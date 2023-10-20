@@ -14,7 +14,7 @@ from univention.testing import utils
 from essential.mailclient import MailClient_SSL
 
 
-def check_login_lookup(host, mail, password, expected_result):
+def check_login_lookup(host, mail, password, expected_result,):
     """
     This function checks if it is possible to login via a mail address
     and a given password, also checks if it is possible to lookup
@@ -23,20 +23,20 @@ def check_login_lookup(host, mail, password, expected_result):
     was not expected.
     """
     print('check_login_lookup() host={!r} mail={!r} password={!r} expected_result={!r}'.format(
-        host, mail, password, expected_result))
+        host, mail, password, expected_result,))
     imap = MailClient_SSL(host)
     if not mail:
         mail = '""'  # no IMAP quoting since Python 3: https://github.com/python/cpython/issues/98241
     try:
-        imap.log_in(mail, password)
+        imap.log_in(mail, password,)
         for mailbox in ['INBOX', 'Ham', 'Spam']:
-            imap.check_lookup(mail, {mailbox: expected_result})
+            imap.check_lookup(mail, {mailbox: expected_result},)
         imap.logout()
         if not expected_result:
             utils.fail('Authentication passed, expected to fail.')
     except Exception as ex:
         auth_errors = ['AUTHENTICATIONFAILED', 'LOGIN => socket error', '[UNAVAILABLE] Internal error']
-        error = ''.join(s.decode('UTF-8', 'replace') if isinstance(s, bytes) else s for s in ex.args)
+        error = ''.join(s.decode('UTF-8', 'replace',) if isinstance(s, bytes,) else s for s in ex.args)
         if any(msg in error for msg in auth_errors):
             if expected_result:
                 utils.fail('Authentication failed, expected to pass.')
@@ -52,7 +52,7 @@ def main():
         ucr_tmp = univention.config_registry.ConfigRegistry()
         ucr_tmp.load()
         cmd = ['/etc/init.d/dovecot', 'restart']
-        with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
+        with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w',),):
             with ucr_test.UCSTestConfigRegistry() as ucr:
                 domain = ucr.get('domainname')
                 basedn = ucr.get('ldap/base')
@@ -61,8 +61,8 @@ def main():
                     'mail/dovecot/mailbox/delete=no',
                     'mail/dovecot/auth/cache_size=0',
                 ])
-                subprocess.call(['service', 'dovecot', 'restart'], stderr=open('/dev/null', 'w'))
-                host = '{}.{}'.format(ucr.get('hostname'), domain)
+                subprocess.call(['service', 'dovecot', 'restart'], stderr=open('/dev/null', 'w',),)
+                host = '{}.{}'.format(ucr.get('hostname'), domain,)
                 password = 'univention'
                 account = utils.UCSTestDomainAdminCredentials()
                 admin = account.binddn
@@ -83,7 +83,7 @@ def main():
                         'mailPrimaryAddress': usermail,
                     },
                 )
-                check_login_lookup(host, usermail, password, True)
+                check_login_lookup(host, usermail, password, True,)
                 new_usermail = f'{uts.random_name()}@{domain}'
                 udm.modify_object(
                     'users/user',
@@ -91,9 +91,9 @@ def main():
                     binddn=admin,
                     bindpwd=passwd,
                     set={'mailPrimaryAddress': new_usermail},
-                    check_for_drs_replication=True)
-                check_login_lookup(host, new_usermail, password, True)
-                check_login_lookup(host, usermail, password, False)
+                    check_for_drs_replication=True,)
+                check_login_lookup(host, new_usermail, password, True,)
+                check_login_lookup(host, usermail, password, False,)
 
                 # Case 2
                 # Create a user with mailPrimaryAddress and without mailHomeServer
@@ -108,15 +108,15 @@ def main():
                         'mailPrimaryAddress': usermail,
                     },
                 )
-                check_login_lookup(host, usermail, password, True)
+                check_login_lookup(host, usermail, password, True,)
                 udm.modify_object(
                     'users/user',
                     dn=userdn,
                     binddn=admin,
                     bindpwd=passwd,
                     set={'mailHomeServer': host},
-                    check_for_drs_replication=True)
-                check_login_lookup(host, usermail, password, True)
+                    check_for_drs_replication=True,)
+                check_login_lookup(host, usermail, password, True,)
 
                 # Case 3
                 # Create a user with mailPrimaryAddress and without mailHomeServer
@@ -131,15 +131,15 @@ def main():
                         'mailPrimaryAddress': usermail,
                     },
                 )
-                check_login_lookup(host, usermail, password, True)
+                check_login_lookup(host, usermail, password, True,)
                 udm.modify_object(
                     'users/user',
                     dn=userdn,
                     binddn=admin,
                     bindpwd=passwd,
                     set={'mailHomeServer': 'mail.example.com'},
-                    check_for_drs_replication=True)
-                check_login_lookup(host, usermail, password, False)
+                    check_for_drs_replication=True,)
+                check_login_lookup(host, usermail, password, False,)
 
                 # Case 4
                 # Create a user without mailPrimaryAddress and mailHomeServer==$LOCALFQDN
@@ -154,15 +154,15 @@ def main():
                         'mailHomeServer': host,
                     },
                 )
-                check_login_lookup(host, '', password, False)
+                check_login_lookup(host, '', password, False,)
                 udm.modify_object(
                     'users/user',
                     dn=userdn,
                     binddn=admin,
                     bindpwd=passwd,
                     set={'mailPrimaryAddress': usermail},
-                    check_for_drs_replication=True)
-                check_login_lookup(host, usermail, password, True)
+                    check_for_drs_replication=True,)
+                check_login_lookup(host, usermail, password, True,)
 
                 # Case 5
                 # Create a user with mailHomeServer and mailPrimaryAddress
@@ -178,10 +178,9 @@ def main():
                         'ip': ip,
                         'name': new_host,
                         'dnsEntryZoneForward': 'zoneName={},cn=dns,{} {}'.format(
-                            domain, basedn, ip),
+                            domain, basedn, ip,),
                     },
-                    position='cn=computers,%s' % basedn,
-                )
+                    position='cn=computers,%s' % basedn,)
                 usermail = f'{uts.random_name()}@{domain}'
                 userdn, username = udm.create_user(
                     set={
@@ -190,15 +189,15 @@ def main():
                         'mailPrimaryAddress': usermail,
                     },
                 )
-                check_login_lookup(host, usermail, password, True)
+                check_login_lookup(host, usermail, password, True,)
                 udm.modify_object(
                     'users/user',
                     dn=userdn,
                     binddn=admin,
                     bindpwd=passwd,
                     set={'mailHomeServer': f'{new_host}.{domain}'},
-                    check_for_drs_replication=True)
-                check_login_lookup(host, usermail, password, False)
+                    check_for_drs_replication=True,)
+                check_login_lookup(host, usermail, password, False,)
 
                 # Case 6
                 # Create a user with mailHomeServer and mailPrimaryAddress
@@ -214,10 +213,9 @@ def main():
                         'ip': ip,
                         'name': new_host,
                         'dnsEntryZoneForward': 'zoneName={},cn=dns,{} {}'.format(
-                            domain, basedn, ip),
+                            domain, basedn, ip,),
                     },
-                    position='cn=computers,%s' % basedn,
-                )
+                    position='cn=computers,%s' % basedn,)
                 usermail = f'{uts.random_name()}@{domain}'
                 userdn, username = udm.create_user(
                     set={
@@ -226,15 +224,15 @@ def main():
                         'mailPrimaryAddress': usermail,
                     },
                 )
-                check_login_lookup(host, usermail, password, True)
+                check_login_lookup(host, usermail, password, True,)
                 udm.modify_object(
                     'users/user',
                     dn=userdn,
                     binddn=admin,
                     bindpwd=passwd,
                     set={'mailHomeServer': ''},
-                    check_for_drs_replication=True)
-                check_login_lookup(host, usermail, password, True)
+                    check_for_drs_replication=True,)
+                check_login_lookup(host, usermail, password, True,)
 
                 # Case 7
                 # Create a user with mailHomeServer and mailPrimaryAddress
@@ -250,10 +248,9 @@ def main():
                         'ip': ip,
                         'name': new_host,
                         'dnsEntryZoneForward': 'zoneName={},cn=dns,{} {}'.format(
-                            domain, basedn, ip),
+                            domain, basedn, ip,),
                     },
-                    position='cn=computers,%s' % basedn,
-                )
+                    position='cn=computers,%s' % basedn,)
                 usermail = f'{uts.random_name()}@{domain}'
                 userdn, username = udm.create_user(
                     set={
@@ -262,15 +259,15 @@ def main():
                         'mailPrimaryAddress': usermail,
                     },
                 )
-                check_login_lookup(host, usermail, password, True)
+                check_login_lookup(host, usermail, password, True,)
                 udm.modify_object(
                     'users/user',
                     dn=userdn,
                     binddn=admin,
                     bindpwd=passwd,
                     set={'mailPrimaryAddress': ''},
-                    check_for_drs_replication=True)
-                check_login_lookup(host, usermail, password, False)
+                    check_for_drs_replication=True,)
+                check_login_lookup(host, usermail, password, False,)
 
 
 if __name__ == '__main__':

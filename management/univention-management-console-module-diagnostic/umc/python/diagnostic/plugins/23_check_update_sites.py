@@ -52,18 +52,18 @@ run_descr = ['Checks resolving repository servers']
 
 
 def repositories() -> Iterator[str]:
-    if configRegistry.is_true('repository/online', True):
-        yield configRegistry.get('repository/online/server', 'updates.software-univention.de/')
-        yield configRegistry.get('repository/app_center/server', 'appcenter.software-univention.de')
+    if configRegistry.is_true('repository/online', True,):
+        yield configRegistry.get('repository/online/server', 'updates.software-univention.de/',)
+        yield configRegistry.get('repository/app_center/server', 'appcenter.software-univention.de',)
 
 
-def test_resolve(url: str) -> bool:
+def test_resolve(url: str,) -> bool:
     parsed = urlsplit(url if '//' in url else '//' + url)
     MODULE.process("Trying to resolve address of repository server %s" % (parsed.hostname))
     MODULE.process("Similar to running: host %s" % (parsed.hostname))
 
     try:
-        socket.getaddrinfo(parsed.hostname, parsed.scheme)
+        socket.getaddrinfo(parsed.hostname, parsed.scheme,)
     except socket.gaierror:
         return False
     return True
@@ -75,7 +75,7 @@ def unresolvable_repositories() -> Iterator[str]:
             yield repository
 
 
-def run(_umc_instance: Instance) -> None:
+def run(_umc_instance: Instance,) -> None:
     error_descriptions = [_('The following FQDNs were not resolvable:')]
     unresolvable = list(unresolvable_repositories())
     if unresolvable:

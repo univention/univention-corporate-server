@@ -45,13 +45,13 @@ def main():
             # send email to each user
             #
             for _dn, _name, addr, msgid in userbase:
-                send_mail(recipients=[addr], messageid=msgid, server=fqdn)
+                send_mail(recipients=[addr], messageid=msgid, server=fqdn,)
             loopcnt = 60
             while loopcnt > 0:
                 loopcnt -= 1
                 found = 0
                 for _dn, _name, addr, msgid in userbase:
-                    if imap_search_mail(messageid=msgid, server=fqdn, imap_user=addr, imap_folder='INBOX', use_ssl=True):
+                    if imap_search_mail(messageid=msgid, server=fqdn, imap_user=addr, imap_folder='INBOX', use_ssl=True,):
                         found += 1
                 print('Found %d of %d mails' % (found, len(userbase)))
                 if found == len(userbase):
@@ -83,12 +83,12 @@ def main():
                     'mail/dovecot/mailbox/delete=%s' % (flag_delete,),
                 ])
                 subprocess.call(['systemctl', 'restart', 'univention-directory-listener'])
-                udm.modify_object('users/user', dn=userbase[i][0], set={'username': '%scopy' % (userbase[i][1],)}, check_for_drs_replication=True)
+                udm.modify_object('users/user', dn=userbase[i][0], set={'username': '%scopy' % (userbase[i][1],)}, check_for_drs_replication=True,)
 
                 if not os.path.exists(old_dir):
                     utils.fail('Test %d: old_dir = %r has been removed unexpectedly! %r' % (i, old_dir, userbase[i]))
                 try:
-                    if not imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=userbase[i][2], imap_folder='INBOX', use_ssl=True):
+                    if not imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=userbase[i][2], imap_folder='INBOX', use_ssl=True,):
                         utils.fail('Test %d: msgid not found unexpectedly' % (i,))
                 except Exception as ex:
                     print('EXCEPTION in imap_search_mail: %r' % (ex,))

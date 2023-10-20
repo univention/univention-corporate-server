@@ -44,27 +44,27 @@ from univention.appcenter.exceptions import RemoveBackupFailed, RemovePluginUnsu
 
 class Remove(Remove, DockerActionMixin):
 
-    def setup_parser(self, parser):
-        super(Remove, self).setup_parser(parser)
-        parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
+    def setup_parser(self, parser,):
+        super(Remove, self,).setup_parser(parser)
+        parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container',)
 
-    def _do_it(self, app, args):
-        self._unregister_host(app, args)
+    def _do_it(self, app, args,):
+        self._unregister_host(app, args,)
         self.percentage = 5
-        super(Remove, self)._do_it(app, args)
+        super(Remove, self,)._do_it(app, args,)
 
-    def _remove_app(self, app, args):
+    def _remove_app(self, app, args,):
         if not app.docker:
-            return super(Remove, self)._remove_app(app, args)
+            return super(Remove, self,)._remove_app(app, args,)
         else:
             if app.plugin_of:
                 raise RemovePluginUnsupported()
             else:
-                return self._remove_docker_container(app, args)
+                return self._remove_docker_container(app, args,)
 
-    def _remove_docker_container(self, app, args):
-        self._configure(app, args)
-        if args.backup and self._backup_container(app, remove=True) is False:
+    def _remove_docker_container(self, app, args,):
+        self._configure(app, args,)
+        if args.backup and self._backup_container(app, remove=True,) is False:
             raise RemoveBackupFailed()
         docker = self._get_docker(app)
         Stop.call(app=app)
@@ -72,7 +72,7 @@ class Remove(Remove, DockerActionMixin):
         docker.rm()
         return True
 
-    def dry_run(self, app, args):
+    def dry_run(self, app, args,):
         if not app.docker:
-            return super(Remove, self).dry_run(app, args)
+            return super(Remove, self,).dry_run(app, args,)
         self.log('%s is a Docker App. No sane dry run is implemented' % app)

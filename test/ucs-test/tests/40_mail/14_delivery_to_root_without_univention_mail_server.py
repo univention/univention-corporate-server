@@ -18,8 +18,8 @@ def main():
         handler_set(['mail/alias/root=systemmail@%s' % fqdn])
         for recipient in ['root', 'root@localhost', 'root@%s' % fqdn]:
             token = str(time.time())
-            send_mail(recipients=recipient, msg=token, tls=True)
-            check_delivery(token, recipient, True)
+            send_mail(recipients=recipient, msg=token, tls=True,)
+            check_delivery(token, recipient, True,)
 
 
 if __name__ == '__main__':

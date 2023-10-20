@@ -55,7 +55,7 @@ class config(object):
             use `None` instead
     """
 
-    def __init__(self, host=''):
+    def __init__(self, host='',):
         # type: (str) -> None
         base = univention.admin.uldap.getBaseDN(host)
         self.data = {
@@ -64,24 +64,24 @@ class config(object):
             'ldap/base/dhcp': 'cn=dhcp,' + base,
         }
 
-    def __getitem__(self, key):
+    def __getitem__(self, key,):
         return self.data[key]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value,):
         self.data[key] = value
 
     if six.PY2:
-        def has_key(self, key):
+        def has_key(self, key,):
             return key in self
 
-    def __contains__(self, key):
+    def __contains__(self, key,):
         return key in self.data
 
     def items(self):
         return self.data.items()
 
 
-def getDefaultContainer(lo, module):
+def getDefaultContainer(lo, module,):
     # type: (univention.admin.uldap.access, Union[ModuleType, str]) -> Optional[str]
     """
     Return any random default container for a UDM module.
@@ -102,7 +102,7 @@ def getDefaultContainer(lo, module):
         return None
 
 
-def getDefaultValue(lo, name, position=None):
+def getDefaultValue(lo, name, position=None,):
     # type: (univention.admin.uldap.access, str, univention.admin.uldap.position) -> Optional[str]
     """
     Return the default value for a UDM module.
@@ -121,9 +121,9 @@ def getDefaultValue(lo, name, position=None):
         att = name
 
     if position:
-        dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], base=position.getDomain(), scope='domain', unique=True, required=True)[0]
+        dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], base=position.getDomain(), scope='domain', unique=True, required=True,)[0]
     else:
-        dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], scope='domain', unique=True, required=True)[0]
-    result = attrs.get(att, [None])[0]
+        dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], scope='domain', unique=True, required=True,)[0]
+    result = attrs.get(att, [None],)[0]
     if result is not None:
         return result.decode('UTF-8')

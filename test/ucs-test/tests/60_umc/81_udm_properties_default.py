@@ -46,70 +46,70 @@ class TestProperty(unittest.TestCase):
         assert p.default(o) == 'x'
 
     def test_str_default_mv(self):
-        p = property(multivalue=True, default=('x', 'y'))
+        p = property(multivalue=True, default=('x', 'y'),)
         o = N(set_defaults=True)
         assert p.default(o) == ['x', 'y']
 
     def test_complex_syntax(self):
         s = N(subsyntaxes=())
-        p = property(multivalue=False, default=(('x', 'y'),), syntax=s)
+        p = property(multivalue=False, default=(('x', 'y'),), syntax=s,)
         o = FakeObject()
         assert p.default(o) == ('x', 'y')
 
     def test_template_sv_empty(self):
-        p = property(multivalue=False, default=('templ', ['prop']))
+        p = property(multivalue=False, default=('templ', ['prop']),)
         o = FakeObject(prop='')
         assert p.default(o) is None
 
     def test_template_sv_set(self):
-        p = property(multivalue=False, default=('<prop>', ['prop']))
+        p = property(multivalue=False, default=('<prop>', ['prop']),)
         o = FakeObject(prop='value')
         assert p.default(o) == 'value'
 
     def test_template_mv_set(self):
-        p = property(multivalue=True, default=('<prop1>', '<prop2>'))
-        o = FakeObject(prop1='value1', prop2='value2')
+        p = property(multivalue=True, default=('<prop1>', '<prop2>'),)
+        o = FakeObject(prop1='value1', prop2='value2',)
         assert p.default(o) == ['value1', 'value2']
 
     def test_template_mv_incomplete(self):
-        p = property(multivalue=True, default=('<prop>', None))
+        p = property(multivalue=True, default=('<prop>', None),)
         o = FakeObject()
         assert p.default(o) == ['<prop>']
 
     def test_template_mv_empty(self):
-        p = property(multivalue=True, default=('', None))
+        p = property(multivalue=True, default=('', None),)
         o = FakeObject()
         assert p.default(o) == []
 
     def test_callable_set(self):
         x = object()
         o = FakeObject(prop='value1')
-        f = lambda obj, extra: 'value2' if extra is x and obj is o else 'error'  # noqa: E731
-        p = property(multivalue=False, default=(f, ['prop'], x))
+        f = lambda obj, extra,: 'value2' if extra is x and obj is o else 'error'  # noqa: E731
+        p = property(multivalue=False, default=(f, ['prop'], x),)
         assert p.default(o) == 'value2'
 
     def test_callable_empty_sv(self):
         x = object()
         o = FakeObject(prop='')
-        f = lambda obj, extra: 1 / 0  # noqa: E731
-        p = property(multivalue=False, default=(f, ['prop'], x))
+        f = lambda obj, extra,: 1 / 0  # noqa: E731
+        p = property(multivalue=False, default=(f, ['prop'], x),)
         assert p.default(o) is None
 
     def test_callable_empty_mv(self):
         x = object()
         o = FakeObject(prop='')
-        f = lambda obj, extra: 1 / 0  # noqa: E731
-        p = property(multivalue=True, default=(f, ['prop'], x))
+        f = lambda obj, extra,: 1 / 0  # noqa: E731
+        p = property(multivalue=True, default=(f, ['prop'], x),)
         assert p.default(o) == []
 
     def test_fallback_sv(self):
         o = FakeObject()
-        p = property(multivalue=False, default=(None,))
+        p = property(multivalue=False, default=(None,),)
         assert p.default(o) is None
 
     def test_fallback_mv(self):
         o = FakeObject()
-        p = property(multivalue=True, default=(None,))
+        p = property(multivalue=True, default=(None,),)
         assert p.default(o) == []
 
 

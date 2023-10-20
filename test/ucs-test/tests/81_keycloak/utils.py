@@ -42,30 +42,30 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-def host_is_alive(host: str) -> bool:
+def host_is_alive(host: str,) -> bool:
     command = ["ping", "-c", "2", host]
     return subprocess.call(command) == 0
 
 
-def wait_for(driver: WebDriver, by: By, element: str, timeout: int = 30) -> None:
+def wait_for(driver: WebDriver, by: By, element: str, timeout: int = 30,) -> None:
     element_present = EC.presence_of_element_located((by, element))
-    WebDriverWait(driver, timeout).until(element_present)
-    WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((by, element)))
+    WebDriverWait(driver, timeout,).until(element_present)
+    WebDriverWait(driver, timeout,).until(EC.visibility_of_element_located((by, element)))
     time.sleep(1)
 
 
-def wait_for_id(driver: WebDriver, element_id: str, timeout: int = 30) -> WebElement:
-    wait_for(driver, By.ID, element_id, timeout)
-    return driver.find_element(By.ID, element_id)
+def wait_for_id(driver: WebDriver, element_id: str, timeout: int = 30,) -> WebElement:
+    wait_for(driver, By.ID, element_id, timeout,)
+    return driver.find_element(By.ID, element_id,)
 
 
-def wait_for_class(driver: WebDriver, element_class: str, timeout: int = 30) -> WebElement:
-    wait_for(driver, By.CLASS_NAME, element_class, timeout)
-    return driver.find_elements(By.CLASS_NAME, element_class)
+def wait_for_class(driver: WebDriver, element_class: str, timeout: int = 30,) -> WebElement:
+    wait_for(driver, By.CLASS_NAME, element_class, timeout,)
+    return driver.find_elements(By.CLASS_NAME, element_class,)
 
 
-def get_portal_tile(driver: WebDriver, text: str, portal_config: SimpleNamespace) -> WebElement:
-    for tile in driver.find_elements(By.CLASS_NAME, portal_config.tile_name_class):
+def get_portal_tile(driver: WebDriver, text: str, portal_config: SimpleNamespace,) -> WebElement:
+    for tile in driver.find_elements(By.CLASS_NAME, portal_config.tile_name_class,):
         if tile.text == text:
             return tile
 
@@ -76,21 +76,20 @@ def keycloak_password_change(
     password: str,
     new_password: str,
     new_password_confirm: str,
-    fails_with: Optional[str] = None,
-) -> None:
-    wait_for_id(driver, keycloak_config.kc_passwd_update_form_id)
-    driver.find_element(By.ID, keycloak_config.password_id).send_keys(password)
-    driver.find_element(By.ID, keycloak_config.password_new_id).send_keys(new_password)
-    driver.find_element(By.ID, keycloak_config.password_confirm_id).send_keys(new_password_confirm)
-    driver.find_element(By.ID, keycloak_config.password_change_button_id).click()
+    fails_with: Optional[str] = None,) -> None:
+    wait_for_id(driver, keycloak_config.kc_passwd_update_form_id,)
+    driver.find_element(By.ID, keycloak_config.password_id,).send_keys(password)
+    driver.find_element(By.ID, keycloak_config.password_new_id,).send_keys(new_password)
+    driver.find_element(By.ID, keycloak_config.password_confirm_id,).send_keys(new_password_confirm)
+    driver.find_element(By.ID, keycloak_config.password_change_button_id,).click()
     if fails_with:
-        error = driver.find_element(By.CSS_SELECTOR, keycloak_config.password_update_error_css_selector)
+        error = driver.find_element(By.CSS_SELECTOR, keycloak_config.password_update_error_css_selector,)
         assert fails_with == error.text, f"{fails_with} != {error.text}"
         assert error.is_displayed()
 
 
-def keycloak_auth_header(config: SimpleNamespace) -> dict:
-    response = requests.post(config.master_token_url, data=config.login_data)
+def keycloak_auth_header(config: SimpleNamespace,) -> dict:
+    response = requests.post(config.master_token_url, data=config.login_data,)
     assert response.status_code == 200, response.text
     return {
         "Content-Type": "application/json",
@@ -98,28 +97,28 @@ def keycloak_auth_header(config: SimpleNamespace) -> dict:
     }
 
 
-def keycloak_get_request(config: SimpleNamespace, path: str, params: Optional[dict] = None) -> dict:
-    response = requests.get(f"{config.admin_url}/{path}", headers=keycloak_auth_header(config), params=params)
+def keycloak_get_request(config: SimpleNamespace, path: str, params: Optional[dict] = None,) -> dict:
+    response = requests.get(f"{config.admin_url}/{path}", headers=keycloak_auth_header(config), params=params,)
     assert response.status_code == 200, response.text
     return response.json()
 
 
-def keycloak_sessions(config: SimpleNamespace) -> dict:
-    response = requests.get(config.client_session_stats_url, headers=keycloak_auth_header(config))
+def keycloak_sessions(config: SimpleNamespace,) -> dict:
+    response = requests.get(config.client_session_stats_url, headers=keycloak_auth_header(config),)
     assert response.status_code == 200, response.text
     return response.json()
 
 
-def keycloak_sessions_by_user(config: SimpleNamespace, username: str) -> dict:
+def keycloak_sessions_by_user(config: SimpleNamespace, username: str,) -> dict:
     params = {"search": username}
-    response = requests.get(config.users_url, params=params, headers=keycloak_auth_header(config))
+    response = requests.get(config.users_url, params=params, headers=keycloak_auth_header(config),)
     assert response.status_code == 200, response.text
     user_object = {}
     for user in response.json():
         if user["attributes"]["uid"][0] == username:
             user_object = user
     assert user_object, f"user {username} not found in keycloak"
-    response = requests.get(f"{config.users_url}/{user_object['id']}/sessions", headers=keycloak_auth_header(config))
+    response = requests.get(f"{config.users_url}/{user_object['id']}/sessions", headers=keycloak_auth_header(config),)
     assert response.status_code == 200, response.text
     return response.json()
 
@@ -130,27 +129,26 @@ def keycloak_login(
     username: str,
     password: str,
     fails_with: Optional[str] = None,
-    no_login: bool = False,
-) -> None:
-    wait_for_id(driver, keycloak_config.username_id)
-    wait_for_id(driver, keycloak_config.password_id)
-    wait_for_id(driver, keycloak_config.login_id)
+    no_login: bool = False,) -> None:
+    wait_for_id(driver, keycloak_config.username_id,)
+    wait_for_id(driver, keycloak_config.password_id,)
+    wait_for_id(driver, keycloak_config.login_id,)
     if no_login:
         return
-    driver.find_element(By.ID, keycloak_config.username_id).send_keys(username)
-    driver.find_element(By.ID, keycloak_config.password_id).send_keys(password)
-    driver.find_element(By.ID, keycloak_config.login_id).click()
+    driver.find_element(By.ID, keycloak_config.username_id,).send_keys(username)
+    driver.find_element(By.ID, keycloak_config.password_id,).send_keys(password)
+    driver.find_element(By.ID, keycloak_config.login_id,).click()
     if fails_with:
-        error = driver.find_element(By.CSS_SELECTOR, keycloak_config.login_error_css_selector)
+        error = driver.find_element(By.CSS_SELECTOR, keycloak_config.login_error_css_selector,)
         assert fails_with == error.text, f"{fails_with} != {error.text}"
         assert error.is_displayed()
 
 
-def run_command(cmd: list) -> str:
-    return subprocess.run(cmd, stdout=subprocess.PIPE, check=True).stdout.decode('utf-8')
+def run_command(cmd: list,) -> str:
+    return subprocess.run(cmd, stdout=subprocess.PIPE, check=True,).stdout.decode('utf-8')
 
 
-def legacy_auth_config_remove(session: KeycloakAdmin, groups: dict) -> None:
+def legacy_auth_config_remove(session: KeycloakAdmin, groups: dict,) -> None:
     """
     groups = {
         "umcaccess": "https://master.ucs.test/univention/saml/metadata",
@@ -165,7 +163,7 @@ def legacy_auth_config_remove(session: KeycloakAdmin, groups: dict) -> None:
     for client in session.get_clients():
         for role in session.get_client_roles(client["id"]):
             if role["name"] == auth_role_name:
-                session.delete_client_role(client["id"], role["name"])
+                session.delete_client_role(client["id"], role["name"],)
 
     # remove groups
     for group in session.get_groups():
@@ -179,7 +177,7 @@ def legacy_auth_config_remove(session: KeycloakAdmin, groups: dict) -> None:
         session.delete_component(mapper[0]["id"])
 
 
-def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: dict) -> None:
+def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: dict,) -> None:
     """
     groups = {
         "umcaccess": "https://master.ucs.test/univention/saml/metadata",
@@ -243,7 +241,7 @@ def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: di
     url = f"/admin/realms/ucs/user-storage/{ldap_provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak"
     if session.path:
         url = f"{session.path}/{url}"
-    res = session.raw_post(url, data={})
+    res = session.raw_post(url, data={},)
     if res.status_code != 200:
         raise Exception(f"raw POST to {url} failed: {res}")
 
@@ -251,7 +249,7 @@ def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: di
     roles = {}
     for client in groups.values():
         client_id = clients[client]
-        session.create_client_role(client_id, {"name": auth_role_name}, skip_exists=True)
+        session.create_client_role(client_id, {"name": auth_role_name}, skip_exists=True,)
         role = [x for x in session.get_client_roles(client_id) if x["name"] == auth_role_name][0]
         roles[client_id] = role["id"]
 
@@ -267,4 +265,4 @@ def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: di
             "id": role_id,
             "name": auth_role_name,
         }
-        session.assign_group_client_roles(group_id, client_id, payload)
+        session.assign_group_client_roles(group_id, client_id, payload,)

@@ -40,8 +40,8 @@ def get_unique_username():
         randomname = "T%x" % (random.getrandbits(44),)
         # this equivalent to
         # univention-directory-manager users/user list | sed -rne "s_^\s+username:\s+(.*)$_\1_p"
-        udm = subprocess.Popen(["univention-directory-manager", "users/user", "list"], stdout=subprocess.PIPE)
-        sed = subprocess.Popen(["sed", "-rne", r"s_^\s+username:\s+(.*)$_\1_p"], stdin=udm.stdout, stdout=subprocess.PIPE)
+        udm = subprocess.Popen(["univention-directory-manager", "users/user", "list"], stdout=subprocess.PIPE,)
+        sed = subprocess.Popen(["sed", "-rne", r"s_^\s+username:\s+(.*)$_\1_p"], stdin=udm.stdout, stdout=subprocess.PIPE,)
         stdout, stderr = sed.communicate()
         for username in stdout:
             if randomname == username.strip():  # collision
@@ -50,9 +50,9 @@ def get_unique_username():
             return randomname  # randomname is unique
 
 
-def create_ssh_session(username, password):
+def create_ssh_session(username, password,):
     known_hosts_file = tempfile.NamedTemporaryFile()
-    shell = pexpect.spawn('ssh', ['-o', 'UserKnownHostsFile="%s"' % known_hosts_file.name, '%s@localhost' % username], timeout=10)  # logfile=sys.stdout)
+    shell = pexpect.spawn('ssh', ['-o', 'UserKnownHostsFile="%s"' % known_hosts_file.name, '%s@localhost' % username], timeout=10,)  # logfile=sys.stdout)
     status = shell.expect([pexpect.TIMEOUT, '[Pp]assword: ', 'Are you sure you want to continue connecting'])
     del known_hosts_file
     if status == 2:  # accept public key
@@ -76,12 +76,11 @@ if __name__ == "__main__":
         password = '%010x' % (random.getrandbits(40),)
         (user_dn, username) = udm.create_user(
             password=password,
-            primaryGroup='cn=%s,cn=groups,%s' % (ucr.get('groups/default/domainadmins', 'Domain Admins'), ucr['ldap/base']),
-            wait_for=True,
-        )
+            primaryGroup='cn=%s,cn=groups,%s' % (ucr.get('groups/default/domainadmins', 'Domain Admins',), ucr['ldap/base']),
+            wait_for=True,)
 
         try:
-            shell = create_ssh_session(username, password)
+            shell = create_ssh_session(username, password,)
         except Exception as e:
             print(e)  # print error
             sys.exit(120)
@@ -101,17 +100,17 @@ if __name__ == "__main__":
         kpasswd_reported_success = status == 0
 
         try:
-            create_ssh_session(username, password)
+            create_ssh_session(username, password,)
             accepted_old_pwd = True
         except Exception:
             accepted_old_pwd = False
         try:
-            create_ssh_session(username, newpassword)
+            create_ssh_session(username, newpassword,)
             accepted_new_pwd = True
         except Exception:
             accepted_new_pwd = False
         if accepted_old_pwd == accepted_new_pwd:
-            print('ERROR: Both passwords were', end=' ')
+            print('ERROR: Both passwords were', end=' ',)
             if accepted_old_pwd and accepted_new_pwd:
                 print('accepted')
             else:
@@ -120,13 +119,13 @@ if __name__ == "__main__":
         password_changed = accepted_new_pwd
 
         if kpasswd_reported_success:
-            print('TEST FAILED: "kpasswd" reported acceptance of too short password', end=' ')
+            print('TEST FAILED: "kpasswd" reported acceptance of too short password', end=' ',)
         else:
-            print('TEST SUCCEEDED: "kpasswd" reported refusal of too short password', end=' ')
+            print('TEST SUCCEEDED: "kpasswd" reported refusal of too short password', end=' ',)
         if kpasswd_reported_success == password_changed:
-            print('and', end=' ')
+            print('and', end=' ',)
         else:
-            print('but', end=' ')
+            print('but', end=' ',)
         if password_changed:
             print('the password was changed')
         else:

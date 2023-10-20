@@ -47,13 +47,13 @@ def restart_web_server():
 
 class AsyncClient(Client):
 
-    def async_request(self, path):
+    def async_request(self, path,):
         cookie = '; '.join(['='.join(x) for x in self.cookies.items()])
-        headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'})
-        headers['X-XSRF-Protection'] = self.cookies.get('UMCSessionId', '')
-        connection = httplib.HTTPSConnection(self.hostname, timeout=10)
+        headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'},)
+        headers['X-XSRF-Protection'] = self.cookies.get('UMCSessionId', '',)
+        connection = httplib.HTTPSConnection(self.hostname, timeout=10,)
         print(f'*** POST to /univention/command/{path} with headers={headers!r}')
-        connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers)
+        connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers,)
         return connection
 
 

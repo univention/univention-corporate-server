@@ -13,7 +13,7 @@ from . import BaseImage
 class Raw(BaseImage):
     """represents a "RAW" disk image"""
 
-    def __init__(self, inputfile: IO[bytes]) -> None:
+    def __init__(self, inputfile: IO[bytes],) -> None:
         BaseImage.__init__(self)
         self._inputfile = inputfile
         self._path = Path(inputfile.name)
@@ -22,7 +22,7 @@ class Raw(BaseImage):
     def hash(self) -> Tuple[Any, ...]:
         return (Raw, self._inputfile)
 
-    def _create(self, path: Path) -> None:
+    def _create(self, path: Path,) -> None:
         pass
 
     def volume_size(self) -> int:

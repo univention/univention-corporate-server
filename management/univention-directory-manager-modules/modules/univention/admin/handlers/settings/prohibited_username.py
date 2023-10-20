@@ -55,8 +55,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionProhibitedUsernames'],
-    ),
+        objectClasses=['top', 'univentionProhibitedUsernames'],),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -65,15 +64,13 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True,
-    ),
+        identifies=True,),
     'usernames': univention.admin.property(
         short_description=_('Prohibited user name'),
         long_description=_('Prohibited user name'),
         syntax=univention.admin.syntax.string,
         multivalue=True,
-        include_in_default_search=True,
-    ),
+        include_in_default_search=True,),
 }
 
 layout = [
@@ -81,13 +78,13 @@ layout = [
         Group(_('General prohibited user names settings'), layout=[
             'name',
             'usernames',
-        ]),
-    ]),
+        ],),
+    ],),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('usernames', 'prohibitedUsername', None, None)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('usernames', 'prohibitedUsername', None, None,)
 
 
 class object(univention.admin.handlers.simpleLdap):

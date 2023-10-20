@@ -60,7 +60,7 @@ except ImportError:
 
 moduleManager = ModuleManager()
 categoryManager = CategoryManager()
-_session_timeout = ucr.get_int('umc/http/session/timeout', 300)
+_session_timeout = ucr.get_int('umc/http/session/timeout', 300,)
 
 
 class User(object):
@@ -91,20 +91,20 @@ class Session(object):
     sessions = {}
 
     @classmethod
-    def get_or_create(cls, session_id):
+    def get_or_create(cls, session_id,):
         session = cls.sessions.get(session_id)
         if not session:
             session = cls(session_id)
         return session
 
     @classmethod
-    def put(cls, session_id, session):
+    def put(cls, session_id, session,):
         session.session_id = session_id
         session.reset_timeout()
         cls.sessions[session_id] = session
 
     @classmethod
-    def expire(cls, session_id):
+    def expire(cls, session_id,):
         """Removes a session when the connection to the UMC server has died or the session is expired"""
         try:
             del cls.sessions[session_id]
@@ -112,7 +112,7 @@ class Session(object):
         except KeyError:
             CORE.info('Session %r not found' % (session_id,))
 
-    def __init__(self, session_id):
+    def __init__(self, session_id,):
         self.session_id = session_id
         self.user = User()
         self.saml = None
@@ -127,10 +127,10 @@ class Session(object):
         self.acls = IACLs(self)
         self.processes = Processes(self)
 
-    async def authenticate(self, args):
+    async def authenticate(self, args,):
         from .server import pool
         pam = self.__auth.get_handler(args['locale'])
-        future = pool.submit(self.__auth.authenticate, pam, args)
+        future = pool.submit(self.__auth.authenticate, pam, args,)
         result = await asyncio.wrap_future(future)
         pam.end()
 
@@ -152,18 +152,18 @@ class Session(object):
             self.renew()
         return result
 
-    async def change_password(self, args):
+    async def change_password(self, args,):
         from .server import pool
         pam = self.__auth.get_handler(args['locale'])
         username = args['username']
         password = args['password']
         new_password = args['new_password']
-        future = pool.submit(pam.change_password, username, password, new_password)
+        future = pool.submit(pam.change_password, username, password, new_password,)
         await asyncio.wrap_future(future)
         pam.end()
-        self.set_credentials(username, new_password, None)
+        self.set_credentials(username, new_password, None,)
 
-    def set_credentials(self, username, password, auth_type):
+    def set_credentials(self, username, password, auth_type,):
         self.user.authenticated = True
         self.user.username = username
         self.user.auth_type = auth_type
@@ -185,7 +185,7 @@ class Session(object):
         if lo and self.user.username:
             # get the LDAP DN of the authorized user
             try:
-                ldap_dn = lo.searchDn(filter_format('(&(uid=%s)(objectClass=person))', (self.user.username,)))
+                ldap_dn = lo.searchDn(filter_format('(&(uid=%s)(objectClass=person))', (self.user.username,),))
             except (ldap.LDAPError, udm_errors.base):
                 reset_ldap_connection_cache(lo)
                 ldap_dn = None
@@ -234,7 +234,7 @@ class Session(object):
             CORE.info('There are still open requests. Deferring session timeout.')
             self.user.session_end_time = monotonic() + 1
             ioloop = tornado.ioloop.IOLoop.current()
-            self._timeout_id = ioloop.call_later(1, self._session_timeout_timer)
+            self._timeout_id = ioloop.call_later(1, self._session_timeout_timer,)
             return
 
         CORE.info('session %r timed out' % (self.session_id,))
@@ -248,14 +248,14 @@ class Session(object):
         ioloop = tornado.ioloop.IOLoop.current()
         when = int(self.session_end_time - monotonic())
         CORE.debug('reset_timeout(): new session expiration in %s seconds' % (when,))
-        self._timeout_id = ioloop.call_later(when, self._session_timeout_timer)
+        self._timeout_id = ioloop.call_later(when, self._session_timeout_timer,)
 
     def disconnect_timer(self):
         if self._timeout_id is not None:
             ioloop = tornado.ioloop.IOLoop.current()
             ioloop.remove_timeout(self._timeout_id)
 
-    def timed_out(self, now):
+    def timed_out(self, now,):
         return self.session_end_time < now
 
     @property
@@ -282,14 +282,14 @@ class IACLs(object):
             self._reload_acls_and_permitted_commands()
         return self.__acls
 
-    def __init__(self, session):
+    def __init__(self, session,):
         self.session = session
         self.__acls = None
         self.__permitted_commands = None
 
     def _reload_acls_and_permitted_commands(self):
         self.__acls = self._get_acls()
-        if isinstance(self.acls, LDAP_ACLs):
+        if isinstance(self.acls, LDAP_ACLs,):
             lo, po = get_machine_connection(write=False)
             try:
                 self.acls.reload(lo)
@@ -306,28 +306,28 @@ class IACLs(object):
             # We need to set empty ACL's for unauthenticated requests
             return ACLs()
         else:
-            return LDAP_ACLs(self.session.user.username, ucr['ldap/base'])
+            return LDAP_ACLs(self.session.user.username, ucr['ldap/base'],)
 
-    def is_command_allowed(self, command, options, flavor):
-        if not isinstance(options, dict):
+    def is_command_allowed(self, command, options, flavor,):
+        if not isinstance(options, dict,):
             options = {}
-        return moduleManager.is_command_allowed(self.acls, command, None, options, flavor)
+        return moduleManager.is_command_allowed(self.acls, command, None, options, flavor,)
 
-    def get_permitted_commands(self, moduleManager):
+    def get_permitted_commands(self, moduleManager,):
         if self.__permitted_commands is None:
             # fixes performance leak?
-            self.__permitted_commands = moduleManager.permitted_commands(ucr['hostname'], self.acls)
+            self.__permitted_commands = moduleManager.permitted_commands(ucr['hostname'], self.acls,)
         return self.__permitted_commands
 
-    def is_module_singleton(self, module_name):
+    def is_module_singleton(self, module_name,):
         return moduleManager.is_singleton(module_name)
 
-    def get_module_proxy_address(self, module_name):
+    def get_module_proxy_address(self, module_name,):
         return moduleManager.proxy_address(module_name)
 
-    def get_module_providing(self, moduleManager, command):
+    def get_module_providing(self, moduleManager, command,):
         permitted_commands = self.get_permitted_commands(moduleManager)
-        module_name = moduleManager.module_providing(permitted_commands, command)
+        module_name = moduleManager.module_providing(permitted_commands, command,)
 
         try:
             # check if the module exists in the module manager
@@ -340,14 +340,14 @@ class IACLs(object):
             module_name = None
         return module_name
 
-    def get_method_name(self, moduleManager, module_name, command):
+    def get_method_name(self, moduleManager, module_name, command,):
         module = self.get_permitted_commands(moduleManager)[module_name]
         methods = (cmd.method for cmd in module.commands if cmd.name == command)
         for method in methods:
             return method
 
     def __repr__(self):
-        return '<ACLs from-ldap=%r>' % (isinstance(self.__acls, LDAP_ACLs),)
+        return '<ACLs from-ldap=%r>' % (isinstance(self.__acls, LDAP_ACLs,),)
 
 
 class Processes(object):
@@ -355,14 +355,14 @@ class Processes(object):
 
     singletons = {}
 
-    def __init__(self, session):
+    def __init__(self, session,):
         self.session = session
         self.__processes = {}
 
-    def processes(self, module_name):
+    def processes(self, module_name,):
         return self.singletons if self.session.acls.is_module_singleton(module_name) else self.__processes
 
-    def get_process(self, module_name, accepted_language, no_daemonize_module_processes=False):
+    def get_process(self, module_name, accepted_language, no_daemonize_module_processes=False,):
         from .resources import ModuleProcess, ModuleProxy
         proxy_address = self.session.acls.get_module_proxy_address(module_name)
         if proxy_address:
@@ -372,7 +372,7 @@ class Processes(object):
         if module_name not in processes:
             CORE.info('Starting new module process %s' % (module_name,))
             try:
-                mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=accepted_language, no_daemonize_module_processes=no_daemonize_module_processes)
+                mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=accepted_language, no_daemonize_module_processes=no_daemonize_module_processes,)
             except EnvironmentError as exc:
                 _ = self.session._
                 message = _('Could not open the module. %s Please try again later.') % {
@@ -381,20 +381,20 @@ class Processes(object):
                     errno.ENFILE: _('There are too many opened files on the server.'),
                     errno.ENOSPC: _('There is not enough free space on the server.'),
                     errno.ENOENT: _('The executable was not found.'),
-                }.get(exc.errno, _('An unknown operating system error occurred (%s).') % (exc,))
+                }.get(exc.errno, _('An unknown operating system error occurred (%s).') % (exc,),)
                 raise ServiceUnavailable(message)
             processes[module_name] = mod_proc
-            mod_proc.set_exit_callback(functools.partial(self.process_exited, module_name))
+            mod_proc.set_exit_callback(functools.partial(self.process_exited, module_name,))
 
         return processes[module_name]
 
-    def stop_process(self, module_name):
-        proc = self.processes(module_name).pop(module_name, None)
+    def stop_process(self, module_name,):
+        proc = self.processes(module_name).pop(module_name, None,)
         if proc:
             proc.stop()
 
-    def process_exited(self, module_name, exit_code):
-        proc = self.processes(module_name).pop(module_name, None)
+    def process_exited(self, module_name, exit_code,):
+        proc = self.processes(module_name).pop(module_name, None,)
         if proc:
             proc._died(exit_code)
 

@@ -62,7 +62,7 @@ class Progress(object):
     Used internally.
     """
 
-    def __init__(self, progress_id, title, total):
+    def __init__(self, progress_id, title, total,):
         self.id = progress_id
         self.title = title
         self.message = ''
@@ -77,7 +77,7 @@ class Progress(object):
         #   "result". it is only set if explicitly
         #   calling finish_with_result
 
-    def progress(self, detail=None, message=None):
+    def progress(self, detail=None, message=None,):
         self.current += 1
         self.intermediate.append(detail)
         if message is not None:
@@ -89,14 +89,14 @@ class Progress(object):
         self.finished = True
         return True
 
-    def finish_with_result(self, result):
+    def finish_with_result(self, result,):
         if self.finish():
             self.result = result
 
     def initialised(self):
         return {'id': self.id, 'title': self.title}
 
-    def exception(self, exc_info):
+    def exception(self, exc_info,):
         self.exc_info = exc_info
 
     def poll(self):
@@ -117,7 +117,7 @@ class Progress(object):
             ret['percentage'] = 'Infinity'
         if self.location is not None:
             ret['location'] = self.location
-        if hasattr(self, 'result'):
+        if hasattr(self, 'result',):
             ret['result'] = self.result
         del self.intermediate[:]
         return ret
@@ -137,20 +137,20 @@ class ProgressMixin(object):
 
     """
 
-    def new_progress(self, title=None, total=0):
-        if not hasattr(self, '_progress_id'):
+    def new_progress(self, title=None, total=0,):
+        if not hasattr(self, '_progress_id',):
             self._progress_id = 0
-        if not hasattr(self, '_progress_objs'):
+        if not hasattr(self, '_progress_objs',):
             self._progress_objs = {}
         if title is None:
             title = _('Please wait for operation to finish')
-        self._progress_id += random.randint(1, 100000)
-        self._progress_objs[self._progress_id] = progress = Progress(self._progress_id, title, total)
+        self._progress_id += random.randint(1, 100000,)
+        self._progress_objs[self._progress_id] = progress = Progress(self._progress_id, title, total,)
         return progress
 
     @simple_response
-    def progress(self, progress_id):
-        if not hasattr(self, '_progress_objs'):
+    def progress(self, progress_id,):
+        if not hasattr(self, '_progress_objs',):
             self._progress_objs = {}
         try:
             progress_obj = self._progress_objs[progress_id]
@@ -162,15 +162,15 @@ class ProgressMixin(object):
                 del self._progress_objs[progress_id]
             return ret
 
-    def thread_progress_finished_callback(self, thread, result, request, progress):
+    def thread_progress_finished_callback(self, thread, result, request, progress,):
         if self._is_active(request):
-            self.thread_finished_callback(thread, result, request)
+            self.thread_finished_callback(thread, result, request,)
 
-        if isinstance(result, BaseException):
+        if isinstance(result, BaseException,):
             progress.exception(thread.exc_info)  # FIXME: broken since Bug #47114
             return
 
-        progress.progress(None, _('finished...'))
+        progress.progress(None, _('finished...'),)
         if result:
             progress.finish_with_result(result)
         else:

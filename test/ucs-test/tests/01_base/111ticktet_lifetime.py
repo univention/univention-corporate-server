@@ -26,7 +26,7 @@ VALUE = "50"
 key = "kerberos/defaults/ticket-lifetime"
 
 
-def file_contain(file: str, text: str, no_exist_ignore: bool = True):
+def file_contain(file: str, text: str, no_exist_ignore: bool = True,):
     if os.path.exists(file):
         with open(file) as f:
             if text not in f.read():
@@ -43,32 +43,32 @@ def myucr() -> Iterator[ConfigRegistry]:
         yield ucr
 
 
-def test_kerberos_lifetime(myucr):
-    old_value = myucr.get(key, None)
+def test_kerberos_lifetime(myucr,):
+    old_value = myucr.get(key, None,)
     value = -3
     try:
         ucr_update(myucr, {
             key: VALUE,
-        })
-        value = file_contain(KRB5_PATH, f"ticket_lifetime = { VALUE }h")
+        },)
+        value = file_contain(KRB5_PATH, f"ticket_lifetime = { VALUE }h",)
     finally:
         ucr_update(myucr, {
             key: old_value,
-        })
+        },)
     assert value == 0
 
 
-@pytest.mark.skipif(not package_installed('univention-samba4'), reason='Missing software: univention-samba4')
-def test_samba_lifetime(myucr):
-    old_value = myucr.get(key, None)
+@pytest.mark.skipif(not package_installed('univention-samba4'), reason='Missing software: univention-samba4',)
+def test_samba_lifetime(myucr,):
+    old_value = myucr.get(key, None,)
     value = -3
     try:
         ucr_update(myucr, {
             key: VALUE,
-        })
-        value = file_contain(SMB_PATH, f"kdc:user ticket lifetime = { VALUE }")
+        },)
+        value = file_contain(SMB_PATH, f"kdc:user ticket lifetime = { VALUE }",)
     finally:
         ucr_update(myucr, {
             key: old_value,
-        })
+        },)
     assert value == 0

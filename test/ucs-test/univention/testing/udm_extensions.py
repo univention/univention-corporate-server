@@ -53,7 +53,7 @@ def get_package_version():
     return random_version()
 
 
-def get_extension_name(extension_type):
+def get_extension_name(extension_type,):
     # type: (str) -> str
     """
     Returns a valid extension name for the given extension type.
@@ -71,13 +71,13 @@ def get_extension_name(extension_type):
         return random_name()
 
 
-def get_extension_filename(extension_type, extension_name):
+def get_extension_filename(extension_type, extension_name,):
     # type: (str, str) -> str
     assert extension_type in VALID_EXTENSION_TYPES
     return '%s.py' % extension_name
 
 
-def call_cmd(cmd, fail_on_error=True):
+def call_cmd(cmd, fail_on_error=True,):
     # type: (Sequence[str], bool) -> int
     """Calls the given cmd (list of strings)."""
     print('CMD: %r' % cmd)
@@ -88,7 +88,7 @@ def call_cmd(cmd, fail_on_error=True):
     return exitcode
 
 
-def call_join_script(name, fail_on_error=True):
+def call_join_script(name, fail_on_error=True,):
     # type: (str, bool) -> int
     """
     Calls the given join script (e.g. name='66foobar.inst').
@@ -96,10 +96,10 @@ def call_join_script(name, fail_on_error=True):
     """
     ucr = ConfigRegistry()
     ucr.load()
-    return call_cmd(['/usr/lib/univention-install/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
+    return call_cmd(['/usr/lib/univention-install/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error,)
 
 
-def call_unjoin_script(name, fail_on_error=True):
+def call_unjoin_script(name, fail_on_error=True,):
     # type: (str, bool) -> int
     """
     Calls the given unjoin script (e.g. name='66foobar-uninstall.uinst').
@@ -107,10 +107,10 @@ def call_unjoin_script(name, fail_on_error=True):
     """
     ucr = ConfigRegistry()
     ucr.load()
-    return call_cmd(['/usr/lib/univention-uninstall/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
+    return call_cmd(['/usr/lib/univention-uninstall/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error,)
 
 
-def get_syntax_buffer(name=None, identifier=None):
+def get_syntax_buffer(name=None, identifier=None,):
     # type: (Optional[str], Optional[str]) -> str
     """
     Returns a UDM syntax with given name (e.g. 'MySimpleHook'). If name is omitted,
@@ -127,7 +127,7 @@ class %(syntax_name)s(simple):
 ''' % {'syntax_name': name, 'syntax_identifier': identifier}
 
 
-def get_hook_buffer(name=None, identifier=None):
+def get_hook_buffer(name=None, identifier=None,):
     # type: (Optional[str], Optional[str]) -> str
     """
     Returns a UDM hook with given name (e.g. 'MySimpleHook'). If name is omitted,
@@ -149,7 +149,7 @@ class %(hook_name)s(simpleHook):
 ''' % {'hook_name': name, 'hook_identifier': identifier}
 
 
-def get_module_buffer(name=None, identifier=None):
+def get_module_buffer(name=None, identifier=None,):
     # type: (Optional[str], Optional[str]) -> str
     """
     Returns a UDM module with given name (e.g. 'testing/mytest'). If name is omitted,
@@ -211,7 +211,7 @@ identify = object.identify
 ''' % {'module_udmname': name, 'module_identifier': identifier}
 
 
-def get_extension_buffer(extension_type, name=None, identifier=None):
+def get_extension_buffer(extension_type, name=None, identifier=None,):
     # type: (str, Optional[str], Optional[str]) -> str
     """
     Get UDM extension of specified type with specified name.
@@ -222,10 +222,10 @@ def get_extension_buffer(extension_type, name=None, identifier=None):
         'hook': get_hook_buffer,
         'syntax': get_syntax_buffer,
         'module': get_module_buffer,
-    }[extension_type](name, identifier)
+    }[extension_type](name, identifier,)
 
 
-def get_postinst_script_buffer(extension_type, filename, app_id=None, version_start=None, version_end=None, options=None):
+def get_postinst_script_buffer(extension_type, filename, app_id=None, version_start=None, version_end=None, options=None,):
     # type: (str, str, Optional[str], Optional[str], Optional[str], Mapping[str, Union[str, Iterable[str]]]) -> str
     """
     Returns a postinst script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
@@ -238,7 +238,7 @@ def get_postinst_script_buffer(extension_type, filename, app_id=None, version_st
     other_options = ''
     if options:
         for key in options:
-            if isinstance(options[key], str):
+            if isinstance(options[key], str,):
                 other_options += ' --%s %s' % (key, options[key])
             else:
                 other_options += ' --%s ' % (key,) + ' --%s '.join(options[key])
@@ -260,7 +260,7 @@ exit 0
     }
 
 
-def get_postrm_script_buffer(extension_type, extension_name, package_name):
+def get_postrm_script_buffer(extension_type, extension_name, package_name,):
     # type: (str, str, str) -> str
     """
     Returns an postrm script that deregisters the given UDM extension. The type of the extension
@@ -278,7 +278,7 @@ exit 0
 ''' % {'extension_name': extension_name, 'extension_type': extension_type}
 
 
-def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_version=1, version_start=None, version_end=None, options=None):
+def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_version=1, version_start=None, version_end=None, options=None,):
     # type: (str, str, Optional[str], int, Optional[str], Optional[str], Mapping[str, Union[str, Iterable[str]]]) -> str
     """
     Returns a join script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
@@ -291,7 +291,7 @@ def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_ver
     other_options = ''
     if options:
         for key in options:
-            if isinstance(options[key], str):
+            if isinstance(options[key], str,):
                 other_options += ' --%s %s' % (key, options[key])
             else:
                 other_options += ' --%s ' % (key,) + (' --%s ' % (key,)).join(options[key])
@@ -317,7 +317,7 @@ exit 0
     }
 
 
-def get_unjoin_script_buffer(extension_type, extension_name, package_name):
+def get_unjoin_script_buffer(extension_type, extension_name, package_name,):
     # type: (str, str, str) -> str
     """
     Returns an unjoin script that deregisters the given UDM extension. The type of the extension
@@ -338,7 +338,7 @@ exit 0
 ''' % {'package_name': package_name, 'extension_name': extension_name, 'extension_type': extension_type}
 
 
-def get_absolute_extension_filename(extension_type, filename):
+def get_absolute_extension_filename(extension_type, filename,):
     # type: (str, str) -> str
     """Returns the absolute path to an extentension of the given type and filename."""
     assert extension_type in VALID_EXTENSION_TYPES
@@ -351,7 +351,7 @@ def get_absolute_extension_filename(extension_type, filename):
     }[extension_type] % filename)
 
 
-def get_dn_of_extension_by_name(extension_type, name):
+def get_dn_of_extension_by_name(extension_type, name,):
     # type: (str, str) -> str
     """Returns a list of DNs of UDM extension objects with given type an name, or [] if no object has been found."""
     assert extension_type in VALID_EXTENSION_TYPES
@@ -365,11 +365,11 @@ def get_dn_of_extension_by_name(extension_type, name):
     return get_ldap_connection().searchDn(filter=searchfilter)
 
 
-def remove_extension_by_name(extension_type, extension_name, fail_on_error=True):
+def remove_extension_by_name(extension_type, extension_name, fail_on_error=True,):
     # type: (str, str, bool) -> None
     """Remove all extensions of given type and name from LDAP."""
     assert extension_type in VALID_EXTENSION_TYPES
-    for dn in get_dn_of_extension_by_name(extension_type, extension_name):
+    for dn in get_dn_of_extension_by_name(extension_type, extension_name,):
         cmd = ['/usr/sbin/udm-test', 'settings/udm_%s' % extension_type, 'remove', '--dn', dn]
         print('CMD: %r' % cmd)
         sys.stdout.flush()

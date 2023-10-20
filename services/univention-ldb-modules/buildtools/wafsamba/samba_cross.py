@@ -14,10 +14,10 @@ ANSWER_OK      = (0, "")
 cross_answers_incomplete = False
 
 
-def add_answer(ca_file, msg, answer):
+def add_answer(ca_file, msg, answer,):
     '''add an answer to a set of cross answers'''
     try:
-        f = open(ca_file, 'a')
+        f = open(ca_file, 'a',)
     except:
         Logs.error("Unable to open cross-answers file %s" % ca_file)
         sys.exit(1)
@@ -45,10 +45,10 @@ def add_answer(ca_file, msg, answer):
     f.close()
 
 
-def cross_answer(ca_file, msg):
+def cross_answer(ca_file, msg,):
     '''return a (retcode,retstring) tuple from a answers file'''
     try:
-        f = open(ca_file, 'r')
+        f = open(ca_file, 'r',)
     except:
         return ANSWER_UNKNOWN
     for line in f:
@@ -56,7 +56,7 @@ def cross_answer(ca_file, msg):
         if line == '' or line[0] == '#':
             continue
         if line.find(':') != -1:
-            a = line.split(':', 1)
+            a = line.split(':', 1,)
             thismsg = a[0].strip()
             if thismsg != msg:
                 continue
@@ -77,7 +77,7 @@ def cross_answer(ca_file, msg):
                 f.close()
                 return (0, ans.strip("'"))
             else:
-                m = re.match(r'\(\s*(-?\d+)\s*,\s*\"(.*)\"\s*\)', ans)
+                m = re.match(r'\(\s*(-?\d+)\s*,\s*\"(.*)\"\s*\)', ans,)
                 if m:
                     f.close()
                     return (int(m.group(1)), m.group(2))
@@ -109,7 +109,7 @@ class cross_Popen(Utils.subprocess.Popen):
             i = args.index('--cross-answers')
             ca_file = args[i+1]
             msg     = args[i+2]
-            ans = cross_answer(ca_file, msg)
+            ans = cross_answer(ca_file, msg,)
 
         if '--cross-execute' in args and ans == ANSWER_UNKNOWN:
             # when --cross-execute is set, then change the arguments
@@ -121,10 +121,10 @@ class cross_Popen(Utils.subprocess.Popen):
                 p = real_Popen(newargs,
                                stdout=Utils.subprocess.PIPE,
                                stderr=Utils.subprocess.PIPE,
-                               env=kw.get('env', {}))
+                               env=kw.get('env', {},),)
                 ce_out, ce_err = p.communicate()
                 ans = (p.returncode, samba_utils.get_string(ce_out))
-                add_answer(ca_file, msg, ans)
+                add_answer(ca_file, msg, ans,)
             else:
                 args = newargs
 
@@ -132,14 +132,14 @@ class cross_Popen(Utils.subprocess.Popen):
             if ans == ANSWER_UNKNOWN:
                 global cross_answers_incomplete
                 cross_answers_incomplete = True
-                add_answer(ca_file, msg, ans)
+                add_answer(ca_file, msg, ans,)
             (retcode, retstring) = ans
             args = ['/bin/sh', '-c', "printf %%s '%s'; exit %d" % (retstring, retcode)]
-        real_Popen.__init__(*(obj, args), **kw)
+        real_Popen.__init__(*(obj, args), **kw,)
 
 
 @conf
-def SAMBA_CROSS_ARGS(conf, msg=None):
+def SAMBA_CROSS_ARGS(conf, msg=None,):
     '''get test_args to pass when running cross compiled binaries'''
     if not conf.env.CROSS_COMPILE:
         return []
@@ -159,7 +159,7 @@ def SAMBA_CROSS_ARGS(conf, msg=None):
     if conf.env.CROSS_ANSWERS:
         if msg is None:
             raise Errors.WafError("Cannot have NULL msg in cross-answers")
-        ret.extend(['--cross-answers', os.path.join(Context.launch_dir, conf.env.CROSS_ANSWERS), msg])
+        ret.extend(['--cross-answers', os.path.join(Context.launch_dir, conf.env.CROSS_ANSWERS,), msg])
 
     if ret == []:
         raise Errors.WafError("Cannot cross-compile without either --cross-execute or --cross-answers")
@@ -167,7 +167,7 @@ def SAMBA_CROSS_ARGS(conf, msg=None):
     return ret
 
 @conf
-def SAMBA_CROSS_CHECK_COMPLETE(conf):
+def SAMBA_CROSS_CHECK_COMPLETE(conf,):
     '''check if we have some unanswered questions'''
     global cross_answers_incomplete
     if conf.env.CROSS_COMPILE and cross_answers_incomplete:

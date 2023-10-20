@@ -60,7 +60,7 @@ from univention._debug import (
 __all__ = ('debug', 'function', 'trace', 'ACL', 'ADMIN', 'ALL', 'AUTH', 'CONFIG', 'DHCP', 'ERROR', 'FLUSH', 'FUNCTION', 'INFO', 'KERBEROS', 'LDAP', 'LICENSE', 'LISTENER', 'LOCALE', 'MAIN', 'MODULE', 'NETWORK', 'NO_FLUSH', 'NO_FUNCTION', 'PARSER', 'POLICY', 'PROCESS', 'PROTOCOL', 'RESOURCES', 'SEARCH', 'SLAPD', 'SSL', 'TRANSFILE', 'USERS', 'WARN', 'begin', 'debug', 'end', 'exit', 'get_level', 'init', 'reopen', 'set_function', 'set_level')
 
 
-def debug(category, level, message, utf8=True):
+def debug(category, level, message, utf8=True,):
     """
     Log message 'message' of severity 'level' to facility 'category'.
 
@@ -72,7 +72,7 @@ def debug(category, level, message, utf8=True):
     >>> debug(LISTENER, ERROR, 'Fatal error: var=%s' % 42) #doctest: +ELLIPSIS
     ... ...  LISTENER    ( ERROR   ) : Fatal error: var=42
     """
-    _debug.debug(category, level, message)
+    _debug.debug(category, level, message,)
 
 
 class function(object):
@@ -92,8 +92,8 @@ class function(object):
     'yes'
     """
 
-    def __init__(self, fname, utf8=True):
-        warn('univention.debug.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning)  # noqa: B028
+    def __init__(self, fname, utf8=True,):
+        warn('univention.debug.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning,)  # noqa: B028
         self.fname = fname
         _debug.begin(self.fname)
 
@@ -102,7 +102,7 @@ class function(object):
         _debug.end(self.fname)
 
 
-def trace(with_args=True, with_return=False, repr=object.__repr__):
+def trace(with_args=True, with_return=False, repr=object.__repr__,):
     """
     Log function call, optional with arguments and result.
 
@@ -129,20 +129,19 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
             ...
     ZeroDivisionError: integer division or modulo by zero
     """
-    def decorator(f):
+    def decorator(f,):
         @wraps(f)
         def wrapper(*args, **kwargs):
             fname = '%s.%s' % (f.__module__, f.__name__)
             _args = ', '.join(
                     chain(
                         (repr(arg) for arg in args),
-                        ('%s=%s' % (k, repr(v)) for (k, v) in kwargs.items()),
-                    ),
+                        ('%s=%s' % (k, repr(v)) for (k, v) in kwargs.items()),),
             ) if with_args else '...'
 
             _debug.begin('%s(%s): ...' % (fname, _args))
             try:
-                ret = f(*args, **kwargs)
+                ret = f(*args, **kwargs,)
             except BaseException:
                 try:
                     (exctype, value) = sys.exc_info()[:2]

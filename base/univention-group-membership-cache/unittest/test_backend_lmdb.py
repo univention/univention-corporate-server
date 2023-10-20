@@ -43,55 +43,55 @@ from univentionunittests import import_module
 
 
 @pytest.fixture()
-def db_module(mocker):
+def db_module(mocker,):
     sys.modules['gdbm'] = mocker.Mock()
     return sys.modules['gdbm']
 
 
 @pytest.fixture()
 def ldap_cache():
-    module = import_module("univention.ldap_cache.cache", "src/", "univention.ldap_cache.cache", use_installed=False)
+    module = import_module("univention.ldap_cache.cache", "src/", "univention.ldap_cache.cache", use_installed=False,)
     return module
 
 
 @pytest.fixture()
-def mocked_os(mocker):
+def mocked_os(mocker,):
     mocked_os = mocker.patch('univention.ldap_cache.cache.os.chown')
     return mocked_os
 
 
 @pytest.fixture()
-def lmdb_caches(ldap_cache, mocked_os):
+def lmdb_caches(ldap_cache, mocked_os,):
     lmdb_caches = ldap_cache.LmdbCaches()
     return lmdb_caches
 
 
-def test__init__and_permissions(db_module, lmdb_caches, mocked_os):
+def test__init__and_permissions(db_module, lmdb_caches, mocked_os,):
     """Test the __init__ method of the ldap_cache.cache.LmdbCaches class."""
     assert lmdb_caches._caches == {}
-    db_module.open.assert_called_once_with('/usr/share/univention-group-membership-cache', 4294967295, max_dbs=128)
+    db_module.open.assert_called_once_with('/usr/share/univention-group-membership-cache', 4294967295, max_dbs=128,)
     assert mocked_os.call_count == 2
 
 
-def test_add_cache(db_module, ldap_cache, lmdb_caches):
+def test_add_cache(db_module, ldap_cache, lmdb_caches,):
     """Test the add_cache_class method of the ldap_cache.cache.LmdbCaches class."""
     new_cache = lmdb_caches.add_cache_class(ldap_cache.EntryUUID)
     assert lmdb_caches._caches == {ldap_cache.EntryUUID.__name__: new_cache}
 
 
-def test_add_full_shard(db_module, ldap_cache, lmdb_caches):
+def test_add_full_shard(db_module, ldap_cache, lmdb_caches,):
     """Test the add_full_shard method of the ldap_cache.cache.LmdbCaches class."""
     cache0 = lmdb_caches.add_full_shard(ldap_cache.UsersInGroup)
     assert lmdb_caches._caches == {'UsersInGroup': cache0}
     assert len(cache0.shards) == 1
-    assert isinstance(cache0.shards[0], ldap_cache.UsersInGroup)
+    assert isinstance(cache0.shards[0], ldap_cache.UsersInGroup,)
     cache1 = lmdb_caches.add_full_shard(ldap_cache.GroupsInGroup)
     assert lmdb_caches._caches == {'UsersInGroup': cache0, 'GroupsInGroup': cache1}
     assert len(cache1.shards) == 1
-    assert isinstance(cache1.shards[0], ldap_cache.GroupsInGroup)
+    assert isinstance(cache1.shards[0], ldap_cache.GroupsInGroup,)
 
 
-def test_recreate(ldap_cache, lmdb_caches, db_module, mocker):
+def test_recreate(ldap_cache, lmdb_caches, db_module, mocker,):
     """Test the recreate method of the ldap_cache.cache.LmdbCaches class."""
     the_env = mocker.Mock()
     the_env.__enter__.return_value = mocker.Mock()

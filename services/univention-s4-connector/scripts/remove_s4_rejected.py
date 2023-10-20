@@ -45,12 +45,12 @@ class ObjectNotFound(BaseException):
     pass
 
 
-def remove_s4_rejected(s4_dn):
+def remove_s4_rejected(s4_dn,):
     config = univention.s4connector.configdb('/etc/univention/connector/s4internal.sqlite')
     found = False
     for usn, rejected_dn in config.items('S4 rejected'):
-        if univention.uldap.access.compare_dn(s4_dn, rejected_dn):
-            config.remove_option('S4 rejected', usn)
+        if univention.uldap.access.compare_dn(s4_dn, rejected_dn,):
+            config.remove_option('S4 rejected', usn,)
             found = True
 
     if not found:

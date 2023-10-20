@@ -62,19 +62,19 @@ filter = (
 )
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> None:
     pass
 
 
 def postrun() -> None:
-    if ucr.is_true("dhcpd/autostart", False):
-        if ucr.is_true('dhcpd/restart/listener', False):
-            ud.debug(ud.LISTENER, ud.INFO, 'DHCP: Restarting server')
+    if ucr.is_true("dhcpd/autostart", False,):
+        if ucr.is_true('dhcpd/restart/listener', False,):
+            ud.debug(ud.LISTENER, ud.INFO, 'DHCP: Restarting server',)
             try:
-                run('/bin/systemctl', ['systemctl', 'try-reload-or-restart', '--', 'isc-dhcp-server.service'], uid=0)
+                run('/bin/systemctl', ['systemctl', 'try-reload-or-restart', '--', 'isc-dhcp-server.service'], uid=0,)
             except Exception as ex:
-                ud.debug(ud.ADMIN, ud.WARN, 'The restart of the DHCP server failed: %s' % (ex,))
+                ud.debug(ud.ADMIN, ud.WARN, 'The restart of the DHCP server failed: %s' % (ex,),)
         else:
-            ud.debug(ud.ADMIN, ud.INFO, 'DHCP: the automatic restart of the dhcp server by the listener is disabled. Set dhcpd/restart/listener to true to enable this option.')
+            ud.debug(ud.ADMIN, ud.INFO, 'DHCP: the automatic restart of the dhcp server by the listener is disabled. Set dhcpd/restart/listener to true to enable this option.',)
     else:
-        ud.debug(ud.LISTENER, ud.INFO, 'DHCP: dcpd disabled in config_registry - not started.')
+        ud.debug(ud.LISTENER, ud.INFO, 'DHCP: dcpd disabled in config_registry - not started.',)

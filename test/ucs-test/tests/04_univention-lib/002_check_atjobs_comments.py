@@ -22,7 +22,7 @@ def main():
         'test': 'foobär',
         '1': '2',
     }
-    job = atjobs.add('sleep 3', comments=comments)
+    job = atjobs.add('sleep 3', comments=comments,)
     for testjob in atjobs.list(extended=True):
         if testjob.nr == job.nr:
             assert testjob.comments == expected_comments, f'storing comments failed: {testjob.comments!r} != {comments!r}'

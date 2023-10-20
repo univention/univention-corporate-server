@@ -58,17 +58,17 @@ def import_hook_files():
     # type: () -> None
     """Load all additional hook files from :file:`.../univention/admin/hooks.d/*.py`"""
     for dir_ in sys.path:
-        hooks_d = os.path.join(dir_, 'univention/admin/hooks.d/')
+        hooks_d = os.path.join(dir_, 'univention/admin/hooks.d/',)
         if os.path.isdir(hooks_d):
-            hooks_files = (os.path.join(hooks_d, f) for f in os.listdir(hooks_d) if f.endswith('.py'))
+            hooks_files = (os.path.join(hooks_d, f,) for f in os.listdir(hooks_d) if f.endswith('.py'))
             for fn in hooks_files:
                 try:
-                    with io.open(fn, 'rb') as fd:
-                        exec(fd.read(), sys.modules[__name__].__dict__)  # noqa: S102
-                    ud.debug(ud.ADMIN, ud.INFO, 'admin.hook.import_hook_files: importing %r' % (fn,))
+                    with io.open(fn, 'rb',) as fd:
+                        exec(fd.read(), sys.modules[__name__].__dict__,)  # noqa: S102
+                    ud.debug(ud.ADMIN, ud.INFO, 'admin.hook.import_hook_files: importing %r' % (fn,),)
                 except Exception:
-                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.hook.import_hook_files: loading %r failed' % (fn,))
-                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.hook.import_hook_files: TRACEBACK:\n%s' % traceback.format_exc())
+                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.hook.import_hook_files: loading %r failed' % (fn,),)
+                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.hook.import_hook_files: TRACEBACK:\n%s' % traceback.format_exc(),)
 
 
 class simpleHook(object):
@@ -81,16 +81,16 @@ class simpleHook(object):
     # methods, use obj.lo and obj.position.
     #
 
-    def hook_open(self, obj):
+    def hook_open(self, obj,):
         # type: (univention.admin.handlers.simpleLdap) -> None
         """
         This method is called by the default open handler just before the current state of all properties is saved.
 
         :param obj: The |UDM| object instance.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _open called')
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _open called',)
 
-    def hook_ldap_pre_create(self, obj):
+    def hook_ldap_pre_create(self, obj,):
         # type: (univention.admin.handlers.simpleLdap) -> None
         """
         This method is called before an |UDM| object is created.
@@ -98,9 +98,9 @@ class simpleHook(object):
 
         :param obj: The |UDM| object instance.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_create called')
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_create called',)
 
-    def hook_ldap_addlist(self, obj, al=[]):
+    def hook_ldap_addlist(self, obj, al=[],):
         # type: (univention.admin.handlers.simpleLdap, AddList) -> AddList
         """
         This method is called before an |UDM| object is created.
@@ -111,19 +111,19 @@ class simpleHook(object):
         :param al: A list of two-tuples (ldap-attribute-name, list-of-values) which will be used to create the LDAP object.
         :returns: The (modified) add-list.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_addlist called')
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_addlist called',)
         return al
 
-    def hook_ldap_post_create(self, obj):
+    def hook_ldap_post_create(self, obj,):
         # type: (univention.admin.handlers.simpleLdap) -> None
         """
         This method is called after the object was created in |LDAP|.
 
         :param obj: The |UDM| object instance.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_create called')
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_create called',)
 
-    def hook_ldap_pre_modify(self, obj):
+    def hook_ldap_pre_modify(self, obj,):
         # type: (univention.admin.handlers.simpleLdap) -> None
         """
         This method is called before an |UDM| object is modified.
@@ -131,9 +131,9 @@ class simpleHook(object):
 
         :param obj: The |UDM| object instance.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_modify called')
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_modify called',)
 
-    def hook_ldap_modlist(self, obj, ml=[]):
+    def hook_ldap_modlist(self, obj, ml=[],):
         # type: (univention.admin.handlers.simpleLdap, ModList) -> ModList
         """
         This method is called before an |UDM| object is created or modified.
@@ -142,35 +142,35 @@ class simpleHook(object):
         :param ml: A list of tuples, which are either two-tuples (ldap-attribute-name, list-of-new-values) or three-tuples (ldap-attribute-name, list-of-old-values, list-of-new-values). It will be used to create or modify the |LDAP| object.
         :returns: The (modified) modification-list.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_modlist called')
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_modlist called',)
         return ml
 
-    def hook_ldap_post_modify(self, obj):
+    def hook_ldap_post_modify(self, obj,):
         # type: (univention.admin.handlers.simpleLdap) -> None
         """
         This method is called after the object was modified in |LDAP|.
 
         :param obj: The |UDM| object instance.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_modify called')
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_modify called',)
 
-    def hook_ldap_pre_remove(self, obj):
+    def hook_ldap_pre_remove(self, obj,):
         # type: (univention.admin.handlers.simpleLdap) -> None
         """
         This method is called before an |UDM| object is removed.
 
         :param obj: The |UDM| object instance.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_remove called')
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_remove called',)
 
-    def hook_ldap_post_remove(self, obj):
+    def hook_ldap_post_remove(self, obj,):
         # type: (univention.admin.handlers.simpleLdap) -> None
         """
         This method is called after the object was removed from |LDAP|.
 
         :param obj: The |UDM| object instance.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_remove called')
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_remove called',)
 
 
 class AttributeHook(simpleHook):
@@ -194,23 +194,23 @@ class AttributeHook(simpleHook):
 
     version = 1  # don't subclass if you don't set version to 2!
 
-    def hook_open(self, obj):
+    def hook_open(self, obj,):
         # type: (univention.admin.handlers.simpleLdap) -> None
         """
         Open |UDM| object by loading value from |LDAP|.
 
         :param obj: The |UDM| object instance.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)' % (self.ldap_attribute_name, self.udm_attribute_name))
-        old_value = obj.oldattr.get(self.ldap_attribute_name, [])
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)' % (self.ldap_attribute_name, self.udm_attribute_name),)
+        old_value = obj.oldattr.get(self.ldap_attribute_name, [],)
         if self.version < 2:  # TODO: remove in UCS 5.1
-            warnings.warn('Still using deprecated AttributeHook.version == 1', DeprecationWarning, stacklevel=2)
+            warnings.warn('Still using deprecated AttributeHook.version == 1', DeprecationWarning, stacklevel=2,)
             old_value = obj[self.udm_attribute_name]
         new_value = self.map_attribute_value_to_udm(old_value)
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting UDM value from %r to %r' % (old_value, new_value))
+        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting UDM value from %r to %r' % (old_value, new_value),)
         obj[self.udm_attribute_name] = new_value
 
-    def hook_ldap_addlist(self, obj, al):
+    def hook_ldap_addlist(self, obj, al,):
         # type: (univention.admin.handlers.simpleLdap, AddList) -> AddList
         """
         Extend |LDAP| add list.
@@ -219,9 +219,9 @@ class AttributeHook(simpleHook):
         :param al: The add list to extend.
         :returns: The extended add list.
         """
-        return self.hook_ldap_modlist(obj, al)
+        return self.hook_ldap_modlist(obj, al,)
 
-    def hook_ldap_modlist(self, obj, ml):
+    def hook_ldap_modlist(self, obj, ml,):
         # type: (univention.admin.handlers.simpleLdap, ModList) -> ModList
         """
         Extend |LDAP| modification list.
@@ -231,7 +231,7 @@ class AttributeHook(simpleHook):
         :returns: The extended modification list.
         """
         if self.version < 2:  # TODO: remove in UCS 5.1
-            warnings.warn('Still using deprecated AttributeHook.version == 1', DeprecationWarning, stacklevel=2)
+            warnings.warn('Still using deprecated AttributeHook.version == 1', DeprecationWarning, stacklevel=2,)
             new_ml = []
             for ml_value in ml:
                 if len(ml_value) == 2:
@@ -239,10 +239,10 @@ class AttributeHook(simpleHook):
                 else:
                     key, old_value, new_value = ml_value
                 if key == self.ldap_attribute_name:
-                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (UDM) -> %s (LDAP)' % (self.udm_attribute_name, self.ldap_attribute_name))
+                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (UDM) -> %s (LDAP)' % (self.udm_attribute_name, self.ldap_attribute_name),)
                     old_value = self.map_attribute_value_to_ldap(old_value)
                     new_new_value = self.map_attribute_value_to_ldap(new_value)
-                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting LDAP value from %r to %r' % (new_value, new_new_value))
+                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting LDAP value from %r to %r' % (new_value, new_new_value),)
                     new_value = new_new_value
                 new_ml.append((key, old_value, new_value))
             return new_ml
@@ -250,14 +250,14 @@ class AttributeHook(simpleHook):
         new_ml = [x for x in ml if x[0] != self.ldap_attribute_name]
 
         if obj.hasChanged(self.udm_attribute_name):
-            old_value = obj.oldattr.get(self.ldap_attribute_name, [])
+            old_value = obj.oldattr.get(self.ldap_attribute_name, [],)
             new_value = obj.info.get(self.udm_attribute_name)
             if new_value is not None:
                 new_value = self.map_attribute_value_to_ldap(new_value)
             new_ml.append((self.ldap_attribute_name, old_value, new_value))
         return new_ml
 
-    def map_attribute_value_to_ldap(self, value):
+    def map_attribute_value_to_ldap(self, value,):
         # type: (Any) -> List[bytes]
         """
         Return value as it shall be saved in |LDAP|.
@@ -267,7 +267,7 @@ class AttributeHook(simpleHook):
         """
         return value
 
-    def map_attribute_value_to_udm(self, value):
+    def map_attribute_value_to_udm(self, value,):
         # type: (List[bytes]) -> Any
         """
         Return value as it shall be used in |UDM| objects.

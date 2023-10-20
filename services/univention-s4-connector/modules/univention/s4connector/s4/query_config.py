@@ -42,7 +42,7 @@ import configparser
 import os
 
 
-def fixup(s):
+def fixup(s,):
     # add proper padding to a base64 string
     n = len(s) & 3
     if n:

@@ -46,7 +46,7 @@ class AddressChange(Phase, metaclass=ABCMeta):
     """Check for at least one removed or added address."""
 
     def check(self) -> None:
-        super(AddressChange, self).check()
+        super(AddressChange, self,).check()
         old_ipv4s = {_.ip for _ in self.changeset.old_ipv4s}
         new_ipv4s = {_.ip for _ in self.changeset.new_ipv4s}
         old_ipv6s = {_.ip for _ in self.changeset.old_ipv6s}
@@ -59,7 +59,7 @@ class Server(Phase, metaclass=ABCMeta):
     """Check server role for being a UCS server."""
 
     def check(self) -> None:
-        super(Server, self).check()
+        super(Server, self,).check()
         role = self.changeset.ucr.get("server/role")
         if role not in (
                 "domaincontroller_master",
@@ -76,7 +76,7 @@ class Executable(Phase, metaclass=ABCMeta):
     executable = ""
 
     def check(self) -> None:
-        super(Executable, self).check()
+        super(Executable, self,).check()
         if not os.path.exists(self.executable):
             raise SkipPhase("Missing executable %s" % (self.executable,))
 
@@ -93,7 +93,7 @@ class Dhcp(Phase, metaclass=ABCMeta):
         return set(self._find_dhcp_interfaces(self.changeset.new_interfaces))
 
     @staticmethod
-    def _find_dhcp_interfaces(interfaces: Interfaces) -> Iterator[str]:
+    def _find_dhcp_interfaces(interfaces: Interfaces,) -> Iterator[str]:
         for name, iface in interfaces.ipv4_interfaces:
             if iface.type in ("dhcp", "dynamic"):
                 yield name
@@ -103,7 +103,7 @@ class NotNetworkOnly(Phase, metaclass=ABCMeta):
     """Skip when not in network only mode."""
 
     def check(self) -> None:
-        super(NotNetworkOnly, self).check()
+        super(NotNetworkOnly, self,).check()
         if self.changeset.options.network_only:
             raise SkipPhase("Network only mode")
 
@@ -116,7 +116,7 @@ class Ldap(Phase, metaclass=ABCMeta):
     available = None
 
     def check(self) -> None:
-        super(Ldap, self).check()
+        super(Ldap, self,).check()
         if self.available is None:
             self.load_state()
         if not self.available:
@@ -162,15 +162,14 @@ class Ldap(Phase, metaclass=ABCMeta):
         except KeyError:
             self.available = False
 
-    def lookup_user(self, username: str) -> None:
+    def lookup_user(self, username: str,) -> None:
         try:
             ldap = getMachineConnection(ldap_master=True)
             ldap_filter = filter_format(
                 "(&(objectClass=person)(uid=%s))",
-                (username,),
-            )
+                (username,),)
             result = ldap.searchDn(ldap_filter)
             self.binddn = result[0]
         except LDAPError as ex:
-            self.logger.warning("Failed LDAP search for '%s': %s", username, ex)
+            self.logger.warning("Failed LDAP search for '%s': %s", username, ex,)
             self.available = False

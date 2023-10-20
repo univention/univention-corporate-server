@@ -49,8 +49,8 @@ links = [{
 }]
 
 
-def get_id(master: str, cmd: str = 'GET_ID') -> str:
-    sock = socket.create_connection((master, 6669), 60.0)
+def get_id(master: str, cmd: str = 'GET_ID',) -> str:
+    sock = socket.create_connection((master, 6669), 60.0,)
 
     sock.send(b'Version: 3\nCapabilities: \n\n')
     sock.recv(100)
@@ -58,11 +58,11 @@ def get_id(master: str, cmd: str = 'GET_ID') -> str:
     sock.send(f'MSGID: 1\n{cmd}\n\n'.encode('ASCII'))
     notifier_result = sock.recv(100).strip().decode('ASCII')
 
-    (msg_id, notifier_id) = notifier_result.split('\n', 1)
+    (msg_id, notifier_id) = notifier_result.split('\n', 1,)
     return notifier_id
 
 
-def run(_umc_instance: Instance) -> None:
+def run(_umc_instance: Instance,) -> None:
     try:
         notifier_id = get_id(configRegistry.get('ldap/master'))
     except socket.error:

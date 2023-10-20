@@ -25,31 +25,31 @@ def get_ext_ip() -> str:
         if iface.startswith(("docker", "veth")):
             continue
         addrs = netifaces.ifaddresses(iface)
-        for rec in addrs.get(netifaces.AF_INET, []):
+        for rec in addrs.get(netifaces.AF_INET, [],):
             addr = rec["addr"]
             print(f"iface={iface} addr={addr}")
             return addr
     raise ValueError("No usable IPv4 address found")
 
 
-def reverse_dns_name(ip: str) -> str:
+def reverse_dns_name(ip: str,) -> str:
     reverse = ip.split('.')
     reverse.reverse()
     return '%s.in-addr.arpa' % '.'.join(reverse)
 
 
-def print_header(section_string: str) -> None:
-    print('info', 40 * '+', '\n%s\ninfo' % section_string, 40 * '+')
+def print_header(section_string: str,) -> None:
+    print('info', 40 * '+', '\n%s\ninfo' % section_string, 40 * '+',)
 
 
-def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str) -> None:
-    def get_return_code(s: str) -> int:
+def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str,) -> None:
+    def get_return_code(s: str,) -> int:
         try:
             return int(s[:4])
         except ValueError:
             return -1
 
-    def get_reply(s: socket.socket) -> str:
+    def get_reply(s: socket.socket,) -> str:
         buff_size = 1024
         reply = b''
         while True:
@@ -59,12 +59,12 @@ def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str)
                 break
         return reply.decode('UTF-8')
 
-    def send_message(s: socket.socket, message: str) -> None:
+    def send_message(s: socket.socket, message: str,) -> None:
         print(f'OUT: {message!r}')
         s.send(b'%s\r\n' % (message.encode('UTF-8'),))
 
-    def send_and_receive(s: socket.socket, message: str) -> int:
-        send_message(s, message)
+    def send_and_receive(s: socket.socket, message: str,) -> int:
+        send_message(s, message,)
         reply = [reply.strip() for reply in get_reply(s).split('\n') if reply.strip()]
         r = get_return_code(reply[-1])
         for line in reply[:-1]:
@@ -73,7 +73,7 @@ def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str)
         return r
 
     print(f'Connecting to {sender_ip}:{SMTP_PORT} (TCP)...')
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM,) as s:
         for _ in range(3):
             try:
                 s.connect((sender_ip, SMTP_PORT))
@@ -87,18 +87,18 @@ def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str)
         reply = get_reply(s)
         r = get_return_code(reply)
         print(f'IN : {reply!r} (return code: {r!r})')
-        send_and_receive(s, 'EHLO %s' % fqdn)
+        send_and_receive(s, 'EHLO %s' % fqdn,)
         if mailfrom:
-            send_and_receive(s, 'MAIL FROM: %s' % mailfrom)
-        send_and_receive(s, 'RCPT TO: %s' % rcptto)
-        send_and_receive(s, 'DATA')
-        send_and_receive(s, 'SPAMBODY')
-        retval = send_and_receive(s, '.')
-        send_message(s, 'QUIT')
+            send_and_receive(s, 'MAIL FROM: %s' % mailfrom,)
+        send_and_receive(s, 'RCPT TO: %s' % rcptto,)
+        send_and_receive(s, 'DATA',)
+        send_and_receive(s, 'SPAMBODY',)
+        retval = send_and_receive(s, '.',)
+        send_message(s, 'QUIT',)
     assert retval != 250
 
 
-def main(ucr) -> None:
+def main(ucr,) -> None:
     fqdn = '%(hostname)s.%(domainname)s' % ucr
     sender_ip = get_ext_ip()
 
@@ -148,7 +148,7 @@ def main(ucr) -> None:
 
     for (mailfrom, rcpt, header) in test_cases:
         print_header(header)
-        create_bad_mailheader(fqdn, sender_ip, mailfrom, rcpt)
+        create_bad_mailheader(fqdn, sender_ip, mailfrom, rcpt,)
 
 
 if __name__ == '__main__':

@@ -56,7 +56,7 @@ import subprocess
 from univention.lib import fstab
 
 
-def _do_modify_extfs_option(fstab_partition, options=[], activate=True):
+def _do_modify_extfs_option(fstab_partition, options=[], activate=True,):
     fstab_modified = False
     for option in options:
         if activate:
@@ -75,7 +75,7 @@ def _do_modify_extfs_option(fstab_partition, options=[], activate=True):
     return fstab_modified
 
 
-def _modify_extfs_option(options=[], activate=True, devices=[]):
+def _modify_extfs_option(options=[], activate=True, devices=[],):
     fs = fstab.File()
     target_partitions = []
     if devices:
@@ -87,11 +87,11 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
                 print('Device could not be found: %s' % (device,))
     else:
         for fstype in ('ext3', 'ext4'):
-            for fstab_partition in fs.get(fstype, ignore_root=False):
+            for fstab_partition in fs.get(fstype, ignore_root=False,):
                 target_partitions.append(fstab_partition)
 
     for fstab_partition in target_partitions:
-        if _do_modify_extfs_option(fstab_partition, options, activate):
+        if _do_modify_extfs_option(fstab_partition, options, activate,):
             fs.save()
             if subprocess.call(('mount', '-o', 'remount', fstab_partition.spec)):
                 print('Remounting partition failed: %s' % (fstab_partition.spec,))

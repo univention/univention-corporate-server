@@ -41,11 +41,11 @@ import json
 cgitb.enable()
 
 
-def application(environ, start_response):
-    status, _, reason = environ.get('REDIRECT_STATUS', '200 OK').partition(' ')
+def application(environ, start_response,):
+    status, _, reason = environ.get('REDIRECT_STATUS', '200 OK',).partition(' ')
     status = int(status)
-    reason = reason or {502: 'Proxy Error', 503: 'Service Unavailable'}.get(status, reason)
-    url = environ.get('REDIRECT_URL', '')
+    reason = reason or {502: 'Proxy Error', 503: 'Service Unavailable'}.get(status, reason,)
+    url = environ.get('REDIRECT_URL', '',)
     service = 'it'
     service_name = 'Service'
     if url.startswith('/univention/udm'):
@@ -66,7 +66,7 @@ def application(environ, start_response):
 
     message = "The %s could not be reached. Please restart %s or try again later." % (service_name, service)
     if status == 502:
-        message += ' %s' % (environ.get('REDIRECT_ERROR_NOTES', ''),)
+        message += ' %s' % (environ.get('REDIRECT_ERROR_NOTES', '',),)
         message = message.rstrip()
     data = {
         "status": status,
@@ -74,5 +74,5 @@ def application(environ, start_response):
         # DEBUG: "environ": dict((key, val) for key, val in environ.items() if not key.startswith('wsgi.') and not key.startswith('mod_wsgi.')),
     }
     response_header = [('Content-type', 'application/json')]  # TODO: give HTML when json is not accepable
-    start_response('%d %s' % (status, reason), response_header)
+    start_response('%d %s' % (status, reason), response_header,)
     return [json.dumps(data).encode('UTF-8')]

@@ -25,9 +25,9 @@ from essential.simplesquid import SimpleSquid
 class TestServer:
     def __init__(self):
         # start http server in a different thread on (127.0.0.1:60025)
-        p = Process(target=startHttpServer, kwargs={'port': 60025})
+        p = Process(target=startHttpServer, kwargs={'port': 60025},)
         p.start()
-        print(p, p.is_alive())
+        print(p, p.is_alive(),)
         self.p = p
 
     def __enter__(self):
@@ -43,7 +43,7 @@ class TestServer:
         handler_unset(['hosts/static/127.0.100.100'])
 
 
-def startHttpServer(host='localhost', port=80):
+def startHttpServer(host='localhost', port=80,):
     """Start a simple Http server in the working directory"""
     HandlerClass = SimpleHTTPRequestHandler
     ServerClass = HTTPServer
@@ -51,14 +51,14 @@ def startHttpServer(host='localhost', port=80):
     server_address = (host, port)
 
     HandlerClass.protocol_version = Protocol
-    httpd = ServerClass(server_address, HandlerClass)
+    httpd = ServerClass(server_address, HandlerClass,)
 
     sa = httpd.socket.getsockname()
-    print("Serving HTTP on", sa[0], "port", sa[1], "...")
+    print("Serving HTTP on", sa[0], "port", sa[1], "...",)
     httpd.serve_forever()
 
 
-def perform_test(test_case):
+def perform_test(test_case,):
     ((permission, expected_response), acl_type, (value_type, value)) = test_case
     sub_case = []
     opposite_response = 407 if expected_response == 200 else 200
@@ -124,7 +124,7 @@ def perform_test(test_case):
     do_test(new_cases)
 
 
-def do_test(test_case):
+def do_test(test_case,):
     for (permission, expected_response, acl_type, value_type, used_value, value) in test_case:
         name = uts.random_name()
         print()
@@ -136,16 +136,16 @@ def do_test(test_case):
         print('** Used Value =\t%s' % used_value)
         print('** Expected Response =\t%d' % expected_response)
 
-        set_ucr_variables(name, permission, acl_type, value_type, value)
+        set_ucr_variables(name, permission, acl_type, value_type, value,)
 
         ucr = ucr_test.UCSTestConfigRegistry()
         ucr.load()
         auth = None
         if permission == 'deny':
             auth = pycurl.HTTPAUTH_BASIC
-        curl = SimpleCurl(proxy=ucr.get('hostname'), auth=auth)
+        curl = SimpleCurl(proxy=ucr.get('hostname'), auth=auth,)
         if 'browser' in acl_type:
-            curl = SimpleCurl(proxy=ucr.get('hostname'), auth=auth, user_agent=used_value)
+            curl = SimpleCurl(proxy=ucr.get('hostname'), auth=auth, user_agent=used_value,)
 
         url = 'http://proxy_test1.univention.de'
         if "dstdomain" in acl_type:
@@ -162,7 +162,7 @@ def do_test(test_case):
             print(':::: OK ::::')
 
 
-def set_ucr_variables(name, permission, acl_type, value_type, value):
+def set_ucr_variables(name, permission, acl_type, value_type, value,):
     squid = SimpleSquid()
     handler_set([
         'squid/acl/%s/%s/%s/%s=%s' % (name, permission, acl_type, value_type, value),
@@ -183,19 +183,19 @@ def main():
         values = [
             "%s%s%s" % (
                 uts.random_string(3),
-                uts.random_string(2, numeric=False).upper(),
+                uts.random_string(2, numeric=False,).upper(),
                 uts.random_string(3)),
             "%s%s%s" % (
                 uts.random_string(3),
-                uts.random_string(2, numeric=False).upper(),
+                uts.random_string(2, numeric=False,).upper(),
                 uts.random_string(3)),
             "%s%s%s%s%s" % (
                 '^', uts.random_string(3),
-                uts.random_string(2, numeric=False).upper(),
+                uts.random_string(2, numeric=False,).upper(),
                 uts.random_string(3), '.*$'),
         ]
         itertion_length = len(permissions) * len(acl_types) * len(value_types)
-        tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
+        tests = itertools.product(zip(permissions, responses,), acl_types, zip(value_types, values,),)
         for _i in range(itertion_length):
             with ucr_test.UCSTestConfigRegistry():
                 perform_test(next(tests))
@@ -207,7 +207,7 @@ def main():
             'proxy_test1',
             '^proxy_test1.univention.de.*$',
         ]
-        tests = itertools.product(zip(permissions, responses), acl_types, zip(value_types, values))
+        tests = itertools.product(zip(permissions, responses,), acl_types, zip(value_types, values,),)
         for _i in range(itertion_length):
             with ucr_test.UCSTestConfigRegistry():
                 perform_test(next(tests))
@@ -228,7 +228,7 @@ def main():
 
 if __name__ == '__main__':
     with TestServer(), NetworkRedirector() as nethelper:
-        nethelper.add_redirection('127.0.100.100', 21, 60025)
-        nethelper.add_redirection('127.0.100.100', 80, 60025)
-        nethelper.add_redirection('127.0.100.100', 443, 60025)
+        nethelper.add_redirection('127.0.100.100', 21, 60025,)
+        nethelper.add_redirection('127.0.100.100', 80, 60025,)
+        nethelper.add_redirection('127.0.100.100', 443, 60025,)
         main()

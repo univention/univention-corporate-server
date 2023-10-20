@@ -53,20 +53,20 @@ def initialize_debug():
     # get_level(..) returns always ud.ERROR if univention.debug is not initialized
     oldLevel = ud1.get_level(ud1.ADMIN)
     if oldLevel == ud1.PROCESS:
-        ud1.set_level(ud1.ADMIN, ud1.DEBUG)
+        ud1.set_level(ud1.ADMIN, ud1.DEBUG,)
         is_ready = (ud1.get_level(ud1.ADMIN) == ud1.DEBUG)
     else:
-        ud1.set_level(ud1.ADMIN, ud1.PROCESS)
+        ud1.set_level(ud1.ADMIN, ud1.PROCESS,)
         is_ready = (ud1.get_level(ud1.ADMIN) == ud1.PROCESS)
     if not is_ready:
-        ud1.init('/var/log/univention/directory-manager-cmd.log', ud1.FLUSH, 0)
-        ud1.set_level(ud1.LDAP, ud1.PROCESS)
-        ud1.set_level(ud1.ADMIN, ud1.PROCESS)
+        ud1.init('/var/log/univention/directory-manager-cmd.log', ud1.FLUSH, 0,)
+        ud1.set_level(ud1.LDAP, ud1.PROCESS,)
+        ud1.set_level(ud1.ADMIN, ud1.PROCESS,)
     else:
-        ud1.set_level(ud1.ADMIN, oldLevel)
+        ud1.set_level(ud1.ADMIN, oldLevel,)
 
 
-def lock(userdn, lock_timestamp):
+def lock(userdn, lock_timestamp,):
     """
     Lock a user account
 
@@ -86,9 +86,9 @@ def lock(userdn, lock_timestamp):
 
     module = univention.admin.modules.get('users/user')
 
-    univention.admin.modules.init(lo, pos, module)
+    univention.admin.modules.init(lo, pos, module,)
 
-    object = module.object(None, lo, pos, userdn)
+    object = module.object(None, lo, pos, userdn,)
     object.open()
     states = (object.descriptions['locked'].editable, object.descriptions['locked'].may_change, object.descriptions['lockedTime'].editable, object.descriptions['lockedTime'].may_change)
     object.descriptions['locked'].editable, object.descriptions['locked'].may_change, object.descriptions['lockedTime'].editable, object.descriptions['lockedTime'].may_change = (True, True, True, True)
@@ -104,11 +104,11 @@ def lock(userdn, lock_timestamp):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers()
-    subparser = subparsers.add_parser('lock', help='Locks a user account')
-    subparser.add_argument('--dn', required=True, help='The DN of the user account to be locked.')
-    subparser.add_argument('--lock-time', required=True, help='The time when the user account was locked.')
+    subparser = subparsers.add_parser('lock', help='Locks a user account',)
+    subparser.add_argument('--dn', required=True, help='The DN of the user account to be locked.',)
+    subparser.add_argument('--lock-time', required=True, help='The time when the user account was locked.',)
     args = parser.parse_args()
 
     initialize_debug()
-    ud1.debug(ud1.ADMIN, ud1.PROCESS, "univention.lib.account.lock was called for %s (%s)" % (args.dn, args.lock_time))
-    lock(args.dn, args.lock_time)
+    ud1.debug(ud1.ADMIN, ud1.PROCESS, "univention.lib.account.lock was called for %s (%s)" % (args.dn, args.lock_time),)
+    lock(args.dn, args.lock_time,)

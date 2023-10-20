@@ -44,13 +44,13 @@ translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate
 
 
-def register_policy_mapping(mapping):
+def register_policy_mapping(mapping,):
     # type: (MappingType) -> None
-    mapping.register('requiredObjectClasses', 'requiredObjectClasses')
-    mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
-    mapping.register('fixedAttributes', 'fixedAttributes')
-    mapping.register('emptyAttributes', 'emptyAttributes')
-    mapping.register('ldapFilter', 'ldapFilter', None, ListToString)
+    mapping.register('requiredObjectClasses', 'requiredObjectClasses',)
+    mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses',)
+    mapping.register('fixedAttributes', 'fixedAttributes',)
+    mapping.register('emptyAttributes', 'emptyAttributes',)
+    mapping.register('ldapFilter', 'ldapFilter', None, ListToString,)
 
 
 def policy_object_tab():
@@ -59,7 +59,7 @@ def policy_object_tab():
         ['ldapFilter'],
         ['requiredObjectClasses', 'prohibitedObjectClasses'],
         ['fixedAttributes', 'emptyAttributes'],
-    ])
+    ],)
 
 
 def requiredObjectClassesProperty(**kwargs):

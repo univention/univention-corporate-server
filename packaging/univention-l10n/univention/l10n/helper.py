@@ -44,7 +44,7 @@ class Error(SystemExit):
     pass
 
 
-def make_parent_dir(path):
+def make_parent_dir(path,):
     # type: (str) -> None
     """
     Create parent directories for file.
@@ -70,13 +70,13 @@ def call(*argv, **kwargs):
     >>> call('true')
     0
     """
-    errmsg = kwargs.pop('errmsg', 'Gettext failed {0.cmd}')
+    errmsg = kwargs.pop('errmsg', 'Gettext failed {0.cmd}',)
 
-    verbose = os.environ.get('DH_VERBOSE', False)
+    verbose = os.environ.get('DH_VERBOSE', False,)
     if verbose:
         print('\t%s' % ' '.join(argv))
     try:
-        return subprocess.check_call(argv, **kwargs)
+        return subprocess.check_call(argv, **kwargs,)
     except subprocess.CalledProcessError as ex:
         if verbose:
             print(ex)

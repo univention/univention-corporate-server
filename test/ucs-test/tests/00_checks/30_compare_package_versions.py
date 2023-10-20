@@ -27,22 +27,22 @@ total_errors = 0
 
 MAJOR_VERSION_RE = re_compile(r'(\d+\.{0,1})+$')  # to match 3.2
 MINOR_VERSION_RE = re_compile(r'(\d+\.{0,1}-{0,1})+$')  # to match 3.2-4
-ERRATA_VERSION_RE = re_compile(r'(.*-errata)+$', IGNORECASE)  # to match 3.2-4-errata
+ERRATA_VERSION_RE = re_compile(r'(.*-errata)+$', IGNORECASE,)  # to match 3.2-4-errata
 
 
 class PackageEntry:
 
-    def __init__(self, package=None, version=None, filename=None, sourcepkg=None, ucs_version=None):
+    def __init__(self, package=None, version=None, filename=None, sourcepkg=None, ucs_version=None,):
         self.package = package
         self.version = version
         self.filename = filename
         self.sourcepkg = sourcepkg
         self.ucs_version = ucs_version
 
-    def _get_value(self, line):
-        return line.split(': ', 1)[1]
+    def _get_value(self, line,):
+        return line.split(': ', 1,)[1]
 
-    def scan(self, entry, ucs_version):
+    def scan(self, entry, ucs_version,):
         if ucs_version:
             self.ucs_version = ucs_version
 
@@ -65,9 +65,9 @@ def perform_cleanup():
     print("\nPerforming cleanup after the test:")
 
     for folder in cleanup_folders:
-        print("Removing folder:", folder)
+        print("Removing folder:", folder,)
         try:
-            rmtree(folder, False)
+            rmtree(folder, False,)
 
         except (shutil_Error, OSError) as exc:
             print("\nAn %r Error occurred while trying to remove a '%s'. "
@@ -75,7 +75,7 @@ def perform_cleanup():
                   % (exc, folder))
 
 
-def download_packages_file(url, version, arch, temp_directory):
+def download_packages_file(url, version, arch, temp_directory,):
     """
     Downloads a 'Packages.gz' as the given url into the
     'temp_directory/version/arch/' folder.
@@ -84,7 +84,7 @@ def download_packages_file(url, version, arch, temp_directory):
     file_path = file_name + arch + '/Packages.gz'  # a complete path to the 'Packages.gz' file
 
     url += version + '/' + arch + '/Packages.gz'
-    print("\nDownloading:", url)
+    print("\nDownloading:", url,)
 
     try:
         makedirs(file_name + arch)
@@ -93,12 +93,12 @@ def download_packages_file(url, version, arch, temp_directory):
                    "at '%s' for the Packages.gz file: %r" % (file_path, exc))
 
     try:
-        urlretrieve(url, file_path)  # noqa: S310
+        urlretrieve(url, file_path,)  # noqa: S310
     except ContentTooShortError as exc:
         print("An %r Error occurred, probably the connection was lost. "
               "Performing a new attempt in 10 seconds." % exc)
         sleep(10)
-        urlretrieve(url, file_path)  # noqa: S310
+        urlretrieve(url, file_path,)  # noqa: S310
     except OSError as exc:
         print("An %r Error occurred, probably the connection cannot be "
               "established or the url is incorrect. "
@@ -109,7 +109,7 @@ def download_packages_file(url, version, arch, temp_directory):
         return file_name
 
 
-def load_packages_file(filename, target_dict, ucs_version):
+def load_packages_file(filename, target_dict, ucs_version,):
     """
     Reads the given 'filename' Packages.gz file.
     Creates a entry object for each found package and fills the target_dict.
@@ -120,7 +120,7 @@ def load_packages_file(filename, target_dict, ucs_version):
 
     try:
         # first try to open it as a .gzip
-        packages_file = gzip_open(filename, 'r')
+        packages_file = gzip_open(filename, 'r',)
     except OSError:
         # otherwise open it as a usual file
         packages_file = open(filename)
@@ -139,17 +139,17 @@ def load_packages_file(filename, target_dict, ucs_version):
     for entry in content.split('\n\n'):
         # scan each entry in the 'filename'
         item = PackageEntry()
-        item.scan(entry, ucs_version)
+        item.scan(entry, ucs_version,)
 
         if item.is_ok():
             if item.package in target_dict:
-                if version_compare(target_dict[item.package].version, item.version) < 0:
+                if version_compare(target_dict[item.package].version, item.version,) < 0:
                     target_dict[item.package] = item
             else:
                 target_dict[item.package] = item
 
 
-def load_version(url):
+def load_version(url,):
     """
     Selects all minor and errata versions for the given 'url'.
     Downloads respective 'Packages.gz' for each version and
@@ -162,18 +162,18 @@ def load_version(url):
 
     for version in select_minor_levels(url):
         for arch in ('all', 'i386', 'amd64'):
-            file_name = download_packages_file(url, version, arch, temp)
+            file_name = download_packages_file(url, version, arch, temp,)
 
             if file_name:
                 # only load the packages file when it was downloaded
-                print("Loading packages file:", file_name + arch + '/Packages.gz')
-                load_packages_file(path.join(file_name, arch, 'Packages.gz'),
+                print("Loading packages file:", file_name + arch + '/Packages.gz',)
+                load_packages_file(path.join(file_name, arch, 'Packages.gz',),
                                    target,
-                                   'ucs_' + version)
+                                   'ucs_' + version,)
     return target
 
 
-def compare(old, new):
+def compare(old, new,):
     """
     Compares 'old' and 'new' versions via apt.
     Prints all the errors detected.
@@ -183,7 +183,7 @@ def compare(old, new):
     src_package_list = set()
 
     for package in package_list:
-        if package in old and version_compare(old[package].version, new[package].version) > 0:
+        if package in old and version_compare(old[package].version, new[package].version,) > 0:
             if errors == 0:
                 print('\n---------------------------------------------------------')
                 print('  The following packages use a smaller package version:')
@@ -214,7 +214,7 @@ def compare(old, new):
         total_errors += errors
 
 
-def read_url(url):
+def read_url(url,):
     """Returns the 'url' in an easy to parse format for finding links."""
     try:
         connection = urlopen(url)  # noqa: S310
@@ -226,7 +226,7 @@ def read_url(url):
     return result
 
 
-def select_errata_levels(repo_component_url):
+def select_errata_levels(repo_component_url,):
     """Returns list of .*-errata levels found in the given 'repo_component_url'."""
     check_erratalevels = []
 
@@ -239,7 +239,7 @@ def select_errata_levels(repo_component_url):
     return check_erratalevels
 
 
-def select_minor_levels(repo_major_url):
+def select_minor_levels(repo_major_url,):
     """
     Returns the list of minor versions with patch and errata levels as found
     for the given 'repo_major_url'.
@@ -260,11 +260,11 @@ def select_minor_levels(repo_major_url):
         utils.fail("Could not find at least one patch level number in "
                    "the given repository at '%s'" % repo_major_url)
 
-    print("\nThe following patch levels will be checked:", check_patchlevels)
+    print("\nThe following patch levels will be checked:", check_patchlevels,)
     return check_patchlevels
 
 
-def select_major_versions_for_test(repo_url):
+def select_major_versions_for_test(repo_url,):
     """
     Looks into specified 'repo_url' and picks up the two most recent
     major versions (for example 3.2 and 4.0).
@@ -350,7 +350,7 @@ if __name__ == '__main__':
 
                 # comparing determined versions:
                 compare(load_version(previous_version),
-                        load_version(current_version))
+                        load_version(current_version),)
     finally:
         perform_cleanup()
         if total_errors:  # an overall statistics

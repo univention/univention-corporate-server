@@ -71,8 +71,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyLDAPServer'],
-    ),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyLDAPServer'],),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -82,14 +81,12 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'ldapServer': univention.admin.property(
         short_description=_('LDAP server'),
         long_description='',
         syntax=univention.admin.syntax.DomainController,
-        multivalue=True,
-    ),
+        multivalue=True,),
 
 }, **dict([
     requiredObjectClassesProperty(),
@@ -97,21 +94,21 @@ property_descriptions = dict({
     fixedAttributesProperty(syntax=ldapServerFixedAttributes),
     emptyAttributesProperty(syntax=ldapServerFixedAttributes),
     ldapFilterProperty(),
-]))
+]),)
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('General LDAP server settings'), layout=[
             'name',
             'ldapServer',
-        ]),
-    ]),
+        ],),
+    ],),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('ldapServer', 'univentionLDAPServer')
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('ldapServer', 'univentionLDAPServer',)
 register_policy_mapping(mapping)
 
 

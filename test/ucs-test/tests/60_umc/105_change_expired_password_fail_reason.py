@@ -59,33 +59,33 @@ if samba4_installed:
 
 
 @contextlib.contextmanager
-def enabled_password_quality_checks(ucr):
+def enabled_password_quality_checks(ucr,):
     # TODO: from 07_expired_password: only if univention-samba4 is not installed
     if samba4_installed:
         yield
         return
     ldap_base = ucr.get('ldap/base')
     dn = f'cn=default-settings,cn=pwhistory,cn=users,cn=policies,{ldap_base}'
-    old = lo.getAttr(dn, 'univentionPWQualityCheck')
+    old = lo.getAttr(dn, 'univentionPWQualityCheck',)
     new = [b'TRUE']
-    lo.modify(dn, [('univentionPWQualityCheck', old, new)])
+    lo.modify(dn, [('univentionPWQualityCheck', old, new)],)
     yield
-    lo.modify(dn, [('univentionPWQualityCheck', new, old)])
+    lo.modify(dn, [('univentionPWQualityCheck', new, old)],)
 
 
-@pytest.mark.parametrize('new_password,reason', [[y, reason] for reason, x in reasons.items() for y in x])
-def test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, ucr):
+@pytest.mark.parametrize('new_password,reason', [[y, reason] for reason, x in reasons.items() for y in x],)
+def test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, ucr,):
     print(f'test_password_changing_failure_reason({new_password!r}, {reason!r})')
     with enabled_password_quality_checks(ucr):
-        _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string)
+        _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string,)
 
 
-def _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string):
-    userdn, username = udm.create_user(password=INITIAL_PASSWORD, pwdChangeNextLogin=1, overridePWLength=1)
+def _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string,):
+    userdn, username = udm.create_user(password=INITIAL_PASSWORD, pwdChangeNextLogin=1, overridePWLength=1,)
     client = Client(language='en-US')
     if samba4_installed:
         utils.wait_for_connector_replication()
     print(f'change password from {INITIAL_PASSWORD!r} to {new_password!r}')
     with pytest.raises(Unauthorized) as msg:
-        client.umc_auth(username, INITIAL_PASSWORD, new_password=new_password)
+        client.umc_auth(username, INITIAL_PASSWORD, new_password=new_password,)
     assert msg.value.message == reason, f'Expected error {reason!r} but got {msg.value.message!r}'

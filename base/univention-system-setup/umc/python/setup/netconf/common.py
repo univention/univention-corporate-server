@@ -48,22 +48,22 @@ class RestartService(Executable, metaclass=ABCMeta):
 
     @property
     def executable(self) -> str:
-        return os.path.join(self.PREFIX, self.service)
+        return os.path.join(self.PREFIX, self.service,)
 
     def pre(self) -> None:
-        super(RestartService, self).pre()
+        super(RestartService, self,).pre()
         self.call(["systemctl", "stop", self.service])
 
     def post(self) -> None:
-        super(RestartService, self).pre()
+        super(RestartService, self,).pre()
         self.call(["systemctl", "start", self.service])
 
 
 class AddressMap(AddressChange, metaclass=ABCMeta):
     """Helper to provide a mapping from old addresses to new addresses."""
 
-    def __init__(self, changeset: ChangeSet) -> None:
-        super(AddressMap, self).__init__(changeset)
+    def __init__(self, changeset: ChangeSet,) -> None:
+        super(AddressMap, self,).__init__(changeset)
         self.old_primary, self.new_primary = (
             iface.get_default_ip_address()
             for iface in (
@@ -91,7 +91,7 @@ class AddressMap(AddressChange, metaclass=ABCMeta):
         mapping = {}
         for name, iface in self.changeset.old_interfaces.ipv4_interfaces:
             old_addr = iface.ipv4_address()
-            new_addr = ipv4s.get(name, default)
+            new_addr = ipv4s.get(name, default,)
             if new_addr is None or old_addr.ip != new_addr.ip:
                 mapping[old_addr] = new_addr
         return mapping
@@ -105,7 +105,7 @@ class AddressMap(AddressChange, metaclass=ABCMeta):
         mapping = {}
         for iface, name in self.changeset.old_interfaces.ipv6_interfaces:
             old_addr = iface.ipv6_address(name)
-            new_addr = ipv6s.get((iface.name, name), default)
+            new_addr = ipv6s.get((iface.name, name), default,)
             if new_addr is None or old_addr.ip != new_addr.ip:
                 mapping[old_addr] = new_addr
         return mapping
@@ -121,8 +121,8 @@ class AddressMap(AddressChange, metaclass=ABCMeta):
 class LdapChange(AddressChange, Ldap, metaclass=ABCMeta):
     """Helper to provide access to LDAP through UDM."""
 
-    def __init__(self, changeset: ChangeSet) -> None:
-        super(LdapChange, self).__init__(changeset)
+    def __init__(self, changeset: ChangeSet,) -> None:
+        super(LdapChange, self,).__init__(changeset)
         self.ldap = None
         self.position = None
 
@@ -133,34 +133,33 @@ class LdapChange(AddressChange, Ldap, metaclass=ABCMeta):
             host=ldap_host,
             base=ldap_base,
             binddn=self.binddn,
-            bindpw=self.bindpwd,
-        )
+            bindpw=self.bindpwd,)
         self.position = uldap.position(ldap_base)
 
 
-def convert_udm_subnet_to_network(subnet: str) -> Union[IPv4Network, IPv6Network]:
+def convert_udm_subnet_to_network(subnet: str,) -> Union[IPv4Network, IPv6Network]:
     if ":" in subnet:
         return convert_udm_subnet_to_ipv6_network(subnet)
     else:
         return convert_udm_subnet_to_ipv4_network(subnet)
 
 
-def convert_udm_subnet_to_ipv4_network(subnet: str) -> IPv4Network:
+def convert_udm_subnet_to_ipv4_network(subnet: str,) -> IPv4Network:
     octets = subnet.split('.')
     count = len(octets)
     assert 1 <= count <= 4
     prefix_length = 8 * count
     octets += ["0"] * (4 - count)
     address = '.'.join(octets)
-    return IPv4Network(u"%s/%d" % (address, prefix_length), False)
+    return IPv4Network(u"%s/%d" % (address, prefix_length), False,)
 
 
-def convert_udm_subnet_to_ipv6_network(subnet: str) -> IPv6Network:
-    prefix = subnet.replace(":", "")
+def convert_udm_subnet_to_ipv6_network(subnet: str,) -> IPv6Network:
+    prefix = subnet.replace(":", "",)
     count = len(prefix)
     assert 1 <= count <= 32
     prefix_length = 4 * count
     address = subnet
     if count <= 28:
         address += "::"
-    return IPv6Network(u"%s/%d" % (address, prefix_length), False)
+    return IPv6Network(u"%s/%d" % (address, prefix_length), False,)

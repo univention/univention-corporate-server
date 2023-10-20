@@ -18,7 +18,7 @@ from umc import JoinModule
 
 class TestUMCDomainRejoin(JoinModule):
 
-    def clear_status_file(self, file_path):
+    def clear_status_file(self, file_path,):
         """
         Clears all contents in the status file located at the
         provided 'file_path' by opening file for writing.
@@ -26,7 +26,7 @@ class TestUMCDomainRejoin(JoinModule):
         File = None
         try:
             if path.exists(file_path):
-                File = open(file_path, 'w')
+                File = open(file_path, 'w',)
             else:
                 utils.fail("Could not find the status file at the provided file_path '%s'" % file_path)
         except OSError as exc:
@@ -42,7 +42,7 @@ class TestUMCDomainRejoin(JoinModule):
 
         try:
             print("Saving a backup of initial join status file '%s'" % join_status_file)
-            self.copy_file(join_status_file, join_status_file + '.bak')
+            self.copy_file(join_status_file, join_status_file + '.bak',)
 
             # clean the status file and perform a complete rejoin
             print("Clearing the status file and making a rejoin request. (This operation may take up to 20 minutes)")
@@ -60,7 +60,7 @@ class TestUMCDomainRejoin(JoinModule):
         finally:
             print("\nRestoring join status file from backup '.bak'")
             # Overwriting status file from backup and removing backup:
-            self.copy_file(join_status_file + '.bak', join_status_file)
+            self.copy_file(join_status_file + '.bak', join_status_file,)
             self.delete_file(join_status_file + '.bak')
 
 

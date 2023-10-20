@@ -14,5 +14,5 @@ import appcentertest as app_test
 
 if __name__ == '__main__':
     client = Client.get_test_connection()
-    client.umc_command('appcenter/suggestions', {'version': 'v1'})
+    client.umc_command('appcenter/suggestions', {'version': 'v1'},)
     app_test.restart_umc()

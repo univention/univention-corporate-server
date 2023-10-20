@@ -48,14 +48,14 @@ class UpdateCertificates(UniventionAppAction):
 
     help = 'Update certificates for an app'
 
-    def setup_parser(self, parser):
-        super(UpdateCertificates, self).setup_parser(parser)
-        parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of app for which the certificates should be updated (all locally installed if none given)')
+    def setup_parser(self, parser,):
+        super(UpdateCertificates, self,).setup_parser(parser)
+        parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of app for which the certificates should be updated (all locally installed if none given)',)
 
-    def update_certificates(self, app):
+    def update_certificates(self, app,):
         self._run_update_certificates_script(app)
 
-    def main(self, args):
+    def main(self, args,):
         if not args.apps:
             args.apps = Apps().get_all_locally_installed_apps()
         self.logfile_logger = get_logfile_logger('update-certificates')
@@ -63,7 +63,7 @@ class UpdateCertificates(UniventionAppAction):
             self.log('updating certificates for {}'.format(app))
             self.update_certificates(app)
 
-    def _run_update_certificates_script(self, app):
+    def _run_update_certificates_script(self, app,):
         ext = 'update_certificates'
         with NamedTemporaryFile('r') as error_file:
             kwargs = {}
@@ -72,7 +72,7 @@ class UpdateCertificates(UniventionAppAction):
             locale = get_locale()
             if locale:
                 kwargs['locale'] = locale
-            success = self._call_cache_script(app, ext, **kwargs)
+            success = self._call_cache_script(app, ext, **kwargs,)
             if success is False:
                 for line in error_file:
                     self.fatal(line)

@@ -50,12 +50,12 @@ attributes = ['univentionService']
 service_name = b"Admin Diary Backend"
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> None:
     listener.setuid(0)
     try:
         change = False
-        new_has_service = service_name in new.get('univentionService', [])
-        old_has_service = service_name in old.get('univentionService', [])
+        new_has_service = service_name in new.get('univentionService', [],)
+        old_has_service = service_name in old.get('univentionService', [],)
         if new_has_service and not old_has_service:
             try:
                 fqdn = b'%s.%s' % (new['cn'][0], new['associatedDomain'][0])
@@ -64,7 +64,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
             ucr = ConfigRegistry()
             ucr.load()
-            old_ucr_value = ucr.get('admin/diary/backend', u'')
+            old_ucr_value = ucr.get('admin/diary/backend', u'',)
             fqdn_set = set(old_ucr_value.split())
             fqdn_set.add(fqdn.decode('utf-8'))
             new_ucr_value = u' '.join(fqdn_set)
@@ -78,7 +78,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
             ucr = ConfigRegistry()
             ucr.load()
-            old_ucr_value = ucr.get('admin/diary/backend', u'')
+            old_ucr_value = ucr.get('admin/diary/backend', u'',)
             fqdn_set = set(old_ucr_value.split())
             fqdn_set.discard(fqdn.decode('UTF-8'))
             new_ucr_value = u' '.join(fqdn_set)

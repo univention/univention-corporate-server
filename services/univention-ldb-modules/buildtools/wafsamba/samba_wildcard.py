@@ -5,14 +5,14 @@ from waflib import Scripting, Utils, Options, Logs, Errors
 from waflib import ConfigSet, Context
 from samba_utils import LOCAL_CACHE
 
-def run_task(t, k):
+def run_task(t, k,):
     '''run a single build task'''
     ret = t.run()
     if ret:
         raise Errors.WafError("Failed to build %s: %u" % (k, ret))
 
 
-def run_named_build_task(cmd):
+def run_named_build_task(cmd,):
     '''run a named build task, matching the cmd name using fnmatch
     wildcards against inputs and outputs of all build tasks'''
     bld = fake_build_environment(info=False)
@@ -24,7 +24,7 @@ def run_named_build_task(cmd):
 
     # cope with builds of bin/*/*
     if os.path.islink(cmd):
-        cmd = os.path.relpath(os.readlink(cmd), os.getcwd())
+        cmd = os.path.relpath(os.readlink(cmd), os.getcwd(),)
 
     if cmd[0:12] == "bin/default/":
         cmd = cmd[12:]
@@ -32,15 +32,15 @@ def run_named_build_task(cmd):
     for g in bld.task_manager.groups:
         for attr in ['outputs', 'inputs']:
             for t in g.tasks:
-                s = getattr(t, attr, [])
+                s = getattr(t, attr, [],)
                 for k in s:
                     relpath1 = k.relpath_gen(cwd_node)
                     relpath2 = k.relpath_gen(top_node)
-                    if (fnmatch.fnmatch(relpath1, cmd) or
-                        fnmatch.fnmatch(relpath2, cmd)):
+                    if (fnmatch.fnmatch(relpath1, cmd,) or
+                        fnmatch.fnmatch(relpath2, cmd,)):
                         t.position = [0,0]
                         print(t.display())
-                        run_task(t, k)
+                        run_task(t, k,)
                         found = True
 
 
@@ -54,7 +54,7 @@ def rewrite_compile_targets():
         return
 
     bld = fake_build_environment(info=False)
-    targets = LOCAL_CACHE(bld, 'TARGET_TYPE')
+    targets = LOCAL_CACHE(bld, 'TARGET_TYPE',)
     tlist = []
 
     for t in Options.options.compile_targets.split(','):
@@ -71,7 +71,7 @@ def rewrite_compile_targets():
 
 
 
-def wildcard_main(missing_cmd_fn):
+def wildcard_main(missing_cmd_fn,):
     '''this replaces main from Scripting, allowing us to override the
        behaviour for unknown commands
 
@@ -92,14 +92,14 @@ def wildcard_main(missing_cmd_fn):
         elif x == 'build':
             fun = Scripting.build
         else:
-            fun = getattr(Utils.g_module, x, None)
+            fun = getattr(Utils.g_module, x, None,)
 
         # this is the new addition on top of main from Scripting.py
         if not fun:
             missing_cmd_fn(x)
             break
 
-        ctx = getattr(Utils.g_module, x + '_context', Utils.Context)()
+        ctx = getattr(Utils.g_module, x + '_context', Utils.Context,)()
 
         if x in ['init', 'shutdown', 'dist', 'distclean', 'distcheck']:
             try:
@@ -122,10 +122,10 @@ def wildcard_main(missing_cmd_fn):
 
 
 
-def fake_build_environment(info=True, flush=False):
+def fake_build_environment(info=True, flush=False,):
     """create all the tasks for the project, but do not run the build
     return the build context in use"""
-    bld = getattr(Context.g_module, 'build_context', Utils.Context)()
+    bld = getattr(Context.g_module, 'build_context', Utils.Context,)()
     bld = Scripting.check_configured(bld)
 
     Options.commands['install'] = False

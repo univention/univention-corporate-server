@@ -26,21 +26,21 @@ from waflib import Utils
 from waflib.TaskGen import feature
 from waflib.Configure import conf
 
-def options(opt):
+def options(opt,):
 	opt.add_option(
 		'-s', '--system',
 		dest='directory_system',
 		default=False,
 		action='store_true',
-		help='determines installation directory (default: user)'
+		help='determines installation directory (default: user)',
 	)
 
 @conf
-def find_blender(ctx):
+def find_blender(ctx,):
 	'''Return version number of blender, if not exist return None'''
 	blender = ctx.find_program('blender')
 	output = ctx.cmd_and_log(blender + ['--version'])
-	m = re.search(r'Blender\s*((\d+(\.|))*)', output)
+	m = re.search(r'Blender\s*((\d+(\.|))*)', output,)
 	if not m:
 		ctx.fatal('Could not retrieve blender version')
 
@@ -53,7 +53,7 @@ def find_blender(ctx):
 	return blender
 
 @conf
-def configure_paths(ctx):
+def configure_paths(ctx,):
 	"""Setup blender paths"""
 	# Get the username
 	user = getuser()
@@ -69,8 +69,8 @@ def configure_paths(ctx):
 		config_path['system'] = '/Library/Application Support/Blender/'
 	elif Utils.is_win32:
 		# Windows
-		appdata_path = ctx.getenv('APPDATA').replace('\\', '/')
-		homedrive = ctx.getenv('HOMEDRIVE').replace('\\', '/')
+		appdata_path = ctx.getenv('APPDATA').replace('\\', '/',)
+		homedrive = ctx.getenv('HOMEDRIVE').replace('\\', '/',)
 
 		config_path['user'] = '%s/Blender Foundation/Blender/' % appdata_path
 		config_path['system'] = \
@@ -91,18 +91,18 @@ def configure_paths(ctx):
 		ctx.env['BLENDER_CONFIG_DIR'] = config_path['system']
 
 	ctx.env['BLENDER_ADDONS_DIR'] = os.path.join(
-		ctx.env['BLENDER_CONFIG_DIR'], 'scripts/addons'
+		ctx.env['BLENDER_CONFIG_DIR'], 'scripts/addons',
 	)
 	Utils.check_dir(ctx.env['BLENDER_ADDONS_DIR'])
 
-def configure(ctx):
+def configure(ctx,):
 	ctx.find_blender()
 	ctx.configure_paths()
 
 @feature('blender_list')
 def blender(self):
 	# Two ways to install a blender extension: as a module or just .py files
-	dest_dir = os.path.join(self.env.BLENDER_ADDONS_DIR, self.get_name())
+	dest_dir = os.path.join(self.env.BLENDER_ADDONS_DIR, self.get_name(),)
 	Utils.check_dir(dest_dir)
-	self.add_install_files(install_to=dest_dir, install_from=getattr(self, 'files', '.'))
+	self.add_install_files(install_to=dest_dir, install_from=getattr(self, 'files', '.',),)
 

@@ -35,7 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-def widget(syntax, udm_property):
+def widget(syntax, udm_property,):
     """
     Returns a widget description as a dictionary
 

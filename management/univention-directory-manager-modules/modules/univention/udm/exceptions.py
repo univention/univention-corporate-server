@@ -38,9 +38,9 @@ class UdmError(Exception):
 
     msg = ''
 
-    def __init__(self, msg=None, dn=None, module_name=None):
+    def __init__(self, msg=None, dn=None, module_name=None,):
         msg = msg or self.msg
-        super(UdmError, self).__init__(msg)
+        super(UdmError, self,).__init__(msg)
         self.dn = dn
         self.module_name = module_name
 
@@ -60,12 +60,11 @@ class ApiVersionNotSupported(UdmError):
             self,
             msg=None,
             module_name=None,
-            requested_version=None,
-    ):
+            requested_version=None,):
         self.requested_version = requested_version
         msg = msg or 'Module {!r} is not supported in API version {!r}.'.format(
-            module_name, requested_version)
-        super(ApiVersionNotSupported, self).__init__(msg, module_name=module_name)
+            module_name, requested_version,)
+        super(ApiVersionNotSupported, self,).__init__(msg, module_name=module_name,)
 
 
 class CreateError(UdmError):
@@ -73,17 +72,17 @@ class CreateError(UdmError):
 
 
 class DeletedError(UdmError):
-    def __init__(self, msg=None, dn=None, module_name=None):
+    def __init__(self, msg=None, dn=None, module_name=None,):
         msg = msg or 'Object{} has already been deleted.'.format(' {!r}'.format(dn) if dn else '')
-        super(DeletedError, self).__init__(msg, dn, module_name)
+        super(DeletedError, self,).__init__(msg, dn, module_name,)
 
 
 class DeleteError(UdmError):
     """Raised when a client tries to delete a UDM object but fails."""
 
-    def __init__(self, msg=None, dn=None, module_name=None):
+    def __init__(self, msg=None, dn=None, module_name=None,):
         msg = msg or 'Object{} could not be deleted.'.format(' {!r}'.format(dn) if dn else '')
-        super(DeleteError, self).__init__(msg, dn, module_name)
+        super(DeleteError, self,).__init__(msg, dn, module_name,)
 
 
 class NotYetSavedError(UdmError):
@@ -115,30 +114,29 @@ class NoApiVersionSet(UdmError):
 class NoObject(UdmError):
     """Raised when a UDM object could not be found at a DN."""
 
-    def __init__(self, msg=None, dn=None, module_name=None):
+    def __init__(self, msg=None, dn=None, module_name=None,):
         msg = msg or 'No object found at DN {!r}.'.format(dn)
-        super(NoObject, self).__init__(msg, dn, module_name)
+        super(NoObject, self,).__init__(msg, dn, module_name,)
 
 
 class NoSuperordinate(UdmError):
     """Raised when no superordinate was supplied but one is needed."""
 
-    def __init__(self, msg=None, dn=None, module_name=None, superordinate_types=None):
+    def __init__(self, msg=None, dn=None, module_name=None, superordinate_types=None,):
         msg = msg or 'No superordinate was supplied, but one of type{} {} is required to create/save a {} object.'.format(
-            's' if len(superordinate_types) > 1 else '', ', '.join(superordinate_types), module_name)
-        super(NoSuperordinate, self).__init__(msg, dn, module_name)
+            's' if len(superordinate_types) > 1 else '', ', '.join(superordinate_types), module_name,)
+        super(NoSuperordinate, self,).__init__(msg, dn, module_name,)
 
 
 class SearchLimitReached(UdmError):
     """Raised when the search results in more objects than specified by the sizelimit."""
 
-    def __init__(self, msg=None, dn=None, module_name=None, search_filter=None, sizelimit=None):
+    def __init__(self, msg=None, dn=None, module_name=None, search_filter=None, sizelimit=None,):
         msg = msg or 'The search_filter {} resulted in more objects than the specified sizelimit of {} allowed.'.format(
-            search_filter if search_filter else "''", sizelimit if sizelimit else "/",
-        )
+            search_filter if search_filter else "''", sizelimit if sizelimit else "/",)
         self.search_filter = search_filter
         self.sizelimit = sizelimit
-        super(SearchLimitReached, self).__init__(msg, dn, module_name)
+        super(SearchLimitReached, self,).__init__(msg, dn, module_name,)
 
 
 class MultipleObjects(UdmError):
@@ -151,9 +149,9 @@ class MultipleObjects(UdmError):
 class UnknownModuleType(UdmError):
     """Raised when an LDAP object has no or empty attribute univentionObjectType."""
 
-    def __init__(self, msg=None, dn=None, module_name=None):
+    def __init__(self, msg=None, dn=None, module_name=None,):
         msg = msg or 'No or empty attribute "univentionObjectType" found at DN {!r}.'.format(dn)
-        super(UnknownModuleType, self).__init__(msg, dn, module_name)
+        super(UnknownModuleType, self,).__init__(msg, dn, module_name,)
 
 
 class UnknownProperty(UdmError):
@@ -169,6 +167,6 @@ class WrongObjectType(UdmError):
     (:py:attr:`BaseModule.name`).
     """
 
-    def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):
-        msg = msg or 'Wrong UDM module: {!r} is not a {!r}, but a {!r}.'.format(dn, module_name, univention_object_type)
-        super(WrongObjectType, self).__init__(msg, dn, module_name)
+    def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None,):
+        msg = msg or 'Wrong UDM module: {!r} is not a {!r}, but a {!r}.'.format(dn, module_name, univention_object_type,)
+        super(WrongObjectType, self,).__init__(msg, dn, module_name,)

@@ -15,13 +15,13 @@ missing_headers = set()
 # m4 files
 
 @conf
-def DEFINE(conf, d, v, add_to_cflags=False, quote=False):
+def DEFINE(conf, d, v, add_to_cflags=False, quote=False,):
     '''define a config option'''
-    conf.define(d, v, quote=quote)
+    conf.define(d, v, quote=quote,)
     if add_to_cflags:
-        conf.env.append_value('CFLAGS', '-D%s=%s' % (d, str(v)))
+        conf.env.append_value('CFLAGS', '-D%s=%s' % (d, str(v)),)
 
-def hlist_to_string(conf, headers=None):
+def hlist_to_string(conf, headers=None,):
     '''convert a headers list to a set of #include lines'''
     hlist = conf.env.hlist
     if headers:
@@ -33,14 +33,14 @@ def hlist_to_string(conf, headers=None):
 
 
 @conf
-def COMPOUND_START(conf, msg):
+def COMPOUND_START(conf, msg,):
     '''start a compound test'''
     def null_check_message_1(self,*k,**kw):
         return
     def null_check_message_2(self,*k,**kw):
         return
 
-    v = getattr(conf.env, 'in_compound', [])
+    v = getattr(conf.env, 'in_compound', [],)
     if v != [] and v != 0:
         conf.env.in_compound = v + 1
         return
@@ -53,7 +53,7 @@ def COMPOUND_START(conf, msg):
 
 
 @conf
-def COMPOUND_END(conf, result):
+def COMPOUND_END(conf, result,):
     '''start a compound test'''
     conf.env.in_compound -= 1
     if conf.env.in_compound != 0:
@@ -64,7 +64,7 @@ def COMPOUND_END(conf, result):
     if result is True:
         p('ok')
     elif not result:
-        p('not found', 'YELLOW')
+        p('not found', 'YELLOW',)
     else:
         p(result)
 
@@ -77,23 +77,23 @@ def nolink(self):
     pass
 
 
-def CHECK_HEADER(conf, h, add_headers=False, lib=None):
+def CHECK_HEADER(conf, h, add_headers=False, lib=None,):
     '''check for a header'''
     if h in missing_headers and lib is None:
         return False
-    d = h.upper().replace('/', '_')
-    d = d.replace('.', '_')
-    d = d.replace('-', '_')
+    d = h.upper().replace('/', '_',)
+    d = d.replace('.', '_',)
+    d = d.replace('-', '_',)
     d = 'HAVE_%s' % d
-    if CONFIG_SET(conf, d):
+    if CONFIG_SET(conf, d,):
         if add_headers:
             if not h in conf.env.hlist:
                 conf.env.hlist.append(h)
         return True
 
-    (ccflags, ldflags, cpppath) = library_flags(conf, lib)
+    (ccflags, ldflags, cpppath) = library_flags(conf, lib,)
 
-    hdrs = hlist_to_string(conf, headers=h)
+    hdrs = hlist_to_string(conf, headers=h,)
     if lib is None:
         lib = ""
     ret = conf.check(fragment='%s\nint main(void) { return 0; }\n' % hdrs,
@@ -103,19 +103,19 @@ def CHECK_HEADER(conf, h, add_headers=False, lib=None):
                      mandatory=False,
                      includes=cpppath,
                      uselib=lib.upper(),
-                     msg="Checking for header %s" % h)
+                     msg="Checking for header %s" % h,)
     if not ret:
         missing_headers.add(h)
         return False
 
-    conf.DEFINE(d, 1)
+    conf.DEFINE(d, 1,)
     if add_headers and not h in conf.env.hlist:
         conf.env.hlist.append(h)
     return ret
 
 
 @conf
-def CHECK_HEADERS(conf, headers, add_headers=False, together=False, lib=None):
+def CHECK_HEADERS(conf, headers, add_headers=False, together=False, lib=None,):
     '''check for a list of headers
 
     when together==True, then the headers accumulate within this test.
@@ -128,28 +128,28 @@ def CHECK_HEADERS(conf, headers, add_headers=False, together=False, lib=None):
     else:
         set_add_headers = add_headers
     for hdr in TO_LIST(headers):
-        if not CHECK_HEADER(conf, hdr, set_add_headers, lib=lib):
+        if not CHECK_HEADER(conf, hdr, set_add_headers, lib=lib,):
             ret = False
     if not add_headers and together:
         conf.env.hlist = saved_hlist
     return ret
 
 
-def header_list(conf, headers=None, lib=None):
+def header_list(conf, headers=None, lib=None,):
     '''form a list of headers which exist, as a string'''
     hlist=[]
     if headers is not None:
         for h in TO_LIST(headers):
-            if CHECK_HEADER(conf, h, add_headers=False, lib=lib):
+            if CHECK_HEADER(conf, h, add_headers=False, lib=lib,):
                 hlist.append(h)
-    return hlist_to_string(conf, headers=hlist)
+    return hlist_to_string(conf, headers=hlist,)
 
 
 @conf
-def CHECK_TYPE(conf, t, alternate=None, headers=None, define=None, lib=None, msg=None, cflags=''):
+def CHECK_TYPE(conf, t, alternate=None, headers=None, define=None, lib=None, msg=None, cflags='',):
     '''check for a single type'''
     if define is None:
-        define = 'HAVE_' + t.upper().replace(' ', '_')
+        define = 'HAVE_' + t.upper().replace(' ', '_',)
     if msg is None:
         msg='Checking for %s' % t
     ret = CHECK_CODE(conf, '%s _x' % t,
@@ -160,33 +160,33 @@ def CHECK_TYPE(conf, t, alternate=None, headers=None, define=None, lib=None, msg
                      msg=msg,
                      cflags=cflags,
                      lib=lib,
-                     link=False)
+                     link=False,)
     if not ret and alternate:
-        conf.DEFINE(t, alternate)
+        conf.DEFINE(t, alternate,)
     return ret
 
 
 @conf
-def CHECK_TYPES(conf, list, headers=None, define=None, alternate=None, lib=None):
+def CHECK_TYPES(conf, list, headers=None, define=None, alternate=None, lib=None,):
     '''check for a list of types'''
     ret = True
     for t in TO_LIST(list):
         if not CHECK_TYPE(conf, t, headers=headers,
-                          define=define, alternate=alternate, lib=lib):
+                          define=define, alternate=alternate, lib=lib,):
             ret = False
     return ret
 
 
 @conf
-def CHECK_TYPE_IN(conf, t, headers=None, alternate=None, define=None, cflags=''):
+def CHECK_TYPE_IN(conf, t, headers=None, alternate=None, define=None, cflags='',):
     '''check for a single type with a header'''
-    return CHECK_TYPE(conf, t, headers=headers, alternate=alternate, define=define, cflags=cflags)
+    return CHECK_TYPE(conf, t, headers=headers, alternate=alternate, define=define, cflags=cflags,)
 
 
 @conf
 def CHECK_VARIABLE(conf, v, define=None, always=False,
                    headers=None, msg=None, lib=None,
-                   mandatory=False):
+                   mandatory=False,):
     '''check for a variable declaration (or define)'''
     if define is None:
         define = 'HAVE_%s' % v.upper()
@@ -211,11 +211,11 @@ def CHECK_VARIABLE(conf, v, define=None, always=False,
                       headers=headers,
                       define=define,
                       mandatory=mandatory,
-                      always=always)
+                      always=always,)
 
 
 @conf
-def CHECK_DECLS(conf, vars, reverse=False, headers=None, lib=None, always=False):
+def CHECK_DECLS(conf, vars, reverse=False, headers=None, lib=None, always=False,):
     '''check a list of variable declarations, using the HAVE_DECL_xxx form
        of define
 
@@ -232,7 +232,7 @@ def CHECK_DECLS(conf, vars, reverse=False, headers=None, lib=None, always=False)
                               headers=headers,
                               lib=lib,
                               msg='Checking for declaration of %s' % v,
-                              always=always):
+                              always=always,):
             if not CHECK_CODE(conf,
                       '''
                       return (int)%s;
@@ -244,12 +244,12 @@ def CHECK_DECLS(conf, vars, reverse=False, headers=None, lib=None, always=False)
                       headers=headers,
                       lib=lib,
                       define=define,
-                      always=always):
+                      always=always,):
                 ret = False
     return ret
 
 
-def CHECK_FUNC(conf, f, link=True, lib=None, headers=None):
+def CHECK_FUNC(conf, f, link=True, lib=None, headers=None,):
     '''check for a function'''
     define='HAVE_%s' % f.upper()
 
@@ -285,7 +285,7 @@ def CHECK_FUNC(conf, f, link=True, lib=None, headers=None):
                          local_include=False,
                          lib=lib,
                          headers=headers,
-                         msg='Checking for %s' % f)
+                         msg='Checking for %s' % f,)
 
         if not ret:
             ret = CHECK_CODE(conf,
@@ -301,35 +301,35 @@ def CHECK_FUNC(conf, f, link=True, lib=None, headers=None):
                              local_include=False,
                              lib=lib,
                              headers=headers,
-                             msg='Checking for macro %s' % f)
+                             msg='Checking for macro %s' % f,)
 
     if not ret and (link is None or not link):
         ret = CHECK_VARIABLE(conf, f,
                              define=define,
                              headers=headers,
-                             msg='Checking for declaration of %s' % f)
+                             msg='Checking for declaration of %s' % f,)
     conf.COMPOUND_END(ret)
     return ret
 
 
 @conf
-def CHECK_FUNCS(conf, list, link=True, lib=None, headers=None):
+def CHECK_FUNCS(conf, list, link=True, lib=None, headers=None,):
     '''check for a list of functions'''
     ret = True
     for f in TO_LIST(list):
-        if not CHECK_FUNC(conf, f, link=link, lib=lib, headers=headers):
+        if not CHECK_FUNC(conf, f, link=link, lib=lib, headers=headers,):
             ret = False
     return ret
 
 
 @conf
-def CHECK_SIZEOF(conf, vars, headers=None, define=None, critical=True):
+def CHECK_SIZEOF(conf, vars, headers=None, define=None, critical=True,):
     '''check the size of a type'''
     for v in TO_LIST(vars):
         v_define = define
         ret = False
         if v_define is None:
-            v_define = 'SIZEOF_%s' % v.upper().replace(' ', '_')
+            v_define = 'SIZEOF_%s' % v.upper().replace(' ', '_',)
         for size in list((1, 2, 4, 8, 16, 32, 64)):
             if CHECK_CODE(conf,
                       'static int test_array[1 - 2 * !(((long int)(sizeof(%s))) <= %d)];' % (v, size),
@@ -337,8 +337,8 @@ def CHECK_SIZEOF(conf, vars, headers=None, define=None, critical=True):
                       quote=False,
                       headers=headers,
                       local_include=False,
-                      msg="Checking if size of %s == %d" % (v, size)):
-                conf.DEFINE(v_define, size)
+                      msg="Checking if size of %s == %d" % (v, size),):
+                conf.DEFINE(v_define, size,)
                 ret = True
                 break
         if not ret and critical:
@@ -347,9 +347,9 @@ def CHECK_SIZEOF(conf, vars, headers=None, define=None, critical=True):
     return ret
 
 @conf
-def CHECK_SIGN(conf, v, headers=None):
+def CHECK_SIGN(conf, v, headers=None,):
     '''check the sign of a type'''
-    define_name = v.upper().replace(' ', '_')
+    define_name = v.upper().replace(' ', '_',)
     for op, signed in [('<', 'signed'),
                        ('>', 'unsigned')]:
         if CHECK_CODE(conf,
@@ -358,18 +358,18 @@ def CHECK_SIGN(conf, v, headers=None):
                       quote=False,
                       headers=headers,
                       local_include=False,
-                      msg=f"Checking if '{v}' is {signed}"):
+                      msg=f"Checking if '{v}' is {signed}",):
             return True
 
     return False
 
 @conf
-def CHECK_VALUEOF(conf, v, headers=None, define=None):
+def CHECK_VALUEOF(conf, v, headers=None, define=None,):
     '''check the value of a variable/define'''
     ret = True
     v_define = define
     if v_define is None:
-        v_define = 'VALUEOF_%s' % v.upper().replace(' ', '_')
+        v_define = 'VALUEOF_%s' % v.upper().replace(' ', '_',)
     if CHECK_CODE(conf,
                   'printf("%%u", (unsigned)(%s))' % v,
                   define=v_define,
@@ -378,7 +378,7 @@ def CHECK_VALUEOF(conf, v, headers=None, define=None):
                   quote=False,
                   headers=headers,
                   local_include=False,
-                  msg="Checking value of %s" % v):
+                  msg="Checking value of %s" % v,):
         return int(conf.env[v_define])
 
     return None
@@ -390,17 +390,17 @@ def CHECK_CODE(conf, code, define,
                headers=None, msg=None, cflags='', includes='# .',
                local_include=True, lib=None, link=True,
                define_ret=False, quote=False,
-               on_target=True, strict=False):
+               on_target=True, strict=False,):
     '''check if some code compiles and/or runs'''
 
-    if CONFIG_SET(conf, define):
+    if CONFIG_SET(conf, define,):
         return True
 
     if headers is not None:
-        CHECK_HEADERS(conf, headers=headers, lib=lib)
+        CHECK_HEADERS(conf, headers=headers, lib=lib,)
 
     if add_headers:
-        hdrs = header_list(conf, headers=headers, lib=lib)
+        hdrs = header_list(conf, headers=headers, lib=lib,)
     else:
         hdrs = ''
     if execute:
@@ -434,7 +434,7 @@ def CHECK_CODE(conf, code, define,
 
     uselib = TO_LIST(lib)
 
-    (ccflags, ldflags, cpppath) = library_flags(conf, uselib)
+    (ccflags, ldflags, cpppath) = library_flags(conf, uselib,)
 
     includes = TO_LIST(includes)
     includes.extend(cpppath)
@@ -462,10 +462,10 @@ def CHECK_CODE(conf, code, define,
                      msg=msg,
                      quote=quote,
                      test_args=test_args,
-                     define_ret=define_ret)
+                     define_ret=define_ret,)
     except Exception:
         if always:
-            conf.DEFINE(define, 0)
+            conf.DEFINE(define, 0,)
         else:
             conf.undefine(define)
         conf.COMPOUND_END(False)
@@ -481,10 +481,10 @@ def CHECK_CODE(conf, code, define,
             conf.COMPOUND_END(False)
             return False
         if not define_ret:
-            conf.DEFINE(define, 1)
+            conf.DEFINE(define, 1,)
             conf.COMPOUND_END(True)
         else:
-            conf.DEFINE(define, ret, quote=quote)
+            conf.DEFINE(define, ret, quote=quote,)
             conf.COMPOUND_END(ret)
         return True
 
@@ -492,7 +492,7 @@ def CHECK_CODE(conf, code, define,
 @conf
 def CHECK_STRUCTURE_MEMBER(conf, structname, member,
                            always=False, define=None, headers=None,
-                           lib=None):
+                           lib=None,):
     '''check for a structure member'''
     if define is None:
         define = 'HAVE_%s' % member.upper()
@@ -505,12 +505,12 @@ def CHECK_STRUCTURE_MEMBER(conf, structname, member,
                       always=always,
                       headers=headers,
                       local_include=False,
-                      msg="Checking for member %s in %s" % (member, structname))
+                      msg="Checking for member %s in %s" % (member, structname),)
 
 
 @conf
 def CHECK_CFLAGS(conf, cflags, fragment='int main(void) { return 0; }\n',
-                 mandatory=False):
+                 mandatory=False,):
     '''check if the given cflags are accepted by the compiler
     '''
     check_cflags = TO_LIST(cflags)
@@ -521,22 +521,22 @@ def CHECK_CFLAGS(conf, cflags, fragment='int main(void) { return 0; }\n',
                       mandatory=mandatory,
                       type='nolink',
                       cflags=check_cflags,
-                      msg="Checking compiler accepts %s" % cflags)
+                      msg="Checking compiler accepts %s" % cflags,)
 
 @conf
 def CHECK_LDFLAGS(conf, ldflags,
-                  mandatory=False):
+                  mandatory=False,):
     '''check if the given ldflags are accepted by the linker
     '''
     return conf.check(fragment='int main(void) { return 0; }\n',
                       execute=0,
                       ldflags=ldflags,
                       mandatory=mandatory,
-                      msg="Checking linker accepts %s" % ldflags)
+                      msg="Checking linker accepts %s" % ldflags,)
 
 
 @conf
-def CONFIG_GET(conf, option):
+def CONFIG_GET(conf, option,):
     '''return True if a configuration option was found'''
     if (option in conf.env):
         return conf.env[option]
@@ -544,7 +544,7 @@ def CONFIG_GET(conf, option):
         return None
 
 @conf
-def CONFIG_SET(conf, option):
+def CONFIG_SET(conf, option,):
     '''return True if a configuration option was found'''
     if option not in conf.env:
         return False
@@ -558,7 +558,7 @@ def CONFIG_SET(conf, option):
     return True
 
 @conf
-def CONFIG_RESET(conf, option):
+def CONFIG_RESET(conf, option,):
     if option not in conf.env:
         return
     del conf.env[option]
@@ -568,7 +568,7 @@ Build.BuildContext.CONFIG_SET = CONFIG_SET
 Build.BuildContext.CONFIG_GET = CONFIG_GET
 
 
-def library_flags(self, libs):
+def library_flags(self, libs,):
     '''work out flags from pkg_config'''
     ccflags = []
     ldflags = []
@@ -577,14 +577,14 @@ def library_flags(self, libs):
         # note that we do not add the -I and -L in here, as that is added by the waf
         # core. Adding it here would just change the order that it is put on the link line
         # which can cause system paths to be added before internal libraries
-        extra_ccflags = TO_LIST(getattr(self.env, 'CFLAGS_%s' % lib.upper(), []))
-        extra_ldflags = TO_LIST(getattr(self.env, 'LDFLAGS_%s' % lib.upper(), []))
-        extra_cpppath = TO_LIST(getattr(self.env, 'CPPPATH_%s' % lib.upper(), []))
+        extra_ccflags = TO_LIST(getattr(self.env, 'CFLAGS_%s' % lib.upper(), [],))
+        extra_ldflags = TO_LIST(getattr(self.env, 'LDFLAGS_%s' % lib.upper(), [],))
+        extra_cpppath = TO_LIST(getattr(self.env, 'CPPPATH_%s' % lib.upper(), [],))
         ccflags.extend(extra_ccflags)
         ldflags.extend(extra_ldflags)
         cpppath.extend(extra_cpppath)
 
-        extra_cpppath = TO_LIST(getattr(self.env, 'INCLUDES_%s' % lib.upper(), []))
+        extra_cpppath = TO_LIST(getattr(self.env, 'INCLUDES_%s' % lib.upper(), [],))
         cpppath.extend(extra_cpppath)
     if 'EXTRA_LDFLAGS' in self.env:
         ldflags.extend(self.env['EXTRA_LDFLAGS'])
@@ -596,7 +596,7 @@ def library_flags(self, libs):
 
 
 @conf
-def CHECK_LIB(conf, libs, mandatory=False, empty_decl=True, set_target=True, shlib=False):
+def CHECK_LIB(conf, libs, mandatory=False, empty_decl=True, set_target=True, shlib=False,):
     '''check if a set of libraries exist as system libraries
 
     returns the sublist of libs that do exist as a syslib or []
@@ -612,15 +612,15 @@ int foo()
     ret = []
     liblist  = TO_LIST(libs)
     for lib in liblist[:]:
-        if GET_TARGET_TYPE(conf, lib) == 'SYSLIB':
+        if GET_TARGET_TYPE(conf, lib,) == 'SYSLIB':
             ret.append(lib)
             continue
 
-        (ccflags, ldflags, cpppath) = library_flags(conf, lib)
+        (ccflags, ldflags, cpppath) = library_flags(conf, lib,)
         if shlib:
-            res = conf.check(features='c cshlib', fragment=fragment, lib=lib, uselib_store=lib, cflags=ccflags, ldflags=ldflags, uselib=lib.upper(), mandatory=False)
+            res = conf.check(features='c cshlib', fragment=fragment, lib=lib, uselib_store=lib, cflags=ccflags, ldflags=ldflags, uselib=lib.upper(), mandatory=False,)
         else:
-            res = conf.check(lib=lib, uselib_store=lib, cflags=ccflags, ldflags=ldflags, uselib=lib.upper(), mandatory=False)
+            res = conf.check(lib=lib, uselib_store=lib, cflags=ccflags, ldflags=ldflags, uselib=lib.upper(), mandatory=False,)
 
         if not res:
             if mandatory:
@@ -629,12 +629,12 @@ int foo()
             if empty_decl:
                 # if it isn't a mandatory library, then remove it from dependency lists
                 if set_target:
-                    SET_TARGET_TYPE(conf, lib, 'EMPTY')
+                    SET_TARGET_TYPE(conf, lib, 'EMPTY',)
         else:
-            conf.define('HAVE_LIB%s' % lib.upper().replace('-','_').replace('.','_'), 1)
+            conf.define('HAVE_LIB%s' % lib.upper().replace('-','_',).replace('.','_',), 1,)
             conf.env['LIB_' + lib.upper()] = lib
             if set_target:
-                conf.SET_TARGET_TYPE(lib, 'SYSLIB')
+                conf.SET_TARGET_TYPE(lib, 'SYSLIB',)
             ret.append(lib)
 
     return ret
@@ -643,7 +643,7 @@ int foo()
 
 @conf
 def CHECK_FUNCS_IN(conf, list, library, mandatory=False, checklibc=False,
-                   headers=None, link=True, empty_decl=True, set_target=True):
+                   headers=None, link=True, empty_decl=True, set_target=True,):
     """
     check that the functions in 'list' are available in 'library'
     if they are, then make that library available as a dependency
@@ -662,22 +662,22 @@ def CHECK_FUNCS_IN(conf, list, library, mandatory=False, checklibc=False,
 
     # check if some already found
     for f in remaining[:]:
-        if CONFIG_SET(conf, 'HAVE_%s' % f.upper()):
+        if CONFIG_SET(conf, 'HAVE_%s' % f.upper(),):
             remaining.remove(f)
 
     # see if the functions are in libc
     if checklibc:
         for f in remaining[:]:
-            if CHECK_FUNC(conf, f, link=True, headers=headers):
+            if CHECK_FUNC(conf, f, link=True, headers=headers,):
                 remaining.remove(f)
 
     if remaining == []:
         for lib in liblist:
-            if GET_TARGET_TYPE(conf, lib) != 'SYSLIB' and empty_decl:
-                SET_TARGET_TYPE(conf, lib, 'EMPTY')
+            if GET_TARGET_TYPE(conf, lib,) != 'SYSLIB' and empty_decl:
+                SET_TARGET_TYPE(conf, lib, 'EMPTY',)
         return True
 
-    checklist = conf.CHECK_LIB(liblist, empty_decl=empty_decl, set_target=set_target)
+    checklist = conf.CHECK_LIB(liblist, empty_decl=empty_decl, set_target=set_target,)
     for lib in liblist[:]:
         if not lib in checklist and mandatory:
             Logs.error("Mandatory library '%s' not found for functions '%s'" % (lib, list))
@@ -685,21 +685,21 @@ def CHECK_FUNCS_IN(conf, list, library, mandatory=False, checklibc=False,
 
     ret = True
     for f in remaining:
-        if not CHECK_FUNC(conf, f, lib=' '.join(checklist), headers=headers, link=link):
+        if not CHECK_FUNC(conf, f, lib=' '.join(checklist), headers=headers, link=link,):
             ret = False
 
     return ret
 
 
 @conf
-def IN_LAUNCH_DIR(conf):
+def IN_LAUNCH_DIR(conf,):
     '''return True if this rule is being run from the launch directory'''
     return os.path.realpath(conf.path.abspath()) == os.path.realpath(Context.launch_dir)
 Options.OptionsContext.IN_LAUNCH_DIR = IN_LAUNCH_DIR
 
 
 @conf
-def SAMBA_CONFIG_H(conf, path=None):
+def SAMBA_CONFIG_H(conf, path=None,):
     '''write out config.h in the right directory'''
     # we don't want to produce a config.h in places like lib/replace
     # when we are building projects that depend on lib/replace
@@ -722,7 +722,7 @@ def SAMBA_CONFIG_H(conf, path=None):
                                     execute=0,
                                     cflags=[ '-Werror', '-Wp,-D_FORTIFY_SOURCE=2', stack_protect_flag],
                                     mandatory=False,
-                                    msg='Checking if compiler accepts %s' % (stack_protect_flag))
+                                    msg='Checking if compiler accepts %s' % (stack_protect_flag),)
         if flag_supported:
             conf.ADD_CFLAGS('%s' % (stack_protect_flag))
             break
@@ -740,12 +740,12 @@ def SAMBA_CONFIG_H(conf, path=None):
                                 execute=0,
                                 cflags=[ '-Werror', '-fstack-clash-protection'],
                                 mandatory=False,
-                                msg='Checking if compiler accepts -fstack-clash-protection')
+                                msg='Checking if compiler accepts -fstack-clash-protection',)
     if flag_supported:
         conf.ADD_CFLAGS('-fstack-clash-protection')
 
     if Options.options.debug:
-        conf.ADD_CFLAGS('-g', testflags=True)
+        conf.ADD_CFLAGS('-g', testflags=True,)
 
     if Options.options.pidl_developer:
         conf.env.PIDL_DEVELOPER_MODE = True
@@ -753,51 +753,51 @@ def SAMBA_CONFIG_H(conf, path=None):
     if Options.options.developer:
         conf.env.DEVELOPER_MODE = True
 
-        conf.ADD_CFLAGS('-g', testflags=True)
-        conf.ADD_CFLAGS('-Wall', testflags=True)
-        conf.ADD_CFLAGS('-Wshadow', testflags=True)
-        conf.ADD_CFLAGS('-Wmissing-prototypes', testflags=True)
+        conf.ADD_CFLAGS('-g', testflags=True,)
+        conf.ADD_CFLAGS('-Wall', testflags=True,)
+        conf.ADD_CFLAGS('-Wshadow', testflags=True,)
+        conf.ADD_CFLAGS('-Wmissing-prototypes', testflags=True,)
         if CHECK_CODE(conf,
                       'struct a { int b; }; struct c { struct a d; } e = { };',
                       'CHECK_C99_INIT',
                       link=False,
                       cflags='-Wmissing-field-initializers -Werror=missing-field-initializers',
-                      msg="Checking C99 init of nested structs."):
-            conf.ADD_CFLAGS('-Wmissing-field-initializers', testflags=True)
-        conf.ADD_CFLAGS('-Wformat-overflow=2', testflags=True)
-        conf.ADD_CFLAGS('-Wformat-zero-length', testflags=True)
-        conf.ADD_CFLAGS('-Wcast-align -Wcast-qual', testflags=True)
-        conf.ADD_CFLAGS('-fno-common', testflags=True)
+                      msg="Checking C99 init of nested structs.",):
+            conf.ADD_CFLAGS('-Wmissing-field-initializers', testflags=True,)
+        conf.ADD_CFLAGS('-Wformat-overflow=2', testflags=True,)
+        conf.ADD_CFLAGS('-Wformat-zero-length', testflags=True,)
+        conf.ADD_CFLAGS('-Wcast-align -Wcast-qual', testflags=True,)
+        conf.ADD_CFLAGS('-fno-common', testflags=True,)
 
-        conf.ADD_CFLAGS('-Werror=address', testflags=True)
+        conf.ADD_CFLAGS('-Werror=address', testflags=True,)
         # we add these here to ensure that -Wstrict-prototypes is not set during configure
         conf.ADD_CFLAGS('-Werror=strict-prototypes -Wstrict-prototypes',
-                        testflags=True)
+                        testflags=True,)
         conf.ADD_CFLAGS('-Werror=write-strings -Wwrite-strings',
-                        testflags=True)
+                        testflags=True,)
         conf.ADD_CFLAGS('-Werror-implicit-function-declaration',
-                        testflags=True)
+                        testflags=True,)
         conf.ADD_CFLAGS('-Werror=implicit-int',
-                        testflags=True)
+                        testflags=True,)
         conf.ADD_CFLAGS('-Werror=pointer-arith -Wpointer-arith',
-                        testflags=True)
+                        testflags=True,)
         conf.ADD_CFLAGS('-Werror=declaration-after-statement -Wdeclaration-after-statement',
-                        testflags=True)
+                        testflags=True,)
         conf.ADD_CFLAGS('-Werror=return-type -Wreturn-type',
-                        testflags=True)
+                        testflags=True,)
         conf.ADD_CFLAGS('-Werror=uninitialized -Wuninitialized',
-                        testflags=True)
+                        testflags=True,)
         conf.ADD_CFLAGS('-Wimplicit-fallthrough',
-                        testflags=True)
+                        testflags=True,)
         conf.ADD_CFLAGS('-Werror=strict-overflow -Wstrict-overflow=2',
-                        testflags=True)
+                        testflags=True,)
         conf.ADD_CFLAGS('-Werror=old-style-definition -Wold-style-definition',
-                        testflags=True)
+                        testflags=True,)
 
-        conf.ADD_CFLAGS('-Wformat=2 -Wno-format-y2k', testflags=True)
-        conf.ADD_CFLAGS('-Wno-format-zero-length', testflags=True)
+        conf.ADD_CFLAGS('-Wformat=2 -Wno-format-y2k', testflags=True,)
+        conf.ADD_CFLAGS('-Wno-format-zero-length', testflags=True,)
         conf.ADD_CFLAGS('-Werror=format-security -Wformat-security',
-                        testflags=True, prereq_flags='-Wformat')
+                        testflags=True, prereq_flags='-Wformat',)
         # This check is because for ldb_search(), a NULL format string
         # is not an error, but some compilers complain about that.
         if CHECK_CFLAGS(conf, ["-Werror=format", "-Wformat=2"], '''
@@ -808,38 +808,38 @@ int main(void) {
         return 0;
 }
 
-'''):
+''',):
             if not 'EXTRA_CFLAGS' in conf.env:
                 conf.env['EXTRA_CFLAGS'] = []
             conf.env['EXTRA_CFLAGS'].extend(TO_LIST("-Werror=format"))
 
-        if CHECK_CFLAGS(conf, ["-Wno-error=array-bounds"]):
-            conf.define('HAVE_WNO_ERROR_ARRAY_BOUNDS', 1)
+        if CHECK_CFLAGS(conf, ["-Wno-error=array-bounds"],):
+            conf.define('HAVE_WNO_ERROR_ARRAY_BOUNDS', 1,)
 
         if not Options.options.disable_warnings_as_errors:
-            conf.ADD_NAMED_CFLAGS('PICKY_CFLAGS', '-Werror -Wno-error=deprecated-declarations', testflags=True)
-            conf.ADD_NAMED_CFLAGS('PICKY_CFLAGS', '-Wno-error=tautological-compare', testflags=True)
-            conf.ADD_NAMED_CFLAGS('PICKY_CFLAGS', '-Wno-error=cast-align', testflags=True)
+            conf.ADD_NAMED_CFLAGS('PICKY_CFLAGS', '-Werror -Wno-error=deprecated-declarations', testflags=True,)
+            conf.ADD_NAMED_CFLAGS('PICKY_CFLAGS', '-Wno-error=tautological-compare', testflags=True,)
+            conf.ADD_NAMED_CFLAGS('PICKY_CFLAGS', '-Wno-error=cast-align', testflags=True,)
 
     if Options.options.fatal_errors:
-        conf.ADD_CFLAGS('-Wfatal-errors', testflags=True)
+        conf.ADD_CFLAGS('-Wfatal-errors', testflags=True,)
 
     if Options.options.pedantic:
-        conf.ADD_CFLAGS('-W', testflags=True)
+        conf.ADD_CFLAGS('-W', testflags=True,)
 
     if (Options.options.address_sanitizer or
         Options.options.undefined_sanitizer):
-        conf.ADD_CFLAGS('-g -O1', testflags=True)
+        conf.ADD_CFLAGS('-g -O1', testflags=True,)
     if Options.options.address_sanitizer:
-        conf.ADD_CFLAGS('-fno-omit-frame-pointer', testflags=True)
-        conf.ADD_CFLAGS('-fsanitize=address', testflags=True)
-        conf.ADD_LDFLAGS('-fsanitize=address', testflags=True)
+        conf.ADD_CFLAGS('-fno-omit-frame-pointer', testflags=True,)
+        conf.ADD_CFLAGS('-fsanitize=address', testflags=True,)
+        conf.ADD_LDFLAGS('-fsanitize=address', testflags=True,)
         conf.env['ADDRESS_SANITIZER'] = True
     if Options.options.undefined_sanitizer:
-        conf.ADD_CFLAGS('-fsanitize=undefined', testflags=True)
-        conf.ADD_CFLAGS('-fsanitize=null', testflags=True)
-        conf.ADD_CFLAGS('-fsanitize=alignment', testflags=True)
-        conf.ADD_LDFLAGS('-fsanitize=undefined', testflags=True)
+        conf.ADD_CFLAGS('-fsanitize=undefined', testflags=True,)
+        conf.ADD_CFLAGS('-fsanitize=null', testflags=True,)
+        conf.ADD_CFLAGS('-fsanitize=alignment', testflags=True,)
+        conf.ADD_LDFLAGS('-fsanitize=undefined', testflags=True,)
         conf.env['UNDEFINED_SANITIZER'] = True
 
 
@@ -854,27 +854,27 @@ int main(void) {
     conf.add_os_flags('ADDITIONAL_CFLAGS')
     if conf.env.ADDITIONAL_CFLAGS:
         conf.CHECK_CFLAGS(conf.env['ADDITIONAL_CFLAGS'],
-                          mandatory=True)
+                          mandatory=True,)
         conf.env['EXTRA_CFLAGS'].extend(conf.env['ADDITIONAL_CFLAGS'])
 
     conf.add_os_flags('ADDITIONAL_LDFLAGS')
     if conf.env.ADDITIONAL_LDFLAGS:
         conf.CHECK_LDFLAGS(conf.env['ADDITIONAL_LDFLAGS'],
-                           mandatory=True)
+                           mandatory=True,)
         conf.env['EXTRA_LDFLAGS'].extend(conf.env['ADDITIONAL_LDFLAGS'])
 
     if path is None:
-        conf.write_config_header('default/config.h', top=True, remove=False)
+        conf.write_config_header('default/config.h', top=True, remove=False,)
     else:
-        conf.write_config_header(os.path.join(conf.variant, path), remove=False)
+        conf.write_config_header(os.path.join(conf.variant, path,), remove=False,)
     for key in conf.env.define_key:
-        conf.undefine(key, from_env=False)
+        conf.undefine(key, from_env=False,)
     conf.env.define_key = []
     conf.SAMBA_CROSS_CHECK_COMPLETE()
 
 
 @conf
-def CONFIG_PATH(conf, name, default):
+def CONFIG_PATH(conf, name, default,):
     '''setup a configurable path'''
     if not name in conf.env:
         if default[0] == '/':
@@ -883,7 +883,7 @@ def CONFIG_PATH(conf, name, default):
             conf.env[name] = conf.env['PREFIX'] + default
 
 @conf
-def ADD_NAMED_CFLAGS(conf, name, flags, testflags=False, prereq_flags=[]):
+def ADD_NAMED_CFLAGS(conf, name, flags, testflags=False, prereq_flags=[],):
     '''add some CFLAGS to the command line
        optionally set testflags to ensure all the flags work
     '''
@@ -891,7 +891,7 @@ def ADD_NAMED_CFLAGS(conf, name, flags, testflags=False, prereq_flags=[]):
     if testflags:
         ok_flags=[]
         for f in flags.split():
-            if CHECK_CFLAGS(conf, [f] + prereq_flags):
+            if CHECK_CFLAGS(conf, [f] + prereq_flags,):
                 ok_flags.append(f)
         flags = ok_flags
     if not name in conf.env:
@@ -899,15 +899,15 @@ def ADD_NAMED_CFLAGS(conf, name, flags, testflags=False, prereq_flags=[]):
     conf.env[name].extend(TO_LIST(flags))
 
 @conf
-def ADD_CFLAGS(conf, flags, testflags=False, prereq_flags=[]):
+def ADD_CFLAGS(conf, flags, testflags=False, prereq_flags=[],):
     '''add some CFLAGS to the command line
        optionally set testflags to ensure all the flags work
     '''
     ADD_NAMED_CFLAGS(conf, 'EXTRA_CFLAGS', flags, testflags=testflags,
-                     prereq_flags=prereq_flags)
+                     prereq_flags=prereq_flags,)
 
 @conf
-def ADD_LDFLAGS(conf, flags, testflags=False):
+def ADD_LDFLAGS(conf, flags, testflags=False,):
     '''add some LDFLAGS to the command line
        optionally set testflags to ensure all the flags work
 
@@ -916,7 +916,7 @@ def ADD_LDFLAGS(conf, flags, testflags=False):
     if testflags:
         ok_flags=[]
         for f in flags.split():
-            if CHECK_LDFLAGS(conf, f):
+            if CHECK_LDFLAGS(conf, f,):
                 ok_flags.append(f)
         flags = ok_flags
     if not 'EXTRA_LDFLAGS' in conf.env:
@@ -926,7 +926,7 @@ def ADD_LDFLAGS(conf, flags, testflags=False):
 
 
 @conf
-def ADD_EXTRA_INCLUDES(conf, includes):
+def ADD_EXTRA_INCLUDES(conf, includes,):
     '''add some extra include directories to all builds'''
     if not 'EXTRA_INCLUDES' in conf.env:
         conf.env['EXTRA_INCLUDES'] = []
@@ -937,7 +937,7 @@ def ADD_EXTRA_INCLUDES(conf, includes):
 def CURRENT_CFLAGS(bld, target, cflags,
                    allow_warnings=False,
                    use_hostcc=False,
-                   hide_symbols=False):
+                   hide_symbols=False,):
     '''work out the current flags. local flags are added first'''
     ret = []
     if use_hostcc:
@@ -957,7 +957,7 @@ def CURRENT_CFLAGS(bld, target, cflags,
 
 
 @conf
-def CHECK_CC_ENV(conf):
+def CHECK_CC_ENV(conf,):
     """trim whitespaces from 'CC'.
     The build farm sometimes puts a space at the start"""
     if os.environ.get('CC'):
@@ -965,13 +965,13 @@ def CHECK_CC_ENV(conf):
 
 
 @conf
-def SETUP_CONFIGURE_CACHE(conf, enable):
+def SETUP_CONFIGURE_CACHE(conf, enable,):
     '''enable/disable cache of configure results'''
     if enable:
         # when -C is chosen, we will use a private cache and will
         # not look into system includes. This roughtly matches what
         # autoconf does with -C
-        cache_path = os.path.join(conf.bldnode.abspath(), '.confcache')
+        cache_path = os.path.join(conf.bldnode.abspath(), '.confcache',)
         mkdir_p(cache_path)
         Options.cache_global = os.environ['WAFCACHE'] = cache_path
     else:
@@ -985,7 +985,7 @@ def SETUP_CONFIGURE_CACHE(conf, enable):
 
 
 @conf
-def SAMBA_CHECK_UNDEFINED_SYMBOL_FLAGS(conf):
+def SAMBA_CHECK_UNDEFINED_SYMBOL_FLAGS(conf,):
     if Options.options.address_sanitizer or Options.options.enable_libfuzzer:
         # Sanitizers can rely on symbols undefined at library link time and the
         # symbols used for fuzzers are only defined by compiler wrappers.
@@ -994,7 +994,7 @@ def SAMBA_CHECK_UNDEFINED_SYMBOL_FLAGS(conf):
     if not sys.platform.startswith("openbsd"):
         # we don't want any libraries or modules to rely on runtime
         # resolution of symbols
-        conf.env.undefined_ldflags = conf.ADD_LDFLAGS('-Wl,-no-undefined', testflags=True)
+        conf.env.undefined_ldflags = conf.ADD_LDFLAGS('-Wl,-no-undefined', testflags=True,)
 
         if (conf.env.undefined_ignore_ldflags == [] and
             conf.CHECK_LDFLAGS(['-undefined', 'dynamic_lookup'])):

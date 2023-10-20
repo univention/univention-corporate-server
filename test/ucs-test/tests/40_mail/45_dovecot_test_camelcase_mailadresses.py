@@ -29,8 +29,8 @@ class Bunch:
         self.__dict__.update(kwds)
 
 
-def get_mixed_case_maildir(addr):
-    localpart, domain = addr.rsplit('@', 1)
+def get_mixed_case_maildir(addr,):
+    localpart, domain = addr.rsplit('@', 1,)
     return '/var/spool/dovecot/private/%s/%s/Maildir' % (domain, localpart)
 
 
@@ -41,10 +41,10 @@ def main():
             'mail/dovecot/mailbox/delete=yes',
             'mail/dovecot/mailbox/rename=yes',
         ])
-        with utils.AutoCallCommand(enter_cmd=cmd, exit_cmd=cmd):
+        with utils.AutoCallCommand(enter_cmd=cmd, exit_cmd=cmd,):
             with udm_test.UCSTestUDM() as udm:
                 userbase = []
-                admin_account = ucr.get("tests/domainadmin/account", "uid=Administrator,cn=users,{}".format(ucr["ldap/base"]))
+                admin_account = ucr.get("tests/domainadmin/account", "uid=Administrator,cn=users,{}".format(ucr["ldap/base"]),)
                 pwd_file = ucr.get("tests/domainadmin/pwdfile")
                 if pwd_file:
                     with open(pwd_file) as fp:
@@ -56,8 +56,7 @@ def main():
                     port=int(ucr["ldap/master/port"]),
                     base=ucr["ldap/base"],
                     binddn=admin_account,
-                    bindpw=password,
-                )
+                    bindpw=password,)
 
                 fqdn = '%(hostname)s.%(domainname)s' % ucr
                 #
@@ -80,10 +79,10 @@ def main():
                         new_addr = user_addr[0:3].upper() + user_addr[3:].lower()
                     elif i == 3:
                         new_addr = user_addr[:-5].upper() + user_addr[-5:].lower()
-                    lo.modify(user_dn, [('mailPrimaryAddress', user_addr.encode('UTF-8'), new_addr.encode('UTF-8'))])
+                    lo.modify(user_dn, [('mailPrimaryAddress', user_addr.encode('UTF-8'), new_addr.encode('UTF-8'))],)
                     user_addr = new_addr
 
-                    userbase.append(Bunch(dn=user_dn, name=user_name, addr=user_addr, msgid=msgid))
+                    userbase.append(Bunch(dn=user_dn, name=user_name, addr=user_addr, msgid=msgid,))
 
                 utils.wait_for_replication()
 
@@ -108,14 +107,14 @@ def main():
                 #
                 for user in userbase:
                     # HINT: use user.addr.lower() to check if the correct maildir is used when delivered by postfix (Bug #39346)
-                    send_mail(recipients=[user.addr], messageid=user.msgid, server=fqdn)
+                    send_mail(recipients=[user.addr], messageid=user.msgid, server=fqdn,)
 
                 loopcnt = 60
                 while loopcnt > 0:
                     loopcnt -= 1
                     found = 0
                     for user in userbase:
-                        if file_search_mail(tokenlist=[user.msgid], mail_address=user.addr):
+                        if file_search_mail(tokenlist=[user.msgid], mail_address=user.addr,):
                             found += 1
                     print('Found %d of %d mails' % (found, len(userbase)))
                     if found == len(userbase):
@@ -144,7 +143,7 @@ def main():
                 # test removing user object
                 #
                 for user in userbase:
-                    udm.remove_object('users/user', dn=user.dn)
+                    udm.remove_object('users/user', dn=user.dn,)
 
                 # check if mailboxes have been removed
                 for user in userbase:

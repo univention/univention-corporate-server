@@ -54,7 +54,7 @@ class Target(metaclass=ABCMeta):
 
     default = True
 
-    def __init__(self, options: Namespace) -> None:
+    def __init__(self, options: Namespace,) -> None:
         self.options = options
 
     def __str__(self) -> str:
@@ -67,7 +67,7 @@ class Target(metaclass=ABCMeta):
             machine_name += ' ' + self.options.version
         return machine_name
 
-    def create(self, image: Raw) -> None:
+    def create(self, image: Raw,) -> None:
         raise NotImplementedError()
 
 

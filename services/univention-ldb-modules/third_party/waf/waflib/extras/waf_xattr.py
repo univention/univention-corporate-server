@@ -36,10 +36,10 @@ except NameError:
 	PermissionError = IOError
 
 def getxattr(self):
-	return os.getxattr(self.abspath(), SIG_VAR)
+	return os.getxattr(self.abspath(), SIG_VAR,)
 
-def setxattr(self, val):
-	os.setxattr(self.abspath(), SIG_VAR, val)
+def setxattr(self, val,):
+	os.setxattr(self.abspath(), SIG_VAR, val,)
 
 def h_file(self):
 	try:
@@ -65,10 +65,10 @@ def h_file(self):
 	if HASH_CACHE:
 		val = TEMPLATE % (ret, int(1000 * st.st_mtime), int(st.st_size))
 		try:
-			setxattr(self, val)
+			setxattr(self, val,)
 		except PermissionError:
-			os.chmod(self.abspath(), st.st_mode | 128)
-			setxattr(self, val)
+			os.chmod(self.abspath(), st.st_mode | 128,)
+			setxattr(self, val,)
 	return ret
 
 def runnable_status(self):
@@ -96,10 +96,10 @@ def runnable_status(self):
 		try:
 			prev_sig = bld.task_sigs[key]
 		except KeyError:
-			Logs.debug('task: task %r must run: it was never run before or the task code changed', self)
+			Logs.debug('task: task %r must run: it was never run before or the task code changed', self,)
 			return RUN_ME
 		if new_sig != prev_sig:
-			Logs.debug('task: task %r must run: the task signature changed', self)
+			Logs.debug('task: task %r must run: the task signature changed', self,)
 			return RUN_ME
 
 	# compare the signatures of the outputs to make a decision
@@ -107,10 +107,10 @@ def runnable_status(self):
 		try:
 			sig = node.h_file()
 		except EnvironmentError:
-			Logs.debug('task: task %r must run: an output node does not exist', self)
+			Logs.debug('task: task %r must run: an output node does not exist', self,)
 			return RUN_ME
 		if sig != new_sig:
-			Logs.debug('task: task %r must run: an output node is stale', self)
+			Logs.debug('task: task %r must run: an output node is stale', self,)
 			return RUN_ME
 
 	return (self.always_run and RUN_ME) or SKIP_ME
@@ -123,7 +123,7 @@ def post_run(self):
 			self.hasrun = MISSING
 			self.err_msg = '-> missing file: %r' % node.abspath()
 			raise Errors.WafError(self.err_msg)
-		os.setxattr(node.abspath(), 'user.waf.sig', sig)
+		os.setxattr(node.abspath(), 'user.waf.sig', sig,)
 	if not self.outputs:
 		# only for task with no outputs
 		bld.task_sigs[self.uid()] = sig

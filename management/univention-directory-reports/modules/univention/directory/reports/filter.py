@@ -45,18 +45,18 @@ __all__ = ['filter_add', 'filter_get']
 _filters = []
 
 
-def filter_add(types, func):
+def filter_add(types, func,):
     _filters.append((types, func))
 
 
-def filter_get(prop_type):
+def filter_get(prop_type,):
     for types, func in _filters:
-        if isinstance(prop_type, types):
+        if isinstance(prop_type, types,):
             return func
     return None
 
 
-def _boolean_filter(prop, key, value):
+def _boolean_filter(prop, key, value,):
     if value and value.lower() in ('1', 'yes', 'true'):
         # need to call str() here directly order to force a correct translation
         return (key, str(_('Yes')))
@@ -65,10 +65,10 @@ def _boolean_filter(prop, key, value):
         return (key, str(_('No')))
 
 
-filter_add((ua_syntax.boolean, ua_syntax.TrueFalseUp, ua_syntax.TrueFalse, ua_syntax.TrueFalseUpper, ua_syntax.OkOrNot), _boolean_filter)
+filter_add((ua_syntax.boolean, ua_syntax.TrueFalseUp, ua_syntax.TrueFalse, ua_syntax.TrueFalseUpper, ua_syntax.OkOrNot), _boolean_filter,)
 
 
-def _email_address(prop, key, value):
+def _email_address(prop, key, value,):
     if prop.multivalue:
         value = [r'\mbox{%s}' % val for val in value]
     else:
@@ -76,10 +76,10 @@ def _email_address(prop, key, value):
     return (key, value)
 
 
-filter_add((ua_syntax.emailAddress, ), _email_address)
+filter_add((ua_syntax.emailAddress, ), _email_address,)
 
 
-def _samba_group_type(prop, key, value):
+def _samba_group_type(prop, key, value,):
     # need to call str() directly in order to force a correct translation
     types = {
         '2': str(_('Domain Group')),
@@ -91,4 +91,4 @@ def _samba_group_type(prop, key, value):
     return (key, value)
 
 
-filter_add((ua_syntax.sambaGroupType, ), _samba_group_type)
+filter_add((ua_syntax.sambaGroupType, ), _samba_group_type,)

@@ -28,20 +28,20 @@ from waflib.Tools import c_preproc
 
 re_inc = re.compile(
 	'^[ \t]*(#|%:)[ \t]*(include)[ \t]*[<"](.*)[>"]\r*$',
-	re.IGNORECASE | re.MULTILINE)
+	re.IGNORECASE | re.MULTILINE,)
 
-def lines_includes(node):
+def lines_includes(node,):
 	code = node.read()
 	if c_preproc.use_trigraphs:
 		for (a, b) in c_preproc.trig_def:
 			code = code.split(a).join(b)
-	code = c_preproc.re_nl.sub('', code)
-	code = c_preproc.re_cpp.sub(c_preproc.repl, code)
-	return [(m.group(2), m.group(3)) for m in re.finditer(re_inc, code)]
+	code = c_preproc.re_nl.sub('', code,)
+	code = c_preproc.re_cpp.sub(c_preproc.repl, code,)
+	return [(m.group(2), m.group(3)) for m in re.finditer(re_inc, code,)]
 
 parser = c_preproc.c_parser
 class dumb_parser(parser):
-	def addlines(self, node):
+	def addlines(self, node,):
 		if node in self.nodes[:-1]:
 			return
 		self.currentnode_stack.append(node.parent)
@@ -54,7 +54,7 @@ class dumb_parser(parser):
 
 		self.lines = lines + [(c_preproc.POPFILE, '')] +  self.lines
 
-	def start(self, node, env):
+	def start(self, node, env,):
 		try:
 			self.parse_cache = node.ctx.parse_cache
 		except AttributeError:
@@ -66,7 +66,7 @@ class dumb_parser(parser):
 			if x == c_preproc.POPFILE:
 				self.currentnode_stack.pop()
 				continue
-			self.tryfind(y, env=env)
+			self.tryfind(y, env=env,)
 
 c_preproc.c_parser = dumb_parser
 

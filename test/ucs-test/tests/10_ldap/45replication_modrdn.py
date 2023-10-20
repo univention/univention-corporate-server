@@ -62,24 +62,24 @@ destination_ou2_name = _get_ou_name()
 destination_ou3_name = _get_ou_name()
 
 udm = udm_test.UCSTestUDM()
-source_ou = udm.create_object('container/ou', name=source_ou_name)
-destination_ou1 = udm.create_object('container/ou', name=destination_ou1_name)
-destination_ou2 = udm.create_object('container/ou', name=destination_ou2_name)
-destination_ou3 = udm.create_object('container/ou', name=destination_ou3_name)
+source_ou = udm.create_object('container/ou', name=source_ou_name,)
+destination_ou1 = udm.create_object('container/ou', name=destination_ou1_name,)
+destination_ou2 = udm.create_object('container/ou', name=destination_ou2_name,)
+destination_ou3 = udm.create_object('container/ou', name=destination_ou3_name,)
 wait_for_replication()
 
 
-def check_listener_stop(consider_listener):
+def check_listener_stop(consider_listener,):
     if consider_listener:
         stop_listener()
 
 
-def check_listener_start(consider_listener):
+def check_listener_start(consider_listener,):
     if consider_listener:
         start_listener()
 
 
-def dump_status(consider_listener, wait_after_each_step, name):
+def dump_status(consider_listener, wait_after_each_step, name,):
     print('Consider listener: %s' % consider_listener)
     print('Wait for replication after each step: %s' % wait_after_each_step)
     print('Computer name: %s\n' % name)
@@ -95,45 +95,45 @@ for consider_listener in [False, True]:
             check_listener_stop(consider_listener)
             name = computer_name + random_name(4)  # make name uniq
             print('\n***** Move once *****')
-            dump_status(consider_listener, wait_after_each_step, name)
-            computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
-            computer_new = udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step)
+            dump_status(consider_listener, wait_after_each_step, name,)
+            computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step,)
+            computer_new = udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step,)
             check_listener_start(consider_listener)
             wait_for_replication()
             utils.verify_ldap_object(computer_new)
-            utils.verify_ldap_object(computer, should_exist=False)
+            utils.verify_ldap_object(computer, should_exist=False,)
 
             check_listener_stop(consider_listener)
             name = computer_name + random_name(4)  # make name uniq
             print('\n***** Move twice *****')
-            dump_status(consider_listener, wait_after_each_step, name)
-            computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
-            udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step)
+            dump_status(consider_listener, wait_after_each_step, name,)
+            computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step,)
+            udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step,)
             computer_new = f'cn={name},{destination_ou1}'
-            udm.move_object(UDM_MODULE, dn=computer_new, position=destination_ou2, wait_for_replication=wait_after_each_step)
+            udm.move_object(UDM_MODULE, dn=computer_new, position=destination_ou2, wait_for_replication=wait_after_each_step,)
             computer_new2 = f'cn={name},{destination_ou2}'
             check_listener_start(consider_listener)
             wait_for_replication()
-            utils.verify_ldap_object(computer, should_exist=False)
-            utils.verify_ldap_object(computer_new, should_exist=False)
+            utils.verify_ldap_object(computer, should_exist=False,)
+            utils.verify_ldap_object(computer_new, should_exist=False,)
             utils.verify_ldap_object(computer_new2)
 
             check_listener_stop(consider_listener)
             name = computer_name + random_name(4)  # make name uniq
             print('\n***** Move thrice *****')
-            dump_status(consider_listener, wait_after_each_step, name)
-            computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
-            udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step)
+            dump_status(consider_listener, wait_after_each_step, name,)
+            computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step,)
+            udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step,)
             computer_new = f'cn={name},{destination_ou1}'
-            udm.move_object(UDM_MODULE, dn=computer_new, position=destination_ou2, wait_for_replication=wait_after_each_step)
+            udm.move_object(UDM_MODULE, dn=computer_new, position=destination_ou2, wait_for_replication=wait_after_each_step,)
             computer_new2 = f'cn={name},{destination_ou2}'
-            udm.move_object(UDM_MODULE, dn=computer_new2, position=destination_ou3, wait_for_replication=wait_after_each_step)
+            udm.move_object(UDM_MODULE, dn=computer_new2, position=destination_ou3, wait_for_replication=wait_after_each_step,)
             computer_new3 = f'cn={name},{destination_ou3}'
             check_listener_start(consider_listener)
             wait_for_replication()
-            utils.verify_ldap_object(computer, should_exist=False)
-            utils.verify_ldap_object(computer_new, should_exist=False)
-            utils.verify_ldap_object(computer_new2, should_exist=False)
+            utils.verify_ldap_object(computer, should_exist=False,)
+            utils.verify_ldap_object(computer_new, should_exist=False,)
+            utils.verify_ldap_object(computer_new2, should_exist=False,)
             if not consider_listener:
                 # this will be failed cause of https://forge.univention.org/bugzilla/show_bug.cgi?id=32206
                 utils.verify_ldap_object(computer_new3)
@@ -141,19 +141,19 @@ for consider_listener in [False, True]:
             # create and delete target before starting
             print('\n***** Create delete and move once *****')
             name = computer_name + random_name(4)  # make name uniq
-            dump_status(consider_listener, wait_after_each_step, name)
-            computer = udm.create_object(UDM_MODULE, name=name, position=destination_ou1, wait_for_replication=True)
-            udm.remove_object(UDM_MODULE, dn=computer, wait_for_replication=True)
+            dump_status(consider_listener, wait_after_each_step, name,)
+            computer = udm.create_object(UDM_MODULE, name=name, position=destination_ou1, wait_for_replication=True,)
+            udm.remove_object(UDM_MODULE, dn=computer, wait_for_replication=True,)
             check_listener_stop(consider_listener)
-            computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
-            udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step)
+            computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step,)
+            udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step,)
             computer_new = f'cn={name},{destination_ou1}'
             check_listener_start(consider_listener)
             wait_for_replication()
             if not consider_listener:
                 # this will be failed cause of https://forge.univention.org/bugzilla/show_bug.cgi?id=32206
                 utils.verify_ldap_object(computer_new)
-            utils.verify_ldap_object(computer, should_exist=False)
+            utils.verify_ldap_object(computer, should_exist=False,)
 
 
 udm.cleanup()

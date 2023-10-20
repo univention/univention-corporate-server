@@ -57,7 +57,7 @@ from .constants import COMP_PARAMS, COMPONENT_BASE, DEFAULT_ICON, PUT_PROCESSING
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
-def rename_app(old_id, new_id, component_manager, package_manager):
+def rename_app(old_id, new_id, component_manager, package_manager,):
     from univention.management.console.modules.appcenter.app_center import Application
     app = Application.find(old_id)
     if not app:
@@ -66,21 +66,21 @@ def rename_app(old_id, new_id, component_manager, package_manager):
         MODULE.error('Found neither OLD_ID nor NEW_ID.\n')
         raise ValueError([old_id, new_id])
 
-    if not app.is_installed(package_manager, strict=False):
+    if not app.is_installed(package_manager, strict=False,):
         MODULE.process('%s is not installed. Fine, nothing to do.\n' % app.name)
         return
 
     app.set_id(old_id)
-    app.unregister_all_and_register(None, component_manager, package_manager)
-    app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False)
+    app.unregister_all_and_register(None, component_manager, package_manager,)
+    app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False,)
 
     app.set_id(new_id)
-    app.register(component_manager, package_manager)
-    app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False)
+    app.register(component_manager, package_manager,)
+    app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False,)
 
 
-def get_hosts(module, lo, ucr=None):
-    _hosts = module.lookup(None, lo, None)
+def get_hosts(module, lo, ucr=None,):
+    _hosts = module.lookup(None, lo, None,)
     hosts = []
     local_hostname = ucr.get('hostname') if ucr is not None else None
     for host in _hosts:
@@ -97,28 +97,28 @@ def get_hosts(module, lo, ucr=None):
     return hosts
 
 
-def get_master(lo):
+def get_master(lo,):
     MODULE.process('Searching Primary Directory Node')
-    return get_hosts(domaincontroller_master, lo)[0].info['fqdn']
+    return get_hosts(domaincontroller_master, lo,)[0].info['fqdn']
 
 
-def get_all_backups(lo, ucr=None):
+def get_all_backups(lo, ucr=None,):
     MODULE.process('Searching Backup Directory Node')
-    return [host.info['fqdn'] for host in get_hosts(domaincontroller_backup, lo, ucr)]
+    return [host.info['fqdn'] for host in get_hosts(domaincontroller_backup, lo, ucr,)]
 
 
-def get_all_hosts(lo=None, ucr=None):
+def get_all_hosts(lo=None, ucr=None,):
     if lo is None:
         lo = get_machine_connection(write=False)[0]
         if lo is None:
             return []
-    return get_hosts(domaincontroller_master, lo, ucr) + \
-        get_hosts(domaincontroller_backup, lo, ucr) + \
-        get_hosts(domaincontroller_slave, lo, ucr) + \
-        get_hosts(memberserver, lo, ucr)
+    return get_hosts(domaincontroller_master, lo, ucr,) + \
+        get_hosts(domaincontroller_backup, lo, ucr,) + \
+        get_hosts(domaincontroller_slave, lo, ucr,) + \
+        get_hosts(memberserver, lo, ucr,)
 
 
-def get_md5(filename):
+def get_md5(filename,):
     m = md5()
     if os.path.exists(filename):
         with open(filename) as f:
@@ -126,12 +126,12 @@ def get_md5(filename):
             return m.hexdigest()
 
 
-def scheme_is_http(server: str) -> bool:
+def scheme_is_http(server: str,) -> bool:
     surl = urlparse(server)
     return surl.scheme in ['http', 'https']
 
 
-def create_url(server: str, prefix: str, username: str, password: str, port: str) -> str:
+def create_url(server: str, prefix: str, username: str, password: str, port: str,) -> str:
     surl = urlparse(server)
     if all([surl.scheme, surl.netloc]):
         netloc = surl.netloc
@@ -146,7 +146,7 @@ def create_url(server: str, prefix: str, username: str, password: str, port: str
         netloc = f"{username}:{password}@{hostport}"
     if not surl.port and port.strip() not in ['80', '443', '']:
         netloc = f'{netloc}:{port}'
-    return ParseResult(scheme=scheme, netloc=netloc, path=path, params='', query='', fragment='').geturl()
+    return ParseResult(scheme=scheme, netloc=netloc, path=path, params='', query='', fragment='',).geturl()
 
 
 class HTTPSConnection(http_client.HTTPSConnection):
@@ -158,13 +158,13 @@ class HTTPSConnection(http_client.HTTPSConnection):
         ssl_context.check_hostname = True
         ssl_context.verify_mode = ssl.CERT_REQUIRED
         ssl_context.load_verify_locations("/etc/ssl/certs/ca-certificates.crt")
-        super(HTTPSConnection, self).__init__(*args, context=ssl_context, **kwargs)
+        super(HTTPSConnection, self,).__init__(*args, context=ssl_context, **kwargs,)
 
 
 class HTTPSHandler(urllib_request.HTTPSHandler):
 
-    def https_open(self, req):
-        return self.do_open(HTTPSConnection, req)
+    def https_open(self, req,):
+        return self.do_open(HTTPSConnection, req,)
 
 # TODO: this should probably go into univention-lib
 # and hide urllib/urllib2 completely
@@ -172,7 +172,7 @@ class HTTPSHandler(urllib_request.HTTPSHandler):
 # in a module
 
 
-def install_opener(ucr):
+def install_opener(ucr,):
     handler = []
     proxy_http = ucr.get('proxy/http')
     if proxy_http:
@@ -182,10 +182,10 @@ def install_opener(ucr):
     urllib_request.install_opener(opener)
 
 
-def urlopen(request):
+def urlopen(request,):
     # use this in __init__ and app_center
     # to have the proxy handler installed globally
-    return urllib_request.urlopen(request, timeout=60)
+    return urllib_request.urlopen(request, timeout=60,)
 
 
 def get_current_ram_available():
@@ -193,17 +193,17 @@ def get_current_ram_available():
     # return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. re-enable when methods are supported
     # implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
     with open('/proc/meminfo') as f:
-        splitlines = map(lambda line: line.split(), f.readlines())
+        splitlines = map(lambda line,: line.split(), f.readlines(),)
         meminfo = {line[0]: int(line[1]) * 1024 for line in splitlines}  # bytes
     avail_phymem = meminfo['MemFree:']  # at least MemFree is required
 
     # see also http://code.google.com/p/psutil/issues/detail?id=313
-    phymem_buffers = meminfo.get('Buffers:', 0)  # OpenVZ does not have Buffers, calculation still correct, see Bug #30659
-    cached_phymem = meminfo.get('Cached:', 0)  # OpenVZ might not even have Cached? Don't know if calculation is still correct but it is better than raising KeyError
+    phymem_buffers = meminfo.get('Buffers:', 0,)  # OpenVZ does not have Buffers, calculation still correct, see Bug #30659
+    cached_phymem = meminfo.get('Cached:', 0,)  # OpenVZ might not even have Cached? Don't know if calculation is still correct but it is better than raising KeyError
     return (avail_phymem + phymem_buffers + cached_phymem) / (1024 * 1024)
 
 
-def component_registered(component_id, ucr):
+def component_registered(component_id, ucr,):
     """
     Checks if a component is registered (enabled or disabled).
     Moved outside of ComponentManager to avoid dependencies for
@@ -212,7 +212,7 @@ def component_registered(component_id, ucr):
     return '%s/%s' % (COMPONENT_BASE, component_id) in ucr
 
 
-def component_current(component_id, ucr):
+def component_current(component_id, ucr,):
     """
     Checks if a component is enabled (not disabled!).
     Moved outside of ComponentManager to avoid dependencies for
@@ -223,14 +223,14 @@ def component_current(component_id, ucr):
 
 class Changes(object):
 
-    def __init__(self, ucr):
+    def __init__(self, ucr,):
         self.ucr = ucr
         self._changes = {}
 
     def changed(self):
         return bool(self._changes)
 
-    def _bool_string(self, variable, value):
+    def _bool_string(self, variable, value,):
         """
         Returns a boolean string representation for a boolean UCR variable. We need
         this as long as we don't really know that all consumers of our variables
@@ -267,7 +267,7 @@ class Changes(object):
                 return s[1][intval]
         return yesno[intval]
 
-    def set_registry_var(self, name, value):
+    def set_registry_var(self, name, value,):
         """
         Sets a registry variable and tracks changedness in a private variable.
         This enables the set_save_commit_load() method to commit the files being affected
@@ -277,8 +277,8 @@ class Changes(object):
         """
         try:
             oldval = self.ucr.get(name)
-            if isinstance(value, bool):
-                value = self._bool_string(name, value)
+            if isinstance(value, bool,):
+                value = self._bool_string(name, value,)
 
             # Possibly useful: if the value is the empty string -> try to unset this variable.
             # FIXME Someone please confirm that there are no UCR variables that need
@@ -297,11 +297,11 @@ class Changes(object):
             MODULE.warn("set_registry_var('%s', '%s') ERROR %s" % (name, value, str(e)))
 
     def commit(self):
-        ucr_update(self.ucr, self._changes)
+        ucr_update(self.ucr, self._changes,)
 
 
 @contextmanager
-def set_save_commit_load(ucr):
+def set_save_commit_load(ucr,):
     ucr.load()
     changes = Changes(ucr)
     yield changes
@@ -311,11 +311,11 @@ def set_save_commit_load(ucr):
 
 class ComponentManager(object):
 
-    def __init__(self, ucr, updater):
+    def __init__(self, ucr, updater,):
         self.ucr = ucr
         self.uu = updater
 
-    def component(self, component_id):
+    def component(self, component_id,):
         """Returns a dict of properties for the component with this id."""
         comp = self.uu.component(component_id)
         entry = {
@@ -323,34 +323,34 @@ class ComponentManager(object):
             'enabled': bool(comp),
             'defaultpackages': list(comp.default_packages),
             # Explicitly enable unmaintained component
-            'unmaintained': self.ucr.is_true(comp.ucrv("unmaintained"), False),
+            'unmaintained': self.ucr.is_true(comp.ucrv("unmaintained"), False,),
             # Component status as a symbolic string
             'status': comp.status(),
             'installed': comp.defaultpackage_installed(),
         }
         # Most values that can be fetched unchanged
         for attr in COMP_PARAMS:
-            entry[attr] = self.ucr.get(comp.ucrv(attr), '')
+            entry[attr] = self.ucr.get(comp.ucrv(attr), '',)
 
         # correct the status to 'installed' if (1) status is 'available' and (2) installed is true
         if entry['status'] == 'available' and entry['installed']:
             entry['status'] = 'installed'
 
         # Possibly this makes sense? add an 'icon' column so the 'status' column can decorated...
-        entry['icon'] = STATUS_ICONS.get(entry['status'], DEFAULT_ICON)
+        entry['icon'] = STATUS_ICONS.get(entry['status'], DEFAULT_ICON,)
 
         # Allowance for an 'install' button: if a package is available, not installed, and there's a default package specified
         entry['installable'] = entry['status'] == 'available' and bool(entry['defaultpackages']) and not entry['installed']
 
         return entry
 
-    def is_registered(self, component_id):
-        return component_registered(component_id, self.ucr)
+    def is_registered(self, component_id,):
+        return component_registered(component_id, self.ucr,)
 
-    def put_app(self, app, super_ucr=None):
+    def put_app(self, app, super_ucr=None,):
         if super_ucr is None:
             with set_save_commit_load(self.ucr) as super_ucr:
-                return self.put_app(app, super_ucr)
+                return self.put_app(app, super_ucr,)
         app_data = {
             'server': app.get_server(),
             'prefix': '',
@@ -368,15 +368,15 @@ class ComponentManager(object):
             # in a join script)
             # it may have been changed intentionally, see EndOfLife
             app_data['version'] = 'current'
-        self.put(app_data, super_ucr)
+        self.put(app_data, super_ucr,)
 
-    def remove_app(self, app, super_ucr=None):
+    def remove_app(self, app, super_ucr=None,):
         if super_ucr is None:
             with set_save_commit_load(self.ucr) as super_ucr:
-                return self.remove_app(app, super_ucr)
-        self._remove(app.component_id, super_ucr)
+                return self.remove_app(app, super_ucr,)
+        self._remove(app.component_id, super_ucr,)
 
-    def put(self, data, super_ucr):
+    def put(self, data, super_ucr,):
         """
         Does the real work of writing one component definition back.
         Will be called for each element in the request array of
@@ -397,9 +397,9 @@ class ComponentManager(object):
                     # was not given, so don't update
                     continue
                 if key in COMP_PARAMS:
-                    super_ucr.set_registry_var('%s/%s' % (named_component_base, key), val)
+                    super_ucr.set_registry_var('%s/%s' % (named_component_base, key), val,)
                 elif key == 'enabled':
-                    super_ucr.set_registry_var(named_component_base, val)
+                    super_ucr.set_registry_var(named_component_base, val,)
         except Exception as e:
             result['status'] = PUT_PROCESSING_ERROR
             result['message'] = "Parameter error: %s" % str(e)
@@ -409,7 +409,7 @@ class ComponentManager(object):
 
         return result
 
-    def remove(self, component_id):
+    def remove(self, component_id,):
         """
         Removes one component. Note that this does not remove
         entries below repository/online/component/<id> that
@@ -420,7 +420,7 @@ class ComponentManager(object):
 
         try:
             with set_save_commit_load(self.ucr) as super_ucr:
-                self._remove(component_id, super_ucr)
+                self._remove(component_id, super_ucr,)
 
         except Exception as e:
             result['status'] = PUT_PROCESSING_ERROR
@@ -428,17 +428,17 @@ class ComponentManager(object):
 
         return result
 
-    def currentify(self, component_id, super_ucr):
-        self.put({'name': component_id, 'version': 'current'}, super_ucr)
+    def currentify(self, component_id, super_ucr,):
+        self.put({'name': component_id, 'version': 'current'}, super_ucr,)
         return super_ucr.changed()
 
-    def uncurrentify(self, component_id, super_ucr):
-        self.put({'name': component_id, 'version': ''}, super_ucr)
+    def uncurrentify(self, component_id, super_ucr,):
+        self.put({'name': component_id, 'version': ''}, super_ucr,)
         return super_ucr.changed()
 
-    def _remove(self, component_id, super_ucr):
+    def _remove(self, component_id, super_ucr,):
         named_component_base = '%s/%s' % (COMPONENT_BASE, component_id)
         for var in COMP_PARAMS:
-            super_ucr.set_registry_var('%s/%s' % (named_component_base, var), '')
+            super_ucr.set_registry_var('%s/%s' % (named_component_base, var), '',)
 
-        super_ucr.set_registry_var(named_component_base, '')
+        super_ucr.set_registry_var(named_component_base, '',)

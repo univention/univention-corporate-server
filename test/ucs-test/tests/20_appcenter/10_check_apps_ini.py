@@ -19,12 +19,12 @@ failures_counter = 0
 apps = []
 
 
-def check_file(filename, local):
+def check_file(filename, local,):
     """
     Tries to create an instance of the App center Application for the given
     'filename'.
     """
-    app = App.from_ini(filename, local)
+    app = App.from_ini(filename, local,)
     if app:
 
         apps.append(app)
@@ -38,9 +38,9 @@ def check_file(filename, local):
               % (filename))
 
 
-def print_all_apps_versions(number_of_files):
+def print_all_apps_versions(number_of_files,):
     """Prints overall statistics and versions of all Apps that were found."""
-    print("\nTotal", number_of_files, ".ini files for", len(apps), "apps were found:\n")
+    print("\nTotal", number_of_files, ".ini files for", len(apps), "apps were found:\n",)
 
     for app in apps:
         print(repr(app))
@@ -53,8 +53,8 @@ def check_ini_files():
 
     for local in test_locales:
         for filename in test_path:
-            print("Checking", filename, "in", local, "locale:")
-            check_file(filename, local)
+            print("Checking", filename, "in", local, "locale:",)
+            check_file(filename, local,)
 
     print_all_apps_versions(len(test_path))
 

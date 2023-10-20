@@ -55,7 +55,7 @@ ENCODING = 'UTF-8'
 
 VM_BRIDGE = "eth0"
 for potential_vm_bridge in ["virbr0", "br0"]:
-    if exists(join("/sys/class/net", potential_vm_bridge, "bridge")):
+    if exists(join("/sys/class/net", potential_vm_bridge, "bridge",)):
         VM_BRIDGE = potential_vm_bridge
         break
 VM_VNC = "0.0.0.0"  # noqa: S104
@@ -68,7 +68,7 @@ LOCAL = '127.0.0.1'  # TODO: IPv6
 
 class VirtualMachine(object):
 
-    def __init__(self, name, server, iso_image=None, disks=1, interfaces=1):
+    def __init__(self, name, server, iso_image=None, disks=1, interfaces=1,):
         self.__created = False
         self.name = name
         self.vnc_host = None
@@ -81,7 +81,7 @@ class VirtualMachine(object):
         self.create()
         return self
 
-    def __exit__(self, etype, exc, etraceback):
+    def __exit__(self, etype, exc, etraceback,):
         self.delete()
 
     def create(self):
@@ -107,8 +107,8 @@ class TestXml(object):
 
 class TestVolume(TestXml):
 
-    def __init__(self, fname):
-        super(TestVolume, self).__init__()
+    def __init__(self, fname,):
+        super(TestVolume, self,).__init__()
         if fname.startswith('/'):
             self.pool_path = fname
         else:
@@ -125,18 +125,18 @@ class TestVolume(TestXml):
 
     @property
     def pool_path(self):
-        return join(self.pool_dir, self.name)
+        return join(self.pool_dir, self.name,)
 
     @pool_path.setter
-    def pool_path(self, value):
+    def pool_path(self, value,):
         self.pool_dir, fname = split(value)
         self.fname, ext = splitext(fname)
         self.suffix = ext.lstrip(extsep)
 
 
 class TestDisk(TestVolume):
-    def __init__(self, fname, boot_order_index, capacity=14):
-        super(TestDisk, self).__init__(fname)
+    def __init__(self, fname, boot_order_index, capacity=14,):
+        super(TestDisk, self,).__init__(fname)
         self.logger = getLogger('test.disk')
         self.capacity = capacity
         self.suffix = "qcow2"
@@ -146,62 +146,56 @@ class TestDisk(TestVolume):
         vol = E.volume(
             E.name(self.name),
             E.source_tree(),
-            E.capacity("%d" % self.capacity, unit="GiB"),
+            E.capacity("%d" % self.capacity, unit="GiB",),
             E.target(
                 E.format(type="qcow2"),
                 E.permissions(
                     E.mode("%04o" % 0o660),
                     E.owner("%d" % UID),
-                    E.group("%d" % GID),
-                ),
-            ),
-        )
+                    E.group("%d" % GID),),),)
         return vol
 
     def volume_xml(self):
         text = etree.tostring(
             self.volume_tree(), encoding=ENCODING, method='xml',
-            pretty_print=True,
-        )
+            pretty_print=True,)
         return text
 
     def source_tree(self):
         dev = E.disk(
-            E.driver(name="qemu", type="qcow2", cache="unsafe"),
+            E.driver(name="qemu", type="qcow2", cache="unsafe",),
             E.source(file=self.pool_path),
-            E.target(dev="vd" + chr(self.boot_order_index + 96), bus="virtio"),
+            E.target(dev="vd" + chr(self.boot_order_index + 96), bus="virtio",),
             E.boot(order=str(self.boot_order_index)),
             # E.transient(),
-            type="file", device="disk",
-        )
+            type="file", device="disk",)
         return dev
 
 
 class TestIso(TestVolume):
-    def __init__(self, fname, boot_order_index):
-        super(TestIso, self).__init__(fname)
+    def __init__(self, fname, boot_order_index,):
+        super(TestIso, self,).__init__(fname)
         self.logger = getLogger('test.cdrom')
         self.suffix = "iso"
         self.boot_order_index = boot_order_index
 
     def source_tree(self):
         dev = E.disk(
-            E.driver(name="qemu", type="raw"),
+            E.driver(name="qemu", type="raw",),
             E.source(file=self.pool_path),
-            E.target(dev="hda", bus="ide"),
+            E.target(dev="hda", bus="ide",),
             E.readonly(),
             E.boot(order=str(self.boot_order_index)),
-            type="file", device="cdrom",
-        )
+            type="file", device="cdrom",)
         return dev
 
 
 class TestInterface(TestXml):
     def __init__(self):
-        super(TestInterface, self).__init__()
+        super(TestInterface, self,).__init__()
         self.mac = "52:54:00:%02x:%02x:%02x" % (
-            random.randint(0, 255), random.randint(0, 255),
-            random.randint(0, 255),
+            random.randint(0, 255,), random.randint(0, 255,),
+            random.randint(0, 255,),
         )
 
     def source_tree(self):
@@ -209,24 +203,23 @@ class TestInterface(TestXml):
             E.mac(address=self.mac),
             E.source(bridge=VM_BRIDGE),
             E.model(type="virtio"),
-            type="bridge",
-        )
+            type="bridge",)
         return interface
 
 
 class TestDomain(TestXml):
-    def __init__(self, iname):
-        super(TestDomain, self).__init__()
+    def __init__(self, iname,):
+        super(TestDomain, self,).__init__()
         self.logger = getLogger('test.domain')
         self.iname = iname
         self.memory = 1024
         self.disks = []
         self.interfaces = []
 
-    def add_disk(self, disk):
+    def add_disk(self, disk,):
         self.disks.append(disk)
 
-    def add_interface(self, interface):
+    def add_interface(self, interface,):
         self.interfaces.append(interface)
 
     def domain_tree(self):
@@ -234,10 +227,10 @@ class TestDomain(TestXml):
             E.name(self.iname),
             #E.uuid("%s" % ...),
             E.description("Automated installer test"),
-            E.memory("%d" % self.memory, unit="MiB"),
-            E.vcpu("1", placement="static"),
+            E.memory("%d" % self.memory, unit="MiB",),
+            E.vcpu("1", placement="static",),
             E.os(
-                E.type("hvm", arch="x86_64", machine="pc-1.1"),
+                E.type("hvm", arch="x86_64", machine="pc-1.1",),
             ),
             self.features(),
             E.clock(offset="utc"),
@@ -245,26 +238,23 @@ class TestDomain(TestXml):
             E.on_reboot("restart"),
             E.on_crash("destroy"),
             self.devices(),
-            type="kvm",
-        )
+            type="kvm",)
         return dom
 
     def features(self):
         features = E.features(
             E.acpi(),
-            E.apic(),
-        )
+            E.apic(),)
         return features
 
     def devices(self):
         devices = E.devices(
             E.emulator(QEMU),
-            E.input(type="tablet", bus="usb"),
-            E.input(type="mouse", bus="ps2"),
+            E.input(type="tablet", bus="usb",),
+            E.input(type="mouse", bus="ps2",),
             self.graphics(),
             self.video(),
-            E.memballoon(model="virtio"),
-        )
+            E.memballoon(model="virtio"),)
         for disk in self.disks:
             devices.append(disk.source_tree())
         for interface in self.interfaces:
@@ -273,27 +263,26 @@ class TestDomain(TestXml):
 
     def graphics(self):
         graphics = E.graphics(
-            E.listen(type="address", address=VM_VNC),
-            type="vnc", port="-1", autoport="yes", listen=VM_VNC, keymap="en-us")
+            E.listen(type="address", address=VM_VNC,),
+            type="vnc", port="-1", autoport="yes", listen=VM_VNC, keymap="en-us",)
         return graphics
 
     def video(self):
         video = E.video(
-            E.model(type="cirrus", vram="%d" % (9 << 10,), heads="1"),
+            E.model(type="cirrus", vram="%d" % (9 << 10,), heads="1",),
         )
         return video
 
     def domain_xml(self):
         text = etree.tostring(
             self.domain_tree(), encoding=ENCODING, method='xml',
-            pretty_print=True,
-        )
+            pretty_print=True,)
         return text
 
 
 class VmCreator(object):
 
-    def __init__(self, args=None):
+    def __init__(self, args=None,):
         self.logger = getLogger('test')
         self.args = self.parse_args(args)
         self.kvm_server = 'qemu+ssh://build@' + self.args.kvm_server + '/system'
@@ -304,26 +293,26 @@ class VmCreator(object):
         self.domain_xml = None
         self.dom = None
 
-    def parse_args(self, args):
+    def parse_args(self, args,):
         parser = argparse.ArgumentParser(description='Create a virtual machine on a kvm server.')
-        parser.add_argument('--name', dest='vm_name', default='installer-target', help='The name of the virtual machine.')
-        parser.add_argument('--server', dest='kvm_server', required=True, help='The fqdn of the kvm server.')
-        parser.add_argument('--ucs-iso', dest='ucs_iso', required=True, help='Path to the ISO file of the UCS-DVD to create the virtual machine with, on the kvm server.')
-        parser.add_argument('--interfaces', dest='interface_count', default=1, type=int, help='The amount of network interfaces the virtual machine should get.')
-        parser.add_argument('--disks', dest='disk_count', default=1, type=int, help='The amount of hard disks the virtual machine should get.')
-        parser.add_argument('--resultfile', dest='resultfile', type=argparse.FileType('w'), help='Store details about the created virtual machine as JSON in the given file.')
+        parser.add_argument('--name', dest='vm_name', default='installer-target', help='The name of the virtual machine.',)
+        parser.add_argument('--server', dest='kvm_server', required=True, help='The fqdn of the kvm server.',)
+        parser.add_argument('--ucs-iso', dest='ucs_iso', required=True, help='Path to the ISO file of the UCS-DVD to create the virtual machine with, on the kvm server.',)
+        parser.add_argument('--interfaces', dest='interface_count', default=1, type=int, help='The amount of network interfaces the virtual machine should get.',)
+        parser.add_argument('--disks', dest='disk_count', default=1, type=int, help='The amount of hard disks the virtual machine should get.',)
+        parser.add_argument('--resultfile', dest='resultfile', type=argparse.FileType('w'), help='Store details about the created virtual machine as JSON in the given file.',)
         return parser.parse_args(args)
 
     def create_vm_if_possible(self):
         try:
             self.dom = self.conn.lookupByName(self.args.vm_name)
-            self.logger.critical("A VM with the name %s already exists! Exiting.", self.dom.name())
+            self.logger.critical("A VM with the name %s already exists! Exiting.", self.dom.name(),)
             exit(1)
         except libvirt.libvirtError as ex:
             if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
-                self.logger.error('Failed libvirt: %s', ex)
+                self.logger.error('Failed libvirt: %s', ex,)
                 exit(1)
-            self.logger.info("Creating new VM: %s", ex)
+            self.logger.info("Creating new VM: %s", ex,)
             self.create_domain()
 
     def create_domain(self):
@@ -337,20 +326,20 @@ class VmCreator(object):
         self.dom = self.conn.defineXML(xml)
 
     def create_disk(self):
-        vol = TestDisk(self.args.vm_name + str(self.boot_order_index), boot_order_index=self.boot_order_index)
+        vol = TestDisk(self.args.vm_name + str(self.boot_order_index), boot_order_index=self.boot_order_index,)
         self.boot_order_index += 1
         try:
             pool = self.conn.storagePoolLookupByName('default')
             disk = pool.storageVolLookupByName(vol.name)
-            self.logger.info("Deleting existing volume %s", disk)
+            self.logger.info("Deleting existing volume %s", disk,)
             disk.delete(0)
         except libvirt.libvirtError as ex:
             if ex.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_VOL:
-                self.logger.error('Failed libvirt: %s', ex)
+                self.logger.error('Failed libvirt: %s', ex,)
                 exit(1)
         self.logger.info("Creating new disk")
         xml = vol.volume_xml()
-        disk = pool.createXML(xml, 0)
+        disk = pool.createXML(xml, 0,)
         vol.pool_path = disk.path()
         return vol
 
@@ -362,7 +351,7 @@ class VmCreator(object):
         self.domain_xml.add_disk(vol)
 
     def add_cdrom(self):
-        vol = TestIso(self.args.ucs_iso, boot_order_index=self.boot_order_index)
+        vol = TestIso(self.args.ucs_iso, boot_order_index=self.boot_order_index,)
         self.boot_order_index += 1
         self.domain_xml.add_disk(vol)
 
@@ -370,7 +359,7 @@ class VmCreator(object):
         self.dom.createWithFlags()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback,):
         pass
         # self.dom.destroyFlags()
 
@@ -391,7 +380,7 @@ class VmCreator(object):
 
 
 def main():
-    basicConfig(stream=stderr, level=DEBUG)
+    basicConfig(stream=stderr, level=DEBUG,)
     test_vm = VmCreator()
     test_vm.create_vm_if_possible()
     with test_vm as created_test_vm:
@@ -404,7 +393,7 @@ def main():
                 'vncport': (port - 5900),
             }]
             with created_test_vm.args.resultfile as resultfile:
-                json.dump(results, resultfile)
+                json.dump(results, resultfile,)
 
 
 if __name__ == '__main__':

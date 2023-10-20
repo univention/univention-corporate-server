@@ -45,23 +45,23 @@ RE_FQDN = re.compile(r'(?=^.{4,253}$)(^((?!-)[a-zA-Z0-9-]{1,63}(?<!-)\.)+[a-zA-Z
 
 class NavigationHandler(PortalResource):
 
-    async def get(self, portal_name):
+    async def get(self, portal_name,):
         portal = self.find_portal()
         if not portal:
             raise tornado.web.HTTPError(404)
 
-        self._portal_lang = self.get_query_argument("language", "en-US").replace('-', '_')
-        self._portal_base = self.get_query_argument("base", self.reverse_abs_url('root', ())).rstrip('/')
+        self._portal_lang = self.get_query_argument("language", "en-US",).replace('-', '_',)
+        self._portal_base = self.get_query_argument("base", self.reverse_abs_url('root', (),),).rstrip('/')
 
         user = await portal.get_user(self)
 
-        visible_content = portal.get_visible_content(user, False)
+        visible_content = portal.get_visible_content(user, False,)
         categories_content = portal.get_categories(visible_content)
-        meta = portal.get_meta(visible_content, categories_content)
+        meta = portal.get_meta(visible_content, categories_content,)
         entries = portal.portal_cache.get_entries()
-        visible_entry_dns = portal._filter_entry_dns(entries.keys(), entries, user, False)
+        visible_entry_dns = portal._filter_entry_dns(entries.keys(), entries, user, False,)
 
-        def get_category(category_dn):
+        def get_category(category_dn,):
             for category in categories_content:
                 if category["dn"] == category_dn:
                     return category
@@ -76,7 +76,7 @@ class NavigationHandler(PortalResource):
                 "identifier": str2dn(category_dn)[0][0][1],
                 "display_name": self._choose_language(category_data["display_name"]),
                 "entries": [
-                    self._get_entry(entries[entry_dn], entry_dn)
+                    self._get_entry(entries[entry_dn], entry_dn,)
                     for entry_dn in category_data["entries"]
                     if entry_dn in visible_entry_dns
                 ],
@@ -91,7 +91,7 @@ class NavigationHandler(PortalResource):
         }
         self.write(navigation)
 
-    def _get_entry(self, entry_data, entry_dn):
+    def _get_entry(self, entry_data, entry_dn,):
         icon_url = entry_data["icon_url"] or None
         if icon_url and icon_url.startswith('.'):  # most icons are referenced as ./portal/foo.svg
             icon_url = icon_url[1:]
@@ -99,21 +99,21 @@ class NavigationHandler(PortalResource):
 
         links = {}
         for link in entry_data["links"]:
-            links.setdefault(link["locale"], []).append(link["value"])
+            links.setdefault(link["locale"], [],).append(link["value"])
 
         return {
             "identifier": str2dn(entry_dn)[0][0][1],
-            "icon_url": self._choose_url(icons, self._portal_base + '/univention/portal'),
+            "icon_url": self._choose_url(icons, self._portal_base + '/univention/portal',),
             "display_name": self._choose_language(entry_data["name"]),
-            "link": self._choose_url(links, self._portal_base),
+            "link": self._choose_url(links, self._portal_base,),
             "target": entry_data.get("target") or '_blank',
             "keywords": entry_data.get("keywords"),
         }
 
-    def _choose_language(self, entry):
+    def _choose_language(self, entry,):
         return entry.get(self._portal_lang) or entry.get("en_US")
 
-    def _choose_url(self, links, base):
+    def _choose_url(self, links, base,):
         # rules:
         # - filter on the requested language otherwise fallback to en_US
         # - always fqdn before ip
@@ -136,7 +136,7 @@ class NavigationHandler(PortalResource):
             else:
                 ip_links.append({'link': link, 'parsed': parsed})
 
-        def prefer_https(links):
+        def prefer_https(links,):
             for linkdict in links:
                 if linkdict['parsed'].scheme == "https":
                     return linkdict["link"]

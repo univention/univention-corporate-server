@@ -73,14 +73,14 @@ TYPES = {
 }
 REALM = 'EXAMPLE.COM'
 USERNAME = 'Administrator'
-USER = '{}@{}'.format(USERNAME, REALM)
+USER = '{}@{}'.format(USERNAME, REALM,)
 ENCSTR = "des-cbc-md5"
 ENCINT = 3
 KVNO = 0
 PASSWORD = 'univention'
 
 
-@unittest.skipUnless(hasattr(sys, 'gettotalrefcount'), 'requires Python debug build')
+@unittest.skipUnless(hasattr(sys, 'gettotalrefcount',), 'requires Python debug build',)
 class TestRefcount(unittest.TestCase):
     def test_context(self):
         before = middle = after = 0
@@ -99,7 +99,7 @@ class TestRefcount(unittest.TestCase):
 
         before = middle = after = 0
         before = sys.gettotalrefcount()
-        principal = heimdal.principal(context, USER)
+        principal = heimdal.principal(context, USER,)
         middle = sys.gettotalrefcount()
         del principal
         after = sys.gettotalrefcount()
@@ -111,12 +111,12 @@ class TestRefcount(unittest.TestCase):
     @unittest.skip('Requires working kerberos services')
     def test_creds(self):
         context = heimdal.context()
-        principal = heimdal.principal(context, USER)
+        principal = heimdal.principal(context, USER,)
         tkt_service = ""
 
         before = middle = after = 0
         before = sys.gettotalrefcount()
-        creds = heimdal.creds(context, principal, PASSWORD, tkt_service)
+        creds = heimdal.creds(context, principal, PASSWORD, tkt_service,)
         middle = sys.gettotalrefcount()
         del creds
         after = sys.gettotalrefcount()
@@ -131,7 +131,7 @@ class TestRefcount(unittest.TestCase):
         before = middle = after = 0
         with NamedTemporaryFile() as tmpfile:
             before = sys.gettotalrefcount()
-            keytab = heimdal.keytab(context, tmpfile.name)
+            keytab = heimdal.keytab(context, tmpfile.name,)
             middle = sys.gettotalrefcount()
             del keytab
             after = sys.gettotalrefcount()
@@ -142,11 +142,11 @@ class TestRefcount(unittest.TestCase):
 
     def test_salt(self):
         context = heimdal.context()
-        principal = heimdal.principal(context, USER)
+        principal = heimdal.principal(context, USER,)
 
         before = middle = after = 0
         before = sys.gettotalrefcount()
-        salt = heimdal.salt(context, principal)
+        salt = heimdal.salt(context, principal,)
         middle = sys.gettotalrefcount()
         del salt
         after = sys.gettotalrefcount()
@@ -160,7 +160,7 @@ class TestRefcount(unittest.TestCase):
 
         before = middle = after = 0
         before = sys.gettotalrefcount()
-        enctype = heimdal.enctype(context, ENCSTR)
+        enctype = heimdal.enctype(context, ENCSTR,)
         middle = sys.gettotalrefcount()
         del enctype
         after = sys.gettotalrefcount()
@@ -174,7 +174,7 @@ class TestRefcount(unittest.TestCase):
 
         before = middle = after = 0
         before = sys.gettotalrefcount()
-        keyblock = heimdal.keyblock_raw(context, ENCINT, TestKeyblock.VALUE)
+        keyblock = heimdal.keyblock_raw(context, ENCINT, TestKeyblock.VALUE,)
         middle = sys.gettotalrefcount()
         del keyblock
         after = sys.gettotalrefcount()
@@ -224,15 +224,15 @@ class TestContext(unittest.TestCase):
 class TestPrincipal(unittest.TestCase):
     def setUp(self):
         context = heimdal.context()
-        self.principal = heimdal.principal(context, USER)
+        self.principal = heimdal.principal(context, USER,)
 
     def test_type(self):
         with self.assertRaises(TypeError):
-            heimdal.principal(None, USER)
+            heimdal.principal(None, USER,)
         with self.assertRaises(TypeError):
-            heimdal.principal("", USER)
+            heimdal.principal("", USER,)
         with self.assertRaises(TypeError):
-            heimdal.principal(object(), USER)
+            heimdal.principal(object(), USER,)
 
     def test_principal(self):
         assert str(self.principal) == USER
@@ -248,14 +248,14 @@ class TestPrincipal(unittest.TestCase):
 class TestCreds(unittest.TestCase):
     def setUp(self):
         context = heimdal.context()
-        principal = heimdal.principal(context, USER)
+        principal = heimdal.principal(context, USER,)
         tkt_service = ""
-        self.creds = heimdal.creds(self.context, principal, PASSWORD, tkt_service)
+        self.creds = heimdal.creds(self.context, principal, PASSWORD, tkt_service,)
 
     def test_parse(self):
         (enctype, kvno, name) = self.creds.parse()
         assert enctype in TYPES
-        self.assertInstance(kvno, int)
+        self.assertInstance(kvno, int,)
         assert name == 'krbtgt/{0}@{0}'.format(REALM)
 
     @unittest.skip('WIP')
@@ -272,22 +272,22 @@ class TestKeytab(unittest.TestCase):
 
     def test_keytab_missing(self):
         with NamedTemporaryFile() as tmpfile:
-            keytab = heimdal.keytab(self.context, tmpfile.name)
+            keytab = heimdal.keytab(self.context, tmpfile.name,)
         with self.assertRaises(IOError):
             keytab.list()
 
     def test_keytab_empty(self):
         with NamedTemporaryFile() as tmpfile:
-            keytab = heimdal.keytab(self.context, tmpfile.name)
+            keytab = heimdal.keytab(self.context, tmpfile.name,)
             with self.assertRaises(heimdal.Krb5Error):
                 keytab.list()
 
     def test_keytab_add(self):
         with NamedTemporaryFile() as tmpfile:
-            keytab = heimdal.keytab(self.context, tmpfile.name)
+            keytab = heimdal.keytab(self.context, tmpfile.name,)
             salt_flag = 0
             random_flag = 0
-            keytab.add(USER, KVNO, ENCSTR, PASSWORD, salt_flag, random_flag)
+            keytab.add(USER, KVNO, ENCSTR, PASSWORD, salt_flag, random_flag,)
             ((kvno, enctype, principal, timestamp, keyblock),) = keytab.list()
             assert kvno == KVNO
             assert enctype == ENCSTR
@@ -297,58 +297,58 @@ class TestKeytab(unittest.TestCase):
 
     def test_keytab_remove_missing(self):
         with NamedTemporaryFile() as tmpfile:
-            keytab = heimdal.keytab(self.context, tmpfile.name)
+            keytab = heimdal.keytab(self.context, tmpfile.name,)
             with self.assertRaises(heimdal.Krb5Error) as ex:
-                keytab.remove(USER, KVNO, ENCSTR)
+                keytab.remove(USER, KVNO, ENCSTR,)
 
             assert ex.exception.code == -1765328203  # #define KRB5_KT_NOTFOUND
 
     def test_keytab_remove_existing(self):
         with NamedTemporaryFile() as tmpfile:
-            keytab = heimdal.keytab(self.context, tmpfile.name)
+            keytab = heimdal.keytab(self.context, tmpfile.name,)
             salt_flag = 0
             random_flag = 0
-            keytab.add(USER, KVNO, ENCSTR, PASSWORD, salt_flag, random_flag)
-            keytab.remove(USER, KVNO, ENCSTR)
+            keytab.add(USER, KVNO, ENCSTR, PASSWORD, salt_flag, random_flag,)
+            keytab.remove(USER, KVNO, ENCSTR,)
 
     def test_dir(self):
         with NamedTemporaryFile() as tmpfile:
-            keytab = heimdal.keytab(self.context, tmpfile.name)
+            keytab = heimdal.keytab(self.context, tmpfile.name,)
             assert {'add', 'list', 'remove'} <= set(dir(keytab))
 
 
 class TestSalt(unittest.TestCase):
-    VALUE = '{}{}'.format(REALM, USERNAME)
+    VALUE = '{}{}'.format(REALM, USERNAME,)
 
     def setUp(self):
         self.context = heimdal.context()
 
     def test_salt(self):
-        principal = heimdal.principal(self.context, USER)
-        salt = heimdal.salt(self.context, principal)
+        principal = heimdal.principal(self.context, USER,)
+        salt = heimdal.salt(self.context, principal,)
         assert salt.saltvalue() == self.VALUE
 
     def test_salt_raw(self):
-        salt = heimdal.salt_raw(self.context, self.VALUE)
+        salt = heimdal.salt_raw(self.context, self.VALUE,)
         assert salt.saltvalue() == self.VALUE
 
     def test_dir(self):
-        salt = heimdal.salt_raw(self.context, self.VALUE)
+        salt = heimdal.salt_raw(self.context, self.VALUE,)
         assert {'saltvalue'} <= set(dir(salt))
 
 
 class TestEnctype(unittest.TestCase):
     def setUp(self):
         context = heimdal.context()
-        self.enctype = heimdal.enctype(context, ENCSTR)
+        self.enctype = heimdal.enctype(context, ENCSTR,)
 
     def test_type(self):
         with self.assertRaises(TypeError):
-            heimdal.enctype(None, ENCSTR)
+            heimdal.enctype(None, ENCSTR,)
         with self.assertRaises(TypeError):
-            heimdal.enctype("", ENCSTR)
+            heimdal.enctype("", ENCSTR,)
         with self.assertRaises(TypeError):
-            heimdal.enctype(object(), ENCSTR)
+            heimdal.enctype(object(), ENCSTR,)
 
     def test_enctype(self):
         assert self.enctype.toint() == ENCINT
@@ -362,34 +362,34 @@ class TestKeyblock(unittest.TestCase):
 
     def setUp(self):
         self.context = heimdal.context()
-        self.enctype = heimdal.enctype(self.context, ENCSTR)
-        self.principal = heimdal.principal(self.context, USER)
+        self.enctype = heimdal.enctype(self.context, ENCSTR,)
+        self.principal = heimdal.principal(self.context, USER,)
 
     def test_keyblock_principal(self):
-        keyblock = heimdal.keyblock(self.context, self.enctype, PASSWORD, self.principal)
+        keyblock = heimdal.keyblock(self.context, self.enctype, PASSWORD, self.principal,)
         assert str(keyblock.keytype()) == ENCSTR
         assert keyblock.keyvalue() == self.VALUE
 
     def test_keyblock_salt(self):
-        salt = heimdal.salt(self.context, self.principal)
-        keyblock = heimdal.keyblock(self.context, self.enctype, PASSWORD, salt)
+        salt = heimdal.salt(self.context, self.principal,)
+        keyblock = heimdal.keyblock(self.context, self.enctype, PASSWORD, salt,)
         assert str(keyblock.keytype()) == ENCSTR
         assert keyblock.keyvalue() == self.VALUE
 
     def test_keyblock_raw(self):
-        keyblock = heimdal.keyblock_raw(self.context, ENCINT, self.VALUE)
+        keyblock = heimdal.keyblock_raw(self.context, ENCINT, self.VALUE,)
         assert str(keyblock.keytype()) == ENCSTR
         assert keyblock.keyvalue() == self.VALUE
 
     def test_dir(self):
-        keyblock = heimdal.keyblock_raw(self.context, ENCINT, self.VALUE)
+        keyblock = heimdal.keyblock_raw(self.context, ENCINT, self.VALUE,)
         assert {'keytype', 'keyvalue'} <= set(dir(keyblock))
 
 
 class TestCcache(unittest.TestCase):
     def setUp(self):
         self.context = heimdal.context()
-        self.principal = heimdal.principal(self.context, USER)
+        self.principal = heimdal.principal(self.context, USER,)
         self.ccache = heimdal.ccache(self.context)
 
     def test_list(self):
@@ -413,13 +413,13 @@ class TestCcache(unittest.TestCase):
     def test_store_cred(self):
         self.ccache.initialize(self.principal)
         tkt_service = ""
-        creds = heimdal.creds(self.context, self.principal, PASSWORD, tkt_service)
+        creds = heimdal.creds(self.context, self.principal, PASSWORD, tkt_service,)
         self.ccache.store_cred(creds)
 
 
 class TestASN1(unittest.TestCase):
     VALUE = b64decode('DvtFDa7V3K0=')
-    SALT = '{}{}'.format('PHAHN.DEV', USERNAME)
+    SALT = '{}{}'.format('PHAHN.DEV', USERNAME,)
     ASN1 = b64decode('MDihEzARoAMCAQOhCgQIDvtFDa7V3K2iITAfoAMCAQOhGAQWUEhBSE4uREVWQWRtaW5pc3RyYXRvcg==')
 
     def test_asn1_decode_key(self):
@@ -431,7 +431,7 @@ class TestASN1(unittest.TestCase):
 
     def test_asn1_decode_key_with_context(self):
         context = heimdal.context()
-        (keyblock, salt, kvno) = heimdal.asn1_decode_key(self.ASN1, context)
+        (keyblock, salt, kvno) = heimdal.asn1_decode_key(self.ASN1, context,)
         assert str(keyblock.keytype()) == ENCSTR
         assert keyblock.keyvalue() == self.VALUE
         assert salt.saltvalue() == self.SALT
@@ -439,22 +439,22 @@ class TestASN1(unittest.TestCase):
 
     def test_asn1_encode_key(self):
         context = heimdal.context()
-        keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE)
-        salt = heimdal.salt_raw(context, self.SALT)
-        asn1 = heimdal.asn1_encode_key(keyblock, salt, KVNO)
+        keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE,)
+        salt = heimdal.salt_raw(context, self.SALT,)
+        asn1 = heimdal.asn1_encode_key(keyblock, salt, KVNO,)
         assert asn1 == self.ASN1
 
     def test_asn1_encode_key_without_salt(self):
         context = heimdal.context()
-        keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE)
-        asn1 = heimdal.asn1_encode_key(keyblock, None, KVNO)
+        keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE,)
+        asn1 = heimdal.asn1_encode_key(keyblock, None, KVNO,)
         assert asn1 is not None
 
     def test_asn1_encode_key_invalid_salt(self):
         context = heimdal.context()
-        keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE)
+        keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE,)
         with self.assertRaises(TypeError):
-            heimdal.asn1_encode_key(keyblock, 0, KVNO)
+            heimdal.asn1_encode_key(keyblock, 0, KVNO,)
 
 
 class TestException(unittest.TestCase):

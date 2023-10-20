@@ -25,24 +25,24 @@ if __name__ == '__main__':
         users = [udm.create_user()[0], udm.create_user()[0]]
         s4connector.wait_for_sync()
         user_sids = [(s4connector.get_object_sid(user)) for user in users]
-        udm.modify_object('groups/group', dn=group_dn, append={'users': list(users)})
+        udm.modify_object('groups/group', dn=group_dn, append={'users': list(users)},)
         s4connector.wait_for_sync()
 
         # check users (ldap objects and if synced )
-        s4connector.verify_users(group_dn, users)
+        s4connector.verify_users(group_dn, users,)
         [(s4connector.check_object(user)) for user in users]
         s4connector.check_object(group_dn)
 
         # modify users
         modified_users = []
-        for user, new_user in zip(users, new_users):
-            modified_users.append(s4connector.modify_username(user, new_user, udm))
+        for user, new_user in zip(users, new_users,):
+            modified_users.append(s4connector.modify_username(user, new_user, udm,))
         s4connector.wait_for_sync()
 
         # check group and users again (ldap objects and if synced)
         s4connector.check_object(group_dn)
-        s4connector.verify_users(group_dn, modified_users)
-        for modified_user, user_sid, user in zip(modified_users, user_sids, users):
-            s4connector.check_object(modified_user, user_sid, user)
+        s4connector.verify_users(group_dn, modified_users,)
+        for modified_user, user_sid, user in zip(modified_users, user_sids, users,):
+            s4connector.check_object(modified_user, user_sid, user,)
 
     s4connector.wait_for_sync()

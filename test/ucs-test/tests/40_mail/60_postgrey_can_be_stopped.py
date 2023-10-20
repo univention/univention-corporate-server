@@ -11,7 +11,7 @@ import psutil
 from univention.testing import utils
 
 
-def is_running(process_name):
+def is_running(process_name,):
     state = False
     for _count in range(5):
         try:
@@ -34,11 +34,11 @@ def main():
     # Make sure postgrey is running
     if not postgrey_is_running:
         cmd = ['/etc/init.d/postgrey', 'start']
-        subprocess.call(cmd, stderr=open('/dev/null', 'w'))
+        subprocess.call(cmd, stderr=open('/dev/null', 'w',),)
 
     # /etc/init.d/postgrey stop
     cmd = ['/etc/init.d/postgrey', 'stop']
-    subprocess.call(cmd, stderr=open('/dev/null', 'w'))
+    subprocess.call(cmd, stderr=open('/dev/null', 'w',),)
     if is_running('/usr/sbin/postg'):
         utils.fail('/etc/init.d/postgrey stop did not stop the process')
     else:
@@ -47,7 +47,7 @@ def main():
     # revert to original state
     if postgrey_is_running:
         cmd = ['/etc/init.d/postgrey', 'start']
-        subprocess.call(cmd, stderr=open('/dev/null', 'w'))
+        subprocess.call(cmd, stderr=open('/dev/null', 'w',),)
 
 
 if __name__ == '__main__':

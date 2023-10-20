@@ -16,7 +16,7 @@ HTTPException = (HTTPError, ConnectionError)
 
 
 @app_test.test_case
-def test_install_non_existent_dry_run(app_center, application):
+def test_install_non_existent_dry_run(app_center, application,):
     """Try to dry-run install an app that does not exist (must fail)."""
     try:
         app_center.install_dry_run([application])
@@ -27,7 +27,7 @@ def test_install_non_existent_dry_run(app_center, application):
 
 
 @app_test.test_case
-def test_install_non_existent(app_center, application):
+def test_install_non_existent(app_center, application,):
     """Try to install an app that does not exist (must fail)."""
     try:
         app_center.install([application])
@@ -38,7 +38,7 @@ def test_install_non_existent(app_center, application):
 
 
 @app_test.test_case
-def test_update_non_existent_dry_run(app_center, application):
+def test_update_non_existent_dry_run(app_center, application,):
     """Try to dry-run update an app that does not exist (must fail)."""
     try:
         app_center.upgrade_dry_run([application])
@@ -49,7 +49,7 @@ def test_update_non_existent_dry_run(app_center, application):
 
 
 @app_test.test_case
-def test_update_non_existent(app_center, application):
+def test_update_non_existent(app_center, application,):
     """Try to update an app that does not exist (must fail)."""
     try:
         app_center.upgrade([application])
@@ -60,7 +60,7 @@ def test_update_non_existent(app_center, application):
 
 
 @app_test.test_case
-def test_uninstall_non_existent_dry_run(app_center, application):
+def test_uninstall_non_existent_dry_run(app_center, application,):
     """Try to dry-run uninstall an app that does not exist (must fail)."""
     try:
         app_center.remove_dry_run([application])
@@ -71,7 +71,7 @@ def test_uninstall_non_existent_dry_run(app_center, application):
 
 
 @app_test.test_case
-def test_uninstall_non_existent(app_center, application):
+def test_uninstall_non_existent(app_center, application,):
     """Try to uninstall an app that does not exist (must fail)."""
     try:
         app_center.remove([application])

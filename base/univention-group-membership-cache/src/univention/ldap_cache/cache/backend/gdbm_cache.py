@@ -46,11 +46,11 @@ MAX_FAIL_COUNT = 5
 
 
 class GdbmCaches(Caches):
-    def _add_sub_cache(self, name, single_value, reverse):
+    def _add_sub_cache(self, name, single_value, reverse,):
         # type: (str, bool, bool) -> GdbmCache
-        db_file = os.path.join(self._directory, '%s.db' % name)
-        debug('Using GDBM %s', name)
-        cache = GdbmCache(name, single_value, reverse)
+        db_file = os.path.join(self._directory, '%s.db' % name,)
+        debug('Using GDBM %s', name,)
+        cache = GdbmCache(name, single_value, reverse,)
         cache.db_file = db_file
         self._caches[name] = cache
         return cache
@@ -60,24 +60,24 @@ class GdbmCache(LdapCache):
     def __init__(self, *args, **kwargs):
         # type: (*Any, **Any) -> None
         self.fail_count = 0
-        super(GdbmCache, self).__init__(*args, **kwargs)
-        log('%s - Recreating!', self.name)
+        super(GdbmCache, self,).__init__(*args, **kwargs,)
+        log('%s - Recreating!', self.name,)
 
     def _fix_permissions(self):
         # type: () -> None
         listener_uid = getpwnam('listener').pw_uid
-        os.chown(self.db_file, listener_uid, -1)
-        os.chmod(self.db_file, 0o640)
+        os.chown(self.db_file, listener_uid, -1,)
+        os.chmod(self.db_file, 0o640,)
 
     @contextmanager
-    def writing(self, writer=None):
+    def writing(self, writer=None,):
         # type: (Optional[Any]) -> Iterator[Any]
         if writer is not None:
             yield writer
         else:
             if not os.path.exists(self.db_file):
                 self.clear()
-            writer = gdbm.open(self.db_file, 'csu')
+            writer = gdbm.open(self.db_file, 'csu',)
             try:
                 yield writer
             finally:
@@ -85,22 +85,22 @@ class GdbmCache(LdapCache):
 
     reading = writing
 
-    def save(self, key, values):
+    def save(self, key, values,):
         # type: (str, List[str]) -> None
         with self.writing() as writer:
             if self.reverse:
                 for value in values:
-                    current = self.get(value, writer) or []
+                    current = self.get(value, writer,) or []
                     if key in current:
                         continue
-                    debug('%s - Adding %s %r', self.name, value, key)
+                    debug('%s - Adding %s %r', self.name, value, key,)
                     current.append(key)
                     writer[value] = json.dumps(current)
             else:
-                self.delete(key, values, writer)
+                self.delete(key, values, writer,)
                 if not values:
                     return
-                debug('%s - Saving %s %r', self.name, key, values)
+                debug('%s - Saving %s %r', self.name, key, values,)
                 if self.single_value:
                     writer[key] = values[0]
                 else:
@@ -108,8 +108,8 @@ class GdbmCache(LdapCache):
 
     def clear(self):
         # type: () -> None
-        log('%s - Clearing whole DB!', self.name)
-        gdbm.open(self.db_file, 'nu').close()
+        log('%s - Clearing whole DB!', self.name,)
+        gdbm.open(self.db_file, 'nu',).close()
         self._fix_permissions()
 
     def cleanup(self):
@@ -121,19 +121,19 @@ class GdbmCache(LdapCache):
                 if self.fail_count > MAX_FAIL_COUNT:
                     raise
                 self.fail_count += 1
-                log('%s - Cleaning up DB FAILED %s times', self.name, self.fail_count)
+                log('%s - Cleaning up DB FAILED %s times', self.name, self.fail_count,)
             else:
-                log('%s - Cleaning up DB WORKED', self.name)
+                log('%s - Cleaning up DB WORKED', self.name,)
                 self.fail_count = 0
         self._fix_permissions()
 
-    def delete(self, key, values, writer=None):
+    def delete(self, key, values, writer=None,):
         # type: (str, List[str], Any) -> None
-        debug('%s - Delete %s', self.name, key)
+        debug('%s - Delete %s', self.name, key,)
         with self.writing(writer) as writer:
             if self.reverse:
                 for value in values:
-                    current = self.get(value, writer) or []
+                    current = self.get(value, writer,) or []
                     try:
                         current.remove(key)
                     except ValueError:
@@ -157,9 +157,9 @@ class GdbmCache(LdapCache):
         # type: () -> Iterator[Tuple[str, Any]]
         with self.reading() as reader:
             for key in self.keys():
-                yield key, self.get(key, reader)
+                yield key, self.get(key, reader,)
 
-    def get(self, key, reader=None):
+    def get(self, key, reader=None,):
         # type: (str, Any) -> Any
         with self.reading(reader) as reader:
             try:
@@ -175,7 +175,7 @@ class GdbmCache(LdapCache):
 
     def load(self):
         # type: () -> Dict[str, Any]
-        debug('%s - Loading', self.name)
+        debug('%s - Loading', self.name,)
         return dict(list(self))
 
 

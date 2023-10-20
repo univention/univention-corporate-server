@@ -15,7 +15,7 @@ from univention.testing import utils
 from univention.testing.umc import Client
 
 
-DIAGNOSTIC_RE = re.compile(r'(?:^ran ([\d\w]*) successfully.$)|(?:#+ Start ([\d\w]*) #+)\n(.*)\n(?:#+ End (?:\2) #+)', flags=re.M | re.S)
+DIAGNOSTIC_RE = re.compile(r'(?:^ran ([\d\w]*) successfully.$)|(?:#+ Start ([\d\w]*) #+)\n(.*)\n(?:#+ End (?:\2) #+)', flags=re.M | re.S,)
 # One would need a strong argument to skip any tests here, as it masks reals problems (See bug #50021)
 PREFIX = "diagnostic/check/disable/"
 SKIPPED_TESTS = {
@@ -27,14 +27,14 @@ SKIPPED_TESTS.update({
 })
 
 
-def pytest_generate_tests(metafunc):
+def pytest_generate_tests(metafunc,):
     client = Client.get_test_connection()
-    plugins = [plugin['id'] for plugin in client.umc_command('diagnostic/query', print_response=False, print_request_data=False).result]
+    plugins = [plugin['id'] for plugin in client.umc_command('diagnostic/query', print_response=False, print_request_data=False,).result]
     plugins = [
-        pytest.param(plugin, marks=pytest.mark.xfail(reason=SKIPPED_TESTS[plugin])) if plugin in SKIPPED_TESTS else plugin
+        pytest.param(plugin, marks=pytest.mark.xfail(reason=SKIPPED_TESTS[plugin]),) if plugin in SKIPPED_TESTS else plugin
         for plugin in plugins
     ]
-    metafunc.parametrize('plugin', plugins)
+    metafunc.parametrize('plugin', plugins,)
 
 
 @pytest.fixture(scope='session')
@@ -44,20 +44,20 @@ def diagnostic_results():
         fd.write(account.bindpw.encode('UTF-8'))
         fd.flush()
         args = ['/usr/bin/univention-run-diagnostic-checks', '--username', account.username, '--bindpwdfile', fd.name]
-        proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
         stdout, _ = proc.communicate()
     params = {
         success or failed: {
             'success': bool(success and not failed),
             'error_message': error_message,
-        } for success, failed, error_message in DIAGNOSTIC_RE.findall(stdout.decode('UTF-8', 'replace'))
+        } for success, failed, error_message in DIAGNOSTIC_RE.findall(stdout.decode('UTF-8', 'replace',))
     }
     if not proc.returncode:
         assert all(item['success'] for plugin, item in params.items())
     return params
 
 
-def test_run_diagnostic_checks(plugin, diagnostic_results):
+def test_run_diagnostic_checks(plugin, diagnostic_results,):
     plugin_data = diagnostic_results.get(plugin)
     print(plugin)
     assert plugin_data

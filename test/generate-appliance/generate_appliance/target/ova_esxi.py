@@ -20,7 +20,7 @@ from . import ANNOTATION, LICENSE, TargetFile
 log = getLogger(__name__)
 
 
-def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) -> bytes:
+def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace,) -> bytes:
     machine_name = options.product
     if options.version is not None:
         machine_name += ' ' + options.version
@@ -65,17 +65,14 @@ def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) 
                 OVF + 'diskId': 'vmdisk1',
                 OVF + 'fileRef': 'file1',
                 OVF + 'format': 'http://www.vmware.com/interfaces/specifications/vmdk.html#streamOptimized',
-            }),
-        ),
+            }),),
         E.NetworkSection(
             E.Info('The list of logical networks'),
             E.Network(
                 E.Description('The VM Network network'),
                 **{
                     OVF + 'name': 'VM Network',
-                },
-            ),
-        ),
+                },),),
         E.VirtualSystem(
             E.Info('A virtual machine'),
             E.Name(machine_name),
@@ -85,55 +82,47 @@ def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) 
                 E.Vendor(options.vendor),
                 E.Version(options.version) if options.version is not None else '',
                 E.ProductUrl(options.product_url),
-                E.VendorUrl(options.vendor_url),
-            ),
+                E.VendorUrl(options.vendor_url),),
             E.AnnotationSection(
                 E.Info('A human-readable annotation'),
-                E.Annotation(ANNOTATION),
-            ),
+                E.Annotation(ANNOTATION),),
             E.EulaSection(
                 E.Info('License agreement for the virtual system'),
-                E.License(LICENSE),
-            ),
+                E.License(LICENSE),),
             E.OperatingSystemSection(
                 E.Info('The kind of installed guest operating system'),
                 **{
                     OVF + 'id': '100',
                     VMW + 'osType': 'other26xLinux64Guest',
-                },
-            ),
+                },),
             E.VirtualHardwareSection(
                 E.Info('Virtual hardware requirements'),
                 E.System(
                     Evssd.ElementName('Virtual Hardware Family'),
                     Evssd.InstanceID('0'),
                     Evssd.VirtualSystemIdentifier(machine_name),
-                    Evssd.VirtualSystemType('vmx-07'),
-                ),
+                    Evssd.VirtualSystemType('vmx-07'),),
                 E.Item(
                     Erasd.AllocationUnits('hertz * 10^6'),
                     Erasd.Description('Number of Virtual CPUs'),
                     Erasd.ElementName('%d virtual CPU(s)' % (options.cpu_count,)),
                     Erasd.InstanceID('1'),
                     Erasd.ResourceType('3'),
-                    Erasd.VirtualQuantity('%d' % (options.cpu_count,)),
-                ),
+                    Erasd.VirtualQuantity('%d' % (options.cpu_count,)),),
                 E.Item(
                     Erasd.AllocationUnits('byte * 2^20'),
                     Erasd.Description('Memory Size'),
                     Erasd.ElementName('%dMB of memory' % (options.memory_size,)),
                     Erasd.InstanceID('2'),
                     Erasd.ResourceType('4'),
-                    Erasd.VirtualQuantity('%d' % (options.memory_size,)),
-                ),
+                    Erasd.VirtualQuantity('%d' % (options.memory_size,)),),
                 E.Item(
                     Erasd.Address('0'),
                     Erasd.Description('SCSI Controller'),
                     Erasd.ElementName('SCSI Controller 0'),
                     Erasd.InstanceID('3'),
                     Erasd.ResourceSubType('lsilogic'),
-                    Erasd.ResourceType('6'),
-                ),
+                    Erasd.ResourceType('6'),),
                 E.Item(
                     Erasd.Address('0'),
                     Erasd.Description('USB Controller (EHCI)'),
@@ -163,8 +152,7 @@ def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) 
                     }),
                     **{
                         OVF + 'required': 'false',
-                    },
-                ),
+                    },),
                 E.Item(
                     Erasd.AutomaticAllocation('false'),
                     Erasd.ElementName('VirtualVideoCard'),
@@ -197,8 +185,7 @@ def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) 
                     }),
                     **{
                         OVF + 'required': 'false',
-                    },
-                ),
+                    },),
                 E.Item(
                     Erasd.AutomaticAllocation('false'),
                     Erasd.ElementName('VirtualVMCIDevice'),
@@ -212,8 +199,7 @@ def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) 
                     }),
                     **{
                         OVF + 'required': 'false',
-                    },
-                ),
+                    },),
                 E.Item(
                     Erasd.AddressOnParent('0'),
                     Erasd.ElementName('Hard Disk 1'),
@@ -225,8 +211,7 @@ def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) 
                         OVF + 'required': 'false',
                         VMW + 'key': 'backing.writeThrough',
                         VMW + 'value': 'false',
-                    }),
-                ),
+                    }),),
                 E.Item(
                     Erasd.AddressOnParent('7'),
                     Erasd.AutomaticAllocation('true'),
@@ -240,8 +225,7 @@ def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) 
                         OVF + 'required': 'false',
                         VMW + 'key': 'wakeOnLanEnabled',
                         VMW + 'value': 'true',
-                    }),
-                ),
+                    }),),
                 Evmw.Config(**{
                     OVF + 'required': 'false',
                     VMW + 'key': 'cpuHotAddEnabled',
@@ -326,17 +310,14 @@ def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) 
                     OVF + 'required': 'false',
                     VMW + 'key': 'tools.toolsUpgradePolicy',
                     VMW + 'value': 'manual',
-                }),
-            ),
+                }),),
             **{
                 OVF + 'id': machine_name,
-            },
-        ),
+            },),
         **{
             VMW + 'buildId': 'build-1331820',
-        },
-    )
-    return cast(bytes, lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True))
+        },)
+    return cast(bytes, lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True,),)
 
 
 class OVA_ESXi(TargetFile):
@@ -344,18 +325,18 @@ class OVA_ESXi(TargetFile):
 
     SUFFIX = "ESX.ova"
 
-    def create(self, image: Raw) -> None:
+    def create(self, image: Raw,) -> None:
         options = self.options
         image_name = '%s-ESX-disk1.vmdk' % (options.product,)
         descriptor_name = '%s-ESX.ovf' % (options.product,)
         archive_name = self.archive_name()
 
-        vmdk = Vmdk(image, adapter_type="lsilogic", hwversion="7", subformat="streamOptimized")
-        descriptor = create_ovf_descriptor_esxi(image_name, vmdk, options)
+        vmdk = Vmdk(image, adapter_type="lsilogic", hwversion="7", subformat="streamOptimized",)
+        descriptor = create_ovf_descriptor_esxi(image_name, vmdk, options,)
         files = [
             (descriptor_name, descriptor),
             (image_name, vmdk),
         ]  # type: List[Tuple[str, Union[File, bytes]]]
         ova = Tar(files)
         ova.path().rename(archive_name)
-        log.info('Generated "%s" appliance as\n  %s', self, archive_name)
+        log.info('Generated "%s" appliance as\n  %s', self, archive_name,)

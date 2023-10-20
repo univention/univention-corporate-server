@@ -48,19 +48,19 @@ ORIGINAL_INIT_SCRIPT = '/usr/share/docker-app-container-init-script'
 
 class Service(UniventionAppAction):
 
-    def setup_parser(self, parser):
-        parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be controlled')
+    def setup_parser(self, parser,):
+        parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be controlled',)
 
     @classmethod
-    def get_init(cls, app):
+    def get_init(cls, app,):
         return '/etc/init.d/docker-app-%s' % app.id
 
-    def call_init(self, app, command):
+    def call_init(self, app, command,):
         init = self.get_init(app)
         if not os.path.exists(init):
             self.fatal('%s is not supported' % app.id)
             return False
-        return self._call_script(self.get_init(app), command)
+        return self._call_script(self.get_init(app), command,)
 
 
 class Start(Service):
@@ -68,11 +68,11 @@ class Start(Service):
 
     help = 'Start an app'
 
-    def main(self, args):
+    def main(self, args,):
         if args.app.uses_docker_compose():
             docker = MultiDocker(args.app)
             return docker.start()
-        return self.call_init(args.app, 'start')
+        return self.call_init(args.app, 'start',)
 
 
 class Stop(Service):
@@ -80,11 +80,11 @@ class Stop(Service):
 
     help = 'Stop an app'
 
-    def main(self, args):
+    def main(self, args,):
         if args.app.uses_docker_compose():
             docker = MultiDocker(args.app)
             return docker.stop()
-        return self.call_init(args.app, 'stop')
+        return self.call_init(args.app, 'stop',)
 
 
 class Restart(Service):
@@ -92,11 +92,11 @@ class Restart(Service):
 
     help = 'Restart an app'
 
-    def main(self, args):
+    def main(self, args,):
         if args.app.uses_docker_compose():
             docker = MultiDocker(args.app)
             return docker.restart()
-        return self.call_init(args.app, 'restart')
+        return self.call_init(args.app, 'restart',)
 
 
 class CRestart(Service):
@@ -104,11 +104,11 @@ class CRestart(Service):
 
     help = 'CRestart an app'
 
-    def main(self, args):
+    def main(self, args,):
         if args.app.uses_docker_compose():
             docker = MultiDocker(args.app)
             return docker.restart()
-        return self.call_init(args.app, 'crestart')
+        return self.call_init(args.app, 'crestart',)
 
 
 class Status(Service):
@@ -117,12 +117,12 @@ class Status(Service):
     help = 'Retrieve status of an app'
 
     @classmethod
-    def get_init(cls, app):
+    def get_init(cls, app,):
         if app.plugin_of:
             app = Apps().find(app.plugin_of)
-        return super(Status, cls).get_init(app)
+        return super(Status, cls,).get_init(app)
 
-    def main(self, args):
+    def main(self, args,):
         if args.app.uses_docker_compose():
             docker = MultiDocker(args.app)
             running = docker.is_running()
@@ -131,10 +131,10 @@ class Status(Service):
             else:
                 self.log('App is not running')
             return running
-        return self.call_init(args.app, 'status')
+        return self.call_init(args.app, 'status',)
 
     @classmethod
-    def get_status(cls, app):
+    def get_status(cls, app,):
         if app.uses_docker_compose():
             return ''
         else:

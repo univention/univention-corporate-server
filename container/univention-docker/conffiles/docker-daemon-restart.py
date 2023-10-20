@@ -34,6 +34,6 @@
 import subprocess
 
 
-def postinst(configRegistry, changes):
+def postinst(configRegistry, changes,):
     subprocess.call(['systemctl', 'daemon-reload'])
     subprocess.call(['systemctl', 'restart', 'docker'])

@@ -67,7 +67,7 @@ DIR_BLACKLIST.append("/run")
 DIR_BLACKLIST.append("/srv")
 
 
-def dirIsMountPoint(path):
+def dirIsMountPoint(path,):
     # type: (str) -> Optional[str]
     """
     Check if `path` is a mount point.
@@ -93,7 +93,7 @@ def dirIsMountPoint(path):
     return None
 
 
-def checkDirFileSystem(path, cr):
+def checkDirFileSystem(path, cr,):
     # type: (str, ConfigRegistry) -> Optional[str]
     """
     Check if the given path is of a known file system type.
@@ -103,7 +103,7 @@ def checkDirFileSystem(path, cr):
     :returns: A string if the path is a known file system, `None` otherwise.
     :rtype: str or None
     """
-    knownFs = cr.get("listener/shares/rename/fstypes", DEFAULT_FS).split(":")
+    knownFs = cr.get("listener/shares/rename/fstypes", DEFAULT_FS,).split(":")
     ret, out = getstatusoutput("LC_ALL=C stat -f %s" % quote(path))  # noqa: S605
     myFs = ""
     for line in out.split("\n"):
@@ -118,7 +118,7 @@ def checkDirFileSystem(path, cr):
     return "filesystem %s for %s is not on a known filesystem" % (myFs, path)
 
 
-def createOrRename(old, new, cr):
+def createOrRename(old, new, cr,):
     # type: (Dict[str, List[bytes]], Dict[str, List[bytes]], ConfigRegistry) -> Optional[str]
     """
     Create or rename a share.
@@ -130,7 +130,7 @@ def createOrRename(old, new, cr):
     :rtype: str or None
     """
     rename = False
-    if cr.is_true("listener/shares/rename", False) and old:
+    if cr.is_true("listener/shares/rename", False,) and old:
         # rename only if old object exists and
         # share host is unchanged and
         # path was changed
@@ -148,7 +148,7 @@ def createOrRename(old, new, cr):
     newPath = os.path.realpath(newPath)
     if newPath == "/":
         return "/ as new path is not allowed"
-    share_name = new.get('univentionShareSambaName', new.get('cn', [b'']))[0].decode('UTF-8')
+    share_name = new.get('univentionShareSambaName', new.get('cn', [b''],),)[0].decode('UTF-8')
 
     # rename it
     if rename:
@@ -175,9 +175,9 @@ def createOrRename(old, new, cr):
             return "source %s is not a directory" % oldPath
 
         # check blacklist
-        if is_blacklisted(newPath, cr):
+        if is_blacklisted(newPath, cr,):
             return "%r as destination for renaming not allowed! WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the UCR variables listener/shares/whitelist/. After changing the variables univention-directory-listener needs to be restartet." % (newPath, newPath, share_name)
-        if is_blacklisted(oldPath, cr):
+        if is_blacklisted(oldPath, cr,):
             return "%r as source for renaming not allowed! WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the UCR variables listener/shares/whitelist/. After changing the variables univention-directory-listener needs to be restartet." % (oldPath, newPath, share_name)
 
         # check mount point
@@ -191,15 +191,15 @@ def createOrRename(old, new, cr):
         newPathDir = os.path.dirname(newPath)
         existingNewPathDir = "/"
         for path in newPathDir.split("/"):
-            if path and os.access(existingNewPathDir, os.F_OK) and os.access(os.path.join(existingNewPathDir, path), os.F_OK):
-                existingNewPathDir = os.path.join(existingNewPathDir, path)
+            if path and os.access(existingNewPathDir, os.F_OK,) and os.access(os.path.join(existingNewPathDir, path,), os.F_OK,):
+                existingNewPathDir = os.path.join(existingNewPathDir, path,)
 
         if newPathDir == "/" or existingNewPathDir == "/":
             return "moving to directory level one is not allowed (%s)" % newPath
 
         # check know fs
         for i in [oldPath, existingNewPathDir]:
-            ret = checkDirFileSystem(i, cr)
+            ret = checkDirFileSystem(i, cr,)
             if ret:
                 return ret
 
@@ -208,9 +208,9 @@ def createOrRename(old, new, cr):
             return "source %s and destination %s are not on the same device" % (oldPath, newPath)
 
         # create path to destination
-        if not os.access(newPathDir, os.F_OK):
+        if not os.access(newPathDir, os.F_OK,):
             try:
-                os.makedirs(newPathDir, 0o755)
+                os.makedirs(newPathDir, 0o755,)
             except Exception as exc:
                 return "creation of directory %s failed: %s" % (newPathDir, exc)
 
@@ -219,21 +219,21 @@ def createOrRename(old, new, cr):
         # move
         try:
             if oldPath != "/" and newPath != "/":
-                shutil.move(oldPath, newPath)
+                shutil.move(oldPath, newPath,)
         except Exception as exc:
             return "failed to move directory %s to %s: %s" % (oldPath, newPath, exc)
 
     # or create directory anyway
-    if not os.access(newPath, os.F_OK):
+    if not os.access(newPath, os.F_OK,):
         try:
-            os.makedirs(newPath, 0o755)
+            os.makedirs(newPath, 0o755,)
         except Exception as exc:
             return "creation of directory %s failed: %s" % (newPath, exc)
 
     # set custom permissions for path in new
     uid = 0
     gid = 0
-    mode = new.get("univentionShareDirectoryMode", [b"0755"])[0]
+    mode = new.get("univentionShareDirectoryMode", [b"0755"],)[0]
 
     if new.get("univentionShareUid"):
         try:
@@ -252,27 +252,27 @@ def createOrRename(old, new, cr):
         return "custom permissions only for directories allowed (%s)" % newPath
 
     # check blacklist
-    if is_blacklisted(newPath, cr):
+    if is_blacklisted(newPath, cr,):
         return "WARNING: the path %r for the share %r matches a blacklisted path. The whitelist can be extended via the UCR variables listener/shares/whitelist/." % (newPath, share_name)
 
     # set permissions, only modify them if a change has occurred
     try:
-        perm = int(mode, 16 if mode.startswith(b'0x') else (8 if mode.startswith(b'0') else 10))
+        perm = int(mode, 16 if mode.startswith(b'0x') else (8 if mode.startswith(b'0') else 10),)
         if (not old or (new.get("univentionShareDirectoryMode") and old.get("univentionShareDirectoryMode") and new["univentionShareDirectoryMode"][0] != old["univentionShareDirectoryMode"][0])):
-            os.chmod(newPath, perm)
+            os.chmod(newPath, perm,)
 
         if (not old or (new.get("univentionShareUid") and old.get("univentionShareUid") and new["univentionShareUid"][0] != old["univentionShareUid"][0])):
-            os.chown(newPath, uid, -1)
+            os.chown(newPath, uid, -1,)
 
         if (not old or (new.get("univentionShareGid") and old.get("univentionShareGid") and new["univentionShareGid"][0] != old["univentionShareGid"][0])):
-            os.chown(newPath, -1, gid)
+            os.chown(newPath, -1, gid,)
     except Exception:
         return "setting custom permissions for %s failed" % newPath
 
     return None
 
 
-def is_blacklisted(path, ucr):
+def is_blacklisted(path, ucr,):
     # type: (str, ConfigRegistry) -> bool
     """
 
@@ -307,7 +307,7 @@ def is_blacklisted(path, ucr):
         for path in value.split(":")
     }
     for directory in DIR_BLACKLIST:
-        if path in whitelist or path.rstrip('/') in whitelist or any(fnmatch.fnmatch(path, allowed) for allowed in whitelist):
+        if path in whitelist or path.rstrip('/') in whitelist or any(fnmatch.fnmatch(path, allowed,) for allowed in whitelist):
             continue
         if path.startswith(directory):
             return True

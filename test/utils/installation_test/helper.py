@@ -26,20 +26,20 @@ COLORS = {
 
 
 class VerboseFormatter(Formatter):
-    def get_value(self, key: Union[int, str], args: Sequence[Any], kwargs: Mapping[str, Any]) -> Any:
+    def get_value(self, key: Union[int, str], args: Sequence[Any], kwargs: Mapping[str, Any],) -> Any:
         try:
-            return super().get_value(key, args, kwargs)
+            return super().get_value(key, args, kwargs,)
         except (IndexError, KeyError):
             return ""
 
-    def check_unused_args(self, used_args: Any, args: Sequence[Any], kwargs: Mapping[str, Any]) -> None:
+    def check_unused_args(self, used_args: Any, args: Sequence[Any], kwargs: Mapping[str, Any],) -> None:
         pass
 
 
-def verbose(msg, fmt="", formatter=VerboseFormatter()):  # type (str, str, Formatter) -> Callabble[[T], T]
+def verbose(msg, fmt="", formatter=VerboseFormatter(),):  # type (str, str, Formatter) -> Callabble[[T], T]
     log = logging.getLogger(__name__)
 
-    def decorator(f):  # type (Callable) -> Callable
+    def decorator(f,):  # type (Callable) -> Callable
         @wraps(f)
         def wrapper(*args, **kwargs):  # type (*Any, **Any) -> Any
             start = time.time()
@@ -48,21 +48,17 @@ def verbose(msg, fmt="", formatter=VerboseFormatter()):  # type (str, str, Forma
                 dict(
                     COLORS,
                     msg=msg,
-                    args=formatter.format(fmt, *args, **kwargs),
-                ),
-            )
+                    args=formatter.format(fmt, *args, **kwargs,),),)
             sys.stdout.flush()
             try:
-                return f(*args, **kwargs)
+                return f(*args, **kwargs,)
             finally:
                 log.info(
                     "%(MAGENTA)s%(msg)s%(CYAN)s:%(GREEN)sEND%(RESET)s %(duration).1f",
                     dict(
                         COLORS,
                         msg=msg,
-                        duration=time.time() - start,
-                    ),
-                )
+                        duration=time.time() - start,),)
                 sys.stdout.flush()
 
         return wrapper
@@ -70,12 +66,12 @@ def verbose(msg, fmt="", formatter=VerboseFormatter()):  # type (str, str, Forma
     return decorator
 
 
-def trace_calls(frame: FrameType, event: str, arg: Any) -> Optional[Callable]:
+def trace_calls(frame: FrameType, event: str, arg: Any,) -> Optional[Callable]:
     log = logging.getLogger(__name__)
 
     co = frame.f_code
     try:
-        is_main = samefile(co.co_filename, sys.modules["__main__"].__file__ or __file__)
+        is_main = samefile(co.co_filename, sys.modules["__main__"].__file__ or __file__,)
     except OSError:
         is_main = False
 
@@ -86,9 +82,7 @@ def trace_calls(frame: FrameType, event: str, arg: Any) -> Optional[Callable]:
                 dict(
                     COLORS,
                     fname=co.co_filename,
-                    lno=frame.f_lineno, code=linecache.getline(co.co_filename, frame.f_lineno).rstrip("\n"),
-                ),
-            )
+                    lno=frame.f_lineno, code=linecache.getline(co.co_filename, frame.f_lineno,).rstrip("\n"),),)
     elif event == "call":
         caller = frame.f_back
         if False:
@@ -100,8 +94,6 @@ def trace_calls(frame: FrameType, event: str, arg: Any) -> Optional[Callable]:
                     sno=caller.f_lineno if caller else 0,
                     dname=co.co_filename,
                     dno=frame.f_lineno,
-                    func=co.co_name,
-                ),
-            )
+                    func=co.co_name,),)
 
     return trace_calls

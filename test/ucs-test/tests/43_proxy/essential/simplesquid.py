@@ -12,7 +12,7 @@ import univention.testing.ucr as ucr_test
 from univention.testing import utils
 
 
-def get_lines_containing(filename, string):
+def get_lines_containing(filename, string,):
     with open(filename) as input_file:
         return [line for line in input_file if string in line]
 
@@ -23,7 +23,7 @@ class SimpleSquid:
     :type path: str
     """
 
-    def __init__(self, path=None):
+    def __init__(self, path=None,):
         self.path = path if path else "/etc/init.d/squid"
         self.basename = os.path.basename(self.path)
         self.conf = "/etc/%s/squid.conf" % self.basename
@@ -45,7 +45,7 @@ class SimpleSquid:
         """
         return call([self.basename, "-k", "check"])
 
-    def is_running(self, tolerance=5):
+    def is_running(self, tolerance=5,):
         """
         Check if it is running within the given tolerance of time\n
         Use when waiting for squid to be running.\n
@@ -64,7 +64,7 @@ class SimpleSquid:
                 break
         return result
 
-    def redirector_is(self, expected_redirector):
+    def redirector_is(self, expected_redirector,):
         """
         Check if the redirector is the same as the passed parameter\n
         :param expected_redirector: in the config file
@@ -73,7 +73,7 @@ class SimpleSquid:
         """
         result = False
         with ucr_test.UCSTestConfigRegistry():
-            config_lines = get_lines_containing(self.conf, 'url_rewrite_program')
+            config_lines = get_lines_containing(self.conf, 'url_rewrite_program',)
             if config_lines:
                 # in config file the first line setting the redirector is activated
                 config_line = config_lines[0]

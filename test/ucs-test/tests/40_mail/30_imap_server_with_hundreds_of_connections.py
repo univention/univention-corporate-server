@@ -21,18 +21,18 @@ from essential.mailclient import MailClient_SSL
 MAX_CONNECTIONS = 700
 
 
-def run_cmd(cmd):
+def run_cmd(cmd,):
     """Execute the given command"""
     print('Executing: %r' % (cmd,))
-    return subprocess.call(cmd, stderr=open('/dev/null', 'w'))
+    return subprocess.call(cmd, stderr=open('/dev/null', 'w',),)
 
 
-def set_openfiles_limit(new_limit):
+def set_openfiles_limit(new_limit,):
     """
     Set ulimit -n new_limit
     for the current process only
     """
-    resource.setrlimit(resource.RLIMIT_NOFILE, new_limit)
+    resource.setrlimit(resource.RLIMIT_NOFILE, new_limit,)
 
 
 def used_memory():
@@ -86,7 +86,7 @@ def main():
 
             time_start = time.time()
             for imap in servers:
-                imap.log_in(usermail, password)
+                imap.log_in(usermail, password,)
             print('%d IMAP logins are OK (took %f seconds)' % (i + 1, time.time() - time_start))
             mem_finish = used_memory()
 

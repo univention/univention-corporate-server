@@ -33,19 +33,19 @@ def main():
                             'mailPrimaryAddress': recipient_email,
                         },
                     )
-                    nethelper.add_loop('1.2.3.4', '4.3.2.1')
+                    nethelper.add_loop('1.2.3.4', '4.3.2.1',)
 
                     # to local address
-                    check_sending_mail(recipient_email, password, recipient_email, tls=True)
-                    check_sending_mail(None, None, recipient_email, tls=True, allowed=True)
-                    check_sending_mail(recipient_email, password, recipient_email, tls=False, allowed=False)
-                    check_sending_mail(None, None, recipient_email, tls=False, allowed=False)
+                    check_sending_mail(recipient_email, password, recipient_email, tls=True,)
+                    check_sending_mail(None, None, recipient_email, tls=True, allowed=True,)
+                    check_sending_mail(recipient_email, password, recipient_email, tls=False, allowed=False,)
+                    check_sending_mail(None, None, recipient_email, tls=False, allowed=False,)
 
                     # to foreign address
-                    check_sending_mail(recipient_email, password, 'noreply@univention.de', tls=True, local=False)
-                    check_sending_mail(None, None, 'noreply@univention.de', tls=True, allowed=False, local=False)
-                    check_sending_mail(recipient_email, password, 'noreply@univention.de', tls=False, allowed=False, local=False)
-                    check_sending_mail(None, None, 'noreply@univention.de', tls=False, allowed=False, local=False)
+                    check_sending_mail(recipient_email, password, 'noreply@univention.de', tls=True, local=False,)
+                    check_sending_mail(None, None, 'noreply@univention.de', tls=True, allowed=False, local=False,)
+                    check_sending_mail(recipient_email, password, 'noreply@univention.de', tls=False, allowed=False, local=False,)
+                    check_sending_mail(None, None, 'noreply@univention.de', tls=False, allowed=False, local=False,)
 
 
 if __name__ == '__main__':

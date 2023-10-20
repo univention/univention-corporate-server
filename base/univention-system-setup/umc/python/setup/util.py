@@ -139,7 +139,7 @@ def is_system_joined() -> bool:
     return os.path.exists('/var/univention-join/joined')
 
 
-def load_values(lang: str | None = None) -> Dict[str, str]:
+def load_values(lang: str | None = None,) -> Dict[str, str]:
     ucr.load()
     values = {ikey: ucr[ikey] if ucr[ikey] else ucr[ikey] for ikey in UCR_VARIABLES}
 
@@ -182,14 +182,14 @@ def load_values(lang: str | None = None) -> Dict[str, str]:
     return values
 
 
-def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Locale | None = None) -> Dict[str, str]:
+def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Locale | None = None,) -> Dict[str, str]:
     # try to automatically determine the domain, except on a dcmaster
     if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname'):
         ucr.load()
         for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
             if newValues.get('domainname'):
                 break
-            nameserver = newValues.get(nameserver, ucr.get(nameserver))
+            nameserver = newValues.get(nameserver, ucr.get(nameserver),)
             if not nameserver:
                 continue
             newValues['domainname'] = get_ucs_domain(nameserver)
@@ -200,10 +200,10 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
     if 'windows/domain' not in newValues and isAdMember:
         MODULE.process('Searching for NETBIOS domain in AD')
         for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
-            ns = newValues.get(nameserver, ucr.get(nameserver))
+            ns = newValues.get(nameserver, ucr.get(nameserver),)
             if ns:
                 try:
-                    ad_domain_info = lookup_adds_dc(newValues.get('ad/address'), ucr={'nameserver1': ns})
+                    ad_domain_info = lookup_adds_dc(newValues.get('ad/address'), ucr={'nameserver1': ns},)
                 except failedADConnect:
                     pass
                 else:
@@ -217,12 +217,12 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
         MODULE.process('Setting NETBIOS domain to default: %s' % newValues['windows/domain'])
 
     # make sure that AD connector package is installed if AD member mode is chosen
-    selectedComponents = set(newValues.get('components', []))
+    selectedComponents = set(newValues.get('components', [],))
     if isAdMember and newValues['server/role'] == 'domaincontroller_master':
         selectedComponents.add('univention-ad-connector')
 
     # make sure to install the memberof overlay if it is installed on the Primary Directory Node
-    if newValues['server/role'] not in ('domaincontroller_master', 'memberserver') and newValues.pop('install_memberof_overlay', ""):
+    if newValues['server/role'] not in ('domaincontroller_master', 'memberserver') and newValues.pop('install_memberof_overlay', "",):
         selectedComponents.add('univention-ldap-overlay-memberof')
 
     # add lists with all packages that should be removed/installed on the system
@@ -247,15 +247,15 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
         installComponents = list(allComponents & (selectedComponents - currentComponents))
         newValues['packages_install'] = ' '.join(installComponents)
 
-    current_locale = Locale(ucr.get('locale/default', 'en_US.UTF-8:UTF-8').split(':', 1)[0])
+    current_locale = Locale(ucr.get('locale/default', 'en_US.UTF-8:UTF-8',).split(':', 1,)[0])
     if newValues['server/role'] == 'domaincontroller_master':
         # add newValues for SSL UCR variables
         default_locale = current_locale
         if 'locale/default' in newValues:
-            default_locale = Locale(newValues['locale/default'].split(':', 1)[0])
+            default_locale = Locale(newValues['locale/default'].split(':', 1,)[0])
         newValues['ssl/state'] = default_locale.territory
         newValues['ssl/locality'] = default_locale.territory
-        newValues['ssl/organization'] = newValues.get('organization', default_locale.territory)
+        newValues['ssl/organization'] = newValues.get('organization', default_locale.territory,)
         newValues['ssl/organizationalunit'] = 'Univention Corporate Server'
         newValues['ssl/email'] = 'ssl@{domainname}'.format(**newValues)
 
@@ -264,10 +264,10 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
     # locale data (in 20_language/10language) with some strange python
     # exceptions about unsupported locale strings...
     if 'locale' not in newValues:
-        newValues['locale'] = newValues.get('locale/default', '')
+        newValues['locale'] = newValues.get('locale/default', '',)
     forcedLocales = ['en_US.UTF-8:UTF-8', 'de_DE.UTF-8:UTF-8']  # we need en_US and de_DE locale as default language
     if current_locale:
-        forcedLocales.append('{}:{}'.format(current_locale, current_locale.codeset))
+        forcedLocales.append('{}:{}'.format(current_locale, current_locale.codeset,))
     for ilocale in forcedLocales:
         if ilocale not in newValues['locale']:
             newValues['locale'] = '%s %s' % (newValues['locale'], ilocale)
@@ -275,7 +275,7 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
     return newValues
 
 
-def pre_save(newValues: Dict[str, str]) -> None:
+def pre_save(newValues: Dict[str, str],) -> None:
     """Modify the final dict before saving it to the profile file."""
     # network interfaces
     from univention.management.console.modules.setup.network import Interfaces
@@ -286,27 +286,27 @@ def pre_save(newValues: Dict[str, str]) -> None:
         newValues.update({key: value or '' for key, value in interfaces.to_ucr().items()})
 
 
-def write_profile(values: Dict[str, str]) -> None:
+def write_profile(values: Dict[str, str],) -> None:
     pre_save(values)
     old_umask = os.umask(0o177)
     try:
-        with open(PATH_PROFILE, "w+") as cache_file:
+        with open(PATH_PROFILE, "w+",) as cache_file:
             for ikey, ival in values.items():
-                if isinstance(ival, bool):
+                if isinstance(ival, bool,):
                     ival = str(ival)
                 cache_file.write('%s="%s"\n' % (ikey, ival or ''))
     finally:
         os.umask(old_umask)
 
 
-def run_networkscrips(demo_mode: bool = False) -> None:
+def run_networkscrips(demo_mode: bool = False,) -> None:
     # write header before executing scripts
-    f = open(LOG_FILE, 'a')
+    f = open(LOG_FILE, 'a',)
     f.write('\n\n=== RUNNING NETWORK APPLY SCRIPTS (%s) ===\n\n' % timestamp())
     f.flush()
 
     # make sure that UMC servers and apache will not be restartet
-    subprocess.call(CMD_DISABLE_EXEC, stdout=f, stderr=f)
+    subprocess.call(CMD_DISABLE_EXEC, stdout=f, stderr=f,)
 
     # If fast demo mode is used, no additional parameters must be provided,
     # as they will prevent ldap modification. The host object has to be updated
@@ -315,28 +315,28 @@ def run_networkscrips(demo_mode: bool = False) -> None:
         script_parameters = ['--network-only', '--appliance-mode']
 
     try:
-        netpath = os.path.join(PATH_SETUP_SCRIPTS, '30_net')
+        netpath = os.path.join(PATH_SETUP_SCRIPTS, '30_net',)
         for scriptpath in sorted(os.listdir(netpath)):
-            scriptpath = os.path.join(netpath, scriptpath)
+            scriptpath = os.path.join(netpath, scriptpath,)
             # launch script
             try:
                 # appliance-mode for temporary saving the old ip address
                 # network-only for not restarting all those services (time consuming!)
-                p = subprocess.Popen([scriptpath] + script_parameters, stdout=f, stderr=subprocess.STDOUT)
+                p = subprocess.Popen([scriptpath] + script_parameters, stdout=f, stderr=subprocess.STDOUT,)
                 MODULE.info("Running script '%s': pid=%d" % (scriptpath, p.pid))
                 p.wait()
             except OSError as ex:
                 MODULE.error("Failed to run '%s': %s" % (scriptpath, ex))
     finally:
         # enable execution of servers again
-        subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
+        subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f,)
 
     f.write('\n=== DONE (%s) ===\n\n' % timestamp())
     f.close()
 
 
 @contextmanager
-def written_profile(values: Dict[str, str]) -> Iterator[None]:
+def written_profile(values: Dict[str, str],) -> Iterator[None]:
     write_profile(values)
     try:
         yield
@@ -365,10 +365,10 @@ class ProgressState(object):
     def percentage(self) -> float:
         return (self._percentage + self.fraction * (self.step / float(self.steps))) / self.max * 100
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: Any,) -> bool:
         return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self.errors == other.errors and self.critical == other.critical
 
-    def __ne__(self, other: Any) -> bool:
+    def __ne__(self, other: Any,) -> bool:
         return not self.__eq__(other)
 
     def __bool__(self) -> bool:
@@ -407,7 +407,7 @@ class ProgressParser(object):
         self.allowed_subdirs: Container[str] | None = None
         self.reset()
 
-    def reset(self, allowed_subdirs: Container[str] | None = None) -> None:
+    def reset(self, allowed_subdirs: Container[str] | None = None,) -> None:
         self.allowed_subdirs = allowed_subdirs
         ucr.load()
         self.current.reset()
@@ -417,9 +417,9 @@ class ProgressParser(object):
 
     def calculateFractions(self) -> None:
         MODULE.info('Calculating maximum value for fractions ...')
-        for category in [x for x in os.listdir(PATH_SETUP_SCRIPTS) if os.path.isdir(os.path.join(PATH_SETUP_SCRIPTS, x))]:
-            cat_path = os.path.join(PATH_SETUP_SCRIPTS, category)
-            for script in [x for x in os.listdir(cat_path) if os.path.isfile(os.path.join(cat_path, x))]:
+        for category in [x for x in os.listdir(PATH_SETUP_SCRIPTS) if os.path.isdir(os.path.join(PATH_SETUP_SCRIPTS, x,))]:
+            cat_path = os.path.join(PATH_SETUP_SCRIPTS, category,)
+            for script in [x for x in os.listdir(cat_path) if os.path.isfile(os.path.join(cat_path, x,))]:
                 name = '%s/%s' % (category, script)
                 if name not in self.fractions:
                     self.fractions[name] = 1
@@ -438,14 +438,14 @@ class ProgressParser(object):
             return True
         return False
 
-    def parse(self, line: str) -> bool:
+    def parse(self, line: str,) -> bool:
         # start new component name
         match = ProgressParser.NAME.match(line)
         if match is not None:
             self.current.name, self.current.fractionName = match.groups()
             self.current.message = ''
             self.current._percentage += self.current.fraction
-            self.current.fraction = self.fractions.get(self.current.name, 1.0)
+            self.current.fraction = self.fractions.get(self.current.name, 1.0,)
             self.current.step = 0  # reset current step
             self.current.steps = 1
             return True
@@ -481,8 +481,8 @@ class ProgressParser(object):
         match = ProgressParser.JOINERROR.match(line)
         if match is not None:
             error = '%s: %s\n' % (self.current.fractionName, match.groups()[0])
-            with open(PATH_JOIN_LOG, 'rb') as join_log:
-                log = join_log.read().decode('UTF-8', 'replace').splitlines(True)
+            with open(PATH_JOIN_LOG, 'rb',) as join_log:
+                log = join_log.read().decode('UTF-8', 'replace',).splitlines(True)
             error_log = []
             for line in reversed(log):
                 error_log.append(line)
@@ -504,19 +504,19 @@ class ProgressParser(object):
         return False
 
 
-def sorted_files_in_subdirs(directory: str, allowed_subdirs: Container[str] | None = None) -> Iterator[str]:
+def sorted_files_in_subdirs(directory: str, allowed_subdirs: Container[str] | None = None,) -> Iterator[str]:
     for entry in sorted(os.listdir(directory)):
         if allowed_subdirs and entry not in allowed_subdirs:
             continue
-        path = os.path.join(directory, entry)
+        path = os.path.join(directory, entry,)
         if os.path.isdir(path):
             for filename in sorted(os.listdir(path)):
-                yield os.path.join(path, filename)
+                yield os.path.join(path, filename,)
 
 
-def run_scripts(progressParser: ProgressParser, restartServer: bool = False, allowed_subdirs: Container[str] | None = None, lang: str = 'C', args: List[str] = []) -> None:
+def run_scripts(progressParser: ProgressParser, restartServer: bool = False, allowed_subdirs: Container[str] | None = None, lang: str = 'C', args: List[str] = [],) -> None:
     # write header before executing scripts
-    f = open(LOG_FILE, 'a')
+    f = open(LOG_FILE, 'a',)
     f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
     f.flush()
 
@@ -524,16 +524,16 @@ def run_scripts(progressParser: ProgressParser, restartServer: bool = False, all
     fr = open(LOG_FILE)
 
     # start observing at the end of the file
-    fr.seek(0, os.SEEK_END)
+    fr.seek(0, os.SEEK_END,)
     lastPos = fr.tell()
 
     # next full line to pass to the progressParser
     fullLine = ''
 
     # make sure that UMC servers and apache will not be restartet
-    subprocess.call(CMD_DISABLE_EXEC, stdout=f, stderr=f)
+    subprocess.call(CMD_DISABLE_EXEC, stdout=f, stderr=f,)
 
-    for scriptpath in sorted_files_in_subdirs(PATH_SETUP_SCRIPTS, allowed_subdirs):
+    for scriptpath in sorted_files_in_subdirs(PATH_SETUP_SCRIPTS, allowed_subdirs,):
         # launch script
         icmd = [scriptpath] + args
         f.write('== script: %s\n' % icmd)
@@ -541,14 +541,14 @@ def run_scripts(progressParser: ProgressParser, restartServer: bool = False, all
             p = subprocess.Popen(icmd, stdout=f, stderr=subprocess.STDOUT, env={
                 'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
                 'LANG': lang,
-            })
+            },)
             MODULE.info("Running script '%s': pid=%d" % (icmd, p.pid))
         except EnvironmentError as exc:
             MODULE.error("Failed to run '%s': %s" % (icmd, exc))
             continue
         while p.poll() is None:
-            fr.seek(0, os.SEEK_END)  # update file handle
-            fr.seek(lastPos, os.SEEK_SET)  # continue reading at last position
+            fr.seek(0, os.SEEK_END,)  # update file handle
+            fr.seek(lastPos, os.SEEK_SET,)  # continue reading at last position
 
             currentLine = fr.readline()  # try to read until next line break
             if not currentLine:
@@ -566,12 +566,12 @@ def run_scripts(progressParser: ProgressParser, restartServer: bool = False, all
     univention.config_registry.handler_set(['system/setup/showloginmessage=false'])
 
     # enable execution of servers again
-    subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
+    subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f,)
 
     if restartServer:
         f.write('=== Restart of UMC server and web server (%s) ===\n' % timestamp())
         f.flush()
-        p = subprocess.Popen(['/usr/bin/at', 'now'], stdin=subprocess.PIPE, stderr=f, stdout=f)
+        p = subprocess.Popen(['/usr/bin/at', 'now'], stdin=subprocess.PIPE, stderr=f, stdout=f,)
         p.communicate(b'''#!/bin/sh
 sleep 5;  # leave enough time to display error messages or indicate success
 deb-systemd-invoke restart univention-management-console-server;''')
@@ -581,11 +581,11 @@ deb-systemd-invoke restart univention-management-console-server;''')
 
 
 @contextmanager
-def _temporary_password_file(password: str) -> Iterator[str]:
+def _temporary_password_file(password: str,) -> Iterator[str]:
     # write password file
-    with open(PATH_PASSWORD_FILE, 'w') as fp:
+    with open(PATH_PASSWORD_FILE, 'w',) as fp:
         fp.write('%s' % password)
-    os.chmod(PATH_PASSWORD_FILE, 0o600)
+    os.chmod(PATH_PASSWORD_FILE, 0o600,)
     try:
         yield PATH_PASSWORD_FILE
     finally:
@@ -593,9 +593,9 @@ def _temporary_password_file(password: str) -> Iterator[str]:
         os.remove(PATH_PASSWORD_FILE)
 
 
-def run_joinscript(progressParser: ProgressParser, values: Dict[str, str], _username: str, password: str, dcname: str | None = None, lang: str = 'C') -> None:
+def run_joinscript(progressParser: ProgressParser, values: Dict[str, str], _username: str, password: str, dcname: str | None = None, lang: str = 'C',) -> None:
     # write header before executing join script
-    f = open(LOG_FILE, 'a')
+    f = open(LOG_FILE, 'a',)
     f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
     f.flush()
 
@@ -621,13 +621,13 @@ def run_joinscript(progressParser: ProgressParser, values: Dict[str, str], _user
     # recompute sum
     progressParser.current.max = sum(progressParser.fractions.values())
 
-    def runit(command):
+    def runit(command,):
         p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env={
             'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
             'LANG': lang,
-        })
+        },)
         while True:
-            line = p.stdout.readline().decode("UTF-8", "replace")
+            line = p.stdout.readline().decode("UTF-8", "replace",)
             if not line:
                 break
             progressParser.parse(line)
@@ -643,7 +643,7 @@ def run_joinscript(progressParser: ProgressParser, values: Dict[str, str], _user
         with _temporary_password_file(password) as password_file:
             # sanitize username
             reg = re.compile('[^ a-zA-Z_0-9-]')
-            username = reg.sub('_', _username)
+            username = reg.sub('_', _username,)
 
             # run join scripts without the cleanup scripts
             runit(cmd + ['--dcaccount', username, '--password_file', password_file, '--run_cleanup_as_atjob'])
@@ -656,7 +656,7 @@ def run_joinscript(progressParser: ProgressParser, values: Dict[str, str], _user
     f.close()
 
 
-def cleanup(with_appliance_hooks: bool = False) -> None:
+def cleanup(with_appliance_hooks: bool = False,) -> None:
     # add delay of 1 sec before actually executing the commands
     # in order to avoid problems with restarting the UMC server
     # and thus killing the setup module process
@@ -669,7 +669,7 @@ def cleanup(with_appliance_hooks: bool = False) -> None:
     atjobs.add(cmd)
 
 
-def run_scripts_in_path(path: str, logfile: IO[str], category_name: str = "") -> None:
+def run_scripts_in_path(path: str, logfile: IO[str], category_name: str = "",) -> None:
     logfile.write('\n=== Running %s scripts (%s) ===\n' % (category_name, timestamp()))
     logfile.flush()
 
@@ -678,7 +678,7 @@ def run_scripts_in_path(path: str, logfile: IO[str], category_name: str = "") ->
             logfile.write('= Running %s\n' % filename)
             logfile.flush()
             try:
-                subprocess.call(os.path.join(path, filename), stdout=logfile, stderr=logfile)
+                subprocess.call(os.path.join(path, filename,), stdout=logfile, stderr=logfile,)
             except (OSError, IOError):
                 logfile.write('%s' % (traceback.format_exc(),))
             logfile.flush()
@@ -688,7 +688,7 @@ def run_scripts_in_path(path: str, logfile: IO[str], category_name: str = "") ->
 
 
 def create_status_file() -> None:
-    with open(PATH_STATUS_FILE, 'w') as status_file:
+    with open(PATH_STATUS_FILE, 'w',) as status_file:
         status_file.write('"setup-scripts"')
 
 
@@ -703,14 +703,14 @@ def detect_interfaces() -> List[Dict[str, str | None]]:
     if not os.path.exists(PATH_SYS_CLASS_NET):
         return interfaces
     for dirname in os.listdir(PATH_SYS_CLASS_NET):
-        pathname = os.path.join(PATH_SYS_CLASS_NET, dirname)
+        pathname = os.path.join(PATH_SYS_CLASS_NET, dirname,)
         if not os.path.isdir(pathname):
             continue
         # filter out lo, etc. interfaces
-        if open(os.path.join(pathname, 'type')).read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
+        if open(os.path.join(pathname, 'type',)).read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
             continue
         # filter out bridge, bond, tun/tap interfaces
-        if any(os.path.exists(os.path.join(pathname, path)) for path in ('bridge', 'bonding', 'brport', 'tun_flags')):
+        if any(os.path.exists(os.path.join(pathname, path,)) for path in ('bridge', 'bonding', 'brport', 'tun_flags')):
             continue
         # filter out vlan devices
         if '.' in dirname:
@@ -718,7 +718,7 @@ def detect_interfaces() -> List[Dict[str, str | None]]:
         mac = None
         try:
             # try to read mac address
-            mac = open(os.path.join(pathname, 'address')).read().strip()
+            mac = open(os.path.join(pathname, 'address',)).read().strip()
         except (OSError, IOError):
             pass
         interfaces.append({'name': dirname, 'mac': mac})
@@ -726,7 +726,7 @@ def detect_interfaces() -> List[Dict[str, str | None]]:
     return interfaces
 
 
-def dhclient(interface: str, timeout: float = 10.0) -> Dict[str, str]:
+def dhclient(interface: str, timeout: float = 10.0,) -> Dict[str, str]:
     """
     perform DHCP request for specified interface. If successful, returns a dict
     similar to the following::
@@ -757,7 +757,7 @@ def dhclient(interface: str, timeout: float = 10.0) -> Dict[str, str]:
             interface,
         )
         MODULE.info('Launch dhclient query via command: %s' % (cmd, ))
-        subprocess.call(cmd, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.call(cmd, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,)
 
         for line in tmp:
             key, _, value = line.strip().partition('=')
@@ -768,20 +768,20 @@ def dhclient(interface: str, timeout: float = 10.0) -> Dict[str, str]:
     return dhcp
 
 
-def get_apps(no_cache: bool = False) -> List[Dict[str, Any]]:
+def get_apps(no_cache: bool = False,) -> List[Dict[str, Any]]:
     if no_cache:
         AppCache().clear_cache()
     get = get_action('get')
     return [get.to_dict(app) for app in Apps().get_all_apps() if app.is_ucs_component()]
 
 
-def is_proxy(proxy: str) -> bool:
+def is_proxy(proxy: str,) -> bool:
     if proxy and proxy != 'http://' and proxy != 'https://' and not proxy.startswith('http://') and not proxy.startswith('https://'):
         return False
     return True
 
 
-def is_ipaddr(addr: str) -> bool:
+def is_ipaddr(addr: str,) -> bool:
     try:
         ipaddress.ip_address(u'%s' % (addr,))
     except ValueError:
@@ -789,7 +789,7 @@ def is_ipaddr(addr: str) -> bool:
     return True
 
 
-def is_ipv4addr(addr: str) -> bool:
+def is_ipv4addr(addr: str,) -> bool:
     try:
         ipaddress.IPv4Address(u'%s' % (addr,))
     except ValueError:
@@ -797,15 +797,15 @@ def is_ipv4addr(addr: str) -> bool:
     return True
 
 
-def is_ipv4netmask(addr_netmask: str) -> bool:
+def is_ipv4netmask(addr_netmask: str,) -> bool:
     try:
-        ipaddress.IPv4Network(u'%s' % (addr_netmask,), False)
+        ipaddress.IPv4Network(u'%s' % (addr_netmask,), False,)
     except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
         return False
     return True
 
 
-def is_ipv6addr(addr: str) -> bool:
+def is_ipv6addr(addr: str,) -> bool:
     try:
         ipaddress.IPv6Address(u'%s' % (addr,))
     except ValueError:
@@ -813,22 +813,22 @@ def is_ipv6addr(addr: str) -> bool:
     return True
 
 
-def is_ipv6netmask(addr_netmask: str) -> bool:
+def is_ipv6netmask(addr_netmask: str,) -> bool:
     try:
-        ipaddress.IPv6Network(u'%s' % (addr_netmask,), False)
+        ipaddress.IPv6Network(u'%s' % (addr_netmask,), False,)
     except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
         return False
     return True
 
 
-def is_hostname(hostname: str) -> bool:
+def is_hostname(hostname: str,) -> bool:
     return is_hostname.RE.match(hostname) is not None  # type: ignore
 
 
-is_hostname.RE = re.compile("^[a-z0-9]([a-z0-9-]*[a-z0-9])?$", re.IGNORECASE)  # type: ignore
+is_hostname.RE = re.compile("^[a-z0-9]([a-z0-9-]*[a-z0-9])?$", re.IGNORECASE,)  # type: ignore
 
 
-def is_domainname(domainname: str) -> bool:
+def is_domainname(domainname: str,) -> bool:
     """
     Check if domainname is a valid DNS domainname according to RFC952/1123.
     >>> is_domainname('foo')
@@ -849,18 +849,18 @@ def is_domainname(domainname: str) -> bool:
     return all(is_domainname.RE.match(_) for _ in domainname.split('.'))  # type: ignore
 
 
-is_domainname.RE = re.compile(r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$', re.I)  # type: ignore
+is_domainname.RE = re.compile(r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$', re.I,)  # type: ignore
 
 
-def is_windowsdomainname(domainname: str) -> bool:
+def is_windowsdomainname(domainname: str,) -> bool:
     return is_windowsdomainname.RE.match(domainname) is not None and len(domainname) < 14  # type: ignore
 
 
 is_windowsdomainname.RE = re.compile(r"^[A-Z](?:[A-Z0-9-]*[A-Z0-9])?$")  # type: ignore
 
 
-def domain2windowdomain(domainname: str) -> str:
-    windomain = domainname.split('.', 1)[0].upper()
+def domain2windowdomain(domainname: str,) -> str:
+    windomain = domainname.split('.', 1,)[0].upper()
 
     invalidChars = re.compile(r"^[^A-Z]*([A-Z0-9-]*?)[^A-Z0-9]*$")
     match = invalidChars.match(windomain)
@@ -874,14 +874,14 @@ def domain2windowdomain(domainname: str) -> str:
     return windomain
 
 
-def is_domaincontroller(domaincontroller: str) -> bool:
+def is_domaincontroller(domaincontroller: str,) -> bool:
     return is_domaincontroller.RE.match(domaincontroller) is not None  # type: ignore
 
 
 is_domaincontroller.RE = re.compile(r"^[a-zA-Z].*\..*$")  # type: ignore
 
 
-def is_ldap_base(ldap_base: str) -> bool:
+def is_ldap_base(ldap_base: str,) -> bool:
     """
     >>> is_ldap_base('dc=foo,dc=bar')
     True
@@ -908,7 +908,7 @@ is_ldap_base.CC = ['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', '
 # new defined methods
 
 
-def is_ascii(string: str) -> bool:
+def is_ascii(string: str,) -> bool:
     try:
         string.encode("ascii")
         return True
@@ -916,18 +916,18 @@ def is_ascii(string: str) -> bool:
         return False
 
 
-def _get_dns_resolver(nameserver: str) -> dns.resolver.Resolver:
+def _get_dns_resolver(nameserver: str,) -> dns.resolver.Resolver:
     resolver = dns.resolver.Resolver()
     resolver.lifetime = 10  # make sure that we get an early timeout
     resolver.nameservers = [nameserver]
     return resolver
 
 
-def is_ucs_domain(nameserver: str, domain: str) -> bool:
-    return bool(get_ucs_domaincontroller_master_query(nameserver, domain))
+def is_ucs_domain(nameserver: str, domain: str,) -> bool:
+    return bool(get_ucs_domaincontroller_master_query(nameserver, domain,))
 
 
-def get_ucs_domaincontroller_master_query(nameserver: str, domain: str) -> dns.resolver.Answer | None:
+def get_ucs_domaincontroller_master_query(nameserver: str, domain: str,) -> dns.resolver.Answer | None:
     if not nameserver or not domain:
         return None
 
@@ -936,7 +936,7 @@ def get_ucs_domaincontroller_master_query(nameserver: str, domain: str) -> dns.r
 
     # perform a SRV lookup
     try:
-        return resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
+        return resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV',)
     except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers):
         MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
     except dns.exception.Timeout as exc:
@@ -946,8 +946,8 @@ def get_ucs_domaincontroller_master_query(nameserver: str, domain: str) -> dns.r
     return None
 
 
-def resolve_domaincontroller_master_srv_record(nameserver: str, domain: str) -> bool:
-    query = get_ucs_domaincontroller_master_query(nameserver, domain)
+def resolve_domaincontroller_master_srv_record(nameserver: str, domain: str,) -> bool:
+    query = get_ucs_domaincontroller_master_query(nameserver, domain,)
     if not query:
         return False
     try:
@@ -956,10 +956,10 @@ def resolve_domaincontroller_master_srv_record(nameserver: str, domain: str) -> 
         return False
 
 
-def is_ssh_reachable(host: str) -> bool:
+def is_ssh_reachable(host: str,) -> bool:
     if not host:
         return False
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM,)
     try:
         # TODO: timeout?
         s.connect((host, 22))
@@ -974,20 +974,20 @@ def is_ssh_reachable(host: str) -> bool:
     return False
 
 
-def get_ucs_domain(nameserver: str) -> str:
+def get_ucs_domain(nameserver: str,) -> str:
     domain = get_domain(nameserver)
-    if not is_ucs_domain(nameserver, domain):
+    if not is_ucs_domain(nameserver, domain,):
         return ""
     return domain
 
 
-def get_domain(nameserver: str) -> str:
+def get_domain(nameserver: str,) -> str:
     fqdn = get_fqdn(nameserver) or ""
     _, _, domain = fqdn.partition(".")
     return domain
 
 
-def get_fqdn(nameserver: str) -> str | None:
+def get_fqdn(nameserver: str,) -> str | None:
     # register nameserver
     resolver = _get_dns_resolver(nameserver)
 
@@ -995,7 +995,7 @@ def get_fqdn(nameserver: str) -> str | None:
     try:
         reverse_address = dns.reversename.from_address(nameserver)
         MODULE.info('Found reverse address: %s' % (reverse_address,))
-        reverse_lookup = resolver.query(reverse_address, 'PTR')
+        reverse_lookup = resolver.query(reverse_address, 'PTR',)
         if not len(reverse_lookup):
             return None
 
@@ -1013,7 +1013,7 @@ def get_fqdn(nameserver: str) -> str | None:
     return None
 
 
-def get_available_locales(pattern: Pattern[str], category: str = 'language_en') -> List[Dict[str, str]] | None:
+def get_available_locales(pattern: Pattern[str], category: str = 'language_en',) -> List[Dict[str, str]] | None:
     """Return a list of all available locales."""
     try:
         fsupported = open('/usr/share/i18n/SUPPORTED')
@@ -1023,7 +1023,7 @@ def get_available_locales(pattern: Pattern[str], category: str = 'language_en') 
         return None
 
     # get all locales that are supported
-    rsupported = csv.reader(fsupported, delimiter=' ')
+    rsupported = csv.reader(fsupported, delimiter=' ',)
     supportedLocales = {'C': True}
     for ilocale in rsupported:
         # we only support UTF-8
@@ -1035,10 +1035,10 @@ def get_available_locales(pattern: Pattern[str], category: str = 'language_en') 
         if m:
             supportedLocales[m.groups()[0]] = True
 
-    column = {'langcode': 0, 'language_en': 1, 'language': 2, 'countrycode': 4, 'fallbacklocale': 5}.get(category, 1)
+    column = {'langcode': 0, 'language_en': 1, 'language': 2, 'countrycode': 4, 'fallbacklocale': 5}.get(category, 1,)
 
     # open all languages
-    rlanguages = csv.reader(flanguages, delimiter=';')
+    rlanguages = csv.reader(flanguages, delimiter=';',)
     locales = []
     for ilang in rlanguages:
         if ilang[0].startswith('#'):
@@ -1053,7 +1053,7 @@ def get_available_locales(pattern: Pattern[str], category: str = 'language_en') 
             try:
                 # open the short list with countries belonging to the language
                 fshort = open(ipath)
-                rshort = csv.reader(fshort, delimiter='\t')
+                rshort = csv.reader(fshort, delimiter='\t',)
 
                 # create for each country a locale entry
                 for jcountry in rshort:
@@ -1105,7 +1105,7 @@ def get_country_data() -> Any:
     return _country_data
 
 
-def get_random_nameserver(country: Mapping[str, Any]) -> Dict[str, str | None]:
+def get_random_nameserver(country: Mapping[str, Any],) -> Dict[str, str | None]:
     ipv4_servers = country.get('ipv4') or country.get('ipv4_erroneous') or [None]
     ipv6_servers = country.get('ipv6') or country.get('ipv6_erroneous') or [None]
     return {
@@ -1114,12 +1114,12 @@ def get_random_nameserver(country: Mapping[str, Any]) -> Dict[str, str | None]:
     }
 
 
-def check_credentials_ad(nameserver: str, address: str, username: str, password: str) -> str:
+def check_credentials_ad(nameserver: str, address: str, username: str, password: str,) -> str:
     try:
-        ad_domain_info = lookup_adds_dc(address, ucr={'nameserver1': nameserver})
-        check_connection(ad_domain_info, username, password)
+        ad_domain_info = lookup_adds_dc(address, ucr={'nameserver1': nameserver},)
+        check_connection(ad_domain_info, username, password,)
         do_time_sync(address)
-        check_ad_account(ad_domain_info, username, password)
+        check_ad_account(ad_domain_info, username, password,)
     except failedADConnect:
         # Not checked... no AD!
         raise UMC_Error(_('The connection to the Active Directory server failed. Please recheck the address.'))

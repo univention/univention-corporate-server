@@ -43,21 +43,21 @@ umc_lib = import_umc_module('lib')
 class TestUMCModule(object):
     def test_message_sanitizer(self):
         sanitizer = umc_lib.server.MessageSanitizer(default='')
-        assert sanitizer.sanitize('message', {}) == ''
-        assert sanitizer.sanitize('message', {"message": "Echt gut"}) == "Echt gut"
+        assert sanitizer.sanitize('message', {},) == ''
+        assert sanitizer.sanitize('message', {"message": "Echt gut"},) == "Echt gut"
         if six.PY2:
-            assert sanitizer.sanitize('message', {"message": u"Ächt gut"}) == b"\xc3\x84cht gut"
+            assert sanitizer.sanitize('message', {"message": u"Ächt gut"},) == b"\xc3\x84cht gut"
 
-    def test_restart_isNeeded(self, instance, umc_request):
+    def test_restart_isNeeded(self, instance, umc_request,):
         instance.restart_isNeeded(umc_request)
         umc_request.expected_response(True)
 
-    def test_ping(self, instance, umc_request):
+    def test_ping(self, instance, umc_request,):
         instance.ping(umc_request)
         umc_request.expected_response({'success': True})
 
-    def test_restart(self, instance, mocker, umc_request):
-        mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess')
+    def test_restart(self, instance, mocker, umc_request,):
+        mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess',)
         out = b'''[ ok ] Restarting univention-management-console-server (via systemctl): univention-management-console-server.service.
         [ ok ] Restarting apache2 (via systemctl): apache2.service.
         '''
@@ -67,12 +67,12 @@ class TestUMCModule(object):
         mocked_subprocess.Popen.return_value = popen_mock
         instance.restart(umc_request)
         mocked_subprocess.call.assert_called_once_with('/usr/share/univention-updater/disable-apache2-umc')
-        mocked_subprocess.Popen.assert_called_once_with('/usr/share/univention-updater/enable-apache2-umc', stderr=1, stdout=-1)
+        mocked_subprocess.Popen.assert_called_once_with('/usr/share/univention-updater/enable-apache2-umc', stderr=1, stdout=-1,)
         umc_request.expected_response(True)
 
     @umc_requests([{}, {"message": "my message"}])
-    def test_shutdown(self, instance, mocker, umc_request):
-        mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess')
+    def test_shutdown(self, instance, mocker, umc_request,):
+        mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess',)
         mocked_subprocess.call.side_effect = [0, 0]
         if umc_request.options.get("message"):
             message = umc_request.options.get("message")
@@ -87,16 +87,16 @@ class TestUMCModule(object):
         assert args[0] == ('/sbin/shutdown', '-h', 'now', reason)
         umc_request.expected_response(None)
 
-    def test_failed_shutdown_failing(self, instance, mocker, umc_request):
-        mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess')
+    def test_failed_shutdown_failing(self, instance, mocker, umc_request,):
+        mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess',)
         mocked_subprocess.call.side_effect = [OSError, 1]
         with pytest.raises(ServerError):
             instance.shutdown(umc_request)
         assert mocked_subprocess.call.call_count == 2
 
     @umc_requests([{}, {"message": "my message"}])
-    def test_reboot(self, instance, mocker, umc_request):
-        mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess')
+    def test_reboot(self, instance, mocker, umc_request,):
+        mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess',)
         mocked_subprocess.call.side_effect = [0, 0]
         if umc_request.options.get("message"):
             message = umc_request.options.get("message")
@@ -111,8 +111,8 @@ class TestUMCModule(object):
         assert args[0] == ('/sbin/shutdown', '-r', 'now', reason)
         umc_request.expected_response(None)
 
-    def test_failed_reboot_failing(self, instance, mocker, umc_request):
-        mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess')
+    def test_failed_reboot_failing(self, instance, mocker, umc_request,):
+        mocked_subprocess = mocker.patch.object(umc_lib.server, 'subprocess',)
         mocked_subprocess.call.side_effect = [OSError, 1]
         with pytest.raises(ServerError):
             instance.reboot(umc_request)

@@ -21,19 +21,19 @@ error_set_password = 'The token you supplied is either expired or invalid. Pleas
 
 def main():
     account = utils.UCSTestDomainAdminCredentials()
-    user = SelfServiceUser(account.username, account.bindpw, language='en-US')
+    user = SelfServiceUser(account.username, account.bindpw, language='en-US',)
 
-    assert_raises(HTTPError, error_get_contact, user.get_contact)
-    assert_raises(HTTPError, error_set_contact, user.set_contact)
+    assert_raises(HTTPError, error_get_contact, user.get_contact,)
+    assert_raises(HTTPError, error_set_contact, user.set_contact,)
     # due to Bug #55346 get_reset_methods send_token always returns the same result
     assert user.get_reset_methods() == ["email"]
-    assert user.request('passwordreset/send_token', method='email').data['message'] == send_token_message
-    assert_raises(HTTPError, error_set_password, user.set_password, token='A', password='B')
+    assert user.request('passwordreset/send_token', method='email',).data['message'] == send_token_message
+    assert_raises(HTTPError, error_set_password, user.set_password, token='A', password='B',)
 
 
-def assert_raises(exc_type, message, callback, *args, **kwargs):
+def assert_raises(exc_type, message, callback,*args, **kwargs):
     try:
-        callback(*args, **kwargs)
+        callback(*args, **kwargs,)
     except exc_type as exc:
         if message:
             # TODO check actual message

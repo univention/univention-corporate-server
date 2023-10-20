@@ -293,13 +293,13 @@ COMPILE_TEMPLATE = '''def f(project):
 	#f.close()
 	return ''.join(lst)
 '''
-reg_act = re.compile(r"(?P<backslash>\\)|(?P<dollar>\$\$)|(?P<subst>\$\{(?P<code>[^}]*?)\})", re.M)
-def compile_template(line):
+reg_act = re.compile(r"(?P<backslash>\\)|(?P<dollar>\$\$)|(?P<subst>\$\{(?P<code>[^}]*?)\})", re.M,)
+def compile_template(line,):
 	"""
 	Compile a template expression into a python function (like jsps, but way shorter)
 	"""
 	extr = []
-	def repl(match):
+	def repl(match,):
 		g = match.group
 		if g('dollar'):
 			return "$"
@@ -310,7 +310,7 @@ def compile_template(line):
 			return "<<|@|>>"
 		return None
 
-	line2 = reg_act.sub(repl, line)
+	line2 = reg_act.sub(repl, line,)
 	params = line2.split('<<|@|>>')
 	assert(extr)
 
@@ -319,7 +319,7 @@ def compile_template(line):
 	buf = []
 	app = buf.append
 
-	def app(txt):
+	def app(txt,):
 		buf.append(indent * '\t' + txt)
 
 	for x in range(len(extr)):
@@ -353,24 +353,24 @@ def compile_template(line):
 	return Task.funex(fun)
 
 
-re_blank = re.compile('(\n|\r|\\s)*\n', re.M)
-def rm_blank_lines(txt):
-	txt = re_blank.sub('\r\n', txt)
+re_blank = re.compile('(\n|\r|\\s)*\n', re.M,)
+def rm_blank_lines(txt,):
+	txt = re_blank.sub('\r\n', txt,)
 	return txt
 
 BOM = '\xef\xbb\xbf'
 try:
-	BOM = bytes(BOM, 'latin-1') # python 3
+	BOM = bytes(BOM, 'latin-1',) # python 3
 except TypeError:
 	pass
 
-def stealth_write(self, data, flags='wb'):
+def stealth_write(self, data, flags='wb',):
 	try:
 		unicode
 	except NameError:
 		data = data.encode('utf-8') # python 3
 	else:
-		data = data.decode(sys.getfilesystemencoding(), 'replace')
+		data = data.decode(sys.getfilesystemencoding(), 'replace',)
 		data = data.encode('utf-8')
 
 	if self.name.endswith(('.vcproj', '.vcxproj')):
@@ -381,12 +381,12 @@ def stealth_write(self, data, flags='wb'):
 		if txt != data:
 			raise ValueError('must write')
 	except (IOError, ValueError):
-		self.write(data, flags=flags)
+		self.write(data, flags=flags,)
 	else:
-		Logs.debug('msvs: skipping %s', self.win32path())
+		Logs.debug('msvs: skipping %s', self.win32path(),)
 Node.Node.stealth_write = stealth_write
 
-re_win32 = re.compile(r'^([/\\]cygdrive)?[/\\]([a-z])([^a-z0-9_-].*)', re.I)
+re_win32 = re.compile(r'^([/\\]cygdrive)?[/\\]([a-z])([^a-z0-9_-].*)', re.I,)
 def win32path(self):
 	p = self.abspath()
 	m = re_win32.match(p)
@@ -396,17 +396,17 @@ def win32path(self):
 Node.Node.win32path = win32path
 
 re_quote = re.compile("[^a-zA-Z0-9-]")
-def quote(s):
-	return re_quote.sub("_", s)
+def quote(s,):
+	return re_quote.sub("_", s,)
 
-def xml_escape(value):
-	return value.replace("&", "&amp;").replace('"', "&quot;").replace("'", "&apos;").replace("<", "&lt;").replace(">", "&gt;")
+def xml_escape(value,):
+	return value.replace("&", "&amp;",).replace('"', "&quot;",).replace("'", "&apos;",).replace("<", "&lt;",).replace(">", "&gt;",)
 
-def make_uuid(v, prefix = None):
+def make_uuid(v, prefix = None,):
 	"""
 	simple utility function
 	"""
-	if isinstance(v, dict):
+	if isinstance(v, dict,):
 		keys = list(v.keys())
 		keys.sort()
 		tmp = str([(k, v[k]) for k in keys])
@@ -415,10 +415,10 @@ def make_uuid(v, prefix = None):
 	d = Utils.md5(tmp.encode()).hexdigest().upper()
 	if prefix:
 		d = '%s%s' % (prefix, d[8:])
-	gid = uuid.UUID(d, version = 4)
+	gid = uuid.UUID(d, version = 4,)
 	return str(gid).upper()
 
-def diff(node, fromnode):
+def diff(node, fromnode,):
 	# difference between two nodes, but with "(..)" instead of ".."
 	c1 = node
 	c2 = fromnode
@@ -459,7 +459,7 @@ class vsnode(object):
 	Abstract class representing visual studio elements
 	We assume that all visual studio nodes have a uuid and a parent
 	"""
-	def __init__(self, ctx):
+	def __init__(self, ctx,):
 		self.ctx = ctx # msvs context
 		self.name = '' # string, mandatory
 		self.vspath = '' # path in visual studio (name for dirs, absolute path for projects)
@@ -470,7 +470,7 @@ class vsnode(object):
 		"""
 		Override in subclasses...
 		"""
-		return 'cd /d "%s" & %s' % (self.ctx.srcnode.win32path(), getattr(self.ctx, 'waf_command', 'waf.bat'))
+		return 'cd /d "%s" & %s' % (self.ctx.srcnode.win32path(), getattr(self.ctx, 'waf_command', 'waf.bat',))
 
 	def ptype(self):
 		"""
@@ -484,7 +484,7 @@ class vsnode(object):
 		"""
 		pass
 
-	def make_uuid(self, val):
+	def make_uuid(self, val,):
 		"""
 		Alias for creating uuid values easily (the templates cannot access global variables)
 		"""
@@ -495,8 +495,8 @@ class vsnode_vsdir(vsnode):
 	Nodes representing visual studio folders (which do not match the filesystem tree!)
 	"""
 	VS_GUID_SOLUTIONFOLDER = "2150E333-8FDC-42A3-9474-1A3956D46DE8"
-	def __init__(self, ctx, uuid, name, vspath=''):
-		vsnode.__init__(self, ctx)
+	def __init__(self, ctx, uuid, name, vspath='',):
+		vsnode.__init__(self, ctx,)
 		self.title = self.name = name
 		self.uuid = uuid
 		self.vspath = vspath or name
@@ -513,12 +513,12 @@ class vsnode_project(vsnode):
 	def ptype(self):
 		return self.VS_GUID_VCPROJ
 
-	def __init__(self, ctx, node):
-		vsnode.__init__(self, ctx)
+	def __init__(self, ctx, node,):
+		vsnode.__init__(self, ctx,)
 		self.path = node
 		self.uuid = make_uuid(node.win32path())
 		self.name = node.name
-		self.platform_toolset_ver = getattr(ctx, 'platform_toolset_ver', None)
+		self.platform_toolset_ver = getattr(ctx, 'platform_toolset_ver', None,)
 		self.title = self.path.win32path()
 		self.source = [] # list of node objects
 		self.build_properties = [] # list of properties (nmake commands, output dir, etc)
@@ -529,7 +529,7 @@ class vsnode_project(vsnode):
 		for writing the filters
 		"""
 		lst = []
-		def add(x):
+		def add(x,):
 			if x.height() > self.tg.path.height() and x not in lst:
 				lst.append(x)
 				add(x.parent)
@@ -538,7 +538,7 @@ class vsnode_project(vsnode):
 		return lst
 
 	def write(self):
-		Logs.debug('msvs: creating %r', self.path)
+		Logs.debug('msvs: creating %r', self.path,)
 
 		# first write the project file
 		template1 = compile_template(PROJECT_TEMPLATE)
@@ -553,7 +553,7 @@ class vsnode_project(vsnode):
 		tmp = self.path.parent.make_node(self.path.name + '.filters')
 		tmp.stealth_write(filter_str)
 
-	def get_key(self, node):
+	def get_key(self, node,):
 		"""
 		required for writing the source files
 		"""
@@ -582,26 +582,26 @@ class vsnode_project(vsnode):
 				ret.append(x)
 		self.build_properties = ret
 
-	def get_build_params(self, props):
+	def get_build_params(self, props,):
 		opt = '--execsolution=%s' % self.ctx.get_solution_node().win32path()
 		return (self.get_waf(), opt)
 
-	def get_build_command(self, props):
+	def get_build_command(self, props,):
 		return "%s build %s" % self.get_build_params(props)
 
-	def get_clean_command(self, props):
+	def get_clean_command(self, props,):
 		return "%s clean %s" % self.get_build_params(props)
 
-	def get_rebuild_command(self, props):
+	def get_rebuild_command(self, props,):
 		return "%s clean build %s" % self.get_build_params(props)
 
-	def get_filter_name(self, node):
-		lst = diff(node, self.tg.path)
+	def get_filter_name(self, node,):
+		lst = diff(node, self.tg.path,)
 		return '\\'.join(lst) or '.'
 
 class vsnode_alias(vsnode_project):
-	def __init__(self, ctx, node, name):
-		vsnode_project.__init__(self, ctx, node)
+	def __init__(self, ctx, node, name,):
+		vsnode_project.__init__(self, ctx, node,)
 		self.name = name
 		self.output_file = ''
 
@@ -610,32 +610,32 @@ class vsnode_build_all(vsnode_alias):
 	Fake target used to emulate the behaviour of "make all" (starting one process by target is slow)
 	This is the only alias enabled by default
 	"""
-	def __init__(self, ctx, node, name='build_all_projects'):
-		vsnode_alias.__init__(self, ctx, node, name)
+	def __init__(self, ctx, node, name='build_all_projects',):
+		vsnode_alias.__init__(self, ctx, node, name,)
 		self.is_active = True
 
 class vsnode_install_all(vsnode_alias):
 	"""
 	Fake target used to emulate the behaviour of "make install"
 	"""
-	def __init__(self, ctx, node, name='install_all_projects'):
-		vsnode_alias.__init__(self, ctx, node, name)
+	def __init__(self, ctx, node, name='install_all_projects',):
+		vsnode_alias.__init__(self, ctx, node, name,)
 
-	def get_build_command(self, props):
+	def get_build_command(self, props,):
 		return "%s build install %s" % self.get_build_params(props)
 
-	def get_clean_command(self, props):
+	def get_clean_command(self, props,):
 		return "%s clean %s" % self.get_build_params(props)
 
-	def get_rebuild_command(self, props):
+	def get_rebuild_command(self, props,):
 		return "%s clean build install %s" % self.get_build_params(props)
 
 class vsnode_project_view(vsnode_alias):
 	"""
 	Fake target used to emulate a file system view
 	"""
-	def __init__(self, ctx, node, name='project_view'):
-		vsnode_alias.__init__(self, ctx, node, name)
+	def __init__(self, ctx, node, name='project_view',):
+		vsnode_alias.__init__(self, ctx, node, name,)
 		self.tg = self.ctx() # fake one, cannot remove
 		self.exclude_files = Node.exclude_regs + '''
 waf-2*
@@ -650,16 +650,16 @@ waf3-2*/**
 
 	def collect_source(self):
 		# this is likely to be slow
-		self.source = self.ctx.srcnode.ant_glob('**', excl=self.exclude_files)
+		self.source = self.ctx.srcnode.ant_glob('**', excl=self.exclude_files,)
 
-	def get_build_command(self, props):
+	def get_build_command(self, props,):
 		params = self.get_build_params(props) + (self.ctx.cmd,)
 		return "%s %s %s" % params
 
-	def get_clean_command(self, props):
+	def get_clean_command(self, props,):
 		return ""
 
-	def get_rebuild_command(self, props):
+	def get_rebuild_command(self, props,):
 		return self.get_build_command(props)
 
 class vsnode_target(vsnode_project):
@@ -667,46 +667,46 @@ class vsnode_target(vsnode_project):
 	Visual studio project representing a targets (programs, libraries, etc) and bound
 	to a task generator
 	"""
-	def __init__(self, ctx, tg):
+	def __init__(self, ctx, tg,):
 		"""
 		A project is more or less equivalent to a file/folder
 		"""
-		base = getattr(ctx, 'projects_dir', None) or tg.path
+		base = getattr(ctx, 'projects_dir', None,) or tg.path
 		node = base.make_node(quote(tg.name) + ctx.project_extension) # the project file as a Node
-		vsnode_project.__init__(self, ctx, node)
+		vsnode_project.__init__(self, ctx, node,)
 		self.name = quote(tg.name)
 		self.tg     = tg  # task generator
 
-	def get_build_params(self, props):
+	def get_build_params(self, props,):
 		"""
 		Override the default to add the target name
 		"""
 		opt = '--execsolution=%s' % self.ctx.get_solution_node().win32path()
-		if getattr(self, 'tg', None):
+		if getattr(self, 'tg', None,):
 			opt += " --targets=%s" % self.tg.name
 		return (self.get_waf(), opt)
 
 	def collect_source(self):
 		tg = self.tg
-		source_files = tg.to_nodes(getattr(tg, 'source', []))
-		include_dirs = Utils.to_list(getattr(tg, 'msvs_includes', []))
+		source_files = tg.to_nodes(getattr(tg, 'source', [],))
+		include_dirs = Utils.to_list(getattr(tg, 'msvs_includes', [],))
 		include_files = []
 		for x in include_dirs:
-			if isinstance(x, str):
+			if isinstance(x, str,):
 				x = tg.path.find_node(x)
 			if x:
-				lst = [y for y in x.ant_glob(HEADERS_GLOB, flat=False)]
+				lst = [y for y in x.ant_glob(HEADERS_GLOB, flat=False,)]
 				include_files.extend(lst)
 
 		# remove duplicates
 		self.source.extend(list(set(source_files + include_files)))
-		self.source.sort(key=lambda x: x.win32path())
+		self.source.sort(key=lambda x,: x.win32path())
 
 	def collect_properties(self):
 		"""
 		Visual studio projects are associated with platforms and configurations (for building especially)
 		"""
-		super(vsnode_target, self).collect_properties()
+		super(vsnode_target, self,).collect_properties()
 		for x in self.build_properties:
 			x.outdir = self.path.parent.win32path()
 			x.preprocessor_definitions = ''
@@ -733,28 +733,28 @@ class msvs_generator(BuildContext):
 		"""
 		Some data that needs to be present
 		"""
-		if not getattr(self, 'configurations', None):
+		if not getattr(self, 'configurations', None,):
 			self.configurations = ['Release'] # LocalRelease, RemoteDebug, etc
-		if not getattr(self, 'platforms', None):
+		if not getattr(self, 'platforms', None,):
 			self.platforms = ['Win32']
-		if not getattr(self, 'all_projects', None):
+		if not getattr(self, 'all_projects', None,):
 			self.all_projects = []
-		if not getattr(self, 'project_extension', None):
+		if not getattr(self, 'project_extension', None,):
 			self.project_extension = '.vcxproj'
-		if not getattr(self, 'projects_dir', None):
+		if not getattr(self, 'projects_dir', None,):
 			self.projects_dir = self.srcnode.make_node('.depproj')
 			self.projects_dir.mkdir()
 
 		# bind the classes to the object, so that subclass can provide custom generators
-		if not getattr(self, 'vsnode_vsdir', None):
+		if not getattr(self, 'vsnode_vsdir', None,):
 			self.vsnode_vsdir = vsnode_vsdir
-		if not getattr(self, 'vsnode_target', None):
+		if not getattr(self, 'vsnode_target', None,):
 			self.vsnode_target = vsnode_target
-		if not getattr(self, 'vsnode_build_all', None):
+		if not getattr(self, 'vsnode_build_all', None,):
 			self.vsnode_build_all = vsnode_build_all
-		if not getattr(self, 'vsnode_install_all', None):
+		if not getattr(self, 'vsnode_install_all', None,):
 			self.vsnode_install_all = vsnode_install_all
-		if not getattr(self, 'vsnode_project_view', None):
+		if not getattr(self, 'vsnode_project_view', None,):
 			self.vsnode_project_view = vsnode_project_view
 
 		self.numver = self.__class__.numver
@@ -785,15 +785,15 @@ class msvs_generator(BuildContext):
 		self.collect_targets()
 		self.add_aliases()
 		self.collect_dirs()
-		default_project = getattr(self, 'default_project', None)
-		def sortfun(x):
+		default_project = getattr(self, 'default_project', None,)
+		def sortfun(x,):
 			# folders should sort to the top
-			if getattr(x, 'VS_GUID_SOLUTIONFOLDER', None):
+			if getattr(x, 'VS_GUID_SOLUTIONFOLDER', None,):
 				return ''
 			# followed by the default project
 			elif x.name == default_project:
 				return ' '
-			return getattr(x, 'path', None) and x.path.win32path() or x.name
+			return getattr(x, 'path', None,) and x.path.win32path() or x.name
 		self.all_projects.sort(key=sortfun)
 
 	def write_files(self):
@@ -807,7 +807,7 @@ class msvs_generator(BuildContext):
 		# and finally write the solution file
 		node = self.get_solution_node()
 		node.parent.mkdir()
-		Logs.warn('Creating %r', node)
+		Logs.warn('Creating %r', node,)
 		template1 = compile_template(SOLUTION_TEMPLATE)
 		sln_str = template1(self)
 		sln_str = rm_blank_lines(sln_str)
@@ -823,9 +823,9 @@ class msvs_generator(BuildContext):
 		except AttributeError:
 			pass
 
-		solution_name = getattr(self, 'solution_name', None)
+		solution_name = getattr(self, 'solution_name', None,)
 		if not solution_name:
-			solution_name = getattr(Context.g_module, Context.APPNAME, 'project') + '.sln'
+			solution_name = getattr(Context.g_module, Context.APPNAME, 'project',) + '.sln'
 		if os.path.isabs(solution_name):
 			self.solution_node = self.root.make_node(solution_name)
 		else:
@@ -848,16 +848,16 @@ class msvs_generator(BuildContext):
 		"""
 		for g in self.groups:
 			for tg in g:
-				if not isinstance(tg, TaskGen.task_gen):
+				if not isinstance(tg, TaskGen.task_gen,):
 					continue
 
-				if not hasattr(tg, 'msvs_includes'):
-					tg.msvs_includes = tg.to_list(getattr(tg, 'includes', [])) + tg.to_list(getattr(tg, 'export_includes', []))
+				if not hasattr(tg, 'msvs_includes',):
+					tg.msvs_includes = tg.to_list(getattr(tg, 'includes', [],)) + tg.to_list(getattr(tg, 'export_includes', [],))
 				tg.post()
-				if not getattr(tg, 'link_task', None):
+				if not getattr(tg, 'link_task', None,):
 					continue
 
-				p = self.vsnode_target(self, tg)
+				p = self.vsnode_target(self, tg,)
 				p.collect_source() # delegate this processing
 				p.collect_properties()
 				self.all_projects.append(p)
@@ -867,25 +867,25 @@ class msvs_generator(BuildContext):
 		Add a specific target that emulates the "make all" necessary for Visual studio when pressing F7
 		We also add an alias for "make install" (disabled by default)
 		"""
-		base = getattr(self, 'projects_dir', None) or self.tg.path
+		base = getattr(self, 'projects_dir', None,) or self.tg.path
 
 		node_project = base.make_node('build_all_projects' + self.project_extension) # Node
-		p_build = self.vsnode_build_all(self, node_project)
+		p_build = self.vsnode_build_all(self, node_project,)
 		p_build.collect_properties()
 		self.all_projects.append(p_build)
 
 		node_project = base.make_node('install_all_projects' + self.project_extension) # Node
-		p_install = self.vsnode_install_all(self, node_project)
+		p_install = self.vsnode_install_all(self, node_project,)
 		p_install.collect_properties()
 		self.all_projects.append(p_install)
 
 		node_project = base.make_node('project_view' + self.project_extension) # Node
-		p_view = self.vsnode_project_view(self, node_project)
+		p_view = self.vsnode_project_view(self, node_project,)
 		p_view.collect_source()
 		p_view.collect_properties()
 		self.all_projects.append(p_view)
 
-		n = self.vsnode_vsdir(self, make_uuid(self.srcnode.win32path() + 'build_aliases'), "build_aliases")
+		n = self.vsnode_vsdir(self, make_uuid(self.srcnode.win32path() + 'build_aliases'), "build_aliases",)
 		p_build.parent = p_install.parent = p_view.parent = n
 		self.all_projects.append(n)
 
@@ -894,9 +894,9 @@ class msvs_generator(BuildContext):
 		Create the folder structure in the Visual studio project view
 		"""
 		seen = {}
-		def make_parents(proj):
+		def make_parents(proj,):
 			# look at a project, try to make a parent
-			if getattr(proj, 'parent', None):
+			if getattr(proj, 'parent', None,):
 				# aliases already have parents
 				return
 			x = proj.iter_path
@@ -906,7 +906,7 @@ class msvs_generator(BuildContext):
 
 			# There is not vsnode_vsdir for x.
 			# So create a project representing the folder "x"
-			n = proj.parent = seen[x] = self.vsnode_vsdir(self, make_uuid(x.win32path()), x.name)
+			n = proj.parent = seen[x] = self.vsnode_vsdir(self, make_uuid(x.win32path()), x.name,)
 			n.iter_path = x.parent
 			self.all_projects.append(n)
 
@@ -915,7 +915,7 @@ class msvs_generator(BuildContext):
 				make_parents(n)
 
 		for p in self.all_projects[:]: # iterate over a copy of all projects
-			if not getattr(p, 'tg', None):
+			if not getattr(p, 'tg', None,):
 				# but only projects that have a task generator
 				continue
 
@@ -926,7 +926,7 @@ class msvs_generator(BuildContext):
 def wrap_2008(cls):
 	class dec(cls):
 		def __init__(self, *k, **kw):
-			cls.__init__(self, *k, **kw)
+			cls.__init__(self, *k, **kw,)
 			self.project_template = PROJECT_2008_TEMPLATE
 
 		def display_filter(self):
@@ -938,7 +938,7 @@ def wrap_2008(cls):
 			root.name = ''
 
 			@Utils.run_once
-			def add_path(lst):
+			def add_path(lst,):
 				if not lst:
 					return root
 				child = build_property()
@@ -958,7 +958,7 @@ def wrap_2008(cls):
 				par = add_path(tmp)
 				par.source.append(x)
 
-			def display(n):
+			def display(n,):
 				buf = []
 				for x in n.source:
 					buf.append('<File RelativePath="%s" FileType="%s"/>\n' % (xml_escape(x.win32path()), self.get_key(x)))
@@ -970,7 +970,7 @@ def wrap_2008(cls):
 
 			return display(root)
 
-		def get_key(self, node):
+		def get_key(self, node,):
 			"""
 			If you do not want to let visual studio use the default file extensions,
 			override this method to return a value:
@@ -986,7 +986,7 @@ def wrap_2008(cls):
 			return ''
 
 		def write(self):
-			Logs.debug('msvs: creating %r', self.path)
+			Logs.debug('msvs: creating %r', self.path,)
 			template1 = compile_template(self.project_template)
 			proj_str = template1(self)
 			proj_str = rm_blank_lines(proj_str)
@@ -1002,39 +1002,39 @@ class msvs_2008_generator(msvs_generator):
 	vsver = '2008'
 
 	def init(self):
-		if not getattr(self, 'project_extension', None):
+		if not getattr(self, 'project_extension', None,):
 			self.project_extension = '_2008.vcproj'
-		if not getattr(self, 'solution_name', None):
-			self.solution_name = getattr(Context.g_module, Context.APPNAME, 'project') + '_2008.sln'
+		if not getattr(self, 'solution_name', None,):
+			self.solution_name = getattr(Context.g_module, Context.APPNAME, 'project',) + '_2008.sln'
 
-		if not getattr(self, 'vsnode_target', None):
+		if not getattr(self, 'vsnode_target', None,):
 			self.vsnode_target = wrap_2008(vsnode_target)
-		if not getattr(self, 'vsnode_build_all', None):
+		if not getattr(self, 'vsnode_build_all', None,):
 			self.vsnode_build_all = wrap_2008(vsnode_build_all)
-		if not getattr(self, 'vsnode_install_all', None):
+		if not getattr(self, 'vsnode_install_all', None,):
 			self.vsnode_install_all = wrap_2008(vsnode_install_all)
-		if not getattr(self, 'vsnode_project_view', None):
+		if not getattr(self, 'vsnode_project_view', None,):
 			self.vsnode_project_view = wrap_2008(vsnode_project_view)
 
 		msvs_generator.init(self)
 
-def options(ctx):
+def options(ctx,):
 	"""
 	If the msvs option is used, try to detect if the build is made from visual studio
 	"""
-	ctx.add_option('--execsolution', action='store', help='when building with visual studio, use a build state file')
+	ctx.add_option('--execsolution', action='store', help='when building with visual studio, use a build state file',)
 
 	old = BuildContext.execute
-	def override_build_state(ctx):
-		def lock(rm, add):
-			uns = ctx.options.execsolution.replace('.sln', rm)
+	def override_build_state(ctx,):
+		def lock(rm, add,):
+			uns = ctx.options.execsolution.replace('.sln', rm,)
 			uns = ctx.root.make_node(uns)
 			try:
 				uns.delete()
 			except OSError:
 				pass
 
-			uns = ctx.options.execsolution.replace('.sln', add)
+			uns = ctx.options.execsolution.replace('.sln', add,)
 			uns = ctx.root.make_node(uns)
 			try:
 				uns.write('')
@@ -1043,9 +1043,9 @@ def options(ctx):
 
 		if ctx.options.execsolution:
 			ctx.launch_dir = Context.top_dir # force a build for the whole project (invalid cwd when called by visual studio)
-			lock('.lastbuildstate', '.unsuccessfulbuild')
+			lock('.lastbuildstate', '.unsuccessfulbuild',)
 			old(ctx)
-			lock('.unsuccessfulbuild', '.lastbuildstate')
+			lock('.unsuccessfulbuild', '.lastbuildstate',)
 		else:
 			old(ctx)
 	BuildContext.execute = override_build_state

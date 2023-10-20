@@ -45,40 +45,40 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         self.tester = uub.UPCFileTester()
         self.tester.addTest(
             re.compile(r'eval\s+(`|[$][(])\s*(/usr/sbin/)?(ucr|univention-baseconfig|univention-config-registry)\s+shell\s*[^`)]*[`)]\s*'),
-            '0017-1', 'unquoted call of eval "$(ucr shell)"', cntmax=0)
+            '0017-1', 'unquoted call of eval "$(ucr shell)"', cntmax=0,)
         self.tester.addTest(re.compile(
-            r'\b tr \s+ (-[a-zA-Z]+\s+)* \[', re.VERBOSE),
-            '0017-2', 'unquoted argument for tr (e.g. "tr -d [a-z]")', cntmax=0)
+            r'\b tr \s+ (-[a-zA-Z]+\s+)* \[', re.VERBOSE,),
+            '0017-2', 'unquoted argument for tr (e.g. "tr -d [a-z]")', cntmax=0,)
         self.tester.addTest(re.compile(
-            r'''\b tr \s+ (-[a-zA-Z]+\s+)* ["']\[+[^\]]+\]+["']\s+\[''', re.VERBOSE),
-            '0017-2', 'unquoted argument for tr (e.g. "tr -d [a-z]")', cntmax=0)
+            r'''\b tr \s+ (-[a-zA-Z]+\s+)* ["']\[+[^\]]+\]+["']\s+\[''', re.VERBOSE,),
+            '0017-2', 'unquoted argument for tr (e.g. "tr -d [a-z]")', cntmax=0,)
         self.tester.addTest(re.compile(
-            r'\b univention-ldapsearch \b .* \s-[a-wyzA-Z]*x[a-wyzA-Z]* \b', re.VERBOSE),
-            '0017-3', 'use of univention-ldapsearch -x', cntmax=0)
+            r'\b univention-ldapsearch \b .* \s-[a-wyzA-Z]*x[a-wyzA-Z]* \b', re.VERBOSE,),
+            '0017-3', 'use of univention-ldapsearch -x', cntmax=0,)
         self.tester.addTest(
-            re.compile(r'\b (?:/sbin/)? ip6?tables \b \s+ (?!--wait \b)', re.VERBOSE),
-            '0017-4', 'iptables without --wait', cntmax=0)
+            re.compile(r'\b (?:/sbin/)? ip6?tables \b \s+ (?!--wait \b)', re.VERBOSE,),
+            '0017-4', 'iptables without --wait', cntmax=0,)
         self.tester.addTest(
-            re.compile(r'\b sed \s+ .* s (.) .* \\\(\.\*\\\) \$? \1 \\1 \1', re.VERBOSE),
-            '0017-5', 'Use `sed -n "s/^prefix: //p"`', cntmax=0)
+            re.compile(r'\b sed \s+ .* s (.) .* \\\(\.\*\\\) \$? \1 \\1 \1', re.VERBOSE,),
+            '0017-5', 'Use `sed -n "s/^prefix: //p"`', cntmax=0,)
         self.tester.addTest(
-            re.compile(r'\b sed (?: \s+ -[bnsuz]*[Er][bnsuze]* \b )+ .* s (.) .* \(\.\*\) \$? \1 \\1 \1', re.VERBOSE),
-            '0017-5', 'Use `sed -n "s/^prefix: //p"`', cntmax=0)
+            re.compile(r'\b sed (?: \s+ -[bnsuz]*[Er][bnsuze]* \b )+ .* s (.) .* \(\.\*\) \$? \1 \\1 \1', re.VERBOSE,),
+            '0017-5', 'Use `sed -n "s/^prefix: //p"`', cntmax=0,)
         self.tester.addTest(
-            re.compile(r'\b ldapsearch \b .+ \b ldapsearch-wrapper \b', re.VERBOSE),
-            '0017-6', 'Use `ldapsearch -o ldif-wrap=no`', cntmax=0)
+            re.compile(r'\b ldapsearch \b .+ \b ldapsearch-wrapper \b', re.VERBOSE,),
+            '0017-6', 'Use `ldapsearch -o ldif-wrap=no`', cntmax=0,)
         self.tester.addTest(
-            re.compile(r'\b (\w+) \[ \${\#\1\[[@*]\]} \]=', re.VERBOSE),
-            '0017-7', 'Use `array+=(val)`', cntmax=0)
+            re.compile(r'\b (\w+) \[ \${\#\1\[[@*]\]} \]=', re.VERBOSE,),
+            '0017-7', 'Use `array+=(val)`', cntmax=0,)
         self.tester.addTest(
-            re.compile(r'''\b (?:cat|more) \s+ (?:'[^']*'|"[^"]*"|[^"'*? |])+ \s* \|(?!\|)''', re.VERBOSE),
-            '0017-8', "Useless use of `cat`; redirect STDIN instead", cntmax=0)
+            re.compile(r'''\b (?:cat|more) \s+ (?:'[^']*'|"[^"]*"|[^"'*? |])+ \s* \|(?!\|)''', re.VERBOSE,),
+            '0017-8', "Useless use of `cat`; redirect STDIN instead", cntmax=0,)
         self.tester.addTest(
-            re.compile(r'\b grep \b .* \|(?!\|) .* \b (?:awk|perl|sed) \b', re.VERBOSE),
-            '0017-9', "Useless use of `grep`; use /PATTERN/s instead", cntmax=0)
+            re.compile(r'\b grep \b .* \|(?!\|) .* \b (?:awk|perl|sed) \b', re.VERBOSE,),
+            '0017-9', "Useless use of `grep`; use /PATTERN/s instead", cntmax=0,)
         self.tester.addTest(
-            re.compile(r'\b echo \s+ (?:-[ne]+ \s+)* (")? \$\( [^<][^)]* \) \1 \s* (?:$|[|&]|\d*[<>])', re.VERBOSE),
-            '0017-10', "Useless use of `echo $(...)` for single argument", cntmax=0)
+            re.compile(r'\b echo \s+ (?:-[ne]+ \s+)* (")? \$\( [^<][^)]* \) \1 \s* (?:$|[|&]|\d*[<>])', re.VERBOSE,),
+            '0017-10', "Useless use of `echo $(...)` for single argument", cntmax=0,)
 
     def getMsgIds(self) -> uub.MsgIds:
         return {
@@ -94,13 +94,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0017-10': (uub.RESULT_STYLE, "Useless use of `echo $(...)` for single argument"),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: str,) -> None:
         super().check(path)
 
         #
         # search shell scripts and execute test
         #
-        for fn in uub.FilteredDirWalkGenerator(path, suffixes=['.sh'], reHashBang=RE_HASHBANG_SHELL):
+        for fn in uub.FilteredDirWalkGenerator(path, suffixes=['.sh'], reHashBang=RE_HASHBANG_SHELL,):
             try:
                 self.tester.open(fn)
             except OSError:

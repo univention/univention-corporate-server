@@ -37,13 +37,13 @@ import pytest
 from univentionunittests import import_module
 
 
-_uldap = import_module('uldap', 'modules/', 'univention.uldap', use_installed=False)  # not needed. but we have to import it
-univention_password = import_module('password', 'modules/', 'univention.password', use_installed=False)
+_uldap = import_module('uldap', 'modules/', 'univention.uldap', use_installed=False,)  # not needed. but we have to import it
+univention_password = import_module('password', 'modules/', 'univention.password', use_installed=False,)
 
 
 @pytest.fixture()
-def mocked_ucr(mock_ucr, mocker):
-    mock = mocker.patch.object(univention_password, 'ucr')
+def mocked_ucr(mock_ucr, mocker,):
+    mock = mocker.patch.object(univention_password, 'ucr',)
     mock.ucr = mock_ucr
     return mock_ucr
 
@@ -60,7 +60,7 @@ def password_radius_config():
     return cfg
 
 
-def password_stats(cfg, password):
+def password_stats(cfg, password,):
     """Calculate password stats based on given configuration"""
     special_characters = string.punctuation
     forbidden_characters = cfg.get('forbidden') or ''
@@ -85,9 +85,9 @@ def password_stats(cfg, password):
     return {'digits': digits, 'lower': lower, 'other': other, 'upper': upper, 'forbidden': forbidden}
 
 
-def match_password_complexity(cfg, password):
+def match_password_complexity(cfg, password,):
     """Test if given password matches complexity criteria."""
-    stats = password_stats(cfg, password)
+    stats = password_stats(cfg, password,)
 
     for stat in ['digits', 'lower', 'other', 'upper']:
         if cfg[stat] == 0 and stats[stat]:
@@ -100,44 +100,44 @@ def match_password_complexity(cfg, password):
 class TestPasswordConfigDefaults(object):
     """Test all cases of no-scoped defaults"""
 
-    def test_digit_count(self, password_config_default):
+    def test_digit_count(self, password_config_default,):
         assert password_config_default['digits'] == 6
 
-    def test_lowercase_count(self, password_config_default):
+    def test_lowercase_count(self, password_config_default,):
         assert password_config_default['lower'] == 6
 
-    def test_special_count(self, password_config_default):
+    def test_special_count(self, password_config_default,):
         assert password_config_default['other'] == 0
 
-    def test_uppercase(self, password_config_default):
+    def test_uppercase(self, password_config_default,):
         assert password_config_default['upper'] == 6
 
-    def test_min_length(self, password_config_default):
+    def test_min_length(self, password_config_default,):
         assert password_config_default['min_length'] == 24
 
-    def test_special_characters(self, password_config_default):
+    def test_special_characters(self, password_config_default,):
         assert password_config_default['forbidden'] == '0Ol1I'
 
 
 class TestScopedPasswordConfigDefaults(object):
     """Test all cases of radius 'scope' defaults"""
 
-    def test_radius_digit_count(self, password_radius_config):
+    def test_radius_digit_count(self, password_radius_config,):
         assert password_radius_config['digits'] == 6
 
-    def test_radius_lowercase_count(self, password_radius_config):
+    def test_radius_lowercase_count(self, password_radius_config,):
         assert password_radius_config['lower'] == 6
 
-    def test_radius_special_count(self, password_radius_config):
+    def test_radius_special_count(self, password_radius_config,):
         assert password_radius_config['other'] == 0
 
-    def test_radius_uppercase(self, password_radius_config):
+    def test_radius_uppercase(self, password_radius_config,):
         assert password_radius_config['upper'] == 6
 
-    def test_radius_min_length(self, password_radius_config):
+    def test_radius_min_length(self, password_radius_config,):
         assert password_radius_config['min_length'] == 24
 
-    def test_radius_special_characters(self, password_radius_config):
+    def test_radius_special_characters(self, password_radius_config,):
         assert password_radius_config['forbidden'] == '0Ol1I'
 
 
@@ -146,27 +146,27 @@ class TestScopedPasswordConfigFallback(object):
 
     scope = 'radius'
 
-    def test_digit_count(self, mocked_ucr):
+    def test_digit_count(self, mocked_ucr,):
         cfg = univention_password.password_config(self.scope)
         assert cfg['digits'] == 6
 
-    def test_lowercase_count(self, mocked_ucr):
+    def test_lowercase_count(self, mocked_ucr,):
         cfg = univention_password.password_config(self.scope)
         assert cfg['lower'] == 6
 
-    def test_special_count(self, mocked_ucr):
+    def test_special_count(self, mocked_ucr,):
         cfg = univention_password.password_config(self.scope)
         assert cfg['other'] == 0
 
-    def test_uppercase(self, mocked_ucr, password_config_default):
+    def test_uppercase(self, mocked_ucr, password_config_default,):
         cfg = univention_password.password_config(self.scope)
         assert cfg['upper'] == 6
 
-    def test_min_length(self, mocked_ucr, password_config_default):
+    def test_min_length(self, mocked_ucr, password_config_default,):
         cfg = univention_password.password_config(self.scope)
         assert cfg['min_length'] == 24
 
-    def test_special_characters(self, mocked_ucr, password_config_default):
+    def test_special_characters(self, mocked_ucr, password_config_default,):
         cfg = univention_password.password_config(self.scope)
         assert cfg['forbidden'] == '0Ol1I'
 
@@ -176,32 +176,32 @@ class TestScopedPasswordConfigCustomizing(object):
 
     scope = 'radius'
 
-    def test_digit_count(self, mocked_ucr):
+    def test_digit_count(self, mocked_ucr,):
         mocked_ucr['password/%s/quality/credit/digits' % self.scope] = '10'
         cfg = univention_password.password_config(self.scope)
         assert cfg['digits'] == 10
 
-    def test_lowercase_count(self, mocked_ucr):
+    def test_lowercase_count(self, mocked_ucr,):
         mocked_ucr['password/%s/quality/credit/lower' % self.scope] = '11'
         cfg = univention_password.password_config(self.scope)
         assert cfg['lower'] == 11
 
-    def test_special_count(self, mocked_ucr):
+    def test_special_count(self, mocked_ucr,):
         mocked_ucr['password/%s/quality/credit/other' % self.scope] = '12'
         cfg = univention_password.password_config(self.scope)
         assert cfg['other'] == 12
 
-    def test_uppercase(self, mocked_ucr, password_config_default):
+    def test_uppercase(self, mocked_ucr, password_config_default,):
         mocked_ucr['password/%s/quality/credit/upper' % self.scope] = '13'
         cfg = univention_password.password_config(self.scope)
         assert cfg['upper'] == 13
 
-    def test_min_length(self, mocked_ucr, password_config_default):
+    def test_min_length(self, mocked_ucr, password_config_default,):
         mocked_ucr['password/%s/quality/length/min' % self.scope] = '14'
         cfg = univention_password.password_config(self.scope)
         assert cfg['min_length'] == 14
 
-    def test_special_characters(self, mocked_ucr, password_config_default):
+    def test_special_characters(self, mocked_ucr, password_config_default,):
         mocked_ucr['password/%s/quality/forbidden/chars' % self.scope] = ''
         cfg = univention_password.password_config(self.scope)
         assert cfg['forbidden'] == ''
@@ -215,7 +215,7 @@ class TestPasswordConfigDigitCount(object):
             univention_password.generate_password(**cfg)
 
     def test_negative(self):
-        with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative"):
+        with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative",):
             cfg = {'digits': -1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
             univention_password.generate_password(**cfg)
 
@@ -224,14 +224,14 @@ class TestPasswordConfigDigitCount(object):
         cfg = {'digits': digit_count, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
         pwd = univention_password.generate_password(**cfg)
 
-        assert (password_stats(cfg, pwd)['digits'] == digit_count)
+        assert (password_stats(cfg, pwd,)['digits'] == digit_count)
 
     def test_positive_number(self):
         digit_count = 3
         cfg = {'digits': digit_count, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
         pwd = univention_password.generate_password(**cfg)
 
-        assert (password_stats(cfg, pwd)['digits'] >= digit_count)
+        assert (password_stats(cfg, pwd,)['digits'] >= digit_count)
 
 
 class TestPasswordConfigLowerCaseCount(object):
@@ -242,7 +242,7 @@ class TestPasswordConfigLowerCaseCount(object):
             univention_password.generate_password(**cfg)
 
     def test_negative(self):
-        with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative"):
+        with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative",):
             cfg = {'digits': 1, 'lower': -1, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
             univention_password.generate_password(**cfg)
 
@@ -251,14 +251,14 @@ class TestPasswordConfigLowerCaseCount(object):
         cfg = {'digits': 1, 'lower': lowercase_count, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
         pwd = univention_password.generate_password(**cfg)
 
-        assert (password_stats(cfg, pwd)['lower'] == lowercase_count)
+        assert (password_stats(cfg, pwd,)['lower'] == lowercase_count)
 
     def test_positive_number(self):
         lowercase_count = 3
         cfg = {'digits': 1, 'lower': lowercase_count, 'other': 1, 'upper': 1, 'forbidden': None, 'min_length': 6}
         pwd = univention_password.generate_password(**cfg)
 
-        assert (password_stats(cfg, pwd)['lower'] >= lowercase_count)
+        assert (password_stats(cfg, pwd,)['lower'] >= lowercase_count)
 
 
 class TestPasswordConfigSpecialCharacterCount(object):
@@ -269,12 +269,12 @@ class TestPasswordConfigSpecialCharacterCount(object):
             univention_password.generate_password(**cfg)
 
     def test_negative(self):
-        with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative"):
+        with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative",):
             cfg = {'digits': 1, 'lower': 1, 'other': -1, 'upper': 1, 'forbidden': None, 'min_length': 6}
             univention_password.generate_password(**cfg)
 
     def test_empty_pool(self):
-        with pytest.raises(ValueError, match="There are 1 special characters requested but special characters pool is empty"):
+        with pytest.raises(ValueError, match="There are 1 special characters requested but special characters pool is empty",):
             cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': string.punctuation, 'min_length': 6}
             univention_password.generate_password(**cfg)
 
@@ -283,14 +283,14 @@ class TestPasswordConfigSpecialCharacterCount(object):
         cfg = {'digits': 1, 'lower': 1, 'other': special_count, 'upper': 1, 'forbidden': None, 'min_length': 6}
         pwd = univention_password.generate_password(**cfg)
 
-        assert (password_stats(cfg, pwd)['other'] == special_count)
+        assert (password_stats(cfg, pwd,)['other'] == special_count)
 
     def test_positive_number(self):
         special_count = 3
         cfg = {'digits': 1, 'lower': 1, 'other': special_count, 'upper': 1, 'forbidden': None, 'min_length': 6}
         pwd = univention_password.generate_password(**cfg)
 
-        assert (password_stats(cfg, pwd)['other'] >= special_count)
+        assert (password_stats(cfg, pwd,)['other'] >= special_count)
 
 
 class TestPasswordConfigUpperCaseCount(object):
@@ -301,7 +301,7 @@ class TestPasswordConfigUpperCaseCount(object):
             univention_password.generate_password(**cfg)
 
     def test_negative(self):
-        with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative"):
+        with pytest.raises(ValueError, match="Number of digits, lower, upper or other characters can not be negative",):
             cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': -1, 'forbidden': None, 'min_length': 6}
             univention_password.generate_password(**cfg)
 
@@ -310,45 +310,45 @@ class TestPasswordConfigUpperCaseCount(object):
         cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': uppercase_count, 'forbidden': None, 'min_length': 6}
         pwd = univention_password.generate_password(**cfg)
 
-        assert (password_stats(cfg, pwd)['upper'] == uppercase_count)
+        assert (password_stats(cfg, pwd,)['upper'] == uppercase_count)
 
     def test_positive_number(self):
         uppercase_count = 0
         cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': uppercase_count, 'forbidden': None, 'min_length': 6}
         pwd = univention_password.generate_password(**cfg)
 
-        assert (password_stats(cfg, pwd)['upper'] >= uppercase_count)
+        assert (password_stats(cfg, pwd,)['upper'] >= uppercase_count)
 
 
 class TestPasswordConfigExhaustedAvailableCharacterPool(object):
 
     def test_exhausted_digits_pool(self):
-        with pytest.raises(ValueError, match="There are 1 digits requested but digits pool is empty"):
+        with pytest.raises(ValueError, match="There are 1 digits requested but digits pool is empty",):
             cfg = {'digits': 1, 'lower': 0, 'other': 0, 'upper': 0, 'forbidden': string.digits, 'min_length': 2}
             univention_password.generate_password(**cfg)
 
     def test_exhausted_lowercase_pool(self):
-        with pytest.raises(ValueError, match="There are 1 lowercase characters requested but lowercase pool is empty"):
+        with pytest.raises(ValueError, match="There are 1 lowercase characters requested but lowercase pool is empty",):
             cfg = {'digits': 0, 'lower': 1, 'other': 0, 'upper': 0, 'forbidden': string.ascii_lowercase, 'min_length': 2}
             univention_password.generate_password(**cfg)
 
     def test_exhausted_special_character_pool(self):
-        with pytest.raises(ValueError, match="There are 1 special characters requested but special characters pool is empty"):
+        with pytest.raises(ValueError, match="There are 1 special characters requested but special characters pool is empty",):
             cfg = {'digits': 0, 'lower': 0, 'other': 1, 'upper': 0, 'forbidden': string.punctuation, 'min_length': 2}
             univention_password.generate_password(**cfg)
 
     def test_exhausted_uppercase_pool(self):
-        with pytest.raises(ValueError, match="There are 1 uppercase characters requested but uppercase pool is empty"):
+        with pytest.raises(ValueError, match="There are 1 uppercase characters requested but uppercase pool is empty",):
             cfg = {'digits': 0, 'lower': 0, 'other': 0, 'upper': 1, 'forbidden': string.ascii_uppercase, 'min_length': 2}
             univention_password.generate_password(**cfg)
 
     def test_exhausted_pool(self):
-        with pytest.raises(ValueError, match="All available characters are excluded by.*"):
+        with pytest.raises(ValueError, match="All available characters are excluded by.*",):
             cfg = {'digits': 1, 'lower': 1, 'other': 1, 'upper': 1, 'forbidden': string.printable, 'min_length': 6}
             univention_password.generate_password(**cfg)
 
     def test_all_zeroes(self):
-        with pytest.raises(ValueError, match="At least one from the: digits, lower, upper or other characters must be positive number"):
+        with pytest.raises(ValueError, match="At least one from the: digits, lower, upper or other characters must be positive number",):
             cfg = {'digits': 0, 'lower': 0, 'other': 0, 'upper': 0, 'forbidden': '', 'min_length': 6}
             univention_password.generate_password(**cfg)
 
@@ -360,15 +360,15 @@ class TestRandomPasswordGenerator(object):
         cfg = {'digits': 3, 'lower': 0, 'other': 0, 'upper': 0, 'forbidden': None, 'min_length': 12}
         pwd = univention_password.generate_password(**cfg)
 
-        assert match_password_complexity(cfg, pwd)
+        assert match_password_complexity(cfg, pwd,)
 
     def test_all_digits_exclude_zero_and_one(self):
         cfg = {'digits': 3, 'lower': 0, 'other': 0, 'upper': 0, 'forbidden': '01', 'min_length': 12}
 
-        for _ in range(0, self.iter_count):
+        for _ in range(0, self.iter_count,):
             pwd = univention_password.generate_password(**cfg)
 
-            assert match_password_complexity(cfg, pwd)
+            assert match_password_complexity(cfg, pwd,)
             assert "0" not in pwd
             assert "1" not in pwd
 
@@ -376,15 +376,15 @@ class TestRandomPasswordGenerator(object):
         cfg = {'digits': 0, 'lower': 3, 'other': 0, 'upper': 0, 'forbidden': None, 'min_length': 12}
         pwd = univention_password.generate_password(**cfg)
 
-        assert match_password_complexity(cfg, pwd)
+        assert match_password_complexity(cfg, pwd,)
 
     def test_all_lowercase_exclude_a_and_b(self):
         cfg = {'digits': 0, 'lower': 3, 'other': 0, 'upper': 0, 'forbidden': 'ab', 'min_length': 12}
 
-        for _ in range(0, self.iter_count):
+        for _ in range(0, self.iter_count,):
             pwd = univention_password.generate_password(**cfg)
 
-            assert match_password_complexity(cfg, pwd)
+            assert match_password_complexity(cfg, pwd,)
             assert "a" not in pwd
             assert "b" not in pwd
 
@@ -392,15 +392,15 @@ class TestRandomPasswordGenerator(object):
         cfg = {'digits': 0, 'lower': 0, 'other': 3, 'upper': 0, 'forbidden': None, 'min_length': 12}
         pwd = univention_password.generate_password(**cfg)
 
-        assert password_stats(cfg, pwd)['other'] == len(pwd)
+        assert password_stats(cfg, pwd,)['other'] == len(pwd)
 
     def test_all_specials_exclude_pound_and_braces(self):
         cfg = {'digits': 0, 'lower': 0, 'other': 3, 'upper': 0, 'forbidden': '#()', 'min_length': 12}
 
-        for _ in range(0, self.iter_count):
+        for _ in range(0, self.iter_count,):
             pwd = univention_password.generate_password(**cfg)
 
-            assert match_password_complexity(cfg, pwd)
+            assert match_password_complexity(cfg, pwd,)
             assert "#" not in pwd
             assert "(" not in pwd
             assert ")" not in pwd
@@ -409,25 +409,25 @@ class TestRandomPasswordGenerator(object):
         cfg = {'digits': 0, 'lower': 0, 'other': 0, 'upper': 3, 'forbidden': None, 'min_length': 12}
         pwd = univention_password.generate_password(**cfg)
 
-        assert match_password_complexity(cfg, pwd)
+        assert match_password_complexity(cfg, pwd,)
 
     def test_all_uppercase_exclude_cap_a_and_cap_b(self):
         cfg = {'digits': 0, 'lower': 0, 'other': 0, 'upper': 3, 'forbidden': 'AB', 'min_length': 12}
 
-        for _ in range(0, self.iter_count):
+        for _ in range(0, self.iter_count,):
             pwd = univention_password.generate_password(**cfg)
 
-            assert match_password_complexity(cfg, pwd)
+            assert match_password_complexity(cfg, pwd,)
             assert "A" not in pwd
             assert "B" not in pwd
 
     def test_radius_password_generate(self):
         cfg = univention_password.password_config('radius')
 
-        for _ in range(0, self.iter_count):
+        for _ in range(0, self.iter_count,):
             pwd = univention_password.generate_password(**cfg)
 
-            assert password_stats(cfg, pwd)['other'] == 0
+            assert password_stats(cfg, pwd,)['other'] == 0
             assert "0" not in pwd
             assert "O" not in pwd
             assert "l" not in pwd
@@ -438,10 +438,10 @@ class TestRandomPasswordGenerator(object):
         cfg = {'digits': 6, 'lower': 6, 'other': 0, 'upper': 0, 'forbidden': '', 'min_length': 6}
         pwd = univention_password.generate_password(**cfg)
 
-        assert match_password_complexity(cfg, pwd)
+        assert match_password_complexity(cfg, pwd,)
 
     def test_zero_min_length(self):
         cfg = {'digits': 6, 'lower': 0, 'other': 0, 'upper': 0, 'forbidden': '', 'min_length': 0}
         pwd = univention_password.generate_password(**cfg)
 
-        assert match_password_complexity(cfg, pwd)
+        assert match_password_complexity(cfg, pwd,)

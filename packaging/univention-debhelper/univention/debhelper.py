@@ -55,7 +55,7 @@ def doIt(*argv):
     >>> doIt('true')
     0
     """
-    if os.environ.get('DH_VERBOSE', False):
+    if os.environ.get('DH_VERBOSE', False,):
         print('\t%s' % ' '.join(argv))
     return subprocess.check_call(argv)
 
@@ -79,7 +79,7 @@ def binary_packages():
     return packages
 
 
-def parseRfc822(f):
+def parseRfc822(f,):
     # type: (str) -> List[Dict[str, List[str]]]
     r"""
     Parses string `f` as a :rfc:`822` conforming file and returns list of sections, each a dict mapping keys to lists of values.
@@ -106,11 +106,11 @@ def parseRfc822(f):
     for line in f.splitlines():
         if line:
             try:
-                key, value = line.split(': ', 1)
+                key, value = line.split(': ', 1,)
             except ValueError:
                 pass
             else:
-                ent.setdefault(key, []).append(value)
+                ent.setdefault(key, [],).append(value)
         elif ent:
             res.append(ent)
             ent = {}
@@ -121,7 +121,7 @@ def parseRfc822(f):
     return res
 
 
-def parser_dh_sequence(parser, argv=None):
+def parser_dh_sequence(parser, argv=None,):
     # type: (ArgumentParser, Optional[Sequence[str]]) -> Namespace
     """
     Add common argument for Debian helper sequence.
@@ -137,11 +137,11 @@ def parser_dh_sequence(parser, argv=None):
     parser.add_argument(
         '--verbose', '-v',
         action='store_true',
-        help='Verbose mode: show all commands that modify the package build directory.')
-    group = parser.add_argument_group("debhelper", "Common debhelper options")
-    group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
-    group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
-    group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
+        help='Verbose mode: show all commands that modify the package build directory.',)
+    group = parser.add_argument_group("debhelper", "Common debhelper options",)
+    group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.",)
+    group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.",)
+    group.add_argument("--option", "-O", action="append", help="Additional debhelper options.",)
 
     args = parser.parse_args(argv)
 

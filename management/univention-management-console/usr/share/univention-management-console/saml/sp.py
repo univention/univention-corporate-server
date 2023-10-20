@@ -22,7 +22,7 @@ class CertDoesNotMatchPrivateKeyError(Exception):
     pass
 
 
-def public_key_compare(key1, key2):
+def public_key_compare(key1, key2,):
     pn1 = key1.public_numbers()
     pn2 = key2.public_numbers()
     return pn1.e == pn2.e and pn1.n == pn2.n
@@ -33,16 +33,16 @@ def get_cert():
     The cert file can contain multiple certs (e.g. with lets encrypt)
     saml expects only the one certificate that matches the private key
     """
-    with open(CONFIG['cert_file'], 'rb') as cert_file:
-        cert = x509.load_pem_x509_certificate(cert_file.read(), default_backend())
+    with open(CONFIG['cert_file'], 'rb',) as cert_file:
+        cert = x509.load_pem_x509_certificate(cert_file.read(), default_backend(),)
         public_cert_key = cert.public_key()
-    with open(CONFIG['key_file'], 'rb') as key_file:
+    with open(CONFIG['key_file'], 'rb',) as key_file:
         private_key = key_file.read()
-        public_key = load_pem_private_key(private_key, password=None, backend=default_backend()).public_key()
-    if public_key_compare(public_cert_key, public_key):
+        public_key = load_pem_private_key(private_key, password=None, backend=default_backend(),).public_key()
+    if public_key_compare(public_cert_key, public_key,):
         return cert.public_bytes(Encoding.PEM)
     raise CertDoesNotMatchPrivateKeyError(
-        'Cert: "{}" does not match private key: "{}"'.format(CONFIG['cert_file'], CONFIG['key_file']),
+        'Cert: "{}" does not match private key: "{}"'.format(CONFIG['cert_file'], CONFIG['key_file'],),
     )
 
 
@@ -72,8 +72,8 @@ CONFIG = {
                 "single_logout_service": [('%s/slo/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
             },
             "name_id_format": [NAMEID_FORMAT_TRANSIENT, NAMEID_FORMAT_PERSISTENT],
-            "required_attributes": [x.strip() for x in ucr.get('umc/saml/required_attributes', 'uid').split(',') if x.strip()],
-            "optional_attributes": [x.strip() for x in ucr.get('umc/saml/optional_attributes', '').split(',') if x.strip()],
+            "required_attributes": [x.strip() for x in ucr.get('umc/saml/required_attributes', 'uid',).split(',') if x.strip()],
+            "optional_attributes": [x.strip() for x in ucr.get('umc/saml/optional_attributes', '',).split(',') if x.strip()],
         },
     },
     "attribute_map_dir": os.path.dirname(saml2.attributemaps.__file__),
@@ -83,23 +83,23 @@ CONFIG = {
     "metadata": {
         "local": glob.glob('/usr/share/univention-management-console/saml/idp/*.xml'),
     },
-    "debug": ucr.is_true('umc/saml/debug', False),
+    "debug": ucr.is_true('umc/saml/debug', False,),
     "contact_person": [
         {
-            "givenname": ucr.get('umc/saml/contact-person/%s/givenname' % (type_,), ''),
-            "surname": ucr.get('umc/saml/contact-person/%s/surname' % (type_,), ''),
-            "company": ucr.get('umc/saml/contact-person/%s/company' % (type_,), ''),
-            "mail": [x.strip() for x in ucr.get('umc/saml/contact-person/%s/mail' % (type_,), '').split(',') if x.strip()],
+            "givenname": ucr.get('umc/saml/contact-person/%s/givenname' % (type_,), '',),
+            "surname": ucr.get('umc/saml/contact-person/%s/surname' % (type_,), '',),
+            "company": ucr.get('umc/saml/contact-person/%s/company' % (type_,), '',),
+            "mail": [x.strip() for x in ucr.get('umc/saml/contact-person/%s/mail' % (type_,), '',).split(',') if x.strip()],
             "type": type_,
         } for type_ in ('technical', 'administrative') if ucr.get('umc/saml/contact-person/%s/mail' % (type_,))
     ],
     "organization": {
         "name": [
-            (ucr.get('umc/saml/organization/name', 'Univention Management Console %s' % (fqdn,)), "en"),
+            (ucr.get('umc/saml/organization/name', 'Univention Management Console %s' % (fqdn,),), "en"),
         ],
-        "display_name": [ucr.get('umc/saml/organization/display-name', 'Univention Management Console %s' % (fqdn,))],
+        "display_name": [ucr.get('umc/saml/organization/display-name', 'Univention Management Console %s' % (fqdn,),)],
         "url": [
-            (ucr.get('umc/saml/organization/url', 'https://%s/univention/management/' % (fqdn,)), "en"),
+            (ucr.get('umc/saml/organization/url', 'https://%s/univention/management/' % (fqdn,),), "en"),
         ],
     },
 }

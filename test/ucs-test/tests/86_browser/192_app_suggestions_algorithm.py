@@ -16,10 +16,10 @@ from univention.testing.browser.appcenter import AppCenter
 from univention.testing.browser.lib import UMCBrowserTest
 
 
-def test_app_suggestons_algorithm(umc_browser_test: UMCBrowserTest):
+def test_app_suggestons_algorithm(umc_browser_test: UMCBrowserTest,):
     app_center = AppCenter(umc_browser_test)
     app_center.navigate()
-    expect(umc_browser_test.page.get_by_role("heading", name="Available")).to_be_visible(timeout=60 * 1000)
+    expect(umc_browser_test.page.get_by_role("heading", name="Available",)).to_be_visible(timeout=60 * 1000)
 
     app_cache = AppCache.build()
     apps = app_cache.get_all_apps()
@@ -72,8 +72,7 @@ def test_app_suggestons_algorithm(umc_browser_test: UMCBrowserTest):
             var w = dijit.byId('umc_modules_appcenter_AppCenterPage_0');
             return w._getSuggestedAppIds(suggestions, installed_apps);
         }""",
-        [suggestions, installed_apps],
-    )
+        [suggestions, installed_apps],)
 
     assert apps[4].id in eval_result, f"Expected {apps[4]} to be in suggested ids {eval_result}"
     assert apps[5].id in eval_result, f"Expected {apps[5]} to be in suggested ids {eval_result}"

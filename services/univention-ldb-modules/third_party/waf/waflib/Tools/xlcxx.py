@@ -9,16 +9,16 @@ from waflib.Tools import ccroot, ar
 from waflib.Configure import conf
 
 @conf
-def find_xlcxx(conf):
+def find_xlcxx(conf,):
 	"""
 	Detects the Aix C++ compiler
 	"""
-	cxx = conf.find_program(['xlc++_r', 'xlc++'], var='CXX')
+	cxx = conf.find_program(['xlc++_r', 'xlc++'], var='CXX',)
 	conf.get_xlc_version(cxx)
 	conf.env.CXX_NAME = 'xlc++'
 
 @conf
-def xlcxx_common_flags(conf):
+def xlcxx_common_flags(conf,):
 	"""
 	Flags required for executing the Aix C++ compiler
 	"""
@@ -55,7 +55,7 @@ def xlcxx_common_flags(conf):
 	v.LINKFLAGS_cxxstlib  = []
 	v.cxxstlib_PATTERN    = 'lib%s.a'
 
-def configure(conf):
+def configure(conf,):
 	conf.find_xlcxx()
 	conf.find_ar()
 	conf.xlcxx_common_flags()

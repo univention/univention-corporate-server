@@ -20,10 +20,10 @@ class TestSecurityHeaders:
         'login/index.html',
         'login/blank.html',
         'login/login.html',
-    ])
-    def test_login_site(self, path, Client):
+    ],)
+    def test_login_site(self, path, Client,):
         client = Client()
-        response = client.request('GET', path)
+        response = client.request('GET', path,)
         assert response.get_header("X-Frame-Options") is None  # changed from: == "SAMEORIGIN"
         assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval'  https://www.piwik.univention.de/ ; frame-ancestors 'self';"
 
@@ -35,10 +35,10 @@ class TestSecurityHeaders:
         '/languages.json',
         '/portal/',
         '/management/',
-    ])
-    def test_univention(self, path, ucr, Client):
+    ],)
+    def test_univention(self, path, ucr, Client,):
         client = Client()
-        response = client.request('GET', path)
+        response = client.request('GET', path,)
         assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
         assert response.get_header("X-XSS-Protection") == "1; mode=block"
         assert response.get_header("X-Content-Type-Options") == "nosniff"
@@ -46,22 +46,22 @@ class TestSecurityHeaders:
         if path == '/languages.json':
             assert response.get_header("Content-Security-Policy") == "frame-ancestors 'none';"
         else:
-            expected = "frame-ancestors 'self' https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/;" % defaultdict(lambda: '', ucr)
+            expected = "frame-ancestors 'self' https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/;" % defaultdict(lambda: '', ucr,)
             assert expected in response.get_header("Content-Security-Policy")
 
     @pytest.mark.xfail(reason='Bug #52940')
-    def test_ip_bound_to_session(self, Client, ucr, restart_umc_server):
+    def test_ip_bound_to_session(self, Client, ucr, restart_umc_server,):
         client = Client('%(hostname)s.%(domainname)s' % ucr)
         client.ConnectionType = HTTPConnection  # workaround TLS hostname mismatch
 
         account = utils.UCSTestDomainAdminCredentials()
-        client.authenticate(account.username, account.bindpw)
+        client.authenticate(account.username, account.bindpw,)
         # make sure any UMC module is present (the session is not dropped to anonymous)
         assert any(x['id'] == 'top' for x in client.umc_get('modules').data['modules'])
 
         # change the external IP address
         with network.NetworkRedirector() as nethelper:
-            nethelper.add_loop('1.2.3.4', '4.3.2.1')
+            nethelper.add_loop('1.2.3.4', '4.3.2.1',)
             c = Client('1.2.3.4')
             c.ConnectionType = HTTPConnection  # workaround TLS hostname mismatch
             c.cookies = copy.deepcopy(client.cookies)

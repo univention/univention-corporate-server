@@ -70,13 +70,13 @@ uidNumber = 0
 preferedGroup = "adm"
 gidNumber = 0  # fallback
 filemode = 0o640
-digest = configRegistry.get('ldap/logging/hash', 'md5')
+digest = configRegistry.get('ldap/logging/hash', 'md5',)
 
 SAFE_STRING_RE = re.compile(r'^(?:\000|\n|\r| |:|<)|[\000\n\r\200-\377]+|[ ]+$'.encode('ASCII'))
 DELLOG_FILE_LINE_NUMBERS = 5
 
 
-def ldapEntry2string(entry: Dict[str, List[bytes]]) -> str:
+def ldapEntry2string(entry: Dict[str, List[bytes]],) -> str:
     # TODO: we don't know the encoding of the attribute, therefore every non-ASCII value must be base64
     return ''.join(
         '%s:: %s\n' % (key, base64.standard_b64encode(value).decode('ASCII'))
@@ -87,16 +87,16 @@ def ldapEntry2string(entry: Dict[str, List[bytes]]) -> str:
     )
 
 
-def ldapTime2string(timestamp: str) -> str:
+def ldapTime2string(timestamp: str,) -> str:
     try:
-        timestruct = time.strptime(timestamp, "%Y%m%d%H%M%SZ")
+        timestruct = time.strptime(timestamp, "%Y%m%d%H%M%SZ",)
     except ValueError:
-        ud.debug(ud.LISTENER, ud.ERROR, '%r: could not parse timestamp %r, expected LDAP format' % (name, timestamp))
+        ud.debug(ud.LISTENER, ud.ERROR, '%r: could not parse timestamp %r, expected LDAP format' % (name, timestamp),)
         return timestamp  # return it as it was
-    return time.strftime(timestampfmt, timestruct)
+    return time.strftime(timestampfmt, timestruct,)
 
 
-def filterOutUnchangedAttributes(old_copy: Dict[str, List[bytes]], new_copy: Dict[str, List[bytes]]) -> None:
+def filterOutUnchangedAttributes(old_copy: Dict[str, List[bytes]], new_copy: Dict[str, List[bytes]],) -> None:
     for key in list(old_copy):
         if key not in new_copy:
             continue
@@ -115,7 +115,7 @@ def filterOutUnchangedAttributes(old_copy: Dict[str, List[bytes]], new_copy: Dic
             new_copy[key].remove(value)
 
 
-def _parse_dellog_file(pathname: str) -> None:
+def _parse_dellog_file(pathname: str,) -> None:
     """Extract data from a dellog file."""
     with open(pathname) as f:
         lines = f.readlines()
@@ -126,24 +126,24 @@ def _parse_dellog_file(pathname: str) -> None:
             raise ValueError('Expected 5 lines, but received %d' % len(lines))
 
 
-def process_dellog(dn: str) -> Tuple[str, str, str, str]:
+def process_dellog(dn: str,) -> Tuple[str, str, str, str]:
     dellog = configRegistry['ldap/logging/dellogdir']
 
     dellist = sorted(os.listdir(dellog))
 
     for filename in dellist:
-        pathname = os.path.join(dellog, filename)
+        pathname = os.path.join(dellog, filename,)
         try:
             try:
                 if pathname.endswith(".fail"):
                     continue
                 (dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
             except EnvironmentError:
-                ud.debug(ud.LISTENER, ud.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
-                os.rename(pathname, '%s.fail' % pathname)
+                ud.debug(ud.LISTENER, ud.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename),)
+                os.rename(pathname, '%s.fail' % pathname,)
                 continue
             except ValueError as exc:
-                ud.debug(ud.LISTENER, ud.ERROR, 'Corrupted file: %r: %s' % (filename, exc))
+                ud.debug(ud.LISTENER, ud.ERROR, 'Corrupted file: %r: %s' % (filename, exc),)
                 os.unlink(pathname)
                 continue
             if dellog_dn == dn:
@@ -157,13 +157,13 @@ def process_dellog(dn: str) -> Tuple[str, str, str, str]:
             os.unlink(pathname)
 
         except Exception as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, 'Unknown Exception: %s.' % (exc,))
-            ud.debug(ud.LISTENER, ud.ERROR, 'Renaming %s to %s.fail' % (filename, filename))
-            os.rename(pathname, '%s.fail' % pathname)
+            ud.debug(ud.LISTENER, ud.ERROR, 'Unknown Exception: %s.' % (exc,),)
+            ud.debug(ud.LISTENER, ud.ERROR, 'Renaming %s to %s.fail' % (filename, filename),)
+            os.rename(pathname, '%s.fail' % pathname,)
             continue
     else:
-        ud.debug(ud.LISTENER, ud.ERROR, 'Did not find matching dn %r in dellog directory %r.' % (dn, dellog))
-        timestamp = time.strftime(timestampfmt, time.gmtime())
+        ud.debug(ud.LISTENER, ud.ERROR, 'Did not find matching dn %r in dellog directory %r.' % (dn, dellog),)
+        timestamp = time.strftime(timestampfmt, time.gmtime(),)
         dellog_id = '<NoID>'
         modifier = '<unknown>'
         action = '<unknown>'
@@ -171,13 +171,13 @@ def process_dellog(dn: str) -> Tuple[str, str, str, str]:
     return (timestamp, dellog_id, modifier, action)
 
 
-def prefix_record(record: str, identifier: int) -> str:
-    if not configRegistry.is_true('ldap/logging/id-prefix', False):
+def prefix_record(record: str, identifier: int,) -> str:
+    if not configRegistry.is_true('ldap/logging/id-prefix', False,):
         return record
     return '\n'.join('ID %s: %s' % (identifier, line) for line in record.splitlines()) + '\n'
 
 
-def handler(dn: str, new_copy: Dict[str, List[bytes]], old_copy: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new_copy: Dict[str, List[bytes]], old_copy: Dict[str, List[bytes]],) -> None:
     if not configRegistry.is_true('ldap/logging'):
         return
 
@@ -199,9 +199,9 @@ def handler(dn: str, new_copy: Dict[str, List[bytes]], old_copy: Dict[str, List[
         # Start processing
         # 1. read previous hash
         if not os.path.exists(cachename):
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: %s vanished mid-run, stop.' % (name, cachename))
+            ud.debug(ud.LISTENER, ud.ERROR, '%s: %s vanished mid-run, stop.' % (name, cachename),)
             return  # really bad, stop it.
-        cachefile = open(cachename, 'r+')
+        cachefile = open(cachename, 'r+',)
         previoushash = cachefile.read()
 
         # get ID
@@ -230,7 +230,7 @@ def handler(dn: str, new_copy: Dict[str, List[bytes]], old_copy: Dict[str, List[
                 record += ldapEntry2string(new_copy)
             else:  # modify branch
                 # filter out unchanged attributes
-                filterOutUnchangedAttributes(old_copy, new_copy)
+                filterOutUnchangedAttributes(old_copy, new_copy,)
                 record = headerfmt % (previoushash, dn, nid, modifier, timestamp, 'modify')
                 record += oldtag
                 record += ldapEntry2string(old_copy)
@@ -245,29 +245,29 @@ def handler(dn: str, new_copy: Dict[str, List[bytes]], old_copy: Dict[str, List[
         record += endtag
 
         # 3. write log file record
-        with open(logname, 'a') as logfile:  # append
-            logfile.write(prefix_record(record, nid))
+        with open(logname, 'a',) as logfile:  # append
+            logfile.write(prefix_record(record, nid,))
         # 4. calculate nexthash, omitting the final line break to make validation of the
         #    record more intituive
-        nexthash = hashlib.new(digest, record[:-1].encode('UTF-8')).hexdigest()
+        nexthash = hashlib.new(digest, record[:-1].encode('UTF-8'),).hexdigest()
         # 5. cache nexthash (the actual logfile might be logrotated away..)
         cachefile.seek(0)
         cachefile.write(nexthash)
         cachefile.close()
         # 6. send log message including nexthash
-        syslog.openlog(name, 0, syslog.LOG_DAEMON)
-        syslog.syslog(syslog.LOG_INFO, logmsgfmt % (dn, nid, modifier, timestamp, nexthash))
+        syslog.openlog(name, 0, syslog.LOG_DAEMON,)
+        syslog.syslog(syslog.LOG_INFO, logmsgfmt % (dn, nid, modifier, timestamp, nexthash),)
         syslog.closelog()
 
 
-def createFile(filename: str) -> int:
+def createFile(filename: str,) -> int:
     global gidNumber
 
     if gidNumber == 0:
         try:
             gidNumber = int(grp.getgrnam(preferedGroup)[2])
         except Exception:
-            ud.debug(ud.LISTENER, ud.WARN, '%s: Failed to get groupID for "%s"' % (name, preferedGroup))
+            ud.debug(ud.LISTENER, ud.WARN, '%s: Failed to get groupID for "%s"' % (name, preferedGroup),)
             gidNumber = 0
 
     basedir = os.path.dirname(filename)
@@ -275,16 +275,16 @@ def createFile(filename: str) -> int:
         os.makedirs(basedir)
 
     if subprocess.call(["/bin/touch", filename]) or not os.path.exists(filename):
-        ud.debug(ud.LISTENER, ud.ERROR, '%s: %s could not be created.' % (name, filename))
+        ud.debug(ud.LISTENER, ud.ERROR, '%s: %s could not be created.' % (name, filename),)
         return 1
-    os.chown(filename, uidNumber, gidNumber)
-    os.chmod(filename, filemode)
+    os.chown(filename, uidNumber, gidNumber,)
+    os.chmod(filename, filemode,)
     return 0
 
 
 def initialize() -> None:
-    timestamp = time.strftime(timestampfmt, time.gmtime())
-    ud.debug(ud.LISTENER, ud.INFO, 'init %s' % name)
+    timestamp = time.strftime(timestampfmt, time.gmtime(),)
+    ud.debug(ud.LISTENER, ud.INFO, 'init %s' % name,)
 
     with SetUID(0):
         if not os.path.exists(logname):
@@ -293,7 +293,7 @@ def initialize() -> None:
         if not os.path.exists(cachename):
             createFile(cachename)
         size = os.path.getsize(cachename)
-        cachefile = open(cachename, 'r+')
+        cachefile = open(cachename, 'r+',)
 
         # generate log record
         if size == 0:
@@ -307,17 +307,17 @@ def initialize() -> None:
         record += endtag
 
         # 3. write log file record
-        with open(logname, 'a') as logfile:  # append
-            logfile.write(prefix_record(record, 0))
+        with open(logname, 'a',) as logfile:  # append
+            logfile.write(prefix_record(record, 0,))
         # 4. calculate initial hash
-        nexthash = hashlib.new(digest, record.encode('UTF-8')).hexdigest()
+        nexthash = hashlib.new(digest, record.encode('UTF-8'),).hexdigest()
         # 5. cache nexthash (the actual logfile might be logrotated away..)
         cachefile.seek(0)
         cachefile.write(nexthash)
         cachefile.close()
         # 6. send log message including nexthash
-        syslog.openlog(name, 0, syslog.LOG_DAEMON)
-        syslog.syslog(syslog.LOG_INFO, '%s\nTimestamp=%s\nNew Hash=%s' % (action, timestamp, nexthash))
+        syslog.openlog(name, 0, syslog.LOG_DAEMON,)
+        syslog.syslog(syslog.LOG_INFO, '%s\nTimestamp=%s\nNew Hash=%s' % (action, timestamp, nexthash),)
         syslog.closelog()
 
 
@@ -326,5 +326,5 @@ with SetUID(0):
     if not os.path.exists(logname):
         createFile(logname)
     if not os.path.exists(cachename):
-        ud.debug(ud.LISTENER, ud.WARN, '%s: %s vanished, creating it' % (name, cachename))
+        ud.debug(ud.LISTENER, ud.WARN, '%s: %s vanished, creating it' % (name, cachename),)
         createFile(cachename)

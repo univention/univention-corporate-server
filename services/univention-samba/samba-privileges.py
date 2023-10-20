@@ -66,20 +66,20 @@ filter = '(&(objectClass=univentionSambaPrivileges)(sambaSID=*))'
 atributes = ['univentionSambaPrivilegeList', 'sambaSID']
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> None:
 
     where = ud.LISTENER
     level = ud.INFO
 
     # deleted -> remove all privileges
     if old and not new and old.get("univentionSambaPrivilegeList") and old.get("sambaSID"):
-        ud.debug(where, level, "%s: remove all samba privs (%r)" % (name, old["sambaSID"][0]))
-        removePrivileges(old["sambaSID"][0], ALL_SAMBA_PRIVILEGES)
+        ud.debug(where, level, "%s: remove all samba privs (%r)" % (name, old["sambaSID"][0]),)
+        removePrivileges(old["sambaSID"][0], ALL_SAMBA_PRIVILEGES,)
 
     # created
     if new and not old and new.get("univentionSambaPrivilegeList") and new.get("sambaSID"):
-        ud.debug(where, level, "%s: add new samba privs (%r)" % (name, new["sambaSID"][0]))
-        addPrivileges(new["sambaSID"][0], new["univentionSambaPrivilegeList"])
+        ud.debug(where, level, "%s: add new samba privs (%r)" % (name, new["sambaSID"][0]),)
+        addPrivileges(new["sambaSID"][0], new["univentionSambaPrivilegeList"],)
 
     # modified
     if new and old:
@@ -90,21 +90,21 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
         # removed
         if not newPrivs and oldPrivs:
-            ud.debug(where, level, "%s: remove all samba privs (%s)" % (name, sid))
-            removePrivileges(sid, oldPrivs)
+            ud.debug(where, level, "%s: remove all samba privs (%s)" % (name, sid),)
+            removePrivileges(sid, oldPrivs,)
         # added
         if newPrivs and not oldPrivs:
-            ud.debug(where, level, "%s: add new samba privs (%s)" % (name, sid))
-            addPrivileges(sid, newPrivs)
+            ud.debug(where, level, "%s: add new samba privs (%s)" % (name, sid),)
+            addPrivileges(sid, newPrivs,)
 
         # modified
         if newPrivs and oldPrivs and newPrivs != oldPrivs:
-            ud.debug(where, level, "%s: modify samba privs (%s)" % (name, sid))
-            removePrivileges(sid, oldPrivs)
-            addPrivileges(sid, newPrivs)
+            ud.debug(where, level, "%s: modify samba privs (%s)" % (name, sid),)
+            removePrivileges(sid, oldPrivs,)
+            addPrivileges(sid, newPrivs,)
 
 
-def addPrivileges(sambaSID: bytes, privileges: Iterable[bytes]) -> None:
+def addPrivileges(sambaSID: bytes, privileges: Iterable[bytes],) -> None:
     with SetUID(0):
         tdbKey = b'PRIV_%s\x00' % (sambaSID,)
         tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
@@ -126,7 +126,7 @@ def addPrivileges(sambaSID: bytes, privileges: Iterable[bytes]) -> None:
         tdbFile.close()
 
 
-def removePrivileges(sambaSID: bytes, privileges: Iterable[bytes]) -> None:
+def removePrivileges(sambaSID: bytes, privileges: Iterable[bytes],) -> None:
     with SetUID(0):
         tdbKey = b'PRIV_%s\x00' % (sambaSID,)
         tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)

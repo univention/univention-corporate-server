@@ -58,46 +58,46 @@ except ImportError:
     sys.modules['univention.admin.uexceptions'] = univention.admin.uexceptions
 
 
-def test_get_mime_type(umc_module):
+def test_get_mime_type(umc_module,):
     assert umc_module.get_mime_type(PNG_HEADER) == 'image/png'
 
 
-def test_get_mime_description(umc_module):
+def test_get_mime_description(umc_module,):
     assert umc_module.get_mime_description(PNG_HEADER) == 'PNG image data, 0 x 0, 0-bit grayscale, non-interlaced'
 
 
-def test_compression_mime_type_of_buffer(umc_module):
+def test_compression_mime_type_of_buffer(umc_module,):
     assert umc_module.compression_mime_type_of_buffer(bz2.compress(PNG_HEADER)) == ('application/x-bzip2', bz2.decompress)
 
 
-def test_uncompress_buffer(umc_module):
+def test_uncompress_buffer(umc_module,):
     assert umc_module.uncompress_buffer(bz2.compress(PNG_HEADER)) == ('application/x-bzip2', PNG_HEADER)
     assert umc_module.uncompress_buffer(b'foo') == (None, b'foo')
 
 
-def test_uncompress_file(umc_module):
+def test_uncompress_file(umc_module,):
     with tempfile.NamedTemporaryFile('wb') as fd:
         fd.write(bz2.compress(PNG_HEADER))
         fd.flush()
         assert umc_module.uncompress_file(fd.name) == ('application/x-bzip2', PNG_HEADER)
 
 
-def test_image_mime_type_of_buffer(umc_module):
+def test_image_mime_type_of_buffer(umc_module,):
     assert umc_module.image_mime_type_of_buffer(PNG_HEADER) == 'image/png'
     with pytest.raises(Exception):  # noqa: B017
         umc_module.image_mime_type_of_buffer(b'foo')
 
 
-def test_imagedimensions_of_buffer(umc_module):
+def test_imagedimensions_of_buffer(umc_module,):
     assert umc_module.imagedimensions_of_buffer(ICON) == (1, 1)
 
 
 @pytest.mark.parametrize('buf,result', [
-    pytest.param(PNG, ('image/png', 'application/x-bzip2', '1x1'), id="PNG"),
-    pytest.param(JPG, ('image/jpeg', 'application/x-bzip2', '1x1'), id="JPG"),
-    pytest.param(ICON, ('image/x-icon', 'application/x-bzip2', '1x1'), marks=pytest.mark.xfail(reason='valueError: Not a supported image format: image/x-icon'), id="ICON"),
-])
-def test_imagecategory_of_buffer(umc_module, buf, result):
+    pytest.param(PNG, ('image/png', 'application/x-bzip2', '1x1'), id="PNG",),
+    pytest.param(JPG, ('image/jpeg', 'application/x-bzip2', '1x1'), id="JPG",),
+    pytest.param(ICON, ('image/x-icon', 'application/x-bzip2', '1x1'), marks=pytest.mark.xfail(reason='valueError: Not a supported image format: image/x-icon'), id="ICON",),
+],)
+def test_imagecategory_of_buffer(umc_module, buf, result,):
     assert umc_module.imagecategory_of_buffer(bz2.compress(buf)) == result
 
 
@@ -107,6 +107,6 @@ def test_imagecategory_of_buffer(umc_module, buf, result):
     ('image/png', None, '.png'),
     ('image/jpeg', None, '.jpg'),
     ('image/x-icon', None, None),
-])
-def test_default_filename_suffix_for_mime_type(umc_module, mime_type, compression_mime_type, suffix):
-    assert umc_module.default_filename_suffix_for_mime_type(mime_type, compression_mime_type) == suffix
+],)
+def test_default_filename_suffix_for_mime_type(umc_module, mime_type, compression_mime_type, suffix,):
+    assert umc_module.default_filename_suffix_for_mime_type(mime_type, compression_mime_type,) == suffix

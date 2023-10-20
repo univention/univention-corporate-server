@@ -54,7 +54,7 @@ umc_modules = [{
 run_descr = ['Checks if all nameservers are responsive']
 
 
-def run(_umc_instance: Instance) -> None:
+def run(_umc_instance: Instance,) -> None:
     failed = []
     fqdn = "%(hostname)s.%(domainname)s" % ucr
     hostnames = {
@@ -69,11 +69,11 @@ def run(_umc_instance: Instance) -> None:
             MODULE.process("Trying %s to resolve %s" % (ucr[nameserver], hostname))
             MODULE.process("Similar to running: dig +short %s @%s" % (hostname, ucr[nameserver]))
             try:
-                query_dns_server(ucr[nameserver], hostname)
+                query_dns_server(ucr[nameserver], hostname,)
             except DNSException as exc:
                 msgs = ['\n', _('The nameserver %(nameserver)s (UCR variable %(var)r) is not responsive:') % {'nameserver': ucr[nameserver], 'var': nameserver}]
 
-                if isinstance(exc, Timeout):
+                if isinstance(exc, Timeout,):
                     msgs.append(_('A timeout occurred while reaching the nameserver (is it online?).'))
                 else:
                     msgs.append('%s' % (exc,))
@@ -84,7 +84,7 @@ def run(_umc_instance: Instance) -> None:
         raise Warning('%s%s' % (description % (len(failed),), '\n'.join(failed)))
 
 
-def query_dns_server(nameserver: str, hostname: str) -> None:
+def query_dns_server(nameserver: str, hostname: str,) -> None:
     resolver = dns.resolver.Resolver()
     resolver.lifetime = 10
     resolver.nameservers = [nameserver]

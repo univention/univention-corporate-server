@@ -46,14 +46,14 @@ from univention.admindiary import DiaryEntry, get_logger  # noqa: F401
 from univention.config_registry import ConfigRegistry
 
 
-get_logger = partial(get_logger, 'backend')
+get_logger = partial(get_logger, 'backend',)
 
 
 def get_query_limit():
     # type: () -> int
     ucr = ConfigRegistry()
     ucr.load()
-    limit = ucr.get('admin/diary/query/limit', '')
+    limit = ucr.get('admin/diary/query/limit', '',)
     default_limit = 1000
     try:
         limit = int(limit)
@@ -83,12 +83,12 @@ def get_engine():
     if dbms == 'mysql':
         db_url = db_url + '?charset=utf8mb4'
     try:
-        return sqlalchemy.create_engine(db_url, poolclass=NullPool)
+        return sqlalchemy.create_engine(db_url, poolclass=NullPool,)
     except sqlalchemy.exc.NoSuchModuleError:
         raise NoDBConnection()
 
 
-def windowed_query(q, column, windowsize, single_entity=True):
+def windowed_query(q, column, windowsize, single_entity=True,):
     """
     Break a Query into chunks on a given unique column (usually primary key), then fetch chunks using LIMIT only,
     adding a WHERE clause that will ensure we only fetch rows greater than the last one we fetched. This will work for
@@ -120,11 +120,11 @@ def windowed_query(q, column, windowsize, single_entity=True):
 
 
 @contextmanager
-def get_session(auto_commit=True):
+def get_session(auto_commit=True,):
     # type: (bool) -> Iterator[sqlalchemy.Session]
     session = None
     try:
-        session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=get_engine()))
+        session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=get_engine(),))
         yield session
     finally:
         if session is not None:
@@ -140,83 +140,82 @@ Base = declarative_base()
 class Meta(Base):
     __tablename__ = 'meta'
 
-    id = Column(Integer, Sequence('meta_id_seq'), primary_key=True)
-    schema = Column(Integer, nullable=False)
+    id = Column(Integer, Sequence('meta_id_seq'), primary_key=True,)
+    schema = Column(Integer, nullable=False,)
 
 
 entry_tags = Table(
     'entry_tags', Base.metadata,
-    Column('entry_id', ForeignKey('entries.id'), primary_key=True),
-    Column('tag_id', ForeignKey('tags.id'), primary_key=True),
-)
+    Column('entry_id', ForeignKey('entries.id'), primary_key=True,),
+    Column('tag_id', ForeignKey('tags.id'), primary_key=True,),)
 
 
 class Event(Base):
     __tablename__ = 'events'
 
-    id = Column(Integer, Sequence('event_id_seq'), primary_key=True)
-    name = Column(String(190), nullable=False, unique=True, index=True)
+    id = Column(Integer, Sequence('event_id_seq'), primary_key=True,)
+    name = Column(String(190), nullable=False, unique=True, index=True,)
 
 
 class EventMessage(Base):
     __tablename__ = 'event_messages'
 
-    event_id = Column(None, ForeignKey('events.id', ondelete='CASCADE'), primary_key=True)
-    locale = Column(String(190), nullable=False, primary_key=True)
-    message = Column(Text, nullable=False)
+    event_id = Column(None, ForeignKey('events.id', ondelete='CASCADE',), primary_key=True,)
+    locale = Column(String(190), nullable=False, primary_key=True,)
+    message = Column(Text, nullable=False,)
     locked = Column(Boolean)
 
 
 class Entry(Base):
     __tablename__ = 'entries'
 
-    id = Column(Integer, Sequence('entry_id_seq'), primary_key=True)
-    username = Column(String(190), nullable=False, index=True)
-    hostname = Column(String(190), nullable=False, index=True)
+    id = Column(Integer, Sequence('entry_id_seq'), primary_key=True,)
+    username = Column(String(190), nullable=False, index=True,)
+    hostname = Column(String(190), nullable=False, index=True,)
     message = Column(Text)
-    timestamp = Column(DateTime(timezone=True), index=True)
-    context_id = Column(String(190), index=True)
-    event_id = Column(None, ForeignKey('events.id', ondelete='RESTRICT'), nullable=True)
-    main_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE'), nullable=True)
+    timestamp = Column(DateTime(timezone=True), index=True,)
+    context_id = Column(String(190), index=True,)
+    event_id = Column(None, ForeignKey('events.id', ondelete='RESTRICT',), nullable=True,)
+    main_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE',), nullable=True,)
 
     event = relationship('Event')
-    args = relationship('Arg', back_populates='entry')
-    tags = relationship('Tag', secondary=entry_tags, back_populates='entries')
-    comments = relationship('Entry', primaryjoin=context_id == context_id, foreign_keys=context_id, remote_side=context_id)  # noqa: PLR0124
+    args = relationship('Arg', back_populates='entry',)
+    tags = relationship('Tag', secondary=entry_tags, back_populates='entries',)
+    comments = relationship('Entry', primaryjoin=context_id == context_id, foreign_keys=context_id, remote_side=context_id,)  # noqa: PLR0124
 
 
 class Tag(Base):
     __tablename__ = 'tags'
 
-    id = Column(Integer, Sequence('tag_id_seq'), primary_key=True)
-    name = Column(String(190), nullable=False, unique=True, index=True)
+    id = Column(Integer, Sequence('tag_id_seq'), primary_key=True,)
+    name = Column(String(190), nullable=False, unique=True, index=True,)
 
-    entries = relationship('Entry', secondary=entry_tags, back_populates='tags')
+    entries = relationship('Entry', secondary=entry_tags, back_populates='tags',)
 
 
 class Arg(Base):
     __tablename__ = 'args'
 
-    id = Column(Integer, Sequence('arg_id_seq'), primary_key=True)
-    entry_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE'), index=True)
-    key = Column(String(190), nullable=False, index=True)
-    value = Column(String(190), nullable=False, index=True)
+    id = Column(Integer, Sequence('arg_id_seq'), primary_key=True,)
+    entry_id = Column(None, ForeignKey('entries.id', ondelete='CASCADE',), index=True,)
+    key = Column(String(190), nullable=False, index=True,)
+    value = Column(String(190), nullable=False, index=True,)
 
     entry = relationship('Entry')
 
 
 class Client(object):
-    def __init__(self, version, session):
+    def __init__(self, version, session,):
         # type: (int, sqlalchemy.Session) -> None
         self.version = version
         self._session = session
         self._translation_cache = {}  # type: Dict[Tuple[str, str], str]
 
-    def translate(self, event_name, locale):
+    def translate(self, event_name, locale,):
         # type: (str, str) -> str
         key = (event_name, locale)
         if key not in self._translation_cache:
-            event_message = self._session.query(EventMessage).filter(EventMessage.event_id == Event.id, EventMessage.locale == locale, Event.name == event_name).one_or_none()
+            event_message = self._session.query(EventMessage).filter(EventMessage.event_id == Event.id, EventMessage.locale == locale, Event.name == event_name,).one_or_none()
             translation = event_message.message if event_message else None
             self._translation_cache[key] = translation
         else:
@@ -232,7 +231,7 @@ class Client(object):
         ret['events'] = sorted([event.name for event in self._session.query(Event).all()])
         return ret
 
-    def add_tag(self, name):
+    def add_tag(self, name,):
         # type: (str) -> Tag
         obj = self._session.query(Tag).filter(Tag.name == name).one_or_none()
         if obj is None:
@@ -241,7 +240,7 @@ class Client(object):
             self._session.flush()
         return obj
 
-    def add_event(self, name):
+    def add_event(self, name,):
         # type: (str) -> Event
         obj = self._session.query(Event).filter(Event.name == name).one_or_none()
         if obj is None:
@@ -250,12 +249,12 @@ class Client(object):
             self._session.flush()
         return obj
 
-    def add_event_message(self, event_id, locale, message, force):
+    def add_event_message(self, event_id, locale, message, force,):
         # type: (int, str, str, bool) -> bool
-        event_message_query = self._session.query(EventMessage).filter(EventMessage.locale == locale, EventMessage.event_id == event_id)
+        event_message_query = self._session.query(EventMessage).filter(EventMessage.locale == locale, EventMessage.event_id == event_id,)
         event_message = event_message_query.one_or_none()
         if event_message is None:
-            event_message = EventMessage(event_id=event_id, locale=locale, message=message, locked=force)
+            event_message = EventMessage(event_id=event_id, locale=locale, message=message, locked=force,)
             self._session.add(event_message)
             self._session.flush()
             return True
@@ -266,7 +265,7 @@ class Client(object):
                 return True
         return False
 
-    def add(self, diary_entry):
+    def add(self, diary_entry,):
         # type: (DiaryEntry) -> None
         if diary_entry.event_name == 'COMMENT':
             entry_message = diary_entry.message.get('en')
@@ -280,11 +279,11 @@ class Client(object):
             if diary_entry.message:
                 for locale, message in diary_entry.message.items():
                     get_logger().debug('Trying to insert message for %s' % locale)
-                    if self.add_event_message(event.id, locale, message, False):
+                    if self.add_event_message(event.id, locale, message, False,):
                         get_logger().debug('Found no existing one. Inserted %r' % message)
             else:
                 get_logger().debug('No further message given, though')
-        entry = Entry(username=diary_entry.username, hostname=diary_entry.hostname, timestamp=diary_entry.timestamp, context_id=diary_entry.context_id, event_id=event_id, message=entry_message)
+        entry = Entry(username=diary_entry.username, hostname=diary_entry.hostname, timestamp=diary_entry.timestamp, context_id=diary_entry.context_id, event_id=event_id, message=entry_message,)
         self._session.add(entry)
         main_id = self._session.query(func.min(Entry.id)).filter(Entry.context_id == entry.context_id).scalar()
         if main_id:
@@ -293,19 +292,19 @@ class Client(object):
             tag = self.add_tag(tag)
             entry.tags.append(tag)
         for key, value in diary_entry.args.items():
-            entry.args.append(Arg(key=key, value=value))
+            entry.args.append(Arg(key=key, value=value,))
         get_logger().info('Successfully added %s (%s)' % (diary_entry.context_id, diary_entry.event_name))
 
-    def query(self, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None, locale='en'):
+    def query(self, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None, locale='en',):
         limit = get_query_limit()
 
         with get_session(False) as session:
-            return self.__query(session, limit, time_from, time_until, tag, event, username, hostname, message, locale)
+            return self.__query(session, limit, time_from, time_until, tag, event, username, hostname, message, locale,)
 
-    def __query(self, session, limit, time_from, time_until, tag, event, username, hostname, message, locale):
+    def __query(self, session, limit, time_from, time_until, tag, event, username, hostname, message, locale,):
         query = session.query(Entry).\
-            outerjoin(Event, Event.id == Entry.event_id).\
-            outerjoin(Arg, Arg.entry_id == Entry.id).\
+            outerjoin(Event, Event.id == Entry.event_id,).\
+            outerjoin(Arg, Arg.entry_id == Entry.id,).\
             options(joinedload(Entry.event)).\
             options(joinedload(Entry.args)).\
             options(joinedload(Entry.comments)).\
@@ -325,7 +324,7 @@ class Client(object):
             query = query.filter(Entry.hostname == hostname)
         if message:
             # in case message is given, we search in entries, event_messages and args tables
-            query = query.outerjoin(EventMessage, EventMessage.event_id == Entry.event_id)
+            query = query.outerjoin(EventMessage, EventMessage.event_id == Entry.event_id,)
 
             # form filters array
             filters = [
@@ -333,10 +332,8 @@ class Client(object):
                     Entry.message.ilike('%{}%'.format(pat)),
                     and_(
                         EventMessage.locale == locale,
-                        EventMessage.message.ilike('%{}%'.format(pat)),
-                    ),
-                    Entry.args.any(Arg.value == pat),
-                )
+                        EventMessage.message.ilike('%{}%'.format(pat)),),
+                    Entry.args.any(Arg.value == pat),)
                 for pat in message.split()
             ]
 
@@ -344,7 +341,7 @@ class Client(object):
             query = query.filter(or_(*filters))
 
         res = []
-        for entry in windowed_query(query, Entry.id, limit):
+        for entry in windowed_query(query, Entry.id, limit,):
             if len(res) >= limit:
                 break
 
@@ -366,12 +363,12 @@ class Client(object):
 
         return res[:limit]
 
-    def get(self, context_id):
+    def get(self, context_id,):
         # type: (int) -> List[Dict[str, Any]]
         res = []
         query = self._session.query(Entry).\
-            outerjoin(Event, Event.id == Entry.event_id).\
-            outerjoin(Arg, Arg.entry_id == Entry.id).\
+            outerjoin(Event, Event.id == Entry.event_id,).\
+            outerjoin(Arg, Arg.entry_id == Entry.id,).\
             options(joinedload(Entry.event)).\
             options(joinedload(Entry.args)).\
             filter(Entry.context_id == context_id).\
@@ -398,12 +395,12 @@ class Client(object):
 
 
 @contextmanager
-def get_client(version):
+def get_client(version,):
     # type: (int) -> Iterator[Client]
     if version != 1:
         raise UnsupportedVersion(version)
     with get_session() as session:
-        client = Client(version=version, session=session)
+        client = Client(version=version, session=session,)
         yield client
 
 

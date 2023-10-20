@@ -72,7 +72,7 @@ from univention.lib.i18n import Translation
 if TYPE_CHECKING:
     from univention.appcenter.app import App  # noqa: F401
 
-_ConfigParser = TypeVar("_ConfigParser", bound=RawConfigParser)
+_ConfigParser = TypeVar("_ConfigParser", bound=RawConfigParser,)
 _T = TypeVar("_T")
 
 # "global" translation for univention-appcenter
@@ -84,18 +84,18 @@ utils_logger = get_base_logger().getChild('utils')
 
 
 @overload
-def read_ini_file(filename):
+def read_ini_file(filename,):
     # type: (str) -> RawConfigParser
     pass
 
 
 @overload
-def read_ini_file(filename, parser_class):
+def read_ini_file(filename, parser_class,):
     # type: (str, Type[_ConfigParser]) -> _ConfigParser
     pass
 
 
-def read_ini_file(filename, parser_class=RawConfigParser):
+def read_ini_file(filename, parser_class=RawConfigParser,):
     parser = parser_class()
     try:
         with open(filename) as f:
@@ -115,19 +115,19 @@ def read_ini_file(filename, parser_class=RawConfigParser):
 
 def docker_bridge_network_conflict():
     # type: () -> bool
-    docker0_net = ipaddress.IPv4Network(u'%s' % (ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16'),), False)
+    docker0_net = ipaddress.IPv4Network(u'%s' % (ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16',),), False,)
     for _name, iface in interfaces.Interfaces().ipv4_interfaces:
         if 'address' in iface and 'netmask' in iface:
-            my_net = ipaddress.IPv4Network(u'%s/%s' % (iface['address'], iface['netmask']), False)
+            my_net = ipaddress.IPv4Network(u'%s/%s' % (iface['address'], iface['netmask']), False,)
             if my_net.overlaps(docker0_net):
                 return True
     return False
 
 
-def app_is_running(app):
+def app_is_running(app,):
     # type: (Union[App, str]) -> Optional[bool]
     from univention.appcenter.app_cache import Apps
-    if isinstance(app, string_types):
+    if isinstance(app, string_types,):
         app = Apps().find(app)
     if app:
         if not app.docker:
@@ -158,7 +158,7 @@ def app_ports():
     """
     ret = []
     for key in ucr_keys():
-        match = re.match(r'^appcenter/apps/(.*)/ports/(\d*)', key)
+        match = re.match(r'^appcenter/apps/(.*)/ports/(\d*)', key,)
         if match:
             try:
                 ret.append((match.groups()[0], int(match.groups()[1]), int(ucr_get(key))))
@@ -175,7 +175,7 @@ def app_ports_with_protocol():
     """
     ret = []
     for app_id, container_port, host_port in app_ports():
-        protocol = ucr_get('appcenter/apps/%s/ports/%s/protocol' % (app_id, container_port), 'tcp')
+        protocol = ucr_get('appcenter/apps/%s/ports/%s/protocol' % (app_id, container_port), 'tcp',)
         for proto in protocol.split(', '):
             ret.append((app_id, container_port, host_port, proto))
     return ret
@@ -185,9 +185,9 @@ class NoMorePorts(Exception):
     pass
 
 
-def currently_free_port_in_range(lower_bound, upper_bound, blacklist):
+def currently_free_port_in_range(lower_bound, upper_bound, blacklist,):
     # type: (int, int, Container[int]) -> int
-    for port in range(lower_bound, upper_bound):
+    for port in range(lower_bound, upper_bound,):
         if port in blacklist:
             continue
         s = socket.socket()
@@ -207,27 +207,27 @@ def generate_password():
     return get_sha256(text.encode("utf-8"))
 
 
-def underscore(value):
+def underscore(value,):
     # type: (str) -> str
-    return re.sub('([a-z])([A-Z])', r'\1_\2', value).lower()
+    return re.sub('([a-z])([A-Z])', r'\1_\2', value,).lower()
 
 
-def capfirst(value):
+def capfirst(value,):
     # type: (str) -> str
     return value[0].upper() + value[1:]
 
 
-def camelcase(value):
+def camelcase(value,):
     # type: (str) -> str
     return ''.join(capfirst(part) for part in value.split('_'))
 
 
-def shell_safe(value):
+def shell_safe(value,):
     # type: (str) -> str
     return underscore(key_shell_escape(value))
 
 
-def mkdir(directory):
+def mkdir(directory,):
     # type: (str) -> None
     if os.path.exists(directory):
         return
@@ -237,13 +237,13 @@ def mkdir(directory):
         os.mkdir(directory)
 
 
-def rmdir(directory):
+def rmdir(directory,):
     # type: (str) -> None
     if os.path.exists(directory):
         shutil.rmtree(directory)
 
 
-def call_process2(cmd, logger=None, env=None, cwd=None):
+def call_process2(cmd, logger=None, env=None, cwd=None,):
     # type: (Sequence[str], Optional[Logger], Optional[Mapping[str, str]], Optional[str]) -> Tuple[int, str]
     if logger is None:
         logger = utils_logger
@@ -255,7 +255,7 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
     out = ""
     ret = 0
     try:
-        p = Popen(cmd, stdout=PIPE, stderr=STDOUT, close_fds=True, env=env, cwd=cwd)
+        p = Popen(cmd, stdout=PIPE, stderr=STDOUT, close_fds=True, env=env, cwd=cwd,)
         assert p.stdout is not None
         while p.poll() is None:
             stdout = p.stdout.readline().decode('utf-8')
@@ -268,32 +268,32 @@ def call_process2(cmd, logger=None, env=None, cwd=None):
         out = str(err)
         ret = 1
     if ret:
-        logger.error('Command {} failed with: {} ({})'.format(' '.join(str_cmd), out.strip(), ret))
+        logger.error('Command {} failed with: {} ({})'.format(' '.join(str_cmd), out.strip(), ret,))
     return ret, out
 
 
-def call_process(args, logger=None, env=None, cwd=None):
+def call_process(args, logger=None, env=None, cwd=None,):
     # type: (Sequence[str], Optional[Logger], Optional[Mapping[str, str]], Optional[str]) -> Any
-    process = Popen(args, stdout=PIPE, stderr=PIPE, close_fds=True, env=env, cwd=cwd)
+    process = Popen(args, stdout=PIPE, stderr=PIPE, close_fds=True, env=env, cwd=cwd,)
     if logger is not None:
         if cwd:
             logger.debug('Calling in %s:' % cwd)
         logger.debug('Calling %s' % ' '.join(quote(arg) for arg in args))
         remove_ansi_escape_sequence_regex = re.compile(r'\x1B\[[0-9;]*[a-zA-Z]')
 
-        def _handle_output(out, handler):
-            for line in iter(out.readline, b''):
+        def _handle_output(out, handler,):
+            for line in iter(out.readline, b'',):
                 line = line.decode('utf-8')
                 if line.endswith('\n'):
                     line = line[:-1]
-                line = remove_ansi_escape_sequence_regex.sub(' ', line)
+                line = remove_ansi_escape_sequence_regex.sub(' ', line,)
                 handler(line)
             out.close()
 
-        stdout_thread = Thread(target=_handle_output, args=(process.stdout, logger.info))
+        stdout_thread = Thread(target=_handle_output, args=(process.stdout, logger.info),)
         stdout_thread.daemon = True
         stdout_thread.start()
-        stderr_thread = Thread(target=_handle_output, args=(process.stderr, logger.warning))
+        stderr_thread = Thread(target=_handle_output, args=(process.stderr, logger.warning),)
         stderr_thread.daemon = True
         stderr_thread.start()
 
@@ -305,38 +305,38 @@ def call_process(args, logger=None, env=None, cwd=None):
     return process
 
 
-def call_process_as(user, args, logger=None, env=None):
+def call_process_as(user, args, logger=None, env=None,):
     # type: (str, Sequence[str], Optional[Logger], Optional[Mapping[str, str]]) -> Any
     args = list2cmdline(args)
     args = ['/bin/su', '-', user, '-c', args]
-    return call_process(args, logger, env)
+    return call_process(args, logger, env,)
 
 
-def verbose_http_error(exc):
+def verbose_http_error(exc,):
     # type: (Exception) -> str
     strerror = ''
-    getcode = getattr(exc, "getcode", None)
+    getcode = getattr(exc, "getcode", None,)
     if getcode is not None:
         code = getcode()
         if code == 404:
-            url = getattr(exc, "url", None)
+            url = getattr(exc, "url", None,)
             strerror = _('%s could not be downloaded. This seems to be a problem with the App Center server. Please try again later.') % url
         elif code >= 500:
             strerror = _('This is a problem with the App Center server. Please try again later.')
 
-    reason = getattr(exc, "reason", None)
-    if reason is not None and isinstance(reason, ssl.SSLError):
+    reason = getattr(exc, "reason", None,)
+    if reason is not None and isinstance(reason, ssl.SSLError,):
         strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server()
         strerror += ' (%s)' % (reason,)
 
     while reason:
         exc = reason
-        reason = getattr(exc, "reason", None)
+        reason = getattr(exc, "reason", None,)
 
-    errno = getattr(exc, "errno", None)
+    errno = getattr(exc, "errno", None,)
     if errno is not None:
         version = ucr_get('version/version')
-        strerror += getattr(exc, 'strerror', '') or ''
+        strerror += getattr(exc, 'strerror', '',) or ''
         if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')  SSLError(1, '_ssl.c:504: error:14090086:SSL routines:ssl3_get_server_certificate:certificate verify failed')
             link_to_doc = _('https://docs.software-univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
             strerror += '. ' + _('This may be a problem with the firewall or proxy of your system. You may find help at %s.') % link_to_doc
@@ -346,9 +346,9 @@ def verbose_http_error(exc):
 
     if not strerror.strip():
         strerror = str(exc)
-    if isinstance(exc, ssl.CertificateError):
+    if isinstance(exc, ssl.CertificateError,):
         strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server() + ' (%s)' % (strerror,)
-    if isinstance(exc, http_client.BadStatusLine):
+    if isinstance(exc, http_client.BadStatusLine,):
         strerror = _('There was a problem with the HTTP response of the server (BadStatusLine). Please try again later.')
     return strerror
 
@@ -362,16 +362,16 @@ class HTTPSConnection(http_client.HTTPSConnection):
         ssl_context.check_hostname = True
         ssl_context.verify_mode = ssl.CERT_REQUIRED
         ssl_context.load_verify_locations("/etc/ssl/certs/ca-certificates.crt")
-        super(HTTPSConnection, self).__init__(*args, context=ssl_context, **kwargs)
+        super(HTTPSConnection, self,).__init__(*args, context=ssl_context, **kwargs,)
 
 
 class HTTPSHandler(urllib_request.HTTPSHandler):
 
-    def https_open(self, req):
-        return self.do_open(HTTPSConnection, req)
+    def https_open(self, req,):
+        return self.do_open(HTTPSConnection, req,)
 
 
-def urlopen(request):
+def urlopen(request,):
     if not urlopen._opener_installed:
         handler = []
         proxy_http = ucr_get('proxy/http')
@@ -381,41 +381,41 @@ def urlopen(request):
         opener = urllib_request.build_opener(*handler)
         urllib_request.install_opener(opener)
         urlopen._opener_installed = True
-    return urllib_request.urlopen(request, timeout=60)
+    return urllib_request.urlopen(request, timeout=60,)
 
 
 urlopen._opener_installed = False  # type: ignore
 
 
-def get_md5(content):
+def get_md5(content,):
     # type: (bytes) -> str
     m = md5()
-    if isinstance(content, string_types):
+    if isinstance(content, string_types,):
         content = content.encode('utf-8')
     m.update(content)
     return m.hexdigest()
 
 
-def get_md5_from_file(filename):
+def get_md5_from_file(filename,):
     # type: (str) -> Optional[str]
     if os.path.exists(filename):
-        with open(filename, 'rb') as f:
+        with open(filename, 'rb',) as f:
             return get_md5(f.read())
 
 
-def get_sha256(content):
+def get_sha256(content,):
     # type: (bytes) -> str
     m = sha256()
-    if isinstance(content, string_types):
+    if isinstance(content, string_types,):
         content = content.encode('utf-8')
     m.update(content)
     return m.hexdigest()
 
 
-def get_sha256_from_file(filename):
+def get_sha256_from_file(filename,):
     # type: (str) -> Optional[str]
     if os.path.exists(filename):
-        with open(filename, 'rb') as f:
+        with open(filename, 'rb',) as f:
             return get_sha256(f.read())
 
 
@@ -425,13 +425,13 @@ def get_current_ram_available():
     # return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. re-enable when methods are supported
     # implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
     with open('/proc/meminfo') as f:
-        splitlines = map(lambda line: line.split(), f.readlines())
+        splitlines = map(lambda line,: line.split(), f.readlines(),)
         meminfo = {line[0]: int(line[1]) * 1024 for line in splitlines}  # bytes
     avail_phymem = meminfo['MemFree:']  # at least MemFree is required
 
     # see also http://code.google.com/p/psutil/issues/detail?id=313
-    phymem_buffers = meminfo.get('Buffers:', 0)  # OpenVZ does not have Buffers, calculation still correct, see Bug #30659
-    cached_phymem = meminfo.get('Cached:', 0)  # OpenVZ might not even have Cached? Don't know if calculation is still correct but it is better than raising KeyError
+    phymem_buffers = meminfo.get('Buffers:', 0,)  # OpenVZ does not have Buffers, calculation still correct, see Bug #30659
+    cached_phymem = meminfo.get('Cached:', 0,)  # OpenVZ might not even have Cached? Don't know if calculation is still correct but it is better than raising KeyError
     return (avail_phymem + phymem_buffers + cached_phymem) / (1024 * 1024)
 
 
@@ -440,7 +440,7 @@ def get_free_disk_space():
     """Returns disk space currently free in MB"""
     docker_path = '/var/lib/docker'
     try:
-        fd = os.open(docker_path, os.O_RDONLY)
+        fd = os.open(docker_path, os.O_RDONLY,)
         try:
             stats = os.fstatvfs(fd)
             bytes_free = stats.f_frsize * stats.f_bavail  # block size * number of free blocks
@@ -453,20 +453,20 @@ def get_free_disk_space():
     return 0.0
 
 
-def flatten(list_of_lists):
+def flatten(list_of_lists,):
     # type: (Iterable[Any]) -> List[Any]
     # return [item for sublist in list_of_lists for item in sublist]
     # => does not work well for strings in list
     ret = []
     for sublist in list_of_lists:
-        if isinstance(sublist, (list, tuple)):
+        if isinstance(sublist, (list, tuple),):
             ret.extend(flatten(sublist))
         else:
             ret.append(sublist)
     return ret
 
 
-def unique(sequence):
+def unique(sequence,):
     # type: (Iterable[_T]) -> List[_T]
     # uniquifies any list; preserves ordering
     return list(OrderedDict.fromkeys(sequence))
@@ -478,11 +478,11 @@ def get_locale():
     # may return None if not set (i.e. 'C')
     locale = getlocale()[0]
     if locale:
-        locale = locale.split('_', 1)[0]
+        locale = locale.split('_', 1,)[0]
     return locale
 
 
-def gpg_verify(filename, signature=None):
+def gpg_verify(filename, signature=None,):
     # type: (str, Optional[str]) -> Tuple[int, str]
     if signature is None:
         signature = filename + '.gpg'
@@ -493,7 +493,7 @@ def gpg_verify(filename, signature=None):
         signature,
         filename,
     )
-    p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
+    p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True,)
     stdout, stderr = p.communicate()
     return (p.returncode, stderr.decode('utf-8'))
 
@@ -515,7 +515,7 @@ def container_mode():
     return bool(ucr_get('docker/container/uuid'))
 
 
-def send_information(action, app=None, status=200, value=None):
+def send_information(action, app=None, status=200, value=None,):
     # type: (str, Optional[App], int, str) -> None
     app_id = app and app.id
     utils_logger.debug('send_information: action=%s app=%s value=%s status=%s' % (action, app_id, value, status))
@@ -526,8 +526,8 @@ def send_information(action, app=None, status=200, value=None):
     uuid = '00000000-0000-0000-0000-000000000000'
     system_uuid = '00000000-0000-0000-0000-000000000000'  # type: Optional[str]
     if not app or app.notify_vendor:
-        uuid = ucr_get('uuid/license', uuid)
-        system_uuid = ucr_get('uuid/system', system_uuid)
+        uuid = ucr_get('uuid/license', uuid,)
+        system_uuid = ucr_get('uuid/system', system_uuid,)
     if action == 'search':
         uuid = '00000000-0000-0000-0000-000000000000'
         system_uuid = None
@@ -548,7 +548,7 @@ def send_information(action, app=None, status=200, value=None):
     utils_logger.debug('tracking information: %s' % str(values))
     try:
         request_data = urlencode(values).encode('utf-8')
-        request = urllib_request.Request(url, request_data)
+        request = urllib_request.Request(url, request_data,)
         urlopen(request)
     except Exception as exc:
         utils_logger.info('Error sending app infos to the App Center server: %s' % exc)
@@ -559,9 +559,9 @@ def find_hosts_for_master_packages():
     from univention.appcenter.udm import get_machine_connection, search_objects
     lo, pos = get_machine_connection()
     hosts = []
-    for host in search_objects('computers/domaincontroller_master', lo, pos):
+    for host in search_objects('computers/domaincontroller_master', lo, pos,):
         hosts.append((host.info.get('fqdn'), True))
-    for host in search_objects('computers/domaincontroller_backup', lo, pos):
+    for host in search_objects('computers/domaincontroller_backup', lo, pos,):
         hosts.append((host.info.get('fqdn'), False))
     try:
         local_fqdn = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
@@ -573,7 +573,7 @@ def find_hosts_for_master_packages():
     return hosts
 
 
-def resolve_dependencies(apps, action):
+def resolve_dependencies(apps, action,):
     # type: (List[App], str) -> List[App]
     from univention.appcenter.app_cache import Apps
     from univention.appcenter.udm import get_machine_connection
@@ -606,7 +606,7 @@ def resolve_dependencies(apps, action):
         app = apps.pop()
         if app in checked:
             continue
-        checked.insert(0, app)
+        checked.insert(0, app,)
         dependencies = depends[app.id] = []
         for app_id in app.required_apps:
             required_app = Apps().find(app_id)
@@ -624,7 +624,7 @@ def resolve_dependencies(apps, action):
                 continue
             if required_app.is_installed():
                 continue
-            if lo.search(filter_format('(&(univentionObjectType=appcenter/app)(univentionAppInstalledOnServer=*)(univentionAppID=%s_*))', [required_app.id])):
+            if lo.search(filter_format('(&(univentionObjectType=appcenter/app)(univentionAppInstalledOnServer=*)(univentionAppID=%s_*))', [required_app.id],)):
                 continue
             utils_logger.info('Adding %s to the list of Apps' % required_app.id)
             apps.append(required_app)

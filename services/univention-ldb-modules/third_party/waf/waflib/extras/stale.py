@@ -23,7 +23,7 @@ from waflib.Runner import Parallel
 DYNAMIC_EXT = [] # add your non-cleanable files/extensions here
 MOC_H_EXTS = '.cpp .cxx .hpp .hxx .h'.split()
 
-def can_delete(node):
+def can_delete(node,):
 	"""Imperfect moc cleanup which does not look for a Q_OBJECT macro in the files"""
 	if not node.name.endswith('.moc'):
 		return True
@@ -46,14 +46,14 @@ def can_delete(node):
 	return True
 
 # recursion over the nodes to find the stale files
-def stale_rec(node, nodes):
+def stale_rec(node, nodes,):
 	if node.abspath() in node.ctx.env[Build.CFG_FILES]:
 		return
 
-	if getattr(node, 'children', []):
+	if getattr(node, 'children', [],):
 		for x in node.children.values():
 			if x.name != "c4che":
-				stale_rec(x, nodes)
+				stale_rec(x, nodes,)
 	else:
 		for ext in DYNAMIC_EXT:
 			if node.name.endswith(ext):
@@ -61,7 +61,7 @@ def stale_rec(node, nodes):
 		else:
 			if not node in nodes:
 				if can_delete(node):
-					Logs.warn('Removing stale file -> %r', node)
+					Logs.warn('Removing stale file -> %r', node,)
 					node.delete()
 
 old = Parallel.refill_task_list
@@ -70,7 +70,7 @@ def refill_task_list(self):
 	bld = self.bld
 
 	# execute this operation only once
-	if getattr(self, 'stale_done', False):
+	if getattr(self, 'stale_done', False,):
 		return iit
 	self.stale_done = True
 
@@ -79,7 +79,7 @@ def refill_task_list(self):
 		return iit
 
 	# this does not work in dynamic builds
-	if getattr(bld, 'post_mode') == Build.POST_AT_ONCE:
+	if getattr(bld, 'post_mode',) == Build.POST_AT_ONCE:
 		return iit
 
 	# obtain the nodes to use during the build
@@ -91,7 +91,7 @@ def refill_task_list(self):
 			except AttributeError:
 				pass
 
-	stale_rec(bld.bldnode, nodes)
+	stale_rec(bld.bldnode, nodes,)
 	return iit
 
 Parallel.refill_task_list = refill_task_list

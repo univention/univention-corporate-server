@@ -40,7 +40,7 @@ import sys
 try:
     from univention.lib.share_restrictions import ShareConfiguration
 except ImportError as exc:
-    print('Could not import ShareConfiguration: %s' % (exc,), file=sys.stderr)
+    print('Could not import ShareConfiguration: %s' % (exc,), file=sys.stderr,)
     sys.exit(0)
 
 # main

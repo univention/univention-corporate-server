@@ -35,7 +35,7 @@ def check_if_looping():
     except LDAPReplicationFailed:
         # stop loop
         print('ERROR: postrun never ran, ldap replication failed, most likely because of an s4con loop. Stopping the loop')
-        ignorelist = ucr.get('connector/s4/mapping/windowscomputer/ignorelist', '')
+        ignorelist = ucr.get('connector/s4/mapping/windowscomputer/ignorelist', '',)
         new_ignorelist = ignorelist + ','.join(object_names)
         ucr_set([f'connector/s4/mapping/windowscomputer/ignorelist={new_ignorelist}'])
         subprocess.check_call(["service", "univention-s4-connector", "restart"])
@@ -50,18 +50,16 @@ def check_if_looping():
             fail('Moving objects to s4 ignorelist helped, which means that the previous tests created a loop')
 
 
-def create_and_delete_computer(rounds=20):
+def create_and_delete_computer(rounds=20,):
     for _i in range(rounds):
         computername = strings.random_string()
         memberserver = udm.create_object(
             'computers/memberserver', name=computername,
-            position='cn=memberserver,cn=computers,%s' % ucr.get('ldap/base'),
-        )
+            position='cn=memberserver,cn=computers,%s' % ucr.get('ldap/base'),)
         memberserver = udm.move_object(
             'computers/memberserver', dn=memberserver,
-            position='cn=computers,%s' % ucr.get('ldap/base'),
-        )
-        udm.remove_object('computers/memberserver', dn=memberserver)
+            position='cn=computers,%s' % ucr.get('ldap/base'),)
+        udm.remove_object('computers/memberserver', dn=memberserver,)
         object_names.append(computername)
     check_if_looping()
 

@@ -51,16 +51,16 @@ def createMachinePassword():
     """
     ucr = ConfigRegistry()
     ucr.load()
-    length = ucr.get('machine/password/length', '20')
-    compl = ucr.get('machine/password/complexity', 'scn')
-    p = subprocess.Popen(["pwgen", "-1", "-" + compl, length], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    length = ucr.get('machine/password/length', '20',)
+    compl = ucr.get('machine/password/complexity', 'scn',)
+    p = subprocess.Popen(["pwgen", "-1", "-" + compl, length], stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
     (stdout, stderr) = p.communicate()
-    if not isinstance(stdout, str):  # Python 3
-        return stdout.decode('ASCII', 'replace').strip()
+    if not isinstance(stdout, str,):  # Python 3
+        return stdout.decode('ASCII', 'replace',).strip()
     return stdout.strip()
 
 
-def getLDAPURIs(ucr=None):
+def getLDAPURIs(ucr=None,):
     # type: (Optional[ConfigRegistry]) -> str
     """
     Returns a space separated list of all configured |LDAP| servers, according to |UCR| variables
@@ -76,7 +76,7 @@ def getLDAPURIs(ucr=None):
 
     uri_string = ''
     ldaphosts = []
-    port = ucr.get('ldap/server/port', '7389')
+    port = ucr.get('ldap/server/port', '7389',)
     ldap_server_name = ucr.get('ldap/server/name')
     ldap_server_addition = ucr.get('ldap/server/addition')
 
@@ -91,7 +91,7 @@ def getLDAPURIs(ucr=None):
     return uri_string
 
 
-def getLDAPServersCommaList(ucr=None):
+def getLDAPServersCommaList(ucr=None,):
     # type: (Optional[ConfigRegistry]) -> str
     """
     Returns a comma-separated string with all configured |LDAP| servers,
@@ -120,7 +120,7 @@ def getLDAPServersCommaList(ucr=None):
     return ldap_servers
 
 
-def custom_username(name, ucr=None):
+def custom_username(name, ucr=None,):
     # type: (str, Optional[ConfigRegistry]) -> str
     """
     Returns the customized user name configured via |UCR| `users/default/*`.
@@ -138,10 +138,10 @@ def custom_username(name, ucr=None):
         ucr = ConfigRegistry()
         ucr.load()
 
-    return ucr.get("users/default/" + name.lower().replace(" ", ""), name)
+    return ucr.get("users/default/" + name.lower().replace(" ", "",), name,)
 
 
-def custom_groupname(name, ucr=None):
+def custom_groupname(name, ucr=None,):
     # type: (str, Optional[ConfigRegistry]) -> str
     """
     Returns the customized group name configured via |UCR| `groups/default/*`.
@@ -159,4 +159,4 @@ def custom_groupname(name, ucr=None):
         ucr = ConfigRegistry()
         ucr.load()
 
-    return ucr.get("groups/default/" + name.lower().replace(" ", ""), name)
+    return ucr.get("groups/default/" + name.lower().replace(" ", "",), name,)

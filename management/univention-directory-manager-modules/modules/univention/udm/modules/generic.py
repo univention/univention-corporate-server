@@ -77,20 +77,19 @@ class GenericObjectProperties(BaseObjectProperties):
 
     _encoders = {}
 
-    def __init__(self, udm_obj):
-        super(GenericObjectProperties, self).__init__(udm_obj)
+    def __init__(self, udm_obj,):
+        super(GenericObjectProperties, self,).__init__(udm_obj)
         for _property_names, encoder_class in self._encoders.items():
-            assert hasattr(encoder_class, 'decode')
-            assert hasattr(encoder_class, 'encode')
+            assert hasattr(encoder_class, 'decode',)
+            assert hasattr(encoder_class, 'encode',)
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key, value,):
         if not str(key).startswith('_') and key not in self._udm_obj._orig_udm_object:
             raise UnknownProperty(
-                'Unknown property {!r} for UDM module {!r}.'.format(key, self._udm_obj._udm_module.name),
+                'Unknown property {!r} for UDM module {!r}.'.format(key, self._udm_obj._udm_module.name,),
                 dn=self._udm_obj.dn,
-                module_name=self._udm_obj._udm_module.name,
-            )
-        super(GenericObjectProperties, self).__setattr__(key, value)
+                module_name=self._udm_obj._udm_module.name,)
+        super(GenericObjectProperties, self,).__setattr__(key, value,)
 
 
 class GenericObject(BaseObject):
@@ -134,7 +133,7 @@ class GenericObject(BaseObject):
         :py:meth:`GenericModule.get()`, :py:meth:`GenericModule.new()` or
         :py:meth:`GenericModule.search()`.
         """
-        super(GenericObject, self).__init__()
+        super(GenericObject, self,).__init__()
         self._udm_module = None
         self._lo = None
         self._orig_udm_object = None
@@ -151,12 +150,12 @@ class GenericObject(BaseObject):
         :raises univention.udm.exceptions.NotYetSavedError: if object does not yet exist (has no dn)
         """
         if self._deleted:
-            raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
+            raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name,)
         if not self.dn or not self._orig_udm_object:
             raise NotYetSavedError(module_name=self._udm_module.name)
         self._orig_udm_object = self._udm_module._get_orig_udm_object(self.dn)
         self._copy_from_udm_obj()
-        ud.debug('{!r} object (dn: {!r}) reloaded'.format(self._udm_module.name, self.dn))
+        ud.debug('{!r} object (dn: {!r}) reloaded'.format(self._udm_module.name, self.dn,))
         return self
 
     def save(self):
@@ -168,7 +167,7 @@ class GenericObject(BaseObject):
         :raises univention.udm.exceptions.MoveError: when a move operation fails
         """
         if self._deleted:
-            raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
+            raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name,)
         if not self._fresh:
             ud.warn('Saving stale UDM object instance')
         self._copy_to_udm_obj()
@@ -177,20 +176,17 @@ class GenericObject(BaseObject):
                 new_dn_li = [str2dn(self._orig_udm_object.dn)[0]]
                 new_dn_li.extend(str2dn(self.position))
                 new_dn = dn2str(new_dn_li)
-                ud.process('Moving {!r} object {!r} to {!r}'.format(self._udm_module.name, self.dn, new_dn))
+                ud.process('Moving {!r} object {!r} to {!r}'.format(self._udm_module.name, self.dn, new_dn,))
                 try:
                     self.dn = self._orig_udm_object.move(new_dn)
                 except univention.admin.uexceptions.invalidOperation as exc:
                     reraise(MoveError, MoveError(
-                            'Moving {!r} object is not supported ({}).'.format(self._udm_module.name, exc),
-                            dn=self.dn, module_name=self._udm_module.name,
-                            ), sys.exc_info()[2])
+                            'Moving {!r} object is not supported ({}).'.format(self._udm_module.name, exc,),
+                            dn=self.dn, module_name=self._udm_module.name,), sys.exc_info()[2],)
                 except (univention.admin.uexceptions.base, ldap.error) as exc:
                     reraise(MoveError, MoveError(
                             'Error moving {!r} object from {!r} to {!r}: {}'.format(
-                                self._udm_module.name, self.dn, self.position, exc,
-                            ), dn=self.dn, module_name=self._udm_module.name,
-                            ), sys.exc_info()[2])
+                                self._udm_module.name, self.dn, self.position, exc,), dn=self.dn, module_name=self._udm_module.name,), sys.exc_info()[2],)
                 assert self.dn == self._orig_udm_object.dn
                 self.position = self._lo.parentDn(self.dn)
                 self._old_position = self.position
@@ -200,26 +196,20 @@ class GenericObject(BaseObject):
             except univention.admin.uexceptions.base as exc:
                 reraise(ModifyError, ModifyError(
                         'Error saving {!r} object at {!r}: {}'.format(
-                            self._udm_module.name, self.dn, exc,
-                        ), dn=self.dn, module_name=self._udm_module.name,
-                        ), sys.exc_info()[2])
-            ud.process('Modified {!r} object {!r}'.format(self._udm_module.name, self.dn))
+                            self._udm_module.name, self.dn, exc,), dn=self.dn, module_name=self._udm_module.name,), sys.exc_info()[2],)
+            ud.process('Modified {!r} object {!r}'.format(self._udm_module.name, self.dn,))
         else:
             try:
                 self.dn = self._orig_udm_object.create()
             except ldap.INVALID_DN_SYNTAX as exc:
                 reraise(CreateError, CreateError(
                         'Error creating {!r} object: {}'.format(
-                            self._udm_module.name, exc,
-                        ), module_name=self._udm_module.name,
-                        ), sys.exc_info()[2])
+                            self._udm_module.name, exc,), module_name=self._udm_module.name,), sys.exc_info()[2],)
             except univention.admin.uexceptions.base as exc:
                 reraise(CreateError, CreateError(
                         'Error creating {!r} object: {}'.format(
-                            self._udm_module.name, exc,
-                        ), module_name=self._udm_module.name,
-                        ), sys.exc_info()[2])
-            ud.process('Created {!r} object {!r}'.format(self._udm_module.name, self.dn))
+                            self._udm_module.name, exc,), module_name=self._udm_module.name,), sys.exc_info()[2],)
+            ud.process('Created {!r} object {!r}'.format(self._udm_module.name, self.dn,))
 
         assert self.dn == self._orig_udm_object.dn
         assert self.position == self._lo.parentDn(self.dn)
@@ -228,7 +218,7 @@ class GenericObject(BaseObject):
             self.reload()
         return self
 
-    def delete(self, remove_childs=False):
+    def delete(self, remove_childs=False,):
         """
         Remove the object (and optionally its child nodes) from the LDAP database.
 
@@ -248,14 +238,12 @@ class GenericObject(BaseObject):
         except univention.admin.uexceptions.base as exc:
             raise DeleteError(
                 'Error deleting {!r} object {!r}: {}'.format(
-                    self._udm_module.name, self.dn, exc,
-                ), dn=self.dn, module_name=self._udm_module.name,
-            )
+                    self._udm_module.name, self.dn, exc,), dn=self.dn, module_name=self._udm_module.name,)
         if univention.admin.objects.wantsCleanup(self._orig_udm_object):
             univention.admin.objects.performCleanup(self._orig_udm_object)
         self._orig_udm_object = None
         self._deleted = True
-        ud.process('Deleted {!r} object {!r}'.format(self._udm_module.name, self.dn))
+        ud.process('Deleted {!r} object {!r}'.format(self._udm_module.name, self.dn,))
 
     def _copy_from_udm_obj(self):
         """
@@ -271,8 +259,7 @@ class GenericObject(BaseObject):
             # policies is a mapping of policy-type to a list of referenced policy-dn
             if not self._policies_encoder:
                 self.__class__._policies_encoder = self._init_encoder(
-                    PoliciesEncoder, property_name='__policies', lo=self._lo, module_name=self._udm_module.name,
-                )
+                    PoliciesEncoder, property_name='__policies', lo=self._lo, module_name=self._udm_module.name,)
             self.policies = self._policies_encoder.decode(self._orig_udm_object.policies)
         elif self._udm_module.meta.used_api_version > 0:
             # policies are a list of referenced policy DN's
@@ -281,8 +268,7 @@ class GenericObject(BaseObject):
                 # 'auto', because list contains policies/*
                 policies_encoder_class = dn_list_property_encoder_for('auto')
                 self.__class__._policies_encoder = self._init_encoder(
-                    policies_encoder_class, property_name='__policies', lo=self._lo,
-                )
+                    policies_encoder_class, property_name='__policies', lo=self._lo,)
             self.policies = self._policies_encoder.decode(self._orig_udm_object.policies)
         else:
             self.policies = self._orig_udm_object.policies
@@ -301,20 +287,19 @@ class GenericObject(BaseObject):
                 except KeyError:
                     val = v
                 else:
-                    encoder = self._init_encoder(encoder_class, property_name=k)
+                    encoder = self._init_encoder(encoder_class, property_name=k,)
                     val = encoder.decode(v)
             else:
                 val = v
             if val is None and self._orig_udm_object.descriptions[k].multivalue:
                 val = []
-            setattr(self.props, k, val)
+            setattr(self.props, k, val,)
         if self._orig_udm_object.superordinate:
             if self._udm_module.meta.used_api_version > 0:
                 # encoders exist from API version 1 on
                 superordinate_encoder_class = dn_property_encoder_for('auto')  # 'auto', because superordinate can be anything
                 superordinate_encoder = self._init_encoder(
-                    superordinate_encoder_class, property_name='__superordinate', lo=self._lo,
-                )
+                    superordinate_encoder_class, property_name='__superordinate', lo=self._lo,)
                 self.superordinate = superordinate_encoder.decode(self._orig_udm_object.superordinate.dn)
             else:
                 self.superordinate = self._orig_udm_object.superordinate.dn
@@ -338,7 +323,7 @@ class GenericObject(BaseObject):
         """
         self._orig_udm_object.options = self.options
         if self._udm_module.meta.used_api_version >= 3:
-            self._orig_udm_object.policies = functools.reduce(lambda x, y: x + y, self.policies.values(), [])
+            self._orig_udm_object.policies = functools.reduce(lambda x, y,: x + y, self.policies.values(), [],)
         else:
             self._orig_udm_object.policies = self.policies
         self._orig_udm_object.position.setDn(self.position)
@@ -349,7 +334,7 @@ class GenericObject(BaseObject):
         for k in keys:
             # workaround Bug #47971: _orig_udm_object.items() changes object
             v = self._orig_udm_object.get(k)
-            new_val = getattr(self.props, k, None)
+            new_val = getattr(self.props, k, None,)
             if self._udm_module.meta.used_api_version > 0:
                 # encoders exist from API version 1 on
                 try:
@@ -357,7 +342,7 @@ class GenericObject(BaseObject):
                 except KeyError:
                     new_val2 = new_val
                 else:
-                    encoder = self._init_encoder(encoder_class, property_name=k)
+                    encoder = self._init_encoder(encoder_class, property_name=k,)
                     new_val2 = encoder.encode(new_val)
             else:
                 new_val2 = new_val
@@ -365,19 +350,18 @@ class GenericObject(BaseObject):
                 self._orig_udm_object[k] = new_val2
         if self.superordinate:
             # _orig_udm_object.superordinate is a orig UDM module
-            if isinstance(self.superordinate, string_types):
+            if isinstance(self.superordinate, string_types,):
                 sup_obj = GenericModule(
                     self._udm_module._orig_udm_module.superordinate,
                     self._lo,
-                    self._udm_module.meta.used_api_version,
-                ).get(self.superordinate)
+                    self._udm_module.meta.used_api_version,).get(self.superordinate)
                 self._orig_udm_object.superordinate = sup_obj._orig_udm_object
-            elif isinstance(self.superordinate, GenericObject):
+            elif isinstance(self.superordinate, GenericObject,):
                 self._orig_udm_object.superordinate = self.superordinate._orig_udm_object
-            elif isinstance(self.superordinate, DnPropertyEncoder.DnStr):
+            elif isinstance(self.superordinate, DnPropertyEncoder.DnStr,):
                 self._orig_udm_object.superordinate = self.superordinate.obj._orig_udm_object
             else:
-                msg = 'Unkown type {!r} in "superordinate" of {!r}.'.format(type(self.superordinate), self)
+                msg = 'Unkown type {!r} in "superordinate" of {!r}.'.format(type(self.superordinate), self,)
                 ud.error(msg)
                 raise ValueError(msg)
 
@@ -390,22 +374,22 @@ class GenericObject(BaseObject):
         """
         for key in self._orig_udm_object.keys():
             if key in self._orig_udm_object.info:
-                if self._orig_udm_object.descriptions[key].multivalue and not isinstance(self._orig_udm_object.info[key], list):
+                if self._orig_udm_object.descriptions[key].multivalue and not isinstance(self._orig_udm_object.info[key], list,):
                     # why isn't this correct in the first place?
-                    setattr(self.props, key, [self._orig_udm_object.info[key]])
+                    setattr(self.props, key, [self._orig_udm_object.info[key]],)
                     continue
-                setattr(self.props, key, self._orig_udm_object.info[key])
+                setattr(self.props, key, self._orig_udm_object.info[key],)
             # Disabled if branch, because the defaults should be calculated
             # when saving and not when accessing (which is the reason this code
             # needs to be here):
             # elif key not in self._orig_udm_object._simpleLdap__no_default and self._orig_udm_object.descriptions[key].editable:
             #     ...
             elif self._orig_udm_object.descriptions[key].multivalue:
-                setattr(self.props, key, [])
+                setattr(self.props, key, [],)
             else:
-                setattr(self.props, key, None)
+                setattr(self.props, key, None,)
 
-    def _init_encoder(self, encoder_class, **kwargs):
+    def _init_encoder(self, encoder_class,**kwargs):
         """
         Instantiate encoder object if required. Optionally assemble additional
         arguments.
@@ -431,15 +415,15 @@ class GenericObject(BaseObject):
                 elif arg == 'api_version':
                     kwargs['api_version'] = self._udm_module.meta.used_api_version
                 else:
-                    raise TypeError('Unknown argument {!r} for {}.__init__.'.format(arg, encoder_class.__class__.__name__))
+                    raise TypeError('Unknown argument {!r} for {}.__init__.'.format(arg, encoder_class.__class__.__name__,))
             return encoder_class(**kwargs)
 
 
 class GenericModuleMetadata(BaseModuleMetadata):
-    def __init__(self, meta):
-        super(GenericModuleMetadata, self).__init__(meta)
+    def __init__(self, meta,):
+        super(GenericModuleMetadata, self,).__init__(meta)
         self.default_positions_property = None
-        if hasattr(meta, 'default_positions_property'):
+        if hasattr(meta, 'default_positions_property',):
             self.default_positions_property = meta.default_positions_property
 
     @property
@@ -454,7 +438,7 @@ class GenericModuleMetadata(BaseModuleMetadata):
                 return key
         return ''
 
-    def lookup_filter(self, filter_s=None):
+    def lookup_filter(self, filter_s=None,):
         """
         Filter the UDM module uses to find its corresponding LDAP objects.
 
@@ -472,7 +456,7 @@ class GenericModuleMetadata(BaseModuleMetadata):
         :return: an LDAP filter string
         :rtype: str
         """
-        return str(self._udm_module._orig_udm_module.lookup_filter(filter_s, self._udm_module.connection))
+        return str(self._udm_module._orig_udm_module.lookup_filter(filter_s, self._udm_module.connection,))
 
     @property
     def mapping(self):
@@ -484,15 +468,14 @@ class GenericModuleMetadata(BaseModuleMetadata):
         """
         return LdapMapping(
             udm2ldap={k: v[0] for k, v in self._udm_module._orig_udm_module.mapping._map.items()},
-            ldap2udm={k: v[0] for k, v in self._udm_module._orig_udm_module.mapping._unmap.items()},
-        )
+            ldap2udm={k: v[0] for k, v in self._udm_module._orig_udm_module.mapping._unmap.items()},)
 
 
 class GenericModuleMeta(ModuleMeta):
     udm_meta_class = GenericModuleMetadata
 
 
-class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
+class GenericModule(with_metaclass(GenericModuleMeta, BaseModule,)):
     """
     Simple API to use UDM modules. Basically a GenericObject factory.
 
@@ -526,11 +509,11 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         supported_api_versions = [0, 1, 2, 3]
         suitable_for = ['*/*']
 
-    def __init__(self, name, connection, api_version):
-        super(GenericModule, self).__init__(name, connection, api_version)
+    def __init__(self, name, connection, api_version,):
+        super(GenericModule, self,).__init__(name, connection, api_version,)
         self._orig_udm_module = self._get_orig_udm_module()
 
-    def new(self, superordinate=None):
+    def new(self, superordinate=None,):
         """
         Create a new, unsaved GenericObject object.
 
@@ -540,9 +523,9 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         :return: a new, unsaved GenericObject object
         :rtype: GenericObject
         """
-        return self._load_obj('', superordinate)
+        return self._load_obj('', superordinate,)
 
-    def get(self, dn):
+    def get(self, dn,):
         """
         Load UDM object from LDAP.
 
@@ -554,7 +537,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         """
         return self._load_obj(dn)
 
-    def search(self, filter_s='', base='', scope='sub', sizelimit=0):
+    def search(self, filter_s='', base='', scope='sub', sizelimit=0,):
         """
         Get all UDM objects from LDAP that match the given filter.
 
@@ -568,13 +551,12 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         """
         try:
             try:
-                udm_module_lookup_filter = str(self._orig_udm_module.lookup_filter(filter_s, self.connection))
+                udm_module_lookup_filter = str(self._orig_udm_module.lookup_filter(filter_s, self.connection,))
                 dns = self.connection.searchDn(
                     filter=udm_module_lookup_filter,
                     base=base,
                     scope=scope,
-                    sizelimit=sizelimit,
-                )
+                    sizelimit=sizelimit,)
             except AttributeError:
                 # not all modules have 'lookup_filter'
                 dns = (obj.dn for obj in self._orig_udm_module.lookup(
@@ -583,14 +565,13 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
                     filter_s,
                     base=base,
                     scope=scope,
-                    sizelimit=sizelimit,
-                ))
+                    sizelimit=sizelimit,))
         except univention.admin.uexceptions.ldapSizelimitExceeded:
-            raise SearchLimitReached(module_name=self.name, search_filter=filter_s, sizelimit=sizelimit)
+            raise SearchLimitReached(module_name=self.name, search_filter=filter_s, sizelimit=sizelimit,)
         for dn in dns:
             yield self.get(dn)
 
-    def _dn_exists(self, dn):
+    def _dn_exists(self, dn,):
         """
         Checks if the DN exists in LDAP.
 
@@ -599,7 +580,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         :rtype: bool
         """
         try:
-            self.connection.searchDn(base=dn, scope='base')
+            self.connection.searchDn(base=dn, scope='base',)
         except univention.admin.uexceptions.noObject:
             return False
         else:
@@ -615,7 +596,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         if not self._default_containers:
             # DEFAULT_CONTAINERS_DN must exist, or we'll run into an infinite recursion
             if self._dn_exists(DEFAULT_CONTAINERS_DN):
-                mod = GenericModule('settings/directory', self.connection, 0)
+                mod = GenericModule('settings/directory', self.connection, 0,)
                 try:
                     default_directory_object = mod.get(DEFAULT_CONTAINERS_DN)
                 except NoObject:
@@ -632,15 +613,15 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         :rtype: list(str)
         """
         module_contailers = [
-            '{},{}'.format(dc, ucr['ldap/base'])
-            for dc in getattr(self._orig_udm_module, 'default_containers', [])
+            '{},{}'.format(dc, ucr['ldap/base'],)
+            for dc in getattr(self._orig_udm_module, 'default_containers', [],)
         ]
 
         default_positions_property = self.meta.default_positions_property
         default_containers = self._get_default_containers()
 
         if default_containers and default_positions_property:
-            dns = default_containers.get(default_positions_property, [])
+            dns = default_containers.get(default_positions_property, [],)
             module_contailers.extend(dn for dn in dns if self._dn_exists(dn))
         module_contailers.append(self.connection.base)
         return module_contailers
@@ -662,14 +643,13 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
             if not udm_module:
                 raise UnknownModuleType(
                     msg='UDM module {!r} does not exist.'.format(self.name),
-                    module_name=self.name,
-                )
+                    module_name=self.name,)
             po = univention.admin.uldap.position(self.connection.base)
-            univention.admin.modules.init(self.connection, po, udm_module)
+            univention.admin.modules.init(self.connection, po, udm_module,)
             self._udm_module_cache[key] = udm_module
         return self._udm_module_cache[key]
 
-    def _get_orig_udm_object(self, dn, superordinate=None):
+    def _get_orig_udm_object(self, dn, superordinate=None,):
         """
         Retrieve UDM object from LDAP.
 
@@ -689,9 +669,9 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         """
         udm_module = self._get_orig_udm_module()
         if superordinate:
-            if isinstance(superordinate, string_types):
-                superordinate_obj = univention.admin.objects.get_superordinate(udm_module, None, self.connection, superordinate)
-            elif isinstance(superordinate, GenericObject):
+            if isinstance(superordinate, string_types,):
+                superordinate_obj = univention.admin.objects.get_superordinate(udm_module, None, self.connection, superordinate,)
+            elif isinstance(superordinate, GenericObject,):
                 superordinate_obj = superordinate._orig_udm_object
             else:
                 raise ValueError('Argument "superordinate" must be a DN (string) or a GenericObject instance.')
@@ -701,22 +681,21 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
             # check if objects of this module require a superordinate
             superordinate_modules = univention.admin.modules.superordinate_names(self.name)
             if superordinate_modules and superordinate_modules != ['settings/cn']:
-                raise NoSuperordinate(dn=dn, module_name=self.name, superordinate_types=superordinate_modules)
+                raise NoSuperordinate(dn=dn, module_name=self.name, superordinate_types=superordinate_modules,)
         po = univention.admin.uldap.position(self.connection.base)
         try:
-            obj = univention.admin.objects.get(udm_module, None, self.connection, po, dn=dn, superordinate=superordinate_obj)
+            obj = univention.admin.objects.get(udm_module, None, self.connection, po, dn=dn, superordinate=superordinate_obj,)
         except univention.admin.uexceptions.noObject:
-            reraise(NoObject, NoObject(dn=dn, module_name=self.name), sys.exc_info()[2])
+            reraise(NoObject, NoObject(dn=dn, module_name=self.name,), sys.exc_info()[2],)
         except univention.admin.uexceptions.base as exc:
             reraise(UdmError, UdmError(
-                    'Error loading UDM object at DN {!r}: {}'.format(dn, exc), dn=dn, module_name=self.name,
-                    ), sys.exc_info()[2])
+                    'Error loading UDM object at DN {!r}: {}'.format(dn, exc,), dn=dn, module_name=self.name,), sys.exc_info()[2],)
         self._verify_univention_object_type(obj)
         if self.meta.auto_open:
             obj.open()
         return obj
 
-    def _load_obj(self, dn, superordinate=None, orig_udm_object=None):
+    def _load_obj(self, dn, superordinate=None, orig_udm_object=None,):
         """
         GenericObject factory.
 
@@ -738,16 +717,16 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         obj._lo = self.connection
         obj._udm_module = self
         if orig_udm_object:
-            if not isinstance(orig_udm_object, univention.admin.handlers.simpleLdap):
+            if not isinstance(orig_udm_object, univention.admin.handlers.simpleLdap,):
                 raise ValueError('Argument "orig_udm_object" must be an original UDM object instance.')
             obj._orig_udm_object = orig_udm_object
         else:
-            obj._orig_udm_object = self._get_orig_udm_object(dn, superordinate)
+            obj._orig_udm_object = self._get_orig_udm_object(dn, superordinate,)
         obj._copy_from_udm_obj()
-        ud.debug('{!r} object (dn: {!r}) loaded'.format(self.name, obj.dn))
+        ud.debug('{!r} object (dn: {!r}) loaded'.format(self.name, obj.dn,))
         return obj
 
-    def _verify_univention_object_type(self, orig_udm_obj):
+    def _verify_univention_object_type(self, orig_udm_obj,):
         """
         Check that the ``univentionObjectType`` of the LDAP objects matches the
         UDM module name.
@@ -758,6 +737,6 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         :raises univention.udm.exceptions.WrongObjectType: if ``univentionObjectType`` of the LDAP object
                 does not match the UDM module name
         """
-        uni_obj_type = getattr(orig_udm_obj, 'oldinfo', {}).get('univentionObjectType')
-        if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
-            raise WrongObjectType(dn=orig_udm_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))
+        uni_obj_type = getattr(orig_udm_obj, 'oldinfo', {},).get('univentionObjectType')
+        if uni_obj_type and self.name.split('/', 1,)[0] not in [uot.split('/', 1,)[0] for uot in uni_obj_type]:
+            raise WrongObjectType(dn=orig_udm_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type),)

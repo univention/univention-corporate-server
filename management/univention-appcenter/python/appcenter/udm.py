@@ -52,7 +52,7 @@ _initialized = set()
 
 class FakeApp(object):
 
-    def __init__(self, id, version):
+    def __init__(self, id, version,):
         self.id = id
         self.version = version
 
@@ -62,18 +62,18 @@ def _update_modules():
         udm_modules.update()
 
 
-def _get_module(module, lo, pos):
+def _get_module(module, lo, pos,):
     _update_modules()
     mod = udm_modules.get(module)
     if module not in _initialized:
-        udm_modules.init(lo, pos, mod)
+        udm_modules.init(lo, pos, mod,)
         _initialized.add(module)
     return mod
 
 
-def init_object(module, lo, pos, dn='', attrs=None):
-    module = _get_module(module, lo, pos)
-    obj = udm_objects.get(module, None, lo, pos, dn)
+def init_object(module, lo, pos, dn='', attrs=None,):
+    module = _get_module(module, lo, pos,)
+    obj = udm_objects.get(module, None, lo, pos, dn,)
     udm_objects.open(obj)
     if attrs:
         if 'policies' in attrs:
@@ -83,9 +83,9 @@ def init_object(module, lo, pos, dn='', attrs=None):
     return obj
 
 
-def remove_object_if_exists(module, lo, pos, dn):
+def remove_object_if_exists(module, lo, pos, dn,):
     try:
-        obj = init_object(module, lo, pos, dn)
+        obj = init_object(module, lo, pos, dn,)
         obj.remove()
     except udm_errors.noObject:
         pass
@@ -93,11 +93,11 @@ def remove_object_if_exists(module, lo, pos, dn):
         udm_objects.performCleanup(obj)
 
 
-def create_object_if_not_exists(_module, _lo, _pos, **kwargs):
-    obj = init_object(_module, _lo, _pos, attrs=kwargs)
+def create_object_if_not_exists(_module, _lo, _pos,**kwargs):
+    obj = init_object(_module, _lo, _pos, attrs=kwargs,)
     dn = obj._ldap_dn()
     try:
-        init_object(_module, _lo, _pos, dn)
+        init_object(_module, _lo, _pos, dn,)
     except udm_errors.noObject:
         obj.create()
         return obj
@@ -106,9 +106,9 @@ def create_object_if_not_exists(_module, _lo, _pos, **kwargs):
         return
 
 
-def modify_object(_module, _lo, _pos, _dn, **kwargs):
+def modify_object(_module, _lo, _pos, _dn,**kwargs):
     try:
-        obj = init_object(_module, _lo, _pos, _dn, attrs=kwargs)
+        obj = init_object(_module, _lo, _pos, _dn, attrs=kwargs,)
     except udm_errors.noObject:
         return
     else:
@@ -116,14 +116,14 @@ def modify_object(_module, _lo, _pos, _dn, **kwargs):
         return obj
 
 
-def search_objects(_module, _lo, _pos, _base='', **kwargs):
-    module = _get_module(_module, _lo, _pos)
+def search_objects(_module, _lo, _pos, _base='',**kwargs):
+    module = _get_module(_module, _lo, _pos,)
     expressions = []
-    conj = udm_filter.conjunction('&', expressions)
+    conj = udm_filter.conjunction('&', expressions,)
     for key, value in kwargs.items():
-        expressions.append(udm_filter.expression(key, escape_filter_chars(value), '='))
+        expressions.append(udm_filter.expression(key, escape_filter_chars(value), '=',))
     try:
-        objs = module.lookup(None, _lo, str(conj), base=_base)
+        objs = module.lookup(None, _lo, str(conj), base=_base,)
     except udm_errors.noObject:
         objs = []
     for obj in objs:
@@ -131,9 +131,9 @@ def search_objects(_module, _lo, _pos, _base='', **kwargs):
     return objs
 
 
-def dn_exists(dn, lo):
+def dn_exists(dn, lo,):
     try:
-        lo.searchDn(base=dn, scope='base')
+        lo.searchDn(base=dn, scope='base',)
     except udm_errors.noObject:
         return False
     else:
@@ -148,21 +148,21 @@ def get_admin_connection():
     return getAdminConnection()
 
 
-def get_connection(userdn, password):
-    port = int(ucr_get('ldap/master/port', '7389'))
+def get_connection(userdn, password,):
+    port = int(ucr_get('ldap/master/port', '7389',))
     host = ucr_get('ldap/master')
     base = ucr_get('ldap/base')
-    lo = base_access(host=host, port=port, base=base, binddn=userdn, bindpw=password)
+    lo = base_access(host=host, port=port, base=base, binddn=userdn, bindpw=password,)
     lo = access(lo=lo)
     pos = position(lo.base)
     return lo, pos
 
 
-def get_read_connection(userdn, password):
-    port = int(ucr_get('ldap/server/port', '7389'))
+def get_read_connection(userdn, password,):
+    port = int(ucr_get('ldap/server/port', '7389',))
     host = ucr_get('ldap/server/name')
     base = ucr_get('ldap/base')
-    lo = base_access(host=host, port=port, base=base, binddn=userdn, bindpw=password)
+    lo = base_access(host=host, port=port, base=base, binddn=userdn, bindpw=password,)
     lo = access(lo=lo)
     pos = position(lo.base)
     return lo, pos
@@ -170,14 +170,14 @@ def get_read_connection(userdn, password):
 
 class ApplicationLDAPObject(object):
 
-    def __init__(self, app, lo, pos, create_if_not_exists=False):
+    def __init__(self, app, lo, pos, create_if_not_exists=False,):
         self._localhost = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
         self._udm_obj = None
         self._rdn = '%s_%s' % (app.id, app.version)
         self._container = 'cn=%s,cn=apps,cn=univention,%s' % (escape_dn_chars(app.id), ucr_get('ldap/base'))
         self._lo = lo
         self._pos = pos
-        self._reload(app, create_if_not_exists)
+        self._reload(app, create_if_not_exists,)
 
     def __bool__(self):
         return self._udm_obj is not None
@@ -187,16 +187,16 @@ class ApplicationLDAPObject(object):
     def dn(self):
         return 'univentionAppID=%s,%s' % (escape_dn_chars(self._rdn), self._container)
 
-    def _reload(self, app, create_if_not_exists=False):
+    def _reload(self, app, create_if_not_exists=False,):
         try:
-            self._udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn)
+            self._udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn,)
         except udm_errors.noObject:
             self._udm_obj = None
             if create_if_not_exists:
                 self._create_obj(app)
 
-    def _create_obj(self, app):
-        create_recursive_container(self._container, self._lo, self._pos)
+    def _create_obj(self, app,):
+        create_recursive_container(self._container, self._lo, self._pos,)
         self._pos.setDn(self._container)
         base64icon = ''
         attrs = {
@@ -222,29 +222,29 @@ class ApplicationLDAPObject(object):
             'umcModuleFlavor': app.umc_module_flavor,
             'serverRole': app.server_role,
         }
-        obj = create_object_if_not_exists('appcenter/app', self._lo, self._pos, **attrs)
+        obj = create_object_if_not_exists('appcenter/app', self._lo, self._pos, **attrs,)
         if obj:
-            self._reload(app, create_if_not_exists=False)
+            self._reload(app, create_if_not_exists=False,)
 
     @classmethod
-    def from_udm_obj(cls, udm_obj, lo, pos):
-        app_id = explode_dn(udm_obj.dn, 1)[1]
-        app = FakeApp(id=app_id, version=udm_obj.info.get('version'))
-        return cls(app, lo, pos)
+    def from_udm_obj(cls, udm_obj, lo, pos,):
+        app_id = explode_dn(udm_obj.dn, 1,)[1]
+        app = FakeApp(id=app_id, version=udm_obj.info.get('version'),)
+        return cls(app, lo, pos,)
 
     def add_localhost(self):
-        self._udm_obj.info.setdefault('server', [])
+        self._udm_obj.info.setdefault('server', [],)
         if self._localhost not in self._udm_obj.info['server']:
             self._udm_obj.info['server'].append(self._localhost)
             self._udm_obj.modify()
         for ldap_object in self.get_siblings():
-            if not self._lo.compare_dn(self.dn, ldap_object.dn):
-                app_obj = self.from_udm_obj(ldap_object, self._lo, self._pos)
+            if not self._lo.compare_dn(self.dn, ldap_object.dn,):
+                app_obj = self.from_udm_obj(ldap_object, self._lo, self._pos,)
                 app_obj.remove_localhost()
 
     def remove_localhost(self):
         try:
-            self._udm_obj.info.setdefault('server', [])
+            self._udm_obj.info.setdefault('server', [],)
             self._udm_obj.info['server'].remove(self._localhost)
         except ValueError:
             pass
@@ -254,33 +254,33 @@ class ApplicationLDAPObject(object):
                 self.remove_from_directory()
 
     def remove_from_directory(self):
-        remove_object_if_exists('appcenter/app', self._lo, self._pos, self.dn)
+        remove_object_if_exists('appcenter/app', self._lo, self._pos, self.dn,)
 
     def installed_on_servers(self):
         if not self:
             return []
-        return self._udm_obj.info.get('server', [])
+        return self._udm_obj.info.get('server', [],)
 
     def get_siblings(self):
-        return search_objects('appcenter/app', self._lo, self._pos, self._container)
+        return search_objects('appcenter/app', self._lo, self._pos, self._container,)
 
     def anywhere_installed(self):
         return bool(self.installed_on_servers())
 
 
-def get_app_ldap_object(app, lo=None, pos=None, or_create=False):
+def get_app_ldap_object(app, lo=None, pos=None, or_create=False,):
     if lo is None or pos is None:
         lo, pos = get_machine_connection()
-    return ApplicationLDAPObject(app, lo, pos, or_create)
+    return ApplicationLDAPObject(app, lo, pos, or_create,)
 
 
-def create_recursive_container(dn, lo, pos):
-    if dn_exists(dn, lo):
+def create_recursive_container(dn, lo, pos,):
+    if dn_exists(dn, lo,):
         return
     position_parts = explode_dn(dn)
     previous_position = ','.join(position_parts[1:])
-    create_recursive_container(previous_position, lo, pos)
+    create_recursive_container(previous_position, lo, pos,)
     pos.setDn(previous_position)
-    name = explode_dn(position_parts[0], 1)[0]
+    name = explode_dn(position_parts[0], 1,)[0]
     module = 'container/ou' if dn.startswith('ou') else 'container/cn'
-    create_object_if_not_exists(module, lo, pos, name=name)
+    create_object_if_not_exists(module, lo, pos, name=name,)

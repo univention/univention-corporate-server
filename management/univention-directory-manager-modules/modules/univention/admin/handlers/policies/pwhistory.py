@@ -72,8 +72,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyPWHistory'],
-    ),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyPWHistory'],),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -83,28 +82,23 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'length': univention.admin.property(
         short_description=_('History length'),
         long_description=_('This number indicates after how many changes the user may reuse the old password again'),
-        syntax=univention.admin.syntax.integer,
-    ),
+        syntax=univention.admin.syntax.integer,),
     'expiryInterval': univention.admin.property(
         short_description=_('Password expiry interval'),
         long_description=_('Number of days after which the password has to be changed'),
-        syntax=univention.admin.syntax.integer,
-    ),
+        syntax=univention.admin.syntax.integer,),
     'pwLength': univention.admin.property(
         short_description=_('Password length'),
         long_description=_('Minimal amount of characters'),
-        syntax=univention.admin.syntax.integer,
-    ),
+        syntax=univention.admin.syntax.integer,),
     'pwQualityCheck': univention.admin.property(
         short_description=_('Password quality check'),
         long_description=_('Enables/disables password quality checks for example dictionary entries'),
-        syntax=univention.admin.syntax.TrueFalseUp,
-    ),
+        syntax=univention.admin.syntax.TrueFalseUp,),
 
 }, **dict([
     requiredObjectClassesProperty(),
@@ -112,7 +106,7 @@ property_descriptions = dict({
     fixedAttributesProperty(syntax=pwhistoryFixedAttributes),
     emptyAttributesProperty(syntax=pwhistoryFixedAttributes),
     ldapFilterProperty(),
-]))
+]),)
 
 layout = [
     Tab(_('General'), _('Passwords'), layout=[
@@ -122,17 +116,17 @@ layout = [
             'expiryInterval',
             'length',
             'pwQualityCheck',
-        ]),
-    ]),
+        ],),
+    ],),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('length', 'univentionPWHistoryLen', None, univention.admin.mapping.ListToIntToString)
-mapping.register('expiryInterval', 'univentionPWExpiryInterval', None, univention.admin.mapping.ListToIntToString)
-mapping.register('pwLength', 'univentionPWLength', None, univention.admin.mapping.ListToIntToString)
-mapping.register('pwQualityCheck', 'univentionPWQualityCheck', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('length', 'univentionPWHistoryLen', None, univention.admin.mapping.ListToIntToString,)
+mapping.register('expiryInterval', 'univentionPWExpiryInterval', None, univention.admin.mapping.ListToIntToString,)
+mapping.register('pwLength', 'univentionPWLength', None, univention.admin.mapping.ListToIntToString,)
+mapping.register('pwQualityCheck', 'univentionPWQualityCheck', None, univention.admin.mapping.ListToString,)
 register_policy_mapping(mapping)
 
 

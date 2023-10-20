@@ -23,7 +23,7 @@ from univention.testing.browser.lib import UMCBrowserTest
 _ = Translation("ucs-test-browser").translate
 
 
-def test_umc_memory_leaks(umc_browser_test: UMCBrowserTest):
+def test_umc_memory_leaks(umc_browser_test: UMCBrowserTest,):
     page = umc_browser_test.page
     pp = pprint.PrettyPrinter(indent=4)
 
@@ -40,13 +40,13 @@ def test_umc_memory_leaks(umc_browser_test: UMCBrowserTest):
     dijit_map_after = gather_dijit_registry_map(page)
     logger.info("Dijit registry map after opening and closing all modules: %s" % pp.pprint(json.loads(dijit_map_after)))
 
-    dijit_map_diff = diff_dijit_registry_map(page, dijit_map, dijit_map_after)
+    dijit_map_diff = diff_dijit_registry_map(page, dijit_map, dijit_map_after,)
 
     for v in json.loads(dijit_map_diff).values():
         assert v != 0, "There were extra widgets in the registry"
 
 
-def gather_dijit_registry_map(page: Page) -> str:
+def gather_dijit_registry_map(page: Page,) -> str:
     return page.evaluate(
         """
     () => {
@@ -57,7 +57,7 @@ def gather_dijit_registry_map(page: Page) -> str:
     )
 
 
-def diff_dijit_registry_map(page: Page, a: str, b: str) -> str:
+def diff_dijit_registry_map(page: Page, a: str, b: str,) -> str:
     return page.evaluate(
         """([a, b]) => {
         var a = JSON.parse(a);
@@ -67,5 +67,4 @@ def diff_dijit_registry_map(page: Page, a: str, b: str) -> str:
         return JSON.stringify(ret)
     }
     """,
-        [a, b],
-    )
+        [a, b],)

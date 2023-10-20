@@ -98,29 +98,29 @@ class Rule(dict):
     @property
     def fromUser(self):
         """Returns *True* if the rule was connected with a user, otherwise False"""
-        return self.get('fromUser', False)
+        return self.get('fromUser', False,)
 
     @property
     def host(self):
         """Returns a hostname pattern. If the pattern matches the hostname the command is allowed on the host"""
-        return self.get('host', '*')
+        return self.get('host', '*',)
 
     @property
     def command(self):
         """Returns the command pattern this rule describes"""
-        return self.get('command', '')
+        return self.get('command', '',)
 
     @property
     def options(self):
         """Returns the option pattern for the rule"""
-        return self.get('options', {})
+        return self.get('options', {},)
 
     @property
     def flavor(self):
         """Returns the flavor if given otherwise *None*"""
-        return self.get('flavor', None)
+        return self.get('flavor', None,)
 
-    def __eq__(self, other):
+    def __eq__(self, other,):
         return self.fromUser == other.fromUser and self.host == other.host and self.command == other.command and self.flavor == other.flavor and self.options == other.options
 
 
@@ -140,7 +140,7 @@ class ACLs(object):
     #: list of all supported computer types for ACL rules
     _systemroles = (dc_master, dc_backup, dc_slave, memberserver)
 
-    def __init__(self, ldap_base=None, acls=None):
+    def __init__(self, ldap_base=None, acls=None,):
         self.__ldap_base = ldap_base
         self.acls = []
         if acls:
@@ -149,10 +149,10 @@ class ACLs(object):
     def reload(self):
         self.acls = []
 
-    def _expand_hostlist(self, lo, hostlist):
+    def _expand_hostlist(self, lo, hostlist,):
         hosts = []
         if self.__ldap_base is None:
-            self.__ldap_base = ucr.get('ldap/base', None)
+            self.__ldap_base = ucr.get('ldap/base', None,)
 
         for host in hostlist:
             host = host.decode('utf-8')
@@ -163,41 +163,41 @@ class ACLs(object):
             elif host.startswith('service:'):
                 service = host[len('service:'):]
                 for role in ACLs._systemroles:
-                    servers = role.lookup(None, lo, filter_format('univentionService=%s', [service]), base=self.__ldap_base)
+                    servers = role.lookup(None, lo, filter_format('univentionService=%s', [service],), base=self.__ldap_base,)
                     for server in servers:
                         if 'name' in server:
                             hosts.append(server['name'])
             elif host == '*':
                 hosts.append(ucr['hostname'])
-            elif fnmatch(ucr['hostname'], host):
+            elif fnmatch(ucr['hostname'], host,):
                 hosts.append(ucr['hostname'])
 
         return hosts
 
-    def __parse_command(self, command):
+    def __parse_command(self, command,):
         data = ''
         if ':' in command:
-            command, data = command.split(':', 1)
+            command, data = command.split(':', 1,)
         options = {}
         if data:
             elements = data.split(',')
             for elem in elements:
                 if '=' in elem:
-                    key, value = elem.split('=', 1)
+                    key, value = elem.split('=', 1,)
                     options[key.strip()] = value.strip()
                 elif elem.startswith('!'):  # key without value allowed if starting with ! -> key may not exist
                     options[elem.strip()] = None
         return command, options
 
-    def _append(self, lo, fromUser, ldap_object):
-        for host in self._expand_hostlist(lo, ldap_object.get('umcOperationSetHost', [b'*'])):
-            flavor = ldap_object.get('umcOperationSetFlavor', [b'*'])
-            for command in ldap_object.get('umcOperationSetCommand', b''):
+    def _append(self, lo, fromUser, ldap_object,):
+        for host in self._expand_hostlist(lo, ldap_object.get('umcOperationSetHost', [b'*'],),):
+            flavor = ldap_object.get('umcOperationSetFlavor', [b'*'],)
+            for command in ldap_object.get('umcOperationSetCommand', b'',):
                 command, options = self.__parse_command(command.decode('utf-8'))
                 new_rule = Rule({'fromUser': fromUser, 'host': host, 'command': command, 'options': options, 'flavor': flavor[0].decode('utf-8')})
                 self.acls.append(new_rule)
 
-    def __compare_rules(self, rule1, rule2):
+    def __compare_rules(self, rule1, rule2,):
         """Hacky version of rule comparison"""
         if not rule1:
             return rule2
@@ -214,7 +214,7 @@ class ACLs(object):
             else:
                 return rule2
 
-    def __option_match(self, opt_pattern, opts):
+    def __option_match(self, opt_pattern, opts,):
         match = ACLs.MATCH_FULL
         for key, value in opt_pattern.items():
             # a key starting with ! means it may not be available
@@ -224,7 +224,7 @@ class ACLs(object):
             if key not in opts:
                 continue
 
-            if isinstance(opts[key], six.string_types):
+            if isinstance(opts[key], six.string_types,):
                 options = (opts[key], )
             else:
                 options = opts[key]
@@ -239,7 +239,7 @@ class ACLs(object):
 
         return match
 
-    def __command_match(self, cmd1, cmd2):
+    def __command_match(self, cmd1, cmd2,):
         """
         if cmd1 == cmd2 return self.COMMAND_MATCH
         if cmd2 is part of cmd1 return self.COMMAND_PART
@@ -253,7 +253,7 @@ class ACLs(object):
 
         return ACLs.MATCH_NONE
 
-    def __flavor_match(self, flavor1, flavor2):
+    def __flavor_match(self, flavor1, flavor2,):
         """
         if flavor1 == flavor2 or flavor1 is None or the pattern '*' return self.COMMAND_MATCH
         if flavor2 is part of flavor1 return self.COMMAND_PART
@@ -267,20 +267,20 @@ class ACLs(object):
 
         return ACLs.MATCH_NONE
 
-    def _is_allowed(self, acls, command, hostname, options, flavor):
+    def _is_allowed(self, acls, command, hostname, options, flavor,):
         for rule in acls:
             if hostname and rule.host != '*' and rule.host != hostname:
                 continue
-            match = self.__command_match(rule.command, command)
-            opt_match = self.__option_match(rule.options, options)
-            flavor_match = self.__flavor_match(rule.flavor, flavor)
+            match = self.__command_match(rule.command, command,)
+            opt_match = self.__option_match(rule.options, options,)
+            flavor_match = self.__flavor_match(rule.flavor, flavor,)
             if match in (ACLs.MATCH_PART, ACLs.MATCH_FULL) and opt_match == ACLs.MATCH_FULL and flavor_match in (ACLs.MATCH_PART, ACLs.MATCH_FULL):
                 return True
 
         # default is to prohibit the command execution
         return False
 
-    def is_command_allowed(self, command, hostname=None, options={}, flavor=None):
+    def is_command_allowed(self, command, hostname=None, options={}, flavor=None,):
         """
         This method verifies if the given command (with options and
         flavor) is on the named host allowed.
@@ -299,7 +299,7 @@ class ACLs(object):
         user_rules = [x for x in self.acls if x.fromUser]
         group_rules = [x for x in self.acls if not x.fromUser]
 
-        return self._is_allowed(user_rules + group_rules, command, hostname, options, flavor)
+        return self._is_allowed(user_rules + group_rules, command, hostname, options, flavor,)
 
     def _dump(self):
         """Dumps the ACLs for the user"""
@@ -310,8 +310,8 @@ class ACLs(object):
             ACL.debug(' %-5s | %-20s | %-15s | %-20s | %-20s' % (rule.fromUser, rule.host, rule.flavor, rule.command, rule.options))
         ACL.debug('')
 
-    def _read_from_file(self, username):
-        filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', ''))
+    def _read_from_file(self, username,):
+        filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', '',),)
 
         try:
             try:
@@ -337,12 +337,12 @@ class ACLs(object):
                     rule['options'] = {}
                 self.acls.append(rule)
 
-    def _write_to_file(self, username):
-        filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', ''))
+    def _write_to_file(self, username,):
+        filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', '',),)
 
         try:
-            file = os.open(filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0o600)
-            os.write(file, json.dumps(self.acls, ensure_ascii=True).encode('ASCII'))
+            file = os.open(filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0o600,)
+            os.write(file, json.dumps(self.acls, ensure_ascii=True,).encode('ASCII'),)
             os.close(file)
         except EnvironmentError as exc:
             ACL.error('Could not write ACL file: %s' % (exc,))
@@ -364,12 +364,12 @@ class LDAP_ACLs(ACLs):
     FROM_USER = True
     FROM_GROUP = False
 
-    def __init__(self, username, ldap_base):
+    def __init__(self, username, ldap_base,):
         self.username = username
-        ACLs.__init__(self, ldap_base)
+        ACLs.__init__(self, ldap_base,)
 
-    def reload(self, lo=None):
-        super(LDAP_ACLs, self).reload()
+    def reload(self, lo=None,):
+        super(LDAP_ACLs, self,).reload()
 
         if lo:
             self._read_from_ldap(lo)
@@ -380,18 +380,18 @@ class LDAP_ACLs(ACLs):
 
         self._dump()
 
-    def _get_policy_for_dn(self, lo, dn):
-        policy = lo.getPolicies(dn, policies=[], attrs={}, result={}, fixedattrs={})
+    def _get_policy_for_dn(self, lo, dn,):
+        policy = lo.getPolicies(dn, policies=[], attrs={}, result={}, fixedattrs={},)
 
-        return policy.get('umcPolicy', None)
+        return policy.get('umcPolicy', None,)
 
-    def _read_from_ldap(self, lo):
+    def _read_from_ldap(self, lo,):
         # TODO: check for fixed attributes
         try:
-            userdn = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [self.username]), unique=True)[0]
-            policy = self._get_policy_for_dn(lo, userdn)
+            userdn = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [self.username],), unique=True,)[0]
+            policy = self._get_policy_for_dn(lo, userdn,)
         except (udm_errors.base, ldap.LDAPError, IndexError) as exc:
-            if not isinstance(exc, IndexError):
+            if not isinstance(exc, IndexError,):
                 ACL.warn('Error reading credentials from LDAP for user %s: %s' % (self.username, traceback.format_exc()))
             # read ACLs from file
             self._read_from_file(self.username)
@@ -399,22 +399,22 @@ class LDAP_ACLs(ACLs):
 
         if policy and 'umcPolicyGrantedOperationSet' in policy:
             for value in policy['umcPolicyGrantedOperationSet']['value']:
-                self._append(lo, LDAP_ACLs.FROM_USER, lo.get(value.decode('UTF-8')))
+                self._append(lo, LDAP_ACLs.FROM_USER, lo.get(value.decode('UTF-8')),)
 
         # TODO: check for nested groups
-        groupDNs = lo.searchDn(filter=filter_format('uniqueMember=%s', [userdn]))
+        groupDNs = lo.searchDn(filter=filter_format('uniqueMember=%s', [userdn],))
 
         for gDN in groupDNs:
-            policy = self._get_policy_for_dn(lo, gDN)
+            policy = self._get_policy_for_dn(lo, gDN,)
             if policy and 'umcPolicyGrantedOperationSet' in policy:
                 for value in policy['umcPolicyGrantedOperationSet']['value']:
-                    self._append(lo, LDAP_ACLs.FROM_GROUP, lo.get(value.decode('UTF-8')))
+                    self._append(lo, LDAP_ACLs.FROM_GROUP, lo.get(value.decode('UTF-8')),)
 
         # make the ACLs unique
-        self.acls.sort(key=operator.itemgetter('fromUser', 'host', 'command', 'flavor'))
+        self.acls.sort(key=operator.itemgetter('fromUser', 'host', 'command', 'flavor',))
 
         result = []
-        for _k, g in itertools.groupby(self.acls, operator.itemgetter('fromUser', 'host', 'command', 'options', 'flavor')):
+        for _k, g in itertools.groupby(self.acls, operator.itemgetter('fromUser', 'host', 'command', 'options', 'flavor',),):
             result.append(next(g))
 
         self.acls[:] = result

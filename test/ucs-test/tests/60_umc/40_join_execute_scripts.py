@@ -19,7 +19,7 @@ from umc import JoinModule
 
 class TestUMCDomainJoinModule(JoinModule):
 
-    def link_join_script(self, script_name, path):
+    def link_join_script(self, script_name, path,):
         """
         Creates a symblic link to a script with provided 'script_name' on
         the provided 'path'. Assuming script is in the same path as the
@@ -29,14 +29,14 @@ class TestUMCDomainJoinModule(JoinModule):
         try:
             if os.path.isfile(script_name):
                 if not os.path.exists(path):
-                    os.symlink(os.path.abspath(script_name), path)
+                    os.symlink(os.path.abspath(script_name), path,)
             else:
                 print("Missing file with the provided name '%s' on path '%s'" % (script_name, path))
                 self.return_code_result_skip()
         except OSError as exc:
             utils.fail("Failed to create a symbolic link to the '%s' on the path '%s' or check if '%s' exists. Exception: '%s'" % (script_name, path, script_name, exc))
 
-    def remove_join_script_link(self, path):
+    def remove_join_script_link(self, path,):
         """
         Removes the symbolic link to a script located at provided 'path'
         Checks if path exists.
@@ -49,7 +49,7 @@ class TestUMCDomainJoinModule(JoinModule):
         except OSError as exc:
             utils.fail("Failed to remove a symbolic link to the test join script, or failed to check if '%s' exists. Exception: '%s'" % (path, exc))
 
-    def get_join_script_state(self, script_name):
+    def get_join_script_state(self, script_name,):
         """
         Makes a query request for all join scripts and returns the
         value of the 'configured' field for the given 'script_name'
@@ -82,10 +82,10 @@ class TestUMCDomainJoinModule(JoinModule):
 
         try:
             print("Saving a backup of initial join status file '%s'" % join_status_file)
-            self.copy_file(join_status_file, join_status_file + '.bak')
+            self.copy_file(join_status_file, join_status_file + '.bak',)
 
             print("Creating a symbolic link to the test join script '%s' in the '%s'" % (test_script, script_link_path))
-            self.link_join_script(test_script + '.inst', script_link_path + test_script + '.inst')
+            self.link_join_script(test_script + '.inst', script_link_path + test_script + '.inst',)
             self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script)
             if test_script_state:
@@ -102,8 +102,8 @@ class TestUMCDomainJoinModule(JoinModule):
             # case 2: executing single join script with 'Force' and with
             # restoration of the status file prior to execution
             print("Force executing test join script '%s' via UMC request" % test_script)
-            self.copy_file(join_status_file + '.bak', join_status_file)
-            self.run(script_names=[test_script], force=True)
+            self.copy_file(join_status_file + '.bak', join_status_file,)
+            self.run(script_names=[test_script], force=True,)
             self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script)
             if not test_script_state:
@@ -112,10 +112,10 @@ class TestUMCDomainJoinModule(JoinModule):
             # case 3: creating more test join scripts with links
             # and executing all pending scripts after
             print("Creating two more test join scripts, linking them and executing all pending scripts")
-            self.copy_file(test_script + '.inst', test_script + '_copy1.inst')
-            self.copy_file(test_script + '.inst', test_script + '_copy2.inst')
-            self.link_join_script(test_script + '_copy1.inst', script_link_path + test_script + '_copy1.inst')
-            self.link_join_script(test_script + '_copy2.inst', script_link_path + test_script + '_copy2.inst')
+            self.copy_file(test_script + '.inst', test_script + '_copy1.inst',)
+            self.copy_file(test_script + '.inst', test_script + '_copy2.inst',)
+            self.link_join_script(test_script + '_copy1.inst', script_link_path + test_script + '_copy1.inst',)
+            self.link_join_script(test_script + '_copy2.inst', script_link_path + test_script + '_copy2.inst',)
             self.execute_pending_scripts()
             self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script + '_copy1')
@@ -135,7 +135,7 @@ class TestUMCDomainJoinModule(JoinModule):
             self.delete_file(test_script + '_copy2.inst')
 
             # Overwriting status file from backup and removing backup:
-            self.copy_file(join_status_file + '.bak', join_status_file)
+            self.copy_file(join_status_file + '.bak', join_status_file,)
             self.delete_file(join_status_file + '.bak')
 
 

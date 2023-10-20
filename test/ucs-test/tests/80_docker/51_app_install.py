@@ -16,7 +16,7 @@ if __name__ == '__main__':
         app_name = get_app_name()
         app_version = get_app_version()
 
-        app = tiny_app(app_name, app_version)
+        app = tiny_app(app_name, app_version,)
         try:
             app.add_to_local_appcenter()
 
@@ -27,7 +27,7 @@ if __name__ == '__main__':
             app.verify(joined=False)
 
             lo = get_ldap_connection()
-            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True))
+            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True,))
         finally:
             app.uninstall()
             app.remove()

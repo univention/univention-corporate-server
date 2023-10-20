@@ -60,11 +60,11 @@ _ACTIONS = {}
 JOINSCRIPT_DIR = '/usr/lib/univention-install'
 
 
-def possible_network_error(func):
+def possible_network_error(func,):
     @wraps(func)
     def _func(*args, **kwargs):
         try:
-            return func(*args, **kwargs)
+            return func(*args, **kwargs,)
         except (urllib_error.HTTPError, urllib_error.URLError, ssl.CertificateError, http_client.BadStatusLine) as exc:
             raise NetworkError(verbose_http_error(exc))
     return _func
@@ -73,7 +73,7 @@ def possible_network_error(func):
 class StoreAppAction(Action):
     cache_class = Apps
 
-    def __call__(self, parser, namespace, value, option_string=None):
+    def __call__(self, parser, namespace, value, option_string=None,):
         apps = []
         if self.nargs is None:
             value = [value]
@@ -87,21 +87,21 @@ class StoreAppAction(Action):
             apps.append(app)
         if self.nargs is None:
             apps = apps[0]
-        setattr(namespace, self.dest, apps)
+        setattr(namespace, self.dest, apps,)
 
 
 class UniventionAppActionMeta(type):
 
-    def __new__(mcs, name, bases, attrs):
-        new_cls = super(UniventionAppActionMeta, mcs).__new__(mcs, name, bases, attrs)
-        if hasattr(new_cls, 'main') and new_cls.main is not None:
+    def __new__(mcs, name, bases, attrs,):
+        new_cls = super(UniventionAppActionMeta, mcs,).__new__(mcs, name, bases, attrs,)
+        if hasattr(new_cls, 'main',) and new_cls.main is not None:
             _ACTIONS[new_cls.get_action_name()] = new_cls
             new_cls.logger = new_cls.parent_logger.getChild(new_cls.get_action_name())
             new_cls.progress = new_cls.logger.getChild('progress')
         return new_cls
 
 
-class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
+class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object,)):
     parent_logger = get_base_logger().getChild('actions')
 
     def __init__(self):
@@ -111,34 +111,34 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
     @classmethod
     def get_action_name(cls):
         # type: () -> str
-        return underscore(cls.__name__).replace('_', '-')
+        return underscore(cls.__name__).replace('_', '-',)
 
     @classmethod
-    def _log(cls, logger, level, msg, *args, **kwargs):
+    def _log(cls, logger, level, msg,*args, **kwargs):
         logger = cls.logger.getChild(logger) if logger is not None else cls.logger
-        logger.log(level, msg, *args, **kwargs)
+        logger.log(level, msg, *args, **kwargs,)
 
     @classmethod
-    def debug(cls, msg, logger=None):
-        cls._log(logger, logging.DEBUG, str(msg))
+    def debug(cls, msg, logger=None,):
+        cls._log(logger, logging.DEBUG, str(msg),)
 
     @classmethod
-    def log(cls, msg, logger=None):
-        cls._log(logger, logging.INFO, str(msg))
+    def log(cls, msg, logger=None,):
+        cls._log(logger, logging.INFO, str(msg),)
 
     @classmethod
-    def warn(cls, msg, logger=None):
-        cls._log(logger, logging.WARNING, str(msg))
+    def warn(cls, msg, logger=None,):
+        cls._log(logger, logging.WARNING, str(msg),)
 
     @classmethod
-    def fatal(cls, msg, logger=None):
-        cls._log(logger, logging.FATAL, str(msg))
+    def fatal(cls, msg, logger=None,):
+        cls._log(logger, logging.FATAL, str(msg),)
 
     @classmethod
-    def log_exception(cls, exc, logger=None):
-        cls._log(logger, logging.ERROR, exc, exc_info=1)
+    def log_exception(cls, exc, logger=None,):
+        cls._log(logger, logging.ERROR, exc, exc_info=1,)
 
-    def setup_parser(self, parser):
+    def setup_parser(self, parser,):
         # type: (ArgumentParser) -> None
         pass
 
@@ -148,12 +148,12 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
         return self._progress_percentage
 
     @percentage.setter
-    def percentage(self, percentage):
+    def percentage(self, percentage,):
         # type: (int) -> None
         self._progress_percentage = percentage
         self.progress.debug(str(percentage))
 
-    def _build_namespace(self, _namespace=None, **kwargs):
+    def _build_namespace(self, _namespace=None,**kwargs):
         # type: (Optional[Namespace], Any) -> Namespace
         parser = ArgumentParser()
         self.setup_parser(parser)
@@ -163,12 +163,12 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
             default = parser._defaults.get(action.dest)
             if action.default is not None:
                 default = action.default
-            if hasattr(_namespace, action.dest):
-                default = getattr(_namespace, action.dest)
+            if hasattr(_namespace, action.dest,):
+                default = getattr(_namespace, action.dest,)
             args[action.dest] = default
         args.update(kwargs)
         for key, value in args.items():
-            setattr(namespace, key, value)
+            setattr(namespace, key, value,)
         return namespace
 
     @classmethod
@@ -186,7 +186,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
         namespace = obj._build_namespace(**kwargs)
         return obj.call_with_namespace(namespace)
 
-    def call_with_namespace(self, namespace):
+    def call_with_namespace(self, namespace,):
         # type: (Namespace) -> Any
         self.debug('Calling %s' % self.get_action_name())
         self.percentage = 0
@@ -205,7 +205,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
             self.percentage = 100
             return result
 
-    def _get_joinscript_path(self, app, unjoin=False):
+    def _get_joinscript_path(self, app, unjoin=False,):
         # type: (App, bool) -> str
         number = 50
         suffix = ''
@@ -214,16 +214,16 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
             number = 51
             ext = 'uinst'
             suffix = '-uninstall'
-        return os.path.join(JOINSCRIPT_DIR, '%d%s%s.%s' % (number, app.id, suffix, ext))
+        return os.path.join(JOINSCRIPT_DIR, '%d%s%s.%s' % (number, app.id, suffix, ext),)
 
-    def _call_cache_script(self, _app, _ext, *args, **kwargs):
+    def _call_cache_script(self, _app, _ext,*args, **kwargs):
         fname = _app.get_cache_file(_ext)
         # change to UCS umask + u+x:      -rwxr--r--
         if os.path.exists(fname):
-            os.chmod(fname, 0o744)
-        return self._call_script(fname, *args, **kwargs)
+            os.chmod(fname, 0o744,)
+        return self._call_script(fname, *args, **kwargs,)
 
-    def _call_script(self, _script, *args, **kwargs):
+    def _call_script(self, _script,*args, **kwargs):
         # type: (str, Any, Any) -> Optional[bool]
         if not os.path.exists(_script):
             self.debug('%s does not exist' % _script)
@@ -232,7 +232,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
         for key, value in kwargs.items():
             if value is None or value is False:
                 continue
-            key = '--%s' % key.replace('_', '-')
+            key = '--%s' % key.replace('_', '-',)
             subprocess_args.append(key)
             if value is not True:
                 subprocess_args.append(value)
@@ -242,21 +242,21 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
 
         return process.returncode == 0
 
-    def _subprocess(self, args, logger=None, env=None, cwd=None):
+    def _subprocess(self, args, logger=None, env=None, cwd=None,):
         # type: (Sequence[str], Optional[logging.Logger], Optional[Mapping[str, str]], Optional[str]) -> Any
         if logger is None:
             logger = self.logger
-        elif isinstance(logger, string_types):
+        elif isinstance(logger, string_types,):
             logger = self.logger.getChild(logger)
-        return call_process(args, logger, env, cwd)
+        return call_process(args, logger, env, cwd,)
 
     @possible_network_error
-    def _send_information(self, app, status, value=None):
+    def _send_information(self, app, status, value=None,):
         action = self.get_action_name()
-        send_information(action, app, status, value)
+        send_information(action, app, status, value,)
 
 
-def get_action(action_name):
+def get_action(action_name,):
     # type: (str) -> Optional[UniventionAppAction]
     _import()
     return _ACTIONS.get(action_name)
@@ -274,6 +274,6 @@ def _import():
     if _ACTIONS:
         return
     path = os.path.dirname(__file__)
-    for pymodule in glob(os.path.join(path, '*.py')):
+    for pymodule in glob(os.path.join(path, '*.py',)):
         pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
         __import__('univention.appcenter.actions.%s' % pymodule_name)

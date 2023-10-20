@@ -31,7 +31,7 @@ class LicenseServer:
 
     cert_basedir = '/etc/univention/ssl/license.univention.de/'
 
-    def __init__(self, host, port):
+    def __init__(self, host, port,):
         self.host = host
         self.port = port
         server = Process(target=self.startHttpServer)
@@ -63,13 +63,12 @@ class LicenseServer:
         server_address = (self.host, self.port)
 
         HTTPHandlerClass.protocol_version = Protocol
-        httpd = ServerClass(server_address, HTTPHandlerClass)
+        httpd = ServerClass(server_address, HTTPHandlerClass,)
         httpd.socket = ssl.wrap_socket(
             httpd.socket,
             keyfile=f'{self.cert_basedir}private.key',
             certfile=f'{self.cert_basedir}cert.pem',
-            server_side=True,
-        )
+            server_side=True,)
 
         sa = httpd.socket.getsockname()
         print(f'Serving HTTP on "{sa[0]}:{sa[1]}"')
@@ -81,14 +80,14 @@ class TestRequestLicense(TestCase):
     @classmethod
     def setUpClass(cls):
         test_server_port = 60026
-        cls._licenseServer = LicenseServer('localhost', test_server_port).__enter__()
+        cls._licenseServer = LicenseServer('localhost', test_server_port,).__enter__()
         cls._nethelper = NetworkRedirector().__enter__()
-        cls._nethelper.add_redirection('127.0.100.101', 443, test_server_port)
+        cls._nethelper.add_redirection('127.0.100.101', 443, test_server_port,)
 
     @classmethod
     def tearDownClass(cls):
-        cls._licenseServer.__exit__(None, None, None)
-        cls._nethelper.__exit__(None, None, None)
+        cls._licenseServer.__exit__(None, None, None,)
+        cls._nethelper.__exit__(None, None, None,)
 
     def test_request_license_admin(self):
         account = utils.UCSTestDomainAdminCredentials()
@@ -100,7 +99,7 @@ class TestRequestLicense(TestCase):
             'udm/request_new_license',
             '--flavor', 'license-request',
             '--option', 'email=packages@univention.de',
-        ]).decode('UTF-8', 'replace')
+        ]).decode('UTF-8', 'replace',)
         print(ans)
         assert 'STATUS   : 200' in ans
 
@@ -116,7 +115,7 @@ class TestRequestLicense(TestCase):
             'udm/request_new_license',
             '--flavor', 'license-request',
             '--option', 'email=packages@univention.de',
-        ]).decode('UTF-8', 'replace')
+        ]).decode('UTF-8', 'replace',)
         print(ans)
         assert 'STATUS   : 200' in ans
 

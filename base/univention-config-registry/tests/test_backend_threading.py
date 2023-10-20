@@ -17,7 +17,7 @@ class DummyLock(object):
     def __enter__(self):
         pass
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback,):
         pass
 
 
@@ -40,10 +40,10 @@ class TestConfigRegistry(object):
 
         lock = Lock() if DO_LOCKING else DummyLock()
 
-        def run(tid):
+        def run(tid,):
             for iteration in range(ITERATIONS):
                 i = tid + iteration
-                random = pow(BASE, i, PRIME)
+                random = pow(BASE, i, PRIME,)
                 key = KEY[:random + 1]
 
                 with lock:
@@ -60,7 +60,7 @@ class TestConfigRegistry(object):
 
         threads = []
         for tid in range(THREADS):
-            thread = Thread(target=run, name='%d' % tid, args=(tid,))
+            thread = Thread(target=run, name='%d' % tid, args=(tid,),)
             threads.append(thread)
         for thread in threads:
             thread.start()

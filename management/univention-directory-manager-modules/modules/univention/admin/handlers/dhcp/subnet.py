@@ -56,8 +56,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionDhcpSubnet'],
-    ),
+        objectClasses=['top', 'univentionDhcpSubnet'],),
 }
 property_descriptions = {
     'subnet': univention.admin.property(
@@ -67,25 +66,21 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'subnetmask': univention.admin.property(
         short_description=_('Address prefix length (or Netmask)'),
         long_description=_('The number of leading bits of the IP address used to identify the network.'),
         syntax=univention.admin.syntax.v4netmask,
-        required=True,
-    ),
+        required=True,),
     'broadcastaddress': univention.admin.property(
         short_description=_('Broadcast address'),
         long_description=_('The IP addresses used to send data to all hosts inside the network.'),
-        syntax=univention.admin.syntax.ipv4Address,
-    ),
+        syntax=univention.admin.syntax.ipv4Address,),
     'range': univention.admin.property(
         short_description=_('Dynamic address assignment'),
         long_description=_('Define a pool of addresses available for dynamic address assignment.'),
         syntax=univention.admin.syntax.IPv4_AddressRange,
-        multivalue=True,
-    ),
+        multivalue=True,),
 }
 
 layout = [
@@ -94,16 +89,16 @@ layout = [
             ['subnet', 'subnetmask'],
             'broadcastaddress',
             'range',
-        ]),
-    ]),
+        ],),
+    ],),
 ]
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
-mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
+mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString,)
+mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString, encoding='ASCII',)
+mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap,)
 add_dhcp_options(__name__)
 
 
@@ -113,13 +108,13 @@ class object(DHCPBaseSubnet):
     @staticmethod
     def unmapped_lookup_filter():
         return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')]),
-        ])
+            univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet',),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet',)],),
+        ],)
 
 
-def identify(dn, attr):
-    return b'univentionDhcpSubnet' in attr.get('objectClass', []) and b'univentionDhcpSharedSubnet' not in attr.get('objectClass', [])
+def identify(dn, attr,):
+    return b'univentionDhcpSubnet' in attr.get('objectClass', [],) and b'univentionDhcpSharedSubnet' not in attr.get('objectClass', [],)
 
 
 lookup_filter = object.lookup_filter

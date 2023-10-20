@@ -60,19 +60,19 @@ class LDAP_connection(object):
         cls._connection_account.clear()
 
     @classmethod
-    def _wrap_connection(cls, func, **kwargs):
+    def _wrap_connection(cls, func,**kwargs):
         try:
             return func(**kwargs)
         except IOError:
-            six.reraise(ConnectionError, ConnectionError('Could not read secret file'), sys.exc_info()[2])
+            six.reraise(ConnectionError, ConnectionError('Could not read secret file'), sys.exc_info()[2],)
         except univention.admin.uexceptions.authFail:
-            six.reraise(ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2])
+            six.reraise(ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2],)
         except ldap.INVALID_CREDENTIALS:
-            six.reraise(ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2])
+            six.reraise(ConnectionError, ConnectionError('Credentials invalid'), sys.exc_info()[2],)
         except ldap.CONNECT_ERROR:
-            six.reraise(ConnectionError, ConnectionError('Connection refused'), sys.exc_info()[2])
+            six.reraise(ConnectionError, ConnectionError('Connection refused'), sys.exc_info()[2],)
         except ldap.SERVER_DOWN:
-            six.reraise(ConnectionError, ConnectionError('The LDAP Server is not running'), sys.exc_info()[2])
+            six.reraise(ConnectionError, ConnectionError('The LDAP Server is not running'), sys.exc_info()[2],)
 
     @classmethod
     def get_admin_connection(cls):
@@ -81,9 +81,9 @@ class LDAP_connection(object):
         return cls._connection_admin
 
     @classmethod
-    def get_machine_connection(cls, ldap_master=True):
+    def get_machine_connection(cls, ldap_master=True,):
         # do not cache the machine connection as this breaks on server-password-change
-        co, po = cls._wrap_connection(univention.admin.uldap.getMachineConnection, ldap_master=ldap_master)
+        co, po = cls._wrap_connection(univention.admin.uldap.getMachineConnection, ldap_master=ldap_master,)
         return co
 
     @classmethod
@@ -93,19 +93,18 @@ class LDAP_connection(object):
             password,
             base=None,
             server=None,
-            port=None,
-    ):
+            port=None,):
         if not cls._ucr:
             cls._ucr = univention.config_registry.ConfigRegistry()
             cls._ucr.load()
 
         if '=' not in identity:
             lo = cls.get_machine_connection()
-            dns = lo.searchDn(filter_format('uid=%s', (identity,)))
+            dns = lo.searchDn(filter_format('uid=%s', (identity,),))
             try:
                 identity = dns[0]
             except IndexError:
-                six.reraise(ConnectionError, ConnectionError('Cannot get DN for username'), sys.exc_info()[2])
+                six.reraise(ConnectionError, ConnectionError('Cannot get DN for username'), sys.exc_info()[2],)
         access_kwargs = {'binddn': identity, 'bindpw': password, 'base': base or cls._ucr['ldap/base']}
         if server:
             access_kwargs['host'] = server
@@ -113,5 +112,5 @@ class LDAP_connection(object):
             access_kwargs['port'] = port
         key = (identity, password, server, port, base)
         if key not in cls._connection_account:
-            cls._connection_account[key] = cls._wrap_connection(univention.admin.uldap.access, **access_kwargs)
+            cls._connection_account[key] = cls._wrap_connection(univention.admin.uldap.access, **access_kwargs,)
         return cls._connection_account[key]

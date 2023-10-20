@@ -17,7 +17,7 @@ for key in c_compiler.keys():
     c_compiler[key].append('generic_cc')
 
 @conf
-def find_generic_cc(conf):
+def find_generic_cc(conf,):
     v = conf.env
     cc = None
     if v.CC:
@@ -25,7 +25,7 @@ def find_generic_cc(conf):
     elif 'CC' in conf.environ:
         cc = conf.environ['CC']
     if not cc:
-        cc = conf.find_program('cc', var='CC')
+        cc = conf.find_program('cc', var='CC',)
     if not cc:
         conf.fatal('generic_cc was not found')
 
@@ -38,7 +38,7 @@ def find_generic_cc(conf):
     v.CC_NAME = 'generic_cc'
 
 @conf
-def generic_cc_common_flags(conf):
+def generic_cc_common_flags(conf,):
     v = conf.env
 
     v.CC_SRC_F            = ''
@@ -61,7 +61,7 @@ def generic_cc_common_flags(conf):
     v.cshlib_PATTERN      = 'lib%s.so'
     v.cstlib_PATTERN      = 'lib%s.a'
 
-def configure(conf):
+def configure(conf,):
     conf.find_generic_cc()
     conf.find_ar()
     conf.generic_cc_common_flags()

@@ -29,18 +29,17 @@ def main():
                     set={
                         'mailHomeServer': mailHomeServer,
                         'mailPrimaryAddress': mailPrimaryAddress,
-                    },
-                )
+                    },)
 
                 imap = essential.mail.ImapMail()
-                imap.get_connection(mailHomeServer, mailPrimaryAddress, password)
+                imap.get_connection(mailHomeServer, mailPrimaryAddress, password,)
 
                 # no subject tag test
                 print('*** check default behavior, no subject tag')
                 subject = 'my subject %s' % time.time()
-                essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
+                essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject,)
                 for _i in range(60):
-                    msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox=spam_folder)
+                    msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox=spam_folder,)
                     time.sleep(1)
                     if msg:
                         break
@@ -59,9 +58,9 @@ def main():
                 essential.mail.reload_amavis_postfix()
                 subject = 'my subject %s' % time.time()
                 wanted = tag + subject
-                essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
+                essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject,)
                 for _i in range(60):
-                    msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox=spam_folder)
+                    msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox=spam_folder,)
                     time.sleep(1)
                     if msg:
                         break

@@ -24,13 +24,13 @@ from univention.testing import strings, ucr as _ucr, utils
 
 
 @contextlib.contextmanager
-def preconditions(path):
+def preconditions(path,):
     if path == '/home/Administrator/etc':
-        os.symlink('/etc', path)
+        os.symlink('/etc', path,)
     elif path == '/home/Administrator/foo':
         os.makedirs(path)
     elif path == '/home/Administrator/bar':
-        os.symlink('/etc/hosts', path)
+        os.symlink('/etc/hosts', path,)
     yield
     if path in ('/home/Administrator/etc', '/home/Administrator/bar'):
         os.unlink(path)
@@ -38,7 +38,7 @@ def preconditions(path):
         shutil.rmtree(path)
 
 
-@pytest.mark.parametrize('modify', [False, True])
+@pytest.mark.parametrize('modify', [False, True],)
 @pytest.mark.parametrize('path,file_', [
     ['/etc'],
     ['/etc/'],
@@ -55,9 +55,9 @@ def preconditions(path):
     ['/home/Administrator/etc'],  # symlink to /etc
     ['/home/Administrator/foo'],  # folder containing symlink to /etc
     ['/home/Administrator/bar'],  # symlink to /etc/hosts
-])
-def test_filename_validation(modify, path, file_):
-    def check(safe=False):
+],)
+def test_filename_validation(modify, path, file_,):
+    def check(safe=False,):
         # we have to check two cases here: samba share and NFS share
         subprocess.check_output(['smbclient', '\\\\%s.%s\\%s' % (ucr['hostname'], ucr['domainname'], name), '-U', 'Administrator%univention', '-c', 'get %s /dev/stdout' % (file_,)])
         assert name not in open('/etc/samba/shares.conf').read()
@@ -109,14 +109,14 @@ def test_filename_validation(modify, path, file_):
         }
         al = [(key, [v % dict(ucr) for v in val]) for key, val in attrs.items()]
         print(('Creating', dn))
-        dn = lo.add(dn, al) or dn
+        dn = lo.add(dn, al,) or dn
         try:
             utils.wait_for_replication_and_postrun()
             if modify:
                 check(safe=True)
                 lo.modify(dn, [
                     ('univentionSharePath', '/home/', path),
-                ])
+                ],)
                 print(('Modified', dn))
                 utils.wait_for_replication_and_postrun()
 
@@ -130,8 +130,8 @@ def test_filename_validation(modify, path, file_):
 def test_newline_nfs_hacking():
     lo = utils.get_ldap_connection()
     with udm_test.UCSTestUDM() as udm, _ucr.UCSTestConfigRegistry() as ucr:
-        share = udm.create_object('shares/share', name=strings.random_string(), host='%(hostname)s.%(domainname)s' % ucr, path='/home/', wait_for_replication=False)
-        lo.modify(share, [('univentionShareNFSAllowed', '', 'foo\n"/etc" -rw,root_squash,sync,subtree_check * #')])
+        share = udm.create_object('shares/share', name=strings.random_string(), host='%(hostname)s.%(domainname)s' % ucr, path='/home/', wait_for_replication=False,)
+        lo.modify(share, [('univentionShareNFSAllowed', '', 'foo\n"/etc" -rw,root_squash,sync,subtree_check * #')],)
         utils.wait_for_replication_and_postrun()
         # TODO: access /home and /etc
 

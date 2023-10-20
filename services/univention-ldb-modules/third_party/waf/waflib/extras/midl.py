@@ -23,8 +23,8 @@ from waflib import Task, Utils
 from waflib.TaskGen import feature, before_method
 import os
 
-def configure(conf):
-	conf.find_program(['midl'], var='MIDL')
+def configure(conf,):
+	conf.find_program(['midl'], var='MIDL',)
 
 	conf.env.MIDLFLAGS = [
 		'/nologo',
@@ -36,7 +36,7 @@ def configure(conf):
 		'/Oicf',
 	]
 
-@feature('c', 'cxx')
+@feature('c', 'cxx',)
 @before_method('process_source')
 def idl_file(self):
 	# Do this before process_source so that the generated header can be resolved
@@ -55,7 +55,7 @@ def idl_file(self):
 		c = node.change_ext('_i.c')
 		p = node.change_ext('_p.c')
 		d = node.parent.find_or_declare('dlldata.c')
-		self.create_task('midl', node, [t, h, c, p, d])
+		self.create_task('midl', node, [t, h, c, p, d],)
 
 	self.source = src_nodes
 

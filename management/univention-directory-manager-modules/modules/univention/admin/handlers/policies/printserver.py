@@ -70,8 +70,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyPrintServer'],
-    ),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyPrintServer'],),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -81,14 +80,12 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'printServer': univention.admin.property(
         short_description=_('Print server'),
         long_description='',
         syntax=univention.admin.syntax.ServicePrint_FQDN,
-        include_in_default_search=True,
-    ),
+        include_in_default_search=True,),
 
 }, **dict([
     requiredObjectClassesProperty(),
@@ -96,21 +93,21 @@ property_descriptions = dict({
     fixedAttributesProperty(syntax=printServerFixedAttributes),
     emptyAttributesProperty(syntax=printServerFixedAttributes),
     ldapFilterProperty(),
-]))
+]),)
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('General print server settings'), layout=[
             'name',
             'printServer',
-        ]),
-    ]),
+        ],),
+    ],),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('printServer', 'univentionPrintServer', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('printServer', 'univentionPrintServer', None, univention.admin.mapping.ListToString,)
 register_policy_mapping(mapping)
 
 

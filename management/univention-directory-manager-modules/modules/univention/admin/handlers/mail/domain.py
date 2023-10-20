@@ -56,8 +56,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionMailDomainname'],
-    ),
+        objectClasses=['top', 'univentionMailDomainname'],),
 }
 
 property_descriptions = {
@@ -67,27 +66,26 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsName,
         include_in_default_search=True,
         required=True,
-        identifies=True,
-    ),
+        identifies=True,),
 }
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('Mail domain description'), layout=[
             "name",
-        ]),
-    ]),
+        ],),
+    ],),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', stripDot, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', stripDot, univention.admin.mapping.ListToString,)
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _ldap_dn(self):
-        dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
+        dn = ldap.dn.str2dn(super(object, self,)._ldap_dn())
         dn[0] = [(dn[0][0][0], dn[0][0][1].lower(), dn[0][0][2])]
         return ldap.dn.dn2str(dn)
 

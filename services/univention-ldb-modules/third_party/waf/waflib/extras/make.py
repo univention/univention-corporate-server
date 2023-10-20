@@ -24,13 +24,13 @@ class MakeContext(BuildContext):
 	fun = 'build'
 
 	def __init__(self, **kw):
-		super(MakeContext, self).__init__(**kw)
+		super(MakeContext, self,).__init__(**kw)
 		self.files = Options.options.files
 
 	def get_build_iterator(self):
 		if not self.files:
 			while 1:
-				yield super(MakeContext, self).get_build_iterator()
+				yield super(MakeContext, self,).get_build_iterator()
 
 		for g in self.groups:
 			for tg in g:
@@ -48,7 +48,7 @@ class MakeContext(BuildContext):
 			for pat in self.files.split(','):
 				matcher = self.get_matcher(pat)
 				for tg in g:
-					if isinstance(tg, Task.Task):
+					if isinstance(tg, Task.Task,):
 						lst = [tg]
 					else:
 						lst = tg.tasks
@@ -62,7 +62,7 @@ class MakeContext(BuildContext):
 							except:
 								uses[node] = [tsk]
 
-							if matcher(node, output=False):
+							if matcher(node, output=False,):
 								do_exec = True
 								break
 
@@ -72,7 +72,7 @@ class MakeContext(BuildContext):
 							except:
 								provides[node] = [tsk]
 
-							if matcher(node, output=True):
+							if matcher(node, output=True,):
 								do_exec = True
 								break
 						if do_exec:
@@ -97,7 +97,7 @@ class MakeContext(BuildContext):
 							if node in seen:
 								continue
 							seen.add(node)
-							tosee |= set(provides.get(node, []))
+							tosee |= set(provides.get(node, [],))
 					cur = tosee
 				result = list(result)
 
@@ -108,16 +108,16 @@ class MakeContext(BuildContext):
 		while 1:
 			yield []
 
-	def get_matcher(self, pat):
+	def get_matcher(self, pat,):
 		# this returns a function
 		inn = True
 		out = True
 		if pat.startswith('in:'):
 			out = False
-			pat = pat.replace('in:', '')
+			pat = pat.replace('in:', '',)
 		elif pat.startswith('out:'):
 			inn = False
-			pat = pat.replace('out:', '')
+			pat = pat.replace('out:', '',)
 
 		anode = self.root.find_node(pat)
 		pattern = None
@@ -128,7 +128,7 @@ class MakeContext(BuildContext):
 				pat = '%s$' % pat
 			pattern = re.compile(pat)
 
-		def match(node, output):
+		def match(node, output,):
 			if output and not out:
 				return False
 			if not output and not inn:

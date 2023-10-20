@@ -23,11 +23,11 @@ def apply_scalac(self):
 
 	Utils.def_attrs(self, jarname='', classpath='',
 		sourcepath='.', srcdir='.',
-		jar_mf_attributes={}, jar_mf_classpath=[])
+		jar_mf_attributes={}, jar_mf_classpath=[],)
 
-	outdir = getattr(self, 'outdir', None)
+	outdir = getattr(self, 'outdir', None,)
 	if outdir:
-		if not isinstance(outdir, Node.Node):
+		if not isinstance(outdir, Node.Node,):
 			outdir = self.path.get_bld().make_node(self.outdir)
 	else:
 		outdir = self.path.get_bld()
@@ -37,11 +37,11 @@ def apply_scalac(self):
 	self.scalac_task = tsk = self.create_task('scalac')
 	tmp = []
 
-	srcdir = getattr(self, 'srcdir', '')
-	if isinstance(srcdir, Node.Node):
+	srcdir = getattr(self, 'srcdir', '',)
+	if isinstance(srcdir, Node.Node,):
 		srcdir = [srcdir]
 	for x in Utils.to_list(srcdir):
-		if isinstance(x, Node.Node):
+		if isinstance(x, Node.Node,):
 			y = x
 		else:
 			y = self.path.find_dir(x)
@@ -55,7 +55,7 @@ feature('scalac')(javaw.use_javac_files)
 after_method('apply_scalac')(javaw.use_javac_files)
 
 feature('scalac')(javaw.set_classpath)
-after_method('apply_scalac', 'use_scalac_files')(javaw.set_classpath)
+after_method('apply_scalac', 'use_scalac_files',)(javaw.set_classpath)
 
 
 SOURCE_RE = '**/*.scala'
@@ -75,8 +75,8 @@ class scalac(javaw.javac):
 			global SOURCE_RE
 			self.inputs  = []
 			for x in self.srcdir:
-				self.inputs.extend(x.ant_glob(SOURCE_RE, remove=False))
-		return super(javaw.javac, self).runnable_status()
+				self.inputs.extend(x.ant_glob(SOURCE_RE, remove=False,))
+		return super(javaw.javac, self,).runnable_status()
 
 	def run(self):
 		"""
@@ -86,8 +86,8 @@ class scalac(javaw.javac):
 		gen = self.generator
 		bld = gen.bld
 		wd = bld.bldnode.abspath()
-		def to_list(xx):
-			if isinstance(xx, str):
+		def to_list(xx,):
+			if isinstance(xx, str,):
 				return [xx]
 			return xx
 		self.last_cmd = lst = []
@@ -100,9 +100,9 @@ class scalac(javaw.javac):
 		lst.extend([a.abspath() for a in self.inputs])
 		lst = [x for x in lst if x]
 		try:
-			self.out = self.generator.bld.cmd_and_log(lst, cwd=wd, env=env.env or None, output=0, quiet=0)[1]
+			self.out = self.generator.bld.cmd_and_log(lst, cwd=wd, env=env.env or None, output=0, quiet=0,)[1]
 		except:
-			self.generator.bld.cmd_and_log(lst, cwd=wd, env=env.env or None)
+			self.generator.bld.cmd_and_log(lst, cwd=wd, env=env.env or None,)
 
 def configure(self):
 	"""
@@ -113,11 +113,11 @@ def configure(self):
 	v = self.env
 
 	if 'SCALA_HOME' in self.environ:
-		java_path = [os.path.join(self.environ['SCALA_HOME'], 'bin')] + java_path
+		java_path = [os.path.join(self.environ['SCALA_HOME'], 'bin',)] + java_path
 		self.env['SCALA_HOME'] = [self.environ['SCALA_HOME']]
 
 	for x in 'scalac scala'.split():
-		self.find_program(x, var=x.upper(), path_list=java_path)
+		self.find_program(x, var=x.upper(), path_list=java_path,)
 
 	if 'CLASSPATH' in self.environ:
 		v['CLASSPATH'] = self.environ['CLASSPATH']

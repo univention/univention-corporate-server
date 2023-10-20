@@ -16,7 +16,7 @@ from univention.testing.browser.lib import UMCBrowserTest
 from univention.testing.browser.suggestion import AppCenterCacheTest
 
 
-def test_suggestion_category_is_shown(umc_browser_test: UMCBrowserTest, app_center_cache: AppCenterCacheTest):
+def test_suggestion_category_is_shown(umc_browser_test: UMCBrowserTest, app_center_cache: AppCenterCacheTest,):
     app_center_cache.write(
         """
 {

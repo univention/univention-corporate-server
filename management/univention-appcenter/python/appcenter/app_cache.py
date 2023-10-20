@@ -61,7 +61,7 @@ CACHE_DIR = '/var/cache/univention-appcenter'
 cache_logger = get_base_logger().getChild('cache')
 
 
-def _cmp_mtimes(mtime1, mtime2):
+def _cmp_mtimes(mtime1, mtime2,):
     # type: (Optional[float], Optional[float]) -> int
     mtime1 = float('{:.3f}'.format(mtime1)) if mtime1 is not None else 0.0
     mtime2 = float('{:.3f}'.format(mtime2)) if mtime2 is not None else 0.0
@@ -73,7 +73,7 @@ class _AppCache(object):
         # type: () -> Iterable[App]
         raise NotImplementedError()
 
-    def get_all_apps_with_id(self, app_id):
+    def get_all_apps_with_id(self, app_id,):
         # type: (str) -> List[App]
         ret = []
         for app in self.get_every_single_app():
@@ -89,7 +89,7 @@ class _AppCache(object):
                 ret.append(app)
         return ret
 
-    def find(self, app_id, app_version=None, latest=False):
+    def find(self, app_id, app_version=None, latest=False,):
         # type: (str, Optional[str], bool) -> Optional[App]
         apps = self.get_all_apps_with_id(app_id)
         if app_version:
@@ -107,7 +107,7 @@ class _AppCache(object):
                 if app == latest_app:
                     return app
 
-    def find_candidate(self, app, prevent_docker=None):
+    def find_candidate(self, app, prevent_docker=None,):
         if prevent_docker is None:
             prevent_docker = ucr_is_true('appcenter/prudence/docker/%s' % app.id)
         if app.docker:
@@ -147,7 +147,7 @@ class _AppCache(object):
                 apps[app.id] = (app, app.is_installed())
         return sorted(app for (app, is_installed) in apps.values())
 
-    def find_by_component_id(self, component_id):
+    def find_by_component_id(self, component_id,):
         # type: (str) -> Optional[App]
         for app in self.get_every_single_app():
             if app.component_id == component_id:
@@ -157,7 +157,7 @@ class _AppCache(object):
 class AppCache(_AppCache):
     _app_cache_cache = {}
 
-    def __init__(self, app_class=None, ucs_version=None, server=None, locale=None, cache_dir=None):
+    def __init__(self, app_class=None, ucs_version=None, server=None, locale=None, cache_dir=None,):
         self._app_class = app_class
         self._ucs_version = ucs_version
         if server and not server.startswith('http'):
@@ -170,7 +170,7 @@ class AppCache(_AppCache):
         self._cache_modified_mtime = None
         self._lock = False
 
-    def copy(self, app_class=None, ucs_version=None, server=None, locale=None, cache_dir=None):
+    def copy(self, app_class=None, ucs_version=None, server=None, locale=None, cache_dir=None,):
         if app_class is None:
             app_class = self._app_class
         if ucs_version is None:
@@ -181,7 +181,7 @@ class AppCache(_AppCache):
             locale = self._locale
         if cache_dir is None:
             cache_dir = self._cache_dir
-        return self.build(app_class=app_class, ucs_version=ucs_version, server=server, locale=locale, cache_dir=cache_dir)
+        return self.build(app_class=app_class, ucs_version=ucs_version, server=server, locale=locale, cache_dir=cache_dir,)
 
     def get_server(self):
         if self._server is None:
@@ -204,7 +204,7 @@ class AppCache(_AppCache):
     def get_cache_dir(self):
         if self._cache_dir is None:
             server = self.get_server_netloc()
-            self._cache_dir = os.path.join(CACHE_DIR, server, self.get_ucs_version())
+            self._cache_dir = os.path.join(CACHE_DIR, server, self.get_ucs_version(),)
             mkdir(self._cache_dir)
         return self._cache_dir
 
@@ -212,29 +212,29 @@ class AppCache(_AppCache):
         if self._cache_file is None:
             cache_dir = self.get_cache_dir()
             locale = self.get_locale()
-            self._cache_file = os.path.join(cache_dir, '.apps.%s.json' % locale)
+            self._cache_file = os.path.join(cache_dir, '.apps.%s.json' % locale,)
         return self._cache_file
 
     @classmethod
-    def build(cls, app_class=None, ucs_version=None, server=None, locale=None, cache_dir=None):
-        obj = cls(app_class, ucs_version, server, locale, cache_dir)
+    def build(cls, app_class=None, ucs_version=None, server=None, locale=None, cache_dir=None,):
+        obj = cls(app_class, ucs_version, server, locale, cache_dir,)
         key = cls, obj.get_app_class(), obj.get_ucs_version(), obj.get_server(), obj.get_locale(), obj.get_cache_file()
         if key not in cls._app_cache_cache:
             cls._app_cache_cache[key] = obj
         return cls._app_cache_cache[key]
 
     def get_appcenter_cache_obj(self):
-        return AppCenterCache.build(server=self.get_server(), ucs_versions=[self.get_ucs_version()], locale=self.get_locale())
+        return AppCenterCache.build(server=self.get_server(), ucs_versions=[self.get_ucs_version()], locale=self.get_locale(),)
 
     def _save_cache(self):
         cache_file = self.get_cache_file()
         if cache_file:
             try:
                 tmp_file = cache_file + ".tmp"
-                with open(tmp_file, 'w') as fd:
-                    dump([app.attrs_dict() for app in self._cache], fd, indent=2)
+                with open(tmp_file, 'w',) as fd:
+                    dump([app.attrs_dict() for app in self._cache], fd, indent=2,)
 
-                os.rename(tmp_file, cache_file)
+                os.rename(tmp_file, cache_file,)
                 cache_modified = self._cache_modified()
             except (EnvironmentError, TypeError):
                 return False
@@ -247,12 +247,12 @@ class AppCache(_AppCache):
         try:
             cache_modified = self._cache_modified()
             archive_modified = self._archive_modified()
-            if _cmp_mtimes(cache_modified, archive_modified) == -1:
+            if _cmp_mtimes(cache_modified, archive_modified,) == -1:
                 cache_logger.debug('Cannot load cache: mtimes of cache files do not match: %r < %r' % (cache_modified, archive_modified))
                 return None
             for master_file in self._relevant_master_files():
                 master_file_modified = os.stat(master_file).st_mtime
-                if _cmp_mtimes(cache_modified, master_file_modified) == -1:
+                if _cmp_mtimes(cache_modified, master_file_modified,) == -1:
                     cache_logger.debug('Cannot load cache: %s is newer than cache' % master_file)
                     return None
             with open(cache_file) as fd:
@@ -276,7 +276,7 @@ class AppCache(_AppCache):
 
     def _archive_modified(self):
         try:
-            return os.stat(os.path.join(self.get_cache_dir(), '.all.tar')).st_mtime
+            return os.stat(os.path.join(self.get_cache_dir(), '.all.tar',)).st_mtime
         except (EnvironmentError, AttributeError) as exc:
             cache_logger.debug('Unable to get mtime for archive: %s' % exc)
             return None
@@ -292,7 +292,7 @@ class AppCache(_AppCache):
         ret = set()
         classes_visited = set()
 
-        def add_class(klass):
+        def add_class(klass,):
             if klass in classes_visited:
                 return
             classes_visited.add(klass)
@@ -301,7 +301,7 @@ class AppCache(_AppCache):
                 ret.add(module.__file__)
             except (AttributeError, KeyError):
                 pass
-            if hasattr(klass, '__bases__'):
+            if hasattr(klass, '__bases__',):
                 for base in klass.__bases__:
                     add_class(base)
             # metaclass
@@ -311,14 +311,14 @@ class AppCache(_AppCache):
         return ret
 
     def _relevant_ini_files(self):
-        return glob(os.path.join(self.get_cache_dir(), '*.ini'))
+        return glob(os.path.join(self.get_cache_dir(), '*.ini',))
 
-    def _build_app_from_attrs(self, attrs):
-        app = self.get_app_class()(attrs, self)
+    def _build_app_from_attrs(self, attrs,):
+        app = self.get_app_class()(attrs, self,)
         return app
 
-    def _build_app_from_ini(self, ini):
-        app = self.get_app_class().from_ini(ini, locale=self.get_locale(), cache=self)
+    def _build_app_from_ini(self, ini,):
+        app = self.get_app_class().from_ini(ini, locale=self.get_locale(), cache=self,)
         if app:
             for attr in app._attrs:
                 attr.post_creation(app)
@@ -332,7 +332,7 @@ class AppCache(_AppCache):
 
     def _invalidate_cache_files(self):
         cache_dir = self.get_cache_dir()
-        for cache_file in glob(os.path.join(cache_dir, '.*apps*.json')):
+        for cache_file in glob(os.path.join(cache_dir, '.*apps*.json',)):
             try:
                 os.unlink(cache_file)
             except EnvironmentError:
@@ -359,7 +359,7 @@ class AppCache(_AppCache):
             if cache_file:
                 archive_modified = self._archive_modified()
 
-                if _cmp_mtimes(archive_modified, self._cache_modified_mtime) == 1:
+                if _cmp_mtimes(archive_modified, self._cache_modified_mtime,) == 1:
                     cache_logger.debug('Cache outdated. Need to rebuild')
                     self._cache[:] = []
             if not self._cache:
@@ -391,7 +391,7 @@ class AppCache(_AppCache):
 class AppCenterCache(_AppCache):
     _appcenter_cache_cache = {}
 
-    def __init__(self, cache_class=None, server=None, ucs_versions=None, locale=None, cache_dir=None):
+    def __init__(self, cache_class=None, server=None, ucs_versions=None, locale=None, cache_dir=None,):
         self._cache_class = cache_class
         self._server = server
         self._ucs_versions = ucs_versions
@@ -402,8 +402,8 @@ class AppCenterCache(_AppCache):
         self._app_categories_cache = None
 
     @classmethod
-    def build(cls, cache_class=None, server=None, ucs_versions=None, locale=None, cache_dir=None):
-        obj = cls(cache_class, server, ucs_versions, locale, cache_dir)
+    def build(cls, cache_class=None, server=None, ucs_versions=None, locale=None, cache_dir=None,):
+        obj = cls(cache_class, server, ucs_versions, locale, cache_dir,)
         key = cls, obj.get_app_cache_class(), obj.get_server(), tuple(obj.get_ucs_versions()), obj.get_locale(), obj.get_cache_dir()
         if key not in cls._appcenter_cache_cache:
             cls._appcenter_cache_cache[key] = obj
@@ -419,7 +419,7 @@ class AppCenterCache(_AppCache):
                 with open(status_file) as status:
                     for line in status:
                         line = line.strip()
-                        key, value = line.split('=', 1)
+                        key, value = line.split('=', 1,)
                         if key == 'status':
                             still_running = value == 'RUNNING'
                         elif key == 'next_version':
@@ -471,13 +471,13 @@ class AppCenterCache(_AppCache):
         # type: () -> str
         if self._cache_dir is None:
             server = self.get_server_netloc()
-            self._cache_dir = os.path.join(CACHE_DIR, server)
+            self._cache_dir = os.path.join(CACHE_DIR, server,)
             mkdir(self._cache_dir)
         return self._cache_dir
 
-    def get_cache_file(self, fname):
+    def get_cache_file(self, fname,):
         # type: (str) -> str
-        return os.path.join(self.get_cache_dir(), fname)
+        return os.path.join(self.get_cache_dir(), fname,)
 
     def get_app_caches(self):
         ret = []
@@ -485,11 +485,11 @@ class AppCenterCache(_AppCache):
             ret.append(self._build_app_cache(ucs_version))
         return ret
 
-    def _build_app_cache(self, ucs_version):
+    def _build_app_cache(self, ucs_version,):
         cache_dir = self.get_cache_file(ucs_version)
-        return self.get_app_cache_class().build(ucs_version=ucs_version, server=self.get_server(), locale=self.get_locale(), cache_dir=cache_dir)
+        return self.get_app_cache_class().build(ucs_version=ucs_version, server=self.get_server(), locale=self.get_locale(), cache_dir=cache_dir,)
 
-    def get_license_description(self, license_name):
+    def get_license_description(self, license_name,):
         # type: (str) -> Optional[str]
         if self._license_type_cache is None:
             cache_file = self.get_cache_file('.license_types.ini')
@@ -538,7 +538,7 @@ class AppCenterCache(_AppCache):
 
 
 class Apps(_AppCache):
-    def __init__(self, cache_class=None, locale=None):
+    def __init__(self, cache_class=None, locale=None,):
         self._cache_class = cache_class
         self._locale = locale
 
@@ -556,11 +556,11 @@ class Apps(_AppCache):
     def get_appcenter_caches(self):
         # type: () -> List[AppCenterCache]
         server = default_server()
-        cache = self._build_appcenter_cache(server, None)
+        cache = self._build_appcenter_cache(server, None,)
         return [cache]
 
-    def _build_appcenter_cache(self, server, ucs_versions):
-        return self.get_appcenter_cache_class().build(server=server, ucs_versions=ucs_versions, locale=self.get_locale())
+    def _build_appcenter_cache(self, server, ucs_versions,):
+        return self.get_appcenter_cache_class().build(server=server, ucs_versions=ucs_versions, locale=self.get_locale(),)
 
     def get_every_single_app(self):
         ret = []
@@ -570,7 +570,7 @@ class Apps(_AppCache):
                     ret.append(app)
         return ret
 
-    def include_app(self, app):
+    def include_app(self, app,):
         return app.supports_ucs_version()
 
     def clear_cache(self):
@@ -579,26 +579,26 @@ class Apps(_AppCache):
             app_cache.clear_cache()
 
     @classmethod
-    def find_by_string(cls, app_string):
+    def find_by_string(cls, app_string,):
         app_id, app_version, ucs_version, server = cls.split_app_string(app_string)
         server = server or default_server()
         ucs_versions = [ucs_version] if ucs_version else None
-        cache = AppCenterCache.build(server=server, ucs_versions=ucs_versions)
-        return cache.find(app_id, app_version=app_version)
+        cache = AppCenterCache.build(server=server, ucs_versions=ucs_versions,)
+        return cache.find(app_id, app_version=app_version,)
 
     @classmethod
-    def split_app_string(cls, app_string):
+    def split_app_string(cls, app_string,):
         try:
-            app_id, app_version = app_string.split('=', 1)
+            app_id, app_version = app_string.split('=', 1,)
         except ValueError:
             app_id, app_version = app_string, None
         try:
-            ucs_version, app_id = app_id.split('/', 1)
+            ucs_version, app_id = app_id.split('/', 1,)
         except ValueError:
             ucs_version, app_id = None, app_id
         if ucs_version:
             try:
-                ucs_version, server = ucs_version.split('@', 1)
+                ucs_version, server = ucs_version.split('@', 1,)
             except ValueError:
                 ucs_version, server = ucs_version, None
         else:
@@ -608,7 +608,7 @@ class Apps(_AppCache):
 
 
 class AllApps(Apps):
-    def include_app(self, app):
+    def include_app(self, app,):
         return True
 
 
@@ -632,7 +632,7 @@ def default_locale():
 
 def default_server():
     # type: () -> str
-    server = ucr_get('repository/app_center/server', 'https://appcenter-test.software-univention.de')
+    server = ucr_get('repository/app_center/server', 'https://appcenter-test.software-univention.de',)
     if not server.startswith('http'):
         server = 'https://%s' % server
     return server

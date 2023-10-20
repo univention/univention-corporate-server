@@ -30,7 +30,7 @@ from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import package_installed
 
 
-def search_templates(old_admin_name, new_admin_name, server_role):
+def search_templates(old_admin_name, new_admin_name, server_role,):
     templates = glob.glob('/etc/univention/templates/info/*.info')
     file_content = []
     file_pattern = re.compile('^(Multifile: |File: )')
@@ -39,7 +39,7 @@ def search_templates(old_admin_name, new_admin_name, server_role):
     for template in templates:
         with open(template) as content_file:
             # find all lines that start with File or Multifile and strip it to get the paths of the template files
-            file_content += ['/' + file_pattern.sub('', line).strip() for line in content_file.readlines() if file_pattern.match(line)]
+            file_content += ['/' + file_pattern.sub('', line,).strip() for line in content_file.readlines() if file_pattern.match(line)]
 
     # A list of templates which are referencing the Administrator. The new name must be found in them
     should_contain_admin = [
@@ -62,8 +62,8 @@ def search_templates(old_admin_name, new_admin_name, server_role):
             continue
 
         print(f'Checking template {file}')
-        with open(file, 'rb') as content_file:
-            content = content_file.read().decode('UTF-8', 'replace')
+        with open(file, 'rb',) as content_file:
+            content = content_file.read().decode('UTF-8', 'replace',)
 
         if file in should_contain_admin and new_admin_name not in content:
             utils.fail(f'FAIL: New admin name {new_admin_name} not in {file}')
@@ -75,11 +75,11 @@ def search_templates(old_admin_name, new_admin_name, server_role):
                 utils.fail(f'FAIL: Old group name {old_admin_name} still in file {file}')
 
 
-def wait_for_ucr(iterations, admin_name, ucr_test):
+def wait_for_ucr(iterations, admin_name, ucr_test,):
     success = False
     for i in range(iterations):
         ucr_test.load()
-        ucr_name = ucr_test.get('users/default/administrator', 'Administrator')
+        ucr_name = ucr_test.get('users/default/administrator', 'Administrator',)
         if admin_name != ucr_name:
             if i == iterations - 1:
                 break
@@ -97,7 +97,7 @@ def test_rename_domain_users():
 
         server_role = ucr_test.get('server/role')
         ldap_base = ucr_test.get('ldap/base')
-        old_admin_name = ucr_test.get('users/default/administrator', 'Administrator')
+        old_admin_name = ucr_test.get('users/default/administrator', 'Administrator',)
         old_admin_dn = f"uid={escape_dn_chars(old_admin_name)},cn=users,{ldap_base}"
         if os.path.exists('/etc/ldap.secret'):
             credentials = ['--binddn', f'cn=admin,{ldap_base}', '--bindpwdfile', '/etc/ldap.secret']
@@ -123,7 +123,7 @@ def test_rename_domain_users():
             print(f'Checking if UCR Variable users/default/administrator is set to {new_admin_name}')
             print('##################################################################\n')
 
-            success, ucr_name = wait_for_ucr(3, new_admin_name, ucr_test)
+            success, ucr_name = wait_for_ucr(3, new_admin_name, ucr_test,)
             if not success:
                 utils.fail(f'UCR variable users/default/administrator was set to {old_admin_name} instead of {new_admin_name}')
 
@@ -131,10 +131,10 @@ def test_rename_domain_users():
             print('\n##################################################################')
             print('Search templates for old and new name of default domainadmins group')
             print('##################################################################\n')
-            search_templates(old_admin_name, new_admin_name, server_role)
+            search_templates(old_admin_name, new_admin_name, server_role,)
         finally:
             try:
-                wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (new_admin_name,)))
+                wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (new_admin_name,),))
             except Exception:
                 # clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
                 time.sleep(10)
@@ -149,7 +149,7 @@ def test_rename_domain_users():
 
             # wait until renaming and UCR Variable is set back again
             utils.wait_for_replication_and_postrun()
-            success, ucr_name = wait_for_ucr(10, old_admin_name, ucr_test)
+            success, ucr_name = wait_for_ucr(10, old_admin_name, ucr_test,)
             if not success:
                 univention.config_registry.handler_set(['users/default/administrator=Administrator'])
                 utils.fail(f'UCR variable users/default/administrator was set to {ucr_name} instead of {old_admin_name}')

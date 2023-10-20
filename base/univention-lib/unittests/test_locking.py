@@ -38,13 +38,13 @@ import pytest
 
 
 @pytest.mark.xfail()
-@pytest.mark.parametrize('nonblocking', [True, False])
-def test_locking(locking, nonblocking):
-    lock = locking.get_lock('foo', nonblocking)
+@pytest.mark.parametrize('nonblocking', [True, False],)
+def test_locking(locking, nonblocking,):
+    lock = locking.get_lock('foo', nonblocking,)
     try:
         assert os.path.exists('/var/run/foo.pid')
         assert int(open('/var/run/foo.pid').read().strip()) == os.getpid()
-        assert subprocess.check_output([sys.executable, '-c', "from univention.lib import locking; print(locking.get_lock('foo', %r))" % (nonblocking,)], shell=True) == b'False'
+        assert subprocess.check_output([sys.executable, '-c', "from univention.lib import locking; print(locking.get_lock('foo', %r))" % (nonblocking,)], shell=True,) == b'False'
         locking.release_lock(lock)
     finally:
         os.unlink('/var/run/foo.pid')

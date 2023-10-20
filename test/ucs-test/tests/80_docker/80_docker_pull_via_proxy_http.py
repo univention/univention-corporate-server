@@ -18,24 +18,24 @@ from dockertest import (
 )
 
 
-def deb_package_is_installed(pkgname):
+def deb_package_is_installed(pkgname,):
     cache = apt.Cache()
     return bool(cache[pkgname].is_installed)
 
 
-def deb_install_package(pkgname):
+def deb_install_package(pkgname,):
     cmd = ['univention-install', '-y', pkgname]
-    p = subprocess.Popen(cmd, close_fds=True)
+    p = subprocess.Popen(cmd, close_fds=True,)
     p.wait()
 
 
-def deb_uninstall_package(pkgname):
+def deb_uninstall_package(pkgname,):
     cmd = ['apt-get', 'purge', '-y', pkgname]
-    p = subprocess.Popen(cmd, close_fds=True)
+    p = subprocess.Popen(cmd, close_fds=True,)
     p.wait()
 
     cmd = ['apt-get', 'autoremove', '-y']
-    p = subprocess.Popen(cmd, close_fds=True)
+    p = subprocess.Popen(cmd, close_fds=True,)
     p.wait()
 
 
@@ -81,7 +81,7 @@ class TestCase:
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback,):
         if exc_type:
             print(f'Cleanup after exception: {exc_type} {exc_value}')
         self.cleanup()

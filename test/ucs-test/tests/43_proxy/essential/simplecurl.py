@@ -51,35 +51,33 @@ class SimpleCurl:
             port=3128,
             auth=pycurl.HTTPAUTH_BASIC,
             cookie=None,
-            user_agent=None,
-    ):
+            user_agent=None,):
         # Perform basic authentication by default
         self.curl = pycurl.Curl()
-        self.curl.setopt(pycurl.FOLLOWLOCATION, bFollowLocation)
-        self.curl.setopt(pycurl.MAXREDIRS, maxReDirs)
-        self.curl.setopt(pycurl.CONNECTTIMEOUT, connectTimout)
-        self.curl.setopt(pycurl.TIMEOUT, timeOut)
-        self.curl.setopt(pycurl.PROXY, proxy)
-        self.curl.setopt(pycurl.PROXYPORT, port)
+        self.curl.setopt(pycurl.FOLLOWLOCATION, bFollowLocation,)
+        self.curl.setopt(pycurl.MAXREDIRS, maxReDirs,)
+        self.curl.setopt(pycurl.CONNECTTIMEOUT, connectTimout,)
+        self.curl.setopt(pycurl.TIMEOUT, timeOut,)
+        self.curl.setopt(pycurl.PROXY, proxy,)
+        self.curl.setopt(pycurl.PROXYPORT, port,)
         if auth:
-            self.curl.setopt(pycurl.PROXYAUTH, auth)
+            self.curl.setopt(pycurl.PROXYAUTH, auth,)
             account = utils.UCSTestDomainAdminCredentials()
             self.curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (
                 username or account.username,
                 password or account.bindpw,
-            ),
-            )
+            ),)
         if user_agent:
-            self.curl.setopt(pycurl.USERAGENT, user_agent)
+            self.curl.setopt(pycurl.USERAGENT, user_agent,)
 
         self.cookiefile = NamedTemporaryFile()
-        self.curl.setopt(pycurl.COOKIEJAR, self.cookiefile.name)
-        self.curl.setopt(pycurl.COOKIEFILE, self.cookiefile.name)
+        self.curl.setopt(pycurl.COOKIEJAR, self.cookiefile.name,)
+        self.curl.setopt(pycurl.COOKIEFILE, self.cookiefile.name,)
 
     def cookies(self):
         return self.curl.getinfo(pycurl.INFO_COOKIELIST)
 
-    def getPage(self, url, bVerbose=False, postData=None):
+    def getPage(self, url, bVerbose=False, postData=None,):
         """
         Gets a http page
         this method keep trying to fetch the page for 60secs then stops
@@ -92,19 +90,19 @@ class SimpleCurl:
         :type postData:
         :returns: html page
         """
-        self.curl.setopt(pycurl.URL, url)
-        self.curl.setopt(pycurl.VERBOSE, bVerbose)
+        self.curl.setopt(pycurl.URL, url,)
+        self.curl.setopt(pycurl.VERBOSE, bVerbose,)
         if postData:
-            self.curl.setopt(pycurl.HTTPPOST, postData)
+            self.curl.setopt(pycurl.HTTPPOST, postData,)
         buf = BytesIO()
-        self.curl.setopt(pycurl.WRITEFUNCTION, buf.write)
-        print('getting page:', url)
+        self.curl.setopt(pycurl.WRITEFUNCTION, buf.write,)
+        print('getting page:', url,)
         for _i in range(60):
             try:
                 self.curl.perform()
                 break
             except pycurl.error as exc:
-                print('.', exc)
+                print('.', exc,)
                 time.sleep(1)
         else:
             print('Requested page could not be fetched')
@@ -121,7 +119,7 @@ class SimpleCurl:
         """
         return self.curl.getinfo(pycurl.HTTP_CODE)
 
-    def response(self, url):
+    def response(self, url,):
         """
         HTTP status code\n
         :param url: url

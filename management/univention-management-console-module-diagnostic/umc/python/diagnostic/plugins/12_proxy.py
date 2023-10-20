@@ -52,7 +52,7 @@ umc_modules = [{
 run_descr = ['Checks if the proxy server runs correctly']
 
 
-def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connecttimeout: int = 30, timeout: int = 30) -> None:
+def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connecttimeout: int = 30, timeout: int = 30,) -> None:
     proxy = ucr.get('proxy/http')
     if not proxy:
         return
@@ -60,27 +60,27 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
     proxy = urlparse(proxy)
     MODULE.info('The proxy is configured, using host=%r, port=%r' % (proxy.hostname, proxy.port))
     curl = pycurl.Curl()
-    curl.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_HTTP)
+    curl.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_HTTP,)
     if proxy.hostname:
-        curl.setopt(pycurl.PROXY, proxy.hostname)
+        curl.setopt(pycurl.PROXY, proxy.hostname,)
     if proxy.port:
-        curl.setopt(pycurl.PROXYPORT, proxy.port)
-    curl.setopt(pycurl.FOLLOWLOCATION, True)
-    curl.setopt(pycurl.MAXREDIRS, 5)
-    curl.setopt(pycurl.CONNECTTIMEOUT, connecttimeout)
-    curl.setopt(pycurl.TIMEOUT, 30)
+        curl.setopt(pycurl.PROXYPORT, proxy.port,)
+    curl.setopt(pycurl.FOLLOWLOCATION, True,)
+    curl.setopt(pycurl.MAXREDIRS, 5,)
+    curl.setopt(pycurl.CONNECTTIMEOUT, connecttimeout,)
+    curl.setopt(pycurl.TIMEOUT, 30,)
     if proxy.username:
-        curl.setopt(pycurl.PROXYAUTH, pycurl.HTTPAUTH_ANY)
+        curl.setopt(pycurl.PROXYAUTH, pycurl.HTTPAUTH_ANY,)
         credentials = '%s' % (proxy.username,)
         if proxy.password:
             credentials = '%s:%s' % (proxy.username, proxy.password)
-        curl.setopt(pycurl.PROXYUSERPWD, credentials)
+        curl.setopt(pycurl.PROXYUSERPWD, credentials,)
 
-    curl.setopt(pycurl.URL, url)
+    curl.setopt(pycurl.URL, url,)
     # curl.setopt(pycurl.VERBOSE, bVerbose)
 
     buf = io.BytesIO()
-    curl.setopt(pycurl.WRITEFUNCTION, buf.write)
+    curl.setopt(pycurl.WRITEFUNCTION, buf.write,)
     MODULE.process(''.join("Trying to connect to %s via HTTP proxy %s" % (url, proxy)))
 
     try:

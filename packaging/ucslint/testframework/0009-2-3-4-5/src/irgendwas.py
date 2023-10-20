@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import foo  # noqa: F401
 import bar  # noqa: F401
-def _(s): return s  # noqa: E731,E704
+def _(s,): return s  # noqa: E731,E704
 
 
 def main():

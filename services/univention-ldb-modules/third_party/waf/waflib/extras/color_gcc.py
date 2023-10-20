@@ -10,16 +10,16 @@ import sys
 from waflib import Logs
 
 class ColorGCCFormatter(Logs.formatter):
-	def __init__(self, colors):
+	def __init__(self, colors,):
 		self.colors = colors
 		Logs.formatter.__init__(self)
-	def format(self, rec):
+	def format(self, rec,):
 		frame = sys._getframe()
 		while frame:
 			func = frame.f_code.co_name
 			if func == 'exec_command':
 				cmd = frame.f_locals.get('cmd')
-				if isinstance(cmd, list) and (len(cmd) > 0) and ('gcc' in cmd[0] or 'g++' in cmd[0]):
+				if isinstance(cmd, list,) and (len(cmd) > 0) and ('gcc' in cmd[0] or 'g++' in cmd[0]):
 					lines = []
 					for line in rec.msg.splitlines():
 						if 'warning: ' in line:
@@ -32,8 +32,8 @@ class ColorGCCFormatter(Logs.formatter):
 							lines.append(line)
 					rec.msg = "\n".join(lines)
 			frame = frame.f_back
-		return Logs.formatter.format(self, rec)
+		return Logs.formatter.format(self, rec,)
 
-def options(opt):
+def options(opt,):
 	Logs.log.handlers[0].setFormatter(ColorGCCFormatter(Logs.colors))
 

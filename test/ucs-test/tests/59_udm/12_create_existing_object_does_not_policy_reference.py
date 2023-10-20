@@ -18,16 +18,16 @@ from univention.testing import utils
 @pytest.mark.tags('udm')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
-def test_create_existing_object_does_not_policy_reference(udm):
+def test_create_existing_object_does_not_policy_reference(udm,):
     """Test that --policy-reference is not evaluated when creating a existing object"""
     # bugs: [38856]
-    dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
-    policy = udm.create_object('policies/pwhistory', **{'name': uts.random_string()})  # noqa: PIE804
+    dhcp_service = udm.create_object('dhcp/service', service=uts.random_name(),)
+    policy = udm.create_object('policies/pwhistory', **{'name': uts.random_string()},)  # noqa: PIE804
 
     subnet_mask = '24'
     subnet = '10.20.30.0'
-    dhcp_subnet = udm.create_object('dhcp/subnet', superordinate=dhcp_service, subnet=subnet, subnetmask=subnet_mask)
+    dhcp_subnet = udm.create_object('dhcp/subnet', superordinate=dhcp_service, subnet=subnet, subnetmask=subnet_mask,)
     with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-        dhcp_subnet = udm.create_object('dhcp/subnet', superordinate=dhcp_service, subnet=subnet, subnetmask=subnet_mask, policy_reference=policy)
+        dhcp_subnet = udm.create_object('dhcp/subnet', superordinate=dhcp_service, subnet=subnet, subnetmask=subnet_mask, policy_reference=policy,)
 
-    utils.verify_ldap_object(dhcp_subnet, {'univentionPolicyReference': []})
+    utils.verify_ldap_object(dhcp_subnet, {'univentionPolicyReference': []},)

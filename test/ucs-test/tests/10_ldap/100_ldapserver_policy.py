@@ -33,22 +33,22 @@ admin_user = None
 def get_admin_user():
     filter_s = admin_dn.partition(",")[0]
     base_s = admin_dn.partition(",")[-1]
-    admin_user = udm_modules.lookup("users/user", None, lo, base=base_s, scope="sub", filter=filter_s)[0]
+    admin_user = udm_modules.lookup("users/user", None, lo, base=base_s, scope="sub", filter=filter_s,)[0]
     admin_user.open()
     return admin_user["username"]
 
 
-def check_all_servers_in_policies(ldap_servers, udm_backups):
-    ldapserver_policies = udm_modules.lookup("policies/ldapserver", None, lo, base=basedn, scope="sub", filter="(cn=default-settings)")
+def check_all_servers_in_policies(ldap_servers, udm_backups,):
+    ldapserver_policies = udm_modules.lookup("policies/ldapserver", None, lo, base=basedn, scope="sub", filter="(cn=default-settings)",)
     ldapserver_policy = ldapserver_policies[0]
 
-    if not all(map(lambda x: x in ldapserver_policy["ldapServer"], ldap_servers)):
+    if not all(map(lambda x,: x in ldapserver_policy["ldapServer"], ldap_servers,)):
         utils.fail(
             "LDAP server policy does not contain all DC master and DC "
-            "backups. ldapserver_policy[ldapServer]: {} ldap_servers: {}".format(ldapserver_policy["ldapServer"], ldap_servers),
+            "backups. ldapserver_policy[ldapServer]: {} ldap_servers: {}".format(ldapserver_policy["ldapServer"], ldap_servers,),
         )
 
-    registry_policies = udm_modules.lookup("policies/registry", None, lo, base=basedn, scope="sub", filter="(cn=default-ldap-servers)")
+    registry_policies = udm_modules.lookup("policies/registry", None, lo, base=basedn, scope="sub", filter="(cn=default-ldap-servers)",)
     registry_policy = registry_policies[0]
 
     ucr_backups = []
@@ -56,13 +56,13 @@ def check_all_servers_in_policies(ldap_servers, udm_backups):
         if ucr[0] == "ldap/server/addition":
             ucr_backups = ucr[1].split()
 
-    if not all(map(lambda x: x in ucr_backups, udm_backups)):
+    if not all(map(lambda x,: x in ucr_backups, udm_backups,)):
         utils.fail(f"UCR policy does not contain all DC backups. ucr_backups: {ucr_backups} udm_backups: {udm_backups}")
 
 
 def situation_before_test():
-    dc_masters = udm_modules.lookup("computers/domaincontroller_master", None, lo, base=basedn, scope="sub")
-    dc_backups = udm_modules.lookup("computers/domaincontroller_backup", None, lo, base=basedn, scope="sub")
+    dc_masters = udm_modules.lookup("computers/domaincontroller_master", None, lo, base=basedn, scope="sub",)
+    dc_backups = udm_modules.lookup("computers/domaincontroller_backup", None, lo, base=basedn, scope="sub",)
     ldap_servers = []
     for master in dc_masters:
         master.open()
@@ -92,7 +92,7 @@ def run_join_script():
     )
 
 
-def add_dc_backup(udm):
+def add_dc_backup(udm,):
     name = uts.random_name()
     fqdn = f"{name}.{domain}"
 
@@ -102,8 +102,7 @@ def add_dc_backup(udm):
             "position": f"cn=dc,cn=computers,{basedn}",
             "name": name,
             "domain": domain,
-        },
-    )
+        },)
     run_join_script()
 
     return fqdn
@@ -112,7 +111,7 @@ def add_dc_backup(udm):
 def main():
     print("** Running checks on situation before test...")
     ldap_servers, udm_backups = situation_before_test()
-    check_all_servers_in_policies(ldap_servers, udm_backups)
+    check_all_servers_in_policies(ldap_servers, udm_backups,)
 
     with udm_test.UCSTestUDM() as udm:
         print("** Adding a DC backup...")
@@ -120,14 +119,14 @@ def main():
 
         ldap_servers.append(fqdn)
         udm_backups.append(fqdn)
-        check_all_servers_in_policies(ldap_servers, udm_backups)
+        check_all_servers_in_policies(ldap_servers, udm_backups,)
 
         print("** Adding another DC backup...")
         fqdn = add_dc_backup(udm)
 
         ldap_servers.append(fqdn)
         udm_backups.append(fqdn)
-        check_all_servers_in_policies(ldap_servers, udm_backups)
+        check_all_servers_in_policies(ldap_servers, udm_backups,)
 
         print("** Removing both test DC backups...")
         # by leaving the context manager
@@ -139,7 +138,7 @@ def main():
     ldap_servers.pop()
     udm_backups.pop()
     udm_backups.pop()
-    check_all_servers_in_policies(ldap_servers, udm_backups)
+    check_all_servers_in_policies(ldap_servers, udm_backups,)
 
 
 if __name__ == '__main__':

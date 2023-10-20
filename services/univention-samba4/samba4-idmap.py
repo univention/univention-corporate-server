@@ -66,7 +66,7 @@ lp.load('/etc/samba/smb.conf')
 listener.unsetuid()
 
 sidAttribute = 'sambaSID'
-if listener.configRegistry.is_false('connector/s4/mapping/sid', False):
+if listener.configRegistry.is_false('connector/s4/mapping/sid', False,):
     sidAttribute = 'univentionSamba4SID'
 
 __SPECIAL_ACCOUNT_SIDS = {
@@ -112,10 +112,10 @@ def open_idmap() -> IDmapDB:
     listener.setuid(0)
     try:
         if not os.path.exists(idmap_ldb):
-            setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
-        open_idmap.instance = IDmapDB(idmap_ldb, session_info=system_session(), lp=lp)
+            setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp,)
+        open_idmap.instance = IDmapDB(idmap_ldb, session_info=system_session(), lp=lp,)
     except ldb.LdbError:
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: /var/lib/samba/private/idmap.ldb could not be opened" % name)
+        ud.debug(ud.LISTENER, ud.ERROR, "%s: /var/lib/samba/private/idmap.ldb could not be opened" % name,)
         raise
     finally:
         listener.unsetuid()
@@ -126,75 +126,75 @@ def open_idmap() -> IDmapDB:
 open_idmap.instance = None
 
 
-def rename_or_modify_idmap_entry(old_sambaSID: str, new_sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None) -> None:
+def rename_or_modify_idmap_entry(old_sambaSID: str, new_sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None,) -> None:
     if not idmap:
         # need to open idmap here in case it has been removed since the module  was loaded
         idmap = open_idmap()
 
     try:
-        res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % old_sambaSID, attrs=["objectSid", "type"])
+        res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % old_sambaSID, attrs=["objectSid", "type"],)
         if not res:
-            ud.debug(ud.LISTENER, ud.INFO, "%s: rename_or_modify_idmap_entry: no mapping for objectSid %s, treating as add", (name, old_sambaSID))
-            add_or_modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap)
+            ud.debug(ud.LISTENER, ud.INFO, "%s: rename_or_modify_idmap_entry: no mapping for objectSid %s, treating as add", (name, old_sambaSID),)
+            add_or_modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap,)
         else:
             record = res.msgs[0]
 
             if record["type"][0].decode('ASCII') != type_string:
-                ud.debug(ud.LISTENER, ud.ERROR, "%s: %s entry type %s does not match object type %s" % (name, old_sambaSID, record["type"][0], type_string))
-                ud.debug(ud.LISTENER, ud.ERROR, "%s: skipping rename of %s to %s" % (name, old_sambaSID, new_sambaSID))
+                ud.debug(ud.LISTENER, ud.ERROR, "%s: %s entry type %s does not match object type %s" % (name, old_sambaSID, record["type"][0], type_string),)
+                ud.debug(ud.LISTENER, ud.ERROR, "%s: skipping rename of %s to %s" % (name, old_sambaSID, new_sambaSID),)
                 return
 
-            ud.debug(ud.LISTENER, ud.PROCESS, "%s: renaming entry for %s to %s" % (name, old_sambaSID, new_sambaSID))
+            ud.debug(ud.LISTENER, ud.PROCESS, "%s: renaming entry for %s to %s" % (name, old_sambaSID, new_sambaSID),)
 
             # try a modrdn
-            idmap.rename(str(record.dn), "CN=%s" % new_sambaSID)
+            idmap.rename(str(record.dn), "CN=%s" % new_sambaSID,)
             # and update related attributes
             msg = ldb.Message()
-            msg.dn = ldb.Dn(idmap, "CN=%s" % new_sambaSID)
-            msg["cn"] = ldb.MessageElement([new_sambaSID], ldb.FLAG_MOD_REPLACE, "cn")
+            msg.dn = ldb.Dn(idmap, "CN=%s" % new_sambaSID,)
+            msg["cn"] = ldb.MessageElement([new_sambaSID], ldb.FLAG_MOD_REPLACE, "cn",)
             new_objectSid = ndr_pack(security.dom_sid(new_sambaSID))
-            msg["objectSid"] = ldb.MessageElement([new_objectSid], ldb.FLAG_MOD_REPLACE, "objectSid")
+            msg["objectSid"] = ldb.MessageElement([new_objectSid], ldb.FLAG_MOD_REPLACE, "objectSid",)
             idmap.modify(msg)
 
     except ldb.LdbError as exc:
         (enum, estr) = exc.args
-        ud.debug(ud.LISTENER, ud.WARN, estr)
+        ud.debug(ud.LISTENER, ud.WARN, estr,)
         # ok, there is an entry for the target sambaSID, let's remove the old sambaSID and modify the target
-        remove_idmap_entry(old_sambaSID, xidNumber, type_string, idmap)
-        modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap)
+        remove_idmap_entry(old_sambaSID, xidNumber, type_string, idmap,)
+        modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap,)
 
 
-def modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None) -> None:
+def modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None,) -> None:
     if not idmap:
         # need to open idmap here in case it has been removed since the module  was loaded
         idmap = open_idmap()
 
     try:
-        res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs=["objectSid", "xidNumber", "type"])
+        res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs=["objectSid", "xidNumber", "type"],)
         record = res.msgs[0]
 
         msg = ldb.Message()
-        msg.dn = ldb.Dn(idmap, str(record.dn))
+        msg.dn = ldb.Dn(idmap, str(record.dn),)
         if record["type"][0].decode('ASCII') != type_string:
-            msg["type"] = ldb.MessageElement([type_string], ldb.FLAG_MOD_REPLACE, "type")
+            msg["type"] = ldb.MessageElement([type_string], ldb.FLAG_MOD_REPLACE, "type",)
         if record["xidNumber"][0].decode('ASCII') != str(xidNumber):
-            msg["xidNumber"] = ldb.MessageElement([str(xidNumber)], ldb.FLAG_MOD_REPLACE, "xidNumber")
+            msg["xidNumber"] = ldb.MessageElement([str(xidNumber)], ldb.FLAG_MOD_REPLACE, "xidNumber",)
 
         if len(msg) != 0:
-            ud.debug(ud.LISTENER, ud.PROCESS, "%s: modifying entry for %s" % (name, sambaSID))
+            ud.debug(ud.LISTENER, ud.PROCESS, "%s: modifying entry for %s" % (name, sambaSID),)
             if "xidNumber" in msg:
-                ud.debug(ud.LISTENER, ud.INFO, "%s: changing xidNumber from %s to %s" % (name, record["xidNumber"][0], xidNumber))
+                ud.debug(ud.LISTENER, ud.INFO, "%s: changing xidNumber from %s to %s" % (name, record["xidNumber"][0], xidNumber),)
             if "type" in msg:
-                ud.debug(ud.LISTENER, ud.INFO, "%s: changing type from %s to %s" % (name, record["type"][0], type_string))
+                ud.debug(ud.LISTENER, ud.INFO, "%s: changing type from %s to %s" % (name, record["type"][0], type_string),)
 
         idmap.modify(msg)
 
     except ldb.LdbError as exc:
         (enum, estr) = exc.args
-        ud.debug(ud.LISTENER, ud.ERROR, estr)
+        ud.debug(ud.LISTENER, ud.ERROR, estr,)
 
 
-def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None) -> None:
+def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None,) -> None:
     if not idmap:
         # need to open idmap here in case it has been removed since the module  was loaded
         idmap = open_idmap()
@@ -205,7 +205,7 @@ def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, i
             'ID_TYPE_GID': idmap.TYPE_GID,
             'ID_TYPE_BOTH': idmap.TYPE_BOTH,
         }
-        idmap.setup_name_mapping(sambaSID, idmap_type[type_string], xidNumber)
+        idmap.setup_name_mapping(sambaSID, idmap_type[type_string], xidNumber,)
         #
         # or directly:
         #
@@ -213,39 +213,39 @@ def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, i
         # "cn": sambaSID, "objectSid": [ndr_pack(security.dom_sid(sambaSID))],
         # "xidNumber": [str(xidNumber)], "type": [type_string]})
 
-        ud.debug(ud.LISTENER, ud.PROCESS, "%s: added entry for %s" % (name, sambaSID))
+        ud.debug(ud.LISTENER, ud.PROCESS, "%s: added entry for %s" % (name, sambaSID),)
 
     except ldb.LdbError as exc:
         # ok, there is an entry for this sambaSID, let's replace it
         (enum, estr) = exc.args
         # ok, there is an entry for this sambaSID, let's replace it
-        modify_idmap_entry(sambaSID, xidNumber, type_string, idmap)
+        modify_idmap_entry(sambaSID, xidNumber, type_string, idmap,)
 
 
-def remove_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None) -> None:
+def remove_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: IDmapDB | None = None,) -> None:
     if not idmap:
         # need to open idmap here in case it has been removed since the module  was loaded
         idmap = open_idmap()
 
     try:
-        res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs=["objectSid", "xidNumber", "type"])
+        res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs=["objectSid", "xidNumber", "type"],)
         if not res:
-            ud.debug(ud.LISTENER, ud.INFO, "%s: remove_idmap_entry: no mapping for objectSid %s, skipping", (name, sambaSID))
+            ud.debug(ud.LISTENER, ud.INFO, "%s: remove_idmap_entry: no mapping for objectSid %s, skipping", (name, sambaSID),)
         else:
             record = res.msgs[0]
 
-            ud.debug(ud.LISTENER, ud.PROCESS, "%s: removing entry for %s" % (name, sambaSID))
+            ud.debug(ud.LISTENER, ud.PROCESS, "%s: removing entry for %s" % (name, sambaSID),)
 
-            idmap.delete(ldb.Dn(idmap, str(record.dn)))
+            idmap.delete(ldb.Dn(idmap, str(record.dn),))
 
             if record["xidNumber"][0].decode('ASCII') != str(xidNumber):
-                ud.debug(ud.LISTENER, ud.WARN, "%s: removed entry xidNumber %s did not match object xidNumber %s" % (name, record["xidNumber"][0], xidNumber))
+                ud.debug(ud.LISTENER, ud.WARN, "%s: removed entry xidNumber %s did not match object xidNumber %s" % (name, record["xidNumber"][0], xidNumber),)
             if record["type"][0].decode('ASCII') != type_string:
-                ud.debug(ud.LISTENER, ud.WARN, "%s: removed entry type %s did not match object type %s" % (name, record["type"][0], type_string))
+                ud.debug(ud.LISTENER, ud.WARN, "%s: removed entry type %s did not match object type %s" % (name, record["type"][0], type_string),)
 
     except ldb.LdbError as exc:
         (enum, estr) = exc.args
-        ud.debug(ud.LISTENER, ud.ERROR, estr)
+        ud.debug(ud.LISTENER, ud.ERROR, estr,)
 
 
 def initialize() -> None:
@@ -254,49 +254,49 @@ def initialize() -> None:
     try:
         if os.path.exists(idmap_ldb):
             idmap_ldb_backup = '%s_%d' % (idmap_ldb, time.time())
-            ud.debug(ud.LISTENER, ud.PROCESS, 'Move %s to %s' % (idmap_ldb, idmap_ldb_backup))
-            os.rename(idmap_ldb, idmap_ldb_backup)
-        setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
+            ud.debug(ud.LISTENER, ud.PROCESS, 'Move %s to %s' % (idmap_ldb, idmap_ldb_backup),)
+            os.rename(idmap_ldb, idmap_ldb_backup,)
+        setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp,)
     finally:
         listener.unsetuid()
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], operation: str) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], operation: str,) -> None:
     idmap = open_idmap()
     if new:
         try:
             if b'sambaSamAccount' in new['objectClass']:
                 xid_attr = 'uidNumber'
                 xid_type = 'ID_TYPE_UID'
-                samaccountname = new.get('uid', [b''])[0]
+                samaccountname = new.get('uid', [b''],)[0]
             elif b'sambaGroupMapping' in new['objectClass']:
                 xid_attr = 'gidNumber'
                 xid_type = 'ID_TYPE_GID'
-                samaccountname = new.get('cn', [b''])[0]
+                samaccountname = new.get('cn', [b''],)[0]
 
-            new_xid = new.get(xid_attr, [b''])[0].decode('ASCII')
+            new_xid = new.get(xid_attr, [b''],)[0].decode('ASCII')
             if new_xid:
-                new_sambaSID = new.get(sidAttribute, [b''])[0]
+                new_sambaSID = new.get(sidAttribute, [b''],)[0]
                 if xid_type == 'ID_TYPE_GID' and new_sambaSID in __SPECIAL_SIDS:
                     xid_type = 'ID_TYPE_BOTH'
-                old_sambaSID = old.get(sidAttribute, [b''])[0]
+                old_sambaSID = old.get(sidAttribute, [b''],)[0]
                 if old and old_sambaSID:
                     if not new_sambaSID:
-                        ud.debug(ud.LISTENER, ud.WARN, "Samba account %r has no attribute '%s', cannot update" % (samaccountname, sidAttribute))
+                        ud.debug(ud.LISTENER, ud.WARN, "Samba account %r has no attribute '%s', cannot update" % (samaccountname, sidAttribute),)
                         return
                     if new_sambaSID != old_sambaSID:
-                        rename_or_modify_idmap_entry(old_sambaSID.decode('ASCII'), new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap)
-                    old_xid = old.get(xid_attr, [b''])[0].decode('ASCII')
+                        rename_or_modify_idmap_entry(old_sambaSID.decode('ASCII'), new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap,)
+                    old_xid = old.get(xid_attr, [b''],)[0].decode('ASCII')
                     if new_xid != old_xid:
-                        add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap)
+                        add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap,)
                 else:
                     if not new_sambaSID:
-                        ud.debug(ud.LISTENER, ud.WARN, "Samba account %r has no attribute '%s', cannot add" % (samaccountname, sidAttribute))
+                        ud.debug(ud.LISTENER, ud.WARN, "Samba account %r has no attribute '%s', cannot add" % (samaccountname, sidAttribute),)
                         return
-                    add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap)
+                    add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap,)
         except ldb.LdbError as exc:
             (enum, estr) = exc.args
-            ud.debug(ud.LISTENER, ud.ERROR, "%s: entry for %r could not be updated" % (name, new[sidAttribute][0]))
+            ud.debug(ud.LISTENER, ud.ERROR, "%s: entry for %r could not be updated" % (name, new[sidAttribute][0]),)
     elif old:
         if operation == 'r':  # modrdn
             return
@@ -305,24 +305,24 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
             if b'sambaSamAccount' in old['objectClass']:
                 xid_attr = 'uidNumber'
                 xid_type = 'ID_TYPE_UID'
-                samaccountname = old.get('uid', [b''])[0]
+                samaccountname = old.get('uid', [b''],)[0]
             elif b'sambaGroupMapping' in old['objectClass']:
                 xid_attr = 'gidNumber'
                 xid_type = 'ID_TYPE_GID'
-                samaccountname = old.get('cn', [b''])[0]
+                samaccountname = old.get('cn', [b''],)[0]
 
-            old_xid = old.get(xid_attr, [b''])[0].decode('ASCII')
+            old_xid = old.get(xid_attr, [b''],)[0].decode('ASCII')
             if old_xid:
-                old_sambaSID = old.get(sidAttribute, [b''])[0]
+                old_sambaSID = old.get(sidAttribute, [b''],)[0]
                 if not old_sambaSID:
-                    ud.debug(ud.LISTENER, ud.WARN, "Samba account '%s' has no attribute '%s', cannot remove" % (samaccountname, sidAttribute))
+                    ud.debug(ud.LISTENER, ud.WARN, "Samba account '%s' has no attribute '%s', cannot remove" % (samaccountname, sidAttribute),)
                     return
                 if xid_type == 'ID_TYPE_GID' and old_sambaSID in __SPECIAL_SIDS:
                     xid_type = 'ID_TYPE_BOTH'
-                remove_idmap_entry(old_sambaSID.decode('ASCII'), old_xid, xid_type, idmap)
+                remove_idmap_entry(old_sambaSID.decode('ASCII'), old_xid, xid_type, idmap,)
         except ldb.LdbError as exc:
             (enum, estr) = exc.args
-            ud.debug(ud.LISTENER, ud.ERROR, "%s: entry for %r could not be updated" % (name, old[sidAttribute][0]))
+            ud.debug(ud.LISTENER, ud.ERROR, "%s: entry for %r could not be updated" % (name, old[sidAttribute][0]),)
 
 
 if __name__ == '__main__':
@@ -338,31 +338,30 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument(
         "--direct-resync", action="store_true", dest="direct_resync", default=False,
-        help="Filter the output of univention-ldapsearch through this module",
-    )
+        help="Filter the output of univention-ldapsearch through this module",)
     options = parser.parse_args()
 
     if not options.direct_resync:
         parser.error("The option --direct-resync is required to run this module directly")
         sys.exit(1)
 
-    ud.init("stderr", ud.NO_FLUSH, ud.NO_FUNCTION)
+    ud.init("stderr", ud.NO_FLUSH, ud.NO_FUNCTION,)
     ucr = ConfigRegistry()
     ucr.load()
-    ud.set_level(ud.LISTENER, int(ucr.get('listener/debug/level', 2)))
+    ud.set_level(ud.LISTENER, int(ucr.get('listener/debug/level', 2,)),)
 
     cmd = ['/usr/bin/univention-ldapsearch', '-LLL', filter, 'objectClass']
     cmd.extend(attributes)
-    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE,)
     (stdout, stderr) = p1.communicate()
 
     class ListenerHandler(LDIFParser):
 
-        def __init__(self, input: IO[bytes]) -> None:
-            LDIFParser.__init__(self, input)
+        def __init__(self, input: IO[bytes],) -> None:
+            LDIFParser.__init__(self, input,)
 
-        def handle(self, dn: str, entry: Dict[str, List[bytes]]) -> None:
-            handler(dn, entry, {}, 'a')
+        def handle(self, dn: str, entry: Dict[str, List[bytes]],) -> None:
+            handler(dn, entry, {}, 'a',)
 
     parser = ListenerHandler(io.BytesIO(stdout))
     parser.parse()

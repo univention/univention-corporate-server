@@ -47,19 +47,19 @@ def restart_umc_server() -> Callable[[], None]:
 
 
 @pytest.fixture(scope='session')
-def server_role(ucr_session) -> str:
+def server_role(ucr_session,) -> str:
     """UCS server role string from UCR."""
     return ucr_session.get('server/role')
 
 
 @pytest.fixture(scope='session')
-def ldap_base(ucr_session) -> str:
+def ldap_base(ucr_session,) -> str:
     """LDAP base DN string from UCR."""
     return ucr_session.get('ldap/base')
 
 
 @pytest.fixture(scope='session')
-def ldap_master(ucr_session) -> str:
+def ldap_master(ucr_session,) -> str:
     """LDAP primary name from UCR."""
     return ucr_session.get('ldap/master')
 

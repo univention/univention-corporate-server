@@ -13,5 +13,4 @@ if sys.version_info >= (3,):
 setup(
     packages=packages,
     package_dir={'': 'modules'},
-    version=version,
-)
+    version=version,)

@@ -128,14 +128,14 @@ properties = {
     'ldapMapping': 'univentionTestAttributeLongDesc%(attribute_id)s' % {'attribute_id': attribute_id},
     'position': 'cn=custom attributes,%s' % udm.UNIVENTION_CONTAINER,
 }
-extended_attribute = udm.create_object('settings/extended_attribute', **properties)
+extended_attribute = udm.create_object('settings/extended_attribute', **properties,)
 
 wait_for_replication()
 
 package = DebianPackage(name=package_name)
-package.create_join_script_from_buffer(join_script_name, joinscript_buffer)
-package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer)
-package.create_usr_share_file_from_buffer(schema_name, schema_buffer)
+package.create_join_script_from_buffer(join_script_name, joinscript_buffer,)
+package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer,)
+package.create_usr_share_file_from_buffer(schema_name, schema_buffer,)
 package.build()
 
 package.install()
@@ -150,7 +150,7 @@ try:
         'univentionTestAttributeLongDesc%(attribute_id)s' % {'attribute_id': attribute_id}: random_name(),
         'position': 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
     }
-    container = udm.create_object('container/cn', **properties)
+    container = udm.create_object('container/cn', **properties,)
 
     wait_for_replication()
 

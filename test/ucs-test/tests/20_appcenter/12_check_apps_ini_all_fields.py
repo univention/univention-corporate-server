@@ -22,18 +22,18 @@ failures = 0
 
 class AppCheck:
 
-    def __init__(self, pname):
+    def __init__(self, pname,):
         self.pname = pname
         self.config = RawConfigParser()
         self.config.read((pname,))
 
-    def log(self, msg, *args):
+    def log(self, msg,*args):
         """
         Prints the given 'msg' with 'args' preceded by path to file unless
         '--quiet' argument was given.
         """
         if not parsed.quiet:
-            print('FILE:', self.pname, msg % args)
+            print('FILE:', self.pname, msg % args,)
 
     def check(self):
         """
@@ -43,13 +43,13 @@ class AppCheck:
         """
         print("\nChecking file '%s':" % self.pname)
         try:
-            appid = self.config.get('Application', 'ID')
+            appid = self.config.get('Application', 'ID',)
         except (NoSectionError, NoOptionError):
             raise Error('No [Application] ID given...')
         for section in self.config.sections():
             if section == 'Appliances-scenarios':
                 continue
-            with Section(self, section, appid) as sec:
+            with Section(self, section, appid,) as sec:
                 if section == 'Application':
                     sec.check_all(sec.APPLICATION)
                 elif section.startswith('Sizing: '):
@@ -60,10 +60,10 @@ class AppCheck:
 
 class Error(Exception):
 
-    def __init__(self, msg):
+    def __init__(self, msg,):
         global failures
         failures += 1
-        print("\nERROR:", msg)
+        print("\nERROR:", msg,)
 
 
 class Optional(Exception):
@@ -75,10 +75,10 @@ class Optional(Exception):
 class Fatal(Exception):
 
     # raised when required value is missing
-    def __init__(self, msg):
+    def __init__(self, msg,):
         global failures
         failures += 1
-        print("\nFATAL:", msg)
+        print("\nFATAL:", msg,)
 
 
 class Value:
@@ -91,7 +91,7 @@ class Value:
     RE_CAPACITY = regex_compile(r'\d+(?:\s*[G]B)?$')
     RE_URL = regex_compile(r'^(?:https?://' + DOMAIN + r'(?::\d+)?)?' + PATH + r'$')
 
-    def __init__(self, value, appid):
+    def __init__(self, value, appid,):
         self.value = value
         self.appid = appid
 
@@ -112,7 +112,7 @@ class Value:
             return
         raise Error('Not a boolean: %s' % self.value)
 
-    def is_n_chars_long(self, length):
+    def is_n_chars_long(self, length,):
         if len(self.value) <= length:
             return
         raise Error('Over %d chars long:\n >%s<>%s<' % (length,
@@ -144,13 +144,13 @@ class Value:
             'memberserver',
         }
 
-        values = map(str.strip, self.value.split(','))
+        values = map(str.strip, self.value.split(','),)
         if set(values) - ALLOWED:
             raise Error('Invalid server role: "%s"' % self.value)
 
     def is_arch(self):
         ALLOWED = {'amd64', 'i386'}
-        if set(re.split(r'\s*,\s*', self.value)) - ALLOWED:
+        if set(re.split(r'\s*,\s*', self.value,)) - ALLOWED:
             raise Error('Invalid architectures: "%s"' % self.value)
 
     def is_capacity(self):
@@ -227,7 +227,7 @@ class Section:
         'Description': APPLICATION['Description'],
         'LongDescription': APPLICATION['LongDescription']}
 
-    def __init__(self, check, section, appid):
+    def __init__(self, check, section, appid,):
         self.config = check.config
         self.section = section
         self.log = check.log
@@ -236,51 +236,51 @@ class Section:
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback,):
         if not exc_type:
             return
 
-        if issubclass(exc_type, NoSectionError):
-            self.log('[%s] missing', self.section)
+        if issubclass(exc_type, NoSectionError,):
+            self.log('[%s] missing', self.section,)
 
-    def check_all(self, options):
+    def check_all(self, options,):
         for option, checks in options.items():
-            self.check(option, *checks)
-            self.config.remove_option(self.section, option)
+            self.check(option, *checks,)
+            self.config.remove_option(self.section, option,)
 
         for option, value in self.config.items(self.section):
-            self.log('[%s].%s: Remaining %s', self.section, option, value)
+            self.log('[%s].%s: Remaining %s', self.section, option, value,)
 
-    def check(self, option, *checks):
+    def check(self, option,*checks):
         value = self.get(option)
         for cname in checks:
             try:
-                check = getattr(value, cname)
+                check = getattr(value, cname,)
                 check()
             except Fatal as exc:
                 self.log('\nSECTION: [%s].%s %s\n',
-                         self.section, option, exc)
+                         self.section, option, exc,)
                 return
 
             except Error as exc:
                 self.log('\nSECTION: [%s].%s %s\n',
-                         self.section, option, exc)
+                         self.section, option, exc,)
 
             except Optional:
                 # not a real error, just stops further checks
                 return
 
-    def get(self, option):
+    def get(self, option,):
         try:
-            value = self.config.get(self.section, option)
+            value = self.config.get(self.section, option,)
         except NoOptionError as exc:
             if not parsed.quiet:
-                print(exc, file=stderr)
+                print(exc, file=stderr,)
             value = None
-        return Value(value, self.appid)
+        return Value(value, self.appid,)
 
 
-def exclude_ignored(names, remove):
+def exclude_ignored(names, remove,):
     """Removes the given 'remove' from the given 'names' when it is in."""
     for name in remove:
         try:
@@ -301,14 +301,14 @@ def parse_args():
                       default=False,
                       dest="quiet",
                       action="store_true",
-                      help="Decrease the verbosity.")
+                      help="Decrease the verbosity.",)
 
     parser.add_option("-a", "--all",
                       default=False,
                       dest="check_all",
                       action="store_true",
                       help=("Force check of all Apps .ini. By default "
-                            "checks only currently installed Apps."))
+                            "checks only currently installed Apps."),)
 
     options, args = parser.parse_args()
     return options

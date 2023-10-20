@@ -23,11 +23,11 @@ if __name__ == '__main__':
         test_zone_name = dnstests.random_zone()
         test_nameserver = dnstests.get_hostname_of_ldap_master()
         txt = uts.random_string()
-        test_zone_dn = udm.create_object('dns/forward_zone', zone=test_zone_name, txt=txt, nameserver=test_nameserver)
-        dnstests.check_ldap_object(test_zone_dn, 'txt record', 'tXTRecord', txt)
+        test_zone_dn = udm.create_object('dns/forward_zone', zone=test_zone_name, txt=txt, nameserver=test_nameserver,)
+        dnstests.check_ldap_object(test_zone_dn, 'txt record', 'tXTRecord', txt,)
         s4connector.wait_for_sync(30)
-        dnstests.test_dns_txt(test_zone_name, txt)
-        dnstests.check_ldap_object(test_zone_dn, 'txt record', 'tXTRecord', txt)
+        dnstests.test_dns_txt(test_zone_name, txt,)
+        dnstests.check_ldap_object(test_zone_dn, 'txt record', 'tXTRecord', txt,)
 
     s4connector.wait_for_sync()
     # Removing a DNS zone triggers bind reload in postrun, better check:

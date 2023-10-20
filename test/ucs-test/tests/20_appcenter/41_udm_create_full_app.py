@@ -68,8 +68,7 @@ if __name__ == '__main__':
             umcModuleName=umcModuleName,
             umcModuleFlavor=umcModuleFlavor,
             serverRole=serverRole,
-            server=server,
-        )
+            server=server,)
         utils.verify_ldap_object(app, {
             'univentionAppName': [name],
             'univentionAppID': [id],
@@ -95,9 +94,9 @@ if __name__ == '__main__':
             'univentionAppServerRole': serverRole,
             'univentionAppInstalledOnServer': server,
 
-        })
+        },)
 
-        udm.remove_object('appcenter/app', dn=app)
+        udm.remove_object('appcenter/app', dn=app,)
         utils.verify_ldap_object(app, {
             'univentionAppName': [name],
-        }, should_exist=False)
+        }, should_exist=False,)

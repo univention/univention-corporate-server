@@ -16,14 +16,14 @@ if __name__ == '__main__':
         id = uts.random_name()
         name = uts.random_name()
         version = uts.random_name()
-        app = udm.create_object('appcenter/app', position=udm.UNIVENTION_CONTAINER, id=id, name=name, version=version)
+        app = udm.create_object('appcenter/app', position=udm.UNIVENTION_CONTAINER, id=id, name=name, version=version,)
         utils.verify_ldap_object(app, {
             'univentionAppName': [name],
             'univentionAppID': [id],
             'univentionAppVersion': [version],
-        })
+        },)
 
-        udm.remove_object('appcenter/app', dn=app)
+        udm.remove_object('appcenter/app', dn=app,)
         utils.verify_ldap_object(app, {
             'univentionAppName': [name],
-        }, should_exist=False)
+        }, should_exist=False,)

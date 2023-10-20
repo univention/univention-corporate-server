@@ -42,7 +42,7 @@ THEME = 'light'
 
 
 def main():
-    tree = ET.parse(os.path.join(THEME, 'bootsplash-logo.svg'))  # noqa: S314
+    tree = ET.parse(os.path.join(THEME, 'bootsplash-logo.svg',))  # noqa: S314
     root = tree.getroot()
     background_rect = root.find(
         './'
@@ -58,15 +58,15 @@ def main():
         '{http://www.w3.org/2000/svg}g[@{http://www.inkscape.org/namespaces/inkscape}label="Logo"]',
     )
     background_style = background_rect.get('style')
-    text.set('style', 'display:none')
-    logo.set('style', 'display:none')
+    text.set('style', 'display:none',)
+    logo.set('style', 'display:none',)
     tree.write('logo-box.svg')
     subprocess.check_call(['inkscape', '--export-type=png', 'logo-box.svg'])
     os.remove('logo-box.svg')
     logo.attrib.pop('style')
     for i in range(STEPS):
-        opacity = round((1 + math.cos(2 * math.pi * i / STEPS)) * 1 / 2, 2)
-        background_rect.set('style', background_style.replace('stroke-opacity:1', f'stroke-opacity:{opacity}'))
+        opacity = round((1 + math.cos(2 * math.pi * i / STEPS)) * 1 / 2, 2,)
+        background_rect.set('style', background_style.replace('stroke-opacity:1', f'stroke-opacity:{opacity}',),)
         logo_fname = f'logo{i}.svg'
         tree.write(logo_fname)
         subprocess.check_call(['inkscape', '--export-type=png', logo_fname])

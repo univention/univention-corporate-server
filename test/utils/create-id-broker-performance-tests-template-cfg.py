@@ -11,12 +11,12 @@ config = ConfigParser(interpolation=None)
 config.read(template_file)
 sections = config.sections()
 sections.remove("Global")
-recover_command = config.getint("Global", "recover")
-kvm_extra_label = config.get("Global", "kvm_extra_label")
-config.set("Global", "kvm_extra_label", f"{kvm_extra_label}-kvm-templates")
+recover_command = config.getint("Global", "recover",)
+kvm_extra_label = config.get("Global", "kvm_extra_label",)
+config.set("Global", "kvm_extra_label", f"{kvm_extra_label}-kvm-templates",)
 new_recover_command = recover_command + 2
-config.set("Global", "recover", str(new_recover_command))
-config.set("Global", "kvm_memory", "8G")
+config.set("Global", "recover", str(new_recover_command),)
+config.set("Global", "kvm_memory", "8G",)
 
 for section in sections:
     template_name = section
@@ -27,8 +27,7 @@ for section in sections:
         f"command{recover_command}",
         """
 . utils-school-idbroker.sh && load_sddb_jenkins
-""",
-    )
+""",)
     config.set(
         section,
         f"command{recover_command + 1}",
@@ -45,17 +44,16 @@ SERVER id=$(virsh domid SELF_KVM_NAME) && [ -n "${{id#-}}" ] && virsh event --do
 SOURCE ucs_[SELF].ver
 SERVER ucs-kt-put -C single -O Others -c "[SELF_KVM_NAME]" "[version]_{template_name}_amd64" --remove-old-templates='[version_version]-*_{template_name}_amd64.tar.gz' --keep-last-templates=1
 LOCAL rm -f ucs_[SELF].ver
-""".format(template_name=template_name),
-    )
-    config.set(section, f"command{new_recover_command}", "")
+""".format(template_name=template_name),)
+    config.set(section, f"command{new_recover_command}", "",)
 
 # add jump host for ldap modifications
 new_section = "JumpHost"
 config.add_section(new_section)
-config.set(new_section, "kvm_template", "[ENV:KVM_TEMPLATE]")
-config.set(new_section, "kvm_ucsversion", "[ENV:KVM_UCSVERSION]")
-for i in range(1, recover_command):
-    config.set(new_section, f"command{i}", "")
+config.set(new_section, "kvm_template", "[ENV:KVM_TEMPLATE]",)
+config.set(new_section, "kvm_ucsversion", "[ENV:KVM_UCSVERSION]",)
+for i in range(1, recover_command,):
+    config.set(new_section, f"command{i}", "",)
 config.set(new_section, f"command{recover_command - 1}", """
 . utils.sh && basic_setup
 . utils.sh && rotate_logfiles
@@ -82,14 +80,14 @@ config.set(new_section, f"command{recover_command - 1}", """
 #
 . utils-school-idbroker.sh && prepare_jump_host
 /var/lib/id-broker-performance-tests/prepare_ldap/prepare_ldap.sh
-""")
-config.set(new_section, f"command{recover_command}", "")
-config.set(new_section, f"command{recover_command + 1}", "")
-config.set(new_section, f"command{new_recover_command}", "")
+""",)
+config.set(new_section, f"command{recover_command}", "",)
+config.set(new_section, f"command{recover_command + 1}", "",)
+config.set(new_section, f"command{new_recover_command}", "",)
 # add files
 config.set(new_section, "files", """utils/utils-school-idbroker.sh /root/
 ~/ec2/keys/tech.pem /root/.ssh/
-""")
+""",)
 
 
 config.write(sys.stdout)

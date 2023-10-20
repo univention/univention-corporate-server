@@ -49,17 +49,17 @@ PATH_CLEANUP_POST_SCRIPTS = '/usr/lib/univention-system-setup/cleanup-post.d/'
 def cleanup() -> None:
     temp_dir = mkdtemp()
 
-    pre_dir = os.path.join(temp_dir, 'pre')
-    post_dir = os.path.join(temp_dir, 'post')
+    pre_dir = os.path.join(temp_dir, 'pre',)
+    post_dir = os.path.join(temp_dir, 'post',)
 
-    shutil.copytree(PATH_CLEANUP_PRE_SCRIPTS, pre_dir)
-    shutil.copytree(PATH_CLEANUP_POST_SCRIPTS, post_dir)
+    shutil.copytree(PATH_CLEANUP_PRE_SCRIPTS, pre_dir,)
+    shutil.copytree(PATH_CLEANUP_POST_SCRIPTS, post_dir,)
 
     # Run cleanup-pre scripts
-    util.run_scripts_in_path(pre_dir, sys.stdout, "cleanup-pre")
+    util.run_scripts_in_path(pre_dir, sys.stdout, "cleanup-pre",)
 
     # Run cleanup-post scripts
-    util.run_scripts_in_path(post_dir, sys.stdout, "cleanup-post")
+    util.run_scripts_in_path(post_dir, sys.stdout, "cleanup-post",)
 
     shutil.rmtree(temp_dir)
 

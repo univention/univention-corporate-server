@@ -9,8 +9,8 @@ SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 TIMEOUT = 5  # seconds
 
 
-def cache_must_exists(dn):
-    filename = os.path.join(SHARE_CACHE_DIR, dn)
+def cache_must_exists(dn,):
+    filename = os.path.join(SHARE_CACHE_DIR, dn,)
     i = 0
     while not os.path.exists(filename):
         if i > TIMEOUT:
@@ -20,8 +20,8 @@ def cache_must_exists(dn):
         i += 1
 
 
-def cache_must_not_exists(dn):
-    filename = os.path.join(SHARE_CACHE_DIR, dn)
+def cache_must_not_exists(dn,):
+    filename = os.path.join(SHARE_CACHE_DIR, dn,)
     i = 0
     while os.path.exists(filename):
         if i > TIMEOUT:
@@ -32,27 +32,27 @@ def cache_must_not_exists(dn):
         i += 1
 
 
-def get_cache_values(dn):
-    filename = os.path.join(SHARE_CACHE_DIR, dn)
+def get_cache_values(dn,):
+    filename = os.path.join(SHARE_CACHE_DIR, dn,)
     if not os.path.exists(filename):
         utils.fail('%s does not exist' % filename)
         return None
 
-    with open(filename, 'rb') as fd:
+    with open(filename, 'rb',) as fd:
         dn, attrs, policy_result = pickle.load(fd)  # noqa: S301
 
     share = {
         'univentionSharePath': attrs['univentionSharePath'][0],
-        'inodeSoftLimit': policy_result.get('univentionQuotaSoftLimitInodes', [None])[0],
-        'inodeHardLimit': policy_result.get('univentionQuotaHardLimitInodes', [None])[0],
-        'spaceSoftLimit': policy_result.get('univentionQuotaSoftLimitSpace', [None])[0],
-        'spaceHardLimit': policy_result.get('univentionQuotaHardLimitSpace', [None])[0],
-        'reapplyQuota': policy_result.get('univentionQuotaReapplyEveryLogin', [None])[0],
+        'inodeSoftLimit': policy_result.get('univentionQuotaSoftLimitInodes', [None],)[0],
+        'inodeHardLimit': policy_result.get('univentionQuotaHardLimitInodes', [None],)[0],
+        'spaceSoftLimit': policy_result.get('univentionQuotaSoftLimitSpace', [None],)[0],
+        'spaceHardLimit': policy_result.get('univentionQuotaHardLimitSpace', [None],)[0],
+        'reapplyQuota': policy_result.get('univentionQuotaReapplyEveryLogin', [None],)[0],
     }
-    return {key: value.decode('UTF-8') if isinstance(value, bytes) else value for key, value in share.items()}
+    return {key: value.decode('UTF-8') if isinstance(value, bytes,) else value for key, value in share.items()}
 
 
-def check_values(dn, inodeSoftLimit, inodeHardLimit, spaceSoftLimit, spaceHardLimit, reapplyQuota):
+def check_values(dn, inodeSoftLimit, inodeHardLimit, spaceSoftLimit, spaceHardLimit, reapplyQuota,):
     cache = get_cache_values(dn)
 
     # if cache['univentionSharePath'] != path:

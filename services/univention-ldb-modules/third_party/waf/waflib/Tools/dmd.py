@@ -8,11 +8,11 @@ from waflib.Tools import ar, d
 from waflib.Configure import conf
 
 @conf
-def find_dmd(conf):
+def find_dmd(conf,):
 	"""
 	Finds the program *dmd*, *dmd2*, or *ldc* and set the variable *D*
 	"""
-	conf.find_program(['dmd', 'dmd2', 'ldc'], var='D')
+	conf.find_program(['dmd', 'dmd2', 'ldc'], var='D',)
 
 	# make sure that we're dealing with dmd1, dmd2, or ldc(1)
 	out = conf.cmd_and_log(conf.env.D + ['--help'])
@@ -22,7 +22,7 @@ def find_dmd(conf):
 			conf.fatal("detected compiler is not dmd/ldc")
 
 @conf
-def common_flags_ldc(conf):
+def common_flags_ldc(conf,):
 	"""
 	Sets the D flags required by *ldc*
 	"""
@@ -32,7 +32,7 @@ def common_flags_ldc(conf):
 	v.DFLAGS_dshlib = ['-relocation-model=pic']
 
 @conf
-def common_flags_dmd(conf):
+def common_flags_dmd(conf,):
 	"""
 	Set the flags required by *dmd* or *dmd2*
 	"""
@@ -59,7 +59,7 @@ def common_flags_dmd(conf):
 	v.DFLAGS_d_with_header = ['-H', '-Hf']
 	v.D_HDR_F           = '%s'
 
-def configure(conf):
+def configure(conf,):
 	"""
 	Configuration for *dmd*, *dmd2*, and *ldc*
 	"""

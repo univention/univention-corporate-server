@@ -56,7 +56,7 @@ class Cache(metaclass=Plugin):
             Class that handles the actual refresh
     """
 
-    def __init__(self, cache_file, reloader=None):
+    def __init__(self, cache_file, reloader=None,):
         self._cache_file = cache_file
         self._reloader = reloader
         self._cache = {}
@@ -84,9 +84,9 @@ class Cache(metaclass=Plugin):
             self._load()
         return self._cache
 
-    def refresh(self, reason=None):
+    def refresh(self, reason=None,):
         if self._reloader:
-            return self._reloader.refresh(reason=reason, content=self._cache)
+            return self._reloader.refresh(reason=reason, content=self._cache,)
 
 
 class PortalFileCache(Cache):

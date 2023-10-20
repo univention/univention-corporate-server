@@ -136,14 +136,14 @@ _MODULE_ERR_COMMAND_FAILED = 591  # FIXME: HTTP violation
 class Base(Translation):
     """The base class for UMC modules"""
 
-    def __init__(self, domain='univention-management-console'):
-        super(Base, self).__init__(domain)
+    def __init__(self, domain='univention-management-console',):
+        super(Base, self,).__init__(domain)
         self.__current_language = None
         self._current_request = None
         self.__requests = {}
         self._accepted_language = None
 
-    def update_language(self, locales):
+    def update_language(self, locales,):
         for _locale in locales:
             language = None
             try:
@@ -167,11 +167,11 @@ class Base(Translation):
         self.__current_language = None
         raise NotAcceptable(self._('Specified locale is not available'))
 
-    def set_locale(self, _locale):
+    def set_locale(self, _locale,):
         self.set_language(_locale)
         _locale = str(Locale(_locale))
-        locale.setlocale(locale.LC_MESSAGES, _locale)
-        locale.setlocale(locale.LC_CTYPE, _locale)
+        locale.setlocale(locale.LC_MESSAGES, _locale,)
+        locale.setlocale(locale.LC_CTYPE, _locale,)
 
     @property
     def username(self):
@@ -229,7 +229,7 @@ class Base(Translation):
     def tornado_routes(self):
         return []
 
-    def prepare(self, request):
+    def prepare(self, request,):
         """this function is invoked after the module process started."""
         self.init()
 
@@ -242,68 +242,68 @@ class Base(Translation):
         exiting.
         """
 
-    def execute(self, method, request, *args, **kwargs):
+    def execute(self, method, request,*args, **kwargs):
         self.__requests[request.id] = (request, method)
         self._current_request = request
 
         try:
-            function = getattr(self, method)
+            function = getattr(self, method,)
         except AttributeError:
             message = self._('Method %(method)r (%(path)r) in %(module)r does not exist.\n\n%(traceback)s') % {'method': method, 'path': request.arguments, 'module': self.__class__.__module__, 'traceback': traceback.format_exc()}
-            self.finished(request.id, None, message=message, status=500)
+            self.finished(request.id, None, message=message, status=500,)
             return
 
         try:
             self._parse_accept_language(request)
-            if ucr.is_false('umc/server/disable-security-restrictions', True):
-                self.security_checks(request, function)
-            function.__func__(self, request, *args, **kwargs)
+            if ucr.is_false('umc/server/disable-security-restrictions', True,):
+                self.security_checks(request, function,)
+            function.__func__(self, request, *args, **kwargs,)
         except (KeyboardInterrupt, SystemExit):
-            self.finished(request.id, None, self._('The UMC service is currently shutting down or restarting. Please retry soon.'), status=503)
+            self.finished(request.id, None, self._('The UMC service is currently shutting down or restarting. Please retry soon.'), status=503,)
             raise
         except BaseException:
-            self.__error_handling(request, method, *sys.exc_info())
+            self.__error_handling(request, method, *sys.exc_info(),)
 
-    def _parse_accept_language(self, request):
+    def _parse_accept_language(self, request,):
         """Parses language tokens from Accept-Language, transforms it into locale and set the language."""
-        if request.headers.get('X-Requested-With'.title(), '').lower() != 'XMLHTTPRequest'.lower():
+        if request.headers.get('X-Requested-With'.title(), '',).lower() != 'XMLHTTPRequest'.lower():
             return  # don't change the language if Accept-Language header contains the value of the browser and not those we set in Javascript
 
-        accepted_locales = re.split(r'\s*,\s*', request.headers.get('Accept-Language', ''))
+        accepted_locales = re.split(r'\s*,\s*', request.headers.get('Accept-Language', '',),)
         try:
             accepted_locales.remove('')
         except ValueError:
             pass
         if accepted_locales and accepted_locales != self._accepted_language:
             self._accepted_language = accepted_locales
-            self.update_language(re.sub(';.*', '', lang.replace('-', '_')) for lang in accepted_locales)
+            self.update_language(re.sub(';.*', '', lang.replace('-', '_',),) for lang in accepted_locales)
 
-    def security_checks(self, request, function):
-        if request.http_method not in (u'POST', u'PUT', u'DELETE') and not getattr(function, 'allow_get', False):
+    def security_checks(self, request, function,):
+        if request.http_method not in (u'POST', u'PUT', u'DELETE') and not getattr(function, 'allow_get', False,):
             status = 405 if request.http_method in (u'GET', u'HEAD') else 501
-            raise UMC_Error(self._('The requested HTTP method is not allowed on this resource.'), status=status, headers={'Allow': 'POST'})
+            raise UMC_Error(self._('The requested HTTP method is not allowed on this resource.'), status=status, headers={'Allow': 'POST'},)
 
-        if getattr(function, 'xsrf_protection', True) and request.cookies.get('UMCSessionId') != request.headers.get('X-Xsrf-Protection'.title()):
-            raise UMC_Error(self._('Cross Site Request Forgery attack detected. Please provide the "UMCSessionId" cookie value as HTTP request header "X-Xsrf-Protection".'), status=403)
+        if getattr(function, 'xsrf_protection', True,) and request.cookies.get('UMCSessionId') != request.headers.get('X-Xsrf-Protection'.title()):
+            raise UMC_Error(self._('Cross Site Request Forgery attack detected. Please provide the "UMCSessionId" cookie value as HTTP request header "X-Xsrf-Protection".'), status=403,)
 
-        if getattr(function, 'referer_protection', True) and request.headers.get('Referer') and not urlparse(request.headers['Referer']).path.startswith('/univention/'):
+        if getattr(function, 'referer_protection', True,) and request.headers.get('Referer') and not urlparse(request.headers['Referer']).path.startswith('/univention/'):
             # FIXME: we must also check the netloc/hostname/IP
-            raise UMC_Error(self._('The "Referer" HTTP header must start with "/univention/".'), status=503)
+            raise UMC_Error(self._('The "Referer" HTTP header must start with "/univention/".'), status=503,)
 
-        content_type = request.headers.get('Content-Type', '')
+        content_type = request.headers.get('Content-Type', '',)
         allowed_content_types = ('application/json', 'application/x-www-form-urlencoded', 'multipart/form-data')
 
-        if content_type and not re.match(r'^(%s)($|\s*;)' % '|'.join(re.escape(x) for x in allowed_content_types), content_type):
-            raise UMC_Error(self._('The requested Content-Type is not acceptable. Please use one of %s.' % (', '.join(allowed_content_types))), status=406)
+        if content_type and not re.match(r'^(%s)($|\s*;)' % '|'.join(re.escape(x) for x in allowed_content_types), content_type,):
+            raise UMC_Error(self._('The requested Content-Type is not acceptable. Please use one of %s.' % (', '.join(allowed_content_types))), status=406,)
 
-    def thread_finished_callback(self, thread, result, request):
-        if not isinstance(result, BaseException):
-            self.finished(request.id, result)
+    def thread_finished_callback(self, thread, result, request,):
+        if not isinstance(result, BaseException,):
+            self.finished(request.id, result,)
             return
         method = '%s: %s' % (thread.name, ' '.join(request.arguments))
-        self.__error_handling(request, method, thread.exc_info[0], thread.exc_info[1], thread.trace)
+        self.__error_handling(request, method, thread.exc_info[0], thread.exc_info[1], thread.trace,)
 
-    def error_handling(self, etype, exc, etraceback):
+    def error_handling(self, etype, exc, etraceback,):
         """
         Translate generic UDM exceptions back to LDAP exceptions.
 
@@ -311,27 +311,27 @@ class Base(Translation):
         :param exc: The exception instance.
         :param etraceback: The exception traceback instance; may be None.
         """
-        if (isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.LDAPError)) or isinstance(exc, ldap.LDAPError):
+        if (isinstance(exc, udm_errors.ldapError,) and isinstance(getattr(exc, 'original_exception', None,), ldap.LDAPError,)) or isinstance(exc, ldap.LDAPError,):
             # After an exception the ReconnectLDAPObject instance can be in a state without a bind. Which can result
             # in a "ldapError: Insufficient access" exception, because the connection is anonymous. Prevent the usage
             # of a ReconnectLDAPObject instance after an exception by clearing the connection cache.
             # Bug #46089
             reset_ldap_connection_cache()
-        if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.SERVER_DOWN):
+        if isinstance(exc, udm_errors.ldapError,) and isinstance(getattr(exc, 'original_exception', None,), ldap.SERVER_DOWN,):
             exc = exc.original_exception
-        if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.INVALID_CREDENTIALS):
+        if isinstance(exc, udm_errors.ldapError,) and isinstance(getattr(exc, 'original_exception', None,), ldap.INVALID_CREDENTIALS,):
             exc = exc.original_exception
-        if isinstance(exc, ldap.SERVER_DOWN):
+        if isinstance(exc, ldap.SERVER_DOWN,):
             raise LDAP_ServerDown()
-        if isinstance(exc, ldap.CONNECT_ERROR):
+        if isinstance(exc, ldap.CONNECT_ERROR,):
             raise LDAP_ConnectionFailed(exc)
-        if isinstance(exc, ldap.INVALID_CREDENTIALS):
+        if isinstance(exc, ldap.INVALID_CREDENTIALS,):
             # Ensure the connection cache is empty to prevent the use of expired saml messages
             # Bug #44621
             reset_ldap_connection_cache()
             raise Unauthorized
 
-    def __error_handling(self, request, method, etype, exc, etraceback):
+    def __error_handling(self, request, method, etype, exc, etraceback,):
         """
         Handle UMC exception.
 
@@ -349,15 +349,15 @@ class Base(Translation):
         headers = None
         error = None
         trace = etraceback or []
-        if isinstance(etraceback, list):
+        if isinstance(etraceback, list,):
             etraceback = None
         try:
             try:
-                self.error_handling(etype, exc, etraceback)
+                self.error_handling(etype, exc, etraceback,)
             except Exception:
                 raise
             else:
-                six.reraise(etype, exc, etraceback)
+                six.reraise(etype, exc, etraceback,)
         except UMC_Error as exc:
             status = exc.status
             result = exc.result
@@ -366,8 +366,8 @@ class Base(Translation):
             message = str(exc)
             if not exc.traceback and exc.include_traceback:
                 exc.traceback = traceback.format_exc()
-                if isinstance(exc.traceback, bytes):   # Python 2
-                    exc.traceback = exc.traceback.decode('utf-8', 'replace')
+                if isinstance(exc.traceback, bytes,):   # Python 2
+                    exc.traceback = exc.traceback.decode('utf-8', 'replace',)
             error = {
                 'command': method,
                 'traceback': exc.traceback,
@@ -379,17 +379,17 @@ class Base(Translation):
                 tb_str = ''.join(['Traceback (most recent call last):\n'] + trace + traceback.format_exception_only(*sys.exc_info()[:2]))
             else:
                 tb_str = traceback.format_exc()
-            if isinstance(tb_str, bytes):  # Python 2
-                tb_str = tb_str.decode('utf-8', 'replace')
+            if isinstance(tb_str, bytes,):  # Python 2
+                tb_str = tb_str.decode('utf-8', 'replace',)
             error = {
                 'command': ('%s %s' % (' '.join(request.arguments), '(%s)' % (request.flavor,) if request.flavor else '')).strip(),
                 'traceback': tb_str,
             }
-            if isinstance(error['command'], bytes):  # Python 2
-                error['command'] = error['command'].decode('utf-8', 'replace')
+            if isinstance(error['command'], bytes,):  # Python 2
+                error['command'] = error['command'].decode('utf-8', 'replace',)
             message = self._('Internal server error during "%(command)s".') % error
         MODULE.process(str(message))
-        self.finished(request.id, result, message, status=status, headers=headers, error=error, reason=reason)
+        self.finished(request.id, result, message, status=status, headers=headers, error=error, reason=reason,)
 
     def default_response_headers(self):
         headers = {
@@ -399,14 +399,14 @@ class Base(Translation):
             headers['Content-Language'] = self.__current_language
         return headers
 
-    def get_user_ldap_connection(self, no_cache=False, **kwargs):
+    def get_user_ldap_connection(self, no_cache=False,**kwargs):
         """
         .. deprecated::
                 use request.get_user_ldap_connection() instead!
         """
-        return self._current_request.get_user_ldap_connection(no_cache=False, **kwargs)
+        return self._current_request.get_user_ldap_connection(no_cache=False, **kwargs,)
 
-    def bind_user_connection(self, lo):
+    def bind_user_connection(self, lo,):
         """
         .. deprecated::
                 use request.bind_user_connection() instead!
@@ -420,13 +420,13 @@ class Base(Translation):
         """
         return self._current_request.require_password()
 
-    def finished(self, id, response, message=None, success=True, status=None, mimetype=None, headers=None, error=None, reason=None):
+    def finished(self, id, response, message=None, success=True, status=None, mimetype=None, headers=None, error=None, reason=None,):
         """Should be invoked by module to finish the processing of a request. 'id' is the request command identifier"""
         if id not in self.__requests:
             return
         request, method = self.__requests[id]
 
-        if not isinstance(response, Response):
+        if not isinstance(response, Response,):
             res = Response(request)
 
             if mimetype and mimetype != _MIMETYPE_JSON:
@@ -435,7 +435,7 @@ class Base(Translation):
             else:
                 res.result = response
                 res.message = message
-                res.headers = dict(self.default_response_headers(), **headers or {})
+                res.headers = dict(self.default_response_headers(), **headers or {},)
                 res.error = error
                 res.reason = reason
         else:
@@ -449,12 +449,12 @@ class Base(Translation):
 
         self.result(res)
 
-    def result(self, response):
+    def result(self, response,):
         try:
             request, method = self.__requests.pop(response.id)
         except KeyError:
             return
         request._request_handler.reply(response)
 
-    def _is_active(self, request):
+    def _is_active(self, request,):
         return request.id in self.__requests

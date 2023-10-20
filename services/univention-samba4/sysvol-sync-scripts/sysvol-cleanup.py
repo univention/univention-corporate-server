@@ -46,24 +46,24 @@ from argparse import ArgumentParser
 from univention import config_registry
 
 
-def _sysvol_directory(ucr):
+def _sysvol_directory(ucr,):
     return '/var/lib/samba/sysvol/%s/Policies/' % ucr.get('domainname')
 
 
-def getLDAPGPOs(options):
+def getLDAPGPOs(options,):
     ldapGPOs = []
 
-    p1 = subprocess.Popen(['univention-s4search', 'objectClass=groupPolicyContainer', 'cn'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p1 = subprocess.Popen(['univention-s4search', 'objectClass=groupPolicyContainer', 'cn'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
     stdout, stderr = p1.communicate()
     if p1.returncode != 0:
         if options.verbose:
             print('Failed to search via univention-s4search.')
-            print(stderr.decode('UTF-8', 'replace'))
+            print(stderr.decode('UTF-8', 'replace',))
         return None
 
     plainGPOAttribute = []
     currentGPO = None
-    for line in stdout.decode('UTF-8', 'replace').split('\n'):
+    for line in stdout.decode('UTF-8', 'replace',).split('\n'):
         # The result looks like this:
         # record 1
         #   dn: CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=deadlock50,DC=local
@@ -75,7 +75,7 @@ def getLDAPGPOs(options):
             currentGPO = line[4:]
         elif line.startswith(' '):
             # if the attributes value uses more than one line
-            currentGPO += line.split(' ', 1)[1]
+            currentGPO += line.split(' ', 1,)[1]
         else:
             if currentGPO:
                 plainGPOAttribute.append(currentGPO)
@@ -96,14 +96,14 @@ def getLDAPGPOs(options):
     return ldapGPOs
 
 
-def getFileSystemGPOs(sysvolDirectory):
+def getFileSystemGPOs(sysvolDirectory,):
     return [x for x in os.listdir(sysvolDirectory) if x.startswith('{')]
 
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument("--move", action="store", dest="target_directory", help="Move unused GPOs to given directory")
-    parser.add_argument("--verbose", action="store_true", default=False, help="Print verbose messages")
+    parser.add_argument("--move", action="store", dest="target_directory", help="Move unused GPOs to given directory",)
+    parser.add_argument("--verbose", action="store_true", default=False, help="Print verbose messages",)
     options = parser.parse_args()
 
     # load UCR
@@ -142,8 +142,8 @@ if __name__ == '__main__':
             continue
 
         # Move GPO
-        src = os.path.join(sysvolDirectory, fileSystemGPO)
-        dest = os.path.join(options.target_directory, '%s_%s' % (fileSystemGPO, time.strftime("%Y%m%d%H%M", time.localtime())))
+        src = os.path.join(sysvolDirectory, fileSystemGPO,)
+        dest = os.path.join(options.target_directory, '%s_%s' % (fileSystemGPO, time.strftime("%Y%m%d%H%M", time.localtime(),)),)
         if options.verbose:
             print('Move unused GPO %s to %s' % (fileSystemGPO, dest))
-        shutil.move(src, dest)
+        shutil.move(src, dest,)

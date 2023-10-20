@@ -49,11 +49,11 @@ class Pin(UniventionAppAction):
 
     help = 'Pins or unpins an app version'
 
-    def setup_parser(self, parser):
-        parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be pinned or unpinned')
-        parser.add_argument('--revert', action='store_true', help='Unpin previously pinned app')
+    def setup_parser(self, parser,):
+        parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be pinned or unpinned',)
+        parser.add_argument('--revert', action='store_true', help='Unpin previously pinned app',)
 
-    def main(self, args):
+    def main(self, args,):
         if not args.app.is_installed():
             self.fatal('%s is not installed!' % args.app.id)
             return
@@ -62,8 +62,8 @@ class Pin(UniventionAppAction):
         else:
             self._pin(args.app)
 
-    def _unpin(self, app):
+    def _unpin(self, app,):
         ucr_save({app.ucr_pinned_key: None})
 
-    def _pin(self, app):
+    def _pin(self, app,):
         ucr_save({app.ucr_pinned_key: 'true'})

@@ -89,14 +89,14 @@ class ComputersMemberModule(ComputersAllModule):
     """ComputersAllObject factory with an adjusted default position"""
 
     def _get_default_object_positions(self):
-        ret = super(ComputersMemberModule, self)._get_default_object_positions()
+        ret = super(ComputersMemberModule, self,)._get_default_object_positions()
         if len(ret) == 4 and \
                 'cn=computers,{}'.format(self.connection.base) in ret and \
                 'cn=memberserver,cn=computers,{}'.format(self.connection.base) in ret and \
                 'cn=dc,cn=computers,{}'.format(self.connection.base) in ret and \
                 self.connection.base in ret:
             ret.remove('cn=memberserver,cn=computers,{}'.format(self.connection.base))
-            ret.insert(0, 'cn=memberserver,cn=computers,{}'.format(self.connection.base))
+            ret.insert(0, 'cn=memberserver,cn=computers,{}'.format(self.connection.base),)
         return ret
 
     class Meta:

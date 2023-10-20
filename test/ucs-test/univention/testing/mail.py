@@ -56,14 +56,14 @@ class MailSinkGuard:
         # type: () -> None
         self.mail_sinks = set()  # type: Set[MailSink]
 
-    def add(self, sink):   # type: (MailSink) -> None
+    def add(self, sink,):   # type: (MailSink) -> None
         self.mail_sinks.add(sink)
 
     def __enter__(self):
         # type: () -> MailSinkGuard
         return self
 
-    def __exit__(self, exc_type, exc_value, etraceback):
+    def __exit__(self, exc_type, exc_value, etraceback,):
         # type: (Optional[Type[BaseException]], Optional[Exception], Optional[TracebackType]) -> None
         for mail_sink in self.mail_sinks:
             mail_sink.stop()
@@ -89,7 +89,7 @@ class MailSink:
     >>>     <do some stuff>
     """
 
-    def __init__(self, address, port, filename=None, target_dir=None, fqdn=None):
+    def __init__(self, address, port, filename=None, target_dir=None, fqdn=None,):
         # type: (str, int, Optional[str], Optional[str], Optional[str]) -> None
         self.address = address
         self.port = port
@@ -103,7 +103,7 @@ class MailSink:
         self.start()
         return self
 
-    def __exit__(self, exc_type, exc_value, etraceback):
+    def __exit__(self, exc_type, exc_value, etraceback,):
         # type: (Optional[Type[BaseException]], Optional[Exception], Optional[TracebackType]) -> None
         self.stop()
 
@@ -114,7 +114,7 @@ class MailSink:
         if self.filename is not None:
             cmd.extend(['-D', self.filename])
         elif self.target_dir is not None:
-            cmd.extend(['-d', os.path.join(self.target_dir, '%Y%m%d-%H%M%S.')])
+            cmd.extend(['-d', os.path.join(self.target_dir, '%Y%m%d-%H%M%S.',)])
         else:
             cmd.extend(['-d', os.path.join('./%Y%m%d-%H%M%S.')])
         if self.fqdn:
@@ -124,7 +124,7 @@ class MailSink:
         cmd.append(f'{self.address}:{self.port}')
         cmd.append('10')
         print(f'*** {cmd!r}')
-        self.process = subprocess.Popen(cmd, stderr=sys.stdout, stdout=sys.stdout)
+        self.process = subprocess.Popen(cmd, stderr=sys.stdout, stdout=sys.stdout,)
 
     def stop(self):
         # type: () -> None
@@ -138,7 +138,7 @@ class MailSink:
 
 if __name__ == '__main__':
     # ms = MailSink('127.0.0.1', 12345, target_dir='/tmp/')
-    ms = MailSink('127.0.0.1', 12345, filename='/tmp/sink.eml')
+    ms = MailSink('127.0.0.1', 12345, filename='/tmp/sink.eml',)
     print('Starting sink')
     ms.start()
     print('Waiting')

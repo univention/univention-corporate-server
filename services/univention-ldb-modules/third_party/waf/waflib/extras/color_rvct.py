@@ -21,16 +21,16 @@ def show_errors():
 atexit.register(show_errors)
 
 class RcvtFormatter(Logs.formatter):
-	def __init__(self, colors):
+	def __init__(self, colors,):
 		Logs.formatter.__init__(self)
 		self.colors = colors
-	def format(self, rec):
+	def format(self, rec,):
 		frame = sys._getframe()
 		while frame:
 			func = frame.f_code.co_name
 			if func == 'exec_command':
 				cmd = frame.f_locals['cmd']
-				if isinstance(cmd, list) and ('armcc' in cmd[0] or 'armld' in cmd[0]):
+				if isinstance(cmd, list,) and ('armcc' in cmd[0] or 'armld' in cmd[0]):
 					lines = []
 					for line in rec.msg.splitlines():
 						if 'Warning: ' in line:
@@ -44,8 +44,8 @@ class RcvtFormatter(Logs.formatter):
 							lines.append(line)
 					rec.msg = "\n".join(lines)
 			frame = frame.f_back
-		return Logs.formatter.format(self, rec)
+		return Logs.formatter.format(self, rec,)
 
-def options(opt):
+def options(opt,):
 	Logs.log.handlers[0].setFormatter(RcvtFormatter(Logs.colors))
 

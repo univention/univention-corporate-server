@@ -14,7 +14,7 @@ if __name__ == '__main__':
     with Appcenter() as appcenter:
         app_name = get_app_name()
         app_version = get_app_version()
-        app = App(name=app_name, version=app_version, container_version='5.0', build_package=False)
+        app = App(name=app_name, version=app_version, container_version='5.0', build_package=False,)
 
         try:
             app.set_ini_parameter(DefaultPackages='foobar')

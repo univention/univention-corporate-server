@@ -45,7 +45,7 @@ from vminstall import create_virtual_machine
 
 class InstallerTests(object):
 
-    def __init__(self, args):
+    def __init__(self, args,):
         self.args = args
         self.i = 1
         self.ip_address = ''
@@ -64,10 +64,10 @@ class InstallerTests(object):
         if self.args.role not in ('master', 'basesystem'):
             self.ip_master = self.get_ip_address()
             vm_kwargs['dns_server'] = self.ip_master
-            managers.append(create_virtual_machine(self.args.language, 'master', 'regular', self.args.server, self.args.iso_image, self.ip_master, 'screen_dumps_master'))
+            managers.append(create_virtual_machine(self.args.language, 'master', 'regular', self.args.server, self.args.iso_image, self.ip_master, 'screen_dumps_master',))
 
         self.ip_address = self.get_ip_address()
-        managers.append(create_virtual_machine(self.args.language, self.args.role, self.args.environment, self.args.server, self.args.iso_image, self.ip_address, 'screen_dumps', **vm_kwargs))
+        managers.append(create_virtual_machine(self.args.language, self.args.role, self.args.environment, self.args.server, self.args.iso_image, self.ip_address, 'screen_dumps', **vm_kwargs,))
         with contextlib.nested(*managers) as foo:
             vm, installer = foo.pop()
             self.password = installer.vm_config.password
@@ -97,12 +97,12 @@ class InstallerTests(object):
             'password': self.password,
         }
         for key, value in cfg.iteritems():
-            config.set('General', key, value)
-        with open('tests.cfg', 'wb') as fd:
+            config.set('General', key, value,)
+        with open('tests.cfg', 'wb',) as fd:
             config.write(fd)
 
     @classmethod
-    def main(cls, args):
+    def main(cls, args,):
         argparser = argparse.ArgumentParser()
         # FIXME: add help
         argparser.add_argument('--junitxml')
@@ -112,7 +112,7 @@ class InstallerTests(object):
         argparser.add_argument('--iso-image')
         argparser.add_argument('--role')
         argparser.add_argument('--environment')
-        argparser.add_argument('tests', nargs='+')
+        argparser.add_argument('tests', nargs='+',)
         cls(argparser.parse_args(args)).run()
 
 

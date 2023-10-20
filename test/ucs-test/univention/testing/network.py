@@ -139,7 +139,7 @@ class NetworkRedirector:
         self.used_by_with_statement = True
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback,):
         # type: (Optional[Type[BaseException]], Optional[Exception], Optional[TracebackType]) -> None
         print('*** Leaving with-statement of NetworkRedirector()')
         self.revert_network_settings()
@@ -149,11 +149,11 @@ class NetworkRedirector:
         print('*** NetworkRedirector.revert_network_settings()')
         for entry in copy.deepcopy(self.cleanup_rules):
             if entry[0] == 'loop':
-                self.remove_loop(entry[1], entry[2], ignore_errors=True)
+                self.remove_loop(entry[1], entry[2], ignore_errors=True,)
             elif entry[0] == 'redirection':
-                self.remove_redirection(entry[1], entry[2], entry[3], entry[4], ignore_errors=True)
+                self.remove_redirection(entry[1], entry[2], entry[3], entry[4], ignore_errors=True,)
 
-    def run_commands(self, cmdlist, argdict, ignore_errors=False):
+    def run_commands(self, cmdlist, argdict, ignore_errors=False,):
         # type: (List[List[str]], Mapping[str, object], bool) -> None
         """
         Start all commands in cmdlist and replace formatstrings with arguments in argdict.
@@ -168,7 +168,7 @@ class NetworkRedirector:
                 print('*** Exitcode: %r' % result)
                 raise UCSTestNetworkCmdFailed('Command returned with non-zero exitcode: %r' % cmd)
 
-    def add_loop(self, addr1, addr2):
+    def add_loop(self, addr1, addr2,):
         # type: (str, str) -> None
         """
         Add connection loop for addr1 and addr2.
@@ -192,9 +192,9 @@ class NetworkRedirector:
             'action': '-A',
         }
         print(f'*** Adding network loop ({addr1} <--> {addr2})')
-        self.run_commands(self.CMD_LIST_LOOP, args)
+        self.run_commands(self.CMD_LIST_LOOP, args,)
 
-    def remove_loop(self, addr1, addr2, ignore_errors=False):
+    def remove_loop(self, addr1, addr2, ignore_errors=False,):
         # type: (str, str, bool) -> None
         """Remove previously defined connection loop."""
         try:
@@ -209,9 +209,9 @@ class NetworkRedirector:
             'action': '-D',
         }
         print(f'*** Removing network loop ({addr1} <--> {addr2})')
-        self.run_commands(self.CMD_LIST_LOOP, args, ignore_errors)
+        self.run_commands(self.CMD_LIST_LOOP, args, ignore_errors,)
 
-    def add_redirection(self, remote_addr, remote_port, local_port, family='tcp'):
+    def add_redirection(self, remote_addr, remote_port, local_port, family='tcp',):
         # type: (str, int, int) -> None
         """
         Add new connection redirection.
@@ -232,9 +232,9 @@ class NetworkRedirector:
                 'family': family,
             }
             print(f'*** Adding network redirection ({remote_addr}:{remote_port} --> 127.0.0.1:{local_port} with {family})')
-            self.run_commands(self.CMD_LIST_REDIRECTION, args)
+            self.run_commands(self.CMD_LIST_REDIRECTION, args,)
 
-    def remove_redirection(self, remote_addr, remote_port, local_port, family='tcp', ignore_errors=False):
+    def remove_redirection(self, remote_addr, remote_port, local_port, family='tcp', ignore_errors=False,):
         # type: (str, int, int, bool) -> None
         """Remove previously defined connection redirection."""
         try:
@@ -250,4 +250,4 @@ class NetworkRedirector:
             'family': family,
         }
         print(f'*** Removing network redirection ({remote_addr}:{remote_port} <--> 127.0.0.1:{local_port})')
-        self.run_commands(self.CMD_LIST_REDIRECTION, args, ignore_errors)
+        self.run_commands(self.CMD_LIST_REDIRECTION, args, ignore_errors,)

@@ -50,8 +50,8 @@ addlist_subobject = [
 ]
 
 
-def get_entryUUID(lo, dn):
-    result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['entryUUID'])
+def get_entryUUID(lo, dn,):
+    result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['entryUUID'],)
     print('DN: %s\n%s' % (dn, result))
     return result[0][1].get('entryUUID')[0].decode('ASCII')
 
@@ -59,24 +59,24 @@ def get_entryUUID(lo, dn):
 
 
 udm = udm_test.UCSTestUDM()
-computer = udm.create_object(UDM_MODULE, name=name, position=ucr.get('ldap/base'), wait_for_replication=True)
+computer = udm.create_object(UDM_MODULE, name=name, position=ucr.get('ldap/base'), wait_for_replication=True,)
 
 lo = univention.uldap.getRootDnConnection().lo
 
 # read computer uuid
-computer_UUID = get_entryUUID(lo, computer)
+computer_UUID = get_entryUUID(lo, computer,)
 
 # create container
-lo.add_s(dn, addlist)
-lo.add_s(dn_subobject, addlist_subobject)
+lo.add_s(dn, addlist,)
+lo.add_s(dn_subobject, addlist_subobject,)
 
-container_UUID = get_entryUUID(lo, dn)
-subcontainer_UUID = get_entryUUID(lo, dn_subobject)
+container_UUID = get_entryUUID(lo, dn,)
+subcontainer_UUID = get_entryUUID(lo, dn_subobject,)
 
 # move container to the same position of the new container
-udm.move_object(UDM_MODULE, dn=computer, position='cn=memberserver,cn=computers,%s' % ucr.get('ldap/base'), wait_for_replication=True)
+udm.move_object(UDM_MODULE, dn=computer, position='cn=memberserver,cn=computers,%s' % ucr.get('ldap/base'), wait_for_replication=True,)
 
-new_computer_UUID = get_entryUUID(lo, dn)
+new_computer_UUID = get_entryUUID(lo, dn,)
 
 # The container should have be replaced by the computer object
 if computer_UUID != new_computer_UUID:
@@ -92,11 +92,11 @@ found_backup_subcontainer = False
 BACKUP_DIR = '/var/univention-backup/replication'
 if os.path.exists(BACKUP_DIR):
     for f in os.listdir(BACKUP_DIR):
-        fd = open(os.path.join(BACKUP_DIR, f))
+        fd = open(os.path.join(BACKUP_DIR, f,))
         for line in fd.readlines():
-            if re.match('entryUUID: %s' % container_UUID, line):
+            if re.match('entryUUID: %s' % container_UUID, line,):
                 found_backup_container = True
-            elif re.match('entryUUID: %s' % subcontainer_UUID, line):
+            elif re.match('entryUUID: %s' % subcontainer_UUID, line,):
                 found_backup_subcontainer = True
         fd.close()
 

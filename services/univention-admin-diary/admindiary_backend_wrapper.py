@@ -48,21 +48,21 @@ from univention.admindiary import DiaryEntry, get_events_to_reject, get_logger
 from univention.admindiary.backend import get_client
 
 
-get_logger = partial(get_logger, 'backend')
+get_logger = partial(get_logger, 'backend',)
 
 
 class RsyslogTransport(object):
-    def __init__(self, syslogtag):
+    def __init__(self, syslogtag,):
         ints = Word(nums)
         # timestamp
-        month = Word(string.ascii_uppercase, string.ascii_lowercase, exact=3)
+        month = Word(string.ascii_uppercase, string.ascii_lowercase, exact=3,)
         day = ints
         hour = Combine(ints + ":" + ints + ":" + ints)
 
         timestamp = month + day + hour
         # Convert timestamp to datetime
         year = str(datetime.now().year)
-        timestamp.setParseAction(lambda t: datetime.strptime(year + ' ' + ' '.join(t), '%Y %b %d %H:%M:%S'))
+        timestamp.setParseAction(lambda t,: datetime.strptime(year + ' ' + ' '.join(t), '%Y %b %d %H:%M:%S',))
 
         # hostname
         hostname = Word(alphas + nums + "_-.")
@@ -72,11 +72,11 @@ class RsyslogTransport(object):
 
         # message
         payload = Regex(".*")
-        payload.setParseAction(lambda t: "".join(t))  # json parsing happens in Event class
+        payload.setParseAction(lambda t,: "".join(t))  # json parsing happens in Event class
 
         self._pattern = timestamp("source_datetime") + hostname("source_hostname") + syslogtag + payload("serialized_event_dict")
 
-    def deserialize(self, line):
+    def deserialize(self, line,):
         get_logger().debug('Parsing %s' % line)
         try:
             parsed = self._pattern.parseString(line)
@@ -93,7 +93,7 @@ class RsyslogTransport(object):
                 get_logger().error('Parsing failed! %r (%s)' % (rsyslog_event_dict, exc))
 
 
-def process(values):
+def process(values,):
     json_string = json.dumps(values)
     if values.get('type') == 'Entry v1':
         entry = DiaryEntry.from_json(json_string)
@@ -102,7 +102,7 @@ def process(values):
         get_logger().error('Unsupported values: %r' % values)
 
 
-def add_entry_v1(entry):
+def add_entry_v1(entry,):
     blocked_events = get_events_to_reject()
     if entry.event_name in blocked_events:
         get_logger().info('Rejecting %s' % entry.event_name)

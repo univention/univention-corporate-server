@@ -43,28 +43,28 @@ class JSON_Object(object):
     the attributes of the object and generate a dict to represent it.
     """
 
-    def _json_list(self, obj):
+    def _json_list(self, obj,):
         result = []
         for item in obj:
-            if isinstance(item, JSON_Object):
+            if isinstance(item, JSON_Object,):
                 result.append(item.json())
             else:
                 result.append(item)
         return result
 
-    def _json_dict(self, obj):
+    def _json_dict(self, obj,):
         result = {}
         for key, value in obj.items():
-            if isinstance(value, JSON_Object):
+            if isinstance(value, JSON_Object,):
                 result[key] = value.json()
             else:
                 result[key] = value
         return result
 
     def json(self):
-        if isinstance(self, (list, tuple)):
+        if isinstance(self, (list, tuple),):
             return self._json_list(self)
-        elif isinstance(self, dict):
+        elif isinstance(self, dict,):
             return self._json_dict(self)
         return self._json_dict(self.__dict__)
 

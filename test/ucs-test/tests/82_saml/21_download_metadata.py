@@ -20,15 +20,15 @@ if __name__ == '__main__':
     res = []
 
     # read at least five times because ucs-sso is an alias for different IPs
-    for i in range(0, 5):
+    for i in range(0, 5,):
         print('%d: Query metadata for %r' % (i, metadata_url))
         response = urlopen(metadata_url)  # noqa: S310
         metadata = response.read()
         if not metadata:
             fail('Empty response')
-        print(metadata.decode('UTF-8', 'replace'))
+        print(metadata.decode('UTF-8', 'replace',))
         res.append(metadata)
 
-    for i in range(0, 4):
+    for i in range(0, 4,):
         if res[i] != res[i + 1]:
             fail('Metadata is different: %d and %d' % (i, i + 1))

@@ -24,14 +24,14 @@ if __name__ == '__main__':
         ip = dnstests.make_random_ip()
         random_zone = dnstests.random_zone()
         test_nameserver = dnstests.get_hostname_of_ldap_master()
-        test_zone_dn = udm.create_object('dns/forward_zone', zone=random_zone, nameserver=test_nameserver, a=ip)
-        dnstests.check_ldap_object(test_zone_dn, 'A Record', 'aRecord', ip)
+        test_zone_dn = udm.create_object('dns/forward_zone', zone=random_zone, nameserver=test_nameserver, a=ip,)
+        dnstests.check_ldap_object(test_zone_dn, 'A Record', 'aRecord', ip,)
         # Adding a DNS zone triggers bind reload in postrun
         wait_for_replication_and_postrun()
         s4connector.wait_for_sync()
 
-        dnstests.test_dns_a_record(random_zone, ip)
-        dnstests.check_ldap_object(test_zone_dn, 'A Record', 'aRecord', ip)
+        dnstests.test_dns_a_record(random_zone, ip,)
+        dnstests.check_ldap_object(test_zone_dn, 'A Record', 'aRecord', ip,)
 
         print("========== modify address in Samba ==========")
         dnstests.get_kerberos_ticket_for_machine()
@@ -58,8 +58,8 @@ quit''' % {
         dnstests.nsupdate(nsupdate_add_request)
 
         s4connector.wait_for_sync()
-        dnstests.test_dns_a_record(random_zone, ip2)
-        dnstests.check_ldap_object(test_zone_dn, 'A Record', 'aRecord', [ip, ip2])
+        dnstests.test_dns_a_record(random_zone, ip2,)
+        dnstests.check_ldap_object(test_zone_dn, 'A Record', 'aRecord', [ip, ip2],)
 
     sys.stdout.flush()
 

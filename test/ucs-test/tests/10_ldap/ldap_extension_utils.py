@@ -81,31 +81,31 @@ def get_schema_attribute_id():
     return random_int() + random_int() + random_int() + random_int() + random_int()
 
 
-def call_join_script(join_script_name):
+def call_join_script(join_script_name,):
     print(f'call_join_script({join_script_name!r})')
     ucr = ConfigRegistry()
     ucr.load()
 
     join_script = '/usr/lib/univention-install/%s' % join_script_name
 
-    return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False)
+    return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False,)
 
 
-def call_unjoin_script(unjoin_script_name):
+def call_unjoin_script(unjoin_script_name,):
     print(f'call_unjoin_script({unjoin_script_name!r})')
     ucr = ConfigRegistry()
     ucr.load()
 
     join_script = '/usr/lib/univention-uninstall/%s' % unjoin_script_name
 
-    return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False)
+    return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False,)
 
 
-def __fetch_schema_from_uri(ldap_uri):
+def __fetch_schema_from_uri(ldap_uri,):
     ucr = ConfigRegistry()
     ucr.load()
 
-    retry = ucr.get('ldap/client/retry/count', 15)
+    retry = ucr.get('ldap/client/retry/count', 15,)
     attempts = int(retry) + 1
 
     i = 0
@@ -136,14 +136,14 @@ def fetch_schema_from_local_ldap():
     return __fetch_schema_from_uri(ldap_uri)
 
 
-def get_ldap_master_connection(user_dn):
+def get_ldap_master_connection(user_dn,):
     ucr = ConfigRegistry()
     ucr.load()
 
-    return univention.uldap.access(host=ucr.get('ldap/master'), port=int(ucr.get('ldap/master/port', '7389')), base=ucr.get('ldap/base'), binddn=user_dn, bindpw='univention')
+    return univention.uldap.access(host=ucr.get('ldap/master'), port=int(ucr.get('ldap/master/port', '7389',)), base=ucr.get('ldap/base'), binddn=user_dn, bindpw='univention',)
 
 
-def set_container_description(user_dn, container):
+def set_container_description(user_dn, container,):
     print(f'set_container_description({user_dn!r}, {container!r})')
     lo = get_ldap_master_connection(user_dn)
-    lo.modify(container, [('description', b'', random_name().encode('UTF-8'))])
+    lo.modify(container, [('description', b'', random_name().encode('UTF-8'))],)

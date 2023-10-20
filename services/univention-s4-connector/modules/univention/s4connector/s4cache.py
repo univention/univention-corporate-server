@@ -42,13 +42,13 @@ import sqlite3
 import univention.debug2 as ud
 
 
-def _encode_base64(val):
+def _encode_base64(val,):
     return base64.b64encode(val).decode('ASCII')
 
 
 class EntryDiff(object):
 
-    def __init__(self, old, new):
+    def __init__(self, old, new,):
         self.old = old
         self.new = new
         if not old:
@@ -77,24 +77,24 @@ class S4Cache(object):
     cache.
     """
 
-    def __init__(self, filename):
+    def __init__(self, filename,):
         self.filename = filename
         self._dbcon = sqlite3.connect(self.filename)
         self.s4cache = {}
 
         self.__create_tables()
 
-    def add_entry(self, guid, entry):
+    def add_entry(self, guid, entry,):
         if not self._guid_exists(guid):
-            self._add_entry(guid, entry)
+            self._add_entry(guid, entry,)
         else:
-            self._update_entry(guid, entry)
+            self._update_entry(guid, entry,)
         self.s4cache[guid] = entry
 
-    def diff_entry(self, old_entry, new_entry):
+    def diff_entry(self, old_entry, new_entry,):
         result = {'added': None, 'removed': None, 'changed': None}
 
-        diff = EntryDiff(old_entry, new_entry)
+        diff = EntryDiff(old_entry, new_entry,)
 
         result['added'] = diff.added()
         result['removed'] = diff.removed()
@@ -102,7 +102,7 @@ class S4Cache(object):
 
         return result
 
-    def get_entry(self, guid):
+    def get_entry(self, guid,):
         entry = {}
 
         guid_id = self._get_guid_id(guid)
@@ -120,7 +120,7 @@ class S4Cache(object):
                 inner join ATTRIBUTES ON data.attribute_id=attributes.id where guid_id = ?;", (str(guid_id),)),
         ]
 
-        rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
+        rows = self.__execute_sql_commands(sql_commands, fetch_result=True,)
 
         if not rows:
             return None
@@ -132,7 +132,7 @@ class S4Cache(object):
 
         return entry
 
-    def remove_entry(self, guid):
+    def remove_entry(self, guid,):
         guid_id = self._get_guid_id(guid)
 
         if not guid_id:
@@ -143,29 +143,29 @@ class S4Cache(object):
             ("DELETE FROM guids WHERE id=?;", (str(guid_id),)),
         ]
 
-        self.__execute_sql_commands(sql_commands, fetch_result=False)
+        self.__execute_sql_commands(sql_commands, fetch_result=False,)
 
-    def __execute_sql_commands(self, sql_commands, fetch_result=False):
+    def __execute_sql_commands(self, sql_commands, fetch_result=False,):
         for _i in [1, 2]:
             try:
                 cur = self._dbcon.cursor()
                 for sql_command in sql_commands:
-                    if isinstance(sql_command, tuple):
-                        ud.debug(ud.LDAP, ud.ALL, "S4Cache: Execute SQL command: '%s', '%s'" % (sql_command[0], sql_command[1]))
-                        cur.execute(sql_command[0], sql_command[1])
+                    if isinstance(sql_command, tuple,):
+                        ud.debug(ud.LDAP, ud.ALL, "S4Cache: Execute SQL command: '%s', '%s'" % (sql_command[0], sql_command[1]),)
+                        cur.execute(sql_command[0], sql_command[1],)
                     else:
-                        ud.debug(ud.LDAP, ud.ALL, "S4Cache: Execute SQL command: '%s'" % sql_command)
+                        ud.debug(ud.LDAP, ud.ALL, "S4Cache: Execute SQL command: '%s'" % sql_command,)
                         cur.execute(sql_command)
                 self._dbcon.commit()
                 if fetch_result:
                     rows = cur.fetchall()
                 cur.close()
                 if fetch_result:
-                    ud.debug(ud.LDAP, ud.ALL, "S4Cache: Return SQL result: '%s'" % rows)
+                    ud.debug(ud.LDAP, ud.ALL, "S4Cache: Return SQL result: '%s'" % rows,)
                     return rows
                 return None
             except sqlite3.Error as exp:
-                ud.debug(ud.LDAP, ud.WARN, "S4Cache: sqlite: %s. SQL command was: %s" % (exp, sql_commands))
+                ud.debug(ud.LDAP, ud.WARN, "S4Cache: sqlite: %s. SQL command was: %s" % (exp, sql_commands),)
                 if self._dbcon:
                     self._dbcon.close()
                 self._dbcon = sqlite3.connect(self.filename)
@@ -180,53 +180,53 @@ class S4Cache(object):
             "CREATE INDEX IF NOT EXISTS guids_guid ON guids(guid);",
         ]
 
-        self.__execute_sql_commands(sql_commands, fetch_result=False)
+        self.__execute_sql_commands(sql_commands, fetch_result=False,)
 
-    def _guid_exists(self, guid):
+    def _guid_exists(self, guid,):
         return self._get_guid_id(guid.strip()) is not None
 
-    def _get_guid_id(self, guid):
+    def _get_guid_id(self, guid,):
         sql_commands = [
             ("SELECT id FROM GUIDS WHERE guid=?;", (str(guid),)),
         ]
 
-        rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
+        rows = self.__execute_sql_commands(sql_commands, fetch_result=True,)
 
         if rows:
             return rows[0][0]
 
         return None
 
-    def _append_guid(self, guid):
+    def _append_guid(self, guid,):
         sql_commands = [
             ("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),)),
         ]
 
-        self.__execute_sql_commands(sql_commands, fetch_result=False)
+        self.__execute_sql_commands(sql_commands, fetch_result=False,)
 
-    def _get_attr_id(self, attr):
+    def _get_attr_id(self, attr,):
         sql_commands = [
             ("SELECT id FROM ATTRIBUTES WHERE attribute=?;", (str(attr),)),
         ]
 
-        rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
+        rows = self.__execute_sql_commands(sql_commands, fetch_result=True,)
 
         if rows:
             return rows[0][0]
 
         return None
 
-    def _attr_exists(self, guid):
+    def _attr_exists(self, guid,):
         return self._get_attr_id(guid) is not None
 
-    def _create_attr(self, attr):
+    def _create_attr(self, attr,):
         sql_commands = [
             ("INSERT INTO ATTRIBUTES(attribute) VALUES(?);", (str(attr),)),
         ]
 
-        self.__execute_sql_commands(sql_commands, fetch_result=False)
+        self.__execute_sql_commands(sql_commands, fetch_result=False,)
 
-    def _get_attr_id_and_create_if_not_exists(self, attr):
+    def _get_attr_id_and_create_if_not_exists(self, attr,):
         attr_id = self._get_attr_id(attr)
         if not attr_id:
             self._create_attr(attr)
@@ -234,7 +234,7 @@ class S4Cache(object):
 
         return attr_id
 
-    def _add_entry(self, guid, entry):
+    def _add_entry(self, guid, entry,):
         guid = guid.strip()
 
         self._append_guid(guid)
@@ -251,13 +251,13 @@ class S4Cache(object):
                 )
 
         if sql_commands:
-            self.__execute_sql_commands(sql_commands, fetch_result=False)
+            self.__execute_sql_commands(sql_commands, fetch_result=False,)
 
-    def _update_entry(self, guid, entry):
+    def _update_entry(self, guid, entry,):
         guid = guid.strip()
         guid_id = self._get_guid_id(guid)
         old_entry = self.get_entry(guid)
-        diff = self.diff_entry(old_entry, entry)
+        diff = self.diff_entry(old_entry, entry,)
 
         sql_commands = []
         for attribute in diff['removed']:
@@ -296,11 +296,11 @@ class S4Cache(object):
                 )
 
         if sql_commands:
-            self.__execute_sql_commands(sql_commands, fetch_result=False)
+            self.__execute_sql_commands(sql_commands, fetch_result=False,)
 
 
 if __name__ == '__main__':
-    print('Starting S4cache test example ', end=' ')
+    print('Starting S4cache test example ', end=' ',)
 
     s4cache = S4Cache('cache.sqlite')
 
@@ -311,26 +311,26 @@ if __name__ == '__main__':
         'attr2': [b'val1', b'val2', b'val3'],
     }
 
-    s4cache.add_entry(guid, entry)
+    s4cache.add_entry(guid, entry,)
     entry_old = s4cache.get_entry(guid)
-    diff_entry = s4cache.diff_entry(entry_old, entry)
+    diff_entry = s4cache.diff_entry(entry_old, entry,)
     if diff_entry.get('changed') or diff_entry.get('removed') or diff_entry.get('added'):
         raise Exception('Test 1 failed: %s' % diff_entry)
-    print('.', end=' ')
+    print('.', end=' ',)
 
     entry['attr3'] = [b'val2']
     entry['attr2'] = [b'val1', b'val3']
 
-    diff_entry = s4cache.diff_entry(entry_old, entry)
+    diff_entry = s4cache.diff_entry(entry_old, entry,)
     if diff_entry.get('changed') != {'attr2'} or diff_entry.get('removed') or diff_entry.get('added') != {'attr3'}:
         raise Exception('Test 2 failed: %s' % diff_entry)
-    print('.', end=' ')
+    print('.', end=' ',)
 
-    s4cache.add_entry(guid, entry)
+    s4cache.add_entry(guid, entry,)
     entry_old = s4cache.get_entry(guid)
-    diff_entry = s4cache.diff_entry(entry_old, entry)
+    diff_entry = s4cache.diff_entry(entry_old, entry,)
     if diff_entry.get('changed') or diff_entry.get('removed') or diff_entry.get('added'):
         raise Exception('Test 3 failed: %s' % diff_entry)
-    print('.', end=' ')
+    print('.', end=' ',)
 
     print(' done')

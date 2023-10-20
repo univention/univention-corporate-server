@@ -50,8 +50,7 @@ RE_LOCAL = re.compile(
     |`
     )
     ''',
-    re.VERBOSE,
-)
+    re.VERBOSE,)
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -64,50 +63,49 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0013-4': (uub.RESULT_WARN, 'unquoted local variable'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: str,) -> None:
         super().check(path)
 
         for fn in uub.FilteredDirWalkGenerator(
                 path,
                 ignore_suffixes=['.po'],
-                reHashBang=RE_HASHBANG_SHELL,
-        ):
+                reHashBang=RE_HASHBANG_SHELL,):
             self.debug('Testing file %s' % fn)
             try:
                 self.check_bashism(fn)
                 self.check_unquoted_local(fn)
             except (OSError, UnicodeDecodeError):
-                self.addmsg('0013-1', 'failed to open file', fn)
+                self.addmsg('0013-1', 'failed to open file', fn,)
 
-    def check_bashism(self, fn: str) -> None:
-        p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    def check_bashism(self, fn: str,) -> None:
+        p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
         stdout, stderr = p.communicate()
         # 2 = file is no shell script or file is already bash script
         # 1 = bashism found
         # 0 = everything is posix compliant
         if p.returncode == 1:
-            for item in stderr.decode('utf-8', 'replace').split('possible bashism in '):
+            for item in stderr.decode('utf-8', 'replace',).split('possible bashism in '):
                 item = item.strip()
                 if not item:
                     continue
 
                 match = RE_BASHISM.search(item)
                 if not match:
-                    self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n', '\\n').replace('\r', '\\r'), fn)
+                    self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n', '\\n',).replace('\r', '\\r',), fn,)
                     continue
 
                 row = int(match.group(1))
                 msg = match.group(2)
                 code = match.group(3)
 
-                self.addmsg('0013-2', f'possible bashism ({msg}):\n{code}', fn, row)
+                self.addmsg('0013-2', f'possible bashism ({msg}):\n{code}', fn, row,)
 
-    def check_unquoted_local(self, fn: str) -> None:
+    def check_unquoted_local(self, fn: str,) -> None:
         with open(fn) as fd:
-            for row, line in enumerate(fd, start=1):
+            for row, line in enumerate(fd, start=1,):
                 line = line.strip()
                 match = RE_LOCAL.search(line)
                 if not match:
                     continue
 
-                self.addmsg('0013-4', f'unquoted local variable: {line}', fn, row)
+                self.addmsg('0013-4', f'unquoted local variable: {line}', fn, row,)

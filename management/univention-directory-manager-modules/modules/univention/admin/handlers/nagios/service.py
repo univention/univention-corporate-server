@@ -68,8 +68,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionNagiosServiceClass'],
-    ),
+        objectClasses=['top', 'univentionNagiosServiceClass'],),
 }
 
 property_descriptions = {
@@ -80,36 +79,30 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description=_('Service description'),
         syntax=univention.admin.syntax.string,
-        include_in_default_search=True,
-    ),
+        include_in_default_search=True,),
     'checkCommand': univention.admin.property(
         short_description=_('Plugin command'),
         long_description=_('Command name of Nagios plugin'),
         syntax=univention.admin.syntax.string,
-        required=True,
-    ),
+        required=True,),
     'checkArgs': univention.admin.property(
         short_description=_('Plugin command arguments'),
         long_description=_('Arguments of used Nagios plugin'),
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'useNRPE': univention.admin.property(
         short_description=_('Use NRPE'),
         long_description=_('Use NRPE to check remote services'),
-        syntax=univention.admin.syntax.boolean,
-    ),
+        syntax=univention.admin.syntax.boolean,),
     'assignedHosts': univention.admin.property(
         short_description=_('Assigned hosts'),
         long_description=_('Check services on these hosts'),
         syntax=univention.admin.syntax.nagiosHostsEnabledDn,
-        multivalue=True,
-    ),
+        multivalue=True,),
 }
 
 
@@ -119,48 +112,48 @@ layout = [
             ["name", "description"],
             ["checkCommand", "checkArgs"],
             "useNRPE",
-        ]),
-    ]),
+        ],),
+    ],),
     Tab(_('Hosts'), _('Assigned hosts'), layout=[
         Group(_('Assigned hosts'), layout=[
             "assignedHosts",
-        ]),
-    ]),
+        ],),
+    ],),
 ]
 
 
 mapping = univention.admin.mapping.mapping()
 
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('checkCommand', 'univentionNagiosCheckCommand', None, univention.admin.mapping.ListToString)
-mapping.register('checkArgs', 'univentionNagiosCheckArgs', None, univention.admin.mapping.ListToString)
-mapping.register('useNRPE', 'univentionNagiosUseNRPE', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
+mapping.register('checkCommand', 'univentionNagiosCheckCommand', None, univention.admin.mapping.ListToString,)
+mapping.register('checkArgs', 'univentionNagiosCheckArgs', None, univention.admin.mapping.ListToString,)
+mapping.register('useNRPE', 'univentionNagiosUseNRPE', None, univention.admin.mapping.ListToString,)
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def open(self):
-        super(object, self).open()
+        super(object, self,).open()
         _re = re.compile(r'^([^.]+)\.(.+?)$')
         # convert host FQDN to host DN
         hostlist = []
-        hosts = self.oldattr.get('univentionNagiosHostname', [])
+        hosts = self.oldattr.get('univentionNagiosHostname', [],)
         for host in [x.decode('UTF-8') for x in hosts]:
             # split into relDomainName and zoneName
             if host and _re.match(host) is not None:
                 (relDomainName, zoneName) = _re.match(host).groups()
                 # find correct dNSZone entry
-                res = self.lo.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
+                res = self.lo.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName),))
                 if not res:
-                    ud.debug(ud.ADMIN, ud.INFO, 'service.py: open: could not find dNSZone of %s' % (host,))
+                    ud.debug(ud.ADMIN, ud.INFO, 'service.py: open: could not find dNSZone of %s' % (host,),)
                 else:
                     # found dNSZone
                     filter = '(&(objectClass=univentionHost)'
                     for aRecord in [x.decode('ASCII') for x in res[0][1]['aRecord']]:
-                        filter += filter_format('(aRecord=%s)', [aRecord])
-                    filter += filter_format('(cn=%s))', [relDomainName])
+                        filter += filter_format('(aRecord=%s)', [aRecord],)
+                    filter += filter_format('(cn=%s))', [relDomainName],)
 
                     # find dn of host that is related to given aRecords
                     res = self.lo.search(filter=filter)
@@ -177,19 +170,19 @@ class object(univention.admin.handlers.simpleLdap):
         # save assigned hosts
         if self.hasChanged('assignedHosts'):
             hostlist = []
-            for hostdn in self.info.get('assignedHosts', []):
+            for hostdn in self.info.get('assignedHosts', [],):
                 try:
-                    host = self.lo.get(hostdn, ['associatedDomain', 'cn'], required=True)
+                    host = self.lo.get(hostdn, ['associatedDomain', 'cn'], required=True,)
                     cn = host['cn'][0]  # type: bytes
                 except (univention.admin.uexceptions.noObject, ldap.NO_SUCH_OBJECT):
-                    raise univention.admin.uexceptions.valueError(_('The host "%s" does not exists.') % (hostdn,), property='assignedHosts')
+                    raise univention.admin.uexceptions.valueError(_('The host "%s" does not exists.') % (hostdn,), property='assignedHosts',)
                 except KeyError:
-                    raise univention.admin.uexceptions.valueError(_('The host "%s" is invalid, it has no "cn" attribute.') % (hostdn,), property='assignedHosts')
+                    raise univention.admin.uexceptions.valueError(_('The host "%s" is invalid, it has no "cn" attribute.') % (hostdn,), property='assignedHosts',)
 
-                domain = host.get('associatedDomain', [configRegistry.get("domainname").encode('ASCII')])[0]  # type: bytes
+                domain = host.get('associatedDomain', [configRegistry.get("domainname").encode('ASCII')],)[0]  # type: bytes
                 hostlist.append(b"%s.%s" % (cn, domain))
 
-            ml.insert(0, ('univentionNagiosHostname', self.oldattr.get('univentionNagiosHostname', []), hostlist))
+            ml.insert(0, ('univentionNagiosHostname', self.oldattr.get('univentionNagiosHostname', [],), hostlist),)
 
         return ml
 

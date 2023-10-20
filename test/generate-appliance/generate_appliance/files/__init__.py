@@ -13,7 +13,7 @@ from tempfile import gettempdir
 from typing import Any, Callable, Optional, TypeVar, cast  # noqa: F401
 
 
-F = TypeVar("F", bound=Callable[..., Any])
+F = TypeVar("F", bound=Callable[..., Any],)
 
 
 log = getLogger(__name__)
@@ -29,14 +29,14 @@ class Lazy(metaclass=ABCMeta):
         self._path = None  # type: Optional[Path]
 
     @staticmethod
-    def lazy(fun: F) -> F:
+    def lazy(fun: F,) -> F:
 
         @wraps(fun)
         def newfun(self: Lazy, *args: Any, **kwargs: Any) -> Any:
             self._check()
-            return fun(self, *args, **kwargs)
+            return fun(self, *args, **kwargs,)
 
-        return cast(F, newfun)
+        return cast(F, newfun,)
 
     def _check(self) -> None:
         if self._path is not None:
@@ -52,7 +52,7 @@ class Lazy(metaclass=ABCMeta):
             if temp.exists():
                 temp.unlink()
 
-    def _create(self, path: Path) -> None:
+    def _create(self, path: Path,) -> None:
         raise NotImplementedError()
 
     def hash(self) -> str:
@@ -66,9 +66,9 @@ class File(Lazy, metaclass=ABCMeta):
         Lazy.__init__(self)
 
     @staticmethod
-    def hashed(fun: Callable[..., Any]) -> Callable[..., str]:
+    def hashed(fun: Callable[..., Any],) -> Callable[..., str]:
         def newfun(self: File, *args: Any, **kwargs: Any) -> str:
-            ret = fun(self, *args, **kwargs)
+            ret = fun(self, *args, **kwargs,)
             return sha256(repr(ret).encode("UTF-8")).hexdigest()
 
         return newfun

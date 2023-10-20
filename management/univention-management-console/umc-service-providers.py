@@ -53,7 +53,7 @@ attributes = ['univentionService', 'cn', 'associatedDomain']
 __changed_trusted_sp = False
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> None:
     global __changed_trusted_sp
     listener.setuid(0)
     try:
@@ -61,8 +61,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new['associatedDomain'][0].decode('UTF-8'))
         except (KeyError, IndexError):
             return
-        umc_service_active = b'Univention Management Console' in new.get('univentionService', [])
-        umc_service_was_active = b'Univention Management Console' in old.get('univentionService', [])
+        umc_service_active = b'Univention Management Console' in new.get('univentionService', [],)
+        umc_service_was_active = b'Univention Management Console' in old.get('univentionService', [],)
         domain_added = 'associatedDomain' in new and 'associatedDomain' not in old and umc_service_active
         if umc_service_active and (domain_added or not umc_service_was_active):
             handler_set(['umc/saml/trusted/sp/%s=%s' % (fqdn, fqdn)])
@@ -85,10 +85,10 @@ def postrun() -> None:
         if os.path.exists(initscript) and slapd_running:
             listener.setuid(0)
             try:
-                ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
-                p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True)
+                ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,),)
+                p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True,)
                 p.wait()
                 if p.returncode != 0:
-                    ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode))
+                    ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode),)
             finally:
                 listener.unsetuid()

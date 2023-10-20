@@ -38,7 +38,7 @@ BYE = 'BYE'
 
 all_sigs_in_cache = (0.0, [])
 
-def put_data(conn, data):
+def put_data(conn, data,):
 	if sys.hexversion > 0x3000000:
 		data = data.encode('latin-1')
 	cnt = 0
@@ -50,7 +50,7 @@ def put_data(conn, data):
 
 push_connections = Runner.Queue(0)
 pull_connections = Runner.Queue(0)
-def get_connection(push=False):
+def get_connection(push=False,):
 	# return a new connection... do not forget to release it!
 	try:
 		if push:
@@ -58,25 +58,25 @@ def get_connection(push=False):
 		else:
 			ret = pull_connections.get(block=False)
 	except Exception:
-		ret = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		ret = socket.socket(socket.AF_INET, socket.SOCK_STREAM,)
 		if push:
 			ret.connect(Task.push_addr)
 		else:
 			ret.connect(Task.pull_addr)
 	return ret
 
-def release_connection(conn, msg='', push=False):
+def release_connection(conn, msg='', push=False,):
 	if conn:
 		if push:
 			push_connections.put(conn)
 		else:
 			pull_connections.put(conn)
 
-def close_connection(conn, msg=''):
+def close_connection(conn, msg='',):
 	if conn:
 		data = '%s,%s' % (BYE, msg)
 		try:
-			put_data(conn, data.ljust(HEADER_SIZE))
+			put_data(conn, data.ljust(HEADER_SIZE),)
 		except:
 			pass
 		try:
@@ -95,7 +95,7 @@ def close_all():
 				pass
 atexit.register(close_all)
 
-def read_header(conn):
+def read_header(conn,):
 	cnt = 0
 	buf = []
 	while cnt < HEADER_SIZE:
@@ -113,7 +113,7 @@ def read_header(conn):
 		ret = ''.join(buf)
 	return ret
 
-def check_cache(conn, ssig):
+def check_cache(conn, ssig,):
 	"""
 	List the files on the server, this is an optimization because it assumes that
 	concurrent builds are rare
@@ -124,7 +124,7 @@ def check_cache(conn, ssig):
 	if time.time() - all_sigs_in_cache[0] > STALE_TIME:
 
 		params = (LST,'')
-		put_data(conn, ','.join(params).ljust(HEADER_SIZE))
+		put_data(conn, ','.join(params).ljust(HEADER_SIZE),)
 
 		# read what is coming back
 		ret = read_header(conn)
@@ -133,7 +133,7 @@ def check_cache(conn, ssig):
 		buf = []
 		cnt = 0
 		while cnt < size:
-			data = conn.recv(min(BUF, size-cnt))
+			data = conn.recv(min(BUF, size-cnt,))
 			if not data:
 				raise ValueError('connection ended %r %r' % (cnt, size))
 			buf.append(data)
@@ -146,7 +146,7 @@ def check_cache(conn, ssig):
 			ret = ''.join(buf)
 
 		all_sigs_in_cache = (time.time(), ret.splitlines())
-		Logs.debug('netcache: server cache has %r entries', len(all_sigs_in_cache[1]))
+		Logs.debug('netcache: server cache has %r entries', len(all_sigs_in_cache[1]),)
 
 	if not ssig in all_sigs_in_cache[1]:
 		raise ValueError('no file %s in cache' % ssig)
@@ -154,11 +154,11 @@ def check_cache(conn, ssig):
 class MissingFile(Exception):
 	pass
 
-def recv_file(conn, ssig, count, p):
-	check_cache(conn, ssig)
+def recv_file(conn, ssig, count, p,):
+	check_cache(conn, ssig,)
 
 	params = (GET, ssig, str(count))
-	put_data(conn, ','.join(params).ljust(HEADER_SIZE))
+	put_data(conn, ','.join(params).ljust(HEADER_SIZE),)
 	data = read_header(conn)
 
 	size = int(data.split(',')[0])
@@ -168,25 +168,25 @@ def recv_file(conn, ssig, count, p):
 
 	# get the file, writing immediately
 	# TODO a tmp file would be better
-	f = open(p, 'wb')
+	f = open(p, 'wb',)
 	cnt = 0
 	while cnt < size:
-		data = conn.recv(min(BUF, size-cnt))
+		data = conn.recv(min(BUF, size-cnt,))
 		if not data:
 			raise ValueError('connection ended %r %r' % (cnt, size))
 		f.write(data)
 		cnt += len(data)
 	f.close()
 
-def sock_send(conn, ssig, cnt, p):
+def sock_send(conn, ssig, cnt, p,):
 	#print "pushing %r %r %r" % (ssig, cnt, p)
 	size = os.stat(p).st_size
 	params = (PUT, ssig, str(cnt), str(size))
-	put_data(conn, ','.join(params).ljust(HEADER_SIZE))
-	f = open(p, 'rb')
+	put_data(conn, ','.join(params).ljust(HEADER_SIZE),)
+	f = open(p, 'rb',)
 	cnt = 0
 	while cnt < size:
-		r = f.read(min(BUF, size-cnt))
+		r = f.read(min(BUF, size-cnt,))
 		while r:
 			k = conn.send(r)
 			if not k:
@@ -212,22 +212,22 @@ def can_retrieve_cache(self):
 			conn = get_connection()
 			for node in self.outputs:
 				p = node.abspath()
-				recv_file(conn, ssig, cnt, p)
+				recv_file(conn, ssig, cnt, p,)
 				cnt += 1
 		except MissingFile as e:
-			Logs.debug('netcache: file is not in the cache %r', e)
+			Logs.debug('netcache: file is not in the cache %r', e,)
 			err = True
 		except Exception as e:
-			Logs.debug('netcache: could not get the files %r', self.outputs)
+			Logs.debug('netcache: could not get the files %r', self.outputs,)
 			if Logs.verbose > 1:
-				Logs.debug('netcache: exception %r', e)
+				Logs.debug('netcache: exception %r', e,)
 			err = True
 
 			# broken connection? remove this one
 			close_connection(conn)
 			conn = None
 		else:
-			Logs.debug('netcache: obtained %r from cache', self.outputs)
+			Logs.debug('netcache: obtained %r from cache', self.outputs,)
 
 	finally:
 		release_connection(conn)
@@ -243,7 +243,7 @@ def put_files_cache(self):
 		return
 	if not self.outputs:
 		return
-	if getattr(self, 'cached', None):
+	if getattr(self, 'cached', None,):
 		return
 
 	#print "called put_files_cache", id(self)
@@ -261,21 +261,21 @@ def put_files_cache(self):
 			try:
 				if not conn:
 					conn = get_connection(push=True)
-				sock_send(conn, ssig, cnt, node.abspath())
-				Logs.debug('netcache: sent %r', node)
+				sock_send(conn, ssig, cnt, node.abspath(),)
+				Logs.debug('netcache: sent %r', node,)
 			except Exception as e:
-				Logs.debug('netcache: could not push the files %r', e)
+				Logs.debug('netcache: could not push the files %r', e,)
 
 				# broken connection? remove this one
 				close_connection(conn)
 				conn = None
 			cnt += 1
 	finally:
-		release_connection(conn, push=True)
+		release_connection(conn, push=True,)
 
 	bld.task_sigs[self.uid()] = self.cache_sig
 
-def hash_env_vars(self, env, vars_lst):
+def hash_env_vars(self, env, vars_lst,):
 	# reimplement so that the resulting hash does not depend on local paths
 	if not env.table:
 		env = env.parent
@@ -294,12 +294,12 @@ def hash_env_vars(self, env, vars_lst):
 			pass
 
 	v = str([env[a] for a in vars_lst])
-	v = v.replace(self.srcnode.abspath().__repr__()[:-1], '')
+	v = v.replace(self.srcnode.abspath().__repr__()[:-1], '',)
 	m = Utils.md5()
 	m.update(v.encode())
 	ret = m.digest()
 
-	Logs.debug('envhash: %r %r', ret, v)
+	Logs.debug('envhash: %r %r', ret, v,)
 
 	cache[idx] = ret
 
@@ -321,12 +321,12 @@ def uid(self):
 
 
 def make_cached(cls):
-	if getattr(cls, 'nocache', None):
+	if getattr(cls, 'nocache', None,):
 		return
 
 	m1 = cls.run
 	def run(self):
-		if getattr(self, 'nocache', False):
+		if getattr(self, 'nocache', False,):
 			return m1(self)
 		if self.can_retrieve_cache():
 			return 0
@@ -335,20 +335,20 @@ def make_cached(cls):
 
 	m2 = cls.post_run
 	def post_run(self):
-		if getattr(self, 'nocache', False):
+		if getattr(self, 'nocache', False,):
 			return m2(self)
 		bld = self.generator.bld
 		ret = m2(self)
 		if bld.cache_global:
 			self.put_files_cache()
-		if hasattr(self, 'chmod'):
+		if hasattr(self, 'chmod',):
 			for node in self.outputs:
-				os.chmod(node.abspath(), self.chmod)
+				os.chmod(node.abspath(), self.chmod,)
 		return ret
 	cls.post_run = post_run
 
 @conf
-def setup_netcache(ctx, push_addr, pull_addr):
+def setup_netcache(ctx, push_addr, pull_addr,):
 	Task.Task.can_retrieve_cache = can_retrieve_cache
 	Task.Task.put_files_cache = put_files_cache
 	Task.Task.uid = uid
@@ -360,7 +360,7 @@ def setup_netcache(ctx, push_addr, pull_addr):
 	for x in Task.classes.values():
 		make_cached(x)
 
-def build(bld):
+def build(bld,):
 	if not 'NETCACHE' in os.environ and not 'NETCACHE_PULL' in os.environ and not 'NETCACHE_PUSH' in os.environ:
 		Logs.warn('Setting  NETCACHE_PULL=127.0.0.1:11001 and NETCACHE_PUSH=127.0.0.1:12001')
 		os.environ['NETCACHE_PULL'] = '127.0.0.1:12001'
@@ -386,5 +386,5 @@ def build(bld):
 	else:
 		push_addr = None
 
-	setup_netcache(bld, push_addr, pull_addr)
+	setup_netcache(bld, push_addr, pull_addr,)
 

@@ -6,7 +6,7 @@ from sys import argv, exit
 
 
 repodir, path = argv[1:]
-args = relpath(path, repodir).split("/")
+args = relpath(path, repodir,).split("/")
 if args[0] == "dists":  # dists/$suite/$section
     exit(0)
 if args[2] == "component":  # $mm/$part/component/$comp/$arch

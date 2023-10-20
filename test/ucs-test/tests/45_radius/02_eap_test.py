@@ -17,7 +17,7 @@ UNIVENTION_CACERT = "/etc/univention/ssl/ucsCA/CAcert.pem"
 DEFAULT_CACERT = "/etc/default/cacert"
 
 
-def get_wpa_config(username, password, ca_cert):
+def get_wpa_config(username, password, ca_cert,):
     comment = "#" if ca_cert == "" else ""
     wpa_config = '''
 network={{
@@ -29,13 +29,13 @@ network={{
     {comment}ca_cert="{ca_cert}"
     eapol_flags=3
 }}
-    '''.format(username=username, password=password, comment=comment, ca_cert=ca_cert)
+    '''.format(username=username, password=password, comment=comment, ca_cert=ca_cert,)
     return wpa_config
 
 
-def eap_test(username, password, ca_cert):
+def eap_test(username, password, ca_cert,):
     with NamedTemporaryFile() as tmp_file:
-        wpa_config = get_wpa_config(username, password, ca_cert)
+        wpa_config = get_wpa_config(username, password, ca_cert,)
         tmp_file.write(wpa_config.encode("UTF-8"))
         tmp_file.seek(0)
         print("wpa_config:")
@@ -61,7 +61,7 @@ def main():
         for ca_cert in (UNIVENTION_CACERT, DEFAULT_CACERT, ''):
             # all certs shouldn't have network access
             try:
-                eap_test(username_forbidden, password, ca_cert)
+                eap_test(username_forbidden, password, ca_cert,)
             except subprocess.CalledProcessError:
                 # OK user has no network access
                 pass
@@ -69,10 +69,10 @@ def main():
                 utils.fail("Authentication at radius without network access possible!")
         username_allowed = udm.create_user(networkAccess=1)[1]
         for ca_cert in (UNIVENTION_CACERT, ''):
-            eap_test(username_allowed, password, ca_cert)
+            eap_test(username_allowed, password, ca_cert,)
         try:
             # Worng cert should fail on client side
-            eap_test(username_allowed, password, DEFAULT_CACERT)
+            eap_test(username_allowed, password, DEFAULT_CACERT,)
         except subprocess.CalledProcessError:
             # OK user has no network access
             pass

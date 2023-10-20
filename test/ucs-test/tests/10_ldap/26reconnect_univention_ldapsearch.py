@@ -28,28 +28,28 @@ UCR.load()
 def restore_retry_count():
     """Sets UCR 'ldap/client/retry/count' to 'ucr_retry_count'."""
     stop_slapd()
-    print("Restoring initial UCR 'ldap/client/retry/count' to", ucr_retry_count)
+    print("Restoring initial UCR 'ldap/client/retry/count' to", ucr_retry_count,)
     set_ucr_retry_count(ucr_retry_count)
     start_slapd()
 
 
-def set_ucr_retry_count(count):
+def set_ucr_retry_count(count,):
     """Sets the 'ldap/client/retry/count' in the UCR."""
     ucr_var = "ldap/client/retry/count=%s" % count
     handler_set((ucr_var,))
 
 
-def univention_ldapsearch(fail_on_success):
+def univention_ldapsearch(fail_on_success,):
     """A wrapper for 'univention-ldapsearch'"""
-    proc = Popen(('univention-ldapsearch', '-s', 'base', 'dn', '-LLL'), stdout=PIPE, stderr=PIPE, shell=False)
+    proc = Popen(('univention-ldapsearch', '-s', 'base', 'dn', '-LLL'), stdout=PIPE, stderr=PIPE, shell=False,)
 
     stdout, stderr = proc.communicate()
     stderr = stderr.decode('UTF-8')
     stdout = stdout.decode('UTF-8')
     if stderr:
-        print("\nunivention-ldapsearch STDERR:\n", stderr.strip())
+        print("\nunivention-ldapsearch STDERR:\n", stderr.strip(),)
     if stdout:
-        print("\nunivention-ldapsearch STDOUT:\n", stdout.strip())
+        print("\nunivention-ldapsearch STDOUT:\n", stdout.strip(),)
 
     if ((base_dn in stdout) and fail_on_success):
         fail("\nThe 'univention-ldapsearch' worked when it is "
@@ -60,7 +60,7 @@ def univention_ldapsearch(fail_on_success):
              "is expected to work.\n")
 
 
-def perform_univention_ldapsearch(fail_on_success=False):
+def perform_univention_ldapsearch(fail_on_success=False,):
     """
     Runs univention-ldapsearch in a separate process with a timeout to
     avoid deadlocks. Checks the exit code of the process with
@@ -69,7 +69,7 @@ def perform_univention_ldapsearch(fail_on_success=False):
     print("\nPerforming 'univention-ldapsearch -s base dn -LLL'")
     try:
         # start a separate process with timeout
-        Proc = Process(target=univention_ldapsearch, args=(fail_on_success,))
+        Proc = Process(target=univention_ldapsearch, args=(fail_on_success,),)
         Proc.start()
         Proc.join(60)  # timeout = 60 seconds
 
@@ -114,9 +114,9 @@ def start_slapd():
              % ret_code)
 
 
-def start_with_delay(delay):
+def start_with_delay(delay,):
     """Sleeps the given 'delay' and starts slapd."""
-    Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
+    Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True,)
 
 
 def wait_for_slapd_to_be_started():
@@ -130,7 +130,7 @@ def wait_for_slapd_to_be_started():
     sleep(5)
 
 
-def print_test_header(header):
+def print_test_header(header,):
     print('\n**********************************************************************************')
     print(header)
     print('**********************************************************************************')

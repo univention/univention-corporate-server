@@ -51,10 +51,10 @@ quit''' % {
 
     dnstests.nsupdate(nsupdate_add_request)
 
-    dnstests.test_dns_service_record(test_fqdn, location)
+    dnstests.test_dns_service_record(test_fqdn, location,)
 
     s4connector.wait_for_sync(30)
-    dnstests.check_ldap_object(test_srv_record_dn, 'Service Record', 'sRVRecord', location)
+    dnstests.check_ldap_object(test_srv_record_dn, 'Service Record', 'sRVRecord', location,)
 
     sys.stdout.flush()
 
@@ -73,11 +73,11 @@ quit''' % {
     }
 
     dnstests.nsupdate(nsupdate_del_request)
-    dnstests.test_dns_service_record(test_fqdn, ".*", should_exist=False)
+    dnstests.test_dns_service_record(test_fqdn, ".*", should_exist=False,)
 
     # TODO: DDNS/con2ucs removal sync doesn't work (Bug #39161)
     # Workaround: Remove via UDM instead:
-    dnstests.udm_remove_dns_record_object('dns/srv_record', test_srv_record_dn)
+    dnstests.udm_remove_dns_record_object('dns/srv_record', test_srv_record_dn,)
 
     s4connector.wait_for_sync()
-    utils.verify_ldap_object(test_srv_record_dn, should_exist=False)
+    utils.verify_ldap_object(test_srv_record_dn, should_exist=False,)

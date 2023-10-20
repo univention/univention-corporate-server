@@ -9,7 +9,7 @@ Provide a scanner for finding dependencies on d files
 import re
 from waflib import Utils
 
-def filter_comments(filename):
+def filter_comments(filename,):
 	"""
 	:param filename: d file name
 	:type filename: string
@@ -86,7 +86,7 @@ class d_parser(object):
 	"""
 	Parser for d files
 	"""
-	def __init__(self, env, incpaths):
+	def __init__(self, env, incpaths,):
 		#self.code = ''
 		#self.module = ''
 		#self.imports = []
@@ -105,7 +105,7 @@ class d_parser(object):
 
 		self.incpaths = incpaths
 
-	def tryfind(self, filename):
+	def tryfind(self, filename,):
 		"""
 		Search file a file matching an module/import directive
 
@@ -114,7 +114,7 @@ class d_parser(object):
 		"""
 		found = 0
 		for n in self.incpaths:
-			found = n.find_resource(filename.replace('.', '/') + '.d')
+			found = n.find_resource(filename.replace('.', '/',) + '.d')
 			if found:
 				self.nodes.append(found)
 				self.waiting.append(found)
@@ -123,7 +123,7 @@ class d_parser(object):
 			if not filename in self.names:
 				self.names.append(filename)
 
-	def get_strings(self, code):
+	def get_strings(self, code,):
 		"""
 		:param code: d code to parse
 		:type code: string
@@ -138,7 +138,7 @@ class d_parser(object):
 
 		mod_name = self.re_module.search(code)
 		if mod_name:
-			self.module = re.sub(r'\s+', '', mod_name.group(1)) # strip all whitespaces
+			self.module = re.sub(r'\s+', '', mod_name.group(1),) # strip all whitespaces
 
 		# go through the code, have a look at all import occurrences
 
@@ -146,7 +146,7 @@ class d_parser(object):
 		import_iterator = self.re_import.finditer(code)
 		if import_iterator:
 			for import_match in import_iterator:
-				import_match_str = re.sub(r'\s+', '', import_match.group(1)) # strip all whitespaces
+				import_match_str = re.sub(r'\s+', '', import_match.group(1),) # strip all whitespaces
 
 				# does this end with an import bindings declaration?
 				# (import bindings always terminate the list of imports)
@@ -167,7 +167,7 @@ class d_parser(object):
 					lst.append(match)
 		return lst
 
-	def start(self, node):
+	def start(self, node,):
 		"""
 		The parsing starts here
 
@@ -180,7 +180,7 @@ class d_parser(object):
 			nd = self.waiting.pop(0)
 			self.iter(nd)
 
-	def iter(self, node):
+	def iter(self, node,):
 		"""
 		Find all the modules that a file depends on, uses :py:meth:`waflib.Tools.d_scan.d_parser.tryfind` to process dependent files
 
@@ -202,7 +202,7 @@ class d_parser(object):
 def scan(self):
 	"look for .d/.di used by a d file"
 	env = self.env
-	gruik = d_parser(env, self.generator.includes_nodes)
+	gruik = d_parser(env, self.generator.includes_nodes,)
 	node = self.inputs[0]
 	gruik.start(node)
 	nodes = gruik.nodes

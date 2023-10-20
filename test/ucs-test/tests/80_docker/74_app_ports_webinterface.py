@@ -17,13 +17,13 @@ if __name__ == '__main__':
 
         for mod_proxy in [True, False]:
             app_name = get_app_name()
-            app = tiny_app(app_name, get_app_version())
+            app = tiny_app(app_name, get_app_version(),)
             try:
                 app.set_ini_parameter(
                     WebInterfacePortHTTP=webinterface_port_http,
                     WebInterfacePortHTTPS=webinterface_port_https,
                     AutoModProxy=str(mod_proxy),
-                    WebInterface='/%s' % app_name)
+                    WebInterface='/%s' % app_name,)
                 app.add_to_local_appcenter()
                 appcenter.update()
                 app.install()

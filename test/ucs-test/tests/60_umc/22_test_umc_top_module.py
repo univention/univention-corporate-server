@@ -20,20 +20,20 @@ class Test_UMCTopModule:
     max_process_time = 30  # seconds
     proc = None
 
-    def kill_process(self, signal, pid):
+    def kill_process(self, signal, pid,):
         """
         Applies the kill action with a signal 'signal' to the list of 'pids'
         provided by making a UMC request 'top/kill' with respective options.
         """
-        self.client.umc_command('top/kill', {'signal': signal, 'pid': [pid]})
+        self.client.umc_command('top/kill', {'signal': signal, 'pid': [pid]},)
 
-    def query_process_exists(self, pid):
+    def query_process_exists(self, pid,):
         """
         Checks if process with a provided 'pid' exists
         by making the UMC request 'top/query'.
         Returns True when exists.
         """
-        return any(result['pid'] == pid and sys.executable in result['command'] for result in self.client.umc_command('top/query', {'category': 'pid', 'filter': pid}).result)
+        return any(result['pid'] == pid and sys.executable in result['command'] for result in self.client.umc_command('top/query', {'category': 'pid', 'filter': pid},).result)
 
     def force_process_kill(self):
         """
@@ -53,7 +53,7 @@ class Test_UMCTopModule:
                       "via psutil: %r" % (self.proc.pid, exc))
 
     @contextlib.contextmanager
-    def create_process(self, ignore_sigterm=False):
+    def create_process(self, ignore_sigterm=False,):
         """
         Initiates a simple test process that should be killed after by forking.
         Creates a psutil Process class to check running state
@@ -68,7 +68,7 @@ class Test_UMCTopModule:
 
         if ignore_sigterm:
             # the process should ignore 'SIGTERM'
-            signal.signal(signal.SIGTERM, signal.SIG_IGN)
+            signal.signal(signal.SIGTERM, signal.SIG_IGN,)
         sleep(self.max_process_time)
         pytest.exit(0)
 
@@ -76,8 +76,8 @@ class Test_UMCTopModule:
         ('SIGTERM', False),
         ('SIGKILL', False),
         ('SIGTERM', True),
-    ])
-    def test_process_termination(self, signame, ignore_signal, Client):
+    ],)
+    def test_process_termination(self, signame, ignore_signal, Client,):
         """
         Creates a process;
         Check created process exist via UMC;
@@ -85,20 +85,20 @@ class Test_UMCTopModule:
         Performs clean-up using psutil if needed.
         """
         print("\nTesting UMC process killing with signal '%s'" % signame)
-        signum = getattr(signal, signame)
+        signum = getattr(signal, signame,)
         self.client = Client.get_test_connection()
         with self.create_process(ignore_signal) as pid:
             assert self.query_process_exists(pid)
-            self.kill_process(signame, pid)  # a UMC request
+            self.kill_process(signame, pid,)  # a UMC request
 
             for i in range(self.max_process_time):
                 if i:
                     sleep(1)
-                child, exit_status, _res_usage = wait4(pid, WNOHANG)
+                child, exit_status, _res_usage = wait4(pid, WNOHANG,)
                 if child:
                     break
 
-            print("Process Exit Status is: ", exit_status)
+            print("Process Exit Status is: ", exit_status,)
             exit_code = WTERMSIG(exit_status)
 
             if ignore_signal:
@@ -107,33 +107,33 @@ class Test_UMCTopModule:
                 assert exit_code == signum
                 assert not self.query_process_exists(pid)
 
-    def test_error_handling_of_not_existing_process_termination(self, Client):
+    def test_error_handling_of_not_existing_process_termination(self, Client,):
         self.client = Client.get_test_connection()
         pid = 0
         while True:
-            pid = randint(2, 4194304)
+            pid = randint(2, 4194304,)
             if not pid_exists(pid):
                 break
-        with pytest.raises(BadRequest, match=r'No process found with PID|Kein Prozess mit der PID'):
-            self.kill_process('SIGKILL', pid)
+        with pytest.raises(BadRequest, match=r'No process found with PID|Kein Prozess mit der PID',):
+            self.kill_process('SIGKILL', pid,)
 
     @pytest.mark.parametrize('pattern,category', [
         ('/sbin/init', 'all'),
         ('/sbin/init', 'command'),
         ('root', 'user'),
         (1, 'pid'),
-    ])
-    def test_process_query_single_process(self, pattern, category, Client):
+    ],)
+    def test_process_query_single_process(self, pattern, category, Client,):
         client = Client.get_test_connection()
-        request = client.umc_command('top/query', {'pattern': pattern, 'category': category})
+        request = client.umc_command('top/query', {'pattern': pattern, 'category': category},)
         assert request.result
         proc = request.result[0]
         assert all(key in proc for key in ('user', 'pid', 'cpu', 'mem', 'command'))
         assert proc['pid'] == 1 and proc['user'] == 'root' and proc['command'].startswith('/sbin/init')
 
-    def test_process_query_response_structure(self, Client):
+    def test_process_query_response_structure(self, Client,):
         client = Client.get_test_connection()
-        request = client.umc_command('top/query', {'category': 'all'})
+        request = client.umc_command('top/query', {'category': 'all'},)
         assert request.result
         assert len(request.result) > 1
         assert all((key in result for key in ('user', 'pid', 'cpu', 'mem', 'command')) for result in request.result)

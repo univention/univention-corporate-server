@@ -46,7 +46,7 @@ def main():
             ):
                 print('Testing port=%r tls=%r ssl=%r failure_expected=%r...' % (port, tls, ssl, failure_expected))
                 try:
-                    result = send_mail(sender=recipient_email, recipients=['noreply@univention.de'], port=port, tls=tls, ssl=ssl, username=recipient_email, password='univention')
+                    result = send_mail(sender=recipient_email, recipients=['noreply@univention.de'], port=port, tls=tls, ssl=ssl, username=recipient_email, password='univention',)
                     if failure_expected:
                         print('TEST (port=%r,tls=%r,ssl=%r,exception expected=%r) = ERROR: UNEXPECTED SUCCESS: %r' % (port, tls, ssl, failure_expected, result))
                         utils.fail('mail unexpectedly sent')

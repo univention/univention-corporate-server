@@ -17,29 +17,28 @@ if __name__ == '__main__':
         apps = []
 
         try:
-            for i in range(0, DOCKER_APP_COUNT):
-                app = tiny_app_apache(get_app_name(), get_app_version())
+            for i in range(0, DOCKER_APP_COUNT,):
+                app = tiny_app_apache(get_app_name(), get_app_version(),)
                 app.set_ini_parameter(
                     WebInterface='/%s' % app.app_name,
                     WebInterfacePortHTTP='80',
                     WebInterfacePortHTTPS='443',
-                    AutoModProxy='True',
-                )
+                    AutoModProxy='True',)
                 app.add_to_local_appcenter()
 
                 apps.append(app)
 
             appcenter.update()
 
-            for i in range(0, DOCKER_APP_COUNT):
+            for i in range(0, DOCKER_APP_COUNT,):
                 apps[i].install()
 
-            for i in range(0, DOCKER_APP_COUNT):
+            for i in range(0, DOCKER_APP_COUNT,):
                 apps[i].verify(joined=False)
                 apps[i].configure_tinyapp_modproxy()
                 apps[i].verify_basic_modproxy_settings_tinyapp()
 
         finally:
-            for i in range(0, len(apps)):
+            for i in range(0, len(apps),):
                 apps[i].uninstall()
                 apps[i].remove()

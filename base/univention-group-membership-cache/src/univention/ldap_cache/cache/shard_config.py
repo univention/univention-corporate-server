@@ -49,20 +49,20 @@ def shards_from_config():
         with open(CONFIG_FILE) as fd:
             config = json.load(fd)
     except (EnvironmentError, ValueError) as exc:
-        log('Could not load CONFIG_FILE: %s', exc)
+        log('Could not load CONFIG_FILE: %s', exc,)
     else:
         for data in config:
             try:
                 class FromConfig(Shard):
                     db_name = data['db_name']
                     single_value = data['single_value']
-                    reverse = data.get('reverse', False)
+                    reverse = data.get('reverse', False,)
                     key = data['key']
                     value = data['value']
                     ldap_filter = data['ldap_filter']
                 ret.append(FromConfig)
             except (TypeError, KeyError) as exc:
-                log('JSON wrong: %s', exc)
+                log('JSON wrong: %s', exc,)
     return ret
 
 
@@ -75,11 +75,11 @@ def _writing_config():
     except EnvironmentError:
         shards = []
     yield shards
-    with open(CONFIG_FILE, 'w') as fd:
-        json.dump(shards, fd, sort_keys=True, indent=4)
+    with open(CONFIG_FILE, 'w',) as fd:
+        json.dump(shards, fd, sort_keys=True, indent=4,)
 
 
-def add_shard_to_config(db_name, single_value, reverse, key, value, ldap_filter):
+def add_shard_to_config(db_name, single_value, reverse, key, value, ldap_filter,):
     # type: (str, bool, bool, str, str, str) -> None
     with _writing_config() as shards:
         shard_config = {
@@ -94,7 +94,7 @@ def add_shard_to_config(db_name, single_value, reverse, key, value, ldap_filter)
             shards.append(shard_config)
 
 
-def rm_shard_from_config(db_name, single_value, reverse, key, value, ldap_filter):
+def rm_shard_from_config(db_name, single_value, reverse, key, value, ldap_filter,):
     # type: (str, bool, bool, str, str, str) -> None
     with _writing_config() as shards:
         try:

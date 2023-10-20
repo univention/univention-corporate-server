@@ -54,8 +54,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'organizationalRole'],
-    ),
+        objectClasses=['top', 'organizationalRole'],),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -65,16 +64,15 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
 }
 
 layout = [
-    Tab(_('General'), _('Basic values'), ["name"]),
+    Tab(_('General'), _('Basic values'), ["name"],),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -83,14 +81,14 @@ class object(univention.admin.handlers.simpleLdap):
     @classmethod
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'organizationalRole'),
-            univention.admin.filter.expression('cn', 'univention'),
-        ])
+            univention.admin.filter.expression('objectClass', 'organizationalRole',),
+            univention.admin.filter.expression('cn', 'univention',),
+        ],)
 
 
 lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr, canonical=False):
-    return b'organizationalRole' in attr.get('objectClass', []) and attr.get('cn', []) == [b'univention']
+def identify(dn, attr, canonical=False,):
+    return b'organizationalRole' in attr.get('objectClass', [],) and attr.get('cn', [],) == [b'univention']

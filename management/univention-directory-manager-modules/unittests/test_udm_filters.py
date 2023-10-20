@@ -125,9 +125,9 @@ BASE_FILTERS = {
     ('users/user', 'certificateSerial', 'certificateSerial=*', 'certificateSerial=*'),  # FIXME:
     ('users/user', 'umcProperty', 'umcProperty=*', 'univentionUMCProperty=*'),
     ('users/user', 'serviceSpecificPassword', 'serviceSpecificPassword=*', 'serviceSpecificPassword=*'),  # FIXME:
-])
-def test_presence_filters(module, property, udm_filter, expected_filter):
-    check_expected_filter(module, property, udm_filter, expected_filter)
+],)
+def test_presence_filters(module, property, udm_filter, expected_filter,):
+    check_expected_filter(module, property, udm_filter, expected_filter,)
 
 
 @pytest.mark.parametrize('module, property, udm_filter, expected_filter', [
@@ -177,8 +177,8 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     ('users/user', 'pwdChangeNextLogin', 'pwdChangeNextLogin=1', 'pwdChangeNextLogin=1'),  # FIXME
     ('users/user', 'pwdChangeNextLogin', 'pwdChangeNextLogin=0', 'pwdChangeNextLogin=0'),  # FIXME
     ('users/user', 'preferredLanguage', 'preferredLanguage=foo', 'preferredLanguage=foo'),
-    pytest.param('users/user', 'accountActivationDate', 'accountActivationDate=2006-06-09 02:43 Europe/Berlin', 'krb5ValidStart=20060609004300Z', marks=pytest.mark.xfail(reason='Bug #53830')),
-    pytest.param('users/user', 'lockedTime', 'lockedTime=foo', 'sambaBadPasswordTime=foo', marks=pytest.mark.xfail()),
+    pytest.param('users/user', 'accountActivationDate', 'accountActivationDate=2006-06-09 02:43 Europe/Berlin', 'krb5ValidStart=20060609004300Z', marks=pytest.mark.xfail(reason='Bug #53830'),),
+    pytest.param('users/user', 'lockedTime', 'lockedTime=foo', 'sambaBadPasswordTime=foo', marks=pytest.mark.xfail(),),
     ('users/user', 'lockedTime', 'lockedTime=20220728135807Z', 'sambaBadPasswordTime=133034902870000000'),
     ('users/user', 'unlock', 'unlock=1', 'unlock=1'),  # FIXME: should raise invalidFilter
     ('users/user', 'unlockTime', 'unlockTime=foo', 'unlockTime=foo'),
@@ -212,7 +212,7 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     ('users/user', 'sambaRID', 'sambaRID=foo', 'sambaRID=foo'),
     ('users/user', 'groups', 'groups=foo', 'memberOf=foo'),
     ('users/user', 'primaryGroup', 'primaryGroup=5000', 'gidNumber=5000'),
-    pytest.param('users/user', 'primaryGroup', 'primaryGroup=cn=Domain Users,cn=users,dc=base', 'gidNumber=5000', marks=pytest.mark.xfail(reason='Bug #53808')),
+    pytest.param('users/user', 'primaryGroup', 'primaryGroup=cn=Domain Users,cn=users,dc=base', 'gidNumber=5000', marks=pytest.mark.xfail(reason='Bug #53808'),),
     ('users/user', 'mailHomeServer', 'mailHomeServer=foo', 'univentionMailHomeServer=foo'),
     ('users/user', 'mailPrimaryAddress', 'mailPrimaryAddress=foo', 'mailPrimaryAddress=foo'),
     ('users/user', 'mailAlternativeAddress', 'mailAlternativeAddress=foo', 'mailAlternativeAddress=foo'),
@@ -223,9 +223,9 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     ('users/user', 'homeShare', 'homeShare=foo', 'homeShare=foo'),
     ('users/user', 'homeSharePath', 'homeSharePath=foo', 'homeSharePath=foo'),
     ('users/user', 'sambaUserWorkstations', 'sambaUserWorkstations=foo', 'sambaUserWorkstations=foo'),
-    pytest.param('users/user', 'sambaLogonHours', 'sambaLogonHours=137', 'sambaLogonHours=000000000000000000000000000000000002000000', marks=pytest.mark.xfail(reason='Bug #53807')),
-    pytest.param('users/user', 'jpegPhoto', 'jpegPhoto=foo', 'jpegPhoto=foo', marks=pytest.mark.xfail()),
-    pytest.param('users/user', 'userCertificate', 'userCertificate=foo', 'userCertificate;binary=foo', marks=pytest.mark.xfail()),
+    pytest.param('users/user', 'sambaLogonHours', 'sambaLogonHours=137', 'sambaLogonHours=000000000000000000000000000000000002000000', marks=pytest.mark.xfail(reason='Bug #53807'),),
+    pytest.param('users/user', 'jpegPhoto', 'jpegPhoto=foo', 'jpegPhoto=foo', marks=pytest.mark.xfail(),),
+    pytest.param('users/user', 'userCertificate', 'userCertificate=foo', 'userCertificate;binary=foo', marks=pytest.mark.xfail(),),
     ('users/user', 'certificateIssuerCountry', 'certificateIssuerCountry=foo', 'certificateIssuerCountry=foo'),  # FIXME:
     ('users/user', 'certificateIssuerState', 'certificateIssuerState=foo', 'certificateIssuerState=foo'),  # FIXME:
     ('users/user', 'certificateIssuerLocation', 'certificateIssuerLocation=foo', 'certificateIssuerLocation=foo'),  # FIXME:
@@ -244,17 +244,17 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
     ('users/user', 'certificateDateNotAfter', 'certificateDateNotAfter=foo', 'certificateDateNotAfter=foo'),  # FIXME:
     ('users/user', 'certificateVersion', 'certificateVersion=foo', 'certificateVersion=foo'),  # FIXME:
     ('users/user', 'certificateSerial', 'certificateSerial=foo', 'certificateSerial=foo'),  # FIXME:
-    pytest.param('users/user', 'umcProperty', 'umcProperty=foo bar', 'univentionUMCProperty=foo=bar', marks=pytest.mark.xfail(reason='Bug #53808')),
+    pytest.param('users/user', 'umcProperty', 'umcProperty=foo bar', 'univentionUMCProperty=foo=bar', marks=pytest.mark.xfail(reason='Bug #53808'),),
     ('users/user', 'umcProperty', 'umcProperty=foo=bar', 'univentionUMCProperty=foo=bar'),
     ('users/user', 'serviceSpecificPassword', 'serviceSpecificPassword=foo', 'serviceSpecificPassword=foo'),  # FIXME:
-])
-def test_udm_filter(module, property, udm_filter, expected_filter):
-    check_expected_filter(module, property, udm_filter, expected_filter)
+],)
+def test_udm_filter(module, property, udm_filter, expected_filter,):
+    check_expected_filter(module, property, udm_filter, expected_filter,)
 
 
-def check_expected_filter(module, property, udm_filter, expected_filter):
+def check_expected_filter(module, property, udm_filter, expected_filter,):
     expected_filter = BASE_FILTERS[module] % expected_filter
     mod = univention.admin.modules.get(module)
     mod.property_descriptions[property]
-    actual_filter = mod.lookup_filter(udm_filter, None)
+    actual_filter = mod.lookup_filter(udm_filter, None,)
     assert expected_filter == str(actual_filter)

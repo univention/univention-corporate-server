@@ -45,14 +45,14 @@ class ListOfListOflTextToListofDictPropertyEncoder(BaseEncoder):
     static = True
 
     @staticmethod
-    def decode(value=None):
+    def decode(value=None,):
         if value:
             return [{'locale': v[0], 'value': v[1]} for v in value]
         else:
             return value
 
     @staticmethod
-    def encode(value=None):
+    def encode(value=None,):
         if value:
             return [[v['locale'], v['value']] for v in value]
         else:

@@ -38,15 +38,15 @@ import os
 import subprocess
 
 
-def handler(ucr, changes):
+def handler(ucr, changes,):
     try:
-        processes = int(ucr.get('umc/http/processes', 1))
+        processes = int(ucr.get('umc/http/processes', 1,))
     except ValueError:
         processes = 1
 
     start_port = 18200
     try:
-        start_port = int(ucr.get('umc/http/processes/start-port', start_port))
+        start_port = int(ucr.get('umc/http/processes/start-port', start_port,))
     except ValueError:
         pass
 

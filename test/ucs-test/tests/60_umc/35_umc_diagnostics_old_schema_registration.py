@@ -26,7 +26,7 @@ from univention.testing.utils import fail
 
 attribute_id = random_int() + random_int() + random_int() + random_int() + random_int()
 schema_name = 'univention-corporate-client.schema'
-filename = os.path.join('/tmp/', schema_name)
+filename = os.path.join('/tmp/', schema_name,)
 diagnostic_plugin = '60_old_schema_registration'
 
 schema_buffer = '''
@@ -38,24 +38,24 @@ attributetype ( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFre
 ''' % {'attribute_id': attribute_id}
 
 
-def write_schema_file(filename, schema_buffer):
-    with open(filename, 'w+') as fd:
+def write_schema_file(filename, schema_buffer,):
+    with open(filename, 'w+',) as fd:
         fd.write(schema_buffer)
 
 
-def ucs_register_ldap_schema(filename):
+def ucs_register_ldap_schema(filename,):
     subprocess.check_call(['bash', '-c', 'source /usr/share/univention-lib/ldap.sh; ucs_registerLDAPSchema %s' % filename])
 
 
-def ucs_unregister_ldap_extension(schema_name):
+def ucs_unregister_ldap_extension(schema_name,):
     subprocess.check_call(['bash', '-c', 'source /usr/share/univention-lib/ldap.sh; ucs_unregisterLDAPExtension --schema %s' % schema_name[:-7]])
 
 
-def __fetch_schema_from_uri(ldap_uri):
+def __fetch_schema_from_uri(ldap_uri,):
     ucr = ConfigRegistry()
     ucr.load()
 
-    retry = ucr.get('ldap/client/retry/count', 15)
+    retry = ucr.get('ldap/client/retry/count', 15,)
     attempts = int(retry) + 1
 
     i = 0
@@ -79,7 +79,7 @@ def fetch_schema_from_ldap_master():
 
 def test():
     try:
-        write_schema_file(filename, schema_buffer)
+        write_schema_file(filename, schema_buffer,)
         ucs_register_ldap_schema(filename)
 
         # start the diagnostic check
@@ -89,7 +89,7 @@ def test():
         assert {'action': 'register_schema', 'label': 'Register Schema files'} in result['buttons'], 'repair button not shown'
 
         # repair button
-        old_schema_registration.execute(None, action='register_schema')
+        old_schema_registration.execute(None, action='register_schema',)
 
         # check if schema is registered properly now
         schema = fetch_schema_from_ldap_master()

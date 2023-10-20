@@ -56,8 +56,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPrinterGroup'],
-    ),
+        objectClasses=['top', 'univentionPrinterGroup'],),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -67,28 +66,24 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'spoolHost': univention.admin.property(
         short_description=_('Print server'),
         long_description='',
         syntax=univention.admin.syntax.ServicePrint_FQDN,
         multivalue=True,
-        required=True,
-    ),
+        required=True,),
     'groupMember': univention.admin.property(
         short_description=_('Group members'),
         long_description='',
         syntax=univention.admin.syntax.PrinterNames,
         multivalue=True,
-        required=True,
-    ),
+        required=True,),
     'sambaName': univention.admin.property(
         short_description=_('Windows name'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        unique=True,
-    ),
+        unique=True,),
 }
 
 layout = [
@@ -96,23 +91,23 @@ layout = [
         Group(_('General printer group share settings'), layout=[
             ['name', 'spoolHost'],
             ['sambaName', 'groupMember'],
-        ]),
-    ]),
+        ],),
+    ],),
 ]
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('spoolHost', 'univentionPrinterSpoolHost', encoding='ASCII')
-mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString)
-mapping.register('groupMember', 'univentionPrinterGroupMember')
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('spoolHost', 'univentionPrinterSpoolHost', encoding='ASCII',)
+mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString,)
+mapping.register('groupMember', 'univentionPrinterGroupMember',)
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _ldap_pre_create(self):
-        super(object, self)._ldap_pre_create()
+        super(object, self,)._ldap_pre_create()
         self.is_valid_printer_object()  # check all members
 
     def _ldap_modlist(self):  # check for membership in a quota-printerclass
@@ -121,10 +116,10 @@ class object(univention.admin.handlers.simpleLdap):
         return univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
     def _ldap_pre_remove(self):  # check for last member in printerclass on same spoolhost
-        super(object, self)._ldap_pre_remove()
-        printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
+        super(object, self,)._ldap_pre_remove()
+        printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x],) for x in self.info['spoolHost']))
         rm_attrib = []
-        for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
+        for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn'],):
             for member_cn in [x.decode('UTF-8') for x in member_list['univentionPrinterGroupMember']]:
                 if member_cn == self.info['name']:
                     rm_attrib.append(pg_dn)
@@ -133,13 +128,13 @@ class object(univention.admin.handlers.simpleLdap):
 
         printergroup_module = univention.admin.modules.get('shares/printergroup')
         for rm_dn in rm_attrib:
-            printergroup_object = univention.admin.objects.get(printergroup_module, None, self.lo, position='', dn=rm_dn)
+            printergroup_object = univention.admin.objects.get(printergroup_module, None, self.lo, position='', dn=rm_dn,)
             printergroup_object.open()
             printergroup_object['groupMember'].remove(self.info['name'])
             printergroup_object.modify()
 
     def is_valid_printer_object(self):  # check printer on current spoolhost
-        spoolhosts = '(|%s)' % ''.join(filter_format('(univentionPrinterSpoolHost=%s)', [host]) for host in self.info['spoolHost'])
+        spoolhosts = '(|%s)' % ''.join(filter_format('(univentionPrinterSpoolHost=%s)', [host],) for host in self.info['spoolHost'])
         for member in self.info['groupMember']:
             if not self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(cn=%s)%s)' % (escape_filter_chars(member), spoolhosts)):
                 raise univention.admin.uexceptions.notValidPrinter(_('%(name)s is not a valid printer on Spoolhost %(host)s.') % {'name': member, 'host': self.info['spoolHost']})

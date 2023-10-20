@@ -52,22 +52,22 @@ configRegistry = ConfigRegistry()
 configRegistry.load()
 
 
-def check_preconditions(options: Namespace) -> None:
+def check_preconditions(options: Namespace,) -> None:
     """Check for already existing mirror and for debmirror package"""
     # check directories
-    if exists(join(options.base, 'mirror')):
-        print('Warning: The path %s/mirror already exists.' % options.base, file=sys.stderr)
+    if exists(join(options.base, 'mirror',)):
+        print('Warning: The path %s/mirror already exists.' % options.base, file=sys.stderr,)
 
     if options.interactive:
-        print("Are you sure you want to create a local repository? [yN] ", end=' ', flush=True)
+        print("Are you sure you want to create a local repository? [yN] ", end=' ', flush=True,)
         sys.stdin.flush()
         if not sys.stdin.readline().startswith('y'):
-            print('Aborted.', file=sys.stderr)
+            print('Aborted.', file=sys.stderr,)
             sys.exit(1)
 
     # install univention-debmirror
     cmd = ('dpkg-query', '-W', '-f', '${Status}', 'univention-debmirror')
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,)
     output = p.communicate()[0].decode("UTF-8")
 
     if output == 'install ok installed':
@@ -76,24 +76,24 @@ def check_preconditions(options: Namespace) -> None:
     print('Installing univention-debmirror')
     ret = subprocess.call(['univention-install', '--yes', 'univention-debmirror'])
     if ret != 0:
-        print('Error: Failed to install univention-debmirror', file=sys.stderr)
+        print('Error: Failed to install univention-debmirror', file=sys.stderr,)
         sys.exit(1)
 
 
-def prepare(options: Namespace) -> None:
+def prepare(options: Namespace,) -> None:
     """Set local/repository and create directory structure"""
-    if configRegistry.is_false('local/repository', True):
+    if configRegistry.is_false('local/repository', True,):
         handler_set(['local/repository=yes'])
         configRegistry.load()
 
-    if configRegistry.is_false('repository/mirror', True):
+    if configRegistry.is_false('repository/mirror', True,):
         handler_set(['repository/mirror=yes'])
         configRegistry.load()
 
-    makedirs(join(options.base, "mirror", "dists"), exist_ok=True)
-    makedirs(join(options.base, "mirror", "pool", "main"), exist_ok=True)
-    makedirs(join(options.base, "skel"), exist_ok=True)
-    makedirs(join(options.base, "var"), exist_ok=True)
+    makedirs(join(options.base, "mirror", "dists",), exist_ok=True,)
+    makedirs(join(options.base, "mirror", "pool", "main",), exist_ok=True,)
+    makedirs(join(options.base, "skel",), exist_ok=True,)
+    makedirs(join(options.base, "var",), exist_ok=True,)
 
 
 def parse_args() -> Namespace:
@@ -103,16 +103,16 @@ def parse_args() -> Namespace:
         '-n', '--non-interactive',
         action='store_false',
         dest='interactive',
-        help='if given no questions are asked.')
+        help='if given no questions are asked.',)
     parser.add_argument(
         '-s', '--silent',
         action='store_true',
-        help='do not print any information, just errors and warnings')
+        help='do not print any information, just errors and warnings',)
     parser.add_argument(
         '-b', '--base',
         metavar="DIR",
-        default=configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository'),
-        help="Local mirror base directory")
+        default=configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository',),
+        help="Local mirror base directory",)
 
     return parser.parse_args()
 
@@ -121,7 +121,7 @@ def main() -> None:
     options = parse_args()
 
     if options.silent:
-        sys.stdout = open(devnull, 'w')
+        sys.stdout = open(devnull, 'w',)
 
     with UpdaterLock():
         check_preconditions(options)
@@ -137,7 +137,7 @@ def main() -> None:
             'repository/mirror/version/start?%s' % current_ucs_version,
         ]
         # set last version contained in repository
-        end = configRegistry.get('repository/mirror/version/end', '').strip()
+        end = configRegistry.get('repository/mirror/version/end', '',).strip()
         if not end or UCS_Version(end) < options.version:
             ucr_set.append('repository/mirror/version/end=%s' % options.version)
 
@@ -145,7 +145,7 @@ def main() -> None:
 
         # create symbolic link univention-repository
         try:
-            symlink('.', join(options.base, 'mirror', 'univention-repository'))
+            symlink('.', join(options.base, 'mirror', 'univention-repository',),)
         except EnvironmentError as ex:
             if ex.errno != errno.EEXIST:
                 raise

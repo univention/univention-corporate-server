@@ -13,12 +13,12 @@ from univention.lib import atjobs
 from univention.testing import strings, utils
 
 
-def get_output(cmd):
-    p = Popen(cmd, stdout=PIPE, stderr=PIPE)
+def get_output(cmd,):
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE,)
     return (b'%s\n%s' % p.communicate()).decode('UTF-8')
 
 
-def print_job(job, msg=''):
+def print_job(job, msg='',):
     print(f'{msg}{job!r}\nNumber: {job.nr!r}\nCommand: {job.command!r}\nComments: {job.comments!r}\nExecTime: {job.execTime!r}\nOwner: {job.owner!r}')
 
 
@@ -33,13 +33,13 @@ def main():
         job_comments[strings.random_name()] = strings.random_string(length=30)
 
     try:
-        job = atjobs.add(job_command, execTime=(datetime.datetime.now() + datetime.timedelta(days=3)), comments=job_comments)
+        job = atjobs.add(job_command, execTime=(datetime.datetime.now() + datetime.timedelta(days=3)), comments=job_comments,)
         job_number = job.nr
-        print_job(job, '\nCreated atjob ')
+        print_job(job, '\nCreated atjob ',)
 
         for testjob in atjobs.list(extended=True):
             if testjob.nr == job.nr:
-                print_job(testjob, '\nFound job ')
+                print_job(testjob, '\nFound job ',)
                 if testjob.command.strip() != job_command:
                     utils.fail(f'Jobs differ: {testjob.command!r}  <==>  {job_command!r}')
                 if testjob.comments != job_comments:
@@ -49,8 +49,8 @@ def main():
                 if testjob.owner != job.owner:
                     utils.fail(f'Jobs differ: {testjob.owner!r}  <==>  {job.owner!r}')
 
-                testjob2 = atjobs.load(testjob.nr, extended=True)
-                print_job(testjob2, '\nExplicitely loaded job ')
+                testjob2 = atjobs.load(testjob.nr, extended=True,)
+                print_job(testjob2, '\nExplicitely loaded job ',)
                 if testjob2.command.strip() != job_command:
                     utils.fail(f'Jobs differ: {testjob2.command!r}  <==>  {job_command!r}')
                 if testjob2.comments != job_comments:

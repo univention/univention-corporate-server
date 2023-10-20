@@ -33,15 +33,14 @@ def main():
             set={
                 'mailHomeServer': mailHomeServer,
                 'mailPrimaryAddress': mailPrimaryAddress,
-            },
-        )
+            },)
 
         newpid = os.fork()
         if newpid == 0:
             print('idle-client: starting imap idle')
             c = imaplib.IMAP4_SSL(mailHomeServer)
-            c.login(mailPrimaryAddress, password)
-            c.select('INBOX', readonly=True)
+            c.login(mailPrimaryAddress, password,)
+            c.select('INBOX', readonly=True,)
             c.send(b"%s IDLE\r\n" % (c._new_tag()))
             while True:
                 line = c.readline().decode('UTF-8').strip()
@@ -58,8 +57,8 @@ def main():
                 print('observer: sending mail')
                 send_mail(recipients=mailPrimaryAddress)
                 # wait for child
-                for i in range(0, timeout):
-                    pid, status = os.waitpid(newpid, os.WNOHANG)
+                for i in range(0, timeout,):
+                    pid, status = os.waitpid(newpid, os.WNOHANG,)
                     print('observer: checking status -> pid:%d status:%d' % (pid, os.WEXITSTATUS(status)))
                     if pid:
                         if os.WEXITSTATUS(status) == 0:
@@ -74,7 +73,7 @@ def main():
                 udm.cleanup()
                 if not pid:
                     print("observer: timeout!, killing child")
-                    os.kill(newpid, signal.SIGKILL)
+                    os.kill(newpid, signal.SIGKILL,)
                     utils.fail('imap idle check failed with timeout (%ds)' % timeout)
                 elif status and os.WEXITSTATUS(status) != 0:
                     print('observer: child failed with %d' % os.WEXITSTATUS(status))

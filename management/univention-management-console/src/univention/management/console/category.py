@@ -79,8 +79,8 @@ from .log import RESOURCES
 class XML_Definition(ET.ElementTree):
     """Represents a category definition."""
 
-    def __init__(self, root=None, filename=None, domain=None):
-        ET.ElementTree.__init__(self, element=root, file=filename)
+    def __init__(self, root=None, filename=None, domain=None,):
+        ET.ElementTree.__init__(self, element=root, file=filename,)
         self.domain = domain
 
     @property
@@ -111,7 +111,7 @@ class XML_Definition(ET.ElementTree):
         :rtype: float or None
         """
         try:
-            return float(self._root.get('priority', -1))
+            return float(self._root.get('priority', -1,))
         except ValueError:
             RESOURCES.warn('No valid number type for property "priority": %s' % self._root.get('priority'))
         return None
@@ -134,7 +134,7 @@ class XML_Definition(ET.ElementTree):
 class Manager(dict):
     """This class manages all available categories."""
 
-    DIRECTORY = os.path.join(sys.prefix, 'share/univention-management-console/categories')
+    DIRECTORY = os.path.join(sys.prefix, 'share/univention-management-console/categories',)
 
     def __init__(self):
         dict.__init__(self)
@@ -150,13 +150,13 @@ class Manager(dict):
                 RESOURCES.info('Found file %s with wrong suffix' % filename)
                 continue
             try:
-                definitions = ET.ElementTree(file=os.path.join(Manager.DIRECTORY, filename))
+                definitions = ET.ElementTree(file=os.path.join(Manager.DIRECTORY, filename,))
                 categories = definitions.find('categories')
                 if categories is None:
                     continue
                 i18nDomain = categories.get('domain')
                 for category_elem in definitions.findall('categories/category'):
-                    category = XML_Definition(root=category_elem, domain=i18nDomain)
+                    category = XML_Definition(root=category_elem, domain=i18nDomain,)
                     self[category.id] = category
                 RESOURCES.info('Loaded categories from %s' % filename)
             except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:

@@ -11,15 +11,15 @@ from waflib.Tools import ccroot, ar, gxx
 from waflib.Configure import conf
 
 @conf
-def find_icpc(conf):
+def find_icpc(conf,):
 	"""
 	Finds the program icpc, and execute it to ensure it really is icpc
 	"""
-	cxx = conf.find_program('icpc', var='CXX')
-	conf.get_cc_version(cxx, icc=True)
+	cxx = conf.find_program('icpc', var='CXX',)
+	conf.get_cc_version(cxx, icc=True,)
 	conf.env.CXX_NAME = 'icc'
 
-def configure(conf):
+def configure(conf,):
 	conf.find_icpc()
 	conf.find_ar()
 	conf.gxx_common_flags()

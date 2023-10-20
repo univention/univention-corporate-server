@@ -24,7 +24,7 @@ from univention.testing.utils import UCSTestDomainAdminCredentials, verify_ldap_
 
 def get_openapi_schema():
     account = UCSTestDomainAdminCredentials()
-    resp = requests.get("http://localhost/univention/udm/openapi.json", auth=HTTPBasicAuth(account.username, account.bindpw))
+    resp = requests.get("http://localhost/univention/udm/openapi.json", auth=HTTPBasicAuth(account.username, account.bindpw,),)
     resp.raise_for_status()
     return resp.json()
 
@@ -62,7 +62,7 @@ class UCSTESTComplexList(complex):
     }
 
 
-@pytest.fixture(scope="class", autouse=True)
+@pytest.fixture(scope="class", autouse=True,)
 def complex_syntax():
 
     extension_type = 'syntax'
@@ -79,10 +79,9 @@ def complex_syntax():
             'container/cn',
             name=f'udm_{extension_type}',
             position=udm.UNIVENTION_CONTAINER,
-            ignore_exists=True,
-        )
+            ignore_exists=True,)
         for i, (extension_name, extension_buffer) in enumerate(extension_buffers.items()):
-            extension_filename = get_extension_filename(extension_type, extension_name)
+            extension_filename = get_extension_filename(extension_type, extension_name,)
             extension_dn = udm.create_object(
                 'settings/udm_%s' % extension_type,
                 name=extension_name,
@@ -94,8 +93,7 @@ def complex_syntax():
                 ucsversionstart=version_start,
                 ucsversionend=version_end,
                 active='FALSE',
-                position=f'cn=udm_{extension_type},{udm.UNIVENTION_CONTAINER}',
-            )
+                position=f'cn=udm_{extension_type},{udm.UNIVENTION_CONTAINER}',)
 
             udm.create_object(
                 'settings/extended_attribute',
@@ -118,8 +116,7 @@ def complex_syntax():
                 multivalue='0',
                 ldapMapping='univentionFreeAttribute%s' % str(i + 10),
                 notEditable='0',
-                tabPosition='1',
-            )
+                tabPosition='1',)
             verify_ldap_object(extension_dn, {
                 'cn': [extension_name],
                 'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
@@ -128,7 +125,7 @@ def complex_syntax():
                 'univentionOwnedByPackageVersion': [package_version],
                 'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
                 'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
-            })
+            },)
 
         wait_for_replication_and_postrun()
         udm.stop_cli_server()

@@ -63,25 +63,21 @@ def parse_args():  # type: () -> Namespace
     parser.add_argument(
         '-H', '--host',
         default='%(hostname)s.%(domainname)s' % ucr,
-        help='UMC host to connect to',
-    )
+        help='UMC host to connect to',)
     parser.add_argument(
         '-u', '--user',
         dest='username',
         required=True,
         help='UMC username',
         metavar='UID',
-        default='Administrator',
-    )
+        default='Administrator',)
     parser.add_argument(
         '-p', '--password',
         required=True,
-        help='UMC password',
-    )
+        help='UMC password',)
     parser.add_argument(
         '-o', '--ou',
-        help='OU name of the school',
-    )
+        help='OU name of the school',)
 
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument(
@@ -89,22 +85,19 @@ def parse_args():  # type: () -> Namespace
         dest='setup',
         action='store_const',
         const='singlemaster',
-        help='install a single server setup on a Primary',
-    )
+        help='install a single server setup on a Primary',)
     group.add_argument(
         '-M', '--multi-server',
         dest='setup',
         action='store_const',
         const='multiserver',
-        help='install a multi server setup',
-    )
+        help='install a multi server setup',)
 
     parser.add_argument(
         '-E', '--educational-server-name',
         dest='name_edu_server',
         help='name of the educational server',
-        metavar='EDU-HOST',
-    )
+        metavar='EDU-HOST',)
 
     group = parser.add_mutually_exclusive_group(required=ucr['server/role'] == 'domaincontroller_slave')
     parser.add_argument(
@@ -112,15 +105,13 @@ def parse_args():  # type: () -> Namespace
         dest='server_type',
         action='store_const',
         const='educational',
-        help='install a DC Replica in educational network (DEFAULT)',
-    )
+        help='install a DC Replica in educational network (DEFAULT)',)
     parser.add_argument(
         '-a', '--administrative-server',
         dest='server_type',
         action='store_const',
         const='administrative',
-        help='install a DC Replica in administrative network',
-    )
+        help='install a DC Replica in administrative network',)
 
     parser.add_argument(
         '-m', '--master-host',
@@ -128,15 +119,13 @@ def parse_args():  # type: () -> Namespace
         default=ucr['ldap/master'],
         required=ucr['server/role'] != 'domaincontroller_master',
         help='on a Replica the Primary host needs to be specified',
-        metavar='HOST',
-    )
+        metavar='HOST',)
     parser.add_argument(
         '-s', '--samba-version',
         dest='samba',
         default='4',
         choices=("3", "4"),
-        help='the version of Samba, either 3 or 4',
-    )
+        help='the version of Samba, either 3 or 4',)
 
     options = parser.parse_args()
 
@@ -152,7 +141,7 @@ def parse_args():  # type: () -> Namespace
 
 
 options = parse_args()
-client = Client(options.host, options.username, options.password, language='en-US')
+client = Client(options.host, options.username, options.password, language='en-US',)
 
 params = {
     'setup': options.setup,
@@ -168,8 +157,8 @@ if options.server_type:
 if options.name_edu_server:
     params['nameEduServer'] = options.name_edu_server
 
-result = client.umc_command('schoolinstaller/install', params).result
-if result and not result.get('success', True):  # backwards compatibility
+result = client.umc_command('schoolinstaller/install', params,).result
+if result and not result.get('success', True,):  # backwards compatibility
     print('ERROR: Failed to run installer!')
     print('output: %s' % result)
     sys.exit(1)
@@ -194,7 +183,7 @@ while not status['finished']:
         last_message = message
         print(message)
     else:
-        print('.', end=' ')
+        print('.', end=' ',)
 
 if len(status['errors']) > 0:
     print('ERROR: installation failed!')

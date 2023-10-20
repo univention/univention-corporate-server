@@ -24,9 +24,9 @@ class valac(Task.Task):
 
 	def run(self):
 		cmd = self.env.VALAC + self.env.VALAFLAGS
-		resources = getattr(self, 'vala_exclude', [])
+		resources = getattr(self, 'vala_exclude', [],)
 		cmd.extend([a.abspath() for a in self.inputs if a not in resources])
-		ret = self.exec_command(cmd, cwd=self.vala_dir_node.abspath())
+		ret = self.exec_command(cmd, cwd=self.vala_dir_node.abspath(),)
 
 		if ret:
 			return ret
@@ -41,10 +41,10 @@ def init_vala_task(self):
 	"""
 	Initializes the vala task with the relevant data (acts as a constructor)
 	"""
-	self.profile = getattr(self, 'profile', 'gobject')
+	self.profile = getattr(self, 'profile', 'gobject',)
 
-	self.packages = packages = Utils.to_list(getattr(self, 'packages', []))
-	self.use = Utils.to_list(getattr(self, 'use', []))
+	self.packages = packages = Utils.to_list(getattr(self, 'packages', [],))
+	self.use = Utils.to_list(getattr(self, 'use', [],))
 	if packages and not self.use:
 		self.use = packages[:] # copy
 
@@ -52,8 +52,8 @@ def init_vala_task(self):
 		if not 'GOBJECT' in self.use:
 			self.use.append('GOBJECT')
 
-	def addflags(flags):
-		self.env.append_value('VALAFLAGS', flags)
+	def addflags(flags,):
+		self.env.append_value('VALAFLAGS', flags,)
 
 	if self.profile:
 		addflags('--profile=%s' % self.profile)
@@ -61,8 +61,8 @@ def init_vala_task(self):
 	valatask = self.valatask
 
 	# output directory
-	if hasattr(self, 'vala_dir'):
-		if isinstance(self.vala_dir, str):
+	if hasattr(self, 'vala_dir',):
+		if isinstance(self.vala_dir, str,):
 			valatask.vala_dir_node = self.path.get_bld().make_node(self.vala_dir)
 			try:
 				valatask.vala_dir_node.mkdir()
@@ -74,13 +74,13 @@ def init_vala_task(self):
 		valatask.vala_dir_node = self.path.get_bld()
 	addflags('--directory=%s' % valatask.vala_dir_node.abspath())
 
-	if hasattr(self, 'thread'):
+	if hasattr(self, 'thread',):
 		if self.profile == 'gobject':
 			if not 'GTHREAD' in self.use:
 				self.use.append('GTHREAD')
 		else:
 			#Vala doesn't have threading support for dova nor posix
-			Logs.warn('Profile %s means no threading support', self.profile)
+			Logs.warn('Profile %s means no threading support', self.profile,)
 			self.thread = False
 
 		if self.thread:
@@ -96,23 +96,23 @@ def init_vala_task(self):
 
 		valatask.outputs.append(valatask.vala_dir_node.find_or_declare('%s.vapi' % self.target))
 
-		if getattr(self, 'gir', None):
+		if getattr(self, 'gir', None,):
 			gir_node = valatask.vala_dir_node.find_or_declare('%s.gir' % self.gir)
 			addflags('--gir=%s' % gir_node.name)
 			valatask.outputs.append(gir_node)
 
-	self.vala_target_glib = getattr(self, 'vala_target_glib', getattr(Options.options, 'vala_target_glib', None))
+	self.vala_target_glib = getattr(self, 'vala_target_glib', getattr(Options.options, 'vala_target_glib', None,),)
 	if self.vala_target_glib:
 		addflags('--target-glib=%s' % self.vala_target_glib)
 
-	addflags(['--define=%s' % x for x in Utils.to_list(getattr(self, 'vala_defines', []))])
+	addflags(['--define=%s' % x for x in Utils.to_list(getattr(self, 'vala_defines', [],))])
 
-	packages_private = Utils.to_list(getattr(self, 'packages_private', []))
+	packages_private = Utils.to_list(getattr(self, 'packages_private', [],))
 	addflags(['--pkg=%s' % x for x in packages_private])
 
 	def _get_api_version():
 		api_version = '1.0'
-		if hasattr(Context.g_module, 'API_VERSION'):
+		if hasattr(Context.g_module, 'API_VERSION',):
 			version = Context.g_module.API_VERSION.split(".")
 			if version[0] == "0":
 				api_version = "0." + version[1]
@@ -120,18 +120,18 @@ def init_vala_task(self):
 				api_version = version[0] + ".0"
 		return api_version
 
-	self.includes = Utils.to_list(getattr(self, 'includes', []))
-	valatask.install_path = getattr(self, 'install_path', '')
+	self.includes = Utils.to_list(getattr(self, 'includes', [],))
+	valatask.install_path = getattr(self, 'install_path', '',)
 
-	valatask.vapi_path = getattr(self, 'vapi_path', '${DATAROOTDIR}/vala/vapi')
-	valatask.pkg_name = getattr(self, 'pkg_name', self.env.PACKAGE)
-	valatask.header_path = getattr(self, 'header_path', '${INCLUDEDIR}/%s-%s' % (valatask.pkg_name, _get_api_version()))
-	valatask.install_binding = getattr(self, 'install_binding', True)
+	valatask.vapi_path = getattr(self, 'vapi_path', '${DATAROOTDIR}/vala/vapi',)
+	valatask.pkg_name = getattr(self, 'pkg_name', self.env.PACKAGE,)
+	valatask.header_path = getattr(self, 'header_path', '${INCLUDEDIR}/%s-%s' % (valatask.pkg_name, _get_api_version()),)
+	valatask.install_binding = getattr(self, 'install_binding', True,)
 
-	self.vapi_dirs = vapi_dirs = Utils.to_list(getattr(self, 'vapi_dirs', []))
+	self.vapi_dirs = vapi_dirs = Utils.to_list(getattr(self, 'vapi_dirs', [],))
 	#includes =  []
 
-	if hasattr(self, 'use'):
+	if hasattr(self, 'use',):
 		local_packages = Utils.to_list(self.use)[:] # make sure to have a copy
 		seen = []
 		while len(local_packages) > 0:
@@ -150,7 +150,7 @@ def init_vala_task(self):
 			# but this makes it explicit
 			package_obj.post()
 			package_name = package_obj.target
-			task = getattr(package_obj, 'valatask', None)
+			task = getattr(package_obj, 'valatask', None,)
 			if task:
 				for output in task.outputs:
 					if output.name == package_name + ".vapi":
@@ -162,7 +162,7 @@ def init_vala_task(self):
 						if output.parent not in self.includes:
 							self.includes.append(output.parent)
 
-			if hasattr(package_obj, 'use'):
+			if hasattr(package_obj, 'use',):
 				lst = self.to_list(package_obj.use)
 				lst.reverse()
 				local_packages = [pkg for pkg in lst if pkg not in seen] + local_packages
@@ -170,12 +170,12 @@ def init_vala_task(self):
 	addflags(['--pkg=%s' % p for p in packages])
 
 	for vapi_dir in vapi_dirs:
-		if isinstance(vapi_dir, Node.Node):
+		if isinstance(vapi_dir, Node.Node,):
 			v_node = vapi_dir
 		else:
 			v_node = self.path.find_dir(vapi_dir)
 		if not v_node:
-			Logs.warn('Unable to locate Vala API directory: %r', vapi_dir)
+			Logs.warn('Unable to locate Vala API directory: %r', vapi_dir,)
 		else:
 			addflags('--vapidir=%s' % v_node.abspath())
 
@@ -187,26 +187,26 @@ def init_vala_task(self):
 	if self.is_lib and valatask.install_binding:
 		headers_list = [o for o in valatask.outputs if o.suffix() == ".h"]
 		if headers_list:
-			self.install_vheader = self.add_install_files(install_to=valatask.header_path, install_from=headers_list)
+			self.install_vheader = self.add_install_files(install_to=valatask.header_path, install_from=headers_list,)
 
 		vapi_list = [o for o in valatask.outputs if (o.suffix() in (".vapi", ".deps"))]
 		if vapi_list:
-			self.install_vapi = self.add_install_files(install_to=valatask.vapi_path, install_from=vapi_list)
+			self.install_vapi = self.add_install_files(install_to=valatask.vapi_path, install_from=vapi_list,)
 
 		gir_list = [o for o in valatask.outputs if o.suffix() == '.gir']
 		if gir_list:
 			self.install_gir = self.add_install_files(
-				install_to=getattr(self, 'gir_path', '${DATAROOTDIR}/gir-1.0'), install_from=gir_list)
+				install_to=getattr(self, 'gir_path', '${DATAROOTDIR}/gir-1.0',), install_from=gir_list,)
 
-	if hasattr(self, 'vala_resources'):
+	if hasattr(self, 'vala_resources',):
 		nodes = self.to_nodes(self.vala_resources)
-		valatask.vala_exclude = getattr(valatask, 'vala_exclude', []) + nodes
+		valatask.vala_exclude = getattr(valatask, 'vala_exclude', [],) + nodes
 		valatask.inputs.extend(nodes)
 		for x in nodes:
 			addflags(['--gresources', x.abspath()])
 
-@extension('.vala', '.gs')
-def vala_file(self, node):
+@extension('.vala', '.gs',)
+def vala_file(self, node,):
 	"""
 	Compile a vala file and bind the task to *self.valatask*. If an existing vala task is already set, add the node
 	to its inputs. The typical example is::
@@ -250,7 +250,7 @@ def vala_file(self, node):
 	self.source.append(c_node)
 
 @extension('.vapi')
-def vapi_file(self, node):
+def vapi_file(self, node,):
 	try:
 		valatask = self.valatask
 	except AttributeError:
@@ -259,7 +259,7 @@ def vapi_file(self, node):
 	valatask.inputs.append(node)
 
 @conf
-def find_valac(self, valac_name, min_version):
+def find_valac(self, valac_name, min_version,):
 	"""
 	Find the valac program, and execute it to store the version
 	number in *conf.env.VALAC_VERSION*
@@ -269,17 +269,17 @@ def find_valac(self, valac_name, min_version):
 	:param min_version: minimum version acceptable
 	:type min_version: tuple of int
 	"""
-	valac = self.find_program(valac_name, var='VALAC')
+	valac = self.find_program(valac_name, var='VALAC',)
 	try:
 		output = self.cmd_and_log(valac + ['--version'])
 	except Errors.WafError:
 		valac_version = None
 	else:
-		ver = re.search(r'\d+.\d+.\d+', output).group().split('.')
+		ver = re.search(r'\d+.\d+.\d+', output,).group().split('.')
 		valac_version = tuple([int(x) for x in ver])
 
 	self.msg('Checking for %s version >= %r' % (valac_name, min_version),
-	         valac_version, valac_version and valac_version >= min_version)
+	         valac_version, valac_version and valac_version >= min_version,)
 	if valac and valac_version < min_version:
 		self.fatal("%s version %r is too old, need >= %r" % (valac_name, valac_version, min_version))
 
@@ -287,7 +287,7 @@ def find_valac(self, valac_name, min_version):
 	return valac
 
 @conf
-def check_vala(self, min_version=(0,8,0), branch=None):
+def check_vala(self, min_version=(0,8,0), branch=None,):
 	"""
 	Check if vala compiler from a given branch exists of at least a given
 	version.
@@ -304,9 +304,9 @@ def check_vala(self, min_version=(0,8,0), branch=None):
 	if not branch:
 		branch = min_version[:2]
 	try:
-		find_valac(self, 'valac-%d.%d' % (branch[0], branch[1]), min_version)
+		find_valac(self, 'valac-%d.%d' % (branch[0], branch[1]), min_version,)
 	except self.errors.ConfigurationError:
-		find_valac(self, 'valac', min_version)
+		find_valac(self, 'valac', min_version,)
 
 @conf
 def check_vala_deps(self):
@@ -317,7 +317,7 @@ def check_vala_deps(self):
 		pkg_args = {'package':      'gobject-2.0',
 		            'uselib_store': 'GOBJECT',
 		            'args':         '--cflags --libs'}
-		if getattr(Options.options, 'vala_target_glib', None):
+		if getattr(Options.options, 'vala_target_glib', None,):
 			pkg_args['atleast_version'] = Options.options.vala_target_glib
 		self.check_cfg(**pkg_args)
 
@@ -325,7 +325,7 @@ def check_vala_deps(self):
 		pkg_args = {'package':      'gthread-2.0',
 		            'uselib_store': 'GTHREAD',
 		            'args':         '--cflags --libs'}
-		if getattr(Options.options, 'vala_target_glib', None):
+		if getattr(Options.options, 'vala_target_glib', None,):
 			pkg_args['atleast_version'] = Options.options.vala_target_glib
 		self.check_cfg(**pkg_args)
 
@@ -341,9 +341,9 @@ def configure(self):
 	self.check_vala_deps()
 	self.check_vala()
 	self.add_os_flags('VALAFLAGS')
-	self.env.append_unique('VALAFLAGS', ['-C'])
+	self.env.append_unique('VALAFLAGS', ['-C'],)
 
-def options(opt):
+def options(opt,):
 	"""
 	Load the :py:mod:`waflib.Tools.gnu_dirs` tool and add the ``--vala-target-glib`` command-line option
 	"""
@@ -351,5 +351,5 @@ def options(opt):
 	valaopts = opt.add_option_group('Vala Compiler Options')
 	valaopts.add_option('--vala-target-glib', default=None,
 		dest='vala_target_glib', metavar='MAJOR.MINOR',
-		help='Target version of glib for Vala GObject code generation')
+		help='Target version of glib for Vala GObject code generation',)
 

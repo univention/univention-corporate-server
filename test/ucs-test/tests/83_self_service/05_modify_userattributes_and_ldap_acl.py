@@ -22,14 +22,14 @@ if __name__ == '__main__':
 
         handler_set(['umc/self-service/profiledata/enabled=true'])
 
-        if 'l' not in ucr.get('self-service/ldap_attributes', '').split(','):
-            handler_set(["self-service/ldap_attributes=%s,l" % ucr.get('self-service/ldap_attributes', '')])
+        if 'l' not in ucr.get('self-service/ldap_attributes', '',).split(','):
+            handler_set(["self-service/ldap_attributes=%s,l" % ucr.get('self-service/ldap_attributes', '',)])
         user = udm.create_user(password='univention')[0]
         utils.verify_ldap_object(user)
 
-        lo = univention.admin.uldap.access(binddn=user, bindpw='univention')
-        lo.modify(user, [('l', '', [b'Bremen'])])
-        utils.verify_ldap_object(user, {'l': ['Bremen']})
+        lo = univention.admin.uldap.access(binddn=user, bindpw='univention',)
+        lo.modify(user, [('l', '', [b'Bremen'])],)
+        utils.verify_ldap_object(user, {'l': ['Bremen']},)
 
         with pytest.raises(univention.admin.uexceptions.permissionDenied):
-            lo.modify(user, [('sn', '', [b'mustfail'])])
+            lo.modify(user, [('sn', '', [b'mustfail'])],)

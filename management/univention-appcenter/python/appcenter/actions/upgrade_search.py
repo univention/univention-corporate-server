@@ -45,11 +45,11 @@ class UpgradeSearch(UniventionAppAction):
 
     help = 'Searches for upgrades'
 
-    def setup_parser(self, parser):
-        parser.add_argument('app', nargs='*', action=StoreAppAction, help='The ID of the App')
-        parser.add_argument('--do-not-update', action='store_false', dest='update', help='Do not download new ini files from the App Center server')
+    def setup_parser(self, parser,):
+        parser.add_argument('app', nargs='*', action=StoreAppAction, help='The ID of the App',)
+        parser.add_argument('--do-not-update', action='store_false', dest='update', help='Do not download new ini files from the App Center server',)
 
-    def main(self, args):
+    def main(self, args,):
         from univention.appcenter.actions import get_action
         if args.update:
             get_action('update').call()
@@ -67,5 +67,5 @@ class UpgradeSearch(UniventionAppAction):
                 ucr_save({app.ucr_upgrade_key: None})
         return any(ucr_is_true(app.ucr_upgrade_key) for app in apps)
 
-    def _check_for_upgrades(self, app):
+    def _check_for_upgrades(self, app,):
         return Apps().find_candidate(app) is not None

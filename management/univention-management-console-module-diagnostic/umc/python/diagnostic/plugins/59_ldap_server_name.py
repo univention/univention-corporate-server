@@ -50,7 +50,7 @@ links = [{
 }]
 
 
-def deactivate_test(umc_instance: Instance) -> None:
+def deactivate_test(umc_instance: Instance,) -> None:
     ucr_set(['diagnostic/check/disable/59_ldap_server_name=yes'])
 
 
@@ -59,14 +59,14 @@ actions = {
 }
 
 
-def run(_umc_instance: Instance) -> None:
+def run(_umc_instance: Instance,) -> None:
     if ucr.get('server/role') != 'memberserver':
         return
 
     ldap_server_name = ucr.get('ldap/server/name')
     domainname = ucr.get('domainname')
     lo = univention.uldap.getMachineConnection()
-    master = lo.search(base=ucr.get('ldap/base'), filter='(univentionServerRole=master)', attr=['cn'])
+    master = lo.search(base=ucr.get('ldap/base'), filter='(univentionServerRole=master)', attr=['cn'],)
     try:
         master_cn = master[0][1].get('cn')[0].decode('UTF-8')
     except IndexError:
@@ -75,7 +75,7 @@ def run(_umc_instance: Instance) -> None:
     master_fqdn = '.'.join([master_cn, domainname])
 
     if master_fqdn == ldap_server_name:
-        res = lo.searchDn(base=ucr.get('ldap/base'), filter='univentionServerRole=backup')
+        res = lo.searchDn(base=ucr.get('ldap/base'), filter='univentionServerRole=backup',)
 
         # Case: ldap/server/name is the Primary Directory Node and there are Backup Directory Nodes available.
         if res:
@@ -84,7 +84,7 @@ def run(_umc_instance: Instance) -> None:
                 'label': _('Deactivate test'),
             }]
             warn = (_('The primary LDAP Server of this System (UCR ldap/server/name) is set to the Primary Directory Node of this UCS domain (%s).\nSince this environment provides further LDAP Servers, we recommend a different configuration to reduce the load on the Primary Directory Node.\nPlease see {sdb} for further information.') % (master_fqdn,))
-            raise Warning(warn, buttons=button)
+            raise Warning(warn, buttons=button,)
 
 
 if __name__ == '__main__':

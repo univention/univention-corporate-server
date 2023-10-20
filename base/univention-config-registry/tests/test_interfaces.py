@@ -15,9 +15,9 @@ from univention.config_registry.interfaces import Interfaces, _Iface, cmp_alnum,
 
 
 @pytest.fixture(autouse=True)
-def tmpucr(monkeypatch):
+def tmpucr(monkeypatch,):
     """Setup UCR instance using `dev/null` for all tests."""
-    monkeypatch.setenv('UNIVENTION_BASECONF', devnull)
+    monkeypatch.setenv('UNIVENTION_BASECONF', devnull,)
 
 
 def test_VengefulConfigRegistry():
@@ -167,8 +167,8 @@ class TestInterfaces(object):
         assert t.ipv6_gateway is False
         assert t.ipv6_gateway_zone_index is None
 
-    @pytest.mark.parametrize("value", [None, ""])
-    def test_non_values(self, value):
+    @pytest.mark.parametrize("value", [None, ""],)
+    def test_non_values(self, value,):
         assert Interfaces(ucr={"key": value})
 
     def test_ipv4_multi(self):
@@ -392,29 +392,29 @@ class TestSort(object):
     def test_all_num(self):
         """Test all plain numeric."""
         data = [0, 1]
-        assert data == sorted(data, key=cmp_alnum)
+        assert data == sorted(data, key=cmp_alnum,)
 
     def test_all_num_str(self):
         """Test all string numeric."""
         data = ['0', '1']
-        assert data == sorted(data, key=cmp_alnum)
+        assert data == sorted(data, key=cmp_alnum,)
 
     def test_all_str(self):
         """Test all string."""
         data = ['a', 'b']
-        assert data == sorted(data, key=cmp_alnum)
+        assert data == sorted(data, key=cmp_alnum,)
 
     def test_str_num_str(self):
         """Test all string numeric."""
         data = ['0', 'b']
-        assert data == sorted(data, key=cmp_alnum)
+        assert data == sorted(data, key=cmp_alnum,)
 
     def test_num_str(self):
         """Test all string numeric."""
         data = [0, 'b']
-        assert data == sorted(data, key=cmp_alnum)
+        assert data == sorted(data, key=cmp_alnum,)
 
     def test_mixed(self):
         """Test mixed strings."""
         data = ['eth2', 'eth10']
-        assert data == sorted(data, key=cmp_alnum)
+        assert data == sorted(data, key=cmp_alnum,)

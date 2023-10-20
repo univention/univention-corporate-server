@@ -34,23 +34,23 @@ class Test:
         self.username = uts.random_username()
         self.password = uts.random_string()
 
-        self.totalRounds = Test._get_int_env('smbauth_totalRounds', 3)
-        self.amountPerRound = Test._get_int_env('smbauth_amountPerRound', 8)
-        self.roundTime = Test._get_int_env('smbauth_roundTime', 6)
+        self.totalRounds = Test._get_int_env('smbauth_totalRounds', 3,)
+        self.amountPerRound = Test._get_int_env('smbauth_amountPerRound', 8,)
+        self.roundTime = Test._get_int_env('smbauth_roundTime', 6,)
         print("Configured for %d times %d processes in %ds." % (
             self.totalRounds, self.amountPerRound, self.roundTime,
         ))
 
-        self.innerDelay = Test._calculateInnerDelay(self.roundTime, self.amountPerRound)
+        self.innerDelay = Test._calculateInnerDelay(self.roundTime, self.amountPerRound,)
 
     def main(self):
         Test.disable_home_mount()
 
         with udm_test.UCSTestUDM() as udm:
-            udm.create_user(username=self.username, password=self.password)
+            udm.create_user(username=self.username, password=self.password,)
 
             print("Waiting for DRS replication...")
-            wait_for_drs_replication(f"(sAMAccountName={self.username})", attrs="objectSid")
+            wait_for_drs_replication(f"(sAMAccountName={self.username})", attrs="objectSid",)
 
             self.start_processes()
             self.check_processes()
@@ -64,9 +64,9 @@ class Test:
     def smbclient(self):
         print("Forking %d processes..." % (len(self.innerDelay),))
         cmd = ("/usr/bin/smbclient", f"-U{self.username}%{self.password}", "//localhost/netlogon")
-        with open(os.path.devnull, 'wb') as null:
+        with open(os.path.devnull, 'wb',) as null:
             for delay in self.innerDelay:
-                subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=null, stderr=null)
+                subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=null, stderr=null,)
                 time.sleep(delay)
 
     def check_processes(self):
@@ -79,9 +79,9 @@ class Test:
             utils.fail()
 
     @staticmethod
-    def checkResult(expectedResult, max_wait=30):
+    def checkResult(expectedResult, max_wait=30,):
         for i in range(max_wait):
-            proc = subprocess.Popen(('smbstatus',), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            proc = subprocess.Popen(('smbstatus',), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
             count = len([line for line in proc.stdout if line.startswith(b'netlogon')])
             if count == expectedResult:
                 return count
@@ -90,16 +90,16 @@ class Test:
         return count
 
     @staticmethod
-    def _get_int_env(key, default):
+    def _get_int_env(key, default,):
         try:
             return int(os.getenv(key))
         except (TypeError, ValueError):
             return default
 
     @staticmethod
-    def _calculateInnerDelay(roundTime, amountPerRound):
+    def _calculateInnerDelay(roundTime, amountPerRound,):
         """Return array of <amountPerRound> floats which sum-up to <roundTime>."""
-        delayArray = [random.randrange(1, 1000, 1) for _ in range(amountPerRound)]
+        delayArray = [random.randrange(1, 1000, 1,) for _ in range(amountPerRound)]
         total = sum(delayArray)
         delayArray = [float(_) / total * roundTime for _ in delayArray]
         return delayArray
@@ -110,10 +110,10 @@ class Test:
         ucr.load()
         homedir_mount = ucr.get("homedir/mount")
         univention.config_registry.handler_set(['homedir/mount=false'])
-        atexit.register(Test._cleanup, homedir_mount)
+        atexit.register(Test._cleanup, homedir_mount,)
 
     @staticmethod
-    def _cleanup(homedir_mount):
+    def _cleanup(homedir_mount,):
         if not homedir_mount:
             univention.config_registry.handler_unset(['homedir/mount'])
         else:

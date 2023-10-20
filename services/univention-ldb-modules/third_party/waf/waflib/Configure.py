@@ -37,7 +37,7 @@ class ConfigurationContext(Context.Context):
 	"""
 
 	def __init__(self, **kw):
-		super(ConfigurationContext, self).__init__(**kw)
+		super(ConfigurationContext, self,).__init__(**kw)
 		self.environ = dict(os.environ)
 		self.all_envs = {}
 
@@ -53,7 +53,7 @@ class ConfigurationContext(Context.Context):
 
 		self.setenv('')
 
-	def setenv(self, name, env=None):
+	def setenv(self, name, env=None,):
 		"""
 		Set a new config set for conf.env. If a config set of that name already exists,
 		recall it without modification.
@@ -87,11 +87,11 @@ class ConfigurationContext(Context.Context):
 	def get_env(self):
 		"""Getter for the env property"""
 		return self.all_envs[self.variant]
-	def set_env(self, val):
+	def set_env(self, val,):
 		"""Setter for the env property"""
 		self.all_envs[self.variant] = val
 
-	env = property(get_env, set_env)
+	env = property(get_env, set_env,)
 
 	def init_dirs(self):
 		"""
@@ -102,7 +102,7 @@ class ConfigurationContext(Context.Context):
 		if not top:
 			top = Options.options.top
 		if not top:
-			top = getattr(Context.g_module, Context.TOP, None)
+			top = getattr(Context.g_module, Context.TOP, None,)
 		if not top:
 			top = self.path.abspath()
 		top = os.path.abspath(top)
@@ -114,9 +114,9 @@ class ConfigurationContext(Context.Context):
 		if not out:
 			out = Options.options.out
 		if not out:
-			out = getattr(Context.g_module, Context.OUT, None)
+			out = getattr(Context.g_module, Context.OUT, None,)
 		if not out:
-			out = Options.lockfile.replace('.lock-waf_%s_' % sys.platform, '').replace('.lock-waf', '')
+			out = Options.lockfile.replace('.lock-waf_%s_' % sys.platform, '',).replace('.lock-waf', '',)
 
 		# someone can be messing with symlinks
 		out = os.path.realpath(out)
@@ -136,19 +136,19 @@ class ConfigurationContext(Context.Context):
 		self.cachedir = self.bldnode.make_node(Build.CACHE_DIR)
 		self.cachedir.mkdir()
 
-		path = os.path.join(self.bldnode.abspath(), WAF_CONFIG_LOG)
-		self.logger = Logs.make_logger(path, 'cfg')
+		path = os.path.join(self.bldnode.abspath(), WAF_CONFIG_LOG,)
+		self.logger = Logs.make_logger(path, 'cfg',)
 
-		app = getattr(Context.g_module, 'APPNAME', '')
+		app = getattr(Context.g_module, 'APPNAME', '',)
 		if app:
-			ver = getattr(Context.g_module, 'VERSION', '')
+			ver = getattr(Context.g_module, 'VERSION', '',)
 			if ver:
 				app = "%s (%s)" % (app, ver)
 
 		params = {'now': time.ctime(), 'pyver': sys.hexversion, 'systype': sys.platform, 'args': " ".join(sys.argv), 'wafver': Context.WAFVERSION, 'abi': Context.ABI, 'app': app}
 		self.to_log(conf_template % params)
-		self.msg('Setting top to', self.srcnode.abspath())
-		self.msg('Setting out to', self.bldnode.abspath())
+		self.msg('Setting top to', self.srcnode.abspath(),)
+		self.msg('Setting out to', self.bldnode.abspath(),)
 
 		if id(self.srcnode) == id(self.bldnode):
 			Logs.warn('Setting top == out')
@@ -156,7 +156,7 @@ class ConfigurationContext(Context.Context):
 			if self.srcnode.is_child_of(self.path):
 				Logs.warn('Are you certain that you do not want to set top="." ?')
 
-		super(ConfigurationContext, self).execute()
+		super(ConfigurationContext, self,).execute()
 
 		self.store()
 
@@ -182,14 +182,14 @@ class ConfigurationContext(Context.Context):
 		env.environ = dict(self.environ)
 		env.launch_dir = Context.launch_dir
 
-		if not (self.env.NO_LOCK_IN_RUN or env.environ.get('NO_LOCK_IN_RUN') or getattr(Options.options, 'no_lock_in_run')):
-			env.store(os.path.join(Context.run_dir, Options.lockfile))
-		if not (self.env.NO_LOCK_IN_TOP or env.environ.get('NO_LOCK_IN_TOP') or getattr(Options.options, 'no_lock_in_top')):
-			env.store(os.path.join(Context.top_dir, Options.lockfile))
-		if not (self.env.NO_LOCK_IN_OUT or env.environ.get('NO_LOCK_IN_OUT') or getattr(Options.options, 'no_lock_in_out')):
-			env.store(os.path.join(Context.out_dir, Options.lockfile))
+		if not (self.env.NO_LOCK_IN_RUN or env.environ.get('NO_LOCK_IN_RUN') or getattr(Options.options, 'no_lock_in_run',)):
+			env.store(os.path.join(Context.run_dir, Options.lockfile,))
+		if not (self.env.NO_LOCK_IN_TOP or env.environ.get('NO_LOCK_IN_TOP') or getattr(Options.options, 'no_lock_in_top',)):
+			env.store(os.path.join(Context.top_dir, Options.lockfile,))
+		if not (self.env.NO_LOCK_IN_OUT or env.environ.get('NO_LOCK_IN_OUT') or getattr(Options.options, 'no_lock_in_out',)):
+			env.store(os.path.join(Context.out_dir, Options.lockfile,))
 
-	def prepare_env(self, env):
+	def prepare_env(self, env,):
 		"""
 		Insert *PREFIX*, *BINDIR* and *LIBDIR* values into ``env``
 
@@ -205,12 +205,12 @@ class ConfigurationContext(Context.Context):
 			if Options.options.bindir:
 				env.BINDIR = Options.options.bindir
 			else:
-				env.BINDIR = Utils.subst_vars('${PREFIX}/bin', env)
+				env.BINDIR = Utils.subst_vars('${PREFIX}/bin', env,)
 		if not env.LIBDIR:
 			if Options.options.libdir:
 				env.LIBDIR = Options.options.libdir
 			else:
-				env.LIBDIR = Utils.subst_vars('${PREFIX}/lib%s' % Utils.lib64(), env)
+				env.LIBDIR = Utils.subst_vars('${PREFIX}/lib%s' % Utils.lib64(), env,)
 
 	def store(self):
 		"""Save the config results into the cache file"""
@@ -222,9 +222,9 @@ class ConfigurationContext(Context.Context):
 
 		for key in self.all_envs:
 			tmpenv = self.all_envs[key]
-			tmpenv.store(os.path.join(self.cachedir.abspath(), key + Build.CACHE_SUFFIX))
+			tmpenv.store(os.path.join(self.cachedir.abspath(), key + Build.CACHE_SUFFIX,))
 
-	def load(self, tool_list, tooldir=None, funs=None, with_sys_path=True, cache=False):
+	def load(self, tool_list, tooldir=None, funs=None, with_sys_path=True, cache=False,):
 		"""
 		Load Waf tools, which will be imported whenever a build is started.
 
@@ -254,9 +254,9 @@ class ConfigurationContext(Context.Context):
 
 			module = None
 			try:
-				module = Context.load_tool(tool, tooldir, ctx=self, with_sys_path=with_sys_path)
+				module = Context.load_tool(tool, tooldir, ctx=self, with_sys_path=with_sys_path,)
 			except ImportError as e:
-				self.fatal('Could not load the Waf tool %r from %r\n%s' % (tool, getattr(e, 'waf_sys_path', sys.path), e))
+				self.fatal('Could not load the Waf tool %r from %r\n%s' % (tool, getattr(e, 'waf_sys_path', sys.path,), e))
 			except Exception as e:
 				self.to_log('imp %r (%r & %r)' % (tool, tooldir, funs))
 				self.to_log(traceback.format_exc())
@@ -265,7 +265,7 @@ class ConfigurationContext(Context.Context):
 			if funs is not None:
 				self.eval_rules(funs)
 			else:
-				func = getattr(module, 'configure', None)
+				func = getattr(module, 'configure', None,)
 				if func:
 					if type(func) is type(Utils.readf):
 						func(self)
@@ -274,18 +274,18 @@ class ConfigurationContext(Context.Context):
 
 			self.tools.append({'tool':tool, 'tooldir':tooldir, 'funs':funs})
 
-	def post_recurse(self, node):
+	def post_recurse(self, node,):
 		"""
 		Records the path and a hash of the scripts visited, see :py:meth:`waflib.Context.Context.post_recurse`
 
 		:param node: script
 		:type node: :py:class:`waflib.Node.Node`
 		"""
-		super(ConfigurationContext, self).post_recurse(node)
+		super(ConfigurationContext, self,).post_recurse(node)
 		self.hash = Utils.h_list((self.hash, node.read('rb')))
 		self.files.append(node.abspath())
 
-	def eval_rules(self, rules):
+	def eval_rules(self, rules,):
 		"""
 		Execute configuration tests provided as list of functions to run
 
@@ -294,12 +294,12 @@ class ConfigurationContext(Context.Context):
 		"""
 		self.rules = Utils.to_list(rules)
 		for x in self.rules:
-			f = getattr(self, x)
+			f = getattr(self, x,)
 			if not f:
 				self.fatal('No such configuration function %r' % x)
 			f()
 
-def conf(f):
+def conf(f,):
 	"""
 	Decorator: attach new configuration functions to :py:class:`waflib.Build.BuildContext` and
 	:py:class:`waflib.Configure.ConfigurationContext`. The methods bound will accept a parameter
@@ -312,20 +312,20 @@ def conf(f):
 	:type f: function
 	"""
 	def fun(*k, **kw):
-		mandatory = kw.pop('mandatory', True)
+		mandatory = kw.pop('mandatory', True,)
 		try:
-			return f(*k, **kw)
+			return f(*k, **kw,)
 		except Errors.ConfigurationError:
 			if mandatory:
 				raise
 
 	fun.__name__ = f.__name__
-	setattr(ConfigurationContext, f.__name__, fun)
-	setattr(Build.BuildContext, f.__name__, fun)
+	setattr(ConfigurationContext, f.__name__, fun,)
+	setattr(Build.BuildContext, f.__name__, fun,)
 	return f
 
 @conf
-def add_os_flags(self, var, dest=None, dup=False):
+def add_os_flags(self, var, dest=None, dup=False,):
 	"""
 	Import operating system environment values into ``conf.env`` dict::
 
@@ -344,17 +344,17 @@ def add_os_flags(self, var, dest=None, dup=False):
 	except KeyError:
 		return
 	if dup or ''.join(flags) not in ''.join(Utils.to_list(self.env[dest or var])):
-		self.env.append_value(dest or var, flags)
+		self.env.append_value(dest or var, flags,)
 
 @conf
-def cmd_to_list(self, cmd):
+def cmd_to_list(self, cmd,):
 	"""
 	Detect if a command is written in pseudo shell like ``ccache g++`` and return a list.
 
 	:param cmd: command
 	:type cmd: a string or a list of string
 	"""
-	if isinstance(cmd, str):
+	if isinstance(cmd, str,):
 		if os.path.isfile(cmd):
 			# do not take any risk
 			return [cmd]
@@ -362,14 +362,14 @@ def cmd_to_list(self, cmd):
 			return shlex.split(cmd)
 		else:
 			try:
-				return shlex.split(cmd, posix=False)
+				return shlex.split(cmd, posix=False,)
 			except TypeError:
 				# Python 2.5 on windows?
 				return shlex.split(cmd)
 	return cmd
 
 @conf
-def check_waf_version(self, mini='1.9.99', maxi='2.1.0', **kw):
+def check_waf_version(self, mini='1.9.99', maxi='2.1.0',**kw):
 	"""
 	Raise a Configuration error if the Waf version does not strictly match the given bounds::
 
@@ -380,16 +380,16 @@ def check_waf_version(self, mini='1.9.99', maxi='2.1.0', **kw):
 	:type  maxi: number, tuple or string
 	:param maxi: Maximum allowed version
 	"""
-	self.start_msg('Checking for waf version in %s-%s' % (str(mini), str(maxi)), **kw)
+	self.start_msg('Checking for waf version in %s-%s' % (str(mini), str(maxi)), **kw,)
 	ver = Context.HEXVERSION
 	if Utils.num2ver(mini) > ver:
 		self.fatal('waf version should be at least %r (%r found)' % (Utils.num2ver(mini), ver))
 	if Utils.num2ver(maxi) < ver:
 		self.fatal('waf version should be at most %r (%r found)' % (Utils.num2ver(maxi), ver))
-	self.end_msg('ok', **kw)
+	self.end_msg('ok', **kw,)
 
 @conf
-def find_file(self, filename, path_list=[]):
+def find_file(self, filename, path_list=[],):
 	"""
 	Find a file in a list of paths
 
@@ -399,13 +399,13 @@ def find_file(self, filename, path_list=[]):
 	"""
 	for n in Utils.to_list(filename):
 		for d in Utils.to_list(path_list):
-			p = os.path.expanduser(os.path.join(d, n))
+			p = os.path.expanduser(os.path.join(d, n,))
 			if os.path.exists(p):
 				return p
 	self.fatal('Could not find %r' % filename)
 
 @conf
-def find_program(self, filename, **kw):
+def find_program(self, filename,**kw):
 	"""
 	Search for a program on the operating system
 
@@ -428,24 +428,24 @@ def find_program(self, filename, **kw):
 	:raises: :py:class:`waflib.Errors.ConfigurationError`
 	"""
 
-	exts = kw.get('exts', Utils.is_win32 and '.exe,.com,.bat,.cmd' or ',.sh,.pl,.py')
+	exts = kw.get('exts', Utils.is_win32 and '.exe,.com,.bat,.cmd' or ',.sh,.pl,.py',)
 
-	environ = kw.get('environ', getattr(self, 'environ', os.environ))
+	environ = kw.get('environ', getattr(self, 'environ', os.environ,),)
 
 	ret = ''
 
 	filename = Utils.to_list(filename)
-	msg = kw.get('msg', ', '.join(filename))
+	msg = kw.get('msg', ', '.join(filename),)
 
-	var = kw.get('var', '')
+	var = kw.get('var', '',)
 	if not var:
-		var = re.sub(r'\W', '_', filename[0].upper())
+		var = re.sub(r'\W', '_', filename[0].upper(),)
 
-	path_list = kw.get('path_list', '')
+	path_list = kw.get('path_list', '',)
 	if path_list:
 		path_list = Utils.to_list(path_list)
 	else:
-		path_list = environ.get('PATH', '').split(os.pathsep)
+		path_list = environ.get('PATH', '',).split(os.pathsep)
 
 	if kw.get('value'):
 		# user-provided in command-line options and passed to find_program
@@ -458,11 +458,11 @@ def find_program(self, filename, **kw):
 		ret = self.cmd_to_list(self.env[var])
 	else:
 		if not ret:
-			ret = self.find_binary(filename, exts.split(','), path_list)
+			ret = self.find_binary(filename, exts.split(','), path_list,)
 		if not ret and Utils.winreg:
-			ret = Utils.get_registry_app_path(Utils.winreg.HKEY_CURRENT_USER, filename)
+			ret = Utils.get_registry_app_path(Utils.winreg.HKEY_CURRENT_USER, filename,)
 		if not ret and Utils.winreg:
-			ret = Utils.get_registry_app_path(Utils.winreg.HKEY_LOCAL_MACHINE, filename)
+			ret = Utils.get_registry_app_path(Utils.winreg.HKEY_LOCAL_MACHINE, filename,)
 		ret = self.cmd_to_list(ret)
 
 	if ret:
@@ -473,16 +473,16 @@ def find_program(self, filename, **kw):
 	else:
 		retmsg = False
 
-	self.msg('Checking for program %r' % msg, retmsg, **kw)
+	self.msg('Checking for program %r' % msg, retmsg, **kw,)
 	if not kw.get('quiet'):
 		self.to_log('find program=%r paths=%r var=%r -> %r' % (filename, path_list, var, ret))
 
 	if not ret:
-		self.fatal(kw.get('errmsg', '') or 'Could not find the program %r' % filename)
+		self.fatal(kw.get('errmsg', '',) or 'Could not find the program %r' % filename)
 
 	interpreter = kw.get('interpreter')
 	if interpreter is None:
-		if not Utils.check_exe(ret[0], env=environ):
+		if not Utils.check_exe(ret[0], env=environ,):
 			self.fatal('Program %r is not executable' % ret)
 		self.env[var] = ret
 	else:
@@ -491,7 +491,7 @@ def find_program(self, filename, **kw):
 	return ret
 
 @conf
-def find_binary(self, filenames, exts, paths):
+def find_binary(self, filenames, exts, paths,):
 	for f in filenames:
 		for ext in exts:
 			exe_name = f + ext
@@ -500,7 +500,7 @@ def find_binary(self, filenames, exts, paths):
 					return exe_name
 			else:
 				for path in paths:
-					x = os.path.expanduser(os.path.join(path, exe_name))
+					x = os.path.expanduser(os.path.join(path, exe_name,))
 					if os.path.isfile(x):
 						return x
 	return None
@@ -542,17 +542,17 @@ def run_build(self, *k, **kw):
 	buf = []
 	for key in sorted(kw.keys()):
 		v = kw[key]
-		if isinstance(v, ConfigSet.ConfigSet):
+		if isinstance(v, ConfigSet.ConfigSet,):
 			# values are being written to, so they are excluded from contributing to the hash
 			continue
-		elif hasattr(v, '__call__'):
+		elif hasattr(v, '__call__',):
 			buf.append(Utils.h_fun(v))
 		else:
 			buf.append(str(v))
 	h = Utils.h_list(buf)
 	dir = self.bldnode.abspath() + os.sep + (not Utils.is_win32 and '.' or '') + 'conf_check_' + Utils.to_hex(h)
 
-	cachemode = kw.get('confcache', getattr(Options.options, 'confcache', None))
+	cachemode = kw.get('confcache', getattr(Options.options, 'confcache', None,),)
 
 	if not cachemode and os.path.exists(dir):
 		shutil.rmtree(dir)
@@ -569,22 +569,22 @@ def run_build(self, *k, **kw):
 
 	if cachemode == 1:
 		try:
-			proj = ConfigSet.ConfigSet(os.path.join(dir, 'cache_run_build'))
+			proj = ConfigSet.ConfigSet(os.path.join(dir, 'cache_run_build',))
 		except EnvironmentError:
 			pass
 		else:
 			ret = proj['cache_run_build']
-			if isinstance(ret, str) and ret.startswith('Test does not build'):
+			if isinstance(ret, str,) and ret.startswith('Test does not build'):
 				self.fatal(ret)
 			return ret
 
-	bdir = os.path.join(dir, 'testbuild')
+	bdir = os.path.join(dir, 'testbuild',)
 
 	if not os.path.exists(bdir):
 		os.makedirs(bdir)
 
-	cls_name = kw.get('run_build_cls') or getattr(self, 'run_build_cls', 'build')
-	self.test_bld = bld = Context.create_context(cls_name, top_dir=dir, out_dir=bdir)
+	cls_name = kw.get('run_build_cls') or getattr(self, 'run_build_cls', 'build',)
+	self.test_bld = bld = Context.create_context(cls_name, top_dir=dir, out_dir=bdir,)
 	bld.init_dirs()
 	bld.progress_bar = 0
 	bld.targets = '*'
@@ -604,20 +604,20 @@ def run_build(self, *k, **kw):
 			ret = 'Test does not build: %s' % traceback.format_exc()
 			self.fatal(ret)
 		else:
-			ret = getattr(bld, 'retval', 0)
+			ret = getattr(bld, 'retval', 0,)
 	finally:
 		if cachemode:
 			# cache the results each time
 			proj = ConfigSet.ConfigSet()
 			proj['cache_run_build'] = ret
-			proj.store(os.path.join(dir, 'cache_run_build'))
+			proj.store(os.path.join(dir, 'cache_run_build',))
 		else:
 			shutil.rmtree(dir)
 	return ret
 
 @conf
-def ret_msg(self, msg, args):
-	if isinstance(msg, str):
+def ret_msg(self, msg, args,):
+	if isinstance(msg, str,):
 		return msg
 	return msg(args)
 
@@ -631,12 +631,12 @@ def test(self, *k, **kw):
 	if kw.get('validate'):
 		kw['validate'](kw)
 
-	self.start_msg(kw['msg'], **kw)
+	self.start_msg(kw['msg'], **kw,)
 	ret = None
 	try:
-		ret = self.run_build(*k, **kw)
+		ret = self.run_build(*k, **kw,)
 	except self.errors.ConfigurationError:
-		self.end_msg(kw['errmsg'], 'YELLOW', **kw)
+		self.end_msg(kw['errmsg'], 'YELLOW', **kw,)
 		if Logs.verbose > 1:
 			raise
 		else:
@@ -648,9 +648,9 @@ def test(self, *k, **kw):
 		ret = kw['post_check'](kw)
 
 	if ret:
-		self.end_msg(kw['errmsg'], 'YELLOW', **kw)
+		self.end_msg(kw['errmsg'], 'YELLOW', **kw,)
 		self.fatal('The configuration failed %r' % ret)
 	else:
-		self.end_msg(self.ret_msg(kw['okmsg'], kw), **kw)
+		self.end_msg(self.ret_msg(kw['okmsg'], kw,), **kw,)
 	return ret
 

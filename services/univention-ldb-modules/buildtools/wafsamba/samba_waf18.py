@@ -11,11 +11,11 @@ from waflib.Tools.flex import decide_ext
 # This version of flexfun runs in tsk.get_cwd() as opposed to the
 # bld.variant_dir: since input paths adjusted against tsk.get_cwd(), we have to
 # use tsk.get_cwd() for the work directory as well.
-def flexfun(tsk):
+def flexfun(tsk,):
     env = tsk.env
     bld = tsk.generator.bld
-    def to_list(xx):
-        if isinstance(xx, str):
+    def to_list(xx,):
+        if isinstance(xx, str,):
             return [xx]
         return xx
     tsk.last_cmd = lst = []
@@ -23,18 +23,17 @@ def flexfun(tsk):
     lst.extend(to_list(env.FLEXFLAGS))
     inputs = [a.path_from(tsk.get_cwd()) for a in tsk.inputs]
     if env.FLEX_MSYS:
-        inputs = [x.replace(os.sep, '/') for x in inputs]
+        inputs = [x.replace(os.sep, '/',) for x in inputs]
     lst.extend(inputs)
     lst = [x for x in lst if x]
-    txt = bld.cmd_and_log(lst, cwd=tsk.get_cwd(), env=env.env or None, quiet=0)
-    tsk.outputs[0].write(txt.replace('\r\n', '\n').replace('\r', '\n')) # issue #1207
+    txt = bld.cmd_and_log(lst, cwd=tsk.get_cwd(), env=env.env or None, quiet=0,)
+    tsk.outputs[0].write(txt.replace('\r\n', '\n',).replace('\r', '\n',)) # issue #1207
 
 TaskGen.declare_chain(
     name = 'flex',
     rule = flexfun, # issue #854
     ext_in = '.l',
-    decider = decide_ext,
-)
+    decider = decide_ext,)
 
 Build.BuildContext.variant = 'default'
 Build.CleanContext.variant = 'default'
@@ -42,34 +41,34 @@ Build.InstallContext.variant = 'default'
 Build.UninstallContext.variant = 'default'
 Build.ListContext.variant = 'default'
 
-def abspath(self, env=None):
-    if env and hasattr(self, 'children'):
+def abspath(self, env=None,):
+    if env and hasattr(self, 'children',):
         return self.get_bld().abspath()
     return self.old_abspath()
 Node.Node.old_abspath = Node.Node.abspath
 Node.Node.abspath = abspath
 
-def bldpath(self, env=None):
+def bldpath(self, env=None,):
     return self.abspath()
     #return self.path_from(self.ctx.bldnode.parent)
 Node.Node.bldpath = bldpath
 
-def srcpath(self, env=None):
+def srcpath(self, env=None,):
     return self.abspath()
     #return self.path_from(self.ctx.bldnode.parent)
 Node.Node.srcpath = srcpath
 
-def store_fast(self, filename):
-    file = open(filename, 'wb')
+def store_fast(self, filename,):
+    file = open(filename, 'wb',)
     data = self.get_merged_dict()
     try:
-        Build.cPickle.dump(data, file, -1)
+        Build.cPickle.dump(data, file, -1,)
     finally:
         file.close()
 ConfigSet.ConfigSet.store_fast = store_fast
 
-def load_fast(self, filename):
-    file = open(filename, 'rb')
+def load_fast(self, filename,):
+    file = open(filename, 'rb',)
     try:
         data = Build.cPickle.load(file)
     finally:
@@ -77,27 +76,27 @@ def load_fast(self, filename):
     self.table.update(data)
 ConfigSet.ConfigSet.load_fast = load_fast
 
-@feature('c', 'cxx', 'd', 'asm', 'fc', 'includes')
-@after('propagate_uselib_vars', 'process_source')
+@feature('c', 'cxx', 'd', 'asm', 'fc', 'includes',)
+@after('propagate_uselib_vars', 'process_source',)
 def apply_incpaths(self):
-    lst = self.to_incnodes(self.to_list(getattr(self, 'includes', [])) + self.env['INCLUDES'])
+    lst = self.to_incnodes(self.to_list(getattr(self, 'includes', [],)) + self.env['INCLUDES'])
     self.includes_nodes = lst
-    cwdx = getattr(self.bld, 'cwdx', self.bld.bldnode)
+    cwdx = getattr(self.bld, 'cwdx', self.bld.bldnode,)
     self.env['INCPATHS'] = [x.path_from(cwdx) for x in lst]
 
 @conf
-def define(self, key, val, quote=True, comment=None):
-   assert key and isinstance(key, str)
+def define(self, key, val, quote=True, comment=None,):
+   assert key and isinstance(key, str,)
 
    if val is None:
        val = ()
-   elif isinstance(val, bool):
+   elif isinstance(val, bool,):
        val = int(val)
 
    # waf 1.5
    self.env[key] = val
 
-   if isinstance(val, int) or isinstance(val, float):
+   if isinstance(val, int,) or isinstance(val, float,):
            s = '%s=%s'
    else:
            s = quote and '%s="%s"' or '%s=%s'
@@ -110,18 +109,18 @@ def define(self, key, val, quote=True, comment=None):
                    lst[lst.index(x)] = app
                    break
    else:
-           self.env.append_value('DEFINES', app)
+           self.env.append_value('DEFINES', app,)
 
-   self.env.append_unique('define_key', key)
+   self.env.append_unique('define_key', key,)
 
 # compat15 removes this but we want to keep it
 @conf
-def undefine(self, key, from_env=True, comment=None):
-    assert key and isinstance(key, str)
+def undefine(self, key, from_env=True, comment=None,):
+    assert key and isinstance(key, str,)
 
     ban = key + '='
     self.env.DEFINES = [x for x in self.env.DEFINES if not x.startswith(ban)]
-    self.env.append_unique('define_key', key)
+    self.env.append_unique('define_key', key,)
     # waf 1.5
     if from_env:
         self.env[key] = ()
@@ -130,13 +129,13 @@ class ConfigurationContext(Configure.ConfigurationContext):
     def init_dirs(self):
         self.setenv('default')
         self.env.merge_config_header = True
-        return super(ConfigurationContext, self).init_dirs()
+        return super(ConfigurationContext, self,).init_dirs()
 
 def find_program_samba(self, *k, **kw):
     # Override the waf default set in the @conf decorator in Configure.py
     if 'mandatory' not in kw:
         kw['mandatory'] = False
-    ret = self.find_program_old(*k, **kw)
+    ret = self.find_program_old(*k, **kw,)
     return ret
 Configure.ConfigurationContext.find_program_old = Configure.ConfigurationContext.find_program
 Configure.ConfigurationContext.find_program = find_program_samba
@@ -156,27 +155,27 @@ def check(self, *k, **kw):
     if 'msg' in kw:
         msg = kw['msg']
         for x in Options.OptionsContext.parser.parser.option_list:
-             if getattr(x, 'match', None) and msg in x.match:
-                 d = getattr(Options.options, x.dest, '')
+             if getattr(x, 'match', None,) and msg in x.match:
+                 d = getattr(Options.options, x.dest, '',)
                  if d:
                      additional_dirs.append(d)
 
     # we add the additional dirs twice: once for the test data, and again if the compilation test suceeds below
-    def add_options_dir(dirs, env):
+    def add_options_dir(dirs, env,):
         for x in dirs:
              if not x in env.CPPPATH:
-                 env.CPPPATH = [os.path.join(x, 'include')] + env.CPPPATH
+                 env.CPPPATH = [os.path.join(x, 'include',)] + env.CPPPATH
              if not x in env.LIBPATH:
-                 env.LIBPATH = [os.path.join(x, 'lib')] + env.LIBPATH
+                 env.LIBPATH = [os.path.join(x, 'lib',)] + env.LIBPATH
 
-    add_options_dir(additional_dirs, kw['env'])
+    add_options_dir(additional_dirs, kw['env'],)
 
-    self.start_msg(kw['msg'], **kw)
+    self.start_msg(kw['msg'], **kw,)
     ret = None
     try:
-        ret = self.run_build(*k, **kw)
+        ret = self.run_build(*k, **kw,)
     except self.errors.ConfigurationError:
-        self.end_msg(kw['errmsg'], 'YELLOW', **kw)
+        self.end_msg(kw['errmsg'], 'YELLOW', **kw,)
         if Logs.verbose > 1:
             raise
         else:
@@ -184,18 +183,18 @@ def check(self, *k, **kw):
     else:
         kw['success'] = ret
         # success! time for brandy
-        add_options_dir(additional_dirs, self.env)
+        add_options_dir(additional_dirs, self.env,)
 
-    ret = self.post_check(*k, **kw)
+    ret = self.post_check(*k, **kw,)
     if not ret:
-        self.end_msg(kw['errmsg'], 'YELLOW', **kw)
+        self.end_msg(kw['errmsg'], 'YELLOW', **kw,)
         self.fatal('The configuration failed %r' % ret)
     else:
-        self.end_msg(self.ret_msg(kw['okmsg'], kw), **kw)
+        self.end_msg(self.ret_msg(kw['okmsg'], kw,), **kw,)
     return ret
 
 @conf
-def CHECK_LIBRARY_SUPPORT(conf, rpath=False, version_script=False, msg=None):
+def CHECK_LIBRARY_SUPPORT(conf, rpath=False, version_script=False, msg=None,):
     '''see if the platform supports building libraries'''
 
     if msg is None:
@@ -204,53 +203,53 @@ def CHECK_LIBRARY_SUPPORT(conf, rpath=False, version_script=False, msg=None):
         else:
             msg = "building library support"
 
-    def build(bld):
+    def build(bld,):
         lib_node = bld.srcnode.make_node('libdir/liblc1.c')
         lib_node.parent.mkdir()
-        lib_node.write('int lib_func(void) { return 42; }\n', 'w')
+        lib_node.write('int lib_func(void) { return 42; }\n', 'w',)
         main_node = bld.srcnode.make_node('main.c')
         main_node.write('int lib_func(void);\n'
-                        'int main(void) {return !(lib_func() == 42);}', 'w')
+                        'int main(void) {return !(lib_func() == 42);}', 'w',)
         linkflags = []
         if version_script:
             script = bld.srcnode.make_node('ldscript')
-            script.write('TEST_1.0A2 { global: *; };\n', 'w')
+            script.write('TEST_1.0A2 { global: *; };\n', 'w',)
             linkflags.append('-Wl,--version-script=%s' % script.abspath())
-        bld(features='c cshlib', source=lib_node, target='lib1', linkflags=linkflags, name='lib1')
-        o = bld(features='c cprogram', source=main_node, target='prog1', uselib_local='lib1')
+        bld(features='c cshlib', source=lib_node, target='lib1', linkflags=linkflags, name='lib1',)
+        o = bld(features='c cprogram', source=main_node, target='prog1', uselib_local='lib1',)
         if rpath:
             o.rpath = [lib_node.parent.abspath()]
         def run_app(self):
              args = conf.SAMBA_CROSS_ARGS(msg=msg)
              env = dict(os.environ)
-             env['LD_LIBRARY_PATH'] = self.inputs[0].parent.abspath() + os.pathsep + env.get('LD_LIBRARY_PATH', '')
-             self.generator.bld.cmd_and_log([self.inputs[0].abspath()] + args, env=env)
+             env['LD_LIBRARY_PATH'] = self.inputs[0].parent.abspath() + os.pathsep + env.get('LD_LIBRARY_PATH', '',)
+             self.generator.bld.cmd_and_log([self.inputs[0].abspath()] + args, env=env,)
         o.post()
-        bld(rule=run_app, source=o.link_task.outputs[0])
+        bld(rule=run_app, source=o.link_task.outputs[0],)
 
     # ok, so it builds
     try:
-        conf.check(build_fun=build, msg='Checking for %s' % msg)
+        conf.check(build_fun=build, msg='Checking for %s' % msg,)
     except conf.errors.ConfigurationError:
         return False
     return True
 
 @conf
-def CHECK_NEED_LC(conf, msg):
+def CHECK_NEED_LC(conf, msg,):
     '''check if we need -lc'''
-    def build(bld):
+    def build(bld,):
         lib_node = bld.srcnode.make_node('libdir/liblc1.c')
         lib_node.parent.mkdir()
-        lib_node.write('#include <stdio.h>\nint lib_func(void) { FILE *f = fopen("foo", "r");}\n', 'w')
-        bld(features='c cshlib', source=[lib_node], linkflags=conf.env.EXTRA_LDFLAGS, target='liblc')
+        lib_node.write('#include <stdio.h>\nint lib_func(void) { FILE *f = fopen("foo", "r");}\n', 'w',)
+        bld(features='c cshlib', source=[lib_node], linkflags=conf.env.EXTRA_LDFLAGS, target='liblc',)
     try:
-        conf.check(build_fun=build, msg=msg, okmsg='-lc is unnecessary', errmsg='-lc is necessary')
+        conf.check(build_fun=build, msg=msg, okmsg='-lc is unnecessary', errmsg='-lc is necessary',)
     except conf.errors.ConfigurationError:
         return False
     return True
 
 # already implemented on "waf -v"
-def order(bld, tgt_list):
+def order(bld, tgt_list,):
     return True
 Build.BuildContext.check_group_ordering = order
 
@@ -261,9 +260,9 @@ def CHECK_CFG(self, *k, **kw):
     if not 'mandatory' in kw:
         kw['mandatory'] = False
     kw['global_define'] = True
-    return self.check_cfg(*k, **kw)
+    return self.check_cfg(*k, **kw,)
 
-def cmd_output(cmd, **kw):
+def cmd_output(cmd,**kw):
 
     silent = False
     if 'silent' in kw:
@@ -275,13 +274,13 @@ def cmd_output(cmd, **kw):
         del(kw['e'])
         kw['env'] = tmp
 
-    kw['shell'] = isinstance(cmd, str)
+    kw['shell'] = isinstance(cmd, str,)
     kw['stdout'] = Utils.subprocess.PIPE
     if silent:
         kw['stderr'] = Utils.subprocess.PIPE
 
     try:
-        p = Utils.subprocess.Popen(cmd, **kw)
+        p = Utils.subprocess.Popen(cmd, **kw,)
         output = p.communicate()[0]
     except OSError as e:
         raise ValueError(str(e))
@@ -295,9 +294,9 @@ def cmd_output(cmd, **kw):
 Utils.cmd_output = cmd_output
 
 
-@TaskGen.feature('c', 'cxx', 'd')
-@TaskGen.before('apply_incpaths', 'propagate_uselib_vars')
-@TaskGen.after('apply_link', 'process_source')
+@TaskGen.feature('c', 'cxx', 'd',)
+@TaskGen.before('apply_incpaths', 'propagate_uselib_vars',)
+@TaskGen.after('apply_link', 'process_source',)
 def apply_uselib_local(self):
     """
     process the uselib_local attribute
@@ -308,9 +307,9 @@ def apply_uselib_local(self):
 
     # 1. the case of the libs defined in the project (visit ancestors first)
     # the ancestors external libraries (uselib) will be prepended
-    self.uselib = self.to_list(getattr(self, 'uselib', []))
-    self.includes = self.to_list(getattr(self, 'includes', []))
-    names = self.to_list(getattr(self, 'uselib_local', []))
+    self.uselib = self.to_list(getattr(self, 'uselib', [],))
+    self.includes = self.to_list(getattr(self, 'includes', [],))
+    names = self.to_list(getattr(self, 'uselib_local', [],))
     get = self.bld.get_tgen_by_name
     seen = set()
     seen_uselib = set()
@@ -329,23 +328,23 @@ def apply_uselib_local(self):
         seen.add(lib_name)
 
         # object has ancestors to process (shared libraries): add them to the end of the list
-        if getattr(y, 'uselib_local', None):
-            for x in self.to_list(getattr(y, 'uselib_local', [])):
+        if getattr(y, 'uselib_local', None,):
+            for x in self.to_list(getattr(y, 'uselib_local', [],)):
                 obj = get(x)
                 obj.post()
-                if getattr(obj, 'link_task', None):
-                    if not isinstance(obj.link_task, stlink_task):
+                if getattr(obj, 'link_task', None,):
+                    if not isinstance(obj.link_task, stlink_task,):
                         tmp.append(x)
 
         # link task and flags
-        if getattr(y, 'link_task', None):
+        if getattr(y, 'link_task', None,):
 
             link_name = y.target[y.target.rfind(os.sep) + 1:]
-            if isinstance(y.link_task, stlink_task):
-                env.append_value('STLIB', [link_name])
+            if isinstance(y.link_task, stlink_task,):
+                env.append_value('STLIB', [link_name],)
             else:
                 # some linkers can link against programs
-                env.append_value('LIB', [link_name])
+                env.append_value('LIB', [link_name],)
 
             # the order
             self.link_task.set_run_after(y.link_task)
@@ -356,26 +355,26 @@ def apply_uselib_local(self):
             # add the link path too
             tmp_path = y.link_task.outputs[0].parent.bldpath()
             if not tmp_path in env['LIBPATH']:
-                env.prepend_value('LIBPATH', [tmp_path])
+                env.prepend_value('LIBPATH', [tmp_path],)
 
         # add ancestors uselib too - but only propagate those that have no staticlib defined
-        for v in self.to_list(getattr(y, 'uselib', [])):
+        for v in self.to_list(getattr(y, 'uselib', [],)):
             if v not in seen_uselib:
                 seen_uselib.add(v)
                 if not env['STLIB_' + v]:
                     if not v in self.uselib:
-                        self.uselib.insert(0, v)
+                        self.uselib.insert(0, v,)
 
         # if the library task generator provides 'export_includes', add to the include path
         # the export_includes must be a list of paths relative to the other library
-        if getattr(y, 'export_includes', None):
+        if getattr(y, 'export_includes', None,):
             self.includes.extend(y.to_incnodes(y.export_includes))
 
-@TaskGen.feature('cprogram', 'cxxprogram', 'cstlib', 'cxxstlib', 'cshlib', 'cxxshlib', 'dprogram', 'dstlib', 'dshlib')
+@TaskGen.feature('cprogram', 'cxxprogram', 'cstlib', 'cxxstlib', 'cshlib', 'cxxshlib', 'dprogram', 'dstlib', 'dshlib',)
 @TaskGen.after('apply_link')
 def apply_objdeps(self):
     "add the .o files produced by some other object files in the same manner as uselib_local"
-    names = getattr(self, 'add_objects', [])
+    names = getattr(self, 'add_objects', [],)
     if not names:
         return
     names = self.to_list(names)
@@ -394,7 +393,7 @@ def apply_objdeps(self):
         y = get(x)
 
         # object has ancestors to process first ? update the list of names
-        if getattr(y, 'add_objects', None):
+        if getattr(y, 'add_objects', None,):
             added = 0
             lst = y.to_list(y.add_objects)
             lst.reverse()
@@ -410,23 +409,23 @@ def apply_objdeps(self):
         y.post()
         seen.append(x)
 
-        for t in getattr(y, 'compiled_tasks', []):
+        for t in getattr(y, 'compiled_tasks', [],):
             self.link_task.inputs.extend(t.outputs)
 
 @TaskGen.after('apply_link')
 def process_obj_files(self):
-    if not hasattr(self, 'obj_files'):
+    if not hasattr(self, 'obj_files',):
         return
     for x in self.obj_files:
         node = self.path.find_resource(x)
         self.link_task.inputs.append(node)
 
 @TaskGen.taskgen_method
-def add_obj_file(self, file):
+def add_obj_file(self, file,):
     """Small example on how to link object files as if they were source
     obj = bld.create_obj('cc')
     obj.add_obj_file('foo.o')"""
-    if not hasattr(self, 'obj_files'):
+    if not hasattr(self, 'obj_files',):
         self.obj_files = []
     if not 'process_obj_files' in self.meths:
         self.meths.append('process_obj_files')

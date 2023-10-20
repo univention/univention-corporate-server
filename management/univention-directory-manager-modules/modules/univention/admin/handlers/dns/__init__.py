@@ -35,19 +35,19 @@
 import six
 
 
-__path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
+__path__ = __import__('pkgutil').extend_path(__path__, __name__,)  # type: ignore
 
 ARPA_IP4 = '.in-addr.arpa'
 ARPA_IP6 = '.ip6.arpa'
 
 
-def makeContactPerson(obj, arg):
+def makeContactPerson(obj, arg,):
     """Create contact Email-address for domain."""
     domain = obj.position.getDomain()
-    return 'root@%s.' % (domain.replace('dc=', '').replace(',', '.'),)
+    return 'root@%s.' % (domain.replace('dc=', '',).replace(',', '.',),)
 
 
-def unescapeSOAemail(email):
+def unescapeSOAemail(email,):
     r"""
     Un-escape Email-address from DNS SOA record.
     >>> unescapeSOAemail(r'first\.last.domain.tld')
@@ -72,7 +72,7 @@ def unescapeSOAemail(email):
     raise ValueError()
 
 
-def escapeSOAemail(email):
+def escapeSOAemail(email,):
     r"""
     Escape Email-address for DNS SOA record.
     >>> escapeSOAemail('first.last@domain.tld')
@@ -81,7 +81,7 @@ def escapeSOAemail(email):
     SPECIAL_CHARACTERS = set('"(),.:;<>@[\\]')
     if '@' not in email:
         raise ValueError()
-    (local, domain) = email.rsplit('@', 1)
+    (local, domain) = email.rsplit('@', 1,)
     tmp = ''
     for c in local:
         if c in SPECIAL_CHARACTERS:
@@ -91,7 +91,7 @@ def escapeSOAemail(email):
     return local + '.' + domain
 
 
-def stripDot(old, encoding=()):
+def stripDot(old, encoding=(),):
     """
     >>> stripDot(['example.com.', 'example.com'])
     ['example.com', 'example.com']
@@ -103,8 +103,8 @@ def stripDot(old, encoding=()):
     ''
     >>> stripDot(None)
     """
-    if isinstance(old, list):
-        return [stripDot(_, encoding) for _ in old]
+    if isinstance(old, list,):
+        return [stripDot(_, encoding,) for _ in old]
     if old is None:
         return old
-    return old[:-1].encode(*encoding) if isinstance(old, (bytes, six.text_type)) and old.endswith('.') else old.encode(*encoding)
+    return old[:-1].encode(*encoding) if isinstance(old, (bytes, six.text_type),) and old.endswith('.') else old.encode(*encoding)

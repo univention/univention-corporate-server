@@ -41,7 +41,7 @@ from univention.config_registry.interfaces import Interfaces
 
 class ChangeSet(object):
 
-    def __init__(self, ucr: ConfigRegistry, profile: Dict[str, str], options):
+    def __init__(self, ucr: ConfigRegistry, profile: Dict[str, str], options,):
         self.ucr = ucr
         self.profile = profile
         self.options = options
@@ -52,14 +52,14 @@ class ChangeSet(object):
         self.update_config(self.only_network_config(profile))
 
     @staticmethod
-    def only_network_config(profile: Dict[str, str]) -> Dict[str, Optional[str]]:
+    def only_network_config(profile: Dict[str, str],) -> Dict[str, Optional[str]]:
         config: Dict[str, Optional[str]] = {}
         for key, value in profile.items():
             if key.startswith("interfaces/"):
                 config[key] = value or None
         return config
 
-    def update_config(self, changes: Dict[str, Optional[str]]) -> None:
+    def update_config(self, changes: Dict[str, Optional[str]],) -> None:
         self.ucr_changes.update(changes)
         new_ucr = dict(self.ucr.items())  # Bug #33101
         new_ucr.update(changes)
@@ -103,11 +103,11 @@ class Phase:
 
     priority = 0
 
-    def __init__(self, changeset: ChangeSet) -> None:
+    def __init__(self, changeset: ChangeSet,) -> None:
         self.changeset = changeset
         self.logger = logging.getLogger("uss.network.phase.%s" % (self,))
 
-    def __lt__(self, other: object) -> object:
+    def __lt__(self, other: object,) -> object:
         """
         Order phases by priority.
 
@@ -124,22 +124,22 @@ class Phase:
         >>> Phase(None) > Phase(None)
         False
         """
-        return (self.priority, str(self)) < (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+        return (self.priority, str(self)) < (other.priority, str(other)) if isinstance(other, Phase,) else NotImplemented
 
-    def __le__(self, other: object) -> object:
-        return (self.priority, str(self)) <= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+    def __le__(self, other: object,) -> object:
+        return (self.priority, str(self)) <= (other.priority, str(other)) if isinstance(other, Phase,) else NotImplemented
 
-    def __eq__(self, other: object) -> bool:
-        return isinstance(other, Phase) and (self.priority, str(self)) == (other.priority, str(other))
+    def __eq__(self, other: object,) -> bool:
+        return isinstance(other, Phase,) and (self.priority, str(self)) == (other.priority, str(other))
 
-    def __ne__(self, other: object) -> bool:
+    def __ne__(self, other: object,) -> bool:
         return not self.__eq__(other)
 
-    def __ge__(self, other: object) -> object:
-        return (self.priority, str(self)) >= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+    def __ge__(self, other: object,) -> object:
+        return (self.priority, str(self)) >= (other.priority, str(other)) if isinstance(other, Phase,) else NotImplemented
 
-    def __gt__(self, other: object) -> object:
-        return (self.priority, str(self)) > (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+    def __gt__(self, other: object,) -> object:
+        return (self.priority, str(self)) > (other.priority, str(other)) if isinstance(other, Phase,) else NotImplemented
 
     def __str__(self) -> str:
         name = self.__class__.__name__
@@ -148,9 +148,9 @@ class Phase:
         return name
 
     @classmethod
-    def _check_valid(cls, other: Type["Phase"]) -> None:
+    def _check_valid(cls, other: Type["Phase"],) -> None:
         try:
-            if not issubclass(other, cls):
+            if not issubclass(other, cls,):
                 raise SkipPhase('Invalid super-class')
             if not other.priority:
                 raise SkipPhase('Missing priority')
@@ -171,12 +171,12 @@ class Phase:
     def post(self) -> None:
         """Called after the changes have been applied to UCR."""
 
-    def call(self, command: Sequence[str]) -> int:
+    def call(self, command: Sequence[str],) -> int:
         """Call external command using subprocess.call(shell=False)."""
-        self.logger.debug("Running %r", command)
+        self.logger.debug("Running %r", command,)
         if self.changeset.no_act:
             ret = 0
         else:
             ret = subprocess.call(command)
-            self.logger.debug("%r returned %d", command, ret)
+            self.logger.debug("%r returned %d", command, ret,)
         return ret

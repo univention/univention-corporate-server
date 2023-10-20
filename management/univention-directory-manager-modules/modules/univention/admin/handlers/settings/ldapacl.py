@@ -55,8 +55,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionObjectMetadata', 'univentionLDAPExtensionACL'],
-    ),
+        objectClasses=['top', 'univentionObjectMetadata', 'univentionLDAPExtensionACL'],),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -65,53 +64,44 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True,
-    ),
+        identifies=True,),
     'filename': univention.admin.property(
         short_description=_('ACL file name'),
         long_description='',
         syntax=univention.admin.syntax.BaseFilename,
         required=True,
-        default='',
-    ),
+        default='',),
     'data': univention.admin.property(
         short_description=_('ACL data'),
         long_description='',
         syntax=univention.admin.syntax.Base64Bzip2Text,
-        required=True,
-    ),
+        required=True,),
     'active': univention.admin.property(
         short_description=_('Active'),
         long_description='',
         syntax=univention.admin.syntax.TrueFalseUp,
-        default='FALSE',
-    ),
+        default='FALSE',),
     'appidentifier': univention.admin.property(
         short_description=_('App identifier'),
         long_description='',
         syntax=univention.admin.syntax.TextArea,
-        multivalue=True,
-    ),
+        multivalue=True,),
     'package': univention.admin.property(
         short_description=_('Software package'),
         long_description='',
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'packageversion': univention.admin.property(
         short_description=_('Software package version'),
         long_description='',
-        syntax=univention.admin.syntax.DebianPackageVersion,
-    ),
+        syntax=univention.admin.syntax.DebianPackageVersion,),
     'ucsversionstart': univention.admin.property(
         short_description=_('Minimal UCS version'),
         long_description='',
-        syntax=univention.admin.syntax.UCSVersion,
-    ),
+        syntax=univention.admin.syntax.UCSVersion,),
     'ucsversionend': univention.admin.property(
         short_description=_('Maximal UCS version'),
         long_description='',
-        syntax=univention.admin.syntax.UCSVersion,
-    ),
+        syntax=univention.admin.syntax.UCSVersion,),
 }
 
 layout = [
@@ -120,46 +110,46 @@ layout = [
             ["name"],
             ["filename"],
             ["data"],
-        ]),
+        ],),
         Group(_('Metadata'), layout=[
             ["package"],
             ["packageversion"],
             ["appidentifier"],
-        ]),
+        ],),
         Group(_('UCS Version Dependencies'), layout=[
             ["ucsversionstart"],
             ["ucsversionend"],
-        ]),
+        ],),
         Group(_('Activated'), layout=[
             ["active"],
-        ]),
-    ]),
+        ],),
+    ],),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('filename', 'univentionLDAPACLFilename', None, univention.admin.mapping.ListToString)
-mapping.register('data', 'univentionLDAPACLData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('active', 'univentionLDAPACLActive', None, univention.admin.mapping.ListToString)
-mapping.register('appidentifier', 'univentionAppIdentifier')
-mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
-mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
-mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
-mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('filename', 'univentionLDAPACLFilename', None, univention.admin.mapping.ListToString,)
+mapping.register('data', 'univentionLDAPACLData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
+mapping.register('active', 'univentionLDAPACLActive', None, univention.admin.mapping.ListToString,)
+mapping.register('appidentifier', 'univentionAppIdentifier',)
+mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString,)
+mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString,)
+mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString,)
+mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString,)
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _ldap_pre_modify(self):
-        super(object, self)._ldap_pre_modify()
+        super(object, self,)._ldap_pre_modify()
         diff_keys = [key for key in self.info.keys() if self.info.get(key) != self.oldinfo.get(key) and key not in ('active', 'appidentifier')]
         if not diff_keys:  # check for trivial change
             return
         if not self.hasChanged('package'):
-            old_version = self.oldinfo.get('packageversion', '0')
-            if not apt.apt_pkg.version_compare(self['packageversion'], old_version) > -1:
-                raise univention.admin.uexceptions.valueInvalidSyntax(_('packageversion: Version must not be lower than the current one.'), property='packageversion')
+            old_version = self.oldinfo.get('packageversion', '0',)
+            if not apt.apt_pkg.version_compare(self['packageversion'], old_version,) > -1:
+                raise univention.admin.uexceptions.valueInvalidSyntax(_('packageversion: Version must not be lower than the current one.'), property='packageversion',)
 
 
 lookup = object.lookup

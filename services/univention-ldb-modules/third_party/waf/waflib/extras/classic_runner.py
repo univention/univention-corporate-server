@@ -17,7 +17,7 @@ class TaskConsumer(Utils.threading.Thread):
 
 	They wait for tasks in the queue and then use ``task.process(...)``
 	"""
-	def __init__(self, spawner):
+	def __init__(self, spawner,):
 		Utils.threading.Thread.__init__(self)
 		"""
 		Obtain :py:class:`waflib.Task.TaskBase` instances from this queue.
@@ -59,7 +59,7 @@ class Spawner(object):
 	spawns a consuming thread :py:class:`waflib.Runner.Consumer` for each
 	:py:class:`waflib.Task.Task` instance.
 	"""
-	def __init__(self, master):
+	def __init__(self, master,):
 		self.master = master
 		""":py:class:`waflib.Runner.Parallel` producer instance"""
 

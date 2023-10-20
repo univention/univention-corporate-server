@@ -22,10 +22,10 @@ logger = logging.getLogger(__name__)
 PROVIDER_PORTAL_JSON = 'https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-catalog.json'
 
 
-def run_test_file(fname):
+def run_test_file(fname,):
     with tempfile.NamedTemporaryFile(suffix='.py') as tmpfile:
         logger.info(f'Copying file to {tmpfile.name}')
-        shutil.copy2(fname, tmpfile.name)
+        shutil.copy2(fname, tmpfile.name,)
         with pip_modules(['pytest', 'selenium', 'xvfbwrapper', 'uritemplate']):
             importlib.reload(sys.modules[__name__])
             import pytest
@@ -38,12 +38,12 @@ def run_test_file(fname):
 
 
 @contextmanager
-def pip_modules(modules):
+def pip_modules(modules,):
     if os.environ.get('UCS_TEST_NO_PIP') == 'TRUE':
         yield
-    if subprocess.run(['which', 'pip3'], stdout=subprocess.DEVNULL).returncode != 0:
+    if subprocess.run(['which', 'pip3'], stdout=subprocess.DEVNULL,).returncode != 0:
         raise RuntimeError('pip3 is required. Install python3-pip')
-    installed = subprocess.run(['pip3', 'list', '--format=columns'], stdout=subprocess.PIPE)
+    installed = subprocess.run(['pip3', 'list', '--format=columns'], stdout=subprocess.PIPE,)
     logger.info(modules)
     for line in installed.stdout.splitlines()[2:]:
         mod, ver = line.decode('utf-8').strip().split()
@@ -71,16 +71,16 @@ def xserver():
         yield display
     else:
         from xvfbwrapper import Xvfb
-        with Xvfb(width=1920, height=1080) as xvfb:
+        with Xvfb(width=1920, height=1080,) as xvfb:
             yield xvfb.new_display
 
 
-def ffmpg_start(capture_video, display):
-    process = subprocess.Popen(['ffmpeg', '-y', '-video_size', '1920x1080', '-framerate', '30', '-f', 'x11grab', '-i', f':{display}', '-c:v', 'libx264', '-crf', '0', capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+def ffmpg_start(capture_video, display,):
+    process = subprocess.Popen(['ffmpeg', '-y', '-video_size', '1920x1080', '-framerate', '30', '-f', 'x11grab', '-i', f':{display}', '-c:v', 'libx264', '-crf', '0', capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,)
     return process.pid
 
 
-def ffmpg_stop(pid):
+def ffmpg_stop(pid,):
     subprocess.Popen(['kill', str(pid)])
 
 
@@ -89,20 +89,20 @@ def is_local():
 
 
 class Session:
-    def __init__(self, display_num, base_url, screenshot_path, driver):
+    def __init__(self, display_num, base_url, screenshot_path, driver,):
         self.display_num = display_num
         self.base_url = base_url
         self.screenshot_path = screenshot_path
         self.driver = driver
         self.ucs_root_ca = '/etc/univention/ssl/ucsCA/CAcert.pem'
-        if os.path.isfile(self.ucs_root_ca) and os.environ.get('UCS_TEST_APPS_ADD_CERT', 'yes') != 'no':
+        if os.path.isfile(self.ucs_root_ca) and os.environ.get('UCS_TEST_APPS_ADD_CERT', 'yes',) != 'no':
             self.add_ucs_root_ca_to_chrome_cert_store()
 
     def add_ucs_root_ca_to_chrome_cert_store(self):
         # add ucs root ca to chromiums cert store
         # certutil -L -d sql:.pki/nssdb/
         # certutil -A -n "UCS root CA" -t "TCu,Cu,Tu" -i /etc/univention/ssl/ucsCA/CAcert.pem -d sql:.pki/nssd
-        cert_store = os.path.join(os.environ['HOME'], '.pki', 'nssdb')
+        cert_store = os.path.join(os.environ['HOME'], '.pki', 'nssdb',)
         if not os.path.isdir(cert_store):
             os.makedirs(cert_store)
         import_cert = ['certutil', '-A', '-n', 'UCS root CA', '-t', 'TCu,Cu,Tu', '-i', self.ucs_root_ca, '-d', f'sql:{cert_store}']
@@ -111,37 +111,37 @@ class Session:
     def __enter__(self):
         yield self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback,):
         self.driver.quit()
 
     def __del__(self):
         self.driver.quit()
 
     @contextmanager
-    def capture(self, name):
-        filename = self._new_filename(name, 'mkv')
-        pid = ffmpg_start(filename, self.display_num)
+    def capture(self, name,):
+        filename = self._new_filename(name, 'mkv',)
+        pid = ffmpg_start(filename, self.display_num,)
         try:
             yield
         finally:
             ffmpg_stop(pid)
             self.save_screenshot(name)
 
-    def wait_until_clickable(self, css):
+    def wait_until_clickable(self, css,):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support import expected_conditions as EC
         from selenium.webdriver.support.ui import WebDriverWait
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css)))
+        WebDriverWait(self.driver, 10,).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css)))
 
-    def wait_until_clickable_and_click(self, css):
+    def wait_until_clickable_and_click(self, css,):
         self.wait_until_clickable(css)
         self.click_element(css)
 
-    def wait_until_gone(self, css):
+    def wait_until_gone(self, css,):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support import expected_conditions as EC
         from selenium.webdriver.support.ui import WebDriverWait
-        WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located((By.CSS_SELECTOR, css)))
+        WebDriverWait(self.driver, 10,).until(EC.invisibility_of_element_located((By.CSS_SELECTOR, css)))
 
     def goto_portal(self):
         self.get('/univention/portal')
@@ -172,24 +172,24 @@ class Session:
         # close side menu
         self.wait_until_clickable_and_click('#header-button-menu')
 
-    def portal_login(self, username, password):
+    def portal_login(self, username, password,):
         self.wait_until_clickable_and_click('#header-button-menu')
         self.wait_until_clickable_and_click('#loginButton')
-        self.enter_input('username', username)
-        self.enter_input('password', password)
+        self.enter_input('username', username,)
+        self.enter_input('password', password,)
         self.enter_return()
 
-    def click_portal_tile(self, name):
+    def click_portal_tile(self, name,):
         from selenium.common.exceptions import NoSuchElementException
         elements = self.find_all('.portal-tile__name')
         for element in elements:
             print(f'-{element.text}- -> {name}')
             if element.text == name:
-                self.driver.execute_script("arguments[0].click();", element)
+                self.driver.execute_script("arguments[0].click();", element,)
                 time.sleep(2)
                 try:
                     # iframe mode
-                    self.driver.switch_to.frame(self.driver.find_element(By.XPATH, '//iframe[@class="portal-iframe__iframe"]'))
+                    self.driver.switch_to.frame(self.driver.find_element(By.XPATH, '//iframe[@class="portal-iframe__iframe"]',))
                 except NoSuchElementException:
                     # tab mode
                     self.change_tab(-1)
@@ -198,13 +198,13 @@ class Session:
             raise RuntimeError(f'Could not find {name}')
 
     @contextmanager
-    def switched_frame(self, css):
+    def switched_frame(self, css,):
         iframe = self.assert_one(css)
         self.driver.switch_to.frame(iframe)
         yield
         self.driver.switch_to.default_content()
 
-    def get(self, url):
+    def get(self, url,):
         if url.startswith('/'):
             url = self.base_url + url
         self.driver.get(url)
@@ -215,46 +215,46 @@ class Session:
     def reload(self):
         self.driver.refresh()
 
-    def find_all(self, css):
-        logger.info("Searching for %r", css)
-        return self.driver.find_elements(By.CSS_SELECTOR, css)
+    def find_all(self, css,):
+        logger.info("Searching for %r", css,)
+        return self.driver.find_elements(By.CSS_SELECTOR, css,)
 
-    def find_all_below(self, element, css):
-        return element.find_elements(By.CSS_SELECTOR, css)
+    def find_all_below(self, element, css,):
+        return element.find_elements(By.CSS_SELECTOR, css,)
 
-    def find_first(self, css):
+    def find_first(self, css,):
         elements = self.find_all(css)
-        logger.info("Found %d elements", len(elements))
+        logger.info("Found %d elements", len(elements),)
         if len(elements) == 0:
             return None
         return elements[0]
 
-    def assert_one(self, css):
+    def assert_one(self, css,):
         elements = self.find_all(css)
         assert len(elements) == 1, f'len(elements) == {len(elements)}'
         return elements[0]
 
-    def assert_one_below(self, element, css):
-        elements = self.find_all_below(element, css)
+    def assert_one_below(self, element, css,):
+        elements = self.find_all_below(element, css,)
         assert len(elements) == 1, f'len(elements) == {len(elements)}'
         return elements[0]
 
-    def click_element(self, css):
+    def click_element(self, css,):
         self.assert_one(css).click()
 
-    def click_element_below(self, element, css):
-        self.assert_one_below(element, css).click()
+    def click_element_below(self, element, css,):
+        self.assert_one_below(element, css,).click()
 
-    def change_tab(self, idx):
+    def change_tab(self, idx,):
         self.driver.switch_to.window(self.driver.window_handles[idx])
 
     def close_tab(self):
         self.driver.close()
 
-    def enter_input(self, input_name, value):
-        self.enter_input_element(f'[name={input_name}]', value)
+    def enter_input(self, input_name, value,):
+        self.enter_input_element(f'[name={input_name}]', value,)
 
-    def enter_input_element(self, css, value):
+    def enter_input_element(self, css, value,):
         from selenium.common.exceptions import InvalidElementStateException
         elem = self.assert_one(css)
         try:
@@ -263,10 +263,10 @@ class Session:
             pass
         elem.send_keys(value)
 
-    def enter_return(self, css=None):
+    def enter_return(self, css=None,):
         from selenium.webdriver.common.keys import Keys
         if css:
-            self.enter_input_element(css, Keys.RETURN)
+            self.enter_input_element(css, Keys.RETURN,)
         else:
             self.send_keys(Keys.RETURN)
 
@@ -281,42 +281,42 @@ class Session:
         from selenium.webdriver.common.keys import Keys
         self.send_keys(Keys.TAB)
 
-    def drag_and_drop(self, source, target):
+    def drag_and_drop(self, source, target,):
         from selenium.webdriver import ActionChains
         action = ActionChains(self.driver)
-        action.drag_and_drop(source, target)
+        action.drag_and_drop(source, target,)
 
-    def send_keys(self, keys):
+    def send_keys(self, keys,):
         from selenium.webdriver import ActionChains
         action = ActionChains(self.driver)
         action.send_keys(keys).perform()
 
-    def _new_filename(self, name, ext):
+    def _new_filename(self, name, ext,):
         timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        os.makedirs(self.screenshot_path, exist_ok=True)
-        return os.path.join(self.screenshot_path, f'{name}_{timestamp}.{ext}')
+        os.makedirs(self.screenshot_path, exist_ok=True,)
+        return os.path.join(self.screenshot_path, f'{name}_{timestamp}.{ext}',)
 
-    def save_screenshot(self, name):
-        filename = self._new_filename(name, 'png')
-        logger.info('Saving screenshot %r', filename)
+    def save_screenshot(self, name,):
+        filename = self._new_filename(name, 'png',)
+        logger.info('Saving screenshot %r', filename,)
         self.driver.save_screenshot(filename)
         return filename
 
     @classmethod
-    def chrome(cls, display_num, base_url, screenshot_path):
+    def chrome(cls, display_num, base_url, screenshot_path,):
         from selenium import webdriver
         options = webdriver.ChromeOptions()
         options.add_argument('--no-sandbox')  # chrome complains about being executed as root
         if os.environ.get('UCS_TEST_SELENIUM_IGNORE_CERTS'):
             options.add_argument('--ignore-certificate-errors')
         driver = webdriver.Chrome(options=options)
-        return cls(display_num, base_url, screenshot_path, driver)
+        return cls(display_num, base_url, screenshot_path, driver,)
 
     @classmethod
     @contextmanager
-    def running_chrome(cls, base_url, screenshot_path):
+    def running_chrome(cls, base_url, screenshot_path,):
         with xserver() as display:
-            obj = cls.chrome(display, base_url, screenshot_path)
+            obj = cls.chrome(display, base_url, screenshot_path,)
             obj.driver.maximize_window()
             with obj:
                 yield obj
@@ -343,7 +343,7 @@ else:
             return {}
 
     @pytest.fixture(scope='session')
-    def hostname(config):
+    def hostname(config,):
         """Hostname to test against"""
         ret = os.environ.get('UCS_TEST_HOSTNAME')
         if ret is None:
@@ -355,7 +355,7 @@ else:
         return ret
 
     @pytest.fixture(scope='session')
-    def fqdn(config):
+    def fqdn(config,):
         """fqdn to test against"""
         ret = os.environ.get('UCS_TEST_HOSTNAME')
         if ret is None:
@@ -369,7 +369,7 @@ else:
         return ret
 
     @pytest.fixture(scope='session')
-    def admin_username(config):
+    def admin_username(config,):
         """Username of the Admin account"""
         ret = os.environ.get('UCS_TEST_ADMIN_USERNAME')
         if not ret:
@@ -378,17 +378,17 @@ else:
         return ret
 
     @pytest.fixture(scope='session')
-    def admin_password(config):
+    def admin_password(config,):
         """Password of the Admin account"""
         ret = os.environ.get('UCS_TEST_ADMIN_USERNAME')
         ret = os.environ.get('UCS_TEST_ADMIN_PASSWORD')
         if not ret:
-            ret = config.get('tests/domainadmin/pwd', 'univention')
+            ret = config.get('tests/domainadmin/pwd', 'univention',)
         return ret
 
     @pytest.fixture(scope='session')
-    def umc(hostname, admin_username, admin_password):
-        umc_lib = os.environ.get('UCS_TEST_UMC_CLIENT_LIB', 'univention.testing._umc')
+    def umc(hostname, admin_username, admin_password,):
+        umc_lib = os.environ.get('UCS_TEST_UMC_CLIENT_LIB', 'univention.testing._umc',)
         try:
             umc_lib = importlib.import_module(umc_lib)
         except ImportError:
@@ -398,63 +398,63 @@ else:
         scheme, hostname = hostname.split('//')
         if scheme == 'http:':
             Client.ConnectionType = HTTPConnection
-        client = Client(hostname=hostname, username=admin_username, password=admin_password, useragent='UCS/ucs-test')
+        client = Client(hostname=hostname, username=admin_username, password=admin_password, useragent='UCS/ucs-test',)
         return client
 
     @pytest.fixture()
-    def ucs_call(fqdn):
-        def _run(args):
+    def ucs_call(fqdn,):
+        def _run(args,):
             logger.info(f'Running: {args!r}')
             if is_local():
                 logger.info('... locally')
-                subprocess.run(args, check=True)
+                subprocess.run(args, check=True,)
             else:
-                logger.info('... with SSH, hope you have added your SSH keys to %s?', fqdn)
-                subprocess.run(['ssh', fqdn] + [quote(arg) for arg in args], check=True)
+                logger.info('... with SSH, hope you have added your SSH keys to %s?', fqdn,)
+                subprocess.run(['ssh', fqdn] + [quote(arg) for arg in args], check=True,)
         return _run
 
     @pytest.fixture()
-    def ucr(umc):
+    def ucr(umc,):
         class UCR:
-            def __init__(self, client):
+            def __init__(self, client,):
                 self.client = client
                 self._old = {}
 
-            def get(self, key):
-                logger.info('Getting UCRV %s', key)
-                response = self.client.umc_command('ucr/get', [key])
+            def get(self, key,):
+                logger.info('Getting UCRV %s', key,)
+                response = self.client.umc_command('ucr/get', [key],)
                 value = response.result[0]['value']
-                logger.info('Found %r', value)
+                logger.info('Found %r', value,)
                 return value
 
-            def set(self, updates, revert_afterwards=True):
+            def set(self, updates, revert_afterwards=True,):
                 if revert_afterwards:
                     keys = list(updates.keys())
-                    response = self.client.umc_command('ucr/get', keys)
-                    old = zip(keys, [res.get('value') for res in response.result])
+                    response = self.client.umc_command('ucr/get', keys,)
+                    old = zip(keys, [res.get('value') for res in response.result],)
                     for k, v in dict(old).items():
                         if k not in self._old:
-                            logger.info('Saving %r=%r for later revert', k, v)
+                            logger.info('Saving %r=%r for later revert', k, v,)
                             self._old[k] = v
-                logger.info('Updating %r', updates)
-                self.client.umc_command('ucr/put', [{'object': {'key': k, 'value': v}} for k, v in updates.items() if v is not None])
-                self.client.umc_command('ucr/remove', [{'object': k} for k, v in updates.items() if v is None])
+                logger.info('Updating %r', updates,)
+                self.client.umc_command('ucr/put', [{'object': {'key': k, 'value': v}} for k, v in updates.items() if v is not None],)
+                self.client.umc_command('ucr/remove', [{'object': k} for k, v in updates.items() if v is None],)
 
         ucr_module = UCR(umc)
         yield ucr_module
         if ucr_module._old:
-            ucr_module.set(ucr_module._old, revert_afterwards=False)
+            ucr_module.set(ucr_module._old, revert_afterwards=False,)
 
     @pytest.fixture(scope='session')
-    def appcenter(umc, fqdn):
+    def appcenter(umc, fqdn,):
         class AppCenter:
-            def __init__(self, client):
+            def __init__(self, client,):
                 self.client = client
 
-            def install_newest(self, app_id):
+            def install_newest(self, app_id,):
                 app_version = None
                 if '=' in app_id:
-                    app_id, app_version = tuple(app_id.split('=', 1))
+                    app_id, app_version = tuple(app_id.split('=', 1,))
                 else:
                     app_version = self.get_published_version(app_id)
                 app = self.get(app_id)
@@ -476,11 +476,11 @@ else:
                     "action": app_function,
                     "auto_installed": [],
                     "hosts": {fqdn: app_id},
-                    "apps": ["{}={}".format(app_id, app['version'])],
+                    "apps": ["{}={}".format(app_id, app['version'],)],
                     "dry_run": False,
                     "settings": {app_id: {}},
                 }
-                response = self.client.umc_command("appcenter/run", data)
+                response = self.client.umc_command("appcenter/run", data,)
                 progress_id = response.result['id']
                 finished = False
                 i = 0
@@ -489,16 +489,16 @@ else:
                     i += 1
                     if i > 600:
                         raise RuntimeError('Did not finish within 20 minutes')
-                    result = self.client.umc_command('appcenter/progress', {'progress_id': progress_id}).result
+                    result = self.client.umc_command('appcenter/progress', {'progress_id': progress_id},).result
                     finished = result.get('finished')
                     assert not result.get('serious_problems')
-                    for message in result.get('intermediate', []):
+                    for message in result.get('intermediate', [],):
                         logger.info(message)
                 app = self.get(app_id)
                 assert app['is_installed']
                 return app
 
-            def get_published_version(self, app_id):
+            def get_published_version(self, app_id,):
                 logger.info(f'Retrieving published App {app_id}')
                 r = requests.get(PROVIDER_PORTAL_JSON)
                 for app in r.json():
@@ -506,17 +506,17 @@ else:
                         return app['version']
                 return None
 
-            def get(self, app_id):
+            def get(self, app_id,):
                 logger.info(f'Retrieving App {app_id}')
-                response = self.client.umc_command('appcenter/get', {'application': app_id})
+                response = self.client.umc_command('appcenter/get', {'application': app_id},)
                 return response.result
 
         return AppCenter(umc)
 
     @pytest.fixture(scope='session')
-    def udm(hostname, config, admin_username, admin_password):
+    def udm(hostname, config, admin_username, admin_password,):
         """A UDM instance (REST client)"""
-        rest_lib = os.environ.get('UCS_TEST_REST_CLIENT_LIB', 'univention.testing._udm_rest')
+        rest_lib = os.environ.get('UCS_TEST_REST_CLIENT_LIB', 'univention.testing._udm_rest',)
         try:
             rest_lib = importlib.import_module(rest_lib)
         except ImportError:
@@ -529,19 +529,19 @@ else:
             else:
                 logger.warning('$UCS_TEST_UDM_URI not set')
             uri = f'{hostname}/univention/udm/'
-        udm = rest_lib.UDM.http(uri, admin_username, admin_password)
+        udm = rest_lib.UDM.http(uri, admin_username, admin_password,)
         return udm
 
     @pytest.fixture(scope='session')
-    def users(udm):
+    def users(udm,):
         user_mod = udm.get('users/user')
         users = {}
         user_id_cache = {'X': 1}  # very elegant...
 
-        def _users(user_id=None, attrs={}):
+        def _users(user_id=None, attrs={},):
             # create mail domain
             if 'mailPrimaryAddress' in attrs:
-                my_domain = attrs['mailPrimaryAddress'].split('@', 1)[1]
+                my_domain = attrs['mailPrimaryAddress'].split('@', 1,)[1]
                 mail_domain_mod = udm.get('mail/domain')
                 for mail_domain in mail_domain_mod.search(opened=True):
                     if mail_domain.properties['name'] == my_domain:
@@ -585,7 +585,7 @@ else:
                 user.delete()
 
     @pytest.fixture()
-    def new_user(users):
+    def new_user(users,):
         """Creates a new user and cleans up"""
         user = users()
         return user
@@ -603,7 +603,7 @@ else:
             yield conn
 
     @pytest.fixture(scope='session')
-    def selenium_base_url(hostname):
+    def selenium_base_url(hostname,):
         """Base URL for selenium"""
         ret = os.environ.get('UCS_TEST_SELENIUM_BASE_URL')
         if ret is None:
@@ -628,7 +628,7 @@ else:
         return logger
 
     @pytest.fixture()
-    def chrome(selenium_base_url, selenium_screenshot_path):
+    def chrome(selenium_base_url, selenium_screenshot_path,):
         """A running chrome instance, controllable by selenium"""
-        with Session.running_chrome(selenium_base_url, selenium_screenshot_path) as c:
+        with Session.running_chrome(selenium_base_url, selenium_screenshot_path,) as c:
             yield c

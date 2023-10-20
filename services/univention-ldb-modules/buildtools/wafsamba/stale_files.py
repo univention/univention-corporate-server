@@ -26,7 +26,7 @@ def replace_refill_task_list(self):
     iit = old_refill_task_list(self)
     bld = self.bld
 
-    if not getattr(bld, 'new_rules', False):
+    if not getattr(bld, 'new_rules', False,):
         # we only need to check for stale files if the build rules changed
         return iit
 
@@ -35,11 +35,11 @@ def replace_refill_task_list(self):
         return iit
 
     # execute only once
-    if getattr(self, 'cleanup_done', False):
+    if getattr(self, 'cleanup_done', False,):
         return iit
     self.cleanup_done = True
 
-    def group_name(g):
+    def group_name(g,):
         tm = self.bld.task_manager
         return [x for x in tm.groups_names if id(tm.groups_names[x]) == id(g)][0]
 
@@ -57,10 +57,10 @@ def replace_refill_task_list(self):
         tasks = g.tasks_gen
         for x in tasks:
             try:
-                if getattr(x, 'target'):
-                    tlist = samba_utils.TO_LIST(getattr(x, 'target'))
-                    ttype = getattr(x, 'samba_type', None)
-                    task_list = getattr(x, 'compiled_tasks', [])
+                if getattr(x, 'target',):
+                    tlist = samba_utils.TO_LIST(getattr(x, 'target',))
+                    ttype = getattr(x, 'samba_type', None,)
+                    task_list = getattr(x, 'compiled_tasks', [],)
                     if task_list:
                         # this gets all of the .o files, including the task
                         # ids, so foo.c maps to foo_3.o for idx=3
@@ -70,10 +70,10 @@ def replace_refill_task_list(self):
                                 expected.append(objpath)
                     for t in tlist:
                         if ttype in ['LIBRARY', 'PLUGIN', 'MODULE']:
-                            t = samba_utils.apply_pattern(t, bld.env.shlib_PATTERN)
+                            t = samba_utils.apply_pattern(t, bld.env.shlib_PATTERN,)
                         if ttype == 'PYTHON':
-                            t = samba_utils.apply_pattern(t, bld.env.pyext_PATTERN)
-                        p = os.path.join(x.path.abspath(bld.env), t)
+                            t = samba_utils.apply_pattern(t, bld.env.pyext_PATTERN,)
+                        p = os.path.join(x.path.abspath(bld.env), t,)
                         p = os.path.normpath(p)
                         expected.append(p)
                 for n in x.allnodes:
@@ -105,7 +105,7 @@ def replace_refill_task_list(self):
     return iit
 
 
-def AUTOCLEANUP_STALE_FILES(bld):
+def AUTOCLEANUP_STALE_FILES(bld,):
     """automatically clean up any files in bin that shouldn't be there"""
     old_refill_task_list = Parallel.refill_task_list
     Parallel.refill_task_list = replace_refill_task_list

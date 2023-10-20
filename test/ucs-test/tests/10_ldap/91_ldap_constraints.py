@@ -26,7 +26,7 @@ def test_uidnumber_0():
     dn = 'cn=foo,%s' % ucr['ldap/base']
     cleanup.dns.append(dn)
     with pytest.raises(ldap.CONSTRAINT_VIOLATION) as msg:
-        print('add', dn)
+        print('add', dn,)
         lo.add(dn, [
             ('objectClass', b'', b'posixAccount'),
             ('objectClass', b'', b'organizationalRole'),
@@ -35,7 +35,7 @@ def test_uidnumber_0():
             ('homeDirectory', b'', b'/home/foo'),
             ('uidNumber', b'', b'0'),
             ('gidNumber', b'', b'1'),
-        ])
+        ],)
     print(msg)
     assert msg.value.args[0]['info'] == 'add breaks constraint on uidNumber'
 
@@ -45,7 +45,7 @@ def test_gidnumber_0():
     dn = 'cn=bar,%s' % ucr['ldap/base']
     cleanup.dns.append(dn)
     with pytest.raises(ldap.CONSTRAINT_VIOLATION) as msg:
-        print('add', dn)
+        print('add', dn,)
         lo.add(dn, [
             ('objectClass', b'', b'posixAccount'),
             ('objectClass', b'', b'organizationalRole'),
@@ -54,7 +54,7 @@ def test_gidnumber_0():
             ('homeDirectory', b'', b'/home/bar'),
             ('uidNumber', b'', b'1'),
             ('gidNumber', b'', b'0'),
-        ])
+        ],)
     print(msg)
     assert msg.value.args[0]['info'] == 'add breaks constraint on gidNumber'
 

@@ -37,31 +37,31 @@ from univentionunittests import import_module
 
 
 @pytest.fixture()
-def db_module(mocker):
+def db_module(mocker,):
     sys.modules['gdbm'] = mocker.Mock()
     return sys.modules['gdbm']
 
 
 @pytest.fixture()
-def backend(db_module):
-    module = import_module("univention.ldap_cache.cache.backend", "src/", "univention.ldap_cache.cache.backend", use_installed=False)
+def backend(db_module,):
+    module = import_module("univention.ldap_cache.cache.backend", "src/", "univention.ldap_cache.cache.backend", use_installed=False,)
     return module
 
 
 @pytest.fixture()
-def mocked_getMachineConnection(mocker):
+def mocked_getMachineConnection(mocker,):
     mocked_getMachineConnection = mocker.patch('univention.ldap_cache.cache.backend.getMachineConnection')
     return mocked_getMachineConnection
 
 
 @pytest.fixture()
-def caches(backend):
+def caches(backend,):
     caches = backend.Caches()
     return caches
 
 
 @pytest.fixture()
-def cache(mocker):
+def cache(mocker,):
     cache = mocker.Mock()
     cache.ldap_filter = "ldap_filter"
     cache.value = "the_value"
@@ -69,13 +69,13 @@ def cache(mocker):
     return cache
 
 
-def test__init__(backend, caches):
+def test__init__(backend, caches,):
     """Test __init__ method."""
     assert caches._directory == backend.DB_DIRECTORY
     assert caches._caches == {}
 
 
-def test_get_shards_for_query(caches, cache, mocker):
+def test_get_shards_for_query(caches, cache, mocker,):
     """test get_shards_for_query method."""
     # get unexisting query
     result = caches.get_shards_for_query("a")
@@ -94,7 +94,7 @@ def test_get_shards_for_query(caches, cache, mocker):
     assert result == [shard]
 
 
-def test_get_queries(caches, cache, mocker):
+def test_get_queries(caches, cache, mocker,):
     """Test if the queries are returned correctly."""
     result = caches.get_queries("a")
     assert result == {}
@@ -123,7 +123,7 @@ def test_get_queries(caches, cache, mocker):
     assert result == {}
 
 
-def test_rebuild(caches, mocker):
+def test_rebuild(caches, mocker,):
     """Test if the rebuild method is called correctly."""
     # Create a couple of mocked cache
     cache1 = mocker.Mock()
@@ -148,15 +148,15 @@ def test_rebuild(caches, mocker):
 # TODO: need some more tests here
 
 
-def test__query_objects(caches, mocked_getMachineConnection):
+def test__query_objects(caches, mocked_getMachineConnection,):
     """Test _query_objects method."""
     mocked_getMachineConnection.search.retun_value = "returned value"
-    caches._query_objects("query", "attrs")
+    caches._query_objects("query", "attrs",)
     assert mocked_getMachineConnection.search.call_count == 1
-    mocked_getMachineConnection.search.assert_called_with("query", "attrs")
+    mocked_getMachineConnection.search.assert_called_with("query", "attrs",)
 
 
-def test_get_sub_cache(caches, cache):
+def test_get_sub_cache(caches, cache,):
     """Test if _get_sub_cache returns the correct cache."""
     result = caches.get_sub_cache("a")
     assert result is None
@@ -165,7 +165,7 @@ def test_get_sub_cache(caches, cache):
     assert result == cache
 
 
-def test_add(caches, cache, mocker):
+def test_add(caches, cache, mocker,):
     """Test add method."""
     caches.add(cache)
 

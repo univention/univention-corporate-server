@@ -71,18 +71,18 @@ class Instance(Base):
 
     def init(self):
         # this initialization method is called when the module process is created
-        super(Instance, self).init()
+        super(Instance, self,).init()
 
-    def colors(self, request):
+    def colors(self, request,):
         """Returns a list of all existing colors."""
         MODULE.info('MODULEID.colors: options: %r' % (request.options,))
         allColors = {x['color'] for x in Instance.entries}
         allColors = [{'id': x, 'label': x} for x in allColors]
         allColors.append({'id': 'None', 'label': _('All colors')})
         MODULE.info('MODULEID.colors: result: %r' % (allColors,))
-        self.finished(request.id, allColors)
+        self.finished(request.id, allColors,)
 
-    def query(self, request):
+    def query(self, request,):
         """
         Searches for entries in a dummy list
 
@@ -93,14 +93,14 @@ class Instance(Base):
         return: [ { 'id' : <unique identifier>, 'name' : <display name>, 'color' : <name of favorite color> }, ... ]
         """
         MODULE.info('MODULEID.query: options: %r' % (request.options,))
-        color = request.options.get('color', 'None')
-        pattern = request.options.get('name', '')
+        color = request.options.get('color', 'None',)
+        pattern = request.options.get('name', '',)
         result = [x for x in Instance.entries if (color == 'None' or color == x['color']) and x['name'].find(pattern) >= 0]
         MODULE.info('MODULEID.query: results: %r' % (result,))
-        self.finished(request.id, result)
+        self.finished(request.id, result,)
 
     @sanitize(StringSanitizer())
-    def get(self, request):
+    def get(self, request,):
         """
         Returns the objects for the given IDs
 
@@ -112,4 +112,4 @@ class Instance(Base):
         ids = set(request.options)
         result = [x for x in Instance.entries if x['id'] in ids]
         MODULE.info('MODULEID.get: results: %r' % (result,))
-        self.finished(request.id, result)
+        self.finished(request.id, result,)

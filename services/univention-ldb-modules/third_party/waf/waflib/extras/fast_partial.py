@@ -57,45 +57,45 @@ TSTAMP_DB = '.wafpickle_tstamp_db_file'
 SAVED_ATTRS = 'root node_sigs task_sigs imp_sigs raw_deps node_deps'.split()
 
 class bld_proxy(object):
-	def __init__(self, bld):
-		object.__setattr__(self, 'bld', bld)
+	def __init__(self, bld,):
+		object.__setattr__(self, 'bld', bld,)
 
-		object.__setattr__(self, 'node_class', type('Nod3', (waflib.Node.Node,), {}))
+		object.__setattr__(self, 'node_class', type('Nod3', (waflib.Node.Node,), {},),)
 		self.node_class.__module__ = 'waflib.Node'
 		self.node_class.ctx = self
 
-		object.__setattr__(self, 'root', self.node_class('', None))
+		object.__setattr__(self, 'root', self.node_class('', None,),)
 		for x in SAVED_ATTRS:
 			if x != 'root':
-				object.__setattr__(self, x, {})
+				object.__setattr__(self, x, {},)
 
 		self.fix_nodes()
 
-	def __setattr__(self, name, value):
-		bld = object.__getattribute__(self, 'bld')
-		setattr(bld, name, value)
+	def __setattr__(self, name, value,):
+		bld = object.__getattribute__(self, 'bld',)
+		setattr(bld, name, value,)
 
-	def __delattr__(self, name):
-		bld = object.__getattribute__(self, 'bld')
-		delattr(bld, name)
+	def __delattr__(self, name,):
+		bld = object.__getattribute__(self, 'bld',)
+		delattr(bld, name,)
 
-	def __getattribute__(self, name):
+	def __getattribute__(self, name,):
 		try:
-			return object.__getattribute__(self, name)
+			return object.__getattribute__(self, name,)
 		except AttributeError:
-			bld = object.__getattribute__(self, 'bld')
-			return getattr(bld, name)
+			bld = object.__getattribute__(self, 'bld',)
+			return getattr(bld, name,)
 
 	def __call__(self, *k, **kw):
-		return self.bld(*k, **kw)
+		return self.bld(*k, **kw,)
 
 	def fix_nodes(self):
 		for x in ('srcnode', 'path', 'bldnode'):
-			node = self.root.find_dir(getattr(self.bld, x).abspath())
-			object.__setattr__(self, x, node)
+			node = self.root.find_dir(getattr(self.bld, x,).abspath())
+			object.__setattr__(self, x, node,)
 
-	def set_key(self, store_key):
-		object.__setattr__(self, 'store_key', store_key)
+	def set_key(self, store_key,):
+		object.__setattr__(self, 'store_key', store_key,)
 
 	def fix_tg_path(self, *tgs):
 		# changing Node objects on task generators is possible
@@ -104,13 +104,13 @@ class bld_proxy(object):
 			tg.path = self.root.make_node(tg.path.abspath())
 
 	def restore(self):
-		dbfn = os.path.join(self.variant_dir, Context.DBFILE + self.store_key)
-		Logs.debug('rev_use: reading %s', dbfn)
+		dbfn = os.path.join(self.variant_dir, Context.DBFILE + self.store_key,)
+		Logs.debug('rev_use: reading %s', dbfn,)
 		try:
-			data = Utils.readf(dbfn, 'rb')
+			data = Utils.readf(dbfn, 'rb',)
 		except (EnvironmentError, EOFError):
 			# handle missing file/empty file
-			Logs.debug('rev_use: Could not load the build cache %s (missing)', dbfn)
+			Logs.debug('rev_use: Could not load the build cache %s (missing)', dbfn,)
 		else:
 			try:
 				waflib.Node.pickle_lock.acquire()
@@ -118,10 +118,10 @@ class bld_proxy(object):
 				try:
 					data = Build.cPickle.loads(data)
 				except Exception as e:
-					Logs.debug('rev_use: Could not pickle the build cache %s: %r', dbfn, e)
+					Logs.debug('rev_use: Could not pickle the build cache %s: %r', dbfn, e,)
 				else:
 					for x in SAVED_ATTRS:
-						object.__setattr__(self, x, data.get(x, {}))
+						object.__setattr__(self, x, data.get(x, {},),)
 			finally:
 				waflib.Node.pickle_lock.release()
 		self.fix_nodes()
@@ -129,13 +129,13 @@ class bld_proxy(object):
 	def store(self):
 		data = {}
 		for x in Build.SAVED_ATTRS:
-			data[x] = getattr(self, x)
-		db = os.path.join(self.variant_dir, Context.DBFILE + self.store_key)
+			data[x] = getattr(self, x,)
+		db = os.path.join(self.variant_dir, Context.DBFILE + self.store_key,)
 
 		with waflib.Node.pickle_lock:
 			waflib.Node.Nod3 = self.node_class
 			try:
-				x = Build.cPickle.dumps(data, Build.PROTOCOL)
+				x = Build.cPickle.dumps(data, Build.PROTOCOL,)
 			except Build.cPickle.PicklingError:
 				root = data['root']
 				for node_deps in data['node_deps'].values():
@@ -143,32 +143,32 @@ class bld_proxy(object):
 						# there may be more cross-context Node objects to fix,
 						# but this should be the main source
 						node_deps[idx] = root.find_node(node.abspath())
-				x = Build.cPickle.dumps(data, Build.PROTOCOL)
+				x = Build.cPickle.dumps(data, Build.PROTOCOL,)
 
-		Logs.debug('rev_use: storing %s', db)
-		Utils.writef(db + '.tmp', x, m='wb')
+		Logs.debug('rev_use: storing %s', db,)
+		Utils.writef(db + '.tmp', x, m='wb',)
 		try:
 			st = os.stat(db)
 			os.remove(db)
 			if not Utils.is_win32:
-				os.chown(db + '.tmp', st.st_uid, st.st_gid)
+				os.chown(db + '.tmp', st.st_uid, st.st_gid,)
 		except (AttributeError, OSError):
 			pass
-		os.rename(db + '.tmp', db)
+		os.rename(db + '.tmp', db,)
 
 class bld(Build.BuildContext):
 	def __init__(self, **kw):
-		super(bld, self).__init__(**kw)
+		super(bld, self,).__init__(**kw)
 		self.hashes_md5_tstamp = {}
 
 	def __call__(self, *k, **kw):
 		# this is one way of doing it, one could use a task generator method too
 		bld = kw['bld'] = bld_proxy(self)
-		ret = TaskGen.task_gen(*k, **kw)
+		ret = TaskGen.task_gen(*k, **kw,)
 		self.task_gen_cache_names = {}
-		self.add_to_group(ret, group=kw.get('group'))
+		self.add_to_group(ret, group=kw.get('group'),)
 		ret.bld = bld
-		bld.set_key(ret.path.abspath().replace(os.sep, '') + str(ret.idx))
+		bld.set_key(ret.path.abspath().replace(os.sep, '',) + str(ret.idx))
 		return ret
 
 	def is_dirty(self):
@@ -241,7 +241,7 @@ class bld(Build.BuildContext):
 						st = set()
 						for tsk in tg.tasks:
 							st.update(tsk.inputs)
-							st.update(self.node_deps.get(tsk.uid(), []))
+							st.update(self.node_deps.get(tsk.uid(), [],))
 
 						# TODO do last/when loading the tgs?
 						lst = []
@@ -260,13 +260,13 @@ class bld(Build.BuildContext):
 			self.f_tstamps[x] = self.hashes_md5_tstamp[x][0]
 
 		if do_store:
-			dbfn = os.path.join(self.variant_dir, TSTAMP_DB)
-			Logs.debug('rev_use: storing %s', dbfn)
+			dbfn = os.path.join(self.variant_dir, TSTAMP_DB,)
+			Logs.debug('rev_use: storing %s', dbfn,)
 			dbfn_tmp = dbfn + '.tmp'
-			x = Build.cPickle.dumps([self.f_tstamps, f_deps], Build.PROTOCOL)
-			Utils.writef(dbfn_tmp, x, m='wb')
-			os.rename(dbfn_tmp, dbfn)
-			Logs.debug('rev_use: stored %s', dbfn)
+			x = Build.cPickle.dumps([self.f_tstamps, f_deps], Build.PROTOCOL,)
+			Utils.writef(dbfn_tmp, x, m='wb',)
+			os.rename(dbfn_tmp, dbfn,)
+			Logs.debug('rev_use: stored %s', dbfn,)
 
 	def store(self):
 		self.store_tstamps()
@@ -276,23 +276,23 @@ class bld(Build.BuildContext):
 	def compute_needed_tgs(self):
 		# assume the 'use' keys are not modified during the build phase
 
-		dbfn = os.path.join(self.variant_dir, TSTAMP_DB)
-		Logs.debug('rev_use: Loading %s', dbfn)
+		dbfn = os.path.join(self.variant_dir, TSTAMP_DB,)
+		Logs.debug('rev_use: Loading %s', dbfn,)
 		try:
-			data = Utils.readf(dbfn, 'rb')
+			data = Utils.readf(dbfn, 'rb',)
 		except (EnvironmentError, EOFError):
-			Logs.debug('rev_use: Could not load the build cache %s (missing)', dbfn)
+			Logs.debug('rev_use: Could not load the build cache %s (missing)', dbfn,)
 			self.f_deps = {}
 			self.f_tstamps = {}
 		else:
 			try:
 				self.f_tstamps, self.f_deps = Build.cPickle.loads(data)
 			except Exception as e:
-				Logs.debug('rev_use: Could not pickle the build cache %s: %r', dbfn, e)
+				Logs.debug('rev_use: Could not pickle the build cache %s: %r', dbfn, e,)
 				self.f_deps = {}
 				self.f_tstamps = {}
 			else:
-				Logs.debug('rev_use: Loaded %s', dbfn)
+				Logs.debug('rev_use: Loaded %s', dbfn,)
 
 
 		# 1. obtain task generators that contain rebuilds
@@ -320,15 +320,15 @@ class bld(Build.BuildContext):
 							use_map[tg].append(xtg)
 							reverse_use_map[xtg].append(tg)
 
-		Logs.debug('rev_use: found %r stale tgs', len(stales))
+		Logs.debug('rev_use: found %r stale tgs', len(stales),)
 
 		# 3. dfs to post downstream tg as stale
 		visited = set()
-		def mark_down(tg):
+		def mark_down(tg,):
 			if tg in visited:
 				return
 			visited.add(tg)
-			Logs.debug('rev_use: marking down %r as stale', tg.name)
+			Logs.debug('rev_use: marking down %r as stale', tg.name,)
 			tg.staleness = DIRTY
 			for x in reverse_use_map[tg]:
 				mark_down(x)
@@ -337,12 +337,12 @@ class bld(Build.BuildContext):
 
 		# 4. dfs to find ancestors tg to mark as needed
 		self.needed_tgs = needed_tgs = set()
-		def mark_needed(tg):
+		def mark_needed(tg,):
 			if tg in needed_tgs:
 				return
 			needed_tgs.add(tg)
 			if tg.staleness == DONE:
-				Logs.debug('rev_use: marking up %r as needed', tg.name)
+				Logs.debug('rev_use: marking up %r as needed', tg.name,)
 				tg.staleness = NEEDED
 			for x in use_map[tg]:
 				mark_needed(x)
@@ -357,11 +357,11 @@ class bld(Build.BuildContext):
 
 		# the stale ones should be fully build, while the needed ones
 		# may skip a few tasks, see create_compiled_task and apply_link_after below
-		Logs.debug('rev_use: amount of needed task gens: %r', len(needed_tgs))
+		Logs.debug('rev_use: amount of needed task gens: %r', len(needed_tgs),)
 
 	def post_group(self):
 		# assumption: we can ignore the folder/subfolders cuts
-		def tgpost(tg):
+		def tgpost(tg,):
 			try:
 				f = tg.post
 			except AttributeError:
@@ -389,11 +389,11 @@ def is_stale(self):
 	self.staleness = DIRTY
 
 	# 1. the case of always stale targets
-	if getattr(self, 'always_stale', False):
+	if getattr(self, 'always_stale', False,):
 		return True
 
 	# 2. check if the db file exists
-	db = os.path.join(self.bld.variant_dir, Context.DBFILE)
+	db = os.path.join(self.bld.variant_dir, Context.DBFILE,)
 	try:
 		dbstat = os.stat(db).st_mtime
 	except OSError:
@@ -407,21 +407,21 @@ def is_stale(self):
 
 	# 3.b check if the configuration changed
 	if os.stat(cache_node.abspath()).st_mtime > dbstat:
-		Logs.debug('rev_use: must post %r because the configuration has changed', self.name)
+		Logs.debug('rev_use: must post %r because the configuration has changed', self.name,)
 		return True
 
 	# 3.c any tstamp data?
 	try:
 		f_deps = self.bld.f_deps
 	except AttributeError:
-		Logs.debug('rev_use: must post %r because there is no f_deps', self.name)
+		Logs.debug('rev_use: must post %r because there is no f_deps', self.name,)
 		return True
 
 	# 4. check if this is the first build (no cache)
 	try:
 		lst = f_deps[(self.path.abspath(), self.idx)]
 	except KeyError:
-		Logs.debug('rev_use: must post %r because there it has no cached data', self.name)
+		Logs.debug('rev_use: must post %r because there it has no cached data', self.name,)
 		return True
 
 	try:
@@ -435,7 +435,7 @@ def is_stale(self):
 		try:
 			old_ts = f_tstamps[x]
 		except KeyError:
-			Logs.debug('rev_use: must post %r because %r is not in cache', self.name, x)
+			Logs.debug('rev_use: must post %r because %r is not in cache', self.name, x,)
 			return True
 
 		try:
@@ -445,18 +445,18 @@ def is_stale(self):
 				ts = cache[x] = os.stat(x).st_mtime
 		except OSError:
 			del f_deps[(self.path.abspath(), self.idx)]
-			Logs.debug('rev_use: must post %r because %r does not exist anymore', self.name, x)
+			Logs.debug('rev_use: must post %r because %r does not exist anymore', self.name, x,)
 			return True
 		else:
 			if ts != old_ts:
-				Logs.debug('rev_use: must post %r because the timestamp on %r changed %r %r', self.name, x, old_ts, ts)
+				Logs.debug('rev_use: must post %r because the timestamp on %r changed %r %r', self.name, x, old_ts, ts,)
 				return True
 
 	self.staleness = DONE
 	return False
 
 @taskgen_method
-def create_compiled_task(self, name, node):
+def create_compiled_task(self, name, node,):
 	# skip the creation of object files
 	# assumption: object-only targets are not skippable
 	if self.staleness == NEEDED:
@@ -466,7 +466,7 @@ def create_compiled_task(self, name, node):
 				return None
 
 	out = '%s.%d.o' % (node.name, self.idx)
-	task = self.create_task(name, node, node.parent.find_or_declare(out))
+	task = self.create_task(name, node, node.parent.find_or_declare(out),)
 	try:
 		self.compiled_tasks.append(task)
 	except AttributeError:
@@ -482,7 +482,7 @@ def apply_link_after(self):
 	for tsk in self.tasks:
 		tsk.hasrun = Task.SKIPPED
 
-def path_from(self, node):
+def path_from(self, node,):
 	# handle nodes of distinct types
 	if node.ctx is not self.ctx:
 		node = self.ctx.root.make_node(node.abspath())

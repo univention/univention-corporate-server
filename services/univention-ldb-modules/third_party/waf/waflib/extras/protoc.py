@@ -110,7 +110,7 @@ class protoc(Task):
 			search_nodes = self.generator.includes_nodes
 
 		if 'py' in self.generator.features or 'javac' in self.generator.features:
-			for incpath in getattr(self.generator, 'protoc_includes', []):
+			for incpath in getattr(self.generator, 'protoc_includes', [],):
 				incpath_node = self.generator.path.find_node(incpath)
 				if incpath_node:
 					search_nodes.append(incpath_node)
@@ -123,13 +123,13 @@ class protoc(Task):
 						raise Errors.WafError('protoc: include path %r does not exist' % incpath)
 
 
-		def parse_node(node):
+		def parse_node(node,):
 			if node in seen:
 				return
 			seen.append(node)
 			code = node.read().splitlines()
 			for line in code:
-				m = re.search(r'^import\s+"(.*)";.*(//)?.*', line)
+				m = re.search(r'^import\s+"(.*)";.*(//)?.*', line,)
 				if m:
 					dep = m.groups()[0]
 					for incnode in search_nodes:
@@ -143,11 +143,11 @@ class protoc(Task):
 		parse_node(node)
 		# Add also dependencies path to INCPATHS so protoc will find the included file
 		for deppath in nodes:
-			self.env.append_unique('INCPATHS', deppath.parent.bldpath())
+			self.env.append_unique('INCPATHS', deppath.parent.bldpath(),)
 		return (nodes, names)
 
 @extension('.proto')
-def process_protoc(self, node):
+def process_protoc(self, node,):
 	incdirs = []
 	out_nodes = []
 	protoc_flags = []
@@ -177,8 +177,8 @@ def process_protoc(self, node):
 		protoc_flags.append('--java_out=%s' % node.parent.get_bld().bldpath())
 		node.parent.get_bld().mkdir()
 
-	tsk = self.create_task('protoc', node, out_nodes)
-	tsk.env.append_value('PROTOC_FLAGS', protoc_flags)
+	tsk = self.create_task('protoc', node, out_nodes,)
+	tsk.env.append_value('PROTOC_FLAGS', protoc_flags,)
 
 	if 'javac' in self.features:
 		self.javac_task.set_run_after(tsk)
@@ -186,7 +186,7 @@ def process_protoc(self, node):
 	# Instruct protoc where to search for .proto included files.
 	# For C++ standard include files dirs are used,
 	# but this doesn't apply to Python for example
-	for incpath in getattr(self, 'protoc_includes', []):
+	for incpath in getattr(self, 'protoc_includes', [],):
 		incpath_node = self.path.find_node(incpath)
 		if incpath_node:
 			incdirs.append(incpath_node.bldpath())
@@ -201,22 +201,22 @@ def process_protoc(self, node):
 	tsk.env.PROTOC_INCPATHS = incdirs
 
 	# Include paths external to the waf project (ie. shared pb repositories)
-	tsk.env.PROTOC_EXTINCPATHS = getattr(self, 'protoc_extincludes', [])
+	tsk.env.PROTOC_EXTINCPATHS = getattr(self, 'protoc_extincludes', [],)
 
 	# PR2115: protoc generates output of .proto files in nested
 	# directories  by canonicalizing paths. To avoid this we have to pass
 	# as first include the full directory file of the .proto file
-	tsk.env.prepend_value('INCPATHS', node.parent.bldpath())
+	tsk.env.prepend_value('INCPATHS', node.parent.bldpath(),)
 
-	use = getattr(self, 'use', '')
+	use = getattr(self, 'use', '',)
 	if not 'PROTOBUF' in use:
 		self.use = self.to_list(use) + ['PROTOBUF']
 
-def configure(conf):
-	conf.check_cfg(package='protobuf', uselib_store='PROTOBUF', args=['--cflags', '--libs'])
-	conf.find_program('protoc', var='PROTOC')
+def configure(conf,):
+	conf.check_cfg(package='protobuf', uselib_store='PROTOBUF', args=['--cflags', '--libs'],)
+	conf.find_program('protoc', var='PROTOC',)
 	conf.start_msg('Checking for protoc version')
-	protocver = conf.cmd_and_log(conf.env.PROTOC + ['--version'], output=Context.BOTH)
+	protocver = conf.cmd_and_log(conf.env.PROTOC + ['--version'], output=Context.BOTH,)
 	protocver = ''.join(protocver).strip()[protocver[0].rfind(' ')+1:]
 	conf.end_msg(protocver)
 	conf.env.PROTOC_MAJOR = protocver[:protocver.find('.')]

@@ -26,16 +26,16 @@ class Hacked(Exception):
 
 class HackingAttempt:
 
-    def __init__(self, ml, search_filter=None, exclude=None):
+    def __init__(self, ml, search_filter=None, exclude=None,):
         self.ml = ml
         self.search_filter = search_filter or 'objectClass=*'
         if exclude:
             self.exclude = exclude
 
-    def exclude(self, dn):
+    def exclude(self, dn,):
         return 'cn=users' in ldap.explode_dn(dn)
 
-    def modlists(self, basedn):
+    def modlists(self, basedn,):
         if self.exclude(basedn):
             return
         yield basedn, self.ml
@@ -43,11 +43,11 @@ class HackingAttempt:
 
 class HackingAttemptAdd(HackingAttempt):
 
-    def __init__(self, ml, search_filter=None, exclude=None):
-        super().__init__(ml, search_filter, exclude)
+    def __init__(self, ml, search_filter=None, exclude=None,):
+        super().__init__(ml, search_filter, exclude,)
         self.uid = uts.random_username()
 
-    def modlists(self, basedn):
+    def modlists(self, basedn,):
         for basedn, ml in super().modlists(basedn):
             for attr in ['cn', 'krb5PrincipalName', 'SAMLServiceProviderIdentifier', 'sambaDomainName', 'dc', 'univentionAppID', 'relativeDomainName', 'uid', 'ou', 'zoneName', 'univentionVirtualMachineUUID']:
                 if any(x[0] == attr for x in ml):
@@ -56,45 +56,45 @@ class HackingAttemptAdd(HackingAttempt):
 
 class Hacking:
 
-    def __init__(self, creations=None, modifications=None):
+    def __init__(self, creations=None, modifications=None,):
         self.creations = creations or _creations
         self.modifications = modifications or _modifications
         self.lo_admin = utils.get_ldap_connection()  # TODO: use connection to DC master because this has only partly replicated objects
 
-    def __call__(self, lo):
+    def __call__(self, lo,):
         failures = set()
         lo_admin = utils.get_ldap_connection()
-        print(f'Testing for {lo.binddn!r}', file=sys.stderr)
+        print(f'Testing for {lo.binddn!r}', file=sys.stderr,)
 
         for dn, al in self.testcases(self.creations):
             try:
-                lo.add(dn, al)
+                lo.add(dn, al,)
             except ldap.INSUFFICIENT_ACCESS:
                 print(f"OK: ldapadd of {dn} denied")
             except (ldap.OBJECT_CLASS_VIOLATION, ldap.CONSTRAINT_VIOLATION, ldap.TYPE_OR_VALUE_EXISTS, ldap.NO_SUCH_OBJECT) as exc:
                 print(f'SKIP: {dn}: {exc}')
             else:
-                print(f"FAIL: ldapadd of {dn} (al={al!r}) successful", file=sys.stderr)
+                print(f"FAIL: ldapadd of {dn} (al={al!r}) successful", file=sys.stderr,)
                 failures.add(dn)
                 lo_admin.delete(dn)
 
         for dn, ml in self.testcases(self.modifications):
             try:
-                lo.modify(dn, ml)
+                lo.modify(dn, ml,)
             except ldap.INSUFFICIENT_ACCESS:
                 print(f"OK: ldapmodify of {dn} denied")
             except (ldap.OBJECT_CLASS_VIOLATION, ldap.CONSTRAINT_VIOLATION, ldap.TYPE_OR_VALUE_EXISTS, ldap.NO_SUCH_OBJECT, ldap.ALREADY_EXISTS) as exc:
                 print(f'SKIP: {dn}: {exc}')
             else:
-                print(f"FAIL: ldapmodify of {dn} (ml={ml!r}) successful", file=sys.stderr)
+                print(f"FAIL: ldapmodify of {dn} (ml={ml!r}) successful", file=sys.stderr,)
                 failures.add(dn)
-                lo_admin.modify(dn, [(attr, new, old) for attr, old, new in ml])
+                lo_admin.modify(dn, [(attr, new, old) for attr, old, new in ml],)
         print('')
 
         if failures:
             raise Hacked('hijacking by %s succeeded for the following %d DNs: %s' % (lo.binddn, len(failures), '\n'.join(failures)))
 
-    def testcases(self, cases):
+    def testcases(self, cases,):
         for hack in cases:
             for dn in set(self.lo_admin.searchDn(hack.search_filter)):
                 for dn, ml in hack.modlists(dn):
@@ -129,7 +129,7 @@ _modifications = [
         ('uid', b'', uts.random_username().encode("UTF-8")),
         ('uidNumber', b'', b'0'),
         ('homeDirectory', b'', b'/foo/'),
-    ]),
+    ],),
 ]
 
 

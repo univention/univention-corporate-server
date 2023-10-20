@@ -50,39 +50,39 @@ from univention.config_registry import ConfigRegistry
 
 class UCSResync(object):
 
-    def __init__(self, ldap_master=False):
+    def __init__(self, ldap_master=False,):
         self.configRegistry = ConfigRegistry()
         self.configRegistry.load()
         self.lo = univention.uldap.getMachineConnection(ldap_master=ldap_master)
 
     def _get_listener_dir(self):
-        return self.configRegistry.get('%s/ad/listener/dir' % options.configbasename, '/var/lib/univention-connector/ad')
+        return self.configRegistry.get('%s/ad/listener/dir' % options.configbasename, '/var/lib/univention-connector/ad',)
 
     def _generate_filename(self):
         directory = self._get_listener_dir()
-        return os.path.join(directory, "%f" % time.time())
+        return os.path.join(directory, "%f" % time.time(),)
 
-    def _dump_object_to_file(self, object_data):
+    def _dump_object_to_file(self, object_data,):
         filename = self._generate_filename()
-        with open(filename, 'wb+') as fd:
-            os.chmod(filename, 0o600)
+        with open(filename, 'wb+',) as fd:
+            os.chmod(filename, 0o600,)
             p = pickle.Pickler(fd)
             p.dump(object_data)
             p.clear_memo()
 
-    def _search_ldap_object_orig(self, ucs_dn):
-        return self.lo.get(ucs_dn, attr=['*', '+'], required=True)
+    def _search_ldap_object_orig(self, ucs_dn,):
+        return self.lo.get(ucs_dn, attr=['*', '+'], required=True,)
 
-    def resync(self, ucs_dns=None, ldapfilter=None, ldapbase=None):
+    def resync(self, ucs_dns=None, ldapfilter=None, ldapbase=None,):
         treated_dns = []
-        for dn, new in self.search_ldap(ucs_dns, ldapfilter, ldapbase):
+        for dn, new in self.search_ldap(ucs_dns, ldapfilter, ldapbase,):
             object_data = (dn, new, {}, None)
             self._dump_object_to_file(object_data)
             treated_dns.append(dn)
 
         return treated_dns
 
-    def search_ldap(self, ucs_dns=None, ldapfilter=None, ldapbase=None):
+    def search_ldap(self, ucs_dns=None, ldapfilter=None, ldapbase=None,):
         attr = ('*', '+')
 
         if ucs_dns:
@@ -93,12 +93,12 @@ class UCSResync(object):
             missing_dns = []
             for targetdn in ucs_dns:
                 try:
-                    result = self.lo.search(base=targetdn, scope='base', filter=ldapfilter, attr=attr)
+                    result = self.lo.search(base=targetdn, scope='base', filter=ldapfilter, attr=attr,)
                     ldap_result.extend(result)
                 except ldap.NO_SUCH_OBJECT:
                     missing_dns.append(targetdn)
             if missing_dns:
-                raise ldap.NO_SUCH_OBJECT(1, 'No object: %s' % (missing_dns,), [r[0] for r in ldap_result])
+                raise ldap.NO_SUCH_OBJECT(1, 'No object: %s' % (missing_dns,), [r[0] for r in ldap_result],)
         else:
             if not ldapfilter:
                 ldapfilter = '(objectClass=*)'
@@ -106,18 +106,18 @@ class UCSResync(object):
             if not ldapbase:
                 ldapbase = self.configRegistry['ldap/base']
 
-            ldap_result = self.lo.search(base=ldapbase, filter=ldapfilter, attr=attr)
+            ldap_result = self.lo.search(base=ldapbase, filter=ldapfilter, attr=attr,)
 
         return ldap_result
 
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument("--filter", dest="ldapfilter", help="LDAP search filter")
-    parser.add_argument("-b", "--base", dest="ldapbase", help="LDAP search base")
-    parser.add_argument("-c", "--configbasename", dest="configbasename", metavar="CONFIGBASENAME", default="connector")
-    parser.add_argument("-p", "--from-primary", action="store_true", help="use primary node for LDAP lookup (instead of the local LDAP)")
-    parser.add_argument("dn", nargs='?', default=None)
+    parser.add_argument("--filter", dest="ldapfilter", help="LDAP search filter",)
+    parser.add_argument("-b", "--base", dest="ldapbase", help="LDAP search base",)
+    parser.add_argument("-c", "--configbasename", dest="configbasename", metavar="CONFIGBASENAME", default="connector",)
+    parser.add_argument("-p", "--from-primary", action="store_true", help="use primary node for LDAP lookup (instead of the local LDAP)",)
+    parser.add_argument("dn", nargs='?', default=None,)
     options = parser.parse_args()
 
     state_directory = '/etc/univention/%s' % (options.configbasename,)
@@ -128,12 +128,12 @@ if __name__ == '__main__':
         parser.print_help()
         sys.exit(2)
 
-    ucs_dns = list(filter(None, [options.dn]))
+    ucs_dns = list(filter(None, [options.dn],))
 
     treated_dns = []
     try:
         resync = UCSResync(ldap_master=options.from_primary)
-        treated_dns = resync.resync(ucs_dns, options.ldapfilter, options.ldapbase)
+        treated_dns = resync.resync(ucs_dns, options.ldapfilter, options.ldapbase,)
     except ldap.NO_SUCH_OBJECT as ex:
         print('ERROR: The LDAP object not found : %s' % str(ex))
         if len(ex.args) == 3:

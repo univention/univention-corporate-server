@@ -14,7 +14,7 @@ UNIVENTION_CACERT = "/etc/univention/ssl/ucsCA/CAcert.pem"
 DEFAULT_CACERT = "/etc/default/cacert"
 
 
-def get_wpa_config(username, password, ca_cert):
+def get_wpa_config(username, password, ca_cert,):
     if ca_cert == "":
         comment = "#"
     else:
@@ -30,16 +30,16 @@ network={{
     eapol_flags=3
     phase1="tls_disable_tlsv1_3=0"
 }}
-    '''.format(username=username, password=password, comment=comment, ca_cert=ca_cert)
+    '''.format(username=username, password=password, comment=comment, ca_cert=ca_cert,)
     return wpa_config
 
 
-def test_eap(udm):
+def test_eap(udm,):
     password = 'univention'
     username = udm.create_user(networkAccess=1)[1]
     ca_cert = UNIVENTION_CACERT
     with NamedTemporaryFile() as tmp_file:
-        wpa_config = get_wpa_config(username, password, ca_cert)
+        wpa_config = get_wpa_config(username, password, ca_cert,)
         tmp_file.write(wpa_config.encode("UTF-8"))
         tmp_file.seek(0)
         print("wpa_config:")

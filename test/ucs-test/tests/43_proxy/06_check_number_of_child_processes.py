@@ -24,10 +24,10 @@ def main():
     with ucr_test.UCSTestConfigRegistry() as ucr:
         # throw dice several times
         expected = {
-            'squid_ldap_auth': random.randint(3, 30),
-            'squid_ldap_ntlm': random.randint(3, 30),
-            'squid_kerb_auth': random.randint(3, 30),
-            'squidGuard': random.randint(3, 30),
+            'squid_ldap_auth': random.randint(3, 30,),
+            'squid_ldap_ntlm': random.randint(3, 30,),
+            'squid_kerb_auth': random.randint(3, 30,),
+            'squidGuard': random.randint(3, 30,),
         }
 
         # set up squid

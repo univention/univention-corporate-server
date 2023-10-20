@@ -29,7 +29,7 @@ from essential.mail import mail_delivered, send_mail
 def reload_postfix():
     print('** Reloading aliases and postfix')
     for cmd in (['newaliases'], ['postfix', 'reload']):
-        subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+        subprocess.Popen(cmd, stderr=open('/dev/null', 'w',),).communicate()
     time.sleep(5)
 
 
@@ -52,9 +52,9 @@ def main():
                 )
                 token = str(time.time())
                 delivery_OK = False
-                send_mail(recipients='root', msg=token, idstring=token, subject='Normal')
+                send_mail(recipients='root', msg=token, idstring=token, subject='Normal',)
                 for _i in range(TIMEOUT):
-                    if mail_delivered(token, check_root=True):
+                    if mail_delivered(token, check_root=True,):
                         delivery_OK = True
                         break
                     else:
@@ -68,9 +68,9 @@ def main():
 
                 token = str(time.time())
                 delivery_OK = False
-                send_mail(recipients='root', msg=token, idstring=token, subject='Alias')
+                send_mail(recipients='root', msg=token, idstring=token, subject='Alias',)
                 for _i in range(TIMEOUT):
-                    if mail_delivered(token, mail_address=mail, check_root=False):
+                    if mail_delivered(token, mail_address=mail, check_root=False,):
                         delivery_OK = True
                         break
                     else:

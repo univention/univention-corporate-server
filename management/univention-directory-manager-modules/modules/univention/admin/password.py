@@ -46,10 +46,10 @@ import univention.debug as ud
 from univention.admin._ucr import configRegistry
 
 
-RE_PASSWORD_SCHEME = re.compile(r'^{(\w+)}(!?)(.*)', re.I)
+RE_PASSWORD_SCHEME = re.compile(r'^{(\w+)}(!?)(.*)', re.I,)
 
 
-def crypt(password, method_id=None, salt=None):
+def crypt(password, method_id=None, salt=None,):
     # type: (str, Optional[str], Optional[str]) -> str
     """
     Return crypt hash.
@@ -59,7 +59,7 @@ def crypt(password, method_id=None, salt=None):
     :param salt: salt for randomize the hashing.
     :returns: the hashed password string.
     """
-    hashing_method = configRegistry.get('password/hashing/method', 'sha-512').upper()
+    hashing_method = configRegistry.get('password/hashing/method', 'sha-512',).upper()
 
     if salt is None:
         salt = ''
@@ -70,8 +70,8 @@ def crypt(password, method_id=None, salt=None):
             'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
             'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5',
             '6', '7', '8', '9']
-        urandom = open("/dev/urandom", "rb")
-        for _i in range(0, 16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
+        urandom = open("/dev/urandom", "rb",)
+        for _i in range(0, 16,):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
             o = ord(urandom.read(1))
             while not o < 256 // len(valid) * len(valid):  # make sure not to skew the distribution when using modulo
                 o = ord(urandom.read(1))
@@ -85,17 +85,17 @@ def crypt(password, method_id=None, salt=None):
             'SHA-256': '5',
             'SHA512': '6',
             'SHA-512': '6',
-        }.get(hashing_method, '6')
+        }.get(hashing_method, '6',)
 
     if method_id == '1':
         return passlib.hash.md5_crypt.using(salt=salt[:8]).hash(password)
     if method_id == '5':
-        return passlib.hash.sha256_crypt.using(salt=salt, rounds=5000).hash(password)
+        return passlib.hash.sha256_crypt.using(salt=salt, rounds=5000,).hash(password)
     if method_id == '6':
-        return passlib.hash.sha512_crypt.using(salt=salt, rounds=5000).hash(password)
+        return passlib.hash.sha512_crypt.using(salt=salt, rounds=5000,).hash(password)
 
 
-def bcrypt_hash(password):
+def bcrypt_hash(password,):
     # type: (str) -> str
     """
     Return bcrypt hash.
@@ -103,13 +103,13 @@ def bcrypt_hash(password):
     :param password: password string.
     :returns: the hashed password string.
     """
-    cost_factor = int(configRegistry.get('password/hashing/bcrypt/cost_factor', '12'))
-    prefix = configRegistry.get('password/hashing/bcrypt/prefix', '2b').encode('utf8')
-    salt = bcrypt.gensalt(rounds=cost_factor, prefix=prefix)
-    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('ASCII')
+    cost_factor = int(configRegistry.get('password/hashing/bcrypt/cost_factor', '12',))
+    prefix = configRegistry.get('password/hashing/bcrypt/prefix', '2b',).encode('utf8')
+    salt = bcrypt.gensalt(rounds=cost_factor, prefix=prefix,)
+    return bcrypt.hashpw(password.encode('utf-8'), salt,).decode('ASCII')
 
 
-def ntlm(password):
+def ntlm(password,):
     # type: (str) -> Tuple[str, str]
     """
     Return tuple with NT and LanMan hash.
@@ -119,7 +119,7 @@ def ntlm(password):
     """
     nt = passlib.hash.nthash.hash(password).upper()
 
-    if configRegistry.is_true('password/samba/lmhash', False):
+    if configRegistry.is_true('password/samba/lmhash', False,):
         lm = passlib.hash.lmhash.hash(password).upper()
     else:
         lm = ''
@@ -127,7 +127,7 @@ def ntlm(password):
     return (nt, lm)
 
 
-def krb5_asn1(principal, password, krb5_context=None):
+def krb5_asn1(principal, password, krb5_context=None,):
     # type: (str, str, Optional[heimdal.context]) -> List[bytes]
     """
     Generate Kerberos password hashes.
@@ -141,16 +141,16 @@ def krb5_asn1(principal, password, krb5_context=None):
     if not krb5_context:
         krb5_context = heimdal.context()
     for krb5_etype in krb5_context.get_permitted_enctypes():
-        if str(krb5_etype) == 'des3-cbc-md5' and configRegistry.is_false('password/krb5/enctype/des3-cbc-md5', True):
+        if str(krb5_etype) == 'des3-cbc-md5' and configRegistry.is_false('password/krb5/enctype/des3-cbc-md5', True,):
             continue
-        krb5_principal = heimdal.principal(krb5_context, principal)
-        krb5_keyblock = heimdal.keyblock(krb5_context, krb5_etype, password, krb5_principal)
-        krb5_salt = heimdal.salt(krb5_context, krb5_principal)
-        list.append(heimdal.asn1_encode_key(krb5_keyblock, krb5_salt, 0))
+        krb5_principal = heimdal.principal(krb5_context, principal,)
+        krb5_keyblock = heimdal.keyblock(krb5_context, krb5_etype, password, krb5_principal,)
+        krb5_salt = heimdal.salt(krb5_context, krb5_principal,)
+        list.append(heimdal.asn1_encode_key(krb5_keyblock, krb5_salt, 0,))
     return list
 
 
-def is_locked(password):
+def is_locked(password,):
     # type: (str) -> bool
     """
     Check is the password (hash) is locked
@@ -173,7 +173,7 @@ def is_locked(password):
     return match is not None and match.group(2) == '!'
 
 
-def unlock_password(password):
+def unlock_password(password,):
     # type: (str) -> str
     """
     Remove prefix from password used for locking.
@@ -198,7 +198,7 @@ def unlock_password(password):
     return password
 
 
-def lock_password(password):
+def lock_password(password,):
     # type: (str) -> str
     """
     Add prefix to password used for locking.
@@ -231,7 +231,7 @@ def lock_password(password):
     return password
 
 
-def password_is_auth_saslpassthrough(password):
+def password_is_auth_saslpassthrough(password,):
     # type: (str) -> bool
     """
     Check if the password hash indicates the use of |SASL|.
@@ -239,10 +239,10 @@ def password_is_auth_saslpassthrough(password):
     :param apssword: password hash.
     :returns: `True` is |SASL| shall be used, `False` otherwise.
     """
-    return password.startswith('{SASL}') and configRegistry.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no').lower() == 'keep'
+    return password.startswith('{SASL}') and configRegistry.get('directory/manager/web/modules/users/user/auth/saslpassthrough', 'no',).lower() == 'keep'
 
 
-def get_password_history(password, pwhistory, pwhlen):
+def get_password_history(password, pwhistory, pwhlen,):
     # type: (str, str, int) -> str
     """
     Append the given password as hash to the history of password hashes
@@ -282,7 +282,7 @@ def get_password_history(password, pwhistory, pwhlen):
     return pwhistory
 
 
-def password_already_used(password, pwhistory):
+def password_already_used(password, pwhistory,):
     # type: (str, str) -> bool
     """
     Check if the password is already used in the password hash history.
@@ -304,14 +304,14 @@ def password_already_used(password, pwhistory):
         try:
             if linesplit[0] == '{BCRYPT}':
                 password_hash = line[len('{BCRYPT}'):]
-                if bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('ASCII')):
+                if bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('ASCII'),):
                     return True
             elif linesplit[0] == '{NT}':
                 password_hash = line[len('{NT}$'):]
                 if password_hash == ntlm(password)[0]:
                     return True
             else:
-                password_hash = crypt(password, linesplit[1], linesplit[2])
+                password_hash = crypt(password, linesplit[1], linesplit[2],)
         except IndexError:  # old style password history entry, no method id/salt in there
             hash_algorithm = hashlib.new("sha1")
             hash_algorithm.update(password.encode("utf-8"))
@@ -324,8 +324,8 @@ def password_already_used(password, pwhistory):
 class PasswortHistoryPolicy(object):
     """Policy for handling history of password hashes."""
 
-    def __init__(self, pwhistoryPolicy):
-        super(PasswortHistoryPolicy, self).__init__()
+    def __init__(self, pwhistoryPolicy,):
+        super(PasswortHistoryPolicy, self,).__init__()
         self.pwhistoryPolicy = pwhistoryPolicy
         self.pwhistoryLength = None
         self.pwhistoryPasswordLength = 0
@@ -333,15 +333,15 @@ class PasswortHistoryPolicy(object):
         self.expiryInterval = 0
         if pwhistoryPolicy:
             try:
-                self.pwhistoryLength = max(0, int(pwhistoryPolicy['length'] or 0))
+                self.pwhistoryLength = max(0, int(pwhistoryPolicy['length'] or 0),)
             except ValueError:
-                ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
+                ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,),)
             try:
-                self.pwhistoryPasswordLength = max(0, int(pwhistoryPolicy['pwLength'] or 0))
+                self.pwhistoryPasswordLength = max(0, int(pwhistoryPolicy['pwLength'] or 0),)
             except ValueError:
-                ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
+                ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,),)
             self.pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
             try:
-                self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0))
+                self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0),)
             except ValueError:
-                ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
+                ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,),)

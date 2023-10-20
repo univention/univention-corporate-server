@@ -58,75 +58,75 @@ s4_init_mode = False
 group_objects = []
 connector_needs_restart = False
 
-dirs = [listener.configRegistry.get('connector/s4/listener/dir', '/var/lib/univention-connector/s4')]
+dirs = [listener.configRegistry.get('connector/s4/listener/dir', '/var/lib/univention-connector/s4',)]
 if 'connector/listener/additionalbasenames' in listener.configRegistry and listener.configRegistry['connector/listener/additionalbasenames']:
     for configbasename in listener.configRegistry['connector/listener/additionalbasenames'].split(' '):
         if '%s/s4/listener/dir' % configbasename in listener.configRegistry and listener.configRegistry['%s/s4/listener/dir' % configbasename]:
             dirs.append(listener.configRegistry['%s/s4/listener/dir' % configbasename])
         else:
-            ud.debug(ud.LISTENER, ud.WARN, "s4-connector: additional config basename %s given, but %s/s4/listener/dir not set; ignore basename." % (configbasename, configbasename))
+            ud.debug(ud.LISTENER, ud.WARN, "s4-connector: additional config basename %s given, but %s/s4/listener/dir not set; ignore basename." % (configbasename, configbasename),)
 
 
-def _save_old_object(directory: str, dn: str, old: Dict[str, List[bytes]] | None) -> None:
-    filename = os.path.join(directory, 'tmp', 'old_dn')
+def _save_old_object(directory: str, dn: str, old: Dict[str, List[bytes]] | None,) -> None:
+    filename = os.path.join(directory, 'tmp', 'old_dn',)
 
-    with open(filename, 'wb+') as fd:
-        os.chmod(filename, 0o600)
+    with open(filename, 'wb+',) as fd:
+        os.chmod(filename, 0o600,)
         p = pickle.Pickler(fd)
         p.dump((dn, old))
         p.clear_memo()
 
 
-def _load_old_object(directory: str) -> Tuple[str, Dict[str, List[bytes]]]:
-    with open(os.path.join(directory, 'tmp', 'old_dn'), 'rb') as fd:
+def _load_old_object(directory: str,) -> Tuple[str, Dict[str, List[bytes]]]:
+    with open(os.path.join(directory, 'tmp', 'old_dn',), 'rb',) as fd:
         p = pickle.Unpickler(fd)
         (old_dn, old_object) = p.load()
 
     return (old_dn, old_object)
 
 
-def _dump_changes_to_file_and_check_file(directory: str, dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[bytes]] | None, old_dn: str | None) -> None:
+def _dump_changes_to_file_and_check_file(directory: str, dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[bytes]] | None, old_dn: str | None,) -> None:
     ob = (dn, new, old, old_dn)
 
-    tmpdir = os.path.join(directory, 'tmp')
+    tmpdir = os.path.join(directory, 'tmp',)
     filename = '%f' % (time.time(),)
-    filepath = os.path.join(tmpdir, filename)
+    filepath = os.path.join(tmpdir, filename,)
 
-    with open(filepath, 'wb+') as fd:
-        os.chmod(filepath, 0o600)
+    with open(filepath, 'wb+',) as fd:
+        os.chmod(filepath, 0o600,)
         p = pickle.Pickler(fd)
         p.dump(ob)
         p.clear_memo()
 
     # prevent a race condition between the pickle file is only partly written to disk and then read
     # by moving it to the final location after it is completely written to disk
-    shutil.move(filepath, os.path.join(directory, filename))
+    shutil.move(filepath, os.path.join(directory, filename,),)
 
 
 def _is_module_disabled() -> bool:
-    return listener.configRegistry.is_true('connector/s4/listener/disabled', False)
+    return listener.configRegistry.is_true('connector/s4/listener/disabled', False,)
 
 
 def _restart_connector() -> None:
     listener.setuid(0)
     try:
         if not subprocess.call(['pgrep', '-f', 'python3.*s4connector.s4.main']):
-            ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: restarting connector ...")
+            ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: restarting connector ...",)
             subprocess.call(('systemctl', 'restart', 'univention-s4-connector'))
-            ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: ... done")
+            ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: ... done",)
     finally:
         listener.unsetuid()
 
 
-def handler(dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[bytes]] | None, command: str) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[bytes]] | None, command: str,) -> None:
     global connector_needs_restart
 
     if _is_module_disabled():
-        ud.debug(ud.LISTENER, ud.INFO, "s4-connector: UMC module is disabled by UCR variable connector/s4/listener/disabled")
+        ud.debug(ud.LISTENER, ud.INFO, "s4-connector: UMC module is disabled by UCR variable connector/s4/listener/disabled",)
         return
 
     # restart connector on extended attribute changes
-    if b'univentionUDMProperty' in new.get('objectClass', []) or b'univentionUDMProperty' in old.get('objectClass', []):
+    if b'univentionUDMProperty' in new.get('objectClass', [],) or b'univentionUDMProperty' in old.get('objectClass', [],):
         connector_needs_restart = True
     else:
         if connector_needs_restart and not s4_init_mode:
@@ -136,32 +136,32 @@ def handler(dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[byt
     listener.setuid(0)
     try:
         for directory in dirs:
-            if not os.path.exists(os.path.join(directory, 'tmp')):
-                os.makedirs(os.path.join(directory, 'tmp'))
+            if not os.path.exists(os.path.join(directory, 'tmp',)):
+                os.makedirs(os.path.join(directory, 'tmp',))
 
             old_dn = None
             old_object: Dict[str, List[bytes]] = {}
 
-            if os.path.exists(os.path.join(directory, 'tmp', 'old_dn')):
+            if os.path.exists(os.path.join(directory, 'tmp', 'old_dn',)):
                 (old_dn, old_object) = _load_old_object(directory)
             if command == 'r':
-                _save_old_object(directory, dn, old)
+                _save_old_object(directory, dn, old,)
             else:
                 # Normally we see two steps for the modrdn operation. But in case of the selective replication we
                 # might only see the first step.
                 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=32542
                 if old_dn and new.get('entryUUID') != old_object.get('entryUUID'):
-                    ud.debug(ud.LISTENER, ud.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn))
-                    _dump_changes_to_file_and_check_file(directory, old_dn, {}, old_object, None)
+                    ud.debug(ud.LISTENER, ud.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn),)
+                    _dump_changes_to_file_and_check_file(directory, old_dn, {}, old_object, None,)
                     old_dn = None
 
-                if s4_init_mode and new and b'univentionGroup' in new.get('objectClass', []):
+                if s4_init_mode and new and b'univentionGroup' in new.get('objectClass', [],):
                     group_objects.append((dn, new, old, old_dn))
 
-                _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn)
+                _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn,)
 
-                if os.path.exists(os.path.join(directory, 'tmp', 'old_dn')):
-                    os.unlink(os.path.join(directory, 'tmp', 'old_dn'))
+                if os.path.exists(os.path.join(directory, 'tmp', 'old_dn',)):
+                    os.unlink(os.path.join(directory, 'tmp', 'old_dn',))
 
     finally:
         listener.unsetuid()
@@ -175,10 +175,10 @@ def clean() -> None:
                 continue
             for filename in os.listdir(directory):
                 if filename != "tmp":
-                    os.remove(os.path.join(directory, filename))
-            if os.path.exists(os.path.join(directory, 'tmp')):
-                for filename in os.listdir(os.path.join(directory, 'tmp')):
-                    os.remove(os.path.join(directory, filename))
+                    os.remove(os.path.join(directory, filename,))
+            if os.path.exists(os.path.join(directory, 'tmp',)):
+                for filename in os.listdir(os.path.join(directory, 'tmp',)):
+                    os.remove(os.path.join(directory, filename,))
     finally:
         listener.unsetuid()
 
@@ -194,9 +194,9 @@ def postrun() -> None:
             s4_init_mode = False
             for ob in group_objects:
                 for directory in dirs:
-                    filename = os.path.join(directory, "%f" % time.time())
-                    with open(filename, 'wb+') as fd:
-                        os.chmod(filename, 0o600)
+                    filename = os.path.join(directory, "%f" % time.time(),)
+                    with open(filename, 'wb+',) as fd:
+                        os.chmod(filename, 0o600,)
                         p = pickle.Pickler(fd)
                         p.dump(ob)
                         p.clear_memo()

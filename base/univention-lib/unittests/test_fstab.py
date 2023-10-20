@@ -34,7 +34,7 @@
 import pytest
 
 
-def test_fstab_parsing(fstab):
+def test_fstab_parsing(fstab,):
     fs = fstab.File('unittests/fstab')
     assert len(fs.get()) == 7
 
@@ -57,19 +57,19 @@ def test_fstab_parsing(fstab):
     f = fs.get()[5]
     assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda4', None, 'none', 'swap', ['sw'], None, None, None)
 
-    f = fs.get('ext3', False)[0]
+    f = fs.get('ext3', False,)[0]
     assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda3', None, '/', 'ext3', ['errors=remount-ro', 'acl', 'user_xattr'], 0, 1, None)
     assert [str(f)] == ['/dev/vda3\t/\text3\terrors=remount-ro,acl,user_xattr\t0\t1']
     assert [repr(f)] == ["univention.lib.fstab.Entry('/dev/vda3', '/', 'ext3', options='errors=remount-ro,acl,user_xattr', freq=0, passno=1)"]
 
 
-def test_fstab_save(mocker, fstab):
+def test_fstab_save(mocker, fstab,):
     content = open('unittests/fstab').read()
     fs = fstab.File('unittests/fstab')
     fd = mocker.Mock()
     fd.__enter__ = mocker.Mock(return_value=fd)
     fd.__exit__ = mocker.Mock(return_value=None)
-    mocker.patch.object(fstab, 'open', mocker.Mock(return_value=fd))
+    mocker.patch.object(fstab, 'open', mocker.Mock(return_value=fd),)
     fs.save()
     write_calls = [args[0] for _, args, _ in fd.write.mock_calls]
     assert [content] == [''.join(write_calls)]
@@ -79,16 +79,16 @@ def test_fstab_save(mocker, fstab):
     '/dev/vda3\t/\text3\tacl,errors=remount-ro\t# comment 1',
     '/dev/vda3\t/\text3\tacl,errors=remount-ro\t0\t# comment 2',
     '/dev/vda2\tnone\tswap\tsw\t#0\t1\t# foo bar baz',
-])
-def test_parsing_broken_entry(broken_line, fstab):
+],)
+def test_parsing_broken_entry(broken_line, fstab,):
     fs = fstab.File('unittests/fstab')
 
     result = fs._File__parse(broken_line)
     assert [broken_line] == [result]
 
 
-def test_entry_repr(fstab):
-    entry = fstab.Entry('/dev/vda3', '/', 'ext3', ['errors=remount-ro', 'acl', 'user_xattr'], 0, 1, None)
+def test_entry_repr(fstab,):
+    entry = fstab.Entry('/dev/vda3', '/', 'ext3', ['errors=remount-ro', 'acl', 'user_xattr'], 0, 1, None,)
     assert [repr(entry)] == ["univention.lib.fstab.Entry('/dev/vda3', '/', 'ext3', options='errors=remount-ro,acl,user_xattr', freq=0, passno=1)"]
 
 
@@ -100,9 +100,9 @@ def test_entry_repr(fstab):
     (("/dev/vda3", "/", "ext3", "defaults", None, 1), {}, "/dev/vda3\t/\text3\tdefaults\t0\t1"),
     (("/dev/vda3", "/", "ext3"), {"dump": 1, "passno": None}, "/dev/vda3\t/\text3\tdefaults\t1"),
     (("/dev/vda3", "/", "ext3"), {'comment': ''}, "/dev/vda3\t/\text3\t"),
-])
-def test_entry_composing(args, kwargs, string, fstab):
-    entry = fstab.Entry(*args, **kwargs)
+],)
+def test_entry_composing(args, kwargs, string, fstab,):
+    entry = fstab.Entry(*args, **kwargs,)
     assert [str(entry)] == [string]
 
     # important! everything parsed must be composed equally
@@ -110,13 +110,13 @@ def test_entry_composing(args, kwargs, string, fstab):
     assert [str(fs._File__parse(string))] == [string]
 
 
-def test_fstab_find(fstab):
+def test_fstab_find(fstab,):
     fs = fstab.File('unittests/fstab')
     assert fs.find(options=['sw']).type == 'swap'
     assert not fs.find(type='cifs')
 
 
-def test_fstab_find_line_with_comment(fstab):
+def test_fstab_find_line_with_comment(fstab,):
     fs = fstab.File('unittests/fstab')
     assert fs.find(mount_point='/home').type == 'nfs'
     assert fs.find(mount_point='/home').comment == '# LDAP bind'

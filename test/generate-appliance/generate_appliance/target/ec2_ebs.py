@@ -26,12 +26,12 @@ log = getLogger(__name__)
 
 
 class Progress:
-    def __init__(self, path: str, size: int) -> None:
+    def __init__(self, path: str, size: int,) -> None:
         self.path = path
         self.size = size
         self.seen = 0
 
-    def __call__(self, amount: int) -> None:
+    def __call__(self, amount: int,) -> None:
         self.seen += amount
         percent = 100 * self.seen // self.size
         sys.stdout.write("\r%s  %s / %s  (%d%%)" % (self.path, self.seen, self.size, percent))
@@ -45,25 +45,25 @@ class EC2_EBS(Target):
     tag = False
     public = False
 
-    def create(self, image: Raw) -> None:
+    def create(self, image: Raw,) -> None:
         vmdk = Vmdk(image)
 
-        s3 = boto3.client("s3", region_name=self.options.region)
-        vmdk_get = self.upload_file(s3, vmdk, self.options.bucket)
+        s3 = boto3.client("s3", region_name=self.options.region,)
+        vmdk_get = self.upload_file(s3, vmdk, self.options.bucket,)
 
-        ec2 = boto3.client("ec2", region_name=self.options.region)
-        import_task_id = self.import_snapshot(ec2, vmdk_get)
-        snapshot_id = self.wait_for_snapshot(ec2, import_task_id)
-        ami = self.register_image(ec2, snapshot_id, size=ceil(vmdk.volume_size() / 1e9))
+        ec2 = boto3.client("ec2", region_name=self.options.region,)
+        import_task_id = self.import_snapshot(ec2, vmdk_get,)
+        snapshot_id = self.wait_for_snapshot(ec2, import_task_id,)
+        ami = self.register_image(ec2, snapshot_id, size=ceil(vmdk.volume_size() / 1e9),)
         print('Generated "%s" appliance as\n  %s' % (self, ami))
 
         if self.tag:
-            self.add_tag(ec2, ami)
+            self.add_tag(ec2, ami,)
 
         if self.public:
-            self.make_public(ec2, ami)
+            self.make_public(ec2, ami,)
 
-    def upload_file(self, s3: "S3Client", vmdk: Vmdk, bucket: str) -> str:
+    def upload_file(self, s3: "S3Client", vmdk: Vmdk, bucket: str,) -> str:
         image_name = self.machine_name + ".vmdk"
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/upload_file.html>
         s3.upload_file(
@@ -75,8 +75,7 @@ class EC2_EBS(Target):
                 "Expires": datetime.datetime.now() + datetime.timedelta(days=1),
                 "StorageClass": "REDUCED_REDUNDANCY",
             },
-            Callback=Progress(vmdk.path().as_posix(), vmdk.file_size()),
-        )
+            Callback=Progress(vmdk.path().as_posix(), vmdk.file_size(),),)
         vmdk_get = s3.generate_presigned_url(
             ClientMethod='get_object',
             Params={
@@ -84,11 +83,10 @@ class EC2_EBS(Target):
                 "Key": image_name,
             },
             ExpiresIn=3600,
-            HttpMethod="GET",
-        )
+            HttpMethod="GET",)
         return vmdk_get
 
-    def import_snapshot(self, ec2: "EC2Client", vmdk_get: str) -> str:
+    def import_snapshot(self, ec2: "EC2Client", vmdk_get: str,) -> str:
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/import_snapshot.html>
         response = ec2.import_snapshot(
             Description=self.machine_name,
@@ -101,15 +99,13 @@ class EC2_EBS(Target):
                 # },
                 "Url": vmdk_get,
             },
-            DryRun=False,
-            # Encrypted=False,
-        )
-        log.debug("import_snapshot: %r", response)
+            DryRun=False,)
+        log.debug("import_snapshot: %r", response,)
         import_task_id = response["ImportTaskId"]
         return import_task_id
 
     @staticmethod
-    def wait_for_snapshot(ec2: "EC2Client", import_task_id: str) -> str:
+    def wait_for_snapshot(ec2: "EC2Client", import_task_id: str,) -> str:
         try:
             # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/get_waiter.html>
             # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/waiter/SnapshotImported.html>
@@ -119,8 +115,7 @@ class EC2_EBS(Target):
                 WaiterConfig={
                     'Delay': 15,
                     'MaxAttempts': 100,
-                },
-            )
+                },)
             count = 1
         except ValueError:
             count = 1000
@@ -128,21 +123,21 @@ class EC2_EBS(Target):
         for _ in range(count):
             # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/describe_import_snapshot_tasks.html>
             response = ec2.describe_import_snapshot_tasks(ImportTaskIds=[import_task_id])
-            log.debug("describe_import_snapshot_tasks: %r", response)
+            log.debug("describe_import_snapshot_tasks: %r", response,)
             detail = response["ImportSnapshotTasks"][0]["SnapshotTaskDetail"]
             status = detail["Status"]
             if status == "completed":
                 return detail["SnapshotId"]
             if status == "active":
                 progress = int(detail["Progress"])
-                Progress(import_task_id, 100)(progress)
+                Progress(import_task_id, 100,)(progress)
             else:
                 print(detail)
             sleep(15)
 
         raise ValueError("Import failed")
 
-    def register_image(self, ec2: "EC2Client", snapshot_id: str, size: int) -> str:
+    def register_image(self, ec2: "EC2Client", snapshot_id: str, size: int,) -> str:
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/register_image.html>
         response = ec2.register_image(
             Architecture="x86_64",
@@ -162,14 +157,12 @@ class EC2_EBS(Target):
             DryRun=False,
             EnaSupport=True,
             RootDeviceName="/dev/xvda",
-            VirtualizationType="hvm",
-            # BootMode="legacy-bios",
-        )
-        log.debug("register_image: %r", response)
+            VirtualizationType="hvm",)
+        log.debug("register_image: %r", response,)
         ami = response["ImageId"]
         return ami
 
-    def add_tag(self, ec2: "EC2Client", ami: str) -> None:
+    def add_tag(self, ec2: "EC2Client", ami: str,) -> None:
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/create_tags.html>
         ec2.create_tags(
             Resources=[
@@ -180,11 +173,10 @@ class EC2_EBS(Target):
                     "Key": "Name",
                     "Value": self.machine_name,
                 },
-            ],
-        )
+            ],)
 
     @staticmethod
-    def make_public(ec2: "EC2Client", ami: str) -> None:
+    def make_public(ec2: "EC2Client", ami: str,) -> None:
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/modify_image_attribute.html>
         response = ec2.modify_image_attribute(
             ImageId=ami,
@@ -194,6 +186,5 @@ class EC2_EBS(Target):
                         "Group": "all",
                     },
                 ],
-            },
-        )
-        log.debug("modify_image_attribute: %r", response)
+            },)
+        log.debug("modify_image_attribute: %r", response,)

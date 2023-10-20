@@ -55,15 +55,15 @@ from univention.config_registry import ConfigRegistry
 
 
 @contextlib.contextmanager
-def bind_stdout(options, statuslogfile):
+def bind_stdout(options, statuslogfile,):
     if options.daemonize:
-        with open(statuslogfile, 'w+') as sys.stdout:
+        with open(statuslogfile, 'w+',) as sys.stdout:
             yield
     else:
         yield
 
 
-def daemon(lock_file, options):
+def daemon(lock_file, options,):
     try:
         pid = os.fork()
     except OSError as e:
@@ -71,7 +71,7 @@ def daemon(lock_file, options):
 
     if (pid == 0):
         os.setsid()
-        signal.signal(signal.SIGHUP, signal.SIG_IGN)
+        signal.signal(signal.SIGHUP, signal.SIG_IGN,)
         try:
             pid = os.fork()
         except OSError as e:
@@ -80,7 +80,7 @@ def daemon(lock_file, options):
             os.chdir("/")
             os.umask(0o022)
         else:
-            pf = open('/var/run/univention-ad-%s' % options.configbasename, 'w+')
+            pf = open('/var/run/univention-ad-%s' % options.configbasename, 'w+',)
             pf.write(str(pid))
             pf.close()
             os._exit(0)
@@ -92,7 +92,7 @@ def daemon(lock_file, options):
     except (AttributeError, ValueError):
         maxfd = 256  # default maximum
 
-    for fd in range(0, maxfd):
+    for fd in range(0, maxfd,):
         if fd == lock_file.fileno():
             continue
         try:
@@ -100,12 +100,12 @@ def daemon(lock_file, options):
         except OSError:  # ERROR (ignore)
             pass
 
-    os.open("/dev/null", os.O_RDONLY)
-    os.open("/dev/null", os.O_RDWR)
-    os.open("/dev/null", os.O_RDWR)
+    os.open("/dev/null", os.O_RDONLY,)
+    os.open("/dev/null", os.O_RDWR,)
+    os.open("/dev/null", os.O_RDWR,)
 
 
-def connect(options):
+def connect(options,):
     print(time.ctime())
 
     ucr = ConfigRegistry()
@@ -115,7 +115,7 @@ def connect(options):
     ad_init = None
     while not ad_init:
         try:
-            ad = univention.connector.ad.ad.main(ucr, options.configbasename, logfilename=options.log_file, debug_level=options.debug)
+            ad = univention.connector.ad.ad.main(ucr, options.configbasename, logfilename=options.log_file, debug_level=options.debug,)
             ad.init_ldap_connections()
             ad.init_group_cache()
             ad_init = True
@@ -125,14 +125,14 @@ def connect(options):
             time.sleep(poll_sleep)
 
     # log the active mapping
-    with open('/var/log/univention/%s-ad-mapping.log' % options.configbasename, 'w+') as fd:
-        print(repr(univention.connector.Mapping(ad.property)), file=fd)
+    with open('/var/log/univention/%s-ad-mapping.log' % options.configbasename, 'w+',) as fd:
+        print(repr(univention.connector.Mapping(ad.property)), file=fd,)
 
     with ad as ad:
-        _connect(ad, poll_sleep, ucr.get('%s/ad/retryrejected' % options.configbasename, 10))
+        _connect(ad, poll_sleep, ucr.get('%s/ad/retryrejected' % options.configbasename, 10,),)
 
 
-def _connect(ad, poll_sleep, baseconfig_retry_rejected):
+def _connect(ad, poll_sleep, baseconfig_retry_rejected,):
     # Initialisierung auf UCS und AD Seite durchfuehren
     ad_init = None
     ucs_init = None
@@ -218,12 +218,12 @@ def _connect(ad, poll_sleep, baseconfig_retry_rejected):
 
 
 @contextlib.contextmanager
-def lock(filename):
+def lock(filename,):
     try:
-        lock_file = open(filename, "a+")
-        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        lock_file = open(filename, "a+",)
+        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB,)
     except IOError:
-        print('Error: Another AD connector process is already running.', file=sys.stderr)
+        print('Error: Another AD connector process is already running.', file=sys.stderr,)
         sys.exit(1)
     with lock_file as lock_file:
         yield lock_file
@@ -231,17 +231,17 @@ def lock(filename):
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-    parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
-    parser.add_argument('-d', '--debug', help='debug level', type=int)
-    parser.add_argument('-L', '--log-file', metavar='LOGFILE', help='Specifies an alternative logfile')
+    parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector",)
+    parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground',)
+    parser.add_argument('-d', '--debug', help='debug level', type=int,)
+    parser.add_argument('-L', '--log-file', metavar='LOGFILE', help='Specifies an alternative logfile',)
     options = parser.parse_args()
 
     with lock('/var/lock/univention-ad-%s' % options.configbasename) as lock_file:
         if options.daemonize:
-            daemon(lock_file, options)
+            daemon(lock_file, options,)
 
-        with bind_stdout(options, "/var/log/univention/%s-ad-status.log" % options.configbasename):
+        with bind_stdout(options, "/var/log/univention/%s-ad-status.log" % options.configbasename,):
             while True:
                 try:
                     connect(options)

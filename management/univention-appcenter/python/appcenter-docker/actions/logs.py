@@ -46,17 +46,17 @@ class Logs(UniventionAppAction, DockerActionMixin):
 
     help = 'Get log output of an app.'
 
-    def setup_parser(self, parser):
-        parser.add_argument('app', action=StoreAppAction, help='The ID of the App whose logs shall be output')
+    def setup_parser(self, parser,):
+        parser.add_argument('app', action=StoreAppAction, help='The ID of the App whose logs shall be output',)
 
-    def main(self, args):
+    def main(self, args,):
         if not args.app.docker or not args.app.is_installed():
             self.log('ERROR: Currently the logs command only works for installed docker apps.')
             return
 
         return self.show_docker_logs(args)
 
-    def show_docker_logs(self, args):
+    def show_docker_logs(self, args,):
         docker = self._get_docker(args.app)
         self.log("#### 'docker logs {}' output:".format(docker.container))
         return subprocess.call(['docker', 'logs', docker.container])

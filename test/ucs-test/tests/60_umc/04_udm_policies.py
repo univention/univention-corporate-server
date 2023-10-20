@@ -21,25 +21,25 @@ PASSWORD = 'univention'
 client = None
 
 
-def get_policy_result_new(container=None, policyDN=None):
-    return get_policy_result(None, policyDN, container)
+def get_policy_result_new(container=None, policyDN=None,):
+    return get_policy_result(None, policyDN, container,)
 
 
-def get_policy_result_edit(objectDN=None, policyDN=None):
-    return get_policy_result(objectDN, policyDN, None)
+def get_policy_result_edit(objectDN=None, policyDN=None,):
+    return get_policy_result(objectDN, policyDN, None,)
 
 
-def logged_in(func):
+def logged_in(func,):
     def _decorated(*args, **kwargs):
         global client
         if client is None:
-            client = Client(None, USERNAME, PASSWORD)
-        return func(*args, **kwargs)
+            client = Client(None, USERNAME, PASSWORD,)
+        return func(*args, **kwargs,)
     return _decorated
 
 
 @logged_in
-def get_policy_result(objectDN, policyDN, container):
+def get_policy_result(objectDN, policyDN, container,):
     """Gets the policy result from UMC"""
     data = [{
             'objectType': 'computers/domaincontroller_slave',
@@ -49,7 +49,7 @@ def get_policy_result(objectDN, policyDN, container):
             'container': container,
             }]
 
-    result = client.umc_command('udm/object/policies', data, 'navigation').result
+    result = client.umc_command('udm/object/policies', data, 'navigation',).result
     return ['='.join(r['value']) for r in result[0]['registry']]
 
 
@@ -62,8 +62,7 @@ def main():
             name='test-umc-opset',
             description="policy result test op set",
             operation=["udm/object/policies"],
-            flavor='navigation',
-        )
+            flavor='navigation',)
 
         # create a new UMC policy
         # containing the UMC operating set
@@ -71,8 +70,7 @@ def main():
             'policies/umc',
             position="cn=UMC,cn=policies,%s" % udm.LDAP_BASE,
             name='test-umc-policy',
-            allow=operation_set_dn,
-        )
+            allow=operation_set_dn,)
 
         # create user to authenticate with at UMC
         # appending the created UMC policy
@@ -93,27 +91,23 @@ def main():
                 'policies/registry',
                 position="cn=policies,%s" % udm.LDAP_BASE,
                 name='test-%s-ucr-policy' % name,
-                **kwargs,
-            )
+                **kwargs,)
 
         # create container hierarchy
         root_dn = udm.create_object(
             'container/cn',
             name='root',
-            position=udm.LDAP_BASE,
-        )
+            position=udm.LDAP_BASE,)
         container_dn = udm.create_object(
             'container/cn',
             name='computers2',
-            position=root_dn,
-        )
+            position=root_dn,)
 
         # create computer object
         computer_dn = udm.create_object(
             'computers/domaincontroller_slave',
             name=random_name(),
-            position=container_dn,
-        )
+            position=container_dn,)
 
         root_policy_dn = policies['root']
         computer_policy_dn = policies['computer']
@@ -140,35 +134,31 @@ def main():
         udm.modify_object('container/cn', **{  # noqa: PIE804
             'dn': root_dn,
             'policy_reference': root_policy_dn,
-        })
+        },)
 
         _assert(
             ["foo=1"],
             get_policy_result_new(container_dn),
-            'new inherit w/o_pol',
-        )
+            'new inherit w/o_pol',)
         _assert(
             ["foo=1", "baz=3", "bar=4"],
-            get_policy_result_new(container_dn, computer_policy_dn),
-            'new set_pol w/o_pol',
-        )
+            get_policy_result_new(container_dn, computer_policy_dn,),
+            'new set_pol w/o_pol',)
 
         # assign policy to computer container
         udm.modify_object('container/cn', **{  # noqa: PIE804
             'dn': container_dn,
             'policy_reference': container_policy_dn,
-        })
+        },)
 
         _assert(
             ["foo=1", "baz=2"],
             get_policy_result_new(container_dn),
-            'new inherit w/pol',
-        )
+            'new inherit w/pol',)
         _assert(
             ["foo=1", "bar=4", "baz=3"],
-            get_policy_result_new(container_dn, computer_policy_dn),
-            'new set_pol w/pol',
-        )
+            get_policy_result_new(container_dn, computer_policy_dn,),
+            'new set_pol w/pol',)
 
         #
         # modification tests
@@ -176,38 +166,33 @@ def main():
         _assert(
             ["foo=1", "baz=2"],
             get_policy_result_edit(computer_dn),
-            'edit inherit w/o_pol',
-        )
+            'edit inherit w/o_pol',)
         _assert(
             ["foo=1", "bar=4", "baz=3"],
-            get_policy_result_edit(computer_dn, computer_policy_dn),
-            'edit set_pol w/o_pol',
-        )
+            get_policy_result_edit(computer_dn, computer_policy_dn,),
+            'edit set_pol w/o_pol',)
 
         # assign policy to computer
         udm.modify_object('computers/domaincontroller_slave', **{  # noqa: PIE804
             'dn': computer_dn,
             'policy_reference': computer_policy_dn,
-        })
+        },)
 
         _assert(
             ["foo=1", "baz=2"],
             get_policy_result_edit(computer_dn),
-            'edit inherit w/pol',
-        )
+            'edit inherit w/pol',)
         _assert(  # test with the same policy the object has assigned
             ["foo=1", "bar=4", "baz=3"],
-            get_policy_result_edit(computer_dn, computer_policy_dn),
-            'edit set_pol w/pol',
-        )
+            get_policy_result_edit(computer_dn, computer_policy_dn,),
+            'edit set_pol w/pol',)
         _assert(
             ["foo=0", "bar=5", "baz=2"],
-            get_policy_result_edit(computer_dn, various_policy_dn),
-            'edit set_pol w/pol (2)',
-        )
+            get_policy_result_edit(computer_dn, various_policy_dn,),
+            'edit set_pol w/pol (2)',)
 
 
-def _assert(first, second, name):
+def _assert(first, second, name,):
     if set(first) != set(second):
         fail(f'ERROR: {name}: {set(first)!r} != {set(second)!r}')
     else:

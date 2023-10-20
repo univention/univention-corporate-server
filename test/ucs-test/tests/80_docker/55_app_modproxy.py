@@ -17,15 +17,14 @@ if __name__ == '__main__':
         app_version = get_app_version()
         ucr = UCSTestConfigRegistry()
 
-        app = tiny_app_apache(app_name, app_version)
+        app = tiny_app_apache(app_name, app_version,)
 
         try:
             app.set_ini_parameter(
                 WebInterface='/%s' % app.app_name,
                 WebInterfacePortHTTP='80',
                 WebInterfacePortHTTPS='443',
-                AutoModProxy='True',
-            )
+                AutoModProxy='True',)
             app.add_to_local_appcenter()
 
             appcenter.update()
@@ -46,7 +45,7 @@ if __name__ == '__main__':
         # special mod proxy with disabled HTTP
         app_version = get_app_version()
 
-        app = tiny_app_apache(app_name, app_version)
+        app = tiny_app_apache(app_name, app_version,)
 
         try:
             app.set_ini_parameter(
@@ -54,8 +53,7 @@ if __name__ == '__main__':
                 WebInterfacePortHTTP='0',  # NO HTTP!
                 WebInterfacePortHTTPS='80',  # ONLY HTTPS PUBLICLY!
                 WebInterfaceProxyScheme='http',  # CONTAINER ONLY HAS HTTP (80) SUPPORT!
-                AutoModProxy='True',
-            )
+                AutoModProxy='True',)
 
             app.add_to_local_appcenter()
 
@@ -65,7 +63,7 @@ if __name__ == '__main__':
             app.configure_tinyapp_modproxy()
             app.verify(joined=False)
 
-            app.verify_basic_modproxy_settings_tinyapp(http=False, https=True)
+            app.verify_basic_modproxy_settings_tinyapp(http=False, https=True,)
             ucr.load()
             assert ucr.get('ucs/web/overview/entries/service/%s/port_http' % app_name) == '', ucr.get('ucs/web/overview/entries/service/%s/port_http' % app_name)
             assert ucr.get('ucs/web/overview/entries/service/%s/port_https' % app_name) == '443', ucr.get('ucs/web/overview/entries/service/%s/port_https' % app_name)

@@ -39,5 +39,4 @@ dch = Changelog(open('debian/changelog'))
 
 setup(
     package_dir={'': '.'},
-    version=dch.version.full_version.split('A~')[0],
-)
+    version=dch.version.full_version.split('A~')[0],)

@@ -18,9 +18,9 @@ groupname = "testgroup"
 
 modules.update()
 users = modules.get('users/user')
-modules.init(lo, position, users)
+modules.init(lo, position, users,)
 groups = modules.get('groups/group')
-modules.init(lo, position, groups)
+modules.init(lo, position, groups,)
 
 all_users: List[str] = []
 all_groups: List[str] = []
@@ -29,9 +29,9 @@ group_member: Dict[int, List[str]] = {}
 position.setDn('cn=users,%s' % (base,))
 for i in range(number_of_users):
     name = "%s%s" % (username, i)
-    user = users.lookup(None, lo, "uid=%s" % name)
+    user = users.lookup(None, lo, "uid=%s" % name,)
     if not user:
-        user = users.object(None, lo, position)
+        user = users.object(None, lo, position,)
         user.open()
         user["lastname"] = name
         user["password"] = "univention"
@@ -43,15 +43,15 @@ for i in range(number_of_users):
         dn = user[0].dn
 
     gid = i % number_of_groups
-    group_member.setdefault(gid, []).append(dn)
+    group_member.setdefault(gid, [],).append(dn)
     all_users.append(dn)
 
 position.setDn('cn=groups,%s' % (base,))
 has_nested_group: List[str] = []
 for i in range(number_of_groups):
     name = "%s%s" % (groupname, i)
-    group = groups.lookup(None, lo, "cn=%s" % name)
-    new_members = group_member.get(i, [])
+    group = groups.lookup(None, lo, "cn=%s" % name,)
+    new_members = group_member.get(i, [],)
     nested_group = False
     if i and not i % 200:
         new_members = all_users
@@ -62,7 +62,7 @@ for i in range(number_of_groups):
         new_members = new_members + [has_nested_group[:1][0]]
         nested_group = True
     if not group:
-        group = groups.object(None, lo, position)
+        group = groups.object(None, lo, position,)
         group.open()
         group["name"] = name
         if new_members:

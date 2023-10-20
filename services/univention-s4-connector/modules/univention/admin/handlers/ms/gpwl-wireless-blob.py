@@ -51,8 +51,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['msieee80211-Policy', 'top'],
-    ),
+        objectClasses=['msieee80211-Policy', 'top'],),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -60,50 +59,45 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         required=True,
-        identifies=True,
-    ),
+        identifies=True,),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'msieee80211-ID': univention.admin.property(
         short_description=_('ID'),
         long_description='',
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'msieee80211-DataType': univention.admin.property(
         short_description=_('Data type'),
         long_description='',
-        syntax=univention.admin.syntax.integer,
-    ),
+        syntax=univention.admin.syntax.integer,),
     'msieee80211-Data': univention.admin.property(
         short_description=_('Data'),
         long_description='',
         syntax=univention.admin.syntax.TextArea,
-        size='Two',
-    ),
+        size='Two',),
 }
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('General'), layout=[
             ["name", "description"],
-        ]),
+        ],),
         Group(_('Policy settings'), layout=[
             'msieee80211-ID',
             'msieee80211-DataType',
             'msieee80211-Data',
-        ]),
-    ]),
+        ],),
+    ],),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('msieee80211-ID', 'msieee80211-ID', None, univention.admin.mapping.ListToString)
-mapping.register('msieee80211-DataType', 'msieee80211-DataType', None, univention.admin.mapping.ListToString)
-mapping.register('msieee80211-Data', 'msieee80211-Data', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
+mapping.register('msieee80211-ID', 'msieee80211-ID', None, univention.admin.mapping.ListToString,)
+mapping.register('msieee80211-DataType', 'msieee80211-DataType', None, univention.admin.mapping.ListToString,)
+mapping.register('msieee80211-Data', 'msieee80211-Data', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
 
 
 class object(univention.admin.handlers.simpleLdap):

@@ -72,8 +72,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyPackagesSlave'],
-    ),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyPackagesSlave'],),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -83,20 +82,17 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'slavePackages': univention.admin.property(
         short_description=_('Package installation list'),
         long_description='',
         syntax=univention.admin.syntax.Packages,
-        multivalue=True,
-    ),
+        multivalue=True,),
     'slavePackagesRemove': univention.admin.property(
         short_description=_('Package removal list'),
         long_description='',
         syntax=univention.admin.syntax.PackagesRemove,
-        multivalue=True,
-    ),
+        multivalue=True,),
 
 }, **dict([
     requiredObjectClassesProperty(),
@@ -104,7 +100,7 @@ property_descriptions = dict({
     fixedAttributesProperty(syntax=slavePackagesFixedAttributes),
     emptyAttributesProperty(syntax=slavePackagesFixedAttributes),
     ldapFilterProperty(),
-]))
+]),)
 
 layout = [
     Tab(_('General'), policy_short_description, layout=[
@@ -112,15 +108,15 @@ layout = [
             'name',
             'slavePackages',
             'slavePackagesRemove',
-        ]),
-    ]),
+        ],),
+    ],),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('slavePackages', 'univentionSlavePackages')
-mapping.register('slavePackagesRemove', 'univentionSlavePackagesRemove')
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('slavePackages', 'univentionSlavePackages',)
+mapping.register('slavePackagesRemove', 'univentionSlavePackagesRemove',)
 register_policy_mapping(mapping)
 
 

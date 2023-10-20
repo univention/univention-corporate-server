@@ -36,9 +36,9 @@ import sys
 from typing import Any, Container, Dict, List, Tuple
 
 
-def _get_path(filename: str) -> str:
+def _get_path(filename: str,) -> str:
     for ipath in (
-            os.path.join(os.path.dirname(sys.argv[0]), filename),
+            os.path.join(os.path.dirname(sys.argv[0]), filename,),
             filename,
     ):
         if os.path.exists(ipath):
@@ -46,7 +46,7 @@ def _get_path(filename: str) -> str:
     raise RuntimeError('Cannot find data file %s' % filename)
 
 
-def get_country_codes(countryCodeKeyType: int = 2) -> Dict[str, str]:
+def get_country_codes(countryCodeKeyType: int = 2,) -> Dict[str, str]:
     if countryCodeKeyType == 2:
         idx1 = 0
         idx2 = 1
@@ -66,7 +66,7 @@ def get_country_codes(countryCodeKeyType: int = 2) -> Dict[str, str]:
         return pairs
 
 
-def get_country_code_to_geonameid_map(countryCodeType: int = 2) -> Dict[str, str]:
+def get_country_code_to_geonameid_map(countryCodeType: int = 2,) -> Dict[str, str]:
     countries = {}
     if countryCodeType == 2:
         countryCodeIndex = 0
@@ -84,7 +84,7 @@ def get_country_code_to_geonameid_map(countryCodeType: int = 2) -> Dict[str, str
     return countries
 
 
-def get_country_default_language(countryCodeType: int = 2) -> Dict[str, str]:
+def get_country_default_language(countryCodeType: int = 2,) -> Dict[str, str]:
     if countryCodeType == 2:
         countryCodeIndex = 0
     elif countryCodeType == 3:
@@ -133,7 +133,7 @@ def get_city_data() -> Dict[str, Dict[str, Any]]:
     return cities
 
 
-def get_localized_names(geonameids: Container[str], lang: str) -> Dict[str, str]:
+def get_localized_names(geonameids: Container[str], lang: str,) -> Dict[str, str]:
     labels = {}
     label_score: Dict[str, int] = {}
     with open(_get_path('alternateNames.txt')) as infile:
@@ -147,14 +147,14 @@ def get_localized_names(geonameids: Container[str], lang: str) -> Dict[str, str]
 
             if ilang == lang and iid in geonameids:
                 iscore = isshort + 2 * isprefered
-                if iscore >= label_score.get(iid, 0):
+                if iscore >= label_score.get(iid, 0,):
                     labels[iid] = ilabel
                     label_score[iid] = iscore
 
     return labels
 
 
-def get_alternate_names(geonameids: Container[str], *locales: str) -> List[Tuple[str, str]]:
+def get_alternate_names(geonameids: Container[str],*locales: str) -> List[Tuple[str, str]]:
     labels = []
     with open(_get_path('alternateNames.txt')) as infile:
         for line in infile:
@@ -188,7 +188,7 @@ def get_country_code_to_nameserver_map() -> Dict[str, Dict[str, List[str]]]:
             if not country:
                 continue
 
-            imapEntry = mapping.setdefault(country, {"ipv4": [], "ipv4_erroneous": [], "ipv6": [], "ipv6_erroneous": []})
+            imapEntry = mapping.setdefault(country, {"ipv4": [], "ipv4_erroneous": [], "ipv6": [], "ipv6_erroneous": []},)
             ip = ientry['ip']
             has_error = ientry['error']
             idx = ''

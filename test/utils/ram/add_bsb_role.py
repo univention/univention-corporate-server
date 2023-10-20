@@ -16,7 +16,7 @@ SEARCH_ATTRS = ["ucsschoolRole"]
 LDAP_WRITE_PARALLELISM = multiprocessing.cpu_count()
 
 
-def update_roles_in_memory(dn: str, attrs: Dict[str, List[bytes]]) -> None:
+def update_roles_in_memory(dn: str, attrs: Dict[str, List[bytes]],) -> None:
     for role_b in attrs["ucsschoolRole"][:]:
         role_s = role_b.decode()
         role, context_type, context = get_role_info(role_s)
@@ -34,13 +34,13 @@ if __name__ == "__main__":
 
     print(f"Searching for users and groups to modify with filter {SEARCH_FILTER!r}...")
     t0 = time.time()
-    objs = lo.search(SEARCH_FILTER, attr=SEARCH_ATTRS)
+    objs = lo.search(SEARCH_FILTER, attr=SEARCH_ATTRS,)
     print(f"Found {len(objs)} objects to update in {time.time() - t0:.2f} seconds.")
 
     print("Updating roles in memory...")
     t0 = time.time()
     for dn, attrs in objs:
-        update_roles_in_memory(dn, attrs)
+        update_roles_in_memory(dn, attrs,)
     print(f"Updated roles in memory in {time.time() - t0:.2f} seconds.")
 
     ou_ds = f"ou=DEMOSCHOOL,{ucr['ldap/base']}"
@@ -52,5 +52,5 @@ if __name__ == "__main__":
     t0 = time.time()
     with concurrent.futures.ThreadPoolExecutor(max_workers=LDAP_WRITE_PARALLELISM) as executor:
         for dn, attrs in objs:
-            executor.submit(lo.modify, dn, [("ucsschoolRole", attrs["ucsschoolRoleOld"], attrs["ucsschoolRole"])])
+            executor.submit(lo.modify, dn, [("ucsschoolRole", attrs["ucsschoolRoleOld"], attrs["ucsschoolRole"])],)
     print(f"Updated roles in LDAP in {time.time() - t0:.2f} seconds.")

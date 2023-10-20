@@ -18,16 +18,16 @@ UCR_CACHE = '/var/cache/univention-config/cache'
 print('Re-registering package univention-base-files...')
 handler_register(['univention-base-files'])
 
-with open(UCR_CACHE, "rb") as f:
+with open(UCR_CACHE, "rb",) as f:
     f.readline()
-    d = pickle.load(f, encoding='bytes')  # noqa: S301
+    d = pickle.load(f, encoding='bytes',)  # noqa: S301
 
 modules = []
 
 print('Check if UCR variable xorg/keyboard/options/XkbModel has more than one module attached...')
 value = d['xorg/keyboard/options/XkbModel']
 for val in value:
-    if isinstance(val, ucrh.ConfigHandlerModule):
+    if isinstance(val, ucrh.ConfigHandlerModule,):
         modules.append(val.module)
 
 if len(modules) > 1:

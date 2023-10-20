@@ -46,5 +46,4 @@ setup(
     name='univention-debhelper',
     version='1.0.0',
     maintainer='Univention GmbH',
-    maintainer_email='packages@univention.de',
-)
+    maintainer_email='packages@univention.de',)

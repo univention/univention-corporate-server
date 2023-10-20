@@ -31,13 +31,13 @@ if __name__ == '__main__':
 
         # modify group
         group_sid = s4connector.get_object_sid(group_dn)
-        udm.modify_object('groups/group', dn=group_dn, name=new_group_name)
-        modified_group_dn = s4connector.correct_cleanup(group_dn, new_group_name, udm, True)
+        udm.modify_object('groups/group', dn=group_dn, name=new_group_name,)
+        modified_group_dn = s4connector.correct_cleanup(group_dn, new_group_name, udm, True,)
         print(modified_group_dn)
         s4connector.wait_for_sync()
 
         # check modified group and sync
-        s4connector.check_object(modified_group_dn, group_sid, group_dn)
+        s4connector.check_object(modified_group_dn, group_sid, group_dn,)
         utils.verify_ldap_object(modified_group_dn)
 
     s4connector.wait_for_sync()

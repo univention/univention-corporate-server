@@ -24,12 +24,12 @@ ad_domain_info = univention.lib.admember.lookup_adds_dc()
 ad_ip = ad_domain_info['DC IP']
 my_ip = Interfaces().get_default_ip_address().ip
 domainname = ucr.get('domainname')
-fqdn = ucr.get('ucs/server/sso/fqdn', 'ucs-sso.' + domainname)
+fqdn = ucr.get('ucs/server/sso/fqdn', 'ucs-sso.' + domainname,)
 
 resolver = dns.resolver.Resolver()
 resolver.nameservers = [ad_ip]
 resolver.lifetime = 10
-response = resolver.query(fqdn, 'A')
+response = resolver.query(fqdn, 'A',)
 ret_val = TestCodes.RESULT_FAIL
 found = False
 for data in response:

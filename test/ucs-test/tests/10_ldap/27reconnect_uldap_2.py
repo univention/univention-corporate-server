@@ -61,17 +61,17 @@ def main():
                 binddn=account.binddn,
                 bindpw=account.bindpw,
                 start_tls=2,
-                follow_referral=follow_referral)
+                follow_referral=follow_referral,)
 
-            if isinstance(lo, tuple):
+            if isinstance(lo, tuple,):
                 lo = lo[0]
 
             print(f'Starting test set with connection {lo!r}')
 
             print('Testing lo.search operation...')
             restart_finished = False
-            start_new_thread(delayed_slapd_restart, ())
-            filter_s = filter_format('(uid=%s)', (account.username,))
+            start_new_thread(delayed_slapd_restart, (),)
+            filter_s = filter_format('(uid=%s)', (account.username,),)
             count = 0
             try:
                 while not restart_finished:
@@ -96,14 +96,14 @@ def main():
 
             # test lo.modify operation
             restart_finished = False
-            start_new_thread(delayed_slapd_restart, ())
+            start_new_thread(delayed_slapd_restart, (),)
             count = 0
             try:
                 old_description = b''
                 while not restart_finished:
                     try:
                         new_description = f'Foo bar {uts.random_string(5)}'.encode()
-                        res = lo.modify(user_dn, [['description', old_description, new_description]])
+                        res = lo.modify(user_dn, [['description', old_description, new_description]],)
                         assert res == user_dn
                         old_description = new_description
                         count += 1

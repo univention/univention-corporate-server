@@ -76,7 +76,7 @@ RE_KEY = re.compile(f'{COMPONENT_BASE}/([^/]+)/({"|".join(DEPRECATED_VARS)})')
 cleanup_vars: List[Tuple[str, str]] = []
 
 
-def run_cleanup_deprecated(umc_instance: Instance) -> None:
+def run_cleanup_deprecated(umc_instance: Instance,) -> None:
 
     msg = _('Cleanup of deprecated variables is executed !')
     MODULE.warn(msg)
@@ -86,17 +86,17 @@ def run_cleanup_deprecated(umc_instance: Instance) -> None:
         component = match.group(1) if match else "$$BASE"
         sorted_vars[component].append((name, value))
     for var_list in sorted_vars.values():
-        values: Dict[str, str] = dict.fromkeys(DEPRECATED_VARS, "")
+        values: Dict[str, str] = dict.fromkeys(DEPRECATED_VARS, "",)
         for name, value in var_list:
             base, dummy, key = name.rpartition("/")
             if key not in DEPRECATED_VARS:
                 raise LookupError(f'Unexpected key found: {key}')
             values[key] = value
         server = ucr.get(f'{base}/server')
-        server = create_url(server, values['prefix'], values['username'], values['password'], values['port'])
+        server = create_url(server, values['prefix'], values['username'], values['password'], values['port'],)
         ucr_set([f'{base}/server={server}'])
         ucr_unset([name[0] for name in var_list])
-    raise ProblemFixed(buttons=[], description=_("After fixing the problem please use the Repository Settings module to check the changes made"))
+    raise ProblemFixed(buttons=[], description=_("After fixing the problem please use the Repository Settings module to check the changes made"),)
 
 
 actions = {
@@ -109,13 +109,13 @@ def _get_config_registry_info() -> cri.ConfigRegistryInfo:
     return cri.ConfigRegistryInfo(install_mode=False)
 
 
-def _repo_relevant(name: str, reg: Pattern) -> bool:
+def _repo_relevant(name: str, reg: Pattern,) -> bool:
     if name in DEPRECATED_GEN:
         return True
     return bool(reg.fullmatch(name))
 
 
-def run(_umc_instance: Instance) -> None:
+def run(_umc_instance: Instance,) -> None:
     error_descriptions: List[str] = []
 
     buttons = [{
@@ -125,10 +125,10 @@ def run(_umc_instance: Instance) -> None:
 
     info = _get_config_registry_info()
 
-    ignore_scheme_check = ucr.get("diagnostic/check/65_check_repository_config/ignore", "")
+    ignore_scheme_check = ucr.get("diagnostic/check/65_check_repository_config/ignore", "",)
     for name in info.variables.keys():
-        if _repo_relevant(name, RE_KEY):
-            value = ucr.get(name, "")
+        if _repo_relevant(name, RE_KEY,):
+            value = ucr.get(name, "",)
             if value:
                 if name == 'repository/online/port' and value == '80':
                     continue
@@ -137,7 +137,7 @@ def run(_umc_instance: Instance) -> None:
                 MODULE.warn(msg)
                 error_descriptions.append(msg)
         elif not ignore_scheme_check and name.startswith(ONLINE_BASE) and name.endswith("server"):
-            value = ucr.get(name, "")
+            value = ucr.get(name, "",)
             if not scheme_is_http(value):
                 msg = "\n".join((
                     _('No http/https used as scheme in %(name)r: %(value)r.') % {'name': name, 'value': value},
@@ -146,7 +146,7 @@ def run(_umc_instance: Instance) -> None:
                 MODULE.warn(msg)
                 error_descriptions.append(msg)
     if error_descriptions:
-        raise Warning(f"{description}\n" + "\n".join(error_descriptions), buttons=buttons)
+        raise Warning(f"{description}\n" + "\n".join(error_descriptions), buttons=buttons,)
 
 
 if __name__ == '__main__':

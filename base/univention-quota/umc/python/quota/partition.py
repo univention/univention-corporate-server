@@ -49,16 +49,16 @@ _ = umc.Translation('univention-management-console-module-quota').translate
 
 class Commands(object):
 
-    def partitions_query(self, request):
+    def partitions_query(self, request,):
         result = []
         try:
             fs = fstab.File('/etc/fstab')
             mt = fstab.File('/etc/mtab')
         except IOError as error:
             MODULE.error('Could not open %s' % error.filename)
-            raise UMC_Error(_('Could not open %s') % error.filename, 500)
+            raise UMC_Error(_('Could not open %s') % error.filename, 500,)
 
-        partitions = fs.get(['xfs', 'ext4', 'ext3', 'ext2'], False)
+        partitions = fs.get(['xfs', 'ext4', 'ext3', 'ext2'], False,)
         for partition in partitions:
             list_entry = {}
             list_entry['partitionDevice'] = partition.spec
@@ -69,19 +69,19 @@ class Commands(object):
             mounted_partition = mt.find(spec=partition.spec)
             if mounted_partition:
                 partition_info = df.DeviceInfo(partition.mount_point)
-                list_entry['partitionSize'] = tools.block2byte(partition_info.size(), 'GB', 1)
-                list_entry['freeSpace'] = tools.block2byte(partition_info.free(), 'GB', 1)
+                list_entry['partitionSize'] = tools.block2byte(partition_info.size(), 'GB', 1,)
+                list_entry['freeSpace'] = tools.block2byte(partition_info.free(), 'GB', 1,)
             result.append(list_entry)
-        self.finished(request.id, result)
+        self.finished(request.id, result,)
 
-    def partitions_info(self, request):
+    def partitions_info(self, request,):
         result = {}
         try:
             fs = fstab.File('/etc/fstab')
             mt = fstab.File('/etc/mtab')
         except IOError as error:
             MODULE.error('Could not open %s' % error.filename)
-            raise UMC_Error(_('Could not open %s') % error.filename, 500)
+            raise UMC_Error(_('Could not open %s') % error.filename, 500,)
 
         partition = fs.find(spec=request.options['partitionDevice'])
         if not partition:
@@ -93,20 +93,20 @@ class Commands(object):
         result['mountPoint'] = mounted_partition.mount_point
         result['filesystem'] = mounted_partition.type
         result['options'] = mounted_partition.options
-        self.finished(request.id, result)
+        self.finished(request.id, result,)
 
     @simple_response
-    def partitions_activate(self, partitionDevice):
+    def partitions_activate(self, partitionDevice,):
         MODULE.info('quota/partitions/activate: %s' % (partitionDevice,))
 
-        def _thread(self, request):
-            return tools.activate_quota(partitionDevice, True)
+        def _thread(self, request,):
+            return tools.activate_quota(partitionDevice, True,)
         return _thread
 
     @simple_response
-    def partitions_deactivate(self, partitionDevice):
+    def partitions_deactivate(self, partitionDevice,):
         MODULE.info('quota/partitions/deactivate: %s' % (partitionDevice,))
 
-        def _thread(self, request):
-            return tools.activate_quota(partitionDevice, False)
+        def _thread(self, request,):
+            return tools.activate_quota(partitionDevice, False,)
         return _thread

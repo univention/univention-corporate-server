@@ -8,12 +8,12 @@ from waflib.Tools import ccroot, ar
 from waflib.Configure import conf
 
 @conf
-def find_sxx(conf):
+def find_sxx(conf,):
 	"""
 	Detects the sun C++ compiler
 	"""
 	v = conf.env
-	cc = conf.find_program(['CC', 'c++'], var='CXX')
+	cc = conf.find_program(['CC', 'c++'], var='CXX',)
 	try:
 		conf.cmd_and_log(cc + ['-flags'])
 	except Errors.WafError:
@@ -22,7 +22,7 @@ def find_sxx(conf):
 	conf.get_suncc_version(cc)
 
 @conf
-def sxx_common_flags(conf):
+def sxx_common_flags(conf,):
 	"""
 	Flags required for executing the sun C++ compiler
 	"""
@@ -57,7 +57,7 @@ def sxx_common_flags(conf):
 	v.LINKFLAGS_cxxstlib  = ['-Bstatic']
 	v.cxxstlib_PATTERN    = 'lib%s.a'
 
-def configure(conf):
+def configure(conf,):
 	conf.find_sxx()
 	conf.find_ar()
 	conf.sxx_common_flags()

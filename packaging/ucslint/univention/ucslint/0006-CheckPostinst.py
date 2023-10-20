@@ -50,7 +50,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0006-8': (uub.RESULT_WARN, 'script uses broken remove_ucr_info_file'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: str,) -> None:
         super().check(path)
 
         fnlist_scripts: Dict[str, Dict[str, Any]] = {}
@@ -58,9 +58,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # search debian scripts
         #
-        for f in os.listdir(os.path.join(path, 'debian')):
-            fn = os.path.join(path, 'debian', f)
-            if f.rsplit('.', 1)[-1] in ['preinst', 'postinst', 'prerm', 'postrm']:
+        for f in os.listdir(os.path.join(path, 'debian',)):
+            fn = os.path.join(path, 'debian', f,)
+            if f.rsplit('.', 1,)[-1] in ['preinst', 'postinst', 'prerm', 'postrm']:
                 fnlist_scripts[fn] = {
                     'debhelper': False,
                     'udm_calls': 0,
@@ -123,24 +123,24 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         for fn, checks in fnlist_scripts.items():
             if not checks['debhelper']:
-                self.addmsg('0006-1', 'script does not contain #DEBHELPER#', fn)
+                self.addmsg('0006-1', 'script does not contain #DEBHELPER#', fn,)
 
             if checks['set-e-hashbang']:
-                self.addmsg('0006-4', 'script contains "sh -e" in hashbang', fn)
+                self.addmsg('0006-4', 'script contains "sh -e" in hashbang', fn,)
 
             if checks['set-e-body']:
-                self.addmsg('0006-5', 'script contains "set -e"', fn)
+                self.addmsg('0006-5', 'script contains "set -e"', fn,)
 
             if checks['udm_calls'] > 0:
-                self.addmsg('0006-2', 'script contains %(udm_calls)d calls of univention-directory-manager or univention-admin - use a join script' % checks, fn)
+                self.addmsg('0006-2', 'script contains %(udm_calls)d calls of univention-directory-manager or univention-admin - use a join script' % checks, fn,)
             if checks['udm_in_line'] > 0:
-                self.addmsg('0006-3', 'script may contain %(udm_in_line)d calls of univention-directory-manager or univention-admin - please check and use a join script' % checks, fn)
+                self.addmsg('0006-3', 'script may contain %(udm_in_line)d calls of univention-directory-manager or univention-admin - please check and use a join script' % checks, fn,)
 
             if not checks['endswith-exit-0']:
-                self.addmsg('0006-6', 'script contains no "exit 0" at end of file', fn)
+                self.addmsg('0006-6', 'script contains no "exit 0" at end of file', fn,)
 
             if checks['uses-remove_ucr_template']:
-                self.addmsg('0006-7', 'script uses broken remove_ucr_template; should use dpkg-maintscript-helper rm_conffile', fn)
+                self.addmsg('0006-7', 'script uses broken remove_ucr_template; should use dpkg-maintscript-helper rm_conffile', fn,)
 
             if checks['uses-remove_ucr_info_file']:
-                self.addmsg('0006-8', 'script uses broken remove_ucr_info_file; should use dpkg-maintscript-helper rm_conffile', fn)
+                self.addmsg('0006-8', 'script uses broken remove_ucr_info_file; should use dpkg-maintscript-helper rm_conffile', fn,)

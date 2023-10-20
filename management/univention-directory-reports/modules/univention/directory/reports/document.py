@@ -60,7 +60,7 @@ class Document(object):
     (TYPE_LATEX, TYPE_CSV, TYPE_RML, TYPE_UNKNOWN) = range(4)
 
     @classmethod
-    def get_type(cls, template):
+    def get_type(cls, template,):
         if template.endswith('.tex'):
             return cls.TYPE_LATEX
         elif template.endswith('.csv'):
@@ -69,7 +69,7 @@ class Document(object):
             return cls.TYPE_RML
         return cls.TYPE_UNKNOWN
 
-    def __init__(self, template, header=None, footer=None):
+    def __init__(self, template, header=None, footer=None,):
         self._template = template
         self._header = header
         self._footer = footer
@@ -94,78 +94,78 @@ class Document(object):
         elif self._type == Document.TYPE_CSV:
             suffix = '.csv'
         else:
-            suffix = self._template.rsplit('.', 1)[1]
-        fd, filename = tempfile.mkstemp(suffix, 'univention-directory-reports-')
-        os.chmod(filename, 0o644)
+            suffix = self._template.rsplit('.', 1,)[1]
+        fd, filename = tempfile.mkstemp(suffix, 'univention-directory-reports-',)
+        os.chmod(filename, 0o644,)
         os.close(fd)
 
         return filename
 
-    def __append_file(self, fd, filename, obj=None):
+    def __append_file(self, fd, filename, obj=None,):
         parser = Parser(filename=filename)
         parser.tokenize()
         tks = copy.deepcopy(parser._tokens)
-        interpret = Interpreter(obj, tks)
+        interpret = Interpreter(obj, tks,)
         interpret.run()
-        output = Output(tks, fd=fd)
+        output = Output(tks, fd=fd,)
         output.write()
 
-    def create_source(self, objects=[]):
+    def create_source(self, objects=[],):
         """Create report from objects (list of DNs)."""
         tmpfile = self.__create_tempfile()
         admin.set_format(self._type)
         parser = Parser(filename=self._template)
         parser.tokenize()
         tokens = parser._tokens
-        fd = codecs.open(tmpfile, 'wb+', encoding='utf8')
+        fd = codecs.open(tmpfile, 'wb+', encoding='utf8',)
         if parser._header:
             fd.write(parser._header.data)
         elif self._header:
-            self.__append_file(fd, self._header)
+            self.__append_file(fd, self._header,)
 
         for dn in objects:
-            if isinstance(dn, six.string_types):
-                obj = admin.get_object(None, dn)
+            if isinstance(dn, six.string_types,):
+                obj = admin.get_object(None, dn,)
             else:
                 obj = admin.cache_object(dn)
             if obj is None:
-                print("warning: dn '%s' not found, skipped." % dn, file=sys.stderr)
+                print("warning: dn '%s' not found, skipped." % dn, file=sys.stderr,)
                 continue
             tks = copy.deepcopy(tokens)
-            interpret = Interpreter(obj, tks)
+            interpret = Interpreter(obj, tks,)
             interpret.run()
-            output = Output(tks, fd=fd)
+            output = Output(tks, fd=fd,)
             output.write()
         if parser._footer:
             fd.write(parser._footer.data)
         elif self._footer:
-            self.__append_file(fd, self._footer)
+            self.__append_file(fd, self._footer,)
         fd.close()
 
         return tmpfile
 
-    def create_pdf(self, latex_file):
+    def create_pdf(self, latex_file,):
         """Run pdflatex on latex_file and return path to generated file or None on errors."""
         cmd = ['/usr/bin/pdflatex', '-interaction=nonstopmode', '-halt-on-error', '-output-directory=%s' % os.path.dirname(latex_file), latex_file]
-        devnull = open(os.path.devnull, 'w')
+        devnull = open(os.path.devnull, 'w',)
         try:
             env_vars = {'PATH': '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin', 'HOME': '/var/cache/univention-directory-reports'}
-            if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars) and not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
-                return '%s.pdf' % latex_file.rsplit('.', 1)[0]
+            if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars,) and not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars,):
+                return '%s.pdf' % latex_file.rsplit('.', 1,)[0]
             raise ReportError(_('Failed creating PDF file.'))
         finally:
             devnull.close()
-            basefile = latex_file.rsplit('.', 1)[0]  # strip suffix
+            basefile = latex_file.rsplit('.', 1,)[0]  # strip suffix
             for file_ in [latex_file] + ['%s.%s' % (basefile, suffix) for suffix in ('aux', 'log')]:
                 try:
                     os.unlink(file_)
                 except EnvironmentError:
                     pass
 
-    def create_rml_pdf(self, rml_file):
+    def create_rml_pdf(self, rml_file,):
         output = '%s.pdf' % (os.path.splitext(rml_file)[0],)
-        with open(rml_file, 'rb') as fd:
-            outputfile = trml2pdf.parseString(fd.read(), output)
+        with open(rml_file, 'rb',) as fd:
+            outputfile = trml2pdf.parseString(fd.read(), output,)
         try:
             os.unlink(rml_file)
         except EnvironmentError:

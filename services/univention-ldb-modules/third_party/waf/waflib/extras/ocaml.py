@@ -15,11 +15,11 @@ EXT_MLI = ['.mli']
 EXT_MLC = ['.c']
 EXT_ML  = ['.ml']
 
-open_re = re.compile(r'^\s*open\s+([a-zA-Z]+)(;;){0,1}$', re.M)
-foo = re.compile(r"""(\(\*)|(\*\))|("(\\.|[^"\\])*"|'(\\.|[^'\\])*'|.[^()*"'\\]*)""", re.M)
-def filter_comments(txt):
+open_re = re.compile(r'^\s*open\s+([a-zA-Z]+)(;;){0,1}$', re.M,)
+foo = re.compile(r"""(\(\*)|(\*\))|("(\\.|[^"\\])*"|'(\\.|[^'\\])*'|.[^()*"'\\]*)""", re.M,)
+def filter_comments(txt,):
 	meh = [0]
-	def repl(m):
+	def repl(m,):
 		if m.group(1):
 			meh[0] += 1
 		elif m.group(2):
@@ -27,7 +27,7 @@ def filter_comments(txt):
 		elif not meh[0]:
 			return m.group()
 		return ''
-	return foo.sub(repl, txt)
+	return foo.sub(repl, txt,)
 
 def scan(self):
 	node = self.inputs[0]
@@ -75,13 +75,13 @@ def init_ml(self):
 		compiled_tasks = [],
 		includes = '',
 		uselib = '',
-		are_deps_set = 0)
+		are_deps_set = 0,)
 
 @feature('ocaml')
 @after_method('init_ml')
 def init_envs_ml(self):
 
-	self.islibrary = getattr(self, 'islibrary', False)
+	self.islibrary = getattr(self, 'islibrary', False,)
 
 	global native_lst, bytecode_lst
 	self.native_env = None
@@ -97,7 +97,7 @@ def init_envs_ml(self):
 			self.bytecode_env['OCALINKFLAGS'] = '-a'
 
 	if self.type == 'c_object':
-		self.native_env.append_unique('OCALINKFLAGS_OPT', '-output-obj')
+		self.native_env.append_unique('OCALINKFLAGS_OPT', '-output-obj',)
 
 @feature('ocaml')
 @before_method('apply_vars_ml')
@@ -121,11 +121,11 @@ def apply_vars_ml(self):
 	for i in self.incpaths_lst:
 		if self.bytecode_env:
 			app = self.bytecode_env.append_value
-			app('OCAMLPATH', ['-I', i.bldpath(), '-I', i.srcpath()])
+			app('OCAMLPATH', ['-I', i.bldpath(), '-I', i.srcpath()],)
 
 		if self.native_env:
 			app = self.native_env.append_value
-			app('OCAMLPATH', ['-I', i.bldpath(), '-I', i.srcpath()])
+			app('OCAMLPATH', ['-I', i.bldpath(), '-I', i.srcpath()],)
 
 	varnames = ['INCLUDES', 'OCAMLFLAGS', 'OCALINKFLAGS', 'OCALINKFLAGS_OPT']
 	for name in self.uselib.split():
@@ -133,9 +133,9 @@ def apply_vars_ml(self):
 			cnt = self.env[vname+'_'+name]
 			if cnt:
 				if self.bytecode_env:
-					self.bytecode_env.append_value(vname, cnt)
+					self.bytecode_env.append_value(vname, cnt,)
 				if self.native_env:
-					self.native_env.append_value(vname, cnt)
+					self.native_env.append_value(vname, cnt,)
 
 @feature('ocaml')
 @after_method('process_source')
@@ -167,45 +167,45 @@ def apply_link_ml(self):
 		self.compiled_tasks.append(linktask)
 
 @extension(*EXT_MLL)
-def mll_hook(self, node):
-	mll_task = self.create_task('ocamllex', node, node.change_ext('.ml'))
+def mll_hook(self, node,):
+	mll_task = self.create_task('ocamllex', node, node.change_ext('.ml'),)
 	mll_task.env = self.native_env.derive()
 	self.mlltasks.append(mll_task)
 
 	self.source.append(mll_task.outputs[0])
 
 @extension(*EXT_MLY)
-def mly_hook(self, node):
-	mly_task = self.create_task('ocamlyacc', node, [node.change_ext('.ml'), node.change_ext('.mli')])
+def mly_hook(self, node,):
+	mly_task = self.create_task('ocamlyacc', node, [node.change_ext('.ml'), node.change_ext('.mli')],)
 	mly_task.env = self.native_env.derive()
 	self.mlytasks.append(mly_task)
 	self.source.append(mly_task.outputs[0])
 
-	task = self.create_task('ocamlcmi', mly_task.outputs[1], mly_task.outputs[1].change_ext('.cmi'))
+	task = self.create_task('ocamlcmi', mly_task.outputs[1], mly_task.outputs[1].change_ext('.cmi'),)
 	task.env = self.native_env.derive()
 
 @extension(*EXT_MLI)
-def mli_hook(self, node):
-	task = self.create_task('ocamlcmi', node, node.change_ext('.cmi'))
+def mli_hook(self, node,):
+	task = self.create_task('ocamlcmi', node, node.change_ext('.cmi'),)
 	task.env = self.native_env.derive()
 	self.mlitasks.append(task)
 
 @extension(*EXT_MLC)
-def mlc_hook(self, node):
-	task = self.create_task('ocamlcc', node, node.change_ext('.o'))
+def mlc_hook(self, node,):
+	task = self.create_task('ocamlcc', node, node.change_ext('.o'),)
 	task.env = self.native_env.derive()
 	self.compiled_tasks.append(task)
 
 @extension(*EXT_ML)
-def ml_hook(self, node):
+def ml_hook(self, node,):
 	if self.native_env:
-		task = self.create_task('ocamlx', node, node.change_ext('.cmx'))
+		task = self.create_task('ocamlx', node, node.change_ext('.cmx'),)
 		task.env = self.native_env.derive()
 		task.incpaths = self.bld_incpaths_lst
 		self.native_tasks.append(task)
 
 	if self.bytecode_env:
-		task = self.create_task('ocaml', node, node.change_ext('.cmo'))
+		task = self.create_task('ocaml', node, node.change_ext('.cmo'),)
 		task.env = self.bytecode_env.derive()
 		task.bytecode = 1
 		task.incpaths = self.bld_incpaths_lst
@@ -213,12 +213,12 @@ def ml_hook(self, node):
 
 def compile_may_start(self):
 
-	if not getattr(self, 'flag_deps', ''):
+	if not getattr(self, 'flag_deps', '',):
 		self.flag_deps = 1
 
 		# the evil part is that we can only compute the dependencies after the
 		# source files can be read (this means actually producing the source files)
-		if getattr(self, 'bytecode', ''):
+		if getattr(self, 'bytecode', '',):
 			alltasks = self.generator.bytecode_tasks
 		else:
 			alltasks = self.generator.native_tasks
@@ -235,7 +235,7 @@ def compile_may_start(self):
 						self.set_run_after(t)
 
 		# TODO necessary to get the signature right - for now
-		delattr(self, 'cache_sig')
+		delattr(self, 'cache_sig',)
 		self.signature()
 
 	return Task.Task.runnable_status(self)
@@ -284,7 +284,7 @@ class ocamlyacc(Task.Task):
 
 def link_may_start(self):
 
-	if getattr(self, 'bytecode', 0):
+	if getattr(self, 'bytecode', 0,):
 		alltasks = self.generator.bytecode_tasks
 	else:
 		alltasks = self.generator.native_tasks
@@ -293,7 +293,7 @@ def link_may_start(self):
 		if not x.hasrun:
 			return Task.ASK_LATER
 
-	if not getattr(self, 'order', ''):
+	if not getattr(self, 'order', '',):
 
 		# now reorder the inputs given the task dependencies
 		# this part is difficult, we do not have a total order on the tasks
@@ -328,17 +328,17 @@ class ocalinkx(Task.Task):
 	runnable_status = link_may_start
 	after = ['ocamlx', 'ocamlcc']
 
-def configure(conf):
-	opt = conf.find_program('ocamlopt', var='OCAMLOPT', mandatory=False)
-	occ = conf.find_program('ocamlc', var='OCAMLC', mandatory=False)
+def configure(conf,):
+	opt = conf.find_program('ocamlopt', var='OCAMLOPT', mandatory=False,)
+	occ = conf.find_program('ocamlc', var='OCAMLC', mandatory=False,)
 	if (not opt) or (not occ):
 		conf.fatal('The objective caml compiler was not found:\ninstall it or make it available in your PATH')
 
 	v = conf.env
 	v['OCAMLC']       = occ
 	v['OCAMLOPT']     = opt
-	v['OCAMLLEX']     = conf.find_program('ocamllex', var='OCAMLLEX', mandatory=False)
-	v['OCAMLYACC']    = conf.find_program('ocamlyacc', var='OCAMLYACC', mandatory=False)
+	v['OCAMLLEX']     = conf.find_program('ocamllex', var='OCAMLLEX', mandatory=False,)
+	v['OCAMLYACC']    = conf.find_program('ocamlyacc', var='OCAMLYACC', mandatory=False,)
 	v['OCAMLFLAGS']   = ''
 	where = conf.cmd_and_log(conf.env.OCAMLC + ['-where']).strip()+os.sep
 	v['OCAMLLIB']     = where

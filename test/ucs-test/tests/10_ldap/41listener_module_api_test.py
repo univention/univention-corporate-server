@@ -28,11 +28,11 @@ from univention.testing.ucs_samba import wait_for_drs_replication, wait_for_s4co
 
 
 lm_name = f'test-{uts.random_name()}'
-lm_file = os.path.join('/usr/lib/univention-directory-listener/system', f'{lm_name}.py')
-log_file = os.path.join('/tmp', f'{uts.random_name()}.log')
+lm_file = os.path.join('/usr/lib/univention-directory-listener/system', f'{lm_name}.py',)
+log_file = os.path.join('/tmp', f'{uts.random_name()}.log',)
 uid_default_file = None
 uid_root_file = None
-verify_ldap_object = SetTimeout(utils.verify_ldap_object, 60)
+verify_ldap_object = SetTimeout(utils.verify_ldap_object, 60,)
 
 
 def cleanup():
@@ -54,14 +54,14 @@ def main():
     test_id = uts.random_name()
     street = uts.random_name()
     roomNumber = uts.random_name()
-    uid_default_file = os.path.join('/tmp', f'{uts.random_name()}.log')
-    uid_root_file = os.path.join('/tmp', f'{uts.random_name()}')
-    lm_logger_path = os.path.join('/var/log/univention/listener_modules', f'{lm_name}.log')
+    uid_default_file = os.path.join('/tmp', f'{uts.random_name()}.log',)
+    uid_root_file = os.path.join('/tmp', f'{uts.random_name()}',)
+    lm_logger_path = os.path.join('/var/log/univention/listener_modules', f'{lm_name}.log',)
     text_replacements = {
         'TEST_ID': test_id,
         'MODULE_NAME': lm_name,
         'LOGFILE': log_file,
-        'LDAP_FILTER': filter_format('(&(objectClass=inetOrgPerson)(uid=%s))', (username,)),
+        'LDAP_FILTER': filter_format('(&(objectClass=inetOrgPerson)(uid=%s))', (username,),),
         'UID_ROOT_FILE': uid_root_file,
         'UID_DEFAULT_FILE': uid_default_file,
         'IMPORTS': 'from univention.listener import ListenerModuleHandler',
@@ -70,13 +70,13 @@ def main():
     }
 
     # create test listener module
-    with open('listener_module_testpy', 'rb') as fp:
+    with open('listener_module_testpy', 'rb',) as fp:
         lm_txt = fp.read()
 
     for k, v in text_replacements.items():
-        lm_txt = lm_txt.replace(f'@@{k}@@'.encode('UTF-8'), v.encode('UTF-8'))
+        lm_txt = lm_txt.replace(f'@@{k}@@'.encode('UTF-8'), v.encode('UTF-8'),)
 
-    with open(lm_file, 'wb') as fp:
+    with open(lm_file, 'wb',) as fp:
         fp.write(lm_txt)
     print(f'Wrote listener module to {lm_file!r}.')
 
@@ -93,16 +93,16 @@ def main():
         print('Restarting univention-directory-listener...')
         subprocess.call(['systemctl', 'restart', 'univention-directory-listener.service'])
 
-        lm_logger = get_logger(lm_name, path=lm_logger_path)
+        lm_logger = get_logger(lm_name, path=lm_logger_path,)
         lm_logger.addHandler(logging.StreamHandler())
 
         lm_logger.info('*** Creating user...')
         userdn, username = udm.create_user(
             username=username,
         )
-        wait_for_drs_replication(filter_format('cn=%s', (username,)))
+        wait_for_drs_replication(filter_format('cn=%s', (username,),))
         time.sleep(2)  # wait for s4 to write SID back to OpenLDAP, don't wait to long or a post_run() will happen
-        verify_ldap_object(userdn, should_exist=True)
+        verify_ldap_object(userdn, should_exist=True,)
 
         lm_logger.info('*** Checking setuid()...')
         file0_uid = os.stat(uid_root_file).st_uid
@@ -117,47 +117,42 @@ def main():
         udm.modify_object(
             'users/user',
             dn=userdn,
-            employeeType=employeeType,
-        )
+            employeeType=employeeType,)
 
         lm_logger.info('*** Moving user (to LDAP base)...')
         new_dn = udm.move_object(
             'users/user',
             dn=userdn,
-            position=ucr['ldap/base'],
-        )
+            position=ucr['ldap/base'],)
 
         lm_logger.info('*** Modifying user (street) should not trigger listener module...')
         udm.modify_object(
             'users/user',
             dn=new_dn,
-            street=street,
-        )
+            street=street,)
 
         lm_logger.info('*** Moving user (to cn=users)...')
         new_dn = udm.move_object(
             'users/user',
             dn=new_dn,
-            position='cn=users,{}'.format(ucr['ldap/base']),
-        )
+            position='cn=users,{}'.format(ucr['ldap/base']),)
 
         lm_logger.info('*** Modifying user (roomNumber) and triggering error...')
         udm.modify_object(
             'users/user',
             dn=new_dn,
-            roomNumber=roomNumber,
-        )
+            roomNumber=roomNumber,)
 
         # wait for s4 connector to catch up, before deleting the user
-        wait_for_drs_replication(filter_format('cn=%s', (username,)))
+        wait_for_drs_replication(filter_format('cn=%s', (username,),))
         wait_for_s4connector()
 
         lm_logger.info('*** Deleting user...')
 
     # wait for UCSTestUDM context manager to delete user
-    wait_for_drs_replication(filter_format('(!(cn=%s))', (username,)))
+    wait_for_drs_replication(filter_format('(!(cn=%s))', (username,),))
     wait_for_s4connector()
-    verify_ldap_object(new_dn, should_exist=False)
+    verify_ldap_object(new_dn, should_exist=False,)
     time.sleep(15)  # give listener time to settle: wait for post_run()
 
     logging.shutdown()
@@ -166,13 +161,13 @@ def main():
     print('*******************************************')
     print(f'    {lm_logfile}')
     print('----------')
-    with open(lm_logfile, 'rb') as fp:
-        print(fp.read().decode('UTF-8', 'replace'))
+    with open(lm_logfile, 'rb',) as fp:
+        print(fp.read().decode('UTF-8', 'replace',))
     print('*******************************************')
 
     # check logfile for correct entries
-    with open(log_file, 'rb') as fp:
-        log_text = fp.read().decode('UTF-8', 'replace')
+    with open(log_file, 'rb',) as fp:
+        log_text = fp.read().decode('UTF-8', 'replace',)
         print('*******************************************')
         print(f'    {log_file}')
         print('----------')

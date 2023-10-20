@@ -45,8 +45,8 @@ class TestLocale(object):
         ("C.UTF-8", "C", "", "UTF-8", ""),
         ("POSIX", "POSIX", "", "UTF-8", ""),
         ("POSIX.UTF-8", "POSIX", "", "UTF-8", ""),
-    ])
-    def test_init(self, i18n, spec, language, territory, codeset, modifier):
+    ],)
+    def test_init(self, i18n, spec, language, territory, codeset, modifier,):
         locale = i18n.Locale(spec)
         assert locale.language == language
         assert locale.territory == territory
@@ -58,8 +58,8 @@ class TestLocale(object):
         (0, TypeError),
         ("deu_GER", None),
         ("german", None),
-    ])
-    def test_malformed(self, i18n, spec, exc_type):
+    ],)
+    def test_malformed(self, i18n, spec, exc_type,):
         with pytest.raises(exc_type or i18n.I18N_Error):
             i18n.Locale(spec)
 
@@ -67,8 +67,8 @@ class TestLocale(object):
         (None, False),
         ("de_DE.UTF-8", True),
         ("C", True),
-    ])
-    def test_bool(self, i18n, spec, value):
+    ],)
+    def test_bool(self, i18n, spec, value,):
         locale = i18n.Locale(spec)
         assert bool(locale) is value
 
@@ -78,8 +78,8 @@ class TestLocale(object):
         ("C.UTF-8", "C.UTF-8"),
         ("ca_ES@valencia", "ca_ES.UTF-8@valencia"),
         (None, ""),
-    ])
-    def test_str(self, i18n, spec, txt):
+    ],)
+    def test_str(self, i18n, spec, txt,):
         locale = i18n.Locale(spec)
         assert str(locale) == txt
 
@@ -89,8 +89,8 @@ class TestNullTranslation(object):
         ((None,), None),
         (("univention",), "univention"),
         (("univention.lib", "de_DE"), "univention-lib"),
-    ])
-    def test_init(self, i18n, args, domain):
+    ],)
+    def test_init(self, i18n, args, domain,):
         translation = i18n.NullTranslation(*args)
         assert translation._domain == domain
         assert translation._translation is None
@@ -102,8 +102,8 @@ class TestTranslation(object):
         (None, None, "C"),
         ("univention", "univention", "C"),
         ("univention.lib", "univention-lib", "C"),
-    ])
-    def test_init(self, i18n, spec, domain, language):
+    ],)
+    def test_init(self, i18n, spec, domain, language,):
         i18n.Translation.locale = i18n.Locale()
 
         translation = i18n.Translation(spec)
@@ -113,10 +113,10 @@ class TestTranslation(object):
     @pytest.mark.parametrize("spec,locale,trans", [
         ("de_DE", "de_DE.UTF-8", True),
         ("en_US", "en_US.UTF-8", False),
-    ])
-    def test_set_language(self, i18n, spec, locale, trans):
+    ],)
+    def test_set_language(self, i18n, spec, locale, trans,):
         i18n.Translation.locale = i18n.Locale()
-        translation = i18n.Translation("univention-lib-unittest", localedir=dirname(__file__))
+        translation = i18n.Translation("univention-lib-unittest", localedir=dirname(__file__),)
 
         translation.set_language(spec)
         assert str(translation.locale) == locale
@@ -125,8 +125,8 @@ class TestTranslation(object):
         else:
             assert translation._translation is None
 
-    def test_set_all_language(self, i18n):
-        translation = i18n.Translation("univention-lib-unittest", localedir=dirname(__file__))
+    def test_set_all_language(self, i18n,):
+        translation = i18n.Translation("univention-lib-unittest", localedir=dirname(__file__),)
         translation.set_language('en_US')
         i18n.Translation.set_all_languages('de_DE')
         assert str(translation.locale) == 'de_DE.UTF-8'

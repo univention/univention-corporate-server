@@ -26,13 +26,13 @@ def search_thread():
     lo.lo._retry_max = 10E4
     lo.lo._retry_delay = .001
     x = 0
-    lo.search(filter="uid=Administrator", attr=["uid"])
+    lo.search(filter="uid=Administrator", attr=["uid"],)
     s = time.time()
     print("go")
     while (time.time() - s) < run_time:
         x += 1
         try:
-            lo.search(filter="uid=Administrator", attr=["uid"])
+            lo.search(filter="uid=Administrator", attr=["uid"],)
         except LDAPError:
             failed = True
     print(f"Searches per sec: {x / run_time}")
@@ -41,7 +41,7 @@ def search_thread():
 def main():
     thread_count = 100
     my_thread = [None] * thread_count
-    for i in range(0, thread_count):
+    for i in range(0, thread_count,):
         my_thread[i] = threading.Thread(target=search_thread)
     for t in my_thread:
         t.start()

@@ -24,10 +24,10 @@ from univention.testing.udm import UCSTestUDM
 
 LDIF_TIMEOUT = 5
 ldif_folder = '/var/lib/univention-directory-replication'
-failed_ldif = os.path.join(ldif_folder, 'failed.ldif')
+failed_ldif = os.path.join(ldif_folder, 'failed.ldif',)
 
 
-@pytest.fixture(scope="module", autouse=True)
+@pytest.fixture(scope="module", autouse=True,)
 def activate_quick_ldif_mode():
     with UCSTestConfigRegistry() as ucr:
         handler_set(['listener/ldap/retries=0', 'replication/ldap/retries=0'])
@@ -53,7 +53,7 @@ def local_ldap_down():
     time.sleep(1)
 
 
-def __check_action_failure(udm, verify_args):
+def __check_action_failure(udm, verify_args,):
     ldif_timer = 0
     while not os.path.isfile(failed_ldif):
         time.sleep(1)
@@ -68,34 +68,34 @@ def __check_action_failure(udm, verify_args):
         pytest.fail('wrong ldap server or not down?')
 
 
-def test_modify_ldif(udm, name=random_name()):
-    dn = udm.create_object('container/cn', name=random_name(), description='will be modified')
+def test_modify_ldif(udm, name=random_name(),):
+    dn = udm.create_object('container/cn', name=random_name(), description='will be modified',)
     with local_ldap_down():
-        udm.modify_object('container/cn', dn=dn, description='has been modified', wait_for_replication=False)
+        udm.modify_object('container/cn', dn=dn, description='has been modified', wait_for_replication=False,)
         verify_args = ('container/cn', dn, {'description': 'has been modified'})
-        __check_action_failure(udm, verify_args)
+        __check_action_failure(udm, verify_args,)
     utils.wait_for_replication()
     udm.verify_udm_object(*verify_args)
 
 
-def test_modify_utf8_ldif(udm):
-    test_modify_ldif(udm, random_name() + '☃')
+def test_modify_utf8_ldif(udm,):
+    test_modify_ldif(udm, random_name() + '☃',)
 
 
-def test_remove_ldif(udm):
-    dn = udm.create_object('container/cn', name=random_name(), description='will be removed')
+def test_remove_ldif(udm,):
+    dn = udm.create_object('container/cn', name=random_name(), description='will be removed',)
     with local_ldap_down():
-        udm.remove_object('container/cn', dn=dn, wait_for_replication=False)
+        udm.remove_object('container/cn', dn=dn, wait_for_replication=False,)
         verify_args = ('container/cn', dn, None)
-        __check_action_failure(udm, verify_args)
+        __check_action_failure(udm, verify_args,)
     utils.wait_for_replication()
     udm.verify_udm_object(*verify_args)
 
 
-def test_create_ldif(udm):
+def test_create_ldif(udm,):
     with local_ldap_down():
-        dn = udm.create_object('container/cn', name=random_name(), description='has been created', wait_for_replication=False)
+        dn = udm.create_object('container/cn', name=random_name(), description='has been created', wait_for_replication=False,)
         verify_args = ('container/cn', dn, {'description': 'has been created'})
-        __check_action_failure(udm, verify_args)
+        __check_action_failure(udm, verify_args,)
     utils.wait_for_replication()
     udm.verify_udm_object(*verify_args)

@@ -79,24 +79,24 @@ class UCSLanguage(Enum):
 
 
 class Waits:
-    def __init__(self, page) -> None:
+    def __init__(self, page,) -> None:
         self.page: Page = page
 
-    def wait_for_text_to_be_visible(self, text: str, timeout: int = 1 * MIN):
+    def wait_for_text_to_be_visible(self, text: str, timeout: int = 1 * MIN,):
         """Waits for the specified text to be visible on screen"""
         all_locators = self.page.get_by_text(text).all()
         for locator in all_locators:
             expect(locator).to_be_visible(timeout=timeout)
 
-    def wait_for_progress_bar(self, n: int = 1, timeout: int = 1 * MIN):
+    def wait_for_progress_bar(self, n: int = 1, timeout: int = 1 * MIN,):
         """Waits for `n` progress bars to disappear"""
-        for _ in range(0, n):
+        for _ in range(0, n,):
             progress_bar = self.page.get_by_role("progressbar")
             expect(progress_bar).to_be_hidden(timeout=timeout)
 
 
 class Interactions:
-    def __init__(self, tester: UMCBrowserTest) -> None:
+    def __init__(self, tester: UMCBrowserTest,) -> None:
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
 
@@ -111,7 +111,7 @@ class Interactions:
         expect(checkbox).to_have_count(2)
         checkbox.last.check()
 
-    def check_checkbox_in_grid_by_name(self, name: str, nth: int | None = None):
+    def check_checkbox_in_grid_by_name(self, name: str, nth: int | None = None,):
         """
         This function checks a checkbox in a <tr> where the given `name` appears
 
@@ -127,7 +127,7 @@ class Interactions:
         expect(checkbox).to_be_visible(timeout=10 * 1000)
         checkbox.click()
 
-    def open_modules(self, modules: List[str], limit: int | None = None, start_at: int | None = None):
+    def open_modules(self, modules: List[str], limit: int | None = None, start_at: int | None = None,):
         """
         This method will open all modules given by `modules`.
         It does this by searching for the module in the UMC, clicking on it and then clicking the close button
@@ -141,7 +141,7 @@ class Interactions:
             logger.info("Closed module %s" % module)
             time.sleep(1)
 
-    def open_all_modules(self, limit: int | None = None, start_at: int | None = None):
+    def open_all_modules(self, limit: int | None = None, start_at: int | None = None,):
         """
         This method opens all modules that can be found in the UMC when searching for '*'
 
@@ -150,11 +150,11 @@ class Interactions:
         """
         modules = self.get_available_modules()
         logger.info("Found %d modules" % len(modules))
-        self.open_modules(modules, limit=limit, start_at=start_at)
+        self.open_modules(modules, limit=limit, start_at=start_at,)
 
-    def open_and_close_module(self, module_name: str):
+    def open_and_close_module(self, module_name: str,):
         self.open_module(_(module_name))
-        self.page.get_by_role("button", name=_("Close")).click()
+        self.page.get_by_role("button", name=_("Close"),).click()
 
     def get_available_modules(self) -> List[str]:
         self.page.locator(".umcModuleSearchToggleButton").click()
@@ -167,7 +167,7 @@ class Interactions:
         self.page.locator(".umcModuleSearchToggleButton").click()
         return result
 
-    def open_module(self, module_name: str, expect_response: re.Pattern | str | None = None):
+    def open_module(self, module_name: str, expect_response: re.Pattern | str | None = None,):
         """
         This method opens a module from anywhere where the module search bar in the UCM is visible
 
@@ -179,7 +179,7 @@ class Interactions:
         module_by_title_attrib_locator = self.page.locator(f".umcGalleryName[title='{module_name}']")
         exact_module_name = re.compile(f"^{re.escape(module_name)}$")
         logger.info("Trying to find button to open module %s" % module_name)
-        module_locator = self.page.locator(".umcGalleryName", has_text=exact_module_name)
+        module_locator = self.page.locator(".umcGalleryName", has_text=exact_module_name,)
         expect(module_locator.or_(module_by_title_attrib_locator)).to_be_visible()
 
         if module_by_title_attrib_locator.is_visible():
@@ -197,14 +197,14 @@ class Interactions:
             from univention.testing.browser.appcenter import AppCenter, wait_for_final_query
 
             app_center = AppCenter(self.tester)
-            with self.page.expect_response(lambda request: wait_for_final_query(request), timeout=15 * MIN):
+            with self.page.expect_response(lambda request,: wait_for_final_query(request), timeout=15 * MIN,):
                 app_center.handle_first_open_dialog()
 
-    def fill_combobox(self, name: str, option: str):
+    def fill_combobox(self, name: str, option: str,):
         # combobox_filter = self.page.locator(f"input[name='{name}'][type='hidden']")
         combobox_filter = self.page.get_by_label(name)
         self.page.get_by_role("combobox").filter(has=combobox_filter).locator(".ucsSimpleIconButton").click()
-        self.page.get_by_role("option", name=option).click()
+        self.page.get_by_role("option", name=option,).click()
 
 
 class UMCBrowserTest(Waits, Interactions):
@@ -221,19 +221,19 @@ class UMCBrowserTest(Waits, Interactions):
 
     lang: UCSLanguage
 
-    def __init__(self, page: Page, lang: UCSLanguage = UCSLanguage.EN_US):
+    def __init__(self, page: Page, lang: UCSLanguage = UCSLanguage.EN_US,):
         self.page: Page = page
         self.set_language(lang)
-        Waits.__init__(self, page)
-        Interactions.__init__(self, self)
+        Waits.__init__(self, page,)
+        Interactions.__init__(self, self,)
 
-    def set_language(self, lang: UCSLanguage):
+    def set_language(self, lang: UCSLanguage,):
         logger.info("Setting language to %s" % lang)
         self.lang = lang
         self.__set_lang(str(lang))
-        translator.set_language(str(lang).replace("-", "_"))
+        translator.set_language(str(lang).replace("-", "_",))
 
-    def __set_lang(self, lang: str):
+    def __set_lang(self, lang: str,):
         self.page.context.clear_cookies()
         cookies = [
             {
@@ -272,7 +272,7 @@ class UMCBrowserTest(Waits, Interactions):
         popup = self.page.get_by_role("dialog").get_by_text("There is no module available for the authenticated user")
         expect(popup).to_be_visible(timeout=30 * SEC)
 
-        button = self.page.get_by_role("button", name=_("Ok"))
+        button = self.page.get_by_role("button", name=_("Ok"),)
         expect(button).to_be_visible()
         button.click()
 
@@ -285,8 +285,7 @@ class UMCBrowserTest(Waits, Interactions):
         login_should_fail: bool = False,
         do_navigation: bool = True,
         expect_password_change_prompt: bool = False,
-        skip_xhr_check: bool = False,
-    ):
+        skip_xhr_check: bool = False,):
         """
         Navigates to {base_url}/univention/login?location={location} and logs in with the given credentials
 
@@ -307,9 +306,9 @@ class UMCBrowserTest(Waits, Interactions):
             query_parameter = f"?location={location}" if location else ""
             page.goto(f"{self.base_url}/univention/login{query_parameter}")
 
-        page.get_by_label(_("Username"), exact=True).fill(username)
-        page.get_by_label(_("Password"), exact=True).fill(password)
-        login_button = page.get_by_role("button", name=_("Login"))
+        page.get_by_label(_("Username"), exact=True,).fill(username)
+        page.get_by_label(_("Password"), exact=True,).fill(password)
+        login_button = page.get_by_role("button", name=_("Login"),)
 
         if expect_password_change_prompt:
             logger.info("Expecting the password change prompt. Only clicking button")
@@ -342,7 +341,7 @@ class UMCBrowserTest(Waits, Interactions):
             logger.info("Logging in without waiting for requests to finish")
             login_button.click()
 
-        self.page.wait_for_url(re.compile(r".*univention/(management|portal).*"), wait_until="networkidle")
+        self.page.wait_for_url(re.compile(r".*univention/(management|portal).*"), wait_until="networkidle",)
         logging.info("Login Done")
 
     def end_umc_session(self):
@@ -361,9 +360,9 @@ class UMCBrowserTest(Waits, Interactions):
         side_menu.navigate(do_login=False)
         side_menu.logout()
 
-    def systemd_restart_service(self, service: str):
+    def systemd_restart_service(self, service: str,):
         logger.info("restarting service %s" % service)
-        subprocess.run(["deb-systemd-invoke", "restart", service], check=True)
+        subprocess.run(["deb-systemd-invoke", "restart", service], check=True,)
 
     def restart_umc(self):
         self.systemd_restart_service("univention-management-console-server")

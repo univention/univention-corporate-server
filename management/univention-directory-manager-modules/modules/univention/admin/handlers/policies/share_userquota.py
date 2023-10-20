@@ -75,8 +75,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyShareUserQuota'],
-    ),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyShareUserQuota'],),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -86,34 +85,28 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'softLimitSpace': univention.admin.property(
         short_description=_('Soft limit'),
         long_description=_('Soft limit. If exceeded users can be warned. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
-        syntax=univention.admin.syntax.filesize,
-    ),
+        syntax=univention.admin.syntax.filesize,),
     'hardLimitSpace': univention.admin.property(
         short_description=_('Hard limit'),
         long_description=_('Hard limit. Can not be exceeded. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
-        syntax=univention.admin.syntax.filesize,
-    ),
+        syntax=univention.admin.syntax.filesize,),
     'softLimitInodes': univention.admin.property(
         short_description=_('Soft limit (Files)'),
         long_description=_('Soft limit. If exceeded users can be warned.'),
-        syntax=univention.admin.syntax.integer,
-    ),
+        syntax=univention.admin.syntax.integer,),
     'hardLimitInodes': univention.admin.property(
         short_description=_('Hard limit (Files)'),
         long_description=_('Hard limit. Can not be exceeded.'),
-        syntax=univention.admin.syntax.integer,
-    ),
+        syntax=univention.admin.syntax.integer,),
     'reapplyeverylogin': univention.admin.property(
         short_description=_('Reapply settings on every login'),
         long_description=_('Reapply the mountpoint specific user quota policies on each user login. If not set, the initially configured quota settings will not be overwritten.'),
         syntax=univention.admin.syntax.TrueFalseUp,
-        default="FALSE",
-    ),
+        default="FALSE",),
 
 }, **dict([
     requiredObjectClassesProperty(),
@@ -121,7 +114,7 @@ property_descriptions = dict({
     fixedAttributesProperty(syntax=shareUserQuotaFixedAttributes),
     emptyAttributesProperty(syntax=shareUserQuotaFixedAttributes),
     ldapFilterProperty(),
-]))
+]),)
 
 layout = [
     Tab(_('General'), _('Quota'), layout=[
@@ -130,18 +123,18 @@ layout = [
             ['softLimitSpace', 'hardLimitSpace'],
             ['softLimitInodes', 'hardLimitInodes'],
             ['reapplyeverylogin'],
-        ]),
-    ]),
+        ],),
+    ],),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('hardLimitSpace', 'univentionQuotaHardLimitSpace', None, univention.admin.mapping.ListToString)
-mapping.register('softLimitSpace', 'univentionQuotaSoftLimitSpace', None, univention.admin.mapping.ListToString)
-mapping.register('hardLimitInodes', 'univentionQuotaHardLimitInodes', None, univention.admin.mapping.ListToString)
-mapping.register('softLimitInodes', 'univentionQuotaSoftLimitInodes', None, univention.admin.mapping.ListToString)
-mapping.register('reapplyeverylogin', 'univentionQuotaReapplyEveryLogin', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('hardLimitSpace', 'univentionQuotaHardLimitSpace', None, univention.admin.mapping.ListToString,)
+mapping.register('softLimitSpace', 'univentionQuotaSoftLimitSpace', None, univention.admin.mapping.ListToString,)
+mapping.register('hardLimitInodes', 'univentionQuotaHardLimitInodes', None, univention.admin.mapping.ListToString,)
+mapping.register('softLimitInodes', 'univentionQuotaSoftLimitInodes', None, univention.admin.mapping.ListToString,)
+mapping.register('reapplyeverylogin', 'univentionQuotaReapplyEveryLogin', None, univention.admin.mapping.ListToString,)
 register_policy_mapping(mapping)
 
 

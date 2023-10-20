@@ -62,7 +62,7 @@ class TeeFile(object):
     with the print statement
     """
 
-    def __init__(self, fds=[]):
+    def __init__(self, fds=[],):
         # type: (List[IO[str]]) -> None
         """
         Register multiple file descriptors, to which the data is written.
@@ -72,7 +72,7 @@ class TeeFile(object):
         """
         self._fds = fds or [sys.stdout]
 
-    def write(self, data):
+    def write(self, data,):
         # type: (str) -> None
         """
         Write string to all registered files.
@@ -84,7 +84,7 @@ class TeeFile(object):
             fd.flush()
 
 
-def gzip_file(filename):
+def gzip_file(filename,):
     # type: (str) -> int
     """
     Compress file.
@@ -96,7 +96,7 @@ def gzip_file(filename):
     return subprocess.call(('gzip', '--keep', '--force', '--no-name', '-9', filename))
 
 
-def copy_package_files(source_dir, dest_dir):
+def copy_package_files(source_dir, dest_dir,):
     # type: (str, str) -> None
     """
     Copy all Debian binary package files and signed updater scripts from `source_dir` to `dest_dir`.
@@ -105,31 +105,31 @@ def copy_package_files(source_dir, dest_dir):
     :param str dest_dir: Destination directory.
     """
     for filename in os.listdir(source_dir):
-        src = os.path.join(source_dir, filename)
+        src = os.path.join(source_dir, filename,)
         if not os.path.isfile(src):
             continue
         if filename.endswith('.deb') or filename.endswith('.udeb'):
             try:
-                arch = filename.rsplit('_', 1)[-1].split('.', 1)[0]  # partman-btrfs_10.3.201403242318_all.udeb
+                arch = filename.rsplit('_', 1,)[-1].split('.', 1,)[0]  # partman-btrfs_10.3.201403242318_all.udeb
             except (TypeError, ValueError):
-                print("Warning: Could not determine architecture of package '%s'" % filename, file=sys.stderr)
+                print("Warning: Could not determine architecture of package '%s'" % filename, file=sys.stderr,)
                 continue
             src_size = os.stat(src)[6]
-            dest = os.path.join(dest_dir, arch, filename)
+            dest = os.path.join(dest_dir, arch, filename,)
             # package already exists with correct size
             if os.path.isfile(dest) and os.stat(dest)[6] == src_size:
                 continue
         elif filename in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
-            dest = os.path.join(dest_dir, 'all', filename)
+            dest = os.path.join(dest_dir, 'all', filename,)
         else:
             continue
         try:
-            shutil.copy2(src, dest)
+            shutil.copy2(src, dest,)
         except shutil.Error as ex:
-            print("Copying '%s' failed: %s" % (src, ex), file=sys.stderr)
+            print("Copying '%s' failed: %s" % (src, ex), file=sys.stderr,)
 
 
-def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
+def gen_indexes(base, version,):  # type: (str, UCS_Version) -> None
     """
     Re-generate Debian :file:`Packages` files from file:`dists/` file.
 
@@ -137,7 +137,7 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
     """
     A = 'Architecture: '
     F = 'Filename: '
-    print('  generating index ...', end=' ')
+    print('  generating index ...', end=' ',)
     for arch in ARCHITECTURES:
         if arch == 'all':
             continue
@@ -147,13 +147,12 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
             'ucs%d%d%d' % version.mmp,
             'main',
             'binary-%s' % (arch,),
-            'Packages.gz',
-        )
+            'Packages.gz',)
         if not os.path.exists(src):
             continue
         lines = []
-        names = [os.path.join(base, name, 'Packages') for name in ('all', arch)]
-        with gzip.open(src, 'rb') as f_src, open(names[0], 'w') as f_all, open(names[1], 'w') as f_arch:
+        names = [os.path.join(base, name, 'Packages',) for name in ('all', arch)]
+        with gzip.open(src, 'rb',) as f_src, open(names[0], 'w',) as f_all, open(names[1], 'w',) as f_arch:
             for raw in f_src:
                 line = raw.decode("UTF-8")
                 if line.startswith(A):
@@ -172,7 +171,7 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
     print('done')
 
 
-def get_repo_basedir(packages_dir):
+def get_repo_basedir(packages_dir,):
     # type: (str) -> str
     """
     Check if a file path is a UCS package repository.
@@ -182,24 +181,24 @@ def get_repo_basedir(packages_dir):
     :rtype: str
     """
     path = os.path.normpath(packages_dir)
-    if os.path.isfile(os.path.join(path, 'Packages')):
+    if os.path.isfile(os.path.join(path, 'Packages',)):
         head, tail = os.path.split(path)
         if tail in ARCHITECTURES:
             return head
     elif set(os.listdir(path)) & ARCHITECTURES:
         return path
 
-    print('Error: %s does not seem to be a repository.' % packages_dir, file=sys.stderr)
+    print('Error: %s does not seem to be a repository.' % packages_dir, file=sys.stderr,)
     sys.exit(1)
 
 
-def assert_local_repository(out=sys.stderr):
+def assert_local_repository(out=sys.stderr,):
     # type: (IO[str]) -> None
     """
     Exit with error if the local repository is not enabled.
 
     :param file out: Override error output. Defaults to :py:obj:`sys.stderr`.
     """
-    if not configRegistry.is_true('local/repository', False):
-        print('Error: The local repository is not activated. Use "univention-repository-create" to create it or set the Univention Configuration Registry variable "local/repository" to "yes" to re-enable it.', file=out)
+    if not configRegistry.is_true('local/repository', False,):
+        print('Error: The local repository is not activated. Use "univention-repository-create" to create it or set the Univention Configuration Registry variable "local/repository" to "yes" to re-enable it.', file=out,)
         sys.exit(1)

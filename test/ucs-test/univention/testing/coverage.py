@@ -25,7 +25,7 @@ class Coverage:
 
     coverage = None
 
-    def __init__(self, options):
+    def __init__(self, options,):
         # type: (Namespace) -> None
         self.coverage_config = options.coverage_config
         self.branch_coverage = options.branch_coverage
@@ -44,16 +44,14 @@ class Coverage:
         try:
             subprocess.check_call(
                 ["dpkg", "-l", "python3-ucs-school"],
-                stderr=open("/dev/null", "a"),
-                stdout=open("/dev/null", "a"),
-            )
+                stderr=open("/dev/null", "a",),
+                stdout=open("/dev/null", "a",),)
             self.coverage_sources.append('ucsschool')
 
             subprocess.check_call(
                 ["dpkg", "-l", "ucs-school-import-http-api"],
-                stderr=open("/dev/null", "a"),
-                stdout=open("/dev/null", "a"),
-            )
+                stderr=open("/dev/null", "a",),
+                stdout=open("/dev/null", "a",),)
             self.services.extend([
                 'celery-worker-ucsschool-import',
                 'ucs-school-import-http-api',
@@ -62,7 +60,7 @@ class Coverage:
             pass
 
         if self.coverage and options.coverage_debug:
-            with open(self.COVERAGE_DEBUG_PATH, 'w'):
+            with open(self.COVERAGE_DEBUG_PATH, 'w',):
                 self.COVERAGE_DEBUG = True
 
     def start(self):
@@ -77,10 +75,10 @@ class Coverage:
     def write_config_file(self):
         # type: () -> None
         """Write a Python .pth file which is invoked before any Python process"""
-        with open(self.COVERAGE_PTH, 'w') as fd:
+        with open(self.COVERAGE_PTH, 'w',) as fd:
             fd.write(self.COVERAGE_PTH_CONTENT)
 
-        with open(self.coverage_config, 'w') as fd:
+        with open(self.coverage_config, 'w',) as fd:
             fd.write('''[run]
 data_file = {data_file}
 branch = {branch}
@@ -95,12 +93,11 @@ omit = handlers/ucstest
 [html]
 directory = {directory}
 '''.format(
-                data_file=os.path.join(os.path.dirname(self.coverage_config), '.coverage'),
+                data_file=os.path.join(os.path.dirname(self.coverage_config), '.coverage',),
                 branch=repr(self.branch_coverage),
                 source='\n\t'.join(self.coverage_sources),
                 show_missing=self.show_missing,
-                directory=self.output_directory,
-            ))
+                directory=self.output_directory,))
 
     def restart_python_services(self):
         # type: () -> None
@@ -141,22 +138,22 @@ directory = {directory}
             os.remove(self.coverage_config)
 
     @classmethod
-    def get_argument_group(cls, parser):
+    def get_argument_group(cls, parser,):
         # type: (ArgumentParser) -> _ArgumentGroup
         """The option group for ucs-test-framework"""
         coverage_group = parser.add_argument_group('Code coverage measurement options')
-        coverage_group.add_argument("--with-coverage", dest="coverage", action='store_true')
-        coverage_group.add_argument("--coverage-config", default=os.path.abspath(os.path.expanduser('~/.coveragerc')))  # don't use this, doesn't work!
-        coverage_group.add_argument("--branch-coverage", action='store_true')
-        coverage_group.add_argument('--coverage-sources', action='append', default=[])
-        coverage_group.add_argument("--coverage-debug", action='store_true')
-        coverage_group.add_argument('--coverage-restart-services', action='append', default=[])
-        coverage_group.add_argument('--coverage-show-missing', action='store_true')
-        coverage_group.add_argument("--coverage-output-directory", default=os.path.abspath(os.path.expanduser('~/htmlcov')))
+        coverage_group.add_argument("--with-coverage", dest="coverage", action='store_true',)
+        coverage_group.add_argument("--coverage-config", default=os.path.abspath(os.path.expanduser('~/.coveragerc')),)  # don't use this, doesn't work!
+        coverage_group.add_argument("--branch-coverage", action='store_true',)
+        coverage_group.add_argument('--coverage-sources', action='append', default=[],)
+        coverage_group.add_argument("--coverage-debug", action='store_true',)
+        coverage_group.add_argument('--coverage-restart-services', action='append', default=[],)
+        coverage_group.add_argument('--coverage-show-missing', action='store_true',)
+        coverage_group.add_argument("--coverage-output-directory", default=os.path.abspath(os.path.expanduser('~/htmlcov')),)
         return coverage_group
 
     @classmethod
-    def is_candidate(cls, argv):
+    def is_candidate(cls, argv,):
         # type: (List[str]) -> bool
         if os.getuid():
             return False
@@ -164,11 +161,11 @@ directory = {directory}
         if exe not in {'python', 'python3', 'python3.7', 'python3.9', 'python3.10', 'python3.11'}:
             return False
         if not any(s in arg for arg in argv for s in {'univention', 'udm', 'ucs', 'ucr'}):
-            cls.debug_message('skip non-ucs process', argv)
+            cls.debug_message('skip non-ucs process', argv,)
             return False
         if any(s in arg for arg in argv[2:] for s in {'listener', 'notifier'}):
             # we don't need to cover the listener currently. some tests failed, maybe because of measuring the listener?
-            cls.debug_message('skip UDL/UDN', argv)
+            cls.debug_message('skip UDL/UDN', argv,)
             return False
         return True
 
@@ -180,12 +177,12 @@ directory = {directory}
         if not cls.is_candidate(argv):
             return
 
-        cls.debug_message('START', argv)
+        cls.debug_message('START', argv,)
         atexit.register(lambda: cls.debug_message('STOP'))
 
         if not os.environ.get('COVERAGE_PROCESS_START'):
             os.environ["COVERAGE_PROCESS_START"] = os.path.abspath(os.path.expanduser('~/.coveragerc'))
-            cls.debug_message('ENVIRON WAS CLEARED BY PARENT PROCESS', argv)
+            cls.debug_message('ENVIRON WAS CLEARED BY PARENT PROCESS', argv,)
 
         import coverage
         cov = coverage.process_startup()
@@ -201,7 +198,7 @@ directory = {directory}
 
         def fork(*args, **kwargs):
             # type: (*Any, **Any) -> int
-            pid = osfork(*args, **kwargs)
+            pid = osfork(*args, **kwargs,)
             if pid == 0:
                 cls.debug_message('FORK CHILD')
                 cls.startup()
@@ -214,25 +211,25 @@ directory = {directory}
         # https://github.com/nedbat/coveragepy/issues/43  # Coverage measurement fails on code containing os.exec* methods
         # if the process calls one of the process-replacement functions the coverage must be started in the new process
         for method in ['execl', 'execle', 'execlp', 'execlpe', 'execv', 'execve', 'execvp', 'execvpe', '_exit']:
-            if isinstance(getattr(os, method), StopCoverageDecorator):
+            if isinstance(getattr(os, method,), StopCoverageDecorator,):
                 continue  # restarted in the same process (e.g. os.fork())
-            setattr(os, method, StopCoverageDecorator(getattr(os, method)))
+            setattr(os, method, StopCoverageDecorator(getattr(os, method,)),)
 
         # There are test cases which e.g. kill the univention-cli-server.
         # The atexit-handler of coverage will not be called for SIGTERM, so we need to stop coverage manually
-        def sigterm(sig, frame):
+        def sigterm(sig, frame,):
             # type: (int, Any) -> None
-            cls.debug_message('signal handler', sig, argv)
+            cls.debug_message('signal handler', sig, argv,)
             cls.stop_measurement()
-            signal.signal(signal.SIGTERM, previous)
-            os.kill(os.getpid(), sig)
-        previous = signal.signal(signal.SIGTERM, sigterm)
+            signal.signal(signal.SIGTERM, previous,)
+            os.kill(os.getpid(), sig,)
+        previous = signal.signal(signal.SIGTERM, sigterm,)
 
     @classmethod
-    def stop_measurement(cls, start=False):
+    def stop_measurement(cls, start=False,):
         # type: (bool) -> None
         cover = cls.coverage
-        cls.debug_message('STOP MEASURE', bool(cover))
+        cls.debug_message('STOP MEASURE', bool(cover),)
         if not cover:
             return
         cover.stop()
@@ -246,7 +243,7 @@ directory = {directory}
         if not cls.COVERAGE_DEBUG:
             return
         try:
-            with open(cls.COVERAGE_DEBUG_PATH, 'a') as fd:
+            with open(cls.COVERAGE_DEBUG_PATH, 'a',) as fd:
                 fd.write('%s : %s: %s\n' % (os.getpid(), time.time(), ' '.join(repr(m) for m in messages)))
         except OSError:
             pass
@@ -255,7 +252,7 @@ directory = {directory}
 class StopCoverageDecorator:
     inDecorator = False
 
-    def __init__(self, method):
+    def __init__(self, method,):
         # type: (Callable[..., Any]) -> None
         self.method = method
 
@@ -263,10 +260,10 @@ class StopCoverageDecorator:
         # type: (*Any, **Any) -> None
         if not StopCoverageDecorator.inDecorator:
             StopCoverageDecorator.inDecorator = True
-            Coverage.debug_message('StopCoverageDecorator', self.method.__name__, open('/proc/%s/cmdline' % os.getpid()).read().split('\x00'))
+            Coverage.debug_message('StopCoverageDecorator', self.method.__name__, open('/proc/%s/cmdline' % os.getpid()).read().split('\x00'),)
             Coverage.stop_measurement(True)
         try:
-            self.method(*args, **kw)
+            self.method(*args, **kw,)
         finally:
             StopCoverageDecorator.inDecorator = False
 

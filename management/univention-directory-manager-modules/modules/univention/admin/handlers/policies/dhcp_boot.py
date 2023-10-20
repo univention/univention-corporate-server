@@ -72,8 +72,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpBoot'],
-    ),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpBoot'],),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -83,41 +82,38 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'boot_server': univention.admin.property(
         short_description=_('Boot server'),
         long_description=_('Numeric IP address or name of the \
 server from which the initial boot file is retrieved.'),
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'boot_filename': univention.admin.property(
         short_description=_('Boot filename'),
         long_description=_('Initial boot file to be loaded by a client'),
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
 }, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=dhcp_bootFixedAttributes),
     emptyAttributesProperty(syntax=dhcp_bootFixedAttributes),
     ldapFilterProperty(),
-]))
+]),)
 
 layout = [
     Tab(_('Boot'), _('Boot settings'), layout=[
         Group(_('General DHCP boot settings'), layout=[
             'name',
             ['boot_server', 'boot_filename'],
-        ]),
-    ]),
+        ],),
+    ],),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('boot_server', 'univentionDhcpBootServer', None, univention.admin.mapping.ListToString)
-mapping.register('boot_filename', 'univentionDhcpBootFilename', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('boot_server', 'univentionDhcpBootServer', None, univention.admin.mapping.ListToString,)
+mapping.register('boot_filename', 'univentionDhcpBootFilename', None, univention.admin.mapping.ListToString,)
 register_policy_mapping(mapping)
 
 

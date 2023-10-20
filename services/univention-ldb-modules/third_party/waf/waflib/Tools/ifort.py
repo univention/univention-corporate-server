@@ -10,8 +10,8 @@ from waflib.Configure import conf
 from waflib.TaskGen import after_method, feature
 
 @conf
-def find_ifort(conf):
-	fc = conf.find_program('ifort', var='FC')
+def find_ifort(conf,):
+	fc = conf.find_program('ifort', var='FC',)
 	conf.get_ifort_version(fc)
 	conf.env.FC_NAME = 'IFORT'
 
@@ -38,40 +38,40 @@ def ifort_modifier_win32(self):
 	v.AR_TGT_F = '/out:'
 	v.IMPLIB_ST = '/IMPLIB:%s'
 
-	v.append_value('LINKFLAGS', '/subsystem:console')
+	v.append_value('LINKFLAGS', '/subsystem:console',)
 	if v.IFORT_MANIFEST:
-		v.append_value('LINKFLAGS', ['/MANIFEST'])
+		v.append_value('LINKFLAGS', ['/MANIFEST'],)
 
 @conf
-def ifort_modifier_darwin(conf):
+def ifort_modifier_darwin(conf,):
 	fc_config.fortran_modifier_darwin(conf)
 
 @conf
-def ifort_modifier_platform(conf):
+def ifort_modifier_platform(conf,):
 	dest_os = conf.env.DEST_OS or Utils.unversioned_sys_platform()
-	ifort_modifier_func = getattr(conf, 'ifort_modifier_' + dest_os, None)
+	ifort_modifier_func = getattr(conf, 'ifort_modifier_' + dest_os, None,)
 	if ifort_modifier_func:
 		ifort_modifier_func()
 
 @conf
-def get_ifort_version(conf, fc):
+def get_ifort_version(conf, fc,):
 	"""
 	Detects the compiler version and sets ``conf.env.FC_VERSION``
 	"""
-	version_re = re.compile(r"\bIntel\b.*\bVersion\s*(?P<major>\d*)\.(?P<minor>\d*)",re.I).search
+	version_re = re.compile(r"\bIntel\b.*\bVersion\s*(?P<major>\d*)\.(?P<minor>\d*)",re.I,).search
 	if Utils.is_win32:
 		cmd = fc
 	else:
 		cmd = fc + ['-logo']
 
-	out, err = fc_config.getoutput(conf, cmd, stdin=False)
+	out, err = fc_config.getoutput(conf, cmd, stdin=False,)
 	match = version_re(out) or version_re(err)
 	if not match:
 		conf.fatal('cannot determine ifort version.')
 	k = match.groupdict()
 	conf.env.FC_VERSION = (k['major'], k['minor'])
 
-def configure(conf):
+def configure(conf,):
 	"""
 	Detects the Intel Fortran compilers
 	"""
@@ -92,7 +92,7 @@ def configure(conf):
 		conf.ifort_modifier_win32()
 	else:
 		conf.find_ifort()
-		conf.find_program('xiar', var='AR')
+		conf.find_program('xiar', var='AR',)
 		conf.find_ar()
 		conf.fc_flags()
 		conf.fc_add_flags()
@@ -103,22 +103,22 @@ all_ifort_platforms = [ ('intel64', 'amd64'), ('em64t', 'amd64'), ('ia32', 'x86'
 """List of icl platforms"""
 
 @conf
-def gather_ifort_versions(conf, versions):
+def gather_ifort_versions(conf, versions,):
 	"""
 	List compiler versions by looking up registry keys
 	"""
 	version_pattern = re.compile(r'^...?.?\....?.?')
 	try:
-		all_versions = Utils.winreg.OpenKey(Utils.winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\\Wow6432node\\Intel\\Compilers\\Fortran')
+		all_versions = Utils.winreg.OpenKey(Utils.winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\\Wow6432node\\Intel\\Compilers\\Fortran',)
 	except OSError:
 		try:
-			all_versions = Utils.winreg.OpenKey(Utils.winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\\Intel\\Compilers\\Fortran')
+			all_versions = Utils.winreg.OpenKey(Utils.winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\\Intel\\Compilers\\Fortran',)
 		except OSError:
 			return
 	index = 0
 	while 1:
 		try:
-			version = Utils.winreg.EnumKey(all_versions, index)
+			version = Utils.winreg.EnumKey(all_versions, index,)
 		except OSError:
 			break
 		index += 1
@@ -131,31 +131,31 @@ def gather_ifort_versions(conf, versions):
 			else:
 				targetDir=target
 			try:
-				Utils.winreg.OpenKey(all_versions,version+'\\'+targetDir)
-				icl_version=Utils.winreg.OpenKey(all_versions,version)
-				path,type=Utils.winreg.QueryValueEx(icl_version,'ProductDir')
+				Utils.winreg.OpenKey(all_versions,version+'\\'+targetDir,)
+				icl_version=Utils.winreg.OpenKey(all_versions,version,)
+				path,type=Utils.winreg.QueryValueEx(icl_version,'ProductDir',)
 			except OSError:
 				pass
 			else:
-				batch_file=os.path.join(path,'bin','ifortvars.bat')
+				batch_file=os.path.join(path,'bin','ifortvars.bat',)
 				if os.path.isfile(batch_file):
-					targets[target] = target_compiler(conf, 'intel', arch, version, target, batch_file)
+					targets[target] = target_compiler(conf, 'intel', arch, version, target, batch_file,)
 
 		for target,arch in all_ifort_platforms:
 			try:
-				icl_version = Utils.winreg.OpenKey(all_versions, version+'\\'+target)
-				path,type = Utils.winreg.QueryValueEx(icl_version,'ProductDir')
+				icl_version = Utils.winreg.OpenKey(all_versions, version+'\\'+target,)
+				path,type = Utils.winreg.QueryValueEx(icl_version,'ProductDir',)
 			except OSError:
 				continue
 			else:
-				batch_file=os.path.join(path,'bin','ifortvars.bat')
+				batch_file=os.path.join(path,'bin','ifortvars.bat',)
 				if os.path.isfile(batch_file):
-					targets[target] = target_compiler(conf, 'intel', arch, version, target, batch_file)
+					targets[target] = target_compiler(conf, 'intel', arch, version, target, batch_file,)
 		major = version[0:2]
 		versions['intel ' + major] = targets
 
 @conf
-def setup_ifort(conf, versiondict):
+def setup_ifort(conf, versiondict,):
 	"""
 	Checks installed compilers and targets and returns the first combination from the user's
 	options, env, or the global supported lists that checks.
@@ -179,12 +179,12 @@ def setup_ifort(conf, versiondict):
 				continue
 			cfg.evaluate()
 			if cfg.is_valid:
-				compiler,revision = version.rsplit(' ', 1)
+				compiler,revision = version.rsplit(' ', 1,)
 				return compiler,revision,cfg.bindirs,cfg.incdirs,cfg.libdirs,cfg.cpu
 	conf.fatal('ifort: Impossible to find a valid architecture for building %r - %r' % (desired_versions, list(versiondict.keys())))
 
 @conf
-def get_ifort_version_win32(conf, compiler, version, target, vcvars):
+def get_ifort_version_win32(conf, compiler, version, target, vcvars,):
 	# FIXME hack
 	try:
 		conf.msvc_cnt += 1
@@ -222,25 +222,25 @@ echo LIB=%%LIB%%;%%LIBPATH%%
 	# The detection may return 64-bit versions even on 32-bit systems, and these would fail to run.
 	env = dict(os.environ)
 	env.update(PATH = path)
-	compiler_name, linker_name, lib_name = _get_prog_names(conf, compiler)
-	fc = conf.find_program(compiler_name, path_list=MSVC_PATH)
+	compiler_name, linker_name, lib_name = _get_prog_names(conf, compiler,)
+	fc = conf.find_program(compiler_name, path_list=MSVC_PATH,)
 
 	# delete CL if exists. because it could contain parameters which can change cl's behaviour rather catastrophically.
 	if 'CL' in env:
 		del(env['CL'])
 
 	try:
-		conf.cmd_and_log(fc + ['/help'], env=env)
+		conf.cmd_and_log(fc + ['/help'], env=env,)
 	except UnicodeError:
 		st = traceback.format_exc()
 		if conf.logger:
 			conf.logger.error(st)
 		conf.fatal('ifort: Unicode error - check the code page?')
 	except Exception as e:
-		Logs.debug('ifort: get_ifort_version: %r %r %r -> failure %s', compiler, version, target, str(e))
+		Logs.debug('ifort: get_ifort_version: %r %r %r -> failure %s', compiler, version, target, str(e),)
 		conf.fatal('ifort: cannot run the compiler in get_ifort_version (run with -v to display errors)')
 	else:
-		Logs.debug('ifort: get_ifort_version: %r %r %r -> OK', compiler, version, target)
+		Logs.debug('ifort: get_ifort_version: %r %r %r -> OK', compiler, version, target,)
 	finally:
 		conf.env[compiler_name] = ''
 
@@ -251,7 +251,7 @@ class target_compiler(object):
 	Wraps a compiler configuration; call evaluate() to determine
 	whether the configuration is usable.
 	"""
-	def __init__(self, ctx, compiler, cpu, version, bat_target, bat, callback=None):
+	def __init__(self, ctx, compiler, cpu, version, bat_target, bat, callback=None,):
 		"""
 		:param ctx: configuration context to use to eventually get the version environment
 		:param compiler: compiler name
@@ -278,12 +278,12 @@ class target_compiler(object):
 			return
 		self.is_done = True
 		try:
-			vs = self.conf.get_ifort_version_win32(self.compiler, self.version, self.bat_target, self.bat)
+			vs = self.conf.get_ifort_version_win32(self.compiler, self.version, self.bat_target, self.bat,)
 		except Errors.ConfigurationError:
 			self.is_valid = False
 			return
 		if self.callback:
-			vs = self.callback(self, vs)
+			vs = self.callback(self, vs,)
 		self.is_valid = True
 		(self.bindirs, self.incdirs, self.libdirs) = vs
 
@@ -298,7 +298,7 @@ def detect_ifort(self):
 	return self.setup_ifort(self.get_ifort_versions(False))
 
 @conf
-def get_ifort_versions(self, eval_and_save=True):
+def get_ifort_versions(self, eval_and_save=True,):
 	"""
 	:return: platforms to compiler configurations
 	:rtype: dict
@@ -307,7 +307,7 @@ def get_ifort_versions(self, eval_and_save=True):
 	self.gather_ifort_versions(dct)
 	return dct
 
-def _get_prog_names(self, compiler):
+def _get_prog_names(self, compiler,):
 	if compiler=='intel':
 		compiler_name = 'ifort'
 		linker_name = 'XILINK'
@@ -320,38 +320,38 @@ def _get_prog_names(self, compiler):
 	return compiler_name, linker_name, lib_name
 
 @conf
-def find_ifort_win32(conf):
+def find_ifort_win32(conf,):
 	# the autodetection is supposed to be performed before entering in this method
 	v = conf.env
 	path = v.PATH
 	compiler = v.MSVC_COMPILER
 	version = v.MSVC_VERSION
 
-	compiler_name, linker_name, lib_name = _get_prog_names(conf, compiler)
+	compiler_name, linker_name, lib_name = _get_prog_names(conf, compiler,)
 	v.IFORT_MANIFEST = (compiler == 'intel' and version >= 11)
 
 	# compiler
-	fc = conf.find_program(compiler_name, var='FC', path_list=path)
+	fc = conf.find_program(compiler_name, var='FC', path_list=path,)
 
 	# before setting anything, check if the compiler is really intel fortran
 	env = dict(conf.environ)
 	if path:
 		env.update(PATH = ';'.join(path))
-	if not conf.cmd_and_log(fc + ['/nologo', '/help'], env=env):
+	if not conf.cmd_and_log(fc + ['/nologo', '/help'], env=env,):
 		conf.fatal('not intel fortran compiler could not be identified')
 
 	v.FC_NAME = 'IFORT'
 
 	if not v.LINK_FC:
-		conf.find_program(linker_name, var='LINK_FC', path_list=path, mandatory=True)
+		conf.find_program(linker_name, var='LINK_FC', path_list=path, mandatory=True,)
 
 	if not v.AR:
-		conf.find_program(lib_name, path_list=path, var='AR', mandatory=True)
+		conf.find_program(lib_name, path_list=path, var='AR', mandatory=True,)
 		v.ARFLAGS = ['/nologo']
 
 	# manifest tool. Not required for VS 2003 and below. Must have for VS 2005 and later
 	if v.IFORT_MANIFEST:
-		conf.find_program('MT', path_list=path, var='MT')
+		conf.find_program('MT', path_list=path, var='MT',)
 		v.MTFLAGS = ['/nologo']
 
 	try:
@@ -371,16 +371,16 @@ def apply_flags_ifort(self):
 		def build(bld):
 			bld.stlib(source='main.c', target='bar', subsystem='gruik')
 	"""
-	if not self.env.IFORT_WIN32 or not getattr(self, 'link_task', None):
+	if not self.env.IFORT_WIN32 or not getattr(self, 'link_task', None,):
 		return
 
-	is_static = isinstance(self.link_task, ccroot.stlink_task)
+	is_static = isinstance(self.link_task, ccroot.stlink_task,)
 
-	subsystem = getattr(self, 'subsystem', '')
+	subsystem = getattr(self, 'subsystem', '',)
 	if subsystem:
 		subsystem = '/subsystem:%s' % subsystem
 		flags = is_static and 'ARFLAGS' or 'LINKFLAGS'
-		self.env.append_value(flags, subsystem)
+		self.env.append_value(flags, subsystem,)
 
 	if not is_static:
 		for f in self.env.LINKFLAGS:
@@ -389,23 +389,23 @@ def apply_flags_ifort(self):
 				pdbnode = self.link_task.outputs[0].change_ext('.pdb')
 				self.link_task.outputs.append(pdbnode)
 
-				if getattr(self, 'install_task', None):
-					self.pdb_install_task = self.add_install_files(install_to=self.install_task.install_to, install_from=pdbnode)
+				if getattr(self, 'install_task', None,):
+					self.pdb_install_task = self.add_install_files(install_to=self.install_task.install_to, install_from=pdbnode,)
 
 				break
 
-@feature('fcprogram', 'fcshlib', 'fcprogram_test')
+@feature('fcprogram', 'fcshlib', 'fcprogram_test',)
 @after_method('apply_link')
 def apply_manifest_ifort(self):
 	"""
 	Enables manifest embedding in Fortran DLLs when using ifort on Windows
 	See: http://msdn2.microsoft.com/en-us/library/ms235542(VS.80).aspx
 	"""
-	if self.env.IFORT_WIN32 and getattr(self, 'link_task', None):
+	if self.env.IFORT_WIN32 and getattr(self, 'link_task', None,):
 		# it seems ifort.exe cannot be called for linking
 		self.link_task.env.FC = self.env.LINK_FC
 
-	if self.env.IFORT_WIN32 and self.env.IFORT_MANIFEST and getattr(self, 'link_task', None):
+	if self.env.IFORT_WIN32 and self.env.IFORT_MANIFEST and getattr(self, 'link_task', None,):
 		out_node = self.link_task.outputs[0]
 		man_node = out_node.parent.find_or_declare(out_node.name + '.manifest')
 		self.link_task.outputs.append(man_node)

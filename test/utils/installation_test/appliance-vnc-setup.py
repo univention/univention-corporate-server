@@ -18,13 +18,13 @@ class UCSSetup(VNCInstallation):
         self.network()
         self.domain(self.args.role)
         if self.args.role == 'master':
-            self.orga(self.args.organisation, self.args.password)
+            self.orga(self.args.organisation, self.args.password,)
         if self.args.role != "fast":
             self.hostname()
         self.start()
         self.finish()
 
-    def language(self, language: str) -> None:
+    def language(self, language: str,) -> None:
         if self.text_is_visible('Notification'):
             self.screenshot('notification.png')
             self.click_on('OK')
@@ -79,7 +79,7 @@ class UCSSetup(VNCInstallation):
         """
         if self.text_is_visible('IP address'):
             pass
-        elif self.text_is_visible('Domain and network', timeout=-1):
+        elif self.text_is_visible('Domain and network', timeout=-1,):
             pass
         else:
             raise VNCDoException()
@@ -106,7 +106,7 @@ class UCSSetup(VNCInstallation):
 
         # sleep(120, "net.finish")
 
-    def domain(self, role: str) -> None:
+    def domain(self, role: str,) -> None:
         """
         # Domain setup
         Please select your domain settings.
@@ -135,7 +135,7 @@ class UCSSetup(VNCInstallation):
         self.screenshot('domain-setup.png')
         self.go_next(tabs=2)
 
-        sleep(10, "ucs.role")
+        sleep(10, "ucs.role",)
         if role == 'slave':
             """
             # System role
@@ -186,7 +186,7 @@ class UCSSetup(VNCInstallation):
             self.type(self.args.join_password)
             self.go_next(tabs=2)
 
-    def orga(self, orga: str, password: str) -> None:
+    def orga(self, orga: str, password: str,) -> None:
         """
         # Account information
         Enter the name of your organization, an e-mail address to activate UCS and a password for your /Administrator/ account.
@@ -219,7 +219,7 @@ class UCSSetup(VNCInstallation):
         """
         self.wait_for_text('Host settings')
         self.screenshot('hostname-setup.png')
-        self.type(self.args.fqdn + "\t", clear=True)
+        self.type(self.args.fqdn + "\t", clear=True,)
         if self.args.role in {'admember', 'slave'}:
             self.type("%s\t%s" % (self.args.password, self.args.password))
 
@@ -256,45 +256,42 @@ class UCSSetup(VNCInstallation):
 
     @verbose("FINISH")
     def finish(self) -> None:
-        sleep(600, "install")
-        self.wait_for_text('Setup successful', -3000)
+        sleep(600, "install",)
+        self.wait_for_text('Setup successful', -3000,)
         self.screenshot('finished-setup.png')
         self.type('\t\n')
         # except welcome screen
         if self.text_is_visible("press any key"):
             pass
-        elif self.text_is_visible("www", timeout=-1):
+        elif self.text_is_visible("www", timeout=-1,):
             pass
         self.screenshot('welcome-screen.png')
 
     def _go_next_search(self) -> None:
         self.click_on('NEXT')
 
-    def _go_next_tab(self, tabs: int) -> None:
+    def _go_next_tab(self, tabs: int,) -> None:
         self.type("\t" * tabs + "\n")
 
-    def go_next(self, tabs: int = 0) -> None:
+    def go_next(self, tabs: int = 0,) -> None:
         self._go_next_tab(tabs)
 
 
 def main() -> None:
-    parser = ArgumentParser(description=__doc__, parents=[build_parser()])
+    parser = ArgumentParser(description=__doc__, parents=[build_parser()],)
     parser = ArgumentParser(
         description=__doc__,
         parents=[build_parser()],
-        formatter_class=ArgumentDefaultsHelpFormatter,
-    )
+        formatter_class=ArgumentDefaultsHelpFormatter,)
     parser.add_argument(
         "--role",
         default="master",
         choices=["master", "admember", "fast", "slave"],
-        help="UCS system role",
-    )
+        help="UCS system role",)
     parser.add_argument(
         "--ucs",
         action="store_true",
-        help="UCS appliance",
-    )
+        help="UCS appliance",)
     parser.set_defaults(language="eng")
     args = parser.parse_args()
 

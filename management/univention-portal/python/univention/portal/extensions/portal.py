@@ -94,7 +94,7 @@ class Portal(metaclass=Plugin):
             Object that does the whole auth thing. Meant to the a `Authenticator` object
     """
 
-    def __init__(self, scorer, portal_cache, authenticator):
+    def __init__(self, scorer, portal_cache, authenticator,):
         self.scorer = scorer
         self.portal_cache = portal_cache
         self.authenticator = authenticator
@@ -102,31 +102,31 @@ class Portal(metaclass=Plugin):
     def get_cache_id(self):
         return self.portal_cache.get_id()
 
-    async def get_user(self, request):
+    async def get_user(self, request,):
         return await self.authenticator.get_user(request)
 
-    async def login_user(self, request):
+    async def login_user(self, request,):
         return await self.authenticator.login_user(request)
 
-    async def login_request(self, request):
+    async def login_request(self, request,):
         return await self.authenticator.login_request(request)
 
-    async def logout_user(self, request):
+    async def logout_user(self, request,):
         return await self.authenticator.logout_user(request)
 
-    def get_visible_content(self, user, admin_mode):
+    def get_visible_content(self, user, admin_mode,):
         entries = self.portal_cache.get_entries()
         folders = self.portal_cache.get_folders()
         categories = self.portal_cache.get_categories()
         announcements = self.portal_cache.get_announcements()
-        visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, user, admin_mode)
+        visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, user, admin_mode,)
         visible_folder_dns = [
             folder_dn
             for folder_dn in folders.keys()
             if admin_mode or len(
                 [
                     entry_dn
-                    for entry_dn in self._get_all_entries_of_folder(folder_dn, folders, entries)
+                    for entry_dn in self._get_all_entries_of_folder(folder_dn, folders, entries,)
                     if entry_dn in visible_entry_dns
                 ],
             ) > 0
@@ -145,7 +145,7 @@ class Portal(metaclass=Plugin):
         visible_announcement_dns = [
             announcement_dn
             for announcement_dn, announcement in announcements.items()
-            if self._announcement_visible(user, announcement)
+            if self._announcement_visible(user, announcement,)
         ]
         return {
             "entry_dns": visible_entry_dns,
@@ -154,23 +154,23 @@ class Portal(metaclass=Plugin):
             "announcement_dns": visible_announcement_dns,
         }
 
-    def get_user_links(self, content):
+    def get_user_links(self, content,):
         links = self.portal_cache.get_user_links()
         return [
             dn for dn in links if dn in content["entry_dns"] or dn in content["folder_dns"]
         ]
 
-    def get_menu_links(self, content):
+    def get_menu_links(self, content,):
         links = self.portal_cache.get_menu_links()
         return [
             dn for dn in links if dn in content["entry_dns"] or dn in content["folder_dns"]
         ]
 
-    def get_entries(self, content):
+    def get_entries(self, content,):
         entries = self.portal_cache.get_entries()
         return [entries[entry_dn] for entry_dn in content["entry_dns"]]
 
-    def get_folders(self, content):
+    def get_folders(self, content,):
         folders = self.portal_cache.get_folders()
         folders = [folders[folder_dn] for folder_dn in content["folder_dns"]]
         for folder in folders:
@@ -181,7 +181,7 @@ class Portal(metaclass=Plugin):
             ]
         return folders
 
-    def get_categories(self, content):
+    def get_categories(self, content,):
         categories = self.portal_cache.get_categories()
         categories = [categories[category_dn] for category_dn in content["category_dns"]]
         for category in categories:
@@ -192,13 +192,13 @@ class Portal(metaclass=Plugin):
             ]
         return categories
 
-    def auth_mode(self, request):
+    def auth_mode(self, request,):
         return self.authenticator.get_auth_mode(request)
 
-    def may_be_edited(self, user):
+    def may_be_edited(self, user,):
         return config.fetch('editable') and user.is_admin()
 
-    def get_meta(self, content, categories):
+    def get_meta(self, content, categories,):
         portal = self.portal_cache.get_portal()
         portal["categories"] = [
             category_dn
@@ -211,16 +211,15 @@ class Portal(metaclass=Plugin):
         ]
         return portal
 
-    def _announcement_visible(self, user, announcement: dict) -> bool:
-        return self._announcement_matches_time(announcement) and self._announcement_matches_group(user, announcement)
+    def _announcement_visible(self, user, announcement: dict,) -> bool:
+        return self._announcement_matches_time(announcement) and self._announcement_matches_group(user, announcement,)
 
-    def _announcement_matches_time(self, announcement: dict):
+    def _announcement_matches_time(self, announcement: dict,):
         return is_announcement_visible_now(
             announcement.get('visibleFrom'),
-            announcement.get('visibleUntil'),
-        )
+            announcement.get('visibleUntil'),)
 
-    def _announcement_matches_group(self, user, announcement: dict):
+    def _announcement_matches_group(self, user, announcement: dict,):
         visible = False
         allowed_groups = announcement.get("allowedGroups")
         if not allowed_groups or allowed_groups == []:
@@ -231,11 +230,11 @@ class Portal(metaclass=Plugin):
                     visible = True
         return visible
 
-    def get_announcements(self, content):
+    def get_announcements(self, content,):
         announcements = self.portal_cache.get_announcements()
         return [announcements[announcement_dn] for announcement_dn in content["announcement_dns"]]
 
-    def _filter_entry_dns(self, entry_dns, entries, user, admin_mode):
+    def _filter_entry_dns(self, entry_dns, entries, user, admin_mode,):
         filtered_dns = []
         for entry_dn in entry_dns:
             entry = entries.get(entry_dn)
@@ -257,86 +256,86 @@ class Portal(metaclass=Plugin):
             filtered_dns.append(entry_dn)
         return filtered_dns
 
-    def _get_all_entries_of_folder(self, folder_dn, folders, entries):
-        def _flatten(folder_dn, folders, entries, ret, already_unpacked_folder_dns):
+    def _get_all_entries_of_folder(self, folder_dn, folders, entries,):
+        def _flatten(folder_dn, folders, entries, ret, already_unpacked_folder_dns,):
             for entry_dn in folders[folder_dn]["entries"]:
                 if entry_dn in entries:
                     if entry_dn not in ret:
                         ret.append(entry_dn)
                 elif entry_dn in folders and entry_dn not in already_unpacked_folder_dns:
                     already_unpacked_folder_dns.append(entry_dn)
-                    _flatten(entry_dn, folders, entries, ret, already_unpacked_folder_dns)
+                    _flatten(entry_dn, folders, entries, ret, already_unpacked_folder_dns,)
 
         ret = []
-        _flatten(folder_dn, folders, entries, ret, [])
+        _flatten(folder_dn, folders, entries, ret, [],)
         return ret
 
-    def refresh(self, reason=None):
+    def refresh(self, reason=None,):
         touched = self.portal_cache.refresh(reason=reason)
         touched = self.authenticator.refresh(reason=reason) or touched
         return touched
 
     def _get_umc_portal(self):
-        return UMCPortal(self.scorer, self.authenticator)
+        return UMCPortal(self.scorer, self.authenticator,)
 
-    def score(self, request):
+    def score(self, request,):
         return self.scorer.score(request)
 
 
 class UMCPortal(Portal):
-    def __init__(self, scorer, authenticator):
+    def __init__(self, scorer, authenticator,):
         self.scorer = scorer
         self.authenticator = authenticator
 
-    def auth_mode(self, request):
+    def auth_mode(self, request,):
         return "ucs"
 
-    def may_be_edited(self, user):
+    def may_be_edited(self, user,):
         return False
 
-    def _request_umc_get(self, get_path, headers):
+    def _request_umc_get(self, get_path, headers,):
         umc_base_url = config.fetch("umc_base_url")
-        uri = urljoin(urljoin(umc_base_url, 'get/'), get_path)
+        uri = urljoin(urljoin(umc_base_url, 'get/',), get_path,)
         body = {"options": {}}
         try:
-            response = requests.post(uri, json=body, headers=headers)
+            response = requests.post(uri, json=body, headers=headers,)
         except requests.exceptions.RequestException as exc:
-            get_logger("umc").warning("Exception while getting %s: %s", get_path, exc)
+            get_logger("umc").warning("Exception while getting %s: %s", get_path, exc,)
             return []
         else:
             if response.status_code != 200:
-                get_logger("umc").debug("Status %r while getting %s", response.status_code, get_path)
+                get_logger("umc").debug("Status %r while getting %s", response.status_code, get_path,)
                 return []
             return response.json()[get_path]
 
-    def get_visible_content(self, user, admin_mode):
+    def get_visible_content(self, user, admin_mode,):
         headers = user.headers
-        categories = self._request_umc_get("categories", headers)
-        modules = self._request_umc_get("modules", headers)
+        categories = self._request_umc_get("categories", headers,)
+        modules = self._request_umc_get("modules", headers,)
         return {
             "umc_categories": categories,
             "umc_modules": modules,
         }
 
-    def get_user_links(self, content):
+    def get_user_links(self, content,):
         return []
 
-    def get_menu_links(self, content):
+    def get_menu_links(self, content,):
         return []
 
-    def get_entries(self, content):
+    def get_entries(self, content,):
         entries = []
         colors = {cat["id"]: cat["color"] for cat in content["umc_categories"] if cat["id"] != "_favorites_"}
 
         for module in content["umc_modules"]:
             if "apps" in module["categories"]:
                 continue
-            entries.append(self._module_to_entry(module, colors))
+            entries.append(self._module_to_entry(module, colors,))
         return entries
 
-    def _module_to_entry(self, module, colors, locale='en_US'):
+    def _module_to_entry(self, module, colors, locale='en_US',):
         icon_url = self._module_icon_url(module)
-        color = self._module_background_color(module, colors)
+        color = self._module_background_color(module, colors,)
 
         entry = {
             "dn": self._entry_id(module),
@@ -355,19 +354,19 @@ class UMCPortal(Portal):
             "backgroundColor": color,
             "links": [{
                 "locale": locale,
-                "value": "/univention/management/?header=try-hide&overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", "")),
+                "value": "/univention/management/?header=try-hide&overview=false&menu=false#module={}:{}".format(module["id"], module.get("flavor", "",),),
             }],
             # TODO: missing: in_portal, anonymous, activated, allowedGroups
         }
         return entry
 
-    def _module_icon_url(self, module):
+    def _module_icon_url(self, module,):
         sub_path = "js/dijit/themes/umc/icons/scalable/{}.svg".format(module["icon"])
-        filename = os.path.join('/usr/share/univention-management-console-frontend/', sub_path)
+        filename = os.path.join('/usr/share/univention-management-console-frontend/', sub_path,)
         if os.path.exists(filename):
-            return urljoin("/univention/management/", sub_path)
+            return urljoin("/univention/management/", sub_path,)
 
-    def _module_background_color(self, module, colors):
+    def _module_background_color(self, module, colors,):
         color = None
         for cat in module["categories"]:
             if cat in colors:
@@ -375,10 +374,10 @@ class UMCPortal(Portal):
                 break
         return color
 
-    def _entry_id(self, module):
-        return "umc:module:{}:{}".format(module["id"], module.get("flavor", ""))
+    def _entry_id(self, module,):
+        return "umc:module:{}:{}".format(module["id"], module.get("flavor", "",),)
 
-    def get_folders(self, content):
+    def get_folders(self, content,):
         folders = []
         for category in content["umc_categories"]:
             if category["id"] == "apps":
@@ -397,12 +396,12 @@ class UMCPortal(Portal):
             })
         return folders
 
-    def get_categories(self, content):
+    def get_categories(self, content,):
         ret = []
         categories = content["umc_categories"]
-        categories = sorted(categories, key=lambda entry: entry["priority"], reverse=True)
+        categories = sorted(categories, key=lambda entry,: entry["priority"], reverse=True,)
         modules = content["umc_modules"]
-        modules = sorted(modules, key=lambda entry: entry["priority"], reverse=True)
+        modules = sorted(modules, key=lambda entry,: entry["priority"], reverse=True,)
         fav_cat = [cat for cat in categories if cat["id"] == "_favorites_"]
         if fav_cat:
             fav_cat = fav_cat[0]
@@ -411,7 +410,7 @@ class UMCPortal(Portal):
                     "en_US": fav_cat["name"],
                 },
                 "dn": "umc:category:favorites",
-                "entries": [self._entry_id(mod) for mod in modules if "_favorites_" in mod.get("categories", [])],
+                "entries": [self._entry_id(mod) for mod in modules if "_favorites_" in mod.get("categories", [],)],
             })
         else:
             ret.append({
@@ -430,7 +429,7 @@ class UMCPortal(Portal):
         })
         return ret
 
-    def get_meta(self, content, categories):
+    def get_meta(self, content, categories,):
         category_dns = ["umc:category:favorites", "umc:category:umc"]
         content = []
         for category_dn in category_dns:
@@ -446,10 +445,10 @@ class UMCPortal(Portal):
             "content": content,
         }
 
-    def get_announcements(self, content):
+    def get_announcements(self, content,):
         return []
 
-    def refresh(self, reason=None):
+    def refresh(self, reason=None,):
         pass
 
     def get_cache_id(self):

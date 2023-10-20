@@ -18,26 +18,26 @@ class Jenkins(TestFormatInterface):
     <https://wiki.jenkins-ci.org/display/JENKINS/Monitoring+external+jobs>
     """
 
-    def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
+    def __init__(self, stream=sys.stdout,):  # type: (IO[str]) -> None
         super().__init__(stream)
 
-    def end_test(self, result):  # type: (TestResult) -> None
+    def end_test(self, result,):  # type: (TestResult) -> None
         """Called after each test."""
-        print('<run>', file=self.stream)
+        print('<run>', file=self.stream,)
         try:
             mime, content = result.artifacts['stdout']
         except KeyError:
             pass
         else:
-            print('<log encoding="hexBinary">%s</log>' % (encode(content.encode('UTF-8'), 'hex').decode('ASCII'),), file=self.stream)
-        print('<result>%d</result>' % (result.result,), file=self.stream)
-        print('<duration>%d</duration>' % (result.duration or -1,), file=self.stream)
-        print('<displayName>%s</displayName>' % (escape_xml(result.case.uid),), file=self.stream)
-        print('<description>%s</description>' % (escape_xml(result.case.description or ''),), file=self.stream)
-        print('</run>', file=self.stream)
+            print('<log encoding="hexBinary">%s</log>' % (encode(content.encode('UTF-8'), 'hex',).decode('ASCII'),), file=self.stream,)
+        print('<result>%d</result>' % (result.result,), file=self.stream,)
+        print('<duration>%d</duration>' % (result.duration or -1,), file=self.stream,)
+        print('<displayName>%s</displayName>' % (escape_xml(result.case.uid),), file=self.stream,)
+        print('<description>%s</description>' % (escape_xml(result.case.description or ''),), file=self.stream,)
+        print('</run>', file=self.stream,)
         super().end_test(result)
 
-    def format(self, result):  # type: (TestResult) -> None
+    def format(self, result,):  # type: (TestResult) -> None
         """
         >>> from univention.testing.data import TestCase, TestEnvironment
         >>> te = TestEnvironment()

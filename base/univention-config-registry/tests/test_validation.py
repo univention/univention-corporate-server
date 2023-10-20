@@ -18,9 +18,8 @@ import univention.config_registry.validation as ttyp
         'String',
         '1234',
         '',
-    ],
-)
-def test_string(value):
+    ],)
+def test_string(value,):
     sval = ttyp.String({})
     assert sval.is_valid(value)
 
@@ -31,9 +30,8 @@ def test_string(value):
         ('^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$', True),
         ('/foo\\1/', False),
         ('', True),
-    ],
-)
-def test_string_set_regex(regex, expected):
+    ],)
+def test_string_set_regex(regex, expected,):
     sval = ttyp.String({})
     try:
         sval.regex = regex
@@ -49,9 +47,8 @@ def test_string_set_regex(regex, expected):
         ('http://univention.de', '^(https?)://(www)?.?(\\w+).(\\w+)/?(\\w+)?', True),
         ('2021-12-31', '^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$', True),
         ('2021-13-31', '^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$', False),
-    ],
-)
-def test_string_regex(value, regex, expected):
+    ],)
+def test_string_regex(value, regex, expected,):
     sval = ttyp.String({"regex": regex})
     assert sval.is_valid(value) == expected
 
@@ -73,9 +70,8 @@ def test_string_regex(value, regex, expected):
         ('http://localhost?query', False),
         ('http://localhost#fragment', False),
         ('ldap://', False),
-    ],
-)
-def test_url_proxy(value, expected):
+    ],)
+def test_url_proxy(value, expected,):
     up = ttyp.URLProxy({})
     assert up.is_valid(value) == expected
 
@@ -99,20 +95,20 @@ IPV6_ONLY = [
 ]
 
 
-@pytest.mark.parametrize("value,expected", IPV4)
-def test_ipv4address(value, expected):
+@pytest.mark.parametrize("value,expected", IPV4,)
+def test_ipv4address(value, expected,):
     ipa = ttyp.IPv4Address({})
     assert ipa.is_valid(value) == expected
 
 
-@pytest.mark.parametrize("value,expected", IPV6 + IPV6_ONLY)
-def test_ipv6address(value, expected):
+@pytest.mark.parametrize("value,expected", IPV6 + IPV6_ONLY,)
+def test_ipv6address(value, expected,):
     ipa = ttyp.IPv6Address({})
     assert ipa.is_valid(value) == expected
 
 
-@pytest.mark.parametrize("value,expected", IPV4 + IPV6)
-def test_ipaddress(value, expected):
+@pytest.mark.parametrize("value,expected", IPV4 + IPV6,)
+def test_ipaddress(value, expected,):
     ipa = ttyp.IPAddress({})
     assert ipa.is_valid(value) == expected
 
@@ -127,9 +123,8 @@ def test_ipaddress(value, expected):
         ('12345678', True),
         ('-500', True),
         ('0', True),
-    ],
-)
-def test_integer(value, expected):
+    ],)
+def test_integer(value, expected,):
     ival = ttyp.Integer({})
     assert ival.is_valid(value) == expected
 
@@ -149,9 +144,8 @@ def test_integer(value, expected):
         ('22', '0', '42', True),
         ('-1', '0', '42', False),
         ('43', '0', '42', False),
-    ],
-)
-def test_integer_range(value, min, max, expected):
+    ],)
+def test_integer_range(value, min, max, expected,):
     ival = ttyp.Integer({"min": min, "max": max})
     assert ival.is_valid(value) == expected
 
@@ -169,9 +163,8 @@ def test_integer_range(value, min, max, expected):
         ('text', '10', False),
         (None, 'text', False),
         ('100', 'text', False),
-    ],
-)
-def test_integer_set_range(min, max, expected):
+    ],)
+def test_integer_set_range(min, max, expected,):
     ival = ttyp.Integer({})
     try:
         ival.min = min
@@ -188,9 +181,8 @@ def test_integer_set_range(min, max, expected):
         ('-1', False),
         ('0', True),
         ('1', True),
-    ],
-)
-def test_uinteger(value, expected):
+    ],)
+def test_uinteger(value, expected,):
     uval = ttyp.UnsignedNumber({})
     assert uval.is_valid(value) == expected
 
@@ -201,9 +193,8 @@ def test_uinteger(value, expected):
         ('-1', False),
         ('0', False),
         ('1', True),
-    ],
-)
-def test_pinteger(value, expected):
+    ],)
+def test_pinteger(value, expected,):
     pval = ttyp.PositiveNumber({})
     assert pval.is_valid(value) == expected
 
@@ -219,9 +210,8 @@ def test_pinteger(value, expected):
         ('0', True),
         ('65535', True),
         ('65536', False),
-    ],
-)
-def test_portnumber(port, expected):
+    ],)
+def test_portnumber(port, expected,):
     pp = ttyp.PortNumber({})
     assert pp.is_valid(port) == expected
 
@@ -256,9 +246,8 @@ def test_portnumber(port, expected):
         ('text', False),
         ('y', False),
         ('n', False),
-    ],
-)
-def test_bool(value, expected):
+    ],)
+def test_bool(value, expected,):
     bb = ttyp.Bool({})
     assert bb.is_valid(value) == expected
 
@@ -268,9 +257,8 @@ def test_bool(value, expected):
     [
         ('{"name": "Egon Testmann", "salary": 9000, "email": "egon@testmail.com",}', False),
         ('{"name": "Egon Testmann", "salary": 9000, "email": "egon@testmail.com"}', True),
-    ],
-)
-def test_json(value, expected):
+    ],)
+def test_json(value, expected,):
     jj = ttyp.Json({})
     assert jj.is_valid(value) == expected
 
@@ -307,9 +295,8 @@ def var():
         ('true, false,0', 'bool', None, True),
         ('{"name": "Egon Testmann", "salary": 9000, "email": "egon@testmail.com"};{"name": "Hans Wurst", "car": "Audi"}', 'json', ';', True),
         ('{"name": "Egon Testmann", "salary": 9000, "email": "egon@testmail.com"};{42}', 'json', ';', False),
-    ],
-)
-def test_list(value, element_type, separator, expected, var):
+    ],)
+def test_list(value, element_type, separator, expected, var,):
     var['type'] = 'list'
     var['elementtype'] = element_type
     if separator is not None:
@@ -348,12 +335,11 @@ def test_list(value, element_type, separator, expected, var):
         ("@daily", None),
         ("@hourly", None),
         ("@reboot", None),
-    ],
-)
-def test_cron(value, error):
+    ],)
+def test_cron(value, error,):
     cron = ttyp.Cron({})
     if error:
-        with pytest.raises(ValueError, match="|".join(map(escape, error.split("|")))):
+        with pytest.raises(ValueError, match="|".join(map(escape, error.split("|"),)),):
             cron.validate(value)
     else:
         assert cron.validate(value)
@@ -374,10 +360,9 @@ def test_cron(value, error):
         ('str', ttyp.String),
         ('json', ttyp.Json),
         ('list', ttyp.List),
-    ],
-)
-def test_type(name, typ, var):
+    ],)
+def test_type(name, typ, var,):
     var['type'] = name
 
     tt = ttyp.Type(var)
-    assert isinstance(tt.checker, typ)
+    assert isinstance(tt.checker, typ,)

@@ -75,14 +75,14 @@ TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
 class UploadManager(dict):
     """Store file uploads in temporary files so that module processes can access them"""
 
-    def add(self, request_id, store):
-        with tempfile.NamedTemporaryFile(prefix=request_id, dir=TEMPUPLOADDIR, delete=False) as tmpfile:
+    def add(self, request_id, store,):
+        with tempfile.NamedTemporaryFile(prefix=request_id, dir=TEMPUPLOADDIR, delete=False,) as tmpfile:
             tmpfile.write(store['body'])
-        self.setdefault(request_id, []).append(tmpfile.name)
+        self.setdefault(request_id, [],).append(tmpfile.name)
 
         return tmpfile.name
 
-    def cleanup(self, request_id):
+    def cleanup(self, request_id,):
         if request_id in self:
             filenames = self[request_id]
             for filename in filenames:
@@ -111,7 +111,7 @@ class ModuleServer(object):
     :param int timeout: If there are no incoming requests for *timeout* seconds the module server shuts down
     """
 
-    def __init__(self, socket, module, logfile, timeout=300):
+    def __init__(self, socket, module, logfile, timeout=300,):
         # type: (str, str, str, int) -> None
         self.server = None
         self.__socket = socket
@@ -126,18 +126,18 @@ class ModuleServer(object):
         self._load_module()
 
     def __enter__(self):
-        tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
+        tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console',)
         routes = self.__handler.tornado_routes if self.__handler else []
         application = Application(routes + [
             (r'^/exit', Exit),
             (r'^/univention/(?:command|upload)/(.*)', Handler, {'server': self, 'handler': self.__handler}),
             (r'^/cancel', Cancel, {'handler': self.__handler}),
-        ], serve_traceback=ucr.is_true('umc/http/show_tracebacks', True))
+        ], serve_traceback=ucr.is_true('umc/http/show_tracebacks', True,),)
 
-        signal.signal(signal.SIGALRM, self.signal_handler_alarm)
-        signal.signal(signal.SIGTERM, self.signal_handler_stop)
-        signal.signal(signal.SIGHUP, self.signal_handler_reload)
-        signal.signal(signal.SIGUSR1, self.signal_handler_reload)
+        signal.signal(signal.SIGALRM, self.signal_handler_alarm,)
+        signal.signal(signal.SIGTERM, self.signal_handler_stop,)
+        signal.signal(signal.SIGHUP, self.signal_handler_reload,)
+        signal.signal(signal.SIGUSR1, self.signal_handler_reload,)
 
         if not six.PY2:
             # TODO: remove in UCS 5.1:
@@ -150,15 +150,14 @@ class ModuleServer(object):
 
         server = HTTPServer(
             application,
-            max_body_size=ucr.get_int('umc/http/max_request_body_size', 104857600),
-        )
+            max_body_size=ucr.get_int('umc/http/max_request_body_size', 104857600,),)
         server.add_socket(bind_unix_socket(self.__socket))
         self.server = server
         server.start()
 
         return self
 
-    def __exit__(self, etype, exc, etraceback):
+    def __exit__(self, etype, exc, etraceback,):
         self.running = False
         self.ioloop.stop()
 
@@ -174,7 +173,7 @@ class ModuleServer(object):
         try:
             try:
                 file_ = 'univention.management.console.modules.%s' % (modname,)
-                self.__module = __import__(file_, {}, {}, modname)
+                self.__module = __import__(file_, {}, {}, modname,)
                 MODULE.debug('Imported Python module.')
                 self.__handler = self.__module.Instance()
                 MODULE.debug('Module instance created.')
@@ -182,14 +181,14 @@ class ModuleServer(object):
                 error = _('Failed to load module %(module)s: %(error)s\n%(traceback)s') % {'module': modname, 'error': exc, 'traceback': traceback.format_exc()}
                 # TODO: systemctl reload univention-management-console-server
                 MODULE.error(error)
-                if isinstance(exc, ImportError) and str(exc).startswith('No module named %s' % (modname,)):
+                if isinstance(exc, ImportError,) and str(exc).startswith('No module named %s' % (modname,)):
                     error = '\n'.join((
                         _('The requested module %r does not exist.') % (modname,),
                         _('The module may have been removed recently.'),
                         _('Please relogin to the Univention Management Console to see if the error persists.'),
                         _('Further information can be found in the logfile %s.') % ('/var/log/univention/management-console-module-%s.log' % (modname,),),
                     ))
-                raise UMC_Error(error, status=_MODULE_ERR_INIT_FAILED)
+                raise UMC_Error(error, status=_MODULE_ERR_INIT_FAILED,)
         except UMC_Error:
             try:
                 exc_info = sys.exc_info()
@@ -197,15 +196,15 @@ class ModuleServer(object):
             finally:
                 exc_info = None
 
-    def signal_handler_stop(self, signo, frame):
+    def signal_handler_stop(self, signo, frame,):
         MODULE.process('Received SIGTERM')
         raise SystemExit(0)
 
-    def signal_handler_reload(self, signo, frame):
+    def signal_handler_reload(self, signo, frame,):
         MODULE.process('Received reload signal (%s)' % (signo,))
         log_reopen()
 
-    def signal_handler_alarm(self, signo, frame):
+    def signal_handler_alarm(self, signo, frame,):
         MODULE.info('Received SIGALARM')
         if self.__handler is not None and self.__handler._Base__requests:
             MODULE.warn('There are still open requests - do not shutdown')
@@ -234,18 +233,18 @@ class ModuleServer(object):
             self.__handler.destroy()
         sys.exit(0)
 
-    def error_handling(self, request, method, etype, exc, etraceback):
+    def error_handling(self, request, method, etype, exc, etraceback,):
         if self.__handler:
             self.__handler._Base__requests[request.id] = (request, method)
-            self.__handler._Base__error_handling(request, method, etype, exc, etraceback)
+            self.__handler._Base__error_handling(request, method, etype, exc, etraceback,)
             return
 
-        trace = ''.join(traceback.format_exception(etype, exc, etraceback))
+        trace = ''.join(traceback.format_exception(etype, exc, etraceback,))
         MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace))
         from .error import UMC_Error
-        if not isinstance(exc, UMC_Error):
+        if not isinstance(exc, UMC_Error,):
             error = _('The initialization of the module failed: %s') % (trace,)
-            exc = UMC_Error(error, status=_MODULE_ERR_INIT_FAILED)
+            exc = UMC_Error(error, status=_MODULE_ERR_INIT_FAILED,)
             etype = UMC_Error
 
         resp = Response(request)
@@ -255,7 +254,7 @@ class ModuleServer(object):
         resp.headers = exc.headers
         request._request_handler.reply(resp)
 
-    def handle_init(self, msg):
+    def handle_init(self, msg,):
         from .error import NotAcceptable
         signal.alarm(self.__timeout)
 
@@ -263,7 +262,7 @@ class ModuleServer(object):
             MODULE.error('module loading failed; respond then shutdown')
             signal.alarm(3)
             exc_info = (self.__init_etype, self.__init_exc, self.__init_etraceback)
-            self.error_handling(msg, 'init', *exc_info)
+            self.error_handling(msg, 'init', *exc_info,)
             raise _Skip()
 
         if not self.__initialized:
@@ -285,28 +284,28 @@ class ModuleServer(object):
 class Handler(RequestHandler):
 
     def set_default_headers(self):
-        self.set_header('Server', 'UMC-Module/1.0')
+        self.set_header('Server', 'UMC-Module/1.0',)
 
-    def initialize(self, server, handler):
+    def initialize(self, server, handler,):
         self.server = server
         self.handler = handler
         self.request_id = None
         self.ioloop = tornado.ioloop.IOLoop.current()
 
     def on_connection_close(self):
-        super(Handler, self).on_connection_close()
+        super(Handler, self,).on_connection_close()
         MODULE.warn('Connection was aborted by the client!')
         self._remove_active_request()
 
     def on_finish(self):
-        super(Handler, self).on_finish()
+        super(Handler, self,).on_finish()
         self._remove_active_request()
 
     def _remove_active_request(self):
         if self.handler:
-            self.handler._Base__requests.pop(self.request_id, None)
+            self.handler._Base__requests.pop(self.request_id, None,)
 
-    async def get(self, path):
+    async def get(self, path,):
         try:
             username, password = self.parse_authorization()
         except TypeError:  # can only happen when doing manual requests
@@ -314,10 +313,10 @@ class Handler(RequestHandler):
             raise Unauthorized(self._("No authentication provided to module process."))
 
         flavor = self.request.headers.get('X-UMC-Flavor')
-        user_dn = json.loads(self.request.headers.get('X-User-Dn', 'null'))
+        user_dn = json.loads(self.request.headers.get('X-User-Dn', 'null',))
         auth_type = self.request.headers.get('X-UMC-AuthType')
-        mimetype = re.split('[ ;]', self.request.headers.get('Content-Type', ''))[0]
-        umcp_command = self.request.headers.get('X-UMC-Command', 'COMMAND')
+        mimetype = re.split('[ ;]', self.request.headers.get('Content-Type', '',),)[0]
+        umcp_command = self.request.headers.get('X-UMC-Command', 'COMMAND',)
         if umcp_command == 'UPLOAD' and mimetype != 'multipart/form-data':
             # very important for security reasons in combination with the file_upload decorator
             # otherwise manipulated requests are able to specify the path of temporary uploaded files
@@ -333,9 +332,9 @@ class Handler(RequestHandler):
             MODULE.warn('Invalid locale: %s %s' % (exc, locale))
         locale = str(locale)
 
-        msg = Request(umcp_command, [path], mime_type=mimetype)
+        msg = Request(umcp_command, [path], mime_type=mimetype,)
         msg._request_handler = self
-        self.request_id = msg.id = self.request.headers.get('X-UMC-Request-ID', msg.id)
+        self.request_id = msg.id = self.request.headers.get('X-UMC-Request-ID', msg.id,)
         msg.username = username
         msg.user_dn = user_dn
         msg.password = password
@@ -353,7 +352,7 @@ class Handler(RequestHandler):
             msg.body = {}
             args = {name: self.get_query_arguments(name) for name in self.request.query_arguments}
             args = {name: value[0] if len(value) == 1 else value for name, value in args.items()}
-            msg.flavor = args.pop('flavor', None)
+            msg.flavor = args.pop('flavor', None,)
             msg.options = args
         else:
             msg.body = self.request.body
@@ -384,40 +383,40 @@ class Handler(RequestHandler):
             return
 
         self._auto_finish = False  # if methods start threads and don't await a future of it an empty response is generated because finish() will be called immediately and twice then
-        self.handler.execute(method, msg)
+        self.handler.execute(method, msg,)
         MODULE.debug('Executed handler')
 
     post = put = delete = patch = options = get
 
-    def reply(self, response):
+    def reply(self, response,):
         if response.headers:
             for key, val in response.headers.items():
-                self.set_header(key, val)
+                self.set_header(key, val,)
         for key, item in response.cookies.items():
-            if six.PY2 and not isinstance(key, bytes):
+            if six.PY2 and not isinstance(key, bytes,):
                 key = key.encode('utf-8')  # bug in python Cookie!
-            if not isinstance(item, dict):
+            if not isinstance(item, dict,):
                 item = {'value': item}
-            self.set_cookie(key, **item)
-        if isinstance(response.body, dict):
-            response.body.pop('headers', None)
-            response.body.pop('cookies', None)
+            self.set_cookie(key, **item,)
+        if isinstance(response.body, dict,):
+            response.body.pop('headers', None,)
+            response.body.pop('cookies', None,)
         status = response.status or 200  # status is not set if not json
-        self.set_status(status, response.reason)
+        self.set_status(status, response.reason,)
         # set reason
-        self.set_header('Content-Type', response.mimetype)
+        self.set_header('Content-Type', response.mimetype,)
         if 300 <= status < 400:
-            self.set_header('Location', response.headers.get('Location', ''))
+            self.set_header('Location', response.headers.get('Location', '',),)
         body = response.body
         if response.mimetype == 'application/json':
             if response.message:
-                self.set_header('X-UMC-Message', json.dumps(response.message))
-            if isinstance(response.body, dict):
-                response.body.pop('options', None)
-                response.body.pop('message', None)
+                self.set_header('X-UMC-Message', json.dumps(response.message),)
+            if isinstance(response.body, dict,):
+                response.body.pop('options', None,)
+                response.body.pop('message', None,)
             body = json.dumps(response.body).encode('ASCII')
 
-        def _reply(body):
+        def _reply(body,):
             try:
                 self.finish(body)
             except Exception:
@@ -429,11 +428,11 @@ class Handler(RequestHandler):
         else:
             # TODO: remove in UCS 5.1:
             MODULE.error('called finish() from thread. should be done in main thread! Traceback (most recent call last)\n%s' % (''.join(traceback.format_stack()),))
-            self.ioloop.add_callback(_reply, body)
+            self.ioloop.add_callback(_reply, body,)
 
-    def suffixed_cookie_name(self, cookie_name):
+    def suffixed_cookie_name(self, cookie_name,):
         # TODO: test if the Host header is correctly passed through the UNIX socket
-        host, _, port = self.request.headers.get('Host', '').partition(':')
+        host, _, port = self.request.headers.get('Host', '',).partition(':')
         if port:
             try:
                 port = '-%d' % (int(port),)
@@ -446,35 +445,35 @@ class Handler(RequestHandler):
         if not credentials:
             return
         try:
-            scheme, credentials = credentials.split(u' ', 1)
+            scheme, credentials = credentials.split(u' ', 1,)
         except ValueError:
             raise HTTPError(400)
         if scheme.lower() != u'basic':
             return
         try:
-            username, password = base64.b64decode(credentials.encode('utf-8')).decode('latin-1').split(u':', 1)
+            username, password = base64.b64decode(credentials.encode('utf-8')).decode('latin-1').split(u':', 1,)
         except ValueError:
             raise HTTPError(400)
         return username, password
 
-    def write_error(self, status_code, exc_info=(None, None, None), **kwargs):
+    def write_error(self, status_code, exc_info=(None, None, None),**kwargs):
         MODULE.error('Fatal error: %s' % (''.join(traceback.format_exception(*exc_info)) if exc_info else status_code,))
-        if not hasattr(self.request, 'umcp_message'):
+        if not hasattr(self.request, 'umcp_message',):
             if status_code >= 500:
                 kwargs['exc_info'] = exc_info
-            return super(Handler, self).write_error(status_code, **kwargs)
+            return super(Handler, self,).write_error(status_code, **kwargs,)
 
         msg = self.request.umcp_message
         exc_info = exc_info or (None, None, None)
-        self.server.error_handling(msg, 'GET', *exc_info)
+        self.server.error_handling(msg, 'GET', *exc_info,)
 
-    def _get_upload_arguments(self, req):
+    def _get_upload_arguments(self, req,):
         # TODO: move into UMC-Server core?
         options = []
         body = {}
 
         # check if enough free space is available
-        min_size = get_int('umc/server/upload/min_free_space', 51200)  # kilobyte
+        min_size = get_int('umc/server/upload/min_free_space', 51200,)  # kilobyte
         s = os.statvfs(TEMPUPLOADDIR)
         free_disk_space = s.f_bavail * s.f_frsize // 1024  # kilobyte
         if free_disk_space < min_size:
@@ -483,8 +482,8 @@ class Handler(RequestHandler):
 
         for name, field in self.request.files.items():
             for part in field:
-                tmpfile = _upload_manager.add(req.id, part)
-                options.append(self._sanitize_file(tmpfile, name, part))
+                tmpfile = _upload_manager.add(req.id, part,)
+                options.append(self._sanitize_file(tmpfile, name, part,))
 
         for name in self.request.body_arguments:
             value = self.get_body_arguments(name)
@@ -495,10 +494,10 @@ class Handler(RequestHandler):
         body['options'] = options
         return body
 
-    def _sanitize_file(self, tmpfile, name, store):
+    def _sanitize_file(self, tmpfile, name, store,):
         # check if filesize is allowed
         st = os.stat(tmpfile)
-        max_size = get_int('umc/server/upload/max', 64) * 1024
+        max_size = get_int('umc/server/upload/max', 64,) * 1024
         if st.st_size > max_size:
             MODULE.warn('file of size %d could not be uploaded' % (st.st_size))
             raise BadRequest('The size of the uploaded file is too large')
@@ -506,7 +505,7 @@ class Handler(RequestHandler):
         filename = store['filename']
         # some security
         for c in '<>/':
-            filename = filename.replace(c, '_')
+            filename = filename.replace(c, '_',)
 
         return {
             'filename': filename,
@@ -518,7 +517,7 @@ class Handler(RequestHandler):
 
 class Cancel(RequestHandler):
 
-    def initialize(self, handler):
+    def initialize(self, handler,):
         self.handler = handler
 
     def get(self):
@@ -540,7 +539,7 @@ class Exit(RequestHandler):
 
     def post(self):
         MODULE.process("EXIT: module shutdown in %ds" % _MODULE_SHUTDOWN_TIMEOUT)
-        self.set_header('Content-Type', 'application/json')
+        self.set_header('Content-Type', 'application/json',)
         body = json.dumps({'status': 200, 'result': None, 'message': 'module %s will shutdown in %ds' % ('TODO', _MODULE_SHUTDOWN_TIMEOUT)}).encode('ASCII')
         self.finish(body)
         signal.alarm(_MODULE_SHUTDOWN_TIMEOUT)

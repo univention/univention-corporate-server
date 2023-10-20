@@ -66,9 +66,9 @@ class AppListener(ListenerModuleHandler):
         with self.as_root():
             os.makedirs(dirname)
 
-    def _write_json(self, dn, obj, command, log_as=None):
-        entry_uuid = obj.get('entryUUID', [None])[0]
-        object_type = obj.get('univentionObjectType', [None])[0]
+    def _write_json(self, dn, obj, command, log_as=None,):
+        entry_uuid = obj.get('entryUUID', [None],)[0]
+        object_type = obj.get('univentionObjectType', [None],)[0]
         attrs = {
             'entry_uuid': entry_uuid.decode('UTF-8') if entry_uuid is not None else entry_uuid,
             'dn': dn,
@@ -77,18 +77,18 @@ class AppListener(ListenerModuleHandler):
         }
         with self.as_root():
             filename = self._get_new_file_name()
-            with open(filename, 'w') as fd:
-                json.dump(attrs, fd, sort_keys=True, indent=4)
+            with open(filename, 'w',) as fd:
+                json.dump(attrs, fd, sort_keys=True, indent=4,)
             self.logger.info('%s of %s (id: %s, file: %s)' % (log_as or command, dn, entry_uuid, filename))
 
-    def create(self, dn, new):
-        self._write_json(dn, new, 'modify', log_as='create')
+    def create(self, dn, new,):
+        self._write_json(dn, new, 'modify', log_as='create',)
 
-    def modify(self, dn, old, new, old_dn):
-        self._write_json(dn, new, 'modify')
+    def modify(self, dn, old, new, old_dn,):
+        self._write_json(dn, new, 'modify',)
 
-    def remove(self, dn, old):
-        self._write_json(dn, old, 'delete')
+    def remove(self, dn, old,):
+        self._write_json(dn, old, 'delete',)
 
     class Configuration(ListenerModuleHandler.Configuration):
         def get_description(self):
@@ -96,4 +96,4 @@ class AppListener(ListenerModuleHandler):
 
         def get_ldap_filter(self):
             app = Apps().find(self.get_name())
-            return '(|%s)' % ''.join(filter_format('(univentionObjectType=%s)', [udm_module]) for udm_module in app.listener_udm_modules)
+            return '(|%s)' % ''.join(filter_format('(univentionObjectType=%s)', [udm_module],) for udm_module in app.listener_udm_modules)

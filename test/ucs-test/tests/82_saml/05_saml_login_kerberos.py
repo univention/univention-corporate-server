@@ -19,14 +19,14 @@ import samltest
 
 
 class KerberosTicket:
-    def __init__(self, hostname):
+    def __init__(self, hostname,):
         self.hostname = hostname
 
     def __enter__(self):
         subprocess.call(['kdestroy'])
         subprocess.check_call(['kinit', '--password-file=/etc/machine.secret', self.hostname + '$'])  # get kerberos ticket
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback,):
         subprocess.check_call(['kdestroy'])
 
 
@@ -35,7 +35,7 @@ def main():
         hostname = ucr['hostname']
         handler_set(['kerberos/defaults/rdns=false', "saml/idp/authsource=univention-negotiate"])
         with KerberosTicket(hostname):
-            SamlSession = samltest.SamlTest('', '', use_kerberos=True)
+            SamlSession = samltest.SamlTest('', '', use_kerberos=True,)
             try:
                 SamlSession.login_with_new_session_at_IdP()
                 SamlSession.test_logged_in_status()

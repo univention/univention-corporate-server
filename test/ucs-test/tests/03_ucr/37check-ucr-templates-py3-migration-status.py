@@ -48,51 +48,51 @@ exec echo "$?" >{1[ret]}
 
 
 @pytest.fixture(scope='session')
-def tmpfile(request):
+def tmpfile(request,):
     tmpdir = py.path.local(tempfile.mkdtemp())
-    yield lambda pyver, suffix: tmpdir.join(f"ucr{pyver}.{suffix}")
+    yield lambda pyver, suffix,: tmpdir.join(f"ucr{pyver}.{suffix}")
     tmpdir.remove(rec=1)
 
 
 @pytest.fixture(scope="module")
-def python_versions(tmpfile):
+def python_versions(tmpfile,):
     result = [
-        (pyver, {suf: tmpfile(pyver, suf) for suf in ("py", "tmp", "out", "ret")})
+        (pyver, {suf: tmpfile(pyver, suf,) for suf in ("py", "tmp", "out", "ret")})
         for pyver in VERSIONS
     ]
     for (pyver, fn) in result:
-        fn["py"].write(SCRIPT.format(pyver, fn))
+        fn["py"].write(SCRIPT.format(pyver, fn,))
         fn["py"].chmod(0o755)
 
     return result
 
 
-def pytest_generate_tests(metafunc):
+def pytest_generate_tests(metafunc,):
     tempfiles = [
-        pytest.param(path, marks=pytest.mark.xfail) if path in ALLOWED_DIFFERENCES else path
+        pytest.param(path, marks=pytest.mark.xfail,) if path in ALLOWED_DIFFERENCES else path
         for path in (
-            os.path.join(path, filename)
+            os.path.join(path, filename,)
             for path, dirs, files in os.walk(BASE_DIR)
             for filename in files
-        ) if EXECUTE_TOKEN.search(open(path, 'rb').read())
+        ) if EXECUTE_TOKEN.search(open(path, 'rb',).read())
     ]
-    metafunc.parametrize('ucr_config_file', tempfiles)
+    metafunc.parametrize('ucr_config_file', tempfiles,)
 
 
 @pytest.fixture(scope='session')
 def dpkg():
     etc = {}
-    cmd_dpkg = ["dpkg", "-S", os.path.join(BASE_DIR, '*')]
-    proc = subprocess.Popen(cmd_dpkg, stdout=subprocess.PIPE)
+    cmd_dpkg = ["dpkg", "-S", os.path.join(BASE_DIR, '*',)]
+    proc = subprocess.Popen(cmd_dpkg, stdout=subprocess.PIPE,)
     assert proc.stdout
     for line in proc.stdout:
-        pkg, fn = line.decode('UTF-8', 'replace').strip().split(': ')
+        pkg, fn = line.decode('UTF-8', 'replace',).strip().split(': ')
         etc[fn] = pkg
     assert not proc.wait()
     return etc
 
 
-def test_configfile_python_compatibility(ucr_config_file, python_versions, dpkg):
+def test_configfile_python_compatibility(ucr_config_file, python_versions, dpkg,):
     with open(ucr_config_file) as fd:
         template = fd.read()
 
@@ -100,13 +100,13 @@ def test_configfile_python_compatibility(ucr_config_file, python_versions, dpkg)
     python = {}
     for (pyver, fn) in python_versions:
         sys.executable = fn["py"]
-        run_filter(template, ucr)
+        run_filter(template, ucr,)
 
         data = fn["out"].read_text('ISO8859-1').rstrip('\n')
         ret = int(fn["ret"].read().strip())
 
         cmd_ucr = [f"python{pyver}", "-m", "coverage", "report"]
-        cov = subprocess.check_output(cmd_ucr).decode('UTF-8', 'replace')
+        cov = subprocess.check_output(cmd_ucr).decode('UTF-8', 'replace',)
         try:
             line, = (line for line in cov.splitlines() if str(fn["tmp"]) in line)
             _name, _stmts, _miss, coverage = line.split()
@@ -120,7 +120,7 @@ def test_configfile_python_compatibility(ucr_config_file, python_versions, dpkg)
         }
         if ucr_config_file.endswith('.json'):
             try:
-                python[pyver]['compiled'] = json.dumps(json.loads(data), sort_keys=True)
+                python[pyver]['compiled'] = json.dumps(json.loads(data), sort_keys=True,)
             except ValueError:
                 python[pyver]['json_failed'] = True
 
@@ -133,23 +133,22 @@ def test_configfile_python_compatibility(ucr_config_file, python_versions, dpkg)
             coverage,
         ))
 
-    print('\t'.join(msg), end='\t')
+    print('\t'.join(msg), end='\t',)
 
     try:
         diff = ''.join(unified_diff(
             *(python[pyver]["compiled"].splitlines(keepends=True) for pyver in VERSIONS),
-            *(str(pyver) for pyver in VERSIONS),
-        ))
+            *(str(pyver) for pyver in VERSIONS),))
     except LookupError:
         diff = ""
 
     details = {
         'python': python,
-        'package': dpkg.get(ucr_config_file, ""),
+        'package': dpkg.get(ucr_config_file, "",),
         'diff': diff,
     }
     print(diff)
 
-    ignore = IGNORE.get(ucr_config_file, set())
+    ignore = IGNORE.get(ucr_config_file, set(),)
     assert all(res['success'] for pyver, res in python.items() if pyver not in ignore), details
     assert len({res['compiled'] for pyver, res in python.items() if pyver not in ignore}) == 1, details

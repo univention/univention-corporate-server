@@ -19,12 +19,12 @@ from waflib import Logs, Context, ConfigSet, Options, Build, Configure
 
 class Odict(dict):
 	"""Ordered dictionary"""
-	def __init__(self, data=None):
+	def __init__(self, data=None,):
 		self._keys = []
 		dict.__init__(self)
 		if data:
 			# we were provided a regular dict
-			if isinstance(data, dict):
+			if isinstance(data, dict,):
 				self.append_from_dict(data)
 
 			# we were provided a tuple list
@@ -35,24 +35,24 @@ class Odict(dict):
 			else:
 				raise Exception("expected a dict or a tuple list")
 
-	def append_from_dict(self, dict):
-		map(self.__setitem__, dict.keys(), dict.values())
+	def append_from_dict(self, dict,):
+		map(self.__setitem__, dict.keys(), dict.values(),)
 
-	def append_from_plist(self, plist):
+	def append_from_plist(self, plist,):
 		for pair in plist:
 			if len(pair) != 2:
 				raise Exception("invalid pairs list")
 		for (k, v) in plist:
-			self.__setitem__(k, v)
+			self.__setitem__(k, v,)
 
-	def __delitem__(self, key):
+	def __delitem__(self, key,):
 		if not key in self._keys:
 			raise KeyError(key)
-		dict.__delitem__(self, key)
+		dict.__delitem__(self, key,)
 		self._keys.remove(key)
 
-	def __setitem__(self, key, item):
-		dict.__setitem__(self, key, item)
+	def __setitem__(self, key, item,):
+		dict.__setitem__(self, key, item,)
 		if key not in self._keys:
 			self._keys.append(key)
 
@@ -64,13 +64,13 @@ class Odict(dict):
 		return Odict(self.plist())
 
 	def items(self):
-		return zip(self._keys, self.values())
+		return zip(self._keys, self.values(),)
 
 	def keys(self):
 		return list(self._keys) # return a copy of the list
 
 	def values(self):
-		return map(self.get, self._keys)
+		return map(self.get, self._keys,)
 
 	def plist(self):
 		p = []
@@ -108,7 +108,7 @@ Review set containing the configuration values after parsing the command line.
 
 class OptionsReview(Options.OptionsContext):
 	def __init__(self, **kw):
-		super(self.__class__, self).__init__(**kw)
+		super(self.__class__, self,).__init__(**kw)
 
 	def prepare_config_review(self):
 		"""
@@ -129,7 +129,7 @@ class OptionsReview(Options.OptionsContext):
 	def parse_args(self):
 		self.prepare_config_review()
 		self.parser.get_option('--prefix').help = 'installation prefix'
-		super(OptionsReview, self).parse_args()
+		super(OptionsReview, self,).parse_args()
 		Context.create_context('review').refresh_review_set()
 
 class ReviewContext(Context.Context):
@@ -138,27 +138,27 @@ class ReviewContext(Context.Context):
 	cmd = 'review'
 
 	def __init__(self, **kw):
-		super(self.__class__, self).__init__(**kw)
+		super(self.__class__, self,).__init__(**kw)
 
 		out = Options.options.out
 		if not out:
-			out = getattr(Context.g_module, Context.OUT, None)
+			out = getattr(Context.g_module, Context.OUT, None,)
 		if not out:
-			out = Options.lockfile.replace('.lock-waf', '')
+			out = Options.lockfile.replace('.lock-waf', '',)
 		self.build_path = (os.path.isabs(out) and self.root or self.path).make_node(out).abspath()
 		"""Path to the build directory"""
 
-		self.cache_path = os.path.join(self.build_path, Build.CACHE_DIR)
+		self.cache_path = os.path.join(self.build_path, Build.CACHE_DIR,)
 		"""Path to the cache directory"""
 
-		self.review_path = os.path.join(self.cache_path, 'review.cache')
+		self.review_path = os.path.join(self.cache_path, 'review.cache',)
 		"""Path to the review cache file"""
 
 	def execute(self):
 		"""
 		Display and store the review set. Invalidate the cache as required.
 		"""
-		if not self.compare_review_set(old_review_set, new_review_set):
+		if not self.compare_review_set(old_review_set, new_review_set,):
 			self.invalidate_cache()
 		self.store_review_set(new_review_set)
 		print(self.display_review_set(new_review_set))
@@ -189,7 +189,7 @@ class ReviewContext(Context.Context):
 			return ConfigSet.ConfigSet(self.review_path)
 		return ConfigSet.ConfigSet()
 
-	def store_review_set(self, review_set):
+	def store_review_set(self, review_set,):
 		"""
 		Store the review set specified in the cache.
 		"""
@@ -197,7 +197,7 @@ class ReviewContext(Context.Context):
 			os.makedirs(self.cache_path)
 		review_set.store(self.review_path)
 
-	def update_review_set(self, old_set):
+	def update_review_set(self, old_set,):
 		"""
 		Merge the options passed on the command line with those imported
 		from the previous review set and return the corresponding
@@ -206,7 +206,7 @@ class ReviewContext(Context.Context):
 
 		# Convert value to string. It's important that 'None' maps to
 		# the empty string.
-		def val_to_str(val):
+		def val_to_str(val,):
 			if val == None or val == '':
 				return ''
 			return str(val)
@@ -226,7 +226,7 @@ class ReviewContext(Context.Context):
 
 		return new_set
 
-	def import_review_set(self, review_set):
+	def import_review_set(self, review_set,):
 		"""
 		Import the actual value of the reviewable options in the option
 		dictionary, given the current review set.
@@ -236,9 +236,9 @@ class ReviewContext(Context.Context):
 				value = review_set[name]
 			else:
 				value = review_defaults[name]
-			setattr(Options.options, name, value)
+			setattr(Options.options, name, value,)
 
-	def compare_review_set(self, set1, set2):
+	def compare_review_set(self, set1, set2,):
 		"""
 		Return true if the review sets specified are equal.
 		"""
@@ -249,7 +249,7 @@ class ReviewContext(Context.Context):
 				return False
 		return True
 
-	def display_review_set(self, review_set):
+	def display_review_set(self, review_set,):
 		"""
 		Return the string representing the review set specified.
 		"""
@@ -263,14 +263,14 @@ class ReviewContext(Context.Context):
 			if dest in review_set:
 				actual = review_set[dest]
 			default = review_defaults[dest]
-			lines.append(self.format_option(name, help, actual, default, term_width))
+			lines.append(self.format_option(name, help, actual, default, term_width,))
 		return "Configuration:\n\n" + "\n\n".join(lines) + "\n"
 
-	def format_option(self, name, help, actual, default, term_width):
+	def format_option(self, name, help, actual, default, term_width,):
 		"""
 		Return the string representing the option specified.
 		"""
-		def val_to_str(val):
+		def val_to_str(val,):
 			if val == None or val == '':
 				return "(void)"
 			return str(val)

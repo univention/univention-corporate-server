@@ -44,11 +44,11 @@ class AppCenterCacheTest:
         self.json_file: str = cache.get_cache_file(".suggestions.json")
         self.json_file_bak: str = cache.get_cache_file(".suggestions.bak.json")
         self.json_fd: Union[TextIO, None] = None
-        shutil.move(self.json_file, self.json_file_bak)
+        shutil.move(self.json_file, self.json_file_bak,)
 
-    def write(self, txt: str, truncate: bool = False):
+    def write(self, txt: str, truncate: bool = False,):
         if self.json_fd is None:
-            self.json_fd = open(self.json_file, "w")
+            self.json_fd = open(self.json_file, "w",)
 
         if truncate:
             self.json_fd.truncate(0)
@@ -59,4 +59,4 @@ class AppCenterCacheTest:
     def restore(self):
         if self.json_fd is not None:
             self.json_fd.close()
-            shutil.move(self.json_file_bak, self.json_file)
+            shutil.move(self.json_file_bak, self.json_file,)

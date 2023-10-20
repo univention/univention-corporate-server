@@ -54,8 +54,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionMailList'],
-    ),
+        objectClasses=['top', 'univentionMailList'],),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -64,41 +63,35 @@ property_descriptions = {
         syntax=univention.admin.syntax.mailinglist_name,
         include_in_default_search=True,
         required=True,
-        identifies=True,
-    ),
+        identifies=True,),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        include_in_default_search=True,
-    ),
+        include_in_default_search=True,),
     'members': univention.admin.property(
         short_description=_('Members'),
         long_description='',
         syntax=univention.admin.syntax.emailAddress,
         multivalue=True,
-        dontsearch=True,
-    ),
+        dontsearch=True,),
     'mailAddress': univention.admin.property(
         short_description=_('Mail address'),
         long_description='',
         syntax=univention.admin.syntax.emailAddressValidDomain,
-        include_in_default_search=True,
-    ),
+        include_in_default_search=True,),
     'allowedEmailUsers': univention.admin.property(
         short_description=_('Users that are allowed to send e-mails to the list'),
         long_description='',
         syntax=univention.admin.syntax.UserDN,
         multivalue=True,
-        dontsearch=True,
-    ),
+        dontsearch=True,),
     'allowedEmailGroups': univention.admin.property(
         short_description=_('Groups that are allowed to send e-mails to the list'),
         long_description='',
         syntax=univention.admin.syntax.GroupDN,
         multivalue=True,
-        dontsearch=True,
-    ),
+        dontsearch=True,),
 }
 
 layout = [
@@ -107,39 +100,39 @@ layout = [
             ["name", "description"],
             "mailAddress",
             "members",
-        ]),
-    ]),
+        ],),
+    ],),
     Tab(_('Authorized users'), _('Users that are allowed to send e-mails to the list'), advanced=True, layout=[
         "allowedEmailUsers",
-    ]),
+    ],),
     Tab(_('Authorized groups'), _('Groups that are allowed to send e-mails to the list'), advanced=True, layout=[
         "allowedEmailGroups",
-    ]),
+    ],),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('members', 'univentionMailMember')
-mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
-mapping.register('allowedEmailUsers', 'univentionAllowedEmailUsers')
-mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
+mapping.register('members', 'univentionMailMember',)
+mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString,)
+mapping.register('allowedEmailUsers', 'univentionAllowedEmailUsers',)
+mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups',)
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _ldap_pre_ready(self):
-        super(object, self)._ldap_pre_ready()
+        super(object, self,)._ldap_pre_ready()
         if not self.exists() or self.hasChanged('mailAddress'):
             try:
-                if self['mailAddress'] and self['mailAddress'].lower() != self.oldinfo.get('mailAddress', '').lower():
-                    self.request_lock('mailPrimaryAddress', self['mailAddress'])
+                if self['mailAddress'] and self['mailAddress'].lower() != self.oldinfo.get('mailAddress', '',).lower():
+                    self.request_lock('mailPrimaryAddress', self['mailAddress'],)
             except univention.admin.uexceptions.noLock:
                 raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
 
     def _ldap_pre_remove(self):
-        super(object, self)._ldap_pre_remove()
+        super(object, self,)._ldap_pre_remove()
         if self.oldattr.get('mailPrimaryAddress'):
             self.alloc.append(('mailPrimaryAddress', self.oldattr['mailPrimaryAddress'][0].decode('UTF-8')))
 

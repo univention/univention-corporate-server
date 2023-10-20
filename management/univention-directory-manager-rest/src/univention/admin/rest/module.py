@@ -114,22 +114,22 @@ from univention.password import generate_password, password_config
 _ = Translation('univention-directory-manager-rest').translate
 
 RE_UUID = re.compile('[^A-Fa-f0-9-]')
-MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
+MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35,)
 
 
-def get_user_ldap_write_connection(binddn, bindpw):
-    return get_ldap_connection('user-write', binddn, bindpw)
+def get_user_ldap_write_connection(binddn, bindpw,):
+    return get_ldap_connection('user-write', binddn, bindpw,)
 
 
-def get_user_ldap_read_connection(binddn, bindpw):
-    return get_ldap_connection('user-read', binddn, bindpw)
+def get_user_ldap_read_connection(binddn, bindpw,):
+    return get_ldap_connection('user-read', binddn, bindpw,)
 
 
-def get_machine_ldap_connection(type_):
-    binddn = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/binddn', ucr['ldap/hostdn'])
-    with open(ucr.get(f'directory/manager/rest/ldap-connection/{type_}/password-file', '/etc/machine.secret')) as fd:
+def get_machine_ldap_connection(type_,):
+    binddn = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/binddn', ucr['ldap/hostdn'],)
+    with open(ucr.get(f'directory/manager/rest/ldap-connection/{type_}/password-file', '/etc/machine.secret',)) as fd:
         password = fd.read().strip()
-    return get_ldap_connection(type_, binddn, password)
+    return get_ldap_connection(type_, binddn, password,)
 
 
 def get_machine_ldap_write_connection():
@@ -140,11 +140,11 @@ def get_machine_ldap_read_connection():
     return get_machine_ldap_connection('machine-read')
 
 
-def get_ldap_connection(type_, binddn, bindpw):
-    default_uri = "ldap://%s:%d" % (ucr.get('ldap/master'), ucr.get_int('ldap/master/port', '7389'))
-    uri = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/uri', default_uri)
-    start_tls = ucr.get_int('directory/manager/rest/ldap-connection/user-read/start-tls', 2)
-    return get_connection(bind=None, binddn=binddn, bindpw=bindpw, host=None, port=None, base=ucr['ldap/base'], start_tls=start_tls, uri=uri)
+def get_ldap_connection(type_, binddn, bindpw,):
+    default_uri = "ldap://%s:%d" % (ucr.get('ldap/master'), ucr.get_int('ldap/master/port', '7389',))
+    uri = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/uri', default_uri,)
+    start_tls = ucr.get_int('directory/manager/rest/ldap-connection/user-read/start-tls', 2,)
+    return get_connection(bind=None, binddn=binddn, bindpw=bindpw, host=None, port=None, base=ucr['ldap/base'], start_tls=start_tls, uri=uri,)
 
 
 class Param:
@@ -153,7 +153,7 @@ class Param:
     def type(self):
         return type(self).__name__.lower()
 
-    def __init__(self, sanitizer, alias=None, description=None, deprecated=None, example=None, examples=None, style=None, explode=None):
+    def __init__(self, sanitizer, alias=None, description=None, deprecated=None, example=None, examples=None, style=None, explode=None,):
         self.sanitizer = sanitizer
         self.alias = alias
         self.description = description
@@ -170,8 +170,8 @@ class Path(Param):
 
 class Body(Param):
 
-    def __init__(self, sanitizer, content_type='application/json', **kwargs):
-        super().__init__(sanitizer, **kwargs)
+    def __init__(self, sanitizer, content_type='application/json',**kwargs):
+        super().__init__(sanitizer, **kwargs,)
         self.content_type = content_type
 
 
@@ -179,38 +179,38 @@ class Query(Param):
     pass
 
 
-def parse_content_type(content_type):
+def parse_content_type(content_type,):
     return content_type.partition(';')[0].strip().lower()
 
 
-def sanitize(method):
+def sanitize(method,):
     args = inspect.getfullargspec(method)
-    all_args = dict(zip(reversed(args.args), reversed(args.defaults)))
+    all_args = dict(zip(reversed(args.args), reversed(args.defaults),))
     method.params = {
         ptype: {
             key: param
             for key, param in all_args.items()
-            if isinstance(param, Param) and param.type == ptype
+            if isinstance(param, Param,) and param.type == ptype
         } for ptype in ('path', 'query', 'body')
     }
     method.sanitizers = {}
     if method.params.get('query'):
         query_sanitizers = {param.alias or key: param.sanitizer for key, param in method.params['query'].items()}
-        method.sanitizers['query_string'] = QueryStringSanitizer(query_sanitizers, required=True, further_arguments=['resource'], _copy_value=False)
+        method.sanitizers['query_string'] = QueryStringSanitizer(query_sanitizers, required=True, further_arguments=['resource'], _copy_value=False,)
     if method.params['body']:
         content_types = {param.content_type for param in method.params['body'].values()}
         method.sanitizers['body_arguments'] = DictSanitizer({
             content_type: DictSanitizer({
                 param.alias or key: param.sanitizer if param.content_type == content_type else Sanitizer() for key, param in method.params['body'].items()
-            }, required=True, further_arguments=['resource'], _copy_value=False)
+            }, required=True, further_arguments=['resource'], _copy_value=False,)
             for content_type in content_types
-        }, required=True, further_arguments=['resource'], _copy_value=False)
+        }, required=True, further_arguments=['resource'], _copy_value=False,)
 
-    method.sanitizer = DictSanitizer(method.sanitizers, further_arguments=['resource'], _copy_value=False)
+    method.sanitizer = DictSanitizer(method.sanitizers, further_arguments=['resource'], _copy_value=False,)
 
     @functools.wraps(method)
     async def decorator(self, *args, **params):
-        content_type = parse_content_type(self.request.headers.get('Content-Type', ''))
+        content_type = parse_content_type(self.request.headers.get('Content-Type', '',))
         payload = {
             'query_string': {k: [v.decode('UTF-8') for v in val] for k, val in self.request.query_arguments.items()} if self.request.query_arguments else {},
             'body_arguments': {
@@ -221,11 +221,11 @@ def sanitize(method):
         }
         payload['body_arguments'][content_type] = self.request.body_arguments
 
-        def _result_func(x):
-            if x.get('body_arguments', {}).get(content_type):
+        def _result_func(x,):
+            if x.get('body_arguments', {},).get(content_type):
                 x['body_arguments'] = x['body_arguments'][content_type]
             return x
-        arguments = self.sanitize_arguments(method.sanitizer, 'request.arguments', {'request.arguments': payload, 'resource': self}, _result_func=_result_func)
+        arguments = self.sanitize_arguments(method.sanitizer, 'request.arguments', {'request.arguments': payload, 'resource': self}, _result_func=_result_func,)
         self.request.decoded_query_arguments = {
             key: arguments['query_string'][param.alias or key]
             for key, param in method.params['query'].items()
@@ -234,20 +234,20 @@ def sanitize(method):
             key: arguments['body_arguments'][content_type][param.alias or key]
             for key, param in method.params['body'].items()
         }
-        return await method(self, *self.path_args, **self.path_kwargs, **self.request.decoded_query_arguments, **self.request.body_arguments)
+        return await method(self, *self.path_args, **self.path_kwargs, **self.request.decoded_query_arguments, **self.request.body_arguments,)
     return decorator
 
 
 class DictSanitizer(DictSanitizer):
 
-    def __init__(self, sanitizers, allow_other_keys=True, **kwargs):
-        self.default_sanitizer = kwargs.get('default_sanitizer', None)
-        self.key_sanitizer = kwargs.get('key_sanitizer', None)
-        super().__init__(sanitizers, allow_other_keys=allow_other_keys, **kwargs)
+    def __init__(self, sanitizers, allow_other_keys=True,**kwargs):
+        self.default_sanitizer = kwargs.get('default_sanitizer', None,)
+        self.key_sanitizer = kwargs.get('key_sanitizer', None,)
+        super().__init__(sanitizers, allow_other_keys=allow_other_keys, **kwargs,)
 
-    def _sanitize(self, value, name, further_arguments):
-        if not isinstance(value, dict):
-            self.raise_formatted_validation_error(_('Not a "dict"'), name, type(value).__name__)
+    def _sanitize(self, value, name, further_arguments,):
+        if not isinstance(value, dict,):
+            self.raise_formatted_validation_error(_('Not a "dict"'), name, type(value).__name__,)
 
         if not self.allow_other_keys and any(key not in self.sanitizers for key in value):
             self.raise_validation_error(_('Has more than the allowed keys'))
@@ -256,14 +256,14 @@ class DictSanitizer(DictSanitizer):
 
         multi_error = MultiValidationError()
         for attr in set(value) | set(self.sanitizers):
-            sanitizer = self.sanitizers.get(attr, self.default_sanitizer)
+            sanitizer = self.sanitizers.get(attr, self.default_sanitizer,)
             try:
                 if self.key_sanitizer:
-                    attr = self.key_sanitizer.sanitize(attr, {attr: attr})
+                    attr = self.key_sanitizer.sanitize(attr, {attr: attr},)
                 if sanitizer:
-                    altered_value[attr] = sanitizer.sanitize(attr, value)
+                    altered_value[attr] = sanitizer.sanitize(attr, value,)
             except ValidationError as e:
-                multi_error.add_error(e, attr)
+                multi_error.add_error(e, attr,)
 
         if multi_error.has_errors():
             raise multi_error
@@ -273,16 +273,16 @@ class DictSanitizer(DictSanitizer):
 
 class QueryStringSanitizer(DictSanitizer):
 
-    def _sanitize(self, value, name, further_arguments):
-        if isinstance(value, dict):
+    def _sanitize(self, value, name, further_arguments,):
+        if isinstance(value, dict,):
             for key, sanitizer in self.sanitizers.items():
-                if len(value.get(key, [])) == 1 and not isinstance(sanitizer, ListSanitizer):
+                if len(value.get(key, [],)) == 1 and not isinstance(sanitizer, ListSanitizer,):
                     value[key] = value[key][0]
-                elif isinstance(sanitizer, DictSanitizer):
+                elif isinstance(sanitizer, DictSanitizer,):
                     value[key] = {k[len(key) + 1:-1]: v[0] for k, v in value.items() if k.startswith(key + '[') and k.endswith(']')}
                     #value[key] = QueryStringSanitizer(sanitizer.sanitizers).sanitize(key, {key: value[key]})
 
-        return super()._sanitize(value, name, further_arguments)
+        return super()._sanitize(value, name, further_arguments,)
 
 
 class ObjectPropertySanitizer(StringSanitizer):
@@ -301,21 +301,21 @@ class ObjectPropertySanitizer(StringSanitizer):
             "regex_pattern": r'^[\w\d\-;]*$',
         }
         args.update(kwargs)
-        StringSanitizer.__init__(self, **args)
+        StringSanitizer.__init__(self, **args,)
 
 
 class PropertiesSanitizer(DictSanitizer):
 
     def __init__(self, *args, **kwargs):
-        super().__init__({}, *args, default_sanitizer=PropertySanitizer(), **kwargs)
+        super().__init__({}, *args, default_sanitizer=PropertySanitizer(), **kwargs,)
 
-    def sanitize(self, properties, module, obj):
+    def sanitize(self, properties, module, obj,):
         # TODO: add sanitizer for e.g. required properties (respect options!)
 
         self.default_sanitizer._module = module
         self.default_sanitizer._obj = obj
         try:
-            return super().sanitize('properties', {'properties': properties})
+            return super().sanitize('properties', {'properties': properties},)
         finally:
             self.default_sanitizer._module = None
             self.default_sanitizer._obj = None
@@ -326,40 +326,40 @@ class PropertySanitizer(Sanitizer):
     def __init__(self, *args, **kwargs):
         self._module = None
         self._obj = None
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs,)
 
-    def _sanitize(self, value, name, further_arguments):
+    def _sanitize(self, value, name, further_arguments,):
         property_obj = self._module.get_property(name)
 
         if property_obj is None:
             if name == 'objectFlag':
                 return value  # not every object type has the extended attribute for objectFlag
-            self.raise_validation_error(_('The %(module)s module has no property %(name)s.'), module=self._module.title)
+            self.raise_validation_error(_('The %(module)s module has no property %(name)s.'), module=self._module.title,)
 
         if not self._obj.has_property(name):
             return value  # value will not be set, so no validation is required
 
-        codec = udm_types.TypeHint.detect(property_obj, name)
+        codec = udm_types.TypeHint.detect(property_obj, name,)
         try:
             return codec.encode_json(value)
         except udm_errors.valueError as exc:
             exc.message = ''
-            self.raise_validation_error(_('The property %(name)s has an invalid value: %(details)s'), details=str(exc))
+            self.raise_validation_error(_('The property %(name)s has an invalid value: %(details)s'), details=str(exc),)
 
 
 class BoolSanitizer(ChoicesSanitizer):
 
     def __init__(self, **kwargs):
-        super().__init__(choices=['1', 'on', 'true', 'false', '0', 'off', '', None, True, False], **kwargs)
+        super().__init__(choices=['1', 'on', 'true', 'false', '0', 'off', '', None, True, False], **kwargs,)
 
-    def _sanitize(self, value, name, further_arguments):
-        return super()._sanitize(value, name, further_arguments) in ('1', 'on', 'true', True)
+    def _sanitize(self, value, name, further_arguments,):
+        return super()._sanitize(value, name, further_arguments,) in ('1', 'on', 'true', True)
 
 
 class LDAPFilterSanitizer(StringSanitizer):
 
-    def _sanitize(self, value, name, further_arguments):
-        value = super()._sanitize(value, name, further_arguments)
+    def _sanitize(self, value, name, further_arguments,):
+        value = super()._sanitize(value, name, further_arguments,)
         try:
             return udm_syntax.ldapFilter.parse(value)
         except udm_errors.valueError as exc:
@@ -372,20 +372,20 @@ class DNSanitizer(DNSanitizer):
     base = ldap.dn.str2dn(ucr['ldap/base'].lower())
     baselen = len(base)
 
-    def _sanitize(self, value, name, further_arguments):
-        value = super()._sanitize(value, name, further_arguments)
+    def _sanitize(self, value, name, further_arguments,):
+        value = super()._sanitize(value, name, further_arguments,)
         if value and ldap.dn.str2dn(value.lower())[-self.baselen:] != self.base:
-            self.raise_validation_error(_('The ldap base is invalid. Use %(details)s.'), details=ldap.dn.dn2str(self.base))
+            self.raise_validation_error(_('The ldap base is invalid. Use %(details)s.'), details=ldap.dn.dn2str(self.base),)
         return value
 
 
 class NotFound(HTTPError):
 
-    def __init__(self, object_type=None, dn=None):
-        super().__init__(404, None, '%r %r' % (object_type, dn or ''))  # FIXME: create error message
+    def __init__(self, object_type=None, dn=None,):
+        super().__init__(404, None, '%r %r' % (object_type, dn or ''),)  # FIXME: create error message
 
 
-def superordinate_names(module):
+def superordinate_names(module,):
     superordinates = module.superordinate_names
     if set(superordinates) == {'settings/cn'}:
         return []
@@ -398,23 +398,23 @@ class ResourceBase:
 
     @tornado.gen.coroutine
     def pool_submit(self, *args, **kwargs):
-        future = self.pool.submit(*args, **kwargs)
+        future = self.pool.submit(*args, **kwargs,)
         return (yield future)
 
     requires_authentication = True
 
     def force_authorization(self):
-        self.set_header('WWW-Authenticate', 'Basic realm="Univention Management Console"')
+        self.set_header('WWW-Authenticate', 'Basic realm="Univention Management Console"',)
         self.set_status(401)
         self.finish()
 
     def set_default_headers(self):
-        self.set_header('Server', 'Univention/1.0')  # TODO:
-        self.set_header('Access-Control-Expose-Headers', '*, Authorization, X-Request-Id')
+        self.set_header('Server', 'Univention/1.0',)  # TODO:
+        self.set_header('Access-Control-Expose-Headers', '*, Authorization, X-Request-Id',)
 
     def prepare(self):
-        self.request.x_request_id = RE_UUID.sub('', self.request.headers.get('X-Request-Id', str(uuid.uuid4())))[:36]
-        self.set_header('X-Request-Id', self.request.x_request_id)
+        self.request.x_request_id = RE_UUID.sub('', self.request.headers.get('X-Request-Id', str(uuid.uuid4()),),)[:36]
+        self.set_header('X-Request-Id', self.request.x_request_id,)
         self.request.content_negotiation_lang = 'html'
         self.request.path_decoded = unquote(self.request.path)
         self.request.decoded_query_arguments = self.request.query_arguments.copy()
@@ -432,7 +432,7 @@ class ResourceBase:
     def _request_summary(self):
         return '%s: %s' % (self.request.x_request_id[:10], super()._request_summary())
 
-    def parse_authorization(self, authorization):
+    def parse_authorization(self, authorization,):
         if authorization in shared_memory.authenticated:  # cache for the userdn, which eliminates a search / request
             username, userdn, password = shared_memory.authenticated[authorization]
             already_authenticated = True
@@ -441,7 +441,7 @@ class ResourceBase:
             username = userdn = password = None
             if authorization.lower().startswith('basic '):
                 try:
-                    username, password = base64.b64decode(authorization.split(' ', 1)[1].encode('ISO8859-1')).decode('ISO8859-1').split(':', 1)
+                    username, password = base64.b64decode(authorization.split(' ', 1,)[1].encode('ISO8859-1')).decode('ISO8859-1').split(':', 1,)
                 except (ValueError, IndexError, binascii.Error):
                     pass
             if not username or not password:
@@ -452,10 +452,10 @@ class ResourceBase:
                 return self.force_authorization()
 
         try:
-            self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(userdn, password)
+            self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(userdn, password,)
             if already_authenticated and not self.ldap_connection.whoami():  # the ldap connection is not bound anymore
                 reset_cache(self.ldap_connection)
-                self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(userdn, password)
+                self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(userdn, password,)
 
             self.request.user_dn = userdn
             self.request.username = username
@@ -473,50 +473,50 @@ class ResourceBase:
     @property
     def ldap_write_connection(self):
         username, userdn, password = shared_memory.authenticated[self.request.headers.get('Authorization')]
-        return get_user_ldap_write_connection(userdn, password)[0]
+        return get_user_ldap_write_connection(userdn, password,)[0]
 
     def _auth_check_allowed_groups(self):
         if self.request.username in ('cn=admin',):
             return
         allowed_groups = [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')]
-        memberof = self.ldap_connection.getAttr(self.request.user_dn, 'memberOf')
+        memberof = self.ldap_connection.getAttr(self.request.user_dn, 'memberOf',)
         if not set(_map_normalized_dn(memberof)) & set(_map_normalized_dn(allowed_groups)):
-            raise HTTPError(403, 'Not in allowed groups.')
+            raise HTTPError(403, 'Not in allowed groups.',)
 
-    def _auth_get_userdn(self, username):
+    def _auth_get_userdn(self, username,):
         if username in ('cn=admin',):
             return 'cn=admin,%(ldap/base)s' % ucr
         lo, po = get_machine_ldap_read_connection()
-        dns = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)
+        dns = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username],), unique=True,)
         return dns[0] if dns else None
 
-    def get_module(self, object_type, ldap_connection=None):
-        module = UDM_Module(object_type, ldap_connection=ldap_connection or self.ldap_connection, ldap_position=self.ldap_position)
+    def get_module(self, object_type, ldap_connection=None,):
+        module = UDM_Module(object_type, ldap_connection=ldap_connection or self.ldap_connection, ldap_position=self.ldap_position,)
         if not module or not module.module:
             raise NotFound(object_type)
         return module
 
-    def get_module_object(self, object_type, dn, ldap_connection=None):
-        module = self.get_module(object_type, ldap_connection=ldap_connection)
+    def get_module_object(self, object_type, dn, ldap_connection=None,):
+        module = self.get_module(object_type, ldap_connection=ldap_connection,)
         try:
             obj = module.get(dn)
         except UDM_Error as exc:
-            if not isinstance(exc.exc, udm_errors.noObject):
+            if not isinstance(exc.exc, udm_errors.noObject,):
                 raise
             obj = None
         if not obj:
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
         return module, obj
 
-    def get_object_by_dn(self, dn, ldap_connection=None):
-        object_type = get_module(None, dn, self.ldap_connection).module
-        return self.get_object(object_type, dn, ldap_connection=ldap_connection)
+    def get_object_by_dn(self, dn, ldap_connection=None,):
+        object_type = get_module(None, dn, self.ldap_connection,).module
+        return self.get_object(object_type, dn, ldap_connection=ldap_connection,)
 
-    def get_object(self, object_type, dn, ldap_connection=None):
-        return self.get_module_object(object_type, dn, ldap_connection=ldap_connection)[1]
+    def get_object(self, object_type, dn, ldap_connection=None,):
+        return self.get_module_object(object_type, dn, ldap_connection=ldap_connection,)[1]
 
     def check_acceptable(self):
-        accept = self.request.headers.get('Accept', 'text/html').split(',')
+        accept = self.request.headers.get('Accept', 'text/html',).split(',')
         langs = []
         for language in accept:
             score = 1.0
@@ -529,7 +529,7 @@ class ResourceBase:
                     raise
                     score = 0.0
             langs.append((parts[0].strip(), score))
-        langs.sort(key=lambda pair: pair[1], reverse=True)
+        langs.sort(key=lambda pair,: pair[1], reverse=True,)
         lang = None
         for name, q in langs:
             if q <= 0:
@@ -548,53 +548,53 @@ class ResourceBase:
         return lang
 
     def decode_request_arguments(self):
-        content_type = parse_content_type(self.request.headers.get('Content-Type', ''))
+        content_type = parse_content_type(self.request.headers.get('Content-Type', '',))
         if self.request.method in ('HEAD', 'GET', 'OPTIONS', 'DELETE'):
             if self.request.body:
-                raise HTTPError(400, 'Safe HTTP method should not contain request body/Content-Type header.')
+                raise HTTPError(400, 'Safe HTTP method should not contain request body/Content-Type header.',)
             return
 
         if content_type in ('application/json',):
             try:
                 self.request.body_arguments = json.loads(self.request.body)
             except ValueError as exc:
-                raise HTTPError(400, _('Invalid JSON document: %r') % (exc,))
+                raise HTTPError(400, _('Invalid JSON document: %r') % (exc,),)
         elif content_type in ('application/x-www-form-urlencoded', 'multipart/form-data'):
             self.decode_form_arguments()
 
     def decode_form_arguments(self):
         pass
 
-    def get_body_argument(self, name, *args):
-        if parse_content_type(self.request.headers.get('Content-Type', '')) in ('application/json',):
+    def get_body_argument(self, name,*args):
+        if parse_content_type(self.request.headers.get('Content-Type', '',)) in ('application/json',):
             return self.request.body_arguments.get(name)
-        return super().get_body_argument(name, *args)
+        return super().get_body_argument(name, *args,)
 
-    def get_body_arguments(self, name, *args):
-        if parse_content_type(self.request.headers.get('Content-Type', '')) in ('application/json',):
+    def get_body_arguments(self, name,*args):
+        if parse_content_type(self.request.headers.get('Content-Type', '',)) in ('application/json',):
             return self.request.body_arguments.get(name)
-        return super().get_body_arguments(name, *args)
+        return super().get_body_arguments(name, *args,)
 
-    def sanitize_arguments(self, sanitizer, *args, **kwargs):
-        field = kwargs.pop('_fieldname', 'request.arguments')
-        result = kwargs.pop('_result_func', lambda x: x)
+    def sanitize_arguments(self, sanitizer,*args, **kwargs):
+        field = kwargs.pop('_fieldname', 'request.arguments',)
+        result = kwargs.pop('_result_func', lambda x,: x,)
         try:
             try:
-                return sanitizer.sanitize(*args, **kwargs)
+                return sanitizer.sanitize(*args, **kwargs,)
             except MultiValidationError:
                 raise
             except ValidationError as exc:
                 multi_error = MultiValidationError()
-                multi_error.add_error(exc, field)
+                multi_error.add_error(exc, field,)
                 raise multi_error
         except MultiValidationError as e:
-            raise UnprocessableEntity(str(e), result=result(e.result()))
+            raise UnprocessableEntity(str(e), result=result(e.result()),)
 
-    def raise_sanitization_error(self, field, message, type='body'):
-        fields = field if isinstance(field, (list, tuple)) else (field,)
+    def raise_sanitization_error(self, field, message, type='body',):
+        fields = field if isinstance(field, (list, tuple),) else (field,)
         field = fields[-1]
 
-        def _result(x):
+        def _result(x,):
             error = {type: {}}
             err = error[type]
             for f in fields:
@@ -607,52 +607,52 @@ class ResourceBase:
 
         class FalseSanitizer(Sanitizer):
             def sanitize(self):
-                self.raise_formatted_validation_error('%(message)s', field, None, message=message)
-        self.sanitize_arguments(FalseSanitizer(), _result_func=_result, _fieldname=field)
+                self.raise_formatted_validation_error('%(message)s', field, None, message=message,)
+        self.sanitize_arguments(FalseSanitizer(), _result_func=_result, _fieldname=field,)
 
-    def content_negotiation(self, response):
-        self.add_header('Vary', ', '.join(self.vary()))
+    def content_negotiation(self, response,):
+        self.add_header('Vary', ', '.join(self.vary()),)
         lang = self.request.content_negotiation_lang
-        formatter = getattr(self, f'{self.request.method.lower()}_{lang}', getattr(self, f'get_{lang}'))
-        codec = getattr(self, f'content_negotiation_{lang}')
+        formatter = getattr(self, f'{self.request.method.lower()}_{lang}', getattr(self, f'get_{lang}',),)
+        codec = getattr(self, f'content_negotiation_{lang}',)
         self.finish(codec(formatter(response)))
 
-    def content_negotiation_json(self, response):
-        self.set_header('Content-Type', 'application/json')
+    def content_negotiation_json(self, response,):
+        self.set_header('Content-Type', 'application/json',)
         try:
-            return json.dumps(response, cls=JsonEncoder)
+            return json.dumps(response, cls=JsonEncoder,)
         except TypeError:
             MODULE.error(f'Cannot JSON serialize: {response!r}')
             raise
 
-    def content_negotiation_hal_json(self, response):
+    def content_negotiation_hal_json(self, response,):
         data = self.content_negotiation_json(response)
-        self.set_header('Content-Type', 'application/hal+json')
+        self.set_header('Content-Type', 'application/hal+json',)
         return data
 
-    def content_negotiation_html(self, response):
-        self.set_header('Content-Type', 'text/html; charset=UTF-8')
-        ajax = self.request.headers.get('X-Requested-With', '').lower() == 'xmlhttprequest'
+    def content_negotiation_html(self, response,):
+        self.set_header('Content-Type', 'text/html; charset=UTF-8',)
+        ajax = self.request.headers.get('X-Requested-With', '',).lower() == 'xmlhttprequest'
 
         root = ET.Element("html")
-        head = ET.SubElement(root, "head")
-        titleelement = ET.SubElement(head, "title")
+        head = ET.SubElement(root, "head",)
+        titleelement = ET.SubElement(head, "title",)
         titleelement.text = 'FIXME: fallback title'  # FIXME: set title
-        ET.SubElement(head, 'meta', content='text/html; charset=utf-8', **{'http-equiv': 'content-type'})
+        ET.SubElement(head, 'meta', content='text/html; charset=utf-8', **{'http-equiv': 'content-type'},)
         # if not ajax:
         #    ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('../js/config.js'))
         #    ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('js/udm.js'))
         #    ET.SubElement(head, 'script', type='text/javascript', async='', src=self.abspath('../js/dojo/dojo.js'))
 
-        body = ET.SubElement(root, "body", dir='ltr')
-        header = ET.SubElement(body, 'header')
-        topnav = ET.SubElement(header, 'nav')
-        h1 = ET.SubElement(topnav, 'h1', id='logo')
-        home = ET.SubElement(h1, 'a', rel='home', href=self.abspath('/'))
+        body = ET.SubElement(root, "body", dir='ltr',)
+        header = ET.SubElement(body, 'header',)
+        topnav = ET.SubElement(header, 'nav',)
+        h1 = ET.SubElement(topnav, 'h1', id='logo',)
+        home = ET.SubElement(h1, 'a', rel='home', href=self.abspath('/'),)
         home.text = ' '
-        nav = ET.SubElement(body, 'nav')
-        links = ET.SubElement(nav, 'ul')
-        main = ET.SubElement(body, 'main')
+        nav = ET.SubElement(body, 'nav',)
+        links = ET.SubElement(nav, 'ul',)
+        main = ET.SubElement(body, 'main',)
         _links = {}
         navigation_relations = self.navigation()
         for link in self._headers.get_list('Link'):
@@ -660,9 +660,9 @@ class ResourceBase:
             link = link.strip().lstrip('<').rstrip('>')
             params = {}
             if _params.strip():
-                params = {x.strip(): y.strip().strip('"').replace('\\"', '"').replace('\\\\', '\\') for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';'))}
-            ET.SubElement(head, "link", href=link, **params)
-            _links[params.get('rel')] = dict(params, href=link)
+                params = {x.strip(): y.strip().strip('"').replace('\\"', '"',).replace('\\\\', '\\',) for x, y in ((param.split('=', 1,) + [''])[:2] for param in _params.split(';'))}
+            ET.SubElement(head, "link", href=link, **params,)
+            _links[params.get('rel')] = dict(params, href=link,)
             if params.get('rel') == 'self':
                 titleelement.text = params.get('title') or link or 'FIXME:notitle'
             if params.get('rel') in ('stylesheet', 'icon', 'self', 'up', 'udm:object/remove', 'udm:object/edit', 'udm:report'):
@@ -670,162 +670,162 @@ class ResourceBase:
             if params.get('rel') in navigation_relations:
                 continue
             if params.get('rel') in ('udm:user-photo',):
-                ET.SubElement(nav, 'img', src=link, style='max-width: 200px')
+                ET.SubElement(nav, 'img', src=link, style='max-width: 200px',)
                 continue
             elif params.get('rel') in ('create-form', 'edit-form'):
-                ET.SubElement(ET.SubElement(nav, 'form'), 'button', formaction=link, **params).text = params.get('title', link)
+                ET.SubElement(ET.SubElement(nav, 'form',), 'button', formaction=link, **params,).text = params.get('title', link,)
                 continue
             # if params.get('rel') in ('udm:tree',):
             #    self.set_header('X-Frame-Options', 'SAMEORIGIN')
             #    body.insert(1, ET.Element('iframe', src=link, name='tree'))
             #    continue
-            li = ET.SubElement(links, "li")
-            ET.SubElement(li, "a", href=link, **params).text = params.get('title', link) or link
+            li = ET.SubElement(links, "li",)
+            ET.SubElement(li, "a", href=link, **params,).text = params.get('title', link,) or link
 
         for name in navigation_relations:
             params = _links.get(name)
             if params:
-                ET.SubElement(topnav, 'a', **params).text = '›› %s' % (params.get('title') or params['href'],)
+                ET.SubElement(topnav, 'a', **params,).text = '›› %s' % (params.get('title') or params['href'],)
 
-        if isinstance(response, (list, tuple)):
+        if isinstance(response, (list, tuple),):
             main.extend(response)
         elif response is not None:
             main.append(response)
 
         if not ajax:
-            stream = XML(xml.dom.minidom.parseString(ET.tostring(root, encoding='utf-8', method='xml')).toprettyxml())  # noqa: S318
+            stream = XML(xml.dom.minidom.parseString(ET.tostring(root, encoding='utf-8', method='xml',)).toprettyxml())  # noqa: S318
             self.write(''.join(HTMLSerializer('html5')(stream)))
         else:
             self.write('<!DOCTYPE html>\n')
             tree = ET.ElementTree(main if ajax else root)
             tree.write(self)
 
-    def get_hal_json(self, response):
-        response.setdefault('_links', {})
-        response.setdefault('_embedded', {})
+    def get_hal_json(self, response,):
+        response.setdefault('_links', {},)
+        response.setdefault('_embedded', {},)
         return self.get_json(response)
 
-    def get_json(self, response):
-        self.add_link(response, 'curies', self.abspath('relation/') + '{rel}', name='udm', templated=True)
-        response.get('_embedded', {}).pop('udm:form', None)  # no public API, just to render html
-        response.get('_embedded', {}).pop('udm:layout', None)  # save traffic, just to render html
-        response.get('_embedded', {}).pop('udm:properties', None)  # save traffic, just to render html
+    def get_json(self, response,):
+        self.add_link(response, 'curies', self.abspath('relation/') + '{rel}', name='udm', templated=True,)
+        response.get('_embedded', {},).pop('udm:form', None,)  # no public API, just to render html
+        response.get('_embedded', {},).pop('udm:layout', None,)  # save traffic, just to render html
+        response.get('_embedded', {},).pop('udm:properties', None,)  # save traffic, just to render html
         return response
 
-    def get_html(self, response):
+    def get_html(self, response,):
         root = []
-        if isinstance(response, dict):
-            self.add_link(response, 'stylesheet', self.abspath('css/style.css'))
+        if isinstance(response, dict,):
+            self.add_link(response, 'stylesheet', self.abspath('css/style.css'),)
 
-            for _form in self.get_resources(response, 'udm:form'):
-                root.insert(0, self.get_html_form(_form, response))
+            for _form in self.get_resources(response, 'udm:form',):
+                root.insert(0, self.get_html_form(_form, response,),)
 
-            if isinstance(response.get('error'), dict) and response['error'].get('code', 0) >= 400:
+            if isinstance(response.get('error'), dict,) and response['error'].get('code', 0,) >= 400:
                 error_response = response['error']
                 error = ET.Element('div')
                 root.append(error)
-                ET.SubElement(error, 'h1').text = _('HTTP-Error %d: %s') % (error_response['code'], error_response['title'])
-                ET.SubElement(error, 'p', style='white-space: pre').text = error_response['message']
-                for error_detail in self.get_resources(response, 'udm:error'):
-                    ET.SubElement(error, 'p', style='white-space: pre').text = '%s(%s): %s' % ('.'.join(error_detail['location']), error_detail['type'], error_detail['message'])
+                ET.SubElement(error, 'h1',).text = _('HTTP-Error %d: %s') % (error_response['code'], error_response['title'])
+                ET.SubElement(error, 'p', style='white-space: pre',).text = error_response['message']
+                for error_detail in self.get_resources(response, 'udm:error',):
+                    ET.SubElement(error, 'p', style='white-space: pre',).text = '%s(%s): %s' % ('.'.join(error_detail['location']), error_detail['type'], error_detail['message'])
                 if error_response.get('traceback'):
-                    ET.SubElement(error, 'pre').text = error_response['traceback']
+                    ET.SubElement(error, 'pre',).text = error_response['traceback']
                 response = None
 
-        if isinstance(response, (list, tuple)):
+        if isinstance(response, (list, tuple),):
             print('WARNING: uses deprecated LIST response')
             for thing in response:
                 pre = ET.Element("pre")
-                pre.text = json.dumps(thing, indent=4)
+                pre.text = json.dumps(thing, indent=4,)
                 root.append(pre)
                 root.append(ET.Element("br"))
-        elif isinstance(response, dict):
+        elif isinstance(response, dict,):
             r = response.copy()
-            r.pop('_links', None)
-            r.pop('_embedded', None)
+            r.pop('_links', None,)
+            r.pop('_embedded', None,)
             if r:
                 pre = ET.Element("pre")
-                pre.text = json.dumps(r, indent=4)
+                pre.text = json.dumps(r, indent=4,)
                 root.append(pre)
         return root
 
-    def get_html_layout(self, root, layout, properties):
+    def get_html_layout(self, root, layout, properties,):
         for sec in layout:
-            section = ET.SubElement(root, 'section')
-            ET.SubElement(section, 'h1').text = sec['label']
+            section = ET.SubElement(root, 'section',)
+            ET.SubElement(section, 'h1',).text = sec['label']
             if sec.get('help'):
-                ET.SubElement(section, 'span').text = sec['help']
-            fieldset = ET.SubElement(section, 'fieldset')
-            ET.SubElement(fieldset, 'legend').text = sec['description']
-            self.render_layout(sec['layout'], fieldset, properties)
+                ET.SubElement(section, 'span',).text = sec['help']
+            fieldset = ET.SubElement(section, 'fieldset',)
+            ET.SubElement(fieldset, 'legend',).text = sec['description']
+            self.render_layout(sec['layout'], fieldset, properties,)
         return root
 
-    def render_layout(self, layout, fieldset, properties):
+    def render_layout(self, layout, fieldset, properties,):
         for elem in layout:
-            if isinstance(elem, dict):
-                sub_fieldset = ET.SubElement(fieldset, 'details', open='open')
-                ET.SubElement(sub_fieldset, 'summary').text = elem['label']
+            if isinstance(elem, dict,):
+                sub_fieldset = ET.SubElement(fieldset, 'details', open='open',)
+                ET.SubElement(sub_fieldset, 'summary',).text = elem['label']
                 if elem['description']:
-                    ET.SubElement(sub_fieldset, 'h2').text = elem['description']
-                self.render_layout(elem['layout'], sub_fieldset, properties)
+                    ET.SubElement(sub_fieldset, 'h2',).text = elem['description']
+                self.render_layout(elem['layout'], sub_fieldset, properties,)
                 continue
-            elements = [elem] if isinstance(elem, str) else elem
+            elements = [elem] if isinstance(elem, str,) else elem
             for elem in elements:
                 for field in properties:
                     if field['name'] in (elem, 'properties.%s' % elem):
-                        self.render_form_field(fieldset, field)
+                        self.render_form_field(fieldset, field,)
             if elements:
-                ET.SubElement(fieldset, 'br')
+                ET.SubElement(fieldset, 'br',)
 
-    def get_html_form(self, _form, response):
-        form = ET.Element('form', **{p: _form[p] for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _form.get(p)})
+    def get_html_form(self, _form, response,):
+        form = ET.Element('form', **{p: _form[p] for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _form.get(p)},)
         if _form.get('layout'):
-            layout = self.get_resource(response, 'udm:layout', name=_form['layout'])
-            self.get_html_layout(form, layout['layout'], _form.get('fields'))
+            layout = self.get_resource(response, 'udm:layout', name=_form['layout'],)
+            self.get_html_layout(form, layout['layout'], _form.get('fields'),)
             return form
 
-        for field in _form.get('fields', []):
-            self.render_form_field(form, field)
+        for field in _form.get('fields', [],):
+            self.render_form_field(form, field,)
             form.append(ET.Element('br'))
         form.append(ET.Element('hr'))
         return form
 
-    def render_form_field(self, form, field):
+    def render_form_field(self, form, field,):
         datalist = None
         name = field['name']
 
         if field.get('type') == 'submit' and field.get('add_noscript_warning'):
-            ET.SubElement(ET.SubElement(form, 'noscript'), 'p').text = _('This form requires JavaScript enabled!')
+            ET.SubElement(ET.SubElement(form, 'noscript',), 'p',).text = _('This form requires JavaScript enabled!')
 
-        label = ET.Element('label', **{'for': name})
-        label.text = field.get('label', name)
+        label = ET.Element('label', **{'for': name},)
+        label.text = field.get('label', name,)
 
         multivalue = field.get('data-multivalue') == '1'
         values = field['value'] or [''] if multivalue else [field['value']]
         for value in values:
             elemattrs = {p: field[p] for p in ('id', 'disabled', 'form', 'multiple', 'required', 'size', 'type', 'placeholder', 'accept', 'alt', 'autocomplete', 'checked', 'max', 'min', 'minlength', 'pattern', 'readonly', 'src', 'step', 'style', 'alt', 'autofocus', 'class', 'cols', 'href', 'rel', 'title', 'list') if field.get(p)}
-            elemattrs.setdefault('type', 'text')
-            elemattrs.setdefault('placeholder', name)
+            elemattrs.setdefault('type', 'text',)
+            elemattrs.setdefault('placeholder', name,)
             if field.get('type') == 'checkbox' and field.get('checked'):
                 elemattrs['checked'] = 'checked'
-            element = ET.Element(field.get('element', 'input'), name=name, value=str(value), **elemattrs)
+            element = ET.Element(field.get('element', 'input',), name=name, value=str(value), **elemattrs,)
 
             if field['element'] == 'select':
-                for option in field.get('options', []):
+                for option in field.get('options', [],):
                     kwargs = {}
-                    if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
+                    if field['value'] == option['value'] or (isinstance(field['value'], list,) and option['value'] in field['value']):
                         kwargs['selected'] = 'selected'
-                    ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
+                    ET.SubElement(element, 'option', value=option['value'], **kwargs,).text = option.get('label', option['value'],)
             elif field.get('element') == 'a':
                 element.text = field['label']
                 label = None
             elif field.get('list') and field.get('datalist'):
-                datalist = ET.Element('datalist', id=field['list'])
-                for option in field.get('datalist', []):
+                datalist = ET.Element('datalist', id=field['list'],)
+                for option in field.get('datalist', [],):
                     kwargs = {}
-                    if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
+                    if field['value'] == option['value'] or (isinstance(field['value'], list,) and option['value'] in field['value']):
                         kwargs['selected'] = 'selected'
-                    ET.SubElement(datalist, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
+                    ET.SubElement(datalist, 'option', value=option['value'], **kwargs,).text = option.get('label', option['value'],)
             if label is not None:
                 form.append(label)
                 label = None
@@ -846,8 +846,8 @@ class ResourceBase:
         query_string = ''
         if query:
             qs = parse_qs(base.query)
-            qs.update({key: val if isinstance(val, (list, tuple)) else [val] for key, val in query.items()})
-            query_string = f'?{urlencode(qs, True)}'
+            qs.update({key: val if isinstance(val, (list, tuple),) else [val] for key, val in query.items()})
+            query_string = f'?{urlencode(qs, True,)}'
         scheme = base.scheme
         for _scheme in self.request.headers.get_list('X-Forwarded-Proto'):
             if _scheme == 'https':
@@ -855,55 +855,55 @@ class ResourceBase:
                 break
             if _scheme == 'http':
                 scheme = 'http'
-        return urljoin(urljoin(urlunparse((scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), quote(self.request.path_decoded.lstrip('/'))), '/'.join(args)) + query_string
+        return urljoin(urljoin(urlunparse((scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), quote(self.request.path_decoded.lstrip('/')),), '/'.join(args),) + query_string
 
     def abspath(self, *args):
-        return urljoin(self.urljoin('/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'), '/'.join(args))
+        return urljoin(self.urljoin('/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'), '/'.join(args),)
 
-    def add_link(self, obj, relation, href, **kwargs):
-        dont_set_http_header = kwargs.pop('dont_set_http_header', False)
-        links = obj.setdefault('_links', {})
-        links.setdefault(relation, []).append(dict(kwargs, href=href))
+    def add_link(self, obj, relation, href,**kwargs):
+        dont_set_http_header = kwargs.pop('dont_set_http_header', False,)
+        links = obj.setdefault('_links', {},)
+        links.setdefault(relation, [],).append(dict(kwargs, href=href,))
         if dont_set_http_header:
             return
 
-        def quote_param(s):
+        def quote_param(s,):
             for char in '\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f':  # remove non printable characters
-                s = s.replace(char, '')
-            return s.encode('ISO8859-1', 'replace').decode('ISO8859-1').replace('\\', '\\\\').replace('"', '\\"')
+                s = s.replace(char, '',)
+            return s.encode('ISO8859-1', 'replace',).decode('ISO8859-1').replace('\\', '\\\\',).replace('"', '\\"',)
         kwargs['rel'] = relation
         params = []
         for param in ('rel', 'name', 'title', 'media'):
             if param in kwargs:
-                params.append('%s="%s"' % (param, quote_param(kwargs.get(param, ''))))
+                params.append('%s="%s"' % (param, quote_param(kwargs.get(param, '',))))
         del kwargs['rel']
         header_name = 'Link-Template' if kwargs.get('templated') else 'Link'
-        self.add_header(header_name, '<%s>; %s' % (href, '; '.join(params)))
+        self.add_header(header_name, '<%s>; %s' % (href, '; '.join(params)),)
 
-    def add_resource(self, obj, relation, ressource):
-        obj.setdefault('_embedded', {}).setdefault(relation, []).append(ressource)
+    def add_resource(self, obj, relation, ressource,):
+        obj.setdefault('_embedded', {},).setdefault(relation, [],).append(ressource)
 
-    def get_resource(self, obj, relation, name=None):
-        for resource in obj.get('_embedded', {}).get(relation, []):
+    def get_resource(self, obj, relation, name=None,):
+        for resource in obj.get('_embedded', {},).get(relation, [],):
             if not name:
                 return resource
-            if resource.get('_links', {}).get('self', [{}])[0].get('name') == name:
+            if resource.get('_links', {},).get('self', [{}],)[0].get('name') == name:
                 return resource
 
-    def get_resources(self, obj, relation):
-        return obj.get('_embedded', {}).get(relation, [])
+    def get_resources(self, obj, relation,):
+        return obj.get('_embedded', {},).get(relation, [],)
 
-    def add_form(self, obj, action, method, **kwargs):
+    def add_form(self, obj, action, method,**kwargs):
         form = {
             'action': action,
             'method': method,
         }
-        form.setdefault('enctype', 'application/x-www-form-urlencoded')
+        form.setdefault('enctype', 'application/x-www-form-urlencoded',)
         form.update(kwargs)
-        self.add_resource(obj, 'udm:form', form)
+        self.add_resource(obj, 'udm:form', form,)
         return form
 
-    def add_form_element(self, form, name, value, type='text', element='input', **kwargs):
+    def add_form_element(self, form, name, value, type='text', element='input',**kwargs):
         field = {
             'name': name,
             'value': value,
@@ -911,32 +911,32 @@ class ResourceBase:
             'element': element,
         }
         field.update(kwargs)
-        form.setdefault('fields', []).append(field)
+        form.setdefault('fields', [],).append(field)
         if field['type'] == 'submit':
             field['add_noscript_warning'] = form.get('method') not in ('GET', 'POST', None)
         return field
 
-    def add_layout(self, obj, layout, name=None, href=None):
-        self.add_resource(obj, 'udm:layout', {'_links': {'self': [{'name': name}]}, 'layout': layout})
+    def add_layout(self, obj, layout, name=None, href=None,):
+        self.add_resource(obj, 'udm:layout', {'_links': {'self': [{'name': name}]}, 'layout': layout},)
         if href:
-            self.add_link(obj, 'udm:layout', href=href, name=name)
+            self.add_link(obj, 'udm:layout', href=href, name=name,)
 
-    def log_exception(self, typ, value, tb):
-        if isinstance(value, UMC_Error):
+    def log_exception(self, typ, value, tb,):
+        if isinstance(value, UMC_Error,):
             return
-        super().log_exception(typ, value, tb)
+        super().log_exception(typ, value, tb,)
 
-    def write_error(self, status_code, exc_info=None, **kwargs):
-        self.set_header('X-Request-Id', self.request.x_request_id)
+    def write_error(self, status_code, exc_info=None,**kwargs):
+        self.set_header('X-Request-Id', self.request.x_request_id,)
         if not exc_info:  # or isinstance(exc_info[1], HTTPError):
-            return super().write_error(status_code, exc_info=exc_info, **kwargs)
+            return super().write_error(status_code, exc_info=exc_info, **kwargs,)
 
         etype, exc, etraceback = exc_info
-        if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), (ldap.SERVER_DOWN, ldap.CONNECT_ERROR, ldap.INVALID_CREDENTIALS)):
+        if isinstance(exc, udm_errors.ldapError,) and isinstance(getattr(exc, 'original_exception', None,), (ldap.SERVER_DOWN, ldap.CONNECT_ERROR, ldap.INVALID_CREDENTIALS),):
             exc = exc.original_exception
-        if isinstance(exc, ldap.SERVER_DOWN):
+        if isinstance(exc, ldap.SERVER_DOWN,):
             exc = LDAP_ServerDown()
-        if isinstance(exc, ldap.CONNECT_ERROR):
+        if isinstance(exc, ldap.CONNECT_ERROR,):
             exc = LDAP_ConnectionFailed(exc)
         message = str(exc)
         title = ''
@@ -944,36 +944,36 @@ class ResourceBase:
         response = {
             'error': {},
         }
-        if isinstance(exc, UDM_Error):
+        if isinstance(exc, UDM_Error,):
             status_code = 400
-        if isinstance(exc, UMC_Error):
+        if isinstance(exc, UMC_Error,):
             status_code = exc.status
             title = exc.msg
             if status_code == 503:
-                self.add_header('Retry-After', '15')
+                self.add_header('Retry-After', '15',)
             if title == message:
                 title = responses.get(status_code)
-            if isinstance(exc.result, dict):
+            if isinstance(exc.result, dict,):
                 error = exc.result
-                if isinstance(exc, UnprocessableEntity) and error.get('body', {}).get('properties'):
+                if isinstance(exc, UnprocessableEntity,) and error.get('body', {},).get('properties'):
                     error = error['body']['properties']
-                elif isinstance(exc, UnprocessableEntity) and error.get('query', {}):
+                elif isinstance(exc, UnprocessableEntity,) and error.get('query', {},):
                     error = error['query']
-        if isinstance(exc, UnprocessableEntity):
+        if isinstance(exc, UnprocessableEntity,):
             error_summary = ''
 
-            def _append_error(key, message, location, formatter):
+            def _append_error(key, message, location, formatter,):
                 error_summary = ''
-                if isinstance(message, dict):
+                if isinstance(message, dict,):
                     for k, v in message.items():
-                        error_summary += _append_error(k, v, list(location) + [k], formatter)
+                        error_summary += _append_error(k, v, list(location) + [k], formatter,)
                 else:
                     error_summary += formatter % (key, message)
                     self.add_resource(response, 'udm:error', {
                         'location': location,
                         'message': message,
                         'type': 'value_error',
-                    })
+                    },)
                 return error_summary
 
             for key, value in exc.result.items():
@@ -985,14 +985,14 @@ class ResourceBase:
                 elif key == 'body_arguments':
                     formatter = _('Body data "%s": %s\n')
                     location = 'body'
-                error_summary += _append_error(key, value, (location,), formatter)
+                error_summary += _append_error(key, value, (location,), formatter,)
             message = f'{message}:\n{error_summary}'
 
         if status_code >= 500:
             _traceback = None
-            if not isinstance(exc, (UDM_Error, UMC_Error)):
-                _traceback = ''.join(traceback.format_exception(etype, exc, etraceback))
-            response['error']['traceback'] = _traceback if self.application.settings.get("serve_traceback", True) else None
+            if not isinstance(exc, (UDM_Error, UMC_Error),):
+                _traceback = ''.join(traceback.format_exception(etype, exc, etraceback,))
+            response['error']['traceback'] = _traceback if self.application.settings.get("serve_traceback", True,) else None
 
         # backwards compatibility :'-(
         response['error'].update({
@@ -1002,12 +1002,12 @@ class ResourceBase:
             'error': error,  # deprecated, use embedded udm:error instead
         })
 
-        self.add_link(response, 'self', self.urljoin(''), title=_('HTTP-Error %d: %s') % (status_code, title))
+        self.add_link(response, 'self', self.urljoin(''), title=_('HTTP-Error %d: %s') % (status_code, title),)
         self.set_status(status_code)
-        self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
+        self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True,)
         self.content_negotiation(response)
 
-    def add_caching(self, expires=None, public=False, must_revalidate=False, no_cache=False, no_store=False, no_transform=False, max_age=None, shared_max_age=None, proxy_revalidate=False):
+    def add_caching(self, expires=None, public=False, must_revalidate=False, no_cache=False, no_store=False, no_transform=False, max_age=None, shared_max_age=None, proxy_revalidate=False,):
         control = [
             'public' if public else 'private',
             'must-revalidate' if must_revalidate else '',
@@ -1020,30 +1020,30 @@ class ResourceBase:
         ]
         cache_control = ', '.join(x for x in control if x)
         if cache_control:
-            self.set_header('Cache-Control', cache_control)
+            self.set_header('Cache-Control', cache_control,)
         if expires:
-            self.set_header('Expires', expires)
+            self.set_header('Expires', expires,)
 
     def vary(self):
         return ['Accept', 'Accept-Language', 'Accept-Encoding', 'Authorization']
 
-    def modified_from_timestamp(self, timestamp):
-        modified = time.strptime(timestamp, '%Y%m%d%H%M%SZ')
+    def modified_from_timestamp(self, timestamp,):
+        modified = time.strptime(timestamp, '%Y%m%d%H%M%SZ',)
         # make sure Last-Modified is only send if it is not now
         if modified < time.gmtime(time.time() - 1):
             return modified
 
-    def get_parent_object_type(self, module):
+    def get_parent_object_type(self, module,):
         flavor = module.flavor
         if '/' not in flavor:
             return module
-        return UDM_Module(flavor, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+        return UDM_Module(flavor, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)
 
     def navigation(self):
         return ('udm:object-modules', 'udm:object-module', 'type', 'up', 'self')
 
 
-def _param_to_openapi(param):
+def _param_to_openapi(param,):
     san = param.sanitizer
     type_ = ''
     definition = {key: val for key, val in {
@@ -1055,7 +1055,7 @@ def _param_to_openapi(param):
         'explode': param.explode,
     }.items() if val is not None}
     schema = {}
-    if isinstance(san, DictSanitizer):
+    if isinstance(san, DictSanitizer,):
         type_ = 'object'
         schema['additionalProperties'] = san.allow_other_keys
         schema['properties'] = {
@@ -1063,7 +1063,7 @@ def _param_to_openapi(param):
             for prop, s in san.sanitizers.items()
             if s or san.default_sanitizer
         }
-    elif isinstance(san, ListSanitizer):
+    elif isinstance(san, ListSanitizer,):
         type_ = 'array'
         if san.min_elements is not None:
             schema['minItems'] = san.min_elements
@@ -1071,20 +1071,20 @@ def _param_to_openapi(param):
             schema['maxItems'] = san.max_elements
         if san.sanitizer:
             schema['items'] = _param_to_openapi(Param(san.sanitizer))['schema']
-    elif isinstance(san, DNSanitizer):
+    elif isinstance(san, DNSanitizer,):
         type_ = 'string'
         schema['format'] = 'dn'
-    elif isinstance(san, BooleanSanitizer):
+    elif isinstance(san, BooleanSanitizer,):
         type_ = 'boolean'
-    elif isinstance(san, BoolSanitizer):
+    elif isinstance(san, BoolSanitizer,):
         type_ = 'boolean'
         #type_ = 'string'
         #definition['examples'] = {choice: {'value': choice, 'summary': choice} for choice in san.choices}
-    elif isinstance(san, ChoicesSanitizer):
+    elif isinstance(san, ChoicesSanitizer,):
         type_ = 'string'
         definition['examples'] = {choice: {'value': choice, 'summary': choice} for choice in san.choices}
         schema['pattern'] = '^(%s)$' % ('|'.join(re.escape(choice) for choice in san.choices))
-    elif isinstance(san, IntegerSanitizer):
+    elif isinstance(san, IntegerSanitizer,):
         type_ = 'integer'
         if san.minimum is not None:
             schema['minimum'] = san.minimum
@@ -1094,7 +1094,7 @@ def _param_to_openapi(param):
             schema['maximum'] = san.maximum
             if san.maximum_strict is True:
                 schema['exclusiveMaximum'] = True
-    elif isinstance(san, StringSanitizer):
+    elif isinstance(san, StringSanitizer,):
         type_ = 'string'
         if san.minimum is not None:
             schema['minLength'] = san.minimum
@@ -1119,47 +1119,47 @@ class Resource(ResourceBase, RequestHandler):
 
     def options(self, *args, **kwargs):
         """Display API descriptions."""
-        result = self._options(*args, **kwargs)
+        result = self._options(*args, **kwargs,)
         result.update(self.get_openapi_schema(args and args[0]))
 
-        self.add_caching(public=False, must_revalidate=True)
+        self.add_caching(public=False, must_revalidate=True,)
         self.content_negotiation(result)
 
     def _options(self, *args, **kwargs):
         return {}
 
-    def get_openapi_schema(self, object_type=None):
+    def get_openapi_schema(self, object_type=None,):
         return {}
 
-    def options_json(self, response):
+    def options_json(self, response,):
         response = super().get_json(response)
-        response.pop('_links', None)
-        response.pop('_embedded', None)
+        response.pop('_links', None,)
+        response.pop('_embedded', None,)
         return response
 
 
 class Nothing(Resource):
 
     def prepare(self, *args, **kwargs):
-        super().prepare(*args, **kwargs)
+        super().prepare(*args, **kwargs,)
         raise NotFound()
 
 
 class Favicon(ResourceBase, tornado.web.StaticFileHandler):
 
     @classmethod
-    def get_absolute_path(cls, root, object_type=''):
-        value = object_type.replace('/', '-')
+    def get_absolute_path(cls, root, object_type='',):
+        value = object_type.replace('/', '-',)
         if value == 'favicon':
             return root
-        if not value.replace('-', '').replace('_', '').isalpha():
+        if not value.replace('-', '',).replace('_', '',).isalpha():
             raise NotFound(object_type)
-        return os.path.join(root, f'udm-{value}.png')
+        return os.path.join(root, f'udm-{value}.png',)
 
 
 class Relations(Resource):
 
-    def get(self, relation):
+    def get(self, relation,):
         iana_relations = {
             'search': "Refers to a resource that can be used to search through the link's context and related resources.",
             'create-form': 'The target IRI points to a resource where a submission form can be obtained.',
@@ -1213,27 +1213,27 @@ class Relations(Resource):
             'error': 'Error',
             'warning': 'Warning',
         }
-        self.add_caching(public=True, must_revalidate=True)
+        self.add_caching(public=True, must_revalidate=True,)
         result = {}
-        self.add_link(result, 'self', self.urljoin(''), title=_('Link relations'))
-        self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
+        self.add_link(result, 'self', self.urljoin(''), title=_('Link relations'),)
+        self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'),)
         if relation and relation.startswith('object/property/reference/'):
             relation = 'object/property/reference/*'
         if relation:
-            result['relation'] = univention_relations.get(relation, iana_relations.get(relation))
+            result['relation'] = univention_relations.get(relation, iana_relations.get(relation),)
             if not result['relation']:
                 raise NotFound()
         else:
             for relation in iana_relations:
-                self.add_link(result, 'udm:relations', self.urljoin(relation), name=relation, title=relation)
+                self.add_link(result, 'udm:relations', self.urljoin(relation), name=relation, title=relation,)
             for relation in univention_relations:
-                self.add_link(result, 'udm:relations', self.urljoin(relation), name='udm:%s' % relation, title='udm:%s' % relation)
+                self.add_link(result, 'udm:relations', self.urljoin(relation), name='udm:%s' % relation, title='udm:%s' % relation,)
         self.content_negotiation(result)
 
 
 class _OpenAPIBase:
 
-    def get_openapi_schema(self, object_type=None):
+    def get_openapi_schema(self, object_type=None,):
         ldap_base = ucr['ldap/base'] if self.requires_authentication else "dc=example,dc=net"
         openapi_paths = {}  # defines all resources and methods they have
         openapi_tags = []  # defines the basic structure, a group of pathes builds a tag, the pathes must include a reference to the tag name
@@ -1263,20 +1263,20 @@ class _OpenAPIBase:
             'X-Request-Id': {'$ref': '#/components/headers/X-Request-Id'},
         }
 
-        def global_response_headers(responses={}):
-            return dict(_global_response_headers, **{str(k): v for k, v in responses.items()})
+        def global_response_headers(responses={},):
+            return dict(_global_response_headers, **{str(k): v for k, v in responses.items()},)
 
-        def global_responses(responses):
-            return dict(_global_responses, **{str(k): v for k, v in responses.items()})
+        def global_responses(responses,):
+            return dict(_global_responses, **{str(k): v for k, v in responses.items()},)
 
-        def content_schema(schema_definition):
+        def content_schema(schema_definition,):
             return {
                 'application/json': {'schema': schema_definition},
                 'application/hal+json': {'schema': schema_definition},
                 'text/html': {'schema': {'$ref': '#/components/schemas/html-response'}},
             }
 
-        def content_schema_ref(schema_definition):
+        def content_schema_ref(schema_definition,):
             return content_schema({'$ref': schema_definition})
 
         openapi_request_bodies = {}
@@ -1662,32 +1662,32 @@ class _OpenAPIBase:
             'X-Request-Id': {"schema": {"type": "string", "format": "uuid"}, "description": "The response of the request-ID used for logging and tracing."},
         }
 
-        def _openapi_quote(string):
-            return string.replace('~', '~0').replace('/', '~1')
+        def _openapi_quote(string,):
+            return string.replace('~', '~0',).replace('/', '~1',)
 
         classes = {'object': Object, 'objects': Objects, 'template': ObjectAdd}
         for name, klass in classes.items():
             for method in ('get', 'post', 'put', 'delete'):
-                func = getattr(klass, method, None)
-                if not hasattr(func, 'params'):
+                func = getattr(klass, method, None,)
+                if not hasattr(func, 'params',):
                     continue
-                for pname, param in func.params.get('query', {}).items():
+                for pname, param in func.params.get('query', {},).items():
                     key = '%s.%s.query.%s' % (name, method, param.alias or pname)
                     if key in openapi_parameters:
                         openapi_parameters[key].update({'in': 'query', 'name': param.alias or pname})
                         openapi_parameters[key].update(_param_to_openapi(param))
 
-        def docstring(key, method, module):
-            obj = getattr(classes[key], method)
+        def docstring(key, method, module,):
+            obj = getattr(classes[key], method,)
             return '\n'.join(x.strip() for x in (obj.__doc__ or '').split('\n')).format(module=module)
 
         for name, _mod in sorted(udm_modules.modules.items()):
             if object_type and name != object_type:
                 continue
 
-            module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+            module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)
             tag = name
-            model_name = name.replace('/', '-')  # for better look in swaggerUI, as they have a bug with showing the escaped variant
+            model_name = name.replace('/', '-',)  # for better look in swaggerUI, as they have a bug with showing the escaped variant
             schema_definition = f"#/components/schemas/{_openapi_quote(model_name)}"
             tag_description = {
                 'description': f'{module.title} objects.',
@@ -1748,7 +1748,7 @@ class _OpenAPIBase:
                     ]
 
                 openapi_paths[objects_path]['get'] = {
-                    "summary": docstring('objects', 'get', module),
+                    "summary": docstring('objects', 'get', module,),
                     "description": "Information about the object type and links to search for objects. The found objects are either referenced as HAL links or embedded via HAL embedded resources.",
                     "operationId": f"udm:{name}/object/search",
                     "parameters": [
@@ -1778,7 +1778,7 @@ class _OpenAPIBase:
             if 'add' in module.operations:
                 openapi_paths[template_path]['get'] = {
                     "operationId": f"udm:{name}/object/template",
-                    "summary": docstring('template', 'get', module),
+                    "summary": docstring('template', 'get', module,),
                     "parameters": [
                         {'$ref': '#/components/parameters/template.get.query.position'},
                         {'$ref': '#/components/parameters/template.get.query.superordinate'},
@@ -1798,7 +1798,7 @@ class _OpenAPIBase:
                 }
                 openapi_paths[objects_path]['post'] = {
                     "operationId": f"udm:{name}/object/create",
-                    "summary": docstring('objects', 'post', module),
+                    "summary": docstring('objects', 'post', module,),
                     "requestBody": {
                         "$ref": schema_request_body,
                     },
@@ -1812,7 +1812,7 @@ class _OpenAPIBase:
                 }
             openapi_paths[object_path]["get"] = {
                 "operationId": f"udm:{name}/object",
-                "summary": docstring('object', 'get', module),
+                "summary": docstring('object', 'get', module,),
                 "parameters": [] + global_parameters,
                 "responses": global_responses({
                     "200": {
@@ -1836,7 +1836,7 @@ class _OpenAPIBase:
             if 'remove' in module.operations:
                 openapi_paths[object_path]["delete"] = {
                     "operationId": f"udm:{name}/object/remove",
-                    "summary": docstring('object', 'delete', module),
+                    "summary": docstring('object', 'delete', module,),
                     "parameters": [
                         {'$ref': '#/components/parameters/object.delete.query.cleanup'},
                         {'$ref': '#/components/parameters/object.delete.query.recursive'},
@@ -1854,7 +1854,7 @@ class _OpenAPIBase:
             if set(module.operations) & {'edit', 'move', 'move_subtree'}:
                 openapi_paths[object_path]["put"] = {
                     "operationId": f"udm:{name}/object/modify",
-                    "summary": docstring('object', 'put', module),
+                    "summary": docstring('object', 'put', module,),
                     "requestBody": {
                         "$ref": schema_request_body,
                     },
@@ -1885,7 +1885,7 @@ class _OpenAPIBase:
                 }
                 openapi_paths[object_path]["patch"] = {
                     "operationId": f'udm:{name}/object/update',
-                    "summary": docstring('object', 'patch', module),
+                    "summary": docstring('object', 'patch', module,),
                     "requestBody": {
                         "$ref": schema_request_body + '.patch',
                     },
@@ -1910,7 +1910,7 @@ class _OpenAPIBase:
                 if name.startswith('$'):
                     continue
                 property = module.get_property(name)
-                codec = udm_types.TypeHint.detect(property, name)
+                codec = udm_types.TypeHint.detect(property, name,)
                 properties_schema[name] = codec.get_openapi_definition()
 
             request_model_patch = {
@@ -2095,21 +2095,21 @@ class _OpenAPIBase:
 
 class OpenAPI(_OpenAPIBase, Resource):
 
-    requires_authentication = ucr.is_true('directory/manager/rest/require-auth', True)
+    requires_authentication = ucr.is_true('directory/manager/rest/require-auth', True,)
 
     def prepare(self):
         super().prepare()
         self.request.content_negotiation_lang = 'json'
         self.ldap_connection, self.ldap_position = get_machine_ldap_read_connection()
 
-    def get(self, object_type=None):
+    def get(self, object_type=None,):
         specs = self.get_openapi_schema(object_type)
         self.content_negotiation(specs)
 
-    def get_json(self, response):
+    def get_json(self, response,):
         response = super().get_json(response)
-        response.pop('_links', None)
-        response.pop('_embedded', None)
+        response.pop('_links', None,)
+        response.pop('_embedded', None,)
         return response
 
 
@@ -2140,23 +2140,23 @@ class Modules(Resource):
 
     def get(self):
         result = {}
-        self.add_link(result, 'self', self.urljoin(''), title=_('All modules'))
-        for main_type, name in sorted(self.mapping.items(), key=lambda x: "\x00" if x[0] == 'navigation' else x[0]):
+        self.add_link(result, 'self', self.urljoin(''), title=_('All modules'),)
+        for main_type, name in sorted(self.mapping.items(), key=lambda x,: "\x00" if x[0] == 'navigation' else x[0],):
             title = _('All %s types') % (name,)
             if '/' in name:
-                title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
+                title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,).object_name_plural
 
-            self.add_link(result, 'udm:object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
+            self.add_link(result, 'udm:object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title,)
 
         for name in sorted(udm_modules.modules):
-            _module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
-            self.add_link(result, 'udm:object-types', self.urljoin(quote(_module.name)) + '/', name=_module.name, title=_module.title, dont_set_http_header=True)
+            _module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)
+            self.add_link(result, 'udm:object-types', self.urljoin(quote(_module.name)) + '/', name=_module.name, title=_module.title, dont_set_http_header=True,)
 
-        self.add_link(result, 'udm:object/get-by-dn', self.urljoin('object') + '/{dn}', templated=True)
-        self.add_link(result, 'udm:object/get-by-uuid', self.urljoin('object') + '/{uuid}', templated=True)
-        self.add_link(result, 'udm:license', self.urljoin('license') + '/', name='license', title=_('UCS license'))
-        self.add_link(result, 'udm:ldap-base', self.urljoin('ldap/base') + '/', title=_('LDAP base'))
-        self.add_link(result, 'udm:relations', self.urljoin('relation') + '/', name='relation', title=_('All link relations'))
+        self.add_link(result, 'udm:object/get-by-dn', self.urljoin('object') + '/{dn}', templated=True,)
+        self.add_link(result, 'udm:object/get-by-uuid', self.urljoin('object') + '/{uuid}', templated=True,)
+        self.add_link(result, 'udm:license', self.urljoin('license') + '/', name='license', title=_('UCS license'),)
+        self.add_link(result, 'udm:ldap-base', self.urljoin('ldap/base') + '/', title=_('LDAP base'),)
+        self.add_link(result, 'udm:relations', self.urljoin('relation') + '/', name='relation', title=_('All link relations'),)
         self.add_caching(public=True)
         self.content_negotiation(result)
 
@@ -2171,8 +2171,7 @@ class ObjectTypes(Resource):
     async def get(
             self,
             module_type,
-            superordinate: Optional[str] = Query(DNSanitizer(required=False, allow_none=True)),
-    ):
+            superordinate: Optional[str] = Query(DNSanitizer(required=False, allow_none=True,)),):
         object_type = Modules.mapping.get(module_type)
         if not object_type:
             raise NotFound(object_type)
@@ -2181,22 +2180,22 @@ class ObjectTypes(Resource):
         module = None
         if '/' in object_type:
             # FIXME: what was/is the superordinate for?
-            module = UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+            module = UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)
             if superordinate:
-                module = get_module(object_type, superordinate, self.ldap_connection) or module  # FIXME: the object_type param is wrong?!
+                module = get_module(object_type, superordinate, self.ldap_connection,) or module  # FIXME: the object_type param is wrong?!
             title = module.object_name_plural
 
         result = {}
 
-        self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'))
-        self.add_link(result, 'self', self.urljoin(''), name=module_type, title=title)
+        self.add_link(result, 'up', self.urljoin('../'), title=_('All modules'),)
+        self.add_link(result, 'self', self.urljoin(''), name=module_type, title=title,)
         if module_type == 'navigation':
-            self.add_link(result, 'udm:tree', self.abspath('container/dc/tree'))
+            self.add_link(result, 'udm:tree', self.abspath('container/dc/tree'),)
         elif module and module.has_tree:
-            self.add_link(result, 'udm:tree', self.urljoin('../', object_type, 'tree'))
+            self.add_link(result, 'udm:tree', self.urljoin('../', object_type, 'tree',),)
 
         if module and (module.help_link or module.help_text):
-            self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
+            self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link,)
 
         if module_type == 'navigation':
             modules = udm_modules.modules.keys()
@@ -2206,11 +2205,11 @@ class ObjectTypes(Resource):
             modules = [x['id'] for x in module.child_modules]
 
         for name in sorted(modules):
-            _module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
-            self.add_link(result, 'udm:object-types', self.urljoin('../%s' % quote(_module.name)) + '/', name=_module.name, title=_module.title)
+            _module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)
+            self.add_link(result, 'udm:object-types', self.urljoin('../%s' % quote(_module.name)) + '/', name=_module.name, title=_module.title,)
             continue
             # TODO: get rid of entries. all of it can be put into the link!?
-            result.setdefault('entries', []).append({
+            result.setdefault('entries', [],).append({
                 'id': _module.name,
                 'label': _module.title,
                 'object_name': _module.object_name,
@@ -2221,14 +2220,14 @@ class ObjectTypes(Resource):
                 # 'has_tree': _module.has_tree,
             })
 
-        self.add_caching(public=True, must_revalidate=True)
+        self.add_caching(public=True, must_revalidate=True,)
         self.content_negotiation(result)
 
 
 class SubObjectTypes(Resource):
     """A list of possible sub-object-types which can be created underneath of the specified container or superordinate."""
 
-    def get(self, object_type=None, position=None):
+    def get(self, object_type=None, position=None,):
         """
         Returns the list of object types matching the given flavor or container.
 
@@ -2248,7 +2247,7 @@ class SubObjectTypes(Resource):
 
         # the container may be a superordinate or have one as its parent
         # (or grandparent, ....)
-        superordinate = udm_modules.find_superordinate(position, None, self.ldap_connection)
+        superordinate = udm_modules.find_superordinate(position, None, self.ldap_connection,)
         if superordinate:
             # there is a superordinate... add its subtypes to the list of allowed modules
             allowed_modules.update(udm_modules.subordinates(superordinate))
@@ -2257,14 +2256,14 @@ class SubObjectTypes(Resource):
             allowed_modules.update(mod for mod in udm_modules.modules.values() if not udm_modules.superordinates(mod))
 
         # make sure that the object type can be created
-        allowed_modules = [mod for mod in allowed_modules if udm_modules.supports(mod, 'add')]
+        allowed_modules = [mod for mod in allowed_modules if udm_modules.supports(mod, 'add',)]
 
         return self.module_definition(allowed_modules)
 
-    def module_definition(self, modules):
+    def module_definition(self, modules,):
         result = {'entries': []}
         for name in modules:
-            _module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+            _module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)
             result['entries'].append({
                 'id': _module.name,
                 'label': _module.title,
@@ -2275,8 +2274,8 @@ class SubObjectTypes(Resource):
                 # 'columns': _module.columns,
                 # 'has_tree': _module.has_tree,
             })
-            self.add_link(result, 'udm:object-types', self.abspath(_module.name) + '/', name=_module.name, title=_module.title)
-        self.add_caching(public=True, must_revalidate=True)
+            self.add_link(result, 'udm:object-types', self.abspath(_module.name) + '/', name=_module.name, title=_module.title,)
+        self.add_caching(public=True, must_revalidate=True,)
         self.content_negotiation(result)
 
 
@@ -2284,44 +2283,44 @@ class LdapBase(Resource):
 
     def get(self):
         result = {}
-        url = self.abspath('container/dc', quote_dn(ucr['ldap/base']))
-        self.add_link(result, 'self', url)
-        self.set_header('Location', url)
+        url = self.abspath('container/dc', quote_dn(ucr['ldap/base']),)
+        self.add_link(result, 'self', url,)
+        self.set_header('Location', url,)
         self.set_status(301)
-        self.add_caching(public=True, must_revalidate=True)
+        self.add_caching(public=True, must_revalidate=True,)
         self.content_negotiation(result)
 
 
 class ObjectLink(Resource):
     """If the object-type is not known but only the DN, this resource redirects to the correct object."""
 
-    def get(self, dn):
+    def get(self, dn,):
         dn = unquote_dn(dn)
         attrs = self.ldap_connection.get(dn)
-        modules = udm_modules.objectType(None, self.ldap_connection, dn, attrs) or []
+        modules = udm_modules.objectType(None, self.ldap_connection, dn, attrs,) or []
         if not modules:
-            raise NotFound(None, dn)
+            raise NotFound(None, dn,)
         for module in modules:
-            module = UDM_Module(module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+            module = UDM_Module(module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)
             if module.module:
                 break
         else:
-            raise NotFound(None, dn)
+            raise NotFound(None, dn,)
 
         result = {}
-        url = self.abspath(module.name, quote_dn(dn))
-        self.add_link(result, 'self', url)
-        self.set_header('Location', url)
+        url = self.abspath(module.name, quote_dn(dn),)
+        self.add_link(result, 'self', url,)
+        self.set_header('Location', url,)
         self.set_status(301)
-        self.add_caching(public=True, must_revalidate=True)
+        self.add_caching(public=True, must_revalidate=True,)
         self.content_negotiation(result)
 
 
 class ObjectByUiid(ObjectLink):
 
-    def get(self, uuid):
+    def get(self, uuid,):
         try:
-            dn = self.ldap_connection.searchDn(filter_format('entryUUID=%s', [uuid]))[0]
+            dn = self.ldap_connection.searchDn(filter_format('entryUUID=%s', [uuid],))[0]
         except IndexError:
             raise NotFound()
         return super().get(dn)
@@ -2329,7 +2328,7 @@ class ObjectByUiid(ObjectLink):
 
 class ContainerQueryBase(Resource):
 
-    async def _container_query(self, object_type, container, modules, scope):
+    async def _container_query(self, object_type, container, modules, scope,):
         """Get a list of containers or child objects of the specified container."""
         if not container:
             container = ucr['ldap/base']
@@ -2338,44 +2337,44 @@ class ContainerQueryBase(Resource):
                 defaults['$operations$'] = ['search']  # disallow edit
             if object_type in ('dns/dns', 'dhcp/dhcp'):
                 defaults.update({
-                    'label': UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).title,
-                    'icon': 'udm-%s' % (object_type.replace('/', '-'),),
+                    'label': UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,).title,
+                    'icon': 'udm-%s' % (object_type.replace('/', '-',),),
                 })
-            self.add_link({}, 'next', self.urljoin('?container=%s' % (quote(container))))
+            self.add_link({}, 'next', self.urljoin('?container=%s' % (quote(container))),)
             return dict({
                 'id': container,
                 'label': ldap_dn2path(container),
                 'icon': 'udm-container-dc',
                 'path': ldap_dn2path(container),
                 'objectType': 'container/dc',
-                '$operations$': UDM_Module('container/dc', ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).operations,
+                '$operations$': UDM_Module('container/dc', ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,).operations,
                 '$flags$': [],
                 '$childs$': True,
                 '$isSuperordinate$': False,
-            }, **defaults)
+            }, **defaults,)
 
         result = []
         for xmodule in modules:
-            xmodule = UDM_Module(xmodule, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
-            superordinate = univention.admin.objects.get_superordinate(xmodule.module, None, self.ldap_connection, container)  # TODO: should also better be in a thread
+            xmodule = UDM_Module(xmodule, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)
+            superordinate = univention.admin.objects.get_superordinate(xmodule.module, None, self.ldap_connection, container,)  # TODO: should also better be in a thread
             try:
-                ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
-                items = await self.pool_submit(xmodule.search, container, scope=scope, superordinate=superordinate)
+                ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000',)
+                items = await self.pool_submit(xmodule.search, container, scope=scope, superordinate=superordinate,)
                 for item in items:
-                    module = UDM_Module(item.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+                    module = UDM_Module(item.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)
                     result.append({
                         'id': item.dn,
                         'label': module.obj_description(item),
-                        'icon': 'udm-%s' % (module.name.replace('/', '-')),
+                        'icon': 'udm-%s' % (module.name.replace('/', '-',)),
                         'path': ldap_dn2path(item.dn),
                         'objectType': module.name,
                         '$operations$': module.operations,
-                        '$flags$': item.oldattr.get('univentionObjectFlag', []),
+                        '$flags$': item.oldattr.get('univentionObjectFlag', [],),
                         '$childs$': module.childs,
                         '$isSuperordinate$': udm_modules.isSuperordinate(module.module),
                     })
             except UDM_Error as exc:
-                raise HTTPError(400, None, str(exc))
+                raise HTTPError(400, None, str(exc),)
 
         return result
 
@@ -2387,8 +2386,7 @@ class Tree(ContainerQueryBase):
     async def get(
             self,
             object_type,
-            container: str = Query(DNSanitizer(default=None)),
-    ):
+            container: str = Query(DNSanitizer(default=None)),):
         ldap_base = ucr['ldap/base']
 
         modules = container_modules()
@@ -2401,8 +2399,8 @@ class Tree(ContainerQueryBase):
             scope = 'sub'
             modules = [object_type]
 
-        containers = await self._container_query(object_type, container, modules, scope)
-        self.add_caching(public=False, must_revalidate=True)
+        containers = await self._container_query(object_type, container, modules, scope,)
+        self.add_caching(public=False, must_revalidate=True,)
         self.content_negotiation(containers)
 
 
@@ -2412,15 +2410,14 @@ class MoveDestinations(ContainerQueryBase):
     async def get(
             self,
             object_type,
-            container: str = Query(DNSanitizer(default=None)),
-    ):
+            container: str = Query(DNSanitizer(default=None)),):
         scope = 'one'
         modules = container_modules()
         if not container:
             scope = 'base'
 
-        containers = await self._container_query(object_type or 'navigation', container, modules, scope)
-        self.add_caching(public=False, must_revalidate=True)
+        containers = await self._container_query(object_type or 'navigation', container, modules, scope,)
+        self.add_caching(public=False, must_revalidate=True,)
         self.content_negotiation(containers)
 
 
@@ -2432,29 +2429,28 @@ class Properties(Resource):
             self,
             object_type,
             dn=None,
-            searchable: bool = Query(BoolSanitizer(required=False)),
-    ):
+            searchable: bool = Query(BoolSanitizer(required=False)),):
         result = {}
         if dn:
             dn = unquote_dn(dn)
         module = self.get_module(object_type)
         module.load(force_reload=True)  # reload for instant extended attributes
 
-        self.add_link(result, 'up', self.urljoin('.'))
-        properties = self.get_properties(module, dn)
+        self.add_link(result, 'up', self.urljoin('.'),)
+        properties = self.get_properties(module, dn,)
         if searchable:
-            properties = {name: prop for name, prop in properties.items() if prop.get('searchable', False)}
+            properties = {name: prop for name, prop in properties.items() if prop.get('searchable', False,)}
         result['properties'] = properties
 
         for propname, prop in properties.items():
             if prop.get('dynamicValues') or prop.get('staticValues') or prop.get('type') == 'umc/modules/udm/MultiObjectSelect':
-                self.add_link(result, 'udm:property-choices', self.urljoin('properties', propname, 'choices'), name=propname, title=_('Get choices for property %s') % (propname,))
+                self.add_link(result, 'udm:property-choices', self.urljoin('properties', propname, 'choices',), name=propname, title=_('Get choices for property %s') % (propname,),)
 
-        self.add_caching(public=True, must_revalidate=True)
+        self.add_caching(public=True, must_revalidate=True,)
         self.content_negotiation(result)
 
     @classmethod
-    def get_properties(cls, module, dn=None):
+    def get_properties(cls, module, dn=None,):
         properties = module.get_properties(dn)
         for policy in module.policies:
             properties.append({
@@ -2468,23 +2464,23 @@ class Properties(Resource):
                     option['id'] = 'options[%s]' % (option['id'],)
                     properties.append(option)
         for prop in properties:
-            prop.setdefault('label', '')
-            prop.setdefault('description', '')
-            prop.setdefault('readonly', False)
-            prop.setdefault('readonly_when_synced', False)
-            prop.setdefault('disabled', False)
-            prop.setdefault('required', False)
-            prop.setdefault('syntax', '')
-            prop.setdefault('identifies', False)
-            prop.setdefault('searchable', False)
-            prop.setdefault('multivalue', False)
-            prop.setdefault('show_in_lists', True)
+            prop.setdefault('label', '',)
+            prop.setdefault('description', '',)
+            prop.setdefault('readonly', False,)
+            prop.setdefault('readonly_when_synced', False,)
+            prop.setdefault('disabled', False,)
+            prop.setdefault('required', False,)
+            prop.setdefault('syntax', '',)
+            prop.setdefault('identifies', False,)
+            prop.setdefault('searchable', False,)
+            prop.setdefault('multivalue', False,)
+            prop.setdefault('show_in_lists', True,)
         return {prop['id']: prop for prop in properties if not prop['id'].startswith('$')}
 
 
 class Layout(Resource):
 
-    def get(self, object_type, dn=None):
+    def get(self, object_type, dn=None,):
         result = {}
         if dn:
             dn = unquote_dn(dn)
@@ -2493,15 +2489,15 @@ class Layout(Resource):
 
         result['layout'] = self.get_layout(module)
 
-        self.add_caching(public=True, must_revalidate=True)
+        self.add_caching(public=True, must_revalidate=True,)
         self.content_negotiation(result)
 
     @classmethod
-    def get_layout(cls, module, dn=None):
+    def get_layout(cls, module, dn=None,):
         layout = module.get_layout(dn)
 
         # TODO: insert module.help_text into first layout element
-        layout.insert(0, {'layout': [], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False})
+        layout.insert(0, {'layout': [], 'advanced': False, 'description': _('Meta information'), 'label': _('Meta information'), 'is_app_tab': False},)
         apps = cls.get_apps_layout(layout)
         if apps:
             apps['layout'].append('options')
@@ -2526,15 +2522,15 @@ class Layout(Resource):
         return layout
 
     @classmethod
-    def get_apps_layout(cls, layout):
+    def get_apps_layout(cls, layout,):
         for x in layout:
             if x.get('label') == 'Apps':
                 return x
 
     @classmethod
-    def get_reference_layout(cls, layout):
+    def get_reference_layout(cls, layout,):
         for x in layout:
-            if x.get('label', '').lower().startswith('referen'):
+            if x.get('label', '',).lower().startswith('referen'):
                 return x
 
 
@@ -2551,20 +2547,19 @@ class Report(ReportingBase, Resource):
     _('PDF Document')
     _('CSV Report')
 
-    async def get(self, object_type, report_type):
+    async def get(self, object_type, report_type,):
         dns = self.get_query_arguments('dn')
-        await self.create_report(object_type, report_type, dns)
+        await self.create_report(object_type, report_type, dns,)
 
     @sanitize
     async def post(
             self,
             object_type,
             report_type,
-            dn: List[str] = Query(ListSanitizer(DNSanitizer())),
-    ):
-        await self.create_report(object_type, report_type, dn)
+            dn: List[str] = Query(ListSanitizer(DNSanitizer())),):
+        await self.create_report(object_type, report_type, dn,)
 
-    async def create_report(self, object_type, report_type, dns):
+    async def create_report(self, object_type, report_type, dns,):
         try:
             assert report_type in self.reports_cfg.get_report_names(object_type)
         except (KeyError, AssertionError):
@@ -2572,13 +2567,13 @@ class Report(ReportingBase, Resource):
 
         report = udr.Report(self.ldap_connection)
         try:
-            report_file = await self.pool_submit(report.create, object_type, report_type, dns)
+            report_file = await self.pool_submit(report.create, object_type, report_type, dns,)
         except udr.ReportError as exc:
-            raise HTTPError(400, None, str(exc))
+            raise HTTPError(400, None, str(exc),)
 
         with open(report_file) as fd:  # noqa: ASYNC101
-            self.set_header('Content-Type', 'text/csv' if report_file.endswith('.csv') else 'application/pdf')
-            self.set_header('Content-Disposition', 'attachment; filename="%s"' % (os.path.basename(report_file).replace('\\', '\\\\').replace('"', '\\"')))
+            self.set_header('Content-Type', 'text/csv' if report_file.endswith('.csv') else 'application/pdf',)
+            self.set_header('Content-Disposition', 'attachment; filename="%s"' % (os.path.basename(report_file).replace('\\', '\\\\',).replace('"', '\\"',)),)
             self.finish(fd.read())
         os.remove(report_file)
 
@@ -2586,7 +2581,7 @@ class Report(ReportingBase, Resource):
 class NextFreeIpAddress(Resource):
     """GET udm/networks/network/$DN/next-free-ip-address (get the next free IP in this network)"""
 
-    def get(self, object_type, dn):  # TODO: threaded?! (might have caused something in the past in system setup?!)
+    def get(self, object_type, dn,):  # TODO: threaded?! (might have caused something in the past in system setup?!)
         """
         Returns the next IP configuration based on the given network object
 
@@ -2597,7 +2592,7 @@ class NextFreeIpAddress(Resource):
         return: {}
         """
         dn = unquote_dn(dn)
-        obj = self.get_object(object_type, dn)
+        obj = self.get_object(object_type, dn,)
         try:
             obj.refreshNextIp()
         except udm_errors.nextFreeIp:
@@ -2610,10 +2605,10 @@ class NextFreeIpAddress(Resource):
             'dnsEntryZoneReverse': obj['dnsEntryZoneReverse'],
         }
 
-        self.add_caching(public=False, must_revalidate=True)
+        self.add_caching(public=False, must_revalidate=True,)
         self.content_negotiation(result)
 
-        if self.get_query_argument('increaseCounter', False):
+        if self.get_query_argument('increaseCounter', False,):
             # increase the next free IP address
             obj.stepIp()
             obj.modify()
@@ -2621,11 +2616,11 @@ class NextFreeIpAddress(Resource):
 
 class FormBase:
 
-    def add_property_form_elements(self, module, form, properties, values):
+    def add_property_form_elements(self, module, form, properties, values,):
         password_properties = module.password_properties
         for key, prop in properties.items():
             if key.startswith('options[') and key.endswith(']'):
-                self.add_form_element(form, 'options', prop['id'].split('[', 1)[1].split(']')[0], type='checkbox', checked=prop['value'], label=prop['label'])
+                self.add_form_element(form, 'options', prop['id'].split('[', 1,)[1].split(']')[0], type='checkbox', checked=prop['value'], label=prop['label'],)
             if key not in values:
                 continue
 
@@ -2664,7 +2659,7 @@ class FormBase:
             kwargs['data-syntax'] = prop['syntax']
             kwargs['title'] = prop['description']
             # TODO: size, type, options, treshold, staticValues, editable, nonempty_is_default
-            self.add_form_element(form, f'properties.{key}', value, label=prop['label'], placeholder=prop['label'], **kwargs)
+            self.add_form_element(form, f'properties.{key}', value, label=prop['label'], placeholder=prop['label'], **kwargs,)
 
     def decode_form_arguments(self):
         # TODO: add files
@@ -2673,19 +2668,19 @@ class FormBase:
         for key in list(self.request.body_arguments.keys()):
             for name in ('properties', 'policies'):
                 if key.startswith(f'{name}.'):
-                    properties = self.request.body_arguments.setdefault(name, {})
+                    properties = self.request.body_arguments.setdefault(name, {},)
                     prop = key[len(f'{name}.'):]
-                    properties.setdefault(prop, []).append(self.request.body_arguments.pop(key))
+                    properties.setdefault(prop, [],).append(self.request.body_arguments.pop(key))
                 elif key.startswith(f'{name}[') and key.endswith(']'):
-                    properties = self.request.body_arguments.setdefault(name, {})
+                    properties = self.request.body_arguments.setdefault(name, {},)
                     prop = key[len(f'{name}['):-1]
-                    properties.setdefault(prop, []).append(self.request.body_arguments.pop(key))
+                    properties.setdefault(prop, [],).append(self.request.body_arguments.pop(key))
 
-    def superordinate_dn_to_object(self, module, superordinate):
+    def superordinate_dn_to_object(self, module, superordinate,):
         if not superordinate_names(module):
             return
         if superordinate:
-            mod = get_module(module.name, superordinate, self.ldap_connection)
+            mod = get_module(module.name, superordinate, self.ldap_connection,)
             if not mod:
                 MODULE.error(f'Superordinate module not found: {superordinate}')
                 raise SuperordinateDoesNotExist(superordinate)
@@ -2700,9 +2695,9 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
     async def get(
             self,
             object_type,
-            position: str = Query(DNSanitizer(required=False, default=None, allow_none=True), description="Position which is used as search base."),
+            position: str = Query(DNSanitizer(required=False, default=None, allow_none=True,), description="Position which is used as search base.",),
             ldap_filter: str = Query(
-                LDAPFilterSanitizer(required=False, default="", allow_none=True),
+                LDAPFilterSanitizer(required=False, default="", allow_none=True,),
                 alias='filter',
                 description="A LDAP filter which may contain `UDM` property names instead of `LDAP` attribute names.",
                 examples={
@@ -2712,10 +2707,9 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
                     "admin-user": {
                         "value": "(|(username=Administrator)(username=Admin*))",
                     },
-                },
-            ),
+                },),
             query: Dict = Query(
-                DictSanitizer({}, default_sanitizer=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True), key_sanitizer=ObjectPropertySanitizer()),
+                DictSanitizer({}, default_sanitizer=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True,), key_sanitizer=ObjectPropertySanitizer(),),
                 description="The values to search for (propertyname and search filter value). Alternatively with `filter` a raw LDAP filter can be given.",
                 style="deepObject",
                 examples={
@@ -2725,49 +2719,41 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
                     'property': {
                         'value': {'': '*'},
                     },
-                },
-            ),
-            property: str = Query(ObjectPropertySanitizer(required=False, default=None)),
-            scope: str = Query(ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'), description="The LDAP search scope (sub, base, one)."),
-            hidden: bool = Query(BoolSanitizer(default=True), description="Include hidden/system objects in the response.", example=True),
+                },),
+            property: str = Query(ObjectPropertySanitizer(required=False, default=None,)),
+            scope: str = Query(ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub',), description="The LDAP search scope (sub, base, one).",),
+            hidden: bool = Query(BoolSanitizer(default=True), description="Include hidden/system objects in the response.", example=True,),
             properties: List[str] = Query(
-                ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0),
+                ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0,),
                 style="form",
                 explode=True,
                 description="The properties which should be returned, if not given all properties are returned.",
                 examples={
                     'no restrictions': {'value': None},
                             'only small subset': {'value': ['username', 'firstname', 'lastname']},
-                },
-            ),
-            superordinate: Optional[str] = Query(DNSanitizer(required=False, default=None, allow_none=True), description="The superordinate DN of the objects to find. `position` is sufficient."),  # example=f"cn=superordinate,{ldap_base}"
+                },),
+            superordinate: Optional[str] = Query(DNSanitizer(required=False, default=None, allow_none=True,), description="The superordinate DN of the objects to find. `position` is sufficient.",),  # example=f"cn=superordinate,{ldap_base}"
             dir: str = Query(
-                ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC'),
+                ChoicesSanitizer(choices=['ASC', 'DESC'], default='ASC',),
                 deprecated=True,
-                description="**Broken/Experimental**: The Sort direction (ASC or DESC).",
-            ),
+                description="**Broken/Experimental**: The Sort direction (ASC or DESC).",),
             by: str = Query(
                 StringSanitizer(required=False),
                 deprecated=True,
-                description="**Broken/Experimental**: Sort the search result by the specified property.",
-                # example="username",
-            ),
+                description="**Broken/Experimental**: Sort the search result by the specified property.",),
             page: int = Query(
-                IntegerSanitizer(required=False, default=1, minimum=1),
+                IntegerSanitizer(required=False, default=1, minimum=1,),
                 deprecated=True,
                 description="**Broken/Experimental**: The search page, starting at one.",
-                example=1,
-            ),
+                example=1,),
             limit: int = Query(
-                IntegerSanitizer(required=False, default=None, allow_none=True, minimum=0),
+                IntegerSanitizer(required=False, default=None, allow_none=True, minimum=0,),
                 deprecated=True,
                 description="**Broken/Experimental**: How many results should be shown per page.",
                 examples={
                     "no limit": {"value": "", "summary": "get all entries"},
                             "limit to 50": {"value": 50, "summary": "limit to 50 entries"},
-                },
-            ),
-    ):
+                },),):
         """Search for {module.object_name_plural} objects"""
         module = self.get_module(object_type)
         result = self._options(object_type)
@@ -2780,110 +2766,110 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
         items_per_page = limit
 
         if not ldap_filter:
-            filters = filter(None, [(module._object_property_filter(attribute or property_ or None, value, hidden)) for attribute, value in query.items()])
+            filters = filter(None, [(module._object_property_filter(attribute or property_ or None, value, hidden,)) for attribute, value in query.items()],)
             if filters:
-                ldap_filter = str(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
+                ldap_filter = str(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters],))
 
         # TODO: replace the superordinate concept with container
-        superordinate = self.superordinate_dn_to_object(module, superordinate)
+        superordinate = self.superordinate_dn_to_object(module, superordinate,)
         if superordinate:
             position = position or superordinate.dn
 
         objects = []
         if search:
             try:
-                objects, last_page = await self.search(module, position, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse)
+                objects, last_page = await self.search(module, position, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse,)
             except ObjectDoesNotExist as exc:
-                self.raise_sanitization_error('position', str(exc), type='query')
+                self.raise_sanitization_error('position', str(exc), type='query',)
             except SuperordinateDoesNotExist as exc:
-                self.raise_sanitization_error('superordinate', str(exc), type='query')
+                self.raise_sanitization_error('superordinate', str(exc), type='query',)
 
         for obj in objects or []:
             if obj is None:
                 continue
-            objmodule = UDM_Module(obj.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+            objmodule = UDM_Module(obj.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)
 
             if '*' in properties:
                 # TODO: i think we need error handling here, because between receiving the object and opening it, it or refernced objects might be removed.
                 # best would be if lookup() would support opening because that already does error handling.
                 obj.open()
 
-            entry = Object.get_representation(objmodule, obj, properties, self.ldap_connection)
-            entry['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
-            self.add_link(entry, 'self', entry['uri'], name=entry['dn'], title=entry['id'], dont_set_http_header=True)
-            self.add_resource(result, 'udm:object', entry)
+            entry = Object.get_representation(objmodule, obj, properties, self.ldap_connection,)
+            entry['uri'] = self.abspath(obj.module, quote_dn(obj.dn),)
+            self.add_link(entry, 'self', entry['uri'], name=entry['dn'], title=entry['id'], dont_set_http_header=True,)
+            self.add_resource(result, 'udm:object', entry,)
 
         if items_per_page:
-            self.add_link(result, 'first', self.urljoin('', page='1'), title=_('First page'))
+            self.add_link(result, 'first', self.urljoin('', page='1',), title=_('First page'),)
             if page > 1:
-                self.add_link(result, 'prev', self.urljoin('', page=str(page - 1)), title=_('Previous page'))
+                self.add_link(result, 'prev', self.urljoin('', page=str(page - 1),), title=_('Previous page'),)
             if not last_page:
-                self.add_link(result, 'next', self.urljoin('', page=str(page + 1)), title=_('Next page'))
+                self.add_link(result, 'next', self.urljoin('', page=str(page + 1),), title=_('Next page'),)
             else:
-                self.add_link(result, 'last', self.urljoin('', page=str(last_page)), title=_('Last page'))
+                self.add_link(result, 'last', self.urljoin('', page=str(last_page),), title=_('Last page'),)
 
         if search:
-            for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
-                form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm:report', name=report_type, id='report%d' % (i,))
-                self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
-                self.add_link(result, 'udm:report', self.urljoin('report', quote(report_type)) + '{?dn}', name=report_type, title=_('Create %s report') % _(report_type), method='POST', templated=True)
+            for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1,):
+                form = self.add_form(result, self.urljoin('report', quote(report_type),), 'POST', rel='udm:report', name=report_type, id='report%d' % (i,),)
+                self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit',)
+                self.add_link(result, 'udm:report', self.urljoin('report', quote(report_type),) + '{?dn}', name=report_type, title=_('Create %s report') % _(report_type), method='POST', templated=True,)
 
-            form = self.add_form(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', id='multi-edit', rel='edit-form')
-            self.add_form_element(form, '', _('Modify %s (multi edit)') % (module.object_name_plural,), type='submit')
+            form = self.add_form(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', id='multi-edit', rel='edit-form',)
+            self.add_form_element(form, '', _('Modify %s (multi edit)') % (module.object_name_plural,), type='submit',)
 
-            form = self.add_form(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm:object/move')
-            self.add_form_element(form, 'position', '')
-            self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
+            form = self.add_form(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm:object/move',)
+            self.add_form_element(form, 'position', '',)
+            self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit',)
         else:
-            for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
-                self.add_link(result, 'udm:report', self.urljoin('report', quote(report_type)) + '{?dn}', name=report_type, title=_('Create %s report') % _(report_type), method='POST', templated=True)
+            for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1,):
+                self.add_link(result, 'udm:report', self.urljoin('report', quote(report_type),) + '{?dn}', name=report_type, title=_('Create %s report') % _(report_type), method='POST', templated=True,)
 
         search_layout_base = [{'description': _('Search for %s') % (module.object_name_plural,), 'label': _('Search'), 'layout': []}]
         search_layout = search_layout_base[0]['layout']
-        self.add_layout(result, search_layout_base, 'search')
-        form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', layout='search')
-        self.add_form_element(form, 'position', position or '', label=_('Search in'))
+        self.add_layout(result, search_layout_base, 'search',)
+        form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', layout='search',)
+        self.add_form_element(form, 'position', position or '', label=_('Search in'),)
         search_layout.append(['position', 'hidden'])
         if superordinate_names(module):
-            self.add_form_element(form, 'superordinate', superordinate.dn if superordinate else '', label=_('Superordinate'))
+            self.add_form_element(form, 'superordinate', superordinate.dn if superordinate else '', label=_('Superordinate'),)
             search_layout.append(['superordinate'])
         searchable_properties = [{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')]
-        self.add_form_element(form, 'property', property_ or '', element='select', options=searchable_properties, label=_('Property'))
-        self.add_form_element(form, 'query*', query.get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'))
-        self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}], label=_('Search scope'))
-        self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'))
+        self.add_form_element(form, 'property', property_ or '', element='select', options=searchable_properties, label=_('Property'),)
+        self.add_form_element(form, 'query*', query.get('', '*',), label=_('Search for'), placeholder=_('Search value (e.g. *)'),)
+        self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}], label=_('Search scope'),)
+        self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'),)
         search_layout.append(['property', 'query*'])
         #self.add_form_element(form, 'fields', list(fields))
         if module.supports_pagination:
-            self.add_form_element(form, 'limit', str(items_per_page or '0'), type='number', label=_('Limit'))
-            self.add_form_element(form, 'page', str(page or '1'), type='number', label=_('Selected page'))
-            self.add_form_element(form, 'by', by or '', element='select', options=searchable_properties, label=_('Sort by'))
-            self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}], label=_('Direction'))
+            self.add_form_element(form, 'limit', str(items_per_page or '0'), type='number', label=_('Limit'),)
+            self.add_form_element(form, 'page', str(page or '1'), type='number', label=_('Selected page'),)
+            self.add_form_element(form, 'by', by or '', element='select', options=searchable_properties, label=_('Sort by'),)
+            self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}], label=_('Direction'),)
             search_layout.append(['page', 'limit'])
             search_layout.append(['by', 'dir'])
         search_layout.append('')
-        self.add_form_element(form, '', _('Search'), type='submit')
+        self.add_form_element(form, '', _('Search'), type='submit',)
 
         if search:
-            result['results'] = len(self.get_resources(result, 'udm:object'))
+            result['results'] = len(self.get_resources(result, 'udm:object',))
         else:
-            self.add_link(result, 'udm:layout', self.urljoin('layout'), title=_('Module layout'))
-            self.add_link(result, 'udm:properties', self.urljoin('properties'), title=_('Module properties'))
+            self.add_link(result, 'udm:layout', self.urljoin('layout'), title=_('Module layout'),)
+            self.add_link(result, 'udm:properties', self.urljoin('properties'), title=_('Module properties'),)
             for policy_module in module.policies:
                 policy_module = policy_module['objectType']
-                self.add_link(result, 'udm:policy-result', self.urljoin(f'{policy_module}/{{?policy,position}}'), name=policy_module, title=_('Evaluate referenced %s policies') % (policy_module,), templated=True)
+                self.add_link(result, 'udm:policy-result', self.urljoin(f'{policy_module}/{{?policy,position}}'), name=policy_module, title=_('Evaluate referenced %s policies') % (policy_module,), templated=True,)
 
-        self.add_caching(public=False, no_cache=True, no_store=True, max_age=1, must_revalidate=True)
+        self.add_caching(public=False, no_cache=True, no_store=True, max_age=1, must_revalidate=True,)
         self.content_negotiation(result)
 
-    async def search(self, module, container, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse):
+    async def search(self, module, container, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse,):
         ctrls = {}
         serverctrls = []
         hashed = (self.request.user_dn, module.name, container or None, ldap_filter or None, superordinate or None, scope or None, hidden or None, items_per_page or None, by or None, reverse or None)
-        session = shared_memory.search_sessions.get(hashed, {})
-        last_cookie = session.get('last_cookie', '')
-        current_page = session.get('page', 0)
-        page_ctrl = SimplePagedResultsControl(True, size=items_per_page, cookie=last_cookie)  # TODO: replace with VirtualListViewRequest
+        session = shared_memory.search_sessions.get(hashed, {},)
+        last_cookie = session.get('last_cookie', '',)
+        current_page = session.get('page', 0,)
+        page_ctrl = SimplePagedResultsControl(True, size=items_per_page, cookie=last_cookie,)  # TODO: replace with VirtualListViewRequest
         if module.supports_pagination:
             if items_per_page:
                 serverctrls.append(page_ctrl)
@@ -2893,45 +2879,45 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
         objects = []
         # TODO: we have to store the results of the previous pages (or make them cacheable)
         # FIXME: we have to store the session across all processes
-        ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
+        ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000',)
         last_page = page
-        for _i in range(current_page, page or 1):
-            objects = await self.pool_submit(module.search, container, superordinate=superordinate, filter=ldap_filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
-            for control in ctrls.get('ctrls', []):
+        for _i in range(current_page, page or 1,):
+            objects = await self.pool_submit(module.search, container, superordinate=superordinate, filter=ldap_filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls,)
+            for control in ctrls.get('ctrls', [],):
                 if control.controlType == SimplePagedResultsControl.controlType:
                     page_ctrl.cookie = control.cookie
             if not page_ctrl.cookie:
-                shared_memory.search_sessions.pop(hashed, None)
+                shared_memory.search_sessions.pop(hashed, None,)
                 break
         else:
             shared_memory.search_sessions[hashed] = {'last_cookie': page_ctrl.cookie, 'page': page}
             last_page = 0
         return (objects, last_page)
 
-    def get_html(self, response):
+    def get_html(self, response,):
         if self.request.method in ('GET', 'HEAD'):
             r = response.copy()
-            r.pop('entries', None)
+            r.pop('entries', None,)
             root = super().get_html(r)
         else:
             root = super().get_html(response)
         if self.request.method in ('GET', 'HEAD'):
-            for thing in response.get('entries', self.get_resources(response, 'udm:object')):
-                if isinstance(thing, dict) and thing.get('uri'):
+            for thing in response.get('entries', self.get_resources(response, 'udm:object',),):
+                if isinstance(thing, dict,) and thing.get('uri'):
                     x = thing.copy()
-                    a = ET.Element("a", href=x.pop('uri'), rel="udm:object item")
+                    a = ET.Element("a", href=x.pop('uri'), rel="udm:object item",)
                     a.text = x.get('dn')
                     pre = ET.Element("pre")
-                    pre.text = json.dumps(x, indent=4)
+                    pre.text = json.dumps(x, indent=4,)
                     root.append(ET.Element("br"))
                     # There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
-                    root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in self.get_resources(response, 'udm:form') if report['rel'] == 'udm:report'][-1:])))
+                    root.append(ET.Element('input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in self.get_resources(response, 'udm:form',) if report['rel'] == 'udm:report'][-1:]),))
                     root.append(a)
                     root.append(pre)
                     root.append(ET.Element("br"))
                 else:
                     pre = ET.Element("pre")
-                    pre.text = json.dumps(thing, indent=4)
+                    pre.text = json.dumps(thing, indent=4,)
                     root.append(pre)
                     root.append(ET.Element("br"))
         return root
@@ -2940,16 +2926,15 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
     async def post(
             self,
             object_type,
-            position: str = Body(DNSanitizer(required=False, allow_none=True)),
-            superordinate: str = Body(DNSanitizer(required=False, allow_none=True)),
-            options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False)),
-            policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False)),
-            properties: Dict = Body(DictSanitizer({}, required=True)),
-    ):
+            position: str = Body(DNSanitizer(required=False, allow_none=True,)),
+            superordinate: str = Body(DNSanitizer(required=False, allow_none=True,)),
+            options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False,)),
+            policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False,)),
+            properties: Dict = Body(DictSanitizer({}, required=True,)),):
         """Create a new {module.object_name} object"""
-        obj = Object(self.application, self.request)
+        obj = Object(self.application, self.request,)
         obj.ldap_connection, obj.ldap_position = self.ldap_connection, self.ldap_position
-        serverctrls = [PostReadControl(True, ['entryUUID'])]
+        serverctrls = [PostReadControl(True, ['entryUUID'],)]
         response = {}
         result = {}
         representation = {
@@ -2959,10 +2944,10 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
             'policies': policies,
             'properties': properties,
         }
-        obj = await obj.create(object_type, None, representation, result, serverctrls=serverctrls, response=response)
-        self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
+        obj = await obj.create(object_type, None, representation, result, serverctrls=serverctrls, response=response,)
+        self.set_header('Location', self.urljoin(quote_dn(obj.dn)),)
         self.set_status(201)
-        self.add_caching(public=False, must_revalidate=True)
+        self.add_caching(public=False, must_revalidate=True,)
 
         uuid = _get_post_read_entry_uuid(response)
 
@@ -2972,39 +2957,39 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
         })
         self.content_negotiation(result)
 
-    def _options(self, object_type):
+    def _options(self, object_type,):
         result = {}
         module = self.get_module(object_type)
         parent = self.get_parent_object_type(module)
         methods = ['GET', 'OPTIONS']
-        self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
-        self.add_link(result, 'up', self.urljoin('../'), title=parent.object_name_plural)
-        self.add_link(result, 'self', self.urljoin(''), name=module.name, title=module.object_name_plural)
-        self.add_link(result, 'describedby', self.urljoin(''), title=_('%s module') % (module.name,), method='OPTIONS')
+        self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'),)
+        self.add_link(result, 'up', self.urljoin('../'), title=parent.object_name_plural,)
+        self.add_link(result, 'self', self.urljoin(''), name=module.name, title=module.object_name_plural,)
+        self.add_link(result, 'describedby', self.urljoin(''), title=_('%s module') % (module.name,), method='OPTIONS',)
         if 'search' in module.operations:
             searchfields = ['position', 'query*', 'filter', 'scope', 'hidden', 'properties']
             if superordinate_names(module):
                 searchfields.append('superordinate')
             if module.supports_pagination:
                 searchfields.extend(['limit', 'page', 'by', 'dir'])
-            self.add_link(result, 'search', self.urljoin('') + '{?%s}' % ','.join(searchfields), templated=True, title=_('Search for %s') % (module.object_name_plural,))
+            self.add_link(result, 'search', self.urljoin('') + '{?%s}' % ','.join(searchfields), templated=True, title=_('Search for %s') % (module.object_name_plural,),)
         if 'add' in module.operations:
             methods.append('POST')
-            self.add_link(result, 'create-form', self.urljoin('add'), title=_('Create a %s') % (module.object_name,))
-            self.add_link(result, 'create-form', self.urljoin('add') + '{?position,superordinate%s}' % (',template' if module.template else ''), templated=True, title=_('Create a %s') % (module.object_name,))
+            self.add_link(result, 'create-form', self.urljoin('add'), title=_('Create a %s') % (module.object_name,),)
+            self.add_link(result, 'create-form', self.urljoin('add') + '{?position,superordinate%s}' % (',template' if module.template else ''), templated=True, title=_('Create a %s') % (module.object_name,),)
         if module.help_link or module.help_text:
-            self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link)
-        self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'help', module.help_link or '', title=module.help_text or module.help_link,)
+        self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon',)
         if module.has_tree:
-            self.add_link(result, 'udm:tree', self.urljoin('tree'), title=_('Object type tree'))
+            self.add_link(result, 'udm:tree', self.urljoin('tree'), title=_('Object type tree'),)
 #        self.add_link(result, '', self.urljoin(''))
-        self.set_header('Allow', ', '.join(methods))
+        self.set_header('Allow', ', '.join(methods),)
         return result
 
-    def options_html(self, response):
+    def options_html(self, response,):
         #root = self.get_html(response)
         root = ET.Element('pre')
-        root.text = json.dumps(response, indent=4)
+        root.text = json.dumps(response, indent=4,)
         return root
 
 
@@ -3015,8 +3000,7 @@ class ObjectsMove(Resource):
             self,
             object_type,
             position: str = Body(DNSanitizer(required=True)),
-            dn: List[str] = Body(ListSanitizer(DNSanitizer(required=True), min_elements=1)),
-    ):
+            dn: List[str] = Body(ListSanitizer(DNSanitizer(required=True), min_elements=1,)),):
         # FIXME: this can only move objects of the same object_type but should move everything
         dns = dn  # TODO: validate: moveable, etc.
 
@@ -3036,12 +3020,12 @@ class ObjectsMove(Resource):
         shared_memory.queue[self.request.user_dn][status_id] = status
 
         self.set_status(202)
-        self.set_header('Location', self.abspath('progress', status['id']))
+        self.set_header('Location', self.abspath('progress', status['id'],),)
         self.finish()
         try:
-            for i, dn in enumerate(dns, 1):
-                module = get_module(object_type, dn, self.ldap_write_connection)
-                dn = await self.pool_submit(module.move, dn, position)
+            for i, dn in enumerate(dns, 1,):
+                module = get_module(object_type, dn, self.ldap_write_connection,)
+                dn = await self.pool_submit(module.move, dn, position,)
                 status['moved'].append(dn)
                 status['description'] = _('Moved %d of %d objects. Last object was: %s.') % (i, len(dns), dn)
                 status['max'] = len(dns)
@@ -3058,72 +3042,72 @@ class ObjectsMove(Resource):
 
 class Object(FormBase, _OpenAPIBase, Resource):
 
-    async def get(self, object_type, dn):
+    async def get(self, object_type, dn,):
         """
         Get a representation of the {module.object_name} object with all its properties, policies, options, metadata and references.
         Includes also instructions how to modify, remove or move the object.
         """
         dn = unquote_dn(dn)
-        copy = bool(self.get_query_argument('copy', None))  # TODO: move into own resource: ./copy
+        copy = bool(self.get_query_argument('copy', None,))  # TODO: move into own resource: ./copy
 
-        if object_type == 'users/self' and not self.ldap_connection.compare_dn(dn, self.request.user_dn):
+        if object_type == 'users/self' and not self.ldap_connection.compare_dn(dn, self.request.user_dn,):
             raise HTTPError(403)
 
         try:
-            module, obj = await self.pool_submit(self.get_module_object, object_type, dn)
+            module, obj = await self.pool_submit(self.get_module_object, object_type, dn,)
         except NotFound:
             # FIXME: return HTTP 410 Gone for removed objects
             # if self.ldap_connection.searchDn(filter_format('(&(reqDN=%s)(reqType=d))', [dn]), base='cn=translog'):
             #     raise Gone(object_type, dn)
             raise
-        if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
-            raise NotFound(object_type, dn)
+        if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr,):
+            raise NotFound(object_type, dn,)
 
         self.set_entity_tags(obj)
 
         props = {}
-        props.update(self._options(object_type, obj.dn))
-        props['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
-        props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy))
+        props.update(self._options(object_type, obj.dn,))
+        props['uri'] = self.abspath(obj.module, quote_dn(obj.dn),)
+        props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy,))
         for reference in module.get_references(obj):
             # TODO: add a reference for the "position" object?!
             if reference['module'] != 'udm':
                 continue  # can not happen currently
-            for dn in set(_map_normalized_dn(filter(None, [reference['id']]))):
-                rel = {'__policies': 'udm:object/policy/reference'}.get(reference['property'], 'udm:object/property/reference/%s' % (reference['property'],))
-                self.add_link(props, rel, self.abspath(reference['objectType'], quote_dn(dn)), name=dn, title=reference['label'], dont_set_http_header=True)
+            for dn in set(_map_normalized_dn(filter(None, [reference['id']],))):
+                rel = {'__policies': 'udm:object/policy/reference'}.get(reference['property'], 'udm:object/property/reference/%s' % (reference['property'],),)
+                self.add_link(props, rel, self.abspath(reference['objectType'], quote_dn(dn),), name=dn, title=reference['label'], dont_set_http_header=True,)
 
         if module.name == 'networks/network':
-            self.add_link(props, 'udm:next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
+            self.add_link(props, 'udm:next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address',), title=_('Next free IP address'),)
 
         if obj.has_property('jpegPhoto'):
-            self.add_link(props, 'udm:user-photo', self.urljoin(quote_dn(obj.dn), 'properties/jpegPhoto.jpg'), type='image/jpeg', title=_('User photo'))
+            self.add_link(props, 'udm:user-photo', self.urljoin(quote_dn(obj.dn), 'properties/jpegPhoto.jpg',), type='image/jpeg', title=_('User photo'),)
 
         if module.name == 'users/user':
-            self.add_link(props, 'udm:service-specific-password', self.urljoin(quote_dn(obj.dn), 'service-specific-password'), title=_('Generate a new service specific password'))
-        self.add_link(props, 'udm:layout', self.urljoin(quote_dn(obj.dn), 'layout'), title=_('Module layout'))
-        self.add_link(props, 'udm:properties', self.urljoin(quote_dn(obj.dn), 'properties'), title=_('Module properties'))
-        for policy_module in props.get('policies', {}).keys():
-            self.add_link(props, 'udm:policy-result', self.urljoin(quote_dn(obj.dn), f'{policy_module}/{{?policy}}'), name=policy_module, title=_('Evaluate referenced %s policies') % (policy_module,), templated=True)
+            self.add_link(props, 'udm:service-specific-password', self.urljoin(quote_dn(obj.dn), 'service-specific-password',), title=_('Generate a new service specific password'),)
+        self.add_link(props, 'udm:layout', self.urljoin(quote_dn(obj.dn), 'layout',), title=_('Module layout'),)
+        self.add_link(props, 'udm:properties', self.urljoin(quote_dn(obj.dn), 'properties',), title=_('Module properties'),)
+        for policy_module in props.get('policies', {},).keys():
+            self.add_link(props, 'udm:policy-result', self.urljoin(quote_dn(obj.dn), f'{policy_module}/{{?policy}}',), name=policy_module, title=_('Evaluate referenced %s policies') % (policy_module,), templated=True,)
 
-        self.add_caching(public=False, must_revalidate=True)
+        self.add_caching(public=False, must_revalidate=True,)
         self.content_negotiation(props)
 
-    def _options(self, object_type, dn):
+    def _options(self, object_type, dn,):
         dn = unquote_dn(dn)
         module = self.get_module(object_type)
         props = {}
         parent_module = self.get_parent_object_type(module)
-        self.add_link(props, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
-        self.add_link(props, 'udm:object-module', self.urljoin('../'), name=parent_module.name, title=parent_module.object_name_plural)
+        self.add_link(props, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'),)
+        self.add_link(props, 'udm:object-module', self.urljoin('../'), name=parent_module.name, title=parent_module.object_name_plural,)
         #self.add_link(props, 'udm:object-types', self.urljoin('../'))
-        self.add_link(props, 'type', self.urljoin('x/../'), name=module.name, title=module.object_name)
-        self.add_link(props, 'up', self.urljoin('x/../'), name=module.name, title=module.object_name)
-        self.add_link(props, 'self', self.urljoin(''), title=dn)
-        self.add_link(props, 'describedby', self.urljoin(''), title=_('%s module') % (module.name,), method='OPTIONS')
-        self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
-        self.add_link(props, 'udm:object/remove', self.urljoin(''), method='DELETE')
-        self.add_link(props, 'udm:object/edit', self.urljoin(''), method='PUT')
+        self.add_link(props, 'type', self.urljoin('x/../'), name=module.name, title=module.object_name,)
+        self.add_link(props, 'up', self.urljoin('x/../'), name=module.name, title=module.object_name,)
+        self.add_link(props, 'self', self.urljoin(''), title=dn,)
+        self.add_link(props, 'describedby', self.urljoin(''), title=_('%s module') % (module.name,), method='OPTIONS',)
+        self.add_link(props, 'icon', self.urljoin('favicon.ico'), type='image/x-icon',)
+        self.add_link(props, 'udm:object/remove', self.urljoin(''), method='DELETE',)
+        self.add_link(props, 'udm:object/edit', self.urljoin(''), method='PUT',)
         # self.add_link(props, '', self.urljoin('report/PDF Document?dn=%s' % (quote(obj.dn),))) # rel=alternate media=print?
 #        for mod in module.child_modules:
 #            mod = self.get_module(mod['id'])
@@ -3132,7 +3116,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
 
         methods = ['GET', 'OPTIONS']
         if module.childs:
-            self.add_link(props, 'udm:children-types', self.urljoin(quote_dn(dn), 'children-types/'), name=module.name, title=_('Sub object types of %s') % (module.object_name,))
+            self.add_link(props, 'udm:children-types', self.urljoin(quote_dn(dn), 'children-types/',), name=module.name, title=_('Sub object types of %s') % (module.object_name,),)
 
         can_modify = set(module.operations) & {'edit', 'move', 'subtree_move'}
         can_remove = 'remove' in module.operations
@@ -3141,40 +3125,40 @@ class Object(FormBase, _OpenAPIBase, Resource):
                 methods.extend(['PUT', 'PATCH'])
             if can_remove:
                 methods.append('DELETE')
-            self.add_link(props, 'edit-form', self.urljoin(quote_dn(dn), 'edit'), title=_('Modify, move or remove this %s') % (module.object_name,))
+            self.add_link(props, 'edit-form', self.urljoin(quote_dn(dn), 'edit',), title=_('Modify, move or remove this %s') % (module.object_name,),)
 
-        self.set_header('Allow', ', '.join(methods))
+        self.set_header('Allow', ', '.join(methods),)
         if 'PATCH' in methods:
-            self.set_header('Accept-Patch', 'application/json-patch+json, application/json')
+            self.set_header('Accept-Patch', 'application/json-patch+json, application/json',)
         return props
 
-    def set_entity_tags(self, obj):
-        self.set_header('Etag', self.get_etag(obj))
-        modified = self.modified_from_timestamp(obj.oldattr['modifyTimestamp'][0].decode('utf-8', 'replace'))
+    def set_entity_tags(self, obj,):
+        self.set_header('Etag', self.get_etag(obj),)
+        modified = self.modified_from_timestamp(obj.oldattr['modifyTimestamp'][0].decode('utf-8', 'replace',))
         if modified:
-            self.set_header('Last-Modified', last_modified(modified))
+            self.set_header('Last-Modified', last_modified(modified),)
         self.check_conditional_requests()
 
-    def get_etag(self, obj):
+    def get_etag(self, obj,):
         # generate as early as possible, to not cause side effects e.g. default values in obj.info. It must be the same value for GET and PUT
         if not obj._open:
             raise RuntimeError('Object was not opened!')
         etag = hashlib.sha1()
-        etag.update(obj.dn.encode('utf-8', 'replace'))
-        etag.update(obj.module.encode('utf-8', 'replace'))
-        etag.update(b''.join(obj.oldattr.get('entryCSN', [])))
+        etag.update(obj.dn.encode('utf-8', 'replace',))
+        etag.update(obj.module.encode('utf-8', 'replace',))
+        etag.update(b''.join(obj.oldattr.get('entryCSN', [],)))
         etag.update((obj.entry_uuid or '').encode('utf-8'))
-        etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
+        etag.update(json.dumps(obj.info, sort_keys=True,).encode('utf-8'))
         return '"%s"' % etag.hexdigest()
 
     @classmethod
-    def get_representation(cls, module, obj, properties, ldap_connection, copy=False, add=False):
-        def _remove_uncopyable_properties(obj):
+    def get_representation(cls, module, obj, properties, ldap_connection, copy=False, add=False,):
+        def _remove_uncopyable_properties(obj,):
             if not copy:
                 return
             for name, p in obj.descriptions.items():
                 if not p.copyable:
-                    obj.info.pop(name, None)
+                    obj.info.pop(name, None,)
 
         # TODO: check if we really want to set the default values
         _remove_uncopyable_properties(obj)
@@ -3192,7 +3176,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
             for passwd in module.password_properties:
                 if passwd in values:
                     values[passwd] = None
-            values = dict(decode_properties(module, obj, values))
+            values = dict(decode_properties(module, obj, values,))
 
         if add:
             # we need to remove dynamic default values as they reference other currently not set variables
@@ -3201,7 +3185,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
                 regex = re.compile(r'<(?P<key>[^>]+)>(?P<ext>\[[\d:]+\])?')  # from univention.admin.pattern_replace()
                 if name not in obj.info or name not in values:
                     continue
-                if isinstance(p.base_default, str) and regex.search(p.base_default):
+                if isinstance(p.base_default, str,) and regex.search(p.base_default):
                     values[name] = None
 
         props = {}
@@ -3209,7 +3193,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
         props['objectType'] = module.name
         props['id'] = module.obj_description(obj)
         if not props['id']:
-            props['id'] = '+'.join(explode_rdn(obj.dn, True))
+            props['id'] = '+'.join(explode_rdn(obj.dn, True,))
         #props['path'] = ldap_dn2path(obj.dn, include_rdn=False)
         props['position'] = ldap_connection.parentDn(obj.dn) if obj.dn else obj.position.getDn()
         props['properties'] = values
@@ -3217,11 +3201,11 @@ class Object(FormBase, _OpenAPIBase, Resource):
         props['policies'] = {}
         if '*' in properties or add:
             for policy in module.policies:
-                props['policies'].setdefault(policy['objectType'], [])
+                props['policies'].setdefault(policy['objectType'], [],)
             for policy in obj.policies:
-                pol_mod = get_module(None, policy, ldap_connection)
+                pol_mod = get_module(None, policy, ldap_connection,)
                 if pol_mod and pol_mod.name:
-                    props['policies'].setdefault(pol_mod.name, []).append(policy)
+                    props['policies'].setdefault(pol_mod.name, [],).append(policy)
         if superordinate_names(module):
             props['superordinate'] = obj.superordinate and obj.superordinate.dn
         if obj.entry_uuid:
@@ -3229,10 +3213,10 @@ class Object(FormBase, _OpenAPIBase, Resource):
         # TODO: objectFlag is available for every module. remove the extended attribute and always map it.
         # alternative: add some other meta information to this object, e.g. is_hidden_object: True, is_synced_from_active_directory: True, ...
         if '*' in properties or 'objectFlag' in properties:
-            props['properties'].setdefault('objectFlag', [x.decode('utf-8', 'replace') for x in obj.oldattr.get('univentionObjectFlag', [])])
+            props['properties'].setdefault('objectFlag', [x.decode('utf-8', 'replace',) for x in obj.oldattr.get('univentionObjectFlag', [],)],)
         if copy or add:
-            props.pop('dn', None)
-            props.pop('id', None)
+            props.pop('dn', None,)
+            props.pop('id', None,)
         return props
 
     @sanitize
@@ -3241,15 +3225,14 @@ class Object(FormBase, _OpenAPIBase, Resource):
             object_type,
             dn,
             position: str = Body(DNSanitizer(required=True)),
-            superordinate: str = Body(DNSanitizer(required=False, allow_none=True)),
-            options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer())),
-            policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()))),
-            properties: Dict = Body(DictSanitizer({}, required=True)),
-    ):
+            superordinate: str = Body(DNSanitizer(required=False, allow_none=True,)),
+            options: Dict = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(),)),
+            policies: Dict = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()),)),
+            properties: Dict = Body(DictSanitizer({}, required=True,)),):
         """Modify or move an {module.object_name} object"""
         dn = unquote_dn(dn)
         try:
-            module, obj = await self.pool_submit(self.get_module_object, object_type, dn, ldap_connection=self.ldap_write_connection)
+            module, obj = await self.pool_submit(self.get_module_object, object_type, dn, ldap_connection=self.ldap_write_connection,)
         except NotFound:
             module, obj = None
 
@@ -3262,14 +3245,14 @@ class Object(FormBase, _OpenAPIBase, Resource):
         }
         if not obj:
             module = self.get_module(object_type)
-            serverctrls = [PostReadControl(True, ['entryUUID'])]
+            serverctrls = [PostReadControl(True, ['entryUUID'],)]
             response = {}
             result = {}
 
-            obj = await self.create(object_type, dn, representation, result, serverctrls=serverctrls, response=response)
-            self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
+            obj = await self.create(object_type, dn, representation, result, serverctrls=serverctrls, response=response,)
+            self.set_header('Location', self.urljoin(quote_dn(obj.dn)),)
             self.set_status(201)
-            self.add_caching(public=False, must_revalidate=True)
+            self.add_caching(public=False, must_revalidate=True,)
 
             uuid = _get_post_read_entry_uuid(response)
 
@@ -3282,14 +3265,14 @@ class Object(FormBase, _OpenAPIBase, Resource):
 
         self.set_entity_tags(obj)
 
-        if position and not self.ldap_write_connection.compare_dn(self.ldap_write_connection.parentDn(dn), position):
-            await self.move(module, dn, position)
+        if position and not self.ldap_write_connection.compare_dn(self.ldap_write_connection.parentDn(dn), position,):
+            await self.move(module, dn, position,)
             return
         else:
             result = {}
-            obj = await self.modify(module, obj, representation, result)
-            self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
-            self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
+            obj = await self.modify(module, obj, representation, result,)
+            self.set_header('Location', self.urljoin(quote_dn(obj.dn)),)
+            self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True,)
             if result:
                 self.content_negotiation(result)
             else:
@@ -3301,19 +3284,18 @@ class Object(FormBase, _OpenAPIBase, Resource):
             self,
             object_type,
             dn,
-            position: Optional[str] = Body(DNSanitizer(required=False, default='')),
-            superordinate: Optional[str] = Body(DNSanitizer(required=False, allow_none=True)),
-            options: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False)),
-            policies: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False)),
-            properties: Optional[Dict] = Body(DictSanitizer({})),
-    ):
+            position: Optional[str] = Body(DNSanitizer(required=False, default='',)),
+            superordinate: Optional[str] = Body(DNSanitizer(required=False, allow_none=True,)),
+            options: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False,)),
+            policies: Optional[Dict] = Body(DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False,)),
+            properties: Optional[Dict] = Body(DictSanitizer({})),):
         """Modify an {module.object_name} object (moving is currently not possible)"""
         dn = unquote_dn(dn)
-        module, obj = await self.pool_submit(self.get_module_object, object_type, dn, self.ldap_write_connection)
+        module, obj = await self.pool_submit(self.get_module_object, object_type, dn, self.ldap_write_connection,)
 
         self.set_entity_tags(obj)
 
-        entry = Object.get_representation(module, obj, ['*'], self.ldap_write_connection, False)
+        entry = Object.get_representation(module, obj, ['*'], self.ldap_write_connection, False,)
         representation = {
             'position': position,
             'superordinate': superordinate,
@@ -3332,17 +3314,17 @@ class Object(FormBase, _OpenAPIBase, Resource):
         if representation['superordinate'] is None:
             representation['superordinate'] = entry.get('superordinate')
         result = {}
-        obj = await self.modify(module, obj, representation, result)
-        self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
-        self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
+        obj = await self.modify(module, obj, representation, result,)
+        self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True,)
+        self.set_header('Location', self.urljoin(quote_dn(obj.dn)),)
         if result:
             self.content_negotiation(result)
         else:
             self.set_status(204)
         raise Finish()
 
-    async def create(self, object_type, dn=None, representation=None, result=None, **kwargs):
-        module = self.get_module(object_type, ldap_connection=self.ldap_write_connection)
+    async def create(self, object_type, dn=None, representation=None, result=None,**kwargs):
+        module = self.get_module(object_type, ldap_connection=self.ldap_write_connection,)
         container = self.request.body_arguments['position']
         superordinate = self.request.body_arguments['superordinate']
         if dn:
@@ -3357,30 +3339,30 @@ class Object(FormBase, _OpenAPIBase, Resource):
         else:
             ldap_position.setDn(module.get_default_container())
 
-        superordinate = self.superordinate_dn_to_object(module, superordinate)
+        superordinate = self.superordinate_dn_to_object(module, superordinate,)
 
-        obj = module.module.object(None, self.ldap_write_connection, ldap_position, superordinate=superordinate)
+        obj = module.module.object(None, self.ldap_write_connection, ldap_position, superordinate=superordinate,)
         obj.open()
-        self.set_properties(module, obj, representation, result)
+        self.set_properties(module, obj, representation, result,)
 
-        if dn and not self.ldap_write_connection.compare_dn(dn, obj._ldap_dn()):
-            self.raise_sanitization_error('dn', _('Trying to create an object with wrong RDN.'))
+        if dn and not self.ldap_write_connection.compare_dn(dn, obj._ldap_dn(),):
+            self.raise_sanitization_error('dn', _('Trying to create an object with wrong RDN.'),)
 
-        dn = await self.pool_submit(self.handle_udm_errors, obj.create, **kwargs)
+        dn = await self.pool_submit(self.handle_udm_errors, obj.create, **kwargs,)
         return obj
 
-    async def modify(self, module, obj, representation, result):
+    async def modify(self, module, obj, representation, result,):
         assert obj._open
-        self.set_properties(module, obj, representation, result)
-        await self.pool_submit(self.handle_udm_errors, obj.modify)
+        self.set_properties(module, obj, representation, result,)
+        await self.pool_submit(self.handle_udm_errors, obj.modify,)
         return obj
 
-    def handle_udm_errors(self, action, *args, **kwargs):
+    def handle_udm_errors(self, action,*args, **kwargs):
         try:
             exists_msg = None
             error = None
             try:
-                return action(*args, **kwargs)
+                return action(*args, **kwargs,)
             except udm_errors.objectExists as exc:
                 exists_msg = f'dn: {exc.args[0]}'
                 error = exc
@@ -3400,41 +3382,41 @@ class Object(FormBase, _OpenAPIBase, Resource):
                 exists_msg = '(nolock)'
                 error = exc
             if exists_msg and error:
-                self.raise_sanitization_error('dn', _('Object exists: %s: %s') % (exists_msg, str(UDM_Error(error))))
+                self.raise_sanitization_error('dn', _('Object exists: %s: %s') % (exists_msg, str(UDM_Error(error))),)
         except (udm_errors.pwQuality, udm_errors.pwToShort, udm_errors.pwalreadyused) as exc:
-            self.raise_sanitization_error(('properties', 'password'), str(UDM_Error(exc)))
+            self.raise_sanitization_error(('properties', 'password'), str(UDM_Error(exc)),)
         except udm_errors.invalidOptions as exc:
-            self.raise_sanitization_error('options', str(UDM_Error(exc)))
+            self.raise_sanitization_error('options', str(UDM_Error(exc)),)
         except (udm_errors.invalidOperation, udm_errors.invalidChild, udm_errors.insufficientInformation) as exc:
-            self.raise_sanitization_error('dn', str(UDM_Error(exc)))  # TODO: invalidOperation and invalidChild should be 403 Forbidden
+            self.raise_sanitization_error('dn', str(UDM_Error(exc)),)  # TODO: invalidOperation and invalidChild should be 403 Forbidden
         except udm_errors.invalidDhcpEntry as exc:
-            self.raise_sanitization_error(('properties', 'dhcpEntryZone'), str(UDM_Error(exc)))
+            self.raise_sanitization_error(('properties', 'dhcpEntryZone'), str(UDM_Error(exc)),)
         except udm_errors.circularGroupDependency as exc:
-            self.raise_sanitization_error(('properties', 'memberOf'), str(UDM_Error(exc)))  # or "nestedGroup"
+            self.raise_sanitization_error(('properties', 'memberOf'), str(UDM_Error(exc)),)  # or "nestedGroup"
         except (udm_errors.valueError) as exc:  # valueInvalidSyntax, valueRequired, etc.
-            self.raise_sanitization_error(('properties', getattr(exc, 'property', 'properties')), str(UDM_Error(exc)))
+            self.raise_sanitization_error(('properties', getattr(exc, 'property', 'properties',)), str(UDM_Error(exc)),)
         except udm_errors.prohibitedUsername as exc:
-            self.raise_sanitization_error(('properties', 'username'), str(UDM_Error(exc)))
+            self.raise_sanitization_error(('properties', 'username'), str(UDM_Error(exc)),)
         except udm_errors.uidNumberAlreadyUsedAsGidNumber as exc:
-            self.raise_sanitization_error(('properties', 'uidNumber'), str(UDM_Error(exc)))
+            self.raise_sanitization_error(('properties', 'uidNumber'), str(UDM_Error(exc)),)
         except udm_errors.gidNumberAlreadyUsedAsUidNumber as exc:
-            self.raise_sanitization_error(('properties', 'gidNumber'), str(UDM_Error(exc)))
+            self.raise_sanitization_error(('properties', 'gidNumber'), str(UDM_Error(exc)),)
         except udm_errors.mailAddressUsed as exc:
-            self.raise_sanitization_error(('properties', 'mailPrimaryAddress'), str(UDM_Error(exc)))
+            self.raise_sanitization_error(('properties', 'mailPrimaryAddress'), str(UDM_Error(exc)),)
         except (udm_errors.adGroupTypeChangeLocalToAny, udm_errors.adGroupTypeChangeDomainLocalToUniversal, udm_errors.adGroupTypeChangeToLocal) as exc:
-            self.raise_sanitization_error(('properties', 'adGroupType'), str(UDM_Error(exc)))
+            self.raise_sanitization_error(('properties', 'adGroupType'), str(UDM_Error(exc)),)
         except udm_errors.base as exc:
             UDM_Error(exc).reraise()
 
-    def set_properties(self, module, obj, representation, result):
+    def set_properties(self, module, obj, representation, result,):
         options = representation['options'] or {}  # TODO: AppAttributes.data_for_module(self.name).iteritems() ?
         options_enable = {opt for opt, enabled in options.items() if enabled}
         options_disable = {opt for opt, enabled in options.items() if enabled is False}  # ignore None!
         obj.options = list(set(obj.options) - options_disable | options_enable)
         if representation['policies']:
-            obj.policies = functools.reduce(lambda x, y: x + y, representation['policies'].values())
+            obj.policies = functools.reduce(lambda x, y,: x + y, representation['policies'].values(),)
         try:
-            properties = PropertiesSanitizer(_copy_value=False).sanitize(representation['properties'], module=module, obj=obj)
+            properties = PropertiesSanitizer(_copy_value=False).sanitize(representation['properties'], module=module, obj=obj,)
         except MultiValidationError as exc:
             multi_error = exc
             properties = representation['properties']
@@ -3448,7 +3430,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
         # The following code is a workaround to make sure that this is the
         # case, however, this should be fixed correctly.
         # This workaround has been documented as Bug #25163.
-        def _tmp_cmp(i):
+        def _tmp_cmp(i,):
             if i[0] == 'mac':  # must be set before network, dhcpEntryZone
                 return ("\x00", i[1])
             if i[0] == 'network':  # must be set before ip, dhcpEntryZone, dnsEntryZoneForward, dnsEntryZoneReverse
@@ -3458,16 +3440,16 @@ class Object(FormBase, _OpenAPIBase, Resource):
             return i
 
         password_properties = module.password_properties
-        for property_name, value in sorted(properties.items(), key=_tmp_cmp):
-            self.set_property(obj, property_name, value, result, multi_error, password_properties)
+        for property_name, value in sorted(properties.items(), key=_tmp_cmp,):
+            self.set_property(obj, property_name, value, result, multi_error, password_properties,)
 
         if multi_error.has_errors():
             class FalseSanitizer(Sanitizer):
                 def sanitize(self):
                     raise multi_error
-            self.sanitize_arguments(FalseSanitizer(), _result_func=lambda x: {'body': {'properties': x}}, _fieldname='properties')
+            self.sanitize_arguments(FalseSanitizer(), _result_func=lambda x,: {'body': {'properties': x}}, _fieldname='properties',)
 
-    def set_property(self, obj, property_name, value, result, multi_error, password_properties):
+    def set_property(self, obj, property_name, value, result, multi_error, password_properties,):
         if property_name in password_properties:
             MODULE.info(f'Setting password property {property_name}')
         else:
@@ -3491,17 +3473,17 @@ class Object(FormBase, _OpenAPIBase, Resource):
                     if property_name in password_properties:
                         MODULE.info(f'Ignore unsetting password property {property_name}')
                     else:
-                        current_value = obj.info.pop(property_name, None)
+                        current_value = obj.info.pop(property_name, None,)
                         MODULE.info(f'Unsetting property {property_name} value {current_value!r}')
                     return
                 raise
         except (udm_errors.valueInvalidSyntax, udm_errors.valueError, udm_errors.valueMayNotChange, udm_errors.valueRequired, udm_errors.noProperty) as exc:
             try:
-                self.raise_sanitization_error(property_name, _('The property %(name)s has an invalid value: %(details)s') % {'name': property_name, 'details': UDM_Error(exc)})
+                self.raise_sanitization_error(property_name, _('The property %(name)s has an invalid value: %(details)s') % {'name': property_name, 'details': UDM_Error(exc)},)
             except ValidationError as exc:
-                multi_error.add_error(exc, property_name)
+                multi_error.add_error(exc, property_name,)
 
-    async def move(self, module, dn, position):
+    async def move(self, module, dn, position,):
         status_id = str(uuid.uuid4())
         status = shared_memory.dict()
         status.update({
@@ -3518,11 +3500,11 @@ class Object(FormBase, _OpenAPIBase, Resource):
         shared_memory.queue[self.request.user_dn][status_id] = status
 
         self.set_status(202)
-        self.set_header('Location', self.abspath('progress', status['id']))
-        self.add_caching(public=False, must_revalidate=True)
+        self.set_header('Location', self.abspath('progress', status['id'],),)
+        self.add_caching(public=False, must_revalidate=True,)
         self.content_negotiation(dict(status))
         try:
-            dn = await self.pool_submit(module.move, dn, position)
+            dn = await self.pool_submit(module.move, dn, position,)
         except Exception:
             status['errors'] = True
             status['traceback'] = traceback.format_exc()  # FIXME: error handling
@@ -3537,12 +3519,11 @@ class Object(FormBase, _OpenAPIBase, Resource):
             self,
             object_type,
             dn,
-            cleanup: bool = Query(BoolSanitizer(default=True), description="Whether to perform a cleanup (e.g. of temporary objects, locks, etc).", example=True),
-            recursive: bool = Query(BoolSanitizer(default=True), description="Whether to remove referring objects (e.g. DNS or DHCP references).", example=True),
-    ):
+            cleanup: bool = Query(BoolSanitizer(default=True), description="Whether to perform a cleanup (e.g. of temporary objects, locks, etc).", example=True,),
+            recursive: bool = Query(BoolSanitizer(default=True), description="Whether to remove referring objects (e.g. DNS or DHCP references).", example=True,),):
         """Remove a {module.object_name_plural} object"""
         dn = unquote_dn(dn)
-        module, obj = await self.pool_submit(self.get_module_object, object_type, dn, self.ldap_write_connection)
+        module, obj = await self.pool_submit(self.get_module_object, object_type, dn, self.ldap_write_connection,)
         assert obj._open
 
         try:
@@ -3557,66 +3538,66 @@ class Object(FormBase, _OpenAPIBase, Resource):
             await self.pool_submit(remove)
         except udm_errors.primaryGroupUsed:
             raise
-        self.add_caching(public=False, must_revalidate=True)
+        self.add_caching(public=False, must_revalidate=True,)
         self.set_status(204)
         raise Finish()
 
     def check_conditional_requests(self):
-        etag = self._headers.get("Etag", "")
+        etag = self._headers.get("Etag", "",)
         if etag:
             self.check_conditional_request_etag(etag)
 
-        last_modified = parsedate(self._headers.get('Last-Modified', ''))
+        last_modified = parsedate(self._headers.get('Last-Modified', '',))
         if last_modified is not None:
             last_modified = datetime.datetime(*last_modified[:6])
             self.check_conditional_request_modified_since(last_modified)
             self.check_conditional_request_unmodified_since(last_modified)
 
-    def check_conditional_request_modified_since(self, last_modified):
-        date = parsedate(self.request.headers.get('If-Modified-Since', ''))
+    def check_conditional_request_modified_since(self, last_modified,):
+        date = parsedate(self.request.headers.get('If-Modified-Since', '',))
         if date is not None:
             if_since = datetime.datetime(*date[:6])
             if if_since >= last_modified:
                 self.set_status(304)
                 raise Finish()
 
-    def check_conditional_request_unmodified_since(self, last_modified):
-        date = parsedate(self.request.headers.get('If-Unmodified-Since', ''))
+    def check_conditional_request_unmodified_since(self, last_modified,):
+        date = parsedate(self.request.headers.get('If-Unmodified-Since', '',))
         if date is not None:
             if_not_since = datetime.datetime(*date[:6])
             if last_modified > if_not_since:
-                raise HTTPError(412, _('If-Unmodified-Since does not match Last-Modified.'))
+                raise HTTPError(412, _('If-Unmodified-Since does not match Last-Modified.'),)
 
-    def check_conditional_request_etag(self, etag):
+    def check_conditional_request_etag(self, etag,):
         safe_request = self.request.method in ('GET', 'HEAD', 'OPTIONS')
 
-        def wheak(x):
+        def wheak(x,):
             return x[2:] if x.startswith('W/') else x
         etag_matches = re.compile(r'\*|(?:W/)?"[^"]*"')
 
         def check_conditional_request_if_none_match():
-            etags = etag_matches.findall(self.request.headers.get("If-None-Match", ""))
+            etags = etag_matches.findall(self.request.headers.get("If-None-Match", "",))
             if not etags:
                 return
 
-            if '*' in etags or wheak(etag) in map(wheak, etags):
+            if '*' in etags or wheak(etag) in map(wheak, etags,):
                 if safe_request:
                     self.set_status(304)  # Not modified
                     raise Finish()
                 else:
                     message = _('If-None-Match %s does not match entity tag(s) %s.') % (etag, ', '.join(etags))
-                    raise HTTPError(412, message)  # Precondition Failed
+                    raise HTTPError(412, message,)  # Precondition Failed
 
         def check_conditional_request_if_match():
-            etags = etag_matches.findall(self.request.headers.get("If-Match", ""))
+            etags = etag_matches.findall(self.request.headers.get("If-Match", "",))
             if not etags:
                 return
-            if wheak(etag) not in map(wheak, etags):
+            if wheak(etag) not in map(wheak, etags,):
                 message = _('If-Match %s does not match entity tag(s) %s.') % (etag, ', '.join(etags))
                 if not safe_request:
-                    raise HTTPError(412, message)  # Precondition Failed
+                    raise HTTPError(412, message,)  # Precondition Failed
                 elif self.request.headers.get('Range'):
-                    raise HTTPError(416, message)  # Range Not Satisfiable
+                    raise HTTPError(416, message,)  # Range Not Satisfiable
 
         check_conditional_request_if_none_match()
         check_conditional_request_if_match()
@@ -3624,43 +3605,43 @@ class Object(FormBase, _OpenAPIBase, Resource):
 
 class UserPhoto(Resource):
 
-    async def get(self, object_type, dn):
+    async def get(self, object_type, dn,):
         dn = unquote_dn(dn)
-        module = get_module(object_type, dn, self.ldap_connection)
+        module = get_module(object_type, dn, self.ldap_connection,)
         if module is None:
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
 
-        obj = await self.pool_submit(module.get, dn)
+        obj = await self.pool_submit(module.get, dn,)
         if not obj:
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
 
         if not obj.has_property('jpegPhoto'):
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
 
-        data = base64.b64decode(obj.info.get('jpegPhoto', '').encode('ASCII'))
-        modified = self.modified_from_timestamp(self.ldap_connection.getAttr(obj.dn, 'modifyTimestamp')[0].decode('utf-8'))
+        data = base64.b64decode(obj.info.get('jpegPhoto', '',).encode('ASCII'))
+        modified = self.modified_from_timestamp(self.ldap_connection.getAttr(obj.dn, 'modifyTimestamp',)[0].decode('utf-8'))
         if modified:
-            self.add_header('Last-Modified', last_modified(modified))
-        self.set_header('Content-Type', 'image/jpeg')
-        self.add_caching(public=False, max_age=2592000, must_revalidate=True)
+            self.add_header('Last-Modified', last_modified(modified),)
+        self.set_header('Content-Type', 'image/jpeg',)
+        self.add_caching(public=False, max_age=2592000, must_revalidate=True,)
         self.finish(data)
 
-    async def post(self, object_type, dn):
+    async def post(self, object_type, dn,):
         dn = unquote_dn(dn)
-        module = get_module(object_type, dn, self.ldap_write_connection)
+        module = get_module(object_type, dn, self.ldap_write_connection,)
         if module is None:
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
 
-        obj = await self.pool_submit(module.get, dn)
+        obj = await self.pool_submit(module.get, dn,)
         if not obj:
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
 
         if not obj.has_property('jpegPhoto'):
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
 
         photo = self.request.files['jpegPhoto'][0]['body']
         if len(photo) > 262144:
-            raise HTTPError(413, 'too large: maximum: 262144 bytes')
+            raise HTTPError(413, 'too large: maximum: 262144 bytes',)
         obj['jpegPhoto'] = base64.b64encode(photo).decode('ASCII')
 
         await self.pool_submit(obj.modify)
@@ -3676,10 +3657,9 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
     async def get(
             self,
             object_type,
-            position: str = Query(DNSanitizer(required=False, allow_none=True), description="Position which is used as search base."),
-            superordinate: str = Query(DNSanitizer(required=False, allow_none=True), description="The superordinate DN of the object to create. `position` is sufficient."),  # example=f"cn=superordinate,{ldap_base}"
-            template: str = Query(DNSanitizer(required=False, allow_none=True), description="**Experimental**: A |UDM| template object.", deprecated=True),
-    ):
+            position: str = Query(DNSanitizer(required=False, allow_none=True,), description="Position which is used as search base.",),
+            superordinate: str = Query(DNSanitizer(required=False, allow_none=True,), description="The superordinate DN of the object to create. `position` is sufficient.",),  # example=f"cn=superordinate,{ldap_base}"
+            template: str = Query(DNSanitizer(required=False, allow_none=True,), description="**Experimental**: A |UDM| template object.", deprecated=True,),):
         """Get a template for creating an {module.object_name} object (contains all properties and their default values)"""
         module = self.get_module(object_type)  # ldap_connection=self.ldap_write_connection ?
         if 'add' not in module.operations:
@@ -3689,68 +3669,68 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
 
         result = {}
 
-        self.add_link(result, 'self', self.urljoin(''), title=_('Add %s') % (module.object_name,))
+        self.add_link(result, 'self', self.urljoin(''), title=_('Add %s') % (module.object_name,),)
         if not module.template:
             template = None
-        result.update(self.get_create_form(module, template=template, position=position, superordinate=superordinate))
+        result.update(self.get_create_form(module, template=template, position=position, superordinate=superordinate,))
 
         if module.template:
-            template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)  # ldap_connection=self.ldap_write_connection ?
+            template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position,)  # ldap_connection=self.ldap_write_connection ?
             templates = template.search(ucr.get('ldap/base'))
             if templates:
-                form = self.add_form(result, action='', method='GET', id='template', layout='template')  # FIXME: preserve query string
+                form = self.add_form(result, action='', method='GET', id='template', layout='template',)  # FIXME: preserve query string
                 template_layout = [{'label': _('Template'), 'description': 'A template defines rules for default object properties.', 'layout': ['template', '']}]
-                self.add_layout(result, template_layout, 'template')
-                self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': template.obj_description(_obj)} for _obj in templates])
-                self.add_form_element(form, '', _('Fill template values'), type='submit')
+                self.add_layout(result, template_layout, 'template',)
+                self.add_form_element(form, 'template', '', element='select', options=[{'value': _obj.dn, 'label': template.obj_description(_obj)} for _obj in templates],)
+                self.add_form_element(form, '', _('Fill template values'), type='submit',)
 
-        self.add_caching(public=True, must_revalidate=True)
+        self.add_caching(public=True, must_revalidate=True,)
         self.content_negotiation(result)
 
-    def get_create_form(self, module, dn=None, copy=False, template=None, position=None, superordinate=None):
+    def get_create_form(self, module, dn=None, copy=False, template=None, position=None, superordinate=None,):
         result = {}
-        self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
-        self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
-        self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
-        self.add_link(result, 'type', self.urljoin('.'), title=module.object_name)
-        self.add_link(result, 'create', self.urljoin('.'), title=module.object_name, method='POST')
+        self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon',)
+        self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'),)
+        self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural,)
+        self.add_link(result, 'type', self.urljoin('.'), title=module.object_name,)
+        self.add_link(result, 'create', self.urljoin('.'), title=module.object_name, method='POST',)
 
         layout = Layout.get_layout(module)
-        self.add_layout(result, layout, 'create-form', href=self.urljoin('layout'))
+        self.add_layout(result, layout, 'create-form', href=self.urljoin('layout'),)
 
         properties = Properties.get_properties(module)
-        self.add_resource(result, 'udm:properties', {'properties': properties})
-        self.add_link(result, 'udm:properties', href=self.urljoin('properties'))
+        self.add_resource(result, 'udm:properties', {'properties': properties},)
+        self.add_link(result, 'udm:properties', href=self.urljoin('properties'),)
 
         meta_layout = layout[0]
         meta_layout['layout'].extend(['position'])
         # TODO: wizard: first select position & template
 
         for policy in module.policies:
-            form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm:policy-result')
-            self.add_form_element(form, 'position', position or '', label=_('The container where the object is going to be created in'))
-            self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'])
-            self.add_form_element(form, '', _('Policy result'), type='submit')
+            form = self.add_form(result, action=self.urljoin(policy['objectType']) + '/', method='GET', name=policy['objectType'], rel='udm:policy-result',)
+            self.add_form_element(form, 'position', position or '', label=_('The container where the object is going to be created in'),)
+            self.add_form_element(form, 'policy', '', label=policy['label'], title=policy['description'],)
+            self.add_form_element(form, '', _('Policy result'), type='submit',)
 
         ldap_position = univention.admin.uldap.position(self.ldap_position.getBase())
         if position:
             ldap_position.setDn(position)
         else:
             ldap_position.setDn(module.get_default_container())
-        superordinate = self.superordinate_dn_to_object(module, superordinate)
+        superordinate = self.superordinate_dn_to_object(module, superordinate,)
 
-        obj = module.module.object(dn, self.ldap_connection, ldap_position, superordinate=superordinate)
+        obj = module.module.object(dn, self.ldap_connection, ldap_position, superordinate=superordinate,)
         obj.open()
-        result.update(Object.get_representation(module, obj, ['*'], self.ldap_connection, copy, True))
+        result.update(Object.get_representation(module, obj, ['*'], self.ldap_connection, copy, True,))
 
-        form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='create-form')
-        self.add_form_element(form, 'position', position or '')
+        form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='create-form',)
+        self.add_form_element(form, 'position', position or '',)
         if superordinate_names(module):
             meta_layout['layout'].append('superordinate')
-            self.add_form_element(form, 'superordinate', '')  # TODO: replace with <select>
+            self.add_form_element(form, 'superordinate', '',)  # TODO: replace with <select>
 
         if template:
-            self.add_form_element(form, 'template', template, readonly='readonly')
+            self.add_form_element(form, 'template', template, readonly='readonly',)
             meta_layout['layout'].append('template')
 
         values = {}
@@ -3760,20 +3740,20 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
             except KeyError:
                 pass
 
-        values = dict(decode_properties(module, obj, values))
-        self.add_property_form_elements(module, form, properties, values)
+        values = dict(decode_properties(module, obj, values,))
+        self.add_property_form_elements(module, form, properties, values,)
 
         for policy in module.policies:
-            self.add_form_element(form, 'policies[%s]' % (policy['objectType']), '', label=policy['label'])
+            self.add_form_element(form, 'policies[%s]' % (policy['objectType']), '', label=policy['label'],)
 
         meta_layout['layout'].append('')
-        self.add_form_element(form, '', _('Create %s') % (module.object_name,), type='submit')
+        self.add_form_element(form, '', _('Create %s') % (module.object_name,), type='submit',)
 
-        form = self.add_form(result, action=self.urljoin(''), method='GET', id='position', layout='position')  # FIXME: preserve query string
-        self.add_form_element(form, 'position', position or '', element='select', options=sorted(({'value': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()), key=lambda x: x['label'].lower()))
-        self.add_form_element(form, '', _('Select position'), type='submit')
+        form = self.add_form(result, action=self.urljoin(''), method='GET', id='position', layout='position',)  # FIXME: preserve query string
+        self.add_form_element(form, 'position', position or '', element='select', options=sorted(({'value': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()), key=lambda x,: x['label'].lower(),),)
+        self.add_form_element(form, '', _('Select position'), type='submit',)
         position_layout = [{'label': _('Container'), 'description': "The container in which the LDAP object shall be created.", 'layout': ['position', '']}]
-        self.add_layout(result, position_layout, 'position')
+        self.add_layout(result, position_layout, 'position',)
         return result
 
 
@@ -3783,85 +3763,84 @@ class ObjectCopy(ObjectAdd):
     async def get(
             self,
             object_type,
-            dn: str = Query(DNSanitizer(required=True)),
-    ):
+            dn: str = Query(DNSanitizer(required=True)),):
         module = self.get_module(object_type)  # ldap_connection=self.ldap_write_connection ?
         if 'copy' not in module.operations:
             raise NotFound(object_type)
 
         result = {}
-        self.add_link(result, 'self', self.urljoin(''), title=_('Copy %s') % (module.object_name,))
-        result.update(self.get_create_form(module, dn=dn, copy=True))
-        self.add_caching(public=True, must_revalidate=True)
+        self.add_link(result, 'self', self.urljoin(''), title=_('Copy %s') % (module.object_name,),)
+        result.update(self.get_create_form(module, dn=dn, copy=True,))
+        self.add_caching(public=True, must_revalidate=True,)
         self.content_negotiation(result)
 
 
 class ObjectEdit(FormBase, Resource):
     """GET a form containing ways to modify, remove, move a specific object"""
 
-    async def get(self, object_type, dn):
+    async def get(self, object_type, dn,):
         dn = unquote_dn(dn)
-        module = get_module(object_type, dn, self.ldap_connection)
+        module = get_module(object_type, dn, self.ldap_connection,)
         if module is None:
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
 
         if not set(module.operations) & {'remove', 'move', 'subtree_move', 'edit'}:
             # modification of this object type is not possible
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
 
         result = {}
         module.load(force_reload=True)  # reload for instant extended attributes
 
-        obj = await self.pool_submit(module.get, dn)
+        obj = await self.pool_submit(module.get, dn,)
         if not obj:
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
 
-        if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
-            raise NotFound(object_type, dn)
+        if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr,):
+            raise NotFound(object_type, dn,)
 
-        self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
-        self.add_link(result, 'udm:object-modules', self.urljoin('../../../'), title=_('All modules'))
-        self.add_link(result, 'udm:object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
-        self.add_link(result, 'type', self.urljoin('../'), title=module.object_name)
-        self.add_link(result, 'up', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
-        self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
+        self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon',)
+        self.add_link(result, 'udm:object-modules', self.urljoin('../../../'), title=_('All modules'),)
+        self.add_link(result, 'udm:object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural,)
+        self.add_link(result, 'type', self.urljoin('../'), title=module.object_name,)
+        self.add_link(result, 'up', self.urljoin('..', quote_dn(obj.dn),), title=obj.dn,)
+        self.add_link(result, 'self', self.urljoin(''), title=_('Modify'),)
 
         if 'remove' in module.operations:
             # TODO: add list of referring objects
-            form = self.add_form(result, id='remove', action=self.urljoin('.').rstrip('/'), method='DELETE', layout='remove')
+            form = self.add_form(result, id='remove', action=self.urljoin('.').rstrip('/'), method='DELETE', layout='remove',)
             remove_layout = [{'label': _('Remove'), 'description': _("Remove the object"), 'layout': ['cleanup', 'recursive', '']}]
-            self.add_layout(result, remove_layout, 'remove')
-            self.add_form_element(form, 'cleanup', '1', type='checkbox', checked=True, label=_('Perform a cleanup'), title=_('e.g. temporary objects, locks, etc.'))
-            self.add_form_element(form, 'recursive', '1', type='checkbox', checked=True, label=_('Remove referring objects'), title=_('e.g. DNS or DHCP references of a computer'))
-            self.add_form_element(form, '', _('Remove'), type='submit')
+            self.add_layout(result, remove_layout, 'remove',)
+            self.add_form_element(form, 'cleanup', '1', type='checkbox', checked=True, label=_('Perform a cleanup'), title=_('e.g. temporary objects, locks, etc.'),)
+            self.add_form_element(form, 'recursive', '1', type='checkbox', checked=True, label=_('Remove referring objects'), title=_('e.g. DNS or DHCP references of a computer'),)
+            self.add_form_element(form, '', _('Remove'), type='submit',)
 
         if set(module.operations) & {'move', 'subtree_move'}:
-            form = self.add_form(result, id='move', action=self.urljoin('.').rstrip('/'), method='PUT')
-            self.add_form_element(form, 'position', self.ldap_connection.parentDn(obj.dn))  # TODO: replace with <select>
-            self.add_form_element(form, '', _('Move'), type='submit')
+            form = self.add_form(result, id='move', action=self.urljoin('.').rstrip('/'), method='PUT',)
+            self.add_form_element(form, 'position', self.ldap_connection.parentDn(obj.dn),)  # TODO: replace with <select>
+            self.add_form_element(form, '', _('Move'), type='submit',)
 
         if 'edit' in module.operations:
-            representation = Object.get_representation(module, obj, ['*'], self.ldap_connection)
+            representation = Object.get_representation(module, obj, ['*'], self.ldap_connection,)
             result.update(representation)
             for policy in module.policies:
                 ptype = policy['objectType']
-                form = self.add_form(result, action=self.urljoin(ptype) + '/', method='GET', name=ptype, rel='udm:policy-result')
-                pol = (representation['policies'].get(ptype, ['']) or [''])[0]
-                self.add_form_element(form, 'policy', pol, label=policy['label'], title=policy['description'], placeholder=_('Policy DN'))
-                self.add_form_element(form, '', _('Policy result'), type='submit')
+                form = self.add_form(result, action=self.urljoin(ptype) + '/', method='GET', name=ptype, rel='udm:policy-result',)
+                pol = (representation['policies'].get(ptype, [''],) or [''])[0]
+                self.add_form_element(form, 'policy', pol, label=policy['label'], title=policy['description'], placeholder=_('Policy DN'),)
+                self.add_form_element(form, '', _('Policy result'), type='submit',)
 
             assert obj._open
-            layout = Layout.get_layout(module, dn if object_type != 'users/self' else None)
+            layout = Layout.get_layout(module, dn if object_type != 'users/self' else None,)
             layout[0]['layout'].extend(['dn', 'jpegPhoto-preview', ''])
-            properties = Properties.get_properties(module, dn)
-            self.add_resource(result, 'udm:properties', {'properties': properties})
-            self.add_link(result, 'udm:properties', href=self.urljoin('properties'))
-            is_ad_synced_object = ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [])
-            is_ad_synced_object = 'synced' in obj.oldattr.get('univentionObjectFlag', [])
+            properties = Properties.get_properties(module, dn,)
+            self.add_resource(result, 'udm:properties', {'properties': properties},)
+            self.add_link(result, 'udm:properties', href=self.urljoin('properties'),)
+            is_ad_synced_object = ucr.is_true('ad/member') and 'synced' in obj.oldattr.get('univentionObjectFlag', [],)
+            is_ad_synced_object = 'synced' in obj.oldattr.get('univentionObjectFlag', [],)
             if is_ad_synced_object:
-                layout[0]['layout'].insert(0, '$active_directory_warning$')
+                layout[0]['layout'].insert(0, '$active_directory_warning$',)
                 properties['$active_directory_warning$'] = {'id': '$active_directory_warning$', 'label': _('The %s "%s" is part of the Active Directory domain.') % (module.object_name, obj[module.identifies])}
-                self.add_form_element(form, '$active_directory_warning$', '1', type='checkbox', checked=True, label=_('The %s "%s" is part of the Active Directory domain.') % (module.object_name, obj[module.identifies]))
+                self.add_form_element(form, '$active_directory_warning$', '1', type='checkbox', checked=True, label=_('The %s "%s" is part of the Active Directory domain.') % (module.object_name, obj[module.identifies]),)
                 for prop in properties.values():
                     if prop.get('readonly_when_synced'):
                         prop['disabled'] = True
@@ -3869,13 +3848,13 @@ class ObjectEdit(FormBase, Resource):
             enctype = 'application/x-www-form-urlencoded'
             if obj.has_property('jpegPhoto'):
                 enctype = 'multipart/form-data'
-                form = self.add_form(result, action=self.urljoin('properties/jpegPhoto.jpg'), method='POST', enctype='multipart/form-data')
-                self.add_form_element(form, 'jpegPhoto', '', type='file', accept='image/jpg image/jpeg image/png')
-                self.add_form_element(form, '', _('Upload user photo'), type='submit')
+                form = self.add_form(result, action=self.urljoin('properties/jpegPhoto.jpg'), method='POST', enctype='multipart/form-data',)
+                self.add_form_element(form, 'jpegPhoto', '', type='file', accept='image/jpg image/jpeg image/png',)
+                self.add_form_element(form, '', _('Upload user photo'), type='submit',)
 
-            form = self.add_form(result, id='edit', action=self.urljoin('.').rstrip('/'), method='PUT', enctype=enctype, layout='edit-form')
-            self.add_layout(result, layout, 'edit-form')
-            self.add_form_element(form, 'dn', obj.dn, readonly='readonly', disabled='disabled')
+            form = self.add_form(result, id='edit', action=self.urljoin('.').rstrip('/'), method='PUT', enctype=enctype, layout='edit-form',)
+            self.add_layout(result, layout, 'edit-form',)
+            self.add_form_element(form, 'dn', obj.dn, readonly='readonly', disabled='disabled',)
 
             values = {}
             for key, prop in properties.items():
@@ -3888,28 +3867,28 @@ class ObjectEdit(FormBase, Resource):
                 except KeyError:
                     continue
 
-            values = dict(decode_properties(module, obj, values))
-            self.add_property_form_elements(module, form, properties, values)
+            values = dict(decode_properties(module, obj, values,))
+            self.add_property_form_elements(module, form, properties, values,)
             if 'jpegPhoto' in properties:
                 properties['jpegPhoto-preview'] = {'id': 'jpegPhoto-preview', 'label': ' '}
-                self.add_form_element(form, 'jpegPhoto-preview', '', type='image', label=' ', src=self.urljoin('properties/jpegPhoto.jpg'), alt=_('No photo set'))
+                self.add_form_element(form, 'jpegPhoto-preview', '', type='image', label=' ', src=self.urljoin('properties/jpegPhoto.jpg'), alt=_('No photo set'),)
 
             for policy in module.policies:
                 ptype = policy['objectType']
-                pol = (representation['policies'].get(ptype, ['']) or [''])[0]
-                self.add_form_element(form, 'policies[%s]' % (ptype), pol, label=policy['label'], placeholder=_('Policy DN'))
+                pol = (representation['policies'].get(ptype, [''],) or [''])[0]
+                self.add_form_element(form, 'policies[%s]' % (ptype), pol, label=policy['label'], placeholder=_('Policy DN'),)
 
             references = Layout.get_reference_layout(layout)
             if references:
                 for reference in module.get_policy_references(obj.dn):
                     if reference['module'] != 'udm':
                         continue
-                    self.add_form_element(form, 'references', '', href=self.abspath(reference['objectType'], quote_dn(reference['id'])), label=reference['label'], element='a')
+                    self.add_form_element(form, 'references', '', href=self.abspath(reference['objectType'], quote_dn(reference['id']),), label=reference['label'], element='a',)
                 references['layout'].append('references')
 
-            self.add_form_element(form, '', _('Modify %s') % (module.object_name,), type='submit')
+            self.add_form_element(form, '', _('Modify %s') % (module.object_name,), type='submit',)
 
-        self.add_caching(public=False, must_revalidate=True)
+        self.add_caching(public=False, must_revalidate=True,)
         self.content_negotiation(result)
 
 
@@ -3926,19 +3905,18 @@ class PropertyChoices(Resource):
             object_type,
             dn,
             property_,
-            dn_: str = Query(DNSanitizer(required=False), alias='dn'),
+            dn_: str = Query(DNSanitizer(required=False), alias='dn',),
             property: str = Query(ObjectPropertySanitizer(required=False)),
             value: str = Query(SearchSanitizer(required=False)),
-            hidden: bool = Query(BooleanSanitizer(required=False, default=True)),
-            dependencies: str = Query(DictSanitizer({}, required=False)),
-    ):
+            hidden: bool = Query(BooleanSanitizer(required=False, default=True,)),
+            dependencies: str = Query(DictSanitizer({}, required=False,)),):
         dn = unquote_dn(dn)
         module = self.get_module(object_type)
         try:
             prop = module.module.property_descriptions[property_]
         except KeyError:
-            raise NotFound(object_type, dn)
-        type_ = udm_types.TypeHint.detect(prop, property_)
+            raise NotFound(object_type, dn,)
+        type_ = udm_types.TypeHint.detect(prop, property_,)
         options = {key: val for key, val in {
             'dn': dn_,
             'property': property,
@@ -3946,8 +3924,8 @@ class PropertyChoices(Resource):
             'hidden': hidden,
             'dependencies': dependencies,
         } if val is not None}
-        choices = await self.pool_submit(type_.get_choices, self.ldap_connection, options)
-        self.add_caching(public=False, must_revalidate=True)
+        choices = await self.pool_submit(type_.get_choices, self.ldap_connection, options,)
+        self.add_caching(public=False, must_revalidate=True,)
         self.content_negotiation({'choices': choices})
 
 
@@ -3955,7 +3933,7 @@ class PolicyResultBase(Resource):
     """get the possible policies of the policy-type for user objects located at the container"""
 
     @run_on_executor(executor='pool')
-    def _get(self, object_type, policy_type, dn, is_container=False):
+    def _get(self, object_type, policy_type, dn, is_container=False,):
         """
         Returns a virtual policy object containing the values that
         the given object or container inherits
@@ -3967,10 +3945,10 @@ class PolicyResultBase(Resource):
             obj = self.get_object_by_dn(dn)
         else:
             # editing an exiting UDM object -> use the object itself
-            obj = self.get_object(object_type, dn)
+            obj = self.get_object(object_type, dn,)
 
         if policy_dn:
-            policy_obj = self.get_object(policy_type, policy_dn)
+            policy_obj = self.get_object(policy_type, policy_dn,)
         else:
             policy_obj = self.get_module(policy_type).get(None)
         policy_obj.clone(obj)
@@ -4011,11 +3989,11 @@ class PolicyResultBase(Resource):
         infos = copy.copy(policy_obj.polinfo_more)
         for key, _value in infos.items():
             if key in policy_obj.polinfo:
-                if isinstance(infos[key], (tuple, list)):
+                if isinstance(infos[key], (tuple, list),):
                     continue
                 infos[key]['value'] = policy_obj.polinfo[key]
         if policy_dn:
-            self.add_link(infos, 'udm:policy-edit', self.abspath(policy_obj.module, policy_dn), title=_('Click to edit the inherited properties of the policy'))
+            self.add_link(infos, 'udm:policy-edit', self.abspath(policy_obj.module, policy_dn,), title=_('Click to edit the inherited properties of the policy'),)
         return infos
 
 
@@ -4031,11 +4009,10 @@ class PolicyResult(PolicyResultBase):
             object_type,
             dn,
             policy_type,
-            policy: str = Query(DNSanitizer(required=False, default=None)),
-    ):
+            policy: str = Query(DNSanitizer(required=False, default=None,)),):
         dn = unquote_dn(dn)
-        infos = await self._get(object_type, policy_type, dn, is_container=False)
-        self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
+        infos = await self._get(object_type, policy_type, dn, is_container=False,)
+        self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True,)
         self.content_negotiation(infos)
 
 
@@ -4050,41 +4027,40 @@ class PolicyResultContainer(PolicyResultBase):
             self,
             object_type,
             policy_type,
-            policy: str = Query(DNSanitizer(required=False, default=None)),
-            position: str = Query(DNSanitizer(required=True)),
-    ):
-        infos = await self._get(object_type, policy_type, position, is_container=True)
-        self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
+            policy: str = Query(DNSanitizer(required=False, default=None,)),
+            position: str = Query(DNSanitizer(required=True)),):
+        infos = await self._get(object_type, policy_type, position, is_container=True,)
+        self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True,)
         self.content_negotiation(infos)
 
 
 class Operations(Resource):
     """GET /udm/progress/$progress-id (get the progress of a started operation like move, report, maybe add/put?, ...)"""
 
-    def get(self, progress):
-        progressbars = shared_memory.queue.get(self.request.user_dn, {})
+    def get(self, progress,):
+        progressbars = shared_memory.queue.get(self.request.user_dn, {},)
         if progress not in progressbars:
             raise NotFound()
         result = dict(progressbars[progress])
         if result.get('uri'):
             self.set_status(303)
-            self.add_header('Location', result['uri'])
-            self.add_link(result, 'self', result['uri'])
-            shared_memory.queue.get(self.request.user_dn, {}).pop(progress, {})
+            self.add_header('Location', result['uri'],)
+            self.add_link(result, 'self', result['uri'],)
+            shared_memory.queue.get(self.request.user_dn, {},).pop(progress, {},)
         else:
             self.set_status(301)
-            self.add_header('Location', self.urljoin(''))
-            self.add_header('Retry-After', '1')
-        self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
+            self.add_header('Location', self.urljoin(''),)
+            self.add_header('Retry-After', '1',)
+        self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True,)
         self.content_negotiation(result)
 
-    def get_html(self, response):
+    def get_html(self, response,):
         root = super().get_html(response)
-        if isinstance(response, dict) and 'value' in response and 'max' in response:
+        if isinstance(response, dict,) and 'value' in response and 'max' in response:
             h1 = ET.Element('h1')
-            h1.text = response.get('description', '')
+            h1.text = response.get('description', '',)
             root.append(h1)
-            root.append(ET.Element('progress', value=str(response['value']), max=str(response['max'])))
+            root.append(ET.Element('progress', value=str(response['value']), max=str(response['max']),))
         return root
 
 
@@ -4093,14 +4069,13 @@ class LicenseRequest(Resource):
     @sanitize
     async def get(
             self,
-            email: str = Query(EmailSanitizer(required=True)),
-    ):
+            email: str = Query(EmailSanitizer(required=True)),):
         data = {
             'email': email,
             'licence': dump_license(),
         }
         if not data['licence']:
-            raise HTTPError(500, _('Cannot parse License from LDAP'))
+            raise HTTPError(500, _('Cannot parse License from LDAP'),)
 
         # TODO: we should also send a link (self.request.full_url()) to the license server, so that the email can link to a url which automatically inserts the license:
         # self.request.urljoin('import', license=quote(base64.b64encode(zlib.compress(b''.join(_[17:] for _ in open('license.ldif', 'rb').readlines() if _.startswith(b'univentionLicense')), 6)[2:-4])))
@@ -4109,20 +4084,20 @@ class LicenseRequest(Resource):
         url = 'https://license.univention.de/keyid/conversion/submit'
         http_client = tornado.httpclient.AsyncHTTPClient()
         try:
-            await http_client.fetch(url, method='POST', body=data, user_agent='UMC/AppCenter', headers={'Content-Type': 'application/x-www-form-urlencoded'})
+            await http_client.fetch(url, method='POST', body=data, user_agent='UMC/AppCenter', headers={'Content-Type': 'application/x-www-form-urlencoded'},)
         except tornado.httpclient.HTTPError as exc:
             error = str(exc)
             if exc.response.code >= 500:
                 error = _('This seems to be a problem with the license server. Please try again later.')
-            match = re.search(b'<span id="details">(?P<details>.*?)</span>', exc.response.body, flags=re.DOTALL)
+            match = re.search(b'<span id="details">(?P<details>.*?)</span>', exc.response.body, flags=re.DOTALL,)
             if match:
-                error = match.group(1).decode('UTF-8', 'replace').replace('\n', '')
+                error = match.group(1).decode('UTF-8', 'replace',).replace('\n', '',)
             # FIXME: use original error handling
-            raise HTTPError(400, _('Could not request a license from Univention: %s') % (error,))
+            raise HTTPError(400, _('Could not request a license from Univention: %s') % (error,),)
 
         # creating a new ucr variable to prevent duplicated registration (Bug #35711)
         handler_set(['ucs/web/license/requested=true'])
-        self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
+        self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True,)
         self.content_negotiation({'message': _('A new license has been requested and sent to your email address.')})
 
 
@@ -4134,7 +4109,7 @@ class LicenseCheck(Resource):
             check_license(self.ldap_connection)
         except LicenseError as exc:
             message = str(exc)
-        self.add_caching(public=False, max_age=120, must_revalidate=True)
+        self.add_caching(public=False, max_age=120, must_revalidate=True,)
         self.content_negotiation({'message': message})
 
 
@@ -4142,17 +4117,17 @@ class License(Resource):
 
     def get(self):
         license_data = {}
-        self.add_link(license_data, 'udm:license-check', self.urljoin('check'), title=_('Check license status'))
-        self.add_link(license_data, 'udm:license-request', self.urljoin('request'))
-        self.add_link(license_data, 'udm:license-import', self.urljoin(''))
+        self.add_link(license_data, 'udm:license-check', self.urljoin('check'), title=_('Check license status'),)
+        self.add_link(license_data, 'udm:license-request', self.urljoin('request'),)
+        self.add_link(license_data, 'udm:license-import', self.urljoin(''),)
 
-        form = self.add_form(license_data, self.urljoin('request'), 'GET', rel='udm:license-request')
-        self.add_form_element(form, 'email', '', type='email', label=_('E-Mail address'))
-        self.add_form_element(form, '', _('Request new license'), type='submit')
+        form = self.add_form(license_data, self.urljoin('request'), 'GET', rel='udm:license-request',)
+        self.add_form_element(form, 'email', '', type='email', label=_('E-Mail address'),)
+        self.add_form_element(form, '', _('Request new license'), type='submit',)
 
-        form = self.add_form(license_data, self.urljoin('import'), 'POST', rel='udm:license-import', enctype='multipart/form-data')
-        self.add_form_element(form, 'license', '', type='file', label=_('License file (ldif format)'))
-        self.add_form_element(form, '', _('Import license'), type='submit')
+        form = self.add_form(license_data, self.urljoin('import'), 'POST', rel='udm:license-import', enctype='multipart/form-data',)
+        self.add_form_element(form, 'license', '', type='file', label=_('License file (ldif format)'),)
+        self.add_form_element(form, '', _('Import license'), type='submit',)
 
         try:
             import univention.admin.license as udm_license
@@ -4164,8 +4139,8 @@ class License(Resource):
                 for item in ('licenses', 'real'):
                     license_data[item] = {}
                     for lic_type in ('CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE'):
-                        count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-                        if isinstance(count, str):
+                        count = getattr(udm_license._license, item,)[udm_license._license.version][getattr(udm_license.License, lic_type,)]
+                        if isinstance(count, str,):
                             try:
                                 count = int(count)
                             except ValueError:
@@ -4173,13 +4148,13 @@ class License(Resource):
                         license_data[item][lic_type.lower()] = count
 
                 if 'UGS' in udm_license._license.types:
-                    udm_license._license.types = filter(lambda x: x != 'UGS', udm_license._license.types)
+                    udm_license._license.types = filter(lambda x,: x != 'UGS', udm_license._license.types,)
             elif udm_license._license.version == '2':
                 for item in ('licenses', 'real'):
                     license_data[item] = {}
                     for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS'):
-                        count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-                        if isinstance(count, str):
+                        count = getattr(udm_license._license, item,)[udm_license._license.version][getattr(udm_license.License, lic_type,)]
+                        if isinstance(count, str,):
                             try:
                                 count = int(count)
                             except ValueError:
@@ -4199,10 +4174,10 @@ class License(Resource):
             if license_data['baseDN'] == 'UCS Core Edition':
                 free_license = 'core'
             if free_license:
-                license_data['baseDN'] = ucr.get('ldap/base', '')
+                license_data['baseDN'] = ucr.get('ldap/base', '',)
             license_data['freeLicense'] = free_license
             license_data['sysAccountsFound'] = udm_license._license.sysAccountsFound
-        self.add_caching(public=False, max_age=120, must_revalidate=True)
+        self.add_caching(public=False, max_age=120, must_revalidate=True,)
         self.content_negotiation(license_data)
 
 
@@ -4211,8 +4186,7 @@ class LicenseImport(Resource):
     @sanitize
     async def get(
             self,
-            license: str = Query(StringSanitizer(required=True)),
-    ):
+            license: str = Query(StringSanitizer(required=True)),):
         text = '''dn: cn=admin,cn=license,cn=univention,%(ldap/base)s
 cn: admin
 objectClass: top
@@ -4220,7 +4194,7 @@ objectClass: univentionLicense
 objectClass: univentionObject
 univentionObjectType: settings/license
 ''' % ucr
-        for line in zlib.decompress(base64.b64decode(license.encode('ASCII')), -15).decode('UTF-8').splitlines():
+        for line in zlib.decompress(base64.b64decode(license.encode('ASCII')), -15,).decode('UTF-8').splitlines():
             text += f'univentionLicense{line.strip()}\n'
 
         self.import_license(io.BytesIO(text.encode('UTF-8')))
@@ -4228,21 +4202,21 @@ univentionObjectType: settings/license
     def post(self):
         return self.import_license(io.BytesIO(self.request.files['license'][0]['body']))
 
-    def import_license(self, fd):
+    def import_license(self, fd,):
         try:
             # check license and write it to LDAP
             importer = LicenseImporter(fd)
-            importer.check(ucr.get('ldap/base', ''))
+            importer.check(ucr.get('ldap/base', '',))
             importer.write(self.ldap_write_connection)
         except ldap.LDAPError as exc:
             # LDAPError e.g. LDIF contained non existing attributes
-            raise HTTPError(400, _('Importing the license failed: LDAP error: %s.') % exc.args[0].get('info'))
+            raise HTTPError(400, _('Importing the license failed: LDAP error: %s.') % exc.args[0].get('info'),)
         except (ValueError, AttributeError) as exc:
             # AttributeError: missing univentionLicenseBaseDN
             # ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
-            raise HTTPError(400, _('Importing the license failed: %s.') % (exc,))
+            raise HTTPError(400, _('Importing the license failed: %s.') % (exc,),)
         except LicenseError as exc:
-            raise HTTPError(400, str(exc))
+            raise HTTPError(400, str(exc),)
         self.content_negotiation({'message': _('The license was imported successfully.')})
 
 
@@ -4253,54 +4227,53 @@ class ServiceSpecificPassword(Resource):
             self,
             object_type,
             dn,
-            service: str = Body(StringSanitizer(required=True)),
-    ):
-        module = get_module(object_type, dn, self.ldap_write_connection)
+            service: str = Body(StringSanitizer(required=True)),):
+        module = get_module(object_type, dn, self.ldap_write_connection,)
         if module is None:
-            raise NotFound(object_type, dn)
+            raise NotFound(object_type, dn,)
 
         cfg = password_config(service)
         new_password = generate_password(**cfg)
 
-        obj = await self.pool_submit(module.get, dn)
+        obj = await self.pool_submit(module.get, dn,)
         obj['serviceSpecificPassword'] = {'service': service, 'password': new_password}
 
         try:
             await self.pool_submit(obj.modify)
         except udm_errors.valueError as exc:
             # ValueError raised if Service is not supported
-            raise HTTPError(400, str(exc))
+            raise HTTPError(400, str(exc),)
         result = {'service': service, 'password': new_password}
         self.content_negotiation(result)
 
 
-def decode_properties(module, obj, properties):
+def decode_properties(module, obj, properties,):
     for key, value in properties.items():
         prop = module.get_property(key)
-        codec = udm_types.TypeHint.detect(prop, key)
+        codec = udm_types.TypeHint.detect(prop, key,)
         yield key, codec.decode_json(value)
 
 
-def encode_properties(module, obj, properties):
+def encode_properties(module, obj, properties,):
     for key, value in properties.items():
         prop = module.get_property(key)
-        codec = udm_types.TypeHint.detect(prop, key)
+        codec = udm_types.TypeHint.detect(prop, key,)
         yield key, codec.encode_json(value)
 
 
-def quote_dn(dn):
-    if isinstance(dn, str):
+def quote_dn(dn,):
+    if isinstance(dn, str,):
         dn = dn.encode('utf-8')
     # duplicated slashes in URI path's can be normalized to one slash. Therefore we need to escape the slashes.
-    return quote(dn.replace(b'//', b',/=/,'))  # .replace('/', quote('/', safe=''))
+    return quote(dn.replace(b'//', b',/=/,',))  # .replace('/', quote('/', safe=''))
 
 
-def unquote_dn(dn):
+def unquote_dn(dn,):
     # tornado already decoded it (UTF-8)
-    return dn.replace(',/=/,', '//')
+    return dn.replace(',/=/,', '//',)
 
 
-def last_modified(date):
+def last_modified(date,):
     return '%s, %02d %s %04d %02d:%02d:%02d GMT' % (
         ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')[date.tm_wday],
         date.tm_mday,
@@ -4309,28 +4282,28 @@ def last_modified(date):
     )
 
 
-def _try(func, exceptions):
+def _try(func, exceptions,):
     def deco(*args, **kwargs):
         try:
-            return func(*args, **kwargs)
+            return func(*args, **kwargs,)
         except exceptions:
             pass
     return deco
 
 
-def _map_try(values, func, exceptions):
-    return filter(None, map(_try(func, exceptions), values))
+def _map_try(values, func, exceptions,):
+    return filter(None, map(_try(func, exceptions,), values,),)
 
 
-def _map_normalized_dn(dns):
-    return _map_try(dns, lambda dn: ldap.dn.dn2str(ldap.dn.str2dn(dn)), Exception)
+def _map_normalized_dn(dns,):
+    return _map_try(dns, lambda dn,: ldap.dn.dn2str(ldap.dn.str2dn(dn)), Exception,)
 
 
-def _get_post_read_entry_uuid(response):
-    for c in response.get('ctrls', []):
+def _get_post_read_entry_uuid(response,):
+    for c in response.get('ctrls', [],):
         if c.controlType == PostReadControl.controlType:
             uuid = c.entry['entryUUID'][0]
-            if isinstance(uuid, bytes):  # starting with python-ldap 4.0
+            if isinstance(uuid, bytes,):  # starting with python-ldap 4.0
                 uuid = uuid.decode('ASCII')
             return uuid
 
@@ -4388,8 +4361,8 @@ class Application(tornado.web.Application):
             (f"/udm/(users/user)/{dn}/service-specific-password", ServiceSpecificPassword),
             ("/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
             # TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
-        ], default_handler_class=Nothing, **kwargs)
+        ], default_handler_class=Nothing, **kwargs,)
 
-    def multi_regex(self, chars):
+    def multi_regex(self, chars,):
         # Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548, therefore we must match =, %3d, %3D
         return ''.join(f'(?:{re.escape(c)}|{re.escape(quote(c).lower())}|{re.escape(quote(c).upper())})' if c in '=,' else re.escape(c) for c in chars)

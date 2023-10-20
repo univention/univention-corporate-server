@@ -30,121 +30,121 @@ from univention.testing.udm import UCSTestUDM  # noqa: E402
 TEST_USERS = [NormalUser, Utf8User, SpecialUser]
 
 
-@pytest.mark.parametrize("user_class", TEST_USERS)
-@pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_user_sync_from_udm_to_ad(user_class, sync_mode):
+@pytest.mark.parametrize("user_class", TEST_USERS,)
+@pytest.mark.parametrize("sync_mode", ["write", "sync"],)
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.",)
+def test_user_sync_from_udm_to_ad(user_class, sync_mode,):
     with connector_setup(sync_mode), UCSTestUDM() as udm:
         udm_user = user_class()
-        (udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
+        (udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync,)
 
         print("\nModifying UDM user\n")
-        udm.modify_object('users/user', dn=udm_user_dn, **udm_user.to_unicode(udm_user.user))
+        udm.modify_object('users/user', dn=udm_user_dn, **udm_user.to_unicode(udm_user.user),)
         adconnector.wait_for_sync()
-        AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.user))
+        AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.user),)
 
-        delete_udm_user(udm, AD, udm_user_dn, ad_user_dn, adconnector.wait_for_sync)
+        delete_udm_user(udm, AD, udm_user_dn, ad_user_dn, adconnector.wait_for_sync,)
 
 
-@pytest.mark.parametrize("user_class", TEST_USERS)
-@pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_user_sync_from_udm_to_ad_with_rename(user_class, sync_mode):
+@pytest.mark.parametrize("user_class", TEST_USERS,)
+@pytest.mark.parametrize("sync_mode", ["write", "sync"],)
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.",)
+def test_user_sync_from_udm_to_ad_with_rename(user_class, sync_mode,):
     with connector_setup(sync_mode), UCSTestUDM() as udm:
         udm_user = user_class()
-        (udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
+        (udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync,)
 
         print("\nRename UDM user\n")
-        udm_user_dn = udm.modify_object('users/user', dn=udm_user_dn, **udm_user.to_unicode(udm_user.rename))
+        udm_user_dn = udm.modify_object('users/user', dn=udm_user_dn, **udm_user.to_unicode(udm_user.rename),)
         adconnector.wait_for_sync()
 
-        AD.verify_object(ad_user_dn, None)
+        AD.verify_object(ad_user_dn, None,)
         ad_user_dn = ldap.dn.dn2str([
             [("CN", udm_user.to_unicode(udm_user.rename).get("username"), ldap.AVA_STRING)],
             [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(AD.adldapbase))
-        AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.rename))
+        AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.rename),)
 
-        delete_udm_user(udm, AD, udm_user_dn, ad_user_dn, adconnector.wait_for_sync)
+        delete_udm_user(udm, AD, udm_user_dn, ad_user_dn, adconnector.wait_for_sync,)
 
 
-@pytest.mark.parametrize("user_class", TEST_USERS)
-@pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_user_sync_from_udm_to_ad_with_move(user_class, sync_mode):
+@pytest.mark.parametrize("user_class", TEST_USERS,)
+@pytest.mark.parametrize("sync_mode", ["write", "sync"],)
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.",)
+def test_user_sync_from_udm_to_ad_with_move(user_class, sync_mode,):
     with connector_setup(sync_mode), UCSTestUDM() as udm:
         udm_user = user_class()
-        (udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
+        (udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync,)
 
         print("\nMove UDM user\n")
-        udm_container_dn = udm.create_object('container/cn', name=udm_user.container)
-        udm_user_dn = udm.move_object('users/user', dn=udm_user_dn, position=udm_container_dn)
+        udm_container_dn = udm.create_object('container/cn', name=udm_user.container,)
+        udm_user_dn = udm.move_object('users/user', dn=udm_user_dn, position=udm_container_dn,)
 
         adconnector.wait_for_sync()
-        AD.verify_object(ad_user_dn, None)
+        AD.verify_object(ad_user_dn, None,)
         ad_user_dn = ldap.dn.dn2str([
             [("CN", udm_user.to_unicode(udm_user.basic).get("username"), ldap.AVA_STRING)],
             [("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(AD.adldapbase))
-        AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.basic))
+        AD.verify_object(ad_user_dn, tcommon.map_udm_user_to_con(udm_user.basic),)
 
-        delete_udm_user(udm, AD, udm_user_dn, ad_user_dn, adconnector.wait_for_sync)
+        delete_udm_user(udm, AD, udm_user_dn, ad_user_dn, adconnector.wait_for_sync,)
 
 
-@pytest.mark.parametrize("user_class", TEST_USERS)
-@pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_user_sync_from_ad_to_udm(user_class, sync_mode):
+@pytest.mark.parametrize("user_class", TEST_USERS,)
+@pytest.mark.parametrize("sync_mode", ["read", "sync"],)
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.",)
+def test_user_sync_from_ad_to_udm(user_class, sync_mode,):
     with connector_setup(sync_mode):
         udm_user = user_class()
-        (basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
+        (basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync,)
 
         print("\nModifying AD user\n")
-        AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.user))
+        AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.user),)
         adconnector.wait_for_sync()
-        tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.user)
+        tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.user,)
 
-        delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync)
+        delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync,)
 
 
-@pytest.mark.parametrize("user_class", TEST_USERS)
-@pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_user_sync_from_ad_to_udm_with_rename(user_class, sync_mode):
+@pytest.mark.parametrize("user_class", TEST_USERS,)
+@pytest.mark.parametrize("sync_mode", ["read", "sync"],)
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.",)
+def test_user_sync_from_ad_to_udm_with_rename(user_class, sync_mode,):
     with connector_setup(sync_mode):
         udm_user = user_class()
-        (basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
+        (basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync,)
 
-        print("\nRename AD user {!r} to {!r}\n".format(ad_user_dn, udm_user.rename.get("username")))
-        ad_user_dn = AD.rename_or_move_user_or_group(ad_user_dn, name=udm_user.to_unicode(udm_user.rename).get("username"))
-        AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.rename))
+        print("\nRename AD user {!r} to {!r}\n".format(ad_user_dn, udm_user.rename.get("username"),))
+        ad_user_dn = AD.rename_or_move_user_or_group(ad_user_dn, name=udm_user.to_unicode(udm_user.rename).get("username"),)
+        AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.rename),)
         adconnector.wait_for_sync()
 
-        tcommon.verify_udm_object("users/user", udm_user_dn, None)
+        tcommon.verify_udm_object("users/user", udm_user_dn, None,)
         udm_user_dn = ldap.dn.dn2str([
             [("uid", udm_user.to_unicode(udm_user.rename).get("username"), ldap.AVA_STRING)],
             [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
-        tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.rename)
+        tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.rename,)
 
-        delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync)
+        delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync,)
 
 
-@pytest.mark.parametrize("user_class", TEST_USERS)
-@pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_user_sync_from_ad_to_udm_with_move(user_class, sync_mode):
+@pytest.mark.parametrize("user_class", TEST_USERS,)
+@pytest.mark.parametrize("sync_mode", ["read", "sync"],)
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.",)
+def test_user_sync_from_ad_to_udm_with_move(user_class, sync_mode,):
     with connector_setup(sync_mode):
         udm_user = user_class()
-        (basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
+        (basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync,)
 
         print(f"\nMove AD user {ad_user_dn!r} to {udm_user.container!r}\n")
         container_dn = AD.container_create(udm_user.container)
-        ad_user_dn = AD.rename_or_move_user_or_group(ad_user_dn, position=container_dn)
-        AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.basic))
+        ad_user_dn = AD.rename_or_move_user_or_group(ad_user_dn, position=container_dn,)
+        AD.set_attributes(ad_user_dn, **tcommon.map_udm_user_to_con(udm_user.basic),)
         adconnector.wait_for_sync()
 
-        tcommon.verify_udm_object("users/user", udm_user_dn, None)
+        tcommon.verify_udm_object("users/user", udm_user_dn, None,)
         udm_user_dn = ldap.dn.dn2str([
             [("uid", udm_user.to_unicode(udm_user.basic).get("username"), ldap.AVA_STRING)],
             [("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
-        tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.basic)
+        tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.basic,)
 
-        delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync)
+        delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync,)

@@ -31,7 +31,7 @@ class TestUMCNetworkFunctionality(UDMModule):
         self.test_computer_name = ''
 
     def create_network(self, netmask="24", dns_forward="", dns_reverse="",
-                       dhcp_entry=""):
+                       dhcp_entry="",):
         """
         Makes a 'udm/add' request to create a network with a
         number of given options
@@ -47,7 +47,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                     "options": {"container": "cn=networks," + self.ldap_base,
                                 "objectType": "networks/network"}}]
 
-        request_result = self.request("udm/add", options, "networks/network")
+        request_result = self.request("udm/add", options, "networks/network",)
         if not request_result[0].get("success"):
             utils.fail("Creation of network named %r not successful. Response: %r\nRequest options: %r"
                        % (self.test_network_name, request_result, options))
@@ -60,21 +60,21 @@ class TestUMCNetworkFunctionality(UDMModule):
                    "objectProperty": "None",
                    "objectPropertyValue": "",
                    "hidden": True}
-        return self.request('udm/query', options, "dhcp/dhcp")
+        return self.request('udm/query', options, "dhcp/dhcp",)
 
-    def get_network_config(self, increase_counter=True):
+    def get_network_config(self, increase_counter=True,):
         """
         Makes a 'udm/network' request to get the network configuration
         with the next free IP address
         """
         options = {"networkDN": self.test_network_dn,
                    "increaseCounter": increase_counter}
-        return self.request("udm/network", options)
+        return self.request("udm/network", options,)
 
-    def get_network_choices(self, syntax):
+    def get_network_choices(self, syntax,):
         """Returns result of 'udm/syntax/choices' for a given 'syntax' request."""
         options = {"syntax": syntax}
-        return self.request("udm/syntax/choices", options, "computers/computer")
+        return self.request("udm/syntax/choices", options, "computers/computer",)
 
     def check_network_in_choices(self):
         """
@@ -90,7 +90,7 @@ class TestUMCNetworkFunctionality(UDMModule):
             utils.fail("KeyError exception while parsing the network "
                        "'%s' for 'id' field: '%s'" % (network, exc))
 
-    def check_dns_dhcp_in_choices(self, syntax, name):
+    def check_dns_dhcp_in_choices(self, syntax, name,):
         """
         Makes a 'udm/syntax/chioces' request with given 'syntax'
         options to get the dns or dhcp available and returns True when
@@ -109,7 +109,7 @@ class TestUMCNetworkFunctionality(UDMModule):
         Checks if the 'self.test_network_dn' has the 'self.test_ip_ranage',
         returns True in case it has.
         """
-        network = self.get_object([self.test_network_dn], "networks/network")
+        network = self.get_object([self.test_network_dn], "networks/network",)
         try:
             if self.test_ip_range in network[0]["ipRange"]:
                 return True
@@ -125,9 +125,9 @@ class TestUMCNetworkFunctionality(UDMModule):
                                "ipRange": [self.test_ip_range],
                                "$dn$": self.test_network_dn},
                     "options": None}]
-        self.modify_object(options, "networks/network")
+        self.modify_object(options, "networks/network",)
 
-    def check_syntax_validation(self, netmask, ip_range, network):
+    def check_syntax_validation(self, netmask, ip_range, network,):
         """
         Makes a 'udm/validate' request with non-valid values and
         checks if they were reported as 'valid'==false
@@ -137,7 +137,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                                   "ipRange": [ip_range],
                                   "network": network}}
 
-        for prop in self.request('udm/validate', options, "networks/network"):
+        for prop in self.request('udm/validate', options, "networks/network",):
             # Workaround for answers that have lists inside:
             try:
                 if True in prop.get('valid'):
@@ -182,7 +182,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                    "objectProperty": "None",
                    "objectPropertyValue": "",
                    "hidden": True}
-        return self.request('udm/query', options, 'networks/network')
+        return self.request('udm/query', options, 'networks/network',)
 
     def run_dns_dhcp_choices_checks(self):
         """
@@ -194,7 +194,7 @@ class TestUMCNetworkFunctionality(UDMModule):
               "in choices for '%s' computer"
               % (domain_name, self.test_computer_name))
         if not self.check_dns_dhcp_in_choices("DNS_ForwardZone",
-                                              domain_name):
+                                              domain_name,):
             utils.fail("The '%s' was not reported as an option for DNS "
                        "forward zones for '%s' computer" % (domain_name, self.test_computer_name))
 
@@ -204,7 +204,7 @@ class TestUMCNetworkFunctionality(UDMModule):
         if dhcp_services:
             dhcp_service_name = dhcp_services[0].get('name')
             if not self.check_dns_dhcp_in_choices("dhcpService",
-                                                  dhcp_service_name):
+                                                  dhcp_service_name,):
                 utils.fail("The '%s' was not reported as an option for DHCP "
                            "service for '%s' computer" % (dhcp_service_name, self.test_computer_name))
         else:
@@ -239,7 +239,7 @@ class TestUMCNetworkFunctionality(UDMModule):
         options = {"networkDN": self.test_network_dn,
                    "increaseCounter": True}
         with pytest.raises(BadRequest) as network_config:
-            self.client.umc_command('udm/network', options)
+            self.client.umc_command('udm/network', options,)
         network_config = network_config.value
 
         error_messages = ("Fehler bei der automatischen IP Adresszuweisung",
@@ -267,7 +267,7 @@ class TestUMCNetworkFunctionality(UDMModule):
             self.test_computer_name,
             [network_config.get('ip')],
             network_config.get('dnsEntryZoneForward'),
-            network_config.get('dnsEntryZoneReverse'))
+            network_config.get('dnsEntryZoneReverse'),)
         if not creation_result[0].get("success"):
             utils.fail("Creation of a computer with a name '%s' failed, "
                        "when should not fail, no 'success'=True "
@@ -281,14 +281,14 @@ class TestUMCNetworkFunctionality(UDMModule):
             self.test_computer_name + '_2',
             [network_config.get('ip')],
             network_config.get('dnsEntryZoneForward'),
-            network_config.get('dnsEntryZoneReverse'))
+            network_config.get('dnsEntryZoneReverse'),)
         if creation_result[0].get("success"):
             utils.fail("Creation of a computer with a name '%s' "
                        "succeeded, when should not, there is "
                        "'success'=True in the response: '%s'"
                        % ((self.test_computer_name + '_2'), creation_result))
         if self.check_obj_exists(self.test_computer_name + '_2',
-                                 "computers/computer"):
+                                 "computers/computer",):
             utils.fail("The '%s' computer was created, while should "
                        "have not been, since there were no free ip addresses "
                        "in the '%s' network"
@@ -304,7 +304,7 @@ class TestUMCNetworkFunctionality(UDMModule):
               "ip range '%s'" % (self.test_network_name, self.test_ip_range))
         self.create_network()
         if not self.check_obj_exists(self.test_network_name,
-                                     "networks/network"):
+                                     "networks/network",):
             utils.fail("The test network '%s' was not created after the "
                        "creation request was made" % self.test_network_name)
 
@@ -324,13 +324,13 @@ class TestUMCNetworkFunctionality(UDMModule):
         self.check_networks_query_structure()
 
         print("\nChecking the syntax validation of network parameters")
-        self.check_syntax_validation("foo", ["foo", "bar"], "foo")
+        self.check_syntax_validation("foo", ["foo", "bar"], "foo",)
         self.check_syntax_validation("12345",
                                      ["10.20.25.256", "10.20.25.257"],
-                                     "12345")
+                                     "12345",)
         self.check_syntax_validation("256",
                                      ["10.20.256.2", "10.20.25.2"],
-                                     "10.20.25.")
+                                     "10.20.25.",)
 
     def main(self):
         """A method to test the UMC network functionality"""
@@ -339,7 +339,7 @@ class TestUMCNetworkFunctionality(UDMModule):
 
         self.test_computer_name = 'umc_test_computer_' + random_username(6)
         self.test_network_name = 'umc_test_network_' + random_username(6)
-        self.test_network = self.ucr.get('interfaces/%s/network' % self.ucr.get('interfaces/primary', 'eth0'))
+        self.test_network = self.ucr.get('interfaces/%s/network' % self.ucr.get('interfaces/primary', 'eth0',))
         self.test_network_subnet = self.test_network[:self.test_network.rfind('.')]
         self.test_ip_range = [self.test_network_subnet + '.50',
                               self.test_network_subnet + '.70']
@@ -353,20 +353,20 @@ class TestUMCNetworkFunctionality(UDMModule):
         finally:
             print("\nRemoving created test objects (if any):")
             if self.check_obj_exists(self.test_computer_name + '_2',
-                                     "computers/computer"):
+                                     "computers/computer",):
                 self.delete_obj(self.test_computer_name + '_2',
                                 "computers",
-                                "computers/computer")
+                                "computers/computer",)
             if self.check_obj_exists(self.test_computer_name,
-                                     "computers/computer"):
+                                     "computers/computer",):
                 self.delete_obj(self.test_computer_name,
                                 "computers",
-                                "computers/computer")
+                                "computers/computer",)
             if self.check_obj_exists(self.test_network_name,
-                                     "networks/network"):
+                                     "networks/network",):
                 self.delete_obj(self.test_network_name,
                                 "networks",
-                                "networks/network")
+                                "networks/network",)
 
 
 if __name__ == '__main__':

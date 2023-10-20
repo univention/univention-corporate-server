@@ -63,17 +63,17 @@ class BuildI18N(Command):
     def run(self):
         data_files = self.distribution.data_files
 
-        po_dir = os.path.join(os.path.dirname(os.curdir), 'src/')
+        po_dir = os.path.join(os.path.dirname(os.curdir), 'src/',)
         for path, _names, filenames in os.walk(po_dir):
             rel_path = path[len(po_dir):]
             for f in filenames:
                 if not f.endswith('.po'):
                     continue
                 lang = f[: -3]
-                src = os.path.join(path, f)
-                dest_path = os.path.join('build', 'locale', lang, 'LC_MESSAGES')
-                dest_file = '%s.mo' % rel_path.replace('/', '-')
-                dest = os.path.join(dest_path, dest_file)
+                src = os.path.join(path, f,)
+                dest_path = os.path.join('build', 'locale', lang, 'LC_MESSAGES',)
+                dest_file = '%s.mo' % rel_path.replace('/', '-',)
+                dest = os.path.join(dest_path, dest_file,)
                 if not os.path.exists(dest_path):
                     os.makedirs(dest_path)
                 if not os.path.exists(dest):
@@ -95,8 +95,8 @@ class Build(build_py):
         build_py.run(self)
 
 
-def all_xml_files_in(dir):
-    return filter(lambda x: os.path.isfile(x) and x.endswith('.xml'), map(lambda x: os.path.join(dir, x), os.listdir(dir)))
+def all_xml_files_in(dir,):
+    return filter(lambda x,: os.path.isfile(x) and x.endswith('.xml'), map(lambda x,: os.path.join(dir, x,), os.listdir(dir),),)
 
 
 setup(
@@ -115,5 +115,4 @@ setup(
     maintainer=realname,
     maintainer_email=email_address,
     url='https://www.univention.de/',
-    description='Univention Management Console',
-)
+    description='Univention Management Console',)

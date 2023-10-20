@@ -63,7 +63,7 @@ class Abort(Exception):
     default_error_msg = ''
 
     def __init__(self, *args, **kwargs):
-        keys = re.findall(r'%\(([^)]+)\)', self.default_error_msg)
+        keys = re.findall(r'%\(([^)]+)\)', self.default_error_msg,)
         keys = unique(keys)
         i = 0
         _args = []
@@ -76,7 +76,7 @@ class Abort(Exception):
                 except IndexError:
                     raise TypeError('Need %s for %s' % (key, self.__class__.__name__))
                 i += 1
-            setattr(self, key, value)
+            setattr(self, key, value,)
             _args.append(value)
         if len(args) > i:
             self.message = args[i]
@@ -99,7 +99,7 @@ class Abort(Exception):
 class AbortWithDetails(Abort):
     def __init__(self, *args, **kwargs):
         self._exc_details = kwargs
-        super(AbortWithDetails, self).__init__(*args, **kwargs)
+        super(AbortWithDetails, self,).__init__(*args, **kwargs,)
 
     def get_exc_details(self):
         if self._exc_details:
@@ -285,14 +285,14 @@ class UpgradeReleaseFailed(Abort):
 class ConnectionFailedConnectError(ConnectionFailed):
     code = 434
 
-    def __init__(self, exc):
+    def __init__(self, exc,):
         self.details = exc.args[0]
 
     def __str__(self):
         msg = _('LDAP connection refused. There may be an issue with the certificate of the LDAP server. Please also check the proxy and firewall settings, if any.')
         details = None
         try:
-            details = self.details.get('info', 'No further details')
+            details = self.details.get('info', 'No further details',)
         except (IndexError, KeyError):
             pass
         if details:

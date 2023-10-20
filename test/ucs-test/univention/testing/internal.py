@@ -43,7 +43,7 @@ __all__ = [
     'strip_indent', 'get_sections', 'get_tests', 'UCSVersion',
 ]
 
-TEST_BASE = os.environ.get('UCS_TESTS', '/usr/share/ucs-test')
+TEST_BASE = os.environ.get('UCS_TESTS', '/usr/share/ucs-test',)
 RE_SECTION = re.compile(r'^[0-9]{2}_(.+)$')
 RE_PREFIX = re.compile(r'^[0-9]{2,3}_?(.+)')
 RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|jpeg|xml|csv|inst|uinst))$')
@@ -58,11 +58,11 @@ def setup_environment():  # type: () -> None
     os.environ['PYTHONUNBUFFERED'] = '1'
 
 
-def setup_debug(level):  # type: (int) -> None
+def setup_debug(level,):  # type: (int) -> None
     """Setup Python logging."""
-    level = _TAB.get(level, logging.DEBUG)
+    level = _TAB.get(level, logging.DEBUG,)
     FORMAT = '%(asctime)-15s ' + logging.BASIC_FORMAT
-    logging.basicConfig(stream=sys.stderr, level=level, format=FORMAT)
+    logging.basicConfig(stream=sys.stderr, level=level, format=FORMAT,)
 
 
 _TAB = {  # pylint: disable-msg=W0612
@@ -73,7 +73,7 @@ _TAB = {  # pylint: disable-msg=W0612
 }
 
 
-def strip_indent(text):  # type: (str) -> str
+def strip_indent(text,):  # type: (str) -> str
     """Strip common indent."""
     lines = text.splitlines()
     while lines and not lines[0].strip():
@@ -91,7 +91,7 @@ def get_sections():  # type: () -> Dict[str, str]
     return sections
 
 
-def get_tests(sections):  # type: (Iterable[str]) -> Dict[str, List[str]]
+def get_tests(sections,):  # type: (Iterable[str]) -> Dict[str, List[str]]
     """Return dictionary of section -> [filenames]."""
     result = {}
     logger = logging.getLogger('test.find')
@@ -105,7 +105,7 @@ def get_tests(sections):  # type: (Iterable[str]) -> Dict[str, List[str]]
 
         files = os.listdir(dirname)
         for filename in sorted(files):
-            fname = os.path.join(dirname, filename)
+            fname = os.path.join(dirname, filename,)
             if not RE_PREFIX.match(filename):
                 logger.debug(f'Skipped file {fname}')
                 continue
@@ -191,7 +191,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
     RE_VERSION = re.compile(r"^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
 
     @classmethod
-    def _parse(cls, ver, default_op='='):  # type: (str, str) -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, int, int]]
+    def _parse(cls, ver, default_op='=',):  # type: (str, str) -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, int, int]]
         """
         Parse UCS-version range and return two-tuple (operator, version)
         >>> UCSVersion._parse('11.22')  # doctest: +ELLIPSIS
@@ -234,12 +234,12 @@ class UCSVersion:  # pylint: disable-msg=R0903
             return (operator.gt, parts)
         raise ValueError(f'Unknown version match: "{ver}"')
 
-    def __init__(self, ver):  # type: (Union[str, Tuple[int, int, int, int]]) -> None
-        if isinstance(ver, str):
+    def __init__(self, ver,):  # type: (Union[str, Tuple[int, int, int, int]]) -> None
+        if isinstance(ver, str,):
             self.rel, self.ver = self._parse(ver)
-        elif isinstance(ver, tuple):
+        elif isinstance(ver, tuple,):
             self.rel = operator.eq
-            assert all(isinstance(_, int) for _ in ver)
+            assert all(isinstance(_, int,) for _ in ver)
             self.ver = ver
         else:
             raise TypeError(ver)
@@ -264,25 +264,25 @@ class UCSVersion:  # pylint: disable-msg=R0903
     def __repr__(self):  # type: () -> str
         return f'{self.__class__.__name__}({self.__str__()!r})'
 
-    def __lt__(self, other):  # type: (Any) -> object
-        return self.ver < other.ver if isinstance(other, UCSVersion) else NotImplemented
+    def __lt__(self, other,):  # type: (Any) -> object
+        return self.ver < other.ver if isinstance(other, UCSVersion,) else NotImplemented
 
-    def __le__(self, other):  # type: (Any) -> object
-        return self.ver <= other.ver if isinstance(other, UCSVersion) else NotImplemented
+    def __le__(self, other,):  # type: (Any) -> object
+        return self.ver <= other.ver if isinstance(other, UCSVersion,) else NotImplemented
 
-    def __eq__(self, other):  # type: (Any) -> bool
-        return self.ver == other.ver if isinstance(other, UCSVersion) else False
+    def __eq__(self, other,):  # type: (Any) -> bool
+        return self.ver == other.ver if isinstance(other, UCSVersion,) else False
 
-    def __ne__(self, other):  # type: (Any) -> bool
-        return self.ver != other.ver if isinstance(other, UCSVersion) else False
+    def __ne__(self, other,):  # type: (Any) -> bool
+        return self.ver != other.ver if isinstance(other, UCSVersion,) else False
 
-    def __ge__(self, other):  # type: (Any) -> object
-        return self.ver >= other.ver if isinstance(other, UCSVersion) else NotImplemented
+    def __ge__(self, other,):  # type: (Any) -> object
+        return self.ver >= other.ver if isinstance(other, UCSVersion,) else NotImplemented
 
-    def __gt__(self, other):  # type: (Any) -> object
-        return self.ver > other.ver if isinstance(other, UCSVersion) else NotImplemented
+    def __gt__(self, other,):  # type: (Any) -> object
+        return self.ver > other.ver if isinstance(other, UCSVersion,) else NotImplemented
 
-    def match(self, other):  # type: (UCSVersion) -> bool
+    def match(self, other,):  # type: (UCSVersion) -> bool
         """
         Check if other matches the criterion.
         >>> UCSVersion('>1.2-3').match(UCSVersion('1.2-4'))
@@ -296,7 +296,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
         """
         parts = [
             (other_ver, self_ver)
-            for self_ver, other_ver in zip(self.ver, other.ver)
+            for self_ver, other_ver in zip(self.ver, other.ver,)
             if self_ver != INF and other_ver != INF
         ]
         return self.rel(*zip(*parts))  # pylint: disable-msg=W0142

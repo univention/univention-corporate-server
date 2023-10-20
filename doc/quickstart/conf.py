@@ -127,7 +127,7 @@ univention_feedback = True
 univention_pdf_show_source_license = True
 
 
-def fix_title_translation(app, config):
+def fix_title_translation(app, config,):
     if config.language == "de":
         config.project = "Quickstart Guide für Univention Corporate Server"
         config.html_title = config.project
@@ -137,8 +137,7 @@ def fix_title_translation(app, config):
         )
 
 
-def setup(app):
+def setup(app,):
     app.connect(
         "config-inited",
-        fix_title_translation,
-    )
+        fix_title_translation,)

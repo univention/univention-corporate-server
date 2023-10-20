@@ -17,13 +17,13 @@ ccroot.USELIB_VARS['fcprogram_test'] = ccroot.USELIB_VARS['fcprogram'] = set(['L
 ccroot.USELIB_VARS['fcshlib'] = set(['LIB', 'STLIB', 'LIBPATH', 'STLIBPATH', 'LINKFLAGS', 'RPATH', 'LINKDEPS', 'LDFLAGS'])
 ccroot.USELIB_VARS['fcstlib'] = set(['ARFLAGS', 'LINKDEPS'])
 
-@extension('.f','.F','.f90','.F90','.for','.FOR','.f95','.F95','.f03','.F03','.f08','.F08')
-def fc_hook(self, node):
+@extension('.f','.F','.f90','.F90','.for','.FOR','.f95','.F95','.f03','.F03','.f08','.F08',)
+def fc_hook(self, node,):
 	"Binds the Fortran file extensions create :py:class:`waflib.Tools.fc.fc` instances"
-	return self.create_compiled_task('fc', node)
+	return self.create_compiled_task('fc', node,)
 
 @conf
-def modfile(conf, name):
+def modfile(conf, name,):
 	"""
 	Turns a module name into the right module file name.
 	Defaults to all lower case.
@@ -47,7 +47,7 @@ def modfile(conf, name):
 		'UPPER.mod' :modname.upper() + suffix.lower(),
 		'UPPER'     :modname.upper() + suffix.upper()}[conf.env.FC_MOD_CAPITALIZATION or 'lower']
 
-def get_fortran_tasks(tsk):
+def get_fortran_tasks(tsk,):
 	"""
 	Obtains all fortran tasks from the same build group. Those tasks must not have
 	the attribute 'nomod' or 'mod_fortran_done'
@@ -56,7 +56,7 @@ def get_fortran_tasks(tsk):
 	"""
 	bld = tsk.generator.bld
 	tasks = bld.get_tasks_group(bld.get_group_idx(tsk.generator))
-	return [x for x in tasks if isinstance(x, fc) and not getattr(x, 'nomod', None) and not getattr(x, 'mod_fortran_done', None)]
+	return [x for x in tasks if isinstance(x, fc,) and not getattr(x, 'nomod', None,) and not getattr(x, 'mod_fortran_done', None,)]
 
 class fc(Task.Task):
 	"""
@@ -80,8 +80,8 @@ class fc(Task.Task):
 		Sets the mod file outputs and the dependencies on the mod files over all Fortran tasks
 		executed by the main thread so there are no concurrency issues
 		"""
-		if getattr(self, 'mod_fortran_done', None):
-			return super(fc, self).runnable_status()
+		if getattr(self, 'mod_fortran_done', None,):
+			return super(fc, self,).runnable_status()
 
 		# now, if we reach this part it is because this fortran task is the first in the list
 		bld = self.generator.bld
@@ -114,7 +114,7 @@ class fc(Task.Task):
 			key = tsk.uid()
 			for x in bld.raw_deps[key]:
 				if x.startswith('MOD@'):
-					name = bld.modfile(x.replace('MOD@', ''))
+					name = bld.modfile(x.replace('MOD@', '',))
 					node = bld.srcnode.find_or_declare(name)
 					tsk.set_outputs(node)
 					outs[node].add(tsk)
@@ -124,7 +124,7 @@ class fc(Task.Task):
 			key = tsk.uid()
 			for x in bld.raw_deps[key]:
 				if x.startswith('USE@'):
-					name = bld.modfile(x.replace('USE@', ''))
+					name = bld.modfile(x.replace('USE@', '',))
 					node = bld.srcnode.find_resource(name)
 					if node and node not in tsk.outputs:
 						if not node in bld.node_deps[key]:
@@ -144,16 +144,16 @@ class fc(Task.Task):
 				for t in outs[k]:
 					tmp.extend(t.outputs)
 				a.dep_nodes.extend(tmp)
-				a.dep_nodes.sort(key=lambda x: x.abspath())
+				a.dep_nodes.sort(key=lambda x,: x.abspath())
 
 		# the task objects have changed: clear the signature cache
 		for tsk in lst:
 			try:
-				delattr(tsk, 'cache_sig')
+				delattr(tsk, 'cache_sig',)
 			except AttributeError:
 				pass
 
-		return super(fc, self).runnable_status()
+		return super(fc, self,).runnable_status()
 
 class fcprogram(ccroot.link_task):
 	"""Links Fortran programs"""
@@ -174,16 +174,16 @@ class fcprogram_test(fcprogram):
 
 	def runnable_status(self):
 		"""This task is always executed"""
-		ret = super(fcprogram_test, self).runnable_status()
+		ret = super(fcprogram_test, self,).runnable_status()
 		if ret == Task.SKIP_ME:
 			ret = Task.RUN_ME
 		return ret
 
-	def exec_command(self, cmd, **kw):
+	def exec_command(self, cmd,**kw):
 		"""Stores the compiler std our/err onto the build context, to bld.out + bld.err"""
 		bld = self.generator.bld
 
-		kw['shell'] = isinstance(cmd, str)
+		kw['shell'] = isinstance(cmd, str,)
 		kw['stdout'] = kw['stderr'] = Utils.subprocess.PIPE
 		kw['cwd'] = self.get_cwd()
 		bld.out = bld.err = ''
@@ -192,7 +192,7 @@ class fcprogram_test(fcprogram):
 
 		kw['output'] = 0
 		try:
-			(bld.out, bld.err) = bld.cmd_and_log(cmd, **kw)
+			(bld.out, bld.err) = bld.cmd_and_log(cmd, **kw,)
 		except Errors.WafError:
 			return -1
 

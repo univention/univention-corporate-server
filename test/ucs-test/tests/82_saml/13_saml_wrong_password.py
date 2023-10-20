@@ -18,7 +18,7 @@ import samltest
 def main():
     with udm_test.UCSTestUDM() as udm:
         testcase_user_name = udm.create_user()[1]
-        SamlSession = samltest.SamlTest(testcase_user_name, 'Wrong password')
+        SamlSession = samltest.SamlTest(testcase_user_name, 'Wrong password',)
 
         with pytest.raises(samltest.SamlAuthenticationFailed):
             SamlSession.login_with_new_session_at_IdP()

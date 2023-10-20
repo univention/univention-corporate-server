@@ -11,7 +11,7 @@ The values put in :py:class:`ConfigSet` must be serializable (dicts, lists, stri
 
 import copy, re, os
 from waflib import Logs, Utils
-re_imp = re.compile(r'^(#)*?([^#=]*?)\ =\ (.*?)$', re.M)
+re_imp = re.compile(r'^(#)*?([^#=]*?)\ =\ (.*?)$', re.M,)
 
 class ConfigSet(object):
 	"""
@@ -27,7 +27,7 @@ class ConfigSet(object):
 		env['FOO'] = 'test'
 	"""
 	__slots__ = ('table', 'parent')
-	def __init__(self, filename=None):
+	def __init__(self, filename=None,):
 		self.table = {}
 		"""
 		Internal dict holding the object values
@@ -37,7 +37,7 @@ class ConfigSet(object):
 		if filename:
 			self.load(filename)
 
-	def __contains__(self, key):
+	def __contains__(self, key,):
 		"""
 		Enables the *in* syntax::
 
@@ -57,7 +57,7 @@ class ConfigSet(object):
 		cur = self
 		while cur:
 			keys.update(cur.table.keys())
-			cur = getattr(cur, 'parent', None)
+			cur = getattr(cur, 'parent', None,)
 		keys = list(keys)
 		keys.sort()
 		return keys
@@ -69,7 +69,7 @@ class ConfigSet(object):
 		"""Text representation of the ConfigSet (for debugging purposes)"""
 		return "\n".join(["%r %r" % (x, self.__getitem__(x)) for x in self.keys()])
 
-	def __getitem__(self, key):
+	def __getitem__(self, key,):
 		"""
 		Dictionary interface: get value from key::
 
@@ -86,19 +86,19 @@ class ConfigSet(object):
 		except AttributeError:
 			return []
 
-	def __setitem__(self, key, value):
+	def __setitem__(self, key, value,):
 		"""
 		Dictionary interface: set value from key
 		"""
 		self.table[key] = value
 
-	def __delitem__(self, key):
+	def __delitem__(self, key,):
 		"""
 		Dictionary interface: mark the value as missing
 		"""
 		self[key] = []
 
-	def __getattr__(self, name):
+	def __getattr__(self, name,):
 		"""
 		Attribute access provided for convenience. The following forms are equivalent::
 
@@ -107,11 +107,11 @@ class ConfigSet(object):
 				conf.env['value']
 		"""
 		if name in self.__slots__:
-			return object.__getattribute__(self, name)
+			return object.__getattribute__(self, name,)
 		else:
 			return self[name]
 
-	def __setattr__(self, name, value):
+	def __setattr__(self, name, value,):
 		"""
 		Attribute access provided for convenience. The following forms are equivalent::
 
@@ -120,11 +120,11 @@ class ConfigSet(object):
 				env['value'] = x
 		"""
 		if name in self.__slots__:
-			object.__setattr__(self, name, value)
+			object.__setattr__(self, name, value,)
 		else:
 			self[name] = value
 
-	def __delattr__(self, name):
+	def __delattr__(self, name,):
 		"""
 		Attribute access provided for convenience. The following forms are equivalent::
 
@@ -133,7 +133,7 @@ class ConfigSet(object):
 				del env['value']
 		"""
 		if name in self.__slots__:
-			object.__delattr__(self, name)
+			object.__delattr__(self, name,)
 		else:
 			del self[name]
 
@@ -165,7 +165,7 @@ class ConfigSet(object):
 		"""
 		tbl = self.get_merged_dict()
 		try:
-			delattr(self, 'parent')
+			delattr(self, 'parent',)
 		except AttributeError:
 			pass
 		else:
@@ -175,7 +175,7 @@ class ConfigSet(object):
 			self.table = tbl
 		return self
 
-	def get_flat(self, key):
+	def get_flat(self, key,):
 		"""
 		Returns a value as a string. If the input is a list, the value returned is space-separated.
 
@@ -183,11 +183,11 @@ class ConfigSet(object):
 		:type key: string
 		"""
 		s = self[key]
-		if isinstance(s, str):
+		if isinstance(s, str,):
 			return s
 		return ' '.join(s)
 
-	def _get_list_value_for_modification(self, key):
+	def _get_list_value_for_modification(self, key,):
 		"""
 		Returns a list value for further modification.
 
@@ -203,18 +203,18 @@ class ConfigSet(object):
 			except AttributeError:
 				value = []
 			else:
-				if isinstance(value, list):
+				if isinstance(value, list,):
 					# force a copy
 					value = value[:]
 				else:
 					value = [value]
 			self.table[key] = value
 		else:
-			if not isinstance(value, list):
+			if not isinstance(value, list,):
 				self.table[key] = value = [value]
 		return value
 
-	def append_value(self, var, val):
+	def append_value(self, var, val,):
 		"""
 		Appends a value to the specified config key::
 
@@ -223,12 +223,12 @@ class ConfigSet(object):
 
 		The value must be a list or a tuple
 		"""
-		if isinstance(val, str): # if there were string everywhere we could optimize this
+		if isinstance(val, str,): # if there were string everywhere we could optimize this
 			val = [val]
 		current_value = self._get_list_value_for_modification(var)
 		current_value.extend(val)
 
-	def prepend_value(self, var, val):
+	def prepend_value(self, var, val,):
 		"""
 		Prepends a value to the specified item::
 
@@ -237,11 +237,11 @@ class ConfigSet(object):
 
 		The value must be a list or a tuple
 		"""
-		if isinstance(val, str):
+		if isinstance(val, str,):
 			val = [val]
 		self.table[var] =  val + self._get_list_value_for_modification(var)
 
-	def append_unique(self, var, val):
+	def append_unique(self, var, val,):
 		"""
 		Appends a value to the specified item only if it's not already present::
 
@@ -250,7 +250,7 @@ class ConfigSet(object):
 
 		The value must be a list or a tuple
 		"""
-		if isinstance(val, str):
+		if isinstance(val, str,):
 			val = [val]
 		current_value = self._get_list_value_for_modification(var)
 
@@ -267,7 +267,7 @@ class ConfigSet(object):
 		table_list = []
 		env = self
 		while 1:
-			table_list.insert(0, env.table)
+			table_list.insert(0, env.table,)
 			try:
 				env = env.parent
 			except AttributeError:
@@ -277,7 +277,7 @@ class ConfigSet(object):
 			merged_table.update(table)
 		return merged_table
 
-	def store(self, filename):
+	def store(self, filename,):
 		"""
 		Serializes the :py:class:`ConfigSet` data to a file. See :py:meth:`ConfigSet.load` for reading such files.
 
@@ -302,9 +302,9 @@ class ConfigSet(object):
 		for k in keys:
 			if k != 'undo_stack':
 				buf.append('%s = %s\n' % (k, fun(merged_table[k])))
-		Utils.writef(filename, ''.join(buf))
+		Utils.writef(filename, ''.join(buf),)
 
-	def load(self, filename):
+	def load(self, filename,):
 		"""
 		Restores contents from a file (current values are not cleared). Files are written using :py:meth:`ConfigSet.store`.
 
@@ -312,13 +312,13 @@ class ConfigSet(object):
 		:type filename: string
 		"""
 		tbl = self.table
-		code = Utils.readf(filename, m='r')
+		code = Utils.readf(filename, m='r',)
 		for m in re_imp.finditer(code):
 			g = m.group
 			tbl[g(2)] = eval(g(3))
-		Logs.debug('env: %s', self.table)
+		Logs.debug('env: %s', self.table,)
 
-	def update(self, d):
+	def update(self, d,):
 		"""
 		Dictionary interface: replace values with the ones from another dict
 

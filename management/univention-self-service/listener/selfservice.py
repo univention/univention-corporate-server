@@ -49,7 +49,7 @@ filter = '(univentionService=univention-self-service)'
 UCRV = 'umc/self-service/passwordreset/email/webserver_address'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> None:
     if new:
         ucr = univention.config_registry.ConfigRegistry()
         ucr.load()

@@ -13,11 +13,11 @@ from dockertest import (
 )
 
 
-def create_app(fail_in_preinst):
+def create_app(fail_in_preinst,):
     app_name = get_app_name()
     app_version = get_app_version()
 
-    app = tiny_app(app_name, app_version)
+    app = tiny_app(app_name, app_version,)
     try:
         app.add_script(preinst='''#!/bin/bash
 set -x -e
@@ -42,7 +42,7 @@ exit %(exit_code)d
             if fail_in_preinst:
                 raise ValueError('Should not have been installed!')
             else:
-                output = subprocess.check_output('univention-app shell %s env' % app_name, shell=True, text=True)
+                output = subprocess.check_output('univention-app shell %s env' % app_name, shell=True, text=True,)
                 if 'FOO=bar' not in output or 'repository_app_center_server=my.server' not in output:
                     raise ValueError('Setting docker/params does not work')
 

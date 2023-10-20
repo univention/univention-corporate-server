@@ -57,7 +57,7 @@ elif sys.platform.lower().startswith('win'):
 else:
 	raise Exception("Unknown sys.platform: %s " % sys.platform)
 
-def configure(ctx):
+def configure(ctx,):
 	ctx.find_program(STATA_COMMANDS, var='STATACMD', errmsg="""\n
 No Stata executable found!\n\n
 If Stata is needed:\n
@@ -65,7 +65,7 @@ If Stata is needed:\n
 	2) Note we are looking for Stata executables called: %s
 	   If yours has a different name, please report to hmgaudecker [at] gmail\n
 Else:\n
-	Do not load the 'run_do_script' tool in the main wscript.\n\n""" % STATA_COMMANDS)
+	Do not load the 'run_do_script' tool in the main wscript.\n\n""" % STATA_COMMANDS,)
 	ctx.env.STATAFLAGS = STATAFLAGS
 	ctx.env.STATAENCODING = STATAENCODING
 
@@ -84,7 +84,7 @@ class run_do_script(run_do_script_base):
 		ret, log_tail  = self.check_erase_log_file()
 		if ret:
 			Logs.error("""Running Stata on %r failed with code %r.\n\nCheck the log file %s, last 10 lines\n\n%s\n\n\n""",
-				self.inputs[0], ret, self.env.LOGFILEPATH, log_tail)
+				self.inputs[0], ret, self.env.LOGFILEPATH, log_tail,)
 		return ret
 
 	def check_erase_log_file(self):
@@ -101,7 +101,7 @@ class run_do_script(run_do_script_base):
 		with open(**kwargs) as log:
 			log_tail = log.readlines()[-10:]
 			for line in log_tail:
-				error_found = re.match(r"r\(([0-9]+)\)", line)
+				error_found = re.match(r"r\(([0-9]+)\)", line,)
 				if error_found:
 					return error_found.group(1), ''.join(log_tail)
 				else:
@@ -113,7 +113,7 @@ class run_do_script(run_do_script_base):
 
 @TaskGen.feature('run_do_script')
 @TaskGen.before_method('process_source')
-def apply_run_do_script(tg):
+def apply_run_do_script(tg,):
 	"""Task generator customising the options etc. to call Stata in batch
 	mode for running a do-script.
 	"""
@@ -122,17 +122,17 @@ def apply_run_do_script(tg):
 	src_node = tg.path.find_resource(tg.source)
 	tgt_nodes = [tg.path.find_or_declare(t) for t in tg.to_list(tg.target)]
 
-	tsk = tg.create_task('run_do_script', src=src_node, tgt=tgt_nodes)
+	tsk = tg.create_task('run_do_script', src=src_node, tgt=tgt_nodes,)
 	tsk.env.DOFILETRUNK = os.path.splitext(src_node.name)[0]
-	tsk.env.LOGFILEPATH = os.path.join(tg.bld.bldnode.abspath(), '%s.log' % (tsk.env.DOFILETRUNK))
+	tsk.env.LOGFILEPATH = os.path.join(tg.bld.bldnode.abspath(), '%s.log' % (tsk.env.DOFILETRUNK),)
 
 	# dependencies (if the attribute 'deps' changes, trigger a recompilation)
-	for x in tg.to_list(getattr(tg, 'deps', [])):
+	for x in tg.to_list(getattr(tg, 'deps', [],)):
 		node = tg.path.find_resource(x)
 		if not node:
 			tg.bld.fatal('Could not find dependency %r for running %r' % (x, src_node.abspath()))
 		tsk.dep_nodes.append(node)
-	Logs.debug('deps: found dependencies %r for running %r', tsk.dep_nodes, src_node.abspath())
+	Logs.debug('deps: found dependencies %r for running %r', tsk.dep_nodes, src_node.abspath(),)
 
 	# Bypass the execution of process_source by setting the source to an empty list
 	tg.source = []

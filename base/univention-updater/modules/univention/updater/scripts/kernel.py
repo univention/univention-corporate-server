@@ -46,14 +46,14 @@ def main() -> None:
     prune(opt)
 
 
-def parse_args(argv: Optional[List[str]] = None) -> Namespace:
+def parse_args(argv: Optional[List[str]] = None,) -> Namespace:
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--verbose", "-v", action="count", help="Increase verbosity")
-    parser.add_argument("--dry-run", "-n", action="store_true", help="Only show what would be done")
+    parser.add_argument("--verbose", "-v", action="count", help="Increase verbosity",)
+    parser.add_argument("--dry-run", "-n", action="store_true", help="Only show what would be done",)
     return parser.parse_args(argv)
 
 
-def prune(opt: Namespace) -> None:
+def prune(opt: Namespace,) -> None:
     cache = Cache()
 
     cur = {PREFIX + uname()[2] + suffix for suffix in {"", "-signed"}}

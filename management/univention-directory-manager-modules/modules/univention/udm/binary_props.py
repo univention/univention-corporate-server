@@ -43,10 +43,10 @@ import magic
 from six import BytesIO, string_types
 
 
-FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])
+FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'],)
 
 
-def get_file_type(filename_or_file):
+def get_file_type(filename_or_file,):
     """
     Get mime_type and encoding of file `filename_or_file`.
 
@@ -57,21 +57,21 @@ def get_file_type(filename_or_file):
     :return: mime_type and encoding of `filename_or_file`
     :rtype: FileType
     """
-    if hasattr(filename_or_file, 'seek'):
+    if hasattr(filename_or_file, 'seek',):
         old_pos = filename_or_file.tell()
         txt = filename_or_file.read()
         filename_or_file.seek(old_pos)
-    elif isinstance(filename_or_file, string_types):
-        with open(filename_or_file, 'rb') as fp:
+    elif isinstance(filename_or_file, string_types,):
+        with open(filename_or_file, 'rb',) as fp:
             txt = fp.read()
     else:
         raise ValueError('Argument "filename_or_file" has unknown type {!r}.'.format(type(filename_or_file)))
-    if hasattr(magic, 'from_file'):
-        mime = magic.Magic(mime=True, mime_encoding=True).from_buffer(txt)
+    if hasattr(magic, 'from_file',):
+        mime = magic.Magic(mime=True, mime_encoding=True,).from_buffer(txt)
         mime_type, charset = mime.split(';')
         encoding = charset.split('=')[-1]
         text = magic.Magic().from_buffer(txt)
-    elif hasattr(magic, 'detect_from_filename'):
+    elif hasattr(magic, 'detect_from_filename',):
         fm = magic.detect_from_content(txt)
         mime_type = fm.mime_type
         encoding = fm.encoding
@@ -81,7 +81,7 @@ def get_file_type(filename_or_file):
     # auto detect utf-8 with BOM
     if encoding == 'utf-8' and txt.startswith(codecs.BOM_UTF8):
         encoding = 'utf-8-sig'
-    return FileType(mime_type, encoding, text)
+    return FileType(mime_type, encoding, text,)
 
 
 class BaseBinaryProperty(object):
@@ -94,7 +94,7 @@ class BaseBinaryProperty(object):
     saved to LDAP).
     """
 
-    def __init__(self, name, encoded_value=None, raw_value=None):
+    def __init__(self, name, encoded_value=None, raw_value=None,):
         assert not (encoded_value and raw_value), 'Only one of "encoded_value" and "raw_value" must be set.'
         assert (encoded_value or raw_value), 'One of "encoded_value" or "raw_value" must be set.'
         self._name = name
@@ -105,14 +105,14 @@ class BaseBinaryProperty(object):
             self.raw = raw_value
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self._name)
+        return '{}({})'.format(self.__class__.__name__, self._name,)
 
     @property
     def encoded(self):
         return self._value
 
     @encoded.setter
-    def encoded(self, value):
+    def encoded(self, value,):
         self._value = value
 
     @property
@@ -120,7 +120,7 @@ class BaseBinaryProperty(object):
         raise NotImplementedError()
 
     @raw.setter
-    def raw(self, value):
+    def raw(self, value,):
         raise NotImplementedError()
 
     @property
@@ -147,7 +147,7 @@ class Base64BinaryProperty(BaseBinaryProperty):
         return base64.b64decode(self._value)
 
     @raw.setter
-    def raw(self, value):
+    def raw(self, value,):
         self._value = base64.b64encode(value)
 
 
@@ -170,5 +170,5 @@ class Base64Bzip2BinaryProperty(BaseBinaryProperty):
         return bz2.decompress(base64.b64decode(self._value))
 
     @raw.setter
-    def raw(self, value):
+    def raw(self, value,):
         self._value = base64.b64encode(bz2.compress(value))

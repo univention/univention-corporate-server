@@ -62,10 +62,10 @@ PCH_COMPILER_OPTIONS = {
 }
 
 
-def options(opt):
-	opt.add_option('--without-pch', action='store_false', default=True, dest='with_pch', help='''Try to use precompiled header to speed up compilation (only g++ and clang++)''')
+def options(opt,):
+	opt.add_option('--without-pch', action='store_false', default=True, dest='with_pch', help='''Try to use precompiled header to speed up compilation (only g++ and clang++)''',)
 
-def configure(conf):
+def configure(conf,):
 	if (conf.options.with_pch and conf.env['COMPILER_CXX'] in PCH_COMPILER_OPTIONS.keys()):
 		conf.env.WITH_PCH = True
 		flags = PCH_COMPILER_OPTIONS[conf.env['COMPILER_CXX']]
@@ -80,15 +80,15 @@ def apply_pch(self):
 	if not self.env.WITH_PCH:
 		return
 
-	if getattr(self.bld, 'pch_tasks', None) is None:
+	if getattr(self.bld, 'pch_tasks', None,) is None:
 		self.bld.pch_tasks = {}
 
-	if getattr(self, 'headers', None) is None:
+	if getattr(self, 'headers', None,) is None:
 		return
 
 	self.headers = self.to_nodes(self.headers)
 
-	if getattr(self, 'name', None):
+	if getattr(self, 'name', None,):
 		try:
 			task = self.bld.pch_tasks[self.name]
 			self.bld.fatal("Duplicated 'pch' task with name %r" % "%s.%s" % (self.name, self.idx))
@@ -97,25 +97,25 @@ def apply_pch(self):
 
 	out = '%s.%d%s' % (self.target, self.idx, self.env['CXXPCH_EXT'])
 	out = self.path.find_or_declare(out)
-	task = self.create_task('gchx', self.headers, out)
+	task = self.create_task('gchx', self.headers, out,)
 
 	# target should be an absolute path of `out`, but without precompiled header extension
 	task.target = out.abspath()[:-len(out.suffix())]
 
 	self.pch_task = task
-	if getattr(self, 'name', None):
+	if getattr(self, 'name', None,):
 		self.bld.pch_tasks[self.name] = task
 
 @TaskGen.feature('cxx')
-@TaskGen.after_method('process_source', 'propagate_uselib_vars')
+@TaskGen.after_method('process_source', 'propagate_uselib_vars',)
 def add_pch(self):
-	if not (self.env['WITH_PCH'] and getattr(self, 'use', None) and getattr(self, 'compiled_tasks', None) and getattr(self.bld, 'pch_tasks', None)):
+	if not (self.env['WITH_PCH'] and getattr(self, 'use', None,) and getattr(self, 'compiled_tasks', None,) and getattr(self.bld, 'pch_tasks', None,)):
 		return
 
 	pch = None
 	# find pch task, if any
 
-	if getattr(self, 'pch_task', None):
+	if getattr(self, 'pch_task', None,):
 		pch = self.pch_task
 	else:
 		for use in Utils.to_list(self.use):
@@ -126,7 +126,7 @@ def add_pch(self):
 
 	if pch:
 		for x in self.compiled_tasks:
-			x.env.append_value('CXXFLAGS', self.env['CXXPCH_F'] + [pch.target])
+			x.env.append_value('CXXFLAGS', self.env['CXXPCH_F'] + [pch.target],)
 
 class gchx(Task.Task):
 	run_str = '${CXX} ${ARCH_ST:ARCH} ${CXXFLAGS} ${CXXPCH_FLAGS} ${FRAMEWORKPATH_ST:FRAMEWORKPATH} ${CPPPATH_ST:INCPATHS} ${DEFINES_ST:DEFINES} ${CXXPCH_F:SRC} ${CXX_SRC_F}${SRC[0].abspath()} ${CXX_TGT_F}${TGT[0].abspath()} ${CPPFLAGS}'

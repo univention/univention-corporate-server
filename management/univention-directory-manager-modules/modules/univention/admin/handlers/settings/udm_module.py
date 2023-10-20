@@ -57,8 +57,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionObjectMetadata', 'univentionUDMModule'],
-    ),
+        objectClasses=['top', 'univentionObjectMetadata', 'univentionUDMModule'],),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -67,76 +66,63 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True,
-    ),
+        identifies=True,),
     'filename': univention.admin.property(
         short_description=_('UDM module file name'),
         long_description='',
         syntax=univention.admin.syntax.string,  # relative path, may contain directories
         required=True,
-        default='',
-    ),
+        default='',),
     'data': univention.admin.property(
         short_description=_('UDM module data'),
         long_description='UDM module data (syntax: Base64 encoded Bzip2)',
         syntax=univention.admin.syntax.Base64Bzip2Text,
-        required=True,
-    ),
+        required=True,),
     'active': univention.admin.property(
         short_description=_('Active'),
         long_description='',
         syntax=univention.admin.syntax.TrueFalseUp,
-        default='FALSE',
-    ),
+        default='FALSE',),
     'appidentifier': univention.admin.property(
         short_description=_('App identifier'),
         long_description='',
         syntax=univention.admin.syntax.TextArea,
-        multivalue=True,
-    ),
+        multivalue=True,),
     'package': univention.admin.property(
         short_description=_('Software package'),
         long_description='',
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'packageversion': univention.admin.property(
         short_description=_('Software package version'),
         long_description='',
-        syntax=univention.admin.syntax.DebianPackageVersion,
-    ),
+        syntax=univention.admin.syntax.DebianPackageVersion,),
     'ucsversionstart': univention.admin.property(
         short_description=_('Minimal UCS version'),
         long_description='',
-        syntax=univention.admin.syntax.UCSVersion,
-    ),
+        syntax=univention.admin.syntax.UCSVersion,),
     'ucsversionend': univention.admin.property(
         short_description=_('Maximal UCS version'),
         long_description='',
-        syntax=univention.admin.syntax.UCSVersion,
-    ),
+        syntax=univention.admin.syntax.UCSVersion,),
     'messagecatalog': univention.admin.property(
         short_description=_('GNU message catalog for translations'),
         long_description='GNU message catalog (syntax: <language tag> <Base64 encoded GNU message catalog>)',
         syntax=univention.admin.syntax.Localesubdirname_and_GNUMessageCatalog,
-        multivalue=True,
-    ),
+        multivalue=True,),
     'umcmessagecatalog': univention.admin.property(
         short_description=_('GNU message catalog for UMC translations'),
         long_description='GNU message catalog (syntax: <UDMModuleID tag> <Base64 encoded GNU message catalog>)',
         syntax=univention.admin.syntax.UMCMessageCatalogFilename_and_GNUMessageCatalog,
-        multivalue=True,
-    ),
+        multivalue=True,),
     'umcregistration': univention.admin.property(
         short_description=_('UMC registration data'),
         long_description='UMC registration data (syntax: Bzip2 compressed and Base64 encoded XML)',
-        syntax=univention.admin.syntax.Base64Bzip2XML,
-    ),
+        syntax=univention.admin.syntax.Base64Bzip2XML,),
     'icon': univention.admin.property(
         short_description=_('UMC icon'),
         long_description='UMC icon (syntax: Base64 encoded jpeg, png or svgz)',
         syntax=univention.admin.syntax.Base64UMCIcon,
-        multivalue=True,
-    ),
+        multivalue=True,),
 }
 
 layout = [
@@ -149,35 +135,35 @@ layout = [
             ["umcmessagecatalog"],
             ["umcregistration"],
             ["icon"],
-        ]),
+        ],),
         Group(_('Metadata'), layout=[
             ["package"],
             ["packageversion"],
             ["appidentifier"],
-        ]),
+        ],),
         Group(_('UCS Version Dependencies'), layout=[
             ["ucsversionstart"],
             ["ucsversionend"],
-        ]),
+        ],),
         Group(_('Activated'), layout=[
             ["active"],
-        ]),
-    ]),
+        ],),
+    ],),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('filename', 'univentionUDMModuleFilename', None, univention.admin.mapping.ListToString)
-mapping.register('data', 'univentionUDMModuleData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('active', 'univentionUDMModuleActive', None, univention.admin.mapping.ListToString)
-mapping.register('appidentifier', 'univentionAppIdentifier')
-mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
-mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
-mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
-mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('filename', 'univentionUDMModuleFilename', None, univention.admin.mapping.ListToString,)
+mapping.register('data', 'univentionUDMModuleData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
+mapping.register('active', 'univentionUDMModuleActive', None, univention.admin.mapping.ListToString,)
+mapping.register('appidentifier', 'univentionAppIdentifier',)
+mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString,)
+mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString,)
+mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString,)
+mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString,)
 # messagecatalogs and umcmessagecatalogs are handled via object._post_map and object._post_unmap defined below
-mapping.register('icon', 'univentionUMCIcon', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('umcregistration', 'univentionUMCRegistrationData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('icon', 'univentionUMCIcon', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
+mapping.register('umcregistration', 'univentionUMCRegistrationData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
 
 messagecatalog_mappings = {
     'messagecatalog': 'univentionMessageCatalog;entry-lang-',
@@ -189,27 +175,27 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _ldap_pre_modify(self):
-        super(object, self)._ldap_pre_modify()
+        super(object, self,)._ldap_pre_modify()
         diff_keys = [key for key in self.info.keys() if self.info.get(key) != self.oldinfo.get(key) and key not in ('active', 'appidentifier')]
         if not diff_keys:  # check for trivial change
             return
         if not self.hasChanged('package'):
-            old_version = self.oldinfo.get('packageversion', '0')
-            if not apt.apt_pkg.version_compare(self['packageversion'], old_version) > -1:
-                raise univention.admin.uexceptions.valueInvalidSyntax(_('packageversion: Version must not be lower than the current one.'), property='packageversion')
+            old_version = self.oldinfo.get('packageversion', '0',)
+            if not apt.apt_pkg.version_compare(self['packageversion'], old_version,) > -1:
+                raise univention.admin.uexceptions.valueInvalidSyntax(_('packageversion: Version must not be lower than the current one.'), property='packageversion',)
 
-    def _post_unmap(self, info, values):
+    def _post_unmap(self, info, values,):
         info['messagecatalog'] = []
         info['umcmessagecatalog'] = []
         for udm_attr, ldap_attr in messagecatalog_mappings.items():
             for ldap_attribute, value_list in values.items():
                 if ldap_attribute.startswith(ldap_attr):
-                    language_tag = ldap_attribute.split(ldap_attr, 1)[1]
+                    language_tag = ldap_attribute.split(ldap_attr, 1,)[1]
                     mo_data_base64 = univention.admin.mapping.unmapBase64(value_list)
                     info[udm_attr].append((language_tag, mo_data_base64))
         return info
 
-    def _post_map(self, modlist, diff):
+    def _post_map(self, modlist, diff,):
         for udm_attr, ldap_attr in messagecatalog_mappings.items():
             for property_name, old_value, new_value in diff:
                 if property_name == udm_attr:

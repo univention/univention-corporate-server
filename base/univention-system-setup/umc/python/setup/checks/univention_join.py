@@ -17,7 +17,7 @@ UCR.load()
 _ = Translation('univention-management-console-module-setup').translate
 
 
-def set_role_and_check_if_join_will_work(role: str, master_fqdn: str, admin_username: str, admin_password: str) -> None:
+def set_role_and_check_if_join_will_work(role: str, master_fqdn: str, admin_username: str, admin_password: str,) -> None:
     orig_role = UCR.get('server/role')
     try:
         univention.config_registry.handler_set(['server/role=%s' % (role,)])
@@ -29,10 +29,10 @@ def set_role_and_check_if_join_will_work(role: str, master_fqdn: str, admin_user
                 '-dcaccount', admin_username,
                 '-dcpwd', password_file,
                 '-checkPrerequisites',
-            ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+            ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True,)
             stdout, stderr = p1.communicate()
             if p1.returncode != 0:
-                messages = [line[11:] for line in stdout.decode("UTF-8", "replace").split('\n') if line.startswith("* Message: ")]
+                messages = [line[11:] for line in stdout.decode("UTF-8", "replace",).split('\n') if line.startswith("* Message: ")]
                 raise UMC_Error(_(
                     "univention-join -checkPrerequisites reported a problem. "
                     "Output of check:\n\n",
@@ -44,16 +44,16 @@ def set_role_and_check_if_join_will_work(role: str, master_fqdn: str, admin_user
             univention.config_registry.handler_unset(['server/role'])
 
 
-def receive_domaincontroller_master_information(dns: str, nameserver: str, address: str, username: str, password: str) -> Dict[str, Any]:
+def receive_domaincontroller_master_information(dns: str, nameserver: str, address: str, username: str, password: str,) -> Dict[str, Any]:
     result: Dict[str, Any] = {}
-    result['domain'] = check_credentials_nonmaster(dns, nameserver, address, username, password)
-    check_domain_has_activated_license(address, username, password)
-    check_domain_is_higher_or_equal_version(address, username, password)
-    result['install_memberof_overlay'] = check_memberof_overlay_is_installed(address, username, password)
+    result['domain'] = check_credentials_nonmaster(dns, nameserver, address, username, password,)
+    check_domain_has_activated_license(address, username, password,)
+    check_domain_is_higher_or_equal_version(address, username, password,)
+    result['install_memberof_overlay'] = check_memberof_overlay_is_installed(address, username, password,)
     return result
 
 
-def check_credentials_nonmaster(dns: str, nameserver: str, address: str, username: str, password: str) -> str:
+def check_credentials_nonmaster(dns: str, nameserver: str, address: str, username: str, password: str,) -> str:
     domain = get_ucs_domain(nameserver) if dns else '.'.join(address.split('.')[1:])
     if not domain:
         # Not checked... no UCS domain!
@@ -64,7 +64,7 @@ def check_credentials_nonmaster(dns: str, nameserver: str, address: str, usernam
         return domain
 
 
-def check_domain_has_activated_license(address: str, username: str, password: str) -> None:
+def check_domain_has_activated_license(address: str, username: str, password: str,) -> None:
     appliance_name = UCR.get("umc/web/appliance/name")
     if not appliance_name:
         return  # the license must only be checked in an appliance scenario
@@ -80,7 +80,7 @@ def check_domain_has_activated_license(address: str, username: str, password: st
                 '/usr/sbin/ucr',
                 'get',
                 'uuid/license',
-            ], stderr=subprocess.STDOUT).decode('UTF-8').rstrip()
+            ], stderr=subprocess.STDOUT,).decode('UTF-8').rstrip()
         except subprocess.CalledProcessError as exc:
             valid_license = False
             error = exc.output.decode("UTF-8")
@@ -95,19 +95,19 @@ def check_domain_has_activated_license(address: str, username: str, password: st
         )))
 
 
-def check_domain_is_higher_or_equal_version(address: str, username: str, password: str) -> None:
+def check_domain_is_higher_or_equal_version(address: str, username: str, password: str,) -> None:
     with _temporary_password_file(password) as password_file:
         try:
-            master_ucs_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip().decode('UTF-8', 'replace')
+            master_ucs_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT,).rstrip().decode('UTF-8', 'replace',)
         except subprocess.CalledProcessError:
             MODULE.error('Failed to retrieve UCS version: %s' % (traceback.format_exc(),))
             return
-        nonmaster_ucs_version = '{}-{}'.format(UCR.get('version/version'), UCR.get('version/patchlevel'))
+        nonmaster_ucs_version = '{}-{}'.format(UCR.get('version/version'), UCR.get('version/patchlevel'),)
         if Version(nonmaster_ucs_version) > Version(master_ucs_version):
-            raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(master_ucs_version, nonmaster_ucs_version))
+            raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(master_ucs_version, nonmaster_ucs_version,))
 
 
-def check_memberof_overlay_is_installed(address: str, username: str, password: str) -> bool:
+def check_memberof_overlay_is_installed(address: str, username: str, password: str,) -> bool:
     with _temporary_password_file(password) as password_file:
         try:
             return UCR.is_true(value=subprocess.check_output([
@@ -123,18 +123,18 @@ def check_memberof_overlay_is_installed(address: str, username: str, password: s
     return False
 
 
-def check_for_school_domain(hostname: str, address: str, username: str, password: str) -> Dict[str, Any]:
+def check_for_school_domain(hostname: str, address: str, username: str, password: str,) -> Dict[str, Any]:
     MODULE.process('univention-join:school: check_for_school_domain(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD'))
-    is_school_multiserver_domain = check_is_school_multiserver_domain(address, username, password)
+    is_school_multiserver_domain = check_is_school_multiserver_domain(address, username, password,)
     if is_school_multiserver_domain:
-        server_school_roles = get_server_school_roles(hostname, address, username, password)
+        server_school_roles = get_server_school_roles(hostname, address, username, password,)
     else:
         server_school_roles = []
     MODULE.process('univention-join:school: check_for_school_domain = %r' % ({'server_school_roles': server_school_roles, 'is_school_multiserver_domain': is_school_multiserver_domain}, ))
     return {'server_school_roles': server_school_roles, 'is_school_multiserver_domain': is_school_multiserver_domain}
 
 
-def check_is_school_multiserver_domain(address: str, username: str, password: str) -> bool:
+def check_is_school_multiserver_domain(address: str, username: str, password: str,) -> bool:
     MODULE.process('univention-join:school: check_is_school_multiserver_domain(%r, %r, %r)' % (address, username, '$PASSWORD'))
     is_school_multiserver_domain = False
     with _temporary_password_file(password) as password_file:
@@ -179,7 +179,7 @@ def check_is_school_multiserver_domain(address: str, username: str, password: st
     return is_school_multiserver_domain
 
 
-def get_server_school_roles(hostname: str, address: str, username: str, password: str) -> List[str]:
+def get_server_school_roles(hostname: str, address: str, username: str, password: str,) -> List[str]:
     MODULE.process('univention-join:school: get_server_school_roles(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD'))
     school_roles = []
     with _temporary_password_file(password) as password_file:

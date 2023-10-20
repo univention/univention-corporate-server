@@ -28,7 +28,7 @@ def dump_db():
     return db
 
 
-def obj_exists(obj_type, dn):
+def obj_exists(obj_type, dn,):
     found = False
     db = dump_db()
     for _obj_id, obj in db[obj_type].items():
@@ -37,15 +37,15 @@ def obj_exists(obj_type, dn):
     return found
 
 
-def user_exists(dn):
-    return obj_exists('users/user', dn)
+def user_exists(dn,):
+    return obj_exists('users/user', dn,)
 
 
-def group_exists(dn):
-    return obj_exists('groups/group', dn)
+def group_exists(dn,):
+    return obj_exists('groups/group', dn,)
 
 
-def get_attr(obj_type, dn, attr):
+def get_attr(obj_type, dn, attr,):
     db = dump_db()
     for _obj_id, obj in db[obj_type].items():
         if dn.lower() == obj.get('dn').lower():
@@ -67,34 +67,34 @@ def test_listener():
         assert group_exists(g1[0])
         assert group_exists(g2[0])
         # modify
-        udm.modify_object('users/user', dn=u1[0], description='abcde')
-        udm.modify_object('users/user', dn=u2[0], description='xyz')
-        udm.modify_object('users/user', dn=u3[0], description='öäü????ßßßß!')
-        udm.modify_object('groups/group', dn=g1[0], description='lkjalkhlÄÖ#üäööäö')
-        udm.modify_object('groups/group', dn=g2[0], users=u1[0])
+        udm.modify_object('users/user', dn=u1[0], description='abcde',)
+        udm.modify_object('users/user', dn=u2[0], description='xyz',)
+        udm.modify_object('users/user', dn=u3[0], description='öäü????ßßßß!',)
+        udm.modify_object('groups/group', dn=g1[0], description='lkjalkhlÄÖ#üäööäö',)
+        udm.modify_object('groups/group', dn=g2[0], users=u1[0],)
         time.sleep(LISTENER_TIMEOUT)
-        assert get_attr('users/user', u1[0], 'description') == 'abcde'
-        assert get_attr('users/user', u2[0], 'description') == 'xyz'
-        assert get_attr('users/user', u3[0], 'description') == 'öäü????ßßßß!'
-        assert get_attr('users/user', u1[0], 'description')
-        assert get_attr('users/user', u1[0], 'disabled') is False
-        assert get_attr('users/user', u1[0], 'displayName')
-        assert get_attr('users/user', u1[0], 'gidNumber')
-        assert get_attr('users/user', u1[0], 'groups')
-        assert get_attr('users/user', u1[0], 'lastname')
-        assert get_attr('users/user', u1[0], 'sambaRID')
-        assert get_attr('groups/group', g1[0], 'description') == 'lkjalkhlÄÖ#üäööäö'
-        assert get_attr('groups/group', g2[0], 'users') == [u1[0]]
-        assert get_attr('groups/group', g2[0], 'users')
-        assert get_attr('groups/group', g2[0], 'gidNumber')
-        assert get_attr('groups/group', g2[0], 'name')
-        assert get_attr('groups/group', g2[0], 'sambaRID')
+        assert get_attr('users/user', u1[0], 'description',) == 'abcde'
+        assert get_attr('users/user', u2[0], 'description',) == 'xyz'
+        assert get_attr('users/user', u3[0], 'description',) == 'öäü????ßßßß!'
+        assert get_attr('users/user', u1[0], 'description',)
+        assert get_attr('users/user', u1[0], 'disabled',) is False
+        assert get_attr('users/user', u1[0], 'displayName',)
+        assert get_attr('users/user', u1[0], 'gidNumber',)
+        assert get_attr('users/user', u1[0], 'groups',)
+        assert get_attr('users/user', u1[0], 'lastname',)
+        assert get_attr('users/user', u1[0], 'sambaRID',)
+        assert get_attr('groups/group', g1[0], 'description',) == 'lkjalkhlÄÖ#üäööäö'
+        assert get_attr('groups/group', g2[0], 'users',) == [u1[0]]
+        assert get_attr('groups/group', g2[0], 'users',)
+        assert get_attr('groups/group', g2[0], 'gidNumber',)
+        assert get_attr('groups/group', g2[0], 'name',)
+        assert get_attr('groups/group', g2[0], 'sambaRID',)
         # remove
-        udm.remove_object('users/user', dn=u1[0])
-        udm.remove_object('users/user', dn=u2[0])
-        udm.remove_object('users/user', dn=u3[0])
-        udm.remove_object('groups/group', dn=g1[0])
-        udm.remove_object('groups/group', dn=g2[0])
+        udm.remove_object('users/user', dn=u1[0],)
+        udm.remove_object('users/user', dn=u2[0],)
+        udm.remove_object('users/user', dn=u3[0],)
+        udm.remove_object('groups/group', dn=g1[0],)
+        udm.remove_object('groups/group', dn=g2[0],)
         time.sleep(LISTENER_TIMEOUT)
         assert not user_exists(u1[0])
         assert not user_exists(u2[0])
@@ -102,22 +102,22 @@ def test_listener():
         assert not group_exists(g1[0])
         assert not group_exists(g2[0])
         # listener dir should be empty at this point
-        assert not glob.glob(os.path.join(LISTENER_DIR, '*.json'))
+        assert not glob.glob(os.path.join(LISTENER_DIR, '*.json',))
 
 
-def get_pid_for_name(name):
-    o = subprocess.check_output(['ps', 'aux'], text=True)
+def get_pid_for_name(name,):
+    o = subprocess.check_output(['ps', 'aux'], text=True,)
     for line in o.split('\n'):
         if name in line:
             return line.split()[1]
     return None
 
 
-def systemd_service_active(service):
+def systemd_service_active(service,):
     active = False
     cmd = ['systemctl', 'status', service]
     try:
-        out = subprocess.check_output(cmd, text=True)
+        out = subprocess.check_output(cmd, text=True,)
     except subprocess.CalledProcessError:
         out = ''
     if 'Active: active (running' in out:
@@ -125,10 +125,10 @@ def systemd_service_active(service):
     return active
 
 
-def systemd_service_enabled(service):
+def systemd_service_enabled(service,):
     cmd = ['systemctl', 'is-enabled', service]
     try:
-        out = subprocess.check_output(cmd, text=True)
+        out = subprocess.check_output(cmd, text=True,)
     except subprocess.CalledProcessError:
         out = ''
     return 'enabled' in out
@@ -192,14 +192,13 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 '''
 
     with Appcenter() as appcenter:
-        app = App(name=name, version='1', build_package=False, call_join_scripts=False)
+        app = App(name=name, version='1', build_package=False, call_join_scripts=False,)
         app.set_ini_parameter(
             DockerImage='docker-test.software-univention.de/debian:stable',
             DockerScriptSetup='/setup',
             DockerScriptStoreData='/store_data',
             DockerScriptInit='/bin/bash',
-            ListenerUdmModules='users/user, groups/group',
-        )
+            ListenerUdmModules='users/user, groups/group',)
         app.add_script(setup=setup)
         app.add_script(store_data=store_data)
         app.add_script(preinst=preinst)
@@ -209,7 +208,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         app.install()
         appcenter.apps.append(app)
         app.verify(joined=False)
-        images = subprocess.check_output(['docker', 'images'], text=True)
+        images = subprocess.check_output(['docker', 'images'], text=True,)
         assert 'stable' in images, images
         very_old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
         time.sleep(10)
@@ -222,14 +221,13 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         old_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
         old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
         assert very_old_con_pid == old_con_pid  # should be the same until now
-        app = App(name=name, version='2', build_package=False, call_join_scripts=False)
+        app = App(name=name, version='2', build_package=False, call_join_scripts=False,)
         app.set_ini_parameter(
             DockerImage='docker-test.software-univention.de/debian:testing',
             DockerScriptSetup='/setup',
             DockerScriptStoreData='/store_data',
             DockerScriptInit='/bin/bash',
-            ListenerUdmModules='users/user, groups/group',
-        )
+            ListenerUdmModules='users/user, groups/group',)
         app.add_script(setup=setup)
         app.add_script(store_data=store_data)
         app.add_script(preinst=preinst)

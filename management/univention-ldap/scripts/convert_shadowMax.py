@@ -42,7 +42,7 @@ lo = univention.uldap.getAdminConnection()
 ucr = ConfigRegistry()
 ucr.load()
 
-searchResult = lo.search(base=ucr['ldap/base'], filter='(&(objectClass=shadowAccount)(shadowLastChange=*)(shadowMax=*))', attr=['shadowLastChange', 'shadowMax'])
+searchResult = lo.search(base=ucr['ldap/base'], filter='(&(objectClass=shadowAccount)(shadowLastChange=*)(shadowMax=*))', attr=['shadowLastChange', 'shadowMax'],)
 
 for dn, attributes in searchResult:
     ml = []
@@ -56,6 +56,6 @@ for dn, attributes in searchResult:
                     ml.append(('shadowMax', attributes['shadowMax'], []))
                 else:
                     ml.append(('shadowMax', attributes['shadowMax'], [str(new_max).encode('ASCII')]))
-                lo.modify(dn, ml)
+                lo.modify(dn, ml,)
         except Exception:
             pass

@@ -15,7 +15,7 @@ To use::
 """
 
 from waflib import Task
-def build(bld):
+def build(bld,):
 	def run(self):
 		for x in self.outputs:
 			x.write('')

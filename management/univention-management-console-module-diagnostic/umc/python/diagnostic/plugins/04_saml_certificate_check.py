@@ -57,7 +57,7 @@ title = _('SAML certificate verification failed!')
 run_descr = ['Checks SAML certificates']
 
 
-def run(_umc_instance: Instance, rerun: bool = False) -> None:
+def run(_umc_instance: Instance, rerun: bool = False,) -> None:
     problems: List[str] = []
     buttons: List[Dict[str, str]] = []
     links: List[Dict[str, str]] = []
@@ -68,9 +68,9 @@ def run(_umc_instance: Instance, rerun: bool = False) -> None:
         idp = True
         kwargs = problem.kwargs
         problems.append(kwargs["description"])
-        buttons += kwargs.get("buttons", [])
-        links += kwargs.get("links", [])
-        umc_modules += kwargs.get("umc_modules", [])
+        buttons += kwargs.get("buttons", [],)
+        links += kwargs.get("links", [],)
+        umc_modules += kwargs.get("umc_modules", [],)
 
     if idp and not rerun:
         problems.append(_(
@@ -92,9 +92,9 @@ def run(_umc_instance: Instance, rerun: bool = False) -> None:
         sp = True
         kwargs = problem.kwargs
         problems.append(kwargs["description"])
-        buttons += kwargs.get("buttons", [])
-        links += kwargs.get("links", [])
-        umc_modules += kwargs.get("umc_modules", [])
+        buttons += kwargs.get("buttons", [],)
+        links += kwargs.get("links", [],)
+        umc_modules += kwargs.get("umc_modules", [],)
 
     if sp:
         problems.append(_(
@@ -124,8 +124,7 @@ def run(_umc_instance: Instance, rerun: bool = False) -> None:
             description="\n".join(problems),
             buttons=buttons,
             links=links,
-            umc_modules=umc_modules,
-        )
+            umc_modules=umc_modules,)
 
 
 def test_identity_provider_certificate() -> Iterator[Problem]:
@@ -153,23 +152,21 @@ def test_identity_provider_certificate() -> Iterator[Problem]:
             "label": url,
         }
         try:
-            res = requests.get(url, headers={'host': sso_fqdn}, verify=False)  # required for SNI since Python 2.7.9 / 3.4  # noqa: S501
+            res = requests.get(url, headers={'host': sso_fqdn}, verify=False,)  # required for SNI since Python 2.7.9 / 3.4  # noqa: S501
             data = res.content
         except requests.exceptions.ConnectionError as exc:
             yield Critical(
-                description=_("Failed to load certificate {{{link}}}: {exc}").format(link=link, exc=exc),
-                links=[links],
-            )
+                description=_("Failed to load certificate {{{link}}}: {exc}").format(link=link, exc=exc,),
+                links=[links],)
             continue
 
         try:
-            certificate = x509.load_pem_x509_certificate(data, backend)
+            certificate = x509.load_pem_x509_certificate(data, backend,)
             MODULE.process("Looking for certificate %s" % (certificate.subject,))
         except ValueError as exc:
             yield Critical(
-                description=_("Failed to load certificate {{{link}}}: {exc}").format(link=link, exc=exc),
-                links=[links],
-            )
+                description=_("Failed to load certificate {{{link}}}: {exc}").format(link=link, exc=exc,),
+                links=[links],)
             continue
 
         # compare this with /usr/share/univention-management-console/saml/idp/*.xml
@@ -178,7 +175,7 @@ def test_identity_provider_certificate() -> Iterator[Problem]:
                 tree = parse(idp)
             except OSError as exc:
                 yield Critical(
-                    description=_("Failed to load certificate {cert!r}: {exc}").format(cert=idp, exc=exc),
+                    description=_("Failed to load certificate {cert!r}: {exc}").format(cert=idp, exc=exc,),
                 )
                 continue
 
@@ -194,11 +191,11 @@ def test_identity_provider_certificate() -> Iterator[Problem]:
                 text = node.text
                 der = b64decode(text)
                 try:
-                    cert = x509.load_der_x509_certificate(der, backend)
+                    cert = x509.load_der_x509_certificate(der, backend,)
                     MODULE.process("Found certificate %s in %s" % (cert.subject, idp))
                 except ValueError as exc:
                     yield Critical(
-                        description=_("Failed to load certificate {cert!r}: {exc}").format(cert=idp, exc=exc),
+                        description=_("Failed to load certificate {cert!r}: {exc}").format(cert=idp, exc=exc,),
                     )
                     continue
 
@@ -206,15 +203,14 @@ def test_identity_provider_certificate() -> Iterator[Problem]:
                     break
             else:
                 yield Critical(
-                    description=_("The SAML identity provider certificate {cert!r} is missing in {{{link}}}.").format(cert=idp, link=link),
-                    links=[links],
-                )
+                    description=_("The SAML identity provider certificate {cert!r} is missing in {{{link}}}.").format(cert=idp, link=link,),
+                    links=[links],)
 
 
-def fix_idp(umc: Instance) -> None:
+def fix_idp(umc: Instance,) -> None:
     MODULE.process("Re-running join-script 92univention-management-console-web-server")
     call(["univention-run-join-scripts", "--force", "--run-scripts", "92univention-management-console-web-server"])
-    return run(umc, rerun=True)
+    return run(umc, rerun=True,)
 
 
 def test_service_provider_certificate() -> Iterator[Problem]:
@@ -229,27 +225,27 @@ def test_service_provider_certificate() -> Iterator[Problem]:
     path = '/etc/univention/ssl/%(hostname)s.%(domainname)s/cert.pem' % ucr
     MODULE.process("Checking certificates of %s" % (path,))
     try:
-        with open(path, "rb") as fd:
+        with open(path, "rb",) as fd:
             data = fd.read()
     except OSError as exc:
         yield Critical(
-            description=_("Failed to load certificate {cert!r}: {exc}").format(cert=path, exc=exc),
+            description=_("Failed to load certificate {cert!r}: {exc}").format(cert=path, exc=exc,),
         )
         return
 
     try:
-        certificate = x509.load_pem_x509_certificate(data, backend)
+        certificate = x509.load_pem_x509_certificate(data, backend,)
         MODULE.process("Looking for certificate %s" % (certificate.subject,))
     except ValueError as exc:
         yield Critical(
-            description=_("Failed to load certificate {cert!r}: {exc}").format(cert=path, exc=exc),
+            description=_("Failed to load certificate {cert!r}: {exc}").format(cert=path, exc=exc,),
         )
         return
 
     lo = univention.uldap.getMachineConnection()
     url = "https://%(hostname)s.%(domainname)s/univention/saml/metadata" % ucr
-    search = filter_format("(&(serviceProviderMetadata=*)(univentionObjectType=saml/serviceprovider)(SAMLServiceProviderIdentifier=%s))", [url])
-    certs = lo.search(search, attr=['serviceProviderMetadata'])
+    search = filter_format("(&(serviceProviderMetadata=*)(univentionObjectType=saml/serviceprovider)(SAMLServiceProviderIdentifier=%s))", [url],)
+    certs = lo.search(search, attr=['serviceProviderMetadata'],)
     for dn, attrs in certs:
         link, umcm = dns_link(dn)
         xml = attrs['serviceProviderMetadata'][0].decode('UTF-8')
@@ -258,33 +254,30 @@ def test_service_provider_certificate() -> Iterator[Problem]:
         if not nodes:
             yield Critical(
                 description=_("Failed to find any certificate in {{{link}}}").format(link=link),
-                umc_modules=[umcm],
-            )
+                umc_modules=[umcm],)
             continue
 
         for node in nodes:
             text = node.text
             der = b64decode(text)
             try:
-                cert = x509.load_der_x509_certificate(der, backend)
+                cert = x509.load_der_x509_certificate(der, backend,)
                 MODULE.process("Found certificate %s in %s" % (cert.subject, dn))
             except ValueError as exc:
                 yield Critical(
-                    description=_("Failed to load certificate {{{link}}}: {exc}").format(link=link, exc=exc),
-                    umc_modules=[umcm],
-                )
+                    description=_("Failed to load certificate {{{link}}}: {exc}").format(link=link, exc=exc,),
+                    umc_modules=[umcm],)
                 continue
 
             if cert == certificate:
                 break
         else:
             yield Critical(
-                description=_("The SAML identity provider certificate {{{link}}} does not match the local certificate {loc!r}.").format(link=link, loc=path),
-                umc_modules=[umcm],
-            )
+                description=_("The SAML identity provider certificate {{{link}}} does not match the local certificate {loc!r}.").format(link=link, loc=path,),
+                umc_modules=[umcm],)
 
 
-def dns_link(dn: str) -> Tuple[str, Dict[str, Any]]:
+def dns_link(dn: str,) -> Tuple[str, Dict[str, Any]]:
     """Create UMC UDM link for DN."""
     link = "udm:saml/serviceprovider"
     umcm: Dict[str, Any] = {
@@ -300,10 +293,10 @@ def dns_link(dn: str) -> Tuple[str, Dict[str, Any]]:
     return (link, umcm)
 
 
-def fix_sp(umc: Instance) -> None:
+def fix_sp(umc: Instance,) -> None:
     MODULE.process("Re-running update_metadata")
     call(["/usr/share/univention-management-console/saml/update_metadata"])
-    return run(umc, rerun=True)
+    return run(umc, rerun=True,)
 
 
 actions: Dict[str, Callable[[Instance], None]] = {

@@ -135,7 +135,7 @@ _enable_syslog = False
 _logger_level = {key: DEFAULT for key in _map_id_old2new.values()}
 
 
-def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
+def init(logfile, force_flush=0, enable_function=0, enable_syslog=0,):
     """
     Initialize debugging library for logging to 'logfile'.
 
@@ -155,10 +155,9 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
         level=logging.DEBUG,
         filename='/dev/null',  # disabled
         format=_outfmt,
-        datefmt=_datefmt,
-    )
+        datefmt=_datefmt,)
 
-    formatter = logging.Formatter(_outfmt, _datefmt)
+    formatter = logging.Formatter(_outfmt, _datefmt,)
     exit()
     if logfile in ('stderr', '/dev/stderr', 'stdout', '/dev/stdout'):
         # add stderr or stdout handler
@@ -170,7 +169,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
     else:
         try:
             # add file handler
-            _handler_file = logging.FileHandler(logfile, 'a+')
+            _handler_file = logging.FileHandler(logfile, 'a+',)
             _handler_file.setLevel(logging.DEBUG)
             _handler_file.setFormatter(formatter)
             logging.getLogger('').addHandler(_handler_file)
@@ -189,11 +188,11 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 #             raise
 #             print('opening syslog failed')
 
-    logging.addLevelName(25, 'PROCESS')
-    logging.addLevelName(15, 'ALL')
-    logging.addLevelName(100, '------')
+    logging.addLevelName(25, 'PROCESS',)
+    logging.addLevelName(15, 'ALL',)
+    logging.addLevelName(100, '------',)
 
-    logging.getLogger('MAIN').log(100, 'DEBUG_INIT')
+    logging.getLogger('MAIN').log(100, 'DEBUG_INIT',)
 
     _do_flush = force_flush
     _enable_function = enable_function
@@ -205,7 +204,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 def exit():
     """Close debug logfile."""
     global _handler_console, _handler_file
-    logging.getLogger('MAIN').log(100, 'DEBUG_EXIT')
+    logging.getLogger('MAIN').log(100, 'DEBUG_EXIT',)
     if _handler_console:
         logging.getLogger('').removeHandler(_handler_console)
         _handler_console = None
@@ -217,18 +216,18 @@ def exit():
 
 def reopen():
     """Close and re-open the debug logfile."""
-    logging.getLogger('MAIN').log(100, 'DEBUG_REINIT')
-    init(_logfilename, _do_flush, _enable_function, _enable_syslog)
+    logging.getLogger('MAIN').log(100, 'DEBUG_REINIT',)
+    init(_logfilename, _do_flush, _enable_function, _enable_syslog,)
 
 
-def set_level(category, level):
+def set_level(category, level,):
     """
     Set minimum required severity 'level' for facility 'category'.
 
     :param int category: ID of the category, e.g. MAIN, LDAP, USERS, ...
     :param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
     """
-    new_id = _map_id_old2new.get(category, 'MAIN')
+    new_id = _map_id_old2new.get(category, 'MAIN',)
     if level > ALL:
         level = ALL
     elif level < ERROR:
@@ -236,7 +235,7 @@ def set_level(category, level):
     _logger_level[new_id] = level
 
 
-def get_level(category):
+def get_level(category,):
     """
     Get minimum required severity for facility 'category'.
 
@@ -244,11 +243,11 @@ def get_level(category):
     :return: Return debug level of category.
     :rtype: int
     """
-    new_id = _map_id_old2new.get(category, 'MAIN')
+    new_id = _map_id_old2new.get(category, 'MAIN',)
     return _logger_level[new_id]
 
 
-def set_function(activate):
+def set_function(activate,):
     """
     Enable or disable the logging of function begins and ends.
 
@@ -261,7 +260,7 @@ def set_function(activate):
     _enable_function = activate
 
 
-def debug(category, level, message, utf8=True):
+def debug(category, level, message, utf8=True,):
     """
     Log message 'message' of severity 'level' to facility 'category'.
 
@@ -270,10 +269,10 @@ def debug(category, level, message, utf8=True):
     :param str message: The message to log.
     :param bool utf8: Assume the message is UTF-8 encoded.
     """
-    new_id = _map_id_old2new.get(category, 'MAIN')
+    new_id = _map_id_old2new.get(category, 'MAIN',)
     if level <= _logger_level[new_id]:
         new_level = _map_lvl_old2new[level]
-        logging.getLogger(new_id).log(new_level, message)
+        logging.getLogger(new_id).log(new_level, message,)
         _flush()
 
 
@@ -294,21 +293,21 @@ class function(object):
     'yes'
     """
 
-    def __init__(self, fname, utf8=True):
-        warn('univention.debug2.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning)  # noqa: B028
+    def __init__(self, fname, utf8=True,):
+        warn('univention.debug2.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning,)  # noqa: B028
         self.fname = fname
         if _enable_function:
-            logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.fname)
+            logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.fname,)
             _flush()
 
     def __del__(self):
         """Log the end of function."""
         if _enable_function:
-            logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.fname)
+            logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.fname,)
             _flush()
 
 
-def trace(with_args=True, with_return=False, repr=object.__repr__):
+def trace(with_args=True, with_return=False, repr=object.__repr__,):
     """
     Log function call, optional with arguments and result.
 
@@ -335,31 +334,30 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
             ...
     ZeroDivisionError: integer division or modulo by zero
     """
-    def decorator(f):
+    def decorator(f,):
         @wraps(f)
         def wrapper(*args, **kwargs):
             fname = '%s.%s' % (f.__module__, f.__name__)
             _args = ', '.join(
                     chain(
                         (repr(arg) for arg in args),
-                        ('%s=%s' % (k, repr(v)) for (k, v) in kwargs.items()),
-                    ),
+                        ('%s=%s' % (k, repr(v)) for (k, v) in kwargs.items()),),
             ) if with_args else '...'
 
             logger = logging.getLogger('MAIN')
-            logger.log(100, 'UNIVENTION_DEBUG_BEGIN : %s(%s): ...', fname, _args)
+            logger.log(100, 'UNIVENTION_DEBUG_BEGIN : %s(%s): ...', fname, _args,)
             _flush()
             try:
-                ret = f(*args, **kwargs)
+                ret = f(*args, **kwargs,)
             except BaseException:
                 try:
                     (exctype, value) = sys.exc_info()[:2]
-                    logger.log(100, 'UNIVENTION_DEBUG_END   : %s(...): %s(%s)', fname, exctype, value)
+                    logger.log(100, 'UNIVENTION_DEBUG_END   : %s(...): %s(%s)', fname, exctype, value,)
                 finally:
                     exctype = value = None
                 raise
             else:
-                logger.log(100, 'UNIVENTION_DEBUG_END   : %s(...): %s', fname, repr(ret) if with_return else '...')
+                logger.log(100, 'UNIVENTION_DEBUG_END   : %s(...): %s', fname, repr(ret) if with_return else '...',)
                 return ret
 
         return wrapper

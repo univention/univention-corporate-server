@@ -73,8 +73,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpNetbios'],
-    ),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpNetbios'],),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -84,31 +83,27 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'netbios_name_servers': univention.admin.property(
         short_description=_('NetBIOS name servers'),
         long_description=_('List of WINS servers listed in order of preference'),
         syntax=univention.admin.syntax.string,
-        multivalue=True,
-    ),
+        multivalue=True,),
     'netbios_scope': univention.admin.property(
         short_description=_('NetBIOS scope'),
         long_description=_('NetBIOS over TCP/IP scope parameter'),
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'netbios_node_type': univention.admin.property(
         short_description=_('NetBIOS node type'),
         long_description=_('The node type of clients for NetBIOS over TCP/IP'),
-        syntax=univention.admin.syntax.netbiosNodeType,
-    ),
+        syntax=univention.admin.syntax.netbiosNodeType,),
 }, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=dhcp_netbiosFixedAttributes),
     emptyAttributesProperty(syntax=dhcp_netbiosFixedAttributes),
     ldapFilterProperty(),
-]))
+]),)
 
 layout = [
     Tab(_('Netbios'), _('SMB/CIFS name resolution'), layout=[
@@ -116,16 +111,16 @@ layout = [
             'name',
             'netbios_name_servers',
             ['netbios_scope', 'netbios_node_type'],
-        ]),
-    ]),
+        ],),
+    ],),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('netbios_name_servers', 'univentionDhcpNetbiosNameServers')
-mapping.register('netbios_scope', 'univentionDhcpNetbiosScope', None, univention.admin.mapping.ListToString)
-mapping.register('netbios_node_type', 'univentionDhcpNetbiosNodeType', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('netbios_name_servers', 'univentionDhcpNetbiosNameServers',)
+mapping.register('netbios_scope', 'univentionDhcpNetbiosScope', None, univention.admin.mapping.ListToString,)
+mapping.register('netbios_node_type', 'univentionDhcpNetbiosNodeType', None, univention.admin.mapping.ListToString,)
 register_policy_mapping(mapping)
 
 

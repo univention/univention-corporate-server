@@ -18,12 +18,12 @@ class ScreenShooter(BaseScreenShooter):
         logging.basicConfig(level=logging.INFO)
 
         self.udm = udm_test.UCSTestUDM()
-        self.selenium = selenium_test.UMCSeleniumTest(login=False, language=self.args.language)
+        self.selenium = selenium_test.UMCSeleniumTest(login=False, language=self.args.language,)
 
     def take_screenshots(self):
-        self.selenium.set_viewport_size(800, 600)
+        self.selenium.set_viewport_size(800, 600,)
         self.selenium.save_screenshot("umc-login")
-        self.selenium.save_screenshot("umc-login_cropped", xpath='//*[@id="umcLoginDialog"]')
+        self.selenium.save_screenshot("umc-login_cropped", xpath='//*[@id="umcLoginDialog"]',)
 
 
 if __name__ == '__main__':

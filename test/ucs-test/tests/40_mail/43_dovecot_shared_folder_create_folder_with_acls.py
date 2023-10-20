@@ -38,7 +38,7 @@ def main():  # type: () -> None
                 utils.wait_for_replication()
                 logfiles = ['/var/log/dovecot.log', '/var/log/univention/listener.log']
                 with utils.FollowLogfile(logfiles=logfiles):
-                    with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log', 'reopen']):
+                    with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log', 'reopen'],):
                         fqdn = '%(hostname)s.%(domainname)s' % ucr
                         user_address = random_email()
                         user_password = 'univention'
@@ -62,14 +62,13 @@ def main():  # type: () -> None
                             fqdn,
                             mailAddress=False,
                             user_permission=user_acls,
-                            group_permission=[f'"{grpname}" "{right}"' for grpname, right in group_acls],
-                        )
+                            group_permission=[f'"{grpname}" "{right}"' for grpname, right in group_acls],)
                         utils.wait_for_replication()
                         print(f'*** Folder: {folder_name!r} --> {folder_dn!r}')
 
                         # read folder's ACLs
                         imap = MailClient_SSL(fqdn)
-                        imap.log_in(user_address, user_password)
+                        imap.log_in(user_address, user_password,)
                         mailbox_acls = imap.get_acl(folder_name)
                         imap.logout()
                         print(repr(mailbox_acls))
@@ -81,7 +80,7 @@ def main():  # type: () -> None
                             assert f'${grpname}' in acls, f"'${grpname}' not in ACL list"
                         assert user_address in acls, f'{user_address} not in ACL list'
 
-                        udm.remove_object('mail/folder', dn=folder_dn)
+                        udm.remove_object('mail/folder', dn=folder_dn,)
 
 
 if __name__ == '__main__':

@@ -18,7 +18,7 @@ from univention.testing.udm import UCSTestUDM
 
 
 def get_current_v2license_client_count():
-    for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8').split('\n'):
+    for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE,).communicate()[0].decode('UTF-8').split('\n'):
         if line.startswith('Managed Clients:'):
             return int(line.split('of')[0].split()[-1])
 
@@ -41,14 +41,14 @@ if __name__ == '__main__':
             attributes = {
                 'name': uts.random_name(),
             }
-            client_dn = udm.create_object('computers/windows', **attributes)
+            client_dn = udm.create_object('computers/windows', **attributes,)
             utils.wait_for_replication()
             udm.stop_cli_server()
             license_client_count_current = get_current_v2license_client_count()
             if license_client_count_current != license_client_count_admember + 1:
                 utils.fail(f'After creating a normal client in ad/member mode, the license client counter did not increase by one (admember: {license_client_count_admember}, current: {license_client_count_current})')
 
-            lo.modify(client_dn, (('univentionObjectFlag', b'', b'synced'),))
+            lo.modify(client_dn, (('univentionObjectFlag', b'', b'synced'),),)
             utils.wait_for_replication()
             udm.stop_cli_server()
             license_client_count_current = get_current_v2license_client_count()

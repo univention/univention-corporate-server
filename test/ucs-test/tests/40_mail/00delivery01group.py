@@ -42,14 +42,14 @@ def main():
             mails.append(usermail)
 
         token = str(time.time())
-        send_mail(recipients=group_mail, msg=token, idstring=token, subject='Test Group Send')
+        send_mail(recipients=group_mail, msg=token, idstring=token, subject='Test Group Send',)
 
         failed_addresses = ['DUMMY']
         while TIMEOUT > 0 and failed_addresses:
             TIMEOUT -= 1
             failed_addresses = []
             for mail in mails:
-                if not file_search_mail(tokenlist=[token], mail_address=mail):
+                if not file_search_mail(tokenlist=[token], mail_address=mail,):
                     failed_addresses.append(mail)
             time.sleep(1)
         for address in failed_addresses:

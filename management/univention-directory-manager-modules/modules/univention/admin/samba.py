@@ -39,11 +39,11 @@ import six
 
 class acctFlags(object):
 
-    def __init__(self, flagstring=None, flags=None, fallbackflags=None):
+    def __init__(self, flagstring=None, flags=None, fallbackflags=None,):
         if flags is not None:
             self.__flags = OrderedDict(flags)
             return
-        if not flagstring or not isinstance(flagstring, six.string_types) or len(flagstring) != 13:
+        if not flagstring or not isinstance(flagstring, six.string_types,) or len(flagstring) != 13:
             if fallbackflags is not None:
                 self.__flags = OrderedDict(fallbackflags)
                 return
@@ -55,10 +55,10 @@ class acctFlags(object):
                 flags[letter] = 1
         self.__flags = OrderedDict(flags)
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value,):
         self.__flags[key] = value
 
-    def __getitem__(self, key):
+    def __getitem__(self, key,):
         return self.__flags[key]
 
     def decode(self):
@@ -71,10 +71,10 @@ class acctFlags(object):
         flagstring += "]"
         return flagstring
 
-    def set(self, flag):
+    def set(self, flag,):
         self[flag] = 1
         return self.decode()
 
-    def unset(self, flag):
+    def unset(self, flag,):
         self[flag] = 0
         return self.decode()

@@ -34,24 +34,23 @@ class TestUMCUserAuthentication(UMCBase):
         self.test_user_dn = self.UDM.create_ldap_user(
             password=self.test_password,
             username=self.test_username,
-            policy_reference='cn=default-umc-all,cn=UMC,cn=policies,%s' % self.ucr['ldap/base'],
-        )[0]
+            policy_reference='cn=default-umc-all,cn=UMC,cn=policies,%s' % self.ucr['ldap/base'],)[0]
         utils.verify_ldap_object(self.test_user_dn)
 
     def query_udm(self):
         """Queries UDM's users/ldap from UMC"""
-        response = self.request('udm/query', {'objectType': 'users/ldap', 'objectProperty': 'username', 'objectPropertyValue': self.test_username}, 'users/user')
+        response = self.request('udm/query', {'objectType': 'users/ldap', 'objectProperty': 'username', 'objectPropertyValue': self.test_username}, 'users/user',)
         if not response:  # udm/query not rejected but does not work
             utils.fail("Cannot find myself with udm/query!")
 
-    def authenticate_to_umc(self, username, password):
+    def authenticate_to_umc(self, username, password,):
         """
         Authenticates to UMC using 'self.client' and given
         'password' with 'username'. Updates the cookie.
         Returns 'True' on success and 'False' in any other case.
         """
         try:
-            response = self.client.authenticate(username, password)
+            response = self.client.authenticate(username, password,)
             assert response.status == 200
             return True
         except Exception as exc:
@@ -65,7 +64,7 @@ class TestUMCUserAuthentication(UMCBase):
         with UCSTestUDM() as self.UDM:
             self.create_user()
             self.client = Client()
-            self.authenticate_to_umc(self.test_username, self.test_password)
+            self.authenticate_to_umc(self.test_username, self.test_password,)
             self.query_udm()
 
 

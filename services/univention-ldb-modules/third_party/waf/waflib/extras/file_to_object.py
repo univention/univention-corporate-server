@@ -34,8 +34,8 @@ Known issues:
 import os, sys
 from waflib import Task, TaskGen, Errors
 
-def filename_c_escape(x):
-	return x.replace("\\", "\\\\")
+def filename_c_escape(x,):
+	return x.replace("\\", "\\\\",)
 
 class file_to_object_s(Task.Task):
 	color = 'CYAN'
@@ -66,7 +66,7 @@ class file_to_object_s(Task.Task):
 			name = "_" + name
 			rodata = ".section __TEXT,__const"
 
-		with open(self.outputs[0].abspath(), 'w') as f:
+		with open(self.outputs[0].abspath(), 'w',) as f:
 			f.write(\
 """
 	.global %(name)s_start
@@ -95,7 +95,7 @@ class file_to_object_c(Task.Task):
 
 		name = "_binary_" + "".join(name)
 
-		def char_to_num(ch):
+		def char_to_num(ch,):
 			if sys.version_info[0] < 3:
 				return ord(ch)
 			return ch
@@ -127,16 +127,16 @@ def tg_file_to_object(self):
 	for src in sources:
 		if bld.env.F2O_METHOD == ["asm"]:
 			tgt = src.parent.find_or_declare(src.name + '.f2o.s')
-			tsk = self.create_task('file_to_object_s', src, tgt)
+			tsk = self.create_task('file_to_object_s', src, tgt,)
 			tsk.cwd = src.parent.abspath() # verify
 		else:
 			tgt = src.parent.find_or_declare(src.name + '.f2o.c')
-			tsk = self.create_task('file_to_object_c', src, tgt)
+			tsk = self.create_task('file_to_object_c', src, tgt,)
 			tsk.cwd = src.parent.abspath() # verify
 		targets.append(tgt)
 	self.source = targets
 
-def configure(conf):
+def configure(conf,):
 	conf.load('gas')
 	conf.env.F2O_METHOD = ["c"]
 

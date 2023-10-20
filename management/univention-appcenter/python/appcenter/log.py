@@ -74,12 +74,12 @@ class RangeFilter(logging.Filter):
     range of logging levels
     """
 
-    def __init__(self, min_level=None, max_level=None):
-        super(RangeFilter, self).__init__()
+    def __init__(self, min_level=None, max_level=None,):
+        super(RangeFilter, self,).__init__()
         self.min_level = min_level
         self.max_level = max_level
 
-    def filter(self, record):
+    def filter(self, record,):
         if self.max_level is None:
             return record.levelno >= self.min_level
         if self.min_level is None:
@@ -90,7 +90,7 @@ class RangeFilter(logging.Filter):
 class UMCHandler(logging.Handler):
     """Handler to link a logger to the UMC logging mechanism"""
 
-    def emit(self, record):
+    def emit(self, record,):
         try:
             from univention.management.console.log import MODULE
         except ImportError:
@@ -109,13 +109,13 @@ class UMCHandler(logging.Handler):
 
 class StreamReader(object):
 
-    def __init__(self, logger, level):
+    def __init__(self, logger, level,):
         self.logger = logger
         self.level = level
 
-    def write(self, msg):
+    def write(self, msg,):
         if self.logger:
-            self.logger.log(self.level, msg.rstrip('\n'))
+            self.logger.log(self.level, msg.rstrip('\n'),)
 
     def flush(self):
         pass
@@ -123,14 +123,14 @@ class StreamReader(object):
 
 class LogCatcher(object):
 
-    def __init__(self, logger=None):
+    def __init__(self, logger=None,):
         self._original_name = None
         self.logger = logger
         if logger:
             self._original_name = logger.name
         self.logs = []
 
-    def getChild(self, name):
+    def getChild(self, name,):
         if self.logger:
             self.logger.name = '%s.%s' % (self.logger.name, name)
         return self
@@ -139,23 +139,23 @@ class LogCatcher(object):
         if self.logger and self._original_name:
             self.logger.name = self._original_name
 
-    def debug(self, msg):
+    def debug(self, msg,):
         if self.logger:
             self.logger.debug(msg)
 
-    def info(self, msg):
+    def info(self, msg,):
         if self.logger:
             self.logger.info(msg)
         self.logs.append(('OUT', msg))
 
-    def warning(self, msg):
+    def warning(self, msg,):
         if self.logger:
             self.logger.warning(msg)
         self.logs.append(('ERR', msg))
 
     warn = warning
 
-    def fatal(self, msg):
+    def fatal(self, msg,):
         if self.logger:
             self.logger.warning(msg)
         self.logs.append(('ERR', msg))
@@ -181,7 +181,7 @@ class LogCatcher(object):
             yield msg
 
 
-def _reverse_umc_module_logger(exclusive=True):
+def _reverse_umc_module_logger(exclusive=True,):
     """
     Function to redirect UMC logs to the univention.appcenter logger.
     Useful when using legacy code when the App Center lib was part of the
@@ -200,7 +200,7 @@ def _reverse_umc_module_logger(exclusive=True):
 
 
 @contextmanager
-def catch_stdout(logger=None):
+def catch_stdout(logger=None,):
     """
     Helper function to redirect stdout output to a logger. Or, if not
     given, suppress completely. Useful when calling other libs that do not
@@ -208,8 +208,8 @@ def catch_stdout(logger=None):
     """
     old_stdout = sys.stdout
     old_stderr = sys.stderr
-    sys.stdout = StreamReader(logger, logging.INFO)
-    sys.stderr = StreamReader(logger, logging.WARN)
+    sys.stdout = StreamReader(logger, logging.INFO,)
+    sys.stderr = StreamReader(logger, logging.WARN,)
     try:
         yield
     finally:
@@ -230,7 +230,7 @@ def log_to_stream():
         log_to_stream._already_set_up = True
         logger = get_base_logger()
         handler = logging.StreamHandler(sys.stdout)
-        handler.addFilter(RangeFilter(min_level=logging.INFO, max_level=logging.INFO))
+        handler.addFilter(RangeFilter(min_level=logging.INFO, max_level=logging.INFO,))
         logger.addHandler(handler)
         handler = logging.StreamHandler(sys.stderr)
         if sys.stderr.isatty():
@@ -248,19 +248,19 @@ class ShortNameFormatter(logging.Formatter):
 
     shorten = get_base_logger().name
 
-    def format(self, record):
+    def format(self, record,):
         record.short_name = record.name
         if record.short_name.startswith('%s.' % self.shorten):
             record.short_name = record.short_name[len(self.shorten) + 1:]
-        return super(ShortNameFormatter, self).format(record)
+        return super(ShortNameFormatter, self,).format(record)
 
 
-def get_logfile_logger(name):
+def get_logfile_logger(name,):
     mylogger = logging.getLogger(name)
     mylogger.handlers = []
     log_format = '%(process)6d %(short_name)-32s %(asctime)s [%(levelname)8s]: %(message)s'
     log_format_time = '%y-%m-%d %H:%M:%S'
-    formatter = ShortNameFormatter(log_format, log_format_time)
+    formatter = ShortNameFormatter(log_format, log_format_time,)
     handler = logging.FileHandler(LOG_FILE)
     handler.setFormatter(formatter)
     mylogger.addHandler(handler)
@@ -279,7 +279,7 @@ def log_to_logfile():
         log_to_logfile._already_set_up = True
         log_format = '%(process)6d %(short_name)-32s %(asctime)s [%(levelname)8s]: %(message)s'
         log_format_time = '%y-%m-%d %H:%M:%S'
-        formatter = ShortNameFormatter(log_format, log_format_time)
+        formatter = ShortNameFormatter(log_format, log_format_time,)
         handler = logging.FileHandler(LOG_FILE)
         handler.setFormatter(formatter)
         get_base_logger().addHandler(handler)

@@ -8,7 +8,7 @@
 from dockertest import tiny_app
 
 
-def test_app_updater_identify(appcenter):
+def test_app_updater_identify(appcenter,):
     app = tiny_app()
 
     try:

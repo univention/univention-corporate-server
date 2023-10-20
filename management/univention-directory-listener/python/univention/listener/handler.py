@@ -60,17 +60,17 @@ class HandlerMetaClass(type):
     fulfill original API.
     """
 
-    def __new__(mcs, clsname, bases, attrs):
+    def __new__(mcs, clsname, bases, attrs,):
         # type: (str, Tuple[type, ...], Dict[str, Any]) -> Type[ListenerModuleHandler]
-        kls = cast(Type["ListenerModuleHandler"], super().__new__(mcs, clsname, bases, attrs))
-        is_listener_module = getattr(kls, '_is_listener_module', lambda: False)
+        kls = cast(Type["ListenerModuleHandler"], super().__new__(mcs, clsname, bases, attrs,),)
+        is_listener_module = getattr(kls, '_is_listener_module', lambda: False,)
         if is_listener_module():
             lm_module = inspect.getmodule(kls)  # type: Optional[types.ModuleType]
             name = os.path.basename(lm_module.__name__).split(".")[0]
             kls.config = kls._get_configuration(name)
             adapter_cls = kls._adapter_class  # type: Type[ListenerModuleAdapter]
             for k, v in adapter_cls(kls.config).get_globals().items():
-                setattr(lm_module, k, v)
+                setattr(lm_module, k, v,)
         return kls
 
 
@@ -119,19 +119,18 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         self._lo = None  # type: Optional[access]
         self._po = None  # type: Optional[position]
         self._ldap_credentials = None  # type: Optional[Dict[str, str]]
-        self.logger.debug('Starting with configuration: %r', self.config)
+        self.logger.debug('Starting with configuration: %r', self.config,)
         if not self.config.get_active():
             self.logger.warning(
                 'Listener module %r deactivated by UCRV "listener/module/%s/deactivate".',
-                self.config.get_name(), self.config.get_name(),
-            )
+                self.config.get_name(), self.config.get_name(),)
 
     def __repr__(self):
         # type: () -> str
         assert self.config
         return f'{self.__class__.__name__}({self.config.name})'
 
-    def create(self, dn, new):
+    def create(self, dn, new,):
         # type: (str, Mapping[str, Sequence[bytes]]) -> None
         """
         Called when a new object was created.
@@ -140,7 +139,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         :param dict new: new LDAP objects attributes
         """
 
-    def modify(self, dn, old, new, old_dn):
+    def modify(self, dn, old, new, old_dn,):
         # type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], Optional[str]) -> None
         """
         Called when an existing object was modified or moved.
@@ -155,7 +154,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         :type old_dn: str or None
         """
 
-    def remove(self, dn, old):
+    def remove(self, dn, old,):
         # type: (str, Mapping[str, Sequence[bytes]]) -> None
         """
         Called when an object was deleted.
@@ -221,7 +220,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
                 listener.unsetuid()
 
     @classmethod
-    def diff(cls, old, new, keys=None, ignore_metadata=True):
+    def diff(cls, old, new, keys=None, ignore_metadata=True,):
         # type: (Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], Optional[Iterable[str]], bool) -> Dict[str, Tuple[Optional[Sequence[bytes]], Optional[Sequence[bytes]]]]
         """
         Find differences in old and new. Returns dict with keys pointing to old
@@ -242,11 +241,11 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             if ignore_metadata:
                 keys.difference_update(cls._metadata_attributes)
         for key in keys:
-            if set(old.get(key, [])) != set(new.get(key, [])):
+            if set(old.get(key, [],)) != set(new.get(key, [],)):
                 res[key] = old.get(key), new.get(key)
         return res
 
-    def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
+    def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback,):
         # type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], str, Optional[Type[BaseException]], Optional[BaseException], Optional[types.TracebackType]) -> None  # NoReturn
         """
         Will be called for unhandled exceptions in create/modify/remove.
@@ -259,8 +258,8 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         :param BaseException exc_value: exception object
         :param traceback exc_traceback: traceback object
         """
-        self.logger.exception('dn=%r command=%r\n    old=%r\n    new=%r', dn, command, old, new)
-        reraise(exc_type, exc_value, exc_traceback)
+        self.logger.exception('dn=%r command=%r\n    old=%r\n    new=%r', dn, command, old, new,)
+        reraise(exc_type, exc_value, exc_traceback,)
 
     @property
     def lo(self):
@@ -304,7 +303,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         """
         return self._ldap_credentials
 
-    def _set_ldap_credentials(self, base, binddn, bindpw, host):
+    def _set_ldap_credentials(self, base, binddn, bindpw, host,):
         # type: (str, str, str, str) -> None
         """
         Store LDAP connection credentials for use by :py:attr.`self.lo`. It is not
@@ -328,7 +327,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             self._lo = self._po = None
 
     @classmethod
-    def _get_configuration(cls, name):
+    def _get_configuration(cls, name,):
         # type: (str) -> ListenerModuleConfiguration
         """
         Load configuration, optionally converting a plain Python class to a
@@ -348,7 +347,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             raise ListenerModuleConfigurationError(f'{cls.__name__!s}.Configuration must be a class.')
         if conf_class is ListenerModuleHandler.Configuration:
             raise ListenerModuleConfigurationError(f'Missing {cls.__name__!s}.Configuration class.')
-        if issubclass(conf_class, cls._configuration_class):
+        if issubclass(conf_class, cls._configuration_class,):
             conf_class.listener_module_class = cls
             conf_class.name = name
             return conf_class()
@@ -359,18 +358,18 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             kwargs = {"listener_module_class": cls}
             for attr in attrs:
                 try:
-                    get_method = getattr(conf_obj, f'get_{attr}')
+                    get_method = getattr(conf_obj, f'get_{attr}',)
                     if not callable(get_method):
                         raise ListenerModuleConfigurationError(
                             'Attribute {!r} of configuration class {!r} is not callable.'.format(
-                                get_method, conf_obj.__class__),
+                                get_method, conf_obj.__class__,),
                         )
                     kwargs[attr] = get_method()
                     continue
                 except AttributeError:
                     pass
                 try:
-                    kwargs[attr] = getattr(conf_obj, attr)
+                    kwargs[attr] = getattr(conf_obj, attr,)
                 except AttributeError:
                     pass
                 # Checking for required attributes is done in ListenerModuleConfiguration().

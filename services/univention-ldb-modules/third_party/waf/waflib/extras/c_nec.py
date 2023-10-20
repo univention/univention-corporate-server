@@ -16,17 +16,17 @@ from waflib.Tools.compiler_c import c_compiler
 c_compiler['linux'].append('c_nec')
 
 @conf
-def find_sxc(conf):
-	cc = conf.find_program(['sxcc'], var='CC')
+def find_sxc(conf,):
+	cc = conf.find_program(['sxcc'], var='CC',)
 	conf.get_sxc_version(cc)
 	conf.env.CC = cc
 	conf.env.CC_NAME = 'sxcc'
 
 @conf
-def get_sxc_version(conf, fc):
-	version_re = re.compile(r"C\+\+/SX\s*Version\s*(?P<major>\d*)\.(?P<minor>\d*)", re.I).search
+def get_sxc_version(conf, fc,):
+	version_re = re.compile(r"C\+\+/SX\s*Version\s*(?P<major>\d*)\.(?P<minor>\d*)", re.I,).search
 	cmd = fc + ['-V']
-	p = Utils.subprocess.Popen(cmd, stdin=False, stdout=Utils.subprocess.PIPE, stderr=Utils.subprocess.PIPE, env=None)
+	p = Utils.subprocess.Popen(cmd, stdin=False, stdout=Utils.subprocess.PIPE, stderr=Utils.subprocess.PIPE, env=None,)
 	out, err = p.communicate()
 
 	if out:
@@ -39,7 +39,7 @@ def get_sxc_version(conf, fc):
 	conf.env['C_VERSION'] = (k['major'], k['minor'])
 
 @conf
-def sxc_common_flags(conf):
+def sxc_common_flags(conf,):
 	v=conf.env
 	v['CC_SRC_F']=[]
 	v['CC_TGT_F']=['-c','-o']
@@ -65,9 +65,9 @@ def sxc_common_flags(conf):
 	v['LINKFLAGS_cstlib']=[]
 	v['cstlib_PATTERN']='lib%s.a'
 
-def configure(conf):
+def configure(conf,):
 	conf.find_sxc()
-	conf.find_program('sxar',VAR='AR')
+	conf.find_program('sxar',VAR='AR',)
 	conf.sxc_common_flags()
 	conf.cc_load_tools()
 	conf.cc_add_flags()

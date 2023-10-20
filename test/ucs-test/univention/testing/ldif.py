@@ -58,7 +58,7 @@ class Ldif:
             |[ ]*([\x01-\x09\x0b-\x0c\x0e-\x1f\x21-\x39\x3b\x3d-\x7f][\x01-\x09\x0b-\x0c\x0e-\x7f]*)  # SAFE-STRING
         )  # value-spec
         $
-        ''', re.VERBOSE)
+        ''', re.VERBOSE,)
 
     # Operational LDAP attributes
     OPERATIONAL = {
@@ -71,7 +71,7 @@ class Ldif:
         'structuralObjectClass',
     }
 
-    def __init__(self, src, exclude=OPERATIONAL):
+    def __init__(self, src, exclude=OPERATIONAL,):
         # type: (Iterable[bytes], Set[str]) -> None
         self.src = src
         self.exclude = exclude
@@ -81,8 +81,8 @@ class Ldif:
         # type: () -> Iterator[str]
         """Return line iterator."""
         lines = []
-        for lno, chunk in enumerate(self.src, start=1):
-            line = chunk.decode('utf-8', 'replace')
+        for lno, chunk in enumerate(self.src, start=1,):
+            line = chunk.decode('utf-8', 'replace',)
             line = line.rstrip('\r\n')
             if line[:1] in (' ', '\t'):
                 lines.append(line[1:])
@@ -93,7 +93,7 @@ class Ldif:
 
         yield ''.join(lines)
 
-    def split(self, line):
+    def split(self, line,):
         # type: (str) -> Tuple[str, str]
         r"""
         Split attribute and value.
@@ -124,7 +124,7 @@ class Ldif:
         if plain:
             value = plain
         elif b64:
-            value = base64.b64decode(b64).decode('utf-8', 'replace')
+            value = base64.b64decode(b64).decode('utf-8', 'replace',)
             value = self.printable(value)
         else:
             value = ""
@@ -141,13 +141,13 @@ class Ldif:
                 key, value = self.split(line)
                 if key in self.exclude:
                     continue
-                obj.setdefault(key, []).append(value)
+                obj.setdefault(key, [],).append(value)
             elif obj:
                 yield obj
                 obj = {}
 
     @staticmethod
-    def printable(value):
+    def printable(value,):
         # type: (str) -> str
         """Convert binary data to printable string."""
         # Py2 has no str.isprintable()
@@ -159,7 +159,7 @@ class Ldif:
 
 class LdifSource:
     @classmethod
-    def create(cls, arg, options):
+    def create(cls, arg, options,):
         # type: (str, Values) -> LdifFile
         raise NotImplementedError()
 
@@ -173,11 +173,11 @@ class LdifFile:
     """LDIF source from local file."""
 
     @classmethod
-    def create(cls, arg, options):
+    def create(cls, arg, options,):
         # type: (str, Values) -> LdifFile
         return cls(arg)
 
-    def __init__(self, filename):
+    def __init__(self, filename,):
         # type: (str) -> None
         super().__init__()
         self.filename = filename
@@ -186,7 +186,7 @@ class LdifFile:
         # type: () -> Ldif
         """Start reading the LDIF data."""
         try:
-            return Ldif(open(self.filename, 'rb'))
+            return Ldif(open(self.filename, 'rb',))
         except OSError as ex:
             raise LdifError(ex)
 
@@ -195,7 +195,7 @@ class LdifSlapcat:
     """LDIF source from local LDAP."""
 
     @classmethod
-    def create(cls, arg, options):
+    def create(cls, arg, options,):
         # type: (Any, Values) -> LdifSlapcat
         return cls()
 
@@ -208,14 +208,14 @@ class LdifSlapcat:
         # type: () -> Ldif
         """Start reading the LDIF data."""
         try:
-            proc = subprocess.Popen(self.command, stdout=subprocess.PIPE)
+            proc = subprocess.Popen(self.command, stdout=subprocess.PIPE,)
             assert proc.stdout
             self.wait_for_data(proc)
             return Ldif(proc.stdout)
         except OSError as ex:
-            raise SlapError("Error executing", self.command, ex)
+            raise SlapError("Error executing", self.command, ex,)
 
-    def wait_for_data(self, proc):
+    def wait_for_data(self, proc,):
         # type: (subprocess.Popen) -> None
         """
         Wait for the remote process to send data.
@@ -231,7 +231,7 @@ class LdifSlapcat:
             wlist = []  # type: List[int]
             xlist = []  # type: List[int]
             try:
-                rlist, wlist, xlist = select.select(rlist, wlist, xlist)
+                rlist, wlist, xlist = select.select(rlist, wlist, xlist,)
                 break
             except OSError as ex:
                 if ex.errno == errno.EINTR:
@@ -241,24 +241,24 @@ class LdifSlapcat:
         time.sleep(0.5)
         ret = proc.poll()
         if ret is not None and ret != 0:
-            raise SlapError("Error executing", self.command, ret)
+            raise SlapError("Error executing", self.command, ret,)
 
 
 class LdifSsh(LdifSlapcat):
     """LDIF source from remote LDAP."""
 
     @classmethod
-    def create(cls, hostname, options):
+    def create(cls, hostname, options,):
         # type: (str, Values) -> LdifSsh
-        return cls(hostname, options.ssh)
+        return cls(hostname, options.ssh,)
 
-    def __init__(self, hostname, ssh='ssh'):
+    def __init__(self, hostname, ssh='ssh',):
         # type: (str, str) -> None
         super().__init__()
         self.command = [ssh, hostname] + self.command
 
 
-def __test(_option, _opt_str, _value, _parser):
+def __test(_option, _opt_str, _value, _parser,):
     # type: (Values, str, None, OptionParser) -> NoReturn
     """Run internal test suite."""
     import doctest
@@ -266,7 +266,7 @@ def __test(_option, _opt_str, _value, _parser):
     sys.exit(int(bool(res[0])))
 
 
-def stream2object(ldif):
+def stream2object(ldif,):
     # type: (Ldif) -> Dict[str, Entry]
     """
     Convert LDIF stream to dictionary of objects.
@@ -283,13 +283,13 @@ def stream2object(ldif):
             dname, = obj.pop('dn')
             objects[dname] = obj  # type: ignore
         except KeyError:
-            print(f'Missing dn: {obj!r}', file=sys.stderr)
+            print(f'Missing dn: {obj!r}', file=sys.stderr,)
         except ValueError:
-            print(f'Multiple dn: {obj!r}', file=sys.stderr)
+            print(f'Multiple dn: {obj!r}', file=sys.stderr,)
     return objects
 
 
-def sort_dn(dname):
+def sort_dn(dname,):
     # type: (str) -> Tuple[Tuple[str, ...], ...]
     """
     Sort by reversed dn.
@@ -307,7 +307,7 @@ def sort_dn(dname):
     return tuple(reversed([tuple(sorted(_.split('+'))) for _ in dname.split(',')]))
 
 
-def compare_ldif(lldif, rldif, options):
+def compare_ldif(lldif, rldif, options,):
     # type: (Ldif, Ldif, Values) -> int
     """
     Compare two LDIF files.
@@ -319,8 +319,8 @@ def compare_ldif(lldif, rldif, options):
     lefts = stream2object(lldif)
     rights = stream2object(rldif)
 
-    lkeys = sorted(lefts, key=sort_dn, reverse=True)
-    rkeys = sorted(rights, key=sort_dn, reverse=True)
+    lkeys = sorted(lefts, key=sort_dn, reverse=True,)
+    rkeys = sorted(rights, key=sort_dn, reverse=True,)
 
     ret = 0
     ldn = rdn = ""
@@ -334,15 +334,15 @@ def compare_ldif(lldif, rldif, options):
 
         lk, rk = sort_dn(ldn), sort_dn(rdn)
         if lk < rk:
-            diffs = list(compare_keys({}, rights[rdn]))
+            diffs = list(compare_keys({}, rights[rdn],))
             print(f'+dn: {rdn}')
             rdn = ""
         elif lk > rk:
-            diffs = list(compare_keys(lefts[ldn], {}))
+            diffs = list(compare_keys(lefts[ldn], {},))
             print(f'-dn: {ldn}')
             ldn = ""
         else:
-            diffs = list(compare_keys(lefts[ldn], rights[rdn]))
+            diffs = list(compare_keys(lefts[ldn], rights[rdn],))
             if not options.objects and all(diff == 0 for diff, key, val in diffs):
                 ldn = rdn = ""
                 continue
@@ -356,7 +356,7 @@ def compare_ldif(lldif, rldif, options):
     return ret
 
 
-def compare_keys(ldata, rdata):
+def compare_keys(ldata, rdata,):
     # type: (Entry, Entry) -> Iterator[Tuple[Literal[-1, 0, 1], str, str]]
     """
     Compare and return attributes of two LDAP objects.
@@ -376,8 +376,8 @@ def compare_keys(ldata, rdata):
     >>> list(compare_keys({'a': ['1']}, {'a': ['2']}))
     [(1, 'a', '2'), (-1, 'a', '1')]
     """
-    lkeys = sorted(ldata, reverse=True)
-    rkeys = sorted(rdata, reverse=True)
+    lkeys = sorted(ldata, reverse=True,)
+    rkeys = sorted(rdata, reverse=True,)
 
     lkey = rkey = ""
     while True:
@@ -389,17 +389,17 @@ def compare_keys(ldata, rdata):
             break
 
         if lkey < rkey:
-            yield from compare_values(rkey, [], rdata[rkey])
+            yield from compare_values(rkey, [], rdata[rkey],)
             rkey = ""
         elif lkey > rkey:
-            yield from compare_values(lkey, ldata[lkey], [])
+            yield from compare_values(lkey, ldata[lkey], [],)
             lkey = ""
         else:
-            yield from compare_values(lkey, ldata[lkey], rdata[rkey])
+            yield from compare_values(lkey, ldata[lkey], rdata[rkey],)
             lkey = rkey = ""
 
 
-def compare_values(attr, lvalues, rvalues):
+def compare_values(attr, lvalues, rvalues,):
     # type: (str, List[str], List[str]) -> Iterator[Tuple[Literal[-1, 0, 1], str, str]]
     """
     Compare and return values of two multi-valued LDAP attributes.
@@ -439,59 +439,59 @@ def compare_values(attr, lvalues, rvalues):
 def parse_args():
     # type: () -> Tuple[LdifSource, LdifSource, Values]
     """Parse command line arguments."""
-    parser = OptionParser(usage=USAGE, description=DESCRIPTION)
+    parser = OptionParser(usage=USAGE, description=DESCRIPTION,)
     parser.disable_interspersed_args()
-    parser.set_defaults(source=LdifFile, verbose=1)
-    group = OptionGroup(parser, "Source", "Source for LDIF")
+    parser.set_defaults(source=LdifFile, verbose=1,)
+    group = OptionGroup(parser, "Source", "Source for LDIF",)
     group.add_option(
         "--file", "-f",
         action="store_const", dest="source", const=LdifFile,
-        help="next arguments are LDIF files")
+        help="next arguments are LDIF files",)
     group.add_option(
         "--host", "-H",
         action="store_const", dest="source", const=LdifSsh,
-        help="next arguments are LDAP hosts")
+        help="next arguments are LDAP hosts",)
     group.add_option(
         "--ssh", "-s", default="ssh",
         dest="ssh",
-        help="specify the remote shell to use [%default]")
+        help="specify the remote shell to use [%default]",)
     parser.add_option_group(group)
 
-    group = OptionGroup(parser, "Attributes", "Ignore attributes")
+    group = OptionGroup(parser, "Attributes", "Ignore attributes",)
     group.add_option(
         "--operational",
         action="store_true", dest="operational",
-        help="also compare operational attributes")
+        help="also compare operational attributes",)
     group.add_option(
         "--exclude", "-x",
         action="append", dest="exclude",
-        help="ignore attribute", default=[])
+        help="ignore attribute", default=[],)
     parser.add_option_group(group)
 
-    group = OptionGroup(parser, "Output", "Control output")
+    group = OptionGroup(parser, "Output", "Control output",)
     group.add_option(
         "--objects", "-o",
         action="store_true", dest="objects",
-        help="show even unchanged objects")
+        help="show even unchanged objects",)
     group.add_option(
         "--attributes", "-a",
         action="store_true", dest="attributes",
-        help="show even unchanged attributes")
+        help="show even unchanged attributes",)
     parser.add_option_group(group)
 
     parser.add_option(
         '--test-internal',
         action='callback', callback=__test,
-        help=SUPPRESS_HELP)
+        help=SUPPRESS_HELP,)
 
     try:
         options, args = parser.parse_args(args=sys.argv[1:])
         try:
-            ldif1 = options.source.create(args.pop(0), options)
+            ldif1 = options.source.create(args.pop(0), options,)
         except IndexError:
             parser.error("No arguments were given")
-        options, args = parser.parse_args(args=args, values=options)
-        ldif2 = options.source.create(args.pop(0), options) if args else LdifSlapcat.create(None, options)
+        options, args = parser.parse_args(args=args, values=options,)
+        ldif2 = options.source.create(args.pop(0), options,) if args else LdifSlapcat.create(None, options,)
         if args:
             parser.error("More than two LDIFs given.")
     except LdifError as ex:
@@ -515,10 +515,10 @@ def main():
         exclude |= Ldif.OPERATIONAL
     ldif1.exclude = ldif2.exclude = exclude
 
-    run_compare(ldif1, ldif2, options)
+    run_compare(ldif1, ldif2, options,)
 
 
-def run_compare(ldif1, ldif2, options):
+def run_compare(ldif1, ldif2, options,):
     # type: (Ldif, Ldif, Values) -> NoReturn
     """
     UNIX correct error handling.
@@ -530,18 +530,18 @@ def run_compare(ldif1, ldif2, options):
     """
     ret = 2
     try:
-        ret = compare_ldif(ldif1, ldif2, options)
+        ret = compare_ldif(ldif1, ldif2, options,)
     except KeyboardInterrupt:
-        signal.signal(signal.SIGINT, signal.SIG_DFL)
-        os.kill(os.getpid(), signal.SIGINT)
+        signal.signal(signal.SIGINT, signal.SIG_DFL,)
+        os.kill(os.getpid(), signal.SIGINT,)
     except OSError as ex:
         if ex.errno == errno.EPIPE:
-            signal.signal(signal.SIGPIPE, signal.SIG_DFL)
-            os.kill(os.getpid(), signal.SIGPIPE)
+            signal.signal(signal.SIGPIPE, signal.SIG_DFL,)
+            os.kill(os.getpid(), signal.SIGPIPE,)
         else:
-            print(f'Error: {ex}', file=sys.stderr)
+            print(f'Error: {ex}', file=sys.stderr,)
     except LdifError as ex:
-        print(f'Invalid LDIF: {ex}', file=sys.stderr)
+        print(f'Invalid LDIF: {ex}', file=sys.stderr,)
     sys.exit(ret)
 
 

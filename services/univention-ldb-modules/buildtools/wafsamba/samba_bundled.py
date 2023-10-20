@@ -5,7 +5,7 @@ from waflib import Build, Options, Logs
 from waflib.Configure import conf
 from wafsamba import samba_utils
 
-def PRIVATE_NAME(bld, name):
+def PRIVATE_NAME(bld, name,):
     '''possibly rename a library to include a bundled extension'''
 
     extension = bld.env.PRIVATE_EXTENSION
@@ -19,7 +19,7 @@ def PRIVATE_NAME(bld, name):
     return "%s-%s" % (name, extension)
 
 
-def target_in_list(target, lst, default):
+def target_in_list(target, lst, default,):
     for l in lst:
         if target == l:
             return True
@@ -32,14 +32,14 @@ def target_in_list(target, lst, default):
     return default
 
 
-def BUILTIN_LIBRARY(bld, name):
+def BUILTIN_LIBRARY(bld, name,):
     '''return True if a library should be builtin
        instead of being built as a shared lib'''
-    return target_in_list(name, bld.env.BUILTIN_LIBRARIES, False)
+    return target_in_list(name, bld.env.BUILTIN_LIBRARIES, False,)
 Build.BuildContext.BUILTIN_LIBRARY = BUILTIN_LIBRARY
 
 
-def BUILTIN_DEFAULT(opt, builtins):
+def BUILTIN_DEFAULT(opt, builtins,):
     '''set a comma separated default list of builtin libraries for this package'''
     if 'BUILTIN_LIBRARIES_DEFAULT' in Options.options.__dict__:
         return
@@ -47,7 +47,7 @@ def BUILTIN_DEFAULT(opt, builtins):
 Options.OptionsContext.BUILTIN_DEFAULT = BUILTIN_DEFAULT
 
 
-def PRIVATE_EXTENSION_DEFAULT(opt, extension, noextension=''):
+def PRIVATE_EXTENSION_DEFAULT(opt, extension, noextension='',):
     '''set a default private library extension'''
     if 'PRIVATE_EXTENSION_DEFAULT' in Options.options.__dict__:
         return
@@ -56,7 +56,7 @@ def PRIVATE_EXTENSION_DEFAULT(opt, extension, noextension=''):
 Options.OptionsContext.PRIVATE_EXTENSION_DEFAULT = PRIVATE_EXTENSION_DEFAULT
 
 
-def minimum_library_version(conf, libname, default):
+def minimum_library_version(conf, libname, default,):
     '''allow override of mininum system library version'''
 
     minlist = Options.options.MINIMUM_LIBRARY_VERSION
@@ -74,7 +74,7 @@ def minimum_library_version(conf, libname, default):
 
 
 @conf
-def LIB_MAY_BE_BUNDLED(conf, libname):
+def LIB_MAY_BE_BUNDLED(conf, libname,):
     if libname in conf.env.SYSTEM_LIBS:
         return False
     if libname in conf.env.BUNDLED_LIBS:
@@ -85,7 +85,7 @@ def LIB_MAY_BE_BUNDLED(conf, libname):
         return False
     return True
 
-def __LIB_MUST_BE(liblist, libname):
+def __LIB_MUST_BE(liblist, libname,):
     if libname in liblist:
         return True
     if '!%s' % libname in liblist:
@@ -95,17 +95,17 @@ def __LIB_MUST_BE(liblist, libname):
     return False
 
 @conf
-def LIB_MUST_BE_BUNDLED(conf, libname):
-    return __LIB_MUST_BE(conf.env.BUNDLED_LIBS, libname)
+def LIB_MUST_BE_BUNDLED(conf, libname,):
+    return __LIB_MUST_BE(conf.env.BUNDLED_LIBS, libname,)
 
 @conf
-def LIB_MUST_BE_PRIVATE(conf, libname):
-    return __LIB_MUST_BE(conf.env.PRIVATE_LIBS, libname)
+def LIB_MUST_BE_PRIVATE(conf, libname,):
+    return __LIB_MUST_BE(conf.env.PRIVATE_LIBS, libname,)
 
 @conf
 def CHECK_BUNDLED_SYSTEM_PKG(conf, libname, minversion='0.0.0',
         maxversion=None, version_blacklist=[],
-        onlyif=None, implied_deps=None, pkg=None):
+        onlyif=None, implied_deps=None, pkg=None,):
     '''check if a library is available as a system library.
 
     This only tries using pkg-config
@@ -116,14 +116,14 @@ def CHECK_BUNDLED_SYSTEM_PKG(conf, libname, minversion='0.0.0',
                                      version_blacklist=version_blacklist,
                                      onlyif=onlyif,
                                      implied_deps=implied_deps,
-                                     pkg=pkg)
+                                     pkg=pkg,)
 
 @conf
 def CHECK_BUNDLED_SYSTEM(conf, libname, minversion='0.0.0',
                          maxversion=None, version_blacklist=[],
                          checkfunctions=None, headers=None, checkcode=None,
                          onlyif=None, implied_deps=None,
-                         require_headers=True, pkg=None, set_target=True):
+                         require_headers=True, pkg=None, set_target=True,):
     '''check if a library is available as a system library.
     this first tries via pkg-config, then if that fails
     tries by testing for a specified function in the specified lib
@@ -159,24 +159,24 @@ def CHECK_BUNDLED_SYSTEM(conf, libname, minversion='0.0.0',
 
     def check_functions_headers_code():
         '''helper function for CHECK_BUNDLED_SYSTEM'''
-        if require_headers and headers and not conf.CHECK_HEADERS(headers, lib=libname):
+        if require_headers and headers and not conf.CHECK_HEADERS(headers, lib=libname,):
             return False
         if checkfunctions is not None:
             ok = conf.CHECK_FUNCS_IN(checkfunctions, libname, headers=headers,
-                                     empty_decl=False, set_target=False)
+                                     empty_decl=False, set_target=False,)
             if not ok:
                 return False
         if checkcode is not None:
             define='CHECK_BUNDLED_SYSTEM_%s' % libname.upper()
             ok = conf.CHECK_CODE(checkcode, lib=libname,
                                  headers=headers, local_include=False,
-                                 msg=msg, define=define)
+                                 msg=msg, define=define,)
             conf.CONFIG_RESET(define)
             if not ok:
                 return False
         return True
 
-    minversion = minimum_library_version(conf, libname, minversion)
+    minversion = minimum_library_version(conf, libname, minversion,)
 
     msg = 'Checking for system %s' % libname
     msg_ver = []
@@ -202,21 +202,21 @@ def CHECK_BUNDLED_SYSTEM(conf, libname, minversion='0.0.0',
     # try pkgconfig first
     if (conf.CHECK_CFG(package=pkg,
                       args='"%s" --cflags --libs' % (version_checks),
-                      msg=msg, uselib_store=uselib_store) and
+                      msg=msg, uselib_store=uselib_store,) and
         check_functions_headers_code()):
         if set_target:
-            conf.SET_TARGET_TYPE(libname, 'SYSLIB')
+            conf.SET_TARGET_TYPE(libname, 'SYSLIB',)
         conf.env[found] = True
         if implied_deps:
-            conf.SET_SYSLIB_DEPS(libname, implied_deps)
+            conf.SET_SYSLIB_DEPS(libname, implied_deps,)
         return True
     if checkfunctions is not None:
         if check_functions_headers_code():
             conf.env[found] = True
             if implied_deps:
-                conf.SET_SYSLIB_DEPS(libname, implied_deps)
+                conf.SET_SYSLIB_DEPS(libname, implied_deps,)
             if set_target:
-                conf.SET_TARGET_TYPE(libname, 'SYSLIB')
+                conf.SET_TARGET_TYPE(libname, 'SYSLIB',)
             return True
     conf.env[found] = False
     if not conf.LIB_MAY_BE_BUNDLED(libname):
@@ -225,11 +225,11 @@ def CHECK_BUNDLED_SYSTEM(conf, libname, minversion='0.0.0',
     return False
 
 
-def tuplize_version(version):
+def tuplize_version(version,):
     return tuple([int(x) for x in version.split(".")])
 
 @conf
-def CHECK_BUNDLED_SYSTEM_PYTHON(conf, libname, modulename, minversion='0.0.0'):
+def CHECK_BUNDLED_SYSTEM_PYTHON(conf, libname, modulename, minversion='0.0.0',):
     '''check if a python module is available on the system and
     has the specified minimum version.
     '''
@@ -239,7 +239,7 @@ def CHECK_BUNDLED_SYSTEM_PYTHON(conf, libname, modulename, minversion='0.0.0'):
     # see if the library should only use a system version if another dependent
     # system version is found. That prevents possible use of mixed library
     # versions
-    minversion = minimum_library_version(conf, libname, minversion)
+    minversion = minimum_library_version(conf, libname, minversion,)
 
     try:
         m = __import__(modulename)
@@ -258,9 +258,9 @@ def CHECK_BUNDLED_SYSTEM_PYTHON(conf, libname, modulename, minversion='0.0.0'):
     return found
 
 
-def NONSHARED_BINARY(bld, name):
+def NONSHARED_BINARY(bld, name,):
     '''return True if a binary should be built without non-system shared libs'''
-    return target_in_list(name, bld.env.NONSHARED_BINARIES, False)
+    return target_in_list(name, bld.env.NONSHARED_BINARIES, False,)
 Build.BuildContext.NONSHARED_BINARY = NONSHARED_BINARY
 
 

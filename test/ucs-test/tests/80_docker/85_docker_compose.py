@@ -35,7 +35,7 @@ services:
             TEST_KEY: "@%@85_docker_compose/test_key@%@"
         command: /sbin/init
         restart: always
-'''.replace('\t', '  ')
+'''.replace('\t', '  ',)
 
 SETTINGS = '''
 [85_docker_compose/test_key]
@@ -53,11 +53,11 @@ if __name__ == '__main__':
         store_data = '#!/bin/sh'
 
         alpine_checksum = 'f80194ae2e0c'
-        images = subprocess.check_output(['docker', 'images'], text=True)
+        images = subprocess.check_output(['docker', 'images'], text=True,)
         if alpine_checksum in images:
             print('CAUTION. Checksum already found in docker images... Lets see...')
             subprocess.call(['docker', 'ps', '-a'])
-        app = App(name=name, version='1', build_package=False, call_join_scripts=False)
+        app = App(name=name, version='1', build_package=False, call_join_scripts=False,)
         try:
             app.set_ini_parameter(
                 DockerMainService='test1',
@@ -70,11 +70,11 @@ if __name__ == '__main__':
             appcenter.update()
             app.install()
             app.verify(joined=False)
-            images = subprocess.check_output(['docker', 'images'], text=True)
+            images = subprocess.check_output(['docker', 'images'], text=True,)
             assert alpine_checksum in images, images
             app.execute_command_in_container('touch /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
 
-            app = App(name=name, version='2', build_package=False, call_join_scripts=False)
+            app = App(name=name, version='2', build_package=False, call_join_scripts=False,)
             app.set_ini_parameter(
                 DockerMainService='test1',
             )
@@ -85,10 +85,10 @@ if __name__ == '__main__':
             appcenter.update()
             app.upgrade()
             app.verify(joined=False)
-            images = subprocess.check_output(['docker', 'images'], text=True)
+            images = subprocess.check_output(['docker', 'images'], text=True,)
             assert alpine_checksum not in images, images
             app.execute_command_in_container('ls /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
-            image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}'], text=True).strip()
+            image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}'], text=True,).strip()
             assert image == 'docker-test.software-univention.de/alpine:3.7'
             from univention.config_registry import ConfigRegistry
             ucr = ConfigRegistry()
@@ -96,7 +96,7 @@ if __name__ == '__main__':
             network = ucr.get('appcenter/apps/' + name + '/ip')
             assert network == '172.16.1.0/24', network
             yml_file = '/var/lib/univention-appcenter/apps/' + name + '/compose/docker-compose.yml'
-            content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+            content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True,)
             assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == '172.16.1.0/24'
             assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.2'
             assert content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.3'

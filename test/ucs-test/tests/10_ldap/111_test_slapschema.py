@@ -17,7 +17,7 @@ import pytest
 from univention.management.console.modules.diagnostic import Warning
 
 
-loader = importlib.machinery.SourceFileLoader('62_check_slapschema', '/usr/lib/python3/dist-packages/univention/management/console/modules/diagnostic/plugins/62_check_slapschema.py')
+loader = importlib.machinery.SourceFileLoader('62_check_slapschema', '/usr/lib/python3/dist-packages/univention/management/console/modules/diagnostic/plugins/62_check_slapschema.py',)
 check_slap = types.ModuleType(loader.name)
 loader.exec_module(check_slap)
 
@@ -31,11 +31,11 @@ def setup_environment():
         'univention-install -y univention-directory-manager-module-example',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None).communicate()
+        stdin=None,).communicate()
     Popen(
         'udm test/ip_phone create --set name=test111 --set ip=1.2.3.4 --set priuser=test@slapschema',
         shell=True,
-        stdin=None).communicate()
+        stdin=None,).communicate()
 
 
 def clean_environment():
@@ -47,16 +47,16 @@ def clean_environment():
         'univention-install -y univention-directory-manager-module-example',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None).communicate()
+        stdin=None,).communicate()
     Popen(
         "udm test/ip_phone remove --dn \"cn=test111,$(ucr get ldap/base)\"",
         shell=True,
-        stdin=None).communicate()
+        stdin=None,).communicate()
     Popen(
         'apt-get -y remove univention-directory-manager-module-example',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None).communicate()
+        stdin=None,).communicate()
 
 
 def remove_schema():
@@ -65,7 +65,7 @@ def remove_schema():
         'apt-get -y remove univention-directory-manager-module-example-schema',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None).communicate()
+        stdin=None,).communicate()
     print("Removed schema")
 
 

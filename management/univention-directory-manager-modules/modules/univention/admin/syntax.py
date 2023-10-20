@@ -97,19 +97,19 @@ def import_syntax_files():
     global _  # don't allow syntax to overwrite our global _ function.
     gettext = _
     for dir_ in sys.path:
-        syntax_d = os.path.join(dir_, 'univention/admin/syntax.d/')
+        syntax_d = os.path.join(dir_, 'univention/admin/syntax.d/',)
 
         if os.path.isdir(syntax_d):
-            syntax_files = (os.path.join(syntax_d, f) for f in os.listdir(syntax_d) if f.endswith('.py'))
+            syntax_files = (os.path.join(syntax_d, f,) for f in os.listdir(syntax_d) if f.endswith('.py'))
 
             for fn in syntax_files:
                 try:
-                    with io.open(fn, 'rb') as fd:
-                        exec(fd.read(), sys.modules[__name__].__dict__)  # noqa: S102
-                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.import_syntax_files: importing %r' % (fn,))
+                    with io.open(fn, 'rb',) as fd:
+                        exec(fd.read(), sys.modules[__name__].__dict__,)  # noqa: S102
+                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.import_syntax_files: importing %r' % (fn,),)
                 except Exception:
-                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: loading %r failed' % (fn,))
-                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: TRACEBACK:\n%s' % traceback.format_exc())
+                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: loading %r failed' % (fn,),)
+                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: TRACEBACK:\n%s' % traceback.format_exc(),)
                 finally:
                     _ = gettext
 
@@ -117,7 +117,7 @@ def import_syntax_files():
 choice_update_functions = []  # type: List[Callable]
 
 
-def __register_choice_update_function(func):
+def __register_choice_update_function(func,):
     # type: (Callable[[], None]) -> None
     """Register a function to be called when the syntax classes are to be re-loaded."""
     choice_update_functions.append(func)
@@ -137,7 +137,7 @@ def update_choices():
         func()
 
 
-def _default_widget_options(syntax):
+def _default_widget_options(syntax,):
     return {
         'dynamicValues': 'udm/syntax/choices',
         'dynamicOptions': {
@@ -146,13 +146,13 @@ def _default_widget_options(syntax):
     }
 
 
-def _replace_asterisks_in_filter(filter_s, allow_asterisks=True):
+def _replace_asterisks_in_filter(filter_s, allow_asterisks=True,):
     if allow_asterisks:
-        return filter_s.replace(escape_filter_chars('*'), '*')
+        return filter_s.replace(escape_filter_chars('*'), '*',)
     return filter_s
 
 
-def is_syntax(syntax_obj, syntax_type):
+def is_syntax(syntax_obj, syntax_type,):
     # type: (Any, Type) -> bool
     """
     Returns True if the syntax object/class matches the given type.
@@ -160,16 +160,16 @@ def is_syntax(syntax_obj, syntax_type):
     :param syntax_obj: The instance to check.
     :param syntax_type: A syntax class type.
     """
-    return isinstance(syntax_obj, type) and issubclass(syntax_obj, syntax_type) or isinstance(syntax_obj, syntax_type)
+    return isinstance(syntax_obj, type,) and issubclass(syntax_obj, syntax_type,) or isinstance(syntax_obj, syntax_type,)
 
 
 class ClassProperty(object):
     """A decorator that can be used to define read-only class properties."""
 
-    def __init__(self, getter):
+    def __init__(self, getter,):
         self.getter = getter
 
-    def __get__(self, instance, owner):
+    def __get__(self, instance, owner,):
         return self.getter(owner)
 
 
@@ -204,7 +204,7 @@ class ISyntax(object):
         return cls.__name__
 
     @classmethod
-    def tostring(self, text):
+    def tostring(self, text,):
         # type: (Any) -> str
         """
         Convert from internal representation to textual representation.
@@ -214,7 +214,7 @@ class ISyntax(object):
         """
         return text
 
-    def parse_command_line(self, value):
+    def parse_command_line(self, value,):
         return value
 
     @classmethod
@@ -230,13 +230,13 @@ class ISyntax(object):
         return '*'
 
     @classmethod
-    def get_choices(cls, lo, options):
+    def get_choices(cls, lo, options,):
         """Get all already sorted choices"""
-        return cls.sort_choices(getattr(cls, 'choices', []))
+        return cls.sort_choices(getattr(cls, 'choices', [],))
 
     @classmethod
-    def sort_choices(cls, choices):
-        return sorted(choices, key=lambda choice: choice[1])
+    def sort_choices(cls, choices,):
+        return sorted(choices, key=lambda choice,: choice[1],)
 
     widget = None
     """The corresponding widget which is used in UMC"""
@@ -248,25 +248,25 @@ class ISyntax(object):
     """The default search pattern for this syntax. String render as TextBox, lists render as ComboBox with the possible choices, booleans render as CheckBox"""
 
     @classmethod
-    def get_widget(cls, prop):
+    def get_widget(cls, prop,):
         return cls.widget
 
-    def get_widget_options(self, udm_property):
+    def get_widget_options(self, udm_property,):
         widget_name = self.get_widget(udm_property)
         if widget_name is None:
-            ud.debug(ud.ADMIN, ud.PROCESS, 'Could not convert UDM syntax %s' % (self,))
+            ud.debug(ud.ADMIN, ud.PROCESS, 'Could not convert UDM syntax %s' % (self,),)
             return {}
 
-        ud.debug(ud.ADMIN, ud.INFO, 'Find choices for syntax %s' % (self.name,))
+        ud.debug(ud.ADMIN, ud.INFO, 'Find choices for syntax %s' % (self.name,),)
         descr = {'type': widget_name}
         descr.update(self.get_widget_choices_options(udm_property))
 
-        if getattr(self, 'depends', None) is not None:
-            descr.setdefault('dynamicOptions', {})
+        if getattr(self, 'depends', None,) is not None:
+            descr.setdefault('dynamicOptions', {},)
             descr['dynamicOptions']['$depends$'] = self.depends
             descr['depends'] = self.depends
 
-        def subsyntaxes(udm_property):
+        def subsyntaxes(udm_property,):
             """
             Returns a list of dictionaries describing the sub types of a
             complex syntax.
@@ -274,7 +274,7 @@ class ISyntax(object):
             udm_prop = copy.copy(udm_property)
             udm_prop.multivalue = False
 
-            def subtypes_dict(item):
+            def subtypes_dict(item,):
                 """Return a single sub type dictionary."""
                 label, subsyn = item
                 elem = subsyn().get_widget_options(udm_prop)
@@ -282,12 +282,12 @@ class ISyntax(object):
                 elem['label'] = label
                 return elem
 
-            return [subtypes_dict(_) for _ in getattr(self, 'subsyntaxes', [])]
+            return [subtypes_dict(_) for _ in getattr(self, 'subsyntaxes', [],)]
 
         subtypes = subsyntaxes(udm_property)
-        ud.debug(ud.ADMIN, ud.INFO, "Syntax %s has the following choices: %s" % (self.name, descr))
+        ud.debug(ud.ADMIN, ud.INFO, "Syntax %s has the following choices: %s" % (self.name, descr),)
         if subtypes:
-            ud.debug(ud.ADMIN, ud.INFO, "Syntax %s has the following sub-types: %s" % (self.name, subtypes))
+            ud.debug(ud.ADMIN, ud.INFO, "Syntax %s has the following sub-types: %s" % (self.name, subtypes),)
             descr['subtypes'] = subtypes
         if descr['type'] == 'LinkList':
             descr['multivalue'] = False
@@ -307,15 +307,15 @@ class ISyntax(object):
 
         return descr
 
-    def get_widget_choices_options(self, udm_property):
+    def get_widget_choices_options(self, udm_property,):
         # for select, MultiSelect and SambaLogonHours
-        empty_value = [{'id': '', 'label': ''}] if getattr(self, 'empty_value', False) else []
+        empty_value = [{'id': '', 'label': ''}] if getattr(self, 'empty_value', False,) else []
         return {
-            'staticValues': empty_value + [{'id': _[0], 'label': _[1]} for _ in getattr(self, 'choices', [])],
+            'staticValues': empty_value + [{'id': _[0], 'label': _[1]} for _ in getattr(self, 'choices', [],)],
         }
 
     @classmethod
-    def get_object_property_filter(cls, object_property, object_property_value, allow_asterisks=True):
+    def get_object_property_filter(cls, object_property, object_property_value, allow_asterisks=True,):
         """
         Get a LDAP filter for a certain property
 
@@ -324,10 +324,10 @@ class ISyntax(object):
         >>> ISyntax.get_object_property_filter('foo', 'bar*')
         '(|(foo=bar*)(foo=bar))'
         """
-        ret = _replace_asterisks_in_filter(filter_format('%s=%s', (object_property, object_property_value)), allow_asterisks)
+        ret = _replace_asterisks_in_filter(filter_format('%s=%s', (object_property, object_property_value),), allow_asterisks,)
         no_substring_value = object_property_value.strip('*')
         if no_substring_value and no_substring_value != object_property_value:
-            ret = '(|(%s)(%s))' % (ret, _replace_asterisks_in_filter(filter_format('%s=%s', (object_property, no_substring_value)), allow_asterisks))
+            ret = '(|(%s)(%s))' % (ret, _replace_asterisks_in_filter(filter_format('%s=%s', (object_property, no_substring_value),), allow_asterisks,))
         return ret
 
 
@@ -356,7 +356,7 @@ class simple(ISyntax):
     widget_default_search_pattern = '*'
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         # type: (Any) -> str
         """
         Validate the value by parsing it.
@@ -370,7 +370,7 @@ class simple(ISyntax):
             raise univention.admin.uexceptions.valueError(self.error_message)
 
     @classmethod
-    def checkLdap(self, lo, value, property=''):
+    def checkLdap(self, lo, value, property='',):
         # type: (access, Any, Optional[str]) -> Any
         """
         Check the given value against the current LDAP state by
@@ -411,7 +411,7 @@ class select(ISyntax):
     """Whether dependencies should be resolved via Javascript (instead via a further request)"""
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         # type: (Any) -> Optional[str]
         # for the UDM CLI
         try:
@@ -425,7 +425,7 @@ class select(ISyntax):
         return None
 
     @classmethod
-    def get_choices(cls, lo, options):
+    def get_choices(cls, lo, options,):
         """Get the choices w.r.t. dependencies"""
         # sort choices before inserting / appending some special items
         try:
@@ -436,9 +436,9 @@ class select(ISyntax):
         choices = cls.sort_choices(class_choices)
 
         if cls.empty_value and class_choices and class_choices[0][0] != '':
-            choices.insert(0, ('', ''))
+            choices.insert(0, ('', ''),)
 
-        if cls.depends in options.get('dependencies', {}):
+        if cls.depends in options.get('dependencies', {},):
             # by default return the dependency values!
             values = []
             for value in options['dependencies'][cls.depends]:
@@ -448,7 +448,7 @@ class select(ISyntax):
 
         return choices
 
-    def get_widget_choices_options(self, udm_property):
+    def get_widget_choices_options(self, udm_property,):
         if self.depends:
             if self.javascript_dependency:
                 return {
@@ -456,7 +456,7 @@ class select(ISyntax):
                 }
             return _default_widget_options(self)
 
-        return super(select, self).get_widget_choices_options(udm_property)
+        return super(select, self,).get_widget_choices_options(udm_property)
 
 
 class combobox(select):
@@ -470,8 +470,8 @@ class combobox(select):
     search_widget = 'SuggestionBox'
 
     @classmethod
-    def parse(cls, text):
-        return super(combobox, cls).parse(text) or text
+    def parse(cls, text,):
+        return super(combobox, cls,).parse(text) or text
 
 
 class MultiSelect(ISyntax):
@@ -490,15 +490,15 @@ class MultiSelect(ISyntax):
     search_widget = 'ComboBox'
 
     @classmethod
-    def parse(self, value):
+    def parse(self, value,):
         # type: (Any) -> List[str]
         # required for UDM CLI
-        if isinstance(value, six.string_types):
-            value = list(map(lambda x: x, shlex.split(value)))
+        if isinstance(value, six.string_types,):
+            value = list(map(lambda x,: x, shlex.split(value),))
 
         if not self.empty_value and not value:
             raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
-        key_list = list(map(lambda x: x[0], self.choices))
+        key_list = list(map(lambda x,: x[0], self.choices,))
         for item in value:
             if item not in key_list:
                 raise univention.admin.uexceptions.valueError(self.error_message)
@@ -526,14 +526,14 @@ class complex(ISyntax):
     subsyntax_key_value = False
 
     @classmethod
-    def get_widget(cls, prop):
+    def get_widget(cls, prop,):
         return cls.widget if prop.multivalue else cls.widget_multivalue
     widget = 'MultiInput'
     widget_multivalue = 'ComplexInput'
     widget_default_search_pattern = None
 
     @classmethod
-    def parse(self, texts, minn=None):
+    def parse(self, texts, minn=None,):
         # type: (Sequence[Any], int) -> List[str]
         if minn is None:
             minn = self.min_elements
@@ -546,8 +546,8 @@ class complex(ISyntax):
             raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
 
         parsed = []
-        for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
-            ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, texts=%s' % (i, syn, text))
+        for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes,)):
+            ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, texts=%s' % (i, syn, text),)
             if text is None and i + 1 < minn:
                 raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument: %s > %s") % (self.name, desc))
             s = syn() if inspect.isclass(syn) else syn  # type: simple # type: ignore
@@ -556,7 +556,7 @@ class complex(ISyntax):
         return parsed
 
     @classmethod
-    def fromdict(self, value):
+    def fromdict(self, value,):
         if self.subsyntax_key_value:
             return [self.parse(item) for item in value.items()]
         elif self.subsyntax_names:
@@ -568,26 +568,26 @@ class complex(ISyntax):
             raise TypeError('Syntax class is not a dict.')
 
     @classmethod
-    def todict(self, value):
+    def todict(self, value,):
         if self.subsyntax_key_value:
             return dict(value)
         if not self.subsyntax_names:
             raise TypeError('Syntax class is not a dict.')
-        values = dict(zip(self.subsyntax_names, [None] * len(self.subsyntax_names)))
-        values.update(dict(zip(self.subsyntax_names, value)))
+        values = dict(zip(self.subsyntax_names, [None] * len(self.subsyntax_names),))
+        values.update(dict(zip(self.subsyntax_names, value,)))
         return values
 
     @property
     def type_class(cls):
-        def _sub_type_class(subsyntax):
+        def _sub_type_class(subsyntax,):
             subsyntax = subsyntax() if inspect.isclass(subsyntax) else subsyntax
             TC = subsyntax.type_class
             if TC is None:
                 return
 
             class SubTC(TC):
-                def __init__(self, property_, property_name):
-                    TC.__init__(self, property_, property_name, syntax=subsyntax)
+                def __init__(self, property_, property_name,):
+                    TC.__init__(self, property_, property_name, syntax=subsyntax,)
             return SubTC
 
         if cls.subsyntax_key_value:
@@ -599,7 +599,7 @@ class complex(ISyntax):
             class ComplexMultiValueDictType(univention.admin.types.DictionaryType):
                 properties = {
                     key: _sub_type_class(syn)
-                    for key, (desc, syn) in zip(cls.subsyntax_names, cls.subsyntaxes)
+                    for key, (desc, syn) in zip(cls.subsyntax_names, cls.subsyntaxes,)
                 }
             return ComplexMultiValueDictType
         else:
@@ -613,7 +613,7 @@ class complex(ISyntax):
             return cls.type_class
 
     @classmethod
-    def tostring(self, texts):
+    def tostring(self, texts,):
         # type: (Any) -> str
         if self.all_required and (len(self.subsyntaxes) != len(texts) or not all(texts)):
             return ''
@@ -636,7 +636,7 @@ class complex(ISyntax):
             for desc, syntax in self.subsyntaxes
         ]
 
-    def parse_command_line(self, value):
+    def parse_command_line(self, value,):
         if '"' not in value:
             return value.split(' ')
         try:
@@ -648,7 +648,7 @@ class complex(ISyntax):
 class _UDMObjectOrAttribute(object):
 
     @classmethod
-    def _append_hidden_filter(cls, module, ret):
+    def _append_hidden_filter(cls, module, ret,):
         if module is None or module.property_descriptions.get('objectFlag') is None:
             return ret
         hidden_filter = '!(objectFlag=hidden)'
@@ -657,8 +657,8 @@ class _UDMObjectOrAttribute(object):
         return hidden_filter
 
     @classmethod
-    def _create_ldap_filter(cls, options, module):
-        if cls.depends and cls.depends not in options.get('dependencies', {}):
+    def _create_ldap_filter(cls, options, module,):
+        if cls.depends and cls.depends not in options.get('dependencies', {},):
             return None
 
         if callable(cls.udm_filter):
@@ -678,7 +678,7 @@ class _UDMObjectOrAttribute(object):
             for object_property in object_properties:
                 prop = module.property_descriptions.get(object_property)
                 syn = prop.syntax if prop else cls
-                property_filter = syn.get_object_property_filter(object_property, object_property_value, allow_asterisks=options.get('allow_asterisks', True))
+                property_filter = syn.get_object_property_filter(object_property, object_property_value, allow_asterisks=options.get('allow_asterisks', True,),)
                 if property_filter:
                     property_filters.append(property_filter)
 
@@ -687,14 +687,14 @@ class _UDMObjectOrAttribute(object):
             else:
                 property_filter_s = cls.wrap_filter(property_filters[0]) if len(property_filters) == 1 else '(|%s)' % ''.join(cls.wrap_filter(x) for x in property_filters)
 
-            if not options.get('hidden', True):
-                property_filter_s = cls._append_hidden_filter(module, property_filter_s)
+            if not options.get('hidden', True,):
+                property_filter_s = cls._append_hidden_filter(module, property_filter_s,)
 
             filter_s = '(&%s%s)' % (cls.wrap_filter(property_filter_s), cls.wrap_filter(filter_s))
         return filter_s
 
     @classmethod
-    def wrap_filter(cls, filter_s):
+    def wrap_filter(cls, filter_s,):
         if filter_s and not filter_s.startswith('('):
             # make sure that the LDAP filter is wrapped in brackets
             filter_s = '(%s)' % filter_s
@@ -749,7 +749,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
     widget_advanced_multivalue = 'umc/modules/udm/MultiObjectSelect'
 
     @classmethod
-    def get_widget(cls, prop):
+    def get_widget(cls, prop,):
         return cls.widget_advanced_multivalue if prop.multivalue and len(cls.udm_modules) == 1 and not cls.simple else cls.widget
 
     @property
@@ -759,10 +759,10 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
         return univention.admin.types.StringType
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if not self.empty_value and not text:
             raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
-        if isinstance(text, bytes):
+        if isinstance(text, bytes,):
             text = text.decode('UTF-8')
         if self.key == 'dn':
             try:
@@ -774,7 +774,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
         raise univention.admin.uexceptions.valueError(self.error_message)
 
     @classmethod
-    def get_choices(cls, lo, options):
+    def get_choices(cls, lo, options,):
         choices = []
 
         # scope & base is no public API and only used by search_syntax_choices_by_key!
@@ -788,12 +788,12 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
         simple = False
         attr = set()
         if not cls.use_objects:
-            attr.update(re.findall(r'%\(([^)]+)\)', cls.key))
+            attr.update(re.findall(r'%\(([^)]+)\)', cls.key,))
             if cls.label:
-                attr.update(re.findall(r'%\(([^)]+)\)', cls.label))
+                attr.update(re.findall(r'%\(([^)]+)\)', cls.label,))
             for udm_module in cls.udm_modules:
                 module = univention.admin.modules.get(udm_module)
-                if not hasattr(module, 'lookup_filter'):
+                if not hasattr(module, 'lookup_filter',):
                     break
                 if module is not None:
                     mapping = module.mapping
@@ -802,9 +802,9 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
             else:
                 simple = True
             if not simple:
-                ud.debug(ud.ADMIN, ud.WARN, 'Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!' % (cls.name,))
+                ud.debug(ud.ADMIN, ud.WARN, 'Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!' % (cls.name,),)
 
-        def extract_key_label(syn, dn, info):
+        def extract_key_label(syn, dn, info,):
             key = label = None
             if syn.key == 'dn':
                 key = dn
@@ -825,14 +825,14 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
             return key, label
 
         if not simple:
-            def map_choices(obj_list):
+            def map_choices(obj_list,):
                 result = []
                 for obj in obj_list:
                     # first try it without obj.open() (expensive)
-                    key, label = extract_key_label(cls, obj.dn, obj.info)
+                    key, label = extract_key_label(cls, obj.dn, obj.info,)
                     if key is None or label is None:
                         obj.open()
-                        key, label = extract_key_label(cls, obj.dn, obj.info)
+                        key, label = extract_key_label(cls, obj.dn, obj.info,)
                         if key is None:
                             # ignore the entry as the key is important for a selection, there
                             # is no sensible fallback for the key (Bug #26994)
@@ -848,63 +848,63 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                 module = univention.admin.modules.get(udm_module)
                 if not module:
                     continue
-                filter_s = cls._create_ldap_filter(options, module)
+                filter_s = cls._create_ldap_filter(options, module,)
                 if filter_s is not None:
-                    objs = module.lookup(None, lo, filter_s, **module_search_options)
+                    objs = module.lookup(None, lo, filter_s, **module_search_options,)
                     choices.extend(map_choices(objs))
         else:
             for udm_module in cls.udm_modules:
                 module = univention.admin.modules.get(udm_module)
                 if not module:
                     continue
-                filter_s = cls._create_ldap_filter(options, module)
+                filter_s = cls._create_ldap_filter(options, module,)
                 if filter_s is not None:
                     if filter_s and not filter_s.startswith('('):
                         filter_s = '(%s)' % filter_s
                     mapping = module.mapping
                     ldap_attr = [mapping.mapName(att) for att in attr]
 
-                    def _search(module, filter_s, ldap_attr=None):
-                        if hasattr(module, 'lookup_filter'):
-                            lookup_filter = module.lookup_filter(filter_s, lo)
+                    def _search(module, filter_s, ldap_attr=None,):
+                        if hasattr(module, 'lookup_filter',):
+                            lookup_filter = module.lookup_filter(filter_s, lo,)
                             if lookup_filter is None:
                                 return []
 
                             if ldap_attr is not None:
-                                return lo.search(filter=six.text_type(lookup_filter), attr=ldap_attr, **module_search_options)
+                                return lo.search(filter=six.text_type(lookup_filter), attr=ldap_attr, **module_search_options,)
                             else:
-                                return lo.searchDn(filter=six.text_type(lookup_filter), **module_search_options)
-                        return module.lookup(None, lo, filter_s, **module_search_options)
+                                return lo.searchDn(filter=six.text_type(lookup_filter), **module_search_options,)
+                        return module.lookup(None, lo, filter_s, **module_search_options,)
 
                     if ldap_attr:
-                        result = _search(module, filter_s, ldap_attr)
+                        result = _search(module, filter_s, ldap_attr,)
                         for dn, ldap_map in result:
-                            info = univention.admin.mapping.mapDict(mapping, ldap_map)
-                            key, label = extract_key_label(cls, dn, info)
+                            info = univention.admin.mapping.mapDict(mapping, ldap_map,)
+                            key, label = extract_key_label(cls, dn, info,)
                             if key is None:
                                 continue
                             if label is None:
-                                label = ldap.dn.explode_rdn(dn, True)[0]
+                                label = ldap.dn.explode_rdn(dn, True,)[0]
                             choices.append((key, label))
                     else:
-                        keys = _search(module, filter_s)
+                        keys = _search(module, filter_s,)
                         if cls.label == 'dn':
                             labels = keys
                         else:
-                            labels = [ldap.dn.explode_rdn(dn, True)[0] for dn in keys]
-                        choices.extend(zip(keys, labels))
+                            labels = [ldap.dn.explode_rdn(dn, True,)[0] for dn in keys]
+                        choices.extend(zip(keys, labels,))
 
         # sort choices before inserting / appending some special items
         choices = cls.sort_choices(choices)
 
-        if isinstance(cls.static_values, (tuple, list)):
+        if isinstance(cls.static_values, (tuple, list),):
             for value in cls.static_values:
-                choices.insert(0, value)
+                choices.insert(0, value,)
         if cls.empty_value:
-            choices.insert(0, ('', ''))
+            choices.insert(0, ('', ''),)
         return choices
 
-    def get_widget_choices_options(self, udm_property):
+    def get_widget_choices_options(self, udm_property,):
         if udm_property.multivalue and len(self.udm_modules) == 1 and not self.simple:
             return {'objectType': self.udm_modules[0]}
 
@@ -949,7 +949,7 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
     widget_default_search_pattern = ''
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if not self.empty_value and not text:
             raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
         if not text or not self.regex or self.regex.match(text) is not None:
@@ -957,26 +957,26 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
         raise univention.admin.uexceptions.valueError(self.error_message)
 
     @classmethod
-    def get_choices(cls, lo, options):
+    def get_choices(cls, lo, options,):
         choices = []
-        sizelimit = options.get('sizelimit', 0)
+        sizelimit = options.get('sizelimit', 0,)
 
-        def filter_choice(obj):
+        def filter_choice(obj,):
             # if attributes does not exist or is empty
             return cls.attribute in obj.info and obj.info[cls.attribute]
 
-        def map_choice(obj):
+        def map_choice(obj,):
             obj.open()
-            ud.debug(ud.ADMIN, ud.INFO, 'Loading choices from %s: %s' % (obj.dn, obj.info))
+            ud.debug(ud.ADMIN, ud.INFO, 'Loading choices from %s: %s' % (obj.dn, obj.info),)
             try:
                 values = obj.info[cls.attribute]
             except KeyError:
-                ud.debug(ud.ADMIN, ud.WARN, 'Object has no attribute %r' % (cls.attribute,))
+                ud.debug(ud.ADMIN, ud.WARN, 'Object has no attribute %r' % (cls.attribute,),)
                 # this happens for example in PrinterDriverList
                 # if the ldap schema is not installed
                 # and thus no 'printmodel' attribute is known.
                 return []
-            if not isinstance(values, (list, tuple)):  # single value
+            if not isinstance(values, (list, tuple),):  # single value
                 values = [values]
             if cls.is_complex:
                 return [(x[cls.key_index], x[cls.label_index]) for x in values]
@@ -992,29 +992,29 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
         if not module:
             return []
 
-        ud.debug(ud.ADMIN, ud.INFO, 'Found syntax %s with udm_module property' % (cls.name,))
+        ud.debug(ud.ADMIN, ud.INFO, 'Found syntax %s with udm_module property' % (cls.name,),)
         if cls.udm_filter == 'dn':
-            obj = module.object(None, lo, None, options.get('dependencies', {})[cls.depends])
+            obj = module.object(None, lo, None, options.get('dependencies', {},)[cls.depends],)
             choices = map_choice(obj)
         else:
-            filter_s = cls._create_ldap_filter(options, module)
+            filter_s = cls._create_ldap_filter(options, module,)
             if filter_s is not None:
-                objs = module.lookup(None, lo, filter_s, sizelimit=sizelimit)
-                for element in map(map_choice, filter(filter_choice, objs)):
+                objs = module.lookup(None, lo, filter_s, sizelimit=sizelimit,)
+                for element in map(map_choice, filter(filter_choice, objs,),):
                     for item in element:
                         choices.append(item)
 
         # sort choices before inserting / appending some special items
         choices = cls.sort_choices(choices)
 
-        if isinstance(cls.static_values, (tuple, list)):
+        if isinstance(cls.static_values, (tuple, list),):
             for value in cls.static_values:
-                choices.insert(0, value)
+                choices.insert(0, value,)
         if cls.empty_value:
-            choices.insert(0, ('', ''))
+            choices.insert(0, ('', ''),)
         return choices
 
-    def get_widget_choices_options(self, udm_property):
+    def get_widget_choices_options(self, udm_property,):
         opts = _default_widget_options(self)
         opts['dynamicValuesInfo'] = 'udm/syntax/choices/info'
         return opts
@@ -1033,7 +1033,7 @@ class string(simple):
     type_class = univention.admin.types.StringType
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         return text
 
 
@@ -1050,7 +1050,7 @@ class string64(simple):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         self.min_length = 0
         self.max_length = 64
 
@@ -1078,7 +1078,7 @@ class string6(OneThirdString):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         self.min_length = 0
         self.max_length = 6
 
@@ -1160,7 +1160,7 @@ class UCSVersion(string):
     """
 
     @classmethod
-    def parse(self, value):
+    def parse(self, value,):
         try:
             UCS_Version(value)
         except ValueError:
@@ -1192,7 +1192,7 @@ class DebianPackageVersion(string):
     invalid_chars_regex = re.compile('[^-+:.0-9a-zA-Z~]')
 
     @classmethod
-    def parse(self, value):
+    def parse(self, value,):
         m = self.invalid_chars_regex.search(value)
         if m is not None:
             raise univention.admin.uexceptions.valueError(_('Invalid character in debian package version: %s') % m.group())
@@ -1216,7 +1216,7 @@ class BaseFilename(string):
     """
 
     @classmethod
-    def parse(self, value):
+    def parse(self, value,):
         if '/' in value:
             raise univention.admin.uexceptions.valueError(_('Filename must not contain slashes: %s') % str(value))
         else:
@@ -1236,7 +1236,7 @@ class Upload(ISyntax):
     type_class = univention.admin.types.BinaryType  # type: Optional[Type[univention.admin.types.TypeHint]]
 
     @classmethod
-    def parse(self, value):
+    def parse(self, value,):
         return value
 
 
@@ -1265,7 +1265,7 @@ class Base64GzipText(TextArea):
     type_class = univention.admin.types.Base64Type
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             gziped_data = base64.b64decode(text)
         except Exception:
@@ -1302,7 +1302,7 @@ class Base64Bzip2Text(TextArea):
     type_class = univention.admin.types.Base64Type
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             compressed_data = base64.b64decode(text)
         except Exception:
@@ -1335,7 +1335,7 @@ class Base64Upload(Upload):
     widget_default_search_pattern = ''
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             base64.b64decode(text)
         except Exception:
@@ -1363,7 +1363,7 @@ class Base64BaseUpload(Base64Upload):
     widget_default_search_pattern = ''
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             base64.b64decode(text)
         except Exception:
@@ -1400,7 +1400,7 @@ class jpegPhoto(Upload):
     widget_default_search_pattern = ''
 
     @classmethod
-    def tostring(self, value):
+    def tostring(self, value,):
         # type: (Any) -> str
         if value:
             return value
@@ -1408,7 +1408,7 @@ class jpegPhoto(Upload):
             return ''
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             raw = base64.b64decode(text)
             if raw.startswith(b'\211PNG\r\n\032\n'):  # PNG
@@ -1422,11 +1422,11 @@ class jpegPhoto(Upload):
                     def _fileno(*a, **k):
                         raise AttributeError()  # workaround for an old PIL lib which can't handle BytesIO
                     text.fileno = _fileno
-                    image.save(text, format='jpeg')
+                    image.save(text, format='jpeg',)
                     raw = text.getvalue()
                     text = base64.b64encode(raw)
                 except (KeyError, IOError, IndexError):
-                    ud.debug(ud.ADMIN, ud.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
+                    ud.debug(ud.ADMIN, ud.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),),)
                     raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
             if raw[:2] != b'\xff\xd8' and raw[6:10] not in (b'JFIF', b'Exif'):
                 raise ValueError()
@@ -1467,7 +1467,7 @@ class Base64Bzip2XML(TextArea):
     type_class = univention.admin.types.Base64Type
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             compressed_data = base64.b64decode(text)
         except Exception:
@@ -1497,7 +1497,7 @@ class Base64UMCIcon(TextArea):
     type_class = univention.admin.types.Base64Type
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             data = base64.b64decode(text)
         except Exception:
@@ -1526,7 +1526,7 @@ class GNUMessageCatalog(TextArea):
     type_class = univention.admin.types.Base64Type
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             data = base64.b64decode(text)
         except Exception:
@@ -1551,7 +1551,7 @@ class Localesubdirname(string):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if text not in os.listdir('/usr/share/locale'):
             raise univention.admin.uexceptions.valueError(_('Not a valid locale subdir name: %s') % str(text))
         return text
@@ -1565,7 +1565,7 @@ class UMCMessageCatalogFilename(string):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         text = string.parse(text)
         language_id, dash, module_id = text.partition('-')
         if not dash:
@@ -1651,8 +1651,8 @@ class integer(simple):
     type_class = univention.admin.types.IntegerType
 
     @classmethod
-    def parse(self, text):
-        if isinstance(text, int):
+    def parse(self, text,):
+        if isinstance(text, int,):
             text = str(text)
         if self._re.match(text) is not None:
             return text
@@ -1673,10 +1673,10 @@ class integerOrEmpty(integer):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if not text and text != 0:
             return
-        return super(integerOrEmpty, self).parse(text)
+        return super(integerOrEmpty, self,).parse(text)
 
 
 class boolean(simple):
@@ -1729,15 +1729,15 @@ class boolean(simple):
     widget_default_search_pattern = False
 
     @classmethod
-    def parse(self, text):
-        if isinstance(text, bool):
+    def parse(self, text,):
+        if isinstance(text, bool,):
             return '1' if text else '0'
-        return super(boolean, self).parse(text)
+        return super(boolean, self,).parse(text)
 
     @classmethod
-    def get_object_property_filter(cls, object_property, object_property_value, allow_asterisks=True):
-        not_set_filter = filter_format('(!(%s=*))', (object_property,))
-        compare_filter = _replace_asterisks_in_filter(filter_format('%s=%s', (object_property, object_property_value)), allow_asterisks)
+    def get_object_property_filter(cls, object_property, object_property_value, allow_asterisks=True,):
+        not_set_filter = filter_format('(!(%s=*))', (object_property,),)
+        compare_filter = _replace_asterisks_in_filter(filter_format('%s=%s', (object_property, object_property_value),), allow_asterisks,)
         if object_property_value == '0':
             return '(|(%s)%s)' % (compare_filter, not_set_filter)
         elif object_property_value == '1':
@@ -1746,7 +1746,7 @@ class boolean(simple):
             return ''
 
     @classmethod
-    def sanitize_property_search_value(cls, search_value):
+    def sanitize_property_search_value(cls, search_value,):
         return '1' if search_value is True else '0'
 
 
@@ -1813,7 +1813,7 @@ class mail_folder_name(simple):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if "!" in text or " " in text or "\t" in text:
             raise univention.admin.uexceptions.valueError(_("Value may not contain whitespace or exclamation mark !"))
         else:
@@ -1993,10 +1993,10 @@ class IA5string(string):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         # type: (Any) -> str
         try:
-            if isinstance(text, bytes):
+            if isinstance(text, bytes,):
                 text = text.decode('UTF-8')
             text.encode('ASCII')
         except UnicodeEncodeError:
@@ -2090,8 +2090,8 @@ class uid_umlauts(simple):
     # FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
 
     @classmethod
-    def parse(self, text):
-        if isinstance(text, bytes):
+    def parse(self, text,):
+        if isinstance(text, bytes,):
             text = text.decode('UTF-8')
         if u" " in text:
             raise univention.admin.uexceptions.valueError(_("Spaces are not allowed in the username!"))
@@ -2128,8 +2128,8 @@ class uid_umlauts_lower_except_first_letter(simple):
     # FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
 
     @classmethod
-    def parse(self, text):
-        if isinstance(text, bytes):
+    def parse(self, text,):
+        if isinstance(text, bytes,):
             text = text.decode('UTF-8')
         if any(c.isupper() for c in text[1:]):
             raise univention.admin.uexceptions.valueError(_("Only the first letter of the username may be uppercase!"))
@@ -2187,14 +2187,14 @@ class sharePath(simple):
     error_message = _('Value may not contain double quotes (")!')
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if not text[0] == '/':
             raise univention.admin.uexceptions.valueInvalidSyntax(_('A path must begin with "/"!'))
         for path in ["tmp", "root", "proc", "dev", "sys"]:
-            if re.match("(^/%s$)|(^/%s/)" % (path, path), os.path.realpath(text)):
+            if re.match("(^/%s$)|(^/%s/)" % (path, path), os.path.realpath(text),):
                 raise univention.admin.uexceptions.valueError(_('Path may not start with "%s" !') % path)
 
-        return super(sharePath, self).parse(text)
+        return super(sharePath, self,).parse(text)
 
 
 class passwd(simple):
@@ -2221,7 +2221,7 @@ class passwd(simple):
     widget_default_search_pattern = ''
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if len(text) >= self.min_length:
             return text
         else:
@@ -2246,7 +2246,7 @@ class userPasswd(simple):
     widget_default_search_pattern = ''
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if text and len(text) > 0:
             return text
         else:
@@ -2307,7 +2307,7 @@ class ipv4Address(simple):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             return str(ipaddress.IPv4Address(u'%s' % (text,)))
         except ValueError:
@@ -2330,7 +2330,7 @@ class ipAddress(simple):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             return str(ipaddress.ip_address(u'%s' % (text,)))
         except ValueError:
@@ -2360,7 +2360,7 @@ class hostOrIP(simple):
     max_length = 0
 
     @classmethod
-    def ipAddress(self, text):
+    def ipAddress(self, text,):
         try:
             ipaddress.ip_address(u'%s' % (text,))
             return True
@@ -2368,11 +2368,11 @@ class hostOrIP(simple):
             return False
 
     @classmethod
-    def hostName(self, text):
+    def hostName(self, text,):
         return bool(text and hostName.regex.match(text) is not None)
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if self.hostName(text) or self.ipAddress(text):
             return text
         else:
@@ -2402,11 +2402,11 @@ class v4netmask(simple):
     max_length = 15
 
     @classmethod
-    def netmaskBits(self, dotted):
-        return ipaddress.IPv4Network(u'0.0.0.0/%s' % (dotted,), strict=False).prefixlen
+    def netmaskBits(self, dotted,):
+        return ipaddress.IPv4Network(u'0.0.0.0/%s' % (dotted,), strict=False,).prefixlen
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             return "%d" % self.netmaskBits(text)
         except ValueError:
@@ -2435,11 +2435,11 @@ class netmask(simple):
     """
 
     @classmethod
-    def parse(self, text):
-        if text.isdigit() and int(text) > 0 and int(text) < max(ipaddress.IPV4LENGTH, ipaddress.IPV6LENGTH):
+    def parse(self, text,):
+        if text.isdigit() and int(text) > 0 and int(text) < max(ipaddress.IPV4LENGTH, ipaddress.IPV6LENGTH,):
             return str(int(text))
         try:
-            return str(ipaddress.IPv4Network(u'0.0.0.0/%s' % (text, ), strict=False).prefixlen)
+            return str(ipaddress.IPv4Network(u'0.0.0.0/%s' % (text, ), strict=False,).prefixlen)
         except ValueError:
             pass
         raise univention.admin.uexceptions.valueError(_("Not a valid netmask!"))
@@ -2458,10 +2458,10 @@ class ipnetwork(simple):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             # FIXME: missing return
-            ipaddress.ip_network(u'%s' % (text,), strict=False)
+            ipaddress.ip_network(u'%s' % (text,), strict=False,)
         except ValueError:
             raise univention.admin.uexceptions.valueError(_("Not a valid network!"))
 
@@ -2499,8 +2499,8 @@ class IP_AddressRange(complex):
     subsyntax_names = ('first', 'last')
 
     @classmethod
-    def parse(self, texts):
-        p = super(IP_AddressRange, self).parse(texts)
+    def parse(self, texts,):
+        p = super(IP_AddressRange, self,).parse(texts)
         try:
             first, last = p
         except ValueError:
@@ -2584,7 +2584,7 @@ class absolutePath(simple):
     _re = re.compile('^/.*')
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if self._re.match(text) is not None:
             return text
         else:
@@ -2716,10 +2716,10 @@ class emailAddress(simple):
     type_class = univention.admin.types.EMailAddressType
 
     @classmethod
-    def parse(self, text):
-        if self.extra_validation and validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation', True):
+    def parse(self, text,):
+        if self.extra_validation and validate_email and configRegistry.is_true('directory/manager/mail-address/extra-validation', True,):
             try:
-                validate_email(text, allow_smtputf8=False, check_deliverability=False, globally_deliverable=False)
+                validate_email(text, allow_smtputf8=False, check_deliverability=False, globally_deliverable=False,)
             except EmailNotValidError as exc:
                 raise univention.admin.uexceptions.valueError(_("Not a valid email address!") + " " + str(exc))
         if not text.startswith('@') and \
@@ -2732,7 +2732,7 @@ class emailAddress(simple):
 
 class emailAddressThatMayEndWithADot(emailAddress):
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if text and text.endswith("."):
             return emailAddress.parse(text[:-1]) + "."
         else:
@@ -2777,21 +2777,21 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
     search_widget = 'MailBox'
 
     @classmethod
-    def parse(self, text):
-        text = super(emailAddressValidDomain, self).parse(text)
+    def parse(self, text,):
+        text = super(emailAddressValidDomain, self,).parse(text)
         return emailAddress.parse(text)
 
     @classmethod
-    def get_widget(cls, prop):
+    def get_widget(cls, prop,):
         return 'MailBox'
 
     @classmethod
-    def checkLdap(self, lo, mailaddresses, property='mailPrimaryAddress'):
+    def checkLdap(self, lo, mailaddresses, property='mailPrimaryAddress',):
         # convert mailaddresses to array if necessary
         mailaddresses = copy.deepcopy(mailaddresses)
-        if isinstance(mailaddresses, str):
+        if isinstance(mailaddresses, str,):
             mailaddresses = [mailaddresses]
-        if not isinstance(mailaddresses, list):
+        if not isinstance(mailaddresses, list,):
             return
 
         faillist = []
@@ -2799,18 +2799,18 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
         # iterate over mail addresses
         for mailaddress in mailaddresses:
             if mailaddress:
-                domain = mailaddress.rsplit('@', 1)[-1]
+                domain = mailaddress.rsplit('@', 1,)[-1]
                 if domain not in domainCache:
-                    ldapfilter = ldap.filter.filter_format('(&(objectClass=univentionMailDomainname)(cn=%s))', [domain])
+                    ldapfilter = ldap.filter.filter_format('(&(objectClass=univentionMailDomainname)(cn=%s))', [domain],)
                     result = lo.searchDn(filter=ldapfilter)
                     domainCache[domain] = bool(result)
-                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.%s: address=%r   domain=%r   result=%r' % (self.name, mailaddress, domain, result))
+                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.%s: address=%r   domain=%r   result=%r' % (self.name, mailaddress, domain, result),)
                 if not domainCache[domain]:
                     faillist.append(mailaddress)
-                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.%s: address=%r   domain=%r' % (self.name, mailaddress, domain))
+                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.%s: address=%r   domain=%r' % (self.name, mailaddress, domain),)
 
         if faillist:
-            raise univention.admin.uexceptions.valueError(self.errMsgDomain % (', '.join(faillist),), property=property)
+            raise univention.admin.uexceptions.valueError(self.errMsgDomain % (', '.join(faillist),), property=property,)
 
 
 class primaryEmailAddressValidDomain(emailAddressValidDomain):
@@ -2866,26 +2866,26 @@ class iso8601Date(simple):
     type_class = univention.admin.types.DateType
 
     @classmethod
-    def to_datetime(cls, value):
+    def to_datetime(cls, value,):
         value = cls.parse(value)
         if value:
             try:
                 return dateutil.parser.parse(value).date()  # FIXME: this gives AttributeError: module 'dateutil' has no attribute 'parser'
             except Exception:
                 pass
-            if re.match(r"\d+-\d+$", value):
+            if re.match(r"\d+-\d+$", value,):
                 # FIXME: broken: the regex does not allow this format
-                return datetime.datetime.strptime(value, "%Y-%j").date()
-            elif re.match(r"\d+-W\d+-\d+$", value):
+                return datetime.datetime.strptime(value, "%Y-%j",).date()
+            elif re.match(r"\d+-W\d+-\d+$", value,):
                 # FIXME: broken: the regex allows 1-7 while the function expects 0-6. 7 gives a traceback
-                return datetime.datetime.strptime(value, "%Y-W%U-%w").date()
-            elif re.match(r"\d+-W\d+$", value):
+                return datetime.datetime.strptime(value, "%Y-W%U-%w",).date()
+            elif re.match(r"\d+-W\d+$", value,):
                 # FIXME: broken: When used with the strptime() method, %U and %W are only used in calculations when the day of the week and the year are specified.
-                return datetime.datetime.strptime(value, "%Y-W%U").date()
-            return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
+                return datetime.datetime.strptime(value, "%Y-W%U",).date()
+            return datetime.date(*time.strptime(value, '%Y-%m-%d',)[0:3])
 
     @classmethod
-    def from_datetime(cls, value):
+    def from_datetime(cls, value,):
         return value.isoformat()
 
 
@@ -2943,13 +2943,13 @@ class date(simple):
     type_class = univention.admin.types.DateType
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if text and self._re_iso.match(text):
-            year, month, day = map(int, text.split('-', 2))
+            year, month, day = map(int, text.split('-', 2,),)
             if 1960 < year < 2100 and 1 <= month <= 12 and 1 <= day <= 31:
                 return '%02d.%02d.%02d' % (day, month, year % 100)
         if text and self._re_de.match(text):
-            day, month, year = map(int, text.split('.', 2))
+            day, month, year = map(int, text.split('.', 2,),)
             if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
                 return text
         if text is not None:
@@ -2957,13 +2957,13 @@ class date(simple):
         return ''
 
     @classmethod
-    def to_datetime(cls, value):
+    def to_datetime(cls, value,):
         value = cls.parse(value)
         if value:
-            return datetime.date(*time.strptime(value, '%d.%m.%y')[0:3])
+            return datetime.date(*time.strptime(value, '%d.%m.%y',)[0:3])
 
     @classmethod
-    def from_datetime(cls, value):
+    def from_datetime(cls, value,):
         return value.isoformat()
 
 
@@ -2990,15 +2990,15 @@ class date2(date):  # fixes the century
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if text is None:
             return ''
         if self._re_iso.match(text):
-            year, month, day = map(int, text.split('-', 2))
+            year, month, day = map(int, text.split('-', 2,),)
             if 1960 < year < 2100 and 1 <= month <= 12 and 1 <= day <= 31:
                 return text
         if text and self._re_de.match(text):
-            day, month, year = map(int, text.split('.', 2))
+            day, month, year = map(int, text.split('.', 2,),)
             if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
                 # Workaround: Don't wrap 2.1.1970 to 2.1.2070:
                 if year >= 70:  # Epoch 0
@@ -3007,10 +3007,10 @@ class date2(date):  # fixes the century
         raise univention.admin.uexceptions.valueError(_("Not a valid Date"))
 
     @classmethod
-    def to_datetime(cls, value):
+    def to_datetime(cls, value,):
         value = cls.parse(value)
         if value:
-            return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
+            return datetime.date(*time.strptime(value, '%Y-%m-%d',)[0:3])
 
 
 class reverseLookupSubnet(simple):
@@ -3081,10 +3081,10 @@ class dnsName(simple):
     max_length = 253
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if not text:
             raise univention.admin.uexceptions.valueError(_("Missing value!"))
-        assert isinstance(text, six.string_types)
+        assert isinstance(text, six.string_types,)
         if not 1 <= len(text) <= 253:
             raise univention.admin.uexceptions.valueError(_("Full domain name must be between 1 and 253 characters long!"))
         labels = (text[:-1] if text.endswith('.') else text).split('.')
@@ -3133,8 +3133,8 @@ class dnsHostname(dnsName):
     NUMERIC = re.compile(r'^[0-9.]+$')
 
     @classmethod
-    def parse(self, text):
-        text = super(dnsHostname, self).parse(text)
+    def parse(self, text,):
+        text = super(dnsHostname, self,).parse(text)
         if self.NUMERIC.match(text):
             raise univention.admin.uexceptions.valueError(_("Full name must not be all numeric!"))
         labels = (text[:-1] if text.endswith('.') else text).split('.')
@@ -3171,7 +3171,7 @@ class dnsName_umlauts(simple):
 
     min_length = 1
     max_length = 63
-    regex = re.compile(r"^(?![0-9]+$|[_-])[\w_-]{1,63}(?<![_-])$", re.UNICODE)
+    regex = re.compile(r"^(?![0-9]+$|[_-])[\w_-]{1,63}(?<![_-])$", re.UNICODE,)
     error_message = _(
         "A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. "
         "In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.",
@@ -3265,8 +3265,7 @@ class dnsPTR(simple):
         (?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){0,2}$
         |^    [0-9a-f]
         (?:\.[0-9a-f]){0,30}$
-        ''', re.VERBOSE,
-    )
+        ''', re.VERBOSE,)
     error_message = _("The reversed host name for IPv4 consists of the reversed host address (example: \"4.3\") or for IPv6 in nibble format (example: \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\").")
 
 
@@ -3366,20 +3365,20 @@ class UNIX_TimeInterval(complex):
     type_class = univention.admin.types.UnixTimeinterval
 
     @classmethod
-    def parse(cls, texts):
-        return super(UNIX_TimeInterval, cls).parse(texts)
+    def parse(cls, texts,):
+        return super(UNIX_TimeInterval, cls,).parse(texts)
 
     @classmethod
-    def from_integer(cls, value):
+    def from_integer(cls, value,):
         return [str(value), 'seconds']
 
     @classmethod
-    def to_integer(cls, value):
+    def to_integer(cls, value,):
         return {
-            'seconds': lambda x: x,
-            'minutes': lambda x: x * 60,
-            'hours': lambda x: x * 60 * 60,
-            'days': lambda x: x * 24 * 60 * 60,
+            'seconds': lambda x,: x,
+            'minutes': lambda x,: x * 60,
+            'hours': lambda x,: x * 60 * 60,
+            'days': lambda x,: x * 24 * 60 * 60,
         }[value[1]](int(value[0]))
 
 
@@ -3391,8 +3390,8 @@ class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
     error_message = _("Value out of bounds (%d - %d seconds)")
 
     @classmethod
-    def parse(cls, texts):
-        parsed = super(UNIX_BoundedTimeInterval, cls).parse(texts)
+    def parse(cls, texts,):
+        parsed = super(UNIX_BoundedTimeInterval, cls,).parse(texts)
         if parsed[0] is None:
             return [None, None]
 
@@ -3485,19 +3484,19 @@ class MAC_Address(simple):
     error_message = _('This is not a valid MAC address (valid examples are 86:f5:d1:f5:6b:3e, 86-f5-d1-f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)')
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if self.regexLinuxFormat.match(text) is not None:
-            text = text.replace(':', '')
+            text = text.replace(':', '',)
         elif self.regexWindowsFormat.match(text) is not None:
-            text = text.replace('-', '')
+            text = text.replace('-', '',)
         elif self.regexRawFormat.match(text) is not None:
             pass
         elif self.regexCiscoFormat.match(text) is not None:
-            text = text.replace('.', '')
+            text = text.replace('.', '',)
         else:
             raise univention.admin.uexceptions.valueError(self.error_message)
 
-        return ':'.join(text[i:i + 2] for i in range(0, len(text), 2)).lower()
+        return ':'.join(text[i:i + 2] for i in range(0, len(text), 2,)).lower()
 
 
 class DHCP_HardwareAddress(complex):
@@ -3531,8 +3530,8 @@ class PackagesRemove(Packages):
     """
 
     @classmethod
-    def parse(cls, text):
-        text = super(PackagesRemove, cls).parse(text)
+    def parse(cls, text,):
+        text = super(PackagesRemove, cls,).parse(text)
         if text in ['wget', 'screen', 'openssh-client', 'nmap', 'lsof', 'file']:
             # Bug #36711: don't allow to remove packages which would uninstall univention-server-master
             raise univention.admin.uexceptions.valueError(_('The package "%s" can not be removed as it would uninstall necessary components.') % (text,))
@@ -3552,7 +3551,7 @@ class userAttributeList(string):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         return text
 
 
@@ -3576,30 +3575,30 @@ class ldapDn(simple):
     type_class = univention.admin.types.DistinguishedNameType
 
     @classmethod
-    def get_widget(cls, prop):
+    def get_widget(cls, prop,):
         if cls is ldapDn:
             return 'TextBox'
         return 'umc/modules/udm/MultiObjectSelect' if prop.multivalue else 'ComboBox'
     widget_default_search_pattern = ''
 
     @classmethod
-    def get_choices(cls, lo, options):
-        if not hasattr(cls, 'searchFilter'):
-            return simple.get_choices(lo, options)
+    def get_choices(cls, lo, options,):
+        if not hasattr(cls, 'searchFilter',):
+            return simple.get_choices(lo, options,)
 
         try:
             result = lo.searchDn(filter=cls.searchFilter)
         except univention.admin.uexceptions.base:
-            ud.debug(ud.ADMIN, ud.PROCESS, 'Failed to initialize syntax class %s' % (cls.name,))
+            ud.debug(ud.ADMIN, ud.PROCESS, 'Failed to initialize syntax class %s' % (cls.name,),)
             return []
 
         return cls.sort_choices([
-            (dn, ldap.dn.explode_rdn(dn, True)[0])
+            (dn, ldap.dn.explode_rdn(dn, True,)[0])
             for dn in result
         ])
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         # type: (Any) -> str
         if text == '':
             raise univention.admin.uexceptions.valueError(self.error_message)
@@ -3608,7 +3607,7 @@ class ldapDn(simple):
         except (ldap.DECODING_ERROR, TypeError):
             raise univention.admin.uexceptions.valueError(self.error_message)
 
-    def get_widget_choices_options(self, udm_property):
+    def get_widget_choices_options(self, udm_property,):
         return _default_widget_options(self)
 
 
@@ -3747,7 +3746,7 @@ class ldapDnOrNone(simple):
     """
 
     @classmethod
-    def get_widget(cls, prop):
+    def get_widget(cls, prop,):
         if cls is ldapDnOrNone:
             return 'TextBox'
         return 'umc/modules/udm/MultiObjectSelect' if prop.multivalue else 'ComboBox'
@@ -3755,7 +3754,7 @@ class ldapDnOrNone(simple):
     widget_default_search_pattern = ''
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if not text or text == 'None':
             return text
         try:
@@ -3763,7 +3762,7 @@ class ldapDnOrNone(simple):
         except (ldap.DECODING_ERROR, TypeError):
             raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
 
-    def get_widget_choices_options(self, udm_property):
+    def get_widget_choices_options(self, udm_property,):
         return _default_widget_options(self)
 
 
@@ -3775,7 +3774,7 @@ class _ClassChoices(type):
         return cls._auto_choices()
 
 
-class _CachedLdap(six.with_metaclass(_ClassChoices, combobox)):
+class _CachedLdap(six.with_metaclass(_ClassChoices, combobox,)):
     """Meta-class to lazily fetch |LDAP| schema information on first access."""
 
     empty_value = True
@@ -3798,24 +3797,24 @@ class _CachedLdap(six.with_metaclass(_ClassChoices, combobox)):
                 finally:
                     conn.unbind()
             except ldap.LDAPError as ex:
-                ud.debug(ud.ADMIN, ud.WARN, 'syntax.py: Failed LDAP connection: %s' % (ex,))
+                ud.debug(ud.ADMIN, ud.WARN, 'syntax.py: Failed LDAP connection: %s' % (ex,),)
 
         return cls._cached_choices
 
     @classmethod
-    def _update_schema(cls, subschema):
+    def _update_schema(cls, subschema,):
         # type: (SubSchema) -> None
         names = set()  # type: Set[str]
         for oid in subschema.listall(cls._class):
-            obj = subschema.get_obj(cls._class, oid)
+            obj = subschema.get_obj(cls._class, oid,)
             if obj:
                 names.update(obj.names)
 
         cls._cached_choices = cls.sort_choices([(name, name) for name in names])
 
     @classmethod
-    def sort_choices(cls, choices):
-        return sorted(choices, key=lambda choice: choice[1].lower())
+    def sort_choices(cls, choices,):
+        return sorted(choices, key=lambda choice,: choice[1].lower(),)
 
     @classmethod
     def update_choices(cls):
@@ -3835,14 +3834,14 @@ class ldapAttribute(_CachedLdap):
     depends = 'objectClass'
 
     @classmethod
-    def get_choices(cls, lo, options):
-        if cls.depends not in options.get('dependencies', {}):  # pragma: no cover
+    def get_choices(cls, lo, options,):
+        if cls.depends not in options.get('dependencies', {},):  # pragma: no cover
             return cls.choices
 
         subschema = lo.get_schema()
         must, may = subschema.attribute_types([options['dependencies'][cls.depends]])
         attrs = set()
-        for atype in dict(must, **may).values():
+        for atype in dict(must, **may,).values():
             attrs.update(atype.names)
         return cls.sort_choices([(attr, attr) for attr in attrs])
 
@@ -3862,11 +3861,11 @@ class ldapFilter(simple):
     type_class = univention.admin.types.LDAPFilterType
 
     @classmethod
-    def parse(cls, text):
+    def parse(cls, text,):
         # use a unbound ldap connection to validate the search filter
         lo = ldap.initialize('')
         try:
-            lo.search_ext_s('', ldap.SCOPE_BASE, text)
+            lo.search_ext_s('', ldap.SCOPE_BASE, text,)
         except ldap.FILTER_ERROR:
             raise univention.admin.uexceptions.valueError(_('Not a valid LDAP search filter'))
         except ldap.SERVER_DOWN:
@@ -4237,9 +4236,9 @@ class GroupDN(UDM_Objects):
 
     search_widget = 'ComboBox'
 
-    def get_widget_choices_options(self, udm_property):
+    def get_widget_choices_options(self, udm_property,):
         opts = _default_widget_options(self)
-        opts.update(super(GroupDN, self).get_widget_choices_options(udm_property))
+        opts.update(super(GroupDN, self,).get_widget_choices_options(udm_property))
         return opts
 
 
@@ -4302,10 +4301,10 @@ class UserID(UDM_Objects):
     type_class = univention.admin.types.IntegerType
 
     @classmethod
-    def parse(cls, text):
-        if isinstance(text, int):
+    def parse(cls, text,):
+        if isinstance(text, int,):
             text = str(text)
-        return super(cls, cls).parse(text)
+        return super(cls, cls,).parse(text)
 
 
 class GroupID(UDM_Objects):
@@ -4332,10 +4331,10 @@ class GroupID(UDM_Objects):
     type_class = univention.admin.types.IntegerType
 
     @classmethod
-    def parse(cls, text):
-        if isinstance(text, int):
+    def parse(cls, text,):
+        if isinstance(text, int,):
             text = str(text)
-        return super(cls, cls).parse(text)
+        return super(cls, cls,).parse(text)
 
 
 class PortalComputer(UDM_Objects):
@@ -4397,7 +4396,7 @@ class IComputer_FQDN(UDM_Objects):
         (?=^ .{4,254}$ )
         (?: (?![0-9]+\. | [_-]) [a-zA-Z0-9_-]{1,63} (?<![_-]) \. )+
             (?![0-9]+$  | [_-]) [a-zA-Z0-9_-]{2,63} (?<![_-]) $
-        ''', re.VERBOSE)
+        ''', re.VERBOSE,)
     error_message = _('Not a valid FQDN')
     udm_filter = '!(univentionObjectFlag=docker)'
     simple = True
@@ -4487,8 +4486,8 @@ class network(UDM_Objects):
     label = '%(name)s'
     empty_value = True
 
-    def get_widget_choices_options(self, udm_property):
-        opts = super(network, self).get_widget_choices_options(udm_property)
+    def get_widget_choices_options(self, udm_property,):
+        opts = super(network, self,).get_widget_choices_options(udm_property)
         opts['onChange'] = 'javascript:umc/modules/udm/callbacks:setNetwork'
         return opts
 
@@ -4509,8 +4508,8 @@ class IP_AddressListEmpty(IP_AddressList):
     empty_value = True
 
     @classmethod
-    def parse(cls, text):
-        return super(IP_AddressListEmpty, cls).parse(text) if text else ''
+    def parse(cls, text,):
+        return super(IP_AddressListEmpty, cls,).parse(text) if text else ''
 
 
 class MAC_AddressList(MAC_Address, select):
@@ -4611,11 +4610,11 @@ class DNS_ForwardZoneList(select):
     javascript_dependency = True
 
     @classmethod
-    def get_choices(cls, lo, options):
-        choices = super(cls, cls).get_choices(lo, options)
-        if cls.depends not in options.get('dependencies', {}):  # pragma: no cover
+    def get_choices(cls, lo, options,):
+        choices = super(cls, cls,).get_choices(lo, options,)
+        if cls.depends not in options.get('dependencies', {},):  # pragma: no cover
             return choices
-        values = [ldap.dn.explode_rdn(x[0][0], True)[0] for x in choices]
+        values = [ldap.dn.explode_rdn(x[0][0], True,)[0] for x in choices]
         return cls.sort_choices([(val, val) for val in values])
 
 
@@ -4659,14 +4658,14 @@ class dhcpEntry(complex):
     size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
 
     @classmethod
-    def parse(cls, text):
+    def parse(cls, text,):
         service, ip, mac = text[0], '', ''
         try:
             mac = text[1:][-1]
             ip, mac = text[1:]
         except (IndexError, ValueError):
             pass
-        return super(dhcpEntry, cls).parse([service, ip, mac])
+        return super(dhcpEntry, cls,).parse([service, ip, mac])
 
 
 class DHCP_Option(complex):
@@ -4718,17 +4717,17 @@ class IStates(select):
 
     @ClassProperty
     def choices(cls):
-        return list(map(lambda x: (x[1]), cls.values))
+        return list(map(lambda x,: (x[1]), cls.values,))
 
     @classmethod
-    def parse(cls, text):
+    def parse(cls, text,):
         for value, (choice, _label) in cls.values:
             if text in (value, choice):
                 return choice
         raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid choice.'))
 
     @classmethod
-    def get_object_property_filter(cls, object_property, object_property_value, allow_asterisks=True):
+    def get_object_property_filter(cls, object_property, object_property_value, allow_asterisks=True,):
         try:
             state_of_object_property_value = [state for state, (ldap_value, _) in cls.values if ldap_value == object_property_value][0]
             if state_of_object_property_value not in (None, True, False):
@@ -4737,8 +4736,8 @@ class IStates(select):
             return ''
 
         states_of_this_syntax = [state for state, _ in cls.values]
-        not_set_filter = filter_format('(!(%s=*))', (object_property,))
-        compare_filter = _replace_asterisks_in_filter(filter_format('%s=%s', (object_property, object_property_value)), allow_asterisks)
+        not_set_filter = filter_format('(!(%s=*))', (object_property,),)
+        compare_filter = _replace_asterisks_in_filter(filter_format('%s=%s', (object_property, object_property_value),), allow_asterisks,)
         if state_of_object_property_value is None:
             return not_set_filter
         elif state_of_object_property_value is False and None not in states_of_this_syntax:
@@ -4749,7 +4748,7 @@ class IStates(select):
             return compare_filter
 
     @classmethod
-    def sanitize_property_search_value(cls, search_value):
+    def sanitize_property_search_value(cls, search_value,):
         if search_value in (True, False):
             # This is for IStates that are shown as Checkboxes in the frontend. In these cases we get a boolean as search value.
             # Map the boolean to the string that is stored in ldap
@@ -5489,19 +5488,19 @@ class SambaLogonHours(MultiSelect):
     type_class = univention.admin.types.SambaLogonHours
 
     @classmethod
-    def parse(self, value):
+    def parse(self, value,):
         # required for UDM CLI: in this case the keys MUST be of type int
-        if isinstance(value, six.string_types):
+        if isinstance(value, six.string_types,):
             if len(value) == 42 and not value.strip('abcdef0123456789'):
                 from univention.admin.handlers.users.user import logonHoursUnmap
                 value = logonHoursUnmap([value.encode('ASCII')])
             else:
-                value = list(map(lambda x: int(x), shlex.split(value)))
+                value = list(map(lambda x,: int(x), shlex.split(value),))
 
-        return super(SambaLogonHours, self).parse(value)
+        return super(SambaLogonHours, self,).parse(value)
 
     @classmethod
-    def tostring(self, value):
+    def tostring(self, value,):
         # type: (list) -> str
         if value is None:
             return value
@@ -5703,7 +5702,7 @@ class univentionAdminModules(select):
     ]
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         for choice in self.choices:
             if choice[0] == text:
                 return text
@@ -5742,7 +5741,7 @@ class listAttributes(string):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         return text
 
 
@@ -5750,8 +5749,8 @@ class timeSpec(select):
     """Time format used by :program:`at`."""
 
     _times = [
-        (_time, _time) for hour in range(0, 24)
-        for minute in range(0, 60, 15)
+        (_time, _time) for hour in range(0, 24,)
+        for minute in range(0, 60, 15,)
         for _time in ('%02d:%02d' % (hour, minute),)
     ]
     choices = [
@@ -5782,17 +5781,17 @@ class allModuleOptions(combobox):
 
     @classmethod
     def update_choices(cls):
-        cls.choices = cls.get_choices(None, {'dependencies': {cls.depends: list(univention.admin.modules.modules)}})
+        cls.choices = cls.get_choices(None, {'dependencies': {cls.depends: list(univention.admin.modules.modules)}},)
 
     @classmethod
-    def get_choices(cls, lo, options):
-        if cls.depends not in options.get('dependencies', {}):  # pragma: no cover
+    def get_choices(cls, lo, options,):
+        if cls.depends not in options.get('dependencies', {},):  # pragma: no cover
             return cls.choices
         modules = options['dependencies'][cls.depends]
         return cls.sort_choices([
             (key, opt.short_description)
             for module in modules
-            for key, opt in getattr(univention.admin.modules.get(module), 'options', {}).items()
+            for key, opt in getattr(univention.admin.modules.get(module), 'options', {},).items()
             if key != 'default'
         ])
 
@@ -5861,13 +5860,13 @@ class LDAP_Search(select):
     appendEmptyValue = False
 
     @classmethod
-    def get_widget(cls, prop):
+    def get_widget(cls, prop,):
         if cls is LDAP_Search:
-            return 'umc/modules/udm/LinkList' if getattr(cls, 'viewonly', False) else 'ComboBox'
+            return 'umc/modules/udm/LinkList' if getattr(cls, 'viewonly', False,) else 'ComboBox'
         return select.get_widget(prop)
     search_widget = 'ComboBox'
 
-    def __init__(self, syntax_name=None, filter=None, attribute=[], base='', value='dn', viewonly=False, addEmptyValue=False, appendEmptyValue=False):
+    def __init__(self, syntax_name=None, filter=None, attribute=[], base='', value='dn', viewonly=False, addEmptyValue=False, appendEmptyValue=False,):
         """
         Creates an syntax object providing a list of choices defined
         by a LDAP objects
@@ -5894,7 +5893,7 @@ class LDAP_Search(select):
         """
         self.name = self.__class__.__name__
 
-    def __new__(cls, syntax_name=None, filter=None, attribute=[], base='', value='dn', viewonly=False, addEmptyValue=False, appendEmptyValue=False):
+    def __new__(cls, syntax_name=None, filter=None, attribute=[], base='', value='dn', viewonly=False, addEmptyValue=False, appendEmptyValue=False,):
         props = {
             'syntax': syntax_name,
             'viewonly': viewonly,
@@ -5910,13 +5909,13 @@ class LDAP_Search(select):
                 'base': base,
                 'value': value,
             })
-        return super(LDAP_Search, cls).__new__(type(cls.__name__, (cls,), props))
+        return super(LDAP_Search, cls,).__new__(type(cls.__name__, (cls,), props,))
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         return text
 
-    def _load(self, lo):
+    def _load(self, lo,):
         """
         Loads an LDAP_Search object from the LDAP directory. If no
         syntax name is given the object is expected to be created with
@@ -5932,7 +5931,7 @@ class LDAP_Search(select):
 
         # get values from UDM settings/syntax
         try:
-            filter = filter_format(LDAP_Search.FILTER_PATTERN, [self.syntax])
+            filter = filter_format(LDAP_Search.FILTER_PATTERN, [self.syntax],)
             dn, attrs = lo.search(filter=filter)[0]
         except Exception:
             return
@@ -5944,46 +5943,46 @@ class LDAP_Search(select):
                 self.base = attrs['univentionSyntaxLDAPBase'][0].decode('utf-8')
             else:
                 self.base = ''
-            self.value = attrs.get('univentionSyntaxLDAPValue', [b'dn'])[0].decode('utf-8')
-            if attrs.get('univentionSyntaxViewOnly', [b'FALSE'])[0] == b'TRUE':
+            self.value = attrs.get('univentionSyntaxLDAPValue', [b'dn'],)[0].decode('utf-8')
+            if attrs.get('univentionSyntaxViewOnly', [b'FALSE'],)[0] == b'TRUE':
                 self.viewonly = True
                 self.value = 'dn'
-            self.addEmptyValue = (attrs.get('univentionSyntaxAddEmptyValue', [b'0'])[0].upper() in [b'TRUE', b'1'])
-            self.appendEmptyValue = (attrs.get('univentionSyntaxAppendEmptyValue', [b'0'])[0].upper() in [b'TRUE', b'1'])
+            self.addEmptyValue = (attrs.get('univentionSyntaxAddEmptyValue', [b'0'],)[0].upper() in [b'TRUE', b'1'])
+            self.appendEmptyValue = (attrs.get('univentionSyntaxAppendEmptyValue', [b'0'],)[0].upper() in [b'TRUE', b'1'])
 
     @classmethod
-    def get_choices(cls, lo, options):
-        return [(choice['id'], choice['label']) for choice in cls.get_umc_choices(lo, options)]
+    def get_choices(cls, lo, options,):
+        return [(choice['id'], choice['label']) for choice in cls.get_umc_choices(lo, options,)]
 
     @classmethod
-    def get_umc_choices(cls, lo, options):
+    def get_umc_choices(cls, lo, options,):
         """Workaround for UMC - we should get rid of this class at all"""
-        options = options.get('options', {})
+        options = options.get('options', {},)
         try:
-            syn = cls(options['syntax'], options['filter'], options['attributes'], options['base'], options['value'], options['viewonly'], options['empty'], options['empty_end'])
+            syn = cls(options['syntax'], options['filter'], options['attributes'], options['base'], options['value'], options['viewonly'], options['empty'], options['empty_end'],)
         except KeyError:
             syn = cls
 
-        return syn._get_choices(lo, options)
+        return syn._get_choices(lo, options,)
 
     @classmethod
-    def _get_choices(cls, lo, options):
-        def split_module_attr(value):
+    def _get_choices(cls, lo, options,):
+        def split_module_attr(value,):
             if ': ' in value:
-                return value.split(': ', 1)
+                return value.split(': ', 1,)
             return (None, value)
 
         filter_s = cls.filter
         if 'dn' in options:
-            filter_mod = univention.admin.modules.identifyOne(options['dn'], lo.get(options['dn']))
+            filter_mod = univention.admin.modules.identifyOne(options['dn'], lo.get(options['dn']),)
             if filter_mod:
-                obj = univention.admin.objects.get(filter_mod, None, lo, None, options['dn'])
+                obj = univention.admin.objects.get(filter_mod, None, lo, None, options['dn'],)
                 eobj = _EscapedDict(obj)
                 eobj.dn = escape_filter_chars(obj.dn)
-                filter_s = univention.admin.pattern_replace(filter_s, eobj)
+                filter_s = univention.admin.pattern_replace(filter_s, eobj,)
 
         choices = []
-        for dn in lo.searchDn(filter=filter_s, base=cls.base):
+        for dn in lo.searchDn(filter=filter_s, base=cls.base,):
             # cls.attributes: pass on all display attributes so the frontend has a chance to supoport it some day
             if cls.viewonly:
                 display_attr = cls.attributes
@@ -5993,9 +5992,9 @@ class LDAP_Search(select):
             if display_attr:
                 # currently we just support one display attribute
                 mod_display, display = split_module_attr(display_attr[0])  # mod_display might be None
-                modules = univention.admin.modules.objectType(None, lo, dn)
+                modules = univention.admin.modules.objectType(None, lo, dn,)
             else:
-                modules = univention.admin.modules.objectType(None, lo, dn)
+                modules = univention.admin.modules.objectType(None, lo, dn,)
                 display = None
             try:
                 module = next(univention.admin.modules.get(m) for m in modules)
@@ -6003,7 +6002,7 @@ class LDAP_Search(select):
                 module = None
             if not module:
                 continue
-            obj = module.object(None, lo, None, dn)
+            obj = module.object(None, lo, None, dn,)
             if not obj:
                 continue
             obj.open()
@@ -6020,21 +6019,21 @@ class LDAP_Search(select):
                     id = obj.oldattr[store][0].decode(*module.mapping.getEncoding(store))
                 else:
                     # no valid store object, ignore
-                    ud.debug(ud.ADMIN, ud.WARN, 'LDAP_Search syntax %r: %r is no valid property for object %r - ignoring entry.' % (cls.name, store, dn))
+                    ud.debug(ud.ADMIN, ud.WARN, 'LDAP_Search syntax %r: %r is no valid property for object %r - ignoring entry.' % (cls.name, store, dn),)
                     continue
 
             # find the value to display
             if display == 'dn':
                 label = dn
             elif display is None:  # if view-only and in case of error
-                label = '%s: %s' % (getattr(module, 'short_description', module.module), obj.description())
+                label = '%s: %s' % (getattr(module, 'short_description', module.module,), obj.description())
             else:
                 if display in obj:
                     label = obj[display]
                 elif display in obj.oldattr and obj.oldattr[display]:
                     label = obj.oldattr[display][0].decode(*module.mapping.getEncoding(display))
                 else:
-                    ud.debug(ud.ADMIN, ud.WARN, 'LDAP_Search syntax %r: defines unknown attribute %r' % (cls.name, display))
+                    ud.debug(ud.ADMIN, ud.WARN, 'LDAP_Search syntax %r: defines unknown attribute %r' % (cls.name, display),)
                     label = 'Unknown attribute %r' % (display,)
 
             # TODO: remove this one day...
@@ -6046,23 +6045,23 @@ class LDAP_Search(select):
 
         # then append empty value
         if cls.addEmptyValue:
-            choices.insert(0, {'id': '', 'label': ''})
+            choices.insert(0, {'id': '', 'label': ''},)
         elif cls.appendEmptyValue:
             choices.append({'id': '', 'label': ''})
 
         return choices
 
     @classmethod
-    def sort_choices(cls, choices):
-        return sorted(choices, key=lambda choice: choice['label'] if isinstance(choice, dict) else choice[1])
+    def sort_choices(cls, choices,):
+        return sorted(choices, key=lambda choice,: choice['label'] if isinstance(choice, dict,) else choice[1],)
 
-    def get_widget_choices_options(self, udm_property):
+    def get_widget_choices_options(self, udm_property,):
         opts = _default_widget_options(self)
         opts['dynamicOptions']['options'] = {
             'syntax': self.name,
             'filter': self.filter,
             'viewonly': self.viewonly,
-            'base': getattr(self, 'base', ''),
+            'base': getattr(self, 'base', '',),
             'value': self.value,
             'attributes': self.attributes,
             'empty': self.addEmptyValue,
@@ -6113,10 +6112,10 @@ class languageCode(combobox):
     """
 
     _re = re.compile(r'^[a-z][a-z]_[A-Z][A-Z]$')
-    choices = (lambda m: [kv for kv in language.choices if m(kv[0])])(_re.match)  # noqa: PLC3002
+    choices = (lambda m,: [kv for kv in language.choices if m(kv[0])])(_re.match)  # noqa: PLC3002
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if self._re.match(text) is not None:
             return text
         else:
@@ -6175,12 +6174,12 @@ class disabled(boolean):
     """
 
     @classmethod
-    def parse(cls, text):
+    def parse(cls, text,):
         if text in ('none', 'none2'):
             text = '0'
         elif text in ('all', 'windows', 'kerberos', 'posix', 'windows_posix', 'windows_kerberos', 'posix_kerberos'):
             text = '1'
-        return super(disabled, cls).parse(text)
+        return super(disabled, cls,).parse(text)
 
 
 class locked(boolean):
@@ -6210,12 +6209,12 @@ class locked(boolean):
     widget_default_search_pattern = False
 
     @classmethod
-    def parse(cls, text):
+    def parse(cls, text,):
         if text in ('all', 'windows', 'posix'):
             text = '1'
         elif text == 'none':
             text = '0'
-        return super(locked, cls).parse(text)
+        return super(locked, cls,).parse(text)
 
 
 # printing stuff
@@ -6235,8 +6234,8 @@ class Printers(UDM_Objects):
     key = '%(name)s'
 
     @classmethod
-    def udm_filter(self, options):
-        return '(|(spoolHost=%s))' % ')(spoolHost='.join(map(escape_filter_chars, options[Printers.depends]))
+    def udm_filter(self, options,):
+        return '(|(spoolHost=%s))' % ')(spoolHost='.join(map(escape_filter_chars, options[Printers.depends],))
 
 
 class PrinterNames(UDM_Objects):
@@ -6257,8 +6256,8 @@ class PrinterNames(UDM_Objects):
     regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9_-]*([a-zA-Z0-9]$)')
 
     @classmethod
-    def udm_filter(self, options):
-        return '(|(spoolHost=%s))' % ')(spoolHost='.join(map(escape_filter_chars, options[Printers.depends]))
+    def udm_filter(self, options,):
+        return '(|(spoolHost=%s))' % ')(spoolHost='.join(map(escape_filter_chars, options[Printers.depends],))
 
 
 class PrintQuotaGroup(complex):
@@ -6317,7 +6316,7 @@ class printerName(simple):
     _re = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9_-]*([a-zA-Z0-9]$)')
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if self._re.match(text) is not None:
             return text
         else:
@@ -6386,7 +6385,7 @@ class PrinterURI(complex):
     all_required = False
 
     @classmethod
-    def parse(self, texts):
+    def parse(self, texts,):
         parsed = []
         if self.min_elements is not None:
             count = self.min_elements
@@ -6402,8 +6401,8 @@ class PrinterURI(complex):
         if len(texts) > len(self.subsyntaxes):
             raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
 
-        for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
-            ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, text=%s' % (i, syn, text))
+        for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes,)):
+            ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, text=%s' % (i, syn, text),)
             if text is None and (self.min_elements is None or (i + 1) < count):
                 raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax: %s > %s") % (self.name, desc))
             s = syn() if inspect.isclass(syn) else syn
@@ -6412,16 +6411,16 @@ class PrinterURI(complex):
                 parsed.append(p)
         return parsed
 
-    def parse_command_line(self, value):
+    def parse_command_line(self, value,):
         """
         >>> PrinterURI().parse_command_line("http://localhost")
         ['http://', 'localhost']
         >>> PrinterURI().parse_command_line("file:/foo")
         ['file:/', 'foo']
         """
-        value = complex.parse_command_line(self, value)
+        value = complex.parse_command_line(self, value,)
         if len(value) == 1:
-            matches = re.match("(.+?://?)(.+)", value[0])
+            matches = re.match("(.+?://?)(.+)", value[0],)
             if matches:
                 return list(matches.groups())
 
@@ -6443,7 +6442,7 @@ class policyName(string):
     _re = re.compile(r'^[a-zA-Z0-9]{1}[a-zA-Z0-9 #!$%&/\|\^.~_-]*?[a-zA-Z0-9#!$%&/\|\^.~_-]{1}$')
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         if self._re.match(text):
             return text
         raise univention.admin.uexceptions.valueError(_(
@@ -6520,8 +6519,7 @@ class mailHomeServer(LDAP_Search):
             filter='(&(!(univentionObjectFlag=docker))(objectClass=univentionHost)(univentionService=IMAP))',
             attribute=['computers/computer: fqdn'],
             value='computers/computer: fqdn',
-            appendEmptyValue=True,
-        )
+            appendEmptyValue=True,)
 
 
 class hostname_or_ipadress_or_network(simple):
@@ -6553,7 +6551,7 @@ class hostname_or_ipadress_or_network(simple):
     """
 
     @classmethod
-    def parse(self, text):
+    def parse(self, text,):
         try:
             if '/' in text:  # a network
                 ipnetwork.parse(text)
@@ -6916,8 +6914,8 @@ class UDM_Syntax(combobox):
         mod = sys.modules[__name__]
         cls.choices = cls.sort_choices(
             (sym, sym)
-            for sym, obj in ((sym, getattr(mod, sym)) for sym in dir(mod))
-            if isinstance(obj, type) and issubclass(obj, ISyntax)
+            for sym, obj in ((sym, getattr(mod, sym,)) for sym in dir(mod))
+            if isinstance(obj, type,) and issubclass(obj, ISyntax,)
         )
 
 
@@ -6988,12 +6986,12 @@ class VFSObjects(combobox):
 
 class _EscapedDict(dict):
 
-    def __init__(self, _dict):
+    def __init__(self, _dict,):
         self._dict = _dict
-        super(_EscapedDict, self).__init__()
+        super(_EscapedDict, self,).__init__()
 
-    def __contains__(self, key):
+    def __contains__(self, key,):
         return key in self._dict
 
-    def __missing__(self, key):
-        return escape_filter_chars(self._dict[key], 0)
+    def __missing__(self, key,):
+        return escape_filter_chars(self._dict[key], 0,)

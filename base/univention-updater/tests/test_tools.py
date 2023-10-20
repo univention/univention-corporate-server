@@ -32,4 +32,4 @@ erp3pQbx5rD0cMYJBw3K
 class TestSignatures(object):
     @pytest.mark.xfail(reason="Can't check signature: No public key")
     def test_verify_script(self):
-        assert U.verify_script(SCRIPT, SIGNATURE) is None
+        assert U.verify_script(SCRIPT, SIGNATURE,) is None

@@ -16,13 +16,13 @@ from time import sleep
 from univention.testing.strings import random_username
 
 
-def test_listener(udm, ucr, base_user, group1, group2):
+def test_listener(udm, ucr, base_user, group1, group2,):
     wait_for_replication = False
     created_users = []
-    for x in range(1, 11):
+    for x in range(1, 11,):
         if x % 10 == 0:
             wait_for_replication = not wait_for_replication
-        new_user = udm.create_object('users/user', position=base_user, username=random_username(), lastname=random_username(), password=random_username(), wait_for_replication=wait_for_replication)
+        new_user = udm.create_object('users/user', position=base_user, username=random_username(), lastname=random_username(), password=random_username(), wait_for_replication=wait_for_replication,)
         created_users.append(new_user)
         wait_for_replication = False
         sleep(1)
@@ -30,11 +30,11 @@ def test_listener(udm, ucr, base_user, group1, group2):
         check_logs()
     cleanup()
     for user in created_users[len(created_users) // 2:]:
-        udm.modify_object('groups/group', dn=random.choice([group1, group2]), users=[user], wait_for_replication=True)
+        udm.modify_object('groups/group', dn=random.choice([group1, group2]), users=[user], wait_for_replication=True,)
 
     cleanup()
     for user in created_users[:len(created_users) // 2]:
-        udm.remove_object('users/user', dn=user, wait_for_replication=True)
+        udm.remove_object('users/user', dn=user, wait_for_replication=True,)
         check_logs()
     cleanup()
 

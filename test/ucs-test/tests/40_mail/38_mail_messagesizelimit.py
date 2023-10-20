@@ -16,7 +16,7 @@ from univention.testing import utils
 from essential.mail import restart_postfix, send_mail
 
 
-def check_sending_mail(recipient, attachments, username, password, should_be_accepted):
+def check_sending_mail(recipient, attachments, username, password, should_be_accepted,):
     token = str(time.time())
     try:
         send_mail(
@@ -25,8 +25,7 @@ def check_sending_mail(recipient, attachments, username, password, should_be_acc
             msg=token,
             tls=True,
             username=username,
-            password=password,
-        )
+            password=password,)
     except smtplib.SMTPSenderRefused as ex:
         if should_be_accepted:
             utils.fail('Mail sent failed with exception: %s' % ex)
@@ -34,7 +33,7 @@ def check_sending_mail(recipient, attachments, username, password, should_be_acc
 
 def main():
     cmd = ['/etc/init.d/postfix', 'restart']
-    with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
+    with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w',),):
         with ucr_test.UCSTestConfigRegistry() as ucr:
             with udm_test.UCSTestUDM() as udm:
                 limit = 8192  # Byte
@@ -50,18 +49,17 @@ def main():
                         'password': password,
                         'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
                         'mailPrimaryAddress': mail,
-                    },
-                )
+                    },)
 
                 # Testing exceeding the messagesizelimit
                 with tempfile.NamedTemporaryFile() as h:
                     h.truncate(limit * 2)
-                    check_sending_mail(mail, [h.name], mail, password, False)
+                    check_sending_mail(mail, [h.name], mail, password, False,)
 
                 # Testing being within the messagesizelimit
                 with tempfile.NamedTemporaryFile() as h:
                     h.truncate(limit // 8)
-                    check_sending_mail(mail, [h.name], mail, password, True)
+                    check_sending_mail(mail, [h.name], mail, password, True,)
 
 
 if __name__ == '__main__':

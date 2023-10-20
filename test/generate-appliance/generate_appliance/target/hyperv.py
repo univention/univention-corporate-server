@@ -21,7 +21,7 @@ class HyperV(TargetFile):
     SUFFIX = "hyperv.zip"
     default = False
 
-    def create(self, image: Raw) -> None:
+    def create(self, image: Raw,) -> None:
         options = self.options
         image_name = "%s.vhdx" % (options.product,)
         archive_name = self.archive_name()
@@ -32,4 +32,4 @@ class HyperV(TargetFile):
         ]
         pkzip = Pkzip(files)
         pkzip.path().rename(archive_name)
-        log.info('Generated "%s" appliance as\n  %s', self, archive_name)
+        log.info('Generated "%s" appliance as\n  %s', self, archive_name,)

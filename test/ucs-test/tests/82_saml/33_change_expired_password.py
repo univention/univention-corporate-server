@@ -24,7 +24,7 @@ def main():
             #  Make sure the user has been replicated or the password change can fail
             print('Wait for s4 replication')
             time.sleep(17)
-        SamlSession = samltest.SamlTest(testcase_user_name, 'univention')
+        SamlSession = samltest.SamlTest(testcase_user_name, 'univention',)
 
         with pytest.raises(samltest.SamlPasswordExpired):
             SamlSession.login_with_new_session_at_IdP()

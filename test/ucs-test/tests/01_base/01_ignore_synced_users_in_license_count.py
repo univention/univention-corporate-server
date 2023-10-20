@@ -17,7 +17,7 @@ from univention.testing.udm import UCSTestUDM
 
 
 def get_current_v2license_user_count():
-    for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8').split('\n'):
+    for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE,).communicate()[0].decode('UTF-8').split('\n'):
         if line.startswith('Users:'):
             return int(line.split('of')[0].split()[-1])
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
             if license_user_count_current != license_user_count_admember + 1:
                 utils.fail(f'After creating a normal user in ad/member mode, the license user counter did not increase by one (admember: {license_user_count_admember}, current: {license_user_count_current})')
 
-            lo.modify(user_dn, (('univentionObjectFlag', b'', b'synced'),))
+            lo.modify(user_dn, (('univentionObjectFlag', b'', b'synced'),),)
             utils.wait_for_replication()
             udm.stop_cli_server()
             license_user_count_current = get_current_v2license_user_count()

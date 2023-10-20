@@ -5,26 +5,26 @@ from waflib import Build, Logs, Utils, Errors
 from samba_utils import TO_LIST
 
 
-def header_install_path(header, header_path):
+def header_install_path(header, header_path,):
     '''find the installation path for a header, given a header_path option'''
     if not header_path:
         return ''
-    if not isinstance(header_path, list):
+    if not isinstance(header_path, list,):
         return header_path
     for (p1, dir) in header_path:
         for p2 in TO_LIST(p1):
-            if fnmatch.fnmatch(header, p2):
+            if fnmatch.fnmatch(header, p2,):
                 return dir
     # default to current path
     return ''
 
 
-re_header = re.compile('^\s*#\s*include[ \t]*"([^"]+)"', re.I | re.M)
+re_header = re.compile('^\s*#\s*include[ \t]*"([^"]+)"', re.I | re.M,)
 
 # a dictionary mapping source header paths to public header paths
 header_map = {}
 
-def find_suggested_header(hpath):
+def find_suggested_header(hpath,):
     '''find a suggested header path to use'''
     base = os.path.basename(hpath)
     ret = []
@@ -34,7 +34,7 @@ def find_suggested_header(hpath):
             ret.append('"%s"' % h)
     return ret
 
-def create_public_header(task):
+def create_public_header(task,):
     '''create a public header from a private one, output within the build tree'''
     src = task.inputs[0].abspath(task.env)
     tgt = task.outputs[0].bldpath(task.env)
@@ -42,10 +42,10 @@ def create_public_header(task):
     if os.path.exists(tgt):
         os.unlink(tgt)
 
-    relsrc = os.path.relpath(src, task.env.TOPDIR)
+    relsrc = os.path.relpath(src, task.env.TOPDIR,)
 
-    infile  = open(src, mode='r')
-    outfile = open(tgt, mode='w')
+    infile  = open(src, mode='r',)
+    outfile = open(tgt, mode='w',)
     linenumber = 0
 
     search_paths = [ '', task.env.RELPATH ]
@@ -80,7 +80,7 @@ def create_public_header(task):
         # work out the header this refers to
         found = False
         for s in search_paths:
-            p = os.path.normpath(os.path.join(s, hpath))
+            p = os.path.normpath(os.path.join(s, hpath,))
             if p in header_map:
                 outfile.write("#include <%s>\n" % header_map[p])
                 found = True
@@ -98,20 +98,20 @@ def create_public_header(task):
         outfile.close()
         os.unlink(tgt)
         sys.stderr.write("%s:%u:Error: unable to resolve public header %s (maybe try one of %s)\n" % (
-            os.path.relpath(src, os.getcwd()), linenumber, hpath, suggested))
+            os.path.relpath(src, os.getcwd(),), linenumber, hpath, suggested))
         raise Errors.WafError("Unable to resolve header path '%s' in public header '%s' in directory %s" % (
             hpath, relsrc, task.env.RELPATH))
     infile.close()
     outfile.close()
 
 
-def public_headers_simple(bld, public_headers, header_path=None, public_headers_install=True):
+def public_headers_simple(bld, public_headers, header_path=None, public_headers_install=True,):
     '''install some headers - simple version, no munging needed
     '''
     if not public_headers_install:
         return
     for h in TO_LIST(public_headers):
-        inst_path = header_install_path(h, header_path)
+        inst_path = header_install_path(h, header_path,)
         if h.find(':') != -1:
             s = h.split(":")
             h_name =  s[0]
@@ -119,10 +119,10 @@ def public_headers_simple(bld, public_headers, header_path=None, public_headers_
         else:
             h_name =  h
             inst_name = os.path.basename(h)
-        bld.INSTALL_FILES('${INCLUDEDIR}', h_name, destname=inst_name)
+        bld.INSTALL_FILES('${INCLUDEDIR}', h_name, destname=inst_name,)
 
 
-def PUBLIC_HEADERS(bld, public_headers, header_path=None, public_headers_install=True):
+def PUBLIC_HEADERS(bld, public_headers, header_path=None, public_headers_install=True,):
     '''install some headers
 
     header_path may either be a string that is added to the INCLUDEDIR,
@@ -134,13 +134,13 @@ def PUBLIC_HEADERS(bld, public_headers, header_path=None, public_headers_install
     if not bld.env.build_public_headers:
         # in this case no header munging neeeded. Used for tdb, talloc etc
         public_headers_simple(bld, public_headers, header_path=header_path,
-                              public_headers_install=public_headers_install)
+                              public_headers_install=public_headers_install,)
         return
 
     # create the public header in the given path
     # in the build tree
     for h in TO_LIST(public_headers):
-        inst_path = header_install_path(h, header_path)
+        inst_path = header_install_path(h, header_path,)
         if h.find(':') != -1:
             s = h.split(":")
             h_name =  s[0]
@@ -149,18 +149,18 @@ def PUBLIC_HEADERS(bld, public_headers, header_path=None, public_headers_install
             h_name =  h
             inst_name = os.path.basename(h)
         curdir = bld.path.abspath()
-        relpath1 = os.path.relpath(bld.srcnode.abspath(), curdir)
-        relpath2 = os.path.relpath(curdir, bld.srcnode.abspath())
-        targetdir = os.path.normpath(os.path.join(relpath1, bld.env.build_public_headers, inst_path))
-        if not os.path.exists(os.path.join(curdir, targetdir)):
+        relpath1 = os.path.relpath(bld.srcnode.abspath(), curdir,)
+        relpath2 = os.path.relpath(curdir, bld.srcnode.abspath(),)
+        targetdir = os.path.normpath(os.path.join(relpath1, bld.env.build_public_headers, inst_path,))
+        if not os.path.exists(os.path.join(curdir, targetdir,)):
             raise Errors.WafError("missing source directory %s for public header %s" % (targetdir, inst_name))
-        target = os.path.join(targetdir, inst_name)
+        target = os.path.join(targetdir, inst_name,)
 
         # the source path of the header, relative to the top of the source tree
-        src_path = os.path.normpath(os.path.join(relpath2, h_name))
+        src_path = os.path.normpath(os.path.join(relpath2, h_name,))
 
         # the install path of the header, relative to the public include directory
-        target_path = os.path.normpath(os.path.join(inst_path, inst_name))
+        target_path = os.path.normpath(os.path.join(inst_path, inst_name,))
 
         header_map[src_path] = target_path
 
@@ -168,14 +168,14 @@ def PUBLIC_HEADERS(bld, public_headers, header_path=None, public_headers_install
                                 group='headers',
                                 rule=create_public_header,
                                 source=h_name,
-                                target=target)
+                                target=target,)
         t.env.RELPATH = relpath2
         t.env.TOPDIR  = bld.srcnode.abspath()
         if not bld.env.public_headers_list:
             bld.env.public_headers_list = []
-        bld.env.public_headers_list.append(os.path.join(inst_path, inst_name))
+        bld.env.public_headers_list.append(os.path.join(inst_path, inst_name,))
         if public_headers_install:
             bld.INSTALL_FILES('${INCLUDEDIR}',
                               target,
-                              destname=os.path.join(inst_path, inst_name), flat=True)
+                              destname=os.path.join(inst_path, inst_name,), flat=True,)
 Build.BuildContext.PUBLIC_HEADERS = PUBLIC_HEADERS

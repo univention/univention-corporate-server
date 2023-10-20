@@ -46,7 +46,7 @@ class Bunch:
         return str(self)
 
 
-def random_mail_user(udm, mail_alternative_address=None):
+def random_mail_user(udm, mail_alternative_address=None,):
     if mail_alternative_address is None:
         mail_alternative_address = random_email()
     user = Bunch()
@@ -65,15 +65,15 @@ def test_user_b_mail_alt_equal_user_a_mail_primary():
     print("### user_b's mail_alternative_address is equal to user_a's primary mail address")
     with udm_test.UCSTestUDM() as udm:
         a_user = random_mail_user(udm=udm)
-        b_user = random_mail_user(udm=udm, mail_alternative_address=a_user.mailPrimaryAddress)
+        b_user = random_mail_user(udm=udm, mail_alternative_address=a_user.mailPrimaryAddress,)
         token = make_token()
-        send_mail(recipients=a_user.mailPrimaryAddress, msg=token, debuglevel=DEBUG_LEVEL)
-        check_delivery(token, a_user.mailPrimaryAddress, True)
-        check_delivery(token, b_user.mailPrimaryAddress, True)
+        send_mail(recipients=a_user.mailPrimaryAddress, msg=token, debuglevel=DEBUG_LEVEL,)
+        check_delivery(token, a_user.mailPrimaryAddress, True,)
+        check_delivery(token, b_user.mailPrimaryAddress, True,)
 
 
-@pytest.mark.parametrize("mail_forward_copy_to_self,delivered", [("1", True), ("0", False)])
-def test_user_b_mail_alt_equal_user_a_mail_primary_with_mail_copy_to_self(mail_forward_copy_to_self, delivered):
+@pytest.mark.parametrize("mail_forward_copy_to_self,delivered", [("1", True), ("0", False)],)
+def test_user_b_mail_alt_equal_user_a_mail_primary_with_mail_copy_to_self(mail_forward_copy_to_self, delivered,):
     print("### user_b's mail_alternative_address is equal to user_a's mail forward address")
     with udm_test.UCSTestUDM() as udm:
         a_user = Bunch()
@@ -95,13 +95,13 @@ def test_user_b_mail_alt_equal_user_a_mail_primary_with_mail_copy_to_self(mail_f
             "mailAlternativeAddress": a_user.mailPrimaryAddress,
         })
         token = make_token()
-        send_mail(recipients=a_user.mailPrimaryAddress, msg=token, debuglevel=DEBUG_LEVEL)
-        check_delivery(token, a_user.mailPrimaryAddress, delivered)
-        check_delivery(token, b_user.mailPrimaryAddress, True)
+        send_mail(recipients=a_user.mailPrimaryAddress, msg=token, debuglevel=DEBUG_LEVEL,)
+        check_delivery(token, a_user.mailPrimaryAddress, delivered,)
+        check_delivery(token, b_user.mailPrimaryAddress, True,)
 
 
-@pytest.mark.parametrize("mail_forward_copy_to_self,delivered", [("1", True), ("0", False)])
-def test_user_b_mail_alt_equal_user_a_mail_forward(mail_forward_copy_to_self, delivered):
+@pytest.mark.parametrize("mail_forward_copy_to_self,delivered", [("1", True), ("0", False)],)
+def test_user_b_mail_alt_equal_user_a_mail_forward(mail_forward_copy_to_self, delivered,):
     print("### user_b's mail_alternative_address is equal to user_a's mail forward address")
     with udm_test.UCSTestUDM() as udm:
         a_user = Bunch()
@@ -123,16 +123,16 @@ def test_user_b_mail_alt_equal_user_a_mail_forward(mail_forward_copy_to_self, de
             "mailAlternativeAddress": a_user.mailForwardAddress,
         })
         token = make_token()
-        send_mail(recipients=a_user.mailPrimaryAddress, msg=token, debuglevel=DEBUG_LEVEL)
-        check_delivery(token, a_user.mailPrimaryAddress, delivered)
-        check_delivery(token, b_user.mailPrimaryAddress, True)
+        send_mail(recipients=a_user.mailPrimaryAddress, msg=token, debuglevel=DEBUG_LEVEL,)
+        check_delivery(token, a_user.mailPrimaryAddress, delivered,)
+        check_delivery(token, b_user.mailPrimaryAddress, True,)
 
 
 def test_group_mail_equal_user_mail_alt():
     print("### The group's mail is identical to a users mail_alternative_address")
     with udm_test.UCSTestUDM() as udm:
         group_mail = random_email()
-        user_a = random_mail_user(udm=udm, mail_alternative_address=group_mail)
+        user_a = random_mail_user(udm=udm, mail_alternative_address=group_mail,)
         user_b = random_mail_user(udm=udm)
         udm.create_group(
             set={
@@ -141,9 +141,9 @@ def test_group_mail_equal_user_mail_alt():
             },
         )
         token = make_token()
-        send_mail(recipients=group_mail, msg=token, debuglevel=DEBUG_LEVEL)
-        check_delivery(token, user_a.mailPrimaryAddress, True)
-        check_delivery(token, user_b.mailPrimaryAddress, True)
+        send_mail(recipients=group_mail, msg=token, debuglevel=DEBUG_LEVEL,)
+        check_delivery(token, user_a.mailPrimaryAddress, True,)
+        check_delivery(token, user_b.mailPrimaryAddress, True,)
 
 
 def test_mail_list_equal_user_mail_alt():
@@ -151,7 +151,7 @@ def test_mail_list_equal_user_mail_alt():
     with udm_test.UCSTestUDM() as udm:
         list_name = uts.random_name()
         mailing_list_mail = "%s@%s" % (list_name, DOMAIN)
-        user_a = random_mail_user(udm=udm, mail_alternative_address=mailing_list_mail)
+        user_a = random_mail_user(udm=udm, mail_alternative_address=mailing_list_mail,)
         user_b = random_mail_user(udm=udm)
         udm.create_object(
             "mail/lists",
@@ -159,12 +159,11 @@ def test_mail_list_equal_user_mail_alt():
                 "name": list_name,
                 "mailAddress": mailing_list_mail,
                 "members": [user_b.mailPrimaryAddress],
-            },
-        )
+            },)
         token = make_token()
-        send_mail(recipients=mailing_list_mail, msg=token, debuglevel=DEBUG_LEVEL)
-        check_delivery(token, user_a.mailPrimaryAddress, True)
-        check_delivery(token, user_b.mailPrimaryAddress, True)
+        send_mail(recipients=mailing_list_mail, msg=token, debuglevel=DEBUG_LEVEL,)
+        check_delivery(token, user_a.mailPrimaryAddress, True,)
+        check_delivery(token, user_b.mailPrimaryAddress, True,)
 
 
 def test_user_mail_alt_equals_shared_folder_mail_address():
@@ -172,20 +171,18 @@ def test_user_mail_alt_equals_shared_folder_mail_address():
     with udm_test.UCSTestUDM() as udm:
         folder_name = uts.random_name()
         shared_folder_mail = "%s@%s" % (folder_name, DOMAIN)
-        user = random_mail_user(udm=udm, mail_alternative_address=shared_folder_mail)
+        user = random_mail_user(udm=udm, mail_alternative_address=shared_folder_mail,)
         token = make_token()
         msgid = uts.random_name()
         folder_dn, folder_name, folder_mailaddress = create_shared_mailfolder(
             udm, FQDN, mailAddress=shared_folder_mail,
-            user_permission=['"%s" "%s"' % ("anyone", "all")],
-        )
-        send_mail(recipients=shared_folder_mail, msg=token, debuglevel=DEBUG_LEVEL, messageid=msgid)
-        check_delivery(token, user.mailPrimaryAddress, True)
+            user_permission=['"%s" "%s"' % ("anyone", "all")],)
+        send_mail(recipients=shared_folder_mail, msg=token, debuglevel=DEBUG_LEVEL, messageid=msgid,)
+        check_delivery(token, user.mailPrimaryAddress, True,)
         found = imap_search_mail(
             messageid=msgid, server=FQDN,
             imap_user=user.mailPrimaryAddress,
-            imap_folder=folder_name, use_ssl=True,
-        )
+            imap_folder=folder_name, use_ssl=True,)
         if not found:
             utils.fail(f"Mail sent with token = {token!r} to {folder_name} un-expectedly")
 
@@ -214,9 +211,8 @@ def test_group_mail_in_mailing_list():
                 "mailAddress": list_mail,
                 "members": [group_mail],
             },
-            wait_for_drs_replication=True,
-        )
+            wait_for_drs_replication=True,)
         token = make_token()
-        send_mail(recipients=list_mail, msg=token, debuglevel=DEBUG_LEVEL)
+        send_mail(recipients=list_mail, msg=token, debuglevel=DEBUG_LEVEL,)
         for mail in group_mails:
-            check_delivery(token, mail, True)
+            check_delivery(token, mail, True,)

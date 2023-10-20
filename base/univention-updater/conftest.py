@@ -30,26 +30,26 @@ ERRAT = 3
 @pytest.fixture(autouse=True)
 def ucslog():
     """Enable :py:mod:`univention.debug` logging."""
-    U.ud.init("stderr", U.ud.NO_FLUSH, U.ud.NO_FUNCTION)
-    U.ud.set_level(U.ud.NETWORK, U.ud.ALL)
+    U.ud.init("stderr", U.ud.NO_FLUSH, U.ud.NO_FUNCTION,)
+    U.ud.set_level(U.ud.NETWORK, U.ud.ALL,)
 
 
 @pytest.fixture(autouse=True)
-def testdir(doctest_namespace):
+def testdir(doctest_namespace,):
     """Return path to directory :file:`test/`."""
-    testdir = join(dirname(__file__), "tests", "data")
+    testdir = join(dirname(__file__), "tests", "data",)
     doctest_namespace["TESTDIR"] = testdir
     return testdir
 
 
 @pytest.fixture(autouse=True)
-def ucr(monkeypatch, tmpdir):
+def ucr(monkeypatch, tmpdir,):
     """Return mock Univention Config Registry"""
     db = tmpdir / "base.conf"
-    monkeypatch.setenv("UNIVENTION_BASECONF", str(db))
+    monkeypatch.setenv("UNIVENTION_BASECONF", str(db),)
     cr = ConfigRegistry()
 
-    def extra(conf={}, **kwargs):
+    def extra(conf={},**kwargs):
         cr.update(conf)
         cr.update(kwargs)
         cr.save()
@@ -64,15 +64,15 @@ def ucr(monkeypatch, tmpdir):
 
 
 @pytest.fixture()
-def http(mocker):
+def http(mocker,):
     """Mock HTTP requests via py2:urllib2 / py3:urllib.requests"""
     ressources = {}
 
-    def extra(uris={}, netloc=""):
-        uris = {join('/', key): value for key, value in uris.items()}
-        ressources.setdefault(netloc, {}).update(uris)
+    def extra(uris={}, netloc="",):
+        uris = {join('/', key,): value for key, value in uris.items()}
+        ressources.setdefault(netloc, {},).update(uris)
 
-    def fopen(req, *args, **kwargs):
+    def fopen(req,*args, **kwargs):
         url = req.get_full_url()
         p = urllib_parse.urlparse(url)
         try:
@@ -81,16 +81,16 @@ def http(mocker):
             except LookupError:
                 res = ressources[""][p.path]
 
-            if isinstance(res, Exception):
+            if isinstance(res, Exception,):
                 raise res
-            elif isinstance(res, bytes):
-                return urllib_response.addinfourl(BytesIO(res), {"content-length": len(res)}, url, 200)
+            elif isinstance(res, bytes,):
+                return urllib_response.addinfourl(BytesIO(res), {"content-length": len(res)}, url, 200,)
             else:
                 return res
         except LookupError:
-            raise U.urllib_error.HTTPError(url, 404, "Not Found", {}, None)
+            raise U.urllib_error.HTTPError(url, 404, "Not Found", {}, None,)
 
-    director = mocker.patch("univention.updater.tools.urllib2.OpenerDirector", autospec=True)
+    director = mocker.patch("univention.updater.tools.urllib2.OpenerDirector", autospec=True,)
     director.open.side_effect = fopen
     opener = mocker.patch("univention.updater.tools.urllib2.build_opener")
     opener.return_value = director
@@ -106,7 +106,7 @@ class MockPopen(object):
     mock_stdout = b''
     mock_stderr = b''
 
-    def __init__(self, cmd, shell=False, *args, **kwargs):  # pylint: disable-msg=W0613
+    def __init__(self, cmd, shell=False,*args, **kwargs):  # pylint: disable-msg=W0613
         self.returncode = 0
         self.stdin = b''
         self.stdout = MockPopen.mock_stdout
@@ -114,7 +114,7 @@ class MockPopen(object):
         if shell:
             MockPopen.mock_commands.append(cmd)
         else:
-            if isinstance(cmd, six.string_types):
+            if isinstance(cmd, six.string_types,):
                 cmd = (cmd,)
             try:
                 with open(cmd[0]) as fd_script:
@@ -129,7 +129,7 @@ class MockPopen(object):
     def __exit__(self, *args):
         pass
 
-    def wait(self, timeout=None):
+    def wait(self, timeout=None,):
         """Return result code."""
         return self.returncode
 
@@ -137,7 +137,7 @@ class MockPopen(object):
         """Return result code."""
         return self.returncode
 
-    def communicate(self, stdin=None):  # pylint: disable-msg=W0613
+    def communicate(self, stdin=None,):  # pylint: disable-msg=W0613
         """Return stdout and strerr."""
         return self.stdout, self.stderr
 
@@ -156,9 +156,9 @@ class MockPopen(object):
 
 
 @pytest.fixture()
-def mockpopen(monkeypatch):
+def mockpopen(monkeypatch,):
     """Mock :py:meth:`subprocess.Popen()` usage"""
-    monkeypatch.setattr(subprocess, 'Popen', MockPopen)
+    monkeypatch.setattr(subprocess, 'Popen', MockPopen,)
     yield MockPopen
     MockPopen.mock_reset()
 
@@ -166,19 +166,19 @@ def mockpopen(monkeypatch):
 class MockFileManager(object):
     """Mockup for :py:func:`open()`"""
 
-    def __init__(self, tmpdir):
+    def __init__(self, tmpdir,):
         # type: (Any) -> None
         self.files = {}  # type: Dict[str, Union[StringIO, BytesIO, Exception]]
         self._open = builtins.open
         self._tmpdir = tmpdir
 
-    def open(self, name, mode='r', buffering=-1, **options):
+    def open(self, name, mode='r', buffering=-1,**options):
         # type: (str, str, int, **Any) -> IO
         name = abspath(name)
         buf = self.files.get(name)
 
         if name.startswith(str(self._tmpdir)):
-            return self._open(name, mode, buffering, **options)
+            return self._open(name, mode, buffering, **options,)
 
         #    | pos | read | write
         # ===+=====+======+======
@@ -191,53 +191,53 @@ class MockFileManager(object):
         # a+ | end | pos  | end FIXME
         binary = "b" in mode
         if "w" in mode or (("r+" in mode or "a" in mode) and not buf):
-            self.files[name] = buf = self._new(name, b"" if binary else u"")
+            self.files[name] = buf = self._new(name, b"" if binary else u"",)
         elif "r" in mode and not buf:
-            return self._open(name, mode, buffering, **options)
+            return self._open(name, mode, buffering, **options,)
 
         buf = self.files[name]
-        if isinstance(buf, Exception):
+        if isinstance(buf, Exception,):
             raise buf
 
         if "r" in mode:
             buf.seek(0)
 
-        return TextIOWrapper(buf, "utf-8") if isinstance(buf, BytesIO) and not binary else buf
+        return TextIOWrapper(buf, "utf-8",) if isinstance(buf, BytesIO,) and not binary else buf
 
-    def _new(self, name, data=b""):
+    def _new(self, name, data=b"",):
         # type: (str, Union[bytes, str]) -> Union[StringIO, BytesIO]
-        buf = BytesIO(data) if isinstance(data, bytes) else StringIO(data)  # type: Union[StringIO, BytesIO]
+        buf = BytesIO(data) if isinstance(data, bytes,) else StringIO(data)  # type: Union[StringIO, BytesIO]
         buf.name = name
         buf.close = lambda: None
         buf.fileno = lambda: -1
         return buf
 
-    def write(self, name, text):
+    def write(self, name, text,):
         # type: (str, bytes) -> None
         name = abspath(name)
-        buf = self._new(name, text)
+        buf = self._new(name, text,)
         self.files[name] = buf
 
-    def read(self, name):
+    def read(self, name,):
         # type: (str) -> bytes
         name = abspath(name)
         if name not in self.files:
-            raise FileNotFoundError(2, "No such file or directory: '%s'" % name)
+            raise FileNotFoundError(2, "No such file or directory: '%s'" % name,)
 
         buf = self.files[name]
-        assert not isinstance(buf, Exception)
+        assert not isinstance(buf, Exception,)
         val = buf.getvalue()
-        return val if isinstance(val, bytes) else val.encode("utf-8")
+        return val if isinstance(val, bytes,) else val.encode("utf-8")
 
-    def __setitem__(self, name, ex):
+    def __setitem__(self, name, ex,):
         # type: (str, Exception) -> None
         name = abspath(name)
         self.files[name] = ex
 
 
 @pytest.fixture()
-def mockopen(monkeypatch, tmpdir):
+def mockopen(monkeypatch, tmpdir,):
     """Mock :py:func:`open()` usage"""
     manager = MockFileManager(tmpdir)
-    monkeypatch.setattr(builtins, "open", manager.open)
+    monkeypatch.setattr(builtins, "open", manager.open,)
     return manager

@@ -24,7 +24,7 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 
-def _cleanup(old_retry_count):
+def _cleanup(old_retry_count,):
     print('CLEANUP')
     _set_retry_count(old_retry_count)
     _start_slapd()
@@ -36,7 +36,7 @@ def _get_connection():
     return univention.uldap.getMachineConnection(ldap_master=False)
 
 
-def _search(lo):
+def _search(lo,):
     lo.searchDn('cn=users')
 
 
@@ -56,8 +56,8 @@ def _start_slapd():
     return rc
 
 
-def _start_delyed(delay):
-    subprocess.Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
+def _start_delyed(delay,):
+    subprocess.Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True,)
 
 
 def _wait_for_slapd_to_be_started():
@@ -65,14 +65,14 @@ def _wait_for_slapd_to_be_started():
     sleep(5)
 
 
-def _set_retry_count(count):
+def _set_retry_count(count,):
     if count:
         univention.config_registry.handler_set(['ldap/client/retry/count=%s' % count])
     else:
         univention.config_registry.handler_unset(['ldap/client/retry/count'])
 
 
-def _print_test_header(header):
+def _print_test_header(header,):
     print('\n************************************************************************')
     print(header)
     print('************************************************************************')

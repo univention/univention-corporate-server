@@ -54,10 +54,10 @@ _ = umc.Translation('univention-management-console-module-admindiary').translate
 
 
 class Instance(Base):
-    def _format_entry(self, entry, client):
+    def _format_entry(self, entry, client,):
         message = entry['message']
         if entry['event_name'] != 'COMMENT':
-            message = client.translate(entry['event_name'], self.locale.language)
+            message = client.translate(entry['event_name'], self.locale.language,)
         try:
             message = message.format(**entry['args'])
         except (AttributeError, IndexError, KeyError):
@@ -70,7 +70,7 @@ class Instance(Base):
         if entry['event_name'] == 'COMMENT':
             icon = 'comment'
         try:
-            date = datetime.strptime(entry['date'], '%Y-%m-%d %H:%M:%S').isoformat()
+            date = datetime.strptime(entry['date'], '%Y-%m-%d %H:%M:%S',).isoformat()
         except (TypeError, ValueError):
             date = entry['date']
         res_entry = {
@@ -89,10 +89,10 @@ class Instance(Base):
             res_entry['comments'] = entry['comments']
         return res_entry
 
-    def error_handling(self, etype, exc, etraceback):
+    def error_handling(self, etype, exc, etraceback,):
         ucr = ConfigRegistry()
         ucr.load()
-        if isinstance(exc, OperationalError):
+        if isinstance(exc, OperationalError,):
             MODULE.error(str(exc))
             db_url = get_engine().url
             hints = []
@@ -103,8 +103,8 @@ class Instance(Base):
                 hints.append(_('Check the password in /etc/admin-diary.secret. Is it the same on %s and on %s?') % (ucr.get('hostname'), db_url.host))
                 hints.append(_('Is %s allowed to connect to the database service on %s?') % (ucr.get('hostname'), db_url.host))
             #hints.append(_('Did the system set up the database? If not, run /usr/share/univention-admin-diary/create-database'))
-            raise umcm.UMC_Error('\n'.join(hints), status=500)
-        return super(Instance, self).error_handling(exc, etype, etraceback)
+            raise umcm.UMC_Error('\n'.join(hints), status=500,)
+        return super(Instance, self,).error_handling(exc, etype, etraceback,)
 
     @simple_response
     def options(self):
@@ -112,36 +112,36 @@ class Instance(Base):
             with get_client(version=1) as client:
                 return client.options()
         except NoDBConnection as exc:
-            raise umcm.UMC_Error(str(exc), status=500)
+            raise umcm.UMC_Error(str(exc), status=500,)
 
     @simple_response
-    def get(self, context_id):
+    def get(self, context_id,):
         with get_client(version=1) as client:
             entries = client.get(context_id)
             result = []
             for entry in entries:
-                res_entry = self._format_entry(entry, client)
+                res_entry = self._format_entry(entry, client,)
                 result.append(res_entry)
-            return sorted(result, key=lambda x: x['id'])
+            return sorted(result, key=lambda x,: x['id'],)
 
     @simple_response
-    def query(self, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None):
+    def query(self, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None,):
         with get_client(version=1) as client:
             if time_until:
-                time_until = datetime.strptime(time_until, '%Y-%m-%d')
+                time_until = datetime.strptime(time_until, '%Y-%m-%d',)
                 time_until = (time_until + timedelta(days=1)).strftime('%Y-%m-%d')
-            entries = client.query(time_from=time_from, time_until=time_until, tag=tag, event=event, username=username, hostname=hostname, message=message, locale=self.locale.language)
+            entries = client.query(time_from=time_from, time_until=time_until, tag=tag, event=event, username=username, hostname=hostname, message=message, locale=self.locale.language,)
             result = []
             for entry in entries:
-                res_entry = self._format_entry(entry, client)
+                res_entry = self._format_entry(entry, client,)
                 result.append(res_entry)
-            return sorted(result, key=lambda x: x['date'])
+            return sorted(result, key=lambda x,: x['date'],)
 
     @simple_response
     def get_query_limit(self):
         return get_query_limit()
 
     @simple_response(with_request=True)
-    def add_comment(self, request, context_id, message):
-        add_comment(message, context_id, request.username)
+    def add_comment(self, request, context_id, message,):
+        add_comment(message, context_id, request.username,)
         time.sleep(1)  # give backend time to insert comment...

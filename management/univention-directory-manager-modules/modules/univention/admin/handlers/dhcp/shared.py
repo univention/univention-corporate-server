@@ -56,8 +56,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'dhcpSharedNetwork'],
-    ),
+        objectClasses=['top', 'dhcpSharedNetwork'],),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -67,20 +66,19 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
 }
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('DHCP shared network description'), layout=[
             'name',
-        ]),
-    ]),
+        ],),
+    ],),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
 
 add_dhcp_options(__name__)
 

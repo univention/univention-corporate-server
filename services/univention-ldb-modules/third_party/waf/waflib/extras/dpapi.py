@@ -30,16 +30,16 @@ class DATA_BLOB(Structure):
 		('pbData', POINTER(c_char))
 	]
 
-def get_data(blob_out):
+def get_data(blob_out,):
 	cbData = int(blob_out.cbData)
 	pbData = blob_out.pbData
 	buffer = c_buffer(cbData)
-	memcpy(buffer, pbData, cbData)
+	memcpy(buffer, pbData, cbData,)
 	LocalFree(pbData)
 	return buffer.raw
 
 @conf
-def dpapi_encrypt_data(self, input_bytes, entropy = extra_entropy):
+def dpapi_encrypt_data(self, input_bytes, entropy = extra_entropy,):
 	'''
 	Encrypts data and returns byte string
 
@@ -48,22 +48,22 @@ def dpapi_encrypt_data(self, input_bytes, entropy = extra_entropy):
 	:param entropy: Extra entropy to add to the encryption process (optional)
 	:type entropy: String or Bytes
 	'''
-	if not isinstance(input_bytes, bytes) or not isinstance(entropy, bytes):
+	if not isinstance(input_bytes, bytes,) or not isinstance(entropy, bytes,):
 		self.fatal('The inputs to dpapi must be bytes')
-	buffer_in      = c_buffer(input_bytes, len(input_bytes))
-	buffer_entropy = c_buffer(entropy, len(entropy))
-	blob_in        = DATA_BLOB(len(input_bytes), buffer_in)
-	blob_entropy   = DATA_BLOB(len(entropy), buffer_entropy)
+	buffer_in      = c_buffer(input_bytes, len(input_bytes),)
+	buffer_entropy = c_buffer(entropy, len(entropy),)
+	blob_in        = DATA_BLOB(len(input_bytes), buffer_in,)
+	blob_entropy   = DATA_BLOB(len(entropy), buffer_entropy,)
 	blob_out       = DATA_BLOB()
 
 	if CryptProtectData(byref(blob_in), 'python_data', byref(blob_entropy), 
-		None, None, CRYPTPROTECT_UI_FORBIDDEN, byref(blob_out)):
+		None, None, CRYPTPROTECT_UI_FORBIDDEN, byref(blob_out),):
 		return get_data(blob_out)
 	else:
 		self.fatal('Failed to decrypt data')
 
 @conf
-def dpapi_decrypt_data(self, encrypted_bytes, entropy = extra_entropy):
+def dpapi_decrypt_data(self, encrypted_bytes, entropy = extra_entropy,):
 	'''
 	Decrypts data and returns byte string
 
@@ -72,15 +72,15 @@ def dpapi_decrypt_data(self, encrypted_bytes, entropy = extra_entropy):
 	:param entropy: Extra entropy to add to the encryption process (optional)
 	:type entropy: String or Bytes
 	'''
-	if not isinstance(encrypted_bytes, bytes) or not isinstance(entropy, bytes):
+	if not isinstance(encrypted_bytes, bytes,) or not isinstance(entropy, bytes,):
 		self.fatal('The inputs to dpapi must be bytes')
-	buffer_in      = c_buffer(encrypted_bytes, len(encrypted_bytes))
-	buffer_entropy = c_buffer(entropy, len(entropy))
-	blob_in        = DATA_BLOB(len(encrypted_bytes), buffer_in)
-	blob_entropy   = DATA_BLOB(len(entropy), buffer_entropy)
+	buffer_in      = c_buffer(encrypted_bytes, len(encrypted_bytes),)
+	buffer_entropy = c_buffer(entropy, len(entropy),)
+	blob_in        = DATA_BLOB(len(encrypted_bytes), buffer_in,)
+	blob_entropy   = DATA_BLOB(len(entropy), buffer_entropy,)
 	blob_out       = DATA_BLOB()
 	if CryptUnprotectData(byref(blob_in), None, byref(blob_entropy), None,
-		None, CRYPTPROTECT_UI_FORBIDDEN, byref(blob_out)):
+		None, CRYPTPROTECT_UI_FORBIDDEN, byref(blob_out),):
 		return get_data(blob_out)
 	else:
 		self.fatal('Failed to decrypt data')

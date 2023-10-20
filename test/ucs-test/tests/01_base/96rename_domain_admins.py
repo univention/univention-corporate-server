@@ -29,7 +29,7 @@ from univention.testing.ucs_samba import wait_for_drs_replication
 from univention.testing.utils import package_installed
 
 
-def search_templates(old_group_name, new_group_name, server_role):
+def search_templates(old_group_name, new_group_name, server_role,):
     templates = glob.glob('/etc/univention/templates/info/*.info')
     file_content = []
     file_pattern = re.compile('^(Multifile: |File: )')
@@ -37,7 +37,7 @@ def search_templates(old_group_name, new_group_name, server_role):
     for template in templates:
         with open(template) as content_file:
             # find all lines that start with File or Multifile and strip it to get the paths of the template files
-            file_content += ['/' + file_pattern.sub('', line).strip() for line in content_file.readlines() if file_pattern.match(line)]
+            file_content += ['/' + file_pattern.sub('', line,).strip() for line in content_file.readlines() if file_pattern.match(line)]
 
     # A list of templates which are referencing the defaultdomainadmins group. The new name must be found in them
     should_contain_admin = [
@@ -58,8 +58,8 @@ def search_templates(old_group_name, new_group_name, server_role):
             continue
 
         print(f'Checking template {filename}')
-        with open(filename, 'rb') as content_file:
-            content = content_file.read().decode('UTF-8', 'replace')
+        with open(filename, 'rb',) as content_file:
+            content = content_file.read().decode('UTF-8', 'replace',)
 
         # contains a comment about the group
         if filename in should_contain_admin and new_group_name not in content:
@@ -78,11 +78,11 @@ def search_templates(old_group_name, new_group_name, server_role):
             utils.fail(f'FAIL: Old group name {old_group_name} still in file {filename}')
 
 
-def wait_for_ucr(iterations, group_name, ucr_test):
+def wait_for_ucr(iterations, group_name, ucr_test,):
     success = False
     for i in range(iterations):
         ucr_test.load()
-        ucr_group = ucr_test.get('groups/default/domainadmins', 'Domain Admins')
+        ucr_group = ucr_test.get('groups/default/domainadmins', 'Domain Admins',)
         if group_name != ucr_group:
             if i == iterations - 1:
                 break
@@ -100,7 +100,7 @@ def test_rename_domain_users():
 
         server_role = ucr_test.get('server/role')
         ldap_base = ucr_test.get('ldap/base')
-        old_group_name = ucr_test.get('groups/default/domainadmins', 'Domain Admins')
+        old_group_name = ucr_test.get('groups/default/domainadmins', 'Domain Admins',)
         old_group_dn = f"cn={escape_dn_chars(old_group_name)},cn=groups,{ldap_base}"
 
         new_group_name = uts.random_name()
@@ -117,7 +117,7 @@ def test_rename_domain_users():
             print(f'Checking if UCR Variable groups/default/domainadmins is set to {new_group_name}')
             print('##################################################################\n')
 
-            success, ucr_group = wait_for_ucr(10, new_group_name, ucr_test)
+            success, ucr_group = wait_for_ucr(10, new_group_name, ucr_test,)
             if not success:
                 utils.fail(f'UCR variable groups/default/domainusers was set to {old_group_name} instead of {new_group_name}')
 
@@ -128,10 +128,10 @@ def test_rename_domain_users():
             print('\n##################################################################')
             print('Search templates for old and new name of default domainadmins group')
             print('##################################################################\n')
-            search_templates(old_group_name, new_group_name, server_role)
+            search_templates(old_group_name, new_group_name, server_role,)
         finally:
             try:
-                wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (new_group_name,)))
+                wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (new_group_name,),))
             except Exception:
                 # clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
                 time.sleep(10)
@@ -146,7 +146,7 @@ def test_rename_domain_users():
 
             # wait until renaming and UCR Variable is set back again
             utils.wait_for_replication_and_postrun()
-            success, ucr_group = wait_for_ucr(10, old_group_name, ucr_test)
+            success, ucr_group = wait_for_ucr(10, old_group_name, ucr_test,)
             if not success:
                 univention.config_registry.handler_set(['groups/default/domainadmins=Domain Admins'])
                 utils.fail(f'UCR variable groups/default/domainadmins was set to {ucr_group} instead of {new_group_name}')

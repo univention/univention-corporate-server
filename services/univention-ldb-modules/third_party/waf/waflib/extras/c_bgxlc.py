@@ -14,13 +14,13 @@ from waflib.Tools.compiler_c import c_compiler
 c_compiler['linux'].append('c_bgxlc')
 
 @conf
-def find_bgxlc(conf):
-	cc = conf.find_program(['bgxlc_r','bgxlc'], var='CC')
+def find_bgxlc(conf,):
+	cc = conf.find_program(['bgxlc_r','bgxlc'], var='CC',)
 	conf.get_xlc_version(cc)
 	conf.env.CC = cc
 	conf.env.CC_NAME = 'bgxlc'
 
-def configure(conf):
+def configure(conf,):
 	conf.find_bgxlc()
 	conf.find_ar()
 	conf.xlc_common_flags()

@@ -11,7 +11,7 @@ import subprocess
 from dockertest import App, Appcenter, get_app_name
 
 
-def cleanup(app):
+def cleanup(app,):
     if os.path.isdir(app.check_dir):
         os.rmdir(app.check_dir)
     if app.installed is True:
@@ -20,7 +20,7 @@ def cleanup(app):
                 os.remove(app.file(i))
 
 
-def verify_certs(app):
+def verify_certs(app,):
     print('looking for %s' % app.check_dir)
     assert os.path.isdir(app.check_dir) is True
     print('%s exists' % app.check_dir)
@@ -43,7 +43,7 @@ mkdir "%s"
 exit 0
 ''' % check_dir
 
-        app = App(name=name, version='1', build_package=False, call_join_scripts=False)
+        app = App(name=name, version='1', build_package=False, call_join_scripts=False,)
         app.check_dir = check_dir
         check_files = []
         check_files.append('etc/univention/ssl/docker-host-certificate/cert.perm')
@@ -61,8 +61,7 @@ exit 0
                 DockerScriptUpdateCertificates='/certs',
                 DockerScriptSetup='/setup',
                 DockerScriptStoreData='/store_data',
-                DockerScriptInit='/sbin/init',
-            )
+                DockerScriptInit='/sbin/init',)
             app.add_script(update_certificates=update_certificates)
             app.add_script(setup=setup)
             app.add_script(store_data=store_data)
@@ -72,14 +71,14 @@ exit 0
             app.verify(joined=False)
             verify_certs(app)
             cleanup(app)
-            subprocess.check_output(['univention-app', 'update-certificates', name], text=True)
+            subprocess.check_output(['univention-app', 'update-certificates', name], text=True,)
             verify_certs(app)
             cleanup(app)
-            subprocess.check_output(['univention-app', 'update-certificates'], text=True)
+            subprocess.check_output(['univention-app', 'update-certificates'], text=True,)
             verify_certs(app)
             cleanup(app)
 
-            app = App(name=name, version='2', build_package=False, call_join_scripts=False)
+            app = App(name=name, version='2', build_package=False, call_join_scripts=False,)
             app.check_dir = check_dir
             app.cert_files = check_files
             app.set_ini_parameter(
@@ -87,8 +86,7 @@ exit 0
                 DockerScriptSetup='/setup',
                 DockerScriptUpdateCertificates='/root/certs',
                 DockerScriptStoreData='/store_data',
-                DockerScriptInit='/sbin/init',
-            )
+                DockerScriptInit='/sbin/init',)
             app.add_script(update_certificates=update_certificates)
             app.add_script(setup=setup)
             app.add_script(store_data=store_data)

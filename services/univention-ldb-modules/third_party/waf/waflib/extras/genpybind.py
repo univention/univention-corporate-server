@@ -16,26 +16,26 @@ from waflib.Tools.c_preproc import scan as scan_impl
 from waflib.TaskGen import feature, before_method
 
 
-def join_args(args):
+def join_args(args,):
     return " ".join(pipes.quote(arg) for arg in args)
 
 
-def configure(cfg):
+def configure(cfg,):
     cfg.load("compiler_cxx")
     cfg.load("python")
     cfg.check_python_version(minver=(2, 7))
     if not cfg.env.LLVM_CONFIG:
-        cfg.find_program("llvm-config", var="LLVM_CONFIG")
+        cfg.find_program("llvm-config", var="LLVM_CONFIG",)
     if not cfg.env.GENPYBIND:
-        cfg.find_program("genpybind", var="GENPYBIND")
+        cfg.find_program("genpybind", var="GENPYBIND",)
 
     # find clang reasource dir for builtin headers
     cfg.env.GENPYBIND_RESOURCE_DIR = os.path.join(
             cfg.cmd_and_log(cfg.env.LLVM_CONFIG + ["--libdir"]).strip(),
             "clang",
-            cfg.cmd_and_log(cfg.env.LLVM_CONFIG + ["--version"]).strip())
+            cfg.cmd_and_log(cfg.env.LLVM_CONFIG + ["--version"]).strip(),)
     if os.path.exists(cfg.env.GENPYBIND_RESOURCE_DIR):
-        cfg.msg("Checking clang resource dir", cfg.env.GENPYBIND_RESOURCE_DIR)
+        cfg.msg("Checking clang resource dir", cfg.env.GENPYBIND_RESOURCE_DIR,)
     else:
         cfg.fatal("Clang resource dir not found")
 
@@ -49,21 +49,21 @@ def generate_genpybind_source(self):
     swapping the source node before `process_source` is run.
     """
     # name of module defaults to name of target
-    module = getattr(self, "module", self.target)
+    module = getattr(self, "module", self.target,)
 
     # create temporary source file in build directory to hold generated code
     out = "genpybind-%s.%d.cpp" % (module, self.idx)
     out = self.path.get_bld().find_or_declare(out)
 
-    task = self.create_task("genpybind", self.to_nodes(self.source), out)
+    task = self.create_task("genpybind", self.to_nodes(self.source), out,)
     # used to detect whether CFLAGS or CXXFLAGS should be passed to genpybind
     task.features = self.features
     task.module = module
     # can be used to select definitions to include in the current module
     # (when header files are shared by more than one module)
-    task.genpybind_tags = self.to_list(getattr(self, "genpybind_tags", []))
+    task.genpybind_tags = self.to_list(getattr(self, "genpybind_tags", [],))
     # additional include directories
-    task.includes = self.to_list(getattr(self, "includes", []))
+    task.includes = self.to_list(getattr(self, "includes", [],))
     task.genpybind = self.env.GENPYBIND
 
     # Tell waf to compile/link the generated code instead of the headers
@@ -100,27 +100,27 @@ class genpybind(Task.Task): # pylint: disable=invalid-name
         # (will be compiled during process_source stage)
         (output_node,) = self.outputs
         output_node.write("// {}\n{}\n".format(
-            pasteable_command.replace("\n", "\n// "), output))
+            pasteable_command.replace("\n", "\n// ",), output,))
 
     def find_genpybind(self):
         return self.genpybind
 
-    def run_genpybind(self, args):
+    def run_genpybind(self, args,):
         bld = self.generator.bld
 
         kwargs = dict(cwd=bld.variant_dir)
-        if hasattr(bld, "log_command"):
-            bld.log_command(args, kwargs)
+        if hasattr(bld, "log_command",):
+            bld.log_command(args, kwargs,)
         else:
             Logs.debug("runner: {!r}".format(args))
         proc = subprocess.Popen(
-            args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
+            args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs,)
         stdout, stderr = proc.communicate()
 
-        if not isinstance(stdout, str):
-            stdout = stdout.decode(sys.stdout.encoding, errors="replace")
-        if not isinstance(stderr, str):
-            stderr = stderr.decode(sys.stderr.encoding, errors="replace")
+        if not isinstance(stdout, str,):
+            stdout = stdout.decode(sys.stdout.encoding, errors="replace",)
+        if not isinstance(stderr, str,):
+            stderr = stderr.decode(sys.stderr.encoding, errors="replace",)
 
         if proc.returncode != 0:
             bld.fatal(
@@ -129,8 +129,7 @@ class genpybind(Task.Task): # pylint: disable=invalid-name
                     code=proc.returncode,
                     command=join_args(args),
                     stdout=stdout,
-                    stderr=stderr,
-                ))
+                    stderr=stderr,))
 
         if stderr.strip():
             Logs.debug("non-fatal warnings during genpybind run:\n{}".format(stderr))
@@ -152,7 +151,7 @@ class genpybind(Task.Task): # pylint: disable=invalid-name
                 self.generator.bld.fatal("could not resolve {}".format(node))
         return relative_includes
 
-    def _arguments(self, genpybind_parse=None, resource_dir=None):
+    def _arguments(self, genpybind_parse=None, resource_dir=None,):
         args = []
         relative_includes = self._inputs_as_relative_includes()
         is_cxx = "cxx" in self.features
@@ -178,7 +177,7 @@ class genpybind(Task.Task): # pylint: disable=invalid-name
         args.append("-xc++" if is_cxx else "-xc")
         has_std_argument = False
         for flag in self.env["CXXFLAGS" if is_cxx else "CFLAGS"]:
-            flag = flag.replace("-std=gnu", "-std=c")
+            flag = flag.replace("-std=gnu", "-std=c",)
             if flag.startswith("-std=c"):
                 has_std_argument = True
             args.append(flag)

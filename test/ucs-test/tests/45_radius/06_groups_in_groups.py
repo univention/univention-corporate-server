@@ -12,7 +12,7 @@ import univention.testing.udm as udm_test
 from univention.testing import utils
 
 
-def radtest(username):
+def radtest(username,):
     subprocess.check_call([
         'radtest',
         '-t',
@@ -51,8 +51,7 @@ def main():
             dn=innergroupdn,
             set={
                 'networkAccess': 0,
-            },
-        )
+            },)
         try:
             radtest(username)
         except Exception:
@@ -65,8 +64,7 @@ def main():
             dn=outergroupdn,
             set={
                 'networkAccess': 0,
-            },
-        )
+            },)
         try:
             radtest(username)
         except subprocess.CalledProcessError:
@@ -81,8 +79,7 @@ def main():
             dn=innergroupdn,
             set={
                 'networkAccess': 1,
-            },
-        )
+            },)
         try:
             radtest(username)
         except Exception:

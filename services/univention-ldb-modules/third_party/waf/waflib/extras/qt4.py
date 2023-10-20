@@ -111,7 +111,7 @@ class qxx(Task.classes['cxx']):
 	"""
 
 	def __init__(self, *k, **kw):
-		Task.Task.__init__(self, *k, **kw)
+		Task.Task.__init__(self, *k, **kw,)
 		self.moc_done = 0
 
 	def runnable_status(self):
@@ -129,7 +129,7 @@ class qxx(Task.classes['cxx']):
 			self.add_moc_tasks()
 			return Task.Task.runnable_status(self)
 
-	def create_moc_task(self, h_node, m_node):
+	def create_moc_task(self, h_node, m_node,):
 		"""
 		If several libraries use the same classes, it is possible that moc will run several times (Issue 1318)
 		It is not possible to change the file names, but we can assume that the moc transformation will be identical,
@@ -146,7 +146,7 @@ class qxx(Task.classes['cxx']):
 		try:
 			return moc_cache[h_node]
 		except KeyError:
-			tsk = moc_cache[h_node] = Task.classes['moc'](env=self.env, generator=self.generator)
+			tsk = moc_cache[h_node] = Task.classes['moc'](env=self.env, generator=self.generator,)
 			tsk.set_inputs(h_node)
 			tsk.set_outputs(m_node)
 
@@ -185,13 +185,13 @@ class qxx(Task.classes['cxx']):
 			pass
 		else:
 			# remove the signature, it must be recomputed with the moc task
-			delattr(self, 'cache_sig')
+			delattr(self, 'cache_sig',)
 
 		include_nodes = [node.parent] + self.generator.includes_nodes
 
 		moctasks = []
 		mocfiles = set()
-		for d in bld.raw_deps.get(self.uid(), []):
+		for d in bld.raw_deps.get(self.uid(), [],):
 			if not d.endswith('.moc'):
 				continue
 
@@ -228,7 +228,7 @@ class qxx(Task.classes['cxx']):
 				raise Errors.WafError('No source found for %r which is a moc file' % d)
 
 			# create the moc task
-			task = self.create_moc_task(h_node, m_node)
+			task = self.create_moc_task(h_node, m_node,)
 			moctasks.append(task)
 
 		# simple scheduler dependency: run the moc task before others
@@ -247,21 +247,21 @@ class XMLHandler(ContentHandler):
 	def __init__(self):
 		self.buf = []
 		self.files = []
-	def startElement(self, name, attrs):
+	def startElement(self, name, attrs,):
 		if name == 'file':
 			self.buf = []
-	def endElement(self, name):
+	def endElement(self, name,):
 		if name == 'file':
 			self.files.append(str(''.join(self.buf)))
-	def characters(self, cars):
+	def characters(self, cars,):
 		self.buf.append(cars)
 
 @extension(*EXT_RCC)
-def create_rcc_task(self, node):
+def create_rcc_task(self, node,):
 	"Create rcc and cxx tasks for *.qrc* files"
 	rcnode = node.change_ext('_rc.cpp')
-	self.create_task('rcc', node, rcnode)
-	cpptask = self.create_task('cxx', rcnode, rcnode.change_ext('.o'))
+	self.create_task('rcc', node, rcnode,)
+	cpptask = self.create_task('cxx', rcnode, rcnode.change_ext('.o'),)
 	try:
 		self.compiled_tasks.append(cpptask)
 	except AttributeError:
@@ -269,15 +269,15 @@ def create_rcc_task(self, node):
 	return cpptask
 
 @extension(*EXT_UI)
-def create_uic_task(self, node):
+def create_uic_task(self, node,):
 	"hook for uic tasks"
-	uictask = self.create_task('ui4', node)
+	uictask = self.create_task('ui4', node,)
 	uictask.outputs = [self.path.find_or_declare(self.env['ui_PATTERN'] % node.name[:-3])]
 
 @extension('.ts')
-def add_lang(self, node):
+def add_lang(self, node,):
 	"""add all the .ts file into self.lang"""
-	self.lang = self.to_list(getattr(self, 'lang', [])) + [node]
+	self.lang = self.to_list(getattr(self, 'lang', [],)) + [node]
 
 @feature('qt4')
 @after_method('apply_link')
@@ -297,26 +297,26 @@ def apply_qt4(self):
 	:param langname: if given, transform the \\*.ts files into a .qrc files to include in the binary file
 	:type langname: :py:class:`waflib.Node.Node` or string without the .qrc extension
 	"""
-	if getattr(self, 'lang', None):
+	if getattr(self, 'lang', None,):
 		qmtasks = []
 		for x in self.to_list(self.lang):
-			if isinstance(x, str):
+			if isinstance(x, str,):
 				x = self.path.find_resource(x + '.ts')
-			qmtasks.append(self.create_task('ts2qm', x, x.change_ext('.qm')))
+			qmtasks.append(self.create_task('ts2qm', x, x.change_ext('.qm'),))
 
-		if getattr(self, 'update', None) and Options.options.trans_qt4:
+		if getattr(self, 'update', None,) and Options.options.trans_qt4:
 			cxxnodes = [a.inputs[0] for a in self.compiled_tasks] + [
-				a.inputs[0] for a in self.tasks if getattr(a, 'inputs', None) and a.inputs[0].name.endswith('.ui')]
+				a.inputs[0] for a in self.tasks if getattr(a, 'inputs', None,) and a.inputs[0].name.endswith('.ui')]
 			for x in qmtasks:
-				self.create_task('trans_update', cxxnodes, x.inputs)
+				self.create_task('trans_update', cxxnodes, x.inputs,)
 
-		if getattr(self, 'langname', None):
+		if getattr(self, 'langname', None,):
 			qmnodes = [x.outputs[0] for x in qmtasks]
 			rcnode = self.langname
-			if isinstance(rcnode, str):
+			if isinstance(rcnode, str,):
 				rcnode = self.path.find_or_declare(rcnode + '.qrc')
-			t = self.create_task('qm2rcc', qmnodes, rcnode)
-			k = create_rcc_task(self, t.outputs[0])
+			t = self.create_task('qm2rcc', qmnodes, rcnode,)
+			k = create_rcc_task(self, t.outputs[0],)
 			self.link_task.inputs.append(k.outputs[0])
 
 	lst = []
@@ -329,14 +329,14 @@ def apply_qt4(self):
 				lst.append('-' + flag[1:])
 			else:
 				lst.append(flag)
-	self.env.append_value('MOC_FLAGS', lst)
+	self.env.append_value('MOC_FLAGS', lst,)
 
 @extension(*EXT_QT4)
-def cxx_hook(self, node):
+def cxx_hook(self, node,):
 	"""
 	Re-map C++ file extensions to the :py:class:`waflib.Tools.qt4.qxx` task.
 	"""
-	return self.create_compiled_task('qxx', node)
+	return self.create_compiled_task('qxx', node,)
 
 class rcc(Task.Task):
 	"""
@@ -358,7 +358,7 @@ class rcc(Task.Task):
 		parser = make_parser()
 		curHandler = XMLHandler()
 		parser.setContentHandler(curHandler)
-		fi = open(self.inputs[0].abspath(), 'r')
+		fi = open(self.inputs[0].abspath(), 'r',)
 		try:
 			parser.parse(fi)
 		finally:
@@ -433,25 +433,25 @@ def find_qt4_binaries(self):
 	env = self.env
 	opt = Options.options
 
-	qtdir = getattr(opt, 'qtdir', '')
-	qtbin = getattr(opt, 'qtbin', '')
+	qtdir = getattr(opt, 'qtdir', '',)
+	qtbin = getattr(opt, 'qtbin', '',)
 
 	paths = []
 
 	if qtdir:
-		qtbin = os.path.join(qtdir, 'bin')
+		qtbin = os.path.join(qtdir, 'bin',)
 
 	# the qt directory has been given from QT4_ROOT - deduce the qt binary path
 	if not qtdir:
-		qtdir = os.environ.get('QT4_ROOT', '')
-		qtbin = os.environ.get('QT4_BIN') or os.path.join(qtdir, 'bin')
+		qtdir = os.environ.get('QT4_ROOT', '',)
+		qtbin = os.environ.get('QT4_BIN') or os.path.join(qtdir, 'bin',)
 
 	if qtbin:
 		paths = [qtbin]
 
 	# no qtdir, look in the path and in /usr/local/Trolltech
 	if not qtdir:
-		paths = os.environ.get('PATH', '').split(os.pathsep)
+		paths = os.environ.get('PATH', '',).split(os.pathsep)
 		paths.append('/usr/share/qt4/bin/')
 		try:
 			lst = Utils.listdir('/usr/local/Trolltech/')
@@ -464,7 +464,7 @@ def find_qt4_binaries(self):
 
 				# keep the highest version
 				qtdir = '/usr/local/Trolltech/%s/' % lst[0]
-				qtbin = os.path.join(qtdir, 'bin')
+				qtbin = os.path.join(qtdir, 'bin',)
 				paths.append(qtbin)
 
 	# at the end, try to find qmake in the paths given
@@ -473,7 +473,7 @@ def find_qt4_binaries(self):
 	prev_ver = ['4', '0', '0']
 	for qmk in ('qmake-qt4', 'qmake4', 'qmake'):
 		try:
-			qmake = self.find_program(qmk, path_list=paths)
+			qmake = self.find_program(qmk, path_list=paths,)
 		except self.errors.ConfigurationError:
 			pass
 		else:
@@ -494,35 +494,35 @@ def find_qt4_binaries(self):
 
 	qtbin = self.cmd_and_log(self.env.QMAKE + ['-query', 'QT_INSTALL_BINS']).strip() + os.sep
 
-	def find_bin(lst, var):
+	def find_bin(lst, var,):
 		if var in env:
 			return
 		for f in lst:
 			try:
-				ret = self.find_program(f, path_list=paths)
+				ret = self.find_program(f, path_list=paths,)
 			except self.errors.ConfigurationError:
 				pass
 			else:
 				env[var]=ret
 				break
 
-	find_bin(['uic-qt3', 'uic3'], 'QT_UIC3')
-	find_bin(['uic-qt4', 'uic'], 'QT_UIC')
+	find_bin(['uic-qt3', 'uic3'], 'QT_UIC3',)
+	find_bin(['uic-qt4', 'uic'], 'QT_UIC',)
 	if not env.QT_UIC:
 		self.fatal('cannot find the uic compiler for qt4')
 
 	self.start_msg('Checking for uic version')
-	uicver = self.cmd_and_log(env.QT_UIC + ["-version"], output=Context.BOTH)
+	uicver = self.cmd_and_log(env.QT_UIC + ["-version"], output=Context.BOTH,)
 	uicver = ''.join(uicver).strip()
-	uicver = uicver.replace('Qt User Interface Compiler ','').replace('User Interface Compiler for Qt', '')
+	uicver = uicver.replace('Qt User Interface Compiler ','',).replace('User Interface Compiler for Qt', '',)
 	self.end_msg(uicver)
 	if uicver.find(' 3.') != -1:
 		self.fatal('this uic compiler is for qt3, add uic for qt4 to your path')
 
-	find_bin(['moc-qt4', 'moc'], 'QT_MOC')
-	find_bin(['rcc-qt4', 'rcc'], 'QT_RCC')
-	find_bin(['lrelease-qt4', 'lrelease'], 'QT_LRELEASE')
-	find_bin(['lupdate-qt4', 'lupdate'], 'QT_LUPDATE')
+	find_bin(['moc-qt4', 'moc'], 'QT_MOC',)
+	find_bin(['rcc-qt4', 'rcc'], 'QT_RCC',)
+	find_bin(['lrelease-qt4', 'lrelease'], 'QT_LRELEASE',)
+	find_bin(['lupdate-qt4', 'lupdate'], 'QT_LUPDATE',)
 
 	env['UIC3_ST']= '%s -o %s'
 	env['UIC_ST'] = '%s -o %s'
@@ -534,14 +534,14 @@ def find_qt4_binaries(self):
 
 @conf
 def find_qt4_libraries(self):
-	qtlibs = getattr(Options.options, 'qtlibs', None) or os.environ.get("QT4_LIBDIR")
+	qtlibs = getattr(Options.options, 'qtlibs', None,) or os.environ.get("QT4_LIBDIR")
 	if not qtlibs:
 		try:
 			qtlibs = self.cmd_and_log(self.env.QMAKE + ['-query', 'QT_INSTALL_LIBS']).strip()
 		except Errors.WafError:
 			qtdir = self.cmd_and_log(self.env.QMAKE + ['-query', 'QT_INSTALL_PREFIX']).strip() + os.sep
-			qtlibs = os.path.join(qtdir, 'lib')
-	self.msg('Found the Qt4 libraries in', qtlibs)
+			qtlibs = os.path.join(qtdir, 'lib',)
+	self.msg('Found the Qt4 libraries in', qtlibs,)
 
 	qtincludes =  os.environ.get("QT4_INCLUDES") or self.cmd_and_log(self.env.QMAKE + ['-query', 'QT_INSTALL_HEADERS']).strip()
 	env = self.env
@@ -558,67 +558,67 @@ def find_qt4_libraries(self):
 			if Utils.unversioned_sys_platform() == "darwin":
 				# Since at least qt 4.7.3 each library locates in separate directory
 				frameworkName = i + ".framework"
-				qtDynamicLib = os.path.join(qtlibs, frameworkName, i)
+				qtDynamicLib = os.path.join(qtlibs, frameworkName, i,)
 				if os.path.exists(qtDynamicLib):
-					env.append_unique('FRAMEWORK_' + uselib, i)
-					self.msg('Checking for %s' % i, qtDynamicLib, 'GREEN')
+					env.append_unique('FRAMEWORK_' + uselib, i,)
+					self.msg('Checking for %s' % i, qtDynamicLib, 'GREEN',)
 				else:
-					self.msg('Checking for %s' % i, False, 'YELLOW')
-				env.append_unique('INCLUDES_' + uselib, os.path.join(qtlibs, frameworkName, 'Headers'))
+					self.msg('Checking for %s' % i, False, 'YELLOW',)
+				env.append_unique('INCLUDES_' + uselib, os.path.join(qtlibs, frameworkName, 'Headers',),)
 			elif env.DEST_OS != "win32":
-				qtDynamicLib = os.path.join(qtlibs, "lib" + i + ".so")
-				qtStaticLib = os.path.join(qtlibs, "lib" + i + ".a")
+				qtDynamicLib = os.path.join(qtlibs, "lib" + i + ".so",)
+				qtStaticLib = os.path.join(qtlibs, "lib" + i + ".a",)
 				if os.path.exists(qtDynamicLib):
-					env.append_unique('LIB_' + uselib, i)
-					self.msg('Checking for %s' % i, qtDynamicLib, 'GREEN')
+					env.append_unique('LIB_' + uselib, i,)
+					self.msg('Checking for %s' % i, qtDynamicLib, 'GREEN',)
 				elif os.path.exists(qtStaticLib):
-					env.append_unique('LIB_' + uselib, i)
-					self.msg('Checking for %s' % i, qtStaticLib, 'GREEN')
+					env.append_unique('LIB_' + uselib, i,)
+					self.msg('Checking for %s' % i, qtStaticLib, 'GREEN',)
 				else:
-					self.msg('Checking for %s' % i, False, 'YELLOW')
+					self.msg('Checking for %s' % i, False, 'YELLOW',)
 
-				env.append_unique('LIBPATH_' + uselib, qtlibs)
-				env.append_unique('INCLUDES_' + uselib, qtincludes)
-				env.append_unique('INCLUDES_' + uselib, os.path.join(qtincludes, i))
+				env.append_unique('LIBPATH_' + uselib, qtlibs,)
+				env.append_unique('INCLUDES_' + uselib, qtincludes,)
+				env.append_unique('INCLUDES_' + uselib, os.path.join(qtincludes, i,),)
 			else:
 				# Release library names are like QtCore4
 				for k in ("lib%s.a", "lib%s4.a", "%s.lib", "%s4.lib"):
-					lib = os.path.join(qtlibs, k % i)
+					lib = os.path.join(qtlibs, k % i,)
 					if os.path.exists(lib):
-						env.append_unique('LIB_' + uselib, i + k[k.find("%s") + 2 : k.find('.')])
-						self.msg('Checking for %s' % i, lib, 'GREEN')
+						env.append_unique('LIB_' + uselib, i + k[k.find("%s") + 2 : k.find('.')],)
+						self.msg('Checking for %s' % i, lib, 'GREEN',)
 						break
 				else:
-					self.msg('Checking for %s' % i, False, 'YELLOW')
+					self.msg('Checking for %s' % i, False, 'YELLOW',)
 
-				env.append_unique('LIBPATH_' + uselib, qtlibs)
-				env.append_unique('INCLUDES_' + uselib, qtincludes)
-				env.append_unique('INCLUDES_' + uselib, os.path.join(qtincludes, i))
+				env.append_unique('LIBPATH_' + uselib, qtlibs,)
+				env.append_unique('INCLUDES_' + uselib, qtincludes,)
+				env.append_unique('INCLUDES_' + uselib, os.path.join(qtincludes, i,),)
 
 				# Debug library names are like QtCore4d
 				uselib = i.upper() + "_debug"
 				for k in ("lib%sd.a", "lib%sd4.a", "%sd.lib", "%sd4.lib"):
-					lib = os.path.join(qtlibs, k % i)
+					lib = os.path.join(qtlibs, k % i,)
 					if os.path.exists(lib):
-						env.append_unique('LIB_' + uselib, i + k[k.find("%s") + 2 : k.find('.')])
-						self.msg('Checking for %s' % i, lib, 'GREEN')
+						env.append_unique('LIB_' + uselib, i + k[k.find("%s") + 2 : k.find('.')],)
+						self.msg('Checking for %s' % i, lib, 'GREEN',)
 						break
 				else:
-					self.msg('Checking for %s' % i, False, 'YELLOW')
+					self.msg('Checking for %s' % i, False, 'YELLOW',)
 
-				env.append_unique('LIBPATH_' + uselib, qtlibs)
-				env.append_unique('INCLUDES_' + uselib, qtincludes)
-				env.append_unique('INCLUDES_' + uselib, os.path.join(qtincludes, i))
+				env.append_unique('LIBPATH_' + uselib, qtlibs,)
+				env.append_unique('INCLUDES_' + uselib, qtincludes,)
+				env.append_unique('INCLUDES_' + uselib, os.path.join(qtincludes, i,),)
 	else:
 		for i in self.qt4_vars_debug + self.qt4_vars:
-			self.check_cfg(package=i, args='--cflags --libs', mandatory=False)
+			self.check_cfg(package=i, args='--cflags --libs', mandatory=False,)
 
 @conf
 def simplify_qt4_libs(self):
 	# the libpaths make really long command-lines
 	# remove the qtcore ones from qtgui, etc
 	env = self.env
-	def process_lib(vars_, coreval):
+	def process_lib(vars_, coreval,):
 		for d in vars_:
 			var = d.upper()
 			if var == 'QTCORE':
@@ -634,15 +634,15 @@ def simplify_qt4_libs(self):
 					accu.append(lib)
 				env['LIBPATH_'+var] = accu
 
-	process_lib(self.qt4_vars,       'LIBPATH_QTCORE')
-	process_lib(self.qt4_vars_debug, 'LIBPATH_QTCORE_DEBUG')
+	process_lib(self.qt4_vars,       'LIBPATH_QTCORE',)
+	process_lib(self.qt4_vars_debug, 'LIBPATH_QTCORE_DEBUG',)
 
 @conf
 def add_qt4_rpath(self):
 	# rpath if wanted
 	env = self.env
-	if getattr(Options.options, 'want_rpath', False):
-		def process_rpath(vars_, coreval):
+	if getattr(Options.options, 'want_rpath', False,):
+		def process_rpath(vars_, coreval,):
 			for d in vars_:
 				var = d.upper()
 				value = env['LIBPATH_'+var]
@@ -655,15 +655,15 @@ def add_qt4_rpath(self):
 								continue
 						accu.append('-Wl,--rpath='+lib)
 					env['RPATH_'+var] = accu
-		process_rpath(self.qt4_vars,       'LIBPATH_QTCORE')
-		process_rpath(self.qt4_vars_debug, 'LIBPATH_QTCORE_DEBUG')
+		process_rpath(self.qt4_vars,       'LIBPATH_QTCORE',)
+		process_rpath(self.qt4_vars_debug, 'LIBPATH_QTCORE_DEBUG',)
 
 @conf
 def set_qt4_libs_to_check(self):
-	if not hasattr(self, 'qt4_vars'):
+	if not hasattr(self, 'qt4_vars',):
 		self.qt4_vars = QT4_LIBS
 	self.qt4_vars = Utils.to_list(self.qt4_vars)
-	if not hasattr(self, 'qt4_vars_debug'):
+	if not hasattr(self, 'qt4_vars_debug',):
 		self.qt4_vars_debug = [a + '_debug' for a in self.qt4_vars]
 	self.qt4_vars_debug = Utils.to_list(self.qt4_vars_debug)
 
@@ -673,23 +673,23 @@ def set_qt4_defines(self):
 		return
 	for x in self.qt4_vars:
 		y = x[2:].upper()
-		self.env.append_unique('DEFINES_%s' % x.upper(), 'QT_%s_LIB' % y)
-		self.env.append_unique('DEFINES_%s_DEBUG' % x.upper(), 'QT_%s_LIB' % y)
+		self.env.append_unique('DEFINES_%s' % x.upper(), 'QT_%s_LIB' % y,)
+		self.env.append_unique('DEFINES_%s_DEBUG' % x.upper(), 'QT_%s_LIB' % y,)
 
-def options(opt):
+def options(opt,):
 	"""
 	Command-line options
 	"""
-	opt.add_option('--want-rpath', action='store_true', default=False, dest='want_rpath', help='enable the rpath for qt libraries')
+	opt.add_option('--want-rpath', action='store_true', default=False, dest='want_rpath', help='enable the rpath for qt libraries',)
 
 	opt.add_option('--header-ext',
 		type='string',
 		default='',
 		help='header extension for moc files',
-		dest='qt_header_ext')
+		dest='qt_header_ext',)
 
 	for i in 'qtdir qtbin qtlibs'.split():
-		opt.add_option('--'+i, type='string', default='', dest=i)
+		opt.add_option('--'+i, type='string', default='', dest=i,)
 
-	opt.add_option('--translate', action="store_true", help="collect translation strings", dest="trans_qt4", default=False)
+	opt.add_option('--translate', action="store_true", help="collect translation strings", dest="trans_qt4", default=False,)
 

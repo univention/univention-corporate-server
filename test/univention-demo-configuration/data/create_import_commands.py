@@ -74,14 +74,14 @@ NAGIOS_OPTIONS = ' '.join(
 )
 
 
-def importRow(row: Dict[str, str]) -> None:
+def importRow(row: Dict[str, str],) -> None:
     """Import one row containing a user definition"""
     row["LDAPBASE"] = LDAPBASE
     row["DOMAIN"] = DOMAIN
     row["DC_OPTIONS"] = DC_OPTIONS
     row["NAGIOS_OPTIONS"] = NAGIOS_OPTIONS
     row["MAIL"] = "%(uid)s@%(DOMAIN)s" % row
-    row["IMG"] = '$(base64 "%s")' % join(IMPORTIMAGEDIR, ("%(firstname)s.%(lastname)s.jpg" % row).lower())
+    row["IMG"] = '$(base64 "%s")' % join(IMPORTIMAGEDIR, ("%(firstname)s.%(lastname)s.jpg" % row).lower(),)
 
     # OU container for user
     print(
@@ -174,8 +174,8 @@ udm computers/domaincontroller_backup create --ignore_exist \
 def main() -> None:
     print(HEADER % globals())
 
-    with open(IMPORTFILE, newline='') as importfile:
-        importreader = csv.DictReader(importfile, delimiter=',', quotechar='"', fieldnames=FIELDS)
+    with open(IMPORTFILE, newline='',) as importfile:
+        importreader = csv.DictReader(importfile, delimiter=',', quotechar='"', fieldnames=FIELDS,)
         for row in importreader:
             importRow(row)
 

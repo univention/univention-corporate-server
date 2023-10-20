@@ -71,8 +71,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'umcPolicy'],
-    ),
+        objectClasses=['top', 'univentionPolicy', 'umcPolicy'],),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -82,35 +81,33 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'allow': univention.admin.property(
         short_description=_('List of allowed UMC operation sets'),
         long_description='',
         syntax=udm_syntax.UMC_OperationSet,
-        multivalue=True,
-    ),
+        multivalue=True,),
 }, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=umcFixedAttributes),
     emptyAttributesProperty(syntax=umcFixedAttributes),
     ldapFilterProperty(),
-]))
+]),)
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('General UMC settings'), layout=[
             'name',
             'allow',
-        ]),
-    ]),
+        ],),
+    ],),
     policy_object_tab(),
 ]
 
 mapping = udm_mapping.mapping()
-mapping.register('name', 'cn', None, udm_mapping.ListToString)
-mapping.register('allow', 'umcPolicyGrantedOperationSet')
+mapping.register('name', 'cn', None, udm_mapping.ListToString,)
+mapping.register('allow', 'umcPolicyGrantedOperationSet',)
 register_policy_mapping(mapping)
 
 

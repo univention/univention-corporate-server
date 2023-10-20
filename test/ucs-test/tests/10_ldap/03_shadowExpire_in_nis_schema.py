@@ -20,11 +20,11 @@ def nis_schema_conatains_ordering_for_shadowExpire():
     NIS_FILE = '/etc/ldap/schema/nis.schema'
     pattern = re.compile(r'(attributetype\s\(\s\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}\sNAME\s\'shadowExpire\'[^\(]+ORDERING\sintegerOrderingMatch[^\)]+\))')
     with open(NIS_FILE) as fi:
-        search_obj = re.search(pattern, fi.read())
+        search_obj = re.search(pattern, fi.read(),)
         return search_obj.groups()
 
 
-def ldap_search(filter_):
+def ldap_search(filter_,):
     lo = getMachineConnection()
     found = lo.search(filter=filter_)
     if found:
@@ -33,14 +33,14 @@ def ldap_search(filter_):
 
 def run():
     with udm_test.UCSTestUDM() as udm:
-        def create_users(date_diff):
+        def create_users(date_diff,):
             current_time = datetime.utcnow()
             chosen_time = current_time + timedelta(days=date_diff)
 
             expiry_date = chosen_time.strftime("%Y-%m-%d")
             passwd = uts.random_string()
             username = uts.random_name()
-            userdn, username = udm.create_user(password=passwd, userexpiry=expiry_date)
+            userdn, username = udm.create_user(password=passwd, userexpiry=expiry_date,)
             expiry_ldap = int(ldap_search('uid=%s' % username)[0][1])  # get the real set value from ldap
             return username, passwd, expiry_ldap
 

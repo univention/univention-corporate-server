@@ -45,15 +45,15 @@ import sys
 def parse_args():
     # type: () -> argparse.Namespace
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('-m', '--master', help='LDAP Server address')
+    parser.add_argument('-m', '--master', help='LDAP Server address',)
     parser.add_argument(
         '-s', '--schema',
         dest='cmd',
         action='store_const',
         const='GET_SCHEMA_ID',
         default='GET_ID',
-        help='Fetch LDAP Schema ID')
-    parser.add_argument('arg', nargs='?', help=argparse.SUPPRESS)
+        help='Fetch LDAP Schema ID',)
+    parser.add_argument('arg', nargs='?', help=argparse.SUPPRESS,)
     options = parser.parse_args()
 
     if not options.master:
@@ -76,7 +76,7 @@ def main():
     """Retrieve current Univention Directory Notifier transaction ID."""
     options = parse_args()
     try:
-        sock = socket.create_connection((options.master, 6669), 60.0)
+        sock = socket.create_connection((options.master, 6669), 60.0,)
 
         sock.send(b'Version: 3\nCapabilities: \n\n')
         sock.recv(100)
@@ -85,9 +85,9 @@ def main():
         notifier_result = sock.recv(100)
 
         if notifier_result:
-            print("%s" % notifier_result.decode('UTF-8', 'replace').splitlines()[1])
+            print("%s" % notifier_result.decode('UTF-8', 'replace',).splitlines()[1])
     except socket.error as ex:
-        print('Error: %s' % (ex,), file=sys.stderr)
+        print('Error: %s' % (ex,), file=sys.stderr,)
         sys.exit(1)
 
 

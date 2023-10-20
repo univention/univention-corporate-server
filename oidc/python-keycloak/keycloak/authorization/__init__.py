@@ -45,10 +45,10 @@ class Authorization:
         return self._policies
 
     @policies.setter
-    def policies(self, value):
+    def policies(self, value,):
         self._policies = value
 
-    def load_config(self, data):
+    def load_config(self, data,):
         """
         Load policies, roles and permissions (scope/resources).
 
@@ -60,12 +60,12 @@ class Authorization:
                 policy = Policy(name=pol['name'],
                                 type=pol['type'],
                                 logic=pol['logic'],
-                                decision_strategy=pol['decisionStrategy'])
+                                decision_strategy=pol['decisionStrategy'],)
 
                 config_roles = json.loads(pol['config']['roles'])
                 for role in config_roles:
                     policy.add_role(Role(name=role['id'],
-                                         required=role['required']))
+                                         required=role['required'],))
 
                 self.policies[policy.name] = policy
 
@@ -73,7 +73,7 @@ class Authorization:
                 permission = Permission(name=pol['name'],
                                         type=pol['type'],
                                         logic=pol['logic'],
-                                        decision_strategy=pol['decisionStrategy'])
+                                        decision_strategy=pol['decisionStrategy'],)
 
                 permission.scopes = ast.literal_eval(pol['config']['scopes'])
 
@@ -84,9 +84,9 @@ class Authorization:
                 permission = Permission(name=pol['name'],
                                         type=pol['type'],
                                         logic=pol['logic'],
-                                        decision_strategy=pol['decisionStrategy'])
+                                        decision_strategy=pol['decisionStrategy'],)
 
-                permission.resources = ast.literal_eval(pol['config'].get('resources', "[]"))
+                permission.resources = ast.literal_eval(pol['config'].get('resources', "[]",))
 
                 for policy_name in ast.literal_eval(pol['config']['applyPolicies']):
                     if self.policies.get(policy_name) is not None:

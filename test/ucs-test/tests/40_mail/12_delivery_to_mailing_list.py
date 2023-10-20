@@ -20,7 +20,7 @@ def main():
         with ucr_test.UCSTestConfigRegistry() as ucr:
             domain = ucr.get('domainname')
             handler_set(['mail/dovecot/mailbox/delete=yes'])
-            subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
+            subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w',),)
             host = '%s.%s' % (ucr.get('hostname'), domain)
             password = 'univention'
             mails = []
@@ -33,8 +33,7 @@ def main():
                         'password': password,
                         'mailHomeServer': host,
                         'mailPrimaryAddress': usermail,
-                    },
-                )
+                    },)
                 mails.append(usermail)
             list_name = uts.random_name()
             list_mail = '%s@%s' % (list_name, domain)
@@ -47,13 +46,12 @@ def main():
                     'members': mails[1],
                 },
                 wait_for_drs_replication=True,
-                position="cn=mailinglists,cn=mail,{}".format(ucr.get("ldap/base")),
-            )
+                position="cn=mailinglists,cn=mail,{}".format(ucr.get("ldap/base")),)
             token = str(time.time())
-            send_mail(recipients=list_mail, msg=token, tls=True, username=usermail, password=password)
+            send_mail(recipients=list_mail, msg=token, tls=True, username=usermail, password=password,)
 
             for mail in mails:
-                check_delivery(token, mail, True)
+                check_delivery(token, mail, True,)
 
 
 if __name__ == '__main__':

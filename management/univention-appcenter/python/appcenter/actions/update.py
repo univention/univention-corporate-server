@@ -61,14 +61,14 @@ class Update(UniventionAppAction):
 
     help = 'Updates the list of apps'
 
-    def setup_parser(self, parser):
+    def setup_parser(self, parser,):
         # type: (ArgumentParser) -> None
-        parser.add_argument('--ucs-version', help=SUPPRESS)
-        parser.add_argument('--appcenter-server', help=SUPPRESS)
-        parser.add_argument('--cache-dir', help=SUPPRESS)
-        parser.add_argument('--just-get-cache', action='store_true', default=False, help=SUPPRESS)
+        parser.add_argument('--ucs-version', help=SUPPRESS,)
+        parser.add_argument('--appcenter-server', help=SUPPRESS,)
+        parser.add_argument('--cache-dir', help=SUPPRESS,)
+        parser.add_argument('--just-get-cache', action='store_true', default=False, help=SUPPRESS,)
 
-    def main(self, args):
+    def main(self, args,):
         # type: (Namespace) -> None
         something_changed = False
         for app_cache in self._app_caches(args):
@@ -100,7 +100,7 @@ class Update(UniventionAppAction):
                     ucr_save({app.ucr_upgrade_key: 'yes'})
             self._update_local_files()
 
-    def _appcenter_caches(self, args):
+    def _appcenter_caches(self, args,):
         # type: (Namespace) -> List[AppCenterCache]
         if args.appcenter_server:
             return [AppCenterCache(server=args.appcenter_server)]
@@ -114,17 +114,17 @@ class Update(UniventionAppAction):
                 ret.append(appcenter_cache)
         return ret
 
-    def _app_caches(self, args):
+    def _app_caches(self, args,):
         # type: (Namespace) -> Iterator[AppCenterCache]
         for appcenter_cache in self._appcenter_caches(args):
             for app_cache in appcenter_cache.get_app_caches():
                 if args.ucs_version:
-                    yield app_cache.copy(ucs_version=args.ucs_version, cache_dir=args.cache_dir)
+                    yield app_cache.copy(ucs_version=args.ucs_version, cache_dir=args.cache_dir,)
                     break
                 else:
                     yield app_cache.copy(cache_dir=args.cache_dir)
 
-    def _get_etags(self, etags_file):
+    def _get_etags(self, etags_file,):
         # type: (str) -> Dict[str, str]
         ret = {}
         try:
@@ -140,43 +140,43 @@ class Update(UniventionAppAction):
             pass
         return ret
 
-    def _save_etags(self, cache, etags):
+    def _save_etags(self, cache, etags,):
         # type: (AppCenterCache, Mapping[str, str]) -> None
-        etags_file = os.path.join(cache.get_cache_dir(), '.etags')
-        with open(etags_file, 'w') as f:
+        etags_file = os.path.join(cache.get_cache_dir(), '.etags',)
+        with open(etags_file, 'w',) as f:
             for fname, etag in etags.items():
                 f.write('%s\t%s\n' % (fname, etag))
 
-    def _download_supra_files(self, appcenter_cache):
+    def _download_supra_files(self, appcenter_cache,):
         # type: (AppCenterCache) -> bool
-        return self._download_files(appcenter_cache, ['app-categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini', 'suggestions.json'])
+        return self._download_files(appcenter_cache, ['app-categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini', 'suggestions.json'],)
 
-    def _download_files(self, cache, filenames):
+    def _download_files(self, cache, filenames,):
         # type: (AppCenterCache, Iterable[str]) -> bool
         updated = False
         server = cache.get_server()
         cache_dir = cache.get_cache_dir()
-        etags_file = os.path.join(cache_dir, '.etags')
+        etags_file = os.path.join(cache_dir, '.etags',)
         present_etags = self._get_etags(etags_file)
         ucs_version = None
-        if hasattr(cache, 'get_ucs_version'):
+        if hasattr(cache, 'get_ucs_version',):
             ucs_version = cache.get_ucs_version()
         for filename in filenames:
             etag = present_etags.get(filename)
-            new_etag = self._download_file(server, filename, cache_dir, etag, ucs_version)
+            new_etag = self._download_file(server, filename, cache_dir, etag, ucs_version,)
             if new_etag:
                 present_etags[filename] = new_etag
                 updated = True
-        self._save_etags(cache, present_etags)
+        self._save_etags(cache, present_etags,)
         return updated
 
-    def _verify_file(self, cache_dir):
+    def _verify_file(self, cache_dir,):
         # type: (str) -> None
         if ucr_is_false('appcenter/index/verify'):
             return
 
-        fname = os.path.join(cache_dir, ".tmp.tar")
-        sname = os.path.join(cache_dir, ".all.tar.gpg")
+        fname = os.path.join(cache_dir, ".tmp.tar",)
+        sname = os.path.join(cache_dir, ".all.tar.gpg",)
 
         # there have been Signature Verification failures we want to investigate
         # one theory is, that the signature file and the file to verify do not match,
@@ -186,7 +186,7 @@ class Update(UniventionAppAction):
         signature_timestamp = os.path.getmtime(sname)
         time_diff = file_timestamp - signature_timestamp
 
-        (rc, gpg_error) = gpg_verify(fname, sname)
+        (rc, gpg_error) = gpg_verify(fname, sname,)
         if not rc:
             return
 
@@ -196,12 +196,12 @@ class Update(UniventionAppAction):
         os.unlink(fname)
         os.unlink(sname)
 
-        raise UpdateSignatureVerificationFailed(fname, gpg_error, time_diff)
+        raise UpdateSignatureVerificationFailed(fname, gpg_error, time_diff,)
 
-    def _download_apps(self, app_cache):
+    def _download_apps(self, app_cache,):
         # type: (AppCenterCache) -> bool
         filenames = [] if ucr_is_false('appcenter/index/verify') else ['all.tar.gpg']
-        if filenames and not self._download_files(app_cache, filenames):
+        if filenames and not self._download_files(app_cache, filenames,):
             return False
 
         appcenter_host = app_cache.get_server()
@@ -209,20 +209,20 @@ class Update(UniventionAppAction):
             appcenter_host = 'http://%s' % appcenter_host[8:]
 
         cache_dir = app_cache.get_cache_dir()
-        tmp_file = os.path.join(cache_dir, '.tmp.tar')
-        all_tar_file = os.path.join(cache_dir, '.all.tar')
+        tmp_file = os.path.join(cache_dir, '.tmp.tar',)
+        all_tar_file = os.path.join(cache_dir, '.all.tar',)
         all_tar_url = '%s/meta-inf/%s/all.tar.zsync' % (appcenter_host, app_cache.get_ucs_version())
         self.log('Downloading "%s"...' % all_tar_url)
-        if self._subprocess(['zsync', all_tar_url, '-q', '-o', tmp_file, '-i', all_tar_file], cwd=cache_dir).returncode:
+        if self._subprocess(['zsync', all_tar_url, '-q', '-o', tmp_file, '-i', all_tar_file], cwd=cache_dir,).returncode:
             # fallback: download all.tar.gz without zsync. some proxys have difficulties with it, including:
             #   * Range requests are not supported
             #   * HTTP requests are altered
             self.warn('Downloading the App archive via zsync failed. Falling back to download it directly.')
             self.warn('For better performance, try to make zsync work for "%s". The error may be caused by a proxy altering HTTP requests' % all_tar_url)
-            self._download_files(app_cache, ['all.tar.gz'])
+            self._download_files(app_cache, ['all.tar.gz'],)
             # files are always downloaded with their filename prepended by '.'
-            tgz_file = os.path.join(cache_dir, '.all.tar.gz')
-            self._uncompress_archive(app_cache, tgz_file)
+            tgz_file = os.path.join(cache_dir, '.all.tar.gz',)
+            self._uncompress_archive(app_cache, tgz_file,)
 
         self._verify_file(cache_dir)
 
@@ -230,17 +230,17 @@ class Update(UniventionAppAction):
         return True
 
     @possible_network_error
-    def _download_file(self, base_url, filename, cache_dir, etag, ucs_version=None):
+    def _download_file(self, base_url, filename, cache_dir, etag, ucs_version=None,):
         # type: (str, str, str, Optional[str], Optional[str]) -> Optional[str]
-        url = os.path.join(base_url, 'meta-inf', ucs_version or '', filename)
-        target = os.path.join(cache_dir, '.%s' % filename)
+        url = os.path.join(base_url, 'meta-inf', ucs_version or '', filename,)
+        target = os.path.join(cache_dir, '.%s' % filename,)
         if not os.path.exists(target):
             etag = None
         self.log('Downloading "%s"...' % url)
         headers = {}
         if etag:
             headers['If-None-Match'] = etag
-        request = Request(url, headers=headers)
+        request = Request(url, headers=headers,)
         try:
             response = urlopen(request)
         except HTTPError as exc:
@@ -250,7 +250,7 @@ class Update(UniventionAppAction):
             raise
         etag = response.headers.get('etag')
         content = response.read()
-        with open(target, 'wb') as f:
+        with open(target, 'wb',) as f:
             if filename == 'ucs.ini':
                 # b'[4.2]\nSupportedUCSVersions=4.2, 4.3, 4.1\n\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n\n[5.1]\nSupportedUCSVersions=5.0\n\n[5.2]\nSupportedUCSVersions=5.0\n'
                 content = b'[5.2]\nSupportedUCSVersions=5.2, 5.1, 5.0, 4.4\n[5.1]\nSupportedUCSVersions=5.1, 5.0, 4.4\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n'
@@ -275,13 +275,13 @@ class Update(UniventionAppAction):
             with catch_stdout(self.logger):
                 handler_commit(conffiles)
 
-    def _get_local_archive(self, app_cache):
+    def _get_local_archive(self, app_cache,):
         # type: (AppCenterCache) -> Optional[str]
-        fname = os.path.join(LOCAL_ARCHIVE_DIR, app_cache.get_server_netloc(), app_cache.get_ucs_version(), 'all.tar.gz')
+        fname = os.path.join(LOCAL_ARCHIVE_DIR, app_cache.get_server_netloc(), app_cache.get_ucs_version(), 'all.tar.gz',)
         if os.path.exists(fname):
             return fname
 
-    def _extract_local_archive(self, app_cache):
+    def _extract_local_archive(self, app_cache,):
         # type: (AppCenterCache) -> bool
         local_archive = self._get_local_archive(app_cache)
         if not local_archive:
@@ -291,17 +291,17 @@ class Update(UniventionAppAction):
             # we already have a cache. our archive is just outdated...
             return False
         self.log('Filling the App Center file cache from our local archive %s!' % local_archive)
-        if not self._uncompress_archive(app_cache, local_archive):
+        if not self._uncompress_archive(app_cache, local_archive,):
             return False
         return self._extract_archive(app_cache)
 
-    def _uncompress_archive(self, app_cache, local_archive):
+    def _uncompress_archive(self, app_cache, local_archive,):
         # type: (AppCenterCache, str) -> bool
         """`gunzip` in Python"""
         try:
-            with gzip_open(local_archive, 'rb') as zipped_file:
+            with gzip_open(local_archive, 'rb',) as zipped_file:
                 archive_content = zipped_file.read()
-            with open(os.path.join(app_cache.get_cache_dir(), '.tmp.tar'), 'wb') as extracted_file:
+            with open(os.path.join(app_cache.get_cache_dir(), '.tmp.tar',), 'wb',) as extracted_file:
                 extracted_file.write(archive_content)
         except (zlib.error, EnvironmentError) as exc:
             self.warn('Error while reading %s: %s' % (local_archive, exc))
@@ -309,28 +309,28 @@ class Update(UniventionAppAction):
         else:
             return True
 
-    def _extract_archive(self, app_cache):
+    def _extract_archive(self, app_cache,):
         # type: (AppCenterCache) -> None
         """`tar xf` in 'Python'"""
         cache_dir = app_cache.get_cache_dir()
         self.debug('Extracting archive in %s' % cache_dir)
         self._purge_old_cache(cache_dir)
-        tmp_file = os.path.join(cache_dir, '.tmp.tar')
+        tmp_file = os.path.join(cache_dir, '.tmp.tar',)
         self.debug('Unpacking %s...' % tmp_file)
         if self._subprocess(['tar', '-C', cache_dir, '-x', '-f', tmp_file]).returncode:
             raise UpdateUnpackArchiveFailed(tmp_file)
         # make sure cache dir is available for everybody
-        os.chmod(cache_dir, 0o755)
+        os.chmod(cache_dir, 0o755,)
         # `touch tmp_file` to get a new cache in case it was created in between extraction
-        os.utime(tmp_file, None)
+        os.utime(tmp_file, None,)
         # Rename temporary to final file name
-        all_tar_file = os.path.join(cache_dir, '.all.tar')
-        os.rename(tmp_file, all_tar_file)
+        all_tar_file = os.path.join(cache_dir, '.all.tar',)
+        os.rename(tmp_file, all_tar_file,)
 
-    def _purge_old_cache(self, cache_dir):
+    def _purge_old_cache(self, cache_dir,):
         # type: (str) -> None
         self.debug('Removing old files...')
-        for fname in glob(os.path.join(cache_dir, '*')):
+        for fname in glob(os.path.join(cache_dir, '*',)):
             try:
                 os.unlink(fname)
             except EnvironmentError as exc:

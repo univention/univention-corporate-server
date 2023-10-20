@@ -16,20 +16,20 @@ from univention.testing import utils
 from essential.simplesquid import SimpleSquid
 
 
-def get_basic_auth_header(base64_encoded_creds):
+def get_basic_auth_header(base64_encoded_creds,):
     return f'Proxy-Authorization: Basic {base64_encoded_creds}'
 
 
-def get_base64_encoded_creds(username, password, encoding):
+def get_base64_encoded_creds(username, password, encoding,):
     return base64.b64encode(f'{username}:{password}'.encode(encoding)).decode('ASCII')
 
 
-def check_proxy(user, encoding):
+def check_proxy(user, encoding,):
     print(f'Now checking encoding: {encoding}')
-    print('Username: {}, Password: {}'.format(user['username'], user['password']))
+    print('Username: {}, Password: {}'.format(user['username'], user['password'],))
     url = 'http://www.univention.de/'
     try:
-        credentials = get_base64_encoded_creds(user['username'], user['password'], encoding)
+        credentials = get_base64_encoded_creds(user['username'], user['password'], encoding,)
     except UnicodeEncodeError:
         print("Warning can't encode username or passwrd")
         print("IE would just send a question mark. Nothing we can do. Pass this test.")
@@ -69,14 +69,14 @@ def main():
         encodings = ['utf8', 'iso-8859-1']
 
         for user in users:
-            udm.create_user(username=user['username'], password=user['password'])
+            udm.create_user(username=user['username'], password=user['password'],)
             for encoding in encodings:
-                check_proxy(user, encoding)
+                check_proxy(user, encoding,)
         fail_user = {'username': 'umlaut', 'password': 'univention'}
         print('Now checking wrong password')
         for encoding in encodings:
             try:
-                check_proxy(fail_user, encoding)
+                check_proxy(fail_user, encoding,)
                 utils.fail('Proxy login possible with wrong password!')
             except subprocess.CalledProcessError:
                 # Login at proxy failed as expected

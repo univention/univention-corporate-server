@@ -54,19 +54,19 @@ schema_handler = ldap_extension.UniventionLDAPSchema(listener.configRegistry)
 acl_handler = ldap_extension.UniventionLDAPACL(listener.configRegistry)
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> None:
     """Handle LDAP schema extensions on Primary and Backup"""
     if new:
-        ocs = new.get('objectClass', [])
+        ocs = new.get('objectClass', [],)
     elif old:
-        ocs = old.get('objectClass', [])
+        ocs = old.get('objectClass', [],)
 
     if b'univentionLDAPExtensionSchema' in ocs:
-        schema_handler.handler(dn, new, old, name=name)
+        schema_handler.handler(dn, new, old, name=name,)
     elif b'univentionLDAPExtensionACL' in ocs:
-        acl_handler.handler(dn, new, old, name=name)
+        acl_handler.handler(dn, new, old, name=name,)
     else:
-        ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
+        ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs),)
 
 
 def postrun() -> None:
@@ -86,19 +86,19 @@ def postrun() -> None:
         listener.setuid(0)
         try:
             if schema_handler._do_reload or acl_handler._do_reload:
-                ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
+                ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,),)
                 for handler_object in (schema_handler, acl_handler):
                     handler_object._do_reload = False
                 p = subprocess.Popen(
-                    [initscript, 'graceful-restart'], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    [initscript, 'graceful-restart'], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
                 out, err = p.communicate()
-                stdout, stderr = out.decode('UTF-8', 'replace'), err.decode('UTF-8', 'replace')
+                stdout, stderr = out.decode('UTF-8', 'replace',), err.decode('UTF-8', 'replace',)
                 if p.returncode != 0:
-                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: LDAP server restart returned {stderr} {stdout} ({p.returncode}).')
+                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: LDAP server restart returned {stderr} {stdout} ({p.returncode}).',)
                     for handler_object in (schema_handler, acl_handler):
                         if handler_object._todo_list:
                             for object_dn in handler_object._todo_list:
-                                ldap_extension.set_handler_message(name, object_dn, f'LDAP server restart returned {stderr} {stdout} ({p.returncode}).')
+                                ldap_extension.set_handler_message(name, object_dn, f'LDAP server restart returned {stderr} {stdout} ({p.returncode}).',)
                     return
 
             # Only set active flags on Primary

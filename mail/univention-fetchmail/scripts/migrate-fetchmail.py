@@ -46,18 +46,18 @@ FETCHMAILRC = '/etc/fetchmailrc'
 PASSWORD_REGEX = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
 
 
-def load_rc(ofile):
+def load_rc(ofile,):
     """open an textfile with setuid(0) for root-action"""
     rc = None
     try:
         with open(ofile) as fd:
             rc = fd.readlines()
     except OSError as exc:
-        ud.debug(ud.PROCESS, ud.ERROR, 'Failed to open %r: %s' % (ofile, exc))
+        ud.debug(ud.PROCESS, ud.ERROR, 'Failed to open %r: %s' % (ofile, exc),)
     return rc
 
 
-def get_pw_from_rc(lines, uid):
+def get_pw_from_rc(lines, uid,):
     """get current password of a user from fetchmailrc"""
     if not uid:
         return None
@@ -70,17 +70,17 @@ def get_pw_from_rc(lines, uid):
     return None
 
 
-def map_fetchmail(value):
+def map_fetchmail(value,):
     ret = []
     for elem in value:
         entry = []
         for param in elem:
-            entry.append(param if isinstance(param, str) else param.decode())
+            entry.append(param if isinstance(param, str,) else param.decode())
         ret.append(json.dumps(entry).encode('UTF-8'))
     return ret
 
 
-def unmap_fetchmail(value):
+def unmap_fetchmail(value,):
     try:
         entries = [json.loads(v) for v in value]
     except ValueError:
@@ -100,8 +100,8 @@ class Converter(object):
 
     def parse_cmdline(self):
         parser = argparse.ArgumentParser(description=__doc__)
-        parser.add_argument('--binddn', help='LDAP bind dn')
-        parser.add_argument('--bindpwdfile', help='LDAP bind password file for bind dn')
+        parser.add_argument('--binddn', help='LDAP bind dn',)
+        parser.add_argument('--bindpwdfile', help='LDAP bind password file for bind dn',)
         self.args = parser.parse_args()
 
     def main(self):
@@ -118,11 +118,10 @@ class Converter(object):
 
             self.access = univention.admin.uldap.access(
                 host=self.ucr["ldap/master"],
-                port=int(self.ucr.get('ldap/master/port', '7389')),
+                port=int(self.ucr.get('ldap/master/port', '7389',)),
                 base=self.ucr['ldap/base'],
                 binddn=self.args.binddn,
-                bindpw=bindpwd,
-            )
+                bindpw=bindpwd,)
             self.position = univention.admin.uldap.position(self.ucr['ldap/base'])
         else:
             self.access, self.position = univention.admin.uldap.getAdminConnection()
@@ -135,15 +134,14 @@ class Converter(object):
 
         for dn, attrs in self.access.search(
             filter='(objectClass=univentionFetchmail)',
-            attr=['uid', 'univentionFetchmailAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailPasswd', 'univentionFetchmailKeepMailOnServer', 'univentionFetchmailUseSSL', 'univentionFetchmailSingle'],
-        ):
+            attr=['uid', 'univentionFetchmailAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailPasswd', 'univentionFetchmailKeepMailOnServer', 'univentionFetchmailUseSSL', 'univentionFetchmailSingle'],):
             uid = attrs['uid'][0].decode('UTF-8')
-            server = attrs.get('univentionFetchmailServer', [])
-            protocol = attrs.get('univentionFetchmailProtocol', [])
-            passwd = attrs.get('univentionFetchmailPasswd', [get_pw_from_rc(file, uid)])[0]
-            address = attrs.get('univentionFetchmailAddress', [])
-            keep = attrs.get('univentionFetchmailKeepMailOnServer', [])
-            ssl = attrs.get('univentionFetchmailUseSSL', [])
+            server = attrs.get('univentionFetchmailServer', [],)
+            protocol = attrs.get('univentionFetchmailProtocol', [],)
+            passwd = attrs.get('univentionFetchmailPasswd', [get_pw_from_rc(file, uid,)],)[0]
+            address = attrs.get('univentionFetchmailAddress', [],)
+            keep = attrs.get('univentionFetchmailKeepMailOnServer', [],)
+            ssl = attrs.get('univentionFetchmailUseSSL', [],)
 
             if not server:
                 self.debug('Skip object with uid "%s". Already migrated or incomplete configuration' % (uid,))
@@ -153,8 +151,8 @@ class Converter(object):
                 self.debug('Skip object with uid "%s". Unable to retrieve univentionFetchmailPasswd attribute from /etc/fetchmailrc file' % (uid,))
                 continue
 
-            passwd = passwd.encode('UTF-8') if isinstance(passwd, str) else passwd
-            old_fetchmail_new = attrs.get('univentionFetchmailSingle', [])
+            passwd = passwd.encode('UTF-8') if isinstance(passwd, str,) else passwd
+            old_fetchmail_new = attrs.get('univentionFetchmailSingle', [],)
             updated_fetchmail_new = unmap_fetchmail(old_fetchmail_new)
             updated_fetchmail_new.append([
                 server[0] if server else b'',
@@ -172,16 +170,16 @@ class Converter(object):
             ]
             try:
                 self.debug('Updating %s' % (dn,))
-                self.access.modify(dn, changes, ignore_license=1)
+                self.access.modify(dn, changes, ignore_license=1,)
             except Exception as ex:
                 self.error('Failed to modify %s: %s, changes: %s' % (dn, ex, changes))
         self.debug("Done.")
 
-    def debug(self, msg):
-        print(msg, file=sys.stderr)
+    def debug(self, msg,):
+        print(msg, file=sys.stderr,)
 
-    def error(self, msg):
-        print(msg, file=sys.stderr)
+    def error(self, msg,):
+        print(msg, file=sys.stderr,)
         self.ret = 1
 
 

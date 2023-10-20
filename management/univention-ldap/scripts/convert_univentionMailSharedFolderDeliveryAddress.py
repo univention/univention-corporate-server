@@ -48,7 +48,7 @@ def run():
     ucr = univention.config_registry.ConfigRegistry()
     ucr.load()
 
-    searchResult = lo.search(base=ucr.get('ldap/base'), filter='(&(objectClass=univentionMailSharedFolder)(univentionMailSharedFolderDeliveryAddress=*))', attr=['univentionMailSharedFolderDeliveryAddress'])
+    searchResult = lo.search(base=ucr.get('ldap/base'), filter='(&(objectClass=univentionMailSharedFolder)(univentionMailSharedFolderDeliveryAddress=*))', attr=['univentionMailSharedFolderDeliveryAddress'],)
     for dn, attr in searchResult:
         ml = []
         oldval = attr['univentionMailSharedFolderDeliveryAddress']
@@ -57,9 +57,9 @@ def run():
             ml.append(('univentionMailSharedFolderDeliveryAddress', oldval, newval))
             try:
                 print('Updating %s' % dn)
-                lo.modify(dn, ml)
+                lo.modify(dn, ml,)
             except Exception:
-                print('E: Failed to modify %s' % dn, file=sys.stderr)
+                print('E: Failed to modify %s' % dn, file=sys.stderr,)
 
     print('done')
 

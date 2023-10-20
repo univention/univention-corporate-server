@@ -74,7 +74,7 @@ class SAMLUser(object):
 
     __slots__ = ('message', 'username', 'session_end_time', 'name_id')
 
-    def __init__(self, response, message):
+    def __init__(self, response, message,):
         self.name_id = encode_name_id(response.name_id)
         self.message = message
         self.username = u''.join(response.ava['uid'])
@@ -89,14 +89,14 @@ class SAMLUser(object):
 class SamlError(HTTPError):
     """Errors caused during SAML authentication"""
 
-    def __init__(self, _=_):
+    def __init__(self, _=_,):
         self._ = _
 
-    def error(func=None, status=400):  # noqa: N805
-        def _decorator(func):
+    def error(func=None, status=400,):  # noqa: N805
+        def _decorator(func,):
             def _decorated(self, *args, **kwargs):
-                message = func(self, *args, **kwargs) or ()
-                super(SamlError, self).__init__(status, message)
+                message = func(self, *args, **kwargs,) or ()
+                super(SamlError, self,).__init__(status, message,)
                 if "Passive authentication not supported." not in message:
                     # "Passive authentication not supported." just means an active login is required. That is expected and needs no logging. It still needs to be raised though.
                     CORE.warn('SamlError: %s %s' % (status, message))
@@ -106,53 +106,53 @@ class SamlError(HTTPError):
             return _decorator
         return _decorator(func)
 
-    def from_exception(self, etype, exc, etraceback):
-        if isinstance(exc, UnknownPrincipal):
+    def from_exception(self, etype, exc, etraceback,):
+        if isinstance(exc, UnknownPrincipal,):
             return self.unknown_principal(exc)
-        if isinstance(exc, UnsupportedBinding):
+        if isinstance(exc, UnsupportedBinding,):
             return self.unsupported_binding(exc)
-        if isinstance(exc, VerificationError):
+        if isinstance(exc, VerificationError,):
             return self.verification_error(exc)
-        if isinstance(exc, UnsolicitedResponse):
+        if isinstance(exc, UnsolicitedResponse,):
             return self.unsolicited_response(exc)
-        if isinstance(exc, StatusError):
+        if isinstance(exc, StatusError,):
             return self.status_error(exc)
-        if isinstance(exc, MissingKey):
+        if isinstance(exc, MissingKey,):
             return self.missing_key(exc)
-        if isinstance(exc, SignatureError):
+        if isinstance(exc, SignatureError,):
             return self.signature_error(exc)
-        six.reraise(etype, exc, etraceback)
+        six.reraise(etype, exc, etraceback,)
 
     @error
-    def unknown_principal(self, exc):
+    def unknown_principal(self, exc,):
         return self._('The principal is unknown: %s') % (exc,)
 
     @error
-    def unsupported_binding(self, exc):
+    def unsupported_binding(self, exc,):
         return self._('The requested SAML binding is not known: %s') % (exc,)
 
     @error
-    def unknown_logout_binding(self, binding):
+    def unknown_logout_binding(self, binding,):
         return self._('The logout binding is not known.')
 
     @error
-    def verification_error(self, exc):
+    def verification_error(self, exc,):
         return self._('The SAML response could not be verified: %s') % (exc,)
 
     @error
-    def unsolicited_response(self, exc):
+    def unsolicited_response(self, exc,):
         return self._('Received an unsolicited SAML response. Please try to single sign on again by accessing /univention/saml/. Error message: %s') % (exc,)
 
     @error
-    def status_error(self, exc):
+    def status_error(self, exc,):
         return self._('The identity provider reported a status error: %s') % (exc,)
 
     @error(status=500)
-    def missing_key(self, exc):
+    def missing_key(self, exc,):
         return self._('The issuer %r is not known to the SAML service provider. This is probably a misconfiguration and might be resolved by restarting the univention-management-console-server.') % (str(exc),)
 
     @error
-    def signature_error(self, exc):
+    def signature_error(self, exc,):
         return self._('The SAML response contained a invalid signature: %s') % (exc,)
 
     @error
@@ -164,7 +164,7 @@ class SamlError(HTTPError):
         return self._('There is a configuration error in the service provider: No identity provider are set up for use.')
 
     @error  # TODO: multiple choices redirection status
-    def multiple_identity_provider(self, idps, idp_query_param):
+    def multiple_identity_provider(self, idps, idp_query_param,):
         return self._('Could not pick an identity provider. You can specify one via the query string parameter %(param)r from %(idps)r') % {'param': idp_query_param, 'idps': idps}
 
 
@@ -181,7 +181,7 @@ class SAMLResource(Resource):
     outstanding_queries = {}
 
     @classmethod
-    def on_logout(cls, name_id):
+    def on_logout(cls, name_id,):
         if cls.SP:
             try:
                 cls.SP.local_logout(decode_name_id(name_id))
@@ -193,8 +193,8 @@ class SamlMetadata(SAMLResource):
     """Get the SAML XML Metadata"""
 
     def get(self):
-        metadata = create_metadata_string(self.configfile, None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False)
-        self.set_header('Content-Type', 'application/xml')
+        metadata = create_metadata_string(self.configfile, None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False,)
+        self.set_header('Content-Type', 'application/xml',)
         self.finish(metadata)
 
 
@@ -204,16 +204,16 @@ class SamlACS(SAMLResource):
     @property
     def sp(self):
         if not self.SP and not self.reload():
-            raise HTTPError(SERVICE_UNAVAILABLE, 'Single sign on is not available due to misconfiguration. See logfiles.')
+            raise HTTPError(SERVICE_UNAVAILABLE, 'Single sign on is not available due to misconfiguration. See logfiles.',)
         return self.SP
 
     @classmethod
     def reload(cls):
         CORE.info('Reloading SAML service provider configuration')
-        sys.modules.pop(os.path.splitext(os.path.basename(cls.configfile))[0], None)
+        sys.modules.pop(os.path.splitext(os.path.basename(cls.configfile))[0], None,)
         identity_cache = cls.identity_cache % (PORT,) if cls.identity_cache else None
         try:
-            cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=identity_cache, state_cache=shared_memory.saml_state_cache)
+            cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=identity_cache, state_cache=shared_memory.saml_state_cache,)
             return True
         except Exception:
             CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
@@ -223,19 +223,19 @@ class SamlACS(SAMLResource):
         binding, message, relay_state = self._get_saml_message()
 
         if message is None:
-            self.do_single_sign_on(relay_state=self.get_query_argument('location', '/univention/management/'))
+            self.do_single_sign_on(relay_state=self.get_query_argument('location', '/univention/management/',))
             return
 
         acs = self.attribute_consuming_service
         if relay_state == 'iframe-passive':
             acs = self.attribute_consuming_service_iframe
-        await acs(binding, message, relay_state)
+        await acs(binding, message, relay_state,)
 
     post = get
 
-    async def attribute_consuming_service(self, binding, message, relay_state):
-        response = self.parse_authn_response(message, binding)
-        saml = SAMLUser(response, message)
+    async def attribute_consuming_service(self, binding, message, relay_state,):
+        response = self.parse_authn_response(message, binding,)
+        saml = SAMLUser(response, message,)
 
         await self.pam_saml_authentication(saml)
 
@@ -245,21 +245,21 @@ class SamlACS(SAMLResource):
             location = urlparse('')
         location = urlunsplit(('', '', location.path, location.query, location.fragment))
 
-        self.redirect(location, status=303)
+        self.redirect(location, status=303,)
 
-    async def attribute_consuming_service_iframe(self, binding, message, relay_state):
+    async def attribute_consuming_service_iframe(self, binding, message, relay_state,):
         self.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
         self.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
-        response = self.parse_authn_response(message, binding)
-        saml = SAMLUser(response, message)
+        response = self.parse_authn_response(message, binding,)
+        saml = SAMLUser(response, message,)
 
         await self.pam_saml_authentication(saml)
 
-        self.set_header('Content-Type', 'text/html')
+        self.set_header('Content-Type', 'text/html',)
         data = {"status": 200, "result": {"username": saml.username}}
         self.finish(b'<html><body><textarea>%s</textarea></body></html>' % (json.dumps(data).encode('ASCII'),))
 
-    async def pam_saml_authentication(self, saml):
+    async def pam_saml_authentication(self, saml,):
         # important: must be called before the auth, to preserve session id in case of re-auth and that a user cannot choose his own session ID by providing a cookie
         sessionid = self.create_sessionid()
 
@@ -272,7 +272,7 @@ class SamlACS(SAMLResource):
         })
         if not self.current_user.user.authenticated:
             CORE.error('SECURITY WARNING: PAM SAML Authentication failed while pysaml2 succeeded!')
-            raise UMC_Error(result.message, result.status, result.result)
+            raise UMC_Error(result.message, result.status, result.result,)
 
         # as an alternative to PAM we could just set the user as authenticated because pysaml2 already ensured this.
         # but we keep the behavior for now because this is what happened prior to the UMC-Web-Server and UMC-Sever unification
@@ -285,12 +285,12 @@ class SamlACS(SAMLResource):
         user = self.current_user
         if user:
             user.saml = None
-        self.redirect('/univention/logout', status=303)
+        self.redirect('/univention/logout', status=303,)
 
     def _get_saml_message(self):
         """Get the SAML message and corresponding binding from the HTTP request"""
         if self.request.method not in ('GET', 'POST'):
-            self.set_header('Allow', 'GET, HEAD, POST')
+            self.set_header('Allow', 'GET, HEAD, POST',)
             raise HTTPError(405)
 
         if self.request.method == 'GET':
@@ -300,7 +300,7 @@ class SamlACS(SAMLResource):
             binding = BINDING_HTTP_POST
             args = self.request.body_arguments
 
-        relay_state = args.get('RelayState', [b''])[0].decode('UTF-8')
+        relay_state = args.get('RelayState', [b''],)[0].decode('UTF-8')
         try:
             message = args['SAMLResponse'][0].decode('UTF-8')
         except KeyError:
@@ -311,28 +311,28 @@ class SamlACS(SAMLResource):
                     message = args['SAMLart'][0].decode('UTF-8')
                 except KeyError:
                     return None, None, None
-                message = self.sp.artifact2message(message, 'spsso')
+                message = self.sp.artifact2message(message, 'spsso',)
                 binding = BINDING_HTTP_ARTIFACT
 
-        if isinstance(message, list):
+        if isinstance(message, list,):
             message = message[0]
 
         return binding, message, relay_state
 
-    def parse_authn_response(self, message, binding):
+    def parse_authn_response(self, message, binding,):
         try:
-            response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)
+            response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries,)
         except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError):
             raise SamlError(self._).from_exception(*sys.exc_info())
         if response is None:
             CORE.warn('The SAML message could not be parsed with binding %r: %r' % (binding, message))
             raise SamlError(self._).unparsed_saml_response()
-        self.outstanding_queries.pop(response.in_response_to, None)
+        self.outstanding_queries.pop(response.in_response_to, None,)
         return response
 
     def do_single_sign_on(self, **kwargs):
         binding, http_args = self.create_authn_request(**kwargs)
-        self.http_response(binding, http_args)
+        self.http_response(binding, http_args,)
 
     def create_authn_request(self, **kwargs):
         """
@@ -343,12 +343,12 @@ class SamlACS(SAMLResource):
         identity_provider_entity_id = self.select_identity_provider()
         binding, destination = self.get_identity_provider_destination(identity_provider_entity_id)
 
-        relay_state = kwargs.pop('relay_state', None)
+        relay_state = kwargs.pop('relay_state', None,)
 
         reply_binding, service_provider_url = self.select_service_provider()
-        sid, message = self.sp.create_authn_request(destination, binding=reply_binding, assertion_consumer_service_urls=(service_provider_url,), **kwargs)
+        sid, message = self.sp.create_authn_request(destination, binding=reply_binding, assertion_consumer_service_urls=(service_provider_url,), **kwargs,)
 
-        http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state)
+        http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state,)
         self.outstanding_queries[sid] = service_provider_url  # self.request.full_url()  # TODO: shouldn't this contain service_provider_url?
         return binding, http_args
 
@@ -363,21 +363,21 @@ class SamlACS(SAMLResource):
         idps = self.sp.metadata.with_descriptor("idpsso")
         if not idps and self.reload():
             idps = self.sp.metadata.with_descriptor("idpsso")
-        if self.get_query_argument(self.idp_query_param, None) in idps:
+        if self.get_query_argument(self.idp_query_param, None,) in idps:
             return self.get_query_argument(self.idp_query_param)
         if len(idps) == 1:
             return list(idps.keys())[0]
         if not idps:
             raise SamlError(self._).no_identity_provider()
-        raise SamlError(self._).multiple_identity_provider(list(idps.keys()), self.idp_query_param)
+        raise SamlError(self._).multiple_identity_provider(list(idps.keys()), self.idp_query_param,)
 
-    def get_identity_provider_destination(self, entity_id):
+    def get_identity_provider_destination(self, entity_id,):
         """
         Get the destination (with SAML binding) of the specified entity_id.
 
         Returns (binding, destination-URI)
         """
-        return self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id)
+        return self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id,)
 
     def select_service_provider(self):
         """
@@ -386,7 +386,7 @@ class SamlACS(SAMLResource):
 
         Returns (binding, service-provider-URI)
         """
-        acs = self.sp.config.getattr("endpoints", "sp")["assertion_consumer_service"]
+        acs = self.sp.config.getattr("endpoints", "sp",)["assertion_consumer_service"]
         service_url, reply_binding = acs[0]
         netloc = False
         p2 = urlparse(self.request.full_url())
@@ -402,16 +402,16 @@ class SamlACS(SAMLResource):
         CORE.info('SAML: picked %r for %r with binding %r' % (service_url, self.request.full_url(), reply_binding))
         return reply_binding, service_url
 
-    def http_response(self, binding, http_args):
+    def http_response(self, binding, http_args,):
         """Converts the HTTP arguments from pysaml2 into the tornado response."""
         body = u''.join(http_args["data"])
         for key, value in http_args["headers"]:
-            self.set_header(key, value)
+            self.set_header(key, value,)
 
         if binding in (BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT):
             self.set_status(303 if self.request.version != "HTTP/1.0" and self.request.method == 'POST' else 302)
             if not body:
-                self.redirect(self._headers['Location'], status=self.get_status())
+                self.redirect(self._headers['Location'], status=self.get_status(),)
                 return
 
         self.finish(body.encode('UTF-8'))
@@ -421,7 +421,7 @@ class SamlIframeACS(SamlACS):
     """Passive SAML authentication via hidden iframe"""
 
     def get(self):
-        self.do_single_sign_on(is_passive='true', relay_state='iframe-passive')
+        self.do_single_sign_on(is_passive='true', relay_state='iframe-passive',)
 
     post = get
 
@@ -432,12 +432,12 @@ class SamlSingleLogout(SamlACS):
     def get(self, *args, **kwargs):  # single logout service
         binding, message, relay_state = self._get_saml_message()
         if message is None:
-            raise HTTPError(400, 'The HTTP request is missing required SAML parameter.')
+            raise HTTPError(400, 'The HTTP request is missing required SAML parameter.',)
 
         try:
             data = base64.b64decode(message.encode('UTF-8'))
             try:
-                data = zlib.decompress(data, -15).split(b'>', 1)[0]
+                data = zlib.decompress(data, -15,).split(b'>', 1,)[0]
             except zlib.error:
                 pass
             is_logout_request = b'LogoutRequest' in data
@@ -453,12 +453,12 @@ class SamlSingleLogout(SamlACS):
             else:
                 name_id = user.saml.name_id
                 user.saml = None
-            http_args = self.sp.handle_logout_request(message, name_id, binding, relay_state=relay_state)
+            http_args = self.sp.handle_logout_request(message, name_id, binding, relay_state=relay_state,)
             self.expire_session()
-            self.http_response(binding, http_args)
+            self.http_response(binding, http_args,)
             return
         else:
-            response = self.sp.parse_logout_request_response(message, binding)
+            response = self.sp.parse_logout_request_response(message, binding,)
             self.sp.handle_logout_response(response)
         self._logout_success()
 
@@ -491,14 +491,14 @@ class SamlLogout(SamlACS):
             data = {}
 
         for _entity_id, logout_info in data.items():
-            if not isinstance(logout_info, tuple):
+            if not isinstance(logout_info, tuple,):
                 continue  # result from logout, should be OK
 
             binding, http_args = logout_info
             if binding not in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT):
                 raise SamlError(self._).unknown_logout_binding(binding)
 
-            self.http_response(binding, http_args)
+            self.http_response(binding, http_args,)
             return
         self._logout_success()
 

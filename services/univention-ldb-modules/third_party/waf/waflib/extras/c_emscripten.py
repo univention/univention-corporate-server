@@ -16,7 +16,7 @@ for supported_os in ('linux', 'darwin', 'gnu', 'aix'):
 
 
 @conf
-def get_emscripten_version(conf, cc):
+def get_emscripten_version(conf, cc,):
 	"""
 	Emscripten doesn't support processing '-' like clang/gcc
 	"""
@@ -26,12 +26,12 @@ def get_emscripten_version(conf, cc):
 	cmd = cc + ['-dM', '-E', '-x', 'c', dummy.abspath()]
 	env = conf.env.env or None
 	try:
-		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env,)
 		out = p.communicate()[0]
 	except Exception as e:
 		conf.fatal('Could not determine emscripten version %r: %s' % (cmd, e))
 
-	if not isinstance(out, str):
+	if not isinstance(out, str,):
 		out = out.decode(sys.stdout.encoding or 'latin-1')
 
 	k = {}
@@ -53,17 +53,17 @@ def get_emscripten_version(conf, cc):
 	return k
 
 @conf
-def find_emscripten(conf):
-	cc = conf.find_program(['emcc'], var='CC')
+def find_emscripten(conf,):
+	cc = conf.find_program(['emcc'], var='CC',)
 	conf.get_emscripten_version(cc)
 	conf.env.CC = cc
 	conf.env.CC_NAME = 'emscripten'
-	cxx = conf.find_program(['em++'], var='CXX')
+	cxx = conf.find_program(['em++'], var='CXX',)
 	conf.env.CXX = cxx
 	conf.env.CXX_NAME = 'emscripten'
-	conf.find_program(['emar'], var='AR')
+	conf.find_program(['emar'], var='AR',)
 
-def configure(conf):
+def configure(conf,):
 	conf.find_emscripten()
 	conf.find_ar()
 	conf.gcc_common_flags()
@@ -84,4 +84,4 @@ def configure(conf):
 	conf.env.CC_TGT_F            = ['-c', '-o', '']
 	conf.env.CXXLNK_TGT_F        = ['-o', '']
 	conf.env.CCLNK_TGT_F         = ['-o', '']
-	conf.env.append_value('LINKFLAGS',['-Wl,--enable-auto-import'])
+	conf.env.append_value('LINKFLAGS',['-Wl,--enable-auto-import'],)

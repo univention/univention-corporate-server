@@ -12,16 +12,16 @@ from waflib.Tools import ccroot, ar
 from waflib.Configure import conf
 
 @conf
-def find_gcc(conf):
+def find_gcc(conf,):
 	"""
 	Find the program gcc, and if present, try to detect its version number
 	"""
-	cc = conf.find_program(['gcc', 'cc'], var='CC')
-	conf.get_cc_version(cc, gcc=True)
+	cc = conf.find_program(['gcc', 'cc'], var='CC',)
+	conf.get_cc_version(cc, gcc=True,)
 	conf.env.CC_NAME = 'gcc'
 
 @conf
-def gcc_common_flags(conf):
+def gcc_common_flags(conf,):
 	"""
 	Common flags for gcc on nearly all platforms
 	"""
@@ -62,7 +62,7 @@ def gcc_common_flags(conf):
 	v.macbundle_PATTERN   = '%s.bundle'
 
 @conf
-def gcc_modifier_win32(conf):
+def gcc_modifier_win32(conf,):
 	"""Configuration flags for executing gcc on Windows"""
 	v = conf.env
 	v.cprogram_PATTERN    = '%s.exe'
@@ -76,19 +76,19 @@ def gcc_modifier_win32(conf):
 	# Auto-import is enabled by default even without this option,
 	# but enabling it explicitly has the nice effect of suppressing the rather boring, debug-level messages
 	# that the linker emits otherwise.
-	v.append_value('LINKFLAGS', ['-Wl,--enable-auto-import'])
+	v.append_value('LINKFLAGS', ['-Wl,--enable-auto-import'],)
 
 @conf
-def gcc_modifier_cygwin(conf):
+def gcc_modifier_cygwin(conf,):
 	"""Configuration flags for executing gcc on Cygwin"""
 	gcc_modifier_win32(conf)
 	v = conf.env
 	v.cshlib_PATTERN = 'cyg%s.dll'
-	v.append_value('LINKFLAGS_cshlib', ['-Wl,--enable-auto-image-base'])
+	v.append_value('LINKFLAGS_cshlib', ['-Wl,--enable-auto-image-base'],)
 	v.CFLAGS_cshlib = []
 
 @conf
-def gcc_modifier_darwin(conf):
+def gcc_modifier_darwin(conf,):
 	"""Configuration flags for executing gcc on MacOS"""
 	v = conf.env
 	v.CFLAGS_cshlib       = ['-fPIC']
@@ -105,7 +105,7 @@ def gcc_modifier_darwin(conf):
 	v.SONAME_ST           = []
 
 @conf
-def gcc_modifier_aix(conf):
+def gcc_modifier_aix(conf,):
 	"""Configuration flags for executing gcc on AIX"""
 	v = conf.env
 	v.LINKFLAGS_cprogram  = ['-Wl,-brtl']
@@ -113,7 +113,7 @@ def gcc_modifier_aix(conf):
 	v.SHLIB_MARKER        = []
 
 @conf
-def gcc_modifier_hpux(conf):
+def gcc_modifier_hpux(conf,):
 	v = conf.env
 	v.SHLIB_MARKER        = []
 	v.STLIB_MARKER        = []
@@ -121,27 +121,27 @@ def gcc_modifier_hpux(conf):
 	v.cshlib_PATTERN      = 'lib%s.sl'
 
 @conf
-def gcc_modifier_openbsd(conf):
+def gcc_modifier_openbsd(conf,):
 	conf.env.SONAME_ST = []
 
 @conf
-def gcc_modifier_osf1V(conf):
+def gcc_modifier_osf1V(conf,):
 	v = conf.env
 	v.SHLIB_MARKER        = []
 	v.STLIB_MARKER        = []
 	v.SONAME_ST           = []
 
 @conf
-def gcc_modifier_platform(conf):
+def gcc_modifier_platform(conf,):
 	"""Execute platform-specific functions based on *gcc_modifier_+NAME*"""
 	# * set configurations specific for a platform.
 	# * the destination platform is detected automatically by looking at the macros the compiler predefines,
 	#   and if it's not recognised, it fallbacks to sys.platform.
-	gcc_modifier_func = getattr(conf, 'gcc_modifier_' + conf.env.DEST_OS, None)
+	gcc_modifier_func = getattr(conf, 'gcc_modifier_' + conf.env.DEST_OS, None,)
 	if gcc_modifier_func:
 		gcc_modifier_func()
 
-def configure(conf):
+def configure(conf,):
 	"""
 	Configuration for gcc
 	"""

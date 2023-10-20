@@ -43,17 +43,17 @@ from univention.admindiary import DiaryEntry, get_events_to_reject, get_logger
 from univention.admindiary.events import DiaryEvent
 
 
-get_logger = partial(get_logger, 'client')
+get_logger = partial(get_logger, 'client',)
 
-F = TypeVar('F', bound=Callable[..., Any])
+F = TypeVar('F', bound=Callable[..., Any],)
 
 
-def exceptionlogging(f):
+def exceptionlogging(f,):
     # type: (F) -> F
     @wraps(f)
     def wrapper(*args, **kwds):
         try:
-            return f(*args, **kwds)
+            return f(*args, **kwds,)
         except Exception as exc:
             get_logger().error('%s failed! %s' % (f.__name__, exc))
             import traceback
@@ -67,15 +67,15 @@ class RsyslogEmitter(object):
         # type: () -> None
         self.handler = None  # type: Optional[SysLogHandler]
 
-    def emit(self, entry):
+    def emit(self, entry,):
         # type: (object) -> None
         if self.handler is None:
             if os.path.exists('/dev/log'):
-                self.handler = SysLogHandler(address='/dev/log', facility='user')
+                self.handler = SysLogHandler(address='/dev/log', facility='user',)
             else:
                 get_logger().error('RsyslogEmitter().emit() failed: /dev/log does not exist, cannot emit entry (%s)' % (entry,))
                 return
-        record = logging.LogRecord('diary-rsyslogger', logging.INFO, None, None, 'ADMINDIARY: ' + str(entry), (), None, None)
+        record = logging.LogRecord('diary-rsyslogger', logging.INFO, None, None, 'ADMINDIARY: ' + str(entry), (), None, None,)
         self.handler.emit(record)
 
 
@@ -83,21 +83,21 @@ emitter = RsyslogEmitter()
 
 
 @exceptionlogging
-def add_comment(message, context_id, username=None):
+def add_comment(message, context_id, username=None,):
     # type: (str, str, Optional[str]) -> Optional[int]
-    event = DiaryEvent('COMMENT', {'en': message})
-    return write_event(event, username=username, context_id=context_id)
+    event = DiaryEvent('COMMENT', {'en': message},)
+    return write_event(event, username=username, context_id=context_id,)
 
 
 @exceptionlogging
-def write_event(event, args=None, username=None, context_id=None):
+def write_event(event, args=None, username=None, context_id=None,):
     # type: (DiaryEvent, Dict[str, str], Optional[str], Optional[str]) -> Optional[int]
     args = args or {}
-    return write(event.message, args, username, event.tags, context_id, event.name)
+    return write(event.message, args, username, event.tags, context_id, event.name,)
 
 
 @exceptionlogging
-def write(message, args=None, username=None, tags=None, context_id=None, event_name=None):
+def write(message, args=None, username=None, tags=None, context_id=None, event_name=None,):
     # type: (str, Dict[str, str], Optional[str], Optional[List[str]], Optional[str], Optional[str]) -> Optional[int]
     if username is None:
         username = getuser()
@@ -109,12 +109,12 @@ def write(message, args=None, username=None, tags=None, context_id=None, event_n
         context_id = os.environ.get('ADMINDIARY_CONTEXT') or str(uuid.uuid4())
     if event_name is None:
         event_name = 'CUSTOM'
-    entry = DiaryEntry(username, message, args, tags, context_id, event_name)
+    entry = DiaryEntry(username, message, args, tags, context_id, event_name,)
     return write_entry(entry)
 
 
 @exceptionlogging
-def write_entry(entry):
+def write_entry(entry,):
     # type: (DiaryEntry) -> Optional[int]
     entry.assert_types()
     blocked_events = get_events_to_reject()

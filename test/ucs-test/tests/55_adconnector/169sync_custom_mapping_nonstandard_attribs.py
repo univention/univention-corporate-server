@@ -44,21 +44,19 @@ class TestADCustomMappings(unittest.TestCase):
             "            con_attribute='{target_attribute}'\n"
             "        )\n"
             "    return ad_mapping\n".format(
-                attribute=self.attribute, target_attribute=self.target_attribute,
-            )
+                attribute=self.attribute, target_attribute=self.target_attribute,)
         )
 
-        print("Using as test-mapping:\n%s\n" % TEST_MAPPING, file=sys.stderr)
+        print("Using as test-mapping:\n%s\n" % TEST_MAPPING, file=sys.stderr,)
 
         try:
             os.mkdir(self.mapping_file_dir)
         except OSError:
             print(
                 "Directory already exists: %s\n" % self.mapping_file_dir,
-                file=sys.stderr,
-            )
+                file=sys.stderr,)
 
-        with open(self.mapping_file, "w") as f:
+        with open(self.mapping_file, "w",) as f:
             f.write(TEST_MAPPING)
 
         # activate mapping by restarting the ad-connector...
@@ -82,12 +80,10 @@ class TestADCustomMappings(unittest.TestCase):
         except OSError:
             print(
                 "Surprising, that there is nothing to remove from this test.\n",
-                file=sys.stderr,
-            )
+                file=sys.stderr,)
 
     def create_extended_attribute(
-        self, udm, ldapMapping, module, defaultValue="defaultValue-TestFailed",
-    ):
+        self, udm, ldapMapping, module, defaultValue="defaultValue-TestFailed",):
         """
         Creates an extended attribute with a default value under module (e.g.
         under 'user/user')
@@ -95,8 +91,7 @@ class TestADCustomMappings(unittest.TestCase):
         print(
             "Creating extended attribute '%s' under '%s' with default value '%s'\n"
             % (ldapMapping, self.ldap_base, defaultValue),
-            file=sys.stderr,
-        )
+            file=sys.stderr,)
 
         udm.create_object(  # noqa: PIE804
             "settings/extended_attribute",
@@ -110,8 +105,7 @@ class TestADCustomMappings(unittest.TestCase):
                 "valueRequired": "1",
                 "module": [module],
                 "default": defaultValue,
-            },
-        )
+            },)
 
     def test_ldap_to_ad_with_mapping(self):
         """
@@ -121,7 +115,7 @@ class TestADCustomMappings(unittest.TestCase):
         in the custom mapping.
         """
         test_string = random_string()
-        self.create_extended_attribute(self.udm, self.attribute, "users/user")
+        self.create_extended_attribute(self.udm, self.attribute, "users/user",)
 
         # create a random user
         udm_user = NormalUser(selection=("username", "lastname"))
@@ -139,20 +133,18 @@ class TestADCustomMappings(unittest.TestCase):
         udm_user.basic[self.attribute] = test_string
 
         (udm_user_dn, ad_user_dn) = create_udm_user(
-            self.udm, self.adc, udm_user, wait_for_sync,
-        )
+            self.udm, self.adc, udm_user, wait_for_sync,)
 
         print(
             "Summary of users to be synchronized:\n\tudm_user_dn:\t%s,\n\ts4_user_dn:\t%s\n"
             % (udm_user_dn, ad_user_dn),
-            file=sys.stderr,
-        )
+            file=sys.stderr,)
 
         # verify that the user exists on the 'ad-side'...
         assert self.adc.exists(ad_user_dn) is True
 
         # check the value from the mapping
-        assert self.adc.get_attribute(ad_user_dn, self.target_attribute) == [test_string.encode("UTF-8")]
+        assert self.adc.get_attribute(ad_user_dn, self.target_attribute,) == [test_string.encode("UTF-8")]
 
 
 if __name__ == "__main__":

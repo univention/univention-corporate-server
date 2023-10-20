@@ -51,61 +51,56 @@ logger = logging.getLogger(__name__)
 
 class Interactions:
 
-    def click_text(self, text, **kwargs):
+    def click_text(self, text,**kwargs):
         # type: (str, **Any) -> None
-        logger.info("Clicking the text %r", text)
-        self.click_element(f'//*[contains(text(), "{text}")]', **kwargs)
+        logger.info("Clicking the text %r", text,)
+        self.click_element(f'//*[contains(text(), "{text}")]', **kwargs,)
 
-    def click_checkbox_of_grid_entry(self, name, **kwargs):
+    def click_checkbox_of_grid_entry(self, name,**kwargs):
         # type: (str, **Any) -> None
-        logger.info("Clicking the checkbox of the grid entry  %r", name)
+        logger.info("Clicking the checkbox of the grid entry  %r", name,)
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]/../..//input[@type="checkbox"]/..'
             % (name,),
-            **kwargs,
-        )
+            **kwargs,)
 
-    def click_checkbox_of_dojox_grid_entry(self, name, **kwargs):
+    def click_checkbox_of_dojox_grid_entry(self, name,**kwargs):
         # type: (str, **Any) -> None
-        logger.info("Clicking the checkbox of the dojox grid entry  %r", name)
+        logger.info("Clicking the checkbox of the dojox grid entry  %r", name,)
         self.click_element(
             expand_path('//*[@containsClass="dojoxGridCell"][@role="gridcell"][contains(text(), "%s")]/preceding-sibling::*[1]')
             % (name,),
-            **kwargs,
-        )
+            **kwargs,)
 
-    def click_grid_entry(self, name, **kwargs):
+    def click_grid_entry(self, name,**kwargs):
         # type: (str, **Any) -> None
-        logger.info("Clicking the grid entry %r", name)
+        logger.info("Clicking the grid entry %r", name,)
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]'
             % (name,),
-            **kwargs,
-        )
+            **kwargs,)
 
-    def click_tree_entry(self, name, **kwargs):
+    def click_tree_entry(self, name,**kwargs):
         # type: (str, **Any) -> None
-        logger.info("Clicking the tree entry %r", name)
+        logger.info("Clicking the tree entry %r", name,)
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-column-label ")][contains(text(), "%s")]'
             % (name,),
-            **kwargs,
-        )
+            **kwargs,)
 
-    def click_button(self, button_text, xpath_prefix='', **kwargs):
+    def click_button(self, button_text, xpath_prefix='',**kwargs):
         # type: (str, str, **Any) -> None
-        logger.info("Clicking the button %r", button_text)
+        logger.info("Clicking the button %r", button_text,)
         xpath = f'//*[@containsClass="dijitButtonText"][text() = "{button_text}"]'
         xpath = expand_path(xpath_prefix + xpath)
         self.click_element(
             xpath,
-            **kwargs,
-        )
+            **kwargs,)
 
-    def click_buttons(self, button_name_list, xpath_prefix='', **kwargs):
+    def click_buttons(self, button_name_list, xpath_prefix='',**kwargs):
         for i, button in enumerate(button_name_list):
             try:
-                self.click_button(button, xpath_prefix=xpath_prefix, **kwargs)
+                self.click_button(button, xpath_prefix=xpath_prefix, **kwargs,)
             except selenium_exceptions.TimeoutException:
                 if i == len(button_name_list) - 1:
                     raise
@@ -117,39 +112,35 @@ class Interactions:
         logger.info("Clicking the search button")
         self.click_element('//form//div[contains(concat(" ", normalize-space(@class), " "), " umcSearchIcon ")]')
 
-    def click_tile(self, tilename, **kwargs):
+    def click_tile(self, tilename,**kwargs):
         # type: (str, **Any) -> None
-        logger.info("Clicking the tile %r", tilename)
+        logger.info("Clicking the tile %r", tilename,)
         try:
             self.click_element(
                 '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]'
                 % (tilename,),
-                **kwargs,
-            )
+                **kwargs,)
         except selenium_exceptions.TimeoutException:
             self.click_element(
                 '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][@title = "%s"]'
                 % (tilename,),
-                **kwargs,
-            )
+                **kwargs,)
 
-    def click_tile_menu_icon(self, tilename, **kwargs):
+    def click_tile_menu_icon(self, tilename,**kwargs):
         # type: (str, **Any) -> None
-        logger.info("Clicking the menu icon of tile %r", tilename)
+        logger.info("Clicking the menu icon of tile %r", tilename,)
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]/../*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryContextIcon ")]'
             % (tilename,),
-            **kwargs,
-        )
+            **kwargs,)
 
-    def click_tab(self, tabname, **kwargs):
+    def click_tab(self, tabname,**kwargs):
         # type: (str, **Any) -> None
-        logger.info("Clicking the tab %r", tabname)
+        logger.info("Clicking the tab %r", tabname,)
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")][text() = "%s"]'
             % (tabname,),
-            **kwargs,
-        )
+            **kwargs,)
 
     def open_side_menu(self):
         # type: () -> None
@@ -161,7 +152,7 @@ class Interactions:
         self.click_element(expand_path('//*[@containsClass="umcMenuButton"]'))
         time.sleep(0.5)
 
-    def click_side_menu_entry(self, text):
+    def click_side_menu_entry(self, text,):
         # type: (str) -> None
         self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="menuItem"][contains(text(), "%s")]') % text)
         time.sleep(0.5)
@@ -171,7 +162,7 @@ class Interactions:
         self.click_element(expand_path('//*[@containsClass="mobileMenu"]//*[@containsClass="menuSlideHeader"]'))
         time.sleep(0.5)
 
-    def click_element(self, xpath, scroll_into_view=False, timeout=60, right_click=False):
+    def click_element(self, xpath, scroll_into_view=False, timeout=60, right_click=False,):
         # type: (str, bool, float, bool) -> None
         """
         Click on the element which is found by the given xpath.
@@ -179,9 +170,8 @@ class Interactions:
         Only use with caution when there are multiple elements with that xpath.
         Waits for the element to be clickable before attempting to click.
         """
-        elems = webdriver.support.ui.WebDriverWait(xpath, timeout).until(
-            self.get_all_enabled_elements, f'click_element({xpath!r}, scroll_into_view={scroll_into_view!r}, timeout={timeout!r}, right_click={right_click!r})',
-        )
+        elems = webdriver.support.ui.WebDriverWait(xpath, timeout,).until(
+            self.get_all_enabled_elements, f'click_element({xpath!r}, scroll_into_view={scroll_into_view!r}, timeout={timeout!r}, right_click={right_click!r})',)
 
         if len(elems) != 1:
             logger.warning(
@@ -190,7 +180,7 @@ class Interactions:
             )
 
         if scroll_into_view:
-            self.driver.execute_script("arguments[0].scrollIntoView();", elems[0])
+            self.driver.execute_script("arguments[0].scrollIntoView();", elems[0],)
         limit = timeout
         if right_click:
             # context_click will always work since it triggers the browser context menu
@@ -208,10 +198,10 @@ class Interactions:
                         raise
                     time.sleep(1)
 
-    def enter_input(self, inputname, inputvalue):
+    def enter_input(self, inputname, inputvalue,):
         # type: (str, str) -> None
         """Enter inputvalue into an input-element with the tag inputname."""
-        logger.info('Entering %r into the input-field %r.', inputvalue, inputname)
+        logger.info('Entering %r into the input-field %r.', inputvalue, inputname,)
         elem = self.get_input(inputname)
         # Retry up to 30 times if expected value does not match actual input field value.
         # This problem may arise, if the focus changes suddenly during send_keys()
@@ -222,12 +212,12 @@ class Interactions:
             if elem.get_property('value') == inputvalue:
                 break
         else:
-            raise ValueError('value of input {!r} does not contain previously entered value ({!r} != {!r})'.format(inputname, inputvalue, elem.get_property('value')))
+            raise ValueError('value of input {!r} does not contain previously entered value ({!r} != {!r})'.format(inputname, inputvalue, elem.get_property('value'),))
 
-    def enter_input_combobox(self, inputname, inputvalue, with_click=True):
+    def enter_input_combobox(self, inputname, inputvalue, with_click=True,):
         # type: (str, str, bool) -> None
         xpath = f"//*[@role='combobox' and .//input[@name='{inputname}']]//input[@role='textbox']"
-        elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
+        elems = webdriver.support.ui.WebDriverWait(xpath, 60,).until(
             self.get_all_enabled_elements,
         )
         if len(elems) != 1:
@@ -239,9 +229,9 @@ class Interactions:
             self.wait_until_element_visible(xpath)
             self.click_element(xpath)
 
-    def enter_input_date(self, inputname, inputvalue):  # type: (str, str) -> None
+    def enter_input_date(self, inputname, inputvalue,):  # type: (str, str) -> None
         xpath = f"//*[@role='combobox' and .//input[@name='{inputname}']]//input[@role='textbox']"
-        elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
+        elems = webdriver.support.ui.WebDriverWait(xpath, 60,).until(
             self.get_all_enabled_elements,
         )
         if len(elems) != 1:
@@ -249,7 +239,7 @@ class Interactions:
         elems[0].clear()
         elems[0].send_keys(inputvalue)
 
-    def submit_input(self, inputname):
+    def submit_input(self, inputname,):
         # type: (str) -> None
         """Submit the input in an input-element with the tag inputname."""
         logger.info(f'Submitting input field {inputname!r}.')
@@ -258,11 +248,11 @@ class Interactions:
         # named 'submit'.
         elem.send_keys(Keys.RETURN)
 
-    def get_input(self, inputname):
+    def get_input(self, inputname,):
         # type: (str) -> None
         """Get an input-element with the tag inputname."""
         xpath = f'//input[@name= {json.dumps(inputname)} ]'
-        elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
+        elems = webdriver.support.ui.WebDriverWait(xpath, 60,).until(
             self.get_all_enabled_elements,
         )
 
@@ -273,9 +263,9 @@ class Interactions:
             )
         return elems[0]
 
-    def get_all_enabled_elements(self, xpath):
+    def get_all_enabled_elements(self, xpath,):
         # type: (str) -> List[Any]
-        elems = self.driver.find_elements(By.XPATH, xpath)
+        elems = self.driver.find_elements(By.XPATH, xpath,)
         try:
             return [
                 elem
@@ -286,7 +276,7 @@ class Interactions:
             pass
         return []
 
-    def upload_image(self, img_path, button_label='Upload', timeout=60, xpath_prefix=''):
+    def upload_image(self, img_path, button_label='Upload', timeout=60, xpath_prefix='',):
         # type: (str, str, int, str) -> None
         """
         Get an ImageUploader widget on screen and upload the given img_path.
@@ -296,28 +286,28 @@ class Interactions:
         uploader_button_xpath = f'//*[contains(@id, "_ImageUploader_")]//*[text()="{button_label}"]'
         self.wait_until_element_visible(xpath_prefix + uploader_button_xpath)
         uploader_xpath = '//*[contains(@id, "_ImageUploader_")]//input[@type="file"]'
-        logger.info("Getting the uploader with xpath: %s%s", xpath_prefix, uploader_xpath)
-        uploader = self.driver.find_element(By.XPATH, xpath_prefix + uploader_xpath)
+        logger.info("Getting the uploader with xpath: %s%s", xpath_prefix, uploader_xpath,)
+        uploader = self.driver.find_element(By.XPATH, xpath_prefix + uploader_xpath,)
         logger.info("Uploading the image: %s" % img_path)
         uploader.send_keys(img_path)
         logger.info("Waiting for upload to finish")
         time.sleep(1)  # wait_for_text('Uploading...') is too inconsistent
         self.wait_until_element_visible(xpath_prefix + uploader_button_xpath)
 
-    def drag_and_drop(self, source, target, find_by='xpath'):
+    def drag_and_drop(self, source, target, find_by='xpath',):
         # type: (Union[Any, str], Union[Any, str], str) -> None
         """Wrapper for selenium.webdriver.common.action_chains.drag_and_drop"""
         by = {'xpath': By.XPATH, 'id': By.ID}[find_by]
-        if isinstance(source, str):
-            source = self.driver.find_element(by, source)
-        if isinstance(target, str):
-            target = self.driver.find_element(by, target)
-        ActionChains(self.driver).drag_and_drop(source, target).perform()
+        if isinstance(source, str,):
+            source = self.driver.find_element(by, source,)
+        if isinstance(target, str,):
+            target = self.driver.find_element(by, target,)
+        ActionChains(self.driver).drag_and_drop(source, target,).perform()
 
-    def drag_and_drop_by_offset(self, source, xoffset, yoffset, find_by='xpath'):
+    def drag_and_drop_by_offset(self, source, xoffset, yoffset, find_by='xpath',):
         # type: (Union[Any, str], int, int, str) -> None
         """Wrapper for selenium.webdriver.common.action_chains.drag_and_drop_by_offset"""
         by = {'xpath': By.XPATH, 'id': By.ID}[find_by]
-        if isinstance(source, str):
-            source = self.driver.find_element(by, source)
-        ActionChains(self.driver).drag_and_drop_by_offset(source, xoffset, yoffset).perform()
+        if isinstance(source, str,):
+            source = self.driver.find_element(by, source,)
+        ActionChains(self.driver).drag_and_drop_by_offset(source, xoffset, yoffset,).perform()

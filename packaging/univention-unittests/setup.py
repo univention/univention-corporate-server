@@ -40,18 +40,18 @@ from setuptools import setup as orig_setup
 
 
 def _get_version():
-    changelog = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
+    changelog = Changelog(io.open('debian/changelog', 'r', encoding='utf-8',))
     return changelog.full_version.split('A~')[0]
 
 
-def _get_description(name):
-    for package in Deb822.iter_paragraphs(io.open('debian/control', 'r', encoding='utf-8')):
+def _get_description(name,):
+    for package in Deb822.iter_paragraphs(io.open('debian/control', 'r', encoding='utf-8',)):
         if package.get('Package') == name:
             description = package['Description']
             return description.split('\n .\n')[0]
 
 
-def setup(name, **attrs):
+def setup(name,**attrs):
     if 'name' not in attrs:
         attrs['name'] = name
     if 'license' not in attrs:
@@ -77,5 +77,4 @@ setup(
     entry_points={"pytest11": ["univention-unittests-ucr = univentionunittests.ucr", "univention-unittests-umc = univentionunittests.umc", "univention-unittests-udm = univentionunittests.udm"]},
     package_dir={
         'univentionunittests': 'python/univention/unittests/',
-    },
-)
+    },)

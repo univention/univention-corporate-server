@@ -8,13 +8,13 @@ from univention.admin.uldap import getAdminConnection
 
 lo, po = getAdminConnection()
 
-student = Student(name='Teststudent', firstname='Test', lastname='Student', school='School1')
+student = Student(name='Teststudent', firstname='Test', lastname='Student', school='School1',)
 student.create(lo)
 
-student2 = Student(name='Teststudent2', firstname='Test2', lastname='Student2', school='School2')
+student2 = Student(name='Teststudent2', firstname='Test2', lastname='Student2', school='School2',)
 student2.create(lo)
 
-student3 = Student(name='Teststudent3', firstname='Test3', lastname='Student3', school='School1', schools=['School1', 'School2'])
+student3 = Student(name='Teststudent3', firstname='Test3', lastname='Student3', school='School1', schools=['School1', 'School2'],)
 student3.create(lo)
 
 s = lo.get(student.dn)

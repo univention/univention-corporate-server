@@ -23,21 +23,21 @@ if __name__ == '__main__':
         new_group_name = uts.random_name()
         group_dn = udm.create_group()[0]
         users = [udm.create_user()[0], udm.create_user()[0]]
-        udm.modify_object('groups/group', dn=group_dn, append={'users': users})
+        udm.modify_object('groups/group', dn=group_dn, append={'users': users},)
 
         # verify users and group sync
         s4connector.wait_for_sync()
-        s4connector.verify_users(group_dn, users)
+        s4connector.verify_users(group_dn, users,)
         s4connector.check_object(group_dn)
 
         # modify group
         group_sid = s4connector.get_object_sid(group_dn)
-        udm.modify_object('groups/group', dn=group_dn, name=new_group_name)
-        modified_group_dn = s4connector.correct_cleanup(group_dn, new_group_name, udm, True)
+        udm.modify_object('groups/group', dn=group_dn, name=new_group_name,)
+        modified_group_dn = s4connector.correct_cleanup(group_dn, new_group_name, udm, True,)
 
         # verify sync of modified group and users
         s4connector.wait_for_sync()
-        s4connector.check_object(modified_group_dn, group_sid, group_dn)
-        s4connector.verify_users(modified_group_dn, users)
+        s4connector.check_object(modified_group_dn, group_sid, group_dn,)
+        s4connector.verify_users(modified_group_dn, users,)
 
     s4connector.wait_for_sync()

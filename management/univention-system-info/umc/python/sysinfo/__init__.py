@@ -61,9 +61,9 @@ class Instance(umcm.Base):
         umcm.Base.__init__(self)
         self.mem_regex = re.compile('([0-9]*) kB')
 
-    def _call(self, command):
+    def _call(self, command,):
         try:
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
             (stdoutdata, stderrdata) = process.communicate()
             return (process.returncode, stdoutdata.decode('UTF-8'), stderrdata.decode('UTF-8'))
         except OSError:
@@ -93,10 +93,9 @@ class Instance(umcm.Base):
         manufacturer=StringSanitizer(required=True),
         model=StringSanitizer(required=True),
         comment=StringSanitizer(required=True),
-        ticket=StringSanitizer(required=False, default=''),
-    )
+        ticket=StringSanitizer(required=False, default='',),)
     @simple_response
-    def get_system_info(self, manufacturer, model, comment, ticket=''):
+    def get_system_info(self, manufacturer, model, comment, ticket='',):
         SYSTEM_INFO_CMD = (
             '/usr/bin/univention-system-info',
             '-m', manufacturer,
@@ -113,7 +112,7 @@ class Instance(umcm.Base):
         result = {}
         for line in stdout.splitlines():
             try:
-                info, value = line.split(':', 1)
+                info, value = line.split(':', 1,)
                 result[info] = value
             except ValueError:
                 pass
@@ -123,37 +122,37 @@ class Instance(umcm.Base):
                 try:
                     converted_mem = (float(match.groups()[0]) / 1048576)
                     result['mem'] = '%.2f GB' % converted_mem
-                    result['mem'] = result['mem'].replace('.', ',')
+                    result['mem'] = result['mem'].replace('.', ',',)
                 except (IndexError, ValueError):
                     pass
-        result.pop('Temp', None)  # remove unnecessary entry
+        result.pop('Temp', None,)  # remove unnecessary entry
         return result
 
     @simple_response
     def get_mail_info(self):
         ucr.load()
-        ADDRESS_VALUE = ucr.get('umc/sysinfo/mail/address', 'feedback@univention.de')
-        SUBJECT_VALUE = ucr.get('umc/sysinfo/mail/subject', 'Univention System Info')
+        ADDRESS_VALUE = ucr.get('umc/sysinfo/mail/address', 'feedback@univention.de',)
+        SUBJECT_VALUE = ucr.get('umc/sysinfo/mail/subject', 'Univention System Info',)
 
         url = urlunparse(('mailto', '', ADDRESS_VALUE, '', urlencode({'subject': SUBJECT_VALUE}), ''))
         result = {}
-        result['url'] = url.replace('+', '%20')
+        result['url'] = url.replace('+', '%20',)
         return result
 
     @sanitize(archive=StringSanitizer(required=True))
     @simple_response
-    def upload_archive(self, archive):
+    def upload_archive(self, archive,):
         ucr.load()
-        url = ucr.get('umc/sysinfo/upload/url', 'https://forge.univention.org/cgi-bin/system-info-upload.py')
+        url = ucr.get('umc/sysinfo/upload/url', 'https://forge.univention.org/cgi-bin/system-info-upload.py',)
 
         SYSINFO_PATH = '/usr/share/univention-system-info/archives/'
-        path = os.path.abspath(os.path.join(SYSINFO_PATH, archive))
+        path = os.path.abspath(os.path.join(SYSINFO_PATH, archive,))
         if not path.startswith(SYSINFO_PATH):
             raise UMC_Error('Archive path invalid.')
 
-        with open(os.path.join(SYSINFO_PATH, archive), 'rb') as fd:
+        with open(os.path.join(SYSINFO_PATH, archive,), 'rb',) as fd:
             try:
-                response = requests.post(url, files={'filename': fd})
+                response = requests.post(url, files={'filename': fd},)
                 response.raise_for_status()
             except requests.exceptions.RequestException as exc:
                 raise UMC_Error('Archive upload failed: %s' % (exc,))
@@ -161,16 +160,16 @@ class Instance(umcm.Base):
         if answer.startswith('ERROR:'):
             raise UMC_Error(answer)
 
-    @sanitize(traceback=StringSanitizer(), remark=StringSanitizer(), email=StringSanitizer())
+    @sanitize(traceback=StringSanitizer(), remark=StringSanitizer(), email=StringSanitizer(),)
     @simple_response
-    def upload_traceback(self, traceback, remark, email):
+    def upload_traceback(self, traceback, remark, email,):
         ucr.load()
         ucs_version = '%(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % ucr
         if ucr.get('appcenter/apps/ucsschool/version'):
             ucs_version = '%s - UCS@school %s' % (ucs_version, ucr['appcenter/apps/ucsschool/version'])
         # anonymised id of localhost
-        uuid_system = ucr.get('uuid/system', '')
-        url = ucr.get('umc/sysinfo/traceback/url', 'https://forge.univention.org/cgi-bin/system-info-traceback.py')
+        uuid_system = ucr.get('uuid/system', '',)
+        url = ucr.get('umc/sysinfo/traceback/url', 'https://forge.univention.org/cgi-bin/system-info-traceback.py',)
         MODULE.process('Sending %s to %s' % (traceback, url))
         request_data = {
             'traceback': traceback,
@@ -178,11 +177,11 @@ class Instance(umcm.Base):
             'email': email,
             'ucs_version': ucs_version,
             'uuid_system': uuid_system,
-            'uuid_license': ucr.get('uuid/license', ''),
+            'uuid_license': ucr.get('uuid/license', '',),
             'server_role': ucr.get('server/role'),
         }
         try:
-            response = requests.post(url, data=request_data)
+            response = requests.post(url, data=request_data,)
             response.raise_for_status()
         except requests.exceptions.RequestException as exc:
             raise UMC_Error('Sending traceback failed: %s' % (exc,))

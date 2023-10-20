@@ -58,8 +58,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'dNSZone'],
-    ),
+        objectClasses=['top', 'dNSZone'],),
 }
 property_descriptions = {
     'subnet': univention.admin.property(
@@ -69,65 +68,56 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'zonettl': univention.admin.property(
         short_description=_('Zone time to live'),
         long_description=_('The time this entry may be cached.'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         required=True,
         default=(('3', 'hours'), []),
-        dontsearch=True,
-    ),
+        dontsearch=True,),
     'contact': univention.admin.property(
         short_description=_('Contact person'),
         long_description=_('The email address of the person responsible for this zone.'),
         syntax=univention.admin.syntax.string,
         required=True,
-        default=('root@%s.' % configRegistry.get('domainname', ''), []),
-    ),
+        default=('root@%s.' % configRegistry.get('domainname', '',), []),),
     'serial': univention.admin.property(
         short_description=_('Serial number'),
         long_description=_('The sequence number for this zone. Updates automatically.'),
         syntax=univention.admin.syntax.integer,
         required=True,
-        default=('1', []),
-    ),
+        default=('1', []),),
     'refresh': univention.admin.property(
         short_description=_('Refresh interval'),
         long_description=_('The time interval secondary DNS servers use to check the zone for updates.'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         required=True,
-        default=(('8', 'hours'), []),
-    ),
+        default=(('8', 'hours'), []),),
     'retry': univention.admin.property(
         short_description=_('Retry interval'),
         long_description=_('The time interval secondary DNS servers use to retry failed refresh updates.'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         required=True,
-        default=(('2', 'hours'), []),
-    ),
+        default=(('2', 'hours'), []),),
     'expire': univention.admin.property(
         short_description=_('Expiry interval'),
         long_description=_('The time interval after which secondary DNS servers will expire failed zones.'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         required=True,
-        default=(('7', 'days'), []),
-    ),
+        default=(('7', 'days'), []),),
     'ttl': univention.admin.property(
         short_description=_('Negative time to live'),
         long_description=_('The time interval "not found" answers are cached.'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         required=True,
-        default=(('1', 'days'), []),
-    ),
+        default=(('1', 'days'), []),),
     'nameserver': univention.admin.property(
         short_description=_('Name server'),
         long_description=_('The FQDNs of the servers serving this zone.'),
         syntax=univention.admin.syntax.dnsHostname,
         multivalue=True,
-        required=True,
-    ),
+        required=True,),
 }
 
 layout = [
@@ -136,20 +126,20 @@ layout = [
             'subnet',
             'zonettl',
             'nameserver',
-        ]),
-    ]),
+        ],),
+    ],),
     Tab(_('Start of authority'), _('Primary name server information'), layout=[
         Group(_('Start of authority'), layout=[
             'contact',
             'serial',
             ['refresh', 'retry'],
             ['expire', 'ttl'],
-        ]),
-    ]),
+        ],),
+    ],),
 ]
 
 
-def mapSubnet(subnet, encoding=()):
+def mapSubnet(subnet, encoding=(),):
     """
     Map subnet to reverse zone.
     >>> mapSubnet('0123:4567:89ab:cdef')
@@ -160,13 +150,13 @@ def mapSubnet(subnet, encoding=()):
     '3.2.1.in-addr.arpa'
     """
     if u':' in subnet:  # IPv6
-        subnet = u'%s%s' % (u'.'.join(subnet.replace(u':', u'')[::-1]), ARPA_IP6)
+        subnet = u'%s%s' % (u'.'.join(subnet.replace(u':', u'',)[::-1]), ARPA_IP6)
     else:
         subnet = u'%s%s' % (u'.'.join(subnet.split(u'.')[::-1]), ARPA_IP4)
     return subnet.encode(*encoding)
 
 
-def unmapSubnet(zone, encoding=()):
+def unmapSubnet(zone, encoding=(),):
     """
     Map reverse zone to subnet.
     >>> unmapSubnet([b'f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.ip6.arpa'])
@@ -176,13 +166,13 @@ def unmapSubnet(zone, encoding=()):
     >>> unmapSubnet([b'3.2.1.in-addr.arpa'])
     '1.2.3'
     """
-    if isinstance(zone, list):
+    if isinstance(zone, list,):
         zone = zone[0]
     zone = zone.decode(*encoding)
     if zone.endswith(ARPA_IP6):  # IPv6
         zone = zone[:-len(ARPA_IP6)]
         zone = zone.split(u'.')[::-1]
-        return u':'.join([u''.join(zone[i:i + 4]) for i in range(0, len(zone), 4)])
+        return u':'.join([u''.join(zone[i:i + 4]) for i in range(0, len(zone), 4,)])
     elif zone.endswith(ARPA_IP4):  # IPv4
         zone = zone[:-len(ARPA_IP4)]
         q = zone.split(u'.')
@@ -193,23 +183,23 @@ def unmapSubnet(zone, encoding=()):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('subnet', 'zoneName', mapSubnet, unmapSubnet, encoding='ASCII')
-mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
-mapping.register('nameserver', 'nSRecord', encoding='ASCII')
+mapping.register('subnet', 'zoneName', mapSubnet, unmapSubnet, encoding='ASCII',)
+mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval,)
+mapping.register('nameserver', 'nSRecord', encoding='ASCII',)
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
+    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[],):
+        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes,)
         if not self.dn and not self.position:
             raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
     def open(self):
         univention.admin.handlers.simpleLdap.open(self)
 
-        soa = self.oldattr.get('sOARecord', [b''])[0].split(b' ')
+        soa = self.oldattr.get('sOARecord', [b''],)[0].split(b' ')
         if len(soa) > 6:
             self['contact'] = unescapeSOAemail(soa[1].decode('UTF-8'))
             self['serial'] = soa[2].decode('UTF-8')
@@ -225,7 +215,7 @@ class object(univention.admin.handlers.simpleLdap):
         if self.hasChanged(['nameserver', 'contact', 'serial', 'refresh', 'retry', 'expire', 'ttl']):
             if self['contact'] and not self['contact'].endswith('.'):
                 self['contact'] += '.'
-            for i in range(0, len(self['nameserver'])):
+            for i in range(0, len(self['nameserver']),):
                 if len(self['nameserver'][i]) > 0 \
                         and ':' not in self['nameserver'][i] \
                         and '.' in self['nameserver'][i] \
@@ -236,17 +226,17 @@ class object(univention.admin.handlers.simpleLdap):
             expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
             ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
             soa = b'%s %s %s %s %s %s %s' % (self['nameserver'][0].encode('UTF-8'), escapeSOAemail(self['contact']).encode('UTF-8'), self['serial'].encode('UTF-8'), refresh, retry, expire, ttl)
-            ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa))
+            ml.append(('sOARecord', self.oldattr.get('sOARecord', [],), soa))
         return ml
 
     def _ldap_pre_modify(self):
-        super(object, self)._ldap_pre_modify()
+        super(object, self,)._ldap_pre_modify()
         # update SOA record
         if not self.hasChanged('serial'):
             self['serial'] = str(int(self['serial']) + 1)
 
     def _ldap_addlist(self):
-        return super(object, self)._ldap_addlist() + [
+        return super(object, self,)._ldap_addlist() + [
             ('relativeDomainName', [b'@']),
         ]
 
@@ -262,20 +252,20 @@ class object(univention.admin.handlers.simpleLdap):
     @classmethod
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.expression('relativeDomainName', '@'),
+            univention.admin.filter.expression('objectClass', 'dNSZone',),
+            univention.admin.filter.expression('relativeDomainName', '@',),
             univention.admin.filter.conjunction('|', [
-                univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4, escape=False),
-                univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6, escape=False),
-            ]),
-        ])
+                univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4, escape=False,),
+                univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6, escape=False,),
+            ],),
+        ],)
 
 
 lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr):
-    return b'dNSZone' in attr.get('objectClass', []) and \
-        [b'@'] == attr.get('relativeDomainName', []) and \
+def identify(dn, attr,):
+    return b'dNSZone' in attr.get('objectClass', [],) and \
+        [b'@'] == attr.get('relativeDomainName', [],) and \
         (attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP4) or attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP6))

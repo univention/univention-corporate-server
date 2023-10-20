@@ -55,9 +55,9 @@ def ensure_localedir(self):
 	# use the tool gnu_dirs to provide options to define this
 	if not self.env.LOCALEDIR:
 		if self.env.DATAROOTDIR:
-			self.env.LOCALEDIR = os.path.join(self.env.DATAROOTDIR, 'locale')
+			self.env.LOCALEDIR = os.path.join(self.env.DATAROOTDIR, 'locale',)
 		else:
-			self.env.LOCALEDIR = os.path.join(self.env.PREFIX, 'share', 'locale')
+			self.env.LOCALEDIR = os.path.join(self.env.PREFIX, 'share', 'locale',)
 
 @before_method('process_source')
 @feature('intltool_in')
@@ -95,36 +95,36 @@ def apply_intltool_in_f(self):
 
 	self.ensure_localedir()
 
-	podir = getattr(self, 'podir', '.')
+	podir = getattr(self, 'podir', '.',)
 	podirnode = self.path.find_dir(podir)
 	if not podirnode:
 		error("could not find the podir %r" % podir)
 		return
 
-	cache = getattr(self, 'intlcache', '.intlcache')
-	self.env.INTLCACHE = [os.path.join(str(self.path.get_bld()), podir, cache)]
+	cache = getattr(self, 'intlcache', '.intlcache',)
+	self.env.INTLCACHE = [os.path.join(str(self.path.get_bld()), podir, cache,)]
 	self.env.INTLPODIR = podirnode.bldpath()
-	self.env.append_value('INTLFLAGS', getattr(self, 'flags', self.env.INTLFLAGS_DEFAULT))
+	self.env.append_value('INTLFLAGS', getattr(self, 'flags', self.env.INTLFLAGS_DEFAULT,),)
 
 	if '-c' in self.env.INTLFLAGS:
 		self.bld.fatal('Redundant -c flag in intltool task %r' % self)
 
-	style = getattr(self, 'style', None)
+	style = getattr(self, 'style', None,)
 	if style:
 		try:
 			style_flag = _style_flags[style]
 		except KeyError:
 			self.bld.fatal('intltool_in style "%s" is not valid' % style)
 
-		self.env.append_unique('INTLFLAGS', [style_flag])
+		self.env.append_unique('INTLFLAGS', [style_flag],)
 
 	for i in self.to_list(self.source):
 		node = self.path.find_resource(i)
 
-		task = self.create_task('intltool', node, node.change_ext(''))
-		inst = getattr(self, 'install_path', None)
+		task = self.create_task('intltool', node, node.change_ext(''),)
+		inst = getattr(self, 'install_path', None,)
 		if inst:
-			self.add_install_files(install_to=inst, install_from=task.outputs)
+			self.add_install_files(install_to=inst, install_from=task.outputs,)
 
 @feature('intltool_po')
 def apply_intltool_po(self):
@@ -152,11 +152,11 @@ def apply_intltool_po(self):
 
 	self.ensure_localedir()
 
-	appname = getattr(self, 'appname', getattr(Context.g_module, Context.APPNAME, 'set_your_app_name'))
-	podir = getattr(self, 'podir', '.')
-	inst = getattr(self, 'install_path', '${LOCALEDIR}')
+	appname = getattr(self, 'appname', getattr(Context.g_module, Context.APPNAME, 'set_your_app_name',),)
+	podir = getattr(self, 'podir', '.',)
+	inst = getattr(self, 'install_path', '${LOCALEDIR}',)
 
-	linguas = self.path.find_node(os.path.join(podir, 'LINGUAS'))
+	linguas = self.path.find_node(os.path.join(podir, 'LINGUAS',))
 	if linguas:
 		# scan LINGUAS file for locales to process
 		with open(linguas.abspath()) as f:
@@ -169,18 +169,18 @@ def apply_intltool_po(self):
 		for lang in langs:
 			# Make sure that we only process lines which contain locales
 			if re_linguas.match(lang):
-				node = self.path.find_resource(os.path.join(podir, re_linguas.match(lang).group() + '.po'))
-				task = self.create_task('po', node, node.change_ext('.mo'))
+				node = self.path.find_resource(os.path.join(podir, re_linguas.match(lang).group() + '.po',))
+				task = self.create_task('po', node, node.change_ext('.mo'),)
 
 				if inst:
 					filename = task.outputs[0].name
 					(langname, ext) = os.path.splitext(filename)
 					inst_file = inst + os.sep + langname + os.sep + 'LC_MESSAGES' + os.sep + appname + '.mo'
 					self.add_install_as(install_to=inst_file, install_from=task.outputs[0],
-						chmod=getattr(self, 'chmod', Utils.O644))
+						chmod=getattr(self, 'chmod', Utils.O644,),)
 
 	else:
-		Logs.pprint('RED', "Error no LINGUAS file found in po directory")
+		Logs.pprint('RED', "Error no LINGUAS file found in po directory",)
 
 class po(Task.Task):
 	"""
@@ -197,24 +197,24 @@ class intltool(Task.Task):
 	color   = 'BLUE'
 
 @conf
-def find_msgfmt(conf):
+def find_msgfmt(conf,):
 	"""
 	Detects msgfmt and sets the ``MSGFMT`` variable
 	"""
-	conf.find_program('msgfmt', var='MSGFMT')
+	conf.find_program('msgfmt', var='MSGFMT',)
 
 @conf
-def find_intltool_merge(conf):
+def find_intltool_merge(conf,):
 	"""
 	Detects intltool-merge
 	"""
 	if not conf.env.PERL:
-		conf.find_program('perl', var='PERL')
+		conf.find_program('perl', var='PERL',)
 	conf.env.INTLCACHE_ST = '--cache=%s'
 	conf.env.INTLFLAGS_DEFAULT = ['-q', '-u']
-	conf.find_program('intltool-merge', interpreter='PERL', var='INTLTOOL')
+	conf.find_program('intltool-merge', interpreter='PERL', var='INTLTOOL',)
 
-def configure(conf):
+def configure(conf,):
 	"""
 	Detects the program *msgfmt* and set *conf.env.MSGFMT*.
 	Detects the program *intltool-merge* and set *conf.env.INTLTOOL*.

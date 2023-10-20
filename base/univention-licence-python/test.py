@@ -47,7 +47,7 @@ class TestBasic(unittest.TestCase):
             ul.getValue('doesNotExists')
 
 
-@unittest.skipUnless(os.access('/etc/machine.secret', os.R_OK), 'Requires /etc/machine.secret')
+@unittest.skipUnless(os.access('/etc/machine.secret', os.R_OK,), 'Requires /etc/machine.secret',)
 class TestSelect(unittest.TestCase):
     def test_select(self):
         """Select licence by LDAP search `(univentionLicenseModule=admin)`"""

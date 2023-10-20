@@ -29,13 +29,12 @@ class ScreenShooter(BaseScreenShooter):
         self.selenium.click_button(_("Add"))
         self.take_template_screenshot_and_move_on()
         self.selenium.wait_for_text(_("First name"))
-        self.selenium.enter_input("firstname", "Anna")
-        self.selenium.enter_input("lastname", "Alster")
-        self.selenium.enter_input("username", "anna")
+        self.selenium.enter_input("firstname", "Anna",)
+        self.selenium.enter_input("lastname", "Alster",)
+        self.selenium.enter_input("username", "anna",)
         self.selenium.save_screenshot(
             "umc-users-add_dialog",
-            xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]',
-        )
+            xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]',)
         # self.selenium.click_button(_("Next"))
         # self.selenium.wait_for_text(_("Password *"))
         # self.selenium.enter_input("password_1", "univention")
@@ -47,13 +46,11 @@ class ScreenShooter(BaseScreenShooter):
         self.selenium.wait_for_text(_("User template"))
         template_selection_dropdown_button = self.selenium.driver.find_element(
             By.XPATH,
-            '//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]',
-        )
+            '//input[@name="objectTemplate"]/../..//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]',)
         template_selection_dropdown_button.click()
         self.selenium.save_screenshot(
             "umc-users-template",
-            xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]',
-        )
+            xpath='//*[contains(concat(" ", normalize-space(@class), " "), " umcUdmNewObjectDialog ")]',)
         template_selection_dropdown_button.click()
         self.selenium.click_button(_("Next"))
 
@@ -167,14 +164,12 @@ WnH8MMD8sVxGRIvY4FFFaPoTl9x1z2rHeiisQMzRRRUAf//Z
 
 if __name__ == '__main__':
     with ScreenShooter(translator) as screen_shooter:
-        screen_shooter.udm.create_user(username='anna', firstname='Anna', lastname='Alster', jpegPhoto=portraitPhoto)
+        screen_shooter.udm.create_user(username='anna', firstname='Anna', lastname='Alster', jpegPhoto=portraitPhoto,)
         screen_shooter.udm.create_object(
             'settings/usertemplate', name=_('Developer'),
-            position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}",
-        )
+            position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}",)
         screen_shooter.udm.create_object(
             'settings/usertemplate', name=_('Guest'),
-            position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}",
-        )
+            position=f"cn=templates,cn=univention,{screen_shooter.selenium.ldap_base}",)
 
         screen_shooter.take_screenshots()

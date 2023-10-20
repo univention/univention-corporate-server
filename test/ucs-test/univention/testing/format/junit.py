@@ -23,27 +23,27 @@ class Junit(TestFormatInterface):
     <http://windyroad.org/dl/Open%20Source/JUnit.xsd>
     """
 
-    def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
+    def __init__(self, stream=sys.stdout,):  # type: (IO[str]) -> None
         super().__init__(stream)
         self.outdir = "test-reports"
         self.now = datetime.today()
         self.raw = Raw(stream)
 
-    def begin_test(self, case, prefix=''):  # type: (TestCase, str) -> None
+    def begin_test(self, case, prefix='',):  # type: (TestCase, str) -> None
         """Called before each test."""
-        super().begin_test(case, prefix)
+        super().begin_test(case, prefix,)
         self.now = datetime.today().replace(microsecond=0)
-        print('\r', end='', file=self.stream)
-        self.raw.begin_test(case, prefix)
+        print('\r', end='', file=self.stream,)
+        self.raw.begin_test(case, prefix,)
         self.stream.flush()
 
     def end_run(self):
         print('')  # clear \r
         self.stream.flush()
 
-    def end_test(self, result):  # type: (TestResult) -> None
+    def end_test(self, result,):  # type: (TestResult) -> None
         """Called after each test."""
-        self.raw.end_test(result, end='')
+        self.raw.end_test(result, end='',)
         failures = errors = skipped = disabled = 0
         if result.eofs == 'O':
             pass
@@ -55,11 +55,11 @@ class Junit(TestFormatInterface):
             errors = 1
         else:
             errors = 1
-        classname = result.case.uid.replace("/", ".")
+        classname = result.case.uid.replace("/", ".",)
         if classname.endswith('.py'):
             classname = classname[:-3]
 
-        filename = os.path.join(self.outdir, f'{result.case.uid}.xml')
+        filename = os.path.join(self.outdir, f'{result.case.uid}.xml',)
         if result.case.is_pytest and os.path.exists(filename):
             return  # pytest itself already writes the junit file! create one if pytest did not
 
@@ -71,11 +71,11 @@ class Junit(TestFormatInterface):
                 raise
 
         if result.case.external_junit and os.path.exists(result.case.external_junit):
-            shutil.copyfile(result.case.external_junit, filename)
+            shutil.copyfile(result.case.external_junit, filename,)
             return
 
-        with open(filename, 'w') as f_report:
-            xml = XMLGenerator(f_report, encoding='utf-8')
+        with open(filename, 'w',) as f_report:
+            xml = XMLGenerator(f_report, encoding='utf-8',)
             xml.startDocument()
             xml.startElement('testsuite', {
                 'name': classname,
@@ -87,34 +87,34 @@ class Junit(TestFormatInterface):
                 'skipped': '%d' % (skipped,),
                 'timestamp': self.now.isoformat(),
                 'hostname': os.uname()[1],
-            })
+            },)
 
-            xml.startElement('properties', {})
+            xml.startElement('properties', {},)
             xml.startElement('property', {
                 'name': 'hostname',
                 'value': result.environment.hostname,
-            })
+            },)
             xml.endElement('property')
             xml.startElement('property', {
                 'name': 'architecture',
                 'value': result.environment.architecture,
-            })
+            },)
             xml.endElement('property')
             xml.startElement('property', {
                 'name': 'role',
                 'value': result.environment.role,
-            })
+            },)
             xml.endElement('property')
             xml.startElement('property', {
                 'name': 'version',
                 'value': f'{result.environment.ucs_version}',
-            })
+            },)
             xml.endElement('property')
             if result.case.description:
                 xml.startElement('property', {
                     'name': 'description',
                     'value': result.case.description or result.case.uid,
-                })
+                },)
                 xml.endElement('property')
             xml.endElement('properties')
 
@@ -124,7 +124,7 @@ class Junit(TestFormatInterface):
                 'time': f'{result.duration / 1000.0:0.3f}',
                 'classname': classname,
                 # 'status': '???',
-            })
+            },)
 
             if skipped:
                 try:
@@ -135,20 +135,20 @@ class Junit(TestFormatInterface):
                     msg = '\n'.join([f'{c}' for c in content])
                 xml.startElement('skipped', {
                     'message': msg,
-                })
+                },)
                 xml.endElement('skipped')
             elif errors:
                 xml.startElement('error', {
                     'type': 'TestError',
                     'message': f'{result.result}',
-                })
+                },)
                 xml.endElement('error')
             elif failures:
-                msg = TestCodes.MESSAGE.get(result.reason, '')
+                msg = TestCodes.MESSAGE.get(result.reason, '',)
                 xml.startElement('failure', {
                     'type': 'TestFailure',
                     'message': f'{msg} ({result.case.description or result.case.uid})',
-                })
+                },)
                 xml.endElement('failure')
 
             try:
@@ -156,7 +156,7 @@ class Junit(TestFormatInterface):
             except KeyError:
                 pass
             else:
-                xml.startElement('system-out', {})
+                xml.startElement('system-out', {},)
                 xml.characters(self.utf8(content))
                 xml.endElement('system-out')
 
@@ -165,7 +165,7 @@ class Junit(TestFormatInterface):
             except KeyError:
                 pass
             else:
-                xml.startElement('system-err', {})
+                xml.startElement('system-err', {},)
                 xml.characters(self.utf8(content))
                 xml.endElement('system-err')
 
@@ -174,14 +174,14 @@ class Junit(TestFormatInterface):
             xml.endDocument()
         super().end_test(result)
 
-    def utf8(self, data):  # type: (Any) -> str
-        if isinstance(data, str):
-            data = data.encode('utf-8', 'replace').decode('utf-8')
-        elif isinstance(data, bytes):
-            data = data.decode('utf-8', 'replace').encode('utf-8')
+    def utf8(self, data,):  # type: (Any) -> str
+        if isinstance(data, str,):
+            data = data.encode('utf-8', 'replace',).decode('utf-8')
+        elif isinstance(data, bytes,):
+            data = data.decode('utf-8', 'replace',).encode('utf-8')
         return data
 
-    def format(self, result):  # type: (TestResult) -> None
+    def format(self, result,):  # type: (TestResult) -> None
         """
         >>> from univention.testing.data import TestEnvironment
         >>> te = TestEnvironment()

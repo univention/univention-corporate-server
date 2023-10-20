@@ -52,23 +52,23 @@ class MultipleTokensInDB(Exception):
 
 class TokenDB(object):
 
-    def __init__(self, logger):
+    def __init__(self, logger,):
         self.logger = logger
         self.conn = self.open_db()
 
-    def insert_token(self, username, method, token):
+    def insert_token(self, username, method, token,):
         sql = "INSERT INTO tokens (username, method, timestamp, token) VALUES (%(username)s, %(method)s, %(ts)s, %(token)s);"
         data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token}
         cur = self.conn.cursor()
-        cur.execute(sql, data)
+        cur.execute(sql, data,)
         self.conn.commit()
         cur.close()
 
-    def update_token(self, username, method, token):
+    def update_token(self, username, method, token,):
         sql = "UPDATE tokens SET method=%(method)s, timestamp=%(ts)s, token=%(token)s WHERE username=%(username)s;"
         data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token}
         cur = self.conn.cursor()
-        cur.execute(sql, data)
+        cur.execute(sql, data,)
         self.conn.commit()
         cur.close()
 
@@ -76,7 +76,7 @@ class TokenDB(object):
         sql = "DELETE FROM tokens WHERE "
         sql += " AND ".join(["{0}=%({0})s".format(key) for key in kwargs.keys()])
         cur = self.conn.cursor()
-        cur.execute(sql, kwargs)
+        cur.execute(sql, kwargs,)
         self.conn.commit()
         cur.close()
 
@@ -84,7 +84,7 @@ class TokenDB(object):
         sql = "SELECT * FROM tokens WHERE "
         sql += " AND ".join(["{0}=%({0})s".format(key) for key in kwargs.keys()])
         cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute(sql, kwargs)
+        cur.execute(sql, kwargs,)
         rows = cur.fetchall()
         cur.close()
         return rows
@@ -121,9 +121,9 @@ token VARCHAR(255) NOT NULL);""")
             raise
         try:
             conn = psycopg2.connect("dbname={db_name} user={db_user} host='localhost' password='{db_pw}'".format(
-                db_name=DB_NAME, db_user=DB_USER, db_pw=password))
+                db_name=DB_NAME, db_user=DB_USER, db_pw=password,))
             self.logger.info("db_open(): Connected to database '{}' on server with version {} using protocol version {}.".format(
-                DB_NAME, conn.server_version, conn.protocol_version))
+                DB_NAME, conn.server_version, conn.protocol_version,))
             return conn
         except Exception:
             self.logger.error(f"db_open(): Error connecting to database '{DB_NAME}': {traceback.format_exc()}")

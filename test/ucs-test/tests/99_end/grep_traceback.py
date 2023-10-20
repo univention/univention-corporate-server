@@ -48,44 +48,44 @@ RE_APPCENTER = re.compile(r'^(\s+\d+ .*[\d \-:]+ \[(    INFO| WARNING|   DEBUG| 
 class Tracebacks(set):
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs,)
         self.occurred = 0
         self.filenames = set()
 
 
 @contextlib.contextmanager
-def getfile(filename, mode):
-    if isinstance(filename, str):
-        fd = gzip.open(filename, mode) if filename.endswith('.gz') else open(filename, mode)
+def getfile(filename, mode,):
+    if isinstance(filename, str,):
+        fd = gzip.open(filename, mode,) if filename.endswith('.gz') else open(filename, mode,)
         with fd as fd:
             yield fd, filename
     else:
-        name = getattr(filename, 'name', repr(filename))
-        if isinstance(name, int):
+        name = getattr(filename, 'name', repr(filename),)
+        if isinstance(name, int,):
             name = repr(filename)
         if name.endswith('.gz'):
-            with gzip.open(name, mode) as fd:
+            with gzip.open(name, mode,) as fd:
                 yield fd, name
         else:
             yield filename, name
 
 
-def _readline(fd):
+def _readline(fd,):
     line = fd.readline()
-    if isinstance(line, bytes):
-        return line.decode('UTF-8', 'replace')
+    if isinstance(line, bytes,):
+        return line.decode('UTF-8', 'replace',)
     return line
 
 
-def main(files, ignore_exceptions=[], out=sys.stdout):
+def main(files, ignore_exceptions=[], out=sys.stdout,):
     tracebacks = {}
     for file_ in files:
-        with getfile(file_, 'rt') as (fd, filename):
+        with getfile(file_, 'rt',) as (fd, filename):
             line = True
             while line:
                 line = _readline(fd)
-                if isinstance(line, bytes):
-                    line = line.decode('UTF-8', 'replace')
+                if isinstance(line, bytes,):
+                    line = line.decode('UTF-8', 'replace',)
                 if line.endswith('Traceback (most recent call last):\n'):
                     # TODO: refactor: can probably be done easily by just fetching 2 lines until first line doesn't start with '.*File "' and strip the start
                     # please note that tracebacks may leave out the source code of lines in some certain situations
@@ -95,14 +95,14 @@ def main(files, ignore_exceptions=[], out=sys.stdout):
                     while line.startswith('  ') or RE_BROKEN.match(line) or (RE_APPCENTER.match(line) and 'appcenter' in filename):
                         line = _readline(fd)
                         if num_spaces is None and line.strip().startswith('File '):
-                            num_spaces = len(line.split('File ', 1)[0]) - 2
+                            num_spaces = len(line.split('File ', 1,)[0]) - 2
                         if num_spaces and num_spaces > 0 and line[:num_spaces].startswith('  '):
                             line = line[num_spaces:]
                         if 'appcenter' in filename and RE_APPCENTER.match(line):
-                            line = RE_APPCENTER.sub('', line)
+                            line = RE_APPCENTER.sub('', line,)
                             lines.append(line[1:])
                             if RE_BROKEN.match(line.strip()):
-                                lines.append(RE_APPCENTER.sub('', _readline(fd))[1:])
+                                lines.append(RE_APPCENTER.sub('', _readline(fd),)[1:])
                         elif RE_BROKEN.match(line):
                             lines.append('  ' + line)
                             if 'File "<stdin>"' not in line:
@@ -110,59 +110,59 @@ def main(files, ignore_exceptions=[], out=sys.stdout):
                         else:
                             lines.append(line)
                     d = Tracebacks()
-                    tb = tracebacks.setdefault(''.join(lines[:-1]), d)
+                    tb = tracebacks.setdefault(''.join(lines[:-1]), d,)
                     tb.add(lines[-1])
                     tb.occurred += 1
                     tb.filenames.add(filename)
 
-    print('Found %d tracebacks:' % (len(tracebacks),), file=out)
+    print('Found %d tracebacks:' % (len(tracebacks),), file=out,)
     found = False
     for traceback, exceptions in tracebacks.items():
         ignore = False
         for e in ignore_exceptions:
             ignore = any(e.ignore_exception.search(exc) for exc in exceptions) and (not e.ignore_traceback or any(tb_pattern.search(traceback) for tb_pattern in e.ignore_traceback))
             if ignore:
-                print('', file=out)
+                print('', file=out,)
                 for bug in e.bugs:
-                    print('https://forge.univention.org/bugzilla/show_bug.cgi?id=%d' % (bug,), file=out)
-                print('Ignoring %s ' % (e.ignore_exception.pattern,), file=out)
+                    print('https://forge.univention.org/bugzilla/show_bug.cgi?id=%d' % (bug,), file=out,)
+                print('Ignoring %s ' % (e.ignore_exception.pattern,), file=out,)
                 break
         if ignore:
             continue
         found = True
-        print('', file=out)
-        print('%d times in %s:' % (exceptions.occurred, ', '.join(exceptions.filenames)), file=out)
+        print('', file=out,)
+        print('%d times in %s:' % (exceptions.occurred, ', '.join(exceptions.filenames)), file=out,)
         if os.environ.get('JENKINS_WS'):
             for fn in exceptions.filenames:
-                print('%sws/test/%s' % (os.environ['JENKINS_WS'], os.path.basename(fn)), file=out)
-        print('Traceback (most recent call last):', file=out)
-        print(traceback, end='', file=out)
+                print('%sws/test/%s' % (os.environ['JENKINS_WS'], os.path.basename(fn)), file=out,)
+        print('Traceback (most recent call last):', file=out,)
+        print(traceback, end='', file=out,)
         for exc in exceptions:
-            print(exc.strip(), file=out)
-        print('', file=out)
+            print(exc.strip(), file=out,)
+        print('', file=out,)
     return not found
 
 
-class E(collections.namedtuple('Exception', ['re_exception', 're_traceback', 'bugs_'], defaults=(None, ()))):
+class E(collections.namedtuple('Exception', ['re_exception', 're_traceback', 'bugs_'], defaults=(None, ()),)):
     __slots__ = ()
 
     @property
     def bugs(self):
-        if isinstance(self.bugs_, tuple):
+        if isinstance(self.bugs_, tuple,):
             return self.bugs_
         return (self.bugs_,)
 
     @property
     def ignore_exception(self):
-        if isinstance(self.re_exception, str):
+        if isinstance(self.re_exception, str,):
             return re.compile(self.re_exception)
         return self.re_exception
 
     @property
     def ignore_traceback(self):
-        if isinstance(self.re_traceback, str):
+        if isinstance(self.re_traceback, str,):
             return [re.compile(self.re_traceback)]
-        return [re.compile(t) if isinstance(t, str) else t for t in self.re_traceback or []]
+        return [re.compile(t) if isinstance(t, str,) else t for t in self.re_traceback or []]
 
 
 COMMON_EXCEPTIONS = (
@@ -175,13 +175,13 @@ COMMON_EXCEPTIONS = (
 #    E("INSUFFICIENT_ACCESS: {'desc': 'Insufficient access', 'info': 'no write access to parent'}", ['uldap.py.* in add', 'uldap.py.* in delete'], 53721),
 #    E('permissionDenied: Permission denied.$', ['_create', 'in sync_to_ucs', 'locking.py.*in lock', 'in __primary_group']),
 #    E('univention.admin.uexceptions.permissionDenied: Can not modify lock time of .*', ['in sync_to_ucs']),
-    E(r'^(univention\.admin\.uexceptions\.)?noObject:.*', ['__update_membership', 'sync_to_ucs', 'get_ucs_object']),
+    E(r'^(univention\.admin\.uexceptions\.)?noObject:.*', ['__update_membership', 'sync_to_ucs', 'get_ucs_object'],),
 #    E('^ldapError: No such object', ['in _create']),
 #    E(r"^PAM.error: \('Authentication failure', 7\)", [re.escape('<string>')]),
 #    E(r'^univention.lib.umc.Forbidden: 403 on .* \(command/join/scripts/query\):.*', [re.escape('<string>')]),
 #    E('^ldapError: Invalid syntax: univentionLDAPACLActive: value #0 invalid per syntax', ['_create']),
 #    E('^ldapError: Invalid syntax: univentionLDAPSchemaActive: value #0 invalid per syntax', ['_create']),
-    E(r"^(FileNotFoundError|IOError): \[Errno 2\] No such file or directory: '/etc/machine.secret'", ['getMachineConnection', re.escape('<stdin>')], 51834),
+    E(r"^(FileNotFoundError|IOError): \[Errno 2\] No such file or directory: '/etc/machine.secret'", ['getMachineConnection', re.escape('<stdin>')], 51834,),
 #    E(r'''^(cherrypy\._cperror\.)?NotFound: \(404, "The path '/(login|portal)/.*'''),
 #    E(r'(lockfile\.)?LockTimeout\: Timeout waiting to acquire lock for \/var\/run\/umc-server\.pid'),
 #    E("^FileExistsError:.*'/var/run/umc-server.pid'"),
@@ -189,7 +189,7 @@ COMMON_EXCEPTIONS = (
 #    E('univention.lib.umc.ServiceUnavailable: .*', ['univention-self-service-invitation']),
 #    E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in add']),
 #    E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'cn\=users,dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in search']),  # s4c
-    E(r'^univention.admin.uexceptions.noObject: No such object.*', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get', 'sync_from_ucs']),  # s4c
+    E(r'^univention.admin.uexceptions.noObject: No such object.*', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get', 'sync_from_ucs'],),  # s4c
 #    E(r'univention.admin.uexceptions.valueError: Invalid password.', ['add_in_ucs'], (53838,)),
 #    # during upgrade to UCS 5.0-2
 #    E("^AttributeError: 'PortalsPortalEntryObjectProperties' object has no attribute 'keywords'", ['reloader.py.*in refresh'], (54295,)),
@@ -208,20 +208,20 @@ COMMON_EXCEPTIONS = (
 #    E("AttributeError: 'ConfigRegistry' object has no attribute '_walk'", ['univention-directory-listener/system/nfs-shares.py'], (53291, 53862)),
 #    E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py', 'system/portal_groups.py'], 53862),
 #    E("ImportError: cannot import name localization", ['univention-directory-listener/system/app_attributes.py'], 53862),
-    E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation'], 53670),
-    E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention/lib/umc.py.*in send'], 53670),
-    E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
-    E("ssl.SSLCertVerificationError.*self.signed certificate in certificate chain", ['univention/lib/umc.py.*in send'], 53670),
-    E("univention.lib.umc.ConnectionError: .*Could not send request.*SSLCertVerificationError", ['univention-self-service-invitation'], 53670),
-    E("FileNotFoundError: \\[Errno 2\\] No such file or directory: '/etc/machine.secret'", ['univention/lib/umc.py.*in authenticate_with_machine_account'], 53670),
+    E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation'], 53670,),
+    E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention/lib/umc.py.*in send'], 53670,),
+    E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670,),
+    E("ssl.SSLCertVerificationError.*self.signed certificate in certificate chain", ['univention/lib/umc.py.*in send'], 53670,),
+    E("univention.lib.umc.ConnectionError: .*Could not send request.*SSLCertVerificationError", ['univention-self-service-invitation'], 53670,),
+    E("FileNotFoundError: \\[Errno 2\\] No such file or directory: '/etc/machine.secret'", ['univention/lib/umc.py.*in authenticate_with_machine_account'], 53670,),
 #    E(r"TypeError: modify\(\) got an unexpected keyword argument 'rename_callback'", ['_register_app'], 54578),
 #    E('sqlite3.OperationalError: no such table: S4 rejected', 'stdin', 54586),
 #    # during UCS 5.0-0-errata updates
 #    E(r"TypeError: __init__\(\) got an unexpected keyword argument 'cli_enabled'", ['_register_app'], 54584),
 #
 #    # updater test cases:
-    E('urllib.error.URLError: .*', ['updater/tools.py.*in access']),
-    E('urllib.error.HTTPError: .*', ['updater/tools.py.*in access']),
+    E('urllib.error.URLError: .*', ['updater/tools.py.*in access'],),
+    E('urllib.error.HTTPError: .*', ['updater/tools.py.*in access'],),
     E('ConfigurationError: Configuration error: host is unresolvable'),
     E('ConfigurationError: Configuration error: port is closed'),
     E('ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*'),
@@ -239,9 +239,9 @@ COMMON_EXCEPTIONS = (
 #    # various test cases:
 #    E('AssertionError: .*contain.*traceback.*', ['01_var_log_tracebacks']),
     E('^(univention.management.console.modules.ucstest.)?NonThreadedError$'),
-    E(r'^(ldap\.)?INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
-    E(r'^(ldap\.)?INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs'], 35391),  # 52_s4connector/134sync_incomplete_attribute_ucs
-    E('^ldap.OTHER: .*[cC]annot rename.*parent does not exist', ['sync_from_ucs'], 53748),
+    E(r'^(ldap\.)?INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs'],),
+    E(r'^(ldap\.)?INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs'], 35391,),  # 52_s4connector/134sync_incomplete_attribute_ucs
+    E('^ldap.OTHER: .*[cC]annot rename.*parent does not exist', ['sync_from_ucs'], 53748,),
     E('univention.lib.umc.ConnectionError:.*machine.secret.*'),
     E('univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*'),
 #    E(r'^OSError: \[Errno 24\] Too many open files'),
@@ -249,54 +249,54 @@ COMMON_EXCEPTIONS = (
 #    E('ImportError: cannot import name saxutils', [r'_cperror\.py']),
 #    E(r'gaierror: \[Errno -5\] No address associated with hostname'),
     E('.*moduleCreationFailed: Target directory.*not below.*'),
-    E("univention.udm.exceptions.NoObject: No object found at DN 'cn=internal-name-for-(folder|category|entry)", ['in refresh'], 53333),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
-    E("univention.admin.uexceptions.noObject: cn=internal-name-for-(folder|category|entry),cn=entry,cn=portals", None, 53333),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
+    E("univention.udm.exceptions.NoObject: No object found at DN 'cn=internal-name-for-(folder|category|entry)", ['in refresh'], 53333,),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
+    E("univention.admin.uexceptions.noObject: cn=internal-name-for-(folder|category|entry),cn=entry,cn=portals", None, 53333,),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 #    E("ldap.NO_SUCH_OBJECT:.*'matched': 'cn=entry,cn=portals,cn=univention,"),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
 #    E('univention.testing.utils.LDAPObjectNotFound: DN:', ['test_container_cn_rename_uppercase_rollback_with_special_characters'], 53776),
 #    E('dns.resolver.NoAnswer: The DNS response does not contain an answer to the question:', ['test__dns_reverse_zone_check_resolve', 'test_dns_reverse_zone_check_resolve'], 53775),
 #    E('^KeyError$', ['in find_rrset'], 53775),
 #    # UCS@school test cases:
     # ("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:description' must be a string.", ['in prepare_import'], 53564),
-    E("ucsschool.importer.exceptions.ConfigurationError: Columns configured in csv:mapping missing:", ['in read_input'], 53564),
-    E("ValueError: time data '.*' does not match format '%Y-%m-%d'", ['import_user.py.* in validate'], 53564),
-    E("ucsschool.importer.exceptions.InitialisationError: Recursion detected when resolving formatting dependencies for 'email'.", ['user_import.py.* in read_input'], 53564),
-    E("ucsschool.importer.exceptions.InvalidBirthday: Birthday has invalid format: '.*' error: time data '.*' does not match format '%Y-%m-%d'.", ['user_import.py.* in create_and_modify_users'], 53564),
-    E("ucsschool.importer.exceptions.UcsSchoolImportSkipImportRecord: Skipping user '.*' with firstname starting with \".\"", ['user_import.py.* in create_and_modify_users'], 53564),
-    E("ucsschool.importer.exceptions.TooManyErrors: More than 0 errors.", ['cmdline.py.* in main', 'in import_users'], 53564),
+    E("ucsschool.importer.exceptions.ConfigurationError: Columns configured in csv:mapping missing:", ['in read_input'], 53564,),
+    E("ValueError: time data '.*' does not match format '%Y-%m-%d'", ['import_user.py.* in validate'], 53564,),
+    E("ucsschool.importer.exceptions.InitialisationError: Recursion detected when resolving formatting dependencies for 'email'.", ['user_import.py.* in read_input'], 53564,),
+    E("ucsschool.importer.exceptions.InvalidBirthday: Birthday has invalid format: '.*' error: time data '.*' does not match format '%Y-%m-%d'.", ['user_import.py.* in create_and_modify_users'], 53564,),
+    E("ucsschool.importer.exceptions.UcsSchoolImportSkipImportRecord: Skipping user '.*' with firstname starting with \".\"", ['user_import.py.* in create_and_modify_users'], 53564,),
+    E("ucsschool.importer.exceptions.TooManyErrors: More than 0 errors.", ['cmdline.py.* in main', 'in import_users'], 53564,),
     E(
         r"ucsschool.importer.exceptions.InitialisationError: Configuration value of username:max_length:default is .*, "
-        r"but must not be higher than UCR variable ucsschool/username/max_length \(20\).", ['in prepare_import'], 53564),
-    E("ucsschool.importer.exceptions.InitialisationError: The 'user_deletion' configuration key is deprecated. Please set 'deletion_grace_period'.", ['in prepare_import'], 53564),
-    E("ucsschool.importer.exceptions.InitialisationError: Thou shalt not import birthdays!", ['in prepare_import'], 53564),
-    E("ucsschool.importer.exceptions.InitialisationError: Deprecated configuration key 'scheme:username:allow_rename'.", ['in prepare_import'], 53564),
-    E("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:.*' must be a string.", ['in prepare_import'], 53564),
-    E("ucsschool.importer.exceptions.MoveError: Error moving.*from school 'NoSchool' to", ['in create_and_modify_users'], 53564),
-    E("ucsschool.importer.exceptions.UniqueIdError: Username '.*' is already in use by .*", ['in create_and_modify_users'], 53564),
-    E('ucsschool.importer.exceptions.UserValidationError: <unprintable UserValidationError object>', ['in create_and_modify_users'], 53564),
-    E(r"ucsschool.importer.exceptions.UserValidationError: .* ValidationError\({'school_classes': \[\"School '302_http_api_no_school' in 'school_classes' is missing in the users 'school\(s\)' attribute.\"\]}\)", ['in create_and_modify_users']),
-    E("ucsschool.importer.exceptions.UnknownSchoolName: School '.*' does not exist.", ['in create_and_modify_users'], 53564),
-    E("univention.admin.uexceptions.pwToShort: Password policy error: The password is too short, at least [0-9] characters needed!", ['ucsschool/importer/mass_import']),
-    E(".*WARNING/ForkPoolWorker.* in create_and_modify_users", [], 53564),
-    E(r"ucsschool.lib.models.attributes.ValidationError: .*is missing in the users 'school\(s\)' attributes", ['in create_and_modify_users'], 53564),
-    E(r"ucsschool.lib.models.attributes.ValidationError: {'school_classes': \[\"School '302_http_api_no_school' in 'school_classes' is missing in the users 'school\(s\)' attribute.\"\]}", ['in create_and_modify_users']),
-    E("Exception: Empty user.input_data.", ['test228_input_data_pyhook.py'], 53564),
-    E("ConnectionForced:.*broker forced connection closure with reason .*shutdown", ['celery'], 53564),
-    E(r"error: \[Errno 104\] Connection reset by peer", ['celery'], (53671, 53564)),
-    E(r"ConnectionResetError: \[Errno 104\] Connection reset by peer", ['celery'], (53671, 53564)),
-    E("gunicorn.errors.HaltServer:.*Worker failed to boot", ['gunicorn'], 53564),
-    E("univention.admin.uexceptions.noLock: .*The attribute 'uid' could not get locked.", ['users/user.py.*in _ldap_pre_ready'], 53749),
-    E("univention.admin.uexceptions.uidAlreadyUsed: .*", ['in sync_to_ucs'], 53749),
-    E(r"IOError: \[Errno 2\] No such file or directory: u'/etc/ucsschool-import/(postgres|django_key).secret'", ['gunicorn'], 53750),
-    E("ImportError: Error accessing LDAP via machine account: {'desc': 'Invalid credentials'}", ['univention-directory-listener/system/ucsschool-s4-branch-site.py']),
-    E("ldap.CONSTRAINT_VIOLATION: .*unique index violation on objectSid", ['in sync_from_ucs'], 43775),  # a test creates a user with the default Administrators SID, which creates a SID-Conflict
-    E("ucsschool.importer.exceptions.UnknownRole: Unknown role 'triggererror' found in 'Typ' column.", ['csv_reader.py']),
-    E("KeyError: 'triggererror'", ['csv_reader.py']),
+        r"but must not be higher than UCR variable ucsschool/username/max_length \(20\).", ['in prepare_import'], 53564,),
+    E("ucsschool.importer.exceptions.InitialisationError: The 'user_deletion' configuration key is deprecated. Please set 'deletion_grace_period'.", ['in prepare_import'], 53564,),
+    E("ucsschool.importer.exceptions.InitialisationError: Thou shalt not import birthdays!", ['in prepare_import'], 53564,),
+    E("ucsschool.importer.exceptions.InitialisationError: Deprecated configuration key 'scheme:username:allow_rename'.", ['in prepare_import'], 53564,),
+    E("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:.*' must be a string.", ['in prepare_import'], 53564,),
+    E("ucsschool.importer.exceptions.MoveError: Error moving.*from school 'NoSchool' to", ['in create_and_modify_users'], 53564,),
+    E("ucsschool.importer.exceptions.UniqueIdError: Username '.*' is already in use by .*", ['in create_and_modify_users'], 53564,),
+    E('ucsschool.importer.exceptions.UserValidationError: <unprintable UserValidationError object>', ['in create_and_modify_users'], 53564,),
+    E(r"ucsschool.importer.exceptions.UserValidationError: .* ValidationError\({'school_classes': \[\"School '302_http_api_no_school' in 'school_classes' is missing in the users 'school\(s\)' attribute.\"\]}\)", ['in create_and_modify_users'],),
+    E("ucsschool.importer.exceptions.UnknownSchoolName: School '.*' does not exist.", ['in create_and_modify_users'], 53564,),
+    E("univention.admin.uexceptions.pwToShort: Password policy error: The password is too short, at least [0-9] characters needed!", ['ucsschool/importer/mass_import'],),
+    E(".*WARNING/ForkPoolWorker.* in create_and_modify_users", [], 53564,),
+    E(r"ucsschool.lib.models.attributes.ValidationError: .*is missing in the users 'school\(s\)' attributes", ['in create_and_modify_users'], 53564,),
+    E(r"ucsschool.lib.models.attributes.ValidationError: {'school_classes': \[\"School '302_http_api_no_school' in 'school_classes' is missing in the users 'school\(s\)' attribute.\"\]}", ['in create_and_modify_users'],),
+    E("Exception: Empty user.input_data.", ['test228_input_data_pyhook.py'], 53564,),
+    E("ConnectionForced:.*broker forced connection closure with reason .*shutdown", ['celery'], 53564,),
+    E(r"error: \[Errno 104\] Connection reset by peer", ['celery'], (53671, 53564),),
+    E(r"ConnectionResetError: \[Errno 104\] Connection reset by peer", ['celery'], (53671, 53564),),
+    E("gunicorn.errors.HaltServer:.*Worker failed to boot", ['gunicorn'], 53564,),
+    E("univention.admin.uexceptions.noLock: .*The attribute 'uid' could not get locked.", ['users/user.py.*in _ldap_pre_ready'], 53749,),
+    E("univention.admin.uexceptions.uidAlreadyUsed: .*", ['in sync_to_ucs'], 53749,),
+    E(r"IOError: \[Errno 2\] No such file or directory: u'/etc/ucsschool-import/(postgres|django_key).secret'", ['gunicorn'], 53750,),
+    E("ImportError: Error accessing LDAP via machine account: {'desc': 'Invalid credentials'}", ['univention-directory-listener/system/ucsschool-s4-branch-site.py'],),
+    E("ldap.CONSTRAINT_VIOLATION: .*unique index violation on objectSid", ['in sync_from_ucs'], 43775,),  # a test creates a user with the default Administrators SID, which creates a SID-Conflict
+    E("ucsschool.importer.exceptions.UnknownRole: Unknown role 'triggererror' found in 'Typ' column.", ['csv_reader.py'],),
+    E("KeyError: 'triggererror'", ['csv_reader.py'],),
 #    # Tracebacks caused by specific UCS bugs:
 #    E(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py'], 52765),
-    E(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect'], 51671),
-    E(r"(OSError|FileNotFoundError): \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py'], 51670),
+    E(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect'], 51671,),
+    E(r"(OSError|FileNotFoundError): \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py'], 51670,),
 #    E("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4'], 50282),
-    E("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs'], 49879),
+    E("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs'], 49879,),
 #    E('^ImportError: No module named __base', [r'app_attributes\.py', '_update_modules', 'univention-management-console-server.*in run'], 50338),
 #    E('^ImportError: No module named s4', ['_update_modules'], 50338),
 #    E(r"^TypeError\:\ \_\_init\_\_\(\)\ got\ an\ unexpected\ keyword\ argument\ \'help\_text\'", ['_update_modules'], 50338),
@@ -308,17 +308,17 @@ COMMON_EXCEPTIONS = (
 #    E('^ImportError: No module named service', ['univention-app'], 50381),
 #    E('^ImportError: No module named ldap_extension', ['get_action'], 50381),
 #    E('^AttributeError: __exit__', ['with Server'], 50583),
-    E(r'^(univention\.admin\.uexceptions\.)?primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs'], 49881),
+    E(r'^(univention\.admin\.uexceptions\.)?primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs'], 49881,),
 #    E(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python  # Bug #52958
 #    E(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/hooks.d/.*", ['import_hook_files']),  # package upgrade before dh-python  # Bug #52958
-    E(r'^(univention\.admin\.uexceptions\.)?(insufficientInformation|noSuperordinate):.*No superordinate object given.?', ['sync_to_ucs'], 49880),
+    E(r'^(univention\.admin\.uexceptions\.)?(insufficientInformation|noSuperordinate):.*No superordinate object given.?', ['sync_to_ucs'], 49880,),
 #    E("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
 #    E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/var/cache/univention-appcenter/.*\.logo'", ['File "<stdin>"']),  # 55_app_modproxy
 #    E('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups'], (46932, 48943)),
 #    E(r"AttributeError\: \'NoneType\' object has no attribute \'searchDn\'", ['get_user_groups'], 48943),
 #    E("^KeyError: 'gidNumber'", ['_ldap_pre_remove'], 51669),
 #    E(r'^(BrokenPipeError|IOError): \[Errno 32\] Broken pipe', ['process_output'], 32532),
-    E(r'^(ldap\.)?NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete'], (43722, 47343)),
+    E(r'^(ldap\.)?NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete'], (43722, 47343),),
 #    E('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
 #    E(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket"),
 #    E(r'ldapError\:\ Type\ or\ value\ exists\:\ univentionPortalEntryLink\:\ value\ \#0\ provided\ more\ than\ once', None, 51808),
@@ -331,14 +331,14 @@ COMMON_EXCEPTIONS = (
 #    E('pg.InternalError: FATAL:.*Datenbank .*pkgdb.* existiert nicht', ['univention-pkgdb-scan'], 52791),
 #    E('pg.InternalError: could not connect to server: No such file or directory', ['univention-pkgdb-scan'], 52795),
 #    E("TypeError: 'NoneType' object has no attribute '__getitem__'", ['add_primary_group_to_addlist'], 47440),
-    E("TypeError: argument of type 'NoneType' is not iterable", ['disable_user_from_ucs', 'primary_group_sync_from_ucs'], (52788, 51809)),
-    E(r"FileNotFoundError\: \[Errno 2\] No such file or directory\: \'\/etc\/machine\.secret\'", [r'bind\.py.*_ldap_auth_string'], 52789),
+    E("TypeError: argument of type 'NoneType' is not iterable", ['disable_user_from_ucs', 'primary_group_sync_from_ucs'], (52788, 51809),),
+    E(r"FileNotFoundError\: \[Errno 2\] No such file or directory\: \'\/etc\/machine\.secret\'", [r'bind\.py.*_ldap_auth_string'], 52789,),
 #    E('dbm.error: db type could not be determined', ['univention-management-console-web-server'], 52764),
 #    E('at least one delete handler failed', ['_add_all_shares_below_this_container_to_dn_list', 'cleanup_python_moduledir'], 43171),
 #    E('ldap.NO_SUCH_OBJECT', ['_add_all_shares_below_this_container_to_dn_list'], 43171),
 #    E(re.escape('LISTENER    ( PROCESS ) : updating') + '.*command a', ['cleanup_python_moduledir']),  # ...
 #    E('ldap.ALREADY_EXISTS.*as it is still the primaryGroupID', ['in sync_from_ucs'], 53278),
-    E('ldap.ALREADY_EXISTS.*already set via primaryGroupID', ['in sync_from_ucs'], 53278),
+    E('ldap.ALREADY_EXISTS.*already set via primaryGroupID', ['in sync_from_ucs'], 53278,),
 #    E('ldap.NOT_ALLOWED_ON_NONLEAF:.*Unable to delete a non-leaf node .*it has .* child', ['in delete_in_s4'], 53278),
 #    E('univention.admin.uexceptions.valueError: The domain part of the primary mail address is not in list of configured mail domains:', ['in sync_to_ucs'], 53277),
 #    E(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns'], 53332),
@@ -351,8 +351,8 @@ COMMON_EXCEPTIONS = (
 #    E("AttributeError: module 'univention.admin.syntax' has no attribute 'UMCMessageCatalogFilename_and_GNUMessageCatalog'", ['_unregister_app', 'import_hook_files', 'pupilgroups.py'], 53754),
 #    E("AttributeError: module 'univention.admin.syntax' has no attribute 'emailAddressThatMayEndWithADot'", ['_update_modules', '/usr/sbin/univention-management-console-server'], 55590),
 #    E('univention.admin.uexceptions.noObject: uid=.*', ['connector/ad/.*set_userPrincipalName_from_ucr'], 53769),
-    E('ldap.TYPE_OR_VALUE_EXISTS:.*SINGLE-VALUE attribute description.*specified more than once', ['sync_from_ucs'], 52801),
-    E('univention.admin.uexceptions.wrongObjectType: .*relativeDomainName=.* is not recognized as dns/txt_record.', ['ucs_txt_record_create'], 53425),
+    E('ldap.TYPE_OR_VALUE_EXISTS:.*SINGLE-VALUE attribute description.*specified more than once', ['sync_from_ucs'], 52801,),
+    E('univention.admin.uexceptions.wrongObjectType: .*relativeDomainName=.* is not recognized as dns/txt_record.', ['ucs_txt_record_create'], 53425,),
 #    E(r"ldap.TYPE_OR_VALUE_EXISTS: \{'desc': 'Type or value exists', 'info': 'modify\/add: uniqueMember: value \#\d already exists'\}", ['object_memberships_sync_to_ucs'], 54590),
 #    # Tracebacks caused by specific UCS@school bugs:
 #    E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
@@ -383,7 +383,7 @@ def test_appcenter():
 """)
     fd.name = '/var/log/univention/appcenter.log'
     out = io.StringIO('w')
-    assert not main([fd], out=out)
+    assert not main([fd], out=out,)
     assert '''Traceback (most recent call last):
   File "/usr/sbin/univention-pkgdb-scan", line 37, in <module>
     univention.pkgdb.main()
@@ -401,7 +401,7 @@ foo = bar
 Exception: foo
 bar""")
     out = io.StringIO('w')
-    assert not main([fd], out=out)
+    assert not main([fd], out=out,)
     assert """Traceback (most recent call last):
   File "<stdin>", line 8, in <module>
   File "xyz", line 8, in bar
@@ -418,7 +418,7 @@ def test_journald_indented():
     Exception: foo
 bar""")
     out = io.StringIO('w')
-    assert not main([fd], out=out)
+    assert not main([fd], out=out,)
     assert """Traceback (most recent call last):
   File "<stdin>", line 8, in <module>
   File "xyz", line 8, in bar
@@ -428,9 +428,9 @@ Exception: foo""" in out.getvalue(), out.getvalue()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--ignore-exception', '-i', action='append', type=E, default=[E('^$')])
-    parser.add_argument('-d', '--default-exceptions', action='store_true')
-    parser.add_argument('files', type=argparse.FileType('r'), nargs='+')
+    parser.add_argument('--ignore-exception', '-i', action='append', type=E, default=[E('^$')],)
+    parser.add_argument('-d', '--default-exceptions', action='store_true',)
+    parser.add_argument('files', type=argparse.FileType('r'), nargs='+',)
     args = parser.parse_args()
     ignore_exceptions = COMMON_EXCEPTIONS if args.default_exceptions else args.ignore_exception
-    sys.exit(int(not main(args.files, ignore_exceptions=ignore_exceptions)))
+    sys.exit(int(not main(args.files, ignore_exceptions=ignore_exceptions,)))

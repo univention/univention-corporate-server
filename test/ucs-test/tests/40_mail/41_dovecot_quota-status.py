@@ -39,7 +39,7 @@ def main():
                     "mailHomeServer": '%s.%s' % (ucr.get("hostname"), domain),
                     "mailPrimaryAddress": mail,
                     "mailUserQuota": str(quota01),
-                })
+                },)
 
             #
             # send email with a size of 70% of quota, should be accepted
@@ -51,14 +51,14 @@ def main():
                 subject="41_dovecot_quota-status 1",
                 msg=msg1,
                 server=socket.gethostname(),
-                debuglevel=0)
+                debuglevel=0,)
             print('OK: Mail was received.')
             time.sleep(10)
             subprocess.call(["/usr/bin/doveadm", "quota", "recalc", "-u", mail])
             print(f'Output of "doveadm quota get -u {mail}":')
             subprocess.call(["/usr/bin/doveadm", "quota", "get", "-u", mail])
 
-            if not mail_delivered("Subject: 41_dovecot_quota-status 1", mail_address=mail):
+            if not mail_delivered("Subject: 41_dovecot_quota-status 1", mail_address=mail,):
                 utils.fail(
                     "Fail: under quota message not delivered missing (quota was"
                     " set to %d MB, len(message body): %d KB)." % (quota01, len(msg1) / 1024),
@@ -75,7 +75,7 @@ def main():
                     subject="41_dovecot_quota-status 2",
                     msg=msg2,
                     server=socket.gethostname(),
-                    debuglevel=0)
+                    debuglevel=0,)
                 print('FAIL: Mail was not rejected.')
             except smtplib.SMTPRecipientsRefused:
                 rejected = True
@@ -83,7 +83,7 @@ def main():
             subprocess.call(["/usr/bin/doveadm", "quota", "recalc", "-u", mail])
             print(f'Output of "doveadm quota get -u {mail}":')
             subprocess.call(["/usr/bin/doveadm", "quota", "get", "-u", mail])
-            if not rejected or mail_delivered("Subject: 41_dovecot_quota-status 2", mail_address=mail):
+            if not rejected or mail_delivered("Subject: 41_dovecot_quota-status 2", mail_address=mail,):
                 utils.fail(
                     "Fail: over quota message was delivered (quota was set to %d MB, len(message body 1): "
                     "%d KB, len(message body 2): %d KB). " % (quota01, len(msg1) / 1024, len(msg2) / 1024),

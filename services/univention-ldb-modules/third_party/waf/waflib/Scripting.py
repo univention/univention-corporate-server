@@ -15,7 +15,7 @@ no_climb_commands = ['configure']
 
 default_cmd = "build"
 
-def waf_entry_point(current_directory, version, wafdir):
+def waf_entry_point(current_directory, version, wafdir,):
 	"""
 	This is the main entry point, all Waf execution starts here.
 
@@ -29,7 +29,7 @@ def waf_entry_point(current_directory, version, wafdir):
 	Logs.init_log()
 
 	if Context.WAFVERSION != version:
-		Logs.error('Waf script %r and library %r do not match (directory %r)', version, Context.WAFVERSION, wafdir)
+		Logs.error('Waf script %r and library %r do not match (directory %r)', version, Context.WAFVERSION, wafdir,)
 		sys.exit(1)
 
 	# Store current directory before any chdir
@@ -41,7 +41,7 @@ def waf_entry_point(current_directory, version, wafdir):
 	if len(sys.argv) > 1:
 		# os.path.join handles absolute paths
 		# if sys.argv[1] is not an absolute path, then it is relative to the current working directory
-		potential_wscript = os.path.join(current_directory, sys.argv[1])
+		potential_wscript = os.path.join(current_directory, sys.argv[1],)
 		if os.path.basename(potential_wscript) == Context.WSCRIPT_FILE and os.path.isfile(potential_wscript):
 			# need to explicitly normalize the path, as it may contain extra '/.'
 			path = os.path.normpath(os.path.dirname(potential_wscript))
@@ -73,11 +73,11 @@ def waf_entry_point(current_directory, version, wafdir):
 			lst = os.listdir(cur)
 		except OSError:
 			lst = []
-			Logs.error('Directory %r is unreadable!', cur)
+			Logs.error('Directory %r is unreadable!', cur,)
 		if Options.lockfile in lst:
 			env = ConfigSet.ConfigSet()
 			try:
-				env.load(os.path.join(cur, Options.lockfile))
+				env.load(os.path.join(cur, Options.lockfile,))
 				ino = os.stat(cur)[stat.ST_INO]
 			except EnvironmentError:
 				pass
@@ -101,7 +101,7 @@ def waf_entry_point(current_directory, version, wafdir):
 								load = True
 								break
 				else:
-					Logs.warn('invalid lock file in %s', cur)
+					Logs.warn('invalid lock file in %s', cur,)
 					load = False
 
 				if load:
@@ -122,35 +122,35 @@ def waf_entry_point(current_directory, version, wafdir):
 		if no_climb:
 			break
 
-	wscript = os.path.normpath(os.path.join(Context.run_dir, Context.WSCRIPT_FILE))
+	wscript = os.path.normpath(os.path.join(Context.run_dir, Context.WSCRIPT_FILE,))
 	if not os.path.exists(wscript):
 		if options.whelp:
 			Logs.warn('These are the generic options (no wscript/project found)')
 			ctx.parser.print_help()
 			sys.exit(0)
-		Logs.error('Waf: Run from a folder containing a %r file (or try -h for the generic options)', Context.WSCRIPT_FILE)
+		Logs.error('Waf: Run from a folder containing a %r file (or try -h for the generic options)', Context.WSCRIPT_FILE,)
 		sys.exit(1)
 
 	try:
 		os.chdir(Context.run_dir)
 	except OSError:
-		Logs.error('Waf: The folder %r is unreadable', Context.run_dir)
+		Logs.error('Waf: The folder %r is unreadable', Context.run_dir,)
 		sys.exit(1)
 
 	try:
 		set_main_module(wscript)
 	except Errors.WafError as e:
-		Logs.pprint('RED', e.verbose_msg)
+		Logs.pprint('RED', e.verbose_msg,)
 		Logs.error(str(e))
 		sys.exit(1)
 	except Exception as e:
-		Logs.error('Waf: The wscript in %r is unreadable', Context.run_dir)
+		Logs.error('Waf: The wscript in %r is unreadable', Context.run_dir,)
 		traceback.print_exc(file=sys.stdout)
 		sys.exit(2)
 
 	if options.profile:
 		import cProfile, pstats
-		cProfile.runctx('from waflib import Scripting; Scripting.run_commands()', {}, {}, 'profi.txt')
+		cProfile.runctx('from waflib import Scripting; Scripting.run_commands()', {}, {}, 'profi.txt',)
 		p = pstats.Stats('profi.txt')
 		p.sort_stats('time').print_stats(75) # or 'cumulative'
 	else:
@@ -167,7 +167,7 @@ def waf_entry_point(current_directory, version, wafdir):
 					raise
 		except Errors.WafError as e:
 			if Logs.verbose > 1:
-				Logs.pprint('RED', e.verbose_msg)
+				Logs.pprint('RED', e.verbose_msg,)
 			Logs.error(e.msg)
 			sys.exit(1)
 		except SystemExit:
@@ -176,10 +176,10 @@ def waf_entry_point(current_directory, version, wafdir):
 			traceback.print_exc(file=sys.stdout)
 			sys.exit(2)
 		except KeyboardInterrupt:
-			Logs.pprint('RED', 'Interrupted')
+			Logs.pprint('RED', 'Interrupted',)
 			sys.exit(68)
 
-def set_main_module(file_path):
+def set_main_module(file_path,):
 	"""
 	Read the main wscript file into :py:const:`waflib.Context.Context.g_module` and
 	bind default functions such as ``init``, ``dist``, ``distclean`` if not defined.
@@ -194,10 +194,10 @@ def set_main_module(file_path):
 	# note: to register the module globally, use the following:
 	# sys.modules['wscript_main'] = g_module
 
-	def set_def(obj):
+	def set_def(obj,):
 		name = obj.__name__
 		if not name in Context.g_module.__dict__:
-			setattr(Context.g_module, name, obj)
+			setattr(Context.g_module, name, obj,)
 	for k in (dist, distclean, distcheck):
 		set_def(k)
 	# add dummy init and shutdown functions if they're not defined
@@ -216,7 +216,7 @@ def parse_options():
 	ctx = Context.create_context('options')
 	ctx.execute()
 	if not Options.commands:
-		if isinstance(default_cmd, list):
+		if isinstance(default_cmd, list,):
 			Options.commands.extend(default_cmd)
 		else:
 			Options.commands.append(default_cmd)
@@ -224,7 +224,7 @@ def parse_options():
 		ctx.parser.print_help()
 		sys.exit(0)
 
-def run_command(cmd_name):
+def run_command(cmd_name,):
 	"""
 	Executes a single Waf command. Called by :py:func:`waflib.Scripting.run_commands`.
 
@@ -253,12 +253,12 @@ def run_commands():
 	while Options.commands:
 		cmd_name = Options.commands.pop(0)
 		ctx = run_command(cmd_name)
-		Logs.info('%r finished successfully (%s)', cmd_name, ctx.log_timer)
+		Logs.info('%r finished successfully (%s)', cmd_name, ctx.log_timer,)
 	run_command('shutdown')
 
 ###########################################################################################
 
-def distclean_dir(dirname):
+def distclean_dir(dirname,):
 	"""
 	Distclean function called in the particular case when::
 
@@ -270,11 +270,11 @@ def distclean_dir(dirname):
 	for (root, dirs, files) in os.walk(dirname):
 		for f in files:
 			if f.endswith(('.o', '.moc', '.exe')):
-				fname = os.path.join(root, f)
+				fname = os.path.join(root, f,)
 				try:
 					os.remove(fname)
 				except OSError:
-					Logs.warn('Could not remove %r', fname)
+					Logs.warn('Could not remove %r', fname,)
 
 	for x in (Context.DBFILE, 'config.log'):
 		try:
@@ -287,22 +287,22 @@ def distclean_dir(dirname):
 	except OSError:
 		pass
 
-def distclean(ctx):
+def distclean(ctx,):
 	'''removes build folders and data'''
 
-	def remove_and_log(k, fun):
+	def remove_and_log(k, fun,):
 		try:
 			fun(k)
 		except EnvironmentError as e:
 			if e.errno != errno.ENOENT:
-				Logs.warn('Could not remove %r', k)
+				Logs.warn('Could not remove %r', k,)
 
 	# remove waf cache folders on the top-level
 	if not Options.commands:
 		for k in os.listdir('.'):
 			for x in '.waf-2 waf-2 .waf3-2 waf3-2'.split():
 				if k.startswith(x):
-					remove_and_log(k, shutil.rmtree)
+					remove_and_log(k, shutil.rmtree,)
 
 	# remove a build folder, if any
 	cur = '.'
@@ -312,25 +312,25 @@ def distclean(ctx):
 	try:
 		lst = os.listdir(cur)
 	except OSError:
-		Logs.warn('Could not read %r', cur)
+		Logs.warn('Could not read %r', cur,)
 		return
 
 	if Options.lockfile in lst:
-		f = os.path.join(cur, Options.lockfile)
+		f = os.path.join(cur, Options.lockfile,)
 		try:
 			env = ConfigSet.ConfigSet(f)
 		except EnvironmentError:
-			Logs.warn('Could not read %r', f)
+			Logs.warn('Could not read %r', f,)
 			return
 
 		if not env.out_dir or not env.top_dir:
-			Logs.warn('Invalid lock file %r', f)
+			Logs.warn('Invalid lock file %r', f,)
 			return
 
 		if env.out_dir == env.top_dir:
 			distclean_dir(env.out_dir)
 		else:
-			remove_and_log(env.out_dir, shutil.rmtree)
+			remove_and_log(env.out_dir, shutil.rmtree,)
 
 		env_dirs = [env.out_dir]
 		if not (os.environ.get('NO_LOCK_IN_TOP') or ctx.options.no_lock_in_top):
@@ -338,8 +338,8 @@ def distclean(ctx):
 		if not (os.environ.get('NO_LOCK_IN_RUN') or ctx.options.no_lock_in_run):
 			env_dirs.append(env.run_dir)
 		for k in env_dirs:
-			p = os.path.join(k, Options.lockfile)
-			remove_and_log(p, os.remove)
+			p = os.path.join(k, Options.lockfile,)
+			remove_and_log(p, os.remove,)
 
 class Dist(Context.Context):
 	'''creates an archive containing the project source code'''
@@ -377,18 +377,18 @@ class Dist(Context.Context):
 		files = self.get_files()
 
 		if self.algo.startswith('tar.'):
-			tar = tarfile.open(node.abspath(), 'w:' + self.algo.replace('tar.', ''))
+			tar = tarfile.open(node.abspath(), 'w:' + self.algo.replace('tar.', '',),)
 
 			for x in files:
-				self.add_tar_file(x, tar)
+				self.add_tar_file(x, tar,)
 			tar.close()
 		elif self.algo == 'zip':
 			import zipfile
-			zip = zipfile.ZipFile(node.abspath(), 'w', compression=zipfile.ZIP_DEFLATED)
+			zip = zipfile.ZipFile(node.abspath(), 'w', compression=zipfile.ZIP_DEFLATED,)
 
 			for x in files:
 				archive_name = self.get_base_name() + '/' + x.path_from(self.base_path)
-				zip.write(x.abspath(), archive_name, zipfile.ZIP_DEFLATED)
+				zip.write(x.abspath(), archive_name, zipfile.ZIP_DEFLATED,)
 			zip.close()
 		else:
 			self.fatal('Valid algo types are tar.bz2, tar.gz, tar.xz or zip')
@@ -400,9 +400,9 @@ class Dist(Context.Context):
 		else:
 			digest = ' (sha256=%r)' % sha256(node.read(flags='rb')).hexdigest()
 
-		Logs.info('New archive created: %s%s', self.arch_name, digest)
+		Logs.info('New archive created: %s%s', self.arch_name, digest,)
 
-	def get_tar_path(self, node):
+	def get_tar_path(self, node,):
 		"""
 		Return the path to use for a node in the tar archive, the purpose of this
 		is to let subclases resolve symbolic links or to change file names
@@ -412,7 +412,7 @@ class Dist(Context.Context):
 		"""
 		return node.abspath()
 
-	def add_tar_file(self, x, tar):
+	def add_tar_file(self, x, tar,):
 		"""
 		Adds a file to the tar archive. Symlinks are not verified.
 
@@ -420,15 +420,15 @@ class Dist(Context.Context):
 		:param tar: tar file object
 		"""
 		p = self.get_tar_path(x)
-		tinfo = tar.gettarinfo(name=p, arcname=self.get_tar_prefix() + '/' + x.path_from(self.base_path))
+		tinfo = tar.gettarinfo(name=p, arcname=self.get_tar_prefix() + '/' + x.path_from(self.base_path),)
 		tinfo.uid   = 0
 		tinfo.gid   = 0
 		tinfo.uname = 'root'
 		tinfo.gname = 'root'
 
 		if os.path.isfile(p):
-			with open(p, 'rb') as f:
-				tar.addfile(tinfo, fileobj=f)
+			with open(p, 'rb',) as f:
+				tar.addfile(tinfo, fileobj=f,)
 		else:
 			tar.addfile(tinfo)
 
@@ -456,7 +456,7 @@ class Dist(Context.Context):
 		try:
 			self.arch_name
 		except AttributeError:
-			self.arch_name = self.get_base_name() + '.' + self.ext_algo.get(self.algo, self.algo)
+			self.arch_name = self.get_base_name() + '.' + self.ext_algo.get(self.algo, self.algo,)
 		return self.arch_name
 
 	def get_base_name(self):
@@ -472,8 +472,8 @@ class Dist(Context.Context):
 		try:
 			self.base_name
 		except AttributeError:
-			appname = getattr(Context.g_module, Context.APPNAME, 'noname')
-			version = getattr(Context.g_module, Context.VERSION, '1.0')
+			appname = getattr(Context.g_module, Context.APPNAME, 'noname',)
+			version = getattr(Context.g_module, Context.VERSION, '1.0',)
 			self.base_name = appname + '-' + version
 		return self.base_name
 
@@ -515,10 +515,10 @@ class Dist(Context.Context):
 		try:
 			files = self.files
 		except AttributeError:
-			files = self.base_path.ant_glob('**/*', excl=self.get_excl())
+			files = self.base_path.ant_glob('**/*', excl=self.get_excl(),)
 		return files
 
-def dist(ctx):
+def dist(ctx,):
 	'''makes a tarball for redistributing the sources'''
 	pass
 
@@ -535,7 +535,7 @@ class DistCheck(Dist):
 		self.archive()
 		self.check()
 
-	def make_distcheck_cmd(self, tmpdir):
+	def make_distcheck_cmd(self, tmpdir,):
 		cfg = []
 		if Options.options.distcheck_args:
 			cfg = shlex.split(Options.options.distcheck_args)
@@ -554,9 +554,9 @@ class DistCheck(Dist):
 			for x in t:
 				t.extract(x)
 
-		instdir = tempfile.mkdtemp('.inst', self.get_base_name())
+		instdir = tempfile.mkdtemp('.inst', self.get_base_name(),)
 		cmd = self.make_distcheck_cmd(instdir)
-		ret = Utils.subprocess.Popen(cmd, cwd=self.get_base_name()).wait()
+		ret = Utils.subprocess.Popen(cmd, cwd=self.get_base_name(),).wait()
 		if ret:
 			raise Errors.WafError('distcheck failed with code %r' % ret)
 
@@ -566,11 +566,11 @@ class DistCheck(Dist):
 		shutil.rmtree(self.get_base_name())
 
 
-def distcheck(ctx):
+def distcheck(ctx,):
 	'''checks if the project compiles (tarball from 'dist')'''
 	pass
 
-def autoconfigure(execute_method):
+def autoconfigure(execute_method,):
 	"""
 	Decorator that enables context commands to run *configure* as needed.
 	"""
@@ -584,7 +584,7 @@ def autoconfigure(execute_method):
 		env = ConfigSet.ConfigSet()
 		do_config = False
 		try:
-			env.load(os.path.join(Context.top_dir, Options.lockfile))
+			env.load(os.path.join(Context.top_dir, Options.lockfile,))
 		except EnvironmentError:
 			Logs.warn('Configuring the project')
 			do_config = True
@@ -595,7 +595,7 @@ def autoconfigure(execute_method):
 				h = 0
 				for f in env.files:
 					try:
-						h = Utils.h_list((h, Utils.readf(f, 'rb')))
+						h = Utils.h_list((h, Utils.readf(f, 'rb',)))
 					except EnvironmentError:
 						do_config = True
 						break

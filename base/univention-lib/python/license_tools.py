@@ -53,7 +53,7 @@ class LicenseNotFound(LicenseCheckError):
     """The license cannot be found in LDAP"""
 
 
-def is_CSP_license(lo=None):
+def is_CSP_license(lo=None,):
     # type: (Optional[univention.uldap.acceess]) -> bool
     """
     Function to detect if installed license is a cloud service provider license (CSP).
@@ -66,20 +66,20 @@ def is_CSP_license(lo=None):
     if not lo:
         lo = univention.uldap.getMachineConnection()
 
-    result = lo.search(filter='(&(objectClass=univentionLicense)(cn=admin))', attr=['univentionLicenseEndDate', 'univentionLicenseOEMProduct'])
+    result = lo.search(filter='(&(objectClass=univentionLicense)(cn=admin))', attr=['univentionLicenseEndDate', 'univentionLicenseOEMProduct'],)
     if not result:
         raise LicenseNotFound()
     attrs = result[0][1]
 
     now = datetime.date.today()
-    enddate = attrs.get('univentionLicenseEndDate', [b'01.01.1970'])[0].decode('ASCII', 'replace')
+    enddate = attrs.get('univentionLicenseEndDate', [b'01.01.1970'],)[0].decode('ASCII', 'replace',)
     if enddate != u"unlimited":
-        (day, month, year) = enddate.split(u'.', 2)
-        then = datetime.date(int(year), int(month), int(day))
+        (day, month, year) = enddate.split(u'.', 2,)
+        then = datetime.date(int(year), int(month), int(day),)
         if now > then:
             raise LicenseExpired('endDate = %s' % (enddate,))
 
-    return b'CSP' in attrs.get('univentionLicenseOEMProduct', [])
+    return b'CSP' in attrs.get('univentionLicenseOEMProduct', [],)
 
 
 if __name__ == '__main__':
@@ -94,8 +94,7 @@ Possible exitcodes:
 
     parser = ArgumentParser(
         description=description,
-        formatter_class=RawDescriptionHelpFormatter,
-    )
+        formatter_class=RawDescriptionHelpFormatter,)
     parser.parse_args()
 
     try:

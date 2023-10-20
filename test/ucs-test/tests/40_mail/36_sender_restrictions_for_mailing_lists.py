@@ -16,10 +16,10 @@ from univention.testing import utils
 from essential.mail import restart_postfix, send_mail
 
 
-def check_sending_mail(sender, recipient, username, password, should_be_accepted):
+def check_sending_mail(sender, recipient, username, password, should_be_accepted,):
     token = str(time.time())
     try:
-        ret_code = send_mail(recipients=recipient, sender=sender, msg=token, port=587, tls=True, username=username, password=password, debuglevel=0)
+        ret_code = send_mail(recipients=recipient, sender=sender, msg=token, port=587, tls=True, username=username, password=password, debuglevel=0,)
         if bool(ret_code) == should_be_accepted:
             utils.fail('Sending should_be_accepted = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_accepted, ret_code))
     except smtplib.SMTPRecipientsRefused as ex:
@@ -33,7 +33,7 @@ def main():
         sys.exit(77)
 
     cmd = ['/etc/init.d/postfix', 'restart']
-    with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
+    with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w',),):
         with ucr_test.UCSTestConfigRegistry() as ucr:
             with udm_test.UCSTestUDM() as udm:
                 handler_set(['mail/postfix/policy/listfilter=yes', 'mail/postfix/greylisting=no'])
@@ -72,8 +72,7 @@ def main():
                         'name': list1_name,
                         'mailAddress': list1_mail,
                         'members': mails[1],
-                    },
-                )
+                    },)
                 list2_name = uts.random_name()
                 list2_mail = '%s@%s' % (list2_name, domain)
                 udm.create_object(
@@ -84,8 +83,7 @@ def main():
                         'members': mails[2],
                         'allowedEmailUsers': users[3],
                         'allowedEmailGroups': group1_dn,
-                    },
-                )
+                    },)
 
                 print("")
                 for i in range(5):
@@ -96,28 +94,28 @@ def main():
 
                 for sender in ('noreply@univention.de', mails[1], '<>'):
                     print("\n>>> sending mail to user 1 (%s): sender=%s -> allowed" % (mails[1], sender))
-                    check_sending_mail(sender, mails[1], mails[1], password, True)
+                    check_sending_mail(sender, mails[1], mails[1], password, True,)
 
                 print("\n>>> sending to unrestricted mailing list %r with a null sender -> allowed" % list1_name)
-                check_sending_mail('<>', list1_mail, mails[1], password, True)
+                check_sending_mail('<>', list1_mail, mails[1], password, True,)
                 print("\n>>> sending to unrestricted mailing list %r with a member -> allowed" % list1_name)
-                check_sending_mail(mails[1], list1_mail, mails[1], password, True)
+                check_sending_mail(mails[1], list1_mail, mails[1], password, True,)
                 print("\n>>> sending to unrestricted mailing list %r with a non-member -> allowed" % list1_name)
-                check_sending_mail(mails[4], list1_mail, mails[4], password, True)
+                check_sending_mail(mails[4], list1_mail, mails[4], password, True,)
                 print("\n>>> sending to restricted mailing list %r with a null sender -> not allowed" % list1_name)
-                check_sending_mail('<>', list2_mail, mails[2], password, False)
+                check_sending_mail('<>', list2_mail, mails[2], password, False,)
                 print("\n>>> sending to restricted mailing list %r with a member not listed in allowedEmailUsers/Groups -> not allowed" % list2_mail)
-                check_sending_mail(mails[2], list2_mail, mails[2], password, False)
+                check_sending_mail(mails[2], list2_mail, mails[2], password, False,)
                 print("\n>>> sending to restricted mailing list %r with a non-member not listed in allowedEmailUsers/Groups -> not allowed" % list2_mail)
-                check_sending_mail(mails[4], list2_mail, mails[4], password, False)
+                check_sending_mail(mails[4], list2_mail, mails[4], password, False,)
                 print("\n>>> sending to restricted mailing list %r with a non-member but as a user in allowedEmailUsers using its mailPrimaryAddress -> allowed" % list2_mail)
-                check_sending_mail(mails[3], list2_mail, mails[3], password, True)
+                check_sending_mail(mails[3], list2_mail, mails[3], password, True,)
                 print("\n>>> sending to restricted mailing list %r with a non-member but as a user in allowedEmailUsers using its mailAlternativeAddress -> allowed" % list2_mail)
-                check_sending_mail(alts[3], list2_mail, mails[3], password, True)
+                check_sending_mail(alts[3], list2_mail, mails[3], password, True,)
                 print("\n>>> sending to restricted mailing list %r with a non-member but as a member of a group in allowedEmailGroups using its mailPrimaryAddress -> allowed" % list2_mail)
-                check_sending_mail(mails[0], list2_mail, mails[0], password, True)
+                check_sending_mail(mails[0], list2_mail, mails[0], password, True,)
                 print("\n>>> sending to restricted mailing list %r with a non-member but as a member of a group in allowedEmailGroups using its mailAlternativeAddress -> allowed" % list2_mail)
-                check_sending_mail(alts[0], list2_mail, mails[0], password, True)
+                check_sending_mail(alts[0], list2_mail, mails[0], password, True,)
 
 
 if __name__ == '__main__':

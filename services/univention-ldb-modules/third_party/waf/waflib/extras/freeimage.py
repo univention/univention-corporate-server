@@ -31,19 +31,19 @@ from waflib import Utils
 from waflib.Configure import conf
 
 
-def options(opt):
+def options(opt,):
 	opt.add_option('--fi-path', type='string', default='', dest='fi_path',
 				   help='''path to the FreeImage directory \
-						where the files are e.g. /FreeImage/Dist''')
+						where the files are e.g. /FreeImage/Dist''',)
 	opt.add_option('--fip', action='store_true', default=False, dest='fip',
-				   help='link with FreeImagePlus')
+				   help='link with FreeImagePlus',)
 	opt.add_option('--fi-static', action='store_true',
 				   default=False, dest='fi_static',
-				   help="link as shared libraries")
+				   help="link as shared libraries",)
 
 
 @conf
-def check_freeimage(self, path=None, fip=False):
+def check_freeimage(self, path=None, fip=False,):
 	self.start_msg('Checking FreeImage')
 	if not self.env['CXX']:
 		self.fatal('you must load compiler_cxx before loading freeimage')
@@ -66,9 +66,9 @@ def check_freeimage(self, path=None, fip=False):
 	self.end_msg('ok')
 
 
-def configure(conf):
+def configure(conf,):
 	platform = Utils.unversioned_sys_platform()
 	if platform == 'win32' and not conf.options.fi_path:
 		return
-	conf.check_freeimage(conf.options.fi_path, conf.options.fip)
+	conf.check_freeimage(conf.options.fi_path, conf.options.fip,)
 

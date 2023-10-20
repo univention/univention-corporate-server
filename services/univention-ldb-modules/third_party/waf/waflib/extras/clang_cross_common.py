@@ -9,9 +9,9 @@ Common routines for cross_clang.py and cross_clangxx.py
 from waflib.Configure import conf
 import waflib.Context
 
-def normalize_target_triple(target_triple):
+def normalize_target_triple(target_triple,):
 	target_triple = target_triple[:-1]
-	normalized_triple = target_triple.replace('--', '-unknown-')
+	normalized_triple = target_triple.replace('--', '-unknown-',)
 
 	if normalized_triple.startswith('-'):
 		normalized_triple = 'unknown' + normalized_triple
@@ -27,10 +27,10 @@ def normalize_target_triple(target_triple):
 	if normalized_triple.endswith('windows-msvc'):
 		normalized_triple = normalized_triple[:normalized_triple.index('-')] + '-windows-msvc'
 
-	return normalized_triple.replace('-', '_')
+	return normalized_triple.replace('-', '_',)
 
 @conf
-def clang_modifier_msvc(conf):
+def clang_modifier_msvc(conf,):
 	import os
 
 	"""
@@ -54,7 +54,7 @@ def clang_modifier_msvc(conf):
 	v.STLIB_MARKER     = []
 
 	del(v.AR)
-	conf.find_program(['llvm-lib', 'lib'], var='AR')
+	conf.find_program(['llvm-lib', 'lib'], var='AR',)
 	v.ARFLAGS          = ['-nologo']
 	v.AR_TGT_F         = ['-out:']
 
@@ -103,11 +103,11 @@ def clang_modifier_msvc(conf):
 	v.CXXFLAGS_CRT_MULTITHREADED_DLL_DBG = v.CFLAGS_CRT_MULTITHREADED_DLL_DBG
 
 @conf
-def clang_modifier_target_triple(conf, cpp=False):
+def clang_modifier_target_triple(conf, cpp=False,):
 	compiler = conf.env.CXX if cpp else conf.env.CC
-	output = conf.cmd_and_log(compiler + ['-dumpmachine'], output=waflib.Context.STDOUT)
+	output = conf.cmd_and_log(compiler + ['-dumpmachine'], output=waflib.Context.STDOUT,)
 
 	modifier = ('clangxx' if cpp else 'clang') + '_modifier_'
-	clang_modifier_func = getattr(conf, modifier + normalize_target_triple(output), None)
+	clang_modifier_func = getattr(conf, modifier + normalize_target_triple(output), None,)
 	if clang_modifier_func:
 		clang_modifier_func()

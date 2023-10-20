@@ -30,4 +30,4 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__path__ = __import__('pkgutil').extend_path(__path__, __name__)
+__path__ = __import__('pkgutil').extend_path(__path__, __name__,)

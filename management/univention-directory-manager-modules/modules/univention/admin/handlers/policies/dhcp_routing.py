@@ -71,8 +71,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpRouting'],
-    ),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpRouting'],),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -82,35 +81,33 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'routers': univention.admin.property(
         short_description=_('Routers'),
         long_description='',
         syntax=univention.admin.syntax.hostOrIP,
-        multivalue=True,
-    ),
+        multivalue=True,),
 }, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=dhcp_routingFixedAttributes),
     emptyAttributesProperty(syntax=dhcp_routingFixedAttributes),
     ldapFilterProperty(),
-]))
+]),)
 
 layout = [
     Tab(_('General'), _('DHCP routing'), layout=[
         Group(_('General DHCP routing settings'), layout=[
             'name',
             'routers',
-        ]),
-    ]),
+        ],),
+    ],),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('routers', 'univentionDhcpRouters')
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('routers', 'univentionDhcpRouters',)
 register_policy_mapping(mapping)
 
 

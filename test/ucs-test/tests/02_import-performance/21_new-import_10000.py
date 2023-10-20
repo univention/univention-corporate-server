@@ -42,40 +42,40 @@ if __name__ == '__main__':
         "classes": 400,
     }
     school_names = [f'School{num:0>2}{uts.random_name(5)}' for num in range(test_user_kwargs['ous'])]
-    cmd_args = '-v --teachers {teachers} --staff {staff} --staffteachers {staffteachers} --students {students} --classes {classes} --csvfile {CSV_IMPORT_FILE} {school_names}'.format(school_names=' '.join(school_names), **test_user_kwargs)
+    cmd_args = '-v --teachers {teachers} --staff {staff} --staffteachers {staffteachers} --students {students} --classes {classes} --csvfile {CSV_IMPORT_FILE} {school_names}'.format(school_names=' '.join(school_names), **test_user_kwargs,)
 
     returnCode = 100
 
-    if not execute_timing('create OUs', MAX_SECONDS_OU_CREATION, create_ous, school_names):
+    if not execute_timing('create OUs', MAX_SECONDS_OU_CREATION, create_ous, school_names,):
         returnCode = 1
 
-    if not execute_timing('new user import', MAX_SECONDS_IMPORT, import_users_new, cmd_args):
+    if not execute_timing('new user import', MAX_SECONDS_IMPORT, import_users_new, cmd_args,):
         returnCode = 1
 
-    if not execute_timing('new user import sync to s4', MAX_SECONDS_SAMBA_IMPORT, wait_for_s4connector):
+    if not execute_timing('new user import sync to s4', MAX_SECONDS_SAMBA_IMPORT, wait_for_s4connector,):
         returnCode = 1
 
-    if not execute_timing('UMC authentication', MAX_SECONDS_ADMIN_AUTH, test_umc_admin_auth):
+    if not execute_timing('UMC authentication', MAX_SECONDS_ADMIN_AUTH, test_umc_admin_auth,):
         returnCode = 1
 
-    if not execute_timing('UMC authentication UDM load', MAX_SECONDS_ADMIN_AUTH_UDM_LOAD, test_umc_admin_auth_udm_load):
+    if not execute_timing('UMC authentication UDM load', MAX_SECONDS_ADMIN_AUTH_UDM_LOAD, test_umc_admin_auth_udm_load,):
         returnCode = 1
 
-    if not execute_timing('create test user', MAX_SECONDS_USER_CREATION, create_test_user):
+    if not execute_timing('create test user', MAX_SECONDS_USER_CREATION, create_test_user,):
         returnCode = 1
 
-    if not execute_timing('samba4 auth', MAX_SECONDS_USER_AUTH, s4_user_auth, 'Administrator', 'univention'):
+    if not execute_timing('samba4 auth', MAX_SECONDS_USER_AUTH, s4_user_auth, 'Administrator', 'univention',):
         returnCode = 1
 
     user_dns = get_user_dn_list_new(test_user_kwargs['CSV_IMPORT_FILE'])
 
-    if not execute_timing('user password reset', MAX_SECONDS_PASSWORD_RESET, reset_passwords, user_dns):
+    if not execute_timing('user password reset', MAX_SECONDS_PASSWORD_RESET, reset_passwords, user_dns,):
         returnCode = 1
 
     if not count_users(needed=test_user_kwargs['teachers'] + test_user_kwargs['staff'] + test_user_kwargs['staffteachers'] + test_user_kwargs['students']):
         returnCode = 1
 
-    if not execute_timing('remove OUs', MAX_SECONDS_OU_CREATION, remove_ous, school_names):
+    if not execute_timing('remove OUs', MAX_SECONDS_OU_CREATION, remove_ous, school_names,):
         returnCode = 1
 
     sys.exit(returnCode)

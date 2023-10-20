@@ -27,19 +27,19 @@ LO = utils.get_ldap_connection(admin_uldap=True)
 
 class Failure:
 
-    def __init__(self, message):
+    def __init__(self, message,):
         self.message = message
 
 
 def get_max_id():
     base_dn = UCR['ldap/base']
-    users = udm_modules.lookup('users/user', None, LO, base=base_dn, scope='sub')
-    groups = udm_modules.lookup('groups/group', None, LO, base=base_dn, scope='sub')
+    users = udm_modules.lookup('users/user', None, LO, base=base_dn, scope='sub',)
+    groups = udm_modules.lookup('groups/group', None, LO, base=base_dn, scope='sub',)
 
     highest_uid = max(int(user['uidNumber']) for user in users if user['uidNumber'])
     highest_gid = max(int(group['gidNumber']) for group in groups if group['gidNumber'])
 
-    id_to_collide_with = max(highest_uid, highest_gid) + 2
+    id_to_collide_with = max(highest_uid, highest_gid,) + 2
 
     return id_to_collide_with
 
@@ -51,7 +51,7 @@ def consecutive_user_creation():
     UDM.create_user(uidNumber=id_to_collide_with - 1)
     testcase_user_dn = UDM.create_user()[0]
 
-    if int(LO.getAttr(testcase_user_dn, 'uidNumber')[0]) == id_to_collide_with:
+    if int(LO.getAttr(testcase_user_dn, 'uidNumber',)[0]) == id_to_collide_with:
         return Failure("Acquired user uidNumber which collides with a groups gidNumber by consecutivley adding users.")
 
 
@@ -62,7 +62,7 @@ def consecutive_group_creation():
     UDM.create_group(gidNumber=id_to_collide_with - 1)
     testcase_group_dn = UDM.create_group()[0]
 
-    if int(LO.getAttr(testcase_group_dn, 'gidNumber')[0]) == id_to_collide_with:
+    if int(LO.getAttr(testcase_group_dn, 'gidNumber',)[0]) == id_to_collide_with:
         return Failure("Acquired a group gidNumber which collides with a users uidNumber by consecutively adding users.")
 
 
@@ -111,7 +111,7 @@ if __name__ == '__main__':
         UDM.stop_cli_server()
 
         # with uniqueness set to false failure case inverts
-        FAILURES.extend([Failure("Not able to collide ids with uid gid uniqueness off for: %s", test) for test in TESTS_UNIQUENESS if not test()])
+        FAILURES.extend([Failure("Not able to collide ids with uid gid uniqueness off for: %s", test,) for test in TESTS_UNIQUENESS if not test()])
 
     UCR.revert_to_original_registry()
     failure_msg = '\n'.join(

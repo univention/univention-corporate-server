@@ -49,7 +49,7 @@ filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMembe
 attributes = ['univentionService']
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> None:
     ucr = ConfigRegistry()
     ucr.load()
     listener.setuid(0)
@@ -60,10 +60,10 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             return
 
         change = False
-        if b'univention-saml' in new.get('univentionService', []):
+        if b'univention-saml' in new.get('univentionService', [],):
             handler_set(['ucs/server/saml-idp-server/%s=%s' % (fqdn, fqdn)])
             change = True
-        elif b'univention-saml' in old.get('univentionService', []):
+        elif b'univention-saml' in old.get('univentionService', [],):
             handler_unset(['ucs/server/saml-idp-server/%s' % (fqdn,)])
             change = True
 

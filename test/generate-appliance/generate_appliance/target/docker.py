@@ -21,7 +21,7 @@ class Docker(TargetFile):
     SUFFIX = "docker.tar"
     default = False
 
-    def create(self, image: Raw) -> None:
+    def create(self, image: Raw,) -> None:
         archive_name = self.archive_name()
 
         image_path = image.path()
@@ -34,5 +34,5 @@ class Docker(TargetFile):
             'mount', '/dev/sda1', '/boot', ':',
             'tar-out', '/', archive_name.as_posix(),
         ]
-        check_call(cmd, stdout=sys.stderr)
-        log.info('Generated "%s" appliance as\n  %s', self, archive_name)
+        check_call(cmd, stdout=sys.stderr,)
+        log.info('Generated "%s" appliance as\n  %s', self, archive_name,)

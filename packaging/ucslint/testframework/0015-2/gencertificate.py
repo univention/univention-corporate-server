@@ -17,7 +17,7 @@ gidNumber = 0
 saved_uid = 65545
 
 
-def set_privileges_cert(root=0):
+def set_privileges_cert(root=0,):
     global saved_uid
     if root:
         saved_uid = os.geteuid()
@@ -27,11 +27,11 @@ def set_privileges_cert(root=0):
 
 
 def initialize():
-    univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Initialize')
+    univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Initialize',)
     return
 
 
-def handler(dn, new, old):
+def handler(dn, new, old,):
     set_privileges_cert(root=1)
 
     if baseConfig['server/role'] != 'domaincontroller_master':
@@ -44,13 +44,13 @@ def handler(dn, new, old):
                 domain = new['associatedDomain'][0]
             else:
                 domain = baseConfig['domainname']
-            create_certificate(new['cn'][0], int(new['uidNumber'][0]), domainname=domain)
+            create_certificate(new['cn'][0], int(new['uidNumber'][0]), domainname=domain,)
         elif old and not new:
             if 'associatedDomain' in old:
                 domain = old['associatedDomain'][0]
             else:
                 domain = baseConfig['domainname']
-            remove_certificate(old['cn'][0], domainname=domain)
+            remove_certificate(old['cn'][0], domainname=domain,)
         else:
             if 'associatedDomain' in old:
                 old_domain = old['associatedDomain'][0]
@@ -63,56 +63,56 @@ def handler(dn, new, old):
                 new_domain = baseConfig['domainname']
 
             if new_domain != old_domain:
-                remove_certificate(old['cn'][0], domainname=old_domain)
-                create_certificate(new['cn'][0], int(new['uidNumber'][0]), domainname=new_domain)
+                remove_certificate(old['cn'][0], domainname=old_domain,)
+                create_certificate(new['cn'][0], int(new['uidNumber'][0]), domainname=new_domain,)
     finally:
         set_privileges_cert(root=0)
     return
 
 
-def set_permissions(tmp1, directory, filename):
+def set_permissions(tmp1, directory, filename,):
     global uidNumber  # noqa: PLW0602
     global gidNumber  # noqa: PLW0602
 
-    univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
-    os.chown(directory, uidNumber, gidNumber)
-    os.chmod(directory, 0o750)
+    univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber),)
+    os.chown(directory, uidNumber, gidNumber,)
+    os.chmod(directory, 0o750,)
 
     for f in filename:
-        file = os.path.join(directory, f)
-        univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (file, gidNumber, uidNumber))
-        os.chown(file, uidNumber, gidNumber)
-        os.chmod(file, 0o750)
+        file = os.path.join(directory, f,)
+        univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (file, gidNumber, uidNumber),)
+        os.chown(file, uidNumber, gidNumber,)
+        os.chmod(file, 0o750,)
 
 
-def remove_dir(tmp1, directory, filename):
+def remove_dir(tmp1, directory, filename,):
     for f in filename:
-        file = os.path.join(directory, f)
+        file = os.path.join(directory, f,)
         os.remove(file)
     os.rmdir(directory)
 
 
-def create_certificate(name, serverUidNumber, domainname):
+def create_certificate(name, serverUidNumber, domainname,):
     global uidNumber
     global gidNumber
     uidNumber = serverUidNumber
 
     ssldir = '/etc/univention/ssl'
-    univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Creating certificate %s' % name)
+    univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Creating certificate %s' % name,)
 
-    certpath = os.path.join(ssldir, name + '.' + domainname)
+    certpath = os.path.join(ssldir, name + '.' + domainname,)
     if os.path.exists(certpath):
-        univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Certificate for host %s.%s already exists' % (name, domainname))
+        univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Certificate for host %s.%s already exists' % (name, domainname),)
         return
 
     try:
         gidNumber = int(pwd.getpwnam('%s$' % (name))[3])
     except Exception:
-        univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % name)
+        univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % name,)
         gidNumber = 0
 
     if len("%s.%s" % (name, domainname)) > 64:
-        univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "CERTIFICATE: can't create certificate, Common Name too long: %s.%s" % (name, domainname))
+        univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "CERTIFICATE: can't create certificate, Common Name too long: %s.%s" % (name, domainname),)
         return
 
     p = os.popen('source /usr/share/univention-ssl/make-certificates.sh; gencert %s.%s %s.%s' % (name, domainname, name, domainname))
@@ -120,26 +120,26 @@ def create_certificate(name, serverUidNumber, domainname):
     p = os.popen('ln -sf %s/%s.%s %s/%s' % (ssldir, name, domainname, ssldir, name))
     p.close()
 
-    os.path.walk(certpath, set_permissions, None)
+    os.path.walk(certpath, set_permissions, None,)
 
     return
 
 
-def remove_certificate(name, domainname):
+def remove_certificate(name, domainname,):
 
     ssldir = '/etc/univention/ssl'
 
-    univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Revoke certificate %s.%s' % (name, domainname))
+    univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Revoke certificate %s.%s' % (name, domainname),)
     p = os.popen('/usr/sbin/univention-certificate revoke -name %s.%s' % (name, domainname))
     p.close()
 
-    link_path = os.path.join(ssldir, name)
+    link_path = os.path.join(ssldir, name,)
     if os.path.exists(link_path):
         os.remove(link_path)
 
-    certpath = os.path.join(ssldir, "%s.%s" % (name, domainname))
+    certpath = os.path.join(ssldir, "%s.%s" % (name, domainname),)
     if os.path.exists(certpath):
-        os.path.walk(certpath, remove_dir, None)
+        os.path.walk(certpath, remove_dir, None,)
 
     return
 

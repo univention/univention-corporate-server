@@ -37,7 +37,7 @@ from univention.portal.handlers import LoginHandler, LogoutHandler, NavigationHa
 from univention.portal.log import get_logger
 
 
-def make_app(portal_definitions):
+def make_app(portal_definitions,):
     portals = {}
     for name, portal_definition in portal_definitions.items():
         get_logger("server").info("Building portal {}".format(name))
@@ -48,12 +48,12 @@ def make_app(portal_definitions):
     return tornado.web.Application(routes)
 
 
-def build_routes(portals):
+def build_routes(portals,):
     return [
-        tornado.web.url(r"/(.+)/login/?", LoginHandler, {"portals": portals}, name='login'),
-        tornado.web.url(r"/(.+)/portal.json", PortalEntriesHandler, {"portals": portals}, name='portal'),
-        tornado.web.url(r"/(.+)/navigation.json", NavigationHandler, {"portals": portals}, name='navigation'),
-        tornado.web.url(r"/(.+)/logout/?", LogoutHandler, {"portals": portals}, name='logout'),
-        tornado.web.url(r"/(.+)/", tornado.web.RequestHandler, name='index'),
-        tornado.web.url(r"/", tornado.web.RequestHandler, name='root'),
+        tornado.web.url(r"/(.+)/login/?", LoginHandler, {"portals": portals}, name='login',),
+        tornado.web.url(r"/(.+)/portal.json", PortalEntriesHandler, {"portals": portals}, name='portal',),
+        tornado.web.url(r"/(.+)/navigation.json", NavigationHandler, {"portals": portals}, name='navigation',),
+        tornado.web.url(r"/(.+)/logout/?", LogoutHandler, {"portals": portals}, name='logout',),
+        tornado.web.url(r"/(.+)/", tornado.web.RequestHandler, name='index',),
+        tornado.web.url(r"/", tornado.web.RequestHandler, name='root',),
     ]

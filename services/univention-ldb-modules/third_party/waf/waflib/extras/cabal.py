@@ -12,25 +12,25 @@ lock = threading.Lock()
 registering = False
 
 def configure(self):
-    self.find_program('cabal', var='CABAL')
-    self.find_program('ghc-pkg', var='GHCPKG')
+    self.find_program('cabal', var='CABAL',)
+    self.find_program('ghc-pkg', var='GHCPKG',)
     pkgconfd = self.bldnode.abspath() + '/package.conf.d'
     self.env.PREFIX = self.bldnode.abspath() + '/dist'
     self.env.PKGCONFD = pkgconfd
     if self.root.find_node(pkgconfd + '/package.cache'):
-        self.msg('Using existing package database', pkgconfd, color='CYAN')
+        self.msg('Using existing package database', pkgconfd, color='CYAN',)
     else:
         pkgdir = self.root.find_dir(pkgconfd)
         if pkgdir:
-            self.msg('Deleting corrupt package database', pkgdir.abspath(), color ='RED')
+            self.msg('Deleting corrupt package database', pkgdir.abspath(), color ='RED',)
             rmtree(pkgdir.abspath())
             pkgdir = None
 
         self.cmd_and_log(self.env.GHCPKG + ['init', pkgconfd])
-        self.msg('Created package database', pkgconfd, color = 'YELLOW' if pkgdir else 'GREEN')
+        self.msg('Created package database', pkgconfd, color = 'YELLOW' if pkgdir else 'GREEN',)
 
 @extension('.cabal')
-def process_cabal(self, node):
+def process_cabal(self, node,):
     out_dir_node = self.bld.root.find_dir(self.bld.out_dir)
     package_node = node.change_ext('.package')
     package_node = out_dir_node.find_or_declare(package_node.name)
@@ -39,32 +39,32 @@ def process_cabal(self, node):
     config_node  = build_node.find_or_declare('setup-config')
     inplace_node = build_node.find_or_declare('package.conf.inplace')
 
-    config_task = self.create_task('cabal_configure', node)
+    config_task = self.create_task('cabal_configure', node,)
     config_task.cwd = node.parent.abspath()
-    config_task.depends_on = getattr(self, 'depends_on', '')
+    config_task.depends_on = getattr(self, 'depends_on', '',)
     config_task.build_path = build_path
     config_task.set_outputs(config_node)
 
-    build_task = self.create_task('cabal_build', config_node)
+    build_task = self.create_task('cabal_build', config_node,)
     build_task.cwd = node.parent.abspath()
     build_task.build_path = build_path
     build_task.set_outputs(inplace_node)
 
-    copy_task = self.create_task('cabal_copy', inplace_node)
+    copy_task = self.create_task('cabal_copy', inplace_node,)
     copy_task.cwd = node.parent.abspath()
-    copy_task.depends_on = getattr(self, 'depends_on', '')
+    copy_task.depends_on = getattr(self, 'depends_on', '',)
     copy_task.build_path = build_path
 
     last_task = copy_task
     task_list = [config_task, build_task, copy_task]
 
-    if (getattr(self, 'register', False)):
-        register_task = self.create_task('cabal_register', inplace_node)
+    if (getattr(self, 'register', False,)):
+        register_task = self.create_task('cabal_register', inplace_node,)
         register_task.cwd = node.parent.abspath()
         register_task.set_run_after(copy_task)
         register_task.build_path = build_path
 
-        pkgreg_task = self.create_task('ghcpkg_register', inplace_node)
+        pkgreg_task = self.create_task('ghcpkg_register', inplace_node,)
         pkgreg_task.cwd = node.parent.abspath()
         pkgreg_task.set_run_after(register_task)
         pkgreg_task.build_path = build_path
@@ -72,7 +72,7 @@ def process_cabal(self, node):
         last_task = pkgreg_task
         task_list += [register_task, pkgreg_task]
 
-    touch_task = self.create_task('cabal_touch', inplace_node)
+    touch_task = self.create_task('cabal_touch', inplace_node,)
     touch_task.set_run_after(last_task)
     touch_task.set_outputs(package_node)
     touch_task.build_path = build_path
@@ -81,14 +81,14 @@ def process_cabal(self, node):
 
     return task_list
 
-def get_all_src_deps(node):
+def get_all_src_deps(node,):
     hs_deps = node.ant_glob('**/*.hs')
     hsc_deps = node.ant_glob('**/*.hsc')
     lhs_deps = node.ant_glob('**/*.lhs')
     c_deps = node.ant_glob('**/*.c')
     cpp_deps = node.ant_glob('**/*.cpp')
     proto_deps = node.ant_glob('**/*.proto')
-    return sum([hs_deps, hsc_deps, lhs_deps, c_deps, cpp_deps, proto_deps], [])
+    return sum([hs_deps, hsc_deps, lhs_deps, c_deps, cpp_deps, proto_deps], [],)
 
 class Cabal(Task.Task):
     def scan(self):

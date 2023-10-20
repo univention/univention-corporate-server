@@ -31,11 +31,10 @@ class JmeterListener:
         field_delimiter=",",
         timestamp_format="%Y/%m/%d %H:%M:%S",
         flush_size=100,
-        results_filename=None,
-    ):
+        results_filename=None,):
         self.env = env
         self.runner = self.env.runner
-        self.is_worker_runner = isinstance(self.env.runner, WorkerRunner)
+        self.is_worker_runner = isinstance(self.env.runner, WorkerRunner,)
 
         self.testplan = testplan
         # default JMeter field and row delimiters
@@ -50,8 +49,7 @@ class JmeterListener:
             self.results_filename = os.path.join(
                 os.path.dirname(env.parsed_options.csv_prefix),
                 "jmeter",
-                f"results_{os.path.basename(env.parsed_options.csv_prefix)}.csv",
-            )
+                f"results_{os.path.basename(env.parsed_options.csv_prefix)}.csv",)
         else:
             self.results_filename = results_filename
 
@@ -89,10 +87,10 @@ class JmeterListener:
 
     def _create_results_log(self):
         filename = Path(self.results_filename)
-        filename.parent.mkdir(exist_ok=True, parents=True)
+        filename.parent.mkdir(exist_ok=True, parents=True,)
         filename.touch(exist_ok=True)
-        results_file = open(filename, "w")
-        self.cvs_writer = csv.writer(results_file, delimiter=self.field_delimiter, quotechar='"')
+        results_file = open(filename, "w",)
+        self.cvs_writer = csv.writer(results_file, delimiter=self.field_delimiter, quotechar='"',)
         self.cvs_writer.writerow(self.csv_headers)
         results_file.flush()
         return results_file
@@ -106,7 +104,7 @@ class JmeterListener:
         self.cvs_writer.writerows(self.csv_results)
         self.results_file.close()
 
-    def add_result(self, success, _request_type, name, response_time, response_length, exception, **kw):
+    def add_result(self, success, _request_type, name, response_time, response_length, exception,**kw):
         timestamp = datetime.fromtimestamp(time()).strftime(self.timestamp_format)
         response_message = "OK" if success == "true" else "KO"
         # check to see if the additional fields have been populated. If not, set to a default value
@@ -144,14 +142,14 @@ class JmeterListener:
         if len(self.csv_results) >= self.flush_size and not self.is_worker_runner:
             self._flush_to_log()
 
-    def _request(self, request_type, name, response_time, response_length, exception, **kw):
-        self.add_result("false" if exception else "true", request_type, name, response_time, response_length, str(exception), **kw)
+    def _request(self, request_type, name, response_time, response_length, exception,**kw):
+        self.add_result("false" if exception else "true", request_type, name, response_time, response_length, str(exception), **kw,)
 
-    def _report_to_master(self, data, **kwargs):
+    def _report_to_master(self, data,**kwargs):
         data["csv_results"] = self.csv_results
         self.csv_results = []
 
-    def _worker_report(self, data, **kwargs):
+    def _worker_report(self, data,**kwargs):
         self.csv_results += data["csv_results"]
         if len(self.csv_results) >= self.flush_size:
             self._flush_to_log()

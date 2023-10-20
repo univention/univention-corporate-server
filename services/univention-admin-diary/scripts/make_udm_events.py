@@ -58,7 +58,7 @@ def modules():
         yield udm.get(m)._orig_udm_module
 
 
-def print_events(m):
+def print_events(m,):
     name = m.module
     icon = 'domain'
     if name.startswith('users/'):
@@ -104,58 +104,58 @@ def print_events(m):
         for k, v in m.property_descriptions.items():
             if v.identifies or not v.may_change:
                 if v.identifies:
-                    args.insert(0, k)
+                    args.insert(0, k,)
                 else:
                     args.append(k)
     if len(args) == 0:
         sys.stderr.write('no args in %s\n' % m)
         return
     if 'add' in m.operations:
-        print_created(m, english_name, german_name, args, icon)
+        print_created(m, english_name, german_name, args, icon,)
         any_printed = True
     if 'edit' in m.operations:
-        print_modified(m, english_name, german_name, args, icon)
+        print_modified(m, english_name, german_name, args, icon,)
         any_printed = True
     if 'move' in m.operations:
-        print_moved(m, english_name, german_name, args, icon)
+        print_moved(m, english_name, german_name, args, icon,)
         any_printed = True
     if 'remove' in m.operations:
-        print_removed(m, english_name, german_name, args, icon)
+        print_removed(m, english_name, german_name, args, icon,)
         any_printed = True
     if any_printed:
         print()
 
 
-def print_created(m, english_name, german_name, args, icon):
-    name = 'UDM_' + m.module.replace('/', '_')
+def print_created(m, english_name, german_name, args, icon,):
+    name = 'UDM_' + m.module.replace('/', '_',)
     additional_args = ''
     if len(args) > 1:
         additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-    print(name.upper() + '_CREATED', '=', "DiaryEvent('%s', {'en': '%s {%s} %screated', 'de': '%s {%s} %sangelegt'}, args=%r, icon='%s')" % (name.upper() + '_CREATED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
+    print(name.upper() + '_CREATED', '=', "DiaryEvent('%s', {'en': '%s {%s} %screated', 'de': '%s {%s} %sangelegt'}, args=%r, icon='%s')" % (name.upper() + '_CREATED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon),)
 
 
-def print_modified(m, english_name, german_name, args, icon):
-    name = 'UDM_' + m.module.replace('/', '_')
+def print_modified(m, english_name, german_name, args, icon,):
+    name = 'UDM_' + m.module.replace('/', '_',)
     additional_args = ''
     if len(args) > 1:
         additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-    print(name.upper() + '_MODIFIED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smodified', 'de': '%s {%s} %sbearbeitet'}, args=%r, icon='%s')" % (name.upper() + '_MODIFIED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
+    print(name.upper() + '_MODIFIED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smodified', 'de': '%s {%s} %sbearbeitet'}, args=%r, icon='%s')" % (name.upper() + '_MODIFIED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon),)
 
 
-def print_moved(m, english_name, german_name, args, icon):
-    name = 'UDM_' + m.module.replace('/', '_')
+def print_moved(m, english_name, german_name, args, icon,):
+    name = 'UDM_' + m.module.replace('/', '_',)
     additional_args = ''
     if len(args) > 1:
         additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-    print(name.upper() + '_MOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smoved to {position}', 'de': '%s {%s} %sverschoben nach {position}'}, args=%r, icon='%s')" % (name.upper() + '_MOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
+    print(name.upper() + '_MOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %smoved to {position}', 'de': '%s {%s} %sverschoben nach {position}'}, args=%r, icon='%s')" % (name.upper() + '_MOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon),)
 
 
-def print_removed(m, english_name, german_name, args, icon):
-    name = 'UDM_' + m.module.replace('/', '_')
+def print_removed(m, english_name, german_name, args, icon,):
+    name = 'UDM_' + m.module.replace('/', '_',)
     additional_args = ''
     if len(args) > 1:
         additional_args = '(%s) ' % ' '.join('{%s}' % arg for arg in args[1:])
-    print(name.upper() + '_REMOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %sremoved', 'de': '%s {%s} %sgelöscht'}, args=%r, icon='%s')" % (name.upper() + '_REMOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon))
+    print(name.upper() + '_REMOVED', '=', "DiaryEvent('%s', {'en': '%s {%s} %sremoved', 'de': '%s {%s} %sgelöscht'}, args=%r, icon='%s')" % (name.upper() + '_REMOVED', english_name, args[0], additional_args, german_name, args[0], additional_args, args, icon),)
 
 
 for module in modules():

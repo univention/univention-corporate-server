@@ -21,7 +21,7 @@ default_password = 'univention'
 
 
 class Account:
-    def __init__(self, description, dn, name, password=default_password):
+    def __init__(self, description, dn, name, password=default_password,):
         self.description = description
         self.dn = dn
         self.name = name
@@ -40,7 +40,7 @@ try:
         try:
             what = 'Helpdesk user'
             helpdesk_user_dn, helpdesk_user_name = udm.create_user()
-            helpdesk_user = Account(what, helpdesk_user_dn, helpdesk_user_name)
+            helpdesk_user = Account(what, helpdesk_user_dn, helpdesk_user_name,)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -50,7 +50,7 @@ try:
         try:
             what = 'Domain Admin 1'
             domainadmin1_dn, domainadmin1_name = udm.create_user()
-            domainadmin1 = Account(what, domainadmin1_dn, domainadmin1_name)
+            domainadmin1 = Account(what, domainadmin1_dn, domainadmin1_name,)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -60,7 +60,7 @@ try:
         try:
             what = 'Plain user'
             user_dn, user_name = udm.create_user()
-            plain_user = Account(what, user_dn, user_name)
+            plain_user = Account(what, user_dn, user_name,)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -70,7 +70,7 @@ try:
         try:
             what = 'Domain Admin 2'
             domainadmin2_dn, domainadmin2_name = udm.create_user()
-            domainadmin2 = Account(what, domainadmin2_dn, domainadmin2_name)
+            domainadmin2 = Account(what, domainadmin2_dn, domainadmin2_name,)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -80,7 +80,7 @@ try:
         try:
             what = 'Domain Admin Group'
             domainadmin_group_dn, domainadmin_group_name = udm.create_group()
-            domainadmin_group = Account(what, domainadmin_group_dn, domainadmin_group_name)
+            domainadmin_group = Account(what, domainadmin_group_dn, domainadmin_group_name,)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -90,7 +90,7 @@ try:
         try:
             udm.modify_object("users/user", dn=helpdesk_user.dn, set={
                 'groups': [user_password_admins_dn],
-            })
+            },)
         except Exception as exc:
             fail(f'Cannot add {helpdesk_user} to group "User Password Admins": {exc}')
         else:
@@ -100,7 +100,7 @@ try:
         try:
             udm.modify_object("groups/group", dn=domainadmin_group.dn, append={
                 'users': [domainadmin1.dn],
-            })
+            },)
         except Exception as exc:
             fail(f'Cannot add {domainadmin1} to {domainadmin_group}: {exc}')
         else:
@@ -110,7 +110,7 @@ try:
         try:
             udm.modify_object("users/user", dn=domainadmin2.dn, set={
                 'primaryGroup': [domainadmin_group.dn],
-            })
+            },)
         except Exception as exc:
             fail(f'Cannot set the  primary group of {domainadmin2} to {domainadmin_group}: {exc}')
         else:
@@ -129,7 +129,7 @@ try:
                 'password': uts.random_string(),
                 'overridePWHistory': 1,
                 'overridePWLength': 1,
-            })
+            },)
         except Exception:
             print(f'OK: {helpdesk_user} cannot reset password of {domainadmin1}')
         else:
@@ -141,7 +141,7 @@ try:
                 'password': uts.random_string(),
                 'overridePWHistory': 1,
                 'overridePWLength': 1,
-            })
+            },)
         except Exception:
             print(f'OK: {helpdesk_user} cannot reset password of {domainadmin2}')
         else:
@@ -153,7 +153,7 @@ try:
                 'password': uts.random_string(),
                 'overridePWHistory': 1,
                 'overridePWLength': 1,
-            })
+            },)
         except Exception as exc:
             fail(f'{helpdesk_user} cannot reset password of {plain_user}: {exc}')
         else:

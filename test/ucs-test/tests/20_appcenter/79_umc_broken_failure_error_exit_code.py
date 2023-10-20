@@ -16,7 +16,7 @@ from univention.config_registry import ConfigRegistry
 import appcentertest as app_test
 
 
-def _test_app_installation_fails(test):
+def _test_app_installation_fails(test,):
     try:
         with test.test_install_safe(test_installed=False):
             pass
@@ -29,7 +29,7 @@ def _test_app_installation_fails(test):
         cleanup(test.application)
 
 
-def _test_app_uninstallation_fails(test):
+def _test_app_uninstallation_fails(test,):
     try:
         with test.test_install_safe():
             try:
@@ -43,74 +43,74 @@ def _test_app_uninstallation_fails(test):
 
 
 @app_test.test_case
-def test_install_preinst_error(app_center, application):
+def test_install_preinst_error(app_center, application,):
     """
     Try to install and uninstall an app that contains an error in `preinst`
     (exit 1). No traces must be left and the app must be reinstallable.
     """
     package = app_test.DebianPackage(name=application)
-    package.create_debian_file_from_buffer("preinst", "\nexit 1\n")
+    package.create_debian_file_from_buffer("preinst", "\nexit 1\n",)
 
     app = app_test.AppPackage.from_package(package)
     app.build_and_publish()
     app.remove_tempdir()
 
-    test = app_test.TestOperations(app_center, app.app_id)
+    test = app_test.TestOperations(app_center, app.app_id,)
     _test_app_installation_fails(test)
 
 
 @app_test.test_case
-def test_install_postinst_error(app_center, application):
+def test_install_postinst_error(app_center, application,):
     """
     Try to install and uninstall an app that contains an error in `postinst`
     (exit 1). No traces must be left and the app must be reinstallable.
     """
     package = app_test.DebianPackage(name=application)
-    package.create_debian_file_from_buffer("postinst", "\nexit 1\n")
+    package.create_debian_file_from_buffer("postinst", "\nexit 1\n",)
 
     app = app_test.AppPackage.from_package(package)
     app.build_and_publish()
     app.remove_tempdir()
 
-    test = app_test.TestOperations(app_center, app.app_id)
+    test = app_test.TestOperations(app_center, app.app_id,)
     _test_app_installation_fails(test)
 
 
 @app_test.test_case
-def test_uninstall_prerm_error(app_center, application):
+def test_uninstall_prerm_error(app_center, application,):
     """
     Try to install and uninstall an app that contains an error in `prerm`
     (exit 1). No traces must be left and the app must be reinstallable.
     """
     package = app_test.DebianPackage(name=application)
-    package.create_debian_file_from_buffer("prerm", "\nexit 1\n")
+    package.create_debian_file_from_buffer("prerm", "\nexit 1\n",)
 
     app = app_test.AppPackage.from_package(package)
     app.build_and_publish()
     app.remove_tempdir()
 
-    test = app_test.TestOperations(app_center, app.app_id)
+    test = app_test.TestOperations(app_center, app.app_id,)
     _test_app_uninstallation_fails(test)
 
 
 @app_test.test_case
-def test_uninstall_postrm_error(app_center, application):
+def test_uninstall_postrm_error(app_center, application,):
     """
     Try to install and uninstall an app that contains an error in `postrm`
     (exit 1). No traces must be left and the app must be reinstallable.
     """
     package = app_test.DebianPackage(name=application)
-    package.create_debian_file_from_buffer("postrm", "\nexit 1\n")
+    package.create_debian_file_from_buffer("postrm", "\nexit 1\n",)
 
     app = app_test.AppPackage.from_package(package)
     app.build_and_publish()
     app.remove_tempdir()
 
-    test = app_test.TestOperations(app_center, app.app_id)
+    test = app_test.TestOperations(app_center, app.app_id,)
     _test_app_uninstallation_fails(test)
 
 
-def cleanup(application):
+def cleanup(application,):
     ucr = ConfigRegistry()
     ucr.load()
     username = ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]

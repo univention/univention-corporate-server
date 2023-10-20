@@ -62,10 +62,10 @@ COMMASPACE = ', '
 
 class Mail:
 
-    def __init__(self, timeout=10):
+    def __init__(self, timeout=10,):
         self.timeout = timeout
 
-    def get_reply(self, s):
+    def get_reply(self, s,):
         reply = ''
         try:
             buff_size = 1024
@@ -78,40 +78,40 @@ class Mail:
         except Exception:
             return reply
 
-    def send_message(self, s, message):
-        print(message, end='')
+    def send_message(self, s, message,):
+        print(message, end='',)
         s.send(message)
 
 
 class ImapMail(Mail):
 
-    def get_mails(self, filter='ALL', mailbox='INBOX'):
+    def get_mails(self, filter='ALL', mailbox='INBOX',):
         msgs = []
         rv, data = self.connection.select(mailbox)
         assert rv == "OK"
-        rv, msg_ids = self.connection.search(None, filter)
+        rv, msg_ids = self.connection.search(None, filter,)
         assert rv == "OK"
         for num in msg_ids[0].split():
-            rv, msg = self.connection.fetch(num, '(RFC822)')
+            rv, msg = self.connection.fetch(num, '(RFC822)',)
             assert rv == "OK"
             msgs.append(email.message_from_string(msg[0][1]))
         return msgs
 
-    def get_connection(self, host, user, password):
+    def get_connection(self, host, user, password,):
         self.connection = imaplib.IMAP4_SSL(host)
-        rv, data = self.connection.login(user, password)
+        rv, data = self.connection.login(user, password,)
         assert rv == "OK"
 
-    def get_return_code(self, id, response):
+    def get_return_code(self, id, response,):
         regex = '%s (.*?) .*$' % id
-        m = re.search(regex, response)
+        m = re.search(regex, response,)
         try:
             return m.group(1)
         except Exception:
             return '-ERR'
 
-    def send_and_receive(self, s, id, message):
-        self.send_message(s, '%s %s' % (id, message))
+    def send_and_receive(self, s, id, message,):
+        self.send_message(s, '%s %s' % (id, message),)
         response = self.get_reply(s)
         while True:
             response2 = self.get_reply(s)
@@ -120,11 +120,11 @@ class ImapMail(Mail):
             else:
                 break
         print(response)
-        r = self.get_return_code(id, response)
+        r = self.get_return_code(id, response,)
         return r
 
-    def send_and_receive_quota(self, s, id, message):
-        self.send_message(s, '%s %s' % (id, message))
+    def send_and_receive_quota(self, s, id, message,):
+        self.send_message(s, '%s %s' % (id, message),)
         response = self.get_reply(s)
         while True:
             response2 = self.get_reply(s)
@@ -133,44 +133,44 @@ class ImapMail(Mail):
             else:
                 break
         print(response)
-        r = self.get_return_code(id, response)
+        r = self.get_return_code(id, response,)
         return (r, response)
 
-    def login_OK(self, username, password):
+    def login_OK(self, username, password,):
         hostname = socket.gethostname()
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM,)
         s.settimeout(self.timeout)
         s.connect((hostname, 143))
         print(self.get_reply(s))
-        retval = self.send_and_receive(s, 'a001', 'login %s %s\r\n' % (username, password))
-        self.send_and_receive(s, 'a002', 'logout\r\n')
+        retval = self.send_and_receive(s, 'a001', 'login %s %s\r\n' % (username, password),)
+        self.send_and_receive(s, 'a002', 'logout\r\n',)
         s.close()
         return (retval == 'OK')
 
-    def get_imap_quota(self, username, password):
+    def get_imap_quota(self, username, password,):
         hostname = socket.gethostname()
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM,)
         s.settimeout(self.timeout)
         s.connect((hostname, 143))
-        retval = self.send_and_receive_quota(s, 'a001', 'login %s %s\r\n' % (username, password))
-        retval = self.send_and_receive_quota(s, 'a002', 'GETQUOTAROOT INBOX\r\n')  # user/%s\r\n' % username)
+        retval = self.send_and_receive_quota(s, 'a001', 'login %s %s\r\n' % (username, password),)
+        retval = self.send_and_receive_quota(s, 'a002', 'GETQUOTAROOT INBOX\r\n',)  # user/%s\r\n' % username)
         regex = r'\(STORAGE 0 (.*)\)'
-        m = re.search(regex, retval[1])
+        m = re.search(regex, retval[1],)
         try:
             quota = int(m.group(1))
         except Exception:
             quota = -1
-        self.send_and_receive_quota(s, 'a003', 'logout\r\n')
+        self.send_and_receive_quota(s, 'a003', 'logout\r\n',)
         s.close()
         return quota, retval[0]
 
-    def copy(self, message_set, old_mailbox, new_mailbox):
+    def copy(self, message_set, old_mailbox, new_mailbox,):
         rv, data = self.connection.select(old_mailbox)
         assert rv == "OK"
-        rv, data = self.connection.copy(message_set, new_mailbox)
+        rv, data = self.connection.copy(message_set, new_mailbox,)
         assert rv == "OK"
 
-    def create_subfolder(self, parent, child):
+    def create_subfolder(self, parent, child,):
         # find separator symbol
         rv, data = self.connection.list()
         assert rv == "OK"
@@ -188,14 +188,14 @@ class ImapMail(Mail):
         assert rv == "OK"
         return subfolder_name
 
-    def delete_folder(self, folder_name):
+    def delete_folder(self, folder_name,):
         rv, data = self.connection.delete(folder_name)
         assert rv == "OK"
 
 
 class PopMail(Mail):
 
-    def login_OK(self, username, password):
+    def login_OK(self, username, password,):
         hostname = socket.gethostname()
         con = poplib.POP3_SSL(hostname)
         con.set_debuglevel(2)
@@ -221,7 +221,7 @@ def make_token():
     return str(time.time())
 
 
-def get_dir_files(dir_path, recursive=True, exclude=None):
+def get_dir_files(dir_path, recursive=True, exclude=None,):
     result = []
     if not exclude:
         exclude = []
@@ -233,7 +233,7 @@ def get_dir_files(dir_path, recursive=True, exclude=None):
     return result
 
 
-def get_maildir_filenames(maildir):
+def get_maildir_filenames(maildir,):
     """
     Returns all filenames for mails in specified dovecot maildir:
 
@@ -246,28 +246,28 @@ def get_maildir_filenames(maildir):
     for dirpath, _dirnames, filenames in os.walk(maildir.rstrip("/")):
         if basename(dirpath) == "Maildir":
             continue
-        result.extend([os.path.join(dirpath, x) for x in filenames if not x.startswith("dovecot") and x not in blacklist])
+        result.extend([os.path.join(dirpath, x,) for x in filenames if not x.startswith("dovecot") and x not in blacklist])
     return result
 
 
-def get_file_contain(token, _dir):
-    for _file in get_dir_files(_dir, recursive=True):
+def get_file_contain(token, _dir,):
+    for _file in get_dir_files(_dir, recursive=True,):
         with open(_file) as fi:
             if token in fi.read():
                 return os.path.basename(_file)
 
 
-def virus_detected_and_quarantined(token, mail_address):
+def virus_detected_and_quarantined(token, mail_address,):
     """
     Check if the virusmail with given token has been detected (==> virus_archive != None) and
     the user specified by mail_address and systemmail have been informed.
     """
     virus_dir = '/var/lib/amavis/virusmails'
-    virus_archive = get_file_contain(token, virus_dir)
+    virus_archive = get_file_contain(token, virus_dir,)
     root_informed = user_informed = False
     if virus_archive:
-        root_informed = bool(file_search_mail(tokenlist=[virus_archive], user='systemmail', timeout=0))
-        user_informed = bool(file_search_mail(tokenlist=[virus_archive], mail_address=mail_address, timeout=0))
+        root_informed = bool(file_search_mail(tokenlist=[virus_archive], user='systemmail', timeout=0,))
+        user_informed = bool(file_search_mail(tokenlist=[virus_archive], mail_address=mail_address, timeout=0,))
     return user_informed and root_informed
 
 
@@ -279,24 +279,24 @@ def activate_spam_detection():
     handler_set(['mail/antivir/spam=yes'])
 
 
-def activate_spam_header_tag(tag):
+def activate_spam_header_tag(tag,):
     handler_set(['mail/antispam/headertag=%s' % tag])
 
 
 def restart_postfix():
     cmd = ['/etc/init.d/postfix', 'restart']
     try:
-        subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+        subprocess.Popen(cmd, stderr=open('/dev/null', 'w',),).communicate()
     except OSError as ex:
-        print(ex, file=sys.stderr)
+        print(ex, file=sys.stderr,)
 
 
 def reload_postfix():
     cmd = ['/etc/init.d/postfix', 'force-reload']
     try:
-        subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+        subprocess.Popen(cmd, stderr=open('/dev/null', 'w',),).communicate()
     except OSError as ex:
-        print(ex, file=sys.stderr)
+        print(ex, file=sys.stderr,)
 
 
 def reload_amavis_postfix():
@@ -306,15 +306,15 @@ def reload_amavis_postfix():
             ['/etc/init.d/postfix', 'force-reload'],
     ):
         try:
-            subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+            subprocess.Popen(cmd, stderr=open('/dev/null', 'w',),).communicate()
         except OSError as ex:
-            print(ex, file=sys.stderr)
+            print(ex, file=sys.stderr,)
 
 
 def get_spam_folder_name():
     """Returns the name of the current spam folder"""
     if ucr.is_true('mail/dovecot'):
-        folder = ucr.get('mail/dovecot/folder/spam', 'Spam')
+        folder = ucr.get('mail/dovecot/folder/spam', 'Spam',)
         if folder and folder.lower() == 'none':
             folder = None
     else:
@@ -323,15 +323,15 @@ def get_spam_folder_name():
 
 
 @WaitForNonzeroResultOrTimeout
-def spam_delivered(token, mail_address):
+def spam_delivered(token, mail_address,):
     delivered = False
     spam = False
     with ucr_test.UCSTestConfigRegistry() as ucr:
         spam_folder = ucr.get('mail/dovecot/folder/spam') or 'Spam'
-    mail_dir = get_dovecot_maildir(mail_address, folder=spam_folder)
+    mail_dir = get_dovecot_maildir(mail_address, folder=spam_folder,)
     if not os.path.isdir(mail_dir):
         print('Warning: maildir %r does not exist!' % (mail_dir,))
-    for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"]):
+    for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"],):
         with open(_file) as fi:
             content = fi.read()
         delivered = delivered or (token in content)
@@ -343,7 +343,7 @@ def spam_delivered(token, mail_address):
 
 
 @WaitForNonzeroResultOrTimeout
-def mail_delivered(token, user=None, mail_address=None, check_root=True):
+def mail_delivered(token, user=None, mail_address=None, check_root=True,):
     """
     Check if a mail with the specified token or message ID has been delivered to a mail spool.
     A "token" is a string, that should occur in the mail body. The message ID is looked up in the
@@ -360,13 +360,13 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
             with open(_file) as fi:
                 delivered = delivered or (token in fi.read())
     if user:
-        _file = os.path.join('/var/mail', user)
+        _file = os.path.join('/var/mail', user,)
         if os.path.isfile(_file):
             with open(_file) as fi:
                 delivered = delivered or (token in fi.read())
     if mail_address and '@' in mail_address:
         mail_dir = get_dovecot_maildir(mail_address)
-        for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"]):
+        for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"],):
             with open(_file) as fi:
                 delivered = delivered or (token in fi.read())
                 if delivered:
@@ -374,7 +374,7 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
     return delivered
 
 
-def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, timeout=0):
+def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, timeout=0,):
     """
     Check if a mail with the specified token or message ID has been delivered to a mail spool.
     A "token" is a string, that should occur in the mail body. The message ID is looked up in the
@@ -395,7 +395,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
     while result == 0 and timeout > 0:
         timeout -= 1
         if user:
-            _file = os.path.join('/var/mail', user)
+            _file = os.path.join('/var/mail', user,)
             if os.path.isfile(_file):
                 with open(_file) as fd:
                     content = fd.read()
@@ -406,7 +406,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
                         result += 1
 
         if mail_address:
-            mail_dir = get_dovecot_maildir(mail_address, folder=folder)
+            mail_dir = get_dovecot_maildir(mail_address, folder=folder,)
             files = get_maildir_filenames(mail_dir)
 
             if not os.path.isdir(mail_dir):
@@ -426,7 +426,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
     return result
 
 
-def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, imap_password=None, imap_folder=None, use_ssl=True):
+def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, imap_password=None, imap_folder=None, use_ssl=True,):
     """
     Check if a mail with the specified token or message ID has been delivered to a specific mail folder.
     A "token" is a string, that should occur in the mail body. The message ID is looked up in the
@@ -447,15 +447,15 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
     assert imap_user, "imap_search_mail: imap_user has not been specified"
     imap_password = imap_password or "univention"
     imap_folder = imap_folder or ""
-    assert isinstance(imap_folder, str), "imap_search_mail: imap_folder is no string"
+    assert isinstance(imap_folder, str,), "imap_search_mail: imap_folder is no string"
 
     conn = imaplib.IMAP4_SSL(host=server) if use_ssl else imaplib.IMAP4(host=server)
-    assert conn.login(imap_user, imap_password)[0] == 'OK', 'imap_search_mail: login failed'
+    assert conn.login(imap_user, imap_password,)[0] == 'OK', 'imap_search_mail: login failed'
     assert conn.select(imap_folder)[0] == 'OK', 'imap_search_mail: select folder %r failed' % (imap_folder,)
 
     foundcnt = 0
     if messageid:
-        status, result = conn.search(None, '(HEADER Message-ID "%s")' % (messageid,))
+        status, result = conn.search(None, '(HEADER Message-ID "%s")' % (messageid,),)
         assert status == 'OK'
         result = result[0]
         if result:
@@ -464,20 +464,20 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
             foundcnt += len(result)
 
     if token:
-        status, result = conn.search(None, 'ALL')
+        status, result = conn.search(None, 'ALL',)
         assert status == 'OK'
         if result:
             msgids = result.split()
             print('Folder contains %d messages' % (len(msgids),))
             for msgid in msgids:
-                typ, msg_data = conn.fetch(msgid, '(BODY.PEEK[TEXT])')
+                typ, msg_data = conn.fetch(msgid, '(BODY.PEEK[TEXT])',)
                 for response_part in msg_data:
-                    if isinstance(response_part, tuple) and token in response_part[1]:
+                    if isinstance(response_part, tuple,) and token in response_part[1]:
                         print('Found token %r in msg %r' % (token, msgid))
                         foundcnt += 1
 
     if not token and not messageid:
-        status, result = conn.search(None, 'ALL')
+        status, result = conn.search(None, 'ALL',)
         assert status == 'OK'
         if result:
             msgids = result.split()
@@ -512,7 +512,7 @@ class UCSTest_Mail_MissingMailbox(UCSTest_Mail_Exception):
     """
 
 
-def get_dovecot_maildir(mail_address, folder=None):
+def get_dovecot_maildir(mail_address, folder=None,):
     """
     Returns directory name for specified mail address.
 
@@ -540,14 +540,14 @@ def get_dovecot_maildir(mail_address, folder=None):
     if '@' not in mail_address:
         raise UCSTest_Mail_InvalidMailAddress()
 
-    localpart, domain = mail_address.rsplit('@', 1)
+    localpart, domain = mail_address.rsplit('@', 1,)
     result = '/var/spool/dovecot/private/%s/%s/Maildir' % (domain.lower(), localpart.lower())
     if folder:
-        result = '%s/.%s' % (result, folder.lstrip('/').replace('/', '.'))
+        result = '%s/.%s' % (result, folder.lstrip('/').replace('/', '.',))
     return result
 
 
-def get_dovecot_shared_folder_maildir(foldername):
+def get_dovecot_shared_folder_maildir(foldername,):
     """
     Returns directory name for specified shared folder name.
 
@@ -569,18 +569,18 @@ def get_dovecot_shared_folder_maildir(foldername):
         return get_dovecot_maildir(foldername[7:])
 
     # shared folder without mail primary address
-    localpart, domain = foldername.rsplit('@', 1)
-    domain, folderpath = domain.split('/', 1)
+    localpart, domain = foldername.rsplit('@', 1,)
+    domain, folderpath = domain.split('/', 1,)
     return '/var/spool/dovecot/public/%s/%s/.%s' % (domain, localpart.lower(), folderpath)
 
 
-def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permission=None, group_permission=None):
+def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permission=None, group_permission=None,):
     with ucr_test.UCSTestConfigRegistry() as ucr:
         domain = ucr.get('domainname').lower()  # lower() can be removed, when #39721 is fixed
         basedn = ucr.get('ldap/base')
     name = uts.random_name()
     folder_mailaddress = ''
-    if isinstance(mailAddress, str):
+    if isinstance(mailAddress, str,):
         folder_mailaddress = mailAddress
     elif mailAddress:
         folder_mailaddress = '%s@%s' % (name, domain)
@@ -597,8 +597,7 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
         append={
             'sharedFolderUserACL': user_permission or [],
             'sharedFolderGroupACL': group_permission or [],
-        },
-    )
+        },)
     if mailAddress:
         folder_name = 'shared/%s' % folder_mailaddress
     else:
@@ -614,7 +613,7 @@ def create_random_msgid():
 def send_mail(
         recipients=None, sender=None, subject=None, msg=None, idstring='no id string',
         gtube=False, virus=False, attachments=[], server=None, port=0, tls=False, username=None, password=None,
-        debuglevel=1, messageid=None, ssl=False):
+        debuglevel=1, messageid=None, ssl=False,):
     """
     Send a mail to mailserver.
     Arguments:
@@ -655,9 +654,9 @@ Regards,
     # use user values if defined
     if sender:
         m_sender = sender
-    if recipients and isinstance(recipients, str):
+    if recipients and isinstance(recipients, str,):
         m_recipients = [recipients]
-    elif recipients and isinstance(recipients, list):
+    elif recipients and isinstance(recipients, list,):
         m_recipients = recipients
     else:
         raise UCSTest_Mail_InvalidRecipientList()
@@ -706,33 +705,33 @@ Regards,
         mimemsg.attach(MIMEText(r'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*'))
 
     for fn in attachments:
-        part = MIMEBase('application', "octet-stream")
-        part.set_payload(open(fn, 'rb').read())
+        part = MIMEBase('application', "octet-stream",)
+        part.set_payload(open(fn, 'rb',).read())
         Encoders.encode_base64(part)
-        part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(fn))
+        part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(fn),)
         mimemsg.attach(part)
 
     # The actual mail send part
     if ssl:
-        server = smtplib.SMTP_SSL(host=m_server, port=m_port, local_hostname=m_ehlo)
+        server = smtplib.SMTP_SSL(host=m_server, port=m_port, local_hostname=m_ehlo,)
     else:
-        server = smtplib.SMTP(host=m_server, port=m_port, local_hostname=m_ehlo)
+        server = smtplib.SMTP(host=m_server, port=m_port, local_hostname=m_ehlo,)
     server.set_debuglevel(debuglevel)
     if tls:
         server.starttls()
     if username and password:
-        server.login(username, password)
-    ret_code = server.sendmail(m_sender, m_recipients, mimemsg.as_string())
+        server.login(username, password,)
+    ret_code = server.sendmail(m_sender, m_recipients, mimemsg.as_string(),)
     server.quit()
     return ret_code
 
 
-def check_delivery(token, recipient_email, should_be_delivered, spam=False):
+def check_delivery(token, recipient_email, should_be_delivered, spam=False,):
     print("%s is waiting for an email; should be delivered = %r" % (recipient_email, should_be_delivered))
     if spam:
-        delivered = spam_delivered(token, mail_address=recipient_email)
+        delivered = spam_delivered(token, mail_address=recipient_email,)
     else:
-        delivered = mail_delivered(token, mail_address=recipient_email)
+        delivered = mail_delivered(token, mail_address=recipient_email,)
     spam_str = 'Spam ' if spam else ''
     if should_be_delivered != delivered:
         if delivered:
@@ -747,8 +746,7 @@ def check_sending_mail(
         recipient_email=None,
         tls=True,
         allowed=True,
-        local=True,
-):
+        local=True,):
     token = f'The token is {time.time()}.'
     try:
         ret_code = send_mail(
@@ -758,12 +756,11 @@ def check_sending_mail(
             server='4.3.2.1',
             tls=tls,
             username=username,
-            password=password,
-        )
+            password=password,)
         if bool(ret_code) == allowed:
             utils.fail('Sending allowed = %r, but return code = %r\n {} means there are no refused recipient' % (allowed, ret_code))
         if local:
-            check_delivery(token, recipient_email, allowed)
+            check_delivery(token, recipient_email, allowed,)
     except smtplib.SMTPException as ex:
         if allowed and (tls or 'access denied' in str(ex)):
             utils.fail('Mail sent failed with exception: %s' % ex)

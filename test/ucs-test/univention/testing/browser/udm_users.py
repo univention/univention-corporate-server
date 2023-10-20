@@ -49,11 +49,10 @@ class Users:
     admin_user: User
 
 
-def create_test_user(udm, lo) -> User:
+def create_test_user(udm, lo,) -> User:
     userdn = udm.create_user()[0]
     user_object = lo.get(userdn)
 
     return User(
         user_object["uid"][0].decode("utf-8"),
-        user_object["sn"][0].decode("utf-8"),
-    )
+        user_object["sn"][0].decode("utf-8"),)

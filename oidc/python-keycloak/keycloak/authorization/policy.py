@@ -37,7 +37,7 @@ class Policy:
 
     """
 
-    def __init__(self, name, type, logic, decision_strategy):
+    def __init__(self, name, type, logic, decision_strategy,):
         self._name = name
         self._type = type
         self._logic = logic
@@ -56,7 +56,7 @@ class Policy:
         return self._name
 
     @name.setter
-    def name(self, value):
+    def name(self, value,):
         self._name = value
 
     @property
@@ -64,7 +64,7 @@ class Policy:
         return self._type
 
     @type.setter
-    def type(self, value):
+    def type(self, value,):
         self._type = value
 
     @property
@@ -72,7 +72,7 @@ class Policy:
         return self._logic
 
     @logic.setter
-    def logic(self, value):
+    def logic(self, value,):
         self._logic = value
 
     @property
@@ -80,7 +80,7 @@ class Policy:
         return self._decision_strategy
 
     @decision_strategy.setter
-    def decision_strategy(self, value):
+    def decision_strategy(self, value,):
         self._decision_strategy = value
 
     @property
@@ -91,7 +91,7 @@ class Policy:
     def permissions(self):
         return self._permissions
 
-    def add_role(self, role):
+    def add_role(self, role,):
         """
         Add keycloak role in policy.
 
@@ -103,7 +103,7 @@ class Policy:
                 "Can't add role. Policy type is different of role")
         self._roles.append(role)
 
-    def add_permission(self, permission):
+    def add_permission(self, permission,):
         """
         Add keycloak permission in policy.
 

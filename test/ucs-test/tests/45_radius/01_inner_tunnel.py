@@ -12,7 +12,7 @@ import univention.testing.udm as udm_test
 from univention.testing import utils
 
 
-def radtest(username):
+def radtest(username,):
     subprocess.check_call([
         'radtest',
         '-t',

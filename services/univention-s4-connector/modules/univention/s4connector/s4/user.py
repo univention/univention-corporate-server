@@ -45,7 +45,7 @@ import univention.debug2 as ud
 map_prefdev = [b'any', b'mhs', b'physical', b'telex', b'teletex', b'g3fax', b'g4fax', b'ia5', b'videotex', b'telephone']
 
 
-def prefdev_sync_s4_to_ucs(s4connector, key, s4_object):
+def prefdev_sync_s4_to_ucs(s4connector, key, s4_object,):
     attr = 'preferredDeliveryMethod'
     s4_prefdev = s4_object['attributes'].get(attr)
 
@@ -57,12 +57,12 @@ def prefdev_sync_s4_to_ucs(s4connector, key, s4_object):
         try:
             ucs_pref += map_prefdev[int(pref)].decode('ASCII') + ' $ '
         except (IndexError, ValueError):
-            ud.debug(ud.LDAP, ud.WARN, "Ignoring invalid value %r of attribute preferredDeliveryMethod. Value must be a number between 0 and 10." % (pref,))
+            ud.debug(ud.LDAP, ud.WARN, "Ignoring invalid value %r of attribute preferredDeliveryMethod. Value must be a number between 0 and 10." % (pref,),)
     ucs_pref = ucs_pref[:-3]
     return [ucs_pref.encode('ASCII')]
 
 
-def prefdev_sync_ucs_to_s4(s4connector, key, ucs_object):
+def prefdev_sync_ucs_to_s4(s4connector, key, ucs_object,):
     attr = 'preferredDeliveryMethod'
 
     ucs_prefdev = ucs_object['attributes'].get(attr)
@@ -75,7 +75,7 @@ def prefdev_sync_ucs_to_s4(s4connector, key, ucs_object):
             int(pref.decode('ASCII'))
     except ValueError:
         # map values
-        for pref in ucs_prefdev[0].replace(b' ', b'').split(b'$'):
+        for pref in ucs_prefdev[0].replace(b' ', b'',).split(b'$'):
             if pref in map_prefdev:
                 s4_prefdev.append(str(map_prefdev.index(pref)).encode('ASCII'))
     else:
@@ -84,7 +84,7 @@ def prefdev_sync_ucs_to_s4(s4connector, key, ucs_object):
     return s4_prefdev
 
 
-def userCertificate_sync_s4_to_ucs(s4connector, key, s4_object):
+def userCertificate_sync_s4_to_ucs(s4connector, key, s4_object,):
     attr = 'userCertificate'
     s4_cert = s4_object['attributes'].get(attr)
     if s4_cert is None:
@@ -93,7 +93,7 @@ def userCertificate_sync_s4_to_ucs(s4connector, key, s4_object):
     return [ucs_cert]
 
 
-def userCertificate_sync_ucs_to_s4(s4connector, key, ucs_object):
+def userCertificate_sync_ucs_to_s4(s4connector, key, ucs_object,):
     attr = 'userCertificate;binary'
     try:
         ucs_cert = ucs_object['attributes'][attr][0]
@@ -102,7 +102,7 @@ def userCertificate_sync_ucs_to_s4(s4connector, key, ucs_object):
     return [ucs_cert]
 
 
-def jpegPhoto_sync_s4_to_ucs(s4connector, key, s4_object):
+def jpegPhoto_sync_s4_to_ucs(s4connector, key, s4_object,):
     attr = 'jpegPhoto'
 
     s4_photo = s4_object['attributes'].get(attr)
@@ -115,7 +115,7 @@ def jpegPhoto_sync_s4_to_ucs(s4connector, key, s4_object):
     return ucs_photo
 
 
-def jpegPhoto_sync_ucs_to_s4(s4connector, key, ucs_object):
+def jpegPhoto_sync_ucs_to_s4(s4connector, key, ucs_object,):
     attr = 'jpegPhoto'
 
     ucs_photo = ucs_object['attributes'].get(attr)
@@ -124,7 +124,7 @@ def jpegPhoto_sync_ucs_to_s4(s4connector, key, ucs_object):
     return ucs_photo[:]
 
 
-def secretary_sync_s4_to_ucs(s4connector, key, s4_object):
+def secretary_sync_s4_to_ucs(s4connector, key, s4_object,):
     attr = 'secretary'
 
     s4_secretary = s4_object['attributes'].get(attr)
@@ -137,19 +137,19 @@ def secretary_sync_s4_to_ucs(s4connector, key, s4_object):
             dn_mapped = s4_dn
             if s4connector._get_dn_by_con(dn_mapped):
                 dn_mapped = s4connector._get_dn_by_con(dn_mapped)
-                dn_mapped = s4connector.dn_mapped_to_base(dn_mapped, s4connector.lo.base)
-            if hasattr(s4connector.property['user'], 'position_mapping'):
+                dn_mapped = s4connector.dn_mapped_to_base(dn_mapped, s4connector.lo.base,)
+            if hasattr(s4connector.property['user'], 'position_mapping',):
                 for mapping in s4connector.property['user'].position_mapping:
-                    dn_mapped = s4connector._subtree_replace(dn_mapped, mapping[1], mapping[0])
+                    dn_mapped = s4connector._subtree_replace(dn_mapped, mapping[1], mapping[0],)
                 if dn_mapped == s4_dn and not (s4connector.lo.base.lower() == dn_mapped[-len(s4connector.lo.base):].lower() and len(s4connector.lo.base) > len(s4connector.lo_s4.base)):
-                    dn_mapped = s4connector._subtree_replace(dn_mapped, s4connector.lo_s4.base, s4connector.lo.base)
+                    dn_mapped = s4connector._subtree_replace(dn_mapped, s4connector.lo_s4.base, s4connector.lo.base,)
             ucs_secretary.append(dn_mapped)
         # remove multiples
         ucs_secretary = list(dict.fromkeys(ucs_secretary))
         return ucs_secretary
 
 
-def secretary_sync_ucs_to_s4(s4connector, key, ucs_object):
+def secretary_sync_ucs_to_s4(s4connector, key, ucs_object,):
     attr = 'secretary'
 
     ucs_secretary = ucs_object['attributes'][attr]
@@ -162,11 +162,11 @@ def secretary_sync_ucs_to_s4(s4connector, key, ucs_object):
             dn_mapped = ucs_dn
             if s4connector._get_dn_by_ucs(ucs_dn):
                 dn_mapped = s4connector._get_dn_by_ucs(ucs_dn)
-                dn_mapped = s4connector.dn_mapped_to_base(dn_mapped, s4connector.lo_s4.base)
-            if hasattr(s4connector.property['user'], 'position_mapping'):
+                dn_mapped = s4connector.dn_mapped_to_base(dn_mapped, s4connector.lo_s4.base,)
+            if hasattr(s4connector.property['user'], 'position_mapping',):
                 for mapping in s4connector.property['user'].position_mapping:
-                    dn_mapped = s4connector._subtree_replace(dn_mapped, mapping[0], mapping[1])
+                    dn_mapped = s4connector._subtree_replace(dn_mapped, mapping[0], mapping[1],)
                 if dn_mapped == ucs_dn and not (s4connector.lo_s4.base.lower() == dn_mapped[-len(s4connector.lo_s4.base):].lower() and len(s4connector.lo_s4.base) > len(s4connector.lo.base)):
-                    dn_mapped = s4connector._subtree_replace(dn_mapped, s4connector.lo.base, s4connector.lo_s4.base)
+                    dn_mapped = s4connector._subtree_replace(dn_mapped, s4connector.lo.base, s4connector.lo_s4.base,)
             s4_secretary.append(dn_mapped.encode('UTF-8'))
         return list(set(s4_secretary))

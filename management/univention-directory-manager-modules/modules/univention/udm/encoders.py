@@ -58,32 +58,32 @@ __dn_property_encoder_class_cache = {}
 class BaseEncoder(object):
     static = False  # whether to create an instance or use a class/static method
 
-    def __init__(self, property_name=None, *args, **kwargs):
+    def __init__(self, property_name=None,*args, **kwargs):
         self.property_name = property_name
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self.property_name)
+        return '{}({})'.format(self.__class__.__name__, self.property_name,)
 
-    def encode(self, value=None):
+    def encode(self, value=None,):
         raise NotImplementedError()
 
-    def decode(self, value=None):
+    def decode(self, value=None,):
         raise NotImplementedError()
 
 
 class Base64BinaryPropertyEncoder(BaseEncoder):
     static = False
 
-    def decode(self, value=None):
+    def decode(self, value=None,):
         if value:
-            return Base64BinaryProperty(self.property_name, value)
+            return Base64BinaryProperty(self.property_name, value,)
         else:
             return value
 
-    def encode(self, value=None):
+    def encode(self, value=None,):
         if value:
-            if not isinstance(value, Base64BinaryProperty):
-                value = Base64BinaryProperty(self.property_name, raw_value=value)
+            if not isinstance(value, Base64BinaryProperty,):
+                value = Base64BinaryProperty(self.property_name, raw_value=value,)
             return value.encoded
         else:
             return value
@@ -92,13 +92,13 @@ class Base64BinaryPropertyEncoder(BaseEncoder):
 class Base64Bzip2BinaryPropertyEncoder(BaseEncoder):
     static = False
 
-    def decode(self, value=None):
+    def decode(self, value=None,):
         if value:
-            return Base64Bzip2BinaryProperty(self.property_name, value)
+            return Base64Bzip2BinaryProperty(self.property_name, value,)
         else:
             return value
 
-    def encode(self, value=None):
+    def encode(self, value=None,):
         if value:
             return value.encoded
         else:
@@ -109,14 +109,14 @@ class DatePropertyEncoder(BaseEncoder):
     static = True
 
     @staticmethod
-    def decode(value=None):
+    def decode(value=None,):
         if value:
-            return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
+            return datetime.date(*time.strptime(value, '%Y-%m-%d',)[0:3])
         else:
             return value
 
     @staticmethod
-    def encode(value=None):
+    def encode(value=None,):
         if value:
             return value.strftime('%Y-%m-%d')
         else:
@@ -127,11 +127,11 @@ class DisabledPropertyEncoder(BaseEncoder):
     static = True
 
     @staticmethod
-    def decode(value=None):
+    def decode(value=None,):
         return value == '1'
 
     @staticmethod
-    def encode(value=None):
+    def encode(value=None,):
         return '1' if value else '0'
 
 
@@ -139,14 +139,14 @@ class HomePostalAddressPropertyEncoder(BaseEncoder):
     static = True
 
     @staticmethod
-    def decode(value=None):
+    def decode(value=None,):
         if value:
             return [{'street': v[0], 'zipcode': v[1], 'city': v[2]} for v in value]
         else:
             return value
 
     @staticmethod
-    def encode(value=None):
+    def encode(value=None,):
         if value:
             return [[v['street'], v['zipcode'], v['city']] for v in value]
         else:
@@ -157,13 +157,13 @@ class ListOfListOflTextToDictPropertyEncoder(BaseEncoder):
     static = True
 
     @staticmethod
-    def decode(value=None):
+    def decode(value=None,):
         if value is None:
             return value
         return dict(value)
 
     @staticmethod
-    def encode(value=None):
+    def encode(value=None,):
         if value:
             return [[k, v] for k, v in value.items()]
         else:
@@ -174,11 +174,11 @@ class MultiLanguageTextAppcenterPropertyEncoder(BaseEncoder):
     static = True
 
     @staticmethod
-    def decode(value=None):
+    def decode(value=None,):
         if value:
             res = {}
             for s in value:
-                lang, txt = s.split(' ', 1)
+                lang, txt = s.split(' ', 1,)
                 lang = lang.strip('[]')
                 res[lang] = txt
             return res
@@ -186,9 +186,9 @@ class MultiLanguageTextAppcenterPropertyEncoder(BaseEncoder):
             return value
 
     @staticmethod
-    def encode(value=None):
+    def encode(value=None,):
         if value:
-            return ['[{}] {}'.format(k, v) for k, v in value.items()]
+            return ['[{}] {}'.format(k, v,) for k, v in value.items()]
         else:
             return value
 
@@ -199,14 +199,14 @@ class SambaGroupTypePropertyEncoder(BaseEncoder):
     choices_reverted = {v: k for k, v in sambaGroupType.choices}
 
     @classmethod
-    def decode(cls, value=None):
+    def decode(cls, value=None,):
         try:
             return cls.choices[value]
         except KeyError:
             return value
 
     @classmethod
-    def encode(cls, value=None):
+    def encode(cls, value=None,):
         try:
             return cls.choices_reverted[value]
         except KeyError:
@@ -218,20 +218,20 @@ class SambaLogonHoursPropertyEncoder(BaseEncoder):
     _weekdays = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
 
     @classmethod
-    def decode(cls, value=None):
+    def decode(cls, value=None,):
         if value:
-            return ['{} {}-{}'.format(cls._weekdays[v / 24], v % 24, v % 24 + 1) for v in value]
+            return ['{} {}-{}'.format(cls._weekdays[v / 24], v % 24, v % 24 + 1,) for v in value]
         else:
             return value
 
     @classmethod
-    def encode(cls, value=None):
+    def encode(cls, value=None,):
         if value:
             try:
                 values = [v.split() for v in value]
-                return [cls._weekdays.index(w) * 24 + int(h.split('-', 1)[0]) for w, h in values]
+                return [cls._weekdays.index(w) * 24 + int(h.split('-', 1,)[0]) for w, h in values]
             except (IndexError, ValueError):
-                six.reraise(valueInvalidSyntax, valueInvalidSyntax('One or more entries in sambaLogonHours have invalid syntax.'), sys.exc_info()[2])
+                six.reraise(valueInvalidSyntax, valueInvalidSyntax('One or more entries in sambaLogonHours have invalid syntax.'), sys.exc_info()[2],)
         else:
             return value
 
@@ -243,16 +243,16 @@ class StringCaseInsensitiveResultLowerBooleanPropertyEncoder(BaseEncoder):
     true_string = 'true'
 
     @classmethod
-    def decode(cls, value=''):
-        return isinstance(value, six.string_types) and value.lower() == cls.true_string
+    def decode(cls, value='',):
+        return isinstance(value, six.string_types,) and value.lower() == cls.true_string
 
     @classmethod
-    def encode(cls, value=None):
+    def encode(cls, value=None,):
         assert cls.result_case_func in ('lower', 'upper')
         if value:
-            return getattr(cls.true_string, cls.result_case_func)()
+            return getattr(cls.true_string, cls.result_case_func,)()
         else:
-            return getattr(cls.false_string, cls.result_case_func)()
+            return getattr(cls.false_string, cls.result_case_func,)()
 
 
 class StringCaseInsensitiveResultUpperBooleanPropertyEncoder(StringCaseInsensitiveResultLowerBooleanPropertyEncoder):
@@ -263,11 +263,11 @@ class StringIntBooleanPropertyEncoder(BaseEncoder):
     static = True
 
     @staticmethod
-    def decode(value=None):
+    def decode(value=None,):
         return value == '1'
 
     @staticmethod
-    def encode(value=None):
+    def encode(value=None,):
         if value:
             return '1'
         else:
@@ -277,17 +277,17 @@ class StringIntBooleanPropertyEncoder(BaseEncoder):
 class StringIntPropertyEncoder(BaseEncoder):
     static = False
 
-    def decode(self, value=None):
+    def decode(self, value=None,):
         if value in ('', None):
             return None
         else:
             try:
                 return int(value)
             except ValueError:
-                six.reraise(valueInvalidSyntax, valueInvalidSyntax('Value of {!r} must be an int (is {!r}).'.format(self.property_name, value)), sys.exc_info()[2])
+                six.reraise(valueInvalidSyntax, valueInvalidSyntax('Value of {!r} must be an int (is {!r}).'.format(self.property_name, value,)), sys.exc_info()[2],)
 
     @staticmethod
-    def encode(value=None):
+    def encode(value=None,):
         if value is None:
             return value
         else:
@@ -299,14 +299,14 @@ class StringListToList(BaseEncoder):
     separator = ' '
 
     @classmethod
-    def decode(cls, value=None):
+    def decode(cls, value=None,):
         if value:
             return value.split(cls.separator)
         else:
             return value
 
     @classmethod
-    def encode(cls, value=None):
+    def encode(cls, value=None,):
         if value:
             return cls.separator.join(value)
         else:
@@ -330,21 +330,21 @@ class DnListPropertyEncoder(BaseEncoder):
         # a list with an additional member variable
         objs = None
 
-        def __deepcopy__(self, memodict=None):
+        def __deepcopy__(self, memodict=None,):
             return list(self)
 
     class MyProxy(lazy_object_proxy.Proxy):
         # overwrite __repr__ for better navigation in ipython
-        def __repr__(self, __getattr__=object.__getattribute__):
-            return super(DnListPropertyEncoder.MyProxy, self).__str__()
+        def __repr__(self, __getattr__=object.__getattribute__,):
+            return super(DnListPropertyEncoder.MyProxy, self,).__str__()
 
-    def __init__(self, property_name=None, connection=None, api_version=None, *args, **kwargs):
+    def __init__(self, property_name=None, connection=None, api_version=None,*args, **kwargs):
         assert connection is not None, 'Argument "connection" must not be None.'
         assert api_version is not None, 'Argument "api_version" must not be None.'
-        super(DnListPropertyEncoder, self).__init__(property_name, *args, **kwargs)
-        self._udm = UDM(connection, api_version)
+        super(DnListPropertyEncoder, self,).__init__(property_name, *args, **kwargs,)
+        self._udm = UDM(connection, api_version,)
 
-    def _list_of_dns_to_list_of_udm_objects(self, value):
+    def _list_of_dns_to_list_of_udm_objects(self, value,):
         udm_module = None
         res = []
         for dn in value:
@@ -363,16 +363,16 @@ class DnListPropertyEncoder(BaseEncoder):
                 res.append(obj)
         return res
 
-    def decode(self, value=None):
+    def decode(self, value=None,):
         if value is None:
             value = []
-        assert hasattr(value, '__iter__'), 'Value is not iterable: {!r}'.format(value)
+        assert hasattr(value, '__iter__',), 'Value is not iterable: {!r}'.format(value)
         new_list = self.DnsList(value)
         new_list.objs = self.MyProxy(lambda: self._list_of_dns_to_list_of_udm_objects(value))
         return new_list
 
     @staticmethod
-    def encode(value=None):
+    def encode(value=None,):
         try:
             del value.objs
         except AttributeError:
@@ -387,21 +387,21 @@ class DnListPropertyEncoder(BaseEncoder):
 class PoliciesEncoder(BaseEncoder):
     static = False
 
-    def __init__(self, property_name=None, connection=None, api_version=None, module_name=None, *args, **kwargs):
+    def __init__(self, property_name=None, connection=None, api_version=None, module_name=None,*args, **kwargs):
         assert connection is not None, 'Argument "connection" must not be None.'
         assert api_version is not None, 'Argument "api_version" must not be None.'
-        super(PoliciesEncoder, self).__init__(property_name, *args, **kwargs)
-        self._udm = UDM(connection, api_version)
+        super(PoliciesEncoder, self,).__init__(property_name, *args, **kwargs,)
+        self._udm = UDM(connection, api_version,)
         self.module_name = module_name
 
-    def decode(self, value=None):
+    def decode(self, value=None,):
         policies = {}
         policy_modules = univention.admin.modules.policyTypes(self.module_name)
         if not policy_modules and self._udm.get(self.module_name)._orig_udm_module.childs:  # container, which allows every policy-type
             policy_modules = [x for x in univention.admin.modules.modules if x.startswith('policies/') and x != 'policies/policy']
 
         for policy_module in policy_modules:
-            policies.setdefault(policy_module, [])
+            policies.setdefault(policy_module, [],)
 
         for policy_dn in value or []:
             policy_module = self._udm.obj_by_dn(policy_dn)._udm_module.name
@@ -411,7 +411,7 @@ class PoliciesEncoder(BaseEncoder):
 
         return policies
 
-    def encode(self, value=None):
+    def encode(self, value=None,):
         if value:
             return [y for x in value.values() for y in x]
         else:
@@ -427,7 +427,7 @@ class CnameListPropertyEncoder(DnListPropertyEncoder):
 
     udm_module_name = 'dns/alias'
 
-    def _list_of_dns_to_list_of_udm_objects(self, value):
+    def _list_of_dns_to_list_of_udm_objects(self, value,):
         udm_module = self.udm.get(self.udm_module_name)
         return [list(udm_module.search('relativeDomainName={}'.format(cname)))[0] for cname in value]
 
@@ -442,9 +442,9 @@ class DnsEntryZoneAliasListPropertyEncoder(DnListPropertyEncoder):
 
     udm_module_name = 'dns/alias'
 
-    def _list_of_dns_to_list_of_udm_objects(self, value):
+    def _list_of_dns_to_list_of_udm_objects(self, value,):
         udm_module = self.udm.get(self.udm_module_name)
-        return [udm_module.get('relativeDomainName={},{}'.format(v[2], v[1])) for v in value]
+        return [udm_module.get('relativeDomainName={},{}'.format(v[2], v[1],)) for v in value]
 
 
 class DnsEntryZoneForwardListMultiplePropertyEncoder(DnListPropertyEncoder):
@@ -458,10 +458,10 @@ class DnsEntryZoneForwardListMultiplePropertyEncoder(DnListPropertyEncoder):
     udm_module_name = 'dns/forward_zone'
 
     @staticmethod
-    def _itemgetter(value):
+    def _itemgetter(value,):
         return value[0]
 
-    def _list_of_dns_to_list_of_udm_objects(self, value):
+    def _list_of_dns_to_list_of_udm_objects(self, value,):
         udm_module = self.udm.get(self.udm_module_name)
         return [udm_module.get(self._itemgetter(v)) for v in value]
 
@@ -477,7 +477,7 @@ class DnsEntryZoneForwardListSinglePropertyEncoder(DnsEntryZoneForwardListMultip
     udm_module_name = 'dns/forward_zone'
 
     @staticmethod
-    def _itemgetter(value):
+    def _itemgetter(value,):
         return value
 
 
@@ -492,7 +492,7 @@ class DnsEntryZoneReverseListMultiplePropertyEncoder(DnsEntryZoneForwardListMult
     udm_module_name = 'dns/reverse_zone'
 
     @staticmethod
-    def _itemgetter(value):
+    def _itemgetter(value,):
         return value[0]
 
 
@@ -507,7 +507,7 @@ class DnsEntryZoneReverseListSinglePropertyEncoder(DnsEntryZoneReverseListMultip
     udm_module_name = 'dns/reverse_zone'
 
     @staticmethod
-    def _itemgetter(value):
+    def _itemgetter(value,):
         return value
 
 
@@ -528,21 +528,21 @@ class DnPropertyEncoder(BaseEncoder):
         # a string with an additional member variable
         obj = None
 
-        def __deepcopy__(self, memodict=None):
+        def __deepcopy__(self, memodict=None,):
             return str(self)
 
     class MyProxy(lazy_object_proxy.Proxy):
         # overwrite __repr__ for better navigation in ipython
-        def __repr__(self, __getattr__=object.__getattribute__):
-            return super(DnPropertyEncoder.MyProxy, self).__str__()
+        def __repr__(self, __getattr__=object.__getattribute__,):
+            return super(DnPropertyEncoder.MyProxy, self,).__str__()
 
-    def __init__(self, property_name=None, connection=None, api_version=None, *args, **kwargs):
+    def __init__(self, property_name=None, connection=None, api_version=None,*args, **kwargs):
         assert connection is not None, 'Argument "connection" must not be None.'
         assert api_version is not None, 'Argument "api_version" must not be None.'
-        super(DnPropertyEncoder, self).__init__(property_name, *args, **kwargs)
-        self._udm = UDM(connection, api_version)
+        super(DnPropertyEncoder, self,).__init__(property_name, *args, **kwargs,)
+        self._udm = UDM(connection, api_version,)
 
-    def _dn_to_udm_object(self, value):
+    def _dn_to_udm_object(self, value,):
         try:
             if self.udm_module_name == 'auto':
                 return self.udm.obj_by_dn(value)
@@ -555,7 +555,7 @@ class DnPropertyEncoder(BaseEncoder):
             UDebug.warn(str(exc))
         return None
 
-    def decode(self, value=None):
+    def decode(self, value=None,):
         if value in (None, ''):
             return None
         new_str = self.DnStr(value)
@@ -564,7 +564,7 @@ class DnPropertyEncoder(BaseEncoder):
         return new_str
 
     @staticmethod
-    def encode(value=None):
+    def encode(value=None,):
         try:
             del value.obj
         except AttributeError:
@@ -576,12 +576,12 @@ class DnPropertyEncoder(BaseEncoder):
         return self._udm
 
 
-def _classify_name(name):
+def _classify_name(name,):
     mod_parts = name.split('/')
-    return ''.join('{}{}'.format(mp[0].upper(), mp[1:]) for mp in mod_parts)
+    return ''.join('{}{}'.format(mp[0].upper(), mp[1:],) for mp in mod_parts)
 
 
-def dn_list_property_encoder_for(udm_module_name):
+def dn_list_property_encoder_for(udm_module_name,):
     """
     Create a (cached) subclass of DnListPropertyEncoder specific for each UDM
     module.
@@ -594,13 +594,13 @@ def dn_list_property_encoder_for(udm_module_name):
     """
     if udm_module_name not in __dn_list_property_encoder_class_cache:
         cls_name = str('DnListPropertyEncoder{}').format(_classify_name(udm_module_name))
-        specific_encoder_cls = type(cls_name, (DnListPropertyEncoder,), {})
+        specific_encoder_cls = type(cls_name, (DnListPropertyEncoder,), {},)
         specific_encoder_cls.udm_module_name = udm_module_name
         __dn_list_property_encoder_class_cache[udm_module_name] = specific_encoder_cls
     return __dn_list_property_encoder_class_cache[udm_module_name]
 
 
-def dn_property_encoder_for(udm_module_name):
+def dn_property_encoder_for(udm_module_name,):
     """
     Create a (cached) subclass of DnPropertyEncoder specific for each UDM
     module.
@@ -613,7 +613,7 @@ def dn_property_encoder_for(udm_module_name):
     """
     if udm_module_name not in __dn_property_encoder_class_cache:
         cls_name = str('DnPropertyEncoder{}').format(_classify_name(udm_module_name))
-        specific_encoder_cls = type(cls_name, (DnPropertyEncoder,), {})
+        specific_encoder_cls = type(cls_name, (DnPropertyEncoder,), {},)
         specific_encoder_cls.udm_module_name = udm_module_name
         __dn_property_encoder_class_cache[udm_module_name] = specific_encoder_cls
     return __dn_property_encoder_class_cache[udm_module_name]

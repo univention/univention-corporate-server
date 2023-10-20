@@ -49,7 +49,7 @@ class _SharedMemory(managers.SyncManager):
     def start(self, *args, **kwargs):
         setproctitle(proctitle + '   # multiprocessing manager')
         try:
-            super().start(*args, **kwargs)
+            super().start(*args, **kwargs,)
         finally:
             setproctitle(proctitle)
 
@@ -65,9 +65,9 @@ shared_memory = _SharedMemory()
 
 class JsonEncoder(json.JSONEncoder):
 
-    def default(self, o):
-        if isinstance(o, managers.DictProxy):
+    def default(self, o,):
+        if isinstance(o, managers.DictProxy,):
             return dict(o)
-        if isinstance(o, managers.ListProxy):
+        if isinstance(o, managers.ListProxy,):
             return list(o)
         raise TypeError(f'Object of type {type(o).__name__} is not JSON serializable')

@@ -6,18 +6,18 @@ from waflib.Tools import ar, d
 from waflib.Configure import conf
 
 @conf
-def find_gdc(conf):
+def find_gdc(conf,):
 	"""
 	Finds the program gdc and set the variable *D*
 	"""
-	conf.find_program('gdc', var='D')
+	conf.find_program('gdc', var='D',)
 
 	out = conf.cmd_and_log(conf.env.D + ['--version'])
 	if out.find("gdc") == -1:
 		conf.fatal("detected compiler is not gdc")
 
 @conf
-def common_flags_gdc(conf):
+def common_flags_gdc(conf,):
 	"""
 	Sets the flags required by *gdc*
 	"""
@@ -43,7 +43,7 @@ def common_flags_gdc(conf):
 	v.DFLAGS_d_with_header = '-fintfc'
 	v.D_HDR_F           = '-fintfc-file=%s'
 
-def configure(conf):
+def configure(conf,):
 	"""
 	Configuration for gdc
 	"""

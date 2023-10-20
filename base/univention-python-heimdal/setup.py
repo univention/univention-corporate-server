@@ -44,8 +44,8 @@ from setuptools import Extension, setup
 
 
 d = pkgconfig.parse('heimdal-krb5')
-dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
-dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
+dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8',))
+dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8',))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
@@ -64,9 +64,7 @@ setup(
                  'salt.c', 'enctype.c', 'keyblock.c', 'asn1.c'],
                 libraries=['krb5', 'hdb', 'asn1'],
                 library_dirs=d['library_dirs'],
-                include_dirs=d['include_dirs'],
-        ),
+                include_dirs=d['include_dirs'],),
     ],
 
-    test_suite='test',
-)
+    test_suite='test',)

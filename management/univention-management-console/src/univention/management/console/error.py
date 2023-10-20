@@ -50,15 +50,15 @@ class UMC_Error(HTTPError):
     msg = None
     include_traceback = False
 
-    def __init__(self, message=None, status=None, result=None, headers=None, traceback=None, reason=None):
+    def __init__(self, message=None, status=None, result=None, headers=None, traceback=None, reason=None,):
         message = message or self.msg
         self.msg = message
         self.result = result
         self.headers = headers
         self.traceback = traceback
-        if isinstance(status, int):
+        if isinstance(status, int,):
             self.status = status
-        super(UMC_Error, self).__init__(self.status, message, reason=reason)
+        super(UMC_Error, self,).__init__(self.status, message, reason=reason,)
 
     def __str__(self):
         return self.msg
@@ -117,7 +117,7 @@ class PasswordRequired(Unauthorized):
 
     def __init__(self):
         message = _('This action requires you to supply your password.')
-        super(PasswordRequired, self).__init__(message, self.status, {'password_required': True})
+        super(PasswordRequired, self,).__init__(message, self.status, {'password_required': True},)
 
 
 class LDAP_ServerDown(UMC_Error):
@@ -128,7 +128,7 @@ class LDAP_ServerDown(UMC_Error):
         self._updates_available = ucr.is_true('update/available')
         self._fqdn = '%(hostname)s.%(domainname)s' % ucr
         message = '\n'.join(self._error_msg())
-        super(LDAP_ServerDown, self).__init__(message, status=503, reason='LDAP Service Unavailable')
+        super(LDAP_ServerDown, self,).__init__(message, status=503, reason='LDAP Service Unavailable',)
 
     def _error_msg(self):
         yield _('Cannot connect to the LDAP service.')
@@ -149,13 +149,13 @@ class LDAP_ServerDown(UMC_Error):
 
 class LDAP_ConnectionFailed(LDAP_ServerDown):
 
-    def __init__(self, exc):
+    def __init__(self, exc,):
         self.exc = exc
-        super(LDAP_ConnectionFailed, self).__init__()
+        super(LDAP_ConnectionFailed, self,).__init__()
 
     def _error_msg(self):
         yield _('Cannot connect to the LDAP service.')
-        yield _('Error message: %s') % (self.exc.args[0].get('info', ''),)
+        yield _('Error message: %s') % (self.exc.args[0].get('info', '',),)
         yield ''
         yield _('The following steps can help to solve this problem:')
         if not self._is_master:

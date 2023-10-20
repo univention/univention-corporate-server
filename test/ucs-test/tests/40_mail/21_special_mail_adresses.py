@@ -14,10 +14,10 @@ from univention.testing import utils
 from essential.mail import mail_delivered, send_mail
 
 
-def check_sending_mail(username, password, recipient_email):
+def check_sending_mail(username, password, recipient_email,):
     token = str(time.time())
-    send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password)
-    delivered = mail_delivered(token, check_root=True)
+    send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password,)
+    delivered = mail_delivered(token, check_root=True,)
     if not delivered:
         utils.fail('Mail sent with token = %r to %s was not redirected to root' % (token, recipient_email))
 
@@ -36,7 +36,7 @@ def main():
         )
         for mail_name in ('postmaster', 'webmaster'):
             recipient_email = '%s@%s' % (mail_name, fqdn)
-            check_sending_mail(mailAddress, 'univention', recipient_email)
+            check_sending_mail(mailAddress, 'univention', recipient_email,)
 
 
 if __name__ == '__main__':

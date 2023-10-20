@@ -38,7 +38,7 @@ class Main:
         print('########################### test_total_limits ##############################')
         cuser = self_service_user(email='user@localhost')
         with cuser as user, set_limits(total_minute=1):
-            assert fail_after(user, 1, 'one minute'), LIMIT_TOTAL_MINUTE
+            assert fail_after(user, 1, 'one minute',), LIMIT_TOTAL_MINUTE
             wait(minutes=1)
             dont_fail(user)
 
@@ -46,16 +46,16 @@ class Main:
         print('########################### test_user_limits ##############################')
         cuser1 = self_service_user(email='user1@localhost')
         cuser2 = self_service_user(email='user2@localhost')
-        limits = set_limits(total_minute=7, user_minute=3)
+        limits = set_limits(total_minute=7, user_minute=3,)
         with cuser1 as user1, cuser2 as user2, limits:
-            assert fail_after(user1, 3, 'one minute')
-            assert fail_after(user2, 2, 'one minute')
+            assert fail_after(user1, 3, 'one minute',)
+            assert fail_after(user2, 2, 'one minute',)
             wait(minutes=1)
             dont_fail(user2)
 
 
 @contextlib.contextmanager
-def set_limits(total_minute=None, total_hour=None, total_day=None, user_minute=None, user_hour=None, user_day=None):
+def set_limits(total_minute=None, total_hour=None, total_day=None, user_minute=None, user_hour=None, user_day=None,):
     print('setting limit to %s' % locals())
     with UCR(), resetting_limits():
         total_minute = (LIMIT_TOTAL_MINUTE, total_minute)
@@ -70,10 +70,10 @@ def set_limits(total_minute=None, total_hour=None, total_day=None, user_minute=N
         yield
 
 
-def fail_after(user, x, retry_after):
-    print('We should fail after', x)
+def fail_after(user, x, retry_after,):
+    print('We should fail after', x,)
     for i in range(x):
-        print('Attempt (we shall not fail)', i + 1)
+        print('Attempt (we shall not fail)', i + 1,)
         user.send_token('email')
 
     try:
@@ -87,7 +87,7 @@ def fail_after(user, x, retry_after):
     raise AssertionError('limit not evaluated')
 
 
-def dont_fail(user):
+def dont_fail(user,):
     print('Now we should not fail anymore')
     user.send_token('email')
     print('Did not fail ;)')
@@ -103,13 +103,13 @@ def resetting_limits():
 
 
 def reset_server_limits():
-    assert call(['deb-systemd-invoke', 'restart', 'memcached'], close_fds=True) == 0
-    assert call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'], close_fds=True) == 0
+    assert call(['deb-systemd-invoke', 'restart', 'memcached'], close_fds=True,) == 0
+    assert call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'], close_fds=True,) == 0
     print('Waiting for umc restart')
     sleep(3)
 
 
-def wait(minutes):
+def wait(minutes,):
     # TODO: set the server time otherwise this test blocks that long
     print('Waiting %d minutes' % (minutes,))
     sleep((minutes * 60) + 1)

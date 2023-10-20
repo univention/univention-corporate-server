@@ -15,7 +15,7 @@ import univention.testing.udm as udm_test
 from univention.testing import strings, utils
 
 
-def eapol_test(username, client_mac):
+def eapol_test(username, client_mac,):
     testdata = '''network={{
         key_mgmt=WPA-EAP
         eap=PEAP
@@ -41,13 +41,12 @@ def main():
                 'name': strings.random_name(),
                 'mac': client_mac,
                 'networkAccess': 0,
-            },
-        )
+            },)
         univention.config_registry.handler_set(['radius/mac/whitelisting=true'])
 
         # try authentication with disabled client
         try:
-            eapol_test(username, client_mac)
+            eapol_test(username, client_mac,)
         except subprocess.CalledProcessError:
             pass
         else:
@@ -59,17 +58,16 @@ def main():
             dn=clientdn,
             set={
                 'networkAccess': 1,
-            },
-        )
+            },)
 
         try:
-            eapol_test(username, client_mac)
+            eapol_test(username, client_mac,)
         except subprocess.CalledProcessError:
             utils.fail('User could not authenticate on client with enabled network!')
 
         # try authentication with unknown client
         try:
-            eapol_test(username, strings.random_mac())
+            eapol_test(username, strings.random_mac(),)
         except subprocess.CalledProcessError:
             pass
         else:

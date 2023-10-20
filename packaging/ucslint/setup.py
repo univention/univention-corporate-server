@@ -38,5 +38,4 @@ VER = open('debian/changelog').readline().split()[1][1:-1].split('A~')[0]
 
 setup(
     package_dir={'': '.'},
-    version=VER,
-)
+    version=VER,)

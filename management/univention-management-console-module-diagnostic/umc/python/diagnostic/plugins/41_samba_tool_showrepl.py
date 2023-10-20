@@ -58,14 +58,14 @@ run_descr = ['This can be checked by running: samba-tool drs showrepl']
 
 
 class DRSUAPI(object):
-    def __init__(self, dc=None) -> None:
+    def __init__(self, dc=None,) -> None:
         (self.load_param, self.credentials) = self.samba_credentials()
         self.server = dc or self.netcmd_dnsname(self.load_param)
-        drs_tuple = drs_utils.drsuapi_connect(self.server, self.load_param, self.credentials)
+        drs_tuple = drs_utils.drsuapi_connect(self.server, self.load_param, self.credentials,)
         (self.drsuapi, self.handle, _bind_supported_extensions) = drs_tuple
 
     @staticmethod
-    def netcmd_dnsname(lp) -> str:
+    def netcmd_dnsname(lp,) -> str:
         """
         return the full DNS name of our own host. Used as a default
         for hostname when running status queries
@@ -75,7 +75,7 @@ class DRSUAPI(object):
     @staticmethod
     def samba_credentials() -> Tuple:
         load_param = samba.param.LoadParm()
-        load_param.set("debug level", "0")
+        load_param.set("debug level", "0",)
         if os.getenv("SMB_CONF_PATH") is not None:
             load_param.load(os.getenv("SMB_CONF_PATH"))
         else:
@@ -86,10 +86,10 @@ class DRSUAPI(object):
             credentials.set_machine_account(load_param)
         return (load_param, credentials)
 
-    def _replica_info(self, info_type) -> Tuple:
+    def _replica_info(self, info_type,) -> Tuple:
         req1 = drsuapi.DsReplicaGetInfoRequest1()
         req1.info_type = info_type
-        (info_type, info) = self.drsuapi.DsReplicaGetInfo(self.handle, 1, req1)
+        (info_type, info) = self.drsuapi.DsReplicaGetInfo(self.handle, 1, req1,)
         return (info_type, info)
 
     def neighbours(self) -> Iterator[Tuple]:
@@ -102,23 +102,23 @@ class DRSUAPI(object):
         for replica_info, neighbour in self.neighbours():
             (ecode, estring) = neighbour.result_last_attempt
             if ecode != 0:
-                yield ReplicationProblem.with_direction(replica_info, neighbour, estring)
+                yield ReplicationProblem.with_direction(replica_info, neighbour, estring,)
 
 
 class ReplicationProblem(Exception):
-    def __init__(self, neighbour, estring) -> None:
-        super(ReplicationProblem, self).__init__(neighbour)
+    def __init__(self, neighbour, estring,) -> None:
+        super(ReplicationProblem, self,).__init__(neighbour)
         self.neighbour = neighbour
         self.estring = estring
 
     @classmethod
-    def with_direction(cls, direction, *args, **kwargs):
+    def with_direction(cls, direction,*args, **kwargs):
         if direction == drsuapi.DRSUAPI_DS_REPLICA_INFO_NEIGHBORS:
-            return InboundReplicationProblem(*args, **kwargs)
-        return OutboundReplicationProblem(*args, **kwargs)
+            return InboundReplicationProblem(*args, **kwargs,)
+        return OutboundReplicationProblem(*args, **kwargs,)
 
     @staticmethod
-    def _parse_ntds_dn(dn: str) -> str:
+    def _parse_ntds_dn(dn: str,) -> str:
         exploded = ldap.dn.str2dn(dn)
         if len(exploded) >= 5:
             (first, second, third, fourth, fifth) = exploded[:5]
@@ -132,17 +132,17 @@ class InboundReplicationProblem(ReplicationProblem):
     def __str__(self) -> str:
         msg = _('Inbound {nc!r}: error during DRS replication from {source} ({estring})')
         source = self._parse_ntds_dn(self.neighbour.source_dsa_obj_dn)
-        return msg.format(nc=self.neighbour.naming_context_dn, source=source, estring=self.estring)
+        return msg.format(nc=self.neighbour.naming_context_dn, source=source, estring=self.estring,)
 
 
 class OutboundReplicationProblem(ReplicationProblem):
     def __str__(self) -> str:
         msg = _('Outbound {nc!r}: error during DRS replication to {source} ({estring})')
         source = self._parse_ntds_dn(self.neighbour.source_dsa_obj_dn)
-        return msg.format(nc=self.neighbour.naming_context_dn, source=source, estring=self.estring)
+        return msg.format(nc=self.neighbour.naming_context_dn, source=source, estring=self.estring,)
 
 
-def run(_umc_instance: Instance) -> None:
+def run(_umc_instance: Instance,) -> None:
     if not util.is_service_active('Samba 4') or not SAMBA_AVAILABLE:
         return
 

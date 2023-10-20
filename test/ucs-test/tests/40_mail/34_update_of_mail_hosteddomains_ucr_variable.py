@@ -23,8 +23,7 @@ def main():
                 udm.create_object(
                     'mail/domain',
                     position='cn=domain,cn=mail,{}'.format(ucr['ldap/base']),
-                    name=maildomain,
-                )
+                    name=maildomain,)
                 domains.append(maildomain.lower())
             ucr.load()
             registered = ucr.get('mail/hosteddomains')
@@ -33,8 +32,7 @@ def main():
                     utils.fail(f'maildomain "{maildomain}" not registered in mail/hosteddomains ({registered})')
                 udm.remove_object(
                     'mail/domain',
-                    dn='cn={},cn=domain,cn=mail,{}'.format(maildomain, ucr['ldap/base']),
-                )
+                    dn='cn={},cn=domain,cn=mail,{}'.format(maildomain, ucr['ldap/base'],),)
                 ucr.load()
                 registered = ucr.get('mail/hosteddomains')
                 if maildomain in registered:

@@ -51,8 +51,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['msPrintConnectionPolicy', 'top'],
-    ),
+        objectClasses=['msPrintConnectionPolicy', 'top'],),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -60,38 +59,31 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         required=True,
-        identifies=True,
-    ),
+        identifies=True,),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'displayName': univention.admin.property(
         short_description=_('Display name'),
         long_description='',
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'msPrintAttributes': univention.admin.property(
         short_description=_('Print attributes'),
         long_description=_('A bitmask of printer attributes.'),
-        syntax=univention.admin.syntax.integer,
-    ),
+        syntax=univention.admin.syntax.integer,),
     'msPrinterName': univention.admin.property(
         short_description=_('Printer name'),
         long_description=_('The display name of an attached printer.'),
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'msPrintServerName': univention.admin.property(
         short_description=_('Server name'),
         long_description=_('The name of a server.'),
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
     'msPrintUNCName': univention.admin.property(
         short_description=_('UNC name'),
         long_description=_('The universal naming convention name for shared volumes and printers.'),
-        syntax=univention.admin.syntax.string,
-    ),
+        syntax=univention.admin.syntax.string,),
 }
 
 layout = [
@@ -99,23 +91,23 @@ layout = [
         ['name'],
         ['description'],
         ['displayName'],
-    ]),
+    ],),
     Tab(_('Printer connection settings'), advanced=True, layout=[
         ['msPrintAttributes'],
         ['msPrinterName'],
         ['msPrintServerName'],
         ['msPrintUNCName'],
-    ]),
+    ],),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('msPrintAttributes', 'msPrintAttributes', None, univention.admin.mapping.ListToString)
-mapping.register('msPrinterName', 'msPrinterName', None, univention.admin.mapping.ListToString)
-mapping.register('msPrintServerName', 'msPrintServerName', None, univention.admin.mapping.ListToString)
-mapping.register('msPrintUNCName', 'msPrintUNCName', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
+mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('msPrintAttributes', 'msPrintAttributes', None, univention.admin.mapping.ListToString,)
+mapping.register('msPrinterName', 'msPrinterName', None, univention.admin.mapping.ListToString,)
+mapping.register('msPrintServerName', 'msPrintServerName', None, univention.admin.mapping.ListToString,)
+mapping.register('msPrintUNCName', 'msPrintUNCName', None, univention.admin.mapping.ListToString,)
 
 
 class object(univention.admin.handlers.simpleLdap):

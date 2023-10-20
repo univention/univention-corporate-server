@@ -46,8 +46,8 @@ from univention.lib.policy_result import PolicyResultFailed, policy_result
 CRON_D = '/etc/cron.d/univention-maintenance'
 
 
-def write_cron_job(configRegistry: ConfigRegistry, cron: str, updateto: str, reboot: str, try_release_update: bool) -> None:
-    with open(CRON_D, 'w') as file:
+def write_cron_job(configRegistry: ConfigRegistry, cron: str, updateto: str, reboot: str, try_release_update: bool,) -> None:
+    with open(CRON_D, 'w',) as file:
         file.write('# cron job for update\n')
         file.write('PATH=/sbin:/usr/sbin:/usr/bin:/bin\n')
         if cron == '* * * * * ':
@@ -67,10 +67,10 @@ def write_cron_job(configRegistry: ConfigRegistry, cron: str, updateto: str, reb
                 'rm -f /run/univention-updater-reboot;'
                 'fi' % (
                     quote(reboot),))
-        print('%s\troot\t%s' % (cron, ';'.join(cmd)), file=file)
+        print('%s\troot\t%s' % (cron, ';'.join(cmd)), file=file,)
 
 
-def one(results: Dict[str, List[str]], key: str) -> str:
+def one(results: Dict[str, List[str]], key: str,) -> str:
     try:
         return results[key][0]
     except LookupError:
@@ -92,14 +92,14 @@ def main() -> None:
     except PolicyResultFailed as ex:
         exit('failed to execute univention_policy_result: %s' % ex)
 
-    cron_active = one(results, "univentionCronActive") == "1"
-    cron = one(results, "univentionCron")
-    updateto = one(results, "univentionUpdateVersion")
-    reboot = one(results, "univentionInstallationReboot")
-    try_release_update = one(results, "univentionUpdateActivate") == "TRUE"
+    cron_active = one(results, "univentionCronActive",) == "1"
+    cron = one(results, "univentionCron",)
+    updateto = one(results, "univentionUpdateVersion",)
+    reboot = one(results, "univentionInstallationReboot",)
+    try_release_update = one(results, "univentionUpdateActivate",) == "TRUE"
 
     if cron_active and cron:
-        write_cron_job(configRegistry, cron, updateto, reboot, try_release_update)
+        write_cron_job(configRegistry, cron, updateto, reboot, try_release_update,)
 
 
 if __name__ == "__main__":

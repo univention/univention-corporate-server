@@ -42,7 +42,7 @@ class Bunch:
         return str(self)
 
 
-def test_mail_forward(mail_copy_to_self):
+def test_mail_forward(mail_copy_to_self,):
     set_mail_forward_copy_to_self_ucrv(mail_copy_to_self)
     mail_copy_to_self = mail_copy_to_self == 'yes'
     with ucr_test.UCSTestConfigRegistry() as ucr:
@@ -65,14 +65,14 @@ def test_mail_forward(mail_copy_to_self):
                     'mailPrimaryAddress': [user.mailPrimaryAddress],
                     'mailForwardAddress': user.mailForwardAddress,
                 },
-                strict=True)
+                strict=True,)
 
             # set mFA without Copy2Self
             user.mailForwardAddress = [
                 'fwd1-%s@univention.de' % (user.username,),
                 'fwd2-%s@univention.de' % (user.username,),
             ]
-            udm.modify_object('users/user', dn=user.dn, mailForwardAddress=user.mailForwardAddress)
+            udm.modify_object('users/user', dn=user.dn, mailForwardAddress=user.mailForwardAddress,)
             utils.verify_ldap_object(
                 user.dn,
                 {
@@ -80,14 +80,14 @@ def test_mail_forward(mail_copy_to_self):
                     'mailPrimaryAddress': [user.mailPrimaryAddress],
                     'mailForwardAddress': user.mailForwardAddress,
                 },
-                strict=True)
+                strict=True,)
 
             # change mFA without Copy2Self
             user.mailForwardAddress = [
                 'fwd2-%s@univention.de' % (user.username,),
                 'fwd3-%s@univention.de' % (user.username,),
             ]
-            udm.modify_object('users/user', dn=user.dn, set={'mailForwardAddress': user.mailForwardAddress})
+            udm.modify_object('users/user', dn=user.dn, set={'mailForwardAddress': user.mailForwardAddress},)
             utils.verify_ldap_object(
                 user.dn,
                 {
@@ -95,10 +95,10 @@ def test_mail_forward(mail_copy_to_self):
                     'mailPrimaryAddress': [user.mailPrimaryAddress],
                     'mailForwardAddress': user.mailForwardAddress,
                 },
-                strict=True)
+                strict=True,)
 
             # set Copy2Self=1
-            udm.modify_object('users/user', dn=user.dn, mailForwardCopyToSelf='1')
+            udm.modify_object('users/user', dn=user.dn, mailForwardCopyToSelf='1',)
             if mail_copy_to_self:
                 utils.verify_ldap_object(
                     user.dn,
@@ -108,7 +108,7 @@ def test_mail_forward(mail_copy_to_self):
                         'mailForwardAddress': user.mailForwardAddress,
                         'mailForwardCopyToSelf': '1',
                     },
-                    strict=True)
+                    strict=True,)
             else:
                 utils.verify_ldap_object(
                     user.dn,
@@ -117,7 +117,7 @@ def test_mail_forward(mail_copy_to_self):
                         'mailPrimaryAddress': [user.mailPrimaryAddress],
                         'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
                     },
-                    strict=True)
+                    strict=True,)
 
             # change mFA and set Copy2Self=0
             user.mailForwardAddress = [
@@ -129,20 +129,20 @@ def test_mail_forward(mail_copy_to_self):
                 set={
                     'mailForwardAddress': user.mailForwardAddress,
                     'mailForwardCopyToSelf': '0',
-                })
+                },)
             if mail_copy_to_self:
                 utils.verify_ldap_object(user.dn, {
                     'univentionMailHomeServer': [user.mailHomeServer],
                     'mailPrimaryAddress': [user.mailPrimaryAddress],
                     'mailForwardAddress': user.mailForwardAddress,
                     'mailForwardCopyToSelf': '0',
-                }, strict=True)
+                }, strict=True,)
             else:
                 utils.verify_ldap_object(user.dn, {
                     'univentionMailHomeServer': [user.mailHomeServer],
                     'mailPrimaryAddress': [user.mailPrimaryAddress],
                     'mailForwardAddress': user.mailForwardAddress,
-                }, strict=True)
+                }, strict=True,)
 
             # change mFA and set Copy2Self=1
             user.mailForwardAddress = [
@@ -156,7 +156,7 @@ def test_mail_forward(mail_copy_to_self):
                 set={
                     'mailForwardAddress': user.mailForwardAddress,
                     'mailForwardCopyToSelf': '1',
-                })
+                },)
             if mail_copy_to_self:
                 utils.verify_ldap_object(
                     user.dn,
@@ -166,7 +166,7 @@ def test_mail_forward(mail_copy_to_self):
                         'mailForwardAddress': user.mailForwardAddress,
                         'mailForwardCopyToSelf': '1',
                     },
-                    strict=True)
+                    strict=True,)
             else:
                 utils.verify_ldap_object(
                     user.dn,
@@ -175,14 +175,14 @@ def test_mail_forward(mail_copy_to_self):
                         'mailPrimaryAddress': [user.mailPrimaryAddress],
                         'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
                     },
-                    strict=True)
+                    strict=True,)
 
             # remove mFA and keep Copy2Self=1
             udm.modify_object(
                 'users/user',
                 dn=user.dn,
                 mailForwardCopyToSelf='1',
-                remove={'mailForwardAddress': user.mailForwardAddress})
+                remove={'mailForwardAddress': user.mailForwardAddress},)
             if mail_copy_to_self:
                 utils.verify_ldap_object(
                     user.dn,
@@ -192,7 +192,7 @@ def test_mail_forward(mail_copy_to_self):
                         'mailForwardAddress': [],
                         'mailForwardCopyToSelf': '1',
                     },
-                    strict=True)
+                    strict=True,)
             else:
                 utils.verify_ldap_object(
                     user.dn,
@@ -201,7 +201,7 @@ def test_mail_forward(mail_copy_to_self):
                         'mailPrimaryAddress': [user.mailPrimaryAddress],
                         'mailForwardAddress': [],
                     },
-                    strict=True)
+                    strict=True,)
 
             # create second user with mPA, mFA and Copy2Self
             user = Bunch()
@@ -226,7 +226,7 @@ def test_mail_forward(mail_copy_to_self):
                         'mailForwardAddress': user.mailForwardAddress,
                         'mailForwardCopyToSelf': '1',
                     },
-                    strict=True)
+                    strict=True,)
             else:
                 utils.verify_ldap_object(
                     user.dn,
@@ -235,7 +235,7 @@ def test_mail_forward(mail_copy_to_self):
                         'mailPrimaryAddress': [user.mailPrimaryAddress],
                         'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
                     },
-                    strict=True)
+                    strict=True,)
 
             # create third user without mPA but mFA
             user = Bunch()

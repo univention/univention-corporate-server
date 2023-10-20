@@ -38,7 +38,7 @@ class ClangDbContext(Build.BuildContext):
 		Write the clang compilation database as JSON
 		"""
 		database_file = self.bldnode.make_node('compile_commands.json')
-		Logs.info('Build commands will be stored in %s', database_file.path_from(self.path))
+		Logs.info('Build commands will be stored in %s', database_file.path_from(self.path),)
 		try:
 			root = database_file.read_json()
 		except IOError:
@@ -88,13 +88,13 @@ class ClangDbContext(Build.BuildContext):
 				else:
 					f()
 
-				if isinstance(tg, Task.Task):
+				if isinstance(tg, Task.Task,):
 					lst = [tg]
 				else: lst = tg.tasks
 				for tsk in lst:
 					if tsk.__class__.__name__ == "swig":
 						tsk.runnable_status()
-						if hasattr(tsk, 'more_tasks'):
+						if hasattr(tsk, 'more_tasks',):
 							lst.extend(tsk.more_tasks)
 					# Not all dynamic tasks can be processed, in some cases
 					# one may have to call the method "run()" like this:
@@ -104,7 +104,7 @@ class ClangDbContext(Build.BuildContext):
 					#		lst.extend(tsk.more_tasks)
 
 					tup = tuple(y for y in [Task.classes.get(x) for x in ('c', 'cxx')] if y)
-					if isinstance(tsk, tup):
+					if isinstance(tsk, tup,):
 						self.clang_compilation_database_tasks.append(tsk)
 						tsk.nocache = True
 						old_exec = tsk.exec_command
@@ -126,12 +126,12 @@ def patch_execute():
 		Invoke clangdb command before build
 		"""
 		if self.cmd.startswith('build'):
-			Scripting.run_command(self.cmd.replace('build','clangdb'))
+			Scripting.run_command(self.cmd.replace('build','clangdb',))
 
 		old_execute_build(self)
 
-	old_execute_build = getattr(Build.BuildContext, 'execute_build', None)
-	setattr(Build.BuildContext, 'execute_build', new_execute_build)
+	old_execute_build = getattr(Build.BuildContext, 'execute_build', None,)
+	setattr(Build.BuildContext, 'execute_build', new_execute_build,)
 	EXECUTE_PATCHED = True
 
 patch_execute()

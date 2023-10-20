@@ -12,7 +12,7 @@ from univention.testing.browser.lib import UMCBrowserTest
 from univention.testing.browser.packagemanagement import PackageManagement
 
 
-def test_package_management_install_uninstall_package(umc_browser_test: UMCBrowserTest) -> None:
+def test_package_management_install_uninstall_package(umc_browser_test: UMCBrowserTest,) -> None:
     pm = PackageManagement(umc_browser_test)
     pm.navigate()
 

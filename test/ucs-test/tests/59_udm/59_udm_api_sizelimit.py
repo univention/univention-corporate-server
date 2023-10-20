@@ -16,7 +16,7 @@ def test_sizelimit():
     udm = UDM.admin().version(1)
     groups_module = udm.get("groups/group")
     with pytest.raises(SearchLimitReached):
-        list(groups_module.search("", sizelimit=1))
+        list(groups_module.search("", sizelimit=1,))
 
 
 def test_sizelimit_force_lookup():
@@ -25,4 +25,4 @@ def test_sizelimit_force_lookup():
     groups_module = udm.get("groups/group")
     del groups_module._orig_udm_module.lookup_filter
     with pytest.raises(SearchLimitReached):
-        list(groups_module.search("", sizelimit=1))
+        list(groups_module.search("", sizelimit=1,))

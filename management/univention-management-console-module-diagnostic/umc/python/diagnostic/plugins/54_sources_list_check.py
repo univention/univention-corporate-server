@@ -51,14 +51,14 @@ TRACEBACK_REGEX = re.compile(
     r'(?P=start)(?P<exception>[^\s].*)\n')  # extract exception
 
 
-def run_ucr_commit(umc_instance: Instance) -> None:
+def run_ucr_commit(umc_instance: Instance,) -> None:
     cmd = [
         'ucr', 'commit',
         '/etc/apt/sources.list.d/15_ucs-online-version.list',
         '/etc/apt/sources.list.d/20_ucs-online-component.list',
     ]
     subprocess.call(cmd)
-    run(umc_instance, rerun=True)
+    run(umc_instance, rerun=True,)
 
 
 actions = {
@@ -67,17 +67,17 @@ actions = {
 
 
 class TracebackFound(Exception):
-    def __init__(self, path: str, exception: str) -> None:
-        super(TracebackFound, self).__init__(path, exception)
+    def __init__(self, path: str, exception: str,) -> None:
+        super(TracebackFound, self,).__init__(path, exception,)
         self.path = path
         self.exception = exception
 
     def __str__(self) -> str:
         msg = _('Found exception in {path!r}: {exception}')
-        return msg.format(path=self.path, exception=self.exception)
+        return msg.format(path=self.path, exception=self.exception,)
 
 
-def find_tracebacks(path: str) -> Iterator[str]:
+def find_tracebacks(path: str,) -> Iterator[str]:
     with open(path) as fob:
         content = fob.read()
         for match in TRACEBACK_REGEX.finditer(content):
@@ -87,10 +87,10 @@ def find_tracebacks(path: str) -> Iterator[str]:
 def check_for_tracebacks() -> Iterator[TracebackFound]:
     for path in glob.glob('/etc/apt/sources.list.d/*'):
         for exception in find_tracebacks(path):
-            yield TracebackFound(path, exception)
+            yield TracebackFound(path, exception,)
 
 
-def run(_umc_instance: Instance, rerun: bool = False) -> None:
+def run(_umc_instance: Instance, rerun: bool = False,) -> None:
     error_descriptions = [str(exc) for exc in check_for_tracebacks()]
 
     buttons = [{
@@ -103,7 +103,7 @@ def run(_umc_instance: Instance, rerun: bool = False) -> None:
         if not rerun:
             error_descriptions.append(_('The error might be fixable by regenerating the sources.list.'))
             MODULE.error('\n'.join(error_descriptions))
-            raise Warning(description='\n'.join(error_descriptions), buttons=buttons)
+            raise Warning(description='\n'.join(error_descriptions), buttons=buttons,)
         raise Warning(description='\n'.join(error_descriptions))
 
 

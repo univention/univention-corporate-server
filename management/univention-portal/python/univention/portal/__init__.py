@@ -41,8 +41,8 @@ from glob import glob
 class Plugin(type):
     """Meta class for plugins."""
 
-    def __new__(mcs, name, bases, attrs):
-        new_cls = super(Plugin, mcs).__new__(mcs, name, bases, attrs)
+    def __new__(mcs, name, bases, attrs,):
+        new_cls = super(Plugin, mcs,).__new__(mcs, name, bases, attrs,)
         Plugins.add_plugin(new_cls)
         return new_cls
 
@@ -53,16 +53,16 @@ class Plugins(object):
     _plugins = []
     _imported = {}
 
-    def __init__(self, python_path):
+    def __init__(self, python_path,):
         """
         :param str python_path: fully dotted Python path that the plugins will
                 be found below
         """
         self.python_path = python_path
-        self._imported.setdefault(python_path, False)
+        self._imported.setdefault(python_path, False,)
 
     @classmethod
-    def add_plugin(cls, plugin):
+    def add_plugin(cls, plugin,):
         """
         Called by `Plugin` meta class to register a new `Plugin` subclass.
 
@@ -88,7 +88,7 @@ class Plugins(object):
             return
         base_module = importlib.import_module(self.python_path)
         base_module_dir = os.path.dirname(base_module.__file__)
-        path = os.path.join(base_module_dir, "*.py")
+        path = os.path.join(base_module_dir, "*.py",)
         for pymodule in sorted(glob(path)):
             pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
             importlib.import_module(f"{self.python_path}.{pymodule_name}")
@@ -100,7 +100,7 @@ def get_all_dynamic_classes():
         yield extension
 
 
-def get_dynamic_classes(klass_name):
+def get_dynamic_classes(klass_name,):
     for extension in get_all_dynamic_classes():
         if klass_name == extension.__name__:
             return extension

@@ -44,7 +44,7 @@ translation = localization.translation('univention/admin')
 _ = translation.translate
 
 
-def lockDn(lo, position, type, value, scope):
+def lockDn(lo, position, type, value, scope,):
     """
     Build |DN| of lock object.
 
@@ -68,7 +68,7 @@ def lockDn(lo, position, type, value, scope):
     return ldap.dn.dn2str(dn)
 
 
-def lock(lo, position, type, value, scope='domain', timeout=300):
+def lock(lo, position, type, value, scope='domain', timeout=300,):
     """
     Lock an |UDM| object.
 
@@ -82,7 +82,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
     :raises univention.admin.uexceptions.noLock: if the lock cannot be acquired.
     :returns: Number of seconds since the UNIX epoch until which the lock is acquired.
     """
-    dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
+    dn = lockDn(lo, position, type, value.decode('utf-8'), scope,)
 
     now = int(time.time())
     locktime = now + timeout if timeout > 0 else 0
@@ -92,16 +92,16 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
         ('cn', [value]),
         ('lockTime', [str(locktime).encode('ascii')]),
     ]
-    if not lo.get(dn, ['lockTime']):
+    if not lo.get(dn, ['lockTime'],):
         try:
-            lo.add(dn, al)
+            lo.add(dn, al,)
             return locktime
         except ldap.ALREADY_EXISTS:
             pass
         except univention.admin.uexceptions.permissionDenied:
             raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
 
-    oldlocktime = lo.getAttr(dn, 'lockTime')
+    oldlocktime = lo.getAttr(dn, 'lockTime',)
     oldlocktime = int(oldlocktime[0]) if oldlocktime and oldlocktime[0] else 0
 
     # lock is old, try again
@@ -110,7 +110,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
             ('lockTime', str(oldlocktime).encode('ascii'), str(locktime).encode('ascii')),
         ]
         try:
-            lo.modify(dn, ml, exceptions=True)
+            lo.modify(dn, ml, exceptions=True,)
             return locktime
         except ldap.INSUFFICIENT_ACCESS:
             raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
@@ -118,7 +118,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
     raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
 
 
-def relock(lo, position, type, value, scope='domain', timeout=300):
+def relock(lo, position, type, value, scope='domain', timeout=300,):
     """
     Extend a lock of an |UDM| object.
 
@@ -132,7 +132,7 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
     :raises univention.admin.uexceptions.noLock: if the lock was not acquired.
     :returns: Number of seconds since the UNIX epoch until which the lock is acquired.
     """
-    dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
+    dn = lockDn(lo, position, type, value.decode('utf-8'), scope,)
 
     now = int(time.time())
     locktime = now + timeout if timeout > 0 else 0
@@ -140,7 +140,7 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
         ('lockTime', b'1', str(locktime).encode('ASCII')),
     ]
     try:
-        lo.modify(dn, ml, exceptions=True)
+        lo.modify(dn, ml, exceptions=True,)
         return locktime
     except ldap.INSUFFICIENT_ACCESS:
         raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
@@ -149,7 +149,7 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
     raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
 
 
-def unlock(lo, position, type, value, scope='domain'):
+def unlock(lo, position, type, value, scope='domain',):
     """
     Unlock an |UDM| object.
 
@@ -159,14 +159,14 @@ def unlock(lo, position, type, value, scope='domain'):
     :param value: A unique value for the object, e.g. `uid`.
     :param scope: The scope for the lock, e.g. `domain`.
     """
-    dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
+    dn = lockDn(lo, position, type, value.decode('utf-8'), scope,)
     try:
-        lo.delete(dn, exceptions=True)
+        lo.delete(dn, exceptions=True,)
     except ldap.NO_SUCH_OBJECT:
         pass
 
 
-def getLock(lo, position, type, value, scope='domain'):
+def getLock(lo, position, type, value, scope='domain',):
     """
     Check if an |UDM| object is locked.
 
@@ -177,8 +177,8 @@ def getLock(lo, position, type, value, scope='domain'):
     :param scope: The scope for the lock, e.g. `domain`.
     :returns: Number of seconds since the UNIX epoch until which the lock is acquired or `0`.
     """
-    dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
+    dn = lockDn(lo, position, type, value.decode('utf-8'), scope,)
     try:
-        return int(lo.getAttr(dn, 'lockTime', exceptions=True)[0])
+        return int(lo.getAttr(dn, 'lockTime', exceptions=True,)[0])
     except ldap.NO_SUCH_OBJECT:
         return 0

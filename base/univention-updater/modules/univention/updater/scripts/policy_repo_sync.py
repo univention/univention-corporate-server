@@ -45,8 +45,8 @@ from univention.lib.policy_result import PolicyResultFailed, policy_result
 CRON_D = '/etc/cron.d/univention-repository-sync'
 
 
-def write_cron_job(cron: str) -> None:
-    with open(CRON_D, 'w') as cron_file:
+def write_cron_job(cron: str,) -> None:
+    with open(CRON_D, 'w',) as cron_file:
         cron_file.write('# cron job for syncing repository\n')
         cron_file.write("PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n")
         if cron == '* * * * * ':
@@ -55,7 +55,7 @@ def write_cron_job(cron: str) -> None:
         cron_file.write('%s root /usr/sbin/univention-repository-update net >>/var/log/univention/repository.log\n' % cron)
 
 
-def one(results: Dict[str, List[str]], key: str) -> str:
+def one(results: Dict[str, List[str]], key: str,) -> str:
     try:
         return results[key][0]
     except LookupError:
@@ -77,7 +77,7 @@ def main() -> None:
     except PolicyResultFailed as ex:
         exit('failed to execute univention_policy_result: %s' % ex)
 
-    cron = one(results, "univentionRepositoryCron")
+    cron = one(results, "univentionRepositoryCron",)
     if cron:
         write_cron_job(cron)
 

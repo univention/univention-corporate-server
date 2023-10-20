@@ -89,25 +89,25 @@ sys.path.append(osp.abspath(DEFAULT_DIR))
 
 def options(self):
 	group = self.add_option_group('configure options')
-	group.add_option('--download', dest='download', default=False, action='store_true', help='try to download the tools if missing')
+	group.add_option('--download', dest='download', default=False, action='store_true', help='try to download the tools if missing',)
 
 	group.add_option('--use-config', action='store', default=None,
 					 metavar='CFG', dest='use_config',
 					 help='force the configuration parameters by importing '
 						  'CFG.py. Several modules may be provided (comma '
-						  'separated).')
+						  'separated).',)
 	group.add_option('--use-config-dir', action='store', default=DEFAULT_DIR,
 					 metavar='CFG_DIR', dest='use_config_dir',
-					 help='path or url where to find the configuration file')
+					 help='path or url where to find the configuration file',)
 
-def download_check(node):
+def download_check(node,):
 	"""
 	Hook to check for the tools which are downloaded. Replace with your function if necessary.
 	"""
 	pass
 
 
-def download_tool(tool, force=False, ctx=None):
+def download_tool(tool, force=False, ctx=None,):
 	"""
 	Download a Waf tool from the remote repository defined in :py:const:`waflib.extras.use_config.remote_repo`::
 
@@ -129,13 +129,13 @@ def download_tool(tool, force=False, ctx=None):
 				continue
 			else:
 				tmp = ctx.root.make_node(os.sep.join((Context.waf_dir, 'waflib', 'extras', tool + '.py')))
-				tmp.write(web.read(), 'wb')
-				Logs.warn('Downloaded %s from %s', tool, url)
+				tmp.write(web.read(), 'wb',)
+				Logs.warn('Downloaded %s from %s', tool, url,)
 				download_check(tmp)
 				try:
 					module = Context.load_tool(tool)
 				except Exception:
-					Logs.warn('The tool %s from %s is unusable', tool, url)
+					Logs.warn('The tool %s from %s is unusable', tool, url,)
 					try:
 						tmp.delete()
 					except Exception:
@@ -145,15 +145,15 @@ def download_tool(tool, force=False, ctx=None):
 
 	raise Errors.WafError('Could not load the Waf tool')
 
-def load_tool(tool, tooldir=None, ctx=None, with_sys_path=True):
+def load_tool(tool, tooldir=None, ctx=None, with_sys_path=True,):
 	try:
-		module = Context.load_tool_default(tool, tooldir, ctx, with_sys_path)
+		module = Context.load_tool_default(tool, tooldir, ctx, with_sys_path,)
 	except ImportError as e:
-		if not ctx or not hasattr(Options.options, 'download'):
+		if not ctx or not hasattr(Options.options, 'download',):
 			Logs.error('Could not load %r during options phase (download unavailable at this point)' % tool)
 			raise
 		if Options.options.download:
-			module = download_tool(tool, ctx=ctx)
+			module = download_tool(tool, ctx=ctx,)
 			if not module:
 				ctx.fatal('Could not load the Waf tool %r or download a suitable replacement from the repository (sys.path %r)\n%s' % (tool, sys.path, e))
 		else:
@@ -178,8 +178,8 @@ def configure(self):
 		kwargs['remote_locs'] = ['', DEFAULT_DIR]
 	tooldir = url.geturl() + ' ' + DEFAULT_DIR
 	for cfg in use_cfg.split(','):
-		Logs.pprint('NORMAL', "Searching configuration '%s'..." % cfg)
-		self.load(cfg, tooldir=tooldir, **kwargs)
+		Logs.pprint('NORMAL', "Searching configuration '%s'..." % cfg,)
+		self.load(cfg, tooldir=tooldir, **kwargs,)
 	self.start_msg('Checking for configuration')
 	self.end_msg(use_cfg)
 

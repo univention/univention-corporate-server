@@ -42,7 +42,7 @@ def main():
                 user_addr = random_email()
                 logfiles = ['/var/log/dovecot.log', '/var/log/univention/listener.log']
                 with utils.FollowLogfile(logfiles=logfiles):
-                    with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log', 'reopen']):
+                    with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log', 'reopen'],):
                         user_dn, user_name = udm.create_user(
                             set={
                                 'mailHomeServer': fqdn,
@@ -69,8 +69,8 @@ def main():
                             utils.wait_for_replication()
 
                             # create folder
-                            dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=with_mailaddress, user_permission=['"%s" "%s"' % (user_addr, 'all')])
-                            folder = Bunch(dn=dn, name=name, mail_address=address)
+                            dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=with_mailaddress, user_permission=['"%s" "%s"' % (user_addr, 'all')],)
+                            folder = Bunch(dn=dn, name=name, mail_address=address,)
 
                             print(folder)
 
@@ -79,7 +79,7 @@ def main():
                             if not os.path.exists(path):
                                 utils.fail('Test %d: maildir %r for shared folder does not exist! %r' % (i, path, folder))
 
-                            udm.remove_object('mail/folder', dn=folder.dn)
+                            udm.remove_object('mail/folder', dn=folder.dn,)
 
                             # check folder removal
                             if os.path.exists(path) and flag_delete == 'yes':

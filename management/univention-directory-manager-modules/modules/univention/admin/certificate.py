@@ -50,8 +50,7 @@ def pki_option():
         short_description=_('Public key infrastructure account'),
         default=False,
         editable=True,
-        objectClasses=['pkiUser'],
-    )
+        objectClasses=['pkiUser'],)
 
 
 def pki_properties():
@@ -61,186 +60,167 @@ def pki_properties():
             long_description=_('Public key infrastructure - certificate'),
             syntax=univention.admin.syntax.Base64Upload,
             dontsearch=True,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateIssuerCountry': univention.admin.property(
             short_description=_('Issuer Country'),
             long_description=_('Certificate Issuer Country'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateIssuerState': univention.admin.property(
             short_description=_('Issuer State'),
             long_description=_('Certificate Issuer State'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateIssuerLocation': univention.admin.property(
             short_description=_('Issuer Location'),
             long_description=_('Certificate Issuer Location'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateIssuerOrganisation': univention.admin.property(
             short_description=_('Issuer Organisation'),
             long_description=_('Certificate Issuer Organisation'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateIssuerOrganisationalUnit': univention.admin.property(
             short_description=_('Issuer Organisational Unit'),
             long_description=_('Certificate Issuer Organisational Unit'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateIssuerCommonName': univention.admin.property(
             short_description=_('Issuer Common Name'),
             long_description=_('Certificate Issuer Common Name'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateIssuerMail': univention.admin.property(
             short_description=_('Issuer Mail'),
             long_description=_('Certificate Issuer Mail'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateSubjectCountry': univention.admin.property(
             short_description=_('Subject Country'),
             long_description=_('Certificate Subject Country'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateSubjectState': univention.admin.property(
             short_description=_('Subject State'),
             long_description=_('Certificate Subject State'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateSubjectLocation': univention.admin.property(
             short_description=_('Subject Location'),
             long_description=_('Certificate Subject Location'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateSubjectOrganisation': univention.admin.property(
             short_description=_('Subject Organisation'),
             long_description=_('Certificate Subject Organisation'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateSubjectOrganisationalUnit': univention.admin.property(
             short_description=_('Subject Organisational Unit'),
             long_description=_('Certificate Subject Organisational Unit'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateSubjectCommonName': univention.admin.property(
             short_description=_('Subject Common Name'),
             long_description=_('Certificate Subject Common Name'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateSubjectMail': univention.admin.property(
             short_description=_('Subject Mail'),
             long_description=_('Certificate Subject Mail'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateDateNotBefore': univention.admin.property(
             short_description=_('Valid from'),
             long_description=_('Certificate valid from'),
             syntax=univention.admin.syntax.date,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateDateNotAfter': univention.admin.property(
             short_description=_('Valid until'),
             long_description=_('Certificate valid until'),
             syntax=univention.admin.syntax.date,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateVersion': univention.admin.property(
             short_description=_('Version'),
             long_description=_('Certificate Version'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
         'certificateSerial': univention.admin.property(
             short_description=_('Serial'),
             long_description=_('Certificate Serial'),
             syntax=univention.admin.syntax.string,
             dontsearch=True,
             editable=False,
-            options=['pki'],
-        ),
+            options=['pki'],),
     }
 
 
-def register_pki_mapping(mapping):
-    mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+def register_pki_mapping(mapping,):
+    mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
 
 
 def pki_tab():
     return Tab(_('Certificate'), _('Certificate'), advanced=True, layout=[
         Group(_('General'), '', [
             'userCertificate',
-        ]),
+        ],),
         Group(_('Subject'), '', [
             ['certificateSubjectCommonName', 'certificateSubjectMail'],
             ['certificateSubjectOrganisation', 'certificateSubjectOrganisationalUnit'],
             'certificateSubjectLocation',
             ['certificateSubjectState', 'certificateSubjectCountry'],
-        ]),
+        ],),
         Group(_('Issuer'), '', [
             ['certificateIssuerCommonName', 'certificateIssuerMail'],
             ['certificateIssuerOrganisation', 'certificateIssuerOrganisationalUnit'],
             'certificateIssuerLocation',
             ['certificateIssuerState', 'certificateIssuerCountry'],
-        ]),
+        ],),
         Group(_('Validity'), '', [
             ['certificateDateNotBefore', 'certificateDateNotAfter'],
-        ]),
+        ],),
         Group(_('Misc'), '', [
             ['certificateVersion', 'certificateSerial'],
-        ]),
-    ])
+        ],),
+    ],)
 
 
-def register_pki_integration(property_descriptions, mapping, options, layout):
+def register_pki_integration(property_descriptions, mapping, options, layout,):
     """
     Register the PKI integration for the given object type.
 
@@ -253,7 +233,7 @@ def register_pki_integration(property_descriptions, mapping, options, layout):
     register_pki_mapping(mapping)
 
 
-def load_certificate(user_certificate):
+def load_certificate(user_certificate,):
     """Import a certificate in DER format"""
     if not user_certificate:
         return {}
@@ -262,7 +242,7 @@ def load_certificate(user_certificate):
     except base64.binascii.Error:
         return {}
     try:
-        x509 = X509.load_cert_string(certificate, X509.FORMAT_DER)
+        x509 = X509.load_cert_string(certificate, X509.FORMAT_DER,)
 
         values = {
             'certificateDateNotBefore': x509.get_not_before().get_datetime().date().isoformat(),
@@ -277,14 +257,14 @@ def load_certificate(user_certificate):
         ):
             for key, attr in load_certificate.ATTR.items():
                 try:
-                    value = getattr(entity, key)
+                    value = getattr(entity, key,)
                 except TypeError:  # not expecting type '<class 'NoneType'>'
                     value = None
                 values[prefix + attr] = value
     except (X509.X509Error, AttributeError):
         return {}
 
-    ud.debug(ud.ADMIN, ud.INFO, 'value=%s' % values)
+    ud.debug(ud.ADMIN, ud.INFO, 'value=%s' % values,)
     return values
 
 
@@ -328,7 +308,7 @@ class PKIIntegration(object):
         self.info['certificateVersion'] = ''
         self.info['certificateSerial'] = ''
         _certificate = self.info.get('userCertificate')
-        certificate = _certificate[0] if isinstance(_certificate, list) else _certificate
+        certificate = _certificate[0] if isinstance(_certificate, list,) else _certificate
         values = load_certificate(certificate)
         if values:
             self.info.update(values)

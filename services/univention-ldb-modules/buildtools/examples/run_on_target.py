@@ -44,7 +44,7 @@ USER = None
 HOST = 'localhost'
 
 
-def xfer_files(ssh, srcdir, host, user, targ_destdir):
+def xfer_files(ssh, srcdir, host, user, targ_destdir,):
     """Transfer executable files to target
 
     Use rsync to copy the directory containing program to run
@@ -71,14 +71,14 @@ def xfer_files(ssh, srcdir, host, user, targ_destdir):
     cmd = 'rsync --verbose -rl --ignore-times --delete -e "%s" %s %s:%s/' % \
           (ssh, srcdir, userhost, targ_destdir)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE)
+                         stderr=subprocess.PIPE,)
     (out, err) = p.communicate()
     if p.returncode != 0:
         raise Exception('failed syncing files\n stdout:\n%s\nstderr:%s\n'
                         % (out, err))
 
 
-def exec_remote(ssh, host, user, destdir, targdir, prog, args):
+def exec_remote(ssh, host, user, destdir, targdir, prog, args,):
     """Run a test on the target
 
     Using password-less ssh, run the compiled binary on the target.
@@ -94,23 +94,23 @@ def exec_remote(ssh, host, user, destdir, targdir, prog, args):
     if args:
         cmd = cmd + ' ' + ' '.join(args)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE)
+                         stderr=subprocess.PIPE,)
     (out, err) = p.communicate()
     return (p.returncode, out)
 
 
-def main(argv):
+def main(argv,):
     usage = "usage: %prog [options] <prog> [args]"
     parser = OptionParser(usage)
 
     parser.add_option('--ssh', help="SSH client and additional flags",
-                      default=SSH)
+                      default=SSH,)
     parser.add_option('--host', help="target host name or IP address",
-                      default=HOST)
+                      default=HOST,)
     parser.add_option('--user', help="login user on target",
-                      default=USER)
+                      default=USER,)
     parser.add_option('--destdir', help="work directory on target",
-                      default='~')
+                      default='~',)
 
     (options, args) = parser.parse_args(argv)
     if len(args) < 1:
@@ -131,14 +131,14 @@ def main(argv):
         progdir,
         options.host,
         options.user,
-        options.destdir)
+        options.destdir,)
 
     (rc, out) = exec_remote(options.ssh,
                             options.host,
                             options.user,
                             options.destdir,
                             targ_progdir,
-                            prog, args[1:])
+                            prog, args[1:],)
     return (rc, out)
 
 

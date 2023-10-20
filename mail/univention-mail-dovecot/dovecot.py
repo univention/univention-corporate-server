@@ -56,7 +56,7 @@ DOVECOT_OLD_PICKLE = "/var/spool/univention-mail-dovecot/dovecot_old_dn"
 
 class DovecotUserListener(DovecotListener):
 
-    def new_email_account2(self, email: str) -> None:
+    def new_email_account2(self, email: str,) -> None:
         try:
             self.new_email_account(email)
         except Exception as ex:
@@ -64,19 +64,19 @@ class DovecotUserListener(DovecotListener):
             raise
         self.log_p("Added mail account %r." % (email,))
 
-    def delete_email_account2(self, dn: str, email: str) -> None:
+    def delete_email_account2(self, dn: str, email: str,) -> None:
         try:
-            self.delete_email_account(dn, email)
+            self.delete_email_account(dn, email,)
         except Exception as ex:
             self.log_e("Failed removing old email account %r of dn %r: %r" % (email, dn, ex))
             raise
         self.log_p("Deleted mail home of %r." % (email,))
 
-    def move_email_account2(self, dn: str, old_mail: str, new_mail: str) -> None:
-        if listener.configRegistry.is_true('mail/dovecot/mailbox/rename', False):
+    def move_email_account2(self, dn: str, old_mail: str, new_mail: str,) -> None:
+        if listener.configRegistry.is_true('mail/dovecot/mailbox/rename', False,):
             # rename/move
             try:
-                self.move_user_home(new_mail, old_mail)
+                self.move_user_home(new_mail, old_mail,)
             except Exception as ex:
                 self.log_e("Failed moving mail home from %r to %r: %r" % (old_mail, new_mail, ex))
                 raise
@@ -84,7 +84,7 @@ class DovecotUserListener(DovecotListener):
             # create new, delete old
             self.log_p("Mailbox renaming disabled, creating new, deleting old mailbox.")
             self.new_email_account2(new_mail)
-            self.delete_email_account2(dn, old_mail)
+            self.delete_email_account2(dn, old_mail,)
         # flush cache to prevent login with previous email address
         self.flush_auth_cache()
         self.log_p("Renamed/moved mailbox %r to %r." % (old_mail, new_mail))
@@ -93,14 +93,14 @@ class DovecotUserListener(DovecotListener):
     def flush_auth_cache() -> None:
         try:
             listener.setuid(0)
-            listener.run('/usr/bin/doveadm', ["/usr/bin/doveadm", "auth", "cache", "flush"], uid=0)
+            listener.run('/usr/bin/doveadm', ["/usr/bin/doveadm", "auth", "cache", "flush"], uid=0,)
         finally:
             listener.unsetuid()
 
 
-def load_old(old: Dict[str, List[bytes]]) -> Dict[str, List[bytes]]:
+def load_old(old: Dict[str, List[bytes]],) -> Dict[str, List[bytes]]:
     if os.path.exists(DOVECOT_OLD_PICKLE):
-        with open(DOVECOT_OLD_PICKLE, "rb") as fd:
+        with open(DOVECOT_OLD_PICKLE, "rb",) as fd:
             p = pickle.Unpickler(fd)
             old = p.load()
         os.unlink(DOVECOT_OLD_PICKLE)
@@ -109,15 +109,15 @@ def load_old(old: Dict[str, List[bytes]]) -> Dict[str, List[bytes]]:
         return old
 
 
-def save_old(old: Dict[str, List[bytes]]) -> None:
-    with open(DOVECOT_OLD_PICKLE, "wb+") as fd:
-        os.chmod(DOVECOT_OLD_PICKLE, 0o600)
+def save_old(old: Dict[str, List[bytes]],) -> None:
+    with open(DOVECOT_OLD_PICKLE, "wb+",) as fd:
+        os.chmod(DOVECOT_OLD_PICKLE, 0o600,)
         p = pickle.Pickler(fd)
         p.dump(old)
         p.clear_memo()
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str,) -> None:
     if command == 'r':
         save_old(old)
         # flush auth cache in case of modrdn: the cached PAM entry would
@@ -128,11 +128,11 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         old = load_old(old)
 
     listener.configRegistry.load()
-    dl = DovecotUserListener(listener, name)
-    oldMailPrimaryAddress = old.get('mailPrimaryAddress', [b""])[0].decode('UTF-8').lower()
-    newMailPrimaryAddress = new.get('mailPrimaryAddress', [b""])[0].decode('UTF-8').lower()
-    oldHomeServer = old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
-    newHomeServer = new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
+    dl = DovecotUserListener(listener, name,)
+    oldMailPrimaryAddress = old.get('mailPrimaryAddress', [b""],)[0].decode('UTF-8').lower()
+    newMailPrimaryAddress = new.get('mailPrimaryAddress', [b""],)[0].decode('UTF-8').lower()
+    oldHomeServer = old.get('univentionMailHomeServer', [b''],)[0].decode('UTF-8').lower()
+    newHomeServer = new.get('univentionMailHomeServer', [b''],)[0].decode('UTF-8').lower()
     fqdn = '%(hostname)s.%(domainname)s' % listener.configRegistry
     fqdn = fqdn.lower()
     # If univentionMailHomeServer is not set, all servers are responsible.
@@ -152,7 +152,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
     #
     if oldMailPrimaryAddress and is_old_home_server \
             and (not newMailPrimaryAddress or not is_new_home_server):
-        dl.delete_email_account2(dn, oldMailPrimaryAddress)
+        dl.delete_email_account2(dn, oldMailPrimaryAddress,)
         return
 
     #
@@ -169,7 +169,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         if is_old_home_server and is_new_home_server \
                 and oldMailPrimaryAddress and newMailPrimaryAddress \
                 and oldMailPrimaryAddress != newMailPrimaryAddress:
-            dl.move_email_account2(dn, oldMailPrimaryAddress, newMailPrimaryAddress)
+            dl.move_email_account2(dn, oldMailPrimaryAddress, newMailPrimaryAddress,)
             return
 
         # new univentionMailHomeServer

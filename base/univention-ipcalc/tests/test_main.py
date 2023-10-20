@@ -33,15 +33,15 @@ from univention.ipcalc.__main__ import main, parse_options  # noqa: E402
     "--calcdns --ip 1.2.3.4 --netmask 16",
     "--calcdns --output network --netmask 16",
     "--calcdns --output network --ip 1.2.3.4",
-])
-def test_invalid(args):
+],)
+def test_invalid(args,):
     with pytest.raises(SystemExit) as exc_info:
         parse_options(args.split())
 
     assert exc_info.value.code
 
 
-def test_help(capsys):
+def test_help(capsys,):
     with pytest.raises(SystemExit) as exc_info:
         parse_options(["--help"])
 
@@ -55,8 +55,8 @@ def test_help(capsys):
 @pytest.mark.parametrize("ip,mask,net", [
     ("1.2.3.4", "16", "1.2"),
     ("1:2:3::4", "64", "0001:0002:0003:0000"),
-])
-def test_main(ip, mask, net, capsys):
+],)
+def test_main(ip, mask, net, capsys,):
     main(["--calcdns", "--ip", ip, "--netmask", mask, "--output", "network"])
     out, err = capsys.readouterr()
     assert out == net + "\n"

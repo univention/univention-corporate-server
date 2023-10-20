@@ -26,17 +26,16 @@ with UCSTestUDM() as udm:
         'settings/prohibited_username',
         position=udm.UNIVENTION_CONTAINER,
         name=container_name,
-        usernames=names,
-    )
+        usernames=names,)
 
     access = getMachineConnection(ldap_master=True)
-    result = access.search(base=dn, scope='base', attr=[ATTR])
+    result = access.search(base=dn, scope='base', attr=[ATTR],)
     ((dn2, values),) = result
     assert dn == dn2
     old = values[ATTR]
     new = list(reversed(old))
     change = (ATTR, old, new)
     changes = [change]
-    access.modify(dn, changes)
+    access.modify(dn, changes,)
 
 # vim: set ft=python :

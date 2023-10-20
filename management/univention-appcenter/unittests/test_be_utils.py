@@ -57,7 +57,6 @@ from univention.management.console.modules.appcenter.util import create_url
         ('file://updates.knut.univention.de', '', '', '', '80', 'file://updates.knut.univention.de'),
         ('file://updates.knut.univention.de', '', '', '', '42', 'file://updates.knut.univention.de:42'),
         ('file://updates.knut.univention.de', '', 'the_user', 'the_password', '42', 'file://the_user:the_password@updates.knut.univention.de:42'),
-    ],
-)
-def test_create_url(server, prefix, username, password, port, expected):
-    assert expected == create_url(server, prefix, username, password, port)
+    ],)
+def test_create_url(server, prefix, username, password, port, expected,):
+    assert expected == create_url(server, prefix, username, password, port,)

@@ -44,9 +44,9 @@ class PytestRunner:
     options = argparse.Namespace(inside=True)
 
     @classmethod
-    def extend_command(cls, testcase, cmd):
+    def extend_command(cls, testcase, cmd,):
         """Add junit and other arguments to pytest"""
-        if getattr(cls.options, 'inside', False):
+        if getattr(cls.options, 'inside', False,):
             return cmd
         args = []
         if cls.options.dry:
@@ -55,7 +55,7 @@ class PytestRunner:
             args.append('--exitfirst')
         if cls.options.format == 'junit':
             from univention.testing.format.junit import Junit
-            args.append('--junit-xml=%s' % (os.path.join(os.getcwd(), Junit().outdir, '%s.xml' % (testcase.uid,)),))
+            args.append('--junit-xml=%s' % (os.path.join(os.getcwd(), Junit().outdir, '%s.xml' % (testcase.uid,),),))
         if cls.options.verbose:
             args.append('-' + 'v' * cls.options.verbose)
         args.append('--continue-on-collection-errors')
@@ -79,18 +79,18 @@ class PytestRunner:
         return cmd
 
     @classmethod
-    def set_arguments(cls, options):
+    def set_arguments(cls, options,):
         """store singleton CLI arguments globally"""
         cls.options = options
 
     @classmethod
-    def is_pytest(self, test_case):
+    def is_pytest(self, test_case,):
         """indicates that the test case is a pytest test"""
         return test_case.exe.filename in ('/usr/bin/py.test-3', '/usr/bin/py.test', '/usr/bin/pytest-3', '/usr/bin/pytest', 'pytest', 'pytest-3', 'py.test', 'py.test-3')
 
     @classmethod
-    def get_argument_group(cls, parser):
+    def get_argument_group(cls, parser,):
         """The option group for ucs-test-framework"""
         group = parser.add_argument_group('Additional pytest arguments')
-        group.add_argument('--pytest-arg', action='append', default=[], help='Additional arguments passed to pytest. Skip leading dashs (-).')
+        group.add_argument('--pytest-arg', action='append', default=[], help='Additional arguments passed to pytest. Skip leading dashs (-).',)
         return group

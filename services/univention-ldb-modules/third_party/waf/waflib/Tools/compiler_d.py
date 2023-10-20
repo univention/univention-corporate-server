@@ -35,10 +35,10 @@ Dict mapping the platform names to lists of names of D compilers to try, in orde
 
 def default_compilers():
 	build_platform = Utils.unversioned_sys_platform()
-	possible_compiler_list = d_compiler.get(build_platform, d_compiler['default'])
+	possible_compiler_list = d_compiler.get(build_platform, d_compiler['default'],)
 	return ' '.join(possible_compiler_list)
 
-def configure(conf):
+def configure(conf,):
 	"""
 	Detects a suitable D compiler
 
@@ -49,7 +49,7 @@ def configure(conf):
 	except AttributeError:
 		conf.fatal("Add options(opt): opt.load('compiler_d')")
 
-	for compiler in re.split('[ ,]+', test_for_compiler):
+	for compiler in re.split('[ ,]+', test_for_compiler,):
 		conf.env.stash()
 		conf.start_msg('Checking for %r (D compiler)' % compiler)
 		try:
@@ -57,7 +57,7 @@ def configure(conf):
 		except conf.errors.ConfigurationError as e:
 			conf.env.revert()
 			conf.end_msg(False)
-			Logs.debug('compiler_d: %r', e)
+			Logs.debug('compiler_d: %r', e,)
 		else:
 			if conf.env.D:
 				conf.end_msg(conf.env.get_flat('D'))
@@ -69,7 +69,7 @@ def configure(conf):
 	else:
 		conf.fatal('could not configure a D compiler!')
 
-def options(opt):
+def options(opt,):
 	"""
 	This is how to provide compiler preferences on the command-line::
 
@@ -78,7 +78,7 @@ def options(opt):
 	test_for_compiler = default_compilers()
 	d_compiler_opts = opt.add_option_group('Configuration options')
 	d_compiler_opts.add_option('--check-d-compiler', default=None,
-		help='list of D compilers to try [%s]' % test_for_compiler, dest='check_d_compiler')
+		help='list of D compilers to try [%s]' % test_for_compiler, dest='check_d_compiler',)
 
 	for x in test_for_compiler.split():
 		opt.load('%s' % x)

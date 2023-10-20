@@ -52,14 +52,14 @@ SAMBA_ACCOUNT_FLAG_LOCKED = 'L'
 DISALLOWED_SAMBA_ACCOUNT_FLAGS = frozenset((SAMBA_ACCOUNT_FLAG_DISABLED, SAMBA_ACCOUNT_FLAG_LOCKED))
 
 
-def convert_network_access_attr(attributes):
+def convert_network_access_attr(attributes,):
     # type: (Dict[str, List[bytes]]) -> bool
-    return b'1' in attributes.get('univentionNetworkAccess', [])
+    return b'1' in attributes.get('univentionNetworkAccess', [],)
 
 
-def convert_ucs_debuglevel(ucs_debuglevel):
+def convert_ucs_debuglevel(ucs_debuglevel,):
     # type: (int) -> int
-    logging_debuglevel = [logging.ERROR, logging.WARN, logging.INFO, logging.INFO, logging.DEBUG][max(0, min(4, ucs_debuglevel))]
+    logging_debuglevel = [logging.ERROR, logging.WARN, logging.INFO, logging.INFO, logging.DEBUG][max(0, min(4, ucs_debuglevel,),)]
     return logging_debuglevel
 
 
@@ -67,7 +67,7 @@ def get_ldapConnection():
     # type: () -> univention.uldap.access
     try:
         # try ldap/server/name, then each of ldap/server/addition
-        return univention.uldap.getMachineConnection(ldap_master=False, reconnect=False, secret_file='/etc/freeradius.secret')
+        return univention.uldap.getMachineConnection(ldap_master=False, reconnect=False, secret_file='/etc/freeradius.secret',)
     except SERVER_DOWN:
         # then primary directory node
         return univention.uldap.getMachineConnection(secret_file='/etc/freeradius.secret')
@@ -75,7 +75,7 @@ def get_ldapConnection():
 
 class NetworkAccessError(Exception):
 
-    def __init__(self, msg):
+    def __init__(self, msg,):
         # type: (str) -> None
         self.msg = msg
 
@@ -98,7 +98,7 @@ class UserDeactivatedError(NetworkAccessError):
 
 class NetworkAccess(object):
 
-    def __init__(self, username, stationId, loglevel=None, logfile=None):  # type: (str, str, Optional[int], Optional[str]) -> None
+    def __init__(self, username, stationId, loglevel=None, logfile=None,):  # type: (str, str, Optional[int], Optional[str]) -> None
         self.username = parse_username(username)
         self.mac_address = decode_stationId(stationId)
         self.ldapConnection = get_ldapConnection()
@@ -106,16 +106,16 @@ class NetworkAccess(object):
         self.configRegistry.load()
         self.use_ssp = self.configRegistry.is_true('radius/use-service-specific-password')
         self.whitelisting = self.configRegistry.is_true('radius/mac/whitelisting')
-        self._setup_logger(loglevel, logfile)
-        self.logger.debug('Given username: %r', username)
-        self.logger.debug('Given stationId: %r', stationId)
+        self._setup_logger(loglevel, logfile,)
+        self.logger.debug('Given username: %r', username,)
+        self.logger.debug('Given stationId: %r', stationId,)
 
-    def _setup_logger(self, loglevel, logfile):  # type: (Optional[int], Optional[str]) -> None
+    def _setup_logger(self, loglevel, logfile,):  # type: (Optional[int], Optional[str]) -> None
         if loglevel is not None:
             ucs_debuglevel = loglevel
         else:
             try:
-                ucs_debuglevel = int(self.configRegistry.get('freeradius/auth/helper/ntlm/debug', '2'))
+                ucs_debuglevel = int(self.configRegistry.get('freeradius/auth/helper/ntlm/debug', '2',))
             except ValueError:
                 ucs_debuglevel = 2
         debuglevel = convert_ucs_debuglevel(ucs_debuglevel)
@@ -131,7 +131,7 @@ class NetworkAccess(object):
         self.logger.addHandler(log_handler)
         # self.logger.info("Loglevel set to: %s", ucs_debuglevel)
 
-    def build_access_dict(self, ldap_result):
+    def build_access_dict(self, ldap_result,):
         # type: (List[Tuple[str, Dict[str, List[bytes]]]]) -> Dict[str, bool]
         access_dict = {
             dn: convert_network_access_attr(attributes)
@@ -139,33 +139,33 @@ class NetworkAccess(object):
         }
         return access_dict
 
-    def get_user_network_access(self, uid):
+    def get_user_network_access(self, uid,):
         # type: (str) -> Dict[str, bool]
-        users = self.ldapConnection.search(filter=filter_format('(uid=%s)', (uid, )), attr=['univentionNetworkAccess'])
+        users = self.ldapConnection.search(filter=filter_format('(uid=%s)', (uid, ),), attr=['univentionNetworkAccess'],)
         if not users:
-            users = self.ldapConnection.search(filter=filter_format('(mailPrimaryAddress=%s)', (uid, )), attr=['univentionNetworkAccess'])
+            users = self.ldapConnection.search(filter=filter_format('(mailPrimaryAddress=%s)', (uid, ),), attr=['univentionNetworkAccess'],)
         return self.build_access_dict(users)
 
-    def get_station_network_access(self, mac_address):
+    def get_station_network_access(self, mac_address,):
         # type: (str) -> Dict[str, bool]
-        stations = self.ldapConnection.search(filter=filter_format('(macAddress=%s)', (mac_address, )), attr=['univentionNetworkAccess'])
+        stations = self.ldapConnection.search(filter=filter_format('(macAddress=%s)', (mac_address, ),), attr=['univentionNetworkAccess'],)
         return self.build_access_dict(stations)
 
-    def get_groups_network_access(self, dn):
+    def get_groups_network_access(self, dn,):
         # type: (str) -> Dict[str, bool]
-        groups = self.ldapConnection.search(filter=filter_format('(uniqueMember=%s)', (dn, )), attr=['univentionNetworkAccess'])
+        groups = self.ldapConnection.search(filter=filter_format('(uniqueMember=%s)', (dn, ),), attr=['univentionNetworkAccess'],)
         return self.build_access_dict(groups)
 
-    def evaluate_ldap_network_access(self, access, level=''):
+    def evaluate_ldap_network_access(self, access, level='',):
         # type: (Dict[str, bool], str) -> bool
         short_circuit = not self.logger.isEnabledFor(logging.DEBUG)
         policy = any(access.values())
         if short_circuit and policy:
             return policy
         for dn, pol in access.items():
-            self.logger.debug("%s%s %r", level, 'ALLOW' if pol else 'DENY', dn)
+            self.logger.debug("%s%s %r", level, 'ALLOW' if pol else 'DENY', dn,)
             parents_access = self.get_groups_network_access(dn)
-            if self.evaluate_ldap_network_access(parents_access, level=level + '-> '):
+            if self.evaluate_ldap_network_access(parents_access, level=level + '-> ',):
                 policy = True
                 if short_circuit:
                     break
@@ -223,11 +223,11 @@ class NetworkAccess(object):
 
         pwd_attr = 'univentionRadiusPassword' if self.use_ssp else 'sambaNTPassword'
         if '@' in self.username:
-            result = self.ldapConnection.search(filter=filter_format('(mailPrimaryAddress=%s)', (self.username, )), attr=[pwd_attr, 'sambaAcctFlags'])
+            result = self.ldapConnection.search(filter=filter_format('(mailPrimaryAddress=%s)', (self.username, ),), attr=[pwd_attr, 'sambaAcctFlags'],)
         else:
-            result = self.ldapConnection.search(filter=filter_format('(uid=%s)', (self.username, )), attr=[pwd_attr, 'sambaAcctFlags'])
+            result = self.ldapConnection.search(filter=filter_format('(uid=%s)', (self.username, ),), attr=[pwd_attr, 'sambaAcctFlags'],)
         try:
-            nt_password_hash = codecs.decode(result[0][1][pwd_attr][0], 'hex')
+            nt_password_hash = codecs.decode(result[0][1][pwd_attr][0], 'hex',)
         except (IndexError, KeyError, TypeError):
             raise NoHashError('No valid NT-password-hash found. Check the "%s" attribute of the user.' % (pwd_attr,))
         sambaAccountFlags = frozenset(result[0][1]['sambaAcctFlags'][0].decode('UTF-8'))

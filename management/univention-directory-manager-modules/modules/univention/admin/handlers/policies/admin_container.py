@@ -71,8 +71,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyAdminContainerSettings'],
-    ),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyAdminContainerSettings'],),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -82,35 +81,33 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,
-    ),
+        identifies=True,),
     'listModules': univention.admin.property(
         short_description=_('Available Univention Directory Manager modules'),
         long_description='',
         syntax=univention.admin.syntax.univentionAdminModules,
-        multivalue=True,
-    ),
+        multivalue=True,),
 }, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=adminFixedAttributes),
     emptyAttributesProperty(syntax=adminFixedAttributes),
     ldapFilterProperty(),
-]))
+]),)
 
 layout = [
     Tab(_('General'), _('Univention Directory Manager settings'), layout=[
         Group(_('General Univention Directory Manager container settings'), layout=[
             'name',
             'listModules',
-        ]),
-    ]),
+        ],),
+    ],),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('listModules', 'univentionAdminListModules')
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('listModules', 'univentionAdminListModules',)
 register_policy_mapping(mapping)
 
 

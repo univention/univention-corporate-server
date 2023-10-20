@@ -39,40 +39,40 @@ class TestUCR(object):
     def __init__(self):
         self.items = {}
 
-    def get(self, key, default=None):
-        return self.items.get(key, default)
+    def get(self, key, default=None,):
+        return self.items.get(key, default,)
 
-    def get_int(self, key, default=None):
+    def get_int(self, key, default=None,):
         val = self.get(key)
         try:
             return int(val)
         except (TypeError, ValueError):
             return default
 
-    def __contains__(self, key):
+    def __contains__(self, key,):
         return key in self.items
 
-    def __getitem__(self, key):
+    def __getitem__(self, key,):
         # raises KeyError... lets see how this ends
         return self.items[key]
 
-    def __delitem__(self, key):
+    def __delitem__(self, key,):
         del self.items[key]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value,):
         self.items[key] = value
 
     def keys(self):
         return self.items.keys()
 
-    def is_false(self, key=None, default=False, value=None):  # noqa: F811
+    def is_false(self, key=None, default=False, value=None,):  # noqa: F811
         if value is None:
             value = self.get(key)  # type: ignore
             if value is None:
                 return default
         return value.lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 
-    def is_true(self, key=None, default=False, value=None):  # noqa: F811
+    def is_true(self, key=None, default=False, value=None,):  # noqa: F811
         if value is None:
             value = self.get(key)  # type: ignore
             if value is None:

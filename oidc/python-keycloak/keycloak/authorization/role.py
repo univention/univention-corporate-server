@@ -31,7 +31,7 @@ class Role:
 
     """
 
-    def __init__(self, name, required=False):
+    def __init__(self, name, required=False,):
         self.name = name
         self.required = required
 
@@ -39,7 +39,7 @@ class Role:
     def get_name(self):
         return self.name
 
-    def __eq__(self, other):
-        if isinstance(other, str):
+    def __eq__(self, other,):
+        if isinstance(other, str,):
             return self.name == other
         return NotImplemented

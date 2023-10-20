@@ -103,31 +103,31 @@ class Apps(app_cache.Apps):
         return self._cache_class
 
 
-def get_luminance(hexcolor: str) -> float:
+def get_luminance(hexcolor: str,) -> float:
     hexcolor = hexcolor.strip(' #')
-    red, green, blue = struct.unpack('BBB', codecs.decode(hexcolor, 'hex'))
+    red, green, blue = struct.unpack('BBB', codecs.decode(hexcolor, 'hex',),)
     # Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
     return (0.299 * red + 0.587 * green + 0.114 * blue) / 255
 
 
-def get_cache_dir_name(app: app.App) -> str:
+def get_cache_dir_name(app: app.App,) -> str:
     CACHE_DIR = '/var/cache/univention-app-appliance/'
-    app_cache_dir = os.path.join(CACHE_DIR, app.id)
+    app_cache_dir = os.path.join(CACHE_DIR, app.id,)
     return app_cache_dir
 
 
-def get_app_style_properties(app: app.App) -> Dict[str, str]:
+def get_app_style_properties(app: app.App,) -> Dict[str, str]:
     local_cache_name = 'app_props' if app.get_locale() == 'en' else 'app_props_de'
     try:
-        with open(os.path.join(get_cache_dir_name(app), local_cache_name)) as fd:
+        with open(os.path.join(get_cache_dir_name(app), local_cache_name,)) as fd:
             props = json.load(fd)
             print('Properties loaded from %s cache' % local_cache_name)
             return props
     except Exception as exc:
-        if not os.path.exists(os.path.join(get_cache_dir_name(app), local_cache_name)):
+        if not os.path.exists(os.path.join(get_cache_dir_name(app), local_cache_name,)):
             print('Properties loaded from web for %s' % local_cache_name)
         else:
-            print('Warning:', exc)
+            print('Warning:', exc,)
 
     props = {}
     for i in (
@@ -146,7 +146,7 @@ def get_app_style_properties(app: app.App) -> Dict[str, str]:
             'portal_background_image',
             'portal_title',
     ):
-        ival = getattr(app, 'appliance_%s' % i, None)
+        ival = getattr(app, 'appliance_%s' % i, None,)
         if ival:
             props[i] = ival
     return props

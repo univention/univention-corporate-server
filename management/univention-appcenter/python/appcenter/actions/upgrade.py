@@ -52,7 +52,7 @@ class Upgrade(Install):
     post_readme = 'readme_post_update'
 
     def __init__(self):
-        super(Upgrade, self).__init__()
+        super(Upgrade, self,).__init__()
         # original_app: The App installed when the whole action started
         # old_app: The current App installed when trying to upgrade
         #   - should be the same most of the time. But Docker Apps may upgrade
@@ -60,18 +60,18 @@ class Upgrade(Install):
         #   after each iteration
         self.original_app = self.old_app = None
 
-    def setup_parser(self, parser):
-        super(Install, self).setup_parser(parser)
-        parser.add_argument('--only-master-packages', action='store_true', help='Install only Primary Node packages')
-        parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install Primary Node packages on Primary or Backup Directory Node systems')
+    def setup_parser(self, parser,):
+        super(Install, self,).setup_parser(parser)
+        parser.add_argument('--only-master-packages', action='store_true', help='Install only Primary Node packages',)
+        parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install Primary Node packages on Primary or Backup Directory Node systems',)
 
-    def _app_too_old(self, current_app, specified_app):
+    def _app_too_old(self, current_app, specified_app,):
         if current_app >= specified_app:
             self.fatal('A newer version of %s than the one installed must be present and chosen' % current_app.id)
             return True
         return False
 
-    def main(self, args):
+    def main(self, args,):
         apps = args.app
         real_apps = []
         for app in apps:
@@ -79,7 +79,7 @@ class Upgrade(Install):
             if app == old_app:
                 app = Apps().find_candidate(app) or app
             if not args.only_master_packages:  # always allow only_master_packages
-                if self._app_too_old(old_app, app):
+                if self._app_too_old(old_app, app,):
                     continue
             real_apps.append(app)
         if not real_apps:
@@ -87,24 +87,24 @@ class Upgrade(Install):
         args.app = real_apps
         return self.do_it(args)
 
-    def do_it_once(self, app, args):
+    def do_it_once(self, app, args,):
         self.old_app = self.original_app = Apps().find(app.id)
-        return super(Upgrade, self).do_it_once(app, args)
+        return super(Upgrade, self,).do_it_once(app, args,)
 
-    def _write_start_event(self, app, args):
-        return write_event(APP_UPGRADE_START, {'name': app.name, 'version': self.old_app.version}, username=self._get_username(args))
+    def _write_start_event(self, app, args,):
+        return write_event(APP_UPGRADE_START, {'name': app.name, 'version': self.old_app.version}, username=self._get_username(args),)
 
-    def _write_success_event(self, app, context_id, args):
-        return write_event(APP_UPGRADE_SUCCESS, {'name': app.name, 'version': app.version}, username=self._get_username(args), context_id=context_id)
+    def _write_success_event(self, app, context_id, args,):
+        return write_event(APP_UPGRADE_SUCCESS, {'name': app.name, 'version': app.version}, username=self._get_username(args), context_id=context_id,)
 
-    def _write_fail_event(self, app, context_id, status, args):
-        return write_event(APP_UPGRADE_FAILURE, {'name': app.name, 'version': self.old_app.version, 'error_code': str(status)}, username=self._get_username(args), context_id=context_id)
+    def _write_fail_event(self, app, context_id, status, args,):
+        return write_event(APP_UPGRADE_FAILURE, {'name': app.name, 'version': self.old_app.version, 'error_code': str(status)}, username=self._get_username(args), context_id=context_id,)
 
-    def _call_action_hooks(self, directory):
-        super(Upgrade, self)._run_parts(directory)
+    def _call_action_hooks(self, directory,):
+        super(Upgrade, self,)._run_parts(directory)
 
-    def needs_credentials(self, app):
-        needs_credentials = super(Upgrade, self).needs_credentials(app)
+    def needs_credentials(self, app,):
+        needs_credentials = super(Upgrade, self,).needs_credentials(app)
         if needs_credentials:
             return True
         if app.docker and app.docker_script_update_packages:
@@ -113,27 +113,27 @@ class Upgrade(Install):
             return True
         return False
 
-    def _revert(self, app, args):
+    def _revert(self, app, args,):
         try:
             self.log('Trying to revert to old version. This may lead to problems, but it is better than leaving it the way it is now')
             args.revert = False
-            self._do_it(self.old_app, args)
+            self._do_it(self.old_app, args,)
         except Exception:
             pass
 
-    def _show_license(self, app, args):
+    def _show_license(self, app, args,):
         old_app = Apps().find(app.id)
         if app.license_agreement != old_app.license_agreement:
-            return super(Upgrade, self)._show_license(app, args)
+            return super(Upgrade, self,)._show_license(app, args,)
 
-    def _call_prescript(self, app, args):
-        return super(Upgrade, self)._call_prescript(app, args, old_version=self.old_app.version)
+    def _call_prescript(self, app, args,):
+        return super(Upgrade, self,)._call_prescript(app, args, old_version=self.old_app.version,)
 
-    def _send_information(self, app, status, value=None):
+    def _send_information(self, app, status, value=None,):
         if app > self.original_app:
-            super(Upgrade, self)._send_information(app, status, value)
+            super(Upgrade, self,)._send_information(app, status, value,)
 
-    def _install_packages(self, packages):
+    def _install_packages(self, packages,):
         return install_packages(packages) and dist_upgrade()
 
     @classmethod
@@ -142,5 +142,5 @@ class Upgrade(Install):
             if ucr_is_true(app.ucr_upgrade_key):
                 yield app
 
-    def _dry_run(self, app, args):
-        return self._install_packages_dry_run(app, args, with_dist_upgrade=True)
+    def _dry_run(self, app, args,):
+        return self._install_packages_dry_run(app, args, with_dist_upgrade=True,)

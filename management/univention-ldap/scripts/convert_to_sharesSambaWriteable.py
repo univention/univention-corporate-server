@@ -46,22 +46,22 @@ import univention.debug as ud
 try:
     lo, position = univention.admin.uldap.getAdminConnection()
 except Exception as exc:
-    ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc, ))
+    ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc, ),)
     print('authentication error: %s' % (exc,))
     sys.exit(1)
 
 
 univention.admin.modules.update()
 module = univention.admin.modules.get('shares/share')
-univention.admin.modules.init(lo, position, module)
+univention.admin.modules.init(lo, position, module,)
 
-for obj in univention.admin.modules.lookup(module, None, lo, scope='sub'):
+for obj in univention.admin.modules.lookup(module, None, lo, scope='sub',):
     obj.open()
-    print('work on DN:', obj.dn)
+    print('work on DN:', obj.dn,)
 
     if obj['writeable'] and obj['sambaWriteable']:
         obj['sambaWriteable'] = obj['writeable']
         dn = obj.modify()
-        lo.modify(dn, [])
+        lo.modify(dn, [],)
     else:
         print("WARNING: Object is missing attributes writeable and/or sambaWriteable ! Did you already update univention-ldap ?")

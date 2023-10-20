@@ -14,7 +14,7 @@ import univention.testing.strings as uts
 from univention.testing import utils
 
 
-def test_join_preexisting_acc_with_multiple_macs(udm):
+def test_join_preexisting_acc_with_multiple_macs(udm,):
     memberserver1 = {
         "name": uts.random_string(),
         "mac": (uts.random_mac(), uts.random_mac()),
@@ -25,13 +25,13 @@ def test_join_preexisting_acc_with_multiple_macs(udm):
         "mac": memberserver1["mac"],
         "ip": "127.0.0.122",
     }
-    memberserver1["dn"] = udm.create_object("computers/memberserver", set=memberserver1)
-    utils.verify_ldap_object(memberserver1["dn"], expected_attr={"macAddress": memberserver1["mac"]})
-    join_member_with_preexisting_acc(memberserver1, udm)
+    memberserver1["dn"] = udm.create_object("computers/memberserver", set=memberserver1,)
+    utils.verify_ldap_object(memberserver1["dn"], expected_attr={"macAddress": memberserver1["mac"]},)
+    join_member_with_preexisting_acc(memberserver1, udm,)
     join_member_with_conflicting_mac(memberserver2)
 
 
-def join_member_with_preexisting_acc(memberserver, udm):
+def join_member_with_preexisting_acc(memberserver, udm,):
     print(memberserver)
     for mac in memberserver["mac"]:
         # This removes all but one mac
@@ -43,11 +43,11 @@ def join_member_with_preexisting_acc(memberserver, udm):
             "-mac", mac,
         ])
         # Re-add macs
-        udm.modify_object("computers/memberserver", dn=memberserver["dn"], mac=memberserver["mac"])
-        utils.verify_ldap_object(memberserver["dn"], expected_attr={"macAddress": memberserver["mac"]})
+        udm.modify_object("computers/memberserver", dn=memberserver["dn"], mac=memberserver["mac"],)
+        utils.verify_ldap_object(memberserver["dn"], expected_attr={"macAddress": memberserver["mac"]},)
 
 
-def join_member_with_conflicting_mac(memberserver):
+def join_member_with_conflicting_mac(memberserver,):
     print(memberserver)
     for mac in memberserver["mac"]:
         with pytest.raises(subprocess.CalledProcessError) as exc:

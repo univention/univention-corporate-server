@@ -6,18 +6,18 @@ from waflib.Tools import ar, d
 from waflib.Configure import conf
 
 @conf
-def find_ldc2(conf):
+def find_ldc2(conf,):
 	"""
 	Finds the program *ldc2* and set the variable *D*
 	"""
-	conf.find_program(['ldc2'], var='D')
+	conf.find_program(['ldc2'], var='D',)
 
 	out = conf.cmd_and_log(conf.env.D + ['-version'])
 	if out.find("based on DMD v2.") == -1:
 		conf.fatal("detected compiler is not ldc2")
 
 @conf
-def common_flags_ldc2(conf):
+def common_flags_ldc2(conf,):
 	"""
 	Sets the D flags required by *ldc2*
 	"""
@@ -44,7 +44,7 @@ def common_flags_ldc2(conf):
 	v.LINKFLAGS     = []
 	v.DFLAGS_dshlib = ['-relocation-model=pic']
 
-def configure(conf):
+def configure(conf,):
 	"""
 	Configuration for *ldc2*
 	"""

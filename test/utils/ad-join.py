@@ -46,13 +46,13 @@ from univention.lib.umc import Client
 
 def parse_args() -> Namespace:
     parser = ArgumentParser()
-    parser.add_argument('-H', '--host', default='localhost', help='host to connect to')
-    parser.add_argument('-u', '--user', dest='username', help='username', metavar='UID', default='administrator')
-    parser.add_argument('-p', '--password', default='univention', help='password')
-    parser.add_argument('-D', '--domain_host', default=None, help='domain controller to connect to', required=True)
-    parser.add_argument('-A', '--domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator')
-    parser.add_argument('-P', '--domain_password', default='Univention@99', help='domain admin password')
-    parser.add_argument('-S', '--sync_mode', action="store_true", help='join in synchronization mode (instead of read by default)')
+    parser.add_argument('-H', '--host', default='localhost', help='host to connect to',)
+    parser.add_argument('-u', '--user', dest='username', help='username', metavar='UID', default='administrator',)
+    parser.add_argument('-p', '--password', default='univention', help='password',)
+    parser.add_argument('-D', '--domain_host', default=None, help='domain controller to connect to', required=True,)
+    parser.add_argument('-A', '--domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator',)
+    parser.add_argument('-P', '--domain_password', default='Univention@99', help='domain admin password',)
+    parser.add_argument('-S', '--sync_mode', action="store_true", help='join in synchronization mode (instead of read by default)',)
 
     options = parser.parse_args()
 
@@ -60,7 +60,7 @@ def parse_args() -> Namespace:
 
 
 options = parse_args()
-client = Client(options.host, options.username, options.password, language='en-US')
+client = Client(options.host, options.username, options.password, language='en-US',)
 
 
 def join_sync_mode() -> None:
@@ -73,7 +73,7 @@ def join_sync_mode() -> None:
         "password": options.domain_password,
         "mode": "adconnector",
     }
-    result = client.umc_command("adconnector/check_domain", request_options).result
+    result = client.umc_command("adconnector/check_domain", request_options,).result
 
     # configure / save options:
     print('=== AD-JOIN CONFIGURATION ===')
@@ -95,14 +95,14 @@ def join_sync_mode() -> None:
         'MappingSyncMode': "sync",
     }
 
-    conf_result = client.umc_command("adconnector/adconnector/save", request_options).result
+    conf_result = client.umc_command("adconnector/adconnector/save", request_options,).result
     if not conf_result['success']:
         print("\nThe AD Connector configuration was not saved successfully: %s" % conf_result)
         exit(1)
 
     # start AD connector:
     print('=== AD-JOIN STARTING CONNECTOR ===')
-    start_result = client.umc_command("adconnector/service", {'action': "start"}).result
+    start_result = client.umc_command("adconnector/service", {'action': "start"},).result
     if not start_result['success']:
         print("\nThe AD Connector was not started successfully: %s" % start_result)
         exit(1)
@@ -118,7 +118,7 @@ def join_read_mode() -> None:
         'username': options.domain_admin,
     }
 
-    result = client.umc_command("adconnector/admember/join", send_data).result
+    result = client.umc_command("adconnector/admember/join", send_data,).result
 
     if not result:
         print('ERROR: Failed to join ad domain!')
@@ -131,7 +131,7 @@ def join_read_mode() -> None:
     status: Dict[str, Any] = {'finished': False}
     while not status['finished']:
         # FIXME: this might loop forever?
-        status = client.umc_command('adconnector/admember/progress', progress_data).result
+        status = client.umc_command('adconnector/admember/progress', progress_data,).result
         percentage = status['percentage']
         print(percentage)
         sleep(2)
@@ -169,9 +169,9 @@ def check_correct_passwords() -> None:
             ucr['tests/domainadmin/pwd'] = options.domain_password
 
     with open("/var/lib/ucs-test/pwdfile") as pwfile:
-        pwfile_pw = pwfile.read().replace('\n', '')
+        pwfile_pw = pwfile.read().replace('\n', '',)
     if pwfile_pw != options.domain_password:
-        with open("/var/lib/ucs-test/pwdfile", "w") as pwfile:
+        with open("/var/lib/ucs-test/pwdfile", "w",) as pwfile:
             pwfile.write(options.domain_password)
 
 

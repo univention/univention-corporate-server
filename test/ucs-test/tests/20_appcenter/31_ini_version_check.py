@@ -20,14 +20,14 @@ from univention.testing.codes import TestCodes
 APP_ID = 'univention-demo-data'
 
 
-def get_app_dn(App):
+def get_app_dn(App,):
     """Returns the given 'App' DN."""
     app_dn = ("univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s"
               % (App.id, App.version, App.id, ldap_base))
     return app_dn
 
 
-def check_app_version_ldap_registraton(new_version):
+def check_app_version_ldap_registraton(new_version,):
     """
     Tries to create an LDAP object for App with 'APP_ID' and 'new_version'
     and verifies it after.
@@ -46,7 +46,7 @@ def check_app_version_ldap_registraton(new_version):
     lo, pos = get_machine_connection()
     print("\nCreating an App LDAP object:")
     try:
-        ldap_object = ApplicationLDAPObject(App, lo, pos, create_if_not_exists=True)
+        ldap_object = ApplicationLDAPObject(App, lo, pos, create_if_not_exists=True,)
         if not ldap_object:
             utils.fail("The App LDAP object was neither created, "
                        "nor already exist.")
@@ -61,7 +61,7 @@ def check_app_version_ldap_registraton(new_version):
     try:
         utils.verify_ldap_object(app_dn,
                                  {'univentionAppID': [f'{App.id}_{App.version}'],
-                                  'univentionAppVersion': [App.version]})
+                                  'univentionAppVersion': [App.version]},)
 
         print("\nRemoving the App object from LDAP:")
         ldap_object.remove_from_directory()

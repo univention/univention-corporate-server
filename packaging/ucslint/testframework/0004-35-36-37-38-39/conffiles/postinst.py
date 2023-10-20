@@ -1,2 +1,2 @@
-def postinst(ucr, changes):
+def postinst(ucr, changes,):
     pass
