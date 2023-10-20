@@ -18,10 +18,10 @@ URI_OTRS = 'https://gorm.knut.univention.de/otrs/index.pl?Action=AgentTicketSear
 class HTML(TestFormatInterface):
     """Create simple HTML report."""
 
-    def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
+    def __init__(self, stream: "IO[str]"=sys.stdout) -> None:
         super().__init__(stream)
 
-    def begin_run(self, environment, count=1):  # type: (TestEnvironment, int) -> None
+    def begin_run(self, environment: "TestEnvironment", count: int=1) -> None:
         """Called before first test."""
         super().begin_run(environment, count)
         print('<html>', file=self.stream)
@@ -30,13 +30,13 @@ class HTML(TestFormatInterface):
         print('</head>', file=self.stream)
         print('<body>', file=self.stream)
 
-    def begin_section(self, section):  # type: (str) -> None
+    def begin_section(self, section: str) -> None:
         """Called before each section."""
         super().begin_section(section)
         print(f'<h2>Section {escape_xml(section)}</h2>', file=self.stream)
         print('<table>', file=self.stream)
 
-    def end_test(self, result):  # type: (TestResult) -> None
+    def end_test(self, result: "TestResult") -> None:
         """Called after each test."""
         title = escape_xml(result.case.uid)
         if result.case.description:
@@ -59,18 +59,18 @@ class HTML(TestFormatInterface):
         print(f'<tr><td>{title}</td><td>{msg}</td></tr>', file=self.stream)
         super().end_test(result)
 
-    def end_section(self):  # type: () -> None
+    def end_section(self) -> None:
         """Called after each section."""
         print('</table>', file=self.stream)
         super().end_section()
 
-    def end_run(self):  # type: () -> None
+    def end_run(self) -> None:
         """Called after all test."""
         print('</body>', file=self.stream)
         print('</html>', file=self.stream)
         super().end_run()
 
-    def format(self, result):  # type: (TestResult) -> None
+    def format(self, result: "TestResult") -> None:
         """
         Format single test.
 

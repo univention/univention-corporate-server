@@ -70,8 +70,7 @@ def UnmapToUnicode(ldap_value, encoding=()):
     return ldap_value.decode(*encoding)
 
 
-def DaysToSeconds(days):
-    # type: (str) -> str
+def DaysToSeconds(days: str) -> str:
     """
     Convert number of days to seconds.
 
@@ -84,8 +83,7 @@ def DaysToSeconds(days):
     return str(int(days) * 24 * 60 * 60)
 
 
-def SecondsToDays(seconds):
-    # type: (str) -> str
+def SecondsToDays(seconds: str) -> str:
     """
     Convert number of seconds to number of complete days.
 
@@ -98,8 +96,7 @@ def SecondsToDays(seconds):
     return str((int(seconds[0])) // (60 * 60 * 24))
 
 
-def StringToLower(string):
-    # type: (str) -> str
+def StringToLower(string: str) -> str:
     """
     Convert string to lower-case.
 
@@ -112,8 +109,7 @@ def StringToLower(string):
     return string.lower()
 
 
-def ListUniq(list):
-    # type: (List[_E]) -> List[_E]
+def ListUniq(list: "List[_E]") -> "List[_E]":
     """
     Return list of unique items.
 
@@ -123,7 +119,7 @@ def ListUniq(list):
     >>> ListUniq(['1', '1', '2'])
     ['1', '2']
     """
-    result = []  # type: List[_E]
+    result: "List[_E]" = []
     if list:
         for element in list:
             if element not in result:
@@ -151,8 +147,7 @@ def ListToString(value, encoding=()):
         return u''
 
 
-def ListToIntToString(list_):
-    # type: (List[str]) -> str
+def ListToIntToString(list_: "List[str]") -> str:
     """
     Return first element from list if it is an integer.
 
@@ -174,8 +169,7 @@ def ListToIntToString(list_):
     return ''
 
 
-def ListToLowerString(list):
-    # type: (List[str]) -> str
+def ListToLowerString(list: "List[str]") -> str:
     """
     Return first element from list lower-cased.
 
@@ -190,8 +184,7 @@ def ListToLowerString(list):
     return StringToLower(ListToString(list))
 
 
-def ListToLowerList(list):
-    # type: (List[str]) -> List[str]
+def ListToLowerList(list: "List[str]") -> "List[str]":
     """
     Return the list with all elements converted to lower-case.
 
@@ -204,8 +197,7 @@ def ListToLowerList(list):
     return [StringToLower(string) for string in list]
 
 
-def ListToLowerListUniq(list):
-    # type: (List[str]) -> List[str]
+def ListToLowerListUniq(list: "List[str]") -> "List[str]":
     """
     Return the list with all elements converted to lower-case and duplicates removed.
 
@@ -239,8 +231,7 @@ def IgnoreNone(value, encoding=()):
     return None  # FIXME
 
 
-def _stringToInt(value):
-    # type: (str) -> int
+def _stringToInt(value: str) -> int:
     """
     Try to convert string into integer.
 
@@ -258,8 +249,7 @@ def _stringToInt(value):
         return 0
 
 
-def unmapUNIX_TimeInterval(value):
-    # type: (Union[List[str], Tuple[str], str]) -> List[str]
+def unmapUNIX_TimeInterval(value: "Union[List[str], Tuple[str], str]") -> "List[str]":
     """
     Map number of seconds to a human understandable time interval.
 
@@ -293,8 +283,7 @@ def unmapUNIX_TimeInterval(value):
     return [unicode(value), unit]
 
 
-def mapUNIX_TimeInterval(value):
-    # type: (Union[List[str], Tuple[str], str]) -> str
+def mapUNIX_TimeInterval(value: "Union[List[str], Tuple[str], str]") -> str:
     """
     Unmap a human understandable time interval back to number of seconds.
 
@@ -352,8 +341,7 @@ def unmapBase64(value):
     return ""
 
 
-def mapBase64(value):
-    # type: (Union[List[str], str]) -> Union[List[bytes], bytes]
+def mapBase64(value: "Union[List[str], str]") -> "Union[List[bytes], bytes]":
     # @overload (List[str]) -> List[bytes]
     # @overload (str) -> bytes
     """
@@ -450,8 +438,7 @@ class mapping(object):
         self._map_encoding[map_name] = (encoding, encoding_errors)
         self._unmap_encoding[unmap_name] = (encoding, encoding_errors)
 
-    def unregister(self, map_name, pop_unmap=True):
-        # type: (str, bool) -> None
+    def unregister(self, map_name: str, pop_unmap: bool=True) -> None:
         """
         Remove a mapping |UDM| to |LDAP| (and also the reverse).
 

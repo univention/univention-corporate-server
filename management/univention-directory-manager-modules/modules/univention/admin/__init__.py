@@ -64,8 +64,7 @@ if six.PY2:
 ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
 
 
-def ucr_overwrite_properties(module, lo):
-    # type: (Any, univention.admin.uldap.access) -> None
+def ucr_overwrite_properties(module: "Any", lo: "univention.admin.uldap.access") -> None:
     """Overwrite properties in property_descriptions by UCR variables"""
     ucr_prefix = ucr_property_prefix % module.module
     if not module:
@@ -119,16 +118,14 @@ def ucr_overwrite_properties(module, lo):
             continue
 
 
-def pattern_replace(pattern, object):
-    # type: (str, Any) -> str
+def pattern_replace(pattern: str, object: "Any") -> str:
     """
     Replaces patterns like `<attribute:command,...>[range]` with values
     of the specified UDM attribute.
     """
-    global_commands = []  # type: List[str]
+    global_commands: "List[str]" = []
 
-    def modify_text(text, commands):
-        # type: (str, List[str]) -> str
+    def modify_text(text: str, commands: "List[str]") -> str:
         # apply all string commands
         for iCmd in commands:
             if iCmd == 'lower':
@@ -153,8 +150,7 @@ def pattern_replace(pattern, object):
                 text = text.strip()
         return text
 
-    def repl(match):
-        # type: (Match[str]) -> str
+    def repl(match: "Match[str]") -> str:
         key = match.group('key')
         ext = match.group('ext')
         strCommands = []
@@ -211,34 +207,34 @@ class property:
 
     def __init__(
             self,
-            short_description='',  # type: str
-            long_description='',  # type: str
-            syntax=None,  # type: Union[Type, Any]
-            module_search=None,  # type: None
-            multivalue=False,  # type: bool
-            one_only=False,  # type: bool
-            parent=None,  # type: str
-            options=[],  # type: List[str]
-            license=[],  # type: List[str]
-            required=False,  # type: bool
-            may_change=True,  # type: bool
-            identifies=False,  # type: bool
-            unique=False,  # type: bool
-            default=None,  # type: Union[None, bool, int, str, List[str], Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]
-            prevent_umc_default_popup=False,  # type: bool
-            dontsearch=False,  # type: bool
-            show_in_lists=True,  # type: bool
-            cli_enabled=True,  # type: bool
-            editable=True,  # type: bool
-            configObjectPosition=None,  # type: None
-            configAttributeName=None,  # type: None
-            include_in_default_search=False,  # type: bool
-            nonempty_is_default=False,  # type: bool
-            readonly_when_synced=False,  # type: bool
-            size=None,  # type: str
-            copyable=False,  # type: bool
-            type_class=None,  # type: type  # univention.admin.types.TypeHint
-    ):  # type: (...) -> None
+            short_description: str='',
+            long_description: str='',
+            syntax: "Union[Type, Any]"=None,
+            module_search: None=None,
+            multivalue: bool=False,
+            one_only: bool=False,
+            parent: str=None,
+            options: "List[str]"=[],
+            license: "List[str]"=[],
+            required: bool=False,
+            may_change: bool=True,
+            identifies: bool=False,
+            unique: bool=False,
+            default: "Union[None, bool, int, str, List[str], Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]"=None,
+            prevent_umc_default_popup: bool=False,
+            dontsearch: bool=False,
+            show_in_lists: bool=True,
+            cli_enabled: bool=True,
+            editable: bool=True,
+            configObjectPosition: None=None,
+            configAttributeName: None=None,
+            include_in_default_search: bool=False,
+            nonempty_is_default: bool=False,
+            readonly_when_synced: bool=False,
+            size: str=None,
+            copyable: bool=False,
+            type_class: "type  # univention.admin.types.TypeHint"=None,
+    ) -> None:
         """
         |UDM| property.
 
@@ -294,7 +290,7 @@ class property:
         self.editable = editable
         self.configObjectPosition = configObjectPosition
         self.configAttributeName = configAttributeName
-        self.templates = []  # type: List  # univention.admin.handlers.simpleLdap
+        self.templates: "List" = []  # univention.admin.handlers.simpleLdap
         self.include_in_default_search = include_in_default_search
         self.threshold = int(configRegistry.get('directory/manager/web/sizelimit', '2000') or 2000)
         self.nonempty_is_default = nonempty_is_default
@@ -303,15 +299,14 @@ class property:
         self.copyable = copyable
         self.type_class = type_class
 
-    def new(self):
-        # type: () -> Union[List[str], None]
+    def new(self) -> "Union[List[str], None]":
         return [] if self.multivalue else None
 
     def _replace(self, res, object):
         return pattern_replace(copy.copy(res), object)
 
     def default(self, object):
-        base_default = copy.copy(self.base_default)  # type: Union[None, bool, int, str, List[str], Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]
+        base_default: "Union[None, bool, int, str, List[str], Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]" = copy.copy(self.base_default)
         if not object.set_defaults:
             return [] if self.multivalue else ''
 
@@ -367,8 +362,7 @@ class property:
             return self.syntax.parse(defaults)
         return defaults
 
-    def check_default(self, object):
-        # type: (Any) -> None
+    def check_default(self, object: "Any") -> None:
         defaults = self.default(object)
         try:
             if isinstance(defaults, list):
@@ -380,8 +374,7 @@ class property:
         except univention.admin.uexceptions.valueError:
             raise univention.admin.uexceptions.templateSyntaxError([t['name'] for t in self.templates])
 
-    def matches(self, options):
-        # type: (Iterable[str]) -> bool
+    def matches(self, options: "Iterable[str]") -> bool:
         if not self.options:
             return True
         return bool(set(self.options).intersection(set(options)))
@@ -390,8 +383,7 @@ class property:
 class option(object):
     """|UDM| option to make properties conditional."""
 
-    def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False):
-        # type: (str, str, int, bool, bool, Iterable[str], bool) -> None
+    def __init__(self, short_description: str='', long_description: str='', default: int=0, editable: bool=False, disabled: bool=False, objectClasses: "Iterable[str]"=None, is_app_option: bool=False) -> None:
         self.short_description = short_description
         self.long_description = long_description
         self.default = default
@@ -402,15 +394,13 @@ class option(object):
         if objectClasses:
             self.objectClasses = set(objectClasses)
 
-    def matches(self, objectClasses):
-        # type: (Container[str]) -> bool
+    def matches(self, objectClasses: "Container[str]") -> bool:
         if not self.objectClasses:
             return True
         return all(not oc not in objectClasses for oc in self.objectClasses)
 
 
-def ucr_overwrite_layout(module, ucr_property, tab):
-    # type: (Any, str, Tab) -> Optional[bool]
+def ucr_overwrite_layout(module: "Any", ucr_property: str, tab: "Tab") -> "Optional[bool]":
     """Overwrite the advanced setting in the layout"""
     desc = tab['name']
     if hasattr(tab['name'], 'data'):
@@ -420,8 +410,7 @@ def ucr_overwrite_layout(module, ucr_property, tab):
     return configRegistry.is_true(f'directory/manager/web/modules/{module}/layout/{desc}/{ucr_property}', None)
 
 
-def ucr_overwrite_module_layout(module):
-    # type: (Any) -> None
+def ucr_overwrite_module_layout(module: "Any") -> None:
     """Overwrite the tab layout through |UCR| variables."""
     ud.debug(ud.ADMIN, ud.INFO, "layout overwrite")
     # there are modules without a layout definition
@@ -497,8 +486,7 @@ def ucr_overwrite_module_layout(module):
 class extended_attribute(object):
     """Extended attributes extend |UDM| and |UMC| with additional properties defined in |LDAP|."""
 
-    def __init__(self, name, objClass, ldapMapping, deleteObjClass=False, syntax='string', hook=None):
-        # type: (str, str, Any, bool, str, Any) -> None
+    def __init__(self, name: str, objClass: str, ldapMapping: "Any", deleteObjClass: bool=False, syntax: str='string', hook: "Any"=None) -> None:
         self.name = name
         self.objClass = objClass
         self.ldapMapping = ldapMapping
@@ -601,8 +589,7 @@ if six.PY2:  # deprecated, use layout.Group instead
 
 class policiesGroup:
 
-    def __init__(self, id, short_description=None, long_description='', members=[]):
-        # type: (Any, Optional[str], str, Any) -> None
+    def __init__(self, id: "Any", short_description: "Optional[str]"=None, long_description: str='', members: "Any"=[]) -> None:
         self.id = id
         if short_description is None:
             self.short_description = id

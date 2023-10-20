@@ -67,8 +67,7 @@ DIR_BLACKLIST.append("/run")
 DIR_BLACKLIST.append("/srv")
 
 
-def dirIsMountPoint(path):
-    # type: (str) -> Optional[str]
+def dirIsMountPoint(path: str) -> "Optional[str]":
     """
     Check if `path` is a mount point.
 
@@ -93,8 +92,7 @@ def dirIsMountPoint(path):
     return None
 
 
-def checkDirFileSystem(path, cr):
-    # type: (str, ConfigRegistry) -> Optional[str]
+def checkDirFileSystem(path: str, cr: "ConfigRegistry") -> "Optional[str]":
     """
     Check if the given path is of a known file system type.
 
@@ -118,8 +116,7 @@ def checkDirFileSystem(path, cr):
     return f"filesystem {myFs} for {path} is not on a known filesystem"
 
 
-def createOrRename(old, new, cr):
-    # type: (Dict[str, List[bytes]], Dict[str, List[bytes]], ConfigRegistry) -> Optional[str]
+def createOrRename(old: "Dict[str, List[bytes]]", new: "Dict[str, List[bytes]]", cr: "ConfigRegistry") -> "Optional[str]":
     """
     Create or rename a share.
 
@@ -272,8 +269,7 @@ def createOrRename(old, new, cr):
     return None
 
 
-def is_blacklisted(path, ucr):
-    # type: (str, ConfigRegistry) -> bool
+def is_blacklisted(path: str, ucr: "ConfigRegistry") -> bool:
     """
 
     >>> is_blacklisted('/home/', {})

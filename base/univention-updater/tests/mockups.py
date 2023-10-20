@@ -20,7 +20,7 @@ DATA = b'x' * 100  # univention.updater.tools.MIN_GZIP
 RJSON = '/ucs-releases.json'
 
 
-def gen_releases(releases=[], major=MAJOR, minor=MINOR, patches=range(0, PATCH + 1)):  # type: (Iterable[Tuple[int, int, int]], int, int, Iterable[int]) -> bytes
+def gen_releases(releases: "Iterable[Tuple[int, int, int]]"=[], major: int=MAJOR, minor: int=MINOR, patches: "Iterable[int]"=range(0, PATCH + 1)) -> bytes:
     """
     Generate a `ucs-releases.json` string from a list of given releases.
 

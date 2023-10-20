@@ -54,14 +54,12 @@ CATEGORY = [
 
 
 @pytest.fixture()
-def parse():
-    # type: () -> Iterator[Callable[[str], Iterator[Tuple[str, Dict[str, str]]]]]
+def parse() -> "Iterator[Callable[[str], Iterator[Tuple[str, Dict[str, str]]]]]":
     """Setup parser."""
     now = datetime.now()
     start = now.replace(microsecond=now.microsecond - now.microsecond % 1000)
 
-    def f(text):
-        # type: (str) -> Iterator[Tuple[str, Dict[str, str]]]
+    def f(text: str) -> "Iterator[Tuple[str, Dict[str, str]]]":
         """
         Parse line into componets.
 

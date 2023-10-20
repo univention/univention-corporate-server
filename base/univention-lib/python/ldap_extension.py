@@ -79,8 +79,7 @@ class BaseDirRestriction(Exception):
     pass
 
 
-def safe_path_join(basedir, filename):
-    # type: (str, str) -> str
+def safe_path_join(basedir: str, filename: str) -> str:
     path = os.path.join(basedir, filename)
     if not os.path.abspath(path).startswith(basedir):
         raise BaseDirRestriction('filename %r invalid, not underneath of %r' % (filename, basedir))
@@ -89,8 +88,7 @@ def safe_path_join(basedir, filename):
     return path
 
 
-def _verify_handler_message_container(lo, position):
-    # type: (udm_uldap.access, udm_uldap.position) -> None
+def _verify_handler_message_container(lo: "udm_uldap.access", position: "udm_uldap.position") -> None:
     position_dn = f'cn=univention,{listener.configRegistry.get("ldap/base")}'
     udm_modules.update()
     cn_module = udm_modules.get('container/cn')
@@ -105,8 +103,7 @@ def _verify_handler_message_container(lo, position):
         cn_object.create()
 
 
-def _get_handler_message_object(lo, position, handler_name, create=False):
-    # type: (udm_uldap.access, udm_uldap.position, str, bool) -> udm_handlers.simpleLdap
+def _get_handler_message_object(lo: "udm_uldap.access", position: "udm_uldap.position", handler_name: str, create: bool=False) -> "udm_handlers.simpleLdap":
     position_dn = f'cn=handler_messages,cn=univention,{listener.configRegistry.get("ldap/base")}'
     udm_modules.update()
     data_module = udm_modules.get('settings/data')
@@ -125,8 +122,7 @@ def _get_handler_message_object(lo, position, handler_name, create=False):
     return data_object
 
 
-def set_handler_message(name, dn, msg):
-    # type: (str, str, str) -> None
+def set_handler_message(name: str, dn: str, msg: str) -> None:
     # currently only on Primary Directory Node
     if listener.configRegistry.get('server/role') in ('domaincontroller_master',):
         ud.debug(ud.LISTENER, ud.INFO, f'set_handler_message for {name}')
@@ -156,8 +152,7 @@ def set_handler_message(name, dn, msg):
                 listener.unsetuid()
 
 
-def get_handler_message(name, binddn, bindpw):
-    # type: (str, str, str) -> dict
+def get_handler_message(name: str, binddn: str, bindpw: str) -> dict:
     msg = {}
     try:
         lo = udm_uldap.access(
@@ -185,34 +180,28 @@ def get_handler_message(name, binddn, bindpw):
 class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
     @abstractproperty
-    def udm_module_name(self):
-        # type: () -> str
+    def udm_module_name(self) -> str:
         pass
 
     @abstractproperty
-    def target_container_name(self):
-        # type: () -> str
+    def target_container_name(self) -> str:
         pass
 
     @abstractproperty
-    def active_flag_attribute(self):
-        # type: () -> str
+    def active_flag_attribute(self) -> str:
         pass
 
     @abstractproperty
-    def filesuffix(self):
-        # type: () -> str
+    def filesuffix(self) -> str:
         pass
 
-    def __init__(self, ucr):
-        # type: (ConfigRegistry) -> None
+    def __init__(self, ucr: "ConfigRegistry") -> None:
         self.ucr = ucr
-        self._todo_list = []  # type: List[str]
+        self._todo_list: "List[str]" = []
         self.target_container_dn = "cn=%s,cn=univention,%s" % (escape_dn_chars(self.target_container_name), ucr["ldap/base"])
 
     @classmethod
-    def create_base_container(cls, ucr, udm_passthrough_options):
-        # type: (ConfigRegistry, List[str]) -> int
+    def create_base_container(cls, ucr: "ConfigRegistry", udm_passthrough_options: "List[str]") -> int:
         cmd = ["univention-directory-manager", "container/cn", "create"] + udm_passthrough_options + [
             "--ignore_exists",
             "--set", "name=%s" % cls.target_container_name,
@@ -220,8 +209,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         ]
         return subprocess.call(cmd)
 
-    def is_local_active(self):
-        # type: () -> Tuple[int, Optional[str]]
+    def is_local_active(self) -> "Tuple[int, Optional[str]]":
         object_dn = None
 
         cmd = ["univention-ldapsearch", "-LLL", "-b", self.object_dn, "-s", "base", filter_format("(&(cn=%s)(%s=TRUE))", (self.objectname, self.active_flag_attribute))]
@@ -244,8 +232,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             return False
         return True  # probably yes
 
-    def wait_for_activation(self, timeout=180):
-        # type: (int) -> bool
+    def wait_for_activation(self, timeout: int=180) -> bool:
         print(f"Waiting for activation of the extension object {self.objectname}:", end=' ')
         t0 = time.time()
         while not self.is_local_active()[1]:
@@ -259,8 +246,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         print("OK")
         return True
 
-    def udm_find_object(self):
-        # type: () -> Tuple[int, str]
+    def udm_find_object(self) -> "Tuple[int, str]":
         cmd = ["univention-directory-manager", self.udm_module_name, "list"] + self.udm_passthrough_options + [
             "--filter", filter_format("name=%s", [self.objectname]),
         ]
@@ -268,8 +254,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         stdout, _ = p.communicate()
         return (p.returncode, stdout.decode('UTF-8', 'replace'))
 
-    def udm_find_object_dn(self):
-        # type: () -> Tuple[int, Optional[str], str]
+    def udm_find_object_dn(self) -> "Tuple[int, Optional[str], str]":
         object_dn = None
 
         rc, stdout = self.udm_find_object()
@@ -298,8 +283,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         stdout = out.decode('UTF-8', 'replace')
         print(stdout)
 
-    def register(self, filename, options, udm_passthrough_options, target_filename=None):
-        # type: (str, Values, List[str], Optional[str]) -> None
+    def register(self, filename: str, options: "Values", udm_passthrough_options: "List[str]", target_filename: "Optional[str]"=None) -> None:
         self.filename = filename
         self.options = options
         self.udm_passthrough_options = udm_passthrough_options
@@ -497,8 +481,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         if not self.object_dn:
             self.object_dn = new_object_dn
 
-    def unregister(self, objectname, options, udm_passthrough_options):
-        # type: (str, Values, List[str]) -> None
+    def unregister(self, objectname: str, options: "Values", udm_passthrough_options: "List[str]") -> None:
         self.objectname = objectname
         self.options = options
         self.udm_passthrough_options = udm_passthrough_options
@@ -536,8 +519,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         stdout = out.decode('UTF-8', 'replace')
         print(stdout)
 
-    def mark_active(self, handler_name=None):
-        # type: (Optional[str]) -> None
+    def mark_active(self, handler_name: "Optional[str]"=None) -> None:
         if self._todo_list:
             try:
                 lo, ldap_position = udm_uldap.getAdminConnection()
@@ -569,8 +551,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
 class UniventionLDAPExtensionWithListenerHandler(six.with_metaclass(ABCMeta, UniventionLDAPExtension)):
 
-    def __init__(self, ucr):
-        # type: (ConfigRegistry) -> None
+    def __init__(self, ucr: "ConfigRegistry") -> None:
         super(UniventionLDAPExtensionWithListenerHandler, self).__init__(ucr)
         self._do_reload = False
         self.ucr_template_dir = '/etc/univention/templates'
@@ -578,8 +559,7 @@ class UniventionLDAPExtensionWithListenerHandler(six.with_metaclass(ABCMeta, Uni
         self.ucr_info_basedir = f'{self.ucr_template_dir}/info'
 
     @abstractmethod
-    def handler(self, dn, new, old, name=""):
-        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
+    def handler(self, dn: str, new: "Dict[str, List[bytes]]", old: "Dict[str, List[bytes]]", name: str="") -> None:
         pass
 
 
@@ -594,15 +574,13 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
         # type (ConfigRegistry) -> bool
         return True
 
-    def handler(self, dn, new, old, name=""):
-        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
+    def handler(self, dn: str, new: "Dict[str, List[bytes]]", old: "Dict[str, List[bytes]]", name: str="") -> None:
         try:
             return self._handler(dn, new, old, name)
         except BaseDirRestriction as exc:
             ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
 
-    def _handler(self, dn, new, old, name=""):
-        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
+    def _handler(self, dn: str, new: "Dict[str, List[bytes]]", old: "Dict[str, List[bytes]]", name: str="") -> None:
         """Handle LDAP schema extensions on Primary and Backup Directory Nodes"""
         if listener.configRegistry.get("server/role") not in ("domaincontroller_master", "domaincontroller_backup"):
             return
@@ -787,15 +765,13 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
     filesuffix = ".acl"
     file_prefix = 'ldapacl_'
 
-    def handler(self, dn, new, old, name=""):
-        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
+    def handler(self, dn: str, new: "Dict[str, List[bytes]]", old: "Dict[str, List[bytes]]", name: str="") -> None:
         try:
             return self._handler(dn, new, old, name)
         except BaseDirRestriction as exc:
             ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
 
-    def _handler(self, dn, new, old, name=""):
-        # type: (str, Dict[str, List[bytes]], Dict[str, List[bytes]], str) -> None
+    def _handler(self, dn: str, new: "Dict[str, List[bytes]]", old: "Dict[str, List[bytes]]", name: str="") -> None:
         """Handle LDAP ACL extensions on Primary, Backup and Replica Directory Nodes"""
         if not listener.configRegistry.get('ldap/server/type'):
             return
@@ -1060,12 +1036,10 @@ class UniventionDataExtension(UniventionLDAPExtension):
     active_flag_attribute = ''
     filesuffix = ''
 
-    def is_local_active(self):
-        # type: () -> Tuple[int, Optional[str]]
+    def is_local_active(self) -> "Tuple[int, Optional[str]]":
         return (0, None)
 
-    def wait_for_activation(self, timeout=180):
-        # type: (int) -> bool
+    def wait_for_activation(self, timeout: int=180) -> bool:
         return True
 
 
@@ -1074,13 +1048,11 @@ class UniventionUDMExtension(six.with_metaclass(ABCMeta, UniventionLDAPExtension
     target_subdir = ''
 
     @property
-    def target_filepath(self):
-        # type: () -> str
+    def target_filepath(self) -> str:
         """return the most likely path where the listener will write the file to"""
         return os.path.abspath(os.path.join(os.path.dirname(udm.__file__), self.target_subdir, self.target_filename.replace('/', '')))
 
-    def wait_for_activation(self, timeout=180):
-        # type: (int) -> bool
+    def wait_for_activation(self, timeout: int=180) -> bool:
         if not super(UniventionUDMExtension, self).wait_for_activation(timeout):
             return False
 
@@ -1109,14 +1081,12 @@ class UniventionUDMModule(UniventionUDMExtension):
     target_subdir = 'handlers'
 
     @property
-    def target_filepath(self):
-        # type: () -> str
+    def target_filepath(self) -> str:
         """return the most likely path where the listener will write the file to"""
         module_dir, module_name = self.target_udm_module.split('/', 1)
         return os.path.abspath(os.path.join(os.path.dirname(udm.__file__), self.target_subdir, module_dir, f'{module_name.replace("/", "")}.py'))
 
-    def register(self, filename, options, udm_passthrough_options, target_filename=None):
-        # type: (str, Values, List[str], Optional[str]) -> None
+    def register(self, filename: str, options: "Values", udm_passthrough_options: "List[str]", target_filename: "Optional[str]"=None) -> None:
         # Determine UDM module name
         saved_value = sys.dont_write_bytecode
         sys.dont_write_bytecode = True
@@ -1138,8 +1108,7 @@ class UniventionUDMModule(UniventionUDMExtension):
 
         UniventionUDMExtension.register(self, filename, options, udm_passthrough_options, target_filename=module_name + ".py")
 
-    def wait_for_activation(self, timeout=180):
-        # type: (int) -> bool
+    def wait_for_activation(self, timeout: int=180) -> bool:
         if not super(UniventionUDMModule, self).wait_for_activation(timeout):
             return False
 
@@ -1174,23 +1143,20 @@ class UniventionUDMHook(UniventionUDMExtension):
     target_subdir = 'hooks.d'
 
 
-def option_validate_existing_filename(option, opt, value):
-    # type: (Option, str, str) -> str
+def option_validate_existing_filename(option: "Option", opt: str, value: str) -> str:
     if not os.path.exists(value):
         raise OptionValueError(f"{opt}: file does not exist: {value}")
     return value
 
 
-def option_validate_ucs_version(option, opt, value):
-    # type: (Option, str, str) -> str
+def option_validate_ucs_version(option: "Option", opt: str, value: str) -> str:
     regex = re.compile("[-.0-9]+")
     if not regex.match(value):
         raise OptionValueError(f"{opt}: may only contain digit, dot and dash characters: {value}")
     return value
 
 
-def option_validate_gnu_message_catalogfile(option, opt, value):
-    # type: (Option, str, str) -> str
+def option_validate_gnu_message_catalogfile(option: "Option", opt: str, value: str) -> str:
     if not os.path.exists(value):
         raise OptionValueError(f"{opt}: file does not exist: {value}")
     filename_parts = os.path.splitext(value)
@@ -1211,8 +1177,7 @@ class UCSOption(Option):
     TYPE_CHECKER["gnu_message_catalogfile"] = option_validate_gnu_message_catalogfile
 
 
-def option_callback_udm_passthrough_options(option, opt_str, value, parser, *args):
-    # type: (Option, str, str, OptionParser, *List[str]) -> None
+def option_callback_udm_passthrough_options(option: "Option", opt_str: str, value: str, parser: "OptionParser", *args: "List[str]") -> None:
     assert parser.values is not None
     assert option.dest is not None
     if value.startswith('--'):
@@ -1223,8 +1188,7 @@ def option_callback_udm_passthrough_options(option, opt_str, value, parser, *arg
     setattr(parser.values, option.dest, value)
 
 
-def check_data_module_options(option, opt_str, value, parser):
-    # type: (Option, str, str, OptionParser) -> None
+def check_data_module_options(option: "Option", opt_str: str, value: str, parser: "OptionParser") -> None:
     assert parser.values is not None
     if value.startswith('--'):
         raise OptionValueError(f"{opt_str} requires an argument")
@@ -1232,24 +1196,21 @@ def check_data_module_options(option, opt_str, value, parser):
         raise OptionValueError(f"{opt_str} can only be used after --data")
 
 
-def option_callback_set_data_module_options(option, opt_str, value, parser):
-    # type: (Option, str, str, OptionParser) -> None
+def option_callback_set_data_module_options(option: "Option", opt_str: str, value: str, parser: "OptionParser") -> None:
     assert parser.values is not None
     assert option.dest is not None
     check_data_module_options(option, opt_str, value, parser)
     setattr(parser.values, option.dest, value)
 
 
-def option_callback_append_data_module_options(option, opt_str, value, parser):
-    # type: (Option, str, str, OptionParser) -> None
+def option_callback_append_data_module_options(option: "Option", opt_str: str, value: str, parser: "OptionParser") -> None:
     assert parser.values is not None
     assert option.dest is not None
     check_data_module_options(option, opt_str, value, parser)
     parser.values.ensure_value(option.dest, []).append(value)
 
 
-def check_udm_module_options(option, opt_str, value, parser):
-    # type: (Option, str, str, OptionParser) -> None
+def check_udm_module_options(option: "Option", opt_str: str, value: str, parser: "OptionParser") -> None:
     assert parser.values is not None
     if value.startswith('--'):
         raise OptionValueError(f"{opt_str} requires an argument")
@@ -1257,24 +1218,21 @@ def check_udm_module_options(option, opt_str, value, parser):
         raise OptionValueError(f"{opt_str} can only be used after --udm_module")
 
 
-def option_callback_set_udm_module_options(option, opt_str, value, parser):
-    # type: (Option, str, str, OptionParser) -> None
+def option_callback_set_udm_module_options(option: "Option", opt_str: str, value: str, parser: "OptionParser") -> None:
     assert parser.values is not None
     assert option.dest is not None
     check_udm_module_options(option, opt_str, value, parser)
     setattr(parser.values, option.dest, value)
 
 
-def option_callback_append_udm_module_options(option, opt_str, value, parser):
-    # type: (Option, str, str, OptionParser) -> None
+def option_callback_append_udm_module_options(option: "Option", opt_str: str, value: str, parser: "OptionParser") -> None:
     assert parser.values is not None
     assert option.dest is not None
     check_udm_module_options(option, opt_str, value, parser)
     parser.values.ensure_value(option.dest, []).append(value)
 
 
-def check_udm_syntax_options(option, opt_str, value, parser):
-    # type: (Option, str, str, OptionParser) -> None
+def check_udm_syntax_options(option: "Option", opt_str: str, value: str, parser: "OptionParser") -> None:
     assert parser.values is not None
     if value.startswith('--'):
         raise OptionValueError(f"{opt_str} requires an argument")
@@ -1282,16 +1240,14 @@ def check_udm_syntax_options(option, opt_str, value, parser):
         raise OptionValueError(f"{opt_str} can only be used after --udm_syntax")
 
 
-def option_callback_append_udm_syntax_options(option, opt_str, value, parser):
-    # type: (Option, str, str, OptionParser) -> None
+def option_callback_append_udm_syntax_options(option: "Option", opt_str: str, value: str, parser: "OptionParser") -> None:
     assert parser.values is not None
     assert option.dest is not None
     check_udm_syntax_options(option, opt_str, value, parser)
     parser.values.ensure_value(option.dest, []).append(value)
 
 
-def check_udm_hook_options(option, opt_str, value, parser):
-    # type: (Option, str, str, OptionParser) -> None
+def check_udm_hook_options(option: "Option", opt_str: str, value: str, parser: "OptionParser") -> None:
     assert parser.values is not None
     if value.startswith('--'):
         raise OptionValueError(f"{opt_str} requires an argument")
@@ -1299,16 +1255,14 @@ def check_udm_hook_options(option, opt_str, value, parser):
         raise OptionValueError(f"{opt_str} can only be used after --udm_hook")
 
 
-def option_callback_append_udm_hook_options(option, opt_str, value, parser):
-    # type: (Option, str, str, OptionParser) -> None
+def option_callback_append_udm_hook_options(option: "Option", opt_str: str, value: str, parser: "OptionParser") -> None:
     assert parser.values is not None
     assert option.dest is not None
     check_udm_hook_options(option, opt_str, value, parser)
     parser.values.ensure_value(option.dest, []).append(value)
 
 
-def ucs_registerLDAPExtension():
-    # type: () -> None
+def ucs_registerLDAPExtension() -> None:
     functionname = inspect.stack()[0][3]
     parser = OptionParser(prog=functionname, option_class=UCSOption)
 
@@ -1421,7 +1375,7 @@ def ucs_registerLDAPExtension():
 
     # parser.add_option("-v", "--verbose", action="count")
 
-    udm_passthrough_options = []  # type: List[str]
+    udm_passthrough_options: "List[str]" = []
     auth_options = OptionGroup(parser, "Authentication Options", "These options are usually passed e.g. from a calling joinscript")
     auth_options.add_option(
         "--binddn", dest="binddn", type="string",
@@ -1455,7 +1409,7 @@ def ucs_registerLDAPExtension():
     ucr = ConfigRegistry()
     ucr.load()
 
-    objects = []  # type: List[UniventionLDAPExtension]
+    objects: "List[UniventionLDAPExtension]" = []
     if opts.schemafile:
         if UniventionLDAPSchema.create_base_container(ucr, udm_passthrough_options) != 0:
             sys.exit(1)
@@ -1523,8 +1477,7 @@ def ucs_registerLDAPExtension():
         p.wait()
 
 
-def ucs_unregisterLDAPExtension():
-    # type: () -> None
+def ucs_unregisterLDAPExtension() -> None:
     functionname = inspect.stack()[0][3]
     parser = OptionParser(prog=functionname, option_class=UCSOption)
 
@@ -1560,7 +1513,7 @@ def ucs_unregisterLDAPExtension():
 
     # parser.add_option("-v", "--verbose", action="count")
 
-    udm_passthrough_options = []  # type: List[str]
+    udm_passthrough_options: "List[str]" = []
     auth_options = OptionGroup(parser, "Authentication Options", "These options are usually passed e.g. from a calling joinscript")
     auth_options.add_option(
         "--binddn", dest="binddn", type="string",

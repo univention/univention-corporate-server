@@ -62,8 +62,7 @@ class TeeFile(object):
     with the print statement
     """
 
-    def __init__(self, fds=[]):
-        # type: (List[IO[str]]) -> None
+    def __init__(self, fds: "List[IO[str]]"=[]) -> None:
         """
         Register multiple file descriptors, to which the data is written.
 
@@ -72,8 +71,7 @@ class TeeFile(object):
         """
         self._fds = fds or [sys.stdout]
 
-    def write(self, data):
-        # type: (str) -> None
+    def write(self, data: str) -> None:
         """
         Write string to all registered files.
 
@@ -84,8 +82,7 @@ class TeeFile(object):
             fd.flush()
 
 
-def gzip_file(filename):
-    # type: (str) -> int
+def gzip_file(filename: str) -> int:
     """
     Compress file.
 
@@ -96,8 +93,7 @@ def gzip_file(filename):
     return subprocess.call(('gzip', '--keep', '--force', '--no-name', '-9', filename))
 
 
-def copy_package_files(source_dir, dest_dir):
-    # type: (str, str) -> None
+def copy_package_files(source_dir: str, dest_dir: str) -> None:
     """
     Copy all Debian binary package files and signed updater scripts from `source_dir` to `dest_dir`.
 
@@ -129,7 +125,7 @@ def copy_package_files(source_dir, dest_dir):
             print(f"Copying '{src}' failed: {ex}", file=sys.stderr)
 
 
-def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
+def gen_indexes(base: str, version: "UCS_Version") -> None:
     """
     Re-generate Debian :file:`Packages` files from file:`dists/` file.
 
@@ -172,8 +168,7 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
     print('done')
 
 
-def get_repo_basedir(packages_dir):
-    # type: (str) -> str
+def get_repo_basedir(packages_dir: str) -> str:
     """
     Check if a file path is a UCS package repository.
 
@@ -193,8 +188,7 @@ def get_repo_basedir(packages_dir):
     sys.exit(1)
 
 
-def assert_local_repository(out=sys.stderr):
-    # type: (IO[str]) -> None
+def assert_local_repository(out: "IO[str]"=sys.stderr) -> None:
     """
     Exit with error if the local repository is not enabled.
 

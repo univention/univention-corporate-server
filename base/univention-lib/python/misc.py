@@ -39,8 +39,7 @@ from typing import Optional  # noqa: F401
 from univention.config_registry import ConfigRegistry
 
 
-def createMachinePassword():
-    # type: () -> str
+def createMachinePassword() -> str:
     """
     Returns a $(pwgen) generated password according to the
     requirements in |UCR| variables
@@ -60,8 +59,7 @@ def createMachinePassword():
     return stdout.strip()
 
 
-def getLDAPURIs(ucr=None):
-    # type: (Optional[ConfigRegistry]) -> str
+def getLDAPURIs(ucr: "Optional[ConfigRegistry]"=None) -> str:
     """
     Returns a space separated list of all configured |LDAP| servers, according to |UCR| variables
     `ldap/server/name` and `ldap/server/addition`.
@@ -91,8 +89,7 @@ def getLDAPURIs(ucr=None):
     return uri_string
 
 
-def getLDAPServersCommaList(ucr=None):
-    # type: (Optional[ConfigRegistry]) -> str
+def getLDAPServersCommaList(ucr: "Optional[ConfigRegistry]"=None) -> str:
     """
     Returns a comma-separated string with all configured |LDAP| servers,
     `ldap/server/name` and `ldap/server/addition`.
@@ -120,8 +117,7 @@ def getLDAPServersCommaList(ucr=None):
     return ldap_servers
 
 
-def custom_username(name, ucr=None):
-    # type: (str, Optional[ConfigRegistry]) -> str
+def custom_username(name: str, ucr: "Optional[ConfigRegistry]"=None) -> str:
     """
     Returns the customized user name configured via |UCR| `users/default/*`.
 
@@ -141,8 +137,7 @@ def custom_username(name, ucr=None):
     return ucr.get("users/default/" + name.lower().replace(" ", ""), name)
 
 
-def custom_groupname(name, ucr=None):
-    # type: (str, Optional[ConfigRegistry]) -> str
+def custom_groupname(name: str, ucr: "Optional[ConfigRegistry]"=None) -> str:
     """
     Returns the customized group name configured via |UCR| `groups/default/*`.
 

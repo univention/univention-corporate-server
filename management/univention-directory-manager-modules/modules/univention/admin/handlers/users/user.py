@@ -1034,7 +1034,7 @@ def unmapWindowsFiletime(old, encoding=()):  # type: (List[bytes]) -> str
     return u''
 
 
-def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple):  # type: (List[str]) -> datetime.datetime
+def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple: "List[str]") -> "datetime.datetime":
     d, t, tz = local_datetimetimezone_tuple
     # dttz_str = module.property_descriptions[key].syntax.tostring(local_datetimetimezone_tuple)
     native_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")

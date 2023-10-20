@@ -10,7 +10,7 @@ import tempfile
 from univention.testing import utils
 
 
-def check_file(basename, snippet):  # type: (str, str) -> None
+def check_file(basename: str, snippet: str) -> None:
     fn_base = basename
     fn_base_local = f'{basename}.local'
     fn_moved_local = None
@@ -45,7 +45,7 @@ def check_file(basename, snippet):  # type: (str, str) -> None
         subprocess.call(['ucr', 'commit', fn_base])
 
 
-def main():  # type: () -> None
+def main() -> None:
     snippet = '''smtp_tls_loglevel = 0
 # MY FUNNY TEST COMMENT
 smtpd_tls_loglevel = 0

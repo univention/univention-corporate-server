@@ -50,8 +50,7 @@ class UcsRepoUrl(object):
 
     DEFAULT = 'https://updates.software-univention.de/'
 
-    def __init__(self, ucr, prefix, default=None):
-        # type: (ConfigRegistry, str, Union[None, str, UcsRepoUrl]) -> None
+    def __init__(self, ucr: "ConfigRegistry", prefix: str, default: "Union[None, str, UcsRepoUrl]"=None) -> None:
         """
         >>> UcsRepoUrl({'_/server': 'hostname'}, '_').path
         ''
@@ -68,8 +67,7 @@ class UcsRepoUrl(object):
         >>> UcsRepoUrl({}, '').private() == UcsRepoUrl.DEFAULT
         True
         """
-        def ucrv(key, default=None):
-            # type: (str, _T) -> _T
+        def ucrv(key: str, default: "_T"=None) -> "_T":
             return ucr.get(f'{prefix}/{key}', default)
 
         server = ucrv('server', '')
@@ -111,28 +109,24 @@ class UcsRepoUrl(object):
             self.path = ''
 
     @property
-    def cred(self):
-        # type: () -> str
+    def cred(self) -> str:
         if self.username:
             # FIXME http://bugs.debian.org/500560: [@:/] don't work
             return f'{quote(self.username)}:{quote(self.password or "")}@'
         return ''
 
     @property
-    def _port(self):
-        # type: () -> str
+    def _port(self) -> str:
         return ':%d' % (self.port) if (self.scheme, self.port) not in (
             ('http', 80),
             ('https', 443),
         ) else ''
 
     @property
-    def _path(self):
-        # type: () -> str
+    def _path(self) -> str:
         return quote(f'/{self.path.lstrip("/")}')
 
-    def public(self):
-        # type: () -> str
+    def public(self) -> str:
         """
         URI without credentials.
 
@@ -147,8 +141,7 @@ class UcsRepoUrl(object):
         """
         return f'{self.scheme}://{self.hostname}{self._port}{self._path}'
 
-    def private(self):
-        # type: () -> str
+    def private(self) -> str:
         """
         URI with credentials.
 
@@ -163,8 +156,7 @@ class UcsRepoUrl(object):
         """
         return f'{self.scheme}://{self.cred}{self.hostname}{self._port}{self._path}'
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         """
         >>> repr(UcsRepoUrl({'_/server': 'hostname'}, '_'))
         "UcsRepoUrl({}, '', 'http://hostname/')"
@@ -176,8 +168,7 @@ class UcsRepoUrl(object):
             self.private(),
         )
 
-    def __eq__(self, other):
-        # type: (object) -> bool
+    def __eq__(self, other: object) -> bool:
         """
         >>> UcsRepoUrl({}, '') == UcsRepoUrl({}, '')
         True
@@ -186,8 +177,7 @@ class UcsRepoUrl(object):
         """
         return isinstance(other, UcsRepoUrl) and self.private() == other.private()
 
-    def __add__(self, rel):
-        # type: (str) -> UcsRepoUrl
+    def __add__(self, rel: str) -> "UcsRepoUrl":
         """
         Append relative path component.
 

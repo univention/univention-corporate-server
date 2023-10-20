@@ -37,8 +37,8 @@ ALLOWED_DIFFERENCES = [
     '/etc/univention/templates/files/usr/share/univention-management-console/i18n/de/apps.mo',  # po-lib adds date
     '/etc/univention/templates/files/etc/mysql/mariadb.conf.d/60-ucr.cnf',  # not really different, but difference due to dict iteration
 ] + glob.glob('/etc/univention/templates/files/etc/security/*.conf')
-IGNORE = {
-}  # type: Dict[str, Set[int]]
+IGNORE: "Dict[str, Set[int]]" = {
+}
 
 SCRIPT = r'''#!/bin/sh
 cat >{1[tmp]}

@@ -58,25 +58,25 @@ _Types = Union[Type[object], Sequence[Type[object]]]
 
 
 class TypeHint(object):
-    _python_types = object  # type: _Types
+    _python_types: "_Types" = object
 
     @property
     def _json_type(self):
         # in most cases, the Python type is equivalent to the JSON type
         return self._python_types
 
-    _openapi_type = None  # type: Optional[str]
-    _openapi_format = None  # type: Optional[str]
-    _openapi_regex = None  # type: Optional[str]
-    _openapi_example = None  # type: Optional[str]
-    _openapi_readonly = None  # type: Optional[bool]
-    _openapi_writeonly = None  # type: Optional[bool]
+    _openapi_type: "Optional[str]" = None
+    _openapi_format: "Optional[str]" = None
+    _openapi_regex: "Optional[str]" = None
+    _openapi_example: "Optional[str]" = None
+    _openapi_readonly: "Optional[bool]" = None
+    _openapi_writeonly: "Optional[bool]" = None
     _openapi_nullable = True  # everything which can be removed is nullable
 
     _html_element = None
     _html_input_type = None
 
-    _encoding = None  # type: Optional[str]
+    _encoding: "Optional[str]" = None
     _minimum = float('-inf')
     _maximum = float('inf')
 
@@ -289,7 +289,7 @@ class NoneType(TypeHint):
 
 
 class BooleanType(TypeHint):
-    _python_types = bool  # type: _Types
+    _python_types: "_Types" = bool
     _openapi_type = 'boolean'
 
     def decode_value(self, value):
@@ -332,7 +332,7 @@ class NumberType(TypeHint):
 
 
 class StringType(TypeHint):
-    _python_types = unicode  # type: _Types
+    _python_types: "_Types" = unicode
     _encoding = 'UTF-8'
     _openapi_type = 'string'
 
@@ -422,10 +422,10 @@ class DateType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value):  # type: (datetime.date) -> unicode
+    def _to_json_type(self, value: "datetime.date") -> "unicode":
         return unicode(value.isoformat())
 
-    def _from_json_type(self, value):  # type: (unicode) -> datetime.date
+    def _from_json_type(self, value: "unicode") -> "datetime.date":
         try:
             return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
         except ValueError:
@@ -454,10 +454,10 @@ class TimeType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value):  # type: (datetime.time) -> unicode
+    def _to_json_type(self, value: "datetime.time") -> "unicode":
         return unicode(value.replace(microsecond=0).isoformat())
 
-    def _from_json_type(self, value):  # type: (unicode) -> datetime.time
+    def _from_json_type(self, value: "unicode") -> "datetime.time":
         try:
             return datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
         except ValueError:
@@ -489,10 +489,10 @@ class DateTimeType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value):  # type: (datetime.datetime) -> unicode
+    def _to_json_type(self, value: "datetime.datetime") -> "unicode":
         return u' '.join((value.date().isoformat(), value.time().replace(microsecond=0).isoformat()))
 
-    def _from_json_type(self, value):  # type: (unicode) -> datetime.datetime
+    def _from_json_type(self, value: "unicode") -> "datetime.datetime":
         try:
             return datetime.datetime(*time.strptime(value, '%Y-%m-%dT%H:%M:%S')[:6])  # FIXME: parse Z at the end
         except ValueError:
@@ -507,7 +507,7 @@ class ArrayType(TypeHint):
 
 
 class ListType(ArrayType):
-    item_type = None  # type: Optional[Type[TypeHint]] # must be set in subclasses
+    item_type: "Optional[Type[TypeHint]]" = None  # must be set in subclasses
 
     def type_check_subitems(self, value):
         item_type = self.item_type(self.property, self.property_name)
@@ -630,8 +630,8 @@ class DictionaryType(TypeHint):
 
 
 class KeyValueDictionaryType(DictionaryType):
-    key_type = None  # type: Optional[_Types]
-    value_type = None  # type: Optional[_Types]
+    key_type: "Optional[_Types]" = None
+    value_type: "Optional[_Types]" = None
 
     def openapi_definition(self):
         definition = super(DictionaryType, self).openapi_definition()

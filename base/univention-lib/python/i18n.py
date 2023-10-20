@@ -67,21 +67,18 @@ class Locale(object):
         r'(?:@(?P<modifier>.+))?'
         r'$')
 
-    def __init__(self, locale=None):
-        # type: (Optional[str]) -> None
+    def __init__(self, locale: "Optional[str]"=None) -> None:
         self.__reset()
         if locale is not None:
             self.parse(locale)
 
-    def __reset(self):
-        # type: () -> None
+    def __reset(self) -> None:
         self.language = ""
         self.territory = ""
         self.codeset = ""
         self.modifier = ""
 
-    def parse(self, locale):
-        # type: (str) -> None
+    def parse(self, locale: str) -> None:
         """
         Parse locale string.
 
@@ -102,13 +99,11 @@ class Locale(object):
                 continue
             setattr(self, key, value)
 
-    def __bool__(self):
-        # type: () -> bool
+    def __bool__(self) -> bool:
         return bool(self.language)
     __nonzero__ = __bool__
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         text = self.language or ''
         if self.language not in ('C', 'POSIX') and self.territory:
             text += f'_{self.territory}'
@@ -128,18 +123,16 @@ class NullTranslation(object):
     :param str localedir: The name of the directory containing the translation files.
     """
 
-    def __init__(self, namespace, locale_spec=None, localedir=None):
-        # type: (str, Optional[str], Optional[str]) -> None
+    def __init__(self, namespace: str, locale_spec: "Optional[str]"=None, localedir: "Optional[str]"=None) -> None:
         self._set_domain(namespace)
-        self._translation = None  # type: Optional[gettext.NullTranslations]
-        self._localedir = localedir  # type: Optional[str]
-        self._localespec = None  # type: Optional[Locale]
-        self._locale = locale_spec  # type: Optional[str]
+        self._translation: "Optional[gettext.NullTranslations]" = None
+        self._localedir: "Optional[str]" = localedir
+        self._localespec: "Optional[Locale]" = None
+        self._locale: "Optional[str]" = locale_spec
         if not self._locale:
             self.set_language()
 
-    def _set_domain(self, namespace):
-        # type: (str) -> None
+    def _set_domain(self, namespace: str) -> None:
         """
         Select translation domain.
 
@@ -152,16 +145,14 @@ class NullTranslation(object):
 
     domain = property(fset=_set_domain)
 
-    def set_language(self, language=""):
-        # type: (str) -> None
+    def set_language(self, language: str="") -> None:
         """
         Select language.
 
         :param str language: The language code.
         """
 
-    def _get_locale(self):
-        # type: () -> Optional[Locale]
+    def _get_locale(self) -> "Optional[Locale]":
         """
         Return currently selected locale.
 
@@ -170,8 +161,7 @@ class NullTranslation(object):
         """
         return self._localespec
 
-    def _set_locale(self, locale_spec=None):
-        # type: (Optional[str]) -> None
+    def _set_locale(self, locale_spec: "Optional[str]"=None) -> None:
         """
         Select new locale.
 
@@ -183,8 +173,7 @@ class NullTranslation(object):
 
     locale = property(fget=_get_locale, fset=_set_locale)
 
-    def translate(self, message):
-        # type: (str) -> str
+    def translate(self, message: str) -> str:
         """
         Translate message.
 
@@ -205,11 +194,10 @@ class NullTranslation(object):
 class Translation(NullTranslation):
     """Translation."""
 
-    _instances = []  # type: List[weakref.ReferenceType[Translation]]
-    locale = Locale()  # type: Locale # type: ignore
+    _instances: "List[weakref.ReferenceType[Translation]]" = []
+    locale: "Locale" = Locale()  # type: ignore
 
-    def set_language(self, language=""):
-        # type: (str) -> None
+    def set_language(self, language: str="") -> None:
         """
         Select language.
 
@@ -244,8 +232,7 @@ class Translation(NullTranslation):
         return self
 
     @classmethod
-    def set_all_languages(cls, language):
-        # type: (str) -> None
+    def set_all_languages(cls, language: str) -> None:
         """
         Set the language of all existing :class:`Translation` instances.
         This is required when instances are created during import time but later on the language should be changed.

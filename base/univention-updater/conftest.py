@@ -102,7 +102,7 @@ def http(mocker):
 class MockPopen(object):
     """Mockup for :py:class:`subprocess.Popen`."""
 
-    mock_commands = []  # type: List[Sequence[str]]
+    mock_commands: "List[Sequence[str]]" = []
     mock_stdout = b''
     mock_stderr = b''
 
@@ -166,14 +166,12 @@ def mockpopen(monkeypatch):
 class MockFileManager(object):
     """Mockup for :py:func:`open()`"""
 
-    def __init__(self, tmpdir):
-        # type: (Any) -> None
+    def __init__(self, tmpdir: "Any") -> None:
         self.files = {}  # type: Dict[str, Union[StringIO, BytesIO, Exception]]
         self._open = builtins.open
         self._tmpdir = tmpdir
 
-    def open(self, name, mode='r', buffering=-1, **options):
-        # type: (str, str, int, **Any) -> IO
+    def open(self, name: str, mode: str='r', buffering: int=-1, **options: "Any") -> "IO":
         name = abspath(name)
         buf = self.files.get(name)
 
@@ -204,22 +202,19 @@ class MockFileManager(object):
 
         return TextIOWrapper(buf, "utf-8") if isinstance(buf, BytesIO) and not binary else buf
 
-    def _new(self, name, data=b""):
-        # type: (str, Union[bytes, str]) -> Union[StringIO, BytesIO]
+    def _new(self, name: str, data: "Union[bytes, str]"=b"") -> "Union[StringIO, BytesIO]":
         buf = BytesIO(data) if isinstance(data, bytes) else StringIO(data)  # type: Union[StringIO, BytesIO]
         buf.name = name
         buf.close = lambda: None
         buf.fileno = lambda: -1
         return buf
 
-    def write(self, name, text):
-        # type: (str, bytes) -> None
+    def write(self, name: str, text: bytes) -> None:
         name = abspath(name)
         buf = self._new(name, text)
         self.files[name] = buf
 
-    def read(self, name):
-        # type: (str) -> bytes
+    def read(self, name: str) -> bytes:
         name = abspath(name)
         if name not in self.files:
             raise FileNotFoundError(2, f"No such file or directory: '{name}'")
@@ -229,8 +224,7 @@ class MockFileManager(object):
         val = buf.getvalue()
         return val if isinstance(val, bytes) else val.encode("utf-8")
 
-    def __setitem__(self, name, ex):
-        # type: (str, Exception) -> None
+    def __setitem__(self, name: str, ex: Exception) -> None:
         name = abspath(name)
         self.files[name] = ex
 

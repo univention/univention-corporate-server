@@ -149,13 +149,13 @@ class VMware(TargetFile):
         machine_uuid = uuid.uuid4()
         image_uuid = uuid.uuid4()
         vmdk = Vmdk(image)
-        files = [
+        files: "List[Tuple[str, Union[File, bytes]]]" = [
             (f'{options.product}/', b""),
             (f'{options.product}/{options.product}.vmdk', vmdk),
             (f'{options.product}/{options.product}.vmxf', create_vmxf(machine_uuid, options.product)),
             (f'{options.product}/{options.product}.vmx', create_vmx(options.product, image_uuid, options)),
             (f'{options.product}/{options.product}.vmsd', b""),
-        ]  # type: List[Tuple[str, Union[File, bytes]]]
+        ]
         pkzip = Pkzip(files)
         pkzip.path().rename(archive_name)
         log.info('Generated "%s" appliance as\n  %s', self, archive_name)

@@ -88,14 +88,14 @@ _ = translation.translate
 
 # global caching variable
 if configRegistry.is_true('directory/manager/samba3/legacy', False):
-    s4connector_present = False  # type: Optional[bool]
+    s4connector_present: "Optional[bool]" = False
 elif configRegistry.is_false('directory/manager/samba3/legacy', False):
     s4connector_present = True
 else:
     s4connector_present = None
 
 
-def disable_ad_restrictions(disable=True):  # type: (bool) -> None
+def disable_ad_restrictions(disable: bool=True) -> None:
     global _prevent_to_change_ad_properties
     _prevent_to_change_ad_properties = disable
 
@@ -161,37 +161,37 @@ class simpleLdap(object):
     module = ''  # the name of the module
     use_performant_ldap_search_filter = False
 
-    def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):  # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, str, simpleLdap, _Attributes) -> None
+    def __init__(self, co: None, lo: "univention.admin.uldap.access", position: "univention.admin.uldap.position", dn: str=u'', superordinate: "simpleLdap"=None, attributes: "_Attributes"=None) -> None:
         self._exists = False
         self.co = None
         if isinstance(lo, univention.admin.uldap.access):
-            self.lo = lo  # type: univention.admin.uldap.access
+            self.lo: "univention.admin.uldap.access" = lo
         elif isinstance(lo, univention.uldap.access):
             ud.debug(ud.ADMIN, ud.ERROR, 'using univention.uldap.access instance is deprecated. Use univention.admin.uldap.access instead.')
             self.lo = univention.admin.uldap.access(lo=lo)
         else:
             raise TypeError('lo must be instance of univention.admin.uldap.access.')
 
-        self.dn = dn.decode('utf-8') if isinstance(dn, bytes) else dn  # type: Optional[str]
-        self.old_dn = self.dn  # type: Optional[str]
-        self.superordinate = superordinate  # type: Optional[univention.admin.handlers.simpleLdap]
+        self.dn: "Optional[str]" = dn.decode('utf-8') if isinstance(dn, bytes) else dn
+        self.old_dn: "Optional[str]" = self.dn
+        self.superordinate: "Optional[univention.admin.handlers.simpleLdap]" = superordinate
 
         self.set_defaults = not self.dn  # this object is newly created and so we can use the default values
 
-        self.position = position or univention.admin.uldap.position(lo.base)  # type: univention.admin.uldap.position
+        self.position: "univention.admin.uldap.position" = position or univention.admin.uldap.position(lo.base)
         if not position and self.dn:
             self.position.setDn(self.dn)
-        self.info = {}  # type: _Properties
-        self.oldinfo = {}  # type: _Properties
-        self.policies = []  # type: List[str]
-        self.oldpolicies = []  # type: List[str]
-        self.policyObjects = {}  # type: Dict[str, simplePolicy]
-        self.__no_default = []  # type: List[str]
+        self.info: "_Properties" = {}
+        self.oldinfo: "_Properties" = {}
+        self.policies: "List[str]" = []
+        self.oldpolicies: "List[str]" = []
+        self.policyObjects: "Dict[str, simplePolicy]" = {}
+        self.__no_default: "List[str]" = []
 
         self._open = False
-        self.options = []  # type: List[str]
-        self.old_options = []  # type: List[str]
-        self.alloc = []  # type: List[Union[Tuple[str, str], Tuple[str, str, bool]]] # name,value,updateLastUsedValue
+        self.options: "List[str]" = []
+        self.old_options: "List[str]" = []
+        self.alloc: "List[Union[Tuple[str, str], Tuple[str, str, bool]]]" = []  # name,value,updateLastUsedValue
 
         # s4connector_present is a global caching variable than can be
         # None ==> ldap has not been checked for servers with service "S4 Connector"
@@ -212,7 +212,7 @@ class simpleLdap(object):
         if not hasattr(self, 'mapping'):
             self.mapping = getattr(m, 'mapping', None)
 
-        self.oldattr = {}  # type: _Attributes
+        self.oldattr: "_Attributes" = {}
         if attributes:
             self.oldattr = attributes
         elif self.dn:
@@ -238,16 +238,16 @@ class simpleLdap(object):
         self._validate_superordinate(False)
 
     @property
-    def descriptions(self):  # type: () -> Dict[str, univention.admin.property]
+    def descriptions(self) -> "Dict[str, univention.admin.property]":
         return univention.admin.modules.get(self.module).property_descriptions
 
     @property
-    def entry_uuid(self):  # type: () -> Optional[str]
+    def entry_uuid(self) -> "Optional[str]":
         """The entry UUID of the object (if object exists)"""
         if 'entryUUID' in self.oldattr:
             return self.oldattr['entryUUID'][0].decode('ASCII')
 
-    def save(self):  # type: () -> None
+    def save(self) -> None:
         """
         Saves the current internal object state as old state for later comparison when e.g. modifying this object.
 
@@ -263,17 +263,17 @@ class simpleLdap(object):
         if self.exists():
             self.old_options = copy.deepcopy(self.options)
 
-    def diff(self):  # type: () -> List[Tuple[str, Any, Any]]
+    def diff(self) -> "List[Tuple[str, Any, Any]]":
         """
         Returns the difference between old and current state as a UDM modlist.
 
         :returns: A list of 3-tuples (udm-property-name, old-property-value, new-property-values).
         :rtype: list
         """
-        changes = []  # type: List[Tuple[str, Any, Any]]
+        changes: "List[Tuple[str, Any, Any]]" = []
 
         for key, prop in self.descriptions.items():
-            null = [] if prop.multivalue else None  # type: Union[List, None]
+            null: "Union[List, None]" = [] if prop.multivalue else None
             # remove properties which are disabled by options
             if prop.options and not set(prop.options) & set(self.options):
                 if self.oldinfo.get(key, null) not in (null, None):
@@ -285,7 +285,7 @@ class simpleLdap(object):
 
         return changes
 
-    def hasChanged(self, key):  # type: (Union[str, List[str], Tuple[str]]) -> bool
+    def hasChanged(self, key: "Union[str, List[str], Tuple[str]]") -> bool:
         """
         Checks if the given attribute(s) was (were) changed.
 
@@ -302,7 +302,7 @@ class simpleLdap(object):
 
         return not univention.admin.mapping.mapCmp(self.mapping, key, self.oldinfo.get(key, ''), self.info.get(key, ''))
 
-    def ready(self):  # type: () -> bool
+    def ready(self) -> bool:
         """
         Makes sure all preconditions are met before creating or modifying this object.
 
@@ -334,7 +334,7 @@ class simpleLdap(object):
         return True
 
     if six.PY2:
-        def has_key(self, key):  # type: (str) -> bool
+        def has_key(self, key: str) -> bool:
             """
             Checks if the property exists in this module and if it is enabled in the set UDM options.
 
@@ -347,7 +347,7 @@ class simpleLdap(object):
             """
             return self.has_property(key)
 
-    def has_property(self, key):  # type: (str) -> bool
+    def has_property(self, key: str) -> bool:
         """
         Checks if the property exists in this module and if it is enabled in the set UDM options.
 
@@ -363,7 +363,7 @@ class simpleLdap(object):
             return bool(set(p.options) & set(self.options))
         return True
 
-    def __setitem__(self, key, value):  # type: (str, Any) -> None
+    def __setitem__(self, key: str, value: "Any") -> None:
         """
         Sets or unsets the property to the given value.
 
@@ -456,7 +456,7 @@ class simpleLdap(object):
                     raise univention.admin.uexceptions.valueInvalidSyntax("%s" % self.descriptions[key].short_description, property=key)
             self.info[key] = p
 
-    def __getitem__(self, key):  # type: (str) -> Any
+    def __getitem__(self, key: str) -> "Any":
         """
         Get the currently set value of the given property.
 
@@ -482,7 +482,7 @@ class simpleLdap(object):
         else:
             return None
 
-    def get(self, key, default=None):  # type: (str, Any) -> Any
+    def get(self, key: str, default: "Any"=None) -> "Any":
         """
         Return the currently set value of the given property.
 
@@ -492,7 +492,7 @@ class simpleLdap(object):
         """
         return self.info.get(key, default)
 
-    def __contains__(self, key):  # type: (str) -> bool
+    def __contains__(self, key: str) -> bool:
         """
         Checks if the property exists in this module.
 
@@ -504,7 +504,7 @@ class simpleLdap(object):
         """
         return key in self.descriptions
 
-    def keys(self):  # type: () -> Iterable[str]
+    def keys(self) -> "Iterable[str]":
         """
         Returns the names of all properties this module has.
 
@@ -513,7 +513,7 @@ class simpleLdap(object):
         """
         return self.descriptions.keys()
 
-    def items(self):  # type: () -> Iterable[Tuple[str, Any]]
+    def items(self) -> "Iterable[Tuple[str, Any]]":
         """
         Return all items which belong to the current options - even if they are empty.
 
@@ -524,7 +524,7 @@ class simpleLdap(object):
         """
         return [(key, self[key]) for key in self.keys() if self.has_property(key)]
 
-    def create(self, serverctrls=None, response=None):  # type: (List[ldap.controls.LDAPControl], Dict[str, Any]) -> str
+    def create(self, serverctrls: "List[ldap.controls.LDAPControl]"=None, response: "Dict[str, Any]"=None) -> str:
         """
         Creates the LDAP object if it does not exists by building the list of attributes (addlist) and write it to LDAP.
         If this call raises an exception it is necessary to instantiate a new object before trying to create it again.
@@ -611,7 +611,7 @@ class simpleLdap(object):
     def _write_admin_diary_create(self):
         self._write_admin_diary_event('CREATED')
 
-    def modify(self, modify_childs=True, ignore_license=False, serverctrls=None, response=None):  # type: (bool, bool, List[ldap.controls.LDAPControl], Dict[str, Any]) -> str
+    def modify(self, modify_childs: bool=True, ignore_license: bool=False, serverctrls: "List[ldap.controls.LDAPControl]"=None, response: "Dict[str, Any]"=None) -> str:
         """
         Modifies the LDAP object by building the difference between the current state and the old state of this object and write this modlist to LDAP.
 
@@ -658,7 +658,7 @@ class simpleLdap(object):
     def _write_admin_diary_modify(self):
         self._write_admin_diary_event('MODIFIED')
 
-    def _create_temporary_ou(self):  # type: () -> str
+    def _create_temporary_ou(self) -> str:
         name = u'temporary_move_container_%s' % time.time()
 
         module = univention.admin.modules.get('container/ou')
@@ -671,7 +671,7 @@ class simpleLdap(object):
 
         return u'ou=%s' % ldap.dn.escape_dn_chars(name)
 
-    def _delete_temporary_ou_if_empty(self, temporary_ou):  # type: (str) -> None
+    def _delete_temporary_ou_if_empty(self, temporary_ou: str) -> None:
         """
         Try to delete the organizational unit entry if it is empty.
 
@@ -690,7 +690,7 @@ class simpleLdap(object):
         except (univention.admin.uexceptions.ldapError, ldap.NOT_ALLOWED_ON_NONLEAF):
             pass
 
-    def move(self, newdn, ignore_license=False, temporary_ou=None):  # type: (str, bool, str) -> str
+    def move(self, newdn: str, ignore_license: bool=False, temporary_ou: str=None) -> str:
         """
         Moves the LDAP object to the target position.
 
@@ -819,7 +819,7 @@ class simpleLdap(object):
             self._delete_temporary_ou_if_empty(temporary_ou)
             return res
 
-    def move_subelements(self, olddn, newdn, subelements, ignore_license=False):  # type: (str, str, List[Tuple[str, Dict]], bool) -> Optional[List[Tuple[str, str]]]
+    def move_subelements(self, olddn: str, newdn: str, subelements: "List[Tuple[str, Dict]]", ignore_license: bool=False) -> "Optional[List[Tuple[str, str]]]":
         """
         Internal function to move all children of a container.
 
@@ -860,7 +860,7 @@ class simpleLdap(object):
 
         return None  # FIXME
 
-    def remove(self, remove_childs=False):  # type: (bool) -> None
+    def remove(self, remove_childs: bool=False) -> None:
         """
         Removes this LDAP object.
 
@@ -881,7 +881,7 @@ class simpleLdap(object):
 
         return self._remove(remove_childs)
 
-    def get_gid_for_primary_group(self):  # type: () -> str
+    def get_gid_for_primary_group(self) -> str:
         """
         Return the numerical group ID of the primary group.
 
@@ -897,7 +897,7 @@ class simpleLdap(object):
                 raise univention.admin.uexceptions.primaryGroup(self['primaryGroup'])
         return gidNum
 
-    def get_sid_for_primary_group(self):  # type: () -> str
+    def get_sid_for_primary_group(self) -> str:
         """
         Return the Windows security ID for the primary group.
 
@@ -911,15 +911,15 @@ class simpleLdap(object):
             raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
         return sidNum
 
-    def _ldap_pre_ready(self):  # type: () -> None
+    def _ldap_pre_ready(self) -> None:
         """Hook which is called before :func:`univention.admin.handlers.simpleLdap.ready`."""
 
-    def _ldap_pre_create(self):  # type: () -> None
+    def _ldap_pre_create(self) -> None:
         """Hook which is called before the object creation."""
         self.dn = self._ldap_dn()
         self.request_lock('cn-uid-position', self.dn)
 
-    def _ldap_dn(self):  # type: () -> str
+    def _ldap_dn(self) -> str:
         """
         Builds the LDAP DN of the object before creation by using the identifying properties to build the RDN.
 
@@ -933,18 +933,18 @@ class simpleLdap(object):
         ]
         return u'%s,%s' % (dn2str([identifier]), dn2str(str2dn(self.dn)[1:]) if self.exists() else self.position.getDn())
 
-    def _ldap_post_create(self):  # type: () -> None
+    def _ldap_post_create(self) -> None:
         """Hook which is called after the object creation."""
         self._confirm_locks()
 
-    def _ldap_pre_modify(self):  # type: () -> None
+    def _ldap_pre_modify(self) -> None:
         """Hook which is called before the object modification."""
 
-    def _ldap_post_modify(self):  # type: () -> None
+    def _ldap_post_modify(self) -> None:
         """Hook which is called after the object modification."""
         self._confirm_locks()
 
-    def _ldap_pre_rename(self, newdn):  # type: (str) -> None
+    def _ldap_pre_rename(self, newdn: str) -> None:
         """
         Hook which is called before renaming the object.
 
@@ -952,14 +952,14 @@ class simpleLdap(object):
         """
         self.request_lock('cn-uid-position', newdn)
 
-    def _ldap_post_rename(self, olddn):  # type: (str) -> None
+    def _ldap_post_rename(self, olddn: str) -> None:
         """
         Hook which is called after renaming the object.
 
         :param str olddn: The old distiguished name the object was renamed from.
         """
 
-    def _ldap_pre_move(self, newdn):  # type: (str) -> None
+    def _ldap_pre_move(self, newdn: str) -> None:
         """
         Hook which is called before the object moving.
 
@@ -967,21 +967,21 @@ class simpleLdap(object):
         """
         self.request_lock('cn-uid-position', newdn)
 
-    def _ldap_post_move(self, olddn):  # type: (str) -> None
+    def _ldap_post_move(self, olddn: str) -> None:
         """
         Hook which is called after the object moving.
 
         :param str olddn: The old distiguished name the object was moved from.
         """
 
-    def _ldap_pre_remove(self):  # type: () -> None
+    def _ldap_pre_remove(self) -> None:
         """Hook which is called before the object removal."""
 
-    def _ldap_post_remove(self):  # type: () -> None
+    def _ldap_post_remove(self) -> None:
         """Hook which is called after the object removal."""
         self._release_locks()
 
-    def _safe_cancel(self):  # type: () -> None
+    def _safe_cancel(self) -> None:
         try:
             self.cancel()
         except (KeyboardInterrupt, SystemExit, SyntaxError):
@@ -989,14 +989,14 @@ class simpleLdap(object):
         except Exception:
             ud.debug(ud.ADMIN, ud.ERROR, "cancel() failed: %s" % (traceback.format_exc(),))
 
-    def _falsy_boolean_extended_attributes(self, info):  # type: (_Properties) -> _Properties
+    def _falsy_boolean_extended_attributes(self, info: "_Properties") -> "_Properties":
         m = univention.admin.modules.get(self.module)
         for prop in getattr(m, 'extended_udm_attributes', []):
             if prop.syntax == 'boolean' and not info.get(prop.name):
                 info[prop.name] = u'0'
         return info
 
-    def exists(self):  # type: () -> bool
+    def exists(self) -> bool:
         """
         Indicates that this object exists in LDAP.
 
@@ -1005,7 +1005,7 @@ class simpleLdap(object):
         """
         return self._exists
 
-    def _validate_superordinate(self, must_exists=True):  # type: (bool) -> None
+    def _validate_superordinate(self, must_exists: bool=True) -> None:
         """
         Checks if the superordinate is set to a valid :class:`univention.admin.handlers.simpleLdap` object if this module requires a superordinate.
         It is ensured that the object type of the superordinate is correct.
@@ -1041,7 +1041,7 @@ class simpleLdap(object):
         if self.dn and not self._ensure_dn_in_subtree(self.superordinate.dn, self.lo.parentDn(self.dn)):
             raise univention.admin.uexceptions.insufficientInformation(_('The DN must be underneath of the superordinate.'))
 
-    def _ensure_dn_in_subtree(self, parent, dn):  # type: (str, str) -> bool
+    def _ensure_dn_in_subtree(self, parent: str, dn: str) -> bool:
         """
         Checks if the given DN is underneath of the subtree of the given parent DN.
 
@@ -1077,7 +1077,7 @@ class simpleLdap(object):
                         changes = func(module, changes)
         return changes
 
-    def open(self):  # type: () -> None
+    def open(self) -> None:
         """
         Opens this object.
 
@@ -1099,7 +1099,7 @@ class simpleLdap(object):
         self.call_udm_property_hook('hook_open', self)
         self.save()
 
-    def _remove_option(self, name):  # type: (str) -> None
+    def _remove_option(self, name: str) -> None:
         """
         Removes the UDM option if it is set.
 
@@ -1108,7 +1108,7 @@ class simpleLdap(object):
         if name in self.options:
             self.options.remove(name)
 
-    def __set_options(self):  # type: () -> None
+    def __set_options(self) -> None:
         """Enables the UDM options of this object by evaluating the currently set LDAP object classes. If the object does not exists yet the default options are enabled."""
         options = univention.admin.modules.options(self.module)
         if 'objectClass' in self.oldattr:
@@ -1123,8 +1123,7 @@ class simpleLdap(object):
             self.options = []
             self._define_options(options)
 
-    def _define_options(self, module_options):
-        # type: (Dict[str, Any]) -> None
+    def _define_options(self, module_options: "Dict[str, Any]") -> None:
         """
         Enables all UDM options which are enabled by default.
 
@@ -1137,7 +1136,7 @@ class simpleLdap(object):
             if not opt.disabled and opt.default
         )
 
-    def option_toggled(self, option):  # type: (str) -> bool
+    def option_toggled(self, option: str) -> bool:
         """
         Checks if an UDM option was changed.
 
@@ -1167,8 +1166,7 @@ class simpleLdap(object):
                 raise univention.admin.uexceptions.valueInvalidSyntax(policy)
         self.policies = [policy for policy in self.policies if not any(self.lo.compare_dn(pol, policy) for pol in policies)]
 
-    def policiesChanged(self):
-        # type: () -> bool
+    def policiesChanged(self) -> bool:
         return set(self.oldpolicies) != set(self.policies)
 
     def __app_option_enabled(self, name, option):
@@ -1176,7 +1174,7 @@ class simpleLdap(object):
             return all(self[pname] in ('TRUE', '1', 'OK') for pname, prop in self.descriptions.items() if name in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue', 'AppActivatedOK'))
         return True
 
-    def description(self):  # type: () -> str
+    def description(self) -> str:
         """
         Return a descriptive string for the object.
         By default the relative distinguished name is returned.
@@ -1217,7 +1215,7 @@ class simpleLdap(object):
         """
         return modlist
 
-    def _ldap_addlist(self):  # type: () -> List[Tuple[str, Any]]
+    def _ldap_addlist(self) -> "List[Tuple[str, Any]]":
         return []
 
     def _ldap_modlist(self):
@@ -1309,7 +1307,7 @@ class simpleLdap(object):
     def _ldap_object_classes_add(self, al):
         m = univention.admin.modules.get(self.module)
         # evaluate extended attributes
-        ocs = set()  # type: Set[str]
+        ocs: "Set[str]" = set()
         for prop in getattr(m, 'extended_udm_attributes', []):
             ud.debug(ud.ADMIN, ud.INFO, 'simpleLdap._create: info[%s]:%r = %r' % (prop.name, self.has_property(prop.name), self.info.get(prop.name)))
             if prop.syntax == 'boolean' and self.info.get(prop.name) == u'0':
@@ -1379,7 +1377,7 @@ class simpleLdap(object):
         self.save()
         return self.dn
 
-    def set_default_values(self):  # type: () -> None
+    def set_default_values(self) -> None:
         """Sets all the default values of all properties."""
         # Make sure all default values are set...
         for name, p in self.descriptions.items():
@@ -1396,7 +1394,7 @@ class simpleLdap(object):
             finally:
                 self.set_defaults = set_defaults
 
-    def _fix_app_options(self):  # type: () -> None
+    def _fix_app_options(self) -> None:
         # for objects with objectClass=appObject and appObjectActivated=0 we must set appObjectActivated=1
         for option, opt in getattr(univention.admin.modules.get(self.module), 'options', {}).items():
             if not opt.is_app_option or not self.option_toggled(option) or option not in self.options:
@@ -1405,17 +1403,16 @@ class simpleLdap(object):
                 if option in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue', 'AppActivatedOK'):
                     self[pname] = True
 
-    def _ldap_object_classes(self, ml):  # type: (list) -> list
+    def _ldap_object_classes(self, ml: list) -> list:
         """Detects the attributes changed in the given modlist, calculates the changes of the object class and appends it to the modlist."""
         m = univention.admin.modules.get(self.module)
 
-        def lowerset(vals):
-            # type: (Iterable[str]) -> Set[str]
+        def lowerset(vals: "Iterable[str]") -> "Set[str]":
             return {x.lower() for x in vals}
 
         ocs = lowerset(x.decode('UTF-8') for x in _MergedAttributes(self, ml).get_attribute('objectClass'))
-        unneeded_ocs = set()  # type: Set[str]
-        required_ocs = set()  # type: Set[str]
+        unneeded_ocs: "Set[str]" = set()
+        required_ocs: "Set[str]" = set()
 
         # evaluate (extended) options
         module_options = univention.admin.modules.options(self.module)
@@ -1520,7 +1517,7 @@ class simpleLdap(object):
                     if not isinstance(exc.original_exception, ldap.TYPE_OR_VALUE_EXISTS):
                         raise
 
-    def _move(self, newdn, modify_childs=True, ignore_license=False):  # type: (str, bool, bool) -> str
+    def _move(self, newdn: str, modify_childs: bool=True, ignore_license: bool=False) -> str:
         """Moves this object to the new DN. Should only be called by :func:`univention.admin.handlers.simpleLdap.move`."""
         self._ldap_pre_move(newdn)
 
@@ -1544,7 +1541,7 @@ class simpleLdap(object):
     def _write_admin_diary_move(self, position):
         self._write_admin_diary_event('MOVED', {'position': position})
 
-    def _remove(self, remove_childs=False):  # type: (bool) -> None
+    def _remove(self, remove_childs: bool=False) -> None:
         """Removes this object. Should only be called by :func:`univention.admin.handlers.simpleLdap.remove`."""
         ud.debug(ud.ADMIN, ud.INFO, 'handlers/__init__._remove() called for %r with remove_childs=%r' % (self.dn, remove_childs))
 
@@ -1555,7 +1552,7 @@ class simpleLdap(object):
         self.call_udm_property_hook('hook_ldap_pre_remove', self)
 
         if remove_childs:
-            subelements = []  # type: List[Tuple[str, Dict[str, List[str]]]]
+            subelements: "List[Tuple[str, Dict[str, List[str]]]]" = []
             if b'FALSE' not in self.lo.getAttr(self.dn, 'hasSubordinates'):
                 ud.debug(ud.ADMIN, ud.INFO, 'handlers/__init__._remove() children of base dn %s' % (self.dn,))
                 subelements = self.lo.search(base=self.dn, scope='one', attr=[])
@@ -1583,11 +1580,10 @@ class simpleLdap(object):
         self._write_admin_diary_remove()
         self.save()
 
-    def _write_admin_diary_remove(self):
-        # type: () -> None
+    def _write_admin_diary_remove(self) -> None:
         self._write_admin_diary_event('REMOVED')
 
-    def loadPolicyObject(self, policy_type, reset=0):  # type: (str, int) -> simplePolicy
+    def loadPolicyObject(self, policy_type: str, reset: int=0) -> "simplePolicy":
         pathlist = []
 
         ud.debug(ud.ADMIN, ud.INFO, "loadPolicyObject: policy_type: %s" % policy_type)
@@ -1648,8 +1644,8 @@ class simpleLdap(object):
 
         return self.policyObjects[policy_type]
 
-    def _init_ldap_search(self, policy):  # type: (simplePolicy) -> None
-        properties = {}  # type: Dict[str, univention.admin.property]
+    def _init_ldap_search(self, policy: "simplePolicy") -> None:
+        properties: "Dict[str, univention.admin.property]" = {}
         if hasattr(policy, 'property_descriptions'):
             properties = policy.property_descriptions
         elif hasattr(policy, 'descriptions'):
@@ -1660,7 +1656,7 @@ class simpleLdap(object):
                 if prop.syntax.viewonly:
                     policy.mapping.unregister(pname, False)
 
-    def _update_policies(self):  # type: () -> None
+    def _update_policies(self) -> None:
         for policy_type, policy_object in self.policyObjects.items():
             ud.debug(ud.ADMIN, ud.INFO, "simpleLdap._update_policies: processing policy of type: %s" % policy_type)
             if policy_object.changes:
@@ -1669,18 +1665,18 @@ class simpleLdap(object):
                 policy_object.create()
                 univention.admin.objects.replacePolicyReference(self, policy_type, policy_object.dn)
 
-    def closePolicyObjects(self):  # type: () -> None
+    def closePolicyObjects(self) -> None:
         self.policyObjects = {}
 
-    def savePolicyObjects(self):  # type: () -> None
+    def savePolicyObjects(self) -> None:
         self._update_policies()
         self.closePolicyObjects()
 
-    def cancel(self):  # type: () -> None
+    def cancel(self) -> None:
         """Cancels the object creation or modification. This method can be subclassed to revert changes for example releasing locks."""
         self._release_locks()
 
-    def _release_locks(self, name=None):  # type: (Optional[str]) -> None
+    def _release_locks(self, name: "Optional[str]"=None) -> None:
         """Release all temporary done locks"""
         for lock in self.alloc[:]:
             key, value = lock[0:2]
@@ -1690,7 +1686,7 @@ class simpleLdap(object):
             ud.debug(ud.ADMIN, ud.INFO, 'release_lock(%s): %r' % (key, value))
             univention.admin.allocators.release(self.lo, self.position, key, value)
 
-    def _confirm_locks(self):  # type: () -> None
+    def _confirm_locks(self) -> None:
         """
         Confirm all temporary done locks. self.alloc should contain a 2-tuple or 3-tuple:
         (name:str, value:str) or (name:str, value:str, updateLastUsedValue:bool)
@@ -1720,7 +1716,7 @@ class simpleLdap(object):
             self.alloc.append((name, value))
         return value
 
-    def _call_checkLdap_on_all_property_syntaxes(self):  # type: () -> None
+    def _call_checkLdap_on_all_property_syntaxes(self) -> None:
         """
         Calls checkLdap() method on every property if present.
         checkLdap() may raise an exception if the value does not match the constraints of the underlying syntax.
@@ -1735,7 +1731,7 @@ class simpleLdap(object):
                 else:
                     prop.syntax.checkLdap(self.lo, self.info.get(pname))
 
-    def __prevent_ad_property_change(self):  # type: () -> None
+    def __prevent_ad_property_change(self) -> None:
         if not _prevent_to_change_ad_properties or not self._is_synced_object():
             return
 
@@ -1746,7 +1742,7 @@ class simpleLdap(object):
                 if oldval != value:
                     raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': oldval, 'new': value}, property=key)
 
-    def _is_synced_object(self):  # type: () -> bool
+    def _is_synced_object(self) -> bool:
         """Checks whether this object was synchronized from Active Directory to UCS."""
         flags = self.oldattr.get('univentionObjectFlag', [])
         return b'synced' in flags and b'docker' not in flags
@@ -1775,7 +1771,7 @@ class simpleLdap(object):
         return containers
 
     @classmethod
-    def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):  # type: (None, univention.admin.uldap.access, str, str, Optional[str], str, bool, bool, int, int, Optional[List], Optional[Dict]) -> List[simpleLdap]
+    def lookup(cls, co: None, lo: "univention.admin.uldap.access", filter_s: str, base: str='', superordinate: "Optional[str]"=None, scope: str='sub', unique: bool=False, required: bool=False, timeout: int=-1, sizelimit: int=0, serverctrls: "Optional[List]"=None, response: "Optional[Dict]"=None) -> "List[simpleLdap]":
         """
         Perform a LDAP search and return a list of instances.
 
@@ -1811,7 +1807,7 @@ class simpleLdap(object):
         return result
 
     @classmethod
-    def lookup_filter(cls, filter_s=None, lo=None):  # type: (Optional[str], Optional[univention.admin.uldap.access]) -> univention.admin.filter.conjunction
+    def lookup_filter(cls, filter_s: "Optional[str]"=None, lo: "Optional[univention.admin.uldap.access]"=None) -> "univention.admin.filter.conjunction":
         """
         Return a LDAP filter as a UDM filter expression.
 
@@ -1834,7 +1830,7 @@ class simpleLdap(object):
         return filter
 
     @classmethod
-    def unmapped_lookup_filter(cls):  # type: () -> univention.admin.filter.conjunction
+    def unmapped_lookup_filter(cls) -> "univention.admin.filter.conjunction":
         """
         Return a LDAP filter UDM filter expression.
 
@@ -1911,10 +1907,10 @@ class simpleLdap(object):
         required_object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
         return (ocs & required_object_classes) == required_object_classes
 
-    _static_ldap_attributes = set()  # type: Set[str]
+    _static_ldap_attributes: "Set[str]" = set()
 
     @classmethod
-    def _ldap_attributes(cls):  # type: () -> List[str]
+    def _ldap_attributes(cls) -> "List[str]":
         """Get a list of additional (operational) LDAP attributes which needs to be fetched from the LDAP server when creating an instance of this object"""
         return list({'*', 'entryUUID', 'entryCSN', 'modifyTimestamp'} | cls._static_ldap_attributes)
 
@@ -1966,7 +1962,7 @@ class simpleComputer(simpleLdap):
 
     # HELPER
     @classmethod
-    def _ip_from_ptr(cls, zoneName, relativeDomainName):  # type: (str, str) -> str
+    def _ip_from_ptr(cls, zoneName: str, relativeDomainName: str) -> str:
         """
         Extract IP address from reverse DNS record.
 
@@ -1981,7 +1977,7 @@ class simpleComputer(simpleLdap):
             return cls._ipv4_from_ptr(zoneName, relativeDomainName)
 
     @staticmethod
-    def _ipv4_from_ptr(zoneName, relativeDomainName):  # type: (str, str) -> str
+    def _ipv4_from_ptr(zoneName: str, relativeDomainName: str) -> str:
         """
         Extract IPv4 address from reverse DNS record.
 
@@ -1993,7 +1989,7 @@ class simpleComputer(simpleLdap):
             '.'.join(reversed(relativeDomainName.split('.'))))
 
     @staticmethod
-    def _ipv6_from_ptr(zoneName, relativeDomainName):  # type: (str, str) -> str
+    def _ipv6_from_ptr(zoneName: str, relativeDomainName: str) -> str:
         """
         Extract IPv6 address from reverse DNS record.
 
@@ -2006,7 +2002,7 @@ class simpleComputer(simpleLdap):
         return ':'.join(reversed(blocks))
 
     @staticmethod
-    def _is_ip(ip):  # type: (str) -> bool
+    def _is_ip(ip: str) -> bool:
         """
         Check if valid IPv4 (0.0.0.0 is allowed) or IPv6 address.
 
@@ -2323,8 +2319,8 @@ class simpleComputer(simpleLdap):
         ud.debug(ud.ADMIN, ud.INFO, 'Split entry %s into zone %s and ip %s' % (entry, zone, ip))
         return (zone, ip)
 
-    def __remove_dns_reverse_object(self, name, dnsEntryZoneReverse, ip):  # type: (str, str, str) -> None
-        def modify(rdn, zoneDN):  # type: (str, str) -> None
+    def __remove_dns_reverse_object(self, name: str, dnsEntryZoneReverse: str, ip: str) -> None:
+        def modify(rdn: str, zoneDN: str) -> None:
             zone_name = explode_rdn(zoneDN, True)[0]
             for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (rdn, zone_name))):
                 ptr_records = attributes.get('pTRRecord', [])
@@ -2366,7 +2362,7 @@ class simpleComputer(simpleLdap):
                 except univention.admin.uexceptions.noObject:
                     pass
 
-    def __add_dns_reverse_object(self, name, zoneDn, ip):  # type: (str, str, str) -> None
+    def __add_dns_reverse_object(self, name: str, zoneDn: str, ip: str) -> None:
         ud.debug(ud.ADMIN, ud.INFO, 'we should create a dns reverse object: zoneDn="%s", name="%s", ip="%s"' % (zoneDn, name, ip))
         if not all((name, zoneDn, ip)):
             return
@@ -2402,7 +2398,7 @@ class simpleComputer(simpleLdap):
             zone.open()
             zone.modify()
 
-    def __remove_dns_forward_object(self, name, zoneDn, ip=None):  # type: (str, str, str) -> None
+    def __remove_dns_forward_object(self, name: str, zoneDn: str, ip: str=None) -> None:
         ud.debug(ud.ADMIN, ud.INFO, 'we should remove a dns forward object: zoneDn="%s", name="%s", ip="%s"' % (zoneDn, name, ip))
         if name:
             # check if dns forward object has more than one ip address
@@ -2441,7 +2437,7 @@ class simpleComputer(simpleLdap):
                     zone.open()
                     zone.modify()
 
-    def __add_related_ptrrecords(self, zoneDN, ip):  # type: (str, str) -> None
+    def __add_related_ptrrecords(self, zoneDN: str, ip: str) -> None:
         if not all((zoneDN, ip)):
             return
         ptrrecord = '%s.%s.' % (self.info['name'], explode_rdn(zoneDN, True)[0])
@@ -2452,7 +2448,7 @@ class simpleComputer(simpleLdap):
         for dn, _attributes in self.lo.search(base=zoneDN, scope='domain', attr=['pTRRecord'], filter=search_filter):
             self.lo.modify(dn, [('pTRRecord', '', ptrrecord)])
 
-    def __remove_related_ptrrecords(self, zoneDN, ip):  # type: (str, str) -> None
+    def __remove_related_ptrrecords(self, zoneDN: str, ip: str) -> None:
         ptrrecord = '%s.%s.' % (self.info['name'], explode_rdn(zoneDN, True)[0])
         ip_split = ip.split('.')
         ip_split.reverse()
@@ -2462,7 +2458,7 @@ class simpleComputer(simpleLdap):
             if ptrrecord in attributes['pTRRecord']:
                 self.lo.modify(dn, [('pTRRecord', ptrrecord, '')])
 
-    def check_common_name_length(self):  # type: () -> None
+    def check_common_name_length(self) -> None:
         ud.debug(ud.ADMIN, ud.INFO, 'check_common_name_length with self["ip"] = %r and self["dnsEntryZoneForward"] = %r' % (self['ip'], self['dnsEntryZoneForward']))
         if len(self['ip']) > 0 and len(self['dnsEntryZoneForward']) > 0:
             for zone in self['dnsEntryZoneForward']:
@@ -2474,7 +2470,7 @@ class simpleComputer(simpleLdap):
                     raise univention.admin.uexceptions.commonNameTooLong()
 
     @staticmethod
-    def _ip2dns(addr):  # type: (str) -> Tuple[Union[IPv4Address, IPv6Address], str]
+    def _ip2dns(addr: str) -> "Tuple[Union[IPv4Address, IPv6Address], str]":
         """
         Convert IP address string to 2-tuple (IPAddress, LdapAttributeName).
 
@@ -2489,7 +2485,7 @@ class simpleComputer(simpleLdap):
         ip = ip_address(u'%s' % (addr, ))
         return (ip, 'aAAARecord' if isinstance(ip, IPv6Address) else 'aRecord')
 
-    def __modify_dns_forward_object(self, name, zoneDn, new_ip, old_ip):  # type: (str, str, str, str) -> None
+    def __modify_dns_forward_object(self, name: str, zoneDn: str, new_ip: str, old_ip: str) -> None:
         ud.debug(ud.ADMIN, ud.INFO, 'we should modify a dns forward object: zoneDn="%s", name="%s", new_ip="%s", old_ip="%s"' % (zoneDn, name, new_ip, old_ip))
         zone = None
         if old_ip and new_ip:
@@ -2541,7 +2537,7 @@ class simpleComputer(simpleLdap):
                 zone.open()
                 zone.modify()
 
-    def __add_dns_forward_object(self, name, zoneDn, ip):  # type: (str, str, str) -> None
+    def __add_dns_forward_object(self, name: str, zoneDn: str, ip: str) -> None:
         ud.debug(ud.ADMIN, ud.INFO, 'we should add a dns forward object: zoneDn="%s", name="%s", ip="%s"' % (zoneDn, name, ip))
         if not all((name, ip, zoneDn)):
             return
@@ -2551,7 +2547,7 @@ class simpleComputer(simpleLdap):
         elif isinstance(addr, IPv4Address):
             self.__add_dns_forward_object_ipv4(name, zoneDn, addr)
 
-    def __add_dns_forward_object_ipv6(self, name, zoneDn, addr):  # type: (str, str, IPv6Address) -> None
+    def __add_dns_forward_object_ipv6(self, name: str, zoneDn: str, addr: "IPv6Address") -> None:
         ip = addr.exploded.encode('ASCII')
         results = self.lo.search(base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
         if not results:
@@ -2579,7 +2575,7 @@ class simpleComputer(simpleLdap):
                 else:
                     self.lo.modify(dn, [('aAAARecord', b'', ip)])
 
-    def __add_dns_forward_object_ipv4(self, name, zoneDn, addr):  # type: (str, str, IPv4Address) -> None
+    def __add_dns_forward_object_ipv4(self, name: str, zoneDn: str, addr: "IPv4Address") -> None:
         ip = addr.exploded.encode('ASCII')
         results = self.lo.search(base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
         if not results:
@@ -2607,7 +2603,7 @@ class simpleComputer(simpleLdap):
                 else:
                     self.lo.modify(dn, [('aRecord', b'', ip)])
 
-    def __add_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias):  # type: (str, str, str, str) -> None
+    def __add_dns_alias_object(self, name: str, dnsForwardZone: str, dnsAliasZoneContainer: str, alias: str) -> None:
         ud.debug(ud.ADMIN, ud.INFO, 'add a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % (name, dnsForwardZone, dnsAliasZoneContainer, alias))
         alias = alias.rstrip('.')
         if name and dnsForwardZone and dnsAliasZoneContainer and alias:
@@ -2629,7 +2625,7 @@ class simpleComputer(simpleLdap):
                 # throw exception, cNAMERecord is single value
                 raise univention.admin.uexceptions.dnsAliasAlreadyUsed(_('DNS alias is already in use.'))
 
-    def __remove_dns_alias_object(self, name, dnsForwardZone, dnsAliasZoneContainer, alias=None):  # type: (str, str, str, str) -> None
+    def __remove_dns_alias_object(self, name: str, dnsForwardZone: str, dnsAliasZoneContainer: str, alias: str=None) -> None:
         ud.debug(ud.ADMIN, ud.INFO, 'remove a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % (name, dnsForwardZone, dnsAliasZoneContainer, alias))
         if name:
             if alias:
@@ -2963,7 +2959,7 @@ class simpleComputer(simpleLdap):
         return ml
 
     @classmethod
-    def calc_dns_reverse_entry_name(cls, sip, reverseDN):  # type: (str, str) -> str
+    def calc_dns_reverse_entry_name(cls, sip: str, reverseDN: str) -> str:
         """
         >>> simpleComputer.calc_dns_reverse_entry_name('10.200.2.5', 'subnet=2.200.10.in-addr.arpa')
         u'5'
@@ -3166,7 +3162,7 @@ class simpleComputer(simpleLdap):
                     newUniqueMembers = b''
                     self.lo.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers)])
 
-    def update_groups(self):  # type: () -> None
+    def update_groups(self) -> None:
         if not self.hasChanged('groups') and not self.oldPrimaryGroupDn and not self.newPrimaryGroupDn:
             return
         ud.debug(ud.ADMIN, ud.INFO, 'updating groups')
@@ -3200,7 +3196,7 @@ class simpleComputer(simpleLdap):
             groupObject['hosts'] = list(DN.values(hosts))
             groupObject.modify(ignore_license=True)
 
-    def primary_group(self):  # type: () -> None
+    def primary_group(self) -> None:
         if not self.hasChanged('primaryGroup'):
             return
         ud.debug(ud.ADMIN, ud.INFO, 'updating primary groups')
@@ -3213,7 +3209,7 @@ class simpleComputer(simpleLdap):
             primaryGroupSambaNumber = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)
             self.lo.modify(self.dn, [('sambaPrimaryGroupSID', b'None', primaryGroupSambaNumber[0])])
 
-    def cleanup(self):  # type: () -> None
+    def cleanup(self) -> None:
         self.open()
         if self['dnsEntryZoneForward']:
             for dnsEntryZoneForward in self['dnsEntryZoneForward']:
@@ -3449,8 +3445,7 @@ class simplePolicy(simpleLdap):
         self.dn = ''
         self.copyIdentifier(referring_object)
 
-    def getIdentifier(self):
-        # type: () -> str
+    def getIdentifier(self) -> str:
         for key, property in self.descriptions.items():
             if property.identifies and key in self.info and self.info[key]:
                 return key
@@ -3555,8 +3550,7 @@ class simplePolicy(simpleLdap):
         ud.debug(ud.ADMIN, ud.INFO, 'simplePolicy.__getitem__: result: %s=%s' % (key, result))
         return result
 
-    def fixedAttributes(self):
-        # type: () -> Dict[str, bool]
+    def fixedAttributes(self) -> "Dict[str, bool]":
         """Return effectively fixed attributes."""
         if not self.resultmode:
             return {}
@@ -3567,8 +3561,7 @@ class simplePolicy(simpleLdap):
             for attr_name, value_dict in self.policy_attrs.items()
         }
 
-    def emptyAttributes(self):
-        # type: () -> Dict[str, bool]
+    def emptyAttributes(self) -> "Dict[str, bool]":
         """return effectively empty attributes."""
         if not self.has_property('emptyAttributes'):
             return {}

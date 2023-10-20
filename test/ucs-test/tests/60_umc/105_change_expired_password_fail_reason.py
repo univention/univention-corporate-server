@@ -37,7 +37,7 @@ REASON_MINIMUM_AGE = 'Changing password failed. The minimum password age is not 
 REASON_TOO_SIMILAR = 'Changing password failed. The password is too similar to the old one.'
 
 # TODO: add a lot more unimplemented tests!
-reasons = {
+reasons: "Dict[str, List[str]]" = {
     REASON_TOO_SHORT: ['Test', 'ana', 'a1z'],
     REASON_TOO_SIMPLE: ['123456789'],
     REASON_PALINDROME: [],  # none work: ['Tattarrattat', 'Rotavator', 'Malayalam', 'Deleveled', 'Racecar', 'Detartrated'],
@@ -45,7 +45,7 @@ reasons = {
     REASON_DIFFERENT_WORDS: ['ooooooooo'],
     # REASON_TOO_SIMILAR: [INITIAL_PASSWORD[:-1] + '2'],
     REASON_ALREADY_USED: [INITIAL_PASSWORD],
-}  # type: Dict[str, List[str]]
+}
 if samba4_installed:
     reasons = {
         REASON_TOO_SHORT: ['Test', 'ana', 'a1z'],

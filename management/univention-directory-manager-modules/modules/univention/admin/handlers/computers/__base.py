@@ -62,9 +62,9 @@ _ = translation.translate
 class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration):
     """|UDM| module for generic computer objects."""
 
-    CONFIG_NAME = None  # type: str
-    SERVER_ROLE = None  # type: str
-    SAMBA_ACCOUNT_FLAG = None  # type: str
+    CONFIG_NAME: str = None
+    SERVER_ROLE: str = None
+    SAMBA_ACCOUNT_FLAG: str = None
 
     def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
         univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
@@ -303,7 +303,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
         return None
 
     @classmethod
-    def unmapped_lookup_filter(cls):  # type: () -> univention.admin.filter.conjunction
+    def unmapped_lookup_filter(cls) -> "univention.admin.filter.conjunction":
         filter_p = super(ComputerObject, cls).unmapped_lookup_filter()
         if cls.SERVER_ROLE and cls.SERVER_ROLE != 'member':
             filter_p.expressions.append(univention.admin.filter.expression('univentionServerRole', cls.SERVER_ROLE, escape=True))

@@ -21,7 +21,7 @@ log = getLogger(__name__)
 
 class Image(BaseImage, metaclass=ABCMeta):
     FMT = ""
-    OPTIONS = {}  # type: Dict[str, str]
+    OPTIONS: "Dict[str, str]" = {}
 
     def __init__(self, raw: Raw, **kwargs) -> None:
         assert isinstance(raw, Raw)

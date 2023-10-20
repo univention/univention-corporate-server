@@ -56,65 +56,54 @@ class UnsupportedSourceType(Exception):
 
 class SourceFileSet(object):
 
-    def __init__(self, src_pkg_path, binary_pkg_name, files):
-        # type: (str, str, Iterable[str]) -> None
+    def __init__(self, src_pkg_path: str, binary_pkg_name: str, files: "Iterable[str]") -> None:
         self.files = files
         self.src_pkg_path = src_pkg_path
         self.binary_pkg_name = binary_pkg_name
 
-    def process_po(self, pot_path):
-        # type: (str) -> None
+    def process_po(self, pot_path: str) -> None:
         self._create_po_template(pot_path)
 
-    def process_target(self, po_path, output_path):
-        # type: (str, str) -> None
+    def process_target(self, po_path: str, output_path: str) -> None:
         if os.path.isabs(output_path):
             output_path = os.path.relpath(output_path, '/')
         output_path = os.path.join(os.getcwd(), 'debian', self.binary_pkg_name, output_path)
         self._compile(po_path, output_path)
 
-    def _create_po_template(self, pot_path):
-        # type: (str) -> None
+    def _create_po_template(self, pot_path: str) -> None:
         raise NotImplementedError()
 
-    def _compile(self, po_path, output_path):
-        # type: (str, str) -> None
+    def _compile(self, po_path: str, output_path: str) -> None:
         raise NotImplementedError()
 
 
 class SourceFilesXgettext(SourceFileSet):
 
-    def _create_po_file(self, gettext_lang, pot_path):
-        # type: (str, str) -> None
+    def _create_po_file(self, gettext_lang: str, pot_path: str) -> None:
         umc.create_po_file(pot_path, self.binary_pkg_name, self.files, language=gettext_lang)
 
-    def _compile(self, po_path, mo_output_path):
-        # type: (str, str) -> None
+    def _compile(self, po_path: str, mo_output_path: str) -> None:
         umc.create_mo_file(po_path, mo_output_path)
 
 
 class SourceFilesShell(SourceFilesXgettext):
 
-    def _create_po_template(self, pot_path):
-        # type: (str) -> None
+    def _create_po_template(self, pot_path: str) -> None:
         super(SourceFilesShell, self)._create_po_file('Shell', pot_path)
 
 
 class SourceFilesPython(SourceFilesXgettext):
 
-    def _create_po_template(self, pot_path):
-        # type: (str) -> None
+    def _create_po_template(self, pot_path: str) -> None:
         super(SourceFilesPython, self)._create_po_file('Python', pot_path)
 
 
 class SourceFilesJavaScript(SourceFilesXgettext):
 
-    def _create_po_template(self, pot_path):
-        # type: (str) -> None
+    def _create_po_template(self, pot_path: str) -> None:
         super(SourceFilesJavaScript, self)._create_po_file('JavaScript', pot_path)
 
-    def _compile(self, po_path, json_output_path):
-        # type: (str, str) -> None
+    def _compile(self, po_path: str, json_output_path: str) -> None:
         """
         With UMC and univention-web based applications a custom, JSON-based
         message format is used.
@@ -124,11 +113,10 @@ class SourceFilesJavaScript(SourceFilesXgettext):
 
 class SourceFilesHTML(SourceFileSet):
 
-    def _create_po_template(self, pot_path):
-        # type: (str) -> None
+    def _create_po_template(self, pot_path: str) -> None:
         po_template = polib.POFile()
         html_parser = etree.HTMLParser()
-        js_paths = []  # type: List[str]
+        js_paths: "List[str]" = []
         for html_path in self.files:
             with open(html_path, 'rb') as html_file:
                 tree = etree.parse(html_file, html_parser)  # noqa: S320
@@ -153,8 +141,7 @@ class SourceFilesHTML(SourceFileSet):
         if js_paths:
             message_catalogs.join_existing('JavaScript', pot_path, js_paths)
 
-    def _compile(self, po_path, json_output_path):
-        # type: (str, str) -> None
+    def _compile(self, po_path: str, json_output_path: str) -> None:
         umc.po_to_json(po_path, json_output_path)
 
 
@@ -167,8 +154,7 @@ class SourceFileSetCreator(object):
         'application/javascript': SourceFilesJavaScript}
 
     @classmethod
-    def from_mimetype(cls, src_pkg_path, binary_pkg_name, mimetype, files):
-        # type: (str, str, str, Iterable[str]) -> SourceFileSet
+    def from_mimetype(cls, src_pkg_path: str, binary_pkg_name: str, mimetype: str, files: "Iterable[str]") -> "SourceFileSet":
         try:
             obj = cls.process_by_type[mimetype](src_pkg_path, binary_pkg_name, files)
         except KeyError:
@@ -177,6 +163,5 @@ class SourceFileSetCreator(object):
             return obj
 
 
-def from_mimetype(src_pkg_path, binary_pkg_name, mimetype, files):
-    # type: (str, str, str, Iterable[str]) -> SourceFileSet
+def from_mimetype(src_pkg_path: str, binary_pkg_name: str, mimetype: str, files: "Iterable[str]") -> "SourceFileSet":
     return SourceFileSetCreator.from_mimetype(src_pkg_path, binary_pkg_name, mimetype, files)

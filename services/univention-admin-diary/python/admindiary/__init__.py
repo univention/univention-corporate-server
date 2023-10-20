@@ -48,8 +48,7 @@ ucr.load()
 LOG_FILE = '/var/log/univention/admindiary.log'
 
 
-def get_events_to_reject():
-    # type: () -> List[str]
+def get_events_to_reject() -> "List[str]":
     ucrv = 'admin/diary/reject'
     blocked_events = ucr.get(ucrv)
     if blocked_events:
@@ -60,16 +59,14 @@ def get_events_to_reject():
 class _ShortNameFormatter(logging.Formatter):
     shorten = 'univention.admindiary'
 
-    def format(self, record):
-        # type: (logging.LogRecord) -> str
+    def format(self, record: "logging.LogRecord") -> str:
         record.short_name = record.name
         if record.short_name.startswith(f'{self.shorten}.'):
             record.short_name = record.short_name[len(self.shorten) + 1:]
         return super(_ShortNameFormatter, self).format(record)
 
 
-def _setup_logger():
-    # type: () -> logging.Logger
+def _setup_logger() -> "logging.Logger":
     base_logger = logging.getLogger('univention.admindiary')
     if not _setup_logger._setup:
         base_logger.setLevel(logging.INFO)
@@ -89,8 +86,7 @@ def _setup_logger():
 _setup_logger._setup = False
 
 
-def get_logger(name):
-    # type: (str) -> logging.Logger
+def get_logger(name: str) -> "logging.Logger":
     base_logger = _setup_logger()
     logger = base_logger.getChild(name)
     log_level = ucr.get(f'admin/diary/logging/{name}')
@@ -104,8 +100,7 @@ def get_logger(name):
 
 
 class DiaryEntry(object):
-    def __init__(self, username, message, args, tags, context_id, event_name):
-        # type: (str, str, Dict[str, str], List[str], str, str) -> None
+    def __init__(self, username: str, message: str, args: "Dict[str, str]", tags: "List[str]", context_id: str, event_name: str) -> None:
         self.username = username
         self.hostname = gethostname()
         self.message = message
@@ -115,8 +110,7 @@ class DiaryEntry(object):
         self.context_id = context_id
         self.event_name = event_name
 
-    def assert_types(self):
-        # type: () -> None
+    def assert_types(self) -> None:
         if not isinstance(self.username, six.string_types):
             raise TypeError(f'DiaryEntry() argument "username" has to be "string", but is: {type(self.username)} ({self.username})')
         if not isinstance(self.hostname, six.string_types):
@@ -140,8 +134,7 @@ class DiaryEntry(object):
         if not isinstance(self.event_name, six.string_types):
             raise TypeError(f'DiaryEntry() argument "event" name has to be "string", but is: {type(self.event_name)} ({self.event_name})')
 
-    def to_json(self):
-        # type: () -> str
+    def to_json(self) -> str:
         attrs = {
             'username': self.username,
             'hostname': self.hostname,
@@ -156,8 +149,7 @@ class DiaryEntry(object):
         return json.dumps(attrs)
 
     @classmethod
-    def from_json(cls, body):
-        # type: (str) -> DiaryEntry
+    def from_json(cls, body: str) -> "DiaryEntry":
         json_body = json.loads(body)
         entry = cls(json_body['username'], json_body['message'], json_body['args'], json_body['tags'], json_body['context_id'], json_body['event'])
         entry.timestamp = datetime.strptime(json_body['timestamp'], '%Y-%m-%d %H:%M:%S')

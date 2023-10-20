@@ -52,19 +52,16 @@ class MailSinkGuard:
             ....use sink....
     """
 
-    def __init__(self):
-        # type: () -> None
+    def __init__(self) -> None:
         self.mail_sinks = set()  # type: Set[MailSink]
 
-    def add(self, sink):   # type: (MailSink) -> None
+    def add(self, sink: "MailSink") -> None:
         self.mail_sinks.add(sink)
 
-    def __enter__(self):
-        # type: () -> MailSinkGuard
+    def __enter__(self) -> "MailSinkGuard":
         return self
 
-    def __exit__(self, exc_type, exc_value, etraceback):
-        # type: (Optional[Type[BaseException]], Optional[Exception], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[Exception]", etraceback: "Optional[TracebackType]") -> None:
         for mail_sink in self.mail_sinks:
             mail_sink.stop()
 
@@ -89,26 +86,22 @@ class MailSink:
     >>>     <do some stuff>
     """
 
-    def __init__(self, address, port, filename=None, target_dir=None, fqdn=None):
-        # type: (str, int, Optional[str], Optional[str], Optional[str]) -> None
+    def __init__(self, address: str, port: int, filename: "Optional[str]"=None, target_dir: "Optional[str]"=None, fqdn: "Optional[str]"=None) -> None:
         self.address = address
         self.port = port
         self.filename = filename
         self.target_dir = target_dir
-        self.process = None  # type: Optional[subprocess.Popen]
+        self.process: "Optional[subprocess.Popen]" = None
         self.fqdn = fqdn
 
-    def __enter__(self):
-        # type: () -> MailSink
+    def __enter__(self) -> "MailSink":
         self.start()
         return self
 
-    def __exit__(self, exc_type, exc_value, etraceback):
-        # type: (Optional[Type[BaseException]], Optional[Exception], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[Exception]", etraceback: "Optional[TracebackType]") -> None:
         self.stop()
 
-    def start(self):
-        # type: () -> None
+    def start(self) -> None:
         print(f'*** Starting SMTPSink at {self.address}:{self.port}')
         cmd = ['/usr/sbin/smtp-sink']  # use postfix' smtp-sink tool
         if self.filename is not None:
@@ -126,8 +119,7 @@ class MailSink:
         print(f'*** {cmd!r}')
         self.process = subprocess.Popen(cmd, stderr=sys.stdout, stdout=sys.stdout)
 
-    def stop(self):
-        # type: () -> None
+    def stop(self) -> None:
         if self.process is not None:
             self.process.terminate()
             time.sleep(1)

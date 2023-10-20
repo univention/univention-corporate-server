@@ -53,8 +53,7 @@ SRV_RECORDS = [
 ]
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     univention.admin.modules.update()
 
     configRegistry = univention.config_registry.ConfigRegistry()

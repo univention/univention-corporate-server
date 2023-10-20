@@ -50,13 +50,11 @@ class ScriptError(Exception):
     pass
 
 
-def error(msg):
-    # type: (str) -> NoReturn
+def error(msg: str) -> "NoReturn":
     raise ScriptError(msg)
 
 
-def get_writable_udm(binddn=None, bindpwdfile=None):
-    # type: (Optional[str], Optional[str]) -> univention.udm.udm.UDM
+def get_writable_udm(binddn: "Optional[str]"=None, bindpwdfile: "Optional[str]"=None) -> "univention.udm.udm.UDM":
     if binddn:
         if not bindpwdfile:
             error('"binddn" provided but not "bindpwdfile".')
@@ -80,19 +78,16 @@ def get_writable_udm(binddn=None, bindpwdfile=None):
     return udm
 
 
-def get_users(deregistration_timestamp_threshold, binddn=None, bindpwdfile=None):
-    # type: (Optional[str], Optional[str], Optional[str]) -> Iterable[univention.udm.modules.users_user.UsersUserObject]
+def get_users(deregistration_timestamp_threshold: "Optional[str]", binddn: "Optional[str]"=None, bindpwdfile: "Optional[str]"=None) -> "Iterable[univention.udm.modules.users_user.UsersUserObject]":
     udm = get_writable_udm(binddn, bindpwdfile)
     return udm.get('users/user').search(filter_s=filter_format('(&(univentionDeregisteredThroughSelfService=TRUE)(univentionDeregistrationTimestamp<=%s))', (deregistration_timestamp_threshold,)))
 
 
-def setup_logging(filename=None):
-    # type: (Optional[str]) -> None
+def setup_logging(filename: "Optional[str]"=None) -> None:
     logging.basicConfig(filename=filename, level=logging.INFO, format='%(levelname)s: %(message)s')
 
 
-def main(args):
-    # type: (argparse.Namespace) -> None
+def main(args: "argparse.Namespace") -> None:
     setup_logging(args.logfile)
     now = datetime.datetime.utcnow()
     dt = datetime.timedelta(
@@ -115,8 +110,7 @@ def main(args):
         logging.info('No users need to be deleted')
 
 
-def parse_args(args=None):
-    # type: (Optional[List[str]]) -> argparse.Namespace
+def parse_args(args: "Optional[List[str]]"=None) -> "argparse.Namespace":
     parser = argparse.ArgumentParser(description='Delete users/user objects with univentionDeregisteredThroughSelfService=TRUE whose univentionDeregistrationTimestamp is older than specified timedelta')
     parser.add_argument("--dry-run", action="store_true", help='Only log the users that would be deleted')
     parser.add_argument("--logfile", help='Path to a logfile')

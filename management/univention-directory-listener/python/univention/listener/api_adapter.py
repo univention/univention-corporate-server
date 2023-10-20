@@ -51,24 +51,21 @@ class ListenerModuleAdapter(object):
             globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
     """
 
-    def __init__(self, module_configuration, *args, **kwargs):
-        # type: (ListenerModuleConfiguration, *Any, **Any) -> None
+    def __init__(self, module_configuration: "ListenerModuleConfiguration", *args: "Any", **kwargs: "Any") -> None:
         """:param ListenerModuleConfiguration module_configuration: configuration object"""
         self.config = module_configuration
-        self._ldap_cred = {}  # type: Dict[str, str]
-        self._module_handler_obj = None  # type: Optional[ListenerModuleHandler]
-        self._saved_old = {}  # type: Mapping[str, Sequence[bytes]]
-        self._saved_old_dn = None  # type: Optional[str]
+        self._ldap_cred: "Dict[str, str]" = {}
+        self._module_handler_obj: "Optional[ListenerModuleHandler]" = None
+        self._saved_old: "Mapping[str, Sequence[bytes]]" = {}
+        self._saved_old_dn: "Optional[str]" = None
         self._rename = False
         self._renamed = False
         self._run_checks()
 
-    def _run_checks(self):
-        # type: () -> None
+    def _run_checks(self) -> None:
         pass
 
-    def get_globals(self):
-        # type: () -> Dict[str, Any]
+    def get_globals(self) -> "Dict[str, Any]":
         """
         Returns the variables to be written to the module namespace, that
         make up the legacy listener module interface.
@@ -105,8 +102,7 @@ class ListenerModuleAdapter(object):
             "setdata": setdata,
         }
 
-    def _setdata(self, key, value):
-        # type: (str, str) -> None
+    def _setdata(self, key: str, value: str) -> None:
         """
         Store LDAP connection credentials passes by the listener (one by one)
         to the listener module. Passes them to the handler object once they
@@ -126,15 +122,13 @@ class ListenerModuleAdapter(object):
             self._ldap_cred.clear()
 
     @property
-    def _module_handler(self):
-        # type: () -> ListenerModuleHandler
+    def _module_handler(self) -> "ListenerModuleHandler":
         """Make sure to not create more than one instance of a listener module."""
         if not self._module_handler_obj:
             self._module_handler_obj = self.config.get_listener_module_instance()
         return self._module_handler_obj
 
-    def _handler(self, dn, new, old, command):
-        # type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], str) -> None
+    def _handler(self, dn: str, new: "Mapping[str, Sequence[bytes]]", old: "Mapping[str, Sequence[bytes]]", command: str) -> None:
         """
         Function called by listener when a LDAP object matching the filter is
         created/modified/moved/deleted.
@@ -172,18 +166,14 @@ class ListenerModuleAdapter(object):
             exc_type, exc_value, exc_traceback = sys.exc_info()
             self._module_handler.error_handler(dn, old, new, command, exc_type, exc_value, exc_traceback)
 
-    def _lazy_initialize(self):
-        # type: () -> None
+    def _lazy_initialize(self) -> None:
         return self._module_handler.initialize()
 
-    def _lazy_clean(self):
-        # type: () -> None
+    def _lazy_clean(self) -> None:
         return self._module_handler.clean()
 
-    def _lazy_pre_run(self):
-        # type: () -> None
+    def _lazy_pre_run(self) -> None:
         return self._module_handler.pre_run()
 
-    def _lazy_post_run(self):
-        # type: () -> None
+    def _lazy_post_run(self) -> None:
         return self._module_handler.post_run()

@@ -21,7 +21,7 @@ from essential.mailclient import MailClient_SSL
 TIMEOUT_MAIL = 10
 
 
-def main():  # type: () -> None
+def main() -> None:
     if utils.package_installed('univention-samba4'):
         print('Skip test case in case Samba 4 is installed, see https://forge.univention.org/bugzilla/show_bug.cgi?id=46191')
         sys.exit(137)

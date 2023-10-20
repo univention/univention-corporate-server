@@ -44,8 +44,7 @@ class Error(SystemExit):
     pass
 
 
-def make_parent_dir(path):
-    # type: (str) -> None
+def make_parent_dir(path: str) -> None:
     """
     Create parent directories for file.
 
@@ -59,8 +58,7 @@ def make_parent_dir(path):
             raise
 
 
-def call(*argv, **kwargs):
-    # type: (*str, **Any) -> int
+def call(*argv: str, **kwargs: "Any") -> int:
     """
     Execute argv and wait.
 

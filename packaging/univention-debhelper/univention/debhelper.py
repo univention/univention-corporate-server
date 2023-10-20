@@ -45,8 +45,7 @@ except ImportError:
     pass
 
 
-def doIt(*argv):
-    # type: (*str) -> int
+def doIt(*argv: str) -> int:
     """
     Execute argv and wait.
 
@@ -60,8 +59,7 @@ def doIt(*argv):
     return subprocess.check_call(argv)
 
 
-def binary_packages():
-    # type: () -> List[str]
+def binary_packages() -> "List[str]":
     """
     Get list of binary packages from debian/control file.
 
@@ -79,8 +77,7 @@ def binary_packages():
     return packages
 
 
-def parseRfc822(f):
-    # type: (str) -> List[Dict[str, List[str]]]
+def parseRfc822(f: str) -> "List[Dict[str, List[str]]]":
     r"""
     Parses string `f` as a :rfc:`822` conforming file and returns list of sections, each a dict mapping keys to lists of values.
     Splits file into multiple sections separated by blank line.
@@ -101,8 +98,8 @@ def parseRfc822(f):
     >>> parseRfc822('\n\n')
     []
     """
-    res = []  # type: List[Dict[str, List[str]]]
-    ent = {}  # type: Dict[str, List[str]]
+    res: "List[Dict[str, List[str]]]" = []
+    ent: "Dict[str, List[str]]" = {}
     for line in f.splitlines():
         if line:
             try:
@@ -121,8 +118,7 @@ def parseRfc822(f):
     return res
 
 
-def parser_dh_sequence(parser, argv=None):
-    # type: (ArgumentParser, Optional[Sequence[str]]) -> Namespace
+def parser_dh_sequence(parser: "ArgumentParser", argv: "Optional[Sequence[str]]"=None) -> "Namespace":
     """
     Add common argument for Debian helper sequence.
 

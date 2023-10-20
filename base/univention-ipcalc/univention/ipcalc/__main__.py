@@ -41,8 +41,7 @@ from typing import List, Optional  # noqa: F401
 from univention import ipcalc
 
 
-def parse_options(args=None):
-    # type: (Optional[List[str]]) -> Namespace
+def parse_options(args: "Optional[List[str]]"=None) -> "Namespace":
     """Parse command line options."""
     epilog = 'Calculate network values from network address for DNS records.'
     parser = ArgumentParser(epilog=epilog)
@@ -76,8 +75,7 @@ def parse_options(args=None):
     return opt
 
 
-def main(args=None):
-    # type: (Optional[List[str]]) -> None
+def main(args: "Optional[List[str]]"=None) -> None:
     """Calculate IP address parameters-"""
     options = parse_options(args)
 

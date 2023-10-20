@@ -173,16 +173,13 @@ class object(univention.admin.handlers.simplePolicy):
         self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
         self.polinfo = self._post_unmap(self.polinfo, values)
 
-    def _ucr_hexlify(self, key_name):
-        # type: (str) -> str
+    def _ucr_hexlify(self, key_name: str) -> str:
         return '%s%s' % (self.UCR_HEX, codecs.encode(key_name.encode('utf-8'), 'hex').decode('ASCII'))
 
-    def _is_ucr_hex(self, attr_name):
-        # type: (str) -> bool
+    def _is_ucr_hex(self, attr_name: str) -> bool:
         return attr_name.startswith(self.UCR_HEX)
 
-    def _ucr_unhexlify(self, attr_name):
-        # type: (str) -> str
+    def _ucr_unhexlify(self, attr_name: str) -> str:
         return codecs.decode(attr_name[len(self.UCR_HEX):], 'hex').decode('UTF-8')
 
 

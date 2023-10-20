@@ -53,8 +53,7 @@ class LicenseNotFound(LicenseCheckError):
     """The license cannot be found in LDAP"""
 
 
-def is_CSP_license(lo=None):
-    # type: (Optional[univention.uldap.acceess]) -> bool
+def is_CSP_license(lo: "Optional[univention.uldap.acceess]"=None) -> bool:
     """
     Function to detect if installed license is a cloud service provider license (CSP).
 

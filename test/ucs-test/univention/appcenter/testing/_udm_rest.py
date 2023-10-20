@@ -66,8 +66,7 @@ else:
 
 class HTTPError(Exception):
 
-    def __init__(self, code, message, response):
-        # type: (int, str, Optional[requests.Response]) -> None
+    def __init__(self, code: int, message: str, response: "Optional[requests.Response]") -> None:
         self.code = code
         self.response = response
         super().__init__(message)
@@ -119,8 +118,7 @@ class _NoRelation(Exception):
 
 class Response:
 
-    def __init__(self, response, data, uri):
-        # type: (requests.Response, Any, str) -> None
+    def __init__(self, response: "requests.Response", data: "Any", uri: str) -> None:
         self.response = response
         self.data = data
         self.uri = uri
@@ -128,8 +126,7 @@ class Response:
 
 class Session:
 
-    def __init__(self, credentials, language='en-US', reconnect=True, user_agent='univention.lib/1.0', enable_caching=False):
-        # type: (UDM, str, bool, str, bool) -> None
+    def __init__(self, credentials: "UDM", language: str='en-US', reconnect: bool=True, user_agent: str='univention.lib/1.0', enable_caching: bool=False) -> None:
         self.language = language
         self.credentials = credentials
         self.reconnect = reconnect
@@ -142,8 +139,7 @@ class Session:
         }
         self.session = self.create_session()
 
-    def create_session(self):
-        # type: () -> requests.Session
+    def create_session(self) -> "requests.Session":
         sess = requests.session()
         sess.auth = (self.credentials.username, self.credentials.password)
         if not self.enable_caching:
@@ -156,8 +152,7 @@ class Session:
             sess = CacheControl(sess)
         return sess
 
-    def get_method(self, method):
-        # type: (str) -> Callable[..., requests.Response]
+    def get_method(self, method: str) -> "Callable[..., requests.Response]":
         sess = self.session
         return {
             'GET': sess.get,
@@ -168,12 +163,10 @@ class Session:
             'OPTIONS': sess.options,
         }.get(method.upper(), sess.get)
 
-    def request(self, method, uri, data=None, expect_json=False, **headers):
-        # type: (str, str, Dict, bool, **str) -> Any
+    def request(self, method: str, uri: str, data: "Dict"=None, expect_json: bool=False, **headers: str) -> "Any":
         return self.make_request(method, uri, data, expect_json=expect_json, **headers).data
 
-    def make_request(self, method, uri, data=None, expect_json=False, **headers):
-        # type: (str, str, Dict, bool, **str) -> Response
+    def make_request(self, method: str, uri: str, data: "Dict"=None, expect_json: bool=False, **headers: str) -> "Response":
         if method in ('GET', 'HEAD'):
             params = data
             json = None
@@ -181,8 +174,7 @@ class Session:
             params = None
             json = data
 
-        def doit():
-            # type: () -> Response
+        def doit() -> "Response":
             try:
                 response = self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers))
             except requests.exceptions.ConnectionError as exc:
@@ -205,8 +197,7 @@ class Session:
 
         return doit()
 
-    def eval_response(self, response, expect_json=False):
-        # type: (requests.Response, bool) -> Any
+    def eval_response(self, response: "requests.Response", expect_json: bool=False) -> "Any":
         if response.status_code >= 299:
             msg = f'{response.request.method} {response.url}: {response.status_code}'
             try:
@@ -229,8 +220,7 @@ class Session:
             raise UnexpectedResponse(response.text)
         return response.text
 
-    def get_relations(self, entry, relation, name=None, template=None):
-        # type: (Dict, str, Optional[str], Optional[Dict[str, Any]]) -> Iterator[Dict[str, str]]
+    def get_relations(self, entry: "Dict", relation: str, name: "Optional[str]"=None, template: "Optional[Dict[str, Any]]"=None) -> "Iterator[Dict[str, str]]":
         links = entry.get('_links', {})
         links = links.get(relation, [None])
         links = links if links and isinstance(links, list) else [links]
@@ -242,15 +232,13 @@ class Session:
                 link['href'] = uritemplate.expand(link['href'], template)
             yield link
 
-    def get_relation(self, entry, relation, name=None, template=None):
-        # type: (Dict, str, Optional[str], Optional[Dict[str, Any]]) -> Dict[str, str]
+    def get_relation(self, entry: "Dict", relation: str, name: "Optional[str]"=None, template: "Optional[Dict[str, Any]]"=None) -> "Dict[str, str]":
         try:
             return next(self.get_relations(entry, relation, name, template))
         except StopIteration:
             raise _NoRelation(relation)
 
-    def resolve_relations(self, entry, relation, name=None, template=None):
-        # type: (Dict, str, Optional[str], Optional[Dict[str, Any]]) -> Iterator[Any]
+    def resolve_relations(self, entry: "Dict", relation: str, name: "Optional[str]"=None, template: "Optional[Dict[str, Any]]"=None) -> "Iterator[Any]":
         embedded = entry.get('_embedded', {})
         if isinstance(embedded, dict) and relation in embedded:
             yield from embedded[relation]
@@ -259,87 +247,73 @@ class Session:
         for rel in self.get_relations(entry, relation, name, template):
             yield self.make_request('GET', rel['href']).data
 
-    def resolve_relation(self, entry, relation, name=None, template=None):
-        # type: (Dict, str, Optional[str], Optional[Dict[str, Any]]) -> Any
+    def resolve_relation(self, entry: "Dict", relation: str, name: "Optional[str]"=None, template: "Optional[Dict[str, Any]]"=None) -> "Any":
         return next(self.resolve_relations(entry, relation, name, template))
 
 
 class Client:
 
-    def __init__(self, client):
-        # type: (Session) -> None
+    def __init__(self, client: "Session") -> None:
         self.client = client
 
 
 class UDM(Client):
 
     @classmethod
-    def http(cls, uri, username, password):
-        # type: (str, str, str) -> UDM
+    def http(cls, uri: str, username: str, password: str) -> "UDM":
         return cls(uri, username, password)
 
-    def __init__(self, uri, username, password, *args, **kwargs):
-        # type: (str, str, str, *Any, **Any) -> None
+    def __init__(self, uri: str, username: str, password: str, *args: "Any", **kwargs: "Any") -> None:
         self.uri = uri
         self.username = username
         self.password = password
-        self._api_version = None  # type: Optional[str]
-        self.entry = None  # type: Any # Optional[Dict]
+        self._api_version: "Optional[str]" = None
+        self.entry: "Any" = None  # Optional[Dict]
         super().__init__(Session(self, *args, **kwargs))
 
-    def load(self):
-        # type: () -> None
+    def load(self) -> None:
         # FIXME: use HTTP caching instead of memory caching
         if self.entry is None:
             self.reload()
 
-    def reload(self):
-        # type: () -> None
+    def reload(self) -> None:
         self.entry = self.client.request('GET', self.uri, expect_json=True)
 
-    def get_ldap_base(self):
-        # type: () -> Optional[str]
+    def get_ldap_base(self) -> "Optional[str]":
         self.load()
         return Object.from_data(self, self.client.resolve_relation(self.entry, 'udm:ldap-base')).dn
 
-    def modules(self, name=None):
-        # type: (Optional[str]) -> Iterator[Module]
+    def modules(self, name: "Optional[str]"=None) -> "Iterator[Module]":
         self.load()
         for module in self.client.resolve_relations(self.entry, 'udm:object-modules'):
             for module_info in self.client.get_relations(module, 'udm:object-types', name):
                 yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
-    def version(self, api_version):
-        # type: (str) -> UDM
+    def version(self, api_version: str) -> "UDM":
         self._api_version = api_version
         return self
 
-    def obj_by_dn(self, dn):
-        # type: (str) -> Object
+    def obj_by_dn(self, dn: str) -> "Object":
         self.load()
         return Object.from_data(self, self.client.resolve_relation(self.entry, 'udm:object/get-by-dn', template={'dn': dn}))
 
-    def obj_by_uuid(self, uuid):
-        # type: (str) -> Object
+    def obj_by_uuid(self, uuid: str) -> "Object":
         self.load()
         return Object.from_data(self, self.client.resolve_relation(self.entry, 'udm:object/get-by-uuid', template={'uuid': uuid}))
 
-    def get(self, name):
-        # type: (str) -> Optional[Module]
+    def get(self, name: str) -> "Optional[Module]":
         for module in self.modules(name):
             return module
 
         return None
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return f'UDM(uri={self.uri}, username={self.username}, password=****, version={self._api_version})'
 
 
 class Module(Client):
 
-    def __init__(self, udm, uri, name, title, *args, **kwargs):
-        # type: (UDM, str, str, str, *Any, **Any) -> None
+    def __init__(self, udm: "UDM", uri: str, name: str, title: str, *args: "Any", **kwargs: "Any") -> None:
         super().__init__(udm.client, *args, **kwargs)
         self.udm = udm
         self.uri = uri
@@ -347,67 +321,57 @@ class Module(Client):
         self.password = udm.password
         self.name = name
         self.title = title
-        self.relations = {}  # type: Dict
+        self.relations: "Dict" = {}
 
-    def load_relations(self):
-        # type: () -> None
+    def load_relations(self) -> None:
         if self.relations:
             return
         self.relations = self.client.request('GET', self.uri)
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return f'Module(uri={self.uri}, name={self.name})'
 
-    def new(self, position=None, superordinate=None, template=None):
-        # type: (Optional[str], Optional[str], Optional[Dict[str, Any]]) -> Object
+    def new(self, position: "Optional[str]"=None, superordinate: "Optional[str]"=None, template: "Optional[Dict[str, Any]]"=None) -> "Object":
         self.load_relations()
         data = {'position': position, 'superordinate': superordinate, 'template': template}
         resp = self.client.resolve_relation(self.relations, 'create-form', template=data)
         return Object.from_data(self.udm, resp)
 
-    def get(self, dn):
-        # type: (str) -> Optional[Object]
+    def get(self, dn: str) -> "Optional[Object]":
         # TODO: use a link relation instead of a search
         for obj in self._search_closed(position=dn, scope='base'):
             return obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    def get_by_entry_uuid(self, uuid):
-        # type: (str) -> Optional[Object]
+    def get_by_entry_uuid(self, uuid: str) -> "Optional[Object]":
         # TODO: use a link relation instead of a search
         # return self.udm.get_by_uuid(uuid)
         for obj in self._search_closed(filter={'entryUUID': uuid}, scope='base'):
             return obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    def get_by_id(self, dn):
-        # type: (str) -> Optional[Object]
+    def get_by_id(self, dn: str) -> "Optional[Object]":
         # TODO: Needed?
         raise NotImplementedError()
 
-    def search(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None, opened=False):
-        # type: (Union[Dict[str, str], str, bytes, None], Optional[str], Optional[str], bool, Optional[str], bool) -> Iterator[Union[Object, ShallowObject]]
+    def search(self, filter: "Union[Dict[str, str], str, bytes, None]"=None, position: "Optional[str]"=None, scope: "Optional[str]"='sub', hidden: bool=False, superordinate: "Optional[str]"=None, opened: bool=False) -> "Iterator[Union[Object, ShallowObject]]":
         if opened:
             return self._search_opened(filter, position, scope, hidden, superordinate)
         else:
             return self._search_closed(filter, position, scope, hidden, superordinate)
 
-    def _search_opened(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None):
-        # type: (Union[Dict[str, str], str, bytes, None], Optional[str], Optional[str], bool, Optional[str]) -> Iterator[Object]
+    def _search_opened(self, filter: "Union[Dict[str, str], str, bytes, None]"=None, position: "Optional[str]"=None, scope: "Optional[str]"='sub', hidden: bool=False, superordinate: "Optional[str]"=None) -> "Iterator[Object]":
         for obj in self._search(filter, position, scope, hidden, superordinate, True):
             yield Object.from_data(self.udm, obj)  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 
-    def _search_closed(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None):
-        # type: (Union[Dict[str, str], str, bytes, None], Optional[str], Optional[str], bool, Optional[str]) -> Iterator[ShallowObject]
+    def _search_closed(self, filter: "Union[Dict[str, str], str, bytes, None]"=None, position: "Optional[str]"=None, scope: "Optional[str]"='sub', hidden: bool=False, superordinate: "Optional[str]"=None) -> "Iterator[ShallowObject]":
         for obj in self._search(filter, position, scope, hidden, superordinate, False):
             objself = self.client.get_relation(obj, 'self')
             uri = objself['href']
             dn = objself['name']
             yield ShallowObject(self.udm, dn, uri)
 
-    def _search(self, filter=None, position=None, scope='sub', hidden=False, superordinate=None, opened=False):
-        # type: (Union[Dict[str, str], str, bytes, None], Optional[str], Optional[str], bool, Optional[str], bool) -> Iterator[Any]
+    def _search(self, filter: "Union[Dict[str, str], str, bytes, None]"=None, position: "Optional[str]"=None, scope: "Optional[str]"='sub', hidden: bool=False, superordinate: "Optional[str]"=None, opened: bool=False) -> "Iterator[Any]":
         data = {
             'position': position,
             'scope': scope,
@@ -429,31 +393,26 @@ class Module(Client):
 
 class ShallowObject(Client):
 
-    def __init__(self, udm, dn, uri, *args, **kwargs):
-        # type: (UDM, Optional[str], str, *Any, **Any) -> None
+    def __init__(self, udm: "UDM", dn: "Optional[str]", uri: str, *args: "Any", **kwargs: "Any") -> None:
         super().__init__(udm.client, *args, **kwargs)
         self.dn = dn
         self.udm = udm
         self.uri = uri
 
-    def open(self):
-        # type: () -> Object
+    def open(self) -> "Object":
         return Object.from_response(self.udm, self.client.make_request('GET', self.uri))
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return f'ShallowObject(dn={self.dn})'
 
 
 class References:
 
-    def __init__(self, obj=None):
-        # type: (Optional[Object]) -> None
+    def __init__(self, obj: "Optional[Object]"=None) -> None:
         self.obj = obj
         self.udm = self.obj.udm if self.obj is not None else None
 
-    def __getitem__(self, item):
-        # type: (str) -> List[ShallowObject]
+    def __getitem__(self, item: str) -> "List[ShallowObject]":
         assert self.obj
         assert self.udm
         return [
@@ -467,8 +426,7 @@ class References:
         except AttributeError:
             return self[key]
 
-    def __get__(self, obj, cls=None):
-        # type: (Any, Type) -> References
+    def __get__(self, obj: "Any", cls: "Type"=None) -> "References":
         return type(self)(obj)
 
 
@@ -483,13 +441,11 @@ class Object(Client):
         return self.udm.get(self.object_type)
 
     @property
-    def object_type(self):
-        # type: () -> str
+    def object_type(self) -> str:
         return self.representation['objectType']
 
     @property
-    def dn(self):
-        # type: () -> Optional[str]
+    def dn(self) -> "Optional[str]":
         return self.representation.get('dn')
 
     @property
@@ -497,18 +453,15 @@ class Object(Client):
         return self.representation['properties']
 
     @property
-    def options(self):
-        # type: () -> Dict
+    def options(self) -> "Dict":
         return self.representation.get('options', {})
 
     @property
-    def policies(self):
-        # type: () -> Dict
+    def policies(self) -> "Dict":
         return self.representation.get('policies', {})
 
     @property
-    def superordinate(self):
-        # type: () -> Optional[str]
+    def superordinate(self) -> "Optional[str]":
         return self.representation.get('superordinate')
 
     @superordinate.setter
@@ -517,8 +470,7 @@ class Object(Client):
         self.representation['superordinate'] = superordinate
 
     @property
-    def position(self):
-        # type: () -> Optional[str]
+    def position(self) -> "Optional[str]":
         return self.representation.get('position')
 
     @position.setter
@@ -527,8 +479,7 @@ class Object(Client):
         self.representation['position'] = position
 
     @property
-    def uri(self):
-        # type: () -> Optional[str]
+    def uri(self) -> "Optional[str]":
         try:
             uri = self.client.get_relation(self.hal, 'self')
         except _NoRelation:
@@ -538,18 +489,15 @@ class Object(Client):
         return self.representation.get('uri')
 
     @classmethod
-    def from_response(cls, udm, response):
-        # type: (UDM, Response) -> Object
+    def from_response(cls, udm: "UDM", response: "Response") -> "Object":
         return cls.from_data(udm, response.data, response.response.headers)
 
     @classmethod
-    def from_data(cls, udm, entry, headers=None):
-        # type: (UDM, Dict, Optional[Mapping[str, str]]) -> Object
+    def from_data(cls, udm: "UDM", entry: "Dict", headers: "Optional[Mapping[str, str]]"=None) -> "Object":
         headers = headers or {}
         return cls(udm, entry, etag=headers.get('Etag'), last_modified=headers.get('Last-Modified'))
 
-    def __init__(self, udm, representation, etag=None, last_modified=None, *args, **kwargs):
-        # type: (UDM, Dict, Optional[str], Optional[str], *Any, **Any) -> None
+    def __init__(self, udm: "UDM", representation: "Dict", etag: "Optional[str]"=None, last_modified: "Optional[str]"=None, *args: "Any", **kwargs: "Any") -> None:
         super().__init__(udm.client, *args, **kwargs)
         self.udm = udm
         self.representation = representation
@@ -560,12 +508,10 @@ class Object(Client):
         self.etag = etag
         self.last_modified = last_modified
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return f'Object(module={self.object_type}, dn={self.dn}, uri={self.uri})'
 
-    def reload(self):
-        # type: () -> None
+    def reload(self) -> None:
         uri = self.client.get_relation(self.hal, 'self')
         if uri:
             obj = ShallowObject(self.udm, self.dn, uri['href']).open()
@@ -573,25 +519,21 @@ class Object(Client):
             obj = self.module.get(self.dn)
         self._copy_from_obj(obj)
 
-    def save(self, reload=True):
-        # type: (bool) -> Response
+    def save(self, reload: bool=True) -> "Response":
         if self.dn:
             return self._modify(reload)
         else:
             return self._create(reload)
 
-    def delete(self, remove_referring=False):
-        # type: (bool) -> bytes
+    def delete(self, remove_referring: bool=False) -> bytes:
         assert self.uri
         return self.client.request('DELETE', self.uri)
 
-    def move(self, position):
-        # type: (str) -> None
+    def move(self, position: str) -> None:
         self.position = position
         self.save()
 
-    def _modify(self, reload=True):
-        # type: (bool) -> Response
+    def _modify(self, reload: bool=True) -> "Response":
         assert self.uri
         headers = {key: value for key, value in {
             'If-Unmodified-Since': self.last_modified,
@@ -603,16 +545,14 @@ class Object(Client):
         self._reload_from_response(response, reload)
         return response
 
-    def _create(self, reload=True):
-        # type: (bool) -> Response
+    def _create(self, reload: bool=True) -> "Response":
         uri = self.client.get_relation(self.hal, 'create')
         response = self.client.make_request('POST', uri['href'], data=self.representation)
         response = self._follow_redirection(response)
         self._reload_from_response(response, reload)
         return response
 
-    def _reload_from_response(self, response, reload):
-        # type: (Response, bool) -> None
+    def _reload_from_response(self, response: "Response", reload: bool) -> None:
         if 200 <= response.response.status_code <= 299 and 'Location' in response.response.headers:
             uri = response.response.headers['Location']
             obj = ShallowObject(self.udm, None, uri)
@@ -621,16 +561,14 @@ class Object(Client):
         elif reload:
             self.reload()
 
-    def _follow_redirection(self, response):
-        # type: (Response) -> Response
+    def _follow_redirection(self, response: "Response") -> "Response":
         while 300 <= response.response.status_code <= 399 and 'Location' in response.response.headers:
             if response.response.headers.get('Retry-After', '').isdigit():
                 time.sleep(min(30, max(0, int(response.response.headers['Retry-After']) - 1)))
             response = self.client.make_request('GET', response.response.headers['Location'])
         return response
 
-    def _copy_from_obj(self, obj):
-        # type: (Object) -> None
+    def _copy_from_obj(self, obj: "Object") -> None:
         self.udm = obj.udm
         self.representation = copy.deepcopy(obj.representation)
         self.hal = copy.deepcopy(obj.hal)

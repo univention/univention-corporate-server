@@ -108,7 +108,7 @@ def add_dhcp_options(module_name):
     ))
 
 
-def check_range_overlap(ranges):  # type: (Sequence[Range]) -> None
+def check_range_overlap(ranges: "Sequence[Range]") -> None:
     """
     Check IPv4 address ranges for overlapping
 
@@ -126,7 +126,7 @@ def check_range_overlap(ranges):  # type: (Sequence[Range]) -> None
     ...
     rangesOverlapping: 192.0.2.0-192.0.2.127; 192.0.2.0-192.0.2.255
     """
-    prev = []  # type: List[Range]
+    prev: "List[Range]" = []
     for r1 in ranges:
         (s1, e1) = r1
         assert s1 <= e1  # already checked by syntax.IPv4_AddressRange
@@ -145,7 +145,7 @@ def check_range_overlap(ranges):  # type: (Sequence[Range]) -> None
         prev.append(r1)
 
 
-def check_range_subnet(subnet, ranges):  # type: (IPv4Network, Sequence[Range]) -> None
+def check_range_subnet(subnet: "IPv4Network", ranges: "Sequence[Range]") -> None:
     """
     Check IPv4 address ranges are inside the given network.
 

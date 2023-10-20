@@ -40,8 +40,7 @@ from _pytest.config import Config  # noqa: F401
 from _pytest.config.argparsing import Parser  # noqa: F401
 
 
-def pytest_addoption(parser):
-    # type: (Parser) -> None
+def pytest_addoption(parser: "Parser") -> None:
     parser.addoption(
         "--ucs-test-tags-prohibited",
         action="append",
@@ -82,23 +81,20 @@ def pytest_addoption(parser):
     )
 
 
-def pytest_configure(config):
-    # type: (Config) -> None
+def pytest_configure(config: "Config") -> None:
     config.addinivalue_line("markers", "slow: test case is slow")
     config.addinivalue_line("markers", "tags(name): tag a test case")
     config.addinivalue_line("markers", "roles(names): specify roles")
     config.addinivalue_line("markers", "exposure(exposure): run dangerous tests?")
 
 
-def pytest_runtest_setup(item):
-    # type: (pytest.Item) -> None
+def pytest_runtest_setup(item: "pytest.Item") -> None:
     check_tags(item)
     check_roles(item)
     check_exposure(item)
 
 
-def check_tags(item):
-    # type: (pytest.Item) -> None
+def check_tags(item: "pytest.Item") -> None:
     tags_required = set(item.config.getoption("--ucs-test-tags-required") or [])
     tags_prohibited = set(item.config.getoption("--ucs-test-tags-prohibited") or [])
     tags = {
@@ -116,8 +112,7 @@ def check_tags(item):
             pytest.skip(f'De-selected by tag: {" ".join(tags_required)}')
 
 
-def check_roles(item):
-    # type: (pytest.Item) -> None
+def check_roles(item: "pytest.Item") -> None:
     from univention.config_registry import ucr
     from univention.testing.data import CheckRoles
     roles_required = {
@@ -142,8 +137,7 @@ def check_roles(item):
         pytest.skip(f'Wrong role: {ucr["server/role"]} not in ({",".join(roles)})')
 
 
-def check_exposure(item):
-    # type: (pytest.Item) -> None
+def check_exposure(item: "pytest.Item") -> None:
     from univention.testing.data import CheckExposure
     required_exposure = item.config.getoption("--ucs-test-exposure")
     if not required_exposure:

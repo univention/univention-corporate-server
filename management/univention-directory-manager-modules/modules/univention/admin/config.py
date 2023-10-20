@@ -55,8 +55,7 @@ class config(object):
             use `None` instead
     """
 
-    def __init__(self, host=''):
-        # type: (str) -> None
+    def __init__(self, host: str='') -> None:
         base = univention.admin.uldap.getBaseDN(host)
         self.data = {
             'ldap/base': base,
@@ -81,8 +80,7 @@ class config(object):
         return self.data.items()
 
 
-def getDefaultContainer(lo, module):
-    # type: (univention.admin.uldap.access, Union[ModuleType, str]) -> Optional[str]
+def getDefaultContainer(lo: "univention.admin.uldap.access", module: "Union[ModuleType, str]") -> "Optional[str]":
     """
     Return any random default container for a UDM module.
 
@@ -102,8 +100,7 @@ def getDefaultContainer(lo, module):
         return None
 
 
-def getDefaultValue(lo, name, position=None):
-    # type: (univention.admin.uldap.access, str, univention.admin.uldap.position) -> Optional[str]
+def getDefaultValue(lo: "univention.admin.uldap.access", name: str, position: "univention.admin.uldap.position"=None) -> "Optional[str]":
     """
     Return the default value for a UDM module.
 

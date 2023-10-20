@@ -23,7 +23,7 @@ import univention.testing.strings as uts
 from univention.testing import utils
 
 
-def random_fqdn(ucr):  # type: (dict) -> str
+def random_fqdn(ucr: dict) -> str:
     return f'{uts.random_name()}.{ucr.get("domainname")}'
 
 

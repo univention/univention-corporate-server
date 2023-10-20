@@ -47,8 +47,7 @@ except ImportError:
     pass
 
 
-def _clean_header(po_path):
-    # type: (str) -> None
+def _clean_header(po_path: str) -> None:
     pof = polib.pofile(po_path)
     pof.header = ""
     pof.metadata.update({
@@ -58,8 +57,7 @@ def _clean_header(po_path):
     pof.save(po_path)
 
 
-def concatenate_po(src_po_path, dest_po_path):
-    # type: (str, str) -> None
+def concatenate_po(src_po_path: str, dest_po_path: str) -> None:
     """
     Append first to second `.po` file.
 
@@ -76,8 +74,7 @@ def concatenate_po(src_po_path, dest_po_path):
     _clean_header(dest_po_path)
 
 
-def create_empty_po(binary_pkg_name, new_po_path):
-    # type: (str, str) -> None
+def create_empty_po(binary_pkg_name: str, new_po_path: str) -> None:
     """
     Create a new empty `.po` file.
 
@@ -101,8 +98,7 @@ def create_empty_po(binary_pkg_name, new_po_path):
     _clean_header(new_po_path)
 
 
-def merge_po(template, translation):
-    # type: (str, str) -> None
+def merge_po(template: str, translation: str) -> None:
     """
     Merge old translation with new template file.
 
@@ -118,8 +114,7 @@ def merge_po(template, translation):
         template)
 
 
-def join_existing(language, output_file, input_files, cwd=os.getcwd()):
-    # type: (str, str, Union[str, List[str]], str) -> None
+def join_existing(language: str, output_file: str, input_files: "Union[str, List[str]]", cwd: str=os.getcwd()) -> None:
     """
     Extract strings from source code and merge into existing translation file.
 
@@ -147,8 +142,7 @@ def join_existing(language, output_file, input_files, cwd=os.getcwd()):
         cwd=cwd)
 
 
-def univention_location_lines(pot_path, abs_path_source_pkg):
-    # type: (str, str) -> None
+def univention_location_lines(pot_path: str, abs_path_source_pkg: str) -> None:
     """
     Convert absolute paths to relative paths.
 

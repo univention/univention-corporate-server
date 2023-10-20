@@ -42,8 +42,7 @@ from univention.ldap_cache.log import log
 CONFIG_FILE = '/usr/share/univention-group-membership-cache/shards.json'
 
 
-def shards_from_config():
-    # type: () -> List[Type[Shard]]
+def shards_from_config() -> "List[Type[Shard]]":
     ret = []  # type: List[Type[Shard]]
     try:
         with open(CONFIG_FILE) as fd:
@@ -67,8 +66,7 @@ def shards_from_config():
 
 
 @contextmanager
-def _writing_config():
-    # type: () -> Iterator[Any]
+def _writing_config() -> "Iterator[Any]":
     try:
         with open(CONFIG_FILE) as fd:
             shards = json.load(fd)
@@ -79,8 +77,7 @@ def _writing_config():
         json.dump(shards, fd, sort_keys=True, indent=4)
 
 
-def add_shard_to_config(db_name, single_value, reverse, key, value, ldap_filter):
-    # type: (str, bool, bool, str, str, str) -> None
+def add_shard_to_config(db_name: str, single_value: bool, reverse: bool, key: str, value: str, ldap_filter: str) -> None:
     with _writing_config() as shards:
         shard_config = {
             'db_name': db_name,
@@ -94,8 +91,7 @@ def add_shard_to_config(db_name, single_value, reverse, key, value, ldap_filter)
             shards.append(shard_config)
 
 
-def rm_shard_from_config(db_name, single_value, reverse, key, value, ldap_filter):
-    # type: (str, bool, bool, str, str, str) -> None
+def rm_shard_from_config(db_name: str, single_value: bool, reverse: bool, key: str, value: str, ldap_filter: str) -> None:
     with _writing_config() as shards:
         try:
             shards.remove({

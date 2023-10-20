@@ -20,21 +20,18 @@ FORBIDDEN_SAMACCOUNTNAME = "\\/[]:;|=,+*?<>@ $."
 SPECIAL_CHARSET_USERNAME = "".join(set(SPECIAL_CHARSET) - set(FORBIDDEN_SAMACCOUNTNAME))
 
 
-def random_string(length=10, alpha=False, numeric=False, charset="", encoding='utf-8'):
-    # type: (int, bool, bool, str, str) -> str
+def random_string(length: int=10, alpha: bool=False, numeric: bool=False, charset: str="", encoding: str='utf-8') -> str:
     return tstrings.random_string(length, alpha, numeric, charset, encoding)
 
 
-def random_bytestring(length=10, alpha=False, numeric=False, charset=""):
-    # type: (int, bool, bool, str) -> bytes
+def random_bytestring(length: int=10, alpha: bool=False, numeric: bool=False, charset: str="") -> bytes:
     string = random_string(length, alpha, numeric, charset)
     if not isinstance(string, bytes):
         return string.encode('utf-8')
     return string
 
 
-def normalize_dn(dn):
-    # type: (str) -> str
+def normalize_dn(dn: str) -> str:
     r"""
     Normalize a given dn. This removes some escaping of special chars in the
     DNs. Note: The CON-LDAP returns DNs with escaping chars, OpenLDAP does not.
@@ -45,15 +42,13 @@ def normalize_dn(dn):
     return ldap.dn.dn2str(ldap.dn.str2dn(dn))
 
 
-def to_unicode(string):
-    # type: (Union[bytes, str]) -> str
+def to_unicode(string: "Union[bytes, str]") -> str:
     if isinstance(string, bytes):
         return string.decode('utf-8')
     return string
 
 
-def restart_univention_cli_server():
-    # type: () -> None
+def restart_univention_cli_server() -> None:
     print("Restarting Univention-CLI-Server")
     subprocess.call(["pkill", "-f", "univention-cli-server"])
 

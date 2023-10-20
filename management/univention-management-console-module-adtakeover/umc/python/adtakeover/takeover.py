@@ -243,7 +243,7 @@ class LicenseInsufficient(TakeoverError):
     default_error_message = _('Insufficient License.')
 
 
-def count_domain_objects_on_server(hostname_or_ip, username, password, progress):  # type: (str, str, str, Progress) -> dict
+def count_domain_objects_on_server(hostname_or_ip: str, username: str, password: str, progress: "Progress") -> dict:
     '''
     Connects to the hostname_or_ip with username/password credentials.
 

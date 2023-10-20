@@ -189,7 +189,7 @@ def main() -> None:
         create_delete_test_user(True)
 
         set_lockout_settings(LOCKOUT_DURATION, LOCKOUT_THRESHOLD)
-        hist = []  # type: List[str]
+        hist: "List[str]" = []
         hist += dump_pwpolicy()
 
         print("# Twiddling thumbs for 30s")  # Why?

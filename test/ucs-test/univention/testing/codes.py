@@ -41,11 +41,11 @@ class TestCodes:
     MESSAGE = {}
     MAX_MESSAGE_LEN = 0
     COLOR = {}
-    EOFS = {  # Error Okay Failure Skip
+    EOFS: "Dict[Optional[int], str]" = {  # Error Okay Failure Skip
         RESULT_OKAY: 'O',
         RESULT_FAIL: 'F',
         RESULT_SKIP: 'S',
-    }  # type: Dict[Optional[int], str]
+    }
     for (code, (eofs, name, msg, color)) in __REASONS.items():
         locals()[name] = code
         MESSAGE[code] = msg

@@ -56,13 +56,11 @@ class RequiredComponentError(UpdaterException):
     :type components: set(str)
     """
 
-    def __init__(self, version, components):
-        # type: (str, Set[str]) -> None
+    def __init__(self, version: str, components: "Set[str]") -> None:
         self.version = version
         self.components = components
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         """
         >>> raise RequiredComponentError('4.0-0', set(('a',)))  # doctest: +IGNORE_EXCEPTION_DETAIL
         Traceback (most recent call last):
@@ -95,8 +93,7 @@ class PreconditionError(UpdaterException):
     univention.updater.errors.PreconditionError: ('preup', 'main', None, 'preup.sh')
     """
 
-    def __init__(self, phase, order, component, script):
-        # type: (str, str, str, str) -> None
+    def __init__(self, phase: str, order: str, component: str, script: str) -> None:
         Exception.__init__(self, phase, order, component, script)
 
 
@@ -110,8 +107,7 @@ class DownloadError(UpdaterException):
     univention.updater.errors.DownloadError: Error downloading file:///preup.sh: 404
     """
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return "Error downloading %s: %d" % self.args
 
 
@@ -125,8 +121,7 @@ class ConfigurationError(UpdaterException):
     univention.updater.errors.ConfigurationError: Configuration error: not found
     """
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return f"Configuration error: {self.args[1]}"
 
 
@@ -140,8 +135,7 @@ class VerificationError(ConfigurationError):
     univention.updater.errors.VerificationError: Verification error: not signed
     """
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return f"Verification error: {self.args[1]}"
 
 
@@ -158,13 +152,11 @@ class CannotResolveComponentServerError(ConfigurationError):
     univention.updater.errors.CannotResolveComponentServerError: Cannot resolve component server for disabled component 'comp' (mirror_list=False).
     """
 
-    def __init__(self, component, for_mirror_list):
-        # type: (str, bool) -> None
+    def __init__(self, component: str, for_mirror_list: bool) -> None:
         self.component = component
         self.for_mirror_list = for_mirror_list
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return f"Cannot resolve component server for disabled component '{self.component}' (mirror_list={self.for_mirror_list})."
 
 
@@ -178,8 +170,7 @@ class ProxyError(ConfigurationError):
     univention.updater.errors.ProxyError: Proxy configuration error: blocked file:///preup.sh
     """
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return f"Proxy configuration error: {self.args[1]} {self.args[0]}"
 
 
@@ -193,6 +184,5 @@ class UnmetDependencyError(UpdaterException):
     univention.updater.errors.UnmetDependencyError: You have unmet dependencies stderr
     """
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return f"You have unmet dependencies {self.args[0]}"

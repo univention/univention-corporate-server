@@ -180,13 +180,13 @@ class object(univention.admin.handlers.simpleLdap):
             for hostdn in self.info.get('assignedHosts', []):
                 try:
                     host = self.lo.get(hostdn, ['associatedDomain', 'cn'], required=True)
-                    cn = host['cn'][0]  # type: bytes
+                    cn: bytes = host['cn'][0]
                 except (univention.admin.uexceptions.noObject, ldap.NO_SUCH_OBJECT):
                     raise univention.admin.uexceptions.valueError(_('The host "%s" does not exists.') % (hostdn,), property='assignedHosts')
                 except KeyError:
                     raise univention.admin.uexceptions.valueError(_('The host "%s" is invalid, it has no "cn" attribute.') % (hostdn,), property='assignedHosts')
 
-                domain = host.get('associatedDomain', [configRegistry.get("domainname").encode('ASCII')])[0]  # type: bytes
+                domain: bytes = host.get('associatedDomain', [configRegistry.get("domainname").encode('ASCII')])[0]
                 hostlist.append(b"%s.%s" % (cn, domain))
 
             ml.insert(0, ('univentionNagiosHostname', self.oldattr.get('univentionNagiosHostname', []), hostlist))

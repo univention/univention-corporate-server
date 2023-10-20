@@ -73,8 +73,7 @@ class UniFileHandler(WatchedFileHandler):
     :py:func:`get_listener_logger`.
     """
 
-    def _open(self):
-        # type: () -> IO[str]
+    def _open(self) -> "IO[str]":
         newly_created = not os.path.exists(self.baseFilename)
 
         try:
@@ -119,13 +118,11 @@ class ModuleHandler(logging.Handler):
         "NOTSET": ud.INFO,
     }
 
-    def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):
-        # type: (int, int) -> None
+    def __init__(self, level: int=logging.NOTSET, udebug_facility: int=ud.LISTENER) -> None:
         self._udebug_facility = udebug_facility
         super(ModuleHandler, self).__init__(level)
 
-    def emit(self, record):
-        # type: (logging.LogRecord) -> None
+    def emit(self, record: "logging.LogRecord") -> None:
         msg = self.format(record)
         if PY2 and isinstance(msg, text_type):
             msg = msg.encode('utf-8')
@@ -169,14 +166,13 @@ UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL = {
 
 LOG_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-_logger_cache = {}  # type: Dict[str, logging.Logger]
-_handler_cache = {}  # type: Dict[str, UniFileHandler]
+_logger_cache: "Dict[str, logging.Logger]" = {}
+_handler_cache: "Dict[str, UniFileHandler]" = {}
 _ucr = ConfigRegistry()
 _ucr.load()
 
 
-def _get_ucr_int(ucr_key, default):
-    # type: (str, int) -> int
+def _get_ucr_int(ucr_key: str, default: int) -> int:
     try:
         return int(_ucr.get(ucr_key, default))
     except ValueError:
@@ -190,8 +186,7 @@ listener_module_root_logger = logging.getLogger('listener module')
 listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str))
 
 
-def get_logger(name, path=None):
-    # type: (str, Optional[str]) -> logging.Logger
+def get_logger(name: str, path: "Optional[str]"=None) -> "logging.Logger":
     """
     Get a logging instance. Caching wrapper for
     :py:func:`get_listener_logger()`.
@@ -227,8 +222,7 @@ def get_logger(name, path=None):
     return _logger_cache[name]
 
 
-def calculate_loglevel(name):
-    # type: (str) -> str
+def calculate_loglevel(name: str) -> str:
     """
     Returns the higher of `listener/debug/level` and `listener/module/<name>/debug/level`
     which is the lower log level.
@@ -242,8 +236,7 @@ def calculate_loglevel(name):
     return UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[min(4, max(0, _listener_debug_level, listener_module_debug_level))]
 
 
-def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatter_kwargs=None):
-    # type: (str, str, Optional[str], Optional[Dict[str, Any]], Optional[Dict[str, Any]]) -> logging.Logger
+def get_listener_logger(name: str, filename: str, level: "Optional[str]"=None, handler_kwargs: "Optional[Dict[str, Any]]"=None, formatter_kwargs: "Optional[Dict[str, Any]]"=None) -> "logging.Logger":
     """
     Get a logger object below the listener module root logger. The logger
     will additionally log to the common `listener.log`.
@@ -307,7 +300,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
         _logger.setLevel(level)
 
     fmt = FILE_LOG_FORMATS[level]
-    fmt_kwargs = {"cls": logging.Formatter, "fmt": fmt, "datefmt": LOG_DATETIME_FORMAT}  # type: Dict[str, Any]
+    fmt_kwargs: "Dict[str, Any]" = {"cls": logging.Formatter, "fmt": fmt, "datefmt": LOG_DATETIME_FORMAT}
     fmt_kwargs.update(formatter_kwargs)
 
     if cache_key in _handler_cache:
@@ -316,7 +309,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
         if getattr(logging, level) < _handler_cache[cache_key].level:
             handler = _handler_cache[cache_key]
             handler.setLevel(level)
-            formatter_cls = fmt_kwargs.pop('cls')  # type: Type[logging.Formatter]
+            formatter_cls: "Type[logging.Formatter]" = fmt_kwargs.pop('cls')
             formatter = formatter_cls(**fmt_kwargs)
             handler.setFormatter(formatter)
     else:
@@ -334,14 +327,12 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
     return _logger
 
 
-def _log_to_syslog(level, msg):
-    # type: (int, str) -> None
+def _log_to_syslog(level: int, msg: str) -> None:
     if not __syslog_opened:
         syslog.openlog('Listener', 0, syslog.LOG_SYSLOG)
 
     syslog.syslog(level, msg)
 
 
-def info_to_syslog(msg):
-    # type: (str) -> None
+def info_to_syslog(msg: str) -> None:
     _log_to_syslog(syslog.LOG_INFO, msg)

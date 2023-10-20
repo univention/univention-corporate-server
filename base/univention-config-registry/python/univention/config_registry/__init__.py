@@ -51,11 +51,11 @@ from univention.config_registry.misc import (  # noqa: F401
 from univention.debhelper import parseRfc822  # noqa: F401
 
 
-ucr = Proxy(lambda: _RCR().load(autoload=Load.ONCE))  # type: _RCR
-ucr_live = Proxy(lambda: _RCR().load(autoload=Load.ALWAYS))  # type: _RCR
+ucr: "_RCR" = Proxy(lambda: _RCR().load(autoload=Load.ONCE))
+ucr_live: "_RCR" = Proxy(lambda: _RCR().load(autoload=Load.ALWAYS))
 
 
-def ucr_factory():  # type: () -> ConfigRegistry
+def ucr_factory() -> "ConfigRegistry":
     """
     Factory method to return private loaded UCR instance.
 

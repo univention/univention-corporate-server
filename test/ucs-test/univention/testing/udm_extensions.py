@@ -42,19 +42,16 @@ from univention.testing.utils import fail, get_ldap_connection
 VALID_EXTENSION_TYPES = ('hook', 'syntax', 'module')
 
 
-def get_package_name():
-    # type: () -> str
+def get_package_name() -> str:
     """returns a valid package name"""
     return random_name()
 
 
-def get_package_version():
-    # type: () -> str
+def get_package_version() -> str:
     return random_version()
 
 
-def get_extension_name(extension_type):
-    # type: (str) -> str
+def get_extension_name(extension_type: str) -> str:
     """
     Returns a valid extension name for the given extension type.
     >>> get_extension_name('hook')
@@ -71,14 +68,12 @@ def get_extension_name(extension_type):
         return random_name()
 
 
-def get_extension_filename(extension_type, extension_name):
-    # type: (str, str) -> str
+def get_extension_filename(extension_type: str, extension_name: str) -> str:
     assert extension_type in VALID_EXTENSION_TYPES
     return f'{extension_name}.py'
 
 
-def call_cmd(cmd, fail_on_error=True):
-    # type: (Sequence[str], bool) -> int
+def call_cmd(cmd: "Sequence[str]", fail_on_error: bool=True) -> int:
     """Calls the given cmd (list of strings)."""
     print('CMD: %r' % cmd)
     sys.stdout.flush()
@@ -88,8 +83,7 @@ def call_cmd(cmd, fail_on_error=True):
     return exitcode
 
 
-def call_join_script(name, fail_on_error=True):
-    # type: (str, bool) -> int
+def call_join_script(name: str, fail_on_error: bool=True) -> int:
     """
     Calls the given join script (e.g. name='66foobar.inst').
     If fail is true, then the function fail() is called if the exitcode is not zero.
@@ -99,8 +93,7 @@ def call_join_script(name, fail_on_error=True):
     return call_cmd([f'/usr/lib/univention-install/{name}', '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
 
 
-def call_unjoin_script(name, fail_on_error=True):
-    # type: (str, bool) -> int
+def call_unjoin_script(name: str, fail_on_error: bool=True) -> int:
     """
     Calls the given unjoin script (e.g. name='66foobar-uninstall.uinst').
     If fail is true, then the function fail() is called if the exitcode is not zero.
@@ -110,8 +103,7 @@ def call_unjoin_script(name, fail_on_error=True):
     return call_cmd([f'/usr/lib/univention-uninstall/{name}', '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
 
 
-def get_syntax_buffer(name=None, identifier=None):
-    # type: (Optional[str], Optional[str]) -> str
+def get_syntax_buffer(name: "Optional[str]"=None, identifier: "Optional[str]"=None) -> str:
     """
     Returns a UDM syntax with given name (e.g. 'MySimpleHook'). If name is omitted,
     a randomly generated name is used.
@@ -127,8 +119,7 @@ class %(syntax_name)s(simple):
 ''' % {'syntax_name': name, 'syntax_identifier': identifier}
 
 
-def get_hook_buffer(name=None, identifier=None):
-    # type: (Optional[str], Optional[str]) -> str
+def get_hook_buffer(name: "Optional[str]"=None, identifier: "Optional[str]"=None) -> str:
     """
     Returns a UDM hook with given name (e.g. 'MySimpleHook'). If name is omitted,
     a randomly generated name is used.
@@ -149,8 +140,7 @@ class %(hook_name)s(simpleHook):
 ''' % {'hook_name': name, 'hook_identifier': identifier}
 
 
-def get_module_buffer(name=None, identifier=None):
-    # type: (Optional[str], Optional[str]) -> str
+def get_module_buffer(name: "Optional[str]"=None, identifier: "Optional[str]"=None) -> str:
     """
     Returns a UDM module with given name (e.g. 'testing/mytest'). If name is omitted,
     a randomly generated name is used ('ucstest/%(randomstring)s').
@@ -211,8 +201,7 @@ identify = object.identify
 ''' % {'module_udmname': name, 'module_identifier': identifier}
 
 
-def get_extension_buffer(extension_type, name=None, identifier=None):
-    # type: (str, Optional[str], Optional[str]) -> str
+def get_extension_buffer(extension_type: str, name: "Optional[str]"=None, identifier: "Optional[str]"=None) -> str:
     """
     Get UDM extension of specified type with specified name.
     In case the name is omitted, a random name will be used.
@@ -225,8 +214,7 @@ def get_extension_buffer(extension_type, name=None, identifier=None):
     }[extension_type](name, identifier)
 
 
-def get_postinst_script_buffer(extension_type, filename, app_id=None, version_start=None, version_end=None, options=None):
-    # type: (str, str, Optional[str], Optional[str], Optional[str], Mapping[str, Union[str, Iterable[str]]]) -> str
+def get_postinst_script_buffer(extension_type: str, filename: str, app_id: "Optional[str]"=None, version_start: "Optional[str]"=None, version_end: "Optional[str]"=None, options: "Mapping[str, Union[str, Iterable[str]]]"=None) -> str:
     """
     Returns a postinst script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
     Optionally UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
@@ -260,8 +248,7 @@ exit 0
     }
 
 
-def get_postrm_script_buffer(extension_type, extension_name, package_name):
-    # type: (str, str, str) -> str
+def get_postrm_script_buffer(extension_type: str, extension_name: str, package_name: str) -> str:
     """
     Returns an postrm script that deregisters the given UDM extension. The type of the extension
     has to be specified ('hook', 'syntax' or 'module').
@@ -278,8 +265,7 @@ exit 0
 ''' % {'extension_name': extension_name, 'extension_type': extension_type}
 
 
-def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_version=1, version_start=None, version_end=None, options=None):
-    # type: (str, str, Optional[str], int, Optional[str], Optional[str], Mapping[str, Union[str, Iterable[str]]]) -> str
+def get_join_script_buffer(extension_type: str, filename: str, app_id: "Optional[str]"=None, joinscript_version: int=1, version_start: "Optional[str]"=None, version_end: "Optional[str]"=None, options: "Mapping[str, Union[str, Iterable[str]]]"=None) -> str:
     """
     Returns a join script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
     Optionally a joinscript version, UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
@@ -317,8 +303,7 @@ exit 0
     }
 
 
-def get_unjoin_script_buffer(extension_type, extension_name, package_name):
-    # type: (str, str, str) -> str
+def get_unjoin_script_buffer(extension_type: str, extension_name: str, package_name: str) -> str:
     """
     Returns an unjoin script that deregisters the given UDM extension. The type of the extension
     has to be specified ('hook', 'syntax' or 'module').
@@ -338,8 +323,7 @@ exit 0
 ''' % {'package_name': package_name, 'extension_name': extension_name, 'extension_type': extension_type}
 
 
-def get_absolute_extension_filename(extension_type, filename):
-    # type: (str, str) -> str
+def get_absolute_extension_filename(extension_type: str, filename: str) -> str:
     """Returns the absolute path to an extentension of the given type and filename."""
     assert extension_type in VALID_EXTENSION_TYPES
     if extension_type == 'module':
@@ -351,8 +335,7 @@ def get_absolute_extension_filename(extension_type, filename):
     }[extension_type] % filename)
 
 
-def get_dn_of_extension_by_name(extension_type, name):
-    # type: (str, str) -> str
+def get_dn_of_extension_by_name(extension_type: str, name: str) -> str:
     """Returns a list of DNs of UDM extension objects with given type an name, or [] if no object has been found."""
     assert extension_type in VALID_EXTENSION_TYPES
     if extension_type == 'module':
@@ -365,8 +348,7 @@ def get_dn_of_extension_by_name(extension_type, name):
     return get_ldap_connection().searchDn(filter=searchfilter)
 
 
-def remove_extension_by_name(extension_type, extension_name, fail_on_error=True):
-    # type: (str, str, bool) -> None
+def remove_extension_by_name(extension_type: str, extension_name: str, fail_on_error: bool=True) -> None:
     """Remove all extensions of given type and name from LDAP."""
     assert extension_type in VALID_EXTENSION_TYPES
     for dn in get_dn_of_extension_by_name(extension_type, extension_name):

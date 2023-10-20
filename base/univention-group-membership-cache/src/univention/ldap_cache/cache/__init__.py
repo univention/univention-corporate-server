@@ -45,8 +45,7 @@ from univention.ldap_cache.log import debug
 
 
 # Singleton pattern
-def get_cache():
-    # type: () -> Caches
+def get_cache() -> "Caches":
     global _cache
     if _cache is None:
         debug('Creating the Caches instance')
@@ -57,4 +56,4 @@ def get_cache():
     return _cache
 
 
-_cache = None  # type: Optional[Caches]
+_cache: "Optional[Caches]" = None

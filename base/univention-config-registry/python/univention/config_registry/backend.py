@@ -78,8 +78,7 @@ class StrictModeException(Exception):
     """Attempt to store non-UTF-8 characters in strict UTF-8 mode."""
 
 
-def exception_occured(out=sys.stderr):
-    # type: (IO) -> NoReturn
+def exception_occured(out: "IO"=sys.stderr) -> "NoReturn":
     """
     Print exception message and exit.
 
@@ -113,8 +112,7 @@ class BooleanConfigRegistry(object):
     TRUE = frozenset({'yes', 'true', '1', 'enable', 'enabled', 'on'})
     FALSE = frozenset({'no', 'false', '0', 'disable', 'disabled', 'off'})
 
-    def is_true(self, key=None, default=False, value=None):
-        # type: (Optional[str], bool, Optional[str]) -> bool
+    def is_true(self, key: "Optional[str]"=None, default: bool=False, value: "Optional[str]"=None) -> bool:
         """
         Return if the strings value of key is considered as true.
 
@@ -140,8 +138,7 @@ class BooleanConfigRegistry(object):
                 return default
         return value.lower() in self.TRUE
 
-    def is_false(self, key=None, default=False, value=None):
-        # type: (Optional[str], bool, Optional[str]) -> bool
+    def is_false(self, key: "Optional[str]"=None, default: bool=False, value: "Optional[str]"=None) -> bool:
         """
         Return if the strings value of key is considered as false.
 
@@ -171,20 +168,16 @@ class BooleanConfigRegistry(object):
 class ViewConfigRegistry(_M, BooleanConfigRegistry):
     """Immutable view of UCR."""
 
-    def __init__(self, ucr):
-        # type: (Mapping[str, str]) -> None
+    def __init__(self, ucr: "Mapping[str, str]") -> None:
         self.ucr = ucr
 
-    def __getitem__(self, key):
-        # type: (str) -> str
+    def __getitem__(self, key: str) -> str:
         return self.ucr.__getitem__(key)
 
-    def __iter__(self):
-        # type: () -> Iterator[str]
+    def __iter__(self) -> "Iterator[str]":
         return self.ucr.__iter__()
 
-    def __len__(self):
-        # type: () -> int
+    def __len__(self) -> int:
         return self.ucr.__len__()
 
 
@@ -207,21 +200,19 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         DEFAULTS: 'base-defaults.conf',
     }
 
-    def __init__(self, filename=""):
-        # type: (str) -> None
+    def __init__(self, filename: str="") -> None:
         super(ReadOnlyConfigRegistry, self).__init__()
         custom = os.getenv('UNIVENTION_BASECONF') or filename
         self.autoload = Load.MANUAL
 
-        self._registry = {}  # type: Dict[int, _ConfigRegistry]
+        self._registry: "Dict[int, _ConfigRegistry]" = {}
         for reg in self.LAYER_PRIORITIES:
             if reg == self.CUSTOM:
                 self._registry[reg] = _ConfigRegistry(custom if custom else os.devnull)
             else:
                 self._registry[reg] = _ConfigRegistry(os.devnull if custom else os.path.join(self.PREFIX, self.BASES[reg]))
 
-    def _walk(self):
-        # type: () -> Iterator[Tuple[int, _ConfigRegistry]]
+    def _walk(self) -> "Iterator[Tuple[int, _ConfigRegistry]]":
         """
         Iterator over layers.
 
@@ -234,8 +225,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
             registry = self._registry[reg]
             yield (reg, registry)
 
-    def load(self, autoload=Load.MANUAL):
-        # type: (_T, Load) -> _T
+    def load(self: "_T", autoload: "Load"=Load.MANUAL) -> "_T":
         """
         Load registry from file.
 
@@ -253,8 +243,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 
         return self
 
-    def __enter__(self):
-        # type: () -> ViewConfigRegistry
+    def __enter__(self) -> "ViewConfigRegistry":
         """
         Return immutable view despite `autoload`.
 
@@ -267,12 +256,10 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         """
         return ViewConfigRegistry(self._merge())
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[BaseException]", traceback: "Optional[TracebackType]") -> None:
         """Release registry view."""
 
-    def __getitem__(self, key):  # type: ignore
-        # type: (str) -> Optional[str]
+    def __getitem__(self, key: str) -> "Optional[str]":  # type: ignore
         """
         Return registry value.
 
@@ -283,8 +270,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         """
         return self.get(key)
 
-    def __contains__(self, key):  # type: ignore
-        # type: (str) -> bool
+    def __contains__(self, key: str) -> bool:  # type: ignore
         """
         Check if registry key is set.
 
@@ -293,8 +279,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         """
         return any(key in registry for _reg, registry in self._walk())
 
-    def __iter__(self):
-        # type: () -> Iterator[str]
+    def __iter__(self) -> "Iterator[str]":
         """
         Iterate over all registry keys.
 
@@ -304,8 +289,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         for key in merge:
             yield key
 
-    def __len__(self):
-        # type: () -> int
+    def __len__(self) -> int:
         """
         Return length.
 
@@ -315,17 +299,14 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         return len(merge)
 
     @overload  # type: ignore
-    def get(self, key, default, getscope):  # pragma: no cover
-        # type: (str, _VT, Literal[True]) -> Union[Tuple[int, str], _VT]
+    def get(self, key: str, default: "_VT", getscope: "Literal[True]") -> "Union[Tuple[int, str], _VT]":  # pragma: no cover
         pass
 
     @overload
-    def get(self, key, default=None):  # pragma: no cover
-        # type: (str, _VT) -> Union[str, _VT]
+    def get(self, key: str, default: "_VT"=None) -> "Union[str, _VT]":  # pragma: no cover
         pass
 
-    def get(self, key, default=None, getscope=False):
-        # type: (str, Optional[_VT], bool) -> Union[str, Tuple[int, str], _VT, None]
+    def get(self, key: str, default: "Optional[_VT]"=None, getscope: bool=False) -> "Union[str, Tuple[int, str], _VT, None]":
         """
         Return registry value (including optional scope).
 
@@ -336,7 +317,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         """
         for reg, registry in self._walk():
             try:
-                value = registry[key]  # type: str
+                value: str = registry[key]
             except KeyError:
                 continue
             if reg == self.DEFAULTS:
@@ -345,17 +326,14 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         return default
 
     @overload
-    def get_int(self, key):  # pragma: no cover
-        # type: (str) -> Optional[int]
+    def get_int(self, key: str) -> "Optional[int]":  # pragma: no cover
         pass
 
     @overload  # type: ignore
-    def get_int(self, key, default):  # pragma: no cover
-        # type: (str, _VT) -> Union[int, _VT]
+    def get_int(self, key: str, default: "_VT") -> "Union[int, _VT]":  # pragma: no cover
         pass
 
-    def get_int(self, key, default=None):
-        # type: (str, Optional[_VT]) -> Union[int, _VT, None]
+    def get_int(self, key: str, default: "Optional[_VT]"=None) -> "Union[int, _VT, None]":
         """
         Return registry value as int.
 
@@ -369,24 +347,21 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
             return default
 
     @overload
-    def _merge(self):  # pragma: no cover
-        # type: () -> Dict[str, str]
+    def _merge(self) -> "Dict[str, str]":  # pragma: no cover
         pass
 
     @overload
-    def _merge(self, getscope):  # pragma: no cover
-        # type: (Literal[True]) -> Dict[str, Tuple[int, str]]
+    def _merge(self, getscope: "Literal[True]") -> "Dict[str, Tuple[int, str]]":  # pragma: no cover
         pass
 
-    def _merge(self, getscope=False):
-        # type: (bool) -> Union[Dict[str, str], Dict[str, Tuple[int, str]]]
+    def _merge(self, getscope: bool=False) -> "Union[Dict[str, str], Dict[str, Tuple[int, str]]]":
         """
         Merge sub registry.
 
         :param getscope: `True` makes the method return the scope level in addition to the value itself.
         :returns: A mapping from varibal ename to eiter the value (if `getscope` is False) or a 2-tuple (level, value).
         """
-        merge = {}  # type: Dict[str, Union[str, Tuple[int, str]]]
+        merge: "Dict[str, Union[str, Tuple[int, str]]]" = {}
         for reg, registry in self._walk():
             for key, value in registry.items():
                 if key not in merge:
@@ -396,8 +371,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 
         return merge  # type: ignore
 
-    def _eval_default(self, default):
-        # type: (str) -> str
+    def _eval_default(self, default: str) -> str:
         """
         Recursively evaluate default value.
 
@@ -414,17 +388,14 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         return value.decode("UTF-8")
 
     @overload
-    def items(self):  # pragma: no cover
-        # type: () -> ItemsView[str, str]
+    def items(self) -> "ItemsView[str, str]":  # pragma: no cover
         pass
 
     @overload
-    def items(self, getscope):  # pragma: no cover
-        # type: (Literal[True]) -> ItemsView[str, Tuple[int, str]]
+    def items(self, getscope: "Literal[True]") -> "ItemsView[str, Tuple[int, str]]":  # pragma: no cover
         pass
 
-    def items(self, getscope=False):
-        # type: (bool) -> Union[ItemsView[str, str], ItemsView[str, Tuple[int, str]]]
+    def items(self, getscope: bool=False) -> "Union[ItemsView[str, str], ItemsView[str, Tuple[int, str]]]":
         """
         Return all registry entries a 2-tuple (key, value) or (key, (scope, value)) if getscope is True.
 
@@ -434,8 +405,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         merge = self._merge(getscope=getscope)
         return merge.items()  # type: ignore
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         """Return registry content as string."""
         merge = self._merge()
         return '\n'.join([f'{key}: {val}' for key, val in merge.items()])
@@ -450,8 +420,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
     :param write_registry: The UCR level used for writing.
     """
 
-    def __init__(self, filename="", write_registry=ReadOnlyConfigRegistry.NORMAL):
-        # type: (str, int) -> None
+    def __init__(self, filename: str="", write_registry: int=ReadOnlyConfigRegistry.NORMAL) -> None:
         super(ConfigRegistry, self).__init__(filename)
         custom = os.getenv('UNIVENTION_BASECONF') or filename
         self.scope = self.CUSTOM if custom else write_registry
@@ -460,28 +429,23 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
             registry._create_base_conf()
 
     @property
-    def _layer(self):
-        # type: () -> _ConfigRegistry
+    def _layer(self) -> "_ConfigRegistry":
         """Return selected layer."""
         return self._registry[self.scope]
 
-    def save(self):
-        # type: () -> None
+    def save(self) -> None:
         """Save registry to file."""
         self._layer.save()
 
-    def lock(self):
-        # type: () -> None
+    def lock(self) -> None:
         """Lock registry file."""
         self._layer.lock()
 
-    def unlock(self):
-        # type: () -> None
+    def unlock(self) -> None:
         """Un-lock registry file."""
         self._layer.unlock()
 
-    def __enter__(self):  # type: ignore
-        # type: () -> ConfigRegistry
+    def __enter__(self) -> "ConfigRegistry":  # type: ignore
         """
         Lock Config Registry for read-modify-write cycle.
 
@@ -494,20 +458,17 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
         self.load()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[BaseException]", traceback: "Optional[TracebackType]") -> None:
         """Unlock registry."""
         if exc_type is None:
             self.save()
         self.unlock()
 
-    def clear(self):
-        # type: () -> None
+    def clear(self) -> None:
         """Clear all registry keys."""
         self._layer.clear()
 
-    def __delitem__(self, key):
-        # type: (str) -> None
+    def __delitem__(self, key: str) -> None:
         """
         Delete registry key.
 
@@ -515,8 +476,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
         """
         del self._layer[key]
 
-    def __setitem__(self, key, value):
-        # type: (str, str) -> None
+    def __setitem__(self, key: str, value: str) -> None:
         """
         Set registry value.
 
@@ -525,8 +485,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
         """
         self._layer[key] = value
 
-    def update(self, changes):  # type: ignore
-        # type: (Dict[str, Optional[str]]) -> Dict[str, Tuple[Optional[str], Optional[str]]]
+    def update(self, changes: "Dict[str, Optional[str]]") -> "Dict[str, Tuple[Optional[str], Optional[str]]]":  # type: ignore
         """
         Set or unset the given config registry variables.
 
@@ -548,8 +507,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
             changed[key] = (old_value, new_value)
         return changed
 
-    def setdefault(self, key, default):  # type: ignore
-        # type: (str, str) -> str
+    def setdefault(self, key: str, default: str) -> str:  # type: ignore
         """
         Set value for variable only when not yet set.
 
@@ -575,8 +533,7 @@ class _ConfigRegistry(dict):
 
     RE_COMMENT = re.compile(r'^[^:]*#.*$')
 
-    def __init__(self, filename):
-        # type: (str) -> None
+    def __init__(self, filename: str) -> None:
         dict.__init__(self)
         self.file = filename
         self.backup_file = self.file + '.bak'
@@ -585,11 +542,10 @@ class _ConfigRegistry(dict):
         # means the backend files are valid UTF-8 and should stay that way -->
         # only accept valid UTF-8
         self.strict_encoding = False
-        self.lock_file = None  # type: Optional[IO]
+        self.lock_file: "Optional[IO]" = None
         self.mtime = 0.0
 
-    def load(self):
-        # type: () -> None
+    def load(self) -> None:
         """Load sub registry from file."""
         for fn in (self.file, self.backup_file):
             new = {}
@@ -627,8 +583,7 @@ class _ConfigRegistry(dict):
         if fn != self.file:
             self._save_file(self.file)
 
-    def _create_base_conf(self):
-        # type: () -> None
+    def _create_base_conf(self) -> None:
         """Create sub registry file."""
         try:
             reg_file = os.open(self.file, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
@@ -640,8 +595,7 @@ class _ConfigRegistry(dict):
             print(msg, file=sys.stderr)
             exception_occured()
 
-    def _save_file(self, filename):
-        # type: (str) -> None
+    def _save_file(self, filename: str) -> None:
         """
         Save sub registry to file.
 
@@ -679,8 +633,7 @@ class _ConfigRegistry(dict):
             if ex.errno != errno.EACCES:
                 raise
 
-    def _save_to(self, filename):
-        # type: (str) -> None
+    def _save_to(self, filename: str) -> None:
         """
         Serialize sub registry to file.
 
@@ -694,20 +647,17 @@ class _ConfigRegistry(dict):
             fd.flush()
             os.fsync(fd.fileno())
 
-    def save(self):
-        # type: () -> None
+    def save(self) -> None:
         """Save sub registry to file."""
         for filename in (self.backup_file, self.file):
             self._save_file(filename)
 
-    def lock(self):
-        # type: () -> None
+    def lock(self) -> None:
         """Lock sub registry file."""
         self.lock_file = lock = open(self.lock_filename, "a+", encoding='utf-8')
         fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
 
-    def unlock(self):
-        # type: () -> None
+    def unlock(self) -> None:
         """Un-lock sub registry file."""
         if self.lock_file is not None:
             self.lock_file.close()
@@ -732,8 +682,7 @@ class _ConfigRegistry(dict):
         return dict.__setitem__(self, key, value)
 
     @staticmethod
-    def remove_invalid_chars(seq):
-        # type: (str) -> str
+    def remove_invalid_chars(seq: str) -> str:
         """
         Remove non-UTF-8 characters from value.
 
@@ -744,8 +693,7 @@ class _ConfigRegistry(dict):
             seq = seq.replace(letter, '')
         return seq
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         """Return sub registry content as string."""
         return '\n'.join(
             '%s: %s' % (key, self.remove_invalid_chars(val))

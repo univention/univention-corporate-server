@@ -53,14 +53,14 @@ from univention.management.console.pam import (
 
 class AuthenticationResult(object):
 
-    def __init__(self, result, locale):  # type: (Union[BaseException, Dict[str, str]], Optional[str]) -> None
+    def __init__(self, result: "Union[BaseException, Dict[str, str]]", locale: "Optional[str]") -> None:
         self.credentials = None
         self.status = 200
         self.authenticated = not isinstance(result, BaseException)
         if self.authenticated:
             self.credentials = result
         self.message = None
-        self.result = None  # type: Optional[Dict[str, Any]]
+        self.result: "Optional[Dict[str, Any]]" = None
         self.password_expired = False
         if isinstance(result, AuthenticationError):
             self.status = 401
@@ -80,7 +80,7 @@ class AuthenticationResult(object):
         else:
             self.result = {'username': result['username']}
 
-    def __bool__(self):  # type: () -> bool
+    def __bool__(self) -> bool:
         return self.authenticated
 
     __nonzero__ = __bool__  # Python 2
@@ -138,7 +138,7 @@ class AuthHandler(object):
             AUTH.info('Authentication for %r was successful' % (username,))
             return (username, password)
 
-    def __canonicalize_username(self, username):  # type: (str) -> str
+    def __canonicalize_username(self, username: str) -> str:
         try:
             lo, po = get_machine_connection(write=False)
             result = None

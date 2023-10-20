@@ -4,8 +4,7 @@ import univention.debug as ud
 import univention.debug2 as ud2
 
 
-def test_compare():
-    # type: () -> None
+def test_compare() -> None:
     native = {_ for _ in dir(ud) if not _.startswith('_')}
     native -= {'_debug', 'begin', 'end'}
     python = {_ for _ in dir(ud2) if not _.startswith('_')}

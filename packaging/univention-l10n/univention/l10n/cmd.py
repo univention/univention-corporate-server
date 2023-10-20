@@ -42,20 +42,20 @@ import sys
 from . import l10n as tlh
 
 
-def main():  # type: () -> None
+def main() -> None:
     cmd = os.path.basename(sys.argv[0])
     parse_args(cmd)
 
 
-def main_build():  # type: () -> None
+def main_build() -> None:
     parse_args("univention-l10n-build")
 
 
-def main_install():  # type: () -> None
+def main_install() -> None:
     parse_args("univention-l10n-install")
 
 
-def parse_args(cmd):  # type: (str) -> None
+def parse_args(cmd: str) -> None:
     parser_common = argparse.ArgumentParser(add_help=False)
     group = parser_common.add_argument_group("debhelper", "Common debhelper options")
     # group.add_argument("--verbose", "-v", action="store_true", help="Verbose mode: show all commands that modify the package build directory.")
@@ -93,7 +93,7 @@ def parse_args(cmd):  # type: (str) -> None
     args.func(args)
 
 
-def build(args):  # type: (argparse.Namespace) -> None
+def build(args: "argparse.Namespace") -> None:
     """
     Generate GNU gettext Portable Objects (PO files) from debian/\\*.univention-l10n files
 
@@ -135,7 +135,7 @@ def build(args):  # type: (argparse.Namespace) -> None
         tlh.update_package_translation_files(module, cwd, args.pot)
 
 
-def install(args):  # type: (argparse.Namespace) -> None
+def install(args: "argparse.Namespace") -> None:
     """
     Generate and install GNU gettext Message Objects (MO files) from debian/\\*.univention-l10n files.
 

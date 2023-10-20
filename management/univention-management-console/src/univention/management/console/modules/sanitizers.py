@@ -72,13 +72,11 @@ class UnformattedValidationError(Exception):
     Should be "enhanced" to a ValidationError.
     """
 
-    def __init__(self, msg, kwargs):
-        # type: (str, Mapping[str, Any]) -> None
+    def __init__(self, msg: str, kwargs: "Mapping[str, Any]") -> None:
         self.msg = msg
         self.kwargs = kwargs
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return self.msg
 
 
@@ -88,23 +86,19 @@ class ValidationError(Exception):
     (e.g. letters when an int is expected).
     """
 
-    def __init__(self, msg, name, value):
-        # type: (str, str, Any) -> None
+    def __init__(self, msg: str, name: str, value: "Any") -> None:
         self.msg = msg
         self.name = name
         self.value = value
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return self.msg
 
-    def number_of_errors(self):
-        # type: () -> int
+    def number_of_errors(self) -> int:
         """1..."""
         return 1
 
-    def result(self):
-        # type: () -> Any
+    def result(self) -> "Any":
         """Returns the message"""
         # return {'name' : self.name, 'value' : self.value, 'msg' : self.msg}
         return self.msg
@@ -116,34 +110,28 @@ class MultiValidationError(ValidationError):
     Used by :class:`~DictSanitizer` and :class:`~ListSanitizer`.
     """
 
-    def __init__(self):
-        # type: () -> None
+    def __init__(self) -> None:
         self.validation_errors = {}  # type: Dict[Union[int, str], ValidationError]
 
-    def add_error(self, e, name):
-        # type: (ValidationError, Union[int, str]) -> None
+    def add_error(self, e: "ValidationError", name: "Union[int, str]") -> None:
         """Adds a :class:`ValidationError`"""
         self.validation_errors[name] = e
 
-    def number_of_errors(self):
-        # type: () -> int
+    def number_of_errors(self) -> int:
         """Cumulative number of errors found"""
         num = 0
         for _k, v in self.validation_errors.items():
             num += v.number_of_errors()
         return num
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return _('%d error(s) occurred') % self.number_of_errors()
 
-    def has_errors(self):
-        # type: () -> bool
+    def has_errors(self) -> bool:
         """Found any errors"""
         return bool(self.validation_errors)
 
-    def result(self):
-        # type: () -> Dict[Union[int, str], str]
+    def result(self) -> "Dict[Union[int, str], str]":
         """
         Returns a errors in a similar way like the arguments were passed
         to the sanitizers.
@@ -181,8 +169,7 @@ class Sanitizer(object):
         self.may_change_value = kwargs.get('may_change_value', True)
         self.allow_none = kwargs.get('allow_none', False)
 
-    def sanitize(self, name, options):
-        # type: (str, Mapping[str, object]) -> Any
+    def sanitize(self, name: str, options: "Mapping[str, object]") -> "Any":
         """
         Sanitize function. Internally calls _sanitize with the
         correct values and returns the new value (together with a flag
@@ -214,8 +201,7 @@ class Sanitizer(object):
         except UnformattedValidationError as e:
             self.raise_formatted_validation_error(str(e), name, value, **e.kwargs)
 
-    def _sanitize(self, value, name, further_arguments):
-        # type: (Any, str, Mapping[str, object]) -> object
+    def _sanitize(self, value: "Any", name: str, further_arguments: "Mapping[str, object]") -> object:
         """
         The method where the actual sanitizing takes place.
 
@@ -235,8 +221,7 @@ class Sanitizer(object):
         """
         return value
 
-    def raise_validation_error(self, msg, **kwargs):
-        # type: (str, **Any) -> NoReturn
+    def raise_validation_error(self, msg: str, **kwargs: "Any") -> "NoReturn":
         r"""
         Used to more or less uniformly raise a
         :class:`~ValidationError`. This will actually raise an
@@ -249,8 +234,7 @@ class Sanitizer(object):
         """
         raise UnformattedValidationError(msg, kwargs)
 
-    def raise_formatted_validation_error(self, msg, name, value, **kwargs):
-        # type: (str, str, Any, **Any) -> NoReturn
+    def raise_formatted_validation_error(self, msg: str, name: str, value: "Any", **kwargs: "Any") -> "NoReturn":
         r"""
         Used to more or less uniformly raise a
         :class:`~ValidationError`. *name* and *value* need to passed
@@ -283,16 +267,14 @@ class DictSanitizer(Sanitizer):
     :type default_sanitizer: Sanitizer
     """
 
-    def __init__(self, sanitizers, allow_other_keys=True, default_sanitizer=None, **kwargs):
-        # type: (Dict[str, Sanitizer], bool, Sanitizer, **Any) -> None
+    def __init__(self, sanitizers: "Dict[str, Sanitizer]", allow_other_keys: bool=True, default_sanitizer: "Sanitizer"=None, **kwargs: "Any") -> None:
         self._copy_value = kwargs.pop('_copy_value', True)
         super(DictSanitizer, self).__init__(**kwargs)
         self.sanitizers = sanitizers
         self.default_sanitizer = default_sanitizer
         self.allow_other_keys = allow_other_keys
 
-    def _sanitize(self, value, name, further_arguments):
-        # type: (object, str, Mapping[str, object]) -> object
+    def _sanitize(self, value: object, name: str, further_arguments: "Mapping[str, object]") -> object:
         if not isinstance(value, dict):
             self.raise_formatted_validation_error(_('Not a "dict"'), name, type(value).__name__)
 
@@ -315,8 +297,7 @@ class DictSanitizer(Sanitizer):
 
         return altered_value
 
-    def __add__(self, other):
-        # type: (DictSanitizer) -> DictSanitizer
+    def __add__(self, other: "DictSanitizer") -> "DictSanitizer":
         new = copy.deepcopy(self)
         new.sanitizers.update(other.sanitizers)
         return new
@@ -336,15 +317,13 @@ class ListSanitizer(Sanitizer):
     :type sanitizer: Sanitizer
     """
 
-    def __init__(self, sanitizer=None, min_elements=None, max_elements=None, **kwargs):
-        # type: (Optional[Sanitizer], Optional[int], Optional[int], **Any) -> None
+    def __init__(self, sanitizer: "Optional[Sanitizer]"=None, min_elements: "Optional[int]"=None, max_elements: "Optional[int]"=None, **kwargs: "Any") -> None:
         super(ListSanitizer, self).__init__(**kwargs)
         self.sanitizer = sanitizer
         self.min_elements = min_elements
         self.max_elements = max_elements
 
-    def _sanitize(self, value, name, further_arguments):
-        # type: (Any, str, Mapping[str, object]) -> object
+    def _sanitize(self, value: "Any", name: str, further_arguments: "Mapping[str, object]") -> object:
         if not isinstance(value, list):
             self.raise_formatted_validation_error(_('Not a "list"'), name, type(value).__name__)
 
@@ -377,8 +356,7 @@ class BooleanSanitizer(Sanitizer):
     It converts other data types if possible.
     """
 
-    def _sanitize(self, value, name, further_arguments):
-        # type: (Any, str, Mapping[str, object]) -> bool
+    def _sanitize(self, value: "Any", name: str, further_arguments: "Mapping[str, object]") -> bool:
         try:
             return bool(value)
         except BaseException:
@@ -402,16 +380,14 @@ class IntegerSanitizer(Sanitizer):
             (<= otherwise)
     """
 
-    def __init__(self, minimum=None, maximum=None, minimum_strict=None, maximum_strict=None, **kwargs):
-        # type: (Optional[int], Optional[int], bool, bool, **Any) -> None
+    def __init__(self, minimum: "Optional[int]"=None, maximum: "Optional[int]"=None, minimum_strict: bool=None, maximum_strict: bool=None, **kwargs: "Any") -> None:
         super(IntegerSanitizer, self).__init__(**kwargs)
         self.minimum = minimum
         self.maximum = maximum
         self.minimum_strict = minimum_strict
         self.maximum_strict = maximum_strict
 
-    def _sanitize(self, value, name, further_arguments):
-        # type: (Any, str, Mapping[str, object]) -> int
+    def _sanitize(self, value: "Any", name: str, further_arguments: "Mapping[str, object]") -> int:
         try:
             value = int(value)
             if not isinstance(value, int):
@@ -489,12 +465,10 @@ class SearchSanitizer(Sanitizer):
             self.max_number_of_asterisks = kwargs.get('max_number_of_asterisks', None)
         super(SearchSanitizer, self).__init__(**kwargs)
 
-    def _escape_and_return(self, value):
-        # type: (str) -> str
+    def _escape_and_return(self, value: str) -> str:
         return value
 
-    def _sanitize(self, value, name, further_fields):
-        # type: (Any, str, Mapping[str, object]) -> object
+    def _sanitize(self, value: "Any", name: str, further_fields: "Mapping[str, object]") -> object:
         if value is None:
             value = ''
         value = str(value)
@@ -520,8 +494,7 @@ class LDAPSearchSanitizer(SearchSanitizer):
 
     ESCAPED_WILDCARD = ldap.filter.escape_filter_chars('*')
 
-    def _escape_and_return(self, value):
-        # type: (str) -> str
+    def _escape_and_return(self, value: str) -> str:
         value = ldap.filter.escape_filter_chars(value)
         if self.use_asterisks:
             value = value.replace(self.ESCAPED_WILDCARD, '*')
@@ -555,8 +528,7 @@ class PatternSanitizer(SearchSanitizer):
             to search across multiple lines.
     """
 
-    def __init__(self, ignore_case=True, multiline=True, **kwargs):
-        # type: (bool, bool, **Any) -> None
+    def __init__(self, ignore_case: bool=True, multiline: bool=True, **kwargs: "Any") -> None:
         default = kwargs.get('default')
         if isinstance(default, six.string_types):
             default = re.compile(default)
@@ -565,8 +537,7 @@ class PatternSanitizer(SearchSanitizer):
         self.ignore_case = ignore_case
         self.multiline = multiline
 
-    def __deepcopy__(self, memo):
-        # type: (Any) -> PatternSanitizer
+    def __deepcopy__(self, memo: "Any") -> "PatternSanitizer":
         new = PatternSanitizer(
             self.ignore_case,
             self.multiline,
@@ -580,8 +551,7 @@ class PatternSanitizer(SearchSanitizer):
         )
         return new
 
-    def _escape_and_return(self, value):
-        # type: (str) -> Pattern[str]
+    def _escape_and_return(self, value: str) -> "Pattern[str]":
         value = re.escape(value)
         if self.use_asterisks:
             value = value.replace(r'\*', '.*')
@@ -609,8 +579,7 @@ class StringSanitizer(Sanitizer):
     :type regex_pattern: six.string_types or re._pattern_type
     """
 
-    def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, **kwargs):
-        # type: (Union[None, Pattern[str], str], int, Optional[int], Optional[int], **Any) -> None
+    def __init__(self, regex_pattern: "Union[None, Pattern[str], str]"=None, re_flags: int=0, minimum: "Optional[int]"=None, maximum: "Optional[int]"=None, **kwargs: "Any") -> None:
         super(StringSanitizer, self).__init__(**kwargs)
         if isinstance(regex_pattern, six.string_types):
             regex_pattern = re.compile(regex_pattern, flags=re_flags)
@@ -618,8 +587,7 @@ class StringSanitizer(Sanitizer):
         self.maximum = maximum
         self.regex_pattern = regex_pattern
 
-    def __deepcopy__(self, memo):
-        # type: (Any) -> StringSanitizer
+    def __deepcopy__(self, memo: "Any") -> "StringSanitizer":
         new = StringSanitizer(
             self.regex_pattern,  # None or non-copyable pattern
             0,
@@ -632,8 +600,7 @@ class StringSanitizer(Sanitizer):
         )
         return new
 
-    def _sanitize(self, value, name, further_args):
-        # type: (Any, str, Mapping[str, object]) -> object
+    def _sanitize(self, value: "Any", name: str, further_args: "Mapping[str, object]") -> object:
         if not isinstance(value, six.string_types):
             self.raise_validation_error(_('Value is not a string'))
 
@@ -655,8 +622,7 @@ class DNSanitizer(StringSanitizer):
     Distinguished Name syntax
     """
 
-    def _sanitize(self, value, name, further_args):
-        # type: (Any, str, Mapping[str, object]) -> object
+    def _sanitize(self, value: "Any", name: str, further_args: "Mapping[str, object]") -> object:
         value = super(DNSanitizer, self)._sanitize(value, name, further_args)
         try:
             ldap.dn.str2dn(value)
@@ -672,8 +638,7 @@ class EmailSanitizer(StringSanitizer):
     somewhere in the middle has to be an @-sign
     """
 
-    def __init__(self, **kwargs):
-        # type: (**Any) -> None
+    def __init__(self, **kwargs: "Any") -> None:
         super(EmailSanitizer, self).__init__(r'.@.', **kwargs)
 
 
@@ -685,15 +650,13 @@ class ChoicesSanitizer(Sanitizer):
     :param object choices: the allowed choices used.
     """
 
-    def __init__(self, choices, **kwargs):
-        # type: (Iterable[str], **Any) -> None
+    def __init__(self, choices: "Iterable[str]", **kwargs: "Any") -> None:
         super(ChoicesSanitizer, self).__init__(**kwargs)
         # makes sure to have an iterable and unifies errors msg
         # because list has a different representation than tuple
         self.choices = list(choices)
 
-    def _sanitize(self, value, name, further_args):
-        # type: (Any, str, Mapping[str, object]) -> object
+    def _sanitize(self, value: "Any", name: str, further_args: "Mapping[str, object]") -> object:
         for choice in self.choices:
             if choice == value:
                 # return element from choices
@@ -712,8 +675,7 @@ class MappingSanitizer(ChoicesSanitizer):
     :type mapping: {object : object}
     """
 
-    def __init__(self, mapping, **kwargs):
-        # type: (Mapping[str, object], Any) -> None
+    def __init__(self, mapping: "Mapping[str, object]", **kwargs: "Any") -> None:
         try:
             # sort allowed values to have reproducible error messages
             # sorted works with every base data type, even inter-data type!
@@ -724,8 +686,7 @@ class MappingSanitizer(ChoicesSanitizer):
         super(MappingSanitizer, self).__init__(choices, **kwargs)
         self.mapping = mapping
 
-    def _sanitize(self, value, name, further_args):
-        # type: (Any, str, Mapping[str, object]) -> object
+    def _sanitize(self, value: "Any", name: str, further_args: "Mapping[str, object]") -> object:
         value = super(MappingSanitizer, self)._sanitize(value, name, further_args)
         return self.mapping[value]
 

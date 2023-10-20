@@ -49,8 +49,7 @@ from univention.config_registry import ConfigRegistry
 get_logger = partial(get_logger, 'backend')
 
 
-def get_query_limit():
-    # type: () -> int
+def get_query_limit() -> int:
     ucr = ConfigRegistry()
     ucr.load()
     limit = ucr.get('admin/diary/query/limit', '')
@@ -65,8 +64,7 @@ def get_query_limit():
     return limit
 
 
-def get_engine():
-    # type: () -> sqlalchemy.Engine
+def get_engine() -> "sqlalchemy.Engine":
     ucr = ConfigRegistry()
     ucr.load()
 
@@ -120,8 +118,7 @@ def windowed_query(q, column, windowsize, single_entity=True):
 
 
 @contextmanager
-def get_session(auto_commit=True):
-    # type: (bool) -> Iterator[sqlalchemy.Session]
+def get_session(auto_commit: bool=True) -> "Iterator[sqlalchemy.Session]":
     session = None
     try:
         session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=get_engine()))
@@ -206,14 +203,12 @@ class Arg(Base):
 
 
 class Client(object):
-    def __init__(self, version, session):
-        # type: (int, sqlalchemy.Session) -> None
+    def __init__(self, version: int, session: "sqlalchemy.Session") -> None:
         self.version = version
         self._session = session
-        self._translation_cache = {}  # type: Dict[Tuple[str, str], str]
+        self._translation_cache: "Dict[Tuple[str, str], str]" = {}
 
-    def translate(self, event_name, locale):
-        # type: (str, str) -> str
+    def translate(self, event_name: str, locale: str) -> str:
         key = (event_name, locale)
         if key not in self._translation_cache:
             event_message = self._session.query(EventMessage).filter(EventMessage.event_id == Event.id, EventMessage.locale == locale, Event.name == event_name).one_or_none()
@@ -223,8 +218,7 @@ class Client(object):
             translation = self._translation_cache[key]
         return translation
 
-    def options(self):
-        # type: () -> dict
+    def options(self) -> dict:
         ret = {}
         ret['tags'] = sorted([tag.name for tag in self._session.query(Tag).all()])
         ret['usernames'] = sorted([username[0] for username in self._session.query(Entry.username).distinct()])
@@ -232,8 +226,7 @@ class Client(object):
         ret['events'] = sorted([event.name for event in self._session.query(Event).all()])
         return ret
 
-    def add_tag(self, name):
-        # type: (str) -> Tag
+    def add_tag(self, name: str) -> "Tag":
         obj = self._session.query(Tag).filter(Tag.name == name).one_or_none()
         if obj is None:
             obj = Tag(name=name)
@@ -241,8 +234,7 @@ class Client(object):
             self._session.flush()
         return obj
 
-    def add_event(self, name):
-        # type: (str) -> Event
+    def add_event(self, name: str) -> "Event":
         obj = self._session.query(Event).filter(Event.name == name).one_or_none()
         if obj is None:
             obj = Event(name=name)
@@ -250,8 +242,7 @@ class Client(object):
             self._session.flush()
         return obj
 
-    def add_event_message(self, event_id, locale, message, force):
-        # type: (int, str, str, bool) -> bool
+    def add_event_message(self, event_id: int, locale: str, message: str, force: bool) -> bool:
         event_message_query = self._session.query(EventMessage).filter(EventMessage.locale == locale, EventMessage.event_id == event_id)
         event_message = event_message_query.one_or_none()
         if event_message is None:
@@ -266,8 +257,7 @@ class Client(object):
                 return True
         return False
 
-    def add(self, diary_entry):
-        # type: (DiaryEntry) -> None
+    def add(self, diary_entry: "DiaryEntry") -> None:
         if diary_entry.event_name == 'COMMENT':
             entry_message = diary_entry.message.get('en')
             event_id = None
@@ -366,8 +356,7 @@ class Client(object):
 
         return res[:limit]
 
-    def get(self, context_id):
-        # type: (int) -> List[Dict[str, Any]]
+    def get(self, context_id: int) -> "List[Dict[str, Any]]":
         res = []
         query = self._session.query(Entry).\
             outerjoin(Event, Event.id == Entry.event_id).\
@@ -398,8 +387,7 @@ class Client(object):
 
 
 @contextmanager
-def get_client(version):
-    # type: (int) -> Iterator[Client]
+def get_client(version: int) -> "Iterator[Client]":
     if version != 1:
         raise UnsupportedVersion(version)
     with get_session() as session:

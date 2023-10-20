@@ -26,7 +26,7 @@ class Lazy(metaclass=ABCMeta):
     SUFFIX = ""
 
     def __init__(self) -> None:
-        self._path = None  # type: Optional[Path]
+        self._path: "Optional[Path]" = None
 
     @staticmethod
     def lazy(fun: F) -> F:

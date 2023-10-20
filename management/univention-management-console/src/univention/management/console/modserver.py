@@ -111,8 +111,7 @@ class ModuleServer(object):
     :param int timeout: If there are no incoming requests for *timeout* seconds the module server shuts down
     """
 
-    def __init__(self, socket, module, logfile, timeout=300):
-        # type: (str, str, str, int) -> None
+    def __init__(self, socket: str, module: str, logfile: str, timeout: int=300) -> None:
         self.server = None
         self.__socket = socket
         self.__module = module
@@ -166,8 +165,7 @@ class ModuleServer(object):
         self.ioloop = tornado.ioloop.IOLoop.current()
         self.ioloop.start()
 
-    def _load_module(self):
-        # type: () -> None
+    def _load_module(self) -> None:
         MODULE.debug('Loading Python module.')
         modname = self.__module
         from .error import UMC_Error
@@ -227,8 +225,7 @@ class ModuleServer(object):
         io_loop.add_callback_from_signal(shutdown)
         self._timed_out()
 
-    def _timed_out(self):
-        # type: () -> NoReturn
+    def _timed_out(self) -> "NoReturn":
         MODULE.process('Committing suicide')
         if self.__handler:
             self.__handler.destroy()

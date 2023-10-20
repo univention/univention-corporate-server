@@ -60,15 +60,14 @@ class HandlerMetaClass(type):
     fulfill original API.
     """
 
-    def __new__(mcs, clsname, bases, attrs):
-        # type: (str, Tuple[type, ...], Dict[str, Any]) -> Type[ListenerModuleHandler]
+    def __new__(mcs, clsname: str, bases: "Tuple[type, ...]", attrs: "Dict[str, Any]") -> "Type[ListenerModuleHandler]":
         kls = cast(Type["ListenerModuleHandler"], super().__new__(mcs, clsname, bases, attrs))
         is_listener_module = getattr(kls, '_is_listener_module', lambda: False)
         if is_listener_module():
-            lm_module = inspect.getmodule(kls)  # type: Optional[types.ModuleType]
+            lm_module: "Optional[types.ModuleType]" = inspect.getmodule(kls)
             name = os.path.basename(lm_module.__name__).split(".")[0]
             kls.config = kls._get_configuration(name)
-            adapter_cls = kls._adapter_class  # type: Type[ListenerModuleAdapter]
+            adapter_cls: "Type[ListenerModuleAdapter]" = kls._adapter_class
             for k, v in adapter_cls(kls.config).get_globals().items():
                 setattr(lm_module, k, v)
         return kls
@@ -93,7 +92,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
     )
     _configuration_class = ListenerModuleConfiguration
     _adapter_class = ListenerModuleAdapter
-    config = None  # type: Optional[ListenerModuleConfiguration]
+    config: "Optional[ListenerModuleConfiguration]" = None
     ucr = listener.configRegistry
 
     class Configuration(ListenerModuleConfiguration):
@@ -103,8 +102,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         `ldap_filter`) or a subclass of :py:class:`ListenerModuleConfiguration`.
         """
 
-    def __init__(self, *args, **kwargs):
-        # type: (*str, **str) -> None
+    def __init__(self, *args: str, **kwargs: str) -> None:
         """
         When subclassing, in :py:meth:`__init__()` first call must be:
 
@@ -116,9 +114,9 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             raise ListenerModuleConfigurationError(f'{self.__class__.__name__}.config was not set by meta class.')
         self.logger = get_logger(self.config.get_name())
         self.ucr.load()
-        self._lo = None  # type: Optional[access]
-        self._po = None  # type: Optional[position]
-        self._ldap_credentials = None  # type: Optional[Dict[str, str]]
+        self._lo: "Optional[access]" = None
+        self._po: "Optional[position]" = None
+        self._ldap_credentials: "Optional[Dict[str, str]]" = None
         self.logger.debug('Starting with configuration: %r', self.config)
         if not self.config.get_active():
             self.logger.warning(
@@ -126,13 +124,11 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
                 self.config.get_name(), self.config.get_name(),
             )
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         assert self.config
         return f'{self.__class__.__name__}({self.config.name})'
 
-    def create(self, dn, new):
-        # type: (str, Mapping[str, Sequence[bytes]]) -> None
+    def create(self, dn: str, new: "Mapping[str, Sequence[bytes]]") -> None:
         """
         Called when a new object was created.
 
@@ -140,8 +136,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         :param dict new: new LDAP objects attributes
         """
 
-    def modify(self, dn, old, new, old_dn):
-        # type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], Optional[str]) -> None
+    def modify(self, dn: str, old: "Mapping[str, Sequence[bytes]]", new: "Mapping[str, Sequence[bytes]]", old_dn: "Optional[str]") -> None:
         """
         Called when an existing object was modified or moved.
 
@@ -155,8 +150,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         :type old_dn: str or None
         """
 
-    def remove(self, dn, old):
-        # type: (str, Mapping[str, Sequence[bytes]]) -> None
+    def remove(self, dn: str, old: "Mapping[str, Sequence[bytes]]") -> None:
         """
         Called when an object was deleted.
 
@@ -164,22 +158,19 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         :param dict old: previous LDAP objects attributes
         """
 
-    def initialize(self):
-        # type: () -> None
+    def initialize(self) -> None:
         """
         Called once when the Univention Directory Listener loads the module
         for the first time or when a resync it triggered.
         """
 
-    def clean(self):
-        # type: () -> None
+    def clean(self) -> None:
         """
         Called once when the Univention Directory Listener loads the module
         for the first time or when a resync it triggered.
         """
 
-    def pre_run(self):
-        # type: () -> None
+    def pre_run(self) -> None:
         """
         Called before create/modify/remove if either the Univention Directory
         Listener has been restarted or when :py:meth:`post_run()` has run before.
@@ -187,8 +178,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         Use for example to open an LDAP connection.
         """
 
-    def post_run(self):
-        # type: () -> None
+    def post_run(self) -> None:
         """
         Called only, when no change happens for 15 seconds - for *any* listener
         module.
@@ -198,8 +188,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 
     @staticmethod
     @contextmanager
-    def as_root():
-        # type: () -> Iterator[None]
+    def as_root() -> "Iterator[None]":
         """
         Contextmanager to temporarily change the effective UID of the current
         process to 0:
@@ -221,8 +210,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
                 listener.unsetuid()
 
     @classmethod
-    def diff(cls, old, new, keys=None, ignore_metadata=True):
-        # type: (Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], Optional[Iterable[str]], bool) -> Dict[str, Tuple[Optional[Sequence[bytes]], Optional[Sequence[bytes]]]]
+    def diff(cls, old: "Mapping[str, Sequence[bytes]]", new: "Mapping[str, Sequence[bytes]]", keys: "Optional[Iterable[str]]"=None, ignore_metadata: bool=True) -> "Dict[str, Tuple[Optional[Sequence[bytes]], Optional[Sequence[bytes]]]]":
         """
         Find differences in old and new. Returns dict with keys pointing to old
         and new values.
@@ -246,8 +234,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
                 res[key] = old.get(key), new.get(key)
         return res
 
-    def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
-        # type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], str, Optional[Type[BaseException]], Optional[BaseException], Optional[types.TracebackType]) -> None  # NoReturn
+    def error_handler(self, dn: str, old: "Mapping[str, Sequence[bytes]]", new: "Mapping[str, Sequence[bytes]]", command: str, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[BaseException]", exc_traceback: "Optional[types.TracebackType]") -> None:
         """
         Will be called for unhandled exceptions in create/modify/remove.
 
@@ -263,8 +250,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         reraise(exc_type, exc_value, exc_traceback)
 
     @property
-    def lo(self):
-        # type: () -> access
+    def lo(self) -> "access":
         """
         LDAP connection object.
 
@@ -282,8 +268,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         return self._lo
 
     @property
-    def po(self):
-        # type: () -> position
+    def po(self) -> "position":
         """
         Get a LDAP position object for the base DN (ldap/base).
 
@@ -294,8 +279,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             self._po = position(self.lo.base)
         return self._po
 
-    def _get_ldap_credentials(self):
-        # type: () -> Optional[Dict[str, str]]
+    def _get_ldap_credentials(self) -> "Optional[Dict[str, str]]":
         """
         Get the LDAP credentials received through setdata().
 
@@ -304,8 +288,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         """
         return self._ldap_credentials
 
-    def _set_ldap_credentials(self, base, binddn, bindpw, host):
-        # type: (str, str, str, str) -> None
+    def _set_ldap_credentials(self, base: str, binddn: str, bindpw: str, host: str) -> None:
         """
         Store LDAP connection credentials for use by :py:attr.`self.lo`. It is not
         necessary to manually run this method. The listener will automatically
@@ -328,8 +311,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             self._lo = self._po = None
 
     @classmethod
-    def _get_configuration(cls, name):
-        # type: (str) -> ListenerModuleConfiguration
+    def _get_configuration(cls, name: str) -> "ListenerModuleConfiguration":
         """
         Load configuration, optionally converting a plain Python class to a
         :py:class:`ListenerModuleConfiguration` object. Set `cls._configuration_class` to
@@ -376,8 +358,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
             return cls._configuration_class(**kwargs)
 
     @classmethod
-    def _is_listener_module(cls):
-        # type: () -> bool
+    def _is_listener_module(cls) -> bool:
         """
         Is this a listener module?
 

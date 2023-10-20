@@ -352,10 +352,10 @@ class OVA_ESXi(TargetFile):
 
         vmdk = Vmdk(image, adapter_type="lsilogic", hwversion="7", subformat="streamOptimized")
         descriptor = create_ovf_descriptor_esxi(image_name, vmdk, options)
-        files = [
+        files: "List[Tuple[str, Union[File, bytes]]]" = [
             (descriptor_name, descriptor),
             (image_name, vmdk),
-        ]  # type: List[Tuple[str, Union[File, bytes]]]
+        ]
         ova = Tar(files)
         ova.path().rename(archive_name)
         log.info('Generated "%s" appliance as\n  %s', self, archive_name)

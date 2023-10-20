@@ -79,8 +79,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         'ff': 'firefox',
     }
 
-    def __init__(self, language='en', host="", suppress_notifications=True):
-        # type: (str, str, bool) -> None
+    def __init__(self, language: str='en', host: str="", suppress_notifications: bool=True) -> None:
         self._ucr = ucr_test.UCSTestConfigRegistry()
         self._ucr.load()
         self.browser = self.BROWSERS[os.environ.get('UCSTEST_SELENIUM_BROWSER', 'firefox')]
@@ -92,8 +91,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         translator.set_language(self.language)
         logging.basicConfig(level=logging.INFO)
 
-    def __enter__(self):
-        # type: () -> UMCSeleniumTest
+    def __enter__(self) -> "UMCSeleniumTest":
         self.restart_umc()
         self._ucr.__enter__()
         if self.selenium_grid:
@@ -132,8 +130,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         self.set_viewport_size(1200, 800)
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[BaseException]", traceback: "Optional[TracebackType]") -> None:
         try:
             if exc_type:
                 logger.error(f'Exception: {exc_type} {exc_value}')
@@ -143,12 +140,10 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         finally:
             self._ucr.__exit__(exc_type, exc_value, traceback)
 
-    def restart_umc(self):
-        # type: () -> None
+    def restart_umc(self) -> None:
         subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'], close_fds=True)
 
-    def set_viewport_size(self, width, height):
-        # type: (int, int) -> None
+    def set_viewport_size(self, width: int, height: int) -> None:
         self.driver.set_window_size(width, height)
 
         measured = self.driver.execute_script("return {width: window.innerWidth, height: window.innerHeight};")
@@ -157,8 +152,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
         self.driver.set_window_size(width + width_delta, height + height_delta)
 
-    def save_screenshot(self, name='error', hide_notifications=True, xpath='/html/body', append_timestamp=False):
-        # type: (str, bool, str, bool) -> None
+    def save_screenshot(self, name: str='error', hide_notifications: bool=True, xpath: str='/html/body', append_timestamp: bool=False) -> None:
         # FIXME: This is needed, because sometimes it takes some time until
         # some texts are really visible (even if elem.is_displayed() is already
         # true).
@@ -188,16 +182,14 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
             except selenium_exceptions.TimeoutException:
                 pass
 
-    def open_traceback(self):
-        # type: () -> None
+    def open_traceback(self) -> None:
         try:
             self.wait_for_text(_('Show server error message'), timeout=1)
             self.click_text(_('Show server error message'))
         except selenium_exceptions.TimeoutException:
             pass
 
-    def crop_screenshot_to_element(self, image_filename, xpath):
-        # type: (str, str) -> Image
+    def crop_screenshot_to_element(self, image_filename: str, xpath: str) -> "Image":
         elem = self.driver.find_element(By.XPATH, xpath)
         location = elem.location
         size = elem.size
@@ -207,8 +199,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         screenshot = Image.open(image_filename)
         return screenshot.crop((left, top, right, bottom))
 
-    def save_browser_log(self, name='error', append_timestamp=True):
-        # type: (str, bool) -> None
+    def save_browser_log(self, name: str='error', append_timestamp: bool=True) -> None:
         timestamp = ''
         if append_timestamp:
             timestamp = f'_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}'
@@ -221,8 +212,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
             for entry in self.driver.get_log('browser'):
                 f.write(f'{json.dumps(entry)}\n')
 
-    def show_notifications(self, show_notifications=True):
-        # type: (bool) -> None
+    def show_notifications(self, show_notifications: bool=True) -> None:
         if show_notifications:
             if not self.notifications_visible():
                 self.press_notifications_button()
@@ -230,18 +220,15 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
             if self.notifications_visible():
                 self.press_notifications_button()
 
-    def notifications_visible(self):
-        # type: () -> bool
+    def notifications_visible(self) -> bool:
         return not self.elements_invisible('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButtonOpened ")]')
 
-    def press_notifications_button(self):
-        # type: () -> None
+    def press_notifications_button(self) -> None:
         self.click_element('//*[contains(concat(" ", normalize-space(@class), " "), " umcNotificationDropDownButton ")]')
         # Wait for the animation to run.
         time.sleep(1)
 
-    def do_login(self, username=None, password=None, without_navigation=False, language=None, check_successful_login=True):
-        # type: (Optional[str], Optional[str], bool, Optional[str], bool) -> None
+    def do_login(self, username: "Optional[str]"=None, password: "Optional[str]"=None, without_navigation: bool=False, language: "Optional[str]"=None, check_successful_login: bool=True) -> None:
         if username is None:
             username = self.umcLoginUsername
         if password is None:
@@ -286,13 +273,11 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         self.show_notifications(False)
         logger.info('Successful login')
 
-    def end_umc_session(self):
-        # type: () -> None
+    def end_umc_session(self) -> None:
         """Log out the logged in user."""
         self.driver.get(self.base_url + 'univention/logout')
 
-    def open_module(self, name, wait_for_standby=True, do_reload=True):
-        # type: (str, bool, bool) -> None
+    def open_module(self, name: str, wait_for_standby: bool=True, do_reload: bool=True) -> None:
         self.search_module(name, do_reload)
         self.click_tile(name)
         if wait_for_standby:
@@ -300,8 +285,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
             if name == 'System diagnostic':
                 self.wait_until_progress_bar_finishes()
 
-    def search_module(self, name, do_reload=True):
-        # type: (str, bool) -> None
+    def search_module(self, name: str, do_reload: bool=True) -> None:
         if do_reload:
             self.driver.get(self.base_url + f'univention/management/?lang={self.language}')
 
