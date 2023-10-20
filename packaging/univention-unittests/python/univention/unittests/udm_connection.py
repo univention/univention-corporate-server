@@ -106,7 +106,7 @@ class MockedPosition(object):
         return get_domain()
 
     def getDomainConfigBase(self):
-        return 'cn=univention,%s' % self.getDomain()
+        return f'cn=univention,{self.getDomain()}'
 
     def getBase(self):
-        return 'cn=univention,%s' % self.getDomain()
+        return f'cn=univention,{self.getDomain()}'

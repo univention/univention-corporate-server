@@ -99,14 +99,14 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         return
 
     if server_role == 'memberserver':
-        ud.debug(ud.LISTENER, ud.PROCESS, 'Fetching %s from %s' % (K5TAB, ldap_master))
+        ud.debug(ud.LISTENER, ud.PROCESS, f'Fetching {K5TAB} from {ldap_master}')
         listener.setuid(0)
         try:
             if os.path.exists(K5TAB):
                 os.remove(K5TAB)
             count = 0
             while not os.path.exists(K5TAB):
-                call(['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), K5TAB])
+                call(['univention-scp', '/etc/machine.secret', f'{hostname}$@{ldap_master}:/var/lib/univention-heimdal/{hostname}', K5TAB])
                 if not os.path.exists(K5TAB):
                     if count > 30:
                         ud.debug(ud.LISTENER, ud.ERROR, 'E: failed to download keytab for Managed Node')
@@ -119,7 +119,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         finally:
             listener.unsetuid()
     else:
-        ud.debug(ud.LISTENER, ud.PROCESS, 'Exporting %s on %s' % (K5TAB, server_role))
+        ud.debug(ud.LISTENER, ud.PROCESS, f'Exporting {K5TAB} on {server_role}')
         listener.setuid(0)
         try:
             if old:

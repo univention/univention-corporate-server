@@ -48,13 +48,13 @@ class TestADCustomMappings(unittest.TestCase):
             )
         )
 
-        print("Using as test-mapping:\n%s\n" % TEST_MAPPING, file=sys.stderr)
+        print(f"Using as test-mapping:\n{TEST_MAPPING}\n", file=sys.stderr)
 
         try:
             os.mkdir(self.mapping_file_dir)
         except OSError:
             print(
-                "Directory already exists: %s\n" % self.mapping_file_dir,
+                f"Directory already exists: {self.mapping_file_dir}\n",
                 file=sys.stderr,
             )
 
@@ -93,20 +93,19 @@ class TestADCustomMappings(unittest.TestCase):
         under 'user/user')
         """
         print(
-            "Creating extended attribute '%s' under '%s' with default value '%s'\n"
-            % (ldapMapping, self.ldap_base, defaultValue),
+            f"Creating extended attribute '{ldapMapping}' under '{self.ldap_base}' with default value '{defaultValue}'\n",
             file=sys.stderr,
         )
 
         udm.create_object(  # noqa: PIE804
             "settings/extended_attribute",
-            position="cn=custom attributes,cn=univention,%s" % self.ldap_base,
+            position=f"cn=custom attributes,cn=univention,{self.ldap_base}",
             **{
                 "name": ldapMapping,
                 "ldapMapping": ldapMapping,  # mandatory
                 "CLIName": ldapMapping,  # mandatory
                 "objectClass": "univentionFreeAttributes",  # mandatory
-                "shortDescription": ("test value: %s" % defaultValue),
+                "shortDescription": f"test value: {defaultValue}",
                 "valueRequired": "1",
                 "module": [module],
                 "default": defaultValue,
@@ -126,9 +125,7 @@ class TestADCustomMappings(unittest.TestCase):
         # create a random user
         udm_user = NormalUser(selection=("username", "lastname"))
         udm_user.basic["password"] = "univention"
-        udm_user.basic["description"] = (
-            "test value: '%s'" % test_string
-        )  # useful as debugging hint
+        udm_user.basic["description"] = f"test value: '{test_string}'"  # useful as debugging hint
 
         # the 'o' field in ldap is usually mapped to company in AD's
         # but we have hardcoded in our mapping, that the company should
@@ -143,8 +140,7 @@ class TestADCustomMappings(unittest.TestCase):
         )
 
         print(
-            "Summary of users to be synchronized:\n\tudm_user_dn:\t%s,\n\ts4_user_dn:\t%s\n"
-            % (udm_user_dn, ad_user_dn),
+            f"Summary of users to be synchronized:\n\tudm_user_dn:\t{udm_user_dn},\n\ts4_user_dn:\t{ad_user_dn}\n",
             file=sys.stderr,
         )
 

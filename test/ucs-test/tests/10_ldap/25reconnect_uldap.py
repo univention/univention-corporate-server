@@ -57,7 +57,7 @@ def _start_slapd():
 
 
 def _start_delyed(delay):
-    subprocess.Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
+    subprocess.Popen(f'sleep {delay}; invoke-rc.d slapd start', shell=True)
 
 
 def _wait_for_slapd_to_be_started():
@@ -67,7 +67,7 @@ def _wait_for_slapd_to_be_started():
 
 def _set_retry_count(count):
     if count:
-        univention.config_registry.handler_set(['ldap/client/retry/count=%s' % count])
+        univention.config_registry.handler_set([f'ldap/client/retry/count={count}'])
     else:
         univention.config_registry.handler_unset(['ldap/client/retry/count'])
 

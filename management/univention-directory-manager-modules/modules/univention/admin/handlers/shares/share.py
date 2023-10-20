@@ -687,7 +687,7 @@ class object(univention.admin.handlers.simpleLdap):
                 #   '%(printablename)s' (may be looked up in ldap directly).
                 #   If you change printablename here you probably want to change
                 #   nfsShare.label, too.
-                self['printablename'] = "%s (%s)" % (self['name'], self['host'])
+                self['printablename'] = f"{self['name']} ({self['host']})"
             except Exception:
                 pass
 
@@ -697,7 +697,7 @@ class object(univention.admin.handlers.simpleLdap):
         # TODO: move this validation into a syntax class
         dirBlackList = ["sys", "proc", "dev"]
         for dir in dirBlackList:
-            if re.match("^/%s$|^/%s/" % (dir, dir), self['path']):
+            if re.match(f"^/{dir}$|^/{dir}/", self['path']):
                 raise univention.admin.uexceptions.invalidOperation(_('It is not valid to set %s as a share.') % self['path'])
 
         return super(object, self)._ldap_addlist()
@@ -729,7 +729,7 @@ class object(univention.admin.handlers.simpleLdap):
                         temp = searchResult[i].split(",")
                         temp = temp[0]  # uid=...
                         uid = temp[4:]
-                        userstring += "%s, " % uid
+                        userstring += f"{uid}, "
                 temp = searchResult[-1].split(",")
                 temp = temp[0]
                 uid = temp[4:]

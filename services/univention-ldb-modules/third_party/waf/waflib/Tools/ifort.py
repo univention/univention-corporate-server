@@ -378,7 +378,7 @@ def apply_flags_ifort(self):
 
 	subsystem = getattr(self, 'subsystem', '')
 	if subsystem:
-		subsystem = '/subsystem:%s' % subsystem
+		subsystem = f'/subsystem:{subsystem}'
 		flags = is_static and 'ARFLAGS' or 'LINKFLAGS'
 		self.env.append_value(flags, subsystem)
 

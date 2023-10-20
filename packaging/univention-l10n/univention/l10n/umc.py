@@ -209,7 +209,7 @@ class UMC_Module(dict):
         except KeyError:
             return
         for lang in LANGUAGES:
-            yield os.path.join(path, '%s.po' % lang)
+            yield os.path.join(path, f'{lang}.po')
 
     @property
     def js_po_files(self):
@@ -219,7 +219,7 @@ class UMC_Module(dict):
         if not path:  # might be an empty string
             return
         for lang in LANGUAGES:
-            yield os.path.join(path, '%s.po' % lang)
+            yield os.path.join(path, f'{lang}.po')
 
     @property
     def xml_po_files(self):
@@ -229,7 +229,7 @@ class UMC_Module(dict):
             return
         dirpath = os.path.dirname(self.xml_definition)
         for lang in LANGUAGES:
-            path = os.path.join(dirpath, '%s.po' % lang)
+            path = os.path.join(dirpath, f'{lang}.po')
             yield (lang, path)
 
     @property
@@ -271,7 +271,7 @@ def read_modules(package, core=False):
             if not core:
                 for required in (MODULE, PYTHON, DEFINITION, JAVASCRIPT):
                     if not item.get(required):
-                        raise Error('UMC module definition incomplete. key %s missing' % (required,))
+                        raise Error(f'UMC module definition incomplete. key {required} missing')
 
             # single values
             item['package'] = package
@@ -361,7 +361,7 @@ def create_po_file(po_file, package, files, language='python', template=False):
         '--add-comments=i18n',
         '--from-code=UTF-8',
         '--sort-output',
-        '--package-name=%s' % package,
+        f'--package-name={package}',
         '--msgid-bugs-address=packages@univention.de',
         '--copyright-holder=Univention GmbH',
         '--language', language,
@@ -421,7 +421,7 @@ def create_mo_file(po_file, mo_file=''):
 
     call(
         'msgfmt', '--check', '--output-file', mo_file, po_file,
-        errmsg='Failed to compile translation file from %s.' % (po_file,),
+        errmsg=f'Failed to compile translation file from {po_file}.',
     )
 
 
@@ -456,7 +456,7 @@ def create_json_file(po_file):
         plural_end = re.search(r'plural\s*=.*;', plural_rules)
 
         if nplurals_start is None or nplurals_end is None or plural_start is None or plural_end is None:
-            raise Error('The plural rules in %s\'s header entry "Plural-Forms" seem to be incorrect.' % (po_file))
+            raise Error(f'The plural rules in {(po_file)}\'s header entry "Plural-Forms" seem to be incorrect.')
 
         data["$nplurals$"] = plural_rules[nplurals_start.end():nplurals_end.end()]
         data["$plural$"] = plural_rules[plural_start.end():plural_end.end() - 1]
@@ -465,19 +465,19 @@ def create_json_file(po_file):
         # javascript. To avoid malicious code injection a simple check is
         # performed here.
         if not re.match(r"^[\s\dn=?!&|%:()<>]+$", data["$plural$"]):
-            raise Error('There are illegal characters in the "plural" expression in %s\'s header entry "Plural-Forms".' % (po_file))
+            raise Error(f'There are illegal characters in the "plural" expression in {(po_file)}\'s header entry "Plural-Forms".')
 
     for entry in pofile:
         if entry.msgstr:
             data[entry.msgid] = entry.msgstr
         elif entry.msgstr_plural and not has_plurals:
-            raise Error("There are plural forms in %s, but no rules in the file's header." % (po_file))
+            raise Error(f"There are plural forms in {(po_file)}, but no rules in the file's header.")
         elif entry.msgstr_plural:
             entries = entry.msgstr_plural.items()
             entries = sorted(entries, key=lambda x: int(x[0]))
             data[entry.msgid] = [x[1] for x in entries]
             if len(data[entry.msgid]) != int(data["$nplurals$"]):
-                raise Error('The amount of plural forms for a translation in %s doesn\'t match "nplurals" from the file\'s header entry "Plural-Forms".' % (po_file))
+                raise Error(f'The amount of plural forms for a translation in {(po_file)} doesn\'t match "nplurals" from the file\'s header entry "Plural-Forms".')
 
     with open(json_file, 'w') as fd:
         json.dump(data, fd)

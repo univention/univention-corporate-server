@@ -77,12 +77,12 @@ class RsyslogTransport(object):
         self._pattern = timestamp("source_datetime") + hostname("source_hostname") + syslogtag + payload("serialized_event_dict")
 
     def deserialize(self, line):
-        get_logger().debug('Parsing %s' % line)
+        get_logger().debug(f'Parsing {line}')
         try:
             parsed = self._pattern.parseString(line)
             parsed_dict = parsed.asDict()
         except ParseException as exc:
-            get_logger().error('Parsing failed! %s (%s)' % (line, exc))
+            get_logger().error(f'Parsing failed! {line} ({exc})')
         else:
             # merge the nested dictionaries to return a simple structure
             rsyslog_event_dict = parsed_dict["serialized_event_dict"]
@@ -105,7 +105,7 @@ def process(values):
 def add_entry_v1(entry):
     blocked_events = get_events_to_reject()
     if entry.event_name in blocked_events:
-        get_logger().info('Rejecting %s' % entry.event_name)
+        get_logger().info(f'Rejecting {entry.event_name}')
         return
     with get_client(version=1) as client:
         client.add(entry)

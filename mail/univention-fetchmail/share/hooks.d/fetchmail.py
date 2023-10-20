@@ -78,7 +78,7 @@ if not hasattr(AttributeHook, 'version'):
 
             :param obj: The |UDM| object instance.
             """
-            ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)' % (self.ldap_attribute_name, self.udm_attribute_name))
+            ud.debug(ud.ADMIN, ud.INFO, f'admin.syntax.hook.AttributeHook: Mapping {self.ldap_attribute_name} (LDAP) -> {self.udm_attribute_name} (UDM)')
             old_value = obj.oldattr.get(self.ldap_attribute_name, [])
             new_value = self.map_attribute_value_to_udm(old_value)
             ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting UDM value from %r to %r' % (old_value, new_value))

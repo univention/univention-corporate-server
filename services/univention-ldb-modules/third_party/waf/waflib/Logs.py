@@ -228,7 +228,7 @@ class formatter(logging.Formatter):
 				elif rec.levelno >= logging.INFO:
 					c1 = colors.GREEN
 			c2 = getattr(rec, 'c2', colors.NORMAL)
-			msg = '%s%s%s' % (c1, msg, c2)
+			msg = f'{c1}{msg}{c2}'
 		else:
 			# remove single \r that make long lines in text files
 			# and other terminal commands
@@ -273,7 +273,7 @@ def error(*k, **kw):
 			for filename, lineno, name, line in st:
 				buf.append('  File %r, line %d, in %s' % (filename, lineno, name))
 				if line:
-					buf.append('	%s' % line.strip())
+					buf.append(f'	{line.strip()}')
 			if buf:
 				log.error('\n'.join(buf))
 

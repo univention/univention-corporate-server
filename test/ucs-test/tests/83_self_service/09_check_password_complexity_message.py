@@ -40,7 +40,7 @@ def selfservice_container_dn(ucr, udm, close_all_processes):
     container_dn = udm.create_object(
         'container/cn',
         name=random_string(),
-        position="cn=users,%s" % ldap_base,
+        position=f"cn=users,{ldap_base}",
         policy_reference=pwhistory_dn,
     )
 
@@ -51,7 +51,7 @@ def selfservice_container_dn(ucr, udm, close_all_processes):
         "umc/self-service/passwordreset/frontend/enabled=true",
         "umc/self-service/account-registration/frontend/enabled=true",
         "umc/self-service/account-registration/backend/enabled=true",
-        "umc/self-service/account-registration/usercontainer=%s" % container_dn,
+        f"umc/self-service/account-registration/usercontainer={container_dn}",
     ])
     subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service', 'univention-self-service-passwordreset-umc.service'])
     time.sleep(3)

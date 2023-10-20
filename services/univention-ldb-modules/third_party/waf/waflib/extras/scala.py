@@ -46,7 +46,7 @@ def apply_scalac(self):
 		else:
 			y = self.path.find_dir(x)
 			if not y:
-				self.bld.fatal('Could not find the folder %s from %s' % (x, self.path))
+				self.bld.fatal(f'Could not find the folder {x} from {self.path}')
 		tmp.append(y)
 	tsk.srcdir = tmp
 

@@ -169,8 +169,7 @@ def apply_vscript(self):
     '''add version-script arguments to library build'''
 
     if self.env.HAVE_LD_VERSION_SCRIPT and getattr(self, 'version_script', ''):
-        self.env.append_value('LINKFLAGS', "-Wl,--version-script=%s" %
-            self.version_script)
+        self.env.append_value('LINKFLAGS', f"-Wl,--version-script={self.version_script}")
         self.version_script = None
 
 
@@ -198,9 +197,9 @@ def symlink_lib(self):
     if link_target == '':
         basename = os.path.basename(self.bld.make_libname(self.target, version=soext))
         if getattr(self, "private_library", False):
-            link_target = '%s/private/%s' % (LIB_PATH, basename)
+            link_target = f'{LIB_PATH}/private/{basename}'
         else:
-            link_target = '%s/%s' % (LIB_PATH, basename)
+            link_target = f'{LIB_PATH}/{basename}'
 
     link_target = os.path.join(blddir, link_target)
 
@@ -225,7 +224,7 @@ def symlink_bin(self):
         return
 
     if not self.link_task.outputs or not self.link_task.outputs[0]:
-        raise Errors.WafError('no outputs found for %s in symlink_bin' % self.name)
+        raise Errors.WafError(f'no outputs found for {self.name} in symlink_bin')
     binpath = self.link_task.outputs[0].abspath(self.env)
     bldpath = os.path.join(self.bld.env.BUILD_DIRECTORY, self.link_task.outputs[0].name)
 

@@ -100,9 +100,9 @@ def write_to_s4(lo_s4, configRegistry, ucs_result):
         try:
             lo_s4.modify(s4_dn, ml)
         except (ldap.LDAPError, univention.admin.uexceptions.base) as exc:
-            print('Failed to set gPLink for Samba 4 object (%s): %s' % (s4_dn, exc))
+            print(f'Failed to set gPLink for Samba 4 object ({s4_dn}): {exc}')
         else:
-            print('Set gPLink for Samba 4 object (%s)' % (s4_dn))
+            print(f'Set gPLink for Samba 4 object ({(s4_dn)})')
 
 
 def write_to_ucs(lo, configRegistry, s4_result, only_override_empty=False, binddn=None, bindpwdfile=None):
@@ -123,13 +123,13 @@ def write_to_ucs(lo, configRegistry, s4_result, only_override_empty=False, bindd
                 ml.append(('msGPOLink', attributes.get('msGPOLink'), s4_result[s4_dn]))
             if ml:
                 lo.modify(ucs_dn, ml)
-                print('Set msGPOLink for UCS object (%s)' % (ucs_dn))
+                print(f'Set msGPOLink for UCS object ({(ucs_dn)})')
         except univention.admin.uexceptions.noObject:
             pass
         except univention.admin.uexceptions.permissionDenied:
-            print('Permission denied for object %s. Please specify a binddn and a bindpwdfile of a Domain Administrator' % (ucs_dn,))
+            print(f'Permission denied for object {ucs_dn}. Please specify a binddn and a bindpwdfile of a Domain Administrator')
         except Exception as e:
-            print('Failed to set msGPOLink for UCS object %s. Error message was (%s)' % (ucs_dn, e))
+            print(f'Failed to set msGPOLink for UCS object {ucs_dn}. Error message was ({e})')
 
 
 if __name__ == '__main__':

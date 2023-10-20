@@ -754,7 +754,7 @@ def log(function=None, sensitives=None, customs=None, single_values=False):
         def _response(self, *args):
             arg_repr = _log(names, args)
             if arg_repr:
-                MODULE.info('%s got: %s' % (name, ', '.join(arg_repr)))
+                MODULE.info(f'{name} got: {", ".join(arg_repr)}')
             result = function(self, *args)
             MODULE.info('%s returned: %r' % (name, result))
             return result

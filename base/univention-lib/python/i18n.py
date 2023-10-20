@@ -111,11 +111,11 @@ class Locale(object):
         # type: () -> str
         text = self.language or ''
         if self.language not in ('C', 'POSIX') and self.territory:
-            text += '_%s' % self.territory
+            text += f'_{self.territory}'
         if self.codeset:
-            text += '.%s' % self.codeset
+            text += f'.{self.codeset}'
         if self.modifier:
-            text += '@%s' % self.modifier
+            text += f'@{self.modifier}'
         return text
 
 
@@ -225,7 +225,7 @@ class Translation(NullTranslation):
                 language = lang[0] or "C"
                 Translation.locale.parse(language)
             except Error as exc:
-                raise I18N_Error('The given locale is not valid: %s' % (exc,))
+                raise I18N_Error(f'The given locale is not valid: {exc}')
 
         if not self._domain:
             return
@@ -234,7 +234,7 @@ class Translation(NullTranslation):
             self._translation = gettext.translation(self._domain, languages=(Translation.locale.language, ), localedir=self._localedir)
         except IOError:
             try:
-                self._translation = gettext.translation(self._domain, languages=('%s_%s' % (Translation.locale.language, Translation.locale.territory), ), localedir=self._localedir)
+                self._translation = gettext.translation(self._domain, languages=(f'{Translation.locale.language}_{Translation.locale.territory}', ), localedir=self._localedir)
             except IOError:
                 self._translation = None
 

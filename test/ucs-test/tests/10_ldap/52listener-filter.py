@@ -149,7 +149,7 @@ class Listener:
 
             sock.close()
         except socket_error as ex:
-            print('E: error talking to UDN on %s: %s' % (hostname, ex))
+            print(f'E: error talking to UDN on {hostname}: {ex}')
             return
 
         lines = result.splitlines()
@@ -180,7 +180,7 @@ def main() -> None:
     error = False
     with Environment() as env, UCSTestConfigRegistry() as ucr:
         handler_set(
-            ['listener/cache/filter=(ou=%s)' % (UNIQUE,)],
+            [f'listener/cache/filter=(ou={UNIQUE})'],
             opts={'schedule': True},
             quiet=False)
 
@@ -201,20 +201,20 @@ def unexpected_transactions(env: Environment, ucr: Dict[str, str]) -> bool:
     found_modify = False
     found_other = False
 
-    dn = 'ou=%s,%s' % (UNIQUE, ucr['ldap/base'])
+    dn = f'ou={UNIQUE},{ucr["ldap/base"]}'
 
     with open(join(env.tmpdir, UNIQUE)) as log:
         for line in log:
             line = line.strip()
             if line == repr((dn, True, False, 'a')):
-                print('I: Found add: %s' % (line,))
+                print(f'I: Found add: {line}')
                 found_add = True
             elif line == repr((dn, True, False, 'm')):
-                print('I: Found modify: %s' % (line,))
+                print(f'I: Found modify: {line}')
                 found_modify = True
             elif eval(line)[0].endswith(dn):  # noqa: PGH001
                 found_other = True
-                print('E: Found other: %s' % (line,))
+                print(f'E: Found other: {line}')
 
     return found_other or not found_add or not found_modify
 
@@ -222,7 +222,7 @@ def unexpected_transactions(env: Environment, ucr: Dict[str, str]) -> bool:
 def is_not_in_cache(env: Environment, ucr: Dict[str, str]) -> bool:
     error = False
 
-    dn = 'dn: ou=%s,%s' % (UNIQUE, ucr['ldap/base'])
+    dn = f'dn: ou={UNIQUE},{ucr["ldap/base"]}'
 
     dump = join(env.tmpdir, 'dump')
     cmd = [
@@ -239,9 +239,9 @@ def is_not_in_cache(env: Environment, ucr: Dict[str, str]) -> bool:
             line = line.strip()
             if line == dn:
                 error = True
-                print('E: Found DN: %s' % (line,))
+                print(f'E: Found DN: {line}')
             elif UNIQUE in line:
-                print('W: Found line: %s' % (line,))
+                print(f'W: Found line: {line}')
 
     return error
 

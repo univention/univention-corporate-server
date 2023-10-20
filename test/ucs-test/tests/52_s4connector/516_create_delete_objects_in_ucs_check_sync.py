@@ -76,7 +76,7 @@ class Users:
             try:
                 verify_udm_object('users/user', dn, None)
             except AssertionError:
-                stderr('%s still exists in UCS LDAP' % dn)
+                stderr(f'{dn} still exists in UCS LDAP')
                 return False
         return True
 
@@ -85,7 +85,7 @@ class Users:
             try:
                 verify_udm_object('users/user', dn, {'username': str2dn(dn)[0][0][1]})
             except noObject:
-                stderr('%s does not exist in UCS LDAP' % dn)
+                stderr(f'{dn} does not exist in UCS LDAP')
                 return False
         return True
 
@@ -93,7 +93,7 @@ class Users:
         db = configdb('/etc/univention/connector/s4internal.sqlite')
         for uuid in self.uuids:
             if db.get('UCS added', uuid):
-                stderr('%s found in UCS added database' % uuid)
+                stderr(f'{uuid} found in UCS added database')
                 return False
         return True
 
@@ -132,7 +132,7 @@ def test_no_leftovers_after_delete_in_ucs():
                 if user_objects.check_every_user_is_deleted():
                     break
             else:
-                fail("not all users (uid=%s*) have been removed, but should be" % name)
+                fail(f"not all users (uid={name}*) have been removed, but should be")
             # we store (ucs) added objects in 'UCS added' and remove the entry during
             # remove to samba, check if the table is clean
             time.sleep(5)
@@ -186,7 +186,7 @@ def test_do_not_delete_objects_with_different_id():
             time.sleep(10)
             # now check that all users exists
             if not user_objects.check_every_user_is_exists():
-                fail("not all users (uid=%s*) exists, but should" % name)
+                fail(f"not all users (uid={name}*) exists, but should")
             # check if we really hit the problem (by checking for a specific log message)
             logentry = f'delete_in_ucs: object uid={name}{create_users - 1},.* already deleted in UCS, ignoring delete'
             logfile = '/var/log/univention/connector-s4.log'

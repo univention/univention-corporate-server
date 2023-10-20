@@ -65,7 +65,7 @@ def get_lock(name, nonblocking=False):
     >>>     # ...... do some critical stuff ......
     >>>     release_lock(fd)
     """
-    fn = "/var/run/%s.pid" % name
+    fn = f"/var/run/{name}.pid"
     fd = open(fn, 'w')
     try:
         if nonblocking:
@@ -76,7 +76,7 @@ def get_lock(name, nonblocking=False):
         if e.errno == 11:
             return None
         raise
-    fd.write('%s\n' % os.getpid())
+    fd.write(f'{os.getpid()}\n')
     fd.flush()
     return fd
 

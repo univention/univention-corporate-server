@@ -163,7 +163,7 @@ class XCodeNode(object):
 			result = result + "\t\t}"
 			return result
 		elif isinstance(value, str):
-			return '"%s"' % value.replace('"', '\\\\\\"')
+			return f'"{value.replace('''"''', '''\\\\\\"''')}"'
 		elif isinstance(value, list):
 			result = "(\n"
 			for i in value:
@@ -192,11 +192,11 @@ class XCodeNode(object):
 				if attribute[0] != '_':
 					self.write_recursive(value, file)
 			w = file.write
-			w("\t%s = {\n" % self._id)
-			w("\t\tisa = %s;\n" % self.__class__.__name__)
+			w(f"\t{self._id} = {{\n")
+			w(f"\t\tisa = {self.__class__.__name__};\n")
 			for attribute,value in self.__dict__.items():
 				if attribute[0] != '_':
-					w("\t\t%s = %s;\n" % (attribute, self.tostring(value)))
+					w(f"\t\t{attribute} = {self.tostring(value)};\n")
 			w("\t};\n\n")
 
 # Configurations
@@ -354,9 +354,9 @@ class PBXLegacyTarget(XCodeNode):
 		XCodeNode.__init__(self)
 		self.buildConfigurationList = XCConfigurationList([XCBuildConfiguration('waf', {})])
 		if not target:
-			self.buildArgumentsString = "%s %s" % (sys.argv[0], action)
+			self.buildArgumentsString = f"{sys.argv[0]} {action}"
 		else:
-			self.buildArgumentsString = "%s %s --targets=%s" % (sys.argv[0], action, target)
+			self.buildArgumentsString = f"{sys.argv[0]} {action} --targets={target}"
 		self.buildPhases = []
 		self.buildToolPath = sys.executable
 		self.buildWorkingDirectory = ""
@@ -374,7 +374,7 @@ class PBXShellScriptBuildPhase(XCodeNode):
 		self.outputPaths = []
 		self.runOnlyForDeploymentPostProcessing = 0
 		self.shellPath = "/bin/sh"
-		self.shellScript = "%s %s %s --targets=%s" % (sys.executable, sys.argv[0], action, target)
+		self.shellScript = f"{sys.executable} {sys.argv[0]} {action} --targets={target}"
 
 class PBXNativeTarget(XCodeNode):
 	""" Represents a target in XCode, e.g. App, DyLib, Framework etc. """
@@ -456,7 +456,7 @@ class PBXProject(XCodeNode):
 		XCodeNode.write(self, file)
 
 		w("\t};\n")
-		w("\trootObject = %s;\n" % self._id)
+		w(f"\trootObject = {self._id};\n")
 		w("}\n")
 
 	def add_target(self, target):
@@ -557,7 +557,7 @@ def process_xcode(self):
 
 	# Merge frameworks and libs into one list, and prefix the frameworks
 	frameworks = Utils.to_list(self.env.FRAMEWORK)
-	frameworks = ' '.join(['-framework %s' % (f.split('.framework')[0]) for f in frameworks])
+	frameworks = ' '.join([f'-framework {(f.split(".framework")[0])}' for f in frameworks])
 
 	libs = Utils.to_list(self.env.STLIB) + Utils.to_list(self.env.LIB)
 	libs = ' '.join(bld.env['STLIB_ST'] % t for t in libs)
@@ -617,7 +617,7 @@ class xcode(Build.BuildContext):
 			else:
 				d = self.srcnode.find_node(x)
 				if not d:
-					raise Errors.WafError('File \'%s\' was not found' % x)
+					raise Errors.WafError(f'File \'{x}\' was not found')
 			nodes.append(d)
 		return nodes
 
@@ -686,7 +686,7 @@ class xcode(Build.BuildContext):
 			self.post_group()
 			self.current_group += 1
 
-		node = self.bldnode.make_node('%s.xcodeproj' % appname)
+		node = self.bldnode.make_node(f'{appname}.xcodeproj')
 		node.mkdir()
 		node = node.make_node('project.pbxproj')
 		with open(node.abspath(), 'w') as f:

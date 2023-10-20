@@ -55,7 +55,7 @@ class EC2_EBS(Target):
         import_task_id = self.import_snapshot(ec2, vmdk_get)
         snapshot_id = self.wait_for_snapshot(ec2, import_task_id)
         ami = self.register_image(ec2, snapshot_id, size=ceil(vmdk.volume_size() / 1e9))
-        print('Generated "%s" appliance as\n  %s' % (self, ami))
+        print(f'Generated "{self}" appliance as\n  {ami}')
 
         if self.tag:
             self.add_tag(ec2, ami)

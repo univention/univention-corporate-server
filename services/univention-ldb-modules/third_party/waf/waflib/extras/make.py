@@ -123,9 +123,9 @@ class MakeContext(BuildContext):
 		pattern = None
 		if not anode:
 			if not pat.startswith('^'):
-				pat = '^.+?%s' % pat
+				pat = f'^.+?{pat}'
 			if not pat.endswith('$'):
-				pat = '%s$' % pat
+				pat = f'{pat}$'
 			pattern = re.compile(pat)
 
 		def match(node, output):

@@ -80,7 +80,7 @@ class InstallerTests(object):
 
     def get_ip_address(self):
         self.i += 1
-        return '%s.%s' % (self.args.ip_range, self.i)
+        return f'{self.args.ip_range}.{self.i}'
 
     def write_config(self):
         config = ConfigParser.RawConfigParser()

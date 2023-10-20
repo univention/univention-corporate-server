@@ -59,7 +59,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     elif old and b'Software Monitor' in old.get('univentionService', ()):
         if not ldap_info['lo']:
             ldap_reconnect()
-        if ldap_info['lo'] and not ldap_info['lo'].search(filter='(&%s(univentionService=Software Monitor))' % filter, attr=['univentionService']):
+        if ldap_info['lo'] and not ldap_info['lo'].search(filter=f'(&{filter}(univentionService=Software Monitor))', attr=['univentionService']):
             with SetUID(0):
                 ucr.handler_set(('pkgdb/scan=no', ))
 
@@ -70,7 +70,7 @@ def ldap_reconnect() -> None:
         try:
             ldap_info['lo'] = univention.uldap.access(host=ldap_info['ldapserver'], base=ldap_info['basedn'], binddn=ldap_info['binddn'], bindpw=ldap_info['bindpw'], start_tls=2)
         except ValueError as ex:
-            ud.debug(ud.LISTENER, ud.ERROR, 'pkgdb-watch: ldap reconnect failed: %s' % (ex,))
+            ud.debug(ud.LISTENER, ud.ERROR, f'pkgdb-watch: ldap reconnect failed: {ex}')
             ldap_info['lo'] = None
         else:
             if ldap_info['lo'] is None:
@@ -79,15 +79,15 @@ def ldap_reconnect() -> None:
 
 def setdata(key: str, value: str) -> None:
     if key == 'bindpw':
-        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed key="%s" value="<HIDDEN>"' % key)
+        ud.debug(ud.LISTENER, ud.INFO, f'pkgdb-watch: listener passed key="{key}" value="<HIDDEN>"')
     else:
-        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed key="%s" value="%s"' % (key, value))
+        ud.debug(ud.LISTENER, ud.INFO, f'pkgdb-watch: listener passed key="{key}" value="{value}"')
 
     if key in ['ldapserver', 'basedn', 'binddn', 'bindpw']:
         ldap_info[key] = value
     else:
-        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed unknown data (key="%s" value="%s")' % (key, value))
+        ud.debug(ud.LISTENER, ud.INFO, f'pkgdb-watch: listener passed unknown data (key="{key}" value="{value}")')
 
     if key == 'ldapserver':
-        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: ldap server changed to %s' % value)
+        ud.debug(ud.LISTENER, ud.INFO, f'pkgdb-watch: ldap server changed to {value}')
         ldap_reconnect()

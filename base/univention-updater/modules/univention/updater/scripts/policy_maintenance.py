@@ -67,7 +67,7 @@ def write_cron_job(configRegistry: ConfigRegistry, cron: str, updateto: str, reb
                 'rm -f /run/univention-updater-reboot;'
                 'fi' % (
                     quote(reboot),))
-        print('%s\troot\t%s' % (cron, ';'.join(cmd)), file=file)
+        print(f'{cron}\troot\t{";".join(cmd)}', file=file)
 
 
 def one(results: Dict[str, List[str]], key: str) -> str:
@@ -90,7 +90,7 @@ def main() -> None:
     try:
         results, _policies = policy_result(ldap_hostdn)
     except PolicyResultFailed as ex:
-        exit('failed to execute univention_policy_result: %s' % ex)
+        exit(f'failed to execute univention_policy_result: {ex}')
 
     cron_active = one(results, "univentionCronActive") == "1"
     cron = one(results, "univentionCron")

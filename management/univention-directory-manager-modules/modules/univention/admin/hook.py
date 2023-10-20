@@ -68,7 +68,7 @@ def import_hook_files():
                     ud.debug(ud.ADMIN, ud.INFO, 'admin.hook.import_hook_files: importing %r' % (fn,))
                 except Exception:
                     ud.debug(ud.ADMIN, ud.ERROR, 'admin.hook.import_hook_files: loading %r failed' % (fn,))
-                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.hook.import_hook_files: TRACEBACK:\n%s' % traceback.format_exc())
+                    ud.debug(ud.ADMIN, ud.ERROR, f'admin.hook.import_hook_files: TRACEBACK:\n{traceback.format_exc()}')
 
 
 class simpleHook(object):
@@ -201,7 +201,7 @@ class AttributeHook(simpleHook):
 
         :param obj: The |UDM| object instance.
         """
-        ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)' % (self.ldap_attribute_name, self.udm_attribute_name))
+        ud.debug(ud.ADMIN, ud.INFO, f'admin.syntax.hook.AttributeHook: Mapping {self.ldap_attribute_name} (LDAP) -> {self.udm_attribute_name} (UDM)')
         old_value = obj.oldattr.get(self.ldap_attribute_name, [])
         if self.version < 2:  # TODO: remove in UCS 5.1
             warnings.warn('Still using deprecated AttributeHook.version == 1', DeprecationWarning, stacklevel=2)
@@ -239,7 +239,7 @@ class AttributeHook(simpleHook):
                 else:
                     key, old_value, new_value = ml_value
                 if key == self.ldap_attribute_name:
-                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (UDM) -> %s (LDAP)' % (self.udm_attribute_name, self.ldap_attribute_name))
+                    ud.debug(ud.ADMIN, ud.INFO, f'admin.syntax.hook.AttributeHook: Mapping {self.udm_attribute_name} (UDM) -> {self.ldap_attribute_name} (LDAP)')
                     old_value = self.map_attribute_value_to_ldap(old_value)
                     new_new_value = self.map_attribute_value_to_ldap(new_value)
                     ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting LDAP value from %r to %r' % (new_value, new_new_value))

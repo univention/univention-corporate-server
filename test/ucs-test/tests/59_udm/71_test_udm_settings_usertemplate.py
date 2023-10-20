@@ -21,11 +21,11 @@ PASSWORD = 'Univention@99'
 MOD_TMPL = 'settings/usertemplate'
 MOD_USER = 'users/user'
 
-MAIL_DOMAIN = '%s.%s' % (random_name(), random_name())
+MAIL_DOMAIN = f'{random_name()}.{random_name()}'
 
 
 def email():
-    return '%s.%s' % (random_name(), MAIL_DOMAIN)
+    return f'{random_name()}.{MAIL_DOMAIN}'
 
 
 @pytest.mark.tags('udm-ldapextensions', 'apptest')
@@ -57,7 +57,7 @@ def test_use_usertemplate(udm):
     dn_group2 = udm.create_group(wait_for_replication=False)[0]
 
     host = random_domain_name()
-    path = '/%s' % (random_name(),)
+    path = f'/{random_name()}'
     dn_share = udm.create_object('shares/share', wait_for_replication=False, name=random_name(), path=path, host=host)
 
     properties = {
@@ -65,8 +65,8 @@ def test_use_usertemplate(udm):
         "_options": ['pki'],
         "title": random_name(),
         "description": random_name(),
-        "mailPrimaryAddress": '<firstname>.<lastname>@%s' % (MAIL_DOMAIN,),
-        "mailAlternativeAddress": ['<username>@%s' % (MAIL_DOMAIN,), '<lastname>@%s' % (MAIL_DOMAIN,)],
+        "mailPrimaryAddress": f'<firstname>.<lastname>@{MAIL_DOMAIN}',
+        "mailAlternativeAddress": [f'<username>@{MAIL_DOMAIN}', f'<lastname>@{MAIL_DOMAIN}'],
         "displayName": '<lastname>, <firstname>',
         "organisation": random_name(),
         "employeeNumber": random_int(),
@@ -77,9 +77,9 @@ def test_use_usertemplate(udm):
         "disabled": '1',
         "pwdChangeNextLogin": '1',
         "homedrive": 'H:',
-        "sambahome": '//%s/<username>' % (host,),
-        "scriptpath": '//%s/scripts/<username>' % (host,),
-        "profilepath": '//%s/profile/<username>' % (host,),
+        "sambahome": f'//{host}/<username>',
+        "scriptpath": f'//{host}/scripts/<username>',
+        "profilepath": f'//{host}/profile/<username>',
         "unixhome": '/home/<username>[0]/<username>',
         "shell": '/bin/false',
         "homeShare": dn_share,
@@ -170,7 +170,7 @@ def test_use_usertemplate(udm):
         dn_user = obj_user.create()
 
     udm._cleanup.setdefault(MOD_USER, []).append(dn_user)
-    print('dn_user=%s' % (dn_user,))
+    print(f'dn_user={dn_user}')
 
     utils.verify_ldap_object(dn_user, {
         'univentionObjectType': [MOD_USER],
@@ -182,9 +182,9 @@ def test_use_usertemplate(udm):
         'mail': [properties['e-mail']],
         'homeDirectory': ['/home/%s/%s' % (user_properties['username'][0], user_properties['username'])],
         'loginShell': [properties['shell']],
-        'sambaHomePath': ['//%s/%s' % (host, user_properties['username'])],
-        'sambaLogonScript': ['//%s/scripts/%s' % (host, user_properties['username'])],
-        'sambaProfilePath': ['//%s/profile/%s' % (host, user_properties['username'])],
+        'sambaHomePath': [f'//{host}/{user_properties["username"]}'],
+        'sambaLogonScript': [f'//{host}/scripts/{user_properties["username"]}'],
+        'sambaProfilePath': [f'//{host}/profile/{user_properties["username"]}'],
         'sambaHomeDrive': [properties['homedrive']],
         'c': [properties['country']],
         'st': [properties['state']],
@@ -201,8 +201,8 @@ def test_use_usertemplate(udm):
         'automountInformation': ['-rw %s:%s/%s/%s' % (host, path, user_properties['username'][0], user_properties['username'])],
         # 'gidNumber': [properties['primaryGroup']],  # TODO
         # 'userGroupsPreset': properties['groups'],  # TODO
-        'mailPrimaryAddress': ['%s.%s@%s' % (user_properties['firstname'], user_properties['lastname'], MAIL_DOMAIN)],
-        'mailAlternativeAddress': ['%s@%s' % (user_properties['username'], MAIL_DOMAIN), '%s@%s' % (user_properties['lastname'], MAIL_DOMAIN)],
+        'mailPrimaryAddress': [f'{user_properties["firstname"]}.{user_properties["lastname"]}@{MAIL_DOMAIN}'],
+        'mailAlternativeAddress': [f'{user_properties["username"]}@{MAIL_DOMAIN}', f'{user_properties["lastname"]}@{MAIL_DOMAIN}'],
         # 'krb5PrincipalName': [],
         # 'krb5PasswordEnd': [],
         # 'krb5Key': [],
@@ -280,13 +280,13 @@ def create_template(udm, host, path):
     dn_share = udm.create_object('shares/share', wait_for_replication=False, name=random_name(), path=path, host=host)
     properties = {
         "name": template_name,
-        "mailPrimaryAddress": '<:umlauts><firstname>.<lastname><:lower>@%s' % (MAIL_DOMAIN,),
-        "mailAlternativeAddress": ['<:umlauts><username><:lower>@%s' % (MAIL_DOMAIN,), '<:umlauts><lastname><:lower>@%s' % (MAIL_DOMAIN,)],
+        "mailPrimaryAddress": f'<:umlauts><firstname>.<lastname><:lower>@{MAIL_DOMAIN}',
+        "mailAlternativeAddress": [f'<:umlauts><username><:lower>@{MAIL_DOMAIN}', f'<:umlauts><lastname><:lower>@{MAIL_DOMAIN}'],
         "displayName": '<:umlauts><lastname>, <:umlauts><firstname>',
         "organisation": random_name(),
-        "sambahome": '//%s/<:umlauts><username>' % (host,),
-        "scriptpath": '//%s/scripts/<:umlauts><username>' % (host,),
-        "profilepath": '//%s/profile/<:umlauts><username>' % (host,),
+        "sambahome": f'//{host}/<:umlauts><username>',
+        "scriptpath": f'//{host}/scripts/<:umlauts><username>',
+        "profilepath": f'//{host}/profile/<:umlauts><username>',
         "unixhome": '/home/<username>[0]/<:umlauts><username>',
         "homeShare": dn_share,
         "homeSharePath": '<:umlauts><username>[0]/<username>',
@@ -318,7 +318,7 @@ def create_template(udm, host, path):
 def test_use_usertemplate_umlauts(udm):
     """Test umlauts for usertemplate object"""
     host = random_domain_name()
-    path = '/%s' % (random_name(),)
+    path = f'/{random_name()}'
     properties, dn_template = create_template(udm, host, path)
     co = None
     lo, po = getAdminConnection()
@@ -355,10 +355,10 @@ def test_use_usertemplate_umlauts(udm):
         obj_user.info.update(user_properties)
         dn_user = obj_user.create()
         udm._cleanup.setdefault(MOD_USER, []).append(dn_user)
-        print('verify that email attributes of dn_user=%s are set as expected' % (dn_user,))
+        print(f'verify that email attributes of dn_user={dn_user} are set as expected')
         utils.verify_ldap_object(dn_user, {
-            'mailPrimaryAddress': ['%s.%s@%s' % (expected_firstname, expected_lastname, MAIL_DOMAIN)],
-            'mailAlternativeAddress': ['%s@%s' % (user_properties['username'], MAIL_DOMAIN), '%s@%s' % (expected_lastname, MAIL_DOMAIN)],
+            'mailPrimaryAddress': [f'{expected_firstname}.{expected_lastname}@{MAIL_DOMAIN}'],
+            'mailAlternativeAddress': [f'{user_properties["username"]}@{MAIL_DOMAIN}', f'{expected_lastname}@{MAIL_DOMAIN}'],
         })
 
 
@@ -387,7 +387,7 @@ def test_usertemplate_filter(udm, ucr):
         'tabPosition': '11',
         'valueRequired': '0',
     }
-    extended_attribute = udm.create_object('settings/extended_attribute', position='cn=custom attributes,cn=univention,%s' % (ucr.get('ldap/base')), **properties)
+    extended_attribute = udm.create_object('settings/extended_attribute', position=f'cn=custom attributes,cn=univention,{(ucr.get("ldap/base"))}', **properties)
     utils.verify_ldap_object(extended_attribute, should_exist=True)
 
     template = udm.create_object('settings/usertemplate', name=uts.random_name(), mail='<username>@example.com')

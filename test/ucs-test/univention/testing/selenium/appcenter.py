@@ -148,7 +148,7 @@ class AppCenter:
 
         search_field = self.selenium.driver.find_element(
             By.XPATH,
-            '//*[contains(text(), "%s")]/../input' % ('Search applications...',),
+            f'//*[contains(text(), "{"Search applications..."}")]/../input',
         )
         search_field.send_keys(text)
         sleep(2)
@@ -162,8 +162,7 @@ class AppCenter:
             '//div[contains(concat(" ", normalize-space(@class), " "), " dropDownMenu ")]//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]',
         )
         self.selenium.click_element(
-            '//*[contains(concat(" ", normalize-space(@class), " "), " dijitMenuItem ")][@role="option"]//*[contains(text(), "%s")]'
-            % (category,),
+            f'//*[contains(concat(" ", normalize-space(@class), " "), " dijitMenuItem ")][@role="option"]//*[contains(text(), "{category}")]',
         )
         sleep(2)
 

@@ -111,7 +111,7 @@ class Instance(Base):
                     process.kill()
             except psutil.NoSuchProcess as exc:
                 failed.append(str(pid_))
-                MODULE.error('Could not %s pid %s: %s' % (signal, pid_, exc))
+                MODULE.error(f'Could not {signal} pid {pid_}: {exc}')
         if failed:
             failed = ', '.join(failed)
             raise UMC_Error(_('No process found with PID %s') % (failed))

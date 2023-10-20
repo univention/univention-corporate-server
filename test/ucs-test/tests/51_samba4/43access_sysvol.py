@@ -26,8 +26,8 @@ def user():
     with _udm.UCSTestUDM() as udm:
         userdn, username = udm.create_user(password='univention', firstname='Max', lastname='Muster', organisation='firma.de_GmbH')  # mailPrimaryAddress='...@...'
 
-        call(['univention-ldapsearch', 'uid=%s' % (username,)])
-        call(['univention-s4search', 'sAMAccountName=%s' % (username,)])
+        call(['univention-ldapsearch', f'uid={username}'])
+        call(['univention-s4search', f'sAMAccountName={username}'])
         yield username
 
 

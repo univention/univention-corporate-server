@@ -14,7 +14,7 @@ def SAMBA_PIDL(bld, pname, source,
 
     bname = source[0:-4]; # strip off the .idl suffix
     bname = os.path.basename(bname)
-    name = "%s_%s" % (pname, bname.upper())
+    name = f"{pname}_{bname.upper()}"
 
     if not SET_TARGET_TYPE(bld, name, 'PIDL'):
         return
@@ -65,7 +65,7 @@ def SAMBA_PIDL(bld, pname, source,
         if isinstance(bld.CONFIG_GET("CPP"), list):
             cpp = 'CPP="%s"' % " ".join(bld.CONFIG_GET("CPP"))
         else:
-            cpp = 'CPP="%s"' % bld.CONFIG_GET("CPP")
+            cpp = f'CPP="{bld.CONFIG_GET("CPP")}"'
 
     if cpp == "CPP=xlc_r":
         cpp = ""
@@ -79,9 +79,9 @@ def SAMBA_PIDL(bld, pname, source,
         if isinstance(bld.CONFIG_GET("CC"), list):
             cc = 'CC="%s"' % " ".join(bld.CONFIG_GET("CC"))
         else:
-            cc = 'CC="%s"' % bld.CONFIG_GET("CC")
+            cc = f'CC="{bld.CONFIG_GET("CC")}"'
 
-    t = bld(rule='cd ${PIDL_LAUNCH_DIR} && %s%s %s ${PERL} ${PIDL} --quiet ${OPTIONS} --outputdir ${OUTPUTDIR} -- "${IDLSRC}"' % (pidl_dev, cpp, cc),
+    t = bld(rule=f'cd ${{PIDL_LAUNCH_DIR}} && {pidl_dev}{cpp} {cc} ${{PERL}} ${{PIDL}} --quiet ${{OPTIONS}} --outputdir ${{OUTPUTDIR}} -- "${{IDLSRC}}"',
             ext_out    = '.c',
             before     = 'c',
             update_outputs = True,
@@ -150,10 +150,10 @@ def collect(self):
     self.source = Utils.to_list(self.source)
     for (name, hd) in pidl_headers.items():
         y = self.bld.get_tgen_by_name(name)
-        self.bld.ASSERT(y is not None, 'Failed to find PIDL header %s' % name)
+        self.bld.ASSERT(y is not None, f'Failed to find PIDL header {name}')
         y.post()
         for node in hd:
-            self.bld.ASSERT(node is not None, 'Got None as build node generating PIDL table for %s' % name)
+            self.bld.ASSERT(node is not None, f'Got None as build node generating PIDL table for {name}')
             self.source.append(node)
 
 

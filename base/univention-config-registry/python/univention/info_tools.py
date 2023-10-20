@@ -168,7 +168,7 @@ class LocalizedDictionary(__LD):
         temp = {}
         variable = dict.__getitem__(self, key)  # type: LocalizedValue # type: ignore
         for locale, value in variable.items():
-            temp['%s[%s]' % (key, locale)] = value
+            temp[f'{key}[{locale}]'] = value
 
         if variable.get_default():  # type: ignore
             temp[key] = variable.get_default()
@@ -219,15 +219,15 @@ class UnicodeConfig(configparser.ConfigParser):
     def write(self, fp):
         """Write an .ini-format representation of the configuration state."""
         if self._defaults:
-            fp.write("[%s]\n" % configparser.DEFAULTSECT)
+            fp.write(f"[{configparser.DEFAULTSECT}]\n")
             for (key, value) in self._defaults.items():
                 fp.write("%s = %s\n" % (key, str(value).replace('\n', '\n\t')))
             fp.write("\n")
         for section in self._sections:
-            fp.write("[%s]\n" % section)
+            fp.write(f"[{section}]\n")
             for (key, value) in self._sections[section].items():
                 if key != "__name__":
-                    fp.write("%s = %s\n" % (key, value.replace('\n', '\n\t')))
+                    fp.write(f"{key} = {value.replace('\n', '\n\t')}\n")
             fp.write("\n")
 
 

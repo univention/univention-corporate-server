@@ -68,7 +68,7 @@ class object(univention.admin.handlers.users.user.object):
     def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
         super(object, self).__init__(co, lo, position, dn=dn, superordinate=superordinate, attributes=attributes)
         if self._exists and (not self.lo.compare_dn(self.dn, self.lo.whoami()) or not univention.admin.modules.recognize('users/user', self.dn, self.oldattr)):
-            raise univention.admin.uexceptions.wrongObjectType('%s is not recognized as %s.' % (self.dn, self.module))
+            raise univention.admin.uexceptions.wrongObjectType(f'{self.dn} is not recognized as {self.module}.')
 
     @classmethod
     def lookup_filter(cls, filter_s=None, lo=None):

@@ -77,20 +77,20 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
 def add_ldap_server(ucr: Dict[str, str], name: str, domain: str, role: str) -> None:
     """Add LDAP server."""
-    ud.debug(ud.LISTENER, ud.INFO, 'LDAP_SERVER: Add ldap_server %s' % name)
+    ud.debug(ud.LISTENER, ud.INFO, f'LDAP_SERVER: Add ldap_server {name}')
 
-    server_name = "%s.%s" % (name, domain)
+    server_name = f"{name}.{domain}"
 
     if role == 'master':
         old_master = ucr.get('ldap/master')
 
-        changes = ['ldap/master=%s' % server_name]
+        changes = [f'ldap/master={server_name}']
 
         if ucr.get('kerberos/adminserver') == old_master:
-            changes.append('kerberos/adminserver=%s' % server_name)
+            changes.append(f'kerberos/adminserver={server_name}')
 
         if ucr.get('ldap/server/name') == old_master:
-            changes.append('ldap/server/name=%s' % server_name)
+            changes.append(f'ldap/server/name={server_name}')
 
         univention.config_registry.handler_set(changes)
 
@@ -98,17 +98,17 @@ def add_ldap_server(ucr: Dict[str, str], name: str, domain: str, role: str) -> N
         backup_list = ucr.get('ldap/backup', '').split()
         if server_name not in backup_list:
             backup_list.append(server_name)
-            univention.config_registry.handler_set(['ldap/backup=%s' % (' '.join(backup_list),)])
+            univention.config_registry.handler_set([f'ldap/backup={" ".join(backup_list)}'])
 
 
 def remove_ldap_server(ucr: Dict[str, str], name: str, domain: str, role: str) -> None:
     """Remove LDAP server."""
-    ud.debug(ud.LISTENER, ud.INFO, 'LDAP_SERVER: Remove ldap_server %s' % name)
+    ud.debug(ud.LISTENER, ud.INFO, f'LDAP_SERVER: Remove ldap_server {name}')
 
-    server_name = "%s.%s" % (name, domain)
+    server_name = f"{name}.{domain}"
 
     if role == 'backup':
         backup_list = ucr.get('ldap/backup', '').split()
         if server_name in backup_list:
             backup_list.remove(server_name)
-            univention.config_registry.handler_set(['ldap/backup=%s' % (' '.join(backup_list),)])
+            univention.config_registry.handler_set([f'ldap/backup={" ".join(backup_list)}'])

@@ -9,17 +9,17 @@ from univention.testing.strings import random_name
 
 @pytest.fixture()
 def base_user(ucr, ldap_base):
-    return 'cn=users,%s' % ldap_base
+    return f'cn=users,{ldap_base}'
 
 
 @pytest.fixture()
 def base_group(ucr, ldap_base):
-    return 'cn=groups,%s' % ldap_base
+    return f'cn=groups,{ldap_base}'
 
 
 @pytest.fixture()
 def dn_builtin_users(ldap_base):
-    return 'cn=Users,cn=Builtin,%s' % ldap_base
+    return f'cn=Users,cn=Builtin,{ldap_base}'
 
 
 @pytest.fixture()

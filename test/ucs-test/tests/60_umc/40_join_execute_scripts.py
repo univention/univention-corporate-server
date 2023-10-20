@@ -31,10 +31,10 @@ class TestUMCDomainJoinModule(JoinModule):
                 if not os.path.exists(path):
                     os.symlink(os.path.abspath(script_name), path)
             else:
-                print("Missing file with the provided name '%s' on path '%s'" % (script_name, path))
+                print(f"Missing file with the provided name '{script_name}' on path '{path}'")
                 self.return_code_result_skip()
         except OSError as exc:
-            utils.fail("Failed to create a symbolic link to the '%s' on the path '%s' or check if '%s' exists. Exception: '%s'" % (script_name, path, script_name, exc))
+            utils.fail(f"Failed to create a symbolic link to the '{script_name}' on the path '{path}' or check if '{script_name}' exists. Exception: '{exc}'")
 
     def remove_join_script_link(self, path):
         """
@@ -45,9 +45,9 @@ class TestUMCDomainJoinModule(JoinModule):
             if os.path.exists(path):
                 os.unlink(path)
             else:
-                print("The provided path '%s' does not exist, no links were removed" % path)
+                print(f"The provided path '{path}' does not exist, no links were removed")
         except OSError as exc:
-            utils.fail("Failed to remove a symbolic link to the test join script, or failed to check if '%s' exists. Exception: '%s'" % (path, exc))
+            utils.fail(f"Failed to remove a symbolic link to the test join script, or failed to check if '{path}' exists. Exception: '{exc}'")
 
     def get_join_script_state(self, script_name):
         """
@@ -81,33 +81,33 @@ class TestUMCDomainJoinModule(JoinModule):
         join_status_file = '/var/univention-join/status'
 
         try:
-            print("Saving a backup of initial join status file '%s'" % join_status_file)
+            print(f"Saving a backup of initial join status file '{join_status_file}'")
             self.copy_file(join_status_file, join_status_file + '.bak')
 
-            print("Creating a symbolic link to the test join script '%s' in the '%s'" % (test_script, script_link_path))
+            print(f"Creating a symbolic link to the test join script '{test_script}' in the '{script_link_path}'")
             self.link_join_script(test_script + '.inst', script_link_path + test_script + '.inst')
             self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script)
             if test_script_state:
-                utils.fail("The state of the join script '%s' is 'configured' right after script link was created in the join scripts folder '%s'" % (test_script, script_link_path))
+                utils.fail(f"The state of the join script '{test_script}' is 'configured' right after script link was created in the join scripts folder '{script_link_path}'")
 
             # case 1: execute single join script
-            print("Executing test join script '%s' via UMC request" % test_script)
+            print(f"Executing test join script '{test_script}' via UMC request")
             self.run(script_names=[test_script])
             self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script)
             if not test_script_state:
-                utils.fail("The state of the join script '%s' 'configured' is '%s' after the script was executed" % (test_script, test_script_state))
+                utils.fail(f"The state of the join script '{test_script}' 'configured' is '{test_script_state}' after the script was executed")
 
             # case 2: executing single join script with 'Force' and with
             # restoration of the status file prior to execution
-            print("Force executing test join script '%s' via UMC request" % test_script)
+            print(f"Force executing test join script '{test_script}' via UMC request")
             self.copy_file(join_status_file + '.bak', join_status_file)
             self.run(script_names=[test_script], force=True)
             self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script)
             if not test_script_state:
-                utils.fail("The state of the join script '%s' 'configured' is '%s' after the script was force executed" % (test_script, test_script_state))
+                utils.fail(f"The state of the join script '{test_script}' 'configured' is '{test_script_state}' after the script was force executed")
 
             # case 3: creating more test join scripts with links
             # and executing all pending scripts after
@@ -120,10 +120,10 @@ class TestUMCDomainJoinModule(JoinModule):
             self.wait_rejoin_to_complete(5)  # check running state and wait
             test_script_state = self.get_join_script_state(test_script + '_copy1')
             if not test_script_state:
-                utils.fail("The state of the join script '%s' 'configured' is '%s' after all pending scripts were executed" % (test_script + '_copy1', test_script_state))
+                utils.fail(f"The state of the join script '{test_script + '_copy1'}' 'configured' is '{test_script_state}' after all pending scripts were executed")
             test_script_state = self.get_join_script_state(test_script + '_copy2')
             if not test_script_state:
-                utils.fail("The state of the join script '%s' 'configured' is '%s' after all pending scripts were executed" % (test_script + '_copy2', test_script_state))
+                utils.fail(f"The state of the join script '{test_script + '_copy2'}' 'configured' is '{test_script_state}' after all pending scripts were executed")
         finally:
             print("\nRemoving all links and test script copies, restoring status file")
             # Unlinking all join scripts:

@@ -27,7 +27,7 @@ def main():
     SamlSession = samltest.SamlTest(account.username, account.bindpw)
     lo = utils.get_ldap_connection(admin_uldap=True)
     master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
-    master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
+    master_hostname = f"{master[0]['name']}.{master[0]['domain']}"
     master_ip = socket.gethostbyname(master_hostname)
     backup_ip = '127.0.0.1'
 

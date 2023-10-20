@@ -156,7 +156,7 @@ class TestLicenseClient:
         self.log.debug("In 'get_server_password': secret_file='%s'", secret_file)
         if not path.exists(secret_file):
             self.log.critical("The '%s' secret file does not exist, cannot proceed without password", secret_file)
-            raise CredentialsMissing("The '%s' secret file does not exist" % secret_file)
+            raise CredentialsMissing(f"The '{secret_file}' secret file does not exist")
         try:
             with open(secret_file) as password:
                 self.server_password = password.read()

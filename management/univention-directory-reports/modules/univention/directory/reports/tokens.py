@@ -67,8 +67,8 @@ class TemplateToken(Token):
     def __str__(self):
         attrs = ''
         for key, value in self.attrs.items():
-            attrs += '%s="%s" ' % (key, value)
-        return '<@%s %s@>' % (self.name, attrs[: -1])
+            attrs += f'{key}="{value}" '
+        return f'<@{self.name} {attrs[: -1]}@>'
 
 
 class IContextToken(TemplateToken, list):

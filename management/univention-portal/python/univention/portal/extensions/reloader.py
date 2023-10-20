@@ -319,7 +319,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             path = assets_root / "icons" / dirname / f"{name}.{extension}"
             path.write_bytes(image)
         except (OSError, TypeError):
-            get_logger("img").exception("Error saving image for %s" % name)
+            get_logger("img").exception(f"Error saving image for {name}")
         else:
             return f"./icons/{quote(dirname)}/{quote(name)}.{extension}"
 

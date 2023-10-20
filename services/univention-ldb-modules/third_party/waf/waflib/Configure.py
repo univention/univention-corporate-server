@@ -116,7 +116,7 @@ class ConfigurationContext(Context.Context):
 		if not out:
 			out = getattr(Context.g_module, Context.OUT, None)
 		if not out:
-			out = Options.lockfile.replace('.lock-waf_%s_' % sys.platform, '').replace('.lock-waf', '')
+			out = Options.lockfile.replace(f'.lock-waf_{sys.platform}_', '').replace('.lock-waf', '')
 
 		# someone can be messing with symlinks
 		out = os.path.realpath(out)
@@ -125,7 +125,7 @@ class ConfigurationContext(Context.Context):
 		self.bldnode.mkdir()
 
 		if not os.path.isdir(self.bldnode.abspath()):
-			self.fatal('Could not create the build directory %s' % self.bldnode.abspath())
+			self.fatal(f'Could not create the build directory {self.bldnode.abspath()}')
 
 	def execute(self):
 		"""
@@ -143,7 +143,7 @@ class ConfigurationContext(Context.Context):
 		if app:
 			ver = getattr(Context.g_module, 'VERSION', '')
 			if ver:
-				app = "%s (%s)" % (app, ver)
+				app = f"{app} ({ver})"
 
 		params = {'now': time.ctime(), 'pyver': sys.hexversion, 'systype': sys.platform, 'args': " ".join(sys.argv), 'wafver': Context.WAFVERSION, 'abi': Context.ABI, 'app': app}
 		self.to_log(conf_template % params)
@@ -210,7 +210,7 @@ class ConfigurationContext(Context.Context):
 			if Options.options.libdir:
 				env.LIBDIR = Options.options.libdir
 			else:
-				env.LIBDIR = Utils.subst_vars('${PREFIX}/lib%s' % Utils.lib64(), env)
+				env.LIBDIR = Utils.subst_vars(f'${{PREFIX}}/lib{Utils.lib64()}', env)
 
 	def store(self):
 		"""Save the config results into the cache file"""
@@ -248,7 +248,7 @@ class ConfigurationContext(Context.Context):
 			if cache:
 				mag = (tool, id(self.env), tooldir, funs)
 				if mag in self.tool_cache:
-					self.to_log('(tool %s is already loaded, skipping)' % tool)
+					self.to_log(f'(tool {tool} is already loaded, skipping)')
 					continue
 				self.tool_cache.append(mag)
 
@@ -380,7 +380,7 @@ def check_waf_version(self, mini='1.9.99', maxi='2.1.0', **kw):
 	:type  maxi: number, tuple or string
 	:param maxi: Maximum allowed version
 	"""
-	self.start_msg('Checking for waf version in %s-%s' % (str(mini), str(maxi)), **kw)
+	self.start_msg(f'Checking for waf version in {str(mini)}-{str(maxi)}', **kw)
 	ver = Context.HEXVERSION
 	if Utils.num2ver(mini) > ver:
 		self.fatal('waf version should be at least %r (%r found)' % (Utils.num2ver(mini), ver))
@@ -601,7 +601,7 @@ def run_build(self, *k, **kw):
 		try:
 			bld.compile()
 		except Errors.WafError:
-			ret = 'Test does not build: %s' % traceback.format_exc()
+			ret = f'Test does not build: {traceback.format_exc()}'
 			self.fatal(ret)
 		else:
 			ret = getattr(bld, 'retval', 0)

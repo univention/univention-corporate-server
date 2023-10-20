@@ -67,7 +67,7 @@ class Upgrade(Install):
 
     def _app_too_old(self, current_app, specified_app):
         if current_app >= specified_app:
-            self.fatal('A newer version of %s than the one installed must be present and chosen' % current_app.id)
+            self.fatal(f'A newer version of {current_app.id} than the one installed must be present and chosen')
             return True
         return False
 

@@ -171,7 +171,7 @@ if options.name_edu_server:
 result = client.umc_command('schoolinstaller/install', params).result
 if result and not result.get('success', True):  # backwards compatibility
     print('ERROR: Failed to run installer!')
-    print('output: %s' % result)
+    print(f'output: {result}')
     sys.exit(1)
 
 print('=== INSTALLATION STARTED ===')
@@ -198,13 +198,13 @@ while not status['finished']:
 
 if len(status['errors']) > 0:
     print('ERROR: installation failed!')
-    print('output: %s' % status)
+    print(f'output: {status}')
     sys.exit(1)
 
 result = client.umc_command('lib/server/restart').result
 if not result:
     print('ERROR: Failed to restart UMC')
-    print('output: %s' % result)
+    print(f'output: {result}')
     sys.exit(1)
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=42305

@@ -45,7 +45,7 @@ policies = []
 def __walk(root, dir, files):
     for file_ in files:
         if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('policy.py', 'base.py'):
-            policies.append(importlib.import_module('univention.admin.handlers.policies.%s' % (file_[:-3],)))
+            policies.append(importlib.import_module(f'univention.admin.handlers.policies.{file_[:-3]}'))
 
 
 path = os.path.abspath(os.path.dirname(__file__))

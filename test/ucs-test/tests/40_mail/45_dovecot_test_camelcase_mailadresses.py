@@ -31,7 +31,7 @@ class Bunch:
 
 def get_mixed_case_maildir(addr):
     localpart, domain = addr.rsplit('@', 1)
-    return '/var/spool/dovecot/private/%s/%s/Maildir' % (domain, localpart)
+    return f'/var/spool/dovecot/private/{domain}/{localpart}/Maildir'
 
 
 def main():

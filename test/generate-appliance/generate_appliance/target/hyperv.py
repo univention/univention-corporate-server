@@ -23,7 +23,7 @@ class HyperV(TargetFile):
 
     def create(self, image: Raw) -> None:
         options = self.options
-        image_name = "%s.vhdx" % (options.product,)
+        image_name = f"{options.product}.vhdx"
         archive_name = self.archive_name()
 
         vhdx = Vhdx(image)

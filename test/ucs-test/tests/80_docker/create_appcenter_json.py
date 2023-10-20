@@ -104,16 +104,16 @@ class App:
         return os.path.join(self.meta_inf_dir, filename)
 
     def get_ini_file(self):
-        return self._meta_inf_dir('%s.ini' % self.name)
+        return self._meta_inf_dir(f'{self.name}.ini')
 
     def get_ini_url(self):
-        return self._meta_url('%s.ini' % self.name)
+        return self._meta_url(f'{self.name}.ini')
 
     def get_png_file(self):
-        return self._meta_inf_dir('%s.png' % self.name)
+        return self._meta_inf_dir(f'{self.name}.png')
 
     def get_png_url(self):
-        return self._meta_url('%s.png' % self.name)
+        return self._meta_url(f'{self.name}.png')
 
     def file_info(self, name, url, filename):
         return FileInfo(self, name, url, filename)
@@ -124,8 +124,8 @@ class App:
     def important_files(self):
         # Adding "special ini and png file
         for special_file in ['ini', 'png']:
-            get_file_method = getattr(self, 'get_%s_file' % special_file.lower())
-            get_url_method = getattr(self, 'get_%s_url' % special_file.lower())
+            get_file_method = getattr(self, f'get_{special_file.lower()}_file')
+            get_url_method = getattr(self, f'get_{special_file.lower()}_url')
             filename = get_file_method()
             url = get_url_method()
             if os.path.exists(filename):
@@ -309,8 +309,8 @@ if __name__ == '__main__':
                 f.close()
             else:
                 old = ''
-            old_format = ['%s\n' % line for line in old.splitlines()]
-            out_format = ['%s\n' % line for line in out.splitlines()]
+            old_format = [f'{line}\n' for line in old.splitlines()]
+            out_format = [f'{line}\n' for line in out.splitlines()]
             if old_format != out_format:
                 for line in unified_diff(old_format, out_format, fromfile=options.output, tofile='NEW'):
                     sys.stdout.write(line)

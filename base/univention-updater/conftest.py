@@ -222,7 +222,7 @@ class MockFileManager(object):
         # type: (str) -> bytes
         name = abspath(name)
         if name not in self.files:
-            raise FileNotFoundError(2, "No such file or directory: '%s'" % name)
+            raise FileNotFoundError(2, f"No such file or directory: '{name}'")
 
         buf = self.files[name]
         assert not isinstance(buf, Exception)

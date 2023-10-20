@@ -19,20 +19,20 @@ def main():
     logfiles = ['/var/log/mail.log']
     with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, utils.FollowLogfile(logfiles=logfiles):
         domain = ucr.get('domainname')
-        mail1 = '%s@%s' % (uts.random_name(), domain)
+        mail1 = f'{uts.random_name()}@{domain}'
         password = 'univention'
         user_dn1, username1 = udm.create_user(
             set={
                 'password': password,
-                'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+                'mailHomeServer': f'{ucr.get("hostname")}.{domain}',
                 'mailPrimaryAddress': mail1,
             },
         )
-        mail2 = '%s@%s' % (uts.random_name(), domain)
+        mail2 = f'{uts.random_name()}@{domain}'
         user_dn2, username2 = udm.create_user(
             set={
                 'password': password,
-                'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+                'mailHomeServer': f'{ucr.get("hostname")}.{domain}',
                 'mailPrimaryAddress': mail2,
             },
         )

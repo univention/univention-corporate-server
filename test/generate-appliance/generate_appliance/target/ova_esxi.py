@@ -42,8 +42,8 @@ def create_ovf_descriptor_esxi(image_name: str, vmdk: Vmdk, options: Namespace) 
         'xsi': XSI_NAMESPACE,
     })
 
-    OVF = '{%s}' % (OVF_NAMESPACE,)
-    VMW = '{%s}' % (VMW_NAMESPACE,)
+    OVF = f'{{{OVF_NAMESPACE}}}'
+    VMW = f'{{{VMW_NAMESPACE}}}'
     Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
     Evmw = lxml.builder.ElementMaker(namespace=VMW_NAMESPACE)
     Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
@@ -346,8 +346,8 @@ class OVA_ESXi(TargetFile):
 
     def create(self, image: Raw) -> None:
         options = self.options
-        image_name = '%s-ESX-disk1.vmdk' % (options.product,)
-        descriptor_name = '%s-ESX.ovf' % (options.product,)
+        image_name = f'{options.product}-ESX-disk1.vmdk'
+        descriptor_name = f'{options.product}-ESX.ovf'
         archive_name = self.archive_name()
 
         vmdk = Vmdk(image, adapter_type="lsilogic", hwversion="7", subformat="streamOptimized")

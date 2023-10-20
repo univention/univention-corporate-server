@@ -77,8 +77,8 @@ def main():
                 if not os.path.exists(old_dir):
                     utils.fail('Test %d: old_dir = %r does not exist! %r' % (i, old_dir, userbase[i]))
                 handler_set([
-                    'mail/dovecot/mailbox/rename=%s' % (flag_rename,),
-                    'mail/dovecot/mailbox/delete=%s' % (flag_delete,),
+                    f'mail/dovecot/mailbox/rename={flag_rename}',
+                    f'mail/dovecot/mailbox/delete={flag_delete}',
                 ])
                 subprocess.call(['systemctl', 'restart', 'univention-directory-listener'])
                 new_mpa = random_email()

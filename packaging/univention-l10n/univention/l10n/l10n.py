@@ -136,7 +136,7 @@ class UMCModuleTranslation(umc.UMC_Module):
             # read package content with umc
             module = cls._get_module_from_source_package(module_in_source_tree, target_language)
         except AttributeError as e:
-            print("%s AttributeError in module, trying to load as core module" % (e,))
+            print(f"{e} AttributeError in module, trying to load as core module")
         else:
             module['core'] = False
             return module
@@ -144,7 +144,7 @@ class UMCModuleTranslation(umc.UMC_Module):
         try:
             module = cls._get_core_module_from_source_package(module_in_source_tree, target_language)
         except AttributeError as e:
-            print("%s core module load failed" % (e,))
+            print(f"{e} core module load failed")
         else:
             print(f"Successfully loaded as core module: {module_in_source_tree['abs_path_to_src_pkg']}")
             module['core'] = True
@@ -343,7 +343,7 @@ def update_package_translation_files(module, output_dir, template=False):
 
     except OSError as exc:
         print(traceback.format_exc())
-        print("error in update_package_translation_files: %s" % (exc,))
+        print(f"error in update_package_translation_files: {exc}")
         raise Error("update_package_translation_files() failed")
     finally:
         os.chdir(start_dir)
@@ -432,7 +432,7 @@ def find_base_translation_modules(source_dir):
     # type: (str) -> List[BaseModule]
     base_translation_modules = []  # type: List[BaseModule]
 
-    print('looking in %s' % source_dir)
+    print(f'looking in {source_dir}')
     for root, dirnames, filenames in os.walk(os.path.abspath(source_dir)):
         dirnames[:] = [d for d in dirnames if d not in DIR_BLACKLIST]
         (package_dir, tail) = os.path.split(root)
@@ -443,10 +443,10 @@ def find_base_translation_modules(source_dir):
             if tail != UMC_MODULES:
                 continue
             if modulename in MODULE_BLACKLIST:
-                print("Ignoring module %s: Module is blacklisted\n" % modulename)
+                print(f"Ignoring module {modulename}: Module is blacklisted\n")
                 continue
 
-            print("Found package: %s" % package_dir)
+            print(f"Found package: {package_dir}")
             module = {
                 'module_name': modulename,
                 'package': modulename,
@@ -478,7 +478,7 @@ def create_new_package(new_package_dir, target_language, target_locale, language
     # type: (str, str, str, str, str) -> None
     new_package_dir_debian = os.path.join(new_package_dir, 'debian')
     if not os.path.exists(new_package_dir_debian):
-        print("creating directory: %s" % new_package_dir_debian)
+        print(f"creating directory: {new_package_dir_debian}")
         os.makedirs(new_package_dir_debian)
 
     translation = {
@@ -495,19 +495,19 @@ def create_new_package(new_package_dir, target_language, target_locale, language
         template_file(new_package_dir_debian, fn, translation)
 
     with open(os.path.join(new_package_dir_debian, '%(package_name)s.postinst' % translation), 'w') as f:
-        f.write("""#!/bin/sh
+        f.write(f"""#!/bin/sh
 #DEBHELPER#
 
 eval \"$(ucr shell locale)\"
-new_locale="%s"
-case "${locale}" in
-    *"${new_locale}"*) echo "Locale ${new_locale} already known" ;;
-    *)	ucr set locale="${locale} ${new_locale}" ;;
+new_locale="{target_locale}"
+case "${{locale}}" in
+    *"${{new_locale}}"*) echo "Locale ${{new_locale}} already known" ;;
+    *)	ucr set locale="${{locale}} ${{new_locale}}" ;;
 esac
 
-ucr set ucs/server/languages/%s?"%s"
+ucr set ucs/server/languages/{target_locale.split('.')[0]}?"{language_name}"
 
-exit 0""" % (target_locale, target_locale.split('.')[0], language_name))
+exit 0""")
 
     # Move source files and installed .mo files to new package dir
     if os.path.exists(os.path.join(new_package_dir, 'usr')):

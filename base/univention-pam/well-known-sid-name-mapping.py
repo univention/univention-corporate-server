@@ -107,7 +107,7 @@ def checkAndSet(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> str
         obj_name = obj.get('cn', [b''])[0].decode('UTF-8')
         ucr_base = 'groups/default'
     else:
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: invalid object: %s" % (name, obj))
+        ud.debug(ud.LISTENER, ud.ERROR, f"{name}: invalid object: {obj}")
         return
 
     if not obj_name:
@@ -118,11 +118,11 @@ def checkAndSet(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> str
     if custom_name_lower == default_name_lower or unset:
         # unset ucr var if the custom name of user/group matches the default one,
         # or if object was deleted
-        unset_ucr_key = "%s/%s" % (ucr_base, default_name_lower)
+        unset_ucr_key = f"{ucr_base}/{default_name_lower}"
         ucr.load()
         ucr_value = ucr.get(unset_ucr_key)
         if ucr_value:
-            ud.debug(ud.LISTENER, ud.PROCESS, "%s: ucr unset %s=%s" % (name, unset_ucr_key, ucr_value))
+            ud.debug(ud.LISTENER, ud.PROCESS, f"{name}: ucr unset {unset_ucr_key}={ucr_value}")
             listener.setuid(0)
             try:
                 univention.config_registry.handler_unset([unset_ucr_key])
@@ -130,8 +130,8 @@ def checkAndSet(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> str
             finally:
                 listener.unsetuid()
     else:
-        ucr_key_value = "%s/%s=%s" % (ucr_base, default_name_lower, obj_name)
-        ud.debug(ud.LISTENER, ud.PROCESS, "%s: ucr set %s" % (name, ucr_key_value))
+        ucr_key_value = f"{ucr_base}/{default_name_lower}={obj_name}"
+        ud.debug(ud.LISTENER, ud.PROCESS, f"{name}: ucr set {ucr_key_value}")
         listener.setuid(0)
         try:
             univention.config_registry.handler_set([ucr_key_value])
@@ -160,25 +160,25 @@ def no_relevant_change(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]])
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
     if ucr.is_false("listener/module/wellknownsidnamemapping", False):
-        ud.debug(ud.LISTENER, ud.INFO, '%s: deactivated by listener/module/wellknownsidnamemapping' % (name,))
+        ud.debug(ud.LISTENER, ud.INFO, f'{name}: deactivated by listener/module/wellknownsidnamemapping')
         return
 
     if command == 'r':  # modrdn phase I: store old object
-        ud.debug(ud.LISTENER, ud.INFO, '%s: modrdn phase I: %s' % (name, dn))
+        ud.debug(ud.LISTENER, ud.INFO, f'{name}: modrdn phase I: {dn}')
         listener.setuid(0)
         try:
             with open(FN_CACHE, 'wb+') as fd:
                 os.chmod(FN_CACHE, 0o600)
                 pickle.dump(old, fd)
         except Exception as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: failed to open/write pickle file: %s' % (name, exc))
+            ud.debug(ud.LISTENER, ud.ERROR, f'{name}: failed to open/write pickle file: {exc}')
         finally:
             listener.unsetuid()
         return
 
     # check for modrdn phase II in case of an add
     if new and os.path.exists(FN_CACHE) and not old:
-        ud.debug(ud.LISTENER, ud.INFO, '%s: modrdn phase II: %s' % (name, dn))
+        ud.debug(ud.LISTENER, ud.INFO, f'{name}: modrdn phase II: {dn}')
         listener.setuid(0)
         try:
             with open(FN_CACHE, 'rb') as fd:
@@ -187,12 +187,12 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
                 else:
                     pickled_object = pickle.load(fd, encoding='bytes')
         except Exception as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: failed to open/read pickle file: %s' % (name, exc))
+            ud.debug(ud.LISTENER, ud.ERROR, f'{name}: failed to open/read pickle file: {exc}')
         try:
             os.remove(FN_CACHE)
         except Exception as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: cannot remove pickle file: %s' % (name, exc))
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: for safety reasons well-known-sid-name-mapping ignores change of LDAP object: %s' % (name, dn))
+            ud.debug(ud.LISTENER, ud.ERROR, f'{name}: cannot remove pickle file: {exc}')
+            ud.debug(ud.LISTENER, ud.ERROR, f'{name}: for safety reasons well-known-sid-name-mapping ignores change of LDAP object: {dn}')
             listener.unsetuid()
             return
         listener.unsetuid()

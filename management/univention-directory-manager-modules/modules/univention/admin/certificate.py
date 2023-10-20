@@ -284,7 +284,7 @@ def load_certificate(user_certificate):
     except (X509.X509Error, AttributeError):
         return {}
 
-    ud.debug(ud.ADMIN, ud.INFO, 'value=%s' % values)
+    ud.debug(ud.ADMIN, ud.INFO, f'value={values}')
     return values
 
 

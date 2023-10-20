@@ -244,11 +244,11 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
         )[0]
     except (ldap.NO_SUCH_OBJECT, IndexError):
         if should_exist:
-            raise LDAPObjectNotFound('DN: %s' % baseDn)
+            raise LDAPObjectNotFound(f'DN: {baseDn}')
         return
 
     if not should_exist:
-        raise LDAPUnexpectedObjectFound('DN: %s' % baseDn)
+        raise LDAPUnexpectedObjectFound(f'DN: {baseDn}')
 
     values_missing = {}
     unexpected_values = {}
@@ -626,14 +626,14 @@ def package_installed(package):
     # type: (str) -> bool
     sys.stdout.flush()
     with open('/dev/null', 'w') as null:
-        return (subprocess.call("dpkg-query -W -f '${Status}' %s | grep -q ^install" % package, stderr=null, shell=True) == 0)
+        return (subprocess.call(f"dpkg-query -W -f '${{Status}}' {package} | grep -q ^install", stderr=null, shell=True) == 0)
 
 
 def fail(log_message=None, returncode=1):
     # type: (Optional[str], int) -> NoReturn
     print('### FAIL ###')
     if log_message:
-        print('%s\n###      ###' % log_message)
+        print(f'{log_message}\n###      ###')
         if sys.exc_info()[-1]:
             print(traceback.format_exc(), file=sys.stderr)
     sys.exit(returncode)

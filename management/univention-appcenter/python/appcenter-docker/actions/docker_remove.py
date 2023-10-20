@@ -75,4 +75,4 @@ class Remove(Remove, DockerActionMixin):
     def dry_run(self, app, args):
         if not app.docker:
             return super(Remove, self).dry_run(app, args)
-        self.log('%s is a Docker App. No sane dry run is implemented' % app)
+        self.log(f'{app} is a Docker App. No sane dry run is implemented')

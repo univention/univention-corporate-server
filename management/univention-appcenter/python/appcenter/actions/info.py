@@ -65,7 +65,7 @@ class Info(UniventionAppAction):
         return ret
 
     def _output(self):
-        self.log('UCS: %s' % self.get_ucs_version())
+        self.log(f'UCS: {self.get_ucs_version()}')
         self.log('Installed: %s' % ' '.join(str(app) for app in self.get_installed_apps()))
         self.log('Upgradable: %s' % ' '.join(app.id for app in self.get_upgradable_apps()))
 

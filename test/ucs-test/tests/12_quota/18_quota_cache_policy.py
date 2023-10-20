@@ -19,13 +19,13 @@ SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 def create_share(position):
     my_fqdn = '%(hostname)s.%(domainname)s' % ucr
     name = uts.random_name()
-    path = '/mnt/_%s' % name
+    path = f'/mnt/_{name}'
     return udm.create_object('shares/share', name=name, path=path, host=my_fqdn, position=position)
 
 
 def create_policy(inodeSoftLimit, inodeHardLimit, spaceSoftLimit, spaceHardLimit, reapplyQuota):
     name = uts.random_name()
-    position = 'cn=userquota,cn=shares,cn=policies,%s' % ucr.get('ldap/base')
+    position = f'cn=userquota,cn=shares,cn=policies,{ucr.get("ldap/base")}'
     return udm.create_object(
         'policies/share_userquota', position=position, name=name,
         softLimitSpace=spaceSoftLimit,
@@ -64,9 +64,9 @@ if __name__ == '__main__':
         append_policy(ou_dn, 'container/ou', policy1)
         utils.wait_for_replication_and_postrun()
 
-        print('Check values for %s' % share1)
+        print(f'Check values for {share1}')
         qc.check_values(share1, inodeSoftLimit_policy1, inodeHardLimit_policy1, spaceSoftLimit_policy1, spaceHardLimit_policy1, reapplyQuota_policy1)
-        print('Check values for %s' % share2)
+        print(f'Check values for {share2}')
         qc.check_values(share2, inodeSoftLimit_policy1, inodeHardLimit_policy1, spaceSoftLimit_policy1, spaceHardLimit_policy1, reapplyQuota_policy1)
 
         inodeSoftLimit_policy2 = None
@@ -78,18 +78,18 @@ if __name__ == '__main__':
         append_policy(container_dn, 'container/cn', policy2)
         utils.wait_for_replication_and_postrun()
 
-        print('Check values for %s' % share1)
+        print(f'Check values for {share1}')
         qc.check_values(share1, inodeSoftLimit_policy1, inodeHardLimit_policy1, spaceSoftLimit_policy1, spaceHardLimit_policy1, reapplyQuota_policy1)
-        print('Check values for %s' % share2)
+        print(f'Check values for {share2}')
         qc.check_values(share2, inodeSoftLimit_policy1, inodeHardLimit_policy1, spaceSoftLimit_policy2, spaceHardLimit_policy2, reapplyQuota_policy2)
 
         inodeHardLimit_policy1 = '30'
         udm.modify_object('policies/share_userquota', dn=policy1, hardLimitInodes=inodeHardLimit_policy1)
         utils.wait_for_replication_and_postrun()
 
-        print('Check values for %s' % share1)
+        print(f'Check values for {share1}')
         qc.check_values(share1, inodeSoftLimit_policy1, inodeHardLimit_policy1, spaceSoftLimit_policy1, spaceHardLimit_policy1, reapplyQuota_policy1)
-        print('Check values for %s' % share2)
+        print(f'Check values for {share2}')
         qc.check_values(share2, inodeSoftLimit_policy1, inodeHardLimit_policy1, spaceSoftLimit_policy2, spaceHardLimit_policy2, reapplyQuota_policy2)
 
     utils.wait_for_replication_and_postrun()

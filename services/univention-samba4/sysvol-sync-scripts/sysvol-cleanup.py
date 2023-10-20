@@ -47,7 +47,7 @@ from univention import config_registry
 
 
 def _sysvol_directory(ucr):
-    return '/var/lib/samba/sysvol/%s/Policies/' % ucr.get('domainname')
+    return f'/var/lib/samba/sysvol/{ucr.get("domainname")}/Policies/'
 
 
 def getLDAPGPOs(options):
@@ -88,7 +88,7 @@ def getLDAPGPOs(options):
 
         if bracketOpen < 0 or bracketClose < 0:
             if options.verbose:
-                print('Unknown GPO format: "%s"' % gpo)
+                print(f'Unknown GPO format: "{gpo}"')
             continue
 
         ldapGPOs.append(gpo[bracketOpen:bracketClose + 1])
@@ -123,12 +123,12 @@ if __name__ == '__main__':
     if options.verbose:
         print('The following LDAP GPOs were found:')
         for ldapGPO in ldapGPOs:
-            print(' - %s' % ldapGPO)
+            print(f' - {ldapGPO}')
         print('')
 
         print('The following file system GPOs were found:')
         for fileSystemGPO in fileSystemGPOs:
-            print(' - %s' % fileSystemGPO)
+            print(f' - {fileSystemGPO}')
         print('')
 
     for fileSystemGPO in fileSystemGPOs:
@@ -138,12 +138,12 @@ if __name__ == '__main__':
 
         if not options.target_directory:
             # In this case we print only
-            print('Found unused GPO: %s' % fileSystemGPO)
+            print(f'Found unused GPO: {fileSystemGPO}')
             continue
 
         # Move GPO
         src = os.path.join(sysvolDirectory, fileSystemGPO)
         dest = os.path.join(options.target_directory, '%s_%s' % (fileSystemGPO, time.strftime("%Y%m%d%H%M", time.localtime())))
         if options.verbose:
-            print('Move unused GPO %s to %s' % (fileSystemGPO, dest))
+            print(f'Move unused GPO {fileSystemGPO} to {dest}')
         shutil.move(src, dest)

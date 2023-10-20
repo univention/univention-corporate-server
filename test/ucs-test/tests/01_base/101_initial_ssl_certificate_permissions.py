@@ -24,18 +24,18 @@ SKIP = '/etc/univention/ssl/unassigned-hostname.unassigned-domain'
 
 def get_computers():
     with ucr_test.UCSTestConfigRegistry() as ucr:
-        files_path = glob.glob('/etc/univention/ssl/*%s' % ucr.get('domainname'))
+        files_path = glob.glob(f'/etc/univention/ssl/*{ucr.get("domainname")}')
         return [os.path.basename(x) for x in files_path]
 
 
 def get_host_cert_dir(hostname):
     with ucr_test.UCSTestConfigRegistry() as ucr:
-        return '/etc/univention/ssl/%s.%s' % (hostname, ucr.get('domainname'))
+        return f'/etc/univention/ssl/{hostname}.{ucr.get("domainname")}'
 
 
 def get_dir_files(dir_path, recursive=False):
     result = []
-    for f in glob.glob('%s/*' % dir_path):
+    for f in glob.glob(f'{dir_path}/*'):
         if os.path.isfile(f):
             result.append(f)
         if os.path.isdir(f) and recursive:
@@ -100,27 +100,27 @@ def is_others_writable(file_path):
 def check_dc_backup_hosts_readability(ssl_files):
     for _file in ssl_files:
         if not is_group_readable(_file, 'DC Backup Hosts'):
-            utils.fail('DC Backup Hosts failed to read %s' % _file)
+            utils.fail(f'DC Backup Hosts failed to read {_file}')
 
 
 def check_dc_backup_hosts_writability(ssl_files):
     for _file in ssl_files:
         if not is_group_writable(_file, 'DC Backup Hosts'):
-            utils.fail('DC Backup Hosts failed to read %s' % _file)
+            utils.fail(f'DC Backup Hosts failed to read {_file}')
 
 
 def check_hosts_readability():
     for host in get_computers():
         for _file in get_dir_files(get_host_cert_dir(host), recursive=True):
             if not is_user_readable(_file, host):
-                utils.fail('%s failed to read %s' % (host, _file))
+                utils.fail(f'{host} failed to read {_file}')
 
 
 def check_hosts_writability():
     for host in get_computers():
         for _file in get_dir_files(get_host_cert_dir(host), recursive=True):
             if not is_user_writable(_file, host):
-                utils.fail('DC Backup Hosts can modify %s' % _file)
+                utils.fail(f'DC Backup Hosts can modify {_file}')
 
 
 def is_exception(_file):
@@ -130,13 +130,13 @@ def is_exception(_file):
 def check_others_writability(ssl_files):
     for _file in ssl_files:
         if is_others_writable(_file):
-            utils.fail('Others can modify %s' % _file)
+            utils.fail(f'Others can modify {_file}')
 
 
 def check_others_readability(ssl_files):
     for _file in ssl_files:
         if is_others_readable(_file) and not is_exception(_file):
-            utils.fail('Others can read %s' % _file)
+            utils.fail(f'Others can read {_file}')
 
 
 def main():

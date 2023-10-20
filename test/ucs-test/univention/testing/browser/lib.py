@@ -136,9 +136,9 @@ class Interactions:
         :param start_at: starts opening
         """
         for module in modules[start_at:limit]:
-            logger.info("Opening module %s" % module)
+            logger.info(f"Opening module {module}")
             self.open_and_close_module(module)
-            logger.info("Closed module %s" % module)
+            logger.info(f"Closed module {module}")
             time.sleep(1)
 
     def open_all_modules(self, limit: int | None = None, start_at: int | None = None):
@@ -178,7 +178,7 @@ class Interactions:
         self.page.locator(".umcModuleSearch input.dijitInputInner").type(module_name)
         module_by_title_attrib_locator = self.page.locator(f".umcGalleryName[title='{module_name}']")
         exact_module_name = re.compile(f"^{re.escape(module_name)}$")
-        logger.info("Trying to find button to open module %s" % module_name)
+        logger.info(f"Trying to find button to open module {module_name}")
         module_locator = self.page.locator(".umcGalleryName", has_text=exact_module_name)
         expect(module_locator.or_(module_by_title_attrib_locator)).to_be_visible()
 
@@ -228,7 +228,7 @@ class UMCBrowserTest(Waits, Interactions):
         Interactions.__init__(self, self)
 
     def set_language(self, lang: UCSLanguage):
-        logger.info("Setting language to %s" % lang)
+        logger.info(f"Setting language to {lang}")
         self.lang = lang
         self.__set_lang(str(lang))
         translator.set_language(str(lang).replace("-", "_"))
@@ -299,7 +299,7 @@ class UMCBrowserTest(Waits, Interactions):
         :param expect_password_change_prompt: Expect a password change prompt to be visible after clicking the Login button
         :param skip_xhr_check: Skip the check for certain requests to be completed
         """
-        logger.info("Starting login to '%s' " % location)
+        logger.info(f"Starting login to '{location}' ")
         page = self.page
 
         if do_navigation:
@@ -362,7 +362,7 @@ class UMCBrowserTest(Waits, Interactions):
         side_menu.logout()
 
     def systemd_restart_service(self, service: str):
-        logger.info("restarting service %s" % service)
+        logger.info(f"restarting service {service}")
         subprocess.run(["deb-systemd-invoke", "restart", service], check=True)
 
     def restart_umc(self):

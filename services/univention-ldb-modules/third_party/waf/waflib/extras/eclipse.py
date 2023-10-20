@@ -199,7 +199,7 @@ class eclipse(Build.BuildContext):
 							  'id': 'org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector.1',
 							  'keep-relative-paths' : 'false',
 							  'name': 'CDT GCC Built-in Compiler Settings',
-							  'parameter': '%s %s ${FLAGS} -E -P -v -dD "${INPUTS}"'%(self.env.CC[0],' '.join(self.env['CFLAGS'])),
+							  'parameter': f'{self.env.CC[0]} {" ".join(self.env["CFLAGS"])} ${{FLAGS}} -E -P -v -dD "${{INPUTS}}"',
 							  'prefer-non-shared': 'true' })
 
 				self.add(lang_settings, provider, 'language-scope', { 'id': 'org.eclipse.cdt.core.gcc'})
@@ -216,7 +216,7 @@ class eclipse(Build.BuildContext):
 				self.add(lang_settings, provider, 'language-scope', { 'id': 'org.eclipse.cdt.core.g++'})
 
 		lang_settings.appendChild(project)
-		self.write_conf_to_xml('%s%s%s'%(settings_dir, os.path.sep, settings_name), lang_settings)
+		self.write_conf_to_xml(f'{settings_dir}{os.path.sep}{settings_name}', lang_settings)
 
 	def impl_create_project(self, executable, appname, hasc, hasjava, haspython, waf_executable):
 		doc = Document()
@@ -244,7 +244,7 @@ class eclipse(Build.BuildContext):
 			# Otherwise for Java/Python an external builder tool is created that will call waf build
 			self.add(doc, buildCommand, 'name', 'org.eclipse.ui.externaltools.ExternalToolBuilder')
 			dictionaries = {
-					'LaunchConfigHandle': '<project>/%s/%s'%(extbuilder_dir, extbuilder_name),
+					'LaunchConfigHandle': f'<project>/{extbuilder_dir}/{extbuilder_name}',
 					}
 			# The definition is in a separate directory XML file
 			try:
@@ -264,7 +264,7 @@ class eclipse(Build.BuildContext):
 			self.add(doc, launchConfiguration, 'stringAttribute', {'key': 'org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY', 'value': '${project_loc}'})
 			builder.appendChild(launchConfiguration)
 			# And write the XML to the file references before
-			self.write_conf_to_xml('%s%s%s'%(extbuilder_dir, os.path.sep, extbuilder_name), builder)
+			self.write_conf_to_xml(f'{extbuilder_dir}{os.path.sep}{extbuilder_name}', builder)
 
 
 		for k, v in dictionaries.items():
@@ -337,8 +337,8 @@ class eclipse(Build.BuildContext):
 
 		self.add(doc, toolChain, 'targetPlatform', {'binaryParser': 'org.eclipse.cdt.core.ELF', 'id': cdt_bld + '.prefbase.toolchain.1', 'name': ''})
 
-		waf_build = '"%s" %s'%(waf_executable, eclipse.fun)
-		waf_clean = '"%s" clean'%(waf_executable)
+		waf_build = f'"{waf_executable}" {eclipse.fun}'
+		waf_clean = f'"{(waf_executable)}" clean'
 		self.add(doc, toolChain, 'builder',
 					{'autoBuildTarget': waf_build,
 					 'command': executable,
@@ -367,11 +367,11 @@ class eclipse(Build.BuildContext):
 				for i in workspace_includes:
 					self.add(doc, option, 'listOptionValue',
 								{'builtIn': 'false',
-								'value': '"${workspace_loc:/%s/%s}"'%(appname, i)})
+								'value': f'"${{workspace_loc:/{appname}/{i}}}"'})
 				for i in cpppath:
 					self.add(doc, option, 'listOptionValue',
 								{'builtIn': 'false',
-								'value': '"%s"'%(i)})
+								'value': f'"{(i)}"'})
 			if tool_name == "GNU C++" or tool_name == "GNU C":
 				self.add(doc,tool,'inputType',{ 'id':'org.eclipse.cdt.build.core.settings.holder.inType.' + str(tool_index), \
 					'languageId':'org.eclipse.cdt.core.gcc' if tool_name == "GNU C" else 'org.eclipse.cdt.core.g++','languageName':tool_name, \
@@ -398,7 +398,7 @@ class eclipse(Build.BuildContext):
 		buildTargets = self.add(doc, storageModule, 'buildTargets')
 		def addTargetWrap(name, runAll):
 			return self.addTarget(doc, buildTargets, executable, name,
-								'"%s" %s'%(waf_executable, name), runAll)
+								f'"{waf_executable}" {name}', runAll)
 		addTargetWrap('configure', True)
 		addTargetWrap('dist', False)
 		addTargetWrap('install', False)
@@ -410,7 +410,7 @@ class eclipse(Build.BuildContext):
 							{'moduleId': 'cdtBuildSystem',
 							 'version': '4.0.0'})
 
-		self.add(doc, storageModule, 'project', {'id': '%s.null.1'%appname, 'name': appname})
+		self.add(doc, storageModule, 'project', {'id': f'{appname}.null.1', 'name': appname})
 
 		storageModule = self.add(doc, cproject, 'storageModule',
 							{'moduleId': 'org.eclipse.cdt.core.LanguageSettingsProviders'})

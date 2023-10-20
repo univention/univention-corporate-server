@@ -92,8 +92,7 @@ class TestUMCUserCreation(UDMModule):
                 utils.fail("Request 'udm/add' user not successful. Response: %r\nRequest options: %r\n"
                            "hostname %r" % (request_result, options, self.hostname))
         except Exception as exc:
-            utils.fail("Exception while making 'udm/add' user request: %s" %
-                       exc)
+            utils.fail(f"Exception while making 'udm/add' user request: {exc}")
 
     def main(self):
         """Method to test UMC users creation, modification and deletion"""
@@ -110,8 +109,7 @@ class TestUMCUserCreation(UDMModule):
         print_admins = self.get_groupname_translation('printoperators')
 
         try:
-            print("Creating a simple domain user with username '%s'"
-                  % test_username)
+            print(f"Creating a simple domain user with username '{test_username}'")
             self.create_user(test_username, test_password, domain_users)
             if not self.check_obj_exists(test_username, "users/user", "users/user"):
                 utils.fail("Cannot query a simple test user '%s' that "
@@ -125,11 +123,11 @@ class TestUMCUserCreation(UDMModule):
                 utils.fail("Cannot query an advanced test user '%s' that "
                            "was just created" % test_username_admin)
 
-            print("Modifying simple user '%s' groups" % test_username)
+            print(f"Modifying simple user '{test_username}' groups")
             test_groupnames = ["cn=" + domain_users + ",cn=groups," + self.ldap_base, "cn=" + print_admins + ",cn=groups," + self.ldap_base]
             self.modify_user_groups(test_username, test_groupnames)
 
-            print("Checking simple user '%s' groups" % test_username)
+            print(f"Checking simple user '{test_username}' groups")
             user_groups = self.get_user_by_uid(test_username)[0].get('groups')
             if not user_groups:
                 utils.fail("No groups or empty groups in response for user "
@@ -139,11 +137,11 @@ class TestUMCUserCreation(UDMModule):
                            "while should be only in '%s'"
                            % (test_username, user_groups, test_groupnames))
 
-            print("Modifying advanced user '%s' groups" % test_username_admin)
+            print(f"Modifying advanced user '{test_username_admin}' groups")
             test_groupnames = ["cn=" + domain_admins + ",cn=groups," + self.ldap_base, "cn=" + print_admins + ",cn=groups," + self.ldap_base]
             self.modify_user_groups(test_username_admin, test_groupnames)
 
-            print("Checking advanced user '%s' groups" % test_username_admin)
+            print(f"Checking advanced user '{test_username_admin}' groups")
             user_groups = self.get_user_by_uid(test_username_admin)[0].get(
                 'groups')
             if not user_groups:

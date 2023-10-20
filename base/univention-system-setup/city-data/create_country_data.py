@@ -61,12 +61,12 @@ def main() -> None:
     country_code_to_geonameid_map = _util.get_country_code_to_geonameid_map()
     country_geonameids = list(country_code_to_geonameid_map.values())
     for ilocale in opt.locales + ['']:
-        print('loading data for locale %s' % ilocale)
+        print(f'loading data for locale {ilocale}')
         country_names = _util.get_localized_names(country_geonameids, ilocale)
         for icode, iid in country_code_to_geonameid_map.items():
             data_set = country_data.get(icode)
             if not data_set:
-                print('  empty country code: %s' % icode)
+                print(f'  empty country code: {icode}')
                 continue
             ilabel = country_names.get(iid)
             if ilabel:

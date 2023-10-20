@@ -84,15 +84,15 @@ class GuaranteedIdP:
         self.sso_fqdn = ucr['ucs/server/sso/fqdn']
 
     def __enter__(self):
-        subprocess.call(['ucr', 'set', 'hosts/static/%s=%s' % (self.ip, self.sso_fqdn)])
+        subprocess.call(['ucr', 'set', f'hosts/static/{self.ip}={self.sso_fqdn}'])
         subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
         IdP_IP = socket.gethostbyname(self.sso_fqdn)
         if IdP_IP != self.ip:
             utils.fail("Couldn't set guaranteed IdP")
-        print('Set IdP to: %s' % self.ip)
+        print(f'Set IdP to: {self.ip}')
 
     def __exit__(self, exc_type, exc_value, traceback):
-        subprocess.call(['ucr', 'unset', 'hosts/static/%s' % self.ip])
+        subprocess.call(['ucr', 'unset', f'hosts/static/{self.ip}'])
         subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
 
 
@@ -163,9 +163,9 @@ class SamlTest:
         except requests.exceptions.SSLError:
             # Bug: https://github.com/shazow/urllib3/issues/556
             # raise SamlError("Problem while %s\nSSL error: %s" % (self.position, exc))
-            raise SamlError("Problem while %s\nSSL error: %s" % (self.position, 'Some ssl error'))
+            raise SamlError(f"Problem while {self.position}\nSSL error: {'Some ssl error'}")
         except requests.ConnectionError as exc:
-            raise SamlError("Problem while %s\nNo connection to server: %s" % (self.position, exc))
+            raise SamlError(f"Problem while {self.position}\nNo connection to server: {exc}")
         print(f'> {method} {url} -> {self.page.status_code}')
         for resp in self.page.history:
             print(f'>> {resp.request.method} {resp.url} -> {resp.status_code}')
@@ -173,7 +173,7 @@ class SamlTest:
             try:
                 self.parsed_page = ET.fromstring(bytes(self.page.content))
             except xml.etree.ElementTree.ParseError as exc:
-                print('WARN: could not parse XML/HTML: %s' % (exc,))
+                print(f'WARN: could not parse XML/HTML: {exc}')
                 self.parsed_page = xml.etree.ElementTree.Element('html')
         elif expected_format == 'json':
             self.parsed_page = json.loads(bytes(self.page.content))
@@ -183,14 +183,14 @@ class SamlTest:
         """Send form with login data"""
         auth_state = self._extract_auth_state()
         self.position = "posting login form"
-        print("Post SAML login form to: %s" % self.page.url)
+        print(f"Post SAML login form to: {self.page.url}")
         data = {'username': self.username, 'password': self.password, 'AuthState': auth_state}
         self._request('POST', self.page.url, 200, data=data)
 
     def xpath(self, xpath, default=None):
-        elem = self.parsed_page.find('.//{http://www.w3.org/1999/xhtml}%s' % (xpath,))
+        elem = self.parsed_page.find(f'.//{{http://www.w3.org/1999/xhtml}}{xpath}')
         if elem is None:
-            elem = self.parsed_page.find('.//%s' % (xpath,))
+            elem = self.parsed_page.find(f'.//{xpath}')
         if elem is None:
             elem = default
         return elem
@@ -201,7 +201,7 @@ class SamlTest:
         if relay_state is None:
             print("No relay state found")
             raise SamlLoginError(self)
-        print("The relay state is:\n%s" % relay_state)
+        print(f"The relay state is:\n{relay_state}")
         return relay_state
 
     def _extract_saml_msg(self):
@@ -209,7 +209,7 @@ class SamlTest:
         saml_message = self.xpath('input[@name="SAMLResponse"]', {}).get('value')
         if saml_message is None:
             raise SamlLoginError(self)
-        print("The SAML message is:\n%s" % saml_message)
+        print(f"The SAML message is:\n{saml_message}")
         return saml_message
 
     def _extract_sp_url(self):
@@ -218,7 +218,7 @@ class SamlTest:
         if url is None:
             print("No url to post SAML message to found")
             raise SamlLoginError(self)
-        print("The url to post SAML message to is: %s" % url)
+        print(f"The url to post SAML message to is: {url}")
         return url
 
     def _extract_auth_state(self):
@@ -232,20 +232,20 @@ class SamlTest:
             except AttributeError:
                 pass
         if not auth_state:
-            raise SamlError("No AuthState field found.\nSAML response:\n%s" % self.page.content)
-        print("The SAML AuthState is:\n%s" % auth_state)
+            raise SamlError(f"No AuthState field found.\nSAML response:\n{self.page.content}")
+        print(f"The SAML AuthState is:\n{auth_state}")
         return auth_state
 
     def _send_saml_response_to_sp(self, url, saml_msg, relay_state):
         # POST the SAML message to SP, thus logging in.
-        print("POST SAML message to: %s" % url)
+        print(f"POST SAML message to: {url}")
         self.position = "posting SAML message"
         self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
 
     def test_logged_in_status(self, expected_auth_type='SAML'):
         """Test login on umc"""
-        url = "https://%s/univention/get/session-info" % self.target_sp_hostname
-        print("Test login @ %s" % url)
+        url = f"https://{self.target_sp_hostname}/univention/get/session-info"
+        print(f"Test login @ {url}")
         self.position = "testing login"
         self._request('GET', url, 200, expected_format='json')
         auth_type = self.parsed_page['result']['auth_type']
@@ -254,24 +254,24 @@ class SamlTest:
 
     def test_slapd(self):
         """Test ldap login with saml"""
-        url = "https://%s/univention/command/udm/query" % self.target_sp_hostname
-        print("Test ldap login @ %s" % url)
+        url = f"https://{self.target_sp_hostname}/univention/command/udm/query"
+        print(f"Test ldap login @ {url}")
         self.position = "testing ldap login"
         self._request('POST', url, 200, data={"objectType": "users/user", "objectProperty": "None", "objectPropertyValue": ""})
         print("LDAP login success")
 
     def test_umc_server(self):
         """Test opening a umc module with saml"""
-        url = "https://%s/univention/command/udm/meta_info" % self.target_sp_hostname
-        print("Test umc module @ %s" % url)
+        url = f"https://{self.target_sp_hostname}/univention/command/udm/meta_info"
+        print(f"Test umc module @ {url}")
         self.position = "testing umc module"
         self._request('POST', url, 200, data={"objectType": "dns/dns"})
         print("LDAP login success")
 
     def test_logout(self):
         """Test logout on umc"""
-        url = "https://%s/univention/get/session-info" % self.target_sp_hostname
-        print("Test logout @ %s" % url)
+        url = f"https://{self.target_sp_hostname}/univention/get/session-info"
+        print(f"Test logout @ {url}")
         self.position = "testing logout"
         self._request('GET', url, 401, expected_format='json')
         print("Logout success at SP")
@@ -292,11 +292,11 @@ class SamlTest:
         If the IdP already knows the session and doesn't ask for username and password
         """
         # Open login prompt. Redirects to IdP. IdP answers with SAML message
-        url = "https://%s/univention/saml/" % self.target_sp_hostname
-        print("GET SAML login form at: %s" % url)
+        url = f"https://{self.target_sp_hostname}/univention/saml/"
+        print(f"GET SAML login form at: {url}")
         self.position = "requesting SAML message"
         self._request('GET', url, 200)
-        print('SAML message received from %s' % self.page.url)
+        print(f'SAML message received from {self.page.url}')
         url = self._extract_sp_url()
         saml_msg = self._extract_saml_msg()
         relay_state = self._extract_relay_state()
@@ -308,8 +308,8 @@ class SamlTest:
         The IdP doesn't know the session and has to ask for username and password
         """
         # Open login prompt. Redirects to IdP. IdP answers with login prompt
-        url = "https://%s/univention/saml/" % self.target_sp_hostname
-        print("GET SAML login form at: %s" % url)
+        url = f"https://{self.target_sp_hostname}/univention/saml/"
+        print(f"GET SAML login form at: {url}")
         self.position = "reaching login dialog"
         # Login at IdP. IdP answers with SAML message and url to SP in body
         if self.use_kerberos:
@@ -327,21 +327,21 @@ class SamlTest:
 
         url = self._extract_sp_url()
         saml_msg = self._extract_saml_msg()
-        print('SAML message received from %s' % self.page.url)
+        print(f'SAML message received from {self.page.url}')
         relay_state = self._extract_relay_state()
         self._send_saml_response_to_sp(url, saml_msg, relay_state)
 
     def logout_at_IdP(self):
         """Logout from session"""
-        url = "https://%s/univention/logout" % self.target_sp_hostname
-        print("Logging out at url: %s" % url)
+        url = f"https://{self.target_sp_hostname}/univention/logout"
+        print(f"Logging out at url: {url}")
         self.position = "trying to logout"
         self._request('GET', url, 200)
 
     def change_expired_password(self, new_password):
         auth_state = self._extract_auth_state()
         self.position = "posting change password form"
-        print("Post SAML change password form to: %s" % self.page.url)
+        print(f"Post SAML change password form to: {self.page.url}")
         data = {'username': self.username, 'password': self.password, 'AuthState': auth_state, 'new_password': new_password, 'new_password_retype': new_password}
         self._request('POST', self.page.url, 200, data=data)
         self.password = new_password
@@ -357,6 +357,6 @@ class SamlTest:
             url = self._extract_sp_url()
             saml_msg = self._extract_saml_msg()
 
-        print('SAML message received from %s' % self.page.url)
+        print(f'SAML message received from {self.page.url}')
         relay_state = self._extract_relay_state()
         self._send_saml_response_to_sp(url, saml_msg, relay_state)

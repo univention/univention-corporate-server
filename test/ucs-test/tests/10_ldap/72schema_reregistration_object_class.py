@@ -23,8 +23,8 @@ ucr.load()
 
 package_name = get_package_name()
 schema_name = get_schema_name()
-join_script_name = '66%s.inst' % package_name
-unjoin_script_name = '66%s.uinst' % package_name
+join_script_name = f'66{package_name}.inst'
+unjoin_script_name = f'66{package_name}.uinst'
 
 joinscript_buffer = '''#!/bin/sh
 VERSION=1
@@ -71,7 +71,7 @@ try:
     # The ldap server needs a few seconds
     sleep(5)
 
-    expected_dn = 'cn=%s,cn=ldapschema,cn=univention,%s' % (schema_name, ucr.get('ldap/base'))
+    expected_dn = f'cn={schema_name},cn=ldapschema,cn=univention,{ucr.get("ldap/base")}'
     verify_ldap_object(expected_dn, {'univentionLDAPSchemaActive': ['FALSE']})
 finally:
     call_unjoin_script(unjoin_script_name)

@@ -91,8 +91,8 @@ class Profile(dict):
             all_lines = profile.readlines()
         with open(filename, 'w') as profile:
             for line in all_lines:
-                if line.startswith('%s=' % key):
-                    line = '#%s="********"\n' % key
+                if line.startswith(f'{key}='):
+                    line = f'#{key}="********"\n'
                 profile.write(line)
 
     def is_true(self, key: str) -> bool:
@@ -252,8 +252,8 @@ class SetupScript(object):
         read by the parser. In a more advanced version, the script
         could change the state of the progress directly.
         """
-        msg = '\n'.join('__%s__:%s' % (progress_attribute.upper(), message) for message in str(msg).splitlines())
-        sys.stdout.write('%s\n' % (msg,))
+        msg = '\n'.join(f'__{progress_attribute.upper()}__:{message}' for message in str(msg).splitlines())
+        sys.stdout.write(f'{msg}\n')
         sys.stdout.flush()
 
     def header(self, msg: object) -> None:
@@ -263,7 +263,7 @@ class SetupScript(object):
         Called automatically by run(). Probably unneeded for developers
         """
         print('===', self.script_name, datetime.now().strftime('(%Y-%m-%d %H:%M:%S)'), '===')
-        self.inform_progress_parser('name', '%s %s' % (self.script_name, msg))
+        self.inform_progress_parser('name', f'{self.script_name} {msg}')
 
     def message(self, msg: object) -> None:
         """Write a harmless __MSG__: for the parser"""

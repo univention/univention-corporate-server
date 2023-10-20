@@ -123,7 +123,7 @@ def halide(self):
 	if task.env.env == []:
 		task.env.env = {}
 	task.env.env.update(env)
-	task.env.HALIDE_ENV = " ".join(("%s=%s" % (k,v)) for (k,v) in sorted(env.items()))
+	task.env.HALIDE_ENV = " ".join(f"{k}={v}" for (k,v) in sorted(env.items()))
 	task.env.HALIDE_ARGS = args
 
 	try:

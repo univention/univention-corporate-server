@@ -77,9 +77,9 @@ def ldap_attribute_join(old: List[str | List[str]]) -> List[Tuple[str, str]]:
     result_keys: Dict[str, str] = {}
     for attr in old:
         if attr[0] not in result_keys.keys() and len(attr) > 1:
-            result_keys[attr[0]] = "%s" % (attr[1],)
+            result_keys[attr[0]] = f"{attr[1]}"
         elif attr[0] in result_keys.keys() and len(attr) > 1:
-            result_keys[attr[0]] += ", %s" % (attr[1],)
+            result_keys[attr[0]] += f", {attr[1]}"
         elif len(attr) == 1:
             result_keys[attr[0]] = ''
     return [(key, value) for key, value in result_keys.items()]
@@ -92,22 +92,22 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             # delete old service provider config file
             old_filename = os.path.join(sp_config_dir, '%s.php' % old.get('SAMLServiceProviderIdentifier')[0].decode('ASCII').replace('/', '_'))
             if os.path.exists(old_filename):
-                ud.debug(ud.LISTENER, ud.INFO, 'Deleting old SAML SP Configuration file %s' % old_filename)
+                ud.debug(ud.LISTENER, ud.INFO, f'Deleting old SAML SP Configuration file {old_filename}')
                 try:
                     os.unlink(old_filename)
                 except IOError as exc:
-                    ud.debug(ud.LISTENER, ud.ERROR, 'Deleting failed: %s' % (exc,))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'Deleting failed: {exc}')
 
         if new and new.get('SAMLServiceProviderIdentifier') and new.get('isServiceProviderActivated')[0] == b"TRUE":
             # write new service provider config file
             filename = os.path.join(sp_config_dir, '%s.php' % new.get('SAMLServiceProviderIdentifier')[0].decode('ASCII').replace('/', '_'))
-            ud.debug(ud.LISTENER, ud.INFO, 'Writing to SAML SP Configuration file %s' % filename)
+            ud.debug(ud.LISTENER, ud.INFO, f'Writing to SAML SP Configuration file {filename}')
             write_configuration_file(dn, new, filename)
 
         with open(include_file, 'w') as fd:
             fd.write('<?php\n')
             for filename in glob.glob(os.path.join(sp_config_dir, '*.php')):
-                fd.write("require_once(%s);\n" % (php_string(filename),))
+                fd.write(f"require_once({php_string(filename)});\n")
     finally:
         listener.unsetuid()
 
@@ -119,7 +119,7 @@ def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str
             root = xml.etree.ElementTree.fromstring(metadata.decode('ASCII'))  # noqa: S314
             entityid = root.get('entityID')
         except xml.etree.ElementTree.ParseError as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, 'Parsing metadata failed: %s' % (exc,))
+            ud.debug(ud.LISTENER, ud.ERROR, f'Parsing metadata failed: {exc}')
             return False
     else:
         metadata = None
@@ -136,8 +136,8 @@ def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str
         fd.write('$memberof = "False";\n')
         fd.write("if(file_exists('/etc/simplesamlphp/serviceprovider_enabled_groups.json')){\n")
         fd.write("	$samlenabledgroups = json_decode(file_get_contents('/etc/simplesamlphp/serviceprovider_enabled_groups.json'), true);\n")
-        fd.write("	if(array_key_exists(%s, $samlenabledgroups) and isset($samlenabledgroups[%s])){\n" % (php_string(dn), php_string(dn)))
-        fd.write("		$memberof = $samlenabledgroups[%s];\n" % (php_string(dn)))
+        fd.write(f"	if(array_key_exists({php_string(dn)}, $samlenabledgroups) and isset($samlenabledgroups[{php_string(dn)}])){{\n")
+        fd.write(f"		$memberof = $samlenabledgroups[{(php_string(dn))}];\n")
         fd.write("	}\n")
         fd.write("}\n")
 
@@ -152,7 +152,7 @@ def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str
                     ud.debug(ud.LISTENER, ud.ERROR, 'Failed to create %s: %s' % (filename, stderr.decode('UTF-8', 'replace')))
             fd.write("$further = array(\n")
         else:
-            fd.write('$metadata[%s] = array(\n' % php_string(entityid))
+            fd.write(f'$metadata[{php_string(entityid)}] = array(\n')
             fd.write("	'AssertionConsumerService' => %s,\n" % php_array(new.get('AssertionConsumerService')))
             if new.get('singleLogoutService'):
                 fd.write("	'SingleLogoutService' => %s,\n" % php_array(new.get('singleLogoutService')))
@@ -189,16 +189,16 @@ def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str
             fd.write("			'class' => 'authorize:Authorize',\n")
             fd.write("			'regex' => FALSE,\n")
             fd.write("			'case_insensitive_attributes' => array('memberOf', 'enabledServiceProviderIdentifier'),\n")
-            fd.write("			'enabledServiceProviderIdentifier' => %s,\n" % php_array([dn]))
+            fd.write(f"			'enabledServiceProviderIdentifier' => {php_array([dn])},\n")
             fd.write("			'memberOf' => $memberof,\n")
             fd.write("		),\n")
             if simplesamlLDAPattributes:
                 fd.write("		50 => array(\n			'class' => 'core:AttributeMap',\n")
                 for attr in ldap_attribute_join(simplesamlLDAPattributes):
                     if ',' in attr[1]:
-                        fd.write("			%s => %s,\n" % (php_string(attr[0]), php_array(attr[1].split(','))))
+                        fd.write(f"			{php_string(attr[0])} => {php_array(attr[1].split(','))},\n")
                     else:
-                        fd.write("			%s => %s,\n" % (php_string(attr[0]), php_string(attr[1])))
+                        fd.write(f"			{php_string(attr[0])} => {php_string(attr[1])},\n")
                 fd.write("		),\n")
         else:
             fd.write("		100 => array('class' => 'core:AttributeMap', 'name2oid'),\n")
@@ -207,7 +207,7 @@ def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str
 
         fd.write(");\n")
         if metadata:
-            fd.write("$metadata[%s] = array_merge($metadata[%s], $further);" % (php_string(entityid), php_string(entityid)))
+            fd.write(f"$metadata[{php_string(entityid)}] = array_merge($metadata[{php_string(entityid)}], $further);")
 
     fd.close()
     process = Popen(['/usr/bin/php', '-lf', filename], stderr=PIPE, stdout=PIPE)

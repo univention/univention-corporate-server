@@ -142,7 +142,7 @@ class UDMLicenseManagement(UDMModule):
         self.test_network_dn = "cn=default,cn=networks," + self.ldap_base
         self.select_ip_address_subnet()
         self.temp_license_folder = mkdtemp()
-        print("Temporary folder to be used to store obtained test licenses: '%s'" % self.temp_license_folder)
+        print(f"Temporary folder to be used to store obtained test licenses: '{self.temp_license_folder}'")
         self.initial_license_file = self.temp_license_folder + '/InitiallyInstalled.license'
 
         self.users_to_delete = []
@@ -173,7 +173,7 @@ class UDMLicenseManagement(UDMModule):
         (i.e. before the first failed attempt or full 'amount')
         Recreates the UMC connection before every attempt.
         """
-        obj_name_base = 'umc_test_%s_%s_' % (obj_type, random_username(6))
+        obj_name_base = f'umc_test_{obj_type}_{random_username(6)}_'
 
         for obj in range(amount):
             # the UMC connection is recreated every step in order to get the
@@ -255,7 +255,7 @@ class UDMLicenseManagement(UDMModule):
         request with the license details in options to import it
         """
         if not path.exists(license_file):
-            print("The '%s' license file cannot be found" % license_file)
+            print(f"The '{license_file}' license file cannot be found")
             self.return_code_result_skip()
         with open(license_file) as license:
             license_text = license.read()
@@ -270,7 +270,7 @@ class UDMLicenseManagement(UDMModule):
         launched 'univention-ldapsearch' with self.license_dn argument
         """
         license_file = self.initial_license_file
-        print("\nSaving initial license to file: '%s'" % license_file)
+        print(f"\nSaving initial license to file: '{license_file}'")
         with open(license_file, 'w') as license:
             proc = Popen(("univention-ldapsearch", "-LLLb", self.license_dn), stdout=license, stderr=PIPE)
             stdout, stderr = proc.communicate()
@@ -402,9 +402,9 @@ class UDMLicenseManagement(UDMModule):
         license_file = self.initial_license_file
         if path.exists(license_file):
             self.restart_umc_server()
-            print("\nRestoring initially dumped license from file '%s' and removing temp folder with license files" % license_file)
+            print(f"\nRestoring initially dumped license from file '{license_file}' and removing temp folder with license files")
             self.import_new_license(license_file)
         try:
             rmtree(self.temp_license_folder)
         except OSError as exc:
-            print("An OSError while deleting the temporaryfolder with license files: '%s'" % exc)
+            print(f"An OSError while deleting the temporaryfolder with license files: '{exc}'")

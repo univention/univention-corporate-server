@@ -56,10 +56,10 @@ def run():
         if oldval != newval:
             ml.append(('univentionMailSharedFolderDeliveryAddress', oldval, newval))
             try:
-                print('Updating %s' % dn)
+                print(f'Updating {dn}')
                 lo.modify(dn, ml)
             except Exception:
-                print('E: Failed to modify %s' % dn, file=sys.stderr)
+                print(f'E: Failed to modify {dn}', file=sys.stderr)
 
     print('done')
 

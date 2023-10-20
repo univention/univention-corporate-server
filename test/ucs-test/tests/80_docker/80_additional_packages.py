@@ -37,19 +37,19 @@ def create_app():
 
     if ucr.get('server/role') == 'domaincontroller_master':
         app.set_ini_parameter(AdditionalPackagesMaster=f'{package_name1},{package_name2}')
-        app.set_ini_parameter(AdditionalPackagesMember='%s' % (package_name3))
+        app.set_ini_parameter(AdditionalPackagesMember=f'{(package_name3)}')
     elif ucr.get('server/role') == 'domaincontroller_backup':
-        app.set_ini_parameter(AdditionalPackagesMaster='%s' % (package_name2))
-        app.set_ini_parameter(AdditionalPackagesBackup='%s' % (package_name1))
-        app.set_ini_parameter(AdditionalPackagesMember='%s' % (package_name3))
+        app.set_ini_parameter(AdditionalPackagesMaster=f'{(package_name2)}')
+        app.set_ini_parameter(AdditionalPackagesBackup=f'{(package_name1)}')
+        app.set_ini_parameter(AdditionalPackagesMember=f'{(package_name3)}')
     elif ucr.get('server/role') == 'domaincontroller_slave':
-        app.set_ini_parameter(AdditionalPackagesBackup='%s' % (package_name1))
-        app.set_ini_parameter(AdditionalPackagesSlave='%s' % (package_name2))
-        app.set_ini_parameter(AdditionalPackagesMember='%s' % (package_name3))
+        app.set_ini_parameter(AdditionalPackagesBackup=f'{(package_name1)}')
+        app.set_ini_parameter(AdditionalPackagesSlave=f'{(package_name2)}')
+        app.set_ini_parameter(AdditionalPackagesMember=f'{(package_name3)}')
     elif ucr.get('server/role') == 'memberserver':
-        app.set_ini_parameter(AdditionalPackagesMaster='%s' % (package_name2))
-        app.set_ini_parameter(AdditionalPackagesSlave='%s' % (package_name1))
-        app.set_ini_parameter(AdditionalPackagesMember='%s' % (package_name3))
+        app.set_ini_parameter(AdditionalPackagesMaster=f'{(package_name2)}')
+        app.set_ini_parameter(AdditionalPackagesSlave=f'{(package_name1)}')
+        app.set_ini_parameter(AdditionalPackagesMember=f'{(package_name3)}')
 
     app.add_to_local_appcenter()
 

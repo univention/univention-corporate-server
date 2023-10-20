@@ -60,11 +60,11 @@ class DevTest(UniventionAppAction):
     @possible_network_error
     def _download_file(self, server, app, fname):
         url = os.path.join(server or app.get_server(), 'univention-repository', app.get_ucs_version(), 'maintained', 'component', app.component_id, 'test')
-        self.log('Downloading "%s"...' % url)
+        self.log(f'Downloading "{url}"...')
         request = Request(url)
         response = urlopen(request)
         content = response.read()
-        self.log('Writing to "%s"...' % fname)
+        self.log(f'Writing to "{fname}"...')
         with open(fname, 'wb') as f:
             f.write(content)
         os.chmod(fname, 0o755)
@@ -75,12 +75,12 @@ class DevTest(UniventionAppAction):
             return call_process([fname] + args, self.logger).returncode
 
     def main(self, args):
-        self.log('Testing %s' % args.app)
+        self.log(f'Testing {args.app}')
         if not args.app.is_installed():
-            self.log('%s is not installed' % args.app)
+            self.log(f'{args.app} is not installed')
             return
-        self.log('%s is installed' % args.app)
-        fname = os.path.join(gettempdir(), '%s.test' % args.app.id)
+        self.log(f'{args.app} is installed')
+        fname = os.path.join(gettempdir(), f'{args.app.id}.test')
         try:
             self._download_file(args.appcenter_server, args.app, fname)
         except NetworkError:

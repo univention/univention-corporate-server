@@ -411,7 +411,7 @@ class qm2rcc(Task.Task):
 	def run(self):
 		"""Create a qrc file including the inputs"""
 		txt = '\n'.join(['<file>%s</file>' % k.path_from(self.outputs[0].parent) for k in self.inputs])
-		code = '<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n%s\n</qresource>\n</RCC>' % txt
+		code = f'<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n{txt}\n</qresource>\n</RCC>'
 		self.outputs[0].write(code)
 
 def configure(self):
@@ -463,7 +463,7 @@ def find_qt4_binaries(self):
 				lst.reverse()
 
 				# keep the highest version
-				qtdir = '/usr/local/Trolltech/%s/' % lst[0]
+				qtdir = f'/usr/local/Trolltech/{lst[0]}/'
 				qtbin = os.path.join(qtdir, 'bin')
 				paths.append(qtbin)
 
@@ -546,7 +546,7 @@ def find_qt4_libraries(self):
 	qtincludes =  os.environ.get("QT4_INCLUDES") or self.cmd_and_log(self.env.QMAKE + ['-query', 'QT_INSTALL_HEADERS']).strip()
 	env = self.env
 	if not 'PKG_CONFIG_PATH' in os.environ:
-		os.environ['PKG_CONFIG_PATH'] = '%s:%s/pkgconfig:/usr/lib/qt4/lib/pkgconfig:/opt/qt4/lib/pkgconfig:/usr/lib/qt4/lib:/opt/qt4/lib' % (qtlibs, qtlibs)
+		os.environ['PKG_CONFIG_PATH'] = f'{qtlibs}:{qtlibs}/pkgconfig:/usr/lib/qt4/lib/pkgconfig:/opt/qt4/lib/pkgconfig:/usr/lib/qt4/lib:/opt/qt4/lib'
 
 	try:
 		if os.environ.get("QT4_XCOMPILE"):
@@ -561,21 +561,21 @@ def find_qt4_libraries(self):
 				qtDynamicLib = os.path.join(qtlibs, frameworkName, i)
 				if os.path.exists(qtDynamicLib):
 					env.append_unique('FRAMEWORK_' + uselib, i)
-					self.msg('Checking for %s' % i, qtDynamicLib, 'GREEN')
+					self.msg(f'Checking for {i}', qtDynamicLib, 'GREEN')
 				else:
-					self.msg('Checking for %s' % i, False, 'YELLOW')
+					self.msg(f'Checking for {i}', False, 'YELLOW')
 				env.append_unique('INCLUDES_' + uselib, os.path.join(qtlibs, frameworkName, 'Headers'))
 			elif env.DEST_OS != "win32":
 				qtDynamicLib = os.path.join(qtlibs, "lib" + i + ".so")
 				qtStaticLib = os.path.join(qtlibs, "lib" + i + ".a")
 				if os.path.exists(qtDynamicLib):
 					env.append_unique('LIB_' + uselib, i)
-					self.msg('Checking for %s' % i, qtDynamicLib, 'GREEN')
+					self.msg(f'Checking for {i}', qtDynamicLib, 'GREEN')
 				elif os.path.exists(qtStaticLib):
 					env.append_unique('LIB_' + uselib, i)
-					self.msg('Checking for %s' % i, qtStaticLib, 'GREEN')
+					self.msg(f'Checking for {i}', qtStaticLib, 'GREEN')
 				else:
-					self.msg('Checking for %s' % i, False, 'YELLOW')
+					self.msg(f'Checking for {i}', False, 'YELLOW')
 
 				env.append_unique('LIBPATH_' + uselib, qtlibs)
 				env.append_unique('INCLUDES_' + uselib, qtincludes)
@@ -586,10 +586,10 @@ def find_qt4_libraries(self):
 					lib = os.path.join(qtlibs, k % i)
 					if os.path.exists(lib):
 						env.append_unique('LIB_' + uselib, i + k[k.find("%s") + 2 : k.find('.')])
-						self.msg('Checking for %s' % i, lib, 'GREEN')
+						self.msg(f'Checking for {i}', lib, 'GREEN')
 						break
 				else:
-					self.msg('Checking for %s' % i, False, 'YELLOW')
+					self.msg(f'Checking for {i}', False, 'YELLOW')
 
 				env.append_unique('LIBPATH_' + uselib, qtlibs)
 				env.append_unique('INCLUDES_' + uselib, qtincludes)
@@ -601,10 +601,10 @@ def find_qt4_libraries(self):
 					lib = os.path.join(qtlibs, k % i)
 					if os.path.exists(lib):
 						env.append_unique('LIB_' + uselib, i + k[k.find("%s") + 2 : k.find('.')])
-						self.msg('Checking for %s' % i, lib, 'GREEN')
+						self.msg(f'Checking for {i}', lib, 'GREEN')
 						break
 				else:
-					self.msg('Checking for %s' % i, False, 'YELLOW')
+					self.msg(f'Checking for {i}', False, 'YELLOW')
 
 				env.append_unique('LIBPATH_' + uselib, qtlibs)
 				env.append_unique('INCLUDES_' + uselib, qtincludes)
@@ -673,8 +673,8 @@ def set_qt4_defines(self):
 		return
 	for x in self.qt4_vars:
 		y = x[2:].upper()
-		self.env.append_unique('DEFINES_%s' % x.upper(), 'QT_%s_LIB' % y)
-		self.env.append_unique('DEFINES_%s_DEBUG' % x.upper(), 'QT_%s_LIB' % y)
+		self.env.append_unique(f'DEFINES_{x.upper()}', f'QT_{y}_LIB')
+		self.env.append_unique(f'DEFINES_{x.upper()}_DEBUG', f'QT_{y}_LIB')
 
 def options(opt):
 	"""

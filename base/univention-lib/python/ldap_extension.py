@@ -150,7 +150,7 @@ def set_handler_message(name, dn, msg):
             data_obj['data'] = base64.b64encode(bz2.compress(json_data))
             data_obj.modify()
         except Exception as err:
-            ud.debug(ud.LISTENER, ud.ERROR, 'Error set_handler_message for handler %s: %s' % (name, err))
+            ud.debug(ud.LISTENER, ud.ERROR, f'Error set_handler_message for handler {name}: {err}')
         finally:
             if setuid:
                 listener.unsetuid()
@@ -237,7 +237,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
     def is_applicable_for_current_ucs_version(self, ucr):
         # type (ConfigRegistry) -> bool
-        current_ucs_version = "%s-%s" % (ucr.get('version/version'), ucr.get('version/patchlevel'))
+        current_ucs_version = f"{ucr.get('version/version')}-{ucr.get('version/patchlevel')}"
         if self.options.ucsversionstart and UCS_Version(current_ucs_version) < UCS_Version(self.options.ucsversionstart):
             return False
         if self.options.ucsversionend and UCS_Version(current_ucs_version) > UCS_Version(self.options.ucsversionend):
@@ -246,12 +246,12 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
     def wait_for_activation(self, timeout=180):
         # type: (int) -> bool
-        print("Waiting for activation of the extension object %s:" % (self.objectname,), end=' ')
+        print(f"Waiting for activation of the extension object {self.objectname}:", end=' ')
         t0 = time.time()
         while not self.is_local_active()[1]:
             if time.time() - t0 > timeout:
                 print("ERROR")
-                print("ERROR: Primary Directory Node did not mark the extension object active within %s seconds." % (timeout,), file=sys.stderr)
+                print(f"ERROR: Primary Directory Node did not mark the extension object active within {timeout} seconds.", file=sys.stderr)
                 return False
             sys.stdout.write(".")
             sys.stdout.flush()
@@ -317,14 +317,14 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             with open(self.filename, 'rb') as f:
                 compressed_data = bz2.compress(f.read())
         except Exception as e:
-            print("Compression of file %s failed: %s" % (self.filename, e), file=sys.stderr)
+            print(f"Compression of file {self.filename} failed: {e}", file=sys.stderr)
             sys.exit(1)
 
         new_data = base64.b64encode(compressed_data).decode('ASCII')
 
         active_change_udm_options = [
-            "--set", "filename=%s" % self.target_filename,
-            "--set", "data=%s" % new_data,
+            "--set", f"filename={self.target_filename}",
+            "--set", f"data={new_data}",
         ]
         if self.udm_module_name != "settings/data":
             active_change_udm_options.extend([
@@ -332,8 +332,8 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             ])
 
         common_udm_options = [
-            "--set", "package=%s" % (options.packagename,),
-            "--set", "packageversion=%s" % (options.packageversion,),
+            "--set", f"package={options.packagename}",
+            "--set", f"packageversion={options.packageversion}",
         ]
 
         if self.udm_module_name == "settings/data":
@@ -343,9 +343,9 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
         if self.udm_module_name != "settings/ldapschema":
             if options.ucsversionstart:
-                common_udm_options.extend(["--set", "ucsversionstart=%s" % (options.ucsversionstart,)])
+                common_udm_options.extend(["--set", f"ucsversionstart={options.ucsversionstart}"])
             if options.ucsversionend:
-                common_udm_options.extend(["--set", "ucsversionend=%s" % (options.ucsversionend,)])
+                common_udm_options.extend(["--set", f"ucsversionend={options.ucsversionend}"])
 
         if self.udm_module_name == "settings/udm_module":
             for udm_module_messagecatalog in options.udm_module_messagecatalog:
@@ -357,7 +357,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             for umcmessagecatalog in options.umcmessagecatalog:
                 filename_parts = os.path.splitext(os.path.basename(umcmessagecatalog))
                 if not ('-' in filename_parts[0] and len(filename_parts[0].split('-', 1)) == 2):
-                    raise OptionValueError("%s: Is not a valid umcmessagecatalog filename. Must be the locale and the UMCModuleID seperated by '-'" % (filename_parts[0],))
+                    raise OptionValueError(f"{filename_parts[0]}: Is not a valid umcmessagecatalog filename. Must be the locale and the UMCModuleID seperated by '-'")
                 with open(umcmessagecatalog, 'rb') as f:
                     common_udm_options.extend(["--append", "umcmessagecatalog=%s %s" % (filename_parts[0], base64.b64encode(f.read()).decode('ASCII'))])
 
@@ -366,7 +366,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
                     with open(options.umcregistration, 'rb') as f:
                         compressed_data = bz2.compress(f.read())
                 except Exception as e:
-                    print("Compression of file %s failed: %s" % (options.umcregistration, e), file=sys.stderr)
+                    print(f"Compression of file {options.umcregistration} failed: {e}", file=sys.stderr)
                     sys.exit(1)
                 common_udm_options.extend(["--set", "umcregistration=%s" % (base64.b64encode(compressed_data).decode('ASCII'),)])
             for icon in options.icon:
@@ -417,7 +417,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             else:  # check again, might be a race
                 rc, self.object_dn, stdout = self.udm_find_object_dn()
                 if not self.object_dn:
-                    print("ERROR: Failed to create %s object." % (self.udm_module_name,), file=sys.stderr)
+                    print(f"ERROR: Failed to create {self.udm_module_name} object.", file=sys.stderr)
                     sys.exit(1)
 
         if self.object_dn:  # object exists already, modify it
@@ -442,10 +442,10 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             if registered_package == options.packagename:
                 rc = apt.apt_pkg.version_compare(options.packageversion, registered_package_version)
                 if not rc > -1:
-                    print("WARNING: Registered package version %s is newer, refusing registration." % (registered_package_version,), file=sys.stderr)
+                    print(f"WARNING: Registered package version {registered_package_version} is newer, refusing registration.", file=sys.stderr)
                     sys.exit(4)
             else:
-                print("WARNING: Object %s was registered by package %s version %s, changing ownership." % (self.objectname, registered_package, registered_package_version), file=sys.stderr)
+                print(f"WARNING: Object {self.objectname} was registered by package {registered_package} version {registered_package_version}, changing ownership.", file=sys.stderr)
 
             regex = re.compile('^ *data: (.*)$', re.M)
             m = regex.search(stdout)
@@ -466,7 +466,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
                 old_filename = ""
 
             if new_data == old_data and self.target_filename == old_filename:
-                print("INFO: No change of core data of object %s." % (self.objectname,), file=sys.stderr)
+                print(f"INFO: No change of core data of object {self.objectname}.", file=sys.stderr)
                 active_change_udm_options = []
 
             cmd = ["univention-directory-manager", self.udm_module_name, "modify"] + self.udm_passthrough_options + [
@@ -477,7 +477,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
             stdout = out.decode('UTF-8', 'replace')
             print(stdout)
             if p.returncode != 0:
-                print("ERROR: Modification of %s object failed." % (self.udm_module_name,), file=sys.stderr)
+                print(f"ERROR: Modification of {self.udm_module_name} object failed.", file=sys.stderr)
                 sys.exit(1)
 
             appidentifier = os.environ.get('UNIVENTION_APP_IDENTIFIER')
@@ -515,17 +515,17 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
                 app_filter = app_filter + filter_format("(cn=%s)", [appidentifier])
 
         if app_filter:
-            cmd = ["univention-ldapsearch", "-LLL", "(&(objectClass=univentionApp)%s)" % (app_filter,), "cn"]
+            cmd = ["univention-ldapsearch", "-LLL", f"(&(objectClass=univentionApp){app_filter})", "cn"]
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             out, _ = p.communicate()
             stdout = out.decode('UTF-8', 'replace')
             if p.returncode:
-                print("ERROR: LDAP search failed: %s" % (stdout,), file=sys.stderr)
+                print(f"ERROR: LDAP search failed: {stdout}", file=sys.stderr)
                 sys.exit(1)
             if stdout:
                 regex = re.compile('^cn: (.*)$', re.M)
                 apps = ",".join(regex.findall(stdout))
-                print("INFO: The object %s is still registered by the following apps: %s" % (objectname, apps), file=sys.stderr)
+                print(f"INFO: The object {objectname} is still registered by the following apps: {apps}", file=sys.stderr)
                 sys.exit(2)
 
         cmd = ["univention-directory-manager", self.udm_module_name, "delete"] + self.udm_passthrough_options + [
@@ -552,16 +552,16 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
                         udm_object['active'] = True
                         udm_object.modify()
                     except udm_errors.noObject:
-                        ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: object not found.' % (object_dn,))
+                        ud.debug(ud.LISTENER, ud.ERROR, f'Error modifying {object_dn}: object not found.')
                     except udm_errors.ldapError as e:
-                        ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
+                        ud.debug(ud.LISTENER, ud.ERROR, f'Error modifying {object_dn}: {e}.')
                         raise
                 if handler_name:
                     for object_dn in self._todo_list:
                         set_handler_message(handler_name, object_dn, 'active')
                 self._todo_list = []
             except udm_errors.ldapError as e:
-                ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e,))
+                ud.debug(ud.LISTENER, ud.ERROR, f'Error accessing UDM: {e}')
                 if handler_name:
                     for object_dn in self._todo_list:
                         set_handler_message(handler_name, object_dn, f'Error accessing UDM: {e}')
@@ -574,8 +574,8 @@ class UniventionLDAPExtensionWithListenerHandler(six.with_metaclass(ABCMeta, Uni
         super(UniventionLDAPExtensionWithListenerHandler, self).__init__(ucr)
         self._do_reload = False
         self.ucr_template_dir = '/etc/univention/templates'
-        self.ucr_slapd_conf_subfile_dir = '%s/files/etc/ldap/slapd.conf.d' % self.ucr_template_dir
-        self.ucr_info_basedir = '%s/info' % self.ucr_template_dir
+        self.ucr_slapd_conf_subfile_dir = f'{self.ucr_template_dir}/files/etc/ldap/slapd.conf.d'
+        self.ucr_info_basedir = f'{self.ucr_template_dir}/info'
 
     @abstractmethod
     def handler(self, dn, new, old, name=""):
@@ -619,18 +619,18 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
             if old:  # check for trivial changes
                 diff_keys = [key for key in new.keys() if new.get(key) != old.get(key) and key not in ('entryCSN', 'modifyTimestamp', 'modifiersName')]
                 if diff_keys == ['univentionLDAPSchemaActive'] and new.get('univentionLDAPSchemaActive') == [b'TRUE']:
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: activation status changed.' % (name, new['cn'][0].decode('UTF-8')))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: extension {new["cn"][0].decode("UTF-8")}: activation status changed.')
                     return
                 elif diff_keys == ['univentionAppIdentifier']:
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: App identifier changed.' % (name, new['cn'][0].decode('UTF-8')))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: extension {new["cn"][0].decode("UTF-8")}: App identifier changed.')
                     return
-                ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: changed attributes: %s' % (name, new['cn'][0].decode('UTF-8'), diff_keys))
+                ud.debug(ud.LISTENER, ud.INFO, f'{name}: extension {new["cn"][0].decode("UTF-8")}: changed attributes: {diff_keys}')
 
                 if new_pkgname == old.get('univentionOwnedByPackage', [b""])[0]:
                     old_version = old.get('univentionOwnedByPackageVersion', [b'0'])[0].decode('UTF-8')
                     rc = apt.apt_pkg.version_compare(new_version, old_version)
                     if not rc > -1:
-                        ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
+                        ud.debug(ud.LISTENER, ud.WARN, f'{name}: New version is lower than version of old object ({old_version}), skipping update.')
                         return
 
             set_handler_message(name, dn, 'handler start')
@@ -638,7 +638,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
             try:
                 new_object_data = bz2.decompress(new['univentionLDAPSchemaData'][0])
             except TypeError:
-                ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
+                ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error uncompressing data of object {dn}.')
                 set_handler_message(name, dn, f'Error uncompressing data of object {dn}.')
                 return
 
@@ -658,29 +658,29 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                     old_filename = safe_path_join(self.basedir, old['univentionLDAPSchemaFilename'][0].decode('UTF-8'))
                     if os.path.exists(old_filename):
                         backup_fd, backup_filename = tempfile.mkstemp()
-                        ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
+                        ud.debug(ud.LISTENER, ud.INFO, f'{name}: Moving old file {old_filename} to {backup_filename}.')
                         try:
                             shutil.move(old_filename, backup_filename)
                         except IOError:
-                            ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, removing it.' % (name, old_filename))
+                            ud.debug(ud.LISTENER, ud.WARN, f'{name}: Error renaming old file {old_filename}, removing it.')
                             os.unlink(old_filename)  # no choice
                             backup_filename = None
                             os.close(backup_fd)
 
                 if not os.path.isdir(self.basedir):
                     if os.path.exists(self.basedir):
-                        ud.debug(ud.LISTENER, ud.WARN, '%s: Directory name %s occupied, renaming blocking file.' % (name, self.basedir))
-                        shutil.move(self.basedir, "%s.bak" % self.basedir)
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Create directory %s.' % (name, self.basedir))
+                        ud.debug(ud.LISTENER, ud.WARN, f'{name}: Directory name {self.basedir} occupied, renaming blocking file.')
+                        shutil.move(self.basedir, f"{self.basedir}.bak")
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Create directory {self.basedir}.')
                     os.makedirs(self.basedir, 0o755)
 
                 # Create new extension file
                 try:
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Writing new extension file %s.' % (name, new_filename))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Writing new extension file {new_filename}.')
                     with open(new_filename, 'wb') as f:
                         f.write(new_object_data)
                 except IOError:
-                    ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing file %s.' % (name, new_filename))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error writing file {new_filename}.')
                     set_handler_message(name, dn, f'Error writing file {new_filename}.')
                     return
 
@@ -697,26 +697,26 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                 out, _ = p.communicate()
                 stdout = out.decode('UTF-8', 'replace')
                 if p.returncode != 0:
-                    ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s.' % (name, p.returncode, stdout))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: validation failed ({p.returncode}):\n{stdout}.')
                     set_handler_message(name, dn, f'slaptest validation failed {stdout} {p.returncode}')
                     # Revert changes
-                    ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Removing new file {new_filename}.')
                     os.unlink(new_filename)
                     if backup_filename:
-                        ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous file %s.' % (name, old_filename))
+                        ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Restoring previous file {old_filename}.')
                         try:
                             shutil.move(backup_filename, old_filename)
                             os.close(backup_fd)
                         except IOError:
-                            ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old file %s.' % (name, old_filename))
+                            ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error reverting to old file {old_filename}.')
                     # Commit and exit
                     ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
                     return
-                ud.debug(ud.LISTENER, ud.INFO, '%s: validation successful.' % (name,))
+                ud.debug(ud.LISTENER, ud.INFO, f'{name}: validation successful.')
 
                 # cleanup backup
                 if backup_filename:
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old file %s.' % (name, backup_filename))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Removing backup of old file {backup_filename}.')
                     os.unlink(backup_filename)
                     os.close(backup_fd)
 
@@ -731,11 +731,11 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                 listener.setuid(0)
                 try:
                     backup_fd, backup_filename = tempfile.mkstemp()
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Moving old file {old_filename} to {backup_filename}.')
                     try:
                         shutil.move(old_filename, backup_filename)
                     except IOError:
-                        ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, leaving it untouched.' % (name, old_filename))
+                        ud.debug(ud.LISTENER, ud.WARN, f'{name}: Error renaming old file {old_filename}, leaving it untouched.')
                         set_handler_message(name, dn, f'Error renaming old file {old_filename}, leaving it untouched.')
                         os.close(backup_fd)
                         return
@@ -752,9 +752,9 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                     out, _ = p.communicate()
                     stdout = out.decode('UTF-8', 'replace')
                     if p.returncode != 0:
-                        ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s.' % (name, p.returncode, stdout))
+                        ud.debug(ud.LISTENER, ud.ERROR, f'{name}: validation failed ({p.returncode}):\n{stdout}.')
                         set_handler_message(name, dn, f'slaptest validation failed {stdout} {p.returncode}')
-                        ud.debug(ud.LISTENER, ud.WARN, '%s: Restoring %s.' % (name, old_filename))
+                        ud.debug(ud.LISTENER, ud.WARN, f'{name}: Restoring {old_filename}.')
                         # Revert changes
                         try:
                             with open(backup_filename, 'rb') as original:
@@ -764,12 +764,12 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                             os.unlink(backup_filename)
                             os.close(backup_fd)
                         except IOError:
-                            ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting removal of %s.' % (name, old_filename))
+                            ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error reverting removal of {old_filename}.')
                         # Commit and exit
                         ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
                         return
 
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: validation successful, removing backup of old file %s.' % (name, backup_filename))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: validation successful, removing backup of old file {backup_filename}.')
                     os.unlink(backup_filename)
                     os.close(backup_fd)
 
@@ -803,11 +803,11 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
         if listener.configRegistry.get("server/role") not in ("domaincontroller_master",):
             # new, ignore first *inactive* appearance, has to be activated on Primary Directory Node first
             if new and not old and new.get('univentionLDAPACLActive', [b'FALSE'])[0] != b'TRUE':
-                ud.debug(ud.LISTENER, ud.PROCESS, '%s: ignore first appearance of %s, not yet activated' % (name, dn))
+                ud.debug(ud.LISTENER, ud.PROCESS, f'{name}: ignore first appearance of {dn}, not yet activated')
                 return
             # ignore change unless (re) activated
             if new and old and new.get("univentionLDAPACLActive", [b"FALSE"])[0] != b"TRUE":
-                ud.debug(ud.LISTENER, ud.PROCESS, '%s: ignore modify of %s, not yet activated' % (name, dn))
+                ud.debug(ud.LISTENER, ud.PROCESS, f'{name}: ignore modify of {dn}, not yet activated')
                 return
 
         # Check UCS version requirements first and skip new if they are not met.
@@ -816,11 +816,11 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
             univentionUCSVersionEnd = new.get('univentionUCSVersionEnd', [b''])[0].decode('UTF-8')
             current_UCS_version = "%s-%s" % (listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel'))
             if univentionUCSVersionStart and UCS_Version(current_UCS_version) < UCS_Version(univentionUCSVersionStart):
-                ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCR version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionStart))
+                ud.debug(ud.LISTENER, ud.INFO, f'{name}: extension {new["cn"][0].decode("UTF-8")} requires at least UCR version {univentionUCSVersionStart}.')
                 old = old or new
                 new = {}
             elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) > UCS_Version(univentionUCSVersionEnd):
-                ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to and including UCR version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionEnd))
+                ud.debug(ud.LISTENER, ud.INFO, f'{name}: extension {new["cn"][0].decode("UTF-8")} specifies compatibility only up to and including UCR version {univentionUCSVersionEnd}.')
                 old = old or new
                 new = {}
 
@@ -840,18 +840,18 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                 if diff_keys == ['univentionLDAPACLActive'] and new['univentionLDAPACLActive'][0] == b'TRUE':
                     # ignore status change on Primary Directory Node, already activated
                     if listener.configRegistry.get('server/role') in ('domaincontroller_master',):
-                        ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: activation status changed.' % (name, new['cn'][0].decode('UTF-8')))
+                        ud.debug(ud.LISTENER, ud.INFO, f'{name}: extension {new["cn"][0].decode("UTF-8")}: activation status changed.')
                         return
                 elif diff_keys == ['univentionAppIdentifier']:
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: App identifier changed.' % (name, new['cn'][0].decode('UTF-8')))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: extension {new["cn"][0].decode("UTF-8")}: App identifier changed.')
                     return
-                ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: changed attributes: %s' % (name, new['cn'][0].decode('UTF-8'), diff_keys))
+                ud.debug(ud.LISTENER, ud.INFO, f'{name}: extension {new["cn"][0].decode("UTF-8")}: changed attributes: {diff_keys}')
 
                 if new_pkgname == old.get('univentionOwnedByPackage', [b""])[0]:
                     old_version = old.get('univentionOwnedByPackageVersion', [b'0'])[0].decode('UTF-8')
                     rc = apt.apt_pkg.version_compare(new_version, old_version)
                     if not rc > -1:
-                        ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
+                        ud.debug(ud.LISTENER, ud.WARN, f'{name}: New version is lower than version of old object ({old_version}), skipping update.')
                         return
 
             set_handler_message(name, dn, 'handler start')
@@ -859,7 +859,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
             try:
                 new_object_data = bz2.decompress(new['univentionLDAPACLData'][0])
             except TypeError:
-                ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
+                ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error uncompressing data of object {dn}.')
                 set_handler_message(name, dn, f'Error uncompressing data of object {dn}.')
                 return
 
@@ -881,24 +881,24 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                     old_filename = safe_path_join(self.ucr_slapd_conf_subfile_dir, old['univentionLDAPACLFilename'][0].decode('UTF-8'))
                     if os.path.exists(old_filename):
                         backup_fd, backup_filename = tempfile.mkstemp()
-                        ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
+                        ud.debug(ud.LISTENER, ud.INFO, f'{name}: Moving old file {old_filename} to {backup_filename}.')
                         try:
                             shutil.move(old_filename, backup_filename)
                         except IOError:
-                            ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, removing it.' % (name, old_filename))
+                            ud.debug(ud.LISTENER, ud.WARN, f'{name}: Error renaming old file {old_filename}, removing it.')
                             os.unlink(old_filename)
                             backup_filename = None
                             os.close(backup_fd)
 
                     # plus the old backlink file
-                    old_backlink_filename = "%s.info" % old_filename
+                    old_backlink_filename = f"{old_filename}.info"
                     if os.path.exists(old_backlink_filename):
                         backup_backlink_fd, backup_backlink_filename = tempfile.mkstemp()
-                        ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old backlink file %s to %s.' % (name, old_backlink_filename, backup_backlink_filename))
+                        ud.debug(ud.LISTENER, ud.INFO, f'{name}: Moving old backlink file {old_backlink_filename} to {backup_backlink_filename}.')
                         try:
                             shutil.move(old_backlink_filename, backup_backlink_filename)
                         except IOError:
-                            ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old backlink file %s, removing it.' % (name, old_backlink_filename))
+                            ud.debug(ud.LISTENER, ud.WARN, f'{name}: Error renaming old backlink file {old_backlink_filename}, removing it.')
                             os.unlink(old_backlink_filename)
                             backup_backlink_filename = None
                             os.close(backup_backlink_fd)
@@ -907,11 +907,11 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                     old_ucrinfo_filename = safe_path_join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, old['univentionLDAPACLFilename'][0].decode('UTF-8')))
                     if os.path.exists(old_ucrinfo_filename):
                         backup_ucrinfo_fd, backup_ucrinfo_filename = tempfile.mkstemp()
-                        ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old UCR info file %s to %s.' % (name, old_ucrinfo_filename, backup_ucrinfo_filename))
+                        ud.debug(ud.LISTENER, ud.INFO, f'{name}: Moving old UCR info file {old_ucrinfo_filename} to {backup_ucrinfo_filename}.')
                         try:
                             shutil.move(old_ucrinfo_filename, backup_ucrinfo_filename)
                         except IOError:
-                            ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old UCR info file %s, removing it.' % (name, old_ucrinfo_filename))
+                            ud.debug(ud.LISTENER, ud.WARN, f'{name}: Error renaming old UCR info file {old_ucrinfo_filename}, removing it.')
                             os.unlink(old_ucrinfo_filename)
                             backup_ucrinfo_filename = None
                             os.close(backup_ucrinfo_fd)
@@ -925,33 +925,33 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 
                 # Create new extension file
                 try:
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Writing new extension file %s.' % (name, new_filename))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Writing new extension file {new_filename}.')
                     with open(new_filename, 'wb') as f:
                         f.write(new_object_data)
                 except IOError:
-                    ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing file %s.' % (name, new_filename))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error writing file {new_filename}.')
                     set_handler_message(name, dn, f'Error writing file {new_filename}.')
                     return
 
                 # plus backlink file
                 try:
-                    new_backlink_filename = "%s.info" % new_filename
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Writing backlink file %s.' % (name, new_backlink_filename))
+                    new_backlink_filename = f"{new_filename}.info"
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Writing backlink file {new_backlink_filename}.')
                     with open(new_backlink_filename, 'w') as f:
-                        f.write("%s\n" % dn)
+                        f.write(f"{dn}\n")
                 except IOError:
-                    ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing backlink file %s.' % (name, new_backlink_filename))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error writing backlink file {new_backlink_filename}.')
                     set_handler_message(name, dn, f'Error writing backlink file {new_backlink_filename}.')
                     return
 
                 # and UCR registration
                 try:
                     new_ucrinfo_filename = safe_path_join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, new['univentionLDAPACLFilename'][0].decode('UTF-8')))
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Writing UCR info file %s.' % (name, new_ucrinfo_filename))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Writing UCR info file {new_ucrinfo_filename}.')
                     with open(new_ucrinfo_filename, 'w') as f:
-                        f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_basename)
+                        f.write(f"Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/{new_basename}\n")
                 except IOError:
-                    ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing UCR info file %s.' % (name, new_ucrinfo_filename))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error writing UCR info file {new_ucrinfo_filename}.')
                     set_handler_message(name, dn, f'Error writing UCR info file {new_ucrinfo_filename}.')
                     return
 
@@ -968,54 +968,54 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                 out, _ = p.communicate()
                 stdout = out.decode('UTF-8', 'replace')
                 if p.returncode != 0:
-                    ud.debug(ud.LISTENER, ud.ERROR, '%s: slapd.conf validation failed:\n%s.' % (name, stdout))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: slapd.conf validation failed:\n{stdout}.')
                     set_handler_message(name, dn, f'slaptest validation failed {stdout} {p.returncode}')
                     # Revert changes
-                    ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Removing new file {new_filename}.')
                     os.unlink(new_filename)
                     os.unlink(new_backlink_filename)
                     os.unlink(new_ucrinfo_filename)
                     if backup_filename:
-                        ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous file %s.' % (name, old_filename))
+                        ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Restoring previous file {old_filename}.')
                         try:
                             shutil.move(backup_filename, old_filename)
                             os.close(backup_fd)
                         except IOError:
-                            ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old file %s.' % (name, old_filename))
+                            ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error reverting to old file {old_filename}.')
                     # plus backlink file
                     if backup_backlink_filename:
-                        ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous backlink file %s.' % (name, old_backlink_filename))
+                        ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Restoring previous backlink file {old_backlink_filename}.')
                         try:
                             shutil.move(backup_backlink_filename, old_backlink_filename)
                             os.close(backup_backlink_fd)
                         except IOError:
-                            ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old backlink file %s.' % (name, old_backlink_filename))
+                            ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error reverting to old backlink file {old_backlink_filename}.')
                     # and the old UCR registration
                     if backup_ucrinfo_filename:
-                        ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous UCR info file %s.' % (name, old_ucrinfo_filename))
+                        ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Restoring previous UCR info file {old_ucrinfo_filename}.')
                         try:
                             shutil.move(backup_ucrinfo_filename, old_ucrinfo_filename)
                             os.close(backup_ucrinfo_fd)
                         except IOError:
-                            ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old UCR info file %s.' % (name, old_ucrinfo_filename))
+                            ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Error reverting to old UCR info file {old_ucrinfo_filename}.')
                     # Commit and exit
                     ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
                     return
-                ud.debug(ud.LISTENER, ud.INFO, '%s: validation successful.' % (name,))
+                ud.debug(ud.LISTENER, ud.INFO, f'{name}: validation successful.')
 
                 # cleanup backup
                 if backup_filename:
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old file %s.' % (name, backup_filename))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Removing backup of old file {backup_filename}.')
                     os.unlink(backup_filename)
                     os.close(backup_fd)
                 # plus backlink file
                 if backup_backlink_filename:
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old backlink file %s.' % (name, backup_backlink_filename))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Removing backup of old backlink file {backup_backlink_filename}.')
                     os.unlink(backup_backlink_filename)
                     os.close(backup_backlink_fd)
                 # and the old UCR registration
                 if backup_ucrinfo_filename:
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old UCR info file %s.' % (name, backup_ucrinfo_filename))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Removing backup of old UCR info file {backup_ucrinfo_filename}.')
                     os.unlink(backup_ucrinfo_filename)
                     os.close(backup_ucrinfo_fd)
 
@@ -1027,13 +1027,13 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
         elif old:
             old_filename = safe_path_join(self.ucr_slapd_conf_subfile_dir, old['univentionLDAPACLFilename'][0].decode('UTF-8'))
             # plus backlink file
-            old_backlink_filename = "%s.info" % old_filename
+            old_backlink_filename = f"{old_filename}.info"
             # and the old UCR registration
             old_ucrinfo_filename = safe_path_join(self.ucr_info_basedir, "%s%s.info" % (self.file_prefix, old['univentionLDAPACLFilename'][0].decode('UTF-8')))
             if os.path.exists(old_filename):
                 listener.setuid(0)
                 try:
-                    ud.debug(ud.LISTENER, ud.INFO, '%s: Removing extension %s.' % (name, old['cn'][0].decode('UTF-8')))
+                    ud.debug(ud.LISTENER, ud.INFO, f'{name}: Removing extension {old["cn"][0].decode("UTF-8")}.')
                     if os.path.exists(old_ucrinfo_filename):
                         os.unlink(old_ucrinfo_filename)
                     if os.path.exists(old_backlink_filename):
@@ -1086,12 +1086,12 @@ class UniventionUDMExtension(six.with_metaclass(ABCMeta, UniventionLDAPExtension
 
         target_filepath = self.target_filepath
         timeout = 60
-        print("Waiting for file %s:" % (target_filepath,), end=' ')
+        print(f"Waiting for file {target_filepath}:", end=' ')
         t0 = time.time()
         while not os.path.exists(target_filepath):
             if time.time() - t0 > timeout:
                 print("ERROR")
-                print("ERROR: Timeout waiting for %s." % (target_filepath,), file=sys.stderr)
+                print(f"ERROR: Timeout waiting for {target_filepath}.", file=sys.stderr)
                 return False
             sys.stdout.write(".")
             sys.stdout.flush()
@@ -1113,7 +1113,7 @@ class UniventionUDMModule(UniventionUDMExtension):
         # type: () -> str
         """return the most likely path where the listener will write the file to"""
         module_dir, module_name = self.target_udm_module.split('/', 1)
-        return os.path.abspath(os.path.join(os.path.dirname(udm.__file__), self.target_subdir, module_dir, '%s.py' % (module_name.replace('/', ''),)))
+        return os.path.abspath(os.path.join(os.path.dirname(udm.__file__), self.target_subdir, module_dir, f'{module_name.replace("/", "")}.py'))
 
     def register(self, filename, options, udm_passthrough_options, target_filename=None):
         # type: (str, Values, List[str], Optional[str]) -> None
@@ -1149,7 +1149,7 @@ class UniventionUDMModule(UniventionUDMExtension):
         while subprocess.call([sys.executable, '-c', 'import univention.admin.modules, sys; univention.admin.modules.update(); sys.exit(0 if univention.admin.modules.get(%r) is not None else 1)' % (self.target_udm_module,)]):
             if time.time() - t0 > timeout:
                 print("ERROR")
-                print("ERROR: Timeout waiting for UDM module %s." % (self.target_udm_module,), file=sys.stderr)
+                print(f"ERROR: Timeout waiting for UDM module {self.target_udm_module}.", file=sys.stderr)
                 return False
             sys.stdout.write(".")
             sys.stdout.flush()
@@ -1177,7 +1177,7 @@ class UniventionUDMHook(UniventionUDMExtension):
 def option_validate_existing_filename(option, opt, value):
     # type: (Option, str, str) -> str
     if not os.path.exists(value):
-        raise OptionValueError("%s: file does not exist: %s" % (opt, value))
+        raise OptionValueError(f"{opt}: file does not exist: {value}")
     return value
 
 
@@ -1185,20 +1185,20 @@ def option_validate_ucs_version(option, opt, value):
     # type: (Option, str, str) -> str
     regex = re.compile("[-.0-9]+")
     if not regex.match(value):
-        raise OptionValueError("%s: may only contain digit, dot and dash characters: %s" % (opt, value))
+        raise OptionValueError(f"{opt}: may only contain digit, dot and dash characters: {value}")
     return value
 
 
 def option_validate_gnu_message_catalogfile(option, opt, value):
     # type: (Option, str, str) -> str
     if not os.path.exists(value):
-        raise OptionValueError("%s: file does not exist: %s" % (opt, value))
+        raise OptionValueError(f"{opt}: file does not exist: {value}")
     filename_parts = os.path.splitext(value)
     language = filename_parts[0]
     if language not in os.listdir('/usr/share/locale'):
-        raise OptionValueError("%s: file basename is not a registered language: %s" % (opt, value))
+        raise OptionValueError(f"{opt}: file basename is not a registered language: {value}")
     if not MIME_DESCRIPTION.file(value).startswith('GNU message catalog'):
-        raise OptionValueError("%s: file is not a GNU message catalog: %s" % (opt, value))
+        raise OptionValueError(f"{opt}: file is not a GNU message catalog: {value}")
 
     return value
 
@@ -1216,7 +1216,7 @@ def option_callback_udm_passthrough_options(option, opt_str, value, parser, *arg
     assert parser.values is not None
     assert option.dest is not None
     if value.startswith('--'):
-        raise OptionValueError("%s requires an argument" % (opt_str,))
+        raise OptionValueError(f"{opt_str} requires an argument")
     udm_passthrough_options = args[0]
     udm_passthrough_options.append(opt_str)
     udm_passthrough_options.append(value)
@@ -1227,9 +1227,9 @@ def check_data_module_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
     assert parser.values is not None
     if value.startswith('--'):
-        raise OptionValueError("%s requires an argument" % (opt_str,))
+        raise OptionValueError(f"{opt_str} requires an argument")
     if not parser.values.data:
-        raise OptionValueError("%s can only be used after --data" % (opt_str,))
+        raise OptionValueError(f"{opt_str} can only be used after --data")
 
 
 def option_callback_set_data_module_options(option, opt_str, value, parser):
@@ -1252,9 +1252,9 @@ def check_udm_module_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
     assert parser.values is not None
     if value.startswith('--'):
-        raise OptionValueError("%s requires an argument" % (opt_str,))
+        raise OptionValueError(f"{opt_str} requires an argument")
     if not parser.values.udm_module:
-        raise OptionValueError("%s can only be used after --udm_module" % (opt_str,))
+        raise OptionValueError(f"{opt_str} can only be used after --udm_module")
 
 
 def option_callback_set_udm_module_options(option, opt_str, value, parser):
@@ -1277,9 +1277,9 @@ def check_udm_syntax_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
     assert parser.values is not None
     if value.startswith('--'):
-        raise OptionValueError("%s requires an argument" % (opt_str,))
+        raise OptionValueError(f"{opt_str} requires an argument")
     if not parser.values.udm_syntax:
-        raise OptionValueError("%s can only be used after --udm_syntax" % (opt_str,))
+        raise OptionValueError(f"{opt_str} can only be used after --udm_syntax")
 
 
 def option_callback_append_udm_syntax_options(option, opt_str, value, parser):
@@ -1294,9 +1294,9 @@ def check_udm_hook_options(option, opt_str, value, parser):
     # type: (Option, str, str, OptionParser) -> None
     assert parser.values is not None
     if value.startswith('--'):
-        raise OptionValueError("%s requires an argument" % (opt_str,))
+        raise OptionValueError(f"{opt_str} requires an argument")
     if not parser.values.udm_hook:
-        raise OptionValueError("%s can only be used after --udm_hook" % (opt_str,))
+        raise OptionValueError(f"{opt_str} can only be used after --udm_hook")
 
 
 def option_callback_append_udm_hook_options(option, opt_str, value, parser):
@@ -1512,9 +1512,9 @@ def ucs_registerLDAPExtension():
 
     for obj in objects:
         if not obj.is_applicable_for_current_ucs_version(ucr):
-            print("%s: skip waiting for %s." % (functionname, obj.filename))
+            print(f"{functionname}: skip waiting for {obj.filename}.")
         elif not obj.wait_for_activation():
-            print("%s: registraton of %s failed." % (functionname, obj.filename))
+            print(f"{functionname}: registraton of {obj.filename} failed.")
             sys.exit(1)
 
     if opts.udm_module:

@@ -47,7 +47,7 @@ def wait_for_dns(hosts):
             except dns.resolver.NXDOMAIN:
                 time.sleep(1)
         if found != ip:
-            utils.fail('DNS query answer address found = %s, expected = %s' % (found, ip))
+            utils.fail(f'DNS query answer address found = {found}, expected = {ip}')
 
 
 def main():
@@ -63,13 +63,12 @@ def main():
                     set={
                         'ip': dcslave_ip,
                         'name': dcslave,
-                        'dnsEntryZoneForward': 'zoneName=%s,cn=dns,%s %s' % (
-                            domain, basedn, dcslave_ip),
+                        'dnsEntryZoneForward': f'zoneName={domain},cn=dns,{basedn} {dcslave_ip}',
                     },
-                    position='cn=computers,%s' % basedn,
+                    position=f'cn=computers,{basedn}',
                 )
-                dcslave_fqdn = '%s.%s' % (dcslave, domain)
-                handler_set(['mail/relayhost=%s' % dcslave_fqdn])
+                dcslave_fqdn = f'{dcslave}.{domain}'
+                handler_set([f'mail/relayhost={dcslave_fqdn}'])
                 port = 60025
                 nethelper.add_redirection(dcslave_ip, 25, port)
                 wait_for_dns([(dcslave, dcslave_ip)])

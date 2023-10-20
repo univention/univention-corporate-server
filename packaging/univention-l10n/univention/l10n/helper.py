@@ -74,7 +74,7 @@ def call(*argv, **kwargs):
 
     verbose = os.environ.get('DH_VERBOSE', False)
     if verbose:
-        print('\t%s' % ' '.join(argv))
+        print(f'\t{" ".join(argv)}')
     try:
         return subprocess.check_call(argv, **kwargs)
     except subprocess.CalledProcessError as ex:

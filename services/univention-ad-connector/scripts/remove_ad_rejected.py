@@ -49,7 +49,7 @@ class ObjectNotFound(BaseException):
 
 
 def remove_ad_rejected(ad_dn):
-    config = univention.connector.configdb('/etc/univention/%s/internal.sqlite' % CONFIGBASENAME)
+    config = univention.connector.configdb(f'/etc/univention/{CONFIGBASENAME}/internal.sqlite')
     found = False
     for usn, rejected_dn, _retry_count in config.items('AD rejected'):
         if univention.uldap.access.compare_dn(ad_dn, rejected_dn):
@@ -67,16 +67,16 @@ if __name__ == '__main__':
     options = parser.parse_args()
 
     CONFIGBASENAME = options.configbasename
-    state_directory = '/etc/univention/%s' % CONFIGBASENAME
+    state_directory = f'/etc/univention/{CONFIGBASENAME}'
     if not os.path.exists(state_directory):
-        parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
+        parser.error(f"Invalid configbasename, directory {state_directory} does not exist")
 
     ad_dn = options.dn
 
     try:
         remove_ad_rejected(ad_dn)
     except ObjectNotFound:
-        print('ERROR: The object %s was not found.' % (ad_dn,))
+        print(f'ERROR: The object {ad_dn} was not found.')
         sys.exit(1)
 
-    print('The rejected AD object %s has been removed.' % (ad_dn,))
+    print(f'The rejected AD object {ad_dn} has been removed.')

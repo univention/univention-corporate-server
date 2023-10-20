@@ -24,14 +24,14 @@ from waflib import Task, TaskGen, Logs
 R_COMMANDS = ['RTerm', 'R', 'r']
 
 def configure(ctx):
-	ctx.find_program(R_COMMANDS, var='RCMD', errmsg = """\n
+	ctx.find_program(R_COMMANDS, var='RCMD', errmsg = f"""\n
 No R executable found!\n\n
 If R is needed:\n
 	1) Check the settings of your system path.
-	2) Note we are looking for R executables called: %s
+	2) Note we are looking for R executables called: {R_COMMANDS}
 	   If yours has a different name, please report to hmgaudecker [at] gmail\n
 Else:\n
-	Do not load the 'run_r_script' tool in the main wscript.\n\n"""  % R_COMMANDS)
+	Do not load the 'run_r_script' tool in the main wscript.\n\n""")
 	ctx.env.RFLAGS = 'CMD BATCH --slave'
 
 class run_r_script_base(Task.Task):

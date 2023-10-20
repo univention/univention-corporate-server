@@ -303,7 +303,7 @@ class Context(ctx):
 						os.listdir(d)
 					except OSError:
 						raise Errors.WafError('Cannot read the folder %r' % d)
-					raise Errors.WafError('No wscript file in directory %s' % d)
+					raise Errors.WafError(f'No wscript file in directory {d}')
 
 	def log_command(self, cmd, kw):
 		if Logs.verbose:
@@ -348,7 +348,7 @@ class Context(ctx):
 			kw['stderr'] = subprocess.PIPE
 
 		if Logs.verbose and not kw['shell'] and not Utils.check_exe(cmd[0]):
-			raise Errors.WafError('Program %s not found!' % cmd[0])
+			raise Errors.WafError(f'Program {cmd[0]} not found!')
 
 		cargs = {}
 		if 'timeout' in kw:
@@ -372,7 +372,7 @@ class Context(ctx):
 		try:
 			ret, out, err = Utils.run_process(cmd, kw, cargs)
 		except Exception as e:
-			raise Errors.WafError('Execution failure: %s' % str(e), ex=e)
+			raise Errors.WafError(f'Execution failure: {str(e)}', ex=e)
 
 		if out:
 			if not isinstance(out, str):
@@ -385,7 +385,7 @@ class Context(ctx):
 			if not isinstance(err, str):
 				err = err.decode(encoding, errors='replace')
 			if self.logger:
-				self.logger.error('err: %s' % err)
+				self.logger.error(f'err: {err}')
 			else:
 				Logs.info(err, extra={'stream':sys.stderr, 'c1': ''})
 
@@ -451,7 +451,7 @@ class Context(ctx):
 		try:
 			ret, out, err = Utils.run_process(cmd, kw, cargs)
 		except Exception as e:
-			raise Errors.WafError('Execution failure: %s' % str(e), ex=e)
+			raise Errors.WafError(f'Execution failure: {str(e)}', ex=e)
 
 		if not isinstance(out, str):
 			out = out.decode(encoding, errors='replace')
@@ -459,9 +459,9 @@ class Context(ctx):
 			err = err.decode(encoding, errors='replace')
 
 		if out and quiet != STDOUT and quiet != BOTH:
-			self.to_log('out: %s' % out)
+			self.to_log(f'out: {out}')
 		if err and quiet != STDERR and quiet != BOTH:
-			self.to_log('err: %s' % err)
+			self.to_log(f'err: {err}')
 
 		if ret:
 			e = Errors.WafError('Command %r returned %r' % (cmd, ret))
@@ -491,7 +491,7 @@ class Context(ctx):
 		:raises: :py:class:`waflib.Errors.ConfigurationError`
 		"""
 		if self.logger:
-			self.logger.info('from %s: %s' % (self.path.abspath(), msg))
+			self.logger.info(f'from {self.path.abspath()}: {msg}')
 		try:
 			logfile = self.logger.handlers[0].baseFilename
 		except AttributeError:
@@ -499,9 +499,9 @@ class Context(ctx):
 		else:
 			if os.environ.get('WAF_PRINT_FAILURE_LOG'):
 				# see #1930
-				msg = 'Log from (%s):\n%s\n' % (logfile, Utils.readf(logfile))
+				msg = f'Log from ({logfile}):\n{Utils.readf(logfile)}\n'
 			else:
-				msg = '%s\n(complete log in %s)' % (msg, logfile)
+				msg = f'{msg}\n(complete log in {logfile})'
 		raise self.errors.ConfigurationError(msg, ex=ex)
 
 	def to_log(self, msg):
@@ -584,7 +584,7 @@ class Context(ctx):
 			self.line_just = max(40, len(msg))
 		for x in (self.line_just * '-', msg):
 			self.to_log(x)
-		Logs.pprint('NORMAL', "%s :" % msg.ljust(self.line_just), sep='')
+		Logs.pprint('NORMAL', f"{msg.ljust(self.line_just)} :", sep='')
 
 	def end_msg(self, *k, **kw):
 		"""Prints the end of a 'Checking for' message. See :py:meth:`waflib.Context.Context.msg`"""
@@ -638,7 +638,7 @@ class Context(ctx):
 			waflibs = PyZipFile(waf_dir)
 			lst = waflibs.namelist()
 			for x in lst:
-				if not re.match('waflib/extras/%s' % var.replace('*', '.*'), var):
+				if not re.match(f'waflib/extras/{var.replace("*", ".*")}', var):
 					continue
 				f = os.path.basename(x)
 				doban = False

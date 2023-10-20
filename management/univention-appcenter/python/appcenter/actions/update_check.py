@@ -134,17 +134,17 @@ class UpdateCheck(UniventionAppAction):
         blocking_apps = {}
         for app in current_cache.get_all_locally_installed_apps():
             if not cls.app_can_update(app, next_version, next_apps):
-                cls.debug('app %s is not available for %s' % (app.id, next_version))
+                cls.debug(f'app {app.id} is not available for {next_version}')
                 blocking_apps[app.component_id] = app.name
             else:
-                cls.debug('app %s is available for %s' % (app.id, next_version))
+                cls.debug(f'app {app.id} is available for {next_version}')
         return blocking_apps
 
     def main(self, args):
         blocking_apps = self.get_blocking_apps(args.ucs_version)
         if blocking_apps:
-            self.log('The update to %s is currently not possible,' % args.ucs_version)
-            self.log('because the following Apps are not available for UCS %s:' % args.ucs_version)
+            self.log(f'The update to {args.ucs_version} is currently not possible,')
+            self.log(f'because the following Apps are not available for UCS {args.ucs_version}:')
             for app in blocking_apps.values():
-                self.log(' * %s' % app)
+                self.log(f' * {app}')
             return 1

@@ -65,7 +65,7 @@ def apply_run_py_script(tg):
 	# Set the Python version to use, default to 3.
 	v = getattr(tg, 'version', 3)
 	if v not in (2, 3):
-		raise ValueError("Specify the 'version' attribute for run_py_script task generator as integer 2 or 3.\n Got: %s" %v)
+		raise ValueError(f"Specify the 'version' attribute for run_py_script task generator as integer 2 or 3.\n Got: {v}")
 
 	# Convert sources and targets to nodes
 	src_node = tg.path.find_resource(tg.source)

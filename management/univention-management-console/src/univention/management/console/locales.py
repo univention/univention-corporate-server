@@ -101,16 +101,16 @@ class I18N(object):
             LOCALE.info('Locale or domain missing. Stopped loading of translation')
             return
 
-        LOCALE.debug('Loading locale %s for domain %s' % (self.locale, self.domain))
-        filename = os.path.join(I18N.LOCALE_DIR, self.locale.language, '%s.mo' % self.domain)
+        LOCALE.debug(f'Loading locale {self.locale} for domain {self.domain}')
+        filename = os.path.join(I18N.LOCALE_DIR, self.locale.language, f'{self.domain}.mo')
         if not os.path.isfile(filename):
-            filename = os.path.join(I18N.LOCALE_DIR, '%s_%s' % (self.locale.language, self.locale.territory), '%s.mo' % self.domain)
+            filename = os.path.join(I18N.LOCALE_DIR, f'{self.locale.language}_{self.locale.territory}', f'{self.domain}.mo')
             if not os.path.isfile(filename):
                 LOCALE.warn('Could not find translation file: %r' % (os.path.basename(filename),))
                 self.mofile = None
                 return
 
-        LOCALE.debug('Found translation file %s' % (filename,))
+        LOCALE.debug(f'Found translation file {filename}')
         self.mofile = None
         try:
             self.mofile = polib.mofile(filename)
@@ -167,10 +167,10 @@ class I18N_Manager(dict):
 
         :param str locale: locale to use
         """
-        LOCALE.info('Setting locale to %s' % locale)
+        LOCALE.info(f'Setting locale to {locale}')
         self.locale.parse(locale)
         for domain, i18n in self.items():
-            LOCALE.info('Loading translation for domain %s' % domain)
+            LOCALE.info(f'Loading translation for domain {domain}')
             i18n.load(locale=self.locale)
 
     def __setitem__(self, key, value):
@@ -186,14 +186,14 @@ class I18N_Manager(dict):
         :param str message: text to translation
         :param str domain: translation domain
         """
-        LOCALE.debug('Searching for %s translation of "%s' % (str(self.locale), message))
+        LOCALE.debug(f'Searching for {str(self.locale)} translation of "{message}')
         try:
             if domain is not None:
                 if domain not in self:
                     self[domain] = I18N(self.locale, domain)
                 return self[domain]._(message)
             for domain, i18n in self.items():
-                LOCALE.info('Checking domain %s for translation' % domain)
+                LOCALE.info(f'Checking domain {domain} for translation')
                 if i18n.exists(message):
                     return i18n._(message)
         except (StructError, IOError) as exc:

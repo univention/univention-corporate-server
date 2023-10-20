@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
             # The package must be installed locally
             if not package_installed(app.package_name):
-                fail('The package %s is not installed locally.' % app.package_name)
+                fail(f'The package {app.package_name} is not installed locally.')
 
         finally:
             app.uninstall()

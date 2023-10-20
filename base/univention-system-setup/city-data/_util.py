@@ -43,7 +43,7 @@ def _get_path(filename: str) -> str:
     ):
         if os.path.exists(ipath):
             return ipath
-    raise RuntimeError('Cannot find data file %s' % filename)
+    raise RuntimeError(f'Cannot find data file {filename}')
 
 
 def get_country_codes(countryCodeKeyType: int = 2) -> Dict[str, str]:
@@ -54,7 +54,7 @@ def get_country_codes(countryCodeKeyType: int = 2) -> Dict[str, str]:
         idx1 = 1
         idx2 = 0
     else:
-        raise ValueError('Unknown countryCodeKeyType (=%s), only 2 or 3 allowed' % countryCodeKeyType)
+        raise ValueError(f'Unknown countryCodeKeyType (={countryCodeKeyType}), only 2 or 3 allowed')
 
     with open(_get_path('countryInfo.txt')) as infile:
         pairs = {}
@@ -73,7 +73,7 @@ def get_country_code_to_geonameid_map(countryCodeType: int = 2) -> Dict[str, str
     elif countryCodeType == 3:
         countryCodeIndex = 1
     else:
-        raise ValueError('Unknown countryCodeType (=%s), only 2 or 3 allowed' % countryCodeType)
+        raise ValueError(f'Unknown countryCodeType (={countryCodeType}), only 2 or 3 allowed')
 
     with open(_get_path('countryInfo.txt')) as infile:
         for line in infile:
@@ -90,7 +90,7 @@ def get_country_default_language(countryCodeType: int = 2) -> Dict[str, str]:
     elif countryCodeType == 3:
         countryCodeIndex = 1
     else:
-        raise ValueError('Unknown countryCodeType (=%s), only 2 or 3 allowed' % countryCodeType)
+        raise ValueError(f'Unknown countryCodeType (={countryCodeType}), only 2 or 3 allowed')
 
     with open(_get_path('countryInfo.txt')) as infile:
         locales = {}

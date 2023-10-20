@@ -127,7 +127,7 @@ class ConfigurationError(UpdaterException):
 
     def __str__(self):
         # type: () -> str
-        return "Configuration error: %s" % self.args[1]
+        return f"Configuration error: {self.args[1]}"
 
 
 class VerificationError(ConfigurationError):
@@ -142,7 +142,7 @@ class VerificationError(ConfigurationError):
 
     def __str__(self):
         # type: () -> str
-        return "Verification error: %s" % self.args[1]
+        return f"Verification error: {self.args[1]}"
 
 
 class CannotResolveComponentServerError(ConfigurationError):
@@ -165,7 +165,7 @@ class CannotResolveComponentServerError(ConfigurationError):
 
     def __str__(self):
         # type: () -> str
-        return "Cannot resolve component server for disabled component '%s' (mirror_list=%s)." % (self.component, self.for_mirror_list)
+        return f"Cannot resolve component server for disabled component '{self.component}' (mirror_list={self.for_mirror_list})."
 
 
 class ProxyError(ConfigurationError):
@@ -180,7 +180,7 @@ class ProxyError(ConfigurationError):
 
     def __str__(self):
         # type: () -> str
-        return "Proxy configuration error: %s %s" % (self.args[1], self.args[0])
+        return f"Proxy configuration error: {self.args[1]} {self.args[0]}"
 
 
 class UnmetDependencyError(UpdaterException):
@@ -195,4 +195,4 @@ class UnmetDependencyError(UpdaterException):
 
     def __str__(self):
         # type: () -> str
-        return "You have unmet dependencies %s" % self.args[0]
+        return f"You have unmet dependencies {self.args[0]}"

@@ -22,8 +22,7 @@ APP_ID = 'univention-demo-data'
 
 def get_app_dn(App):
     """Returns the given 'App' DN."""
-    app_dn = ("univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s"
-              % (App.id, App.version, App.id, ldap_base))
+    app_dn = f"univentionAppID={App.id}_{App.version},cn={App.id},cn=apps,cn=univention,{ldap_base}"
     return app_dn
 
 
@@ -32,13 +31,11 @@ def check_app_version_ldap_registraton(new_version):
     Tries to create an LDAP object for App with 'APP_ID' and 'new_version'
     and verifies it after.
     """
-    print("\nChecking if App's new version '%s' can be registered in LDAP"
-          % new_version)
+    print(f"\nChecking if App's new version '{new_version}' can be registered in LDAP")
 
     App = Apps().find(APP_ID)
     if not App:
-        print("\nThe App with id '%s' could not be found, skipping the test."
-              % APP_ID)
+        print(f"\nThe App with id '{APP_ID}' could not be found, skipping the test.")
         exit(TestCodes.RESULT_SKIP)
 
     App.version = new_version
@@ -56,7 +53,7 @@ def check_app_version_ldap_registraton(new_version):
 
     sleep(5)  # wait a bit before the check
     app_dn = get_app_dn(App)
-    print("\nPerforming a check of App LDAP object with a DN '%s'" % app_dn)
+    print(f"\nPerforming a check of App LDAP object with a DN '{app_dn}'")
 
     try:
         utils.verify_ldap_object(app_dn,
@@ -79,7 +76,7 @@ if __name__ == '__main__':
     test_versions = ("0.1 (rev 1.0)", "0.1 [rev 1.1]", "0.1 {rev 1.2}",
                      "0.1 'rev 1.3'", "0.1 !@#$%^*-")
 
-    print("\nChecking an App with id '%s'" % APP_ID)
+    print(f"\nChecking an App with id '{APP_ID}'")
     ldap_base = ucr_get('ldap/base')
 
     for version in test_versions:

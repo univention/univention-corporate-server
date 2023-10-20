@@ -74,13 +74,13 @@ class Apps(object):
 
     def run_script(self, app_id: str, script: str, version: str | None = None) -> None:
         app = FindApps().find(app_id, version)
-        url = os.path.join('http://appcenter-test.software-univention.de', 'univention-repository', app.get_ucs_version(), 'maintained', 'component', app.component_id, 'test_%s' % script)
+        url = os.path.join('http://appcenter-test.software-univention.de', 'univention-repository', app.get_ucs_version(), 'maintained', 'component', app.component_id, f'test_{script}')
         print(url)
         response = get(url)
         if response.ok is not True:
             print(' no %s script found for app %s: %r' % (script, app.id, response.content))
             return
-        fname = os.path.join(gettempdir(), '%s.%s' % (app.id, script))
+        fname = os.path.join(gettempdir(), f'{app.id}.{script}')
         with open(fname, 'wb') as f:
             f.write(response.content)
 

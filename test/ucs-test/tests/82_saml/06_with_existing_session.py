@@ -22,7 +22,7 @@ def main():
     lo = utils.get_ldap_connection(admin_uldap=True)
 
     master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
-    master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
+    master_hostname = f"{master[0]['name']}.{master[0]['domain']}"
     try:
         SamlSession.login_with_new_session_at_IdP()
         SamlSession.test_logged_in_status()

@@ -18,11 +18,11 @@ def main():
 
     with ucr_test.UCSTestConfigRegistry():
         redirector = "pyredir"
-        handler_set(['squid/redirect=%s' % redirector])
+        handler_set([f'squid/redirect={redirector}'])
         squid.redirector_is(redirector)
 
         redirector = "squidguard"
-        handler_set(['squid/redirect=%s' % redirector])
+        handler_set([f'squid/redirect={redirector}'])
         squid.redirector_is(f"{squid_guard_path} -c {squid_guard_config}")
 
 

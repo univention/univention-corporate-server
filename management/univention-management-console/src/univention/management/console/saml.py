@@ -99,7 +99,7 @@ class SamlError(HTTPError):
                 super(SamlError, self).__init__(status, message)
                 if "Passive authentication not supported." not in message:
                     # "Passive authentication not supported." just means an active login is required. That is expected and needs no logging. It still needs to be raised though.
-                    CORE.warn('SamlError: %s %s' % (status, message))
+                    CORE.warn(f'SamlError: {status} {message}')
                 return self
             return _decorated
         if func is None:
@@ -186,7 +186,7 @@ class SAMLResource(Resource):
             try:
                 cls.SP.local_logout(decode_name_id(name_id))
             except Exception as exc:  # e.g. bsddb.DBNotFoundError
-                CORE.warn('Could not remove SAML session: %s' % (exc,))
+                CORE.warn(f'Could not remove SAML session: {exc}')
 
 
 class SamlMetadata(SAMLResource):
@@ -216,7 +216,7 @@ class SamlACS(SAMLResource):
             cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=identity_cache, state_cache=shared_memory.saml_state_cache)
             return True
         except Exception:
-            CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
+            CORE.warn(f'Startup of SAML2.0 service provider failed:\n{traceback.format_exc()}')
         return False
 
     async def get(self):

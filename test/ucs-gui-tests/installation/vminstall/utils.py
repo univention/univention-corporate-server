@@ -51,7 +51,7 @@ def execute_through_ssh(password, command, ip):
         '-p', password,
         'ssh',
         '-o', 'StrictHostKeyChecking=no',
-        'root@%s' % (ip,),
+        f'root@{ip}',
         command,
     ), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     stdout, _ = p.communicate()

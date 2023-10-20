@@ -113,7 +113,7 @@ class XML_Definition(ET.ElementTree):
         try:
             return float(self._root.get('priority', -1))
         except ValueError:
-            RESOURCES.warn('No valid number type for property "priority": %s' % self._root.get('priority'))
+            RESOURCES.warn(f'No valid number type for property "priority": {self._root.get("priority")}')
         return None
 
     def json(self):
@@ -147,7 +147,7 @@ class Manager(dict):
         RESOURCES.info('Loading categories ...')
         for filename in os.listdir(Manager.DIRECTORY):
             if not filename.endswith('.xml'):
-                RESOURCES.info('Found file %s with wrong suffix' % filename)
+                RESOURCES.info(f'Found file {filename} with wrong suffix')
                 continue
             try:
                 definitions = ET.ElementTree(file=os.path.join(Manager.DIRECTORY, filename))
@@ -158,7 +158,7 @@ class Manager(dict):
                 for category_elem in definitions.findall('categories/category'):
                     category = XML_Definition(root=category_elem, domain=i18nDomain)
                     self[category.id] = category
-                RESOURCES.info('Loaded categories from %s' % filename)
+                RESOURCES.info(f'Loaded categories from {filename}')
             except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:
-                RESOURCES.warn('Failed to parse category file %s: %s' % (filename, exc))
+                RESOURCES.warn(f'Failed to parse category file {filename}: {exc}')
                 continue

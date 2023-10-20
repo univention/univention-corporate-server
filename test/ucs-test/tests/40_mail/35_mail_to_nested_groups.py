@@ -20,9 +20,9 @@ def main():
             password = 'univention'
             mails_list = []
             users_list = []
-            fqdn = '%s.%s' % (ucr.get('hostname'), domain)
+            fqdn = f'{ucr.get("hostname")}.{domain}'
             for i in range(3):
-                mail = '%s@%s' % (uts.random_name(), domain)
+                mail = f'{uts.random_name()}@{domain}'
                 user_dn, username = udm.create_user(
                     set={
                         'password': password,
@@ -32,19 +32,19 @@ def main():
                 )
                 mails_list.append(mail)
                 users_list.append(user_dn)
-            group1_mail = '%s@%s' % (uts.random_name(), domain)
+            group1_mail = f'{uts.random_name()}@{domain}'
             group1_dn, group1_name = udm.create_group(
                 set={
                     'mailAddress': group1_mail,
                     'users': users_list[0],
                 },
             )
-            group2_mail = '%s@%s' % (uts.random_name(), domain)
+            group2_mail = f'{uts.random_name()}@{domain}'
             group2_dn, group2_name = udm.create_group(
                 set={'mailAddress': group2_mail},
                 append={'users': users_list[1:3]},
             )
-            group3_mail = '%s@%s' % (uts.random_name(), domain)
+            group3_mail = f'{uts.random_name()}@{domain}'
             udm.create_group(
                 set={'mailAddress': group3_mail},
                 append={'nestedGroup': [group1_dn, group2_dn]},

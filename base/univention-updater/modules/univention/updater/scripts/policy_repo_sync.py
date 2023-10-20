@@ -52,7 +52,7 @@ def write_cron_job(cron: str) -> None:
         if cron == '* * * * * ':
             return
 
-        cron_file.write('%s root /usr/sbin/univention-repository-update net >>/var/log/univention/repository.log\n' % cron)
+        cron_file.write(f'{cron} root /usr/sbin/univention-repository-update net >>/var/log/univention/repository.log\n')
 
 
 def one(results: Dict[str, List[str]], key: str) -> str:
@@ -75,7 +75,7 @@ def main() -> None:
     try:
         results, _policies = policy_result(ldap_hostdn)
     except PolicyResultFailed as ex:
-        exit('failed to execute univention_policy_result: %s' % ex)
+        exit(f'failed to execute univention_policy_result: {ex}')
 
     cron = one(results, "univentionRepositoryCron")
     if cron:

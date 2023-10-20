@@ -168,10 +168,10 @@ def compile_template(line):
 			app(f + ':')
 			indent += 1
 		elif f.startswith('xml:'):
-			app('lst.append(xml_escape(%s))' % f[4:])
+			app(f'lst.append(xml_escape({f[4:]}))')
 		else:
 			#app('lst.append((%s) or "cannot find %s")' % (f, f))
-			app('lst.append(str(%s))' % f)
+			app(f'lst.append(str({f}))')
 
 	if extr:
 		if params[-1]:

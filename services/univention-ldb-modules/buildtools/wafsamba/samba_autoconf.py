@@ -19,7 +19,7 @@ def DEFINE(conf, d, v, add_to_cflags=False, quote=False):
     '''define a config option'''
     conf.define(d, v, quote=quote)
     if add_to_cflags:
-        conf.env.append_value('CFLAGS', '-D%s=%s' % (d, str(v)))
+        conf.env.append_value('CFLAGS', f'-D{d}={str(v)}')
 
 def hlist_to_string(conf, headers=None):
     '''convert a headers list to a set of #include lines'''
@@ -27,7 +27,7 @@ def hlist_to_string(conf, headers=None):
     if headers:
         hlist = hlist[:]
         hlist.extend(TO_LIST(headers))
-    hdrs = "\n".join('#include <%s>' % h for h in hlist)
+    hdrs = "\n".join(f'#include <{h}>' for h in hlist)
 
     return hdrs
 
@@ -84,7 +84,7 @@ def CHECK_HEADER(conf, h, add_headers=False, lib=None):
     d = h.upper().replace('/', '_')
     d = d.replace('.', '_')
     d = d.replace('-', '_')
-    d = 'HAVE_%s' % d
+    d = f'HAVE_{d}'
     if CONFIG_SET(conf, d):
         if add_headers:
             if not h in conf.env.hlist:
@@ -96,14 +96,14 @@ def CHECK_HEADER(conf, h, add_headers=False, lib=None):
     hdrs = hlist_to_string(conf, headers=h)
     if lib is None:
         lib = ""
-    ret = conf.check(fragment='%s\nint main(void) { return 0; }\n' % hdrs,
+    ret = conf.check(fragment=f'{hdrs}\nint main(void) {{ return 0; }}\n',
                      type='nolink',
                      execute=0,
                      cflags=ccflags,
                      mandatory=False,
                      includes=cpppath,
                      uselib=lib.upper(),
-                     msg="Checking for header %s" % h)
+                     msg=f"Checking for header {h}")
     if not ret:
         missing_headers.add(h)
         return False
@@ -151,8 +151,8 @@ def CHECK_TYPE(conf, t, alternate=None, headers=None, define=None, lib=None, msg
     if define is None:
         define = 'HAVE_' + t.upper().replace(' ', '_')
     if msg is None:
-        msg='Checking for %s' % t
-    ret = CHECK_CODE(conf, '%s _x' % t,
+        msg=f'Checking for {t}'
+    ret = CHECK_CODE(conf, f'{t} _x',
                      define,
                      execute=False,
                      headers=headers,
@@ -189,20 +189,20 @@ def CHECK_VARIABLE(conf, v, define=None, always=False,
                    mandatory=False):
     '''check for a variable declaration (or define)'''
     if define is None:
-        define = 'HAVE_%s' % v.upper()
+        define = f'HAVE_{v.upper()}'
 
     if msg is None:
-        msg="Checking for variable %s" % v
+        msg=f"Checking for variable {v}"
 
     return CHECK_CODE(conf,
                       # we need to make sure the compiler doesn't
                       # optimize it out...
-                      '''
-                      #ifndef %s
-                      void *_x; _x=(void *)&%s; return (int)_x;
+                      f'''
+                      #ifndef {v}
+                      void *_x; _x=(void *)&{v}; return (int)_x;
                       #endif
                       return 0
-                      ''' % (v, v),
+                      ''',
                       execute=False,
                       link=False,
                       msg=msg,
@@ -224,22 +224,22 @@ def CHECK_DECLS(conf, vars, reverse=False, headers=None, lib=None, always=False)
     ret = True
     for v in TO_LIST(vars):
         if not reverse:
-            define='HAVE_DECL_%s' % v.upper()
+            define=f'HAVE_DECL_{v.upper()}'
         else:
-            define='HAVE_%s_DECL' % v.upper()
+            define=f'HAVE_{v.upper()}_DECL'
         if not CHECK_VARIABLE(conf, v,
                               define=define,
                               headers=headers,
                               lib=lib,
-                              msg='Checking for declaration of %s' % v,
+                              msg=f'Checking for declaration of {v}',
                               always=always):
             if not CHECK_CODE(conf,
-                      '''
-                      return (int)%s;
-                      ''' % (v),
+                      f'''
+                      return (int){(v)};
+                      ''',
                       execute=False,
                       link=False,
-                      msg='Checking for declaration of %s (as enum)' % v,
+                      msg=f'Checking for declaration of {v} (as enum)',
                       local_include=False,
                       headers=headers,
                       lib=lib,
@@ -251,32 +251,32 @@ def CHECK_DECLS(conf, vars, reverse=False, headers=None, lib=None, always=False)
 
 def CHECK_FUNC(conf, f, link=True, lib=None, headers=None):
     '''check for a function'''
-    define='HAVE_%s' % f.upper()
+    define=f'HAVE_{f.upper()}'
 
     ret = False
 
     in_lib_str = ""
     if lib:
-        in_lib_str = " in %s" % lib
-    conf.COMPOUND_START('Checking for %s%s' % (f, in_lib_str))
+        in_lib_str = f" in {lib}"
+    conf.COMPOUND_START(f'Checking for {f}{in_lib_str}')
 
     if link is None or link:
         ret = CHECK_CODE(conf,
                          # this is based on the autoconf strategy
-                         '''
-                         #define %s __fake__%s
+                         f'''
+                         #define {f} __fake__{f}
                          #ifdef HAVE_LIMITS_H
                          # include <limits.h>
                          #else
                          # include <assert.h>
                          #endif
-                         #undef %s
-                         #if defined __stub_%s || defined __stub___%s
+                         #undef {f}
+                         #if defined __stub_{f} || defined __stub___{f}
                          #error "bad glibc stub"
                          #endif
-                         extern char %s();
-                         int main() { return %s(); }
-                         ''' % (f, f, f, f, f, f, f),
+                         extern char {f}();
+                         int main() {{ return {f}(); }}
+                         ''',
                          execute=False,
                          link=True,
                          addmain=False,
@@ -285,14 +285,14 @@ def CHECK_FUNC(conf, f, link=True, lib=None, headers=None):
                          local_include=False,
                          lib=lib,
                          headers=headers,
-                         msg='Checking for %s' % f)
+                         msg=f'Checking for {f}')
 
         if not ret:
             ret = CHECK_CODE(conf,
                              # it might be a macro
                              # we need to make sure the compiler doesn't
                              # optimize it out...
-                             'void *__x = (void *)%s; return (int)__x' % f,
+                             f'void *__x = (void *){f}; return (int)__x',
                              execute=False,
                              link=True,
                              addmain=True,
@@ -301,13 +301,13 @@ def CHECK_FUNC(conf, f, link=True, lib=None, headers=None):
                              local_include=False,
                              lib=lib,
                              headers=headers,
-                             msg='Checking for macro %s' % f)
+                             msg=f'Checking for macro {f}')
 
     if not ret and (link is None or not link):
         ret = CHECK_VARIABLE(conf, f,
                              define=define,
                              headers=headers,
-                             msg='Checking for declaration of %s' % f)
+                             msg=f'Checking for declaration of {f}')
     conf.COMPOUND_END(ret)
     return ret
 
@@ -329,7 +329,7 @@ def CHECK_SIZEOF(conf, vars, headers=None, define=None, critical=True):
         v_define = define
         ret = False
         if v_define is None:
-            v_define = 'SIZEOF_%s' % v.upper().replace(' ', '_')
+            v_define = f'SIZEOF_{v.upper().replace(" ", "_")}'
         for size in list((1, 2, 4, 8, 16, 32, 64)):
             if CHECK_CODE(conf,
                       'static int test_array[1 - 2 * !(((long int)(sizeof(%s))) <= %d)];' % (v, size),
@@ -342,7 +342,7 @@ def CHECK_SIZEOF(conf, vars, headers=None, define=None, critical=True):
                 ret = True
                 break
         if not ret and critical:
-            Logs.error("Couldn't determine size of '%s'" % v)
+            Logs.error(f"Couldn't determine size of '{v}'")
             sys.exit(1)
     return ret
 
@@ -369,7 +369,7 @@ def CHECK_VALUEOF(conf, v, headers=None, define=None):
     ret = True
     v_define = define
     if v_define is None:
-        v_define = 'VALUEOF_%s' % v.upper().replace(' ', '_')
+        v_define = f'VALUEOF_{v.upper().replace(" ", "_")}'
     if CHECK_CODE(conf,
                   'printf("%%u", (unsigned)(%s))' % v,
                   define=v_define,
@@ -378,7 +378,7 @@ def CHECK_VALUEOF(conf, v, headers=None, define=None):
                   quote=False,
                   headers=headers,
                   local_include=False,
-                  msg="Checking value of %s" % v):
+                  msg=f"Checking value of {v}"):
         return int(conf.env[v_define])
 
     return None
@@ -409,12 +409,12 @@ def CHECK_CODE(conf, code, define,
         execute = 0
 
     if addmain:
-        fragment='%s\n int main(void) { %s; return 0; }\n' % (hdrs, code)
+        fragment=f'{hdrs}\n int main(void) {{ {code}; return 0; }}\n'
     else:
-        fragment='%s\n%s\n' % (hdrs, code)
+        fragment=f'{hdrs}\n{code}\n'
 
     if msg is None:
-        msg="Checking for %s" % define
+        msg=f"Checking for {define}"
 
     cflags = TO_LIST(cflags)
 
@@ -425,7 +425,7 @@ def CHECK_CODE(conf, code, define,
             cflags.extend(conf.env['WERROR_CFLAGS'])
 
     if local_include:
-        cflags.append('-I%s' % conf.path.abspath())
+        cflags.append(f'-I{conf.path.abspath()}')
 
     if not link:
         type='nolink'
@@ -495,9 +495,9 @@ def CHECK_STRUCTURE_MEMBER(conf, structname, member,
                            lib=None):
     '''check for a structure member'''
     if define is None:
-        define = 'HAVE_%s' % member.upper()
+        define = f'HAVE_{member.upper()}'
     return CHECK_CODE(conf,
-                      '%s s; void *_x; _x=(void *)&s.%s' % (structname, member),
+                      f'{structname} s; void *_x; _x=(void *)&s.{member}',
                       define,
                       execute=False,
                       link=False,
@@ -505,7 +505,7 @@ def CHECK_STRUCTURE_MEMBER(conf, structname, member,
                       always=always,
                       headers=headers,
                       local_include=False,
-                      msg="Checking for member %s in %s" % (member, structname))
+                      msg=f"Checking for member {member} in {structname}")
 
 
 @conf
@@ -521,7 +521,7 @@ def CHECK_CFLAGS(conf, cflags, fragment='int main(void) { return 0; }\n',
                       mandatory=mandatory,
                       type='nolink',
                       cflags=check_cflags,
-                      msg="Checking compiler accepts %s" % cflags)
+                      msg=f"Checking compiler accepts {cflags}")
 
 @conf
 def CHECK_LDFLAGS(conf, ldflags,
@@ -532,7 +532,7 @@ def CHECK_LDFLAGS(conf, ldflags,
                       execute=0,
                       ldflags=ldflags,
                       mandatory=mandatory,
-                      msg="Checking linker accepts %s" % ldflags)
+                      msg=f"Checking linker accepts {ldflags}")
 
 
 @conf
@@ -577,14 +577,14 @@ def library_flags(self, libs):
         # note that we do not add the -I and -L in here, as that is added by the waf
         # core. Adding it here would just change the order that it is put on the link line
         # which can cause system paths to be added before internal libraries
-        extra_ccflags = TO_LIST(getattr(self.env, 'CFLAGS_%s' % lib.upper(), []))
-        extra_ldflags = TO_LIST(getattr(self.env, 'LDFLAGS_%s' % lib.upper(), []))
-        extra_cpppath = TO_LIST(getattr(self.env, 'CPPPATH_%s' % lib.upper(), []))
+        extra_ccflags = TO_LIST(getattr(self.env, f'CFLAGS_{lib.upper()}', []))
+        extra_ldflags = TO_LIST(getattr(self.env, f'LDFLAGS_{lib.upper()}', []))
+        extra_cpppath = TO_LIST(getattr(self.env, f'CPPPATH_{lib.upper()}', []))
         ccflags.extend(extra_ccflags)
         ldflags.extend(extra_ldflags)
         cpppath.extend(extra_cpppath)
 
-        extra_cpppath = TO_LIST(getattr(self.env, 'INCLUDES_%s' % lib.upper(), []))
+        extra_cpppath = TO_LIST(getattr(self.env, f'INCLUDES_{lib.upper()}', []))
         cpppath.extend(extra_cpppath)
     if 'EXTRA_LDFLAGS' in self.env:
         ldflags.extend(self.env['EXTRA_LDFLAGS'])
@@ -624,7 +624,7 @@ int foo()
 
         if not res:
             if mandatory:
-                Logs.error("Mandatory library '%s' not found for functions '%s'" % (lib, list))
+                Logs.error(f"Mandatory library '{lib}' not found for functions '{list}'")
                 sys.exit(1)
             if empty_decl:
                 # if it isn't a mandatory library, then remove it from dependency lists
@@ -662,7 +662,7 @@ def CHECK_FUNCS_IN(conf, list, library, mandatory=False, checklibc=False,
 
     # check if some already found
     for f in remaining[:]:
-        if CONFIG_SET(conf, 'HAVE_%s' % f.upper()):
+        if CONFIG_SET(conf, f'HAVE_{f.upper()}'):
             remaining.remove(f)
 
     # see if the functions are in libc
@@ -680,7 +680,7 @@ def CHECK_FUNCS_IN(conf, list, library, mandatory=False, checklibc=False,
     checklist = conf.CHECK_LIB(liblist, empty_decl=empty_decl, set_target=set_target)
     for lib in liblist[:]:
         if not lib in checklist and mandatory:
-            Logs.error("Mandatory library '%s' not found for functions '%s'" % (lib, list))
+            Logs.error(f"Mandatory library '{lib}' not found for functions '{list}'")
             sys.exit(1)
 
     ret = True
@@ -722,9 +722,9 @@ def SAMBA_CONFIG_H(conf, path=None):
                                     execute=0,
                                     cflags=[ '-Werror', '-Wp,-D_FORTIFY_SOURCE=2', stack_protect_flag],
                                     mandatory=False,
-                                    msg='Checking if compiler accepts %s' % (stack_protect_flag))
+                                    msg=f'Checking if compiler accepts {(stack_protect_flag)}')
         if flag_supported:
-            conf.ADD_CFLAGS('%s' % (stack_protect_flag))
+            conf.ADD_CFLAGS(f'{(stack_protect_flag)}')
             break
 
     flag_supported = conf.check(fragment='''

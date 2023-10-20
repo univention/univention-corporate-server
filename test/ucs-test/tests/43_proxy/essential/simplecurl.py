@@ -64,10 +64,7 @@ class SimpleCurl:
         if auth:
             self.curl.setopt(pycurl.PROXYAUTH, auth)
             account = utils.UCSTestDomainAdminCredentials()
-            self.curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (
-                username or account.username,
-                password or account.bindpw,
-            ),
+            self.curl.setopt(pycurl.PROXYUSERPWD, f"{username or account.username}:{password or account.bindpw}",
             )
         if user_agent:
             self.curl.setopt(pycurl.USERAGENT, user_agent)

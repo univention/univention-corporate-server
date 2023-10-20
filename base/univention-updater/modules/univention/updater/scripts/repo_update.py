@@ -118,7 +118,7 @@ def update_net(options: Namespace) -> None:
         mirror.run()
     elif options.update_to:
         # trigger update to explicitly mirror until given versions
-        handler_set(['repository/mirror/version/end=%s' % options.update_to])
+        handler_set([f'repository/mirror/version/end={options.update_to}'])
         mirror = UniventionMirror()
         mirror.run()
     else:
@@ -127,7 +127,7 @@ def update_net(options: Namespace) -> None:
         nextupdate = mirror.release_update_available()
         mirror_run = False
         while nextupdate:
-            handler_set(['repository/mirror/version/end=%s' % nextupdate])
+            handler_set([f'repository/mirror/version/end={nextupdate}'])
             # UCR variable repository/mirror/version/end has change - reinit Mirror object
             mirror = UniventionMirror()
             mirror.run()
@@ -166,7 +166,7 @@ def main() -> None:
 
     options = parse_args()
 
-    print('***** Starting univention-repository-update at %s\n' % time.ctime())
+    print(f'***** Starting univention-repository-update at {time.ctime()}\n')
 
     urepo.assert_local_repository()
 
@@ -181,7 +181,7 @@ def main() -> None:
             try:
                 update_net(options)
             except VerificationError as ex:
-                print("Error: %s" % (ex,))
+                print(f"Error: {ex}")
                 print('\n'.join(wrap(dedent(
                     """\
                     This can and should only be disabled temporarily using the UCR variable
@@ -190,7 +190,7 @@ def main() -> None:
                 ))))
                 sys.exit(1)
             except UpdaterException as e:
-                print("Error: %s" % e)
+                print(f"Error: {e}")
                 sys.exit(1)
 
 

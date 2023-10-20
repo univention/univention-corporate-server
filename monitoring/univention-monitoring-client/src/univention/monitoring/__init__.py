@@ -66,12 +66,12 @@ class Alert(object):
         if args.verbose:
             logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
-        if ucr.is_true('monitoring/plugin/%s/disabled' % (plugin,)):
+        if ucr.is_true(f'monitoring/plugin/{plugin}/disabled'):
             return
 
         self = cls(args)
         self.write_metrics()
-        write_to_textfile(os.path.join(NODE_EXPORTER_DIR, '%s.prom' % (plugin,)), self._registry)
+        write_to_textfile(os.path.join(NODE_EXPORTER_DIR, f'{plugin}.prom'), self._registry)
 
     def write_metrics(self):
         pass

@@ -97,14 +97,14 @@ def join_sync_mode() -> None:
 
     conf_result = client.umc_command("adconnector/adconnector/save", request_options).result
     if not conf_result['success']:
-        print("\nThe AD Connector configuration was not saved successfully: %s" % conf_result)
+        print(f"\nThe AD Connector configuration was not saved successfully: {conf_result}")
         exit(1)
 
     # start AD connector:
     print('=== AD-JOIN STARTING CONNECTOR ===')
     start_result = client.umc_command("adconnector/service", {'action': "start"}).result
     if not start_result['success']:
-        print("\nThe AD Connector was not started successfully: %s" % start_result)
+        print(f"\nThe AD Connector was not started successfully: {start_result}")
         exit(1)
 
     print('=== AD-JOIN FINISHED ===')

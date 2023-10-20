@@ -62,7 +62,7 @@ with test:
             raise ValueError('%s: %r' % (key, ucr_get(key)))
     lo, pos = get_machine_connection()
     app_obj = search_objects('appcenter/app', lo, pos)[0]
-    assert app_obj.dn == 'univentionAppID=self-service_4.0,cn=self-service,cn=apps,cn=univention,%s' % ucr_get('ldap/base')
+    assert app_obj.dn == f'univentionAppID=self-service_4.0,cn=self-service,cn=apps,cn=univention,{ucr_get("ldap/base")}'
 
     # Können Apps mit NotifyVendor=Yes installiert werden (sollte nicht so sein) ?
     test.click_button("Back to overview")

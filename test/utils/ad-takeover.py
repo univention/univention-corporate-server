@@ -113,7 +113,7 @@ except Exception:
 wait(client)
 
 print('starting rpc copy')
-result = subprocess.call(["net", "-U", "%s%%%s" % (options.domain_admin, options.domain_password), "rpc", "share", "migrate", "files", "sysvol", "-S", options.domain_host, "--destination=%s" % (options.host), "--acls", "-vvvv"])
+result = subprocess.call(["net", "-U", "%s%%%s" % (options.domain_admin, options.domain_password), "rpc", "share", "migrate", "files", "sysvol", "-S", options.domain_host, f"--destination={(options.host)}", "--acls", "-vvvv"])
 assert result == 0
 
 print('starting sysvol check')

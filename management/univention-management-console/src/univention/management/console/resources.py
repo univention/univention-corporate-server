@@ -161,17 +161,17 @@ class _ModuleConnection(object):
         try:
             response = function()
         except tornado.curl_httpclient.CurlError as exc:
-            CORE.warn('Reaching module failed: %s' % (exc,))
+            CORE.warn(f'Reaching module failed: {exc}')
             raise CouldNotConnect(exc)
         except tornado.httpclient.HTTPError as exc:
             response = exc.response
             if response is None:  # (599, 'Timeout while connecting', None)
                 raise CouldNotConnect(exc)
         except ValueError as exc:  # HTTP GET request with body
-            CORE.warn('Reaching module failed: %s' % (exc,))
+            CORE.warn(f'Reaching module failed: {exc}')
             raise BadRequest(str(exc))
         except asyncio.exceptions.CancelledError as exc:
-            CORE.warn('Aborted module process request: %s' % (exc,))
+            CORE.warn(f'Aborted module process request: {exc}')
             raise CouldNotConnect(exc)
 
         return response
@@ -195,7 +195,7 @@ class ModuleProcess(_ModuleConnection):
         self.socket = '%s.socket' % (('/run/univention-management-console/%u-%s-%lu-%s' % (os.getpid(), module.replace('/', ''), int(time.time() * 1000), uuid.uuid4()))[:85],)
         args = ['/usr/bin/python3', MODULE_COMMAND, '-m', module, '-s', self.socket, '-d', str(debug)]
         if locale:
-            args.extend(('-l', '%s' % locale))
+            args.extend(('-l', f'{locale}'))
         if no_daemonize_module_processes:
             args.extend(('-f', '-L', 'stdout'))
 
@@ -314,20 +314,20 @@ class ModuleProcess(_ModuleConnection):
         self._inactivity_timer = ioloop.call_later(MODULE_INACTIVITY_TIMER // 1000, self._mod_inactive)
 
     def _mod_inactive(self):
-        CORE.debug('The module %s is inactive for too long.' % (self.name,))
+        CORE.debug(f'The module {self.name} is inactive for too long.')
         if self._active_requests:
-            CORE.debug('There are unfinished requests. Waiting for %s requests to finish.' % len(self._active_requests))
+            CORE.debug(f'There are unfinished requests. Waiting for {len(self._active_requests)} requests to finish.')
             ioloop = tornado.ioloop.IOLoop.current()
             self._inactivity_timer = ioloop.call_later(1, self._mod_inactive)
             return
 
         if self.__process:
-            CORE.info('Sending shutdown request to %s module' % (self.name,))
+            CORE.info(f'Sending shutdown request to {self.name} module')
             try:
                 # or /exit HTTP request?
                 self.__process.proc.send_signal(signal.SIGALRM)
             except ProcessLookupError as exc:
-                CORE.warn('Could not shutdown module: %s' % (exc,))
+                CORE.warn(f'Could not shutdown module: {exc}')
 
 
 class ModuleProxy(_ModuleConnection):
@@ -514,12 +514,12 @@ class Modules(Resource):
             for flavor in module.flavors
         ])
 
-        CORE.debug('Modules: %s' % (modules,))
+        CORE.debug(f'Modules: {modules}')
         self.content_negotiation({'modules': modules}, wrap=False)
 
     def _flavor_definition(self, module, flavor, favorites):
         favcat = []
-        if '%s:%s' % (module.id, flavor.id) in favorites:
+        if f'{module.id}:{flavor.id}' in favorites:
             favcat.append('_favorites_')
 
         translationId = flavor.translationId or module.id
@@ -567,7 +567,7 @@ class Modules(Resource):
         try:
             preferences = lo.get(user_dn, ['univentionUMCProperty']).get('univentionUMCProperty', [])
         except (ldap.LDAPError, udm_errors.base) as exc:
-            CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
+            CORE.warn(f'Failed to retrieve user preferences: {exc}')
             return {}
         preferences = (val.decode('utf-8', 'replace') for val in preferences)
         return dict(val.split(u'=', 1) if u'=' in val else (val, u'') for val in preferences)
@@ -599,7 +599,7 @@ class Categories(Resource):
                 'name': self.i18n._(category.name, category.domain).format(**_ucr_dict),
                 'priority': category.priority,
             })
-        CORE.debug('Categories: %s' % (categories,))
+        CORE.debug(f'Categories: {categories}')
         self.content_negotiation({'categories': categories}, wrap=False)
 
     post = get
@@ -652,7 +652,7 @@ class Command(Resource):
             self.cancel_request()
 
     def cancel_request(self):
-        fut = self.process.request("GET", "%s://%s/cancel" % (self._request_url.scheme, self._request_url.netloc), {'X-UMC-Request-ID': self._request_id})
+        fut = self.process.request("GET", f"{self._request_url.scheme}://{self._request_url.netloc}/cancel", {'X-UMC-Request-ID': self._request_id})
 
         def cb(response):
             CORE.process('Cancel request for %s completed with %d' % (self._request_id, response.result().code))
@@ -692,19 +692,19 @@ class Command(Resource):
         self._request_url = urlparse(self.request.full_url())
         module_name = acls.get_module_providing(moduleManager, command)
         if not module_name:
-            CORE.warn('No module provides %s' % (command))
+            CORE.warn(f'No module provides {(command)}')
             raise self.forbidden_or_unauthenticated(self._("No module found for this request."))
 
-        CORE.info('Checking ACLs for %s (%s)' % (command, module_name))
+        CORE.info(f'Checking ACLs for {command} ({module_name})')
         options = self.request.body_arguments
         flavor = self.request.headers.get('X-UMC-Flavor')
         if not acls.is_command_allowed(command, options, flavor):
-            CORE.warn('Command %s is not allowed' % (command))
+            CORE.warn(f'Command {(command)} is not allowed')
             raise self.forbidden_or_unauthenticated(self._("Not allowed to perform this request."))
 
         methodname = acls.get_method_name(moduleManager, module_name, command)
         if not methodname:
-            CORE.warn('Command %s does not exists' % (command))
+            CORE.warn(f'Command {(command)} does not exists')
             raise self.forbidden_or_unauthenticated(self._("Unknown request."))
 
         headers = self.get_request_header(session, methodname, umcp_command)
@@ -714,7 +714,7 @@ class Command(Resource):
         if not locale.territory:  # TODO: replace by using the actual provided value
             locale.territory = {'de': 'DE', 'fr': 'FR', 'en': 'US'}.get(self.locale.code)
         process = self.process = session.processes.get_process(module_name, str(locale), self.settings.get("no_daemonize_module_processes"))
-        CORE.info('Passing request to module %s' % (module_name,))
+        CORE.info(f'Passing request to module {module_name}')
 
         try:
             await process.connect()
@@ -732,7 +732,7 @@ class Command(Resource):
             reason = 'UMC-Server module process connection failed'
             raise BadGateway('%s: %s: %s' % (self._('Connection to module process failed'), module_name, exc), reason=reason)
         else:
-            CORE.debug('Received response %s' % (response.code,))
+            CORE.debug(f'Received response {response.code}')
             self.set_status(response.code, response.reason)
             self._headers = tornado.httputil.HTTPHeaders()
 
@@ -841,7 +841,7 @@ class Meta(Resource):
             with open(self.META_JSON_PATH) as fd:
                 meta_data = json.load(fd)
         except (EnvironmentError, ValueError) as exc:
-            CORE.error('meta.json is not available: %s' % (exc,))
+            CORE.error(f'meta.json is not available: {exc}')
             meta_data = {}
 
         if not self.current_user.user.authenticated:
@@ -914,7 +914,7 @@ class Hosts(Resource):
             domaincontrollers = lo.search(filter="(objectClass=univentionDomainController)", attr=['cn', 'associatedDomain'])
         except (ldap.LDAPError, udm_errors.base) as exc:
             reset_ldap_connection_cache(lo)
-            CORE.warn('Could not search for domaincontrollers: %s' % (exc))
+            CORE.warn(f'Could not search for domaincontrollers: {(exc)}')
             return []
 
         return sorted(
@@ -973,7 +973,7 @@ class SetLocale(Resource):
             CORE.warn('Invalid locale specified: %r -> %s' % (locale, exc))
             raise BadRequest(self._('Specified locale is not available'))
         self.current_user.user._locale = locale
-        self.set_header('Content-Language', '%s-%s' % (lang.language, lang.territory) if lang.territory else lang.language)
+        self.set_header('Content-Language', f'{lang.language}-{lang.territory}' if lang.territory else lang.language)
         self.content_negotiation(None)
 
 
@@ -1001,7 +1001,7 @@ class SetPassword(Resource):
         try:
             await self.current_user.change_password(args)
         except PasswordChangeFailed as exc:
-            raise UMC_Error(str(exc), 400, {'new_password': '%s' % (exc,)})  # 422
+            raise UMC_Error(str(exc), 400, {'new_password': f'{exc}'})  # 422
         else:
             CORE.info('Successfully changed password')
             self.set_header('X-UMC-Message', json.dumps(self._('Password successfully changed.')))
@@ -1027,7 +1027,7 @@ class UserPreferences(Resource):
         try:
             preferences = lo.get(user_dn, ['univentionUMCProperty']).get('univentionUMCProperty', [])
         except (ldap.LDAPError, udm_errors.base) as exc:
-            CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
+            CORE.warn(f'Failed to retrieve user preferences: {exc}')
             return {}
         preferences = (val.decode('utf-8', 'replace') for val in preferences)
         return dict(val.split(u'=', 1) if u'=' in val else (val, u'') for val in preferences)

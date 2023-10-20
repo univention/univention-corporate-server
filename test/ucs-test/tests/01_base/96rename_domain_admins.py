@@ -109,7 +109,7 @@ def test_rename_domain_users():
             print('\n##################################################################')
             print(f'Renaming default domainadmins group {old_group_name} to {new_group_name}')
             print('##################################################################\n')
-            subprocess.call(['udm-test', 'groups/group', 'modify', '--dn=%s' % (old_group_dn), '--set', 'name=%s' % (new_group_name)])
+            subprocess.call(['udm-test', 'groups/group', 'modify', f'--dn={(old_group_dn)}', '--set', f'name={(new_group_name)}'])
             utils.wait_for_replication_and_postrun()
 
             # Check UCR Variable
@@ -142,7 +142,7 @@ def test_rename_domain_users():
             print('\n##################################################################')
             print('Cleanup')
             print('##################################################################\n')
-            subprocess.call(['udm-test', 'groups/group', 'modify', '--dn=%s' % (new_group_dn), '--set', 'name=%s' % (old_group_name)])
+            subprocess.call(['udm-test', 'groups/group', 'modify', f'--dn={(new_group_dn)}', '--set', f'name={(old_group_name)}'])
 
             # wait until renaming and UCR Variable is set back again
             utils.wait_for_replication_and_postrun()

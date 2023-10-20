@@ -79,11 +79,11 @@ def main():
                 if not os.path.exists(old_dir):
                     utils.fail('Test %d: old_dir = %r does not exist! %r' % (i, old_dir, userbase[i]))
                 handler_set([
-                    'mail/dovecot/mailbox/rename=%s' % (flag_rename,),
-                    'mail/dovecot/mailbox/delete=%s' % (flag_delete,),
+                    f'mail/dovecot/mailbox/rename={flag_rename}',
+                    f'mail/dovecot/mailbox/delete={flag_delete}',
                 ])
                 subprocess.call(['systemctl', 'restart', 'univention-directory-listener'])
-                udm.modify_object('users/user', dn=userbase[i][0], set={'username': '%scopy' % (userbase[i][1],)}, check_for_drs_replication=True)
+                udm.modify_object('users/user', dn=userbase[i][0], set={'username': f'{userbase[i][1]}copy'}, check_for_drs_replication=True)
 
                 if not os.path.exists(old_dir):
                     utils.fail('Test %d: old_dir = %r has been removed unexpectedly! %r' % (i, old_dir, userbase[i]))

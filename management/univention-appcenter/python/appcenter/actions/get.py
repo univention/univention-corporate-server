@@ -91,17 +91,17 @@ class Get(UniventionAppAction):
                     self.log(value)
                 else:
                     if section is not None:
-                        key = '%s__%s' % (section, key)
-                    self.log('%s=%s' % (shell_safe(key), quote(value)))
+                        key = f'{section}__{key}'
+                    self.log(f'{shell_safe(key)}={quote(value)}')
             else:
                 if isinstance(value, list):
                     value = ', '.join(value)
                 if section is not None:
-                    key = '%s/%s' % (section, key)
+                    key = f'{section}/{key}'
                 if args.values_only:
                     self.log(value)
                 else:
-                    self.log('%s: %s' % (key, value))
+                    self.log(f'{key}: {value}')
 
     @classmethod
     def to_dict(cls, app):
@@ -111,7 +111,7 @@ class Get(UniventionAppAction):
         ret['license_description'] = app.license_description
         ret['thumbnails'] = app.get_thumbnail_urls()
         ret['is_installed'] = app.is_installed()
-        ret['is_current'] = app.without_repository or ucr_get('repository/online/component/%s' % app.component_id) == 'enabled'
+        ret['is_current'] = app.without_repository or ucr_get(f'repository/online/component/{app.component_id}') == 'enabled'
         ret['local_role'] = ucr_get('server/role')
         ret['is_master'] = ret['local_role'] == 'domaincontroller_master'
         ret['host_master'] = ucr_get('ldap/master')
@@ -173,6 +173,6 @@ class Get(UniventionAppAction):
                         raise AttributeError(key)
                 except AttributeError:
                     if warn:
-                        self.warn('Could not find option %s:%s' % (search_section, key))
+                        self.warn(f'Could not find option {search_section}:{key}')
                 else:
                     yield None, key, value

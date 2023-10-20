@@ -84,10 +84,10 @@ def remove_saml_logout_soap_binding(config_registry, saml_idp):
     if not config_registry.is_true("umc/saml/idp-server/remove-soap-logout", True):
         return
     idp = str(urlparse(saml_idp).netloc)
-    filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
+    filename = f'/usr/share/univention-management-console/saml/idp/{idp}.xml'
     with open(filename) as xmlfile:
         dom_xml = lxml.fromstring(xmlfile.read())
-    slo_endpoints = dom_xml.findall('.//{%s}SingleLogoutService' % NAMESPACE)
+    slo_endpoints = dom_xml.findall(f'.//{{{NAMESPACE}}}SingleLogoutService')
     modified = False
     for endpoint in slo_endpoints:
         if endpoint.get('Binding') == BINDING_SOAP:
@@ -105,7 +105,7 @@ def cleanup():
 
 def valid_metadata(saml_idp):
     idp = str(urlparse(saml_idp).netloc)
-    filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
+    filename = f'/usr/share/univention-management-console/saml/idp/{idp}.xml'
     try:
         ElementTree.parse(filename)
     except ElementTree.ParseError:
@@ -116,9 +116,9 @@ def valid_metadata(saml_idp):
 
 def download_idp_metadata(metadata):
     idp = str(urlparse(metadata).netloc)
-    filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
+    filename = f'/usr/share/univention-management-console/saml/idp/{idp}.xml'
     for i in range(0, 60):
-        print('Try to download idp metadata (%s/60)' % (i + 1))
+        print(f'Try to download idp metadata ({(i + 1)}/60)')
         rc = call([
             '/usr/bin/curl',
             '--fail',

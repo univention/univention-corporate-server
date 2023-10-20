@@ -111,7 +111,7 @@ class UpdatePrinterModels(object):
 
             if duplicated_ppds:
                 if self.options.verbose:
-                    print('removing duplicate models for %s:' % obj.dn)
+                    print(f'removing duplicate models for {obj.dn}:')
                     print('replace:', [' '.join(ppd_model) for ppd_model in obj['printmodel'] if ppd_model[0] in duplicated_ppds])
                     print('with:', [' '.join(ppd_model) for ppd_model in replacement_ppds])
 
@@ -133,16 +133,16 @@ class UpdatePrinterModels(object):
                     changed = True
                     obj['printmodel'].remove(model_item)
                     if options.verbose:
-                        print('info: %s model "%s" removed' % (obj.dn, model_item))
+                        print(f'info: {obj.dn} model "{model_item}" removed')
                     model_item[1] = 'deprecated (only available in %s and older) - ' % self.options.version + model_item[1]
                     obj['printmodel'].append(model_item)
                     if options.verbose:
-                        print('info: %s model "%s" added' % (obj.dn, model_item))
+                        print(f'info: {obj.dn} model "{model_item}" added')
             if changed:
                 if not options.dry_run:
                     obj.modify()
                 if options.verbose:
-                    print('info: %s modified' % obj.dn)
+                    print(f'info: {obj.dn} modified')
 
 
 if __name__ == '__main__':

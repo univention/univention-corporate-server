@@ -48,11 +48,11 @@ if __name__ == '__main__':
 
         name = get_app_name()
         store_data = '#!/bin/sh'
-        configure_host = '''#!/bin/sh
+        configure_host = f'''#!/bin/sh
 if [ "$1" = "settings" ]; then
-univention-app reinitialize %s
+univention-app reinitialize {name}
 fi
-''' % name
+'''
 
         app = App(name=name, version='1', build_package=False, call_join_scripts=False)
         try:
@@ -68,10 +68,10 @@ fi
             appcenter.update()
             app.install()
             app.verify(joined=False)
-            env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
+            env = subprocess.check_output(f'univention-app shell {name} env', shell=True, text=True)
             assert 'TEST_KEY=1' in env, env
-            subprocess.call('univention-app configure %s --set TEST_KEY=2' % name, shell=True)
-            env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
+            subprocess.call(f'univention-app configure {name} --set TEST_KEY=2', shell=True)
+            env = subprocess.check_output(f'univention-app shell {name} env', shell=True, text=True)
             assert 'TEST_KEY=2' in env, env
             assert 'EMPTY_KEY' not in env, env
         finally:

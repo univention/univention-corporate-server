@@ -177,32 +177,32 @@ class TestScopedPasswordConfigCustomizing(object):
     scope = 'radius'
 
     def test_digit_count(self, mocked_ucr):
-        mocked_ucr['password/%s/quality/credit/digits' % self.scope] = '10'
+        mocked_ucr[f'password/{self.scope}/quality/credit/digits'] = '10'
         cfg = univention_password.password_config(self.scope)
         assert cfg['digits'] == 10
 
     def test_lowercase_count(self, mocked_ucr):
-        mocked_ucr['password/%s/quality/credit/lower' % self.scope] = '11'
+        mocked_ucr[f'password/{self.scope}/quality/credit/lower'] = '11'
         cfg = univention_password.password_config(self.scope)
         assert cfg['lower'] == 11
 
     def test_special_count(self, mocked_ucr):
-        mocked_ucr['password/%s/quality/credit/other' % self.scope] = '12'
+        mocked_ucr[f'password/{self.scope}/quality/credit/other'] = '12'
         cfg = univention_password.password_config(self.scope)
         assert cfg['other'] == 12
 
     def test_uppercase(self, mocked_ucr, password_config_default):
-        mocked_ucr['password/%s/quality/credit/upper' % self.scope] = '13'
+        mocked_ucr[f'password/{self.scope}/quality/credit/upper'] = '13'
         cfg = univention_password.password_config(self.scope)
         assert cfg['upper'] == 13
 
     def test_min_length(self, mocked_ucr, password_config_default):
-        mocked_ucr['password/%s/quality/length/min' % self.scope] = '14'
+        mocked_ucr[f'password/{self.scope}/quality/length/min'] = '14'
         cfg = univention_password.password_config(self.scope)
         assert cfg['min_length'] == 14
 
     def test_special_characters(self, mocked_ucr, password_config_default):
-        mocked_ucr['password/%s/quality/forbidden/chars' % self.scope] = ''
+        mocked_ucr[f'password/{self.scope}/quality/forbidden/chars'] = ''
         cfg = univention_password.password_config(self.scope)
         assert cfg['forbidden'] == ''
 

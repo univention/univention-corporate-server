@@ -50,7 +50,7 @@ def _unixTimeInverval2seconds(unixTime):
         return unixTime
 
     if len(unixTime) != 2:
-        ud.debug(ud.LDAP, ud.WARN, 'dc _unixTimeInverval2seconds: Not a valid time format: %s' % unixTime)
+        ud.debug(ud.LDAP, ud.WARN, f'dc _unixTimeInverval2seconds: Not a valid time format: {unixTime}')
         return 0
 
     if int(unixTime[0]) < 0:
@@ -65,7 +65,7 @@ def _unixTimeInverval2seconds(unixTime):
     elif unixTime[1] == 'days':
         return int(unixTime[0]) * 86400  # 60 * 60 * 24
     else:
-        ud.debug(ud.LDAP, ud.WARN, 'dc _unixTimeInverval2seconds: Not a valid time unit: %s' % unixTime)
+        ud.debug(ud.LDAP, ud.WARN, f'dc _unixTimeInverval2seconds: Not a valid time unit: {unixTime}')
         return 0
 
 # Time interval in S4 / AD is often 100-nanosecond intervals:
@@ -82,7 +82,7 @@ def _nano2s(nanoseconds):
 
 def ucs2con(s4connector, key, object):
 
-    ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: Object (%s): %s' % (object['dn'], object))
+    ud.debug(ud.LDAP, ud.INFO, f'dc ucs2con: Object ({object["dn"]}): {object}')
     s4base_dn, s4base_attr = s4connector.lo_s4.lo.search_s(s4connector.s4_ldap_base, ldap.SCOPE_BASE, '(objectClass=*)')[0]
     ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object: %r' % (s4base_dn,))
     ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object: %r' % (s4base_attr,))
@@ -105,8 +105,8 @@ def ucs2con(s4connector, key, object):
             ucs_time = int(object['attributes'].get(ucs_attr, [0])[0])
             s4_time = _nano2s(int(s4base_attr.get(s4_attr, [0])[0]) * -1)
 
-            ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: ucs_time (%s): %s' % (ucs_attr, ucs_time))
-            ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: s4-time (%s): %s' % (s4_attr, s4_time))
+            ud.debug(ud.LDAP, ud.INFO, f'dc ucs2con: ucs_time ({ucs_attr}): {ucs_time}')
+            ud.debug(ud.LDAP, ud.INFO, f'dc ucs2con: s4-time ({s4_attr}): {s4_time}')
 
             if ucs_time != s4_time:
                 s4_time = str(_s2nano(ucs_time) * -1) if ucs_time > 0 else '0'
@@ -120,7 +120,7 @@ def ucs2con(s4connector, key, object):
                 ml.append((ldap.MOD_REPLACE, s4_attr, ucs_val))
 
         if ml:
-            ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object modlist: %s' % (ml))
+            ud.debug(ud.LDAP, ud.INFO, f'dc ucs2con: S4 object modlist: {(ml)}')
             s4connector.lo_s4.lo.modify_s(s4connector.s4_ldap_base, ml)
 
     return True
@@ -128,7 +128,7 @@ def ucs2con(s4connector, key, object):
 
 def con2ucs(s4connector, key, object):
 
-    ud.debug(ud.LDAP, ud.INFO, 'dc con2ucs: Object (%s): %s' % (object['dn'], object))
+    ud.debug(ud.LDAP, ud.INFO, f'dc con2ucs: Object ({object["dn"]}): {object}')
 
     # Search sambaDomainname object via sambaSID
     object_sid = decode_sid(object['attributes']['objectSid'][0])

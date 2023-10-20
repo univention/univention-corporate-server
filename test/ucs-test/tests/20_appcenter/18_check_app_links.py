@@ -98,7 +98,7 @@ def findall_urls_from_readme(app):
                 parser.feed(html)
                 for url in parser.href:
                     if 'http://' in url or 'https://' in url:
-                        print('found URL - %s' % url)
+                        print(f'found URL - {url}')
                         if all_urls.get(url):
                             all_urls[url].append(filename)
                         else:
@@ -119,7 +119,7 @@ def findall_urls_from_ini(app):
                     if not line.startswith('#'):
                         url = url_re.findall(line)
                         for u in url:
-                            print('found URL - %s' % u)
+                            print(f'found URL - {u}')
                             u = re.sub(r'<[^>]+>', '', u)
                             if all_urls.get(u):
                                 all_urls[u].append(filename)
@@ -154,7 +154,7 @@ def check_files():
             try:
                 r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers)  # noqa: S501
             except Exception as exc:
-                print("Response code indicates a problem. %s" % str(exc))
+                print(f"Response code indicates a problem. {str(exc)}")
                 bad_links.append(f'Link: {link} App: {app} File: {links[app][link]}')
                 continue
             print(r.status_code)
@@ -168,6 +168,6 @@ if __name__ == '__main__':
     # skip the test if there are no Apps (in 'APPCENTER_FILE'):
     bad_links = check_files()
     if bad_links:
-        utils.fail("Problematic links are: \n\t* %s" % ('\n\t* '.join(bad_links)))
+        utils.fail(f"Problematic links are: \n\t* {('\n\t* '.join(bad_links))}")
     else:
         print("\nNo errors were detected.\n")

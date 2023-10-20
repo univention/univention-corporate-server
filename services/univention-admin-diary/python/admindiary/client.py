@@ -55,7 +55,7 @@ def exceptionlogging(f):
         try:
             return f(*args, **kwds)
         except Exception as exc:
-            get_logger().error('%s failed! %s' % (f.__name__, exc))
+            get_logger().error(f'{f.__name__} failed! {exc}')
             import traceback
             get_logger().error(traceback.format_exc())
             return ''
@@ -73,7 +73,7 @@ class RsyslogEmitter(object):
             if os.path.exists('/dev/log'):
                 self.handler = SysLogHandler(address='/dev/log', facility='user')
             else:
-                get_logger().error('RsyslogEmitter().emit() failed: /dev/log does not exist, cannot emit entry (%s)' % (entry,))
+                get_logger().error(f'RsyslogEmitter().emit() failed: /dev/log does not exist, cannot emit entry ({entry})')
                 return
         record = logging.LogRecord('diary-rsyslogger', logging.INFO, None, None, 'ADMINDIARY: ' + str(entry), (), None, None)
         self.handler.emit(record)
@@ -119,9 +119,9 @@ def write_entry(entry):
     entry.assert_types()
     blocked_events = get_events_to_reject()
     if entry.event_name in blocked_events:
-        get_logger().info('Rejecting %s' % entry.event_name)
+        get_logger().info(f'Rejecting {entry.event_name}')
         return None
     body = entry.to_json()
     emitter.emit(body)
-    get_logger().debug('Successfully wrote %s. (%s)' % (entry.context_id, entry.event_name))
+    get_logger().debug(f'Successfully wrote {entry.context_id}. ({entry.event_name})')
     return entry.context_id

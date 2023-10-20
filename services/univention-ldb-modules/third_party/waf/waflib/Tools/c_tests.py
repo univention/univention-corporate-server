@@ -47,13 +47,13 @@ def link_lib_test_fun(self):
 		rpath = [self.bld.path.get_bld().abspath()]
 
 	mode = self.mode
-	m = '%s %s' % (mode, mode)
+	m = f'{mode} {mode}'
 	ex = self.test_exec and 'test_exec' or ''
 	bld = self.bld
 	bld(rule=write_test_file, target='test.' + mode, code=LIB_CODE)
 	bld(rule=write_test_file, target='main.' + mode, code=MAIN_CODE)
-	bld(features='%sshlib' % m, source='test.' + mode, target='test')
-	bld(features='%sprogram %s' % (m, ex), source='main.' + mode, target='app', use='test', rpath=rpath)
+	bld(features=f'{m}shlib', source='test.' + mode, target='test')
+	bld(features=f'{m}program {ex}', source='main.' + mode, target='app', use='test', rpath=rpath)
 
 @conf
 def check_library(self, mode=None, test_exec=True):

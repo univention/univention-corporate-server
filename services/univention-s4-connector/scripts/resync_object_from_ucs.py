@@ -100,7 +100,7 @@ class UCSResync(object):
                 except ldap.NO_SUCH_OBJECT:
                     missing_dns.append(targetdn)
             if missing_dns:
-                raise ldap.NO_SUCH_OBJECT(1, 'No object: %s' % (missing_dns,), [r[0] for r in ldap_result])
+                raise ldap.NO_SUCH_OBJECT(1, f'No object: {missing_dns}', [r[0] for r in ldap_result])
         else:
             ldap_result = self.lo.search(filter=ldapfilter, attr=attr)
 
@@ -126,13 +126,13 @@ if __name__ == '__main__':
         resync = UCSResync(ldap_master=options.from_primary)
         treated_dns = resync.resync(options.first, ucs_dns, options.ldapfilter)
     except ldap.NO_SUCH_OBJECT as ex:
-        print('ERROR: The LDAP object not found : %s' % ex.args[1])
+        print(f'ERROR: The LDAP object not found : {ex.args[1]}')
         if len(ex.args) == 3:
             treated_dns = ex.args[2]
         sys.exit(1)
     finally:
         for dn in treated_dns:
-            print('resync triggered for %s' % dn)
+            print(f'resync triggered for {dn}')
 
     if not treated_dns:
         print('No matching objects.')

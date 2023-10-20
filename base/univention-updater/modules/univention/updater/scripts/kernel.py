@@ -85,19 +85,19 @@ def prune(opt: Namespace) -> None:
         | top
     )
     if opt.verbose:
-        print("Exception list for kernel packages:\n %s" % ("\n ".join(sorted(keep)),))
+        print(f"Exception list for kernel packages:\n {'\n '.join(sorted(keep))}")
 
     cache.clear()
     for pkg in cache:
         if pkg.name.startswith(PREFIX) and pkg.is_installed:
             if pkg.name not in keep:
                 if opt.verbose:
-                    print("Purging kernel package: %s" % (pkg.name,))
+                    print(f"Purging kernel package: {pkg.name}")
                 if not opt.dry_run:
                     pkg.mark_delete(purge=True)
             else:
                 if opt.verbose:
-                    print("Keeping kernel package: %s" % (pkg.name, ))
+                    print(f"Keeping kernel package: {pkg.name}")
 
     cache.commit()
 

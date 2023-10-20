@@ -204,7 +204,7 @@ class UCSSetup(VNCInstallation):
         """
         self.wait_for_text('Account information')
         self.screenshot('organisation-setup.png')
-        self.type('home\t\t\t%s\t%s' % (password, password))
+        self.type(f'home\t\t\t{password}\t{password}')
         self.go_next(tabs=2)
 
     def hostname(self) -> None:
@@ -221,7 +221,7 @@ class UCSSetup(VNCInstallation):
         self.screenshot('hostname-setup.png')
         self.type(self.args.fqdn + "\t", clear=True)
         if self.args.role in {'admember', 'slave'}:
-            self.type("%s\t%s" % (self.args.password, self.args.password))
+            self.type(f"{self.args.password}\t{self.args.password}")
 
         self.go_next(tabs=2)
 

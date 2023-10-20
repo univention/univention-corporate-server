@@ -57,7 +57,7 @@ class UpgradeSearch(UniventionAppAction):
         if not apps:
             apps = Apps().get_all_locally_installed_apps()
         for app in apps:
-            self.debug('Checking %s' % app)
+            self.debug(f'Checking {app}')
             if not app.is_installed():
                 continue
             upgrade_available = self._check_for_upgrades(app)

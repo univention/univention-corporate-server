@@ -35,11 +35,11 @@ def main():
                     mails_list = []
                     users_list = []
                     for i in range(4):
-                        mail = '%s@%s' % (uts.random_name(), domain)
+                        mail = f'{uts.random_name()}@{domain}'
                         user_dn, username = udm.create_user(
                             set={
                                 'password': password,
-                                'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+                                'mailHomeServer': f'{ucr.get("hostname")}.{domain}',
                                 'mailPrimaryAddress': mail if i > 0 else '',
                             },
                             check_for_drs_replication=True,
@@ -47,7 +47,7 @@ def main():
                         mails_list.append(mail)
                         users_list.append(user_dn)
                     group_name = uts.random_name()
-                    group_mail = '%s@%s' % (group_name, domain)
+                    group_mail = f'{group_name}@{domain}'
                     print('Users List = ', users_list)
                     group_dn = udm.create_object(
                         'groups/group',
@@ -56,7 +56,7 @@ def main():
                             'mailAddress': group_mail,
                             'users': users_list[0],
                         },
-                        position='cn=groups,%s' % ucr.get('ldap/base'),
+                        position=f'cn=groups,{ucr.get("ldap/base")}',
                         check_for_drs_replication=True,
                     )
                     udm.modify_object(

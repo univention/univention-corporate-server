@@ -218,7 +218,7 @@ class QuotaCheck:
     def create_quota_policy(self, udm, quota_policy):
         return udm.create_object(
             'policies/share_userquota',
-            position='cn=userquota,cn=shares,cn=policies,%s' % self.ldap_base,
+            position=f'cn=userquota,cn=shares,cn=policies,{self.ldap_base}',
             name=quota_policy["name"],
             softLimitSpace=quota_policy["spaceSoftLimit"],
             hardLimitSpace=quota_policy["spaceHardLimit"],

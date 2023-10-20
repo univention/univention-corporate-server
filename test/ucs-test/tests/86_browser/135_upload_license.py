@@ -49,7 +49,7 @@ def license_file_path(side_menu_license: SideMenuLicense, ucr, ldap_base):
 @pytest.mark.skipif(not core_edition_license_path.is_file(), reason="FreeForPersonalUseTest.license file not found")
 @pytest.mark.parametrize("as_text", [True, False])
 def test_upload_license(side_menu_license: SideMenuLicense, license_file_path: Path, as_text: bool):
-    logger.info("Using %s as test license" % core_edition_license_path)
+    logger.info(f"Using {core_edition_license_path} as test license")
     side_menu_license.tester.restart_umc()
 
     side_menu_license.navigate()
@@ -90,7 +90,7 @@ def dump_current_license_to_file(license_file: IO[str], license_dn: str):
     Opens a given 'license_file' for writing and puts in the output of
     launched 'univention-ldapsearch' with self.license_dn argument
     """
-    logger.info("Saving original license to file: '%s'" % license_file.name)
+    logger.info(f"Saving original license to file: '{license_file.name}'")
     try:
         subprocess.run(["univention-ldapsearch", "-LLLb", license_dn], stdout=license_file, check=True)
     except (IOError, ValueError, OSError, CalledProcessError):

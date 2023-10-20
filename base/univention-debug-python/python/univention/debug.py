@@ -132,21 +132,21 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            fname = '%s.%s' % (f.__module__, f.__name__)
+            fname = f'{f.__module__}.{f.__name__}'
             _args = ', '.join(
                     chain(
                         (repr(arg) for arg in args),
-                        ('%s=%s' % (k, repr(v)) for (k, v) in kwargs.items()),
+                        (f'{k}={repr(v)}' for (k, v) in kwargs.items()),
                     ),
             ) if with_args else '...'
 
-            _debug.begin('%s(%s): ...' % (fname, _args))
+            _debug.begin(f'{fname}({_args}): ...')
             try:
                 ret = f(*args, **kwargs)
             except BaseException:
                 try:
                     (exctype, value) = sys.exc_info()[:2]
-                    _debug.end('%s(...): %s(%s)' % (fname, exctype, value))
+                    _debug.end(f'{fname}(...): {exctype}({value})')
                 finally:
                     exctype = value = None
                 raise

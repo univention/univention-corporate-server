@@ -166,7 +166,7 @@ class UCS_Version(object):
         """
         match = UCS_Version._regexp.match(version)
         if not match:
-            raise ValueError('string %s does not match UCS version pattern' % version)
+            raise ValueError(f'string {version} does not match UCS version pattern')
         self.mmp = map(int, match.groups())  # type: ignore
 
     def __getitem__(self, k):
@@ -216,7 +216,7 @@ class UCS_Version(object):
         * `%%`: A literal `'%'` character.
         """
         if not isinstance(fmt, str):  # pragma: no cover
-            raise TypeError("must be str, not %s" % type(fmt).__name__)
+            raise TypeError(f"must be str, not {type(fmt).__name__}")
         if fmt:
             val = {
                 "%": "%",

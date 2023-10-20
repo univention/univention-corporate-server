@@ -132,7 +132,7 @@ class LogCatcher(object):
 
     def getChild(self, name):
         if self.logger:
-            self.logger.name = '%s.%s' % (self.logger.name, name)
+            self.logger.name = f'{self.logger.name}.{name}'
         return self
 
     def __del__(self):
@@ -250,7 +250,7 @@ class ShortNameFormatter(logging.Formatter):
 
     def format(self, record):
         record.short_name = record.name
-        if record.short_name.startswith('%s.' % self.shorten):
+        if record.short_name.startswith(f'{self.shorten}.'):
             record.short_name = record.short_name[len(self.shorten) + 1:]
         return super(ShortNameFormatter, self).format(record)
 

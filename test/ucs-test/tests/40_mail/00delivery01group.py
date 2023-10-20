@@ -28,13 +28,13 @@ def main():
     ucr.load()
     with udm_test.UCSTestUDM() as udm:
         domain = ucr.get('domainname')
-        group_mail = 'g%s@%s' % (uts.random_string(), domain)
+        group_mail = f'g{uts.random_string()}@{domain}'
         mails = []
         for _i in range(3):
-            usermail = '%s@%s' % (uts.random_name(), domain)
+            usermail = f'{uts.random_name()}@{domain}'
             udm.create_user(
                 set={
-                    'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+                    'mailHomeServer': f'{ucr.get("hostname")}.{domain}',
                     'mailAlternativeAddress': group_mail,
                     'mailPrimaryAddress': usermail,
                 },

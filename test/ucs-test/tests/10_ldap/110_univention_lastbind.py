@@ -52,7 +52,7 @@ def other_server():
     if other_servers:
         idx = random.randrange(len(other_servers))
         other_server = other_servers[idx]
-    print('other_server is: %s' % (other_server,))
+    print(f'other_server is: {other_server}')
     return other_server
 
 
@@ -89,7 +89,7 @@ def binddn(ucr):
     if ucr.get("tests/domainadmin/account", None):
         return str(ucr.get("tests/domainadmin/account"))
     else:
-        return "uid=Administrator,cn=users,%s" % (ucr.get('ldap/base'),)
+        return f"uid=Administrator,cn=users,{ucr.get('ldap/base')}"
 
 
 @pytest.fixture()
@@ -105,7 +105,7 @@ def readudm():
 def bind_for_timestamp(dn, host=None):
     args = ['univention-ldapsearch', '-LLL', '-D', dn, '-w', 'univention', '-b', dn, 'authTimestamp']
     if host:
-        args.insert(1, "ldap://%s:7389" % host)
+        args.insert(1, f"ldap://{host}:7389")
         args.insert(1, '-H')
     out = subprocess.check_output(args).decode('UTF-8', 'replace')
     timestamp = [line.split()[1] for line in out.splitlines() if 'authTimestamp' in line]
@@ -129,7 +129,7 @@ def test_save_timestamp(udm, readudm, binddn, bindpwdfile, capsys):
     timestamp = '2020010101Z'
     capsys.readouterr()  # flush
     univention_lastbind.save_timestamp(o, timestamp)
-    assert 'Warning: Could not save new timestamp "%s" to "lastbind" extended attribute of user "%s". Continuing' % (timestamp, o.dn) in capsys.readouterr()[1]
+    assert f'Warning: Could not save new timestamp "{timestamp}" to "lastbind" extended attribute of user "{o.dn}". Continuing' in capsys.readouterr()[1]
     writeudm = univention_lastbind.get_writable_udm(binddn, bindpwdfile)
     o = writeudm.obj_by_dn(dn)
     univention_lastbind.save_timestamp(o, timestamp)
@@ -187,13 +187,13 @@ def test_main_not_enough_arguments():
 
 @pytest.mark.slow()
 def test_server_down(ucr, udm, readudm, capsys):
-    mod = readudm.get('computers/%s' % (ucr.get('server/role'),))
+    mod = readudm.get(f'computers/{ucr.get("server/role")}')
     comp = mod.get_by_id(ucr.get('hostname'))
     slave = udm.create_object('computers/domaincontroller_slave', name=uts.random_name(), dnsEntryZoneForward=comp.props.dnsEntryZoneForward[0][0])
     slave = readudm.obj_by_dn(slave)
     capsys.readouterr()  # flush
     univention_lastbind.get_ldap_connections()
-    assert 'Server "%s" is not reachable. The "authTimestamp" will not be read from it. Continuing.' % (slave.props.fqdn,) in capsys.readouterr()[1]
+    assert f'Server "{slave.props.fqdn}" is not reachable. The "authTimestamp" will not be read from it. Continuing.' in capsys.readouterr()[1]
 
 
 def test_invalid_user(binddn, bindpwdfile):
@@ -201,7 +201,7 @@ def test_invalid_user(binddn, bindpwdfile):
     args = univention_lastbind.parse_args(['--user', user, '--binddn', binddn, '--bindpwdfile', bindpwdfile])
     with pytest.raises(univention_lastbind.ScriptError) as excinfo:
         univention_lastbind.main(args)
-    assert 'The provided user "%s" could not be found' % (user,) in str(excinfo.value)
+    assert f'The provided user "{user}" could not be found' in str(excinfo.value)
 
 
 def test_tracebacks(binddn, failbinddn, bindpwdfile, failbindpwdfile, ucr):
@@ -213,9 +213,9 @@ def test_tracebacks(binddn, failbinddn, bindpwdfile, failbindpwdfile, ucr):
     args = univention_lastbind.parse_args(['--user', 'foo', '--binddn', binddn, '--bindpwdfile', failbindpwdfile])
     with pytest.raises(univention_lastbind.ScriptError) as excinfo:
         univention_lastbind.main(args)
-    assert 'Could not open "bindpwdfile" "%s"' % (failbindpwdfile) in str(excinfo.value)
+    assert f'Could not open "bindpwdfile" "{(failbindpwdfile)}"' in str(excinfo.value)
 
     args = univention_lastbind.parse_args(['--user', 'foo', '--binddn', failbinddn, '--bindpwdfile', bindpwdfile])
     with pytest.raises(univention_lastbind.ScriptError) as excinfo:
         univention_lastbind.main(args)
-    assert 'Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s"' % (ucr.get('ldap/server/name'), failbinddn, bindpwdfile)
+    assert f'Could not connect to server "{ucr.get("ldap/server/name")}" with provided "binddn" "{failbinddn}" and "bindpwdfile" "{bindpwdfile}"'

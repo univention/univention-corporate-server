@@ -472,7 +472,7 @@ class qm2rcc(Task.Task):
 	def run(self):
 		"""Create a qrc file including the inputs"""
 		txt = '\n'.join(['<file>%s</file>' % k.path_from(self.outputs[0].parent) for k in self.inputs])
-		code = '<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n%s\n</qresource>\n</RCC>' % txt
+		code = f'<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n{txt}\n</qresource>\n</RCC>'
 		self.outputs[0].write(code)
 
 def configure(self):
@@ -503,7 +503,7 @@ def configure(self):
 	for flag in [[], '-fPIE', '-fPIC', '-std=c++11' , ['-std=c++11', '-fPIE'], ['-std=c++11', '-fPIC']]:
 		msg = 'See if Qt files compile '
 		if flag:
-			msg += 'with %s' % flag
+			msg += f'with {flag}'
 		try:
 			self.check(features='qt5 cxx', use=uses, uselib_store='qt5', cxxflags=flag, fragment=frag, msg=msg)
 		except self.errors.ConfigurationError:
@@ -559,7 +559,7 @@ def find_qt5_binaries(self):
 				lst.reverse()
 
 				# keep the highest version
-				qtdir = '/usr/local/Trolltech/%s/' % lst[0]
+				qtdir = f'/usr/local/Trolltech/{lst[0]}/'
 				qtbin = os.path.join(qtdir, 'bin')
 				paths.append(qtbin)
 
@@ -681,7 +681,7 @@ def find_single_qt5_lib(self, name, uselib, qtlibs, qtincludes, force_static):
 			else:
 				libval = name
 			env.append_unique(prefix + '_' + uselib, libval)
-			env.append_unique('%sPATH_%s' % (prefix, uselib), qtlibs)
+			env.append_unique(f'{prefix}PATH_{uselib}', qtlibs)
 			env.append_unique('INCLUDES_' + uselib, qtincludes)
 			env.append_unique('INCLUDES_' + uselib, os.path.join(qtincludes, name.replace('Qt5', 'Qt')))
 			return k
@@ -709,15 +709,15 @@ def find_qt5_libraries(self):
 				if os.path.exists(qtDynamicLib):
 					env.append_unique('FRAMEWORK_' + uselib, fwk)
 					env.append_unique('FRAMEWORKPATH_' + uselib, env.QTLIBS)
-					self.msg('Checking for %s' % i, qtDynamicLib, 'GREEN')
+					self.msg(f'Checking for {i}', qtDynamicLib, 'GREEN')
 				else:
-					self.msg('Checking for %s' % i, False, 'YELLOW')
+					self.msg(f'Checking for {i}', False, 'YELLOW')
 				env.append_unique('INCLUDES_' + uselib, os.path.join(env.QTLIBS, frameworkName, 'Headers'))
 			else:
 				ret = self.find_single_qt5_lib(i, uselib, env.QTLIBS, qtincludes, force_static)
 				if not force_static and not ret:
 					ret = self.find_single_qt5_lib(i, uselib, env.QTLIBS, qtincludes, True)
-				self.msg('Checking for %s' % i, ret, 'GREEN' if ret else 'YELLOW')
+				self.msg(f'Checking for {i}', ret, 'GREEN' if ret else 'YELLOW')
 	else:
 		path = '%s:%s:%s/pkgconfig:/usr/lib/qt5/lib/pkgconfig:/opt/qt5/lib/pkgconfig:/usr/lib/qt5/lib:/opt/qt5/lib' % (
 			self.environ.get('PKG_CONFIG_PATH', ''), env.QTLIBS, env.QTLIBS)
@@ -787,7 +787,7 @@ def set_qt5_libs_to_check(self):
 		for x in sorted(dirlst):
 			m = re_qt.match(x)
 			if m:
-				self.qt5_vars.append("Qt5%s" % m.group('name'))
+				self.qt5_vars.append(f"Qt5{m.group('name')}")
 		if not self.qt5_vars:
 			self.fatal('cannot find any Qt5 library (%r)' % self.env.QTLIBS)
 
@@ -801,7 +801,7 @@ def set_qt5_defines(self):
 		return
 	for x in self.qt5_vars:
 		y=x.replace('Qt5', 'Qt')[2:].upper()
-		self.env.append_unique('DEFINES_%s' % x.upper(), 'QT_%s_LIB' % y)
+		self.env.append_unique(f'DEFINES_{x.upper()}', f'QT_{y}_LIB')
 
 def options(opt):
 	"""

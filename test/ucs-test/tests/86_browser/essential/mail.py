@@ -103,7 +103,7 @@ class ImapMail(Mail):
         assert rv == "OK"
 
     def get_return_code(self, id, response):
-        regex = '%s (.*?) .*$' % id
+        regex = f'{id} (.*?) .*$'
         m = re.search(regex, response)
         try:
             return m.group(1)
@@ -111,7 +111,7 @@ class ImapMail(Mail):
             return '-ERR'
 
     def send_and_receive(self, s, id, message):
-        self.send_message(s, '%s %s' % (id, message))
+        self.send_message(s, f'{id} {message}')
         response = self.get_reply(s)
         while True:
             response2 = self.get_reply(s)
@@ -124,7 +124,7 @@ class ImapMail(Mail):
         return r
 
     def send_and_receive_quota(self, s, id, message):
-        self.send_message(s, '%s %s' % (id, message))
+        self.send_message(s, f'{id} {message}')
         response = self.get_reply(s)
         while True:
             response2 = self.get_reply(s)
@@ -142,7 +142,7 @@ class ImapMail(Mail):
         s.settimeout(self.timeout)
         s.connect((hostname, 143))
         print(self.get_reply(s))
-        retval = self.send_and_receive(s, 'a001', 'login %s %s\r\n' % (username, password))
+        retval = self.send_and_receive(s, 'a001', f'login {username} {password}\r\n')
         self.send_and_receive(s, 'a002', 'logout\r\n')
         s.close()
         return (retval == 'OK')
@@ -152,7 +152,7 @@ class ImapMail(Mail):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(self.timeout)
         s.connect((hostname, 143))
-        retval = self.send_and_receive_quota(s, 'a001', 'login %s %s\r\n' % (username, password))
+        retval = self.send_and_receive_quota(s, 'a001', f'login {username} {password}\r\n')
         retval = self.send_and_receive_quota(s, 'a002', 'GETQUOTAROOT INBOX\r\n')  # user/%s\r\n' % username)
         regex = r'\(STORAGE 0 (.*)\)'
         m = re.search(regex, retval[1])
@@ -214,7 +214,7 @@ ucr.load()
 
 
 def random_email():
-    return '%s@%s' % (uts.random_name(), ucr.get('domainname'))
+    return f'{uts.random_name()}@{ucr.get("domainname")}'
 
 
 def make_token():
@@ -225,7 +225,7 @@ def get_dir_files(dir_path, recursive=True, exclude=None):
     result = []
     if not exclude:
         exclude = []
-    for f in glob.glob('%s/*' % dir_path):
+    for f in glob.glob(f'{dir_path}/*'):
         if os.path.isfile(f):
             result.append(f)
         if os.path.isdir(f) and recursive and f not in exclude:
@@ -280,7 +280,7 @@ def activate_spam_detection():
 
 
 def activate_spam_header_tag(tag):
-    handler_set(['mail/antispam/headertag=%s' % tag])
+    handler_set([f'mail/antispam/headertag={tag}'])
 
 
 def restart_postfix():
@@ -455,7 +455,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 
     foundcnt = 0
     if messageid:
-        status, result = conn.search(None, '(HEADER Message-ID "%s")' % (messageid,))
+        status, result = conn.search(None, f'(HEADER Message-ID "{messageid}")')
         assert status == 'OK'
         result = result[0]
         if result:
@@ -541,7 +541,7 @@ def get_dovecot_maildir(mail_address, folder=None):
         raise UCSTest_Mail_InvalidMailAddress()
 
     localpart, domain = mail_address.rsplit('@', 1)
-    result = '/var/spool/dovecot/private/%s/%s/Maildir' % (domain.lower(), localpart.lower())
+    result = f'/var/spool/dovecot/private/{domain.lower()}/{localpart.lower()}/Maildir'
     if folder:
         result = '%s/.%s' % (result, folder.lstrip('/').replace('/', '.'))
     return result
@@ -571,7 +571,7 @@ def get_dovecot_shared_folder_maildir(foldername):
     # shared folder without mail primary address
     localpart, domain = foldername.rsplit('@', 1)
     domain, folderpath = domain.split('/', 1)
-    return '/var/spool/dovecot/public/%s/%s/.%s' % (domain, localpart.lower(), folderpath)
+    return f'/var/spool/dovecot/public/{domain}/{localpart.lower()}/.{folderpath}'
 
 
 def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permission=None, group_permission=None):
@@ -583,11 +583,11 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
     if isinstance(mailAddress, str):
         folder_mailaddress = mailAddress
     elif mailAddress:
-        folder_mailaddress = '%s@%s' % (name, domain)
+        folder_mailaddress = f'{name}@{domain}'
 
     folder_dn = udm.create_object(
         'mail/folder',
-        position='cn=folder,cn=mail,%s' % basedn,
+        position=f'cn=folder,cn=mail,{basedn}',
         set={
             'name': name,
             'mailHomeServer': mailHomeServer,
@@ -600,15 +600,15 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
         },
     )
     if mailAddress:
-        folder_name = 'shared/%s' % folder_mailaddress
+        folder_name = f'shared/{folder_mailaddress}'
     else:
-        folder_name = '%s@%s/INBOX' % (name, domain)
+        folder_name = f'{name}@{domain}/INBOX'
     return folder_dn, folder_name, folder_mailaddress
 
 
 def create_random_msgid():
     """returns a random and unique message ID"""
-    return '%s.%s' % (uuid.uuid1(), random_email())
+    return f'{uuid.uuid1()}.{random_email()}'
 
 
 def send_mail(
@@ -638,19 +638,19 @@ def send_mail(
     """
     # default values
     m_sender = 'tarpit@example.com'
-    m_subject = 'Testmessage %s' % time.ctime()
+    m_subject = f'Testmessage {time.ctime()}'
     m_ehlo = 'ucstest.%d.example.com' % os.getpid()
     m_server = 'localhost'
     m_port = 25
-    m_msg = '''Hello,
+    m_msg = f'''Hello,
 
 This is a test mail. Please do not answer.
-(%s)
+({idstring})
 .
 Regards,
 .
 ...ucs-test
-''' % idstring
+'''
 
     # use user values if defined
     if sender:
@@ -709,7 +709,7 @@ Regards,
         part = MIMEBase('application', "octet-stream")
         part.set_payload(open(fn, 'rb').read())
         Encoders.encode_base64(part)
-        part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(fn))
+        part.add_header('Content-Disposition', f'attachment; filename="{os.path.basename(fn)}"')
         mimemsg.attach(part)
 
     # The actual mail send part
@@ -766,7 +766,7 @@ def check_sending_mail(
             check_delivery(token, recipient_email, allowed)
     except smtplib.SMTPException as ex:
         if allowed and (tls or 'access denied' in str(ex)):
-            utils.fail('Mail sent failed with exception: %s' % ex)
+            utils.fail(f'Mail sent failed with exception: {ex}')
 
 
 if __name__ == '__main__':

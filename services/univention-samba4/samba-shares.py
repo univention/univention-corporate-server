@@ -98,7 +98,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
             if not os.path.exists(tmpDir):
                 os.makedirs(tmpDir)
         except Exception as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, "%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
+            ud.debug(ud.LISTENER, ud.ERROR, f"{name}: could not create tmp dir {tmpDir} ({exc})")
             return
 
     # modrdn stuff
@@ -123,12 +123,12 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         except Exception as e:
             if os.path.isfile(tmpFile):
                 os.remove(tmpFile)
-            ud.debug(ud.LISTENER, ud.ERROR, "%s: could not read/write tmp file %s (%s)" % (name, tmpFile, e))
+            ud.debug(ud.LISTENER, ud.ERROR, f"{name}: could not read/write tmp file {tmpFile} ({e})")
 
     if old:
         share_name = old.get('univentionShareSambaName', [b''])[0].decode('UTF-8', 'ignore')
         share_name_mapped = quote(share_name, safe='')
-        filename = '/etc/samba/shares.conf.d/%s' % (share_name_mapped,)
+        filename = f'/etc/samba/shares.conf.d/{share_name_mapped}'
         with SetUID(0):
             if os.path.exists(filename):
                 os.unlink(filename)
@@ -147,7 +147,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
             ud.debug(ud.LISTENER, ud.ERROR, "invalid samba share name: %r" % (share_name,))
             return
         share_name_mapped = quote(share_name, safe='')
-        filename = '/etc/samba/shares.conf.d/%s' % (share_name_mapped,)
+        filename = f'/etc/samba/shares.conf.d/{share_name_mapped}'
 
         # important!: createOrRename() checks if the share path is allowed. this must be done prior to writing any files.
         # try to create directory to share
@@ -158,13 +158,13 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
             with SetUID(0):
                 ret = univention.lib.listenerSharePath.createOrRename(old, new, configRegistry)
             if ret:
-                ud.debug(ud.LISTENER, ud.ERROR, "%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
+                ud.debug(ud.LISTENER, ud.ERROR, f"{name}: rename/create of sharePath for {dn} failed ({ret})")
                 return
 
         with SetUID(0):
             fp = open(filename, 'w')
 
-            print('[%s]' % (share_name,), file=fp)
+            print(f'[{share_name}]', file=fp)
             if share_name != 'homes':
                 print('path = %s' % _quote(new['univentionSharePath'][0].decode('UTF-8', 'ignore')), file=fp)
             mapping = [
@@ -295,7 +295,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
                     if new_aces:
                         dacl_flags = "PAI"
                     sddl = f"{owner}D:{dacl_flags}{deny_aces.strip()}{allow_aces.strip()}"
-                    ud.debug(ud.LISTENER, ud.PROCESS, "Set new nt %s acl for dir %s" % (sddl, share_path))
+                    ud.debug(ud.LISTENER, ud.PROCESS, f"Set new nt {sddl} acl for dir {share_path}")
                     proc = subprocess.Popen(
                         ['samba-tool', 'ntacl', 'set', sddl, share_path],
                         stdout=subprocess.PIPE,
@@ -305,7 +305,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
                     _, err = proc.communicate()
                     stderr = err.decode('UTF-8')
                     if stderr:
-                        ud.debug(ud.LISTENER, ud.ERROR, "could not set nt acl for dir %s (%s)" % (share_path, stderr))
+                        ud.debug(ud.LISTENER, ud.ERROR, f"could not set nt acl for dir {share_path} ({stderr})")
 
 
 @SetUID(0)

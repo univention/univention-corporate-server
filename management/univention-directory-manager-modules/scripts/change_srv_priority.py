@@ -82,7 +82,7 @@ def main():
                     srv_record['location'] = list(set(srv_record['location']))
 
                     # Change the objects
-                    print('Modify: %s' % srv_record.dn)
+                    print(f'Modify: {srv_record.dn}')
                     srv_record.modify()
 
 

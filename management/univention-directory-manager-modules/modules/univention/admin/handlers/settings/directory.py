@@ -209,7 +209,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_dn(self):
         dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
-        return '%s,cn=univention,%s' % (ldap.dn.dn2str(dn[0]), self.position.getDomain())
+        return f'{ldap.dn.dn2str(dn[0])},cn=univention,{self.position.getDomain()}'
 
 
 lookup = object.lookup

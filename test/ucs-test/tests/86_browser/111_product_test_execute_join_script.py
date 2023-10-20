@@ -100,14 +100,14 @@ class UMCTester(object):
 
     def get_joinscript_status(self, joinscript):
         self.scroll_join_script_into_view(joinscript)
-        xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]/../*[contains(concat(" ", normalize-space(@class), " "), " field-status ")]/*' % (joinscript,)
+        xpath = f'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "{joinscript}")]/../*[contains(concat(" ", normalize-space(@class), " "), " field-status ")]/*'
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
             self.selenium.get_all_enabled_elements,
         )
         return elems[0].get_attribute('innerHTML')
 
     def scroll_join_script_into_view(self, joinscript):
-        xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]' % (joinscript,)
+        xpath = f'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "{joinscript}")]'
         elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
             self.selenium.get_all_enabled_elements,
         )

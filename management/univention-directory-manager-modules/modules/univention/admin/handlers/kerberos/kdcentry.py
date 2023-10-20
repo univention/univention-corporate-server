@@ -158,7 +158,7 @@ class object(univention.admin.handlers.simpleLdap):
                 self['name'].index('@')
             except ValueError:
                 # does not contain an @
-                self.krb5PrincipalName = '%s@%s' % (self['name'], realm)
+                self.krb5PrincipalName = f'{self["name"]}@{realm}'
             else:
                 self.krb5PrincipalName = self['name']
 

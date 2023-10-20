@@ -74,8 +74,8 @@ class TestCases:
     def __init__(self, udm: udm_test.UCSTestUDM, ucr: ucr_test.UCSTestConfigRegistry) -> None:
         self.udm = udm
         self.ucr = ucr
-        self.base_user = 'cn=users,%s' % (ucr.get('ldap/base'),)
-        self.base_group = 'cn=groups,%s' % (ucr.get('ldap/base'),)
+        self.base_user = f'cn=users,{ucr.get("ldap/base")}'
+        self.base_group = f'cn=groups,{ucr.get("ldap/base")}'
         self.dn_domain_users = 'cn=%s,%s' % (custom_groupname('Domain Users', ucr), self.base_group)
 
     def print_attributes(self, dn_list: List[str], msg: str | None = None) -> None:
@@ -86,13 +86,13 @@ class TestCases:
         ATTR_LIST = ['memberOf', 'uniqueMember']
         print()
         if msg is not None:
-            print('*** %s ***' % (msg,))
+            print(f'*** {msg} ***')
         for dn in dn_list:
             print(dn)
             attrs = self.udm._lo.get(dn, attr=ATTR_LIST)
             for key in ATTR_LIST:
                 for val in attrs.get(key, []):
-                    print('  %s: %s' % (key, val.decode('UTF-8')))
+                    print(f'  {key}: {val.decode("UTF-8")}')
             print()
 
     def test_user_then_group(self, with_listener: bool) -> None:

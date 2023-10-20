@@ -32,7 +32,7 @@ class tex(texmodule.tex):
 		path = self.aux_nodes[0].abspath()[:-4] + '.bcf'
 		if os.path.isfile(path):
 			Logs.warn('calling biber')
-			self.check_status('error when calling biber, check %s.blg for errors' % (self.env.SRCFILE), self.biber_fun())
+			self.check_status(f'error when calling biber, check {(self.env.SRCFILE)}.blg for errors', self.biber_fun())
 		else:
 			super(tex, self).bibfile()
 			super(tex, self).bibunits()

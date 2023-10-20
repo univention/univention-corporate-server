@@ -52,11 +52,10 @@ class HTML(TestFormatInterface):
                 '<a href="%s">OTRS #%d</a>' %
                 (escape_xml(URI_OTRS % tick), tick)
                 for tick in result.case.otrs]
-            title = '%s (%s)' % (title, ', '.join(links))
+            title = f'{title} ({", ".join(links)})'
         msg = TestCodes.MESSAGE.get(result.reason, TestCodes.REASON_INTERNAL)
         colorname = TestCodes.COLOR.get(result.reason, 'BLACK')
-        msg = '<span style="color:%s;">%s</span>' % \
-            (colorname.lower(), escape_xml(msg))
+        msg = f'<span style="color:{colorname.lower()};">{escape_xml(msg)}</span>'
         print(f'<tr><td>{title}</td><td>{msg}</td></tr>', file=self.stream)
         super().end_test(result)
 

@@ -59,14 +59,14 @@ def preconditions(path):
 def test_filename_validation(modify, path, file_):
     def check(safe=False):
         # we have to check two cases here: samba share and NFS share
-        subprocess.check_output(['smbclient', '\\\\%s.%s\\%s' % (ucr['hostname'], ucr['domainname'], name), '-U', 'Administrator%univention', '-c', 'get %s /dev/stdout' % (file_,)])
+        subprocess.check_output(['smbclient', f'\\\\{ucr["hostname"]}.{ucr["domainname"]}\\{name}', '-U', 'Administrator%univention', '-c', f'get {file_} /dev/stdout'])
         assert name not in open('/etc/samba/shares.conf').read()
 
     lo = utils.get_ldap_connection()
     with udm_test.UCSTestUDM() as udm, _ucr.UCSTestConfigRegistry() as ucr, preconditions():
-        pos = 'cn=shares,%s' % (udm.LDAP_BASE,)
+        pos = f'cn=shares,{udm.LDAP_BASE}'
         name = strings.random_string()
-        dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), pos)
+        dn = f'cn={ldap.dn.escape_dn_chars(name)},{pos}'
         attrs = {
             'objectClass': ['univentionShareSamba', 'univentionShare', 'top', 'univentionObject', 'univentionShareNFS'],
             'cn': [name],

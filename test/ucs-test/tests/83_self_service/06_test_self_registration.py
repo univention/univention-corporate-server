@@ -65,8 +65,8 @@ def get_registration_info(ucr):
 
     def _get_registration_info(attributes=None, container_without_base=None):
         if container_without_base:
-            container_dn = '%s,%s' % (container_without_base, ucr.get('ldap/base'))
-            ucr.handler_set(['umc/self-service/account-registration/usercontainer=%s' % (container_dn,)])
+            container_dn = f'{container_without_base},{ucr.get("ldap/base")}'
+            ucr.handler_set([f'umc/self-service/account-registration/usercontainer={container_dn}'])
             ucr.load()
         container_dn = ucr.get('umc/self-service/account-registration/usercontainer')
         username = uts.random_name()
@@ -78,7 +78,7 @@ def get_registration_info(ucr):
         }
         if attributes:
             _attributes.update(attributes)
-        dn = "uid=%s,%s" % (_attributes['username'], container_dn)
+        dn = f"uid={_attributes['username']},{container_dn}"
         local.dns.append(dn)
         return {
             'dn': dn,
@@ -97,7 +97,7 @@ def get_registration_info(ucr):
 
 
 def _get_mail(mails, idx=-1):
-    assert mails.data, 'No mails have been captured in %s seconds' % (MAILS_TIMEOUT,)
+    assert mails.data, f'No mails have been captured in {MAILS_TIMEOUT} seconds'
     assert idx < len(mails.data), f'Not enough mails have been captured to get mail of index: {idx}'
     mail = email.message_from_string(mails.data[idx])
     body = mail.get_payload(decode=True).decode('utf-8')
@@ -192,7 +192,7 @@ def test_udm_attributes_required_ucr_var(umc_client, ucr, get_registration_info)
         umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
     assert excinfo.value.message.startswith('The account could not be created:\nInformation provided is not sufficient. The following properties are missing:\n')
     for attr in ['username', 'title']:
-        assert '\n%s' % (attr,) in excinfo.value.message
+        assert f'\n{attr}' in excinfo.value.message
 
 
 def test_usercontainer_ucr_var(umc_client, get_registration_info):
@@ -216,7 +216,7 @@ def test_usercontainer_ucr_var_not_existing(umc_client, get_registration_info):
 def test_usertemplate_ucr_var(umc_client, udm, ucr, get_registration_info):
     # TODO test all fields
     template_dn = udm.create_object('settings/usertemplate', name=uts.random_name(), title="<username>")
-    ucr.handler_set(['umc/self-service/account-registration/usertemplate=%s' % (template_dn,)])
+    ucr.handler_set([f'umc/self-service/account-registration/usertemplate={template_dn}'])
     info = get_registration_info()
     umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
     utils.verify_ldap_object(info['dn'], {
@@ -243,7 +243,7 @@ def test_text_file_ucr_var(umc_client, mails, ucr, get_registration_info, tmpdir
     file_path = tmpdir.mkdir("sub").join("mail_body.txt")
     mail_body = "This is mail"
     file_path.write(mail_body)
-    ucr.handler_set(['umc/self-service/account-verification/email/text_file=%s' % (file_path,)])
+    ucr.handler_set([f'umc/self-service/account-verification/email/text_file={file_path}'])
     info = get_registration_info()
     umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
     assert _get_mail(mails)['body'] == mail_body
@@ -251,7 +251,7 @@ def test_text_file_ucr_var(umc_client, mails, ucr, get_registration_info, tmpdir
 
 def test_token_length_ucr_var(umc_client, mails, ucr, get_registration_info):
     token_length = 4
-    ucr.handler_set(['umc/self-service/account-verification/email/token_length=%s' % (token_length,)])
+    ucr.handler_set([f'umc/self-service/account-verification/email/token_length={token_length}'])
     info = get_registration_info()
     umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
     verify_data = _get_mail(mails)['verify_data']
@@ -260,17 +260,17 @@ def test_token_length_ucr_var(umc_client, mails, ucr, get_registration_info):
 
 def test_webserver_addresss_ucr_var(umc_client, mails, ucr, get_registration_info):
     webserver_address = 'foo.bar.com'
-    ucr.handler_set(['umc/self-service/account-verification/email/webserver_address=%s' % (webserver_address,)])
+    ucr.handler_set([f'umc/self-service/account-verification/email/webserver_address={webserver_address}'])
     info = get_registration_info()
     umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
     mail = _get_mail(mails)
-    assert mail['auto_verify_link'].startswith('https://%s' % (webserver_address,))
-    assert mail['verify_link'].startswith('https://%s' % (webserver_address,))
+    assert mail['auto_verify_link'].startswith(f'https://{webserver_address}')
+    assert mail['verify_link'].startswith(f'https://{webserver_address}')
 
 
 def test_sender_address_ucr_var(umc_client, mails, ucr, get_registration_info):
     sender_address = 'foobar@mail.com'
-    ucr.handler_set(['umc/self-service/account-verification/email/sender_address=%s' % (sender_address,)])
+    ucr.handler_set([f'umc/self-service/account-verification/email/sender_address={sender_address}'])
     info = get_registration_info()
     umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
     mail = _get_mail(mails)['mail']
@@ -346,7 +346,7 @@ def test_deregistration_text_file_ucr_var(umc_client, mails, ucr, udm, tmpdir):
     file_path = tmpdir.mkdir("sub").join("mail_body.txt")
     mail_body = "This is mail"
     file_path.write(mail_body)
-    ucr.handler_set(['umc/self-service/account-deregistration/email/text_file=%s' % (file_path,)])
+    ucr.handler_set([f'umc/self-service/account-deregistration/email/text_file={file_path}'])
     password = 'univention'
     _, username = udm.create_user(**{  # noqa: PIE804
         'PasswordRecoveryEmail': 'root@localhost',
@@ -361,7 +361,7 @@ def test_deregistration_text_file_ucr_var(umc_client, mails, ucr, udm, tmpdir):
 
 def test_deregistration_sender_address_ucr_var(umc_client, mails, ucr, udm):
     sender_address = 'foobar@mail.com'
-    ucr.handler_set(['umc/self-service/account-deregistration/email/sender_address=%s' % (sender_address,)])
+    ucr.handler_set([f'umc/self-service/account-deregistration/email/sender_address={sender_address}'])
     password = 'univention'
     _, username = udm.create_user(**{  # noqa: PIE804
         'PasswordRecoveryEmail': 'root@localhost',

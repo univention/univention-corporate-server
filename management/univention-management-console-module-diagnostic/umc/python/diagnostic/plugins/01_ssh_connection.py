@@ -48,7 +48,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 title = _('SSH connection to UCS server failed!')
 
 FQDN = "%(hostname)s.%(domainname)s" % ucr
-run_descr = ['This can be checked by running:  univention-ssh /etc/machine.secret "%s$@%s" echo OK' % (ucr["hostname"], FQDN)]
+run_descr = [f'This can be checked by running:  univention-ssh /etc/machine.secret "{ucr["hostname"]}$@{FQDN}" echo OK']
 
 
 class IgnorePolicy(paramiko.MissingHostKeyPolicy):
@@ -134,7 +134,7 @@ def run(_umc_instance: Instance) -> None:
         msg = gen_msg
         msg += '\n\n'
         for host in bad:
-            msg += '%s - %s\n' % (host, bad[host])
+            msg += f'{host} - {bad[host]}\n'
         if key_failed:
             msg += '\n' + key_msg + ' - ' + key_info + '\n'
         if auth_failed:
@@ -143,8 +143,8 @@ def run(_umc_instance: Instance) -> None:
         log_msg = msg.splitlines()
         for line in log_msg:
             if not re.match(r'^\s*$', line):
-                MODULE.error("%s" % line)
-        MODULE.error("%s" % data)
+                MODULE.error(f"{line}")
+        MODULE.error(f"{data}")
         raise Critical(msg % data)
 
 

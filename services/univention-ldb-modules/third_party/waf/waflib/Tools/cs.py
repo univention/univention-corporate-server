@@ -46,8 +46,8 @@ def apply_cs(self):
 
 	bintype = getattr(self, 'bintype', self.gen.endswith('.dll') and 'library' or 'exe')
 	self.cs_task = tsk = self.create_task('mcs', cs_nodes, self.path.find_or_declare(self.gen))
-	tsk.env.CSTYPE = '/target:%s' % bintype
-	tsk.env.OUT = '/out:%s' % tsk.outputs[0].abspath()
+	tsk.env.CSTYPE = f'/target:{bintype}'
+	tsk.env.OUT = f'/out:{tsk.outputs[0].abspath()}'
 	self.env.append_value('CSFLAGS', '/platform:%s' % getattr(self, 'platform', 'anycpu'))
 
 	inst_to = getattr(self, 'install_path', bintype=='exe' and '${BINDIR}' or '${LIBDIR}')
@@ -72,7 +72,7 @@ def use_cs(self):
 		try:
 			y = get(x)
 		except Errors.WafError:
-			self.env.append_value('CSFLAGS', '/reference:%s' % x)
+			self.env.append_value('CSFLAGS', f'/reference:{x}')
 			continue
 		y.post()
 
@@ -81,7 +81,7 @@ def use_cs(self):
 			self.bld.fatal('cs task has no link task for use %r' % self)
 		self.cs_task.dep_nodes.extend(tsk.outputs) # dependency
 		self.cs_task.set_run_after(tsk) # order (redundant, the order is inferred from the nodes inputs/outputs)
-		self.env.append_value('CSFLAGS', '/reference:%s' % tsk.outputs[0].abspath())
+		self.env.append_value('CSFLAGS', f'/reference:{tsk.outputs[0].abspath()}')
 
 @feature('cs')
 @after_method('apply_cs', 'use_cs')
@@ -138,7 +138,7 @@ def doc_cs(self):
 		self.doc_install_task = self.add_install_files(
 			install_to=self.install_task.install_to, install_from=out)
 
-	self.env.append_value('CSFLAGS', '/doc:%s' % out.abspath())
+	self.env.append_value('CSFLAGS', f'/doc:{out.abspath()}')
 
 class mcs(Task.Task):
 	"""

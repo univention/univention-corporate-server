@@ -47,7 +47,7 @@ description = '\n'.join([
     _('The security limits (e.g. for max_open_files) are currently not configured properly.'),
     _('This can cause several different serious problems (e.g. the login at samba servers may be impossible, file operations (copy, move) on shares can fail, etc.)'),
     _('It is suggested to increase the security limits either manually by using {ucr} or to automatically adjust them to the suggested limits:'),
-    '<pre>samba/max_open_files=%s</pre>' % (suggested_max_open_files,),
+    f'<pre>samba/max_open_files={suggested_max_open_files}</pre>',
     # _('More related information can be found at the "{sdb}".'),
 ])
 links = [{
@@ -74,7 +74,7 @@ def run(_umc_instance: Instance) -> None:
         return  # logfile does not exists
 
     max_open_files = ucr.get_int('samba/max_open_files', 32808)
-    MODULE.process("open files: %s , max open files: %s" % (counter, max_open_files))
+    MODULE.process(f"open files: {counter} , max open files: {max_open_files}")
     if counter and max_open_files < suggested_max_open_files:
         raise Critical(umc_modules=[{'module': 'ucr'}])
 

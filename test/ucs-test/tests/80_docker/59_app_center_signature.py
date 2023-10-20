@@ -27,7 +27,7 @@ class SyncedAppcenter(Appcenter):
 
     def reset_local_cache(self):
         handler_set([
-            'repository/app_center/server=%s' % (self.upstream_appcenter),
+            f'repository/app_center/server={(self.upstream_appcenter)}',
         ])
         call('univention-app update', shell=True)
         handler_set([
@@ -35,25 +35,25 @@ class SyncedAppcenter(Appcenter):
         ])
 
     def download(self, f):
-        if os.path.exists('/var/www/%s' % f):
-            os.remove('/var/www/%s' % f)
+        if os.path.exists(f'/var/www/{f}'):
+            os.remove(f'/var/www/{f}')
 
-        d = os.path.dirname('/var/www/%s' % f)
+        d = os.path.dirname(f'/var/www/{f}')
         if not os.path.exists(d):
             os.makedirs(d)
 
-        call('wget -O /var/www/%s %s/%s' % (f, self.upstream_appcenter, f), shell=True)
+        call(f'wget -O /var/www/{f} {self.upstream_appcenter}/{f}', shell=True)
 
     def download_index_json(self):
         for version in self.all_versions:
-            self.download('meta-inf/%s/index.json.gz' % version)
-            self.download('meta-inf/%s/all.tar.zsync' % version)
-            self.download('meta-inf/%s/all.tar.gz' % version)
+            self.download(f'meta-inf/{version}/index.json.gz')
+            self.download(f'meta-inf/{version}/all.tar.zsync')
+            self.download(f'meta-inf/{version}/all.tar.gz')
 
     def download_index_json_gpg(self):
         for version in self.all_versions:
-            self.download('meta-inf/%s/index.json.gz.gpg' % version)
-            self.download('meta-inf/%s/all.tar.gpg' % version)
+            self.download(f'meta-inf/{version}/index.json.gz.gpg')
+            self.download(f'meta-inf/{version}/all.tar.gpg')
 
     def remove_from_cache(self, f):
         if os.path.exists(os.path.join('/var/cache/univention-appcenter/', f)):
@@ -82,7 +82,7 @@ class SyncedAppcenter(Appcenter):
         self.download_index_json_gpg()
         ucr = ConfigRegistry()
         ucr.load()
-        f = '/var/www/meta-inf/%s' % self.vv
+        f = f'/var/www/meta-inf/{self.vv}'
         # this just so that all.tar gets newly synced
         call('rm /var/cache/univention-appcenter/%(fqdn)s/%(vv)s/.etags' % {'vv': self.vv, 'fqdn': '%(hostname)s.%(domainname)s' % self.ucr}, shell=True)
         call('echo "foo" > nasty ; tar --append -f %(f)s/all.tar nasty' % {'f': f}, shell=True)
@@ -98,8 +98,8 @@ class SyncedAppcenter(Appcenter):
         filename = 'tecart_20151204.inst'
         basename, ext = os.path.splitext(filename)
         self.remove_from_cache(filename)
-        self.download('univention-repository/%s/maintained/component/%s/%s' % (self.vv, basename, ext))
-        call('echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/%s/maintained/component/%s/%s' % (self.vv, basename, ext), shell=True)
+        self.download(f'univention-repository/{self.vv}/maintained/component/{basename}/{ext}')
+        call(f'echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/{self.vv}/maintained/component/{basename}/{ext}', shell=True)
         call('univention-app update', shell=True)
         # Check only if the file was removed from the local cache
         if self.file_exists_in_cache(filename):

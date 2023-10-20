@@ -64,7 +64,7 @@ class Domain(CredentialsAction):
             if not first:
                 self.log('')
             fqdn = obj.info.get('fqdn')
-            self.log('%s:' % fqdn)
+            self.log(f'{fqdn}:')
             logger = LogCatcher()
             output = self.manage(username % fqdn, pwdfile, logger, 'info')
             if output.has_stdout():
@@ -80,7 +80,7 @@ class Domain(CredentialsAction):
     def get_appcenter_hosts(self, lo, pos):
         ret = []
         for role in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
-            objs = search_objects('computers/%s' % role, lo, pos)
+            objs = search_objects(f'computers/{role}', lo, pos)
             for obj in objs:
                 if 'serverRole' not in obj.info:
                     continue

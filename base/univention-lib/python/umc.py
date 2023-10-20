@@ -152,7 +152,7 @@ class HTTPError(six.with_metaclass(_HTTPType, Exception)):
 
     def __repr__(self):
         # type: () -> str
-        return '<HTTPError %s>' % (self,)
+        return f'<HTTPError {self}>'
 
     def __str__(self):
         # type: () -> str
@@ -160,8 +160,8 @@ class HTTPError(six.with_metaclass(_HTTPType, Exception)):
         data = self.response.data
         if self.status >= 500 and isinstance(self.response.data, dict) and isinstance(self.response.data.get('traceback'), six.string_types) and 'Traceback (most recent call last)' in self.response.data['traceback']:
             data = data.copy()
-            traceback = '\n%s' % (data.pop('traceback'),)
-        return '%s on %s (%s): %s%s' % (self.status, self.hostname, self.request.path, data, traceback)
+            traceback = f'\n{data.pop("traceback")}'
+        return f'{self.status} on {self.hostname} ({self.request.path}): {data}{traceback}'
 
 
 class HTTPRedirect(HTTPError):
@@ -460,7 +460,7 @@ class Client(object):
 
         :raises ConnectionError: if :file:`/etc/machine.secret` cannot be read.
         """
-        username = '%s$' % ucr.get('hostname')
+        username = f'{ucr.get("hostname")}$'
         try:
             with open('/etc/machine.secret') as machine_file:
                 password = machine_file.readline().strip()
@@ -481,7 +481,7 @@ class Client(object):
         :rtype: Response
         """
         data = self.__build_data(options, flavor)
-        return self.request('POST', 'command/%s' % (path,), data, headers)
+        return self.request('POST', f'command/{path}', data, headers)
 
     def umc_set(self, options, headers=None):
         # type: (Optional[dict], Optional[dict]) -> Response
@@ -521,7 +521,7 @@ class Client(object):
         :returns: The |UMC| response.
         :rtype: Response
         """
-        return self.request('POST', 'get/%s' % path, self.__build_data(options), headers)
+        return self.request('POST', f'get/{path}', self.__build_data(options), headers)
 
     def umc_upload(self):
         # type: () -> None
@@ -628,7 +628,7 @@ class Client(object):
         :returns: The |HTTP| response.
         :rtype: http.client.HTTPResponse
         """
-        uri = '%s%s' % (self._base_uri, request.path)
+        uri = f'{self._base_uri}{request.path}'
         con = self._get_connection()
         con.request(request.method, uri, request.get_body(), headers=request.headers)
         response = con.getresponse()

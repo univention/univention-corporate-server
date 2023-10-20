@@ -22,12 +22,12 @@ def check_sending_mail(username, password, recipient_email, should_be_accepted):
             utils.fail('Sending should_be_accepted = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_accepted, ret_code))
     except smtplib.SMTPRecipientsRefused as exc:
         if should_be_accepted:
-            utils.fail('Mail sent failed with exception: %s' % exc)
+            utils.fail(f'Mail sent failed with exception: {exc}')
 
 
 def main():
     with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
-        maildomain = '%s.%s' % (uts.random_name(), uts.random_name())
+        maildomain = f'{uts.random_name()}.{uts.random_name()}'
         udm.create_object(
             'mail/domain',
             set={
@@ -37,12 +37,12 @@ def main():
         )
 
         password = 'univention'
-        recipient_email = '%s@%s' % (uts.random_name(), maildomain)
-        unknown_email = '%s@%s' % (uts.random_name(), maildomain)
+        recipient_email = f'{uts.random_name()}@{maildomain}'
+        unknown_email = f'{uts.random_name()}@{maildomain}'
         udm.create_user(
             set={
                 'password': password,
-                'mailHomeServer': '%s.%s' % (ucr.get('hostname'), maildomain),
+                'mailHomeServer': f'{ucr.get("hostname")}.{maildomain}',
                 'mailPrimaryAddress': recipient_email,
             },
         )

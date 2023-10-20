@@ -125,7 +125,7 @@ def main(files, ignore_exceptions=[], out=sys.stdout):
                 print('', file=out)
                 for bug in e.bugs:
                     print('https://forge.univention.org/bugzilla/show_bug.cgi?id=%d' % (bug,), file=out)
-                print('Ignoring %s ' % (e.ignore_exception.pattern,), file=out)
+                print(f'Ignoring {e.ignore_exception.pattern} ', file=out)
                 break
         if ignore:
             continue
@@ -134,7 +134,7 @@ def main(files, ignore_exceptions=[], out=sys.stdout):
         print('%d times in %s:' % (exceptions.occurred, ', '.join(exceptions.filenames)), file=out)
         if os.environ.get('JENKINS_WS'):
             for fn in exceptions.filenames:
-                print('%sws/test/%s' % (os.environ['JENKINS_WS'], os.path.basename(fn)), file=out)
+                print(f'{os.environ["JENKINS_WS"]}ws/test/{os.path.basename(fn)}', file=out)
         print('Traceback (most recent call last):', file=out)
         print(traceback, end='', file=out)
         for exc in exceptions:

@@ -127,7 +127,7 @@ class Register(CredentialsAction):
             self.log('No repository to register')
             return {}
         updates = {}
-        self.log('Registering component for %s' % app)
+        self.log(f'Registering component for {app}')
         for _app in Apps().get_all_apps_with_id(app.id):
             if _app == app:
                 updates.update(self._register_component_dict(_app))
@@ -142,7 +142,7 @@ class Register(CredentialsAction):
     def _register_component_dict(self, app):
         ret = {}
         ucr_base_key = app.ucr_component_key
-        self.debug('Adding %s' % ucr_base_key)
+        self.debug(f'Adding {ucr_base_key}')
         ret[ucr_base_key] = 'enabled'
         ucr_base_key = '%s/%%s' % ucr_base_key
         ret[ucr_base_key % 'server'] = app.get_server()
@@ -164,8 +164,8 @@ class Register(CredentialsAction):
         ret = {}
         ucr_base_key = app.ucr_component_key
         for key in ucr_keys():
-            if key == ucr_base_key or key.startswith('%s/' % ucr_base_key):
-                self.debug('Removing %s' % key)
+            if key == ucr_base_key or key.startswith(f'{ucr_base_key}/'):
+                self.debug(f'Removing {key}')
                 ret[key] = None
         return ret
 
@@ -179,14 +179,14 @@ class Register(CredentialsAction):
                 self._unregister_files(app)
 
     def _register_files(self, app):
-        self.log('Creating data directories for %s...' % app.id)
+        self.log(f'Creating data directories for {app.id}...')
         mkdir(app.get_data_dir())
         mkdir(app.get_conf_dir())
         mkdir(app.get_share_dir())
         for ext in ['univention-config-registry-variables', 'schema']:
             fname = app.get_cache_file(ext)
             if os.path.exists(fname):
-                self.log('Copying %s' % fname)
+                self.log(f'Copying {fname}')
                 shutil.copy2(fname, app.get_share_file(ext))
             else:
                 if ext == 'schema':
@@ -221,16 +221,16 @@ class Register(CredentialsAction):
         # FIXME: there is no better lib function than this snippet
         schema_file = app.get_share_file('schema')
         if os.path.exists(schema_file):
-            self.log('Registering schema %s' % schema_file)
+            self.log(f'Registering schema {schema_file}')
             lo, pos = self._get_ldap_connection(args)
             with self._get_password_file(args) as password_file:
-                create_recursive_container('cn=ldapschema,cn=univention,%s' % ucr_get('ldap/base'), lo, pos)
+                create_recursive_container(f'cn=ldapschema,cn=univention,{ucr_get("ldap/base")}', lo, pos)
                 if app.automatic_schema_creation:
                     schema_obj = UniventionLDAPSchema(ucr_instance())
                     userdn = self._get_userdn(args)
                     udm_passthrough_options = ['--binddn', userdn, '--bindpwdfile', password_file]
                     opts = Values()
-                    opts.packagename = 'appcenter-app-%s' % app.id
+                    opts.packagename = f'appcenter-app-{app.id}'
                     opts.packageversion = app.version
                     opts.ucsversionstart = None
                     opts.ucsversionend = None
@@ -240,7 +240,7 @@ class Register(CredentialsAction):
                         schema_obj.register(schema_file, opts, udm_passthrough_options)
                     except SystemExit as exc:
                         if exc.code == 4:
-                            self.warn('A newer version of %s has already been registered. Skipping...' % schema_file)
+                            self.warn(f'A newer version of {schema_file} has already been registered. Skipping...')
                         else:
                             msg = get_handler_message('ldap_extension', userdn, self._get_password(args, ask=False))
                             raise RegisterSchemaFailed(f'activation failed: {msg} {exc.code}')
@@ -256,11 +256,11 @@ class Register(CredentialsAction):
                 app = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)
                 attributes, __, options = get_extended_attributes(app)
                 for option in options:
-                    self.log('Registering option %s' % option.name)
+                    self.log(f'Registering option {option.name}')
                     create_extended_option(option, app, lo, pos)
                 if attributes:
                     for i, attribute in enumerate(attributes):
-                        self.log('Registering attribute %s' % attribute.name)
+                        self.log(f'Registering attribute {attribute.name}')
                         create_extended_attribute(attribute, app, i + 1, lo, pos)
 
     def _unregister_attributes(self, app, args):
@@ -290,7 +290,7 @@ class Register(CredentialsAction):
 
     def _register_listener(self, app, delay=False):
         if app.listener_udm_modules:
-            listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
+            listener_file = f'/usr/lib/univention-directory-listener/system/{app.id}.py'
             if os.path.exists(listener_file):
                 return
             ldap_filter = '(|%s)' % ''.join(filter_format('(univentionObjectType=%s)', [udm_module]) for udm_module in app.listener_udm_modules)
@@ -314,7 +314,7 @@ class AppListener(AppListener):
         output_dir = %(output_dir)r
 ''' % {'ldap_filter': ldap_filter, 'dump_dir': dump_dir, 'output_dir': output_dir})
             self._update_converter_service(app)
-            self.log('Added Listener for %s' % app)
+            self.log(f'Added Listener for {app}')
             if not delay:
                 self._restart_listener([])
             return True
@@ -322,27 +322,27 @@ class AppListener(AppListener):
             pass  # do not remove any listener. could be installed properly by packages
 
     def _update_converter_service(self, app):
-        listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
+        listener_file = f'/usr/lib/univention-directory-listener/system/{app.id}.py'
         if os.path.exists(listener_file):
             logger = LogCatcher()
-            self._subprocess(['systemctl', 'is-enabled', 'univention-appcenter-listener-converter@%s.service' % app.id], logger)
+            self._subprocess(['systemctl', 'is-enabled', f'univention-appcenter-listener-converter@{app.id}.service'], logger)
             if list(logger.stdout()) == ['enabled']:
-                self._subprocess(['systemctl', 'restart', 'univention-appcenter-listener-converter@%s.service' % app.id])
+                self._subprocess(['systemctl', 'restart', f'univention-appcenter-listener-converter@{app.id}.service'])
             else:
-                self._subprocess(['systemctl', 'enable', 'univention-appcenter-listener-converter@%s.service' % app.id])
-                self._subprocess(['systemctl', 'start', 'univention-appcenter-listener-converter@%s.service' % app.id])
+                self._subprocess(['systemctl', 'enable', f'univention-appcenter-listener-converter@{app.id}.service'])
+                self._subprocess(['systemctl', 'start', f'univention-appcenter-listener-converter@{app.id}.service'])
         else:
-            self._subprocess(['systemctl', 'stop', 'univention-appcenter-listener-converter@%s.service' % app.id])
-            self._subprocess(['systemctl', 'disable', 'univention-appcenter-listener-converter@%s.service' % app.id])
+            self._subprocess(['systemctl', 'stop', f'univention-appcenter-listener-converter@{app.id}.service'])
+            self._subprocess(['systemctl', 'disable', f'univention-appcenter-listener-converter@{app.id}.service'])
 
     def _unregister_listener(self, app, delay=False):
         if app.listener_udm_modules:
-            listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
-            listener_meta_file = '/var/lib/univention-directory-listener/handlers/%s' % app.id
+            listener_file = f'/usr/lib/univention-directory-listener/system/{app.id}.py'
+            listener_meta_file = f'/var/lib/univention-directory-listener/handlers/{app.id}'
             if os.path.exists(listener_file):
                 os.unlink(listener_file)
                 self._update_converter_service(app)
-                self.log('Removed Listener for %s' % app)
+                self.log(f'Removed Listener for {app}')
                 if not delay:
                     self._restart_listener([listener_meta_file])
                 return listener_meta_file
@@ -352,7 +352,7 @@ class AppListener(AppListener):
         self._subprocess(['systemctl', 'try-restart', 'univention-directory-listener'])
         for meta_file in meta_files:
             if os.path.exists(meta_file):
-                self.debug('Removed leftover file %s. Useful for re-installations' % meta_file)
+                self.debug(f'Removed leftover file {meta_file}. Useful for re-installations')
                 os.unlink(meta_file)
 
     def _register_host_for_apps(self, apps, args):
@@ -372,30 +372,30 @@ class AppListener(AppListener):
         lo, pos = self._get_ldap_connection(args)
         if hostdn:
             if lo.get(hostdn):
-                self.log('Already found %s as a host for %s. Trying to retrieve machine secret.' % (hostdn, app.id))
+                self.log(f'Already found {hostdn} as a host for {app.id}. Trying to retrieve machine secret.')
                 password = None
                 if os.path.isfile(app.secret_on_host):
                     with open(app.secret_on_host) as pwfile:
                         password = pwfile.read()
                 return hostdn, password
             else:
-                self.warn('%s should be the host for %s. But it was not found in LDAP. Creating a new one' % (hostdn, app.id))
+                self.warn(f'{hostdn} should be the host for {app.id}. But it was not found in LDAP. Creating a new one')
         # quasi unique hostname; make sure it does not exceed 14 chars
         # 5 chars of appid + '-' + 8 digits of Epoch
         hostname = '%s-%s' % (app.id[:5], str(int(time.time() * 1000000))[-10:-2])
         password = generate_password()
-        self.log('Registering the container host %s for %s' % (hostname, app.id))
+        self.log(f'Registering the container host {hostname} for {app.id}')
         if app.docker_server_role == 'memberserver':
-            base = 'cn=memberserver,cn=computers,%s' % ucr_get('ldap/base')
+            base = f'cn=memberserver,cn=computers,{ucr_get("ldap/base")}'
         else:
-            base = 'cn=dc,cn=computers,%s' % ucr_get('ldap/base')
+            base = f'cn=dc,cn=computers,{ucr_get("ldap/base")}'
         while base and not lo.get(base):
             base = dn2str(str2dn(base)[1:])
         pos.setDn(base)
         domain = ucr_get('domainname')
-        description = '%s (%s)' % (app.name, app.version)
-        policies = ['cn=app-release-update,cn=policies,%s' % ucr_get('ldap/base'), 'cn=app-update-schedule,cn=policies,%s' % ucr_get('ldap/base')]
-        obj = create_object_if_not_exists('computers/%s' % app.docker_server_role, lo, pos, name=hostname, description=description, domain=domain, password=password, objectFlag='docker', policies=policies)
+        description = f'{app.name} ({app.version})'
+        policies = [f'cn=app-release-update,cn=policies,{ucr_get("ldap/base")}', f'cn=app-update-schedule,cn=policies,{ucr_get("ldap/base")}']
+        obj = create_object_if_not_exists(f'computers/{app.docker_server_role}', lo, pos, name=hostname, description=description, domain=domain, password=password, objectFlag='docker', policies=policies)
         ucr_save({app.ucr_hostdn_key: obj.dn})
         # save password on docker host
         if password:
@@ -407,10 +407,10 @@ class AppListener(AppListener):
     def _unregister_host(self, app, args):
         hostdn = ucr_get(app.ucr_hostdn_key)
         if not hostdn:
-            self.log('No hostdn for %s found. Nothing to remove' % app.id)
+            self.log(f'No hostdn for {app.id} found. Nothing to remove')
             return
         lo, pos = self._get_ldap_connection(args)
-        remove_object_if_exists('computers/%s' % app.docker_server_role, lo, pos, hostdn)
+        remove_object_if_exists(f'computers/{app.docker_server_role}', lo, pos, hostdn)
         ucr_save({app.ucr_hostdn_key: None})
 
     def _register_app_for_apps(self, apps, args):
@@ -430,8 +430,8 @@ class AppListener(AppListener):
         if lo is None:
             lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
         updates = {}
-        self.log('Registering UCR for %s' % app.id)
-        self.log('Marking %s as installed' % app)
+        self.log(f'Registering UCR for {app.id}')
+        self.log(f'Marking {app} as installed')
         if app.is_installed():
             status = ucr_get(app.ucr_status_key, 'installed')
         else:
@@ -477,7 +477,7 @@ class AppListener(AppListener):
                 if not app.uses_docker_compose():
                     try:
                         init_script = Service.get_init(app)
-                        self.log('Creating %s' % init_script)
+                        self.log(f'Creating {init_script}')
                         with open(ORIGINAL_INIT_SCRIPT) as source:
                             lines = source.readlines()
                         with open(init_script, 'w') as target:
@@ -523,7 +523,7 @@ class AppListener(AppListener):
             protocol_key = app.ucr_ports_key % container_port + '/protocol'
             protocol_value = updates.get(protocol_key)
             if protocol_value:
-                protocol_value = '%s, %s' % (protocol_value, protocol)
+                protocol_value = f'{protocol_value}, {protocol}'
             else:
                 protocol_value = protocol
             updates[protocol_key] = protocol_value
@@ -571,12 +571,12 @@ class AppListener(AppListener):
     def _register_app_report_variables(self, app):
         updates = {}
         for key in ucr_keys():
-            if re.match('appreport/%s/' % app.id, key):
+            if re.match(f'appreport/{app.id}/', key):
                 updates[key] = None
         registry_key = 'appreport/%s/%%s' % app.id
         anything_set = False
         for key in ['object_type', 'object_filter', 'object_attribute', 'attribute_type', 'attribute_filter']:
-            value = getattr(app, 'app_report_%s' % key)
+            value = getattr(app, f'app_report_{key}')
             if value:
                 anything_set = True
             updates[registry_key % key] = value
@@ -588,7 +588,7 @@ class AppListener(AppListener):
         updates = {}
         if app.ucs_overview_category is not False:
             for key in ucr_keys():
-                if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
+                if re.match(f'ucs/web/overview/entries/[^/]+/{app.id}/', key):
                     updates[key] = None
         if app.ucs_overview_category and app.web_interface:
             self.log('Setting overview variables')
@@ -630,11 +630,11 @@ class AppListener(AppListener):
             lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
         updates = {}
         for key in ucr_keys():
-            if key.startswith('appcenter/apps/%s/' % app.id):
+            if key.startswith(f'appcenter/apps/{app.id}/'):
                 updates[key] = None
-            if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
+            if re.match(f'ucs/web/overview/entries/[^/]+/{app.id}/', key):
                 updates[key] = None
-            if re.match('appreport/%s/' % app.id, key):
+            if re.match(f'appreport/{app.id}/', key):
                 updates[key] = None
         if app.docker and not app.plugin_of:
             try:

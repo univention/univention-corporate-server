@@ -26,31 +26,31 @@ all_users: List[str] = []
 all_groups: List[str] = []
 group_member: Dict[int, List[str]] = {}
 
-position.setDn('cn=users,%s' % (base,))
+position.setDn(f'cn=users,{base}')
 for i in range(number_of_users):
-    name = "%s%s" % (username, i)
-    user = users.lookup(None, lo, "uid=%s" % name)
+    name = f"{username}{i}"
+    user = users.lookup(None, lo, f"uid={name}")
     if not user:
         user = users.object(None, lo, position)
         user.open()
         user["lastname"] = name
         user["password"] = "univention"
         user["username"] = name
-        print('creating user %s' % name)
+        print(f'creating user {name}')
         dn = user.create()
     else:
-        print('get user %s' % name)
+        print(f'get user {name}')
         dn = user[0].dn
 
     gid = i % number_of_groups
     group_member.setdefault(gid, []).append(dn)
     all_users.append(dn)
 
-position.setDn('cn=groups,%s' % (base,))
+position.setDn(f'cn=groups,{base}')
 has_nested_group: List[str] = []
 for i in range(number_of_groups):
-    name = "%s%s" % (groupname, i)
-    group = groups.lookup(None, lo, "cn=%s" % name)
+    name = f"{groupname}{i}"
+    group = groups.lookup(None, lo, f"cn={name}")
     new_members = group_member.get(i, [])
     nested_group = False
     if i and not i % 200:
@@ -67,13 +67,13 @@ for i in range(number_of_groups):
         group["name"] = name
         if new_members:
             group["users"] = new_members
-        print('creating group %s' % name)
+        print(f'creating group {name}')
         group.create()
         dn = group.dn
     else:
         group[0].open()
         group[0]["users"] = new_members
-        print('modify group %s' % name)
+        print(f'modify group {name}')
         group[0].modify()
         dn = group[0].dn
     all_groups.append(dn)

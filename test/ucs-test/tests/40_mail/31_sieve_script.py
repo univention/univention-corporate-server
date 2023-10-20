@@ -39,9 +39,9 @@ def main():
             handler_set(['mail/dovecot/sieve/spam=true'])
             utils.restart_listener()
             domain = ucr.get('domainname')
-            host = '%s.%s' % (ucr.get('hostname'), domain)
+            host = f'{ucr.get("hostname")}.{domain}'
             password = 'univention'
-            usermail = '%s@%s' % (uts.random_name(), domain)
+            usermail = f'{uts.random_name()}@{domain}'
             userdn, username = udm.create_user(
                 set={
                     'password': password,
@@ -57,7 +57,7 @@ def main():
 
             handler_set(['mail/dovecot/sieve/spam=false'])
             utils.restart_listener()
-            usermail = '%s@%s' % (uts.random_name(), domain)
+            usermail = f'{uts.random_name()}@{domain}'
             userdn, username = udm.create_user(
                 set={
                     'password': password,

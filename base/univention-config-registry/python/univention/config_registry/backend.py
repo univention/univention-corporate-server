@@ -438,7 +438,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         # type: () -> str
         """Return registry content as string."""
         merge = self._merge()
-        return '\n'.join(['%s: %s' % (key, val) for key, val in merge.items()])
+        return '\n'.join([f'{key}: {val}' for key, val in merge.items()])
 
 
 class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
@@ -636,7 +636,7 @@ class _ConfigRegistry(dict):
         except EnvironmentError as ex:
             if ex.errno == errno.EEXIST and not os.path.isdir(self.file):
                 return
-            msg = "E: could not create file '%s': %s" % (self.file, ex)
+            msg = f"E: could not create file '{self.file}': {ex}"
             print(msg, file=sys.stderr)
             exception_occured()
 
@@ -648,7 +648,7 @@ class _ConfigRegistry(dict):
         :param filename: File name for saving.
         :raises EnvironmentError: on fatal errors.
         """
-        temp_filename = '%s.temp' % filename
+        temp_filename = f'{filename}.temp'
         try:
             try:
                 file_stat = os.stat(filename)
@@ -672,7 +672,7 @@ class _ConfigRegistry(dict):
                     # In this case the temp file created above in this
                     # function was already moved by a concurrent UCR
                     # operation. Dump the current state to a backup file
-                    temp_filename = '%s.concurrent_%s' % (filename, time.time())
+                    temp_filename = f'{filename}.concurrent_{time.time()}'
                     self._save_to(temp_filename)
         except EnvironmentError as ex:
             # suppress certain errors

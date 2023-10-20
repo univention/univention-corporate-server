@@ -176,7 +176,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
             logging.getLogger('').addHandler(_handler_file)
             result = _handler_file.stream
         except EnvironmentError as ex:
-            print('opening %s failed: %s' % (logfile, ex))
+            print(f'opening {logfile} failed: {ex}')
 
 #     if enable_syslog:
 #         try:
@@ -338,11 +338,11 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            fname = '%s.%s' % (f.__module__, f.__name__)
+            fname = f'{f.__module__}.{f.__name__}'
             _args = ', '.join(
                     chain(
                         (repr(arg) for arg in args),
-                        ('%s=%s' % (k, repr(v)) for (k, v) in kwargs.items()),
+                        (f'{k}={repr(v)}' for (k, v) in kwargs.items()),
                     ),
             ) if with_args else '...'
 

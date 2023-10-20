@@ -103,9 +103,9 @@ def options(opt):
 	opt.load_special_tools('c_*.py', ban=['c_dumbpreproc.py'])
 	cc_compiler_opts = opt.add_option_group('Configuration options')
 	cc_compiler_opts.add_option('--check-c-compiler', default=None,
-		help='list of C compilers to try [%s]' % test_for_compiler,
+		help=f'list of C compilers to try [{test_for_compiler}]',
 		dest="check_c_compiler")
 
 	for x in test_for_compiler.split():
-		opt.load('%s' % x)
+		opt.load(f'{x}')
 

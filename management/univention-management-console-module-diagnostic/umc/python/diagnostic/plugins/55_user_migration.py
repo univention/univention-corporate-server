@@ -45,7 +45,7 @@ description = '\n'.join([
     _('With UCS 4.3 the LDAP format of user objects changed. After upgrading the Primary Directory Node all user objects are migrated into the new format.'),
     _('When a user object is created by a system which is not yet on UCS 4.3 it will have the old format. These user objects need to migrated again.'),
 ])
-run_descr = ['Checks user objects exist which are not migrated by using %s --check' % (SCRIPT,)]
+run_descr = [f'Checks user objects exist which are not migrated by using {SCRIPT} --check']
 
 
 def run(_umc_instance: Instance) -> None:
@@ -68,10 +68,10 @@ def migrate_users(_umc_instance: Instance) -> None:
     stdout_, stderr = process.communicate()
     stdout = stdout_.decode('UTF-8', 'replace')
     if process.returncode:
-        MODULE.error('Error running univention-migrate-users-to-ucs4.3:\n%s' % (stdout,))
+        MODULE.error(f'Error running univention-migrate-users-to-ucs4.3:\n{stdout}')
         raise Critical(_('The migration failed: %s') % (stdout,))
     else:
-        MODULE.process('Output of univention-migrate-users-to-ucs4.3:\n%s' % (stdout,))
+        MODULE.process(f'Output of univention-migrate-users-to-ucs4.3:\n{stdout}')
     raise ProblemFixed(buttons=[])
 
 

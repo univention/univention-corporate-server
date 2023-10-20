@@ -194,7 +194,7 @@ class qm2rcc(Task.Task):
 	def run(self):
 		"""Create a qrc file including the inputs"""
 		txt = '\n'.join(['<file>%s</file>' % k.path_from(self.outputs[0].parent) for k in self.inputs])
-		code = '<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n%s\n</qresource>\n</RCC>' % txt
+		code = f'<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n{txt}\n</qresource>\n</RCC>'
 		self.outputs[0].write(code)
 
 def configure(self):

@@ -59,17 +59,17 @@ def get_server_url():
 	return getattr(Context.g_module, 'DISTNETSERVER', DISTNETSERVER)
 
 def get_download_url():
-	return '%s/download.py' % get_server_url()
+	return f'{get_server_url()}/download.py'
 
 def get_upload_url():
-	return '%s/upload.py' % get_server_url()
+	return f'{get_server_url()}/upload.py'
 
 def get_resolve_url():
-	return '%s/resolve.py' % get_server_url()
+	return f'{get_server_url()}/resolve.py'
 
 def send_package_name():
 	out = getattr(Context.g_module, 'out', 'build')
-	pkgfile = '%s/package_to_upload.tarfile' % out
+	pkgfile = f'{out}/package_to_upload.tarfile'
 	return pkgfile
 
 class package(Context.Context):
@@ -163,10 +163,10 @@ class constraint(object):
 		return ','.join(buf)
 
 	def __repr__(self):
-		return "requires %s-%s" % (self.pkgname, self.required_version)
+		return f"requires {self.pkgname}-{self.required_version}"
 
 	def human_display(self, pkgname, pkgver):
-		return '%s-%s requires %s-%s' % (pkgname, pkgver, self.pkgname, self.required_version)
+		return f'{pkgname}-{pkgver} requires {self.pkgname}-{self.required_version}'
 
 	def why(self):
 		ret = []
@@ -319,7 +319,7 @@ class package_reader(Context.Context):
 		tmp = dict(n_packages_to_versions)
 		tmp[n_pkgname] = [n_pkgver]
 
-		self.trace("fixed point %s" % n_pkgname)
+		self.trace(f"fixed point {n_pkgname}")
 
 		return self.solve(tmp, n_packages_to_constraints, n_pkgname, n_pkgver, todo[1:], done)
 

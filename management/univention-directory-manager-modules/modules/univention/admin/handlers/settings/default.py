@@ -155,7 +155,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _ldap_dn(self):
-        return 'cn=default containers,cn=univention,%s' % (self.position.getDomain())
+        return f'cn=default containers,cn=univention,{(self.position.getDomain())}'
 
 
 lookup = object.lookup

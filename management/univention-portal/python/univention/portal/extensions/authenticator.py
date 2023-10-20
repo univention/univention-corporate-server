@@ -137,7 +137,7 @@ class UMCAuthenticator(Authenticator):
             get_logger("user").debug("no user found")
             return None, None
         else:
-            get_logger("user").debug("found %s" % (username,))
+            get_logger("user").debug(f"found {username}")
             return username.lower(), username
 
     async def _ask_umc(self, cookies, headers):
@@ -149,9 +149,9 @@ class UMCAuthenticator(Authenticator):
             data = json.loads(response.body.decode('UTF-8'))
             username = data["result"]["username"]
         except HTTPError as exc:
-            get_logger("user").error("request failed: %s" % exc)
+            get_logger("user").error(f"request failed: {exc}")
         except EnvironmentError as exc:
-            get_logger("user").error("connection failed: %s" % exc)
+            get_logger("user").error(f"connection failed: {exc}")
         except ValueError:
             get_logger("user").error("malformed answer!")
         except KeyError:

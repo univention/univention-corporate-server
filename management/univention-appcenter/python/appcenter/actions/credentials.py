@@ -106,7 +106,7 @@ class CredentialsAction(UniventionAppAction):
 
     def _get_password_for(self, username):
         try:
-            return getpass('Password for %s: ' % username)
+            return getpass(f'Password for {username}: ')
         except (EOFError, KeyboardInterrupt):
             raise CredentialsNoPasswordError()
 
@@ -131,7 +131,7 @@ class CredentialsAction(UniventionAppAction):
         if users:
             return users[0].dn
         else:
-            self.fatal('Cannot find user %s' % username)
+            self.fatal(f'Cannot find user {username}')
 
     def _get_machine_connection(self):
         try:

@@ -176,7 +176,7 @@ class Instance(Base):
         as an array that can be directly passed on to the
         _shell_command() method
         """
-        args = ['/usr/bin/cancel', '-U', '%s$' % ucr.get('hostname')]
+        args = ['/usr/bin/cancel', '-U', f'{ucr.get("hostname")}$']
         for job in jobs:
             args.append(job)
         args.append(printer)

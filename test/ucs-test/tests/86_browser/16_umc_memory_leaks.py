@@ -33,7 +33,7 @@ def test_umc_memory_leaks(umc_browser_test: UMCBrowserTest):
     dijit_map_json = json.loads(dijit_map)
     assert len(dijit_map_json) > 0
 
-    logger.info("Inital dijit registry map: %s" % pp.pprint(dijit_map_json))
+    logger.info(f"Inital dijit registry map: {pp.pprint(dijit_map_json)}")
 
     umc_browser_test.open_all_modules(4)
 

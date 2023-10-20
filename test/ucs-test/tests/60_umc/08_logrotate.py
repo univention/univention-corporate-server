@@ -18,7 +18,7 @@ class Test_LogrotationReload:
     LOGFILE = '/var/log/univention/management-console-server.log'
 
     def pid(self):
-        pids = [int(pid) for pid in check_output(['pgrep', '-x', '-f', r'^/usr/bin/python3.*%s.*' % (self.SERVICE,)]).decode('UTF-8').splitlines() if pid.strip()]
+        pids = [int(pid) for pid in check_output(['pgrep', '-x', '-f', fr'^/usr/bin/python3.*{self.SERVICE}.*']).decode('UTF-8').splitlines() if pid.strip()]
         assert len(pids) == 1
         return pids[0]
 

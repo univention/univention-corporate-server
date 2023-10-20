@@ -135,9 +135,9 @@ def update():
             if not file.endswith('.py') or file.startswith('__'):
                 continue
             package = os.path.join(dir, file)[len(root) + 1:-len('.py')]
-            ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % (package,))
+            ud.debug(ud.ADMIN, ud.INFO, f'admin.modules.update: importing "{package}"')
             modulepackage = '.'.join(package.split(os.path.sep))
-            m = importlib.import_module('univention.admin.handlers.%s' % (modulepackage,))  # type: Any
+            m = importlib.import_module(f'univention.admin.handlers.{modulepackage}')  # type: Any
             m.initialized = False
             if not hasattr(m, 'module'):
                 ud.debug(ud.ADMIN, ud.ERROR, 'admin.modules.update: attribute "module" is missing in module %r' % (modulepackage,))
@@ -236,7 +236,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 
     # get defaults from template
     if template_object:
-        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got template object %s' % template_object.dn)
+        ud.debug(ud.ADMIN, ud.INFO, f'modules_init: got template object {template_object.dn}')
         template_object.open()
 
         # add template defaults
@@ -248,7 +248,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
             elif key not in {"name", "description"}:  # these keys are part of the template itself
                 module.property_descriptions[key].base_default = copy.copy(tmpl)
                 module.property_descriptions[key].templates.append(template_object)
-        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions)
+        ud.debug(ud.ADMIN, ud.INFO, f'modules_init: module.property_description after template: {module.property_descriptions}')
     else:
         ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got no template')
 
@@ -266,15 +266,15 @@ def update_extended_options(lo, module, position):
     """Overwrite options defined via |LDAP|."""
     # get current language
     lang = locale.getlocale(locale.LC_MESSAGES)[0]
-    ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_options: LANG=%s' % lang)
+    ud.debug(ud.ADMIN, ud.INFO, f'modules update_extended_options: LANG={lang}')
 
     module_filter = filter_format('(univentionUDMOptionModule=%s)', [name(module)])
     if name(module) == 'settings/usertemplate':
-        module_filter = '(|(univentionUDMOptionModule=users/user)%s)' % (module_filter,)
+        module_filter = f'(|(univentionUDMOptionModule=users/user){module_filter})'
 
     # append UDM extended options
     new_options = copy.copy(module.options) if hasattr(module, 'options') else {}
-    for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
+    for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter=f'(&(objectClass=univentionUDMOption){module_filter})'):
         oname = attrs['cn'][0].decode('UTF-8', 'replace')
         shortdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationShortDescription;entry-%s', 'univentionUDMOptionShortDescription')
         longdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationLongDescription;entry-%s', 'univentionUDMOptionLongDescription')
@@ -375,10 +375,10 @@ def update_extended_attributes(lo, module, position):
 
     module_filter = filter_format('(univentionUDMPropertyModule=%s)', [name(module)])
     if name(module) == 'settings/usertemplate':
-        module_filter = '(|(univentionUDMPropertyModule=users/user)%s)' % (module_filter,)
+        module_filter = f'(|(univentionUDMPropertyModule=users/user){module_filter})'
 
     new_property_descriptions = copy.copy(module.property_descriptions)
-    for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
+    for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter=f'(&(objectClass=univentionUDMProperty){module_filter}(univentionUDMPropertyVersion=2))'):
         # get CLI name
         pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
         object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0].decode('UTF-8', 'replace')
@@ -450,7 +450,7 @@ def update_extended_attributes(lo, module, position):
 
         # get current language
         lang = locale.getlocale(locale.LC_MESSAGES)[0]
-        ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: LANG = %s' % str(lang))
+        ud.debug(ud.ADMIN, ud.INFO, f'modules update_extended_attributes: LANG = {str(lang)}')
 
         # get descriptions
         shortdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationShortDescription;entry-%s', 'univentionUDMPropertyShortDescription')
@@ -506,7 +506,7 @@ def update_extended_attributes(lo, module, position):
             # add tab name to list if missing
             if tabname not in properties4tabs and not layoutDisabled:
                 properties4tabs[tabname] = []
-                ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: custom fields init for tab %s' % tabname)
+                ud.debug(ud.ADMIN, ud.INFO, f'modules update_extended_attributes: custom fields init for tab {tabname}')
 
             # remember tab for purging if required
             if overwriteTab and tabname not in overwriteTabList and not layoutDisabled:
@@ -521,7 +521,7 @@ def update_extended_attributes(lo, module, position):
                     if priority < 1:
                         priority = -1
                 except ValueError:
-                    ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
+                    ud.debug(ud.ADMIN, ud.WARN, f'modules update_extended_attributes: custom field for tab {tabname}: failed to convert tabNumber to int')
                     priority = -1
 
                 if priority == -1 and properties4tabs[tabname]:
@@ -666,7 +666,7 @@ def identify(dn, attr, module_name='', canonical=0, module_base=None):
             if module_base is not None and not name.startswith(module_base):
                 continue
             if not hasattr(module, 'identify'):
-                ud.debug(ud.ADMIN, ud.INFO, 'module %s does not provide identify' % module)
+                ud.debug(ud.ADMIN, ud.INFO, f'module {module} does not provide identify')
                 continue
 
             if (not module_name or module_name == module.module) and module.identify(dn, attr):
@@ -674,7 +674,7 @@ def identify(dn, attr, module_name='', canonical=0, module_base=None):
     if not res:
         ud.debug(ud.ADMIN, ud.INFO, 'object could not be identified')
     for r in res:
-        ud.debug(ud.ADMIN, ud.INFO, 'identify: found module %s on %s' % (r.module, dn))
+        ud.debug(ud.ADMIN, ud.INFO, f'identify: found module {r.module} on {dn}')
     return res
 
 
@@ -1137,7 +1137,7 @@ def defaultContainers(module):
     :returns: a list of DNs.
     """
     base = configRegistry['ldap/base']
-    return ['%s,%s' % (rdn, base) for rdn in getattr(module, 'default_containers', [])]
+    return [f'{rdn},{base}' for rdn in getattr(module, 'default_containers', [])]
 
 
 def childModules(module_name):

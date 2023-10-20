@@ -54,10 +54,10 @@ def service_and_network():
         network = udm.create_object(
             'networks/network',
             name=random_name(),
-            network='%s.0' % (NET,),
+            network=f'{NET}.0',
             netmask='24',
             dhcpEntryZone=service,
-            ipRange='%s.2 %s.253' % (NET, NET))
+            ipRange=f'{NET}.2 {NET}.253')
 
         yield udm, service, network, NET
 
@@ -98,7 +98,7 @@ class Test_ComputerAllRoles:
     @pytest.mark.tags('udm', 'udm-computers')
     def test_all_roles_check_nagios(self, udm, lo, verify_ldap_object, role):
         """Validate nagios for all computer roles"""
-        forwardZone = udm.create_object('dns/forward_zone', zone='%s.%s' % (random_name(), random_name()), nameserver=random_string(numeric=False))
+        forwardZone = udm.create_object('dns/forward_zone', zone=f'{random_name()}.{random_name()}', nameserver=random_string(numeric=False))
         nagiosService = udm.create_object('nagios/service', name=random_name(), checkCommand=random_string())
 
         computerProperties = {
@@ -136,9 +136,9 @@ class Test_ComputerAllRoles:
             'name': random_name(),
         }
 
-        dNSCn = 'cn=dns,%s' % (ucr.get('ldap/base'),)
+        dNSCn = f'cn=dns,{ucr.get("ldap/base")}'
 
-        forwardZoneName = '%s.%s' % (random_name(), random_name())
+        forwardZoneName = f'{random_name()}.{random_name()}'
         forwardZone = udm.create_object('dns/forward_zone', zone=forwardZoneName, position=dNSCn, nameserver=random_string(numeric=False))
         reverseZone = udm.create_object('dns/reverse_zone', subnet=ip_subnet, position=dNSCn, nameserver=random_string(numeric=False))
         dhcpService = udm.create_object('dhcp/service', service=random_name())
@@ -170,18 +170,18 @@ class Test_ComputerAllRoles:
         assert aRecord or aaaRecord
 
         if aRecord:
-            assert aRecord in ['%s.%s' % (ip_subnet, oktett) for oktett in range(2, 255)], 'IP address of computer not in range of its network'
+            assert aRecord in [f'{ip_subnet}.{oktett}' for oktett in range(2, 255)], 'IP address of computer not in range of its network'
 
             verify_ldap_object(
-                'relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone),
+                f'relativeDomainName={computerProperties["name"]},{forwardZone}',
                 {'aRecord': [aRecord]},
             )
             verify_ldap_object(
-                'relativeDomainName=%s,%s' % (aRecord.split(".")[-1], reverseZone),
-                {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]},
+                f'relativeDomainName={aRecord.split(".")[-1]},{reverseZone}',
+                {'pTRRecord': [f'{computerProperties["name"]}.{forwardZoneName}.']},
             )
             verify_ldap_object(
-                'cn=%s,%s' % (computerProperties['name'], dhcpService),
+                f'cn={computerProperties["name"]},{dhcpService}',
                 {'univentionDhcpFixedAddress': [aRecord]},
             )
 
@@ -189,15 +189,15 @@ class Test_ComputerAllRoles:
             assert aaaRecord in ['%s:0000:0000:0000:%0.4x' % (ip_subnet, oktett) for oktett in range(2, 255)], 'IP address of computer not in range of its network'
 
             verify_ldap_object(
-                'relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone),
+                f'relativeDomainName={computerProperties["name"]},{forwardZone}',
                 {'aAAARecord': [aaaRecord]},
             )
             verify_ldap_object(
                 'relativeDomainName=%s,%s' % ('.'.join(reversed(''.join(aaaRecord.split(':')[4:]))), reverseZone),
-                {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]},
+                {'pTRRecord': [f'{computerProperties["name"]}.{forwardZoneName}.']},
             )
             verify_ldap_object(
-                'cn=%s,%s' % (computerProperties['name'], dhcpService),
+                f'cn={computerProperties["name"]},{dhcpService}',
                 {'univentionDhcpFixedAddress': [str(ipaddress.IPv6Address(aaaRecord))]},
             )
 
@@ -215,15 +215,15 @@ class Test_ComputerAllRoles:
             'mac': '01:23:45:67:89:ac',
         }
 
-        lockContainer = 'cn=temporary,cn=univention,%s' % ucr['ldap/base']
+        lockContainer = f'cn=temporary,cn=univention,{ucr["ldap/base"]}'
 
         computer = udm.create_object(role, name=random_name(), **properties)
-        verify_ldap_object('cn=%s,cn=aRecord,%s' % (properties['ip'], lockContainer), should_exist=False)
-        verify_ldap_object('cn=%s,cn=mac,%s' % (properties['mac'], lockContainer), should_exist=False)
+        verify_ldap_object(f'cn={properties["ip"]},cn=aRecord,{lockContainer}', should_exist=False)
+        verify_ldap_object(f'cn={properties["mac"]},cn=mac,{lockContainer}', should_exist=False)
 
         udm.modify_object(role, dn=computer, **newProperties)
-        verify_ldap_object('cn=%s,cn=aRecord,%s' % (newProperties['ip'], lockContainer), should_exist=False)
-        verify_ldap_object('cn=%s,cn=mac,%s' % (newProperties['mac'], lockContainer), should_exist=False)
+        verify_ldap_object(f'cn={newProperties["ip"]},cn=aRecord,{lockContainer}', should_exist=False)
+        verify_ldap_object(f'cn={newProperties["mac"]},cn=mac,{lockContainer}', should_exist=False)
 
     @pytest.mark.tags('udm', 'udm-computers', 'apptest')
     def test_all_roles_modification_append_macs(self, udm, verify_ldap_object, role):
@@ -283,9 +283,9 @@ class Test_ComputerAllRoles:
             'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones],
         })
         for service, ip, mac in dhcpEntryZones:
-            verify_ldap_object('cn=%s,%s' % (computerName, service), {
+            verify_ldap_object(f'cn={computerName},{service}', {
                 'univentionDhcpFixedAddress': [ip],
-                'dhcpHWAddress': ['ethernet %s' % mac],
+                'dhcpHWAddress': [f'ethernet {mac}'],
             })
 
         udm.modify_object(role, dn=computer, remove={
@@ -299,7 +299,7 @@ class Test_ComputerAllRoles:
         for service, ip, mac in dhcpEntryZones[2:]:
             verify_ldap_object('cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service), {
                 'univentionDhcpFixedAddress': [ip],
-                'dhcpHWAddress': ['ethernet %s' % mac],
+                'dhcpHWAddress': [f'ethernet {mac}'],
             })
 
     @pytest.mark.tags('udm', 'udm-computers', 'apptest')
@@ -330,7 +330,7 @@ class Test_ComputerAllRoles:
         computer = udm.create_object(
             role,
             options=['posix', 'nagios'],
-            dnsEntryZoneForward=udm.create_object('dns/forward_zone', zone='%s.%s' % (random_name(), random_name()), nameserver=random_string(numeric=False)),
+            dnsEntryZoneForward=udm.create_object('dns/forward_zone', zone=f'{random_name()}.{random_name()}', nameserver=random_string(numeric=False)),
             name=computerName,
             ip=computerIp,
             wait_for=True,
@@ -391,7 +391,7 @@ class Test_ComputerAllRoles:
         # verify
         dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(computerName), service)
         expected = {
-            'dhcpHWAddress': ['ethernet %s' % (mac,)],
+            'dhcpHWAddress': [f'ethernet {mac}'],
             'univentionObjectType': ['dhcp/host'],
         }
         if ip:
@@ -460,9 +460,9 @@ class Test_ComputerAllRoles:
             })
             for i, (service, ip, mac) in enumerate(dhcpEntryZones, -1):
                 addon = '' if i < 0 else '_uv%d' % (i,)
-                verify_ldap_object('cn=%s%s,%s' % (computerName, addon, service), {
+                verify_ldap_object(f'cn={computerName}{addon},{service}', {
                     'univentionDhcpFixedAddress': [ip],
-                    'dhcpHWAddress': ['ethernet %s' % mac],
+                    'dhcpHWAddress': [f'ethernet {mac}'],
                 })
 
             udm.modify_object(role, dn=computer, remove={
@@ -478,13 +478,13 @@ class Test_ComputerAllRoles:
                 addon = '' if i < 0 else '_uv%d' % (i,)
                 verify_ldap_object('cn=%s%s,%s' % (ldap.dn.escape_dn_chars(computerName), addon, service), {
                     'univentionDhcpFixedAddress': [ip],
-                    'dhcpHWAddress': ['ethernet %s' % mac],
+                    'dhcpHWAddress': [f'ethernet {mac}'],
                 })
 
     @pytest.mark.tags('udm', 'udm-computers', 'apptest')
     def test_all_roles_univentionLastUsedValue(self, udm, ucr, lo, verify_ldap_object, wait_for_replication_cleanup, role):
         """Create minimal object for all computer roles and check univentionLastUsedValue"""
-        luv_dn = 'cn=uidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
+        luv_dn = f'cn=uidNumber,cn=temporary,cn=univention,{ucr.get("ldap/base")}'
 
         lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
         computer_dn = udm.create_object(role, name=random_string(), wait_for_replication=False)
@@ -531,15 +531,15 @@ class Test_ComputerRolesExceptMacos:
         properties = {
             'name': random_name(),
             'description': random_string(),
-            'mac': '01:23:45:67:89:%s' % rand_mac,
+            'mac': f'01:23:45:67:89:{rand_mac}',
             'network': udm.create_object('networks/network', name=random_name(), network='10.20.30.0', netmask='24'),
-            'ip': '10.20.30.%s' % rand_ip,
-            'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone='%s.%s' % (random_name(), random_name()), nameserver=random_string(numeric=False)),
+            'ip': f'10.20.30.{rand_ip}',
+            'dnsEntryZoneForward': udm.create_object('dns/forward_zone', zone=f'{random_name()}.{random_name()}', nameserver=random_string(numeric=False)),
             'dnsEntryZoneReverse': udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver=random_string(numeric=False)),
             'inventoryNumber': random_string(),
-            'domain': '%s.%s' % (random_name(), random_name()),
+            'domain': f'{random_name()}.{random_name()}',
         }
-        properties['dhcpEntryZone'] = '%s %s %s' % (dhcpZone, properties['ip'], properties['mac'])
+        properties['dhcpEntryZone'] = f'{dhcpZone} {properties["ip"]} {properties["mac"]}'
 
         expectedLdap = {
             'cn': [properties['name']],
@@ -562,7 +562,7 @@ class Test_ComputerRolesExceptMacos:
             expectedLdap['loginShell'] = [properties['shell']]
             expectedLdap['sambaPrimaryGroupSID'] = [lo.getAttr(properties['primaryGroup'], 'sambaSID')[0]]
             expectedLdap['homeDirectory'] = [properties['unixhome']]
-            expectedLdap['uid'] = ['%s$' % properties['name']]
+            expectedLdap['uid'] = [f'{properties["name"]}$']
             expectedLdap['displayName'] = [properties['name']]
             expectedLdap['sambaNTPassword'] = [passlib.hash.nthash.hash(properties['password'].lower()).upper()]
             expectedLdap['krb5PrincipalName'] = [b'host/%s.%s@%s' % (properties['name'].encode('UTF-8'), properties['domain'].lower().encode('UTF-8'), lo.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
@@ -584,8 +584,8 @@ class Test_ComputerRolesExceptMacos:
         verify_ldap_object(computer_DN, expectedLdap)
 
         # validate related DHCP host object
-        verify_ldap_object('cn=%s,%s' % (properties['name'], dhcpZone), {
-            'dhcpHWAddress': ['ethernet %s' % properties['mac']],
+        verify_ldap_object(f'cn={properties["name"]},{dhcpZone}', {
+            'dhcpHWAddress': [f'ethernet {properties["mac"]}'],
             'univentionDhcpFixedAddress': [properties['ip']],
         })
 
@@ -610,14 +610,14 @@ class Test_ComputerRolesExceptMacos:
             computer_sambaSID = lo.getAttr(computer_DN, 'sambaSID')[0].decode('ASCII')
             udm.addCleanupLock('sid', computer_sambaSID)
             if utils.s4connector_present():
-                assert computer_sambaSID.startswith('S-1-4'), '"sambaSID" of %s did not start with "S-1-4-" as expected' % computer_DN
+                assert computer_sambaSID.startswith('S-1-4'), f'"sambaSID" of {computer_DN} did not start with "S-1-4-" as expected'
             else:
                 sambaDomainSID = lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0].decode('ASCII')
-                assert computer_sambaSID.startswith(sambaDomainSID), '"sambaSID" of %s did not start with "%s" as expected' % (computer_DN, sambaDomainSID)
+                assert computer_sambaSID.startswith(sambaDomainSID), f'"sambaSID" of {computer_DN} did not start with "{sambaDomainSID}" as expected'
 
             # validate group memberships
             for group in [properties['primaryGroup']] + properties['groups']:
-                verify_ldap_object(group, {'memberUid': ['%s$' % properties['name']], 'uniqueMember': [computer_DN]})
+                verify_ldap_object(group, {'memberUid': [f'{properties["name"]}$'], 'uniqueMember': [computer_DN]})
 
     @pytest.mark.skip(reason="Fails due to a bug in the UDM-CLI, see Bug #25163. Issues when running on AWS instances, see Bug #37365 git:8666c032e7e")
     @pytest.mark.tags('udm', 'udm-computers')
@@ -631,9 +631,9 @@ class Test_ComputerRolesExceptMacos:
             'name': random_name(),
         }
 
-        dNSCn = 'cn=dns,%s' % (ucr.get('ldap/base'),)
+        dNSCn = f'cn=dns,{ucr.get("ldap/base")}'
 
-        forwardZoneName = '%s.%s' % (random_name(), random_name())
+        forwardZoneName = f'{random_name()}.{random_name()}'
 
         forwardZone = udm.create_object('dns/forward_zone', zone=forwardZoneName, position=dNSCn, nameserver=random_string(numeric=False))
         reverseZone = udm.create_object('dns/reverse_zone', subnet='10.20.30', position=dNSCn, nameserver=random_string(numeric=False))
@@ -659,20 +659,20 @@ class Test_ComputerRolesExceptMacos:
         # verify that properties have been adopted correctly during creation
         verify_ldap_object(computer, {'univentionNetworkLink': [network]})
 
-        assert aRecord in ['10.20.30.%s' % str(oktett) for oktett in range(2, 255)], "IP address of computer not in range of it's network"
+        assert aRecord in [f'10.20.30.{str(oktett)}' for oktett in range(2, 255)], "IP address of computer not in range of it's network"
 
         verify_ldap_object(
-            'relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone),
+            f'relativeDomainName={computerProperties["name"]},{forwardZone}',
             {'aRecord': [aRecord]},
         )
 
         verify_ldap_object(
-            'relativeDomainName=%s,%s' % (aRecord.split(".")[-1], reverseZone),
-            {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]},
+            f'relativeDomainName={aRecord.split(".")[-1]},{reverseZone}',
+            {'pTRRecord': [f'{computerProperties["name"]}.{forwardZoneName}.']},
         )
 
         verify_ldap_object(
-            'cn=%s,%s' % (computerProperties['name'], dhcpService),
+            f'cn={computerProperties["name"]},{dhcpService}',
             {'univentionDhcpFixedAddress': [aRecord]},
         )
 
@@ -694,7 +694,7 @@ class Test_ComputerRolesExceptIpmanagedclient:
         utils.wait_for_connector_replication()
         # validate group memberships set during modification
         for group in groups:
-            verify_ldap_object(group, {'memberUid': ['%s$' % computerName], 'uniqueMember': [computer]})
+            verify_ldap_object(group, {'memberUid': [f'{computerName}$'], 'uniqueMember': [computer]})
 
         udm.modify_object(role, dn=computer, remove={'groups': groups[:2]})
         utils.wait_for_connector_replication()
@@ -704,7 +704,7 @@ class Test_ComputerRolesExceptIpmanagedclient:
 
         # validate that the other group memberships are still unimpaired after seccond modification
         for group in groups[2:]:
-            verify_ldap_object(group, {'memberUid': ['%s$' % computerName], 'uniqueMember': [computer]})
+            verify_ldap_object(group, {'memberUid': [f'{computerName}$'], 'uniqueMember': [computer]})
 
     def test_all_roles_modification_unixhome(self, udm, verify_ldap_object, role):
         """Test modifying unixhome for all computer roles (except computers/ipmanagedclient)"""
@@ -772,20 +772,20 @@ def test_windows_check_ntCompatibility(udm, verify_ldap_object):
 @pytest.mark.exposure('careful')
 def test_modify_dns_forward_zone_ptr_record(udm, lo):
     """Check if modifying the DNS forward zone of a computer only affects PTR records related to him"""
-    dnsZone = udm.create_object('dns/forward_zone', zone='%s.%s' % (random_string(numeric=False), random_string(numeric=False)), nameserver='univention')
-    dnsZone2 = udm.create_object('dns/forward_zone', zone='%s.%s' % (random_string(numeric=False), random_string(numeric=False)), nameserver='univention')
+    dnsZone = udm.create_object('dns/forward_zone', zone=f'{random_string(numeric=False)}.{random_string(numeric=False)}', nameserver='univention')
+    dnsZone2 = udm.create_object('dns/forward_zone', zone=f'{random_string(numeric=False)}.{random_string(numeric=False)}', nameserver='univention')
 
     rdnsZone = udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver='univention')
     rdnsZone2 = udm.create_object('dns/reverse_zone', subnet='10.20', nameserver='univention')
 
-    ptrRecordEntry = '%s.%s.%s.' % (random_string(numeric=False), random_string(numeric=False), random_string(numeric=False))
+    ptrRecordEntry = f'{random_string(numeric=False)}.{random_string(numeric=False)}.{random_string(numeric=False)}.'
     udm.create_object('dns/ptr_record', superordinate=rdnsZone, address='40', ptr_record=ptrRecordEntry)
 
     computerName = random_string()
-    computer = udm.create_object('computers/windows', name=computerName, ip='10.20.40.40', dnsEntryZoneForward='%s 10.20.40.40' % dnsZone, dnsEntryZoneReverse='%s 10.20.40.40' % rdnsZone2)
-    udm.modify_object('computers/windows', dn=computer, dnsEntryZoneForward='%s 10.20.40.40' % dnsZone2)
+    computer = udm.create_object('computers/windows', name=computerName, ip='10.20.40.40', dnsEntryZoneForward=f'{dnsZone} 10.20.40.40', dnsEntryZoneReverse=f'{rdnsZone2} 10.20.40.40')
+    udm.modify_object('computers/windows', dn=computer, dnsEntryZoneForward=f'{dnsZone2} 10.20.40.40')
 
-    ptr = lo.search(filter='(&(relativeDomainName=40)(pTRRecord=%s))' % ptrRecordEntry)[0][1]['pTRRecord']
+    ptr = lo.search(filter=f'(&(relativeDomainName=40)(pTRRecord={ptrRecordEntry}))')[0][1]['pTRRecord']
     for entry in ptr:
         assert not entry.startswith(computerName.encode('UTF-8')), 'Found entry of the modified computer in the PTR record. PTR: %r' % ptr
 
@@ -795,16 +795,16 @@ def test_modify_dns_forward_zone_ptr_record(udm, lo):
 @pytest.mark.exposure('careful')
 def test_modify_ip_ptr_record(udm, lo):
     """Check if modifying the DNS forward zone of a computer only affects PTR records related to him"""
-    dnsZone = udm.create_object('dns/forward_zone', zone='%s.%s' % (random_string(numeric=False), random_string(numeric=False)), nameserver='univention')
+    dnsZone = udm.create_object('dns/forward_zone', zone=f'{random_string(numeric=False)}.{random_string(numeric=False)}', nameserver='univention')
     rdnsZone = udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver='univention')
 
-    ptrRecordEntry = '%s.%s.%s.' % (random_string(numeric=False), random_string(numeric=False), random_string(numeric=False))
+    ptrRecordEntry = f'{random_string(numeric=False)}.{random_string(numeric=False)}.{random_string(numeric=False)}.'
     udm.create_object('dns/ptr_record', superordinate=rdnsZone, address='50', ptr_record=ptrRecordEntry)
 
-    computer = udm.create_object('computers/windows', name=random_string(), ip='10.20.30.60', dnsEntryZoneForward='%s 10.20.30.60' % dnsZone, dnsEntryZoneReverse='%s 10.20.30.60' % rdnsZone)
+    computer = udm.create_object('computers/windows', name=random_string(), ip='10.20.30.60', dnsEntryZoneForward=f'{dnsZone} 10.20.30.60', dnsEntryZoneReverse=f'{rdnsZone} 10.20.30.60')
     udm.modify_object('computers/windows', dn=computer, ip='10.20.30.50')
 
-    ptr = lo.search(filter='(&(relativeDomainName=50)(pTRRecord=%s))' % ptrRecordEntry)
+    ptr = lo.search(filter=f'(&(relativeDomainName=50)(pTRRecord={ptrRecordEntry}))')
     assert len(ptr) >= 1, 'Test FAILED. Could not find PTR record created anymore after modifying computers IP'
 
 
@@ -820,11 +820,11 @@ def test_concurrent_rename_and_group_change(udm, verify_ldap_object):
     computerdn = udm.create_object('computers/ubuntu', name=random_string(), groups=[groupdn_a, groupdn_b])
     verify_ldap_object(groupdn_a, {'uniqueMember': [computerdn]})
     verify_ldap_object(groupdn_b, {'uniqueMember': [computerdn]})
-    print('created %s in %s and %s' % (computerdn, groupdn_a, groupdn_b))
+    print(f'created {computerdn} in {groupdn_a} and {groupdn_b}')
 
     new_name = random_string()
     computerdn_new = udm.modify_object('computers/ubuntu', dn=computerdn, name=new_name, remove={'groups': [groupdn_a]}, append={'groups': [groupdn_c]})
-    print('moved to %s' % (computerdn_new,))
+    print(f'moved to {computerdn_new}')
     verify_ldap_object(computerdn, should_exist=False)
     verify_ldap_object(computerdn_new, should_exist=True)
     verify_ldap_object(groupdn_b, {'uniqueMember': [computerdn_new]})
@@ -840,32 +840,32 @@ def test_removal_of_leftover_ptr_record_with_multiple_ip_addresses(udm, verify_l
     # bugs: [44710, 51736]
     domainname = random_string(numeric=False)
     tld = random_string(numeric=False)
-    dnsZone1 = udm.create_object('dns/forward_zone', zone='%s.%s' % (domainname, tld), nameserver='univention')
-    dnsZone2 = udm.create_object('dns/forward_zone', zone='%s2.%s' % (domainname, tld), nameserver='univention')
+    dnsZone1 = udm.create_object('dns/forward_zone', zone=f'{domainname}.{tld}', nameserver='univention')
+    dnsZone2 = udm.create_object('dns/forward_zone', zone=f'{domainname}2.{tld}', nameserver='univention')
     rdnsZone = udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver='univention')
 
     computer_name = random_string()
-    computer = udm.create_object('computers/windows', name=computer_name, ip='10.20.30.60', dnsEntryZoneForward='%s 10.20.30.60' % dnsZone1, dnsEntryZoneReverse='%s 10.20.30.60' % rdnsZone)
-    udm.modify_object('computers/windows', dn=computer, append={'dnsEntryZoneForward': ['%s 10.20.30.60' % dnsZone2]})
+    computer = udm.create_object('computers/windows', name=computer_name, ip='10.20.30.60', dnsEntryZoneForward=f'{dnsZone1} 10.20.30.60', dnsEntryZoneReverse=f'{rdnsZone} 10.20.30.60')
+    udm.modify_object('computers/windows', dn=computer, append={'dnsEntryZoneForward': [f'{dnsZone2} 10.20.30.60']})
 
-    ptr_record = 'relativeDomainName=60,%s' % (rdnsZone,)
+    ptr_record = f'relativeDomainName=60,{rdnsZone}'
     udm._cleanup.setdefault('dns/ptr_record', []).append(ptr_record)  # Workaround for being able to modify it:
-    udm.modify_object('dns/ptr_record', dn=ptr_record, append={'ptr_record': ['%s.%s2.%s.' % (computer_name, domainname, tld)]})
+    udm.modify_object('dns/ptr_record', dn=ptr_record, append={'ptr_record': [f'{computer_name}.{domainname}2.{tld}.']})
 
     remove = {
-        'dnsEntryZoneForward': ['%s 10.20.30.60' % dnsZone1, '%s 10.20.30.60' % dnsZone2],
-        'dnsEntryZoneReverse': ['%s 10.20.30.60' % rdnsZone],
+        'dnsEntryZoneForward': [f'{dnsZone1} 10.20.30.60', f'{dnsZone2} 10.20.30.60'],
+        'dnsEntryZoneReverse': [f'{rdnsZone} 10.20.30.60'],
     }
     append = {
-        'dnsEntryZoneForward': ['%s 10.20.30.6' % dnsZone1, '%s 10.20.30.6' % dnsZone2],
-        'dnsEntryZoneReverse': ['%s 10.20.30.6' % rdnsZone],
+        'dnsEntryZoneForward': [f'{dnsZone1} 10.20.30.6', f'{dnsZone2} 10.20.30.6'],
+        'dnsEntryZoneReverse': [f'{rdnsZone} 10.20.30.6'],
     }
     udm.modify_object('computers/windows', dn=computer, ip='10.20.30.6', remove=remove, append=append)
     verify_ldap_object(ptr_record, should_exist=False)
-    verify_ldap_object('relativeDomainName=6,%s' % (rdnsZone,), {
+    verify_ldap_object(f'relativeDomainName=6,{rdnsZone}', {
         'pTRRecord': [
-            ('%s.%s.%s.' % (computer_name, domainname, tld)).encode('UTF-8'),
-            ('%s.%s2.%s.' % (computer_name, domainname, tld)).encode('UTF-8')],
+            f'{computer_name}.{domainname}.{tld}.'.encode('UTF-8'),
+            f'{computer_name}.{domainname}2.{tld}.'.encode('UTF-8')],
     })
 
 
@@ -879,7 +879,7 @@ def test_removal_of_leftover_ptr_record_with_multiple_ip_addresses(udm, verify_l
 def test_remove_ipv4_ptr(udm, remove_ip, expected_ptr, verify_ldap_object):
     """Removing one of multiple DNS PTR RR works"""
     # bugs: [53213]
-    domainname = '%s.%s' % (random_string(numeric=False), random_string(numeric=False))
+    domainname = f'{random_string(numeric=False)}.{random_string(numeric=False)}'
     computerName = random_string()
 
     dnsZone = udm.create_object('dns/forward_zone', zone=domainname, nameserver='univention')
@@ -891,12 +891,12 @@ def test_remove_ipv4_ptr(udm, remove_ip, expected_ptr, verify_ldap_object):
         'computers/ipmanagedclient',
         name=computerName,
         ip=[IP4, IP6],
-        dnsEntryZoneForward=['%s %s' % (dnsZone, ip) for ip in (IP4, IP6)],
-        dnsEntryZoneReverse=['%s %s' % (zone, ip) for (zone, ip) in ((rdnsZone4, IP4), (rdnsZone6, IP6))],
+        dnsEntryZoneForward=[f'{dnsZone} {ip}' for ip in (IP4, IP6)],
+        dnsEntryZoneReverse=[f'{zone} {ip}' for (zone, ip) in ((rdnsZone4, IP4), (rdnsZone6, IP6))],
     )
     udm.modify_object('computers/ipmanagedclient', dn=computer, remove={'ip': [remove_ip]})
 
-    ptr_record = 'relativeDomainName=%s,%s' % (expected_ptr, rdnsZone6)
+    ptr_record = f'relativeDomainName={expected_ptr},{rdnsZone6}'
     verify_ldap_object(ptr_record, should_exist=False)
 
 
@@ -912,10 +912,10 @@ def test_create_empty_dhcp(udm):
         'computers/ipmanagedclient',
         name=computerName,
         mac=[MAC],
-        dhcpEntryZone=['%s %s %s' % (service, '', MAC)],
+        dhcpEntryZone=[f'{service} {""} {MAC}'],
     )
 
-    host = 'cn=%s,%s' % (computerName, service)
+    host = f'cn={computerName},{service}'
     ((dn, attr),) = udm._lo.search(
         filter='(objectClass=*)',
         base=host,

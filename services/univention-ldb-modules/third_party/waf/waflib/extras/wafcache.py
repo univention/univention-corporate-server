@@ -120,7 +120,7 @@ def can_retrieve_cache(self):
 			self.generator.bld.cache_hits += 1
 	else:
 		if WAFCACHE_VERBOSITY:
-			Logs.pprint('YELLOW', '  No cache entry %s' % files_to)
+			Logs.pprint('YELLOW', f'  No cache entry {files_to}')
 		else:
 			Logs.debug('wafcache: No cache entry %s: %s', files_to, err)
 		return False
@@ -167,14 +167,14 @@ def put_files_cache(self):
 		process_pool.append(proc)
 		if err.startswith(OK):
 			if WAFCACHE_VERBOSITY:
-				Logs.pprint('CYAN', '  Successfully uploaded %s to cache' % files_from)
+				Logs.pprint('CYAN', f'  Successfully uploaded {files_from} to cache')
 			else:
 				Logs.debug('wafcache: Successfully uploaded %r to cache', files_from)
 			if WAFCACHE_STATS:
 				bld.cache_puts += 1
 		else:
 			if WAFCACHE_VERBOSITY:
-				Logs.pprint('RED', '  Error caching step results %s: %s' % (files_from, err))
+				Logs.pprint('RED', f'  Error caching step results {files_from}: {err}')
 			else:
 				Logs.debug('wafcache: Error caching results %s: %s', files_from, err)
 
@@ -246,7 +246,7 @@ def make_cached(cls):
 	if getattr(cls, 'nocache', None) or getattr(cls, 'has_cache', False):
 		return
 
-	full_name = "%s.%s" % (cls.__module__, cls.__name__)
+	full_name = f"{cls.__module__}.{cls.__name__}"
 	if full_name in ('waflib.Tools.ccroot.vnum', 'waflib.Build.inst'):
 		return
 
@@ -318,7 +318,7 @@ def build(bld):
 
 				bld.wafcache_procs.clear()
 			else:
-				Logs.pprint('CYAN', '... waiting for wafcache uploads to complete (%s uploads)' % len(bld.wafcache_uploads))
+				Logs.pprint('CYAN', f'... waiting for wafcache uploads to complete ({len(bld.wafcache_uploads)} uploads)')
 			bld.wafcache_executor.shutdown(wait=True)
 		bld.add_post_fun(finalize_upload_async)
 
@@ -477,14 +477,14 @@ class netcache(object):
 		self.http = urllib3.PoolManager()
 
 	def url_of(self, sig, i):
-		return "%s/%s/%s" % (CACHE_DIR, sig, i)
+		return f"{CACHE_DIR}/{sig}/{i}"
 
 	def upload(self, file_path, sig, i):
 		url = self.url_of(sig, i)
 		with open(file_path, 'rb') as f:
 			file_data = f.read()
 		r = self.http.request('POST', url, timeout=60,
-			fields={ 'file': ('%s/%s' % (sig, i), file_data), })
+			fields={ 'file': (f'{sig}/{i}', file_data), })
 		if r.status >= 400:
 			raise OSError("Invalid status %r %r" % (url, r.status))
 

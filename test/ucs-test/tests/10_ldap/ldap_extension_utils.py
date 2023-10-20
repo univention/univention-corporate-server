@@ -54,7 +54,7 @@ def wait_for_ldap():
             pass
         else:
             if pinfo:
-                print("(%s) process is running now.\n" % pinfo[0])
+                print(f"({pinfo[0]}) process is running now.\n")
                 break
             else:
                 time.sleep(1)
@@ -70,7 +70,7 @@ def get_schema_name():
 
 
 def get_acl_name():
-    return '62%s' % random_name()
+    return f'62{random_name()}'
 
 
 def get_container_name():
@@ -86,7 +86,7 @@ def call_join_script(join_script_name):
     ucr = ConfigRegistry()
     ucr.load()
 
-    join_script = '/usr/lib/univention-install/%s' % join_script_name
+    join_script = f'/usr/lib/univention-install/{join_script_name}'
 
     return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False)
 
@@ -96,7 +96,7 @@ def call_unjoin_script(unjoin_script_name):
     ucr = ConfigRegistry()
     ucr.load()
 
-    join_script = '/usr/lib/univention-uninstall/%s' % unjoin_script_name
+    join_script = f'/usr/lib/univention-uninstall/{unjoin_script_name}'
 
     return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False)
 

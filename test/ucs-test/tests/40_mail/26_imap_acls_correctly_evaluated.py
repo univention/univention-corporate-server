@@ -24,7 +24,7 @@ def main():
         ucr_tmp = univention.config_registry.ConfigRegistry()
         ucr_tmp.load()
         domain = ucr_tmp.get('domainname').lower()  # remove lower() when Bug #39721 is fixed
-        host = '%s.%s' % (ucr_tmp.get('hostname'), domain)
+        host = f'{ucr_tmp.get("hostname")}.{domain}'
 
         cmd = ['/etc/init.d/dovecot', 'restart']
         with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
@@ -46,7 +46,7 @@ def main():
                             mails = []
                             users = []
                             for _i in range(3):
-                                usermail = '%s@%s' % (uts.random_name(), domain)
+                                usermail = f'{uts.random_name()}@{domain}'
                                 userdn, username = udm.create_user(
                                     set={
                                         'password': password,
@@ -59,7 +59,7 @@ def main():
                             token = str(time.time())
                             send_mail(recipients=mails, msg=token, port=587, tls=True, username=usermail, password=password, debuglevel=0)
                             check_delivery(token, mails[0], True)
-                            group_mail = '%s@%s' % (uts.random_name(), domain)
+                            group_mail = f'{uts.random_name()}@{domain}'
                             groupdn, groupname = udm.create_group(
                                 set={
                                     'users': users[1],
@@ -75,8 +75,8 @@ def main():
                                 'all': 'lrspiwcda',
                             }
 
-                            create_shared_mailfolder(udm, host, mailAddress=False, user_permission=['"%s" "%s"' % ('anyone', 'none')])
-                            create_shared_mailfolder(udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('anyone', 'none')])
+                            create_shared_mailfolder(udm, host, mailAddress=False, user_permission=[f'"{"anyone"}" "{"none"}"'])
+                            create_shared_mailfolder(udm, host, mailAddress=True, user_permission=[f'"{"anyone"}" "{"none"}"'])
                             utils.wait_for_replication()
 
                             owner_user = mails[0]
@@ -87,8 +87,7 @@ def main():
                                 imap.log_in(owner_user, password)
                                 mailboxs = imap.getMailBoxes()
                                 for mailbox in mailboxs:
-                                    print('** %s Mailbox = %s, Setting %s -> %s' % (
-                                        owner_user, mailbox, independent_user, permission))
+                                    print(f'** {owner_user} Mailbox = {mailbox}, Setting {independent_user} -> {permission}')
                                     imap.setacl(mailbox, independent_user, permission)
                                     imap2 = MailClient_SSL(host)
                                     imap2.log_in(independent_user, password)
@@ -97,13 +96,12 @@ def main():
                                 imap.logout()
 
                             group_user = mails[1]
-                            groupname = '$%s' % groupname
+                            groupname = f'${groupname}'
                             for permission in [permissions.get(x) for x in permissions]:
                                 imap = MailClient_SSL(host)
                                 imap.log_in(owner_user, password)
                                 mailbox = 'INBOX'
-                                print('** %s Mailbox = %s, Setting %s -> %s' % (
-                                    owner_user, mailbox, groupname, permission))
+                                print(f'** {owner_user} Mailbox = {mailbox}, Setting {groupname} -> {permission}')
                                 imap.setacl(mailbox, groupname, permission)
                                 time.sleep(20)
                                 imap2 = MailClient_SSL(host)

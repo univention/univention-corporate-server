@@ -62,27 +62,17 @@ class glib_genmarshal(Task.Task):
 		bld = self.generator.bld
 
 		get = self.env.get_flat
-		cmd1 = "%s %s --prefix=%s --header > %s" % (
-			get('GLIB_GENMARSHAL'),
-			self.inputs[0].srcpath(),
-			get('GLIB_GENMARSHAL_PREFIX'),
-			self.outputs[0].abspath()
-		)
+		cmd1 = f"{get('GLIB_GENMARSHAL')} {self.inputs[0].srcpath()} --prefix={get('GLIB_GENMARSHAL_PREFIX')} --header > {self.outputs[0].abspath()}"
 
 		ret = bld.exec_command(cmd1)
 		if ret:
 			return ret
 
 		#print self.outputs[1].abspath()
-		c = '''#include "%s"\n''' % self.outputs[0].name
+		c = f'''#include "{self.outputs[0].name}"\n'''
 		self.outputs[1].write(c)
 
-		cmd2 = "%s %s --prefix=%s --body >> %s" % (
-			get('GLIB_GENMARSHAL'),
-			self.inputs[0].srcpath(),
-			get('GLIB_GENMARSHAL_PREFIX'),
-			self.outputs[1].abspath()
-		)
+		cmd2 = f"{get('GLIB_GENMARSHAL')} {self.inputs[0].srcpath()} --prefix={get('GLIB_GENMARSHAL_PREFIX')} --body >> {self.outputs[1].abspath()}"
 		return bld.exec_command(cmd2)
 
 ########################## glib-mkenums
@@ -184,7 +174,7 @@ def process_enums(self):
 
 		if enum['template']: # template, if provided
 			template_node = self.path.find_resource(enum['template'])
-			options.append('--template %s' % (template_node.abspath()))
+			options.append(f'--template {(template_node.abspath())}')
 			inputs.append(template_node)
 		params = {'file-head' : '--fhead',
 		           'file-prod' : '--fprod',

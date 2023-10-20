@@ -103,8 +103,8 @@ class task_gen(object):
 		lst = []
 		for x in self.__dict__:
 			if x not in ('env', 'bld', 'compiled_tasks', 'tasks'):
-				lst.append("%s=%s" % (x, repr(getattr(self, x))))
-		return "bld(%s) in %s" % (", ".join(lst), self.path.abspath())
+				lst.append(f"{x}={repr(getattr(self, x))}")
+		return f"bld({', '.join(lst)}) in {self.path.abspath()}"
 
 	def get_cwd(self):
 		"""
@@ -224,7 +224,7 @@ class task_gen(object):
 		if prec:
 			buf = ['Cycle detected in the method execution:']
 			for k, v in prec.items():
-				buf.append('- %s after %s' % (k, [x for x in v if x in prec]))
+				buf.append(f'- {k} after {[x for x in v if x in prec]}')
 			raise Errors.WafError('\n'.join(buf))
 		self.meths = out
 

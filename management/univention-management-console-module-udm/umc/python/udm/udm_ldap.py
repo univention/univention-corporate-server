@@ -121,14 +121,14 @@ class AppAttributes(object):
 
     @classmethod
     def reload_cache(cls, module):
-        MODULE.info('Loading AppAttributes for %s...' % module)
+        MODULE.info(f'Loading AppAttributes for {module}...')
         cache = cls._read_cache_file()
         if cls._cache is None:
             cls._cache = {}
         module_cache = cache.get(module) or {}
         cls._cache[module] = module_cache
         if module_cache:
-            MODULE.info('Found for %s:' % module)
+            MODULE.info(f'Found for {module}:')
             for attr in module_cache:
                 MODULE.info('    %s and with it: %r' % (attr, module_cache[attr]['attributes']))
 
@@ -139,10 +139,10 @@ class AppAttributes(object):
             with open(cls.FNAME) as fd:
                 cache = load(fd)
         except EnvironmentError:
-            MODULE.warn('Error reading %s' % cls.FNAME)
+            MODULE.warn(f'Error reading {cls.FNAME}')
             cache = {}
         except ValueError:
-            MODULE.warn('Error parsing %s' % cls.FNAME)
+            MODULE.warn(f'Error parsing {cls.FNAME}')
             cache = {}
         else:
             cache = cache.get(current_locale) or cache.get('en_US') or {}
@@ -445,7 +445,7 @@ class UDM_Module(object):
         Depending on the syntax of the given property a default
         search pattern/value is returned
         """
-        MODULE.info('Searching for property %s' % property_name)
+        MODULE.info(f'Searching for property {property_name}')
         ldap_connection, ldap_position = self.get_ldap_connection()
         for key, prop in getattr(self.module, 'property_descriptions', {}).items():
             if key == property_name:
@@ -472,9 +472,9 @@ class UDM_Module(object):
         password_properties = self.password_properties
         for property_name, value in sorted(properties.items(), key=_tmp_cmp):
             if property_name in password_properties:
-                MODULE.info('Setting password property %s' % (property_name,))
+                MODULE.info(f'Setting password property {property_name}')
             else:
-                MODULE.info('Setting property %s to %s' % (property_name, value))
+                MODULE.info(f'Setting property {property_name} to {value}')
 
             property_obj = self.get_property(property_name)
             if property_obj is None:
@@ -538,7 +538,7 @@ class UDM_Module(object):
         if superordinate:
             _superordinate, mod = get_obj_module(self.name, superordinate, ldap_connection)
             if not mod:
-                MODULE.error('Superordinate module not found: %s' % (superordinate,))
+                MODULE.error(f'Superordinate module not found: {superordinate}')
                 raise SuperordinateDoesNotExist(superordinate)
             MODULE.info('Found UDM module for superordinate')
             superordinate = _superordinate
@@ -563,7 +563,7 @@ class UDM_Module(object):
 
             obj.create()
         except udm_errors.base as e:
-            MODULE.warn('Failed to create LDAP object: %s: %s' % (e.__class__.__name__, str(e)))
+            MODULE.warn(f'Failed to create LDAP object: {e.__class__.__name__}: {str(e)}')
             UDM_Error(e, obj.dn).reraise()
 
         return obj.dn
@@ -577,12 +577,12 @@ class UDM_Module(object):
             obj.open()
             # build new dn
             rdn = udm.uldap.explodeDn(ldap_dn)[0]
-            dest = '%s,%s' % (rdn, container)
-            MODULE.info('Moving LDAP object %s to %s' % (ldap_dn, dest))
+            dest = f'{rdn},{container}'
+            MODULE.info(f'Moving LDAP object {ldap_dn} to {dest}')
             obj.move(dest)
             return dest
         except udm_errors.base as e:
-            MODULE.warn('Failed to move LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
+            MODULE.warn(f'Failed to move LDAP object {ldap_dn}: {e.__class__.__name__}: {str(e)}')
             UDM_Error(e).reraise()
 
     def remove(self, ldap_dn, cleanup=False, recursive=False):
@@ -592,19 +592,19 @@ class UDM_Module(object):
         obj = self.module.object(None, ldap_connection, ldap_position, dn=ldap_dn, superordinate=superordinate)
         try:
             obj.open()
-            MODULE.info('Removing LDAP object %s' % ldap_dn)
+            MODULE.info(f'Removing LDAP object {ldap_dn}')
             obj.remove(remove_childs=recursive)
             if cleanup:
                 udm_objects.performCleanup(obj)
         except udm_errors.base as e:
-            MODULE.warn('Failed to remove LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
+            MODULE.warn(f'Failed to remove LDAP object {ldap_dn}: {e.__class__.__name__}: {str(e)}')
             UDM_Error(e).reraise()
 
     def modify(self, ldap_object):
         """Modifies a LDAP object"""
         ldap_connection, ldap_position = self.get_ldap_connection()
         superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_object['$dn$'])
-        MODULE.info('Modifying object %s with superordinate %s' % (ldap_object['$dn$'], superordinate))
+        MODULE.info(f'Modifying object {ldap_object["$dn$"]} with superordinate {superordinate}')
         obj = self.module.object(None, ldap_connection, ldap_position, dn=ldap_object.get('$dn$'), superordinate=superordinate)
         del ldap_object['$dn$']
 
@@ -631,9 +631,9 @@ class UDM_Module(object):
                         except ValueError:
                             pass
                 obj.options = options
-                MODULE.info('Setting new options to %s' % str(obj.options))
+                MODULE.info(f'Setting new options to {str(obj.options)}')
                 del ldap_object['$options$']
-            MODULE.info('Modifying LDAP object %s' % obj.dn)
+            MODULE.info(f'Modifying LDAP object {obj.dn}')
             if '$policies$' in ldap_object:
                 obj.policies = reduce(lambda x, y: x + y, ldap_object['$policies$'].values(), [])
                 del ldap_object['$policies$']
@@ -642,7 +642,7 @@ class UDM_Module(object):
 
             obj.modify()
         except udm_errors.base as e:
-            MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
+            MODULE.warn(f'Failed to modify LDAP object {obj.dn}: {e.__class__.__name__}: {str(e)}')
             UDM_Error(e).reraise()
 
     def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None, allow_asterisks=True):
@@ -657,7 +657,7 @@ class UDM_Module(object):
         else:
             filter_s = self._object_property_filter(attribute, value, hidden, allow_asterisks)
 
-        MODULE.info('Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % (container, filter_s, superordinate))
+        MODULE.info(f'Searching for LDAP objects: container = {container}, filter = {filter_s}, superordinate = {superordinate}')
         result = None
         try:
             sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000') or 2000)
@@ -710,14 +710,14 @@ class UDM_Module(object):
                 if superordinate is None:
                     superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_dn)
                 obj = self.module.object(None, ldap_connection, None, ldap_dn, superordinate, attributes=attributes)
-                MODULE.info('Found LDAP object %s' % obj.dn)
+                MODULE.info(f'Found LDAP object {obj.dn}')
                 obj.open()
             else:
                 obj = self.module.object(None, ldap_connection, None, '', superordinate, attributes=attributes)
         except (LDAPError, udm_errors.ldapError):
             raise
         except udm_errors.base as exc:
-            MODULE.info('Failed to retrieve LDAP object: %s' % (exc,))
+            MODULE.info(f'Failed to retrieve LDAP object: {exc}')
             if isinstance(exc, udm_errors.noObject) and superordinate and not ldap_connection.get(superordinate):
                 raise SuperordinateDoesNotExist(superordinate)
             UDM_Error(exc).reraise()
@@ -783,7 +783,7 @@ class UDM_Module(object):
         """Property of the UDM module that identifies objects of this type"""
         for key, prop in getattr(self.module, 'property_descriptions', {}).items():
             if prop.identifies:
-                MODULE.info('The property %s identifies to module objects %s' % (key, self.name))
+                MODULE.info(f'The property {key} identifies to module objects {self.name}')
                 return key
         return None
 
@@ -812,7 +812,7 @@ class UDM_Module(object):
             mod = UDM_Module(child, ldap_connection=ldap_connection, ldap_position=ldap_position)
             if not mod.module:
                 continue
-            MODULE.info('Found module %s' % str(mod))
+            MODULE.info(f'Found module {str(mod)}')
             modules.append({
                 'id': child,
                 'label': mod.title,
@@ -844,7 +844,7 @@ class UDM_Module(object):
 
     def obj_description(self, obj):
         description = None
-        description_property_name = ucr.get('directory/manager/web/modules/%s/display' % self.name)
+        description_property_name = ucr.get(f'directory/manager/web/modules/{self.name}/display')
         if description_property_name:
             description = self.property_description(obj, description_property_name)
         if not description:
@@ -1087,14 +1087,14 @@ class UDM_Module(object):
                 obj, module = get_obj_module(None, dn, ldap_connection)
                 if not module or not obj:
                     continue
-                label = '%s: %s' % (module.title, obj.description())
+                label = f'{module.title}: {obj.description()}'
                 references.append({
                     'module': 'udm',
                     'flavor': module.flavor or 'navigation',
                     'objectType': module.name,
                     'id': dn,
                     'label': label,
-                    'icon': 'udm-%s' % module.name.replace('/', '-'),
+                    'icon': f'udm-{module.name.replace("/", "-")}',
                 })
         return references
 
@@ -1111,7 +1111,7 @@ class UDM_Module(object):
                 if not isinstance(dns, (list, tuple)):
                     dns = [dns]
                 for dn in dns:
-                    references.append({'module': 'udm', 'property': key, 'flavor': 'navigation', 'objectType': object_type, 'id': dn, 'label': '%s: %s: %s' % (key, object_type, dn), 'icon': 'udm-%s' % object_type.replace('/', '-')})
+                    references.append({'module': 'udm', 'property': key, 'flavor': 'navigation', 'objectType': object_type, 'id': dn, 'label': f'{key}: {object_type}: {dn}', 'icon': f'udm-{object_type.replace("/", "-")}'})
         return references + [dict(ref, property='__policies') for ref in self.get_policy_references(obj.dn)]
 
     @property
@@ -1158,8 +1158,8 @@ class UDM_Module(object):
         hidden_filter = '!(objectFlag=hidden)'
         if ret:
             if not ret.startswith('('):
-                ret = '(%s)' % ret
-            return '(&(%s)%s)' % (hidden_filter, ret)
+                ret = f'({ret})'
+            return f'(&({hidden_filter}){ret})'
         return hidden_filter
 
 
@@ -1348,7 +1348,7 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
                     choice.update({
                         'module': 'udm',
                         'flavor': module.flavor,
-                        'icon': 'udm-%s' % module.name.replace('/', '-'),
+                        'icon': f'udm-{module.name.replace("/", "-")}',
                     })
                 choices.append(choice)
         else:
@@ -1371,4 +1371,4 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
 
 
 if __name__ == '__main__':
-    set_bind_function(lambda lo: lo.bind('uid=Administrator,cn=users,%s' % (ucr['ldap/base'],), 'univention'))
+    set_bind_function(lambda lo: lo.bind(f'uid=Administrator,cn=users,{ucr["ldap/base"]}', 'univention'))

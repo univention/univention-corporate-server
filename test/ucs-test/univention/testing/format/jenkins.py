@@ -32,7 +32,7 @@ class Jenkins(TestFormatInterface):
             print('<log encoding="hexBinary">%s</log>' % (encode(content.encode('UTF-8'), 'hex').decode('ASCII'),), file=self.stream)
         print('<result>%d</result>' % (result.result,), file=self.stream)
         print('<duration>%d</duration>' % (result.duration or -1,), file=self.stream)
-        print('<displayName>%s</displayName>' % (escape_xml(result.case.uid),), file=self.stream)
+        print(f'<displayName>{escape_xml(result.case.uid)}</displayName>', file=self.stream)
         print('<description>%s</description>' % (escape_xml(result.case.description or ''),), file=self.stream)
         print('</run>', file=self.stream)
         super().end_test(result)

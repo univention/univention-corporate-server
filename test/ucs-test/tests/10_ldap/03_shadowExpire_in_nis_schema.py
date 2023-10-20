@@ -41,7 +41,7 @@ def run():
             passwd = uts.random_string()
             username = uts.random_name()
             userdn, username = udm.create_user(password=passwd, userexpiry=expiry_date)
-            expiry_ldap = int(ldap_search('uid=%s' % username)[0][1])  # get the real set value from ldap
+            expiry_ldap = int(ldap_search(f'uid={username}')[0][1])  # get the real set value from ldap
             return username, passwd, expiry_ldap
 
         test_list = []
@@ -62,7 +62,7 @@ def run():
 
 def main():
     nis = nis_schema_conatains_ordering_for_shadowExpire()
-    print('nis.schema contains:\n%s' % nis)
+    print(f'nis.schema contains:\n{nis}')
     if not nis:
         utils.fail("nis.schema does not contain ordering for shadowExpire")
     run()

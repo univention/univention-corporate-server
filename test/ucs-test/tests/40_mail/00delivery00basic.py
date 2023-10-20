@@ -44,7 +44,7 @@ class Tester:
 
     def test(self):
         mailsToTest, users = self.create_users_and_mail_addresses()
-        print('The mail addresses, that will be tested are: %s' % (mailsToTest,))
+        print(f'The mail addresses, that will be tested are: {mailsToTest}')
 
         test_cases1 = self.mail_sending_test_1(mailsToTest)
         test_cases2 = self.mail_sending_test_2(users)
@@ -58,15 +58,15 @@ class Tester:
         users = []
         domain = self.ucr.get('domainname')
         mails = [
-            'BIG%ssmall@%s' % (uts.random_string(), domain),
-            '%s.t.o.c@%s' % (uts.random_string(), domain),
-            'un_sc%s@%s' % (uts.random_string(), domain),
-            '1fo%so2bar3@%s' % (uts.random_string(), domain),
+            f'BIG{uts.random_string()}small@{domain}',
+            f'{uts.random_string()}.t.o.c@{domain}',
+            f'un_sc{uts.random_string()}@{domain}',
+            f'1fo{uts.random_string()}o2bar3@{domain}',
         ]
         for mail in mails:
             userdn, username = self.udm.create_user(
                 set={
-                    'mailHomeServer': '%s.%s' % (self.ucr.get('hostname'), domain),
+                    'mailHomeServer': f'{self.ucr.get("hostname")}.{domain}',
                     'mailPrimaryAddress': mail,
                 },
             )
@@ -80,7 +80,7 @@ class Tester:
         for mail in mailsToTest:
             token = str(time.time())
             test_cases.append([token, mail, False])
-            print('\nTOKEN = %s\n' % token)
+            print(f'\nTOKEN = {token}\n')
             send_mail(recipients=mail, msg=token, idstring=token, subject='Test')
         return test_cases
 
@@ -89,7 +89,7 @@ class Tester:
         for user in users:
             token = str(time.time())
             test_cases.append([token, user, False])
-            print('\nTOKEN = %s\n' % token)
+            print(f'\nTOKEN = {token}\n')
             send_mail(recipients=user, msg=token, subject='Test')
         return test_cases
 
@@ -98,7 +98,7 @@ class Tester:
         for user in users:
             token = str(time.time())
             test_cases.append([token, user, False])
-            print('\nTOKEN = %s\n' % token)
+            print(f'\nTOKEN = {token}\n')
             send_mail(recipients=user, msg=token, subject='TestTLS', tls=True)
         return test_cases
 

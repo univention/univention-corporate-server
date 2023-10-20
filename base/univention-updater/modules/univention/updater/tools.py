@@ -283,7 +283,7 @@ class UCSRepoPool5(_UCSRepo):
         'deb https://updates.software-univention.de/ errata510 main'
         """
         components = "main main/debian-installer" if mirror and not self.errata and type == "deb" else "main"
-        return "%s %s %s %s" % (type, server, self._suite, components)
+        return f"{type} {server} {self._suite} {components}"
 
     def path(self, filename=None):
         # type: (str) -> str
@@ -499,7 +499,7 @@ class UCSHttpServer(_UCSServer):
             # type: (urllib2.Request, Any, int, str, Dict) -> Any
             m = req.get_method()
             if m == 'HEAD' == UCSHttpServer.http_method:
-                ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % req)
+                ud.debug(ud.NETWORK, ud.INFO, f"HEAD not implemented at {req}, switching to GET.")
                 UCSHttpServer.http_method = 'GET'
                 return self.parent.open(req, timeout=req.timeout)
             else:
@@ -655,7 +655,7 @@ class UCSHttpServer(_UCSServer):
             req.get_method = functools.partial(get_method, req) if six.PY3 else instancemethod(get_method, req, urllib2.Request)  # type: ignore
 
         self.log.info('Requesting %s', req.get_full_url())
-        ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()))
+        ud.debug(ud.NETWORK, ud.ALL, f"updater: {req.get_method()} {req.get_full_url()}")
         try:
             res = UCSHttpServer.opener.open(req, timeout=self.timeout)
             assert res
@@ -746,7 +746,7 @@ class UCSLocalServer(_UCSServer):
         self.log = logging.getLogger('updater.UCSFile')
         self.log.addHandler(logging.NullHandler())
         prefix = str(prefix).strip('/')
-        self._prefix = '%s/' % prefix if prefix else ''
+        self._prefix = f'{prefix}/' if prefix else ''
 
     @property
     def prefix(self):
@@ -756,7 +756,7 @@ class UCSLocalServer(_UCSServer):
     def __str__(self):
         # type: () -> str
         """Absolute file-URI."""
-        return 'file:///%s' % self.prefix
+        return f'file:///{self.prefix}'
 
     def __repr__(self):
         # type: () -> str
@@ -807,7 +807,7 @@ class UCSLocalServer(_UCSServer):
         rel = filename if repo is None else repo.path(filename)
         assert rel is not None
         uri = self.join(rel)
-        ud.debug(ud.NETWORK, ud.ALL, "updater: %s" % (uri,))
+        ud.debug(ud.NETWORK, ud.ALL, f"updater: {uri}")
         # urllib2.urlopen() doesn't work for directories
         assert uri.startswith('file://')
         path = uri[len('file://'):]
@@ -936,7 +936,7 @@ class Component(object):
             if not match:
                 if ignore_invalid_package_names:
                     continue
-                raise ValueError('invalid package name (%s)' % pkg)
+                raise ValueError(f'invalid package name ({pkg})')
 
         cmd = ['/usr/bin/dpkg-query', '-W', '-f', '${Status}\\n']
         cmd.extend(pkglist)
@@ -1047,7 +1047,7 @@ class Component(object):
                     assert server.access(None, '')
                 except DownloadError as e:
                     uri, code = e.args
-                    raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (self.name, uri))
+                    raise ConfigurationError(uri, f'absent prefix forced - component {self.name} not found: {uri}')
             else:
                 # FIXME: PMH stop iterating
                 for testserver in [
@@ -1063,9 +1063,9 @@ class Component(object):
                         assert testserver.access(None, '')
                         return testserver
                     except DownloadError as e:
-                        ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+                        ud.debug(ud.NETWORK, ud.ALL, f"{e}")
                         uri, code = e.args
-                raise ConfigurationError(uri, 'non-existing component prefix: %s' % (uri,))
+                raise ConfigurationError(uri, f'non-existing component prefix: {uri}')
 
         except ConfigurationError:
             if self.updater.check_access:
@@ -1151,8 +1151,8 @@ class Component(object):
             comp_file = open(self.FN_APTSOURCES)
         except IOError:
             return self.UNKNOWN
-        rePath = re.compile('(un)?maintained/component/ ?%s/' % self.name)
-        reDenied = re.compile('credentials not accepted: %s$' % self.name)
+        rePath = re.compile(f'(un)?maintained/component/ ?{self.name}/')
+        reDenied = re.compile(f'credentials not accepted: {self.name}$')
         try:
             # default: file contains no valid repo entry
             result = self.NOT_FOUND
@@ -1186,7 +1186,7 @@ class Component(object):
     def _parts(self):
         # type: () -> List[str]
         parts = ["maintained"] + ["unmaintained"][:self.updater.configRegistry.is_true(self.ucrv('unmaintained'))]
-        return ['%s/component' % (part,) for part in parts]
+        return [f'{part}/component' for part in parts]
 
 
 class UniventionUpdater(object):
@@ -1275,7 +1275,7 @@ class UniventionUpdater(object):
                     self.releases = json.loads(data)
                 except DownloadError as e:
                     self.log.info('No prefix /univention-repository/ detected, using /')
-                    ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+                    ud.debug(ud.NETWORK, ud.ALL, f"{e}")
             # Validate server settings
             try:
                 _code, _size, data = self.server.access(None, 'ucs-releases.json', get=True)
@@ -1284,14 +1284,14 @@ class UniventionUpdater(object):
             except DownloadError as e:
                 self.log.error('Failed configured prefix %s', self.repourl.path, exc_info=True)
                 uri, code = e.args
-                raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri))
+                raise ConfigurationError(uri, f'non-existing prefix "{self.repourl.path}": {uri}')
         except ConfigurationError as e:
             if self.check_access:
                 self.log.fatal('Failed server detection: %s', e, exc_info=True)
                 raise
             self.releases = {"error": str(e)}
         except (ValueError, LookupError) as exc:
-            ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
+            ud.debug(ud.NETWORK, ud.ERROR, f'Querying maintenance information failed: {exc}')
             self.releases = {"error": str(exc)}
 
     def get_releases(self, start=None, end=None):
@@ -1462,25 +1462,25 @@ class UniventionUpdater(object):
         proc = subprocess.Popen(("univention-config-registry", "commit", Component.FN_APTSOURCES), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
         if stderr:
-            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+            ud.debug(ud.NETWORK, ud.PROCESS, f'stderr={stderr}')
         if stdout:
-            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+            ud.debug(ud.NETWORK, ud.INFO, f'stdout={stdout}')
         # FIXME: error handling
 
         proc = subprocess.Popen(cmd_update, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
         if stderr:
-            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+            ud.debug(ud.NETWORK, ud.PROCESS, f'stderr={stderr}')
         if stdout:
-            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+            ud.debug(ud.NETWORK, ud.INFO, f'stdout={stdout}')
         # FIXME: error handling
 
         proc = subprocess.Popen(cmd_dist_upgrade_sim, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
         if stderr:
-            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+            ud.debug(ud.NETWORK, ud.PROCESS, f'stderr={stderr}')
         if stdout:
-            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+            ud.debug(ud.NETWORK, ud.INFO, f'stdout={stdout}')
 
         if proc.returncode == 100:
             raise UnmetDependencyError(stderr)
@@ -1497,23 +1497,23 @@ class UniventionUpdater(object):
                 #    Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
                 if len(line_split) > 3:
                     if line_split[2].startswith('[') and line_split[2].endswith(']'):
-                        ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of upgraded packages' % line_split[1])
+                        ud.debug(ud.NETWORK, ud.PROCESS, f'Added {line_split[1]} to the list of upgraded packages')
                         upgraded_packages.append((line_split[1], line_split[2].replace('[', '').replace(']', ''), line_split[3].replace('(', '')))
                     else:
-                        ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of new packages' % line_split[1])
+                        ud.debug(ud.NETWORK, ud.PROCESS, f'Added {line_split[1]} to the list of new packages')
                         new_packages.append((line_split[1], line_split[2].replace('(', '')))
                 else:
-                    ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
+                    ud.debug(ud.NETWORK, ud.WARN, f'unable to parse the update line: {line}')
                     continue
             elif line.startswith('Remv '):
                 if len(line_split) > 3:
-                    ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
+                    ud.debug(ud.NETWORK, ud.PROCESS, f'Added {line_split[1]} to the list of removed packages')
                     removed_packages.append((line_split[1], line_split[2].replace('(', '')))
                 elif len(line_split) > 2:
-                    ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
+                    ud.debug(ud.NETWORK, ud.PROCESS, f'Added {line_split[1]} to the list of removed packages')
                     removed_packages.append((line_split[1], 'unknown'))
                 else:
-                    ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
+                    ud.debug(ud.NETWORK, ud.WARN, f'unable to parse the update line: {line}')
                     continue
 
         return (new_packages, upgraded_packages, removed_packages)
@@ -1552,7 +1552,7 @@ class UniventionUpdater(object):
         failed = set()  # type: Set[Tuple[Component, str]]
         for comp in sorted(self.get_components(only_localmirror_enabled=for_mirror_list)):
             result += comp.repositories(start, end, clean=clean, for_mirror_list=for_mirror_list, failed=failed)
-        result += ["# Component %s: %s" % (comp.name, ex) for comp, ex in failed]
+        result += [f"# Component {comp.name}: {ex}" for comp, ex in failed]
 
         return '\n'.join(result)
 
@@ -1607,7 +1607,7 @@ class UniventionUpdater(object):
             :rtype: int
             """
             commandline = ' '.join(["'%s'" % a.replace("'", "'\\''") for a in cmd])
-            ud.debug(ud.NETWORK, ud.INFO, "Calling %s" % commandline)
+            ud.debug(ud.NETWORK, ud.INFO, f"Calling {commandline}")
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             tee = subprocess.Popen(('tee', '-a', logname), stdin=p.stdout)
             # Order is important! See bug #16454
@@ -1632,12 +1632,12 @@ class UniventionUpdater(object):
                         fd.write(data)
                         os.fchmod(fd.fileno(), 0o744)
 
-                    ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
+                    ud.debug(ud.NETWORK, ud.INFO, f"{uri} saved to {name}")
                     is_component = hasattr(struct, 'part') and struct.part.endswith('/component')
                     memo = comp if is_component else main
                     memo[phase].append((name, str(struct.patch)))
                 except EnvironmentError as ex:
-                    ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s: %s" % (uri, name, ex))
+                    ud.debug(ud.NETWORK, ud.ERROR, f"Error saving {uri} to {name}: {ex}")
 
             # call component/preup.sh pre $args
             yield "preup", "pre"
@@ -1711,9 +1711,9 @@ class UniventionUpdater(object):
         for server, struct, critical in all_repos():
             uses_proxy = hasattr(server, "proxy_handler") and server.proxy_handler.proxies  # type: ignore
             for phase in ('preup', 'postup'):
-                name = '%s.sh' % phase
+                name = f'{phase}.sh'
                 path = struct.path(name)
-                ud.debug(ud.NETWORK, ud.ALL, "Accessing %s" % path)
+                ud.debug(ud.NETWORK, ud.ALL, f"Accessing {path}")
                 try:
                     _code, _size, script = server.access(struct, name, get=True)
                     # Bug #37031: dansguarding is lying and returns 200 even for blocked content
@@ -1736,7 +1736,7 @@ class UniventionUpdater(object):
                         yield server, struct, None, path_gpg, signature
                     yield server, struct, phase, path, script
                 except DownloadError as e:
-                    ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+                    ud.debug(ud.NETWORK, ud.ALL, f"{e}")
                 except ConfigurationError:
                     if critical:
                         raise
@@ -1751,4 +1751,4 @@ class LocalUpdater(UniventionUpdater):
         self.log = logging.getLogger('updater.LocalUpdater')
         self.log.addHandler(logging.NullHandler())
         repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
-        self.server = UCSLocalServer("%s/mirror/" % repository_path)  # type: _UCSServer
+        self.server = UCSLocalServer(f"{repository_path}/mirror/")  # type: _UCSServer

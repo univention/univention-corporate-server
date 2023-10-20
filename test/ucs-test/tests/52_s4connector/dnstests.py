@@ -32,7 +32,7 @@ def check_ldap_object(item, item_name, item_attribute=None, expected_values=None
             utils.verify_ldap_object(item, should_exist=should_exist)
     except utils.LDAPError as exc:
         print(' Failed')
-        print('Verification of Ldap object failed: %s' % exc)
+        print(f'Verification of Ldap object failed: {exc}')
         sys.exit(1)
     else:
         print(' Success ')
@@ -121,16 +121,16 @@ def match(re_test_object, dns_name, typ, param=None, should_exist=True):
         for line in dig_answer:
             print(line)
             if should_exist and re.match(re_test_object, line):
-                print("\nOK: DNS synced after %s seconds\n" % attempt)
+                print(f"\nOK: DNS synced after {attempt} seconds\n")
                 return
             elif not should_exist and not re.match(re_test_object, line):
-                print("\nOK: DNS record removed after after %s seconds\n" % attempt)
+                print(f"\nOK: DNS record removed after after {attempt} seconds\n")
                 return
 
         print("\n  DNS not synced yet, making another dig attempt in 1 sec.")
         time.sleep(1)
 
-    utils.fail("FAIL: DNS still not synced, made %s dig attempts " % MATCH_ATTEMPTS)
+    utils.fail(f"FAIL: DNS still not synced, made {MATCH_ATTEMPTS} dig attempts ")
 
 
 def get_hostname_of_ldap_master():
@@ -194,12 +194,12 @@ def fail_if_cant_resolve_own_hostname(max_attempts=17, delta_t_seconds=1):
     attempt = 1
     while rc != 0:
         if attempt > max_attempts:
-            utils.fail("Cannot resolve own hostname after %s seconds" % max_attempts)
+            utils.fail(f"Cannot resolve own hostname after {max_attempts} seconds")
         sys.stdout.flush()
         time.sleep(delta_t_seconds)
         rc = subprocess.call(["host", "%(hostname)s.%(domainname)s" % ucr])
         attempt += 1
-    print("Resolved own hostname after %s seconds" % attempt)
+    print(f"Resolved own hostname after {attempt} seconds")
 
 
 def udm_remove_dns_record_object(module, object_dn):
@@ -212,10 +212,10 @@ def get_kerberos_ticket_for_machine():
     sys.stdout.flush()
     rc = subprocess.call(["kdestroy"])
 
-    principal_for_nsupdate = "%s$" % ucr["hostname"].upper()
+    principal_for_nsupdate = f"{ucr['hostname'].upper()}$"
     rc = subprocess.call(["kinit", "-t", "/etc/krb5.keytab", principal_for_nsupdate])
     if rc != 0:
-        utils.fail("kinit for %s failed" % principal_for_nsupdate)
+        utils.fail(f"kinit for {principal_for_nsupdate} failed")
 
 
 def nsupdate(nsupdate_request):

@@ -12,7 +12,7 @@ def git_version_summary(path, env=None):
     env.GIT = git
 
     environ = dict(os.environ)
-    environ["GIT_DIR"] = '%s/.git' % path
+    environ["GIT_DIR"] = f'{path}/.git'
     environ["GIT_WORK_TREE"] = path
     git = samba_utils.get_string(Utils.cmd_output(env.GIT + ' show --pretty=format:"%h%n%ct%n%H%n%cd" --stat HEAD', silent=True, env=environ))
 
@@ -30,7 +30,7 @@ def git_version_summary(path, env=None):
     ret = "GIT-" + fields["GIT_COMMIT_ABBREV"]
 
     if env.GIT_LOCAL_CHANGES:
-        clean = Utils.cmd_output('%s diff HEAD | wc -l' % env.GIT, silent=True).strip()
+        clean = Utils.cmd_output(f'{env.GIT} diff HEAD | wc -l', silent=True).strip()
         if clean == "0":
             fields["COMMIT_IS_CLEAN"] = 1
         else:
@@ -60,7 +60,7 @@ def distversion_version_summary(path):
                     continue
                 fields[key] = value
         except:
-            print("Failed to parse line %s from .distversion file." % (line))
+            print(f"Failed to parse line {(line)} from .distversion file.")
             raise
 
     if "COMMIT_TIME" in fields:
@@ -106,7 +106,7 @@ also accepted as dictionary entries here
         elif self.IS_GIT_SNAPSHOT == "no":
             self.IS_SNAPSHOT=False
         else:
-            raise Exception("Unknown value for IS_GIT_SNAPSHOT: %s" % self.IS_GIT_SNAPSHOT)
+            raise Exception(f"Unknown value for IS_GIT_SNAPSHOT: {self.IS_GIT_SNAPSHOT}")
 
  ##
  ## start with "3.0.22"
@@ -168,7 +168,7 @@ also accepted as dictionary entries here
         self.STRING = SAMBA_VERSION_STRING
 
         if self.RELEASE_NICKNAME is not None:
-            self.STRING_WITH_NICKNAME = "%s (%s)" % (self.STRING, self.RELEASE_NICKNAME)
+            self.STRING_WITH_NICKNAME = f"{self.STRING} ({self.RELEASE_NICKNAME})"
         else:
             self.STRING_WITH_NICKNAME = self.STRING
 
@@ -196,13 +196,13 @@ also accepted as dictionary entries here
             string+="#define SAMBA_VERSION_RC_RELEASE %u\n" % self.RC_RELEASE
 
         for name in sorted(self.vcs_fields.keys()):
-            string+="#define SAMBA_VERSION_%s " % name
+            string+=f"#define SAMBA_VERSION_{name} "
             value = self.vcs_fields[name]
             string_types = str
             if sys.version_info[0] < 3:
                 string_types = basestring
             if isinstance(value, string_types):
-                string += "\"%s\"" % value
+                string += f"\"{value}\""
             elif type(value) is int:
                 string += "%d" % value
             else:
@@ -249,7 +249,7 @@ def samba_version_file(version_file, path, env=None, is_install=True):
                 value = split_line[1].strip('"')
                 version_dict[split_line[0]] = value
         except:
-            print("Failed to parse line %s from %s" % (line, version_file))
+            print(f"Failed to parse line {line} from {version_file}")
             raise
 
     return SambaVersion(version_dict, path, env=env, is_install=is_install)

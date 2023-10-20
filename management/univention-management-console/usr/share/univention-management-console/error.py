@@ -64,7 +64,7 @@ def application(environ, start_response):
         if status == 503:
             reason = 'UMC Service Unavailable'
 
-    message = "The %s could not be reached. Please restart %s or try again later." % (service_name, service)
+    message = f"The {service_name} could not be reached. Please restart {service} or try again later."
     if status == 502:
         message += ' %s' % (environ.get('REDIRECT_ERROR_NOTES', ''),)
         message = message.rstrip()

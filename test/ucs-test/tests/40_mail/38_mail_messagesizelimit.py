@@ -29,7 +29,7 @@ def check_sending_mail(recipient, attachments, username, password, should_be_acc
         )
     except smtplib.SMTPSenderRefused as ex:
         if should_be_accepted:
-            utils.fail('Mail sent failed with exception: %s' % ex)
+            utils.fail(f'Mail sent failed with exception: {ex}')
 
 
 def main():
@@ -43,12 +43,12 @@ def main():
                 domain = ucr.get('domainname')
                 password = 'univention'
                 username = uts.random_name()
-                mail = '%s@%s' % (username, domain)
+                mail = f'{username}@{domain}'
                 user_dn, username = udm.create_user(
                     username=username,
                     set={
                         'password': password,
-                        'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+                        'mailHomeServer': f'{ucr.get("hostname")}.{domain}',
                         'mailPrimaryAddress': mail,
                     },
                 )

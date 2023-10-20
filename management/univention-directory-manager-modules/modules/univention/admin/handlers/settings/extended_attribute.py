@@ -352,13 +352,13 @@ class object(univention.admin.handlers.simpleLdap):
 
         for transKey in ['ShortDescription', 'LongDescription', 'TabName', 'GroupName']:
             translations = [
-                ('%s_%s' % (key[-5:-3].lower(), key[-2:].upper()), vals[0].decode('UTF-8'))
+                (f'{key[-5:-3].lower()}_{key[-2:].upper()}', vals[0].decode('UTF-8'))
                 for key, vals in self.oldattr.items()
-                if key.startswith('univentionUDMPropertyTranslation%s;entry-' % transKey)
+                if key.startswith(f'univentionUDMPropertyTranslation{transKey};entry-')
             ]
 
-            ud.debug(ud.ADMIN, ud.INFO, 'extended_attribute: added translations for %s: %s' % (transKey, translations))
-            self['translation%s' % transKey] = translations
+            ud.debug(ud.ADMIN, ud.INFO, f'extended_attribute: added translations for {transKey}: {translations}')
+            self[f'translation{transKey}'] = translations
 
         self.save()
 
@@ -369,18 +369,18 @@ class object(univention.admin.handlers.simpleLdap):
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
         for transKey in ['ShortDescription', 'LongDescription', 'TabName', 'GroupName']:
-            if self.hasChanged('translation%s' % transKey):
+            if self.hasChanged(f'translation{transKey}'):
                 oldlist = {}
                 newlist = {}
 
-                for lang, txt in self.oldinfo.get('translation%s' % transKey, []):
+                for lang, txt in self.oldinfo.get(f'translation{transKey}', []):
                     lang = lang.replace('_', '-')
                     oldlist[lang] = txt.encode('UTF-8')
                     if lang not in newlist:
                         newlist[lang] = b''
 
                 # duplicate lang entries will be removed due to use of dictionary
-                for lang, txt in self.info.get('translation%s' % transKey, []):
+                for lang, txt in self.info.get(f'translation{transKey}', []):
                     lang = lang.replace('_', '-')
                     newlist[lang] = txt.encode('UTF-8')
                     if lang not in oldlist:
@@ -389,7 +389,7 @@ class object(univention.admin.handlers.simpleLdap):
                 # modlist for new items
                 for lang, txt in oldlist.items():
                     if txt != newlist[lang]:
-                        ml.append(('univentionUDMPropertyTranslation%s;entry-%s' % (transKey, lang), oldlist[lang], newlist[lang]))
+                        ml.append((f'univentionUDMPropertyTranslation{transKey};entry-{lang}', oldlist[lang], newlist[lang]))
 
         return ml
 

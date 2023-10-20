@@ -32,9 +32,9 @@ def run_activation_script():
 @pytest.fixture()
 def disabled_cronjob():
     """Disable cron to avoid race"""
-    handler_set(['%s=%s' % (ucrv, "# disabled")])
+    handler_set([f'{ucrv}={"# disabled"}'])
     yield
-    handler_unset(['%s' % (ucrv, )])
+    handler_unset([f'{ucrv}'])
 
 
 @pytest.mark.roles('domaincontroller_master')
@@ -65,7 +65,7 @@ def test_disabled_user_creation_activation(disabled_cronjob, udm, ucr):
         lo = univention.admin.uldap.access(binddn=userdn, bindpw="univention")
         lo.lo.lo.whoami_s()
 
-    handler_set(['%s=%s' % (ucrv, "*/1 *  * * *")])
+    handler_set([f'{ucrv}={"*/1 *  * * *"}'])
 
     time.sleep(2 * 60)
 

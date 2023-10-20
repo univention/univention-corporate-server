@@ -81,7 +81,7 @@ def ldapEntry2string(entry: Dict[str, List[bytes]]) -> str:
     return ''.join(
         '%s:: %s\n' % (key, base64.standard_b64encode(value).decode('ASCII'))
         if not value.isascii() or SAFE_STRING_RE.search(value) else
-        '%s: %s\n' % (key, value.decode('ASCII'))
+        f'{key}: {value.decode("ASCII")}\n'
         for key, values in entry.items()
         for value in values
     )
@@ -139,8 +139,8 @@ def process_dellog(dn: str) -> Tuple[str, str, str, str]:
                     continue
                 (dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
             except EnvironmentError:
-                ud.debug(ud.LISTENER, ud.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
-                os.rename(pathname, '%s.fail' % pathname)
+                ud.debug(ud.LISTENER, ud.ERROR, f'EnvironmentError: Renaming {filename} to {filename}.fail')
+                os.rename(pathname, f'{pathname}.fail')
                 continue
             except ValueError as exc:
                 ud.debug(ud.LISTENER, ud.ERROR, 'Corrupted file: %r: %s' % (filename, exc))
@@ -157,9 +157,9 @@ def process_dellog(dn: str) -> Tuple[str, str, str, str]:
             os.unlink(pathname)
 
         except Exception as exc:
-            ud.debug(ud.LISTENER, ud.ERROR, 'Unknown Exception: %s.' % (exc,))
-            ud.debug(ud.LISTENER, ud.ERROR, 'Renaming %s to %s.fail' % (filename, filename))
-            os.rename(pathname, '%s.fail' % pathname)
+            ud.debug(ud.LISTENER, ud.ERROR, f'Unknown Exception: {exc}.')
+            ud.debug(ud.LISTENER, ud.ERROR, f'Renaming {filename} to {filename}.fail')
+            os.rename(pathname, f'{pathname}.fail')
             continue
     else:
         ud.debug(ud.LISTENER, ud.ERROR, 'Did not find matching dn %r in dellog directory %r.' % (dn, dellog))
@@ -199,7 +199,7 @@ def handler(dn: str, new_copy: Dict[str, List[bytes]], old_copy: Dict[str, List[
         # Start processing
         # 1. read previous hash
         if not os.path.exists(cachename):
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: %s vanished mid-run, stop.' % (name, cachename))
+            ud.debug(ud.LISTENER, ud.ERROR, f'{name}: {cachename} vanished mid-run, stop.')
             return  # really bad, stop it.
         cachefile = open(cachename, 'r+')
         previoushash = cachefile.read()
@@ -267,7 +267,7 @@ def createFile(filename: str) -> int:
         try:
             gidNumber = int(grp.getgrnam(preferedGroup)[2])
         except Exception:
-            ud.debug(ud.LISTENER, ud.WARN, '%s: Failed to get groupID for "%s"' % (name, preferedGroup))
+            ud.debug(ud.LISTENER, ud.WARN, f'{name}: Failed to get groupID for "{preferedGroup}"')
             gidNumber = 0
 
     basedir = os.path.dirname(filename)
@@ -275,7 +275,7 @@ def createFile(filename: str) -> int:
         os.makedirs(basedir)
 
     if subprocess.call(["/bin/touch", filename]) or not os.path.exists(filename):
-        ud.debug(ud.LISTENER, ud.ERROR, '%s: %s could not be created.' % (name, filename))
+        ud.debug(ud.LISTENER, ud.ERROR, f'{name}: {filename} could not be created.')
         return 1
     os.chown(filename, uidNumber, gidNumber)
     os.chmod(filename, filemode)
@@ -284,7 +284,7 @@ def createFile(filename: str) -> int:
 
 def initialize() -> None:
     timestamp = time.strftime(timestampfmt, time.gmtime())
-    ud.debug(ud.LISTENER, ud.INFO, 'init %s' % name)
+    ud.debug(ud.LISTENER, ud.INFO, f'init {name}')
 
     with SetUID(0):
         if not os.path.exists(logname):
@@ -298,12 +298,12 @@ def initialize() -> None:
         # generate log record
         if size == 0:
             action = 'Initialize'
-            record = 'START\nTimestamp: %s\nAction: %s %s\n' % (timestamp, action, name)
+            record = f'START\nTimestamp: {timestamp}\nAction: {action} {name}\n'
         else:
             # read previous hash
             previoushash = cachefile.read()
             action = 'Reinitialize'
-            record = 'START\nOld Hash: %s\nTimestamp: %s\nAction: %s %s\n' % (previoushash, timestamp, action, name)
+            record = f'START\nOld Hash: {previoushash}\nTimestamp: {timestamp}\nAction: {action} {name}\n'
         record += endtag
 
         # 3. write log file record
@@ -317,7 +317,7 @@ def initialize() -> None:
         cachefile.close()
         # 6. send log message including nexthash
         syslog.openlog(name, 0, syslog.LOG_DAEMON)
-        syslog.syslog(syslog.LOG_INFO, '%s\nTimestamp=%s\nNew Hash=%s' % (action, timestamp, nexthash))
+        syslog.syslog(syslog.LOG_INFO, f'{action}\nTimestamp={timestamp}\nNew Hash={nexthash}')
         syslog.closelog()
 
 
@@ -326,5 +326,5 @@ with SetUID(0):
     if not os.path.exists(logname):
         createFile(logname)
     if not os.path.exists(cachename):
-        ud.debug(ud.LISTENER, ud.WARN, '%s: %s vanished, creating it' % (name, cachename))
+        ud.debug(ud.LISTENER, ud.WARN, f'{name}: {cachename} vanished, creating it')
         createFile(cachename)

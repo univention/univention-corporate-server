@@ -129,7 +129,7 @@ class Document(object):
             else:
                 obj = admin.cache_object(dn)
             if obj is None:
-                print("warning: dn '%s' not found, skipped." % dn, file=sys.stderr)
+                print(f"warning: dn '{dn}' not found, skipped.", file=sys.stderr)
                 continue
             tks = copy.deepcopy(tokens)
             interpret = Interpreter(obj, tks)
@@ -146,12 +146,12 @@ class Document(object):
 
     def create_pdf(self, latex_file):
         """Run pdflatex on latex_file and return path to generated file or None on errors."""
-        cmd = ['/usr/bin/pdflatex', '-interaction=nonstopmode', '-halt-on-error', '-output-directory=%s' % os.path.dirname(latex_file), latex_file]
+        cmd = ['/usr/bin/pdflatex', '-interaction=nonstopmode', '-halt-on-error', f'-output-directory={os.path.dirname(latex_file)}', latex_file]
         devnull = open(os.path.devnull, 'w')
         try:
             env_vars = {'PATH': '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin', 'HOME': '/var/cache/univention-directory-reports'}
             if not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars) and not subprocess.call(cmd, stdout=devnull, stderr=devnull, env=env_vars):
-                return '%s.pdf' % latex_file.rsplit('.', 1)[0]
+                return f'{latex_file.rsplit(".", 1)[0]}.pdf'
             raise ReportError(_('Failed creating PDF file.'))
         finally:
             devnull.close()
@@ -163,7 +163,7 @@ class Document(object):
                     pass
 
     def create_rml_pdf(self, rml_file):
-        output = '%s.pdf' % (os.path.splitext(rml_file)[0],)
+        output = f'{os.path.splitext(rml_file)[0]}.pdf'
         with open(rml_file, 'rb') as fd:
             outputfile = trml2pdf.parseString(fd.read(), output)
         try:

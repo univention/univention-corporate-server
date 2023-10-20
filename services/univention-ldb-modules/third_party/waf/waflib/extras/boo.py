@@ -33,11 +33,11 @@ def apply_booc(self):
 	self.boo_task = self.create_task('booc', src_nodes, [out_node])
 
 	# Set variables used by the 'booc' task
-	self.boo_task.env.OUT = '-o:%s' % out_node.abspath()
+	self.boo_task.env.OUT = f'-o:{out_node.abspath()}'
 
 	# type is "exe" by default
 	type = getattr(self, "type", "exe")
-	self.boo_task.env.BOO_TARGET_TYPE = "-target:%s" % type
+	self.boo_task.env.BOO_TARGET_TYPE = f"-target:{type}"
 
 @feature('boo')
 @after_method('apply_boo')
@@ -63,7 +63,7 @@ def use_boo(self):
 					continue
 		self.boo_task.set_run_after(dep_task) # order
 		self.boo_task.dep_nodes.extend(dep_task.outputs) # dependency
-		self.boo_task.env.append_value('BOO_FLAGS', '-reference:%s' % dep_task.outputs[0].abspath())
+		self.boo_task.env.append_value('BOO_FLAGS', f'-reference:{dep_task.outputs[0].abspath()}')
 
 class booc(Task.Task):
 	"""Compiles .boo files """

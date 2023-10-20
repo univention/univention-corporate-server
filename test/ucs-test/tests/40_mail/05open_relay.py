@@ -35,11 +35,11 @@ def get_ext_ip() -> str:
 def reverse_dns_name(ip: str) -> str:
     reverse = ip.split('.')
     reverse.reverse()
-    return '%s.in-addr.arpa' % '.'.join(reverse)
+    return f'{".".join(reverse)}.in-addr.arpa'
 
 
 def print_header(section_string: str) -> None:
-    print('info', 40 * '+', '\n%s\ninfo' % section_string, 40 * '+')
+    print('info', 40 * '+', f'\n{section_string}\ninfo', 40 * '+')
 
 
 def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str) -> None:
@@ -87,10 +87,10 @@ def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str)
         reply = get_reply(s)
         r = get_return_code(reply)
         print(f'IN : {reply!r} (return code: {r!r})')
-        send_and_receive(s, 'EHLO %s' % fqdn)
+        send_and_receive(s, f'EHLO {fqdn}')
         if mailfrom:
-            send_and_receive(s, 'MAIL FROM: %s' % mailfrom)
-        send_and_receive(s, 'RCPT TO: %s' % rcptto)
+            send_and_receive(s, f'MAIL FROM: {mailfrom}')
+        send_and_receive(s, f'RCPT TO: {rcptto}')
         send_and_receive(s, 'DATA')
         send_and_receive(s, 'SPAMBODY')
         retval = send_and_receive(s, '.')
@@ -114,9 +114,9 @@ def main(ucr) -> None:
     header9 = "NULL sender vulnerability:"
 
     test_cases = [
-        ('%s@%s' % ('spambag', sender_ip), 'victim@mailinator.com', header0),
-        ('%s@[%s]' % ('spambag', sender_ip), 'victim@mailinator.com', header0),
-        ('%s@%s' % ('spambag', reverse_dns_name(sender_ip)), 'victim@mailinator.com', header0),
+        (f'{"spambag"}@{sender_ip}', 'victim@mailinator.com', header0),
+        (f'{"spambag"}@[{sender_ip}]', 'victim@mailinator.com', header0),
+        (f'{"spambag"}@{reverse_dns_name(sender_ip)}', 'victim@mailinator.com', header0),
 
         ("spambag@mailinator.com", "victim@mailinator.com", header1),
 

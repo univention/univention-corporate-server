@@ -60,7 +60,7 @@ class CheckLogFiles:
             self.last_trace_msg = trace_message
             return trace_message
         else:
-            return 'Last Traceback "%s" repeats one more time.\n' % last_line
+            return f'Last Traceback "{last_line}" repeats one more time.\n'
 
     def check_for_tracebacks(self, line, errors, msg):
         """
@@ -114,7 +114,7 @@ class CheckLogFiles:
         previous_line = ''
 
         if not path.isfile(filename):
-            print("\nThe file '%s' cannot be found, skipping..." % filename)
+            print(f"\nThe file '{filename}' cannot be found, skipping...")
             return (None, None)
 
         basename = path.basename(filename)
@@ -142,8 +142,7 @@ class CheckLogFiles:
 
             self.log_file.close()
         except (OSError, ValueError) as exc:
-            utils.fail("An exception while working with a log file '%s': '%s'"
-                       % (filename, exc))
+            utils.fail(f"An exception while working with a log file '{filename}': '{exc}'")
         return (errors, warnings)
 
     def extend_log_ignore_definitions(self):
@@ -212,14 +211,14 @@ class CheckLogFiles:
             if errors:
                 # Errors detected, test should fail
                 self.return_code = TestCodes.RESULT_FAIL
-                print("\nErrors found in '%s':\n" % filename)
+                print(f"\nErrors found in '{filename}':\n")
                 for line in errors:
-                    print(" E: %s" % line)
+                    print(f" E: {line}")
 
             if warnings:
-                print("\nWarnings found in '%s':\n" % filename)
+                print(f"\nWarnings found in '{filename}':\n")
                 for line in warnings:
-                    print(" W: %s" % line)
+                    print(f" W: {line}")
 
 
 if __name__ == '__main__':

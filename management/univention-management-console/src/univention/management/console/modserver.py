@@ -173,7 +173,7 @@ class ModuleServer(object):
         from .error import UMC_Error
         try:
             try:
-                file_ = 'univention.management.console.modules.%s' % (modname,)
+                file_ = f'univention.management.console.modules.{modname}'
                 self.__module = __import__(file_, {}, {}, modname)
                 MODULE.debug('Imported Python module.')
                 self.__handler = self.__module.Instance()
@@ -182,7 +182,7 @@ class ModuleServer(object):
                 error = _('Failed to load module %(module)s: %(error)s\n%(traceback)s') % {'module': modname, 'error': exc, 'traceback': traceback.format_exc()}
                 # TODO: systemctl reload univention-management-console-server
                 MODULE.error(error)
-                if isinstance(exc, ImportError) and str(exc).startswith('No module named %s' % (modname,)):
+                if isinstance(exc, ImportError) and str(exc).startswith(f'No module named {modname}'):
                     error = '\n'.join((
                         _('The requested module %r does not exist.') % (modname,),
                         _('The module may have been removed recently.'),
@@ -202,7 +202,7 @@ class ModuleServer(object):
         raise SystemExit(0)
 
     def signal_handler_reload(self, signo, frame):
-        MODULE.process('Received reload signal (%s)' % (signo,))
+        MODULE.process(f'Received reload signal ({signo})')
         log_reopen()
 
     def signal_handler_alarm(self, signo, frame):
@@ -241,7 +241,7 @@ class ModuleServer(object):
             return
 
         trace = ''.join(traceback.format_exception(etype, exc, etraceback))
-        MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace))
+        MODULE.error(f'The init function of the module failed\n{exc}: {trace}')
         from .error import UMC_Error
         if not isinstance(exc, UMC_Error):
             error = _('The initialization of the module failed: %s') % (trace,)
@@ -330,7 +330,7 @@ class Handler(RequestHandler):
             if not locale.territory:  # TODO: replace by using the actual provided value
                 locale.territory = {'de': 'DE', 'fr': 'FR', 'en': 'US'}.get(self.locale.code)
         except I18N_Error as exc:
-            MODULE.warn('Invalid locale: %s %s' % (exc, locale))
+            MODULE.warn(f'Invalid locale: {exc} {locale}')
         locale = str(locale)
 
         msg = Request(umcp_command, [path], mime_type=mimetype)
@@ -421,7 +421,7 @@ class Handler(RequestHandler):
             try:
                 self.finish(body)
             except Exception:
-                MODULE.error('FATAL ERROR in reply(): %s' % (traceback.format_exc(),))
+                MODULE.error(f'FATAL ERROR in reply(): {traceback.format_exc()}')
 
         ioloop = tornado.ioloop.IOLoop.current()
         if ioloop is self.ioloop:  # main thread
@@ -439,7 +439,7 @@ class Handler(RequestHandler):
                 port = '-%d' % (int(port),)
             except ValueError:
                 port = ''
-        return '%s%s' % (cookie_name, port)
+        return f'{cookie_name}{port}'
 
     def parse_authorization(self):
         credentials = self.request.headers.get('Authorization')

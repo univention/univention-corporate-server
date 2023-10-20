@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
         try:
             app.set_ini_parameter(
-                WebInterface='/%s' % app.app_name,
+                WebInterface=f'/{app.app_name}',
                 WebInterfacePortHTTP='80',
                 WebInterfacePortHTTPS='443',
                 AutoModProxy='True',
@@ -36,8 +36,8 @@ if __name__ == '__main__':
 
             app.verify_basic_modproxy_settings_tinyapp()
             ucr.load()
-            assert ucr.get('ucs/web/overview/entries/service/%s/port_http' % app_name) == '80', ucr.get('ucs/web/overview/entries/service/%s/port_http' % app_name)
-            assert ucr.get('ucs/web/overview/entries/service/%s/port_https' % app_name) == '443', ucr.get('ucs/web/overview/entries/service/%s/port_https' % app_name)
+            assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == '80', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http')
+            assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == '443', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https')
 
         finally:
             app.uninstall()
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
         try:
             app.set_ini_parameter(
-                WebInterface='/%s' % app.app_name,
+                WebInterface=f'/{app.app_name}',
                 WebInterfacePortHTTP='0',  # NO HTTP!
                 WebInterfacePortHTTPS='80',  # ONLY HTTPS PUBLICLY!
                 WebInterfaceProxyScheme='http',  # CONTAINER ONLY HAS HTTP (80) SUPPORT!
@@ -67,8 +67,8 @@ if __name__ == '__main__':
 
             app.verify_basic_modproxy_settings_tinyapp(http=False, https=True)
             ucr.load()
-            assert ucr.get('ucs/web/overview/entries/service/%s/port_http' % app_name) == '', ucr.get('ucs/web/overview/entries/service/%s/port_http' % app_name)
-            assert ucr.get('ucs/web/overview/entries/service/%s/port_https' % app_name) == '443', ucr.get('ucs/web/overview/entries/service/%s/port_https' % app_name)
+            assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == '', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http')
+            assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == '443', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https')
 
         finally:
             app.uninstall()

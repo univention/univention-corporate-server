@@ -24,7 +24,7 @@ from univention.testing import utils
 
 
 def random_fqdn(ucr):  # type: (dict) -> str
-    return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
+    return f'{uts.random_name()}.{ucr.get("domainname")}'
 
 
 boolean_to_unmapped = {'0': 'no', '1': 'yes'}
@@ -48,13 +48,13 @@ def keyAndValue_to_ldap(property_values):
 @pytest.mark.exposure('careful')
 def test_create_fileshare(udm, ucr):
     """Create shares/share and verify LDAP object"""
-    admin_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % (ucr.get('ldap/base'),))
+    admin_dn = ucr.get('tests/domainadmin/account', f'uid=Administrator,cn=users,{ucr.get("ldap/base")}')
     admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
 
     properties = {
         'name': uts.random_name(),
         'host': random_fqdn(ucr),
-        'path': '/test/%s' % uts.random_string(),
+        'path': f'/test/{uts.random_string()}',
         'owner': uts.random_int(),
         'group': uts.random_int(),
         'directorymode': '00750',
@@ -87,8 +87,8 @@ def test_create_fileshare(udm, ucr):
         'sambaCscPolicy': random.choice(['manual', 'documents', 'programs', 'disable']),
         'sambaHostsAllow': random_fqdn(ucr),
         'sambaHostsDeny': random_fqdn(ucr),
-        'sambaValidUsers': '%s, @"%s %s"' % (admin_name, uts.random_name(), uts.random_name()),
-        'sambaInvalidUsers': '%s, @"%s %s"' % (uts.random_name(), uts.random_name(), uts.random_name()),
+        'sambaValidUsers': f'{admin_name}, @"{uts.random_name()} {uts.random_name()}"',
+        'sambaInvalidUsers': f'{uts.random_name()}, @"{uts.random_name()} {uts.random_name()}"',
         'sambaForceUser': uts.random_name(),
         'sambaForceGroup': uts.random_name(),
         'sambaHideFiles': uts.random_name(),
@@ -96,8 +96,8 @@ def test_create_fileshare(udm, ucr):
         'sambaInheritAcls': random.choice(['0', '1']),
         'sambaPostexec': uts.random_name(),
         'sambaPreexec': uts.random_name(),
-        'sambaWriteList': '%s' % (uts.random_name(),),
-        'sambaVFSObjects': '%s, %s' % (uts.random_name(), uts.random_name()),
+        'sambaWriteList': f'{uts.random_name()}',
+        'sambaVFSObjects': f'{uts.random_name()}, {uts.random_name()}',
         'sambaMSDFSRoot': random.choice(['0', '1']),
         'sambaInheritOwner': random.choice(['0', '1']),
         'sambaInheritPermissions': random.choice(['0', '1']),
@@ -108,7 +108,7 @@ def test_create_fileshare(udm, ucr):
     print('*** Create shares/share object')
     file_share_dn = udm.create_object(
         'shares/share',
-        position='cn=shares,%s' % (ucr['ldap/base'],),
+        position=f'cn=shares,{ucr["ldap/base"]}',
         **properties)
 
     utils.verify_ldap_object(
@@ -183,7 +183,7 @@ def test_create_fileshare(udm, ucr):
 @pytest.mark.exposure('careful')
 def test_create_fileshare_and_connect_via_samba(udm, ucr):
     """Create shares/share and check if share connect works"""
-    admin_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % (ucr.get('ldap/base'),))
+    admin_dn = ucr.get('tests/domainadmin/account', f'uid=Administrator,cn=users,{ucr.get("ldap/base")}')
     admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
     password = ucr.get('tests/domainadmin/pwd', 'univention')
     sambaOplocks = random.choice(['0', '1'])
@@ -191,7 +191,7 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
     properties = {
         'name': uts.random_name(),
         'host': '.'.join([ucr['hostname'], ucr['domainname']]),
-        'path': '/test/%s' % uts.random_string(),
+        'path': f'/test/{uts.random_string()}',
         'owner': uts.random_int(),
         'group': uts.random_int(),
         'directorymode': '00750',
@@ -224,8 +224,8 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
         'sambaCscPolicy': random.choice(['manual', 'documents', 'programs', 'disable']),
         # 'sambaHostsAllow': random_fqdn(ucr),
         # 'sambaHostsDeny': random_fqdn(ucr),
-        'sambaValidUsers': '%s, @"%s %s"' % (admin_name, uts.random_name(), uts.random_name()),
-        'sambaInvalidUsers': '%s, @"%s %s"' % (uts.random_name(), uts.random_name(), uts.random_name()),
+        'sambaValidUsers': f'{admin_name}, @"{uts.random_name()} {uts.random_name()}"',
+        'sambaInvalidUsers': f'{uts.random_name()}, @"{uts.random_name()} {uts.random_name()}"',
         # 'sambaForceUser': uts.random_name(),
         # 'sambaForceGroup': uts.random_name(),
         'sambaHideFiles': uts.random_name(),
@@ -233,7 +233,7 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
         'sambaInheritAcls': random.choice(['0', '1']),
         'sambaPostexec': '/bin/true',
         'sambaPreexec': '/bin/true',
-        'sambaWriteList': '%s' % (uts.random_name(),),
+        'sambaWriteList': f'{uts.random_name()}',
         # 'sambaVFSObjects': '%s, %s' % (uts.random_name(), uts.random_name()),
         'sambaMSDFSRoot': random.choice(['0', '1']),
         'sambaInheritOwner': random.choice(['0', '1']),
@@ -246,7 +246,7 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
     print('*** Create shares/share object')
     file_share_dn = udm.create_object(
         'shares/share',
-        position='cn=shares,%s' % (ucr['ldap/base'],),
+        position=f'cn=shares,{ucr["ldap/base"]}',
         **properties)
 
     utils.verify_ldap_object(
@@ -307,7 +307,7 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
         delay=1)
 
     delay = 15
-    print('*** Wait %s seconds for listener postrun' % delay)
+    print(f'*** Wait {delay} seconds for listener postrun')
     time.sleep(delay)
 
     s4_dc_installed = utils.package_installed("univention-samba4")
@@ -317,14 +317,14 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
         pytest.skip('Samba 4 not installed')
     delay = 1
     time.sleep(delay)
-    cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', '%'.join([admin_name, password]), '-c', 'showconnect']
-    print('\nRunning: %s' % ' '.join(cmd))
+    cmd = ['smbclient', f'//localhost/{properties["sambaName"]}', '-U', '%'.join([admin_name, password]), '-c', 'showconnect']
+    print(f'\nRunning: {" ".join(cmd)}')
     p = subprocess.Popen(cmd, close_fds=True)
     p.wait()
     if p.returncode:
-        share_definition = '/etc/samba/shares.conf.d/%s' % properties['sambaName']
+        share_definition = f'/etc/samba/shares.conf.d/{properties["sambaName"]}'
         with open(share_definition) as f:
-            print('### Samba share file %s :' % share_definition)
+            print(f'### Samba share file {share_definition} :')
             print(f.read())
         print('### testpam for that smb.conf section:')
         p = subprocess.Popen(['testparm', '-s', '--section-name', properties['sambaName']], close_fds=True)

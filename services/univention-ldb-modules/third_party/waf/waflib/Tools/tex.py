@@ -304,7 +304,7 @@ class tex(Task.Task):
 
 			self.env.SRCFILE = self.idx_node.name
 			self.env.env = {}
-			self.check_status('error when calling makeindex %s' % idx_path, self.makeindex_fun())
+			self.check_status(f'error when calling makeindex {idx_path}', self.makeindex_fun())
 
 	def bibtopic(self):
 		"""
@@ -333,7 +333,7 @@ class tex(Task.Task):
 					raise Errors.WafError("The program 'makeglossaries' is missing!")
 				Logs.warn('calling makeglossaries')
 				self.env.SRCFILE = base
-				self.check_status('error when calling makeglossaries %s' % base, self.makeglossaries_fun())
+				self.check_status(f'error when calling makeglossaries {base}', self.makeglossaries_fun())
 				return
 
 	def texinputs(self):

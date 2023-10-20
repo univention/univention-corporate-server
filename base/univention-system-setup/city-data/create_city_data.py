@@ -53,7 +53,7 @@ def main() -> None:
         icity['id'] = iid
 
     for ilocale in opt.locales + ['']:
-        print('loading data for locale %s' % ilocale)
+        print(f'loading data for locale {ilocale}')
         city_names = _util.get_localized_names(city_geonameids, ilocale)
         for iid, ilabel in city_names.items():
             city_data[iid].setdefault('label', {})[ilocale] = ilabel

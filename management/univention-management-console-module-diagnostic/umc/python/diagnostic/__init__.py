@@ -95,7 +95,7 @@ class Instance(Base, ProgressMixin):
     @simple_response(with_progress=True)
     def run(self, plugin: str, args: Any = None):
         plug = self.get(plugin)
-        MODULE.process('Running %s' % (plug,))
+        MODULE.process(f'Running {plug}')
         for line in plug.run_descr:
             MODULE.process(line)
         args = args or {}
@@ -263,7 +263,7 @@ class Plugin(object):
 
     def load(self) -> None:
         self.module = __import__(
-            'univention.management.console.modules.diagnostic.plugins.%s' % (self.plugin,),
+            f'univention.management.console.modules.diagnostic.plugins.{self.plugin}',
             fromlist=['univention.management.console.modules.diagnostic'],
             level=0,
         )
@@ -298,7 +298,7 @@ class Plugin(object):
         return pattern.match(self.title) or pattern.match(self.description)
 
     def __str__(self) -> str:
-        return '%s' % (self.plugin,)
+        return f'{self.plugin}'
 
     @property
     def dict(self) -> Dict[str, Any]:

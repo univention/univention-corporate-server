@@ -82,7 +82,7 @@ try:
         except Exception as exc:
             fail(f'Adding {helpdesk_user1} to corresponding group {helpdesk_group1.name} failed: {exc}')
         else:
-            print('Added %s to corresponding group' % what)
+            print(f'Added {what} to corresponding group')
 
         # Create second helpdesk group
         try:
@@ -103,7 +103,7 @@ try:
         except Exception as exc:
             fail(f'Adding {helpdesk_user2} to corresponding group {helpdesk_group2.name} failed: {exc}')
         else:
-            print('Added %s to corresponding group' % what)
+            print(f'Added {what} to corresponding group')
 
         # Create nested group
         try:

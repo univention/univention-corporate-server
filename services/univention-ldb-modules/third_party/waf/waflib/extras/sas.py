@@ -56,7 +56,7 @@ def apply_sas(self):
 			if not n:
 				n = self.bld.root.find_resource(filename)
 			if not n:
-				raise Errors.WafError('cannot find input file %s for processing' % filename)
+				raise Errors.WafError(f'cannot find input file {filename} for processing')
 			if not n in deps_lst:
 				deps_lst.append(n)
 

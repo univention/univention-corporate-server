@@ -112,7 +112,7 @@ def copy_package_files(source_dir, dest_dir):
             try:
                 arch = filename.rsplit('_', 1)[-1].split('.', 1)[0]  # partman-btrfs_10.3.201403242318_all.udeb
             except (TypeError, ValueError):
-                print("Warning: Could not determine architecture of package '%s'" % filename, file=sys.stderr)
+                print(f"Warning: Could not determine architecture of package '{filename}'", file=sys.stderr)
                 continue
             src_size = os.stat(src)[6]
             dest = os.path.join(dest_dir, arch, filename)
@@ -126,7 +126,7 @@ def copy_package_files(source_dir, dest_dir):
         try:
             shutil.copy2(src, dest)
         except shutil.Error as ex:
-            print("Copying '%s' failed: %s" % (src, ex), file=sys.stderr)
+            print(f"Copying '{src}' failed: {ex}", file=sys.stderr)
 
 
 def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
@@ -146,7 +146,7 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
             'dists',
             'ucs%d%d%d' % version.mmp,
             'main',
-            'binary-%s' % (arch,),
+            f'binary-{arch}',
             'Packages.gz',
         )
         if not os.path.exists(src):
@@ -159,7 +159,7 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
                 if line.startswith(A):
                     arch = line[len(A):].strip()
                 elif line.startswith(F):
-                    line = '%s%s/%s' % (F, version, line[len(F):].lstrip('/'))
+                    line = f'{F}{version}/{line[len(F):].lstrip("/")}'
                 lines.append(line)
                 if line == '\n':
                     f = f_all if arch == 'all' else f_arch
@@ -189,7 +189,7 @@ def get_repo_basedir(packages_dir):
     elif set(os.listdir(path)) & ARCHITECTURES:
         return path
 
-    print('Error: %s does not seem to be a repository.' % packages_dir, file=sys.stderr)
+    print(f'Error: {packages_dir} does not seem to be a repository.', file=sys.stderr)
     sys.exit(1)
 
 

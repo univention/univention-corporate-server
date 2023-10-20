@@ -70,7 +70,7 @@ class UcsRepoUrl(object):
         """
         def ucrv(key, default=None):
             # type: (str, _T) -> _T
-            return ucr.get('%s/%s' % (prefix, key), default)
+            return ucr.get(f'{prefix}/{key}', default)
 
         server = ucrv('server', '')
         url = urlsplit(server)
@@ -104,7 +104,7 @@ class UcsRepoUrl(object):
         if prefix:
             prefix = prefix.strip('/')
             if prefix:
-                self.path = '/%s/' % (prefix,)
+                self.path = f'/{prefix}/'
             else:
                 self.path = '/'
         else:
@@ -115,7 +115,7 @@ class UcsRepoUrl(object):
         # type: () -> str
         if self.username:
             # FIXME http://bugs.debian.org/500560: [@:/] don't work
-            return '%s:%s@' % (quote(self.username), quote(self.password or ''))
+            return f'{quote(self.username)}:{quote(self.password or "")}@'
         return ''
 
     @property
@@ -129,7 +129,7 @@ class UcsRepoUrl(object):
     @property
     def _path(self):
         # type: () -> str
-        return quote('/%s' % (self.path.lstrip('/'),))
+        return quote(f'/{self.path.lstrip("/")}')
 
     def public(self):
         # type: () -> str
@@ -203,5 +203,5 @@ class UcsRepoUrl(object):
         'http://hostname/a/b/'
         """
         cfg = copy(self)
-        cfg.path = '%s/%s' % (self._path.rstrip('/'), str(rel).lstrip('/'))
+        cfg.path = f'{self._path.rstrip("/")}/{str(rel).lstrip("/")}'
         return cfg

@@ -78,12 +78,12 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
         if self.exists():
             if 'posix' in self.options and not self.info.get('primaryGroup'):
                 primaryGroupNumber = self.oldattr.get('gidNumber', [b''])[0].decode('ASCII')
-                ud.debug(ud.ADMIN, ud.INFO, 'primary group number = %s' % (primaryGroupNumber))
+                ud.debug(ud.ADMIN, ud.INFO, f'primary group number = {(primaryGroupNumber)}')
                 if primaryGroupNumber:
                     primaryGroupResult = self.lo.searchDn(filter_format('(&(objectClass=posixGroup)(gidNumber=%s))', [primaryGroupNumber]))
                     if primaryGroupResult:
                         self['primaryGroup'] = primaryGroupResult[0]
-                        ud.debug(ud.ADMIN, ud.INFO, 'Set primary group = %s' % (self['primaryGroup']))
+                        ud.debug(ud.ADMIN, ud.INFO, f'Set primary group = {(self["primaryGroup"])}')
                     else:
                         self['primaryGroup'] = None
                         self.save()
@@ -229,7 +229,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
 
         if self.hasChanged('name'):
             if 'posix' in self.options:
-                requested_uid = "%s$" % self['name']
+                requested_uid = f"{self['name']}$"
                 try:
                     if not self.exists() or self['name'].lower() != self.oldinfo['name'].lower():
                         requested_uid = self.request_lock('uid', requested_uid)
@@ -289,14 +289,14 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
         result = []
         if self['ip'] and len(self['ip']) > 0 and self['ip'][0]:
             result = [{
-                'url': 'https://%s/univention-management-console/' % self['ip'][0],
+                'url': f'https://{self["ip"][0]}/univention-management-console/',
                 'ipaddr': self['ip'][0],
             }]
         if 'dnsEntryZoneForward' in self and self['dnsEntryZoneForward'] and len(self['dnsEntryZoneForward']) > 0:
             zone = univention.admin.uldap.explodeDn(self['dnsEntryZoneForward'][0], 1)[0]
             if not result:
-                result = [{'url': 'https://%s.%s/univention-management-console/' % (self['name'], zone)}]
-            result[0]['fqdn'] = '%s.%s' % (self['name'], zone)
+                result = [{'url': f'https://{self["name"]}.{zone}/univention-management-console/'}]
+            result[0]['fqdn'] = f'{self["name"]}.{zone}'
         if result:
             result[0]['name'] = _('Open Univention Management Console on this computer')
             return result

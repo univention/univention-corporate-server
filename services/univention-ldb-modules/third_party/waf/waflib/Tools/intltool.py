@@ -114,7 +114,7 @@ def apply_intltool_in_f(self):
 		try:
 			style_flag = _style_flags[style]
 		except KeyError:
-			self.bld.fatal('intltool_in style "%s" is not valid' % style)
+			self.bld.fatal(f'intltool_in style "{style}" is not valid')
 
 		self.env.append_unique('INTLFLAGS', [style_flag])
 

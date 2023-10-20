@@ -48,4 +48,4 @@ def handler(configRegistry, changes):
     new = configRegistry.get(ad_var, '')
     path = os.path.join(ssl_path, new)
     if new and not os.path.exists(path):
-        os.system('%s new -name %s >> %s 2>&1' % (cert_cmd, quote(new), cert_log))  # noqa: S605
+        os.system(f'{cert_cmd} new -name {quote(new)} >> {cert_log} 2>&1')  # noqa: S605

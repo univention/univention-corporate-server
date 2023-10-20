@@ -57,10 +57,10 @@ config = configparser.ConfigParser()
 config.read_file(open(configfile))
 
 for section in config.sections():
-    print("SECTION: %s" % section)
+    print(f"SECTION: {section}")
     for name, value in config.items(section):
         if section == "AD GUID":
-            print(" --%s: %s" % (name, value))
+            print(f" --{name}: {value}")
             print(" --%s: %s" % (base64.b64decode(fixup(name).encode('ASCII')).decode('ASCII'), base64.b64decode(fixup(value).encode('ASCII')).decode('ASCII')))
         else:
             print(" -- %50s : %s" % (name, value))

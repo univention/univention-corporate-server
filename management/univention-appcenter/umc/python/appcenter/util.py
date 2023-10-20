@@ -67,7 +67,7 @@ def rename_app(old_id, new_id, component_manager, package_manager):
         raise ValueError([old_id, new_id])
 
     if not app.is_installed(package_manager, strict=False):
-        MODULE.process('%s is not installed. Fine, nothing to do.\n' % app.name)
+        MODULE.process(f'{app.name} is not installed. Fine, nothing to do.\n')
         return
 
     app.set_id(old_id)
@@ -87,10 +87,10 @@ def get_hosts(module, lo, ucr=None):
         host.open()  # needed for fqdn. it may be enough to return 'name'
         hostname = host.info.get('name')
         if hostname == local_hostname:
-            MODULE.process('%s is me. Skipping' % host.dn)
+            MODULE.process(f'{host.dn} is me. Skipping')
             continue
         if 'fqdn' not in host.info:
-            MODULE.warn('%s does not have an FQDN. Skipping' % host.dn)
+            MODULE.warn(f'{host.dn} does not have an FQDN. Skipping')
             continue
         hosts.append(host)
     MODULE.process('Found hosts: %r' % [host.info.get('name') for host in hosts])
@@ -209,7 +209,7 @@ def component_registered(component_id, ucr):
     Moved outside of ComponentManager to avoid dependencies for
     UniventionUpdater when just using Application.all()
     """
-    return '%s/%s' % (COMPONENT_BASE, component_id) in ucr
+    return f'{COMPONENT_BASE}/{component_id}' in ucr
 
 
 def component_current(component_id, ucr):
@@ -218,7 +218,7 @@ def component_current(component_id, ucr):
     Moved outside of ComponentManager to avoid dependencies for
     UniventionUpdater
     """
-    return ucr.get('%s/%s/version' % (COMPONENT_BASE, component_id)) == 'current'
+    return ucr.get(f'{COMPONENT_BASE}/{component_id}/version') == 'current'
 
 
 class Changes(object):
@@ -294,7 +294,7 @@ class Changes(object):
 
             self._changes[name] = value
         except Exception as e:
-            MODULE.warn("set_registry_var('%s', '%s') ERROR %s" % (name, value, str(e)))
+            MODULE.warn(f"set_registry_var('{name}', '{value}') ERROR {str(e)}")
 
     def commit(self):
         ucr_update(self.ucr, self._changes)
@@ -391,18 +391,18 @@ class ComponentManager(object):
         }
         try:
             name = data.pop('name')
-            named_component_base = '%s/%s' % (COMPONENT_BASE, name)
+            named_component_base = f'{COMPONENT_BASE}/{name}'
             for key, val in data.items():
                 if val is None:
                     # was not given, so don't update
                     continue
                 if key in COMP_PARAMS:
-                    super_ucr.set_registry_var('%s/%s' % (named_component_base, key), val)
+                    super_ucr.set_registry_var(f'{named_component_base}/{key}', val)
                 elif key == 'enabled':
                     super_ucr.set_registry_var(named_component_base, val)
         except Exception as e:
             result['status'] = PUT_PROCESSING_ERROR
-            result['message'] = "Parameter error: %s" % str(e)
+            result['message'] = f"Parameter error: {str(e)}"
 
         # Saving the registry and invoking all commit handlers is deferred until
         # the end of the loop over all request elements.
@@ -424,7 +424,7 @@ class ComponentManager(object):
 
         except Exception as e:
             result['status'] = PUT_PROCESSING_ERROR
-            result['message'] = "Parameter error: %s" % str(e)
+            result['message'] = f"Parameter error: {str(e)}"
 
         return result
 
@@ -437,8 +437,8 @@ class ComponentManager(object):
         return super_ucr.changed()
 
     def _remove(self, component_id, super_ucr):
-        named_component_base = '%s/%s' % (COMPONENT_BASE, component_id)
+        named_component_base = f'{COMPONENT_BASE}/{component_id}'
         for var in COMP_PARAMS:
-            super_ucr.set_registry_var('%s/%s' % (named_component_base, var), '')
+            super_ucr.set_registry_var(f'{named_component_base}/{var}', '')
 
         super_ucr.set_registry_var(named_component_base, '')

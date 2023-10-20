@@ -25,8 +25,8 @@ def check_sending_mail(username, password, recipient_email):
 def main():
     with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
         fqdn = '%(hostname)s.%(domainname)s' % ucr
-        handler_set(['mail/alias/root=systemmail@%s' % fqdn])
-        mailAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
+        handler_set([f'mail/alias/root=systemmail@{fqdn}'])
+        mailAddress = f'{uts.random_name()}@{ucr.get("domainname")}'
         userdn, username = udm.create_user(
             set={
                 'password': 'univention',
@@ -35,7 +35,7 @@ def main():
             },
         )
         for mail_name in ('postmaster', 'webmaster'):
-            recipient_email = '%s@%s' % (mail_name, fqdn)
+            recipient_email = f'{mail_name}@{fqdn}'
             check_sending_mail(mailAddress, 'univention', recipient_email)
 
 

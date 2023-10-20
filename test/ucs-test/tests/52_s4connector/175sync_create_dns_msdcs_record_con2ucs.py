@@ -25,13 +25,13 @@ if __name__ == '__main__':
     domainname = dnstests.ucr["domainname"]
     hostname = dnstests.ucr["hostname"]
     fqdn = ".".join((hostname, domainname))
-    location = "0 100 389 %s." % fqdn
-    forward_zone_dn = "zoneName=%s,cn=dns,%s" % (domainname, dnstests.ucr["ldap/base"])
+    location = f"0 100 389 {fqdn}."
+    forward_zone_dn = f"zoneName={domainname},cn=dns,{dnstests.ucr['ldap/base']}"
 
-    test_relativeDomainName = "_%s._msdcs" % uts.random_name()
-    test_srv_record_dn = "relativeDomainName=%s,%s" % (test_relativeDomainName, forward_zone_dn)
-    test_fqdn = "%s.%s" % (test_relativeDomainName, domainname)
-    s4_zonename = "_msdcs.%s" % (domainname,)
+    test_relativeDomainName = f"_{uts.random_name()}._msdcs"
+    test_srv_record_dn = f"relativeDomainName={test_relativeDomainName},{forward_zone_dn}"
+    test_fqdn = f"{test_relativeDomainName}.{domainname}"
+    s4_zonename = f"_msdcs.{domainname}"
 
     nsupdate_add_request = '''server %(hostname)s.%(domainname)s
 zone %(zonename)s.

@@ -36,9 +36,9 @@ def make_buildcopy(self):
 		"""
 		if isinstance(lst, Node.Node):
 			if not lst.is_src():
-				raise Errors.WafError('buildcopy: node %s is not in src'%lst)
+				raise Errors.WafError(f'buildcopy: node {lst} is not in src')
 			if not os.path.isfile(lst.abspath()):
-				raise Errors.WafError('buildcopy: Cannot copy directory %s (unsupported action)'%lst)
+				raise Errors.WafError(f'buildcopy: Cannot copy directory {lst} (unsupported action)')
 			return lst
 
 		if isinstance(lst, str):
@@ -47,15 +47,15 @@ def make_buildcopy(self):
 		node = self.bld.path.get_src().search_node(lst)
 		if node:
 			if not os.path.isfile(node.abspath()):
-				raise Errors.WafError('buildcopy: Cannot copy directory %s (unsupported action)'%node)
+				raise Errors.WafError(f'buildcopy: Cannot copy directory {node} (unsupported action)')
 			return node
 
 		node = self.bld.path.get_src().find_node(lst)
 		if node:
 			if not os.path.isfile(node.abspath()):
-				raise Errors.WafError('buildcopy: Cannot copy directory %s (unsupported action)'%node)
+				raise Errors.WafError(f'buildcopy: Cannot copy directory {node} (unsupported action)')
 			return node
-		raise Errors.WafError('buildcopy: File not found in src: %s'%os.path.join(*lst))
+		raise Errors.WafError(f'buildcopy: File not found in src: {os.path.join(*lst)}')
 
 	nodes = [ to_src_nodes(n) for n in getattr(self, 'buildcopy_source', getattr(self, 'source', [])) ]
 	if not nodes:

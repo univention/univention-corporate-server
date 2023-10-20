@@ -31,7 +31,7 @@ if PY3:
         if isinstance(bytesorstring, bytes):
             tmp = bytesorstring.decode('utf8')
         elif not isinstance(bytesorstring, str):
-            raise ValueError('Expected byte of string for %s:%s' % (type(bytesorstring), bytesorstring))
+            raise ValueError(f'Expected byte of string for {type(bytesorstring)}:{bytesorstring}')
         return tmp
 
 else:
@@ -45,7 +45,7 @@ else:
     def get_string(bytesorstring):
         tmp = bytesorstring
         if not(isinstance(bytesorstring, str) or isinstance(bytesorstring, unicode)):
-            raise ValueError('Expected str or unicode for %s:%s' % (type(bytesorstring), bytesorstring))
+            raise ValueError(f'Expected str or unicode for {type(bytesorstring)}:{bytesorstring}')
         return tmp
 
 # sigh, python octal constants are a mess
@@ -83,10 +83,10 @@ def SET_TARGET_TYPE(ctx, target, value):
     '''set the target type of a target'''
     cache = LOCAL_CACHE(ctx, 'TARGET_TYPE')
     if target in cache and cache[target] != 'EMPTY':
-        Logs.error("ERROR: Target '%s' in directory %s re-defined as %s - was %s" % (target, ctx.path.abspath(), value, cache[target]))
+        Logs.error(f"ERROR: Target '{target}' in directory {ctx.path.abspath()} re-defined as {value} - was {cache[target]}")
         sys.exit(1)
     LOCAL_CACHE_SET(ctx, 'TARGET_TYPE', target, value)
-    debug("task_gen: Target '%s' created of type '%s' in %s" % (target, value, ctx.path.abspath()))
+    debug(f"task_gen: Target '{target}' created of type '{value}' in {ctx.path.abspath()}")
     return True
 
 
@@ -133,7 +133,7 @@ def install_rpath(target):
 
 def build_rpath(bld):
     '''the rpath value for build'''
-    rpaths = [os.path.normpath('%s/%s' % (bld.env.BUILD_DIRECTORY, d)) for d in ("shared", "shared/private")]
+    rpaths = [os.path.normpath(f'{bld.env.BUILD_DIRECTORY}/{d}') for d in ("shared", "shared/private")]
     bld.env['RPATH'] = []
     if bld.env.RPATH_ON_BUILD:
         return rpaths
@@ -163,7 +163,7 @@ def LOCAL_CACHE_SET(ctx, cachename, key, value):
 def ASSERT(ctx, expression, msg):
     '''a build assert call'''
     if not expression:
-        raise Errors.WafError("ERROR: %s\n" % msg)
+        raise Errors.WafError(f"ERROR: {msg}\n")
 Build.BuildContext.ASSERT = ASSERT
 
 
@@ -199,7 +199,7 @@ def process_depends_on(self):
         lst = self.to_list(self.depends_on)
         for x in lst:
             y = self.bld.get_tgen_by_name(x)
-            self.bld.ASSERT(y is not None, "Failed to find dependency %s of %s" % (x, self.name))
+            self.bld.ASSERT(y is not None, f"Failed to find dependency {x} of {self.name}")
             y.post()
             if getattr(y, 'more_includes', None):
                   self.includes += " " + y.more_includes
@@ -243,7 +243,7 @@ def subst_vars_error(string, env):
         if re.match('\$\{\w+\}', v):
             vname = v[2:-1]
             if not vname in env:
-                raise KeyError("Failed to find variable %s in %s in env %s <%s>" % (vname, string, env.__class__, str(env)))
+                raise KeyError(f"Failed to find variable {vname} in {string} in env {env.__class__} <{str(env)}>")
             v = env[vname]
             if isinstance(v, list):
                 v = ' '.join(v)
@@ -339,7 +339,7 @@ def EXPAND_VARIABLES(ctx, varstr, vars=None):
     # make sure there is nothing left. Also check for the common
     # typo of $( instead of ${
     if ret.find('${') != -1 or ret.find('$(') != -1:
-        Logs.error('Failed to substitute all variables in varstr=%s' % ret)
+        Logs.error(f'Failed to substitute all variables in varstr={ret}')
         sys.exit(1)
     return ret
 Build.BuildContext.EXPAND_VARIABLES = EXPAND_VARIABLES
@@ -370,14 +370,14 @@ def RUN_PYTHON_TESTS(testfiles, pythonpath=None, extra_env=None):
         if not isinstance(interp, str):
             interp = ' '.join(interp)
         for testfile in testfiles:
-            cmd = "PYTHONPATH=%s %s %s" % (pythonpath, interp, testfile)
+            cmd = f"PYTHONPATH={pythonpath} {interp} {testfile}"
             if extra_env:
                 for key, value in extra_env.items():
-                    cmd = "%s=%s %s" % (key, value, cmd)
-            print('Running Python test with %s: %s' % (interp, testfile))
+                    cmd = f"{key}={value} {cmd}"
+            print(f'Running Python test with {interp}: {testfile}')
             ret = RUN_COMMAND(cmd)
             if ret:
-                print('Python test failed: %s' % cmd)
+                print(f'Python test failed: {cmd}')
                 result = ret
     return result
 
@@ -641,9 +641,9 @@ def make_libname(ctx, name, nolibprefix=False, version=None, python=False):
         (root, ext) = os.path.splitext(libname)
         if ext == ".dylib":
             # special case - version goes before the prefix
-            libname = "%s.%s%s" % (root, version, ext)
+            libname = f"{root}.{version}{ext}"
         else:
-            libname = "%s%s.%s" % (root, ext, version)
+            libname = f"{root}{ext}.{version}"
     return libname
 Build.BuildContext.make_libname = make_libname
 
@@ -661,7 +661,7 @@ def get_tgt_list(bld):
             continue
         t = bld.get_tgen_by_name(tgt)
         if t is None:
-            Logs.error("Target %s of type %s has no task generator" % (tgt, type))
+            Logs.error(f"Target {tgt} of type {type} has no task generator")
             sys.exit(1)
         tgt_list.append(t)
     return tgt_list
@@ -740,12 +740,12 @@ def samba_add_onoff_option(opt, option, help=(), dest=None, default=True,
         default_str = str(default)
 
     if help == ():
-        help = ("Build with %s support (default=%s)" % (option, default_str))
+        help = f"Build with {option} support (default={default_str})"
     if dest is None:
-        dest = "with_%s" % option.replace('-', '_')
+        dest = f"with_{option.replace('-', '_')}"
 
-    with_val = "--%s-%s" % (with_name, option)
-    without_val = "--%s-%s" % (without_name, option)
+    with_val = f"--{with_name}-{option}"
+    without_val = f"--{without_name}-{option}"
 
     opt.add_option(with_val, help=help, action="store_true", dest=dest,
                    default=default)

@@ -20,7 +20,7 @@ def main():
             udm.create_user()
         handler_set(["admin/diary/query/limit=0"])
         len_without_limit = len(client.query())
-        handler_set(["admin/diary/query/limit=%s" % limit])
+        handler_set([f"admin/diary/query/limit={limit}"])
         len_with_limit = len(client.query())
         assert len_with_limit == limit, 'The length of the query result is not that of admin/diary/query/limit'
         assert len_with_limit != len_without_limit, 'The length of the query result without a limit and with a limit of %s are the same. Functionality of limit cannot be tested'

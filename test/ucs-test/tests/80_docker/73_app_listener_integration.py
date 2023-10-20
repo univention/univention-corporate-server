@@ -211,16 +211,16 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         app.verify(joined=False)
         images = subprocess.check_output(['docker', 'images'], text=True)
         assert 'stable' in images, images
-        very_old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
+        very_old_con_pid = get_pid_for_name(f'univention-appcenter-listener-converter {name}')
         time.sleep(10)
-        with open('/var/lib/univention-directory-listener/handlers/%s' % name) as f:
+        with open(f'/var/lib/univention-directory-listener/handlers/{name}') as f:
             status = f.readline()
             assert status == '3'
         test_listener()
 
         # check listener/converter restart during update
         old_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
-        old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
+        old_con_pid = get_pid_for_name(f'univention-appcenter-listener-converter {name}')
         assert very_old_con_pid == old_con_pid  # should be the same until now
         app = App(name=name, version='2', build_package=False, call_join_scripts=False)
         app.set_ini_parameter(
@@ -240,7 +240,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         app.verify(joined=False)
 
         li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
-        con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
+        con_pid = get_pid_for_name(f'univention-appcenter-listener-converter {name}')
         assert old_li_pid == li_pid  # app update does not require listener restart
         assert old_con_pid != con_pid
 
@@ -248,5 +248,5 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
         app.uninstall()
         new_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
         assert not systemd_service_enabled(systemd_service)
-        assert not os.path.isfile('/var/lib/univention-directory-listener/handlers/%s' % name)
+        assert not os.path.isfile(f'/var/lib/univention-directory-listener/handlers/{name}')
         assert li_pid != new_li_pid

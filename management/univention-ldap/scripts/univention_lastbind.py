@@ -56,7 +56,7 @@ def error(msg: str) -> NoReturn:
 
 
 def warning(msg: str) -> None:
-    print('Warning: %s' % (msg,), file=sys.stderr)
+    print(f'Warning: {msg}', file=sys.stderr)
 
 
 def get_ldap_connections() -> List[univention.admin.uldap.access]:
@@ -68,7 +68,7 @@ def get_ldap_connections() -> List[univention.admin.uldap.access]:
             try:
                 lo = univention.admin.uldap.access(host=comp.props.fqdn, base=udm.connection.base, binddn=udm.connection.binddn, bindpw=udm.connection.bindpw)
             except ldap.SERVER_DOWN:
-                warning('Server "%s" is not reachable. The "authTimestamp" will not be read from it. Continuing.' % (comp.props.fqdn,))
+                warning(f'Server "{comp.props.fqdn}" is not reachable. The "authTimestamp" will not be read from it. Continuing.')
             else:
                 connections.append(lo)
     return connections
@@ -82,7 +82,7 @@ def get_users(binddn: str | None = None, bindpwdfile: str | None = None, only_th
         try:
             users = [get_user(only_this_user)]
         except (univention.udm.exceptions.NoObject, univention.udm.exceptions.MultipleObjects) as err:
-            error('The provided user "%s" could not be found: %s' % (only_this_user, err))
+            error(f'The provided user "{only_this_user}" could not be found: {err}')
     else:
         users = udm.get('users/user').search()
     return users
@@ -103,7 +103,7 @@ def save_timestamp(user: univention.udm.modules.users_user.UsersUserObject, time
     try:
         user.save()
     except univention.udm.exceptions.ModifyError as err:
-        warning('Could not save new timestamp "%s" to "lastbind" extended attribute of user "%s". Continuing: %s' % (timestamp, user.dn, err))
+        warning(f'Could not save new timestamp "{timestamp}" to "lastbind" extended attribute of user "{user.dn}". Continuing: {err}')
 
 
 def update_users(binddn: str | None = None, bindpwdfile: str | None = None, only_this_user: str | None = None) -> None:
@@ -121,18 +121,18 @@ def get_writable_udm(binddn: str | None = None, bindpwdfile: str | None = None) 
             with open(bindpwdfile) as f:
                 bindpwd = f.read().strip()
         except IOError as err:
-            error('Could not open "bindpwdfile" "%s": %s' % (bindpwdfile, err))
+            error(f'Could not open "bindpwdfile" "{bindpwdfile}": {err}')
         ucr = ConfigRegistry()
         ucr.load()
         try:
             udm = UDM.credentials(binddn, bindpwd, ucr.get('ldap/base'), ucr.get('ldap/master'), ucr.get('ldap/master/port'))
         except univention.udm.exceptions.ConnectionError as err:
-            error('Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s": %s' % (ucr.get('ldap/master'), binddn, bindpwdfile, err))
+            error(f'Could not connect to server "{ucr.get("ldap/master")}" with provided "binddn" "{binddn}" and "bindpwdfile" "{bindpwdfile}": {err}')
     else:
         try:
             udm = UDM.admin()
         except univention.udm.exceptions.ConnectionError as err:
-            error('Could not create a writable connection to UDM on this server. Try to provide "binddn" and "bindpwdfile": %s' % (err,))
+            error(f'Could not create a writable connection to UDM on this server. Try to provide "binddn" and "bindpwdfile": {err}')
     udm.version(2)
     return udm
 
@@ -157,4 +157,4 @@ if __name__ == '__main__':
     try:
         main(parse_args())
     except ScriptError as err:
-        print('Error: %s' % (err,), file=sys.stderr)
+        print(f'Error: {err}', file=sys.stderr)

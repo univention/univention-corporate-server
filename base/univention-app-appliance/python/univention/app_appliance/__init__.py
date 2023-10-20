@@ -121,11 +121,11 @@ def get_app_style_properties(app: app.App) -> Dict[str, str]:
     try:
         with open(os.path.join(get_cache_dir_name(app), local_cache_name)) as fd:
             props = json.load(fd)
-            print('Properties loaded from %s cache' % local_cache_name)
+            print(f'Properties loaded from {local_cache_name} cache')
             return props
     except Exception as exc:
         if not os.path.exists(os.path.join(get_cache_dir_name(app), local_cache_name)):
-            print('Properties loaded from web for %s' % local_cache_name)
+            print(f'Properties loaded from web for {local_cache_name}')
         else:
             print('Warning:', exc)
 
@@ -146,7 +146,7 @@ def get_app_style_properties(app: app.App) -> Dict[str, str]:
             'portal_background_image',
             'portal_title',
     ):
-        ival = getattr(app, 'appliance_%s' % i, None)
+        ival = getattr(app, f'appliance_{i}', None)
         if ival:
             props[i] = ival
     return props

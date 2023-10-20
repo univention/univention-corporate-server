@@ -141,7 +141,7 @@ def parse_options() -> Namespace:
     targets = {ep.name: ep.load() for ep in eps.get("generate_appliance.targets", [])}
     for name, target in targets.items():
         group.add_argument(
-            "--%s" % (name.replace("_", "-"),),
+            f"--{name.replace('_', '-')}",
             help='create "%s"%s"' % (
                 (target.__doc__ or "").strip(),
                 ' (selected by default)' if target.default else '',

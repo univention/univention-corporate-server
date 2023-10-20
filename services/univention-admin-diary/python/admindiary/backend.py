@@ -79,7 +79,7 @@ def get_engine():
         dbhost = admin_diary_backend.split()[0]
     if dbhost == ucr.get('hostname') or dbhost == '%(hostname)s.%(domainname)s' % ucr:
         dbhost = 'localhost'
-    db_url = '%s://admindiary:%s@%s/admindiary' % (dbms, password, dbhost)
+    db_url = f'{dbms}://admindiary:{password}@{dbhost}/admindiary'
     if dbms == 'mysql':
         db_url = db_url + '?charset=utf8mb4'
     try:
@@ -272,14 +272,14 @@ class Client(object):
             entry_message = diary_entry.message.get('en')
             event_id = None
         else:
-            get_logger().debug('Searching for Event %s' % diary_entry.event_name)
+            get_logger().debug(f'Searching for Event {diary_entry.event_name}')
             entry_message = None
             event = self.add_event(diary_entry.event_name)
             event_id = event.id
-            get_logger().debug('Found Event ID %s' % event.id)
+            get_logger().debug(f'Found Event ID {event.id}')
             if diary_entry.message:
                 for locale, message in diary_entry.message.items():
-                    get_logger().debug('Trying to insert message for %s' % locale)
+                    get_logger().debug(f'Trying to insert message for {locale}')
                     if self.add_event_message(event.id, locale, message, False):
                         get_logger().debug('Found no existing one. Inserted %r' % message)
             else:
@@ -294,7 +294,7 @@ class Client(object):
             entry.tags.append(tag)
         for key, value in diary_entry.args.items():
             entry.args.append(Arg(key=key, value=value))
-        get_logger().info('Successfully added %s (%s)' % (diary_entry.context_id, diary_entry.event_name))
+        get_logger().info(f'Successfully added {diary_entry.context_id} ({diary_entry.event_name})')
 
     def query(self, time_from=None, time_until=None, tag=None, event=None, username=None, hostname=None, message=None, locale='en'):
         limit = get_query_limit()
@@ -409,7 +409,7 @@ def get_client(version):
 
 class UnsupportedVersion(Exception):
     def __str__(self):
-        return 'Version %s of the Admin Diary Backend is not supported' % (self.args[0])
+        return f'Version {(self.args[0])} of the Admin Diary Backend is not supported'
 
 
 class NoDBConnection(Exception):

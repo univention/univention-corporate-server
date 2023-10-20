@@ -154,7 +154,7 @@ class object(univention.admin.handlers.simpleLdap):
                 # find correct dNSZone entry
                 res = self.lo.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
                 if not res:
-                    ud.debug(ud.ADMIN, ud.INFO, 'service.py: open: could not find dNSZone of %s' % (host,))
+                    ud.debug(ud.ADMIN, ud.INFO, f'service.py: open: could not find dNSZone of {host}')
                 else:
                     # found dNSZone
                     filter = '(&(objectClass=univentionHost)'

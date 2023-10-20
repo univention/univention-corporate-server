@@ -26,7 +26,7 @@ from essential.mail import (
 with ucr_test.UCSTestConfigRegistry() as ucr:
     DOMAIN = ucr.get("domainname").lower()
     HOSTNAME = ucr.get("hostname")
-    FQDN = "%s.%s" % (HOSTNAME, DOMAIN)
+    FQDN = f"{HOSTNAME}.{DOMAIN}"
 
 DEBUG_LEVEL = 1
 set_mail_forward_copy_to_self_ucrv('yes')
@@ -150,7 +150,7 @@ def test_mail_list_equal_user_mail_alt():
     print("### A mailing list's mail is identical with a users mail_alternative_address")
     with udm_test.UCSTestUDM() as udm:
         list_name = uts.random_name()
-        mailing_list_mail = "%s@%s" % (list_name, DOMAIN)
+        mailing_list_mail = f"{list_name}@{DOMAIN}"
         user_a = random_mail_user(udm=udm, mail_alternative_address=mailing_list_mail)
         user_b = random_mail_user(udm=udm)
         udm.create_object(
@@ -171,13 +171,13 @@ def test_user_mail_alt_equals_shared_folder_mail_address():
     print("### A user has mail@shared_folder as mail_alternative_address address")
     with udm_test.UCSTestUDM() as udm:
         folder_name = uts.random_name()
-        shared_folder_mail = "%s@%s" % (folder_name, DOMAIN)
+        shared_folder_mail = f"{folder_name}@{DOMAIN}"
         user = random_mail_user(udm=udm, mail_alternative_address=shared_folder_mail)
         token = make_token()
         msgid = uts.random_name()
         folder_dn, folder_name, folder_mailaddress = create_shared_mailfolder(
             udm, FQDN, mailAddress=shared_folder_mail,
-            user_permission=['"%s" "%s"' % ("anyone", "all")],
+            user_permission=[f'"{"anyone"}" "{"all"}"'],
         )
         send_mail(recipients=shared_folder_mail, msg=token, debuglevel=DEBUG_LEVEL, messageid=msgid)
         check_delivery(token, user.mailPrimaryAddress, True)
@@ -206,7 +206,7 @@ def test_group_mail_in_mailing_list():
             },
         )
         list_name = uts.random_name()
-        list_mail = "%s@%s" % (list_name, DOMAIN)
+        list_mail = f"{list_name}@{DOMAIN}"
         udm.create_object(
             "mail/lists",
             set={

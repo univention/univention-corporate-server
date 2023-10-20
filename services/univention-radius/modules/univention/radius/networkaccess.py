@@ -229,7 +229,7 @@ class NetworkAccess(object):
         try:
             nt_password_hash = codecs.decode(result[0][1][pwd_attr][0], 'hex')
         except (IndexError, KeyError, TypeError):
-            raise NoHashError('No valid NT-password-hash found. Check the "%s" attribute of the user.' % (pwd_attr,))
+            raise NoHashError(f'No valid NT-password-hash found. Check the "{pwd_attr}" attribute of the user.')
         sambaAccountFlags = frozenset(result[0][1]['sambaAcctFlags'][0].decode('UTF-8'))
         if sambaAccountFlags & DISALLOWED_SAMBA_ACCOUNT_FLAGS:
             raise UserDeactivatedError('Account is deactivated')

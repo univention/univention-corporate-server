@@ -68,7 +68,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
                     for old_ip in self.ip_mapping.keys():
                         new_ip = self.ip_mapping.get(old_ip, old_ip)
                         loc, link = old_value
-                        link = link.replace("//%s/" % old_ip, "//%s/" % new_ip)
+                        link = link.replace(f"//{old_ip}/", f"//{new_ip}/")
                         new_value = [loc, link]
                         if new_value not in new_values:
                             new_values.append(new_value)

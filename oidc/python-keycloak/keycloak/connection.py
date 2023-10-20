@@ -155,7 +155,7 @@ class ConnectionManager(object):
                                verify=self.verify)
         except Exception as e:
             raise KeycloakConnectionError(
-                "Can't connect to server (%s)" % e)
+                f"Can't connect to server ({e})")
 
     def raw_post(self, path, data, **kwargs):
         """ Submit post request to the path.
@@ -176,7 +176,7 @@ class ConnectionManager(object):
                                 verify=self.verify)
         except Exception as e:
             raise KeycloakConnectionError(
-                "Can't connect to server (%s)" % e)
+                f"Can't connect to server ({e})")
 
     def raw_put(self, path, data, **kwargs):
         """ Submit put request to the path.
@@ -197,7 +197,7 @@ class ConnectionManager(object):
                                verify=self.verify)
         except Exception as e:
             raise KeycloakConnectionError(
-                "Can't connect to server (%s)" % e)
+                f"Can't connect to server ({e})")
 
     def raw_delete(self, path, data={}, **kwargs):
         """ Submit delete request to the path.
@@ -219,4 +219,4 @@ class ConnectionManager(object):
                                   verify=self.verify)
         except Exception as e:
             raise KeycloakConnectionError(
-                "Can't connect to server (%s)" % e)
+                f"Can't connect to server ({e})")

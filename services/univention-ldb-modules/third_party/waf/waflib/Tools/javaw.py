@@ -173,7 +173,7 @@ def apply_java(self):
 		else:
 			y = self.path.find_dir(x)
 			if not y:
-				self.bld.fatal('Could not find the folder %s from %s' % (x, self.path))
+				self.bld.fatal(f'Could not find the folder {x} from {self.path}')
 		tmp.append(y)
 
 	tsk.srcdir = tmp
@@ -438,7 +438,7 @@ class javadoc(Task.Task):
 	color = 'BLUE'
 
 	def __str__(self):
-		return '%s: %s -> %s\n' % (self.__class__.__name__, self.generator.srcdir, self.generator.javadoc_output)
+		return f'{self.__class__.__name__}: {self.generator.srcdir} -> {self.generator.javadoc_output}\n'
 
 	def run(self):
 		env = self.env
@@ -526,10 +526,10 @@ def check_java_class(self, classname, with_classpath=None):
 
 	# Try to run the app
 	cmd = self.env.JAVA + ['-cp', classpath, 'Test', classname]
-	self.to_log("%s\n" % str(cmd))
+	self.to_log(f"{str(cmd)}\n")
 	found = self.exec_command(cmd, shell=False)
 
-	self.msg('Checking for java class %s' % classname, not found)
+	self.msg(f'Checking for java class {classname}', not found)
 
 	shutil.rmtree(javatestdir, True)
 

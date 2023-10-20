@@ -21,9 +21,9 @@ def main():
             domain = ucr.get('domainname')
             handler_set(['mail/dovecot/mailbox/delete=yes'])
             subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
-            host = '%s.%s' % (ucr.get('hostname'), domain)
+            host = f'{ucr.get("hostname")}.{domain}'
             password = 'univention'
-            usermail1 = '%s@%s' % (uts.random_name(), domain)
+            usermail1 = f'{uts.random_name()}@{domain}'
             udm.create_user(
                 set={
                     'password': password,
@@ -32,7 +32,7 @@ def main():
                     'disabled': '1',
                 },
             )
-            usermail = '%s@%s' % (uts.random_name(), domain)
+            usermail = f'{uts.random_name()}@{domain}'
             udm.create_user(
                 set={
                     'password': password,

@@ -555,7 +555,7 @@ class TestUdmComputersBasic(TestCase):
     def test_cleanup(self):
         ubuntu = self.udm.get('computers/ubuntu').new()
         ubuntu.props.name = 'ubuntu'
-        ubuntu.props.network = 'cn=default,cn=networks,%s' % self.ucr_test['ldap/base']
+        ubuntu.props.network = f'cn=default,cn=networks,{self.ucr_test["ldap/base"]}'
         ubuntu.save()
         try:
             num_ptr_records = len(list(self.udm.get('dns/ptr_record').search()))
@@ -592,15 +592,15 @@ class TestUdmComputersBasic(TestCase):
 
     def test_default_position(self):
         ubuntu = self.udm.get('computers/ubuntu').new()
-        assert ubuntu.position == 'cn=computers,%s' % self.ucr_test['ldap/base']
+        assert ubuntu.position == f'cn=computers,{self.ucr_test["ldap/base"]}'
         memberserver = self.udm.get('computers/memberserver').new()
-        assert memberserver.position == 'cn=memberserver,cn=computers,%s' % self.ucr_test['ldap/base']
+        assert memberserver.position == f'cn=memberserver,cn=computers,{self.ucr_test["ldap/base"]}'
         slave = self.udm.get('computers/domaincontroller_slave').new()
-        assert slave.position == 'cn=dc,cn=computers,%s' % self.ucr_test['ldap/base']
+        assert slave.position == f'cn=dc,cn=computers,{self.ucr_test["ldap/base"]}'
         backup = self.udm.get('computers/domaincontroller_backup').new()
-        assert backup.position == 'cn=dc,cn=computers,%s' % self.ucr_test['ldap/base']
+        assert backup.position == f'cn=dc,cn=computers,{self.ucr_test["ldap/base"]}'
         master = self.udm.get('computers/domaincontroller_master').new()
-        assert master.position == 'cn=dc,cn=computers,%s' % self.ucr_test['ldap/base']
+        assert master.position == f'cn=dc,cn=computers,{self.ucr_test["ldap/base"]}'
 
 
 class TestEncoders(TestCase):

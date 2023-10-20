@@ -63,7 +63,7 @@ def handler(configRegistry, changes):
 
         try:
             var = service['start_type']
-            unit = service.get('systemd', '%s.service' % (name,))
+            unit = service.get('systemd', f'{name}.service')
         except KeyError:
             log.debug('Incomplete service information: %s', service)
             continue

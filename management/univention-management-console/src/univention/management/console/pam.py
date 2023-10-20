@@ -217,7 +217,7 @@ class PamAuth(object):
 
     def _get_password_complexity_message(self):  # type: () -> str
         return ucr.get(
-            'umc/login/password-complexity-message/%s' % (self._language,),
+            f'umc/login/password-complexity-message/{self._language}',
             ucr.get('umc/login/password-complexity-message/en', ''),
         )
 
@@ -235,7 +235,7 @@ class PamAuth(object):
             self.pam.authenticate()
             self.pam.acct_mgmt()
         except PAMError as pam_err:
-            AUTH.error("PAM: authentication error: %s" % (pam_err,))
+            AUTH.error(f"PAM: authentication error: {pam_err}")
             if pam_err.args[1] == PAM_NEW_AUTHTOK_REQD:  # error: ('Authentication token is no longer valid; new one required', 12)
                 message = self.error_message(pam_err.args)
                 raise PasswordExpired(("%s %s" % (message, self._get_password_complexity_message())).rstrip())
@@ -290,7 +290,7 @@ class PamAuth(object):
         try:
             return list(self._conversation(auth, query_list, data))
         except BaseException:
-            AUTH.error('Unexpected error during PAM conversation: %s' % (traceback.format_exc(),))
+            AUTH.error(f'Unexpected error during PAM conversation: {traceback.format_exc()}')
             raise
 
     def _conversation(self, auth, query_list, data):  # type: (Any, List[Tuple[Any, Any]], Any) -> Iterator[Tuple[str, int]]
@@ -332,8 +332,8 @@ class PamAuth(object):
             if error_message:
                 return error_message
             if errno in (PAM_TEXT_INFO, PAM_ERROR_MSG):
-                messages.append('%s.' % (self._(prompt).strip(': .'),))
-        messages.append('Errorcode %s: %s' % (pam_err[1], self.error_message(pam_err)))
+                messages.append(f'{self._(prompt).strip(": .")}.')
+        messages.append(f'Errorcode {pam_err[1]}: {self.error_message(pam_err)}')
         return '%s. %s: %s' % (
             self._('The reason could not be determined'),
             self._('In case it helps, the raw error message will be displayed'),

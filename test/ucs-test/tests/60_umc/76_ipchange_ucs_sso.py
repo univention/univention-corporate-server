@@ -36,9 +36,9 @@ if __name__ == '__main__':
             role = 'domaincontroller_backup'
         computerName = uts.random_string()
         computer = udm.create_object(
-            'computers/%s' % role, name=computerName,
+            f'computers/{role}', name=computerName,
             password='univention',
-            network='cn=default,cn=networks,%s' % ucr.get('ldap/base'),
+            network=f'cn=default,cn=networks,{ucr.get("ldap/base")}',
             univentionService='univention-saml',
             check_for_drs_replication=False,
         )
@@ -60,8 +60,8 @@ if __name__ == '__main__':
             new_ip = '1.2.3.10'
 
             iface = ucr.get('interfaces/primary', 'eth0')
-            client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
-            client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
+            client = Client(ucr.get('ldap/master'), f'{computerName}$', 'univention')
+            client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get(f'interfaces/{iface}/netmask'), 'role': role})
 
             utils.wait_for_replication()
             utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True)

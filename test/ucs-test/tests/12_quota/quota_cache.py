@@ -14,7 +14,7 @@ def cache_must_exists(dn):
     i = 0
     while not os.path.exists(filename):
         if i > TIMEOUT:
-            utils.fail('%s does not exist' % filename)
+            utils.fail(f'{filename} does not exist')
         print('Waiting for quota cache removing (%d) ...' % i)
         time.sleep(1)
         i += 1
@@ -25,7 +25,7 @@ def cache_must_not_exists(dn):
     i = 0
     while os.path.exists(filename):
         if i > TIMEOUT:
-            utils.fail('%s exists' % filename)
+            utils.fail(f'{filename} exists')
             break
         print('Waiting for quota cache creating (%d) ...' % i)
         time.sleep(1)
@@ -35,7 +35,7 @@ def cache_must_not_exists(dn):
 def get_cache_values(dn):
     filename = os.path.join(SHARE_CACHE_DIR, dn)
     if not os.path.exists(filename):
-        utils.fail('%s does not exist' % filename)
+        utils.fail(f'{filename} does not exist')
         return None
 
     with open(filename, 'rb') as fd:
@@ -59,12 +59,12 @@ def check_values(dn, inodeSoftLimit, inodeHardLimit, spaceSoftLimit, spaceHardLi
     #     utils.fail('univentionSharePath is set to %s. Expected: %s' % (cache['univentionSharePath'], path))
     print(cache)
     if cache['inodeSoftLimit'] != inodeSoftLimit:
-        utils.fail('inodeSoftLimit is set to %s. Expected: %s' % (cache['inodeSoftLimit'], inodeSoftLimit))
+        utils.fail(f'inodeSoftLimit is set to {cache["inodeSoftLimit"]}. Expected: {inodeSoftLimit}')
     if cache['inodeHardLimit'] != inodeHardLimit:
-        utils.fail('inodeHardLimit is set to %s. Expected: %s' % (cache['inodeHardLimit'], inodeHardLimit))
+        utils.fail(f'inodeHardLimit is set to {cache["inodeHardLimit"]}. Expected: {inodeHardLimit}')
     if cache['spaceSoftLimit'] != spaceSoftLimit:
-        utils.fail('spaceSoftLimit is set to %s. Expected: %s' % (cache['spaceSoftLimit'], spaceSoftLimit))
+        utils.fail(f'spaceSoftLimit is set to {cache["spaceSoftLimit"]}. Expected: {spaceSoftLimit}')
     if cache['spaceHardLimit'] != spaceHardLimit:
-        utils.fail('spaceHardLimit is set to %s. Expected: %s' % (cache['spaceHardLimit'], spaceHardLimit))
+        utils.fail(f'spaceHardLimit is set to {cache["spaceHardLimit"]}. Expected: {spaceHardLimit}')
     if cache['reapplyQuota'] != reapplyQuota:
-        utils.fail('reapplyQuota is set to %s. Expected: %s' % (cache['reapplyQuota'], reapplyQuota))
+        utils.fail(f'reapplyQuota is set to {cache["reapplyQuota"]}. Expected: {reapplyQuota}')

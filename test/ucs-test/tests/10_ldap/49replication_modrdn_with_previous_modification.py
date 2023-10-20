@@ -39,7 +39,7 @@ def get_entryUUID(lo, dn):
 
 
 def create_listener_module_for_computer(computer_name):
-    filename = '/usr/lib/univention-directory-listener/system/%s-test.py' % (computer_name)
+    filename = f'/usr/lib/univention-directory-listener/system/{(computer_name)}-test.py'
     fd = open(filename, 'w')
     fd.write('''
 from __future__ import absolute_import
@@ -66,7 +66,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 
 
 def remove_listener_module_for_computer(computer_name):
-    filename = '/usr/lib/univention-directory-listener/system/%s-test.py' % (computer_name)
+    filename = f'/usr/lib/univention-directory-listener/system/{(computer_name)}-test.py'
     if os.path.exists(filename):
         os.remove(filename)
     restart_listener()
@@ -81,7 +81,7 @@ computer_name = random_name()
 
 create_listener_module_for_computer(computer_name)
 
-position = 'cn=memberserver,cn=computers,%s' % (ucr.get('ldap/base'))
+position = f'cn=memberserver,cn=computers,{(ucr.get("ldap/base"))}'
 container = udm.create_object('container/cn', name=container_name, position=position, wait_for_replication=True)
 computer = udm.create_object('computers/linux', name=computer_name, position=container, wait_for_replication=True)
 
@@ -110,7 +110,7 @@ if computer_UUID != new_computer_UUID:
     print('ERROR: entryUUID of moved object do not match')
     success = False
 
-delete_handler_file = '/tmp/%s-test' % computer_name
+delete_handler_file = f'/tmp/{computer_name}-test'
 if os.path.exists(delete_handler_file):
     print('ERROR: the delete handler was called for the modified and moved object')
     success = False

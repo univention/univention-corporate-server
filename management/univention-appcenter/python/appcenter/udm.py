@@ -171,10 +171,10 @@ def get_read_connection(userdn, password):
 class ApplicationLDAPObject(object):
 
     def __init__(self, app, lo, pos, create_if_not_exists=False):
-        self._localhost = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
+        self._localhost = f'{ucr_get("hostname")}.{ucr_get("domainname")}'
         self._udm_obj = None
-        self._rdn = '%s_%s' % (app.id, app.version)
-        self._container = 'cn=%s,cn=apps,cn=univention,%s' % (escape_dn_chars(app.id), ucr_get('ldap/base'))
+        self._rdn = f'{app.id}_{app.version}'
+        self._container = f'cn={escape_dn_chars(app.id)},cn=apps,cn=univention,{ucr_get("ldap/base")}'
         self._lo = lo
         self._pos = pos
         self._reload(app, create_if_not_exists)
@@ -185,7 +185,7 @@ class ApplicationLDAPObject(object):
 
     @property
     def dn(self):
-        return 'univentionAppID=%s,%s' % (escape_dn_chars(self._rdn), self._container)
+        return f'univentionAppID={escape_dn_chars(self._rdn)},{self._container}'
 
     def _reload(self, app, create_if_not_exists=False):
         try:

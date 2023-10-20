@@ -42,7 +42,7 @@ def get_temp_app_prefix(app_cache):
 
 
 def write_ini_file(app_prefix):
-    print('Writing INI file: %s.ini' % os.path.basename(app_prefix))
+    print(f'Writing INI file: {os.path.basename(app_prefix)}.ini')
     with open_file(app_prefix, 'ini') as ini_file:
         ini_file.write('''
 [Application]
@@ -67,7 +67,7 @@ def test_ini_data(umc_data, lang):
         'name': 'Test App',
         'version': '11',
         'license': 'freemium',
-        'description': 'Test App [%s]' % lang,
+        'description': f'Test App [{lang}]',
     }
     for ikey, ival in expected_data.items():
         expected_val = expected_data[ikey]
@@ -88,7 +88,7 @@ README_TYPES = (
 
 def write_readme_file(app_prefix, readme_filename):
     with open_file(app_prefix, readme_filename) as readme_file:
-        readme_file.write('--%s--' % readme_filename)
+        readme_file.write(f'--{readme_filename}--')
 
 
 def write_readme_files(app_prefix):
@@ -96,7 +96,7 @@ def write_readme_files(app_prefix):
     for readme in README_TYPES:
         for lang in ('EN', 'DE'):
             filename = f'{readme}_{lang}'
-            print('  %s' % filename)
+            print(f'  {filename}')
             write_readme_file(app_prefix, filename)
 
 
@@ -122,7 +122,7 @@ def write_ratings(app_prefix, *keys):
     with open_file(app_prefix, 'meta') as meta_file:
         meta_file.write('[Application]\n')
         for ikey in keys:
-            meta_file.write('%s=1\n' % ikey)
+            meta_file.write(f'{ikey}=1\n')
 
 
 def get_ratings(umc_data):
@@ -162,7 +162,7 @@ def test_all():
     for lang in ('en_US', 'de_DE'):
         lang_suffix = lang.split('_')[0].upper()
         print('')
-        print('Testing language: %s' % lang_suffix)
+        print(f'Testing language: {lang_suffix}')
 
         # test INI and README file data
         app = get_app_from_umc(lang)

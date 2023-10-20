@@ -31,7 +31,7 @@ for val in value:
         modules.append(val.module)
 
 if len(modules) > 1:
-    utils.fail('Error: module %s was registered more than once' % modules[0])
+    utils.fail(f'Error: module {modules[0]} was registered more than once')
     sys.exit(1)
 
 # vim: ft=python

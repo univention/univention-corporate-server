@@ -55,7 +55,7 @@ _ = umc.Translation('univention-management-console-module-quota').translate
 class UserQuota(dict):
 
     def __init__(self, partition, user, bused, bsoft, bhard, btime, fused, fsoft, fhard, ftime):
-        self['id'] = '%s@%s' % (user, partition)
+        self['id'] = f'{user}@{partition}'
         self['partitionDevice'] = partition
         self['user'] = user
         self['sizeLimitUsed'] = block2byte(bused, 'MB')
@@ -148,7 +148,7 @@ def quota_is_enabled(fstab_entry):
         return False
     else:
         # match lines like "quota on / (/dev/disk/by-uuid/5bf2a723-b25a) is on"
-        pattern = re.compile(r"user quota on %s \([^)]*\) is (on|off)" % fstab_entry.mount_point)
+        pattern = re.compile(fr"user quota on {fstab_entry.mount_point} \([^)]*\) is (on|off)")
         match = pattern.match(stdout)
         if match:
             return match.group(1) == 'on'
@@ -174,14 +174,14 @@ def activate_quota(partition, activate):
         try:
             status = _do_activate_quota_partition(fs, fstab_entry, activate)
         except QuotaActivationError as exc:
-            failed.append('%s: %s' % (fstab_entry.spec, exc))
+            failed.append(f'{fstab_entry.spec}: {exc}')
             continue
 
         if fstab_entry.mount_point == '/' and fstab_entry.type == 'xfs':
             try:
                 enable_quota_in_kernel(activate)
             except QuotaActivationError as exc:
-                failed.append('%s: %s' % (fstab_entry.spec, exc))
+                failed.append(f'{fstab_entry.spec}: {exc}')
                 continue
         result.append(status)
 
@@ -247,18 +247,18 @@ def enable_quota_in_kernel(activate):
 
     flags = ','.join(flags)
     if flags:
-        flags = 'rootflags=%s' % (flags,)
+        flags = f'rootflags={flags}'
 
     new_grub_append = grub_append
     if 'rootflags=' not in grub_append:
         if flags:
-            new_grub_append = '%s %s' % (grub_append, flags)
+            new_grub_append = f'{grub_append} {flags}'
     else:
         new_grub_append = re.sub(r'rootflags=[^\s]*', flags, grub_append)
 
     if new_grub_append != grub_append:
-        MODULE.info('Replacing grub/append from %s to %s' % (grub_append, new_grub_append))
-        handler_set(['grub/append=%s' % (new_grub_append,)])
+        MODULE.info(f'Replacing grub/append from {grub_append} to {new_grub_append}')
+        handler_set([f'grub/append={new_grub_append}'])
         status = _('enable') if activate else _('disable')
         raise QuotaActivationError(_('To %s quota support for the root filesystem the system has to be rebooted.') % (status,))
 

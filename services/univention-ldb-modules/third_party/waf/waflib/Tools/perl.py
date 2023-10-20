@@ -69,7 +69,7 @@ def check_perl_version(self, minver=None):
 	else:
 		cver = ''
 
-	self.start_msg('Checking for minimum perl version %s' % cver)
+	self.start_msg(f'Checking for minimum perl version {cver}')
 
 	perl = self.find_program('perl', var='PERL', value=getattr(Options.options, 'perlbinary', None))
 	version = self.cmd_and_log(perl + ["-e", 'printf \"%vd\", $^V'])
@@ -96,7 +96,7 @@ def check_perl_module(self, module):
 			conf.check_perl_module("Some::Module 2.92")
 	"""
 	cmd = self.env.PERL + ['-e', 'use %s' % module]
-	self.start_msg('perl module %s' % module)
+	self.start_msg(f'perl module {module}')
 	try:
 		r = self.cmd_and_log(cmd)
 	except Errors.WafError:
@@ -129,7 +129,7 @@ def check_perl_ext_devel(self):
 		return Utils.to_list(cfg_str(cfg))
 	def find_xsubpp():
 		for var in ('privlib', 'vendorlib'):
-			xsubpp = cfg_lst('$Config{%s}/ExtUtils/xsubpp$Config{exe_ext}' % var)
+			xsubpp = cfg_lst(f'$Config{{{var}}}/ExtUtils/xsubpp$Config{{exe_ext}}')
 			if xsubpp and os.path.isfile(xsubpp[0]):
 				return xsubpp
 		return self.find_program('xsubpp')

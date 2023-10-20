@@ -72,7 +72,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 ignore_suffixes=['.po'],
                 reHashBang=RE_HASHBANG_SHELL,
         ):
-            self.debug('Testing file %s' % fn)
+            self.debug(f'Testing file {fn}')
             try:
                 self.check_bashism(fn)
                 self.check_unquoted_local(fn)

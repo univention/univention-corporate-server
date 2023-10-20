@@ -103,7 +103,7 @@ def writeConfig(fqdn: str, new: Dict[str, List[bytes]]) -> None:
     cmdline = re.sub(r'\$HOSTADDRESS\$', fqdn, cmdline)
     cmdline = re.sub(r'\$HOSTNAME\$', fqdn, cmdline)
 
-    filename = os.path.join(__confdir, "%s.cfg" % name)
+    filename = os.path.join(__confdir, f"{name}.cfg")
     with SetUID(0), open(filename, 'w') as fp:
         fp.write('# Warning: This file is auto-generated and might be overwritten.\n')
         fp.write('#          Please use univention-directory-manager instead.\n')
@@ -111,12 +111,12 @@ def writeConfig(fqdn: str, new: Dict[str, List[bytes]]) -> None:
         fp.write('#          automatisch ueberschrieben. Bitte benutzen Sie\n')
         fp.write('#          stattdessen den Univention Directory Manager.\n')
         fp.write('\n')
-        fp.write('command[%s]=%s\n' % (name, cmdline))
-    ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: service %s written' % name)
+        fp.write(f'command[{name}]={cmdline}\n')
+    ud.debug(ud.LISTENER, ud.INFO, f'NAGIOS-CLIENT: service {name} written')
 
 
 def removeConfig(name: str) -> None:
-    filename = os.path.join(__confdir, "%s.cfg" % name)
+    filename = os.path.join(__confdir, f"{name}.cfg")
     with SetUID(0):
         if os.path.exists(filename):
             os.unlink(filename)

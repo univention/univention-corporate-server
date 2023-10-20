@@ -56,8 +56,8 @@ def wait_for_final_query(response: Response):
         return False
     json_body = json.loads(request.post_data)
     if "options" in json_body and "quick" in json_body["options"] and not json_body["options"]["quick"]:
-        logger.debug("URL: %s" % response.url)
-        logger.debug("JSON content: %s" % json_body)
+        logger.debug(f"URL: {response.url}")
+        logger.debug(f"JSON content: {json_body}")
         logger.debug("TRUE")
         return True
     return False
@@ -96,7 +96,7 @@ class AppCenter:
         """Install an app. The AppCenter needs to be on the overview screen"""
         self.open_app(app_name)
 
-        logger.info("Starting installation of %s" % app_name)
+        logger.info(f"Starting installation of {app_name}")
         install_button = self.page.get_by_role("button", name=_("Install"), exact=True)
         expect(install_button).to_be_visible()
         install_button.click()
@@ -128,7 +128,7 @@ class AppCenter:
         grid = self.page.get_by_role("grid")
 
         expect(uninstall_button.or_(grid)).to_be_visible()
-        logger.info("Starting uninstall of %s" % app_name)
+        logger.info(f"Starting uninstall of {app_name}")
         if grid.is_visible():
             self.tester.check_checkbox_in_grid_by_name(_("this computer"))
             self.page.get_by_role("button", name=_("More")).click()

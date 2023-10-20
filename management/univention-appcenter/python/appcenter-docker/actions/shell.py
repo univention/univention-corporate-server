@@ -82,5 +82,5 @@ class Shell(UniventionAppAction, DockerActionMixin):
             raise ShellNoCommandError()
         if not app_is_running(args.app):
             raise ShellAppNotRunning(args.app)
-        self.debug('Calling %s' % commands[0])
+        self.debug(f'Calling {commands[0]}')
         return subprocess.call(docker_exec + [container_id] + commands)

@@ -54,7 +54,7 @@ class Stall(UniventionAppAction):
 
     def main(self, args):
         if not args.app.is_installed():
-            self.fatal('%s is not installed!' % args.app.id)
+            self.fatal(f'{args.app.id} is not installed!')
             return
         if args.undo:
             self._undo_stall(args.app)

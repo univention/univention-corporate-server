@@ -58,7 +58,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
     if not lp:
         lp = LoadParm()
         lp.load('/etc/samba/smb.conf')
-    samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
+    samdb = SamDB(f"tdb://{lp.private_path('sam.ldb')}", session_info=system_session(lp), lp=lp)
     if not controls:
         controls = ["domain_scope:0"]
     if base is None:
@@ -121,7 +121,7 @@ def get_available_s4connector_dc():
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, _stderr = p.communicate()
     if not stdout:
-        print("ERROR: Automatic S4 Connector host detection failed: Found %s S4 Connector services" % len(matches))
+        print(f"ERROR: Automatic S4 Connector host detection failed: Found {len(matches)} S4 Connector services")
         return ""
     # Look for replicating DCs
     dcs_replicating_with_this_one = []

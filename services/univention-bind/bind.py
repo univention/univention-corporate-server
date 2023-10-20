@@ -87,7 +87,7 @@ def chgrp_bind(filename: str) -> None:
     try:
         bind_gid = grp.getgrnam("bind").gr_gid
     except KeyError:
-        ud.debug(ud.LISTENER, ud.WARN, 'Failed to change grp to bind for %s. gid for bind not found' % filename)
+        ud.debug(ud.LISTENER, ud.WARN, f'Failed to change grp to bind for {filename}. gid for bind not found')
         return
 
     os.chown(filename, 0, bind_gid)
@@ -96,7 +96,7 @@ def chgrp_bind(filename: str) -> None:
 def safe_path_join(basedir: str, filename: str) -> str:
     path = os.path.join(basedir, filename)
     if not os.path.abspath(path).startswith(basedir):
-        raise BaseDirRestriction('basedir manipulation: %s' % (filename,))
+        raise BaseDirRestriction(f'basedir manipulation: {filename}')
     return path
 
 
@@ -163,13 +163,13 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             # Create an empty file to trigger the postrun()
             zonename = new['zoneName'][0].decode('UTF-8')
             zonename = validate_zonename(zonename)
-            zonefile = safe_path_join(PROXY_CACHE_DIR, "%s.zone" % (zonename,))
+            zonefile = safe_path_join(PROXY_CACHE_DIR, f"{zonename}.zone")
             proxy_cache = open(zonefile, 'w')
             proxy_cache.close()
             os.chmod(zonefile, 0o640)
             chgrp_bind(zonefile)
     except InvalidZone as exc:
-        ud.debug(ud.LISTENER, ud.ERROR, '%s is invalid: %s' % (dn, exc))
+        ud.debug(ud.LISTENER, ud.ERROR, f'{dn} is invalid: {exc}')
     finally:
         listener.unsetuid()
 
@@ -180,12 +180,12 @@ def _ldap_auth_string(ucr: Dict[str, str]) -> str:
 
     pwdfile = ucr.get('bind/bindpw', '/etc/machine.secret')
     with open(pwdfile) as fd:
-        return '????!bindname=%s,!x-bindpw=%s,x-tls' % (quote(account), quote(fd.readline().rstrip()))
+        return f'????!bindname={quote(account)},!x-bindpw={quote(fd.readline().rstrip())},x-tls'
 
 
 def _new_zone(ucr: Dict[str, str], zonename: str, dn: str) -> None:
     """Handle addition of zone."""
-    ud.debug(ud.LISTENER, ud.INFO, 'DNS: Creating zone %s' % (zonename,))
+    ud.debug(ud.LISTENER, ud.INFO, f'DNS: Creating zone {zonename}')
     if not os.path.exists(NAMED_CONF_DIR):
         os.mkdir(NAMED_CONF_DIR)
         os.chmod(NAMED_CONF_DIR, 0o755)
@@ -232,7 +232,7 @@ def _new_zone(ucr: Dict[str, str], zonename: str, dn: str) -> None:
 
 def _remove_zone(zonename: str) -> None:
     """Handle removal of zone."""
-    ud.debug(ud.LISTENER, ud.INFO, 'DNS: Removing zone %s' % (zonename,))
+    ud.debug(ud.LISTENER, ud.INFO, f'DNS: Removing zone {zonename}')
     zonename = validate_zonename(zonename)
     zonefile = safe_path_join(NAMED_CONF_DIR, zonename)
     cached_zonefile = safe_path_join(NAMED_CACHE_DIR, zonename + '.zone')
@@ -273,7 +273,7 @@ def _reload(zones: List[str], restart: bool = False, dns_backend: str = 'ldap') 
         if dns_backend == 'ldap':
             if zones:
                 for zone in zones:
-                    ud.debug(ud.LISTENER, ud.INFO, 'DNS: Reloading zone %s' % (zone,))
+                    ud.debug(ud.LISTENER, ud.INFO, f'DNS: Reloading zone {zone}')
                     cmd = ['rndc', '-p', '55555', 'reload', zone]
                     pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)  # noqa: S606
                     pids[pid] = cmd
@@ -307,7 +307,7 @@ def _wait_children(pids: Dict[int, List[str]], timeout: float = 15) -> None:
             if ex.errno == errno.ECHILD:
                 break  # no more own children
             else:
-                ud.debug(ud.LISTENER, ud.WARN, 'DNS: Unexpected error: %s' % (ex,))
+                ud.debug(ud.LISTENER, ud.WARN, f'DNS: Unexpected error: {ex}')
         else:
             if pid:  # only when waitpid() found one child
                 # Ignore unexpected child from other listener modules (Bug #21363)
@@ -337,14 +337,14 @@ def _kill_children(pids: Dict[int, List[str]], timeout: float = 5) -> None:
             os.kill(pid, signal.SIGTERM)
         except OSError as ex:
             if ex.errno != errno.ESRCH:
-                ud.debug(ud.LISTENER, ud.WARN, 'DNS: Unexpected error: %s' % (ex,))
+                ud.debug(ud.LISTENER, ud.WARN, f'DNS: Unexpected error: {ex}')
     _wait_children(pids, timeout)
     for pid in pids:
         try:
             os.kill(pid, signal.SIGKILL)
         except OSError as ex:
             if ex.errno != errno.ESRCH:
-                ud.debug(ud.LISTENER, ud.WARN, 'DNS: Unexpected error: %s' % (ex,))
+                ud.debug(ud.LISTENER, ud.WARN, f'DNS: Unexpected error: {ex}')
     _wait_children(pids, timeout)
 
 
@@ -393,7 +393,7 @@ def postrun() -> None:
                     zone = filename[:-len('.zone')]
                     zones.append(zone)
             if zones:
-                ud.debug(ud.LISTENER, ud.INFO, 'DNS: Zones: %s' % (zones,))
+                ud.debug(ud.LISTENER, ud.INFO, f'DNS: Zones: {zones}')
         elif dns_backend == 'none':
             do_reload = False
 
@@ -407,6 +407,6 @@ def postrun() -> None:
         _wait_children(pids)
         _kill_children(pids)
     except InvalidZone as exc:
-        ud.debug(ud.LISTENER, ud.ERROR, 'postrun: invalid: %s' % (exc,))
+        ud.debug(ud.LISTENER, ud.ERROR, f'postrun: invalid: {exc}')
     finally:
         listener.unsetuid()

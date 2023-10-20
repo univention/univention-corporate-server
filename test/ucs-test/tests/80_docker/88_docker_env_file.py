@@ -53,14 +53,14 @@ if __name__ == '__main__':
             appcenter.update()
             app.install()
             app.verify(joined=False)
-            env_file = '/var/lib/univention-appcenter/apps/%s/compose/%s.env' % (name, name)
+            env_file = f'/var/lib/univention-appcenter/apps/{name}/compose/{name}.env'
             subprocess.call(['ls', '-la', env_file])
             env_content = open(env_file).read()
             ucr = ConfigRegistry()
             ucr.load()
-            assert ('TEST_HOSTNAME=%s' % ucr.get('hostname')) in env_content, env_content
+            assert f'TEST_HOSTNAME={ucr.get("hostname")}' in env_content, env_content
             env_container = subprocess.check_output(['univention-app', 'shell', name, 'env'], text=True)
-            assert ('TEST_HOSTNAME=%s' % ucr.get('hostname')) in env_container, env_container
+            assert f'TEST_HOSTNAME={ucr.get("hostname")}' in env_container, env_container
         finally:
             app.uninstall()
             app.remove()

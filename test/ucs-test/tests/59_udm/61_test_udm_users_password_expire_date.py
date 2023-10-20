@@ -73,7 +73,7 @@ def modify_and_check_expectation(udm, expected_diff=None, **kwargs):
     if expected_diff:
         diff = modify_and_diff(udm, **kwargs)
         ddiff = dictdiff(diff, expected_diff)
-        assert not ddiff, "Unexpected diff: %s" % ddiff
+        assert not ddiff, f"Unexpected diff: {ddiff}"
     else:
         try:
             diff = modify_and_diff(udm, **kwargs)
@@ -81,7 +81,7 @@ def modify_and_check_expectation(udm, expected_diff=None, **kwargs):
             pass
         else:
             ddiff = dictdiff(diff, {})
-            assert not ddiff, "Unexpected diff: %s" % ddiff
+            assert not ddiff, f"Unexpected diff: {ddiff}"
 
 
 def syntax_date2_dateformat(userexpirydate):

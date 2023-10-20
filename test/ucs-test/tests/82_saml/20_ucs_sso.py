@@ -16,7 +16,7 @@ def _check_record_type(record_type):
     print(f'Checking record type: {record_type}')
     dns_entries = set()
     try:
-        for addr in dns.resolver.query('ucs-sso.%s' % ucr.get('domainname'), record_type):
+        for addr in dns.resolver.query(f'ucs-sso.{ucr.get("domainname")}', record_type):
             dns_entries.add(addr.address)
     except dns.resolver.NoAnswer:
         pass
@@ -35,7 +35,7 @@ def _check_record_type(record_type):
     print(f'LDAP entries: {"; ".join(master_backup_ips)}')
 
     if master_backup_ips.difference(dns_entries):
-        fail('Not all master and backup IPs are registered: DNS: [%s], LDAP: [%s]' % (dns_entries, master_backup_ips))
+        fail(f'Not all master and backup IPs are registered: DNS: [{dns_entries}], LDAP: [{master_backup_ips}]')
     return len(dns_entries)
 
 

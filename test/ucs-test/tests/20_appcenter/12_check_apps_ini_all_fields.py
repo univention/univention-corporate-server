@@ -41,7 +41,7 @@ class AppCheck:
         Checks can be skipped when respective App is not installed
         and no '--all' argument was given or if App instance cannot be created.
         """
-        print("\nChecking file '%s':" % self.pname)
+        print(f"\nChecking file '{self.pname}':")
         try:
             appid = self.config.get('Application', 'ID')
         except (NoSectionError, NoOptionError):
@@ -110,7 +110,7 @@ class Value:
     def is_bool(self):
         if self.value in ('True', 'False', 'true', 'false'):
             return
-        raise Error('Not a boolean: %s' % self.value)
+        raise Error(f'Not a boolean: {self.value}')
 
     def is_n_chars_long(self, length):
         if len(self.value) <= length:
@@ -124,17 +124,17 @@ class Value:
     def is_email(self):
         if self.RE_EMAIL.match(self.value):
             return
-        raise Error('No email: "%s"' % self.value)
+        raise Error(f'No email: "{self.value}"')
 
     def is_www(self):
         if self.RE_WWW.match(self.value):
             return
-        raise Error('No WWW: "%s"' % self.value)
+        raise Error(f'No WWW: "{self.value}"')
 
     def is_url(self):
         if self.RE_URL.match(self.value):
             return
-        raise Error('No URL: "%s"' % self.value)
+        raise Error(f'No URL: "{self.value}"')
 
     def is_role(self):
         ALLOWED = {
@@ -146,17 +146,17 @@ class Value:
 
         values = map(str.strip, self.value.split(','))
         if set(values) - ALLOWED:
-            raise Error('Invalid server role: "%s"' % self.value)
+            raise Error(f'Invalid server role: "{self.value}"')
 
     def is_arch(self):
         ALLOWED = {'amd64', 'i386'}
         if set(re.split(r'\s*,\s*', self.value)) - ALLOWED:
-            raise Error('Invalid architectures: "%s"' % self.value)
+            raise Error(f'Invalid architectures: "{self.value}"')
 
     def is_capacity(self):
         if self.RE_CAPACITY.match(self.value):
             return
-        raise Error('Wrong capacity: "%s"' % self.value)
+        raise Error(f'Wrong capacity: "{self.value}"')
 
     def deprecated_master_packages(self):
         if self.value:
@@ -167,7 +167,7 @@ class Value:
         ALLOWED = {'admin', 'service', 'False'}
         if self.value in ALLOWED:
             return
-        raise Error('Not an allowed category: "%s"' % self.value)
+        raise Error(f'Not an allowed category: "{self.value}"')
 
 
 class Section:

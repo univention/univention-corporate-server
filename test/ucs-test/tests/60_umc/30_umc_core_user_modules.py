@@ -33,7 +33,7 @@ class TestUMCUserModules(UMCBase):
 
             # case 1: there is no group policy and thus no modules
             # should be available to the user:
-            print("Checking if user '%s' has no access to umc modules" % test_username)
+            print(f"Checking if user '{test_username}' has no access to umc modules")
             user_modules = self.list_umc_modules(test_username, test_password)
             assert len(user_modules) == 0, f"The newly created test user '{test_username}' in test group '{test_groupname}' has access to the following modules '{user_modules}', when should not have access to any"
 

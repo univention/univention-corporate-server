@@ -73,7 +73,7 @@ def postrun() -> None:
             try:
                 run('/bin/systemctl', ['systemctl', 'try-reload-or-restart', '--', 'isc-dhcp-server.service'], uid=0)
             except Exception as ex:
-                ud.debug(ud.ADMIN, ud.WARN, 'The restart of the DHCP server failed: %s' % (ex,))
+                ud.debug(ud.ADMIN, ud.WARN, f'The restart of the DHCP server failed: {ex}')
         else:
             ud.debug(ud.ADMIN, ud.INFO, 'DHCP: the automatic restart of the dhcp server by the listener is disabled. Set dhcpd/restart/listener to true to enable this option.')
     else:

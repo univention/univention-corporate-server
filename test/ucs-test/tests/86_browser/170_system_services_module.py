@@ -119,10 +119,10 @@ class UMCTester(object):
             'never': _('Never'),
         }[start_type]
         if grid_start_type != wanted_start_type:
-            raise UmcError('Trying to change the start type of service "%s" to "%s" failed. The start type in the grid did not change' % (service, start_type))
+            raise UmcError(f'Trying to change the start type of service "{service}" to "{start_type}" failed. The start type in the grid did not change')
 
     def get_service_grid_start_type(self, service):
-        start_type_cell_xpath = expand_path('//td[@containsClass="field-service"]/descendant-or-self::*[text() = "%s"]/following::td[@containsClass="field-autostart"]/descendant-or-self::*[text() = "Automatically" or text() = "Manually" or text() = "Never"]' % service)
+        start_type_cell_xpath = expand_path(f'//td[@containsClass="field-service"]/descendant-or-self::*[text() = "{service}"]/following::td[@containsClass="field-autostart"]/descendant-or-self::*[text() = "Automatically" or text() = "Manually" or text() = "Never"]')
         return self.selenium.driver.find_element(By.XPATH, start_type_cell_xpath).text
 
     #
@@ -172,17 +172,17 @@ class UMCTester(object):
             self.search(service)
             grid_status = self.get_service_grid_status(service)
             if grid_status != wanted_status:
-                raise UmcError('Service "%s" did not change status in grid after being %s' % (service, err_txt_for_cmd))
+                raise UmcError(f'Service "{service}" did not change status in grid after being {err_txt_for_cmd}')
 
         # check that the status with psutil is correct
         proc = [proc for proc in psutil.process_iter() if self.srvs.services[service]['programs'] in proc.cmdline()]
         if cmd == 'stop' and proc:
-            raise UmcError('Service "%s" was %s but is still visible in psutil' % (service, err_txt_for_cmd))
+            raise UmcError(f'Service "{service}" was {err_txt_for_cmd} but is still visible in psutil')
         elif cmd != 'stop' and not proc:
-            raise UmcError('Service "%s" was %s but is not visible in psutil' % (service, err_txt_for_cmd))
+            raise UmcError(f'Service "{service}" was {err_txt_for_cmd} but is not visible in psutil')
 
     def get_service_grid_status(self, service):
-        status_cell_xpath = expand_path('//td[@containsClass="field-service"]/descendant-or-self::*[text() = "%s"]/following::td[@containsClass="field-isRunning"]/descendant-or-self::*[text() = "stopped" or text() = "running"]' % service)
+        status_cell_xpath = expand_path(f'//td[@containsClass="field-service"]/descendant-or-self::*[text() = "{service}"]/following::td[@containsClass="field-isRunning"]/descendant-or-self::*[text() = "stopped" or text() = "running"]')
         return self.selenium.driver.find_element(By.XPATH, status_cell_xpath).text
 
 

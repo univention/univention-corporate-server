@@ -25,7 +25,7 @@ if __name__ == '__main__':
     domainname = dnstests.ucr["domainname"]
     hostname = dnstests.ucr["hostname"]
     fqdn = ".".join((hostname, domainname))
-    location = "0 100 389 %s." % fqdn
+    location = f"0 100 389 {fqdn}."
 
     account = utils.UCSTestDomainAdminCredentials()
 
@@ -38,11 +38,11 @@ if __name__ == '__main__':
     p = subprocess.Popen(cmd)
     p.wait()
     if p.returncode:
-        print("WARNING: command exited with non-zero return code:\n%s" % (" ".join(cmd),))
-    forward_zone_dn = "zoneName=%s,cn=dns,%s" % (domainname, dnstests.ucr["ldap/base"])
+        print(f"WARNING: command exited with non-zero return code:\n{' '.join(cmd)}")
+    forward_zone_dn = f"zoneName={domainname},cn=dns,{dnstests.ucr['ldap/base']}"
 
-    test_relativeDomainName = "_%s._msdcs" % s4_RR_val
-    test_srv_record_dn = "relativeDomainName=%s,%s" % (test_relativeDomainName, forward_zone_dn)
+    test_relativeDomainName = f"_{s4_RR_val}._msdcs"
+    test_srv_record_dn = f"relativeDomainName={test_relativeDomainName},{forward_zone_dn}"
     test_fqdn = ".".join((test_relativeDomainName, domainname))
 
     dnstests.check_ldap_object(test_srv_record_dn, 'Service Record', 'sRVRecord', location)

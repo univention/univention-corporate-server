@@ -60,21 +60,21 @@ def configure_paths(ctx):
 	_platform = Utils.unversioned_sys_platform()
 	config_path = {'user': '', 'system': ''}
 	if _platform.startswith('linux'):
-		config_path['user'] = '/home/%s/.config/blender/' % user
+		config_path['user'] = f'/home/{user}/.config/blender/'
 		config_path['system'] = '/usr/share/blender/'
 	elif _platform == 'darwin':
 		# MAC OS X
 		config_path['user'] = \
-			'/Users/%s/Library/Application Support/Blender/' % user
+			f'/Users/{user}/Library/Application Support/Blender/'
 		config_path['system'] = '/Library/Application Support/Blender/'
 	elif Utils.is_win32:
 		# Windows
 		appdata_path = ctx.getenv('APPDATA').replace('\\', '/')
 		homedrive = ctx.getenv('HOMEDRIVE').replace('\\', '/')
 
-		config_path['user'] = '%s/Blender Foundation/Blender/' % appdata_path
+		config_path['user'] = f'{appdata_path}/Blender Foundation/Blender/'
 		config_path['system'] = \
-			'%sAll Users/AppData/Roaming/Blender Foundation/Blender/' % homedrive
+			f'{homedrive}All Users/AppData/Roaming/Blender Foundation/Blender/'
 	else:
 		ctx.fatal(
 			'Unsupported platform. '

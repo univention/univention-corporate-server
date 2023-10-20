@@ -66,7 +66,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     elif b'univentionLDAPExtensionACL' in ocs:
         acl_handler.handler(dn, new, old, name=name)
     else:
-        ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
+        ud.debug(ud.LISTENER, ud.ERROR, f'{name}: Undetermined error: unknown objectclass: {ocs}.')
 
 
 def postrun() -> None:
@@ -86,7 +86,7 @@ def postrun() -> None:
         listener.setuid(0)
         try:
             if schema_handler._do_reload or acl_handler._do_reload:
-                ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
+                ud.debug(ud.LISTENER, ud.PROCESS, f'{name}: Reloading LDAP server.')
                 for handler_object in (schema_handler, acl_handler):
                     handler_object._do_reload = False
                 p = subprocess.Popen(

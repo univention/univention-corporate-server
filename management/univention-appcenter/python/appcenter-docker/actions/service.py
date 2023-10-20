@@ -53,12 +53,12 @@ class Service(UniventionAppAction):
 
     @classmethod
     def get_init(cls, app):
-        return '/etc/init.d/docker-app-%s' % app.id
+        return f'/etc/init.d/docker-app-{app.id}'
 
     def call_init(self, app, command):
         init = self.get_init(app)
         if not os.path.exists(init):
-            self.fatal('%s is not supported' % app.id)
+            self.fatal(f'{app.id} is not supported')
             return False
         return self._call_script(self.get_init(app), command)
 

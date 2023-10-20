@@ -16,7 +16,7 @@ def show_errors():
 	for i, e in enumerate(errors):
 		if i > 5:
 			break
-		print("Error: %s" % e)
+		print(f"Error: {e}")
 
 atexit.register(show_errors)
 

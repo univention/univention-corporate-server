@@ -343,12 +343,12 @@ def unmapBase64(value):
         try:
             return [base64.b64encode(x).decode('ASCII') for x in value]
         except Exception as e:
-            ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in unmapBase64: %s' % e)
+            ud.debug(ud.ADMIN, ud.ERROR, f'ERROR in unmapBase64: {e}')
     else:
         try:
             return base64.b64encode(value[0]).decode('ASCII')
         except Exception as e:
-            ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in unmapBase64: %s' % e)
+            ud.debug(ud.ADMIN, ud.ERROR, f'ERROR in unmapBase64: {e}')
     return ""
 
 
@@ -376,12 +376,12 @@ def mapBase64(value):
         try:
             return [base64.b64decode(x) for x in value]
         except Exception as e:
-            ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in mapBase64: %s' % e)
+            ud.debug(ud.ADMIN, ud.ERROR, f'ERROR in mapBase64: {e}')
     else:
         try:
             return base64.b64decode(value)
         except Exception as e:
-            ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in mapBase64: %s' % e)
+            ud.debug(ud.ADMIN, ud.ERROR, f'ERROR in mapBase64: {e}')
     return ""
 
 
@@ -553,7 +553,7 @@ class mapping(object):
         errors = encoding_errors or errors
         value = self.mapValue(map_name, value, encoding_errors=errors)
         if isinstance(value, (list, tuple)):
-            ud.debug(ud.ADMIN, ud.WARN, 'mapValueDecoded returns a list for %s. This is probably not wanted?' % map_name)
+            ud.debug(ud.ADMIN, ud.WARN, f'mapValueDecoded returns a list for {map_name}. This is probably not wanted?')
             value = [val.decode(encoding, errors) for val in value]
         else:
             value = value.decode(encoding, errors)

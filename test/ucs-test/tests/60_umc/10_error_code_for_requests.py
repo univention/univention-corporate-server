@@ -53,7 +53,7 @@ class AsyncClient(Client):
         headers['X-XSRF-Protection'] = self.cookies.get('UMCSessionId', '')
         connection = httplib.HTTPSConnection(self.hostname, timeout=10)
         print(f'*** POST to /univention/command/{path} with headers={headers!r}')
-        connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers)
+        connection.request('POST', f'/univention/command/{path}', '{}', headers=headers)
         return connection
 
 

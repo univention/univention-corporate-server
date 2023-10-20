@@ -194,7 +194,7 @@ def unlock_password(password):
     """
     if is_locked(password):
         match = RE_PASSWORD_SCHEME.match(password).groups()
-        password = '{%s}%s' % (match[0], match[2])
+        password = f'{{{match[0]}}}{match[2]}'
     return password
 
 
@@ -222,12 +222,12 @@ def lock_password(password):
     # cleartext password?
     if not RE_PASSWORD_SCHEME.match(password):
         if configRegistry.is_true('password/hashing/bcrypt'):
-            return "{BCRYPT}!%s" % (bcrypt_hash(password))
-        return "{crypt}!%s" % (crypt(password))
+            return f"{{BCRYPT}}!{(bcrypt_hash(password))}"
+        return f"{{crypt}}!{(crypt(password))}"
 
     if not is_locked(password):
         match = RE_PASSWORD_SCHEME.match(password).groups()
-        password = '{%s}!%s' % (match[0], match[2])
+        password = f'{{{match[0]}}}!{match[2]}'
     return password
 
 
@@ -265,7 +265,7 @@ def get_password_history(password, pwhistory, pwhlen):
     if password.startswith('{NT}'):
         newpwhash = password
     elif configRegistry.is_true('password/hashing/bcrypt'):
-        newpwhash = "{BCRYPT}%s" % (bcrypt_hash(password))
+        newpwhash = f"{{BCRYPT}}{(bcrypt_hash(password))}"
     else:
         newpwhash = crypt(password)
 

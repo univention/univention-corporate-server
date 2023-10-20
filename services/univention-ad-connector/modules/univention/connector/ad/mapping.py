@@ -86,7 +86,7 @@ def ignore_filter_from_attr(attribute, ucr_key, default=''):
 
 def get_mapping(configbasename='connector'):
     ad_mapping = create_mapping(configbasename)
-    return load_localmapping(ad_mapping, '/etc/univention/%s/ad/localmapping.py' % configbasename)
+    return load_localmapping(ad_mapping, f'/etc/univention/{configbasename}/ad/localmapping.py')
 
 
 def create_mapping(configbasename='connector'):

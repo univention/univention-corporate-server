@@ -122,7 +122,7 @@ exp_types = [
 ]
 """Expression types"""
 
-re_clexer = re.compile('|'.join(["(?P<%s>%s)" % (name, part) for name, part in zip(tok_types, exp_types)]), re.M)
+re_clexer = re.compile('|'.join([f"(?P<{name}>{part})" for name, part in zip(tok_types, exp_types)]), re.M)
 """Match expressions into tokens"""
 
 accepted  = 'a'
@@ -789,7 +789,7 @@ def format_defines(lst):
 				ret.append(y)
 			elif pos > 0:
 				# all others are assumed to be -DX=Y
-				ret.append('%s %s' % (y[:pos], y[pos+1:]))
+				ret.append(f'{y[:pos]} {y[pos+1:]}')
 			else:
 				raise ValueError('Invalid define expression %r' % y)
 	return ret

@@ -34,7 +34,7 @@ class UDMClient(UDMClient):
 
     @classmethod
     def master_connection(cls, username, password):
-        return cls.http('https://%s/univention/udm/' % (ucr['ldap/master'],), username, password)
+        return cls.http(f'https://{ucr["ldap/master"]}/univention/udm/', username, password)
 
     @classmethod
     def test_connection(cls):

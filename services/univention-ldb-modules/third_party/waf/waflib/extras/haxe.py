@@ -11,7 +11,7 @@ def libname_haxe(self, libname):
 def check_lib_haxe(self, libname, uselib_store=None):
 	haxe_libs = [node.name for node in self.root.find_node('haxe_libraries').ant_glob()]
 	changed = False
-	self.start_msg('Checking for library %s' % libname)
+	self.start_msg(f'Checking for library {libname}')
 	if libname + '.hxml' in haxe_libs:
 		self.end_msg('yes')
 	else:
@@ -25,7 +25,7 @@ def check_lib_haxe(self, libname, uselib_store=None):
 				self.end_msg('downloaded', color = 'YELLOW')
 		except Errors.WafError as e:
 			self.end_msg('no', color = 'RED')
-			self.fatal('Getting %s has failed' % libname)
+			self.fatal(f'Getting {libname} has failed')
 
 	postfix = uselib_store if uselib_store else libname.upper()
 	self.env['LIB_' + postfix] += [self.libname_haxe(libname)]
@@ -78,7 +78,7 @@ def init_haxe_task(self, node):
 		addflags(['-main', node.name])
 	addflags(['-hl', self.path.get_bld().make_node(self.target).abspath()])
 	addflags(['-cp', self.path.abspath()])
-	addflags(['-D', 'resourcesPath=%s' % getattr(self, 'res', '')])
+	addflags(['-D', f'resourcesPath={getattr(self, "res", "")}'])
 	if hasattr(self, 'use'):
 		for dep in self.use:
 			if self.env['LIB_' + dep]:

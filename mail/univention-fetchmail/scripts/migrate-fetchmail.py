@@ -63,7 +63,7 @@ def get_pw_from_rc(lines, uid):
         return None
     for line in lines:
         line = line.rstrip()
-        if line.endswith("#UID='%s'" % uid):
+        if line.endswith(f"#UID='{uid}'"):
             match = PASSWORD_REGEX.match(line)
             if match:
                 return match.group(1)
@@ -146,11 +146,11 @@ class Converter(object):
             ssl = attrs.get('univentionFetchmailUseSSL', [])
 
             if not server:
-                self.debug('Skip object with uid "%s". Already migrated or incomplete configuration' % (uid,))
+                self.debug(f'Skip object with uid "{uid}". Already migrated or incomplete configuration')
                 continue
 
             if not passwd:
-                self.debug('Skip object with uid "%s". Unable to retrieve univentionFetchmailPasswd attribute from /etc/fetchmailrc file' % (uid,))
+                self.debug(f'Skip object with uid "{uid}". Unable to retrieve univentionFetchmailPasswd attribute from /etc/fetchmailrc file')
                 continue
 
             passwd = passwd.encode('UTF-8') if isinstance(passwd, str) else passwd
@@ -171,10 +171,10 @@ class Converter(object):
                 ('univentionFetchmailUseSSL', ssl, []), ('univentionFetchmailSingle', old_fetchmail_new, map_fetchmail(updated_fetchmail_new)),
             ]
             try:
-                self.debug('Updating %s' % (dn,))
+                self.debug(f'Updating {dn}')
                 self.access.modify(dn, changes, ignore_license=1)
             except Exception as ex:
-                self.error('Failed to modify %s: %s, changes: %s' % (dn, ex, changes))
+                self.error(f'Failed to modify {dn}: {ex}, changes: {changes}')
         self.debug("Done.")
 
     def debug(self, msg):

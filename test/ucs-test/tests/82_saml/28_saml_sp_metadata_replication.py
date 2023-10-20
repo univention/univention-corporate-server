@@ -33,15 +33,15 @@ def main():
     SamlSession = samltest.SamlTest(account.username, account.bindpw)
     lo = utils.get_ldap_connection(admin_uldap=True)
     master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
-    master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
+    master_hostname = f"{master[0]['name']}.{master[0]['domain']}"
     cmd_disable = [
         '/usr/sbin/udm', 'saml/serviceprovider', 'modify',
-        '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')),
+        f'--dn=SAMLServiceProviderIdentifier=https://{master_hostname}/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,{ucr.get("ldap/base")}',
         '--set', 'isActivated=FALSE',
     ]
     cmd_enable = [
         '/usr/sbin/udm', 'saml/serviceprovider', 'modify',
-        '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')),
+        f'--dn=SAMLServiceProviderIdentifier=https://{master_hostname}/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,{ucr.get("ldap/base")}',
         '--set', 'isActivated=TRUE',
     ]
     # Force update of the sp config to avoid test failures due to old configs
@@ -53,7 +53,7 @@ def main():
     try:
         # Copy service provider config from UMC, delete it, and re-inject it as a new service provider
         # using the functionality introduced in Bug #47309
-        metadata_filename = '/etc/simplesamlphp/metadata.d/https:__%s_univention_saml_metadata.php' % (master_hostname)
+        metadata_filename = f'/etc/simplesamlphp/metadata.d/https:__{(master_hostname)}_univention_saml_metadata.php'
         with open(metadata_filename) as metadata_file:
             metadata = metadata_file.read()
 
@@ -71,7 +71,7 @@ def main():
         except samltest.SamlError as exc:
             expected_error = "<h2>Metadata not found</h2>"
             if expected_error not in str(exc):
-                utils.fail("Login failed, but for the wrong reason?:\n%s" % str(exc))
+                utils.fail(f"Login failed, but for the wrong reason?:\n{str(exc)}")
         else:
             utils.fail("Serviceprovider deactivation failed")
 

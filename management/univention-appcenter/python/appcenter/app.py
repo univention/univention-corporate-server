@@ -295,14 +295,14 @@ class AppFromFileAttribute(AppAttribute):
         return None
 
     def post_creation(self, app):
-        values = getattr(app, 'get_%s' % self.name)()
+        values = getattr(app, f'get_{self.name}')()
         setattr(app, self.name, [value.to_dict() for value in values])
 
     def contribute_to_class(self, klass, name):
         super(AppFromFileAttribute, self).contribute_to_class(klass, name)
 
         def _get_objects_fn(_self):
-            cache_name = '_%s_cache' % name
+            cache_name = f'_{name}_cache'
             if not hasattr(_self, cache_name):
                 app_attributes = self.klass.all_from_file(_self.get_cache_file(name), _self.get_locale())
                 if name == "settings":
@@ -313,7 +313,7 @@ class AppFromFileAttribute(AppAttribute):
                 setattr(_self, cache_name, app_attributes)
             return getattr(_self, cache_name)
 
-        setattr(klass, 'get_%s' % name, _get_objects_fn)
+        setattr(klass, f'get_{name}', _get_objects_fn)
 
 
 class AppRatingAttribute(AppListAttribute):
@@ -341,7 +341,7 @@ class AppLocalisedListAttribute(AppListAttribute):
     def _translate(cls, fname, locale, value, reverse=False):
         if fname not in cls._cache:
             cls._cache[fname] = translations = {}
-            cached_file = os.path.join(CACHE_DIR, '.%s' % fname)
+            cached_file = os.path.join(CACHE_DIR, f'.{fname}')
             localiser = read_ini_file(cached_file, CaseSensitiveConfigParser)
             for section in localiser.sections():
                 translations[section] = dict(localiser.items(section))
@@ -418,11 +418,11 @@ class AppFileAttribute(AppAttribute):
     def post_creation(self, app):
         value = None
         fname = self.name.upper()
-        filenames = [fname, '%s_EN' % fname]
+        filenames = [fname, f'{fname}_EN']
         if self.localisable:
             locale = app.get_locale()
             if locale:
-                filenames.insert(0, '%s_%s' % (fname, locale.upper()))
+                filenames.insert(0, f'{fname}_{locale.upper()}')
         for filename in filenames:
             try:
                 with open(app.get_cache_file(filename)) as fd:
@@ -438,13 +438,13 @@ class AppFileAttribute(AppAttribute):
         directory = os.path.dirname(ini_file)
         component_id = os.path.splitext(os.path.basename(ini_file))[0]
         fname = self.name.upper()
-        localised_file_exts = [fname, '%s_EN' % fname]
+        localised_file_exts = [fname, f'{fname}_EN']
         if self.localisable:
             locale = get_locale()
             if locale:
-                localised_file_exts.insert(0, '%s_%s' % (fname, locale.upper()))
+                localised_file_exts.insert(0, f'{fname}_{locale.upper()}')
         for localised_file_ext in localised_file_exts:
-            filename = os.path.join(directory, '%s.%s' % (component_id, localised_file_ext))
+            filename = os.path.join(directory, f'{component_id}.{localised_file_ext}')
             if os.path.exists(filename):
                 return filename
 
@@ -1076,18 +1076,18 @@ class App(with_metaclass(AppMetaClass, object)):
             annotation = self.get_ucs_version()
         if server != self.get_server():
             server = urlsplit(self.get_server()).netloc
-            annotation = '%s@%s' % (annotation, server)
+            annotation = f'{annotation}@{server}'
         if annotation:
             annotation += '/'
-        return '%s%s=%s' % (annotation, self.id, self.version)
+        return f'{annotation}{self.id}={self.version}'
 
     def __repr__(self):
-        return 'App(id="%s", version="%s", ucs_version="%s", server="%s")' % (self.id, self.version, self.get_ucs_version(), self.get_server())
+        return f'App(id="{self.id}", version="{self.version}", ucs_version="{self.get_ucs_version()}", server="{self.get_server()}")'
 
     @classmethod
     def _get_meta_parser(cls, ini_file, ini_parser):
         component_id = os.path.splitext(os.path.basename(ini_file))[0]
-        meta_file = os.path.join(os.path.dirname(ini_file), '%s.meta' % component_id)
+        meta_file = os.path.join(os.path.dirname(ini_file), f'{component_id}.meta')
         return read_ini_file(meta_file)
 
     @classmethod
@@ -1104,7 +1104,7 @@ class App(with_metaclass(AppMetaClass, object)):
             try:
                 value = attr.get_value(component_id, ini_parser, meta_parser, locale)
             except ValueError as e:
-                app_logger.warning('Ignoring %s because of %s: %s' % (ini_file, attr.name, e))
+                app_logger.warning(f'Ignoring {ini_file} because of {attr.name}: {e}')
                 return
             attr_values[attr.name] = value
         return cls(attr_values, cache)
@@ -1118,43 +1118,43 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @property
     def ucr_status_key(self):
-        return 'appcenter/apps/%s/status' % self.id
+        return f'appcenter/apps/{self.id}/status'
 
     @property
     def ucr_autoinstalled_key(self):
-        return 'appcenter/apps/%s/autoinstalled' % self.id
+        return f'appcenter/apps/{self.id}/autoinstalled'
 
     @property
     def ucr_version_key(self):
-        return 'appcenter/apps/%s/version' % self.id
+        return f'appcenter/apps/{self.id}/version'
 
     @property
     def ucr_ucs_version_key(self):
-        return 'appcenter/apps/%s/ucs' % self.id
+        return f'appcenter/apps/{self.id}/ucs'
 
     @property
     def ucr_upgrade_key(self):
-        return 'appcenter/apps/%s/update/available' % self.id
+        return f'appcenter/apps/{self.id}/update/available'
 
     @property
     def ucr_container_key(self):
-        return 'appcenter/apps/%s/container' % self.id
+        return f'appcenter/apps/{self.id}/container'
 
     @property
     def ucr_hostdn_key(self):
-        return 'appcenter/apps/%s/hostdn' % self.id
+        return f'appcenter/apps/{self.id}/hostdn'
 
     @property
     def ucr_image_key(self):
-        return 'appcenter/apps/%s/image' % self.id
+        return f'appcenter/apps/{self.id}/image'
 
     @property
     def ucr_docker_params_key(self):
-        return 'appcenter/apps/%s/docker/params' % self.id
+        return f'appcenter/apps/{self.id}/docker/params'
 
     @property
     def ucr_ip_key(self):
-        return 'appcenter/apps/%s/ip' % self.id
+        return f'appcenter/apps/{self.id}/ip'
 
     @property
     def ucr_ports_key(self):
@@ -1162,11 +1162,11 @@ class App(with_metaclass(AppMetaClass, object)):
 
     @property
     def ucr_component_key(self):
-        return 'repository/online/component/%s' % self.component_id
+        return f'repository/online/component/{self.component_id}'
 
     @property
     def ucr_pinned_key(self):
-        return 'appcenter/apps/%s/pinned' % self.id
+        return f'appcenter/apps/{self.id}/pinned'
 
     @classmethod
     def get_attr(cls, attr_name):
@@ -1196,7 +1196,7 @@ class App(with_metaclass(AppMetaClass, object)):
                 self._supports_ucs_version = self.get_ucs_version() == ucr_get('version/version')
             else:
                 for supported_version in self.supported_ucs_versions:
-                    if supported_version.startswith('%s-' % ucr_get('version/version')):
+                    if supported_version.startswith(f'{ucr_get("version/version")}-'):
                         self._supports_ucs_version = True
         return self._supports_ucs_version
 
@@ -1225,7 +1225,7 @@ class App(with_metaclass(AppMetaClass, object)):
         return os.path.join(SHARE_DIR, self.id)
 
     def get_share_file(self, ext):
-        return os.path.join(self.get_share_dir(), '%s.%s' % (self.id, ext))
+        return os.path.join(self.get_share_dir(), f'{self.id}.{ext}')
 
     def get_data_dir(self):
         return os.path.join(DATA_DIR, self.id, 'data')
@@ -1277,19 +1277,19 @@ class App(with_metaclass(AppMetaClass, object)):
             self._weak_ref_app_cache = None
 
     def get_cache_file(self, ext):
-        return os.path.join(self.get_cache_dir(), '%s.%s' % (self.component_id, ext))
+        return os.path.join(self.get_cache_dir(), f'{self.component_id}.{ext}')
 
     def get_ini_file(self):
         return self.get_cache_file('ini')
 
     @property
     def logo_name(self):
-        return 'apps-%s.svg' % self.component_id
+        return f'apps-{self.component_id}.svg'
 
     @property
     def logo_detail_page_name(self):
         if os.path.exists(self.get_cache_file('logodetailpage')):
-            return 'apps-%s-detail.svg' % self.component_id
+            return f'apps-{self.component_id}-detail.svg'
 
     @property
     def secret_on_host(self):
@@ -1305,12 +1305,12 @@ class App(with_metaclass(AppMetaClass, object)):
                 thumbnails.append(ithumb)
                 continue
 
-            app_path = '%s/' % self.id
+            app_path = f'{self.id}/'
             ucs_version = self.get_ucs_version()
             if ucs_version == '4.0' or ucs_version.startswith('3.'):
                 # since UCS 4.1, each app has a separate subdirectory
                 app_path = ''
-            thumbnails.append('%s/meta-inf/%s/%s%s' % (self.get_server(), ucs_version, app_path, ithumb))
+            thumbnails.append(f'{self.get_server()}/meta-inf/{ucs_version}/{app_path}{ithumb}')
         return thumbnails
 
     def get_localised(self, key, loc=None):
@@ -1331,7 +1331,7 @@ class App(with_metaclass(AppMetaClass, object)):
                 continue
             if section is None:
                 section = 'en'
-            value = '[%s] %s' % (section, value)
+            value = f'[{section}] {value}'
             ret.append(value)
         return ret
 
@@ -1362,7 +1362,7 @@ class App(with_metaclass(AppMetaClass, object)):
         """The application requires UCS version %(required_version)s."""
         required_ucs_version = None
         for supported_version in self.supported_ucs_versions:
-            if supported_version.startswith('%s-' % ucr_get('version/version')):
+            if supported_version.startswith(f'{ucr_get("version/version")}-'):
                 required_ucs_version = supported_version
                 break
         else:
@@ -1706,9 +1706,9 @@ class App(with_metaclass(AppMetaClass, object)):
     def _docker_prudence_is_true(self):
         if not self.docker:
             return False
-        ret = ucr_is_true('appcenter/prudence/docker/%s' % self.id)
+        ret = ucr_is_true(f'appcenter/prudence/docker/{self.id}')
         if not ret and self.plugin_of:
-            ret = ucr_is_true('appcenter/prudence/docker/%s' % self.plugin_of)
+            ret = ucr_is_true(f'appcenter/prudence/docker/{self.plugin_of}')
         return ret
 
     def check(self, function):
@@ -1739,7 +1739,7 @@ class App(with_metaclass(AppMetaClass, object)):
         return not allowed_roles or server_role in allowed_roles
 
     def _has_active_ad_member_issue(self, issue):
-        return ucr_is_true('ad/member') and getattr(self, 'ad_member_issue_%s' % issue, False)
+        return ucr_is_true('ad/member') and getattr(self, f'ad_member_issue_{issue}', False)
 
     def __lt__(self, other):
         """

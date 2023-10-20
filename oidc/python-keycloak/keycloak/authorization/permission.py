@@ -49,10 +49,10 @@ class Permission:
         self._scopes = []
 
     def __repr__(self):
-        return "<Permission: %s (%s)>" % (self.name, self.type)
+        return f"<Permission: {self.name} ({self.type})>"
 
     def __str__(self):
-        return "Permission: %s (%s)" % (self.name, self.type)
+        return f"Permission: {self.name} ({self.type})"
 
     @property
     def name(self):

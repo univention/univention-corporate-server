@@ -55,7 +55,7 @@ class Pin(UniventionAppAction):
 
     def main(self, args):
         if not args.app.is_installed():
-            self.fatal('%s is not installed!' % args.app.id)
+            self.fatal(f'{args.app.id} is not installed!')
             return
         if args.revert:
             self._unpin(args.app)

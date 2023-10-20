@@ -84,7 +84,7 @@ class Test_UMCTopModule:
         Kills/Terminates process with a given 'signame' via UMC;
         Performs clean-up using psutil if needed.
         """
-        print("\nTesting UMC process killing with signal '%s'" % signame)
+        print(f"\nTesting UMC process killing with signal '{signame}'")
         signum = getattr(signal, signame)
         self.client = Client.get_test_connection()
         with self.create_process(ignore_signal) as pid:

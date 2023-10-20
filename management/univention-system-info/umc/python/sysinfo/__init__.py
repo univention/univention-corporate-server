@@ -107,7 +107,7 @@ class Instance(umcm.Base):
 
         (exitcode, stdout, stderr) = self._call(SYSTEM_INFO_CMD)
         if exitcode:
-            MODULE.error('Execution of univention-system-info failed: %s' % (stdout,))
+            MODULE.error(f'Execution of univention-system-info failed: {stdout}')
             raise UMC_Error('Execution of univention-system-info failed')
 
         result = {}
@@ -156,7 +156,7 @@ class Instance(umcm.Base):
                 response = requests.post(url, files={'filename': fd})
                 response.raise_for_status()
             except requests.exceptions.RequestException as exc:
-                raise UMC_Error('Archive upload failed: %s' % (exc,))
+                raise UMC_Error(f'Archive upload failed: {exc}')
             answer = response.text
         if answer.startswith('ERROR:'):
             raise UMC_Error(answer)
@@ -171,7 +171,7 @@ class Instance(umcm.Base):
         # anonymised id of localhost
         uuid_system = ucr.get('uuid/system', '')
         url = ucr.get('umc/sysinfo/traceback/url', 'https://forge.univention.org/cgi-bin/system-info-traceback.py')
-        MODULE.process('Sending %s to %s' % (traceback, url))
+        MODULE.process(f'Sending {traceback} to {url}')
         request_data = {
             'traceback': traceback,
             'remark': remark,
@@ -185,4 +185,4 @@ class Instance(umcm.Base):
             response = requests.post(url, data=request_data)
             response.raise_for_status()
         except requests.exceptions.RequestException as exc:
-            raise UMC_Error('Sending traceback failed: %s' % (exc,))
+            raise UMC_Error(f'Sending traceback failed: {exc}')

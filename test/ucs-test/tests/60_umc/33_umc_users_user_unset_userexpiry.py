@@ -28,12 +28,12 @@ class TestUMCUserAuthentication(UMCBase):
 
     def create_user(self):
         """Creates a group and a user in it for the test."""
-        print("\nCreating a user '%s'" % (self.test_username,))
+        print(f"\nCreating a user '{self.test_username}'")
 
         self.test_user_dn = self.UDM.create_user(
             password=self.test_password,
             username=self.test_username,
-            policy_reference='cn=default-umc-all,cn=UMC,cn=policies,%s' % self.ucr['ldap/base'],
+            policy_reference=f'cn=default-umc-all,cn=UMC,cn=policies,{self.ucr["ldap/base"]}',
         )[0]
         utils.verify_ldap_object(self.test_user_dn)
 
@@ -62,7 +62,7 @@ class TestUMCUserAuthentication(UMCBase):
             self.set_userexpiry_testval()
             response = self.get_object([self.test_user_dn], 'users/user')
             try:
-                assert response[0]["userexpiry"] == "2015-02-02", "userexpiry not initialized properly: %s" % (response[0]["userexpiry"],)
+                assert response[0]["userexpiry"] == "2015-02-02", f"userexpiry not initialized properly: {response[0]['userexpiry']}"
             except KeyError:  # Bug #37924
                 print('FAIL! https://forge.univention.org/bugzilla/show_bug.cgi?id=37924')
                 print('PRIOR=%r' % (prior_testval,))

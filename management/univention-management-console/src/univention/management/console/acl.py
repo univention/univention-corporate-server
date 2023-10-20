@@ -345,7 +345,7 @@ class ACLs(object):
             os.write(file, json.dumps(self.acls, ensure_ascii=True).encode('ASCII'))
             os.close(file)
         except EnvironmentError as exc:
-            ACL.error('Could not write ACL file: %s' % (exc,))
+            ACL.error(f'Could not write ACL file: {exc}')
             return False
 
     def json(self):
@@ -392,7 +392,7 @@ class LDAP_ACLs(ACLs):
             policy = self._get_policy_for_dn(lo, userdn)
         except (udm_errors.base, ldap.LDAPError, IndexError) as exc:
             if not isinstance(exc, IndexError):
-                ACL.warn('Error reading credentials from LDAP for user %s: %s' % (self.username, traceback.format_exc()))
+                ACL.warn(f'Error reading credentials from LDAP for user {self.username}: {traceback.format_exc()}')
             # read ACLs from file
             self._read_from_file(self.username)
             return

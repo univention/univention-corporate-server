@@ -53,11 +53,11 @@ def reset_progress(func):
     @wraps(func)
     def _foreground(self, request):
         self.progress.reset()
-        MODULE.process('Running %s' % func.__name__)
+        MODULE.process(f'Running {func.__name__}')
         try:
             return func(self, request)
         except takeover.TakeoverError as exc:
-            MODULE.warn('Error during %s: %s' % (func.__name__, exc))
+            MODULE.warn(f'Error during {func.__name__}: {exc}')
             message = str(exc)
             self.progress.error(message)
             raise BadRequest(message)

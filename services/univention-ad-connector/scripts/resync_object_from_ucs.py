@@ -56,7 +56,7 @@ class UCSResync(object):
         self.lo = univention.uldap.getMachineConnection(ldap_master=ldap_master)
 
     def _get_listener_dir(self):
-        return self.configRegistry.get('%s/ad/listener/dir' % options.configbasename, '/var/lib/univention-connector/ad')
+        return self.configRegistry.get(f'{options.configbasename}/ad/listener/dir', '/var/lib/univention-connector/ad')
 
     def _generate_filename(self):
         directory = self._get_listener_dir()
@@ -98,7 +98,7 @@ class UCSResync(object):
                 except ldap.NO_SUCH_OBJECT:
                     missing_dns.append(targetdn)
             if missing_dns:
-                raise ldap.NO_SUCH_OBJECT(1, 'No object: %s' % (missing_dns,), [r[0] for r in ldap_result])
+                raise ldap.NO_SUCH_OBJECT(1, f'No object: {missing_dns}', [r[0] for r in ldap_result])
         else:
             if not ldapfilter:
                 ldapfilter = '(objectClass=*)'
@@ -120,9 +120,9 @@ if __name__ == '__main__':
     parser.add_argument("dn", nargs='?', default=None)
     options = parser.parse_args()
 
-    state_directory = '/etc/univention/%s' % (options.configbasename,)
+    state_directory = f'/etc/univention/{options.configbasename}'
     if not os.path.exists(state_directory):
-        parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
+        parser.error(f"Invalid configbasename, directory {state_directory} does not exist")
 
     if not options.dn and not options.ldapfilter:
         parser.print_help()
@@ -135,13 +135,13 @@ if __name__ == '__main__':
         resync = UCSResync(ldap_master=options.from_primary)
         treated_dns = resync.resync(ucs_dns, options.ldapfilter, options.ldapbase)
     except ldap.NO_SUCH_OBJECT as ex:
-        print('ERROR: The LDAP object not found : %s' % str(ex))
+        print(f'ERROR: The LDAP object not found : {str(ex)}')
         if len(ex.args) == 3:
             treated_dns = ex.args[2]
         sys.exit(1)
     finally:
         for dn in treated_dns:
-            print('resync triggered for %s' % dn)
+            print(f'resync triggered for {dn}')
 
     if not treated_dns:
         print('No matching objects.')

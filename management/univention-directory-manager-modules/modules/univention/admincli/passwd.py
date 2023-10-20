@@ -77,12 +77,12 @@ def doit(arglist):
     with open(pwdfile) as fd:
         bindpw = fd.read().rstrip()
 
-    ud.debug(ud.ADMIN, ud.WARN, 'binddn: %s; bindpwd: *************' % (binddn,))
+    ud.debug(ud.ADMIN, ud.WARN, f'binddn: {binddn}; bindpwd: *************')
     try:
         lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=bindpw, start_tls=2)
     except Exception as exc:
-        ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
-        out.append('authentication error: %s' % (exc,))
+        ud.debug(ud.ADMIN, ud.WARN, f'authentication error: {exc}')
+        out.append(f'authentication error: {exc}')
         return out
 
     if isinstance(user, bytes):  # Python 2
@@ -127,8 +127,8 @@ def doit(arglist):
         return out
 
     except Exception as exc:
-        ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % (exc,))
-        out.append('passwd error: %s' % (exc,))
+        ud.debug(ud.ADMIN, ud.WARN, f'passwd error: {exc}')
+        out.append(f'passwd error: {exc}')
         return out
 
     try:
@@ -151,6 +151,6 @@ def doit(arglist):
 
             ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: password changed')
     except Exception as exc:
-        ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % (exc,))
+        ud.debug(ud.ADMIN, ud.WARN, f'passwd error: {exc}')
 
     return out

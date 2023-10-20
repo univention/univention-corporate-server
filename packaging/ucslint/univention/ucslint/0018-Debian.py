@@ -92,7 +92,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             other_scripts = self.SCRIPTS - {suffix}
             other_actions = {action for actions in self.ACTIONS.values() for action in actions} - self.ACTIONS[suffix]
-            self.debug('script=%s' % suffix)
+            self.debug(f'script={suffix}')
             self.debug('actions=%s' % ' '.join(sorted(self.ACTIONS[suffix])))
             self.debug('other_script=%s' % ' '.join(sorted(other_scripts)))
             self.debug('other_actions=%s' % ' '.join(sorted(other_actions)))

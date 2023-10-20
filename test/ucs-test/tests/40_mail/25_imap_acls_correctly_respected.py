@@ -27,12 +27,12 @@ def main():
                 domain = ucr.get('domainname')
                 univention.config_registry.handler_set(['mail/dovecot/mailbox/delete=yes'])
                 subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
-                host = '%s.%s' % (ucr.get('hostname'), domain)
+                host = f'{ucr.get("hostname")}.{domain}'
                 password = 'univention'
                 mails = []
                 users = []
                 for i in range(3):
-                    usermail = '%s@%s' % (uts.random_name(), domain)
+                    usermail = f'{uts.random_name()}@{domain}'
                     userdn, username = udm.create_user(
                         set={
                             'password': password,
@@ -45,7 +45,7 @@ def main():
                 default_shared_permissions = {'anyone': 'lrswipkxtecda'}
                 permissions = 'lrswipkxtecda'
                 shared_dn, shared_mailbox, shared_address = create_shared_mailfolder(
-                    udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('anyone', 'all')])
+                    udm, host, mailAddress=True, user_permission=[f'"{"anyone"}" "{"all"}"'])
 
                 test_cases = itertools.product(mails[0:2], permissions)
                 for i in range(len(mails[0:2]) * len(permissions)):

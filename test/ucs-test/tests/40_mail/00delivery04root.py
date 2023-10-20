@@ -63,7 +63,7 @@ def main():
                 if not delivery_OK:
                     utils.fail('Mail sent to root was not delivered')
 
-                handler_set(['mail/alias/root=%s' % mail])
+                handler_set([f'mail/alias/root={mail}'])
                 reload_postfix()
 
                 token = str(time.time())
@@ -74,10 +74,10 @@ def main():
                         delivery_OK = True
                         break
                     else:
-                        print("Mail sent to %s has not been delivered yet" % mail)
+                        print(f"Mail sent to {mail} has not been delivered yet")
                         time.sleep(1)
                 if not delivery_OK:
-                    utils.fail('Mail sent to %s was not delivered' % mail)
+                    utils.fail(f'Mail sent to {mail} was not delivered')
         finally:
             reload_postfix()
 

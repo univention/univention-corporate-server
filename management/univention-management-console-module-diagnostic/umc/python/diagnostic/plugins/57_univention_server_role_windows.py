@@ -58,7 +58,7 @@ def udm_objects_without_ServerRole(lo: access) -> Dict[str, List[str]]:
     if result:
         ldap_base = ucr.get('ldap/base')
         for dn, attrs in result:
-            if dn.endswith(',cn=temporary,cn=univention,%s' % ldap_base):
+            if dn.endswith(f',cn=temporary,cn=univention,{ldap_base}'):
                 continue
             try:
                 univentionObjectType = attrs['univentionObjectType'][0].decode('UTF-8')

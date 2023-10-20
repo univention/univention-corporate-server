@@ -90,12 +90,12 @@ class VirtualMachine(object):
         self.__created = True
         with test_vm as created_test_vm:
             (host, port) = created_test_vm.get_vnc()
-            self.vnc_host = '%s:%s' % (host, port - 5900)
+            self.vnc_host = f'{host}:{port - 5900}'
 
     def delete(self):
         if not self.__created:
             return
-        conn = libvirt.open('qemu+ssh://build@%s/system' % (self.server,))
+        conn = libvirt.open(f'qemu+ssh://build@{self.server}/system')
         dom = conn.lookupByName(self.name)
         dom.destroy()
         dom.undefine()
@@ -121,7 +121,7 @@ class TestVolume(TestXml):
 
     @property
     def name(self):
-        return '%s.%s' % (self.fname, self.suffix)
+        return f'{self.fname}.{self.suffix}'
 
     @property
     def pool_path(self):

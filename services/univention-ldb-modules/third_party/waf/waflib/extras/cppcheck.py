@@ -186,23 +186,23 @@ def _tgen_create_cmd(self):
 
 	cmd  = self.env.CPPCHECK
 	args = ['--inconclusive','--report-progress','--verbose','--xml','--xml-version=2']
-	args.append('--max-configs=%s' % max_configs)
-	args.append('-j %s' % jobs)
+	args.append(f'--max-configs={max_configs}')
+	args.append(f'-j {jobs}')
 
 	if 'cxx' in features:
 		args.append('--language=c++')
-		args.append('--std=%s' % std_cxx)
+		args.append(f'--std={std_cxx}')
 	else:
 		args.append('--language=c')
-		args.append('--std=%s' % std_c)
+		args.append(f'--std={std_c}')
 
 	if Options.options.cppcheck_check_config:
 		args.append('--check-config')
 
 	if set(['cprogram','cxxprogram']) & set(features):
-		args.append('--enable=%s' % bin_enable)
+		args.append(f'--enable={bin_enable}')
 	else:
-		args.append('--enable=%s' % lib_enable)
+		args.append(f'--enable={lib_enable}')
 
 	for src in self.to_list(getattr(self, 'source', [])):
 		if not isinstance(src, str):
@@ -211,11 +211,11 @@ def _tgen_create_cmd(self):
 	for inc in self.to_incnodes(self.to_list(getattr(self, 'includes', []))):
 		if not isinstance(inc, str):
 			inc = repr(inc)
-		args.append('-I%s' % inc)
+		args.append(f'-I{inc}')
 	for inc in self.to_incnodes(self.to_list(self.env.INCLUDES)):
 		if not isinstance(inc, str):
 			inc = repr(inc)
-		args.append('-I%s' % inc)
+		args.append(f'-I{inc}')
 	return cmd + args
 
 
@@ -234,12 +234,12 @@ class cppcheck(Task.Task):
 		'''use cppcheck xml result string, add the command string used to invoke cppcheck
 		and save as xml file.
 		'''
-		header = '%s\n' % s.splitlines()[0]
+		header = f'{s.splitlines()[0]}\n'
 		root = ElementTree.fromstring(s)
 		cmd = ElementTree.SubElement(root.find('cppcheck'), 'cmd')
 		cmd.text = str(self.cmd)
 		body = ElementTree.tostring(root).decode('us-ascii')
-		body_html_name = 'cppcheck-%s.xml' % self.generator.get_name()
+		body_html_name = f'cppcheck-{self.generator.get_name()}.xml'
 		if self.env.CPPCHECK_SINGLE_HTML:
 			body_html_name = 'cppcheck.xml'
 		node = self.generator.path.get_bld().find_or_declare(body_html_name)
@@ -289,7 +289,7 @@ class cppcheck(Task.Task):
 			else:
 				htmlfile = 'cppcheck/%s%i.html' % (self.generator.get_name(),i)
 			errors = sources[name]
-			files[name] = { 'htmlfile': '%s/%s' % (bpath, htmlfile), 'errors': errors }
+			files[name] = { 'htmlfile': f'{bpath}/{htmlfile}', 'errors': errors }
 			css_style_defs = self._create_html_file(name, htmlfile, errors)
 		return files, css_style_defs
 
@@ -297,7 +297,7 @@ class cppcheck(Task.Task):
 		name = self.generator.get_name()
 		root = ElementTree.fromstring(CPPCHECK_HTML_FILE)
 		title = root.find('head/title')
-		title.text = 'cppcheck - report - %s' % name
+		title.text = f'cppcheck - report - {name}'
 
 		body = root.find('body')
 		for div in body.findall('div'):
@@ -307,13 +307,13 @@ class cppcheck(Task.Task):
 		for div in page.findall('div'):
 			if div.get('id') == 'header':
 				h1 = div.find('h1')
-				h1.text = 'cppcheck report - %s' % name
+				h1.text = f'cppcheck report - {name}'
 			if div.get('id') == 'menu':
 				indexlink = div.find('a')
 				if self.env.CPPCHECK_SINGLE_HTML:
 					indexlink.attrib['href'] = 'index.html'
 				else:
-					indexlink.attrib['href'] = 'index-%s.html' % name
+					indexlink.attrib['href'] = f'index-{name}.html'
 			if div.get('id') == 'content':
 				content = div
 				srcnode = self.generator.bld.root.find_node(sourcefile)
@@ -336,7 +336,7 @@ class cppcheck(Task.Task):
 		name = self.generator.get_name()
 		root = ElementTree.fromstring(CPPCHECK_HTML_FILE)
 		title = root.find('head/title')
-		title.text = 'cppcheck - report - %s' % name
+		title.text = f'cppcheck - report - {name}'
 
 		body = root.find('body')
 		for div in body.findall('div'):
@@ -346,7 +346,7 @@ class cppcheck(Task.Task):
 		for div in page.findall('div'):
 			if div.get('id') == 'header':
 				h1 = div.find('h1')
-				h1.text = 'cppcheck report - %s' % name
+				h1.text = f'cppcheck report - {name}'
 			if div.get('id') == 'content':
 				content = div
 				self._create_html_table(content, files)
@@ -355,11 +355,11 @@ class cppcheck(Task.Task):
 				if self.env.CPPCHECK_SINGLE_HTML:
 					indexlink.attrib['href'] = 'index.html'
 				else:
-					indexlink.attrib['href'] = 'index-%s.html' % name
+					indexlink.attrib['href'] = f'index-{name}.html'
 
 		s = ElementTree.tostring(root, method='html').decode('us-ascii')
 		s = CCPCHECK_HTML_TYPE + s
-		index_html_name = 'cppcheck/index-%s.html' % name
+		index_html_name = f'cppcheck/index-{name}.html'
 		if self.env.CPPCHECK_SINGLE_HTML:
 			index_html_name = 'cppcheck/index.html'
 		node = self.generator.path.get_bld().find_or_declare(index_html_name)
@@ -370,20 +370,20 @@ class cppcheck(Task.Task):
 		table = ElementTree.fromstring(CPPCHECK_HTML_TABLE)
 		for name, val in files.items():
 			f = val['htmlfile']
-			s = '<tr><td colspan="4"><a href="%s">%s</a></td></tr>\n' % (f,name)
+			s = f'<tr><td colspan="4"><a href="{f}">{name}</a></td></tr>\n'
 			row = ElementTree.fromstring(s)
 			table.append(row)
 
 			errors = sorted(val['errors'], key=lambda e: int(e['line']) if 'line' in e else sys.maxint)
 			for e in errors:
 				if not 'line' in e:
-					s = '<tr><td></td><td>%s</td><td>%s</td><td>%s</td></tr>\n' % (e['id'], e['severity'], e['msg'])
+					s = f'<tr><td></td><td>{e["id"]}</td><td>{e["severity"]}</td><td>{e["msg"]}</td></tr>\n'
 				else:
 					attr = ''
 					if e['severity'] == 'error':
 						attr = 'class="error"'
-					s = '<tr><td><a href="%s#line-%s">%s</a></td>' % (f, e['line'], e['line'])
-					s+= '<td>%s</td><td>%s</td><td %s>%s</td></tr>\n' % (e['id'], e['severity'], attr, e['msg'])
+					s = f'<tr><td><a href="{f}#line-{e["line"]}">{e["line"]}</a></td>'
+					s+= f'<td>{e["id"]}</td><td>{e["severity"]}</td><td {attr}>{e["msg"]}</td></tr>\n'
 				row = ElementTree.fromstring(s)
 				table.append(row)
 		content.append(table)
@@ -391,7 +391,7 @@ class cppcheck(Task.Task):
 	def _create_css_file(self, css_style_defs):
 		css = str(CPPCHECK_CSS_FILE)
 		if css_style_defs:
-			css = "%s\n%s\n" % (css, css_style_defs)
+			css = f"{css}\n{css_style_defs}\n"
 		node = self.generator.path.get_bld().find_or_declare('cppcheck/style.css')
 		node.write(css)
 
@@ -403,13 +403,13 @@ class cppcheck(Task.Task):
 
 		if set(fatal) & set(severity):
 			exc  = "\n"
-			exc += "\nccpcheck detected fatal error(s) in task '%s', see report for details:" % name
+			exc += f"\nccpcheck detected fatal error(s) in task '{name}', see report for details:"
 			exc += "\n    file://%r" % (http_index)
 			exc += "\n"
 			self.generator.bld.fatal(exc)
 
 		elif len(problems):
-			msg =  "\nccpcheck detected (possible) problem(s) in task '%s', see report for details:" % name
+			msg =  f"\nccpcheck detected (possible) problem(s) in task '{name}', see report for details:"
 			msg += "\n    file://%r" % http_index
 			msg += "\n"
 			Logs.error(msg)

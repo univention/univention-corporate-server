@@ -32,7 +32,7 @@ def check_file(filename):
     test fails if Contact='', but it won't fail if there is no Contact
     option found in the .ini file. Also fails if there is no '@' sign found.
     """
-    print("\nChecking file '%s':" % filename)
+    print(f"\nChecking file '{filename}':")
     IniConfig = RawConfigParser()
     IniConfig.read(filename)
 

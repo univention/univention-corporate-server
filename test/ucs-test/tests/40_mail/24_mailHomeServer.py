@@ -48,7 +48,7 @@ def wait_for_dns(hosts):
                 time.sleep(1)
         found = dns.resolver.query(host, 'A')[0].address
         if found != ip:
-            utils.fail('DNS query answer address found = %s, expected = %s' % (found, ip))
+            utils.fail(f'DNS query answer address found = {found}, expected = {ip}')
 
 
 def main():
@@ -62,20 +62,19 @@ def main():
             for i in range(2):
                 ip = uts.random_ip()
                 host = uts.random_name()
-                hosts.append(('%s.%s' % (host, domain), ip))
+                hosts.append((f'{host}.{domain}', ip))
                 udm.create_object(
                     'computers/domaincontroller_slave',
                     set={
                         'ip': ip,
                         'name': host,
-                        'dnsEntryZoneForward': 'zoneName=%s,cn=dns,%s %s' % (
-                            domain, basedn, ip),
+                        'dnsEntryZoneForward': f'zoneName={domain},cn=dns,{basedn} {ip}',
                     },
-                    position='cn=computers,%s' % basedn,
+                    position=f'cn=computers,{basedn}',
                 )
             mails_list = []
             for mailHomeServer, _ in hosts:
-                mail = '%s@%s' % (uts.random_name(), domain)
+                mail = f'{uts.random_name()}@{domain}'
                 user_dn, username = udm.create_user(
                     set={
                         'password': password,

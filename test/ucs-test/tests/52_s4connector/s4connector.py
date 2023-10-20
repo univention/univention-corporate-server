@@ -30,16 +30,16 @@ class S4Connection(ldap_glue.ADConnection):
 
     def __init__(self, configbase='connector'):
         self.configbase = configbase
-        self.adldapbase = configRegistry['%s/s4/ldap/base' % configbase]
+        self.adldapbase = configRegistry[f'{configbase}/s4/ldap/base']
         self.addomain = self.adldapbase.replace(',DC=', '.').replace('DC=', '')
-        self.login_dn = configRegistry['%s/s4/ldap/binddn' % configbase]
-        self.pw_file = configRegistry['%s/s4/ldap/bindpw' % configbase]
-        self.host = configRegistry['%s/s4/ldap/host' % configbase]
-        self.port = configRegistry['%s/s4/ldap/port' % configbase]
-        self.ca_file = configRegistry['%s/s4/ldap/certificate' % configbase]
-        self.protocol = configRegistry.get('%s/s4/ldap/protocol' % self.configbase, 'ldap').lower()
+        self.login_dn = configRegistry[f'{configbase}/s4/ldap/binddn']
+        self.pw_file = configRegistry[f'{configbase}/s4/ldap/bindpw']
+        self.host = configRegistry[f'{configbase}/s4/ldap/host']
+        self.port = configRegistry[f'{configbase}/s4/ldap/port']
+        self.ca_file = configRegistry[f'{configbase}/s4/ldap/certificate']
+        self.protocol = configRegistry.get(f'{self.configbase}/s4/ldap/protocol', 'ldap').lower()
         self.kerberos = False
-        self.socket = configRegistry.get('%s/s4/ldap/socket' % self.configbase, '')
+        self.socket = configRegistry.get(f'{self.configbase}/s4/ldap/socket', '')
 
         self.serverctrls_for_add_and_modify = []
         if 'univention_samaccountname_ldap_check' in configRegistry.get('samba4/ldb/sam/module/prepend', '').split():
@@ -48,7 +48,7 @@ class S4Connection(ldap_glue.ADConnection):
             ldb_ctrl_bypass_samaccountname_ldap_check = LDAPControl('1.3.6.1.4.1.10176.1004.0.4.1', criticality=0)
             self.serverctrls_for_add_and_modify.append(ldb_ctrl_bypass_samaccountname_ldap_check)
 
-        self.connect(configRegistry.is_false('%s/s4/ldap/ssl' % self.configbase, True))
+        self.connect(configRegistry.is_false(f'{self.configbase}/s4/ldap/ssl', True))
 
 
 def check_object(object_dn, sid=None, old_object_dn=None):

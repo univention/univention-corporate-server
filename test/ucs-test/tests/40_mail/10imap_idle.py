@@ -25,7 +25,7 @@ def main():
         timeout = 30
         password = uts.random_string()
         udm = udm_test.UCSTestUDM()
-        mailPrimaryAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
+        mailPrimaryAddress = f'{uts.random_name()}@{ucr.get("domainname")}'
         mailHomeServer = '%(hostname)s.%(domainname)s' % ucr
 
         udm.create_user(
@@ -45,7 +45,7 @@ def main():
             c.send(b"%s IDLE\r\n" % (c._new_tag()))
             while True:
                 line = c.readline().decode('UTF-8').strip()
-                print('idle-client: got line %s' % line)
+                print(f'idle-client: got line {line}')
                 if line.endswith('EXISTS'):
                     print('idle-client: OK, we are good')
                     sys.exit(0)
@@ -68,7 +68,7 @@ def main():
                             print('observer: child failed with %d' % os.WEXITSTATUS(status))
                         break
                     else:
-                        print('observer: waiting for child (timeout=%s)' % i)
+                        print(f'observer: waiting for child (timeout={i})')
                         time.sleep(1)
             finally:
                 udm.cleanup()

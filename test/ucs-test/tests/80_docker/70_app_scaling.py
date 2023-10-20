@@ -20,7 +20,7 @@ if __name__ == '__main__':
             for i in range(0, DOCKER_APP_COUNT):
                 app = tiny_app_apache(get_app_name(), get_app_version())
                 app.set_ini_parameter(
-                    WebInterface='/%s' % app.app_name,
+                    WebInterface=f'/{app.app_name}',
                     WebInterfacePortHTTP='80',
                     WebInterfacePortHTTPS='443',
                     AutoModProxy='True',

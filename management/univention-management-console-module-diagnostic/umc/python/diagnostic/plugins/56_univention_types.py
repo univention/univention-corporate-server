@@ -59,7 +59,7 @@ def udm_objects_without_type(lo: access) -> List[Tuple[str, List[UdmModule], Lis
     objs = []
     query = lo.search('(!(univentionObjectType=*))')
     for dn, attrs in query:
-        if dn.endswith(',cn=temporary,cn=univention,%s' % ucr.get('ldap/base')):
+        if dn.endswith(f',cn=temporary,cn=univention,{ucr.get("ldap/base")}'):
             continue
         modules = identify(dn, attrs)
         if modules:

@@ -63,13 +63,13 @@ def main():
                             #
                             handler_set([
                                 'mail/dovecot/mailbox/rename=yes',
-                                'mail/dovecot/mailbox/delete=%s' % (flag_delete,),
+                                f'mail/dovecot/mailbox/delete={flag_delete}',
                             ])
                             utils.restart_listener()
                             utils.wait_for_replication()
 
                             # create folder
-                            dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=with_mailaddress, user_permission=['"%s" "%s"' % (user_addr, 'all')])
+                            dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=with_mailaddress, user_permission=[f'"{user_addr}" "{"all"}"'])
                             folder = Bunch(dn=dn, name=name, mail_address=address)
 
                             print(folder)

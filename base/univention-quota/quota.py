@@ -88,7 +88,7 @@ def _read_share_and_policy_result(dn: str) -> Tuple[Dict[str, List[bytes]] | Non
 
 def _remove_cache_for_share(dn: str) -> None:
     filename = os.path.join(SHARE_CACHE_DIR, dn)
-    ud.debug(ud.LISTENER, ud.INFO, 'Remove "%s"' % filename)
+    ud.debug(ud.LISTENER, ud.INFO, f'Remove "{filename}"')
     if os.path.exists(filename):
         os.remove(filename)
 
@@ -173,7 +173,7 @@ def _add_all_shares_below_this_container_to_dn_list(container_dn: str) -> None:
 
 
 def _add_share_to_dn_list(dn: str) -> None:
-    ud.debug(ud.LISTENER, ud.INFO, 'Add %s to share list' % dn)
+    ud.debug(ud.LISTENER, ud.INFO, f'Add {dn} to share list')
     filename = os.path.join(SHARE_CACHE_TODO_DIR, dn)
     # Create todo file
     open(filename, 'w').close()

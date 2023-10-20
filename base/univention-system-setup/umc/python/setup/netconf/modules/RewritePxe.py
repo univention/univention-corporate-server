@@ -42,7 +42,7 @@ class PhaseRewritePxe(AddressMap):
     def check(self) -> None:
         super(PhaseRewritePxe, self).check()
         if not os.path.exists(self.dirname):
-            raise SkipPhase("No '%s'" % (self.dirname,))
+            raise SkipPhase(f"No '{self.dirname}'")
         if not any(self.ipv4_changes().values()):
             raise SkipPhase("No IPv4 changes")
 

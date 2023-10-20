@@ -10,7 +10,7 @@ lockfile = '/var/lock/univention-lilo'
 def lock():
     if os.path.exists(lockfile):
         return False
-    os.system('touch %s' % lockfile)
+    os.system(f'touch {lockfile}')
     return True
 
 

@@ -181,14 +181,14 @@ class DovecotSharedFolderListener(DovecotListener):
             acls.append("dovecotadmin none")
             try:
                 # give master-user admin rights on mailbox
-                self.doveadm_set_mailbox_acls("shared/%s" % new_mailbox, ["dovecotadmin all"])
+                self.doveadm_set_mailbox_acls(f"shared/{new_mailbox}", ["dovecotadmin all"])
                 # use IMAP to set actual ACLs, so the shared mailbox list dictionary is updated
                 self.imap_set_mailbox_acls(new_mailbox, "INBOX", acls)
                 self.add_global_acls(new)
             except Exception as exc:
-                self.log_e("Failed setting ACLs on new shared mailbox '%s': %s" % (new_mailbox, exc))
+                self.log_e(f"Failed setting ACLs on new shared mailbox '{new_mailbox}': {exc}")
                 return
-            self.log_p("Created shared mailbox '%s'." % new_mailbox)
+            self.log_p(f"Created shared mailbox '{new_mailbox}'.")
         else:
             # use a public folder
             new_mailbox = new["cn"][0].decode('UTF-8')
@@ -198,12 +198,12 @@ class DovecotSharedFolderListener(DovecotListener):
                 acls = new.get(self.acl_key)
                 if acls:
                     acls = [acl.decode('UTF-8') for acl in acls]
-                    self.doveadm_set_mailbox_acls("%s/INBOX" % new_mailbox, acls)
-                    self.log_p("Set ACLs on '%s'." % new_mailbox)
+                    self.doveadm_set_mailbox_acls(f"{new_mailbox}/INBOX", acls)
+                    self.log_p(f"Set ACLs on '{new_mailbox}'.")
             except Exception:
-                self.log_e("Failed creating public mailbox '%s'." % new_mailbox)
+                self.log_e(f"Failed creating public mailbox '{new_mailbox}'.")
                 return
-            self.log_p("Created public mailbox '%s'." % new_mailbox)
+            self.log_p(f"Created public mailbox '{new_mailbox}'.")
 
     def del_shared_folder(self, old):  # type: (Dict[str, List[bytes]]) -> None
         if "mailPrimaryAddress" in old:
@@ -222,7 +222,7 @@ class DovecotSharedFolderListener(DovecotListener):
             if self.acl_key in old:
                 # Only users with ACL entries can potentially have subscribed, unsubscribe them.
                 # For performance reasons this intentionally ignores groups.
-                folder = "%s/INBOX" % old_mailbox
+                folder = f"{old_mailbox}/INBOX"
                 self.unsubscribe_from_mailbox([acl.decode('ASCII').split()[0] for acl in old[self.acl_key] if b"@" in acl.split()[0]], folder)
             # update namespaces
             self.update_public_mailbox_configuration(delete_only=old_mailbox)
@@ -233,13 +233,13 @@ class DovecotSharedFolderListener(DovecotListener):
                 self.listener.setuid(0)
                 shutil.rmtree(path, ignore_errors=True)
             except Exception:
-                self.log_e("Error deleting mailbox '%s'." % old_mailbox)
+                self.log_e(f"Error deleting mailbox '{old_mailbox}'.")
                 return
             finally:
                 self.listener.unsetuid()
-            self.log_p("Deleted mailbox '%s'." % old_mailbox)
+            self.log_p(f"Deleted mailbox '{old_mailbox}'.")
         else:
-            self.log_p("Deleting of mailboxes disabled (mailbox '%s')." % old_mailbox)
+            self.log_p(f"Deleting of mailboxes disabled (mailbox '{old_mailbox}').")
 
     def mod_shared_folder(self, old, new):  # type: (Dict[str, List[bytes]], Dict[str, List[bytes]]) -> None
         if "mailPrimaryAddress" in new:
@@ -256,7 +256,7 @@ class DovecotSharedFolderListener(DovecotListener):
                     self.move_user_home(new_mailbox, old_mailbox, True)
                     self.remove_global_acls(old)
                     # self.add_global_acls(new) is further down
-                    self.log_p("Moved mailbox '%s' -> '%s'." % (old_mailbox, new_mailbox))
+                    self.log_p(f"Moved mailbox '{old_mailbox}' -> '{new_mailbox}'.")
                 else:
                     # no address change
                     pass
@@ -269,7 +269,7 @@ class DovecotSharedFolderListener(DovecotListener):
                     new_user_home = self.get_user_home(new_mailbox)
                     if self.acl_key in old:
                         old_acl_users = [acl.split()[0].decode('UTF-8') for acl in old[self.acl_key] if b"@" in acl.split()[0]]
-                        self.unsubscribe_from_mailbox(old_acl_users, "%s/INBOX" % old_mailbox)
+                        self.unsubscribe_from_mailbox(old_acl_users, f"{old_mailbox}/INBOX")
                     # update dovecot config
                     self.update_public_mailbox_configuration()
                     # move mail home
@@ -281,15 +281,14 @@ class DovecotSharedFolderListener(DovecotListener):
                         self.listener.setuid(0)
                         shutil.move(old_maildir, new_maildir)
                     except Exception:
-                        self.log_e("Failed to move mail home (of '%s') from '%s' to '%s'.\n%s" % (
-                            new_mailbox, old_maildir, new_maildir, traceback.format_exc()))
+                        self.log_e(f"Failed to move mail home (of '{new_mailbox}') from '{old_maildir}' to '{new_maildir}'.\n{traceback.format_exc()}")
                         raise
                     finally:
                         self.listener.unsetuid()
                 except Exception:
-                    self.log_e("Could not rename/move mailbox ('%s' -> '%s').\n%s" % (old_mailbox, new_mailbox, traceback.format_exc()))
+                    self.log_e(f"Could not rename/move mailbox ('{old_mailbox}' -> '{new_mailbox}').\n{traceback.format_exc()}")
                     return
-                self.log_p("Moved mailbox '%s' -> '%s'." % (old_mailbox, new_mailbox))
+                self.log_p(f"Moved mailbox '{old_mailbox}' -> '{new_mailbox}'.")
 
             # set ACLs
             acls = self._diff_acls(old, new)
@@ -300,15 +299,15 @@ class DovecotSharedFolderListener(DovecotListener):
             acls.append("dovecotadmin none")
             try:
                 # give master-user admin rights on mailbox, so it can change its ACL
-                self.doveadm_set_mailbox_acls("shared/%s" % new_mailbox, ["dovecotadmin all"])
+                self.doveadm_set_mailbox_acls(f"shared/{new_mailbox}", ["dovecotadmin all"])
                 # use IMAP to set actual ACLs, so the shared mailbox list dictionary is updated
                 self.imap_set_mailbox_acls(new_mailbox, "INBOX", acls)
                 self.remove_global_acls(old)
                 self.add_global_acls(new)
             except Exception as exc:
-                self.log_e("Failed setting ACLs on moved shared mailbox ('%s' -> '%s'): %s" % (old_mailbox, new_mailbox, exc))
+                self.log_e(f"Failed setting ACLs on moved shared mailbox ('{old_mailbox}' -> '{new_mailbox}'): {exc}")
                 return
-            self.log_p("Set ACLs on '%s'." % new_mailbox)
+            self.log_p(f"Set ACLs on '{new_mailbox}'.")
         else:
             # use a public folder
             new_mailbox = new["cn"][0].decode('UTF-8')
@@ -333,16 +332,15 @@ class DovecotSharedFolderListener(DovecotListener):
                         self.listener.setuid(0)
                         shutil.move(old_maildir, new_maildir)
                     except Exception:
-                        self.log_e("Failed to move mail home (of '%s') from '%s' to '%s'.\n%s" % (
-                            new_mailbox, old_maildir, new_maildir, traceback.format_exc()))
+                        self.log_e(f"Failed to move mail home (of '{new_mailbox}') from '{old_maildir}' to '{new_maildir}'.\n{traceback.format_exc()}")
                         raise
                     finally:
                         self.listener.unsetuid()
                     self.remove_global_acls(old)
                 except Exception:
-                    self.log_e("Could not rename/move mailbox ('%s' -> '%s').\n%s" % (old_mailbox, new_mailbox, traceback.format_exc()))
+                    self.log_e(f"Could not rename/move mailbox ('{old_mailbox}' -> '{new_mailbox}').\n{traceback.format_exc()}")
                     return
-                self.log_p("Moved mailbox '%s' -> '%s'." % (old_mailbox, new_mailbox))
+                self.log_p(f"Moved mailbox '{old_mailbox}' -> '{new_mailbox}'.")
             else:
                 # it remained a public folder
                 # renaming of public folders is disabled in UDM
@@ -352,16 +350,16 @@ class DovecotSharedFolderListener(DovecotListener):
             # set ACLs
             try:
                 curacl = self._diff_acls(old, new)
-                self.doveadm_set_mailbox_acls("%s/INBOX" % new_mailbox, curacl)
+                self.doveadm_set_mailbox_acls(f"{new_mailbox}/INBOX", curacl)
             except Exception:
-                self.log_e("Error changing ACLs for mailbox '%s'." % new_mailbox)
-            self.log_p("Set ACLs on '%s'." % new_mailbox)
+                self.log_e(f"Error changing ACLs for mailbox '{new_mailbox}'.")
+            self.log_p(f"Set ACLs on '{new_mailbox}'.")
 
     def get_public_location(self, ns):  # type: (str) -> str
         try:
             pub_loc = self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "namespace/" + ns + "/location"], r"maildir:(\S+):INDEXPVT.*")
         except Exception:
-            self.log_e("Failed to get location of public folder '%s' from Dovecot configuration.\n%s" % (ns, traceback.format_exc()))
+            self.log_e(f"Failed to get location of public folder '{ns}' from Dovecot configuration.\n{traceback.format_exc()}")
             raise
         return pub_loc
 
@@ -371,10 +369,10 @@ class DovecotSharedFolderListener(DovecotListener):
             pub_loc = self.get_public_location(folder_name)
             path = os.path.join(pub_loc, ".INBOX")
             self.mkdir_p(pub_loc)
-            self.read_from_ext_proc_as_root(["/usr/bin/maildirmake.dovecot", path, "%s:%s" % (user, group)])
+            self.read_from_ext_proc_as_root(["/usr/bin/maildirmake.dovecot", path, f"{user}:{group}"])
             self.listener.setuid(0)
         except Exception:
-            self.log_e("Failed to create maildir '%s'." % folder_name)
+            self.log_e(f"Failed to create maildir '{folder_name}'.")
             raise
         finally:
             self.listener.unsetuid()
@@ -414,7 +412,7 @@ class DovecotSharedFolderListener(DovecotListener):
             try:
                 self.read_from_ext_proc_as_root(cmd)
             except Exception:
-                self.log_e("Failed to set ACL using doveadm using command '%s'." % cmd)
+                self.log_e(f"Failed to set ACL using doveadm using command '{cmd}'.")
                 raise
 
     def imap_set_mailbox_acls(self, mb_owner, mailbox, acls):  # type: (str, str, List[str]) -> None
@@ -422,7 +420,7 @@ class DovecotSharedFolderListener(DovecotListener):
         imap = None
         try:
             imap = imaplib.IMAP4("localhost")
-            imap.login("%s*%s" % (mb_owner, master_name), master_pw)
+            imap.login(f"{mb_owner}*{master_name}", master_pw)
             for acl in acls:
                 identifier, right = self._split_udm_imap_acl_imap(acl)
                 if right == "none":
@@ -432,7 +430,7 @@ class DovecotSharedFolderListener(DovecotListener):
                     # double quotes to prevent problems with e.g. whitespace (e.g. group 'Domain Users').
                     imap.setacl(mailbox, '"{}"'.format(identifier.replace('"', r'\"')), dovecot_acls[right][0])
         except Exception:
-            self.log_e("Failed to set ACLs '%s' on mailbox '%s' for '%s'.\n%s" % (acls, mailbox, mb_owner, traceback.format_exc()))
+            self.log_e(f"Failed to set ACLs '{acls}' on mailbox '{mailbox}' for '{mb_owner}'.\n{traceback.format_exc()}")
             raise
         finally:
             if imap:
@@ -457,7 +455,7 @@ class DovecotSharedFolderListener(DovecotListener):
                 old_info = self.listener.configRegistry.get("mail/dovecot/internal/sharedfolders", "").split()
                 emails_quota = [info for info in old_info if not info.startswith(delete_only + ":")]
             except Exception:
-                self.log_e("update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n%s" % traceback.format_exc())
+                self.log_e(f"update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n{traceback.format_exc()}")
                 raise
             finally:
                 self.listener.unsetuid()
@@ -467,7 +465,7 @@ class DovecotSharedFolderListener(DovecotListener):
                 try:
                     public_folders.extend(self.get_udm_infos(module, "(!(mailPrimaryAddress=*))"))
                 except Exception:
-                    self.log_e("update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n%s" % traceback.format_exc())
+                    self.log_e(f"update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n{traceback.format_exc()}")
                     raise
                 finally:
                     self.listener.unsetuid()
@@ -481,10 +479,10 @@ class DovecotSharedFolderListener(DovecotListener):
             ]
         try:
             self.listener.setuid(0)
-            handler_set(["mail/dovecot/internal/sharedfolders=%s" % " ".join(emails_quota)])
+            handler_set([f"mail/dovecot/internal/sharedfolders={' '.join(emails_quota)}"])
             self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "reload"])
         except Exception:
-            self.log_e("update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n%s" % traceback.format_exc())
+            self.log_e(f"update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n{traceback.format_exc()}")
             raise
         finally:
             self.listener.unsetuid()
@@ -495,7 +493,7 @@ class DovecotSharedFolderListener(DovecotListener):
             try:
                 self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "mailbox", "unsubscribe", "-u", user, mailbox])
             except Exception:
-                self.log_e("Failed to unsubscribe user '%s' from mailbox '%s'." % (user, mailbox))
+                self.log_e(f"Failed to unsubscribe user '{user}' from mailbox '{mailbox}'.")
 
     def get_udm_infos(self, udm_module, udm_filter):  # type: (Any, str) -> List[Any]
         try:
@@ -505,7 +503,7 @@ class DovecotSharedFolderListener(DovecotListener):
             mod = univention.admin.modules.get(udm_module)
             return mod.lookup(None, lo, udm_filter)
         except Exception:
-            self.log_e("get_udm_infos(%s, %s): Failed to retrieve UDM info:\n%s" % (udm_module, udm_filter, traceback.format_exc()))
+            self.log_e(f"get_udm_infos({udm_module}, {udm_filter}): Failed to retrieve UDM info:\n{traceback.format_exc()}")
             raise
         finally:
             self.listener.unsetuid()

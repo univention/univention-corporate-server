@@ -55,7 +55,7 @@ def main():  # type: () -> None
                             ("Domain Users", "read"),
                             ("Computers", "append"),
                         ]
-                        user_acls = ['"%s" "%s"' % (user_address, 'all')]
+                        user_acls = [f'"{user_address}" "{"all"}"']
                         # create folder
                         folder_dn, folder_name, folder_address = create_shared_mailfolder(
                             udm,

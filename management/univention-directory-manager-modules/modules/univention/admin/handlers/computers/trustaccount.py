@@ -124,7 +124,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         else:
             # if no rid is given, create a domain sid or local sid if connector is present
             if self.s4connector_present:
-                return 'S-1-4-%s' % uidNum
+                return f'S-1-4-{uidNum}'
             else:
                 num = uidNum
                 while True:
@@ -161,7 +161,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         ml = super(object, self)._ldap_modlist()
 
         if self.hasChanged('name') and self['name']:
-            requested_uid = "%s$" % self['name']
+            requested_uid = f"{self['name']}$"
             try:
                 ml.append(('uid', self.oldattr.get('uid', []), [self.request_lock('uid', requested_uid).encode('UTF-8')]))
             except univention.admin.uexceptions.noLock:

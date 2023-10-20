@@ -226,7 +226,7 @@ class VNCInstallation:
     def type(self, text: str, clear: bool = False) -> None:
         translated = self.translate(text)
         if self.config.dump_dir and "\n" in text:
-            img_path = os.path.join(self.config.dump_dir, "vnc_automate_%s.png" % datetime.now().isoformat())
+            img_path = os.path.join(self.config.dump_dir, f"vnc_automate_{datetime.now().isoformat()}.png")
             self.client.captureScreen(img_path)
         time.sleep(1)
         if clear:

@@ -27,8 +27,8 @@ urllib3.disable_warnings()
 def check_status(app):
     if app.docker:
         print('    Checking running Docker Container')
-        assert ucr_get('appcenter/apps/%s/status' % app.id) == 'installed'
-        container = ucr_get('appcenter/apps/%s/container' % app.id)
+        assert ucr_get(f'appcenter/apps/{app.id}/status') == 'installed'
+        container = ucr_get(f'appcenter/apps/{app.id}/container')
         output = subprocess.check_output(['docker', 'inspect', '-f', '{{.State.Running}}', container]).decode().rstrip('\n')
         if output != 'true':
             utils.fail('ERROR: Container not running!')
@@ -54,13 +54,13 @@ def check_status(app):
 
 
 def check_ldap(app, apps):
-    dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app.id, app.version, app.id, ucr_get('ldap/base'))
+    dn = f'univentionAppID={app.id}_{app.version},cn={app.id},cn=apps,cn=univention,{ucr_get("ldap/base")}'
     utils.verify_ldap_object(dn, {'univentionAppVersion': [app.version]})
-    utils.verify_ldap_object(dn, {'univentionAppName': ['[en] %s' % app.name], 'univentionAppInstalledOnServer': ['%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))]}, strict=False)
+    utils.verify_ldap_object(dn, {'univentionAppName': [f'[en] {app.name}'], 'univentionAppInstalledOnServer': [f'{ucr_get("hostname")}.{ucr_get("domainname")}']}, strict=False)
     for app_version in apps.get_all_apps_with_id(app.id):
         if app_version == app:
             continue
-        dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app_version.id, app_version.version, app_version.id, ucr_get('ldap/base'))
+        dn = f'univentionAppID={app_version.id}_{app_version.version},cn={app_version.id},cn=apps,cn=univention,{ucr_get("ldap/base")}'
         utils.verify_ldap_object(dn, should_exist=False)
 
 
@@ -70,20 +70,20 @@ def check_webinterface(app):
         return
     print('    Webinterface for', app)
     if app.has_local_web_interface():
-        fqdn = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
+        fqdn = f'{ucr_get("hostname")}.{ucr_get("domainname")}'
         if app.web_interface_port_http:
             port = app.web_interface_port_http
             if app.auto_mod_proxy:
                 port = 80
             port = ':%d' % port if port != 80 else ''
-            url = 'http://%s%s%s' % (fqdn, port, app.web_interface)
+            url = f'http://{fqdn}{port}{app.web_interface}'
             _check_url(url)
         if app.web_interface_port_https:
             port = app.web_interface_port_https
             if app.auto_mod_proxy:
                 port = 443
             port = ':%d' % port if port != 443 else ''
-            url = 'https://%s%s%s' % (fqdn, port, app.web_interface)
+            url = f'https://{fqdn}{port}{app.web_interface}'
             _check_url(url)
     else:
         _check_url(app.web_interface)
@@ -105,13 +105,13 @@ def _check_url(url):
     if refresh:
         refresh_url = refresh[0].get('content')
         if refresh_url:
-            print('Found meta refresh: %s' % refresh_url)
+            print(f'Found meta refresh: {refresh_url}')
             # e.g., 0;URL=controller.pl?action=LoginScreen/user_login
             index = refresh_url.lower().find('url=')
             if index > 0:
                 refresh_url = refresh_url[index + 4:]
                 if not refresh_url.lower().startswith('http'):
-                    refresh_url = '%s%s' % (url, refresh_url)
+                    refresh_url = f'{url}{refresh_url}'
                 _check_url(refresh_url)
 
 

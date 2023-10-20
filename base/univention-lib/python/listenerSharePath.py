@@ -89,7 +89,7 @@ def dirIsMountPoint(path):
                 if len(tmp) > 1:
                     tmp[1] = tmp[1].rstrip("/")
                     if tmp[1] == path:
-                        return "%s is a mount point" % path
+                        return f"{path} is a mount point"
     return None
 
 
@@ -104,7 +104,7 @@ def checkDirFileSystem(path, cr):
     :rtype: str or None
     """
     knownFs = cr.get("listener/shares/rename/fstypes", DEFAULT_FS).split(":")
-    ret, out = getstatusoutput("LC_ALL=C stat -f %s" % quote(path))  # noqa: S605
+    ret, out = getstatusoutput(f"LC_ALL=C stat -f {quote(path)}")  # noqa: S605
     myFs = ""
     for line in out.split("\n"):
         tmp = line.split("Type: ")
@@ -115,7 +115,7 @@ def checkDirFileSystem(path, cr):
                     # ok, found fs is fs whitelist
                     return None
             break
-    return "filesystem %s for %s is not on a known filesystem" % (myFs, path)
+    return f"filesystem {myFs} for {path} is not on a known filesystem"
 
 
 def createOrRename(old, new, cr):
@@ -170,9 +170,9 @@ def createOrRename(old, new, cr):
 
         # check source and destination
         if os.path.exists(newPath):
-            return "destination %s exists" % newPath
+            return f"destination {newPath} exists"
         if not os.path.isdir(oldPath):
-            return "source %s is not a directory" % oldPath
+            return f"source {oldPath} is not a directory"
 
         # check blacklist
         if is_blacklisted(newPath, cr):
@@ -195,7 +195,7 @@ def createOrRename(old, new, cr):
                 existingNewPathDir = os.path.join(existingNewPathDir, path)
 
         if newPathDir == "/" or existingNewPathDir == "/":
-            return "moving to directory level one is not allowed (%s)" % newPath
+            return f"moving to directory level one is not allowed ({newPath})"
 
         # check know fs
         for i in [oldPath, existingNewPathDir]:
@@ -205,14 +205,14 @@ def createOrRename(old, new, cr):
 
         # check if source and destination are on the same device
         if os.stat(oldPath).st_dev != os.stat(existingNewPathDir).st_dev:
-            return "source %s and destination %s are not on the same device" % (oldPath, newPath)
+            return f"source {oldPath} and destination {newPath} are not on the same device"
 
         # create path to destination
         if not os.access(newPathDir, os.F_OK):
             try:
                 os.makedirs(newPathDir, 0o755)
             except Exception as exc:
-                return "creation of directory %s failed: %s" % (newPathDir, exc)
+                return f"creation of directory {newPathDir} failed: {exc}"
 
         # TODO: check size of source and free space in destination
 
@@ -221,14 +221,14 @@ def createOrRename(old, new, cr):
             if oldPath != "/" and newPath != "/":
                 shutil.move(oldPath, newPath)
         except Exception as exc:
-            return "failed to move directory %s to %s: %s" % (oldPath, newPath, exc)
+            return f"failed to move directory {oldPath} to {newPath}: {exc}"
 
     # or create directory anyway
     if not os.access(newPath, os.F_OK):
         try:
             os.makedirs(newPath, 0o755)
         except Exception as exc:
-            return "creation of directory %s failed: %s" % (newPath, exc)
+            return f"creation of directory {newPath} failed: {exc}"
 
     # set custom permissions for path in new
     uid = 0
@@ -249,7 +249,7 @@ def createOrRename(old, new, cr):
 
     # only dirs
     if not os.path.isdir(newPath):
-        return "custom permissions only for directories allowed (%s)" % newPath
+        return f"custom permissions only for directories allowed ({newPath})"
 
     # check blacklist
     if is_blacklisted(newPath, cr):
@@ -267,7 +267,7 @@ def createOrRename(old, new, cr):
         if (not old or (new.get("univentionShareGid") and old.get("univentionShareGid") and new["univentionShareGid"][0] != old["univentionShareGid"][0])):
             os.chown(newPath, -1, gid)
     except Exception:
-        return "setting custom permissions for %s failed" % newPath
+        return f"setting custom permissions for {newPath} failed"
 
     return None
 
@@ -299,7 +299,7 @@ def is_blacklisted(path, ucr):
     >>> is_blacklisted('/var/spool/cups-pdf/', {'listener/shares/whitelist/univention-printserver-pdf': '/var/spool/cups-pdf/*'})
     False
     """
-    path = '%s/' % (path.rstrip('/'),)
+    path = f'{path.rstrip("/")}/'
     whitelist = {
         path
         for key, value in ucr.items()

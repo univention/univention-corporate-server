@@ -90,7 +90,7 @@ def _escape_filename(name: str) -> str:
     name = name.replace('/', '').replace('\x00', '')
     if name in ('.', '..', ''):
         ud.debug(ud.LISTENER, ud.ERROR, "Invalid filename: %r" % (name,))
-        raise BasedirLimit('Invalid filename: %s' % (name,))
+        raise BasedirLimit(f'Invalid filename: {name}')
     return name
 
 
@@ -98,7 +98,7 @@ def _join_basedir_filename(basedir: str, filename: str) -> str:
     _filename = os.path.join(basedir, _escape_filename(filename))
     if not os.path.abspath(_filename).startswith(basedir):
         ud.debug(ud.LISTENER, ud.ERROR, "Basedir manipulation: %r" % (filename,))
-        raise BasedirLimit('Invalid filename: %s' % (filename,))
+        raise BasedirLimit(f'Invalid filename: {filename}')
     return _filename
 
 
@@ -106,7 +106,7 @@ def lpadmin(args: List[str]) -> None:
     quoted_args = [shlex.quote(x) for x in args]
 
     # Show this info message by default
-    ud.debug(ud.LISTENER, ud.WARN, "cups-printers: info: univention-lpadmin %s" % ' '.join(quoted_args))
+    ud.debug(ud.LISTENER, ud.WARN, f"cups-printers: info: univention-lpadmin {' '.join(quoted_args)}")
 
     rc = listener.run('/usr/sbin/univention-lpadmin', ['univention-lpadmin'] + args, uid=0)
     if rc != 0:
@@ -115,11 +115,11 @@ def lpadmin(args: List[str]) -> None:
         with open(filename, 'w+') as fd:
             os.chmod(filename, 0o755)
             fd.write('#!/bin/sh\n')
-            fd.write('/usr/sbin/univention-lpadmin %s\n' % (' '.join(quoted_args),))
+            fd.write(f'/usr/sbin/univention-lpadmin {" ".join(quoted_args)}\n')
 
 
 def filter_match(object: Dict[str, List[bytes]]) -> bool:
-    fqdn = ('%s.%s' % (hostname, domainname)).lower()
+    fqdn = f'{hostname}.{domainname}'.lower()
     return any(host.decode('ASCII').lower() in (ip.lower(), fqdn) for host in object.get('univentionPrinterSpoolHost', ()))
 
 
@@ -127,7 +127,7 @@ def get_testparm_var(smbconf: str, sectionname: str, varname: str) -> str:
     if not os.path.exists("/usr/bin/testparm"):
         return ""
 
-    cmd = ["/usr/bin/testparm", "-s", "-l", "--section-name=%s" % sectionname, "--parameter-name=%s" % varname, smbconf]
+    cmd = ["/usr/bin/testparm", "-s", "-l", f"--section-name={sectionname}", f"--parameter-name={varname}", smbconf]
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     (out, err) = p1.communicate()
     return out.decode('UTF-8').strip()
@@ -196,7 +196,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             printer_is_restricted = printer_name in printer_list
             if printer_is_restricted and not listener.configRegistry.is_false('cups/automaticrestrict', False):
                 printer_list.remove(printer_name)
-                keyval = 'cups/restrictedprinters=%s' % ' '.join(printer_list)
+                keyval = f'cups/restrictedprinters={" ".join(printer_list)}'
                 listener.setuid(0)
                 try:
                     univention.config_registry.handler_set([keyval])
@@ -234,7 +234,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             update_restricted_printers = True
 
         if update_restricted_printers and not listener.configRegistry.is_false('cups/automaticrestrict', False):
-            keyval = 'cups/restrictedprinters=%s' % ' '.join(printer_list)
+            keyval = f'cups/restrictedprinters={" ".join(printer_list)}'
             listener.setuid(0)
             try:
                 univention.config_registry.handler_set([keyval])
@@ -254,9 +254,9 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
                 args.append('-u')
                 argument = "%s:" % new['univentionPrinterACLtype'][0].decode('ASCII')
                 for userDn in new.get('univentionPrinterACLUsers', ()):
-                    argument += '%s,' % (_rdn(userDn.decode('UTF-8')),)
+                    argument += f'{_rdn(userDn.decode("UTF-8"))},'
                 for groupDn in new.get('univentionPrinterACLGroups', ()):
-                    argument += '@%s,' % (_rdn(groupDn.decode('UTF-8')),)
+                    argument += f'@{_rdn(groupDn.decode("UTF-8"))},'
                 args.append(argument.rstrip(','))
         else:
             args += ['-o', 'auth-info-required=none']
@@ -322,7 +322,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
             def _quote(arg: str) -> str:
                 if ' ' in arg:
-                    arg = '"%s"' % (arg.replace('"', '\\"'),)
+                    arg = f'"{arg.replace('''"''', '''\\"''')}"'
                 return arg.replace('\n', '')
 
             user_and_groups = [_quote(_rdn(_dn.decode('UTF-8'))) for _dn in new.get('univentionPrinterACLUsers', ())]
@@ -333,8 +333,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             listener.setuid(0)
             try:
                 with open(filename, 'w') as fp:
-                    fp.write('[%s]\n' % (printername,))
-                    fp.write('printer name = %s\n' % (cups_printername,))
+                    fp.write(f'[{printername}]\n')
+                    fp.write(f'printer name = {cups_printername}\n')
                     fp.write('path = /tmp\n')
                     fp.write('guest ok = yes\n')
                     fp.write('printable = yes\n')
@@ -342,9 +342,9 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
                         fp.write('force printername = yes\n')
                     if perm:
                         if new['univentionPrinterACLtype'][0] == b'allow':
-                            fp.write('valid users = %s\n' % perm)
+                            fp.write(f'valid users = {perm}\n')
                         if new['univentionPrinterACLtype'][0] == b'deny':
-                            fp.write('invalid users = %s\n' % perm)
+                            fp.write(f'invalid users = {perm}\n')
 
                 os.chmod(filename, 0o755)
                 os.chown(filename, 0, 0)
@@ -380,11 +380,11 @@ def remove_printer_from_samba(printername: str) -> None:
         os.unlink(filename)
 
     if os.path.exists('/usr/bin/net'):
-        registry_key = 'HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Print\\Printers\\%s' % (printername,)
+        registry_key = f'HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Print\\Printers\\{printername}'
         subprocess.call(['/usr/bin/net', 'registry', 'deletekey_recursive', registry_key])
 
     try:
-        os.unlink('/var/cache/samba/printing/%s.tdb' % (printername,))
+        os.unlink(f'/var/cache/samba/printing/{printername}.tdb')
     except FileNotFoundError:
         pass
 

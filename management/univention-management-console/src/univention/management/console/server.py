@@ -202,7 +202,7 @@ class Server(object):
             fd_limit = ucr.get_int('umc/http/max-open-file-descriptors', 65535)
             resource.setrlimit(resource.RLIMIT_NOFILE, (fd_limit, fd_limit))
         except (ValueError, resource.error) as exc:
-            CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
+            CORE.error(f'Could not raise NOFILE resource limits: {exc}')
 
         # bind sockets
         sockets = bind_sockets(self.options.port, ucr.get('umc/http/interface', '127.0.0.1'), backlog=ucr.get_int('umc/http/requestqueuesize', 100), reuse_port=True)
@@ -221,7 +221,7 @@ class Server(object):
             try:
                 self._child_number = tornado.process.fork_processes(self.options.processes, 0)
             except RuntimeError as exc:
-                CORE.warn('Child process died: %s' % (exc,))
+                CORE.warn(f'Child process died: {exc}')
                 os.kill(os.getpid(), signal.SIGTERM)
                 raise SystemExit(str(exc))
             except KeyboardInterrupt:

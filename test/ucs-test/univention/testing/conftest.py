@@ -109,11 +109,11 @@ def check_tags(item):
 
     prohibited = tags & tags_prohibited
     if prohibited:
-        pytest.skip('De-selected by tag: %s' % (' '.join(prohibited),))
+        pytest.skip(f'De-selected by tag: {" ".join(prohibited)}')
     elif tags_required:
         required = tags & tags_required
         if not required:
-            pytest.skip('De-selected by tag: %s' % (' '.join(tags_required),))
+            pytest.skip(f'De-selected by tag: {" ".join(tags_required)}')
 
 
 def check_roles(item):
@@ -139,7 +139,7 @@ def check_roles(item):
         roles = set(CheckRoles.ROLES) - roles_prohibited
 
     if ucr['server/role'] not in roles:
-        pytest.skip('Wrong role: %s not in (%s)' % (ucr['server/role'], ','.join(roles)))
+        pytest.skip(f'Wrong role: {ucr["server/role"]} not in ({",".join(roles)})')
 
 
 def check_exposure(item):

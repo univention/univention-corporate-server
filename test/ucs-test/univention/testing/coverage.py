@@ -176,7 +176,7 @@ directory = {directory}
     def startup(cls):
         # type: () -> None
         """Startup function which is invoked by every(!) Python process during coverage measurement. If the process is relevant we start measuring coverage."""
-        argv = open('/proc/%s/cmdline' % os.getpid()).read().split('\x00')
+        argv = open(f'/proc/{os.getpid()}/cmdline').read().split('\x00')
         if not cls.is_candidate(argv):
             return
 
@@ -263,7 +263,7 @@ class StopCoverageDecorator:
         # type: (*Any, **Any) -> None
         if not StopCoverageDecorator.inDecorator:
             StopCoverageDecorator.inDecorator = True
-            Coverage.debug_message('StopCoverageDecorator', self.method.__name__, open('/proc/%s/cmdline' % os.getpid()).read().split('\x00'))
+            Coverage.debug_message('StopCoverageDecorator', self.method.__name__, open(f'/proc/{os.getpid()}/cmdline').read().split('\x00'))
             Coverage.stop_measurement(True)
         try:
             self.method(*args, **kw)

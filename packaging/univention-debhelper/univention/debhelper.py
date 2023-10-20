@@ -56,7 +56,7 @@ def doIt(*argv):
     0
     """
     if os.environ.get('DH_VERBOSE', False):
-        print('\t%s' % ' '.join(argv))
+        print(f'\t{" ".join(argv)}')
     return subprocess.check_call(argv)
 
 

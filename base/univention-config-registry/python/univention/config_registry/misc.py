@@ -137,18 +137,18 @@ def validate_key(key, out=sys.stderr):
     key = replace_umlaut(key)
 
     if old != key:
-        print('Umlauts in config variable key are not recommended. Please consider renaming "%s" to %s.' % (old, key), file=out)
+        print(f'Umlauts in config variable key are not recommended. Please consider renaming "{old}" to {key}.', file=out)
         # return False  # Bug #53742
 
     if len(key) > 0:
         if ': ' in key:
-            print('Please fix invalid ": " in config variable key "%s".' % (key,), file=out)
+            print(f'Please fix invalid ": " in config variable key "{key}".', file=out)
             return False
         match = INVALID_KEY_CHARS.search(key)
 
         if not match:
             return True
-        print('Please fix invalid character "%s" in config variable key "%s".' % (match.group(), key), file=out)
+        print(f'Please fix invalid character "{match.group()}" in config variable key "{key}".', file=out)
     return False
 
 

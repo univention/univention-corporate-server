@@ -75,7 +75,7 @@ class TestUsers:
 
         user = udm.create_user(homeShare=share, homeSharePath=homeSharePath)[0]
         udm.verify_udm_object("users/user", user, {"homeShare": share, "homeSharePath": homeSharePath})
-        udm.verify_ldap_object(user, {'automountInformation': ['-rw %s:%s/%s' % (host, path.rstrip('/'), homeSharePath)]})
+        udm.verify_ldap_object(user, {'automountInformation': [f'-rw {host}:{path.rstrip("/")}/{homeSharePath}']})
 
     @pytest.mark.parametrize('module', [
         'users/user',
@@ -186,7 +186,7 @@ class TestUsers:
         user = udm.modify_object('users/user', dn=user, username=username)
         assert name not in user
         assert username in user
-        udm.verify_ldap_object(user, {'krb5PrincipalName': ['%s@%s' % (username, ucr['domainname'].upper())]})
+        udm.verify_ldap_object(user, {'krb5PrincipalName': [f'{username}@{ucr["domainname"].upper()}']})
 
     def test_kerberos_values_are_set(self, udm):
         user = udm.create_user()[0]
@@ -236,12 +236,12 @@ class TestUsers:
 
     @pytest.mark.parametrize('form,props,cn', [
         ('<firstname> <lastname>', {'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
-        ('<username> <firstname> <lastname>', {'username': _modlist_cn_username, 'firstname': 'X', 'lastname': 'Y'}, '%s X Y' % (_modlist_cn_username,)),
+        ('<username> <firstname> <lastname>', {'username': _modlist_cn_username, 'firstname': 'X', 'lastname': 'Y'}, f'{_modlist_cn_username} X Y'),
     ])
     def test_modlist_cn(self, restart_s4connector_if_present, udm, ucr, form, props, cn):
         try:
             with UCSTestConfigRegistry():
-                handler_set(['directory/manager/usercn/attributes=%s' % (form,)])
+                handler_set([f'directory/manager/usercn/attributes={form}'])
                 # restart udm cli and connector to apply new setting
                 udm.stop_cli_server()
                 restart_s4connector_if_present()
@@ -283,7 +283,7 @@ class TestUsers:
 
     def test_modlist_krb_principal(self, udm, random_username, ucr):
         username = random_username()
-        self._test_modlist(udm, {'username': username}, {'krb5PrincipalName': ['%s@%s' % (username, ucr['domainname'].upper())]})
+        self._test_modlist(udm, {'username': username}, {'krb5PrincipalName': [f'{username}@{ucr["domainname"].upper()}']})
 
     def test_lock_unlock_preserves_password(self, udm, lo):
         user = udm.create_user(password='univention')[0]

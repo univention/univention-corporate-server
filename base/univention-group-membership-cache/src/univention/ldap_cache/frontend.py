@@ -87,7 +87,7 @@ def users_in_group(group_dn, consider_nested_groups=True, readers=(None, None), 
             rdn = _extract_id_from_dn(member).lower()
             if rdn in uids:
                 ret.add(member.lower())
-            elif '%s$' % rdn in uids:
+            elif f'{rdn}$' in uids:
                 continue
             else:
                 if consider_nested_groups:

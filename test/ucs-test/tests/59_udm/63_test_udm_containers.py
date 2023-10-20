@@ -207,7 +207,7 @@ class Test_ContainerOU:
                 if dn not in existing_temporary_ous:
                     to_be_removed = udm._cleanup.setdefault('container/ou', [])
                     to_be_removed.append(dn)
-                assert dn in existing_temporary_ous, 'ou = %s remained' % dn
+                assert dn in existing_temporary_ous, f'ou = {dn} remained'
 
             new_ou = 'ou=%s,%s' % (ldap.dn.escape_dn_chars(ou_name_new), parent)
             new_user = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(user_name), new_ou)
@@ -215,7 +215,7 @@ class Test_ContainerOU:
             utils.verify_ldap_object(new_ou, {'ou': [ou_name_new]}, should_exist=True)
             if add_user:
                 for dn, entry in lo.search(filter=ldap.filter.filter_format('uid=%s', [user_name])):
-                    assert entry.get('uid')[0] == user_name.encode('UTF-8'), 'CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name)
+                    assert entry.get('uid')[0] == user_name.encode('UTF-8'), f'CASE SENSITIVITY: uid = {entry.get("uid")[0]}; expected: {user_name}'
                 utils.verify_ldap_object(new_user, should_exist=True)
 
             return new_ou
@@ -261,7 +261,7 @@ class Test_ContainerOU:
                 if dn not in existing_temporary_ous:
                     to_be_removed = udm._cleanup.setdefault('container/ou', [])
                     to_be_removed.append(dn)
-                assert dn in existing_temporary_ous, 'ou = %s remained' % dn
+                assert dn in existing_temporary_ous, f'ou = {dn} remained'
 
             new_ou = 'ou=%s,%s' % (ldap.dn.escape_dn_chars(ou_name_new), parent)
             new_user = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(user_name), new_ou)
@@ -269,7 +269,7 @@ class Test_ContainerOU:
             utils.verify_ldap_object(new_ou, {'ou': [ou_name_new]}, should_exist=True)
             if add_user:
                 for dn, entry in lo.search(filter=ldap.filter.filter_format('uid=%s', [user_name])):
-                    assert entry.get('uid')[0] == user_name.encode('UTF-8'), 'CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name)
+                    assert entry.get('uid')[0] == user_name.encode('UTF-8'), f'CASE SENSITIVITY: uid = {entry.get("uid")[0]}; expected: {user_name}'
                 utils.verify_ldap_object(new_user, should_exist=True)
 
             return new_ou
@@ -297,7 +297,7 @@ class Test_ContainerOU:
         ou_name_new = ou_name.encode('UTF-8').upper().decode('UTF-8')  # warning: u'ß'.upper() == u'SS'
 
         ou = udm.create_object('container/ou', name=ou_name)
-        wait_for_drs_replication('ou=%s' % ou_name)
+        wait_for_drs_replication(f'ou={ou_name}')
         udm.create_user(position=ou, username=user_name)
         udm.create_object('networks/network', position=ou, name=network_name, network='1.1.1.1', netmask='24')
 
@@ -313,7 +313,7 @@ class Test_ContainerOU:
 
         lo = utils.get_ldap_connection()
         for _dn, entry in lo.search(filter=ldap.filter.filter_format('ou=%s', [ou_name])):
-            assert entry.get('ou')[0] == ou_name.encode('UTF-8'), 'ou = %s; expected: %s' % (entry.get('ou')[0], ou_name)
+            assert entry.get('ou')[0] == ou_name.encode('UTF-8'), f'ou = {entry.get("ou")[0]}; expected: {ou_name}'
 
     def test_container_ou_rename_uppercase_rollback_with_special_characters(self, udm, ucr):
         """Rename a container/ou with un-moveable subobjects from lower to upper case with special characters"""
@@ -340,7 +340,7 @@ class Test_ContainerOU:
 
         lo = utils.get_ldap_connection()
         for _dn, entry in lo.search(filter=ldap.filter.filter_format('ou=%s', (ou_name,))):
-            assert entry.get('ou')[0] == ou_name.encode('UTF-8'), 'ou = %s; expected: %s' % (entry.get('ou')[0], ou_name)
+            assert entry.get('ou')[0] == ou_name.encode('UTF-8'), f'ou = {entry.get("ou")[0]}; expected: {ou_name}'
 
 
 class Test_ContainerCN:
@@ -361,7 +361,7 @@ class Test_ContainerCN:
 
         cn_name = uts.random_name()
         cn = udm.create_object('container/cn', name=cn_name)
-        wait_for_drs_replication('cn=%s' % cn_name)
+        wait_for_drs_replication(f'cn={cn_name}')
 
         udm.modify_object('container/cn', dn=cn, description=description)
         utils.verify_ldap_object(cn, {'description': [description]})
@@ -486,7 +486,7 @@ class Test_ContainerCN:
         utils.verify_ldap_object(user[0], should_exist=False)
 
         new_cn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn_name_new), ucr.get('ldap/base'))
-        new_user = 'uid=%s,cn=%s,%s' % (user_name, cn_name_new, ucr.get('ldap/base'))
+        new_user = f'uid={user_name},cn={cn_name_new},{ucr.get("ldap/base")}'
         utils.verify_ldap_object(new_cn, should_exist=True)
         utils.verify_ldap_object(new_user, should_exist=True)
 
@@ -533,7 +533,7 @@ class Test_ContainerCN:
             for dn, entry in lo.search(filter='ou=temporary_move_container_*'):
                 to_be_removed = udm._cleanup.setdefault('container/ou', [])
                 to_be_removed.append(dn)
-                raise AssertionError("ou = %s remained" % dn)
+                raise AssertionError(f"ou = {dn} remained")
 
             new_cn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn_name_new), parent)
             new_user = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(user_name), new_cn)
@@ -541,11 +541,11 @@ class Test_ContainerCN:
             utils.verify_ldap_object(new_cn, should_exist=True)
             if add_user:
                 for dn, entry in lo.search(filter=ldap.filter.filter_format('uid=%s', [user_name])):
-                    assert entry.get('uid')[0] == user_name.encode('UTF-8'), 'CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name)
+                    assert entry.get('uid')[0] == user_name.encode('UTF-8'), f'CASE SENSITIVITY: uid = {entry.get("uid")[0]}; expected: {user_name}'
                 utils.verify_ldap_object(new_user, should_exist=True)
 
             for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name_new])):
-                assert entry.get('cn')[0] == cn_name_new.encode('UTF-8'), 'cn = %s; expected: %s' % (entry.get('cn')[0], cn_name_new)
+                assert entry.get('cn')[0] == cn_name_new.encode('UTF-8'), f'cn = {entry.get("cn")[0]}; expected: {cn_name_new}'
             return new_cn
 
         # EMPTY
@@ -598,7 +598,7 @@ class Test_ContainerCN:
             for dn, entry in lo.search(filter='ou=temporary_move_container_*'):
                 to_be_removed = udm._cleanup.setdefault('container/ou', [])
                 to_be_removed.append(dn)
-                raise AssertionError("ou = %s remained" % dn)
+                raise AssertionError(f"ou = {dn} remained")
 
             new_cn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn_name_new), parent)
             new_user = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(user_name), new_cn)
@@ -606,11 +606,11 @@ class Test_ContainerCN:
             utils.verify_ldap_object(new_cn, should_exist=True)
             if add_user:
                 for dn, entry in lo.search(filter=ldap.filter.filter_format('uid=%s', [user_name])):
-                    assert entry.get('uid')[0] == user_name.encode('UTF-8'), 'CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name)
+                    assert entry.get('uid')[0] == user_name.encode('UTF-8'), f'CASE SENSITIVITY: uid = {entry.get("uid")[0]}; expected: {user_name}'
                 utils.verify_ldap_object(new_user, should_exist=True)
 
             for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name_new])):
-                assert entry.get('cn')[0] == cn_name_new.encode('UTF-8'), 'cn = %s; expected: %s' % (entry.get('cn')[0], cn_name_new)
+                assert entry.get('cn')[0] == cn_name_new.encode('UTF-8'), f'cn = {entry.get("cn")[0]}; expected: {cn_name_new}'
             return new_cn
 
         # EMPTY
@@ -636,7 +636,7 @@ class Test_ContainerCN:
         cn_name_new = cn_name.encode('UTF-8').upper().decode('UTF-8')  # warning: u'ß'.upper() == u'SS'
 
         cn = udm.create_object('container/cn', name=cn_name)
-        wait_for_drs_replication('cn=%s' % cn_name)
+        wait_for_drs_replication(f'cn={cn_name}')
         udm.create_user(position=cn, username=user_name)
         udm.create_object('networks/network', position=cn, name=network_name, network='1.1.1.1', netmask='24')
 
@@ -650,7 +650,7 @@ class Test_ContainerCN:
 
         lo = utils.get_ldap_connection()
         for _dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name])):
-            assert entry.get('cn')[0] == cn_name.encode('UTF-8'), 'cn = %s; expected: %s' % (entry.get('cn')[0], cn_name)
+            assert entry.get('cn')[0] == cn_name.encode('UTF-8'), f'cn = {entry.get("cn")[0]}; expected: {cn_name}'
 
     def test_container_cn_rename_uppercase_rollback_with_special_characters(self, udm, ucr):
         """Rename a container/cn with un-moveable subobjects from lower to upper case special characters"""
@@ -676,7 +676,7 @@ class Test_ContainerCN:
 
         lo = utils.get_ldap_connection()
         for _dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name])):
-            assert entry.get('cn')[0] == cn_name.encode('UTF-8'), 'cn = %s; expected: %s' % (entry.get('cn')[0], cn_name)
+            assert entry.get('cn')[0] == cn_name.encode('UTF-8'), f'cn = {entry.get("cn")[0]}; expected: {cn_name}'
 
 
 class Test_StandardContainer:
@@ -690,7 +690,7 @@ class Test_StandardContainer:
         lo = utils.get_ldap_connection()
 
         for object_type in ('container/cn', 'container/ou'):
-            defalt_containers = 'cn=default containers,%s' % (udm.UNIVENTION_CONTAINER,)
+            defalt_containers = f'cn=default containers,{udm.UNIVENTION_CONTAINER}'
             print('testing', object_type)
             computerPath = [x.decode('UTF-8') for x in lo.getAttr(defalt_containers, 'univentionComputersObject')]
             userPath = lo.getAttr(defalt_containers, 'univentionUsersObject')

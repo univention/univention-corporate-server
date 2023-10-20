@@ -203,7 +203,7 @@ def find_syslib_path(bld, libname, deps):
     if libname == "python":
         libname += bld.env.PYTHON_VERSION
 
-    return find_ldd_path(bld, "lib%s" % libname.lower(), linkpath)
+    return find_ldd_path(bld, f"lib{libname.lower()}", linkpath)
 
 
 def build_symbol_sets(bld, tgt_list):
@@ -255,7 +255,7 @@ def build_symbol_sets(bld, tgt_list):
         if t.samba_type in ['LIBRARY', 'PLUGIN']:
             for dep in t.add_objects:
                 t2 = bld.get_tgen_by_name(dep)
-                bld.ASSERT(t2 is not None, "Library '%s' has unknown dependency '%s'" % (name, dep))
+                bld.ASSERT(t2 is not None, f"Library '{name}' has unknown dependency '{dep}'")
                 bld.env.public_symbols[name] = bld.env.public_symbols[name].union(t2.public_symbols)
 
     bld.env.used_symbols = {}
@@ -268,7 +268,7 @@ def build_symbol_sets(bld, tgt_list):
         if t.samba_type in ['LIBRARY', 'PLUGIN']:
             for dep in t.add_objects:
                 t2 = bld.get_tgen_by_name(dep)
-                bld.ASSERT(t2 is not None, "Library '%s' has unknown dependency '%s'" % (name, dep))
+                bld.ASSERT(t2 is not None, f"Library '{name}' has unknown dependency '{dep}'")
                 bld.env.used_symbols[name] = bld.env.used_symbols[name].union(t2.used_symbols)
 
 
@@ -309,7 +309,7 @@ def build_syslib_sets(bld, tgt_list):
     for lib in syslibs:
         path = find_syslib_path(bld, lib, syslibs[lib])
         if path is None:
-            Logs.warn("Unable to find syslib path for %s" % lib)
+            Logs.warn(f"Unable to find syslib path for {lib}")
         if path is not None:
             syslib_paths.append(path)
             objmap[path] = lib.lower()
@@ -402,7 +402,7 @@ def check_library_deps(bld, t):
     name = real_name(t.sname)
 
     if len(t.in_library) > 1:
-        Logs.warn("WARNING: Target '%s' in multiple libraries: %s" % (t.sname, t.in_library))
+        Logs.warn(f"WARNING: Target '{t.sname}' in multiple libraries: {t.in_library}")
 
     for dep in t.autodeps:
         t2 = bld.get_tgen_by_name(dep)
@@ -410,8 +410,8 @@ def check_library_deps(bld, t):
             continue
         for dep2 in t2.autodeps:
             if dep2 == name and t.in_library != t2.in_library:
-                Logs.warn("WARNING: mutual dependency %s <=> %s" % (name, real_name(t2.sname)))
-                Logs.warn("Libraries should match. %s != %s" % (t.in_library, t2.in_library))
+                Logs.warn(f"WARNING: mutual dependency {name} <=> {real_name(t2.sname)}")
+                Logs.warn(f"Libraries should match. {t.in_library} != {t2.in_library}")
                 # raise Errors.WafError("illegal mutual dependency")
 
 
@@ -429,7 +429,7 @@ def check_syslib_collisions(bld, tgt_list):
         for lib in bld.env.syslib_symbols:
             common = t.public_symbols.intersection(bld.env.syslib_symbols[lib])
             if common:
-                Logs.error("ERROR: Target '%s' has symbols '%s' which is also in syslib '%s'" % (t.sname, common, lib))
+                Logs.error(f"ERROR: Target '{t.sname}' has symbols '{common}' which is also in syslib '{lib}'")
                 has_error = True
     if has_error:
         raise Errors.WafError("symbols in common with system libraries")
@@ -452,10 +452,10 @@ def check_dependencies(bld, t):
     for d in t.samba_deps:
         if targets[d] in [ 'EMPTY', 'DISABLED', 'SYSLIB', 'GENERATOR' ]:
             continue
-        bld.ASSERT(d in bld.env.public_symbols, "Failed to find symbol list for dependency '%s'" % d)
+        bld.ASSERT(d in bld.env.public_symbols, f"Failed to find symbol list for dependency '{d}'")
         diff = remaining.intersection(bld.env.public_symbols[d])
         if not diff and targets[sname] != 'LIBRARY':
-            Logs.info("Target '%s' has no dependency on %s" % (sname, d))
+            Logs.info(f"Target '{sname}' has no dependency on {d}")
         else:
             remaining = remaining.difference(diff)
 
@@ -471,7 +471,7 @@ def check_dependencies(bld, t):
             t.unsatisfied_symbols.add(sym)
 
     for dep in needed:
-        Logs.info("Target '%s' should add dep '%s' for symbols %s" % (sname, dep, " ".join(needed[dep])))
+        Logs.info(f"Target '{sname}' should add dep '{dep}' for symbols {' '.join(needed[dep])}")
 
 
 
@@ -503,10 +503,10 @@ def check_syslib_dependencies(bld, t):
             remaining.add(sym)
 
     for dep in needed:
-        Logs.info("Target '%s' should add syslib dep '%s' for symbols %s" % (sname, dep, " ".join(needed[dep])))
+        Logs.info(f"Target '{sname}' should add syslib dep '{dep}' for symbols {' '.join(needed[dep])}")
 
     if remaining:
-        debug("deps: Target '%s' has unsatisfied symbols: %s" % (sname, " ".join(remaining)))
+        debug(f"deps: Target '{sname}' has unsatisfied symbols: {' '.join(remaining)}")
 
 
 
@@ -556,18 +556,18 @@ def symbols_whyneeded(task):
     build_library_names(bld, tgt_list)
     build_syslib_sets(bld, tgt_list)
 
-    Logs.info("Checking why %s needs to link to %s" % (target, subsystem))
+    Logs.info(f"Checking why {target} needs to link to {subsystem}")
     if not target in bld.env.used_symbols:
-        Logs.warn("unable to find target '%s' in used_symbols dict" % target)
+        Logs.warn(f"unable to find target '{target}' in used_symbols dict")
         return
     if not subsystem in bld.env.public_symbols:
-        Logs.warn("unable to find subsystem '%s' in public_symbols dict" % subsystem)
+        Logs.warn(f"unable to find subsystem '{subsystem}' in public_symbols dict")
         return
     overlap = bld.env.used_symbols[target].intersection(bld.env.public_symbols[subsystem])
     if not overlap:
-        Logs.info("target '%s' doesn't use any public symbols from '%s'" % (target, subsystem))
+        Logs.info(f"target '{target}' doesn't use any public symbols from '{subsystem}'")
     else:
-        Logs.info("target '%s' uses symbols %s from '%s'" % (target, overlap, subsystem))
+        Logs.info(f"target '{target}' uses symbols {overlap} from '{subsystem}'")
 
 
 def report_duplicate(bld, binname, sym, libs, fail_on_error):
@@ -581,9 +581,9 @@ def report_duplicate(bld, binname, sym, libs, fail_on_error):
         else:
             libnames.append(lib)
     if fail_on_error:
-        raise Errors.WafError("%s: Symbol %s linked in multiple libraries %s" % (binname, sym, libnames))
+        raise Errors.WafError(f"{binname}: Symbol {sym} linked in multiple libraries {libnames}")
     else:
-        print("%s: Symbol %s linked in multiple libraries %s" % (binname, sym, libnames))
+        print(f"{binname}: Symbol {sym} linked in multiple libraries {libnames}")
 
 
 def symbols_dupcheck_binary(bld, binname, fail_on_error):

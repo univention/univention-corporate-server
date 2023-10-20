@@ -232,7 +232,7 @@ class Instance(Base):
         try:
             self.dbConnection = updb.open_database_connection(self.ucr, pkgdbu=True)
         except pgdb.InternalError as ex:
-            MODULE.error('Could not establish connection to the PostgreSQL server: %s' % (ex,))
+            MODULE.error(f'Could not establish connection to the PostgreSQL server: {ex}')
             raise UMC_Error(_('Could not establish connection to the database.\n\n%s') % (_server_not_running_msg(),))
         else:
             self.cursor = self.dbConnection.cursor()
@@ -242,7 +242,7 @@ class Instance(Base):
         try:
             self.cursor.execute('SELECT TRUE')
         except pgdb.OperationalError as ex:
-            MODULE.error('Connection to the PostgreSQL server lost: %s' % (ex,))
+            MODULE.error(f'Connection to the PostgreSQL server lost: {ex}')
             self.dbConnection = None
             try:
                 self.connect()
@@ -368,13 +368,13 @@ def _make_query(key, operator, pattern):
             # 2. a * indicates to not do a substring search
             if '*' in pattern:
                 pattern = pattern.replace('*', '.*')
-                pattern = '^%s$' % (pattern)
+                pattern = f'^{(pattern)}$'
 
             # 3. empty pattern means search for everything
             if pattern == '':
                 pattern = '.*'
 
-        return "\"%s\" %s '%s'" % (key, operator, pattern)
+        return f"\"{key}\" {operator} '{pattern}'"
 
     if pattern in MAPPED_PATTERNS_TO_KEYS:
         patterns = MAPPED_PATTERNS_TO_KEYS[pattern]

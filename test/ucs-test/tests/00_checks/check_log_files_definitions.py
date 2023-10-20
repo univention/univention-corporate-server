@@ -10,7 +10,7 @@ class LogMessage:
 
     @staticmethod
     def recomp(patterns, ignore_case=True):
-        pattern = '|'.join('(?:%s)' % _ for _ in patterns)
+        pattern = '|'.join(f'(?:{_})' for _ in patterns)
         return re.compile(pattern, re.IGNORECASE if ignore_case else 0)
 
 

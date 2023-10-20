@@ -298,7 +298,7 @@ def _get_samba_obj():
     lo = get_ldap_connection()
     udm_modules.update()
     samba_module = udm_modules.get("settings/sambadomain")
-    obj = samba_module.object(None, lo, None, "sambaDomainName=%s,cn=samba,%s" % (ucr.get("windows/domain"), ucr.get("ldap/base")))
+    obj = samba_module.object(None, lo, None, f"sambaDomainName={ucr.get('windows/domain')},cn=samba,{ucr.get('ldap/base')}")
     obj.open()
     return obj
 

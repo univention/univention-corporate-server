@@ -115,7 +115,7 @@ def open_idmap() -> IDmapDB:
             setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
         open_idmap.instance = IDmapDB(idmap_ldb, session_info=system_session(), lp=lp)
     except ldb.LdbError:
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: /var/lib/samba/private/idmap.ldb could not be opened" % name)
+        ud.debug(ud.LISTENER, ud.ERROR, f"{name}: /var/lib/samba/private/idmap.ldb could not be opened")
         raise
     finally:
         listener.unsetuid()
@@ -132,7 +132,7 @@ def rename_or_modify_idmap_entry(old_sambaSID: str, new_sambaSID: str, xidNumber
         idmap = open_idmap()
 
     try:
-        res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % old_sambaSID, attrs=["objectSid", "type"])
+        res = idmap.search('', ldb.SCOPE_SUBTREE, f"(&(objectClass=sidMap)(cn={old_sambaSID}))", attrs=["objectSid", "type"])
         if not res:
             ud.debug(ud.LISTENER, ud.INFO, "%s: rename_or_modify_idmap_entry: no mapping for objectSid %s, treating as add", (name, old_sambaSID))
             add_or_modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap)
@@ -140,17 +140,17 @@ def rename_or_modify_idmap_entry(old_sambaSID: str, new_sambaSID: str, xidNumber
             record = res.msgs[0]
 
             if record["type"][0].decode('ASCII') != type_string:
-                ud.debug(ud.LISTENER, ud.ERROR, "%s: %s entry type %s does not match object type %s" % (name, old_sambaSID, record["type"][0], type_string))
-                ud.debug(ud.LISTENER, ud.ERROR, "%s: skipping rename of %s to %s" % (name, old_sambaSID, new_sambaSID))
+                ud.debug(ud.LISTENER, ud.ERROR, f"{name}: {old_sambaSID} entry type {record['type'][0]} does not match object type {type_string}")
+                ud.debug(ud.LISTENER, ud.ERROR, f"{name}: skipping rename of {old_sambaSID} to {new_sambaSID}")
                 return
 
-            ud.debug(ud.LISTENER, ud.PROCESS, "%s: renaming entry for %s to %s" % (name, old_sambaSID, new_sambaSID))
+            ud.debug(ud.LISTENER, ud.PROCESS, f"{name}: renaming entry for {old_sambaSID} to {new_sambaSID}")
 
             # try a modrdn
-            idmap.rename(str(record.dn), "CN=%s" % new_sambaSID)
+            idmap.rename(str(record.dn), f"CN={new_sambaSID}")
             # and update related attributes
             msg = ldb.Message()
-            msg.dn = ldb.Dn(idmap, "CN=%s" % new_sambaSID)
+            msg.dn = ldb.Dn(idmap, f"CN={new_sambaSID}")
             msg["cn"] = ldb.MessageElement([new_sambaSID], ldb.FLAG_MOD_REPLACE, "cn")
             new_objectSid = ndr_pack(security.dom_sid(new_sambaSID))
             msg["objectSid"] = ldb.MessageElement([new_objectSid], ldb.FLAG_MOD_REPLACE, "objectSid")
@@ -170,7 +170,7 @@ def modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: I
         idmap = open_idmap()
 
     try:
-        res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs=["objectSid", "xidNumber", "type"])
+        res = idmap.search('', ldb.SCOPE_SUBTREE, f"(&(objectClass=sidMap)(cn={sambaSID}))", attrs=["objectSid", "xidNumber", "type"])
         record = res.msgs[0]
 
         msg = ldb.Message()
@@ -181,11 +181,11 @@ def modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: I
             msg["xidNumber"] = ldb.MessageElement([str(xidNumber)], ldb.FLAG_MOD_REPLACE, "xidNumber")
 
         if len(msg) != 0:
-            ud.debug(ud.LISTENER, ud.PROCESS, "%s: modifying entry for %s" % (name, sambaSID))
+            ud.debug(ud.LISTENER, ud.PROCESS, f"{name}: modifying entry for {sambaSID}")
             if "xidNumber" in msg:
-                ud.debug(ud.LISTENER, ud.INFO, "%s: changing xidNumber from %s to %s" % (name, record["xidNumber"][0], xidNumber))
+                ud.debug(ud.LISTENER, ud.INFO, f"{name}: changing xidNumber from {record['xidNumber'][0]} to {xidNumber}")
             if "type" in msg:
-                ud.debug(ud.LISTENER, ud.INFO, "%s: changing type from %s to %s" % (name, record["type"][0], type_string))
+                ud.debug(ud.LISTENER, ud.INFO, f"{name}: changing type from {record['type'][0]} to {type_string}")
 
         idmap.modify(msg)
 
@@ -213,7 +213,7 @@ def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, i
         # "cn": sambaSID, "objectSid": [ndr_pack(security.dom_sid(sambaSID))],
         # "xidNumber": [str(xidNumber)], "type": [type_string]})
 
-        ud.debug(ud.LISTENER, ud.PROCESS, "%s: added entry for %s" % (name, sambaSID))
+        ud.debug(ud.LISTENER, ud.PROCESS, f"{name}: added entry for {sambaSID}")
 
     except ldb.LdbError as exc:
         # ok, there is an entry for this sambaSID, let's replace it
@@ -228,20 +228,20 @@ def remove_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: I
         idmap = open_idmap()
 
     try:
-        res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs=["objectSid", "xidNumber", "type"])
+        res = idmap.search('', ldb.SCOPE_SUBTREE, f"(&(objectClass=sidMap)(cn={sambaSID}))", attrs=["objectSid", "xidNumber", "type"])
         if not res:
             ud.debug(ud.LISTENER, ud.INFO, "%s: remove_idmap_entry: no mapping for objectSid %s, skipping", (name, sambaSID))
         else:
             record = res.msgs[0]
 
-            ud.debug(ud.LISTENER, ud.PROCESS, "%s: removing entry for %s" % (name, sambaSID))
+            ud.debug(ud.LISTENER, ud.PROCESS, f"{name}: removing entry for {sambaSID}")
 
             idmap.delete(ldb.Dn(idmap, str(record.dn)))
 
             if record["xidNumber"][0].decode('ASCII') != str(xidNumber):
-                ud.debug(ud.LISTENER, ud.WARN, "%s: removed entry xidNumber %s did not match object xidNumber %s" % (name, record["xidNumber"][0], xidNumber))
+                ud.debug(ud.LISTENER, ud.WARN, f"{name}: removed entry xidNumber {record['xidNumber'][0]} did not match object xidNumber {xidNumber}")
             if record["type"][0].decode('ASCII') != type_string:
-                ud.debug(ud.LISTENER, ud.WARN, "%s: removed entry type %s did not match object type %s" % (name, record["type"][0], type_string))
+                ud.debug(ud.LISTENER, ud.WARN, f"{name}: removed entry type {record['type'][0]} did not match object type {type_string}")
 
     except ldb.LdbError as exc:
         (enum, estr) = exc.args
@@ -254,7 +254,7 @@ def initialize() -> None:
     try:
         if os.path.exists(idmap_ldb):
             idmap_ldb_backup = '%s_%d' % (idmap_ldb, time.time())
-            ud.debug(ud.LISTENER, ud.PROCESS, 'Move %s to %s' % (idmap_ldb, idmap_ldb_backup))
+            ud.debug(ud.LISTENER, ud.PROCESS, f'Move {idmap_ldb} to {idmap_ldb_backup}')
             os.rename(idmap_ldb, idmap_ldb_backup)
         setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
     finally:
@@ -315,7 +315,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
             if old_xid:
                 old_sambaSID = old.get(sidAttribute, [b''])[0]
                 if not old_sambaSID:
-                    ud.debug(ud.LISTENER, ud.WARN, "Samba account '%s' has no attribute '%s', cannot remove" % (samaccountname, sidAttribute))
+                    ud.debug(ud.LISTENER, ud.WARN, f"Samba account '{samaccountname}' has no attribute '{sidAttribute}', cannot remove")
                     return
                 if xid_type == 'ID_TYPE_GID' and old_sambaSID in __SPECIAL_SIDS:
                     xid_type = 'ID_TYPE_BOTH'

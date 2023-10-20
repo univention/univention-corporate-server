@@ -70,7 +70,7 @@ def run(_umc_instance: Instance) -> None:
     try:
         master_cn = master[0][1].get('cn')[0].decode('UTF-8')
     except IndexError:
-        raise Critical('Could not find a Primary Directory Node %s' % (master,))
+        raise Critical(f'Could not find a Primary Directory Node {master}')
 
     master_fqdn = '.'.join([master_cn, domainname])
 

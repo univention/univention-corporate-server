@@ -80,7 +80,7 @@ def ADD_INIT_FUNCTION(bld, subsystem, target, init_function):
     '''add an init_function to the list for a subsystem'''
     if init_function is None:
         return
-    bld.ASSERT(subsystem is not None, "You must specify a subsystem for init_function '%s'" % init_function)
+    bld.ASSERT(subsystem is not None, f"You must specify a subsystem for init_function '{init_function}'")
     cache = LOCAL_CACHE(bld, 'INIT_FUNCTIONS')
     if not subsystem in cache:
         cache[subsystem] = []
@@ -148,29 +148,23 @@ def SAMBA_LIBRARY(bld, libname, source,
     # - PYTHON:  a python C binding library
     #
     if target_type not in ['LIBRARY', 'MODULE', 'PLUGIN', 'PYTHON']:
-        raise Errors.WafError("target_type[%s] not supported in SAMBA_LIBRARY('%s')" %
-                              (target_type, libname))
+        raise Errors.WafError(f"target_type[{target_type}] not supported in SAMBA_LIBRARY('{libname}')")
 
     if require_builtin_deps:
         # For now we only support require_builtin_deps only for libraries, plugins
         if target_type not in ['LIBRARY', 'PLUGIN']:
-            raise Errors.WafError("target_type[%s] not supported SAMBA_LIBRARY('%s', require_builtin_deps=True)" %
-                                  (target_type, libname))
+            raise Errors.WafError(f"target_type[{target_type}] not supported SAMBA_LIBRARY('{libname}', require_builtin_deps=True)")
 
     if private_library and public_headers:
-        raise Errors.WafError("private library '%s' must not have public header files" %
-                             libname)
+        raise Errors.WafError(f"private library '{libname}' must not have public header files")
 
     if orig_vscript_map and not private_library:
-        raise Errors.WafError("public library '%s' must not have orig_vscript_map" %
-                             libname)
+        raise Errors.WafError(f"public library '{libname}' must not have orig_vscript_map")
 
     if orig_vscript_map and abi_directory:
-        raise Errors.WafError("private library '%s' with orig_vscript_map must not have abi_directory" %
-                             libname)
+        raise Errors.WafError(f"private library '{libname}' with orig_vscript_map must not have abi_directory")
     if orig_vscript_map and abi_match:
-        raise Errors.WafError("private library '%s' with orig_vscript_map must not have abi_match" %
-                             libname)
+        raise Errors.WafError(f"private library '{libname}' with orig_vscript_map must not have abi_match")
 
     if LIB_MUST_BE_PRIVATE(bld, libname) and target_type not in ['PLUGIN']:
         private_library = True
@@ -189,7 +183,7 @@ def SAMBA_LIBRARY(bld, libname, source,
             SET_TARGET_TYPE(bld, libname, 'EMPTY')
             return
         empty_c = libname + '.empty.c'
-        bld.SAMBA_GENERATOR('%s_empty_c' % libname,
+        bld.SAMBA_GENERATOR(f'{libname}_empty_c',
                             rule=generate_empty_file,
                             target=empty_c)
         source=empty_c
@@ -284,14 +278,11 @@ def SAMBA_LIBRARY(bld, libname, source,
     # we don't want any public libraries without version numbers
     if (not private_library and target_type != 'PYTHON' and not realname):
         if vnum is None and soname is None:
-            raise Errors.WafError("public library '%s' must have a vnum" %
-                    libname)
+            raise Errors.WafError(f"public library '{libname}' must have a vnum")
         if pc_files is None:
-            raise Errors.WafError("public library '%s' must have pkg-config file" %
-                       libname)
+            raise Errors.WafError(f"public library '{libname}' must have pkg-config file")
         if public_headers is None:
-            raise Errors.WafError("public library '%s' must have header files" %
-                       libname)
+            raise Errors.WafError(f"public library '{libname}' must have header files")
 
     abi_vnum = vnum
 
@@ -334,11 +325,11 @@ def SAMBA_LIBRARY(bld, libname, source,
         if private_library:
             version = bld.env.PRIVATE_VERSION
         elif vnum:
-            version = "%s_%s" % (libname, vnum)
+            version = f"{libname}_{vnum}"
         else:
             version = None
         if version:
-            vscript = "%s.vscript" % libname
+            vscript = f"{libname}.vscript"
             if orig_vscript_map:
                 bld.VSCRIPT_MAP_PRIVATE(version_libname, orig_vscript_map, version, vscript)
             else:
@@ -348,9 +339,9 @@ def SAMBA_LIBRARY(bld, libname, source,
             fullpath = bld.path.find_or_declare(fullname)
             vscriptpath = bld.path.find_or_declare(vscript)
             if not fullpath:
-                raise Errors.WafError("unable to find fullpath for %s" % fullname)
+                raise Errors.WafError(f"unable to find fullpath for {fullname}")
             if not vscriptpath:
-                raise Errors.WafError("unable to find vscript path for %s" % vscript)
+                raise Errors.WafError(f"unable to find vscript path for {vscript}")
             bld.add_manual_dependency(fullpath, vscriptpath)
             if bld.is_install:
                 # also make the .inst file depend on the vscript
@@ -378,7 +369,7 @@ def SAMBA_LIBRARY(bld, libname, source,
         name            = libname,
         samba_realname  = realname,
         samba_install   = install,
-        abi_directory   = "%s/%s" % (bld.path.abspath(), abi_directory),
+        abi_directory   = f"{bld.path.abspath()}/{abi_directory}",
         abi_match       = abi_match,
         abi_vnum        = abi_vnum,
         private_library = private_library,
@@ -389,7 +380,7 @@ def SAMBA_LIBRARY(bld, libname, source,
         )
 
     if realname and not link_name:
-        link_name = 'shared/%s' % realname
+        link_name = f'shared/{realname}'
 
     if link_name:
         if 'waflib.extras.compat15' in sys.modules:
@@ -565,7 +556,7 @@ def SAMBA_MODULE(bld, modname, source,
                  ):
     '''define a Samba module.'''
 
-    bld.ASSERT(subsystem, "You must specify a subsystem for SAMBA_MODULE(%s)" % modname)
+    bld.ASSERT(subsystem, f"You must specify a subsystem for SAMBA_MODULE({modname})")
 
     source = bld.EXPAND_VARIABLES(source, vars=vars)
     if subdir:
@@ -605,16 +596,16 @@ def SAMBA_MODULE(bld, modname, source,
     while realname.startswith(subsystem+"_"):
         realname = realname[len(subsystem+"_"):]
 
-    build_name = "%s_module_%s" % (subsystem, realname)
+    build_name = f"{subsystem}_module_{realname}"
 
     realname = bld.make_libname(realname)
     while realname.startswith("lib"):
         realname = realname[len("lib"):]
 
-    build_link_name = "modules/%s/%s" % (subsystem, realname)
+    build_link_name = f"modules/{subsystem}/{realname}"
 
     if init_function:
-        cflags += " -D%s=%s" % (init_function, module_init_name)
+        cflags += f" -D{init_function}={module_init_name}"
 
     bld.SAMBA_LIBRARY(modname,
                       source,
@@ -629,7 +620,7 @@ def SAMBA_MODULE(bld, modname, source,
                       vars=vars,
                       bundled_name=build_name,
                       link_name=build_link_name,
-                      install_path="${MODULESDIR}/%s" % subsystem,
+                      install_path=f"${{MODULESDIR}}/{subsystem}",
                       pyembed=pyembed,
                       manpages=manpages,
                       allow_undefined_symbols=allow_undefined_symbols,
@@ -665,14 +656,14 @@ def SAMBA_PLUGIN(bld, pluginname, source,
                  enabled=True):
     '''define an external plugin.'''
 
-    bld.ASSERT(realname, "You must specify a realname for SAMBA_PLUGIN(%s)" % pluginname)
+    bld.ASSERT(realname, f"You must specify a realname for SAMBA_PLUGIN({pluginname})")
 
     source = bld.EXPAND_VARIABLES(source, vars=vars)
     if subdir:
         source = bld.SUBDIR(subdir, source)
 
-    build_name = "_plugin_%s" % (pluginname)
-    build_link_name = "plugins/%s" % (realname)
+    build_name = f"_plugin_{(pluginname)}"
+    build_link_name = f"plugins/{(realname)}"
 
     bld.SAMBA_LIBRARY(pluginname,
                       source,
@@ -725,8 +716,7 @@ def __SAMBA_SUBSYSTEM_BUILTIN(bld, builtin_target, source,
                               allow_warnings=False):
 
     bld.ASSERT(builtin_target.endswith('.builtin.objlist'),
-               "builtin_target[%s] does not end with '.builtin.objlist'" %
-               (builtin_target))
+               f"builtin_target[{(builtin_target)}] does not end with '.builtin.objlist'")
     return bld.SAMBA_SUBSYSTEM(builtin_target, source,
                                deps=deps,
                                public_deps=public_deps,
@@ -788,8 +778,7 @@ def SAMBA_SUBSYSTEM(bld, modname, source,
     # - SUBSYSTEM: a normal subsystem from SAMBA_SUBSYSTEM()
     # - BUILTIN:   a hidden subsystem from __SAMBA_SUBSYSTEM_BUILTIN()
     if target_type not in ['SUBSYSTEM', 'BUILTIN']:
-        raise Errors.WafError("target_type[%s] not supported in SAMBA_SUBSYSTEM('%s')" %
-                              (target_type, modname))
+        raise Errors.WafError(f"target_type[{target_type}] not supported in SAMBA_SUBSYSTEM('{modname}')")
 
     if not enabled:
         SET_TARGET_TYPE(bld, modname, 'DISABLED')
@@ -801,7 +790,7 @@ def SAMBA_SUBSYSTEM(bld, modname, source,
             SET_TARGET_TYPE(bld, modname, 'EMPTY')
             return
         empty_c = modname + '.empty.c'
-        bld.SAMBA_GENERATOR('%s_empty_c' % modname,
+        bld.SAMBA_GENERATOR(f'{modname}_empty_c',
                             rule=generate_empty_file,
                             target=empty_c)
         source=empty_c
@@ -1001,7 +990,7 @@ def SAMBA_SCRIPT(bld, name, pattern, installdir, installname=None):
             continue
         if os.path.islink(link_dst):
             os.unlink(link_dst)
-        Logs.info("symlink: %s -> %s/%s" % (s, installdir, iname))
+        Logs.info(f"symlink: {s} -> {installdir}/{iname}")
         symlink(link_src, link_dst)
 Build.BuildContext.SAMBA_SCRIPT = SAMBA_SCRIPT
 
@@ -1011,15 +1000,15 @@ def copy_and_fix_python_path(task):
     if task.env["PYTHONARCHDIR"] in sys.path and task.env["PYTHONDIR"] in sys.path:
         replacement = ""
     elif task.env["PYTHONARCHDIR"] == task.env["PYTHONDIR"]:
-        replacement="""sys.path.insert(0, "%s")""" % task.env["PYTHONDIR"]
+        replacement=f"""sys.path.insert(0, "{task.env["PYTHONDIR"]}")"""
     else:
-        replacement="""sys.path.insert(0, "%s")
-sys.path.insert(1, "%s")""" % (task.env["PYTHONARCHDIR"], task.env["PYTHONDIR"])
+        replacement=f"""sys.path.insert(0, "{task.env["PYTHONARCHDIR"]}")
+sys.path.insert(1, "{task.env["PYTHONDIR"]}")"""
 
     if task.env["PYTHON"][0].startswith("/"):
-        replacement_shebang = "#!%s\n" % task.env["PYTHON"][0]
+        replacement_shebang = f"#!{task.env['PYTHON'][0]}\n"
     else:
-        replacement_shebang = "#!/usr/bin/env %s\n" % task.env["PYTHON"][0]
+        replacement_shebang = f"#!/usr/bin/env {task.env['PYTHON'][0]}\n"
 
     installed_location=task.outputs[0].bldpath(task.env)
     source_file = open(task.inputs[0].srcpath(task.env))
@@ -1046,9 +1035,9 @@ def copy_and_fix_perl_path(task):
          replacement = 'use lib "%s";' % task.env["PERL_LIB_INSTALL_DIR"]
 
     if task.env["PERL"][0] == "/":
-        replacement_shebang = "#!%s\n" % task.env["PERL"]
+        replacement_shebang = f"#!{task.env['PERL']}\n"
     else:
-        replacement_shebang = "#!/usr/bin/env %s\n" % task.env["PERL"]
+        replacement_shebang = f"#!/usr/bin/env {task.env['PERL']}\n"
 
     installed_location=task.outputs[0].bldpath(task.env)
     source_file = open(task.inputs[0].srcpath(task.env))
@@ -1082,7 +1071,7 @@ def install_file(bld, destdir, file, chmod=MODE_644, flat=False,
     if python_fixup:
         # fix the path python will use to find Samba modules
         inst_file = file + '.inst'
-        bld.SAMBA_GENERATOR('python_%s' % destname,
+        bld.SAMBA_GENERATOR(f'python_{destname}',
                             rule=copy_and_fix_python_path,
                             dep_vars=["PYTHON","PYTHON_SPECIFIED","PYTHONDIR","PYTHONARCHDIR"],
                             source=file,
@@ -1091,7 +1080,7 @@ def install_file(bld, destdir, file, chmod=MODE_644, flat=False,
     if perl_fixup:
         # fix the path perl will use to find Samba modules
         inst_file = file + '.inst'
-        bld.SAMBA_GENERATOR('perl_%s' % destname,
+        bld.SAMBA_GENERATOR(f'perl_{destname}',
                             rule=copy_and_fix_perl_path,
                             dep_vars=["PERL","PERL_SPECIFIED","PERL_LIB_INSTALL_DIR"],
                             source=file,
@@ -1149,7 +1138,7 @@ def INSTALL_DIR(bld, path, chmod=0o755, env=None):
                 os.chmod(destpath, chmod)
             except OSError as e:
                 if not os.path.isdir(destpath):
-                    raise Errors.WafError("Cannot create the folder '%s' (error: %s)" % (path, e))
+                    raise Errors.WafError(f"Cannot create the folder '{path}' (error: {e})")
 Build.BuildContext.INSTALL_DIR = INSTALL_DIR
 
 def INSTALL_DIRS(bld, destdir, dirs, chmod=0o755, env=None):
@@ -1173,7 +1162,7 @@ def MANPAGES(bld, manpages, install):
                             rule='${XSLTPROC} --xinclude -o ${TGT} --nonet ${MAN_XSL} ${SRC}'
                             )
         if install:
-            bld.INSTALL_FILES('${MANDIR}/man%s' % m[-1], m, flat=True)
+            bld.INSTALL_FILES(f'${{MANDIR}}/man{m[-1]}', m, flat=True)
 Build.BuildContext.MANPAGES = MANPAGES
 
 def SAMBAMANPAGES(bld, manpages, extra_source=None):
@@ -1201,7 +1190,7 @@ def SAMBAMANPAGES(bld, manpages, extra_source=None):
                                     ${XSLTPROC} --xinclude --stringparam noreference 0 -o ${TGT}.xml --nonet ${SAMBA_EXPAND_XSL} ${SRC[0].abspath(env)}
                                     ${XSLTPROC} --nonet -o ${TGT} ${SAMBA_MAN_XSL} ${TGT}.xml'''
                             )
-        bld.INSTALL_FILES('${MANDIR}/man%s' % m[-1], m, flat=True)
+        bld.INSTALL_FILES(f'${{MANDIR}}/man{m[-1]}', m, flat=True)
 Build.BuildContext.SAMBAMANPAGES = SAMBAMANPAGES
 
 @after('apply_link')

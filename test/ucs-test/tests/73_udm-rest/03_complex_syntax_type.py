@@ -84,7 +84,7 @@ def complex_syntax():
         for i, (extension_name, extension_buffer) in enumerate(extension_buffers.items()):
             extension_filename = get_extension_filename(extension_type, extension_name)
             extension_dn = udm.create_object(
-                'settings/udm_%s' % extension_type,
+                f'settings/udm_{extension_type}',
                 name=extension_name,
                 data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
                 filename=extension_filename,
@@ -99,7 +99,7 @@ def complex_syntax():
 
             udm.create_object(
                 'settings/extended_attribute',
-                position='cn=custom attributes,%s' % udm.UNIVENTION_CONTAINER,
+                position=f'cn=custom attributes,{udm.UNIVENTION_CONTAINER}',
                 objectClass='univentionFreeAttributes',
                 groupPosition='1',
                 module='users/user',
@@ -113,21 +113,21 @@ def complex_syntax():
                 tabName='UCS TEST',
                 syntax=extension_name,
                 tabAdvanced='0',
-                name='UCStest-syntax-extension-%s' % extension_name,
+                name=f'UCStest-syntax-extension-{extension_name}',
                 mayChange='1',
                 multivalue='0',
-                ldapMapping='univentionFreeAttribute%s' % str(i + 10),
+                ldapMapping=f'univentionFreeAttribute{str(i + 10)}',
                 notEditable='0',
                 tabPosition='1',
             )
             verify_ldap_object(extension_dn, {
                 'cn': [extension_name],
-                'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+                f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
                 'univentionOwnedByPackage': [package_name],
-                'univentionObjectType': ['settings/udm_%s' % extension_type],
+                'univentionObjectType': [f'settings/udm_{extension_type}'],
                 'univentionOwnedByPackageVersion': [package_version],
-                'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-                'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+                f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+                f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
             })
 
         wait_for_replication_and_postrun()

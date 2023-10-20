@@ -30,8 +30,8 @@ def find_suggested_header(hpath):
     ret = []
     for h in header_map:
         if os.path.basename(h) == base:
-            ret.append('<%s>' % header_map[h])
-            ret.append('"%s"' % h)
+            ret.append(f'<{header_map[h]}>')
+            ret.append(f'"{h}"')
     return ret
 
 def create_public_header(task):
@@ -82,14 +82,14 @@ def create_public_header(task):
         for s in search_paths:
             p = os.path.normpath(os.path.join(s, hpath))
             if p in header_map:
-                outfile.write("#include <%s>\n" % header_map[p])
+                outfile.write(f"#include <{header_map[p]}>\n")
                 found = True
                 break
         if found:
             continue
 
         if task.env.public_headers_allow_broken:
-            Logs.warn("Broken public header include '%s' in '%s'" % (hpath, relsrc))
+            Logs.warn(f"Broken public header include '{hpath}' in '{relsrc}'")
             outfile.write(line)
             continue
 
@@ -99,8 +99,7 @@ def create_public_header(task):
         os.unlink(tgt)
         sys.stderr.write("%s:%u:Error: unable to resolve public header %s (maybe try one of %s)\n" % (
             os.path.relpath(src, os.getcwd()), linenumber, hpath, suggested))
-        raise Errors.WafError("Unable to resolve header path '%s' in public header '%s' in directory %s" % (
-            hpath, relsrc, task.env.RELPATH))
+        raise Errors.WafError(f"Unable to resolve header path '{hpath}' in public header '{relsrc}' in directory {task.env.RELPATH}")
     infile.close()
     outfile.close()
 
@@ -153,7 +152,7 @@ def PUBLIC_HEADERS(bld, public_headers, header_path=None, public_headers_install
         relpath2 = os.path.relpath(curdir, bld.srcnode.abspath())
         targetdir = os.path.normpath(os.path.join(relpath1, bld.env.build_public_headers, inst_path))
         if not os.path.exists(os.path.join(curdir, targetdir)):
-            raise Errors.WafError("missing source directory %s for public header %s" % (targetdir, inst_name))
+            raise Errors.WafError(f"missing source directory {targetdir} for public header {inst_name}")
         target = os.path.join(targetdir, inst_name)
 
         # the source path of the header, relative to the top of the source tree
@@ -164,7 +163,7 @@ def PUBLIC_HEADERS(bld, public_headers, header_path=None, public_headers_install
 
         header_map[src_path] = target_path
 
-        t = bld.SAMBA_GENERATOR('HEADER_%s/%s/%s' % (relpath2, inst_path, inst_name),
+        t = bld.SAMBA_GENERATOR(f'HEADER_{relpath2}/{inst_path}/{inst_name}',
                                 group='headers',
                                 rule=create_public_header,
                                 source=h_name,

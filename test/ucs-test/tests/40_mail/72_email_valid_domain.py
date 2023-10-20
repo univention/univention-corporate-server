@@ -21,7 +21,7 @@ def main():
     with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
         fqdn = '%(hostname)s.%(domainname)s' % ucr
         test_domain = f'{uts.random_name()}.com'
-        mail_address = '%s@%s' % (uts.random_name(), test_domain)
+        mail_address = f'{uts.random_name()}@{test_domain}'
         try:
             udm.create_user(
                 set={

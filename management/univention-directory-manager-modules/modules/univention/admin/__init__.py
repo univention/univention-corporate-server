@@ -77,7 +77,7 @@ def ucr_overwrite_properties(module, lo):
         try:
             prop_name, attr = var[len(ucr_prefix):].split('/', 1)
             # ignore internal attributes
-            ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: found variable: %s' % var)
+            ud.debug(ud.ADMIN, ud.INFO, f'ucr_overwrite_properties: found variable: {var}')
             if attr.startswith('__'):
                 continue
             if attr == 'default':
@@ -96,7 +96,7 @@ def ucr_overwrite_properties(module, lo):
                         #   will fail. best bet is str as type
                         old_prop_val = ''
                     prop_val_type = type(old_prop_val)
-                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % (attr, new_prop_val))
+                    ud.debug(ud.ADMIN, ud.INFO, f'ucr_overwrite_properties: set property attribute {attr} to {new_prop_val}')
                     if attr in ('syntax', ):
                         if hasattr(univention.admin.syntax, new_prop_val):
                             syntax = getattr(univention.admin.syntax, new_prop_val)
@@ -113,9 +113,9 @@ def ucr_overwrite_properties(module, lo):
                         setattr(prop, attr, configRegistry.is_true(None, None, new_prop_val))
                     else:
                         setattr(prop, attr, prop_val_type(new_prop_val))
-                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: get property attribute: %s (type %s)' % (old_prop_val, prop_val_type))
+                    ud.debug(ud.ADMIN, ud.INFO, f'ucr_overwrite_properties: get property attribute: {old_prop_val} (type {prop_val_type})')
         except Exception as exc:
-            ud.debug(ud.ADMIN, ud.ERROR, 'ucr_overwrite_properties: failed to set property attribute: %s' % (exc,))
+            ud.debug(ud.ADMIN, ud.ERROR, f'ucr_overwrite_properties: failed to set property attribute: {exc}')
             continue
 
 
@@ -180,7 +180,7 @@ def pattern_replace(pattern, object):
             # try to apply the indexing instructions, indicated through '[...]'
             if ext:
                 try:
-                    return eval('val%s' % (ext))  # noqa: PGH001
+                    return eval(f'val{(ext)}')  # noqa: PGH001
                 except SyntaxError:
                     return val
             return val
@@ -332,7 +332,7 @@ class property:
             if not self.multivalue:  # default=(template-str, [list-of-required-properties])
                 if all(object[p] for p in base_default[1]):
                     for p in base_default[1]:
-                        bd0 = bd0.replace('<%s>' % (p,), object[p])
+                        bd0 = bd0.replace(f'<{p}>', object[p])
                     return bd0
                 return self.new()
             else:  # multivalue
@@ -417,7 +417,7 @@ def ucr_overwrite_layout(module, ucr_property, tab):
         desc = tab.tab['name'].data
     # replace invalid characters by underscores
     desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc).replace('/', '_')
-    return configRegistry.is_true('directory/manager/web/modules/%s/layout/%s/%s' % (module, desc, ucr_property), None)
+    return configRegistry.is_true(f'directory/manager/web/modules/{module}/layout/{desc}/{ucr_property}', None)
 
 
 def ucr_overwrite_module_layout(module):
@@ -437,12 +437,12 @@ def ucr_overwrite_module_layout(module):
         # replace invalid characters by underscores
         desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc).replace('/', '_')
 
-        tab_layout = configRegistry.get('directory/manager/web/modules/%s/layout/%s' % (module.module, desc))
-        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_layout='%s'" % tab_layout)
-        tab_name = configRegistry.get('directory/manager/web/modules/%s/layout/%s/name' % (module.module, desc))
-        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_name='%s'" % tab_name)
-        tab_descr = configRegistry.get('directory/manager/web/modules/%s/layout/%s/description' % (module.module, desc))
-        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_descr='%s'" % tab_descr)
+        tab_layout = configRegistry.get(f'directory/manager/web/modules/{module.module}/layout/{desc}')
+        ud.debug(ud.ADMIN, ud.INFO, f"layout overwrite: tab_layout='{tab_layout}'")
+        tab_name = configRegistry.get(f'directory/manager/web/modules/{module.module}/layout/{desc}/name')
+        ud.debug(ud.ADMIN, ud.INFO, f"layout overwrite: tab_name='{tab_name}'")
+        tab_descr = configRegistry.get(f'directory/manager/web/modules/{module.module}/layout/{desc}/description')
+        ud.debug(ud.ADMIN, ud.INFO, f"layout overwrite: tab_descr='{tab_descr}'")
 
         if tab_name:
             tab['name'] = tab_name
@@ -469,7 +469,7 @@ def ucr_overwrite_module_layout(module):
 
         if not tab_layout or tab_layout.lower() != 'none':
             # disable specified properties via UCR
-            ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_module_layout: trying to hide properties on tab %s' % (desc))
+            ud.debug(ud.ADMIN, ud.INFO, f'ucr_overwrite_module_layout: trying to hide properties on tab {(desc)}')
             ucr_prefix = ucr_property_prefix % module.module
             for var in configRegistry.keys():
                 if not var.startswith(ucr_prefix):
@@ -480,7 +480,7 @@ def ucr_overwrite_module_layout(module):
                     continue
                 if attr in ('__hidden') and configRegistry.is_true(var):
                     removed, layout = tab.remove(prop)
-                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_module_layout: tried to hide property: %s (found=%s)' % (prop, removed))
+                    ud.debug(ud.ADMIN, ud.INFO, f'ucr_overwrite_module_layout: tried to hide property: {prop} (found={removed})')
             new_layout.append(tab)
 
     module.layout = new_layout
@@ -510,7 +510,7 @@ class extended_attribute(object):
         hook = None
         if self.hook:
             hook = self.hook.type
-        return " univention.admin.extended_attribute: { name: '%s', oc: '%s', attr: '%s', delOC: '%s', syntax: '%s', hook: '%s' }" % (self.name, self.objClass, self.ldapMapping, self.deleteObjClass, self.syntax, hook)
+        return f" univention.admin.extended_attribute: {{ name: '{self.name}', oc: '{self.objClass}', attr: '{self.ldapMapping}', delOC: '{self.deleteObjClass}', syntax: '{self.syntax}', hook: '{hook}' }}"
 
 
 if six.PY2:  # deprecated, use layout.Tab instead
@@ -533,9 +533,9 @@ if six.PY2:  # deprecated, use layout.Tab instead
             return self.fields
 
         def __repr__(self):
-            string = " univention.admin.tab: { short_description: '%s', long_description: '%s', advanced: '%s', fields: [" % (self.short_description, self.long_description, self.advanced)
+            string = f" univention.admin.tab: {{ short_description: '{self.short_description}', long_description: '{self.long_description}', advanced: '{self.advanced}', fields: ["
             for field in self.fields:
-                string = "%s %s," % (string, field)
+                string = f"{string} {field},"
             return string + " ] }"
 
 
@@ -576,8 +576,7 @@ if six.PY2:  # deprecated, use layout.Group instead
             self.width = width
 
         def __repr__(self):
-            return " univention.admin.field: { short_description: '%s', long_description: '%s', property: '%s', type: '%s', first_only: '%s', hide_in_resultmode: '%s', hide_in_normalmode: '%s', colspan: '%s', width: '%s' }" % (
-                self.short_description, self.long_description, self.property, self.type, self.first_only, self.hide_in_resultmode, self.hide_in_normalmode, self.colspan, self.width)
+            return f" univention.admin.field: {{ short_description: '{self.short_description}', long_description: '{self.long_description}', property: '{self.property}', type: '{self.type}', first_only: '{self.first_only}', hide_in_resultmode: '{self.hide_in_resultmode}', hide_in_normalmode: '{self.hide_in_normalmode}', colspan: '{self.colspan}', width: '{self.width}' }}"
 
         # at the moment the sort is only needed for layout of the registry module
 
@@ -645,5 +644,5 @@ hook.import_hook_files()
 if __name__ == '__main__':
     prop = property('_replace')
     for pattern in ('<firstname>', '<firstname> <lastname>', '<firstname:upper>', '<:trim,upper><firstname> <lastname>     ', '<:lower><firstname> <lastname>', '<:umlauts><firstname> <lastname>'):
-        print("pattern: '%s'" % pattern)
+        print(f"pattern: '{pattern}'")
         print(" -> '%s'" % prop._replace(pattern, {'firstname': 'Andreas', 'lastname': 'Büsching'}))

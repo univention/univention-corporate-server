@@ -92,5 +92,5 @@ def php_bool(bool_):
         '0': False,
     }.get(bool_.lower())
     if mapped is None:
-        raise TypeError('Not a PHP bool: %s' % (bool_,))
+        raise TypeError(f'Not a PHP bool: {bool_}')
     return 'true' if mapped else 'false'

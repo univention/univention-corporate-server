@@ -18,7 +18,7 @@ SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 
 def create_share(host):
     name = uts.random_name()
-    path = '/mnt/_%s' % name
+    path = f'/mnt/_{name}'
     return udm.create_object('shares/share', name=name, path=path, host=host)
 
 

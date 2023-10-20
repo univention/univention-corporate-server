@@ -292,7 +292,7 @@ class access(object):
         """
         self.binddn = binddn
         self.bindpw = bindpw
-        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'bind binddn=%s' % self.binddn)
+        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, f'bind binddn={self.binddn}')
         self.lo.simple_bind_s(self.binddn, self.bindpw)
 
     @_fix_reconnect_handling
@@ -311,7 +311,7 @@ class access(object):
         }, 'SAML')
         self.lo.sasl_interactive_bind_s('', saml)
         self.binddn = self.whoami()
-        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'SAML bind binddn=%s' % self.binddn)
+        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, f'SAML bind binddn={self.binddn}')
 
     def unbind(self):
         # type: () -> None
@@ -550,7 +550,7 @@ class access(object):
 
         univention.debug.debug(
             univention.debug.LDAP, univention.debug.ALL,
-            "getPolicies: result: %s" % merged)
+            f"getPolicies: result: {merged}")
         return merged
 
     def _merge_policy(self, policy_dn, obj_dn, object_classes, result):
@@ -632,7 +632,7 @@ class access(object):
         if not serverctrls:
             serverctrls = []
 
-        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'uldap.add dn=%s' % dn)
+        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, f'uldap.add dn={dn}')
         nal = {}  # type: Dict[str, Any]
         for i in al:
             key, val = i[0], i[-1]
@@ -670,7 +670,7 @@ class access(object):
         :returns: The distinguished name.
         :rtype: str
         """
-        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'uldap.modify %s' % dn)
+        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, f'uldap.modify {dn}')
 
         if not serverctrls:
             serverctrls = []
@@ -702,7 +702,7 @@ class access(object):
         if not self.compare_dn(dn, new_dn):
             if rename_callback:
                 rename_callback(dn, new_dn, ml)
-            univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % (new_rdn,))
+            univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, f'rename {new_rdn}')
             self.rename_ext_s(dn, new_rdn, serverctrls=serverctrls, response=response)
             dn = new_dn
         if ml:
@@ -786,7 +786,7 @@ class access(object):
         :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         """
-        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'uldap.rename %s -> %s' % (dn, newdn))
+        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, f'uldap.rename {dn} -> {newdn}')
         oldsdn = self.parentDn(dn)
         newrdn = ldap.dn.dn2str([ldap.dn.str2dn(newdn)[0]])
         newsdn = ldap.dn.dn2str(ldap.dn.str2dn(newdn)[1:])
@@ -795,10 +795,10 @@ class access(object):
             serverctrls = []
 
         if oldsdn and newsdn.lower() == oldsdn.lower():
-            univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
+            univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, f'uldap.rename: modrdn {dn} to {newrdn}')
             self.rename_ext_s(dn, newrdn, serverctrls=serverctrls, response=response)
         else:
-            univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
+            univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, f'uldap.rename: move {dn} to {newrdn} in {newsdn}')
             self.rename_ext_s(dn, newrdn, newsdn, serverctrls=serverctrls, response=response)
 
     @_fix_reconnect_handling
@@ -836,7 +836,7 @@ class access(object):
 
         :param str dn: The distinguished name of the object to remove.
         """
-        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'uldap.delete %s' % dn)
+        univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, f'uldap.delete {dn}')
         if dn:
             univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'delete')
             try:
@@ -951,7 +951,7 @@ class access(object):
             return lo_ref
 
         else:
-            raise ldap.CONNECT_ERROR('Bad referral "%s"' % (exc,))
+            raise ldap.CONNECT_ERROR(f'Bad referral "{exc}"')
 
 
 if __name__ == '__main__':

@@ -72,7 +72,7 @@ def make_interpreted_test(self):
 	"""Create interpreted unit tests."""
 	for x in ['test_scripts_source', 'test_scripts_template']:
 		if not hasattr(self, x):
-			Logs.warn('a test_scripts taskgen i missing %s' % x)
+			Logs.warn(f'a test_scripts taskgen i missing {x}')
 			return
 
 	self.ut_run, lst = Task.compile_fun(self.test_scripts_template, shell=getattr(self, 'test_scripts_shell', False))
@@ -257,12 +257,12 @@ def summary(bld):
 		Logs.pprint('GREEN', '  tests that pass %d/%d' % (total-tfail, total))
 		for (f, code, out, err) in lst:
 			if not code:
-				Logs.pprint('GREEN', '    %s' % f)
+				Logs.pprint('GREEN', f'    {f}')
 
 		Logs.pprint('GREEN' if tfail == 0 else 'RED', '  tests that fail %d/%d' % (tfail, total))
 		for (f, code, out, err) in lst:
 			if code:
-				Logs.pprint('RED', '    %s' % f)
+				Logs.pprint('RED', f'    {f}')
 
 def set_exit_code(bld):
 	"""
@@ -281,9 +281,9 @@ def set_exit_code(bld):
 		if code:
 			msg = []
 			if out:
-				msg.append('stdout:%s%s' % (os.linesep, out.decode('utf-8')))
+				msg.append(f'stdout:{os.linesep}{out.decode("utf-8")}')
 			if err:
-				msg.append('stderr:%s%s' % (os.linesep, err.decode('utf-8')))
+				msg.append(f'stderr:{os.linesep}{err.decode("utf-8")}')
 			bld.fatal(os.linesep.join(msg))
 
 

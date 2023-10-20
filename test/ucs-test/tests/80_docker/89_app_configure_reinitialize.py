@@ -29,14 +29,14 @@ Type = String
 Description = Just a simple parameter
 Show = Install, Settings
 ''')
-            app.add_script(configure_host='''#!/bin/sh
+            app.add_script(configure_host=f'''#!/bin/sh
 set -x
 if [ "$1" = "settings" ]; then
     echo "Recreating the App from outside"
-    univention-app reinitialize %s
+    univention-app reinitialize {app.app_name}
 fi
 exit 0
-''' % app.app_name)
+''')
             app.add_script(configure='''#!/bin/sh
 set -x
 echo "Configuring the App"

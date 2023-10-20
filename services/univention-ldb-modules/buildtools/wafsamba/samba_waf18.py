@@ -215,7 +215,7 @@ def CHECK_LIBRARY_SUPPORT(conf, rpath=False, version_script=False, msg=None):
         if version_script:
             script = bld.srcnode.make_node('ldscript')
             script.write('TEST_1.0A2 { global: *; };\n', 'w')
-            linkflags.append('-Wl,--version-script=%s' % script.abspath())
+            linkflags.append(f'-Wl,--version-script={script.abspath()}')
         bld(features='c cshlib', source=lib_node, target='lib1', linkflags=linkflags, name='lib1')
         o = bld(features='c cprogram', source=main_node, target='prog1', uselib_local='lib1')
         if rpath:
@@ -230,7 +230,7 @@ def CHECK_LIBRARY_SUPPORT(conf, rpath=False, version_script=False, msg=None):
 
     # ok, so it builds
     try:
-        conf.check(build_fun=build, msg='Checking for %s' % msg)
+        conf.check(build_fun=build, msg=f'Checking for {msg}')
     except conf.errors.ConfigurationError:
         return False
     return True

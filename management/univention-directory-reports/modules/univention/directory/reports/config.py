@@ -125,13 +125,13 @@ class Config(ConfigParser):
         report = self._get_report_entry(module, name)
         if not report:
             return None
-        return self._guess_path(report[1], 'header%s' % (suffix,), self._oldHeader)
+        return self._guess_path(report[1], f'header{suffix}', self._oldHeader)
 
     def get_footer(self, module, name=None, suffix='.tex'):
         report = self._get_report_entry(module, name)
         if not report:
             return None
-        return self._guess_path(report[1], 'footer%s' % (suffix,), self._oldFooter)
+        return self._guess_path(report[1], f'footer{suffix}', self._oldFooter)
 
     def get_report_names(self, module):
         reports = self._reports.get(module, [])

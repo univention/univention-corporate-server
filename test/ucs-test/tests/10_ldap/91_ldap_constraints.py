@@ -23,7 +23,7 @@ def main():
 
 def test_uidnumber_0():
     lo = univention.uldap.getAdminConnection()
-    dn = 'cn=foo,%s' % ucr['ldap/base']
+    dn = f'cn=foo,{ucr["ldap/base"]}'
     cleanup.dns.append(dn)
     with pytest.raises(ldap.CONSTRAINT_VIOLATION) as msg:
         print('add', dn)
@@ -42,7 +42,7 @@ def test_uidnumber_0():
 
 def test_gidnumber_0():
     lo = univention.uldap.getAdminConnection()
-    dn = 'cn=bar,%s' % ucr['ldap/base']
+    dn = f'cn=bar,{ucr["ldap/base"]}'
     cleanup.dns.append(dn)
     with pytest.raises(ldap.CONSTRAINT_VIOLATION) as msg:
         print('add', dn)

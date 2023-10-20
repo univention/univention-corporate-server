@@ -48,7 +48,7 @@ MAX_FAIL_COUNT = 5
 class GdbmCaches(Caches):
     def _add_sub_cache(self, name, single_value, reverse):
         # type: (str, bool, bool) -> GdbmCache
-        db_file = os.path.join(self._directory, '%s.db' % name)
+        db_file = os.path.join(self._directory, f'{name}.db')
         debug('Using GDBM %s', name)
         cache = GdbmCache(name, single_value, reverse)
         cache.db_file = db_file

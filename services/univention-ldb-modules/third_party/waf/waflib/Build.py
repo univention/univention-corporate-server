@@ -192,7 +192,7 @@ class BuildContext(Context.Context):
 		node = self.root.find_node(self.cache_dir)
 		if not node:
 			raise Errors.WafError('The project was not configured: run "waf configure" first!')
-		lst = node.ant_glob('**/*%s' % CACHE_SUFFIX, quiet=True)
+		lst = node.ant_glob(f'**/*{CACHE_SUFFIX}', quiet=True)
 
 		if not lst:
 			raise Errors.WafError('The cache directory is empty: reconfigure the project')
@@ -517,7 +517,7 @@ class BuildContext(Context.Context):
 		pc = (100. * idx)/total
 		fs = "[%%%dd/%%d][%%s%%2d%%%%%%s][%s][" % (n, ind)
 		left = fs % (idx, total, col1, pc, col2)
-		right = '][%s%s%s]' % (col1, self.timer, col2)
+		right = f'][{col1}{self.timer}{col2}]'
 
 		cols = Logs.get_term_cols() - len(left) - len(right) + 2*len(col1) + 2*len(col2)
 		if cols < 7:
@@ -1336,7 +1336,7 @@ class CleanContext(BuildContext):
 			lst = []
 			for env in self.all_envs.values():
 				lst.extend(self.root.find_or_declare(f) for f in env[CFG_FILES])
-			excluded_dirs = '.lock* *conf_check_*/** config.log %s/*' % CACHE_DIR
+			excluded_dirs = f'.lock* *conf_check_*/** config.log {CACHE_DIR}/*'
 			for n in self.bldnode.ant_glob('**/*', excl=excluded_dirs, quiet=True):
 				if n in lst:
 					continue
@@ -1398,7 +1398,7 @@ class ListContext(BuildContext):
 			descript = getattr(tgen, 'description', '')
 			if descript:
 				target = target.ljust(line_just)
-				descript = ': %s' % descript
+				descript = f': {descript}'
 
 			Logs.pprint('GREEN', target, label=descript)
 
@@ -1483,9 +1483,9 @@ class StepContext(BuildContext):
 		pattern = None
 		if not anode:
 			if not pat.startswith('^'):
-				pat = '^.+?%s' % pat
+				pat = f'^.+?{pat}'
 			if not pat.endswith('$'):
-				pat = '%s$' % pat
+				pat = f'{pat}$'
 			pattern = re.compile(pat)
 
 		def match(node, output):

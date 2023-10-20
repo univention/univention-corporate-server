@@ -66,7 +66,7 @@ def get_extension_name(extension_type):
     """
     assert extension_type in VALID_EXTENSION_TYPES
     if extension_type == 'module':
-        return 'ucstest/%s' % random_name()
+        return f'ucstest/{random_name()}'
     else:
         return random_name()
 
@@ -74,7 +74,7 @@ def get_extension_name(extension_type):
 def get_extension_filename(extension_type, extension_name):
     # type: (str, str) -> str
     assert extension_type in VALID_EXTENSION_TYPES
-    return '%s.py' % extension_name
+    return f'{extension_name}.py'
 
 
 def call_cmd(cmd, fail_on_error=True):
@@ -96,7 +96,7 @@ def call_join_script(name, fail_on_error=True):
     """
     ucr = ConfigRegistry()
     ucr.load()
-    return call_cmd(['/usr/lib/univention-install/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
+    return call_cmd([f'/usr/lib/univention-install/{name}', '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
 
 
 def call_unjoin_script(name, fail_on_error=True):
@@ -107,7 +107,7 @@ def call_unjoin_script(name, fail_on_error=True):
     """
     ucr = ConfigRegistry()
     ucr.load()
-    return call_cmd(['/usr/lib/univention-uninstall/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
+    return call_cmd([f'/usr/lib/univention-uninstall/{name}', '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
 
 
 def get_syntax_buffer(name=None, identifier=None):
@@ -232,14 +232,14 @@ def get_postinst_script_buffer(extension_type, filename, app_id=None, version_st
     Optionally UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
     """
     assert extension_type in VALID_EXTENSION_TYPES
-    app_id = '' if not app_id else 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
-    version_start = '' if not version_start else '--ucsversionstart %s' % version_start
-    version_end = '' if not version_end else '--ucsversionend %s' % version_end
+    app_id = '' if not app_id else f'export UNIVENTION_APP_IDENTIFIER="{app_id}"'
+    version_start = '' if not version_start else f'--ucsversionstart {version_start}'
+    version_end = '' if not version_end else f'--ucsversionend {version_end}'
     other_options = ''
     if options:
         for key in options:
             if isinstance(options[key], str):
-                other_options += ' --%s %s' % (key, options[key])
+                other_options += f' --{key} {options[key]}'
             else:
                 other_options += ' --%s ' % (key,) + ' --%s '.join(options[key])
 
@@ -285,14 +285,14 @@ def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_ver
     Optionally a joinscript version, UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
     """
     assert extension_type in VALID_EXTENSION_TYPES
-    app_id = '' if not app_id else 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
-    version_start = '' if not version_start else '--ucsversionstart %s' % version_start
-    version_end = '' if not version_end else '--ucsversionend %s' % version_end
+    app_id = '' if not app_id else f'export UNIVENTION_APP_IDENTIFIER="{app_id}"'
+    version_start = '' if not version_start else f'--ucsversionstart {version_start}'
+    version_end = '' if not version_end else f'--ucsversionend {version_end}'
     other_options = ''
     if options:
         for key in options:
             if isinstance(options[key], str):
-                other_options += ' --%s %s' % (key, options[key])
+                other_options += f' --{key} {options[key]}'
             else:
                 other_options += ' --%s ' % (key,) + (' --%s ' % (key,)).join(options[key])
 
@@ -358,9 +358,9 @@ def get_dn_of_extension_by_name(extension_type, name):
     if extension_type == 'module':
         assert '/' in name
     searchfilter = {
-        'hook': '(&(objectClass=univentionUDMHook)(cn=%s))' % name,
-        'syntax': '(&(objectClass=univentionUDMSyntax)(cn=%s))' % name,
-        'module': '(&(objectClass=univentionUDMModule)(cn=%s))' % name,
+        'hook': f'(&(objectClass=univentionUDMHook)(cn={name}))',
+        'syntax': f'(&(objectClass=univentionUDMSyntax)(cn={name}))',
+        'module': f'(&(objectClass=univentionUDMModule)(cn={name}))',
     }[extension_type]
     return get_ldap_connection().searchDn(filter=searchfilter)
 
@@ -370,11 +370,11 @@ def remove_extension_by_name(extension_type, extension_name, fail_on_error=True)
     """Remove all extensions of given type and name from LDAP."""
     assert extension_type in VALID_EXTENSION_TYPES
     for dn in get_dn_of_extension_by_name(extension_type, extension_name):
-        cmd = ['/usr/sbin/udm-test', 'settings/udm_%s' % extension_type, 'remove', '--dn', dn]
+        cmd = ['/usr/sbin/udm-test', f'settings/udm_{extension_type}', 'remove', '--dn', dn]
         print('CMD: %r' % cmd)
         sys.stdout.flush()
         if subprocess.call(cmd):
             if fail_on_error:
-                fail('Failed to remove %s' % dn)
+                fail(f'Failed to remove {dn}')
             else:
-                print('ERROR: failed to remove %s' % dn)
+                print(f'ERROR: failed to remove {dn}')

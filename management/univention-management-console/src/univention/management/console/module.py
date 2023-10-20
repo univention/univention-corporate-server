@@ -241,7 +241,7 @@ class Module(JSON_Object):
             if flavor.id not in [iflavor.id for iflavor in self.flavors] or flavor.deactivated:
                 self.flavors.append(flavor)
             else:
-                RESOURCES.warn('Duplicated flavor for module %s: %s' % (self.id, flavor.id))
+                RESOURCES.warn(f'Duplicated flavor for module {self.id}: {flavor.id}')
 
     def merge_flavors(self, other_flavors):
         for other_flavor in other_flavors:
@@ -249,7 +249,7 @@ class Module(JSON_Object):
                 self_flavor = [iflavor for iflavor in self.flavors if iflavor.id == other_flavor.id][0]
                 self_flavor.merge(other_flavor)
             except IndexError:  # add if other_flavor does not exist
-                RESOURCES.debug('Add flavor: %s' % other_flavor.name)
+                RESOURCES.debug(f'Add flavor: {other_flavor.name}')
                 self.flavors.append(other_flavor)
 
     def merge(self, other):
@@ -316,7 +316,7 @@ class XML_Definition(ET.ElementTree):
         try:
             return float(self.root.get('priority', -1))
         except ValueError:
-            RESOURCES.warn('No valid number type for property "priority": %s' % self.root.get('priority'))
+            RESOURCES.warn(f'No valid number type for property "priority": {self.root.get("priority")}')
         return None
 
     @property
@@ -344,7 +344,7 @@ class XML_Definition(ET.ElementTree):
             try:
                 priority = float(elem.get('priority', -1))
             except ValueError:
-                RESOURCES.warn('No valid number type for property "priority": %s' % elem.get('priority'))
+                RESOURCES.warn(f'No valid number type for property "priority": {elem.get("priority")}')
             categories = [cat.get('name') for cat in elem.findall('categories/category')]
             # a empty <categories/> causes the module to be hidden! while a not existing <category> element causes that the categories from the module are used
             hidden = elem.find('categories') is not None and not categories
@@ -441,16 +441,16 @@ class Manager(dict):
                 continue
             try:
                 parsed_xml = ET.parse(os.path.join(Manager.DIRECTORY, filename))  # noqa: S313
-                RESOURCES.debug('Loaded module %s' % filename)
+                RESOURCES.debug(f'Loaded module {filename}')
                 for mod_tree in parsed_xml.getroot():
                     mod = XML_Definition(root=mod_tree)
                     if mod.deactivated:
-                        RESOURCES.info('Module is deactivated: %s' % filename)
+                        RESOURCES.info(f'Module is deactivated: {filename}')
                         continue
                     # save list of definitions
                     modules.setdefault(mod.id, []).append(mod)
             except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:
-                RESOURCES.warn('Failed to load module %s: %s' % (filename, exc))
+                RESOURCES.warn(f'Failed to load module {filename}: {exc}')
                 continue
         self.clear()
         self.update(modules)
@@ -486,15 +486,15 @@ class Manager(dict):
         for module_id in self:
             mod = self.get_module(module_id)
 
-            if ucr.is_true('umc/module/%s/disabled' % (module_id)):
-                RESOURCES.info('module %s is deactivated by UCR' % (module_id))
+            if ucr.is_true(f'umc/module/{(module_id)}/disabled'):
+                RESOURCES.info(f'module {(module_id)} is deactivated by UCR')
                 continue
 
             if isinstance(mod, Link):
                 if mod.url:
                     modules[module_id] = mod
                 else:
-                    RESOURCES.info('invalid link %s: no url element' % (module_id))
+                    RESOURCES.info(f'invalid link {(module_id)}: no url element')
                 continue
 
             if not mod.flavors:
@@ -504,8 +504,8 @@ class Manager(dict):
 
             deactivated_flavors = set()
             for flavor in flavors:
-                if ucr.is_true('umc/module/%s/%s/disabled' % (module_id, flavor.id)):
-                    RESOURCES.info('flavor %s (module=%s) is deactivated by UCR' % (flavor.id, module_id))
+                if ucr.is_true(f'umc/module/{module_id}/{flavor.id}/disabled'):
+                    RESOURCES.info(f'flavor {flavor.id} (module={module_id}) is deactivated by UCR')
                     # flavor is deactivated by UCR variable
                     flavor.deactivated = True
 
@@ -552,14 +552,14 @@ class Manager(dict):
         permitted_commands) for the given command. If found, the id of
         the module is returned, otherwise None
         """
-        RESOURCES.info('Searching for module providing command %s' % command)
+        RESOURCES.info(f'Searching for module providing command {command}')
         for module_id in modules:
             for cmd in modules[module_id].commands:
                 if cmd.name == command:
-                    RESOURCES.info('Found module %s' % module_id)
+                    RESOURCES.info(f'Found module {module_id}')
                     return module_id
 
-        RESOURCES.info('No module provides %s' % command)
+        RESOURCES.info(f'No module provides {command}')
         return None
 
 

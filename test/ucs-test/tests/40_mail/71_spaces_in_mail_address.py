@@ -17,7 +17,7 @@ EXPECTED_ERROR_MSG = 'Invalid syntax: Primary e-mail address (mailbox): Not a va
 def main():
     with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
         fqdn = '%(hostname)s.%(domainname)s' % ucr
-        mail_address = '%s @%s' % (uts.random_name(), ucr.get('domainname'))
+        mail_address = f'{uts.random_name()} @{ucr.get("domainname")}'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed) as exc:
             userdn, username = udm.create_user(
                 set={

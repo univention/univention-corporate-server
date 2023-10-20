@@ -29,7 +29,7 @@ if stderr.strip():
         if not line.endswith('WARNING: The "blocking locks" option is deprecated'):
             errors.append(line)
     if errors:
-        utils.fail('samba-tool drsi showrepl returned on stderr: %s' % '\n'.join(errors))
+        utils.fail(f'samba-tool drsi showrepl returned on stderr: {"\n".join(errors)}')
 
 if re.search('ERR_', stdout):
     utils.fail('samba-tool drsi showrepl returned a string with ERR_')

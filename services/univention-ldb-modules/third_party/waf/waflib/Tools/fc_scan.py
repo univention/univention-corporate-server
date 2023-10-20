@@ -91,12 +91,12 @@ class fortran_parser(object):
 			self.tryfind_header(x)
 
 		for x in uses:
-			name = "USE@%s" % x
+			name = f"USE@{x}"
 			if not name in self.names:
 				self.names.append(name)
 
 		for x in mods:
-			name = "MOD@%s" % x
+			name = f"MOD@{x}"
 			if not name in self.names:
 				self.names.append(name)
 

@@ -27,5 +27,5 @@ def test_kerberos_authentication(ucr):
 
     soup = BeautifulSoup(page.content, features="lxml")
     saml_resp = soup.find("input", {"name": "SAMLResponse"})
-    print("%s\nGot SAML respose" % (saml_resp,))
+    print(f"{saml_resp}\nGot SAML respose")
     assert saml_resp

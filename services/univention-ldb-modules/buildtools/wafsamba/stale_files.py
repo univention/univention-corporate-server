@@ -48,7 +48,7 @@ def replace_refill_task_list(self):
 
     # paranoia
     if bin_base[-4:] != '/bin':
-        raise Errors.WafError("Invalid bin base: %s" % bin_base)
+        raise Errors.WafError(f"Invalid bin base: {bin_base}")
 
     # obtain the expected list of files
     expected = []
@@ -100,7 +100,7 @@ def replace_refill_task_list(self):
             if p.find("/.conf") != -1:
                 continue
             if not p in expected and os.path.exists(p):
-                Logs.warn("Removing stale file: %s" % p)
+                Logs.warn(f"Removing stale file: {p}")
                 os.unlink(p)
     return iit
 

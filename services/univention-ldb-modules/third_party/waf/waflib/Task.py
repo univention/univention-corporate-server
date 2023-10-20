@@ -251,7 +251,7 @@ class Task(evil):
 		if '"' in x:
 			x = x.replace('"', '\\"')
 		if old != x or ' ' in x or '\t' in x or "'" in x:
-			x = '"%s"' % x
+			x = f'"{x}"'
 		return x
 
 	def priority(self):
@@ -419,7 +419,7 @@ class Task(evil):
 				outs = ','.join([n.name for n in self.outputs])
 			except AttributeError:
 				outs = ''
-			return '|Total %s|Current %s|Inputs %s|Outputs %s|Time %s|\n' % (master.total, cur(), ins, outs, ela)
+			return f'|Total {master.total}|Current {cur()}|Inputs {ins}|Outputs {outs}|Time {ela}|\n'
 
 		s = str(self)
 		if not s:
@@ -521,7 +521,7 @@ class Task(evil):
 			sep = ' -> '
 		else:
 			sep = ''
-		return '%s: %s%s%s' % (self.__class__.__name__, src_str, sep, tgt_str)
+		return f'{self.__class__.__name__}: {src_str}{sep}{tgt_str}'
 
 	def keyword(self):
 		"Display keyword used to prettify the console outputs"
@@ -1090,12 +1090,12 @@ def compile_fun_shell(line):
 	for (var, meth) in extr:
 		if var == 'SRC':
 			if meth:
-				app('tsk.inputs%s' % meth)
+				app(f'tsk.inputs{meth}')
 			else:
 				app('" ".join([a.path_from(cwdx) for a in tsk.inputs])')
 		elif var == 'TGT':
 			if meth:
-				app('tsk.outputs%s' % meth)
+				app(f'tsk.outputs{meth}')
 			else:
 				app('" ".join([a.path_from(cwdx) for a in tsk.outputs])')
 		elif meth:
@@ -1107,9 +1107,9 @@ def compile_fun_shell(line):
 				elif m == 'TGT':
 					m = '[a.path_from(cwdx) for a in tsk.outputs]'
 				elif re_novar.match(m):
-					m = '[tsk.inputs%s]' % m[3:]
+					m = f'[tsk.inputs{m[3:]}]'
 				elif re_novar.match(m):
-					m = '[tsk.outputs%s]' % m[3:]
+					m = f'[tsk.outputs{m[3:]}]'
 				else:
 					add_dvar(m)
 					if m[:3] not in ('tsk', 'gen', 'bld'):
@@ -1120,12 +1120,12 @@ def compile_fun_shell(line):
 				expr = re_cond.sub(replc, meth[1:])
 				app('p(%r) if (%s) else ""' % (var, expr))
 			else:
-				call = '%s%s' % (var, meth)
+				call = f'{var}{meth}'
 				add_dvar(call)
 				app(call)
 		else:
 			add_dvar(var)
-			app("p('%s')" % var)
+			app(f"p('{var}')")
 	if parm:
 		parm = "%% (%s) " % (',\n\t\t'.join(parm))
 	else:
@@ -1171,12 +1171,12 @@ def compile_fun_noshell(line):
 			code = m.group('code')
 			if var == 'SRC':
 				if code:
-					app('[tsk.inputs%s]' % code)
+					app(f'[tsk.inputs{code}]')
 				else:
 					app('[a.path_from(cwdx) for a in tsk.inputs]')
 			elif var == 'TGT':
 				if code:
-					app('[tsk.outputs%s]' % code)
+					app(f'[tsk.outputs{code}]')
 				else:
 					app('[a.path_from(cwdx) for a in tsk.outputs]')
 			elif code:
@@ -1189,9 +1189,9 @@ def compile_fun_noshell(line):
 					elif m == 'TGT':
 						m = '[a.path_from(cwdx) for a in tsk.outputs]'
 					elif re_novar.match(m):
-						m = '[tsk.inputs%s]' % m[3:]
+						m = f'[tsk.inputs{m[3:]}]'
 					elif re_novar.match(m):
-						m = '[tsk.outputs%s]' % m[3:]
+						m = f'[tsk.outputs{m[3:]}]'
 					else:
 						add_dvar(m)
 						if m[:3] not in ('tsk', 'gen', 'bld'):
@@ -1203,20 +1203,20 @@ def compile_fun_noshell(line):
 					app('to_list(env[%r] if (%s) else [])' % (var, expr))
 				else:
 					# plain code such as ${tsk.inputs[0].abspath()}
-					call = '%s%s' % (var, code)
+					call = f'{var}{code}'
 					add_dvar(call)
-					app('to_list(%s)' % call)
+					app(f'to_list({call})')
 			else:
 				# a plain variable such as # a plain variable like ${AR}
 				app('to_list(env[%r])' % var)
 				add_dvar(var)
 		if merge:
-			tmp = 'merge(%s, %s)' % (buf[-2], buf[-1])
+			tmp = f'merge({buf[-2]}, {buf[-1]})'
 			del buf[-1]
 			buf[-1] = tmp
 		merge = True # next turn
 
-	buf = ['lst.extend(%s)' % x for x in buf]
+	buf = [f'lst.extend({x})' for x in buf]
 	fun = COMPILE_TEMPLATE_NOSHELL % "\n\t".join(buf)
 	Logs.debug('action: %s', fun.strip().splitlines())
 	return (funex(fun), dvars)
@@ -1291,7 +1291,7 @@ def compile_sig_vars(vars):
 	buf = []
 	for x in sorted(vars):
 		if x[:3] in ('tsk', 'gen', 'bld'):
-			buf.append('buf.append(%s)' % x)
+			buf.append(f'buf.append({x})')
 	if buf:
 		return funex(COMPILE_TEMPLATE_SIG_VARS % '\n\t'.join(buf))
 	return None

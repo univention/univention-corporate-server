@@ -25,15 +25,15 @@ class gen_sym(Task):
 
 		reg = getattr(self.generator, 'export_symbols_regex', '.+?')
 		if 'msvc' in (self.env.CC_NAME, self.env.CXX_NAME):
-			re_nm = re.compile(r'External\s+\|\s+_(?P<symbol>%s)\b' % reg)
+			re_nm = re.compile(fr'External\s+\|\s+_(?P<symbol>{reg})\b')
 			cmd = (self.env.DUMPBIN or ['dumpbin']) + ['/symbols', obj.abspath()]
 		else:
 			if self.env.DEST_BINFMT == 'pe': #gcc uses nm, and has a preceding _ on windows
-				re_nm = re.compile(r'(T|D)\s+_(?P<symbol>%s)\b' % reg)
+				re_nm = re.compile(fr'(T|D)\s+_(?P<symbol>{reg})\b')
 			elif self.env.DEST_BINFMT=='mac-o':
-				re_nm=re.compile(r'(T|D)\s+(?P<symbol>_?(%s))\b' % reg)
+				re_nm=re.compile(fr'(T|D)\s+(?P<symbol>_?({reg}))\b')
 			else:
-				re_nm = re.compile(r'(T|D)\s+(?P<symbol>%s)\b' % reg)
+				re_nm = re.compile(fr'(T|D)\s+(?P<symbol>{reg})\b')
 			cmd = (self.env.NM or ['nm']) + ['-g', obj.abspath()]
 		syms = [m.group('symbol') for m in re_nm.finditer(self.generator.bld.cmd_and_log(cmd, quiet=STDOUT, **kw))]
 		self.outputs[0].write('%r' % syms)

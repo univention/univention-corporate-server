@@ -36,7 +36,7 @@ PRINTER_PROTOCOLS = ['usb://', 'ipp://', 'socket://', 'parallel://', 'http://']
 
 
 def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) -> str
-    return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
+    return f'{uts.random_name()}.{ucr.get("domainname")}'
 
 
 @pytest.mark.tags('udm')
@@ -53,17 +53,17 @@ def test_create_printer(ucr, udm):
         'spoolHost': random_fqdn(ucr),
         'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip()),
         'model': 'foomatic-rip/Generic-PCL_4_Printer-gutenprint-ijs-simplified.5.2.ppd',
-        'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
+        'producer': f'cn=Generic,cn=cups,cn=univention,{ucr.get("ldap/base")}',
         'sambaName': uts.random_name(),
         'ACLtype': random.choice(['allow all', 'allow', 'deny']),
-        'ACLUsers': 'uid=Administrator,cn=users,%s' % (ucr.get('ldap/base'),),
-        'ACLGroups': 'cn=Printer Admins,cn=groups,%s' % (ucr.get('ldap/base'),),
+        'ACLUsers': f'uid=Administrator,cn=users,{ucr.get("ldap/base")}',
+        'ACLGroups': f'cn=Printer Admins,cn=groups,{ucr.get("ldap/base")}',
     }
 
     print('*** Create shares/printer object')
     print_share_dn = udm.create_object(
         'shares/printer',
-        position='cn=printers,%s' % (ucr['ldap/base'],),
+        position=f'cn=printers,{ucr["ldap/base"]}',
         **properties)
 
     utils.verify_ldap_object(
@@ -100,7 +100,7 @@ def test_create_printer(ucr, udm):
 def test_create_printer_and_check_printing_works(ucr, udm):
     """Create shares/printer and check if print access works"""
     ucr.load()
-    admin_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % (ucr.get('ldap/base'),))
+    admin_dn = ucr.get('tests/domainadmin/account', f'uid=Administrator,cn=users,{ucr.get("ldap/base")}')
     admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
     password = ucr.get('tests/domainadmin/pwd', 'univention')
 
@@ -114,17 +114,17 @@ def test_create_printer_and_check_printing_works(ucr, udm):
         'spoolHost': spoolhost,
         'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip()),
         'model': 'hp-ppd/HP/HP_Business_Inkjet_2500C_Series.ppd',
-        'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
+        'producer': f'cn=Generic,cn=cups,cn=univention,{ucr.get("ldap/base")}',
         'sambaName': uts.random_name(),
         'ACLtype': acltype,
         'ACLUsers': admin_dn,
-        'ACLGroups': 'cn=Printer Admins,cn=groups,%s' % (ucr.get('ldap/base'),),
+        'ACLGroups': f'cn=Printer Admins,cn=groups,{ucr.get("ldap/base")}',
     }
 
     print('*** Create shares/printer object')
     print_share_dn = udm.create_object(
         'shares/printer',
-        position='cn=printers,%s' % (ucr['ldap/base'],),
+        position=f'cn=printers,{ucr["ldap/base"]}',
         **properties)
 
     utils.verify_ldap_object(
@@ -154,13 +154,13 @@ def test_create_printer_and_check_printing_works(ucr, udm):
     )
 
     delay = 15
-    print('*** Wait %s seconds for listener postrun' % delay)
+    print(f'*** Wait {delay} seconds for listener postrun')
     time.sleep(delay)
     p = subprocess.Popen(['lpq', '-P', properties['name']], close_fds=True)
     p.wait()
     assert not p.returncode, f"CUPS printer {properties['name']} not created after {delay} seconds"
 
-    p = subprocess.Popen(['su', admin_name, '-c', 'lpr -P %s /etc/hosts' % properties['name']], close_fds=True)
+    p = subprocess.Popen(['su', admin_name, '-c', f'lpr -P {properties["name"]} /etc/hosts'], close_fds=True)
     p.wait()
     assert not p.returncode, f"Printing to CUPS printer {properties['name']} as {admin_name} failed"
 
@@ -170,14 +170,14 @@ def test_create_printer_and_check_printing_works(ucr, udm):
     if smb_server:
         delay = 1
         time.sleep(delay)
-        cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', '%'.join([admin_name, password]), '-c', 'print /etc/hosts']
-        print('\nRunning: %s' % ' '.join(cmd))
+        cmd = ['smbclient', f'//localhost/{properties["sambaName"]}', '-U', '%'.join([admin_name, password]), '-c', 'print /etc/hosts']
+        print(f'\nRunning: {" ".join(cmd)}')
         p = subprocess.Popen(cmd, close_fds=True)
         p.wait()
         if p.returncode:
-            share_definition = '/etc/samba/printers.conf.d/%s' % properties['sambaName']
+            share_definition = f'/etc/samba/printers.conf.d/{properties["sambaName"]}'
             with open(share_definition) as f:
-                print('### Samba share file %s :' % share_definition)
+                print(f'### Samba share file {share_definition} :')
                 print(f.read())
             print('### testpam for that smb.conf section:')
             p = subprocess.Popen(['testparm', '-s', '--section-name', properties['sambaName']], close_fds=True)
@@ -202,13 +202,13 @@ def test_create_printergroup(ucr, udm):
         'spoolHost': spoolHost,
         'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip()),
         'model': 'foomatic-rip/Generic-PCL_4_Printer-gutenprint-ijs-simplified.5.2.ppd',
-        'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
+        'producer': f'cn=Generic,cn=cups,cn=univention,{ucr.get("ldap/base")}',
     }
 
     print('*** Create shares/printer object')
     udm.create_object(
         'shares/printer',
-        position='cn=printers,%s' % (ucr['ldap/base'],),
+        position=f'cn=printers,{ucr["ldap/base"]}',
         **printer_properties1)
 
     printer_properties2 = {
@@ -216,13 +216,13 @@ def test_create_printergroup(ucr, udm):
         'spoolHost': spoolHost,
         'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip()),
         'model': 'foomatic-rip/Generic-PCL_4_Printer-gutenprint-ijs-simplified.5.2.ppd',
-        'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
+        'producer': f'cn=Generic,cn=cups,cn=univention,{ucr.get("ldap/base")}',
     }
 
     print('*** Create shares/printer object')
     udm.create_object(
         'shares/printer',
-        position='cn=printers,%s' % (ucr['ldap/base'],),
+        position=f'cn=printers,{ucr["ldap/base"]}',
         **printer_properties2)
 
     printergroup_properties = {
@@ -235,7 +235,7 @@ def test_create_printergroup(ucr, udm):
     print('*** Create shares/printergroup object')
     printergroup_share_dn = udm.create_object(
         'shares/printergroup',
-        position='cn=printers,%s' % (ucr['ldap/base'],),
+        position=f'cn=printers,{ucr["ldap/base"]}',
         **printergroup_properties)
 
     utils.verify_ldap_object(
@@ -314,8 +314,8 @@ def get_testparm_var(smbconf, sectionname, varname):
 
     cmd = [
         "/usr/bin/testparm", "-s", "-l",
-        "--section-name=%s" % sectionname,
-        "--parameter-name=%s" % varname,
+        f"--section-name={sectionname}",
+        f"--parameter-name={varname}",
         smbconf]
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     (out, err) = p1.communicate()
@@ -333,10 +333,10 @@ def rename_share_and_check(udm, printer, expected_value):
     utils.verify_ldap_object(printer, {'univentionPrinterSambaName': [printer_samba_name]})
     utils.wait_for_replication()
 
-    filename = '/etc/samba/printers.conf.d/%s' % printer_samba_name
+    filename = f'/etc/samba/printers.conf.d/{printer_samba_name}'
     samba_force_printername = _testparm_is_true(filename, printer_samba_name, 'force printername')
     assert samba_force_printername == expected_value, "samba option \"force printername\" changed after UDM share modification"
-    print("Ok, samba option \"force printername\" still set to %s" % (expected_value,))
+    print(f"Ok, samba option \"force printername\" still set to {expected_value}")
 
 
 @pytest.mark.skipif(not printserver_installed, reason='Missing software: univention-printserver')
@@ -356,7 +356,7 @@ def test_force_printername(ucr, udm, ucr_value):
         univention.config_registry.handler_unset([ucr_var])
 
     else:
-        keyval = "%s=%s" % (ucr_var, ucr_value)
+        keyval = f"{ucr_var}={ucr_value}"
         univention.config_registry.handler_set([keyval])
 
     if ucr_value != previous_value:
@@ -374,7 +374,7 @@ def test_force_printername(ucr, udm, ucr_value):
         'name': printer_name,
     }
 
-    printer = udm.create_object('shares/printer', position='cn=printers,%s' % ucr['ldap/base'], **printer_properties)
+    printer = udm.create_object('shares/printer', position=f'cn=printers,{ucr["ldap/base"]}', **printer_properties)
     utils.verify_ldap_object(printer, {
         'univentionPrinterModel': [printer_properties['model']],
         'univentionPrinterURI': [printer_properties['uri'].replace(' ', '')],
@@ -382,10 +382,10 @@ def test_force_printername(ucr, udm, ucr_value):
     })
     utils.wait_for_replication()
 
-    old_filename = '/etc/samba/printers.conf.d/%s' % printer_name
+    old_filename = f'/etc/samba/printers.conf.d/{printer_name}'
     samba_force_printername = _testparm_is_true(old_filename, printer_name, 'force printername')
-    assert samba_force_printername == expected_value, "samba option \"force printername\" not set to %s" % (expected_value,)
-    print("Ok, samba option \"force printername\" set to %s" % (expected_value,))
+    assert samba_force_printername == expected_value, f"samba option \"force printername\" not set to {expected_value}"
+    print(f"Ok, samba option \"force printername\" set to {expected_value}")
 
     # Check behavior during UDM modification
     rename_share_and_check(udm, printer, expected_value)
@@ -393,10 +393,10 @@ def test_force_printername(ucr, udm, ucr_value):
     # And check again after inverting the UCR setting:
     if not expected_value:
         # This simulates the update case
-        keyval = "%s=%s" % (ucr_var, "yes")
+        keyval = f"{ucr_var}={'yes'}"
         univention.config_registry.handler_set([keyval])
     else:
-        keyval = "%s=%s" % (ucr_var, "no")
+        keyval = f"{ucr_var}={'no'}"
         univention.config_registry.handler_set([keyval])
 
     subprocess.call(["systemctl", "restart", "univention-directory-listener"], close_fds=True)
@@ -418,8 +418,8 @@ def printer_enabled(printer_name):
     cmd = ['lpstat', '-p']
     out, err = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if err:
-        print('stdout from lpstat -p: %s' % out)
-        print('stderr from lpstat -p: %s' % err)
+        print(f'stdout from lpstat -p: {out}')
+        print(f'stderr from lpstat -p: {err}')
     return printer_name in out.decode('UTF-8', 'replace')
 
 
@@ -436,19 +436,19 @@ def test_create_printer_for_every_printer_URI(ucr, udm):
         udm.create_object(
             modulename='shares/printer',
             name=printer_name,
-            position='%s' % position,
+            position=f'{position}',
             binddn=account.binddn,
             bindpwd=account.bindpw,
             set={
                 'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
                 'model': 'None',
-                'uri': '%s:// /tmp/%s' % (uri, printer_name),
+                'uri': f'{uri}:// /tmp/{printer_name}',
             },
         )
         if not printer_enabled(printer_name):
             print('Wait for 30 seconds and try again')
             time.sleep(30)
-            assert printer_enabled(printer_name), 'Printer (%s) is created but not enabled' % printer_name
+            assert printer_enabled(printer_name), f'Printer ({printer_name}) is created but not enabled'
 
 
 @pytest.mark.tags('udm')
@@ -471,7 +471,7 @@ def test_create_printer_without_whitespace_in_uri(udm, ucr, uri, uri_expected, u
 
     created_printer = udm.create_object(
         'shares/printer',
-        position='cn=printers,%s' % ucr['ldap/base'],
+        position=f'cn=printers,{ucr["ldap/base"]}',
         name=name,
         model='foomatic-rip/Alps-MD-5000-md5k.ppd',
         spoolHost='%(hostname)s.%(domainname)s' % ucr,
@@ -496,11 +496,11 @@ def test_modify_printer_and_check_cupsd(ucr, udm):
     name = uts.random_name()
     printer_properties = {
         'model': 'foomatic-rip/Alps-MD-5000-md5k.ppd',
-        'uri': 'file:/ tmp/%s' % name,
+        'uri': f'file:/ tmp/{name}',
         'spoolHost': '%(hostname)s.%(domainname)s' % ucr,
         'name': name,
     }
-    printer = udm.create_object('shares/printer', position='cn=printers,%s' % ucr['ldap/base'], **printer_properties)
+    printer = udm.create_object('shares/printer', position=f'cn=printers,{ucr["ldap/base"]}', **printer_properties)
     utils.verify_ldap_object(printer, {
         'univentionPrinterModel': [printer_properties['model']],
         'univentionPrinterURI': [printer_properties['uri'].replace(' ', '')],

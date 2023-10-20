@@ -25,8 +25,8 @@ def main():
         package_name = get_package_name()
         acl_name = get_acl_name()
         container_name = get_container_name()
-        join_script_name = '66%s.inst' % package_name
-        unjoin_script_name = '66%s.uinst' % package_name
+        join_script_name = f'66{package_name}.inst'
+        unjoin_script_name = f'66{package_name}.uinst'
 
         user_dn, _username = udm.create_user(password='univention')
         container = udm.create_object('container/cn', name=container_name)
@@ -35,7 +35,7 @@ def main():
         except ldap.INSUFFICIENT_ACCESS:
             pass
         else:
-            fail('New user was able to modify %s' % container)
+            fail(f'New user was able to modify {container}')
 
         joinscript_buffer = '''#!/bin/sh
 VERSION=1
@@ -89,7 +89,7 @@ access to dn.base="%(container)s" attrs="description"
         except ldap.INSUFFICIENT_ACCESS:
             pass
         else:
-            fail('New user was able to modify %s' % container)
+            fail(f'New user was able to modify {container}')
 
         package.uninstall()
         package.remove()

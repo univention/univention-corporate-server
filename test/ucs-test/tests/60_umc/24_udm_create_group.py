@@ -46,8 +46,7 @@ class TestUMCGroupsCreation(UMCBase):
                 utils.fail("Request 'udm/add' group not successful. Response: %r\nRequest options: %r\n"
                            "hostname: %r" % (request_result, options, self.hostname))
         except Exception as exc:
-            utils.fail("Exception while making 'udm/add' group request: %s" %
-                       exc)
+            utils.fail(f"Exception while making 'udm/add' group request: {exc}")
 
     def add_group_policy(self, groupname, policyname):
         """
@@ -62,7 +61,7 @@ class TestUMCGroupsCreation(UMCBase):
             if not request_result[0].get('success'):
                 utils.fail(f"Request 'udm/put' to add policy to a group with options '{options}' failed, no success = True in response, hostname {self.hostname}")
         except Exception as exc:
-            utils.fail("Exception while making 'udm/put' request: %s" % exc)
+            utils.fail(f"Exception while making 'udm/put' request: {exc}")
 
     def get_group_by_name(self, groupname):
         """
@@ -76,7 +75,7 @@ class TestUMCGroupsCreation(UMCBase):
                 utils.fail(f"Request 'udm/get' with options '{options}' failed, hostname '{self.hostname}'")
             return request_result
         except Exception as exc:
-            utils.fail("Exception while making 'udm/get' request: %s" % exc)
+            utils.fail(f"Exception while making 'udm/get' request: {exc}")
 
     def main(self):
         """Method to test the UMC group creation, modification and deletion"""
@@ -87,10 +86,10 @@ class TestUMCGroupsCreation(UMCBase):
         policyname = "default-udm-self"
 
         try:
-            print("Creating a test group with a name '%s'" % test_groupname)
+            print(f"Creating a test group with a name '{test_groupname}'")
             self.create_group(test_groupname)
             if not self.check_obj_exists(test_groupname, "groups/group"):
-                utils.fail("Failed to query the newly created group '%s'" % test_groupname)
+                utils.fail(f"Failed to query the newly created group '{test_groupname}'")
 
             print(f"Adding a '{policyname}' policy to a test group '{test_groupname}'")
             self.add_group_policy(test_groupname, policyname)

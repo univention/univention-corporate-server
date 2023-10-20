@@ -27,8 +27,8 @@ def get_testparm_var(sectionname, varname):
 
     cmd = [
         path_testparm, "-slv",
-        "--section-name=%s" % sectionname,
-        "--parameter-name=%s" % varname]
+        f"--section-name={sectionname}",
+        f"--parameter-name={varname}"]
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     (out, err) = p1.communicate()
     return out.strip()

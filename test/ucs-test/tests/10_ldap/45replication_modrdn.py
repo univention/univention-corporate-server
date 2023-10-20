@@ -80,9 +80,9 @@ def check_listener_start(consider_listener):
 
 
 def dump_status(consider_listener, wait_after_each_step, name):
-    print('Consider listener: %s' % consider_listener)
-    print('Wait for replication after each step: %s' % wait_after_each_step)
-    print('Computer name: %s\n' % name)
+    print(f'Consider listener: {consider_listener}')
+    print(f'Wait for replication after each step: {wait_after_each_step}')
+    print(f'Computer name: {name}\n')
 
 
 for consider_listener in [False, True]:

@@ -35,11 +35,11 @@ def main():
                 quota01 = 5
                 domain = ucr.get('domainname')
                 pw = 'univention'
-                mail = '%s@%s' % (uts.random_name(), domain)
+                mail = f'{uts.random_name()}@{domain}'
                 userdn, username = udm.create_user(
                     password=pw,
                     set={
-                        "mailHomeServer": '%s.%s' % (ucr.get("hostname"), domain),
+                        "mailHomeServer": f'{ucr.get("hostname")}.{domain}',
                         "mailPrimaryAddress": mail,
                         "mailUserQuota": str(quota01),
                     },
@@ -85,7 +85,7 @@ def main():
                 #
                 quota04 = 2
                 percent = 50
-                token_body = "my_message %s" % str(time.time())
+                token_body = f"my_message {str(time.time())}"
                 univention.config_registry.handler_set(["mail/dovecot/quota/warning/text/%d=%s" % (percent, token_body)])
                 subprocess.call(["/usr/bin/doveadm", "reload"])
                 udm.modify_object(modulename='users/user', dn=userdn, mailUserQuota=str(quota04))
@@ -106,7 +106,7 @@ def main():
                 imap.select("INBOX")
                 result, txt = imap.append("INBOX", "", imaplib.Time2Internaldate(time.time()), msg)
                 if result != "NO":
-                    utils.fail("Fail: message upload should have failed with 'OVERQUOTA'. imap.append() returned: (%s, %s)" % (result, txt))
+                    utils.fail(f"Fail: message upload should have failed with 'OVERQUOTA'. imap.append() returned: ({result}, {txt})")
 
 
 if __name__ == '__main__':

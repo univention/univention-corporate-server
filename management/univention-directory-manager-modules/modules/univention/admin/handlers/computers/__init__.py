@@ -46,7 +46,7 @@ computers = []
 def __walk(root, dir, files):
     for file_ in files:
         if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('computer.py',):
-            computers.append(importlib.import_module('univention.admin.handlers.computers.%s' % (file_[: -3],)))
+            computers.append(importlib.import_module(f'univention.admin.handlers.computers.{file_[: -3]}'))
 
 
 path = os.path.abspath(os.path.dirname(__file__))

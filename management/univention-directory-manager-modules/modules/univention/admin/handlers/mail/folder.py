@@ -172,24 +172,24 @@ class object(univention.admin.handlers.simpleLdap):
         return '%(name)s@%(mailDomain)s' % self
 
     def _ldap_dn(self):
-        name = '%s@%s' % (self.info['name'], self.info['mailDomain'])
-        return 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), self.position.getDn())
+        name = f'{self.info["name"]}@{self.info["mailDomain"]}'
+        return f'cn={ldap.dn.escape_dn_chars(name)},{self.position.getDn()}'
 
     def _ldap_addlist(self):
         al = super(object, self)._ldap_addlist()
 
         if self['mailPrimaryAddress']:
-            value = 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())
+            value = f'univentioninternalpostuser+shared/{self["name"].lower()}@{self["mailDomain"].lower()}'
             al.append(('univentionMailSharedFolderDeliveryAddress', value.encode('UTF-8')))
 
-            address = '%s@%s' % (self['name'], self['mailDomain'])
+            address = f'{self["name"]}@{self["mailDomain"]}'
             if self['mailPrimaryAddress'] != address:
                 try:
                     self.request_lock('mailPrimaryAddress', self['mailPrimaryAddress'])
                 except univention.admin.uexceptions.noLock:
                     raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
-        value = "%s@%s" % (self.info['name'], self.info['mailDomain'])
+        value = f"{self.info['name']}@{self.info['mailDomain']}"
         al.append(('cn', value.encode('UTF-8')))
 
         return al
@@ -203,14 +203,14 @@ class object(univention.admin.handlers.simpleLdap):
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
         if self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress'] and not any(x[0] == 'mailPrimaryAddress' for x in self.alloc):
-            value = 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())
+            value = f'univentioninternalpostuser+shared/{self["name"].lower()}@{self["mailDomain"].lower()}'
             ml.append((
                 'univentionMailSharedFolderDeliveryAddress',
                 self.oldattr.get('univentionMailSharedFolderDeliveryAddress', []),
                 [value.encode('UTF-8')],
             ))
 
-            address = '%s@%s' % (self['name'], self['mailDomain'])
+            address = f'{self["name"]}@{self["mailDomain"]}'
             if self['mailPrimaryAddress'] != address and self['mailPrimaryAddress'].lower() != self.oldinfo.get('mailPrimaryAddress', '').lower():
                 try:
                     self.request_lock('mailPrimaryAddress', self['mailPrimaryAddress'])
@@ -223,7 +223,7 @@ class object(univention.admin.handlers.simpleLdap):
         rewrite_acl = False
         new_acls_tmp = []
         for attr in ['sharedFolderUserACL', 'sharedFolderGroupACL']:
-            ud.debug(ud.ADMIN, ud.INFO, 'ACLs: %s' % str(self[attr]))
+            ud.debug(ud.ADMIN, ud.INFO, f'ACLs: {str(self[attr])}')
             if self.hasChanged(attr):
                 rewrite_acl = True
                 # re-use regular expressions from syntax definitions

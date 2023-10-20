@@ -44,11 +44,11 @@ def write_schema_file(filename, schema_buffer):
 
 
 def ucs_register_ldap_schema(filename):
-    subprocess.check_call(['bash', '-c', 'source /usr/share/univention-lib/ldap.sh; ucs_registerLDAPSchema %s' % filename])
+    subprocess.check_call(['bash', '-c', f'source /usr/share/univention-lib/ldap.sh; ucs_registerLDAPSchema {filename}'])
 
 
 def ucs_unregister_ldap_extension(schema_name):
-    subprocess.check_call(['bash', '-c', 'source /usr/share/univention-lib/ldap.sh; ucs_unregisterLDAPExtension --schema %s' % schema_name[:-7]])
+    subprocess.check_call(['bash', '-c', f'source /usr/share/univention-lib/ldap.sh; ucs_unregisterLDAPExtension --schema {schema_name[:-7]}'])
 
 
 def __fetch_schema_from_uri(ldap_uri):
@@ -97,7 +97,7 @@ def test():
 
         for attribute_entry in schema[1].ldap_entry().get('attributeTypes'):
             if attribute_entry.startswith(attribute_identifier):
-                print('The schema entry was found: %s' % attribute_entry)
+                print(f'The schema entry was found: {attribute_entry}')
                 break
         else:
             fail('The attribute was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})

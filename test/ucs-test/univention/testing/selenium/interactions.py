@@ -60,8 +60,7 @@ class Interactions:
         # type: (str, **Any) -> None
         logger.info("Clicking the checkbox of the grid entry  %r", name)
         self.click_element(
-            '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]/../..//input[@type="checkbox"]/..'
-            % (name,),
+            f'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "{name}")]/../..//input[@type="checkbox"]/..',
             **kwargs,
         )
 
@@ -78,8 +77,7 @@ class Interactions:
         # type: (str, **Any) -> None
         logger.info("Clicking the grid entry %r", name)
         self.click_element(
-            '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]'
-            % (name,),
+            f'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "{name}")]',
             **kwargs,
         )
 
@@ -87,8 +85,7 @@ class Interactions:
         # type: (str, **Any) -> None
         logger.info("Clicking the tree entry %r", name)
         self.click_element(
-            '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-column-label ")][contains(text(), "%s")]'
-            % (name,),
+            f'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-column-label ")][contains(text(), "{name}")]',
             **kwargs,
         )
 
@@ -122,14 +119,12 @@ class Interactions:
         logger.info("Clicking the tile %r", tilename)
         try:
             self.click_element(
-                '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]'
-                % (tilename,),
+                f'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "{tilename}"]',
                 **kwargs,
             )
         except selenium_exceptions.TimeoutException:
             self.click_element(
-                '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][@title = "%s"]'
-                % (tilename,),
+                f'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][@title = "{tilename}"]',
                 **kwargs,
             )
 
@@ -137,8 +132,7 @@ class Interactions:
         # type: (str, **Any) -> None
         logger.info("Clicking the menu icon of tile %r", tilename)
         self.click_element(
-            '//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "%s"]/../*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryContextIcon ")]'
-            % (tilename,),
+            f'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "{tilename}"]/../*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryContextIcon ")]',
             **kwargs,
         )
 
@@ -146,8 +140,7 @@ class Interactions:
         # type: (str, **Any) -> None
         logger.info("Clicking the tab %r", tabname)
         self.click_element(
-            '//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")][text() = "%s"]'
-            % (tabname,),
+            f'//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")][text() = "{tabname}"]',
             **kwargs,
         )
 
@@ -235,7 +228,7 @@ class Interactions:
         elems[0].clear()
         elems[0].send_keys(inputvalue)
         if with_click:
-            xpath = expand_path('//*[@containsClass="dijitMenuItem"]/descendant-or-self::node()[contains(text(), "%s")]' % (inputvalue))
+            xpath = expand_path(f'//*[@containsClass="dijitMenuItem"]/descendant-or-self::node()[contains(text(), "{(inputvalue)}")]')
             self.wait_until_element_visible(xpath)
             self.click_element(xpath)
 
@@ -298,7 +291,7 @@ class Interactions:
         uploader_xpath = '//*[contains(@id, "_ImageUploader_")]//input[@type="file"]'
         logger.info("Getting the uploader with xpath: %s%s", xpath_prefix, uploader_xpath)
         uploader = self.driver.find_element(By.XPATH, xpath_prefix + uploader_xpath)
-        logger.info("Uploading the image: %s" % img_path)
+        logger.info(f"Uploading the image: {img_path}")
         uploader.send_keys(img_path)
         logger.info("Waiting for upload to finish")
         time.sleep(1)  # wait_for_text('Uploading...') is too inconsistent

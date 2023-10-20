@@ -64,7 +64,7 @@ class StoreConfigAction(Action):
             try:
                 key, val = val.split('=', 1)
             except ValueError:
-                parser.error('Could not parse %s. Use var=val. Skipping...' % val)
+                parser.error(f'Could not parse {val}. Use var=val. Skipping...')
             else:
                 set_vars[key] = val
         setattr(namespace, self.dest, set_vars)
@@ -128,15 +128,15 @@ class InstallRemoveUpgrade(Register):
                 action = self.get_action_name()
                 apps = resolve_dependencies(args.app, action)
                 for app in apps:
-                    self.log('Going to %s %s (%s)' % (action, app.name, app.version))
+                    self.log(f'Going to {action} {app.name} ({app.version})')
                 new_apps = [app for app in apps if app.id not in [_a.id for _a in args.app]]
                 new_apps_have_settings = False
                 for app in new_apps:
                     if app.get_settings():
                         new_apps_have_settings = True
-                        self.fatal('Automatically added App %s has its own settings. You should explicitely mention this App. This way, you may (or may not) set settings for this App via --set.' % app)
+                        self.fatal(f'Automatically added App {app} has its own settings. You should explicitely mention this App. This way, you may (or may not) set settings for this App via --set.')
                 if new_apps_have_settings:
-                    self.fatal('Unable to %s. Aborting...' % action)
+                    self.fatal(f'Unable to {action}. Aborting...')
                     return False
                 if not args.autoinstalled:
                     # save the installed status for those apps that were not explicitely given
@@ -148,7 +148,7 @@ class InstallRemoveUpgrade(Register):
                 if can_continue and self.needs_credentials(app) and not self.check_user_credentials(args):
                     can_continue = False
                 if not can_continue:
-                    self.fatal('Unable to %s. Aborting...' % action)
+                    self.fatal(f'Unable to {action}. Aborting...')
                     return False
                 for app in apps:
                     try:
@@ -203,7 +203,7 @@ class InstallRemoveUpgrade(Register):
         try:
             self._configure(app, args, run_script='no', scope='outside')
             if not self._call_prescript(app, args):
-                self.fatal('Running prescript of %s failed. Aborting...' % app)
+                self.fatal(f'Running prescript of {app} failed. Aborting...')
                 status = 0
             else:
                 try:
@@ -281,7 +281,7 @@ class InstallRemoveUpgrade(Register):
                     message = requirement.__doc__
             except KeyError:
                 message = ''
-            message = '(%s) %s' % (error, message or '')
+            message = f'({error}) {message or ""}'
             if args.skip_checks is not None and (error in args.skip_checks or args.skip_checks == []):
                 self.log(message)
             else:
@@ -297,7 +297,7 @@ class InstallRemoveUpgrade(Register):
                 if args.noninteractive:
                     return True
                 try:
-                    aggreed = input('Do you want to %s anyway [y/N]? ' % self.get_action_name())
+                    aggreed = input(f'Do you want to {self.get_action_name()} anyway [y/N]? ')
                 except (KeyboardInterrupt, EOFError):
                     return False
                 else:
@@ -306,14 +306,14 @@ class InstallRemoveUpgrade(Register):
 
     def _call_prescript(self, app, args, **kwargs):
         ext = self.prescript_ext
-        self.debug('Calling prescript (%s)' % ext)
+        self.debug(f'Calling prescript ({ext})')
         if not ext:
             return True
         script = app.get_cache_file(ext)
         # check here to not bother asking for a password
         # otherwise self._call_script could handle it, too
         if not os.path.exists(script):
-            self.debug('%s does not exist' % script)
+            self.debug(f'{script} does not exist')
             return True
         with NamedTemporaryFile('r') as error_file:
             with self._get_password_file(args) as pwdfile:
@@ -340,17 +340,17 @@ class InstallRemoveUpgrade(Register):
         raise NotImplementedError()
 
     def _show_license(self, app, args):
-        self.log('Showing License agreement for %s' % app)
+        self.log(f'Showing License agreement for {app}')
         if self._show_file(app, 'license_agreement', args, agree=True) is False:
             raise Abort()
 
     def _show_pre_readme(self, app, args):
-        self.log('Showing README for %s' % app)
+        self.log(f'Showing README for {app}')
         if self._show_file(app, self.pre_readme, args, confirm=True) is False:
             raise Abort()
 
     def _show_post_readme(self, app, args):
-        self.log('Showing README for %s' % app)
+        self.log(f'Showing README for {app}')
         if self._show_file(app, self.post_readme, args, confirm=True) is False:
             raise Abort()
 
@@ -382,16 +382,16 @@ class InstallRemoveUpgrade(Register):
             return
         other_script = self._get_joinscript_path(app, unjoin=not unjoin)
         any_number_basename = os.path.basename(other_script)
-        any_number_basename = '[0-9][0-9]%s' % any_number_basename[2:]
+        any_number_basename = f'[0-9][0-9]{any_number_basename[2:]}'
         any_number_scripts = os.path.join(os.path.dirname(other_script), any_number_basename)
         for other_script in glob(any_number_scripts):
-            self.log('Uninstalling %s' % other_script)
+            self.log(f'Uninstalling {other_script}')
             os.unlink(other_script)
         ext = 'uinst' if unjoin else 'inst'
         joinscript = app.get_cache_file(ext)
         ret = dest = None
         if os.path.exists(joinscript):
-            self.log('Installing join script %s' % joinscript)
+            self.log(f'Installing join script {joinscript}')
             dest = self._get_joinscript_path(app, unjoin=unjoin)
             shutil.copy2(joinscript, dest)
             # change to UCS umask + +x:      -rwxr-xr-x
@@ -451,15 +451,15 @@ class InstallRemoveUpgrade(Register):
         if ret['install']:
             self.log('The following packages would be INSTALLED/UPGRADED:')
             for pkg in ret['install']:
-                self.log(' * %s' % pkg)
+                self.log(f' * {pkg}')
         if ret['remove']:
             self.log('The following packages would be REMOVED:')
             for pkg in ret['remove']:
-                self.log(' * %s' % pkg)
+                self.log(f' * {pkg}')
         if ret['broken']:
             self.log('The following packages are BROKEN:')
             for pkg in ret['broken']:
-                self.log(' * %s' % pkg)
+                self.log(f' * {pkg}')
         return ret
 
     def _dry_run(self, app, args):

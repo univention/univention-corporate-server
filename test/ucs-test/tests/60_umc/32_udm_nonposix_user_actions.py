@@ -34,7 +34,7 @@ class TestUMCUserAuthentication(UMCBase):
         self.test_user_dn = self.UDM.create_ldap_user(
             password=self.test_password,
             username=self.test_username,
-            policy_reference='cn=default-umc-all,cn=UMC,cn=policies,%s' % self.ucr['ldap/base'],
+            policy_reference=f'cn=default-umc-all,cn=UMC,cn=policies,{self.ucr["ldap/base"]}',
         )[0]
         utils.verify_ldap_object(self.test_user_dn)
 

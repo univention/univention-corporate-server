@@ -74,11 +74,11 @@ def ant_matcher(s, ignorecase):
 				accu.append(k)
 			else:
 				k = k.replace('.', '[.]').replace('*', '.*').replace('?', '.').replace('+', '\\+')
-				k = '^%s$' % k
+				k = f'^{k}$'
 				try:
 					exp = re.compile(k, flags=reflags)
 				except Exception as e:
-					raise Errors.WafError('Invalid pattern: %s' % k, e)
+					raise Errors.WafError(f'Invalid pattern: {k}', e)
 				else:
 					accu.append(exp)
 		ret.append(accu)

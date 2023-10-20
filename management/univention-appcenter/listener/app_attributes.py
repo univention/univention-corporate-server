@@ -77,7 +77,7 @@ class AppAttributes(ListenerModuleHandler):
         if 'en_US' not in locales:
             locales.append('en_US')
         cache = {}
-        custom_attributes_base = 'cn=custom attributes,cn=univention,%s' % self.ucr.get('ldap/base')
+        custom_attributes_base = f'cn=custom attributes,cn=univention,{self.ucr.get("ldap/base")}'
         for current_locale in locales:
             locale_cache = cache[current_locale] = {}
             app_objs = search_objects('appcenter/app', self.lo, self.po)

@@ -57,4 +57,4 @@ def check_logs():
                     if 'Traceback' in line:
                         print(line)
                         raise Exception('Traceback found in listener.log')
-            print('No traceback found in %s' % file)
+            print(f'No traceback found in {file}')

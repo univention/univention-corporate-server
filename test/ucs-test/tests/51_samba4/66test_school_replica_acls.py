@@ -45,10 +45,10 @@ def lo(ucr):
 
 @pytest.fixture()
 def ldif(ucr):
-    def_admin = 'cn=Administrator,cn=users,%s' % (ucr.get('ldap/base'),)
+    def_admin = f'cn=Administrator,cn=users,{ucr.get("ldap/base")}'
     attribute = 'description'
     new_attribute_val = uts.random_name()
-    filename = "/tmp/%s.ldif" % (uts.random_name())
+    filename = f"/tmp/{(uts.random_name())}.ldif"
     with open(filename, 'w+') as f:
         f.write(f"dn: {def_admin}\nchangetype: modify\nreplace: {attribute}\n{attribute}: {new_attribute_val}")
     return filename

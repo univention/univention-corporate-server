@@ -36,12 +36,12 @@ class Popen(object):
 					print("Emulating")
 		except Exception as e:
 			if Popen.verbose:
-				print("Exception: %s" % e)
+				print(f"Exception: {e}")
 			raise
 
 	def __getattr__(self, name):
 		if Popen.verbose:
-			sys.stdout.write("Getattr: %s..." % name)
+			sys.stdout.write(f"Getattr: {name}...")
 		if name in Popen.__slots__:
 			return object.__getattribute__(self, name)
 		else:
@@ -53,7 +53,7 @@ class Popen(object):
 				if name == "wait":
 					return self.emu_wait
 				else:
-					raise Exception("subprocess emulation: not implemented: %s" % name)
+					raise Exception(f"subprocess emulation: not implemented: {name}")
 
 	def emu_wait(self):
 		if Popen.verbose:
@@ -63,7 +63,7 @@ class Popen(object):
 		else:
 			cmd = " ".join(self.prog)
 		if 'cwd' in self.kw:
-			cmd = 'cd "%s" && %s' % (self.kw['cwd'], cmd)
+			cmd = f'cd "{self.kw["cwd"]}" && {cmd}'
 		return os.system(cmd)
 
 if sys.platform == "qnx6":

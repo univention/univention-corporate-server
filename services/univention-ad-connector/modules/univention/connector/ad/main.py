@@ -67,7 +67,7 @@ def daemon(lock_file, options):
     try:
         pid = os.fork()
     except OSError as e:
-        print('Daemon Mode Error: %s' % e.strerror)
+        print(f'Daemon Mode Error: {e.strerror}')
 
     if (pid == 0):
         os.setsid()
@@ -75,12 +75,12 @@ def daemon(lock_file, options):
         try:
             pid = os.fork()
         except OSError as e:
-            print('Daemon Mode Error: %s' % e.strerror)
+            print(f'Daemon Mode Error: {e.strerror}')
         if (pid == 0):
             os.chdir("/")
             os.umask(0o022)
         else:
-            pf = open('/var/run/univention-ad-%s' % options.configbasename, 'w+')
+            pf = open(f'/var/run/univention-ad-{options.configbasename}', 'w+')
             pf.write(str(pid))
             pf.close()
             os._exit(0)
@@ -111,7 +111,7 @@ def connect(options):
     ucr = ConfigRegistry()
     ucr.load()
 
-    poll_sleep = int(ucr['%s/ad/poll/sleep' % options.configbasename])
+    poll_sleep = int(ucr[f'{options.configbasename}/ad/poll/sleep'])
     ad_init = None
     while not ad_init:
         try:
@@ -125,11 +125,11 @@ def connect(options):
             time.sleep(poll_sleep)
 
     # log the active mapping
-    with open('/var/log/univention/%s-ad-mapping.log' % options.configbasename, 'w+') as fd:
+    with open(f'/var/log/univention/{options.configbasename}-ad-mapping.log', 'w+') as fd:
         print(repr(univention.connector.Mapping(ad.property)), file=fd)
 
     with ad as ad:
-        _connect(ad, poll_sleep, ucr.get('%s/ad/retryrejected' % options.configbasename, 10))
+        _connect(ad, poll_sleep, ucr.get(f'{options.configbasename}/ad/retryrejected', 10))
 
 
 def _connect(ad, poll_sleep, baseconfig_retry_rejected):
@@ -212,7 +212,7 @@ def _connect(ad, poll_sleep, baseconfig_retry_rejected):
             change_counter = 0
             retry_rejected += 1
 
-        print('- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected))
+        print(f'- sleep {poll_sleep} seconds ({retry_rejected}/{baseconfig_retry_rejected} until resync) -')
         sys.stdout.flush()
         time.sleep(poll_sleep)
 
@@ -237,11 +237,11 @@ def main():
     parser.add_argument('-L', '--log-file', metavar='LOGFILE', help='Specifies an alternative logfile')
     options = parser.parse_args()
 
-    with lock('/var/lock/univention-ad-%s' % options.configbasename) as lock_file:
+    with lock(f'/var/lock/univention-ad-{options.configbasename}') as lock_file:
         if options.daemonize:
             daemon(lock_file, options)
 
-        with bind_stdout(options, "/var/log/univention/%s-ad-status.log" % options.configbasename):
+        with bind_stdout(options, f"/var/log/univention/{options.configbasename}-ad-status.log"):
             while True:
                 try:
                     connect(options)

@@ -55,7 +55,7 @@ class LDAPConnection:
 
     def __init__(self, no_starttls=False):
         self.ldapbase = ucr['ldap/base']
-        self.login_dn = 'cn=admin,%s' % self.ldapbase
+        self.login_dn = f'cn=admin,{self.ldapbase}'
         self.pw_file = '/etc/ldap.secret'
         self.host = 'localhost'
         self.port = ucr.get('ldap/server/port', 389)
@@ -116,11 +116,11 @@ class LDAPConnection:
     def get_kerberos_ticket(self):
         p1 = subprocess.Popen(['kdestroy'], close_fds=True)
         p1.wait()
-        cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.pw_file, self.principal]
+        cmd_block = ['kinit', '--no-addresses', f'--password-file={self.pw_file}', self.principal]
         p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
         stdout, stderr = p1.communicate()
         if p1.returncode != 0:
-            raise Exception('The following command failed: "%s" (%s): %s' % (''.join(cmd_block), p1.returncode, stdout.decode('UTF-8')))
+            raise Exception(f'The following command failed: "{"".join(cmd_block)}" ({p1.returncode}): {stdout.decode("UTF-8")}')
 
     def exists(self, dn):
         try:
@@ -220,9 +220,9 @@ class ADConnection(LDAPConnection):
 
     def __init__(self, configbase='connector'):
         self.configbase = configbase
-        self.adldapbase = ucr['%s/ad/ldap/base' % configbase]
+        self.adldapbase = ucr[f'{configbase}/ad/ldap/base']
         self.addomain = self.adldapbase.replace(',DC=', '.').replace('DC=', '')
-        self.kerberos = ucr.is_true('%s/ad/ldap/kerberos' % configbase)
+        self.kerberos = ucr.is_true(f'{configbase}/ad/ldap/kerberos')
         if self.kerberos:  # i.e. if UCR ad/member=true
             # Note: tests/domainadmin/account is an OpenLDAP DN but
             #       we only extract the username from it in ldap_glue
@@ -230,14 +230,14 @@ class ADConnection(LDAPConnection):
             self.principal = ldap.dn.str2dn(self.login_dn)[0][0][1]
             self.pw_file = ucr['tests/domainadmin/pwdfile']
         else:
-            self.login_dn = ucr['%s/ad/ldap/binddn' % configbase]
-            self.pw_file = ucr['%s/ad/ldap/bindpw' % configbase]
-        self.host = ucr['%s/ad/ldap/host' % configbase]
-        self.port = ucr['%s/ad/ldap/port' % configbase]
-        self.ca_file = ucr['%s/ad/ldap/certificate' % configbase]
+            self.login_dn = ucr[f'{configbase}/ad/ldap/binddn']
+            self.pw_file = ucr[f'{configbase}/ad/ldap/bindpw']
+        self.host = ucr[f'{configbase}/ad/ldap/host']
+        self.port = ucr[f'{configbase}/ad/ldap/port']
+        self.ca_file = ucr[f'{configbase}/ad/ldap/certificate']
         self.protocol = 'ldap'
         self.serverctrls_for_add_and_modify = []
-        no_starttls = ucr.is_false('%s/ad/ldap/ssl' % configbase)
+        no_starttls = ucr.is_false(f'{configbase}/ad/ldap/ssl')
         self.connect(no_starttls)
 
     def get(self, dn, attr=[], required=False):
@@ -281,7 +281,7 @@ class ADConnection(LDAPConnection):
         cn = to_bytes(attributes.get('cn', username))
         sn = to_bytes(attributes.get('sn', b'SomeSurName'))
 
-        new_position = position or 'cn=users,%s' % self.adldapbase
+        new_position = position or f'cn=users,{self.adldapbase}'
         new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(get_first(cn).decode("UTF-8")), new_position)
 
         defaults = (
@@ -312,7 +312,7 @@ class ADConnection(LDAPConnection):
 
         Returns the dn of the created group.
         """
-        new_position = position or 'cn=groups,%s' % self.adldapbase
+        new_position = position or f'cn=groups,{self.adldapbase}'
         new_dn = f'cn={ldap.dn.escape_dn_chars(groupname)},{new_position}'
 
         defaults = (('objectclass', [b'top', b'group']), ('sAMAccountName', to_bytes(groupname)))
@@ -335,7 +335,7 @@ class ADConnection(LDAPConnection):
         )
 
         import re
-        regex = '^(.*?)-%s$' % primaryGroupID
+        regex = f'^(.*?)-{primaryGroupID}$'
         for r in res:
             if r[0] is None or r[0] == 'None':
                 continue  # Referral

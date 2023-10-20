@@ -131,7 +131,7 @@ class AdminConnection(object):
                 possible_real_DNs |= possible_real_DN_set  # collect every distinct possible value
             possible_real_DNs = tuple(possible_real_DNs)
             if not len(possible_real_DNs) == 1:
-                raise ValueError('ambiguous DNs, cannot unescape %s (possibilities: %s)' % (repr(dn), repr(possible_real_DNs)))
+                raise ValueError(f'ambiguous DNs, cannot unescape {repr(dn)} (possibilities: {repr(possible_real_DNs)})')
             dn = possible_real_DNs[0]
         try:
             return self.get_object_real(module, dn)
@@ -162,8 +162,8 @@ class AdminConnection(object):
             # write the traceback in the logfile
             import traceback
 
-            ud.debug(ud.ADMIN, ud.ERROR, 'The object %s could not be opened' % dn)
-            ud.debug(ud.ADMIN, ud.ERROR, 'Traceback: %s' % (traceback.format_exc(),))
+            ud.debug(ud.ADMIN, ud.ERROR, f'The object {dn} could not be opened')
+            ud.debug(ud.ADMIN, ud.ERROR, f'Traceback: {traceback.format_exc()}')
         for key, value in new.items():
             from univention.directory.reports.document import Document
             if self._format in (Document.TYPE_LATEX, Document.TYPE_RML):

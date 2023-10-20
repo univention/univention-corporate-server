@@ -33,7 +33,7 @@ ucr.load()
 UDM_MODULE = 'computers/ipmanagedclient'
 
 name = random_name()
-dn = 'cn=%s,cn=memberserver,cn=computers,%s' % (name, ucr.get('ldap/base'))
+dn = f'cn={name},cn=memberserver,cn=computers,{ucr.get("ldap/base")}'
 modlist = [
     (ldap.MOD_REPLACE, 'entryUUID', b'76944348-ea2e-1032-95ad-000000000000'),
 ]
@@ -41,7 +41,7 @@ modlist = [
 
 def get_entryUUID(lo, dn):
     result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['*', '+'])
-    print('DN: %s\n%s' % (dn, result))
+    print(f'DN: {dn}\n{result}')
     return result[0][1].get('entryUUID')[0].decode('ASCII')
 
 
@@ -50,7 +50,7 @@ lo_remote = univention.uldap.getMachineConnection().lo
 
 # create computer
 udm = udm_test.UCSTestUDM()
-computer = udm.create_object(UDM_MODULE, name=name, position='cn=memberserver,cn=computers,%s' % (ucr.get('ldap/base')), wait_for_replication=True)
+computer = udm.create_object(UDM_MODULE, name=name, position=f'cn=memberserver,cn=computers,{(ucr.get("ldap/base"))}', wait_for_replication=True)
 
 # change entryUUID
 lo_local.modify_s(dn, modlist)
@@ -59,16 +59,16 @@ local_UUID = get_entryUUID(lo_local, dn)
 remote_UUID = get_entryUUID(lo_remote, dn)
 
 # move computer
-udm.move_object(UDM_MODULE, dn=computer, position='cn=computers,%s' % ucr.get('ldap/base'), wait_for_replication=True)
-new_dn = 'cn=%s,cn=computers,%s' % (name, ucr.get('ldap/base'))
+udm.move_object(UDM_MODULE, dn=computer, position=f'cn=computers,{ucr.get("ldap/base")}', wait_for_replication=True)
+new_dn = f'cn={name},cn=computers,{ucr.get("ldap/base")}'
 
 new_local_UUID = get_entryUUID(lo_local, new_dn)
 new_remote_UUID = get_entryUUID(lo_remote, new_dn)
 
 if new_local_UUID != new_remote_UUID:
     print('ERROR: local and remote UUID do not match')
-    print('  local_UUID: %s' % new_local_UUID)
-    print(' remote_UUID: %s' % new_remote_UUID)
+    print(f'  local_UUID: {new_local_UUID}')
+    print(f' remote_UUID: {new_remote_UUID}')
     success = False
 
 utils.verify_ldap_object(dn, should_exist=False)

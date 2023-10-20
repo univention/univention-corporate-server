@@ -56,7 +56,7 @@ def check_preconditions(options: Namespace) -> None:
     """Check for already existing mirror and for debmirror package"""
     # check directories
     if exists(join(options.base, 'mirror')):
-        print('Warning: The path %s/mirror already exists.' % options.base, file=sys.stderr)
+        print(f'Warning: The path {options.base}/mirror already exists.', file=sys.stderr)
 
     if options.interactive:
         print("Are you sure you want to create a local repository? [yN] ", end=' ', flush=True)
@@ -134,12 +134,12 @@ def main() -> None:
         # set repository server to local system
         ucr_set = [
             'repository/online/server=%(hostname)s.%(domainname)s' % configRegistry,
-            'repository/mirror/version/start?%s' % current_ucs_version,
+            f'repository/mirror/version/start?{current_ucs_version}',
         ]
         # set last version contained in repository
         end = configRegistry.get('repository/mirror/version/end', '').strip()
         if not end or UCS_Version(end) < options.version:
-            ucr_set.append('repository/mirror/version/end=%s' % options.version)
+            ucr_set.append(f'repository/mirror/version/end={options.version}')
 
         handler_set(ucr_set)
 

@@ -27,8 +27,8 @@ ucr.load()
 
 package_name = get_package_name()
 schema_name = get_schema_name()
-join_script_name = '66%s.inst' % package_name
-unjoin_script_name = '66%s.uinst' % package_name
+join_script_name = f'66{package_name}.inst'
+unjoin_script_name = f'66{package_name}.uinst'
 attribute_id = get_schema_attribute_id()
 
 joinscript_buffer = '''#!/bin/sh
@@ -76,7 +76,7 @@ try:
 
     for attribute_entry in schema[1].ldap_entry().get('attributeTypes'):
         if attribute_entry.startswith(attribute_identifier):
-            print('The schema entry was found: %s' % attribute_entry)
+            print(f'The schema entry was found: {attribute_entry}')
             break
     else:
         fail('The attribute was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
@@ -84,7 +84,7 @@ try:
     if ucr.get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
         schema_file = os.path.join('/var/lib/univention-ldap/local-schema/', schema_name)
         if not os.path.exists(schema_file):
-            fail('The schema file was not found: %s' % schema_file)
+            fail(f'The schema file was not found: {schema_file}')
 finally:
     call_unjoin_script(unjoin_script_name)
     package.remove()

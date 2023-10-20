@@ -76,7 +76,7 @@ class LicenseImport(ldif.LDIFParser):
 
         # a free license does not have the ldap base in its dn
         if not self.dn.endswith(base) and self.base.lower() in ('free for personal use edition', 'ucs core edition'):
-            self.dn = '%s,%s' % (self.dn, base)
+            self.dn = f'{self.dn},{base}'
 
         # check whether DN matches the LDAP base
         dnWithoutBase = self.dn[:-len(base)]
@@ -208,5 +208,5 @@ def dump_license():
         return data
     except Exception as e:
         # no udm, no ldap, malformed return value, whatever
-        MODULE.error('getting License from LDAP failed: %s' % e)
+        MODULE.error(f'getting License from LDAP failed: {e}')
         return None

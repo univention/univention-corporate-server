@@ -178,7 +178,7 @@ def configure(self):
 		kwargs['remote_locs'] = ['', DEFAULT_DIR]
 	tooldir = url.geturl() + ' ' + DEFAULT_DIR
 	for cfg in use_cfg.split(','):
-		Logs.pprint('NORMAL', "Searching configuration '%s'..." % cfg)
+		Logs.pprint('NORMAL', f"Searching configuration '{cfg}'...")
 		self.load(cfg, tooldir=tooldir, **kwargs)
 	self.start_msg('Checking for configuration')
 	self.end_msg(use_cfg)

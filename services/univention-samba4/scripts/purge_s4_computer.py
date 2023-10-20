@@ -66,7 +66,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
     try:
         uldap_access = univention.admin.uldap.access(host=ucr["ldap/master"], base=ucr["ldap/base"], binddn=binddn, bindpw=bindpw, start_tls=2)
     except Exception as exc:
-        print('authentication error: %s' % (exc,))
+        print(f'authentication error: {exc}')
         sys.exit(1)
 
     dns_position = univention.admin.uldap.position(uldap_access.base)
@@ -78,7 +78,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 
     objs = module.lookup(None, uldap_access, filter, scope="domain", base=dns_position.getDn(), unique=True)
     if not objs:
-        print("Lookup of dns/forward_zone %s via UDM failed." % (ucr["domainname"],), file=sys.stderr)
+        print(f"Lookup of dns/forward_zone {ucr['domainname']} via UDM failed.", file=sys.stderr)
         sys.exit(1)
 
     zone_obj = objs[0]
@@ -86,21 +86,21 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
     zone_position.setDn(zone_obj.dn)
 
     if NTDS_objectGUID:
-        dns_record = "%s._msdcs" % NTDS_objectGUID
+        dns_record = f"{NTDS_objectGUID}._msdcs"
         module = univention.admin.modules.get("dns/alias")
         univention.admin.modules.init(uldap_access, zone_position, module)
         filter = filter_format("name=%s", [dns_record])
         objs = module.lookup(None, uldap_access, filter, superordinate=zone_obj, scope="domain", base=zone_position.getDn(), unique=True)
         if objs:
-            print("Removing dns/alias '%s' from Univention Directory Manager" % (dns_record,))
+            print(f"Removing dns/alias '{dns_record}' from Univention Directory Manager")
             obj = objs[0]
             try:
                 obj.remove()
             except univention.admin.uexceptions.ldapError:
-                print("Removal of dns/alias %s via UDM failed." % (dns_record,), file=sys.stderr)
+                print(f"Removal of dns/alias {dns_record} via UDM failed.", file=sys.stderr)
                 sys.exit(1)
 
-    fqdn = "%s.%s" % (computername, ucr["domainname"])
+    fqdn = f"{computername}.{ucr['domainname']}"
     module = univention.admin.modules.get("dns/srv_record")
     univention.admin.modules.init(uldap_access, zone_position, module)
 
@@ -112,16 +112,16 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
     srv_record_name_list = []
     srv_record_name_list.extend(("_kerberos._tcp", "_kerberos._udp", "_kerberos._tcp.dc._msdcs"))
     for sitename in site_list:
-        srv_record_name_list.extend(("_kerberos._tcp.%s._sites" % sitename, "_kerberos._tcp.%s._sites.dc._msdcs" % sitename))
+        srv_record_name_list.extend((f"_kerberos._tcp.{sitename}._sites", f"_kerberos._tcp.{sitename}._sites.dc._msdcs"))
     srv_record_name_list.extend(("_kpasswd._tcp", "_kpasswd._udp"))
     # LDAP SRV records
-    srv_record_name_list.extend(("_ldap._tcp", "_ldap._tcp.dc._msdcs", "_ldap._tcp.%s.domains._msdcs" % Domain_GUID, "_ldap._tcp.pdc._msdcs"))
+    srv_record_name_list.extend(("_ldap._tcp", "_ldap._tcp.dc._msdcs", f"_ldap._tcp.{Domain_GUID}.domains._msdcs", "_ldap._tcp.pdc._msdcs"))
     for sitename in site_list:
-        srv_record_name_list.extend(("_ldap._tcp.%s._sites" % sitename, "_ldap._tcp.%s._sites.dc._msdcs" % sitename))
+        srv_record_name_list.extend((f"_ldap._tcp.{sitename}._sites", f"_ldap._tcp.{sitename}._sites.dc._msdcs"))
     # GC SRV records
     srv_record_name_list.extend(("_gc._tcp", "_ldap._tcp.gc._msdcs"))
     for sitename in site_list:
-        srv_record_name_list.extend(("_gc._tcp.%s._sites" % sitename, "_ldap._tcp.%s._sites.gc._msdcs" % sitename))
+        srv_record_name_list.extend((f"_gc._tcp.{sitename}._sites", f"_ldap._tcp.{sitename}._sites.gc._msdcs"))
 
     for srv_record_name in srv_record_name_list:
         filter = filter_format("name=%s", [srv_record_name])
@@ -131,25 +131,25 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
             target_location = None
             filtered_location_list = []
             for location in obj["location"]:
-                if location[3] == "%s." % fqdn:
+                if location[3] == f"{fqdn}.":
                     target_location = " ".join(location)
                 else:
                     filtered_location_list.append(location)
             if target_location:
                 if filtered_location_list:
-                    print("Removing location '%s' from dns/srv_record %s via UDM" % (target_location, srv_record_name))
+                    print(f"Removing location '{target_location}' from dns/srv_record {srv_record_name} via UDM")
                     obj["location"] = filtered_location_list
                     try:
                         obj.modify()
                     except univention.admin.uexceptions.ldapError as exc:
-                        print("Removal of location '%s' from dns/srv_record %s via UDM failed: %s" % (target_location, srv_record_name, exc), file=sys.stderr)
+                        print(f"Removal of location '{target_location}' from dns/srv_record {srv_record_name} via UDM failed: {exc}", file=sys.stderr)
                         sys.exit(1)
                 else:
-                    print("Removing dns/srv_record %s via UDM" % (srv_record_name,))
+                    print(f"Removing dns/srv_record {srv_record_name} via UDM")
                     try:
                         obj.remove()
                     except univention.admin.uexceptions.ldapError as exc:
-                        print("Removal of dns/srv_record %s via UDM failed: %s" % (srv_record_name, exc), file=sys.stderr)
+                        print(f"Removal of dns/srv_record {srv_record_name} via UDM failed: {exc}", file=sys.stderr)
                         sys.exit(1)
 
     # We would need to check the IP address before removing gc._msdcs. Probably that's a bad idea anyway..
@@ -172,7 +172,7 @@ def purge_udm_computer(ucr, binddn, bindpw, computername):
     try:
         uldap_access = univention.admin.uldap.access(host=ucr["ldap/master"], base=ucr["ldap/base"], binddn=binddn, bindpw=bindpw, start_tls=2)
     except Exception as exc:
-        print('authentication error: %s' % (exc,))
+        print(f'authentication error: {exc}')
         sys.exit(1)
     computer_filter = filter_format("(&(objectClass=univentionHost)(uid=%s$))", [computername])
     result = uldap_access.search(filter=computer_filter, base=ucr["ldap/base"], scope='sub', attr=['univentionObjectType'], unique=True)
@@ -184,12 +184,12 @@ def purge_udm_computer(ucr, binddn, bindpw, computername):
         filter = filter_format('name=%s', [computername])
         objs = module.lookup(None, uldap_access, filter, scope='domain', base=position.getDn(), unique=True)
         if objs:
-            print("Removing Samba 4 computer account '%s' from Univention Directory Manager" % computername)
+            print(f"Removing Samba 4 computer account '{computername}' from Univention Directory Manager")
             obj = objs[0]
             try:
                 obj.remove()
             except univention.admin.uexceptions.ldapError:
-                print("Removal of UDM computer account %s via UDM failed (univentionObjectType: %s)." % (computername, univentionObjectType), file=sys.stderr)
+                print(f"Removal of UDM computer account {computername} via UDM failed (univentionObjectType: {univentionObjectType}).", file=sys.stderr)
                 sys.exit(1)
             if univention.admin.objects.wantsCleanup(obj):
                 univention.admin.objects.performCleanup(obj)
@@ -204,10 +204,10 @@ def purge_computer_with_DC_objects(ucr, binddn, bindpw, computername):
     backlink_attribute_list = ["serverReferenceBL", "frsComputerReferenceBL", "msDFSR-ComputerReferenceBL"]
     msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=computer)(sAMAccountName=%s$))", [computername]), attrs=backlink_attribute_list)
     if not msgs:
-        print("Samba 4 computer account '%s' not found." % (computername,))
+        print(f"Samba 4 computer account '{computername}' not found.")
         sys.exit(1)
 
-    answer = input("Really remove %s from Samba 4? [y/N]: " % computername)
+    answer = input(f"Really remove {computername} from Samba 4? [y/N]: ")
     if answer.lower() not in ('y', 'yes'):
         print("Ok, stopping as requested.\n")
         sys.exit(2)
@@ -232,12 +232,12 @@ def purge_computer_with_DC_objects(ucr, binddn, bindpw, computername):
     # Determine the Domain_GUID
     msgs = samdb.search(base=ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_BASE, attrs=["objectGUID"])
     if not msgs:
-        print("Samba 4 Domain_GUID for base dn '%s' not found." % (ucr["samba4/ldap/base"],))
+        print(f"Samba 4 Domain_GUID for base dn '{ucr['samba4/ldap/base']}' not found.")
         sys.exit(1)
     Domain_GUID = str(ndr_unpack(misc.GUID, msgs[0]["objectGUID"][0]))
 
     # Build current site list
-    msgs = samdb.search(base="CN=Configuration,%s" % ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_SUBTREE, expression="(objectClass=site)", attrs=["cn"])
+    msgs = samdb.search(base=f"CN=Configuration,{ucr['samba4/ldap/base']}", scope=samba.ldb.SCOPE_SUBTREE, expression="(objectClass=site)", attrs=["cn"])
     site_list = [obj["cn"][0].decode('UTF-8') for obj in msgs]
 
     # Remove Samba 4 DNS records
@@ -248,10 +248,10 @@ def purge_computer_with_DC_objects(ucr, binddn, bindpw, computername):
         if backlink_attribute in computer_obj:
             backlink_object = computer_obj[backlink_attribute][0]
             try:
-                print("Removing %s from SAM database." % (backlink_object,))
+                print(f"Removing {backlink_object} from SAM database.")
                 samdb.delete(backlink_object, ["tree_delete:0"])
             except Exception:
-                print("Removal of Samba 4 %s objects %s from Samba 4 SAM database failed." % (backlink_attribute, backlink_object), file=sys.stderr)
+                print(f"Removal of Samba 4 {backlink_attribute} objects {backlink_object} from Samba 4 SAM database failed.", file=sys.stderr)
                 print(traceback.format_exc())
 
     # Now delete the Samba 4 computer account and sub-objects
@@ -262,13 +262,13 @@ def purge_computer_with_DC_objects(ucr, binddn, bindpw, computername):
     obj_dn_list.reverse()
     for obj_dn in obj_dn_list:
         try:
-            print("Removing %s from SAM database." % (obj_dn,))
+            print(f"Removing {obj_dn} from SAM database.")
             samdb.delete(obj_dn)
         except Exception:
-            print("Removal of Samba 4 computer account object %s from Samba 4 SAM database failed." % (obj_dn,), file=sys.stderr)
+            print(f"Removal of Samba 4 computer account object {obj_dn} from Samba 4 SAM database failed.", file=sys.stderr)
             print(traceback.format_exc(), file=sys.stderr)
 
-    answer = input("Really remove %s from UDM as well? [y/N]: " % computername)
+    answer = input(f"Really remove {computername} from UDM as well? [y/N]: ")
     if answer.lower() not in ('y', 'yes'):
         print("Ok, stopping as requested.\n")
         sys.exit(2)
@@ -304,7 +304,7 @@ if __name__ == '__main__':
         try:
             lo = univention.admin.uldap.access(host=ucr["ldap/server/name"], base=ucr["ldap/base"], binddn=ucr["ldap/hostdn"], bindpw=machine_secret, start_tls=0)
         except Exception as exc:
-            print('authentication error: %s' % (exc,))
+            print(f'authentication error: {exc}')
             sys.exit(1)
 
         user_searchfilter = filter_format("(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))(uid=%s))", [opts.bind_account])
@@ -312,11 +312,11 @@ if __name__ == '__main__':
         if result:
             binddn = result[0]
         else:
-            print("Cannot determine DN for bind account %s" % opts.bind_account)
+            print(f"Cannot determine DN for bind account {opts.bind_account}")
             sys.exit(1)
         bindpw = opts.bind_password
     elif os.path.exists('/etc/ldap.secret'):
-        binddn = "cn=admin,%s" % ucr["ldap/base"]
+        binddn = f"cn=admin,{ucr['ldap/base']}"
         with open('/etc/ldap.secret') as f:
             bindpw = f.read().rstrip('\n')
     else:

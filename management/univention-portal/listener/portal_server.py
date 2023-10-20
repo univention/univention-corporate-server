@@ -55,7 +55,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         else:
             module = 'unknown'
         reason = f'ldap:{module}:{dn}'
-        ud.debug(ud.LISTENER, ud.PROCESS, "Updating portal. Reason: %s" % reason)
+        ud.debug(ud.LISTENER, ud.PROCESS, f"Updating portal. Reason: {reason}")
         subprocess.call(['/usr/sbin/univention-portal', 'update', '--reason', reason], stdout=subprocess.PIPE)
     finally:
         listener.unsetuid()

@@ -1,6 +1,6 @@
 # Base UCR path definitions
 ONLINE_BASE = 'repository/online'
-COMPONENT_BASE = '%s/component' % ONLINE_BASE
+COMPONENT_BASE = f'{ONLINE_BASE}/component'
 
 # Parameter names for component definitions
 COMP_PARAMS = ['description', 'server', 'prefix', 'password', 'username', 'defaultpackages', 'version', 'localmirror', 'unmaintained', 'port']

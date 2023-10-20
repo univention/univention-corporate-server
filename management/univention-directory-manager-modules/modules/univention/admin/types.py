@@ -196,7 +196,7 @@ class TypeHint(object):
     def type_check(self, value, types=None):
         """Checks if the value has the correct Python type."""
         if not isinstance(value, types or self._python_types):
-            must = '%s (%s)' % (self._openapi_type, self._openapi_format) if self._openapi_format else '%s' % (self._openapi_type,)
+            must = f'{self._openapi_type} ({self._openapi_format})' if self._openapi_format else f'{self._openapi_type}'
             actual = type(value).__name__
             ud.debug(ud.ADMIN, ud.WARN, '%r: Value=%r %r' % (self.property_name, value, type(self).__name__))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Value must be of type %s not %s.') % (must, actual))
@@ -619,7 +619,7 @@ class DictionaryType(TypeHint):
 
         if self.properties:
             definition['properties'] = {
-                name: prop(self.property, self.property_name).get_openapi_definition() if prop else {'description': '%s:%s has no definition' % (self.property_name, name)}
+                name: prop(self.property, self.property_name).get_openapi_definition() if prop else {'description': f'{self.property_name}:{name} has no definition'}
                 for name, prop in self.properties.items()
             }
             definition['additionalProperties'] = False

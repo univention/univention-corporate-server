@@ -40,7 +40,7 @@ def create_vmxf(machine_uuid: uuid.UUID, image_name: str) -> bytes:
                 E.HistoryEventList(),
             ),
             E.vmxPathName(
-                '%s.vmx' % (image_name,),
+                f'{image_name}.vmx',
                 type='string',
             ),
         ),
@@ -51,7 +51,7 @@ def create_vmxf(machine_uuid: uuid.UUID, image_name: str) -> bytes:
 def encode_vmx_file(vmx: Dict[str, str]) -> bytes:
     output = '.encoding = "UTF-8"\n'
     for key, value, in sorted(vmx.items()):
-        output += '%s = "%s"\n' % (key, value)
+        output += f'{key} = "{value}"\n'
     return output.encode('UTF-8')
 
 
@@ -69,7 +69,7 @@ def create_vmx(image_name: str, image_uuid: uuid.UUID, options: Namespace) -> by
         'memsize': "%d" % (options.memory_size,),
         'mem.hotadd': "TRUE",
         'scsi0:0.present': "TRUE",
-        'scsi0:0.fileName': "%s.vmdk" % (image_name,),
+        'scsi0:0.fileName': f"{image_name}.vmdk",
         'ide1:0.present': "FALSE",
         'floppy0.present': "FALSE",
         'ethernet0.present': "TRUE",
@@ -96,14 +96,14 @@ def create_vmx(image_name: str, image_uuid: uuid.UUID, options: Namespace) -> by
         'usb.vbluetooth.startConnected': "TRUE",
         'displayName': machine_name,
         'guestOS': "other26xlinux-64",
-        'nvram': "%s.nvram" % (image_name,),
+        'nvram': f"{image_name}.nvram",
         'virtualHW.productCompatibility': "hosted",
         'gui.exitOnCLIHLT': "FALSE",
         'powerType.powerOff': "hard",
         'powerType.powerOn': "hard",
         'powerType.suspend': "hard",
         'powerType.reset': "hard",
-        'extendedConfigFile': "%s.vmxf" % (image_name,),
+        'extendedConfigFile': f"{image_name}.vmxf",
         'scsi0.pciSlotNumber': "16",
         'ethernet0.generatedAddress': "00:0C:29:DD:56:97",
         'ethernet0.pciSlotNumber': "33",
@@ -150,11 +150,11 @@ class VMware(TargetFile):
         image_uuid = uuid.uuid4()
         vmdk = Vmdk(image)
         files = [
-            ('%s/' % (options.product,), b""),
-            ('%s/%s.vmdk' % (options.product, options.product), vmdk),
-            ('%s/%s.vmxf' % (options.product, options.product), create_vmxf(machine_uuid, options.product)),
-            ('%s/%s.vmx' % (options.product, options.product), create_vmx(options.product, image_uuid, options)),
-            ('%s/%s.vmsd' % (options.product, options.product), b""),
+            (f'{options.product}/', b""),
+            (f'{options.product}/{options.product}.vmdk', vmdk),
+            (f'{options.product}/{options.product}.vmxf', create_vmxf(machine_uuid, options.product)),
+            (f'{options.product}/{options.product}.vmx', create_vmx(options.product, image_uuid, options)),
+            (f'{options.product}/{options.product}.vmsd', b""),
         ]  # type: List[Tuple[str, Union[File, bytes]]]
         pkzip = Pkzip(files)
         pkzip.path().rename(archive_name)

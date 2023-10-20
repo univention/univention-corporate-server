@@ -23,15 +23,15 @@ def test_acls(udm, ucr):
     for i in range(1, 11):
         operation_sets.append(udm.create_object(
             'settings/umc_operationset',
-            position="cn=operations,cn=UMC,cn=univention,%s" % udm.LDAP_BASE,
-            name='join%s' % i,
-            description='Join%s' % i,
+            position=f"cn=operations,cn=UMC,cn=univention,{udm.LDAP_BASE}",
+            name=f'join{i}',
+            description=f'Join{i}',
             operation=["join/*", "lib/server/*"],
             wait_for_replication=False,
         ))
     policy_dn = udm.create_object(
         'policies/umc',
-        position="cn=UMC,cn=policies,%s" % udm.LDAP_BASE,
+        position=f"cn=UMC,cn=policies,{udm.LDAP_BASE}",
         name='test-umc-policy',
         wait_for_replication=False,
     )
@@ -51,10 +51,10 @@ def test_acls(udm, ucr):
     _test_new_acl(operation_sets[0], ['systemrole:domaincontroller_master', 'systemrole:domaincontroller_backup'])
     _test_new_acl(operation_sets[1], ['systemrole:domaincontroller_master'])
     _test_new_acl(operation_sets[2], ['systemrole:domaincontroller_backup'], False)
-    _test_new_acl(operation_sets[3], ['foo', '%s' % hostname])
+    _test_new_acl(operation_sets[3], ['foo', f'{hostname}'])
     _test_new_acl(operation_sets[4], ['*'])
     _test_new_acl(operation_sets[5], ['foo'], False)
     _test_new_acl(operation_sets[6], ['service:LDAP'])
     _test_new_acl(operation_sets[7], ['service:LDAP', 'service:FOO'])
     _test_new_acl(operation_sets[8], ['service:BAR'], False)
-    _test_new_acl(operation_sets[9], ['*%s' % hostname[2:]])
+    _test_new_acl(operation_sets[9], [f'*{hostname[2:]}'])

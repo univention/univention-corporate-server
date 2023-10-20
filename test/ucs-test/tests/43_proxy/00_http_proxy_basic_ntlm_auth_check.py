@@ -60,9 +60,8 @@ def setAuthVariables(squid, basic_ntlm):
 
 def printHeader(state, passwd, expect_wrong_password):
     print('-' * 40)
-    print('(Basic, NTLM) = %s' % (state,))
-    print('Password used: %s, expect_wrong_password: %s' % (
-        passwd, expect_wrong_password))
+    print(f'(Basic, NTLM) = {state}')
+    print(f'Password used: {passwd}, expect_wrong_password: {expect_wrong_password}')
 
 
 def main():

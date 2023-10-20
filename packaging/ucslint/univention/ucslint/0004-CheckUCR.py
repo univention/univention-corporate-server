@@ -267,12 +267,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     if match.group(2) != fname:
                         self.addmsg('0004-1', f'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files{fname}\n      - path in header    = {match.group(1)}', fn)
 
-        self.debug('found conffiles: %s' % conffiles.keys())
+        self.debug(f'found conffiles: {conffiles.keys()}')
 
         return conffiles
 
     def read_ucr(self, fn: str) -> Iterator[UcrInfo]:
-        self.debug('Reading %s' % fn)
+        self.debug(f'Reading {fn}')
         try:
             entry: UcrInfo = {}
             with open(fn) as stream:
@@ -301,14 +301,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0004-27', 'cannot open/read file', fn)
 
     def read_ini(self, fn: str) -> RawConfigParser:
-        self.debug('Reading %s' % fn)
+        self.debug(f'Reading {fn}')
 
         cfg = RawConfigParser(interpolation=None)
         try:
             if not cfg.read(fn):
                 self.addmsg('0004-27', 'cannot open/read file', fn)
         except DuplicateSectionError as ex:
-            self.addmsg('0004-60', 'Duplicate section entry: %s' % (ex.section), ex.source, ex.lineno)
+            self.addmsg('0004-60', f'Duplicate section entry: {(ex.section)}', ex.source, ex.lineno)
         except MissingSectionHeaderError as ex:
             self.addmsg('0004-61', f'Invalid entry: {ex}', fn, ex.lineno)
         except DuplicateOptionError as ex:
@@ -371,13 +371,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             elif fn.endswith('.univention-service'):
                 self.read_ini(fn)
             elif fn.endswith(('.univention-config-registry', '.univention-baseconfig')):
-                tmpfn = os.path.join(path, 'debian', '%s.univention-config-registry-variables' % f.rsplit('.', 1)[0])
-                self.debug('testing %s' % tmpfn)
+                tmpfn = os.path.join(path, 'debian', f'{f.rsplit(".", 1)[0]}.univention-config-registry-variables')
+                self.debug(f'testing {tmpfn}')
                 if not os.path.exists(tmpfn):
                     self.addmsg('0004-24', f'{f} exists but corresponding {tmpfn} is missing', tmpfn)
 
                 if not self.RE_UICR.search(rules_content):
-                    self.addmsg('0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f, fn_rules)
+                    self.addmsg('0004-23', f'{f} exists but debian/rules contains no univention-install-config-registry', fn_rules)
                     break
 
         for f in os.listdir(os.path.join(path, 'debian')):
@@ -399,7 +399,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 unique: Set[str | Tuple[str, str]] = set()
 
                 for entry in self.read_ucr(fn):
-                    self.debug('Entry: %s' % entry)
+                    self.debug(f'Entry: {entry}')
 
                     try:
                         typ = entry['Type'][0]
@@ -584,9 +584,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                                 self.addmsg('0004-55', f'UCR .info-file may contain globbing pattern instead of regular expression: "{var}"', fn)
                                 break
 
-                self.debug('Multifiles: %s' % multifiles)
-                self.debug('Subfiles: %s' % subfiles)
-                self.debug('Files: %s' % files)
+                self.debug(f'Multifiles: {multifiles}')
+                self.debug(f'Subfiles: {subfiles}')
+                self.debug(f'Files: {files}')
                 for multifile, subfileentries in subfiles.items():
                     if multifile not in multifiles:
                         self.addmsg('0004-10', f'file contains subfile entry without corresponding multifile entry.\n      - subfile = {subfileentries[0]["Subfile"][0]}\n      - multifile = {multifile}', fn)
@@ -679,10 +679,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         # "Multifile" entry exists ==> obj is a subfile
                         self.debug('cfn = %r' % shortconffn)
                         self.debug('knownvars(mf+sf) = %r' % knownvars)
-                        self.addmsg('0004-29', 'template file contains variables that are not registered in multifile or subfile entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
+                        self.addmsg('0004-29', f'template file contains variables that are not registered in multifile or subfile entry:\n	- {("\n	- ".join(notregistered))}', conffn)
                     else:
                         # no subfile ==> File, Module, Script
-                        self.addmsg('0004-12', 'template file contains variables that are not registered in file entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
+                        self.addmsg('0004-12', f'template file contains variables that are not registered in file entry:\n	- {("\n	- ".join(notregistered))}', conffn)
 
                 if checks['custom_user'] and not any('users/default/' in v for v in knownvars):
                     self.addmsg('0004-62', 'UCR template file using `custom_username()` must register for UCRV "users/default/.*"', conffn)
@@ -724,7 +724,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             try:
                 fn = obj['File'][0]
             except LookupError:
-                print('FIXME: no File entry in obj: %s' % obj, file=sys.stderr)
+                print(f'FIXME: no File entry in obj: {obj}', file=sys.stderr)
             else:
                 try:
                     conffn = find_conf(fn)
@@ -743,7 +743,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 try:
                     fn = obj['Subfile'][0]
                 except LookupError:
-                    print('FIXME: no Subfile entry in obj: %s' % obj, file=sys.stderr)
+                    print(f'FIXME: no Subfile entry in obj: {obj}', file=sys.stderr)
                 else:
                     try:
                         conffn = find_conf(fn)

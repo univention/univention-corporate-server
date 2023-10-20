@@ -170,7 +170,7 @@ def getPackageList(configRegistry: ConfigRegistry, job: _JOB) -> List[str]:
         results, _policies = policy_result(ldap_hostdn)
         return results.get(packages_name, [])
     except PolicyResultFailed as ex:
-        sys.exit('failed to execute univention_policy_result: %s' % ex)
+        sys.exit(f'failed to execute univention_policy_result: {ex}')
 
 
 def parse_args() -> Namespace:
@@ -203,7 +203,7 @@ def run(opt: Namespace) -> int:
 
         if ldap_hostdn:
             logfile = open(LOGNAME, 'a')
-            logfile.write('***** Starting univention-actualise at %s\n' % time.ctime())
+            logfile.write(f'***** Starting univention-actualise at {time.ctime()}\n')
 
             getUpdate()
 
@@ -222,16 +222,16 @@ def run(opt: Namespace) -> int:
                 with apt_lock():
                     res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
                 if res == 0:
-                    print("Removing packages: %s" % package)
+                    print(f"Removing packages: {package}")
                     with apt_lock():
                         res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
                         if not res:
                             res = subprocess.call(shlex.split(cmd_remove) + [package], stdout=logfile, stderr=logfile)
                 else:
-                    print("The package %s doesn't exist." % package)
+                    print(f"The package {package} doesn't exist.")
                     res = 0
                 if res != 0:
-                    print("E: failed to remove %s" % package, file=sys.stderr)
+                    print(f"E: failed to remove {package}", file=sys.stderr)
                     sys.exit(res)
 
             add_packages = getPackageList(configRegistry, 'add')
@@ -239,17 +239,17 @@ def run(opt: Namespace) -> int:
                 with apt_lock():
                     res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
                 if res == 0:
-                    print("Installing packages: %s" % package)
+                    print(f"Installing packages: {package}")
                     with apt_lock():
                         res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
                         if not res:
                             res = subprocess.call(shlex.split(cmd_install) + [package], stdout=logfile, stderr=logfile)
                 else:
-                    print("The package %s doesn't exist." % package)
+                    print(f"The package {package} doesn't exist.")
                     res = 0
 
                 if res != 0:
-                    print("E: failed to install %s" % package, file=sys.stderr)
+                    print(f"E: failed to install {package}", file=sys.stderr)
                     sys.exit(res)
 
         else:
@@ -271,12 +271,12 @@ def run(opt: Namespace) -> int:
             tee = Tee([LOGNAME], stdout=not opt.silent)
             res = tee.call(shlex.split(cmd_config))
         if res != 0:
-            print("E: failed to configure packets, see %s for details." % LOGNAME, file=sys.stderr)
+            print(f"E: failed to configure packets, see {LOGNAME} for details.", file=sys.stderr)
         else:
             tee = Tee([LOGNAME], stdout=not opt.silent, filter='(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)')
             res = tee.call(cmd.split(' '))
             if res != 0:
-                print("E: failed to upgrade, see %s for details." % LOGNAME, file=sys.stderr)
+                print(f"E: failed to upgrade, see {LOGNAME} for details.", file=sys.stderr)
 
         sys.exit(res)
 
@@ -284,7 +284,7 @@ def run(opt: Namespace) -> int:
         if pkgdb:
             if pkgdb_scope == ConfigRegistry.FORCED:
                 # old value was set in FORCED scope
-                handler_set(['pkgdb/scan=%s' % pkgdb], {'force': True})
+                handler_set([f'pkgdb/scan={pkgdb}'], {'force': True})
             else:
                 # old value was set in any other scope ==> remove value in FORCED scope
                 handler_unset(['pkgdb/scan'], {'force': True})
@@ -304,7 +304,7 @@ def check_failed() -> None:
     failure = '/var/lib/univention-updater/update-failed'
     if os.path.exists(failure):
         print('univention-actualise: univention-updater failed, stopping...')
-        print("	   remove `%s' to proceed" % failure)
+        print(f"	   remove `{failure}' to proceed")
         sys.exit(2)
 
 
@@ -313,7 +313,7 @@ def remove_temp() -> None:
         for root, dirs, files in os.walk('/etc/apt/sources.list.d'):
             for file in [file for file in files if file.startswith('00_ucs_temporary_')]:
                 filename = os.path.join(root, file)
-                print('Warning: Deleting `%s` from incomplete update.' % filename)
+                print(f'Warning: Deleting `{filename}` from incomplete update.')
                 os.remove(filename)
             del dirs[:]
     except EnvironmentError:

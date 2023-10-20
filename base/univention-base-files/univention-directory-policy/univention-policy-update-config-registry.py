@@ -50,7 +50,7 @@ def get_policy(host_dn, server=None, password_file="/etc/machine.secret", verbos
         (results, _) = ucr_policy_result(dn=host_dn, binddn=host_dn, bindpw=password_file, ldap_server=server)
     except PolicyResultFailed as ex:
         if verbose:
-            print('WARN: failed to execute univention_policy_result: %s' % (ex,), file=sys.stderr)
+            print(f'WARN: failed to execute univention_policy_result: {ex}', file=sys.stderr)
         sys.exit(1)
     return results
 
@@ -90,14 +90,14 @@ def main() -> None:
         new_set_list = []
         for key, values in set_list.items():
             value = values[0]
-            record = '%s=%s' % (key, value)
+            record = f'{key}={value}'
 
             if ucr_ldap.get(key) != value or args.setall:
                 new_set_list.append(record)
 
         if args.simulate or args.verbose:
             for item in new_set_list:
-                print('Setting %s' % item, file=sys.stderr)
+                print(f'Setting {item}', file=sys.stderr)
         if not args.simulate:
             confreg.handler_set(new_set_list, {'ldap-policy': True})
 
@@ -108,7 +108,7 @@ def main() -> None:
     if unset_list:
         if args.simulate or args.verbose:
             for item in unset_list:
-                print('Unsetting %s' % item, file=sys.stderr)
+                print(f'Unsetting {item}', file=sys.stderr)
         if not args.simulate:
             confreg.handler_unset(unset_list, {'ldap-policy': True})
 

@@ -561,7 +561,7 @@ class DistCheck(Dist):
 			raise Errors.WafError('distcheck failed with code %r' % ret)
 
 		if os.path.exists(instdir):
-			raise Errors.WafError('distcheck succeeded, but files were left in %s' % instdir)
+			raise Errors.WafError(f'distcheck succeeded, but files were left in {instdir}')
 
 		shutil.rmtree(self.get_base_name())
 

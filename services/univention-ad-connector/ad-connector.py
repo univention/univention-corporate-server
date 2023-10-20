@@ -61,10 +61,10 @@ connector_needs_restart = False
 dirs = [listener.configRegistry['connector/ad/listener/dir']]
 if 'connector/listener/additionalbasenames' in listener.configRegistry and listener.configRegistry['connector/listener/additionalbasenames']:
     for configbasename in listener.configRegistry['connector/listener/additionalbasenames'].split(' '):
-        if '%s/ad/listener/dir' % configbasename in listener.configRegistry and listener.configRegistry['%s/ad/listener/dir' % configbasename]:
-            dirs.append(listener.configRegistry['%s/ad/listener/dir' % configbasename])
+        if f'{configbasename}/ad/listener/dir' in listener.configRegistry and listener.configRegistry[f'{configbasename}/ad/listener/dir']:
+            dirs.append(listener.configRegistry[f'{configbasename}/ad/listener/dir'])
         else:
-            ud.debug(ud.LISTENER, ud.WARN, "ad-connector: additional config basename %s given, but %s/ad/listener/dir not set; ignore basename." % (configbasename, configbasename))
+            ud.debug(ud.LISTENER, ud.WARN, f"ad-connector: additional config basename {configbasename} given, but {configbasename}/ad/listener/dir not set; ignore basename.")
 dirs = [dir_ for dir_ in dirs if dir_]
 if not dirs:
     raise ImportError('UCR variable connector/ad/listener/dir needs to be set!')
@@ -146,7 +146,7 @@ def handler(dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[byt
                 # might only see the first step.
                 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=32542
                 if old_dn and new.get('entryUUID') != old_object.get('entryUUID'):
-                    ud.debug(ud.LISTENER, ud.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn))
+                    ud.debug(ud.LISTENER, ud.PROCESS, f"The entryUUID attribute of the saved object ({old_dn}) does not match the entryUUID attribute of the current object ({dn}). This can be normal in a selective replication scenario.")
                     _dump_changes_to_file_and_check_file(directory, old_dn, {}, old_object, None)
                     old_dn = None
 

@@ -66,12 +66,12 @@ class _Link(object):
             return self.full
         if not self.protocol or not self.host or not self.path:
             return ''
-        port = ':%s' % self.port
+        port = f':{self.port}'
         if self.protocol == 'http' and (not self.port or self.port == '80'):
             port = ''
         if self.protocol == 'https' and (not self.port or self.port == '443'):
             port = ''
-        return '%s://%s%s%s' % (self.protocol, self.host, port, self.path)
+        return f'{self.protocol}://{self.host}{port}{self.path}'
 
     def __nonzero__(self):
         return str(self) != ''
@@ -89,7 +89,7 @@ def _handler(ucr, changes):
     if not changed_entries:
         return
     lo, pos = get_machine_connection()
-    pos.setDn('cn=entry,cn=portals,cn=univention,%s' % ucr.get('ldap/base'))
+    pos.setDn(f'cn=entry,cn=portals,cn=univention,{ucr.get("ldap/base")}')
     hostname = '%(hostname)s.%(domainname)s' % ucr
 
     # iterate over all ipv4 and ipv6 addresses and append them to the link
@@ -102,7 +102,7 @@ def _handler(ucr, changes):
 
         # get ipv6 addresses of device
         for iname in iconf.ipv6_names:
-            local_hosts.append('[%s]' % (iconf.ipv6_address(iname).ip, ))
+            local_hosts.append(f'[{iconf.ipv6_address(iname).ip}]')
 
     portal_logger.debug('Local hosts are: %r' % local_hosts)
     attr_entries = {}
@@ -151,8 +151,8 @@ def _handler(ucr, changes):
             elif key == 'icon':
                 try:
                     if value.startswith('/univention-management-console'):
-                        value = '/univention%s' % value[30:]
-                    with open('/var/www/%s' % value, 'rb') as fd:
+                        value = f'/univention{value[30:]}'
+                    with open(f'/var/www/{value}', 'rb') as fd:
                         entry['icon'] = b64encode(fd.read()).decode('ASCII')
                 except EnvironmentError:
                     pass
@@ -179,9 +179,9 @@ def _handler(ucr, changes):
             elif key == 'background-color':
                 entry['backgroundColor'] = value
             else:
-                portal_logger.info("Don't know how to handle UCR key %s" % ucr_key)
+                portal_logger.info(f"Don't know how to handle UCR key {ucr_key}")
     for cn, attrs in attr_entries.items():
-        dn = 'cn=%s,%s' % (escape_dn_chars(cn), pos.getDn())
+        dn = f'cn={escape_dn_chars(cn)},{pos.getDn()}'
         unprocessed_links = attrs.pop('_links', [])
         my_links = set()
         no_ports = all(not link.port for link in unprocessed_links)
@@ -201,7 +201,7 @@ def _handler(ucr, changes):
                 if link:
                     my_links.add(('en_US', str(link)))
         my_links = list(my_links)
-        portal_logger.debug('Processing %s' % dn)
+        portal_logger.debug(f'Processing {dn}')
         portal_logger.debug('Attrs: %r' % attrs)
         portal_logger.debug('Links: %r' % my_links)
         try:
@@ -218,12 +218,12 @@ def _handler(ucr, changes):
                 try:
                     create_object_if_not_exists('portals/entry', lo, pos, **attrs)
                 except udm_errors.insufficientInformation as exc:
-                    portal_logger.info('Cannot create: %s' % exc)
+                    portal_logger.info(f'Cannot create: {exc}')
                 try:
                     category_pos = position(ucr.get('ldap/base'))
                     category_pos.setDn('cn=category,cn=portals,cn=univention')
-                    category_dn = 'cn=domain-%s,%s' % (escape_dn_chars(category), category_pos.getDn())
-                    portal_logger.debug('Adding entry to %s' % (category_dn,))
+                    category_dn = f'cn=domain-{escape_dn_chars(category)},{category_pos.getDn()}'
+                    portal_logger.debug(f'Adding entry to {category_dn}')
                     obj = init_object('portals/category', lo, category_pos, category_dn)
                     entries = obj['entries']
                     entries.append(dn)

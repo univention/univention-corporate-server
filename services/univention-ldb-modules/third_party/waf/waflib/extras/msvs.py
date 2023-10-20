@@ -339,10 +339,10 @@ def compile_template(line):
 			app(f + ':')
 			indent += 1
 		elif f.startswith('xml:'):
-			app('lst.append(xml_escape(%s))' % f[4:])
+			app(f'lst.append(xml_escape({f[4:]}))')
 		else:
 			#app('lst.append((%s) or "cannot find %s")' % (f, f))
-			app('lst.append(%s)' % f)
+			app(f'lst.append({f})')
 
 	if extr:
 		if params[-1]:
@@ -391,7 +391,7 @@ def win32path(self):
 	p = self.abspath()
 	m = re_win32.match(p)
 	if m:
-		return "%s:%s" % (m.group(2).upper(), m.group(3))
+		return f"{m.group(2).upper()}:{m.group(3)}"
 	return p
 Node.Node.win32path = win32path
 
@@ -414,7 +414,7 @@ def make_uuid(v, prefix = None):
 		tmp = str(v)
 	d = Utils.md5(tmp.encode()).hexdigest().upper()
 	if prefix:
-		d = '%s%s' % (prefix, d[8:])
+		d = f'{prefix}{d[8:]}'
 	gid = uuid.UUID(d, version = 4)
 	return str(gid).upper()
 
@@ -683,7 +683,7 @@ class vsnode_target(vsnode_project):
 		"""
 		opt = '--execsolution=%s' % self.ctx.get_solution_node().win32path()
 		if getattr(self, 'tg', None):
-			opt += " --targets=%s" % self.tg.name
+			opt += f" --targets={self.tg.name}"
 		return (self.get_waf(), opt)
 
 	def collect_source(self):
@@ -961,9 +961,9 @@ def wrap_2008(cls):
 			def display(n):
 				buf = []
 				for x in n.source:
-					buf.append('<File RelativePath="%s" FileType="%s"/>\n' % (xml_escape(x.win32path()), self.get_key(x)))
+					buf.append(f'<File RelativePath="{xml_escape(x.win32path())}" FileType="{self.get_key(x)}"/>\n')
 				for x in n.subfilters:
-					buf.append('<Filter Name="%s">' % xml_escape(x.name))
+					buf.append(f'<Filter Name="{xml_escape(x.name)}">')
 					buf.append(display(x))
 					buf.append('</Filter>')
 				return '\n'.join(buf)

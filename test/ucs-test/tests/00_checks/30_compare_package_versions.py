@@ -115,7 +115,7 @@ def load_packages_file(filename, target_dict, ucs_version):
     Creates a entry object for each found package and fills the target_dict.
     """
     if not path.exists(filename):
-        print("Error: file %s does not exist" % filename)
+        print(f"Error: file {filename} does not exist")
         return
 
     try:
@@ -128,8 +128,7 @@ def load_packages_file(filename, target_dict, ucs_version):
     try:
         content = packages_file.read()
         if not content:
-            utils.fail("The '%s' file is either empty or cannot be read."
-                       % filename)
+            utils.fail(f"The '{filename}' file is either empty or cannot be read.")
 
         packages_file.close()
     except (ValueError, OSError) as exc:
@@ -189,7 +188,7 @@ def compare(old, new):
                 print('  The following packages use a smaller package version:')
                 print('---------------------------------------------------------\n')
 
-            print(" Package: %s" % package)
+            print(f" Package: {package}")
             print(f"   {old[package].ucs_version}: {old[package].version}")
             print(f"   {new[package].ucs_version}: {new[package].version}")
 
@@ -199,13 +198,13 @@ def compare(old, new):
 
             src_package_list.add(src_package)
 
-            print("  Source package: %s" % src_package)
+            print(f"  Source package: {src_package}")
             errors += 1
 
     if errors:
         print("\nAffected source packages:")
         for package in sorted(src_package_list):
-            print("  %s" % package)
+            print(f"  {package}")
 
         print("\nNumber of affected binary packages: %d" % errors)
         print("Number of affected source packages: %d" % len(src_package_list))
@@ -344,7 +343,7 @@ if __name__ == '__main__':
 
             # comparing first maintained and than unmaintained sections:
             for repo_type in ('maintained/', 'unmaintained/'):
-                print("\nChecking %s packages:" % repo_type[:-1])
+                print(f"\nChecking {repo_type[:-1]} packages:")
                 previous_version = repo_url + check_versions[0] + '/' + repo_type
                 current_version = repo_url + check_versions[1] + '/' + repo_type
 

@@ -23,7 +23,7 @@ def check_sending_mail(sender, recipient, username, password, should_be_accepted
             utils.fail('Sending should_be_accepted = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_accepted, ret_code))
     except smtplib.SMTPRecipientsRefused as ex:
         if should_be_accepted:
-            utils.fail('Mail sent failed with exception: %s' % ex)
+            utils.fail(f'Mail sent failed with exception: {ex}')
 
 
 def main():
@@ -39,12 +39,12 @@ def main():
                 alts = []
                 users = []
                 for i in range(5):
-                    mail = '%s@%s' % (uts.random_name(), domain)
-                    alt = '%s@%s' % (uts.random_name(), domain)
+                    mail = f'{uts.random_name()}@{domain}'
+                    alt = f'{uts.random_name()}@{domain}'
                     user_dn, username = udm.create_user(
                         set={
                             'password': password,
-                            'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+                            'mailHomeServer': f'{ucr.get("hostname")}.{domain}',
                             'mailPrimaryAddress': mail,
                             'mailAlternativeAddress': alt,
                         },
@@ -52,14 +52,14 @@ def main():
                     mails.append(mail)
                     alts.append(alt)
                     users.append(user_dn)
-                group1_mail = '%s@%s' % (uts.random_name(), domain)
+                group1_mail = f'{uts.random_name()}@{domain}'
                 group1_dn, group1_name = udm.create_group(
                     set={
                         'mailAddress': group1_mail,
                         'users': users[0],
                     },
                 )
-                group2_mail = '%s@%s' % (uts.random_name(), domain)
+                group2_mail = f'{uts.random_name()}@{domain}'
                 group2_dn, group2_name = udm.create_group(
                     set={
                         'mailAddress': group2_mail,
@@ -76,7 +76,7 @@ def main():
                 print("group %r: email: %r users: %r allowedEmailUsers: %r allowedEmailGroups: %r" % (group2_name, group2_mail, mails[4], mails[2], group1_name))
 
                 for sender in ('noreply@univention.de', mails[1], '<>'):
-                    print("\n>>> sending mail to user 1 (%s): sender=%s -> allowed" % (mails[1], sender))
+                    print(f"\n>>> sending mail to user 1 ({mails[1]}): sender={sender} -> allowed")
                     check_sending_mail(sender, mails[1], mails[1], password, True)
 
                 print("\n>>> sending to unrestricted mail group %r with a null sender -> allowed" % group1_mail)

@@ -55,7 +55,7 @@ def __login_is_locked(attrs: Dict[str, List[bytes]]) -> bool:
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
     if new and old and __login_is_locked(old) and not __login_is_locked(new):
         # reset local bad password count
-        ud.debug(ud.LISTENER, ud.PROCESS, 'Reset faillog for user %s' % new['uid'][0].decode('UTF-8'))
+        ud.debug(ud.LISTENER, ud.PROCESS, f'Reset faillog for user {new["uid"][0].decode("UTF-8")}')
         listener.setuid(0)
         try:
             listener.run('/usr/sbin/faillock', ['faillock', '--user', new['uid'][0].decode('UTF-8'), '--reset'])

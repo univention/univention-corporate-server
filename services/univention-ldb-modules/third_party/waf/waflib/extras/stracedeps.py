@@ -27,7 +27,7 @@ BANNED = ('/tmp', '/proc', '/sys', '/dev')
 
 s_process = r'(?:clone|fork|vfork)\(.*?(?P<npid>\d+)'
 s_file = r'(?P<call>\w+)\("(?P<path>([^"\\]|\\.)*)"(.*)'
-re_lines = re.compile(r'^(?P<pid>\d+)\s+(?:(?:%s)|(?:%s))\r*$' % (s_file, s_process), re.IGNORECASE | re.MULTILINE)
+re_lines = re.compile(fr'^(?P<pid>\d+)\s+(?:(?:{s_file})|(?:{s_process}))\r*$', re.IGNORECASE | re.MULTILINE)
 strace_lock = threading.Lock()
 
 def configure(conf):
@@ -39,7 +39,7 @@ def task_method(func):
 	# The methods Task.exec_command and Task.sig_implicit_deps already exists and are rarely overridden
 	# we thus expect that we are the only ones doing this
 	try:
-		setattr(Task.Task, 'nostrace_%s' % func.__name__, getattr(Task.Task, func.__name__))
+		setattr(Task.Task, f'nostrace_{func.__name__}', getattr(Task.Task, func.__name__))
 	except AttributeError:
 		pass
 	setattr(Task.Task, func.__name__, func)
@@ -74,7 +74,7 @@ def exec_command(self, cmd, **kw):
 	if isinstance(cmd, list):
 		cmd = args + cmd
 	else:
-		cmd = '%s %s' % (' '.join(args), cmd)
+		cmd = f'{" ".join(args)} {cmd}'
 
 	try:
 		ret = bld.exec_command(cmd, **kw)

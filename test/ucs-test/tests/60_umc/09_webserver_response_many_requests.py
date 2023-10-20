@@ -34,7 +34,7 @@ class AsyncClient(Client):
         cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
         headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'})
         connection = httplib.HTTPSConnection(self.hostname, timeout=10)
-        connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers)
+        connection.request('POST', f'/univention/command/{path}', '{}', headers=headers)
         return connection
 
 

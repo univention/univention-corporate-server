@@ -198,8 +198,8 @@ def sql_grant_system(connection, cursor, sysname):
     """Datenbankbenutzer hinzufügen"""
     log('add (grant) user ' + sysname + ' to database')
     # manual "quoted identifier" (no pgdb support)
-    sqlcmd = 'CREATE USER "%s" IN GROUP pkgdbg' % (sysname.replace('"', '""'), )
-    print('SQL: %s\n' % (sqlcmd, ))
+    sqlcmd = f'CREATE USER "{sysname.replace('''"''', '''""''')}" IN GROUP pkgdbg'
+    print(f'SQL: {sqlcmd}\n')
     try:
         cursor.execute(sqlcmd)
         connection.commit()
@@ -208,8 +208,8 @@ def sql_grant_system(connection, cursor, sysname):
         connection.rollback()
         log('not OK. Try to alter ' + sysname)
         # manual "quoted identifier" (no pgdb support)
-        sqlcmd = 'ALTER GROUP pkgdbg ADD USER "%s"' % (sysname.replace('"', '""'), )
-        print('SQL: %s\n' % (sqlcmd, ))
+        sqlcmd = f'ALTER GROUP pkgdbg ADD USER "{sysname.replace('''"''', '''""''')}"'
+        print(f'SQL: {sqlcmd}\n')
         try:
             cursor.execute(sqlcmd)
             connection.commit()
@@ -224,7 +224,7 @@ def sql_revoke_system(connection, cursor, sysname):
     """Datenbankbenutzer entfernen"""
     log('del (revoke) user ' + sysname + ' from database')
     # manual "quoted identifier" (no pgdb support)
-    sql_command = 'DROP USER IF EXISTS "%s"' % (sysname.replace('"', '""'), )
+    sql_command = f'DROP USER IF EXISTS "{sysname.replace('''"''', '''""''')}"'
     cursor.execute(sql_command)
     connection.commit()
     return 0
@@ -356,7 +356,7 @@ def sql_get_packages_in_systems_by_query(cursor, query, join_systems, limit=None
         sqlcmd = "SELECT sysname, pkgname, vername, to_char(packages_on_systems.scandate, 'YYYY-MM-DD HH24:MI:SS'), inststatus, selectedstate, inststate, currentstate FROM packages_on_systems WHERE " + query  # FIXME  # noqa: S608
 
     if orderby:
-        sqlcmd += " ORDER BY %s" % (orderby)
+        sqlcmd += f" ORDER BY {(orderby)}"
 
     if limit is not None:
         sqlcmd += " LIMIT %d" % (limit)
@@ -555,7 +555,7 @@ def open_database_connection(config_registry, pkgdbu=False, db_server=None):
             if db_server is None:
                 return None
         connection_info['host'] = db_server
-        connection_info['user'] = config_registry.get('pkgdb/user', '%s$' % (config_registry['hostname'], ))
+        connection_info['user'] = config_registry.get('pkgdb/user', f'{config_registry["hostname"]}$')
         password_file = config_registry.get('pkgdb/pwdfile', '/etc/machine.secret')
 
     with open(password_file) as fd:
@@ -573,7 +573,7 @@ def main():
     """main function for univention-pkgdb-scan"""
     options = parse_options()
     if options.action == 'version':
-        print('%s %s' % (os.path.basename(sys.argv[0]), '@%@package_version@%@'))
+        print(f'{os.path.basename(sys.argv[0])} {"@%@package_version@%@"}')
         return 0
 
     config_registry = univention.config_registry.ConfigRegistry()

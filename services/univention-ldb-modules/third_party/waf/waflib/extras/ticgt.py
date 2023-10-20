@@ -154,7 +154,7 @@ def ti_dsplink_set_platform_flags(cfg, splat, dsp, dspbios_ver, board):
 	]
 
 	cfg.env.LINKFLAGS_DSPLINK += [
-	 opj(cfg.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'export', 'BIN', 'DspBios', splat, board+'_0', 'RELEASE', 'dsplink%s.lib' % x)
+	 opj(cfg.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'export', 'BIN', 'DspBios', splat, board+'_0', 'RELEASE', f'dsplink{x}.lib')
 	 for x in ('', 'pool', 'mpcs', 'mplist', 'msg', 'data', 'notify', 'ringio')
 	]
 
@@ -252,8 +252,8 @@ def apply_tconf(self):
 	task.cwd = target_node.parent.abspath()
 	task.env = self.env.derive()
 	task.env["TCONFSRC"] = node.path_from(target_node.parent)
-	task.env["TCONFINC"] = '-Dconfig.importPath=%s' % ";".join(importpaths)
-	task.env['TCONFPROGNAME'] = '-Dconfig.programName=%s' % target
+	task.env["TCONFINC"] = f'-Dconfig.importPath={";".join(importpaths)}'
+	task.env['TCONFPROGNAME'] = f'-Dconfig.programName={target}'
 	task.env['PROCID'] = procid
 	task.outputs = [
 	 target_node.change_ext("cfg_c.c"),

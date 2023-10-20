@@ -19,7 +19,7 @@ class Test_UDMNetwork:
         network = udm.create_object('networks/network', name=networkName, network='10.20.30.0', netmask='24')
 
         ldap = uldap.getAdminConnection()
-        ldapFilter = '(&(cn=%s)(objectClass=univentionNetworkClass))' % networkName
+        ldapFilter = f'(&(cn={networkName})(objectClass=univentionNetworkClass))'
         assert network in ldap.searchDn(filter=ldapFilter)
 
         udm.remove_object('networks/network', dn=network)

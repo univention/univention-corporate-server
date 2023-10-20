@@ -48,9 +48,9 @@ def main():
     with udm_test.UCSTestUDM() as udm:
         with ucr_test.UCSTestConfigRegistry() as ucr:
             domain = ucr.get('domainname')
-            host = '%s.%s' % (ucr.get('hostname'), domain)
+            host = f'{ucr.get("hostname")}.{domain}'
             password = 'univention'
-            usermail = '%s@%s' % (uts.random_name(), domain)
+            usermail = f'{uts.random_name()}@{domain}'
             userdn, username = udm.create_user(
                 set={
                     'password': password,

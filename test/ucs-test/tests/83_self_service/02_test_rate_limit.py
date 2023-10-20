@@ -56,7 +56,7 @@ class Main:
 
 @contextlib.contextmanager
 def set_limits(total_minute=None, total_hour=None, total_day=None, user_minute=None, user_hour=None, user_day=None):
-    print('setting limit to %s' % locals())
+    print(f'setting limit to {locals()}')
     with UCR(), resetting_limits():
         total_minute = (LIMIT_TOTAL_MINUTE, total_minute)
         total_hour = (LIMIT_TOTAL_HOUR, total_hour)

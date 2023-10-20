@@ -74,7 +74,7 @@ def release_connection(conn, msg='', push=False):
 
 def close_connection(conn, msg=''):
 	if conn:
-		data = '%s,%s' % (BYE, msg)
+		data = f'{BYE},{msg}'
 		try:
 			put_data(conn, data.ljust(HEADER_SIZE))
 		except:
@@ -149,7 +149,7 @@ def check_cache(conn, ssig):
 		Logs.debug('netcache: server cache has %r entries', len(all_sigs_in_cache[1]))
 
 	if not ssig in all_sigs_in_cache[1]:
-		raise ValueError('no file %s in cache' % ssig)
+		raise ValueError(f'no file {ssig} in cache')
 
 class MissingFile(Exception):
 	pass
@@ -164,7 +164,7 @@ def recv_file(conn, ssig, count, p):
 	size = int(data.split(',')[0])
 
 	if size == -1:
-		raise MissingFile('no file %s - %s in cache' % (ssig, count))
+		raise MissingFile(f'no file {ssig} - {count} in cache')
 
 	# get the file, writing immediately
 	# TODO a tmp file would be better

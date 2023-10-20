@@ -113,7 +113,7 @@ def test_rename_domain_users():
             print('##################################################################\n')
             print(old_admin_dn)
             print(new_admin_name)
-            cmd = ['udm-test', 'users/user', 'modify', '--dn=%s' % (old_admin_dn), '--set', 'username=%s' % (new_admin_name)]
+            cmd = ['udm-test', 'users/user', 'modify', f'--dn={(old_admin_dn)}', '--set', f'username={(new_admin_name)}']
             cmd.extend(credentials)
             subprocess.call(cmd)
             utils.wait_for_replication_and_postrun()

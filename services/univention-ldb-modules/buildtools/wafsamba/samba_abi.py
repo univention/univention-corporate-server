@@ -66,13 +66,13 @@ def parse_sigs(sigs, abi_match):
                     break
             if (not matched) and negative:
                 continue
-        Logs.debug("%s -> %s" % (sa[1], normalise_signature(sa[1])))
+        Logs.debug(f"{sa[1]} -> {normalise_signature(sa[1])}")
         ret[sa[0]] = normalise_signature(sa[1])
     return ret
 
 def save_sigs(sig_file, parsed_sigs):
     '''save ABI signatures to a file'''
-    sigs = "".join('%s: %s\n' % (s, parsed_sigs[s]) for s in sorted(parsed_sigs.keys()))
+    sigs = "".join(f'{s}: {parsed_sigs[s]}\n' for s in sorted(parsed_sigs.keys()))
     return samba_utils.save_file(sig_file, sigs, create_dir=True)
 
 
@@ -91,8 +91,8 @@ def abi_check_task(self):
     old_sigs = samba_utils.load_file(sig_file)
     if old_sigs is None or Options.options.ABI_UPDATE:
         if not save_sigs(sig_file, parsed_sigs):
-            raise Errors.WafError('Failed to save ABI file "%s"' % sig_file)
-        Logs.warn('Generated ABI signatures %s' % sig_file)
+            raise Errors.WafError(f'Failed to save ABI file "{sig_file}"')
+        Logs.warn(f'Generated ABI signatures {sig_file}')
         return
 
     parsed_old_sigs = parse_sigs(old_sigs, self.ABI_MATCH)
@@ -101,22 +101,19 @@ def abi_check_task(self):
     got_error = False
     for s in parsed_old_sigs:
         if not s in parsed_sigs:
-            Logs.error('%s: symbol %s has been removed - please update major version\n\tsignature: %s' % (
-                libname, s, parsed_old_sigs[s]))
+            Logs.error(f'{libname}: symbol {s} has been removed - please update major version\n\tsignature: {parsed_old_sigs[s]}')
             got_error = True
         elif normalise_varargs(parsed_old_sigs[s]) != normalise_varargs(parsed_sigs[s]):
-            Logs.error('%s: symbol %s has changed - please update major version\n\told_signature: %s\n\tnew_signature: %s' % (
-                libname, s, parsed_old_sigs[s], parsed_sigs[s]))
+            Logs.error(f'{libname}: symbol {s} has changed - please update major version\n\told_signature: {parsed_old_sigs[s]}\n\tnew_signature: {parsed_sigs[s]}')
             got_error = True
 
     for s in parsed_sigs:
         if not s in parsed_old_sigs:
-            Logs.error('%s: symbol %s has been added - please mark it _PRIVATE_ or update minor version\n\tsignature: %s' % (
-                libname, s, parsed_sigs[s]))
+            Logs.error(f'{libname}: symbol {s} has been added - please mark it _PRIVATE_ or update minor version\n\tsignature: {parsed_sigs[s]}')
             got_error = True
 
     if got_error:
-        raise Errors.WafError('ABI for %s has changed - please fix library version then build with --abi-update\nSee http://wiki.samba.org/index.php/Waf#ABI_Checking for more information\nIf you have not changed any ABI, and your platform always gives this error, please configure with --abi-check-disable to skip this check' % libname)
+        raise Errors.WafError(f'ABI for {libname} has changed - please fix library version then build with --abi-update\nSee http://wiki.samba.org/index.php/Waf#ABI_Checking for more information\nIf you have not changed any ABI, and your platform always gives this error, please configure with --abi-check-disable to skip this check')
 
 
 t = Task.task_factory('abi_check', abi_check_task, color='BLUE', ext_in='.bin')
@@ -141,8 +138,7 @@ def abi_check(self):
     topsrc = self.bld.srcnode.abspath()
     abi_gen = os.path.join(topsrc, 'buildtools/scripts/abi_gen.sh')
 
-    abi_file = "%s/%s-%s.sigs" % (self.abi_directory, self.version_libname,
-                                  self.abi_vnum)
+    abi_file = f"{self.abi_directory}/{self.version_libname}-{self.abi_vnum}.sigs"
 
     tsk = self.create_task('abi_check', self.link_task.outputs[0])
     tsk.ABI_FILE = abi_file
@@ -194,7 +190,7 @@ def version_script_map_process_file(fname, version, abi_match):
         if in_local:
             if symname == "*":
                 continue
-            symname = "!%s" % symname
+            symname = f"!{symname}"
         if not symname in abi_match:
             abi_match.append(symname)
 
@@ -217,30 +213,30 @@ def abi_write_vscript(f, libname, current_version, versions, symmap, abi_match):
     last_key = ""
     versions = sorted(versions, key=version_key)
     for k in versions:
-        symver = "%s_%s" % (libname, k)
+        symver = f"{libname}_{k}"
         if symver == current_version:
             break
-        f.write("%s {\n" % symver)
+        f.write(f"{symver} {{\n")
         if k in sorted(invmap.keys()):
             f.write("\tglobal:\n")
             for s in invmap.get(k, []):
-                f.write("\t\t%s;\n" % s);
-        f.write("}%s;\n\n" % last_key)
-        last_key = " %s" % symver
-    f.write("%s {\n" % current_version)
+                f.write(f"\t\t{s};\n");
+        f.write(f"}}{last_key};\n\n")
+        last_key = f" {symver}"
+    f.write(f"{current_version} {{\n")
     local_abi = list(filter(lambda x: x[0] == '!', abi_match))
     global_abi = list(filter(lambda x: x[0] != '!', abi_match))
     f.write("\tglobal:\n")
     if len(global_abi) > 0:
         for x in global_abi:
-            f.write("\t\t%s;\n" % x)
+            f.write(f"\t\t{x};\n")
     else:
         f.write("\t\t*;\n")
     # Always hide symbols that must be local if exist
     local_abi.extend(["!_end", "!__bss_start", "!_edata"])
     f.write("\tlocal:\n")
     for x in local_abi:
-        f.write("\t\t%s;\n" % x[1:])
+        f.write(f"\t\t{x[1:]};\n")
     if global_abi != ["*"]:
         if len(global_abi) > 0:
             f.write("\t\t*;\n")
@@ -266,7 +262,7 @@ def abi_build_vscript(task):
         if basename == "version-script.map":
             version_script_map_process_file(fname, task.env.VERSION, abi_match)
             continue
-        raise Errors.WafError('Unsupported input "%s"' % fname)
+        raise Errors.WafError(f'Unsupported input "{fname}"')
     if task.env.PRIVATE_LIBRARY:
         # For private libraries we need to inject
         # each public symbol explicitly into the
@@ -301,7 +297,7 @@ Build.BuildContext.VSCRIPT_MAP_PRIVATE = VSCRIPT_MAP_PRIVATE
 def ABI_VSCRIPT(bld, libname, abi_directory, version, vscript, abi_match=None, private_library=False):
     '''generate a vscript file for our public libraries'''
     if abi_directory:
-        source = bld.path.ant_glob('%s/%s-[0-9]*.sigs' % (abi_directory, libname), flat=True)
+        source = bld.path.ant_glob(f'{abi_directory}/{libname}-[0-9]*.sigs', flat=True)
         def abi_file_key(path):
             return version_key(path[:-len(".sigs")].rsplit("-")[-1])
         source = sorted(source.split(), key=abi_file_key)

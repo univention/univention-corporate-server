@@ -187,7 +187,7 @@ class UniventionMirror(UniventionUpdater):
             makedirs(os.path.dirname(filename))
             with open(filename, "wb") as fd:
                 fd.write(script)
-                ud.debug(ud.NETWORK, ud.INFO, "Successfully mirrored: %s" % filename)
+                ud.debug(ud.NETWORK, ud.INFO, f"Successfully mirrored: {filename}")
 
     def write_releases_json(self):
         """Write a `ucs-releases.json` including only the mirrored releases."""
@@ -195,7 +195,7 @@ class UniventionMirror(UniventionUpdater):
         try:
             releases = json.loads(data)
         except ValueError as exc:
-            ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
+            ud.debug(ud.NETWORK, ud.ERROR, f'Querying maintenance information failed: {exc}')
             if hasattr(self.server, "proxy_handler") and self.server.proxy_handler.proxies:
                 ud.debug(ud.NETWORK, ud.WARN, 'Maintenance information malformed, blocked by proxy?')
 

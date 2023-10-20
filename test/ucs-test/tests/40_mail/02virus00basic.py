@@ -33,14 +33,13 @@ def main():
                 domain = ucr.get('domainname')
                 host = ucr.get('hostname')
                 handler_set([
-                    'mail/alias/root=systemmail@%s.%s' % (
-                            host, domain),
+                    f'mail/alias/root=systemmail@{host}.{domain}',
                 ])
                 reload_amavis_postfix()
-                mail = 'virus%stest@%s' % (uts.random_string(), domain)
+                mail = f'virus{uts.random_string()}test@{domain}'
                 userdn, username = udm.create_user(
                     set={
-                        'mailHomeServer': '%s.%s' % (host, domain),
+                        'mailHomeServer': f'{host}.{domain}',
                         'mailPrimaryAddress': mail,
                     },
                 )

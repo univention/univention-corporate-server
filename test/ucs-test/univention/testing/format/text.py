@@ -41,7 +41,7 @@ class _Term:  # pylint: disable-msg=R0903
         self.NORMAL = _Term.__RE_DELAY.sub(b'', curses.tigetstr('sgr0') or b'')
         set_fg_ansi = curses.tigetstr('setaf')
         for color in self.__ANSICOLORS:
-            i = getattr(curses, 'COLOR_%s' % color)
+            i = getattr(curses, f'COLOR_{color}')
             val = set_fg_ansi and curses.tparm(set_fg_ansi, i) or b''
             setattr(self, color, val)
 

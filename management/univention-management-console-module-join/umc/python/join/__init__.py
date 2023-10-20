@@ -214,7 +214,7 @@ def run(
         info_pattern = re.compile(r'^(?P<message>.*?)\s*:?\s*\x1b.*$')
 
         # call to univention-join
-        MODULE.info('calling "%s"' % ' '.join(cmd))
+        MODULE.info(f'calling "{" ".join(cmd)}"')
         process = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         failed_join_scripts = set()

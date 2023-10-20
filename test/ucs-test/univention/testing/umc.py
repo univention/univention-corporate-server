@@ -129,13 +129,13 @@ class ClientSaml(Client):
         # type: (*Any) -> None
         self.__samlSession = requests.Session()
 
-        saml_login_url = "https://%s/univention/saml/" % self.hostname
-        print('GET SAML login form at: %s' % saml_login_url)
+        saml_login_url = f"https://{self.hostname}/univention/saml/"
+        print(f'GET SAML login form at: {saml_login_url}')
         saml_login_page = self.__samlSession.get(saml_login_url)
         saml_login_page.raise_for_status()
         saml_idp_login_ans = self._login_at_idp_with_credentials(saml_login_page)
 
-        print('SAML message received from %s' % saml_idp_login_ans.url)
+        print(f'SAML message received from {saml_idp_login_ans.url}')
         self._send_saml_response_to_sp(saml_idp_login_ans)
         self.cookies.update(self.__samlSession.cookies.items())
 
@@ -144,7 +144,7 @@ class ClientSaml(Client):
         """Send login form to IdP"""
         auth_state = get_html_tag_value(saml_login_page.text, 'input', ('name', 'AuthState'), 'value')
         data = {'username': self.username, 'password': self.password, 'AuthState': auth_state}
-        print('Post SAML login form to: %s' % saml_login_page.url)
+        print(f'Post SAML login form to: {saml_login_page.url}')
         saml_idp_login_ans = self.__samlSession.post(saml_login_page.url, data=data)
         saml_idp_login_ans.raise_for_status()
         if 'umcLoginWarning' in saml_idp_login_ans.text:
@@ -156,5 +156,5 @@ class ClientSaml(Client):
         sp_login_url = get_html_tag_value(saml_idp_login_ans.text, 'form', ('method', 'post'), 'action')
         saml_msg = get_html_tag_value(saml_idp_login_ans.text, 'input', ('name', 'SAMLResponse'), 'value')
         relay_state = get_html_tag_value(saml_idp_login_ans.text, 'input', ('name', 'RelayState'), 'value')
-        print('Post SAML msg to: %s' % sp_login_url)
+        print(f'Post SAML msg to: {sp_login_url}')
         self.__samlSession.post(sp_login_url, data={'SAMLResponse': saml_msg, 'RelayState': relay_state}).raise_for_status()

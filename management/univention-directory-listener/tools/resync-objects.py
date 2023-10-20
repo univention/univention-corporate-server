@@ -67,7 +67,7 @@ def main():
         return
 
     if not opts.filter:
-        opts.filter = '(uid=%s$)' % ucr['hostname']
+        opts.filter = f'(uid={ucr["hostname"]}$)'
 
     # get local and Primary connection
     local = uldap.getRootDnConnection()
@@ -82,7 +82,7 @@ def main():
         if not res:
             print('object does not exist local')
         for dn in res:
-            print("remove from local: %s" % (dn,))
+            print(f"remove from local: {dn}")
             if not opts.simulate:
                 local.delete(dn)
 
@@ -91,7 +91,7 @@ def main():
     if not res:
         print('object does not exist on Primary')
     for dn, data in res:
-        print("resync from Primary: %s" % (dn,))
+        print(f"resync from Primary: {dn}")
         try:
             local_res = local.search(base=dn)
         except ldap.NO_SUCH_OBJECT:

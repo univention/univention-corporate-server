@@ -54,6 +54,5 @@ def log_warnings_about_unreachable_repository_servers(servers_with_curl_processe
         if process.returncode != 0:
             MODULE.warn(
                 # FIXME: When changing to Python 3 use process.args here.
-                "'curl --max-time 10 %s' exited with returncode %s." %
-                (server, process.returncode),
+                f"'curl --max-time 10 {server}' exited with returncode {process.returncode}.",
             )

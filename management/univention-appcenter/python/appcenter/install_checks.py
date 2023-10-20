@@ -231,7 +231,7 @@ class MustHaveFittingUcsVersion(SingleRequirement, HardRequirement):
     def test_install(self, app):
         required_ucs_version = None
         for supported_version in app.supported_ucs_versions:
-            if supported_version.startswith('%s-' % ucr_get('version/version')):
+            if supported_version.startswith(f'{ucr_get("version/version")}-'):
                 required_ucs_version = supported_version
                 break
         else:

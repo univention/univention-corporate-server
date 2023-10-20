@@ -18,7 +18,7 @@ def test_ipchange_basic(udm, ucr):
     if role == 'domaincontroller_master':
         role = 'domaincontroller_backup'
     computerName = uts.random_string()
-    computer = udm.create_object('computers/%s' % role, name=computerName, password='univention', network='cn=default,cn=networks,%s' % ucr.get('ldap/base'))
+    computer = udm.create_object(f'computers/{role}', name=computerName, password='univention', network=f'cn=default,cn=networks,{ucr.get("ldap/base")}')
 
     lo = utils.get_ldap_connection()
     computer_object = lo.get(computer)
@@ -29,8 +29,8 @@ def test_ipchange_basic(udm, ucr):
     new_ip = '1.2.3.4'
 
     iface = ucr.get('interfaces/primary', 'eth0')
-    client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
-    client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
+    client = Client(ucr.get('ldap/master'), f'{computerName}$', 'univention')
+    client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get(f'interfaces/{iface}/netmask'), 'role': role})
 
     utils.wait_for_replication()
     utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True)

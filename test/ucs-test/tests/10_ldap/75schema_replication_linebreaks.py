@@ -31,8 +31,8 @@ ucr.load()
 
 package_name = get_package_name()
 schema_name = get_schema_name()
-join_script_name = '66%s.inst' % package_name
-unjoin_script_name = '66%s.uinst' % package_name
+join_script_name = f'66{package_name}.inst'
+unjoin_script_name = f'66{package_name}.uinst'
 attribute_id = get_schema_attribute_id()
 
 joinscript_buffer = '''#!/bin/sh
@@ -126,7 +126,7 @@ properties = {
     'module': 'container/cn',
     'objectClass': 'univentionTestAttributes%(attribute_id)s' % {'attribute_id': attribute_id},
     'ldapMapping': 'univentionTestAttributeLongDesc%(attribute_id)s' % {'attribute_id': attribute_id},
-    'position': 'cn=custom attributes,%s' % udm.UNIVENTION_CONTAINER,
+    'position': f'cn=custom attributes,{udm.UNIVENTION_CONTAINER}',
 }
 extended_attribute = udm.create_object('settings/extended_attribute', **properties)
 
@@ -148,7 +148,7 @@ try:
     properties = {
         'name': random_name(),
         'univentionTestAttributeLongDesc%(attribute_id)s' % {'attribute_id': attribute_id}: random_name(),
-        'position': 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+        'position': f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
     }
     container = udm.create_object('container/cn', **properties)
 

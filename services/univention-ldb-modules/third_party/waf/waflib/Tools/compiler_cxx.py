@@ -104,9 +104,9 @@ def options(opt):
 	opt.load_special_tools('cxx_*.py')
 	cxx_compiler_opts = opt.add_option_group('Configuration options')
 	cxx_compiler_opts.add_option('--check-cxx-compiler', default=None,
-		help='list of C++ compilers to try [%s]' % test_for_compiler,
+		help=f'list of C++ compilers to try [{test_for_compiler}]',
 		dest="check_cxx_compiler")
 
 	for x in test_for_compiler.split():
-		opt.load('%s' % x)
+		opt.load(f'{x}')
 

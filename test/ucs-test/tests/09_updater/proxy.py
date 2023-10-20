@@ -30,7 +30,7 @@ def _auth(f: FuncT) -> FuncT:
             try:
                 auth = self.headers.get('Proxy-Authorization', '')
                 if not auth.lower().startswith('basic '):
-                    raise KeyError("Only Basic authentication: %s" % auth)
+                    raise KeyError(f"Only Basic authentication: {auth}")
                 auth = auth[len('Basic '):]
                 auth = base64.b64decode(auth).decode('UTF-8')
                 username, password = auth.split(':', 1)
@@ -80,9 +80,9 @@ class Proxy(BaseHTTPRequestHandler):
         if url.username is not None:
             u[1] = u[1].split('@', 1)[1]
             if "Authorization" not in self.headers:
-                auth = "%s:%s" % (quote(url.username), quote(url.password or ""))
+                auth = f"{quote(url.username)}:{quote(url.password or '')}"
                 auth = base64.b64encode(auth.encode("UTF-8")).decode("ASCII")
-                self.headers["Authorization"] = "Basic %s" % (auth.rstrip(),)
+                self.headers["Authorization"] = f"Basic {auth.rstrip()}"
 
         # Fake DNS resolve of configured hostname to localhost
         if options.translate and url.hostname == options.translate:

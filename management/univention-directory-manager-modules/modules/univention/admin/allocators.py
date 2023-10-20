@@ -85,7 +85,7 @@ def requestUserSid(lo, position, uid_s):
     domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
     sid = domainsid + '-' + rid
 
-    ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: request user sid. SID = %s-%s' % (domainsid, rid))
+    ud.debug(ud.ADMIN, ud.INFO, f'ALLOCATE: request user sid. SID = {domainsid}-{rid}')
 
     return request(lo, position, 'sid', sid)
 
@@ -167,7 +167,7 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 
 
 def acquireUnique(lo, position, type, value, attr, scope='base'):
-    ud.debug(ud.ADMIN, ud.INFO, 'LOCK acquireUnique scope = %s' % scope)
+    ud.debug(ud.ADMIN, ud.INFO, f'LOCK acquireUnique scope = {scope}')
     searchBase = position.getDomain() if scope == "domain" else position.getBase()
 
     if type == "aRecord":  # uniqueness is only relevant among hosts (one or more dns entries having the same aRecord as a host are allowed)
@@ -177,12 +177,12 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
     elif type in ['groupName', 'uid'] and configRegistry.is_true('directory/manager/user_group/uniqueness', True):
         univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
         if not lo.searchDn(base=searchBase, filter=filter_format('(|(&(cn=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))(uid=%s))', (value, value))):
-            ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
+            ud.debug(ud.ADMIN, ud.INFO, f'ALLOCATE return {value}')
             return value
     elif type == "groupName":  # search filter is more complex then in general case
         univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
         if not lo.searchDn(base=searchBase, filter=filter_format('(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))', (attr, value))):
-            ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
+            ud.debug(ud.ADMIN, ud.INFO, f'ALLOCATE return {value}')
             return value
     elif type == 'cn-uid-position':
         base = lo.parentDn(value)
@@ -196,19 +196,19 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
             return value
         raise univention.admin.uexceptions.alreadyUsedInSubtree('name=%r position=%r' % (value, base))
     elif type in ('mailPrimaryAddress', 'mailAlternativeAddress') and configRegistry.is_true('directory/manager/mail-address/uniqueness'):
-        ud.debug(ud.ADMIN, ud.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
+        ud.debug(ud.ADMIN, ud.INFO, f'LOCK univention.admin.locking.lock scope = {scope}')
         univention.admin.locking.lock(lo, position, 'mailPrimaryAddress', value.encode('utf-8'), scope=scope)
         other = 'mailPrimaryAddress' if type == 'mailAlternativeAddress' else 'mailAlternativeAddress'
         if not lo.searchDn(base=searchBase, filter=filter_format('(|(%s=%s)(%s=%s))', (attr, value, other, value))):
-            ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
+            ud.debug(ud.ADMIN, ud.INFO, f'ALLOCATE return {value}')
             return value
     elif type == 'mailAlternativeAddress':
         return value  # lock for mailAlternativeAddress exists only if above UCR variable is enabled
     else:
-        ud.debug(ud.ADMIN, ud.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
+        ud.debug(ud.ADMIN, ud.INFO, f'LOCK univention.admin.locking.lock scope = {scope}')
         univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
         if not lo.searchDn(base=searchBase, filter=filter_format('%s=%s', (attr, value))):
-            ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
+            ud.debug(ud.ADMIN, ud.INFO, f'ALLOCATE return {value}')
             return value
 
     raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
@@ -222,7 +222,7 @@ def request(lo, position, type, value=None):
 
 def confirm(lo, position, type, value, updateLastUsedValue=True):
     if type in ('uidNumber', 'gidNumber') and updateLastUsedValue:
-        lo.modify('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(type), position.getBase()), [('univentionLastUsedValue', b'1', value.encode('utf-8'))])
+        lo.modify(f'cn={ldap.dn.escape_dn_chars(type)},cn=temporary,cn=univention,{position.getBase()}', [('univentionLastUsedValue', b'1', value.encode('utf-8'))])
     elif type == 'cn-uid-position':
         return
     univention.admin.locking.unlock(lo, position, type, value.encode('utf-8'), _type2scope[type])

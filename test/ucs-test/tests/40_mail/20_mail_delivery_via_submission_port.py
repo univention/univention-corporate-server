@@ -24,12 +24,12 @@ def main():
                     'mail/dovecot/logging/auth_debug_passwords=yes', 'mail/dovecot/logging/auth_verbose=yes',
                     'mail/dovecot/logging/auth_verbose_passwords=yes', 'mail/dovecot/logging/mail_debug=yes'])
                 with utils.FollowLogfile(logfiles=['/var/log/auth.log', '/var/log/mail.log']):
-                    recipient_email = '%s@%s' % (uts.random_name(), domain)
+                    recipient_email = f'{uts.random_name()}@{domain}'
                     password = 'univention'
                     userdn, username = udm.create_user(
                         set={
                             'password': password,
-                            'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
+                            'mailHomeServer': f'{ucr.get("hostname")}.{domain}',
                             'mailPrimaryAddress': recipient_email,
                         },
                     )

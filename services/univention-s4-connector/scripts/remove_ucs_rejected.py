@@ -77,8 +77,8 @@ if __name__ == '__main__':
     try:
         remove_ucs_rejected(ucs_dn)
     except ObjectNotFound:
-        print('ERROR: The object %s was not found.' % ucs_dn)
+        print(f'ERROR: The object {ucs_dn} was not found.')
         sys.exit(1)
 
-    print('The rejected UCS object %s has been removed.' % ucs_dn)
+    print(f'The rejected UCS object {ucs_dn} has been removed.')
     sys.exit(0)

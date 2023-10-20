@@ -55,7 +55,7 @@ class Commands(object):
             fs = fstab.File('/etc/fstab')
             mt = fstab.File('/etc/mtab')
         except IOError as error:
-            MODULE.error('Could not open %s' % error.filename)
+            MODULE.error(f'Could not open {error.filename}')
             raise UMC_Error(_('Could not open %s') % error.filename, 500)
 
         partitions = fs.get(['xfs', 'ext4', 'ext3', 'ext2'], False)
@@ -80,7 +80,7 @@ class Commands(object):
             fs = fstab.File('/etc/fstab')
             mt = fstab.File('/etc/mtab')
         except IOError as error:
-            MODULE.error('Could not open %s' % error.filename)
+            MODULE.error(f'Could not open {error.filename}')
             raise UMC_Error(_('Could not open %s') % error.filename, 500)
 
         partition = fs.find(spec=request.options['partitionDevice'])
@@ -97,7 +97,7 @@ class Commands(object):
 
     @simple_response
     def partitions_activate(self, partitionDevice):
-        MODULE.info('quota/partitions/activate: %s' % (partitionDevice,))
+        MODULE.info(f'quota/partitions/activate: {partitionDevice}')
 
         def _thread(self, request):
             return tools.activate_quota(partitionDevice, True)
@@ -105,7 +105,7 @@ class Commands(object):
 
     @simple_response
     def partitions_deactivate(self, partitionDevice):
-        MODULE.info('quota/partitions/deactivate: %s' % (partitionDevice,))
+        MODULE.info(f'quota/partitions/deactivate: {partitionDevice}')
 
         def _thread(self, request):
             return tools.activate_quota(partitionDevice, False)

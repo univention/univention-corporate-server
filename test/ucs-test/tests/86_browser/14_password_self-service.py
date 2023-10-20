@@ -62,7 +62,7 @@ class UMCTester(object):
 
     def enable_mail_receiving(self):
         name = self.ucr.get('domainname')
-        position = 'cn=domain,cn=mail,%s' % (self.ucr.get('ldap/base'),)
+        position = f'cn=domain,cn=mail,{self.ucr.get("ldap/base")}'
         try:
             self.udm.create_object('mail/domain', name=name, position=position)
         except UCSTestUDM_CreateUDMObjectFailed:
@@ -72,11 +72,11 @@ class UMCTester(object):
 
     def create_user_with_mail(self):
         domain = self.ucr.get('domainname')
-        mail = '%s@%s' % (uts.random_string(), domain)
+        mail = f'{uts.random_string()}@{domain}'
         password = 'univention'
         userdn, username = self.udm.create_user(
             set={
-                'mailHomeServer': '%s.%s' % (self.ucr.get('hostname'), domain),
+                'mailHomeServer': f'{self.ucr.get("hostname")}.{domain}',
                 'mailPrimaryAddress': mail,
                 'password': password,
             },

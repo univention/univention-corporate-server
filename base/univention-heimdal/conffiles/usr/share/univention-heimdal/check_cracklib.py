@@ -49,7 +49,7 @@ def main():
         try:
             key, val = line.split(': ', 1)
         except Exception:
-            print('key value pair is not correct: %s' % (line,))
+            print(f'key value pair is not correct: {line}')
             sys.exit(1)
         params[key] = val
 

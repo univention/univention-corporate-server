@@ -64,11 +64,11 @@ class DovecotListener(object):
 
     def log_p(self, msg):
         # type: (str) -> None
-        ud.debug(ud.LISTENER, ud.PROCESS, "%s: %s" % (self.name, msg))
+        ud.debug(ud.LISTENER, ud.PROCESS, f"{self.name}: {msg}")
 
     def log_e(self, msg):
         # type: (str) -> None
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: %s" % (self.name, msg))
+        ud.debug(ud.LISTENER, ud.ERROR, f"{self.name}: {msg}")
 
     def new_email_account(self, email):
         # type: (str) -> None
@@ -78,7 +78,7 @@ class DovecotListener(object):
             try:
                 self.upload_activate_sieve_script(email, default_sieve_script)
             except Exception:
-                self.log_e("dovecot: Could not upload sieve script to account '%s'." % email)
+                self.log_e(f"dovecot: Could not upload sieve script to account '{email}'.")
                 raise
             finally:
                 self.listener.unsetuid()
@@ -91,19 +91,19 @@ class DovecotListener(object):
                 global_mail_home = self.get_maillocation()
                 old_home_calc = str(global_mail_home).replace("%Ld", old_domainpart).replace("%Ln", old_localpart)
             except Exception:
-                self.log_e("dovecot: Delete mailbox: Configuration error. Could not remove mailbox (dn:'%s' old mail: '%s')." % (dn, email))
+                self.log_e(f"dovecot: Delete mailbox: Configuration error. Could not remove mailbox (dn:'{dn}' old mail: '{email}').")
                 raise
             self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "kick", email])
             try:
                 self.listener.setuid(0)
                 shutil.rmtree(old_home_calc, ignore_errors=True)
             except Exception:
-                self.log_e("dovecot: Delete mailbox: Error removing directory '%s' from disk." % old_home_calc)
+                self.log_e(f"dovecot: Delete mailbox: Error removing directory '{old_home_calc}' from disk.")
                 raise
             finally:
                 self.listener.unsetuid()
         else:
-            self.log_p("dovecot: Deleting of mailboxes disabled, not removing '%s' (dn '%s')." % (email, dn))
+            self.log_p(f"dovecot: Deleting of mailboxes disabled, not removing '{email}' (dn '{dn}').")
 
     def read_from_ext_proc_as_root(self, cmd, regexp=None, stdin=None, stdout=subprocess.PIPE, stderr=None, stdin_input=None):
         # type; (Sequence[str], Optional[str], Optional[str], Any, Any, Any) -> str
@@ -132,7 +132,7 @@ class DovecotListener(object):
     def move_user_home(self, newMailPrimaryAddress, oldMailPrimaryAddress, force_rename=False):
         # type: (str, str, bool) -> None
         if not force_rename and not self.listener.configRegistry.is_true("mail/dovecot/mailbox/rename", False):
-            self.log_p("Renaming of mailboxes disabled, not moving ('%s' -> '%s')." % (oldMailPrimaryAddress, newMailPrimaryAddress))
+            self.log_p(f"Renaming of mailboxes disabled, not moving ('{oldMailPrimaryAddress}' -> '{newMailPrimaryAddress}').")
             return
 
         old_localpart, old_domainpart = oldMailPrimaryAddress.lower().split("@")
@@ -142,7 +142,7 @@ class DovecotListener(object):
             old_home_calc = str(global_mail_home).replace("%Ld", old_domainpart).replace("%Ln", old_localpart)
             new_home_dove = self.get_user_home(newMailPrimaryAddress)
         except Exception:
-            self.log_e("Move mailbox: Configuration error. Could not move mailbox ('%s' -> '%s')." % (oldMailPrimaryAddress, newMailPrimaryAddress))
+            self.log_e(f"Move mailbox: Configuration error. Could not move mailbox ('{oldMailPrimaryAddress}' -> '{newMailPrimaryAddress}').")
             return
 
         try:
@@ -150,11 +150,11 @@ class DovecotListener(object):
             if not os.path.isdir(old_home_calc):
                 # Either the user never logged in or never got any email, and thus no maildir was ever created,
                 # or it was moved manually. In any case: ignore.
-                self.log_p("Move mailbox: Source directory ('%s') does not exist. Nothing to do for mailbox move ('%s' -> '%s')." % (old_home_calc, oldMailPrimaryAddress, newMailPrimaryAddress))
+                self.log_p(f"Move mailbox: Source directory ('{old_home_calc}') does not exist. Nothing to do for mailbox move ('{oldMailPrimaryAddress}' -> '{newMailPrimaryAddress}').")
                 return
             if os.path.isdir(new_home_dove) or os.path.isfile(new_home_dove):
                 # We don't know why there is a file or directory already. For security reasons we don't do anything.
-                self.log_e("Move mailbox: Target directory ('%s') exists.  For security reasons not moving mailbox for mailbox move ('%s' -> '%s')." % (new_home_dove, oldMailPrimaryAddress, newMailPrimaryAddress))
+                self.log_e(f"Move mailbox: Target directory ('{new_home_dove}') exists.  For security reasons not moving mailbox for mailbox move ('{oldMailPrimaryAddress}' -> '{newMailPrimaryAddress}').")
                 return
         finally:
             self.listener.unsetuid()
@@ -168,11 +168,10 @@ class DovecotListener(object):
         try:
             self.move_mail_home(old_home_calc, new_home_dove, newMailPrimaryAddress, force_rename)
         except Exception:
-            self.log_e("Move mailbox: Failed to move mail home (of mail '%s') from '%s' to '%s'.\n%s" % (
-                newMailPrimaryAddress, old_home_calc, new_home_dove, traceback.format_exc()))
+            self.log_e(f"Move mailbox: Failed to move mail home (of mail '{newMailPrimaryAddress}') from '{old_home_calc}' to '{new_home_dove}'.\n{traceback.format_exc()}")
             return
 
-        self.log_p("Moved mail home (of mail: '%s') from '%s' to '%s'." % (newMailPrimaryAddress, old_home_calc, new_home_dove))
+        self.log_p(f"Moved mail home (of mail: '{newMailPrimaryAddress}') from '{old_home_calc}' to '{new_home_dove}'.")
         return
 
     def move_mail_home(self, old_path, new_path, email, force_rename=False):
@@ -180,7 +179,7 @@ class DovecotListener(object):
         # create parent path in any case to make sure it has correct ownership
         self.mkdir_p(os.path.dirname(new_path))
         if not force_rename and not self.listener.configRegistry.is_true("mail/dovecot/mailbox/rename", False):
-            self.log_p("Renaming of mailboxes disabled, not moving mail home (of mail '%s') from '%s' to '%s." % (email, old_path, new_path))
+            self.log_p(f"Renaming of mailboxes disabled, not moving mail home (of mail '{email}') from '{old_path}' to '{new_path}.")
             return
         try:
             self.listener.setuid(0)
@@ -188,8 +187,7 @@ class DovecotListener(object):
             shutil.move(old_path, new_path)
             self.chown_r(new_path, st[stat.ST_UID], st[stat.ST_GID])
         except Exception:
-            self.log_e("Failed to move mail home (of mail '%s') from '%s' to '%s'.\n%s" % (
-                email, old_path, new_path, traceback.format_exc()))
+            self.log_e(f"Failed to move mail home (of mail '{email}') from '{old_path}' to '{new_path}'.\n{traceback.format_exc()}")
             raise
         finally:
             self.listener.unsetuid()
@@ -199,7 +197,7 @@ class DovecotListener(object):
         try:
             return self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_location"], r"\S+:(\S+)/Maildir")
         except Exception:
-            self.log_e("Failed to get mail_location from Dovecot configuration.\n%s" % traceback.format_exc())
+            self.log_e(f"Failed to get mail_location from Dovecot configuration.\n{traceback.format_exc()}")
             raise
 
     def upload_activate_sieve_script(self, email, file):
@@ -210,7 +208,7 @@ class DovecotListener(object):
             fqdn = "%(hostname)s.%(domainname)s" % self.listener.configRegistry
             fqdn = self.listener.configRegistry.get("mail/dovecot/sieve/client/server", fqdn)
             _cmd = [
-                "sieve-connect", "--user", "%s*%s" % (email, master_name),
+                "sieve-connect", "--user", f"{email}*{master_name}",
                 "--server", fqdn,
                 "--noclearauth", "--noclearchan",
                 "--tlscafile", ca_file,
@@ -222,7 +220,7 @@ class DovecotListener(object):
             cmd_activate.extend(["--activate"])
             self.read_from_ext_proc_as_root(cmd_activate, stdin=subprocess.PIPE, stdin_input=master_pw)
         except Exception:
-            self.log_e("upload_activate_sieve_script(): Could not upload sieve script '%s' to mailbox '%s'. Exception:\n%s" % (file, email, traceback.format_exc()))
+            self.log_e(f"upload_activate_sieve_script(): Could not upload sieve script '{file}' to mailbox '{email}'. Exception:\n{traceback.format_exc()}")
             raise
 
     def get_user_home(self, username):
@@ -230,7 +228,7 @@ class DovecotListener(object):
         try:
             return self.read_from_ext_proc_as_root(["/usr/bin/doveadm", 'user', "-f", "home", username]).lower()
         except Exception:
-            self.log_e("Failed to get mail home for user '%s'.\n%s" % (username, traceback.format_exc()))
+            self.log_e(f"Failed to get mail home for user '{username}'.\n{traceback.format_exc()}")
             raise
 
     def get_masteruser_credentials(self):
@@ -239,7 +237,7 @@ class DovecotListener(object):
             self.listener.setuid(0)
             return re.findall(r"(\S+):{PLAIN}(\S+)::::::", open("/etc/dovecot/master-users").read())[0]
         except Exception:
-            self.log_e("Failed to get masteruser password.\n%s" % traceback.format_exc())
+            self.log_e(f"Failed to get masteruser password.\n{traceback.format_exc()}")
             raise
         finally:
             self.listener.unsetuid()
@@ -277,7 +275,7 @@ class DovecotListener(object):
                 os.mkdir(dir, 0o2700)
                 os.chown(dir, dovecot_uid, dovecot_gid)
         except Exception:
-            self.log_e("Failed to create directory '%s'.\n%s" % (dir, traceback.format_exc()))
+            self.log_e(f"Failed to create directory '{dir}'.\n{traceback.format_exc()}")
             raise
         finally:
             self.listener.unsetuid()

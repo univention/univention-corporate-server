@@ -28,8 +28,8 @@ def apply_fsc(self):
 
 	bintype = getattr(self, 'type', self.gen.endswith('.dll') and 'library' or 'exe')
 	self.cs_task = tsk = self.create_task('fsc', cs_nodes, self.path.find_or_declare(self.gen))
-	tsk.env.CSTYPE = '/target:%s' % bintype
-	tsk.env.OUT    = '/out:%s' % tsk.outputs[0].abspath()
+	tsk.env.CSTYPE = f'/target:{bintype}'
+	tsk.env.OUT    = f'/out:{tsk.outputs[0].abspath()}'
 
 	inst_to = getattr(self, 'install_path', bintype=='exe' and '${BINDIR}' or '${LIBDIR}')
 	if inst_to:

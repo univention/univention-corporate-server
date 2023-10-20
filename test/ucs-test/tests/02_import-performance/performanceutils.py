@@ -20,7 +20,7 @@ lo = None
 
 
 def import_users(file):
-    subprocess.call('/usr/share/ucs-school-import/scripts/ucs-school-import %s' % file, shell=True)
+    subprocess.call(f'/usr/share/ucs-school-import/scripts/ucs-school-import {file}', shell=True)
     return 0
 
 
@@ -88,7 +88,7 @@ def wait_for_s4connector():
             c.execute('select value from S4 where key=="lastUSN"')
         except sqlite3.OperationalError as e:
             static_count = 0
-            print('Reset counter: sqlite3.OperationalError: %s' % e)
+            print(f'Reset counter: sqlite3.OperationalError: {e}')
             print('Counter: %d' % static_count)
             continue
 
@@ -123,7 +123,7 @@ def s4_user_auth(username, password):
 
 def reset_passwords(user_dns):
     for dn in user_dns:
-        subprocess.call('udm users/user modify --dn "%s" --set password="Univention.991"' % dn, shell=True)
+        subprocess.call(f'udm users/user modify --dn "{dn}" --set password="Univention.991"', shell=True)
     wait_for_s4connector()
     return 0
 
@@ -132,7 +132,7 @@ def get_user_dn(username):
     global lo
     if not lo:
         lo = univention.uldap.getMachineConnection()
-    dn = lo.searchDn('(&(uid=%s)(objectClass=sambaSamAccount))' % username)
+    dn = lo.searchDn(f'(&(uid={username})(objectClass=sambaSamAccount))')
     return dn[0]
 
 
@@ -181,7 +181,7 @@ def create_test_user():
 
 
 def execute_timing(description, allowedTime, callback, *args):
-    print('Starting %s' % description)
+    print(f'Starting {description}')
 
     startTime = _start_time()
     result = callback(*args)
@@ -194,7 +194,7 @@ def execute_timing(description, allowedTime, callback, *args):
         return False
 
     if duration > allowedTime:
-        print('ERROR: %s took too long' % description)
+        print(f'ERROR: {description} took too long')
         return False
 
     return True

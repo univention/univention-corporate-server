@@ -462,7 +462,7 @@ class ResourceBase:
         except (ldap.LDAPError, udm_errors.base):
             return self.force_authorization()
         except Exception:
-            MODULE.error('Unknown error during authentication: %s' % (traceback.format_exc(), ))
+            MODULE.error(f'Unknown error during authentication: {traceback.format_exc()}')
             return self.force_authorization()
 
         if not already_authenticated:
@@ -772,7 +772,7 @@ class ResourceBase:
             elements = [elem] if isinstance(elem, str) else elem
             for elem in elements:
                 for field in properties:
-                    if field['name'] in (elem, 'properties.%s' % elem):
+                    if field['name'] in (elem, f'properties.{elem}'):
                         self.render_form_field(fieldset, field)
             if elements:
                 ET.SubElement(fieldset, 'br')
@@ -878,7 +878,7 @@ class ResourceBase:
                 params.append('%s="%s"' % (param, quote_param(kwargs.get(param, ''))))
         del kwargs['rel']
         header_name = 'Link-Template' if kwargs.get('templated') else 'Link'
-        self.add_header(header_name, '<%s>; %s' % (href, '; '.join(params)))
+        self.add_header(header_name, f'<{href}>; {"; ".join(params)}')
 
     def add_resource(self, obj, relation, ressource):
         obj.setdefault('_embedded', {}).setdefault(relation, []).append(ressource)
@@ -1227,7 +1227,7 @@ class Relations(Resource):
             for relation in iana_relations:
                 self.add_link(result, 'udm:relations', self.urljoin(relation), name=relation, title=relation)
             for relation in univention_relations:
-                self.add_link(result, 'udm:relations', self.urljoin(relation), name='udm:%s' % relation, title='udm:%s' % relation)
+                self.add_link(result, 'udm:relations', self.urljoin(relation), name=f'udm:{relation}', title=f'udm:{relation}')
         self.content_negotiation(result)
 
 
@@ -1672,7 +1672,7 @@ class _OpenAPIBase:
                 if not hasattr(func, 'params'):
                     continue
                 for pname, param in func.params.get('query', {}).items():
-                    key = '%s.%s.query.%s' % (name, method, param.alias or pname)
+                    key = f'{name}.{method}.query.{param.alias or pname}'
                     if key in openapi_parameters:
                         openapi_parameters[key].update({'in': 'query', 'name': param.alias or pname})
                         openapi_parameters[key].update(_param_to_openapi(param))
@@ -1761,12 +1761,12 @@ class _OpenAPIBase:
                     ] + pagination_parameters + global_parameters,
                     "responses": global_responses({
                         200: {
-                            '$ref': '#/components/responses/objects.%s.get.response.success' % (_openapi_quote(model_name),),
+                            '$ref': f'#/components/responses/objects.{_openapi_quote(model_name)}.get.response.success',
                         },
                     }),
                     "tags": [tag],
                 }
-                openapi_responses['objects.%s.get.response.success' % (model_name,)] = {
+                openapi_responses[f'objects.{model_name}.get.response.success'] = {
                     "description": "Successfull search (if query parameters were given) or a object type overview.",
                     "content": content_schema_ref(f"#/components/schemas/{_openapi_quote(model_name)}.list"),
                     "headers": global_response_headers(),
@@ -1786,12 +1786,12 @@ class _OpenAPIBase:
                     ] + global_parameters,
                     "responses": global_responses({
                         200: {
-                            '$ref': '#/components/responses/template.%s.get.response.success' % (_openapi_quote(model_name),),
+                            '$ref': f'#/components/responses/template.{_openapi_quote(model_name)}.get.response.success',
                         },
                     }),
                     "tags": [tag],
                 }
-                openapi_responses['template.%s.get.response.success' % (model_name,)] = {
+                openapi_responses[f'template.{model_name}.get.response.success'] = {
                     "description": f"Successfully received a template suitable for creation of a new {module.object_name}.",
                     "content": content_schema_ref(f"#/components/schemas/{_openapi_quote(model_name)}"),
                     "headers": global_response_headers(),
@@ -1816,7 +1816,7 @@ class _OpenAPIBase:
                 "parameters": [] + global_parameters,
                 "responses": global_responses({
                     "200": {
-                        '$ref': '#/components/responses/object.%s.get.response.success' % (_openapi_quote(model_name),),
+                        '$ref': f'#/components/responses/object.{_openapi_quote(model_name)}.get.response.success',
                     },
                     "404": {
                         '$ref': '#/components/responses/object.get.response.notfound',
@@ -1824,7 +1824,7 @@ class _OpenAPIBase:
                 }),
                 "tags": [tag],
             }
-            openapi_responses['object.%s.get.response.success' % (model_name,)] = {
+            openapi_responses[f'object.{model_name}.get.response.success'] = {
                 "description": "Success",
                 "content": content_schema_ref(f"#/components/schemas/{_openapi_quote(model_name)}"),
                 "headers": global_response_headers({
@@ -2339,9 +2339,9 @@ class ContainerQueryBase(Resource):
             if object_type in ('dns/dns', 'dhcp/dhcp'):
                 defaults.update({
                     'label': UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).title,
-                    'icon': 'udm-%s' % (object_type.replace('/', '-'),),
+                    'icon': f'udm-{object_type.replace("/", "-")}',
                 })
-            self.add_link({}, 'next', self.urljoin('?container=%s' % (quote(container))))
+            self.add_link({}, 'next', self.urljoin(f'?container={(quote(container))}'))
             return dict({
                 'id': container,
                 'label': ldap_dn2path(container),
@@ -2458,14 +2458,14 @@ class Properties(Resource):
         properties = module.get_properties(dn)
         for policy in module.policies:
             properties.append({
-                'id': 'policies[%s]' % (policy['objectType'],),
+                'id': f'policies[{policy["objectType"]}]',
                 'label': policy['label'],
                 'description': policy['description'],
             })
         for prop in properties[:]:
             if prop['id'] == '$options$':
                 for option in prop['widgets']:
-                    option['id'] = 'options[%s]' % (option['id'],)
+                    option['id'] = f'options[{option["id"]}]'
                     properties.append(option)
         for prop in properties:
             prop.setdefault('label', '')
@@ -2515,7 +2515,7 @@ class Layout(Resource):
         if advanced['layout']:
             layout.append(advanced)
         layout.append({
-            'layout': ['policies[%s]' % (policy['objectType'],) for policy in module.policies],
+            'layout': [f'policies[{policy["objectType"]}]' for policy in module.policies],
             'advanced': False,
             'description': _('Properties inherited from policies'),
             'label': _('Policies'),
@@ -2889,7 +2889,7 @@ class Objects(FormBase, ReportingBase, _OpenAPIBase, Resource):
                 serverctrls.append(page_ctrl)
             if by in ('uid', 'uidNumber', 'cn'):
                 rule = ':caseIgnoreOrderingMatch' if by not in ('uidNumber',) else ''
-                serverctrls.append(SSSRequestControl(ordering_rules=['%s%s%s' % ('-' if reverse else '', by, rule)]))
+                serverctrls.append(SSSRequestControl(ordering_rules=[f'{"-" if reverse else ""}{by}{rule}']))
         objects = []
         # TODO: we have to store the results of the previous pages (or make them cacheable)
         # FIXME: we have to store the session across all processes
@@ -3090,7 +3090,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
             if reference['module'] != 'udm':
                 continue  # can not happen currently
             for dn in set(_map_normalized_dn(filter(None, [reference['id']]))):
-                rel = {'__policies': 'udm:object/policy/reference'}.get(reference['property'], 'udm:object/property/reference/%s' % (reference['property'],))
+                rel = {'__policies': 'udm:object/policy/reference'}.get(reference['property'], f'udm:object/property/reference/{reference["property"]}')
                 self.add_link(props, rel, self.abspath(reference['objectType'], quote_dn(dn)), name=dn, title=reference['label'], dont_set_http_header=True)
 
         if module.name == 'networks/network':
@@ -3165,7 +3165,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
         etag.update(b''.join(obj.oldattr.get('entryCSN', [])))
         etag.update((obj.entry_uuid or '').encode('utf-8'))
         etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
-        return '"%s"' % etag.hexdigest()
+        return f'"{etag.hexdigest()}"'
 
     @classmethod
     def get_representation(cls, module, obj, properties, ldap_connection, copy=False, add=False):
@@ -3548,7 +3548,7 @@ class Object(FormBase, _OpenAPIBase, Resource):
         try:
             def remove():
                 try:
-                    MODULE.info('Removing LDAP object %s' % (dn,))
+                    MODULE.info(f'Removing LDAP object {dn}')
                     obj.remove(remove_childs=recursive)
                     if cleanup:
                         udm_objects.performCleanup(obj)
@@ -3764,7 +3764,7 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
         self.add_property_form_elements(module, form, properties, values)
 
         for policy in module.policies:
-            self.add_form_element(form, 'policies[%s]' % (policy['objectType']), '', label=policy['label'])
+            self.add_form_element(form, f'policies[{(policy["objectType"])}]', '', label=policy['label'])
 
         meta_layout['layout'].append('')
         self.add_form_element(form, '', _('Create %s') % (module.object_name,), type='submit')
@@ -3897,7 +3897,7 @@ class ObjectEdit(FormBase, Resource):
             for policy in module.policies:
                 ptype = policy['objectType']
                 pol = (representation['policies'].get(ptype, ['']) or [''])[0]
-                self.add_form_element(form, 'policies[%s]' % (ptype), pol, label=policy['label'], placeholder=_('Policy DN'))
+                self.add_form_element(form, f'policies[{(ptype)}]', pol, label=policy['label'], placeholder=_('Policy DN'))
 
             references = Layout.get_reference_layout(layout)
             if references:

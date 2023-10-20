@@ -26,7 +26,7 @@ from univention.testing.utils import fail
 ucr = ConfigRegistry()
 ucr.load()
 
-currentversion = '%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel'))
+currentversion = f'{ucr.get("version/version")}-{ucr.get("version/patchlevel")}'
 nextversion = '%s-%s' % (ucr.get('version/version'), int(ucr.get('version/patchlevel')) + 1)
 futureversion = '%s-%s' % (ucr.get('version/version'), int(ucr.get('version/patchlevel')) + 99)
 
@@ -36,7 +36,7 @@ with UCSTestUDM() as udm:
     acl_name_new = get_acl_name()
     container_name_current = get_container_name()
     container_name_new = get_container_name()
-    join_script_name = '66%s.inst' % package_name
+    join_script_name = f'66{package_name}.inst'
 
     user_dn, _username = udm.create_user(password='univention')
     container_current = udm.create_object('container/cn', name=container_name_current)
@@ -46,14 +46,14 @@ with UCSTestUDM() as udm:
     except ldap.INSUFFICIENT_ACCESS:
         pass
     else:
-        fail('New user was able to modify %s' % container_current)
+        fail(f'New user was able to modify {container_current}')
 
     try:
         set_container_description(user_dn, container_new)
     except ldap.INSUFFICIENT_ACCESS:
         pass
     else:
-        fail('New user was able to modify %s' % container_new)
+        fail(f'New user was able to modify {container_new}')
 
     joinscript_buffer = '''#!/bin/sh
 VERSION=1
@@ -105,7 +105,7 @@ access to dn.base="%(container)s" attrs="description"
     except ldap.INSUFFICIENT_ACCESS:
         pass
     else:
-        fail('User was able to modify %s which should not be possible.' % container_new)
+        fail(f'User was able to modify {container_new} which should not be possible.')
         sys.exit(100)
 
     package.uninstall()

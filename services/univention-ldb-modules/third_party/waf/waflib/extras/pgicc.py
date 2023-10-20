@@ -29,7 +29,7 @@ def find_pgi_compiler(conf, var, name):
 	if not cc:
 		cc = conf.find_program(name, var=var)
 	if not cc:
-		conf.fatal('PGI Compiler (%s) was not found' % name)
+		conf.fatal(f'PGI Compiler ({name}) was not found')
 
 	v[var + '_VERSION'] = conf.get_pgi_version(cc)
 	v[var] = cc

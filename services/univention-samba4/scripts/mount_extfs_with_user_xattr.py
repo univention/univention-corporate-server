@@ -85,7 +85,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
             if fstab_partition and fstab_partition.type in ('ext3', 'ext4'):
                 target_partitions.append(fstab_partition)
             else:
-                print('Device could not be found: %s' % device)
+                print(f'Device could not be found: {device}')
     else:
         for fstype in ('ext2', 'ext3', 'ext4'):
             for fstab_partition in fs.get(fstype, ignore_root=False):
@@ -95,7 +95,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
         if _do_modify_extfs_option(fstab_partition, options, activate):
             fs.save()
             if subprocess.call(('mount', '-o', 'remount', fstab_partition.spec)):
-                print('Remounting partition failed: %s' % fstab_partition.spec)
+                print(f'Remounting partition failed: {fstab_partition.spec}')
 
 
 if __name__ == '__main__':

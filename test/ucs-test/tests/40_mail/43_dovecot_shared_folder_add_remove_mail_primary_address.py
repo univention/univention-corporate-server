@@ -51,14 +51,14 @@ def main():
                     # reconfigure system
                     #
                     handler_set([
-                        'mail/dovecot/mailbox/rename=%s' % (flag_rename,),
+                        f'mail/dovecot/mailbox/rename={flag_rename}',
                         'mail/dovecot/mailbox/delete=yes',
                     ])
                     utils.restart_listener()
                     utils.wait_for_replication()
 
                     # create folder
-                    dn, name, address = create_shared_mailfolder(udm, fqdn, user_permission=['"%s" "%s"' % (user_addr, 'all')])
+                    dn, name, address = create_shared_mailfolder(udm, fqdn, user_permission=[f'"{user_addr}" "{"all"}"'])
                     folder = Bunch(dn=dn, name=name, mail_address=address)
 
                     # check folder with mail address

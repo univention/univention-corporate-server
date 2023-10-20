@@ -71,11 +71,7 @@ class LockingError(UpdaterException):
 
     def __str__(self):
         # type: () -> str
-        return "Another updater process %s is currently running according to %s: %s" % (
-            self.args[0],
-            FN_LOCK_UP,
-            self.args[1],
-        )
+        return f"Another updater process {self.args[0]} is currently running according to {FN_LOCK_UP}: {self.args[1]}"
 
 
 class UpdaterLock(object):
@@ -140,7 +136,7 @@ class UpdaterLock(object):
                     raise LockingError(lock_pid_b, "Invalid PID")
 
                 if not lock_pid_s:
-                    print('Empty lockfile %s, removing.' % (FN_LOCK_UP,), file=sys.stderr)
+                    print(f'Empty lockfile {FN_LOCK_UP}, removing.', file=sys.stderr)
                     os.remove(FN_LOCK_UP)
                     continue  # redo acquire
 
@@ -204,7 +200,7 @@ def apt_lock(timeout=300, out=sys.stdout):
         print("\r%3d Waiting for updater lock %s ..." % (count, FN_LOCK_APT), end="", file=out)
         sleep(1)
     else:
-        print("Updater is still locked: %s" % (FN_LOCK_APT,), file=out)
+        print(f"Updater is still locked: {FN_LOCK_APT}", file=out)
         # FIXME: Abort?
 
     open(FN_LOCK_APT, "w").close()

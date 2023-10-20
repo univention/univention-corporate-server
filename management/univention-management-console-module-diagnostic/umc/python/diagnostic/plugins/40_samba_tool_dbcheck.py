@@ -49,7 +49,7 @@ def run_samba_tool_dbcheck_fix(umc_instance: Instance) -> None:
     (success, output) = util.run_with_output(cmd)
 
     cmd_string = ' '.join(cmd)
-    MODULE.process('Output of %s:\n%s' % (cmd_string, output))
+    MODULE.process(f'Output of {cmd_string}:\n{output}')
     fix_log = [_('Output of `{cmd}`:').format(cmd=cmd_string)]
 
     fix_log.append(output)

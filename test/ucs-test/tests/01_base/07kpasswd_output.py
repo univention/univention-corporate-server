@@ -52,7 +52,7 @@ def get_unique_username():
 
 def create_ssh_session(username, password):
     known_hosts_file = tempfile.NamedTemporaryFile()
-    shell = pexpect.spawn('ssh', ['-o', 'UserKnownHostsFile="%s"' % known_hosts_file.name, '%s@localhost' % username], timeout=10)  # logfile=sys.stdout)
+    shell = pexpect.spawn('ssh', ['-o', f'UserKnownHostsFile="{known_hosts_file.name}"', f'{username}@localhost'], timeout=10)  # logfile=sys.stdout)
     status = shell.expect([pexpect.TIMEOUT, '[Pp]assword: ', 'Are you sure you want to continue connecting'])
     del known_hosts_file
     if status == 2:  # accept public key
@@ -132,7 +132,7 @@ if __name__ == "__main__":
         else:
             print('the password was not changed')
         if password_changed:
-            print('\tThe short password "%s" was accepted - this should not happen.' % (newpassword,))
+            print(f'\tThe short password "{newpassword}" was accepted - this should not happen.')
             sys.exit(120)  # Transient error
 
         if kpasswd_reported_success:

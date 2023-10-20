@@ -44,8 +44,8 @@ CWD = dirname(__file__)
 LDAPBASE = '$ldap_base'
 DOMAIN = '$domainname'
 
-IMPORTFILE = '%s/data.csv' % CWD
-IMPORTIMAGEDIR = '%s/images' % CWD
+IMPORTFILE = f'{CWD}/data.csv'
+IMPORTIMAGEDIR = f'{CWD}/images'
 FIELDS = (
     "dn uid firstname lastname displayName gender birthplace birthday age imageref "  # 0-9
     "mail office organisation department employeeType degree manager managerDN "  # 10-17
@@ -69,7 +69,7 @@ NAGIOS_SERVICES = (
 )
 DC_OPTIONS = '--option kerberos --option samba --option posix --option nagios'
 NAGIOS_OPTIONS = ' '.join(
-    '--append nagiosServices=cn=%s,cn=nagios,%s' % (iservice, LDAPBASE)
+    f'--append nagiosServices=cn={iservice},cn=nagios,{LDAPBASE}'
     for iservice in NAGIOS_SERVICES
 )
 

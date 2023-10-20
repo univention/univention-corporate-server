@@ -58,7 +58,7 @@ def main():
         # create an UMC operation set to allow the udm/object/policies command
         operation_set_dn = udm.create_object(
             'settings/umc_operationset',
-            position="cn=operations,cn=UMC,cn=univention,%s" % udm.LDAP_BASE,
+            position=f"cn=operations,cn=UMC,cn=univention,{udm.LDAP_BASE}",
             name='test-umc-opset',
             description="policy result test op set",
             operation=["udm/object/policies"],
@@ -69,7 +69,7 @@ def main():
         # containing the UMC operating set
         umc_policy_dn = udm.create_object(
             'policies/umc',
-            position="cn=UMC,cn=policies,%s" % udm.LDAP_BASE,
+            position=f"cn=UMC,cn=policies,{udm.LDAP_BASE}",
             name='test-umc-policy',
             allow=operation_set_dn,
         )
@@ -91,8 +91,8 @@ def main():
         for name, kwargs in policies.items():
             policies[name] = udm.create_object(
                 'policies/registry',
-                position="cn=policies,%s" % udm.LDAP_BASE,
-                name='test-%s-ucr-policy' % name,
+                position=f"cn=policies,{udm.LDAP_BASE}",
+                name=f'test-{name}-ucr-policy',
                 **kwargs,
             )
 
@@ -211,7 +211,7 @@ def _assert(first, second, name):
     if set(first) != set(second):
         fail(f'ERROR: {name}: {set(first)!r} != {set(second)!r}')
     else:
-        print('OK: %s' % name)
+        print(f'OK: {name}')
 
 
 if __name__ == '__main__':

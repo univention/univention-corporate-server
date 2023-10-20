@@ -51,7 +51,7 @@ def main():
             })
 
         # create folder with mailPrimaryAddress (mpa)
-        dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=True, user_permission=['"%s" "%s"' % (user_addr, 'all')])
+        dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=True, user_permission=[f'"{user_addr}" "{"all"}"'])
         folder = Bunch(dn=dn, name=name, mail_address=address)
 
         # check folder with mail address
@@ -76,8 +76,8 @@ def main():
             # reconfigure system
             #
             ucr_settings = [
-                'mail/dovecot/mailbox/rename=%s' % (flag_rename,),
-                'mail/dovecot/mailbox/delete=%s' % (flag_delete,),
+                f'mail/dovecot/mailbox/rename={flag_rename}',
+                f'mail/dovecot/mailbox/delete={flag_delete}',
             ]
             handler_set(ucr_settings)
             utils.restart_listener()
@@ -92,7 +92,7 @@ def main():
             send_mail(recipients=[old_address], messageid=msgid, server=fqdn)
             for _ in range(TIMEOUT_MAIL):
                 try:
-                    found = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (old_address,), use_ssl=True)
+                    found = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder=f'shared/{old_address}', use_ssl=True)
                 except AssertionError as exc:
                     print(exc)
                     found = False
@@ -121,7 +121,7 @@ def main():
 
             if os.path.exists(old_dir):
                 utils.fail('Test %d: old_dir = %r has not been renamed! %r' % (i, old_dir, folder))
-            cnt = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True)
+            cnt = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder=f'shared/{new_address}', use_ssl=True)
             if not cnt:
                 print('Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt))
                 time.sleep(180)

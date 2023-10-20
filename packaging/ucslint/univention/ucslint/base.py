@@ -152,11 +152,11 @@ class UPCMessage:
 
     def __str__(self) -> str:
         if self.filename:
-            s = '%s' % self.filename
+            s = f'{self.filename}'
             if self.row is not None:
-                s += ':%s' % self.row
+                s += f':{self.row}'
                 if self.col is not None:
-                    s += ':%s' % self.col
+                    s += f':{self.col}'
             return f'{self.id}: {s}: {self.msg}'
         return f'{self.id}: {self.msg}'
 

@@ -59,7 +59,7 @@ def copy_out_logs():
     password = config.get('General', 'password')
 
     execute_through_ssh(password, 'cd /var; tar czf log.tar.gz log', ip)
-    copy_through_ssh(password, 'root@%s:/var/log.tar.gz' % (ip), '.')
+    copy_through_ssh(password, f'root@{(ip)}:/var/log.tar.gz', '.')
 
 
 def remove_old_sshkeys():

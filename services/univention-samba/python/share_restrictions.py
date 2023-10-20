@@ -75,7 +75,7 @@ class Restrictions(dict):
     def _add(self, key, value):
         if not isinstance(value, (tuple, list, set)):
             value = [value]
-        value = ['"%s"' % x if ' ' in x else x for x in value]
+        value = [f'"{x}"' if ' ' in x else x for x in value]
         if self[key] is None:
             self[key] = set(value)
         else:
@@ -361,10 +361,10 @@ class ShareConfiguration(object):
                 for option in share:
                     if share[option] is None:
                         continue
-                    fd.write('%s = ' % option)
+                    fd.write(f'{option} = ')
                     fd.write(' '.join(share[option]))
                     fd.write('\n')
-            includes.add('include = %s' % share_filename)
+            includes.add(f'include = {share_filename}')
 
         # write print share configs
         for prt in self._printers.values():
@@ -373,21 +373,21 @@ class ShareConfiguration(object):
                 continue
 
             filename = os.path.join(ShareConfiguration.SHARES_DIR, ShareConfiguration.PREFIX + prt.name + ShareConfiguration.POSTFIX)
-            includes.add('include = %s' % filename)
+            includes.add(f'include = {filename}')
 
             with open(filename, 'w') as fd:
                 if not prt.smbname:
-                    fd.write('[%s]\n' % prt.name)
+                    fd.write(f'[{prt.name}]\n')
                 else:
-                    fd.write('[%s]\n' % prt.smbname)
-                    fd.write('printer name = %s\n' % prt.name)
+                    fd.write(f'[{prt.smbname}]\n')
+                    fd.write(f'printer name = {prt.name}\n')
                     fd.write('path = /tmp\n')
                     fd.write('guest ok = yes\n')
                     fd.write('printable = yes\n')
 
                 for option in (Restrictions.VALID_USERS, Restrictions.INVALID_USERS, Restrictions.HOSTS_DENY, Restrictions.HOSTS_ALLOW):
                     if option in prt and prt[option] is not None:
-                        fd.write('%s = ' % option)
+                        fd.write(f'{option} = ')
                         fd.write(' '.join(prt[option]))
                         fd.write('\n')
 

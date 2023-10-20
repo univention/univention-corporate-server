@@ -21,27 +21,27 @@ def cleanup(app):
 
 
 def verify_certs(app):
-    print('looking for %s' % app.check_dir)
+    print(f'looking for {app.check_dir}')
     assert os.path.isdir(app.check_dir) is True
-    print('%s exists' % app.check_dir)
+    print(f'{app.check_dir} exists')
     for i in app.cert_files:
-        print('looking for %s in container' % i)
+        print(f'looking for {i} in container')
         assert os.path.isfile(app.file(i)) is True
-        print('%s exists' % i)
+        print(f'{i} exists')
 
 
 if __name__ == '__main__':
     with Appcenter() as appcenter:
 
         name = get_app_name()
-        check_dir = '/tmp/update-certificates-test-%s' % name
+        check_dir = f'/tmp/update-certificates-test-{name}'
         setup = '#!/bin/sh'
         store_data = '#!/bin/sh'
-        update_certificates = '''#!/bin/sh
+        update_certificates = f'''#!/bin/sh
 set -x
-mkdir "%s"
+mkdir "{check_dir}"
 exit 0
-''' % check_dir
+'''
 
         app = App(name=name, version='1', build_package=False, call_join_scripts=False)
         app.check_dir = check_dir

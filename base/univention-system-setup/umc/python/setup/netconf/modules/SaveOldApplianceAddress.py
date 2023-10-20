@@ -46,7 +46,7 @@ class PhaseSaveOldApplianceAddress(AddressChange):
     @staticmethod
     def _prefix_iface(prefix: str, iface: Dict[str, _V]) -> Dict[str, _V]:
         new_iface = {
-            "interfaces/%s/%s" % (prefix, key): value
+            f"interfaces/{prefix}/{key}": value
             for key, value in iface.items()
         }
         return new_iface

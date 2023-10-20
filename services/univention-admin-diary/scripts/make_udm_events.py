@@ -81,10 +81,10 @@ def print_events(m):
         try:
             object_name = m.short_description
         except AttributeError:
-            sys.stderr.write('no short_description and no object_name in %s\n' % m)
+            sys.stderr.write(f'no short_description and no object_name in {m}\n')
             return
         else:
-            sys.stderr.write('using short_description in %s\n' % m)
+            sys.stderr.write(f'using short_description in {m}\n')
     english_name = translation.translate(object_name)
     translation.set_language('de_DE.UTF-8')
     german_name = translation.translate(object_name)
@@ -108,7 +108,7 @@ def print_events(m):
                 else:
                     args.append(k)
     if len(args) == 0:
-        sys.stderr.write('no args in %s\n' % m)
+        sys.stderr.write(f'no args in {m}\n')
         return
     if 'add' in m.operations:
         print_created(m, english_name, german_name, args, icon)

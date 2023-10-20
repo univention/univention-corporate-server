@@ -43,9 +43,9 @@ def create_ovf_descriptor_virtualbox(machine_uuid: uuid.UUID, image_name: str, v
         'xsi': XSI_NAMESPACE,
     })
 
-    OVF = '{%s}' % (OVF_NAMESPACE,)
-    VBOX = '{%s}' % (VBOX_NAMESPACE,)
-    XML = '{%s}' % (XML_NAMESPACE,)
+    OVF = f'{{{OVF_NAMESPACE}}}'
+    VBOX = f'{{{VBOX_NAMESPACE}}}'
+    XML = f'{{{XML_NAMESPACE}}}'
     Erasd = lxml.builder.ElementMaker(namespace=RASD_NAMESPACE)
     Evbox = lxml.builder.ElementMaker(namespace=VBOX_NAMESPACE)
     Evssd = lxml.builder.ElementMaker(namespace=VSSD_NAMESPACE)
@@ -180,8 +180,8 @@ class OVA_Virtualbox(TargetFile):
 
     def create(self, image: Raw) -> None:
         options = self.options
-        image_name = '%s-virtualbox-disk1.vmdk' % (options.product,)
-        descriptor_name = '%s-virtualbox.ovf' % (options.product,)
+        image_name = f'{options.product}-virtualbox-disk1.vmdk'
+        descriptor_name = f'{options.product}-virtualbox.ovf'
         archive_name = self.archive_name()
 
         machine_uuid = uuid.uuid4()

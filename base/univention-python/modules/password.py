@@ -169,7 +169,7 @@ class Check(object):
                     if c in password:
                         break
                 else:
-                    raise CheckFailed('Password does not contain one of required characters: "%s"' % self.required_chars)
+                    raise CheckFailed(f'Password does not contain one of required characters: "{self.required_chars}"')
 
             cracklib.MIN_LENGTH = self.min_length
 
@@ -219,12 +219,12 @@ def password_config(scope=None):
 
     if scope:
         cfg = {
-            'digits': ucr.ucr.get_int('password/%s/quality/credit/digits' % scope, default_cfg.get('digits')),
-            'lower': ucr.ucr.get_int('password/%s/quality/credit/lower' % scope, default_cfg.get('lower')),
-            'other': ucr.ucr.get_int('password/%s/quality/credit/other' % scope, default_cfg.get('other')),
-            'upper': ucr.ucr.get_int('password/%s/quality/credit/upper' % scope, default_cfg.get('upper')),
-            'forbidden': ucr.ucr.get('password/%s/quality/forbidden/chars' % scope, default_cfg.get('forbidden')),
-            'min_length': ucr.ucr.get_int('password/%s/quality/length/min' % scope, default_cfg.get('min_length')),
+            'digits': ucr.ucr.get_int(f'password/{scope}/quality/credit/digits', default_cfg.get('digits')),
+            'lower': ucr.ucr.get_int(f'password/{scope}/quality/credit/lower', default_cfg.get('lower')),
+            'other': ucr.ucr.get_int(f'password/{scope}/quality/credit/other', default_cfg.get('other')),
+            'upper': ucr.ucr.get_int(f'password/{scope}/quality/credit/upper', default_cfg.get('upper')),
+            'forbidden': ucr.ucr.get(f'password/{scope}/quality/forbidden/chars', default_cfg.get('forbidden')),
+            'min_length': ucr.ucr.get_int(f'password/{scope}/quality/length/min', default_cfg.get('min_length')),
         }
     else:
         cfg = default_cfg
@@ -284,25 +284,25 @@ def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_len
         if digit_characters:
             random_list.extend(rnd.choices(digit_characters, k=digits))
         else:
-            raise ValueError('There are %s digits requested but digits pool is empty' % (digits,))
+            raise ValueError(f'There are {digits} digits requested but digits pool is empty')
 
     if lower > 0:
         if ascii_lowercase:
             random_list.extend(rnd.choices(ascii_lowercase, k=lower))
         else:
-            raise ValueError('There are %s lowercase characters requested but lowercase pool is empty' % (lower,))
+            raise ValueError(f'There are {lower} lowercase characters requested but lowercase pool is empty')
 
     if upper > 0:
         if ascii_uppercase:
             random_list.extend(rnd.choices(ascii_uppercase, k=upper))
         else:
-            raise ValueError('There are %s uppercase characters requested but uppercase pool is empty' % (upper,))
+            raise ValueError(f'There are {upper} uppercase characters requested but uppercase pool is empty')
 
     if other > 0:
         if special_characters:
             random_list.extend(rnd.choices(special_characters, k=other))
         else:
-            raise ValueError('There are %s special characters requested but special characters pool is empty' % (other,))
+            raise ValueError(f'There are {other} special characters requested but special characters pool is empty')
 
     if min_length > len(random_list):
         available_char_pool = ''.join(set(digit_characters + ascii_lowercase + ascii_uppercase + special_characters))

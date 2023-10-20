@@ -67,18 +67,18 @@ def exit(result: int, message: Optional[str] = None) -> None:
     """Exit with optional error message."""
     script = os.path.basename(sys.argv[0])
     if message:
-        print('%s: %s' % (script, message), file=sys.stderr)
+        print(f'{script}: {message}', file=sys.stderr)
     sys.exit(result)
 
 
 def query_policy(host_dn: str, server: Optional[str] = None, password_file: str = "/etc/machine.secret", verbose: bool = False) -> Set[str]:
     """Get NFS shares from LDAP as per policy for dn."""
-    debug('Retrieving policy for %s...\n' % (host_dn,))
+    debug(f'Retrieving policy for {host_dn}...\n')
     try:
         (results, _) = policy_result(dn=host_dn, binddn=host_dn, bindpw=password_file, ldap_server=server)
     except PolicyResultFailed as ex:
         if verbose:
-            print('WARN: failed to execute univention_policy_result: %s' % (ex,), file=sys.stderr)
+            print(f'WARN: failed to execute univention_policy_result: {ex}', file=sys.stderr)
         sys.exit(1)
     return set(results.get('univentionNFSMounts', []))
 
@@ -97,7 +97,7 @@ def main() -> None:
 
     if not args.dn:
         parser.error("ldap/hostdn is not set.")
-    debug("Hostdn is %s\n" % args.dn)
+    debug(f"Hostdn is {args.dn}\n")
 
     to_mount = update_fstab(args, simulate)
     mount(to_mount)
@@ -111,19 +111,19 @@ def update_fstab(args: argparse.Namespace, simulate: bool) -> Set[str]:
     nfs_mounts = query_policy(args.dn)
 
     for nfs_mount in nfs_mounts:
-        debug("NFS Mount: %s ..." % nfs_mount)
+        debug(f"NFS Mount: {nfs_mount} ...")
 
         data = get_nfs_data(nfs_mount, current_fstab.get())
         if data:
             dn, nfs_path_ip, mp = data
-            comment = "%s %s" % (MAGIC_LDAP, dn)
+            comment = f"{MAGIC_LDAP} {dn}"
             nfs_entry = current_fstab.find(comment=comment)
             if nfs_entry is not None:
-                debug("\n- %s" % (nfs_entry,))
+                debug(f"\n- {nfs_entry}")
                 current_fstab.remove(nfs_entry)
             nfs_entry = fstab.Entry(nfs_path_ip, mp, "nfs", comment=comment)
             current_fstab.append(nfs_entry)
-            debug("\n+ %s" % (nfs_entry,))
+            debug(f"\n+ {nfs_entry}")
             to_mount.add(mp)
 
     debug('Switching /etc/fstab...\n')
@@ -167,20 +167,20 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[s
     # skip share if target already in fstab
     mount_points = [entry.mount_point for entry in entries]
     if mp in mount_points:
-        debug('already mounted on %s, skipping\n' % mp)
+        debug(f'already mounted on {mp}, skipping\n')
         return None
 
     # skip share if to self
     fqdn = "%(hostname)s.%(domainname)s" % ucr
     if share_host == fqdn and overlap(share_path, mp):
-        debug('is self and %s overlaps %s, skipping\n' % (share_path, mp))
+        debug(f'is self and {share_path} overlaps {mp}, skipping\n')
         return None
 
-    nfs_path_fqdn = "%s:%s" % (share_host, share_path)
+    nfs_path_fqdn = f"{share_host}:{share_path}"
     # skip share if the source is already in the fstab
     sources = [entry.spec for entry in entries]
     if nfs_path_fqdn in sources:
-        debug('already mounted from %s, skipping\n' % nfs_path_fqdn)
+        debug(f'already mounted from {nfs_path_fqdn}, skipping\n')
         return None
 
     # get the ip of the share_host
@@ -197,7 +197,7 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[s
 
     # skip share if the source is already in the fstab
     if nfs_path_ip in sources:
-        debug('already mounted from %s, skipping\n' % nfs_path_ip)
+        debug(f'already mounted from {nfs_path_ip}, skipping\n')
         return None
 
     return dn, nfs_path_ip, mp
@@ -228,7 +228,7 @@ def mount(to_mount: Set[str]) -> None:
     for mp in sorted(to_mount):
         if not os.path.exists(mp):
             os.makedirs(mp)
-        debug('Mounting %s...\n' % mp)
+        debug(f'Mounting {mp}...\n')
         if not simulate:
             subprocess.call(['mount', mp])
 

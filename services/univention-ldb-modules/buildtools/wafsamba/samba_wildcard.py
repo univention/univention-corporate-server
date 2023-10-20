@@ -45,7 +45,7 @@ def run_named_build_task(cmd):
 
 
     if not found:
-        raise Errors.WafError("Unable to find build target matching %s" % cmd)
+        raise Errors.WafError(f"Unable to find build target matching {cmd}")
 
 
 def rewrite_compile_targets():
@@ -111,7 +111,7 @@ def wildcard_main(missing_cmd_fn):
 
         ela = ''
         if not Options.options.progress_bar:
-            ela = ' (%s)' % Utils.get_elapsed_time(ini)
+            ela = f' ({Utils.get_elapsed_time(ini)})'
 
         if x != 'init' and x != 'shutdown':
             Logs.info('%r finished successfully%s' % (x, ela))
@@ -141,7 +141,7 @@ def fake_build_environment(info=True, flush=False):
     bld.load_envs()
 
     if info:
-        Logs.info("Waf: Entering directory `%s'" % bld.bldnode.abspath())
+        Logs.info(f"Waf: Entering directory `{bld.bldnode.abspath()}'")
     bld.add_subdirs([os.path.split(Context.g_module.root_path)[0]])
 
     bld.pre_build()

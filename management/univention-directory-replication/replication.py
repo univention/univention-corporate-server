@@ -306,13 +306,13 @@ def update_schema(attr: Dict[str, List[bytes]]) -> None:
         if oid in BUILTIN_OIDS:
             continue
         obj = _insert_linebereak(str(subschema.get_obj(ldap.schema.AttributeType, oid)))
-        print('attributetype %s' % (obj,), file=fp)
+        print(f'attributetype {obj}', file=fp)
 
     for oid in subschema_sort(subschema, ldap.schema.ObjectClass):
         if oid in BUILTIN_OIDS:
             continue
         obj = _insert_linebereak(str(subschema.get_obj(ldap.schema.ObjectClass, oid)))
-        print('objectclass %s' % (obj,), file=fp)
+        print(f'objectclass {obj}', file=fp)
 
     fp.close()
 
@@ -335,18 +335,18 @@ def getOldValues(ldapconn: ldap.ldapobject, dn: str) -> Dict[str, List[bytes]]:
         try:
             res = ldapconn.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
         except ldap.NO_SUCH_OBJECT as ex:
-            ud.debug(ud.LISTENER, ud.ALL, "replication: LOCAL not found: %s %s" % (dn, ex))
+            ud.debug(ud.LISTENER, ud.ALL, f"replication: LOCAL not found: {dn} {ex}")
             old = {}
         else:
             try:
                 ((_dn, old),) = res
                 entryCSN = old.get('entryCSN', None)
-                ud.debug(ud.LISTENER, ud.ALL, "replication: LOCAL found result: %s %s" % (dn, entryCSN))
+                ud.debug(ud.LISTENER, ud.ALL, f"replication: LOCAL found result: {dn} {entryCSN}")
             except (TypeError, ValueError) as ex:
-                ud.debug(ud.LISTENER, ud.ALL, "replication: LOCAL empty result: %s: %s" % (dn, ex))
+                ud.debug(ud.LISTENER, ud.ALL, f"replication: LOCAL empty result: {dn}: {ex}")
                 old = {}
     else:
-        ud.debug(ud.LISTENER, ud.ALL, "replication: LDIF empty result: %s" % (dn,))
+        ud.debug(ud.LISTENER, ud.ALL, f"replication: LDIF empty result: {dn}")
         old = {}
 
     return old
@@ -356,7 +356,7 @@ def _delete_dn_recursive(lo: ldap.ldapobject, dn: str) -> None:
     try:
         lo.delete_s(dn)
     except ldap.NOT_ALLOWED_ON_NONLEAF:
-        ud.debug(ud.LISTENER, ud.WARN, 'replication: Failed to delete non leaf object: dn=[%s];' % dn)
+        ud.debug(ud.LISTENER, ud.WARN, f'replication: Failed to delete non leaf object: dn=[{dn}];')
         dns = [dn2 for dn2, _attr in lo.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['dn'], attrsonly=1)]
         dns.reverse()
         for dn in dns:
@@ -370,7 +370,7 @@ def _backup_dn_recursive(lo: ldap.ldapobject, dn: str) -> None:
         return
 
     backup_file = os.path.join(BACKUP_DIR, str(time.time()))
-    ud.debug(ud.LISTENER, ud.PROCESS, 'replication: dump %s to %s' % (dn, backup_file))
+    ud.debug(ud.LISTENER, ud.PROCESS, f'replication: dump {dn} to {backup_file}')
     with open(backup_file, 'w+') as fd:
         os.fchmod(fd.fileno(), 0o600)
         ldif_writer = ldifparser.LDIFWriter(fd)
@@ -379,12 +379,12 @@ def _backup_dn_recursive(lo: ldap.ldapobject, dn: str) -> None:
 
 
 def _remove_file(pathname: str) -> None:
-    ud.debug(ud.LISTENER, ud.ALL, 'replication: removing %s' % (pathname,))
+    ud.debug(ud.LISTENER, ud.ALL, f'replication: removing {pathname}')
     try:
         os.remove(pathname)
     except EnvironmentError as ex:
         if ex.errno != ENOENT:
-            ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove %s: %s' % (pathname, ex))
+            ud.debug(ud.LISTENER, ud.ERROR, f'replication: failed to remove {pathname}: {ex}')
 
 
 def _add_object_from_new(lo: ldap.ldapobject, dn: str, new: Dict[str, List[bytes]]) -> None:
@@ -398,7 +398,7 @@ def _add_object_from_new(lo: ldap.ldapobject, dn: str, new: Dict[str, List[bytes
 def _modify_object_from_old_and_new(lo: ldap.ldapobject, dn: str, old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> None:
     ml = modlist(old, new)
     if ml:
-        ud.debug(ud.LISTENER, ud.ALL, 'replication: modify: %s' % dn)
+        ud.debug(ud.LISTENER, ud.ALL, f'replication: modify: {dn}')
         lo.modify_s(dn, ml)
 
 
@@ -409,7 +409,7 @@ def _read_dn_from_file(filename: str) -> str | None:
         with open(filename) as fd:
             old_dn = fd.read()
     except EnvironmentError as ex:
-        ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (filename, ex))
+        ud.debug(ud.LISTENER, ud.ERROR, f'replication: failed to open/read modrdn file {filename}: {ex}')
 
     return old_dn
 
@@ -432,7 +432,7 @@ def check_file_system_space() -> None:
         ' %r\n\n'
         'Please free up some disk space and restart the Univention LDAP Listener with the following command:\n'
         'systemctl restart univention-directory-listener' % (fqdn, LDAP_DIR, stat))
-    msg['Subject'] = 'Alert: Critical disk space on %s' % (fqdn,)
+    msg['Subject'] = f'Alert: Critical disk space on {fqdn}'
     sender = 'root'
     recipient = listener.configRegistry.get('ldap/replication/filesystem/recipient', sender)
 
@@ -454,7 +454,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[b
 
     check_file_system_space()
 
-    ud.debug(ud.LISTENER, ud.INFO, 'replication: Running handler %s for: %s' % (operation, dn))
+    ud.debug(ud.LISTENER, ud.INFO, f'replication: Running handler {operation} for: {dn}')
     if dn == 'cn=Subschema':
         return update_schema(new)
 
@@ -489,23 +489,23 @@ def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[b
                 # Check if both entries really match
                 match = True
                 if len(old) != len(listener_old):
-                    ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP keys=%s; listener keys=%s' % (list(old.keys()), list(listener_old.keys())))
+                    ud.debug(ud.LISTENER, ud.INFO, f'replication: LDAP keys={list(old.keys())}; listener keys={list(listener_old.keys())}')
                     match = False
                 else:
                     for k in old:
                         if k in EXCLUDE_ATTRIBUTES:
                             continue
                         if k not in listener_old:
-                            ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have key %s' % (k,))
+                            ud.debug(ud.LISTENER, ud.INFO, f'replication: listener does not have key {k}')
                             match = False
                             break
                         if len(old[k]) != len(listener_old[k]):
-                            ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP and listener values diff for %s' % (k,))
+                            ud.debug(ud.LISTENER, ud.INFO, f'replication: LDAP and listener values diff for {k}')
                             match = False
                             break
                         for v in old[k]:
                             if v not in listener_old[k]:
-                                ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have value for key %s' % (k,))
+                                ud.debug(ud.LISTENER, ud.INFO, f'replication: listener does not have value for key {k}')
                                 match = False
                                 break
                 if not match:
@@ -522,11 +522,11 @@ def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[b
                 new_entryUUID = new['entryUUID'][0].decode('ASCII')
                 modrdn_cache = os.path.join(STATE_DIR, new_entryUUID)
                 if modrdn_cache == target_uuid_file:
-                    ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
+                    ud.debug(ud.LISTENER, ud.PROCESS, f'replication: rename phase II: {dn} (entryUUID={new_entryUUID})')
 
                     if old:
                         # this means the target already exists, we have to delete this old object
-                        ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the rename target already exists in the local LDAP, backup and remove the dn: %s' % (dn,))
+                        ud.debug(ud.LISTENER, ud.PROCESS, f'replication: the rename target already exists in the local LDAP, backup and remove the dn: {dn}')
                         _backup_dn_recursive(lo, dn)
                         _delete_dn_recursive(lo, dn)
 
@@ -539,25 +539,25 @@ def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[b
                         delold = 0
                         for (key, value, _typ) in ldap.dn.str2dn(old_dn)[0]:
                             if key not in new:
-                                ud.debug(ud.LISTENER, ud.ALL, 'replication: move: attr %s not present' % (key,))
+                                ud.debug(ud.LISTENER, ud.ALL, f'replication: move: attr {key} not present')
                                 delold = 1
                             elif value not in new[key]:
-                                ud.debug(ud.LISTENER, ud.ALL, 'replication: move: val %s not present in attr %s' % (value, new[key]))
+                                ud.debug(ud.LISTENER, ud.ALL, f'replication: move: val {value} not present in attr {new[key]}')
                                 delold = 1
 
-                        ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename from %s to %s' % (old_dn, dn))
+                        ud.debug(ud.LISTENER, ud.PROCESS, f'replication: rename from {old_dn} to {dn}')
                         lo.rename_s(old_dn, new_rdn, new_parent, delold=delold)
                         _remove_file(modrdn_cache)
                     else:
                         # the old object does not exists, so we have to re-create the new object
-                        ud.debug(ud.LISTENER, ud.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
+                        ud.debug(ud.LISTENER, ud.ALL, f'replication: the local target does not exist, so the object will be added: {dn}')
                         _add_object_from_new(lo, dn, new)
                         _remove_file(modrdn_cache)
                 else:  # current_modrdn points to a different file
-                    ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % (target_uuid_file,))
+                    ud.debug(ud.LISTENER, ud.PROCESS, f'replication: the current modrdn points to a different entryUUID: {target_uuid_file}')
 
                     if old_dn:
-                        ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the DN %s from the %s has to be backuped and removed' % (old_dn, CURRENT_MODRDN))
+                        ud.debug(ud.LISTENER, ud.PROCESS, f'replication: the DN {old_dn} from the {CURRENT_MODRDN} has to be backuped and removed')
                         _backup_dn_recursive(lo, old_dn)
                         _delete_dn_recursive(lo, old_dn)
                     else:
@@ -580,7 +580,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[b
         elif old and not new:
             if operation == 'r':  # check for modrdn phase 1
                 old_entryUUID = old['entryUUID'][0].decode('ASCII')
-                ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase I: %s (entryUUID=%s)' % (dn, old_entryUUID))
+                ud.debug(ud.LISTENER, ud.PROCESS, f'replication: rename phase I: {dn} (entryUUID={old_entryUUID})')
                 modrdn_cache = os.path.join(STATE_DIR, old_entryUUID)
                 try:
                     with open(modrdn_cache, 'w') as fd:
@@ -592,9 +592,9 @@ def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[b
                     return
                 except EnvironmentError as ex:
                     # d'oh! output some message and continue doing a delete+add instead
-                    ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, ex))
+                    ud.debug(ud.LISTENER, ud.ERROR, f'replication: failed to open/write modrdn file {modrdn_cache}: {ex}')
 
-            ud.debug(ud.LISTENER, ud.ALL, 'replication: delete: %s' % dn)
+            ud.debug(ud.LISTENER, ud.ALL, f'replication: delete: {dn}')
             _delete_dn_recursive(lo, dn)
     except ldap.SERVER_DOWN as ex:
         log_ldap(ud.WARN, 'retrying', ex)

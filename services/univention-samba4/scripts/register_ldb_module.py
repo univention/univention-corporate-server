@@ -86,7 +86,7 @@ if __name__ == "__main__":
                 try:
                     modules_list_0.remove(module)
                 except ValueError:
-                    print("Module %s not in @LIST, ignoring" % module)
+                    print(f"Module {module} not in @LIST, ignoring")
             modules_list_0.reverse()
 
         updated_modules = []

@@ -223,7 +223,7 @@ def check_swig_version(conf, minver=None):
 		conf.msg('Checking for swig version', swigver_full)
 	else:
 		minver_str = '.'.join(map(str, minver))
-		conf.msg('Checking for swig version >= %s' % (minver_str,), swigver_full, color=result and 'GREEN' or 'YELLOW')
+		conf.msg(f'Checking for swig version >= {minver_str}', swigver_full, color=result and 'GREEN' or 'YELLOW')
 
 	if not result:
 		conf.fatal('The swig version is too old, expecting %r' % (minver,))

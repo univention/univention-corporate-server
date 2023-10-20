@@ -78,7 +78,7 @@ def log_init(filename, log_level=2, log_pid=None):
     :param bool log_pid: Prefix log message with process ID
     """
     if not os.path.isabs(filename) and filename not in {'stdout', 'stderr'}:
-        filename = '/var/log/univention/%s.log' % filename
+        filename = f'/var/log/univention/{filename}.log'
     fd = ud.init(filename, ud.FLUSH, ud.NO_FUNCTION)
     adm = grp.getgrnam('adm')
     os.fchown(fd.fileno(), 0, adm.gr_gid)
@@ -125,7 +125,7 @@ class ILogger(object):
         fallbackLoggingFormatter = logging.Formatter('%%(asctime)s.%%(msecs)03d %(component)-11s ( %%(level)-7s ) : %%(message)s' % {'component': id}, '%d.%m.%y %H:%M:%S')
         fallbackLoggingHandler = logging.StreamHandler()
         fallbackLoggingHandler.setFormatter(fallbackLoggingFormatter)
-        self._fallbackLogger = logging.getLogger('UMC.%s' % id)
+        self._fallbackLogger = logging.getLogger(f'UMC.{id}')
         self._fallbackLogger.setLevel(logging.DEBUG)
         self._fallbackLogger.addHandler(fallbackLoggingHandler)
         self._extras = [
@@ -157,7 +157,7 @@ class ILogger(object):
 
     def __log(self, level, message, logger):
         if _log_pid:
-            message = '%s: %s' % (os.getpid(), message)
+            message = f'{os.getpid()}: {message}'
         if _debug_ready:
             try:
                 ud.debug(self._id, level, message)

@@ -178,7 +178,7 @@ def main():
                         'name': new_host,
                         'dnsEntryZoneForward': f'zoneName={domain},cn=dns,{basedn} {ip}',
                     },
-                    position='cn=computers,%s' % basedn,
+                    position=f'cn=computers,{basedn}',
                 )
                 usermail = f'{uts.random_name()}@{domain}'
                 userdn, username = udm.create_user(
@@ -213,7 +213,7 @@ def main():
                         'name': new_host,
                         'dnsEntryZoneForward': f'zoneName={domain},cn=dns,{basedn} {ip}',
                     },
-                    position='cn=computers,%s' % basedn,
+                    position=f'cn=computers,{basedn}',
                 )
                 usermail = f'{uts.random_name()}@{domain}'
                 userdn, username = udm.create_user(
@@ -248,7 +248,7 @@ def main():
                         'name': new_host,
                         'dnsEntryZoneForward': f'zoneName={domain},cn=dns,{basedn} {ip}',
                     },
-                    position='cn=computers,%s' % basedn,
+                    position=f'cn=computers,{basedn}',
                 )
                 usermail = f'{uts.random_name()}@{domain}'
                 userdn, username = udm.create_user(

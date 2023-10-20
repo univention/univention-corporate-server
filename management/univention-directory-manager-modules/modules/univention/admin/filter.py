@@ -355,4 +355,4 @@ def _replace_fqdn_filter(match):
     except ValueError:
         host = domain = value
         operator = '|'
-    return '(%s(cn=%s)(associatedDomain=%s))' % (operator, host, domain)
+    return f'({operator}(cn={host})(associatedDomain={domain}))'

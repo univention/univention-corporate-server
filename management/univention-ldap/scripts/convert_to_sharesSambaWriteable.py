@@ -46,8 +46,8 @@ import univention.debug as ud
 try:
     lo, position = univention.admin.uldap.getAdminConnection()
 except Exception as exc:
-    ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc, ))
-    print('authentication error: %s' % (exc,))
+    ud.debug(ud.ADMIN, ud.WARN, f'authentication error: {exc}')
+    print(f'authentication error: {exc}')
     sys.exit(1)
 
 

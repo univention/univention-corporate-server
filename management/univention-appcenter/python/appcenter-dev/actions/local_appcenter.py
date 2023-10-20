@@ -109,7 +109,7 @@ class DevUseTestAppcenter(UniventionAppAction):
         self.log('Updating all installed Apps to use the new App Center server')
         logfile_logger = get_logfile_logger('dev-use-test-appcenter')
         for app in Apps().get_all_locally_installed_apps():
-            self.log('Updating %s' % app)
+            self.log(f'Updating {app}')
             register = get_action('register')
             # we should only use ['component'] in container_mode()
             # and None otherwise, because it is more correct. however,
@@ -177,7 +177,7 @@ class FileInfo(object):
         self.filename = filename
         self.md5 = get_md5_from_file(filename)
         self.sha256 = get_sha256_from_file(filename)
-        self.archive_filename = '%s.%s' % (app.name, name)
+        self.archive_filename = f'{app.name}.{name}'
 
 
 class AppcenterApp(object):
@@ -199,11 +199,11 @@ class AppcenterApp(object):
         self.config.read([self.get_ini_file(), self.get_meta_file()])
 
     def get_metainf_url(self):
-        url = '%s/meta-inf/%s/' % (self.server, self.ucs_version)
+        url = f'{self.server}/meta-inf/{self.ucs_version}/'
         return url
 
     def get_repository_url(self):
-        return '%s/univention-repository/%s/maintained/component/%s/' % (self.server, self.ucs_version, self.name)
+        return f'{self.server}/univention-repository/{self.ucs_version}/maintained/component/{self.name}/'
 
     def _meta_url(self, filename, with_app_dir=True):
         path = filename
@@ -224,24 +224,24 @@ class AppcenterApp(object):
         return os.path.join(path, filename)
 
     def get_meta_file(self):
-        return self._meta_inf_dir('%s.meta' % self.id)
+        return self._meta_inf_dir(f'{self.id}.meta')
 
     def get_meta_url(self):
-        return self._meta_url('%s.meta' % self.id)
+        return self._meta_url(f'{self.id}.meta')
 
     def get_ini_file(self):
-        return self._meta_inf_dir('%s.ini' % self.name)
+        return self._meta_inf_dir(f'{self.name}.ini')
 
     def get_ini_url(self):
-        return self._meta_url('%s.ini' % self.name)
+        return self._meta_url(f'{self.name}.ini')
 
     def get_png_file(self):
         # since UCS 4.1 deprecated
-        return self._meta_inf_dir('%s.png' % self.name)
+        return self._meta_inf_dir(f'{self.name}.png')
 
     def get_png_url(self):
         # since UCS 4.1 deprecated
-        return self._meta_url('%s.png' % self.name)
+        return self._meta_url(f'{self.name}.png')
 
     def file_info(self, name, url, filename):
         return FileInfo(self, name, url, filename)
@@ -249,8 +249,8 @@ class AppcenterApp(object):
     def important_files(self):
         # Adding "special ini and png file
         for special_file in ['ini', 'png', 'meta']:
-            get_file_method = getattr(self, 'get_%s_file' % special_file.lower())
-            get_url_method = getattr(self, 'get_%s_url' % special_file.lower())
+            get_file_method = getattr(self, f'get_{special_file.lower()}_file')
+            get_url_method = getattr(self, f'get_{special_file.lower()}_url')
             filename = get_file_method()
             url = get_url_method()
             if os.path.exists(filename):
@@ -337,10 +337,10 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
                             archive.add(filename_in_directory, filename_in_archive)
                 index_json.write(dumps(apps, sort_keys=True, indent=4).encode('utf-8'))
         if appcenter_host.startswith('https'):
-            appcenter_host = 'http://%s' % appcenter_host[8:]
+            appcenter_host = f'http://{appcenter_host[8:]}'
         if not appcenter_host.startswith('http://'):
-            appcenter_host = 'http://%s' % appcenter_host
-        call_process(['zsyncmake', '-u', '%s/meta-inf/%s/all.tar.gz' % (appcenter_host, ucs_version), '-q', '-z', '-o', archive_name + '.zsync', archive_name])
+            appcenter_host = f'http://{appcenter_host}'
+        call_process(['zsyncmake', '-u', f'{appcenter_host}/meta-inf/{ucs_version}/all.tar.gz', '-q', '-z', '-o', archive_name + '.zsync', archive_name])
 
     def main(self, args):
         meta_inf_dir = os.path.join(args.path, 'meta-inf', args.ucs_version)
@@ -390,7 +390,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
         parser.add_argument('-r', '--readme', nargs='+', help='Path to (multiple) README files like README_DE, README_POST_INSTALL')
         parser.add_argument('--license', nargs='+', help='Path to (multiple) LICENSE_AGREEMENT files like LICENSE_AGREEMENT, LICENSE_AGREEMENT_DE')
         parser.add_argument('-p', '--packages', nargs='+', help='Path to debian packages files for the app', metavar='PACKAGE')
-        parser.add_argument('-u', '--unmaintained', nargs='+', help='Package names that exist in the unmaintained repository for UCS. ATTENTION: Only works for --ucs-version=%s; takes some time, but it is only needed once, so for further package updates of this very app version this is not need to be done again. ATTENTION: Only works for architecture %s.' % (version, arch), metavar='PACKAGE')
+        parser.add_argument('-u', '--unmaintained', nargs='+', help=f'Package names that exist in the unmaintained repository for UCS. ATTENTION: Only works for --ucs-version={version}; takes some time, but it is only needed once, so for further package updates of this very app version this is not need to be done again. ATTENTION: Only works for architecture {arch}.', metavar='PACKAGE')
         parser.add_argument('-d', '--do-not-delete-duplicates', action='store_true', help=' If any PACKAGE already exist in the repository (e.g. another version), they are removed. Unless this option is set.')
         parser.add_argument('--appcenter-host', default=default_server(), help='The hostname of the new App Center. Default: %(default)s')
 
@@ -407,7 +407,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
                 else:
                     for root, _dirnames, filenames in os.walk(meta_inf_dir):
                         for filename in filenames:
-                            if filename == '%s.ini' % component_id:
+                            if filename == f'{component_id}.ini':
                                 ini_file = os.path.join(root, filename)
                                 break
                         else:
@@ -424,7 +424,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
         if args.unmaintained:
             version = ucr_get('version/version')
             if args.ucs_version != version:
-                self.fatal('Cannot easily set up unmaintained packages for %s (need %s). You need to download them into the repository manually. Sorry!' % (args.ucs_version, version))
+                self.fatal(f'Cannot easily set up unmaintained packages for {args.ucs_version} (need {version}). You need to download them into the repository manually. Sorry!')
             else:
                 self._copy_unmaintained_packages(repo_dir, args)
         app = self._copy_meta_files(component_id, meta_inf_dir, repo_dir, args)
@@ -432,7 +432,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
             self._handle_packages(app, repo_dir, args)
             self._generate_repo_index_files(repo_dir)
         self._generate_meta_index_files(args)
-        self.log('Component is: %s' % component_id)
+        self.log(f'Component is: {component_id}')
 
     def _create_new_repo(self, args):
         if not args.ini or not os.path.exists(args.ini):
@@ -472,7 +472,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
             ucr_save({unmaintained_ucr_var: old_unmaintained})
 
     def _copy_meta_files(self, component_id, meta_inf_dir, repo_dir, args):
-        ini_file = os.path.join(meta_inf_dir, '%s.ini' % component_id)
+        ini_file = os.path.join(meta_inf_dir, f'{component_id}.ini')
         if args.clear:
             if os.path.exists(repo_dir):
                 rmdir(repo_dir)
@@ -500,7 +500,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
                 else:
                     self.copy_file(args.logo, os.path.join(meta_inf_dir, logo_fname))
             else:
-                self.copy_file(args.logo, os.path.join(meta_inf_dir, '%s.png' % component_id))
+                self.copy_file(args.logo, os.path.join(meta_inf_dir, f'{component_id}.png'))
         if args.logo_detail_page:
             parser = ConfigParser()
             parser.read(ini_file)
@@ -579,7 +579,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
                 try:
                     output = subprocess.check_output(['dpkg', '-f', pkg, 'Package', 'Version', 'Architecture']).decode('utf-8')
                 except subprocess.CalledProcessError:
-                    self.warn('%s is not a package' % pkg)
+                    self.warn(f'{pkg} is not a package')
                 else:
                     pkg_name = pkg_version = pkg_arch = None
                     __, ext = os.path.splitext(pkg)
@@ -593,11 +593,11 @@ class DevPopulateAppcenter(LocalAppcenterAction):
                         elif label == 'Architecture:':
                             pkg_arch = value
                     if pkg_name and pkg_version and pkg_arch:
-                        fname = '%s_%s_%s%s' % (pkg_name, pkg_version, pkg_arch, ext)
-                        self.debug('%s -> %s' % (pkg, fname))
+                        fname = f'{pkg_name}_{pkg_version}_{pkg_arch}{ext}'
+                        self.debug(f'{pkg} -> {fname}')
                         shutil.copy2(pkg, os.path.join(dirname, fname))
                     else:
-                        self.warn('Could not determine package name: %s' % output)
+                        self.warn(f'Could not determine package name: {output}')
             args.packages = glob(os.path.join(dirname, '*.*deb'))
             self._copy_packages(repo_dir, args)
         finally:
@@ -608,18 +608,18 @@ class DevPopulateAppcenter(LocalAppcenterAction):
             if not args.do_not_delete_duplicates:
                 package_name, ext = os.path.splitext(os.path.basename(pkg))
                 package_name = package_name.split('_', 2)[0]
-                for existing_package in glob(os.path.join(repo_dir, arch, '%s_*' % package_name)):
-                    self.warn('Deleting already existing %s' % existing_package)
+                for existing_package in glob(os.path.join(repo_dir, arch, f'{package_name}_*')):
+                    self.warn(f'Deleting already existing {existing_package}')
                     os.unlink(existing_package)
             dst = os.path.join(repo_dir, arch)
             if add_arch_ending:
                 package_name, ext = os.path.splitext(os.path.basename(pkg))
-                dst = os.path.join(dst, '%s_%s%s' % (package_name, arch, ext))
+                dst = os.path.join(dst, f'{package_name}_{arch}{ext}')
             self.copy_file(pkg, dst)
         for package in args.packages:
             package_name, ext = os.path.splitext(os.path.basename(package))
             if ext not in ['.deb', '.udeb']:
-                self.warn('%s should end with .deb' % package)
+                self.warn(f'{package} should end with .deb')
                 continue
             if package_name.endswith('_i386'):
                 _copy_package(package, 'i386')
@@ -636,7 +636,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
         mode = 'packages'
         for arch in ['i386', 'amd64', 'all']:
             filename = os.path.join(repo_dir, arch, 'Packages')
-            for fname in glob('%s*' % filename):
+            for fname in glob(f'{filename}*'):
                 os.unlink(fname)
             with open(filename, 'wb') as packages:
                 process = subprocess.Popen(['apt-ftparchive', mode, os.path.dirname(filename)], stdout=subprocess.PIPE)
@@ -647,7 +647,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
                         line = b'Filename: %s' % path
                     packages.write(b'%s\n' % line)
             if compress:
-                with open('%s.gz' % filename, 'wb') as gz:
+                with open(f'{filename}.gz', 'wb') as gz:
                     subprocess.Popen(['gzip', '--stdout', filename], stdout=gz)
                 subprocess.call(['bzip2', '--keep', filename])
 
@@ -687,18 +687,18 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
             mkdir(os.path.join(repo_dir, 'maintained', 'component'))
             for supra_file in ['app-categories.ini', 'categories.ini', 'rating.ini', 'license_types.ini', 'ucs.ini', 'suggestions.json']:
                 with open(os.path.join(meta_inf_dir, '..', supra_file), 'wb') as f:
-                    categories = urlopen('%s/meta-inf/%s' % (default_server(), supra_file)).read()
+                    categories = urlopen(f'{default_server()}/meta-inf/{supra_file}').read()
                     if supra_file == 'ucs.ini':
                         # b'[4.2]\nSupportedUCSVersions=4.2, 4.3, 4.1\n\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n\n[5.1]\nSupportedUCSVersions=5.0\n\n[5.2]\nSupportedUCSVersions=5.0\n'
                         categories = b'[5.2]\nSupportedUCSVersions=5.2, 5.1, 5.0, 4.4\n[5.1]\nSupportedUCSVersions=5.1, 5.0, 4.4\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n'
                     f.write(categories)
-            server = 'http://%s' % args.appcenter_host
+            server = f'http://{args.appcenter_host}'
             use_test_appcenter = get_action('dev-use-test-appcenter')
             use_test_appcenter.call_safe(appcenter_host=server)
             DevRegenerateMetaInf.call_safe(ucs_version=args.ucs_version, path=args.path, appcenter_host=server)
-            self.log('Local App Center server is set up at %s.' % server)
+            self.log(f'Local App Center server is set up at {server}.')
             self.log('If this server should serve as an App Center server for other computers in the UCS domain, the following command has to be executed on each computer:')
-            self.log('  univention-app dev-use-test-appcenter --appcenter-host="%s"' % server)
+            self.log(f'  univention-app dev-use-test-appcenter --appcenter-host="{server}"')
 
 
 class DevSet(UniventionAppAction):
@@ -713,7 +713,7 @@ class DevSet(UniventionAppAction):
 
     def set_ini_value(self, section, attr, value, parser):
         if not re.match('^[a-zA-Z0-9_]+$', attr):
-            raise LocalAppCenterError('May not use %s as attribute' % attr)
+            raise LocalAppCenterError(f'May not use {attr} as attribute')
         try:
             items = parser.items(section)
         except NoSectionError:
@@ -721,7 +721,7 @@ class DevSet(UniventionAppAction):
         for name, old_value in items:
             if attr.lower() == name.lower():
                 if attr != name:
-                    self.warn('Using %s instead of %s as attribute' % (name, attr))
+                    self.warn(f'Using {name} instead of {attr} as attribute')
                     attr = name
                 self.log('%s: Overwriting %r' % (attr, old_value))
         self.debug('Setting [%s]%s=%r' % (section, attr, value))
@@ -741,11 +741,11 @@ class DevSet(UniventionAppAction):
 
     def set_file_content(self, app, attr, value):
         if value:
-            self.log('Writing %s' % attr)
+            self.log(f'Writing {attr}')
             with open(app.get_cache_file(attr), 'w') as fd:
                 fd.write(value)
         else:
-            self.log('Removing %s' % attr)
+            self.log(f'Removing {attr}')
             try:
                 os.unlink(app.get_cache_file(attr))
             except EnvironmentError:
@@ -755,7 +755,7 @@ class DevSet(UniventionAppAction):
         if isinstance(attribute, AppFileAttribute):
             if section == 'Application':
                 section = 'EN'
-            attr = '%s_%s' % (underscore(attr), section)
+            attr = f'{underscore(attr)}_{section}'
             self.set_file_content(app, attr.upper(), value)
         else:
             self.set_ini_value(section, attr, value, parser)
@@ -769,7 +769,7 @@ class DevSet(UniventionAppAction):
         for section, attr, value in args.attrs:
             attribute = args.app.get_attr(underscore(attr))
             self.process(args.app, attribute, section, camelcase(attr), value, parser)
-        self.log('Rewriting %s' % ini_file)
+        self.log(f'Rewriting {ini_file}')
         with NamedTemporaryFile('w') as tmp_ini_file:
             parser.write(tmp_ini_file)
             tmp_ini_file.flush()

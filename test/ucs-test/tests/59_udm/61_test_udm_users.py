@@ -76,12 +76,12 @@ class Test_UserCreation:
     @pytest.mark.tags('apptest')
     def test_user_creation_with_mailPrimaryAddress_already_in_use(self, udm):
         """Create users/user with mailPrimaryAddress which is already in use"""
-        mailDomainName = '%s.%s' % (uts.random_name(), uts.random_name())
+        mailDomainName = f'{uts.random_name()}.{uts.random_name()}'
         emailaddr = uts.random_name()
         udm.create_object('mail/domain', name=mailDomainName)
-        udm.create_user(mailPrimaryAddress='%s@%s' % (emailaddr, mailDomainName))
+        udm.create_user(mailPrimaryAddress=f'{emailaddr}@{mailDomainName}')
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-            udm.create_user(mailPrimaryAddress='%s@%s' % (emailaddr, mailDomainName))
+            udm.create_user(mailPrimaryAddress=f'{emailaddr}@{mailDomainName}')
 
     def test_user_creation_with_uidNumber_already_in_use(self, udm):
         """Create users/user with uidNumber which is already in use"""
@@ -123,7 +123,7 @@ class Test_UserModification:
         """Set jpegPhoto during users/user modification"""
         user = udm.create_user()[0]
 
-        with open('%s/example_user_jpeg_photo.jpg' % (CWD,), "rb") as jpeg:
+        with open(f'{CWD}/example_user_jpeg_photo.jpg', "rb") as jpeg:
             jpeg_data = jpeg.read()
 
         udm.modify_object('users/user', dn=user, jpegPhoto=base64.b64encode(jpeg_data).decode('ascii'))
@@ -132,7 +132,7 @@ class Test_UserModification:
     def test_user_creation_with_umlaut_in_username(self, udm):
         """Create users/user with umlaut in username"""
         # bugs: [11415]
-        user = udm.create_user(username='%säÄöÖüÜ%s' % (uts.random_name(length=4), uts.random_name(length=4)))[0]
+        user = udm.create_user(username=f'{uts.random_name(length=4)}äÄöÖüÜ{uts.random_name(length=4)}')[0]
         utils.verify_ldap_object(user)
 
 
@@ -163,7 +163,7 @@ def test_execute_udm_users_list_as_administrator(ucr):
 
     assert udm.returncode == 0, 'UDM-CLI returned "%d" while trying to execute "%s" as Administrator. Returncode "0" was expected.' % (udm.returncode, cmd[3:])
 
-    assert ('DN: uid=' + admin_username) in output, 'Could not find DN of "%s" user in the UDM-CLI output:\n%s' % (admin_username, output)
+    assert ('DN: uid=' + admin_username) in output, f'Could not find DN of "{admin_username}" user in the UDM-CLI output:\n{output}'
 
 
 def test_user_removal(udm):
@@ -184,7 +184,7 @@ def test_ignore_user_with_functional_flag(stopped_s4_connector, udm):
     user_dn = udm.create_user(check_for_drs_replication=False, wait_for=False)[0]
     utils.verify_ldap_object(user_dn)
     stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
-    assert user_dn.lower().encode('UTF-8') in stdout.lower(), 'Cannot find user DN %s in output of "udm users/user list":\n%s' % (user_dn, stdout)
+    assert user_dn.lower().encode('UTF-8') in stdout.lower(), f'Cannot find user DN {user_dn} in output of "udm users/user list":\n{stdout}'
 
     # perform a license check
     license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
@@ -205,7 +205,7 @@ def test_ignore_user_with_functional_flag(stopped_s4_connector, udm):
     lo.modify(user_dn, (('univentionObjectFlag', b'functional', b''),))
     utils.wait_for_replication()
     stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
-    assert user_dn.lower().encode('UTF-8') in stdout.lower(), 'Cannot find user DN %s in output of "udm users/user list" after removing flag:\n%s' % (user_dn, stdout)
+    assert user_dn.lower().encode('UTF-8') in stdout.lower(), f'Cannot find user DN {user_dn} in output of "udm users/user list" after removing flag:\n{stdout}'
 
     # perform a license check
     license_after = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
@@ -258,7 +258,7 @@ def test_script_lock_expired_accounts(stopped_s4_connector, udm):  # TODO: param
         utils.fail('Did not find all users prior to script execution!')
     for entry in results:
         entry.open()
-        assert entry['locked'] == userdata[entry['username']][0], 'uid=%s should not be locked for posix prior to script execution!' % (entry['username'],)
+        assert entry['locked'] == userdata[entry['username']][0], f'uid={entry["username"]} should not be locked for posix prior to script execution!'
 
     print('Calling lock_expired_accounts...')
     subprocess.check_call(['/usr/share/univention-directory-manager-tools/lock_expired_accounts', '--only-last-week'])
@@ -293,7 +293,7 @@ def test_script_lock_expired_accounts(stopped_s4_connector, udm):  # TODO: param
 def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
     """Check if ldap auth is denied for expired passwords"""
     # bugs: [35088]
-    assert ucr.is_true('ldap/shadowbind', True), 'UCR variable ldap/shadowbind is disabled (%s), test will not work' % ucr['ldap/shadowbind']
+    assert ucr.is_true('ldap/shadowbind', True), f'UCR variable ldap/shadowbind is disabled ({ucr["ldap/shadowbind"]}), test will not work'
 
     print(time.ctime())
     lo, position = univention.admin.uldap.getAdminConnection()
@@ -304,8 +304,8 @@ def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
     shadowMax = 7
     planned_expiry_day = today + delta
     shadowLastChange = planned_expiry_day - shadowMax
-    print("testing: shadow password expiry in delta=%s days and account disabled=%s" % (delta, disabled))
-    print("shadowLastChange: %s, today: %s, expires: %s" % (shadowLastChange, today, planned_expiry_day))
+    print(f"testing: shadow password expiry in delta={delta} days and account disabled={disabled}")
+    print(f"shadowLastChange: {shadowLastChange}, today: {today}, expires: {planned_expiry_day}")
     lo.modify(dn, [
         ['shadowMax', oldattr.get('shadowMax', []), [str(shadowMax).encode()]],
         ['shadowLastChange', oldattr.get('shadowLastChange', []), [str(shadowLastChange).encode()]],
@@ -318,9 +318,9 @@ def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
     print("result   : %s" % ("failure" if p.returncode else "success"))
     print(stdout.decode('utf-8', 'replace'))
     if expected == 0:
-        assert p.returncode == 0, 'Login for account %s is expected to pass, but failed' % dn
+        assert p.returncode == 0, f'Login for account {dn} is expected to pass, but failed'
     else:
-        assert p.returncode != 0, 'Login for account %s is expected to fail, but passed' % dn
+        assert p.returncode != 0, f'Login for account {dn} is expected to fail, but passed'
 
 
 @pytest.mark.tags('apptest')
@@ -345,27 +345,27 @@ def test_displayName_update(stopped_s4_connector, udm):
     firstname = uts.random_string()
     lastname = uts.random_string()
     userdn = udm.create_user(firstname=firstname, lastname=lastname, check_for_drs_replication=False)[0]
-    utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname, lastname)]})
+    utils.verify_ldap_object(userdn, {'displayName': [f'{firstname} {lastname}']})
 
     print('>>> change firstname and then lastname')
     firstname2 = uts.random_string()
     lastname2 = uts.random_string()
     udm.modify_object('users/user', dn=userdn, firstname=firstname2, check_for_drs_replication=False)
-    utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname2, lastname)]})
+    utils.verify_ldap_object(userdn, {'displayName': [f'{firstname2} {lastname}']})
     udm.modify_object('users/user', dn=userdn, lastname=lastname2, check_for_drs_replication=False)
-    utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname2, lastname2)]})
+    utils.verify_ldap_object(userdn, {'displayName': [f'{firstname2} {lastname2}']})
 
     print('>>> create user with default settings')
     firstname = uts.random_string()
     lastname = uts.random_string()
     userdn = udm.create_user(firstname=firstname, lastname=lastname, check_for_drs_replication=False)[0]
-    utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname, lastname)]})
+    utils.verify_ldap_object(userdn, {'displayName': [f'{firstname} {lastname}']})
 
     print('>>> change firstname and lastname in one step')
     firstname2 = uts.random_string()
     lastname2 = uts.random_string()
     udm.modify_object('users/user', dn=userdn, firstname=firstname2, lastname=lastname2, check_for_drs_replication=False)
-    utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname2, lastname2)]})
+    utils.verify_ldap_object(userdn, {'displayName': [f'{firstname2} {lastname2}']})
 
     print('>>> create user with default settings')
     lastname = uts.random_string()
@@ -418,7 +418,7 @@ def test_displayName_update(stopped_s4_connector, udm):
     utils.verify_ldap_object(userdn, {'displayName': [displayName3]})
 
     print('>>> change displayName back to default')
-    displayName4 = '%s %s' % (firstname3, lastname3)
+    displayName4 = f'{firstname3} {lastname3}'
     udm.modify_object(
         'users/user', dn=userdn,
         displayName=displayName4,
@@ -429,7 +429,7 @@ def test_displayName_update(stopped_s4_connector, udm):
     firstname4 = uts.random_string()
     lastname4 = uts.random_string()
     udm.modify_object('users/user', dn=userdn, firstname=firstname4, lastname=lastname4, check_for_drs_replication=False)
-    utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname4, lastname4)]})
+    utils.verify_ldap_object(userdn, {'displayName': [f'{firstname4} {lastname4}']})
 
 
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_slave')
@@ -477,7 +477,7 @@ def test_check_univentionDefaultGroup_membership_after_create(udm):
 
     # lookup previous members for comparison
     searchResult = lo.search(base=groupdn, scope='base', attr=['uniqueMember', 'memberUid'])
-    assert searchResult and searchResult[0][1], 'Test system is broken: univentionDefaultGroup object missing: %s' % groupdn
+    assert searchResult and searchResult[0][1], f'Test system is broken: univentionDefaultGroup object missing: {groupdn}'
     uniqueMember = searchResult[0][1]['uniqueMember']
     memberUid = searchResult[0][1]['memberUid']
 
@@ -534,7 +534,7 @@ def test_pwdChangeNextLogin_and_password_set(udm):
 def test_user_univentionLastUsedValue(udm, ucr):
     """Create users/user and check univentionLastUsedValue"""
     # Please note: modification of uidNumber is not allowed according to users/user.py --> not tested here
-    luv_dn = 'cn=uidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
+    luv_dn = f'cn=uidNumber,cn=temporary,cn=univention,{ucr.get("ldap/base")}'
     lo = univention.uldap.getAdminConnection()
 
     lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
@@ -614,7 +614,7 @@ def test_lookup_with_pagination(udm):
         pctrl = SimplePagedResultsControl(True, size=page_size, cookie=cookie)
         sctrl = SSSRequestControl(ordering_rules=['uid:caseIgnoreOrderingMatch'])
         users = univention.admin.modules.get('users/user')
-        entries.append([x.dn for x in users.lookup(None, lo, 'username=%s*' % (name,), serverctrls=[sctrl, pctrl], response=res)])
+        entries.append([x.dn for x in users.lookup(None, lo, f'username={name}*', serverctrls=[sctrl, pctrl], response=res)])
         print(('Found', entries[-1]))
         for control in res['ctrls']:
             if control.controlType == SimplePagedResultsControl.controlType:
@@ -721,7 +721,7 @@ def test_udm_users_ldap_mspolicy(udm, ucr, module):
     pol_dn = udm.create_object('policies/pwhistory', wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
     utils.wait_for_replication_and_postrun()
 
-    name = "%s_test1" % (uts.random_username())
+    name = f"{(uts.random_username())}_test1"
     attr = {'password': 'Univention.1', 'username': name, 'lastname': 'test', 'policy_reference': pol_dn}
     dn = udm.create_object(module, wait_for_replication=True, check_for_drs_replication=True, wait_for=True, **attr)
 
@@ -729,7 +729,7 @@ def test_udm_users_ldap_mspolicy(udm, ucr, module):
         udm.modify_object(module, dn=dn, password='univention')
 
     with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
-        udm.modify_object(module, dn=dn, password='Uni1%s' % (name,))
+        udm.modify_object(module, dn=dn, password=f'Uni1{name}')
 
     if module == 'users/user':
         with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):

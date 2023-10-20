@@ -60,7 +60,7 @@ class RunPhases(object):
                         self.logger.debug("Skipping '%s'", filename)
                         continue
                     try:
-                        module = importlib.import_module('%s.%s' % (__name__, name))
+                        module = importlib.import_module(f'{__name__}.{name}')
                     except ImportError:
                         self.logger.warning("Failed to open '%s'", filename)
                         continue

@@ -63,7 +63,7 @@ class _ShortNameFormatter(logging.Formatter):
     def format(self, record):
         # type: (logging.LogRecord) -> str
         record.short_name = record.name
-        if record.short_name.startswith('%s.' % self.shorten):
+        if record.short_name.startswith(f'{self.shorten}.'):
             record.short_name = record.short_name[len(self.shorten) + 1:]
         return super(_ShortNameFormatter, self).format(record)
 
@@ -93,13 +93,13 @@ def get_logger(name):
     # type: (str) -> logging.Logger
     base_logger = _setup_logger()
     logger = base_logger.getChild(name)
-    log_level = ucr.get('admin/diary/logging/%s' % name)
+    log_level = ucr.get(f'admin/diary/logging/{name}')
     if log_level:
         log_level = logging.getLevelName(log_level)
         if isinstance(log_level, int):
             logger.setLevel(log_level)
         else:
-            logger.warning('Cannot use log level %s. Call ucr set admin/diary/logging/%s=DEBUG (for example)' % (log_level, name))
+            logger.warning(f'Cannot use log level {log_level}. Call ucr set admin/diary/logging/{name}=DEBUG (for example)')
     return logger
 
 
@@ -118,14 +118,14 @@ class DiaryEntry(object):
     def assert_types(self):
         # type: () -> None
         if not isinstance(self.username, six.string_types):
-            raise TypeError('DiaryEntry() argument "username" has to be "string", but is: %s (%s)' % (type(self.username), self.username))
+            raise TypeError(f'DiaryEntry() argument "username" has to be "string", but is: {type(self.username)} ({self.username})')
         if not isinstance(self.hostname, six.string_types):
-            raise TypeError('DiaryEntry().hostname has to be "string", but is: %s (%s)' % (type(self.hostname), self.hostname))
+            raise TypeError(f'DiaryEntry().hostname has to be "string", but is: {type(self.hostname)} ({self.hostname})')
         if not isinstance(self.args, dict) or not all(isinstance(key, six.string_types) and isinstance(value, six.string_types) for key, value in self.args.items()):
-            raise TypeError('DiaryEntry() argument "args" has to be "dict of string/string", but is: %s (%s)' % (type(self.args), self.args))
+            raise TypeError(f'DiaryEntry() argument "args" has to be "dict of string/string", but is: {type(self.args)} ({self.args})')
         if self.message is not None:
             if not isinstance(self.message, dict) or not all(isinstance(key, six.string_types) and isinstance(value, six.string_types) for key, value in self.message.items()):
-                raise TypeError('DiaryEntry() argument "message" has to be "dict of string/string", but is: %s (%s)' % (type(self.message), self.message))
+                raise TypeError(f'DiaryEntry() argument "message" has to be "dict of string/string", but is: {type(self.message)} ({self.message})')
             for locale, message in self.message.items():
                 try:
                     message.format(**self.args)
@@ -134,11 +134,11 @@ class DiaryEntry(object):
         if not isinstance(self.timestamp, datetime):
             raise TypeError('DiaryEntry().timestamp has to be "datetime"')
         if not isinstance(self.tags, list) or not all(isinstance(tag, six.string_types) for tag in self.tags):
-            raise TypeError('DiaryEntry() argument "tags" have to be "list of string", but is: %s (%s)' % (type(self.tags), self.tags))
+            raise TypeError(f'DiaryEntry() argument "tags" have to be "list of string", but is: {type(self.tags)} ({self.tags})')
         if not isinstance(self.context_id, six.string_types):
-            raise TypeError('DiaryEntry() argument "context_id" has to be "string", but is: %s (%s)' % (type(self.context_id), self.context_id))
+            raise TypeError(f'DiaryEntry() argument "context_id" has to be "string", but is: {type(self.context_id)} ({self.context_id})')
         if not isinstance(self.event_name, six.string_types):
-            raise TypeError('DiaryEntry() argument "event" name has to be "string", but is: %s (%s)' % (type(self.event_name), self.event_name))
+            raise TypeError(f'DiaryEntry() argument "event" name has to be "string", but is: {type(self.event_name)} ({self.event_name})')
 
     def to_json(self):
         # type: () -> str

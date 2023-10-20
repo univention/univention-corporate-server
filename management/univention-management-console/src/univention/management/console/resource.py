@@ -174,7 +174,7 @@ class Resource(RequestHandler):
                 port = '-%d' % (int(port),)
             except ValueError:
                 port = ''
-        return '%s%s' % (name, port)
+        return f'{name}{port}'
 
     def bind_session_to_ip(self):
         ip = self.get_ip_address()
@@ -189,7 +189,7 @@ class Resource(RequestHandler):
 
         # bind session to IP (allow requests from localhost)
         if ip != current_ip and not any(ipaddress.ip_address(ip) in network for network in allowed_networks):
-            CORE.warn('The sessionid (ip=%s) is not valid for this IP address (%s)' % (ip, current_ip))
+            CORE.warn(f'The sessionid (ip={ip}) is not valid for this IP address ({current_ip})')
             # very important! We must expire the session cookie, with the same path, otherwise one ends up in a infinite redirection loop after changing the IP address (e.g. because switching from VPN to regular network)
             for name in self.request.cookies:
                 if name.startswith('UMCSessionId'):
@@ -203,7 +203,7 @@ class Resource(RequestHandler):
     def _proxy_uri(self):  # TODO: replace with tornado builtin
         if self.request.headers.get('X-UMC-HTTPS') == 'on':
             self.request.protocol = 'https'
-        self.request.uri = '/univention%s' % (self.request.uri,)
+        self.request.uri = f'/univention{self.request.uri}'
 
     async def parse_authorization(self):
         credentials = self.request.headers.get('Authorization')
@@ -278,8 +278,8 @@ class Resource(RequestHandler):
 
     def content_negotiation(self, response, wrap=True):
         lang = self.request.content_negotiation_lang
-        formatter = getattr(self, '%s_%s' % (self.request.method.lower(), lang), getattr(self, 'get_%s' % (lang,)))
-        codec = getattr(self, 'content_negotiation_%s' % (lang,))
+        formatter = getattr(self, f'{self.request.method.lower()}_{lang}', getattr(self, f'get_{lang}'))
+        codec = getattr(self, f'content_negotiation_{lang}')
         self.finish(codec(formatter(response, wrap)))
 
     def get_json(self, result, wrap=True):
@@ -317,7 +317,7 @@ class Resource(RequestHandler):
             error = kwargs.pop('error', None)
             stacktrace = None
             if isinstance(exc, UMC_Error) and isinstance(error, dict) and error.get('traceback'):
-                stacktrace = '%s\nRequest: %s\n\n%s' % (exc.msg, error.get('command'), error.get('traceback'))
+                stacktrace = f'{exc.msg}\nRequest: {error.get("command")}\n\n{error.get("traceback")}'
                 stacktrace = stacktrace.strip()
         else:
             status = 500
@@ -338,7 +338,7 @@ class Resource(RequestHandler):
             index = message.find('Traceback') if 'Traceback' in message else message.find('File')
             message, stacktrace = message[:index].strip(), message[index:].strip()
         if stacktrace:
-            CORE.error('%s' % (stacktrace,))
+            CORE.error(f'{stacktrace}')
         if ucr.is_false('umc/http/show_tracebacks', False):
             stacktrace = None
 
@@ -353,7 +353,7 @@ class Resource(RequestHandler):
         page = self.default_error_page_json(status, message, stacktrace, result)
         if self.request.headers.get('X-Iframe-Response'):
             self.set_header('Content-Type', 'text/html')
-            return '<html><body><textarea>%s</textarea></body></html>' % (escape(page, False),)
+            return f'<html><body><textarea>{escape(page, False)}</textarea></body></html>'
         return page
 
     def default_error_page_html(self, status, message, stacktrace, result=None):

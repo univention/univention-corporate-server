@@ -57,7 +57,7 @@ class NoValueError(Exception):
         self.section = section
 
     def __str__(self):
-        return 'Missing %s in %s' % (self.name, self.section)
+        return f'Missing {self.name} in {self.section}'
 
 
 class ParseError(Exception):
@@ -67,7 +67,7 @@ class ParseError(Exception):
         self.message = message
 
     def __str__(self):
-        return 'Cannot parse %s in %s: %s' % (self.name, self.section, self.message)
+        return f'Cannot parse {self.name} in {self.section}: {self.message}'
 
 
 def read_ini_file(filename, parser_class=RawConfigParser):
@@ -80,7 +80,7 @@ def read_ini_file(filename, parser_class=RawConfigParser):
     except EnvironmentError:
         pass
     except (DuplicateSectionError, ParsingError) as exc:
-        ini_logger.warning('Could not parse %s' % filename)
+        ini_logger.warning(f'Could not parse {filename}')
         ini_logger.warning(str(exc))
     else:
         return parser
@@ -110,7 +110,7 @@ class IniSectionAttribute(UniventionMetaInfo):
         name = self._canonical_name()
         names = [name]
         if self.localisable and locale:
-            names.insert(0, '%s[%s]' % (name, locale))
+            names.insert(0, f'{name}[{locale}]')
         for name in names:
             try:
                 value = self._fetch_from_parser(parser, section, name)
@@ -199,7 +199,7 @@ class IniSectionObject(with_metaclass(UniventionMetaClass, object)):
             try:
                 obj = cls.from_parser(parser, section, locale)
             except (NoValueError, ParseError) as exc:
-                ini_logger.warning('%s: %s' % (fname, exc))
+                ini_logger.warning(f'{fname}: {exc}')
             else:
                 ret.append(obj)
         return ret

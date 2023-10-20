@@ -145,14 +145,14 @@ def update_status(**kwargs):  # type: (**str) -> None
     if updater_status.get('status') != 'RUNNING':
         updater_status.pop('phase', None)
     # write temporary file
-    fn = '%s.new' % FN_STATUS
+    fn = f'{FN_STATUS}.new'
     try:
         with open(fn, 'w+') as fd:
             for key, val in updater_status.items():
-                fd.write('%s=%s\n' % (key, val))
+                fd.write(f'{key}={val}\n')
         os.rename(fn, FN_STATUS)
     except EnvironmentError as ex:
-        dprint('Warning: cannot update status: %s' % (ex,))
+        dprint(f'Warning: cannot update status: {ex}')
 
 
 def get_status():
@@ -240,7 +240,7 @@ def update_net(opt, ucr):
     except RequiredComponentError:
         raise
     except ConfigurationError as ex:
-        raise UpdateError('The configured repository is unavailable: %s' % (ex,), errorsource='SETTINGS')
+        raise UpdateError(f'The configured repository is unavailable: {ex}', errorsource='SETTINGS')
 
     return (updater, nextversion)
 
@@ -316,14 +316,14 @@ def check(opt, ucr):
     try:
         _updater, nextversion = update_available(opt, ucr)
         if nextversion:
-            dprint('Next version is %s' % nextversion)
+            dprint(f'Next version is {nextversion}')
             return True
     except UpdateError as msg:
-        dprint("Error: %s" % msg)
-        print('Error: Please check "%s" for details.' % LOGNAME, file=sys.stderr)
+        dprint(f"Error: {msg}")
+        print(f'Error: Please check "{LOGNAME}" for details.', file=sys.stderr)
         # Errors are handled as "update currently no available"
     except RequiredComponentError as ex:
-        dprint("%s" % ex)
+        dprint(f"{ex}")
     else:
         dprint('System is up to date')  # Sync with /etc/cron.d/univention-maintenance
     return False
@@ -332,7 +332,7 @@ def check(opt, ucr):
 def find(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> Optional[Tuple[UniventionUpdater, UCS_Version]]
     lastversion = '%(version/version)s-%(version/patchlevel)s' % ucr
-    log('**** Starting univention-updater %s with parameter=%s' % (lastversion, sys.argv))
+    log(f'**** Starting univention-updater {lastversion} with parameter={sys.argv}')
 
     # Bug #51880: if last postup.sh failed
     last_status = get_status()
@@ -347,11 +347,11 @@ def find(opt, ucr):
 
     updater, nextversion = update_available(opt, ucr)
     if not nextversion:
-        dprint('System is up to date (UCS %s)' % lastversion)
+        dprint(f'System is up to date (UCS {lastversion})')
         return None
 
     if opt.updateto and nextversion > opt.updateto:
-        dprint('Update hold at %s, next %s is after %s' % (lastversion, nextversion, opt.updateto))
+        dprint(f'Update hold at {lastversion}, next {nextversion} is after {opt.updateto}')
         return None
 
     return (updater, nextversion)
@@ -366,7 +366,7 @@ def run(opt, ucr, updater, nextversion):
         with open(os.path.devnull) as null:
             os.dup2(null.fileno(), sys.stdin.fileno())
 
-    dprint('Update to = %s' % nextversion)
+    dprint(f'Update to = {nextversion}')
     update_status(next_version=nextversion)
     if opt.updateto:
         update_status(target_version=opt.updateto)
@@ -393,13 +393,13 @@ def run(opt, ucr, updater, nextversion):
                 update_status(phase=phase.upper())
 
             if (phase, order) == ('update', 'pre'):
-                log('**** Downloading scripts at %s' % datetime.now().ctime())
+                log(f'**** Downloading scripts at {datetime.now().ctime()}')
             elif (phase, order) == ('preup', 'pre'):
-                log('**** Starting actual update at %s' % datetime.now().ctime())
+                log(f'**** Starting actual update at {datetime.now().ctime()}')
             elif (phase, order) == ('update', 'main'):
                 with apt_lock():
                     if call(cmd_update, shell=True, stdout=fd_log, stderr=fd_log):
-                        raise UpdateError('Failed to execute "%s"' % cmd_update, errorsource='UPDATE')
+                        raise UpdateError(f'Failed to execute "{cmd_update}"', errorsource='UPDATE')
 
                 context_id = write_event(UPDATE_STARTED, {'hostname': ucr.get('hostname')})
                 if context_id:
@@ -410,12 +410,12 @@ def run(opt, ucr, updater, nextversion):
                 with apt_lock(), open(detailed_status, 'w+b') as detailed_status_fd:
                     fno = detailed_status_fd.fileno()
                     env = dict(os.environ, DEBIAN_FRONTEND="noninteractive")
-                    cmd2 = "%s -o APT::Status-FD=%s" % (cmd_dist_upgrade, fno)
+                    cmd2 = f"{cmd_dist_upgrade} -o APT::Status-FD={fno}"
                     resultCode = call(cmd2, shell=True, stdout=fd_log, stderr=fd_log, env=env, pass_fds=(fno,))
                     if os.path.exists(detailed_status):
                         os.unlink(detailed_status)
                     if resultCode != 0:
-                        raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
+                        raise UpdateError(f'Failed to execute "{cmd_dist_upgrade}"', errorsource='UPDATE')
             elif (phase, order) == ('postup', 'main'):
                 # Bug #23202: After an update of Python ucr.handler_set() may not work any more
                 cmd = [
@@ -483,7 +483,7 @@ def main():
                 )))
                 raise UpdateError(msg, errorsource='SETTINGS')
             except ConfigurationError as e:
-                msg = 'Update aborted due to configuration error: %s' % e
+                msg = f'Update aborted due to configuration error: {e}'
                 raise UpdateError(msg, errorsource='SETTINGS')
             except RequiredComponentError as ex:
                 update_status(status='DONE', errorsource='PREPARATION')
@@ -500,13 +500,13 @@ def main():
                     errorsource = 'UPDATE'
 
                 if order == 'main':
-                    order = 'release %s' % component
+                    order = f'release {component}'
                 elif order == 'pre':
-                    order = 'component %s before calling release script' % component
+                    order = f'component {component} before calling release script'
                 elif order == 'post':
-                    order = 'component %s after calling release script' % component
+                    order = f'component {component} after calling release script'
 
-                msg = 'Update aborted by %s script of %s' % (phase, order)
+                msg = f'Update aborted by {phase} script of {order}'
                 raise UpdateError(msg, errorsource=errorsource)
 
             update_ucr_updatestatus()
@@ -514,9 +514,9 @@ def main():
         except UpdateError as msg:
             write_event(UPDATE_FINISHED_FAILURE, {'hostname': ucr.get('hostname')})
             update_status(status='FAILED', errorsource=msg.errorsource)
-            dprint("Error: %s" % msg)
+            dprint(f"Error: {msg}")
             call(['touch', failure])
-            sys.exit('Error: Please check "%s" for details.' % LOGNAME)
+            sys.exit(f'Error: Please check "{LOGNAME}" for details.')
         except KeyboardInterrupt:
             update_status(status='FAILED')
             dprint("\nUpdate aborted by user (ctrl-c)\n")

@@ -100,19 +100,19 @@ def check_file(path: str, owner: str, group: str, mode: int, must_exist: bool = 
         file_stat = os.stat(path)
     except OSError:
         if must_exist:
-            MODULE.error("%s must exist, but does not" % (path))
+            MODULE.error(f"{(path)} must exist, but does not")
             yield DoesNotExist(path)
         return
 
     expected_owner = (owner, group)
     actual_owner = get_actual_owner(file_stat.st_uid, file_stat.st_gid)
     if expected_owner != actual_owner:
-        MODULE.error("Owner mismatch: %s should be owned by %s, is actually owned by %s" % (path, expected_owner, actual_owner))
+        MODULE.error(f"Owner mismatch: {path} should be owned by {expected_owner}, is actually owned by {actual_owner}")
         yield OwnerMismatch(path, expected_owner, actual_owner)
 
     actual_mode = stat.S_IMODE(file_stat.st_mode)
     if actual_mode != mode:
-        MODULE.error("Permission mismatch: %s should have the permission mode %s but has the mode %s" % (path, mode, actual_mode))
+        MODULE.error(f"Permission mismatch: {path} should have the permission mode {mode} but has the mode {actual_mode}")
         yield PermissionMismatch(path, actual_mode, mode)
 
 

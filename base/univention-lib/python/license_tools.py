@@ -77,7 +77,7 @@ def is_CSP_license(lo=None):
         (day, month, year) = enddate.split(u'.', 2)
         then = datetime.date(int(year), int(month), int(day))
         if now > then:
-            raise LicenseExpired('endDate = %s' % (enddate,))
+            raise LicenseExpired(f'endDate = {enddate}')
 
     return b'CSP' in attrs.get('univentionLicenseOEMProduct', [])
 
@@ -110,7 +110,7 @@ Possible exitcodes:
         print('License verification error')
         sys.exit(12)
 
-    print('CSP=%s' % (result,))
+    print(f'CSP={result}')
     if not result:
         sys.exit(10)
 

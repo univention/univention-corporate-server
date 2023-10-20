@@ -32,11 +32,11 @@ def main():
             quota01 = 2
             domain = ucr.get('domainname')
             pw = 'univention'
-            mail = '%s@%s' % (uts.random_name(), domain)
+            mail = f'{uts.random_name()}@{domain}'
             userdn, username = udm.create_user(
                 password=pw,
                 set={
-                    "mailHomeServer": '%s.%s' % (ucr.get("hostname"), domain),
+                    "mailHomeServer": f'{ucr.get("hostname")}.{domain}',
                     "mailPrimaryAddress": mail,
                     "mailUserQuota": str(quota01),
                 })

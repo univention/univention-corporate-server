@@ -17,7 +17,7 @@ returncode = 100
 codes = {}
 for app in Apps(locale='en').get_every_single_app():
     if app.id.endswith('-test'):
-        print('Ignoring test App %s' % app)
+        print(f'Ignoring test App {app}')
         continue
     else:
         print('Checking %r' % app)
@@ -46,7 +46,7 @@ for app in Apps(locale='en').get_every_single_app():
             url = f'{app.get_server()}/meta-inf/{app.get_ucs_version()}/{app.id}/{logo_name}'
             stdout = subprocess.check_output(['curl', '-Is', url])
             if b'HTTP/1.1 200 OK' not in stdout.splitlines():
-                print('FAIL: Could not find %s' % url)
+                print(f'FAIL: Could not find {url}')
                 returncode = 1
 
 sys.exit(returncode)

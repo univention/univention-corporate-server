@@ -33,7 +33,7 @@ These are detected by searching for "=" in the remaining arguments.
 You probably do not want to use this.
 """
 
-lockfile = os.environ.get('WAFLOCK', '.lock-waf_%s_build' % sys.platform)
+lockfile = os.environ.get('WAFLOCK', f'.lock-waf_{sys.platform}_build')
 """
 Name of the lock file that marks a project as configured
 """
@@ -44,7 +44,7 @@ class opt_parser(optparse.OptionParser):
 	"""
 	def __init__(self, ctx, allow_unknown=False):
 		optparse.OptionParser.__init__(self, conflict_handler='resolve', add_help_option=False,
-			version='%s %s (%s)' % (Context.WAFNAME, Context.WAFVERSION, Context.WAFREVISION))
+			version=f'{Context.WAFNAME} {Context.WAFVERSION} ({Context.WAFREVISION})')
 		self.formatter.width = Logs.get_term_cols()
 		self.ctx = ctx
 		self.allow_unknown = allow_unknown
@@ -107,15 +107,15 @@ class opt_parser(optparse.OptionParser):
 		for k in cmds_str:
 			just = max(just, len(k))
 
-		lst = ['  %s: %s' % (k.ljust(just), v) for (k, v) in cmds_str.items()]
+		lst = [f'  {k.ljust(just)}: {v}' for (k, v) in cmds_str.items()]
 		lst.sort()
 		ret = '\n'.join(lst)
 
-		return '''%s [commands] [options]
+		return f'''{Context.WAFNAME} [commands] [options]
 
-Main commands (example: ./%s build -j4)
-%s
-''' % (Context.WAFNAME, Context.WAFNAME, ret)
+Main commands (example: ./{Context.WAFNAME} build -j4)
+{ret}
+'''
 
 
 class OptionsContext(Context.Context):

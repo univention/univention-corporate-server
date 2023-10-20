@@ -194,7 +194,7 @@ class Instance(Base, ProgressMixin):
     def error_handling(self, etype, exc, etraceback):
         super(Instance, self).error_handling(etype, exc, etraceback)
         if isinstance(exc, (udm_errors.authFail, INVALID_CREDENTIALS)):
-            MODULE.warn('Authentication failed: %s' % (exc,))
+            MODULE.warn(f'Authentication failed: {exc}')
             raise LDAP_AuthenticationFailed()
         if isinstance(exc, (udm_errors.base, LDAPError)):
             MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback)))
@@ -435,7 +435,7 @@ class Instance(Base, ProgressMixin):
                     raise ObjectDoesNotExist(ldap_dn)
                 result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object does not exist.')})
                 continue
-            MODULE.info('Modifying LDAP object %s' % (ldap_dn,))
+            MODULE.info(f'Modifying LDAP object {ldap_dn}')
             if '$labelObjectType$' in properties:
                 del properties['$labelObjectType$']
             try:
@@ -547,7 +547,7 @@ class Instance(Base, ProgressMixin):
                     props['$references$'] = module.get_policy_references(ldap_dn)
                     result.append(props)
                 else:
-                    MODULE.process('The LDAP object for the LDAP DN %s could not be found' % ldap_dn)
+                    MODULE.process(f'The LDAP object for the LDAP DN {ldap_dn} could not be found')
         return result
 
     @sanitize(
@@ -582,7 +582,7 @@ class Instance(Base, ProgressMixin):
         if superordinate == 'None':
             superordinate = None
         elif superordinate is not None:
-            MODULE.info('Query defines a superordinate %s' % superordinate)
+            MODULE.info(f'Query defines a superordinate {superordinate}')
             _superordinate, mod = self.get_obj_module(request.flavor, superordinate)
             if mod is not None:
                 MODULE.info('Found UDM module %r for superordinate %s' % (mod.name, superordinate))
@@ -611,7 +611,7 @@ class Instance(Base, ProgressMixin):
             module = self.get_module(object_type, obj.dn)
             if module is None:
                 # This happens when concurrent a object is removed between the module.search() and self.get_module() call
-                MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
+                MODULE.warn(f'LDAP object does not exists {obj.dn} (flavor: {request.flavor}). The object is ignored.')
                 continue
             entry = {
                 '$dn$': obj.dn,
@@ -801,7 +801,7 @@ class Instance(Base, ProgressMixin):
         superordinate = udm_modules.find_superordinate(container, None, ldap_connection)
         if superordinate:
             # there is a superordinate... add its subtypes to the list of allowed modules
-            MODULE.info('container has a superordinate: %s' % superordinate)
+            MODULE.info(f'container has a superordinate: {superordinate}')
             allowed_modules.update(udm_modules.subordinates(superordinate))
         else:
             # add all types that do not have a superordinate

@@ -19,7 +19,7 @@ def add_answer(ca_file, msg, answer):
     try:
         f = open(ca_file, 'a')
     except:
-        Logs.error("Unable to open cross-answers file %s" % ca_file)
+        Logs.error(f"Unable to open cross-answers file {ca_file}")
         sys.exit(1)
     (retcode, retstring) = answer
     # if retstring is more than one line then we probably
@@ -32,14 +32,14 @@ def add_answer(ca_file, msg, answer):
     answer = (retcode, retstring)
 
     if answer == ANSWER_OK:
-        f.write('%s: OK\n' % msg)
+        f.write(f'{msg}: OK\n')
     elif answer == ANSWER_UNKNOWN:
-        f.write('%s: UNKNOWN\n' % msg)
+        f.write(f'{msg}: UNKNOWN\n')
     elif answer == ANSWER_NO:
-        f.write('%s: NO\n' % msg)
+        f.write(f'{msg}: NO\n')
     else:
         if retcode == 0:
-            f.write('%s: "%s"\n' % (msg, retstring))
+            f.write(f'{msg}: "{retstring}"\n')
         else:
             f.write('%s: (%d, "%s")\n' % (msg, retcode, retstring))
     f.close()
@@ -82,7 +82,7 @@ def cross_answer(ca_file, msg):
                     f.close()
                     return (int(m.group(1)), m.group(2))
                 else:
-                    raise Errors.WafError("Bad answer format '%s' in %s" % (line, ca_file))
+                    raise Errors.WafError(f"Bad answer format '{line}' in {ca_file}")
     f.close()
     return ANSWER_UNKNOWN
 
@@ -171,5 +171,5 @@ def SAMBA_CROSS_CHECK_COMPLETE(conf):
     '''check if we have some unanswered questions'''
     global cross_answers_incomplete
     if conf.env.CROSS_COMPILE and cross_answers_incomplete:
-        raise Errors.WafError("Cross answers file %s is incomplete" % conf.env.CROSS_ANSWERS)
+        raise Errors.WafError(f"Cross answers file {conf.env.CROSS_ANSWERS} is incomplete")
     return True

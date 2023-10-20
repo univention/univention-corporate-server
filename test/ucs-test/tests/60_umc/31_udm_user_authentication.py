@@ -38,7 +38,7 @@ class TestUMCUserAuthentication(UDMModule):
         """Creates a group and a user in it for the test."""
         test_groupname = 'umc_test_group_' + random_username(6)
 
-        print("\nCreating a group '%s' and a user '%s' in it for the test:\n" % (test_groupname, self.test_username))
+        print(f"\nCreating a group '{test_groupname}' and a user '{self.test_username}' in it for the test:\n")
         test_group_dn = self.UDM.create_group(name=test_groupname)[0]
         utils.verify_ldap_object(test_group_dn)
 
@@ -64,13 +64,13 @@ class TestUMCUserAuthentication(UDMModule):
         Makes a 'udm/put' UMC request with a 'new_password' and
         a 'user_dn' in options to change the password.
         """
-        print("\nChanging '%s' user password to '%s'" % (user_dn, new_password))
+        print(f"\nChanging '{user_dn}' user password to '{new_password}'")
         options = [{"object": {"password": new_password, "$dn$": user_dn}, "options": {"objectType": "users/user"}}]
 
         request_result = self.request("udm/put", options, "users/user")
         if not request_result[0].get('success'):
-            print("Change password UMC response: '%s'" % request_result)
-            utils.fail("The UMC request to change 'user'=%s password to '%s' failed, as there are no 'success'=True in response" % (user_dn, new_password))
+            print(f"Change password UMC response: '{request_result}'")
+            utils.fail(f"The UMC request to change 'user'={user_dn} password to '{new_password}' failed, as there are no 'success'=True in response")
         sleep(30)  # wait for new password to sync
 
     def check_random_and_valid_passwords(self):
@@ -81,11 +81,11 @@ class TestUMCUserAuthentication(UDMModule):
         print("\nTrying to authenticate to UMC with username '%s' and "
               "a random password:" % self.test_username)
         if self.authenticate_to_umc(self.test_username, self.test_password + random_username(4)):
-            utils.fail("Authentication with a valid 'username'=%s and random password succeeded." % self.test_username)
+            utils.fail(f"Authentication with a valid 'username'={self.test_username} and random password succeeded.")
 
-        print("\nTrying to authenticate to UMC with username '%s' and a valid initial password '%s':" % (self.test_username, self.test_password))
+        print(f"\nTrying to authenticate to UMC with username '{self.test_username}' and a valid initial password '{self.test_password}':")
         if not self.authenticate_to_umc(self.test_username, self.test_password):
-            utils.fail("Authentication with a valid 'username'=%s and 'password'=%s failed." % (self.test_username, self.test_password))
+            utils.fail(f"Authentication with a valid 'username'={self.test_username} and 'password'={self.test_password} failed.")
 
     def check_change_old_new_unicode_passwords(self):
         """
@@ -95,22 +95,21 @@ class TestUMCUserAuthentication(UDMModule):
         """
         self.change_user_password(self.test_user_dn, self.test_password + '1')
 
-        print("\nTrying to authenticate to UMC with username '%s' and an old password '%s':" % (self.test_username, self.test_password))
+        print(f"\nTrying to authenticate to UMC with username '{self.test_username}' and an old password '{self.test_password}':")
         if self.authenticate_to_umc(self.test_username, self.test_password):
-            utils.fail("Authentication with old password '%s' succeeded after password change." % self.test_password)
+            utils.fail(f"Authentication with old password '{self.test_password}' succeeded after password change.")
 
-        print("\nTrying to authenticate to UMC with username '%s' and a new valid password '%s':"
-              % (self.test_username, self.test_password + '1'))
+        print(f"\nTrying to authenticate to UMC with username '{self.test_username}' and a new valid password '{self.test_password + '1'}':")
         if not self.authenticate_to_umc(self.test_username, self.test_password + '1'):
-            utils.fail("Authentication with a 'username'=%s and a new 'password'=%s failed." % (self.test_username, self.test_password + '1'))
+            utils.fail(f"Authentication with a 'username'={self.test_username} and a new 'password'={self.test_password + '1'} failed.")
 
         # New password with (Latin-1 Latin-A Latin-B unicode chars)
         self.test_password_unicode = self.test_password + '_ÃŎǦ'
         self.change_user_password(self.test_user_dn, self.test_password_unicode)
 
-        print("\nTrying to authenticate to UMC with username '%s' and a new valid unicode password '%s':" % (self.test_username, self.test_password_unicode))
+        print(f"\nTrying to authenticate to UMC with username '{self.test_username}' and a new valid unicode password '{self.test_password_unicode}':")
         if not self.authenticate_to_umc(self.test_username, self.test_password_unicode):
-            utils.fail("Authentication with a new unicode password '%s' did not succeeded." % self.test_password_unicode)
+            utils.fail(f"Authentication with a new unicode password '{self.test_password_unicode}' did not succeeded.")
 
     def generate_expiry_date(self, time_seconds):
         """
@@ -131,7 +130,7 @@ class TestUMCUserAuthentication(UDMModule):
         # approx. amount of seconds in 1 month is 2630000
         expiry_date = self.generate_expiry_date(-2630000)
 
-        print("\nSetting an expiry date in the past for the test user '%s' account and trying to authenticate:\n" % self.test_username)
+        print(f"\nSetting an expiry date in the past for the test user '{self.test_username}' account and trying to authenticate:\n")
         self.UDM.modify_object('users/user', dn=self.test_user_dn, userexpiry=expiry_date)
         utils.wait_for_connector_replication()
         wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (self.test_username,)))
@@ -144,7 +143,7 @@ class TestUMCUserAuthentication(UDMModule):
         utils.wait_for_connector_replication()
         sleep(30)  # wait for sync
 
-        print("\nDeactivating the test user '%s' account and trying to authenticate:\n" % self.test_username)
+        print(f"\nDeactivating the test user '{self.test_username}' account and trying to authenticate:\n")
         # user modified two times as disabling account and
         # changing expiry date at the same time does not work:
         self.UDM.modify_object('users/user', dn=self.test_user_dn, disabled="1")
@@ -154,7 +153,7 @@ class TestUMCUserAuthentication(UDMModule):
         if self.authenticate_to_umc(self.test_username, self.test_password_unicode):
             utils.fail("Authentication with a deactivated user account succeeded.")
 
-        print("\nRemoving the test user '%s' account and trying to authenticate:\n" % self.test_username)
+        print(f"\nRemoving the test user '{self.test_username}' account and trying to authenticate:\n")
         self.UDM.remove_object('users/user', dn=self.test_user_dn)
         utils.wait_for_connector_replication()
         if self.authenticate_to_umc(self.test_username, self.test_password_unicode):

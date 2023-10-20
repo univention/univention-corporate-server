@@ -76,7 +76,7 @@ def send_and_check(user, sink_files, in_mail_sink, in_local):
             (user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
             (user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress'),
     ):
-        print('*** %s' % (msg,))
+        print(f'*** {msg}')
         token = f'token: {str(time.time())!r}'
         send_mail(
             recipients=addr,
@@ -115,9 +115,9 @@ def test_mail_forward(mail_copy_to_self):
 
         # create user with mPA, mFA and Copy2Self=1
         user = Bunch()
-        user.mailPrimaryAddress = '%s@%s' % (uts.random_string(), domain)
-        user.mailAlternativeAddress = ['%s@%s' % (uts.random_string(), domain)]
-        user.mailHomeServer = '%s.%s' % (ucr.get('hostname'), domain)
+        user.mailPrimaryAddress = f'{uts.random_string()}@{domain}'
+        user.mailAlternativeAddress = [f'{uts.random_string()}@{domain}']
+        user.mailHomeServer = f'{ucr.get("hostname")}.{domain}'
         user.mailForwardAddress = ['noreply@univention.de']
         user.dn, user.username = udm.create_user(set={
             'mailHomeServer': user.mailHomeServer,

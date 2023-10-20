@@ -64,9 +64,9 @@ def ldap_filter_not_objectflag(flag_string_list):
     if not ldap_filter_parts:
         return ''
     elif len(ldap_filter_parts) == 1:
-        return '(!%s)' % ''.join(ldap_filter_parts)
+        return f'(!{"".join(ldap_filter_parts)})'
     else:
-        return '(!(|%s))' % ''.join(ldap_filter_parts)
+        return f'(!(|{"".join(ldap_filter_parts)}))'
 
 
 user_exclude_objectflags = ['temporary', 'functional', 'hidden']
@@ -235,11 +235,11 @@ class License(object):
         for mod in univention.admin.modules.modules.keys():
             # remove module if valid license is missing
             if self.isValidFor(mod):
-                ud.debug(ud.ADMIN, ud.INFO, 'update: License is valid for module %s!!' % (mod,))
+                ud.debug(ud.ADMIN, ud.INFO, f'update: License is valid for module {mod}!!')
                 # check module options according to given license type
                 self.modifyOptions(mod)
             else:
-                ud.debug(ud.ADMIN, ud.INFO, 'update: License is NOT valid for module %s!!' % (mod,))
+                ud.debug(ud.ADMIN, ud.INFO, f'update: License is NOT valid for module {mod}!!')
                 del univention.admin.modules.modules[mod]
                 deleted_mods.append(mod)
 

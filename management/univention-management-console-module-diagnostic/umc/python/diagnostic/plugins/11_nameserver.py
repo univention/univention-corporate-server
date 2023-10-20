@@ -66,8 +66,8 @@ def run(_umc_instance: Instance) -> None:
             if not ucr.get(nameserver):
                 continue
 
-            MODULE.process("Trying %s to resolve %s" % (ucr[nameserver], hostname))
-            MODULE.process("Similar to running: dig +short %s @%s" % (hostname, ucr[nameserver]))
+            MODULE.process(f"Trying {ucr[nameserver]} to resolve {hostname}")
+            MODULE.process(f"Similar to running: dig +short {hostname} @{ucr[nameserver]}")
             try:
                 query_dns_server(ucr[nameserver], hostname)
             except DNSException as exc:
@@ -76,12 +76,12 @@ def run(_umc_instance: Instance) -> None:
                 if isinstance(exc, Timeout):
                     msgs.append(_('A timeout occurred while reaching the nameserver (is it online?).'))
                 else:
-                    msgs.append('%s' % (exc,))
+                    msgs.append(f'{exc}')
                 failed.append('\n'.join(msgs))
 
     if failed:
-        MODULE.error('%s%s' % (description % (len(failed),), '\n'.join(failed)))
-        raise Warning('%s%s' % (description % (len(failed),), '\n'.join(failed)))
+        MODULE.error(f'{description % (len(failed),)}{"\n".join(failed)}')
+        raise Warning(f'{description % (len(failed),)}{"\n".join(failed)}')
 
 
 def query_dns_server(nameserver: str, hostname: str) -> None:

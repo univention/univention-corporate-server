@@ -350,7 +350,7 @@ def compare_ldif(lldif, rldif, options):
             ldn = rdn = ""
         for diff, key, val in diffs:
             if options.attributes or diff:
-                print('%s%s: %s' % (' +-'[diff], key, val))
+                print(f'{" +-"[diff]}{key}: {val}')
         print()
         ret = 1
     return ret
@@ -508,7 +508,7 @@ def main():
     try:
         ldif1, ldif2 = (src.start_reading() for src in (src1, src2))
     except (LdifError, SlapError) as ex:
-        sys.exit("Failed to setup source: %s" % ex)
+        sys.exit(f"Failed to setup source: {ex}")
 
     exclude = set(options.exclude)
     if not options.operational:

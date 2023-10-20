@@ -28,7 +28,7 @@ def main():
                 with utils.FollowLogfile(logfiles=logfiles):
                     with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2):
                         password = uts.random_string()
-                        mailAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
+                        mailAddress = f'{uts.random_name()}@{ucr.get("domainname")}'
                         udm.create_user(
                             password=password,
                             mailPrimaryAddress=mailAddress,

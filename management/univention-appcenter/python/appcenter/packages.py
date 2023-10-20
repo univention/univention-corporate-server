@@ -138,13 +138,13 @@ def wait_for_dpkg_lock(timeout=120):
     # type: (int) -> bool
     lock_files = ['/var/lib/dpkg/lock', '/var/lib/apt/lists/lock']
     lock_file_string = ' or '.join(lock_files)
-    package_logger.debug('Trying to get a lock for %s...' % lock_file_string)
+    package_logger.debug(f'Trying to get a lock for {lock_file_string}...')
     first = True
     while first or timeout > 0:
         returncode = call_process(['fuser'] + lock_files).returncode
         if returncode == 0:
             if first:
-                package_logger.info('Could not lock %s. Is another process using it? Waiting up to %s seconds' % (lock_file_string, timeout))
+                package_logger.info(f'Could not lock {lock_file_string}. Is another process using it? Waiting up to {timeout} seconds')
                 first = False
             # there seems to be a timing issue with the fuser approach
             # in which the second (the apt) process releases its lock before

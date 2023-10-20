@@ -56,7 +56,7 @@ class LicenseLDIF(LDIFParser):
         self.uuid = '00000000-0000-0000-0000-000000000000'
 
     def handle(self, dn, entry):
-        if dn == 'cn=admin,cn=license,cn=univention,%s' % self.ucr.get('ldap/base') and 'univentionLicenseKeyID' in entry and len(entry['univentionLicenseKeyID']) > 0:
+        if dn == f'cn=admin,cn=license,cn=univention,{self.ucr.get("ldap/base")}' and 'univentionLicenseKeyID' in entry and len(entry['univentionLicenseKeyID']) > 0:
             self.uuid = entry['univentionLicenseKeyID'][0].decode('utf-8')
 
 
@@ -131,8 +131,8 @@ def application(environ, start_response):
             out = clean_license_output(out.decode('UTF-8'))
             return _finish(data=out)
         except subprocess.CalledProcessError as exc:
-            _log('Failed to read license data from LDAP:\n%s' % exc)
-            return _finish('500 Internal Server Error', _error('Failed to read license data from LDAP:\n%s' % exc))
+            _log(f'Failed to read license data from LDAP:\n{exc}')
+            return _finish('500 Internal Server Error', _error(f'Failed to read license data from LDAP:\n{exc}'))
         except Exception as exc:
             return _finish('500 Internal Server Error', data=_error(str(exc), traceback.format_exc()))
 
@@ -173,7 +173,7 @@ def application(environ, start_response):
     try:
         subprocess.check_output(['/usr/bin/sudo', '/usr/sbin/univention-license-import', LICENSE_UPLOAD_PATH], stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as exc:
-        _log('Failed to import the license:\n%s\n%s' % (exc.output, exc))
+        _log(f'Failed to import the license:\n{exc.output}\n{exc}')
         return _finish('400 Bad Request', {
             'success': False,
             'message': exc.output.decode('utf-8', 'replace'),

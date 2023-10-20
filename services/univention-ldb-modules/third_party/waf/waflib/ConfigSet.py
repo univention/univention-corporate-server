@@ -301,7 +301,7 @@ class ConfigSet(object):
 
 		for k in keys:
 			if k != 'undo_stack':
-				buf.append('%s = %s\n' % (k, fun(merged_table[k])))
+				buf.append(f'{k} = {fun(merged_table[k])}\n')
 		Utils.writef(filename, ''.join(buf))
 
 	def load(self, filename):

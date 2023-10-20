@@ -79,7 +79,7 @@ class TargetFile(Target, metaclass=ABCMeta):
     def archive_name(self) -> Path:
         path = self.options.filename  # type: Path
         if not self.options.no_target_specific_filename:
-            path = path.with_name("%s-%s" % (path.name, self.SUFFIX))
+            path = path.with_name(f"{path.name}-{self.SUFFIX}")
 
         if path.exists():
             raise IOError('Output file %r exists' % (path,))

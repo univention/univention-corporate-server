@@ -74,13 +74,13 @@ def set_permissions(tmp1, directory, filename):
     global uidNumber  # noqa: PLW0602
     global gidNumber  # noqa: PLW0602
 
-    univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
+    univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, f'CERTIFICATE: Set permissions for = {directory} with owner/group {gidNumber}/{uidNumber}')
     os.chown(directory, uidNumber, gidNumber)
     os.chmod(directory, 0o750)
 
     for f in filename:
         file = os.path.join(directory, f)
-        univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (file, gidNumber, uidNumber))
+        univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, f'CERTIFICATE: Set permissions for = {file} with owner/group {gidNumber}/{uidNumber}')
         os.chown(file, uidNumber, gidNumber)
         os.chmod(file, 0o750)
 
@@ -98,26 +98,26 @@ def create_certificate(name, serverUidNumber, domainname):
     uidNumber = serverUidNumber
 
     ssldir = '/etc/univention/ssl'
-    univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Creating certificate %s' % name)
+    univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, f'CERTIFICATE: Creating certificate {name}')
 
     certpath = os.path.join(ssldir, name + '.' + domainname)
     if os.path.exists(certpath):
-        univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Certificate for host %s.%s already exists' % (name, domainname))
+        univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, f'CERTIFICATE: Certificate for host {name}.{domainname} already exists')
         return
 
     try:
-        gidNumber = int(pwd.getpwnam('%s$' % (name))[3])
+        gidNumber = int(pwd.getpwnam(f'{(name)}$')[3])
     except Exception:
-        univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % name)
+        univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, f'CERTIFICATE: Failed to get groupID for "{name}"')
         gidNumber = 0
 
-    if len("%s.%s" % (name, domainname)) > 64:
-        univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "CERTIFICATE: can't create certificate, Common Name too long: %s.%s" % (name, domainname))
+    if len(f"{name}.{domainname}") > 64:
+        univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, f"CERTIFICATE: can't create certificate, Common Name too long: {name}.{domainname}")
         return
 
-    p = os.popen('source /usr/share/univention-ssl/make-certificates.sh; gencert %s.%s %s.%s' % (name, domainname, name, domainname))
+    p = os.popen(f'source /usr/share/univention-ssl/make-certificates.sh; gencert {name}.{domainname} {name}.{domainname}')
     p.close()
-    p = os.popen('ln -sf %s/%s.%s %s/%s' % (ssldir, name, domainname, ssldir, name))
+    p = os.popen(f'ln -sf {ssldir}/{name}.{domainname} {ssldir}/{name}')
     p.close()
 
     os.path.walk(certpath, set_permissions, None)
@@ -129,15 +129,15 @@ def remove_certificate(name, domainname):
 
     ssldir = '/etc/univention/ssl'
 
-    univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'CERTIFICATE: Revoke certificate %s.%s' % (name, domainname))
-    p = os.popen('/usr/sbin/univention-certificate revoke -name %s.%s' % (name, domainname))
+    univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, f'CERTIFICATE: Revoke certificate {name}.{domainname}')
+    p = os.popen(f'/usr/sbin/univention-certificate revoke -name {name}.{domainname}')
     p.close()
 
     link_path = os.path.join(ssldir, name)
     if os.path.exists(link_path):
         os.remove(link_path)
 
-    certpath = os.path.join(ssldir, "%s.%s" % (name, domainname))
+    certpath = os.path.join(ssldir, f"{name}.{domainname}")
     if os.path.exists(certpath):
         os.path.walk(certpath, remove_dir, None)
 

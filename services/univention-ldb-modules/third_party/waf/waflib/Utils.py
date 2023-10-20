@@ -394,7 +394,7 @@ def listdir_win32(s):
 		s += os.sep
 
 	if not os.path.isdir(s):
-		e = OSError('%s is not a directory' % s)
+		e = OSError(f'{s} is not a directory')
 		e.errno = errno.ENOENT
 		raise e
 	return os.listdir(s)
@@ -849,7 +849,7 @@ def get_registry_app_path(key, filename):
 	if not winreg:
 		return None
 	try:
-		result = winreg.QueryValue(key, "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\%s.exe" % filename[0])
+		result = winreg.QueryValue(key, f"Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\{filename[0]}.exe")
 	except OSError:
 		pass
 	else:

@@ -91,7 +91,7 @@ class Test_UMCServiceProcessHandling:
             self.service.check_service_presence(initial_state, SERVICE_NAME)
             for result in initial_state:
                 if result['service'] == SERVICE_NAME and result['autostart'] in ('no', 'false'):
-                    print("Skipped due to: %s/autostart=%s" % (SERVICE_NAME, result['autostart']))
+                    print(f"Skipped due to: {SERVICE_NAME}/autostart={result['autostart']}")
                     self.service.return_code_result_skip()
 
     @pytest.fixture()
@@ -113,8 +113,7 @@ class Test_UMCServiceProcessHandling:
             assert self.query_service_is_running(SERVICE_NAME)
             assert self.get_service_current_pid(SERVICE_NAME)
         elif self.initial_service_state_running is False:
-            print("Trying to restore the '%s' to initially stopped state"
-                  % SERVICE_NAME)
+            print(f"Trying to restore the '{SERVICE_NAME}' to initially stopped state")
             self.do_service_action([SERVICE_NAME], 'stop')
             assert not self.query_service_is_running()
             assert self.get_service_current_pid()
@@ -128,7 +127,7 @@ class Test_UMCServiceProcessHandling:
         for result in request_result:
             if result['service'] == service_name:
                 return result['isRunning']
-        raise AssertionError("Couldn't find service %s: %s" % (service_name, request_result))
+        raise AssertionError(f"Couldn't find service {service_name}: {request_result}")
 
     def get_service_current_pid(self, service_name):
         """

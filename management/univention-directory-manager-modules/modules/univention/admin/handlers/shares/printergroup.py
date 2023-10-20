@@ -141,7 +141,7 @@ class object(univention.admin.handlers.simpleLdap):
     def is_valid_printer_object(self):  # check printer on current spoolhost
         spoolhosts = '(|%s)' % ''.join(filter_format('(univentionPrinterSpoolHost=%s)', [host]) for host in self.info['spoolHost'])
         for member in self.info['groupMember']:
-            if not self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(cn=%s)%s)' % (escape_filter_chars(member), spoolhosts)):
+            if not self.lo.searchDn(filter=f'(&(objectClass=univentionPrinter)(cn={escape_filter_chars(member)}){spoolhosts})'):
                 raise univention.admin.uexceptions.notValidPrinter(_('%(name)s is not a valid printer on Spoolhost %(host)s.') % {'name': member, 'host': self.info['spoolHost']})
 
 

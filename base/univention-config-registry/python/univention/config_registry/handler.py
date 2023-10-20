@@ -341,7 +341,7 @@ class ConfigHandlerDiverting(ConfigHandler):
     def install_divert(self):
         # type: () -> None
         """Prepare file for diversion."""
-        deb = '%s.debian' % self.to_file
+        deb = f'{self.to_file}.debian'
         self._call_silent('dpkg-divert', '--quiet', '--rename', '--local', '--divert', deb, '--add', self.to_file)
         # Make sure a valid file still exists
         if os.path.exists(deb) and not os.path.exists(self.to_file):
@@ -359,14 +359,14 @@ class ConfigHandlerDiverting(ConfigHandler):
             os.unlink(self.to_file)
         except EnvironmentError:
             pass
-        deb = '%s.debian' % self.to_file
+        deb = f'{self.to_file}.debian'
         self._call_silent('dpkg-divert', '--quiet', '--rename', '--local', '--divert', deb, '--remove', self.to_file)
         return True
 
     def _temp_file_name(self):
         # type: () -> str
         dirname, basename = os.path.split(self.to_file)
-        filename = '.%s__ucr__commit__%s' % (basename, random.random())
+        filename = f'.{basename}__ucr__commit__{random.random()}'
         return os.path.join(dirname, filename)
 
 
@@ -418,7 +418,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
         # type: (_ARG) -> None
         """Generate multfile from subfile templates."""
         ucr, changed = args
-        print('Multifile: %s' % self.to_file)
+        print(f'Multifile: {self.to_file}')
 
         if hasattr(self, 'preinst') and self.preinst:
             run_module(self.preinst, 'preinst', ucr, changed)
@@ -517,7 +517,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
         if hasattr(self, 'preinst') and self.preinst:
             run_module(self.preinst, 'preinst', ucr, changed)
 
-        print('File: %s' % self.to_file)
+        print(f'File: {self.to_file}')
 
         to_dir = os.path.dirname(self.to_file)
         if not os.path.isdir(to_dir):
@@ -595,7 +595,7 @@ class ConfigHandlerScript(ConfigHandler):
         # type: (_ARG) -> None
         """Call external programm after change."""
         _ucr, changed = args
-        print('Script: %s' % self.script)
+        print(f'Script: {self.script}')
         if os.path.isfile(self.script):
             run_script(self.script, 'generate', changed)
 
@@ -632,7 +632,7 @@ class ConfigHandlerModule(ConfigHandler):
         # type: (_ARG) -> None
         """Call Python module after change."""
         ucr, changed = args
-        print('Module: %s' % self.module)
+        print(f'Module: {self.module}')
         run_module(self.module, 'handler', ucr, changed)
 
 
@@ -658,8 +658,8 @@ class ConfigHandlers:
     VERSION_MIN = 3
     VERSION_MAX = 3
     VERSION_TEXT = 'univention-config cache, version'
-    VERSION_NOTICE = '%s %s\n' % (VERSION_TEXT, VERSION)
-    VERSION_RE = re.compile('^%s (?P<version>[0-9]+)$' % VERSION_TEXT)
+    VERSION_NOTICE = f'{VERSION_TEXT} {VERSION}\n'
+    VERSION_RE = re.compile(f'^{VERSION_TEXT} (?P<version>[0-9]+)$')
 
     _handlers = {}    # type: Dict[str, Set[ConfigHandler]] # variable -> set(handlers)
     _multifiles = {}  # type: Dict[str, ConfigHandlerMultifile] # multifile -> handler
@@ -732,7 +732,7 @@ class ConfigHandlers:
         """
         try:
             typ = entry['Type'][0]
-            handler = getattr(self, '_get_handler_%s' % typ)
+            handler = getattr(self, f'_get_handler_{typ}')
         except (LookupError, AttributeError):
             return None
         else:
@@ -766,7 +766,7 @@ class ConfigHandlers:
             try:
                 handler.user = getpwnam(user).pw_uid
             except LookupError:
-                print(('W: failed to convert the username %s to the uid' % (user,)), file=sys.stderr)
+                print(f'W: failed to convert the username {user} to the uid', file=sys.stderr)
 
         try:
             group = entry['Group'][0]
@@ -776,7 +776,7 @@ class ConfigHandlers:
             try:
                 handler.group = getgrnam(group).gr_gid
             except LookupError:
-                print(('W: failed to convert the groupname %s to the gid' % (group,)), file=sys.stderr)
+                print(f'W: failed to convert the groupname {group} to the gid', file=sys.stderr)
 
         try:
             mode = entry['Mode'][0]
@@ -786,7 +786,7 @@ class ConfigHandlers:
             try:
                 handler.mode = int(mode, 8)
             except ValueError:
-                print('W: failed to convert mode %s' % (mode,), file=sys.stderr)
+                print(f'W: failed to convert mode {mode}', file=sys.stderr)
 
     def _get_handler_file(self, entry):
         # type: (_INFO) -> Optional[ConfigHandlerFile]
@@ -894,7 +894,7 @@ class ConfigHandlers:
             with open(name, 'r', encoding='utf-8') as temp_file:
                 variables |= grep_variables(temp_file.read())
         except EnvironmentError:
-            print("Failed to process Subfile %s" % (name,), file=sys.stderr)
+            print(f"Failed to process Subfile {name}", file=sys.stderr)
             return None
         qentry = (name, variables)
         # if multifile handler does not yet exists, queue subfiles for later
@@ -995,7 +995,7 @@ class ConfigHandlers:
         :returns: Set of (new) handlers.
         """
         handlers = set()  # type: Set[ConfigHandler]
-        fname = os.path.join(INFO_DIR, '%s.info' % package)
+        fname = os.path.join(INFO_DIR, f'{package}.info')
         for section in self._parse_rfc822_file(fname):
             handler = self.get_handler(section)
             if handler:
@@ -1033,7 +1033,7 @@ class ConfigHandlers:
         """
         obsolete_handlers = set()  # type: Set[ConfigHandler]
         mf_handlers = set()  # type: Set[ConfigHandler] # Remaining Multifile handlers
-        fname = os.path.join(INFO_DIR, '%s.info' % package)
+        fname = os.path.join(INFO_DIR, f'{package}.info')
         for section in self._parse_rfc822_file(fname):
             try:
                 typ = section['Type'][0]
@@ -1090,7 +1090,7 @@ class ConfigHandlers:
             try:
                 _re = re.compile(reg_var)
             except re.error as ex:
-                print('Failed to compile regular expression %s: %s' % (reg_var, ex), file=sys.stderr)
+                print(f'Failed to compile regular expression {reg_var}: {ex}', file=sys.stderr)
                 continue
 
             for variable in variables:
@@ -1128,7 +1128,7 @@ class ConfigHandlers:
                     files = section.get('File') or section.get('Multifile') or ()
                     for filename in files:
                         if not os.path.isabs(filename):
-                            filename = '/%s' % filename
+                            filename = f'/{filename}'
                         if filename in _filelist:
                             handler = self.get_handler(section)
                             break
@@ -1161,7 +1161,7 @@ class ConfigHandlers:
             if variable in self._handlers.keys():
                 if ".*" in variable:
                     for i in range(4):
-                        var = variable.replace(".*", "%s" % i)
+                        var = variable.replace(".*", f"{i}")
                         val = ucr.get(var)
                         values[var] = (val, val)
                 else:

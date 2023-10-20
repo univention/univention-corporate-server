@@ -34,7 +34,7 @@ ucr.load()
 UDM_MODULE = 'computers/linux'
 
 name = random_name()
-dn = 'cn=%s,cn=memberserver,cn=computers,%s' % (name, ucr.get('ldap/base'))
+dn = f'cn={name},cn=memberserver,cn=computers,{ucr.get("ldap/base")}'
 addlist = [
     ('cn', [name.encode('UTF-8')]),
     ('objectClass', [b'top', b'organizationalRole', b'univentionObject']),
@@ -42,7 +42,7 @@ addlist = [
 ]
 
 name_subobject = random_name()
-dn_subobject = 'cn=%s,cn=%s,cn=memberserver,cn=computers,%s' % (name_subobject, name, ucr.get('ldap/base'))
+dn_subobject = f'cn={name_subobject},cn={name},cn=memberserver,cn=computers,{ucr.get("ldap/base")}'
 addlist_subobject = [
     ('cn', [name_subobject.encode('UTF-8')]),
     ('objectClass', [b'top', b'organizationalRole', b'univentionObject']),
@@ -52,7 +52,7 @@ addlist_subobject = [
 
 def get_entryUUID(lo, dn):
     result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['entryUUID'])
-    print('DN: %s\n%s' % (dn, result))
+    print(f'DN: {dn}\n{result}')
     return result[0][1].get('entryUUID')[0].decode('ASCII')
 
 # create computer
@@ -74,16 +74,16 @@ container_UUID = get_entryUUID(lo, dn)
 subcontainer_UUID = get_entryUUID(lo, dn_subobject)
 
 # move container to the same position of the new container
-udm.move_object(UDM_MODULE, dn=computer, position='cn=memberserver,cn=computers,%s' % ucr.get('ldap/base'), wait_for_replication=True)
+udm.move_object(UDM_MODULE, dn=computer, position=f'cn=memberserver,cn=computers,{ucr.get("ldap/base")}', wait_for_replication=True)
 
 new_computer_UUID = get_entryUUID(lo, dn)
 
 # The container should have be replaced by the computer object
 if computer_UUID != new_computer_UUID:
     print('ERROR: entryUUID of moved object do not match')
-    print('  new_computer_UUID: %s' % computer_UUID)
-    print('      computer_UUID: %s' % new_computer_UUID)
-    print('     container_UUID: %s' % container_UUID)
+    print(f'  new_computer_UUID: {computer_UUID}')
+    print(f'      computer_UUID: {new_computer_UUID}')
+    print(f'     container_UUID: {container_UUID}')
     success = False
 
 found_backup_container = False
@@ -94,17 +94,17 @@ if os.path.exists(BACKUP_DIR):
     for f in os.listdir(BACKUP_DIR):
         fd = open(os.path.join(BACKUP_DIR, f))
         for line in fd.readlines():
-            if re.match('entryUUID: %s' % container_UUID, line):
+            if re.match(f'entryUUID: {container_UUID}', line):
                 found_backup_container = True
-            elif re.match('entryUUID: %s' % subcontainer_UUID, line):
+            elif re.match(f'entryUUID: {subcontainer_UUID}', line):
                 found_backup_subcontainer = True
         fd.close()
 
 if not found_backup_container:
-    print('ERROR: Backup of container with UUID %s was not found' % container_UUID)
+    print(f'ERROR: Backup of container with UUID {container_UUID} was not found')
     success = False
 if not found_backup_subcontainer:
-    print('ERROR: Backup of subcontainer with UUID %s was not found' % subcontainer_UUID)
+    print(f'ERROR: Backup of subcontainer with UUID {subcontainer_UUID} was not found')
     success = False
 
 

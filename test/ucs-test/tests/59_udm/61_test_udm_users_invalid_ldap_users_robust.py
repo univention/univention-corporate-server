@@ -85,7 +85,7 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
                 ocs.extend(mapping[option]['objectClass'])
                 al.extend([(key, (val % defaults).encode('UTF-8')) for key, val in mapping[option].items() if key not in ['objectClass', 'userPassword', 'krb5Key']])
             al.append(('objectClass', ocs))
-            dn = 'uid=%s,cn=users,%s' % (uid, ucr['ldap/base'])
+            dn = f'uid={uid},cn=users,{ucr["ldap/base"]}'
             print('Adding', dn, 'with', options, 'and', al)
             lo.add(dn, al)
             dns.append(dn)

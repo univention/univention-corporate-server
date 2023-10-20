@@ -27,7 +27,7 @@ def main():
     old_atq_output = get_output('atq')
 
     job_number = None
-    job_command = 'echo %s' % (strings.random_name())
+    job_command = f'echo {(strings.random_name())}'
     job_comments = {}
     for _i in range(10):
         job_comments[strings.random_name()] = strings.random_string(length=30)

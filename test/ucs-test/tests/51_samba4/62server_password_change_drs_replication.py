@@ -49,7 +49,7 @@ with UCSTestConfigRegistry() as ucr_test:
         try:
             cmd = ['/usr/lib/univention-server/server_password_change']
             output = subprocess.check_output(cmd).decode('UTF-8', 'replace')
-            print('Output of server_password_change:\n%s' % (output))
+            print(f'Output of server_password_change:\n{(output)}')
         except subprocess.CalledProcessError:
             fail('Error running server_password_change')
         else:
@@ -61,14 +61,14 @@ with UCSTestConfigRegistry() as ucr_test:
         try:
             user_dn, user_name = udm.create_user(password='univention')
         except Exception as exc:
-            fail('Creating user failed: %s' % (exc))
+            fail(f'Creating user failed: {(exc)}')
         else:
-            print('Creating user %s succeeded: ' % user_name)
+            print(f'Creating user {user_name} succeeded: ')
         # Check if user can be authenticated with current password
         try:
             umc_client.authenticate(user_name, default_password)
         except Exception as exc:
-            fail('User cannot be authenticated: %s' % exc)
+            fail(f'User cannot be authenticated: {exc}')
         else:
             print(f'User {user_name} could authenticate against UMC of {ldap_master}')
         # Wait for replication
@@ -76,7 +76,7 @@ with UCSTestConfigRegistry() as ucr_test:
         t0 = time.time()
         timeout = 200
         while (not samba_found) and (time.time() < t0 + timeout):
-            print('Checking if user %s can be found in samba-tool user list' % (user_name))
+            print(f'Checking if user {(user_name)} can be found in samba-tool user list')
             output = subprocess.check_output(['samba-tool', 'user', 'list']).decode('UTF-8')
             output = output.splitlines()
             for line in output:

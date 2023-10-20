@@ -66,7 +66,7 @@ def perform_test(test_case):
     # Add special cases for each type
     if value_type == 'string':
         used_value = value
-        used_value2 = "%s%s%s" % (uts.random_string(2), value, uts.random_string(2))
+        used_value2 = f"{uts.random_string(2)}{value}{uts.random_string(2)}"
         if "dstdomain" in acl_type:
             used_value = "http://proxy_test1.univention.de"
             used_value2 = "http://proxy_test2.univention.de/"
@@ -76,14 +76,14 @@ def perform_test(test_case):
         ])
 
     if value_type == 'substring':
-        used_value = "%s%s%s" % (uts.random_string(2), value, uts.random_string(2))
+        used_value = f"{uts.random_string(2)}{value}{uts.random_string(2)}"
         if "dstdomain" in acl_type:
             used_value = "http://proxy_test1.univention.de"
         sub_case.append(
             (permission, expected_response, acl_type, value_type, used_value, value),
         )
 
-        used_value = "%s%s%s" % (value[0:2], uts.random_string(3), value[2:5])
+        used_value = f"{value[0:2]}{uts.random_string(3)}{value[2:5]}"
         if "dstdomain" in acl_type:
             used_value = "http://proxy_test2.univention.de/"
         sub_case.append(
@@ -91,13 +91,13 @@ def perform_test(test_case):
         )
 
     if value_type == 'regex':
-        used_value = "%s%s" % (value[1:-3], uts.random_string(3))
+        used_value = f"{value[1:-3]}{uts.random_string(3)}"
         if "dstdomain" in acl_type:
             used_value = "http://proxy_test1.univention.de"
         sub_case.append(
             (permission, expected_response, acl_type, value_type, used_value, value),
         )
-        used_value = "%s%s%s" % (uts.random_string(1), value[1:-3], uts.random_string(2))
+        used_value = f"{uts.random_string(1)}{value[1:-3]}{uts.random_string(2)}"
         if "dstdomain" in acl_type:
             used_value = "http://proxy_test2.univention.de/"
         sub_case.append(
@@ -128,12 +128,12 @@ def do_test(test_case):
     for (permission, expected_response, acl_type, value_type, used_value, value) in test_case:
         name = uts.random_name()
         print()
-        print('** Name =\t%s' % name)
-        print('** Permission =\t%s' % permission)
-        print('** Type =\t%s' % acl_type)
-        print('** Value Type =\t%s' % value_type)
-        print('** Set Value =\t%s' % value)
-        print('** Used Value =\t%s' % used_value)
+        print(f'** Name =\t{name}')
+        print(f'** Permission =\t{permission}')
+        print(f'** Type =\t{acl_type}')
+        print(f'** Value Type =\t{value_type}')
+        print(f'** Set Value =\t{value}')
+        print(f'** Used Value =\t{used_value}')
         print('** Expected Response =\t%d' % expected_response)
 
         set_ucr_variables(name, permission, acl_type, value_type, value)
@@ -165,7 +165,7 @@ def do_test(test_case):
 def set_ucr_variables(name, permission, acl_type, value_type, value):
     squid = SimpleSquid()
     handler_set([
-        'squid/acl/%s/%s/%s/%s=%s' % (name, permission, acl_type, value_type, value),
+        f'squid/acl/{name}/{permission}/{acl_type}/{value_type}={value}',
         'squid/basicauth=yes',
     ])
 

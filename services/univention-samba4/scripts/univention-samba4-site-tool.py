@@ -119,18 +119,18 @@ ldif_dict = {
 }
 
 if opts.createsite:
-    res = samdb.search("CN=Configuration,%s" % samba4_ldap_base, scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=site)(cn=%s))", [opts.site]))
+    res = samdb.search(f"CN=Configuration,{samba4_ldap_base}", scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=site)(cn=%s))", [opts.site]))
     if res:
-        print("site %s already exists" % opts.site, file=sys.stderr)
+        print(f"site {opts.site} already exists", file=sys.stderr)
         if not opts.ignore_exists:
             sys.exit(1)
         else:
             sys.exit(0)
 
     if opts.sitelink and not opts.createsitelink:
-        res = samdb.search("CN=Configuration,%s" % samba4_ldap_base, scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=siteLink)(cn=%s))", [opts.sitelink]))
+        res = samdb.search(f"CN=Configuration,{samba4_ldap_base}", scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=siteLink)(cn=%s))", [opts.sitelink]))
         if not res:
-            print("sitelink %s not found" % opts.sitelink, file=sys.stderr)
+            print(f"sitelink {opts.sitelink} not found", file=sys.stderr)
             sys.exit(1)
 
     site_add_ldif = '''
@@ -159,7 +159,7 @@ objectCategory: CN=Servers-Container,CN=Schema,CN=Configuration,%(samba4_ldap_ba
 ''' % ldif_dict
 
     samdb.add_ldif(site_add_ldif)
-    print("created site %s" % opts.site)
+    print(f"created site {opts.site}")
 
     if opts.sitelink and not opts.createsitelink:
         # and add it to the sitelink
@@ -170,18 +170,18 @@ add: siteList
 siteList: CN=%(branchsite_name)s,CN=Sites,CN=Configuration,%(samba4_ldap_base)s
 ''' % ldif_dict
         samdb.modify_ldif(sitelink_modify_ldif)
-        print("added site %s to sitelink %s" % (opts.site, opts.sitelink))
+        print(f"added site {opts.site} to sitelink {opts.sitelink}")
 
 elif opts.site:
-    res = samdb.search("CN=Configuration,%s" % samba4_ldap_base, scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=site)(cn=%s))", [opts.site]))
+    res = samdb.search(f"CN=Configuration,{samba4_ldap_base}", scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=site)(cn=%s))", [opts.site]))
     if not res:
-        print("site %s not found" % opts.site, file=sys.stderr)
+        print(f"site {opts.site} not found", file=sys.stderr)
         sys.exit(1)
 
 if opts.createsitelink:
-    res = samdb.search("CN=Configuration,%s" % samba4_ldap_base, scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=siteLink)(cn=%s))", [opts.sitelink]))
+    res = samdb.search(f"CN=Configuration,{samba4_ldap_base}", scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=siteLink)(cn=%s))", [opts.sitelink]))
     if res:
-        print("sitelink %s already exists" % opts.sitelink, file=sys.stderr)
+        print(f"sitelink {opts.sitelink} already exists", file=sys.stderr)
         if not opts.ignore_exists:
             sys.exit(1)
 
@@ -199,12 +199,12 @@ siteList: CN=%(branchsite_name)s,CN=Sites,CN=Configuration,%(samba4_ldap_base)s
 ''' % ldif_dict
 
     samdb.add_ldif(sitelink_add_ldif)
-    print("created sitelink %s" % opts.sitelink)
+    print(f"created sitelink {opts.sitelink}")
 
 if opts.createsubnet:
-    res = samdb.search("CN=Configuration,%s" % samba4_ldap_base, scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=subnet)(cn=%s))", [opts.subnet]))
+    res = samdb.search(f"CN=Configuration,{samba4_ldap_base}", scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=subnet)(cn=%s))", [opts.subnet]))
     if res:
-        print("subnet %s already exists" % opts.subnet, file=sys.stderr)
+        print(f"subnet {opts.subnet} already exists", file=sys.stderr)
         if not opts.ignore_exists:
             sys.exit(1)
 
@@ -220,28 +220,28 @@ objectCategory: CN=Subnet,CN=Schema,CN=Configuration,%(samba4_ldap_base)s
 ''' % ldif_dict
 
     samdb.add_ldif(subnet_add_ldif)
-    print("created subnet %s for site %s" % (opts.subnet, opts.site))
+    print(f"created subnet {opts.subnet} for site {opts.site}")
 
 elif opts.modifysubnet:
-    res = samdb.search("CN=Configuration,%s" % samba4_ldap_base, scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=subnet)(cn=%s))", [opts.subnet]))
+    res = samdb.search(f"CN=Configuration,{samba4_ldap_base}", scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=subnet)(cn=%s))", [opts.subnet]))
     if not res:
-        print("subnet %s not found" % opts.subnet, file=sys.stderr)
+        print(f"subnet {opts.subnet} not found", file=sys.stderr)
         sys.exit(1)
 
-    res = samdb.search("CN=Configuration,%s" % samba4_ldap_base, scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=site)(cn=%s))", [opts.site]))
+    res = samdb.search(f"CN=Configuration,{samba4_ldap_base}", scope=ldb.SCOPE_SUBTREE, expression=filter_format("(&(objectClass=site)(cn=%s))", [opts.site]))
     if not res:
-        print("site %s not found" % opts.site, file=sys.stderr)
+        print(f"site {opts.site} not found", file=sys.stderr)
         sys.exit(1)
 
     site_dn = res[0]['dn']
     subnet_dn = "CN=$(branchsite_subnet)s,CN=Subnets,CN=Sites,CN=Configuration,%(samba4_ldap_base)s" % ldif_dict
 
-    subnet_modify_ldif = '''
-dn: %s
+    subnet_modify_ldif = f'''
+dn: {subnet_dn}
 changetype: modify
 replace: siteObject
-siteObject: %s
-''' % (subnet_dn, site_dn)
+siteObject: {site_dn}
+'''
 
     samdb.modify_ldif(subnet_modify_ldif)
-    print("associated subnet %s with site %s" % (opts.subnet, opts.site))
+    print(f"associated subnet {opts.subnet} with site {opts.site}")

@@ -53,13 +53,13 @@ class Test_DNSResolve:
             'zone': zone,
             'nameserver': udm.FQHN,
             'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
-            'serial': '%s' % (uts.random_int()),
+            'serial': f'{(uts.random_int())}',
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
-            'retry': '%s' % (uts.random_int()),
-            'a': ['%s' % (uts.random_ip())],
+            'retry': f'{(uts.random_int())}',
+            'a': [f'{(uts.random_ip())}'],
         }
         udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
         utils.wait_for_replication_and_postrun()
@@ -78,12 +78,12 @@ class Test_DNSResolve:
             'subnet': '.'.join(subnet),
             'nameserver': udm.FQHN,
             'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
-            'serial': '%s' % (uts.random_int()),
+            'serial': f'{(uts.random_int())}',
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
-            'retry': '%s' % (uts.random_int()),
+            'retry': f'{(uts.random_int())}',
         }
         udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
         zoneName = '.'.join(
@@ -118,12 +118,12 @@ class Test_DNSResolve:
             'zone': zone,
             'nameserver': udm.FQHN,
             'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
-            'serial': '%s' % (uts.random_int()),
+            'serial': f'{(uts.random_int())}',
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
-            'retry': '%s' % (uts.random_int()),
+            'retry': f'{(uts.random_int())}',
         }
         forward_zone = udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
 
@@ -134,7 +134,7 @@ class Test_DNSResolve:
             'name': host,
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'a': ip,
-            'mx': '50 %s' % uts.random_string(),
+            'mx': f'50 {uts.random_string()}',
             'txt': uts.random_string(),
         }
         udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
@@ -169,12 +169,12 @@ class Test_DNSResolve:
             'zone': zone,
             'nameserver': udm.FQHN,
             'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
-            'serial': '%s' % (uts.random_int()),
+            'serial': f'{(uts.random_int())}',
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
-            'retry': '%s' % (uts.random_int()),
+            'retry': f'{(uts.random_int())}',
         }
         forward_zone = udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
 
@@ -186,7 +186,7 @@ class Test_DNSResolve:
             'name': host,
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'a': [ipv4, ipv6],
-            'mx': '50 %s' % uts.random_string(),
+            'mx': f'50 {uts.random_string()}',
             'txt': uts.random_string(),
         }
         udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
@@ -211,12 +211,12 @@ class Test_DNSResolve:
             'zone': zone,
             'nameserver': udm.FQHN,
             'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
-            'serial': '%s' % (uts.random_int()),
+            'serial': f'{(uts.random_int())}',
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
-            'retry': '%s' % (uts.random_int()),
+            'retry': f'{(uts.random_int())}',
         }
         forward_zone = udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
 
@@ -228,7 +228,7 @@ class Test_DNSResolve:
             'name': host,
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'a': [ipv4, ipv6],
-            'mx': '50 %s' % uts.random_string(),
+            'mx': f'50 {uts.random_string()}',
             'txt': uts.random_string(),
         }
         udm.create_object('dns/host_record', superordinate=forward_zone, **host_record_properties)
@@ -267,12 +267,12 @@ class Test_DNSResolve:
             'subnet': '.'.join(subnet),
             'nameserver': udm.FQHN,
             'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
-            'serial': '%s' % (uts.random_int()),
+            'serial': f'{(uts.random_int())}',
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
-            'retry': '%s' % (uts.random_int()),
+            'retry': f'{(uts.random_int())}',
         }
         reverse_zone = udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
 
@@ -315,12 +315,12 @@ class Test_DNSResolve:
             'zone': zone,
             'nameserver': udm.FQHN,
             'contact': f'{uts.random_name()}@{uts.random_name()}.{uts.random_name()}',
-            'serial': '%s' % (uts.random_int()),
+            'serial': f'{(uts.random_int())}',
             'zonettl': '%s' % (uts.random_int(bottom_end=100, top_end=999)),
             'refresh': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'expire': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
             'ttl': '%s' % (uts.random_int(bottom_end=10, top_end=99)),
-            'retry': '%s' % (uts.random_int()),
+            'retry': f'{(uts.random_int())}',
             'txt': txt,
         }
         udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)

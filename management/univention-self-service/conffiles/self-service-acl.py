@@ -69,18 +69,18 @@ def handler(configRegistry, changes):
                 acl_file.write(ACL_TEMPLATE % params)
                 acl_file.flush()
             except IOError as exc:
-                print('Error writing updated LDAP ACL!\n %s' % exc)
+                print(f'Error writing updated LDAP ACL!\n {exc}')
                 return
         try:
-            cmd = ["/usr/sbin/univention-self-service-register-acl", "register", "%s" % ACL_FILE_PATH, "%s" % version_by_date]
+            cmd = ["/usr/sbin/univention-self-service-register-acl", "register", f"{ACL_FILE_PATH}", f"{version_by_date}"]
             print('Registering ACL in LDAP')
             subprocess.call(cmd, shell=False)
         except subprocess.CalledProcessError as e:
-            print('Error registering updated LDAP ACL!\n %s' % e.output)
+            print(f'Error registering updated LDAP ACL!\n {e.output}')
 
     else:
         try:
-            cmd = ["/usr/sbin/univention-self-service-register-acl", "unregister", "%s" % ACL_FILE_PATH, "%s" % version_by_date]
+            cmd = ["/usr/sbin/univention-self-service-register-acl", "unregister", f"{ACL_FILE_PATH}", f"{version_by_date}"]
             subprocess.call(cmd, shell=False)
         except subprocess.CalledProcessError as e:
-            print('Error unregistering updated LDAP ACL!\n %s' % e.output)
+            print(f'Error unregistering updated LDAP ACL!\n {e.output}')

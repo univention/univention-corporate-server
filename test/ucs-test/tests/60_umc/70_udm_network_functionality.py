@@ -256,8 +256,7 @@ class TestUMCNetworkFunctionality(UDMModule):
         one more computer in the same network where no more free ip
         addresses are left
         """
-        print("\nCreating a test computer '%s' in the test network '%s'"
-              % (self.test_computer_name, self.test_network_name))
+        print(f"\nCreating a test computer '{self.test_computer_name}' in the test network '{self.test_network_name}'")
         if not self.check_network_in_choices():
             utils.fail("The test network '%s' was not reported as a "
                        "choice for a test computer '%s'"
@@ -310,8 +309,7 @@ class TestUMCNetworkFunctionality(UDMModule):
 
         self.test_ip_range = [self.test_network_subnet + '.70',
                               self.test_network_subnet + '.70']
-        print("\nModifing and checking test network '%s' ip range to '%s'"
-              % (self.test_network_name, self.test_ip_range))
+        print(f"\nModifing and checking test network '{self.test_network_name}' ip range to '{self.test_ip_range}'")
         self.modify_network_ip_range()
         if not self.check_network_ip_modification():
             utils.fail("The test network '%s' does not have the correct "

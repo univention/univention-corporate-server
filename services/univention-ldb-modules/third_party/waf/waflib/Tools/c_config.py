@@ -115,9 +115,9 @@ def parse_flags(self, line, uselib_store, env=None, force_static=False, posix=No
 	# for example, apple flags may require both -arch i386 and -arch ppc
 	uselib = uselib_store
 	def app(var, val):
-		env.append_value('%s_%s' % (var, uselib), val)
+		env.append_value(f'{var}_{uselib}', val)
 	def appu(var, val):
-		env.append_unique('%s_%s' % (var, uselib), val)
+		env.append_unique(f'{var}_{uselib}', val)
 	static = False
 	while lst:
 		x = lst.pop(0)
@@ -291,7 +291,7 @@ def exec_cfg(self, kw):
 		if kw.get('global_define', 1):
 			self.define(define_name, 1, False)
 		else:
-			self.env.append_unique('DEFINES_%s' % kw['uselib_store'], "%s=1" % define_name)
+			self.env.append_unique(f'DEFINES_{kw["uselib_store"]}', f"{define_name}=1")
 
 		if kw.get('add_have_to_env', 1):
 			self.env[define_name] = 1
@@ -316,7 +316,7 @@ def exec_cfg(self, kw):
 	if not defi:
 		defi = self.env.PKG_CONFIG_DEFINES or {}
 	for key, val in defi.items():
-		lst.append('--define-variable=%s=%s' % (key, val))
+		lst.append(f'--define-variable={key}={val}')
 
 	static = kw.get('force_static', False)
 	if 'args' in kw:
@@ -334,7 +334,7 @@ def exec_cfg(self, kw):
 		vars = Utils.to_list(kw['variables'])
 		for v in vars:
 			val = self.cmd_and_log(lst + ['--variable=' + v], env=env).strip()
-			var = '%s_%s' % (kw['uselib_store'], v)
+			var = f'{kw["uselib_store"]}_{v}'
 			v_env[var] = val
 		return
 
@@ -379,7 +379,7 @@ def check_cfg(self, *k, **kw):
 		if 'errmsg' in kw:
 			self.end_msg(kw['errmsg'], 'YELLOW', **kw)
 		if Logs.verbose > 1:
-			self.to_log('Command failure: %s' % e)
+			self.to_log(f'Command failure: {e}')
 		self.fatal('The configuration failed')
 	else:
 		if not ret:
@@ -404,7 +404,7 @@ def build_fun(bld):
 		setattr(o, k, v)
 
 	if not bld.kw.get('quiet'):
-		bld.conf.to_log("==>\n%s\n<==" % bld.kw['code'])
+		bld.conf.to_log(f"==>\n{bld.kw['code']}\n<==")
 
 @conf
 def validate_c(self, kw):
@@ -477,7 +477,7 @@ def validate_c(self, kw):
 	def to_header(dct):
 		if 'header_name' in dct:
 			dct = Utils.to_list(dct['header_name'])
-			return ''.join(['#include <%s>\n' % x for x in dct])
+			return ''.join([f'#include <{x}>\n' for x in dct])
 		return ''
 
 	if 'framework_name' in kw:
@@ -486,17 +486,17 @@ def validate_c(self, kw):
 		if not 'uselib_store' in kw:
 			kw['uselib_store'] = fwkname.upper()
 		if not kw.get('no_header'):
-			fwk = '%s/%s.h' % (fwkname, fwkname)
+			fwk = f'{fwkname}/{fwkname}.h'
 			if kw.get('remove_dot_h'):
 				fwk = fwk[:-2]
 			val = kw.get('header_name', [])
 			kw['header_name'] = Utils.to_list(val) + [fwk]
-		kw['msg'] = 'Checking for framework %s' % fwkname
+		kw['msg'] = f'Checking for framework {fwkname}'
 		kw['framework'] = fwkname
 
 	elif 'header_name' in kw:
 		if not 'msg' in kw:
-			kw['msg'] = 'Checking for header %s' % kw['header_name']
+			kw['msg'] = f'Checking for header {kw["header_name"]}'
 
 		l = Utils.to_list(kw['header_name'])
 		assert len(l), 'list of headers in header_name is empty'
@@ -509,13 +509,13 @@ def validate_c(self, kw):
 
 	if 'lib' in kw:
 		if not 'msg' in kw:
-			kw['msg'] = 'Checking for library %s' % kw['lib']
+			kw['msg'] = f'Checking for library {kw["lib"]}'
 		if not 'uselib_store' in kw:
 			kw['uselib_store'] = kw['lib'].upper()
 
 	if 'stlib' in kw:
 		if not 'msg' in kw:
-			kw['msg'] = 'Checking for static library %s' % kw['stlib']
+			kw['msg'] = f'Checking for static library {kw["stlib"]}'
 		if not 'uselib_store' in kw:
 			kw['uselib_store'] = kw['stlib'].upper()
 
@@ -531,7 +531,7 @@ def validate_c(self, kw):
 	for (flagsname,flagstype) in (('cxxflags','compiler'), ('cflags','compiler'), ('linkflags','linker')):
 		if flagsname in kw:
 			if not 'msg' in kw:
-				kw['msg'] = 'Checking for %s flags %s' % (flagstype, kw[flagsname])
+				kw['msg'] = f'Checking for {flagstype} flags {kw[flagsname]}'
 			if not 'errmsg' in kw:
 				kw['errmsg'] = 'no'
 
@@ -556,7 +556,7 @@ def validate_c(self, kw):
 
 	# in case defines lead to very long command-lines
 	if kw.get('merge_config_header') or env.merge_config_header:
-		kw['code'] = '%s\n\n%s' % (self.get_config_header(), kw['code'])
+		kw['code'] = f'{self.get_config_header()}\n\n{kw["code"]}'
 		env.DEFINES = [] # modify the copy
 
 	if not kw.get('success'):
@@ -591,18 +591,18 @@ def post_check(self, *k, **kw):
 				self.define(define_name, is_success, quote=kw.get('quote', 1), comment=comment)
 			else:
 				if kw.get('quote', 1):
-					succ = '"%s"' % is_success
+					succ = f'"{is_success}"'
 				else:
 					succ = int(is_success)
-				val = '%s=%s' % (define_name, succ)
-				var = 'DEFINES_%s' % kw['uselib_store']
+				val = f'{define_name}={succ}'
+				var = f'DEFINES_{kw["uselib_store"]}'
 				self.env.append_value(var, val)
 		else:
 			if kw.get('global_define', 1):
 				self.define_cond(define_name, is_success, comment=comment)
 			else:
-				var = 'DEFINES_%s' % kw['uselib_store']
-				self.env.append_value(var, '%s=%s' % (define_name, int(is_success)))
+				var = f'DEFINES_{kw["uselib_store"]}'
+				self.env.append_value(var, f'{define_name}={int(is_success)}')
 
 		# define conf.env.HAVE_X to 1
 		if kw.get('add_have_to_env', 1):
@@ -912,9 +912,9 @@ def write_config_header(self, configfile='', guard='', top=False, defines=True, 
 	node.parent.mkdir()
 
 	lst = ['/* WARNING! All changes made to this file will be lost! */\n']
-	lst.append('#ifndef %s\n#define %s\n' % (waf_guard, waf_guard))
+	lst.append(f'#ifndef {waf_guard}\n#define {waf_guard}\n')
 	lst.append(self.get_config_header(defines, headers, define_prefix=define_prefix))
-	lst.append('\n#endif /* %s */\n' % waf_guard)
+	lst.append(f'\n#endif /* {waf_guard} */\n')
 
 	node.write('\n'.join(lst))
 
@@ -955,7 +955,7 @@ def get_config_header(self, defines=True, headers=False, define_prefix=''):
 
 	if headers:
 		for x in self.env[INCKEYS]:
-			lst.append('#include <%s>' % x)
+			lst.append(f'#include <{x}>')
 
 	if defines:
 		tbl = {}
@@ -966,11 +966,11 @@ def get_config_header(self, defines=True, headers=False, define_prefix=''):
 		for k in self.env[DEFKEYS]:
 			caption = self.get_define_comment(k)
 			if caption:
-				caption = ' /* %s */' % caption
+				caption = f' /* {caption} */'
 			try:
-				txt = '#define %s%s %s%s' % (define_prefix, k, tbl[k], caption)
+				txt = f'#define {define_prefix}{k} {tbl[k]}{caption}'
 			except KeyError:
-				txt = '/* #undef %s%s */%s' % (define_prefix, k, caption)
+				txt = f'/* #undef {define_prefix}{k} */{caption}'
 			lst.append(txt)
 	return "\n".join(lst)
 
@@ -1341,7 +1341,7 @@ def multicheck(self, *k, **kw):
 			failure_count += 1
 
 	if failure_count:
-		self.end_msg(kw.get('errmsg', '%s test failed' % failure_count), color='YELLOW', **kw)
+		self.end_msg(kw.get('errmsg', f'{failure_count} test failed'), color='YELLOW', **kw)
 	else:
 		self.end_msg('all ok', **kw)
 
@@ -1360,7 +1360,7 @@ def check_gcc_o_space(self, mode='c'):
 		self.env.CCLNK_TGT_F = ['-o', '']
 	elif mode == 'cxx':
 		self.env.CXXLNK_TGT_F = ['-o', '']
-	features = '%s %sshlib' % (mode, mode)
+	features = f'{mode} {mode}shlib'
 	try:
 		self.check(msg='Checking if the -o link must be split from arguments', fragment=SNIP_EMPTY_PROGRAM, features=features)
 	except self.errors.ConfigurationError:

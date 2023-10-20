@@ -55,17 +55,17 @@ elif sys.platform.lower().startswith('win'):
 	STATAFLAGS = '/e do'
 	STATAENCODING = 'Latin-1'
 else:
-	raise Exception("Unknown sys.platform: %s " % sys.platform)
+	raise Exception(f"Unknown sys.platform: {sys.platform} ")
 
 def configure(ctx):
-	ctx.find_program(STATA_COMMANDS, var='STATACMD', errmsg="""\n
+	ctx.find_program(STATA_COMMANDS, var='STATACMD', errmsg=f"""\n
 No Stata executable found!\n\n
 If Stata is needed:\n
 	1) Check the settings of your system path.
-	2) Note we are looking for Stata executables called: %s
+	2) Note we are looking for Stata executables called: {STATA_COMMANDS}
 	   If yours has a different name, please report to hmgaudecker [at] gmail\n
 Else:\n
-	Do not load the 'run_do_script' tool in the main wscript.\n\n""" % STATA_COMMANDS)
+	Do not load the 'run_do_script' tool in the main wscript.\n\n""")
 	ctx.env.STATAFLAGS = STATAFLAGS
 	ctx.env.STATAENCODING = STATAENCODING
 
@@ -124,7 +124,7 @@ def apply_run_do_script(tg):
 
 	tsk = tg.create_task('run_do_script', src=src_node, tgt=tgt_nodes)
 	tsk.env.DOFILETRUNK = os.path.splitext(src_node.name)[0]
-	tsk.env.LOGFILEPATH = os.path.join(tg.bld.bldnode.abspath(), '%s.log' % (tsk.env.DOFILETRUNK))
+	tsk.env.LOGFILEPATH = os.path.join(tg.bld.bldnode.abspath(), f'{(tsk.env.DOFILETRUNK)}.log')
 
 	# dependencies (if the attribute 'deps' changes, trigger a recompilation)
 	for x in tg.to_list(getattr(tg, 'deps', [])):

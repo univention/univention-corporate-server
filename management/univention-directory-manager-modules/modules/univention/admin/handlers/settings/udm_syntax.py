@@ -173,7 +173,7 @@ class object(univention.admin.handlers.simpleLdap):
     def _post_unmap(self, info, values):
         info['messagecatalog'] = []
         messagecatalog_ldap_attribute = "univentionMessageCatalog"
-        messagecatalog_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (messagecatalog_ldap_attribute,)
+        messagecatalog_ldap_attribute_and_tag_prefix = f"{messagecatalog_ldap_attribute};entry-lang-"
         for ldap_attribute, value_list in values.items():
             if ldap_attribute.startswith(messagecatalog_ldap_attribute_and_tag_prefix):
                 language_tag = ldap_attribute.split(messagecatalog_ldap_attribute_and_tag_prefix, 1)[1]
@@ -183,7 +183,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _post_map(self, modlist, diff):
         messagecatalog_ldap_attribute = "univentionMessageCatalog"
-        messagecatalog_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (messagecatalog_ldap_attribute,)
+        messagecatalog_ldap_attribute_and_tag_prefix = f"{messagecatalog_ldap_attribute};entry-lang-"
         for property_name, old_value, new_value in diff:
             if property_name == 'messagecatalog':
                 old_dict = dict(old_value)

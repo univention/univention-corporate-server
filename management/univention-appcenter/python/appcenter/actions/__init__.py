@@ -83,7 +83,7 @@ class StoreAppAction(Action):
             else:
                 app = Apps.split_app_string(val)
             if app is None:
-                parser.error('Unable to find app %s. Maybe "%s update" to get the latest list of applications?' % (val, sys.argv[0]))
+                parser.error(f'Unable to find app {val}. Maybe "{sys.argv[0]} update" to get the latest list of applications?')
             apps.append(app)
         if self.nargs is None:
             apps = apps[0]
@@ -188,7 +188,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
 
     def call_with_namespace(self, namespace):
         # type: (Namespace) -> Any
-        self.debug('Calling %s' % self.get_action_name())
+        self.debug(f'Calling {self.get_action_name()}')
         self.percentage = 0
         try:
             result = self.main(namespace)
@@ -226,19 +226,19 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
     def _call_script(self, _script, *args, **kwargs):
         # type: (str, Any, Any) -> Optional[bool]
         if not os.path.exists(_script):
-            self.debug('%s does not exist' % _script)
+            self.debug(f'{_script} does not exist')
             return None
         subprocess_args = [_script] + list(args)
         for key, value in kwargs.items():
             if value is None or value is False:
                 continue
-            key = '--%s' % key.replace('_', '-')
+            key = f'--{key.replace("_", "-")}'
             subprocess_args.append(key)
             if value is not True:
                 subprocess_args.append(value)
 
         process = self._subprocess(subprocess_args)
-        self.debug('%s returned with %s' % (_script, process.returncode))
+        self.debug(f'{_script} returned with {process.returncode}')
 
         return process.returncode == 0
 
@@ -276,4 +276,4 @@ def _import():
     path = os.path.dirname(__file__)
     for pymodule in glob(os.path.join(path, '*.py')):
         pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
-        __import__('univention.appcenter.actions.%s' % pymodule_name)
+        __import__(f'univention.appcenter.actions.{pymodule_name}')

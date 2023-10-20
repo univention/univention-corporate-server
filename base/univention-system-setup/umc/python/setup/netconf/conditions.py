@@ -78,7 +78,7 @@ class Executable(Phase, metaclass=ABCMeta):
     def check(self) -> None:
         super(Executable, self).check()
         if not os.path.exists(self.executable):
-            raise SkipPhase("Missing executable %s" % (self.executable,))
+            raise SkipPhase(f"Missing executable {self.executable}")
 
 
 class Dhcp(Phase, metaclass=ABCMeta):

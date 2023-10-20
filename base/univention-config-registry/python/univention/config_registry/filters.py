@@ -60,7 +60,7 @@ def filter_shell(args, text):  # pylint: disable-msg=W0613
         except ValueError:
             var = line
             value = ''
-        out.append('%s=%s' % (key_shell_escape(var), escape_value(value)))
+        out.append(f'{key_shell_escape(var)}={escape_value(value)}')
     return out
 
 

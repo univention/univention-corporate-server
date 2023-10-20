@@ -95,7 +95,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
         if result is not None:
             process, log = result
             if process.returncode != 0:
-                self.fatal('%s: Searching for App upgrade failed!' % app)
+                self.fatal(f'{app}: Searching for App upgrade failed!')
                 return None, None
             mode = '\n'.join(log.stdout())
             if mode:
@@ -135,7 +135,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
                 self.fatal('Unable to process %r' % (mode,))
                 return
             self._last_mode = mode, detail
-            ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
+            ucr_save({f'appcenter/prudence/docker/{app.id}': None})
             self._do_it(app, args)
         else:
             self.log('Nothing to upgrade')
@@ -162,12 +162,12 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
     def _upgrade_image(self, app, args):
         docker = self._get_docker(app)
         if args.pull_image:
-            self.log('Pulling Docker image %s' % docker.image)
+            self.log(f'Pulling Docker image {docker.image}')
             docker.backup_run_file()
             docker.pull()
         else:
             docker.setup_docker_files()
-        self.log('Saving data from old container (%s)' % self.old_app)
+        self.log(f'Saving data from old container ({self.old_app})')
         Start.call(app=self.old_app)
         settings = self._get_configure_settings(self.old_app, filter_action=False)
         settings.update(args.set_vars or {})
@@ -180,7 +180,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
         if old_docker.container:
             old_docker.rm()
         self._had_image_upgrade = True
-        self.log('Setting up new container (%s)' % app)
+        self.log(f'Setting up new container ({app})')
         ucr_save({app.ucr_image_key: None})
         old_configure = args.configure
         args.configure = False
@@ -198,7 +198,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
                 if old_docker.rmi() != 0:
                     self.log('Failed to remove old image. Continuing anyway...')
             except Exception as exc:
-                self.warn('Error while removing old image: %s' % exc)
+                self.warn(f'Error while removing old image: {exc}')
         self.old_app = app
 
     def _upgrade_docker(self, app, args):
@@ -238,4 +238,4 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
     def dry_run(self, app, args):
         if not app.docker:
             return super(Upgrade, self).dry_run(app, args)
-        self.log('%s is a Docker App. No sane dry run is implemented' % app)
+        self.log(f'{app} is a Docker App. No sane dry run is implemented')

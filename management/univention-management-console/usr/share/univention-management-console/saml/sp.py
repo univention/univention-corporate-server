@@ -55,11 +55,11 @@ else:
     addresses = [fqdn]
     addresses.extend([y['address'] for x, y in i.all_interfaces if y and y.get('address')])
 
-bases = ['%s://%s/univention/saml' % (scheme, addr) for addr in addresses for scheme in ('https', 'http')]
+bases = [f'{scheme}://{addr}/univention/saml' for addr in addresses for scheme in ('https', 'http')]
 CONFIG = {
-    "entityid": "https://%s/univention/saml/metadata" % (fqdn,),
+    "entityid": f"https://{fqdn}/univention/saml/metadata",
     "name_form": NAME_FORMAT_URI,
-    "description": "Univention Management Console at %s" % (fqdn,),
+    "description": f"Univention Management Console at {fqdn}",
     "service": {
         "sp": {
                 "allow_unsolicited": True,
@@ -68,8 +68,8 @@ CONFIG = {
                 "authn_requests_signed": True,
                 "logout_requests_signed": True,
             "endpoints": {
-                "assertion_consumer_service": [('%s/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST,)],
-                "single_logout_service": [('%s/slo/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
+                "assertion_consumer_service": [(f'{url}/', binding) for url in bases for binding in (BINDING_HTTP_POST,)],
+                "single_logout_service": [(f'{url}/slo/', binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
             },
             "name_id_format": [NAMEID_FORMAT_TRANSIENT, NAMEID_FORMAT_PERSISTENT],
             "required_attributes": [x.strip() for x in ucr.get('umc/saml/required_attributes', 'uid').split(',') if x.strip()],
@@ -77,8 +77,8 @@ CONFIG = {
         },
     },
     "attribute_map_dir": os.path.dirname(saml2.attributemaps.__file__),
-    "key_file": "/etc/univention/ssl/%s/private.key" % (fqdn,),
-    "cert_file": "/etc/univention/ssl/%s/cert.pem" % (fqdn,),
+    "key_file": f"/etc/univention/ssl/{fqdn}/private.key",
+    "cert_file": f"/etc/univention/ssl/{fqdn}/cert.pem",
     "xmlsec_binary": "/usr/bin/xmlsec1",
     "metadata": {
         "local": glob.glob('/usr/share/univention-management-console/saml/idp/*.xml'),
@@ -86,20 +86,20 @@ CONFIG = {
     "debug": ucr.is_true('umc/saml/debug', False),
     "contact_person": [
         {
-            "givenname": ucr.get('umc/saml/contact-person/%s/givenname' % (type_,), ''),
-            "surname": ucr.get('umc/saml/contact-person/%s/surname' % (type_,), ''),
-            "company": ucr.get('umc/saml/contact-person/%s/company' % (type_,), ''),
-            "mail": [x.strip() for x in ucr.get('umc/saml/contact-person/%s/mail' % (type_,), '').split(',') if x.strip()],
+            "givenname": ucr.get(f'umc/saml/contact-person/{type_}/givenname', ''),
+            "surname": ucr.get(f'umc/saml/contact-person/{type_}/surname', ''),
+            "company": ucr.get(f'umc/saml/contact-person/{type_}/company', ''),
+            "mail": [x.strip() for x in ucr.get(f'umc/saml/contact-person/{type_}/mail', '').split(',') if x.strip()],
             "type": type_,
-        } for type_ in ('technical', 'administrative') if ucr.get('umc/saml/contact-person/%s/mail' % (type_,))
+        } for type_ in ('technical', 'administrative') if ucr.get(f'umc/saml/contact-person/{type_}/mail')
     ],
     "organization": {
         "name": [
-            (ucr.get('umc/saml/organization/name', 'Univention Management Console %s' % (fqdn,)), "en"),
+            (ucr.get('umc/saml/organization/name', f'Univention Management Console {fqdn}'), "en"),
         ],
-        "display_name": [ucr.get('umc/saml/organization/display-name', 'Univention Management Console %s' % (fqdn,))],
+        "display_name": [ucr.get('umc/saml/organization/display-name', f'Univention Management Console {fqdn}')],
         "url": [
-            (ucr.get('umc/saml/organization/url', 'https://%s/univention/management/' % (fqdn,)), "en"),
+            (ucr.get('umc/saml/organization/url', f'https://{fqdn}/univention/management/'), "en"),
         ],
     },
 }

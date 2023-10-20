@@ -143,7 +143,7 @@ class TestUMCAuthenticator:
     def test_ask_umc_request_success(self, mocked_authenticator, mocker):
         def _side_effect(req):
             """Side effect to simulate successful request with different response data"""
-            print("Making a request to '%s'" % req.url)
+            print(f"Making a request to '{req.url}'")
 
             response_mock = mocker.Mock()
 
@@ -178,7 +178,7 @@ class TestUMCAuthenticator:
     def test_ask_umc_request_error(self, mocked_authenticator, mocker):
         def _side_effect(req):
             """Side effect to simulate request with a http error"""
-            print("Making a request to '%s'" % req.url)
+            print(f"Making a request to '{req.url}'")
             response_mock = mocker.Mock()
             response_mock.status_code = 404
             response_mock.body.decode.return_value = b'X'

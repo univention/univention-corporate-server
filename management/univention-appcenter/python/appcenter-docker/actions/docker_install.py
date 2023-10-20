@@ -73,7 +73,7 @@ class Install(Install, DockerActionMixin):
     def _do_it(self, app, args):
         ret = super(Install, self)._do_it(app, args)
         if app.docker:
-            ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
+            ucr_save({f'appcenter/prudence/docker/{app.id}': None})
         return ret
 
     def _install_app_in_existing_container(self, app, args):
@@ -99,4 +99,4 @@ class Install(Install, DockerActionMixin):
     def dry_run(self, app, args):
         if not app.docker:
             return super(Install, self).dry_run(app, args)
-        self.log('%s is a Docker App. No sane dry run is implemented' % app)
+        self.log(f'{app} is a Docker App. No sane dry run is implemented')

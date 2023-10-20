@@ -57,7 +57,7 @@ class unity(Task.Task):
 		ret = ret.replace('\\', '\\\\').replace('"', '\\"')
 		return ret
 	def run(self):
-		lst = ['#include "%s"\n' % self.to_include(node) for node in self.inputs]
+		lst = [f'#include "{self.to_include(node)}"\n' for node in self.inputs]
 		txt = ''.join(lst)
 		self.outputs[0].write(txt)
 	def __str__(self):
@@ -77,15 +77,15 @@ def bind_unity(obj, cls_name, exts):
 			cnt = self.batch_size()
 			if cnt <= 1:
 				return fun(self, node)
-			x = getattr(self, 'master_%s' % cls_name, None)
+			x = getattr(self, f'master_{cls_name}', None)
 			if not x or len(x.inputs) >= cnt:
 				x = self.create_task('unity')
-				setattr(self, 'master_%s' % cls_name, x)
+				setattr(self, f'master_{cls_name}', x)
 
-				cnt_cur = getattr(self, 'cnt_%s' % cls_name, 0)
+				cnt_cur = getattr(self, f'cnt_{cls_name}', 0)
 				c_node = node.parent.find_or_declare('unity_%s_%d_%d.%s' % (self.idx, cnt_cur, cnt, cls_name))
 				x.outputs = [c_node]
-				setattr(self, 'cnt_%s' % cls_name, cnt_cur + 1)
+				setattr(self, f'cnt_{cls_name}', cnt_cur + 1)
 				fun(self, c_node)
 			x.inputs.append(node)
 

@@ -158,7 +158,7 @@ def check_fortran_dummy_main(self, *k, **kw):
 		kw['fortran_main'] = main
 		try:
 			self.check_cc(
-				fragment = 'int %s() { return 0; }\n' % (main or 'test'),
+				fragment = f'int {(main or "test")}() {{ return 0; }}\n',
 				features = 'c fcprogram',
 				mandatory = True
 			)
@@ -167,7 +167,7 @@ def check_fortran_dummy_main(self, *k, **kw):
 				self.end_msg('no')
 			else:
 				self.env.FC_MAIN = main
-				self.end_msg('yes %s' % main)
+				self.end_msg(f'yes {main}')
 			break
 		except self.errors.ConfigurationError:
 			pass
@@ -273,7 +273,7 @@ def _parse_flink_token(lexer, token, tmp_flags):
 		if t.startswith('P,'):
 			t = t[2:]
 		for opt in t.split(os.pathsep):
-			tmp_flags.append('-L%s' % opt)
+			tmp_flags.append(f'-L{opt}')
 	# step 6
 	elif NOSPACE_OPTS.match(token):
 		tmp_flags.append(token)
@@ -324,7 +324,7 @@ def check_fortran_clib(self, autoadd=True, *k, **kw):
 	else:
 		out = self.test_bld.err
 		flags = parse_fortran_link(out.splitlines())
-		self.end_msg('ok (%s)' % ' '.join(flags))
+		self.end_msg(f'ok ({" ".join(flags)})')
 		self.env.LINKFLAGS_CLIB = flags
 		return flags
 	return []
@@ -437,7 +437,7 @@ def check_fortran_mangling(self, *k, **kw):
 		except self.errors.ConfigurationError:
 			pass
 		else:
-			self.end_msg("ok ('%s', '%s', '%s-case')" % (u, du, c))
+			self.end_msg(f"ok ('{u}', '{du}', '{c}-case')")
 			self.env.FORTRAN_MANGLING = (u, du, c)
 			break
 	else:
@@ -459,7 +459,7 @@ def detect_openmp(self):
 	for x in ('-fopenmp','-openmp','-mp','-xopenmp','-omp','-qsmp=omp'):
 		try:
 			self.check_fc(
-				msg          = 'Checking for OpenMP flag %s' % x,
+				msg          = f'Checking for OpenMP flag {x}',
 				fragment     = 'program main\n  call omp_get_num_threads()\nend program main',
 				fcflags      = x,
 				linkflags    = x,

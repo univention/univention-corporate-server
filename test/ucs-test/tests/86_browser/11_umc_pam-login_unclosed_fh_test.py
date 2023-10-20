@@ -33,7 +33,7 @@ def test_open_fd_after_login(umc_browser_test: UMCBrowserTest, udm, try_wrong_pw
 
     for i in range(4):
         username = udm.create_user()[1]
-        logger.info("Created user with username %s" % username)
+        logger.info(f"Created user with username {username}")
         umc_browser_test.page.goto(f"{umc_browser_test.base_url}/univention/portal")
         umc_browser_test.page.get_by_role("link", name=_("Login")).click()
         umc_browser_test.login(username, password, check_for_no_module_available_popup=False, login_should_fail=False, do_navigation=False, skip_xhr_check=True)

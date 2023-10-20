@@ -22,7 +22,7 @@ SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 
 def create_share(host):
     name = uts.random_name()
-    path = '/mnt/_%s' % name
+    path = f'/mnt/_{name}'
     return udm.create_object('shares/share', name=name, path=path, host=host)
 
 
@@ -30,7 +30,7 @@ def rename_share(dn):
     name = uts.random_name()
     udm.modify_object('shares/share', dn=dn, name=name)
     exploded_dn = ldap.explode_dn(dn)
-    exploded_dn[0] = 'cn=%s' % name
+    exploded_dn[0] = f'cn={name}'
     return ','.join(exploded_dn)
 
 
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         qc.cache_must_exists(share2)
 
         # renamed objects must be removed manually
-        subprocess.call('udm-test shares/share remove --dn "%s"' % share2, shell=True)
+        subprocess.call(f'udm-test shares/share remove --dn "{share2}"', shell=True)
 
     utils.wait_for_replication_and_postrun()
 

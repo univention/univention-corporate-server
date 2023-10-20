@@ -59,7 +59,7 @@ def main():
 
         # try to authenticate and change password of the user
         # to the 'complex' one (should work):
-        print("\nTrying to change user password to '%s':" % complex_password)
+        print(f"\nTrying to change user password to '{complex_password}':")
         client = Client(None, user_name, user_password)
         response = client.umc_set({'password': {'password': user_password, 'new_password': complex_password}})
         print("RESPONSE:", response)
@@ -68,7 +68,7 @@ def main():
 
         # try to authenticate with a new user password
         # and change it to a simple one (should not work):
-        print("\nTrying to change user password to '%s':" % simple_password)
+        print(f"\nTrying to change user password to '{simple_password}':")
         client = Client(None, user_name, complex_password)
         with pytest.raises(BadRequest):
             response = client.umc_set({'password': {'password': complex_password, 'new_password': simple_password}})

@@ -282,10 +282,10 @@ def compile_template(line):
                         app(f + ':')
                         indent += 1
                 elif f.startswith('xml:'):
-                        app('lst.append(xml_escape(%s))' % f[4:])
+                        app(f'lst.append(xml_escape({f[4:]}))')
                 else:
                         #app('lst.append((%s) or "cannot find %s")' % (f, f))
-                        app('lst.append(%s)' % f)
+                        app(f'lst.append({f})')
 
         if extr:
                 if params[-1]:
@@ -348,7 +348,7 @@ def make_uuid(v, prefix = None):
                 tmp = str(v)
         d = Utils.md5(tmp.encode()).hexdigest().upper()
         if prefix:
-                d = '%s%s' % (prefix, d[8:])
+                d = f'{prefix}{d[8:]}'
         gid = uuid.UUID(d, version = 4)
         return str(gid).upper()
 
@@ -634,7 +634,7 @@ class vsnode_target(vsnode_project):
                 """
                 opt = ''
                 if getattr(self, 'tg', None):
-                        opt += " --targets=%s" % self.tg.name
+                        opt += f" --targets={self.tg.name}"
                 return (self.get_waf(), opt)
 
         def collect_source(self):

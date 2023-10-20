@@ -72,7 +72,7 @@ def encode_additional_info(users: Optional[int] = None, role: Optional[str] = No
         ('R', encode_role, role),
     ]
     return ",".join(
-        "%s:%s" % (key, encoder(datum))
+        f"{key}:{encoder(datum)}"
         for key, encoder, datum in data
         if datum is not None
     )

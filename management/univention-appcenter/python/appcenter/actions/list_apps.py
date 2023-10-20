@@ -59,24 +59,24 @@ class List(UniventionAppAction):
         first = True
         if args.ids_only:
             for app in self.get_apps():
-                self.log('%s' % app.id)
+                self.log(f'{app.id}')
             return
         for app, versions, installations in self._list(args.app):
             if not first:
                 self.log('')
-            self.log('%s' % app.id)
-            self.log('  Name: %s' % app.name)
+            self.log(f'{app.id}')
+            self.log(f'  Name: {app.name}')
             if args.with_repository:
-                self.log('  Repository: %s' % app.component_id)
+                self.log(f'  Repository: {app.component_id}')
             if args.app:
                 self.log('  Versions:')
                 for version in versions:
-                    self.log('    %s' % version)
+                    self.log(f'    {version}')
                     version_installations = installations.get(version)
                     if version_installations:
                         self.log('      Installed: %s' % ' '.join(sorted(version_installations)))
             else:
-                self.log('  Latest version: %s' % app.version)
+                self.log(f'  Latest version: {app.version}')
                 self.log('  Installations: %s' % ' '.join(sorted(flatten(installations.values()))))
             first = False
 

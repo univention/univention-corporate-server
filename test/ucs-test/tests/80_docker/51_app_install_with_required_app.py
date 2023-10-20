@@ -33,7 +33,7 @@ if __name__ == '__main__':
             app2.verify(joined=False)
 
             lo = get_ldap_connection()
-            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True))
+            print(lo.searchDn(filter=f'(&(cn={app_name[:5]}-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))', unique=True, required=True))
         finally:
             app2.uninstall()
             app.uninstall()

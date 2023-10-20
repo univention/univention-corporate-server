@@ -74,7 +74,7 @@ class Abort(Exception):
                 try:
                     value = args[i]
                 except IndexError:
-                    raise TypeError('Need %s for %s' % (key, self.__class__.__name__))
+                    raise TypeError(f'Need {key} for {self.__class__.__name__}')
                 i += 1
             setattr(self, key, value)
             _args.append(value)

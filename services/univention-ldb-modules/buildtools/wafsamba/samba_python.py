@@ -105,7 +105,7 @@ def SAMBA_PYTHON(bld, name,
     # when we support static python modules we'll need to gather
     # the list from all the SAMBA_PYTHON() targets
     if init_function_sentinel is not None:
-        cflags += ' -DSTATIC_LIBPYTHON_MODULES=%s' % init_function_sentinel
+        cflags += f' -DSTATIC_LIBPYTHON_MODULES={init_function_sentinel}'
 
     # From https://docs.python.org/2/c-api/arg.html:
     # Starting with Python 2.5 the type of the length argument to
@@ -121,7 +121,7 @@ def SAMBA_PYTHON(bld, name,
     source = bld.EXPAND_VARIABLES(source, vars=vars)
 
     if realname is not None:
-        link_name = 'python/%s' % realname
+        link_name = f'python/{realname}'
     else:
         link_name = None
 

@@ -35,7 +35,7 @@ def restore_retry_count():
 
 def set_ucr_retry_count(count):
     """Sets the 'ldap/client/retry/count' in the UCR."""
-    ucr_var = "ldap/client/retry/count=%s" % count
+    ucr_var = f"ldap/client/retry/count={count}"
     handler_set((ucr_var,))
 
 
@@ -90,7 +90,7 @@ def stop_slapd():
     """
     ret_code = Popen(('invoke-rc.d', 'slapd', 'stop')).wait()
     if ret_code != 0:
-        fail("Expecting the return code to be 0, while it is: %s" % ret_code)
+        fail(f"Expecting the return code to be 0, while it is: {ret_code}")
 
     # look for process and wait up to 15 seconds for its termination:
     for proc in psutil.process_iter():
@@ -110,13 +110,12 @@ def start_slapd():
     """Starts the slapd and wait for it to be started."""
     ret_code = Popen(('invoke-rc.d', 'slapd', 'start')).wait()
     if ret_code not in (0, 2):
-        fail("Expecting the return code to be 0 or 2, while it is: %s"
-             % ret_code)
+        fail(f"Expecting the return code to be 0 or 2, while it is: {ret_code}")
 
 
 def start_with_delay(delay):
     """Sleeps the given 'delay' and starts slapd."""
-    Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
+    Popen(f'sleep {delay}; invoke-rc.d slapd start', shell=True)
 
 
 def wait_for_slapd_to_be_started():

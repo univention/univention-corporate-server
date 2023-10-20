@@ -23,7 +23,7 @@ if __name__ == '__main__':
                     WebInterfacePortHTTP=webinterface_port_http,
                     WebInterfacePortHTTPS=webinterface_port_https,
                     AutoModProxy=str(mod_proxy),
-                    WebInterface='/%s' % app_name)
+                    WebInterface=f'/{app_name}')
                 app.add_to_local_appcenter()
                 appcenter.update()
                 app.install()
@@ -31,11 +31,11 @@ if __name__ == '__main__':
                 ucr = ConfigRegistry()
                 ucr.load()
                 if mod_proxy:
-                    assert ucr.get('ucs/web/overview/entries/service/%s/port_http' % app_name) == '80'
-                    assert ucr.get('ucs/web/overview/entries/service/%s/port_https' % app_name) == '443'
+                    assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == '80'
+                    assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == '443'
                 else:
-                    assert ucr.get('ucs/web/overview/entries/service/%s/port_http' % app_name) == webinterface_port_http
-                    assert ucr.get('ucs/web/overview/entries/service/%s/port_https' % app_name) == webinterface_port_https
+                    assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == webinterface_port_http
+                    assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == webinterface_port_https
             finally:
                 app.uninstall()
                 app.remove()

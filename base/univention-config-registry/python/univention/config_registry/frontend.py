@@ -90,7 +90,7 @@ class UnknownKeyException(Exception):
         Exception.__init__(self, value)
 
     def __str__(self):
-        return 'W: Unknown key: "%s"' % self.args
+        return f'W: Unknown key: "{self.args}"'
 
 
 def replog(ucr, var, old_value, value=None):
@@ -107,10 +107,10 @@ def replog(ucr, var, old_value, value=None):
     if ucr.is_true('ucr/replog/enabled', False):
         if value is not None:
             method = 'set'
-            varvalue = "%s=%s" % (var, escape_value(value))
+            varvalue = f"{var}={escape_value(value)}"
         else:
             method = 'unset'
-            varvalue = "'%s'" % var
+            varvalue = f"'{var}'"
 
         scope_arg = {
             ConfigRegistry.LDAP: '--ldap-policy ',
@@ -129,7 +129,7 @@ def replog(ucr, var, old_value, value=None):
             with open(REPLOG_FILE, "a+", encoding='utf-8') as logfile:
                 logfile.write(log)
         except EnvironmentError as ex:
-            print("E: exception occurred while writing to replication log: %s" % (ex,), file=sys.stderr)
+            print(f"E: exception occurred while writing to replication log: {ex}", file=sys.stderr)
             exception_occured()
 
 
@@ -155,7 +155,7 @@ def handler_set(args, opts={}, quiet=False):
             sep_set = arg.find('=')  # set
             sep_def = arg.find('?')  # set if not already set
             if sep_set == -1 and sep_def == -1:
-                print("W: Missing value for config registry variable '%s'" % (arg,), file=sys.stderr)
+                print(f"W: Missing value for config registry variable '{arg}'", file=sys.stderr)
                 continue
             else:
                 if sep_set > 0 and sep_def == -1:
@@ -171,9 +171,9 @@ def handler_set(args, opts={}, quiet=False):
             if do_set_value and validate_key(key):
                 if not quiet:
                     if key_exists:
-                        print('Setting %s' % key)
+                        print(f'Setting {key}')
                     else:
-                        print('Create %s' % key)
+                        print(f'Create {key}')
                 vinfo = info.get_variable(key) or info.match_pattern(key)
                 if vinfo:  # Type checking can only be done if key is already configured
                     try:
@@ -201,9 +201,9 @@ def handler_set(args, opts={}, quiet=False):
                     opts['exit_code'] = 1
                 if not quiet:
                     if key_exists:
-                        print('Not updating %s' % key)
+                        print(f'Not updating {key}')
                     else:
-                        print('Not setting %s' % key)
+                        print(f'Not setting {key}')
         changed = ucr.update(changes)
 
     _run_changed(ucr, changed, "" if quiet else 'W: %s is overridden by scope "%s"')
@@ -222,7 +222,7 @@ def handler_unset(args, opts={}):
         changes = {}  # type: Dict[str, Optional[str]]
         for arg in args:
             if arg in ucr._layer:
-                print('Unsetting %s' % arg)
+                print(f'Unsetting {arg}')
                 changes[arg] = None
             else:
                 msg = "W: The config registry variable '%s' does not exist"
@@ -413,9 +413,9 @@ def handler_search(args, opts={}):
 
     if args:
         try:
-            search = re.compile('|'.join('(?:%s)' % (_,) for _ in args)).search
+            search = re.compile('|'.join(f'(?:{_})' for _ in args)).search
         except re.error as ex:
-            print('E: invalid regular expression: %s' % (ex,), file=sys.stderr)
+            print(f'E: invalid regular expression: {ex}', file=sys.stderr)
             sys.exit(1)
     else:
         def search(x):
@@ -425,7 +425,7 @@ def handler_search(args, opts={}):
 
     category = opts.get('category', None)
     if category and not info.get_category(category):
-        print('E: unknown category: "%s"' % (category,), file=sys.stderr)
+        print(f'E: unknown category: "{category}"', file=sys.stderr)
         sys.exit(1)
 
     ucr = ConfigRegistry()
@@ -481,7 +481,7 @@ def handler_get(args, opts={}):
     if value is None:
         return
     elif OPT_FILTERS['shell'][2]:
-        yield '%s: %s' % (key, value)
+        yield f'{key}: {value}'
     else:
         yield value
 
@@ -506,12 +506,12 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
         # if not shell filter option is set
         value_string = "<empty>" if not OPT_FILTERS["shell"][2] else ""
     else:
-        value_string = '%s' % value
+        value_string = f'{value}'
 
     if scope is None or not 0 <= scope < len(SCOPE) or not _SHOW_SCOPE & details or OPT_FILTERS['shell'][2]:  # Do not display scope in shell export
-        key_value = '%s: %s' % (key, value_string)
+        key_value = f'{key}: {value_string}'
     else:
-        key_value = '%s (%s): %s' % (key, SCOPE[scope], value_string)
+        key_value = f'{key} ({SCOPE[scope]}): {value_string}'
 
     info = [key_value]
     if variable_info and _SHOW_DESCRIPTION & details:
@@ -533,9 +533,9 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
     if variable_info and _SHOW_TYPE & details:
         try:
             validator = Type(variable_info)
-            info.append(' Type: %s' % (validator,))
+            info.append(f' Type: {validator}')
         except ValueError as exc:
-            info.append(' Type: %s' % exc)
+            info.append(f' Type: {exc}')
 
     if (_SHOW_CATEGORIES | _SHOW_DESCRIPTION) & details:
         info.append('')
@@ -663,7 +663,7 @@ Description:
 def missing_parameter(action):
     # type: (str) -> NoReturn
     """Print missing parameter error."""
-    print('E: too few arguments for command [%s]' % (action,), file=sys.stderr)
+    print(f'E: too few arguments for command [{action}]', file=sys.stderr)
     print('try `univention-config-registry --help` for more information', file=sys.stderr)
     sys.exit(1)
 
@@ -776,7 +776,7 @@ def main(args):
                 try:
                     OPT_FILTERS[arg[2:]][2] = True
                 except LookupError:
-                    print('E: unknown option %s' % (arg,), file=sys.stderr)
+                    print(f'E: unknown option {arg}', file=sys.stderr)
                     sys.exit(1)
 
         # is action already defined by global option?
@@ -805,7 +805,7 @@ def main(args):
             else:
                 for arg in args:
                     if not arg.startswith('--'):
-                        tmp.append('^%s$' % arg)
+                        tmp.append(f'^{arg}$')
                     else:
                         tmp.append(arg)
             args = tmp
@@ -821,7 +821,7 @@ def main(args):
         # if a filter option is set: verify that a valid command is given
         for name, (_prio, func, state, actions) in OPT_FILTERS.items():
             if state and action not in actions:
-                print('E: invalid option --%s for command %s' % (name, action), file=sys.stderr)
+                print(f'E: invalid option --{name} for command {action}', file=sys.stderr)
                 sys.exit(1)
 
         # check command options
@@ -833,7 +833,7 @@ def main(args):
             try:
                 cmd_opt_tuple = cmd_opts[arg[2:]]
             except LookupError:
-                print('E: invalid option %s for command %s' % (arg, action), file=sys.stderr)
+                print(f'E: invalid option {arg} for command {action}', file=sys.stderr)
                 sys.exit(1)
             else:
                 if cmd_opt_tuple[0] == BOOL:
@@ -853,7 +853,7 @@ def main(args):
         try:
             handler_func, min_args = HANDLERS[action]
         except LookupError:
-            print('E: unknown action "%s", see --help' % (action,), file=sys.stderr)
+            print(f'E: unknown action "{action}", see --help', file=sys.stderr)
             sys.exit(1)
         else:
             # enough arguments?

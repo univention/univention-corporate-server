@@ -71,9 +71,9 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
     curl.setopt(pycurl.TIMEOUT, 30)
     if proxy.username:
         curl.setopt(pycurl.PROXYAUTH, pycurl.HTTPAUTH_ANY)
-        credentials = '%s' % (proxy.username,)
+        credentials = f'{proxy.username}'
         if proxy.password:
-            credentials = '%s:%s' % (proxy.username, proxy.password)
+            credentials = f'{proxy.username}:{proxy.password}'
         curl.setopt(pycurl.PROXYUSERPWD, credentials)
 
     curl.setopt(pycurl.URL, url)
@@ -81,14 +81,14 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
 
     buf = io.BytesIO()
     curl.setopt(pycurl.WRITEFUNCTION, buf.write)
-    MODULE.process(''.join("Trying to connect to %s via HTTP proxy %s" % (url, proxy)))
+    MODULE.process(''.join(f"Trying to connect to {url} via HTTP proxy {proxy}"))
 
     try:
         curl.perform()
     except pycurl.error as exc:
         try:
             code, msg = exc.args
-            msg = '%s (code=%s)' % (msg, code)
+            msg = f'{msg} (code={code})'
             MODULE.info(msg)
         except ValueError:
             MODULE.error(traceback.format_exc())

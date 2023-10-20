@@ -88,7 +88,7 @@ if IS_SELFSERVICE_MASTER:
         from univention.management.console.modules.udm.udm_ldap import UDM_Error, UDM_Module
         from univention.udm import UDM, NoObject
     except ImportError as exc:
-        MODULE.error('Could not load udm module: %s' % (exc,))
+        MODULE.error(f'Could not load udm module: {exc}')
 
 
 def forward_to_master(func):
@@ -320,7 +320,7 @@ class Instance(Base):
         dn, username = self.auth(username, password)
         MODULE.error(f'set_service_specific_passwords(): Setting {password_type} password for {username}')
         if password_type == 'radius':
-            udm = UDMRest.http('https://%s/univention/udm/' % UDM_REST_SERVER, 'cn=admin', open('/etc/ldap.secret').read())
+            udm = UDMRest.http(f'https://{UDM_REST_SERVER}/univention/udm/', 'cn=admin', open('/etc/ldap.secret').read())
             user_obj = udm.get('users/user').get(dn)
             service_specific_password = user_obj.generate_service_specific_password('radius')
         else:
@@ -561,7 +561,7 @@ class Instance(Base):
 
         for attr in attributes:
             if attr in read_only_attributes:
-                MODULE.error('set_user_attributes(): attribute %s is read-only' % (attr,))
+                MODULE.error(f'set_user_attributes(): attribute {attr} is read-only')
                 raise UMC_Error(_('The attribute %s is read-only.') % (attr,))
         user = self.usersmod.object(None, lo, po, dn)
         user.open()
@@ -571,13 +571,13 @@ class Instance(Base):
         try:
             user.modify()
         except udm_errors.base as exc:
-            MODULE.error('set_user_attributes(): modifying the user failed: %s' % (traceback.format_exc(),))
+            MODULE.error(f'set_user_attributes(): modifying the user failed: {traceback.format_exc()}')
             raise UMC_Error(_('The attributes could not be saved: %s') % (UDM_Error(exc)))
         return _("Successfully changed your profile data.")
 
     def _get_password_complexity_message(self):
         return ucr.get(
-            'umc/login/password-complexity-message/%s' % (self.locale.language,),
+            f'umc/login/password-complexity-message/{self.locale.language}',
             ucr.get('umc/login/password-complexity-message/en', ''),
         )
 
@@ -677,7 +677,7 @@ class Instance(Base):
             new_user.create()
         except univention.admin.uexceptions.base as exc:
             password_complexity_message = self._get_password_complexity_message() if isinstance(exc, (udm_errors.pwToShort, udm_errors.pwQuality)) else ''
-            MODULE.error('create_self_registered_account(): could not create user: %s' % (exc,))
+            MODULE.error(f'create_self_registered_account(): could not create user: {exc}')
             return {
                 'success': False,
                 'failType': 'CREATION_FAILED',
@@ -700,7 +700,7 @@ class Instance(Base):
                 user_info,
             )
         except Exception:
-            MODULE.error('could not send message: %s' % (traceback.format_exc(),))
+            MODULE.error(f'could not send message: {traceback.format_exc()}')
             verify_token_successfully_send = False
         else:
             verify_token_successfully_send = True
@@ -842,7 +842,7 @@ class Instance(Base):
                 'success': False,
                 'failType': 'INVALID_INFORMATION',
             }
-        next_steps = ucr.get('umc/self-service/account-verification/next-steps/%s' % self.locale.language, '')
+        next_steps = ucr.get(f'umc/self-service/account-verification/next-steps/{self.locale.language}', '')
         if not next_steps:
             next_steps = ucr.get('umc/self-service/account-verification/next-steps', '')
         plugin = self._get_send_plugin(method)
@@ -1059,7 +1059,7 @@ class Instance(Base):
         try:
             plugin.send()
         except Exception as exc:
-            MODULE.error('Unknown error: %s' % (traceback.format_exc(),))
+            MODULE.error(f'Unknown error: {traceback.format_exc()}')
             raise UMC_Error(_("Error sending token: {}").format(exc), status=500)
         return True
 
@@ -1142,7 +1142,7 @@ class Instance(Base):
 
     def admember_set_password(self, username, password):
         ldb_url = ucr.get('connector/ad/ldap/host')
-        ldb_url = 'ldaps://%s' % (ldb_url,) if ucr.is_true('connector/ad/ldap/ldaps') else 'ldap://%s' % (ldb_url,)
+        ldb_url = f'ldaps://{ldb_url}' if ucr.is_true('connector/ad/ldap/ldaps') else f'ldap://{ldb_url}'
         try:
             reset_username = dict(ucr)['ad/reset/username']
             with open(dict(ucr)['ad/reset/password']) as fd:
@@ -1153,10 +1153,10 @@ class Instance(Base):
         stdouterr = process.communicate()[0].decode('utf-8', 'replace')
 
         if stdouterr:
-            MODULE.process('samba-tool user setpassword: %s' % (stdouterr,))
+            MODULE.process(f'samba-tool user setpassword: {stdouterr}')
 
         if process.returncode:
-            MODULE.error("admember_set_password(): failed to set password. Return code: %s" % (process.returncode,))
+            MODULE.error(f"admember_set_password(): failed to set password. Return code: {process.returncode}")
             return False
         return True
 
@@ -1173,8 +1173,8 @@ class Instance(Base):
         try:
             user.modify()
         except (udm_errors.pwToShort, udm_errors.pwQuality) as exc:
-            password_complexity_message = ucr.get('umc/login/password-complexity-message/%s' % (self.locale.language,), ucr.get('umc/login/password-complexity-message/en', ''))
-            raise UMC_Error(("%s %s" % (exc, password_complexity_message)).rstrip())
+            password_complexity_message = ucr.get(f'umc/login/password-complexity-message/{self.locale.language}', ucr.get('umc/login/password-complexity-message/en', ''))
+            raise UMC_Error(f"{exc} {password_complexity_message}".rstrip())
         except udm_errors.pwalreadyused as exc:
             raise UMC_Error(exc.message)
         except Exception:

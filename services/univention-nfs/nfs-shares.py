@@ -55,7 +55,7 @@ ip = interfaces.get_default_ip_address().ip
 
 name = 'nfs-shares'
 description = 'Create configuration for NFS shares'
-filter = '(&(objectClass=univentionShare)(|(univentionShareHost=%s.%s)(univentionShareHost=%s)))' % (hostname, domainname, ip)
+filter = f'(&(objectClass=univentionShare)(|(univentionShareHost={hostname}.{domainname})(univentionShareHost={ip})))'
 modrdn = '1'
 
 __exports = '/etc/exports'
@@ -72,7 +72,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         if not os.path.exists(tmpDir):
             os.makedirs(tmpDir)
     except Exception as exc:
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
+        ud.debug(ud.LISTENER, ud.ERROR, f"{name}: could not create tmp dir {tmpDir} ({exc})")
         return
     finally:
         listener.unsetuid()
@@ -99,7 +99,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
     except Exception as exc:
         if os.path.isfile(tmpFile):
             os.remove(tmpFile)
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: could not read/write tmp file %s (%s)" % (name, tmpFile, exc))
+        ud.debug(ud.LISTENER, ud.ERROR, f"{name}: could not read/write tmp file {tmpFile} ({exc})")
     finally:
         listener.unsetuid()
 
@@ -130,7 +130,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
                 old = oldObject
             ret = univention.lib.listenerSharePath.createOrRename(old, new, listener.configRegistry)
             if ret:
-                ud.debug(ud.LISTENER, ud.ERROR, "%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
+                ud.debug(ud.LISTENER, ud.ERROR, f"{name}: rename/create of sharePath for {dn} failed ({ret})")
         finally:
             listener.unsetuid()
     else:

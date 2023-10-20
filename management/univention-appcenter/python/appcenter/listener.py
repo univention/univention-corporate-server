@@ -54,10 +54,10 @@ class AppListener(ListenerModuleHandler):
 
     def _get_new_file_name(self):
         timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S-%f')
-        return '%s/%s/%s.json' % (LISTENER_DUMP_DIR, self.config.get_name(), timestamp)
+        return f'{LISTENER_DUMP_DIR}/{self.config.get_name()}/{timestamp}.json'
 
     def initialize(self):
-        dirname = '%s/%s/' % (LISTENER_DUMP_DIR, self.config.get_name())
+        dirname = f'{LISTENER_DUMP_DIR}/{self.config.get_name()}/'
         try:
             with self.as_root():
                 shutil.rmtree(dirname)
@@ -79,7 +79,7 @@ class AppListener(ListenerModuleHandler):
             filename = self._get_new_file_name()
             with open(filename, 'w') as fd:
                 json.dump(attrs, fd, sort_keys=True, indent=4)
-            self.logger.info('%s of %s (id: %s, file: %s)' % (log_as or command, dn, entry_uuid, filename))
+            self.logger.info(f'{log_as or command} of {dn} (id: {entry_uuid}, file: {filename})')
 
     def create(self, dn, new):
         self._write_json(dn, new, 'modify', log_as='create')
@@ -92,7 +92,7 @@ class AppListener(ListenerModuleHandler):
 
     class Configuration(ListenerModuleHandler.Configuration):
         def get_description(self):
-            return 'Listener module for App %s' % self.get_name()
+            return f'Listener module for App {self.get_name()}'
 
         def get_ldap_filter(self):
             app = Apps().find(self.get_name())

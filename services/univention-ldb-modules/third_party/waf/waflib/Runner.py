@@ -240,7 +240,7 @@ class Parallel(object):
 							lst.append('%s\t-> %r' % (repr(tsk), deps))
 							if not deps:
 								lst.append('\n  task %r dependencies are done, check its *runnable_status*?' % id(tsk))
-						raise Errors.WafError('Deadlock detected: check the task build order%s' % ''.join(lst))
+						raise Errors.WafError(f'Deadlock detected: check the task build order{"".join(lst)}')
 				self.deadlock = self.processed
 
 			if self.postponed:
@@ -616,7 +616,7 @@ class Parallel(object):
 					if tsk is n:
 						# exclude prior nodes, we want the minimum cycle
 						break
-				raise Errors.WafError('Task dependency cycle in "run_after" constraints: %s' % ''.join(lst))
+				raise Errors.WafError(f'Task dependency cycle in "run_after" constraints: {"".join(lst)}')
 		for x in tasks:
 			visit(x, [])
 

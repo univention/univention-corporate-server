@@ -192,7 +192,7 @@ class Session(object):
                 CORE.error('Could not get uid for %r: %s' % (self.user.username, traceback.format_exc()))
             if ldap_dn:
                 self.user.user_dn = ldap_dn[0]
-                CORE.info('The LDAP DN for user %s is %s' % (self.user.username, self.user.user_dn))
+                CORE.info(f'The LDAP DN for user {self.user.username} is {self.user.user_dn}')
 
         if not self.user.user_dn and self.user.username not in ('root', '__systemsetup__', None):
             CORE.error('The LDAP DN for user %s could not be found (lo=%r)' % (self.user.username, lo))
@@ -247,7 +247,7 @@ class Session(object):
         self.user.session_end_time = monotonic() + _session_timeout
         ioloop = tornado.ioloop.IOLoop.current()
         when = int(self.session_end_time - monotonic())
-        CORE.debug('reset_timeout(): new session expiration in %s seconds' % (when,))
+        CORE.debug(f'reset_timeout(): new session expiration in {when} seconds')
         self._timeout_id = ioloop.call_later(when, self._session_timeout_timer)
 
     def disconnect_timer(self):
@@ -370,7 +370,7 @@ class Processes(object):
 
         processes = self.processes(module_name)
         if module_name not in processes:
-            CORE.info('Starting new module process %s' % (module_name,))
+            CORE.info(f'Starting new module process {module_name}')
             try:
                 mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=accepted_language, no_daemonize_module_processes=no_daemonize_module_processes)
             except EnvironmentError as exc:
@@ -402,4 +402,4 @@ class Processes(object):
         return self.__processes
 
     def __repr__(self):
-        return '<Processes for=%s>' % (', '.join(self.__processes),)
+        return f'<Processes for={", ".join(self.__processes)}>'

@@ -54,7 +54,7 @@ def _strip(string):
 
 def _strip_and_append(string, char='.'):
     string = _strip(string)
-    return '%s%s' % (string, char) if not string.endswith('!') else string
+    return f'{string}{char}' if not string.endswith('!') else string
 
 
 class base(Exception):

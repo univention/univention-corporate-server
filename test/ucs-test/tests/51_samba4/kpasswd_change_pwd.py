@@ -26,13 +26,13 @@ if __name__ == "__main__":
 
     cmd = 'kpasswd'
     if opts.adminname:
-        cmd += ' --admin-principal=%s' % (opts.adminname,)
+        cmd += f' --admin-principal={opts.adminname}'
         authusername = opts.adminname
         authpassword = opts.adminpassword
     else:
         authusername = opts.username
         authpassword = opts.password
-    cmd += ' %s' % (opts.username,)
+    cmd += f' {opts.username}'
 
     kpasswd = pexpect.spawn(cmd, timeout=20)  # logfile=sys.stdout
     status = kpasswd.expect([pexpect.TIMEOUT, b"%s@%s's Password: " % (authusername.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII'))])
@@ -58,4 +58,4 @@ if __name__ == "__main__":
     if status != 0:
         sys.exit(1)
     else:
-        print('Password changed for %s to %s' % (opts.username, opts.newpassword))
+        print(f'Password changed for {opts.username} to {opts.newpassword}')

@@ -117,10 +117,10 @@ def xcheck_var(conf, name, wafname=None, cross=False):
 
 	conf.env[wafname] = value
 	if cross:
-		pretty = 'cross-compilation %s' % wafname
+		pretty = f'cross-compilation {wafname}'
 	else:
 		pretty = wafname
-	conf.msg('Will use %s' % pretty, " ".join(quote(x) for x in value))
+	conf.msg(f'Will use {pretty}', " ".join(quote(x) for x in value))
 
 @Configure.conf
 def xcheck_host_prog(conf, name, tool, wafname=None):
@@ -130,20 +130,20 @@ def xcheck_host_prog(conf, name, tool, wafname=None):
 
 	specific = None
 	if chost:
-		specific = os.environ.get('%s_%s' % (chost_envar, name))
+		specific = os.environ.get(f'{chost_envar}_{name}')
 
 	if specific:
 		value = Utils.to_list(specific)
 		conf.env[wafname] += value
-		conf.msg('Will use cross-compilation %s from %s_%s' % (name, chost_envar, name),
+		conf.msg(f'Will use cross-compilation {name} from {chost_envar}_{name}',
 		 " ".join(quote(x) for x in value))
 		return
 	else:
-		envar = os.environ.get('HOST_%s' % name)
+		envar = os.environ.get(f'HOST_{name}')
 		if envar is not None:
 			value = Utils.to_list(envar)
 			conf.env[wafname] = value
-			conf.msg('Will use cross-compilation %s from HOST_%s' % (name, name),
+			conf.msg(f'Will use cross-compilation {name} from HOST_{name}',
 			 " ".join(quote(x) for x in value))
 			return
 
@@ -152,11 +152,11 @@ def xcheck_host_prog(conf, name, tool, wafname=None):
 
 	value = None
 	if chost:
-		value = '%s-%s' % (chost, tool)
+		value = f'{chost}-{tool}'
 
 	if value:
 		conf.env[wafname] = value
-		conf.msg('Will use cross-compilation %s from CHOST' % wafname, value)
+		conf.msg(f'Will use cross-compilation {wafname} from CHOST', value)
 
 @Configure.conf
 def xcheck_host_envar(conf, name, wafname=None):
@@ -166,25 +166,24 @@ def xcheck_host_envar(conf, name, wafname=None):
 
 	specific = None
 	if chost:
-		specific = os.environ.get('%s_%s' % (chost_envar, name))
+		specific = os.environ.get(f'{chost_envar}_{name}')
 
 	if specific:
 		value = Utils.to_list(specific)
 		conf.env[wafname] += value
-		conf.msg('Will use cross-compilation %s from %s_%s' \
-		 % (name, chost_envar, name),
+		conf.msg(f'Will use cross-compilation {name} from {chost_envar}_{name}',
 		 " ".join(quote(x) for x in value))
 		return
 
 
-	envar = os.environ.get('HOST_%s' % name)
+	envar = os.environ.get(f'HOST_{name}')
 	if envar is None:
 		return
 
 	value = Utils.to_list(envar) if envar != '' else [envar]
 
 	conf.env[wafname] = value
-	conf.msg('Will use cross-compilation %s from HOST_%s' % (name, name),
+	conf.msg(f'Will use cross-compilation {name} from HOST_{name}',
 	 " ".join(quote(x) for x in value))
 
 

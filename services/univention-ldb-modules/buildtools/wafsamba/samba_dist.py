@@ -91,7 +91,7 @@ def add_tarfile(tar, fname, abspath, basedir):
     try:
         tinfo = tar.gettarinfo(name=abspath, arcname=fname)
     except OSError:
-        Logs.error('Unable to find file %s - missing from git checkout?' % abspath)
+        Logs.error(f'Unable to find file {abspath} - missing from git checkout?')
         sys.exit(1)
     tinfo.uid   = 0
     tinfo.gid   = 0
@@ -118,7 +118,7 @@ def vcs_dir_contents(path):
             break
         repo = os.path.dirname(repo)
     if repo == "/":
-        raise Exception("unsupported or no vcs for %s" % path)
+        raise Exception(f"unsupported or no vcs for {path}")
     return get_string(Utils.cmd_output(ls_files_cmd, cwd=cwd, env=env)).split('\n')
 
 
@@ -177,13 +177,13 @@ def dist(appname='', version=''):
         Logs.error('You must use samba_dist.DIST_DIRS() to set which directories to package')
         sys.exit(1)
 
-    dist_base = '%s-%s' % (appname, version)
+    dist_base = f'{appname}-{version}'
 
     if Options.options.SIGN_RELEASE:
-        dist_name = '%s.tar' % (dist_base)
+        dist_name = f'{(dist_base)}.tar'
         tar = tarfile.open(dist_name, 'w')
     else:
-        dist_name = '%s.tar.gz' % (dist_base)
+        dist_name = f'{(dist_base)}.tar.gz'
         tar = tarfile.open(dist_name, 'w:gz')
 
     blacklist = dist_blacklist.split()
@@ -198,7 +198,7 @@ def dist(appname='', version=''):
         try:
             files = vcs_dir_contents(absdir)
         except Exception as e:
-            Logs.error('unable to get contents of %s: %s' % (absdir, e))
+            Logs.error(f'unable to get contents of {absdir}: {e}')
             sys.exit(1)
         add_files_to_tarball(tar, srcdir, dir, dist_base, destdir, blacklist, files)
 
@@ -243,10 +243,10 @@ def dist(appname='', version=''):
         uncompressed_tar.close()
         compressed_tar.close()
         os.unlink(dist_name)
-        Logs.info('Created %s.gz %s.asc' % (dist_name, dist_name))
+        Logs.info(f'Created {dist_name}.gz {dist_name}.asc')
         dist_name = dist_name + '.gz'
     else:
-        Logs.info('Created %s' % dist_name)
+        Logs.info(f'Created {dist_name}')
 
     # TODO use the ctx object instead
     global dist_archive

@@ -360,7 +360,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
         :param str pkg: The name of the binary package currently being processed.
         :param str errormsg: An error message.
         """
-        self.progress_state.error('%s: %s' % (pkg, errormsg), logger_name='process')
+        self.progress_state.error(f'{pkg}: {errormsg}', logger_name='process')
 
 #    def start_update(self):
 #        self.log('SUPDATE')
@@ -732,7 +732,7 @@ class PackageManager(object):
             if raise_key_error:
                 raise
             else:
-                self.progress_state.error('%s: %s' % (pkg_name, _('No such package')))
+                self.progress_state.error(f'{pkg_name}: {_("No such package")}')
                 return None
 
     def is_installed(self, pkg_name, reopen=False):
@@ -858,7 +858,7 @@ class PackageManager(object):
                     broken.add(pkg.name)
                 if apt_pkg.config.get('APT::Get::AllowUnauthenticated') != '1' and pkg.candidate:
                     if not any(origin.trusted for origin in pkg.candidate.origins):
-                        self.progress_state.error('%s: %s' % (pkg.name, _('Untrusted origin')))
+                        self.progress_state.error(f'{pkg.name}: {_("Untrusted origin")}')
                         broken.add(pkg.name)
             if pkg.marked_delete:
                 to_be_removed.add(pkg.name)
@@ -952,12 +952,12 @@ class PackageManager(object):
         # check whether all packages have been installed
         for pkg in install_pkgs:
             if not self.is_installed(pkg.name):  # fresh from cache
-                self.progress_state.error('%s: %s' % (pkg.name, _('Failed to install')))
+                self.progress_state.error(f'{pkg.name}: {_("Failed to install")}')
 
         # check whether all packages have been removed
         for pkg in remove_pkgs:
             if self.is_installed(pkg.name):  # fresh from cache
-                self.progress_state.error('%s: %s' % (pkg.name, _('Failed to uninstall')))
+                self.progress_state.error(f'{pkg.name}: {_("Failed to uninstall")}')
 
         return result
 
@@ -1053,7 +1053,7 @@ class PackageManager(object):
             msg = re.sub('^E:', _('Error: '), msg)
             msg = re.sub(',$', '.', msg)
             if not msg.endswith('.'):
-                msg = '%s.' % msg
+                msg = f'{msg}.'
             further.add(msg)
         further.discard('')
         further.discard('.')

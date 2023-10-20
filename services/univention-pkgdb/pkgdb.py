@@ -53,7 +53,7 @@ DELETE_DIR = '/var/lib/univention-pkgdb/delete'
 
 
 def exec_pkgdb(args: List[str]) -> int:
-    ud.debug(ud.LISTENER, ud.INFO, "exec_pkgdb args=%s" % args)
+    ud.debug(ud.LISTENER, ud.INFO, f"exec_pkgdb args={args}")
 
     with SetUID(0):
         cmd = ['univention-pkgdb-scan', '--db-server=%(hostname)s.%(domainname)s' % configRegistry]
@@ -67,23 +67,23 @@ def exec_pkgdb(args: List[str]) -> int:
 def add_system(sysname: str) -> int:
     retcode = exec_pkgdb(['--add-system', sysname])
     if retcode != 0:
-        ud.debug(ud.LISTENER, ud.ERROR, "error while adding system=%s to pkgdb" % sysname)
+        ud.debug(ud.LISTENER, ud.ERROR, f"error while adding system={sysname} to pkgdb")
     else:
-        ud.debug(ud.LISTENER, ud.INFO, "successful added system=%s" % sysname)
+        ud.debug(ud.LISTENER, ud.INFO, f"successful added system={sysname}")
     return retcode
 
 
 def del_system(sysname: str) -> int:
     retcode = exec_pkgdb(['--del-system', sysname])
     if retcode != 0:
-        ud.debug(ud.LISTENER, ud.ERROR, "error while deleting system=%s to pkgdb" % sysname)
+        ud.debug(ud.LISTENER, ud.ERROR, f"error while deleting system={sysname} to pkgdb")
     else:
-        ud.debug(ud.LISTENER, ud.INFO, "successful added system=%s" % sysname)
+        ud.debug(ud.LISTENER, ud.INFO, f"successful added system={sysname}")
     return retcode
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-    ud.debug(ud.LISTENER, ud.INFO, "pkgdb handler dn=%s" % (dn))
+    ud.debug(ud.LISTENER, ud.INFO, f"pkgdb handler dn={(dn)}")
 
     with SetUID(0):
         if old and not new:

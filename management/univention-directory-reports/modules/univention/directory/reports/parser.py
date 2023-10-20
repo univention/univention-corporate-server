@@ -70,7 +70,7 @@ class Parser(object):
         if not m:
             m = Parser.REGEX_CLOSE.match(token)
             if not m:
-                raise SyntaxError("failed to parse token: '%s'" % token)
+                raise SyntaxError(f"failed to parse token: '{token}'")
             closing = True
         d = m.groupdict()
         if not closing and d.get('attrs', None):
@@ -118,7 +118,7 @@ class Parser(object):
         elif name == 'date':
             return DateToken(attrs)
         else:
-            raise SyntaxError('Unknown tag: %s' % name)
+            raise SyntaxError(f'Unknown tag: {name}')
 
     def tokenize(self):
         token = self.next_token()

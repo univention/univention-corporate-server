@@ -45,7 +45,7 @@ def query_policy(ldap_hostdn: str) -> Tuple[str, str]:
     try:
         results, _policies = policy_result(ldap_hostdn)
     except PolicyResultFailed as ex:
-        sys.exit("failed to execute univention_policy_result: %s" % ex)
+        sys.exit(f"failed to execute univention_policy_result: {ex}")
 
     server = one(results, "univentionRepositoryServer")  # univentionPolicyRepositorySync
     update = one(results, "univentionUpdateVersion")  # univentionPolicyUpdate
@@ -83,13 +83,13 @@ def main() -> None:
     if ucr.is_true('local/repository'):
         # on a repository server
         if not new_server:
-            ucr_variables.append('repository/online/server?%s' % fqdn)
+            ucr_variables.append(f'repository/online/server?{fqdn}')
         elif new_server != mirror_server and new_server != fqdn:
-            ucr_variables.append('repository/mirror/server=%s' % new_server)
+            ucr_variables.append(f'repository/mirror/server={new_server}')
     else:
         # without a local repository
         if new_server and new_server != online_server:
-            ucr_variables.append('repository/online/server=%s' % new_server)
+            ucr_variables.append(f'repository/online/server={new_server}')
 
     if ucr_variables:
         handler_set(ucr_variables)

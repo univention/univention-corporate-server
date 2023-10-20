@@ -12,7 +12,7 @@ def test_compare():
     python -= {'logging', 'DEFAULT', 'print_function'}
 
     # The C implementation implements everything from the Python version
-    assert python <= native, 'Missing C implementation: %s' % (python - native,)
+    assert python <= native, f'Missing C implementation: {python - native}'
 
     # The Python implementation implements everything from the C version
-    assert native <= python, 'Missing Python implementation: %s' % (native - python,)
+    assert native <= python, f'Missing Python implementation: {native - python}'

@@ -72,20 +72,20 @@ class BuildI18N(Command):
                 lang = f[: -3]
                 src = os.path.join(path, f)
                 dest_path = os.path.join('build', 'locale', lang, 'LC_MESSAGES')
-                dest_file = '%s.mo' % rel_path.replace('/', '-')
+                dest_file = f'{rel_path.replace("/", "-")}.mo'
                 dest = os.path.join(dest_path, dest_file)
                 if not os.path.exists(dest_path):
                     os.makedirs(dest_path)
                 if not os.path.exists(dest):
-                    print('Compiling %s' % src)
+                    print(f'Compiling {src}')
                     subprocess.call(['msgfmt', src, '-o', dest])
                 else:
                     src_mtime = os.stat(src)[8]
                     dest_mtime = os.stat(dest)[8]
                     if src_mtime > dest_mtime:
-                        print('Compiling %s' % src)
+                        print(f'Compiling {src}')
                         subprocess.call(['msgfmt', src, '-o', dest])
-                data_files.append(('share/locale/%s/LC_MESSAGES' % lang, (dest, )))
+                data_files.append((f'share/locale/{lang}/LC_MESSAGES', (dest, )))
 
 
 class Build(build_py):

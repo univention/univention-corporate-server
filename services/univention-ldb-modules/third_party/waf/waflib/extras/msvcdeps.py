@@ -251,7 +251,7 @@ def exec_command(self, cmd, **kw):
 			# get one from the exception object
 			ret = getattr(e, 'returncode', 1)
 
-		Logs.debug('msvcdeps: Running for: %s' % self.inputs[0])
+		Logs.debug(f'msvcdeps: Running for: {self.inputs[0]}')
 		for line in raw_out.splitlines():
 			if line.startswith(INCLUDE_PATTERN):
 				# Only strip whitespace after log to preserve
@@ -264,7 +264,7 @@ def exec_command(self, cmd, **kw):
 
 		# Pipe through the remaining stdout content (not related to /showIncludes)
 		if self.generator.bld.logger:
-			self.generator.bld.logger.debug('out: %s' % os.linesep.join(out))
+			self.generator.bld.logger.debug(f'out: {os.linesep.join(out)}')
 		else:
 			sys.stdout.write(os.linesep.join(out) + os.linesep)
 

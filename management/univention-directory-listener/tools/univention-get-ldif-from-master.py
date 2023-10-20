@@ -70,13 +70,13 @@ def _update_schema(fp, attr):
         if oid in OIDS:
             continue
         obj = subschema.get_obj(ldap.schema.AttributeType, oid)
-        fp.write('attributetype %s\n' % (obj,))
+        fp.write(f'attributetype {obj}\n')
 
     for oid in replication.subschema_sort(subschema, ldap.schema.ObjectClass):
         if oid in OIDS:
             continue
         obj = subschema.get_obj(ldap.schema.ObjectClass, oid)
-        fp.write('objectclass %s\n' % (obj,))
+        fp.write(f'objectclass {obj}\n')
 
 
 def update_schema(lo):
@@ -145,7 +145,7 @@ def main():
     # type: () -> None
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("-l", "--ldif", action="store_true", help="Create LDIF file")
-    parser.add_argument("-s", "--schema", action="store_true", help="Update LDAP schema [%s]" % SCHEMA)
+    parser.add_argument("-s", "--schema", action="store_true", help=f"Update LDAP schema [{SCHEMA}]")
     parser.add_argument("-o", "--outfile", default=LDIF, help="File to store gzip LDIF data [%(default)s]")
     parser.add_argument("-p", "--pagesize", type=int, default=1000, help="page size to use for LDAP paged search")
     parser.add_argument("-v", "--verbose", action="count", help="Increase verbosity")

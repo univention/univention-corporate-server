@@ -79,7 +79,7 @@ def load_rc(ofile: str) -> List[str] | None:
         with open(ofile) as fd:
             rc = reduce(_split_file, fd, [])
     except EnvironmentError as exc:
-        ud.debug(ud.LISTENER, ud.ERROR, 'Failed to open "%s": %s' % (ofile, exc))
+        ud.debug(ud.LISTENER, ud.ERROR, f'Failed to open "{ofile}": {exc}')
     listener.unsetuid()
     return rc
 
@@ -91,7 +91,7 @@ def write_rc(flist: Iterable[str], wfile: str) -> None:
         with open(wfile, "w") as fd:
             fd.writelines(flist)
     except EnvironmentError as exc:
-        ud.debug(ud.LISTENER, ud.ERROR, 'Failed to write to file "%s": %s' % (wfile, exc))
+        ud.debug(ud.LISTENER, ud.ERROR, f'Failed to write to file "{wfile}": {exc}')
     listener.unsetuid()
 
 
@@ -132,7 +132,7 @@ def get_pw_from_rc(lines: Iterable[str], uid: int) -> str | None:
         return None
     for line in lines:
         line = line.rstrip()
-        if line.endswith("#UID='%s'" % uid):
+        if line.endswith(f"#UID='{uid}'"):
             match = REpassword.match(line)
             if match:
                 return match.group(1)

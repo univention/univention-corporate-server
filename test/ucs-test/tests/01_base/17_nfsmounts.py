@@ -64,7 +64,7 @@ def test_nfsmount(udm, ucr, lo, backup_fstab):
         policy = udm.create_object(
             'policies/nfsmounts',
             name=policy_name,
-            nfsMounts=['%s %s' % (share, shared_dest)],
+            nfsMounts=[f'{share} {shared_dest}'],
             position='cn=nfsmounts,cn=policies,%(ldap/base)s' % ucr,
         )
         utils.verify_ldap_object(policy, {'cn': [policy_name]})
@@ -77,7 +77,7 @@ def test_nfsmount(udm, ucr, lo, backup_fstab):
 
             # Call script
             command = ["/usr/lib/univention-directory-policy/nfsmounts", '-v', '--dn', ucr['ldap/hostdn']]
-            print("About to run %s" % (' '.join(command),))
+            print(f"About to run {' '.join(command)}")
             subprocess.check_call(command)
 
             assert (Path(shared_dest) / SOURCE_FILE_NAME).exists()

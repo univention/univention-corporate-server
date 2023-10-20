@@ -124,7 +124,7 @@ class object(univention.admin.handlers.simpleLdap):
             # in syntax.py IComputer_FQDN key and label are '%(name)s.%(domain)s' for
             #   performance reasons. These statements and this fqdn over here have to
             #   be in sync.
-            self['fqdn'] = '%s.%s' % (self['name'], self['domain'])
+            self['fqdn'] = f'{self["name"]}.{self["domain"]}'
             self.save()
 
 

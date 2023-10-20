@@ -39,7 +39,7 @@ def check_user_groups_sids():
     for key, sid_ending in sid_check_dict.items():
         sid_in_ldap = get_sid_for_user_group(key)
         if not sid_in_ldap:
-            utils.fail("The 'sambaSID' for '%s' is empty." % key)
+            utils.fail(f"The 'sambaSID' for '{key}' is empty.")
 
         print("\nRecord:", key)
         print("SID:", sid_in_ldap)
@@ -127,7 +127,7 @@ def get_members_in_group(group_name):
 
     stdout = stdout.strip().decode('UTF-8')
     if not stdout:
-        print("\nNo stdout from 'getent' for a '%s' group." % group_name)
+        print(f"\nNo stdout from 'getent' for a '{group_name}' group.")
         return []
 
     # remove the group name, password, gid and separate members by commas:

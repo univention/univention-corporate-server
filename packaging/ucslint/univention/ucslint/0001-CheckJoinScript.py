@@ -84,7 +84,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0001-9', 'failed to open and read file', filename)
             return
 
-        self.debug('checking %s' % filename)
+        self.debug(f'checking {filename}')
 
         is_uninstall = filename.endswith('.uinst')
         lines = content.splitlines()
@@ -177,7 +177,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 fnlist_joinscripts[fn] = CALLED | COPIED
             else:
                 continue
-            self.debug('found %s' % fn)
+            self.debug(f'found {fn}')
 
         #
         # check if join scripts use versioning
@@ -220,8 +220,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     for binary_package in ctrl.binary_sections:
                         package = binary_package['Package']
                         for js in fnlist_joinscripts:
-                            if re.match(r'^\./\d\d%s\.u?inst$' % re.escape(package), js):
-                                self.debug('univention-install-joinscript will take care of %s' % js)
+                            if re.match(fr'^\./\d\d{re.escape(package)}\.u?inst$', js):
+                                self.debug(f'univention-install-joinscript will take care of {js}')
                                 fnlist_joinscripts[js] = 0
                                 found[js] = found.get(js, 0) + 1
 
@@ -276,7 +276,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 continue
 
             fn = os.path.join(path, 'debian', f)
-            self.debug('loading %s' % (fn))
+            self.debug(f'loading {(fn)}')
             try:
                 with open(fn) as fd:
                     content = fd.read()
@@ -286,7 +286,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             set_e = self.RE_LINE_CONTAINS_SET_E.search(content)
             if set_e:
-                self.debug('found "set -e" in %s' % fn)
+                self.debug(f'found "set -e" in {fn}')
 
             for js in fnlist_joinscripts:
                 name = os.path.basename(js)

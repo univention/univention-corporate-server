@@ -67,10 +67,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
             "(%s=%s)" % (key, escape_filter_chars(str(address.ip)))
             for address in addresses
         ]
-        ldap_filter = "(&(cn=%s)(|%s))" % (
-            escape_filter_chars(hostname),
-            "".join(addr),
-        )
+        ldap_filter = f"(&(cn={escape_filter_chars(hostname)})(|{''.join(addr)}))"
         return ldap_filter
 
     def _search_computer(self, ldap_filter: str) -> simpleComputer:

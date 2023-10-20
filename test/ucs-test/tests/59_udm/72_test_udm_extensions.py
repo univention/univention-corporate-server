@@ -64,45 +64,45 @@ class Test_UDMExtensionsJoinscript:
         package_version = get_package_version()
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
-        joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
+        joinscript_buffer = get_join_script_buffer(extension_type, f'/usr/share/{package_name}/{extension_filename}', version_start='5.0-0')
         unjoinscript_buffer = get_unjoin_script_buffer(extension_type, extension_name, package_name)
         extension_buffer = get_extension_buffer(extension_type, extension_name)
 
         package = DebianPackage(name=package_name, version=package_version)
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         try:
             # create package and install it
-            package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-            package.create_unjoin_script_from_buffer('66%s-uninstall.uinst' % package_name, unjoinscript_buffer)
+            package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
+            package.create_unjoin_script_from_buffer(f'66{package_name}-uninstall.uinst', unjoinscript_buffer)
             package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
             package.build()
             package.install()
 
-            call_join_script('66%s.inst' % package_name)
+            call_join_script(f'66{package_name}.inst')
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
 
             dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-            assert dnlist, 'ERROR: cannot find UDM extension object with cn=%s in LDAP' % extension_name
+            assert dnlist, f'ERROR: cannot find UDM extension object with cn={extension_name} in LDAP'
 
             # check if registered file has been replicated to local system
             target_fn = get_absolute_extension_filename(extension_type, extension_filename)
-            assert os.path.exists(target_fn), 'ERROR: target file %s does not exist' % target_fn
+            assert os.path.exists(target_fn), f'ERROR: target file {target_fn} does not exist'
             print('FILE REPLICATED: %r' % target_fn)
 
             # check replicated file has correct file mode
             current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
             expected_mode = '0o644'
-            assert current_mode == expected_mode, 'ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode)
-            print('PERMISSIONS OK: mode=%s' % current_mode)
+            assert current_mode == expected_mode, f'ERROR: permissions of target file {target_fn} are not ok (current={current_mode}  expected={expected_mode})'
+            print(f'PERMISSIONS OK: mode={current_mode}')
 
             # check replicated file is own by root:nobody
             expected_groups = (0, grp.getgrnam('nogroup').gr_gid)
             expected_uid = 0
             current_uid = os.stat(target_fn).st_uid
             current_group = os.stat(target_fn).st_gid
-            assert current_uid == expected_uid and current_group in expected_groups, 'ERROR: owner/group of target file %s is not ok (current=%s:%s  expected_uid=%s expected_gid=%s)' % (target_fn, current_uid, current_group, expected_uid, expected_groups)
+            assert current_uid == expected_uid and current_group in expected_groups, f'ERROR: owner/group of target file {target_fn} is not ok (current={current_uid}:{current_group}  expected_uid={expected_uid} expected_gid={expected_groups})'
             print('FILE OWNER/GROUP OK')
 
             # check if sha1(buffer) == sha1(file)
@@ -110,18 +110,18 @@ class Test_UDMExtensionsJoinscript:
             hash_file = hashlib.sha1(open(target_fn, 'rb').read()).hexdigest()
             print('HASH BUFFER: %r' % hash_buffer)
             print('HASH FILE: %r' % hash_file)
-            assert hash_buffer == hash_file, 'ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer)
+            assert hash_buffer == hash_file, f'ERROR: sha1 sums of file and buffer differ (fn={target_fn} ; file={hash_file} ; buffer={hash_buffer})'
 
-            call_unjoin_script('66%s-uninstall.uinst' % package_name)
+            call_unjoin_script(f'66{package_name}-uninstall.uinst')
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
 
             dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-            assert not dnlist, 'ERROR: UDM extension object with cn=%s is still present in LDAP' % extension_name
+            assert not dnlist, f'ERROR: UDM extension object with cn={extension_name} is still present in LDAP'
 
             # check if registered file has been removed from local system
-            assert not os.path.exists(target_fn), 'ERROR: target file %s is still present' % target_fn
+            assert not os.path.exists(target_fn), f'ERROR: target file {target_fn} is still present'
 
         finally:
             print('Removing UDM extension from LDAP')
@@ -139,36 +139,36 @@ class Test_UDMExtensionsJoinscript:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     def test_register_and_verify_ldap_object(self, extension_type):
         """Register UDM extension and perform simple LDAP verification"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         package_version = get_package_version()
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
-        joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
+        joinscript_buffer = get_join_script_buffer(extension_type, f'/usr/share/{package_name}/{extension_filename}', version_start='5.0-0')
         extension_buffer = get_extension_buffer(extension_type, extension_name)
 
         package = DebianPackage(name=package_name, version=package_version)
         try:
             # create package and install it
-            package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+            package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
             package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
             package.build()
             package.install()
 
-            call_join_script('66%s.inst' % package_name)
+            call_join_script(f'66{package_name}.inst')
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
 
             dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-            assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
+            assert dnlist, f'Cannot find UDM {extension_type} extension with name {extension_name} in LDAP'
             verify_ldap_object(dnlist[0], {
                 'cn': [extension_name],
-                'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+                f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
                 'univentionOwnedByPackage': [package_name],
-                'univentionObjectType': ['settings/udm_%s' % extension_type],
+                'univentionObjectType': [f'settings/udm_{extension_type}'],
                 'univentionOwnedByPackageVersion': [package_version],
-                'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+                f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
             })
 
         finally:
@@ -187,15 +187,15 @@ class Test_UDMExtensionsJoinscript:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     def test_register_and_verify_test_app_id(self, extension_type):
         """Check setting of UNIVENTION_APP_ID for UDM extensions"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         package_version = get_package_version()
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         joinscript_buffer = get_join_script_buffer(
             extension_type,
-            '/usr/share/%s/%s' % (package_name, extension_filename),
+            f'/usr/share/{package_name}/{extension_filename}',
             app_id=app_id,
             version_start='5.0-0',
         )
@@ -204,25 +204,25 @@ class Test_UDMExtensionsJoinscript:
         package = DebianPackage(name=package_name, version=package_version)
         try:
             # create package and install it
-            package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+            package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
             package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
             package.build()
             package.install()
 
-            call_join_script('66%s.inst' % package_name)
+            call_join_script(f'66{package_name}.inst')
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
 
             dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-            assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
+            assert dnlist, f'Cannot find UDM {extension_type} extension with name {extension_name} in LDAP'
             verify_ldap_object(dnlist[0], {
                 'cn': [extension_name],
-                'univentionUDM%sFilename' % extension_type.capitalize(): ['%s.py' % extension_name],
+                f'univentionUDM{extension_type.capitalize()}Filename': [f'{extension_name}.py'],
                 'univentionOwnedByPackage': [package_name],
-                'univentionObjectType': ['settings/udm_%s' % extension_type],
+                'univentionObjectType': [f'settings/udm_{extension_type}'],
                 'univentionOwnedByPackageVersion': [package_version],
-                'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+                f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
                 'univentionAppIdentifier': [app_id],
             })
         finally:
@@ -241,17 +241,17 @@ class Test_UDMExtensionsJoinscript:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     def test_register_and_verify_version_start_end(self, extension_type):
         """Check setting of a version range for UDM extensions"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         package_version = get_package_version()
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
         version_start = random_ucs_version(max_major=2)
         version_end = random_ucs_version(min_major=5)
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         joinscript_buffer = get_join_script_buffer(
             extension_type,
-            '/usr/share/%s/%s' % (package_name, extension_filename),
+            f'/usr/share/{package_name}/{extension_filename}',
             app_id=app_id, version_start=version_start, version_end=version_end,
         )
         extension_buffer = get_extension_buffer(extension_type, extension_name)
@@ -260,25 +260,25 @@ class Test_UDMExtensionsJoinscript:
         package = DebianPackage(name=package_name, version=package_version)
         try:
             # create package and install it
-            package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+            package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
             package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
             package.build()
             package.install()
 
-            call_join_script('66%s.inst' % package_name)
+            call_join_script(f'66{package_name}.inst')
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
 
             dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-            assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
+            assert dnlist, f'Cannot find UDM {extension_type} extension with name {extension_name} in LDAP'
             verify_ldap_object(dnlist[0], {
                 'cn': [extension_name],
-                'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+                f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
                 'univentionOwnedByPackage': [package_name],
-                'univentionObjectType': ['settings/udm_%s' % extension_type],
+                'univentionObjectType': [f'settings/udm_{extension_type}'],
                 'univentionOwnedByPackageVersion': [package_version],
-                'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+                f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
                 'univentionUCSVersionStart': [version_start],
                 'univentionUCSVersionEnd': [version_end],
             })
@@ -300,7 +300,7 @@ class Test_UDMExtensionsJoinscript:
         """Register UDM extension with non-join-accounts"""
         password = 'univention'
         dn, username = udm.create_user(password=password)
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         self._test_extension(extension_type, dn, password)
         self._test_extension(extension_type, ucr.get('ldap/hostdn'), open('/etc/machine.secret').read())
 
@@ -309,25 +309,25 @@ class Test_UDMExtensionsJoinscript:
         package_version = get_package_version()
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
-        joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
+        joinscript_buffer = get_join_script_buffer(extension_type, f'/usr/share/{package_name}/{extension_filename}', version_start='5.0-0')
         extension_buffer = get_extension_buffer(extension_type, extension_name)
 
         package = DebianPackage(name=package_name, version=package_version)
         try:
             # create package and install it
-            package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+            package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
             package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
             package.build()
             package.install()
 
-            exitcode = call_cmd(['/usr/lib/univention-install/66%s.inst' % package_name, '--binddn', dn, '--bindpwd', password], fail_on_error=False)
+            exitcode = call_cmd([f'/usr/lib/univention-install/66{package_name}.inst', '--binddn', dn, '--bindpwd', password], fail_on_error=False)
             assert exitcode, 'ERROR: registerLDAPExtension() did not fail even if machine account is used'
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
 
             dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-            assert not dnlist, 'ERROR: Machine account is able to create UDM %s extension' % (extension_type,)
+            assert not dnlist, f'ERROR: Machine account is able to create UDM {extension_type} extension'
 
         finally:
             print('Removing UDM extension from LDAP')
@@ -372,13 +372,13 @@ class Test_UDMExtensionsJoinscript:
         package = DebianPackage(name=package_name, version=package_version)
         try:
             # create package and install it
-            package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+            package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
             for extension_type in VALID_EXTENSION_TYPES:
                 package.create_usr_share_file_from_buffer(extension_filename[extension_type], extension_buffer[extension_type])
             package.build()
             package.install()
 
-            call_join_script('66%s.inst' % package_name)
+            call_join_script(f'66{package_name}.inst')
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
@@ -388,11 +388,11 @@ class Test_UDMExtensionsJoinscript:
                 assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name[extension_type])
                 verify_ldap_object(dnlist[0], {
                     'cn': [extension_name[extension_type]],
-                    'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename[extension_type]],
+                    f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename[extension_type]],
                     'univentionOwnedByPackage': [package_name],
-                    'univentionObjectType': ['settings/udm_%s' % extension_type],
+                    'univentionObjectType': [f'settings/udm_{extension_type}'],
                     'univentionOwnedByPackageVersion': [package_version],
-                    'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer[extension_type].encode('UTF-8'))],
+                    f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer[extension_type].encode('UTF-8'))],
                 })
 
         finally:
@@ -442,13 +442,13 @@ class Test_UDMExtensionsJoinscript:
         package = DebianPackage(name=package_name, version=package_version)
         try:
             # create package and install it
-            package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+            package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
             for extension_type in VALID_EXTENSION_TYPES:
                 package.create_usr_share_file_from_buffer(extension_filename[extension_type], extension_buffer[extension_type])
             package.build()
             package.install()
 
-            call_join_script('66%s.inst' % package_name)
+            call_join_script(f'66{package_name}.inst')
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
@@ -458,11 +458,11 @@ class Test_UDMExtensionsJoinscript:
                 assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_objectname[extension_type])
                 verify_ldap_object(dnlist[0], {
                     'cn': [extension_objectname[extension_type]],
-                    'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename[extension_type]],
+                    f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename[extension_type]],
                     'univentionOwnedByPackage': [package_name],
-                    'univentionObjectType': ['settings/udm_%s' % extension_type],
+                    'univentionObjectType': [f'settings/udm_{extension_type}'],
                     'univentionOwnedByPackageVersion': [package_version],
-                    'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer[extension_type].encode('UTF-8'))],
+                    f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer[extension_type].encode('UTF-8'))],
                 })
 
         finally:
@@ -482,14 +482,14 @@ class Test_UDMExtensionsJoinscript:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     def test_update_extension_via_package(self, extension_type):
         """Test extension update with correct version order"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         version = random_version()
         package_version_LOW = '%s.%d' % (version, random.randint(0, 4))
         package_version_HIGH = '%s.%d' % (version, random.randint(5, 9))
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         joinscript_version = 1
 
         packages = []
@@ -504,7 +504,7 @@ class Test_UDMExtensionsJoinscript:
                 extension_buffer = get_extension_buffer(extension_type, extension_name, extension_identifier)
                 joinscript_buffer = get_join_script_buffer(
                     extension_type,
-                    '/usr/share/%s/%s' % (package_name, extension_filename),
+                    f'/usr/share/{package_name}/{extension_filename}',
                     app_id=app_id,
                     joinscript_version=joinscript_version,
                     version_start=version_start,
@@ -515,18 +515,18 @@ class Test_UDMExtensionsJoinscript:
                 # create package and install it
                 package = DebianPackage(name=package_name, version=package_version)
                 packages.append(package)
-                package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+                package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
                 package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
                 package.build()
                 package.install()
 
-                call_join_script('66%s.inst' % package_name)
+                call_join_script(f'66{package_name}.inst')
 
                 # wait until removed object has been handled by the listener
                 wait_for_replication()
 
                 dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-                assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
+                assert dnlist, f'Cannot find UDM {extension_type} extension with name {extension_name} in LDAP'
                 verify_ldap_object(dnlist[0], {
                     'cn': [extension_name],
                     'univentionUCSVersionStart': [version_start],
@@ -554,14 +554,14 @@ class Test_UDMExtensionsJoinscript:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     def test_update_extension_via_package_expected_fail(self, extension_type):
         """Test extension update with wrong version order"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         version = random_version()
         package_version_LOW = '%s.%d' % (version, random.randint(0, 4))
         package_version_HIGH = '%s.%d' % (version, random.randint(5, 9))
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         joinscript_version = 1
 
         packages = []
@@ -572,7 +572,7 @@ class Test_UDMExtensionsJoinscript:
                 extension_buffer = get_extension_buffer(extension_type, extension_name, extension_identifier)
                 joinscript_buffer = get_join_script_buffer(
                     extension_type,
-                    '/usr/share/%s/%s' % (package_name, extension_filename),
+                    f'/usr/share/{package_name}/{extension_filename}',
                     app_id=app_id,
                     joinscript_version=joinscript_version,
                     version_start='5.0-0',
@@ -582,14 +582,14 @@ class Test_UDMExtensionsJoinscript:
                 # create package and install it
                 package = DebianPackage(name=package_name, version=package_version)
                 packages.append(package)
-                package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+                package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
                 package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
                 package.build()
                 package.install()
 
-                exitcode = call_join_script('66%s.inst' % package_name, fail_on_error=False)
+                exitcode = call_join_script(f'66{package_name}.inst', fail_on_error=False)
                 if package_version == package_version_HIGH:
-                    assert not exitcode, 'The join script failed with exitcode %s' % exitcode
+                    assert not exitcode, f'The join script failed with exitcode {exitcode}'
                 else:
                     if not exitcode:
                         print('\nWARNING: a failure of the joinscript has been expected but in ran through\n')
@@ -599,7 +599,7 @@ class Test_UDMExtensionsJoinscript:
 
                 content = open(get_absolute_extension_filename(extension_type, extension_filename)).read()
                 assert not (package_version == package_version_HIGH and extension_identifier not in content), 'ERROR: UDM extension of package %d has not been written to disk (%s)' % (len(packages), extension_filename)
-                assert not (package_version == package_version_LOW and extension_identifier in content), 'ERROR: the extension update has been performed but should not (old version=%s ; new version=%s)' % (package_version_HIGH, package_version_LOW)
+                assert not (package_version == package_version_LOW and extension_identifier in content), f'ERROR: the extension update has been performed but should not (old version={package_version_HIGH} ; new version={package_version_LOW})'
 
         finally:
             print('Removing UDM extension from LDAP')
@@ -619,13 +619,13 @@ class Test_UDMExtensionsJoinscript:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     def test_update_extension_via_other_packagename(self, extension_type):
         """Test extension update with other package name"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         version = random_version()
         package_version_LOW = '%s.%d' % (version, random.randint(0, 4))
         package_version_HIGH = '%s.%d' % (version, random.randint(5, 9))
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         joinscript_version = 1
 
         packages = []
@@ -641,7 +641,7 @@ class Test_UDMExtensionsJoinscript:
                 extension_buffer = get_extension_buffer(extension_type, extension_name, extension_identifier)
                 joinscript_buffer = get_join_script_buffer(
                     extension_type,
-                    '/usr/share/%s/%s' % (package_name, extension_filename),
+                    f'/usr/share/{package_name}/{extension_filename}',
                     app_id=app_id,
                     joinscript_version=joinscript_version,
                     version_start=version_start,
@@ -652,12 +652,12 @@ class Test_UDMExtensionsJoinscript:
                 # create package and install it
                 package = DebianPackage(name=package_name, version=package_version)
                 packages.append(package)
-                package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
+                package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
                 package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
                 package.build()
                 package.install()
 
-                call_join_script('66%s.inst' % package_name)
+                call_join_script(f'66{package_name}.inst')
 
                 # wait until removed object has been handled by the listener
                 wait_for_replication()
@@ -700,10 +700,10 @@ class Test_UDMExtensionsJoinscript:
         options = {}
         buffers = {}
         for option_type, filename, _target_filename in self.TEST_DATA:
-            buffers[filename] = open('%s/%s' % (CWD, filename), 'rb').read()
-            options.setdefault(option_type, []).append('/usr/share/%s/%s' % (package_name, filename))
+            buffers[filename] = open(f'{CWD}/{filename}', 'rb').read()
+            options.setdefault(option_type, []).append(f'/usr/share/{package_name}/{filename}')
 
-        joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), options=options, version_start='5.0-0')
+        joinscript_buffer = get_join_script_buffer(extension_type, f'/usr/share/{package_name}/{extension_filename}', options=options, version_start='5.0-0')
         unjoinscript_buffer = get_unjoin_script_buffer(extension_type, extension_name, package_name)
         extension_buffer = get_extension_buffer(extension_type, extension_name)
 
@@ -712,25 +712,25 @@ class Test_UDMExtensionsJoinscript:
         package = DebianPackage(name=package_name, version=package_version)
         try:
             # create package and install it
-            package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-            package.create_unjoin_script_from_buffer('66%s-uninstall.uinst' % package_name, unjoinscript_buffer)
+            package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
+            package.create_unjoin_script_from_buffer(f'66{package_name}-uninstall.uinst', unjoinscript_buffer)
             package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
             for fn, data in buffers.items():
                 package.create_usr_share_file_from_buffer(fn, data, 'wb')
             package.build()
             package.install()
 
-            call_join_script('66%s.inst' % package_name)
+            call_join_script(f'66{package_name}.inst')
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
 
             dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-            assert dnlist, 'ERROR: cannot find UDM extension object with cn=%s in LDAP' % extension_name
+            assert dnlist, f'ERROR: cannot find UDM extension object with cn={extension_name} in LDAP'
 
             # check if registered file has been replicated to local system
             target_fn = get_absolute_extension_filename(extension_type, extension_filename)
-            assert os.path.exists(target_fn), 'ERROR: target file %s does not exist' % target_fn
+            assert os.path.exists(target_fn), f'ERROR: target file {target_fn} does not exist'
             print('FILE REPLICATED: %r' % target_fn)
 
             # check if sha1(buffer) == sha1(file)
@@ -747,16 +747,16 @@ class Test_UDMExtensionsJoinscript:
                 hash_file = hashlib.sha1(open(filename, 'rb').read()).hexdigest()
                 assert hash_buffer == hash_file, ('\n'.join(difflib.context_diff(open(filename).read(), buffers[src_fn], fromfile='filename', tofile='buffer'))) + ('ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (filename, hash_file, hash_buffer))
 
-            call_unjoin_script('66%s-uninstall.uinst' % package_name)
+            call_unjoin_script(f'66{package_name}-uninstall.uinst')
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
 
             dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-            assert not dnlist, 'ERROR: UDM extension object with cn=%s is still present in LDAP' % extension_name
+            assert not dnlist, f'ERROR: UDM extension object with cn={extension_name} is still present in LDAP'
 
             # check if registered file has been removed from local system
-            assert not os.path.exists(target_fn), 'ERROR: target file %s is still present' % target_fn
+            assert not os.path.exists(target_fn), f'ERROR: target file {target_fn} is still present'
             print('FILE HAS BEEN REMOVED: %r' % target_fn)
 
         finally:
@@ -802,11 +802,11 @@ class Test_UDMExtensionsJoinscript:
         options = {}
         buffers = {}
         for option_type, filename, _target_filename in self.TEST_DATA_2:
-            buffers[filename] = open('%s/%s' % (CWD, filename), 'rb').read()
-            options.setdefault(option_type, []).append('/usr/share/%s/%s' % (package_name, filename))
+            buffers[filename] = open(f'{CWD}/{filename}', 'rb').read()
+            options.setdefault(option_type, []).append(f'/usr/share/{package_name}/{filename}')
         joinscript_buffer = get_join_script_buffer(
             extension_type,
-            '/usr/share/%s/%s' % (package_name, extension_filename),
+            f'/usr/share/{package_name}/{extension_filename}',
             options=options,
             joinscript_version=1,
             version_start=random_ucs_version(max_major=2),
@@ -818,25 +818,25 @@ class Test_UDMExtensionsJoinscript:
         package = DebianPackage(name=package_name, version=package_version)
         try:
             # create package and install it
-            package.create_join_script_from_buffer('66%s.inst' % package_name, joinscript_buffer)
-            package.create_unjoin_script_from_buffer('66%s-uninstall.uinst' % package_name, unjoinscript_buffer)
+            package.create_join_script_from_buffer(f'66{package_name}.inst', joinscript_buffer)
+            package.create_unjoin_script_from_buffer(f'66{package_name}-uninstall.uinst', unjoinscript_buffer)
             package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
             for fn, data in buffers.items():
                 package.create_usr_share_file_from_buffer(fn, data, 'wb')
             package.build()
             package.install()
 
-            call_join_script('66%s.inst' % package_name)
+            call_join_script(f'66{package_name}.inst')
 
             # wait until removed object has been handled by the listener
             wait_for_replication()
 
             dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-            assert dnlist, 'ERROR: cannot find UDM extension object with cn=%s in LDAP' % extension_name
+            assert dnlist, f'ERROR: cannot find UDM extension object with cn={extension_name} in LDAP'
 
             # check if registered file has been replicated to local system
             target_fn = get_absolute_extension_filename(extension_type, extension_filename)
-            assert os.path.exists(target_fn), 'ERROR: target file %s does not exist' % target_fn
+            assert os.path.exists(target_fn), f'ERROR: target file {target_fn} does not exist'
             print('FILE REPLICATED: %r' % target_fn)
 
             for option_type, _src_fn, filename in self.TEST_DATA_2:
@@ -849,7 +849,7 @@ class Test_UDMExtensionsJoinscript:
                 'univentionUMCMessageCatalog;entry-fr-ucs-test': [self.mo_file],
             })
 
-            call_unjoin_script('66%s-uninstall.uinst' % package_name)
+            call_unjoin_script(f'66{package_name}-uninstall.uinst')
 
         finally:
             print('Removing UDM extension from LDAP')
@@ -870,7 +870,7 @@ class Test_UDMExtensions:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     def test_create_via_udm_cli(self, udm, ucr, extension_type):
         """Create full UDM extension objects via CLI"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         for active in ['TRUE', 'FALSE']:
             extension_name = get_extension_name(extension_type)
             extension_filename = get_extension_filename(extension_type, extension_name)
@@ -878,12 +878,12 @@ class Test_UDMExtensions:
 
             package_name = get_package_name()
             package_version = get_package_version()
-            app_id = '%s-%s' % (random_name(), random_version())
+            app_id = f'{random_name()}-{random_version()}'
             version_start = random_ucs_version(max_major=2)
             version_end = random_ucs_version(min_major=5)
 
             dn = udm.create_object(
-                'settings/udm_%s' % extension_type,
+                f'settings/udm_{extension_type}',
                 name=extension_name,
                 data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
                 filename=extension_filename,
@@ -893,16 +893,16 @@ class Test_UDMExtensions:
                 ucsversionstart=version_start,
                 ucsversionend=version_end,
                 active=active,
-                position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+                position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
             )
 
             verify_ldap_object(dn, {
                 'cn': [extension_name],
-                'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+                f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
                 'univentionOwnedByPackage': [package_name],
-                'univentionObjectType': ['settings/udm_%s' % extension_type],
+                'univentionObjectType': [f'settings/udm_{extension_type}'],
                 'univentionOwnedByPackageVersion': [package_version],
-                'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+                f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
                 'univentionAppIdentifier': [app_id],
                 'univentionUCSVersionStart': [version_start],
                 'univentionUCSVersionEnd': [version_end],
@@ -916,23 +916,23 @@ class Test_UDMExtensions:
         ('1.0-0', '2.4-4', False),   # range below current version
         ('6.0-0', '9.9-9', False),   # range above current version
         ('4.0-0', '9.9-9', True),    # current version in range
-        ('1.0-0', '%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel')), True),  # upper limit of range is current version
-        ('%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel')), '9.9-9', True),  # lower limit of range is current version
+        ('1.0-0', f'{ucr.get("version/version")}-{ucr.get("version/patchlevel")}', True),  # upper limit of range is current version
+        (f'{ucr.get("version/version")}-{ucr.get("version/patchlevel")}', '9.9-9', True),  # lower limit of range is current version
     ])
     def test_listener_version_start_end(self, udm, ucr, extension_type, version_start, version_end, should_exist, wait_before):
         """Create extensions with different version ranges"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
 
-        print('=== Testing range from %s to %s with expected result exists=%s ===' % (version_start, version_end, should_exist))
+        print(f'=== Testing range from {version_start} to {version_end} with expected result exists={should_exist} ===')
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
         extension_buffer = get_extension_buffer(extension_type, extension_name)
 
         udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -942,7 +942,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            position=f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
         )
 
         # wait for replication before local filesystem is checked
@@ -951,12 +951,12 @@ class Test_UDMExtensions:
         # check if registered file has been replicated to local system
         target_fn = get_absolute_extension_filename(extension_type, extension_filename)
         exists = os.path.exists(target_fn)
-        assert exists == should_exist, 'ERROR: expected filesystem status mismatch (exists=%s should_exist=%s)' % (exists, should_exist)
+        assert exists == should_exist, f'ERROR: expected filesystem status mismatch (exists={exists} should_exist={should_exist})'
 
         # wait for replication before local filesystem is checked
         udm.cleanup()
         wait_for_replication()
-        assert not os.path.exists(target_fn), 'ERROR: file %s should not exist' % target_fn
+        assert not os.path.exists(target_fn), f'ERROR: file {target_fn} should not exist'
 
     @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
     @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
@@ -964,7 +964,7 @@ class Test_UDMExtensions:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     def test_rename_object(self, udm, extension_type, ucr):
         """Rename UDM extension object"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
         extension_buffer = get_extension_buffer(extension_type, extension_name)
@@ -976,7 +976,7 @@ class Test_UDMExtensions:
 
         # create object
         dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -985,39 +985,39 @@ class Test_UDMExtensions:
             active='TRUE',
             ucsversionstart=version_start,
             ucsversionend=version_end,
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         # check object
         verify_ldap_object(dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
         })
 
         # check if registered file has been replicated to local system
         target_fn = get_absolute_extension_filename(extension_type, extension_filename)
-        assert os.path.exists(target_fn), 'ERROR: expected file does not exist (%s)' % (target_fn)
+        assert os.path.exists(target_fn), f'ERROR: expected file does not exist ({(target_fn)})'
 
         extension_name2 = random_name()
         if extension_type == 'module':
-            extension_name2 = 'ucstest/%s' % extension_name2
+            extension_name2 = f'ucstest/{extension_name2}'
         extension_filename2 = get_extension_filename(extension_type, extension_name2)
         expected_dn = dn.replace(extension_name, extension_name2)
 
-        udm.modify_object('settings/udm_%s' % extension_type, dn=dn, name=extension_name2, filename=extension_filename2)
+        udm.modify_object(f'settings/udm_{extension_type}', dn=dn, name=extension_name2, filename=extension_filename2)
         dnlist = get_dn_of_extension_by_name(extension_type, extension_name2)
-        assert dnlist, 'ERROR: rename of udm %s extension object %s to %s failed' % (extension_type, extension_name, extension_name2)
+        assert dnlist, f'ERROR: rename of udm {extension_type} extension object {extension_name} to {extension_name2} failed'
         assert dnlist[0] == expected_dn, 'ERROR: rename successful but expected DN is not equal to actual DN (%r vs %r)' % (expected_dn, dnlist[0])
 
         # check if registered file is still present with the old name
         target_fn = get_absolute_extension_filename(extension_type, extension_filename)
         target_fn2 = get_absolute_extension_filename(extension_type, extension_filename2)
-        assert not os.path.exists(target_fn), 'ERROR: expected file exist (%s) while it should be removed' % (target_fn)
-        assert os.path.exists(target_fn2), 'ERROR: expected file does not exist (%s)' % (target_fn2)
+        assert not os.path.exists(target_fn), f'ERROR: expected file exist ({(target_fn)}) while it should be removed'
+        assert os.path.exists(target_fn2), f'ERROR: expected file does not exist ({(target_fn2)})'
 
         remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
         remove_extension_by_name(extension_type, extension_name2, fail_on_error=False)
@@ -1026,7 +1026,7 @@ class Test_UDMExtensions:
 
         # check if registered file has been removed
         target_fn = get_absolute_extension_filename(extension_type, extension_filename)
-        assert not os.path.exists(target_fn), 'ERROR: file exists unexpectedly (%s)' % (target_fn)
+        assert not os.path.exists(target_fn), f'ERROR: file exists unexpectedly ({(target_fn)})'
 
     @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
     @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
@@ -1034,19 +1034,19 @@ class Test_UDMExtensions:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     def test_listener_check_active(self, udm, extension_type, ucr):
         """Change active flag to TRUE by domaincontroller master"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
         extension_buffer = get_extension_buffer(extension_type, extension_name)
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=2)
         version_end = random_ucs_version(min_major=5)
 
         dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1056,22 +1056,22 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         wait_for_replication_and_postrun()
 
         verify_ldap_object(dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
             'univentionAppIdentifier': [app_id],
             'univentionUCSVersionStart': [version_start],
             'univentionUCSVersionEnd': [version_end],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+            f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
         })
 
     @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
@@ -1085,18 +1085,18 @@ class Test_UDMExtensions:
     ])
     def test_create_with_invalid_ucsversions(self, udm, extension_type, version_start, version_end):
         """Create full UDM extension objects via CLI"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
         extension_buffer = get_extension_buffer(extension_type, extension_name)
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
 
         with pytest.raises(UCSTestUDM_CreateUDMObjectFailed):
             udm.create_object(
-                'settings/udm_%s' % extension_type,
+                f'settings/udm_{extension_type}',
                 name=extension_name,
                 data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
                 filename=extension_filename,
@@ -1114,10 +1114,10 @@ class Test_UDMExtensions:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     def test_file_integrity(self, udm, ucr, extension_type, wait_before):
         """Check permissions of distributed extension file"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=2)
         version_end = random_ucs_version(min_major=5)
 
@@ -1126,7 +1126,7 @@ class Test_UDMExtensions:
         extension_buffer = get_extension_buffer(extension_type, extension_name)
 
         udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1136,7 +1136,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            position=f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
         )
 
         # wait for replication before local filesystem is checked
@@ -1144,29 +1144,29 @@ class Test_UDMExtensions:
 
         # check if registered file has been replicated to local system
         target_fn = get_absolute_extension_filename(extension_type, extension_filename)
-        assert os.path.exists(target_fn), 'ERROR: expected UDM extension does not exist in filesystem (%s)' % (target_fn, )
+        assert os.path.exists(target_fn), f'ERROR: expected UDM extension does not exist in filesystem ({target_fn})'
 
         # check if sha1(buffer) == sha1(file)
         hash_buffer = hashlib.sha1(extension_buffer.encode('UTF-8')).hexdigest()
         hash_file = hashlib.sha1(open(target_fn, 'rb').read()).hexdigest()
-        assert hash_buffer == hash_file, 'ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer)
+        assert hash_buffer == hash_file, f'ERROR: sha1 sums of file and buffer differ (fn={target_fn} ; file={hash_file} ; buffer={hash_buffer})'
 
         # check replicated file has correct file mode
         current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
         expected_mode = '0o644'
-        assert current_mode == expected_mode, 'ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode)
+        assert current_mode == expected_mode, f'ERROR: permissions of target file {target_fn} are not ok (current={current_mode}  expected={expected_mode})'
 
         # check replicated file is own by root:nobody
         expected_groups = (0, grp.getgrnam('nogroup').gr_gid)
         expected_uid = 0
         current_uid = os.stat(target_fn).st_uid
         current_group = os.stat(target_fn).st_gid
-        assert not (current_uid != expected_uid or current_group not in expected_groups), 'ERROR: owner/group of target file %s is not ok (current=%s:%s  expected_uid=%s expected_gid=%s)' % (target_fn, current_uid, current_group, expected_uid, expected_groups)
+        assert not (current_uid != expected_uid or current_group not in expected_groups), f'ERROR: owner/group of target file {target_fn} is not ok (current={current_uid}:{current_group}  expected_uid={expected_uid} expected_gid={expected_groups})'
 
         udm.cleanup()
         # wait for replication before local filesystem is checked
         wait_for_replication()
-        assert not os.path.exists(target_fn), 'ERROR: file %s should not exist' % target_fn
+        assert not os.path.exists(target_fn), f'ERROR: file {target_fn} should not exist'
 
     @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
     @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
@@ -1181,19 +1181,19 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=2)
         version_end = random_ucs_version(min_major=5)
 
         udm.create_object(
             'container/cn',
-            name='udm_%s' % (extension_type,),
-            position='cn=univention,%s' % (ucr['ldap/base'],),
+            name=f'udm_{extension_type}',
+            position=f'cn=univention,{ucr["ldap/base"]}',
             ignore_exists=True,
         )
 
         dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1203,7 +1203,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         wait_for_replication()
@@ -1211,12 +1211,12 @@ class Test_UDMExtensions:
 
         verify_ldap_object(dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
 
         })
 
@@ -1247,19 +1247,19 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = '5.0-0'
         version_end = ''
 
         udm.create_object(
             'container/cn',
-            name='udm_%s' % (extension_type,),
-            position='cn=univention,%s' % (ucr['ldap/base'],),
+            name=f'udm_{extension_type}',
+            position=f'cn=univention,{ucr["ldap/base"]}',
             ignore_exists=True,
         )
 
         dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1269,7 +1269,7 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         wait_for_replication()
@@ -1277,12 +1277,12 @@ class Test_UDMExtensions:
 
         verify_ldap_object(dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
 
         })
 
@@ -1312,12 +1312,12 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=4)
         version_end = '4.4-99'
 
         extension_dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1327,27 +1327,27 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         udm.create_object(
             'settings/extended_attribute',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            position=f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
             objectClass='univentionFreeAttributes',
             groupPosition='1',
             module='users/user',
             overwriteTab='0',
             hook=extension_name,
-            shortDescription='UCS Test Extended Attribute %s' % extension_name,
+            shortDescription=f'UCS Test Extended Attribute {extension_name}',
             groupName='UCS TEST: test_udm_syntax',
             valueRequired='0',
-            CLIName='ucstest%s' % extension_name.upper(),
+            CLIName=f'ucstest{extension_name.upper()}',
             longDescription='UCS Test Extended Attribute',
             doNotSearch='0',
             tabName='UCS TEST',
             syntax='string',
             tabAdvanced='0',
-            name='UCStest-hook-extension-%s' % extension_name,
+            name=f'UCStest-hook-extension-{extension_name}',
             mayChange='1',
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
@@ -1359,15 +1359,15 @@ class Test_UDMExtensions:
 
         verify_ldap_object(extension_dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['FALSE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['FALSE'],
         })
 
-        assert not os.path.exists('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s' % (extension_filename,))
+        assert not os.path.exists(f'/usr/lib/python3/dist-packages/univention/admin/hooks.d/{extension_filename}')
 
         udm.cleanup()
         wait_for_replication_and_postrun()
@@ -1385,12 +1385,12 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=4)
         version_end = ''
 
         extension_dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1400,27 +1400,27 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         udm.create_object(
             'settings/extended_attribute',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            position=f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
             objectClass='univentionFreeAttributes',
             groupPosition='1',
             module='users/user',
             overwriteTab='0',
             hook=extension_name,
-            shortDescription='UCS Test Extended Attribute %s' % extension_name,
+            shortDescription=f'UCS Test Extended Attribute {extension_name}',
             groupName='UCS TEST: test_udm_syntax',
             valueRequired='0',
-            CLIName='ucstest%s' % extension_name.upper(),
+            CLIName=f'ucstest{extension_name.upper()}',
             longDescription='UCS Test Extended Attribute',
             doNotSearch='0',
             tabName='UCS TEST',
             syntax='string',
             tabAdvanced='0',
-            name='UCStest-hook-extension-%s' % extension_name,
+            name=f'UCStest-hook-extension-{extension_name}',
             mayChange='1',
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
@@ -1432,12 +1432,12 @@ class Test_UDMExtensions:
 
         verify_ldap_object(extension_dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
         }, should_exist=False, retry_count=3, delay=1)
 
         udm.cleanup()
@@ -1456,19 +1456,19 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=2)
         version_end = random_ucs_version(min_major=5)
 
         udm.create_object(
             'container/cn',
-            name='udm_%s' % (extension_type,),
-            position='cn=univention,%s' % (ucr['ldap/base'],),
+            name=f'udm_{extension_type}',
+            position=f'cn=univention,{ucr["ldap/base"]}',
             ignore_exists=True,
         )
 
         extension_dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1478,27 +1478,27 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         udm.create_object(
             'settings/extended_attribute',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            position=f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
             objectClass='univentionFreeAttributes',
             groupPosition='1',
             module='users/user',
             overwriteTab='0',
             hook=extension_name,
-            shortDescription='UCS Test Extended Attribute %s' % extension_name,
+            shortDescription=f'UCS Test Extended Attribute {extension_name}',
             groupName='UCS TEST: test_udm_syntax',
             valueRequired='0',
-            CLIName='ucstest%s' % extension_name.upper(),
+            CLIName=f'ucstest{extension_name.upper()}',
             longDescription='UCS Test Extended Attribute',
             doNotSearch='0',
             tabName='UCS TEST',
             syntax='string',
             tabAdvanced='0',
-            name='UCStest-hook-extension-%s' % extension_name,
+            name=f'UCStest-hook-extension-{extension_name}',
             mayChange='1',
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
@@ -1511,12 +1511,12 @@ class Test_UDMExtensions:
 
         verify_ldap_object(extension_dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
 
         })
 
@@ -1535,7 +1535,7 @@ class Test_UDMExtensions:
         verify_ldap_object(user_dn, {
             'uid': [username],
             'sn': [lastname],
-            'description': ['USERNAME=%s  LASTNAME=%s' % (username, lastname)],
+            'description': [f'USERNAME={username}  LASTNAME={lastname}'],
         })
 
         # set lastname of user ==> hook should set description
@@ -1547,7 +1547,7 @@ class Test_UDMExtensions:
         verify_ldap_object(user_dn, {
             'uid': [username],
             'sn': [lastname],
-            'description': ['USERNAME=%s  LASTNAME=%s' % (username, lastname)],
+            'description': [f'USERNAME={username}  LASTNAME={lastname}'],
         })
 
         udm.__exit__(None, None, None)
@@ -1571,19 +1571,19 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = '5.0-0'
         version_end = ''
 
         udm.create_object(
             'container/cn',
-            name='udm_%s' % (extension_type,),
-            position='cn=univention,%s' % (ucr['ldap/base'],),
+            name=f'udm_{extension_type}',
+            position=f'cn=univention,{ucr["ldap/base"]}',
             ignore_exists=True,
         )
 
         extension_dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1593,27 +1593,27 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         udm.create_object(
             'settings/extended_attribute',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            position=f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
             objectClass='univentionFreeAttributes',
             groupPosition='1',
             module='users/user',
             overwriteTab='0',
             hook=extension_name,
-            shortDescription='UCS Test Extended Attribute %s' % extension_name,
+            shortDescription=f'UCS Test Extended Attribute {extension_name}',
             groupName='UCS TEST: test_udm_syntax',
             valueRequired='0',
-            CLIName='ucstest%s' % extension_name.upper(),
+            CLIName=f'ucstest{extension_name.upper()}',
             longDescription='UCS Test Extended Attribute',
             doNotSearch='0',
             tabName='UCS TEST',
             syntax='string',
             tabAdvanced='0',
-            name='UCStest-hook-extension-%s' % extension_name,
+            name=f'UCStest-hook-extension-{extension_name}',
             mayChange='1',
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
@@ -1626,12 +1626,12 @@ class Test_UDMExtensions:
 
         verify_ldap_object(extension_dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
         })
 
         # create user
@@ -1649,7 +1649,7 @@ class Test_UDMExtensions:
         verify_ldap_object(user_dn, {
             'uid': [username],
             'sn': [lastname],
-            'description': ['USERNAME=%s  LASTNAME=%s' % (username, lastname)],
+            'description': [f'USERNAME={username}  LASTNAME={lastname}'],
         })
 
         # set lastname of user ==> hook should set description
@@ -1661,7 +1661,7 @@ class Test_UDMExtensions:
         verify_ldap_object(user_dn, {
             'uid': [username],
             'sn': [lastname],
-            'description': ['USERNAME=%s  LASTNAME=%s' % (username, lastname)],
+            'description': [f'USERNAME={username}  LASTNAME={lastname}'],
         })
 
         udm.__exit__(None, None, None)
@@ -1684,12 +1684,12 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=4)
         version_end = '4.4-99'
 
         extension_dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1699,12 +1699,12 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         udm.create_object(
             'settings/extended_attribute',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            position=f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
             objectClass='univentionFreeAttributes',
             groupPosition='1',
             module='users/user',
@@ -1712,13 +1712,13 @@ class Test_UDMExtensions:
             shortDescription='UCS Test Extended Attribute',
             groupName='UCS TEST: test_udm_syntax',
             valueRequired='0',
-            CLIName='ucstest%s' % extension_name.upper(),
+            CLIName=f'ucstest{extension_name.upper()}',
             longDescription='UCS Test Extended Attribute',
             doNotSearch='0',
             tabName='UCS TEST',
             syntax=extension_name,
             tabAdvanced='0',
-            name='UCStest-syntax-extension-%s' % extension_name,
+            name=f'UCStest-syntax-extension-{extension_name}',
             mayChange='1',
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
@@ -1730,15 +1730,15 @@ class Test_UDMExtensions:
 
         verify_ldap_object(extension_dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['FALSE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['FALSE'],
         })
 
-        assert not os.path.exists('/usr/lib/python3/dist-packages/univention/admin/syntax.d/%s' % (extension_filename,))
+        assert not os.path.exists(f'/usr/lib/python3/dist-packages/univention/admin/syntax.d/{extension_filename}')
 
         udm.cleanup()
         wait_for_replication_and_postrun()
@@ -1756,12 +1756,12 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=4)
         version_end = ''
 
         extension_dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1771,12 +1771,12 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         udm.create_object(
             'settings/extended_attribute',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            position=f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
             objectClass='univentionFreeAttributes',
             groupPosition='1',
             module='users/user',
@@ -1784,13 +1784,13 @@ class Test_UDMExtensions:
             shortDescription='UCS Test Extended Attribute',
             groupName='UCS TEST: test_udm_syntax',
             valueRequired='0',
-            CLIName='ucstest%s' % extension_name.upper(),
+            CLIName=f'ucstest{extension_name.upper()}',
             longDescription='UCS Test Extended Attribute',
             doNotSearch='0',
             tabName='UCS TEST',
             syntax=extension_name,
             tabAdvanced='0',
-            name='UCStest-syntax-extension-%s' % extension_name,
+            name=f'UCStest-syntax-extension-{extension_name}',
             mayChange='1',
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
@@ -1802,12 +1802,12 @@ class Test_UDMExtensions:
 
         verify_ldap_object(extension_dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
         }, should_exist=False, retry_count=3, delay=1)
 
         udm.cleanup()
@@ -1826,19 +1826,19 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=2)
         version_end = random_ucs_version(min_major=5)
 
         udm.create_object(
             'container/cn',
-            name='udm_%s' % (extension_type,),
-            position='cn=univention,%s' % (ucr['ldap/base'],),
+            name=f'udm_{extension_type}',
+            position=f'cn=univention,{ucr["ldap/base"]}',
             ignore_exists=True,
         )
 
         extension_dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1848,12 +1848,12 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         udm.create_object(
             'settings/extended_attribute',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            position=f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
             objectClass='univentionFreeAttributes',
             groupPosition='1',
             module='users/user',
@@ -1861,13 +1861,13 @@ class Test_UDMExtensions:
             shortDescription='UCS Test Extended Attribute',
             groupName='UCS TEST: test_udm_syntax',
             valueRequired='0',
-            CLIName='ucstest%s' % extension_name.upper(),
+            CLIName=f'ucstest{extension_name.upper()}',
             longDescription='UCS Test Extended Attribute',
             doNotSearch='0',
             tabName='UCS TEST',
             syntax=extension_name,
             tabAdvanced='0',
-            name='UCStest-syntax-extension-%s' % extension_name,
+            name=f'UCStest-syntax-extension-{extension_name}',
             mayChange='1',
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
@@ -1880,22 +1880,22 @@ class Test_UDMExtensions:
 
         verify_ldap_object(extension_dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
 
         })
 
         # create user and set extended attribute with valid value
-        value = 'ucstest-%s' % random_name()
-        userargs = {'ucstest%s' % extension_name.upper(): value}
+        value = f'ucstest-{random_name()}'
+        userargs = {f'ucstest{extension_name.upper()}': value}
         user_dn, username = udm.create_user(**userargs)
 
         # modify user and set extended attribute with invalid value (according to assigned syntax)
-        userargs = {'ucstest%s' % extension_name.upper(): random_name()}
+        userargs = {f'ucstest{extension_name.upper()}': random_name()}
         with pytest.raises(UCSTestUDM_ModifyUDMObjectFailed) as exc:
             udm.modify_object('users/user', dn=user_dn, **userargs)
         assert 'Wrong value given for ucs-test-syntax' in str(exc.value)
@@ -1920,19 +1920,19 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = '5.0-0'
         version_end = ''
 
         udm.create_object(
             'container/cn',
-            name='udm_%s' % (extension_type,),
-            position='cn=univention,%s' % (ucr['ldap/base'],),
+            name=f'udm_{extension_type}',
+            position=f'cn=univention,{ucr["ldap/base"]}',
             ignore_exists=True,
         )
 
         extension_dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -1942,12 +1942,12 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         udm.create_object(
             'settings/extended_attribute',
-            position='cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            position=f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
             objectClass='univentionFreeAttributes',
             groupPosition='1',
             module='users/user',
@@ -1955,13 +1955,13 @@ class Test_UDMExtensions:
             shortDescription='UCS Test Extended Attribute',
             groupName='UCS TEST: test_udm_syntax',
             valueRequired='0',
-            CLIName='ucstest%s' % extension_name.upper(),
+            CLIName=f'ucstest{extension_name.upper()}',
             longDescription='UCS Test Extended Attribute',
             doNotSearch='0',
             tabName='UCS TEST',
             syntax=extension_name,
             tabAdvanced='0',
-            name='UCStest-syntax-extension-%s' % extension_name,
+            name=f'UCStest-syntax-extension-{extension_name}',
             mayChange='1',
             multivalue='0',
             ldapMapping='univentionFreeAttribute20',
@@ -1974,22 +1974,22 @@ class Test_UDMExtensions:
 
         verify_ldap_object(extension_dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
 
         })
 
         # create user and set extended attribute with valid value
-        value = 'ucstest-%s' % random_name()
-        userargs = {'ucstest%s' % extension_name.upper(): value}
+        value = f'ucstest-{random_name()}'
+        userargs = {f'ucstest{extension_name.upper()}': value}
         user_dn, username = udm.create_user(**userargs)
 
         # modify user and set extended attribute with invalid value (according to assigned syntax)
-        userargs = {'ucstest%s' % extension_name.upper(): random_name()}
+        userargs = {f'ucstest{extension_name.upper()}': random_name()}
         with pytest.raises(UCSTestUDM_ModifyUDMObjectFailed) as exc:
             udm.modify_object('users/user', dn=user_dn, **userargs)
         assert 'Wrong value given for ucs-test-syntax' in str(exc.value)
@@ -2014,12 +2014,12 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=4)
         version_end = '4.4-99'
 
         dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -2029,22 +2029,22 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         wait_for_replication()
 
         verify_ldap_object(dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['FALSE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['FALSE'],
         })
 
-        assert not os.path.exists('/usr/lib/python3/dist-packages/univention/admin/handlers/%s' % (extension_filename,))
+        assert not os.path.exists(f'/usr/lib/python3/dist-packages/univention/admin/handlers/{extension_filename}')
 
         udm.cleanup()
         wait_for_replication()
@@ -2062,12 +2062,12 @@ class Test_UDMExtensions:
 
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=4)
         version_end = ''
 
         dn = udm.create_object(
-            'settings/udm_%s' % extension_type,
+            f'settings/udm_{extension_type}',
             name=extension_name,
             data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
             filename=extension_filename,
@@ -2077,19 +2077,19 @@ class Test_UDMExtensions:
             ucsversionstart=version_start,
             ucsversionend=version_end,
             active='FALSE',
-            position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base']),
+            position=f'cn=udm_{extension_type},cn=univention,{ucr["ldap/base"]}',
         )
 
         wait_for_replication()
 
         verify_ldap_object(dn, {
             'cn': [extension_name],
-            'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+            f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
             'univentionOwnedByPackage': [package_name],
-            'univentionObjectType': ['settings/udm_%s' % extension_type],
+            'univentionObjectType': [f'settings/udm_{extension_type}'],
             'univentionOwnedByPackageVersion': [package_version],
-            'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
-            'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
+            f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
+            f'univentionUDM{extension_type.capitalize()}Active': ['TRUE'],
         }, should_exist=False, retry_count=3, delay=1)
 
         udm.cleanup()
@@ -2105,20 +2105,20 @@ class Test_UDMExtensionSpecial:
     @pytest.mark.roles('domaincontroller_master')
     def test_register_deregister_via_postinst(self, extension_type):
         """Register and deregister UDM extension via postinst"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         package_version = get_package_version()
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
         extension_buffer = get_extension_buffer(extension_type, extension_name)
-        postinst_buffer = get_postinst_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
+        postinst_buffer = get_postinst_script_buffer(extension_type, f'/usr/share/{package_name}/{extension_filename}', version_start='5.0-0')
         postrm_buffer = get_postrm_script_buffer(extension_type, extension_name, package_name)
 
         package = DebianPackage(name=package_name, version=package_version)
         try:
             # create package and install it
-            package.create_debian_file_from_buffer('%s.postinst' % package_name, postinst_buffer)
-            package.create_debian_file_from_buffer('%s.postrm' % package_name, postrm_buffer)
+            package.create_debian_file_from_buffer(f'{package_name}.postinst', postinst_buffer)
+            package.create_debian_file_from_buffer(f'{package_name}.postrm', postrm_buffer)
             package.create_usr_share_file_from_buffer(extension_filename, extension_buffer)
             package.build()
             package.install()
@@ -2127,14 +2127,14 @@ class Test_UDMExtensionSpecial:
             wait_for_replication()
 
             dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-            assert dnlist, 'Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name)
+            assert dnlist, f'Cannot find UDM {extension_type} extension with name {extension_name} in LDAP'
             verify_ldap_object(dnlist[0], {
                 'cn': [extension_name],
-                'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename],
+                f'univentionUDM{extension_type.capitalize()}Filename': [extension_filename],
                 'univentionOwnedByPackage': [package_name],
-                'univentionObjectType': ['settings/udm_%s' % extension_type],
+                'univentionObjectType': [f'settings/udm_{extension_type}'],
                 'univentionOwnedByPackageVersion': [package_version],
-                'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer.encode('UTF-8'))],
+                f'univentionUDM{extension_type.capitalize()}Data': [bz2.compress(extension_buffer.encode('UTF-8'))],
             })
 
         finally:
@@ -2148,7 +2148,7 @@ class Test_UDMExtensionSpecial:
             package.remove()
 
         dnlist = get_dn_of_extension_by_name(extension_type, extension_name)
-        assert not dnlist, 'ERROR: UDM extension object with cn=%s is still present in LDAP' % extension_name
+        assert not dnlist, f'ERROR: UDM extension object with cn={extension_name} is still present in LDAP'
 
     current_version = '%(version/version)s-%(version/patchlevel)s' % ucr
 
@@ -2166,54 +2166,54 @@ class Test_UDMExtensionSpecial:
     ])
     def test_listener_version_change(self, udm, ucr, version_start, version_end, should_exist, extension_type, wait_before):
         """Change version range of an existing extension"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         package_version = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         dn = None
 
-        print('=== Testing range from %s to %s with expected result exists=%s ===' % (version_start, version_end, should_exist))
+        print(f'=== Testing range from {version_start} to {version_end} with expected result exists={should_exist} ===')
         extension_name = get_extension_name(extension_type)
         extension_buffer = get_extension_buffer(extension_type, extension_name)
 
         properties = {
             'data': base64.b64encode(bz2.compress(extension_buffer.encode('UTF-8'))).decode('ASCII'),
-            'filename': '%s.py' % extension_name,
+            'filename': f'{extension_name}.py',
             'packageversion': package_version,
             'appidentifier': app_id,
             'package': package_name,
             'ucsversionstart': version_start,
             'ucsversionend': version_end,
-            'position': 'cn=custom attributes,cn=univention,%s' % ucr.get('ldap/base'),
+            'position': f'cn=custom attributes,cn=univention,{ucr.get("ldap/base")}',
             'active': 'FALSE'}
 
         if not dn:
-            dn = udm.create_object('settings/udm_%s' % extension_type, name=extension_name, **properties)
+            dn = udm.create_object(f'settings/udm_{extension_type}', name=extension_name, **properties)
         else:
-            udm.modify_object('settings/udm_%s' % extension_type, dn=dn, **properties)
+            udm.modify_object(f'settings/udm_{extension_type}', dn=dn, **properties)
 
         # wait for replication before local filesystem is checked
         wait_for_replication()
 
         # check if registered file has been replicated to local system
-        target_fn = get_absolute_extension_filename(extension_type, '%s.py' % extension_name)
+        target_fn = get_absolute_extension_filename(extension_type, f'{extension_name}.py')
         exists = os.path.exists(target_fn)
-        assert exists == should_exist, 'ERROR: expected filesystem status mismatch (exists=%s should_exist=%s)' % (exists, should_exist)
+        assert exists == should_exist, f'ERROR: expected filesystem status mismatch (exists={exists} should_exist={should_exist})'
 
         # wait for replication before local filesystem is checked
         udm.cleanup()
         wait_for_replication()
-        assert not os.path.exists(target_fn), 'ERROR: file %s should not exist' % target_fn
+        assert not os.path.exists(target_fn), f'ERROR: file {target_fn} should not exist'
 
     @pytest.mark.tags('udm', 'udm-ldapextensions', 'apptest')
     @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
     @pytest.mark.exposure('dangerous')
     def test_update_packageversion(self, udm, ucr, extension_type, wait_before):
         """Change version of an existing extension"""
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         package_version_base = get_package_version()
-        app_id = '%s-%s' % (random_name(), random_version())
+        app_id = f'{random_name()}-{random_version()}'
         version_start = random_ucs_version(max_major=2)
         version_end = random_ucs_version(min_major=5)
         dn = None
@@ -2227,7 +2227,7 @@ class Test_UDMExtensionSpecial:
 
             properties = {
                 'data': base64.b64encode(bz2.compress(extension_buffer.encode('UTF-8'))).decode('ASCII'),
-                'filename': '%s.py' % extension_name,
+                'filename': f'{extension_name}.py',
                 'packageversion': package_version,
                 'appidentifier': app_id,
                 'package': package_name,
@@ -2238,7 +2238,7 @@ class Test_UDMExtensionSpecial:
 
             if not dn:
                 dn = udm.create_object(
-                    'settings/udm_%s' % extension_type,
+                    f'settings/udm_{extension_type}',
                     name=extension_name,
                     position=udm.UNIVENTION_CONTAINER,
                     **properties,
@@ -2246,12 +2246,12 @@ class Test_UDMExtensionSpecial:
             else:
                 try:
                     udm.modify_object(
-                        'settings/udm_%s' % extension_type,
+                        f'settings/udm_{extension_type}',
                         dn=dn,
                         **properties,
                     )
                 except UCSTestUDM_ModifyUDMObjectFailed as ex:
-                    print('CAUGHT EXCEPTION: %s' % ex)
+                    print(f'CAUGHT EXCEPTION: {ex}')
                     if oldversion < newversion:
                         raise
 
@@ -2266,7 +2266,7 @@ class Test_UDMExtensionSpecial:
         version_start = random_ucs_version(max_major=2)
         version_end = random_ucs_version(min_major=5)
 
-        print('========================= TESTING EXTENSION %s =============================' % extension_type)
+        print(f'========================= TESTING EXTENSION {extension_type} =============================')
         package_name = get_package_name()
         package_version = get_package_version()
         extension_name = get_extension_name(extension_type)
@@ -2274,7 +2274,7 @@ class Test_UDMExtensionSpecial:
 
         try:
             udm.create_object(
-                'settings/udm_%s' % extension_type,
+                f'settings/udm_{extension_type}',
                 name=extension_name,
                 data=base64.b64encode(bz2.compress(extension_buffer.encode("UTF-8"))).decode("ASCII"),
                 filename='../' * 20 + 'tmp/%s' % filename,
@@ -2285,15 +2285,15 @@ class Test_UDMExtensionSpecial:
                 active='FALSE',
             )
         except UCSTestUDM_CreateUDMObjectFailed:
-            print('NOTICE: creating malicious UDM %s extension object failed' % extension_type)
+            print(f'NOTICE: creating malicious UDM {extension_type} extension object failed')
             return  # FIXME: remove from test matrix
 
         # wait for replication before local filesystem is checked
         wait_for_replication()
 
         # check if registered file has been replicated to local system
-        assert not os.path.exists('/tmp/%s' % filename), 'ERROR: path attack possible'
+        assert not os.path.exists(f'/tmp/{filename}'), 'ERROR: path attack possible'
 
-        assert not os.path.islink('/tmp/%s' % filename), 'ERROR: path attack possible'
+        assert not os.path.islink(f'/tmp/{filename}'), 'ERROR: path attack possible'
 
-        assert not os.path.isfile('/tmp/%s' % filename), 'ERROR: path attack possible'
+        assert not os.path.isfile(f'/tmp/{filename}'), 'ERROR: path attack possible'

@@ -436,7 +436,7 @@ class TestInfo(object):
 
     @pytest.mark.parametrize("scope,name", enumerate(ucrfe.SCOPE))
     def test_scope(self, scope, name, vinfo):
-        assert ucrfe.variable_info_string("key", "value", None, scope=scope, details=ucrfe._SHOW_SCOPE) == "key (%s): value" % name
+        assert ucrfe.variable_info_string("key", "value", None, scope=scope, details=ucrfe._SHOW_SCOPE) == f"key ({name}): value"
 
     def test_description(shell, vinfo, gopt):
         flags = ucrfe._SHOW_DESCRIPTION | ucrfe._SHOW_SCOPE | ucrfe._SHOW_CATEGORIES | ucrfe._SHOW_DEFAULT
@@ -505,7 +505,7 @@ class TestMain(object):
     def handlers(self, mocker, reset):
         """Mock frontend handlers."""
         h = {
-            key: (mocker.patch("univention.config_registry.frontend.%s" % hdlr.__name__), args)
+            key: (mocker.patch(f"univention.config_registry.frontend.{hdlr.__name__}"), args)
             for (key, (hdlr, args)) in ucrfe.HANDLERS.items()
         }
         mocker.patch.dict(ucrfe.HANDLERS, h)

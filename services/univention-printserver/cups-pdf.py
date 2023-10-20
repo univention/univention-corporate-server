@@ -60,10 +60,10 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         me = listener.configRegistry.get('hostname') + "." + listener.configRegistry.get('domainname')
 
         if me == server:
-            ud.debug(ud.LISTENER, ud.INFO, "cups-pdf: setting cups-pdf path to %s according to sharepath in %s on %s" % (path, sharename, server))
+            ud.debug(ud.LISTENER, ud.INFO, f"cups-pdf: setting cups-pdf path to {path} according to sharepath in {sharename} on {server}")
             list_ = []
-            list_.append('cups/cups-pdf/directory=%s' % (path,))
-            list_.append('cups/cups-pdf/anonymous=%s' % (path,))
+            list_.append(f'cups/cups-pdf/directory={path}')
+            list_.append(f'cups/cups-pdf/anonymous={path}')
             listener.setuid(0)
             try:
                 univention.config_registry.handler_set(list_)

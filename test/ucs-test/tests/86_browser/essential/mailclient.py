@@ -38,9 +38,9 @@ class BaseMailClient:
     def login_plain(self, user, password, authuser=None):
         def plain_callback(response):
             if authuser is None:
-                return "%s\x00%s\x00%s" % (user, user, password)
+                return f"{user}\x00{user}\x00{password}"
             else:
-                return "%s\x00%s\x00%s" % (user, authuser, password)
+                return f"{user}\x00{authuser}\x00{password}"
         return self.authenticate('PLAIN', plain_callback)
 
     def log_in(self, usermail, password):
@@ -111,7 +111,7 @@ class BaseMailClient:
         if '"' in acl[0]:
             x = acl[0].split('"', 1)[1]
             y = acl[1].split('"', 1)[0]
-            acl[0] = "%s %s" % (x, y)
+            acl[0] = f"{x} {y}"
             del acl[1]
         i = iter(acl[1:])
         d = dict(zip(i, i))
@@ -166,7 +166,7 @@ class BaseMailClient:
             data = self.getMailBoxes()
             print('Lookup :', mailbox, data)
             if (mailbox in data) != retcode:
-                raise LookupFail('Un-expected result for listing the mailbox %s' % mailbox)
+                raise LookupFail(f'Un-expected result for listing the mailbox {mailbox}')
 
     def check_read(self, mailbox_owner, expected_result):
         """
@@ -181,7 +181,7 @@ class BaseMailClient:
             typ, data = self.status(mailbox, '(MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)')
             print('Read Retcode:', typ, data)
             if (typ == 'OK') != retcode:
-                raise ReadFail('Unexpected read result for the inbox %s' % mailbox)
+                raise ReadFail(f'Unexpected read result for the inbox {mailbox}')
             if 'OK' in typ:
                 # typ, data = self.search(None, 'ALL')
                 # for num in data[0].split():
@@ -202,11 +202,11 @@ class BaseMailClient:
             typ, data = self.append(
                 mailbox, '',
                 imaplib.Time2Internaldate(time.time()),
-                str(email.message_from_string('TEST %s' % mailbox)),
+                str(email.message_from_string(f'TEST {mailbox}')),
             )
             print('Append Retcode:', typ, data)
             if (typ == 'OK') != retcode:
-                raise AppendFail('Unexpected append result to inbox %s' % mailbox)
+                raise AppendFail(f'Unexpected append result to inbox {mailbox}')
             if 'OK' in typ:
                 self.close()
 
@@ -220,23 +220,23 @@ class BaseMailClient:
             # actual Permissions are given to shared/owner/INBOX
             # This is different than listing
             if mailbox_owner != self.owner and mailbox == 'INBOX':
-                mailbox = 'shared/%s/INBOX' % (mailbox_owner,)
+                mailbox = f'shared/{mailbox_owner}/INBOX'
             subname = uts.random_name()
-            typ, data = self.create('%s/%s' % (mailbox, subname))
+            typ, data = self.create(f'{mailbox}/{subname}')
             print('Create Retcode:', typ, data)
             if (typ == 'OK') != retcode:
-                raise WriteFail('Unexpected create sub result mailbox in %s' % mailbox)
+                raise WriteFail(f'Unexpected create sub result mailbox in {mailbox}')
             if 'OK' in typ:
-                typ, data = self.delete('%s/%s' % (mailbox, subname))
+                typ, data = self.delete(f'{mailbox}/{subname}')
                 print('Delete Retcode:', typ, data)
                 if (typ == 'OK') != retcode:
-                    raise WriteFail('Unexpected delete sub result mailbox in %s' % mailbox)
+                    raise WriteFail(f'Unexpected delete sub result mailbox in {mailbox}')
 
     def mail_folder(self, mailbox_owner, mailbox):
         if mailbox == 'INBOX':
-            return 'shared/%s' % (mailbox_owner,)
+            return f'shared/{mailbox_owner}'
         if '/' not in mailbox:
-            return 'shared/%s/%s' % (mailbox_owner, mailbox)
+            return f'shared/{mailbox_owner}/{mailbox}'
         return mailbox
 
     def check_permissions(self, owner_user, mailbox, permission):

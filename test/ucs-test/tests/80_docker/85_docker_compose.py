@@ -72,7 +72,7 @@ if __name__ == '__main__':
             app.verify(joined=False)
             images = subprocess.check_output(['docker', 'images'], text=True)
             assert alpine_checksum in images, images
-            app.execute_command_in_container('touch /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
+            app.execute_command_in_container(f'touch /var/lib/univention-appcenter/apps/{name}/data/test1.txt')
 
             app = App(name=name, version='2', build_package=False, call_join_scripts=False)
             app.set_ini_parameter(
@@ -87,7 +87,7 @@ if __name__ == '__main__':
             app.verify(joined=False)
             images = subprocess.check_output(['docker', 'images'], text=True)
             assert alpine_checksum not in images, images
-            app.execute_command_in_container('ls /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
+            app.execute_command_in_container(f'ls /var/lib/univention-appcenter/apps/{name}/data/test1.txt')
             image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}'], text=True).strip()
             assert image == 'docker-test.software-univention.de/alpine:3.7'
             from univention.config_registry import ConfigRegistry

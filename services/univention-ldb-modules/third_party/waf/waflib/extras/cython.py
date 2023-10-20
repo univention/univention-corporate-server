@@ -31,7 +31,7 @@ def add_cython_file(self, node):
 		# TODO re-use these nodes in "scan" below
 		d = self.path.find_dir(x)
 		if d:
-			self.env.append_unique('CYTHONFLAGS', '-I%s' % d.abspath())
+			self.env.append_unique('CYTHONFLAGS', f'-I{d.abspath()}')
 
 	tsk = self.create_task('cython', node, node.change_ext(ext))
 	self.source += tsk.outputs
@@ -127,9 +127,9 @@ class cython(Task.Task):
 					has_public = True
 		name = node.name.replace('.pyx', '')
 		if has_api:
-			missing.append('header:%s_api.h' % name)
+			missing.append(f'header:{name}_api.h')
 		if has_public:
-			missing.append('header:%s.h' % name)
+			missing.append(f'header:{name}.h')
 
 		return (found, missing)
 

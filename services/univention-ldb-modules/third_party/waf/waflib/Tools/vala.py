@@ -56,7 +56,7 @@ def init_vala_task(self):
 		self.env.append_value('VALAFLAGS', flags)
 
 	if self.profile:
-		addflags('--profile=%s' % self.profile)
+		addflags(f'--profile={self.profile}')
 
 	valatask = self.valatask
 
@@ -88,27 +88,27 @@ def init_vala_task(self):
 
 	self.is_lib = 'cprogram' not in self.features
 	if self.is_lib:
-		addflags('--library=%s' % self.target)
+		addflags(f'--library={self.target}')
 
-		h_node = valatask.vala_dir_node.find_or_declare('%s.h' % self.target)
+		h_node = valatask.vala_dir_node.find_or_declare(f'{self.target}.h')
 		valatask.outputs.append(h_node)
-		addflags('--header=%s' % h_node.name)
+		addflags(f'--header={h_node.name}')
 
-		valatask.outputs.append(valatask.vala_dir_node.find_or_declare('%s.vapi' % self.target))
+		valatask.outputs.append(valatask.vala_dir_node.find_or_declare(f'{self.target}.vapi'))
 
 		if getattr(self, 'gir', None):
-			gir_node = valatask.vala_dir_node.find_or_declare('%s.gir' % self.gir)
-			addflags('--gir=%s' % gir_node.name)
+			gir_node = valatask.vala_dir_node.find_or_declare(f'{self.gir}.gir')
+			addflags(f'--gir={gir_node.name}')
 			valatask.outputs.append(gir_node)
 
 	self.vala_target_glib = getattr(self, 'vala_target_glib', getattr(Options.options, 'vala_target_glib', None))
 	if self.vala_target_glib:
-		addflags('--target-glib=%s' % self.vala_target_glib)
+		addflags(f'--target-glib={self.vala_target_glib}')
 
-	addflags(['--define=%s' % x for x in Utils.to_list(getattr(self, 'vala_defines', []))])
+	addflags([f'--define={x}' for x in Utils.to_list(getattr(self, 'vala_defines', []))])
 
 	packages_private = Utils.to_list(getattr(self, 'packages_private', []))
-	addflags(['--pkg=%s' % x for x in packages_private])
+	addflags([f'--pkg={x}' for x in packages_private])
 
 	def _get_api_version():
 		api_version = '1.0'
@@ -125,7 +125,7 @@ def init_vala_task(self):
 
 	valatask.vapi_path = getattr(self, 'vapi_path', '${DATAROOTDIR}/vala/vapi')
 	valatask.pkg_name = getattr(self, 'pkg_name', self.env.PACKAGE)
-	valatask.header_path = getattr(self, 'header_path', '${INCLUDEDIR}/%s-%s' % (valatask.pkg_name, _get_api_version()))
+	valatask.header_path = getattr(self, 'header_path', f'${{INCLUDEDIR}}/{valatask.pkg_name}-{_get_api_version()}')
 	valatask.install_binding = getattr(self, 'install_binding', True)
 
 	self.vapi_dirs = vapi_dirs = Utils.to_list(getattr(self, 'vapi_dirs', []))
@@ -167,7 +167,7 @@ def init_vala_task(self):
 				lst.reverse()
 				local_packages = [pkg for pkg in lst if pkg not in seen] + local_packages
 
-	addflags(['--pkg=%s' % p for p in packages])
+	addflags([f'--pkg={p}' for p in packages])
 
 	for vapi_dir in vapi_dirs:
 		if isinstance(vapi_dir, Node.Node):
@@ -177,11 +177,11 @@ def init_vala_task(self):
 		if not v_node:
 			Logs.warn('Unable to locate Vala API directory: %r', vapi_dir)
 		else:
-			addflags('--vapidir=%s' % v_node.abspath())
+			addflags(f'--vapidir={v_node.abspath()}')
 
 	self.dump_deps_node = None
 	if self.is_lib and self.packages:
-		self.dump_deps_node = valatask.vala_dir_node.find_or_declare('%s.deps' % self.target)
+		self.dump_deps_node = valatask.vala_dir_node.find_or_declare(f'{self.target}.deps')
 		valatask.outputs.append(self.dump_deps_node)
 
 	if self.is_lib and valatask.install_binding:

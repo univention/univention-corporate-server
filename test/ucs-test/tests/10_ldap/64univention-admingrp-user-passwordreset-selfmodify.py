@@ -38,9 +38,9 @@ try:
                     'password': uts.random_string(),
                 })
             except Exception:
-                fail('%s can not change its own password' % account)
+                fail(f'{account} can not change its own password')
             else:
-                print('%s changed its password successfully' % account)
+                print(f'{account} changed its password successfully')
 
         # Create new helpdesk group
         try:
@@ -90,7 +90,7 @@ try:
         except Exception as exc:
             fail(f'Adding {helpdesk_user} to corresponding group {helpdesk_group} failed: {exc}')
         else:
-            print('Added %s to corresponding group' % helpdesk_user)
+            print(f'Added {helpdesk_user} to corresponding group')
 
         # Allow users to modify their password in Univention Directory Manager
         univention.config_registry.handler_set([

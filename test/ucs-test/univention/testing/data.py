@@ -133,12 +133,12 @@ class TestEnvironment:
 
     def dump(self, stream=sys.stdout):  # type: (IO[str]) -> None
         """Dump environment information."""
-        print('hostname: %s' % (self.hostname,), file=stream)
-        print('architecture: %s' % (self.architecture,), file=stream)
-        print('version: %s' % (self.ucs_version,), file=stream)
-        print('role: %s' % (self.role,), file=stream)
-        print('apps: %s' % (self.local_apps,), file=stream)
-        print('joined: %s' % (self.joined,), file=stream)
+        print(f'hostname: {self.hostname}', file=stream)
+        print(f'architecture: {self.architecture}', file=stream)
+        print(f'version: {self.ucs_version}', file=stream)
+        print(f'role: {self.role}', file=stream)
+        print(f'apps: {self.local_apps}', file=stream)
+        print(f'joined: {self.joined}', file=stream)
         print('tags_required: %s' % (' '.join(self.tags_required or set()) or '-',), file=stream)
         print('tags_prohibited: %s' % (' '.join(self.tags_prohibited or set()) or '-',), file=stream)
         print('timeout: %d' % (self.timeout,), file=stream)
@@ -201,7 +201,7 @@ class Verdict:
     __nonzero__ = __bool__
 
     def __str__(self):  # type: () -> str
-        return '%s: %s' % ('IWE'[self.level], self.message)
+        return f'{"IWE"[self.level]}: {self.message}'
 
     def __repr__(self):  # type: () -> str
         return f'{self.__class__.__name__}(level={self.level!r}, message={self.message!r})'
@@ -288,11 +288,11 @@ class CheckTags(Check):
             return
         prohibited = self.tags & environment.tags_prohibited
         if prohibited:
-            yield Verdict(Verdict.ERROR, 'De-selected by tag: %s' % (' '.join(prohibited),), TestCodes.REASON_ROLE_MISMATCH)
+            yield Verdict(Verdict.ERROR, f'De-selected by tag: {" ".join(prohibited)}', TestCodes.REASON_ROLE_MISMATCH)
         elif environment.tags_required:
             required = self.tags & environment.tags_required
             if required:
-                yield Verdict(Verdict.INFO, 'Selected by tag: %s' % (' '.join(required),))
+                yield Verdict(Verdict.INFO, f'Selected by tag: {" ".join(required)}')
             else:
                 yield Verdict(Verdict.ERROR, 'De-selected by tag: %s' % (' '.join(environment.tags_required),), TestCodes.REASON_ROLE_MISMATCH)
 
@@ -323,10 +323,10 @@ class CheckApps(Check):
         """Check environment for required / prohibited apps."""
         for app in self.apps_required:
             if app not in environment.local_apps:
-                yield Verdict(Verdict.ERROR, 'Required app missing: %s' % app, TestCodes.REASON_APP_MISMATCH)
+                yield Verdict(Verdict.ERROR, f'Required app missing: {app}', TestCodes.REASON_APP_MISMATCH)
         for app in self.apps_prohibited:
             if app in environment.local_apps:
-                yield Verdict(Verdict.ERROR, 'Prohibited app installed: %s' % app, TestCodes.REASON_APP_MISMATCH)
+                yield Verdict(Verdict.ERROR, f'Prohibited app installed: {app}', TestCodes.REASON_APP_MISMATCH)
 
 
 class CheckRoles(Check):
@@ -349,7 +349,7 @@ class CheckRoles(Check):
         """Check environment for required / prohibited server role."""
         overlap = self.roles_required & self.roles_prohibited
         if overlap:
-            yield Verdict(Verdict.WARNING, 'Overlapping roles: %s' % (' '.join(overlap),))
+            yield Verdict(Verdict.WARNING, f'Overlapping roles: {" ".join(overlap)}')
             roles = self.roles_required - self.roles_prohibited
         elif self.roles_required:
             roles = set(self.roles_required)
@@ -358,10 +358,10 @@ class CheckRoles(Check):
 
         unknown_roles = roles - CheckRoles.ROLES
         if unknown_roles:
-            yield Verdict(Verdict.WARNING, 'Unknown roles: %s' % (' '.join(unknown_roles),))
+            yield Verdict(Verdict.WARNING, f'Unknown roles: {" ".join(unknown_roles)}')
 
         if environment.role not in roles:
-            yield Verdict(Verdict.ERROR, 'Wrong role: %s not in (%s)' % (environment.role, ','.join(roles)), TestCodes.REASON_ROLE_MISMATCH)
+            yield Verdict(Verdict.ERROR, f'Wrong role: {environment.role} not in ({",".join(roles)})', TestCodes.REASON_ROLE_MISMATCH)
 
 
 class CheckJoin(Check):
@@ -742,8 +742,7 @@ class TestCase:
 
         print('\n*** BEGIN *** %r ***' % (
             cmd,), file=result.environment.log)
-        print('*** %s *** %s ***' % (
-            self.uid, self.description), file=result.environment.log)
+        print(f'*** {self.uid} *** {self.description} ***', file=result.environment.log)
         print('*** START TIME: %s ***' % (
             time_start.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
         result.environment.log.flush()
@@ -805,8 +804,8 @@ class TestCase:
 
         print('*** END TIME: %s ***' % (
             time_end.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
-        print('*** TEST DURATION (H:MM:SS.ms): %s ***' % (
-            time_delta), file=result.environment.log)
+        print(f'*** TEST DURATION (H:MM:SS.ms): {(
+            time_delta)} ***', file=result.environment.log)
         print('*** END *** %d ***' % (
             result.result,), file=result.environment.log)
         result.environment.log.flush()
@@ -837,8 +836,8 @@ class TestResult:
 
     def dump(self, stream=sys.stdout):
         """Dump test result data."""
-        print('Case: %s' % (self.case.uid,), file=stream)
-        print('Environment: %s' % (self.environment.hostname,), file=stream)
+        print(f'Case: {self.case.uid}', file=stream)
+        print(f'Environment: {self.environment.hostname}', file=stream)
         print('Result: %d %s' % (self.result, self.eofs), file=stream)
         print('Reason: %s (%s)' % (self.reason, TestCodes.MESSAGE.get(self.reason, '')), file=stream)
         print('Duration: %d' % (self.duration or 0,), file=stream)

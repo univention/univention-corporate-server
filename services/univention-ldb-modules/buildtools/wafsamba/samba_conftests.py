@@ -131,8 +131,8 @@ def CHECK_C_PROTOTYPE(conf, function, prototype, define, headers=None, msg=None,
     if not conf.CHECK_DECLS(function, headers=headers):
         return False
     if not msg:
-        msg = 'Checking C prototype for %s' % function
-    return conf.CHECK_CODE('%s; void *_x = (void *)%s' % (prototype, function),
+        msg = f'Checking C prototype for {function}'
+    return conf.CHECK_CODE(f'{prototype}; void *_x = (void *){function}',
                            define=define,
                            local_include=False,
                            headers=headers,
@@ -147,13 +147,13 @@ def CHECK_CHARSET_EXISTS(conf, charset, outcharset='UCS-2LE', headers=None, defi
     '''check that a named charset is able to be used with iconv_open() for conversion
     to a target charset
     '''
-    msg = 'Checking if can we convert from %s to %s' % (charset, outcharset)
+    msg = f'Checking if can we convert from {charset} to {outcharset}'
     if define is None:
         define = 'HAVE_CHARSET_%s' % charset.upper().replace('-','_')
-    return conf.CHECK_CODE('''
-                           iconv_t cd = iconv_open("%s", "%s");
+    return conf.CHECK_CODE(f'''
+                           iconv_t cd = iconv_open("{charset}", "{outcharset}");
                            if (cd == 0 || cd == (iconv_t)-1) return -1;
-                           ''' % (charset, outcharset),
+                           ''',
                            define=define,
                            execute=True,
                            msg=msg,
@@ -304,7 +304,7 @@ def CHECK_LIBRARY_SUPPORT(conf, rpath=False, version_script=False, msg=None):
 
     ldflags = []
     if version_script:
-        ldflags.append("-Wl,--version-script=%s/vscript" % bld.path.abspath())
+        ldflags.append(f"-Wl,--version-script={bld.path.abspath()}/vscript")
         Utils.writef(os.path.join(dir,'vscript'), 'TEST_1.0A2 { global: *; };\n')
 
     bld(features='c cshlib',
@@ -364,7 +364,7 @@ def CHECK_PERL_MANPAGE(conf, msg=None, section=None):
 
     if msg is None:
         if section:
-            msg = "perl man%s extension" % section
+            msg = f"perl man{section} extension"
         else:
             msg = "perl manpage generation"
 
@@ -398,7 +398,7 @@ WriteMakefile(
 
     if section:
         man = Utils.readf(os.path.join(bdir,'Makefile'))
-        m = re.search('MAN%sEXT\s+=\s+(\w+)' % section, man)
+        m = re.search(f'MAN{section}EXT\s+=\s+(\w+)', man)
         if not m:
             conf.end_msg('not found', color='YELLOW')
             return
@@ -414,7 +414,7 @@ WriteMakefile(
 def CHECK_COMMAND(conf, cmd, msg=None, define=None, on_target=True, boolean=False):
     '''run a command and return result'''
     if msg is None:
-        msg = 'Checking %s' % ' '.join(cmd)
+        msg = f'Checking {" ".join(cmd)}'
     conf.COMPOUND_START(msg)
     cmd = cmd[:]
     if on_target:
@@ -447,13 +447,13 @@ def CHECK_UNAME(conf):
                                if (uname(&n) == -1) return -1;
                                printf("%%s", n.%s);
                                ''' % v,
-                               define='SYSTEM_UNAME_%s' % v.upper(),
+                               define=f'SYSTEM_UNAME_{v.upper()}',
                                execute=True,
                                define_ret=True,
                                quote=True,
                                headers='sys/utsname.h',
                                local_include=False,
-                               msg="Checking uname %s type" % v):
+                               msg=f"Checking uname {v} type"):
             ret = False
     return ret
 
@@ -462,10 +462,10 @@ def CHECK_INLINE(conf):
     '''check for the right value for inline'''
     conf.COMPOUND_START('Checking for inline')
     for i in ['inline', '__inline__', '__inline']:
-        ret = conf.CHECK_CODE('''
+        ret = conf.CHECK_CODE(f'''
         typedef int foo_t;
-        static %s foo_t static_foo () {return 0; }
-        %s foo_t foo () {return 0; }\n''' % (i, i),
+        static {i} foo_t static_foo () {{return 0; }}
+        {i} foo_t foo () {{return 0; }}\n''',
                               define='INLINE_MACRO',
                               addmain=False,
                               link=False)
@@ -490,8 +490,8 @@ def CHECK_XSLTPROC_MANPAGES(conf):
         return False
 
     s='http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl'
-    conf.CHECK_COMMAND('%s --nonet %s 2> /dev/null' % (conf.env.get_flat('XSLTPROC'), s),
-                             msg='Checking for stylesheet %s' % s,
+    conf.CHECK_COMMAND(f'{conf.env.get_flat("XSLTPROC")} --nonet {s} 2> /dev/null',
+                             msg=f'Checking for stylesheet {s}',
                              define='XSLTPROC_MANPAGES', on_target=False,
                              boolean=True)
     if not conf.CONFIG_SET('XSLTPROC_MANPAGES'):
@@ -515,7 +515,7 @@ def CHECK_STANDARD_LIBPATH(conf):
         # option not supported by compiler - use a standard list of directories
         dirlist = [ '/usr/lib', '/usr/lib64' ]
     except:
-        raise Errors.WafError('Unexpected error running "%s"' % (cmd))
+        raise Errors.WafError(f'Unexpected error running "{(cmd)}"')
     else:
         dirlist = []
         for line in out:

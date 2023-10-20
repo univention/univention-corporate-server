@@ -18,16 +18,16 @@ def test_san():
         membername = strings.random_string()
         udm.create_object(
             'computers/memberserver',
-            position='cn=memberserver,cn=computers,%s' % ucr.get('ldap/base'),
+            position=f'cn=memberserver,cn=computers,{ucr.get("ldap/base")}',
             set={
                 'name': membername,
                 'password': 'univention',
-                'network': 'cn=default,cn=networks,%s' % ucr.get('ldap/base'),
+                'network': f'cn=default,cn=networks,{ucr.get("ldap/base")}',
                 'dnsEntryZoneAlias': f'{domainname} zoneName={domainname},cn=dns,{ucr.get("ldap/base")} www',
             },
         )
 
-        x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % membername)
+        x509 = X509.load_cert(f'/etc/univention/ssl/{membername}/cert.pem')
         san = x509.get_ext('subjectAltName').get_value()
 
         if 'www.' + domainname not in san:
@@ -40,7 +40,7 @@ def test_san_different_network():
 
         forwardzonedn = udm.create_object(
             'dns/forward_zone',
-            position='cn=dns,%s' % ucr.get('ldap/base'),
+            position=f'cn=dns,{ucr.get("ldap/base")}',
             set={
                 'nameserver': ucr.get('hostname'),
                 'zone': zonename,
@@ -50,16 +50,16 @@ def test_san_different_network():
         membername = strings.random_string()
         udm.create_object(
             'computers/memberserver',
-            position='cn=memberserver,cn=computers,%s' % ucr.get('ldap/base'),
+            position=f'cn=memberserver,cn=computers,{ucr.get("ldap/base")}',
             set={
                 'name': membername,
                 'password': 'univention',
-                'network': 'cn=default,cn=networks,%s' % ucr.get('ldap/base'),
-                'dnsEntryZoneAlias': '%s %s www' % (ucr.get('domainname'), forwardzonedn),
+                'network': f'cn=default,cn=networks,{ucr.get("ldap/base")}',
+                'dnsEntryZoneAlias': f'{ucr.get("domainname")} {forwardzonedn} www',
             },
         )
 
-        x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % membername)
+        x509 = X509.load_cert(f'/etc/univention/ssl/{membername}/cert.pem')
         san = x509.get_ext('subjectAltName').get_value()
 
         if 'www.' + zonename not in san:

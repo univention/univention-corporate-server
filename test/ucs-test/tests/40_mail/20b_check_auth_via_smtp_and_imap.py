@@ -24,13 +24,13 @@ class AuthTests:
         self.domain = self.ucr.get('domainname')
 
         self.username = uts.random_name()
-        self.email = '%s@%s' % (self.username, self.domain)
+        self.email = f'{self.username}@{self.domain}'
         self.password = 'univention'
         self.userdn, self.username = self.udm.create_user(
             username=self.username,
             set={
                 'password': self.password,
-                'mailHomeServer': '%s.%s' % (self.ucr.get('hostname'), self.domain),
+                'mailHomeServer': f'{self.ucr.get("hostname")}.{self.domain}',
                 'mailPrimaryAddress': self.email,
             },
         )
@@ -88,7 +88,7 @@ class AuthTests:
             '--port', '4190', '-4',
             '--passwordfd', '0',
             '--list'], stdin=subprocess.PIPE)
-        command = '%s\n' % (self.password,)
+        command = f'{self.password}\n'
         proc.communicate(command.encode('UTF-8'))
         exitcode = proc.returncode
         print('>>> test_sieve(%s): exitcode=%r' % (user, exitcode))

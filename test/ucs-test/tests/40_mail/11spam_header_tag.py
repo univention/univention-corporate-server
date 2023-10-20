@@ -20,7 +20,7 @@ def main():
         try:
             with ucr_test.UCSTestConfigRegistry() as ucr:
                 password = uts.random_string()
-                mailPrimaryAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
+                mailPrimaryAddress = f'{uts.random_name()}@{ucr.get("domainname")}'
                 mailHomeServer = '%(hostname)s.%(domainname)s' % ucr
                 spam_folder = essential.mail.get_spam_folder_name()
 
@@ -37,18 +37,18 @@ def main():
 
                 # no subject tag test
                 print('*** check default behavior, no subject tag')
-                subject = 'my subject %s' % time.time()
+                subject = f'my subject {time.time()}'
                 essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
                 for _i in range(60):
-                    msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox=spam_folder)
+                    msg = imap.get_mails(filter=f'(SUBJECT "{subject}")', mailbox=spam_folder)
                     time.sleep(1)
                     if msg:
                         break
                 if len(msg) != 1:
                     utils.fail('Test 1: got %d mails with subject: %s' % (len(msg), subject))
-                print('%s == %s ?' % (subject, msg[0]['Subject']))
+                print(f'{subject} == {msg[0]["Subject"]} ?')
                 if subject != msg[0]['Subject']:
-                    utils.fail('Test 1: received subject "%s" differs from sent subject "%s"' % (msg[0]['Subject'], subject))
+                    utils.fail(f'Test 1: received subject "{msg[0]["Subject"]}" differs from sent subject "{subject}"')
                 else:
                     print('*** SUBJECT IS CORRECT')
 
@@ -57,19 +57,19 @@ def main():
                 tag = '*** UCS_TEST ***'
                 essential.mail.activate_spam_header_tag(tag)
                 essential.mail.reload_amavis_postfix()
-                subject = 'my subject %s' % time.time()
+                subject = f'my subject {time.time()}'
                 wanted = tag + subject
                 essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
                 for _i in range(60):
-                    msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox=spam_folder)
+                    msg = imap.get_mails(filter=f'(SUBJECT "{subject}")', mailbox=spam_folder)
                     time.sleep(1)
                     if msg:
                         break
                 if len(msg) != 1:
                     utils.fail('Test 2: got %d mails with subject: %s' % (len(msg), subject))
-                print('%s == %s ?' % (wanted, msg[0]['Subject']))
+                print(f'{wanted} == {msg[0]["Subject"]} ?')
                 if wanted != msg[0]['Subject']:
-                    utils.fail('Test 2: received subject "%s" differs from what we want "%s"' % (msg[0]['Subject'], wanted))
+                    utils.fail(f'Test 2: received subject "{msg[0]["Subject"]}" differs from what we want "{wanted}"')
                 else:
                     print('*** SUBJECT IS CORRECT')
         finally:

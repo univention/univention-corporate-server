@@ -26,14 +26,14 @@ from waflib import Task, TaskGen, Logs
 MATLAB_COMMANDS = ['matlab']
 
 def configure(ctx):
-	ctx.find_program(MATLAB_COMMANDS, var='MATLABCMD', errmsg = """\n
+	ctx.find_program(MATLAB_COMMANDS, var='MATLABCMD', errmsg = f"""\n
 No Matlab executable found!\n\n
 If Matlab is needed:\n
     1) Check the settings of your system path.
-    2) Note we are looking for Matlab executables called: %s
+    2) Note we are looking for Matlab executables called: {MATLAB_COMMANDS}
        If yours has a different name, please report to hmgaudecker [at] gmail\n
 Else:\n
-    Do not load the 'run_m_script' tool in the main wscript.\n\n"""  % MATLAB_COMMANDS)
+    Do not load the 'run_m_script' tool in the main wscript.\n\n""")
 	ctx.env.MATLABFLAGS = '-wait -nojvm -nosplash -minimize'
 
 class run_m_script_base(Task.Task):

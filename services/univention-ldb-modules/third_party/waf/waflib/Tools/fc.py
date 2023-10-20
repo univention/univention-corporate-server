@@ -188,7 +188,7 @@ class fcprogram_test(fcprogram):
 		kw['cwd'] = self.get_cwd()
 		bld.out = bld.err = ''
 
-		bld.to_log('command: %s\n' % cmd)
+		bld.to_log(f'command: {cmd}\n')
 
 		kw['output'] = 0
 		try:
@@ -197,7 +197,7 @@ class fcprogram_test(fcprogram):
 			return -1
 
 		if bld.out:
-			bld.to_log('out: %s\n' % bld.out)
+			bld.to_log(f'out: {bld.out}\n')
 		if bld.err:
-			bld.to_log('err: %s\n' % bld.err)
+			bld.to_log(f'err: {bld.err}\n')
 

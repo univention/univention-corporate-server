@@ -160,7 +160,7 @@ class UCSInstallation(VNCInstallation):
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
         self.wait_for_text('user_and_password')
-        self.type("%s\t\t%s\n" % (self.args.password, self.args.password))
+        self.type(f"{self.args.password}\t\t{self.args.password}\n")
 
         if self.args.language == 'eng':
             """
@@ -242,7 +242,7 @@ class UCSInstallation(VNCInstallation):
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
         self.wait_for_text('partition_disks')
-        sub = getattr(self, "_disk_%s" % (self.args.role,), self._disk_default)
+        sub = getattr(self, f"_disk_{self.args.role}", self._disk_default)
         sub()
 
     def _disk_applianceLVM(self) -> None:
@@ -663,7 +663,7 @@ class UCSInstallation(VNCInstallation):
         [Weiter]
         """
         self.wait_for_text('domain_setup', timeout=-300)
-        sub = getattr(self, "_setup_%s" % (self.args.role,))
+        sub = getattr(self, f"_setup_{self.args.role}")
         sub()
 
     def _setup_master(self) -> None:
@@ -784,7 +784,7 @@ class UCSInstallation(VNCInstallation):
             return
 
         self.wait_for_text('school_role')
-        self.click_on('school_%s' % (self.args.school_dep,))
+        self.click_on(f'school_{self.args.school_dep}')
         self.go_next()
 
     @verbose("FINISH")
@@ -831,14 +831,14 @@ class UCSInstallation(VNCInstallation):
         self.type('root\n')
         sleep(5)
         self.type(self.args.password + "\n")
-        self.type('ucr set interfaces-%s-tzpe`manual\n' % iface)
+        self.type(f'ucr set interfaces-{iface}-tzpe`manual\n')
         sleep(30, "kvm.ucr")
-        self.type('ip link set %s up\n' % iface)
+        self.type(f'ip link set {iface} up\n')
         self.type('echo ')
         self.client.keyDown('shift')
         self.type('2')  # @
         self.client.keyUp('shift')
-        self.type('reboot -sbin-ip link set %s up ' % iface)
+        self.type(f'reboot -sbin-ip link set {iface} up ')
         self.client.keyDown('shift')
         self.type("'")  # |
         self.client.keyUp('shift')

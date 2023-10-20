@@ -109,7 +109,7 @@ class _AppCache(object):
 
     def find_candidate(self, app, prevent_docker=None):
         if prevent_docker is None:
-            prevent_docker = ucr_is_true('appcenter/prudence/docker/%s' % app.id)
+            prevent_docker = ucr_is_true(f'appcenter/prudence/docker/{app.id}')
         if app.docker:
             prevent_docker = False
         app_version = LooseVersion(app.version)
@@ -161,7 +161,7 @@ class AppCache(_AppCache):
         self._app_class = app_class
         self._ucs_version = ucs_version
         if server and not server.startswith('http'):
-            server = 'https://%s' % server
+            server = f'https://{server}'
         self._server = server
         self._locale = locale
         self._cache_dir = cache_dir
@@ -212,7 +212,7 @@ class AppCache(_AppCache):
         if self._cache_file is None:
             cache_dir = self.get_cache_dir()
             locale = self.get_locale()
-            self._cache_file = os.path.join(cache_dir, '.apps.%s.json' % locale)
+            self._cache_file = os.path.join(cache_dir, f'.apps.{locale}.json')
         return self._cache_file
 
     @classmethod
@@ -253,7 +253,7 @@ class AppCache(_AppCache):
             for master_file in self._relevant_master_files():
                 master_file_modified = os.stat(master_file).st_mtime
                 if _cmp_mtimes(cache_modified, master_file_modified) == -1:
-                    cache_logger.debug('Cannot load cache: %s is newer than cache' % master_file)
+                    cache_logger.debug(f'Cannot load cache: {master_file} is newer than cache')
                     return None
             with open(cache_file) as fd:
                 cache = load(fd)
@@ -278,14 +278,14 @@ class AppCache(_AppCache):
         try:
             return os.stat(os.path.join(self.get_cache_dir(), '.all.tar')).st_mtime
         except (EnvironmentError, AttributeError) as exc:
-            cache_logger.debug('Unable to get mtime for archive: %s' % exc)
+            cache_logger.debug(f'Unable to get mtime for archive: {exc}')
             return None
 
     def _cache_modified(self):
         try:
             return os.stat(self.get_cache_file()).st_mtime
         except (EnvironmentError, AttributeError) as exc:
-            cache_logger.debug('Unable to get mtime for cache: %s' % exc)
+            cache_logger.debug(f'Unable to get mtime for cache: {exc}')
             return None
 
     def _relevant_master_files(self):
@@ -344,7 +344,7 @@ class AppCache(_AppCache):
         wait = 0.1
         while self._lock:
             if timeout < 0:
-                raise RuntimeError('Could not get lock in %s seconds' % timeout)
+                raise RuntimeError(f'Could not get lock in {timeout} seconds')
             sleep(wait)
             timeout -= wait
         self._lock = True
@@ -425,10 +425,10 @@ class AppCenterCache(_AppCache):
                         elif key == 'next_version':
                             next_version = value.split('-')[0]
                     if still_running and next_version:
-                        cache_logger.debug('Using UCS %s. Apparently an updater is running' % next_version)
+                        cache_logger.debug(f'Using UCS {next_version}. Apparently an updater is running')
                         return next_version
         except (EnvironmentError, ValueError) as exc:
-            cache_logger.warning('Could not parse univention-updater.status: %s' % exc)
+            cache_logger.warning(f'Could not parse univention-updater.status: {exc}')
         return ucr_get('version/version')
 
     def get_app_cache_class(self):
@@ -634,7 +634,7 @@ def default_server():
     # type: () -> str
     server = ucr_get('repository/app_center/server', 'https://appcenter-test.software-univention.de')
     if not server.startswith('http'):
-        server = 'https://%s' % server
+        server = f'https://{server}'
     return server
 
 

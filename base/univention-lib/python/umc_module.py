@@ -97,7 +97,7 @@ def compression_mime_type_of_buffer(data):
         return (mime_type, compression_mime_type_handlers[mime_type])
     else:
         import univention.admin.uexceptions
-        raise univention.admin.uexceptions.valueError("Not a supported compression format: %s" % (mime_type,))
+        raise univention.admin.uexceptions.valueError(f"Not a supported compression format: {mime_type}")
 
 
 def uncompress_buffer(data):
@@ -145,7 +145,7 @@ def image_mime_type_of_buffer(data):
         return mime_type
     else:
         import univention.admin.uexceptions
-        raise univention.admin.uexceptions.valueError("Not a supported image format: %s" % (mime_type,))
+        raise univention.admin.uexceptions.valueError(f"Not a supported image format: {mime_type}")
 
 
 def imagedimensions_of_buffer(data):

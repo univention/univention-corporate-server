@@ -68,12 +68,12 @@ class Configure(UniventionAppAction):
                     phase = 'Install'
                 value = setting.get_value(args.app, phase)
                 if isinstance(setting, FileSetting):
-                    value = 'File %s contains %s bytes' % (setting.filename, len(value or ''))
+                    value = f'File {setting.filename} contains {len(value or "")} bytes'
                 else:
                     value = repr(value)
-                self.log('%s: %s (%s)' % (setting.name, value, setting.description))
+                self.log(f'{setting.name}: {value} ({setting.description})')
         else:
-            self.log('Configuring %s' % args.app)
+            self.log(f'Configuring {args.app}')
             set_vars = (args.set_vars or {}).copy()
             for key in (args.unset or []):
                 set_vars[key] = None

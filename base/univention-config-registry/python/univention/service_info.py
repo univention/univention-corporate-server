@@ -68,10 +68,7 @@ class Service(uit.LocalizedDictionary):
 
     def __repr__(self):
         # type: () -> str
-        return '%s(%s)' % (
-            self.__class__.__name__,
-            dict.__repr__(self),
-        )
+        return f'{self.__class__.__name__}({dict.__repr__(self)})'
 
     def check(self):
         # type: () -> List[str]
@@ -123,7 +120,7 @@ class Service(uit.LocalizedDictionary):
         # type: (str) -> Tuple[int, str]
         if self.get('init_script'):
             # samba currently must not be started via systemd
-            return self._exec(('/etc/init.d/%s' % (self['init_script'],), action))
+            return self._exec((f'/etc/init.d/{self["init_script"]}', action))
 
         service_name = self._service_name()
         return self._exec(('/usr/sbin/service', service_name, action))

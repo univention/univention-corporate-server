@@ -110,5 +110,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     initialize_debug()
-    ud1.debug(ud1.ADMIN, ud1.PROCESS, "univention.lib.account.lock was called for %s (%s)" % (args.dn, args.lock_time))
+    ud1.debug(ud1.ADMIN, ud1.PROCESS, f"univention.lib.account.lock was called for {args.dn} ({args.lock_time})")
     lock(args.dn, args.lock_time)

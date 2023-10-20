@@ -168,7 +168,7 @@ InitialValue = Default: @%@ldap/base@%@
     assert setting.is_inside(app) is False
     assert setting.is_outside(app) is True
 
-    assert setting.get_initial_value(app) == 'Default: %s' % ucr_get('ldap/base')
+    assert setting.get_initial_value(app) == f'Default: {ucr_get("ldap/base")}'
 
     assert setting.get_value(app) is None
 
@@ -196,7 +196,7 @@ Scope = inside, outside
     assert setting.is_inside(app) is True
     assert setting.is_outside(app) is True
 
-    assert setting.get_initial_value(app) == 'Default: %s' % ucr_get('ldap/base')
+    assert setting.get_initial_value(app) == f'Default: {ucr_get("ldap/base")}'
 
     assert setting.get_value(app) is None
 
@@ -239,7 +239,7 @@ Scope = inside, outside
         assert repr(setting) == "StringSetting(name='test/setting')"
         assert setting.is_inside(app) is True
         assert setting.is_outside(app) is True
-        assert setting.get_initial_value(app) == 'Default: %s' % ucr_get('ldap/base')
+        assert setting.get_initial_value(app) == f'Default: {ucr_get("ldap/base")}'
         assert setting.get_value(app) is None
         with Configuring(app, revert='ucr') as config:
             config.set({setting.name: 'My value'})
@@ -296,7 +296,7 @@ Required = Yes
 
 
 def test_status_and_file_setting(installed_component_app):
-    content = '''[test/setting3]
+    content = f'''[test/setting3]
 Type = Status
 Description = My Description 3
 
@@ -307,9 +307,9 @@ Description = My Description 4
 
 [test/setting4/2]
 Type = File
-Filename = /tmp/%s
+Filename = /tmp/{(300 * 'X')}
 Description = My Description 4.2
-''' % (300 * 'X')
+'''
 
     app, settings = fresh_settings(content, installed_component_app, 3)
     status_setting, file_setting, file_setting2 = settings

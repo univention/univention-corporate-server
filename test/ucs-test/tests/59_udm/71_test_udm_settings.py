@@ -30,7 +30,7 @@ class Test_LDAPSchema:
     def test_create_ldap_schema(self, udm):
         """Create a valid ldap schema object"""
         schema_name = uts.random_name()
-        filename = '90%s' % uts.random_name()
+        filename = f'90{uts.random_name()}'
         data = '# schema test'
         schema = udm.create_object('settings/ldapschema', position=udm.UNIVENTION_CONTAINER, name=schema_name, filename=filename, data=(base64.b64encode(bz2.compress(data.encode('UTF-8')))).decode('ASCII'))
         utils.verify_ldap_object(schema, {'cn': [schema_name]})
@@ -46,11 +46,11 @@ class Test_LDAPSchema:
     def test_create_full_ldap_schema(self, udm, active):
         """Create a full ldap schema objects"""
         schema_name = uts.random_name()
-        filename = '90%s' % uts.random_name()
+        filename = f'90{uts.random_name()}'
         data = '# schema test'
-        package_version = '99.%s-%s' % (uts.random_int(), uts.random_int())
+        package_version = f'99.{uts.random_int()}-{uts.random_int()}'
         package = uts.random_name()
-        appidentifier = '%s' % uts.random_name()
+        appidentifier = f'{uts.random_name()}'
 
         schema = udm.create_object(
             'settings/ldapschema',
@@ -84,19 +84,19 @@ class Test_LDAPACL:
     def test_create_invalid_ldap_schema(self, udm):
         """Try to create invalid ldap schema objects"""
         schema_name = uts.random_name()
-        filename = '/90%s' % uts.random_name()
+        filename = f'/90{uts.random_name()}'
         data = '# schema test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'))
 
         schema_name = uts.random_name()
-        filename = '90%s' % uts.random_name()
+        filename = f'90{uts.random_name()}'
         data = '# schema test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(data.encode('UTF-8')).decode('ASCII'))
 
         schema_name = uts.random_name()
-        filename = '90%s' % uts.random_name()
+        filename = f'90{uts.random_name()}'
         data = '# schema test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'), active='YES')
@@ -107,7 +107,7 @@ class Test_LDAPACL:
     def test_create_ldap_acl(self, udm):
         """Create a valid ldap acl object"""
         acl_name = uts.random_name()
-        filename = '90%s' % uts.random_name()
+        filename = f'90{uts.random_name()}'
         data = '# access to  *'
         acl = udm.create_object('settings/ldapacl', position=udm.UNIVENTION_CONTAINER, name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'))
         utils.verify_ldap_object(acl, {'cn': [acl_name]})
@@ -123,11 +123,11 @@ class Test_LDAPACL:
     def test_create_full_ldap_acl(self, udm, active):
         """Create a full ldap acl objects"""
         acl_name = uts.random_name()
-        filename = '90%s' % uts.random_name()
+        filename = f'90{uts.random_name()}'
         data = '# acl test'
-        package_version = '99.%s-%s' % (uts.random_int(), uts.random_int())
+        package_version = f'99.{uts.random_int()}-{uts.random_int()}'
         package = uts.random_name()
-        appidentifier = '%s' % uts.random_name()
+        appidentifier = f'{uts.random_name()}'
         ucsversionstart = '1.2-0'
         ucsversionend = '1.3-99'
 
@@ -163,19 +163,19 @@ class Test_LDAPACL:
     def test_create_invalid_ldap_acl(self, udm):
         """Try to create invalid ldap acl objects"""
         acl_name = uts.random_name()
-        filename = '/90%s' % uts.random_name()
+        filename = f'/90{uts.random_name()}'
         data = '# acl test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'))
 
         acl_name = uts.random_name()
-        filename = '90%s' % uts.random_name()
+        filename = f'90{uts.random_name()}'
         data = '# acl test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(data.encode('UTF-8')).decode('ASCII'))
 
         acl_name = uts.random_name()
-        filename = '90%s' % uts.random_name()
+        filename = f'90{uts.random_name()}'
         data = '# acl test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'), active='YES')
@@ -195,8 +195,8 @@ def test_filename_validation(udm, lo, modify, prefix, path, position, attr, ocs,
     def err(filename):
         return '%r exists (content=%r)' % (filename, open(filename).read())
 
-    pos = '%s,%s' % (position, udm.LDAP_BASE)
-    filename = filename_modify = '%s%s%s' % (prefix, name, strings.random_string())
+    pos = f'{position},{udm.LDAP_BASE}'
+    filename = filename_modify = f'{prefix}{name}{strings.random_string()}'
     if modify:
         dn_modify = '%s=%s,%s' % (attr, ldap.dn.escape_dn_chars(filename), pos)
         filename = filename.replace('/', '').replace('.', '')
@@ -289,7 +289,7 @@ def test_create_portal_entry(udm, ucr):
     """Create a UMC portal entry"""
     portal = Bunch(
         name=uts.random_name(),
-        displayName='"de_DE" "%s"' % (uts.random_name(),),
+        displayName=f'"de_DE" "{uts.random_name()}"',
         logo=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),
         background=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),
     )

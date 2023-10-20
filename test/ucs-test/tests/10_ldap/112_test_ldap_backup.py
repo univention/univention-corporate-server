@@ -132,8 +132,8 @@ def test_run_custom_backup(owner, group, permissions, udm, ucr, cleanup):
     owner = create_owner(udm) if owner is None else owner
     group = create_group(udm) if group is None else group
     ucr.handler_set([
-        "slapd/backup/group=%s" % (group),
-        "slapd/backup/owner=%s" % (owner),
+        f"slapd/backup/group={(group)}",
+        f"slapd/backup/owner={(owner)}",
         f"slapd/backup/permissions={permissions:o}",
     ])
     print(f"** Creating custom backup with {owner}:{group} {permissions:04o}")
@@ -171,8 +171,8 @@ def test_non_existing_owner_group(owner, group, permissions, udm, ucr, cleanup):
     """Test backup when variables were all set but non existing owner or group"""
     print("** Checking a non existing user or group cannot own a backup")
     ucr.handler_set([
-        "slapd/backup/group=%s" % (group),
-        "slapd/backup/owner=%s" % (owner),
+        f"slapd/backup/group={(group)}",
+        f"slapd/backup/owner={(owner)}",
         f"slapd/backup/permissions={permissions:o}",
     ])
     exit_code = create_backup()

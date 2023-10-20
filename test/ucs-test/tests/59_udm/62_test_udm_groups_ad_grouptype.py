@@ -169,7 +169,7 @@ def test_umd_memberUid(udm, ucr, lo):
     # validate memberuid after update users in group
     username = uts.random_name()
     for i in range(5):
-        user = 'uid=%s,cn=temp_%s,%s' % (username, i, ucr.get('ldap/base'))
+        user = f'uid={username},cn=temp_{i},{ucr.get("ldap/base")}'
         group1 = udm.modify_object('groups/group', dn=group1, users=user)
         res = lo.get(group1).get('memberUid')
         res1 = lo.get(group1).get('uniqueMember')
@@ -219,6 +219,6 @@ def test_group_type(group_type, use_create_group_parameter, builtin_sid_expected
     utils.verify_ldap_object(group, {'univentionGroupType': [group_type]})
     sid = _get_samba_sid(group)
     if _sid_is_builtin(sid):
-        assert group_type == '-2147483643', 'New generated group has builtin sid: %s' % sid
+        assert group_type == '-2147483643', f'New generated group has builtin sid: {sid}'
     else:
-        assert group_type != '-2147483643', 'New generated builtin group has no builtin sid: %s' % sid
+        assert group_type != '-2147483643', f'New generated builtin group has no builtin sid: {sid}'

@@ -127,11 +127,7 @@ def test_configfile_python_compatibility(ucr_config_file, python_versions, dpkg)
         if os.path.exists('.coverage'):
             os.unlink('.coverage')
 
-        msg.append('Py%s:|%s|%s' % (
-            pyver,
-            '✅' if ret == 0 else '❎',
-            coverage,
-        ))
+        msg.append(f'Py{pyver}:|{"✅" if ret == 0 else "❎"}|{coverage}')
 
     print('\t'.join(msg), end='\t')
 

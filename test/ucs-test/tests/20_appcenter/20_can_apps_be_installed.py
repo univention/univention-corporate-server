@@ -34,7 +34,7 @@ with UCSTestConfigRegistry():
 
     def _apt_get_update():
         cmd = ['/usr/bin/apt-get', 'update']
-        print('Executing the command: %s' % cmd)
+        print(f'Executing the command: {cmd}')
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True)
         (stdoutdata, stderrdata) = p.communicate()
         if p.returncode:
@@ -51,7 +51,7 @@ with UCSTestConfigRegistry():
                 _apt_get_update()
             packages = _packages_to_install(app)
             cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
-            print('Executing the command: %s' % cmd)
+            print(f'Executing the command: {cmd}')
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True)
             (stdoutdata, stderrdata) = p.communicate()
             retcode = p.returncode
@@ -75,14 +75,14 @@ with UCSTestConfigRegistry():
     _apt_get_update()
     for app in Apps().get_all_apps():
         if app.docker:
-            print('Ignoring app %s: Docker App' % app.id)
+            print(f'Ignoring app {app.id}: Docker App')
             continue
         forbidden, warning = app.check('install')
         if forbidden:
             print(f'Ignoring app {app.id!r}: requirements not met -> {forbidden!r}')
             continue
 
-        print('Checking app: %s' % app.id)
+        print(f'Checking app: {app.id}')
         if not _apt_get_simulate(app):
             failed.append(app)
     _apt_get_update()
@@ -90,7 +90,7 @@ with UCSTestConfigRegistry():
     if failed:
         print('\nTEST FAILED: the following apps cannot be installed due to broken packages...')
         for app in failed:
-            print('[ APP: %s ]' % app.id)
+            print(f'[ APP: {app.id} ]')
         sys.exit(1)
 
 sys.exit(0)

@@ -19,7 +19,7 @@ def subst_at_vars(task):
             if not vname in task.env and vname.upper() in task.env:
                 vname = vname.upper()
             if not vname in task.env:
-                Logs.error("Unknown substitution %s in %s" % (v, task.name))
+                Logs.error(f"Unknown substitution {v} in {task.name}")
                 sys.exit(1)
             v = SUBST_VARS_RECURSIVE(task.env[vname], task.env)
             # now we back substitute the allowed pc vars
@@ -48,7 +48,7 @@ def PKG_CONFIG_FILES(bld, pc_files, vnum=None, extra_name=None):
         else:
             target = f
         base=os.path.basename(target)
-        t = bld.SAMBA_GENERATOR('PKGCONFIG_%s' % base,
+        t = bld.SAMBA_GENERATOR(f'PKGCONFIG_{base}',
                                 rule=subst_at_vars,
                                 source=f+'.in',
                                 target=target)

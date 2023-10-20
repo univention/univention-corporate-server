@@ -77,7 +77,7 @@ class Remove(InstallRemoveUpgrade):
         self.percentage = 80
         self._call_unjoin_script(app, args)
         if not app.docker:
-            ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
+            ucr_save({f'appcenter/prudence/docker/{app.id}': 'yes'})
 
     def _write_start_event(self, app, args):
         return write_event(APP_REMOVE_START, {'name': app.name, 'version': app.version}, username=self._get_username(args))

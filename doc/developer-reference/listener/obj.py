@@ -142,7 +142,7 @@ class ReferentialIntegrityCheck(LocalLdap, LocalFile):
     ) -> None:
         valid = (self._validate(old), self._validate(new))
         msg = self.MESSAGES[valid]
-        self.log("%s %s -> %s" % (msg, old_dn, new_dn))
+        self.log(f"{msg} {old_dn} -> {new_dn}")
 
     def handler_schema(
             self,

@@ -47,7 +47,7 @@ def check_pfs_cipher():
     print('-----------CUTCUTCUT----------------')
     for possible_cipher in PFS_CIPHERS:
         if possible_cipher in openssl_out:
-            print("\nCipher '%s' was found.\n" % possible_cipher)
+            print(f"\nCipher '{possible_cipher}' was found.\n")
             return
 
     utils.fail("None of the possible ciphers were found in the output from TLS client. Probably TLS/PFS does not work.")

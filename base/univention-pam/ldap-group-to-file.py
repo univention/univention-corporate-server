@@ -88,7 +88,7 @@ def _run_hooks(options):
             else:
                 subprocess.call(cmd, stdin=null, stdout=null, stderr=null)
     elif options.verbose:
-        print('%s does not exist' % (HOOK_DIR,))
+        print(f'{HOOK_DIR} does not exist')
 
 
 def main():
@@ -140,7 +140,7 @@ def doit(options, lo):
     # Move the file
     shutil.move(fdname, options.file)
     if options.verbose:
-        print('The file %s was created.' % options.file)
+        print(f'The file {options.file} was created.')
 
     _run_hooks(options)
 

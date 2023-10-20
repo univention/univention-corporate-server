@@ -149,7 +149,7 @@ class Base(Translation):
             try:
                 CORE.info("Setting locale %r" % (_locale,))
                 _locale = Locale(_locale)
-                language = '%s-%s' % (_locale.language, _locale.territory) if _locale.territory else '%s' % (_locale.language,)
+                language = f'{_locale.language}-{_locale.territory}' if _locale.territory else f'{_locale.language}'
                 if language != self.__current_language:
                     self.set_locale(str(_locale))
                 self.__current_language = language
@@ -300,7 +300,7 @@ class Base(Translation):
         if not isinstance(result, BaseException):
             self.finished(request.id, result)
             return
-        method = '%s: %s' % (thread.name, ' '.join(request.arguments))
+        method = f'{thread.name}: {" ".join(request.arguments)}'
         self.__error_handling(request, method, thread.exc_info[0], thread.exc_info[1], thread.trace)
 
     def error_handling(self, etype, exc, etraceback):

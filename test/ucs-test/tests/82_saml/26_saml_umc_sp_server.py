@@ -19,5 +19,5 @@ if __name__ == '__main__':
         print(res[1])
         fqdn = b'%s.%s' % (res[1].get('cn')[0], res[1].get('associatedDomain')[0])
         fqdn = fqdn.decode('UTF-8')
-        if ucr.get('umc/saml/trusted/sp/%s' % fqdn) != fqdn:
+        if ucr.get(f'umc/saml/trusted/sp/{fqdn}') != fqdn:
             fail('umc/saml/trusted/sp/%s is %s, expected %s' % (fqdn, ucr.get('umc/saml/trusted/sp/%s' % fqdn), fqdn))

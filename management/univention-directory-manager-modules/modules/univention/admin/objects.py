@@ -104,7 +104,7 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
             if not lo.get(dn, attr=['objectClass']):
                 raise univention.admin.uexceptions.noObject(dn)
             if not univention.admin.modules.virtual(module.module):
-                raise univention.admin.uexceptions.wrongObjectType('The object %s is not a %s.' % (dn, module.module))
+                raise univention.admin.uexceptions.wrongObjectType(f'The object {dn} is not a {module.module}.')
 
     return module.object(co, lo, position, dn, superordinate=superordinate, attributes=attributes)
 
@@ -253,7 +253,7 @@ def getPolicyReference(object, policy_type):
         for m in univention.admin.modules.identify(policy_dn, object.lo.get(policy_dn)):
             if univention.admin.modules.name(m) == policy_type:
                 policyReference = policy_dn
-    ud.debug(ud.ADMIN, ud.INFO, 'getPolicyReference: returning: %s' % policyReference)
+    ud.debug(ud.ADMIN, ud.INFO, f'getPolicyReference: returning: {policyReference}')
     return policyReference
 
 
@@ -273,7 +273,7 @@ def removePolicyReference(object, policy_type):
             if univention.admin.modules.name(m) == policy_type:
                 remove = policy_dn
     if remove:
-        ud.debug(ud.ADMIN, ud.INFO, 'removePolicyReference: removing reference: %s' % remove)
+        ud.debug(ud.ADMIN, ud.INFO, f'removePolicyReference: removing reference: {remove}')
         object.policies.remove(remove)
 
 
@@ -294,7 +294,7 @@ def replacePolicyReference(object, policy_type, new_reference):
 
     removePolicyReference(object, policy_type)
 
-    ud.debug(ud.ADMIN, ud.INFO, 'replacePolicyReference: appending reference: %s' % new_reference)
+    ud.debug(ud.ADMIN, ud.INFO, f'replacePolicyReference: appending reference: {new_reference}')
     object.policies.append(new_reference)
 
 

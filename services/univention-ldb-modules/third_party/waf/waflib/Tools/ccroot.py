@@ -165,9 +165,9 @@ class link_task(Task.Task):
 					# the import lib file name stays unversioned.
 					name = name + '-' + nums[0]
 				elif self.env.DEST_OS == 'openbsd':
-					pattern = '%s.%s' % (pattern, nums[0])
+					pattern = f'{pattern}.{nums[0]}'
 					if len(nums) >= 2:
-						pattern += '.%s' % nums[1]
+						pattern += f'.{nums[1]}'
 
 			if folder:
 				tmp = folder + os.sep + pattern % name
@@ -214,7 +214,7 @@ class link_task(Task.Task):
 		lst = [] + self.env.MT
 		lst.extend(Utils.to_list(self.env.MTFLAGS))
 		lst.extend(['-manifest', manifest])
-		lst.append('-outputresource:%s;%s' % (self.outputs[0].abspath(), mode))
+		lst.append(f'-outputresource:{self.outputs[0].abspath()};{mode}')
 
 		return super(link_task, self).exec_command(lst)
 
@@ -497,7 +497,7 @@ def propagate_uselib_vars(self):
 			app(var, self.to_list(val))
 
 		for x in feature_uselib:
-			val = env['%s_%s' % (var, x)]
+			val = env[f'{var}_{x}']
 			if val:
 				app(var, val)
 
@@ -592,12 +592,12 @@ def apply_vnum(self):
 	cnum = getattr(self, 'cnum', str(nums[0]))
 	cnums = cnum.split('.')
 	if len(cnums)>len(nums) or nums[0:len(cnums)] != cnums:
-		raise Errors.WafError('invalid compatibility version %s' % cnum)
+		raise Errors.WafError(f'invalid compatibility version {cnum}')
 
 	libname = node.name
 	if libname.endswith('.dylib'):
-		name3 = libname.replace('.dylib', '.%s.dylib' % self.vnum)
-		name2 = libname.replace('.dylib', '.%s.dylib' % cnum)
+		name3 = libname.replace('.dylib', f'.{self.vnum}.dylib')
+		name2 = libname.replace('.dylib', f'.{cnum}.dylib')
 	else:
 		name3 = libname + '.' + self.vnum
 		name2 = libname + '.' + cnum
@@ -620,7 +620,7 @@ def apply_vnum(self):
 		path = self.install_task.install_to
 		if self.env.DEST_OS == 'openbsd':
 			libname = self.link_task.outputs[0].name
-			t1 = self.add_install_as(install_to='%s/%s' % (path, libname), install_from=node, chmod=self.link_task.chmod)
+			t1 = self.add_install_as(install_to=f'{path}/{libname}', install_from=node, chmod=self.link_task.chmod)
 			self.vnum_install_task = (t1,)
 		else:
 			t1 = self.add_install_as(install_to=path + os.sep + name3, install_from=node, chmod=self.link_task.chmod)
@@ -641,8 +641,8 @@ def apply_vnum(self):
 			p = Utils.subst_vars(inst_to, self.env)
 			path = os.path.join(p, name2)
 			self.env.append_value('LINKFLAGS', ['-install_name', path])
-			self.env.append_value('LINKFLAGS', '-Wl,-compatibility_version,%s' % cnum)
-			self.env.append_value('LINKFLAGS', '-Wl,-current_version,%s' % self.vnum)
+			self.env.append_value('LINKFLAGS', f'-Wl,-compatibility_version,{cnum}')
+			self.env.append_value('LINKFLAGS', f'-Wl,-current_version,{self.vnum}')
 
 class vnum(Task.Task):
 	"""
@@ -735,7 +735,7 @@ def process_lib(self):
 		break
 	else:
 		raise Errors.WafError('could not find library %r' % self.name)
-	self.link_task = self.create_task('fake_%s' % self.lib_type, [], [node])
+	self.link_task = self.create_task(f'fake_{self.lib_type}', [], [node])
 	self.target = self.name
 
 

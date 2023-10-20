@@ -170,12 +170,12 @@ def write_build_options_footer(fp):
              "}\n")
 
 def write_build_options_section(fp, keys, section):
-    fp.write("\n\t/* Show %s */\n" % section)
-    fp.write("       output(screen, \"\\n%s:\\n\");\n\n" % section)
+    fp.write(f"\n\t/* Show {section} */\n")
+    fp.write(f"       output(screen, \"\\n{section}:\\n\");\n\n")
 
     for k in sorted(keys):
-        fp.write("#ifdef %s\n" % k)
-        fp.write("       output(screen, \"   %s\\n\");\n" % k)
+        fp.write(f"#ifdef {k}\n")
+        fp.write(f"       output(screen, \"   {k}\\n\");\n")
         fp.write("#endif\n")
     fp.write("\n")
 

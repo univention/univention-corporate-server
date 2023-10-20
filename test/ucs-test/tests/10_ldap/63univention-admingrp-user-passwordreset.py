@@ -31,7 +31,7 @@ class Account:
         self.password = password
 
     def __str__(self):
-        return '%s "%s"' % (self.description, self.name)
+        return f'{self.description} "{self.name}"'
 
 
 try:
@@ -52,11 +52,11 @@ try:
 
         def verify_no_write_access_for_password(account, target):
             if has_write_access_for_password(account, target):
-                fail('%s can set password of %s' % (account, target))
+                fail(f'{account} can set password of {target}')
 
         def verify_write_access_for_password(account, target):
             if not has_write_access_for_password(account, target):
-                fail('%s cannot set password of %s' % (account, target))
+                fail(f'{account} cannot set password of {target}')
 
         def has_write_access_for_descr(account, target):
             try:
@@ -69,11 +69,11 @@ try:
 
         def verify_no_write_access_for_descr(account, target):
             if has_write_access_for_descr(account, target):
-                fail('%s can set description of %s' % (account, target))
+                fail(f'{account} can set description of {target}')
 
         def verify_write_access_for_descr(account, target):
             if not has_write_access_for_descr(account, target):
-                fail('%s cannot set description of %s' % (account, target))
+                fail(f'{account} cannot set description of {target}')
 
         admin_dn = ucr['tests/domainadmin/account']
         admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
@@ -85,13 +85,13 @@ try:
             what = 'Helpdesk group'
             hdgroup_a_dn, hdgroup_a = udm.create_group()
         except Exception as exc:
-            fail('Creating %s failed: %s' % (what, exc), ucstest_errorcode)
+            fail(f'Creating {what} failed: {exc}', ucstest_errorcode)
 
         try:
             what = 'Helpdesk group'
             hdgroup_b_dn, hdgroup_b = udm.create_group()
         except Exception as exc:
-            fail('Creating %s failed: %s' % (what, exc), ucstest_errorcode)
+            fail(f'Creating {what} failed: {exc}', ucstest_errorcode)
 
         # create helpdesk users
         try:
@@ -99,18 +99,18 @@ try:
             hduser_a_dn, hduser_a_name = udm.create_user()
             hduser_a = Account(what, hduser_a_dn, hduser_a_name)
         except Exception as exc:
-            fail('Creating %s failed: %s' % (what, exc), ucstest_errorcode)
+            fail(f'Creating {what} failed: {exc}', ucstest_errorcode)
         else:
-            print('Created %s' % (hduser_a,))
+            print(f'Created {hduser_a}')
 
         try:
             what = 'Helpdesk user'
             hduser_b_dn, hduser_b_name = udm.create_user()
             hduser_b = Account(what, hduser_b_dn, hduser_b_name)
         except Exception as exc:
-            fail('Creating %s failed: %s' % (what, exc), ucstest_errorcode)
+            fail(f'Creating {what} failed: {exc}', ucstest_errorcode)
         else:
-            print('Created %s' % (hduser_b,))
+            print(f'Created {hduser_b}')
 
         # add users to corresponding groups
         udm.modify_object('groups/group', dn=hdgroup_a_dn, append={
@@ -127,18 +127,18 @@ try:
             unprot_user_a_dn, unprot_user_a_name = udm.create_user()
             unprot_user_a = Account(what, unprot_user_a_dn, unprot_user_a_name)
         except Exception as exc:
-            fail('Creating %s failed: %s' % (what, exc), ucstest_errorcode)
+            fail(f'Creating {what} failed: {exc}', ucstest_errorcode)
         else:
-            print('Created %s' % (unprot_user_a,))
+            print(f'Created {unprot_user_a}')
 
         try:
             what = 'Unprotected user'
             unprot_user_b_dn, unprot_user_b_name = udm.create_user()
             unprot_user_b = Account(what, unprot_user_b_dn, unprot_user_b_name)
         except Exception as exc:
-            fail('Creating %s failed: %s' % (what, exc), ucstest_errorcode)
+            fail(f'Creating {what} failed: {exc}', ucstest_errorcode)
         else:
-            print('Created %s' % (unprot_user_b,))
+            print(f'Created {unprot_user_b}')
 
         # create new protected test user
         try:
@@ -146,14 +146,14 @@ try:
             prot_user_dn, prot_user_name = udm.create_user()
             prot_user = Account(what, prot_user_dn, prot_user_name)
         except Exception as exc:
-            fail('Creating %s failed: %s' % (what, exc), ucstest_errorcode)
+            fail(f'Creating {what} failed: {exc}', ucstest_errorcode)
         else:
-            print('Created %s' % (prot_user,))
+            print(f'Created {prot_user}')
 
         # configure group a
         univention.config_registry.handler_set([
-            'ldap/acl/user/passwordreset/accesslist/groups/helpdesk-a=%s' % (hdgroup_a_dn,),
-            'ldap/acl/user/passwordreset/protected/uid=Administrator,%s' % (prot_user.name,),
+            f'ldap/acl/user/passwordreset/accesslist/groups/helpdesk-a={hdgroup_a_dn}',
+            f'ldap/acl/user/passwordreset/protected/uid=Administrator,{prot_user.name}',
         ])
 
         # Activate passwordreset ACLs:
@@ -162,7 +162,7 @@ try:
         # ========== TESTS ==========
 
         # test if Administrator can set passwords
-        print('==> Test 1: can %s set passwords' % admin)
+        print(f'==> Test 1: can {admin} set passwords')
         for target in (unprot_user_a, prot_user):
             verify_write_access_for_password(admin, target)
 
@@ -177,7 +177,7 @@ try:
         # do test with two helpdesk groups
         print('==> Testing with two helpdesk groups now.')
         univention.config_registry.handler_set([
-            'ldap/acl/user/passwordreset/accesslist/groups/helpdesk-b=%s' % hdgroup_b_dn,
+            f'ldap/acl/user/passwordreset/accesslist/groups/helpdesk-b={hdgroup_b_dn}',
         ])
 
         # Activate passwordreset ACLs:
@@ -223,9 +223,9 @@ try:
             fail('Creating policies/pwhistory failed', ucstest_errorcode)
 
         try:
-            udm.modify_object('users/user', dn=unprot_user_b.dn, policy_reference='cn=%s,cn=policies,%s' % (polname, ucr['ldap/base']))
+            udm.modify_object('users/user', dn=unprot_user_b.dn, policy_reference=f'cn={polname},cn=policies,{ucr["ldap/base"]}')
         except Exception:
-            fail('Setting reference of policies/pwhistory object %s to %s failed' % (polname, unprot_user_b), ucstest_errorcode)
+            fail(f'Setting reference of policies/pwhistory object {polname} to {unprot_user_b} failed', ucstest_errorcode)
         verify_write_access_for_password(hduser_a, unprot_user_b)
 
         # do test with additional attributes
@@ -237,7 +237,7 @@ try:
         passwordreset_attributes = ucr['ldap/acl/user/passwordreset/attributes']
         passwordreset_attributes += ',description'
         univention.config_registry.handler_set([
-            'ldap/acl/user/passwordreset/attributes=%s' % (passwordreset_attributes,),
+            f'ldap/acl/user/passwordreset/attributes={passwordreset_attributes}',
         ])
 
         # Activate passwordreset ACLs:

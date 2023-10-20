@@ -28,7 +28,7 @@ class TestUMCDomainRejoin(JoinModule):
             if path.exists(file_path):
                 File = open(file_path, 'w')
             else:
-                utils.fail("Could not find the status file at the provided file_path '%s'" % file_path)
+                utils.fail(f"Could not find the status file at the provided file_path '{file_path}'")
         except OSError as exc:
             utils.fail(f"An exception while clearing the status file at '{file_path}': '{exc}'")
         finally:
@@ -41,7 +41,7 @@ class TestUMCDomainRejoin(JoinModule):
         join_status_file = '/var/univention-join/status'
 
         try:
-            print("Saving a backup of initial join status file '%s'" % join_status_file)
+            print(f"Saving a backup of initial join status file '{join_status_file}'")
             self.copy_file(join_status_file, join_status_file + '.bak')
 
             # clean the status file and perform a complete rejoin
@@ -50,13 +50,13 @@ class TestUMCDomainRejoin(JoinModule):
             # check that no scripts are 'configured'==True with clean status
             for result in self.query_joinscripts():
                 if result.get('configured'):
-                    utils.fail("The following join script '%s' was 'configured'==True while should not be" % result)
+                    utils.fail(f"The following join script '{result}' was 'configured'==True while should not be")
             self.join(hostname=self.ucr.get('ldap/master'))
             self.wait_rejoin_to_complete(120)
             # check that all scripts are 'configured'==True after rejoin
             for result in self.query_joinscripts():
                 if not result.get('configured'):
-                    utils.fail("The following join script '%s' was 'configured'==False while should be True" % result)
+                    utils.fail(f"The following join script '{result}' was 'configured'==False while should be True")
         finally:
             print("\nRestoring join status file from backup '.bak'")
             # Overwriting status file from backup and removing backup:

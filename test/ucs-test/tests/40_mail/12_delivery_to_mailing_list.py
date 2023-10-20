@@ -21,12 +21,12 @@ def main():
             domain = ucr.get('domainname')
             handler_set(['mail/dovecot/mailbox/delete=yes'])
             subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
-            host = '%s.%s' % (ucr.get('hostname'), domain)
+            host = f'{ucr.get("hostname")}.{domain}'
             password = 'univention'
             mails = []
             for _i in range(2):
                 name = uts.random_name()
-                usermail = '%s@%s' % (name, domain)
+                usermail = f'{name}@{domain}'
                 userdn, username = udm.create_user(
                     username=name,
                     set={
@@ -37,7 +37,7 @@ def main():
                 )
                 mails.append(usermail)
             list_name = uts.random_name()
-            list_mail = '%s@%s' % (list_name, domain)
+            list_mail = f'{list_name}@{domain}'
             udm.create_object(
                 'mail/lists',
                 members=mails[0],

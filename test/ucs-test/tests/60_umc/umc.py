@@ -82,7 +82,7 @@ class UMCBase:
         Supported types are: users, groups, policies, extended attributes,
         networks and computers.
         """
-        print("Deleting test object '%s' with a name: '%s'" % (obj_type, name))
+        print(f"Deleting test object '{obj_type}' with a name: '{name}'")
 
         if obj_type in ('users', 'users/user', 'users/ldap'):
             obj_type = 'users'
@@ -94,7 +94,7 @@ class UMCBase:
         elif obj_type in ('groups', 'networks', 'computers'):
             obj_identifier = "cn=" + name + ",cn=" + obj_type + ","
         else:
-            utils.fail("The object identifier format is unknown for the provided object type '%s'" % obj_type)
+            utils.fail(f"The object identifier format is unknown for the provided object type '{obj_type}'")
 
         obj_identifier = obj_identifier + self.ldap_base
         options = [{
@@ -139,9 +139,9 @@ class JoinModule(UMCBase):
         response = self.client.umc_command(path, options)
 
         if response.status != 202:
-            utils.fail("Request 'join/%s' did not return status 202, hostname: '%s', response '%s'" % (path, self.hostname, response.status))
+            utils.fail(f"Request 'join/{path}' did not return status 202, hostname: '{self.hostname}', response '{response.status}'")
         if not response.result['success']:
-            utils.fail("Request 'join/%s' did not return success=True in the response: '%s',hostname '%s'" % (path, response.result, self.hostname))
+            utils.fail(f"Request 'join/{path}' did not return success=True in the response: '{response.result}',hostname '{self.hostname}'")
 
     def wait_rejoin_to_complete(self, poll_attempts):
         """
@@ -166,11 +166,11 @@ class JoinModule(UMCBase):
             if os.path.exists(src):
                 shutil.copy2(src, dst)
                 if not os.path.exists(dst):
-                    utils.fail("The 'shutil' did not copy file '%s' to '%s'" % (src, dst))
+                    utils.fail(f"The 'shutil' did not copy file '{src}' to '{dst}'")
             else:
-                utils.fail("Failed to find the file at the provided path '%s'" % src)
+                utils.fail(f"Failed to find the file at the provided path '{src}'")
         except (OSError, shutil.Error) as exc:
-            utils.fail("An exception while coping the file from '%s', to '%s', error '%s'" % (src, dst, exc))
+            utils.fail(f"An exception while coping the file from '{src}', to '{dst}', error '{exc}'")
 
     def delete_file(self, path):
         """Checks if 'path' file exists and deletes it"""
@@ -178,9 +178,9 @@ class JoinModule(UMCBase):
             if os.path.exists(path):
                 os.remove(path)
             else:
-                print("Failed to find the file at the provided path '%s'" % path)
+                print(f"Failed to find the file at the provided path '{path}'")
         except OSError as exc:
-            utils.fail("An exception occurred while deleting a file located at '%s': '%s'" % (path, exc))
+            utils.fail(f"An exception occurred while deleting a file located at '{path}': '{exc}'")
 
 
 class UDMModule(UMCBase):

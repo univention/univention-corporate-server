@@ -16,7 +16,7 @@ from essential.mail import PopMail
 def main():
     with ucr_test.UCSTestConfigRegistry() as ucr:
         with udm_test.UCSTestUDM() as udm:
-            usermail = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
+            usermail = f'{uts.random_name()}@{ucr.get("domainname")}'
             password = uts.random_string()
             userdn, username = udm.create_user(
                 password=password,

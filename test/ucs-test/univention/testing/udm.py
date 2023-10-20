@@ -253,7 +253,7 @@ class UCSTestUDM:
         self._cleanup = {}
         self._cleanupLocks = {}
         if language:
-            self._env['LANG'] = '%s.UTF-8' % (language.replace('-', '_'),)
+            self._env['LANG'] = f'{language.replace("-", "_")}.UTF-8'
 
     @classmethod
     def _build_udm_cmdline(cls, modulename, action, kwargs):
@@ -296,13 +296,13 @@ class UCSTestUDM:
             if not isinstance(value, (list, tuple)):
                 value = (value,)
             for item in value:
-                cmd.extend(['--%s' % arg.replace('_', '-'), item])
+                cmd.extend([f'--{arg.replace("_", "-")}', item])
 
         if action == 'list' and 'policies' in args:
-            cmd.extend(['--policies=%s' % (args.pop('policies'),)])
+            cmd.extend([f'--policies={args.pop("policies")}'])
 
         if action == 'list' and 'filter' in args:
-            cmd.extend(['--filter=%s' % (args.pop('filter'),)])
+            cmd.extend([f'--filter={args.pop("filter")}'])
 
         for option in args.pop('options', ()):
             cmd.extend(['--option', option])
@@ -317,7 +317,7 @@ class UCSTestUDM:
         for operation in ('append', 'remove'):
             for key, values in args.pop(operation, {}).items():
                 for value in values:
-                    cmd.extend(['--%s' % operation, f'{key}={value}'])
+                    cmd.extend([f'--{operation}', f'{key}={value}'])
 
         if args.pop('remove_referring', True) and action == 'remove':
             cmd.append('--remove_referring')
@@ -548,7 +548,7 @@ class UCSTestUDM:
             'ipv4Address': random_ip,
             'absolutePath': lambda: '/' + uts.random_string(),
             'sharePath': lambda: '/' + uts.random_string(),
-            'BaseFilename': lambda: '%s.%s' % (uts.random_string(), uts.random_string(3)),
+            'BaseFilename': lambda: f'{uts.random_string()}.{uts.random_string(3)}',
             'PrinterURI': lambda: '%s %s' % (random.choice(['lpd://', 'ipp://', 'http://', 'usb:/', 'socket://', 'parallel:/', 'file:/', 'smb://']), uts.random_string()),
             'Base64Bzip2Text': lambda: base64.b64encode(__import__('bz2').compress(uts.random_string().encode())).decode('ASCII'),
             'Base64Upload': lambda: base64.b64encode(uts.random_string().encode()).decode('ASCII'),
@@ -629,8 +629,8 @@ class UCSTestUDM:
             'TextArea': lambda: '\n'.join([uts.random_string()] * random.randint(2, 5)),
             'SignedInteger': uts.random_int,
             'hostOrIP': random_ip,
-            'hostname_or_ipadress_or_network': lambda: random.choice([random_ip(), uts.random_name(), '%s/%s' % (random_ip(), random.randint(1, 31))]),
-            'jpegPhoto': lambda: '/9j/2wBDAP%swAALCAABAAEBAREA/8QAFAABA%s//EABQQAQ%sD/2gAIAQEAAD8AN//Z' % ('/' * 86, 'A' * 20, 'A' * 20),
+            'hostname_or_ipadress_or_network': lambda: random.choice([random_ip(), uts.random_name(), f'{random_ip()}/{random.randint(1, 31)}']),
+            'jpegPhoto': lambda: f'/9j/2wBDAP{"/" * 86}wAALCAABAAEBAREA/8QAFAABA{"A" * 20}//EABQQAQ{"A" * 20}D/2gAIAQEAAD8AN//Z',
             'Base64UMCIcon': lambda: 'AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAD/////AAAAAA==',
             'SharedFolderUserACL': complex('SharedFolderUserACL'),
             'SharedFolderGroupACL': complex('SharedFolderGroupACL'),
@@ -735,7 +735,7 @@ class UCSTestUDM:
             },
             'users/user': {
                 'userCertificate': lambda: base64.b64encode(subprocess.check_output(
-                    ('openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%s/cert.pem' % (self.FQHN.rstrip('.'),), '-outform', 'der', '-out', '-'),
+                    ('openssl', 'x509', '-inform', 'pem', '-in', f'/etc/univention/ssl/{self.FQHN.rstrip(".")}/cert.pem', '-outform', 'der', '-out', '-'),
                 )).decode('ASCII'),  # expensive!
             },
         }
@@ -932,7 +932,7 @@ class UCSTestUDM:
         :return: (dn, username)
         """
         attr = self._set_module_default_attr(kwargs, (
-            ('position', 'cn=users,%s' % self.LDAP_BASE),
+            ('position', f'cn=users,{self.LDAP_BASE}'),
             ('password', 'univention'),
             ('username', uts.random_username()),
             ('lastname', uts.random_name()),
@@ -945,7 +945,7 @@ class UCSTestUDM:
         # type: (bool, bool, **Any) -> Tuple[str, str]
         # check_for_drs_replication=False -> ldap users are not replicated to s4
         attr = self._set_module_default_attr(kwargs, (
-            ('position', 'cn=users,%s' % self.LDAP_BASE),
+            ('position', f'cn=users,{self.LDAP_BASE}'),
             ('password', 'univention'),
             ('username', uts.random_username()),
             ('lastname', uts.random_name()),
@@ -975,7 +975,7 @@ class UCSTestUDM:
         If "groupname" is missing, a random group name will be used.
         """
         attr = self._set_module_default_attr(kwargs, (
-            ('position', 'cn=groups,%s' % self.LDAP_BASE),
+            ('position', f'cn=groups,{self.LDAP_BASE}'),
             ('name', uts.random_groupname()),
         ))
 
@@ -1268,6 +1268,6 @@ if __name__ == '__disabled__':
 
         # try to modify object not created by create_udm_object()
         try:
-            udm.modify_object('users/user', dn='uid=Administrator,cn=users,%s' % ucr.get('ldap/base'), description='Foo Bar')
+            udm.modify_object('users/user', dn=f'uid=Administrator,cn=users,{ucr.get("ldap/base")}', description='Foo Bar')
         except UCSTestUDM_CannotModifyExistingObject:
             print('Caught anticipated exception UCSTestUDM_CannotModifyExistingObject - SUCCESS')

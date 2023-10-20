@@ -10,7 +10,7 @@ logging.basicConfig()
 
 @contextlib.contextmanager
 def create_virtual_machine(language, role, environment, server, iso_image, ip_address, output_directory, dns_server=None):
-    name = 'installer_test_%s-%s-%s' % (language, role, environment)
+    name = f'installer_test_{language}-{role}-{environment}'
     installer_args = ['--ip', ip_address, '--dump-dir', output_directory]
     with VirtualMachine(name=name, server=server, iso_image=iso_image, interfaces=3 if environment == 'multiple_nics' else 1, disks=3 if environment == 'multiple_hdds' else 1) as vm:
         installer_args.append(vm.vnc_host)

@@ -20,7 +20,7 @@ _ = Translation('univention-management-console-module-setup').translate
 def set_role_and_check_if_join_will_work(role: str, master_fqdn: str, admin_username: str, admin_password: str) -> None:
     orig_role = UCR.get('server/role')
     try:
-        univention.config_registry.handler_set(['server/role=%s' % (role,)])
+        univention.config_registry.handler_set([f'server/role={role}'])
 
         with _temporary_password_file(admin_password) as password_file:
             p1 = subprocess.Popen([
@@ -39,7 +39,7 @@ def set_role_and_check_if_join_will_work(role: str, master_fqdn: str, admin_user
                 ) + "\n".join(messages))
     finally:
         if orig_role:
-            univention.config_registry.handler_set(['server/role=%s' % (orig_role,)])
+            univention.config_registry.handler_set([f'server/role={orig_role}'])
         else:
             univention.config_registry.handler_unset(['server/role'])
 
@@ -59,7 +59,7 @@ def check_credentials_nonmaster(dns: str, nameserver: str, address: str, usernam
         # Not checked... no UCS domain!
         raise UMC_Error(_('No UCS Primary Directory Node could be found at the address.'))
     with _temporary_password_file(password) as password_file:
-        if subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), '/bin/true']):
+        if subprocess.call(['univention-ssh', password_file, f'{username}@{address}', '/bin/true']):
             raise UMC_Error(_('The connection to the UCS Primary Directory Node was refused. Please recheck the password.'))
         return domain
 
@@ -76,7 +76,7 @@ def check_domain_has_activated_license(address: str, username: str, password: st
             license_uuid = subprocess.check_output([
                 'univention-ssh',
                 password_file,
-                '%s@%s' % (username, address),
+                f'{username}@{address}',
                 '/usr/sbin/ucr',
                 'get',
                 'uuid/license',
@@ -98,9 +98,9 @@ def check_domain_has_activated_license(address: str, username: str, password: st
 def check_domain_is_higher_or_equal_version(address: str, username: str, password: str) -> None:
     with _temporary_password_file(password) as password_file:
         try:
-            master_ucs_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip().decode('UTF-8', 'replace')
+            master_ucs_version = subprocess.check_output(['univention-ssh', password_file, f'{username}@{address}', 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip().decode('UTF-8', 'replace')
         except subprocess.CalledProcessError:
-            MODULE.error('Failed to retrieve UCS version: %s' % (traceback.format_exc(),))
+            MODULE.error(f'Failed to retrieve UCS version: {traceback.format_exc()}')
             return
         nonmaster_ucs_version = f'{UCR.get("version/version")}-{UCR.get("version/patchlevel")}'
         if Version(nonmaster_ucs_version) > Version(master_ucs_version):
@@ -113,13 +113,13 @@ def check_memberof_overlay_is_installed(address: str, username: str, password: s
             return UCR.is_true(value=subprocess.check_output([
                 'univention-ssh',
                 password_file,
-                '%s@%s' % (username, address),
+                f'{username}@{address}',
                 '/usr/sbin/univention-config-registry',
                 'get',
                 'ldap/overlay/memberof',
             ]).strip().decode('UTF-8'))
         except subprocess.CalledProcessError as exc:
-            MODULE.error('Could not query Primary Directory Node for memberof overlay: %s' % (exc,))
+            MODULE.error(f'Could not query Primary Directory Node for memberof overlay: {exc}')
     return False
 
 
@@ -142,7 +142,7 @@ def check_is_school_multiserver_domain(address: str, username: str, password: st
             master_hostdn = subprocess.check_output([
                 'univention-ssh',
                 password_file,
-                '%s@%s' % (username, address),
+                f'{username}@{address}',
                 '/usr/sbin/univention-config-registry',
                 'get',
                 'ldap/hostdn',
@@ -150,7 +150,7 @@ def check_is_school_multiserver_domain(address: str, username: str, password: st
             ldap_base = subprocess.check_output([
                 'univention-ssh',
                 password_file,
-                '%s@%s' % (username, address),
+                f'{username}@{address}',
                 '/usr/sbin/univention-config-registry',
                 'get',
                 'ldap/base',
@@ -170,11 +170,11 @@ def check_is_school_multiserver_domain(address: str, username: str, password: st
                 'univention-ssh',
                 '--no-split',
                 password_file,
-                '%s@%s' % (username, address),
+                f'{username}@{address}',
                 remote_cmd,
             ]).strip().decode('UTF-8').splitlines()
         except subprocess.CalledProcessError as exc:
-            MODULE.error('univention-join:school: Could not query Primary Directory Node if the domain is a multiserver school domain: %s' % (exc,))
+            MODULE.error(f'univention-join:school: Could not query Primary Directory Node if the domain is a multiserver school domain: {exc}')
     MODULE.process('univention-join:school: check_is_school_multiserver_domain = %r' % (is_school_multiserver_domain, ))
     return is_school_multiserver_domain
 
@@ -187,7 +187,7 @@ def get_server_school_roles(hostname: str, address: str, username: str, password
             ldap_base = subprocess.check_output([
                 'univention-ssh',
                 password_file,
-                '%s@%s' % (username, address),
+                f'{username}@{address}',
                 '/usr/sbin/univention-config-registry',
                 'get',
                 'ldap/base',
@@ -206,11 +206,11 @@ def get_server_school_roles(hostname: str, address: str, username: str, password
                 'univention-ssh',
                 '--no-split',
                 password_file,
-                '%s@%s' % (username, address),
+                f'{username}@{address}',
                 remote_cmd,
             ]).strip().decode('UTF-8').splitlines()[1:]
             school_roles = [role.split()[-1] for role in school_roles]
         except (subprocess.CalledProcessError, IndexError) as exc:
-            MODULE.error('univention-join:school: Could not query Primary Directory Node for ucsschoolRole: %s' % (exc,))
+            MODULE.error(f'univention-join:school: Could not query Primary Directory Node for ucsschoolRole: {exc}')
     MODULE.process('univention-join:school: get_server_school_roles = %r' % (school_roles, ))
     return school_roles

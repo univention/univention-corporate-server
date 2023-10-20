@@ -79,17 +79,17 @@ class DockerActionMixin(object):
         docker = self._get_docker(app)
         if docker.exists():
             if not Start.call(app=app):
-                self.fatal('Starting the container for %s failed' % app)
+                self.fatal(f'Starting the container for {app} failed')
                 return False
             if not self._store_data(app):
-                self.fatal('Storing data for %s failed' % app)
+                self.fatal(f'Storing data for {app} failed')
                 return False
             if not Stop.call(app=app):
-                self.fatal('Stopping the container for %s failed' % app)
+                self.fatal(f'Stopping the container for {app} failed')
                 return False
             if remove:
                 # New backup
-                image_repo = 'appcenter-backup-%s' % app.id
+                image_repo = f'appcenter-backup-{app.id}'
                 image_name = '%s:%d' % (image_repo, time.time())
                 shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
         else:
@@ -98,21 +98,21 @@ class DockerActionMixin(object):
     def _execute_container_script(self, app, interface, args=None, credentials=True, output=False, cmd_args=None, cmd_kwargs=None):
         cmd_args = cmd_args or []
         cmd_kwargs = cmd_kwargs or {}
-        self.log('Executing interface %s for %s' % (interface, app.id))
+        self.log(f'Executing interface {interface} for {app.id}')
         docker = self._get_docker(app)
-        interface_file = getattr(app, 'docker_script_%s' % interface)
+        interface_file = getattr(app, f'docker_script_{interface}')
         if not interface_file:
             self.log('No interface defined')
             return None
         remote_interface_script = app.get_cache_file(interface)
         container_interface_script = docker.path(interface_file)
         if os.path.exists(remote_interface_script):
-            self.log("Copying App Center's %s to container's %s" % (interface, interface_file))
+            self.log(f"Copying App Center's {interface} to container's {interface_file}")
             mkdir(os.path.dirname(container_interface_script))
             shutil.copy2(remote_interface_script, container_interface_script)
             os.chmod(container_interface_script, 0o755)  # -rwxr-xr-x
         if not os.path.exists(container_interface_script):
-            self.warn('Interface script %s not found!' % interface_file)
+            self.warn(f'Interface script {interface_file} not found!')
             return None
         with docker.tmp_file() as error_file:
             with docker.tmp_file() as password_file:
@@ -147,7 +147,7 @@ class DockerActionMixin(object):
         docker = self._get_docker(app)
         for filename in filenames:
             if filename:
-                self.debug('Copying %s into container' % filename)
+                self.debug(f'Copying {filename} into container')
                 shutil.copy2(filename, docker.path(filename))
 
     def _start_docker_image(self, app, hostdn, password, args):
@@ -171,7 +171,7 @@ class DockerActionMixin(object):
                     after_image_configuration[setting.name] = set_vars.pop(setting.name)
                 except KeyError:
                     after_image_configuration[setting.name] = setting.get_initial_value(app)
-        set_vars['docker/host/name'] = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
+        set_vars['docker/host/name'] = f'{ucr_get("hostname")}.{ucr_get("domainname")}'
         set_vars['ldap/hostdn'] = hostdn
         if app.docker_env_ldap_user:
             set_vars[app.docker_env_ldap_user] = hostdn
@@ -217,7 +217,7 @@ class DockerActionMixin(object):
                 raise DatabaseConnectorError(str(exc))
 
         container = docker.create(hostname, set_vars)
-        self.log('Preconfiguring container %s' % container)
+        self.log(f'Preconfiguring container {container}')
         autostart = 'yes'
         if not Start.call(app=app):
             raise DockerCouldNotStartContainer(str(Status.get_status(app)))
@@ -255,7 +255,7 @@ docker inspect:
                     os.chmod(f_name, 0o600)
                     f.write(password)
             except Exception as exc:
-                raise DockerCouldNotStartContainer('Could not copy machine.secret to container: %s (%s)' % (str(exc), docker.logs()))
+                raise DockerCouldNotStartContainer(f'Could not copy machine.secret to container: {str(exc)} ({docker.logs()})')
         if database_password_file:
             docker.cp_to_container(database_password_file, database_password_file)
         # update timezone in container

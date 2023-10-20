@@ -105,7 +105,7 @@ class PackageManagement:
                 and not package.candidate.recommends
                 and not package.candidate.dependencies
             ):
-                logger.info("Found %s" % package)
+                logger.info(f"Found {package}")
                 return package.name
 
         raise Exception("Failed to find a small package")
@@ -118,14 +118,14 @@ class PackageManagement:
             search_bar.press("Enter")
 
     def do_package_action(self, name: str, action: PackageAction):
-        logger.info("Action %s on package %s" % (action, name))
+        logger.info(f"Action {action} on package {name}")
         self.search_for_package(name)
         self.tester.check_checkbox_in_grid_by_name(name, 0)
         self.page.get_by_role("button", name=str(action), exact=True).click()
 
         self.handle_confirmation_dialog(str(action))
         self.handle_action_dialog()
-        logger.info("%s done" % action)
+        logger.info(f"{action} done")
         with self.page.expect_response(self.grid_load_url):
             pass
 

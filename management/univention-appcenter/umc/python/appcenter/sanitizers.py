@@ -98,7 +98,7 @@ class NoDoubleNameSanitizer(StringSanitizer):
         from .constants import COMPONENT_BASE
         ucr = univention.config_registry.ConfigRegistry()
         ucr.load()
-        if '%s/%s' % (COMPONENT_BASE, value) in ucr:
+        if f'{COMPONENT_BASE}/{value}' in ucr:
             self.raise_validation_error(_("There already is a component with this name"))
         return value
 

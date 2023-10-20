@@ -55,11 +55,11 @@ def create_and_delete_computer(rounds=20):
         computername = strings.random_string()
         memberserver = udm.create_object(
             'computers/memberserver', name=computername,
-            position='cn=memberserver,cn=computers,%s' % ucr.get('ldap/base'),
+            position=f'cn=memberserver,cn=computers,{ucr.get("ldap/base")}',
         )
         memberserver = udm.move_object(
             'computers/memberserver', dn=memberserver,
-            position='cn=computers,%s' % ucr.get('ldap/base'),
+            position=f'cn=computers,{ucr.get("ldap/base")}',
         )
         udm.remove_object('computers/memberserver', dn=memberserver)
         object_names.append(computername)

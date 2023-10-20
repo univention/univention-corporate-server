@@ -59,7 +59,7 @@ PXEBASE = '/var/lib/univention-client-boot/pxelinux.cfg'
 FQDN = '%(hostname)s.%(domainname)s' % listener.configRegistry
 URLBASE = listener.configRegistry.get(
     'pxe/installer/profiles',
-    'http://%s/univention-client-boot/preseed/' % (FQDN,))
+    f'http://{FQDN}/univention-client-boot/preseed/')
 
 
 def ip_to_hex(ip: str) -> str:
@@ -88,7 +88,7 @@ def gen_pxe(new: Dict[str, List[bytes]]) -> str | None:
         vga = listener.configRegistry.get("pxe/installer/vga")
         args += [
             'video=vesa:ywrap,mtrr',
-            'vga=%s' % (vga,),
+            f'vga={vga}',
         ] if vga else [
             # plymouth
             'nosplash',
@@ -103,7 +103,7 @@ def gen_pxe(new: Dict[str, List[bytes]]) -> str | None:
             'loglevel=%s' % listener.configRegistry.get('pxe/installer/loglevel', '0'),
             # Debian installer
             'auto-install/enable=true',
-            'preseed/url=%s' % (url,),
+            f'preseed/url={url}',
             'mirror/http/hostname=%s' % (listener.configRegistry.get("repository/online/server", FQDN),),
             # 'DEBCONF_DEBUG=5',
         ]
@@ -160,10 +160,10 @@ def create_pxe(new: Dict[str, List[bytes]], pxeconfig: str) -> None:
         return
     else:
         cn = new['cn'][0].decode('UTF-8')
-        ud.debug(ud.LISTENER, ud.INFO, 'PXE: writing configuration for host %s' % cn)
+        ud.debug(ud.LISTENER, ud.INFO, f'PXE: writing configuration for host {cn}')
 
         if not basename:
-            ud.debug(ud.LISTENER, ud.ERROR, 'PXE: invalid new IP address %s' % new['aRecord'][0])
+            ud.debug(ud.LISTENER, ud.ERROR, f'PXE: invalid new IP address {new["aRecord"][0]}')
             return
         filename = os.path.join(PXEBASE, basename)
 

@@ -123,7 +123,7 @@ class Watched_File(object):
             # only depends on the mtime field.
             if current_size != self._last_size:
                 current_stamp = int(time())
-                MODULE.info("Size of '%s': %s -> %s" % (self._file, self._last_size, current_size))
+                MODULE.info(f"Size of '{self._file}': {self._last_size} -> {current_size}")
                 self._last_size = current_size
 
         if current_stamp == self._last_stamp:
@@ -140,7 +140,7 @@ class Watched_File(object):
                         self._last_md5 = hash_
                         self._last_returned_stamp = current_stamp
                     else:
-                        MODULE.info("Hash of '%s' unchanged" % self._file)
+                        MODULE.info(f"Hash of '{self._file}' unchanged")
         else:
             self._unchanged_count = 0
             self._last_stamp = current_stamp
@@ -182,7 +182,7 @@ class Instance(Base):
             self.uu = UniventionUpdater(False)
         except Exception as exc:  # FIXME: let it raise
             self.uu = None
-            MODULE.error("init() ERROR: %s" % (exc,))
+            MODULE.error(f"init() ERROR: {exc}")
 
     @simple_response
     def query_maintenance_information(self) -> Dict[str, Any]:
@@ -252,7 +252,7 @@ class Instance(Base):
         appliance_mode = ucr.is_true('server/appliance')
 
         available_versions, blocking_components = self.uu.get_all_available_release_updates()
-        result = [{'id': str(rel), 'label': 'UCS %s' % (rel,)} for rel in available_versions]
+        result = [{'id': str(rel), 'label': f'UCS {rel}'} for rel in available_versions]
         #
         # appliance_mode=no ; blocking_comp=no  → add "latest version"
         # appliance_mode=no ; blocking_comp=yes →  no "latest version"
@@ -263,7 +263,7 @@ class Instance(Base):
             # UniventionUpdater returns available version in ascending order, so
             # the last returned entry is the one to be flagged as 'latest' if there's
             # no blocking component.
-            result[-1]['label'] = '%s (%s)' % (result[-1]['label'], _('latest version'))
+            result[-1]['label'] = f'{result[-1]["label"]} ({_("latest version")})'
 
         return result
 
@@ -276,9 +276,9 @@ class Instance(Base):
         result = {}
         hookmanager = HookManager(HOOK_DIRECTORY)  # , raise_exceptions=False
         hooks = request.options['hooks']
-        MODULE.info('requested hooks: %s' % (hooks,))
+        MODULE.info(f'requested hooks: {hooks}')
         for hookname in hooks:
-            MODULE.info('calling hook %s' % hookname)
+            MODULE.info(f'calling hook {hookname}')
             result[hookname] = hookmanager.call_hook(hookname)
 
         MODULE.info('result: %r' % (result,))
@@ -332,7 +332,7 @@ class Instance(Base):
             return any((new, upgrade, removed))
         except Exception as ex:
             typ = str(type(ex)).strip('<>')
-            msg = '[while %s] [%s] %s' % (what, typ, str(ex))
+            msg = f'[while {what}] [{typ}] {str(ex)}'
             MODULE.error(msg)
         return False
 
@@ -487,7 +487,7 @@ class Instance(Base):
                 for line in fd:
                     fields = line.strip().split('=')
                     if len(fields) == 2:
-                        result['_%s_' % fields[0]] = fields[1]
+                        result[f'_{fields[0]}_'] = fields[1]
         except EnvironmentError:
             pass
 
@@ -527,10 +527,10 @@ class Instance(Base):
         if '%' in command:
             command = command % (quote(detail).translate({0: None, 10: None, 13: None}),)
         MODULE.info("Creating job: %r" % (command,))
-        command = '''
-%s
-%s < /dev/null
-%s''' % (spec["prejob"], command, spec["postjob"])
+        command = f'''
+{spec["prejob"]}
+{command} < /dev/null
+{spec["postjob"]}'''
         atjobs.add(command, comments={"lines": self._logfile_start_line})
 
         return {'status': 0}

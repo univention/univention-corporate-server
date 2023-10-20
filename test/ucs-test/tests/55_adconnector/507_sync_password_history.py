@@ -51,7 +51,7 @@ configRegistry.load()
 class ADHistSync_Exception(Exception):
     def __str__(self):
         if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
-            return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].items())
+            return '\n'.join(f'{key}={value}' for key, value in self.args[0].items())
         else:
             return Exception.__str__(self)
     __repr__ = __str__
@@ -92,7 +92,7 @@ def open_drs_connection():
         with NamedTemporaryFile('w') as fd:
             fd.write(ad_ldap_bindpw)
             fd.flush()
-            cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % (fd.name,), ad_ldap_binddn]
+            cmd_block = ['kinit', '--no-addresses', f'--password-file={fd.name}', ad_ldap_binddn]
             p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
             stdout, stderr = p1.communicate()
         if p1.returncode != 0:
@@ -115,7 +115,7 @@ def open_drs_connection():
             result = lo_ad.search(base=lo_ad.binddn, scope='base')
             ad_ldap_bind_username = result[0][1]['sAMAccountName'][0].decode('UTF-8')
         except ldap.LDAPError as msg:
-            print("Failed to get SID from AD: %s" % msg)
+            print(f"Failed to get SID from AD: {msg}")
     else:
         ad_ldap_bind_username = configRegistry.get('connector/ad/ldap/binddn')
 
@@ -244,7 +244,7 @@ def create_ad_user(username, password, **kwargs):
     host = configRegistry.get("connector/ad/ldap/host")
     admin = ldap.dn.explode_rdn(configRegistry.get("connector/ad/ldap/binddn"), notypes=True)[0]
     passw = open(configRegistry.get("connector/ad/ldap/bindpw")).read()
-    cmd = ["samba-tool", "user", "create", "--use-username-as-cn", username.decode('UTF-8'), password, "--URL=ldap://%s" % host, "-U'%s'%%'%s'" % (admin, passw)]
+    cmd = ["samba-tool", "user", "create", "--use-username-as-cn", username.decode('UTF-8'), password, f"--URL=ldap://{host}", "-U'%s'%%'%s'" % (admin, passw)]
 
     print(" ".join(cmd))
     child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -268,7 +268,7 @@ def modify_password_ad(username, password):
     host = configRegistry.get("connector/ad/ldap/host")
     admin = ldap.dn.explode_rdn(configRegistry.get("connector/ad/ldap/binddn"), notypes=True)[0]
     passw = open(configRegistry.get("connector/ad/ldap/bindpw")).read()
-    cmd = ["samba-tool", "user", "setpassword", "--newpassword='%s'" % password, username.decode('UTF-8'), "--URL=ldap://%s" % host, "-U'%s'%%'%s'" % (admin, passw)]
+    cmd = ["samba-tool", "user", "setpassword", f"--newpassword='{password}'", username.decode('UTF-8'), f"--URL=ldap://{host}", "-U'%s'%%'%s'" % (admin, passw)]
 
     child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     (stdout, stderr) = child.communicate()

@@ -77,7 +77,7 @@ def check_if_looping():
             # wait a bit to calm down the connector ..
             time.sleep(5)
         finally:
-            ucr_set(['connector/s4/mapping/syncmode=%s' % sync_mode])
+            ucr_set([f'connector/s4/mapping/syncmode={sync_mode}'])
             subprocess.check_call(["service", "univention-s4-connector", "restart"])
             print('Trying to wait for postrun again, see if a loop was the reason for failure')
             # wait a bit for things to settle..

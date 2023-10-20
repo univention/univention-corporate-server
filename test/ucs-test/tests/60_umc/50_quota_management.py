@@ -110,26 +110,26 @@ class TestUMCQuotasManagement(UMCBase):
                 quotas_query = self.request('quota/partitions/query')
                 self.check_quotas_query(quotas_query)
 
-                print("Choosing partition device for the test (with '%s' mount point)" % self.test_mount_point)
+                print(f"Choosing partition device for the test (with '{self.test_mount_point}' mount point)")
                 self.choose_partition_device(quotas_query)
 
-                print("Deactivating quotas for partition device '%s'" % self.partition_dev)
+                print(f"Deactivating quotas for partition device '{self.partition_dev}'")
                 self.activate_deactivate_quota('deactivate')
                 assert not self.is_dev_quota_active()
 
-                print("Activating quotas for '%s' partition device" % self.partition_dev)
+                print(f"Activating quotas for '{self.partition_dev}' partition device")
                 self.activate_deactivate_quota('activate')
                 assert self.is_dev_quota_active()
 
-                print("Setting '%s' user quota for '%s' partition" % (test_username, self.partition_dev))
+                print(f"Setting '{test_username}' user quota for '{self.partition_dev}' partition")
                 self.set_remove_user_quota('set', test_username)
                 assert self.is_user_quota_active(test_username)
 
-                print("Removing '%s' user quota for '%s' partition" % (test_username, self.partition_dev))
+                print(f"Removing '{test_username}' user quota for '{self.partition_dev}' partition")
                 self.set_remove_user_quota('remove', test_username)
                 assert not self.is_user_quota_active(test_username)
 
-                print("Deactivating quotas for '%s' partition device" % self.partition_dev)
+                print(f"Deactivating quotas for '{self.partition_dev}' partition device")
                 self.activate_deactivate_quota('deactivate')
                 assert not self.is_dev_quota_active()
             finally:

@@ -124,7 +124,7 @@ class Message(object):
             else:
                 self.body[key] = value
         else:
-            PARSER.warn('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
+            PARSER.warn(f'Attribute {key} just available for MIME type {MIMETYPE_JSON}')
 
     def _get_key(self, key, default=None):
         if isinstance(default, dict):
@@ -134,7 +134,7 @@ class Message(object):
                 self.body.setdefault(key, default)
             return self.body.get(key, default)
         else:
-            PARSER.info('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
+            PARSER.info(f'Attribute {key} just available for MIME type {MIMETYPE_JSON}')
             return default
 
     #: contains a human readable error message
@@ -188,7 +188,7 @@ class Request(Message):
                 self._user_connections.add(lo)
             return lo
         except (ldap.LDAPError, udm_errors.base) as exc:
-            CORE.warn('Failed to open LDAP connection for user %s: %s' % (self.user_dn, exc))
+            CORE.warn(f'Failed to open LDAP connection for user {self.user_dn}: {exc}')
 
     def bind_user_connection(self, lo):
         CORE.process('LDAP bind for user %r.' % (self.user_dn,))
@@ -253,7 +253,7 @@ class Response(Message):
             self.mimetype = mimetype
 
         if self.mimetype is None:
-            PROTOCOL.process('Failed to guess MIME type of %s' % filename)
+            PROTOCOL.process(f'Failed to guess MIME type of {filename}')
             raise TypeError('Unknown mime type')
 
         with open(filename, 'rb') as fd:

@@ -89,7 +89,7 @@ class SphinxBuildingTask(Task.Task):
     run_str = '${SPHINX_BUILD} -M ${SPHINX_OUTPUT_FORMAT} ${SRC} ${TGT} ${SPHINX_OPTIONS}'
 
     def keyword(self):
-        return 'Compiling (%s)' % self.env.SPHINX_OUTPUT_FORMAT
+        return f'Compiling ({self.env.SPHINX_OUTPUT_FORMAT})'
 
     def runnable_status(self):
 

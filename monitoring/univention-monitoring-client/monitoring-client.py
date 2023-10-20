@@ -145,7 +145,7 @@ class MonitoringClient(ListenerModuleHandler):
         try:
             os.remove(filename)
         except FileNotFoundError:
-            ud.debug(ud.LISTENER, ud.WARN, 'alert definition does not exists: %s' % (filename,))
+            ud.debug(ud.LISTENER, ud.WARN, f'alert definition does not exists: {filename}')
 
     def post_run(self):
         # type: () -> None
@@ -156,7 +156,7 @@ class MonitoringClient(ListenerModuleHandler):
             try:
                 response.raise_for_status()
             except requests.HTTPError as exc:
-                ud.debug(ud.LISTENER, ud.ERROR, 'Error reloading prometheus alert rules: %s' % (exc,))
+                ud.debug(ud.LISTENER, ud.ERROR, f'Error reloading prometheus alert rules: {exc}')
 
     class Configuration(ListenerModuleHandler.Configuration):
         name = name

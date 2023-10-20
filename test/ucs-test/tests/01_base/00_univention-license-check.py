@@ -17,10 +17,10 @@ from univention.testing import utils
 
 def get_license_count(key):
     for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8').split('\n'):
-        if line.startswith('%s:' % key):
+        if line.startswith(f'{key}:'):
             return int(line.split('of')[0].split()[-1])
 
-    raise ValueError('Could not determine license count for %s' % key)
+    raise ValueError(f'Could not determine license count for {key}')
 
 
 if __name__ == '__main__':
@@ -65,7 +65,7 @@ if __name__ == '__main__':
     }
 
     license_version = utils.get_ldap_connection().search(
-        base='cn=admin,cn=license,cn=univention,%s' % ucr['ldap/base'],
+        base=f'cn=admin,cn=license,cn=univention,{ucr["ldap/base"]}',
         attr=['univentionLicenseVersion'])[0][1].get('univentionLicenseVersion', [b'1'])[0].decode('ASCII')
     with udm_test.UCSTestUDM() as udm:
         for asset, counting_object_types in license_mapping[license_version].items():

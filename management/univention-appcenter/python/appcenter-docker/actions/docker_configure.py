@@ -68,13 +68,13 @@ class Configure(Configure, DockerActionMixin):
         if autostart not in ['yes', 'manually', 'no']:
             self.warn('Autostart must be one of yes, manually, no. Not setting to %r' % autostart)
             return
-        ucr_save({'%s/autostart' % app.id: autostart})
+        ucr_save({f'{app.id}/autostart': autostart})
 
     def _set_config_via_tool(self, app, set_vars):
         if not app.docker:
             return super(Configure, self)._set_config_via_tool(app, set_vars)
         if not app_is_running(app):
-            self.warn('Cannot write settings while %s is not running' % app)
+            self.warn(f'Cannot write settings while {app} is not running')
             return
         logfile_logger = get_logfile_logger('docker.configure')
         docker = self._get_docker(app)
@@ -82,14 +82,14 @@ class Configure(Configure, DockerActionMixin):
             self.warn('ucr cannot be found, falling back to changing the database file directly')
             self._set_config_directly(app, set_vars)
             return
-        self.log('Setting registry variables for %s' % app.id)
+        self.log(f'Setting registry variables for {app.id}')
         set_args = []
         unset_args = []
         for key, value in set_vars.items():
             if value is None:
                 unset_args.append(key)
             else:
-                set_args.append('%s=%s' % (key, value))
+                set_args.append(f'{key}={value}')
         if set_args:
             docker.execute('ucr', 'set', *set_args, _logger=logfile_logger)
         if unset_args:

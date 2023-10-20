@@ -105,7 +105,7 @@ class Phase:
 
     def __init__(self, changeset: ChangeSet) -> None:
         self.changeset = changeset
-        self.logger = logging.getLogger("uss.network.phase.%s" % (self,))
+        self.logger = logging.getLogger(f"uss.network.phase.{self}")
 
     def __lt__(self, other: object) -> object:
         """

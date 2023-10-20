@@ -76,7 +76,7 @@ def modify_passwordpolicy_s4(key, value):
 
 
 def modify_password_s4(username, password):
-    cmd = ["samba-tool", "user", "setpassword", "--newpassword='%s'" % password, username.decode('UTF-8')]
+    cmd = ["samba-tool", "user", "setpassword", f"--newpassword='{password}'", username.decode('UTF-8')]
 
     child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     (stdout, stderr) = child.communicate()

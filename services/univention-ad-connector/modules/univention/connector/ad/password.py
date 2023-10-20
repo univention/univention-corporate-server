@@ -172,7 +172,7 @@ def calculate_krb5keys(supplementalCredentialsblob):
         assert krb5_old.version == 3
         for k in krb5_old.ctr.keys:
             if k.keytype not in keytypes:
-                ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr3.key.keytype: %s" % k.keytype)
+                ud.debug(ud.LDAP, ud.INFO, f"calculate_krb5key: ctr3.key.keytype: {k.keytype}")
                 try:
                     key = heimdal.keyblock_raw(context, k.keytype, k.value)
                     krb5SaltObject = heimdal.salt_raw(context, krb5_old.ctr.salt.string)
@@ -180,9 +180,9 @@ def calculate_krb5keys(supplementalCredentialsblob):
                     keytypes.append(k.keytype)
                 except Exception:
                     if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
-                        ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring unknown key with special keytype %s in %s" % (k.keytype, pkg.name))
+                        ud.debug(ud.LDAP, ud.INFO, f"calculate_krb5key: ignoring unknown key with special keytype {k.keytype} in {pkg.name}")
                     else:
-                        ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype." % (k.keytype, pkg.name))
+                        ud.debug(ud.LDAP, ud.ERROR, f"calculate_krb5key: krb5Key with keytype {k.keytype} could not be parsed in {pkg.name}. Ignoring this keytype.")
                         ud.debug(ud.LDAP, ud.ERROR, traceback.format_exc())
 
     krb5_new_hex = None
@@ -200,7 +200,7 @@ def calculate_krb5keys(supplementalCredentialsblob):
 
         for k in krb.ctr.keys:
             if k.keytype not in keytypes:
-                ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr4.key.keytype: %s" % k.keytype)
+                ud.debug(ud.LDAP, ud.INFO, f"calculate_krb5key: ctr4.key.keytype: {k.keytype}")
                 try:
                     key = heimdal.keyblock_raw(context, k.keytype, k.value)
                     krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
@@ -208,9 +208,9 @@ def calculate_krb5keys(supplementalCredentialsblob):
                     keytypes.append(k.keytype)
                 except Exception:
                     if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
-                        ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring unknown key with special keytype %s in %s" % (k.keytype, pkg.name))
+                        ud.debug(ud.LDAP, ud.INFO, f"calculate_krb5key: ignoring unknown key with special keytype {k.keytype} in {pkg.name}")
                     else:
-                        ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype." % (k.keytype, pkg.name))
+                        ud.debug(ud.LDAP, ud.ERROR, f"calculate_krb5key: krb5Key with keytype {k.keytype} could not be parsed in {pkg.name}. Ignoring this keytype.")
                         ud.debug(ud.LDAP, ud.ERROR, traceback.format_exc())
     return keys
 
@@ -278,7 +278,7 @@ def decrypt_supplementalCredentials(connector, spl_crypt):
 
 
 def get_password_from_ad(connector, user_dn, reconnect=False):
-    ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Read password from AD: %s" % user_dn)
+    ud.debug(ud.LDAP, ud.INFO, f"get_password_from_ad: Read password from AD: {user_dn}")
     nt_hash = None
     nt_hashes = []
 
@@ -322,7 +322,7 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
                 for j in i.value_ctr.values:
                     ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found ntPwdHistory blob")
                     history_blob = j.blob
-            if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and connector.configRegistry.is_true('%s/ad/mapping/user/password/kerberos/enabled' % connector.CONFIGBASENAME, False):
+            if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and connector.configRegistry.is_true(f'{connector.CONFIGBASENAME}/ad/mapping/user/password/kerberos/enabled', False):
                 if i.value_ctr.values:
                     for j in i.value_ctr.values:
                         ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found supplementalCredentials blob")
@@ -338,7 +338,7 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
         if ctr.more_data == 0:
             break
 
-    ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: AD Hash: %s" % nt_hash)
+    ud.debug(ud.LDAP, ud.INFO, f"get_password_from_ad: AD Hash: {nt_hash}")
 
     return nt_hash, keys, nt_hashes
 
@@ -356,13 +356,13 @@ def password_sync_ucs(connector, key, object):
     try:
         res = connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword', 'sambaPwdLastSet'])
     except ldap.NO_SUCH_OBJECT:
-        ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: The UCS object (%s) was not found. The object was removed." % ucs_object['dn'])
+        ud.debug(ud.LDAP, ud.PROCESS, f"password_sync_ucs: The UCS object ({ucs_object['dn']}) was not found. The object was removed.")
         return
 
     sambaPwdLastSet = None
     if 'sambaPwdLastSet' in res[0][1]:
         sambaPwdLastSet = int(res[0][1]['sambaPwdLastSet'][0])
-    ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
+    ud.debug(ud.LDAP, ud.INFO, f"password_sync_ucs: sambaPwdLastSet: {sambaPwdLastSet}")
 
     pwd = None
     if 'sambaNTPassword' in res[0][1]:
@@ -374,43 +374,43 @@ def password_sync_ucs(connector, key, object):
     pwdLastSet = None
     if 'pwdLastSet' in res[0][1]:
         pwdLastSet = int(res[0][1]['pwdLastSet'][0])
-    ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdLastSet from AD : %s" % pwdLastSet)
+    ud.debug(ud.LDAP, ud.INFO, f"password_sync_ucs: pwdLastSet from AD : {pwdLastSet}")
     if 'objectSid' in res[0][1]:
         str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
     # Only sync passwords from UCS to AD when the password timestamp in UCS is newer
-    if connector.configRegistry.is_true('%s/ad/password/timestamp/check' % connector.CONFIGBASENAME, False):
+    if connector.configRegistry.is_true(f'{connector.CONFIGBASENAME}/ad/password/timestamp/check', False):
         ad_password_last_set = 0
         # If sambaPwdLast was set to 1 the password must be changed on next login. In this
         # case the timestamp is ignored and the password will be synced. This behavior can
         # be disabled by setting connector/ad/password/timestamp/syncreset/ucs to false. This
         # might be necessary if the connector is configured in read mode and the password will be
         # synced in two ways: Bug #22653
-        if sambaPwdLastSet > 1 or (sambaPwdLastSet <= 2 and connector.configRegistry.is_false('%s/ad/password/timestamp/syncreset/ucs' % connector.CONFIGBASENAME, False)):
+        if sambaPwdLastSet > 1 or (sambaPwdLastSet <= 2 and connector.configRegistry.is_false(f'{connector.CONFIGBASENAME}/ad/password/timestamp/syncreset/ucs', False)):
             ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
             if sambaPwdLastSet and int(ad_password_last_set) >= int(sambaPwdLastSet):
                 # skip
                 ud.debug(ud.LDAP, ud.PROCESS, "password_sync: Don't sync the password from UCS to AD because the AD password equal or is newer.")
-                ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync:  AD pwdlastset: {ad_password_last_set} (original ({pwdLastSet}))")
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: UCS pwdlastset: {(sambaPwdLastSet)}")
                 return
 
         ud.debug(ud.LDAP, ud.INFO, "password_sync: Sync the passwords from UCS to AD.")
-        ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
-        ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
+        ud.debug(ud.LDAP, ud.INFO, f"password_sync:  AD pwdlastset: {ad_password_last_set} (original ({pwdLastSet}))")
+        ud.debug(ud.LDAP, ud.INFO, f"password_sync: UCS pwdlastset: {(sambaPwdLastSet)}")
 
     pwd_set = False
     try:
         nt_hash, krb5Key, _ = get_password_from_ad(connector, object['dn'])
     except NTSTATUSError as exc:
-        ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: get_password_from_ad failed with %s, retry with reconnect" % (exc,))
+        ud.debug(ud.LDAP, ud.PROCESS, f"password_sync_ucs: get_password_from_ad failed with {exc}, retry with reconnect")
         nt_hash, krb5Key, _ = get_password_from_ad(connector, object['dn'], reconnect=True)
 
     if not nt_hash:
         ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: No password hash could be read from AD")
     res = ''
 
-    ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD: %s Hash UCS: %s" % (nt_hash, pwd))
+    ud.debug(ud.LDAP, ud.INFO, f"password_sync_ucs: Hash AD: {nt_hash} Hash UCS: {pwd}")
     if not pwd or pwd.startswith(b'NO PASSWORD'):
         # There are variations of "NO PASSWORD" in customer environments:
         # 1. "NO PASSWORD*********************" (password_sync_kinit, see below)
@@ -418,7 +418,7 @@ def password_sync_ucs(connector, key, object):
         # 3. "NO PASSWORDXXXXXXX"               (Ticket #2020121821000706)
         # 4. "NO PASSWORDXXXXXXXXXXXXXXXXXXXXX" (/usr/share/univention-heimdal/kerberos_now)
         # see https://forge.univention.org/bugzilla/buglist.cgi?longdesc=NO%20PASSWORD&longdesc_type=casesubstring
-        ud.debug(ud.LDAP, ud.PROCESS, "The sambaNTPassword hash is set to %s. Skip the synchronisation of this hash to AD." % pwd)
+        ud.debug(ud.LDAP, ud.PROCESS, f"The sambaNTPassword hash is set to {pwd}. Skip the synchronisation of this hash to AD.")
     elif pwd != nt_hash:
         ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD and Hash UCS differ")
         pwd_set = True
@@ -426,7 +426,7 @@ def password_sync_ucs(connector, key, object):
         try:
             res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd)
         except NTSTATUSError as exc:
-            ud.debug(ud.LDAP, ud.PROCESS, "password_sync: set_password_in_ad failed with %s, retry with reconnect" % (exc,))
+            ud.debug(ud.LDAP, ud.PROCESS, f"password_sync: set_password_in_ad failed with {exc}, retry with reconnect")
             res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd, reconnect=True)
 
     newpwdlastset = "-1"  # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0
@@ -439,7 +439,7 @@ def password_sync_ucs(connector, key, object):
     elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:
         newpwdlastset = "1"
     if int(newpwdlastset) != 1:
-        ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdlastset in modlist: %s" % newpwdlastset)
+        ud.debug(ud.LDAP, ud.INFO, f"password_sync_ucs: pwdlastset in modlist: {newpwdlastset}")
         connector.lo_ad.lo.modify_s(object['dn'], [(ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset.encode('ASCII'))])
     else:
         ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: don't modify pwdlastset")
@@ -480,7 +480,7 @@ def password_sync(connector, key, ucs_object):
     pwdLastSet = None
     if 'pwdLastSet' in res[0][1]:
         pwdLastSet = int(res[0][1]['pwdLastSet'][0])
-    ud.debug(ud.LDAP, ud.INFO, "password_sync: pwdLastSet from AD: %s (%s)" % (pwdLastSet, res))
+    ud.debug(ud.LDAP, ud.INFO, f"password_sync: pwdLastSet from AD: {pwdLastSet} ({res})")
 
     if 'objectSid' in res[0][1]:
         str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
@@ -490,9 +490,9 @@ def password_sync(connector, key, ucs_object):
     sambaPwdLastSet = None
     if 'sambaPwdLastSet' in ucs_result[0][1]:
         sambaPwdLastSet = ucs_result[0][1]['sambaPwdLastSet'][0]
-    ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet: %s" % sambaPwdLastSet)
+    ud.debug(ud.LDAP, ud.INFO, f"password_sync: sambaPwdLastSet: {sambaPwdLastSet}")
 
-    if connector.configRegistry.is_true('%s/ad/password/timestamp/check' % connector.CONFIGBASENAME, False):
+    if connector.configRegistry.is_true(f'{connector.CONFIGBASENAME}/ad/password/timestamp/check', False):
         # Only sync the passwords from AD to UCS when the pwdLastSet timestamps in AD are newer
         ad_password_last_set = 0
 
@@ -501,23 +501,23 @@ def password_sync(connector, key, ucs_object):
         # be disabled by setting connector/ad/password/timestamp/syncreset/ad to false. This
         # might be necessary if the connector is configured in read mode and the password will be
         # synced in two ways: Bug #22653
-        if (pwdLastSet > 1) or (pwdLastSet in [0, 1] and connector.configRegistry.is_false('%s/ad/password/timestamp/syncreset/ad' % connector.CONFIGBASENAME, False)):
+        if (pwdLastSet > 1) or (pwdLastSet in [0, 1] and connector.configRegistry.is_false(f'{connector.CONFIGBASENAME}/ad/password/timestamp/syncreset/ad', False)):
             ad_password_last_set = univention.connector.ad.ad2samba_time(pwdLastSet)
             if sambaPwdLastSet and int(sambaPwdLastSet) >= int(ad_password_last_set) and int(sambaPwdLastSet) != 1:
                 # skip
                 ud.debug(ud.LDAP, ud.PROCESS, "password_sync: Don't sync the passwords from AD to UCS because the UCS password is equal or newer.")
-                ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync:  AD pwdlastset: {ad_password_last_set} (original ({pwdLastSet}))")
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: UCS pwdlastset: {(sambaPwdLastSet)}")
                 return
 
         ud.debug(ud.LDAP, ud.INFO, "password_sync: Sync the passwords from AD to UCS.")
-        ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
-        ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
+        ud.debug(ud.LDAP, ud.INFO, f"password_sync:  AD pwdlastset: {ad_password_last_set} (original ({pwdLastSet}))")
+        ud.debug(ud.LDAP, ud.INFO, f"password_sync: UCS pwdlastset: {(sambaPwdLastSet)}")
 
     try:
         nt_hash, krb5Key, nt_history = get_password_from_ad(connector, object['dn'])
     except Exception as exc:
-        ud.debug(ud.LDAP, ud.PROCESS, "password_sync: get_password_from_ad failed with %s, retry with reconnect" % (exc,))
+        ud.debug(ud.LDAP, ud.PROCESS, f"password_sync: get_password_from_ad failed with {exc}, retry with reconnect")
         nt_hash, krb5Key, nt_history = get_password_from_ad(connector, object['dn'], reconnect=True)
 
     old_krb5end = ucs_result[0][1].get('krb5PasswordEnd', [None])[0]
@@ -569,13 +569,13 @@ def password_sync(connector, key, ucs_object):
             else:
                 ad_object = connector.lo_ad.get(connector.lo_ad.base, attr=['pwdHistoryLength'])
                 ad_pwhistory_length = int(ad_object.get('pwdHistoryLength', [0])[0].decode('UTF-8'))
-            ud.debug(ud.LDAP, ud.INFO, "password_sync:  UCS pwhistoryPolicylength (%s)  AD pwhistoryPolicylength (%s)." % (pwhistory_length, ad_pwhistory_length))
+            ud.debug(ud.LDAP, ud.INFO, f"password_sync:  UCS pwhistoryPolicylength ({pwhistory_length})  AD pwhistoryPolicylength ({ad_pwhistory_length}).")
 
             if pwhistory_length:
                 pwhistory_new = None
 
                 if pwhistory_length != ad_pwhistory_length:
-                    ud.debug(ud.LDAP, ud.WARN, "password_sync: Mismatch between UCS pwhistoryPolicy (%s) and AD pwhistoryPolicy (%s). Using the larger one" % (pwhistory_length, ad_pwhistory_length))
+                    ud.debug(ud.LDAP, ud.WARN, f"password_sync: Mismatch between UCS pwhistoryPolicy ({pwhistory_length}) and AD pwhistoryPolicy ({ad_pwhistory_length}). Using the larger one")
                 pwhistory_length = max(pwhistory_length, ad_pwhistory_length)
 
                 pwhistory_list = pwhistory_ucs.decode('ASCII').strip().split(" ")
@@ -598,7 +598,7 @@ def password_sync(connector, key, ucs_object):
             new_shadowLastChange = str(int(time.time()) // 3600 // 24).encode('ASCII')
             if pwdLastSet != 0:
                 modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: update shadowLastChange to {new_shadowLastChange} for {ucs_object['dn']}")
 
             # get pw policy
             new_shadowMax = None
@@ -606,7 +606,7 @@ def password_sync(connector, key, ucs_object):
             policies = connector.lo.getPolicies(ucs_object['dn'])
             policy = policies.get('univentionPolicyPWHistory', {}).get('univentionPWExpiryInterval')
             if policy:
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: password expiry for %s is %s" % (ucs_object['dn'], policy))
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: password expiry for {ucs_object['dn']} is {policy}")
                 policy_value = policy.get('value', [None])[0]
                 if policy_value:
                     new_shadowMax = policy_value
@@ -615,10 +615,10 @@ def password_sync(connector, key, ucs_object):
             # update shadowMax (set to value of univentionPWExpiryInterval, otherwise delete) and
             # krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
             if (old_shadowMax or new_shadowMax) and (pwdLastSet != 0):
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: update shadowMax to %s for %s" % (new_shadowMax, ucs_object['dn']))
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: update shadowMax to {new_shadowMax} for {ucs_object['dn']}")
                 modlist.append(('shadowMax', old_shadowMax, new_shadowMax))
             if (old_krb5end or new_krb5end) and (pwdLastSet != 0):
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: update krb5PasswordEnd to %s for %s" % (new_krb5end, ucs_object['dn']))
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: update krb5PasswordEnd to {new_krb5end} for {ucs_object['dn']}")
                 modlist.append(('krb5PasswordEnd', old_krb5end, new_krb5end))
     else:
         ud.debug(ud.LDAP, ud.ERROR, "password_sync: sync failed, no result from AD")
@@ -629,18 +629,18 @@ def password_sync(connector, key, ucs_object):
         if sambaPwdLastSet:
             if sambaPwdLastSet != newSambaPwdLastSet:
                 modlist.append(('sambaPwdLastSet', sambaPwdLastSet, newSambaPwdLastSet))
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (replace): %s" % newSambaPwdLastSet)
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: sambaPwdLastSet in modlist (replace): {newSambaPwdLastSet}")
         else:
             modlist.append(('sambaPwdLastSet', b'', newSambaPwdLastSet))
-            ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (set): %s" % newSambaPwdLastSet)
+            ud.debug(ud.LDAP, ud.INFO, f"password_sync: sambaPwdLastSet in modlist (set): {newSambaPwdLastSet}")
         if pwdLastSet == 0:
             expiry = int(time.time())
             new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry)).encode('ASCII')
             if old_krb5end:
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: krb5PasswordEnd in modlist (replace): %s" % new_krb5end)
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: krb5PasswordEnd in modlist (replace): {new_krb5end}")
                 modlist.append(('krb5PasswordEnd', old_krb5end, new_krb5end))
             else:
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: krb5PasswordEnd in modlist (set): %s" % new_krb5end)
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: krb5PasswordEnd in modlist (set): {new_krb5end}")
                 modlist.append(('krb5PasswordEnd', b'', new_krb5end))
             if old_shadowMax:
                 ud.debug(ud.LDAP, ud.INFO, "password_sync: shadowMax in modlist (replace): 0")
@@ -651,10 +651,10 @@ def password_sync(connector, key, ucs_object):
             two_days_ago = int(time.time()) - (86400 * 2)
             new_shadowLastChange = str(two_days_ago // 3600 // 24).encode('ASCII')
             if old_shadowLastChange:
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: shadowLastChange in modlist (replace): %s" % new_shadowLastChange)
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: shadowLastChange in modlist (replace): {new_shadowLastChange}")
                 modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
             else:
-                ud.debug(ud.LDAP, ud.INFO, "password_sync: shadowMax in modlist (set): %s" % new_shadowLastChange)
+                ud.debug(ud.LDAP, ud.INFO, f"password_sync: shadowMax in modlist (set): {new_shadowLastChange}")
                 modlist.append(('shadowLastChange', b'', new_shadowLastChange))
 
     if len(modlist) > 0:

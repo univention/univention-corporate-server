@@ -67,7 +67,7 @@ def download_archive(self, src, dst):
 			Logs.warn('Downloaded %s from %s', tmp.abspath(), url)
 			break
 	else:
-		self.fatal('Could not get the package %s' % src)
+		self.fatal(f'Could not get the package {src}')
 
 @conf
 def load_packages(self):

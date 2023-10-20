@@ -133,7 +133,7 @@ class doxygen(Task.Task):
 		if not file_patterns:
 			file_patterns = DOXY_FILE_PATTERNS.split()
 		if self.pars.get('RECURSIVE') == 'YES':
-			file_patterns = ["**/%s" % pattern for pattern in file_patterns]
+			file_patterns = [f"**/{pattern}" for pattern in file_patterns]
 		nodes = []
 		names = []
 		for node in self.doxy_inputs:
@@ -146,7 +146,7 @@ class doxygen(Task.Task):
 
 	def run(self):
 		dct = self.pars.copy()
-		code = '\n'.join(['%s = %s' % (x, dct[x]) for x in self.pars])
+		code = '\n'.join([f'{x} = {dct[x]}' for x in self.pars])
 		code = code.encode() # for python 3
 		#fmt = DOXY_STR % (self.inputs[0].parent.abspath())
 		cmd = Utils.subst_vars(DOXY_STR, self.env)
@@ -194,7 +194,7 @@ class tar(Task.Task):
 
 	def __str__(self):
 		tgt_str = ' '.join([a.path_from(a.ctx.launch_node()) for a in self.outputs])
-		return '%s: %s\n' % (self.__class__.__name__, tgt_str)
+		return f'{self.__class__.__name__}: {tgt_str}\n'
 
 @feature('doxygen')
 def process_doxy(self):
@@ -205,7 +205,7 @@ def process_doxy(self):
 	if not isinstance(node, Node.Node):
 		node = self.path.find_resource(node)
 	if not node:
-		self.bld.fatal('doxygen file %s not found' % self.doxyfile)
+		self.bld.fatal(f'doxygen file {self.doxyfile} not found')
 
 	# the task instance
 	dsk = self.create_task('doxygen', node, always_run=getattr(self, 'always', False))

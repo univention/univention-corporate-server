@@ -58,8 +58,8 @@ def usage(msg=None):
     out = []
     script_name = 'univention-license-check'
     if msg:
-        out.append('E: %s' % msg)
-    out.append('usage: %s [options]' % script_name)
+        out.append(f'E: {msg}')
+    out.append(f'usage: {script_name} [options]')
     out.append('options:')
     out.append('  --%-30s %s' % ('binddn', 'bind DN'))
     out.append('  --%-30s %s' % ('bindpw', 'bind password'))
@@ -76,7 +76,7 @@ def parse_options(argv):
     except getopt.error as msg:
         raise UsageError(str(msg))
     if args:
-        raise UsageError('options "%s" not recognized' % ' '.join(args))
+        raise UsageError(f'options "{" ".join(args)}" not recognized')
     for opt, val in opts:
         options[opt[2:]] = val
     return options
@@ -105,7 +105,7 @@ def find_licenses(lo, baseDN, module='*'):
         except uexceptions.noObject:
             return []
     filter = filter_format('univentionLicenseModule=%s', [module])
-    dirs = ['cn=directory,cn=univention,%s' % baseDN, 'cn=default containers,cn=univention,%s' % baseDN]
+    dirs = [f'cn=directory,cn=univention,{baseDN}', f'cn=default containers,cn=univention,{baseDN}']
     objects = [o for d in dirs for o in find_wrap(d)]
     containers = [c.decode('UTF-8') for o in objects for c in lo.get(o)['univentionLicenseObject']]
     licenses = [license for c in containers for license in lo.searchDn(base=c, filter=filter)]
@@ -133,7 +133,7 @@ def check_license(lo, dn, list_dns, expired):
                 ok = 'FAILED'
             else:
                 ok = 'OK'
-            out.append('Checking %s... %s' % ((label.ljust(10)), ok))
+            out.append(f'Checking {(label.ljust(10))}... {ok}')
 
     def check_type():
         v = _license.version
@@ -162,9 +162,9 @@ def check_license(lo, dn, list_dns, expired):
                 out.append(format(ln, n, m, 0, _license.compare, ignored))
                 if list_dns and maximum != 'unlimited':
                     for dnout in odn:
-                        out.extend(["  %s" % dnout])
+                        out.extend([f"  {dnout}"])
                 if list_dns and (i == License.USERS or i == License.ACCOUNT):
-                    out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
+                    out.append(f"  {_license.sysAccountsFound} Systemaccounts are ignored.")
 
     def check_time():
         now = datetime.date.today()
@@ -173,12 +173,12 @@ def check_license(lo, dn, list_dns, expired):
             (day, month, year) = then.split(u'.')
             then = datetime.date(int(year), int(month), int(day))
             if now > then:
-                out.append('Has expired on: %s                  -- EXPIRED' % then)
+                out.append(f'Has expired on: {then}                  -- EXPIRED')
             else:
-                out.append('Will expire on: %s' % then)
+                out.append(f'Will expire on: {then}')
 
     if dn is not None and list_dns:
-        out.append('License found at: %s' % dn)
+        out.append(f'License found at: {dn}')
     check_code(expired)
     check_type()
     if dn is not None:
@@ -193,7 +193,7 @@ def main(argv):
     baseDN = configRegistry['ldap/base']
     master = configRegistry['ldap/master']
     port = int(configRegistry.get('ldap/master/port', '7389'))
-    binddn = options.get('binddn', 'cn=admin,%s' % baseDN)
+    binddn = options.get('binddn', f'cn=admin,{baseDN}')
     bindpw = options.get('bindpw', None)
     if bindpw is None:
         try:
@@ -205,7 +205,7 @@ def main(argv):
     except uexceptions.authFail:
         raise UsageError("Authentication failed, try `--bindpw'")
 
-    out = ['Base DN: %s' % baseDN]
+    out = [f'Base DN: {baseDN}']
     try:
         _license.init_select(lo, 'admin')
         out.extend(check_license(lo, None, 'list-dns' in options, 0))

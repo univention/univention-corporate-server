@@ -293,7 +293,7 @@ class CLIClient:
         layout = module.get_layout()
 
         for layout in layout:
-            print('  %s - %s:' % (layout['label'], layout['description']), file=stream)
+            print(f'  {layout["label"]} - {layout["description"]}:', file=stream)
             for sub in layout['layout']:
                 self.print_layout(sub, properties, stream=stream)
             print('', file=stream)
@@ -312,7 +312,7 @@ class CLIClient:
                 flags.extend(vals.get('options', []))
                 if vals.get('multivalue'):
                     flags.append('[]')
-                return ' (%s)' % ','.join(flags) if flags else ''
+                return f' ({",".join(flags)})' if flags else ''
 
             def _print(prop):
                 if isinstance(prop, dict):
@@ -328,7 +328,7 @@ class CLIClient:
                 _print(prop)
 
         if isinstance(sub, dict):
-            print('\t%s %s' % (sub['label'], sub['description']), file=stream)
+            print(f'\t{sub["label"]} {sub["description"]}', file=stream)
             for prop in sub['layout']:
                 if isinstance(prop, dict):
                     self.print_layout(prop, properties, indent + 1, stream=stream)
@@ -474,7 +474,7 @@ def add_object_action_arguments(parser, client):
     parser.set_defaults(subparsers=subparsers, func=client.get_info)
 
     def add_subparser(name, *args, **kwargs):
-        kwargs.setdefault('description', '%s: %s' % (name, kwargs.get('help', '')))
+        kwargs.setdefault('description', f'{name}: {kwargs.get("help", "")}')
         kwargs.setdefault('add_help', False)
         return subparsers.add_parser(name, *args, **kwargs)
 

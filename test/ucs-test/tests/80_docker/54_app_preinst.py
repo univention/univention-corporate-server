@@ -42,7 +42,7 @@ exit %(exit_code)d
             if fail_in_preinst:
                 raise ValueError('Should not have been installed!')
             else:
-                output = subprocess.check_output('univention-app shell %s env' % app_name, shell=True, text=True)
+                output = subprocess.check_output(f'univention-app shell {app_name} env', shell=True, text=True)
                 if 'FOO=bar' not in output or 'repository_app_center_server=my.server' not in output:
                     raise ValueError('Setting docker/params does not work')
 

@@ -205,7 +205,7 @@ class Instance(umcm.Base, ProgressMixin):
         info = get_action('info')
         ret = info.get_compatibility()
         if not info.is_compatible(version):
-            raise umcm.UMC_Error('The App Center version of the requesting host is not compatible with the version of %s (%s)' % (get_local_fqdn(), ret))
+            raise umcm.UMC_Error(f'The App Center version of the requesting host is not compatible with the version of {get_local_fqdn()} ({ret})')
         return ret
 
     @sanitize(
@@ -220,7 +220,7 @@ class Instance(umcm.Base, ProgressMixin):
     def _remote_appcenter(self, request, host, function=None):
         if host is None:
             raise ValueError('Cannot connect to None')
-        if not host.endswith('.%s' % self.ucr.get('domainname')):
+        if not host.endswith(f'.{self.ucr.get("domainname")}'):
             raise ValueError('Only connect to FQDNs within the domain')
         info = get_action('info')
         opts = {'version': info.get_ucs_version()}
@@ -349,7 +349,7 @@ class Instance(umcm.Base, ProgressMixin):
         except AppCenterError as exc:
             raise umcm.UMC_Error(str(exc), result={
                 "display_feedback": True,
-                "title": '%s %s' % (exc.title, exc.info)})
+                "title": f'{exc.title} {exc.info}'})
         finally:
             action.logger.removeHandler(handler)
 
@@ -384,7 +384,7 @@ class Instance(umcm.Base, ProgressMixin):
                 with open(query_cache_file) as fd:
                     return json.load(fd)
             except (EnvironmentError, ValueError) as exc:
-                MODULE.error('Error returning cached query: %s' % exc)
+                MODULE.error(f'Error returning cached query: {exc}')
                 return []
         self.update_applications()
         self.ucr.load()
@@ -496,7 +496,7 @@ class Instance(umcm.Base, ProgressMixin):
         return self._get_config(app, phase)
 
     def _get_config(self, app, phase):
-        autostart = self.ucr.get('%s/autostart' % app.id, 'yes')
+        autostart = self.ucr.get(f'{app.id}/autostart', 'yes')
         is_running = app_is_running(app)
         values = {}
         for setting in app.get_settings():
@@ -839,7 +839,7 @@ class Instance(umcm.Base, ProgressMixin):
         # check if scheme of server is correct
         for repo, in iterator:
             name = repo['name']
-            named_component_base = '%s/%s' % (COMPONENT_BASE, name)
+            named_component_base = f'{COMPONENT_BASE}/{name}'
             for key, value in repo.items():
                 if key.endswith("server") and not scheme_is_http(value):
                     msg = _("Invalid scheme, use http or https: %(base)r/%(key)r: %(value)r") % {'base': named_component_base, 'key': key, 'value': value}
@@ -849,12 +849,12 @@ class Instance(umcm.Base, ProgressMixin):
             for repo, in iterator:
                 try:
                     name = repo['name']
-                    named_component_base = '%s/%s' % (COMPONENT_BASE, name)
+                    named_component_base = f'{COMPONENT_BASE}/{name}'
                     for deprecated in DEPRECATED_PARAMS:
                         if self.ucr.get(f'{named_component_base}/{deprecated}', ''):
                             super_ucr.set_registry_var(f'{named_component_base}/{deprecated}', None)
                 except Exception as e:
-                    MODULE.warn("   !! Writing UCR failed: %s" % str(e))
+                    MODULE.warn(f"   !! Writing UCR failed: {str(e)}")
                     yield [{'message': str(e), 'status': PUT_WRITE_ERROR}]
                     return
                 yield self.get_component_manager().put(repo, super_ucr)
@@ -908,11 +908,11 @@ class Instance(umcm.Base, ProgressMixin):
             with set_save_commit_load(self.ucr) as super_ucr:
                 for repo, in iterator:
                     for key, value in repo.items():
-                        MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
-                        super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
+                        MODULE.info(f"   ++ Setting new value for '{key}' to '{value}'")
+                        super_ucr.set_registry_var(f'{ONLINE_BASE}/{key}', value)
                 super_ucr.changed()
         except Exception as e:
-            MODULE.warn("   !! Writing UCR failed: %s" % str(e))
+            MODULE.warn(f"   !! Writing UCR failed: {str(e)}")
             return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
 
         # delete deprecated ucr variables if still exist.
@@ -923,7 +923,7 @@ class Instance(umcm.Base, ProgressMixin):
                         super_ucr.set_registry_var(f'{ONLINE_BASE}/{deprecated}', None)
                 super_ucr.changed()
         except Exception as e:
-            MODULE.warn("   !! Writing UCR failed: %s" % str(e))
+            MODULE.warn(f"   !! Writing UCR failed: {str(e)}")
             return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
 
         self.package_manager.update()

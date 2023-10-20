@@ -67,8 +67,8 @@ if __name__ == '__main__':
     try:
         remove_s4_rejected(s4_dn)
     except ObjectNotFound:
-        print('ERROR: The object %s was not found.' % s4_dn)
+        print(f'ERROR: The object {s4_dn} was not found.')
         sys.exit(1)
 
-    print('The rejected S4 object %s has been removed.' % s4_dn)
+    print(f'The rejected S4 object {s4_dn} has been removed.')
     sys.exit(0)

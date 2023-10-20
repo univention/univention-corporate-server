@@ -66,16 +66,14 @@ def xfer_files(ssh, srcdir, host, user, targ_destdir):
 
     userhost = host
     if user:
-        userhost = '%s@%s' % (user, host)
+        userhost = f'{user}@{host}'
 
-    cmd = 'rsync --verbose -rl --ignore-times --delete -e "%s" %s %s:%s/' % \
-          (ssh, srcdir, userhost, targ_destdir)
+    cmd = f'rsync --verbose -rl --ignore-times --delete -e "{ssh}" {srcdir} {userhost}:{targ_destdir}/'
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE)
     (out, err) = p.communicate()
     if p.returncode != 0:
-        raise Exception('failed syncing files\n stdout:\n%s\nstderr:%s\n'
-                        % (out, err))
+        raise Exception(f'failed syncing files\n stdout:\n{out}\nstderr:{err}\n')
 
 
 def exec_remote(ssh, host, user, destdir, targdir, prog, args):
@@ -88,9 +86,9 @@ def exec_remote(ssh, host, user, destdir, targdir, prog, args):
     """
     userhost = host
     if user:
-        userhost = '%s@%s' % (user, host)
+        userhost = f'{user}@{host}'
 
-    cmd = '%s %s %s/%s/%s' % (ssh, userhost, destdir, targdir, prog)
+    cmd = f'{ssh} {userhost} {destdir}/{targdir}/{prog}'
     if args:
         cmd = cmd + ' ' + ' '.join(args)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,

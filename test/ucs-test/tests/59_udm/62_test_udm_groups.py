@@ -58,7 +58,7 @@ def test_group_creation_with_umlaut_in_name(udm):
     # This should not be a problem since they are stored in LDAP as UTF-8.
 
     with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-        udm.create_group(name='%säÄöÖüÜ%s' % (uts.random_groupname(4), uts.random_groupname(4)))[0]
+        udm.create_group(name=f'{uts.random_groupname(4)}äÄöÖüÜ{uts.random_groupname(4)}')[0]
         # udm.create_group(name='Contrôleurs de domaine d’entreprise')[0]
 
 
@@ -212,7 +212,7 @@ def test_indirect_group_user_memberships(udm):
 
     for group in grp.getgrall():
         if group.gr_name == group[1]:
-            assert user[1] in group.gr_mem, 'User %s is no indirect member of group %s' % (user[1], group[1])
+            assert user[1] in group.gr_mem, f'User {user[1]} is no indirect member of group {group[1]}'
             break
 
 
@@ -241,10 +241,10 @@ def test_indirect_group_user_memberships_file_access(udm):
 
         subprocess.check_call(['su', file_owner[1], '-c', 'touch %(file)s; chmod 070 %(file)s' % {'file': fd.name}])
         # test reading as "another_user"
-        subprocess.check_call(['su', another_user[1], '-c', 'cat %s' % fd.name])
+        subprocess.check_call(['su', another_user[1], '-c', f'cat {fd.name}'])
 
         # test writing as "another_user"
-        subprocess.check_call(['su', another_user[1], '-c', 'touch %s' % fd.name])
+        subprocess.check_call(['su', another_user[1], '-c', f'touch {fd.name}'])
 
 
 @pytest.mark.tags('udm')
@@ -269,7 +269,7 @@ def test_group_creation_recursion_set_nestedGroup_to_self(udm):
 
     group_name = uts.random_groupname()
     with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-        udm.create_group(name=group_name, nestedGroup='cn=%s,cn=groups,%s' % (group_name, udm.LDAP_BASE))
+        udm.create_group(name=group_name, nestedGroup=f'cn={group_name},cn=groups,{udm.LDAP_BASE}')
 
 
 @pytest.mark.tags('udm')
@@ -281,7 +281,7 @@ def test_group_creation_recursion_set_memberOf_to_self(udm):
 
     group_name = uts.random_groupname()
     with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-        udm.create_group(memberOf='cn=%s,cn=groups,%s' % (group_name, udm.LDAP_BASE))
+        udm.create_group(memberOf=f'cn={group_name},cn=groups,{udm.LDAP_BASE}')
 
 
 @pytest.mark.tags('udm')
@@ -387,7 +387,7 @@ def test_group_different_case(udm):
 @pytest.mark.exposure('careful')
 def test_group_univention_last_used_value(ucr, udm):
     """Create groups/group and check univentionLastUsedValue"""
-    luv_dn = 'cn=gidNumber,cn=temporary,cn=univention,%s' % (ucr.get('ldap/base'),)
+    luv_dn = f'cn=gidNumber,cn=temporary,cn=univention,{ucr.get("ldap/base")}'
     lo = univention.uldap.getAdminConnection()
 
     lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]

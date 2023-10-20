@@ -97,17 +97,17 @@ def update_status(**kwargs: str) -> None:
     """
     updater_status.update(kwargs)
     # write temporary file
-    fn = '%s.new' % FN_STATUS
+    fn = f'{FN_STATUS}.new'
     try:
         with open(fn, 'w+') as fd:
             for key, val in updater_status.items():
-                fd.write('%s=%s\n' % (key, val))
+                fd.write(f'{key}={val}\n')
     except EnvironmentError:
-        dprint(silent, 'Warning: cannot update %s' % fn)
+        dprint(silent, f'Warning: cannot update {fn}')
     try:
         os.rename(fn, FN_STATUS)
     except EnvironmentError:
-        dprint(silent, 'Warning: cannot update %s' % FN_STATUS)
+        dprint(silent, f'Warning: cannot update {FN_STATUS}')
 
 
 def readcontinue(msg: str) -> bool:
@@ -153,14 +153,14 @@ def do_release_update(options: Namespace, checkForUpdates: bool, silent: bool) -
         dprint(silent, 'none')
         return False
     if options.updateto and UCS_Version(options.updateto) < UCS_Version(version_next):
-        dprint(silent, '%s is available but updater has been instructed to stop at version %s.' % (version_next, options.updateto))
+        dprint(silent, f'{version_next} is available but updater has been instructed to stop at version {options.updateto}.')
         return False
-    dprint(silent, 'found: UCS %s' % version_next)
+    dprint(silent, f'found: UCS {version_next}')
     if checkForUpdates:
         return True
 
     interactive = not (options.noninteractive or checkForUpdates)
-    if interactive and not readcontinue('Do you want to update to %s [Y|n]?' % version_next):
+    if interactive and not readcontinue(f'Do you want to update to {version_next} [Y|n]?'):
         return False
 
     update_status(
@@ -168,8 +168,8 @@ def do_release_update(options: Namespace, checkForUpdates: bool, silent: bool) -
         next_version=version_next,
         status='RUNNING')
 
-    dprint(silent, 'Starting update to UCS version %s at %s...' % (version_next, time.ctime()), debug=True)
-    dprint(silent, 'Starting update to UCS version %s' % (version_next))
+    dprint(silent, f'Starting update to UCS version {version_next} at {time.ctime()}...', debug=True)
+    dprint(silent, f'Starting update to UCS version {(version_next)}')
     time.sleep(1)
     params = ['--silent']
     if options.ignoressh:
@@ -178,11 +178,11 @@ def do_release_update(options: Namespace, checkForUpdates: bool, silent: bool) -
         params.append('--ignoreterm')
     retcode = subprocess.call(['/usr/share/univention-updater/univention-updater', 'net', '--updateto', '%s' % (version_next)] + params, env=os.environ)
     if retcode:
-        dprint(silent, 'exitcode of univention-updater: %s' % retcode, debug=True)
+        dprint(silent, f'exitcode of univention-updater: {retcode}', debug=True)
         dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
         update_status(status='FAILED', errorsource='UPDATE')
         sys.exit(1)
-    dprint(silent, 'Update to UCS version %s finished at %s...' % (version_next, time.ctime()), debug=True)
+    dprint(silent, f'Update to UCS version {version_next} finished at {time.ctime()}...', debug=True)
     return True
 
 
@@ -207,14 +207,14 @@ def do_package_updates(options: Namespace, checkForUpdates: bool, silent: bool) 
     if len(removed_packages) > 0:
         dprint(silent, 'The following packages will be REMOVED:\n %s' % _package_list(removed_packages))
     if len(new_packages) > 0:
-        dprint(silent, 'The following packages will be installed:\n %s' % _package_list(new_packages))
+        dprint(silent, f'The following packages will be installed:\n {_package_list(new_packages)}')
     if len(upgraded_packages) > 0:
         dprint(silent, 'The following packages will be upgraded:\n %s' % _package_list(upgraded_packages))
     if interactive and not readcontinue('\nDo you want to continue [Y|n]?'):
         return False
 
     time.sleep(1)
-    dprint(silent, 'Starting dist-update at %s...' % (time.ctime()), debug=True)
+    dprint(silent, f'Starting dist-update at {(time.ctime())}...', debug=True)
     dprint(silent, 'Starting package upgrade', newline=False)
 
     hostname = socket.gethostname()
@@ -224,12 +224,12 @@ def do_package_updates(options: Namespace, checkForUpdates: bool, silent: bool) 
     returncode = updater.run_dist_upgrade()
 
     if returncode:
-        dprint(silent, 'exitcode of apt-get dist-upgrade: %s' % returncode, debug=True)
+        dprint(silent, f'exitcode of apt-get dist-upgrade: {returncode}', debug=True)
         dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
         update_status(status='FAILED', errorsource='UPDATE')
         write_event(UPDATE_FINISHED_FAILURE, {'hostname': hostname})
         sys.exit(1)
-    dprint(silent, 'dist-update finished at %s...' % (time.ctime()), debug=True)
+    dprint(silent, f'dist-update finished at {(time.ctime())}...', debug=True)
     dprint(silent, 'done')
     write_event(UPDATE_FINISHED_SUCCESS, {'hostname': hostname, 'version': 'UCS %(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % configRegistry})
     time.sleep(1)
@@ -299,12 +299,12 @@ def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> O
                 'name': app.name,
             })
 
-    dprint(silent, 'Starting univention-app upgrade at %s...' % time.ctime(), debug=True)
-    dprint(silent, 'Most of the output for App upgrades goes to %s' % appcenter_log.LOG_FILE, debug=True)
+    dprint(silent, f'Starting univention-app upgrade at {time.ctime()}...', debug=True)
+    dprint(silent, f'Most of the output for App upgrades goes to {appcenter_log.LOG_FILE}', debug=True)
     dprint(silent, '\nStarting app upgrade', newline=False)
     success = True
     for app in new_apps:
-        if interactive and not readcontinue('\nDo you want to upgrade %s [Y|n]?' % app.name):
+        if interactive and not readcontinue(f'\nDo you want to upgrade {app.name} [Y|n]?'):
             continue
         success &= bool(app_upgrade.call_safe(
             app=[app],
@@ -314,9 +314,9 @@ def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> O
         ))
 
     if not success:
-        dprint(silent, 'ERROR: app upgrade failed. Please check %s\n' % appcenter_log.LOG_FILE)
+        dprint(silent, f'ERROR: app upgrade failed. Please check {appcenter_log.LOG_FILE}\n')
         return False  # pretend no updates available; otherwise do_exec may result in infinite loop
-    dprint(silent, 'univention-app upgrade finished at %s...' % time.ctime(), debug=True)
+    dprint(silent, f'univention-app upgrade finished at {time.ctime()}...', debug=True)
     dprint(silent, 'done')
     return not success  # pending updates
 
@@ -372,7 +372,7 @@ def parse_args(argv: Optional[List[str]] = None) -> Namespace:
         try:
             UCS_Version(options.updateto)
         except ValueError:
-            dprint(silent, "Unexpected format of updateto: %s .Expected format: X.Y-Z" % options.updateto)
+            dprint(silent, f"Unexpected format of updateto: {options.updateto} .Expected format: X.Y-Z")
             sys.exit(1)
 
     if options.app_updates:
@@ -399,7 +399,7 @@ def main() -> None:
         logger.addHandler(handler)
         logger.setLevel(logging.ERROR)
     except EnvironmentError:
-        print('Cannot open %s for writing' % LOGFN)
+        print(f'Cannot open {LOGFN} for writing')
         sys.exit(1)
 
     configRegistry.load()
@@ -435,11 +435,11 @@ def do_update(options: Namespace) -> None:
         update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
     except ConfigurationError as e:
         update_status(status='FAILED', errorsource='SETTINGS')
-        print('The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e, file=sys.stderr)
+        print(f'The connection to the repository server failed: {e}. Please check the repository configuration and the network connection.', file=sys.stderr)
         sys.exit(3)
     except Exception:
         update_status(status='FAILED')
-        print('An error occurred - see "%s" for details' % (LOGFN,))
+        print(f'An error occurred - see "{LOGFN}" for details')
         print('Traceback in univention-upgrade:', file=logfd)
         print(traceback.format_exc(), file=logfd)
         sys.exit(2)

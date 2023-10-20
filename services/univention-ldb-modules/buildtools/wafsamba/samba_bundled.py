@@ -10,13 +10,13 @@ def PRIVATE_NAME(bld, name):
 
     extension = bld.env.PRIVATE_EXTENSION
 
-    if extension and name.startswith('%s' % extension):
+    if extension and name.startswith(f'{extension}'):
         return name
 
-    if extension and name.endswith('%s' % extension):
+    if extension and name.endswith(f'{extension}'):
         return name
 
-    return "%s-%s" % (name, extension)
+    return f"{name}-{extension}"
 
 
 def target_in_list(target, lst, default):
@@ -66,7 +66,7 @@ def minimum_library_version(conf, libname, default):
     for m in minlist.split(','):
         a = m.split(':')
         if len(a) != 2:
-            Logs.error("Bad syntax for --minimum-library-version of %s" % m)
+            Logs.error(f"Bad syntax for --minimum-library-version of {m}")
             sys.exit(1)
         if a[0] == libname:
             return a[1]
@@ -79,7 +79,7 @@ def LIB_MAY_BE_BUNDLED(conf, libname):
         return False
     if libname in conf.env.BUNDLED_LIBS:
         return True
-    if '!%s' % libname in conf.env.BUNDLED_LIBS:
+    if f'!{libname}' in conf.env.BUNDLED_LIBS:
         return False
     if 'NONE' in conf.env.BUNDLED_LIBS:
         return False
@@ -88,7 +88,7 @@ def LIB_MAY_BE_BUNDLED(conf, libname):
 def __LIB_MUST_BE(liblist, libname):
     if libname in liblist:
         return True
-    if '!%s' % libname in liblist:
+    if f'!{libname}' in liblist:
         return False
     if 'ALL' in liblist:
         return True
@@ -132,7 +132,7 @@ def CHECK_BUNDLED_SYSTEM(conf, libname, minversion='0.0.0',
     missing = []
     if onlyif:
         for l in samba_utils.TO_LIST(onlyif):
-            f = 'FOUND_SYSTEMLIB_%s' % l
+            f = f'FOUND_SYSTEMLIB_{l}'
             if not f in conf.env:
                 Logs.error('ERROR: CHECK_BUNDLED_SYSTEM(%s) - ' % (libname) +
                            'missing prerequisite check for ' +
@@ -140,7 +140,7 @@ def CHECK_BUNDLED_SYSTEM(conf, libname, minversion='0.0.0',
                 sys.exit(1)
             if not conf.env[f]:
                 missing.append(l)
-    found = 'FOUND_SYSTEMLIB_%s' % libname
+    found = f'FOUND_SYSTEMLIB_{libname}'
     if found in conf.env:
         return conf.env[found]
     if conf.LIB_MUST_BE_BUNDLED(libname):
@@ -167,7 +167,7 @@ def CHECK_BUNDLED_SYSTEM(conf, libname, minversion='0.0.0',
             if not ok:
                 return False
         if checkcode is not None:
-            define='CHECK_BUNDLED_SYSTEM_%s' % libname.upper()
+            define=f'CHECK_BUNDLED_SYSTEM_{libname.upper()}'
             ok = conf.CHECK_CODE(checkcode, lib=libname,
                                  headers=headers, local_include=False,
                                  msg=msg, define=define)
@@ -178,30 +178,30 @@ def CHECK_BUNDLED_SYSTEM(conf, libname, minversion='0.0.0',
 
     minversion = minimum_library_version(conf, libname, minversion)
 
-    msg = 'Checking for system %s' % libname
+    msg = f'Checking for system {libname}'
     msg_ver = []
     if minversion != '0.0.0':
-        msg_ver.append('>=%s' % minversion)
+        msg_ver.append(f'>={minversion}')
     if maxversion is not None:
-        msg_ver.append('<=%s' % maxversion)
+        msg_ver.append(f'<={maxversion}')
     for v in version_blacklist:
-        msg_ver.append('!=%s' % v)
+        msg_ver.append(f'!={v}')
     if msg_ver != []:
-        msg += " (%s)" % (" ".join(msg_ver))
+        msg += f" ({(' '.join(msg_ver))})"
 
     uselib_store=libname.upper()
     if pkg is None:
         pkg = libname
 
-    version_checks = '%s >= %s' % (pkg, minversion)
+    version_checks = f'{pkg} >= {minversion}'
     if maxversion is not None:
-        version_checks += ' %s <= %s' % (pkg, maxversion)
+        version_checks += f' {pkg} <= {maxversion}'
 
-    version_checks += "".join(' %s != %s' % (pkg, v) for v in version_blacklist)
+    version_checks += "".join(f' {pkg} != {v}' for v in version_blacklist)
 
     # try pkgconfig first
     if (conf.CHECK_CFG(package=pkg,
-                      args='"%s" --cflags --libs' % (version_checks),
+                      args=f'"{(version_checks)}" --cflags --libs',
                       msg=msg, uselib_store=uselib_store) and
         check_functions_headers_code()):
         if set_target:
@@ -220,7 +220,7 @@ def CHECK_BUNDLED_SYSTEM(conf, libname, minversion='0.0.0',
             return True
     conf.env[found] = False
     if not conf.LIB_MAY_BE_BUNDLED(libname):
-        Logs.error('ERROR: System library %s of version %s not found, and bundling disabled' % (libname, minversion))
+        Logs.error(f'ERROR: System library {libname} of version {minversion} not found, and bundling disabled')
         sys.exit(1)
     return False
 
@@ -253,7 +253,7 @@ def CHECK_BUNDLED_SYSTEM_PYTHON(conf, libname, modulename, minversion='0.0.0'):
         else:
             found = tuplize_version(version) >= tuplize_version(minversion)
     if not found and not conf.LIB_MAY_BE_BUNDLED(libname):
-        Logs.error('ERROR: Python module %s of version %s not found, and bundling disabled' % (libname, minversion))
+        Logs.error(f'ERROR: Python module {libname} of version {minversion} not found, and bundling disabled')
         sys.exit(1)
     return found
 

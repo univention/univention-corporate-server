@@ -78,8 +78,8 @@ def options(opt):
 	test_for_compiler = default_compilers()
 	d_compiler_opts = opt.add_option_group('Configuration options')
 	d_compiler_opts.add_option('--check-d-compiler', default=None,
-		help='list of D compilers to try [%s]' % test_for_compiler, dest='check_d_compiler')
+		help=f'list of D compilers to try [{test_for_compiler}]', dest='check_d_compiler')
 
 	for x in test_for_compiler.split():
-		opt.load('%s' % x)
+		opt.load(f'{x}')
 

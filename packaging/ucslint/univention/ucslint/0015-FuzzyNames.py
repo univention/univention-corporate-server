@@ -115,9 +115,9 @@ class Trie:
         cconly = not alt
 
         if cc:
-            alt.append(cc[0] if len(cc) == 1 else '[%s]' % ''.join(cc))
+            alt.append(cc[0] if len(cc) == 1 else f'[{"".join(cc)}]')
 
-        return f'{"(?:%s)" % "|".join(alt) if len(alt) > 1 or q and not cconly else alt[0]}{"?" if q else ""}'
+        return f'{f"(?:{'|'.join(alt)})" if len(alt) > 1 or q and not cconly else alt[0]}{"?" if q else ""}'
 
     def pattern(self) -> str:
         """
@@ -186,7 +186,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             if self.RE_WHITEWORD.match(found):
                                 continue
                             self.debug('%s:%d: found="%s"  origline="%s"' % (fn, row, found, origline))
-                            self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % found, fn, row)
+                            self.addmsg('0015-2', f'univention is incorrectly spelled: {found}', fn, row)
             except UnicodeDecodeError:
                 # Silently skip binary files
                 pass

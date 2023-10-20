@@ -139,7 +139,7 @@ class rst2html(docutils):
 			stylesheet = getattr(self.generator, attribute, None)
 			if stylesheet is not None:
 				stylesheet = self.generator.to_nodes(stylesheet)[0]
-				cmd += ['--%s' % attribute, stylesheet.path_from(cwdn)]
+				cmd += [f'--{attribute}', stylesheet.path_from(cwdn)]
 
 		return self.exec_command(cmd, cwd=cwdn.abspath())
 
@@ -187,7 +187,7 @@ def apply_rst(self):
 		elif isinstance(self.target, str):
 			tgt = self.path.get_bld().make_node(self.target)
 		else:
-			self.bld.fatal("rst: Don't know how to build target name %s which is not a string or Node for %s" % (self.target, self))
+			self.bld.fatal(f"rst: Don't know how to build target name {self.target} which is not a string or Node for {self}")
 	else:
 		tgt = None
 
@@ -201,8 +201,8 @@ def apply_rst(self):
 		if tsk_type.startswith('rst2'):
 			ext = tsk_type[4:]
 		else:
-			self.bld.fatal("rst: Could not detect the output file extension for %s" % self)
-		tgt = src.change_ext('.%s' % ext)
+			self.bld.fatal(f"rst: Could not detect the output file extension for {self}")
+		tgt = src.change_ext(f'.{ext}')
 	elif tsk_type is None and tgt is not None:
 		out = tgt.name
 		ext = out[out.rfind('.')+1:]
@@ -211,7 +211,7 @@ def apply_rst(self):
 		# the user knows what he wants
 		pass
 	else:
-		self.bld.fatal("rst: Need to indicate task type or target name for %s" % self)
+		self.bld.fatal(f"rst: Need to indicate task type or target name for {self}")
 
 	deps_lst = []
 
@@ -227,7 +227,7 @@ def apply_rst(self):
 	try:
 		task = self.create_task(self.type, src, tgt)
 	except KeyError:
-		self.bld.fatal("rst: Task of type %s not implemented (created by %s)" % (self.type, self))
+		self.bld.fatal(f"rst: Task of type {self.type} not implemented (created by {self})")
 
 	task.env = self.env
 

@@ -436,7 +436,7 @@ class Client:
 
         :raises ConnectionError: if :file:`/etc/machine.secret` cannot be read.
         """
-        username = '%s$' % _get_ucr().get('hostname')
+        username = f'{_get_ucr().get("hostname")}$'
         try:
             with open('/etc/machine.secret') as machine_file:
                 password = machine_file.readline().strip()
@@ -480,7 +480,7 @@ class Client:
         :returns: The |UMC| response.
         :rtype: Response
         """
-        return self.request('POST', 'get/%s' % path, self.__build_data(options), headers)
+        return self.request('POST', f'get/{path}', self.__build_data(options), headers)
 
     def umc_upload(self) -> None:
         """

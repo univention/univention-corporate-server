@@ -18,5 +18,5 @@ if __name__ == '__main__':
         print(res[1])
         fqdn = b'%s.%s' % (res[1].get('cn')[0], res[1].get('associatedDomain')[0])
         fqdn = fqdn.decode('UTF-8')
-        if ucr.get('ucs/server/saml-idp-server/%s' % fqdn) != fqdn:
+        if ucr.get(f'ucs/server/saml-idp-server/{fqdn}') != fqdn:
             fail('ucs/server/saml-idp-server/%s is %s, expected %s' % (fqdn, ucr.get('ucs/server/saml-idp-server/%s' % fqdn), fqdn))

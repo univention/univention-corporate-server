@@ -57,6 +57,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new.get('associatedDomain')[0].decode('ASCII'))
             listener.setuid(0)
             try:
-                univention.config_registry.handler_set(['%s=%s' % (UCRV, fqdn)])
+                univention.config_registry.handler_set([f'{UCRV}={fqdn}'])
             finally:
                 listener.unsetuid()

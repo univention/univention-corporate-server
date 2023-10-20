@@ -45,27 +45,27 @@ PSDIR          PostScript documentation                  DOCDIR
 import os, re
 from waflib import Utils, Options, Context
 
-gnuopts = '''
-bindir, user commands, ${EXEC_PREFIX}/bin
-sbindir, system binaries, ${EXEC_PREFIX}/sbin
-libexecdir, program-specific binaries, ${EXEC_PREFIX}/libexec
-sysconfdir, host-specific configuration, ${PREFIX}/etc
-sharedstatedir, architecture-independent variable data, ${PREFIX}/com
-localstatedir, variable data, ${PREFIX}/var
-libdir, object code libraries, ${EXEC_PREFIX}/lib%s
-includedir, header files, ${PREFIX}/include
+gnuopts = f'''
+bindir, user commands, ${{EXEC_PREFIX}}/bin
+sbindir, system binaries, ${{EXEC_PREFIX}}/sbin
+libexecdir, program-specific binaries, ${{EXEC_PREFIX}}/libexec
+sysconfdir, host-specific configuration, ${{PREFIX}}/etc
+sharedstatedir, architecture-independent variable data, ${{PREFIX}}/com
+localstatedir, variable data, ${{PREFIX}}/var
+libdir, object code libraries, ${{EXEC_PREFIX}}/lib{Utils.lib64()}
+includedir, header files, ${{PREFIX}}/include
 oldincludedir, header files for non-GCC compilers, /usr/include
-datarootdir, architecture-independent data root, ${PREFIX}/share
-datadir, architecture-independent data, ${DATAROOTDIR}
-infodir, GNU "info" documentation, ${DATAROOTDIR}/info
-localedir, locale-dependent data, ${DATAROOTDIR}/locale
-mandir, manual pages, ${DATAROOTDIR}/man
-docdir, documentation root, ${DATAROOTDIR}/doc/${PACKAGE}
-htmldir, HTML documentation, ${DOCDIR}
-dvidir, DVI documentation, ${DOCDIR}
-pdfdir, PDF documentation, ${DOCDIR}
-psdir, PostScript documentation, ${DOCDIR}
-''' % Utils.lib64()
+datarootdir, architecture-independent data root, ${{PREFIX}}/share
+datadir, architecture-independent data, ${{DATAROOTDIR}}
+infodir, GNU "info" documentation, ${{DATAROOTDIR}}/info
+localedir, locale-dependent data, ${{DATAROOTDIR}}/locale
+mandir, manual pages, ${{DATAROOTDIR}}/man
+docdir, documentation root, ${{DATAROOTDIR}}/doc/${{PACKAGE}}
+htmldir, HTML documentation, ${{DOCDIR}}
+dvidir, DVI documentation, ${{DOCDIR}}
+pdfdir, PDF documentation, ${{DOCDIR}}
+psdir, PostScript documentation, ${{DOCDIR}}
+'''
 
 _options = [x.split(', ') for x in gnuopts.splitlines() if x]
 

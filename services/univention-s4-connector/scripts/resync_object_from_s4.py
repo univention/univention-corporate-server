@@ -153,18 +153,18 @@ if __name__ == '__main__':
         resync = S4Resync()
         treated_dns = resync.resync(s4_dns, options.ldapfilter)
     except ldb.LdbError as ex:
-        print('ERROR: The S4 object was not found: %s' % (ex.args[1],))
+        print(f'ERROR: The S4 object was not found: {ex.args[1]}')
         if len(ex.args) == 3:
             treated_dns = ex.args[2]
         sys.exit(1)
     except GuidNotFound as ex:
-        print('ERROR: The S4 search for objectGUID failed: %s' % (ex.args[1],))
+        print(f'ERROR: The S4 search for objectGUID failed: {ex.args[1]}')
         if len(ex.args) == 3:
             treated_dns = ex.args[2]
         sys.exit(1)
     finally:
         for dn in treated_dns:
-            print('resync triggered for %s' % dn)
+            print(f'resync triggered for {dn}')
 
     if treated_dns:
         estimated_delay = 60
@@ -173,7 +173,7 @@ if __name__ == '__main__':
         except ValueError:
             pass
 
-        print('Estimated sync in %s seconds.' % (estimated_delay,))
+        print(f'Estimated sync in {estimated_delay} seconds.')
     else:
         print('No matching objects.')
 

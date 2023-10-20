@@ -87,7 +87,7 @@ class Server(object):
         subprocess.call(CMD_DISABLE_EXEC)
         p = subprocess.Popen(CMD_ENABLE_EXEC_WITH_RESTART, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         out, err = p.communicate()
-        MODULE.info('enabling server restart:\n%s' % (out.decode('utf-8')))
+        MODULE.info(f'enabling server restart:\n{(out.decode("utf-8"))}')
 
     @simple_response
     def ping(self):
@@ -97,7 +97,7 @@ class Server(object):
     def reboot(self, request):
         message = _('The system will now be restarted')
         if request.options['message']:
-            message = '%s (%s)' % (message, request.options['message'])
+            message = f'{message} ({request.options["message"]})'
 
         if self._shutdown(message, reboot=True) != 0:
             raise ServerError(_('System could not reboot'))
@@ -108,7 +108,7 @@ class Server(object):
     def shutdown(self, request):
         message = _('The system will now be shut down')
         if request.options['message']:
-            message = '%s (%s)' % (message, request.options['message'])
+            message = f'{message} ({request.options["message"]})'
 
         if self._shutdown(message, reboot=False) != 0:
             raise ServerError(_('System could not shutdown'))

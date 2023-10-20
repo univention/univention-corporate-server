@@ -51,8 +51,8 @@ def test_mail_forward(mail_copy_to_self):
 
             # create user with mPA
             user = Bunch()
-            user.mailPrimaryAddress = '%s@%s' % (uts.random_string(), domain)
-            user.mailHomeServer = '%s.%s' % (ucr.get('hostname'), domain)
+            user.mailPrimaryAddress = f'{uts.random_string()}@{domain}'
+            user.mailHomeServer = f'{ucr.get("hostname")}.{domain}'
             user.mailForwardAddress = []
             user.dn, user.username = udm.create_user(set={
                 'mailHomeServer': user.mailHomeServer,
@@ -69,8 +69,8 @@ def test_mail_forward(mail_copy_to_self):
 
             # set mFA without Copy2Self
             user.mailForwardAddress = [
-                'fwd1-%s@univention.de' % (user.username,),
-                'fwd2-%s@univention.de' % (user.username,),
+                f'fwd1-{user.username}@univention.de',
+                f'fwd2-{user.username}@univention.de',
             ]
             udm.modify_object('users/user', dn=user.dn, mailForwardAddress=user.mailForwardAddress)
             utils.verify_ldap_object(
@@ -84,8 +84,8 @@ def test_mail_forward(mail_copy_to_self):
 
             # change mFA without Copy2Self
             user.mailForwardAddress = [
-                'fwd2-%s@univention.de' % (user.username,),
-                'fwd3-%s@univention.de' % (user.username,),
+                f'fwd2-{user.username}@univention.de',
+                f'fwd3-{user.username}@univention.de',
             ]
             udm.modify_object('users/user', dn=user.dn, set={'mailForwardAddress': user.mailForwardAddress})
             utils.verify_ldap_object(
@@ -121,7 +121,7 @@ def test_mail_forward(mail_copy_to_self):
 
             # change mFA and set Copy2Self=0
             user.mailForwardAddress = [
-                'fwd4-%s@univention.de' % (user.username,),
+                f'fwd4-{user.username}@univention.de',
             ]
             udm.modify_object(
                 'users/user',
@@ -146,9 +146,9 @@ def test_mail_forward(mail_copy_to_self):
 
             # change mFA and set Copy2Self=1
             user.mailForwardAddress = [
-                'fwd5-%s@univention.de' % (user.username,),
-                'fwd6-%s@univention.de' % (user.username,),
-                'fwd7-%s@univention.de' % (user.username,),
+                f'fwd5-{user.username}@univention.de',
+                f'fwd6-{user.username}@univention.de',
+                f'fwd7-{user.username}@univention.de',
             ]
             udm.modify_object(
                 'users/user',
@@ -205,11 +205,11 @@ def test_mail_forward(mail_copy_to_self):
 
             # create second user with mPA, mFA and Copy2Self
             user = Bunch()
-            user.mailPrimaryAddress = '%s@%s' % (uts.random_string(), domain)
-            user.mailHomeServer = '%s.%s' % (ucr.get('hostname'), domain)
+            user.mailPrimaryAddress = f'{uts.random_string()}@{domain}'
+            user.mailHomeServer = f'{ucr.get("hostname")}.{domain}'
             user.mailForwardAddress = [
-                'fwd5-%s@univention.de' % (uts.random_string(),),
-                'fwd6-%s@univention.de' % (uts.random_string(),),
+                f'fwd5-{uts.random_string()}@univention.de',
+                f'fwd6-{uts.random_string()}@univention.de',
             ]
             user.dn, user.username = udm.create_user(set={
                 'mailHomeServer': user.mailHomeServer,
@@ -239,7 +239,7 @@ def test_mail_forward(mail_copy_to_self):
 
             # create third user without mPA but mFA
             user = Bunch()
-            user.mailHomeServer = '%s.%s' % (ucr.get('hostname'), domain)
+            user.mailHomeServer = f'{ucr.get("hostname")}.{domain}'
             user.mailForwardAddress = ['noreply@univention.de']
             try:
                 user.dn, user.username = udm.create_user(set={

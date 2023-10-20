@@ -39,18 +39,18 @@ class valadoc(Task.Task):
 		if not self.env['VALADOCFLAGS']:
 			self.env['VALADOCFLAGS'] = ''
 		cmd = [Utils.subst_vars(VALADOC_STR, self.env)]
-		cmd.append ('-o %s' % self.output_dir)
+		cmd.append (f'-o {self.output_dir}')
 		if getattr(self, 'doclet', None):
-			cmd.append ('--doclet %s' % self.doclet)
-		cmd.append ('--package-name %s' % self.package_name)
+			cmd.append (f'--doclet {self.doclet}')
+		cmd.append (f'--package-name {self.package_name}')
 		if getattr(self, 'package_version', None):
-			cmd.append ('--package-version %s' % self.package_version)
+			cmd.append (f'--package-version {self.package_version}')
 		if getattr(self, 'packages', None):
 			for package in self.packages:
-				cmd.append ('--pkg %s' % package)
+				cmd.append (f'--pkg {package}')
 		if getattr(self, 'vapi_dirs', None):
 			for vapi_dir in self.vapi_dirs:
-				cmd.append ('--vapidir %s' % vapi_dir)
+				cmd.append (f'--vapidir {vapi_dir}')
 		if not getattr(self, 'protected', None):
 			cmd.append ('--no-protected')
 		if getattr(self, 'private', None):
@@ -61,9 +61,9 @@ class valadoc(Task.Task):
 			cmd.append ('--deps')
 		if getattr(self, 'vala_defines', None):
 			for define in self.vala_defines:
-				cmd.append ('--define %s' % define)
+				cmd.append (f'--define {define}')
 		if getattr(self, 'vala_target_glib', None):
-			cmd.append ('--target-glib=%s' % self.vala_target_glib)
+			cmd.append (f'--target-glib={self.vala_target_glib}')
 		if getattr(self, 'enable_non_null_experimental', None):
 			cmd.append ('--enable-non-null-experimental')
 		if getattr(self, 'force', None):

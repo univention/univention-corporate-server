@@ -119,7 +119,7 @@ class File(list):
         """Save entries to file."""
         with open(filename or self.__file, 'w') as fd:
             for line in self:
-                fd.write('%s\n' % (line,))
+                fd.write(f'{line}\n')
 
     def __parse(self, line):
         # type: (str) -> Union[Entry, str]
@@ -167,7 +167,7 @@ class Entry(object):
     :ivar str uuid: The file system |UUID| if the file system is mounted by it. Otherwise `None`.
     """
 
-    _quote_dict = {c: r'\%s' % oct(ord(c)) for c in ' \t\n\r\\'}
+    _quote_dict = {c: fr'\{oct(ord(c))}' for c in ' \t\n\r\\'}
     _quote_re = re.compile(r'\\0([0-7]+)')
 
     def __init__(self, spec, mount_point, fs_type, options='', dump=None, passno=None, comment=None):
@@ -199,7 +199,7 @@ class Entry(object):
         """
         # If a line has a comment or any next field is non-empty, all previous one needs to be set
         h = [
-            self.quote('UUID=%s' % self.uuid if self.uuid else self.spec),
+            self.quote(f'UUID={self.uuid}' if self.uuid else self.spec),
             self.quote(self.mount_point),
             self.quote(self.type),
             self.quote(','.join(self.options or (['defaults'] if any([self.dump, self.passno, self.comment]) else []))) or None,
@@ -225,7 +225,7 @@ class Entry(object):
         ]
         if self.comment is not None:
             h.append("comment=%r" % self.comment)
-        return "univention.lib.fstab.Entry(%s)" % ', '.join(h)
+        return f"univention.lib.fstab.Entry({', '.join(h)})"
 
     @classmethod
     def quote(cls, s):

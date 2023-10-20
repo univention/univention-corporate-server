@@ -130,7 +130,7 @@ class init(Context.Context):
 			if k.endswith('_all'):
 				name = k.replace('_all', '')
 				for x in Context.g_module.variants:
-					lst.append('%s_%s' % (name, x))
+					lst.append(f'{name}_{x}')
 			else:
 				lst.append(k)
 		del Options.commands[:]
@@ -188,7 +188,7 @@ class remote(BuildContext):
 				Utils.writef(self.ssh_hosts, '\n'.join(self.get_ssh_hosts()))
 				os.chmod(self.ssh_key, 448)
 
-				Utils.writef(self.ssh_config, 'UserKnownHostsFile %s' % self.ssh_hosts, 'wb')
+				Utils.writef(self.ssh_config, f'UserKnownHostsFile {self.ssh_hosts}', 'wb')
 				os.chmod(self.ssh_config, 448)
 		self.env.SSH_OPTS = ['-F', self.ssh_config, '-i', self.ssh_key]
 		self.env.append_value('RSYNC_SEND_OPTS', '--exclude=build/.ssh')
@@ -213,7 +213,7 @@ class remote(BuildContext):
 			x = x[:x.find('_')]
 			ret = os.environ.get('REMOTE_' + x.upper(), '')
 		if not ret:
-			ret = '%s@localhost' % getpass.getuser()
+			ret = f'{getpass.getuser()}@localhost'
 		return ret
 
 	def execute(self):
@@ -306,10 +306,10 @@ def rsync_and_ssh(task):
 
 	task.env.user, _, _ = task.env.login.partition('@')
 	task.env.hdir = Utils.to_hex(Utils.h_list((task.generator.path.abspath(), task.env.variant)))
-	task.env.remote_dir = '~%s/wafremote/%s' % (task.env.user, task.env.hdir)
+	task.env.remote_dir = f'~{task.env.user}/wafremote/{task.env.hdir}'
 	task.env.local_dir = bld.srcnode.abspath() + '/'
 
-	task.env.remote_dir_variant = '%s/%s/%s' % (task.env.remote_dir, Context.g_module.out, task.env.variant)
+	task.env.remote_dir_variant = f'{task.env.remote_dir}/{Context.g_module.out}/{task.env.variant}'
 	task.env.build_dir = bld.bldnode.abspath()
 
 	ret = task.exec_command(bld.make_mkdir_command(task))

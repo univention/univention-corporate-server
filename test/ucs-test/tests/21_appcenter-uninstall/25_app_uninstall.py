@@ -20,7 +20,7 @@ from appcenteruninstalltest import get_requested_apps
 def check_status(app):
     if app.docker:
         print('    Checking removed Docker Container')
-        assert ucr_get('appcenter/apps/%s/status' % app.id) is None
+        assert ucr_get(f'appcenter/apps/{app.id}/status') is None
     else:
         packages = app.default_packages
         print('    Checking packages', ', '.join(packages))
@@ -47,16 +47,16 @@ def check_status(app):
                             print(output)
                             utils.fail('ERROR: A package is not installed!')
         print('    Checking component')
-        if ucr_is_true('repository/online/component/%s' % app.component_id):
-            utils.fail('FAIL: component %s still active' % app.component)
+        if ucr_is_true(f'repository/online/component/{app.component_id}'):
+            utils.fail(f'FAIL: component {app.component} still active')
 
 
 def check_ldap(app):
-    dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app.id, app.version, app.id, ucr_get('ldap/base'))
+    dn = f'univentionAppID={app.id}_{app.version},cn={app.id},cn=apps,cn=univention,{ucr_get("ldap/base")}'
     try:
         utils.verify_ldap_object(dn, should_exist=False)
     except utils.LDAPUnexpectedObjectFound:
-        utils.fail('FAIL: %s still exists' % dn)
+        utils.fail(f'FAIL: {dn} still exists')
 
 
 def check_webinterface(app):
@@ -81,13 +81,13 @@ def _check_url(url):
     if refresh:
         refresh_url = refresh[0].get('content')
         if refresh_url:
-            print('Found meta refresh: %s' % refresh_url)
+            print(f'Found meta refresh: {refresh_url}')
             # e.g., 0;URL=controller.pl?action=LoginScreen/user_login
             index = refresh_url.lower().find('url=')
             if index > 0:
                 refresh_url = refresh_url[index + 4:]
                 if not refresh_url.lower().startswith('http'):
-                    refresh_url = '%s%s' % (url, refresh_url)
+                    refresh_url = f'{url}{refresh_url}'
                 _check_url(refresh_url)
 
 

@@ -104,7 +104,7 @@ def options(opt):
 	if vsver:
 		m = re.match(r'(^\d+\.\d+).*', vsver)
 		if m:
-			default_ver = 'msvc %s' % m.group(1)
+			default_ver = f'msvc {m.group(1)}'
 	opt.add_option('--msvc_version', type='string', help = 'msvc version, eg: "msvc 10.0,msvc 9.0"', default=default_ver)
 	opt.add_option('--msvc_targets', type='string', help = 'msvc targets, eg: "x64,arm"', default='')
 	opt.add_option('--no-msvc-lazy', action='store_false', help = 'lazily check msvc target environments', default=True, dest='msvc_lazy')
@@ -432,7 +432,7 @@ def gather_msvc_targets(conf, versions, version, vc_path):
 	elif os.path.isfile(os.path.join(vc_path, 'Bin', 'vcvars32.bat')):
 		targets['x86'] = target_compiler(conf, 'msvc', 'x86', version, '', os.path.join(vc_path, 'Bin', 'vcvars32.bat'))
 	if targets:
-		versions['msvc %s' % version] = targets
+		versions[f'msvc {version}'] = targets
 
 @conf
 def gather_wince_targets(conf, versions, version, vc_path, vsvars, supported_platforms):
@@ -492,7 +492,7 @@ def gather_vswhere_versions(conf, versions):
 		ver = entry['installationVersion']
 		ver = str('.'.join(ver.split('.')[:2]))
 		path = str(os.path.abspath(entry['installationPath']))
-		if os.path.exists(path) and ('msvc %s' % ver) not in versions:
+		if os.path.exists(path) and f'msvc {ver}' not in versions:
 			conf.gather_msvc_targets(versions, ver, path)
 
 @conf
@@ -688,8 +688,8 @@ def find_lt_names_msvc(self, libname, is_static=False):
 	(library absolute path, library name without extension, whether the library is static)
 	"""
 	lt_names=[
-		'lib%s.la' % libname,
-		'%s.la' % libname,
+		f'lib{libname}.la',
+		f'{libname}.la',
 	]
 
 	for path in self.env.LIBPATH:
@@ -715,7 +715,7 @@ def find_lt_names_msvc(self, libname, is_static=False):
 					else:
 						return (None, olib, True)
 				else:
-					raise self.errors.WafError('invalid libtool object file: %s' % laf)
+					raise self.errors.WafError(f'invalid libtool object file: {laf}')
 	return (None, None, None)
 
 @conf
@@ -744,20 +744,20 @@ def libname_msvc(self, libname, is_static=False):
 		_libpaths = self.env.LIBPATH
 
 	static_libs=[
-		'lib%ss.lib' % lib,
-		'lib%s.lib' % lib,
-		'%ss.lib' % lib,
-		'%s.lib' %lib,
+		f'lib{lib}s.lib',
+		f'lib{lib}.lib',
+		f'{lib}s.lib',
+		f'{lib}.lib',
 		]
 
 	dynamic_libs=[
-		'lib%s.dll.lib' % lib,
-		'lib%s.dll.a' % lib,
-		'%s.dll.lib' % lib,
-		'%s.dll.a' % lib,
-		'lib%s_d.lib' % lib,
-		'%s_d.lib' % lib,
-		'%s.lib' %lib,
+		f'lib{lib}.dll.lib',
+		f'lib{lib}.dll.a',
+		f'{lib}.dll.lib',
+		f'{lib}.dll.a',
+		f'lib{lib}_d.lib',
+		f'{lib}_d.lib',
+		f'{lib}.lib',
 		]
 
 	libnames=static_libs
@@ -877,7 +877,7 @@ def find_msvc(conf):
 
 	# linker
 	if not v.LINK_CXX:
-		conf.find_program(linker_name, path_list=path, errmsg='%s was not found (linker)' % linker_name, var='LINK_CXX')
+		conf.find_program(linker_name, path_list=path, errmsg=f'{linker_name} was not found (linker)', var='LINK_CXX')
 
 	if not v.LINK_CC:
 		v.LINK_CC = v.LINK_CXX
@@ -983,7 +983,7 @@ def apply_flags_msvc(self):
 
 	subsystem = getattr(self, 'subsystem', '')
 	if subsystem:
-		subsystem = '/subsystem:%s' % subsystem
+		subsystem = f'/subsystem:{subsystem}'
 		flags = is_static and 'ARFLAGS' or 'LINKFLAGS'
 		self.env.append_value(flags, subsystem)
 
@@ -1016,10 +1016,10 @@ def apply_manifest(self):
 
 def make_winapp(self, family):
 	append = self.env.append_unique
-	append('DEFINES', 'WINAPI_FAMILY=%s' % family)
+	append('DEFINES', f'WINAPI_FAMILY={family}')
 	append('CXXFLAGS', ['/ZW', '/TP'])
 	for lib_path in self.env.LIBPATH:
-		append('CXXFLAGS','/AI%s'%lib_path)
+		append('CXXFLAGS',f'/AI{lib_path}')
 
 @feature('winphoneapp')
 @after_method('process_use')
