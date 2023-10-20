@@ -1,3 +1,9 @@
+univention-portal (4.0.14-10) unstable; urgency=low
+
+  * Bug #56660: Fix label translation for self-service fields.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 20 Oct 2023 11:51:53 +0200
+
 univention-portal (4.0.14-9) unstable; urgency=low
 
   * Bug #53860: Update file portals.json atomically

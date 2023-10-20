@@ -224,8 +224,23 @@ export default defineComponent({
       }
       return this.loginWidgets;
     },
-    loginWidgetsWithTabindex(): WidgetDefinition[] {
+    formWidgetsTranslated(): WidgetDefinition[] {
       return this.loginWidgetsVisible.map((widget) => {
+        switch (widget.name) {
+          case 'username':
+            widget.label = _('Username');
+            break;
+          case 'password':
+            widget.label = _('Password');
+            break;
+          default:
+            break;
+        }
+        return widget;
+      });
+    },
+    loginWidgetsWithTabindex(): WidgetDefinition[] {
+      return this.formWidgetsTranslated.map((widget) => {
         widget.tabindex = this.tabindex;
         return widget;
       });

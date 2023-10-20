@@ -1,3 +1,9 @@
+ucs-test (10.0.19-21) unstable; urgency=medium
+
+  * Bug #56660: Add new test to check self-service translations labels.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 20 Oct 2023 11:51:53 +0200
+
 ucs-test (10.0.19-20) unstable; urgency=medium
 
   * Bug #56731: Bug #56734: enhance UDM REST API tests
