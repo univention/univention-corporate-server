@@ -105,14 +105,14 @@ class store_task_type(type):
 
 	The attribute 'run_str' is compiled into a method 'run' bound to the task class.
 	"""
-	def __init__(cls, name, bases, dict,):
-		super(store_task_type, cls,).__init__(name, bases, dict,)
+	def __init__(cls, name, bases, dict):
+		super(store_task_type, cls).__init__(name, bases, dict)
 		name = cls.__name__
 
 		if name != 'evil' and name != 'Task':
-			if getattr(cls, 'run_str', None,):
+			if getattr(cls, 'run_str', None):
 				# if a string is provided, convert it to a method
-				(f, dvars) = compile_fun(cls.run_str, cls.shell,)
+				(f, dvars) = compile_fun(cls.run_str, cls.shell)
 				cls.hcode = Utils.h_cmd(cls.run_str)
 				cls.orig_run_str = cls.run_str
 				# change the name of run_str or it is impossible to subclass with a function
@@ -125,14 +125,14 @@ class store_task_type(type):
 					fun = compile_sig_vars(cls.vars)
 					if fun:
 						cls.sig_vars = fun
-			elif getattr(cls, 'run', None,) and not 'hcode' in cls.__dict__:
+			elif getattr(cls, 'run', None) and not 'hcode' in cls.__dict__:
 				# getattr(cls, 'hcode') would look in the upper classes
 				cls.hcode = Utils.h_cmd(cls.run)
 
 			# be creative
-			getattr(cls, 'register', classes,)[name] = cls
+			getattr(cls, 'register', classes)[name] = cls
 
-evil = store_task_type('evil', (object,), {},)
+evil = store_task_type('evil', (object,), {})
 "Base class provided to avoid writing a metaclass, so the code can run in python 2.6 and 3.x unmodified"
 
 class Task(evil):
@@ -213,13 +213,13 @@ class Task(evil):
 		self.run_after = set()
 		"""Set of tasks that must be executed before this one"""
 
-	def __lt__(self, other,):
+	def __lt__(self, other):
 		return self.priority() > other.priority()
-	def __le__(self, other,):
+	def __le__(self, other):
 		return self.priority() >= other.priority()
-	def __gt__(self, other,):
+	def __gt__(self, other):
 		return self.priority() < other.priority()
-	def __ge__(self, other,):
+	def __ge__(self, other):
 		return self.priority() <= other.priority()
 
 	def get_cwd(self):
@@ -228,15 +228,15 @@ class Task(evil):
 		:rtype: :py:class:`waflib.Node.Node`
 		"""
 		bld = self.generator.bld
-		ret = getattr(self, 'cwd', None,) or getattr(bld, 'cwd', bld.bldnode,)
-		if isinstance(ret, str,):
+		ret = getattr(self, 'cwd', None) or getattr(bld, 'cwd', bld.bldnode)
+		if isinstance(ret, str):
 			if os.path.isabs(ret):
 				ret = bld.root.make_node(ret)
 			else:
 				ret = self.generator.path.make_node(ret)
 		return ret
 
-	def quote_flag(self, x,):
+	def quote_flag(self, x):
 		"""
 		Surround a process argument by quotes so that a list of arguments can be written to a file
 
@@ -247,9 +247,9 @@ class Task(evil):
 		"""
 		old = x
 		if '\\' in x:
-			x = x.replace('\\', '\\\\',)
+			x = x.replace('\\', '\\\\')
 		if '"' in x:
-			x = x.replace('"', '\\"',)
+			x = x.replace('"', '\\"')
 		if old != x or ' ' in x or '\t' in x or "'" in x:
 			x = '"%s"' % x
 		return x
@@ -261,9 +261,9 @@ class Task(evil):
 		:return: the priority value
 		:rtype: a tuple of numeric values
 		"""
-		return (self.weight + self.prio_order, - getattr(self.generator, 'tg_idx_count', 0,))
+		return (self.weight + self.prio_order, - getattr(self.generator, 'tg_idx_count', 0))
 
-	def split_argfile(self, cmd,):
+	def split_argfile(self, cmd):
 		"""
 		Splits a list of process commands into the executable part and its list of arguments
 
@@ -272,7 +272,7 @@ class Task(evil):
 		"""
 		return ([cmd[0]], [self.quote_flag(x) for x in cmd[1:]])
 
-	def exec_command(self, cmd,**kw):
+	def exec_command(self, cmd, **kw):
 		"""
 		Wrapper for :py:meth:`waflib.Context.Context.exec_command`.
 		This version set the current working directory (``build.variant_dir``),
@@ -294,19 +294,19 @@ class Task(evil):
 		if not 'cwd' in kw:
 			kw['cwd'] = self.get_cwd()
 
-		if hasattr(self, 'timeout',):
+		if hasattr(self, 'timeout'):
 			kw['timeout'] = self.timeout
 
 		if self.env.PATH:
 			env = kw['env'] = dict(kw.get('env') or self.env.env or os.environ)
-			env['PATH'] = self.env.PATH if isinstance(self.env.PATH, str,) else os.pathsep.join(self.env.PATH)
+			env['PATH'] = self.env.PATH if isinstance(self.env.PATH, str) else os.pathsep.join(self.env.PATH)
 
-		if hasattr(self, 'stdout',):
+		if hasattr(self, 'stdout'):
 			kw['stdout'] = self.stdout
-		if hasattr(self, 'stderr',):
+		if hasattr(self, 'stderr'):
 			kw['stderr'] = self.stderr
 
-		if not isinstance(cmd, str,):
+		if not isinstance(cmd, str):
 			if Utils.is_win32:
 				# win32 compares the resulting length http://support.microsoft.com/kb/830473
 				too_long = sum([len(arg) for arg in cmd]) + len(cmd) > 8192
@@ -314,23 +314,23 @@ class Task(evil):
 				# non-win32 counts the amount of arguments (200k)
 				too_long = len(cmd) > 200000
 
-			if too_long and getattr(self, 'allow_argsfile', True,):
+			if too_long and getattr(self, 'allow_argsfile', True):
 				# Shunt arguments to a temporary file if the command is too long.
 				cmd, args = self.split_argfile(cmd)
 				try:
 					(fd, tmp) = tempfile.mkstemp()
-					os.write(fd, '\r\n'.join(args).encode(),)
+					os.write(fd, '\r\n'.join(args).encode())
 					os.close(fd)
 					if Logs.verbose:
-						Logs.debug('argfile: @%r -> %r', tmp, args,)
-					return self.generator.bld.exec_command(cmd + ['@' + tmp], **kw,)
+						Logs.debug('argfile: @%r -> %r', tmp, args)
+					return self.generator.bld.exec_command(cmd + ['@' + tmp], **kw)
 				finally:
 					try:
 						os.remove(tmp)
 					except OSError:
 						# anti-virus and indexers can keep files open -_-
 						pass
-		return self.generator.bld.exec_command(cmd, **kw,)
+		return self.generator.bld.exec_command(cmd, **kw)
 
 	def process(self):
 		"""
@@ -373,7 +373,7 @@ class Task(evil):
 			except KeyError:
 				pass
 
-	def log_display(self, bld,):
+	def log_display(self, bld):
 		"Writes the execution status on the context logger"
 		if self.generator.bld.progress_bar == 3:
 			return
@@ -388,9 +388,9 @@ class Task(evil):
 			if self.generator.bld.progress_bar == 1:
 				c1 = Logs.colors.cursor_off
 				c2 = Logs.colors.cursor_on
-				logger.info(s, extra={'stream': sys.stderr, 'terminator':'', 'c1': c1, 'c2' : c2},)
+				logger.info(s, extra={'stream': sys.stderr, 'terminator':'', 'c1': c1, 'c2' : c2})
 			else:
-				logger.info(s, extra={'terminator':'', 'c1': '', 'c2' : ''},)
+				logger.info(s, extra={'terminator':'', 'c1': '', 'c2' : ''})
 
 	def display(self):
 		"""
@@ -407,7 +407,7 @@ class Task(evil):
 			return master.processed - master.ready.qsize()
 
 		if self.generator.bld.progress_bar == 1:
-			return self.generator.bld.progress_line(cur(), master.total, col1, col2,)
+			return self.generator.bld.progress_line(cur(), master.total, col1, col2)
 
 		if self.generator.bld.progress_bar == 2:
 			ela = str(self.generator.bld.timer)
@@ -449,11 +449,11 @@ class Task(evil):
 		:rtype: string
 		"""
 		if Logs.verbose:
-			msg = ': %r\n%r' % (self, getattr(self, 'last_cmd', '',))
+			msg = ': %r\n%r' % (self, getattr(self, 'last_cmd', ''))
 		else:
 			msg = ' (run with -v to display more information)'
-		name = getattr(self.generator, 'name', '',)
-		if getattr(self, "err_msg", None,):
+		name = getattr(self.generator, 'name', '')
+		if getattr(self, "err_msg", None):
 			return self.err_msg
 		elif not self.hasrun:
 			return 'task in %r was not executed for some reason: %r' % (name, self)
@@ -469,7 +469,7 @@ class Task(evil):
 		else:
 			return 'invalid status for task in %r: %r' % (name, self.hasrun)
 
-	def colon(self, var1, var2,):
+	def colon(self, var1, var2):
 		"""
 		Enable scriptlet expressions of the form ${FOO_ST:FOO}
 		If the first variable (FOO_ST) is empty, then an empty list is returned
@@ -489,11 +489,11 @@ class Task(evil):
 		if not tmp:
 			return []
 
-		if isinstance(var2, str,):
+		if isinstance(var2, str):
 			it = self.env[var2]
 		else:
 			it = var2
-		if isinstance(tmp, str,):
+		if isinstance(tmp, str):
 			return [tmp % x for x in it]
 		else:
 			lst = []
@@ -574,31 +574,31 @@ class Task(evil):
 			self.uid_ = m.digest()
 			return self.uid_
 
-	def set_inputs(self, inp,):
+	def set_inputs(self, inp):
 		"""
 		Appends the nodes to the *inputs* list
 
 		:param inp: input nodes
 		:type inp: node or list of nodes
 		"""
-		if isinstance(inp, list,):
+		if isinstance(inp, list):
 			self.inputs += inp
 		else:
 			self.inputs.append(inp)
 
-	def set_outputs(self, out,):
+	def set_outputs(self, out):
 		"""
 		Appends the nodes to the *outputs* list
 
 		:param out: output nodes
 		:type out: node or list of nodes
 		"""
-		if isinstance(out, list,):
+		if isinstance(out, list):
 			self.outputs += out
 		else:
 			self.outputs.append(out)
 
-	def set_run_after(self, task,):
+	def set_run_after(self, task):
 		"""
 		Run this task only after the given *task*.
 
@@ -608,7 +608,7 @@ class Task(evil):
 		:param task: task
 		:type task: :py:class:`waflib.Task.Task`
 		"""
-		assert isinstance(task, Task,)
+		assert isinstance(task, Task)
 		self.run_after.add(task)
 
 	def signature(self):
@@ -685,24 +685,24 @@ class Task(evil):
 		try:
 			prev_sig = bld.task_sigs[key]
 		except KeyError:
-			Logs.debug('task: task %r must run: it was never run before or the task code changed', self,)
+			Logs.debug('task: task %r must run: it was never run before or the task code changed', self)
 			return RUN_ME
 
 		if new_sig != prev_sig:
-			Logs.debug('task: task %r must run: the task signature changed', self,)
+			Logs.debug('task: task %r must run: the task signature changed', self)
 			return RUN_ME
 
 		# compare the signatures of the outputs
 		for node in self.outputs:
 			sig = bld.node_sigs.get(node)
 			if not sig:
-				Logs.debug('task: task %r must run: an output node has no signature', self,)
+				Logs.debug('task: task %r must run: an output node has no signature', self)
 				return RUN_ME
 			if sig != key:
-				Logs.debug('task: task %r must run: an output node was produced by another task', self,)
+				Logs.debug('task: task %r must run: an output node was produced by another task', self)
 				return RUN_ME
 			if not node.exists():
-				Logs.debug('task: task %r must run: an output node does not exist', self,)
+				Logs.debug('task: task %r must run: an output node does not exist', self)
 				return RUN_ME
 
 		return (self.always_run and RUN_ME) or SKIP_ME
@@ -751,7 +751,7 @@ class Task(evil):
 					try:
 						v = v.get_bld_sig()
 					except AttributeError:
-						if hasattr(v, '__call__',):
+						if hasattr(v, '__call__'):
 							v = v() # dependency is a function, call it
 					upd(v)
 
@@ -789,7 +789,7 @@ class Task(evil):
 
 		This method may be replaced on subclasses by the metaclass to force dependencies on scriptlet code.
 		"""
-		sig = self.generator.bld.hash_env_vars(self.env, self.vars,)
+		sig = self.generator.bld.hash_env_vars(self.env, self.vars)
 		self.m.update(sig)
 
 	scan = None
@@ -823,7 +823,7 @@ class Task(evil):
 
 		# get the task signatures from previous runs
 		key = self.uid()
-		prev = bld.imp_sigs.get(key, [],)
+		prev = bld.imp_sigs.get(key, [])
 
 		# for issue #379
 		if prev:
@@ -836,7 +836,7 @@ class Task(evil):
 				# when a file was renamed, remove the stale nodes (headers in folders without source files)
 				# this will break the order calculation for headers created during the build in the source directory (should be uncommon)
 				# the behaviour will differ when top != out
-				for x in bld.node_deps.get(self.uid(), [],):
+				for x in bld.node_deps.get(self.uid(), []):
 					if not x.is_bld() and not x.exists():
 						try:
 							del x.parent.children[x.name]
@@ -848,15 +848,15 @@ class Task(evil):
 		# no previous run or the signature of the dependencies has changed, rescan the dependencies
 		(bld.node_deps[key], bld.raw_deps[key]) = self.scan()
 		if Logs.verbose:
-			Logs.debug('deps: scanner for %s: %r; unresolved: %r', self, bld.node_deps[key], bld.raw_deps[key],)
+			Logs.debug('deps: scanner for %s: %r; unresolved: %r', self, bld.node_deps[key], bld.raw_deps[key])
 
 		# recompute the signature and return it
 		try:
 			bld.imp_sigs[key] = self.compute_sig_implicit_deps()
 		except EnvironmentError:
-			for k in bld.node_deps.get(self.uid(), [],):
+			for k in bld.node_deps.get(self.uid(), []):
 				if not k.exists():
-					Logs.warn('Dependency %r for %r is missing: check the task declaration and the build order!', k, self,)
+					Logs.warn('Dependency %r for %r is missing: check the task declaration and the build order!', k, self)
 			raise
 
 	def compute_sig_implicit_deps(self):
@@ -873,7 +873,7 @@ class Task(evil):
 		# scanner returns a node that does not have a signature
 		# just *ignore* the error and let them figure out from the compiler output
 		# waf -k behaviour
-		for k in self.generator.bld.node_deps.get(self.uid(), [],):
+		for k in self.generator.bld.node_deps.get(self.uid(), []):
 			upd(k.get_bld_sig())
 		return self.m.digest()
 
@@ -900,7 +900,7 @@ class Task(evil):
 					dct[x] = tsk
 
 		modified = False
-		for x in bld.node_deps.get(self.uid(), [],):
+		for x in bld.node_deps.get(self.uid(), []):
 			if x in dct:
 				self.run_after.add(dct[x])
 				modified = True
@@ -915,16 +915,16 @@ if sys.hexversion > 0x3000000:
 		try:
 			return self.uid_
 		except AttributeError:
-			m = Utils.md5(self.__class__.__name__.encode('latin-1', 'xmlcharrefreplace',))
+			m = Utils.md5(self.__class__.__name__.encode('latin-1', 'xmlcharrefreplace'))
 			up = m.update
 			for x in self.inputs + self.outputs:
-				up(x.abspath().encode('latin-1', 'xmlcharrefreplace',))
+				up(x.abspath().encode('latin-1', 'xmlcharrefreplace'))
 			self.uid_ = m.digest()
 			return self.uid_
 	uid.__doc__ = Task.uid.__doc__
 	Task.uid = uid
 
-def is_before(t1, t2,):
+def is_before(t1, t2):
 	"""
 	Returns a non-zero value if task t1 is to be executed before task t2::
 
@@ -952,7 +952,7 @@ def is_before(t1, t2,):
 
 	return 0
 
-def set_file_constraints(tasks,):
+def set_file_constraints(tasks):
 	"""
 	Updates the ``run_after`` attribute of all tasks based on the task inputs and outputs
 
@@ -982,7 +982,7 @@ class TaskGroup(object):
 
 	This is an optimization
 	"""
-	def __init__(self, prev, next,):
+	def __init__(self, prev, next):
 		self.prev = prev
 		self.next = next
 		self.done = False
@@ -993,9 +993,9 @@ class TaskGroup(object):
 				return NOT_RUN
 		return SUCCESS
 
-	hasrun = property(get_hasrun, None,)
+	hasrun = property(get_hasrun, None)
 
-def set_precedence_constraints(tasks,):
+def set_precedence_constraints(tasks):
 	"""
 	Updates the ``run_after`` attribute of all tasks based on the after/before/ext_out/ext_in attributes
 
@@ -1013,14 +1013,14 @@ def set_precedence_constraints(tasks,):
 	# this list should be short
 	for i in range(maxi):
 		t1 = cstr_groups[keys[i]][0]
-		for j in range(i + 1, maxi,):
+		for j in range(i + 1, maxi):
 			t2 = cstr_groups[keys[j]][0]
 
 			# add the constraints based on the comparisons
-			if is_before(t1, t2,):
+			if is_before(t1, t2):
 				a = i
 				b = j
-			elif is_before(t2, t1,):
+			elif is_before(t2, t1):
 				a = j
 				b = i
 			else:
@@ -1033,11 +1033,11 @@ def set_precedence_constraints(tasks,):
 				for x in b:
 					x.run_after.update(a)
 			else:
-				group = TaskGroup(set(a), set(b),)
+				group = TaskGroup(set(a), set(b))
 				for x in b:
 					x.run_after.add(group)
 
-def funex(c,):
+def funex(c):
 	"""
 	Compiles a scriptlet expression into a Python function
 
@@ -1047,18 +1047,18 @@ def funex(c,):
 	:rtype: function
 	"""
 	dc = {}
-	exec(c, dc,)
+	exec(c, dc)
 	return dc['f']
 
 re_cond = re.compile(r'(?P<var>\w+)|(?P<or>\|)|(?P<and>&)')
 re_novar = re.compile(r'^(SRC|TGT)\W+.*?$')
-reg_act = re.compile(r'(?P<backslash>\\)|(?P<dollar>\$\$)|(?P<subst>\$\{(?P<var>\w+)(?P<code>.*?)\})', re.M,)
-def compile_fun_shell(line,):
+reg_act = re.compile(r'(?P<backslash>\\)|(?P<dollar>\$\$)|(?P<subst>\$\{(?P<var>\w+)(?P<code>.*?)\})', re.M)
+def compile_fun_shell(line):
 	"""
 	Creates a compiled function to execute a process through a sub-shell
 	"""
 	extr = []
-	def repl(match,):
+	def repl(match):
 		g = match.group
 		if g('dollar'):
 			return "$"
@@ -1068,13 +1068,13 @@ def compile_fun_shell(line,):
 			extr.append((g('var'), g('code')))
 			return "%s"
 		return None
-	line = reg_act.sub(repl, line,) or line
+	line = reg_act.sub(repl, line) or line
 	dvars = []
-	def add_dvar(x,):
+	def add_dvar(x):
 		if x not in dvars:
 			dvars.append(x)
 
-	def replc(m,):
+	def replc(m):
 		# performs substitutions and populates dvars
 		if m.group('and'):
 			return ' and '
@@ -1117,7 +1117,7 @@ def compile_fun_shell(line,):
 				app('" ".join(tsk.colon(%r, %s))' % (var, m))
 			elif meth.startswith('?'):
 				# In A?B|C output env.A if one of env.B or env.C is non-empty
-				expr = re_cond.sub(replc, meth[1:],)
+				expr = re_cond.sub(replc, meth[1:])
 				app('p(%r) if (%s) else ""' % (var, expr))
 			else:
 				call = '%s%s' % (var, meth)
@@ -1132,11 +1132,11 @@ def compile_fun_shell(line,):
 		parm = ''
 
 	c = COMPILE_TEMPLATE_SHELL % (line, parm)
-	Logs.debug('action: %s', c.strip().splitlines(),)
+	Logs.debug('action: %s', c.strip().splitlines())
 	return (funex(c), dvars)
 
-reg_act_noshell = re.compile(r"(?P<space>\s+)|(?P<subst>\$\{(?P<var>\w+)(?P<code>.*?)\})|(?P<text>([^$ \t\n\r\f\v]|\$\$)+)", re.M,)
-def compile_fun_noshell(line,):
+reg_act_noshell = re.compile(r"(?P<space>\s+)|(?P<subst>\$\{(?P<var>\w+)(?P<code>.*?)\})|(?P<text>([^$ \t\n\r\f\v]|\$\$)+)", re.M)
+def compile_fun_noshell(line):
 	"""
 	Creates a compiled function to execute a process without a sub-shell
 	"""
@@ -1145,11 +1145,11 @@ def compile_fun_noshell(line,):
 	merge = False
 	app = buf.append
 
-	def add_dvar(x,):
+	def add_dvar(x):
 		if x not in dvars:
 			dvars.append(x)
 
-	def replc(m,):
+	def replc(m):
 		# performs substitutions and populates dvars
 		if m.group('and'):
 			return ' and '
@@ -1165,7 +1165,7 @@ def compile_fun_noshell(line,):
 			merge = False
 			continue
 		elif m.group('text'):
-			app('[%r]' % m.group('text').replace('$$', '$',))
+			app('[%r]' % m.group('text').replace('$$', '$'))
 		elif m.group('subst'):
 			var = m.group('var')
 			code = m.group('code')
@@ -1199,7 +1199,7 @@ def compile_fun_noshell(line,):
 					app('tsk.colon(%r, %s)' % (var, m))
 				elif code.startswith('?'):
 					# In A?B|C output env.A if one of env.B or env.C is non-empty
-					expr = re_cond.sub(replc, code[1:],)
+					expr = re_cond.sub(replc, code[1:])
 					app('to_list(env[%r] if (%s) else [])' % (var, expr))
 				else:
 					# plain code such as ${tsk.inputs[0].abspath()}
@@ -1218,10 +1218,10 @@ def compile_fun_noshell(line,):
 
 	buf = ['lst.extend(%s)' % x for x in buf]
 	fun = COMPILE_TEMPLATE_NOSHELL % "\n\t".join(buf)
-	Logs.debug('action: %s', fun.strip().splitlines(),)
+	Logs.debug('action: %s', fun.strip().splitlines())
 	return (funex(fun), dvars)
 
-def compile_fun(line, shell=False,):
+def compile_fun(line, shell=False):
 	"""
 	Parses a string expression such as '${CC} ${SRC} -o ${TGT}' and returns a pair containing:
 
@@ -1240,21 +1240,21 @@ def compile_fun(line, shell=False,):
 	The reserved keywords ``TGT`` and ``SRC`` represent the task input and output nodes
 
 	"""
-	if isinstance(line, str,):
+	if isinstance(line, str):
 		if line.find('<') > 0 or line.find('>') > 0 or line.find('&&') > 0:
 			shell = True
 	else:
 		dvars_lst = []
 		funs_lst = []
 		for x in line:
-			if isinstance(x, str,):
-				fun, dvars = compile_fun(x, shell,)
+			if isinstance(x, str):
+				fun, dvars = compile_fun(x, shell)
 				dvars_lst += dvars
 				funs_lst.append(fun)
 			else:
 				# assume a function to let through
 				funs_lst.append(x)
-		def composed_fun(task,):
+		def composed_fun(task):
 			for x in funs_lst:
 				ret = x(task)
 				if ret:
@@ -1266,7 +1266,7 @@ def compile_fun(line, shell=False,):
 	else:
 		return compile_fun_noshell(line)
 
-def compile_sig_vars(vars,):
+def compile_sig_vars(vars):
 	"""
 	This method produces a sig_vars method suitable for subclasses that provide
 	scriptlet code in their run_str code.
@@ -1296,7 +1296,7 @@ def compile_sig_vars(vars,):
 		return funex(COMPILE_TEMPLATE_SIG_VARS % '\n\t'.join(buf))
 	return None
 
-def task_factory(name, func=None, vars=None, color='GREEN', ext_in=[], ext_out=[], before=[], after=[], shell=False, scan=None,):
+def task_factory(name, func=None, vars=None, color='GREEN', ext_in=[], ext_out=[], before=[], after=[], shell=False, scan=None):
 	"""
 	Returns a new task subclass with the function ``run`` compiled from the line given.
 
@@ -1321,12 +1321,12 @@ def task_factory(name, func=None, vars=None, color='GREEN', ext_in=[], ext_out=[
 		'scan': scan,
 	}
 
-	if isinstance(func, str,) or isinstance(func, tuple,):
+	if isinstance(func, str) or isinstance(func, tuple):
 		params['run_str'] = func
 	else:
 		params['run'] = func
 
-	cls = type(Task)(name, (Task,), params,)
+	cls = type(Task)(name, (Task,), params)
 	classes[name] = cls
 
 	if ext_in:
@@ -1369,7 +1369,7 @@ class TaskSemaphore(object):
 	Task semaphores are meant to be used by the build scheduler in the main
 	thread, so there are no guarantees of thread safety.
 	"""
-	def __init__(self, num,):
+	def __init__(self, num):
 		"""
 		:param num: maximum value of concurrent tasks
 		:type num: int
@@ -1382,7 +1382,7 @@ class TaskSemaphore(object):
 		"""Returns True if this semaphore cannot be acquired by more tasks"""
 		return len(self.locking) >= self.num
 
-	def acquire(self, tsk,):
+	def acquire(self, tsk):
 		"""
 		Mark the semaphore as used by the given task (not re-entrant).
 
@@ -1394,7 +1394,7 @@ class TaskSemaphore(object):
 			raise IndexError('Cannot lock more %r' % self.locking)
 		self.locking.add(tsk)
 
-	def release(self, tsk,):
+	def release(self, tsk):
 		"""
 		Mark the semaphore as unused by the given task.
 

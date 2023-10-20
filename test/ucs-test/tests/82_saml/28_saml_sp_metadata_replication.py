@@ -30,9 +30,9 @@ class ListenerError(Exception):
 
 def main():
     account = utils.UCSTestDomainAdminCredentials()
-    SamlSession = samltest.SamlTest(account.username, account.bindpw,)
+    SamlSession = samltest.SamlTest(account.username, account.bindpw)
     lo = utils.get_ldap_connection(admin_uldap=True)
-    master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub',)
+    master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
     master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
     cmd_disable = [
         '/usr/sbin/udm', 'saml/serviceprovider', 'modify',
@@ -79,7 +79,7 @@ def main():
         with udm_test.UCSTestUDM() as udm:
             new_identifier = 'ucs-test-sp'
             new_service_provider = {'Identifier': new_identifier, 'isActivated': 'TRUE', 'AssertionConsumerService': 'https://.de', 'rawsimplesamlSPconfig': metadata}
-            udm.create_object('saml/serviceprovider', **new_service_provider,)
+            udm.create_object('saml/serviceprovider', **new_service_provider)
 
             utils.wait_for_replication()
             if not os.path.exists(f'/etc/simplesamlphp/metadata.d/{new_identifier}.php'):
@@ -107,7 +107,8 @@ def main():
                 metadata.splitlines(),
                 metadata_new.splitlines(),
                 fromfile='old metadata',
-                tofile='new metadata',))))
+                tofile='new metadata',
+            ))))
             raise ListenerError('Metadata written by the listener differs from old metadata!')
 
 

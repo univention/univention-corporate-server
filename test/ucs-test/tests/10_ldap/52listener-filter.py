@@ -43,9 +43,9 @@ class Environment:
         self.uid = ent.pw_uid
 
     def __enter__(self) -> Environment:
-        self.tmpdir = mkdtemp(prefix='ucs-test', dir=TMPDIR,)
+        self.tmpdir = mkdtemp(prefix='ucs-test', dir=TMPDIR)
         print('I: tmpdir=%r' % (self.tmpdir,))
-        chown(self.tmpdir, self.uid, -1,)
+        chown(self.tmpdir, self.uid, -1)
 
         self.mdir = self.mkdir('module')
         self.cdir = self.mkdir('cache')
@@ -53,27 +53,27 @@ class Environment:
         self.copy_handler()
         return self
 
-    def mkdir(self, name: str,) -> str:
-        path = join(self.tmpdir, name,)
+    def mkdir(self, name: str) -> str:
+        path = join(self.tmpdir, name)
         mkdir(path)
-        chown(path, self.uid, -1,)
+        chown(path, self.uid, -1)
         return path
 
     def copy_handler(self) -> None:
-        with open(argv[0]) as source, open(join(self.mdir, 'filter.py',), 'w',) as target:
+        with open(argv[0]) as source, open(join(self.mdir, 'filter.py'), 'w') as target:
             for line in source:
                 if line.startswith('TMPDIR = '):
                     line = 'TMPDIR = %r\n' % (self.tmpdir,)
                 target.write(line)
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None,) -> None:
-        rmtree(self.tmpdir, ignore_errors=True,)
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+        rmtree(self.tmpdir, ignore_errors=True)
         self.tmpdir = None
 
 
 class Listener:
 
-    def __init__(self, ucr: Dict[str, str], env: Environment,) -> None:
+    def __init__(self, ucr: Dict[str, str], env: Environment) -> None:
         self.ucr = ucr
         self.env = env
         self.proc = None
@@ -98,7 +98,7 @@ class Listener:
             '-d', '2',
             '-i',
         ]
-        proc = Popen(cmd, close_fds=True,)
+        proc = Popen(cmd, close_fds=True)
         print('I: %d = %r' % (proc.pid, cmd))
         ret = proc.wait()
         print('I: ret=%r' % (ret,))
@@ -110,11 +110,11 @@ class Listener:
             '-d', '4',
             '-F',
         ]
-        self.proc = Popen(cmd, close_fds=True,)
+        self.proc = Popen(cmd, close_fds=True)
         print('I: %d = %r' % (self.proc.pid, cmd))
         return self
 
-    def __exit__(self, exc_type: Type[Exception] | None, exc_value: BaseException | None, traceback: TracebackType | None,) -> None:
+    def __exit__(self, exc_type: Type[Exception] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if not exc_type:
             self.wait_transactions()
         self.kill_listener()
@@ -139,7 +139,7 @@ class Listener:
     def get_master_transaction(self) -> int | None:
         hostname = self.ucr['ldap/master']
         try:
-            sock = create_connection((hostname, 6669), 60.0,)
+            sock = create_connection((hostname, 6669), 60.0)
 
             sock.send(b'Version: 3\nCapabilities: \n\n')
             sock.recv(100)
@@ -156,7 +156,7 @@ class Listener:
         return int(lines[1])
 
     def get_local_transaction(self) -> int:
-        filename = join(self.env.cdir, 'notifier_id',)
+        filename = join(self.env.cdir, 'notifier_id')
         with open(filename) as nid_file:
             nid = nid_file.read()
         return int(nid)
@@ -182,28 +182,28 @@ def main() -> None:
         handler_set(
             ['listener/cache/filter=(ou=%s)' % (UNIQUE,)],
             opts={'schedule': True},
-            quiet=False,)
+            quiet=False)
 
-        with Listener(ucr, env,) as listener, UCSTestUDM() as udm:
-            ou = udm.create_object(MODULE, name=UNIQUE,)
-            udm.modify_object(MODULE, dn=ou, description=UNIQUE,)
+        with Listener(ucr, env) as listener, UCSTestUDM() as udm:
+            ou = udm.create_object(MODULE, name=UNIQUE)
+            udm.modify_object(MODULE, dn=ou, description=UNIQUE)
             listener.wait_transactions()
             verify_ldap_object(ou)
 
-        error |= unexpected_transactions(env, ucr,)
-        error |= is_not_in_cache(env, ucr,)
+        error |= unexpected_transactions(env, ucr)
+        error |= is_not_in_cache(env, ucr)
 
     exit(1 if error else 0)
 
 
-def unexpected_transactions(env: Environment, ucr: Dict[str, str],) -> bool:
+def unexpected_transactions(env: Environment, ucr: Dict[str, str]) -> bool:
     found_add = False
     found_modify = False
     found_other = False
 
     dn = 'ou=%s,%s' % (UNIQUE, ucr['ldap/base'])
 
-    with open(join(env.tmpdir, UNIQUE,)) as log:
+    with open(join(env.tmpdir, UNIQUE)) as log:
         for line in log:
             line = line.strip()
             if line == repr((dn, True, False, 'a')):
@@ -219,18 +219,18 @@ def unexpected_transactions(env: Environment, ucr: Dict[str, str],) -> bool:
     return found_other or not found_add or not found_modify
 
 
-def is_not_in_cache(env: Environment, ucr: Dict[str, str],) -> bool:
+def is_not_in_cache(env: Environment, ucr: Dict[str, str]) -> bool:
     error = False
 
     dn = 'dn: ou=%s,%s' % (UNIQUE, ucr['ldap/base'])
 
-    dump = join(env.tmpdir, 'dump',)
+    dump = join(env.tmpdir, 'dump')
     cmd = [
         '/usr/sbin/univention-directory-listener-dump',
         '-c', env.cdir,
         '-O', dump,
     ]
-    proc = Popen(cmd, close_fds=True,)
+    proc = Popen(cmd, close_fds=True)
     print('I: %d = %r' % (proc.pid, cmd))
     proc.wait()
 
@@ -246,9 +246,9 @@ def is_not_in_cache(env: Environment, ucr: Dict[str, str],) -> bool:
     return error
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], cmd: str = '',) -> None:
-    with open(join(TMPDIR, UNIQUE,), 'a',) as log:
-        print(repr((dn, bool(new), bool(old), cmd)), file=log,)
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], cmd: str = '') -> None:
+    with open(join(TMPDIR, UNIQUE), 'a') as log:
+        print(repr((dn, bool(new), bool(old), cmd)), file=log)
 
 
 if __name__ == '__main__':

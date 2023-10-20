@@ -42,17 +42,17 @@ translation = localization.translation('univention/admin')
 _ = translation.translate
 
 
-def _str(string,):
-    if six.PY2 and not isinstance(string, bytes,):
+def _str(string):
+    if six.PY2 and not isinstance(string, bytes):
         string = string.encode('utf-8')
     return str(string)
 
 
-def _strip(string,):
+def _strip(string):
     return string.strip().strip('.:').strip()
 
 
-def _strip_and_append(string, char='.',):
+def _strip_and_append(string, char='.'):
     string = _strip(string)
     return '%s%s' % (string, char) if not string.endswith('!') else string
 
@@ -76,7 +76,7 @@ class base(Exception):
         if len(args) == 1:
             args[0] = _strip_and_append(args[0])
         elif len(args) > 1:
-            args[0] = _strip_and_append(args[0], ':',)
+            args[0] = _strip_and_append(args[0], ':')
             args[1:] = [_strip_and_append(a) for a in args[1:]]
 
         return ' '.join(args)
@@ -86,7 +86,7 @@ class objectExists(base):
     message = _('Object exists.')
 
     def __init__(self, *args, **kwargs):
-        super(objectExists, self,).__init__(*args, **kwargs,)
+        super(objectExists, self).__init__(*args, **kwargs)
         self.dn = self.args[0] if self.args else None
 
 
@@ -94,7 +94,7 @@ class noObject(base):
     message = _('No such object.')
 
     def __init__(self, *args, **kwargs):
-        super(noObject, self,).__init__(*args, **kwargs,)
+        super(noObject, self).__init__(*args, **kwargs)
         self.dn = self.args[0] if self.args else None
 
 
@@ -106,8 +106,8 @@ class ldapError(base):
     message = _('LDAP Error')
 
     def __init__(self, *args, **kwargs):
-        self.original_exception = kwargs.pop('original_exception', None,)
-        super(ldapError, self,).__init__(*args, **kwargs,)
+        self.original_exception = kwargs.pop('original_exception', None)
+        super(ldapError, self).__init__(*args, **kwargs)
 
 
 class ldapTimeout(base):
@@ -133,8 +133,8 @@ class noProperty(base):
 class valueError(base):
 
     def __init__(self, *args, **kwargs):
-        self.property = kwargs.pop('property', None,)
-        super(valueError, self,).__init__(*args, **kwargs,)
+        self.property = kwargs.pop('property', None)
+        super(valueError, self).__init__(*args, **kwargs)
 
 
 class valueMayNotChange(valueError):
@@ -162,7 +162,7 @@ class authFail(base):
 
 
 class uidAlreadyUsed(base):
-    if configRegistry.is_true('directory/manager/user_group/uniqueness', True,):
+    if configRegistry.is_true('directory/manager/user_group/uniqueness', True):
         message = _('The username is already in use as username or as groupname')
     else:
         message = _('The username is already in use')
@@ -173,7 +173,7 @@ class sidAlreadyUsed(base):
 
 
 class groupNameAlreadyUsed(base):
-    if configRegistry.is_true('directory/manager/user_group/uniqueness', True,):
+    if configRegistry.is_true('directory/manager/user_group/uniqueness', True):
         message = _('The groupname is already in use as groupname or as username')
     else:
         message = _('The groupname is already in use')
@@ -434,7 +434,7 @@ class notValidUser(base):
 class templateSyntaxError(base):
     message = _('Invalid syntax in default value. Check these templates: %s.')
 
-    def __init__(self, templates,):
+    def __init__(self, templates):
         self.templates = templates
 
 

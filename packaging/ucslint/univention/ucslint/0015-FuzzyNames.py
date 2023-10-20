@@ -37,7 +37,7 @@ from typing import Any, Dict, Iterator, List
 import univention.ucslint.base as uub
 
 
-def levenshtein(word: str, distance: int = 1, subst: str = '.',) -> Iterator[str]:
+def levenshtein(word: str, distance: int = 1, subst: str = '.') -> Iterator[str]:
     """
     Return modified list of words with given Levenshtein distance.
 
@@ -58,8 +58,8 @@ def levenshtein(word: str, distance: int = 1, subst: str = '.',) -> Iterator[str
     m_ins = (f'{word[0:i]}{subst}{word[i:]}' for i in range(n + 1))
     m_del = (f'{word[0:i]}{word[1 + i:]}' for i in range(n))
     m_swp = (f'{word[0:i]}{word[j]}{word[i + 1:j]}{word[i]}{word[j + 1:]}' for j in range(n) for i in range(j))
-    for modified in chain(m_sub, m_ins, m_del, m_swp,):
-        for result in levenshtein(modified, distance - 1,):
+    for modified in chain(m_sub, m_ins, m_del, m_swp):
+        for result in levenshtein(modified, distance - 1):
             yield result
 
 
@@ -76,7 +76,7 @@ class Trie:
         for word in args:
             self.add(word)
 
-    def add(self, word: str,) -> None:
+    def add(self, word: str) -> None:
         """
         Add new word.
 
@@ -84,11 +84,11 @@ class Trie:
         """
         ref = self.data
         for char in word:
-            ref = ref.setdefault(char, {},)
+            ref = ref.setdefault(char, {})
 
         ref[''] = None
 
-    def _pattern(self, pData: (Dict[str, Any]),) -> str:
+    def _pattern(self, pData: (Dict[str, Any])) -> str:
         """
         Recursively convert Trie structuture to regular expression.
 
@@ -119,7 +119,8 @@ class Trie:
 
         return '{}{}'.format(
             '(?:%s)' % '|'.join(alt) if len(alt) > 1 or q and not cconly else alt[0],
-            '?' if q else '',)
+            '?' if q else '',
+        )
 
     def pattern(self) -> str:
         """
@@ -135,7 +136,8 @@ UNIVENTION = ('univention', 'Univention', 'UNIVENTION')
 RE_UNIVENTION = re.compile(
     r'\b(?<![%\\])(?!{})(?:{})\b'.format(
         '|'.join(UNIVENTION),
-        Trie(*chain(*[levenshtein(word, 2,) for word in UNIVENTION])).pattern().replace('.', r'\w',),),
+        Trie(*chain(*[levenshtein(word, 2) for word in UNIVENTION])).pattern().replace('.', r'\w'),
+    ),
 )
 """Regular expression to find misspellings."""
 
@@ -172,13 +174,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         /var/lib/univentions-client-boot/
     """.split()))
 
-    def check(self, path: str,) -> None:
+    def check(self, path: str) -> None:
         super().check(path)
 
-        for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES,):
+        for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
             try:
                 with open(fn) as fd:
-                    for row, line in enumerate(fd, start=1,):
+                    for row, line in enumerate(fd, start=1):
                         origline = line
                         if self.RE_WHITELINE.match(line):
                             continue
@@ -187,7 +189,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             if self.RE_WHITEWORD.match(found):
                                 continue
                             self.debug('%s:%d: found="%s"  origline="%s"' % (fn, row, found, origline))
-                            self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % found, fn, row,)
+                            self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % found, fn, row)
             except UnicodeDecodeError:
                 # Silently skip binary files
                 pass

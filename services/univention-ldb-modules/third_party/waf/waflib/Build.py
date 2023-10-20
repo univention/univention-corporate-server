@@ -53,18 +53,18 @@ class BuildContext(Context.Context):
 	variant = ''
 
 	def __init__(self, **kw):
-		super(BuildContext, self,).__init__(**kw)
+		super(BuildContext, self).__init__(**kw)
 
 		self.is_install = 0
 		"""Non-zero value when installing or uninstalling file"""
 
-		self.top_dir = kw.get('top_dir', Context.top_dir,)
+		self.top_dir = kw.get('top_dir', Context.top_dir)
 		"""See :py:attr:`waflib.Context.top_dir`; prefer :py:attr:`waflib.Build.BuildContext.srcnode`"""
 
-		self.out_dir = kw.get('out_dir', Context.out_dir,)
+		self.out_dir = kw.get('out_dir', Context.out_dir)
 		"""See :py:attr:`waflib.Context.out_dir`; prefer :py:attr:`waflib.Build.BuildContext.bldnode`"""
 
-		self.run_dir = kw.get('run_dir', Context.run_dir,)
+		self.run_dir = kw.get('run_dir', Context.run_dir)
 		"""See :py:attr:`waflib.Context.run_dir`"""
 
 		self.launch_dir = Context.launch_dir
@@ -75,7 +75,7 @@ class BuildContext(Context.Context):
 
 		self.cache_dir = kw.get('cache_dir')
 		if not self.cache_dir:
-			self.cache_dir = os.path.join(self.out_dir, CACHE_DIR,)
+			self.cache_dir = os.path.join(self.out_dir, CACHE_DIR)
 
 		self.all_envs = {}
 		"""Map names to :py:class:`waflib.ConfigSet.ConfigSet`, the empty string must map to the default environment"""
@@ -140,15 +140,15 @@ class BuildContext(Context.Context):
 		"""
 
 		for v in SAVED_ATTRS:
-			if not hasattr(self, v,):
-				setattr(self, v, {},)
+			if not hasattr(self, v):
+				setattr(self, v, {})
 
 	def get_variant_dir(self):
 		"""Getter for the variant_dir attribute"""
 		if not self.variant:
 			return self.out_dir
-		return os.path.join(self.out_dir, os.path.normpath(self.variant),)
-	variant_dir = property(get_variant_dir, None,)
+		return os.path.join(self.out_dir, os.path.normpath(self.variant))
+	variant_dir = property(get_variant_dir, None)
 
 	def __call__(self, *k, **kw):
 		"""
@@ -170,9 +170,9 @@ class BuildContext(Context.Context):
 		:type group: string
 		"""
 		kw['bld'] = self
-		ret = TaskGen.task_gen(*k, **kw,)
+		ret = TaskGen.task_gen(*k, **kw)
 		self.task_gen_cache_names = {} # reset the cache, each time
-		self.add_to_group(ret, group=kw.get('group'),)
+		self.add_to_group(ret, group=kw.get('group'))
 		return ret
 
 	def __copy__(self):
@@ -192,13 +192,13 @@ class BuildContext(Context.Context):
 		node = self.root.find_node(self.cache_dir)
 		if not node:
 			raise Errors.WafError('The project was not configured: run "waf configure" first!')
-		lst = node.ant_glob('**/*%s' % CACHE_SUFFIX, quiet=True,)
+		lst = node.ant_glob('**/*%s' % CACHE_SUFFIX, quiet=True)
 
 		if not lst:
 			raise Errors.WafError('The cache directory is empty: reconfigure the project')
 
 		for x in lst:
-			name = x.path_from(node).replace(CACHE_SUFFIX, '',).replace('\\', '/',)
+			name = x.path_from(node).replace(CACHE_SUFFIX, '').replace('\\', '/')
 			env = ConfigSet.ConfigSet(x.abspath())
 			self.all_envs[name] = env
 			for f in env[CFG_FILES]:
@@ -240,7 +240,7 @@ class BuildContext(Context.Context):
 		* calling :py:meth:`waflib.Build.BuildContext.post_build` to call user build functions
 		"""
 
-		Logs.info("Waf: Entering directory `%s'", self.variant_dir,)
+		Logs.info("Waf: Entering directory `%s'", self.variant_dir)
 		self.recurse([self.run_dir])
 		self.pre_build()
 
@@ -252,9 +252,9 @@ class BuildContext(Context.Context):
 		finally:
 			if self.progress_bar == 1 and sys.stderr.isatty():
 				c = self.producer.processed or 1
-				m = self.progress_line(c, c, Logs.colors.BLUE, Logs.colors.NORMAL,)
-				Logs.info(m, extra={'stream': sys.stderr, 'c1': Logs.colors.cursor_off, 'c2' : Logs.colors.cursor_on},)
-			Logs.info("Waf: Leaving directory `%s'", self.variant_dir,)
+				m = self.progress_line(c, c, Logs.colors.BLUE, Logs.colors.NORMAL)
+				Logs.info(m, extra={'stream': sys.stderr, 'c1': Logs.colors.cursor_off, 'c2' : Logs.colors.cursor_on})
+			Logs.info("Waf: Leaving directory `%s'", self.variant_dir)
 		try:
 			self.producer.bld = None
 			del self.producer
@@ -267,7 +267,7 @@ class BuildContext(Context.Context):
 		Load data from a previous run, sets the attributes listed in :py:const:`waflib.Build.SAVED_ATTRS`
 		"""
 		try:
-			env = ConfigSet.ConfigSet(os.path.join(self.cache_dir, 'build.config.py',))
+			env = ConfigSet.ConfigSet(os.path.join(self.cache_dir, 'build.config.py'))
 		except EnvironmentError:
 			pass
 		else:
@@ -277,12 +277,12 @@ class BuildContext(Context.Context):
 			for t in env.tools:
 				self.setup(**t)
 
-		dbfn = os.path.join(self.variant_dir, Context.DBFILE,)
+		dbfn = os.path.join(self.variant_dir, Context.DBFILE)
 		try:
-			data = Utils.readf(dbfn, 'rb',)
+			data = Utils.readf(dbfn, 'rb')
 		except (EnvironmentError, EOFError):
 			# handle missing file/empty file
-			Logs.debug('build: Could not load the build cache %s (missing)', dbfn,)
+			Logs.debug('build: Could not load the build cache %s (missing)', dbfn)
 		else:
 			try:
 				Node.pickle_lock.acquire()
@@ -290,10 +290,10 @@ class BuildContext(Context.Context):
 				try:
 					data = cPickle.loads(data)
 				except Exception as e:
-					Logs.debug('build: Could not pickle the build cache %s: %r', dbfn, e,)
+					Logs.debug('build: Could not pickle the build cache %s: %r', dbfn, e)
 				else:
 					for x in SAVED_ATTRS:
-						setattr(self, x, data.get(x, {},),)
+						setattr(self, x, data.get(x, {}))
 			finally:
 				Node.pickle_lock.release()
 
@@ -306,28 +306,28 @@ class BuildContext(Context.Context):
 		"""
 		data = {}
 		for x in SAVED_ATTRS:
-			data[x] = getattr(self, x,)
-		db = os.path.join(self.variant_dir, Context.DBFILE,)
+			data[x] = getattr(self, x)
+		db = os.path.join(self.variant_dir, Context.DBFILE)
 
 		try:
 			Node.pickle_lock.acquire()
 			Node.Nod3 = self.node_class
-			x = cPickle.dumps(data, PROTOCOL,)
+			x = cPickle.dumps(data, PROTOCOL)
 		finally:
 			Node.pickle_lock.release()
 
-		Utils.writef(db + '.tmp', x, m='wb',)
+		Utils.writef(db + '.tmp', x, m='wb')
 
 		try:
 			st = os.stat(db)
 			os.remove(db)
 			if not Utils.is_win32: # win32 has no chown but we're paranoid
-				os.chown(db + '.tmp', st.st_uid, st.st_gid,)
+				os.chown(db + '.tmp', st.st_uid, st.st_gid)
 		except (AttributeError, OSError):
 			pass
 
 		# do not use shutil.move (copy is not thread-safe)
-		os.rename(db + '.tmp', db,)
+		os.rename(db + '.tmp', db)
 
 	def compile(self):
 		"""
@@ -339,7 +339,7 @@ class BuildContext(Context.Context):
 		Logs.debug('build: compile()')
 
 		# delegate the producer-consumer logic to another object to reduce the complexity
-		self.producer = Runner.Parallel(self, self.jobs,)
+		self.producer = Runner.Parallel(self, self.jobs)
 		self.producer.biter = self.get_build_iterator()
 		try:
 			self.producer.start()
@@ -357,7 +357,7 @@ class BuildContext(Context.Context):
 	def is_dirty(self):
 		return self.producer.dirty
 
-	def setup(self, tool, tooldir=None, funs=None,):
+	def setup(self, tool, tooldir=None, funs=None):
 		"""
 		Import waf tools defined during the configuration::
 
@@ -373,13 +373,13 @@ class BuildContext(Context.Context):
 		:type tooldir: list of string
 		:param funs: unused variable
 		"""
-		if isinstance(tool, list,):
+		if isinstance(tool, list):
 			for i in tool:
-				self.setup(i, tooldir,)
+				self.setup(i, tooldir)
 			return
 
-		module = Context.load_tool(tool, tooldir,)
-		if hasattr(module, "setup",):
+		module = Context.load_tool(tool, tooldir)
+		if hasattr(module, "setup"):
 			module.setup(self)
 
 	def get_env(self):
@@ -388,13 +388,13 @@ class BuildContext(Context.Context):
 			return self.all_envs[self.variant]
 		except KeyError:
 			return self.all_envs['']
-	def set_env(self, val,):
+	def set_env(self, val):
 		"""Setter for the env property"""
 		self.all_envs[self.variant] = val
 
-	env = property(get_env, set_env,)
+	env = property(get_env, set_env)
 
-	def add_manual_dependency(self, path, value,):
+	def add_manual_dependency(self, path, value):
 		"""
 		Adds a dependency from a node object to a value::
 
@@ -411,7 +411,7 @@ class BuildContext(Context.Context):
 		if not path:
 			raise ValueError('Invalid input path %r' % path)
 
-		if isinstance(path, Node.Node,):
+		if isinstance(path, Node.Node):
 			node = path
 		elif os.path.isabs(path):
 			node = self.root.find_resource(path)
@@ -420,7 +420,7 @@ class BuildContext(Context.Context):
 		if not node:
 			raise ValueError('Could not find the path %r' % path)
 
-		if isinstance(value, list,):
+		if isinstance(value, list):
 			self.deps_man[node].extend(value)
 		else:
 			self.deps_man[node].append(value)
@@ -434,7 +434,7 @@ class BuildContext(Context.Context):
 			self.p_ln = self.root.find_dir(self.launch_dir)
 			return self.p_ln
 
-	def hash_env_vars(self, env, vars_lst,):
+	def hash_env_vars(self, env, vars_lst):
 		"""
 		Hashes configuration set variables::
 
@@ -467,10 +467,10 @@ class BuildContext(Context.Context):
 
 		lst = [env[a] for a in vars_lst]
 		cache[idx] = ret = Utils.h_list(lst)
-		Logs.debug('envhash: %s %r', Utils.to_hex(ret), lst,)
+		Logs.debug('envhash: %s %r', Utils.to_hex(ret), lst)
 		return ret
 
-	def get_tgen_by_name(self, name,):
+	def get_tgen_by_name(self, name):
 		"""
 		Fetches a task generator by its name or its target attribute;
 		the name must be unique in a build::
@@ -499,7 +499,7 @@ class BuildContext(Context.Context):
 		except KeyError:
 			raise Errors.WafError('Could not find a task generator for the name %r' % name)
 
-	def progress_line(self, idx, total, col1, col2,):
+	def progress_line(self, idx, total, col1, col2):
 		"""
 		Computes a progress bar line displayed when running ``waf -p``
 
@@ -534,19 +534,19 @@ class BuildContext(Context.Context):
 		"""
 		Wraps :py:func:`waflib.TaskGen.declare_chain` for convenience
 		"""
-		return TaskGen.declare_chain(*k, **kw,)
+		return TaskGen.declare_chain(*k, **kw)
 
 	def pre_build(self):
 		"""Executes user-defined methods before the build starts, see :py:meth:`waflib.Build.BuildContext.add_pre_fun`"""
-		for m in getattr(self, 'pre_funs', [],):
+		for m in getattr(self, 'pre_funs', []):
 			m(self)
 
 	def post_build(self):
 		"""Executes user-defined methods after the build is successful, see :py:meth:`waflib.Build.BuildContext.add_post_fun`"""
-		for m in getattr(self, 'post_funs', [],):
+		for m in getattr(self, 'post_funs', []):
 			m(self)
 
-	def add_pre_fun(self, meth,):
+	def add_pre_fun(self, meth):
 		"""
 		Binds a callback method to execute after the scripts are read and before the build starts::
 
@@ -561,7 +561,7 @@ class BuildContext(Context.Context):
 		except AttributeError:
 			self.pre_funs = [meth]
 
-	def add_post_fun(self, meth,):
+	def add_post_fun(self, meth):
 		"""
 		Binds a callback method to execute immediately after the build is successful::
 
@@ -577,7 +577,7 @@ class BuildContext(Context.Context):
 		except AttributeError:
 			self.post_funs = [meth]
 
-	def get_group(self, x,):
+	def get_group(self, x):
 		"""
 		Returns the build group named `x`, or the current group if `x` is None
 
@@ -592,13 +592,13 @@ class BuildContext(Context.Context):
 			return self.group_names[x]
 		return self.groups[x]
 
-	def add_to_group(self, tgen, group=None,):
+	def add_to_group(self, tgen, group=None):
 		"""Adds a task or a task generator to the build; there is no attempt to remove it if it was already added."""
-		assert(isinstance(tgen, TaskGen.task_gen,) or isinstance(tgen, Task.Task,))
+		assert(isinstance(tgen, TaskGen.task_gen) or isinstance(tgen, Task.Task))
 		tgen.bld = self
 		self.get_group(group).append(tgen)
 
-	def get_group_name(self, g,):
+	def get_group_name(self, g):
 		"""
 		Returns the name of the input build group
 
@@ -607,14 +607,14 @@ class BuildContext(Context.Context):
 		:return: name
 		:rtype: string
 		"""
-		if not isinstance(g, list,):
+		if not isinstance(g, list):
 			g = self.groups[g]
 		for x in self.group_names:
 			if id(self.group_names[x]) == id(g):
 				return x
 		return ''
 
-	def get_group_idx(self, tg,):
+	def get_group_idx(self, tg):
 		"""
 		Returns the index of the group containing the task generator given as argument::
 
@@ -633,7 +633,7 @@ class BuildContext(Context.Context):
 					return i
 		return None
 
-	def add_group(self, name=None, move=True,):
+	def add_group(self, name=None, move=True):
 		"""
 		Adds a new group of tasks/task generators. By default the new group becomes
 		the default group for new task generators (make sure to create build groups in order).
@@ -645,14 +645,14 @@ class BuildContext(Context.Context):
 		:raises: :py:class:`waflib.Errors.WafError` if a group by the name given already exists
 		"""
 		if name and name in self.group_names:
-			raise Errors.WafError('add_group: name %s already present', name,)
+			raise Errors.WafError('add_group: name %s already present', name)
 		g = []
 		self.group_names[name] = g
 		self.groups.append(g)
 		if move:
 			self.current_group = len(self.groups) - 1
 
-	def set_group(self, idx,):
+	def set_group(self, idx):
 		"""
 		Sets the build group at position idx as current so that newly added
 		task generators are added to this one by default::
@@ -667,7 +667,7 @@ class BuildContext(Context.Context):
 		:param idx: group name or group index
 		:type idx: string or int
 		"""
-		if isinstance(idx, str,):
+		if isinstance(idx, str):
 			g = self.group_names[idx]
 			for i, tmp in enumerate(self.groups):
 				if id(g) == id(tmp):
@@ -732,7 +732,7 @@ class BuildContext(Context.Context):
 		Post task generators from the group indexed by self.current_group; used internally
 		by :py:meth:`waflib.Build.BuildContext.get_build_iterator`
 		"""
-		def tgpost(tg,):
+		def tgpost(tg):
 			try:
 				f = tg.post
 			except AttributeError:
@@ -758,10 +758,10 @@ class BuildContext(Context.Context):
 				ln = self.srcnode
 			elif not ln.is_child_of(self.srcnode):
 				if Logs.verbose > 1:
-					Logs.warn('CWD %s is not under %s, forcing --targets=* (run distclean?)', ln.abspath(), self.srcnode.abspath(),)
+					Logs.warn('CWD %s is not under %s, forcing --targets=* (run distclean?)', ln.abspath(), self.srcnode.abspath())
 				ln = self.srcnode
 
-			def is_post(tg, ln,):
+			def is_post(tg, ln):
 				try:
 					p = tg.path
 				except AttributeError:
@@ -774,7 +774,7 @@ class BuildContext(Context.Context):
 				for i, g in enumerate(self.groups):
 					if i > self.current_group:
 						for tg in g:
-							if is_post(tg, ln,):
+							if is_post(tg, ln):
 								return True
 
 			if self.post_mode == POST_LAZY and ln != self.srcnode:
@@ -783,10 +783,10 @@ class BuildContext(Context.Context):
 					ln = self.srcnode
 
 			for tg in self.groups[self.current_group]:
-				if is_post(tg, ln,):
+				if is_post(tg, ln):
 					tgpost(tg)
 
-	def get_tasks_group(self, idx,):
+	def get_tasks_group(self, idx):
 		"""
 		Returns all task instances for the build group at position idx,
 		used internally by :py:meth:`waflib.Build.BuildContext.get_build_iterator`
@@ -840,7 +840,7 @@ class BuildContext(Context.Context):
 			# the build stops once there are no tasks to process
 			yield []
 
-	def install_files(self, dest, files,**kw):
+	def install_files(self, dest, files, **kw):
 		"""
 		Creates a task generator to install files on the system::
 
@@ -861,14 +861,14 @@ class BuildContext(Context.Context):
 		:type postpone: bool
 		"""
 		assert(dest)
-		tg = self(features='install_task', install_to=dest, install_from=files, **kw,)
+		tg = self(features='install_task', install_to=dest, install_from=files, **kw)
 		tg.dest = tg.install_to
 		tg.type = 'install_files'
-		if not kw.get('postpone', True,):
+		if not kw.get('postpone', True):
 			tg.post()
 		return tg
 
-	def install_as(self, dest, srcfile,**kw):
+	def install_as(self, dest, srcfile, **kw):
 		"""
 		Creates a task generator to install a file on the system with a different name::
 
@@ -887,14 +887,14 @@ class BuildContext(Context.Context):
 		:type postpone: bool
 		"""
 		assert(dest)
-		tg = self(features='install_task', install_to=dest, install_from=srcfile, **kw,)
+		tg = self(features='install_task', install_to=dest, install_from=srcfile, **kw)
 		tg.dest = tg.install_to
 		tg.type = 'install_as'
-		if not kw.get('postpone', True,):
+		if not kw.get('postpone', True):
 			tg.post()
 		return tg
 
-	def symlink_as(self, dest, src,**kw):
+	def symlink_as(self, dest, src, **kw):
 		"""
 		Creates a task generator to install a symlink::
 
@@ -915,17 +915,17 @@ class BuildContext(Context.Context):
 		:type relative_trick: bool
 		"""
 		assert(dest)
-		tg = self(features='install_task', install_to=dest, install_from=src, **kw,)
+		tg = self(features='install_task', install_to=dest, install_from=src, **kw)
 		tg.dest = tg.install_to
 		tg.type = 'symlink_as'
 		tg.link = src
 		# TODO if add: self.add_to_group(tsk)
-		if not kw.get('postpone', True,):
+		if not kw.get('postpone', True):
 			tg.post()
 		return tg
 
 @TaskGen.feature('install_task')
-@TaskGen.before_method('process_rule', 'process_source',)
+@TaskGen.before_method('process_rule', 'process_source')
 def process_install_task(self):
 	"""Creates the installation task for the current task generator; uses :py:func:`waflib.Build.add_install_task` internally."""
 	self.add_install_task(**self.__dict__)
@@ -951,17 +951,17 @@ def add_install_task(self, **kw):
 			return
 
 	tsk = self.install_task = self.create_task('inst')
-	tsk.chmod = kw.get('chmod', Utils.O644,)
-	tsk.link = kw.get('link', '',) or kw.get('install_from', '',)
-	tsk.relative_trick = kw.get('relative_trick', False,)
+	tsk.chmod = kw.get('chmod', Utils.O644)
+	tsk.link = kw.get('link', '') or kw.get('install_from', '')
+	tsk.relative_trick = kw.get('relative_trick', False)
 	tsk.type = kw['type']
 	tsk.install_to = tsk.dest = kw['install_to']
 	tsk.install_from = kw['install_from']
-	tsk.relative_base = kw.get('cwd') or kw.get('relative_base', self.path,)
+	tsk.relative_base = kw.get('cwd') or kw.get('relative_base', self.path)
 	tsk.install_user = kw.get('install_user')
 	tsk.install_group = kw.get('install_group')
 	tsk.init_files()
-	if not kw.get('postpone', True,):
+	if not kw.get('postpone', True):
 		tsk.run_now()
 	return tsk
 
@@ -1025,16 +1025,16 @@ class inst(Task.Task):
 		outputs = []
 		if self.type == 'symlink_as':
 			if self.relative_trick:
-				self.link = os.path.relpath(self.link, os.path.dirname(dest),)
+				self.link = os.path.relpath(self.link, os.path.dirname(dest))
 			outputs.append(self.generator.bld.root.make_node(dest))
 		elif self.type == 'install_as':
 			outputs.append(self.generator.bld.root.make_node(dest))
 		else:
 			for y in inputs:
 				if self.relative_trick:
-					destfile = os.path.join(dest, y.path_from(self.relative_base),)
+					destfile = os.path.join(dest, y.path_from(self.relative_base))
 				else:
-					destfile = os.path.join(dest, y.name,)
+					destfile = os.path.join(dest, y.name)
 				outputs.append(self.generator.bld.root.make_node(destfile))
 		self.set_outputs(outputs)
 
@@ -1042,7 +1042,7 @@ class inst(Task.Task):
 		"""
 		Installation tasks are always executed, so this method returns either :py:const:`waflib.Task.ASK_LATER` or :py:const:`waflib.Task.RUN_ME`.
 		"""
-		ret = super(inst, self,).runnable_status()
+		ret = super(inst, self).runnable_status()
 		if ret == Task.SKIP_ME and self.generator.bld.is_install:
 			return Task.RUN_ME
 		return ret
@@ -1053,7 +1053,7 @@ class inst(Task.Task):
 		"""
 		pass
 
-	def get_install_path(self, destdir=True,):
+	def get_install_path(self, destdir=True):
 		"""
 		Returns the destination path where files will be installed, pre-pending `destdir`.
 
@@ -1061,17 +1061,17 @@ class inst(Task.Task):
 
 		:rtype: string
 		"""
-		if isinstance(self.install_to, Node.Node,):
+		if isinstance(self.install_to, Node.Node):
 			dest = self.install_to.abspath()
 		else:
-			dest = os.path.normpath(Utils.subst_vars(self.install_to, self.env,))
+			dest = os.path.normpath(Utils.subst_vars(self.install_to, self.env))
 		if not os.path.isabs(dest):
-			dest = os.path.join(self.env.PREFIX, dest,)
+			dest = os.path.join(self.env.PREFIX, dest)
 		if destdir and Options.options.destdir:
 			dest = Options.options.destdir.rstrip(os.sep) + os.sep + os.path.splitdrive(dest)[1].lstrip(os.sep)
 		return dest
 
-	def copy_fun(self, src, tgt,):
+	def copy_fun(self, src, tgt):
 		"""
 		Copies a file from src to tgt, preserving permissions and trying to work
 		around path limitations on Windows platforms. On Unix-like platforms,
@@ -1086,10 +1086,10 @@ class inst(Task.Task):
 		# kw['tsk'].source is the task that created the files in the build
 		if Utils.is_win32 and len(tgt) > 259 and not tgt.startswith('\\\\?\\'):
 			tgt = '\\\\?\\' + tgt
-		shutil.copy2(src, tgt,)
+		shutil.copy2(src, tgt)
 		self.fix_perms(tgt)
 
-	def rm_empty_dirs(self, tgt,):
+	def rm_empty_dirs(self, tgt):
 		"""
 		Removes empty folders recursively when uninstalling.
 
@@ -1116,12 +1116,12 @@ class inst(Task.Task):
 				x.parent.mkdir()
 		if self.type == 'symlink_as':
 			fun = is_install == INSTALL and self.do_link or self.do_unlink
-			fun(self.link, self.outputs[0].abspath(),)
+			fun(self.link, self.outputs[0].abspath())
 		else:
 			fun = is_install == INSTALL and self.do_install or self.do_uninstall
 			launch_node = self.generator.bld.launch_node()
-			for x, y in zip(self.inputs, self.outputs,):
-				fun(x.abspath(), y.abspath(), x.path_from(launch_node),)
+			for x, y in zip(self.inputs, self.outputs):
+				fun(x.abspath(), y.abspath(), x.path_from(launch_node))
 
 	def run_now(self):
 		"""
@@ -1135,7 +1135,7 @@ class inst(Task.Task):
 		self.run()
 		self.hasrun = Task.SUCCESS
 
-	def do_install(self, src, tgt, lbl,**kw):
+	def do_install(self, src, tgt, lbl, **kw):
 		"""
 		Copies a file from src to tgt with given file permissions. The actual copy is only performed
 		if the source and target file sizes or timestamps differ. When the copy occurs,
@@ -1166,7 +1166,7 @@ class inst(Task.Task):
 						c1 = Logs.colors.NORMAL
 						c2 = Logs.colors.BLUE
 
-						Logs.info('%s- install %s%s%s (from %s)', c1, c2, tgt, c1, lbl,)
+						Logs.info('%s- install %s%s%s (from %s)', c1, c2, tgt, c1, lbl)
 					return False
 
 		if not self.generator.bld.progress_bar:
@@ -1174,12 +1174,12 @@ class inst(Task.Task):
 			c1 = Logs.colors.NORMAL
 			c2 = Logs.colors.BLUE
 
-			Logs.info('%s+ install %s%s%s (from %s)', c1, c2, tgt, c1, lbl,)
+			Logs.info('%s+ install %s%s%s (from %s)', c1, c2, tgt, c1, lbl)
 
 		# Give best attempt at making destination overwritable,
 		# like the 'install' utility used by 'make install' does.
 		try:
-			os.chmod(tgt, Utils.O644 | stat.S_IMODE(os.stat(tgt).st_mode),)
+			os.chmod(tgt, Utils.O644 | stat.S_IMODE(os.stat(tgt).st_mode))
 		except EnvironmentError:
 			pass
 
@@ -1190,15 +1190,15 @@ class inst(Task.Task):
 			pass
 
 		try:
-			self.copy_fun(src, tgt,)
+			self.copy_fun(src, tgt)
 		except EnvironmentError as e:
 			if not os.path.exists(src):
-				Logs.error('File %r does not exist', src,)
+				Logs.error('File %r does not exist', src)
 			elif not os.path.isfile(src):
-				Logs.error('Input %r is not a file', src,)
-			raise Errors.WafError('Could not install the file %r' % tgt, e,)
+				Logs.error('Input %r is not a file', src)
+			raise Errors.WafError('Could not install the file %r' % tgt, e)
 
-	def fix_perms(self, tgt,):
+	def fix_perms(self, tgt):
 		"""
 		Change the ownership of the file/folder/link pointed by the given path
 		This looks up for `install_user` or `install_group` attributes
@@ -1213,14 +1213,14 @@ class inst(Task.Task):
 					install_user='nobody', install_group='nogroup')
 		"""
 		if not Utils.is_win32:
-			user = getattr(self, 'install_user', None,) or getattr(self.generator, 'install_user', None,)
-			group = getattr(self, 'install_group', None,) or getattr(self.generator, 'install_group', None,)
+			user = getattr(self, 'install_user', None) or getattr(self.generator, 'install_user', None)
+			group = getattr(self, 'install_group', None) or getattr(self.generator, 'install_group', None)
 			if user or group:
-				Utils.lchown(tgt, user or -1, group or -1,)
+				Utils.lchown(tgt, user or -1, group or -1)
 		if not os.path.islink(tgt):
-			os.chmod(tgt, self.chmod,)
+			os.chmod(tgt, self.chmod)
 
-	def do_link(self, src, tgt,**kw):
+	def do_link(self, src, tgt, **kw):
 		"""
 		Creates a symlink from tgt to src.
 
@@ -1233,7 +1233,7 @@ class inst(Task.Task):
 			if not self.generator.bld.progress_bar:
 				c1 = Logs.colors.NORMAL
 				c2 = Logs.colors.BLUE
-				Logs.info('%s- symlink %s%s%s (to %s)', c1, c2, tgt, c1, src,)
+				Logs.info('%s- symlink %s%s%s (to %s)', c1, c2, tgt, c1, src)
 		else:
 			try:
 				os.remove(tgt)
@@ -1242,32 +1242,32 @@ class inst(Task.Task):
 			if not self.generator.bld.progress_bar:
 				c1 = Logs.colors.NORMAL
 				c2 = Logs.colors.BLUE
-				Logs.info('%s+ symlink %s%s%s (to %s)', c1, c2, tgt, c1, src,)
-			os.symlink(src, tgt,)
+				Logs.info('%s+ symlink %s%s%s (to %s)', c1, c2, tgt, c1, src)
+			os.symlink(src, tgt)
 			self.fix_perms(tgt)
 
-	def do_uninstall(self, src, tgt, lbl,**kw):
+	def do_uninstall(self, src, tgt, lbl, **kw):
 		"""
 		See :py:meth:`waflib.Build.inst.do_install`
 		"""
 		if not self.generator.bld.progress_bar:
 			c1 = Logs.colors.NORMAL
 			c2 = Logs.colors.BLUE
-			Logs.info('%s- remove %s%s%s', c1, c2, tgt, c1,)
+			Logs.info('%s- remove %s%s%s', c1, c2, tgt, c1)
 
 		#self.uninstall.append(tgt)
 		try:
 			os.remove(tgt)
 		except OSError as e:
 			if e.errno != errno.ENOENT:
-				if not getattr(self, 'uninstall_error', None,):
+				if not getattr(self, 'uninstall_error', None):
 					self.uninstall_error = True
 					Logs.warn('build: some files could not be uninstalled (retry with -vv to list them)')
 				if Logs.verbose > 1:
-					Logs.warn('Could not remove %s (error code %r)', e.filename, e.errno,)
+					Logs.warn('Could not remove %s (error code %r)', e.filename, e.errno)
 		self.rm_empty_dirs(tgt)
 
-	def do_unlink(self, src, tgt,**kw):
+	def do_unlink(self, src, tgt, **kw):
 		"""
 		See :py:meth:`waflib.Build.inst.do_link`
 		"""
@@ -1275,7 +1275,7 @@ class inst(Task.Task):
 			if not self.generator.bld.progress_bar:
 				c1 = Logs.colors.NORMAL
 				c2 = Logs.colors.BLUE
-				Logs.info('%s- remove %s%s%s', c1, c2, tgt, c1,)
+				Logs.info('%s- remove %s%s%s', c1, c2, tgt, c1)
 			os.remove(tgt)
 		except OSError:
 			pass
@@ -1286,7 +1286,7 @@ class InstallContext(BuildContext):
 	cmd = 'install'
 
 	def __init__(self, **kw):
-		super(InstallContext, self,).__init__(**kw)
+		super(InstallContext, self).__init__(**kw)
 		self.is_install = INSTALL
 
 class UninstallContext(InstallContext):
@@ -1294,7 +1294,7 @@ class UninstallContext(InstallContext):
 	cmd = 'uninstall'
 
 	def __init__(self, **kw):
-		super(UninstallContext, self,).__init__(**kw)
+		super(UninstallContext, self).__init__(**kw)
 		self.is_install = UNINSTALL
 
 class CleanContext(BuildContext):
@@ -1328,7 +1328,7 @@ class CleanContext(BuildContext):
 		"""
 		Logs.debug('build: clean called')
 
-		if hasattr(self, 'clean_files',):
+		if hasattr(self, 'clean_files'):
 			for n in self.clean_files:
 				n.delete()
 		elif self.bldnode != self.srcnode:
@@ -1337,7 +1337,7 @@ class CleanContext(BuildContext):
 			for env in self.all_envs.values():
 				lst.extend(self.root.find_or_declare(f) for f in env[CFG_FILES])
 			excluded_dirs = '.lock* *conf_check_*/** config.log %s/*' % CACHE_DIR
-			for n in self.bldnode.ant_glob('**/*', excl=excluded_dirs, quiet=True,):
+			for n in self.bldnode.ant_glob('**/*', excl=excluded_dirs, quiet=True):
 				if n in lst:
 					continue
 				n.delete()
@@ -1346,7 +1346,7 @@ class CleanContext(BuildContext):
 		for v in SAVED_ATTRS:
 			if v == 'root':
 				continue
-			setattr(self, v, {},)
+			setattr(self, v, {})
 
 class ListContext(BuildContext):
 	'''lists the targets to execute'''
@@ -1395,19 +1395,19 @@ class ListContext(BuildContext):
 
 			# Support displaying the description for the target
 			# if it was set on the tgen
-			descript = getattr(tgen, 'description', '',)
+			descript = getattr(tgen, 'description', '')
 			if descript:
 				target = target.ljust(line_just)
 				descript = ': %s' % descript
 
-			Logs.pprint('GREEN', target, label=descript,)
+			Logs.pprint('GREEN', target, label=descript)
 
 class StepContext(BuildContext):
 	'''executes tasks in a step-by-step fashion, for debugging'''
 	cmd = 'step'
 
 	def __init__(self, **kw):
-		super(StepContext, self,).__init__(**kw)
+		super(StepContext, self).__init__(**kw)
 		self.files = Options.options.files
 
 	def compile(self):
@@ -1443,25 +1443,25 @@ class StepContext(BuildContext):
 			for pat in self.files.split(','):
 				matcher = self.get_matcher(pat)
 				for tg in g:
-					if isinstance(tg, Task.Task,):
+					if isinstance(tg, Task.Task):
 						lst = [tg]
 					else:
 						lst = tg.tasks
 					for tsk in lst:
 						do_exec = False
 						for node in tsk.inputs:
-							if matcher(node, output=False,):
+							if matcher(node, output=False):
 								do_exec = True
 								break
 						for node in tsk.outputs:
-							if matcher(node, output=True,):
+							if matcher(node, output=True):
 								do_exec = True
 								break
 						if do_exec:
 							ret = tsk.run()
-							Logs.info('%s -> exit %r', tsk, ret,)
+							Logs.info('%s -> exit %r', tsk, ret)
 
-	def get_matcher(self, pat,):
+	def get_matcher(self, pat):
 		"""
 		Converts a step pattern into a function
 
@@ -1474,10 +1474,10 @@ class StepContext(BuildContext):
 		out = True
 		if pat.startswith('in:'):
 			out = False
-			pat = pat.replace('in:', '',)
+			pat = pat.replace('in:', '')
 		elif pat.startswith('out:'):
 			inn = False
-			pat = pat.replace('out:', '',)
+			pat = pat.replace('out:', '')
 
 		anode = self.root.find_node(pat)
 		pattern = None
@@ -1488,7 +1488,7 @@ class StepContext(BuildContext):
 				pat = '%s$' % pat
 			pattern = re.compile(pat)
 
-		def match(node, output,):
+		def match(node, output):
 			if output and not out:
 				return False
 			if not output and not inn:

@@ -21,7 +21,7 @@ try:
 except ImportError:
 
 	class AnsiTerm(object):
-		def __init__(self, stream,):
+		def __init__(self, stream):
 			self.stream = stream
 			try:
 				self.errors = self.stream.errors
@@ -29,7 +29,7 @@ except ImportError:
 				pass # python 2.5
 			self.encoding = self.stream.encoding
 
-		def write(self, txt,):
+		def write(self, txt):
 			try:
 				wlock.acquire()
 				self.stream.write(txt)
@@ -64,7 +64,7 @@ else:
 	except NameError:
 		_type = str
 
-	to_int = lambda number, default,: number and int(number) or default
+	to_int = lambda number, default: number and int(number) or default
 
 	STD_OUTPUT_HANDLE = -11
 	STD_ERROR_HANDLE = -12
@@ -88,7 +88,7 @@ else:
 		"""
 		emulate a vt100 terminal in cmd.exe
 		"""
-		def __init__(self, s,):
+		def __init__(self, s):
 			self.stream = s
 			try:
 				self.errors = s.errors
@@ -103,125 +103,125 @@ else:
 			self._sbinfo = CONSOLE_SCREEN_BUFFER_INFO()
 
 			self._csinfo = CONSOLE_CURSOR_INFO()
-			windll.kernel32.GetConsoleCursorInfo(self.hconsole, byref(self._csinfo),)
+			windll.kernel32.GetConsoleCursorInfo(self.hconsole, byref(self._csinfo))
 
 			# just to double check that the console is usable
 			self._orig_sbinfo = CONSOLE_SCREEN_BUFFER_INFO()
-			r = windll.kernel32.GetConsoleScreenBufferInfo(self.hconsole, byref(self._orig_sbinfo),)
+			r = windll.kernel32.GetConsoleScreenBufferInfo(self.hconsole, byref(self._orig_sbinfo))
 			self._isatty = r == 1
 
 		def screen_buffer_info(self):
 			"""
 			Updates self._sbinfo and returns it
 			"""
-			windll.kernel32.GetConsoleScreenBufferInfo(self.hconsole, byref(self._sbinfo),)
+			windll.kernel32.GetConsoleScreenBufferInfo(self.hconsole, byref(self._sbinfo))
 			return self._sbinfo
 
-		def clear_line(self, param,):
+		def clear_line(self, param):
 			mode = param and int(param) or 0
 			sbinfo = self.screen_buffer_info()
 			if mode == 1: # Clear from beginning of line to cursor position
-				line_start = COORD(0, sbinfo.CursorPosition.Y,)
+				line_start = COORD(0, sbinfo.CursorPosition.Y)
 				line_length = sbinfo.Size.X
 			elif mode == 2: # Clear entire line
-				line_start = COORD(sbinfo.CursorPosition.X, sbinfo.CursorPosition.Y,)
+				line_start = COORD(sbinfo.CursorPosition.X, sbinfo.CursorPosition.Y)
 				line_length = sbinfo.Size.X - sbinfo.CursorPosition.X
 			else: # Clear from cursor position to end of line
 				line_start = sbinfo.CursorPosition
 				line_length = sbinfo.Size.X - sbinfo.CursorPosition.X
 			chars_written = c_ulong()
-			windll.kernel32.FillConsoleOutputCharacterW(self.hconsole, c_wchar(' '), line_length, line_start, byref(chars_written),)
-			windll.kernel32.FillConsoleOutputAttribute(self.hconsole, sbinfo.Attributes, line_length, line_start, byref(chars_written),)
+			windll.kernel32.FillConsoleOutputCharacterW(self.hconsole, c_wchar(' '), line_length, line_start, byref(chars_written))
+			windll.kernel32.FillConsoleOutputAttribute(self.hconsole, sbinfo.Attributes, line_length, line_start, byref(chars_written))
 
-		def clear_screen(self, param,):
-			mode = to_int(param, 0,)
+		def clear_screen(self, param):
+			mode = to_int(param, 0)
 			sbinfo = self.screen_buffer_info()
 			if mode == 1: # Clear from beginning of screen to cursor position
-				clear_start = COORD(0, 0,)
+				clear_start = COORD(0, 0)
 				clear_length = sbinfo.CursorPosition.X * sbinfo.CursorPosition.Y
 			elif mode == 2: # Clear entire screen and return cursor to home
-				clear_start = COORD(0, 0,)
+				clear_start = COORD(0, 0)
 				clear_length = sbinfo.Size.X * sbinfo.Size.Y
-				windll.kernel32.SetConsoleCursorPosition(self.hconsole, clear_start,)
+				windll.kernel32.SetConsoleCursorPosition(self.hconsole, clear_start)
 			else: # Clear from cursor position to end of screen
 				clear_start = sbinfo.CursorPosition
 				clear_length = ((sbinfo.Size.X - sbinfo.CursorPosition.X) + sbinfo.Size.X * (sbinfo.Size.Y - sbinfo.CursorPosition.Y))
 			chars_written = c_ulong()
-			windll.kernel32.FillConsoleOutputCharacterW(self.hconsole, c_wchar(' '), clear_length, clear_start, byref(chars_written),)
-			windll.kernel32.FillConsoleOutputAttribute(self.hconsole, sbinfo.Attributes, clear_length, clear_start, byref(chars_written),)
+			windll.kernel32.FillConsoleOutputCharacterW(self.hconsole, c_wchar(' '), clear_length, clear_start, byref(chars_written))
+			windll.kernel32.FillConsoleOutputAttribute(self.hconsole, sbinfo.Attributes, clear_length, clear_start, byref(chars_written))
 
-		def push_cursor(self, param,):
+		def push_cursor(self, param):
 			sbinfo = self.screen_buffer_info()
 			self.cursor_history.append(sbinfo.CursorPosition)
 
-		def pop_cursor(self, param,):
+		def pop_cursor(self, param):
 			if self.cursor_history:
 				old_pos = self.cursor_history.pop()
-				windll.kernel32.SetConsoleCursorPosition(self.hconsole, old_pos,)
+				windll.kernel32.SetConsoleCursorPosition(self.hconsole, old_pos)
 
-		def set_cursor(self, param,):
+		def set_cursor(self, param):
 			y, sep, x = param.partition(';')
-			x = to_int(x, 1,) - 1
-			y = to_int(y, 1,) - 1
+			x = to_int(x, 1) - 1
+			y = to_int(y, 1) - 1
 			sbinfo = self.screen_buffer_info()
 			new_pos = COORD(
-				min(max(0, x,), sbinfo.Size.X,),
-				min(max(0, y,), sbinfo.Size.Y,),
+				min(max(0, x), sbinfo.Size.X),
+				min(max(0, y), sbinfo.Size.Y)
 			)
-			windll.kernel32.SetConsoleCursorPosition(self.hconsole, new_pos,)
+			windll.kernel32.SetConsoleCursorPosition(self.hconsole, new_pos)
 
-		def set_column(self, param,):
-			x = to_int(param, 1,) - 1
+		def set_column(self, param):
+			x = to_int(param, 1) - 1
 			sbinfo = self.screen_buffer_info()
 			new_pos = COORD(
-				min(max(0, x,), sbinfo.Size.X,),
-				sbinfo.CursorPosition.Y,
+				min(max(0, x), sbinfo.Size.X),
+				sbinfo.CursorPosition.Y
 			)
-			windll.kernel32.SetConsoleCursorPosition(self.hconsole, new_pos,)
+			windll.kernel32.SetConsoleCursorPosition(self.hconsole, new_pos)
 
-		def move_cursor(self, x_offset=0, y_offset=0,):
+		def move_cursor(self, x_offset=0, y_offset=0):
 			sbinfo = self.screen_buffer_info()
 			new_pos = COORD(
-				min(max(0, sbinfo.CursorPosition.X + x_offset,), sbinfo.Size.X,),
-				min(max(0, sbinfo.CursorPosition.Y + y_offset,), sbinfo.Size.Y,),
+				min(max(0, sbinfo.CursorPosition.X + x_offset), sbinfo.Size.X),
+				min(max(0, sbinfo.CursorPosition.Y + y_offset), sbinfo.Size.Y)
 			)
-			windll.kernel32.SetConsoleCursorPosition(self.hconsole, new_pos,)
+			windll.kernel32.SetConsoleCursorPosition(self.hconsole, new_pos)
 
-		def move_up(self, param,):
-			self.move_cursor(y_offset = -to_int(param, 1,))
+		def move_up(self, param):
+			self.move_cursor(y_offset = -to_int(param, 1))
 
-		def move_down(self, param,):
-			self.move_cursor(y_offset = to_int(param, 1,))
+		def move_down(self, param):
+			self.move_cursor(y_offset = to_int(param, 1))
 
-		def move_left(self, param,):
-			self.move_cursor(x_offset = -to_int(param, 1,))
+		def move_left(self, param):
+			self.move_cursor(x_offset = -to_int(param, 1))
 
-		def move_right(self, param,):
-			self.move_cursor(x_offset = to_int(param, 1,))
+		def move_right(self, param):
+			self.move_cursor(x_offset = to_int(param, 1))
 
-		def next_line(self, param,):
+		def next_line(self, param):
 			sbinfo = self.screen_buffer_info()
 			self.move_cursor(
 				x_offset = -sbinfo.CursorPosition.X,
-				y_offset = to_int(param, 1,),
+				y_offset = to_int(param, 1)
 			)
 
-		def prev_line(self, param,):
+		def prev_line(self, param):
 			sbinfo = self.screen_buffer_info()
 			self.move_cursor(
 				x_offset = -sbinfo.CursorPosition.X,
-				y_offset = -to_int(param, 1,),
+				y_offset = -to_int(param, 1)
 			)
 
-		def rgb2bgr(self, c,):
+		def rgb2bgr(self, c):
 			return ((c&1) << 2) | (c&2) | ((c&4)>>2)
 
-		def set_color(self, param,):
+		def set_color(self, param):
 			cols = param.split(';')
 			sbinfo = self.screen_buffer_info()
 			attr = sbinfo.Attributes
 			for c in cols:
-				c = to_int(c, 0,)
+				c = to_int(c, 0)
 				if 29 < c < 38: # fgcolor
 					attr = (attr & 0xfff0) | self.rgb2bgr(c - 30)
 				elif 39 < c < 48: # bgcolor
@@ -235,15 +235,15 @@ else:
 				elif c == 7: # negative
 					attr = (attr & 0xff88) | ((attr & 0x70) >> 4) | ((attr & 0x07) << 4)
 
-			windll.kernel32.SetConsoleTextAttribute(self.hconsole, attr,)
+			windll.kernel32.SetConsoleTextAttribute(self.hconsole, attr)
 
-		def show_cursor(self,param,):
+		def show_cursor(self,param):
 			self._csinfo.bVisible = 1
-			windll.kernel32.SetConsoleCursorInfo(self.hconsole, byref(self._csinfo),)
+			windll.kernel32.SetConsoleCursorInfo(self.hconsole, byref(self._csinfo))
 
-		def hide_cursor(self,param,):
+		def hide_cursor(self,param):
 			self._csinfo.bVisible = 0
-			windll.kernel32.SetConsoleCursorInfo(self.hconsole, byref(self._csinfo),)
+			windll.kernel32.SetConsoleCursorInfo(self.hconsole, byref(self._csinfo))
 
 		ansi_command_table = {
 			'A': move_up,
@@ -265,7 +265,7 @@ else:
 		}
 		# Match either the escape sequence or text not containing escape sequence
 		ansi_tokens = re.compile(r'(?:\x1b\[([0-9?;]*)([a-zA-Z])|([^\x1b]+))')
-		def write(self, text,):
+		def write(self, text):
 			try:
 				wlock.acquire()
 				if self._isatty:
@@ -273,7 +273,7 @@ else:
 						if cmd:
 							cmd_func = self.ansi_command_table.get(cmd)
 							if cmd_func:
-								cmd_func(self, param,)
+								cmd_func(self, param)
 						else:
 							self.writeconsole(txt)
 				else:
@@ -283,10 +283,10 @@ else:
 			finally:
 				wlock.release()
 
-		def writeconsole(self, txt,):
+		def writeconsole(self, txt):
 			chars_written = c_ulong()
 			writeconsole = windll.kernel32.WriteConsoleA
-			if isinstance(txt, _type,):
+			if isinstance(txt, _type):
 				writeconsole = windll.kernel32.WriteConsoleW
 
 			# MSDN says that there is a shared buffer of 64 KB for the console
@@ -295,9 +295,9 @@ else:
 			todo = len(txt)
 			chunk = 32<<10
 			while todo != 0:
-				doing = min(chunk, todo,)
+				doing = min(chunk, todo)
 				buf = txt[done:done+doing]
-				r = writeconsole(self.hconsole, buf, doing, byref(chars_written), None,)
+				r = writeconsole(self.hconsole, buf, doing, byref(chars_written), None)
 				if r == 0:
 					chunk >>= 1
 					continue
@@ -319,7 +319,7 @@ else:
 		console = windll.kernel32.GetStdHandle(handle)
 		sbinfo = CONSOLE_SCREEN_BUFFER_INFO()
 		def get_term_cols():
-			windll.kernel32.GetConsoleScreenBufferInfo(console, byref(sbinfo),)
+			windll.kernel32.GetConsoleScreenBufferInfo(console, byref(sbinfo))
 			# Issue 1401 - the progress bar cannot reach the last character
 			return sbinfo.Size.X - 1
 
@@ -329,10 +329,10 @@ try:
 except ImportError:
 	pass
 else:
-	if (sys.stdout.isatty() or sys.stderr.isatty()) and os.environ.get('TERM', '',) not in ('dumb', 'emacs'):
+	if (sys.stdout.isatty() or sys.stderr.isatty()) and os.environ.get('TERM', '') not in ('dumb', 'emacs'):
 		FD = sys.stdout.isatty() and sys.stdout.fileno() or sys.stderr.fileno()
 		def fun():
-			return struct.unpack("HHHH", fcntl.ioctl(FD, termios.TIOCGWINSZ, struct.pack("HHHH", 0, 0, 0, 0,),),)[1]
+			return struct.unpack("HHHH", fcntl.ioctl(FD, termios.TIOCGWINSZ, struct.pack("HHHH", 0, 0, 0, 0)))[1]
 		try:
 			fun()
 		except Exception as e:

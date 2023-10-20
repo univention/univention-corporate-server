@@ -13,7 +13,7 @@ import waflib.Node
 if sys.hexversion > 0x3040000:
 	import types
 	class imp(object):
-		new_module = lambda x,: types.ModuleType(x)
+		new_module = lambda x: types.ModuleType(x)
 else:
 	import imp
 
@@ -80,7 +80,7 @@ List of :py:class:`waflib.Context.Context` subclasses that can be used as waf co
 are added automatically by a metaclass.
 """
 
-def create_context(cmd_name,*k, **kw):
+def create_context(cmd_name, *k, **kw):
 	"""
 	Returns a new :py:class:`waflib.Context.Context` instance corresponding to the given command.
 	Used in particular by :py:func:`waflib.Scripting.run_command`
@@ -96,8 +96,8 @@ def create_context(cmd_name,*k, **kw):
 	"""
 	for x in classes:
 		if x.cmd == cmd_name:
-			return x(*k, **kw,)
-	ctx = Context(*k, **kw,)
+			return x(*k, **kw)
+	ctx = Context(*k, **kw)
 	ctx.fun = cmd_name
 	return ctx
 
@@ -107,8 +107,8 @@ class store_context(type):
 	Context classes must provide an attribute 'cmd' representing the command name, and a function
 	attribute 'fun' representing the function name that the command uses.
 	"""
-	def __init__(cls, name, bases, dct,):
-		super(store_context, cls,).__init__(name, bases, dct,)
+	def __init__(cls, name, bases, dct):
+		super(store_context, cls).__init__(name, bases, dct)
 		name = cls.__name__
 
 		if name in ('ctx', 'Context'):
@@ -119,12 +119,12 @@ class store_context(type):
 		except AttributeError:
 			raise Errors.WafError('Missing command for the context class %r (cmd)' % name)
 
-		if not getattr(cls, 'fun', None,):
+		if not getattr(cls, 'fun', None):
 			cls.fun = cls.cmd
 
-		classes.insert(0, cls,)
+		classes.insert(0, cls)
 
-ctx = store_context('ctx', (object,), {},)
+ctx = store_context('ctx', (object,), {})
 """Base class for all :py:class:`waflib.Context.Context` classes"""
 
 class Context(ctx):
@@ -164,11 +164,11 @@ class Context(ctx):
 			rd = run_dir
 
 		# binds the context to the nodes in use to avoid a context singleton
-		self.node_class = type('Nod3', (waflib.Node.Node,), {},)
+		self.node_class = type('Nod3', (waflib.Node.Node,), {})
 		self.node_class.__module__ = 'waflib.Node'
 		self.node_class.ctx = self
 
-		self.root = self.node_class('', None,)
+		self.root = self.node_class('', None)
 		self.cur_script = None
 		self.path = self.root.find_dir(rd)
 
@@ -186,9 +186,9 @@ class Context(ctx):
 			pass
 		else:
 			Logs.free_logger(logger)
-			delattr(self, 'logger',)
+			delattr(self, 'logger')
 
-	def load(self, tool_list,*k, **kw):
+	def load(self, tool_list, *k, **kw):
 		"""
 		Loads a Waf tool as a module, and try calling the function named :py:const:`waflib.Context.Context.fun`
 		from it.  A ``tooldir`` argument may be provided as a list of module paths.
@@ -197,12 +197,12 @@ class Context(ctx):
 		:type tool_list: list of string or space-separated string
 		"""
 		tools = Utils.to_list(tool_list)
-		path = Utils.to_list(kw.get('tooldir', '',))
-		with_sys_path = kw.get('with_sys_path', True,)
+		path = Utils.to_list(kw.get('tooldir', ''))
+		with_sys_path = kw.get('with_sys_path', True)
 
 		for t in tools:
-			module = load_tool(t, path, with_sys_path=with_sys_path,)
-			fun = getattr(module, kw.get('name', self.fun,), None,)
+			module = load_tool(t, path, with_sys_path=with_sys_path)
+			fun = getattr(module, kw.get('name', self.fun), None)
 			if fun:
 				fun(self)
 
@@ -213,7 +213,7 @@ class Context(ctx):
 		"""
 		self.recurse([os.path.dirname(g_module.root_path)])
 
-	def pre_recurse(self, node,):
+	def pre_recurse(self, node):
 		"""
 		Method executed immediately before a folder is read by :py:meth:`waflib.Context.Context.recurse`.
 		The current script is bound as a Node object on ``self.cur_script``, and the current path
@@ -227,7 +227,7 @@ class Context(ctx):
 		self.cur_script = node
 		self.path = node.parent
 
-	def post_recurse(self, node,):
+	def post_recurse(self, node):
 		"""
 		Restores ``self.cur_script`` and ``self.path`` right after :py:meth:`waflib.Context.Context.recurse` terminates.
 
@@ -238,7 +238,7 @@ class Context(ctx):
 		if self.cur_script:
 			self.path = self.cur_script.parent
 
-	def recurse(self, dirs, name=None, mandatory=True, once=True, encoding=None,):
+	def recurse(self, dirs, name=None, mandatory=True, once=True, encoding=None):
 		"""
 		Runs user-provided functions from the supplied list of directories.
 		The directories can be either absolute, or relative to the directory
@@ -266,9 +266,9 @@ class Context(ctx):
 
 			if not os.path.isabs(d):
 				# absolute paths only
-				d = os.path.join(self.path.abspath(), d,)
+				d = os.path.join(self.path.abspath(), d)
 
-			WSCRIPT     = os.path.join(d, WSCRIPT_FILE,)
+			WSCRIPT     = os.path.join(d, WSCRIPT_FILE)
 			WSCRIPT_FUN = WSCRIPT + '_' + (name or self.fun)
 
 			node = self.root.find_node(WSCRIPT_FUN)
@@ -276,8 +276,8 @@ class Context(ctx):
 				cache[node] = True
 				self.pre_recurse(node)
 				try:
-					function_code = node.read('r', encoding,)
-					exec(compile(function_code, node.abspath(), 'exec',), self.exec_dict,)
+					function_code = node.read('r', encoding)
+					exec(compile(function_code, node.abspath(), 'exec'), self.exec_dict)
 				finally:
 					self.post_recurse(node)
 			elif not node:
@@ -287,8 +287,8 @@ class Context(ctx):
 					cache[tup] = True
 					self.pre_recurse(node)
 					try:
-						wscript_module = load_module(node.abspath(), encoding=encoding,)
-						user_function = getattr(wscript_module, (name or self.fun), None,)
+						wscript_module = load_module(node.abspath(), encoding=encoding)
+						user_function = getattr(wscript_module, (name or self.fun), None)
 						if not user_function:
 							if not mandatory:
 								continue
@@ -305,16 +305,16 @@ class Context(ctx):
 						raise Errors.WafError('Cannot read the folder %r' % d)
 					raise Errors.WafError('No wscript file in directory %s' % d)
 
-	def log_command(self, cmd, kw,):
+	def log_command(self, cmd, kw):
 		if Logs.verbose:
 			fmt = os.environ.get('WAF_CMD_FORMAT')
 			if fmt == 'string':
-				if not isinstance(cmd, str,):
+				if not isinstance(cmd, str):
 					cmd = Utils.shell_escape(cmd)
-			Logs.debug('runner: %r', cmd,)
-			Logs.debug('runner_env: kw=%s', kw,)
+			Logs.debug('runner: %r', cmd)
+			Logs.debug('runner_env: kw=%s', kw)
 
-	def exec_command(self, cmd,**kw):
+	def exec_command(self, cmd, **kw):
 		"""
 		Runs an external process and returns the exit status::
 
@@ -336,8 +336,8 @@ class Context(ctx):
 		:raises: :py:class:`waflib.Errors.WafError` in case of execution failure
 		"""
 		subprocess = Utils.subprocess
-		kw['shell'] = isinstance(cmd, str,)
-		self.log_command(cmd, kw,)
+		kw['shell'] = isinstance(cmd, str)
+		self.log_command(cmd, kw)
 
 		if self.logger:
 			self.logger.info(cmd)
@@ -364,34 +364,34 @@ class Context(ctx):
 			del kw['input']
 
 		if 'cwd' in kw:
-			if not isinstance(kw['cwd'], str,):
+			if not isinstance(kw['cwd'], str):
 				kw['cwd'] = kw['cwd'].abspath()
 
-		encoding = kw.pop('decode_as', default_encoding,)
+		encoding = kw.pop('decode_as', default_encoding)
 
 		try:
-			ret, out, err = Utils.run_process(cmd, kw, cargs,)
+			ret, out, err = Utils.run_process(cmd, kw, cargs)
 		except Exception as e:
-			raise Errors.WafError('Execution failure: %s' % str(e), ex=e,)
+			raise Errors.WafError('Execution failure: %s' % str(e), ex=e)
 
 		if out:
-			if not isinstance(out, str,):
-				out = out.decode(encoding, errors='replace',)
+			if not isinstance(out, str):
+				out = out.decode(encoding, errors='replace')
 			if self.logger:
-				self.logger.debug('out: %s', out,)
+				self.logger.debug('out: %s', out)
 			else:
-				Logs.info(out, extra={'stream':sys.stdout, 'c1': ''},)
+				Logs.info(out, extra={'stream':sys.stdout, 'c1': ''})
 		if err:
-			if not isinstance(err, str,):
-				err = err.decode(encoding, errors='replace',)
+			if not isinstance(err, str):
+				err = err.decode(encoding, errors='replace')
 			if self.logger:
 				self.logger.error('err: %s' % err)
 			else:
-				Logs.info(err, extra={'stream':sys.stderr, 'c1': ''},)
+				Logs.info(err, extra={'stream':sys.stderr, 'c1': ''})
 
 		return ret
 
-	def cmd_and_log(self, cmd,**kw):
+	def cmd_and_log(self, cmd, **kw):
 		"""
 		Executes a process and returns stdout/stderr if the execution is successful.
 		An exception is thrown when the exit status is non-0. In that case, both stderr and stdout
@@ -416,11 +416,11 @@ class Context(ctx):
 		:raises: :py:class:`waflib.Errors.WafError` in case of execution failure; stdout/stderr/returncode are bound to the exception object
 		"""
 		subprocess = Utils.subprocess
-		kw['shell'] = isinstance(cmd, str,)
-		self.log_command(cmd, kw,)
+		kw['shell'] = isinstance(cmd, str)
+		self.log_command(cmd, kw)
 
-		quiet = kw.pop('quiet', None,)
-		to_ret = kw.pop('output', STDOUT,)
+		quiet = kw.pop('quiet', None)
+		to_ret = kw.pop('output', STDOUT)
 
 		if Logs.verbose and not kw['shell'] and not Utils.check_exe(cmd[0]):
 			raise Errors.WafError('Program %r not found!' % cmd[0])
@@ -443,20 +443,20 @@ class Context(ctx):
 			del kw['input']
 
 		if 'cwd' in kw:
-			if not isinstance(kw['cwd'], str,):
+			if not isinstance(kw['cwd'], str):
 				kw['cwd'] = kw['cwd'].abspath()
 
-		encoding = kw.pop('decode_as', default_encoding,)
+		encoding = kw.pop('decode_as', default_encoding)
 
 		try:
-			ret, out, err = Utils.run_process(cmd, kw, cargs,)
+			ret, out, err = Utils.run_process(cmd, kw, cargs)
 		except Exception as e:
-			raise Errors.WafError('Execution failure: %s' % str(e), ex=e,)
+			raise Errors.WafError('Execution failure: %s' % str(e), ex=e)
 
-		if not isinstance(out, str,):
-			out = out.decode(encoding, errors='replace',)
-		if not isinstance(err, str,):
-			err = err.decode(encoding, errors='replace',)
+		if not isinstance(out, str):
+			out = out.decode(encoding, errors='replace')
+		if not isinstance(err, str):
+			err = err.decode(encoding, errors='replace')
 
 		if out and quiet != STDOUT and quiet != BOTH:
 			self.to_log('out: %s' % out)
@@ -476,7 +476,7 @@ class Context(ctx):
 			return err
 		return out
 
-	def fatal(self, msg, ex=None,):
+	def fatal(self, msg, ex=None):
 		"""
 		Prints an error message in red and stops command execution; this is
 		usually used in the configuration section::
@@ -502,9 +502,9 @@ class Context(ctx):
 				msg = 'Log from (%s):\n%s\n' % (logfile, Utils.readf(logfile))
 			else:
 				msg = '%s\n(complete log in %s)' % (msg, logfile)
-		raise self.errors.ConfigurationError(msg, ex=ex,)
+		raise self.errors.ConfigurationError(msg, ex=ex)
 
-	def to_log(self, msg,):
+	def to_log(self, msg):
 		"""
 		Logs information to the logger (if present), or to stderr.
 		Empty messages are not printed::
@@ -549,7 +549,7 @@ class Context(ctx):
 		except KeyError:
 			msg = k[0]
 
-		self.start_msg(msg, **kw,)
+		self.start_msg(msg, **kw)
 
 		try:
 			result = kw['result']
@@ -557,10 +557,10 @@ class Context(ctx):
 			result = k[1]
 
 		color = kw.get('color')
-		if not isinstance(color, str,):
+		if not isinstance(color, str):
 			color = result and 'GREEN' or 'YELLOW'
 
-		self.end_msg(result, color, **kw,)
+		self.end_msg(result, color, **kw)
 
 	def start_msg(self, *k, **kw):
 		"""
@@ -579,12 +579,12 @@ class Context(ctx):
 		self.in_msg += 1
 
 		try:
-			self.line_just = max(self.line_just, len(msg),)
+			self.line_just = max(self.line_just, len(msg))
 		except AttributeError:
-			self.line_just = max(40, len(msg),)
+			self.line_just = max(40, len(msg))
 		for x in (self.line_just * '-', msg):
 			self.to_log(x)
-		Logs.pprint('NORMAL', "%s :" % msg.ljust(self.line_just), sep='',)
+		Logs.pprint('NORMAL', "%s :" % msg.ljust(self.line_just), sep='')
 
 	def end_msg(self, *k, **kw):
 		"""Prints the end of a 'Checking for' message. See :py:meth:`waflib.Context.Context.msg`"""
@@ -614,9 +614,9 @@ class Context(ctx):
 				color = k[1]
 			else:
 				color = defcolor
-		Logs.pprint(color, msg,)
+		Logs.pprint(color, msg)
 
-	def load_special_tools(self, var, ban=[],):
+	def load_special_tools(self, var, ban=[]):
 		"""
 		Loads third-party extensions modules for certain programming languages
 		by trying to list certain files in the extras/ directory. This method
@@ -632,22 +632,22 @@ class Context(ctx):
 			lst = self.root.find_node(waf_dir).find_node('waflib/extras').ant_glob(var)
 			for x in lst:
 				if not x.name in ban:
-					load_tool(x.name.replace('.py', '',))
+					load_tool(x.name.replace('.py', ''))
 		else:
 			from zipfile import PyZipFile
 			waflibs = PyZipFile(waf_dir)
 			lst = waflibs.namelist()
 			for x in lst:
-				if not re.match('waflib/extras/%s' % var.replace('*', '.*',), var,):
+				if not re.match('waflib/extras/%s' % var.replace('*', '.*'), var):
 					continue
 				f = os.path.basename(x)
 				doban = False
 				for b in ban:
-					r = b.replace('*', '.*',)
-					if re.match(r, f,):
+					r = b.replace('*', '.*')
+					if re.match(r, f):
 						doban = True
 				if not doban:
-					f = f.replace('.py', '',)
+					f = f.replace('.py', '')
 					load_tool(f)
 
 cache_modules = {}
@@ -656,7 +656,7 @@ Dictionary holding already loaded modules (wscript), indexed by their absolute p
 The modules are added automatically by :py:func:`waflib.Context.load_module`
 """
 
-def load_module(path, encoding=None,):
+def load_module(path, encoding=None):
 	"""
 	Loads a wscript file as a python module. This method caches results in :py:attr:`waflib.Context.cache_modules`
 
@@ -672,21 +672,21 @@ def load_module(path, encoding=None,):
 
 	module = imp.new_module(WSCRIPT_FILE)
 	try:
-		code = Utils.readf(path, m='r', encoding=encoding,)
+		code = Utils.readf(path, m='r', encoding=encoding)
 	except EnvironmentError:
 		raise Errors.WafError('Could not read the file %r' % path)
 
 	module_dir = os.path.dirname(path)
-	sys.path.insert(0, module_dir,)
+	sys.path.insert(0, module_dir)
 	try:
-		exec(compile(code, path, 'exec',), module.__dict__,)
+		exec(compile(code, path, 'exec'), module.__dict__)
 	finally:
 		sys.path.remove(module_dir)
 
 	cache_modules[path] = module
 	return module
 
-def load_tool(tool, tooldir=None, ctx=None, with_sys_path=True,):
+def load_tool(tool, tooldir=None, ctx=None, with_sys_path=True):
 	"""
 	Imports a Waf tool as a python module, and stores it in the dict :py:const:`waflib.Context.Context.tools`
 
@@ -700,14 +700,14 @@ def load_tool(tool, tooldir=None, ctx=None, with_sys_path=True,):
 	if tool == 'java':
 		tool = 'javaw' # jython
 	else:
-		tool = tool.replace('++', 'xx',)
+		tool = tool.replace('++', 'xx')
 
 	if not with_sys_path:
 		back_path = sys.path
 		sys.path = []
 	try:
 		if tooldir:
-			assert isinstance(tooldir, list,)
+			assert isinstance(tooldir, list)
 			sys.path = tooldir + sys.path
 			try:
 				__import__(tool)
@@ -722,7 +722,7 @@ def load_tool(tool, tooldir=None, ctx=None, with_sys_path=True,):
 			return ret
 		else:
 			if not with_sys_path:
-				sys.path.insert(0, waf_dir,)
+				sys.path.insert(0, waf_dir)
 			try:
 				for x in ('waflib.Tools.%s', 'waflib.extras.%s', 'waflib.%s', '%s'):
 					try:

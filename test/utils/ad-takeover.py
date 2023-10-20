@@ -46,18 +46,18 @@ client = None
 finished = False
 
 parser = ArgumentParser()
-parser.add_argument('-H', '--host', default='localhost', help='host to connect to',)
-parser.add_argument('-u', '--user', dest='username', help='username', metavar='UID', default='Administrator',)
-parser.add_argument('-p', '--password', default='univention', help='password',)
-parser.add_argument('-D', '--domain_host', default=None, help='domain controller to connect to', required=True,)
-parser.add_argument('-A', '--domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator',)
-parser.add_argument('-P', '--domain_password', default='Univention@99', help='domain admin password',)
+parser.add_argument('-H', '--host', default='localhost', help='host to connect to')
+parser.add_argument('-u', '--user', dest='username', help='username', metavar='UID', default='Administrator')
+parser.add_argument('-p', '--password', default='univention', help='password')
+parser.add_argument('-D', '--domain_host', default=None, help='domain controller to connect to', required=True)
+parser.add_argument('-A', '--domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator')
+parser.add_argument('-P', '--domain_password', default='Univention@99', help='domain admin password')
 
 options = parser.parse_args()
 
 
-def domainhost_unreachable(client: Client,) -> bool:
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM,)
+def domainhost_unreachable(client: Client) -> bool:
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(2)
     try:
         s.connect((client, 53))
@@ -66,13 +66,13 @@ def domainhost_unreachable(client: Client,) -> bool:
         return True
 
 
-def get_progress(client: Client,) -> None:
+def get_progress(client: Client) -> None:
     while not finished:
         client.umc_command('adtakeover/progress')
         sleep(1)
 
 
-def wait(client: Client,) -> None:
+def wait(client: Client) -> None:
     path = 'adtakeover/progress'
     waited = 0
     result = None
@@ -85,7 +85,7 @@ def wait(client: Client,) -> None:
             print('... Apache down? Ignoring...')
             continue
         print(result)
-        if result.get('finished', False,):
+        if result.get('finished', False):
             break
     else:
         raise Exception("wait timeout")
@@ -93,7 +93,7 @@ def wait(client: Client,) -> None:
     assert not result['errors']
 
 
-client = Client(options.host, options.username, options.password, language='en-US',)
+client = Client(options.host, options.username, options.password, language='en-US')
 request_options = {
     "ip": options.domain_host,
     "username": options.domain_admin,
@@ -101,13 +101,13 @@ request_options = {
 }
 
 print('starting connect')
-response = client.umc_command("adtakeover/connect", request_options,)
+response = client.umc_command("adtakeover/connect", request_options)
 print(response.result)
 assert response.status == 200
 
 try:
     print('starting copy')
-    response = client.umc_command("adtakeover/run/copy", request_options,)
+    response = client.umc_command("adtakeover/run/copy", request_options)
 except Exception:
     pass
 wait(client)
@@ -117,7 +117,7 @@ result = subprocess.call(["net", "-U", "%s%%%s" % (options.domain_admin, options
 assert result == 0
 
 print('starting sysvol check')
-response = client.umc_command("adtakeover/check/sysvol", request_options,)
+response = client.umc_command("adtakeover/check/sysvol", request_options)
 assert response.status == 200
 
 print('starting shutdown')
@@ -136,12 +136,12 @@ sleep(10)
 # so as a fallback adtakeover/check/status until finished or fail
 try:
     print('starting takeover')
-    response = client.umc_command("adtakeover/run/takeover", request_options,)
+    response = client.umc_command("adtakeover/run/takeover", request_options)
     print(response.status)
     assert response.status == 200
 
     print('starting done')
-    response = client.umc_command("adtakeover/status/done", request_options,)
+    response = client.umc_command("adtakeover/status/done", request_options)
     print(response.status)
     assert response.status == 200
 
@@ -153,7 +153,7 @@ except Exception:
 # wait until finished
 for _i in range(90):
     sleep(10)
-    response = client.umc_command("adtakeover/check/status", request_options,)
+    response = client.umc_command("adtakeover/check/status", request_options)
     print(f'waiting got finished - {response.data}')
     if response.result == 'finished':
         print('OK - finished')

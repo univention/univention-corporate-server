@@ -77,13 +77,13 @@ class I18N(object):
 
     LOCALE_DIR = '/usr/share/univention-management-console/i18n/'
 
-    def __init__(self, locale=None, domain=None,):
+    def __init__(self, locale=None, domain=None):
         self.mofile = None
         self.domain = domain
         self.locale = locale
-        self.load(locale, domain,)
+        self.load(locale, domain)
 
-    def load(self, locale=None, domain=None,):
+    def load(self, locale=None, domain=None):
         """
         Tries to load the translation file specified by the given locale
         and domain. If the given locale could not be found the method
@@ -102,9 +102,9 @@ class I18N(object):
             return
 
         LOCALE.debug('Loading locale %s for domain %s' % (self.locale, self.domain))
-        filename = os.path.join(I18N.LOCALE_DIR, self.locale.language, '%s.mo' % self.domain,)
+        filename = os.path.join(I18N.LOCALE_DIR, self.locale.language, '%s.mo' % self.domain)
         if not os.path.isfile(filename):
-            filename = os.path.join(I18N.LOCALE_DIR, '%s_%s' % (self.locale.language, self.locale.territory), '%s.mo' % self.domain,)
+            filename = os.path.join(I18N.LOCALE_DIR, '%s_%s' % (self.locale.language, self.locale.territory), '%s.mo' % self.domain)
             if not os.path.isfile(filename):
                 LOCALE.warn('Could not find translation file: %r' % (os.path.basename(filename),))
                 self.mofile = None
@@ -120,16 +120,16 @@ class I18N(object):
             LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
             LOCALE.error(traceback.format_exc())
 
-    def exists(self, message,):
+    def exists(self, message):
         """
         Verifies if the translation file contains a translation for the given text.
 
         :param str message: the text to search for
         :rtype: bool
         """
-        return self.mofile is not None and self.mofile.find(message, by='msgid',)
+        return self.mofile is not None and self.mofile.find(message, by='msgid')
 
-    def _(self, message,):
+    def _(self, message):
         """
         Translates the given text if a translation is
         available. Otherwise the given text is returned.
@@ -138,7 +138,7 @@ class I18N(object):
         :rtype: str
         """
         if self.mofile:
-            entry = self.mofile.find(message, by='msgid',)
+            entry = self.mofile.find(message, by='msgid')
             if entry is not None:
                 return entry.msgstr
 
@@ -161,7 +161,7 @@ class I18N_Manager(dict):
             lang = 'C'
         self.locale = Locale(lang)
 
-    def set_locale(self, locale,):
+    def set_locale(self, locale):
         """
         Sets the locale to use within the :class:`.I18N_Manager`.
 
@@ -173,11 +173,11 @@ class I18N_Manager(dict):
             LOCALE.info('Loading translation for domain %s' % domain)
             i18n.load(locale=self.locale)
 
-    def __setitem__(self, key, value,):
+    def __setitem__(self, key, value):
         value.domain = key
-        dict.__setitem__(self, key, value,)
+        dict.__setitem__(self, key, value)
 
-    def _(self, message, domain=None,):
+    def _(self, message, domain=None):
         """
         Translates the given text. Therefore all known translation
         domains or if not None the given domain is searched for a
@@ -190,7 +190,7 @@ class I18N_Manager(dict):
         try:
             if domain is not None:
                 if domain not in self:
-                    self[domain] = I18N(self.locale, domain,)
+                    self[domain] = I18N(self.locale, domain)
                 return self[domain]._(message)
             for domain, i18n in self.items():
                 LOCALE.info('Checking domain %s for translation' % domain)

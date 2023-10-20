@@ -25,15 +25,15 @@ class WaitForS4ConnectorTimeout(Exception):
 
 
 @contextlib.contextmanager
-def password_policy(complexity=False, minimum_password_age=0, maximum_password_age=3,):
+def password_policy(complexity=False, minimum_password_age=0, maximum_password_age=3):
     # type: (bool, int, int) -> Iterator[None]
     if not package_installed('univention-samba4'):
         print('skipping samba password policy adjustment')
         yield
         return
-    min_pwd_age = subprocess.check_output('samba-tool domain passwordsettings show | grep "Minimum password age" | sed s/[^0-9]*/""/', shell=True,).strip()
-    max_pwd_age = subprocess.check_output('samba-tool domain passwordsettings show | grep "Maximum password age" | sed s/[^0-9]*/""/', shell=True,).strip()
-    pwd_complexity = subprocess.check_output('samba-tool domain passwordsettings show | grep complexity | sed "s/Password complexity: //"', shell=True,).strip()
+    min_pwd_age = subprocess.check_output('samba-tool domain passwordsettings show | grep "Minimum password age" | sed s/[^0-9]*/""/', shell=True).strip()
+    max_pwd_age = subprocess.check_output('samba-tool domain passwordsettings show | grep "Maximum password age" | sed s/[^0-9]*/""/', shell=True).strip()
+    pwd_complexity = subprocess.check_output('samba-tool domain passwordsettings show | grep complexity | sed "s/Password complexity: //"', shell=True).strip()
     if complexity != pwd_complexity or str(minimum_password_age) != min_pwd_age or str(maximum_password_age) != max_pwd_age:
         subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', str(minimum_password_age), '--max-pwd-age', str(maximum_password_age), '--complexity', 'on' if complexity else 'off'])
     yield
@@ -41,7 +41,7 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
         subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--max-pwd-age', max_pwd_age, '--complexity', pwd_complexity])
 
 
-def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True, controls=None,):
+def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True, controls=None):
     # type: (str, Union[List[str], None, str], Optional[str], int, Optional[LoadParm], int, int, bool, bool, Optional[List[str]]) -> None
     if not package_installed('univention-samba4'):
         if package_installed('univention-samba'):
@@ -52,13 +52,13 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
         return
     if not attrs:
         attrs = ['dn']
-    elif not isinstance(attrs, list,):
+    elif not isinstance(attrs, list):
         attrs = [attrs]
 
     if not lp:
         lp = LoadParm()
         lp.load('/etc/samba/smb.conf')
-    samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp,)
+    samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
     if not controls:
         controls = ["domain_scope:0"]
     if base is None:
@@ -76,11 +76,11 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
         return
 
     if verbose:
-        print(f"Waiting for DRS replication, filter: {ldap_filter!r}, base: {base!r}, scope: {scope!r}, should_exist: {should_exist!r}", end=' ',)
+        print(f"Waiting for DRS replication, filter: {ldap_filter!r}, base: {base!r}, scope: {scope!r}, should_exist: {should_exist!r}", end=' ')
     t = t0 = time.time()
     while t < t0 + timeout:
         try:
-            res = samdb.search(base=base, scope=scope, expression=ldap_filter, attrs=attrs, controls=controls,)
+            res = samdb.search(base=base, scope=scope, expression=ldap_filter, attrs=attrs, controls=controls)
             if bool(res) is bool(should_exist):
                 if verbose:
                     print("\nDRS replication took %d seconds" % (t - t0, ))
@@ -95,7 +95,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
                 return
             print(f"Error during samdb.search: {msg}")
 
-        print('.', end=' ',)
+        print('.', end=' ')
         time.sleep(delta_t)
         t = time.time()
     raise DRSReplicationFailed("DRS replication for filter: %r failed due to timeout after %d sec." % (ldap_filter, t - t0))
@@ -104,12 +104,12 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 def get_available_s4connector_dc():
     # type: () -> str
     cmd = ("/usr/bin/univention-ldapsearch", "-LLL", "(univentionService=S4 Connector)", "uid")
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE,)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, _stderr = p.communicate()
     if not stdout:
         print("WARNING: Automatic S4 Connector host detection failed")
         return ""
-    matches = re.compile(r'^uid: (.*)\$$', re.M,).findall(stdout.decode('utf-8', 'replace',))
+    matches = re.compile(r'^uid: (.*)\$$', re.M).findall(stdout.decode('utf-8', 'replace'))
     if len(matches) == 1:
         return matches[0]
     elif len(matches) == 0:
@@ -118,7 +118,7 @@ def get_available_s4connector_dc():
 
     # check if this is UCS@school
     cmd = ("/usr/bin/univention-ldapsearch", "-LLL", "(univentionService=UCS@school)", "dn")
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE,)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, _stderr = p.communicate()
     if not stdout:
         print("ERROR: Automatic S4 Connector host detection failed: Found %s S4 Connector services" % len(matches))
@@ -127,7 +127,7 @@ def get_available_s4connector_dc():
     dcs_replicating_with_this_one = []
     for s4c in matches:
         cmd = ("/usr/bin/samba-tool", "drs", "showrepl", s4c)
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, _stderr = p.communicate()
         if p.returncode != 0:
             continue
@@ -139,7 +139,7 @@ def get_available_s4connector_dc():
         return ""
 
 
-def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in",):
+def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in"):
     # type: (Optional[str], Optional[str], Optional[str], str) -> int
     if not package_installed('univention-samba4'):
         print('force_drs_replication(): skip, univention-samba4 not installed.')
@@ -157,21 +157,21 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
         ucr = config_registry.ConfigRegistry()
         ucr.load()
         partition_dn = str(ucr.get('samba4/ldap/base'))
-        print("USING partition_dn:", partition_dn,)
+        print("USING partition_dn:", partition_dn)
 
     cmd = ("/usr/bin/samba-tool", "drs", "replicate", dst, src, partition_dn)
     return subprocess.call(cmd)
 
 
-def _ldap_replication_complete(verbose=True,):
+def _ldap_replication_complete(verbose=True):
     # type: (bool) -> bool
     kwargs = {}  # type: Dict[str, Any]
     if not verbose:
-        kwargs = {'stdout': open('/dev/null', 'w',), 'stderr': subprocess.STDOUT}
-    return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication', **kwargs,) == 0
+        kwargs = {'stdout': open('/dev/null', 'w'), 'stderr': subprocess.STDOUT}
+    return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication', **kwargs) == 0
 
 
-def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5,):
+def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
     # type: (int, int, int) -> int
     ucr = config_registry.ConfigRegistry()
     ucr.load()
@@ -208,7 +208,7 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5,):
             '--scope', 'base',
             '--basedn', '',
             'highestCommittedUSN',
-        ], stdout=subprocess.PIPE,)
+        ], stdout=subprocess.PIPE)
         assert ldbresult.stdout
         for chunk in ldbresult.stdout:
             line = chunk.decode('utf-8').strip()
@@ -238,7 +238,7 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5,):
     raise WaitForS4ConnectorTimeout()
 
 
-def append_dot(verify_list,):
+def append_dot(verify_list):
     # type: (List[str]) -> List[str]
     """The S4-Connector appends dots to various dns records. Helper function to adjust a list."""
     if not package_installed('univention-s4-connector'):

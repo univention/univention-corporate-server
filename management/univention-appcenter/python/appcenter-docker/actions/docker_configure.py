@@ -52,15 +52,15 @@ class NoDatabaseFound(Exception):
 
 
 class Configure(Configure, DockerActionMixin):
-    def setup_parser(self, parser,):
-        super(Configure, self,).setup_parser(parser)
-        parser.add_argument('--autostart', help='Sets the autostart mode for the app: yes=App starts when the host starts; manually=App starts when manually started; no=App will never start', choices=['yes', 'manually', 'no'],)
+    def setup_parser(self, parser):
+        super(Configure, self).setup_parser(parser)
+        parser.add_argument('--autostart', help='Sets the autostart mode for the app: yes=App starts when the host starts; manually=App starts when manually started; no=App will never start', choices=['yes', 'manually', 'no'])
 
-    def _set_config(self, app, set_vars, args,):
-        self._set_autostart(app, args.autostart,)
-        super(Configure, self,)._set_config(app, set_vars, args,)
+    def _set_config(self, app, set_vars, args):
+        self._set_autostart(app, args.autostart)
+        super(Configure, self)._set_config(app, set_vars, args)
 
-    def _set_autostart(self, app, autostart,):
+    def _set_autostart(self, app, autostart):
         if not app.docker:
             return
         if autostart is None:
@@ -70,17 +70,17 @@ class Configure(Configure, DockerActionMixin):
             return
         ucr_save({'%s/autostart' % app.id: autostart})
 
-    def _set_config_via_tool(self, app, set_vars,):
+    def _set_config_via_tool(self, app, set_vars):
         if not app.docker:
-            return super(Configure, self,)._set_config_via_tool(app, set_vars,)
+            return super(Configure, self)._set_config_via_tool(app, set_vars)
         if not app_is_running(app):
             self.warn('Cannot write settings while %s is not running' % app)
             return
         logfile_logger = get_logfile_logger('docker.configure')
         docker = self._get_docker(app)
-        if docker.execute('which', 'ucr', _logger=logfile_logger,).returncode != 0:
+        if docker.execute('which', 'ucr', _logger=logfile_logger).returncode != 0:
             self.warn('ucr cannot be found, falling back to changing the database file directly')
-            self._set_config_directly(app, set_vars,)
+            self._set_config_directly(app, set_vars)
             return
         self.log('Setting registry variables for %s' % app.id)
         set_args = []
@@ -91,13 +91,13 @@ class Configure(Configure, DockerActionMixin):
             else:
                 set_args.append('%s=%s' % (key, value))
         if set_args:
-            docker.execute('ucr', 'set', *set_args, _logger=logfile_logger,)
+            docker.execute('ucr', 'set', *set_args, _logger=logfile_logger)
         if unset_args:
-            docker.execute('ucr', 'unset', *unset_args, _logger=logfile_logger,)
+            docker.execute('ucr', 'unset', *unset_args, _logger=logfile_logger)
 
     @classmethod
     @contextmanager
-    def _locked_app_ucr(cls, app,):
+    def _locked_app_ucr(cls, app):
         ucr = cls._get_app_ucr(app)
         ucr.lock()
         try:
@@ -107,14 +107,14 @@ class Configure(Configure, DockerActionMixin):
             ucr.unlock()
 
     @classmethod
-    def _get_app_ucr(cls, app,):
+    def _get_app_ucr(cls, app):
         ucr_file = cls._get_app_ucr_filename(app)
         ucr = _ConfigRegistry(ucr_file)
         ucr.load()
         return ucr
 
     @classmethod
-    def _get_app_ucr_filename(cls, app,):
+    def _get_app_ucr_filename(cls, app):
         docker = cls._get_docker(app)
         ucr_file = docker.path('/etc/univention/base.conf')
         if ucr_file:
@@ -122,18 +122,18 @@ class Configure(Configure, DockerActionMixin):
             return ucr_file
         raise NoDatabaseFound()
 
-    def _set_config_directly(self, app, set_vars,):
+    def _set_config_directly(self, app, set_vars):
         with self._locked_app_ucr(app) as _ucr:
             for key, value in set_vars.items():
                 if value is None:
-                    _ucr.pop(key, None,)
+                    _ucr.pop(key, None)
                 else:
                     _ucr[key] = str(value)
             _ucr.save()
 
-    def _run_configure_script(self, app, action,):
-        success = super(Configure, self,)._run_configure_script(app, action,)
+    def _run_configure_script(self, app, action):
+        success = super(Configure, self)._run_configure_script(app, action)
         ucr_load()  # Bug #53761 - maybe configure_host reinitialized the app, resulting in a new ucrv for the container
         if success is not False and app.docker and app_is_running(app):
-            success = self._execute_container_script(app, 'configure', credentials=False, cmd_args=[action],)
+            success = self._execute_container_script(app, 'configure', credentials=False, cmd_args=[action])
         return success

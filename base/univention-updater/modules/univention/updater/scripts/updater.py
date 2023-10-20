@@ -97,7 +97,7 @@ RE_APT = re.compile(
     (?:\[ [^]]* \]\s*)?
     ([a-z][a-z0-9+.-]*)
     :
-    """, re.VERBOSE,)
+    """, re.VERBOSE)
 
 
 class UpdateError(Exception):
@@ -108,23 +108,23 @@ class UpdateError(Exception):
     :param errorsource: One of 'SETTINGS', 'PREPARATION', 'PREUP', 'UPDATE', 'POSTUP'
     """
 
-    def __init__(self, msg, errorsource,):
+    def __init__(self, msg, errorsource):
         # type: (str, _ESRC) -> None
-        Exception.__init__(self, msg,)
+        Exception.__init__(self, msg)
         self.errorsource = errorsource
 
 
-def log(str,):
+def log(str):
     # type: (str) -> None
     """Log message to LOGNAME."""
-    print(str, file=fd_log,)
+    print(str, file=fd_log)
     fd_log.flush()
 
 
-def dprint(str,):  # type: (object) -> None
+def dprint(str):  # type: (object) -> None
     """Print message to stdout and LOGNAME."""
     for fd in (stdout_orig, fd_log)[nostdout:]:
-        print(str, file=fd,)
+        print(str, file=fd)
         fd.flush()
 
 
@@ -143,14 +143,14 @@ def update_status(**kwargs):  # type: (**str) -> None
     """
     updater_status.update(kwargs)
     if updater_status.get('status') != 'RUNNING':
-        updater_status.pop('phase', None,)
+        updater_status.pop('phase', None)
     # write temporary file
     fn = '%s.new' % FN_STATUS
     try:
-        with open(fn, 'w+',) as fd:
+        with open(fn, 'w+') as fd:
             for key, val in updater_status.items():
                 fd.write('%s=%s\n' % (key, val))
-        os.rename(fn, FN_STATUS,)
+        os.rename(fn, FN_STATUS)
     except EnvironmentError as ex:
         dprint('Warning: cannot update status: %s' % (ex,))
 
@@ -170,7 +170,7 @@ def get_status():
         with open(FN_STATUS) as fd:
             for line in fd:
                 try:
-                    key, value = line.rstrip().split('=', 1,)
+                    key, value = line.rstrip().split('=', 1)
                 except ValueError:
                     continue
                 status[key] = value
@@ -190,16 +190,16 @@ def remove_temporary_sources_list():
                 raise
 
 
-def add_temporary_sources_list(temporary_sources_list,):
+def add_temporary_sources_list(temporary_sources_list):
     # type: (Iterable[str]) -> None
     """Add line to a temporary sources.list."""
     remove_temporary_sources_list()
-    with open(TMPSOURCE, 'w',) as fp:
+    with open(TMPSOURCE, 'w') as fp:
         for entry in temporary_sources_list:
-            print(entry, file=fp,)
+            print(entry, file=fp)
 
 
-def update_available(opt, ucr,):
+def update_available(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> Tuple[UniventionUpdater, Optional[UCS_Version]]
     """
     Checks if there is an update available.
@@ -208,30 +208,30 @@ def update_available(opt, ucr,):
     log('--->DBG:update_available(mode={.mode})'.format(opt))
 
     if opt.mode == 'local':
-        return update_local(opt, ucr,)
+        return update_local(opt, ucr)
     elif opt.mode == 'net':
-        return update_net(opt, ucr,)
+        return update_net(opt, ucr)
     else:
         raise ValueError(opt.mode)
 
 
-def update_local(opt, ucr,):
+def update_local(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> Tuple[UniventionUpdater, Optional[UCS_Version]]
     dprint('Checking local repository')
     updater = LocalUpdater()
     try:
-        assert updater.server.access(None, '',)
+        assert updater.server.access(None, '')
         nextversion = updater.release_update_available(errorsto='exception')
     except DownloadError:
         raise UpdateError(
             'A local repository was not found.\n'
             '       Please check the UCR variable repository/mirror/basepath\n'
-            '       or try to install via "univention-updater net"', errorsource='SETTINGS',)
+            '       or try to install via "univention-updater net"', errorsource='SETTINGS')
 
     return updater, nextversion
 
 
-def update_net(opt, ucr,):
+def update_net(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> Tuple[UniventionUpdater, Optional[UCS_Version]]
     dprint('Checking network repository')
     try:
@@ -240,7 +240,7 @@ def update_net(opt, ucr,):
     except RequiredComponentError:
         raise
     except ConfigurationError as ex:
-        raise UpdateError('The configured repository is unavailable: %s' % (ex,), errorsource='SETTINGS',)
+        raise UpdateError('The configured repository is unavailable: %s' % (ex,), errorsource='SETTINGS')
 
     return (updater, nextversion)
 
@@ -248,12 +248,12 @@ def update_net(opt, ucr,):
 def update_ucr_updatestatus():
     # type: () -> None
     try:
-        call(('/usr/share/univention-updater/univention-updater-check',), stdout=DEVNULL, stderr=DEVNULL,)
+        call(('/usr/share/univention-updater/univention-updater-check',), stdout=DEVNULL, stderr=DEVNULL)
     except EnvironmentError:
         dprint('Warning: calling univention-updater-check failed.')
 
 
-def call_local(opt,):
+def call_local(opt):
     # type: (Namespace) -> NoReturn
     """Call updater in "local" mode."""
     cmd = [
@@ -266,61 +266,61 @@ def call_local(opt,):
             ["--ignore-releasenotes"][:opt.ignore_releasenotes],
         ) for arg in args
     ]
-    os.execv(sys.argv[0], cmd,)  # noqa: S606
+    os.execv(sys.argv[0], cmd)  # noqa: S606
     dprint('Fatal: failed to exec: %r' % cmd)
     sys.exit(1)
 
 
-def parse_args(args=None,):  # type: (Optional[Sequence[str]]) -> Namespace
+def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
     """Parse command line arguments."""
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--reboot", action="store_true", help=SUPPRESS,)  # Deprecated
-    parser.add_argument("--updateto", metavar="RELEAASE", type=UCS_Version, help="Upper limit for version",)
-    parser.add_argument("--no-clean", action="store_true", help="Skip cleaning downloaded package file",)
+    parser.add_argument("--reboot", action="store_true", help=SUPPRESS)  # Deprecated
+    parser.add_argument("--updateto", metavar="RELEAASE", type=UCS_Version, help="Upper limit for version")
+    parser.add_argument("--no-clean", action="store_true", help="Skip cleaning downloaded package file")
 
     group = parser.add_argument_group("Non-interactive usage")
-    group.add_argument("--ignoressh", action="store_true", help="Skip check for SSH terminal",)
-    group.add_argument("--ignoreterm", action="store_true", help="Skip check for X11 Terminal",)
-    group.add_argument("--ignore-releasenotes", action="store_true", help="Skip showing release notes",)
-    group.add_argument("--noninteractive", action="store_true", help="Do not ask interactive questions",)
+    group.add_argument("--ignoressh", action="store_true", help="Skip check for SSH terminal")
+    group.add_argument("--ignoreterm", action="store_true", help="Skip check for X11 Terminal")
+    group.add_argument("--ignore-releasenotes", action="store_true", help="Skip showing release notes")
+    group.add_argument("--noninteractive", action="store_true", help="Do not ask interactive questions")
 
     group = parser.add_argument_group("Verbosity options")
-    group.add_argument("--silent", action="store_true", help="No output to STDOUT",)
-    group.add_argument("--verbose", "-v", action="count", default=2, help="Increase verbosity",)
+    group.add_argument("--silent", action="store_true", help="No output to STDOUT")
+    group.add_argument("--verbose", "-v", action="count", default=2, help="Increase verbosity")
 
-    parser.add_argument("--check", action="store_true", help="Check if system is up-to-date",)
-    parser.add_argument("mode", choices=("local", "net"), help="Update source",)
+    parser.add_argument("--check", action="store_true", help="Check if system is up-to-date")
+    parser.add_argument("mode", choices=("local", "net"), help="Update source")
 
     return parser.parse_args(args)
 
 
-def setup_logging(opt, ucr,):
+def setup_logging(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> IO[str]
-    ud.init(LOGNAME, 0, 0,)
+    ud.init(LOGNAME, 0, 0)
     try:
-        loglevel = int(ucr.get('update/debug/level', opt.verbose,))
+        loglevel = int(ucr.get('update/debug/level', opt.verbose))
     except ValueError:
         loglevel = opt.verbose
-    ud.set_level(ud.NETWORK, loglevel,)
+    ud.set_level(ud.NETWORK, loglevel)
 
     if opt.silent:
         global nostdout
         nostdout = True
 
-    return open(LOGNAME, 'a+',)
+    return open(LOGNAME, 'a+')
 
 
-def check(opt, ucr,):
+def check(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> bool
     """Return pending update status."""
     try:
-        _updater, nextversion = update_available(opt, ucr,)
+        _updater, nextversion = update_available(opt, ucr)
         if nextversion:
             dprint('Next version is %s' % nextversion)
             return True
     except UpdateError as msg:
         dprint("Error: %s" % msg)
-        print('Error: Please check "%s" for details.' % LOGNAME, file=sys.stderr,)
+        print('Error: Please check "%s" for details.' % LOGNAME, file=sys.stderr)
         # Errors are handled as "update currently no available"
     except RequiredComponentError as ex:
         dprint("%s" % ex)
@@ -329,7 +329,7 @@ def check(opt, ucr,):
     return False
 
 
-def find(opt, ucr,):
+def find(opt, ucr):
     # type: (Namespace, ConfigRegistry) -> Optional[Tuple[UniventionUpdater, UCS_Version]]
     lastversion = '%(version/version)s-%(version/patchlevel)s' % ucr
     log('**** Starting univention-updater %s with parameter=%s' % (lastversion, sys.argv))
@@ -343,9 +343,9 @@ def find(opt, ucr,):
         dprint("       /var/lib/univention-updater/univention-updater.status has been removed.")
         sys.exit(1)
 
-    update_status(current_version=lastversion, type=opt.mode.upper(), status='RUNNING', phase='PREPARATION',)
+    update_status(current_version=lastversion, type=opt.mode.upper(), status='RUNNING', phase='PREPARATION')
 
-    updater, nextversion = update_available(opt, ucr,)
+    updater, nextversion = update_available(opt, ucr)
     if not nextversion:
         dprint('System is up to date (UCS %s)' % lastversion)
         return None
@@ -357,14 +357,14 @@ def find(opt, ucr,):
     return (updater, nextversion)
 
 
-def run(opt, ucr, updater, nextversion,):
+def run(opt, ucr, updater, nextversion):
     # type: (Namespace, ConfigRegistry, UniventionUpdater, UCS_Version) -> None
 
     if opt.noninteractive:
         opt.ignore_releasenotes = True
         os.environ['UCS_FRONTEND'] = 'noninteractive'
         with open(os.path.devnull) as null:
-            os.dup2(null.fileno(), sys.stdin.fileno(),)
+            os.dup2(null.fileno(), sys.stdin.fileno())
 
     dprint('Update to = %s' % nextversion)
     update_status(next_version=nextversion)
@@ -383,8 +383,8 @@ def run(opt, ucr, updater, nextversion,):
         phase = 'preup'
         update_status(phase='PREUP')
 
-        scripts = updater.get_sh_files(nextversion, nextversion,)
-        for phase, order in updater.call_sh_files(scripts, LOGNAME, str(nextversion),):
+        scripts = updater.get_sh_files(nextversion, nextversion)
+        for phase, order in updater.call_sh_files(scripts, LOGNAME, str(nextversion)):
             # do not switch back and forth between PRE and UPDATE phase resp. UPDATE and POST phase.
             if (phase, order) not in (
                     ('update', 'pre'),
@@ -398,24 +398,24 @@ def run(opt, ucr, updater, nextversion,):
                 log('**** Starting actual update at %s' % datetime.now().ctime())
             elif (phase, order) == ('update', 'main'):
                 with apt_lock():
-                    if call(cmd_update, shell=True, stdout=fd_log, stderr=fd_log,):
-                        raise UpdateError('Failed to execute "%s"' % cmd_update, errorsource='UPDATE',)
+                    if call(cmd_update, shell=True, stdout=fd_log, stderr=fd_log):
+                        raise UpdateError('Failed to execute "%s"' % cmd_update, errorsource='UPDATE')
 
-                context_id = write_event(UPDATE_STARTED, {'hostname': ucr.get('hostname')},)
+                context_id = write_event(UPDATE_STARTED, {'hostname': ucr.get('hostname')})
                 if context_id:
                     os.environ['ADMINDIARY_CONTEXT'] = context_id
 
                 # Used by ../univention-maintenance-mode/univention-maintenance-mode-update-progress
                 detailed_status = FN_STATUS + '.details'
-                with apt_lock(), open(detailed_status, 'w+b',) as detailed_status_fd:
+                with apt_lock(), open(detailed_status, 'w+b') as detailed_status_fd:
                     fno = detailed_status_fd.fileno()
-                    env = dict(os.environ, DEBIAN_FRONTEND="noninteractive",)
+                    env = dict(os.environ, DEBIAN_FRONTEND="noninteractive")
                     cmd2 = "%s -o APT::Status-FD=%s" % (cmd_dist_upgrade, fno)
-                    resultCode = call(cmd2, shell=True, stdout=fd_log, stderr=fd_log, env=env, pass_fds=(fno,),)
+                    resultCode = call(cmd2, shell=True, stdout=fd_log, stderr=fd_log, env=env, pass_fds=(fno,))
                     if os.path.exists(detailed_status):
                         os.unlink(detailed_status)
                     if resultCode != 0:
-                        raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE',)
+                        raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
             elif (phase, order) == ('postup', 'main'):
                 # Bug #23202: After an update of Python ucr.handler_set() may not work any more
                 cmd = [
@@ -423,7 +423,7 @@ def run(opt, ucr, updater, nextversion,):
                     'version/version={}'.format(nextversion.FORMAT % nextversion),
                     'version/patchlevel={.patchlevel}'.format(nextversion),
                 ]
-                call(cmd, stdout=fd_log, stderr=fd_log,)
+                call(cmd, stdout=fd_log, stderr=fd_log)
 
     except BaseException:
         if phase == 'preup' or (phase == 'update' and order == 'pre'):
@@ -433,13 +433,13 @@ def run(opt, ucr, updater, nextversion,):
     remove_temporary_sources_list()
 
     if os.path.exists('/usr/sbin/univention-pkgdb-scan'):
-        call(['/usr/sbin/univention-pkgdb-scan'], stdout=fd_log, stderr=fd_log,)
+        call(['/usr/sbin/univention-pkgdb-scan'], stdout=fd_log, stderr=fd_log)
 
     if not opt.no_clean:
         call(['apt-get', 'clean'])
 
     call(['touch', reboot_required])
-    write_event(UPDATE_FINISHED_SUCCESS, {'hostname': ucr.get('hostname'), 'version': 'UCS %(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % ucr},)
+    write_event(UPDATE_FINISHED_SUCCESS, {'hostname': ucr.get('hostname'), 'version': 'UCS %(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % ucr})
 
 
 def main():
@@ -454,23 +454,23 @@ def main():
     ucr.load()
 
     global fd_log
-    with setup_logging(opt, ucr,) as fd_log:
+    with setup_logging(opt, ucr) as fd_log:
         try:
             try:
                 with UpdaterLock():
                     if opt.check:
-                        sys.exit(check(opt, ucr,))
+                        sys.exit(check(opt, ucr))
 
-                    ret = find(opt, ucr,)
+                    ret = find(opt, ucr)
                     if ret:
-                        run(opt, ucr, ret[0], ret[1],)
+                        run(opt, ucr, ret[0], ret[1])
 
                     update_status(status='DONE')
                     if os.path.exists(failure):
                         os.unlink(failure)
 
                     if ret:
-                        os.execv(sys.argv[0], sys.argv,)  # noqa: S606
+                        os.execv(sys.argv[0], sys.argv)  # noqa: S606
             except VerificationError as ex:
                 msg = '\n'.join([
                     "Update aborted due to verification error:",
@@ -481,12 +481,12 @@ def main():
                     using the UCR variable 'repository/online/verify'.
                     """,
                 )))
-                raise UpdateError(msg, errorsource='SETTINGS',)
+                raise UpdateError(msg, errorsource='SETTINGS')
             except ConfigurationError as e:
                 msg = 'Update aborted due to configuration error: %s' % e
-                raise UpdateError(msg, errorsource='SETTINGS',)
+                raise UpdateError(msg, errorsource='SETTINGS')
             except RequiredComponentError as ex:
-                update_status(status='DONE', errorsource='PREPARATION',)
+                update_status(status='DONE', errorsource='PREPARATION')
                 dprint(ex)
             except PreconditionError as ex:
                 (phase, order, component, script) = ex.args
@@ -507,13 +507,13 @@ def main():
                     order = 'component %s after calling release script' % component
 
                 msg = 'Update aborted by %s script of %s' % (phase, order)
-                raise UpdateError(msg, errorsource=errorsource,)
+                raise UpdateError(msg, errorsource=errorsource)
 
             update_ucr_updatestatus()
 
         except UpdateError as msg:
-            write_event(UPDATE_FINISHED_FAILURE, {'hostname': ucr.get('hostname')},)
-            update_status(status='FAILED', errorsource=msg.errorsource,)
+            write_event(UPDATE_FINISHED_FAILURE, {'hostname': ucr.get('hostname')})
+            update_status(status='FAILED', errorsource=msg.errorsource)
             dprint("Error: %s" % msg)
             call(['touch', failure])
             sys.exit('Error: Please check "%s" for details.' % LOGNAME)

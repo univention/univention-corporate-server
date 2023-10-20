@@ -25,7 +25,7 @@ def close_all_processes():
 
 
 @pytest.fixture()
-def self_service_prepare(ucr, udm, close_all_processes,):
+def self_service_prepare(ucr, udm, close_all_processes):
     """force all module processes to close"""
     ucr.handler_set([
         'self-service/udm_attributes/read-only=title',
@@ -35,12 +35,12 @@ def self_service_prepare(ucr, udm, close_all_processes,):
     time.sleep(3)
 
 
-def test_self_service_read_only_attribute(ucr, self_service_prepare,):
+def test_self_service_read_only_attribute(ucr, self_service_prepare):
     reset_mail_address = f'{random_username()}@{random_username()}'
-    with self_service_user(mailPrimaryAddress=reset_mail_address, language="en-US",) as user:
+    with self_service_user(mailPrimaryAddress=reset_mail_address, language="en-US") as user:
         user.auth()
         # check that title is returned by get_user_attributes_descriptions
-        response = user.command('passwordreset/get_user_attributes_descriptions', **{},)  # noqa: PIE804
+        response = user.command('passwordreset/get_user_attributes_descriptions', **{})  # noqa: PIE804
         attributes = [attr['id'] for attr in response.result]
         assert response.status == 200
         assert 'title' in attributes
@@ -49,7 +49,7 @@ def test_self_service_read_only_attribute(ucr, self_service_prepare,):
         data = {
             "attributes": attributes,
         }
-        response = user.command('passwordreset/get_user_attributes_values', **data,)
+        response = user.command('passwordreset/get_user_attributes_values', **data)
         assert response.status == 200
         assert "title" in response.result
 
@@ -60,7 +60,7 @@ def test_self_service_read_only_attribute(ucr, self_service_prepare,):
             },
         }
         with pytest.raises(Exception) as exc:
-            user.command('passwordreset/set_user_attributes', **data,)
+            user.command('passwordreset/set_user_attributes', **data)
         response = exc.value.response
         assert response.status == 400
         assert response.message == 'The attribute title is read-only.'

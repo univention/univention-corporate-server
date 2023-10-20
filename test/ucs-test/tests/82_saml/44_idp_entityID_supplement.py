@@ -26,7 +26,7 @@ def main():
             umc_saml_idpserver = ucr.get('umc/saml/idp-server')
             handler_set([f'saml/idp/entityID/supplement/{supplement}=true'])
             subprocess.check_call(['systemctl', 'restart', 'apache2.service'])
-            saml_root = 'https://{}/simplesamlphp/{}/'.format(ucr.get('ucs/server/sso/fqdn'), supplement,)
+            saml_root = 'https://{}/simplesamlphp/{}/'.format(ucr.get('ucs/server/sso/fqdn'), supplement)
             supplement_entityID = f'{saml_root}saml2/idp/metadata.php'
             print(f'supplement_entityID: "{supplement_entityID}"')
             handler_set([f'umc/saml/idp-server={supplement_entityID}'])
@@ -35,7 +35,7 @@ def main():
             if f'entityID="{supplement_entityID}"' not in metadata_req.text:
                 print(f'IDP Metadata:\n{metadata_req.text}')
                 utils.fail('entityID not changed?')
-            SamlSession = samltest.SamlTest(account.username, account.bindpw,)
+            SamlSession = samltest.SamlTest(account.username, account.bindpw)
             try:
                 SamlSession.login_with_new_session_at_IdP()
                 SamlSession.test_logged_in_status()

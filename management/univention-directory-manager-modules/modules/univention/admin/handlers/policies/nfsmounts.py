@@ -71,7 +71,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyNFSMounts'],),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyNFSMounts'],
+    ),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -81,12 +82,14 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'nfsMounts': univention.admin.property(
         short_description=_('NFS shares to mount'),
         long_description='',
         syntax=univention.admin.syntax.nfsMounts,
-        multivalue=True,),
+        multivalue=True,
+    ),
 
 }, **dict([
     requiredObjectClassesProperty(),
@@ -94,30 +97,30 @@ property_descriptions = dict({
     fixedAttributesProperty(syntax=ldapServerFixedAttributes),
     emptyAttributesProperty(syntax=ldapServerFixedAttributes),
     ldapFilterProperty(),
-]),)
+]))
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('General NFS mounts settings'), layout=[
             'name',
             'nfsMounts',
-        ],),
-    ],),
+        ]),
+    ]),
     policy_object_tab(),
 ]
 
 
-def unmapMounts(old, encoding=(),):
+def unmapMounts(old, encoding=()):
     return [x.decode(*encoding).split(u' ') for x in old]
 
 
-def mapMounts(old, encoding=(),):
+def mapMounts(old, encoding=()):
     return [u' '.join(x).encode(*encoding) for x in old]
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('nfsMounts', 'univentionNFSMounts', mapMounts, unmapMounts,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('nfsMounts', 'univentionNFSMounts', mapMounts, unmapMounts)
 register_policy_mapping(mapping)
 
 

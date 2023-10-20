@@ -30,9 +30,9 @@ Variables: %s/.*$
 def test_ucr_register_api():
     package_name = random_string()
     package_version = random_version()
-    package = DebianPackage(name=package_name, version=package_version,)
-    package.create_debian_file_from_buffer(f'/etc/univention/templates/modules/{package_name}.py', UCR_MODULE,)
-    package.create_debian_file_from_buffer(f'/etc/univention/templates/info/{package_name}.info', UCR_INFO % (package_name, package_name),)
+    package = DebianPackage(name=package_name, version=package_version)
+    package.create_debian_file_from_buffer(f'/etc/univention/templates/modules/{package_name}.py', UCR_MODULE)
+    package.create_debian_file_from_buffer(f'/etc/univention/templates/info/{package_name}.info', UCR_INFO % (package_name, package_name))
     try:
         package.build()
         package.install()

@@ -62,7 +62,7 @@ class Reloader(metaclass=Plugin):
     itself.
     """
 
-    def refresh(self, reason=None,):  # pragma: no cover
+    def refresh(self, reason=None):  # pragma: no cover
         pass
 
 
@@ -77,7 +77,7 @@ class MtimeBasedLazyFileReloader(Reloader):
             Filename this object is responsible for
     """
 
-    def __init__(self, cache_file,):
+    def __init__(self, cache_file):
         self._cache_file = cache_file
         self._mtime = self._get_mtime()
 
@@ -94,14 +94,14 @@ class MtimeBasedLazyFileReloader(Reloader):
             self._mtime = mtime
             return True
 
-    def _check_reason(self, reason, content=None,):
+    def _check_reason(self, reason, content=None):
         if reason is None:
             return False
         if reason == "force":
             return True
 
-    def refresh(self, reason=None, content=None,):
-        if self._check_reason(reason, content=content,):
+    def refresh(self, reason=None, content=None):
+        if self._check_reason(reason, content=content):
             get_logger("cache").info("refreshing cache")
             fd = None
             try:
@@ -115,7 +115,7 @@ class MtimeBasedLazyFileReloader(Reloader):
                         os.makedirs(os.path.dirname(self._cache_file))
                     except EnvironmentError:
                         pass
-                    shutil.move(fd.name, self._cache_file,)
+                    shutil.move(fd.name, self._cache_file)
                     self._mtime = self._get_mtime()
                     return True
         return self._file_was_updated()
@@ -135,16 +135,16 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             Filename this object is responsible for
     """
 
-    def __init__(self, portal_dn, cache_file,):
-        super(PortalReloaderUDM, self,).__init__(cache_file)
+    def __init__(self, portal_dn, cache_file):
+        super(PortalReloaderUDM, self).__init__(cache_file)
         self._portal_dn = portal_dn
 
-    def _check_reason(self, reason, content=None,):
-        if super(PortalReloaderUDM, self,)._check_reason(reason, content,):
+    def _check_reason(self, reason, content=None):
+        if super(PortalReloaderUDM, self)._check_reason(reason, content):
             return True
         if reason is None:
             return False
-        reason_args = reason.split(":", 2,)
+        reason_args = reason.split(":", 2)
         if len(reason_args) < 2:
             return False
         if reason_args[0] != "ldap":
@@ -163,18 +163,18 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             get_logger("cache").warning("UDM not up to date? Portal module not found.")
             return None
         except udm_lib.NoObject:
-            get_logger("cache").warning("Portal %s not found", self._portal_dn,)
+            get_logger("cache").warning("Portal %s not found", self._portal_dn)
             return None
 
         portal = self._extract_portal(portal_data)
-        categories = self._extract_categories(udm, portal_data,)
+        categories = self._extract_categories(udm, portal_data)
         user_links = portal_data.props.userLinks
         menu_links = portal_data.props.menuLinks
-        folders = self._extract_folders(udm, portal_data, list(categories.values()),)
-        entries = self._extract_entries(udm, portal_data, list(categories.values()), list(folders.values()),)
-        announcements = self._extract_announcements(udm, portal_data,)
+        folders = self._extract_folders(udm, portal_data, list(categories.values()))
+        entries = self._extract_entries(udm, portal_data, list(categories.values()), list(folders.values()))
+        announcements = self._extract_announcements(udm, portal_data)
 
-        with tempfile.NamedTemporaryFile(mode="w", delete=False,) as fd:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
             json.dump(
                 {
                     "portal": portal,
@@ -187,11 +187,12 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
                 },
                 fd,
                 sort_keys=True,
-                indent=4,)
+                indent=4,
+            )
             return fd
 
     @classmethod
-    def _extract_portal(cls, portal_data,):
+    def _extract_portal(cls, portal_data):
         portal = {
             "dn": portal_data.dn,
             "showUmc": portal_data.props.showUmc,
@@ -206,13 +207,13 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
         portal_name = portal_data.props.name
 
         if portal["logo"]:
-            portal["logo"] = cls._write_image(portal_data.props.logo.raw, portal_name, "logos",)
+            portal["logo"] = cls._write_image(portal_data.props.logo.raw, portal_name, "logos")
         if portal["background"]:
-            portal["background"] = cls._write_image(portal_data.props.background.raw, portal_name, "backgrounds",)
+            portal["background"] = cls._write_image(portal_data.props.background.raw, portal_name, "backgrounds")
         return portal
 
     @classmethod
-    def _extract_categories(cls, udm, portal,):
+    def _extract_categories(cls, udm, portal):
         categories = {}
         for category in udm.get("portals/category").search():
             categories[category.dn] = {
@@ -224,7 +225,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
         return categories
 
     @classmethod
-    def _extract_folders(cls, udm, portal, categories,):
+    def _extract_folders(cls, udm, portal, categories):
         folders = {}
 
         for folder in udm.get("portals/folder").search():
@@ -243,7 +244,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
         return folders
 
     @classmethod
-    def _extract_entries(cls, udm, portal, categories, folders,):
+    def _extract_entries(cls, udm, portal, categories, folders):
         entries = {}
 
         for entry in udm.get("portals/entry").search():
@@ -257,7 +258,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             )
             icon_url = None
             if entry.props.icon:
-                icon_url = cls._write_image(entry.props.icon.raw, entry.props.name, "entries",)
+                icon_url = cls._write_image(entry.props.icon.raw, entry.props.name, "entries")
 
             entries[entry.dn] = {
                 "dn": entry.dn,
@@ -278,7 +279,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
         return entries
 
     @classmethod
-    def _extract_announcements(cls, udm, portal,):
+    def _extract_announcements(cls, udm, portal):
         udm_lib = importlib.import_module("univention.udm")
         announcements = {}
 
@@ -307,13 +308,14 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
         return announcements
 
     @classmethod
-    def _write_image(cls, image, name, dirname,):
+    def _write_image(cls, image, name, dirname):
         assets_root = Path(config.fetch("assets_root"))
 
         try:
             name = name.replace(
-                "/", "-",)  # name must not contain / and must be a path which can be accessed via the web!
-            extension = what(None, image,) or "svg"
+                "/", "-",
+            )  # name must not contain / and must be a path which can be accessed via the web!
+            extension = what(None, image) or "svg"
             path = assets_root / "icons" / dirname / f"{name}.{extension}"
             path.write_bytes(image)
         except (OSError, TypeError):
@@ -344,11 +346,11 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
             Filename this object is responsible for
     """
 
-    def __init__(self, ldap_uri, binddn, password_file, ldap_base, cache_file,):
-        super(GroupsReloaderLDAP, self,).__init__(cache_file)
+    def __init__(self, ldap_uri, binddn, password_file, ldap_base, cache_file):
+        super(GroupsReloaderLDAP, self).__init__(cache_file)
 
-    def _check_reason(self, reason, content=None,):
-        if super(GroupsReloaderLDAP, self,)._check_reason(reason, content,):
+    def _check_reason(self, reason, content=None):
+        if super(GroupsReloaderLDAP, self)._check_reason(reason, content):
             return True
         if reason is None:
             return False
@@ -359,6 +361,6 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
         from univention.ldap_cache.frontend import users_groups
 
         users = users_groups()
-        with tempfile.NamedTemporaryFile(mode="w", delete=False,) as fd:
-            json.dump(users, fd, sort_keys=True, indent=4,)
+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
+            json.dump(users, fd, sort_keys=True, indent=4)
         return fd

@@ -42,12 +42,13 @@ def test_check_enabled_email_verified():
         check_login(activated_email=True)
 
 
-def check_login(activated_email=False,):
+def check_login(activated_email=False):
     with udm_test.UCSTestUDM() as udm:
         testcase_user_name = udm.create_user(
             RegisteredThroughSelfService='TRUE',
-            PasswordRecoveryEmailVerified='TRUE' if activated_email else 'FALSE',)[1]
-        SamlSession = samltest.SamlTest(testcase_user_name, 'univention',)
+            PasswordRecoveryEmailVerified='TRUE' if activated_email else 'FALSE',
+        )[1]
+        SamlSession = samltest.SamlTest(testcase_user_name, 'univention')
         SamlSession.login_with_new_session_at_IdP()
         SamlSession.test_logged_in_status()
         SamlSession.logout_at_IdP()

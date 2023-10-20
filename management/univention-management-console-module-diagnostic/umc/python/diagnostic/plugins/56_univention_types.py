@@ -51,7 +51,7 @@ _UPDATED = False
 UdmModule = Any  # FIXME
 
 
-def udm_objects_without_type(lo: access,) -> List[Tuple[str, List[UdmModule], List[bytes]]]:
+def udm_objects_without_type(lo: access) -> List[Tuple[str, List[UdmModule], List[bytes]]]:
     global _UPDATED
     if not _UPDATED:
         update()
@@ -61,7 +61,7 @@ def udm_objects_without_type(lo: access,) -> List[Tuple[str, List[UdmModule], Li
     for dn, attrs in query:
         if dn.endswith(',cn=temporary,cn=univention,%s' % ucr.get('ldap/base')):
             continue
-        modules = identify(dn, attrs,)
+        modules = identify(dn, attrs)
         if modules:
             for module in modules:  # Bug #47846
                 if module.module == 'kerberos/kdcentry':
@@ -71,7 +71,7 @@ def udm_objects_without_type(lo: access,) -> List[Tuple[str, List[UdmModule], Li
     return objs
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     if ucr.get('server/role') != 'domaincontroller_master':
         return
 
@@ -82,7 +82,7 @@ def run(_umc_instance: Instance,) -> None:
         details = '\n\n' + _('These objects were found:')
         for _dn, modules, _object_classes in objects:
             for module in modules:
-                counted_objects.setdefault(module.short_description, 0,)
+                counted_objects.setdefault(module.short_description, 0)
                 counted_objects[module.short_description] += 1
         for module_name in sorted(counted_objects.keys()):
             num_objs = counted_objects[module_name]
@@ -90,10 +90,10 @@ def run(_umc_instance: Instance,) -> None:
         raise Warning(description + details, buttons=[{
             'action': 'migrate_objects',
             'label': _('Migrate %d LDAP objects') % len(objects),
-        }],)
+        }])
 
 
-def migrate_objects(_umc_instance: Instance,) -> None:
+def migrate_objects(_umc_instance: Instance) -> None:
     lo, pos = getAdminConnection()
     objects = udm_objects_without_type(lo)
     for dn, modules, object_classes in objects:
@@ -104,7 +104,7 @@ def migrate_objects(_umc_instance: Instance,) -> None:
             ('objectClass', object_classes, new_object_classes),
             ('univentionObjectType', [], [module.module.encode('UTF-8') for module in modules]),
         ]
-        lo.modify(dn, changes,)
+        lo.modify(dn, changes)
     raise ProblemFixed(buttons=[])
 
 

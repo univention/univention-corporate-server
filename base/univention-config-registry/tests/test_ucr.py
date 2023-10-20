@@ -17,13 +17,13 @@ if sys.version_info >= (3,):
     from importlib import reload
 
 
-def test_private(tmpucr,):
+def test_private(tmpucr):
     assert UCR.ucr_factory() is not UCR.ucr_factory()
 
 
-def test_ro(ucrf,):
+def test_ro(ucrf):
     reload(UCR)
-    assert not isinstance(UCR.ucr, UCR.ConfigRegistry,)
+    assert not isinstance(UCR.ucr, UCR.ConfigRegistry)
     assert UCR.ucr["foo"] == "LDAP"
     assert UCR.ucr["bam"] is None
     with pytest.raises(TypeError):
@@ -33,12 +33,12 @@ def test_ro(ucrf,):
 
 
 @pytest.mark.parametrize("autoload,before,after", [
-    pytest.param(lambda: UCR.ConfigRegistry(), None, None, id="Manual",),
-    pytest.param(lambda: UCR.ucr, "BEFORE", "BEFORE", id="Once",),
-    pytest.param(lambda: UCR.ucr_live, "BEFORE", "AFTER", id="Always",),
-    pytest.param(lambda: UCR.ucr_live.__enter__(), "BEFORE", "BEFORE", id="View",),
-],)
-def test_autoload(autoload, before, after, ucr0,):
+    pytest.param(lambda: UCR.ConfigRegistry(), None, None, id="Manual"),
+    pytest.param(lambda: UCR.ucr, "BEFORE", "BEFORE", id="Once"),
+    pytest.param(lambda: UCR.ucr_live, "BEFORE", "AFTER", id="Always"),
+    pytest.param(lambda: UCR.ucr_live.__enter__(), "BEFORE", "BEFORE", id="View"),
+])
+def test_autoload(autoload, before, after, ucr0):
     reload(UCR)
 
     ucr0["baz"] = "BEFORE"
@@ -57,13 +57,13 @@ def test_autoload(autoload, before, after, ucr0,):
 
 @pytest.mark.slow()
 @pytest.mark.parametrize("autoload", [
-    pytest.param(lambda ucr,: ucr.load(), id="Default",),
-    pytest.param(lambda ucr,: ucr.load(autoload=UCR.Load.ALWAYS), id="Always",),
-    pytest.param(lambda ucr,: ucr.load(autoload=UCR.Load.ALWAYS).__enter__(), id="View",),
-],)
-def test_benchmark_autoload(autoload, benchmark, ucr0,):
+    pytest.param(lambda ucr: ucr.load(), id="Default"),
+    pytest.param(lambda ucr: ucr.load(autoload=UCR.Load.ALWAYS), id="Always"),
+    pytest.param(lambda ucr: ucr.load(autoload=UCR.Load.ALWAYS).__enter__(), id="View"),
+])
+def test_benchmark_autoload(autoload, benchmark, ucr0):
     ucr0["foo"] = "value"
     ucr0.save()
 
     ucr = autoload(UCR.ConfigRegistry())
-    benchmark(ucr.get, "foo",)
+    benchmark(ucr.get, "foo")

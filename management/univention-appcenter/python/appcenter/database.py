@@ -58,7 +58,7 @@ class DatabaseError(Exception):
 
 
 class DatabaseCreationFailed(DatabaseError):
-    def __init__(self, msg, details=None,):
+    def __init__(self, msg, details=None):
         self.msg = msg
         self.details = details
 
@@ -82,7 +82,7 @@ class DatabaseInfoError(DatabaseError):
 
 class DatabaseConnector(object):
 
-    def __init__(self, app,):
+    def __init__(self, app):
         self.app = app
 
     def _get_default_db_name(self):
@@ -92,13 +92,13 @@ class DatabaseConnector(object):
         return None
 
     def get_db_host(self):
-        bip = ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16',)
+        bip = ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16')
         try:
-            IPv4Network(u'%s' % (bip,), False,)
+            IPv4Network(u'%s' % (bip,), False)
         except AddressValueError:
             raise DatabaseInfoError('Could not find DB host for %r' % bip)
         else:
-            ip_address = IPv4Address(u'%s' % (bip.split('/', 1,)[0],))
+            ip_address = IPv4Address(u'%s' % (bip.split('/', 1)[0],))
             return str(ip_address)
 
     def get_db_name(self):
@@ -130,7 +130,7 @@ class DatabaseConnector(object):
     def install(self):
         packages = self._get_software_packages()
         if packages:
-            if packages_are_installed(packages, strict=False,):
+            if packages_are_installed(packages, strict=False):
                 mark_packages_as_manually_installed(packages)
             else:
                 database_logger.info('Installing/upgrading %s' % ', '.join(packages))
@@ -142,7 +142,7 @@ class DatabaseConnector(object):
                     raise DatabaseCreationFailed('Could not install software packages due to missing lock')
 
     @classmethod
-    def get_connector(cls, app,):
+    def get_connector(cls, app):
         value = app.database
         if value:
             if app.docker and container_mode():
@@ -161,24 +161,24 @@ class DatabaseConnector(object):
     def _get_service_name(self):
         return self.__class__.__name__.lower()
 
-    def start(self, attempts=2,):
+    def start(self, attempts=2):
         service_name = self._get_service_name()
-        if service_name and call_process(['service', service_name, 'start'], database_logger,).returncode:
+        if service_name and call_process(['service', service_name, 'start'], database_logger).returncode:
             if attempts > 1:
                 # try again. sometimes, under heavy load, mysql seems to fail to
                 # start although it is just slow
                 database_logger.info('Starting %s failed. Retrying...' % service_name)
                 return self.start(attempts=attempts - 1)
             catcher = LogCatcher(database_logger)
-            call_process(['service', service_name, 'status'], catcher,)
+            call_process(['service', service_name, 'status'], catcher)
             details = '\n'.join(catcher.stdstream())
-            raise DatabaseCreationFailed('Could not start %s' % service_name, details=details,)
+            raise DatabaseCreationFailed('Could not start %s' % service_name, details=details)
 
-    def _write_password(self, password,):
+    def _write_password(self, password):
         db_password_file = self.get_db_password_file()
         try:
-            with open(db_password_file, 'w',) as f:
-                os.chmod(f.name, 0o600,)
+            with open(db_password_file, 'w') as f:
+                os.chmod(f.name, 0o600)
                 f.write(password)
         except EnvironmentError as exc:
             raise DatabaseCreationFailed(str(exc))
@@ -199,7 +199,7 @@ class DatabaseConnector(object):
     def db_user_exists(self):
         return False
 
-    def create_db_and_user(self, password,):
+    def create_db_and_user(self, password):
         raise NotImplementedError()
 
     def setup(self):
@@ -226,7 +226,7 @@ class DatabaseConnector(object):
 
 class PostgreSQL(DatabaseConnector):
 
-    def _escape(self, value,):
+    def _escape(self, value):
         return mysql.string_literal(value).decode('utf-8')
 
     def _get_software_packages(self):
@@ -243,9 +243,9 @@ class PostgreSQL(DatabaseConnector):
     def get_autostart_variable(self):
         return 'postgres8/autostart'
 
-    def execute(self, query,):
+    def execute(self, query):
         logger = LogCatcher()
-        process = call_process_as('postgres', ['/usr/bin/psql', '-tc', query], logger=logger,)
+        process = call_process_as('postgres', ['/usr/bin/psql', '-tc', query], logger=logger)
         if process.returncode:
             for level, msg in logger.logs:
                 if level == 'OUT':
@@ -270,16 +270,16 @@ class PostgreSQL(DatabaseConnector):
         if stdout and stdout[0].strip() == '1':
             return True
 
-    def create_db_and_user(self, password,):
-        call_process_as('postgres', ['/usr/bin/createuser', '-DRS', '--login', self.get_db_user()], logger=database_logger,)
-        call_process_as('postgres', ['/usr/bin/createdb', '-O', self.get_db_user(), '-T', 'template0', '-E', 'UTF8', self.get_db_name()], logger=database_logger,)
+    def create_db_and_user(self, password):
+        call_process_as('postgres', ['/usr/bin/createuser', '-DRS', '--login', self.get_db_user()], logger=database_logger)
+        call_process_as('postgres', ['/usr/bin/createdb', '-O', self.get_db_user(), '-T', 'template0', '-E', 'UTF8', self.get_db_name()], logger=database_logger)
         self.execute('ALTER ROLE "%s" WITH ENCRYPTED PASSWORD %s' % (self.get_db_user(), self._escape(password)))
 
 
 class MySQL(DatabaseConnector):
 
-    def __init__(self, app,):
-        super(MySQL, self,).__init__(app)
+    def __init__(self, app):
+        super(MySQL, self).__init__(app)
         self._connection = None
         self._cursor = None
 
@@ -305,7 +305,7 @@ class MySQL(DatabaseConnector):
             with open('/etc/mysql.secret') as f:
                 passwd = f.read().rstrip('\n')
             try:
-                self._connection = mysql.connect(host='localhost', user='root', passwd=passwd,)
+                self._connection = mysql.connect(host='localhost', user='root', passwd=passwd)
             except mysql.OperationalError:
                 raise DatabaseConnectionFailed('Could not connect to the MySQL server. Please verify that MySQL is running. The password for MySQL\'s root user should be in /etc/mysql.secret. You can test the connection via\n  mysql --password="$(cat /etc/mysql.secret)"')
         return self._connection
@@ -315,10 +315,10 @@ class MySQL(DatabaseConnector):
             self._cursor = self.get_root_connection().cursor()
         return self._cursor
 
-    def execute(self, query,*args):
+    def execute(self, query, *args):
         try:
             cursor = self.get_cursor()
-            cursor.execute(query, args,)
+            cursor.execute(query, args)
         except mysql.Error as exc:
             raise DatabaseError(str(exc))
         else:
@@ -326,21 +326,21 @@ class MySQL(DatabaseConnector):
 
     def db_exists(self):
         database_logger.info('Checking if database %s exists (mysql implementation)' % self.get_db_name())
-        cursor = self.execute("SELECT EXISTS (SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s)", self.get_db_name(),)
+        cursor = self.execute("SELECT EXISTS (SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s)", self.get_db_name())
         return cursor.fetchone()[0]
 
     def db_user_exists(self):
-        cursor = self.execute("SELECT EXISTS (SELECT DISTINCT user FROM mysql.user WHERE user = %s)", self.get_db_user(),)
+        cursor = self.execute("SELECT EXISTS (SELECT DISTINCT user FROM mysql.user WHERE user = %s)", self.get_db_user())
         return cursor.fetchone()[0]
 
-    def escape(self, value,):
+    def escape(self, value):
         print(repr(value))
         print(repr(six.text_type(value)))
         return self.get_root_connection().escape(six.text_type(value))
 
-    def create_db_and_user(self, password,):
+    def create_db_and_user(self, password):
         self.execute('CREATE DATABASE IF NOT EXISTS `%s`' % self.get_db_name())
-        self.execute("GRANT ALL ON `%s`.* TO %%s@'%%%%' IDENTIFIED BY %%s" % self.get_db_name(), self.get_db_user(), password,)
+        self.execute("GRANT ALL ON `%s`.* TO %%s@'%%%%' IDENTIFIED BY %%s" % self.get_db_name(), self.get_db_user(), password)
 
     def __del__(self):
         if self._connection:

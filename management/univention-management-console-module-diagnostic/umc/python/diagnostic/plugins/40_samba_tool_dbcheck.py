@@ -41,7 +41,7 @@ description = _('No errors found.')
 run_descr = ['This can be checked by running: samba-tool dbcheck']
 
 
-def run_samba_tool_dbcheck_fix(umc_instance: Instance,) -> None:
+def run_samba_tool_dbcheck_fix(umc_instance: Instance) -> None:
     if not util.is_service_active('Samba 4'):
         return
 
@@ -53,7 +53,7 @@ def run_samba_tool_dbcheck_fix(umc_instance: Instance,) -> None:
     fix_log = [_('Output of `{cmd}`:').format(cmd=cmd_string)]
 
     fix_log.append(output)
-    run(umc_instance, rerun=True, fix_log='\n'.join(fix_log),)
+    run(umc_instance, rerun=True, fix_log='\n'.join(fix_log))
 
 
 actions = {
@@ -61,7 +61,7 @@ actions = {
 }
 
 
-def run(_umc_instance: Instance, rerun: bool = False, fix_log: str = '',) -> None:
+def run(_umc_instance: Instance, rerun: bool = False, fix_log: str = '') -> None:
     if not util.is_service_active('Samba 4'):
         return
 
@@ -83,7 +83,7 @@ def run(_umc_instance: Instance, rerun: bool = False, fix_log: str = '',) -> Non
         if not rerun:
             fix = _('You can run `samba-tool dbcheck --fix` to fix the issue.')
             error_descriptions.append(fix)
-        raise Critical(description='\n'.join(error_descriptions), buttons=buttons,)
+        raise Critical(description='\n'.join(error_descriptions), buttons=buttons)
 
     if rerun:
         fixed = _('`samba-tool dbcheck` found no errors in the local AD database.')

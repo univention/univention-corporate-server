@@ -63,13 +63,14 @@ def create_diagnostics_plugin() -> PluginData:
         "133_system_diagnostics description",
         "test_action label",
         Path(temp_file.name),
-        plugin_path,)
+        plugin_path,
+    )
 
-    create_plugin(plugin_path, plugin_data,)
+    create_plugin(plugin_path, plugin_data)
     return plugin_data
 
 
-def create_plugin(plugin_path: Path, plugin_data: PluginData,):
+def create_plugin(plugin_path: Path, plugin_data: PluginData):
     plugin = f"""
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
@@ -98,7 +99,7 @@ actions = {{
 }}
 """.strip()
 
-    with open(plugin_path, "w",) as fd:
+    with open(plugin_path, "w") as fd:
         fd.write(plugin)
 
 
@@ -113,20 +114,20 @@ def get_plugin_path() -> Path:
 
 
 def get_random_plugin_path() -> Path:
-    plugin_name = f"{uts.random_string(length=10, alpha=True, numeric=False,)}.py"
+    plugin_name = f"{uts.random_string(length=10, alpha=True, numeric=False)}.py"
     return PLUGIN_DIR / plugin_name
 
 
-def test_system_diagnostics(umc_browser_test: UMCBrowserTest, plugin_data: PluginData,):
+def test_system_diagnostics(umc_browser_test: UMCBrowserTest, plugin_data: PluginData):
     page = umc_browser_test.page
 
     system_diag = SystemDiagnostic(umc_browser_test)
     system_diag.navigate()
 
-    expect(page.get_by_role("button", name=plugin_data.title,)).to_be_hidden()
+    expect(page.get_by_role("button", name=plugin_data.title)).to_be_hidden()
 
-    with open(plugin_data.temp_file_name, "w",) as fd:
+    with open(plugin_data.temp_file_name, "w") as fd:
         fd.write("FAIL")
 
     system_diag.run_system_diagnostics()
-    expect(page.get_by_role("button", name=plugin_data.title,)).to_be_visible()
+    expect(page.get_by_role("button", name=plugin_data.title)).to_be_visible()

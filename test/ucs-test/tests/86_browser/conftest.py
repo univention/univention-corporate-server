@@ -18,7 +18,7 @@ from univention.testing.browser.suggestion import AppCenterCacheTest
 from univention.testing.browser.univentionconfigurationregistry import UniventionConfigurationRegistry
 
 
-@pytest.fixture(scope="session", autouse=True,)
+@pytest.fixture(scope="session", autouse=True)
 def suppress_notifications():
     handler_set(["umc/web/hooks/suppress_umc_notifications=suppress_umc_notifications"])
     yield
@@ -28,16 +28,16 @@ def suppress_notifications():
 phase_report_key = pytest.StashKey[Dict[str, pytest.CollectReport]]()
 
 
-@pytest.hookimpl(tryfirst=True, hookwrapper=True,)
-def pytest_runtest_makereport(item, call,):
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
 
-    item.stash.setdefault(phase_report_key, {},)[rep.when] = rep
+    item.stash.setdefault(phase_report_key, {})[rep.when] = rep
 
 
 @pytest.fixture(scope="session")
-def browser_context_args(browser_context_args,):
+def browser_context_args(browser_context_args):
     return {
         **browser_context_args,
         "ignore_https_errors": True,
@@ -45,7 +45,7 @@ def browser_context_args(browser_context_args,):
 
 
 @pytest.fixture(scope="session")
-def browser_type_launch_args(browser_type_launch_args,):
+def browser_type_launch_args(browser_type_launch_args):
     return {
         **browser_type_launch_args,
         "executable_path": "/usr/bin/chromium",
@@ -67,22 +67,22 @@ def ucr_module_scope() -> Iterator[_ucr.UCSTestConfigRegistry]:
 
 
 @pytest.fixture()
-def ucr_module(umc_browser_test: UMCBrowserTest,):
+def ucr_module(umc_browser_test: UMCBrowserTest):
     return UniventionConfigurationRegistry(umc_browser_test)
 
 
 @pytest.fixture()
-def user_module(umc_browser_test: UMCBrowserTest,):
+def user_module(umc_browser_test: UMCBrowserTest):
     return UserModule(umc_browser_test)
 
 
 @pytest.fixture()
-def side_menu_license(umc_browser_test: UMCBrowserTest,):
+def side_menu_license(umc_browser_test: UMCBrowserTest):
     return SideMenuLicense(umc_browser_test)
 
 
 @pytest.fixture()
-def side_menu_user(umc_browser_test: UMCBrowserTest,):
+def side_menu_user(umc_browser_test: UMCBrowserTest):
     return SideMenuUser(umc_browser_test)
 
 
@@ -92,17 +92,18 @@ def kill_module_processes():
     try:
         subprocess.run(
             ["pkill", "-f", "/usr/sbin/univention-management-console-module"],
-            check=True,)
+            check=True,
+        )
     except subprocess.CalledProcessError as e:
         if e.returncode != 1:
             logger.exception("failed killing module processes")
             raise
 
 
-def setup_browser_context(context, start_tracing=True,):
+def setup_browser_context(context, start_tracing=True):
     context.set_default_timeout(60 * 1000 * 2)
     if start_tracing:
-        context.tracing.start(screenshots=True, snapshots=True, sources=True,)
+        context.tracing.start(screenshots=True, snapshots=True, sources=True)
     page = context.new_page()
     expect.set_options(timeout=15_000)
     return page
@@ -112,7 +113,8 @@ def setup_browser_context(context, start_tracing=True,):
 def context_module_scope(
     browser_type: BrowserType,
     browser_type_launch_args: Dict,
-    browser_context_args: Dict,):
+    browser_context_args: Dict,
+):
     browser = browser_type.launch(**browser_type_launch_args)
     return browser.new_context(**browser_context_args)
 
@@ -120,7 +122,8 @@ def context_module_scope(
 @pytest.fixture(scope="module")
 def umc_browser_test_module(
     context_module_scope: BrowserContext,
-    kill_module_processes,) -> UMCBrowserTest:
+    kill_module_processes,
+) -> UMCBrowserTest:
     page = setup_browser_context(context_module_scope)
     tester = UMCBrowserTest(page)
 
@@ -132,18 +135,20 @@ def umc_browser_test(
     context: BrowserContext,
     request: pytest.FixtureRequest,
     kill_module_processes,
-    ucr,) -> Generator[UMCBrowserTest, None, None]:
+    ucr,
+) -> Generator[UMCBrowserTest, None, None]:
     page = setup_browser_context(context)
     tester = UMCBrowserTest(page)
     # time.sleep(1)
 
     yield tester
 
-    teardown_umc_browser_test(request, ucr, page, context,)
+    teardown_umc_browser_test(request, ucr, page, context)
 
 
 def teardown_umc_browser_test(
-    request: pytest.FixtureRequest, ucr, page: Page, context: BrowserContext,):
+    request: pytest.FixtureRequest, ucr, page: Page, context: BrowserContext,
+):
     try:
         report = request.node.stash[phase_report_key]
     except KeyError:
@@ -154,7 +159,7 @@ def teardown_umc_browser_test(
 
     try:
         if "call" in report and report["call"].failed:
-            save_trace(page, context, request.node.name, ucr,)
+            save_trace(page, context, request.node.name, ucr)
             check_for_backtrace(page)
         else:
             context.tracing.stop()
@@ -167,7 +172,8 @@ def save_trace(
     context: BrowserContext,
     node_name: str,
     ucr,
-    tracing_stop_chunk: bool = False,):
+    tracing_stop_chunk: bool = False,
+):
     ts = time.time_ns()
 
     base_path = Path("browser").resolve()
@@ -193,8 +199,8 @@ def save_trace(
         logger.info("Browser screenshot URL: %s" % browser_screenshot_url)
 
 
-def check_for_backtrace(page: Page,):
-    show_backtrace_button = page.get_by_role("button", name="Show server error message",)
+def check_for_backtrace(page: Page):
+    show_backtrace_button = page.get_by_role("button", name="Show server error message")
     notification_502_error = page.get_by_text("An unknown error with status code 502 occurred").first
     try:
         expect(show_backtrace_button.or_(notification_502_error)).to_be_visible(timeout=5 * SEC)
@@ -202,7 +208,8 @@ def check_for_backtrace(page: Page,):
             show_backtrace_button.click()
             backtrace_container = page.get_by_role(
                 "region",
-                name="Hide server error message",)
+                name="Hide server error message",
+            )
             logger.info("Recorded backtrace")
             print(backtrace_container.inner_text())
         else:

@@ -41,13 +41,13 @@ class ConnectionManager(object):
         verify (bool): Verify server SSL.
     """
 
-    def __init__(self, base_url, headers={}, timeout=60, verify=True,):
+    def __init__(self, base_url, headers={}, timeout=60, verify=True):
         self._base_url = base_url
         self._headers = headers
         self._timeout = timeout
         self._verify = verify
         self._s = requests.Session()
-        self._s.auth = lambda x,: x  # don't let requests add auth headers
+        self._s.auth = lambda x: x  # don't let requests add auth headers
 
         # retry once to reset connection with Keycloak after  tomcat's ConnectionTimeout
         # see https://github.com/marcospereirampj/python-keycloak/issues/36
@@ -58,7 +58,7 @@ class ConnectionManager(object):
             method_whitelist.add('POST')
             adapter.max_retries.method_whitelist = frozenset(method_whitelist)
 
-            self._s.mount(protocol, adapter,)
+            self._s.mount(protocol, adapter)
 
     @property
     def base_url(self):
@@ -66,7 +66,7 @@ class ConnectionManager(object):
         return self._base_url
 
     @base_url.setter
-    def base_url(self, value,):
+    def base_url(self, value):
         """ """
         self._base_url = value
 
@@ -76,7 +76,7 @@ class ConnectionManager(object):
         return self._timeout
 
     @timeout.setter
-    def timeout(self, value,):
+    def timeout(self, value):
         """ """
         self._timeout = value
 
@@ -86,7 +86,7 @@ class ConnectionManager(object):
         return self._verify
 
     @verify.setter
-    def verify(self, value,):
+    def verify(self, value):
         """ """
         self._verify = value
 
@@ -96,11 +96,11 @@ class ConnectionManager(object):
         return self._headers
 
     @headers.setter
-    def headers(self, value,):
+    def headers(self, value):
         """ """
         self._headers = value
 
-    def param_headers(self, key,):
+    def param_headers(self, key):
         """ Return a specific header parameter.
         :arg
             key (str): Header parameters key.
@@ -113,7 +113,7 @@ class ConnectionManager(object):
         """ Clear header parameters. """
         self.headers = {}
 
-    def exist_param_headers(self, key,):
+    def exist_param_headers(self, key):
         """ Check if the parameter exists in the header.
         :arg
             key (str): Header parameters key.
@@ -122,7 +122,7 @@ class ConnectionManager(object):
         """
         return self.param_headers(key) is not None
 
-    def add_param_headers(self, key, value,):
+    def add_param_headers(self, key, value):
         """ Add a single parameter inside the header.
         :arg
             key (str): Header parameters key.
@@ -130,14 +130,14 @@ class ConnectionManager(object):
         """
         self.headers[key] = value
 
-    def del_param_headers(self, key,):
+    def del_param_headers(self, key):
         """ Remove a specific parameter.
         :arg
             key (str): Key of the header parameters.
         """
-        self.headers.pop(key, None,)
+        self.headers.pop(key, None)
 
-    def raw_get(self, path,**kwargs):
+    def raw_get(self, path, **kwargs):
         """ Submit get request to the path.
         :arg
             path (str): Path for request.
@@ -148,16 +148,16 @@ class ConnectionManager(object):
         """
 
         try:
-            return self._s.get(urljoin(self.base_url, path,),
+            return self._s.get(urljoin(self.base_url, path),
                                params=kwargs,
                                headers=self.headers,
                                timeout=self.timeout,
-                               verify=self.verify,)
+                               verify=self.verify)
         except Exception as e:
             raise KeycloakConnectionError(
                 "Can't connect to server (%s)" % e)
 
-    def raw_post(self, path, data,**kwargs):
+    def raw_post(self, path, data, **kwargs):
         """ Submit post request to the path.
         :arg
             path (str): Path for request.
@@ -168,17 +168,17 @@ class ConnectionManager(object):
             HttpError: Can't connect to server.
         """
         try:
-            return self._s.post(urljoin(self.base_url, path,),
+            return self._s.post(urljoin(self.base_url, path),
                                 params=kwargs,
                                 data=data,
                                 headers=self.headers,
                                 timeout=self.timeout,
-                                verify=self.verify,)
+                                verify=self.verify)
         except Exception as e:
             raise KeycloakConnectionError(
                 "Can't connect to server (%s)" % e)
 
-    def raw_put(self, path, data,**kwargs):
+    def raw_put(self, path, data, **kwargs):
         """ Submit put request to the path.
         :arg
             path (str): Path for request.
@@ -189,17 +189,17 @@ class ConnectionManager(object):
             HttpError: Can't connect to server.
         """
         try:
-            return self._s.put(urljoin(self.base_url, path,),
+            return self._s.put(urljoin(self.base_url, path),
                                params=kwargs,
                                data=data,
                                headers=self.headers,
                                timeout=self.timeout,
-                               verify=self.verify,)
+                               verify=self.verify)
         except Exception as e:
             raise KeycloakConnectionError(
                 "Can't connect to server (%s)" % e)
 
-    def raw_delete(self, path, data={},**kwargs):
+    def raw_delete(self, path, data={}, **kwargs):
         """ Submit delete request to the path.
 
         :arg
@@ -211,12 +211,12 @@ class ConnectionManager(object):
             HttpError: Can't connect to server.
         """
         try:
-            return self._s.delete(urljoin(self.base_url, path,),
+            return self._s.delete(urljoin(self.base_url, path),
                                   params=kwargs,
                                   data=data,
                                   headers=self.headers,
                                   timeout=self.timeout,
-                                  verify=self.verify,)
+                                  verify=self.verify)
         except Exception as e:
             raise KeycloakConnectionError(
                 "Can't connect to server (%s)" % e)

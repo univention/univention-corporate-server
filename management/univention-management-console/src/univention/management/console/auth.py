@@ -53,28 +53,28 @@ from univention.management.console.pam import (
 
 class AuthenticationResult(object):
 
-    def __init__(self, result, locale,):  # type: (Union[BaseException, Dict[str, str]], Optional[str]) -> None
+    def __init__(self, result, locale):  # type: (Union[BaseException, Dict[str, str]], Optional[str]) -> None
         self.credentials = None
         self.status = 200
-        self.authenticated = not isinstance(result, BaseException,)
+        self.authenticated = not isinstance(result, BaseException)
         if self.authenticated:
             self.credentials = result
         self.message = None
         self.result = None  # type: Optional[Dict[str, Any]]
         self.password_expired = False
-        if isinstance(result, AuthenticationError,):
+        if isinstance(result, AuthenticationError):
             self.status = 401
             self.message = str(result)
             self.result = {}
-            if isinstance(result, PasswordExpired,):
+            if isinstance(result, PasswordExpired):
                 self.result['password_expired'] = True
-            elif isinstance(result, AccountExpired,):
+            elif isinstance(result, AccountExpired):
                 self.result['account_expired'] = True
-            elif isinstance(result, AuthenticationInformationMissing,):
+            elif isinstance(result, AuthenticationInformationMissing):
                 self.result['missing_prompts'] = result.missing_prompts
-            elif isinstance(result, PasswordChangeFailed,):
+            elif isinstance(result, PasswordChangeFailed):
                 self.result['password_change_failed'] = True
-        elif isinstance(result, BaseException,):
+        elif isinstance(result, BaseException):
             self.status = 500
             self.message = str(result)
         else:
@@ -88,36 +88,36 @@ class AuthenticationResult(object):
 
 class AuthHandler(object):
 
-    def get_handler(self, locale,):
+    def get_handler(self, locale):
         # PAM MUST be initialized outside of a thread. Otherwise it segfaults e.g. with pam_saml.so.
         # See http://pam-python.sourceforge.net/doc/html/#bugs
         return PamAuth(locale)
 
-    def authenticate(self, pam, args,):
-        args.pop('pam', None,)
+    def authenticate(self, pam, args):
+        args.pop('pam', None)
         locale = args.pop('locale')
-        args.setdefault('new_password', None,)
-        args.setdefault('username', '',)
-        args.setdefault('password', '',)
+        args.setdefault('new_password', None)
+        args.setdefault('username', '')
+        args.setdefault('password', '')
 
         try:
-            result = self.__authenticate_thread(pam, **args,)
+            result = self.__authenticate_thread(pam, **args)
         except (AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, PasswordChangeFailed, AccountExpired) as exc:
             result = exc
         except BaseException as exc:
             result = exc
             AUTH.error(traceback.format_exc())
 
-        if isinstance(result, tuple,):
+        if isinstance(result, tuple):
             username, password = result
             result = {'username': username, 'password': password, 'auth_type': args.get('auth_type')}
-        return AuthenticationResult(result, locale,)
+        return AuthenticationResult(result, locale)
 
-    def __authenticate_thread(self, pam, username, password, new_password, auth_type=None,**custom_prompts):
+    def __authenticate_thread(self, pam, username, password, new_password, auth_type=None, **custom_prompts):
         AUTH.info('Trying to authenticate user %r (auth_type: %r)' % (username, auth_type))
         username = self.__canonicalize_username(username)
         try:
-            pam.authenticate(username, password, **custom_prompts,)
+            pam.authenticate(username, password, **custom_prompts)
         except AuthenticationFailed as auth_failed:
             AUTH.error(str(auth_failed))
             raise
@@ -127,7 +127,7 @@ class AuthHandler(object):
                 raise
 
             try:
-                pam.change_password(username, password, new_password,)
+                pam.change_password(username, password, new_password)
             except PasswordChangeFailed as change_failed:
                 AUTH.error(str(change_failed))
                 raise
@@ -138,13 +138,13 @@ class AuthHandler(object):
             AUTH.info('Authentication for %r was successful' % (username,))
             return (username, password)
 
-    def __canonicalize_username(self, username,):  # type: (str) -> str
+    def __canonicalize_username(self, username):  # type: (str) -> str
         try:
             lo, po = get_machine_connection(write=False)
             result = None
             if lo:
                 attr = 'mailPrimaryAddress' if '@' in username else 'uid'
-                result = lo.search(filter_format('(&(%s=%s)(objectClass=person))', (attr, username),), attr=['uid'], unique=True,)
+                result = lo.search(filter_format('(&(%s=%s)(objectClass=person))', (attr, username)), attr=['uid'], unique=True)
             if result and result[0][1].get('uid'):
                 username = result[0][1]['uid'][0].decode('utf-8')
                 AUTH.info('Canonicalized username: %r' % (username,))

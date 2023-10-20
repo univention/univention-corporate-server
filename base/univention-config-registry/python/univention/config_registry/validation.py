@@ -48,10 +48,10 @@ class BaseValidator(object):
 
     NAME = ""
 
-    def __init__(self, attrs,):  # type: (Dict[str, str]) -> None
+    def __init__(self, attrs):  # type: (Dict[str, str]) -> None
         pass
 
-    def is_valid(self, value,):
+    def is_valid(self, value):
         # type: (str) -> bool
         """
         Check if value is valid.
@@ -63,7 +63,7 @@ class BaseValidator(object):
         except Exception:
             return False
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         """
         Check is value is valid.
@@ -99,8 +99,8 @@ class String(BaseValidator):
     NAME = "str"
     REGEX = None  # type: Optional[Pattern]
 
-    def __init__(self, attrs,):  # type: (Dict[str, str]) -> None
-        self.regex = attrs.get('regex', self.REGEX,)  # type: ignore
+    def __init__(self, attrs):  # type: (Dict[str, str]) -> None
+        self.regex = attrs.get('regex', self.REGEX)  # type: ignore
 
     @property
     def regex(self):
@@ -108,7 +108,7 @@ class String(BaseValidator):
         return self._rxc.pattern if self._rxc else None
 
     @regex.setter
-    def regex(self, regex,):
+    def regex(self, regex):
         # type: (Union[None, str, Pattern]) -> None
         rxc = None
         if regex is not None:
@@ -118,12 +118,12 @@ class String(BaseValidator):
                 raise ValueError('error compiling regex: %s' % regex)
         self._rxc = rxc
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         if self._rxc:
             return self._rxc.match(value)
         else:
-            return isinstance(value, str,)
+            return isinstance(value, str)
 
     def __str__(self):
         # type: () -> str
@@ -135,7 +135,7 @@ class URLHttp(BaseValidator):
 
     NAME = "url_http"
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         o = urlsplit(value)
         o.port  # may raise ValueError  # noqa: B018
@@ -147,7 +147,7 @@ class URLProxy(BaseValidator):
 
     NAME = "url_proxy"
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         o = urlsplit(value)
         o.port  # may raise ValueError  # noqa: B018
@@ -159,7 +159,7 @@ class IPv4Address(BaseValidator):
 
     NAME = "ipv4address"
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         return ipaddress.IPv4Address(u"%s" % value)  # FIXME: remove Python 2.7 unicoding
 
@@ -169,7 +169,7 @@ class IPv6Address(BaseValidator):
 
     NAME = "ipv6address"
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         return ipaddress.IPv6Address(u"%s" % value)  # FIXME: remove Python 2.7 unicoding
 
@@ -179,7 +179,7 @@ class IPAddress(BaseValidator):
 
     NAME = "ipaddress"
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         return ipaddress.ip_address(u"%s" % value)  # FIXME: remove Python 2.7 unicoding
 
@@ -196,12 +196,12 @@ class Integer(BaseValidator):
     MIN = None  # type: Optional[int]
     MAX = None  # type: Optional[int]
 
-    def __init__(self, attrs,):
+    def __init__(self, attrs):
         # type: (Dict[str, str]) -> None
         self._min = None  # type: Optional[int]
         self._max = None  # type: Optional[int]
-        self.min = cast(Optional[int], attrs.get('min', self.MIN,),)
-        self.max = cast(Optional[int], attrs.get('max', self.MAX,),)
+        self.min = cast(Optional[int], attrs.get('min', self.MIN))
+        self.max = cast(Optional[int], attrs.get('max', self.MAX))
 
     @property
     def min(self):
@@ -209,7 +209,7 @@ class Integer(BaseValidator):
         return self._min
 
     @min.setter
-    def min(self, value,):
+    def min(self, value):
         # type: (Optional[str]) -> None
         if value is None:
             self._min = None
@@ -227,7 +227,7 @@ class Integer(BaseValidator):
         return self._max
 
     @max.setter
-    def max(self, value,):
+    def max(self, value):
         # type: (Optional[str]) -> None
         if value is None:
             self._max = None
@@ -239,7 +239,7 @@ class Integer(BaseValidator):
 
         self._max = val
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         val = int(value)
         if self._min is not None and val < self._min:
@@ -293,7 +293,7 @@ class Bool(BaseValidator):
     NAME = "bool"
     _BCR = BooleanConfigRegistry()
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         return self._BCR.is_true(value=value) or self._BCR.is_false(value=value)
 
@@ -303,7 +303,7 @@ class Json(BaseValidator):
 
     NAME = "json"
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         return json.loads(value) or True
 
@@ -314,18 +314,18 @@ class List(BaseValidator):
     NAME = "list"
     DEFAULT_SEPARATOR = ','
 
-    def __init__(self, attrs,):
+    def __init__(self, attrs):
         # type: (Dict[str, str]) -> None
-        self.element_type = attrs.get('elementtype', "str",)
-        regex = attrs.get('separator', self.DEFAULT_SEPARATOR,)
+        self.element_type = attrs.get('elementtype', "str")
+        regex = attrs.get('separator', self.DEFAULT_SEPARATOR)
         try:
             self.separator = re.compile(regex)
         except re.error:
             raise ValueError('error compiling regex: %s' % regex)
-        typ = Type.TYPE_CLASSES.get(self.element_type, String,)
+        typ = Type.TYPE_CLASSES.get(self.element_type, String)
         self.checker = typ(attrs)
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         if self.element_type is None:
             return False
@@ -347,7 +347,7 @@ class Cron(BaseValidator):
     MONTHS = frozenset("jan feb mar apr may jun jul aug sep oct nov dec".split())
     DAYS = frozenset("sun mon tue wed thu fri sat".split())
 
-    def validate(self, value,):
+    def validate(self, value):
         # type: (str) -> object
         if value.startswith("#"):
             pass
@@ -355,15 +355,15 @@ class Cron(BaseValidator):
             pass
         else:
             minutes, hours, days_month, months, days_week = value.split()
-            self._check(minutes, 0, 59,)
-            self._check(hours, 0, 23,)
-            self._check(days_month, 1, 31,)
-            self._check(months, 1, 12, self.MONTHS,)
-            self._check(days_week, 0, 7, self.DAYS,)
+            self._check(minutes, 0, 59)
+            self._check(hours, 0, 23)
+            self._check(days_month, 1, 31)
+            self._check(months, 1, 12, self.MONTHS)
+            self._check(days_week, 0, 7, self.DAYS)
         return True
 
     @staticmethod
-    def _check(text, low, high, extra={},):
+    def _check(text, low, high, extra={}):
         # type: (str, int, int, Container[str]) -> None
         if text.lower() in extra:
             return
@@ -395,7 +395,7 @@ class Cron(BaseValidator):
             elif (low or 1) <= int(step) <= high:
                 pass
             else:
-                raise ValueError("step={step!r} not in range [{low_}-{high}]".format(low_=low or 1, **locals(),))
+                raise ValueError("step={step!r} not in range [{low_}-{high}]".format(low_=low or 1, **locals()))
 
 
 class Type(object):
@@ -420,14 +420,14 @@ class Type(object):
         for clazz in BaseValidator._recurse_subclasses()
     }  # type: Dict[Optional[str], _Type[BaseValidator]]
 
-    def __init__(self, vinfo,):
+    def __init__(self, vinfo):
         # type: (cri.Variable) -> None
         self.vinfo = vinfo
         self.vtype = self.vinfo.get('type')  # type: Optional[str]
-        typ = self.TYPE_CLASSES.get(self.vtype, String,)
+        typ = self.TYPE_CLASSES.get(self.vtype, String)
         self.checker = typ(self.vinfo)
 
-    def check(self, value,):
+    def check(self, value):
         # type: (str) -> bool
         return self.checker.is_valid(value)
 

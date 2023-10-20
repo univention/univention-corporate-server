@@ -36,21 +36,21 @@ from collections import OrderedDict
 
 
 class LDAPObject(object):
-    def __init__(self, dn, attrs,):
+    def __init__(self, dn, attrs):
         self.dn = dn
         self.attrs = attrs
         self.changed = {}
 
     def __repr__(self):
-        return 'Object({!r}, {!r})'.format(self.dn, self.attrs,)
+        return 'Object({!r}, {!r})'.format(self.dn, self.attrs)
 
 
-def make_obj(obj,):
+def make_obj(obj):
     dn = obj.pop('dn')[0].decode('utf-8')
-    return LDAPObject(dn, obj,)
+    return LDAPObject(dn, obj)
 
 
-def parse_ldif(ldif,):
+def parse_ldif(ldif):
     ret = []
     obj = {}
     for line in ldif.splitlines():
@@ -59,8 +59,8 @@ def parse_ldif(ldif,):
                 ret.append(make_obj(obj))
             obj = {}
             continue
-        k, v = line.split(': ', 1,)
-        obj.setdefault(k, [],)
+        k, v = line.split(': ', 1)
+        obj.setdefault(k, [])
         obj[k].append(v.encode('utf-8'))
     if obj:
         ret.append(make_obj(obj))
@@ -71,7 +71,7 @@ class Database(object):
     def __init__(self):
         self.objs = OrderedDict()
 
-    def fill(self, fname,):
+    def fill(self, fname):
         with open(fname) as fd:
             objs = parse_ldif(fd.read())
             for obj in objs:
@@ -84,30 +84,30 @@ class Database(object):
     def __repr__(self):
         return 'Database({!r})'.format(self.objs)
 
-    def __getitem__(self, dn,):
+    def __getitem__(self, dn):
         return self.objs[dn].attrs
 
-    def get(self, dn,):
+    def get(self, dn):
         obj = self.objs.get(dn)
         if obj:
             return obj.attrs
 
-    def add(self, obj,):
+    def add(self, obj):
         self.objs[obj.dn] = obj
         return obj.dn
 
-    def delete(self, dn,):
+    def delete(self, dn):
         del self.objs[dn]
 
-    def modify(self, dn, ml,):
+    def modify(self, dn, ml):
         obj = self.objs[dn]
         for attr, _old, new in ml:
             if new:
-                if not isinstance(new, (list, tuple),):
+                if not isinstance(new, (list, tuple)):
                     new = [new]
                 obj.attrs[attr] = new
             else:
-                obj.attrs.pop(attr, None,)
+                obj.attrs.pop(attr, None)
 
 
 # def make_univention_object(object_type, attrs, parent=None):

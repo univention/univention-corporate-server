@@ -48,19 +48,19 @@ class ObjectNotFound(BaseException):
     pass
 
 
-def remove_ucs_rejected(ucs_dn,):
+def remove_ucs_rejected(ucs_dn):
     config = univention.connector.configdb('/etc/univention/%s/internal.sqlite' % CONFIGBASENAME)
     found = False
     for filename, rejected_dn in config.items('UCS rejected'):
         if univention.connector.RE_NO_RESYNC.match(rejected_dn):
             if ucs_dn != rejected_dn:
                 continue
-        elif not univention.uldap.access.compare_dn(ucs_dn, rejected_dn,):
+        elif not univention.uldap.access.compare_dn(ucs_dn, rejected_dn):
             continue
 
         if os.path.exists(filename):
             os.remove(filename)
-        config.remove_option('UCS rejected', filename,)
+        config.remove_option('UCS rejected', filename)
         found = True
 
     if not found:
@@ -69,7 +69,7 @@ def remove_ucs_rejected(ucs_dn,):
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument("-c", "--configbasename", metavar="CONFIGBASENAME", default="connector",)
+    parser.add_argument("-c", "--configbasename", metavar="CONFIGBASENAME", default="connector")
     parser.add_argument('dn')
     options = parser.parse_args()
 

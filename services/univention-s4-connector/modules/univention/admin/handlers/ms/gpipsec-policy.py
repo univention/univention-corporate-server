@@ -51,7 +51,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['ipsecPolicy', 'top'],),
+        objectClasses=['ipsecPolicy', 'top'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -59,42 +60,51 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        size='Two',),
+        size='Two',
+    ),
     'ipsecOwnersReference': univention.admin.property(
         short_description=_('IPsec Owners reference'),
         long_description='',
         multivalue=True,
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,  # ipsecOwner,
+    ),
     'ipsecName': univention.admin.property(
         short_description=_('IPsec Name'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,  # ipsecName,
+    ),
     'ipsecID': univention.admin.property(
         short_description=_('IPsec ID'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,  # ipsecID,
+    ),
     'ipsecDataType': univention.admin.property(
         short_description=_('IPsec Data Type'),
         long_description='',
-        syntax=univention.admin.syntax.integer,),
+        syntax=univention.admin.syntax.integer,
+    ),
     'ipsecData': univention.admin.property(
         short_description=_('IPsec Data'),
         long_description='',
-        syntax=univention.admin.syntax.TextArea,),
+        syntax=univention.admin.syntax.TextArea,
+    ),
     'ipsecNFAReference': univention.admin.property(
         short_description=_('IPsec NFA Reference'),
         long_description='',
         multivalue=True,
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,  # ipsecNFA,
+    ),
     'ipsecISAKMPReference': univention.admin.property(
         short_description=_('IPsec ISAKMP Reference'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,  # ipsecISAKMP,
+    ),
 }
 
 layout = [
@@ -109,20 +119,20 @@ layout = [
             'ipsecData',
             'ipsecNFAReference',
             'ipsecISAKMPReference',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
-mapping.register('ipsecOwnersReference', 'ipsecOwnersReference',)
-mapping.register('ipsecName', 'ipsecName', None, univention.admin.mapping.ListToString,)
-mapping.register('ipsecID', 'ipsecID', None, univention.admin.mapping.ListToString,)
-mapping.register('ipsecDataType', 'ipsecDataType', None, univention.admin.mapping.ListToString,)
-mapping.register('ipsecData', 'ipsecData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
-mapping.register('ipsecNFAReference', 'ipsecNFAReference',)
-mapping.register('ipsecISAKMPReference', 'ipsecISAKMPReference', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.register('ipsecOwnersReference', 'ipsecOwnersReference')
+mapping.register('ipsecName', 'ipsecName', None, univention.admin.mapping.ListToString)
+mapping.register('ipsecID', 'ipsecID', None, univention.admin.mapping.ListToString)
+mapping.register('ipsecDataType', 'ipsecDataType', None, univention.admin.mapping.ListToString)
+mapping.register('ipsecData', 'ipsecData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('ipsecNFAReference', 'ipsecNFAReference')
+mapping.register('ipsecISAKMPReference', 'ipsecISAKMPReference', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

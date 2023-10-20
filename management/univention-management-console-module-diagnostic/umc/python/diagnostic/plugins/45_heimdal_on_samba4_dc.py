@@ -68,7 +68,7 @@ def is_kerberos_autostart_disabled() -> bool:
     return configRegistry.is_false('kerberos/autostart')
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     error = _('This is a Samba 4 DC, but `samba-tool processes` reports no `kdc_server`.')
     heimdal_error = _('This may be, because Heimdal KDC seems to be running.')
     autostart_error = _('This may be, because `kerberos/autostart` is not disabled.')

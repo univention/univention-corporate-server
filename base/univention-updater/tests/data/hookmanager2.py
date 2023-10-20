@@ -2,7 +2,7 @@
 
 
 def test_hook(*args, **kwargs):
-    print('2ND_TEST_HOOK:', args, kwargs,)
+    print('2ND_TEST_HOOK:', args, kwargs)
     return ('Result', 2)
 
 

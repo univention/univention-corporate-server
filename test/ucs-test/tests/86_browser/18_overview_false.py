@@ -18,18 +18,18 @@ from univention.testing.browser.lib import UMCBrowserTest
 _ = Translation("ucs-test-browser").translate
 
 
-def test_correct_number_of_tabs_displayed(umc_browser_test: UMCBrowserTest, udm,):
+def test_correct_number_of_tabs_displayed(umc_browser_test: UMCBrowserTest, udm):
     page = umc_browser_test.page
 
     name = uts.random_name()
-    _dn, username = udm.create_user(username=name, displayName=name,)
+    _dn, username = udm.create_user(username=name, displayName=name)
 
     user_module = UserModule(umc_browser_test)
-    umc_browser_test.login("Administrator", "univention", "/univention/management/?overview=false#module=udm:users/user",)
+    umc_browser_test.login("Administrator", "univention", "/univention/management/?overview=false#module=udm:users/user")
 
     details = user_module.open_details(username)
     details.open_tab(_("Policies"))
-    users_tab = page.get_by_role("tab", name=_("Users"),)
+    users_tab = page.get_by_role("tab", name=_("Users"))
     # tab should not be visible as long as only one tab is open
     expect(users_tab).to_be_hidden()
 
@@ -45,7 +45,7 @@ def test_correct_number_of_tabs_displayed(umc_browser_test: UMCBrowserTest, udm,
     # the first tabs close button should not be visible
     expect(close_buttons.first).to_be_hidden()
 
-    policies_tab = page.get_by_role("tab", name=_("Policies"),)
+    policies_tab = page.get_by_role("tab", name=_("Policies"))
 
     # the second tab should be visible
     expect(policies_tab).to_be_visible()
@@ -53,7 +53,7 @@ def test_correct_number_of_tabs_displayed(umc_browser_test: UMCBrowserTest, udm,
     # the policies tab close button should be visible
     expect(close_buttons.last).to_be_visible()
 
-    page.get_by_role("button", name=_("Cancel"),).click()
+    page.get_by_role("button", name=_("Cancel")).click()
 
     # the user tab should be hidden again
     expect(users_tab).to_be_hidden()

@@ -15,7 +15,7 @@ from univention.testing import utils
 
 
 class DummyInterface:
-    def __init__(self, ip,):
+    def __init__(self, ip):
         self.network = f'{ip}/32'
 
     def __enter__(self):
@@ -27,7 +27,7 @@ class DummyInterface:
         subprocess.check_output(['ip', 'link', 'del', 'eth99'])
 
 
-def get_wpa_config(username, password,):
+def get_wpa_config(username, password):
     wpa_config = '''
 network={{
     ssid="DoesNotMatterForThisTest"
@@ -37,13 +37,13 @@ network={{
     password="{password}"
     eapol_flags=3
 }}
-    '''.format(username=username, password=password,)
+    '''.format(username=username, password=password)
     return wpa_config
 
 
-def eap_test(username, password, password_ap, addr_ap,):
+def eap_test(username, password, password_ap, addr_ap):
     with NamedTemporaryFile() as tmp_file:
-        wpa_config = get_wpa_config(username, password,)
+        wpa_config = get_wpa_config(username, password)
         tmp_file.write(wpa_config.encode('UTF-8'))
         tmp_file.seek(0)
         print("wpa_config:")
@@ -82,14 +82,15 @@ def main():
             options=['kerberos', 'samba', 'posix', 'radiusAuthenticator'],
             univentionRadiusClientSharedSecret=secret,
             univentionRadiusClientType=nas_type,
-            wait_for_replication=False,)
+            wait_for_replication=False,
+        )
         utils.wait_for_replication_and_postrun()
         with DummyInterface(addr):
             # Right password, right ip
-            eap_test(username_allowed, password, secret, addr,)
+            eap_test(username_allowed, password, secret, addr)
             # Wrong password, right ip
             try:
-                eap_test(username_allowed, password, secret + 'foo', addr,)
+                eap_test(username_allowed, password, secret + 'foo', addr)
             except subprocess.CalledProcessError:
                 # OK Authenticator has no radius access
                 pass
@@ -99,7 +100,7 @@ def main():
         with DummyInterface(wrong_addr):
             # Right password, wrong ip
             try:
-                eap_test(username_allowed, password, secret, wrong_addr,)
+                eap_test(username_allowed, password, secret, wrong_addr)
             except subprocess.CalledProcessError:
                 # OK Authenticator has no radius access
                 pass
@@ -107,7 +108,7 @@ def main():
                 utils.fail("Authenticator has network access with wrong ip")
             # wrong password, wrong ip
             try:
-                eap_test(username_allowed, password, secret, wrong_addr,)
+                eap_test(username_allowed, password, secret, wrong_addr)
             except subprocess.CalledProcessError:
                 # OK Authenticator has no radius access
                 pass

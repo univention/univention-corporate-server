@@ -59,7 +59,7 @@ class Pep8(Task.Task):
 			pep8.options.ignore = pep8.DEFAULT_IGNORE.split(',')
 		pep8.options.physical_checks = pep8.find_checks('physical_line')
 		pep8.options.logical_checks = pep8.find_checks('logical_line')
-		pep8.options.counters = dict.fromkeys(pep8.BENCHMARK_KEYS, 0,)
+		pep8.options.counters = dict.fromkeys(pep8.BENCHMARK_KEYS, 0)
 		pep8.options.messages = {}
 
 	def run(self):
@@ -69,38 +69,38 @@ class Pep8(Task.Task):
 		return 0 if not pep8.get_count() else -1
 
 
-def options(opt,):
+def options(opt):
 	opt.add_option('-q', '--quiet', default=0, action='count',
-				   help="report only file names, or nothing with -qq",)
+				   help="report only file names, or nothing with -qq")
 	opt.add_option('-r', '--repeat', action='store_true',
-				   help="show all occurrences of the same error",)
+				   help="show all occurrences of the same error")
 	opt.add_option('--exclude', metavar='patterns',
 				   default=pep8.DEFAULT_EXCLUDE,
 				   help="exclude files or directories which match these "
 				   "comma separated patterns (default: %s)" %
 				   pep8.DEFAULT_EXCLUDE,
-				   dest='exclude',)
+				   dest='exclude')
 	opt.add_option('--filename', metavar='patterns', default='*.py',
 				   help="when parsing directories, only check filenames "
 				   "matching these comma separated patterns (default: "
-				   "*.py)",)
+				   "*.py)")
 	opt.add_option('--select', metavar='errors', default='',
-				   help="select errors and warnings (e.g. E,W6)",)
+				   help="select errors and warnings (e.g. E,W6)")
 	opt.add_option('--ignore', metavar='errors', default='',
-				   help="skip errors and warnings (e.g. E4,W)",)
+				   help="skip errors and warnings (e.g. E4,W)")
 	opt.add_option('--show-source', action='store_true',
-				   help="show source code for each error",)
+				   help="show source code for each error")
 	opt.add_option('--show-pep8', action='store_true',
-				   help="show text of PEP 8 for each error",)
+				   help="show text of PEP 8 for each error")
 	opt.add_option('--statistics', action='store_true',
-				   help="count errors and warnings",)
+				   help="count errors and warnings")
 	opt.add_option('--count', action='store_true',
 				   help="print total number of errors and warnings "
 				   "to standard error and set exit code to 1 if "
-				   "total is not null",)
+				   "total is not null")
 	opt.add_option('--benchmark', action='store_true',
-				   help="measure processing speed",)
+				   help="measure processing speed")
 	opt.add_option('--testsuite', metavar='dir',
-				   help="run regression tests from dir",)
+				   help="run regression tests from dir")
 	opt.add_option('--doctest', action='store_true',
-				   help="run doctest on myself",)
+				   help="run doctest on myself")

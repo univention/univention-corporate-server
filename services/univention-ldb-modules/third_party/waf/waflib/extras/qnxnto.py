@@ -18,7 +18,7 @@ class Popen(object):
 	"""
 	__slots__ = ["prog", "kw", "popen", "verbose"]
 	verbose = 0
-	def __init__(self, prog,**kw):
+	def __init__(self, prog, **kw):
 		try:
 			self.prog = prog
 			self.kw = kw
@@ -30,7 +30,7 @@ class Popen(object):
 			if do_delegate:
 				if Popen.verbose:
 					print("Delegating to real Popen")
-				self.popen = self.real_Popen(prog, **kw,)
+				self.popen = self.real_Popen(prog, **kw)
 			else:
 				if Popen.verbose:
 					print("Emulating")
@@ -39,16 +39,16 @@ class Popen(object):
 				print("Exception: %s" % e)
 			raise
 
-	def __getattr__(self, name,):
+	def __getattr__(self, name):
 		if Popen.verbose:
 			sys.stdout.write("Getattr: %s..." % name)
 		if name in Popen.__slots__:
-			return object.__getattribute__(self, name,)
+			return object.__getattribute__(self, name)
 		else:
 			if self.popen is not None:
 				if Popen.verbose:
 					print("from Popen")
-				return getattr(self.popen, name,)
+				return getattr(self.popen, name)
 			else:
 				if name == "wait":
 					return self.emu_wait
@@ -58,7 +58,7 @@ class Popen(object):
 	def emu_wait(self):
 		if Popen.verbose:
 			print("emulated wait (%r kw=%r)" % (self.prog, self.kw))
-		if isinstance(self.prog, str,):
+		if isinstance(self.prog, str):
 			cmd = self.prog
 		else:
 			cmd = " ".join(self.prog)

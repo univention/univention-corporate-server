@@ -41,18 +41,18 @@ from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
 
-def encode_number(number: int, significant_digits: int = 3,) -> str:
+def encode_number(number: int, significant_digits: int = 3) -> str:
     assert 0 <= number <= int('9' * 26)
     assert significant_digits > 1
     string = str(number)
     return string[:significant_digits] + ' abcdefghijklmnopqrstuvwxyz'[len(string)]
 
 
-def encode_users(users: int,) -> str:
+def encode_users(users: int) -> str:
     return encode_number(users)
 
 
-def encode_role(role: str,) -> str:
+def encode_role(role: str) -> str:
     if role == 'domaincontroller_master':
         return 'M'
     if role == 'domaincontroller_backup':
@@ -66,7 +66,7 @@ def encode_role(role: str,) -> str:
     raise ValueError('Invalid role %r' % (role, ))
 
 
-def encode_additional_info(users: Optional[int] = None, role: Optional[str] = None,) -> str:
+def encode_additional_info(users: Optional[int] = None, role: Optional[str] = None) -> str:
     data: List[Tuple[str, Callable[[Any], str], Any]] = [
         ('U', encode_users, users),
         ('R', encode_role, role),
@@ -89,7 +89,7 @@ def getReadonlyAdminConnection() -> Tuple[access, position]:
 
 def main() -> None:
     def get_role() -> Optional[str]:
-        return configRegistry.get('server/role', None,)
+        return configRegistry.get('server/role', None)
 
     def get_users() -> Optional[int]:
         if get_role() != 'domaincontroller_master':
@@ -103,8 +103,9 @@ def main() -> None:
     ucr_update(
         configRegistry,
         {
-            'updater/statistics': encode_additional_info(users=get_users(), role=get_role(),),
-        },)
+            'updater/statistics': encode_additional_info(users=get_users(), role=get_role()),
+        },
+    )
 
 
 if __name__ == "__main__":

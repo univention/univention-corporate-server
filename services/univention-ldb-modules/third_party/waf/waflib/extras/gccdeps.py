@@ -32,7 +32,7 @@ supported_compilers = ['gas', 'gcc', 'icc', 'clang']
 re_o = re.compile(r"\.o$")
 re_splitter = re.compile(r'(?<!\\)\s+') # split by space, except when spaces are escaped
 
-def remove_makefile_rule_lhs(line,):
+def remove_makefile_rule_lhs(line):
 	# Splitting on a plain colon would accidentally match inside a
 	# Windows absolute-path filename, so we must search for a colon
 	# followed by whitespace to find the divider between LHS and RHS
@@ -45,11 +45,11 @@ def remove_makefile_rule_lhs(line,):
 	else:
 		return line
 
-def path_to_node(base_node, path, cached_nodes,):
+def path_to_node(base_node, path, cached_nodes):
 	# Take the base node and the path and return a node
 	# Results are cached because searching the node tree is expensive
 	# The following code is executed by threads, it is not safe, so a lock is needed...
-	if getattr(path, '__hash__',):
+	if getattr(path, '__hash__'):
 		node_lookup_key = (base_node, path)
 	else:
 		# Not hashable, assume it is a list and join into a string
@@ -69,10 +69,10 @@ def path_to_node(base_node, path, cached_nodes,):
 
 def post_run(self):
 	if not self.__class__.__name__ in self.env.ENABLE_GCCDEPS:
-		return super(self.derived_gccdeps, self,).post_run()
+		return super(self.derived_gccdeps, self).post_run()
 
 	deps_filename = self.outputs[0].abspath()
-	deps_filename = re_o.sub('.d', deps_filename,)
+	deps_filename = re_o.sub('.d', deps_filename)
 	try:
 		deps_txt = Utils.readf(deps_filename)
 	except EnvironmentError:
@@ -100,10 +100,10 @@ def post_run(self):
 	deps_txt = '\n'.join([remove_makefile_rule_lhs(line) for line in deps_txt.splitlines()])
 
 	# Now join all the lines together
-	deps_txt = deps_txt.replace('\\\n', '',)
+	deps_txt = deps_txt.replace('\\\n', '')
 
 	dep_paths = deps_txt.strip()
-	dep_paths = [x.replace('\\ ', ' ',) for x in re_splitter.split(dep_paths) if x]
+	dep_paths = [x.replace('\\ ', ' ') for x in re_splitter.split(dep_paths) if x]
 
 	resolved_nodes = []
 	unresolved_names = []
@@ -119,10 +119,10 @@ def post_run(self):
 
 		node = None
 		if os.path.isabs(path):
-			node = path_to_node(bld.root, path, cached_nodes,)
+			node = path_to_node(bld.root, path, cached_nodes)
 		else:
 			# TODO waf 1.9 - single cwd value
-			base_node = getattr(bld, 'cwdx', bld.bldnode,)
+			base_node = getattr(bld, 'cwdx', bld.bldnode)
 			# when calling find_resource, make sure the path does not contain '..'
 			path = [k for k in Utils.split_path(path) if k and k != '.']
 			while '..' in path:
@@ -134,7 +134,7 @@ def post_run(self):
 					del path[idx]
 					del path[idx-1]
 
-			node = path_to_node(base_node, path, cached_nodes,)
+			node = path_to_node(base_node, path, cached_nodes)
 
 		if not node:
 			raise ValueError('could not find %r for %r' % (path, self))
@@ -146,7 +146,7 @@ def post_run(self):
 
 		resolved_nodes.append(node)
 
-	Logs.debug('deps: gccdeps for %s returned %s', self, resolved_nodes,)
+	Logs.debug('deps: gccdeps for %s returned %s', self, resolved_nodes)
 
 	bld.node_deps[self.uid()] = resolved_nodes
 	bld.raw_deps[self.uid()] = unresolved_names
@@ -160,15 +160,15 @@ def post_run(self):
 
 def scan(self):
 	if not self.__class__.__name__ in self.env.ENABLE_GCCDEPS:
-		return super(self.derived_gccdeps, self,).scan()
+		return super(self.derived_gccdeps, self).scan()
 
-	resolved_nodes = self.generator.bld.node_deps.get(self.uid(), [],)
+	resolved_nodes = self.generator.bld.node_deps.get(self.uid(), [])
 	unresolved_names = []
 	return (resolved_nodes, unresolved_names)
 
 def sig_implicit_deps(self):
 	if not self.__class__.__name__ in self.env.ENABLE_GCCDEPS:
-		return super(self.derived_gccdeps, self,).sig_implicit_deps()
+		return super(self.derived_gccdeps, self).sig_implicit_deps()
 	bld = self.generator.bld
 
 	try:
@@ -177,7 +177,7 @@ def sig_implicit_deps(self):
 		raise ValueError("Please specify the build order precisely with gccdeps (asm/c/c++ tasks)")
 	except EnvironmentError:
 		# If a file is renamed, assume the dependencies are stale and must be recalculated
-		for x in bld.node_deps.get(self.uid(), [],):
+		for x in bld.node_deps.get(self.uid(), []):
 			if not x.is_bld() and not x.exists():
 				try:
 					del x.parent.children[x.name]
@@ -189,8 +189,8 @@ def sig_implicit_deps(self):
 	bld.raw_deps[key] = []
 	return Utils.SIG_NIL
 
-def wrap_compiled_task(classname,):
-	derived_class = type(classname, (Task.classes[classname],), {},)
+def wrap_compiled_task(classname):
+	derived_class = type(classname, (Task.classes[classname],), {})
 	derived_class.derived_gccdeps = derived_class
 	derived_class.post_run = post_run
 	derived_class.scan = scan
@@ -205,40 +205,40 @@ for k in ('asm', 'c', 'cxx'):
 def force_gccdeps(self):
 	self.env.ENABLE_GCCDEPS = ['asm', 'c', 'cxx']
 
-def configure(conf,):
+def configure(conf):
 	# in case someone provides a --enable-gccdeps command-line option
-	if not getattr(conf.options, 'enable_gccdeps', True,):
+	if not getattr(conf.options, 'enable_gccdeps', True):
 		return
 
 	global gccdeps_flags
 	flags = conf.env.GCCDEPS_FLAGS or gccdeps_flags
 	if conf.env.ASM_NAME in supported_compilers:
 		try:
-			conf.check(fragment='', features='asm force_gccdeps', asflags=flags, compile_filename='test.S', msg='Checking for asm flags %r' % ''.join(flags),)
+			conf.check(fragment='', features='asm force_gccdeps', asflags=flags, compile_filename='test.S', msg='Checking for asm flags %r' % ''.join(flags))
 		except Errors.ConfigurationError:
 			pass
 		else:
-			conf.env.append_value('ASFLAGS', flags,)
-			conf.env.append_unique('ENABLE_GCCDEPS', 'asm',)
+			conf.env.append_value('ASFLAGS', flags)
+			conf.env.append_unique('ENABLE_GCCDEPS', 'asm')
 
 	if conf.env.CC_NAME in supported_compilers:
 		try:
-			conf.check(fragment='int main() { return 0; }', features='c force_gccdeps', cflags=flags, msg='Checking for c flags %r' % ''.join(flags),)
+			conf.check(fragment='int main() { return 0; }', features='c force_gccdeps', cflags=flags, msg='Checking for c flags %r' % ''.join(flags))
 		except Errors.ConfigurationError:
 			pass
 		else:
-			conf.env.append_value('CFLAGS', flags,)
-			conf.env.append_unique('ENABLE_GCCDEPS', 'c',)
+			conf.env.append_value('CFLAGS', flags)
+			conf.env.append_unique('ENABLE_GCCDEPS', 'c')
 
 	if conf.env.CXX_NAME in supported_compilers:
 		try:
-			conf.check(fragment='int main() { return 0; }', features='cxx force_gccdeps', cxxflags=flags, msg='Checking for cxx flags %r' % ''.join(flags),)
+			conf.check(fragment='int main() { return 0; }', features='cxx force_gccdeps', cxxflags=flags, msg='Checking for cxx flags %r' % ''.join(flags))
 		except Errors.ConfigurationError:
 			pass
 		else:
-			conf.env.append_value('CXXFLAGS', flags,)
-			conf.env.append_unique('ENABLE_GCCDEPS', 'cxx',)
+			conf.env.append_value('CXXFLAGS', flags)
+			conf.env.append_unique('ENABLE_GCCDEPS', 'cxx')
 
-def options(opt,):
+def options(opt):
 	raise ValueError('Do not load gccdeps options')
 

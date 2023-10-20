@@ -12,12 +12,12 @@ from univention.testing.utils import fail, get_ldap_connection
 from dockertest import Appcenter, tiny_app
 
 
-def fail_if_file_exists(f,):
+def fail_if_file_exists(f):
     if os.path.exists(f):
         fail('%s still exists' % f)
 
 
-def fail_if_file_does_not_exist(f,):
+def fail_if_file_does_not_exist(f):
     if not os.path.exists(f):
         fail('%s still exists' % f)
 
@@ -45,7 +45,7 @@ echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test1
             app.verify(joined=False)
 
             lo = get_ldap_connection()
-            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app.app_name[:5], unique=True, required=True,))
+            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app.app_name[:5], unique=True, required=True))
 
         finally:
             app.uninstall()
@@ -59,7 +59,7 @@ echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test1
         backup_dir = '/var/lib/univention-appcenter/backups/'
         for d in os.listdir(backup_dir):
             if d.startswith('appcenter-backup-%s:' % app.app_name):
-                conffile = os.path.join(backup_dir, d, 'conf', 'test123',)
+                conffile = os.path.join(backup_dir, d, 'conf', 'test123')
                 if os.path.exists(conffile):
                     f = open(conffile)
                     res = f.readlines()

@@ -95,26 +95,26 @@ class NoneCandidate(object):
 
 
 class UMCProgressHandler(logging.Handler):
-    def __init__(self, progress,):
-        super(UMCProgressHandler, self,).__init__()
+    def __init__(self, progress):
+        super(UMCProgressHandler, self).__init__()
         self.progress = progress
 
-    def emit(self, record,):
+    def emit(self, record):
         msg = record.msg
-        if isinstance(record.msg, Exception,):
+        if isinstance(record.msg, Exception):
             msg = str(msg)
         detail = {'level': record.levelname, 'message': msg}
-        self.progress.progress(detail=detail, message=msg,)
+        self.progress.progress(detail=detail, message=msg)
 
 
 class ProgressInfoHandler(logging.Handler):
-    def __init__(self, package_manager,):
-        super(ProgressInfoHandler, self,).__init__()
+    def __init__(self, package_manager):
+        super(ProgressInfoHandler, self).__init__()
         self.state = package_manager.progress_state
 
-    def emit(self, record,):
+    def emit(self, record):
         msg = record.msg
-        if isinstance(record.msg, Exception,):
+        if isinstance(record.msg, Exception):
             msg = str(msg)
         if record.levelno >= logging.ERROR:
             self.state.error(msg)
@@ -123,17 +123,17 @@ class ProgressInfoHandler(logging.Handler):
 
 
 class ProgressPercentageHandler(ProgressInfoHandler):
-    def emit(self, record,):
+    def emit(self, record):
         percentage = float(record.msg)
         self.state.percentage(percentage)
         self.state._finished = percentage >= 100
 
 
-def require_apps_update(func,):
+def require_apps_update(func):
     def _deferred(self, *args, **kwargs):
         if not self.update_applications_done:
             self.update_applications()
-        return func(self, *args, **kwargs,)
+        return func(self, *args, **kwargs)
     return _deferred
 
 
@@ -151,10 +151,11 @@ class Instance(umcm.Base, ProgressMixin):
                 info_handler=MODULE.process,
                 step_handler=None,
                 error_handler=MODULE.warn,
-                lock=False,)
+                lock=False,
+            )
         except SystemError as exc:
             MODULE.error(str(exc))
-            raise umcm.UMC_Error(str(exc), status=500,)
+            raise umcm.UMC_Error(str(exc), status=500)
         self.package_manager.set_finished()  # currently not working. accepting new tasks
         get_package_manager._package_manager = self.package_manager
 
@@ -167,7 +168,7 @@ class Instance(umcm.Base, ProgressMixin):
         self._cm = None
 
         # in order to set the correct locale
-        locale.setlocale(locale.LC_ALL, str(self.locale),)
+        locale.setlocale(locale.LC_ALL, str(self.locale))
 
         try:
             log_to_logfile()
@@ -192,15 +193,15 @@ class Instance(umcm.Base, ProgressMixin):
 
     def get_component_manager(self):
         if self._cm is None:
-            self._cm = ComponentManager(self.ucr, self.get_updater(),)
+            self._cm = ComponentManager(self.ucr, self.get_updater())
         return self._cm
 
-    def error_handling(self, etype, exc, etraceback,):
-        error_handling(etype, exc, etraceback,)
-        return super(Instance, self,).error_handling(exc, etype, etraceback,)
+    def error_handling(self, etype, exc, etraceback):
+        error_handling(etype, exc, etraceback)
+        return super(Instance, self).error_handling(exc, etype, etraceback)
 
     @simple_response
-    def version(self, version=None,):
+    def version(self, version=None):
         info = get_action('info')
         ret = info.get_compatibility()
         if not info.is_compatible(version):
@@ -209,13 +210,14 @@ class Instance(umcm.Base, ProgressMixin):
 
     @sanitize(
         version=StringSanitizer(required=True),
-        function=StringSanitizer(required=False),)
+        function=StringSanitizer(required=False),
+    )
     @simple_response
-    def version2(self, version, function=None,):
+    def version2(self, version, function=None):
         info = get_action('info')
-        return {'compatible': info.is_compatible(version, function=function,), 'version': info.get_ucs_version()}
+        return {'compatible': info.is_compatible(version, function=function), 'version': info.get_ucs_version()}
 
-    def _remote_appcenter(self, request, host, function=None,):
+    def _remote_appcenter(self, request, host, function=None):
         if host is None:
             raise ValueError('Cannot connect to None')
         if not host.endswith('.%s' % self.ucr.get('domainname')):
@@ -225,18 +227,18 @@ class Instance(umcm.Base, ProgressMixin):
         if function is not None:
             opts['function'] = function
         try:
-            client = Client(host, request.username, request.password,)
-            response = client.umc_command('appcenter/version2', opts,)
+            client = Client(host, request.username, request.password)
+            response = client.umc_command('appcenter/version2', opts)
         except (HTTPError) as exc:
-            raise umcm.UMC_Error(_('Problems connecting to {0} ({1}). Please update {0}!').format(host, exc.message,))
+            raise umcm.UMC_Error(_('Problems connecting to {0} ({1}). Please update {0}!').format(host, exc.message))
         except (ConnectionError, Exception) as exc:
-            raise umcm.UMC_Error(_('Problems connecting to {} ({}).').format(host, str(exc),))
-        err_msg = _('The App Center version of the this host ({}) is not compatible with the version of {} ({})').format(opts['version'], host, response.result.get('version'),)
+            raise umcm.UMC_Error(_('Problems connecting to {} ({}).').format(host, str(exc)))
+        err_msg = _('The App Center version of the this host ({}) is not compatible with the version of {} ({})').format(opts['version'], host, response.result.get('version'))
         # i guess this is kind of bad
         if response.status != 200:
             raise umcm.UMC_Error(err_msg)
         # remote says he is not compatible
-        if response.result.get('compatible', True,) is False:
+        if response.result.get('compatible', True) is False:
             raise umcm.UMC_Error(err_msg)
         # i'm not compatible
         if not info.is_compatible(response.result.get('version')):
@@ -244,44 +246,46 @@ class Instance(umcm.Base, ProgressMixin):
         return client
 
     @sanitize(
-        apps=ListSanitizer(AppSanitizer(), required=True,),
-        action=ChoicesSanitizer(['install', 'upgrade', 'remove'], required=True,),)
+        apps=ListSanitizer(AppSanitizer(), required=True),
+        action=ChoicesSanitizer(['install', 'upgrade', 'remove'], required=True),
+    )
     @simple_response
-    def resolve(self, apps, action,):
+    def resolve(self, apps, action):
         ret = {}
-        ret['apps'] = resolve_dependencies(apps, action,)
+        ret['apps'] = resolve_dependencies(apps, action)
         ret['auto_installed'] = [app.id for app in ret['apps'] if app.id not in [a.id for a in apps]]
         apps = ret['apps']
-        ret['errors'], ret['warnings'] = check(apps, action,)
+        ret['errors'], ret['warnings'] = check(apps, action)
         domain = get_action('domain')
         ret['apps'] = domain.to_dict(apps)
         ret['settings'] = {}
         self.ucr.load()
         for app in apps:
-            ret['settings'][app.id] = self._get_config(app, action.title(),)
+            ret['settings'][app.id] = self._get_config(app, action.title())
         return ret
 
     @require_apps_update
     @require_password
     @sanitize(
-        apps=ListSanitizer(AppSanitizer(), required=True,),
+        apps=ListSanitizer(AppSanitizer(), required=True),
         auto_installed=ListSanitizer(required=True),
-        action=ChoicesSanitizer(['install', 'upgrade', 'remove'], required=True,),
-        hosts=DictSanitizer({}, required=True,),
-        settings=DictSanitizer({}, required=True,),
-        dry_run=BooleanSanitizer(),)
-    @simple_response(with_progress=True, with_request=True,)
-    def run(self, request, progress, apps, auto_installed, action, hosts, settings, dry_run,):
+        action=ChoicesSanitizer(['install', 'upgrade', 'remove'], required=True),
+        hosts=DictSanitizer({}, required=True),
+        settings=DictSanitizer({}, required=True),
+        dry_run=BooleanSanitizer(),
+    )
+    @simple_response(with_progress=True, with_request=True)
+    def run(self, request, progress, apps, auto_installed, action, hosts, settings, dry_run):
         localhost = get_local_fqdn()
         ret = {}
         if dry_run:
             for host in hosts:
                 _apps = [next(app for app in apps if app.id == _app) for _app in hosts[host]]
                 if host == localhost:
-                    ret[host] = self._run_local_dry_run(_apps, action, {}, progress,)
+                    ret[host] = self._run_local_dry_run(_apps, action, {}, progress)
                 else:
                     try:
-                        ret[host] = self._run_remote_dry_run(request, host, _apps, action, auto_installed, {}, progress,)
+                        ret[host] = self._run_remote_dry_run(request, host, _apps, action, auto_installed, {}, progress)
                     except umcm.UMC_Error:
                         ret[host] = {'unreachable': [app.id for app in _apps]}
         else:
@@ -289,18 +293,18 @@ class Instance(umcm.Base, ProgressMixin):
                 for host in hosts:
                     if app.id not in hosts[host]:
                         continue
-                    host_result = ret.get(host, {},)
+                    host_result = ret.get(host, {})
                     ret[host] = host_result
                     _settings = {app.id: settings[app.id]}
                     if host == localhost:
-                        host_result[app.id] = self._run_local(app, action, _settings, auto_installed, progress,)
+                        host_result[app.id] = self._run_local(app, action, _settings, auto_installed, progress)
                     else:
-                        host_result[app.id] = self._run_remote(request, host, app, action, auto_installed, _settings, progress,)[app.id]
+                        host_result[app.id] = self._run_remote(request, host, app, action, auto_installed, _settings, progress)[app.id]
                     if not host_result[app.id]['success']:
                         break
         return ret
 
-    def _run_local_dry_run(self, apps, action, settings, progress,):
+    def _run_local_dry_run(self, apps, action, settings, progress):
         if action == 'upgrade':
             apps = [Apps().find_candidate(app) or app for app in apps]
         if len(apps) == 1:
@@ -308,18 +312,18 @@ class Instance(umcm.Base, ProgressMixin):
         else:
             progress.title = _('%d Apps: Running tests') % len(apps)
         ret = {}
-        ret['errors'], ret['warnings'] = check(apps, action,)
-        ret['errors'].pop('must_have_no_unmet_dependencies', None,)  # has to be resolved prior to this call!
+        ret['errors'], ret['warnings'] = check(apps, action)
+        ret['errors'].pop('must_have_no_unmet_dependencies', None)  # has to be resolved prior to this call!
         action = get_action(action)()
         ret['packages'] = {}
         for app in apps:
-            args = action._build_namespace(app=[app], dry_run=True, install_master_packages_remotely=False, only_master_packages=False,)
-            result = action.dry_run(app, args,)
+            args = action._build_namespace(app=[app], dry_run=True, install_master_packages_remotely=False, only_master_packages=False)
+            result = action.dry_run(app, args)
             if result is not None:
                 ret['packages'][app.id] = result
         return ret
 
-    def _run_local(self, app, action, settings, auto_installed, progress,):
+    def _run_local(self, app, action, settings, auto_installed, progress):
         kwargs = {
             'noninteractive': True,
             'auto_installed': auto_installed,
@@ -340,31 +344,31 @@ class Instance(umcm.Base, ProgressMixin):
         try:
             package_manager = get_package_manager()
             with package_manager.no_umc_restart():
-                success = action.call(app=[app], username=self.username, password=self.password, **kwargs,)
+                success = action.call(app=[app], username=self.username, password=self.password, **kwargs)
                 return {'success': success}
         except AppCenterError as exc:
             raise umcm.UMC_Error(str(exc), result={
                 "display_feedback": True,
-                "title": '%s %s' % (exc.title, exc.info)},)
+                "title": '%s %s' % (exc.title, exc.info)})
         finally:
             action.logger.removeHandler(handler)
 
-    def _run_remote_dry_run(self, request, host, apps, action, auto_installed, settings, progress,):
-        return self._run_remote_logic(request, host, apps, action, auto_installed, settings, progress, dry_run=True,)
+    def _run_remote_dry_run(self, request, host, apps, action, auto_installed, settings, progress):
+        return self._run_remote_logic(request, host, apps, action, auto_installed, settings, progress, dry_run=True)
 
-    def _run_remote(self, request, host, app, action, auto_installed, settings, progress,):
-        return self._run_remote_logic(request, host, [app], action, auto_installed, settings, progress, dry_run=False,)
+    def _run_remote(self, request, host, app, action, auto_installed, settings, progress):
+        return self._run_remote_logic(request, host, [app], action, auto_installed, settings, progress, dry_run=False)
 
-    def _run_remote_logic(self, request, host, apps, action, auto_installed, settings, progress, dry_run,):
+    def _run_remote_logic(self, request, host, apps, action, auto_installed, settings, progress, dry_run):
         if len(apps) == 1:
             progress.title = _('%s: Connecting to %s') % (apps[0].name, host)
         else:
             progress.title = _('%d Apps: Connecting to %s') % (len(apps), host)
-        client = self._remote_appcenter(request, host, function='appcenter/run',)
+        client = self._remote_appcenter(request, host, function='appcenter/run')
         opts = {'apps': [str(app) for app in apps], 'auto_installed': auto_installed, 'action': action, 'hosts': {host: [app.id for app in apps]}, 'settings': settings, 'dry_run': dry_run}
-        progress_id = client.umc_command('appcenter/run', opts,).result['id']
+        progress_id = client.umc_command('appcenter/run', opts).result['id']
         while True:
-            result = client.umc_command('appcenter/progress', {'progress_id': progress_id},).result
+            result = client.umc_command('appcenter/progress', {'progress_id': progress_id}).result
             if result['finished']:
                 return result['result'][host]
             progress.title = result['title']
@@ -373,7 +377,7 @@ class Instance(umcm.Base, ProgressMixin):
             time.sleep(result['retry_after'] / 1000.0)
 
     @simple_response
-    def query(self, quick=False,):
+    def query(self, quick=False):
         query_cache_file = '/var/cache/univention-appcenter/umc-query.json'
         if quick:
             try:
@@ -388,16 +392,16 @@ class Instance(umcm.Base, ProgressMixin):
         list_apps = get_action('list')
         domain = get_action('domain')
         apps = list_apps.get_apps()
-        if self.ucr.is_true('appcenter/docker', True,):
+        if self.ucr.is_true('appcenter/docker', True):
             if not self._test_for_docker_service():
                 raise umcm.UMC_Error(_('The docker service is not running! The App Center will not work properly.') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
         info = domain.to_dict(apps)
-        with open(query_cache_file, 'w',) as fd:
-            json.dump(info, fd,)
+        with open(query_cache_file, 'w') as fd:
+            json.dump(info, fd)
         return info
 
     def update_applications(self):
-        if self.ucr.is_true('appcenter/umc/update/always', True,):
+        if self.ucr.is_true('appcenter/umc/update/always', True):
             update = get_action('update')
             try:
                 update.call()
@@ -421,7 +425,7 @@ class Instance(umcm.Base, ProgressMixin):
         return True
 
     @simple_response
-    def suggestions(self, version,):
+    def suggestions(self, version):
         try:
             cache = AppCenterCache.build(server=default_server())
             cache_file = cache.get_cache_file('.suggestions.json')
@@ -444,16 +448,16 @@ class Instance(umcm.Base, ProgressMixin):
 
     @require_apps_update
     @require_password
-    @simple_response(with_progress=True, with_request=True,)
-    def sync_ldap(self, request,):
+    @simple_response(with_progress=True, with_request=True)
+    def sync_ldap(self, request):
         register = get_action('register')
-        register.call(username=request.username, password=request.password,)
+        register.call(username=request.username, password=request.password)
 
     # used in updater-umc
     @simple_response
-    def get_by_component_id(self, component_id,):
+    def get_by_component_id(self, component_id):
         domain = get_action('domain')
-        if isinstance(component_id, list,):
+        if isinstance(component_id, list):
             requested_apps = [Apps().find_by_component_id(cid) for cid in component_id]
             return domain.to_dict(requested_apps)
         else:
@@ -470,9 +474,9 @@ class Instance(umcm.Base, ProgressMixin):
         domain = get_action('domain')
         return domain.to_dict(list(upgrade.iter_upgradable_apps()))
 
-    @sanitize(application=StringSanitizer(minimum=1, required=True,))
+    @sanitize(application=StringSanitizer(minimum=1, required=True))
     @simple_response
-    def get(self, application,):
+    def get(self, application):
         list_apps = get_action('list')
         domain = get_action('domain')
         apps = list_apps.get_apps()
@@ -487,18 +491,18 @@ class Instance(umcm.Base, ProgressMixin):
 
     @sanitize(app=AppSanitizer(required=True))
     @simple_response
-    def config(self, app, phase,):
+    def config(self, app, phase):
         self.ucr.load()
-        return self._get_config(app, phase,)
+        return self._get_config(app, phase)
 
-    def _get_config(self, app, phase,):
-        autostart = self.ucr.get('%s/autostart' % app.id, 'yes',)
+    def _get_config(self, app, phase):
+        autostart = self.ucr.get('%s/autostart' % app.id, 'yes')
         is_running = app_is_running(app)
         values = {}
         for setting in app.get_settings():
             if phase in setting.show or phase in setting.show_read_only:
-                value = setting.get_value(app, phase,)
-                if isinstance(setting, FileSetting,) and not isinstance(setting, PasswordFileSetting,) and value:
+                value = setting.get_value(app, phase)
+                if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting) and value:
                     value = b64encode(value.encode('utf-8')).decode('ascii')
                 values[setting.name] = value
         return {
@@ -507,38 +511,38 @@ class Instance(umcm.Base, ProgressMixin):
             'values': values,
         }
 
-    @sanitize(app=AppSanitizer(required=True), values=DictSanitizer({}),)
+    @sanitize(app=AppSanitizer(required=True), values=DictSanitizer({}))
     @simple_response(with_progress=True)
-    def configure(self, progress, app, values, autostart=None,):
+    def configure(self, progress, app, values, autostart=None):
         for setting in app.get_settings():
-            if isinstance(setting, FileSetting,) and not isinstance(setting, PasswordFileSetting,) and values.get(setting.name):
+            if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting) and values.get(setting.name):
                 values[setting.name] = b64decode(values[setting.name]).decode('utf-8')
         configure = get_action('configure')
         handler = UMCProgressHandler(progress)
         handler.setLevel(logging.INFO)
         configure.logger.addHandler(handler)
         try:
-            return configure.call(app=app, set_vars=values, autostart=autostart,)
+            return configure.call(app=app, set_vars=values, autostart=autostart)
         finally:
             configure.logger.removeHandler(handler)
 
     @simple_response
-    def unpin_app(self, app,):
+    def unpin_app(self, app):
         app = Apps().find(app)
         if app:
             pin = get_action('pin')
-            pin.call(app=app, revert=True,)
+            pin.call(app=app, revert=True)
 
-    @sanitize(app=AppSanitizer(required=True), mode=ChoicesSanitizer(['start', 'stop']),)
+    @sanitize(app=AppSanitizer(required=True), mode=ChoicesSanitizer(['start', 'stop']))
     @simple_response
-    def app_service(self, app, mode,):
+    def app_service(self, app, mode):
         service = get_action(mode)
         service.call(app=app)
 
-    @sanitize(app=AppSanitizer(required=False), action=ChoicesSanitizer(['get', 'buy', 'search', 'vote']), value=StringSanitizer(),)
+    @sanitize(app=AppSanitizer(required=False), action=ChoicesSanitizer(['get', 'buy', 'search', 'vote']), value=StringSanitizer())
     @simple_response
-    def track(self, app, action, value,):
-        send_information(action, app=app, value=value,)
+    def track(self, app, action, value):
+        send_information(action, app=app, value=value)
 
     @contextmanager
     def locked(self):
@@ -551,7 +555,7 @@ class Instance(umcm.Base, ProgressMixin):
             raise umcm.UMC_Error(_('Another package operation is in progress'))
 
     @threaded
-    def keep_alive(self, request,):
+    def keep_alive(self, request):
         """
         Fix for Bug #30611: UMC kills appcenter module
         if no request is sent for $(ucr get umc/module/timeout).
@@ -567,7 +571,7 @@ class Instance(umcm.Base, ProgressMixin):
         return True
 
     @simple_response
-    def buy(self, application,):
+    def buy(self, application):
         app = Apps().find(application)
         if not app or not app.shop_url:
             return None
@@ -582,12 +586,12 @@ class Instance(umcm.Base, ProgressMixin):
         return ret
 
     @simple_response
-    def enable_disable_app(self, application, enable=True,):
+    def enable_disable_app(self, application, enable=True):
         app = Apps().find(application)
         if not app:
             return
         stall = get_action('stall')
-        stall.call(app=app, undo=enable,)
+        stall.call(app=app, undo=enable)
 
     @simple_response
     def packages_sections(self):
@@ -602,7 +606,7 @@ class Instance(umcm.Base, ProgressMixin):
 
     @sanitize(pattern=PatternSanitizer(required=True))
     @simple_response
-    def packages_query(self, pattern, section='all', key='package',):
+    def packages_query(self, pattern, section='all', key='package'):
         """Query to fill the grid. Structure is fixed here."""
         result = []
         for package in self.package_manager.packages(reopen=True):
@@ -615,15 +619,15 @@ class Instance(umcm.Base, ProgressMixin):
                 elif key == 'description' and package.candidate and pattern.search(package.candidate.raw_description):
                     toshow = True
                 if toshow:
-                    result.append(self._package_to_dict(package, full=False,))
+                    result.append(self._package_to_dict(package, full=False))
         return result
 
     @simple_response
-    def packages_get(self, package,):
+    def packages_get(self, package):
         """retrieves full properties of one package"""
         package = self.package_manager.get_package(package)
         if package is not None:
-            return self._package_to_dict(package, full=True,)
+            return self._package_to_dict(package, full=True)
         else:
             # TODO: 404?
             return {}
@@ -633,11 +637,12 @@ class Instance(umcm.Base, ProgressMixin):
             'install': 'install',
             'upgrade': 'install',
             'uninstall': 'remove',
-        }, required=True,),
-        packages=ListSanitizer(StringSanitizer(minimum=1), required=True,),
-        update=BooleanSanitizer(),)
+        }, required=True),
+        packages=ListSanitizer(StringSanitizer(minimum=1), required=True),
+        update=BooleanSanitizer(),
+    )
     @simple_response
-    def packages_invoke_dry_run(self, packages, function, update,):
+    def packages_invoke_dry_run(self, packages, function, update):
         if update:
             self.package_manager.update()
         packages = self.package_manager.get_packages(packages)
@@ -646,16 +651,17 @@ class Instance(umcm.Base, ProgressMixin):
             kwargs['install'] = packages
         else:
             kwargs['remove'] = packages
-        return dict(zip(['install', 'remove', 'broken'], self.package_manager.mark(**kwargs),))
+        return dict(zip(['install', 'remove', 'broken'], self.package_manager.mark(**kwargs)))
 
     @sanitize(
         function=MappingSanitizer({
             'install': 'install',
             'upgrade': 'install',
             'uninstall': 'remove',
-        }, required=True,),
-        packages=ListSanitizer(StringSanitizer(minimum=1), required=True,),)
-    def packages_invoke(self, request,):
+        }, required=True),
+        packages=ListSanitizer(StringSanitizer(minimum=1), required=True),
+    )
+    def packages_invoke(self, request):
         """executes an installer action"""
         packages = request.options.get('packages')
         function = request.options.get('function')
@@ -666,10 +672,10 @@ class Instance(umcm.Base, ProgressMixin):
                 raise LockError()
             with self.package_manager.locked(reset_status=True):
                 not_found = [pkg_name for pkg_name in packages if self.package_manager.get_package(pkg_name) is None]
-                self.finished(request.id, {'not_found': not_found},)
+                self.finished(request.id, {'not_found': not_found})
 
                 if not not_found:
-                    def _thread(package_manager, function, packages,):
+                    def _thread(package_manager, function, packages):
                         with package_manager.locked(set_finished=True):
                             with package_manager.no_umc_restart():
                                 if function == 'install':
@@ -677,11 +683,11 @@ class Instance(umcm.Base, ProgressMixin):
                                 else:
                                     package_manager.uninstall(*packages)
 
-                    def _finished(thread, result,):
-                        if isinstance(result, BaseException,):
+                    def _finished(thread, result):
+                        if isinstance(result, BaseException):
                             MODULE.warn('Exception during %s %s: %r' % (function, packages, str(result)))
-                    thread = SimpleThread('invoke', _thread, _finished,)
-                    thread.run(self.package_manager, function, packages,)
+                    thread = SimpleThread('invoke', _thread, _finished)
+                    thread.run(self.package_manager, function, packages)
                 else:
                     self.package_manager.set_finished()  # nothing to do, ready to take new commands
         except LockError:
@@ -712,7 +718,7 @@ class Instance(umcm.Base, ProgressMixin):
         ret['finished'] = not self._working()
         return ret
 
-    def _package_to_dict(self, package, full,):
+    def _package_to_dict(self, package, full):
         """
         Helper that extracts properties from a 'apt_pkg.Package' object
         and stores them into a dictionary. Depending on the 'full'
@@ -791,20 +797,20 @@ class Instance(umcm.Base, ProgressMixin):
 
     @sanitize_list(StringSanitizer())
     @multi_response(single_values=True)
-    def components_get(self, iterator, component_id,):
+    def components_get(self, iterator, component_id):
         # be as current as possible.
         self.get_updater().ucr_reinit()
         self.ucr.load()
         for component_id in iterator:
             items = self.get_component_manager().component(component_id).copy()
-            items['server'] = create_url(items['server'], items['prefix'], items['username'], items['password'], items['port'],)
+            items['server'] = create_url(items['server'], items['prefix'], items['username'], items['password'], items['port'])
             for deprecated in DEPRECATED_PARAMS:
                 del items[deprecated]
             yield items
 
     @sanitize_list(DictSanitizer({'object': advanced_components_sanitizer}))
     @multi_response
-    def components_put(self, iterator, object,):
+    def components_put(self, iterator, object):
         """Writes back one or more component definitions."""
         # umc.widgets.Form wraps the real data into an array:
         #
@@ -845,13 +851,13 @@ class Instance(umcm.Base, ProgressMixin):
                     name = repo['name']
                     named_component_base = '%s/%s' % (COMPONENT_BASE, name)
                     for deprecated in DEPRECATED_PARAMS:
-                        if self.ucr.get(f'{named_component_base}/{deprecated}', '',):
-                            super_ucr.set_registry_var(f'{named_component_base}/{deprecated}', None,)
+                        if self.ucr.get(f'{named_component_base}/{deprecated}', ''):
+                            super_ucr.set_registry_var(f'{named_component_base}/{deprecated}', None)
                 except Exception as e:
                     MODULE.warn("   !! Writing UCR failed: %s" % str(e))
                     yield [{'message': str(e), 'status': PUT_WRITE_ERROR}]
                     return
-                yield self.get_component_manager().put(repo, super_ucr,)
+                yield self.get_component_manager().put(repo, super_ucr)
 
         self.package_manager.update()
 
@@ -862,33 +868,34 @@ class Instance(umcm.Base, ProgressMixin):
 
     @sanitize_list(StringSanitizer())
     @multi_response(single_values=True)
-    def components_del(self, iterator, component_id,):
+    def components_del(self, iterator, component_id):
         for component_id in iterator:
             yield self.get_component_manager().remove(component_id)
         self.package_manager.update()
 
     @multi_response
-    def settings_get(self, iterator,):
+    def settings_get(self, iterator):
         # *** IMPORTANT *** Our UCR copy must always be current. This is not only
         #    to catch up changes made via other channels (ucr command line etc),
         #    but also to reflect the changes we have made ourselves!
         self.ucr.load()
 
-        path = self.ucr.get(f'{ONLINE_BASE}/prefix', '',)
-        server = self.ucr.get(f'{ONLINE_BASE}/server', '',)
-        port = self.ucr.get(f'{ONLINE_BASE}/port', '',)
+        path = self.ucr.get(f'{ONLINE_BASE}/prefix', '')
+        server = self.ucr.get(f'{ONLINE_BASE}/server', '')
+        port = self.ucr.get(f'{ONLINE_BASE}/port', '')
 
         for _ in iterator:
             yield {
-                'server': create_url(server, path, '', '', port,),
+                'server': create_url(server, path, '', '', port),
             }
 
     @sanitize_list(
         DictSanitizer({'object': basic_components_sanitizer}),
         min_elements=1,
-        max_elements=1,)
+        max_elements=1,  # moduleStore with one element...
+    )
     @multi_response
-    def settings_put(self, iterator, object,):
+    def settings_put(self, iterator, object):
         # FIXME: returns values although it should yield (multi_response)
         # check if scheme of server is correct
         for repo, in iterator:
@@ -902,7 +909,7 @@ class Instance(umcm.Base, ProgressMixin):
                 for repo, in iterator:
                     for key, value in repo.items():
                         MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
-                        super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value,)
+                        super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
                 super_ucr.changed()
         except Exception as e:
             MODULE.warn("   !! Writing UCR failed: %s" % str(e))
@@ -912,8 +919,8 @@ class Instance(umcm.Base, ProgressMixin):
         try:
             with set_save_commit_load(self.ucr) as super_ucr:
                 for deprecated in DEPRECATED_PARAMS:
-                    if self.ucr.get(f'{ONLINE_BASE}/{deprecated}', '',):
-                        super_ucr.set_registry_var(f'{ONLINE_BASE}/{deprecated}', None,)
+                    if self.ucr.get(f'{ONLINE_BASE}/{deprecated}', ''):
+                        super_ucr.set_registry_var(f'{ONLINE_BASE}/{deprecated}', None)
                 super_ucr.changed()
         except Exception as e:
             MODULE.warn("   !! Writing UCR failed: %s" % str(e))

@@ -22,11 +22,11 @@ def main():
         ucr_tmp = univention.config_registry.ConfigRegistry()
         ucr_tmp.load()
         cmd = ['/etc/init.d/dovecot', 'restart']
-        with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w',),):
+        with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
             with ucr_test.UCSTestConfigRegistry() as ucr:
                 domain = ucr.get('domainname')
                 univention.config_registry.handler_set(['mail/dovecot/mailbox/delete=yes'])
-                subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w',),)
+                subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
                 host = '%s.%s' % (ucr.get('hostname'), domain)
                 password = 'univention'
                 mails = []
@@ -45,21 +45,21 @@ def main():
                 default_shared_permissions = {'anyone': 'lrswipkxtecda'}
                 permissions = 'lrswipkxtecda'
                 shared_dn, shared_mailbox, shared_address = create_shared_mailfolder(
-                    udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('anyone', 'all')],)
+                    udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('anyone', 'all')])
 
-                test_cases = itertools.product(mails[0:2], permissions,)
+                test_cases = itertools.product(mails[0:2], permissions)
                 for i in range(len(mails[0:2]) * len(permissions)):
                     who, what = next(test_cases)
                     imap = MailClient_SSL(host)
-                    imap.log_in(mails[2], password,)
+                    imap.log_in(mails[2], password)
                     mailboxs = imap.getMailBoxes()
                     mailboxs.append(shared_mailbox)
                     for mailbox in mailboxs:
                         print('%d: Mailbox = %s, %s -> %s' % (i, mailbox, who, what))
-                        imap.deleteacl(mailbox, who,)
+                        imap.deleteacl(mailbox, who)
                         if mailbox == shared_mailbox:
                             imap.check_acls({mailbox: default_shared_permissions})
-                        imap.setacl(mailbox, who, what,)
+                        imap.setacl(mailbox, who, what)
                         imap.check_acls({mailbox: {who: what}})
                     imap.logout()
 

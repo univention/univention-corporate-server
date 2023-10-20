@@ -48,7 +48,7 @@ class _SharedMemory(managers.SyncManager):
 
     def dict(self):
         if self.started:
-            return super(_SharedMemory, self,).dict()
+            return super(_SharedMemory, self).dict()
         return {}
 
     def namespace(self):
@@ -60,7 +60,7 @@ class _SharedMemory(managers.SyncManager):
         self.started = True
         setproctitle(proctitle + '   # multiprocessing manager')
         try:
-            super(_SharedMemory, self,).start(*args, **kwargs,)
+            super(_SharedMemory, self).start(*args, **kwargs)
         finally:
             setproctitle(proctitle)
 

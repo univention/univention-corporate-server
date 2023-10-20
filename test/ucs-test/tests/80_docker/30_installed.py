@@ -18,15 +18,15 @@ if __name__ == '__main__':
 
         app_docker1 = app_docker2 = app_nondocker = None
         try:
-            app_docker1 = tiny_app(get_app_name(), get_app_version(),)
+            app_docker1 = tiny_app(get_app_name(), get_app_version())
             app_docker1.set_ini_parameter(Code='D1')
             app_docker1.add_to_local_appcenter()
 
-            app_docker2 = tiny_app(get_app_name(), get_app_version(),)
+            app_docker2 = tiny_app(get_app_name(), get_app_version())
             app_docker2.set_ini_parameter(Code='D2')
             app_docker2.add_to_local_appcenter()
 
-            app_nondocker = App(name=get_app_name(), version=get_app_version(), build_package=True,)
+            app_nondocker = App(name=get_app_name(), version=get_app_version(), build_package=True)
             app_nondocker.set_ini_parameter(Code='ND')
             app_nondocker.add_to_local_appcenter()
 

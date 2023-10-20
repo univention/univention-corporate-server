@@ -14,7 +14,7 @@ import samltest
 
 
 def main():
-    SamlSession = samltest.SamlTest('NonExistent3.14', 'univention',)
+    SamlSession = samltest.SamlTest('NonExistent3.14', 'univention')
 
     with pytest.raises(samltest.SamlAuthenticationFailed):
         SamlSession.login_with_new_session_at_IdP()

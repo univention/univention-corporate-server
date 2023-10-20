@@ -55,7 +55,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPackageList'],),
+        objectClasses=['top', 'univentionPackageList'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -64,13 +65,15 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'packageList': univention.admin.property(
         short_description=_('Package List'),
         long_description=_('Package List'),
         syntax=univention.admin.syntax.string,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
 }
 
 layout = [
@@ -78,13 +81,13 @@ layout = [
         Group(_('General package list settings'), layout=[
             'name',
             'packageList',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('packageList', 'univentionPackageDefinition',)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('packageList', 'univentionPackageDefinition')
 
 
 class object(univention.admin.handlers.simpleLdap):

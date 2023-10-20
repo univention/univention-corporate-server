@@ -13,7 +13,7 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 
 
-def eapol_test(username,):
+def eapol_test(username):
     testdata = '''network={{
         key_mgmt=WPA-EAP
         eap=PEAP
@@ -33,7 +33,7 @@ def main():
     with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
         username_allowed = udm.create_user(networkAccess=1)[1]
         eapol_test(username_allowed)
-        eapol_test('{}\\{}'.format(ucr.get('windows/domain'), username_allowed,))
+        eapol_test('{}\\{}'.format(ucr.get('windows/domain'), username_allowed))
 
 
 if __name__ == '__main__':

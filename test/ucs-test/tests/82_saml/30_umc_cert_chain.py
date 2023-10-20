@@ -17,9 +17,9 @@ import samltest
 
 def main():
     cert_folder = samltest.SPCertificate.get_server_cert_folder()
-    with open(os.path.join(cert_folder, 'cert.pem',), 'rb',) as cert_file:
+    with open(os.path.join(cert_folder, 'cert.pem'), 'rb') as cert_file:
         cert = cert_file.read()
-    with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'rb',) as ca_file:
+    with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'rb') as ca_file:
         cert += b'\n' + ca_file.read()
     with samltest.SPCertificate(cert):
         saml_check()
@@ -27,7 +27,7 @@ def main():
 
 def saml_check():
     account = utils.UCSTestDomainAdminCredentials()
-    SamlSession = samltest.SamlTest(account.username, account.bindpw,)
+    SamlSession = samltest.SamlTest(account.username, account.bindpw)
     try:
         SamlSession.login_with_new_session_at_IdP()
         SamlSession.test_logged_in_status()

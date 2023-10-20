@@ -12,7 +12,7 @@ import subprocess
 import univention.testing.strings as uts
 
 
-def radius_auth(user_identificator, password,):
+def radius_auth(user_identificator, password):
     subprocess.check_call([
         'radtest',
         '-t',
@@ -25,7 +25,7 @@ def radius_auth(user_identificator, password,):
     ])
 
 
-def test_email_login(ucr, udm_session, rad_user,):
+def test_email_login(ucr, udm_session, rad_user):
     dn, name, password = rad_user
     mail_domain = uts.random_domain_name()
     email = f"testuser-{name}@{mail_domain}"
@@ -34,12 +34,14 @@ def test_email_login(ucr, udm_session, rad_user,):
         ignore_exists=True,
         wait_for_replication=True,
         check_for_drs_replication=False,
-        name=mail_domain,)
+        name=mail_domain,
+    )
     udm_session.modify_object(
         'users/user',
         wait_for_replication=True,
         dn=dn,
-        mailPrimaryAddress=email,)
+        mailPrimaryAddress=email,
+    )
 
-    radius_auth(name, password,)
-    radius_auth(email, password,)
+    radius_auth(name, password)
+    radius_auth(email, password)

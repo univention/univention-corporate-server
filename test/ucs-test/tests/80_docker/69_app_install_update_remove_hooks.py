@@ -26,7 +26,7 @@ color_highlight = "\033[0;31m"
 color_reset = "\033[0;0m"
 
 
-def get_code_position(depth=1, line_length=80, fill_char='.', prefix="# ", color_start="", color_stop="",):
+def get_code_position(depth=1, line_length=80, fill_char='.', prefix="# ", color_start="", color_stop=""):
     """
     The function draws a fixed length line (80 columns) and displays the
     position in the code from where it is called. The rest of the line
@@ -41,24 +41,24 @@ def get_code_position(depth=1, line_length=80, fill_char='.', prefix="# ", color
     @param color_start: Could be "\033[0;31m" for red or \033[0;32m for green
     @param color_stop: should reset the color to default, usually "\033[0;0m"
     """
-    if hasattr(sys, '_getframe',):
+    if hasattr(sys, '_getframe'):
         # not every Python version has a _getframe function. We will only
         # return a separator, if we cannot determine the position.
         return ((color_start + prefix + "%-*s" + color_stop) % (
                 line_length - len(prefix),
-                sys._getframe(depth).f_code.co_filename + ":" + str(sys._getframe(depth).f_lineno) + ' [' + sys._getframe(depth).f_code.co_name + ']')).replace('  ', fill_char + fill_char,)
+                sys._getframe(depth).f_code.co_filename + ":" + str(sys._getframe(depth).f_lineno) + ' [' + sys._getframe(depth).f_code.co_name + ']')).replace('  ', fill_char + fill_char)
     else:
-        return color_start + ("%80s" % '').replace(' ', '=',) + color_stop
+        return color_start + ("%80s" % '').replace(' ', '=') + color_stop
 
 
-def setup(app_name,):
+def setup(app_name):
     """
     the setup creates the necessary script hook folders and places a script in
     each of them with the filename being the action name. The script will
     append its own name to `file_result` when executed.
     """
     # try to create an empty result file...
-    with open(file_result, "w",) as f:
+    with open(file_result, "w") as f:
         f.close()
 
     # the same script will be placed in all script hook folders, always named
@@ -74,15 +74,17 @@ echo "$0" >> {file_result}'''.format(file_result=file_result)
 
         script_hook_path = '{hook_path}/post-{action}.d'.format(
             hook_path=path_hooks.format(appid=app_name),
-            action=action,)
+            action=action,
+        )
 
         script_hook_file = "{pathname}/{filename}".format(
             pathname=script_hook_path,
-            filename=action,)
+            filename=action,
+        )
 
         # create the hook directory only if it does not exist yet
         try:
-            os.makedirs(script_hook_path, mode=0o777,)
+            os.makedirs(script_hook_path, mode=0o777)
         except Exception:
             # we know well enough what went wrong and can savely ignore it. In
             # python3 however os.makedirs has an `exist_ok`-parameter which should
@@ -91,25 +93,25 @@ echo "$0" >> {file_result}'''.format(file_result=file_result)
 
         try:
             # create a script file in the hook directory...
-            with open(script_hook_file, 'w',) as f:
+            with open(script_hook_file, 'w') as f:
                 f.write(test_script)
 
             # add the executable flag to the file permissions...
             os.chmod(
                 script_hook_file,
-                os.stat(script_hook_file).st_mode | stat.S_IEXEC,)
+                os.stat(script_hook_file).st_mode | stat.S_IEXEC)
 
         except Exception as e:
             print("Error with file '{filename}': {error}".format(
                 error=e,
-                filename=script_hook_file,),
+                filename=script_hook_file),
             )
 
 
-def app_install(appcenter, app_name,):
-    print(get_code_position(color_start=color_highlight, color_stop=color_reset,))
+def app_install(appcenter, app_name):
+    print(get_code_position(color_start=color_highlight, color_stop=color_reset))
 
-    app = tiny_app(app_name, '3.6',)
+    app = tiny_app(app_name, '3.6')
     app.set_ini_parameter(DockerImage='docker-test.software-univention.de/alpine:3.6')
 
     app.add_to_local_appcenter()
@@ -120,10 +122,10 @@ def app_install(appcenter, app_name,):
     return app
 
 
-def app_upgrade(appcenter, app_name,):
-    print(get_code_position(color_start=color_highlight, color_stop=color_reset,))
+def app_upgrade(appcenter, app_name):
+    print(get_code_position(color_start=color_highlight, color_stop=color_reset))
 
-    app = tiny_app(app_name, '3.7',)
+    app = tiny_app(app_name, '3.7')
     app.set_ini_parameter(DockerImage='docker-test.software-univention.de/alpine:3.7')
 
     app.add_to_local_appcenter()
@@ -134,8 +136,8 @@ def app_upgrade(appcenter, app_name,):
     return app
 
 
-def app_remove(app,):
-    print(get_code_position(color_start=color_highlight, color_stop=color_reset,))
+def app_remove(app):
+    print(get_code_position(color_start=color_highlight, color_stop=color_reset))
 
     app.uninstall()
     app.remove()
@@ -169,8 +171,8 @@ if __name__ == '__main__':
     setup(app_name)
 
     with Appcenter() as appcenter:
-        app = app_install(appcenter, app_name,)
-        app = app_upgrade(appcenter, app_name,)
+        app = app_install(appcenter, app_name)
+        app = app_upgrade(appcenter, app_name)
         app_remove(app)
 
     verify_test_results_and_exit()

@@ -51,7 +51,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['msGPOContainer', 'top'],),
+        objectClasses=['msGPOContainer', 'top'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -59,51 +60,63 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'displayName': univention.admin.property(
         short_description=_('Display name'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'msGPOFlags': univention.admin.property(
         short_description=_('MS Group Policy Flags'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'msGPOVersionNumber': univention.admin.property(
         short_description=_('MS Group Policy Version Number'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'msGPOSystemFlags': univention.admin.property(
         short_description=_('MS Group Policy System Flags'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'msGPOFunctionalityVersion': univention.admin.property(
         short_description=_('MS Group Policy Functionality Version'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'msGPOFileSysPath': univention.admin.property(
         short_description=_('MS Group Policy File Sys Path'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'msGPOUserExtensionNames': univention.admin.property(
         short_description=_('MS Group Policy User Extension Names'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'msGPOMachineExtensionNames': univention.admin.property(
         short_description=_('MS Group Policy Machine Extension Names'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'msGPOWQLFilter': univention.admin.property(
         short_description=_('MS Group Policy WQL Filter'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'msNTSecurityDescriptor': univention.admin.property(
         short_description=_('MS NT Security Descriptor'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
 }
 
 layout = [
@@ -111,8 +124,8 @@ layout = [
         Group(_('General'), layout=[
             ["name", "description"],
             ["displayName"],
-        ],),
-    ],),
+        ]),
+    ]),
     Tab(_('GPO settings'), _('MS GPO settings'), advanced=True, layout=[
         Group(_('GPO settings'), layout=[
             ['msGPOFlags'],
@@ -123,23 +136,23 @@ layout = [
             ['msGPOWQLFilter'],
             ['msGPOUserExtensionNames'],
             ['msGPOMachineExtensionNames'],
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
-mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString,)
-mapping.register('msGPOFlags', 'msGPOFlags', None, univention.admin.mapping.ListToString,)
-mapping.register('msGPOVersionNumber', 'msGPOVersionNumber', None, univention.admin.mapping.ListToString,)
-mapping.register('msGPOSystemFlags', 'msGPOSystemFlags', None, univention.admin.mapping.ListToString,)
-mapping.register('msGPOFunctionalityVersion', 'msGPOFunctionalityVersion', None, univention.admin.mapping.ListToString,)
-mapping.register('msGPOFileSysPath', 'msGPOFileSysPath', None, univention.admin.mapping.ListToString,)
-mapping.register('msGPOWQLFilter', 'msGPOWQLFilter', None, univention.admin.mapping.ListToString,)
-mapping.register('msGPOUserExtensionNames', 'msGPOUserExtensionNames', None, univention.admin.mapping.ListToString,)
-mapping.register('msGPOMachineExtensionNames', 'msGPOMachineExtensionNames', None, univention.admin.mapping.ListToString,)
-mapping.register('msNTSecurityDescriptor', 'msNTSecurityDescriptor', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
+mapping.register('msGPOFlags', 'msGPOFlags', None, univention.admin.mapping.ListToString)
+mapping.register('msGPOVersionNumber', 'msGPOVersionNumber', None, univention.admin.mapping.ListToString)
+mapping.register('msGPOSystemFlags', 'msGPOSystemFlags', None, univention.admin.mapping.ListToString)
+mapping.register('msGPOFunctionalityVersion', 'msGPOFunctionalityVersion', None, univention.admin.mapping.ListToString)
+mapping.register('msGPOFileSysPath', 'msGPOFileSysPath', None, univention.admin.mapping.ListToString)
+mapping.register('msGPOWQLFilter', 'msGPOWQLFilter', None, univention.admin.mapping.ListToString)
+mapping.register('msGPOUserExtensionNames', 'msGPOUserExtensionNames', None, univention.admin.mapping.ListToString)
+mapping.register('msGPOMachineExtensionNames', 'msGPOMachineExtensionNames', None, univention.admin.mapping.ListToString)
+mapping.register('msNTSecurityDescriptor', 'msNTSecurityDescriptor', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

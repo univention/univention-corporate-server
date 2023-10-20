@@ -73,12 +73,12 @@ class _HTTPType(type):
     Sub-classes of this meta class are automatically added to the :py:data:`HTTPError.codes` mapping.
     """
 
-    def __init__(mcs, name, bases, dict,):
+    def __init__(mcs, name, bases, dict):
         try:
             HTTPError.codes[mcs.code] = mcs
         except (NameError, AttributeError):
             pass
-        return type.__init__(mcs, name, bases, dict,)
+        return type.__init__(mcs, name, bases, dict)
 
 
 class ConnectionError(Exception):
@@ -89,13 +89,13 @@ class ConnectionError(Exception):
     :param reason: The optional underlying exception.
     """
 
-    def __init__(self, msg, reason=None,):
+    def __init__(self, msg, reason=None):
         # type: (str, Exception) -> None
-        super(ConnectionError, self,).__init__(msg, reason,)
+        super(ConnectionError, self).__init__(msg, reason)
         self.reason = reason
 
 
-class HTTPError(six.with_metaclass(_HTTPType, Exception,)):
+class HTTPError(six.with_metaclass(_HTTPType, Exception)):
     """
     Base class for |HTTP| errors.
     A specialized sub-class if automatically instantiated based on the |HTTP| return code.
@@ -141,11 +141,11 @@ class HTTPError(six.with_metaclass(_HTTPType, Exception,)):
         """
         return self.response.result
 
-    def __new__(cls, request, response, hostname,):
-        err = cls.codes.get(response.status, cls,)
-        return super(HTTPError, cls,).__new__(err, request, response, hostname,)  # type: ignore
+    def __new__(cls, request, response, hostname):
+        err = cls.codes.get(response.status, cls)
+        return super(HTTPError, cls).__new__(err, request, response, hostname)  # type: ignore
 
-    def __init__(self, request, response, hostname,):
+    def __init__(self, request, response, hostname):
         self.request = request
         self.hostname = hostname
         self.response = response
@@ -158,7 +158,7 @@ class HTTPError(six.with_metaclass(_HTTPType, Exception,)):
         # type: () -> str
         traceback = ''
         data = self.response.data
-        if self.status >= 500 and isinstance(self.response.data, dict,) and isinstance(self.response.data.get('traceback'), six.string_types,) and 'Traceback (most recent call last)' in self.response.data['traceback']:
+        if self.status >= 500 and isinstance(self.response.data, dict) and isinstance(self.response.data.get('traceback'), six.string_types) and 'Traceback (most recent call last)' in self.response.data['traceback']:
             data = data.copy()
             traceback = '\n%s' % (data.pop('traceback'),)
         return '%s on %s (%s): %s%s' % (self.status, self.hostname, self.request.path, data, traceback)
@@ -264,7 +264,7 @@ class Request(object):
     :param dict headers: a mapping of HTTP headers
     """
 
-    def __init__(self, method, path, data=None, headers=None,):
+    def __init__(self, method, path, data=None, headers=None):
         # type: (str, str, Optional[bytes], Optional[Dict[str, str]]) -> None
         self.method = method
         self.path = path
@@ -279,7 +279,7 @@ class Request(object):
         :returns: encodes data in JSON if Content-Type wants it
         :rtype: bytes
         """
-        if self.headers.get('Content-Type', '',).startswith('application/json'):
+        if self.headers.get('Content-Type', '').startswith('application/json'):
             return json.dumps(self.data).encode('ASCII')
         return self.data
 
@@ -303,7 +303,7 @@ class Response(object):
 
         :returns: The `result`.
         """
-        if isinstance(self.data, dict,):
+        if isinstance(self.data, dict):
             return self.data.get('result')
 
     @property
@@ -314,10 +314,10 @@ class Response(object):
 
         :returns: The `message`.
         """
-        if isinstance(self.data, dict,):
+        if isinstance(self.data, dict):
             return self.data.get('message')
 
-    def __init__(self, status, reason, body, headers, _response,):
+    def __init__(self, status, reason, body, headers, _response):
         # type: (int, str, bytes, List[Tuple[str, str]], http.client.HTTPResponse) -> None
         self.status = status
         self.reason = reason
@@ -327,16 +327,16 @@ class Response(object):
         self.data = self.decode_body()
 
     @overload
-    def get_header(self, name,):
+    def get_header(self, name):
         # type: (str) -> Optional[str]
         pass
 
     @overload
-    def get_header(self, name, default=None,):
+    def get_header(self, name, default=None):
         # type: (str, _T) -> _T
         pass
 
-    def get_header(self, name, default=None,):
+    def get_header(self, name, default=None):
         # type: (str, _T) -> Union[None, str, _T]
         """
         Return original |HTTP| response header.
@@ -346,7 +346,7 @@ class Response(object):
         :returns: The header value or `None`.
         :rtype: str or None
         """
-        return self._response.getheader(name, default,)
+        return self._response.getheader(name, default)
 
     def decode_body(self):
         # type: () -> Union[bytes, dict]
@@ -357,15 +357,15 @@ class Response(object):
         :rtype: dict or str
         """
         data = self.body
-        if self.get_header('Content-Type', '',).startswith('application/json'):
+        if self.get_header('Content-Type', '').startswith('application/json'):
             try:
                 data = json.loads(data.decode('UTF-8'))
             except ValueError as exc:
-                raise ConnectionError('Malformed response data: %r' % (data,), reason=exc,)
+                raise ConnectionError('Malformed response data: %r' % (data,), reason=exc)
         return data
 
     @classmethod
-    def _from_httplib_response(cls, response,):
+    def _from_httplib_response(cls, response):
         # type: (http.client.HTTPResponse) -> Response
         """
         Create class instance from |HTTP| response.
@@ -373,7 +373,7 @@ class Response(object):
         :param http.client.HTTPResponse response: The |HTTP| response.
         """
         data = response.read()
-        return cls(response.status, response.reason, data, response.getheaders(), response,)
+        return cls(response.status, response.reason, data, response.getheaders(), response)
 
 
 class Client(object):
@@ -390,16 +390,16 @@ class Client(object):
 
     ConnectionType = HTTPSConnection
 
-    def __init__(self, hostname=None, username=None, password=None, language=None, timeout=None, automatic_reauthentication=False,):
+    def __init__(self, hostname=None, username=None, password=None, language=None, timeout=None, automatic_reauthentication=False):
         # type: (Optional[str], Optional[str], Optional[str], Optional[str], Optional[float], bool) -> None
         self.hostname = hostname or '%(hostname)s.%(domainname)s' % ucr
         self._language = language or locale.getlocale()[0] or ''
         self._headers = {
             'Content-Type': 'application/json; charset=UTF-8',
             'Accept': 'application/json; q=1, text/html; q=0.5; */*; q=0.1',
-            'Accept-Language': self._language.replace('_', '-',),
+            'Accept-Language': self._language.replace('_', '-'),
             'X-Requested-With': 'XMLHttpRequest',
-            'User-Agent': 'UCS/%s (univention.lib.umc/%s-errata%s)' % (ucr.get('version/version', '0.0',), ucr.get('version/patchlevel', '0',), ucr.get('version/erratalevel', '0',)),
+            'User-Agent': 'UCS/%s (univention.lib.umc/%s-errata%s)' % (ucr.get('version/version', '0.0'), ucr.get('version/patchlevel', '0'), ucr.get('version/erratalevel', '0')),
         }
         self._base_uri = '/univention/'
         self._timeout = timeout
@@ -409,9 +409,9 @@ class Client(object):
         self.username = username or ''
         self.password = password or ''
         if username:
-            self.authenticate(self.username, self.password,)
+            self.authenticate(self.username, self.password)
 
-    def authenticate(self, username, password,):
+    def authenticate(self, username, password):
         # type: (str, str) -> Response
         """
         Authenticate against the host and preserves the
@@ -423,14 +423,14 @@ class Client(object):
         """
         self.username = username
         self.password = password
-        return self.umc_auth(username, password,)
+        return self.umc_auth(username, password)
 
     def reauthenticate(self):
         # type: () -> Response
         """Re-authenticate using the stored username and password."""
-        return self.authenticate(self.username, self.password,)
+        return self.authenticate(self.username, self.password)
 
-    def set_basic_http_authentication(self, username, password,):
+    def set_basic_http_authentication(self, username, password):
         # type: (str, str) -> None
         """
         Setup authentication using |HTTP| Basic authentication.
@@ -440,7 +440,7 @@ class Client(object):
         """
         self._headers['Authorization'] = 'Basic %s' % (base64.b64encode(b'%s:%s' % (username.encode('UTF-8'), password.encode('UTF-8'))).decode('ASCII'),)
 
-    def authenticate_saml(self, username, password,):
+    def authenticate_saml(self, username, password):
         # type: (str, str) -> None
         """
         Setup authentication using |SAML|.
@@ -465,10 +465,10 @@ class Client(object):
             with open('/etc/machine.secret') as machine_file:
                 password = machine_file.readline().strip()
         except EnvironmentError as exc:
-            raise ConnectionError('Could not read /etc/machine.secret', reason=exc,)
-        self.authenticate(username, password,)
+            raise ConnectionError('Could not read /etc/machine.secret', reason=exc)
+        self.authenticate(username, password)
 
-    def umc_command(self, path, options=None, flavor=None, headers=None,):
+    def umc_command(self, path, options=None, flavor=None, headers=None):
         # type: (str, Optional[dict], Optional[str], Optional[dict]) -> Response
         """
         Perform generic |UMC| command.
@@ -480,10 +480,10 @@ class Client(object):
         :returns: The |UMC| response.
         :rtype: Response
         """
-        data = self.__build_data(options, flavor,)
-        return self.request('POST', 'command/%s' % (path,), data, headers,)
+        data = self.__build_data(options, flavor)
+        return self.request('POST', 'command/%s' % (path,), data, headers)
 
-    def umc_set(self, options, headers=None,):
+    def umc_set(self, options, headers=None):
         # type: (Optional[dict], Optional[dict]) -> Response
         """
         Perform |UMC| `set` command.
@@ -494,10 +494,10 @@ class Client(object):
         :rtype: Response
         """
         data = self.__build_data(options)
-        return self.request('POST', 'set', data, headers,)
+        return self.request('POST', 'set', data, headers)
         # TODO: return self.request('POST', 'set/%s' % options.keys()[0], data, headers)
 
-    def umc_set_password(self, options, headers=None,):
+    def umc_set_password(self, options, headers=None):
         # type: (Optional[dict], Optional[dict]) -> Response
         """
         Perform |UMC| `set/password` command. Target UMC version need to be >= UCS 5.0-4.
@@ -508,9 +508,9 @@ class Client(object):
         :rtype: Response
         """
         data = self.__build_data(options)
-        return self.request('POST', 'set/password', data, headers,)
+        return self.request('POST', 'set/password', data, headers)
 
-    def umc_get(self, path, options=None, headers=None,):
+    def umc_get(self, path, options=None, headers=None):
         # type: (str, Optional[dict], Optional[dict]) -> Response
         """
         Perform |UMC| `get` command.
@@ -521,7 +521,7 @@ class Client(object):
         :returns: The |UMC| response.
         :rtype: Response
         """
-        return self.request('POST', 'get/%s' % path, self.__build_data(options), headers,)
+        return self.request('POST', 'get/%s' % path, self.__build_data(options), headers)
 
     def umc_upload(self):
         # type: () -> None
@@ -533,7 +533,7 @@ class Client(object):
         """
         raise NotImplementedError('File uploads currently need to be done manually.')
 
-    def umc_auth(self, username, password,**data):
+    def umc_auth(self, username, password, **data):
         # type: (str, str, **str) -> Response
         """
         Perform |UMC| authentication command.
@@ -544,8 +544,8 @@ class Client(object):
         :returns: The |UMC| response.
         :rtype: Response
         """
-        data = self.__build_data(dict({'username': username, 'password': password}, **data,))
-        return self.request('POST', 'auth', data,)
+        data = self.__build_data(dict({'username': username, 'password': password}, **data))
+        return self.request('POST', 'auth', data)
 
     def umc_logout(self):
         # type: () -> Response
@@ -556,11 +556,11 @@ class Client(object):
         :rtype: Response
         """
         try:
-            return self.request('GET', 'logout',)
+            return self.request('GET', 'logout')
         except (SeeOther, Found, MovedPermanently) as exc:
             return exc.response
 
-    def request(self, method, path, data=None, headers=None,):
+    def request(self, method, path, data=None, headers=None):
         # type: (str, str, Any, Optional[dict]) -> Response
         """
         Send request to |UMC| server handling re-authentication.
@@ -573,7 +573,7 @@ class Client(object):
         :rtype: Response
         :raises Unauthorized: if the session expired and re-authentication was disabled.
         """
-        request = Request(method, path, data, headers,)
+        request = Request(method, path, data, headers)
         try:
             return self.send(request)
         except Unauthorized:
@@ -582,7 +582,7 @@ class Client(object):
             self.reauthenticate()
             return self.send(request)
 
-    def send(self, request,):
+    def send(self, request):
         # type: (Request) -> Response
         """
         Low-level function to send request to |UMC| server.
@@ -594,20 +594,20 @@ class Client(object):
         :raises HTTPError: if an |UMC| error occurs.
         """
         cookie = '; '.join(['='.join(x) for x in self.cookies.items()])
-        request.headers = dict(self._headers, Cookie=cookie, **request.headers,)
+        request.headers = dict(self._headers, Cookie=cookie, **request.headers)
         if 'UMCSessionId' in self.cookies:
             request.headers['X-XSRF-Protection'] = self.cookies['UMCSessionId']
         try:
             http_response = self.__request(request)
         except (HTTPException, EnvironmentError, ssl.CertificateError) as exc:
-            raise ConnectionError('Could not send request.', reason=exc,)
+            raise ConnectionError('Could not send request.', reason=exc)
         self._handle_cookies(http_response)
         umc_response = Response._from_httplib_response(http_response)
         if self._raise_errors and umc_response.status > 299:
-            raise HTTPError(request, umc_response, self.hostname,)
+            raise HTTPError(request, umc_response, self.hostname)
         return umc_response
 
-    def _handle_cookies(self, response,):
+    def _handle_cookies(self, response):
         # type: (http.client.HTTPResponse) -> None
         """
         Parse cookies from |HTTP| response and store for next request.
@@ -616,10 +616,10 @@ class Client(object):
         """
         # FIXME: this cookie handling doesn't respect path, domain and expiry
         cookies = SimpleCookie()  # type: SimpleCookie[Any]
-        cookies.load(response.getheader('set-cookie', '',))
+        cookies.load(response.getheader('set-cookie', ''))
         self.cookies.update({cookie.key: cookie.value for cookie in cookies.values()})
 
-    def __request(self, request,):
+    def __request(self, request):
         # type: (Request) -> http.client.HTTPResponse
         """
         Perform a request to the |UMC| server and return its response.
@@ -630,7 +630,7 @@ class Client(object):
         """
         uri = '%s%s' % (self._base_uri, request.path)
         con = self._get_connection()
-        con.request(request.method, uri, request.get_body(), headers=request.headers,)
+        con.request(request.method, uri, request.get_body(), headers=request.headers)
         response = con.getresponse()
         if response.status == 404:
             if self._base_uri == '/univention/':
@@ -653,9 +653,9 @@ class Client(object):
         """
         # once keep-alive is over, the socket closes
         #   so create a new connection on every request
-        return self.ConnectionType(self.hostname, timeout=self._timeout,)
+        return self.ConnectionType(self.hostname, timeout=self._timeout)
 
-    def __build_data(self, data, flavor=None,):
+    def __build_data(self, data, flavor=None):
         # type: (Optional[Dict[str, Any]], Optional[str]) -> Dict[str, Any]
         """
         Create a dictionary as expected by the |UMC| Server.

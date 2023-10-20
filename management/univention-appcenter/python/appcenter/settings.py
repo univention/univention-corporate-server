@@ -61,10 +61,10 @@ class Setting(TypedIniSectionObject):
     that can be configured before installation, during run-time, etc.
     """
 
-    type = IniSectionAttribute(default='String', choices=['String', 'Int', 'Bool', 'List', 'Password', 'File', 'PasswordFile', 'Status'],)
-    description = IniSectionAttribute(localisable=True, required=True,)
+    type = IniSectionAttribute(default='String', choices=['String', 'Int', 'Bool', 'List', 'Password', 'File', 'PasswordFile', 'Status'])
+    description = IniSectionAttribute(localisable=True, required=True)
     group = IniSectionAttribute(localisable=True)
-    show = IniSectionListAttribute(default=['Settings'], choices=['Install', 'Upgrade', 'Remove', 'Settings'],)
+    show = IniSectionListAttribute(default=['Settings'], choices=['Install', 'Upgrade', 'Remove', 'Settings'])
     show_read_only = IniSectionListAttribute(choices=['Install', 'Upgrade', 'Remove', 'Settings'])
 
     initial_value = IniSectionAttribute()
@@ -72,29 +72,29 @@ class Setting(TypedIniSectionObject):
     scope = IniSectionListAttribute(choices=['inside', 'outside'])
 
     @classmethod
-    def get_class(cls, name,):
+    def get_class(cls, name):
         if name and not name.endswith('Setting'):
             name = '%sSetting' % name
-        return super(Setting, cls,).get_class(name)
+        return super(Setting, cls).get_class(name)
 
-    def is_outside(self, app,):
+    def is_outside(self, app):
         # for Non-Docker Apps, Docker Apps when called from inside, Settings specified for 'outside'
         return not app.docker or container_mode() or 'outside' in self.scope
 
-    def is_inside(self, app,):
+    def is_inside(self, app):
         # only for Docker Apps (and called from the Docker Host). And not only 'outside' is specified
         return app.docker and not container_mode() and ('inside' in self.scope or self.scope == [])
 
-    def get_initial_value(self, app,):
+    def get_initial_value(self, app):
         if self.is_outside(app):
             value = ucr_get(self.name)
             if value is not None:
-                return self.sanitize_value(app, value,)
-        if isinstance(self.initial_value, string_types,):
+                return self.sanitize_value(app, value)
+        if isinstance(self.initial_value, string_types):
             return ucr_run_filter(self.initial_value)
         return self.initial_value
 
-    def get_value(self, app, phase='Settings',):
+    def get_value(self, app, phase='Settings'):
         """Get the current value for this Setting. Easy implementation"""
         if self.is_outside(app):
             value = ucr_get(self.name)
@@ -108,7 +108,7 @@ class Setting(TypedIniSectionObject):
                 settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
                 value = None
         try:
-            value = self.sanitize_value(app, value,)
+            value = self.sanitize_value(app, value)
         except SettingValueError:
             settings_logger.info('Cannot use %r for %s' % (value, self.name))
             value = None
@@ -117,32 +117,32 @@ class Setting(TypedIniSectionObject):
             value = self.get_initial_value(app)
         return value
 
-    def _log_set_value(self, app, value,):
+    def _log_set_value(self, app, value):
         if value is None:
             settings_logger.info('Unsetting %s' % self.name)
         else:
             settings_logger.info('Setting %s to %r' % (self.name, value))
 
-    def set_value(self, app, value, together_config_settings, part,):
+    def set_value(self, app, value, together_config_settings, part):
         together_config_settings[part][self.name] = value
 
-    def set_value_together(self, app, value, together_config_settings,):
-        value = self.sanitize_value(app, value,)
-        value = self.value_for_setting(app, value,)
-        self._log_set_value(app, value,)
+    def set_value_together(self, app, value, together_config_settings):
+        value = self.sanitize_value(app, value)
+        value = self.value_for_setting(app, value)
+        self._log_set_value(app, value)
         if self.is_outside(app):
-            together_config_settings.setdefault('outside', {},)
-            self.set_value(app, value, together_config_settings, 'outside',)
+            together_config_settings.setdefault('outside', {})
+            self.set_value(app, value, together_config_settings, 'outside')
         if self.is_inside(app):
-            together_config_settings.setdefault('inside', {},)
-            self.set_value(app, value, together_config_settings, 'inside',)
+            together_config_settings.setdefault('inside', {})
+            self.set_value(app, value, together_config_settings, 'inside')
 
-    def sanitize_value(self, app, value,):
+    def sanitize_value(self, app, value):
         if self.required and value in [None, '']:
             raise SettingValueError('%s is required' % self.name)
         return value
 
-    def value_for_setting(self, app, value,):
+    def value_for_setting(self, app, value):
         if value is None:
             return None
         value = str(value)
@@ -150,7 +150,7 @@ class Setting(TypedIniSectionObject):
             return None
         return value
 
-    def should_go_into_image_configuration(self, app,):
+    def should_go_into_image_configuration(self, app):
         return self.is_inside(app) and ('Install' in self.show or 'Upgrade' in self.show)
 
 
@@ -159,8 +159,8 @@ class StringSetting(Setting):
 
 
 class IntSetting(Setting):
-    def sanitize_value(self, app, value,):
-        super(IntSetting, self,).sanitize_value(app, value,)
+    def sanitize_value(self, app, value):
+        super(IntSetting, self).sanitize_value(app, value)
         if value is not None:
             try:
                 return int(value)
@@ -169,13 +169,13 @@ class IntSetting(Setting):
 
 
 class BoolSetting(Setting):
-    def sanitize_value(self, app, value,):
-        super(BoolSetting, self,).sanitize_value(app, value,)
-        if isinstance(value, bool,):
+    def sanitize_value(self, app, value):
+        super(BoolSetting, self).sanitize_value(app, value)
+        if isinstance(value, bool):
             return value
-        return ucr_is_true(self.name, value=value,)
+        return ucr_is_true(self.name, value=value)
 
-    def value_for_setting(self, app, value,):
+    def value_for_setting(self, app, value):
         return str(value).lower()
 
 
@@ -183,8 +183,8 @@ class ListSetting(Setting):
     labels = IniSectionListAttribute()
     values = IniSectionListAttribute()
 
-    def sanitize_value(self, app, value,):
-        super(ListSetting, self,).sanitize_value(app, value,)
+    def sanitize_value(self, app, value):
+        super(ListSetting, self).sanitize_value(app, value)
         if value not in self.values:
             raise SettingValueError('%s: %r is not a valid option' % (self.name, value))
         return value
@@ -197,28 +197,28 @@ class UDMListSetting(ListSetting):
 class FileSetting(Setting):
     filename = IniSectionAttribute(required=True)
 
-    def _log_set_value(self, app, value,):
+    def _log_set_value(self, app, value):
         # do not log complete file content
         pass
 
-    def _read_file_content(self, filename,):
+    def _read_file_content(self, filename):
         try:
             with open(filename) as fd:
                 return fd.read()
         except EnvironmentError:
             return None
 
-    def _touch_file(self, filename,):
+    def _touch_file(self, filename):
         if not os.path.exists(filename):
             mkdir(os.path.dirname(filename))
-            open(filename, 'wb',)
+            open(filename, 'wb')
 
-    def _write_file_content(self, filename, content,):
+    def _write_file_content(self, filename, content):
         try:
             if content:
                 settings_logger.debug('Writing to %s' % filename)
                 self._touch_file(filename)
-                with open(filename, 'w',) as fd:
+                with open(filename, 'w') as fd:
                     fd.write(content)
             else:
                 settings_logger.debug('Deleting %s' % filename)
@@ -227,7 +227,7 @@ class FileSetting(Setting):
         except EnvironmentError as exc:
             settings_logger.error('Could not set content: %s' % exc)
 
-    def get_value(self, app, phase='Settings',):
+    def get_value(self, app, phase='Settings'):
         if self.is_outside(app):
             value = self._read_file_content(self.filename)
         else:
@@ -243,36 +243,36 @@ class FileSetting(Setting):
             value = self.get_initial_value(app)
         return value
 
-    def set_value(self, app, value, together_config_settings, part,):
+    def set_value(self, app, value, together_config_settings, part):
         if part == 'outside':
-            return self._write_file_content(self.filename, value,)
+            return self._write_file_content(self.filename, value)
         else:
             if not app_is_running(app):
                 settings_logger.error('Cannot write %s while %s is not running' % (self.name, app))
                 return
             from univention.appcenter.docker import Docker
             docker = Docker(app)
-            return self._write_file_content(docker.path(self.filename), value,)
+            return self._write_file_content(docker.path(self.filename), value)
 
-    def should_go_into_image_configuration(self, app,):
+    def should_go_into_image_configuration(self, app):
         return False
 
 
 class PasswordSetting(Setting):
-    description = IniSectionAttribute(default=_('Password'), localisable=True,)
+    description = IniSectionAttribute(default=_('Password'), localisable=True)
 
-    def _log_set_value(self, app, value,):
+    def _log_set_value(self, app, value):
         # do not log password
         pass
 
 
 class PasswordFileSetting(FileSetting, PasswordSetting):
-    def _touch_file(self, filename,):
-        super(PasswordFileSetting, self,)._touch_file(filename)
-        os.chmod(filename, 0o600,)
+    def _touch_file(self, filename):
+        super(PasswordFileSetting, self)._touch_file(filename)
+        os.chmod(filename, 0o600)
 
 
 class StatusSetting(Setting):
-    def set_value(self, app, value, together_config_settings, part,):
+    def set_value(self, app, value, together_config_settings, part):
         # do not set value via this function - has to be done directly
         pass

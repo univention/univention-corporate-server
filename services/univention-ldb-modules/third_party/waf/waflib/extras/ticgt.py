@@ -41,23 +41,23 @@ from waflib.Tools.c import cprogram
 opj = os.path.join
 
 @conf
-def find_ticc(conf,):
-	conf.find_program(['cl6x'], var='CC', path_list=opj(getattr(Options.options, 'ti-cgt-dir', "",), 'bin',),)
+def find_ticc(conf):
+	conf.find_program(['cl6x'], var='CC', path_list=opj(getattr(Options.options, 'ti-cgt-dir', ""), 'bin'))
 	conf.env.CC_NAME = 'ticc'
 
 @conf
-def find_tild(conf,):
-	conf.find_program(['lnk6x'], var='LINK_CC', path_list=opj(getattr(Options.options, 'ti-cgt-dir', "",), 'bin',),)
+def find_tild(conf):
+	conf.find_program(['lnk6x'], var='LINK_CC', path_list=opj(getattr(Options.options, 'ti-cgt-dir', ""), 'bin'))
 	conf.env.LINK_CC_NAME = 'tild'
 
 @conf
-def find_tiar(conf,):
-	conf.find_program(['ar6x'], var='AR', path_list=opj(getattr(Options.options, 'ti-cgt-dir', "",), 'bin',),)
+def find_tiar(conf):
+	conf.find_program(['ar6x'], var='AR', path_list=opj(getattr(Options.options, 'ti-cgt-dir', ""), 'bin'))
 	conf.env.AR_NAME = 'tiar'
 	conf.env.ARFLAGS = 'qru'
 
 @conf
-def ticc_common_flags(conf,):
+def ticc_common_flags(conf):
 	v = conf.env
 
 	if not v['LINK_CC']:
@@ -79,13 +79,13 @@ def ticc_common_flags(conf,):
 	#v['LINKFLAGS_cstlib']    = ['-Wl,-Bstatic']
 	v['cstlib_PATTERN']      = '%s.lib'
 
-def configure(conf,):
+def configure(conf):
 	v = conf.env
-	v.TI_CGT_DIR = getattr(Options.options, 'ti-cgt-dir', "",)
-	v.TI_DSPLINK_DIR = getattr(Options.options, 'ti-dsplink-dir', "",)
-	v.TI_BIOSUTILS_DIR = getattr(Options.options, 'ti-biosutils-dir', "",)
-	v.TI_DSPBIOS_DIR = getattr(Options.options, 'ti-dspbios-dir', "",)
-	v.TI_XDCTOOLS_DIR = getattr(Options.options, 'ti-xdctools-dir', "",)
+	v.TI_CGT_DIR = getattr(Options.options, 'ti-cgt-dir', "")
+	v.TI_DSPLINK_DIR = getattr(Options.options, 'ti-dsplink-dir', "")
+	v.TI_BIOSUTILS_DIR = getattr(Options.options, 'ti-biosutils-dir', "")
+	v.TI_DSPBIOS_DIR = getattr(Options.options, 'ti-dspbios-dir', "")
+	v.TI_XDCTOOLS_DIR = getattr(Options.options, 'ti-xdctools-dir', "")
 	conf.find_ticc()
 	conf.find_tiar()
 	conf.find_tild()
@@ -93,34 +93,34 @@ def configure(conf,):
 	conf.cc_load_tools()
 	conf.cc_add_flags()
 	conf.link_add_flags()
-	conf.find_program(['tconf'], var='TCONF', path_list=v.TI_XDCTOOLS_DIR,)
+	conf.find_program(['tconf'], var='TCONF', path_list=v.TI_XDCTOOLS_DIR)
 
 	conf.env.TCONF_INCLUDES += [
-	 opj(conf.env.TI_DSPBIOS_DIR, 'packages',),
+	 opj(conf.env.TI_DSPBIOS_DIR, 'packages'),
 	]
 
 	conf.env.INCLUDES += [
-	 opj(conf.env.TI_CGT_DIR, 'include',),
+	 opj(conf.env.TI_CGT_DIR, 'include'),
 	]
 
 	conf.env.LIBPATH += [
-	 opj(conf.env.TI_CGT_DIR, "lib",),
+	 opj(conf.env.TI_CGT_DIR, "lib"),
 	]
 
 	conf.env.INCLUDES_DSPBIOS += [
-	 opj(conf.env.TI_DSPBIOS_DIR, 'packages', 'ti', 'bios', 'include',),
+	 opj(conf.env.TI_DSPBIOS_DIR, 'packages', 'ti', 'bios', 'include'),
 	]
 
 	conf.env.LIBPATH_DSPBIOS += [
-	 opj(conf.env.TI_DSPBIOS_DIR, 'packages', 'ti', 'bios', 'lib',),
+	 opj(conf.env.TI_DSPBIOS_DIR, 'packages', 'ti', 'bios', 'lib'),
 	]
 
 	conf.env.INCLUDES_DSPLINK += [
-	 opj(conf.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'inc',),
+	 opj(conf.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'inc'),
 	]
 
 @conf
-def ti_set_debug(cfg, debug=1,):
+def ti_set_debug(cfg, debug=1):
 	"""
 	Sets debug flags for the compiler.
 
@@ -132,7 +132,7 @@ def ti_set_debug(cfg, debug=1,):
 		cfg.env.CFLAGS += "-d_DEBUG -dDEBUG -dDDSP_DEBUG".split()
 
 @conf
-def ti_dsplink_set_platform_flags(cfg, splat, dsp, dspbios_ver, board,):
+def ti_dsplink_set_platform_flags(cfg, splat, dsp, dspbios_ver, board):
 	"""
 	Sets the INCLUDES, LINKFLAGS for DSPLINK and TCONF_INCLUDES
 	For the specific hardware.
@@ -145,26 +145,26 @@ def ti_dsplink_set_platform_flags(cfg, splat, dsp, dspbios_ver, board,):
 	:param board: board name (eg. OMAPL138GEM)
 
 	"""
-	d1 = opj(cfg.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'inc', 'DspBios', dspbios_ver,)
-	d = opj(cfg.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'inc', 'DspBios', dspbios_ver, board,)
+	d1 = opj(cfg.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'inc', 'DspBios', dspbios_ver)
+	d = opj(cfg.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'inc', 'DspBios', dspbios_ver, board)
 	cfg.env.TCONF_INCLUDES += [d1, d]
 	cfg.env.INCLUDES_DSPLINK += [
-	 opj(cfg.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'inc', dsp,),
+	 opj(cfg.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'inc', dsp),
 	 d,
 	]
 
 	cfg.env.LINKFLAGS_DSPLINK += [
-	 opj(cfg.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'export', 'BIN', 'DspBios', splat, board+'_0', 'RELEASE', 'dsplink%s.lib' % x,)
+	 opj(cfg.env.TI_DSPLINK_DIR, 'dsplink', 'dsp', 'export', 'BIN', 'DspBios', splat, board+'_0', 'RELEASE', 'dsplink%s.lib' % x)
 	 for x in ('', 'pool', 'mpcs', 'mplist', 'msg', 'data', 'notify', 'ringio')
 	]
 
 
-def options(opt,):
-	opt.add_option('--with-ti-cgt', type='string', dest='ti-cgt-dir', help = 'Specify alternate cgt root folder', default="",)
-	opt.add_option('--with-ti-biosutils', type='string', dest='ti-biosutils-dir', help = 'Specify alternate biosutils folder', default="",)
-	opt.add_option('--with-ti-dspbios', type='string', dest='ti-dspbios-dir', help = 'Specify alternate dspbios folder', default="",)
-	opt.add_option('--with-ti-dsplink', type='string', dest='ti-dsplink-dir', help = 'Specify alternate dsplink folder', default="",)
-	opt.add_option('--with-ti-xdctools', type='string', dest='ti-xdctools-dir', help = 'Specify alternate xdctools folder', default="",)
+def options(opt):
+	opt.add_option('--with-ti-cgt', type='string', dest='ti-cgt-dir', help = 'Specify alternate cgt root folder', default="")
+	opt.add_option('--with-ti-biosutils', type='string', dest='ti-biosutils-dir', help = 'Specify alternate biosutils folder', default="")
+	opt.add_option('--with-ti-dspbios', type='string', dest='ti-dspbios-dir', help = 'Specify alternate dspbios folder', default="")
+	opt.add_option('--with-ti-dsplink', type='string', dest='ti-dsplink-dir', help = 'Specify alternate dsplink folder', default="")
+	opt.add_option('--with-ti-xdctools', type='string', dest='ti-xdctools-dir', help = 'Specify alternate xdctools folder', default="")
 
 class ti_cprogram(cprogram):
 	"""
@@ -184,7 +184,7 @@ def use_ti_cprogram(self):
 	Automatically uses ti_cprogram link process
 	"""
 	if 'cprogram' in self.features and self.env.CC_NAME == 'ticc':
-		self.features.insert(0, "ti_cprogram",)
+		self.features.insert(0, "ti_cprogram")
 
 class ti_c(Task.Task):
 	"""
@@ -199,14 +199,14 @@ class ti_c(Task.Task):
 	ext_in  = ['.h'] # set the build order easily by using ext_out=['.h']
 	scan    = c_preproc.scan
 
-def create_compiled_task(self, name, node,):
+def create_compiled_task(self, name, node):
 	"""
 	Overrides ccroot.create_compiled_task to support ti_c
 	"""
 	out = '%s' % (node.change_ext('.obj').name)
 	if self.env.CC_NAME == 'ticc':
 		name = 'ti_c'
-	task = self.create_task(name, node, node.parent.find_or_declare(out),)
+	task = self.create_task(name, node, node.parent.find_or_declare(out))
 	self.env.OUT = '-fr%s' % (node.parent.get_bld().abspath())
 	try:
 		self.compiled_tasks.append(task)
@@ -215,30 +215,30 @@ def create_compiled_task(self, name, node,):
 	return task
 
 @TaskGen.extension('.c')
-def c_hook(self, node,):
+def c_hook(self, node):
 	"Bind the c file extension to the creation of a :py:class:`waflib.Tools.c.c` instance"
 	if self.env.CC_NAME == 'ticc':
-		return create_compiled_task(self, 'ti_c', node,)
+		return create_compiled_task(self, 'ti_c', node)
 	else:
-		return self.create_compiled_task('c', node,)
+		return self.create_compiled_task('c', node)
 
 
 @feature("ti-tconf")
 @before_method('process_source')
 def apply_tconf(self):
-	sources = [x.get_src() for x in self.to_nodes(self.source, path=self.path.get_src(),)]
+	sources = [x.get_src() for x in self.to_nodes(self.source, path=self.path.get_src())]
 	node = sources[0]
 	assert(sources[0].name.endswith(".tcf"))
 	if len(sources) > 1:
 		assert(sources[1].name.endswith(".cmd"))
 
-	target = getattr(self, 'target', self.source,)
+	target = getattr(self, 'target', self.source)
 	target_node = node.get_bld().parent.find_or_declare(node.name)
 	
-	procid = "%d" % int(getattr(self, 'procid', 0,))
+	procid = "%d" % int(getattr(self, 'procid', 0))
 
 	importpaths = []
-	includes = Utils.to_list(getattr(self, 'includes', [],))
+	includes = Utils.to_list(getattr(self, 'includes', []))
 	for x in includes + self.env.TCONF_INCLUDES:
 		if x == os.path.abspath(x):
 			importpaths.append(x)
@@ -246,7 +246,7 @@ def apply_tconf(self):
 			relpath = self.path.find_node(x).path_from(target_node.parent)
 			importpaths.append(relpath)
 
-	task = self.create_task('ti_tconf', sources, target_node.change_ext('.cdb'),)
+	task = self.create_task('ti_tconf', sources, target_node.change_ext('.cdb'))
 	task.path = self.path
 	task.includes = includes
 	task.cwd = target_node.parent.abspath()
@@ -261,8 +261,8 @@ def apply_tconf(self):
 	 target_node.change_ext("cfg.cmd"),
 	]
 
-	create_compiled_task(self, 'ti_c', task.outputs[1],)
-	ctask = create_compiled_task(self, 'ti_c', task.outputs[0],)
+	create_compiled_task(self, 'ti_c', task.outputs[1])
+	ctask = create_compiled_task(self, 'ti_c', task.outputs[0])
 	ctask.env = self.env.derive()
 
 	self.add_those_o_files(target_node.change_ext("cfg.cmd"))
@@ -270,15 +270,15 @@ def apply_tconf(self):
 		self.add_those_o_files(sources[1])
 	self.source = []
 
-re_tconf_include = re.compile(r'(?P<type>utils\.importFile)\("(?P<file>.*)"\)',re.M,)
+re_tconf_include = re.compile(r'(?P<type>utils\.importFile)\("(?P<file>.*)"\)',re.M)
 class ti_tconf(Task.Task):
 	run_str = '${TCONF} ${TCONFINC} ${TCONFPROGNAME} ${TCONFSRC} ${PROCID}'
 	color   = 'PINK'
 
 	def scan(self):
-		includes = Utils.to_list(getattr(self, 'includes', [],))
+		includes = Utils.to_list(getattr(self, 'includes', []))
 
-		def deps(node,):
+		def deps(node):
 			nodes, names = [], []
 			if node:
 				code = Utils.readf(node.abspath())
@@ -286,7 +286,7 @@ class ti_tconf(Task.Task):
 					path = match.group('file')
 					if path:
 						for x in includes:
-							filename = opj(x, path,)
+							filename = opj(x, path)
 							fi = self.path.find_resource(filename)
 							if fi:
 								subnodes, subnames = deps(fi)

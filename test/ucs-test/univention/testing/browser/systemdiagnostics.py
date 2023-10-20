@@ -42,19 +42,19 @@ _ = Translation("ucs-test-framework").translate
 
 
 class SystemDiagnostic:
-    def __init__(self, tester: UMCBrowserTest,):
+    def __init__(self, tester: UMCBrowserTest):
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
         self.module_name = _("System diagnostic")
 
-    def navigate(self, username="Administrator", password="univention",):
-        self.tester.login(username, password,)
+    def navigate(self, username="Administrator", password="univention"):
+        self.tester.login(username, password)
         self.tester.open_module(self.module_name)
 
         self.wait_for_system_diagnostics_to_finish()
 
     def run_system_diagnostics(self):
-        self.page.get_by_role("button", name=_("Run system diagnosis"),).click()
+        self.page.get_by_role("button", name=_("Run system diagnosis")).click()
         self.wait_for_system_diagnostics_to_finish()
 
     def wait_for_system_diagnostics_to_finish(self):

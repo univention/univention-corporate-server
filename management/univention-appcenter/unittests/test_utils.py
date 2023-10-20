@@ -41,38 +41,38 @@ def ldap_database_file():
     return 'unittests/dependencies.ldif'
 
 
-def test_dependency_selfservice(custom_apps, import_appcenter_module,):
+def test_dependency_selfservice(custom_apps, import_appcenter_module):
     utils = import_appcenter_module('utils')
     custom_apps.load('unittests/inis/dependencies')
     app = custom_apps.find('self-service')
     app2 = custom_apps.find('self-service-backend')
 
-    resolved = utils.resolve_dependencies([app], 'install',)
+    resolved = utils.resolve_dependencies([app], 'install')
     assert resolved == [app2, app]
 
 
-def test_dependency_selfservices_wrong_order(custom_apps, import_appcenter_module,):
+def test_dependency_selfservices_wrong_order(custom_apps, import_appcenter_module):
     utils = import_appcenter_module('utils')
     custom_apps.load('unittests/inis/dependencies')
     app = custom_apps.find('self-service')
     app2 = custom_apps.find('self-service-backend')
 
-    resolved = utils.resolve_dependencies([app2, app], 'install',)
+    resolved = utils.resolve_dependencies([app2, app], 'install')
     assert resolved == [app2, app]
-    resolved = utils.resolve_dependencies([app, app2], 'install',)
+    resolved = utils.resolve_dependencies([app, app2], 'install')
     assert resolved == [app2, app]
 
 
-def test_dependency_selfservice_backend(custom_apps, import_appcenter_module,):
+def test_dependency_selfservice_backend(custom_apps, import_appcenter_module):
     utils = import_appcenter_module('utils')
     custom_apps.load('unittests/inis/dependencies')
     app = custom_apps.find('self-service-backend')
 
-    resolved = utils.resolve_dependencies([app], 'install',)
+    resolved = utils.resolve_dependencies([app], 'install')
     assert resolved == [app]
 
 
-def test_dependency_selfservice_and_webmeetings(custom_apps, import_appcenter_module,):
+def test_dependency_selfservice_and_webmeetings(custom_apps, import_appcenter_module):
     utils = import_appcenter_module('utils')
     custom_apps.load('unittests/inis/dependencies')
     app1 = custom_apps.find('self-service')
@@ -81,62 +81,62 @@ def test_dependency_selfservice_and_webmeetings(custom_apps, import_appcenter_mo
     app4 = custom_apps.find('kopano-webapp')
     app5 = custom_apps.find('kopano-core')
 
-    resolved = utils.resolve_dependencies([app1, app3], 'install',)
+    resolved = utils.resolve_dependencies([app1, app3], 'install')
     assert resolved == [app2, app1, app5, app4, app3]
 
 
-def test_dependency_selfservice_installed_in_domain(custom_apps, import_appcenter_module, mocked_connection,):
+def test_dependency_selfservice_installed_in_domain(custom_apps, import_appcenter_module, mocked_connection):
     utils = import_appcenter_module('utils')
     custom_apps.load('unittests/inis/dependencies')
     app = custom_apps.find('self-service')
     app2 = custom_apps.find('kopano-webapp')
 
-    resolved = utils.resolve_dependencies([app, app2], 'install',)
+    resolved = utils.resolve_dependencies([app, app2], 'install')
     assert resolved == [app, app2]
-    resolved = utils.resolve_dependencies([app2, app], 'install',)
+    resolved = utils.resolve_dependencies([app2, app], 'install')
     assert resolved == [app2, app]
 
 
-def test_dependency_selfservice_installed_locally(custom_apps, import_appcenter_module, mocker,):
+def test_dependency_selfservice_installed_locally(custom_apps, import_appcenter_module, mocker):
     utils = import_appcenter_module('utils')
     custom_apps.load('unittests/inis/dependencies')
     app = custom_apps.find('kopano-webmeetings')
     app2 = custom_apps.find('kopano-webapp')
-    mocker.patch.object(app2, 'is_installed', return_value=True,)
+    mocker.patch.object(app2, 'is_installed', return_value=True)
 
-    resolved = utils.resolve_dependencies([app], 'install',)
+    resolved = utils.resolve_dependencies([app], 'install')
     assert resolved == [app]
 
 
-def test_dependency_remove_selfservice(custom_apps, import_appcenter_module, mocker,):
+def test_dependency_remove_selfservice(custom_apps, import_appcenter_module, mocker):
     utils = import_appcenter_module('utils')
     custom_apps.load('unittests/inis/dependencies')
     app = custom_apps.find('self-service')
     app2 = custom_apps.find('self-service-backend')
-    mocker.patch.object(app2, 'is_installed', return_value=True,)
+    mocker.patch.object(app2, 'is_installed', return_value=True)
 
-    resolved = utils.resolve_dependencies([app], 'remove',)
+    resolved = utils.resolve_dependencies([app], 'remove')
     assert resolved == [app]
 
 
-def test_dependency_remove_selfservice_backend(custom_apps, import_appcenter_module, mocker,):
+def test_dependency_remove_selfservice_backend(custom_apps, import_appcenter_module, mocker):
     utils = import_appcenter_module('utils')
     custom_apps.load('unittests/inis/dependencies')
     app = custom_apps.find('self-service-backend')
     app2 = custom_apps.find('self-service')
-    mocker.patch.object(app2, 'is_installed', return_value=True,)
+    mocker.patch.object(app2, 'is_installed', return_value=True)
 
-    resolved = utils.resolve_dependencies([app], 'remove',)
+    resolved = utils.resolve_dependencies([app], 'remove')
     assert resolved == [app]
 
 
-def test_dependency_remove_selfservices_order(custom_apps, import_appcenter_module, mocker,):
+def test_dependency_remove_selfservices_order(custom_apps, import_appcenter_module, mocker):
     utils = import_appcenter_module('utils')
     custom_apps.load('unittests/inis/dependencies')
     app = custom_apps.find('self-service-backend')
     app2 = custom_apps.find('self-service')
 
-    resolved = utils.resolve_dependencies([app, app2], 'remove',)
+    resolved = utils.resolve_dependencies([app, app2], 'remove')
     assert resolved == [app2, app]
-    resolved = utils.resolve_dependencies([app2, app], 'remove',)
+    resolved = utils.resolve_dependencies([app2, app], 'remove')
     assert resolved == [app2, app]

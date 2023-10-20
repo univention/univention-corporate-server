@@ -43,8 +43,8 @@ from debian.deb822 import Deb822
 from setuptools import setup
 
 
-dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8',))
-dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8',))
+dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
+dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
@@ -58,4 +58,5 @@ setup(
     name=dch.package,
     version=dch.version.full_version.split('A~')[0],
     maintainer=realname,
-    maintainer_email=email_address,)
+    maintainer_email=email_address,
+)

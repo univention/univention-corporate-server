@@ -31,19 +31,21 @@ RE_INVALID = re.compile(r"""[][\t !"#$%&'()*./:;<=>?\\`{|}~]+-""")
 
 
 def parse_options() -> Namespace:
-    parser = ArgumentParser(description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter,)
+    parser = ArgumentParser(description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         "-d",
         "--verbose",
         action="count",
-        help="Increase verbosity",)
+        help="Increase verbosity",
+    )
     parser.add_argument(
         "-s",
         "--source",
         type=FileType("rb"),
         help="source image",
         required=True,
-        metavar="PATH",)
+        metavar="PATH",
+    )
 
     group = parser.add_argument_group("VM sizing")
     group.add_argument(
@@ -52,14 +54,16 @@ def parse_options() -> Namespace:
         default=1024,
         type=int,
         help="size of virtual memory [MiB]",
-        metavar="MiB",)
+        metavar="MiB",
+    )
     group.add_argument(
         "-c",
         "--cpu-count",
         default=1,
         type=int,
         help="virtual CPU count",
-        metavar="COUNT",)
+        metavar="COUNT",
+    )
 
     group = parser.add_argument_group("Output options")
     group.add_argument(
@@ -67,71 +71,83 @@ def parse_options() -> Namespace:
         "--filename",
         type=Path,
         help="filename of appliance (default: derived from product)",
-        metavar="PATH",)
+        metavar="PATH",
+    )
     group.add_argument(
         "-n",
         "--no-target-specific-filename",
         action="store_true",
-        help="do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.",)
+        help="do not append hypervisor target to filename of appliance. This is the default if only one target is chosen.",
+    )
 
     group = parser.add_argument_group("Metadata settings")
     group.add_argument(
         "-p",
         "--product",
         help="product name of appliance",
-        default="Univention Corporate Server (UCS)",)
+        default="Univention Corporate Server (UCS)",
+    )
     group.add_argument(
         "--product-url",
         help="product URL of appliance",
         default="https://www.univention.com/products/ucs/",
-        metavar="URL",)
+        metavar="URL",
+    )
     group.add_argument(
         "-v",
         "--version",
-        help="version string of appliance",)
+        help="version string of appliance",
+    )
     group.add_argument(
         "--vendor",
         help="vendor string of appliance",
-        default="Univention GmbH",)
+        default="Univention GmbH",
+    )
     group.add_argument(
         "--vendor-url",
         help="vendor URL of appliance",
         default="https://www.univention.com/",
-        metavar="URL",)
+        metavar="URL",
+    )
 
     parser.add_argument(
         "-t",
         "--tempdir",
         type=Path,
-        help="temporary directory to use",)
+        help="temporary directory to use",
+    )
 
     group = parser.add_argument_group("AWS settings")
     group.add_argument(
         "--region",
         help="EC2 region to use",
-        default="eu-west-1",)
+        default="eu-west-1",
+    )
     group.add_argument(
         "--bucket",
         help="S3 bucket to use",
-        default="generate-appliance",)
+        default="generate-appliance",
+    )
 
     group = parser.add_argument_group("Targets")
     group.add_argument(
         "-o",
         "--only",
         action="store_true",
-        help="ignore default selections, only create selected targets",)
+        help="ignore default selections, only create selected targets",
+    )
 
     eps = entry_points()
-    targets = {ep.name: ep.load() for ep in eps.get("generate_appliance.targets", [],)}
+    targets = {ep.name: ep.load() for ep in eps.get("generate_appliance.targets", [])}
     for name, target in targets.items():
         group.add_argument(
-            "--%s" % (name.replace("_", "-",),),
+            "--%s" % (name.replace("_", "-"),),
             help='create "%s"%s"' % (
                 (target.__doc__ or "").strip(),
                 ' (selected by default)' if target.default else '',
             ),
-            action=BooleanOptionalAction,)
+            action=BooleanOptionalAction,
+        )
 
     options = parser.parse_args()
 
@@ -142,12 +158,12 @@ def parse_options() -> Namespace:
 
     if options.filename is None:
         fn = "-".join(p for p in [options.product, options.version] if p)
-        options.filename = Path(RE_INVALID.sub('-', fn,))
+        options.filename = Path(RE_INVALID.sub('-', fn))
 
     chosen = {
         target
         for name, target in targets.items()
-        if getattr(options, name,) or target.default and not options.only
+        if getattr(options, name) or target.default and not options.only
     }
 
     if len(chosen) == 1:
@@ -158,7 +174,7 @@ def parse_options() -> Namespace:
     return options
 
 
-def setup_logging(level: int,) -> None:
+def setup_logging(level: int) -> None:
     basicConfig(level=DEBUG if level else INFO)
 
 
@@ -169,5 +185,5 @@ def main() -> None:
         Lazy.BASEDIR = Path(tmpdir)
         source_image = Raw(options.source)
         for choice in options.choices:
-            print("Creating", choice.__doc__,)
+            print("Creating", choice.__doc__)
             choice.create(source_image)

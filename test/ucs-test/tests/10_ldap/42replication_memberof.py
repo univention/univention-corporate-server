@@ -50,7 +50,7 @@ DELAY = 10
 class AutoStartStopListener:
     """Stops and starts listener automatically"""
 
-    def __init__(self, dry_run: bool,) -> None:
+    def __init__(self, dry_run: bool) -> None:
         """
         The listener is only shut down on __enter__ resp. started on __exit__, if dry_run != True.
         >>> with AutoStartStopListener(True):
@@ -65,20 +65,20 @@ class AutoStartStopListener:
             stop_listener()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback,):
+    def __exit__(self, exc_type, exc_value, traceback):
         if not self.dry_run:
             start_listener()
 
 
 class TestCases:
-    def __init__(self, udm: udm_test.UCSTestUDM, ucr: ucr_test.UCSTestConfigRegistry,) -> None:
+    def __init__(self, udm: udm_test.UCSTestUDM, ucr: ucr_test.UCSTestConfigRegistry) -> None:
         self.udm = udm
         self.ucr = ucr
         self.base_user = 'cn=users,%s' % (ucr.get('ldap/base'),)
         self.base_group = 'cn=groups,%s' % (ucr.get('ldap/base'),)
-        self.dn_domain_users = 'cn=%s,%s' % (custom_groupname('Domain Users', ucr,), self.base_group)
+        self.dn_domain_users = 'cn=%s,%s' % (custom_groupname('Domain Users', ucr), self.base_group)
 
-    def print_attributes(self, dn_list: List[str], msg: str | None = None,) -> None:
+    def print_attributes(self, dn_list: List[str], msg: str | None = None) -> None:
         """
         Prints the DN and the values of the attributes memberOf and uniqueMember for all given
         DNs in dn_list. If msg is specified, a small header line is printed.
@@ -89,13 +89,13 @@ class TestCases:
             print('*** %s ***' % (msg,))
         for dn in dn_list:
             print(dn)
-            attrs = self.udm._lo.get(dn, attr=ATTR_LIST,)
+            attrs = self.udm._lo.get(dn, attr=ATTR_LIST)
             for key in ATTR_LIST:
-                for val in attrs.get(key, [],):
+                for val in attrs.get(key, []):
                     print('  %s: %s' % (key, val.decode('UTF-8')))
             print()
 
-    def test_user_then_group(self, with_listener: bool,) -> None:
+    def test_user_then_group(self, with_listener: bool) -> None:
         """
         1) create user1
         2) create user2
@@ -103,18 +103,18 @@ class TestCases:
         4) add user2 to group
         """
         with AutoStartStopListener(with_listener):
-            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener,)
-            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener,)
-            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener,)
+            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener)
+            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
+            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
         wait_for_replication()
-        self.print_attributes([dn_user1, dn_user2], 'RESULT',)
-        utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
+        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+        utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_user_group_mixed(self, with_listener: bool,) -> None:
+    def test_user_group_mixed(self, with_listener: bool) -> None:
         """
         1) create user1
         2) add user1 to group
@@ -122,18 +122,18 @@ class TestCases:
         4) add user2 to group
         """
         with AutoStartStopListener(with_listener):
-            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener,)
-            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener,)
-            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener,)
+            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener)
+            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener)
+            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
         wait_for_replication()
-        self.print_attributes([dn_user1, dn_user2], 'RESULT',)
-        utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
+        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+        utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_move_user(self, with_listener: bool,) -> None:
+    def test_move_user(self, with_listener: bool) -> None:
         """
         1) create container
         2) create grp1
@@ -143,19 +143,19 @@ class TestCases:
         6) move user1 to new container
         """
         with AutoStartStopListener(with_listener):
-            dn_cn = udm.create_object('container/cn', position=self.base_user, name=random_name(), wait_for_replication=with_listener,)
-            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener,)
-            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener,)
-            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener,)
-            new_dn_user1 = udm.move_object('users/user', dn=dn_user1, position=dn_cn, wait_for_replication=with_listener,)
+            dn_cn = udm.create_object('container/cn', position=self.base_user, name=random_name(), wait_for_replication=with_listener)
+            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener)
+            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
+            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
+            new_dn_user1 = udm.move_object('users/user', dn=dn_user1, position=dn_cn, wait_for_replication=with_listener)
         wait_for_replication()
-        self.print_attributes([new_dn_user1, dn_user2], 'RESULT',)
-        utils.verify_ldap_object(dn_grp1, {'uniqueMember': [new_dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(new_dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
+        self.print_attributes([new_dn_user1, dn_user2], 'RESULT')
+        utils.verify_ldap_object(dn_grp1, {'uniqueMember': [new_dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(new_dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_move_group(self, with_listener: bool,) -> None:
+    def test_move_group(self, with_listener: bool) -> None:
         """
         1) create container
         2) create grp1
@@ -165,19 +165,19 @@ class TestCases:
         6) move grp1 to new container
         """
         with AutoStartStopListener(with_listener):
-            dn_cn = udm.create_object('container/cn', position=self.base_group, name=random_name(), wait_for_replication=with_listener,)
-            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener,)
-            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener,)
-            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener,)
-            new_dn_grp1 = udm.move_object('groups/group', dn=dn_grp1, position=dn_cn, wait_for_replication=with_listener,)
+            dn_cn = udm.create_object('container/cn', position=self.base_group, name=random_name(), wait_for_replication=with_listener)
+            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener)
+            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
+            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
+            new_dn_grp1 = udm.move_object('groups/group', dn=dn_grp1, position=dn_cn, wait_for_replication=with_listener)
         wait_for_replication()
-        self.print_attributes([dn_user1, dn_user2], 'RESULT',)
-        utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
+        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+        utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_rename_group(self, with_listener: bool,) -> None:
+    def test_rename_group(self, with_listener: bool) -> None:
         """
         1) create grp1
         2) create user1
@@ -186,18 +186,18 @@ class TestCases:
         5) rename grp1
         """
         with AutoStartStopListener(with_listener):
-            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener,)
-            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener,)
-            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener,)
-            new_dn_grp1 = udm.modify_object('groups/group', dn=dn_grp1, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener,)
+            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
+            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
+            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
+            new_dn_grp1 = udm.modify_object('groups/group', dn=dn_grp1, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
         wait_for_replication()
-        self.print_attributes([dn_user1, dn_user2], 'RESULT',)
-        utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
+        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+        utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_remove_group(self, with_listener: bool,) -> None:
+    def test_remove_group(self, with_listener: bool) -> None:
         """
         1) create grp1
         2) create user1
@@ -208,21 +208,21 @@ class TestCases:
         7) remove grp1
         """
         with AutoStartStopListener(with_listener):
-            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener,)
-            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener, wait_for=with_listener,)
+            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
+            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener, wait_for=with_listener)
         wait_for_replication()
         with AutoStartStopListener(with_listener):
-            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener,)
-            udm.remove_object('groups/group', dn=dn_grp1, wait_for_replication=with_listener,)
+            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
+            udm.remove_object('groups/group', dn=dn_grp1, wait_for_replication=with_listener)
         wait_for_replication()
-        udm.wait_for('groups/group', dn_grp1, wait_for_s4connector=with_listener,)
-        self.print_attributes([dn_user1, dn_user2], 'RESULT',)
-        utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user2, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
+        udm.wait_for('groups/group', dn_grp1, wait_for_s4connector=with_listener)
+        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+        utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user2, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_remove_user_from_group(self, with_listener: bool,) -> None:
+    def test_remove_user_from_group(self, with_listener: bool) -> None:
         """
         1) create grp1
         2) create user1
@@ -233,19 +233,19 @@ class TestCases:
         7) remove user1 from group
         """
         with AutoStartStopListener(with_listener):
-            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener,)
-            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener, wait_for=with_listener,)
+            dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
+            dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener, wait_for=with_listener)
         wait_for_replication()
         with AutoStartStopListener(with_listener):
-            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener,)
-            udm.modify_object('groups/group', dn=dn_grp1, remove={'users': [dn_user1]}, wait_for_replication=with_listener, wait_for=with_listener,)
+            dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
+            udm.modify_object('groups/group', dn=dn_grp1, remove={'users': [dn_user1]}, wait_for_replication=with_listener, wait_for=with_listener)
         wait_for_replication()
-        self.print_attributes([dn_user1, dn_user2], 'RESULT',)
-        utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
-        utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY,)
+        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+        utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
+        utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
     def run(self):
         for func in (
@@ -267,12 +267,12 @@ class TestCases:
 
 if __name__ == '__main__':
     with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
-        if utils.package_installed('univention-samba4') and ucr.is_false('connector/s4/autostart', False,):
+        if utils.package_installed('univention-samba4') and ucr.is_false('connector/s4/autostart', False):
             # skip test which would be flaky otherwise
             print('WARNING: univention-samba4 is installed but no running S4 connector on this machine --> skipping test')
             sys.exit(138)
 
-        testcases = TestCases(udm, ucr,)
+        testcases = TestCases(udm, ucr)
         testcases.run()
 
 # vim: set ft=python :

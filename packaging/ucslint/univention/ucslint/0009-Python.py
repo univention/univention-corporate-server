@@ -54,7 +54,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
     RE_STRING = PythonVer.matcher()
 
-    def check(self, path: str,) -> None:
+    def check(self, path: str) -> None:
         super().check(path)
 
         tester = uub.UPCFileTester()
@@ -62,8 +62,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             r'''(?:baseConfig|configRegistry|ucr)(?:\[.+\]|\.get\(.+\)).*\bin\s*
             [\[\(]
             (?:\s*(['"])(?:yes|no|1|0|true|false|on|off|enabled?|disabled?)\1\s*,?\s*){3,}
-            [\]\)]''', re.VERBOSE | re.IGNORECASE,),
-            '0009-8', 'use ucr.is_true() or .is_false()', cntmax=0,)
+            [\]\)]''', re.VERBOSE | re.IGNORECASE),
+            '0009-8', 'use ucr.is_true() or .is_false()', cntmax=0)
         tester.addTest(re.compile(
             r'''\.search\s*\(
             .*?\b
@@ -76,8 +76,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             (?P=str)
             \s*
             (?(list)\])(?(tuple)\))
-            ''', re.VERBOSE,),
-            '0009-11', 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])', cntmax=0,)
+            ''', re.VERBOSE),
+            '0009-11', 'Use uldap.searchDn() instead of uldap.search(attr=["dn"])', cntmax=0)
 
         for fn in python_files(path):
             tester.open(fn)
@@ -90,19 +90,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if match:
                 version, space, option, tail = match.groups()
                 if not version:
-                    self.addmsg('0009-2', 'file does not specify Python version in hashbang', fn, 1,)
+                    self.addmsg('0009-2', 'file does not specify Python version in hashbang', fn, 1)
                 elif version not in {'2.7', '3'}:
-                    self.addmsg('0009-3', 'file specifies wrong Python version in hashbang', fn, 1,)
+                    self.addmsg('0009-3', 'file specifies wrong Python version in hashbang', fn, 1)
                 if space and not option:
-                    self.addmsg('0009-4', 'file contains whitespace after Python command', fn, 1,)
+                    self.addmsg('0009-4', 'file contains whitespace after Python command', fn, 1)
                 if tail:
-                    self.addmsg('0009-9', 'hashbang contains more than one option', fn, 1,)
+                    self.addmsg('0009-9', 'hashbang contains more than one option', fn, 1)
 
-            for row, col, m in uub.line_regexp(tester.raw, RE_LENIENT,):
+            for row, col, m in uub.line_regexp(tester.raw, RE_LENIENT):
                 txt = m.group("str")
                 if not txt:
                     continue
                 if self.RE_STRING.match(txt):
                     continue
 
-                self.addmsg('0009-10', f'invalid Python string literal: {txt}', fn, row, col,)
+                self.addmsg('0009-10', f'invalid Python string literal: {txt}', fn, row, col)

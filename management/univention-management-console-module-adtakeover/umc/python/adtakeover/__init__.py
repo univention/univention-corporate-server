@@ -49,13 +49,13 @@ from univention.management.console.modules.decorators import simple_response, th
 _ = umc.Translation('univention-management-console-module-adtakeover').translate
 
 
-def reset_progress(func,):
+def reset_progress(func):
     @wraps(func)
-    def _foreground(self, request,):
+    def _foreground(self, request):
         self.progress.reset()
         MODULE.process('Running %s' % func.__name__)
         try:
-            return func(self, request,)
+            return func(self, request)
         except takeover.TakeoverError as exc:
             MODULE.warn('Error during %s: %s' % (func.__name__, exc))
             message = str(exc)
@@ -94,15 +94,15 @@ class Instance(umcm.Base):
 
     @threaded
     @reset_progress
-    def connect(self, request,):
+    def connect(self, request):
         username, password, ip = (request.options[var] for var in ['username', 'password', 'ip'])
-        return takeover.count_domain_objects_on_server(ip, username, password, self.progress,)
+        return takeover.count_domain_objects_on_server(ip, username, password, self.progress)
 
     @threaded
     @reset_progress
-    def copy_domain_data(self, request,):
+    def copy_domain_data(self, request):
         username, password, ip = (request.options[var] for var in ['username', 'password', 'ip'])
-        takeover.join_to_domain_and_copy_domain_data(ip, username, password, self.progress,)
+        takeover.join_to_domain_and_copy_domain_data(ip, username, password, self.progress)
 
     @simple_response
     def sysvol_info(self):
@@ -110,10 +110,10 @@ class Instance(umcm.Base):
 
     @threaded
     @reset_progress
-    def check_sysvol(self, request,):
+    def check_sysvol(self, request):
         takeover.check_sysvol(self.progress)
 
     @threaded
     @reset_progress
-    def take_over_domain(self, request,):
+    def take_over_domain(self, request):
         takeover.take_over_domain(self.progress)

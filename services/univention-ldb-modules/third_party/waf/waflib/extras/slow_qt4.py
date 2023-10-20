@@ -21,13 +21,13 @@ import waflib.Tools.qt4
 import waflib.Tools.cxx
 
 @extension(*waflib.Tools.qt4.EXT_QT4)
-def cxx_hook(self, node,):
-	return self.create_compiled_task('cxx_qt', node,)
+def cxx_hook(self, node):
+	return self.create_compiled_task('cxx_qt', node)
 
 class cxx_qt(Task.classes['cxx']):
 	def runnable_status(self):
 		ret = Task.classes['cxx'].runnable_status(self)
-		if ret != Task.ASK_LATER and not getattr(self, 'moc_done', None,):
+		if ret != Task.ASK_LATER and not getattr(self, 'moc_done', None):
 
 			try:
 				cache = self.generator.moc_cache
@@ -50,12 +50,12 @@ class cxx_qt(Task.classes['cxx']):
 							continue
 
 					# the file foo.cpp could be compiled for a static and a shared library - hence the %number in the name
-					cxx_node = x.parent.get_bld().make_node(x.name.replace('.', '_',) + '_%d_moc.cpp' % self.generator.idx)
+					cxx_node = x.parent.get_bld().make_node(x.name.replace('.', '_') + '_%d_moc.cpp' % self.generator.idx)
 					if cxx_node in cache:
 						continue
 					cache[cxx_node] = self
 
-					tsk = Task.classes['moc'](env=self.env, generator=self.generator,)
+					tsk = Task.classes['moc'](env=self.env, generator=self.generator)
 					tsk.set_inputs(x)
 					tsk.set_outputs(cxx_node)
 
@@ -67,7 +67,7 @@ class cxx_qt(Task.classes['cxx']):
 						gen.total += 1
 						self.set_run_after(tsk)
 					else:
-						cxxtsk = Task.classes['cxx'](env=self.env, generator=self.generator,)
+						cxxtsk = Task.classes['cxx'](env=self.env, generator=self.generator)
 						cxxtsk.set_inputs(tsk.outputs)
 						cxxtsk.set_outputs(cxx_node.change_ext('.o'))
 						cxxtsk.set_run_after(tsk)
@@ -84,7 +84,7 @@ class cxx_qt(Task.classes['cxx']):
 						else:
 							link.set_run_after(cxxtsk)
 							link.inputs.extend(cxxtsk.outputs)
-							link.inputs.sort(key=lambda x,: x.abspath())
+							link.inputs.sort(key=lambda x: x.abspath())
 
 			self.moc_done = True
 

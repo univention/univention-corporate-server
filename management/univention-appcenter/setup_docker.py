@@ -47,4 +47,5 @@ setup(
     package_dir={
         'univention.appcenter': 'python/appcenter-docker',
         'univention.appcenter.actions': 'python/appcenter-docker/actions',
-    },)
+    },
+)

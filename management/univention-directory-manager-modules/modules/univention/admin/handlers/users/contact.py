@@ -61,7 +61,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'person', 'inetOrgPerson', 'organizationalPerson'],),
+        objectClasses=['top', 'person', 'inetOrgPerson', 'organizationalPerson'],
+    ),
 }
 property_descriptions = {
     'cn': univention.admin.property(
@@ -71,7 +72,8 @@ property_descriptions = {
         include_in_default_search=True,
         identifies=True,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'lastname': univention.admin.property(
         short_description=_('Last name'),
         long_description='',
@@ -79,174 +81,203 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'firstname': univention.admin.property(
         short_description=_('First name'),
         long_description='',
         syntax=univention.admin.syntax.TwoThirdsString,
         include_in_default_search=True,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'title': univention.admin.property(
         short_description=_('Title'),
         long_description='',
         syntax=univention.admin.syntax.OneThirdString,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'initials': univention.admin.property(
         short_description=_('Initials'),
         long_description='',
         syntax=univention.admin.syntax.string6,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'displayName': univention.admin.property(
         short_description=_('Display name'),
         long_description='',
         syntax=univention.admin.syntax.string,
         default='<firstname> <lastname><:strip>',
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'birthday': univention.admin.property(
         short_description=_('Birthdate'),
         long_description='',
         syntax=univention.admin.syntax.iso8601Date,
-        copyable=True,),
+        copyable=True,
+    ),
     'jpegPhoto': univention.admin.property(
         short_description=_("Picture of the user (JPEG format)"),
         long_description=_('Picture for user account in JPEG format'),
         syntax=univention.admin.syntax.jpegPhoto,
         dontsearch=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'organisation': univention.admin.property(
         short_description=_('Organisation'),
         long_description='',
         syntax=univention.admin.syntax.string64,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'employeeNumber': univention.admin.property(
         short_description=_('Employee number'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        copyable=True,),
+        copyable=True,
+    ),
     'employeeType': univention.admin.property(
         short_description=_('Employee type'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        copyable=True,),
+        copyable=True,
+    ),
     'secretary': univention.admin.property(
         short_description=_('Superior'),
         long_description='',
         syntax=univention.admin.syntax.UserDN,
         multivalue=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'e-mail': univention.admin.property(
         short_description=_('E-mail address'),
         long_description='',
         syntax=univention.admin.syntax.emailAddress,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'phone': univention.admin.property(
         short_description=_('Telephone number'),
         long_description='',
         syntax=univention.admin.syntax.phone,
         multivalue=True,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'roomNumber': univention.admin.property(
         short_description=_('Room number'),
         long_description='',
         syntax=univention.admin.syntax.OneThirdString,
         multivalue=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'departmentNumber': univention.admin.property(
         short_description=_('Department number'),
         long_description='',
         syntax=univention.admin.syntax.OneThirdString,
         multivalue=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'street': univention.admin.property(
         short_description=_('Street'),
         long_description='',
         syntax=univention.admin.syntax.string,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'postcode': univention.admin.property(
         short_description=_('Postal code'),
         long_description='',
         syntax=univention.admin.syntax.OneThirdString,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'postOfficeBox': univention.admin.property(
         short_description=_('Post office box'),
         long_description='',
         syntax=univention.admin.syntax.string,
         multivalue=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'preferredLanguage': univention.admin.property(
         short_description=_('Preferred language'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        copyable=True,),
+        copyable=True,
+    ),
     'city': univention.admin.property(
         short_description=_('City'),
         long_description='',
         syntax=univention.admin.syntax.TwoThirdsString,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'country': univention.admin.property(
         short_description=_('Country'),
         long_description='',
         syntax=univention.admin.syntax.Country,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'state': univention.admin.property(
         short_description=_('State'),
         long_description=_('State / Province'),
         syntax=univention.admin.syntax.string,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'homeTelephoneNumber': univention.admin.property(
         short_description=_('Private telephone number'),
         long_description='',
         syntax=univention.admin.syntax.phone,
         multivalue=True,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'mobileTelephoneNumber': univention.admin.property(
         short_description=_('Mobile phone number'),
         long_description='',
         syntax=univention.admin.syntax.phone,
         multivalue=True,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'pagerTelephoneNumber': univention.admin.property(
         short_description=_('Pager telephone number'),
         long_description='',
         syntax=univention.admin.syntax.phone,
         multivalue=True,
         readonly_when_synced=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'homePostalAddress': univention.admin.property(
         short_description=_('Private postal address'),
         long_description='',
         syntax=univention.admin.syntax.postalAddress,
         multivalue=True,
-        copyable=True,),
+        copyable=True,
+    ),
     'preferredDeliveryMethod': univention.admin.property(
         short_description=_('Preferred delivery method'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'physicalDeliveryOfficeName': univention.admin.property(
         short_description=_('Delivery office name'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        copyable=True,),
+        copyable=True,
+    ),
 }
 
 layout = [
@@ -254,18 +285,18 @@ layout = [
         Group(_('User account'), layout=[
             ['title', 'firstname', 'lastname'],
             ['description'],
-        ],),
+        ]),
         Group(_('Personal information'), layout=[
             'displayName',
             'birthday',
             'jpegPhoto',
-        ],),
+        ]),
         Group(_('Organisation'), layout=[
             'organisation',
             ['employeeNumber', 'employeeType'],
             'secretary',
-        ],),
-    ],),
+        ]),
+    ]),
     Tab(_('Contact'), _('Contact information'), layout=[
         Group(_('Business'), layout=[
             'e-mail',
@@ -273,46 +304,46 @@ layout = [
             ['roomNumber', 'departmentNumber'],
             ['street', 'postcode', 'city'],
             ['state', 'country'],
-        ],),
+        ]),
         Group(_('Private'), layout=[
             'homeTelephoneNumber',
             'mobileTelephoneNumber',
             'pagerTelephoneNumber',
             'homePostalAddress',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('cn', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('lastname', 'sn', None, univention.admin.mapping.ListToString,)
-mapping.register('firstname', 'givenName', None, univention.admin.mapping.ListToString,)
-mapping.register('title', 'title', None, univention.admin.mapping.ListToString,)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
-mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString,)
-mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString,)
-mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
-mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString,)
-mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString,)
-mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.ListToString,)
-mapping.register('secretary', 'secretary',)
-mapping.register('e-mail', 'mail', encoding='ASCII',)
-mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString,)
-mapping.register('preferredDeliveryMethod', 'preferredDeliveryMethod', None, univention.admin.mapping.ListToString,)
-mapping.register('phone', 'telephoneNumber',)
-mapping.register('roomNumber', 'roomNumber',)
-mapping.register('departmentNumber', 'departmentNumber',)
-mapping.register('physicalDeliveryOfficeName', 'physicalDeliveryOfficeName', None, univention.admin.mapping.ListToString,)
-mapping.register('street', 'street', None, univention.admin.mapping.ListToString,)
-mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString,)
-mapping.register('postOfficeBox', 'postOfficeBox',)
-mapping.register('city', 'l', None, univention.admin.mapping.ListToString,)
-mapping.register('country', 'c', None, univention.admin.mapping.ListToString,)
-mapping.register('state', 'st', None, univention.admin.mapping.ListToString,)
-mapping.register('homeTelephoneNumber', 'homePhone',)
-mapping.register('mobileTelephoneNumber', 'mobile',)
-mapping.register('pagerTelephoneNumber', 'pager',)
-mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress,)
+mapping.register('cn', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('lastname', 'sn', None, univention.admin.mapping.ListToString)
+mapping.register('firstname', 'givenName', None, univention.admin.mapping.ListToString)
+mapping.register('title', 'title', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
+mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
+mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
+mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
+mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.ListToString)
+mapping.register('secretary', 'secretary')
+mapping.register('e-mail', 'mail', encoding='ASCII')
+mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
+mapping.register('preferredDeliveryMethod', 'preferredDeliveryMethod', None, univention.admin.mapping.ListToString)
+mapping.register('phone', 'telephoneNumber')
+mapping.register('roomNumber', 'roomNumber')
+mapping.register('departmentNumber', 'departmentNumber')
+mapping.register('physicalDeliveryOfficeName', 'physicalDeliveryOfficeName', None, univention.admin.mapping.ListToString)
+mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
+mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
+mapping.register('postOfficeBox', 'postOfficeBox')
+mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
+mapping.register('country', 'c', None, univention.admin.mapping.ListToString)
+mapping.register('state', 'st', None, univention.admin.mapping.ListToString)
+mapping.register('homeTelephoneNumber', 'homePhone')
+mapping.register('mobileTelephoneNumber', 'mobile')
+mapping.register('pagerTelephoneNumber', 'pager')
+mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress)
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -332,7 +363,7 @@ class object(univention.admin.handlers.simpleLdap):
     def unique_dn(self):
         candidate_dn = self.get_candidate_dn()
         try:
-            self.lo.searchDn(base=candidate_dn, scope='base',)
+            self.lo.searchDn(base=candidate_dn, scope='base')
         except univention.admin.uexceptions.noObject:
             return True
         else:
@@ -349,7 +380,7 @@ class object(univention.admin.handlers.simpleLdap):
         return self.get_candidate_dn()
 
     def _ldap_pre_ready(self):
-        super(object, self,)._ldap_pre_ready()
+        super(object, self)._ldap_pre_ready()
 
         if not self.exists() or self.hasChanged(('firstname', 'lastname')):
             self.acquire_unique_dn()
@@ -360,29 +391,29 @@ class object(univention.admin.handlers.simpleLdap):
         ml = self._modlist_univention_person(ml)
         return ml
 
-    def _modlist_display_name(self, ml,):
+    def _modlist_display_name(self, ml):
         # update displayName automatically if no custom value has been entered by the user and the name changed
         if self.info.get('displayName') == self.oldinfo.get('displayName') and (self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')):
             prop_displayName = self.descriptions['displayName']
-            old_default_displayName = prop_displayName._replace(prop_displayName.base_default, self.oldinfo,)
+            old_default_displayName = prop_displayName._replace(prop_displayName.base_default, self.oldinfo)
             # does old displayName match with old default displayName?
-            if self.oldinfo.get('displayName', '',) == old_default_displayName:
+            if self.oldinfo.get('displayName', '') == old_default_displayName:
                 # yes ==> update displayName automatically
-                new_displayName = prop_displayName._replace(prop_displayName.base_default, self,)
-                ml.append(('displayName', self.oldattr.get('displayName', [b''],)[0], new_displayName.encode('UTF-8')))
+                new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
+                ml.append(('displayName', self.oldattr.get('displayName', [b''])[0], new_displayName.encode('UTF-8')))
         return ml
 
-    def _modlist_univention_person(self, ml,):
+    def _modlist_univention_person(self, ml):
         univention_person_property_names = ('birthday', 'country')
         if any(self.hasChanged(ikey) for ikey in univention_person_property_names):
             if any(self[ikey] for ikey in univention_person_property_names):
-                if b'univentionPerson' not in self.oldattr.get('objectClass', [],):
+                if b'univentionPerson' not in self.oldattr.get('objectClass', []):
                     ml.append(('objectClass', b'', b'univentionPerson'))
-            elif b'univentionPerson' in self.oldattr.get('objectClass', [],):
+            elif b'univentionPerson' in self.oldattr.get('objectClass', []):
                 ml.append(('objectClass', b'univentionPerson', b''))
         return ml
 
-    def _move(self, newdn, modify_childs=True, ignore_license=False,):
+    def _move(self, newdn, modify_childs=True, ignore_license=False):
         olddn = self.dn
 
         # acquire unique dn in new position
@@ -390,7 +421,7 @@ class object(univention.admin.handlers.simpleLdap):
         newdn = self.acquire_unique_dn()
         self.dn = olddn
 
-        self.lo.rename(self.dn, newdn,)
+        self.lo.rename(self.dn, newdn)
         self.dn = newdn
 
         try:
@@ -399,8 +430,8 @@ class object(univention.admin.handlers.simpleLdap):
             self._ldap_post_move(olddn)
         except BaseException:
             # move back
-            ud.debug(ud.ADMIN, ud.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn,)
-            self.lo.rename(self.dn, olddn,)
+            ud.debug(ud.ADMIN, ud.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn)
+            self.lo.rename(self.dn, olddn)
             self.dn = olddn
             raise
         return self.dn
@@ -408,31 +439,31 @@ class object(univention.admin.handlers.simpleLdap):
     @classmethod
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'person',),
-            univention.admin.filter.expression('objectClass', 'inetOrgPerson',),
-            univention.admin.filter.expression('objectClass', 'organizationalPerson',),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount',)],),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'shadowAccount',)],),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'sambaSamAccount',)],),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'krb5Principal',)],),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'krb5KDCEntry',)],),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionMail',)],),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'simpleSecurityObject',)],),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'uidObject',)],),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'pkiUser',)],),
-        ],)
+            univention.admin.filter.expression('objectClass', 'person'),
+            univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
+            univention.admin.filter.expression('objectClass', 'organizationalPerson'),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'shadowAccount')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'sambaSamAccount')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'krb5Principal')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'krb5KDCEntry')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionMail')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'simpleSecurityObject')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'uidObject')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'pkiUser')]),
+        ])
 
 
 lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr, canonical=False,):
+def identify(dn, attr, canonical=False):
     # FIXME is this if block needed? copy pasted from users/user
-    if b'0' in attr.get('uidNumber', [],) or b'$' in attr.get('uid', [b''],)[0] or b'univentionHost' in attr.get('objectClass', [],) or b'functional' in attr.get('univentionObjectFlag', [],):
+    if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
         return False
 
     required_ocs = {b'person', b'inetOrgPerson', b'organizationalPerson'}
     forbidden_ocs = {b'posixAccount', b'shadowAccount', b'sambaSamAccount', b'krb5Principal', b'krb5KDCEntry', b'univentionMail', b'simpleSecurityObject', b'uidObject', b'pkiUser'}
-    ocs = set(attr.get('objectClass', [],))
+    ocs = set(attr.get('objectClass', []))
     return (ocs & required_ocs == required_ocs) and not (ocs & forbidden_ocs)

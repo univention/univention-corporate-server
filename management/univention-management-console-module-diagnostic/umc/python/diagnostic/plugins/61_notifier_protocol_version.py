@@ -49,14 +49,14 @@ BUTTON = {
 }
 
 title = _('Check of the protocol version of the Univention Directory Notifier')
-description = _('Starting with UCS {ucs[0]}.{ucs[1]}-{ucs[2]} erratum {ucs[3]}, the minimum protocol version should be set to {udn}.').format(ucs=UCS, udn=UDN,)
+description = _('Starting with UCS {ucs[0]}.{ucs[1]}-{ucs[2]} erratum {ucs[3]}, the minimum protocol version should be set to {udn}.').format(ucs=UCS, udn=UDN)
 run_descr = [f'This can be checked by running: ucr get {UCR}']
 umc_modules = [{'module': 'ucr'}]
 
 invalid_msg = _('The UCR variable <tt>{ucr}</tt> is not configured or invalid.')
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     server_role = ucr.get('server/role')
     if server_role not in ('domaincontroller_master', 'domaincontroller_backup'):
         return
@@ -64,7 +64,7 @@ def run(_umc_instance: Instance,) -> None:
     problems: List[str] = []
 
     var = "version/version"
-    ucs_version = ucr.get(var, "",)
+    ucs_version = ucr.get(var, "")
     maj_str, _, min_str = ucs_version.partition(".")
     try:
         major, minor = int(maj_str), int(min_str)
@@ -72,16 +72,16 @@ def run(_umc_instance: Instance,) -> None:
         problems.append(invalid_msg.format(ucr=var))
 
     var = "version/patchlevel"
-    ucs_patchlevel = ucr.get_int(var, -1,)
+    ucs_patchlevel = ucr.get_int(var, -1)
     if ucs_patchlevel < 0:
         problems.append(invalid_msg.format(ucr=var))
 
     var = "version/erratalevel"
-    ucs_erratalevel = ucr.get_int(var, -1,)
+    ucs_erratalevel = ucr.get_int(var, -1)
     if ucs_erratalevel < 0:
         problems.append(invalid_msg.format(ucr=var))
 
-    np_version = ucr.get_int(UCR, -1,)
+    np_version = ucr.get_int(UCR, -1)
     if np_version < 0:
         problems.append(invalid_msg.format(ucr=UCR))
 
@@ -92,10 +92,10 @@ def run(_umc_instance: Instance,) -> None:
 
     if (major, minor, ucs_patchlevel, ucs_erratalevel) >= (4, 3, 3, 428) and np_version < UDN:
         MODULE.error(description)
-        raise Warning(description, buttons=[BUTTON],)
+        raise Warning(description, buttons=[BUTTON])
 
 
-def set_protocol_version(umc: Instance,) -> None:
+def set_protocol_version(umc: Instance) -> None:
     MODULE.process(f"Setting UDN protocol version {UDN}")
     handler_set(["%s=%d" % (UCR, UDN)])
     call(["systemctl", "try-restart", "univention-directory-notifier.service"])

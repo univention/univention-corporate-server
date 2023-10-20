@@ -7,11 +7,11 @@
 import waflib.Tools.asm # - leave this
 from waflib.Tools import ar
 
-def configure(conf,):
+def configure(conf):
 	"""
 	Find the programs gas/as/gcc and set the variable *AS*
 	"""
-	conf.find_program(['gas', 'gcc'], var='AS',)
+	conf.find_program(['gas', 'gcc'], var='AS')
 	conf.env.AS_TGT_F = ['-c', '-o']
 	conf.env.ASLNK_TGT_F = ['-o']
 	conf.find_ar()

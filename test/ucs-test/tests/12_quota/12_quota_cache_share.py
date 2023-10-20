@@ -16,10 +16,10 @@ import quota_cache as qc
 SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 
 
-def create_share(host,):
+def create_share(host):
     name = uts.random_name()
     path = '/mnt/_%s' % name
-    return udm.create_object('shares/share', name=name, path=path, host=host,)
+    return udm.create_object('shares/share', name=name, path=path, host=host)
 
 
 if __name__ == '__main__':

@@ -73,7 +73,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyRepositorySync'],),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyRepositorySync'],
+    ),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -83,32 +84,38 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'month': univention.admin.property(
         short_description=_('Month'),
         long_description='',
         syntax=univention.admin.syntax.Month,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'day': univention.admin.property(
         short_description=_('Day'),
         long_description='',
         syntax=univention.admin.syntax.Day,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'weekday': univention.admin.property(
         short_description=_('Day of week'),
         long_description='',
         syntax=univention.admin.syntax.Weekday,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'hour': univention.admin.property(
         short_description=_('Hour'),
         long_description='',
         syntax=univention.admin.syntax.Hour,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'minute': univention.admin.property(
         short_description=_('Minute'),
         long_description='',
         syntax=univention.admin.syntax.Minute,
-        multivalue=True,),
+        multivalue=True,
+    ),
 
 }, **dict([
     requiredObjectClassesProperty(),
@@ -116,7 +123,7 @@ property_descriptions = dict({
     fixedAttributesProperty(syntax=repositorySyncFixedAttributes),
     emptyAttributesProperty(syntax=repositorySyncFixedAttributes),
     ldapFilterProperty(),
-]),)
+]))
 
 layout = [
     Tab(_('General'), _('Repository synchronisation settings'), layout=[
@@ -125,33 +132,33 @@ layout = [
             ['month', 'weekday'],
             ['day', 'hour'],
             'minute',
-        ],),
-    ],),
+        ]),
+    ]),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
     module = module
 
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[],):
-        univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes,)
+    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+        univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes)
 
         self.cron_parsed = 0
-        oldcron = self.oldattr.get('univentionRepositoryCron', [b''],)[0].decode('ASCII')
+        oldcron = self.oldattr.get('univentionRepositoryCron', [b''])[0].decode('ASCII')
         if oldcron:
             self.parse_cron(oldcron)
             self.cron_parsed = 1
         self.save()
         self.changes = 0
 
-    def parse_cron(self, cronstring,):
+    def parse_cron(self, cronstring):
         # don't use self[key] inside here - it will be recursive call(ed by) __getitem__
-        ud.debug(ud.ADMIN, ud.INFO, 'repositorysync cron: %s' % cronstring,)
+        ud.debug(ud.ADMIN, ud.INFO, 'repositorysync cron: %s' % cronstring)
         cron = univention.admin.cron.cron_split(cronstring)
         keys = ['minute', 'hour', 'day', 'month', 'weekday']
         for key in keys:
@@ -159,12 +166,12 @@ class object(univention.admin.handlers.simplePolicy):
                 self[key] = []
                 for value in cron[key]:
                     if value != u'*':
-                        univention.admin.handlers.simplePolicy.__getitem__(self, key,).append(value)
+                        univention.admin.handlers.simplePolicy.__getitem__(self, key).append(value)
 
-    def __getitem__(self, key,):
-        value = univention.admin.handlers.simplePolicy.__getitem__(self, key,)  # need this first to initialize policy-results
+    def __getitem__(self, key):
+        value = univention.admin.handlers.simplePolicy.__getitem__(self, key)  # need this first to initialize policy-results
         # set cron if we are in resultmode
-        if self.resultmode and hasattr(self, 'policy_attrs',) and 'univentionRepositoryCron' in self.policy_attrs \
+        if self.resultmode and hasattr(self, 'policy_attrs') and 'univentionRepositoryCron' in self.policy_attrs \
                 and (not self.cron_parsed):
             self.parse_cron(self.policy_attrs['univentionRepositoryCron']['value'][0])
             if not self.cron_parsed:
@@ -172,7 +179,7 @@ class object(univention.admin.handlers.simplePolicy):
                 self.changes = 0
             self.cron_parsed = 1
 
-            value = univention.admin.handlers.simplePolicy.__getitem__(self, key,)  # need to reload
+            value = univention.admin.handlers.simplePolicy.__getitem__(self, key)  # need to reload
         return value
 
     def _ldap_modlist(self):
@@ -191,7 +198,7 @@ class object(univention.admin.handlers.simplePolicy):
             if self.has_property('weekday'):
                 cron['weekday'] = self['weekday']
             cron = univention.admin.cron.cron_create(cron)
-            ml.append(('univentionRepositoryCron', self.oldattr.get('univentionRepositoryCron', [],), [cron.encode('ASCII')]))
+            ml.append(('univentionRepositoryCron', self.oldattr.get('univentionRepositoryCron', []), [cron.encode('ASCII')]))
         return ml
 
 

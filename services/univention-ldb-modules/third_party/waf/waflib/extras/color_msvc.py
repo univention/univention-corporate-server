@@ -11,13 +11,13 @@ import sys
 from waflib import Logs
 
 class ColorMSVCFormatter(Logs.formatter):
-	def __init__(self, colors,):
+	def __init__(self, colors):
 		self.colors = colors
 		Logs.formatter.__init__(self)
 	
-	def parseMessage(self, line, color,):
+	def parseMessage(self, line, color):
 		# Split messaage from 'disk:filepath: type: message'
-		arr = line.split(':', 3,)
+		arr = line.split(':', 3)
 		if len(arr) < 4:
 			return line
 		
@@ -26,13 +26,13 @@ class ColorMSVCFormatter(Logs.formatter):
 		colored += arr[3]
 		return colored
 	
-	def format(self, rec,):
+	def format(self, rec):
 		frame = sys._getframe()
 		while frame:
 			func = frame.f_code.co_name
 			if func == 'exec_command':
 				cmd = frame.f_locals.get('cmd')
-				if isinstance(cmd, list,):
+				if isinstance(cmd, list):
 					# Fix file case, it may be CL.EXE or cl.exe
 					argv0 = cmd[0].lower()
 					if 'cl.exe' in argv0:
@@ -41,19 +41,19 @@ class ColorMSVCFormatter(Logs.formatter):
 						# of MSVC
 						for line in rec.msg.splitlines():
 							if ': warning ' in line:
-								lines.append(self.parseMessage(line, self.colors.YELLOW,))
+								lines.append(self.parseMessage(line, self.colors.YELLOW))
 							elif ': error ' in line:
-								lines.append(self.parseMessage(line, self.colors.RED,))
+								lines.append(self.parseMessage(line, self.colors.RED))
 							elif ': fatal error ' in line:
-								lines.append(self.parseMessage(line, self.colors.RED + self.colors.BOLD,))
+								lines.append(self.parseMessage(line, self.colors.RED + self.colors.BOLD))
 							elif ': note: ' in line:
-								lines.append(self.parseMessage(line, self.colors.CYAN,))
+								lines.append(self.parseMessage(line, self.colors.CYAN))
 							else:
 								lines.append(line)
 						rec.msg = "\n".join(lines)
 			frame = frame.f_back
-		return Logs.formatter.format(self, rec,)
+		return Logs.formatter.format(self, rec)
 
-def options(opt,):
+def options(opt):
 	Logs.log.handlers[0].setFormatter(ColorMSVCFormatter(Logs.colors))
 

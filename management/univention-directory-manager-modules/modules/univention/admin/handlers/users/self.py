@@ -53,7 +53,7 @@ virtual = True
 options = udm_user.options
 property_descriptions = udm_user.property_descriptions  # TODO: strip down the properties to some configured "profile" subset e.g. from UCRv self-service/udm_attributes
 mapping = udm_user.mapping
-layout = [Tab(_('General'), layout=[],)]  # TODO: load a layout structure from a JSON file.
+layout = [Tab(_('General'), layout=[])]  # TODO: load a layout structure from a JSON file.
 
 childs = False
 short_description = _('User: Self')
@@ -65,28 +65,28 @@ long_description = ''
 class object(univention.admin.handlers.users.user.object):
     module = module
 
-    def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None,):
-        super(object, self,).__init__(co, lo, position, dn=dn, superordinate=superordinate, attributes=attributes,)
-        if self._exists and (not self.lo.compare_dn(self.dn, self.lo.whoami(),) or not univention.admin.modules.recognize('users/user', self.dn, self.oldattr,)):
+    def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
+        super(object, self).__init__(co, lo, position, dn=dn, superordinate=superordinate, attributes=attributes)
+        if self._exists and (not self.lo.compare_dn(self.dn, self.lo.whoami()) or not univention.admin.modules.recognize('users/user', self.dn, self.oldattr)):
             raise univention.admin.uexceptions.wrongObjectType('%s is not recognized as %s.' % (self.dn, self.module))
 
     @classmethod
-    def lookup_filter(cls, filter_s=None, lo=None,):
+    def lookup_filter(cls, filter_s=None, lo=None):
         if lo:
             dn = lo.whoami()
-            filter_p = univention.admin.filter.parse(filter_format('(&(entryDN=%s))', [dn],))
+            filter_p = univention.admin.filter.parse(filter_format('(&(entryDN=%s))', [dn]))
             module = univention.admin.modules.get_module(cls.module)
-            filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, module.mapping,)
+            filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, module.mapping)
             return filter_p
-        return super(object, cls,).lookup_filter(filter_s, lo,)
+        return super(object, cls).lookup_filter(filter_s, lo)
 
     @classmethod
-    def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None,):
+    def lookup(cls, co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
         dn = lo.whoami()
-        return [user for user in udm_user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit, serverctrls=serverctrls, response=response,) if lo.compare_dn(dn, user.dn,)]
+        return [user for user in udm_user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit, serverctrls=serverctrls, response=response) if lo.compare_dn(dn, user.dn)]
 
     @classmethod
-    def identify(cls, dn, attr, canonical=False,):
+    def identify(cls, dn, attr, canonical=False):
         return False
 
 

@@ -67,10 +67,11 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
 }
 
-layout = [Tab(_('General'), _('Basic settings'), layout=["name"],)]
+layout = [Tab(_('General'), _('Basic settings'), layout=["name"])]
 
 mapping = univention.admin.mapping.mapping()
 
@@ -79,19 +80,19 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0,):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     ret = []
     if superordinate:
-        ret += univention.admin.handlers.dhcp.host.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit,)
-        ret += univention.admin.handlers.dhcp.pool.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit,)
-        ret += univention.admin.handlers.dhcp.server.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit,)
-        ret += univention.admin.handlers.dhcp.shared.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit,)
-        ret += univention.admin.handlers.dhcp.sharedsubnet.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit,)
-        ret += univention.admin.handlers.dhcp.subnet.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit,)
+        ret += univention.admin.handlers.dhcp.host.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+        ret += univention.admin.handlers.dhcp.pool.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+        ret += univention.admin.handlers.dhcp.server.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+        ret += univention.admin.handlers.dhcp.shared.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+        ret += univention.admin.handlers.dhcp.sharedsubnet.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+        ret += univention.admin.handlers.dhcp.subnet.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     else:
-        ret += univention.admin.handlers.dhcp.service.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit,)
+        ret += univention.admin.handlers.dhcp.service.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     return ret
 
 
-def identify(dn, attr, canonical=False,):
+def identify(dn, attr, canonical=False):
     pass

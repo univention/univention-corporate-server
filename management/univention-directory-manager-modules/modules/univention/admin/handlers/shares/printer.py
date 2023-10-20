@@ -73,7 +73,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPrinter'],),
+        objectClasses=['top', 'univentionPrinter'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -83,59 +84,70 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'location': univention.admin.property(
         short_description=_('Location'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'spoolHost': univention.admin.property(
         short_description=_('Print server'),
         long_description='',
         syntax=univention.admin.syntax.ServicePrint_FQDN,
         multivalue=True,
-        required=True,),
+        required=True,
+    ),
     'uri': univention.admin.property(
         short_description=_('Connection'),
         long_description='',
         syntax=univention.admin.syntax.PrinterURI,
         include_in_default_search=True,
-        required=True,),
+        required=True,
+    ),
     'model': univention.admin.property(
         short_description=_('Printer model'),
         long_description='',
         syntax=univention.admin.syntax.PrinterDriverList,
         include_in_default_search=True,
-        required=True,),
+        required=True,
+    ),
     'producer': univention.admin.property(
         short_description=_('Printer producer'),
         long_description='',
-        syntax=univention.admin.syntax.PrinterProducerList,),
+        syntax=univention.admin.syntax.PrinterProducerList,
+    ),
     'sambaName': univention.admin.property(
         short_description=_('Windows name'),
         long_description='',
         syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
-        unique=True,),
+        unique=True,
+    ),
     'ACLtype': univention.admin.property(
         short_description=_('Access control'),
         long_description=_('Access list can allow or deny listed users and groups.'),
         syntax=printerACLTypes,
-        default="allow all",),
+        default="allow all",
+    ),
     'ACLUsers': univention.admin.property(
         short_description=_('Allowed/denied users'),
         long_description=_('For the given users printing is explicitly allowed or denied.'),
         syntax=univention.admin.syntax.UserDN,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'ACLGroups': univention.admin.property(
         short_description=_('Allowed/denied groups'),
         long_description=_('For the given groups printing is explicitly allowed or denied.'),
         syntax=univention.admin.syntax.GroupDN,
-        multivalue=True,),
+        multivalue=True,
+    ),
 }
 
 layout = [
@@ -146,22 +158,22 @@ layout = [
             'uri',
             ['producer', 'model'],
             ['location', 'description'],
-        ],),
-    ], help_text=_('For information about how to manage Windows printer drivers and troubleshooting, see <a href="https://help.univention.com/t/overview-windows-printer-driver-distribution-known-issues-and-workarounds/13387" target="_blank" rel="noreferrer noopener">here</a>.'),),
+        ]),
+    ], help_text=_('For information about how to manage Windows printer drivers and troubleshooting, see <a href="https://help.univention.com/t/overview-windows-printer-driver-distribution-known-issues-and-workarounds/13387" target="_blank" rel="noreferrer noopener">here</a>.')),
     Tab(_('Access control'), _('Access control for users and groups'), layout=[
         Group(_('Access control'), layout=[
             'ACLtype',
             'ACLUsers',
             'ACLGroups',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 
 _AVAILABLE_PRINTER_SCHEMAS = []
 
 
-def unmapPrinterURI(value, encoding=(),):
+def unmapPrinterURI(value, encoding=()):
     if not value:
         return (u'', u'')
     schema = u''
@@ -176,41 +188,41 @@ def unmapPrinterURI(value, encoding=(),):
     return (schema, dest)
 
 
-def mapPrinterURI(value, encoding=(),):
+def mapPrinterURI(value, encoding=()):
     return u''.join(value).encode(*encoding)
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('location', 'univentionPrinterLocation', None, univention.admin.mapping.ListToString,)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
-mapping.register('spoolHost', 'univentionPrinterSpoolHost', encoding='ASCII',)
-mapping.register('uri', 'univentionPrinterURI', mapPrinterURI, unmapPrinterURI, encoding='ASCII',)
-mapping.register('model', 'univentionPrinterModel', None, univention.admin.mapping.ListToString, encoding='ASCII',)
-mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString,)
-mapping.register('ACLUsers', 'univentionPrinterACLUsers',)
-mapping.register('ACLGroups', 'univentionPrinterACLGroups',)
-mapping.register('ACLtype', 'univentionPrinterACLtype', None, univention.admin.mapping.ListToString, encoding='ASCII',)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('location', 'univentionPrinterLocation', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.register('spoolHost', 'univentionPrinterSpoolHost', encoding='ASCII')
+mapping.register('uri', 'univentionPrinterURI', mapPrinterURI, unmapPrinterURI, encoding='ASCII')
+mapping.register('model', 'univentionPrinterModel', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString)
+mapping.register('ACLUsers', 'univentionPrinterACLUsers')
+mapping.register('ACLGroups', 'univentionPrinterACLGroups')
+mapping.register('ACLtype', 'univentionPrinterACLtype', None, univention.admin.mapping.ListToString, encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[],):
+    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
         # find the printer uris
         if not _AVAILABLE_PRINTER_SCHEMAS:
-            printer_uris = univention.admin.modules.get('settings/printeruri').lookup(co, lo, '',)
+            printer_uris = univention.admin.modules.get('settings/printeruri').lookup(co, lo, '')
             for uri in printer_uris:
                 _AVAILABLE_PRINTER_SCHEMAS.extend(uri['printeruri'])
 
-        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes,)
+        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
     def open(self):
         # find the producer
         univention.admin.handlers.simpleLdap.open(self)
         if self['model']:
-            models = univention.admin.modules.get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']],),)
-            ud.debug(ud.ADMIN, ud.INFO, "printermodel: %s" % str(models),)
+            models = univention.admin.modules.get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']]))
+            ud.debug(ud.ADMIN, ud.INFO, "printermodel: %s" % str(models))
             if not models or len(models) > 1:
                 self['producer'] = []
             else:
@@ -219,7 +231,7 @@ class object(univention.admin.handlers.simpleLdap):
         self.save()
 
     def _ldap_pre_ready(self):
-        super(object, self,)._ldap_pre_ready()
+        super(object, self)._ldap_pre_ready()
         if (not self.exists() or self.hasChanged('uri')) and self['uri']:
             self._sanitize_uri()
 
@@ -239,13 +251,13 @@ class object(univention.admin.handlers.simpleLdap):
 
         # cut off '/' at the beginning of the destination if it exists and protocol is file:/
         if protocol == 'file:/' and host.startswith('/'):
-            self['uri'][1] = re.sub(r'^/+', '', self['uri'][1],)
+            self['uri'][1] = re.sub(r'^/+', '', self['uri'][1])
 
     def _ldap_pre_remove(self):  # check for last member in printerclass
-        super(object, self,)._ldap_pre_remove()
-        printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x],) for x in self.info['spoolHost']))
+        super(object, self)._ldap_pre_remove()
+        printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
         rm_attrib = []
-        for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn'],):
+        for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
             for member_cn in [x.decode('UTF-8') for x in member_list['univentionPrinterGroupMember']]:
                 if member_cn == self.info['name']:
                     rm_attrib.append(pg_dn)
@@ -254,7 +266,7 @@ class object(univention.admin.handlers.simpleLdap):
 
         printergroup_module = univention.admin.modules.get('shares/printergroup')
         for rm_dn in rm_attrib:
-            printergroup_object = univention.admin.objects.get(printergroup_module, None, self.lo, position='', dn=rm_dn,)
+            printergroup_object = univention.admin.objects.get(printergroup_module, None, self.lo, position='', dn=rm_dn)
             printergroup_object.open()
             printergroup_object['groupMember'].remove(self.info['name'])
             printergroup_object.modify()

@@ -40,7 +40,7 @@ for app in Apps(locale='en').get_every_single_app():
                 'ApplianceWelcomeScreenLogo',
         ]:
             try:
-                logo_name = ini_parser.get('Application', logo_attr,)
+                logo_name = ini_parser.get('Application', logo_attr)
             except (NoSectionError, NoOptionError):
                 continue
             url = f'{app.get_server()}/meta-inf/{app.get_ucs_version()}/{app.id}/{logo_name}'

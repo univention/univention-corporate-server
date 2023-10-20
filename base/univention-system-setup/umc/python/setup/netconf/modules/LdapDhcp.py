@@ -15,7 +15,7 @@ class PhaseLdapDhcp(LdapChange):
             self.open_ldap()
             self._create_subnet()
         except (LDAPError, UniventionBaseException) as ex:
-            self.logger.warning("Failed LDAP: %s", ex,)
+            self.logger.warning("Failed LDAP: %s", ex)
 
     def _create_subnet(self) -> None:
         ipv4 = self.changeset.new_interfaces.get_default_ipv4_address()
@@ -23,16 +23,16 @@ class PhaseLdapDhcp(LdapChange):
             return
 
         service_module = modules.get("dhcp/service")
-        modules.init(self.ldap, self.position, service_module,)
+        modules.init(self.ldap, self.position, service_module)
 
         subnet_module = modules.get("dhcp/subnet")
-        modules.init(self.ldap, self.position, subnet_module,)
+        modules.init(self.ldap, self.position, subnet_module)
 
-        services = service_module.lookup(None, self.ldap, None,)
+        services = service_module.lookup(None, self.ldap, None)
         for service in services:
-            subnet = subnet_module.object(None, self.ldap, service.position, superordinate=service,)
+            subnet = subnet_module.object(None, self.ldap, service.position, superordinate=service)
             subnet["subnet"] = str(ipv4.network.network_address)
             subnet["subnetmask"] = str(ipv4.network.prefixlen)
-            self.logger.info("Creating '%s' with '%r'...", subnet.position.getDn(), subnet.info,)
+            self.logger.info("Creating '%s' with '%r'...", subnet.position.getDn(), subnet.info)
             if not self.changeset.no_act:
                 subnet.create()

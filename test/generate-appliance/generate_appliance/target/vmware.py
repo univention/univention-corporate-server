@@ -21,37 +21,41 @@ from . import TargetFile
 log = getLogger(__name__)
 
 
-def encode_vmware_uuid(u: uuid.UUID,) -> str:
+def encode_vmware_uuid(u: uuid.UUID) -> str:
     # <https://kb.vmware.com/s/article/1880>
     FMT = "-".join([" ".join(["{}{}"] * 8)] * 2)
     return FMT.format(*u.hex)
 
 
-def create_vmxf(machine_uuid: uuid.UUID, image_name: str,) -> bytes:
+def create_vmxf(machine_uuid: uuid.UUID, image_name: str) -> bytes:
     E = lxml.builder.ElementMaker()
     foundry = E.Foundry(
         E.VM(
             E.VMId(
                 encode_vmware_uuid(machine_uuid),
-                type='string',),
+                type='string',
+            ),
             E.ClientMetaData(
                 E.clientMetaDataAttributes(),
-                E.HistoryEventList(),),
+                E.HistoryEventList(),
+            ),
             E.vmxPathName(
                 '%s.vmx' % (image_name,),
-                type='string',),),
+                type='string',
+            ),
+        ),
     )
-    return cast(bytes, lxml.etree.tostring(foundry, encoding='UTF-8', xml_declaration=True, pretty_print=True,),)
+    return cast(bytes, lxml.etree.tostring(foundry, encoding='UTF-8', xml_declaration=True, pretty_print=True))
 
 
-def encode_vmx_file(vmx: Dict[str, str],) -> bytes:
+def encode_vmx_file(vmx: Dict[str, str]) -> bytes:
     output = '.encoding = "UTF-8"\n'
     for key, value, in sorted(vmx.items()):
         output += '%s = "%s"\n' % (key, value)
     return output.encode('UTF-8')
 
 
-def create_vmx(image_name: str, image_uuid: uuid.UUID, options: Namespace,) -> bytes:
+def create_vmx(image_name: str, image_uuid: uuid.UUID, options: Namespace) -> bytes:
     machine_name = options.product
     if options.version is not None:
         machine_name += ' ' + options.version
@@ -138,7 +142,7 @@ class VMware(TargetFile):
 
     SUFFIX = "vmware-zip"
 
-    def create(self, image: Raw,) -> None:
+    def create(self, image: Raw) -> None:
         options = self.options
         archive_name = self.archive_name()
 
@@ -148,10 +152,10 @@ class VMware(TargetFile):
         files = [
             ('%s/' % (options.product,), b""),
             ('%s/%s.vmdk' % (options.product, options.product), vmdk),
-            ('%s/%s.vmxf' % (options.product, options.product), create_vmxf(machine_uuid, options.product,)),
-            ('%s/%s.vmx' % (options.product, options.product), create_vmx(options.product, image_uuid, options,)),
+            ('%s/%s.vmxf' % (options.product, options.product), create_vmxf(machine_uuid, options.product)),
+            ('%s/%s.vmx' % (options.product, options.product), create_vmx(options.product, image_uuid, options)),
             ('%s/%s.vmsd' % (options.product, options.product), b""),
         ]  # type: List[Tuple[str, Union[File, bytes]]]
         pkzip = Pkzip(files)
         pkzip.path().rename(archive_name)
-        log.info('Generated "%s" appliance as\n  %s', self, archive_name,)
+        log.info('Generated "%s" appliance as\n  %s', self, archive_name)

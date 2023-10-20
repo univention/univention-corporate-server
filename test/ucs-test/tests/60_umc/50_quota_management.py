@@ -24,7 +24,7 @@ class TestUMCQuotasManagement(UMCBase):
         self.test_mount_point = '/'
         self.partition_dev = ''
 
-    def check_quotas_query(self, quotas_query,):
+    def check_quotas_query(self, quotas_query):
         """Checks if 'quotas_query' has all default fields"""
         for quota in quotas_query:
             assert 'partitionSize' in quota
@@ -33,7 +33,7 @@ class TestUMCQuotasManagement(UMCBase):
             assert 'freeSpace' in quota
             assert 'inUse' in quota
 
-    def choose_partition_device(self, quotas_query,):
+    def choose_partition_device(self, quotas_query):
         """
         Looks through the provided 'quotas_query' for a
         'self.test_mount_point', saves respective partition device
@@ -59,25 +59,25 @@ class TestUMCQuotasManagement(UMCBase):
             if ((quota['partitionDevice'] == self.partition_dev) and (quota['mountPoint'] == self.test_mount_point)):
                 return quota['inUse']
 
-    def is_user_quota_active(self, username,):
+    def is_user_quota_active(self, username):
         """
         Makes a query request for user quotas and returns True when
         quota is found for a user with provided 'username'.
         """
         options = {"filter": username, "partitionDevice": self.partition_dev}
 
-        user_quotas = self.client.umc_command('quota/users/query', options,).result
+        user_quotas = self.client.umc_command('quota/users/query', options).result
         return any(quota['user'] == username for quota in user_quotas)
 
-    def activate_deactivate_quota(self, command,):
+    def activate_deactivate_quota(self, command):
         """
         Depending on a given 'command' activates or deactvates a
         'self.partition_dev' quota by making a UMC request 'quota/partitions/'
         """
         options = {"partitionDevice": self.partition_dev}
-        assert self.client.umc_command('quota/partitions/' + command, options,).result.get('objects')
+        assert self.client.umc_command('quota/partitions/' + command, options).result.get('objects')
 
-    def set_remove_user_quota(self, command, username, size_limit_soft=10, size_limit_hard=10, file_limit_soft=0, file_limit_hard=0,):
+    def set_remove_user_quota(self, command, username, size_limit_soft=10, size_limit_hard=10, file_limit_soft=0, file_limit_hard=0):
         """
         Sets or removes the quota for a provided 'username' and
         'self.partition_dev' depending on a given 'command'
@@ -93,7 +93,7 @@ class TestUMCQuotasManagement(UMCBase):
             }
         elif command == 'remove':
             options = [{"object": username + "@" + self.partition_dev, "options": None}]
-        self.client.umc_command('quota/users/' + command, options,).result  # noqa: B018
+        self.client.umc_command('quota/users/' + command, options).result  # noqa: B018
 
     def main(self):
         """A method to test the filesystem quota management through UMC"""
@@ -103,7 +103,7 @@ class TestUMCQuotasManagement(UMCBase):
 
         with udm_test.UCSTestUDM() as UDM:
             print("Creating a test user for testing user-specific quotas setup through UMC")
-            test_user_dn = UDM.create_user(password='univention', username=test_username,)[0]
+            test_user_dn = UDM.create_user(password='univention', username=test_username)[0]
             utils.verify_ldap_object(test_user_dn)
             try:
                 print("Making 'quota/partitions' query request and checking response structure")
@@ -122,11 +122,11 @@ class TestUMCQuotasManagement(UMCBase):
                 assert self.is_dev_quota_active()
 
                 print("Setting '%s' user quota for '%s' partition" % (test_username, self.partition_dev))
-                self.set_remove_user_quota('set', test_username,)
+                self.set_remove_user_quota('set', test_username)
                 assert self.is_user_quota_active(test_username)
 
                 print("Removing '%s' user quota for '%s' partition" % (test_username, self.partition_dev))
-                self.set_remove_user_quota('remove', test_username,)
+                self.set_remove_user_quota('remove', test_username)
                 assert not self.is_user_quota_active(test_username)
 
                 print("Deactivating quotas for '%s' partition device" % self.partition_dev)
@@ -143,7 +143,7 @@ class TestUMCQuotasManagement(UMCBase):
                     # The test user quota is always removed to avoid
                     # 'hanging' of quotas (Bug #34879)
                     if self.is_user_quota_active(test_username):
-                        self.set_remove_user_quota('remove', test_username,)
+                        self.set_remove_user_quota('remove', test_username)
                     if self.quota_was_in_use is False:
                         self.activate_deactivate_quota('deactivate')
 

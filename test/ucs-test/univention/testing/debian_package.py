@@ -53,7 +53,7 @@ class UninstallRuntimeError(RuntimeError):
 class DebianPackage:
     """Class to build simple debian packages"""
 
-    def __init__(self, name='testdeb', version='1.0',):
+    def __init__(self, name='testdeb', version='1.0'):
         # type: (str, str) -> None
         self._package_name = name
         self._package_version = version
@@ -66,8 +66,8 @@ class DebianPackage:
         # type: () -> None
         self._package_tempdir = tempfile.mkdtemp()
 
-        self._package_path = os.path.join(self._package_tempdir, self._package_name,)
-        self._package_debian_path = os.path.join(self._package_path, 'debian',)
+        self._package_path = os.path.join(self._package_tempdir, self._package_name)
+        self._package_debian_path = os.path.join(self._package_path, 'debian')
 
         os.makedirs(self._package_debian_path)
 
@@ -87,52 +87,52 @@ class DebianPackage:
     def get_binary_name(self):
         # type: () -> str
         deb_file = f'{self._package_name}_{self._package_version}_all.deb'
-        deb_package = os.path.join(self._package_tempdir, deb_file,)
+        deb_package = os.path.join(self._package_tempdir, deb_file)
         return deb_package
 
-    def __create_file_from_buffer(self, path, file_buffer, write_mode='w',):
+    def __create_file_from_buffer(self, path, file_buffer, write_mode='w'):
         # type: (str, str) -> None
-        with open(path, write_mode,) as f:
+        with open(path, write_mode) as f:
             f.write(file_buffer)
 
-    def create_join_script_from_buffer(self, joinscript_name, joinscript_buffer,):
+    def create_join_script_from_buffer(self, joinscript_name, joinscript_buffer):
         # type: (str, str) -> None
-        self.__join_file = os.path.join(self._package_path, joinscript_name,)
-        self.__create_file_from_buffer(self.__join_file, joinscript_buffer,)
-        os.chmod(self.__join_file, 0o755,)
+        self.__join_file = os.path.join(self._package_path, joinscript_name)
+        self.__create_file_from_buffer(self.__join_file, joinscript_buffer)
+        os.chmod(self.__join_file, 0o755)
 
-    def create_unjoin_script_from_buffer(self, unjoinscript_name, unjoinscript_buffer,):
+    def create_unjoin_script_from_buffer(self, unjoinscript_name, unjoinscript_buffer):
         # type: (str, str) -> None
-        self.__unjoin_file = os.path.join(self._package_path, unjoinscript_name,)
-        self.__create_file_from_buffer(self.__unjoin_file, unjoinscript_buffer,)
-        os.chmod(self.__unjoin_file, 0o755,)
+        self.__unjoin_file = os.path.join(self._package_path, unjoinscript_name)
+        self.__create_file_from_buffer(self.__unjoin_file, unjoinscript_buffer)
+        os.chmod(self.__unjoin_file, 0o755)
 
-    def create_usr_share_file_from_buffer(self, share_filename, schema_buffer, write_mode='w',):
+    def create_usr_share_file_from_buffer(self, share_filename, schema_buffer, write_mode='w'):
         # type: (str, str) -> None
-        share_file = os.path.join(self._package_path, 'usr/share/%s' % self._package_name, share_filename,)
+        share_file = os.path.join(self._package_path, 'usr/share/%s' % self._package_name, share_filename)
         dirpath = os.path.dirname(share_file)
         if not os.path.exists(dirpath):
             os.makedirs(dirpath)
-        self.__create_file_from_buffer(share_file, schema_buffer, write_mode,)
+        self.__create_file_from_buffer(share_file, schema_buffer, write_mode)
 
-    def create_debian_file_from_buffer(self, debian_filename, debian_buffer,):
+    def create_debian_file_from_buffer(self, debian_filename, debian_buffer):
         # type: (str, str) -> None
-        deb_file = os.path.join(self._package_debian_path, debian_filename,)
-        self.__create_file_from_buffer(deb_file, debian_buffer,)
+        deb_file = os.path.join(self._package_debian_path, debian_filename)
+        self.__create_file_from_buffer(deb_file, debian_buffer)
 
     def build(self):
         # type: () -> None
         install = []
-        if os.path.exists(os.path.join(self._package_path, 'usr/share',)):
+        if os.path.exists(os.path.join(self._package_path, 'usr/share')):
             install.append('usr/share/* usr/share')
         if self.__join_file:
             install.append('*.inst usr/lib/univention-install/')
         if self.__unjoin_file:
             install.append('*.uinst usr/lib/univention-uninstall/')
-        self.create_debian_file_from_buffer('install', '\n'.join(install),)
+        self.create_debian_file_from_buffer('install', '\n'.join(install))
 
         sys.stdout.flush()
-        if subprocess.call(['dpkg-buildpackage', '-rfakeroot', '-b', '-us', '-uc'], cwd=self._package_path,):
+        if subprocess.call(['dpkg-buildpackage', '-rfakeroot', '-b', '-us', '-uc'], cwd=self._package_path):
             raise BuildRuntimeError()
 
     def install(self):
@@ -143,7 +143,7 @@ class DebianPackage:
         if subprocess.call(['dpkg', '-i', deb_package]):
             raise InstallRuntimeError()
 
-    def uninstall(self, purge=False,):
+    def uninstall(self, purge=False):
         # type: (bool) -> None
         sys.stdout.flush()
         if subprocess.call(['dpkg', '-r', self._package_name]):
@@ -164,7 +164,7 @@ class DebianPackage:
  -- Univention GmbH <packages@univention.de>  Fri, 20 Sep 2013 01:01:01 +0200
 ''' % {'package_name': self._package_name, 'package_version': self._package_version}
 
-        self.create_debian_file_from_buffer('changelog', changelog,)
+        self.create_debian_file_from_buffer('changelog', changelog)
 
     def _create_control(self):
         # type: () -> None
@@ -185,7 +185,7 @@ Description: UCS - Test package
  refer to: https://www.univention.de/
 ''' % {'package_name': self._package_name}
 
-        self.create_debian_file_from_buffer('control', control,)
+        self.create_debian_file_from_buffer('control', control)
 
     def _create_rules(self):
         # type: () -> None
@@ -194,7 +194,7 @@ Description: UCS - Test package
 \tdh $@
 override_dh_strip_nondeterminism: ; # Bug #46002
 '''
-        self.create_debian_file_from_buffer('rules', rules,)
+        self.create_debian_file_from_buffer('rules', rules)
 
     def _create_install(self):
         # type: () -> None
@@ -203,7 +203,7 @@ usr/share/* usr/share/
 install/* usr/lib/univention-install/
 uninstall/* usr/lib/univention-uninstall/
 '''
-        self.create_debian_file_from_buffer('install', install,)
+        self.create_debian_file_from_buffer('install', install)
 
 
 if __name__ == '__main__':
@@ -211,8 +211,8 @@ if __name__ == '__main__':
     share_file = '''# testdeb
 ...
 '''
-    deb.create_usr_share_file_from_buffer('test', share_file,)
-    deb.create_join_script_from_buffer('66testdeb.inst', '...',)
+    deb.create_usr_share_file_from_buffer('test', share_file)
+    deb.create_join_script_from_buffer('66testdeb.inst', '...')
     deb.build()
     subprocess.call(['dpkg', '--contents', deb.get_binary_name()])
     deb.install()

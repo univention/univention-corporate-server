@@ -44,7 +44,7 @@ except ImportError:  # pragma: no cover
 __all__ = ['filter_shell', 'filter_keys_only', 'filter_sort']
 
 
-def filter_shell(args, text,):  # pylint: disable-msg=W0613
+def filter_shell(args, text):  # pylint: disable-msg=W0613
     # type: (Any, Iterable[str]) -> Iterable[str]
     """
     Filter output for shell: escape keys.
@@ -56,7 +56,7 @@ def filter_shell(args, text,):  # pylint: disable-msg=W0613
     out = []
     for line in text:
         try:
-            var, value = line.split(': ', 1,)
+            var, value = line.split(': ', 1)
         except ValueError:
             var = line
             value = ''
@@ -64,7 +64,7 @@ def filter_shell(args, text,):  # pylint: disable-msg=W0613
     return out
 
 
-def filter_keys_only(args, text,):  # pylint: disable-msg=W0613
+def filter_keys_only(args, text):  # pylint: disable-msg=W0613
     # type: (Any, Iterable[str]) -> Iterable[str]
     """
     Filter output: strip values.
@@ -75,11 +75,11 @@ def filter_keys_only(args, text,):  # pylint: disable-msg=W0613
     """
     out = []
     for line in text:
-        out.append(line.split(': ', 1,)[0])
+        out.append(line.split(': ', 1)[0])
     return out
 
 
-def filter_sort(args, text,):  # pylint: disable-msg=W0613
+def filter_sort(args, text):  # pylint: disable-msg=W0613
     # type: (Any, Iterable[str]) -> Iterable[str]
     """
     Filter output: sort by key.

@@ -56,15 +56,15 @@ _REQUIREMENTS = {}
 
 
 class RequirementMetaClass(UniventionMetaClass):
-    def __new__(mcs, name, bases, attrs,):
-        new_cls = super(RequirementMetaClass, mcs,).__new__(mcs, name, bases, attrs,)
+    def __new__(mcs, name, bases, attrs):
+        new_cls = super(RequirementMetaClass, mcs).__new__(mcs, name, bases, attrs)
         if new_cls.__doc__:
             _REQUIREMENTS[new_cls.get_name()] = new_cls
         return new_cls
 
 
 class Requirement(with_metaclass(RequirementMetaClass)):
-    def __init__(self, apps, action,):
+    def __init__(self, apps, action):
         self.apps = apps
         self.action = action
 
@@ -90,7 +90,7 @@ class Requirement(with_metaclass(RequirementMetaClass)):
     def get_name(cls):
         return underscore(cls.__name__)
 
-    def other_apps(self, app,):
+    def other_apps(self, app):
         return [_app for _app in self.apps if app != _app]
 
 
@@ -103,7 +103,7 @@ class SingleRequirement(Requirement):
                 ret[app.id] = result
         return ret
 
-    def test_install(self, app,):
+    def test_install(self, app):
         pass
 
     def _test_upgrade(self):
@@ -114,7 +114,7 @@ class SingleRequirement(Requirement):
                 ret[app.id] = result
         return ret
 
-    def test_upgrade(self, app,):
+    def test_upgrade(self, app):
         pass
 
     def _test_remove(self):
@@ -125,7 +125,7 @@ class SingleRequirement(Requirement):
                 ret[app.id] = result
         return ret
 
-    def test_remove(self, app,):
+    def test_remove(self, app):
         pass
 
 
@@ -137,7 +137,7 @@ class MultiRequirement(Requirement):
             ret['__all__'] = result
         return ret
 
-    def test_install(self, apps,):
+    def test_install(self, apps):
         pass
 
     def _test_upgrade(self):
@@ -147,7 +147,7 @@ class MultiRequirement(Requirement):
             ret['__all__'] = result
         return ret
 
-    def test_upgrade(self, apps,):
+    def test_upgrade(self, apps):
         pass
 
     def _test_remove(self):
@@ -157,7 +157,7 @@ class MultiRequirement(Requirement):
             ret['__all__'] = result
         return ret
 
-    def test_remove(self, apps,):
+    def test_remove(self, apps):
         pass
 
 
@@ -178,7 +178,7 @@ class MustHaveCorrectServerRole(SingleRequirement, HardRequirement):
     one of the following roles is necessary: %(allowed_roles)r
     """
 
-    def test_install(self, app,):
+    def test_install(self, app):
         server_role = ucr_get('server/role')
         if not app._allowed_on_local_server():
             return {
@@ -195,7 +195,7 @@ class MustHaveFittingAppVersion(SingleRequirement, HardRequirement):
     be installed.
     """
 
-    def test_upgrade(self, app,):
+    def test_upgrade(self, app):
         if app.required_app_version_upgrade:
             required_version = LooseVersion(app.required_app_version_upgrade)
             installed_app = Apps().find(app.id)
@@ -207,7 +207,7 @@ class MustHaveFittingAppVersion(SingleRequirement, HardRequirement):
 class MustHaveFittingKernelVersion(MultiRequirement, HardRequirement):
     """The Kernel version has to be upgraded and the system rebootet."""
 
-    def test_install(self, apps,):
+    def test_install(self, apps):
         if any(app.docker for app in apps):
             kernel = LooseVersion(os.uname()[2])
             if kernel < LooseVersion('4.9'):
@@ -219,7 +219,7 @@ class MustHaveFittingKernelVersion(MultiRequirement, HardRequirement):
 class MustHaveCandidate(SingleRequirement, HardRequirement):
     """The application is either not installed or no newer version is available"""
 
-    def test_upgrade(self, app,):
+    def test_upgrade(self, app):
         _app = Apps().find(app.id)
         if not _app.is_installed() or _app >= app:
             return False
@@ -228,7 +228,7 @@ class MustHaveCandidate(SingleRequirement, HardRequirement):
 class MustHaveFittingUcsVersion(SingleRequirement, HardRequirement):
     """The application requires UCS version %(required_version)s."""
 
-    def test_install(self, app,):
+    def test_install(self, app):
         required_ucs_version = None
         for supported_version in app.supported_ucs_versions:
             if supported_version.startswith('%s-' % ucr_get('version/version')):
@@ -242,11 +242,11 @@ class MustHaveFittingUcsVersion(SingleRequirement, HardRequirement):
                     return True
         if required_ucs_version is None:
             return {'required_version': app.get_ucs_version()}
-        major, minor = ucr_get('version/version').split('.', 1,)
+        major, minor = ucr_get('version/version').split('.', 1)
         patchlevel = ucr_get('version/patchlevel')
         errata = ucr_get('version/erratalevel')
-        version_bits = re.match(r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$', required_ucs_version,).groups()
-        comparisons = zip(version_bits, [major, minor, patchlevel, errata],)
+        version_bits = re.match(r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$', required_ucs_version).groups()
+        comparisons = zip(version_bits, [major, minor, patchlevel, errata])
         for required, present in comparisons:
             if int(required or 0) > int(present):
                 return {'required_version': required_ucs_version}
@@ -259,7 +259,7 @@ class MustHaveFittingUcsVersion(SingleRequirement, HardRequirement):
 class MustHaveInstallPermissions(SingleRequirement, HardRequirement):
     """You need to buy the App to install this version."""
 
-    def test_install(self, app,):
+    def test_install(self, app):
         if not app.install_permissions_exist():
             return {'shop_url': app.shop_url, 'version': app.version}
 
@@ -272,7 +272,7 @@ class MustHaveNoConflictsApps(SingleRequirement, HardRequirement):
     %r
     """
 
-    def test_install(self, app,):
+    def test_install(self, app):
         conflictedapps = set()
         apps_cache = Apps()
         # check ConflictedApps
@@ -290,7 +290,7 @@ class MustHaveNoConflictsApps(SingleRequirement, HardRequirement):
         for i in app.ports_exclusive:
             ports.append(i)
         for i in app.ports_redirection:
-            ports.append(i.split(':', 1,)[0])
+            ports.append(i.split(':', 1)[0])
         for app_id, _container_port, host_port in app_ports():
             if app_id != app.id and str(host_port) in ports:
                 conflictedapps.add(app_id)
@@ -299,7 +299,7 @@ class MustHaveNoConflictsApps(SingleRequirement, HardRequirement):
             for i in _app.ports_exclusive:
                 other_ports.add(i)
             for i in _app.ports_redirection:
-                other_ports.add(i.split(':', 1,)[0])
+                other_ports.add(i.split(':', 1)[0])
             if other_ports.intersection(ports):
                 conflictedapps.add(_app.id)
         if conflictedapps:
@@ -312,10 +312,10 @@ class MustHaveNoConflictsApps(SingleRequirement, HardRequirement):
 class MustHaveNoConflictsPackages(SingleRequirement, HardRequirement):
     """The application conflicts with the following packages: %r"""
 
-    def test_install(self, app,):
+    def test_install(self, app):
         conflict_packages = []
         for pkgname in app.conflicted_system_packages:
-            if packages_are_installed([pkgname], strict=True,):
+            if packages_are_installed([pkgname], strict=True):
                 conflict_packages.append(pkgname)
         if conflict_packages:
             return conflict_packages
@@ -326,7 +326,7 @@ class MustHaveNoConflictsPackages(SingleRequirement, HardRequirement):
 class MustHaveNoUnmetDependencies(SingleRequirement, HardRequirement):
     """The application requires the following applications: %r"""
 
-    def test_install(self, app,):
+    def test_install(self, app):
         unmet_apps = []
 
         apps_cache = Apps()
@@ -358,7 +358,7 @@ class MustHaveSupportedArchitecture(SingleRequirement, HardRequirement):
     architecture. %(msg)s
     """
 
-    def test_install(self, app,):
+    def test_install(self, app):
         supported_architectures = app.supported_architectures
         platform_bits = platform.architecture()[0]
         aliases = {'i386': '32bit', 'amd64': '64bit'}
@@ -392,7 +392,7 @@ class MustHaveValidLicense(MultiRequirement, HardRequirement):
     with a key identification (Key ID) is required
     """
 
-    def test_install(self, apps,):
+    def test_install(self, apps):
         if any(app.notify_vendor for app in apps):
             license = ucr_get('uuid/license')
             if license is None:
@@ -409,7 +409,7 @@ class MustNotBeDependedOn(SingleRequirement, HardRequirement):
     to work: %r
     """
 
-    def test_remove(self, app,):
+    def test_remove(self, app):
         depending_apps = []
 
         apps_cache = Apps()
@@ -442,8 +442,8 @@ class MustNotBeDockerIfDockerIsDisabled(SingleRequirement, HardRequirement):
     is configured to not not support it
     """
 
-    def test_install(self, app,):
-        return not app.docker or ucr_is_true('appcenter/docker', True,)
+    def test_install(self, app):
+        return not app.docker or ucr_is_true('appcenter/docker', True)
 
     test_upgrade = test_install
 
@@ -455,7 +455,7 @@ class MustNotBeDockerInDocker(SingleRequirement, HardRequirement):
     supported on this host
     """
 
-    def test_install(self, app,):
+    def test_install(self, app):
         return not app.docker or not container_mode()
 
     test_upgrade = test_install
@@ -467,14 +467,14 @@ class MustNotBeEndOfLife(SingleRequirement, HardRequirement):
     anymore
     """
 
-    def test_install(self, app,):
+    def test_install(self, app):
         return not app.end_of_life
 
 
 class MustNotBeInstalled(SingleRequirement, HardRequirement):
     """This application is already installed"""
 
-    def test_install(self, app,):
+    def test_install(self, app):
         return not app.is_installed()
 
 
@@ -485,7 +485,7 @@ class MustNotBeVoteForApp(SingleRequirement, HardRequirement):
     Center
     """
 
-    def test_install(self, app,):
+    def test_install(self, app):
         return not app.vote_for_app
 
     test_upgrade = test_install
@@ -494,7 +494,7 @@ class MustNotBeVoteForApp(SingleRequirement, HardRequirement):
 class MustNotHaveConcurrentOperation(SingleRequirement, HardRequirement):
     """Another package operation is in progress"""
 
-    def test_install(self, app,):
+    def test_install(self, app):
         if app.docker:
             return True
         else:
@@ -508,8 +508,8 @@ class MustNotHaveConcurrentOperation(SingleRequirement, HardRequirement):
 class MustNotBePinned(SingleRequirement, HardRequirement):
     """This application is pinned"""
 
-    def test_upgrade(self, app,):
-        if ucr_is_true(app.ucr_pinned_key, False,):
+    def test_upgrade(self, app):
+        if ucr_is_true(app.ucr_pinned_key, False):
             return {'appid': app.id}
         else:
             return True
@@ -523,7 +523,7 @@ class ShallHaveEnoughFreeDiskSpace(MultiRequirement, SoftRequirement):
     %(current)d MB are available.
     """
 
-    def test_install(self, apps,):
+    def test_install(self, apps):
         required_free_disk_space = 0
         for app in apps:
             required_free_disk_space += (app.min_free_disk_space or 0)
@@ -540,7 +540,7 @@ class ShallHaveEnoughRam(MultiRequirement, SoftRequirement):
     %(current)d MB are available.
     """
 
-    def test_install(self, apps,):
+    def test_install(self, apps):
         current_ram = get_current_ram_available()
         required_ram = 0
         for app in apps:
@@ -548,7 +548,7 @@ class ShallHaveEnoughRam(MultiRequirement, SoftRequirement):
         if current_ram < required_ram:
             return {'minimum': required_ram, 'current': current_ram}
 
-    def test_upgrade(self, apps,):
+    def test_upgrade(self, apps):
         current_ram = get_current_ram_available()
         required_ram = 0
         for app in apps:
@@ -569,7 +569,7 @@ class ShallNotBeDockerIfDiscouraged(SingleRequirement, HardRequirement):
     %(migration_link)s
     """
 
-    def test_install(self, app,):
+    def test_install(self, app):
         problem = app._docker_prudence_is_true() and not app.docker_migration_works
         if problem:
             return {'migration_link': app.docker_migration_link}
@@ -583,17 +583,17 @@ class ShallOnlyBeInstalledInAdEnvWithPasswordService(SingleRequirement, SoftRequ
     on the Active Directory domain controller server.
     """
 
-    def test_install(self, app,):
+    def test_install(self, app):
         return not app._has_active_ad_member_issue('password')
 
     test_upgrade = test_install
 
 
-def check(apps, action,):
+def check(apps, action):
     errors = {}
     warnings = {}
     for name, klass in _REQUIREMENTS.items():
-        requirement = klass(apps, action,)
+        requirement = klass(apps, action)
         result = requirement.test()
         if result:
             if requirement.is_error():
@@ -603,5 +603,5 @@ def check(apps, action,):
     return errors, warnings
 
 
-def get_requirement(name,):
+def get_requirement(name):
     return _REQUIREMENTS[name]

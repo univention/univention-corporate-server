@@ -79,44 +79,44 @@ from .udm_ldap import (
 )
 
 
-USE_ASTERISKS = ucr.is_true('directory/manager/web/allow_wildcard_search', True,)
-ADD_ASTERISKS = USE_ASTERISKS and ucr.is_true('directory/manager/web/auto_substring_search', True,)
+USE_ASTERISKS = ucr.is_true('directory/manager/web/allow_wildcard_search', True)
+ADD_ASTERISKS = USE_ASTERISKS and ucr.is_true('directory/manager/web/auto_substring_search', True)
 
 _ = Translation('univention-management-console-module-udm').translate
 
 
-def sanitize_func(sanitizer_func,):
+def sanitize_func(sanitizer_func):
     from univention.management.console.modules.decorators import copy_function_meta_data, sanitize
 
-    def _decorated(function,):
-        def _response(self, request,):
-            sanitizer_parameters = sanitizer_func(self, request,)
-            if isinstance(sanitizer_parameters, dict,):
+    def _decorated(function):
+        def _response(self, request):
+            sanitizer_parameters = sanitizer_func(self, request)
+            if isinstance(sanitizer_parameters, dict):
                 sanitizer = sanitize(**sanitizer_parameters)
             else:  # if isinstance(sanitizer_parameters, (list, tuple)):
                 sanitizer = sanitize(*sanitizer_parameters)
-            return sanitizer(function)(self, request,)
-        copy_function_meta_data(function, _response,)
+            return sanitizer(function)(self, request)
+        copy_function_meta_data(function, _response)
         return _response
     return _decorated
 
 
-def module_from_request(func,):
-    def _decorated(self, request,*a, **kw):
+def module_from_request(func):
+    def _decorated(self, request, *a, **kw):
         request.options['module'] = self._get_module_by_request(request)
-        return func(self, request, *a, **kw,)
+        return func(self, request, *a, **kw)
     return _decorated
 
 
-def bundled(func,):
-    def _decoarated(self, request,):
-        bundled = isinstance(request.options, (list, tuple),)
+def bundled(func):
+    def _decoarated(self, request):
+        bundled = isinstance(request.options, (list, tuple))
         if not bundled:
-            ret = func(self, request,)
+            ret = func(self, request)
         else:
             options = request.options
-            ret = [func(self, request,) for request.options in options]
-        self.finished(request.id, ret,)
+            ret = [func(self, request) for request.options in options]
+        self.finished(request.id, ret)
     return _decoarated
 
 
@@ -136,12 +136,12 @@ class ObjectPropertySanitizer(StringSanitizer):
             "regex_pattern": r'^[\w\d\-;]+$',
         }
         args.update(kwargs)
-        StringSanitizer.__init__(self, **args,)
+        StringSanitizer.__init__(self, **args)
 
 
 class PropertySearchSanitizer(SearchSanitizer):
 
-    def _sanitize(self, value, name, further_arguments,):
+    def _sanitize(self, value, name, further_arguments):
         object_type = further_arguments.get('objectType')
         property_ = further_arguments.get('objectProperty')
         add_asterisks, use_asterisks = self.add_asterisks, self.use_asterisks
@@ -151,12 +151,12 @@ class PropertySearchSanitizer(SearchSanitizer):
             # we get True/False as search value.
             # We need to make sure that the sanitizer rewrites this to the
             # correct thruthy/falsy string of the syntax class and not add asterisks.
-            if prop and issubclass(prop.syntax if inspect.isclass(prop.syntax) else type(prop.syntax), (udm_syntax.IStates, udm_syntax.boolean),):
+            if prop and issubclass(prop.syntax if inspect.isclass(prop.syntax) else type(prop.syntax), (udm_syntax.IStates, udm_syntax.boolean)):
                 self.use_asterisks = False
                 self.add_asterisks = False
                 value = prop.syntax.sanitize_property_search_value(value)
         try:
-            return super(PropertySearchSanitizer, self,)._sanitize(value, name, further_arguments,)
+            return super(PropertySearchSanitizer, self)._sanitize(value, name, further_arguments)
         finally:
             self.add_asterisks, self.use_asterisks = add_asterisks, use_asterisks
 
@@ -170,14 +170,14 @@ class Instance(Base, ProgressMixin):
         self.__license_checks = set()
         install_opener(ucr)
 
-    def prepare(self, request,):
-        super(Instance, self,).prepare(request)
+    def prepare(self, request):
+        super(Instance, self).prepare(request)
         if not request.user_dn:
             raise UserWithoutDN(request.username)
 
         MODULE.info('Initializing module as user %r' % (request.user_dn,))
 
-        def bind_user_connection(lo,):
+        def bind_user_connection(lo):
             request.bind_user_connection(lo)
             self.require_license(lo)
 
@@ -187,19 +187,19 @@ class Instance(Base, ProgressMixin):
         self.reports_cfg = udr.Config()
         self.modules_with_childs = container_modules()
 
-    def set_locale(self, _locale,):
-        super(Instance, self,).set_locale(_locale)
-        locale.setlocale(locale.LC_TIME, _locale,)
+    def set_locale(self, _locale):
+        super(Instance, self).set_locale(_locale)
+        locale.setlocale(locale.LC_TIME, _locale)
 
-    def error_handling(self, etype, exc, etraceback,):
-        super(Instance, self,).error_handling(etype, exc, etraceback,)
-        if isinstance(exc, (udm_errors.authFail, INVALID_CREDENTIALS),):
+    def error_handling(self, etype, exc, etraceback):
+        super(Instance, self).error_handling(etype, exc, etraceback)
+        if isinstance(exc, (udm_errors.authFail, INVALID_CREDENTIALS)):
             MODULE.warn('Authentication failed: %s' % (exc,))
             raise LDAP_AuthenticationFailed()
-        if isinstance(exc, (udm_errors.base, LDAPError),):
-            MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback,)))
+        if isinstance(exc, (udm_errors.base, LDAPError)):
+            MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback)))
 
-    def require_license(self, lo,):
+    def require_license(self, lo):
         if id(lo) in self.__license_checks:
             return
         self.__license_checks.add(id(lo))
@@ -208,25 +208,25 @@ class Instance(Base, ProgressMixin):
         except ImportError:
             return  # GPL Version
         try:
-            check_license(lo, True,)
+            check_license(lo, True)
         except LicenseError:
             lo.allow_modify = False
         lo.requireLicense()
 
     def get_ldap_connection(self):
         try:
-            lo, po = get_user_connection(bind=self.bind_user_connection, write=True,)
+            lo, po = get_user_connection(bind=self.bind_user_connection, write=True)
         except (LDAPError, udm_errors.ldapError):
-            lo, po = get_user_connection(bind=self.bind_user_connection, write=True,)
+            lo, po = get_user_connection(bind=self.bind_user_connection, write=True)
         return lo, udm_uldap.position(lo.base)
 
-    def get_module(self, flavor, ldap_dn,):
-        return get_module(flavor, ldap_dn, self.get_ldap_connection()[0],)
+    def get_module(self, flavor, ldap_dn):
+        return get_module(flavor, ldap_dn, self.get_ldap_connection()[0])
 
-    def get_obj_module(self, flavor, ldap_dn,):
-        return get_obj_module(flavor, ldap_dn, self.get_ldap_connection()[0],)
+    def get_obj_module(self, flavor, ldap_dn):
+        return get_obj_module(flavor, ldap_dn, self.get_ldap_connection()[0])
 
-    def _get_module_by_request(self, request, object_type=None,):
+    def _get_module_by_request(self, request, object_type=None):
         """
         Tries to determine the UDM module to use. If no specific
         object type is given the request option 'objectType' is used. In
@@ -248,17 +248,17 @@ class Instance(Base, ProgressMixin):
         return UDM_Module(module_name)
 
     @LDAP_Connection
-    def license(self, request, ldap_connection=None, ldap_position=None,):
+    def license(self, request, ldap_connection=None, ldap_position=None):
         message = None
         try:
             check_license(ldap_connection)
         except LicenseError as exc:
             message = str(exc)
 
-        self.finished(request.id, {'message': message},)
+        self.finished(request.id, {'message': message})
 
     @LDAP_Connection
-    def license_info(self, request, ldap_connection=None, ldap_position=None,):
+    def license_info(self, request, ldap_connection=None, ldap_position=None):
         license_data = {}
         try:
             import univention.admin.license as udm_license
@@ -270,8 +270,8 @@ class Instance(Base, ProgressMixin):
                 for item in ('licenses', 'real'):
                     license_data[item] = {}
                     for lic_type in ('CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE'):
-                        count = getattr(udm_license._license, item,)[udm_license._license.version][getattr(udm_license.License, lic_type,)]
-                        if isinstance(count, six.string_types,):
+                        count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
+                        if isinstance(count, six.string_types):
                             try:
                                 count = int(count)
                             except ValueError:
@@ -284,8 +284,8 @@ class Instance(Base, ProgressMixin):
                 for item in ('licenses', 'real'):
                     license_data[item] = {}
                     for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS'):
-                        count = getattr(udm_license._license, item,)[udm_license._license.version][getattr(udm_license.License, lic_type,)]
-                        if isinstance(count, six.string_types,):
+                        count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
+                        if isinstance(count, six.string_types):
                             try:
                                 count = int(count)
                             except ValueError:
@@ -305,50 +305,50 @@ class Instance(Base, ProgressMixin):
             if license_data['baseDN'] == 'UCS Core Edition':
                 free_license = 'core'
             if free_license:
-                license_data['baseDN'] = ucr.get('ldap/base', '',)
+                license_data['baseDN'] = ucr.get('ldap/base', '')
             license_data['freeLicense'] = free_license
             license_data['sysAccountsFound'] = udm_license._license.sysAccountsFound
 
-        self.finished(request.id, license_data,)
+        self.finished(request.id, license_data)
 
     @prevent_xsrf_check
     @LDAP_Connection
-    def license_import(self, request, ldap_connection=None, ldap_position=None,):
+    def license_import(self, request, ldap_connection=None, ldap_position=None):
         filename = None
-        if isinstance(request.options, (list, tuple),) and request.options:
+        if isinstance(request.options, (list, tuple)) and request.options:
             # file upload
-            file_upload(lambda s, r,: None)(self, request,)  # protect against hacking attempts!
+            file_upload(lambda s, r: None)(self, request)  # protect against hacking attempts!
             filename = request.options[0]['tmpfile']
         else:
-            sanitize(license=StringSanitizer(required=True))(lambda self, request,: None)(self, request,)
+            sanitize(license=StringSanitizer(required=True))(lambda self, request: None)(self, request)
             lic = request.options['license']
 
             # Replace non-breaking space with a normal space
             # https://forge.univention.org/bugzilla/show_bug.cgi?id=30098
-            lic = lic.replace(u'\xa0', " ",)
+            lic = lic.replace(u'\xa0', " ")
 
             lic_file = tempfile.NamedTemporaryFile(delete=False)
             lic_file.write(lic.encode('UTF-8'))
             lic_file.close()
             filename = lic_file.name
 
-        def _error(msg=None,):
+        def _error(msg=None):
             self.finished(request.id, [{
                 'success': False, 'message': msg,
-            }],)
+            }])
 
         try:
-            with open(filename, 'rb',) as fd:
+            with open(filename, 'rb') as fd:
                 # check license and write it to LDAP
                 importer = LicenseImport(fd)
-                importer.check(ucr.get('ldap/base', '',))
+                importer.check(ucr.get('ldap/base', ''))
                 importer.write(ldap_connection)
         except (ValueError, AttributeError, LDAPError) as exc:
             MODULE.error('License import failed (malformed LDIF): %r' % (exc, ))
             # AttributeError: missing univentionLicenseBaseDN
             # ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
             # LDAPError e.g. LDIF contained non existing attributes
-            if isinstance(exc, LDAPError,) and len(exc.args) and isinstance(exc.args[0], dict,) and exc.args[0].get('info'):
+            if isinstance(exc, LDAPError) and len(exc.args) and isinstance(exc.args[0], dict) and exc.args[0].get('info'):
                 _error(_('LDAP error: %s.') % exc.args[0].get('info'))
             else:
                 _error(_('License import failed: malformed LDIF.'))
@@ -360,34 +360,34 @@ class Instance(Base, ProgressMixin):
         finally:
             os.unlink(filename)
 
-        self.finished(request.id, [{'success': True}],)
+        self.finished(request.id, [{'success': True}])
 
     @multi_response(progress=[_('Moving %d object(s)'), _('%($dn$)s moved')])
-    def move(self, iterator, object, options,):
+    def move(self, iterator, object, options):
         for object, options in iterator:
             if 'container' not in options:
                 yield {'$dn$': object, 'success': False, 'details': _('The destination is missing')}
                 continue
-            module = self.get_module(None, object,)
+            module = self.get_module(None, object)
             if not module:
                 yield {'$dn$': object, 'success': False, 'details': _('Could not identify the given LDAP object')}
             elif 'move' not in module.operations:
                 yield {'$dn$': object, 'success': False, 'details': _('This object can not be moved')}
             else:
                 try:
-                    module.move(object, options['container'],)
+                    module.move(object, options['container'])
                     yield {'$dn$': object, 'success': True}
                 except UDM_Error as e:
                     yield {'$dn$': object, 'success': False, 'details': str(e)}
 
     @sanitize(DictSanitizer({
-        "object": DictSanitizer({}, required=True,),
+        "object": DictSanitizer({}, required=True),
         "options": DictSanitizer({
             "objectType": StringSanitizer(required=True),
-        }, required=True,),
-    }, required=True,))
+        }, required=True),
+    }, required=True))
     @threaded
-    def add(self, request,):
+    def add(self, request):
         """
         Creates LDAP objects.
 
@@ -397,14 +397,14 @@ class Instance(Base, ProgressMixin):
         """
         result = []
         for obj in request.options:
-            options = obj.get('options', {},)
-            properties = obj.get('object', {},)
+            options = obj.get('options', {})
+            properties = obj.get('object', {})
 
-            module = self._get_module_by_request(request, object_type=options.get('objectType'),)
+            module = self._get_module_by_request(request, object_type=options.get('objectType'))
             if '$labelObjectType$' in properties:
                 del properties['$labelObjectType$']
             try:
-                dn = module.create(properties, container=options.get('container'), superordinate=options.get('superordinate'),)
+                dn = module.create(properties, container=options.get('container'), superordinate=options.get('superordinate'))
                 result.append({'$dn$': dn, 'success': True})
             except UDM_Error as e:
                 result.append({'$dn$': e.dn, 'success': False, 'details': str(e)})
@@ -414,10 +414,10 @@ class Instance(Base, ProgressMixin):
     @sanitize(DictSanitizer({
         "object": DictSanitizer({
             '$dn$': StringSanitizer(required=True),
-        }, required=True,),
-    }), required=True,)
+        }, required=True),
+    }), required=True)
     @threaded
-    def put(self, request,):
+    def put(self, request):
         """
         Modifies the given list of LDAP objects.
 
@@ -429,7 +429,7 @@ class Instance(Base, ProgressMixin):
         for obj in request.options:
             properties = obj.get('object') or {}
             ldap_dn = properties['$dn$']
-            module = self.get_module(request.flavor, ldap_dn,)
+            module = self.get_module(request.flavor, ldap_dn)
             if module is None:
                 if len(request.options) == 1:
                     raise ObjectDoesNotExist(ldap_dn)
@@ -446,7 +446,7 @@ class Instance(Base, ProgressMixin):
         return result
 
     @threaded
-    def remove(self, request,):
+    def remove(self, request):
         """
         Removes the given list of LDAP objects.
 
@@ -457,13 +457,13 @@ class Instance(Base, ProgressMixin):
         result = []
         for item in request.options:
             ldap_dn = item.get('object')
-            options = item.get('options', {},)
-            module = self.get_module(request.flavor, ldap_dn,)
+            options = item.get('options', {})
+            module = self.get_module(request.flavor, ldap_dn)
             if module is None:
                 result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object could not be identified')})
                 continue
             try:
-                module.remove(ldap_dn, options.get('cleanup', False,), options.get('recursive', False,),)
+                module.remove(ldap_dn, options.get('cleanup', False), options.get('recursive', False))
                 result.append({'$dn$': ldap_dn, 'success': True})
             except UDM_Error as e:
                 result.append({'$dn$': ldap_dn, 'success': False, 'details': str(e)})
@@ -471,7 +471,7 @@ class Instance(Base, ProgressMixin):
         return result
 
     @simple_response
-    def meta_info(self, objectType,):
+    def meta_info(self, objectType):
         module = UDM_Module(objectType)
         if module:
             return {
@@ -482,7 +482,7 @@ class Instance(Base, ProgressMixin):
             }
 
     @threaded
-    def get(self, request,):
+    def get(self, request):
         """
         Retrieves the given list of LDAP objects. Password property will be removed.
 
@@ -495,21 +495,21 @@ class Instance(Base, ProgressMixin):
         return self._get(request)
 
     @threaded
-    def copy(self, request,):
-        return self._get(request, copy=True,)
+    def copy(self, request):
+        return self._get(request, copy=True)
 
-    def _get(self, request, copy=False,):
-        def _remove_uncopyable_properties(obj,):
+    def _get(self, request, copy=False):
+        def _remove_uncopyable_properties(obj):
             if not copy:
                 return
             for name, p in obj.descriptions.items():
                 if not p.copyable:
-                    obj.info.pop(name, None,)
+                    obj.info.pop(name, None)
         result = []
         for ldap_dn in request.options:
             if request.flavor == 'users/self':
                 ldap_dn = request.user_dn
-            obj, module = self.get_obj_module(request.flavor, ldap_dn,)
+            obj, module = self.get_obj_module(request.flavor, ldap_dn)
             if module is None:
                 raise ObjectDoesNotExist(ldap_dn)
             else:
@@ -538,11 +538,11 @@ class Instance(Base, ProgressMixin):
                         props['$options$'][opt['id']] = opt['value']
                     props['$policies$'] = {}
                     for policy in obj.policies:
-                        pol_mod = self.get_module(None, policy,)
+                        pol_mod = self.get_module(None, policy)
                         if pol_mod and pol_mod.name:
-                            props['$policies$'].setdefault(pol_mod.name, [],).append(policy)
+                            props['$policies$'].setdefault(pol_mod.name, []).append(policy)
                     props['$labelObjectType$'] = module.title
-                    props['$flags$'] = [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [],)]
+                    props['$flags$'] = [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])]
                     props['$operations$'] = module.operations
                     props['$references$'] = module.get_policy_references(ldap_dn)
                     result.append(props)
@@ -554,11 +554,13 @@ class Instance(Base, ProgressMixin):
         objectPropertyValue=PropertySearchSanitizer(
             add_asterisks=ADD_ASTERISKS,
             use_asterisks=USE_ASTERISKS,
-            further_arguments=['objectType', 'objectProperty'],),
+            further_arguments=['objectType', 'objectProperty'],
+        ),
         objectProperty=ObjectPropertySanitizer(required=True),
-        fields=ListSanitizer(),)
+        fields=ListSanitizer(),
+    )
     @threaded
-    def query(self, request,):
+    def query(self, request):
         """
         Searches for LDAP objects and returns a few properties of the found objects
 
@@ -581,7 +583,7 @@ class Instance(Base, ProgressMixin):
             superordinate = None
         elif superordinate is not None:
             MODULE.info('Query defines a superordinate %s' % superordinate)
-            _superordinate, mod = self.get_obj_module(request.flavor, superordinate,)
+            _superordinate, mod = self.get_obj_module(request.flavor, superordinate)
             if mod is not None:
                 MODULE.info('Found UDM module %r for superordinate %s' % (mod.name, superordinate))
                 superordinate = _superordinate
@@ -593,20 +595,20 @@ class Instance(Base, ProgressMixin):
         container = request.options.get('container')
         objectProperty = request.options['objectProperty']
         objectPropertyValue = request.options['objectPropertyValue']
-        scope = request.options.get('scope', 'sub',)
+        scope = request.options.get('scope', 'sub')
         hidden = request.options.get('hidden')
-        fields = (set(request.options.get('fields', [],) or []) | {objectProperty}) - {'name', 'None'}
-        result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, allow_asterisks=USE_ASTERISKS,)
+        fields = (set(request.options.get('fields', []) or []) | {objectProperty}) - {'name', 'None'}
+        result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, allow_asterisks=USE_ASTERISKS)
         if result is None:
             return []
 
         entries = []
-        object_type = request.options.get('objectType', request.flavor,)
+        object_type = request.options.get('objectType', request.flavor)
 
         for obj in result:
             if obj is None:
                 continue
-            module = self.get_module(object_type, obj.dn,)
+            module = self.get_module(object_type, obj.dn)
             if module is None:
                 # This happens when concurrent a object is removed between the module.search() and self.get_module() call
                 MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
@@ -614,65 +616,65 @@ class Instance(Base, ProgressMixin):
             entry = {
                 '$dn$': obj.dn,
                 '$childs$': module.childs,
-                '$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [],)],
+                '$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])],
                 '$operations$': module.operations,
                 'objectType': module.name,
                 'labelObjectType': module.subtitle,
                 'name': module.obj_description(obj),
-                'path': ldap_dn2path(obj.dn, include_rdn=False,),
+                'path': ldap_dn2path(obj.dn, include_rdn=False),
             }
             if '$value$' in fields:
-                entry['$value$'] = [module.property_description(obj, column['name'],) for column in module.columns]
+                entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
             for field in fields - set(module.password_properties) - set(entry.keys()):
-                entry[field] = module.property_description(obj, field,)
+                entry[field] = module.property_description(obj, field)
             entries.append(entry)
         return entries
 
-    def reports_query(self, request,):
+    def reports_query(self, request):
         """Returns a list of reports for the given object type"""
         # i18n: translattion for univention-directory-reports
         _('PDF Document')
-        self.finished(request.id, [{'id': name, 'label': _(name)} for name in sorted(self.reports_cfg.get_report_names(request.flavor))],)
+        self.finished(request.id, [{'id': name, 'label': _(name)} for name in sorted(self.reports_cfg.get_report_names(request.flavor))])
 
-    def sanitize_reports_create(self, request,):
+    def sanitize_reports_create(self, request):
         choices = self.reports_cfg.get_report_names(request.flavor)
         return {
-            "report": ChoicesSanitizer(choices=choices, required=True,),
-            "objects": ListSanitizer(DNSanitizer(minimum=1), required=True, min_elements=1,),
+            "report": ChoicesSanitizer(choices=choices, required=True),
+            "objects": ListSanitizer(DNSanitizer(minimum=1), required=True, min_elements=1),
         }
 
     @sanitize_func(sanitize_reports_create)
     @threaded
     @LDAP_Connection
-    def reports_create(self, request, ldap_connection=None, ldap_position=None,):
+    def reports_create(self, request, ldap_connection=None, ldap_position=None):
         """Creates a report for the given LDAP DNs and returns the URL to access the file"""
         report = udr.Report(ldap_connection)
         try:
-            report_file = report.create(request.flavor, request.options['report'], request.options['objects'],)
+            report_file = report.create(request.flavor, request.options['report'], request.options['objects'])
         except udr.ReportError as exc:
             raise UMC_Error(str(exc))
 
         path = '/usr/share/univention-management-console-module-udm/'
-        filename = os.path.join(path, os.path.basename(report_file),)
+        filename = os.path.join(path, os.path.basename(report_file))
 
-        shutil.move(report_file, path,)
-        os.chmod(filename, 0o600,)
+        shutil.move(report_file, path)
+        os.chmod(filename, 0o600)
         url = '/univention/command/udm/reports/get?report=%s' % (quote(os.path.basename(report_file)),)
         return {'URL': url}
 
     @allow_get_request
     @sanitize(report=StringSanitizer(required=True))
-    def reports_get(self, request,):
+    def reports_get(self, request):
         report = request.options['report']
         path = '/usr/share/univention-management-console-module-udm/'
-        filename = os.path.join(path, os.path.basename(report),)
+        filename = os.path.join(path, os.path.basename(report))
         try:
-            with open(filename, 'rb',) as fd:
-                self.finished(request.id, fd.read(), mimetype='text/csv' if report.endswith('.csv') else 'application/pdf',)
+            with open(filename, 'rb') as fd:
+                self.finished(request.id, fd.read(), mimetype='text/csv' if report.endswith('.csv') else 'application/pdf')
         except EnvironmentError:
-            raise UMC_Error(_('The report does not exists. Please create a new one.'), status=404,)
+            raise UMC_Error(_('The report does not exists. Please create a new one.'), status=404)
 
-    def values(self, request,):
+    def values(self, request):
         """
         Returns the default search pattern/value for the given object property
 
@@ -687,12 +689,13 @@ class Instance(Base, ProgressMixin):
             result = None
         else:
             result = module.get_default_values(property_name)
-        self.finished(request.id, result,)
+        self.finished(request.id, result)
 
     @sanitize(
         networkDN=StringSanitizer(required=True),
-        increaseCounter=BooleanSanitizer(default=False),)
-    def network(self, request,):
+        increaseCounter=BooleanSanitizer(default=False),
+    )
+    def network(self, request):
         """
         Returns the next IP configuration based on the given network object
 
@@ -713,7 +716,7 @@ class Instance(Base, ProgressMixin):
             raise NoIpLeft(request.options['networkDN'])
 
         result = {'ip': obj['nextIp'], 'dnsEntryZoneForward': obj['dnsEntryZoneForward'], 'dhcpEntryZone': obj['dhcpEntryZone'], 'dnsEntryZoneReverse': obj['dnsEntryZoneReverse']}
-        self.finished(request.id, result,)
+        self.finished(request.id, result)
 
         if request.options['increaseCounter']:
             # increase the next free IP address
@@ -722,7 +725,7 @@ class Instance(Base, ProgressMixin):
 
     @module_from_request
     @simple_response()
-    def containers(self, module,):
+    def containers(self, module):
         """
         Returns the list of default containers for the given object
         type. Therefore the Python module and the default object in the
@@ -734,11 +737,11 @@ class Instance(Base, ProgressMixin):
         return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
         """
         containers = [{'id': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()]
-        return sorted(containers, key=lambda x,: x['label'].lower(),)
+        return sorted(containers, key=lambda x: x['label'].lower())
 
     @module_from_request
     @simple_response
-    def templates(self, module,):
+    def templates(self, module):
         """
         Returns the list of template objects for the given object
         type.
@@ -759,7 +762,7 @@ class Instance(Base, ProgressMixin):
         return result
 
     @LDAP_Connection
-    def types(self, request, ldap_connection=None, ldap_position=None,):
+    def types(self, request, ldap_connection=None, ldap_position=None):
         """
         Returns the list of object types matching the given flavor or container.
 
@@ -773,15 +776,15 @@ class Instance(Base, ProgressMixin):
         if request.flavor != 'navigation':
             module = UDM_Module(request.flavor)
             if superordinate:
-                module = self.get_module(request.flavor, superordinate,) or module
-            self.finished(request.id, module.child_modules,)
+                module = self.get_module(request.flavor, superordinate) or module
+            self.finished(request.id, module.child_modules)
             return
 
         container = request.options.get('container') or superordinate
         if not container:
             # no container is specified, return all existing object types
             MODULE.info('no container specified, returning all object types')
-            self.finished(request.id, [{'id': name, 'label': getattr(mod, 'short_description', name,)} for name, mod in udm_modules.modules.items()],)
+            self.finished(request.id, [{'id': name, 'label': getattr(mod, 'short_description', name)} for name, mod in udm_modules.modules.items()])
             return
 
         if container == 'None':
@@ -795,7 +798,7 @@ class Instance(Base, ProgressMixin):
 
         # the container may be a superordinate or have one as its parent
         # (or grandparent, ....)
-        superordinate = udm_modules.find_superordinate(container, None, ldap_connection,)
+        superordinate = udm_modules.find_superordinate(container, None, ldap_connection)
         if superordinate:
             # there is a superordinate... add its subtypes to the list of allowed modules
             MODULE.info('container has a superordinate: %s' % superordinate)
@@ -806,15 +809,15 @@ class Instance(Base, ProgressMixin):
             allowed_modules.update(mod for mod in udm_modules.modules.values() if not udm_modules.superordinates(mod))
 
         # make sure that the object type can be created
-        allowed_modules = [mod for mod in allowed_modules if udm_modules.supports(mod, 'add',)]
+        allowed_modules = [mod for mod in allowed_modules if udm_modules.supports(mod, 'add')]
         MODULE.info('all modules that are allowed: %s' % [udm_modules.name(mod) for mod in allowed_modules])
 
         # return the final list of object types
-        self.finished(request.id, [{'id': udm_modules.name(_module), 'label': getattr(_module, 'short_description', udm_modules.name(_module),)} for _module in allowed_modules],)
+        self.finished(request.id, [{'id': udm_modules.name(_module), 'label': getattr(_module, 'short_description', udm_modules.name(_module))} for _module in allowed_modules])
 
     @bundled
     @sanitize(objectType=StringSanitizer())  # objectDN=StringSanitizer(allow_none=True),
-    def layout(self, request,):
+    def layout(self, request):
         """
         Returns the layout information for the given object type.
 
@@ -835,8 +838,9 @@ class Instance(Base, ProgressMixin):
     @sanitize(
         objectType=StringSanitizer(),
         objectDn=StringSanitizer(),
-        searchable=BooleanSanitizer(default=False),)
-    def properties(self, request,):
+        searchable=BooleanSanitizer(default=False),
+    )
+    def properties(self, request):
         """
         Returns the properties of the given object type.
 
@@ -849,13 +853,13 @@ class Instance(Base, ProgressMixin):
         module.load(force_reload=True)  # reload for instant extended attributes
         object_dn = request.options.get('objectDN')
         properties = module.get_properties(object_dn)
-        if request.options.get('searchable', False,):
-            properties = [prop for prop in properties if prop.get('searchable', False,)]
+        if request.options.get('searchable', False):
+            properties = [prop for prop in properties if prop.get('searchable', False)]
         return properties
 
     @module_from_request
     @simple_response
-    def options(self, module,):
+    def options(self, module):
         """
         Returns the options specified for the given object type
 
@@ -870,13 +874,13 @@ class Instance(Base, ProgressMixin):
     @sanitize(
         objectType=StringSanitizer(),
     )
-    def policies(self, request,):
+    def policies(self, request):
         """Returns a list of policy types that apply to the given object type"""
         module = self._get_module_by_request(request)
         return module.policies
 
     @threaded
-    def validate(self, request,):
+    def validate(self, request):
         """
         Validates the correctness of values for properties of the
         given object type. Therefore the syntax definition of the properties is used.
@@ -899,7 +903,7 @@ class Instance(Base, ProgressMixin):
                 raise UMC_Error(_('Property %s not found') % property_name)
 
             # check each element if 'value' is a list
-            if isinstance(value, (tuple, list),) and property_obj.multivalue:
+            if isinstance(value, (tuple, list)) and property_obj.multivalue:
                 subResults = []
                 subDetails = []
                 for ival in value:
@@ -923,9 +927,10 @@ class Instance(Base, ProgressMixin):
 
     @sanitize(
         syntax=StringSanitizer(required=True),
-        key=SearchSanitizer(use_asterisks=False),)
+        key=SearchSanitizer(use_asterisks=False),
+    )
     @simple_response
-    def syntax_choices_key(self, syntax, key,):
+    def syntax_choices_key(self, syntax, key):
         """
         If size limit is reached search only for the current value
         (so that the selected value is valid).
@@ -938,11 +943,11 @@ class Instance(Base, ProgressMixin):
         syntax = _get_syntax(syntax)
         if syntax is None:
             return
-        return search_syntax_choices_by_key(syntax, key, lo, po,)
+        return search_syntax_choices_by_key(syntax, key, lo, po)
 
     @sanitize(syntax=StringSanitizer(required=True))
     @simple_response
-    def syntax_choices_info(self, syntax,):
+    def syntax_choices_info(self, syntax):
         """
         Fetch meta information about syntax choices.
         By doing a search query the number of results is returned.
@@ -956,15 +961,16 @@ class Instance(Base, ProgressMixin):
         syntax = _get_syntax(syntax)
         if syntax is None:
             return
-        return info_syntax_choices(syntax, ldap_connection=lo, ldap_position=po,)
+        return info_syntax_choices(syntax, ldap_connection=lo, ldap_position=po)
 
     @sanitize(
         objectPropertyValue=SearchSanitizer(),
         objectProperty=ObjectPropertySanitizer(),
-        syntax=StringSanitizer(required=True),)
+        syntax=StringSanitizer(required=True),
+    )
     @threaded
     @LDAP_Connection
-    def syntax_choices(self, request, ldap_connection=None, ldap_position=None,):
+    def syntax_choices(self, request, ldap_connection=None, ldap_position=None):
         """
         Dynamically determine valid values for a given syntax class
 
@@ -978,31 +984,31 @@ class Instance(Base, ProgressMixin):
             return
 
         options = request.options
-        options.pop('allow_asterisks', None,)  # internal option
+        options.pop('allow_asterisks', None)  # internal option
         options['dependencies'] = {}
         dependency_name = options.get('$depends$')
         if options.get(dependency_name):
             options['dependencies'] = {dependency_name: options.pop(dependency_name)}
 
-        return read_syntax_choices(syntax, options, ldap_connection=ldap_connection, ldap_position=ldap_position,)
+        return read_syntax_choices(syntax, options, ldap_connection=ldap_connection, ldap_position=ldap_position)
 
     @sanitize(
-        container=StringSanitizer(default='', allow_none=True,),
+        container=StringSanitizer(default='', allow_none=True),
     )
     @threaded
-    def move_container_query(self, request,):
+    def move_container_query(self, request):
         scope = 'one'
         modules = self.modules_with_childs
         container = request.options['container']
         if not container:
             scope = 'base'
-        return self._container_query(request, container, modules, scope,)
+        return self._container_query(request, container, modules, scope)
 
     @sanitize(
         container=StringSanitizer(allow_none=True),
     )
     @threaded
-    def nav_container_query(self, request,):
+    def nav_container_query(self, request):
         """
         Returns a list of LDAP containers located under the given
         LDAP base (option 'container'). If no base container is
@@ -1020,10 +1026,10 @@ class Instance(Base, ProgressMixin):
             # this is the tree root of DNS / DHCP, show all zones / services
             scope = 'sub'
             modules = [request.flavor]
-        return self._container_query(request, container, modules, scope,)
+        return self._container_query(request, container, modules, scope)
 
     @LDAP_Connection
-    def _container_query(self, request, container, modules, scope, ldap_connection=None, ldap_position=None,):
+    def _container_query(self, request, container, modules, scope, ldap_connection=None, ldap_position=None):
         """Get a list of containers or child objects of the specified container."""
         if not container:
             container = ucr['ldap/base']
@@ -1033,7 +1039,7 @@ class Instance(Base, ProgressMixin):
             if request.flavor in ('dns/dns', 'dhcp/dhcp'):
                 defaults.update({
                     'label': UDM_Module(request.flavor).title,
-                    'icon': 'udm-%s' % (request.flavor.replace('/', '-',),),
+                    'icon': 'udm-%s' % (request.flavor.replace('/', '-'),),
                 })
             return [dict({
                     'id': container,
@@ -1045,23 +1051,23 @@ class Instance(Base, ProgressMixin):
                     '$flags$': [],
                     '$childs$': True,
                     '$isSuperordinate$': False,
-                    }, **defaults,)]
+                    }, **defaults)]
 
         result = []
         for xmodule in modules:
             xmodule = UDM_Module(xmodule)
-            superordinate = udm_objects.get_superordinate(xmodule.module, None, ldap_connection, container,)
+            superordinate = udm_objects.get_superordinate(xmodule.module, None, ldap_connection, container)
             try:
-                for item in xmodule.search(container, scope=scope, superordinate=superordinate,):
+                for item in xmodule.search(container, scope=scope, superordinate=superordinate):
                     module = UDM_Module(item.module)
                     result.append({
                         'id': item.dn,
                         'label': module.obj_description(item),
-                        'icon': 'udm-%s' % (module.name.replace('/', '-',)),
+                        'icon': 'udm-%s' % (module.name.replace('/', '-')),
                         'path': ldap_dn2path(item.dn),
                         'objectType': module.name,
                         '$operations$': module.operations,
-                        '$flags$': [x.decode('UTF-8') for x in item.oldattr.get('univentionObjectFlag', [],)],
+                        '$flags$': [x.decode('UTF-8') for x in item.oldattr.get('univentionObjectFlag', [])],
                         '$childs$': module.childs,
                         '$isSuperordinate$': udm_modules.isSuperordinate(module.module),
                     })
@@ -1074,7 +1080,7 @@ class Instance(Base, ProgressMixin):
         container=StringSanitizer(required=True),
     )
     @LDAP_Connection
-    def nav_object_query(self, request, ldap_connection=None, ldap_position=None,):
+    def nav_object_query(self, request, ldap_connection=None, ldap_position=None):
         """
         Returns a list of objects in a LDAP container (scope: one)
 
@@ -1086,11 +1092,11 @@ class Instance(Base, ProgressMixin):
 
         return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
         """
-        object_type = request.options.get('objectType', '',)
+        object_type = request.options.get('objectType', '')
         if object_type not in ('None', '$containers$'):
             # we need to search for a specific objectType, then we should call the standard query
             # we also need to get the correct superordinate
-            superordinate = udm_objects.get_superordinate(object_type, None, ldap_connection, request.options['container'],)
+            superordinate = udm_objects.get_superordinate(object_type, None, ldap_connection, request.options['container'])
             if superordinate and superordinate.module == 'settings/cn':
                 # false positive detected superordinate; Bug #32843
                 superordinate = None
@@ -1101,9 +1107,9 @@ class Instance(Base, ProgressMixin):
             self.query(request)
             return
 
-        def _thread(container,):
+        def _thread(container):
             entries = []
-            for module, obj in list_objects(container, object_type=object_type, ldap_connection=ldap_connection, ldap_position=ldap_position,):
+            for module, obj in list_objects(container, object_type=object_type, ldap_connection=ldap_connection, ldap_position=ldap_position):
                 if obj is None:
                     continue
                 if object_type != '$containers$' and module.childs:
@@ -1116,14 +1122,14 @@ class Instance(Base, ProgressMixin):
                     'objectType': module.name,
                     'labelObjectType': module.subtitle,
                     'name': udm_objects.description(obj),
-                    'path': ldap_dn2path(obj.dn, include_rdn=False,),
-                    '$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [],)],
+                    'path': ldap_dn2path(obj.dn, include_rdn=False),
+                    '$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])],
                     '$operations$': module.operations,
                 })
 
             return entries
 
-        thread = SimpleThread('NavObjectQuery', _thread, lambda r, t,: self.thread_finished_callback(r, t, request,),)
+        thread = SimpleThread('NavObjectQuery', _thread, lambda r, t: self.thread_finished_callback(r, t, request))
         thread.run(request.options['container'])
 
     @sanitize(DictSanitizer({
@@ -1136,7 +1142,7 @@ class Instance(Base, ProgressMixin):
         # container=StringSanitizer(default=None, allow_none=True)
     }))
     @threaded
-    def object_policies(self, request,):
+    def object_policies(self, request):
         """
         Returns a virtual policy object containing the values that
         the given object or container inherits
@@ -1145,7 +1151,7 @@ class Instance(Base, ProgressMixin):
         container_dn = None
         obj = None
 
-        def _get_object(_dn, _module,):
+        def _get_object(_dn, _module):
             """Get existing UDM object and corresponding module. Verify user input."""
             if _module is None or _module.module is None:
                 raise UMC_Error('The given object type is not valid')
@@ -1154,7 +1160,7 @@ class Instance(Base, ProgressMixin):
                 raise ObjectDoesNotExist(_dn)
             return _obj
 
-        def _get_object_parts(_options,):
+        def _get_object_parts(_options):
             """Get object related information and corresponding UDM object/module. Verify user input."""
             _object_type = _options['objectType']
             _object_dn = _options['objectDN']
@@ -1169,20 +1175,20 @@ class Instance(Base, ProgressMixin):
             if _object_dn:
                 # editing an exiting UDM object -> use the object itself
                 _module = UDM_Module(_object_type)
-                _obj = _get_object(_object_dn, _module,)
+                _obj = _get_object(_object_dn, _module)
             elif _container_dn:
                 # editing a new (i.e. non existing) object -> use the parent container
-                _module = self.get_module(None, _container_dn,)
-                _obj = _get_object(_container_dn, _module,)
+                _module = self.get_module(None, _container_dn)
+                _obj = _get_object(_container_dn, _module)
 
             return (_object_dn, _container_dn, _obj)
 
         ret = []
         for ioptions in request.options:
             object_dn, container_dn, obj = _get_object_parts(ioptions)
-            policy_dns = ioptions.get('policies', [],)
+            policy_dns = ioptions.get('policies', [])
             policy_module = UDM_Module(ioptions['policyType'])
-            policy_obj = _get_object(policy_dns[0] if policy_dns else None, policy_module,)
+            policy_obj = _get_object(policy_dns[0] if policy_dns else None, policy_module)
 
             if obj is None:
                 ret.append({})
@@ -1226,7 +1232,7 @@ class Instance(Base, ProgressMixin):
             infos = copy.copy(policy_obj.polinfo_more)
             for key, _value in infos.items():
                 if key in policy_obj.polinfo:
-                    if isinstance(infos[key], (tuple, list),):
+                    if isinstance(infos[key], (tuple, list)):
                         continue
                     infos[key]['value'] = policy_obj.polinfo[key]
 
@@ -1234,7 +1240,7 @@ class Instance(Base, ProgressMixin):
         return ret
 
     @threaded
-    def object_options(self, request,):
+    def object_options(self, request):
         """
         Returns the options known by the given objectType. If an LDAP
         DN is passed the current values for the options of this object
@@ -1253,7 +1259,7 @@ class Instance(Base, ProgressMixin):
 
     @sanitize(email=EmailSanitizer(required=True))
     @simple_response
-    def request_new_license(self, email,):
+    def request_new_license(self, email):
         license = dump_license()
         if license is None:
             raise UMC_Error(_('Cannot parse License from LDAP'))
@@ -1262,31 +1268,31 @@ class Instance(Base, ProgressMixin):
         data['licence'] = license
         data = urlencode(data).encode('ASCII')
         url = 'https://license.univention.de/keyid/conversion/submit'
-        request = Request(url, data=data, headers={'User-agent': 'UMC/AppCenter'},)
+        request = Request(url, data=data, headers={'User-agent': 'UMC/AppCenter'})
         self._request_license(request)
         # creating a new ucr variable to prevent duplicated registration (Bug #35711)
         handler_set(['ucs/web/license/requested=true'])
         return True
 
-    def _request_license(self, request,):
+    def _request_license(self, request):
         try:
             urlopen(request)
         except (HTTPError, URLError, IOError) as exc:
             strerror = ''
-            if hasattr(exc, 'read',):  # try to parse an html error
-                body = exc.read().decode('UTF-8', 'replace',)
-                match = re.search('<span id="details">(?P<details>.*?)</span>', body, flags=re.DOTALL,)
+            if hasattr(exc, 'read'):  # try to parse an html error
+                body = exc.read().decode('UTF-8', 'replace')
+                match = re.search('<span id="details">(?P<details>.*?)</span>', body, flags=re.DOTALL)
                 if match:
-                    strerror = match.group(1).replace('\n', '',)
+                    strerror = match.group(1).replace('\n', '')
             if not strerror:
-                if hasattr(exc, 'getcode',) and exc.getcode() >= 400:
+                if hasattr(exc, 'getcode') and exc.getcode() >= 400:
                     strerror = _('This seems to be a problem with the license server. Please try again later.')
-                while hasattr(exc, 'reason',):
+                while hasattr(exc, 'reason'):
                     exc = exc.reason
-                if hasattr(exc, 'errno',):
+                if hasattr(exc, 'errno'):
                     version = ucr.get('version/version')
                     errno = exc.errno
-                    strerror += getattr(exc, 'strerror', '',) or ''
+                    strerror += getattr(exc, 'strerror', '') or ''
                     if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')
                         link_to_doc = _('https://docs.software-univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
                         strerror += '. ' + _('This may be a problem with the proxy of your system. You may find help at %s.') % link_to_doc
@@ -1295,4 +1301,4 @@ class Instance(Base, ProgressMixin):
                         strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
             if not strerror.strip():
                 strerror = str(exc)
-            raise UMC_Error(_('An error occurred while contacting the license server: %s') % (strerror,), status=500,)
+            raise UMC_Error(_('An error occurred while contacting the license server: %s') % (strerror,), status=500)

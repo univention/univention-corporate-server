@@ -43,20 +43,20 @@ def main():
                 # see https://forge.univention.org/bugzilla/show_bug.cgi?id=27662
                 print('Ignore /etc/slave-join.secret on DC Backup')
                 continue
-            return_code = check_owner_groupname(filename, shouldowner, filegroup,)
+            return_code = check_owner_groupname(filename, shouldowner, filegroup)
             if not return_code:
                 exit_code = RETURN_FAIL_CODE
             return_code = check_permissions(filename)
             if not return_code:
                 exit_code = RETURN_FAIL_CODE
     except OSError as error:
-        print(f"An error occurred with: {error}", file=sys.stderr,)
+        print(f"An error occurred with: {error}", file=sys.stderr)
         sys.exit(RETURN_FAIL_CODE)
 
     sys.exit(exit_code)
 
 
-def check_owner_groupname(filename, shouldowner, shouldgroup,):
+def check_owner_groupname(filename, shouldowner, shouldgroup):
     """Checks a given file for a right owner and a right group."""
     return_code = True
     stat_info = os.stat(filename)  # statistics about a given file
@@ -65,15 +65,15 @@ def check_owner_groupname(filename, shouldowner, shouldgroup,):
     owner = pwd.getpwuid(uid)[0]  # get username/owner
     group = grp.getgrgid(gid)[0]  # get groupname
     if owner != shouldowner:
-        print(f"ERROR: '{filename}' has wrong owner '{owner}' but should be '{shouldowner}'", file=sys.stderr,)
+        print(f"ERROR: '{filename}' has wrong owner '{owner}' but should be '{shouldowner}'", file=sys.stderr)
         return_code = False
     if group != shouldgroup:
-        print(f"ERROR: '{filename}' has wrong group '{group}' but should be '{shouldgroup}'", file=sys.stderr,)
+        print(f"ERROR: '{filename}' has wrong group '{group}' but should be '{shouldgroup}'", file=sys.stderr)
         return_code = False
     return return_code
 
 
-def check_permissions(filename,):
+def check_permissions(filename):
     """Checks file permissions for -rw-r-----"""
     return_code = True
     stat_info = os.stat(filename)
@@ -81,10 +81,10 @@ def check_permissions(filename,):
     if (stat.S_IRUSR & stat_info_stmode) and (stat.S_IWUSR & stat_info_stmode) and (stat.S_IRGRP & stat_info_stmode):
         pass
     elif (stat.S_IXUSR | stat.S_IWGRP | stat.S_IXGRP | stat.S_IRWXO) & stat_info_stmode:
-        print(f"ERROR: '{filename}' has wrong permissions {stat_info_stmode:04o}. Should be exactly -rw-r-----", file=sys.stderr,)
+        print(f"ERROR: '{filename}' has wrong permissions {stat_info_stmode:04o}. Should be exactly -rw-r-----", file=sys.stderr)
         return_code = False
     else:
-        print(f"ERROR: '{filename}' has wrong permissions {stat_info_stmode:04o}. Should be exactly -rw-r-----", file=sys.stderr,)
+        print(f"ERROR: '{filename}' has wrong permissions {stat_info_stmode:04o}. Should be exactly -rw-r-----", file=sys.stderr)
         return_code = False
     return return_code
 

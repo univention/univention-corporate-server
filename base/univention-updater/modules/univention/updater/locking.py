@@ -81,7 +81,7 @@ class LockingError(UpdaterException):
 class UpdaterLock(object):
     """Context wrapper for updater-lock :file:`/var/lock/univention-updater`."""
 
-    def __init__(self, timeout=0,):
+    def __init__(self, timeout=0):
         # type: (int) -> None
         self.timeout = timeout
         self.lock = 0
@@ -92,13 +92,13 @@ class UpdaterLock(object):
             self.lock = self.updater_lock_acquire()
             return self
         except LockingError as ex:
-            print(ex, file=sys.stderr,)
+            print(ex, file=sys.stderr)
             sys.exit(5)
 
-    def __exit__(self, exc_type, exc_value, traceback,):
+    def __exit__(self, exc_type, exc_value, traceback):
         # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
         if not self.updater_lock_release():
-            print('WARNING: updater-lock already released!', file=sys.stderr,)
+            print('WARNING: updater-lock already released!', file=sys.stderr)
 
     def updater_lock_acquire(self):
         # type: () -> int
@@ -114,9 +114,9 @@ class UpdaterLock(object):
         lock_pid = 0
         while True:
             try:
-                lock_fd = os.open(FN_LOCK_UP, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644,)
+                lock_fd = os.open(FN_LOCK_UP, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
                 my_pid = b"%d\n" % os.getpid()
-                bytes_written = os.write(lock_fd, my_pid,)
+                bytes_written = os.write(lock_fd, my_pid)
                 assert bytes_written == len(my_pid)
                 os.close(lock_fd)
                 return 0
@@ -125,9 +125,9 @@ class UpdaterLock(object):
                     raise
 
             try:
-                lock_fd = os.open(FN_LOCK_UP, os.O_RDONLY | os.O_EXCL,)
+                lock_fd = os.open(FN_LOCK_UP, os.O_RDONLY | os.O_EXCL)
                 try:
-                    lock_pid_b = os.read(lock_fd, 11,)  # sizeof(s32) + len('\n')
+                    lock_pid_b = os.read(lock_fd, 11)  # sizeof(s32) + len('\n')
                 finally:
                     os.close(lock_fd)
             except EnvironmentError as ex:
@@ -137,17 +137,17 @@ class UpdaterLock(object):
                 try:
                     lock_pid_s = lock_pid_b.decode('ASCII').strip()
                 except UnicodeDecodeError:
-                    raise LockingError(lock_pid_b, "Invalid PID",)
+                    raise LockingError(lock_pid_b, "Invalid PID")
 
                 if not lock_pid_s:
-                    print('Empty lockfile %s, removing.' % (FN_LOCK_UP,), file=sys.stderr,)
+                    print('Empty lockfile %s, removing.' % (FN_LOCK_UP,), file=sys.stderr)
                     os.remove(FN_LOCK_UP)
                     continue  # redo acquire
 
                 try:
                     lock_pid = int(lock_pid_s)
                 except ValueError:
-                    raise LockingError(lock_pid_s, "Invalid PID",)
+                    raise LockingError(lock_pid_s, "Invalid PID")
 
                 if lock_pid == os.getpid():
                     return 0
@@ -156,16 +156,16 @@ class UpdaterLock(object):
                     return 1
 
                 try:
-                    os.kill(lock_pid, 0,)
+                    os.kill(lock_pid, 0)
                 except EnvironmentError as ex:
                     if ex.errno == ESRCH:
-                        print('Stale PID %d in lockfile %s, removing.' % (lock_pid, FN_LOCK_UP), file=sys.stderr,)
+                        print('Stale PID %d in lockfile %s, removing.' % (lock_pid, FN_LOCK_UP), file=sys.stderr)
                         os.remove(FN_LOCK_UP)
                         continue  # redo acquire
                 # PID is valid and process is still alive...
 
             if monotonic() > deadline:
-                raise LockingError(lock_pid, "Check lockfile",)
+                raise LockingError(lock_pid, "Check lockfile")
             else:
                 sleep(1)
 
@@ -191,23 +191,23 @@ class UpdaterLock(object):
 
 
 @contextmanager
-def apt_lock(timeout=300, out=sys.stdout,):
+def apt_lock(timeout=300, out=sys.stdout):
     """
     Acquire and release lock for APT.
 
     :param timeout: Time to wait.
     :param out: Output stream for progress and error messages.
     """
-    for count in range(timeout, 0, -1,):
+    for count in range(timeout, 0, -1):
         if not os.path.exists(FN_LOCK_APT):
             break
-        print("\r%3d Waiting for updater lock %s ..." % (count, FN_LOCK_APT), end="", file=out,)
+        print("\r%3d Waiting for updater lock %s ..." % (count, FN_LOCK_APT), end="", file=out)
         sleep(1)
     else:
-        print("Updater is still locked: %s" % (FN_LOCK_APT,), file=out,)
+        print("Updater is still locked: %s" % (FN_LOCK_APT,), file=out)
         # FIXME: Abort?
 
-    open(FN_LOCK_APT, "w",).close()
+    open(FN_LOCK_APT, "w").close()
     yield None
     if os.path.exists(FN_LOCK_APT):
         os.unlink(FN_LOCK_APT)

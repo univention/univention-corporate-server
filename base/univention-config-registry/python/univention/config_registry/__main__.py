@@ -46,6 +46,6 @@ if __name__ == '__main__':
     try:
         sys.exit(main(sys.argv[1:]))
     except StrictModeException as ex2:
-        print(('E: UCR is running in strict mode and thus cannot accept the given input:'), file=sys.stderr,)
-        print(ex2, file=sys.stderr,)
+        print(('E: UCR is running in strict mode and thus cannot accept the given input:'), file=sys.stderr)
+        print(ex2, file=sys.stderr)
         sys.exit(1)

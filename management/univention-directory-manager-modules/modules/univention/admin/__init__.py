@@ -64,7 +64,7 @@ if six.PY2:
 ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
 
 
-def ucr_overwrite_properties(module, lo,):
+def ucr_overwrite_properties(module, lo):
     # type: (Any, univention.admin.uldap.access) -> None
     """Overwrite properties in property_descriptions by UCR variables"""
     ucr_prefix = ucr_property_prefix % module.module
@@ -75,9 +75,9 @@ def ucr_overwrite_properties(module, lo,):
         if not var.startswith(ucr_prefix):
             continue
         try:
-            prop_name, attr = var[len(ucr_prefix):].split('/', 1,)
+            prop_name, attr = var[len(ucr_prefix):].split('/', 1)
             # ignore internal attributes
-            ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: found variable: %s' % var,)
+            ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: found variable: %s' % var)
             if attr.startswith('__'):
                 continue
             if attr == 'default':
@@ -87,39 +87,39 @@ def ucr_overwrite_properties(module, lo,):
                 attr = 'base_default'
             if prop_name in module.property_descriptions:
                 prop = module.property_descriptions[prop_name]
-                ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: found property',)
-                if hasattr(prop, attr,):
+                ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: found property')
+                if hasattr(prop, attr):
                     new_prop_val = configRegistry[var]
-                    old_prop_val = getattr(prop, attr,)
+                    old_prop_val = getattr(prop, attr)
                     if old_prop_val is None:
                         # if the attribute was None the type cast
                         #   will fail. best bet is str as type
                         old_prop_val = ''
                     prop_val_type = type(old_prop_val)
-                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % (attr, new_prop_val),)
+                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % (attr, new_prop_val))
                     if attr in ('syntax', ):
-                        if hasattr(univention.admin.syntax, new_prop_val,):
-                            syntax = getattr(univention.admin.syntax, new_prop_val,)
-                            setattr(prop, attr, syntax(),)
+                        if hasattr(univention.admin.syntax, new_prop_val):
+                            syntax = getattr(univention.admin.syntax, new_prop_val)
+                            setattr(prop, attr, syntax())
                         else:
-                            if lo.searchDn(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [new_prop_val],)):
+                            if lo.searchDn(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [new_prop_val])):
                                 syntax = univention.admin.syntax.LDAP_Search(new_prop_val)
                                 syntax._load(lo)
-                                setattr(prop, attr, syntax,)
+                                setattr(prop, attr, syntax)
                             else:
                                 syntax = univention.admin.syntax.string()
-                                setattr(prop, attr, syntax(),)
+                                setattr(prop, attr, syntax())
                     elif prop_val_type is bool:
-                        setattr(prop, attr, configRegistry.is_true(None, None, new_prop_val,),)
+                        setattr(prop, attr, configRegistry.is_true(None, None, new_prop_val))
                     else:
-                        setattr(prop, attr, prop_val_type(new_prop_val),)
-                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: get property attribute: %s (type %s)' % (old_prop_val, prop_val_type),)
+                        setattr(prop, attr, prop_val_type(new_prop_val))
+                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: get property attribute: %s (type %s)' % (old_prop_val, prop_val_type))
         except Exception as exc:
-            ud.debug(ud.ADMIN, ud.ERROR, 'ucr_overwrite_properties: failed to set property attribute: %s' % (exc,),)
+            ud.debug(ud.ADMIN, ud.ERROR, 'ucr_overwrite_properties: failed to set property attribute: %s' % (exc,))
             continue
 
 
-def pattern_replace(pattern, object,):
+def pattern_replace(pattern, object):
     # type: (str, Any) -> str
     """
     Replaces patterns like `<attribute:command,...>[range]` with values
@@ -127,7 +127,7 @@ def pattern_replace(pattern, object,):
     """
     global_commands = []  # type: List[str]
 
-    def modify_text(text, commands,):
+    def modify_text(text, commands):
         # type: (str, List[str]) -> str
         # apply all string commands
         for iCmd in commands:
@@ -136,24 +136,24 @@ def pattern_replace(pattern, object,):
             elif iCmd == 'upper':
                 text = text.upper()
             elif iCmd == 'umlauts':
-                if isinstance(text, bytes,):  # Python 2
+                if isinstance(text, bytes):  # Python 2
                     text = text.decode('UTF-8')
                 # We need this to handle german umlauts, e.g. ä -> ae
                 for umlaut, code in property.UMLAUTS.items():
-                    text = text.replace(umlaut, code,)
+                    text = text.replace(umlaut, code)
                 text = unidecode.unidecode(text)
             elif iCmd == 'alphanum':
-                whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '',)
-                if isinstance(whitelist, bytes,):  # Python 2
+                whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
+                if isinstance(whitelist, bytes):  # Python 2
                     whitelist = whitelist.decode('UTF-8')
-                if isinstance(text, bytes,):
+                if isinstance(text, bytes):
                     text = text.decode('UTF-8')
                 text = u''.join([c for c in text if (c.isalnum() or c in whitelist)])
             elif iCmd in ('trim', 'strip'):
                 text = text.strip()
         return text
 
-    def repl(match,):
+    def repl(match):
         # type: (Match[str]) -> str
         key = match.group('key')
         ext = match.group('ext')
@@ -163,7 +163,7 @@ def pattern_replace(pattern, object,):
         # (e.g., 'firstname:lower,umlaut') these commands are found after a ':'
         if ':' in key:
             # get the corrected key without following commands
-            key, tmpStr = key.rsplit(':', 1,)
+            key, tmpStr = key.rsplit(':', 1)
 
             # get all commands in lower case and without leading/trailing spaces
             strCommands = [iCmd.lower().strip() for iCmd in tmpStr.split(',')]
@@ -176,7 +176,7 @@ def pattern_replace(pattern, object,):
 
         # make sure the key value exists
         if key in object and object[key]:
-            val = modify_text(object[key], strCommands,)
+            val = modify_text(object[key], strCommands)
             # try to apply the indexing instructions, indicated through '[...]'
             if ext:
                 try:
@@ -190,9 +190,9 @@ def pattern_replace(pattern, object,):
         return ''
 
     regex = re.compile(r'<(?P<key>[^>]+)>(?P<ext>\[[\d:]+\])?')
-    value = regex.sub(repl, pattern, 0,)
+    value = regex.sub(repl, pattern, 0)
     if global_commands:
-        value = modify_text(value, global_commands,)
+        value = modify_text(value, global_commands)
     return value
 
 
@@ -237,7 +237,8 @@ class property:
             readonly_when_synced=False,  # type: bool
             size=None,  # type: str
             copyable=False,  # type: bool
-            type_class=None,):  # type: (...) -> None
+            type_class=None,  # type: type  # univention.admin.types.TypeHint
+    ):  # type: (...) -> None
         """
         |UDM| property.
 
@@ -271,7 +272,7 @@ class property:
         """
         self.short_description = short_description
         self.long_description = long_description
-        if isinstance(syntax, type,):
+        if isinstance(syntax, type):
             self.syntax = syntax()
         else:
             self.syntax = syntax
@@ -295,7 +296,7 @@ class property:
         self.configAttributeName = configAttributeName
         self.templates = []  # type: List  # univention.admin.handlers.simpleLdap
         self.include_in_default_search = include_in_default_search
-        self.threshold = int(configRegistry.get('directory/manager/web/sizelimit', '2000',) or 2000)
+        self.threshold = int(configRegistry.get('directory/manager/web/sizelimit', '2000') or 2000)
         self.nonempty_is_default = nonempty_is_default
         self.readonly_when_synced = readonly_when_synced
         self.size = size
@@ -306,10 +307,10 @@ class property:
         # type: () -> Union[List[str], None]
         return [] if self.multivalue else None
 
-    def _replace(self, res, object,):
-        return pattern_replace(copy.copy(res), object,)
+    def _replace(self, res, object):
+        return pattern_replace(copy.copy(res), object)
 
-    def default(self, object,):
+    def default(self, object):
         base_default = copy.copy(self.base_default)  # type: Union[None, bool, int, str, List[str], Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]
         if not object.set_defaults:
             return [] if self.multivalue else ''
@@ -317,26 +318,26 @@ class property:
         if not base_default:
             return self.new()
 
-        if isinstance(base_default, six.string_types,):
-            return self._replace(base_default, object,)
+        if isinstance(base_default, six.string_types):
+            return self._replace(base_default, object)
 
         bd0 = base_default[0]
 
         # we can not import univention.admin.syntax here (recursive import) so we need to find another way to identify a complex syntax
-        if getattr(self.syntax, 'subsyntaxes', None,) is not None and isinstance(bd0, (list, tuple),) and not self.multivalue:
+        if getattr(self.syntax, 'subsyntaxes', None) is not None and isinstance(bd0, (list, tuple)) and not self.multivalue:
             return bd0
 
-        if isinstance(bd0, six.string_types,):
+        if isinstance(bd0, six.string_types):
             # multivalue defaults will only be a part of templates, so not multivalue is the common way for modules
             if not self.multivalue:  # default=(template-str, [list-of-required-properties])
                 if all(object[p] for p in base_default[1]):
                     for p in base_default[1]:
-                        bd0 = bd0.replace('<%s>' % (p,), object[p],)
+                        bd0 = bd0.replace('<%s>' % (p,), object[p])
                     return bd0
                 return self.new()
             else:  # multivalue
-                if all(isinstance(bd, six.string_types,) for bd in base_default):
-                    return [self._replace(bd, object,) for bd in base_default]
+                if all(isinstance(bd, six.string_types) for bd in base_default):
+                    return [self._replace(bd, object) for bd in base_default]
                 # must be a list of loaded extended attributes then, so we return it if it has content
                 # return the first element, this is only related to empty extended attributes which are loaded wrong, needs to be fixed elsewhere
                 if bd0:
@@ -345,13 +346,13 @@ class property:
 
         if callable(bd0):  # default=(func_obj_extra, [list-of-required-properties], extra-arg)
             if all(object[p] for p in base_default[1]):
-                return bd0(object, base_default[2],)
+                return bd0(object, base_default[2])
             return self.new()
 
         return self.new()
 
-    def safe_default(self, object,):
-        def safe_parse(default,):
+    def safe_default(self, object):
+        def safe_parse(default):
             if not default:
                 return False
             try:
@@ -360,17 +361,17 @@ class property:
             except Exception:
                 return False
         defaults = self.default(object)
-        if isinstance(defaults, list,):
+        if isinstance(defaults, list):
             return [self.syntax.parse(d) for d in defaults if safe_parse(d)]
         elif safe_parse(defaults):
             return self.syntax.parse(defaults)
         return defaults
 
-    def check_default(self, object,):
+    def check_default(self, object):
         # type: (Any) -> None
         defaults = self.default(object)
         try:
-            if isinstance(defaults, list,):
+            if isinstance(defaults, list):
                 for d in defaults:
                     if d:
                         self.syntax.parse(d)
@@ -379,7 +380,7 @@ class property:
         except univention.admin.uexceptions.valueError:
             raise univention.admin.uexceptions.templateSyntaxError([t['name'] for t in self.templates])
 
-    def matches(self, options,):
+    def matches(self, options):
         # type: (Iterable[str]) -> bool
         if not self.options:
             return True
@@ -389,7 +390,7 @@ class property:
 class option(object):
     """|UDM| option to make properties conditional."""
 
-    def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False,):
+    def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False):
         # type: (str, str, int, bool, bool, Iterable[str], bool) -> None
         self.short_description = short_description
         self.long_description = long_description
@@ -401,47 +402,47 @@ class option(object):
         if objectClasses:
             self.objectClasses = set(objectClasses)
 
-    def matches(self, objectClasses,):
+    def matches(self, objectClasses):
         # type: (Container[str]) -> bool
         if not self.objectClasses:
             return True
         return all(not oc not in objectClasses for oc in self.objectClasses)
 
 
-def ucr_overwrite_layout(module, ucr_property, tab,):
+def ucr_overwrite_layout(module, ucr_property, tab):
     # type: (Any, str, Tab) -> Optional[bool]
     """Overwrite the advanced setting in the layout"""
     desc = tab['name']
-    if hasattr(tab['name'], 'data',):
+    if hasattr(tab['name'], 'data'):
         desc = tab.tab['name'].data
     # replace invalid characters by underscores
-    desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc,).replace('/', '_',)
-    return configRegistry.is_true('directory/manager/web/modules/%s/layout/%s/%s' % (module, desc, ucr_property), None,)
+    desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc).replace('/', '_')
+    return configRegistry.is_true('directory/manager/web/modules/%s/layout/%s/%s' % (module, desc, ucr_property), None)
 
 
-def ucr_overwrite_module_layout(module,):
+def ucr_overwrite_module_layout(module):
     # type: (Any) -> None
     """Overwrite the tab layout through |UCR| variables."""
-    ud.debug(ud.ADMIN, ud.INFO, "layout overwrite",)
+    ud.debug(ud.ADMIN, ud.INFO, "layout overwrite")
     # there are modules without a layout definition
-    if not hasattr(module, 'layout',):
+    if not hasattr(module, 'layout'):
         return
 
     new_layout = []
     for tab in module.layout[:]:
         desc = tab.label
-        if hasattr(tab.label, 'data',):
+        if hasattr(tab.label, 'data'):
             desc = tab.label.data
 
         # replace invalid characters by underscores
-        desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc,).replace('/', '_',)
+        desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc).replace('/', '_')
 
         tab_layout = configRegistry.get('directory/manager/web/modules/%s/layout/%s' % (module.module, desc))
-        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_layout='%s'" % tab_layout,)
+        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_layout='%s'" % tab_layout)
         tab_name = configRegistry.get('directory/manager/web/modules/%s/layout/%s/name' % (module.module, desc))
-        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_name='%s'" % tab_name,)
+        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_name='%s'" % tab_name)
         tab_descr = configRegistry.get('directory/manager/web/modules/%s/layout/%s/description' % (module.module, desc))
-        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_descr='%s'" % tab_descr,)
+        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_descr='%s'" % tab_descr)
 
         if tab_name:
             tab['name'] = tab_name
@@ -468,27 +469,27 @@ def ucr_overwrite_module_layout(module,):
 
         if not tab_layout or tab_layout.lower() != 'none':
             # disable specified properties via UCR
-            ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_module_layout: trying to hide properties on tab %s' % (desc),)
+            ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_module_layout: trying to hide properties on tab %s' % (desc))
             ucr_prefix = ucr_property_prefix % module.module
             for var in configRegistry.keys():
                 if not var.startswith(ucr_prefix):
                     continue
-                prop, attr = var[len(ucr_prefix):].split('/', 1,)
+                prop, attr = var[len(ucr_prefix):].split('/', 1)
                 # ignore invalid/unknown UCR variables
                 if '/' in attr:
                     continue
                 if attr in ('__hidden') and configRegistry.is_true(var):
                     removed, layout = tab.remove(prop)
-                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_module_layout: tried to hide property: %s (found=%s)' % (prop, removed),)
+                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_module_layout: tried to hide property: %s (found=%s)' % (prop, removed))
             new_layout.append(tab)
 
     module.layout = new_layout
 
     # sort tabs: All apps occur alphabetical after the "Apps" / "Options" tab
     app_tabs = [x for x in module.layout if x.is_app_tab]
-    app_tabs.sort(key=lambda x,: x.label.lower())
+    app_tabs.sort(key=lambda x: x.label.lower())
     layout = [x for x in module.layout if not x.is_app_tab]
-    pos = ([i for i, x in enumerate(layout, 1,) if x.label == 'Apps'] or [len(layout)])[0]
+    pos = ([i for i, x in enumerate(layout, 1) if x.label == 'Apps'] or [len(layout)])[0]
     layout[pos:pos] = app_tabs
     module.layout = layout
 
@@ -496,7 +497,7 @@ def ucr_overwrite_module_layout(module,):
 class extended_attribute(object):
     """Extended attributes extend |UDM| and |UMC| with additional properties defined in |LDAP|."""
 
-    def __init__(self, name, objClass, ldapMapping, deleteObjClass=False, syntax='string', hook=None,):
+    def __init__(self, name, objClass, ldapMapping, deleteObjClass=False, syntax='string', hook=None):
         # type: (str, str, Any, bool, str, Any) -> None
         self.name = name
         self.objClass = objClass
@@ -518,14 +519,14 @@ if six.PY2:  # deprecated, use layout.Tab instead
 
         is_app_tab = False
 
-        def __init__(self, short_description='', long_description='', fields=[], advanced=False, help_text=None,):
+        def __init__(self, short_description='', long_description='', fields=[], advanced=False, help_text=None):
             self.short_description = short_description
             self.long_description = long_description
             self.fields = fields
             self.advanced = advanced
             self.help_text = help_text
 
-        def set_fields(self, fields,):
+        def set_fields(self, fields):
             self.fields = fields
 
         def get_fields(self):
@@ -563,7 +564,7 @@ if six.PY2:  # deprecated, use layout.Group instead
         False
         """
 
-        def __init__(self, property='', type='', first_only=0, short_description='', long_description='', hide_in_resultmode=0, hide_in_normalmode=0, colspan=None, width=None,):
+        def __init__(self, property='', type='', first_only=0, short_description='', long_description='', hide_in_resultmode=0, hide_in_normalmode=0, colspan=None, width=None):
             self.property = property
             self.type = type
             self.first_only = first_only
@@ -580,28 +581,28 @@ if six.PY2:  # deprecated, use layout.Group instead
 
         # at the moment the sort is only needed for layout of the registry module
 
-        def __lt__(self, other,):
-            return (self.property != 'registry', self.property) < (other.property != 'registry', other.property) if isinstance(other, field,) else NotImplemented
+        def __lt__(self, other):
+            return (self.property != 'registry', self.property) < (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
 
-        def __le__(self, other,):
-            return (self.property != 'registry', self.property) <= (other.property != 'registry', other.property) if isinstance(other, field,) else NotImplemented
+        def __le__(self, other):
+            return (self.property != 'registry', self.property) <= (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
 
-        def __eq__(self, other,):
-            return self.property == other.property if isinstance(other, field,) else NotImplemented
+        def __eq__(self, other):
+            return self.property == other.property if isinstance(other, field) else NotImplemented
 
-        def __ne__(self, other,):
-            return self.property != other.property if isinstance(other, field,) else NotImplemented
+        def __ne__(self, other):
+            return self.property != other.property if isinstance(other, field) else NotImplemented
 
-        def __ge__(self, other,):
-            return (self.property != 'registry', self.property) >= (other.property != 'registry', other.property) if isinstance(other, field,) else NotImplemented
+        def __ge__(self, other):
+            return (self.property != 'registry', self.property) >= (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
 
-        def __gt__(self, other,):
-            return (self.property != 'registry', self.property) > (other.property != 'registry', other.property) if isinstance(other, field,) else NotImplemented
+        def __gt__(self, other):
+            return (self.property != 'registry', self.property) > (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
 
 
 class policiesGroup:
 
-    def __init__(self, id, short_description=None, long_description='', members=[],):
+    def __init__(self, id, short_description=None, long_description='', members=[]):
         # type: (Any, Optional[str], str, Any) -> None
         self.id = id
         if short_description is None:
@@ -612,11 +613,11 @@ class policiesGroup:
         self.members = members
 
 
-def _ldap_cache(ttl=10, cache_none=True,):
-    def _decorator(func,):
+def _ldap_cache(ttl=10, cache_none=True):
+    def _decorator(func):
         func._cache = {}
 
-        def _decorated(lo,*args):
+        def _decorated(lo, *args):
             cache = func._cache
             key = tuple([id(lo)] + list(args))
             now = time.time()
@@ -625,7 +626,7 @@ def _ldap_cache(ttl=10, cache_none=True,):
                     cache.pop(cache_key)
 
             if key not in cache or cache[key]['expire'] < now:
-                value = {'value': func(lo, *args,), 'expire': time.time() + ttl}
+                value = {'value': func(lo, *args), 'expire': time.time() + ttl}
                 if value['value'] is None and not cache_none:
                     return
                 cache[key] = value
@@ -645,4 +646,4 @@ if __name__ == '__main__':
     prop = property('_replace')
     for pattern in ('<firstname>', '<firstname> <lastname>', '<firstname:upper>', '<:trim,upper><firstname> <lastname>     ', '<:lower><firstname> <lastname>', '<:umlauts><firstname> <lastname>'):
         print("pattern: '%s'" % pattern)
-        print(" -> '%s'" % prop._replace(pattern, {'firstname': 'Andreas', 'lastname': 'Büsching'},))
+        print(" -> '%s'" % prop._replace(pattern, {'firstname': 'Andreas', 'lastname': 'Büsching'}))

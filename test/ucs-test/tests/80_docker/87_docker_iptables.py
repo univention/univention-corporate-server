@@ -28,7 +28,7 @@ services:
         ports:
             - "9000:9000"
         command: /sbin/init
-'''.replace('\t', '  ',)
+'''.replace('\t', '  ')
 
 if __name__ == '__main__':
     # cleanup remnants from previous tests
@@ -39,7 +39,7 @@ if __name__ == '__main__':
         setup = '#!/bin/sh'
         store_data = '#!/bin/sh'
 
-        app = App(name=name, version='1', build_package=False, call_join_scripts=False,)
+        app = App(name=name, version='1', build_package=False, call_join_scripts=False)
         try:
             app.set_ini_parameter(
                 DockerMainService='test1',
@@ -52,16 +52,16 @@ if __name__ == '__main__':
             app.install()
             app.verify(joined=False)
 
-            iptables_save_after_installation = subprocess.check_output(['iptables-save'], text=True,)
+            iptables_save_after_installation = subprocess.check_output(['iptables-save'], text=True)
             print(" iptables rules before firewall restart:\n" + iptables_save_after_installation)
             docker_iptables_rules = []
             for line in iptables_save_after_installation.split("\n"):
-                if not re.match('^#.*', line,) and not re.match('^:.*ACCEPT.*', line,):
+                if not re.match('^#.*', line) and not re.match('^:.*ACCEPT.*', line):
                     docker_iptables_rules.append(line)
 
             restart_firewall()
 
-            iptables_save_after_firewall_restart = subprocess.check_output(['iptables-save'], text=True,)
+            iptables_save_after_firewall_restart = subprocess.check_output(['iptables-save'], text=True)
             print(" iptables rules after firewall restart:\n" + iptables_save_after_firewall_restart)
             for rule in docker_iptables_rules:
                 assert rule in iptables_save_after_firewall_restart, "iptables rules are inconsistent"

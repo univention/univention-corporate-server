@@ -90,7 +90,7 @@ class ProgressState(object):
     :param logging.Logger parent_logger: The Logger of the parent.
     """
 
-    def __init__(self, parent_logger,):
+    def __init__(self, parent_logger):
         # type: (logging.Logger) -> None
         self._logger = parent_logger.getChild('dpkg')
         self.hard_reset()
@@ -115,7 +115,7 @@ class ProgressState(object):
         """Mark installation as finished."""
         self._finished = True
 
-    def get_logger(self, logger_name=None,):
+    def get_logger(self, logger_name=None):
         # type: (Optional[str]) -> logging.Logger
         """
         Return (sub-)logger.
@@ -128,7 +128,7 @@ class ProgressState(object):
             return self._logger
         return self._logger.getChild(logger_name)
 
-    def info(self, info, logger_name=None,):
+    def info(self, info, logger_name=None):
         # type: (Any, Optional[str]) -> None
         """
         Log info message.
@@ -139,7 +139,7 @@ class ProgressState(object):
         self._info = info
         self.get_logger(logger_name).info(info)
 
-    def percentage(self, percentage, logger_name='percentage',):
+    def percentage(self, percentage, logger_name='percentage'):
         # type: (float, str) -> None
         """
         Update progress information.
@@ -151,7 +151,7 @@ class ProgressState(object):
         if percentage is not None:
             self.get_logger(logger_name).info(percentage)
 
-    def error(self, error, logger_name=None,):
+    def error(self, error, logger_name=None):
         # type: (Any, Optional[str]) -> None
         """
         Log error message.
@@ -162,7 +162,7 @@ class ProgressState(object):
         self._errors.append(error)
         self.get_logger(logger_name).error(error)
 
-    def add_start_steps(self, steps,):
+    def add_start_steps(self, steps):
         # type: (int) -> None
         """
         Add additional planned steps.
@@ -210,43 +210,43 @@ class FetchProgress(apt.progress.base.AcquireProgress):
     :param ProgressState outfile: An instance to receive the progress information.
     """
 
-    def __init__(self, progress_state,):
+    def __init__(self, progress_state):
         # type: (ProgressState) -> None
-        super(FetchProgress, self,).__init__()
+        super(FetchProgress, self).__init__()
         self.progress_state = progress_state
 
-    def _info(self, msg,*args):
+    def _info(self, msg, *args):
         # type: (str, *object) -> None
-        self.progress_state.info(msg % args, logger_name="fetch",)
+        self.progress_state.info(msg % args, logger_name="fetch")
 
     @staticmethod
-    def _b2h(item,):
+    def _b2h(item):
         # type: (apt_pkg.AcquireItemDesc) -> str
         if not item.owner.filesize:
             return ""
         return " [%sB]" % (apt_pkg.size_to_str(item.owner.filesize),)
 
-    def fail(self, item,):
+    def fail(self, item):
         # type: (apt_pkg.AcquireItemDesc) -> None
         """Invoked when an item could not be fetched."""
         if item.owner.status == item.owner.STAT_DONE:
-            self._info("Ign %s", item.description,)
+            self._info("Ign %s", item.description)
         else:
-            self._info("Err %s  %s", item.description, item.owner.error_text,)
+            self._info("Err %s  %s", item.description, item.owner.error_text)
 
-    def fetch(self, item,):
+    def fetch(self, item):
         # type: (apt_pkg.AcquireItemDesc) -> None
         """Invoked when some of the item's data is fetched."""
         if item.owner.complete:
             return
-        self._info("Get: %s %s%s", 0, item.description, self._b2h(item),)
+        self._info("Get: %s %s%s", 0, item.description, self._b2h(item))
 
-    def ims_hit(self, item,):
+    def ims_hit(self, item):
         # type: (apt_pkg.AcquireItemDesc) -> None
         """Invoked when an item is confirmed to be up-to-date."""
-        self._info("Hit %s%s", item.description, self._b2h(item),)
+        self._info("Hit %s%s", item.description, self._b2h(item))
 
-    def pulse(self, owner,):
+    def pulse(self, owner):
         # type: (apt_pkg.Acquire) -> bool
         """Periodically invoked while the Acquire process is underway."""
         self.progress_state.percentage(
@@ -261,7 +261,8 @@ class FetchProgress(apt.progress.base.AcquireProgress):
             "Fetched %sB in %s (%sB/s)",
             apt_pkg.size_to_str(self.fetched_bytes),
             apt_pkg.time_to_str(self.elapsed_time),
-            apt_pkg.size_to_str(self.current_cps),)
+            apt_pkg.size_to_str(self.current_cps),
+        )
 
 
 class DpkgProgress(apt.progress.base.InstallProgress):
@@ -270,9 +271,9 @@ class DpkgProgress(apt.progress.base.InstallProgress):
     Writes messages (and percentage) from |APT| status file descriptor
     """
 
-    def __init__(self, progress_state,):
+    def __init__(self, progress_state):
         # type: (ProgressState) -> None
-        super(DpkgProgress, self,).__init__()
+        super(DpkgProgress, self).__init__()
         self.progress_state = progress_state
 
     def fork(self):
@@ -292,8 +293,8 @@ class DpkgProgress(apt.progress.base.InstallProgress):
         p = os.fork()
         if p == 0:
             # child -> redirect stdout/stderr of dpkg to pipe
-            os.dup2(fd_pipe_write, sys.stdout.fileno(),)
-            os.dup2(fd_pipe_write, sys.stderr.fileno(),)
+            os.dup2(fd_pipe_write, sys.stdout.fileno())
+            os.dup2(fd_pipe_write, sys.stderr.fileno())
 
             # close unneeded pipe handles
             os.close(fd_pipe_read)
@@ -306,13 +307,13 @@ class DpkgProgress(apt.progress.base.InstallProgress):
             pipe_read = os.fdopen(fd_pipe_read)
 
             # start thread that monitors the pipes output
-            self._check_pipe_thread = threading.Thread(target=self.check_pipe, args=(pipe_read,),)
+            self._check_pipe_thread = threading.Thread(target=self.check_pipe, args=(pipe_read,))
             self._check_pipe_thread.daemon = True
             self._check_pipe_thread.start()
 
         return p
 
-    def check_pipe(self, pipe_read,):
+    def check_pipe(self, pipe_read):
         # type: (IO[bytes]) -> None
         """
         Internal function for reading the pipe and updating the progress status.
@@ -328,7 +329,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
                     break
 
                 # we got a new line -> send to info handler
-                self.progress_state.info(output.strip(), logger_name='process',)
+                self.progress_state.info(output.strip(), logger_name='process')
             except (OSError, IOError):
                 # something unexpected happened -> break loop
                 break
@@ -337,7 +338,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
         pipe_read.close()
 
     # status == pmstatus
-    def status_change(self, pkg, percent, status,):
+    def status_change(self, pkg, percent, status):
         # type: (str, float, str) -> None
         """
         Update installation status and progress.
@@ -346,12 +347,12 @@ class DpkgProgress(apt.progress.base.InstallProgress):
         :param float percent: The progress.
         :param str status: The status message.
         """
-        self.progress_state.info(status, logger_name='status',)
+        self.progress_state.info(status, logger_name='status')
         self.progress_state.percentage(percent)
 
     # status == pmerror
     # they are probably not for frontend-users
-    def error(self, pkg, errormsg,):
+    def error(self, pkg, errormsg):
         # type: (str, str) -> None
         """
         Report an error.
@@ -359,7 +360,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
         :param str pkg: The name of the binary package currently being processed.
         :param str errormsg: An error message.
         """
-        self.progress_state.error('%s: %s' % (pkg, errormsg), logger_name='process',)
+        self.progress_state.error('%s: %s' % (pkg, errormsg), logger_name='process')
 
 #    def start_update(self):
 #        self.log('SUPDATE')
@@ -387,14 +388,14 @@ class _PackageManagerLoggerHandler(Handler):
     :parmm error_handler: A optional function which accepts error messages as the single argument.
     """
 
-    def __init__(self, info_handler, step_handler, error_handler,):
+    def __init__(self, info_handler, step_handler, error_handler):
         # type: (Optional[Callable[..., None]], Optional[Callable[..., None]], Optional[Callable[..., None]]) -> None
-        super(_PackageManagerLoggerHandler, self,).__init__()
+        super(_PackageManagerLoggerHandler, self).__init__()
         self.info_handler = info_handler
         self.step_handler = step_handler
         self.error_handler = error_handler
 
-    def emit(self, record,):
+    def emit(self, record):
         # type: (logging.LogRecord) -> None
         """
         Translate event to calls of |APT| handlers.
@@ -421,7 +422,7 @@ class PackageManager(object):
     :param always_noninteractive: Run :command:`dpkg` in non-interactive mode to prevent any user input.
     """
 
-    def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, always_noninteractive=True,):
+    def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, always_noninteractive=True):
         # type: (bool, Optional[Callable[..., None]], Optional[Callable[..., None]], Optional[Callable[..., None]], bool) -> None
         self.lock_fd = None  # type: Optional[IO[Text]]
         self.apt_lock_fd = -1  # type: int
@@ -429,7 +430,7 @@ class PackageManager(object):
         self.logger = getLogger('packagemanager')
         self.logger.setLevel(DEBUG)
         if info_handler or step_handler or error_handler:
-            handler = _PackageManagerLoggerHandler(info_handler, step_handler, error_handler,)
+            handler = _PackageManagerLoggerHandler(info_handler, step_handler, error_handler)
             self.logger.addHandler(handler)
 
         self._cache = None  # type: Optional[apt.cache.Cache]
@@ -448,7 +449,7 @@ class PackageManager(object):
         assert self._cache is not None
         return self._cache
 
-    def always_install(self, pkgs=(), just_mark=False,):
+    def always_install(self, pkgs=(), just_mark=False):
         # type: (Iterable[apt.package.Package], bool) -> None
         """
         Set packages that should be installed and never
@@ -467,7 +468,7 @@ class PackageManager(object):
             else:
                 pkg.mark_install()
 
-    def lock(self, raise_on_fail=True,):
+    def lock(self, raise_on_fail=True):
         # type: (bool) -> bool
         """
         Get locks to prevent concurrent calls.
@@ -480,7 +481,7 @@ class PackageManager(object):
         if self.is_locked():
             return True
 
-        self.lock_fd = get_lock('univention-lib-package-manager', nonblocking=True,)
+        self.lock_fd = get_lock('univention-lib-package-manager', nonblocking=True)
         locked = self.lock_fd is not None
 
         if locked:
@@ -525,7 +526,7 @@ class PackageManager(object):
         return self.lock_fd is not None and self.apt_lock_fd >= 0
 
     @contextmanager
-    def locked(self, reset_status=False, set_finished=False,):
+    def locked(self, reset_status=False, set_finished=False):
         # type: (bool, bool) -> Iterator[None]
         """
         Perform locking and cleanup actions before and after working with package state.
@@ -546,7 +547,7 @@ class PackageManager(object):
                 self.set_finished()
             self.unlock()
 
-    def _shell_command(self, command, handle_streams=True,):
+    def _shell_command(self, command, handle_streams=True):
         # type: (Union[str, Sequence[str]], bool) -> Tuple[bytes, bytes]
         """
         Execute command processing and returning its output.
@@ -556,7 +557,7 @@ class PackageManager(object):
         :returns: a 2-tuple (stdout, stderr)
         :rtype: tuple(str, str)
         """
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = process.communicate()
         if handle_streams:
             if out:
@@ -566,7 +567,7 @@ class PackageManager(object):
         return out, err
 
     @contextmanager
-    def no_umc_restart(self, exclude_apache=False,):
+    def no_umc_restart(self, exclude_apache=False):
         # type: (bool) -> Iterator[None]
         """
         Run package manager with restart of |UMC| (and Apache) disabled.
@@ -574,17 +575,17 @@ class PackageManager(object):
         :param bool exclude_apache: DEPRECATED
         """
         cmd_disable_exec = CMD_DISABLE_EXEC
-        self._shell_command(cmd_disable_exec, False,)
+        self._shell_command(cmd_disable_exec, False)
         try:
             yield
         finally:
-            self._shell_command(CMD_ENABLE_EXEC, False,)
+            self._shell_command(CMD_ENABLE_EXEC, False)
 
     def __del__(self):
         # type: () -> None
         self.unlock()
 
-    def _set_apt_pkg_config(self, options,):
+    def _set_apt_pkg_config(self, options):
         # type: (Iterable[Tuple[str, Optional[str]]]) -> List[Tuple[str, Optional[str]]]
         """
         Set |APT| options.
@@ -607,7 +608,7 @@ class PackageManager(object):
         self.progress_state.add_start_steps(100)
         self.progress_state.percentage(0)
 
-    def set_max_steps(self, steps,):  # type: (int) -> None
+    def set_max_steps(self, steps):  # type: (int) -> None
         """
         Set maximum number of steps.
 
@@ -619,7 +620,7 @@ class PackageManager(object):
         """Signal all steps done."""
         self.progress_state.set_finished()
 
-    def poll(self, timeout,):
+    def poll(self, timeout):
         # type: (Any) -> Dict[str, Any]
         """
         Poll for progress.
@@ -701,7 +702,7 @@ class PackageManager(object):
             self.reopen_cache()
             return True
 
-    def get_packages(self, pkg_names,):
+    def get_packages(self, pkg_names):
         # type: (Iterable[PkgNameOrApt]) -> List[apt.package.Package]
         """
         Get many Package-objects at once
@@ -713,7 +714,7 @@ class PackageManager(object):
         packages = (self.get_package(pkg_name) for pkg_name in pkg_names)
         return [pkg for pkg in packages if pkg]
 
-    def get_package(self, pkg_name, raise_key_error=False,):
+    def get_package(self, pkg_name, raise_key_error=False):
         # type: (PkgNameOrApt, bool) -> Optional[apt.package.Package]
         """
         Get Package-object for package name.
@@ -722,7 +723,7 @@ class PackageManager(object):
         :param raise_key_error: Raise error when `True`, otherwise write an error message.
         :returns: The |APT| cache entry for the binary package.
         """
-        if isinstance(pkg_name, apt.package.Package,):
+        if isinstance(pkg_name, apt.package.Package):
             # we already have a Package instance :)
             return pkg_name
         try:
@@ -734,7 +735,7 @@ class PackageManager(object):
                 self.progress_state.error('%s: %s' % (pkg_name, _('No such package')))
                 return None
 
-    def is_installed(self, pkg_name, reopen=False,):
+    def is_installed(self, pkg_name, reopen=False):
         # type: (PkgNameOrApt, bool) -> Optional[bool]
         """
         Returns whether a package is installed.
@@ -746,7 +747,7 @@ class PackageManager(object):
         if reopen:
             self.reopen_cache()
         try:
-            package = self.get_package(pkg_name, raise_key_error=True,)
+            package = self.get_package(pkg_name, raise_key_error=True)
         except KeyError:
             return None
         else:
@@ -754,7 +755,7 @@ class PackageManager(object):
             # return package.is_installed
             return package._pkg.current_state == apt_pkg.CURSTATE_INSTALLED  # type: ignore
 
-    def packages(self, reopen=False,):
+    def packages(self, reopen=False):
         # type: (bool) -> Iterator[apt.package.Package]
         """
         Yields all packages in cache.
@@ -766,7 +767,7 @@ class PackageManager(object):
         for pkg in self.cache:
             yield pkg
 
-    def mark_auto(self, auto,*pkgs):
+    def mark_auto(self, auto, *pkgs):
         # type: (bool, PkgNameOrApt) -> None
         """
         Immediately sets packages to automatically installed (or not).
@@ -780,7 +781,7 @@ class PackageManager(object):
             pkg.mark_auto(auto)
         self.commit()
 
-    def mark(self, install, remove, dry_run=False,):
+    def mark(self, install, remove, dry_run=False):
         # type: (List[apt.package.Package], List[apt.package.Package], bool) -> Tuple[List[str], List[str], List[str]]
         """
         Mark packages as automatically installed (or not).
@@ -882,7 +883,7 @@ class PackageManager(object):
             self.reopen_cache()
         return sorted(to_be_installed), sorted(to_be_removed), sorted(broken)
 
-    def commit(self, install=(), remove=(), upgrade=False, dist_upgrade=False, msg_if_failed='',):
+    def commit(self, install=(), remove=(), upgrade=False, dist_upgrade=False, msg_if_failed=''):
         # type: (Iterable[PkgNameOrApt], Iterable[PkgNameOrApt], bool, bool, str) -> bool
         """
         Really commit changes (mark_install or mark_delete)
@@ -912,7 +913,7 @@ class PackageManager(object):
         # as it reopens the cache
         broken = []  # type: List[str]
         if install_pkgs or remove_pkgs:
-            _to_be_installed, _to_be_removed, broken = self.mark(install_pkgs, remove_pkgs, dry_run=True,)
+            _to_be_installed, _to_be_removed, broken = self.mark(install_pkgs, remove_pkgs, dry_run=True)
 
         result = False
         try:
@@ -926,14 +927,14 @@ class PackageManager(object):
                 self.cache.upgrade(dist_upgrade=False)
 
             # mark packages to install/remove
-            self.mark(install_pkgs, remove_pkgs, dry_run=False,)
+            self.mark(install_pkgs, remove_pkgs, dry_run=False)
 
             # commit marked packages
             if self.always_noninteractive:
                 with self.noninteractive():
-                    result = self.cache.commit(fetch_progress=self.fetch_progress, install_progress=self.dpkg_progress,)
+                    result = self.cache.commit(fetch_progress=self.fetch_progress, install_progress=self.dpkg_progress)
             else:
-                result = self.cache.commit(fetch_progress=self.fetch_progress, install_progress=self.dpkg_progress,)
+                result = self.cache.commit(fetch_progress=self.fetch_progress, install_progress=self.dpkg_progress)
             if not result:
                 raise SystemError()
         except FetchFailedException as exc:
@@ -994,7 +995,7 @@ class PackageManager(object):
             # still failing, let it raise
             self._handle_system_error(*sys.exc_info())
 
-    def _handle_system_error(self, etype, exc, etraceback,):
+    def _handle_system_error(self, etype, exc, etraceback):
         # type: (Type[BaseException], BaseException, TracebackType) -> None
         """
         Log exception from opening |APT| cache.
@@ -1004,9 +1005,9 @@ class PackageManager(object):
         :param etraceback: Exception traceback.
         """
         message = '%s %s' % (_('Could not initialize package manager.'), '\n'.join(self._get_error_message(exc)))
-        six.reraise(etype, etype(message), etraceback,)
+        six.reraise(etype, etype(message), etraceback)
 
-    def _get_error_message(self, exc,):
+    def _get_error_message(self, exc):
         # type: (BaseException) -> List[str]
         """
         Parse exception message and return standardized messages for user consumption.
@@ -1016,7 +1017,7 @@ class PackageManager(object):
 
         All strings which must pass this function are in: <https://forge.univention.org/bugzilla/attachment.cgi?id=6898>
         """
-        messages = re.sub(r'\s([WE]:)', r'\n\1', str(exc),).splitlines()
+        messages = re.sub(r'\s([WE]:)', r'\n\1', str(exc)).splitlines()
         further = set()  # type: Set[str]
 
         apt_update = False
@@ -1035,7 +1036,7 @@ class PackageManager(object):
                 if 'pkgProblemResolver::Resolve' in msg:
                     hold_package = True
                     continue
-                match = re.search(r' - (write|open|rename) \((\d+): .*\)', msg,)
+                match = re.search(r' - (write|open|rename) \((\d+): .*\)', msg)
                 if match:
                     type_, errno_ = match.groups()
                     errno = int(errno_)
@@ -1048,9 +1049,9 @@ class PackageManager(object):
                     elif errno == ENOENT and type_ == 'rename':
                         renaming_failed = True
                         continue
-            msg = re.sub('^W:', _('Warning: '), msg,)
-            msg = re.sub('^E:', _('Error: '), msg,)
-            msg = re.sub(',$', '.', msg,)
+            msg = re.sub('^W:', _('Warning: '), msg)
+            msg = re.sub('^E:', _('Error: '), msg)
+            msg = re.sub(',$', '.', msg)
             if not msg.endswith('.'):
                 msg = '%s.' % msg
             further.add(msg)
@@ -1138,4 +1139,4 @@ class PackageManager(object):
         :param pkg_names: A list of binary package names to remove.
         :returns: `True` on success, `False` otherwise.
         """
-        return self.commit(install=self._always_install, remove=pkg_names,)
+        return self.commit(install=self._always_install, remove=pkg_names)

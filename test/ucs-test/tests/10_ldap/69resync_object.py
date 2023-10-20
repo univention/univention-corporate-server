@@ -29,7 +29,7 @@ def test_resync_missing_object():
         # pong has stopped, so that we can remove the object in the local
         # ldap without getting the object back from samba
         time.sleep(30)
-        user_filter = ldap.filter.filter_format('uid=%s', (user_name, ),)
+        user_filter = ldap.filter.filter_format('uid=%s', (user_name, ))
         local_lo = getRootDnConnection()
         local_lo.delete(user_dn)
         if local_lo.searchDn(user_filter):
@@ -67,12 +67,12 @@ def test_resync_updating_object():
     print('Testing resync updating object')
     with UCSTestUDM() as udm:
         user_dn, user_name = udm.create_user()
-        user_filter = ldap.filter.filter_format('uid=%s', (user_name, ),)
+        user_filter = ldap.filter.filter_format('uid=%s', (user_name, ))
         local_lo = getRootDnConnection()
-        user_sn = local_lo.search(user_filter, attr=('sn',),)[0][1]['sn'][0]
+        user_sn = local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0]
         user_sn_new = uts.random_string().encode('UTF-8')
-        local_lo.modify(user_dn, [('sn', user_sn, user_sn_new)],)
-        if local_lo.search(user_filter, attr=('sn',),)[0][1]['sn'][0] != user_sn_new:
+        local_lo.modify(user_dn, [('sn', user_sn, user_sn_new)])
+        if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
             utils.fail('Local object modification failed')
         fail_create = subprocess.check_output([
             '/usr/share/univention-directory-listener/resync-objects.py',
@@ -90,7 +90,7 @@ def test_resync_updating_object():
         ]).decode('UTF-8')
         if simulation != f'resync from Primary: {user_dn}\n  ==> modifying object\n':
             utils.fail(f'Unexpected output from simulation: {simulation}')
-        if local_lo.search(user_filter, attr=('sn',),)[0][1]['sn'][0] != user_sn_new:
+        if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
             utils.fail('Simulation changed local ldap')
         print('OK: simulation works')
         subprocess.check_call([
@@ -99,7 +99,7 @@ def test_resync_updating_object():
             '--filter',
             user_filter,
         ])
-        if local_lo.search(user_filter, attr=('sn',),)[0][1]['sn'][0] != user_sn:
+        if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn:
             utils.fail('Object not resynced')
         print('OK: could resync updating object')
 
@@ -108,12 +108,12 @@ def test_resync_recreate_object():
     print('Testing resync recreate object')
     with UCSTestUDM() as udm:
         user_dn, user_name = udm.create_user()
-        user_filter = ldap.filter.filter_format('uid=%s', (user_name, ),)
+        user_filter = ldap.filter.filter_format('uid=%s', (user_name, ))
         local_lo = getRootDnConnection()
-        user_sn = local_lo.search(user_filter, attr=('sn',),)[0][1]['sn'][0]
+        user_sn = local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0]
         user_sn_new = uts.random_string().encode('UTF-8')
-        local_lo.modify(user_dn, [('sn', user_sn, user_sn_new)],)
-        if local_lo.search(user_filter, attr=('sn',),)[0][1]['sn'][0] != user_sn_new:
+        local_lo.modify(user_dn, [('sn', user_sn, user_sn_new)])
+        if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
             utils.fail('Local object modification failed')
         simulation = subprocess.check_output([
             '/usr/share/univention-directory-listener/resync-objects.py',
@@ -124,7 +124,7 @@ def test_resync_recreate_object():
         ]).decode('UTF-8')
         if simulation != f'remove from local: {user_dn}\nresync from Primary: {user_dn}\n  ==> adding object\n':
             utils.fail(f'Unexpected output from simulation: {simulation}')
-        if local_lo.search(user_filter, attr=('sn',),)[0][1]['sn'][0] != user_sn_new:
+        if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn_new:
             utils.fail('Simulation changed local ldap')
         print('OK: simulation works')
         subprocess.check_call([
@@ -133,7 +133,7 @@ def test_resync_recreate_object():
             '--filter',
             user_filter,
         ])
-        if local_lo.search(user_filter, attr=('sn',),)[0][1]['sn'][0] != user_sn:
+        if local_lo.search(user_filter, attr=('sn',))[0][1]['sn'][0] != user_sn:
             utils.fail('Object not resynced')
         print('OK: could resync recreate object')
 
@@ -143,7 +143,7 @@ def test_resync_remove_object():
     local_lo = getRootDnConnection()
     container_name = uts.random_name()
     container_dn = f'cn={container_name},{local_lo.base}'
-    container_filter = ldap.filter.filter_format('cn=%s', (container_name, ),)
+    container_filter = ldap.filter.filter_format('cn=%s', (container_name, ))
     fail_remove = subprocess.check_output([
         '/usr/share/univention-directory-listener/resync-objects.py',
         '--remove',
@@ -152,7 +152,7 @@ def test_resync_remove_object():
     ]).decode('UTF-8')
     if fail_remove != 'object does not exist local\nobject does not exist on Primary\n':
         utils.fail(f'Script should not have done anything: {fail_remove}')
-    local_lo.add(container_dn, [('objectClass', b'organizationalRole'), ('cn', container_name.encode('UTF-8'))],)
+    local_lo.add(container_dn, [('objectClass', b'organizationalRole'), ('cn', container_name.encode('UTF-8'))])
     try:
         if not local_lo.searchDn(container_filter):
             utils.fail("Could not add container to local ldap")

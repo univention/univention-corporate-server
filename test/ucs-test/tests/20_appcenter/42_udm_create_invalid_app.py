@@ -18,28 +18,28 @@ if __name__ == '__main__':
         version = uts.random_name()
         serverRole = ['invalid_role']
         try:
-            app = udm.create_object('appcenter/app', id=id, name=name, version=version, serverRole=serverRole,)
+            app = udm.create_object('appcenter/app', id=id, name=name, version=version, serverRole=serverRole)
         except udm_test.UCSTestUDM_CreateUDMObjectFailed:
             pass
         else:
             utils.fail('appcenter/app object with an invalid serverRole could be created')
 
         try:
-            app = udm.create_object('appcenter/app', id=id, name=name,)
+            app = udm.create_object('appcenter/app', id=id, name=name)
         except udm_test.UCSTestUDM_CreateUDMObjectFailed:
             pass
         else:
             utils.fail('appcenter/app object without version could be created')
 
         try:
-            app = udm.create_object('appcenter/app', id=id, version=version,)
+            app = udm.create_object('appcenter/app', id=id, version=version)
         except udm_test.UCSTestUDM_CreateUDMObjectFailed:
             pass
         else:
             utils.fail('appcenter/app object without name could be created')
 
         try:
-            app = udm.create_object('appcenter/app', name=name, version=version,)
+            app = udm.create_object('appcenter/app', name=name, version=version)
         except udm_test.UCSTestUDM_CreateUDMObjectFailed:
             pass
         else:

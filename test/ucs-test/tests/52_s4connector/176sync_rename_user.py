@@ -32,11 +32,11 @@ if __name__ == '__main__':
         user_sid = s4connector.get_object_sid(user_dn)
 
         # modify user
-        modified_user_dn = s4connector.modify_username(user_dn, new_user_name, udm,)
+        modified_user_dn = s4connector.modify_username(user_dn, new_user_name, udm)
         s4connector.wait_for_sync()
 
         # test ldap object and sync
-        s4connector.check_object(modified_user_dn, user_sid, user_dn,)
+        s4connector.check_object(modified_user_dn, user_sid, user_dn)
         utils.verify_ldap_object(modified_user_dn)
 
     s4connector.wait_for_sync()

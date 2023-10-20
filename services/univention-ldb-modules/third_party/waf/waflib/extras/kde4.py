@@ -20,17 +20,17 @@ def apply_msgfmt(self):
 	"""
 	for lang in self.to_list(self.langs):
 		node = self.path.find_resource(lang+'.po')
-		task = self.create_task('msgfmt', node, node.change_ext('.mo'),)
+		task = self.create_task('msgfmt', node, node.change_ext('.mo'))
 
 		langname = lang.split('/')
 		langname = langname[-1]
 
-		inst = getattr(self, 'install_path', '${KDE4_LOCALE_INSTALL_DIR}',)
+		inst = getattr(self, 'install_path', '${KDE4_LOCALE_INSTALL_DIR}')
 
 		self.add_install_as(
-			inst_to = inst + os.sep + langname + os.sep + 'LC_MESSAGES' + os.sep + getattr(self, 'appname', 'set_your_appname',) + '.mo',
+			inst_to = inst + os.sep + langname + os.sep + 'LC_MESSAGES' + os.sep + getattr(self, 'appname', 'set_your_appname') + '.mo',
 			inst_from = task.outputs[0],
-			chmod = getattr(self, 'chmod', Utils.O644,),)
+			chmod = getattr(self, 'chmod', Utils.O644))
 
 class msgfmt(Task.Task):
 	"""
@@ -67,9 +67,9 @@ def configure(self):
 	except EnvironmentError:
 		self.fatal('could not read %s' % fname)
 
-	txt = txt.replace('\\\n', '\n',)
+	txt = txt.replace('\\\n', '\n')
 	fu = re.compile('#(.*)\n')
-	txt = fu.sub('', txt,)
+	txt = fu.sub('', txt)
 
 	setregexp = re.compile(r'([sS][eE][tT]\s*\()\s*([^\s]+)\s+\"([^"]+)\"\)')
 	found = setregexp.findall(txt)
@@ -85,9 +85,9 @@ def configure(self):
 	self.env['LIB_KHTML']  = ['khtml']
 	self.env['LIB_KPARTS'] = ['kparts']
 
-	self.env['LIBPATH_KDECORE']  = [os.path.join(self.env.KDE4_LIB_INSTALL_DIR, 'kde4', 'devel',), self.env.KDE4_LIB_INSTALL_DIR]
+	self.env['LIBPATH_KDECORE']  = [os.path.join(self.env.KDE4_LIB_INSTALL_DIR, 'kde4', 'devel'), self.env.KDE4_LIB_INSTALL_DIR]
 	self.env['INCLUDES_KDECORE'] = [self.env['KDE4_INCLUDE_INSTALL_DIR']]
-	self.env.append_value('INCLUDES_KDECORE', [self.env['KDE4_INCLUDE_INSTALL_DIR']+ os.sep + 'KDE'],)
+	self.env.append_value('INCLUDES_KDECORE', [self.env['KDE4_INCLUDE_INSTALL_DIR']+ os.sep + 'KDE'])
 
-	self.find_program('msgfmt', var='MSGFMT',)
+	self.find_program('msgfmt', var='MSGFMT')
 

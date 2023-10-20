@@ -3,15 +3,15 @@ import re
 
 class LogMessage:
 
-    def __init__(self, wanted=None, ignore=None,):
+    def __init__(self, wanted=None, ignore=None):
         self.wanted = self.recomp(self.wanted_list + (wanted or [])).match
         self.ignore = self.recomp(self.ignore_list + (ignore or [])).match
         self.ignore_extra = self.recomp(self.extra_ignore_list).match  # Bug #36160
 
     @staticmethod
-    def recomp(patterns, ignore_case=True,):
+    def recomp(patterns, ignore_case=True):
         pattern = '|'.join('(?:%s)' % _ for _ in patterns)
-        return re.compile(pattern, re.IGNORECASE if ignore_case else 0,)
+        return re.compile(pattern, re.IGNORECASE if ignore_case else 0)
 
 
 class Errors(LogMessage):

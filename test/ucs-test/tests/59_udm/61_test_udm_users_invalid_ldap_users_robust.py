@@ -65,10 +65,10 @@ constellations = [
 ]
 
 
-def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replication, ucr, udm,):
+def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replication, ucr, udm):
     dns = []
-    sid = lo.getAttr(lo.binddn, 'sambaSID',)[0].decode('ASCII').rsplit('-', 1,)[0]
-    rid = random.randint(2000, 3000,)
+    sid = lo.getAttr(lo.binddn, 'sambaSID')[0].decode('ASCII').rsplit('-', 1)[0]
+    rid = random.randint(2000, 3000)
     try:
         for options in constellations:
             uid = random_username()
@@ -86,8 +86,8 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
                 al.extend([(key, (val % defaults).encode('UTF-8')) for key, val in mapping[option].items() if key not in ['objectClass', 'userPassword', 'krb5Key']])
             al.append(('objectClass', ocs))
             dn = 'uid=%s,cn=users,%s' % (uid, ucr['ldap/base'])
-            print('Adding', dn, 'with', options, 'and', al,)
-            lo.add(dn, al,)
+            print('Adding', dn, 'with', options, 'and', al)
+            lo.add(dn, al)
             dns.append(dn)
 
         wait_for_replication()
@@ -98,9 +98,9 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
         for dn in dns:
             assert dn not in users.keys(), 'Invalid object was detected'
             try:
-                udm.verify_udm_object('users/user', dn, None,)
+                udm.verify_udm_object('users/user', dn, None)
             except univention.admin.uexceptions.wrongObjectType:
-                print('dn', dn, 'correctly identified as wrong',)
+                print('dn', dn, 'correctly identified as wrong')
 
     finally:
         for dn in dns:

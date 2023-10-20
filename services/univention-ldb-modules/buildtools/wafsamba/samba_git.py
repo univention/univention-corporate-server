@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-def find_git(env=None,):
+def find_git(env=None):
     """Find the git binary."""
     if env is not None and 'GIT' in env:
         return env.get_flat('GIT')
@@ -14,16 +14,16 @@ def find_git(env=None,):
     return None
 
 
-def has_submodules(path,):
+def has_submodules(path):
     """Check whether a source directory is git-versioned and has submodules.
 
     :param path: Path to Samba source directory
     """
-    return (os.path.isdir(os.path.join(path, ".git",)) and
-            os.path.isfile(os.path.join(path, ".gitmodules",)))
+    return (os.path.isdir(os.path.join(path, ".git")) and
+            os.path.isfile(os.path.join(path, ".gitmodules")))
 
 
-def read_submodule_status(path, env=None,):
+def read_submodule_status(path, env=None):
     """Check status of submodules.
 
     :param path: Path to git directory
@@ -40,7 +40,7 @@ def read_submodule_status(path, env=None,):
     if git is None:
         return
     p = subprocess.Popen([git, "submodule", "status"], stdout=subprocess.PIPE,
-        cwd=path,)
+        cwd=path)
     (stdout, stderr) = p.communicate(None)
     for l in stdout.splitlines():
         l = l.rstrip()

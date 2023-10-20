@@ -10,10 +10,10 @@ USE_REGEX = r"""(?:^|;)\s*USE(?:\s+|(?:(?:\s*,\s*(?:NON_)?INTRINSIC)?\s*::))\s*(
 MOD_REGEX = r"""(?:^|;)\s*MODULE(?!\s+(?:PROCEDURE|SUBROUTINE|FUNCTION))\s+(\w+)"""
 SMD_REGEX = r"""(?:^|;)\s*SUBMODULE\s*\(([\w:]+)\)\s*(\w+)"""
 
-re_inc = re.compile(INC_REGEX, re.I,)
-re_use = re.compile(USE_REGEX, re.I,)
-re_mod = re.compile(MOD_REGEX, re.I,)
-re_smd = re.compile(SMD_REGEX, re.I,)
+re_inc = re.compile(INC_REGEX, re.I)
+re_use = re.compile(USE_REGEX, re.I)
+re_mod = re.compile(MOD_REGEX, re.I)
+re_smd = re.compile(SMD_REGEX, re.I)
 
 class fortran_parser(object):
 	"""
@@ -23,7 +23,7 @@ class fortran_parser(object):
 	* the nodes corresponding to the include files used
 	* the module names used by the fortran files
 	"""
-	def __init__(self, incpaths,):
+	def __init__(self, incpaths):
 		self.seen = []
 		"""Files already parsed"""
 
@@ -36,7 +36,7 @@ class fortran_parser(object):
 		self.incpaths = incpaths
 		"""List of :py:class:`waflib.Node.Node` representing the include paths"""
 
-	def find_deps(self, node,):
+	def find_deps(self, node):
 		"""
 		Parses a Fortran file to obtain the dependencies used/provided
 
@@ -63,10 +63,10 @@ class fortran_parser(object):
 			m = re_smd.search(line)
 			if m:
 				uses.append(m.group(1))
-				mods.append('{0}:{1}'.format(m.group(1),m.group(2),))
+				mods.append('{0}:{1}'.format(m.group(1),m.group(2)))
 		return (incs, uses, mods)
 
-	def start(self, node,):
+	def start(self, node):
 		"""
 		Start parsing. Use the stack ``self.waiting`` to hold nodes to iterate on
 
@@ -78,7 +78,7 @@ class fortran_parser(object):
 			nd = self.waiting.pop(0)
 			self.iter(nd)
 
-	def iter(self, node,):
+	def iter(self, node):
 		"""
 		Processes a single file during dependency parsing. Extracts files used
 		modules used and modules provided.
@@ -100,7 +100,7 @@ class fortran_parser(object):
 			if not name in self.names:
 				self.names.append(name)
 
-	def tryfind_header(self, filename,):
+	def tryfind_header(self, filename):
 		"""
 		Adds an include file to the list of nodes to process
 

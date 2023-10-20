@@ -47,9 +47,9 @@ else:
 _Interface = Union[IPv4Interface, IPv6Interface]
 
 
-def _prefixlen(interface,):  # PY2 VS PY3
+def _prefixlen(interface):  # PY2 VS PY3
     # type: (_Interface) -> int
-    return interface.prefixlen if hasattr(interface, 'prefixlen',) else interface.network.prefixlen  # type: ignore
+    return interface.prefixlen if hasattr(interface, 'prefixlen') else interface.network.prefixlen  # type: ignore
 
 
 # IPv4: 4.3.                            2.1.                        IN-ADDR.ARPA
@@ -61,7 +61,7 @@ def _prefixlen(interface,):  # PY2 VS PY3
 # pointer: dns/ptr_record.address (LDAP: relativeDomainName)
 
 
-def calculate_ipv6_reverse(network,):
+def calculate_ipv6_reverse(network):
     # type: (_Interface) -> str
     """
     Return reversed network part of IPv4 network.
@@ -79,12 +79,12 @@ def calculate_ipv6_reverse(network,):
     '0123:4567:89ab:cdef:0123:4567:89ab:cde'
     """
     # at least one part must remain for zone entry
-    prefixlen = min(_prefixlen(network) // 4, network.max_prefixlen // 4 - 1,) or 1
-    prefix = network.ip.exploded.replace(':', '',)[:prefixlen]
-    return ':'.join([prefix[i:i + 4] for i in range(0, len(prefix), 4,)])
+    prefixlen = min(_prefixlen(network) // 4, network.max_prefixlen // 4 - 1) or 1
+    prefix = network.ip.exploded.replace(':', '')[:prefixlen]
+    return ':'.join([prefix[i:i + 4] for i in range(0, len(prefix), 4)])
 
 
-def calculate_ipv4_reverse(network,):
+def calculate_ipv4_reverse(network):
     # type: (_Interface) -> str
     """
     Return reversed network part of IPv4 network.
@@ -100,12 +100,12 @@ def calculate_ipv4_reverse(network,):
     '1.2.3'
     """
     # at least one part must remain for zone entry
-    prefixlen = min(_prefixlen(network) // 8, network.max_prefixlen // 8 - 1,) or 1
+    prefixlen = min(_prefixlen(network) // 8, network.max_prefixlen // 8 - 1) or 1
     prefix = network.ip.exploded.split('.')[:prefixlen]
     return '.'.join(prefix)
 
 
-def calculate_ipv6_network(network,):
+def calculate_ipv6_network(network):
     # type: (_Interface) -> str
     """
     Return network part of IPv6 network.
@@ -123,11 +123,11 @@ def calculate_ipv6_network(network,):
     '0123:4567:89ab:cdef:0123:4567:89ab:cdef'
     """
     prefixlen = _prefixlen(network) // 4
-    prefix = network.ip.exploded.replace(':', '',)[:prefixlen]
-    return ':'.join([prefix[i:i + 4] for i in range(0, len(prefix), 4,)])
+    prefix = network.ip.exploded.replace(':', '')[:prefixlen]
+    return ':'.join([prefix[i:i + 4] for i in range(0, len(prefix), 4)])
 
 
-def calculate_ipv4_network(network,):
+def calculate_ipv4_network(network):
     # type: (_Interface) -> str
     """
     Return network part of IPv4 network.
@@ -147,7 +147,7 @@ def calculate_ipv4_network(network,):
     return '.'.join(prefix)
 
 
-def calculate_ipv6_pointer(network,):
+def calculate_ipv6_pointer(network):
     # type: (_Interface) -> str
     """
     Return host part of IPv6 network.
@@ -162,12 +162,12 @@ def calculate_ipv6_pointer(network,):
     >>> calculate_ipv6_pointer(IPv6Interface(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/128'))
     'f'
     """
-    prefixlen = min(_prefixlen(network) // 4, network.max_prefixlen // 4 - 1,) or 1
-    suffix = network.ip.exploded.replace(':', '',)[prefixlen:]
+    prefixlen = min(_prefixlen(network) // 4, network.max_prefixlen // 4 - 1) or 1
+    suffix = network.ip.exploded.replace(':', '')[prefixlen:]
     return '.'.join(reversed(suffix))
 
 
-def calculate_ipv4_pointer(network,):
+def calculate_ipv4_pointer(network):
     # type: (_Interface) -> str
     """
     Return host part of IPv4 network.
@@ -182,6 +182,6 @@ def calculate_ipv4_pointer(network,):
     >>> calculate_ipv4_pointer(IPv4Interface(u'1.2.3.4/32'))
     '4'
     """
-    prefixlen = min(_prefixlen(network) // 8, network.max_prefixlen // 8 - 1,) or 1
+    prefixlen = min(_prefixlen(network) // 8, network.max_prefixlen // 8 - 1) or 1
     suffix = network.ip.exploded.split('.')[prefixlen:]
     return '.'.join(reversed(suffix))

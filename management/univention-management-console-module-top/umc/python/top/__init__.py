@@ -54,9 +54,10 @@ class Instance(Base):
 
     @sanitize(
         pattern=PatternSanitizer(default='.*'),
-        category=ChoicesSanitizer(choices=['user', 'pid', 'command', 'all'], default='all',),)
+        category=ChoicesSanitizer(choices=['user', 'pid', 'command', 'all'], default='all'),
+    )
     @simple_response
-    def query(self, pattern, category='all',):
+    def query(self, pattern, category='all'):
         processes = []
         for process in psutil.process_iter():
             try:
@@ -96,9 +97,10 @@ class Instance(Base):
 
     @sanitize(
         signal=ChoicesSanitizer(choices=['SIGTERM', 'SIGKILL']),
-        pid=ListSanitizer(IntegerSanitizer()),)
+        pid=ListSanitizer(IntegerSanitizer()),
+    )
     @simple_response
-    def kill(self, signal, pid,):
+    def kill(self, signal, pid):
         failed = []
         for pid_ in pid:
             try:

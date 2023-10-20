@@ -41,8 +41,8 @@ from debian.deb822 import Deb822
 from setuptools import Extension, setup
 
 
-dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8',))
-dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8',))
+dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
+dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
@@ -51,7 +51,7 @@ setup(
 
     ext_modules=[Extension(
         'univention.license', ['python/univention/py_license.c'],
-                libraries=['univentionlicense'],)],
+                libraries=['univentionlicense'])],
 
     url='https://www.univention.de/',
     license='GNU Affero General Public License v3',
@@ -61,4 +61,5 @@ setup(
     maintainer=realname,
     maintainer_email=email_address,
 
-    test_suite='test',)
+    test_suite='test',
+)

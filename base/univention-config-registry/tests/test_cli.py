@@ -33,8 +33,8 @@ def global_state():
         "--help",
         "-v",
         "--version",
-    ],)
-def test_exit(args, tmpucr,):
+    ])
+def test_exit(args, tmpucr):
     with pytest.raises(SystemExit) as exc_info:
         main(args.split() if args else [])
 
@@ -61,7 +61,7 @@ def test_exit(args, tmpucr,):
         "unset --schedule key",
         "unset --ldap-policy key",
         "dump",
-        pytest.param("--shell dump", marks=pytest.mark.xfail(reason="Fails on empty output"),),
+        pytest.param("--shell dump", marks=pytest.mark.xfail(reason="Fails on empty output")),
         "--sort dump",
         "--keys-only dump",
         "search",
@@ -69,7 +69,7 @@ def test_exit(args, tmpucr,):
         "search --key hostname",
         "search --value hostname",
         "search --all hostname",
-        pytest.param("search --category system-network hostname", marks=pytest.mark.xfail(reason="Category not defined"),),
+        pytest.param("search --category system-network hostname", marks=pytest.mark.xfail(reason="Category not defined")),
         "search --brief hostname",
         "search --non-empty hostname",
         "search --verbose hostname",
@@ -80,14 +80,14 @@ def test_exit(args, tmpucr,):
         "--sort info hostname",
         "shell",
         "shell hostname",
-        pytest.param("commit", marks=pytest.mark.skip(reason="Commits files"),),
+        pytest.param("commit", marks=pytest.mark.skip(reason="Commits files")),
         "commit /boot/boot.msg",
-        pytest.param("filter", marks=pytest.mark.skip(reason="Requires input"),),
-        pytest.param("filter --encode-utf8", marks=pytest.mark.skip(reason="Requires input"),),
-        pytest.param("filter disallow-execution", marks=pytest.mark.skip(reason="Requires input"),),
-        pytest.param("register ...", marks=pytest.mark.skip("Requires file"),),
-        pytest.param("unregister ...", marks=pytest.mark.skip("Requires file"),),
-        pytest.param("update", marks=pytest.mark.skip(reason="Commits files"),),
-    ],)
-def test_cmd(args, tmpucr,):
+        pytest.param("filter", marks=pytest.mark.skip(reason="Requires input")),
+        pytest.param("filter --encode-utf8", marks=pytest.mark.skip(reason="Requires input")),
+        pytest.param("filter disallow-execution", marks=pytest.mark.skip(reason="Requires input")),
+        pytest.param("register ...", marks=pytest.mark.skip("Requires file")),
+        pytest.param("unregister ...", marks=pytest.mark.skip("Requires file")),
+        pytest.param("update", marks=pytest.mark.skip(reason="Commits files")),
+    ])
+def test_cmd(args, tmpucr):
     main(args.split())

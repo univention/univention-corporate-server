@@ -7,10 +7,10 @@ from univention.config_registry import handler_set as ucr_set, handler_unset as 
 
 
 @pytest.fixture(scope="session")
-def rad_user(udm_session, ucr_session,):
-    old_ucr = ucr_session.get('radius/use-service-specific-password', None,)
+def rad_user(udm_session, ucr_session):
+    old_ucr = ucr_session.get('radius/use-service-specific-password', None)
     password = uts.random_string()
-    dn, name = udm_session.create_user(networkAccess=1, password=password, birthday='2001-01-01',)
+    dn, name = udm_session.create_user(networkAccess=1, password=password, birthday='2001-01-01')
     yield dn, name, password
 
     # unset variable again

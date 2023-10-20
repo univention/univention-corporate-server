@@ -50,12 +50,12 @@ class List(UniventionAppAction):
 
     help = 'List all apps'
 
-    def setup_parser(self, parser,):
-        parser.add_argument('app', nargs='?', help='The ID of the App that shall be listed. May contain asterisk. Default: list all apps',)
-        parser.add_argument('--with-repository', action='store_true', help='Also list the repository name',)
-        parser.add_argument('--ids-only', action='store_true', help='Only list the IDs. Does not respect APP argument',)
+    def setup_parser(self, parser):
+        parser.add_argument('app', nargs='?', help='The ID of the App that shall be listed. May contain asterisk. Default: list all apps')
+        parser.add_argument('--with-repository', action='store_true', help='Also list the repository name')
+        parser.add_argument('--ids-only', action='store_true', help='Only list the IDs. Does not respect APP argument')
 
-    def main(self, args,):
+    def main(self, args):
         first = True
         if args.ids_only:
             for app in self.get_apps():
@@ -87,13 +87,13 @@ class List(UniventionAppAction):
         blacklist = ucr_get('repository/app_center/blacklist')
         whitelist = ucr_get('repository/app_center/whitelist')
         if blacklist:
-            blacklist = re.split(r'\s*,\s*', blacklist,)
+            blacklist = re.split(r'\s*,\s*', blacklist)
         if whitelist:
-            whitelist = re.split(r'\s*,\s*', whitelist,)
+            whitelist = re.split(r'\s*,\s*', whitelist)
         for app in apps:
             if blacklist or whitelist:
                 unlocalised_app = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)
-                if cls._blacklist_includes_app(blacklist, unlocalised_app,) and not cls._blacklist_includes_app(whitelist, unlocalised_app,):
+                if cls._blacklist_includes_app(blacklist, unlocalised_app) and not cls._blacklist_includes_app(whitelist, unlocalised_app):
                     continue
             if app.end_of_life and not app.is_installed():
                 continue
@@ -117,7 +117,7 @@ class List(UniventionAppAction):
         return ret
 
     @classmethod
-    def _blacklist_includes_app(cls, the_list, app,):
+    def _blacklist_includes_app(cls, the_list, app):
         if not the_list:
             return False
         if '*' in the_list:
@@ -131,17 +131,17 @@ class List(UniventionAppAction):
             return True
         return False
 
-    def _list(self, pattern,):
+    def _list(self, pattern):
         ret = []
         lo, pos = get_machine_connection()
         for app in self.get_apps():
             versions = []
             installations = {}
-            if pattern and not fnmatch(app.id, pattern,):
+            if pattern and not fnmatch(app.id, pattern):
                 continue
-            app = Apps().find(app.id, latest=True,)
+            app = Apps().find(app.id, latest=True)
             for _app in Apps().get_all_apps_with_id(app.id):
-                ldap_obj = get_app_ldap_object(_app, lo, pos,)
+                ldap_obj = get_app_ldap_object(_app, lo, pos)
                 servers = ldap_obj.installed_on_servers()
                 versions.append(_app.version)
                 installations[_app.version] = servers

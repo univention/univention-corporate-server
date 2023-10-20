@@ -10,15 +10,15 @@ from waflib.Tools.compiler_fc import fc_compiler
 fc_compiler['linux'].append('fc_cray')
 
 @conf
-def find_crayftn(conf,):
+def find_crayftn(conf):
 	"""Find the Cray fortran compiler (will look in the environment variable 'FC')"""
-	fc = conf.find_program(['crayftn'], var='FC',)
+	fc = conf.find_program(['crayftn'], var='FC')
 	conf.get_crayftn_version(fc)
 	conf.env.FC_NAME = 'CRAY'
 	conf.env.FC_MOD_CAPITALIZATION = 'UPPER.mod'
 
 @conf
-def crayftn_flags(conf,):
+def crayftn_flags(conf):
 	v = conf.env
 	v['_FCMODOUTFLAGS']  = ['-em', '-J.'] # enable module files and put them in the current directory
 	v['FCFLAGS_DEBUG'] = ['-m1'] # more verbose compiler warnings
@@ -29,10 +29,10 @@ def crayftn_flags(conf,):
 	v['FCSHLIB_MARKER'] = '-h dynamic'
 
 @conf
-def get_crayftn_version(conf, fc,):
-		version_re = re.compile(r"Cray Fortran\s*:\s*Version\s*(?P<major>\d*)\.(?P<minor>\d*)", re.I,).search
+def get_crayftn_version(conf, fc):
+		version_re = re.compile(r"Cray Fortran\s*:\s*Version\s*(?P<major>\d*)\.(?P<minor>\d*)", re.I).search
 		cmd = fc + ['-V']
-		out,err = fc_config.getoutput(conf, cmd, stdin=False,)
+		out,err = fc_config.getoutput(conf, cmd, stdin=False)
 		if out:
 			match = version_re(out)
 		else:
@@ -42,7 +42,7 @@ def get_crayftn_version(conf, fc,):
 		k = match.groupdict()
 		conf.env['FC_VERSION'] = (k['major'], k['minor'])
 
-def configure(conf,):
+def configure(conf):
 	conf.find_crayftn()
 	conf.find_ar()
 	conf.fc_flags()

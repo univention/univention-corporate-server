@@ -44,33 +44,38 @@ class UMCTester(object):
             name=self.entry_a_1_dname,
             displayName=['en_US ' + self.entry_a_1_dname],
             description=['en_US foo'],
-            link=['en_US foo'],)
+            link=['en_US foo'],
+        )
         self.entry_a_2_dname = "entry_a_2__{}".format(uts.random_string())
         entry_a_2_dn = self.udm_test.create_object(
             'portals/entry',
             name=self.entry_a_2_dname,
             displayName=['en_US ' + self.entry_a_2_dname],
             description=['en_US foo'],
-            link=['en_US foo'],)
+            link=['en_US foo'],
+        )
         self.cat_a_dname = "category_a__{}".format(uts.random_string())
         cat_a_dn = self.udm_test.create_object(
             'portals/category',
             name=self.cat_a_dname,
             displayName=['en_US ' + self.cat_a_dname],
-            entries=[entry_a_1_dn, entry_a_2_dn],)
+            entries=[entry_a_1_dn, entry_a_2_dn],
+        )
         self.entry_b_dname = "entry_b__{}".format(uts.random_string())
         entry_b_dn = self.udm_test.create_object(
             'portals/entry',
             name=self.entry_b_dname,
             displayName=['en_US ' + self.entry_b_dname],
             description=['en_US foo'],
-            link=['en_US foo'],)
+            link=['en_US foo'],
+        )
         self.cat_b_dname = "category_b__{}".format(uts.random_string())
         cat_b_dn = self.udm_test.create_object(
             'portals/category',
             name=self.cat_b_dname,
             displayName=['en_US ' + self.cat_b_dname],
-            entries=[entry_b_dn],)
+            entries=[entry_b_dn],
+        )
 
         logger.info('Creating dummy portal')
         self.dummy_portal_title = uts.random_string()
@@ -79,7 +84,8 @@ class UMCTester(object):
             name=uts.random_string(),
             displayName=['en_US ' + self.dummy_portal_title],
             categories=[cat_a_dn, cat_b_dn],
-            portalComputers=[ucr.get('ldap/hostdn')],)
+            portalComputers=[ucr.get('ldap/hostdn')],
+        )
 
         logger.info('Saving previously set portalComputers of main portal')
         udm = UDM.admin().version(1)
@@ -103,47 +109,49 @@ class UMCTester(object):
 
         logger.info('Check order before dnd')
         # Category_B is after Category_A
-        self.selenium.driver.find_element(By.XPATH, '//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_a_dname, self.cat_b_dname),)
+        self.selenium.driver.find_element(By.XPATH, '//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_a_dname, self.cat_b_dname))
         # Entry_A is in Category_A
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)),)
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)),)
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname, self.entry_a_2_dname)),)
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname, self.entry_a_2_dname)))
         # Entry_B is in Category_B
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)),)
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
 
         logger.info('Drag category b above category a')
         self.selenium.drag_and_drop(
             expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_b_dname)),
-            expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_a_dname)),)
+            expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_a_dname)),
+        )
         self.selenium.wait_for_text('Order saved')
         self.selenium.wait_for_text_to_disappear('Order saved')
 
         logger.info('Check order after category dnd')
         # Category_A is after Category_B
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname)),)
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname)))
         # Entry_A is in Category_A
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)),)
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)),)
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname, self.entry_a_2_dname)),)
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname, self.entry_a_2_dname)))
         # Entry_B is in Category_B
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)),)
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
 
         # TODO dragging entries across categories does not work in selenium for some reason
         self.selenium.drag_and_drop(
             expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="tile__name"][text()="%s"]' % (self.entry_a_1_dname)),
-            expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="tile__name"][text()="%s"]' % (self.entry_a_2_dname)),)
+            expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="tile__name"][text()="%s"]' % (self.entry_a_2_dname)),
+        )
         self.selenium.wait_for_text('Order saved')
         self.selenium.wait_for_text_to_disappear('Order saved')
 
         logger.info('Check order after entry dnd')
         # Category_A is after Category_B
-        self.selenium.driver.find_element(By.XPATH, '//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname),)
+        self.selenium.driver.find_element(By.XPATH, '//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname))
         # Entry_A is in Category_A
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)),)
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)),)
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname, self.entry_a_1_dname)),)
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname, self.entry_a_1_dname)))
         # Entry_B is in Category_B
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)),)
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
 
         logger.info('Reload dummy portal')
         self.selenium.driver.get(self.selenium.base_url)
@@ -151,17 +159,17 @@ class UMCTester(object):
 
         logger.info('Check order after reload')
         # Category_A is after Category_B
-        self.selenium.driver.find_element(By.XPATH, '//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname),)
+        self.selenium.driver.find_element(By.XPATH, '//h2[text()="%s"]/following::h2[text()="%s"]' % (self.cat_b_dname, self.cat_a_dname))
         # Entry_A is in Category_A
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)),)
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)),)
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname, self.entry_a_1_dname)),)
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_1_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname)))
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]/following::*[@containsClass="tile__name"][text()="%s"]' % (self.cat_a_dname, self.entry_a_2_dname, self.entry_a_1_dname)))
         # Entry_B is in Category_B
-        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)),)
+        self.selenium.driver.find_element(By.XPATH, expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (self.cat_b_dname, self.entry_b_dname)))
 
     def cleanup(self):
         logger.info('Cleanup')
-        if hasattr(self, 'prev_comps',):
+        if hasattr(self, 'prev_comps'):
             logger.info('Restore previously set portalComputers on main portal')
             udm = UDM.admin().version(1)
             portal = udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))

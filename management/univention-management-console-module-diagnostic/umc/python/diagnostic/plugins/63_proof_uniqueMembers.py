@@ -45,7 +45,7 @@ description = _('Check the LDAP database for inconsistencies in group membership
 run_descr = ['This can be checked by running: /usr/share/univention-directory-manager-tools/proof_uniqueMembers -c']
 
 
-def run_proof_uniqueMembers_fix(umc_instance: Instance,) -> None:
+def run_proof_uniqueMembers_fix(umc_instance: Instance) -> None:
     cmd = ['/usr/share/univention-directory-manager-tools/proof_uniqueMembers']
     (success, output) = util.run_with_output(cmd)
 
@@ -54,7 +54,7 @@ def run_proof_uniqueMembers_fix(umc_instance: Instance,) -> None:
     fix_log = [_('Output of `{cmd}`:').format(cmd=cmd_string)]
 
     fix_log.append(output)
-    run(umc_instance, rerun=True, fix_log='\n'.join(fix_log),)
+    run(umc_instance, rerun=True, fix_log='\n'.join(fix_log))
 
 
 actions = {
@@ -62,7 +62,7 @@ actions = {
 }
 
 
-def run(_umc_instance: Instance, rerun: bool = False, fix_log: str = '',) -> None:
+def run(_umc_instance: Instance, rerun: bool = False, fix_log: str = '') -> None:
     if ucr.get('server/role') != 'domaincontroller_master':
         return
     error_descriptions = []
@@ -83,7 +83,7 @@ def run(_umc_instance: Instance, rerun: bool = False, fix_log: str = '',) -> Non
         if not rerun:
             fix = _('You can run `/usr/share/univention-directory-manager-tools/proof_uniqueMembers` to fix the issue.')
             error_descriptions.append(fix)
-        raise Warning(description='\n'.join(error_descriptions), buttons=buttons,)
+        raise Warning(description='\n'.join(error_descriptions), buttons=buttons)
 
     if rerun:
         fixed = _('`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` found no errors with the LDAP database group membership attributes.')

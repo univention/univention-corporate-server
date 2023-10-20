@@ -19,7 +19,8 @@ if __name__ == '__main__':
                 WebInterface='/%s' % app.app_name,
                 WebInterfacePortHTTP='80',
                 WebInterfacePortHTTPS='443',
-                AutoModProxy='True',)
+                AutoModProxy='True',
+            )
             app.add_to_local_appcenter()
 
             appcenter.update()
@@ -32,7 +33,7 @@ if __name__ == '__main__':
             app.verify_basic_modproxy_settings_tinyapp()
 
             lo = get_ldap_connection()
-            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app.app_name[:5], unique=True, required=True,))
+            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app.app_name[:5], unique=True, required=True))
         finally:
             app.uninstall()
             app.remove()

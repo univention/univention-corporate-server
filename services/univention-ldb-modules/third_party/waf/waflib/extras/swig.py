@@ -17,10 +17,10 @@ tasks have to be added dynamically:
 
 SWIG_EXTS = ['.swig', '.i']
 
-re_module = re.compile(r'%module(?:\s*\(.*\))?\s+([^\r\n]+)', re.M,)
+re_module = re.compile(r'%module(?:\s*\(.*\))?\s+([^\r\n]+)', re.M)
 
-re_1 = re.compile(r'^%module.*?\s+([\w]+)\s*?$', re.M,)
-re_2 = re.compile(r'[#%](?:include|import(?:\(module=".*"\))+|python(?:begin|code)) [<"](.*)[">]', re.M,)
+re_1 = re.compile(r'^%module.*?\s+([\w]+)\s*?$', re.M)
+re_2 = re.compile(r'[#%](?:include|import(?:\(module=".*"\))+|python(?:begin|code)) [<"](.*)[">]', re.M)
 
 class swig(Task.Task):
 	color   = 'BLUE'
@@ -33,9 +33,9 @@ class swig(Task.Task):
 			if not t.hasrun:
 				return Task.ASK_LATER
 
-		if not getattr(self, 'init_outputs', None,):
+		if not getattr(self, 'init_outputs', None):
 			self.init_outputs = True
-			if not getattr(self, 'module', None,):
+			if not getattr(self, 'module', None):
 				# search the module name
 				txt = self.inputs[0].read()
 				m = re_module.search(txt)
@@ -57,7 +57,7 @@ class swig(Task.Task):
 				else:
 					fun(self)
 
-		return super(swig, self,).runnable_status()
+		return super(swig, self).runnable_status()
 
 	def scan(self):
 		"scan for swig dependencies, climb the .i files"
@@ -76,8 +76,8 @@ class swig(Task.Task):
 
 			# read the file
 			code = node.read()
-			code = c_preproc.re_nl.sub('', code,)
-			code = c_preproc.re_cpp.sub(c_preproc.repl, code,)
+			code = c_preproc.re_nl.sub('', code)
+			code = c_preproc.re_cpp.sub(c_preproc.repl, code)
 
 			# find .i files and project headers
 			names = re_2.findall(code)
@@ -93,8 +93,8 @@ class swig(Task.Task):
 
 # provide additional language processing
 swig_langs = {}
-def swigf(fun,):
-	swig_langs[fun.__name__.replace('swig_', '',)] = fun
+def swigf(fun):
+	swig_langs[fun.__name__.replace('swig_', '')] = fun
 	return fun
 swig.swigf = swigf
 
@@ -113,9 +113,9 @@ def swig_c(self):
 	c_tsk.set_run_after(self)
 
 	# transfer weights from swig task to c task
-	if getattr(self, 'weight', None,):
+	if getattr(self, 'weight', None):
 		c_tsk.weight = self.weight
-	if getattr(self, 'tree_weight', None,):
+	if getattr(self, 'tree_weight', None):
 		c_tsk.tree_weight = self.tree_weight
 
 	try:
@@ -137,17 +137,17 @@ def swig_c(self):
 	self.outputs.append(out_node)
 
 	if not '-o' in self.env['SWIGFLAGS']:
-		self.env.append_value('SWIGFLAGS', ['-o', self.outputs[0].abspath()],)
+		self.env.append_value('SWIGFLAGS', ['-o', self.outputs[0].abspath()])
 
 @swigf
-def swig_python(tsk,):
+def swig_python(tsk):
 	node = tsk.inputs[0].parent
 	if tsk.outdir:
 		node = tsk.outdir
 	tsk.set_outputs(node.find_or_declare(tsk.module+'.py'))
 
 @swigf
-def swig_ocaml(tsk,):
+def swig_ocaml(tsk):
 	node = tsk.inputs[0].parent
 	if tsk.outdir:
 		node = tsk.outdir
@@ -155,14 +155,14 @@ def swig_ocaml(tsk,):
 	tsk.set_outputs(node.find_or_declare(tsk.module+'.mli'))
 
 @extension(*SWIG_EXTS)
-def i_file(self, node,):
+def i_file(self, node):
 	# the task instance
 	tsk = self.create_task('swig')
 	tsk.set_inputs(node)
-	tsk.module = getattr(self, 'swig_module', None,)
+	tsk.module = getattr(self, 'swig_module', None)
 
-	flags = self.to_list(getattr(self, 'swig_flags', [],))
-	tsk.env.append_value('SWIGFLAGS', flags,)
+	flags = self.to_list(getattr(self, 'swig_flags', []))
+	tsk.env.append_value('SWIGFLAGS', flags)
 
 	tsk.outdir = None
 	if '-outdir' in flags:
@@ -171,8 +171,8 @@ def i_file(self, node,):
 		outdir.mkdir()
 		tsk.outdir = outdir
 
-@feature('c', 'cxx', 'd', 'fc', 'asm',)
-@after_method('apply_link', 'process_source',)
+@feature('c', 'cxx', 'd', 'fc', 'asm')
+@after_method('apply_link', 'process_source')
 def enforce_swig_before_link(self):
 	try:
 		link_task = self.link_task
@@ -184,7 +184,7 @@ def enforce_swig_before_link(self):
 				link_task.run_after.add(x)
 
 @conf
-def check_swig_version(conf, minver=None,):
+def check_swig_version(conf, minver=None):
 	"""
 	Check if the swig tool is found matching a given minimum version.
 	minver should be a tuple, eg. to check for swig >= 1.3.28 pass (1,3,28) as minver.
@@ -197,15 +197,15 @@ def check_swig_version(conf, minver=None,):
 	:return: swig version
 	:rtype: tuple of int
 	"""
-	assert minver is None or isinstance(minver, tuple,)
+	assert minver is None or isinstance(minver, tuple)
 	swigbin = conf.env['SWIG']
 	if not swigbin:
 		conf.fatal('could not find the swig executable')
 
 	# Get swig version string
 	cmd = swigbin + ['-version']
-	Logs.debug('swig: Running swig command %r', cmd,)
-	reg_swig = re.compile(r'SWIG Version\s(.*)', re.M,)
+	Logs.debug('swig: Running swig command %r', cmd)
+	reg_swig = re.compile(r'SWIG Version\s(.*)', re.M)
 	swig_out = conf.cmd_and_log(cmd)
 	swigver_tuple = tuple([int(s) for s in reg_swig.findall(swig_out)[0].split('.')])
 
@@ -218,20 +218,20 @@ def check_swig_version(conf, minver=None,):
 		conf.env['SWIG_VERSION'] = swigver
 
 	# Feedback
-	swigver_full = '.'.join(map(str, swigver_tuple[:3],))
+	swigver_full = '.'.join(map(str, swigver_tuple[:3]))
 	if minver is None:
-		conf.msg('Checking for swig version', swigver_full,)
+		conf.msg('Checking for swig version', swigver_full)
 	else:
-		minver_str = '.'.join(map(str, minver,))
-		conf.msg('Checking for swig version >= %s' % (minver_str,), swigver_full, color=result and 'GREEN' or 'YELLOW',)
+		minver_str = '.'.join(map(str, minver))
+		conf.msg('Checking for swig version >= %s' % (minver_str,), swigver_full, color=result and 'GREEN' or 'YELLOW')
 
 	if not result:
 		conf.fatal('The swig version is too old, expecting %r' % (minver,))
 
 	return swigver_tuple
 
-def configure(conf,):
-	conf.find_program('swig', var='SWIG',)
+def configure(conf):
+	conf.find_program('swig', var='SWIG')
 	conf.env.SWIGPATH_ST = '-I%s'
 	conf.env.SWIGDEF_ST = '-D%s'
 

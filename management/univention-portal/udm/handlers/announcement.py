@@ -51,7 +51,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionNewPortalAnnouncement'],),
+        objectClasses=['top', 'univentionNewPortalAnnouncement'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -61,98 +62,107 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'allowedGroups': univention.admin.property(
         short_description=_('Restrict visibility to groups'),
         long_description=_('If one or more groups are selected then the portal announcement will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible.'),
         syntax=univention.admin.syntax.GroupDN,
         multivalue=True,
-        required=False,),
+        required=False,
+    ),
     'needsConfirmation': univention.admin.property(
         short_description=_('Needs Confirmation (not yet implemented!)'),
         long_description=_('If enabled, the user will see a "Confirm" button and the announcement will persist until it is clicked.'),
         syntax=univention.admin.syntax.TrueFalseUp,
         default='FALSE',
         dontsearch=True,
-        required=False,),
+        required=False,
+    ),
     'isSticky': univention.admin.property(
         short_description=_('Sticky'),
         long_description=_("If enabled, the announcement can't be closed and will persist until the time ends (or never)."),
         syntax=univention.admin.syntax.TrueFalseUp,
         default='FALSE',
         dontsearch=True,
-        required=False,),
+        required=False,
+    ),
     'severity': univention.admin.property(
         short_description=_('Severity'),
         long_description=_('A color theme the announcement should appear in.'),
         syntax=univention.admin.syntax.NewPortalAnnouncementSeverity,
         dontsearch=True,
-        required=False,),
+        required=False,
+    ),
     'title': univention.admin.property(
         short_description=_('Title'),
         long_description=_('The title of the announcement, usually written in bold above the message.'),
         syntax=univention.admin.syntax.LocalizedDisplayName,
         multivalue=True,
-        required=True,),
+        required=True,
+    ),
     'message': univention.admin.property(
         short_description=_('Message'),
         long_description=_('The message of the announcement, usually written in normal text below the title.'),
         syntax=univention.admin.syntax.LocalizedDisplayName,
         multivalue=True,
-        required=False,),
+        required=False,
+    ),
     'visibleFrom': univention.admin.property(
         short_description=_('Start date'),
         long_description=_('The date when the announcement will first appear.'),
         syntax=univention.admin.syntax.iso8601Date,
         dontsearch=True,
-        required=False,),
+        required=False,
+    ),
     'visibleUntil': univention.admin.property(
         short_description=_('End date'),
         long_description=_('The date when the announcement will last appear.'),
         syntax=univention.admin.syntax.iso8601Date,
         dontsearch=True,
-        required=False,),
+        required=False,
+    ),
 }
 
 layout = [
     Tab(_('General'), _('Announcement options'), layout=[
         Group(_('General'), layout=[
             ["name"],
-        ],),
+        ]),
         Group(_('Content'), layout=[
             ["title"],
             ["message"],
-        ],),
+        ]),
         Group(_('Time'), layout=[
             ["visibleFrom", "visibleUntil"],
-        ],),
+        ]),
         Group(_('Options'), layout=[
             ["isSticky"],
             ["severity"],
             ["allowedGroups"],
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 
-def mapTranslationValue(vals, encoding=(),):
+def mapTranslationValue(vals, encoding=()):
     return [u' '.join(val).encode(*encoding) for val in vals]
 
 
-def unmapTranslationValue(vals, encoding=(),):
-    return [val.decode(*encoding).split(u' ', 1,) for val in vals]
+def unmapTranslationValue(vals, encoding=()):
+    return [val.decode(*encoding).split(u' ', 1) for val in vals]
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('allowedGroups', 'univentionNewPortalAnnouncementAllowedGroups',)
-mapping.register('needsConfirmation', 'univentionNewPortalAnnouncementNeedsConfirmation', None, univention.admin.mapping.ListToString,)
-mapping.register('isSticky', 'univentionNewPortalAnnouncementIsSticky', None, univention.admin.mapping.ListToString,)
-mapping.register('severity', 'univentionNewPortalAnnouncementSeverity', None, univention.admin.mapping.ListToString,)
-mapping.register('title', 'univentionNewPortalAnnouncementTitle', mapTranslationValue, unmapTranslationValue,)
-mapping.register('message', 'univentionNewPortalAnnouncementMessage', mapTranslationValue, unmapTranslationValue,)
-mapping.register('visibleFrom', 'univentionNewPortalAnnouncementVisibleFrom', None, univention.admin.mapping.ListToString,)
-mapping.register('visibleUntil', 'univentionNewPortalAnnouncementVisibleUntil', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('allowedGroups', 'univentionNewPortalAnnouncementAllowedGroups')
+mapping.register('needsConfirmation', 'univentionNewPortalAnnouncementNeedsConfirmation', None, univention.admin.mapping.ListToString)
+mapping.register('isSticky', 'univentionNewPortalAnnouncementIsSticky', None, univention.admin.mapping.ListToString)
+mapping.register('severity', 'univentionNewPortalAnnouncementSeverity', None, univention.admin.mapping.ListToString)
+mapping.register('title', 'univentionNewPortalAnnouncementTitle', mapTranslationValue, unmapTranslationValue)
+mapping.register('message', 'univentionNewPortalAnnouncementMessage', mapTranslationValue, unmapTranslationValue)
+mapping.register('visibleFrom', 'univentionNewPortalAnnouncementVisibleFrom', None, univention.admin.mapping.ListToString)
+mapping.register('visibleUntil', 'univentionNewPortalAnnouncementVisibleUntil', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

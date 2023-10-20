@@ -67,7 +67,7 @@ class Locale(object):
         r'(?:@(?P<modifier>.+))?'
         r'$')
 
-    def __init__(self, locale=None,):
+    def __init__(self, locale=None):
         # type: (Optional[str]) -> None
         self.__reset()
         if locale is not None:
@@ -80,7 +80,7 @@ class Locale(object):
         self.codeset = ""
         self.modifier = ""
 
-    def parse(self, locale,):
+    def parse(self, locale):
         # type: (str) -> None
         """
         Parse locale string.
@@ -89,7 +89,7 @@ class Locale(object):
         :raises TypeError: if `locale` is not a string.
         :raises I18N_Error: if `locale` does not match the format.
         """
-        if not isinstance(locale, six.string_types,):
+        if not isinstance(locale, six.string_types):
             raise TypeError('locale must be of type string')
         self.__reset()
         regex = Locale.REGEX.match(locale)
@@ -100,7 +100,7 @@ class Locale(object):
         for key, value in regex.groupdict().items():
             if value is None:
                 continue
-            setattr(self, key, value,)
+            setattr(self, key, value)
 
     def __bool__(self):
         # type: () -> bool
@@ -128,7 +128,7 @@ class NullTranslation(object):
     :param str localedir: The name of the directory containing the translation files.
     """
 
-    def __init__(self, namespace, locale_spec=None, localedir=None,):
+    def __init__(self, namespace, locale_spec=None, localedir=None):
         # type: (str, Optional[str], Optional[str]) -> None
         self._set_domain(namespace)
         self._translation = None  # type: Optional[gettext.NullTranslations]
@@ -138,7 +138,7 @@ class NullTranslation(object):
         if not self._locale:
             self.set_language()
 
-    def _set_domain(self, namespace,):
+    def _set_domain(self, namespace):
         # type: (str) -> None
         """
         Select translation domain.
@@ -146,13 +146,13 @@ class NullTranslation(object):
         :param str namespace: The name of the translation domain.
         """
         if namespace is not None:
-            self._domain = namespace.replace('/', '-',).replace('.', '-',)
+            self._domain = namespace.replace('/', '-').replace('.', '-')
         else:
             self._domain = None
 
     domain = property(fset=_set_domain)
 
-    def set_language(self, language="",):
+    def set_language(self, language=""):
         # type: (str) -> None
         """
         Select language.
@@ -170,7 +170,7 @@ class NullTranslation(object):
         """
         return self._localespec
 
-    def _set_locale(self, locale_spec=None,):
+    def _set_locale(self, locale_spec=None):
         # type: (Optional[str]) -> None
         """
         Select new locale.
@@ -181,9 +181,9 @@ class NullTranslation(object):
             return
         self._localespec = Locale(locale_spec)
 
-    locale = property(fget=_get_locale, fset=_set_locale,)
+    locale = property(fget=_get_locale, fset=_set_locale)
 
-    def translate(self, message,):
+    def translate(self, message):
         # type: (str) -> str
         """
         Translate message.
@@ -208,7 +208,7 @@ class Translation(NullTranslation):
     _instances = []  # type: List[weakref.ReferenceType[Translation]]
     locale = Locale()  # type: Locale # type: ignore
 
-    def set_language(self, language="",):
+    def set_language(self, language=""):
         # type: (str) -> None
         """
         Select language.
@@ -231,10 +231,10 @@ class Translation(NullTranslation):
             return
 
         try:
-            self._translation = gettext.translation(self._domain, languages=(Translation.locale.language, ), localedir=self._localedir,)
+            self._translation = gettext.translation(self._domain, languages=(Translation.locale.language, ), localedir=self._localedir)
         except IOError:
             try:
-                self._translation = gettext.translation(self._domain, languages=('%s_%s' % (Translation.locale.language, Translation.locale.territory), ), localedir=self._localedir,)
+                self._translation = gettext.translation(self._domain, languages=('%s_%s' % (Translation.locale.language, Translation.locale.territory), ), localedir=self._localedir)
             except IOError:
                 self._translation = None
 
@@ -244,7 +244,7 @@ class Translation(NullTranslation):
         return self
 
     @classmethod
-    def set_all_languages(cls, language,):
+    def set_all_languages(cls, language):
         # type: (str) -> None
         """
         Set the language of all existing :class:`Translation` instances.

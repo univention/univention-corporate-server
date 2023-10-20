@@ -1,2 +1,2 @@
-def handler(ucr, changes,):
+def handler(ucr, changes):
     pass

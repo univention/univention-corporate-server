@@ -11,7 +11,7 @@ from samba_utils import LOCAL_CACHE, TO_LIST, get_tgt_list, unique_list
 from samba_autoconf import library_flags
 
 @conf
-def ADD_GLOBAL_DEPENDENCY(ctx, dep,):
+def ADD_GLOBAL_DEPENDENCY(ctx, dep):
     '''add a dependency for all binaries and libraries'''
     if not 'GLOBAL_DEPENDENCIES' in ctx.env:
         ctx.env.GLOBAL_DEPENDENCIES = []
@@ -19,29 +19,29 @@ def ADD_GLOBAL_DEPENDENCY(ctx, dep,):
 
 
 @conf
-def BREAK_CIRCULAR_LIBRARY_DEPENDENCIES(ctx,):
+def BREAK_CIRCULAR_LIBRARY_DEPENDENCIES(ctx):
     '''indicate that circular dependencies between libraries should be broken.'''
     ctx.env.ALLOW_CIRCULAR_LIB_DEPENDENCIES = True
 
 
 @conf
-def SET_SYSLIB_DEPS(conf, target, deps,):
+def SET_SYSLIB_DEPS(conf, target, deps):
     '''setup some implied dependencies for a SYSLIB'''
-    cache = LOCAL_CACHE(conf, 'SYSLIB_DEPS',)
+    cache = LOCAL_CACHE(conf, 'SYSLIB_DEPS')
     cache[target] = deps
 
 
-def expand_subsystem_deps(bld,):
+def expand_subsystem_deps(bld):
     '''expand the reverse dependencies resulting from subsystem
        attributes of modules. This is walking over the complete list
        of declared subsystems, and expands the samba_deps_extended list for any
        module<->subsystem dependencies'''
 
-    subsystem_list = LOCAL_CACHE(bld, 'INIT_FUNCTIONS',)
-    targets    = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+    subsystem_list = LOCAL_CACHE(bld, 'INIT_FUNCTIONS')
+    targets    = LOCAL_CACHE(bld, 'TARGET_TYPE')
 
     for subsystem_name in subsystem_list:
-        bld.ASSERT(subsystem_name in targets, "Subsystem target %s not declared" % subsystem_name,)
+        bld.ASSERT(subsystem_name in targets, "Subsystem target %s not declared" % subsystem_name)
         type = targets[subsystem_name]
         if type == 'DISABLED' or type == 'EMPTY':
             continue
@@ -53,14 +53,14 @@ def expand_subsystem_deps(bld,):
         #    module         = rpc_epmapper (a module object within the dcerpc_server subsystem)
 
         subsystem = bld.get_tgen_by_name(subsystem_name)
-        bld.ASSERT(subsystem is not None, "Unable to find subsystem %s" % subsystem_name,)
+        bld.ASSERT(subsystem is not None, "Unable to find subsystem %s" % subsystem_name)
         for d in subsystem_list[subsystem_name]:
             module_name = d['TARGET']
             module_type = targets[module_name]
             if module_type in ['DISABLED', 'EMPTY']:
                 continue
             bld.ASSERT(subsystem is not None,
-                       "Subsystem target %s for %s (%s) not found" % (subsystem_name, module_name, module_type),)
+                       "Subsystem target %s for %s (%s) not found" % (subsystem_name, module_name, module_type))
             if module_type in ['SUBSYSTEM']:
                 # if a module is a plain object type (not a library) then the
                 # subsystem it is part of needs to have it as a dependency, so targets
@@ -85,21 +85,21 @@ def build_dependencies(self):
         # extra link flags from pkg_config
         libs = self.final_syslibs.copy()
 
-        (cflags, ldflags, cpppath) = library_flags(self, list(libs),)
-        new_ldflags        = getattr(self, 'samba_ldflags', [],)[:]
+        (cflags, ldflags, cpppath) = library_flags(self, list(libs))
+        new_ldflags        = getattr(self, 'samba_ldflags', [])[:]
         new_ldflags.extend(ldflags)
         self.ldflags       = new_ldflags
 
-        if getattr(self, 'allow_undefined_symbols', False,) and self.env.undefined_ldflags:
+        if getattr(self, 'allow_undefined_symbols', False) and self.env.undefined_ldflags:
             for f in self.env.undefined_ldflags:
                 self.ldflags.remove(f)
 
-        if getattr(self, 'allow_undefined_symbols', False,) and self.env.undefined_ignore_ldflags:
+        if getattr(self, 'allow_undefined_symbols', False) and self.env.undefined_ignore_ldflags:
             for f in self.env.undefined_ignore_ldflags:
                 self.ldflags.append(f)
 
         debug('deps: computed dependencies for target %s: uselib=%s uselib_local=%s add_objects=%s',
-              self.sname, self.uselib, self.uselib_local, self.add_objects,)
+              self.sname, self.uselib, self.uselib_local, self.add_objects)
 
     if self.samba_type in ['SUBSYSTEM', 'BUILTIN']:
         # this is needed for the cflags of libs that come from pkg_config
@@ -110,7 +110,7 @@ def build_dependencies(self):
             self.uselib.extend(list(t.final_syslibs))
         self.uselib = unique_list(self.uselib)
 
-    if getattr(self, 'uselib', None,):
+    if getattr(self, 'uselib', None):
         up_list = []
         for l in self.uselib:
            up_list.append(l.upper())
@@ -131,22 +131,22 @@ def build_includes(self):
     attribute
     '''
 
-    if getattr(self, 'samba_includes', None,) is None:
+    if getattr(self, 'samba_includes', None) is None:
         return
 
     bld = self.bld
 
-    inc_deps = includes_objects(bld, self, set(), {},)
+    inc_deps = includes_objects(bld, self, set(), {})
 
     includes = []
 
     # maybe add local includes
-    if getattr(self, 'local_include', True,) and getattr(self, 'local_include_first', True,):
+    if getattr(self, 'local_include', True) and getattr(self, 'local_include_first', True):
         includes.append('.')
 
     includes.extend(self.samba_includes_extended)
 
-    if 'EXTRA_INCLUDES' in bld.env and getattr(self, 'global_include', True,):
+    if 'EXTRA_INCLUDES' in bld.env and getattr(self, 'global_include', True):
         includes.extend(bld.env['EXTRA_INCLUDES'])
 
     includes.append('#')
@@ -156,9 +156,9 @@ def build_includes(self):
 
     for d in inc_deps:
         t = bld.get_tgen_by_name(d)
-        bld.ASSERT(t is not None, "Unable to find dependency %s for %s" % (d, self.sname),)
-        inclist = getattr(t, 'samba_includes_extended', [],)[:]
-        if getattr(t, 'local_include', True,):
+        bld.ASSERT(t is not None, "Unable to find dependency %s for %s" % (d, self.sname))
+        inclist = getattr(t, 'samba_includes_extended', [])[:]
+        if getattr(t, 'local_include', True):
             inclist.append('.')
         if inclist == []:
             continue
@@ -171,10 +171,10 @@ def build_includes(self):
 
     mypath = self.path.abspath(bld.env)
     for inc in inc_abs:
-        relpath = os.path.relpath(inc, mypath,)
+        relpath = os.path.relpath(inc, mypath)
         includes.append(relpath)
 
-    if getattr(self, 'local_include', True,) and not getattr(self, 'local_include_first', True,):
+    if getattr(self, 'local_include', True) and not getattr(self, 'local_include_first', True):
         includes.append('.')
 
     # now transform the includes list to be relative to the top directory
@@ -186,13 +186,13 @@ def build_includes(self):
             # some are already top based
             includes_top.append(i)
             continue
-        absinc = os.path.join(self.path.abspath(), i,)
-        relinc = os.path.relpath(absinc, self.bld.srcnode.abspath(),)
+        absinc = os.path.join(self.path.abspath(), i)
+        relinc = os.path.relpath(absinc, self.bld.srcnode.abspath())
         includes_top.append('#' + relinc)
 
     self.includes = unique_list(includes_top)
     debug('deps: includes for target %s: includes=%s',
-          self.sname, self.includes,)
+          self.sname, self.includes)
 
 
 def add_init_functions(self):
@@ -200,7 +200,7 @@ def add_init_functions(self):
 
     bld = self.bld
 
-    subsystems = LOCAL_CACHE(bld, 'INIT_FUNCTIONS',)
+    subsystems = LOCAL_CACHE(bld, 'INIT_FUNCTIONS')
 
     # cope with the separated object lists from BINARY and LIBRARY targets
     sname = self.sname
@@ -211,26 +211,26 @@ def add_init_functions(self):
     if sname in subsystems:
         modules.append(sname)
 
-    m = getattr(self, 'samba_modules', None,)
+    m = getattr(self, 'samba_modules', None)
     if m is not None:
         modules.extend(TO_LIST(m))
 
-    m = getattr(self, 'samba_subsystem', None,)
+    m = getattr(self, 'samba_subsystem', None)
     if m is not None:
         modules.append(m)
 
     if 'pyembed' in self.features:
         return
 
-    sentinel = getattr(self, 'init_function_sentinel', 'NULL',)
+    sentinel = getattr(self, 'init_function_sentinel', 'NULL')
 
-    targets    = LOCAL_CACHE(bld, 'TARGET_TYPE',)
-    cflags = getattr(self, 'samba_cflags', [],)[:]
+    targets    = LOCAL_CACHE(bld, 'TARGET_TYPE')
+    cflags = getattr(self, 'samba_cflags', [])[:]
 
     if modules == []:
-        sname = sname.replace('-','_',)
-        sname = sname.replace('.','_',)
-        sname = sname.replace('/','_',)
+        sname = sname.replace('-','_')
+        sname = sname.replace('.','_')
+        sname = sname.replace('/','_')
         cflags.append('-DSTATIC_%s_MODULES=%s' % (sname, sentinel))
         if sentinel == 'NULL':
             proto = "extern void __%s_dummy_module_proto(void)" % (sname)
@@ -240,7 +240,7 @@ def add_init_functions(self):
 
     for m in modules:
         bld.ASSERT(m in subsystems,
-                   "No init_function defined for module '%s' in target '%s'" % (m, self.sname),)
+                   "No init_function defined for module '%s' in target '%s'" % (m, self.sname))
         init_fn_list = []
         for d in subsystems[m]:
             if targets[d['TARGET']] != 'DISABLED':
@@ -258,21 +258,21 @@ def add_init_functions(self):
     self.cflags = cflags
 
 
-def check_duplicate_sources(bld, tgt_list,):
+def check_duplicate_sources(bld, tgt_list):
     '''see if we are compiling the same source file more than once'''
 
     debug('deps: checking for duplicate sources')
-    targets = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+    targets = LOCAL_CACHE(bld, 'TARGET_TYPE')
 
     for t in tgt_list:
-        source_list = TO_LIST(getattr(t, 'source', '',))
-        tpath = os.path.normpath(os.path.relpath(t.path.abspath(bld.env), t.env.BUILD_DIRECTORY + '/default',))
+        source_list = TO_LIST(getattr(t, 'source', ''))
+        tpath = os.path.normpath(os.path.relpath(t.path.abspath(bld.env), t.env.BUILD_DIRECTORY + '/default'))
         obj_sources = set()
         for s in source_list:
-            if not isinstance(s, str,):
+            if not isinstance(s, str):
                 print('strange path in check_duplicate_sources %r' % s)
                 s = s.abspath()
-            p = os.path.normpath(os.path.join(tpath, s,))
+            p = os.path.normpath(os.path.join(tpath, s))
             if p in obj_sources:
                 Logs.error("ERROR: source %s appears twice in target '%s'" % (p, t.sname))
                 sys.exit(1)
@@ -287,7 +287,7 @@ def check_duplicate_sources(bld, tgt_list,):
             continue
         for obj in t.add_objects:
             t2 = t.bld.get_tgen_by_name(obj)
-            source_set = getattr(t2, 'samba_source_set', set(),)
+            source_set = getattr(t2, 'samba_source_set', set())
             for s in source_set:
                 if not s in subsystems:
                     subsystems[s] = {}
@@ -304,14 +304,14 @@ def check_duplicate_sources(bld, tgt_list,):
 
     return True
 
-def check_group_ordering(bld, tgt_list,):
+def check_group_ordering(bld, tgt_list):
     '''see if we have any dependencies that violate the group ordering
 
     It is an error for a target to depend on a target from a later
     build group
     '''
 
-    def group_name(g,):
+    def group_name(g):
         tm = bld.task_manager
         return [x for x in tm.groups_names if id(tm.groups_names[x]) == id(g)][0]
 
@@ -327,11 +327,11 @@ def check_group_ordering(bld, tgt_list,):
         grp_map[name] = idx
         idx += 1
 
-    targets = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+    targets = LOCAL_CACHE(bld, 'TARGET_TYPE')
 
     ret = True
     for t in tgt_list:
-        tdeps = getattr(t, 'add_objects', [],) + getattr(t, 'uselib_local', [],)
+        tdeps = getattr(t, 'add_objects', []) + getattr(t, 'uselib_local', [])
         for d in tdeps:
             t2 = bld.get_tgen_by_name(d)
             if t2 is None:
@@ -347,22 +347,22 @@ def check_group_ordering(bld, tgt_list,):
     return ret
 Build.BuildContext.check_group_ordering = check_group_ordering
 
-def show_final_deps(bld, tgt_list,):
+def show_final_deps(bld, tgt_list):
     '''show the final dependencies for all targets'''
 
-    targets = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+    targets = LOCAL_CACHE(bld, 'TARGET_TYPE')
 
     for t in tgt_list:
         if not targets[t.sname] in ['LIBRARY', 'PLUGIN', 'BINARY', 'PYTHON', 'SUBSYSTEM', 'BUILTIN']:
             continue
         debug('deps: final dependencies for target %s: uselib=%s uselib_local=%s add_objects=%s',
-              t.sname, t.uselib, getattr(t, 'uselib_local', [],), getattr(t, 'add_objects', [],),)
+              t.sname, t.uselib, getattr(t, 'uselib_local', []), getattr(t, 'add_objects', []))
 
 
-def add_samba_attributes(bld, tgt_list,):
+def add_samba_attributes(bld, tgt_list):
     '''ensure a target has a the required samba attributes'''
 
-    targets = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+    targets = LOCAL_CACHE(bld, 'TARGET_TYPE')
 
     for t in tgt_list:
         if t.name != '':
@@ -373,19 +373,19 @@ def add_samba_attributes(bld, tgt_list,):
         t.samba_abspath = t.path.abspath(bld.env)
         t.samba_deps_extended = t.samba_deps[:]
         t.samba_includes_extended = TO_LIST(t.samba_includes)[:]
-        t.cflags = getattr(t, 'samba_cflags', '',)
+        t.cflags = getattr(t, 'samba_cflags', '')
 
-def replace_builtin_subsystem_deps(bld, tgt_list,):
+def replace_builtin_subsystem_deps(bld, tgt_list):
     '''replace dependencies based on builtin subsystems/libraries
 
     '''
 
-    targets  = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+    targets  = LOCAL_CACHE(bld, 'TARGET_TYPE')
 
     # If either the target or the dependency require builtin linking
     # we should replace the dependency
     for t in tgt_list:
-        t_require_builtin_deps = getattr(t, 'samba_require_builtin_deps', False,)
+        t_require_builtin_deps = getattr(t, 'samba_require_builtin_deps', False)
         if t_require_builtin_deps:
             debug("deps: target %s: requires builtin dependencies..." % (t.sname))
         else:
@@ -394,30 +394,30 @@ def replace_builtin_subsystem_deps(bld, tgt_list,):
         replacing = {}
 
         for dep in t.samba_deps_extended:
-            bld.ASSERT(dep in targets, "target %s: dependency target %s not declared" % (t.sname, dep),)
+            bld.ASSERT(dep in targets, "target %s: dependency target %s not declared" % (t.sname, dep))
             dtype = targets[dep]
-            bld.ASSERT(dtype != 'BUILTIN', "target %s: dependency target %s is BUILTIN" % (t.sname, dep),)
-            bld.ASSERT(dtype != 'PLUGIN', "target %s: dependency target %s is PLUGIN" % (t.sname, dep),)
+            bld.ASSERT(dtype != 'BUILTIN', "target %s: dependency target %s is BUILTIN" % (t.sname, dep))
+            bld.ASSERT(dtype != 'PLUGIN', "target %s: dependency target %s is PLUGIN" % (t.sname, dep))
             if dtype not in ['SUBSYSTEM', 'LIBRARY']:
                 debug("deps: target %s: keep %s dependency %s" % (t.sname, dtype, dep))
                 continue
             dt = bld.get_tgen_by_name(dep)
-            bld.ASSERT(dt is not None, "target %s: dependency target %s not found by name" % (t.sname, dep),)
-            dt_require_builtin_deps = getattr(dt, 'samba_require_builtin_deps', False,)
+            bld.ASSERT(dt is not None, "target %s: dependency target %s not found by name" % (t.sname, dep))
+            dt_require_builtin_deps = getattr(dt, 'samba_require_builtin_deps', False)
             if not dt_require_builtin_deps and not t_require_builtin_deps:
                 # both target and dependency don't require builtin linking
                 continue
-            sdt = getattr(dt, 'samba_builtin_subsystem', None,)
+            sdt = getattr(dt, 'samba_builtin_subsystem', None)
             if not t_require_builtin_deps:
                 if sdt is None:
                     debug("deps: target %s: dependency %s requires builtin deps only" % (t.sname, dep))
                     continue
                 debug("deps: target %s: dependency %s requires builtin linking" % (t.sname, dep))
-            bld.ASSERT(sdt is not None, "target %s: dependency target %s is missing samba_builtin_subsystem" % (t.sname, dep),)
+            bld.ASSERT(sdt is not None, "target %s: dependency target %s is missing samba_builtin_subsystem" % (t.sname, dep))
             sdep = sdt.sname
-            bld.ASSERT(sdep in targets, "target %s: builtin dependency target %s (from %s) not declared" % (t.sname, sdep, dep),)
+            bld.ASSERT(sdep in targets, "target %s: builtin dependency target %s (from %s) not declared" % (t.sname, sdep, dep))
             sdt = targets[sdep]
-            bld.ASSERT(sdt == 'BUILTIN', "target %s: builtin dependency target %s (from %s) is not BUILTIN" % (t.sname, sdep, dep),)
+            bld.ASSERT(sdt == 'BUILTIN', "target %s: builtin dependency target %s (from %s) is not BUILTIN" % (t.sname, sdep, dep))
             replacing[dep] = sdep
 
         for i in range(len(t.samba_deps_extended)):
@@ -427,7 +427,7 @@ def replace_builtin_subsystem_deps(bld, tgt_list,):
                 debug("deps: target %s: replacing dependency %s with builtin subsystem %s" % (t.sname, dep, sdep))
                 t.samba_deps_extended[i] = sdep
 
-def replace_grouping_libraries(bld, tgt_list,):
+def replace_grouping_libraries(bld, tgt_list):
     '''replace dependencies based on grouping libraries
 
     If a library is marked as a grouping library, then any target that
@@ -435,16 +435,16 @@ def replace_grouping_libraries(bld, tgt_list,):
     that dependency replaced with a dependency on the grouping library
     '''
 
-    targets  = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+    targets  = LOCAL_CACHE(bld, 'TARGET_TYPE')
 
     grouping = {}
 
     # find our list of grouping libraries, mapped from the subsystems they depend on
     for t in tgt_list:
-        if not getattr(t, 'grouping_library', False,):
+        if not getattr(t, 'grouping_library', False):
             continue
         for dep in t.samba_deps_extended:
-            bld.ASSERT(dep in targets, "grouping library target %s not declared in %s" % (dep, t.sname),)
+            bld.ASSERT(dep in targets, "grouping library target %s not declared in %s" % (dep, t.sname))
             if targets[dep] == 'SUBSYSTEM':
                 grouping[dep] = t.sname
 
@@ -459,11 +459,11 @@ def replace_grouping_libraries(bld, tgt_list,):
 
 
 
-def build_direct_deps(bld, tgt_list,):
+def build_direct_deps(bld, tgt_list):
     '''build the direct_objects and direct_libs sets for each target'''
 
-    targets  = LOCAL_CACHE(bld, 'TARGET_TYPE',)
-    syslib_deps  = LOCAL_CACHE(bld, 'SYSLIB_DEPS',)
+    targets  = LOCAL_CACHE(bld, 'TARGET_TYPE')
+    syslib_deps  = LOCAL_CACHE(bld, 'SYSLIB_DEPS')
 
     global_deps = bld.env.GLOBAL_DEPENDENCIES
     global_deps_exclude = set()
@@ -479,7 +479,7 @@ def build_direct_deps(bld, tgt_list,):
         t.direct_libs = set()
         t.direct_syslibs = set()
         deps = t.samba_deps_extended[:]
-        if getattr(t, 'samba_use_global_deps', False,) and not t.sname in global_deps_exclude:
+        if getattr(t, 'samba_use_global_deps', False) and not t.sname in global_deps_exclude:
             deps.extend(global_deps)
         for d in deps:
             if d == t.sname: continue
@@ -499,7 +499,7 @@ def build_direct_deps(bld, tgt_list,):
                     for implied in TO_LIST(syslib_deps[d]):
                         if targets[implied] == 'SUBSYSTEM':
                             it = bld.get_tgen_by_name(implied)
-                            sit = getattr(it, 'samba_builtin_subsystem', None,)
+                            sit = getattr(it, 'samba_builtin_subsystem', None)
                             if sit:
                                 implied = sit.sname
                         if targets[implied] == 'BUILTIN':
@@ -529,7 +529,7 @@ def build_direct_deps(bld, tgt_list,):
     debug('deps: built direct dependencies')
 
 
-def dependency_loop(loops, t, target,):
+def dependency_loop(loops, t, target):
     '''add a dependency loop to the loops dictionary'''
     if t.sname == target:
         return
@@ -539,36 +539,36 @@ def dependency_loop(loops, t, target,):
         loops[target].add(t.sname)
 
 
-def indirect_libs(bld, t, chain, loops,):
+def indirect_libs(bld, t, chain, loops):
     '''recursively calculate the indirect library dependencies for a target
 
     An indirect library is a library that results from a dependency on
     a subsystem
     '''
 
-    ret = getattr(t, 'indirect_libs', None,)
+    ret = getattr(t, 'indirect_libs', None)
     if ret is not None:
         return ret
 
     ret = set()
     for obj in t.direct_objects:
         if obj in chain:
-            dependency_loop(loops, t, obj,)
+            dependency_loop(loops, t, obj)
             continue
         chain.add(obj)
         t2 = bld.get_tgen_by_name(obj)
-        r2 = indirect_libs(bld, t2, chain, loops,)
+        r2 = indirect_libs(bld, t2, chain, loops)
         chain.remove(obj)
         ret = ret.union(t2.direct_libs)
         ret = ret.union(r2)
 
-    for obj in indirect_objects(bld, t, set(), loops,):
+    for obj in indirect_objects(bld, t, set(), loops):
         if obj in chain:
-            dependency_loop(loops, t, obj,)
+            dependency_loop(loops, t, obj)
             continue
         chain.add(obj)
         t2 = bld.get_tgen_by_name(obj)
-        r2 = indirect_libs(bld, t2, chain, loops,)
+        r2 = indirect_libs(bld, t2, chain, loops)
         chain.remove(obj)
         ret = ret.union(t2.direct_libs)
         ret = ret.union(r2)
@@ -578,24 +578,24 @@ def indirect_libs(bld, t, chain, loops,):
     return ret
 
 
-def indirect_objects(bld, t, chain, loops,):
+def indirect_objects(bld, t, chain, loops):
     '''recursively calculate the indirect object dependencies for a target
 
     indirect objects are the set of objects from expanding the
     subsystem dependencies
     '''
 
-    ret = getattr(t, 'indirect_objects', None,)
+    ret = getattr(t, 'indirect_objects', None)
     if ret is not None: return ret
 
     ret = set()
     for lib in t.direct_objects:
         if lib in chain:
-            dependency_loop(loops, t, lib,)
+            dependency_loop(loops, t, lib)
             continue
         chain.add(lib)
         t2 = bld.get_tgen_by_name(lib)
-        r2 = indirect_objects(bld, t2, chain, loops,)
+        r2 = indirect_objects(bld, t2, chain, loops)
         chain.remove(lib)
         ret = ret.union(t2.direct_objects)
         ret = ret.union(r2)
@@ -604,7 +604,7 @@ def indirect_objects(bld, t, chain, loops,):
     return ret
 
 
-def extended_objects(bld, t, chain,):
+def extended_objects(bld, t, chain):
     '''recursively calculate the extended object dependencies for a target
 
     extended objects are the union of:
@@ -613,7 +613,7 @@ def extended_objects(bld, t, chain,):
        - direct and indirect objects of all direct and indirect libraries
     '''
 
-    ret = getattr(t, 'extended_objects', None,)
+    ret = getattr(t, 'extended_objects', None)
     if ret is not None: return ret
 
     ret = set()
@@ -624,7 +624,7 @@ def extended_objects(bld, t, chain,):
             continue
         t2 = bld.get_tgen_by_name(lib)
         chain.add(lib)
-        r2 = extended_objects(bld, t2, chain,)
+        r2 = extended_objects(bld, t2, chain)
         chain.remove(lib)
         ret = ret.union(t2.final_objects)
         ret = ret.union(r2)
@@ -633,12 +633,12 @@ def extended_objects(bld, t, chain,):
     return ret
 
 
-def includes_objects(bld, t, chain, inc_loops,):
+def includes_objects(bld, t, chain, inc_loops):
     '''recursively calculate the includes object dependencies for a target
 
     includes dependencies come from either library or object dependencies
     '''
-    ret = getattr(t, 'includes_objects', None,)
+    ret = getattr(t, 'includes_objects', None)
     if ret is not None:
         return ret
 
@@ -647,27 +647,27 @@ def includes_objects(bld, t, chain, inc_loops,):
 
     for obj in t.direct_objects:
         if obj in chain:
-            dependency_loop(inc_loops, t, obj,)
+            dependency_loop(inc_loops, t, obj)
             continue
         chain.add(obj)
         t2 = bld.get_tgen_by_name(obj)
-        r2 = includes_objects(bld, t2, chain, inc_loops,)
+        r2 = includes_objects(bld, t2, chain, inc_loops)
         chain.remove(obj)
         ret = ret.union(t2.direct_objects)
         ret = ret.union(r2)
 
     for lib in t.direct_libs:
         if lib in chain:
-            dependency_loop(inc_loops, t, lib,)
+            dependency_loop(inc_loops, t, lib)
             continue
         chain.add(lib)
         t2 = bld.get_tgen_by_name(lib)
         if t2 is None:
-            targets = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+            targets = LOCAL_CACHE(bld, 'TARGET_TYPE')
             Logs.error('Target %s of type %s not found in direct_libs for %s' % (
                 lib, targets[lib], t.sname))
             sys.exit(1)
-        r2 = includes_objects(bld, t2, chain, inc_loops,)
+        r2 = includes_objects(bld, t2, chain, inc_loops)
         chain.remove(lib)
         ret = ret.union(t2.direct_objects)
         ret = ret.union(r2)
@@ -676,29 +676,29 @@ def includes_objects(bld, t, chain, inc_loops,):
     return ret
 
 
-def break_dependency_loops(bld, tgt_list,):
+def break_dependency_loops(bld, tgt_list):
     '''find and break dependency loops'''
     loops = {}
     inc_loops = {}
 
     # build up the list of loops
     for t in tgt_list:
-        indirect_objects(bld, t, set(), loops,)
-        indirect_libs(bld, t, set(), loops,)
-        includes_objects(bld, t, set(), inc_loops,)
+        indirect_objects(bld, t, set(), loops)
+        indirect_libs(bld, t, set(), loops)
+        includes_objects(bld, t, set(), inc_loops)
 
     # break the loops
     for t in tgt_list:
         if t.sname in loops:
             for attr in ['direct_objects', 'indirect_objects', 'direct_libs', 'indirect_libs']:
-                objs = getattr(t, attr, set(),)
-                setattr(t, attr, objs.difference(loops[t.sname]),)
+                objs = getattr(t, attr, set())
+                setattr(t, attr, objs.difference(loops[t.sname]))
 
     for loop in loops:
-        debug('deps: Found dependency loops for target %s : %s', loop, loops[loop],)
+        debug('deps: Found dependency loops for target %s : %s', loop, loops[loop])
 
     for loop in inc_loops:
-        debug('deps: Found include loops for target %s : %s', loop, inc_loops[loop],)
+        debug('deps: Found include loops for target %s : %s', loop, inc_loops[loop])
 
     # expand the loops mapping by one level
     for loop in loops.copy():
@@ -735,31 +735,31 @@ def break_dependency_loops(bld, tgt_list,):
     for t in tgt_list:
         for loop in loops:
             for attr in ['indirect_objects', 'indirect_libs']:
-                objs = getattr(t, attr, set(),)
+                objs = getattr(t, attr, set())
                 if loop in objs:
                     diff = loops[loop].difference(objs)
                     if t.sname in diff:
                         diff.remove(t.sname)
                     if diff:
-                        debug('deps: Expanded target %s of type %s from loop %s by %s', t.sname, t.samba_type, loop, diff,)
+                        debug('deps: Expanded target %s of type %s from loop %s by %s', t.sname, t.samba_type, loop, diff)
                         objs = objs.union(diff)
-                setattr(t, attr, objs,)
+                setattr(t, attr, objs)
 
         for loop in inc_loops:
-            objs = getattr(t, 'includes_objects', set(),)
+            objs = getattr(t, 'includes_objects', set())
             if loop in objs:
                 diff = inc_loops[loop].difference(objs)
                 if t.sname in diff:
                     diff.remove(t.sname)
                 if diff:
-                    debug('deps: Expanded target %s includes of type %s from loop %s by %s', t.sname, t.samba_type, loop, diff,)
+                    debug('deps: Expanded target %s includes of type %s from loop %s by %s', t.sname, t.samba_type, loop, diff)
                     objs = objs.union(diff)
-            setattr(t, 'includes_objects', objs,)
+            setattr(t, 'includes_objects', objs)
 
 
-def reduce_objects(bld, tgt_list,):
+def reduce_objects(bld, tgt_list):
     '''reduce objects by looking for indirect object dependencies'''
-    targets  = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+    targets  = LOCAL_CACHE(bld, 'TARGET_TYPE')
 
     rely_on = {}
 
@@ -775,7 +775,7 @@ def reduce_objects(bld, tgt_list,):
             new = t.final_objects.copy()
             for l in t.final_libs:
                 t2 = bld.get_tgen_by_name(l)
-                t2_obj = extended_objects(bld, t2, set(),)
+                t2_obj = extended_objects(bld, t2, set())
                 dup = new.intersection(t2_obj)
                 if t.sname in rely_on:
                     dup = dup.difference(rely_on[t.sname])
@@ -785,13 +785,13 @@ def reduce_objects(bld, tgt_list,):
                         dtype = targets[d]
                         if dtype == 'BUILTIN':
                             debug('deps: BUILTIN SKIP: removing dups from %s of type %s: %s also in %s %s',
-                                  t.sname, t.samba_type, d, t2.samba_type, l,)
+                                  t.sname, t.samba_type, d, t2.samba_type, l)
                             dup.remove(d)
                     if len(dup) == 0:
                         continue
 
                     debug('deps: removing dups from %s of type %s: %s also in %s %s',
-                          t.sname, t.samba_type, dup, t2.samba_type, l,)
+                          t.sname, t.samba_type, dup, t2.samba_type, l)
                     new = new.difference(dup)
                     changed = True
                     if not l in rely_on:
@@ -804,10 +804,10 @@ def reduce_objects(bld, tgt_list,):
                 # Otherwise our check_duplicate_sources()
                 # checks would trigger!
                 if n.endswith('.builtin.objlist'):
-                    unused = n.replace('.builtin.objlist', '.objlist',)
+                    unused = n.replace('.builtin.objlist', '.objlist')
                     if unused in new:
                         new.remove(unused)
-                    unused = n.replace('.builtin.objlist', '',)
+                    unused = n.replace('.builtin.objlist', '')
                     if unused in new:
                         new.remove(unused)
             t.final_objects = new
@@ -823,11 +823,11 @@ def reduce_objects(bld, tgt_list,):
     return True
 
 
-def show_library_loop(bld, lib1, lib2, path, seen,):
+def show_library_loop(bld, lib1, lib2, path, seen):
     '''show the detailed path of a library loop between lib1 and lib2'''
 
     t = bld.get_tgen_by_name(lib1)
-    if not lib2 in getattr(t, 'final_libs', set(),):
+    if not lib2 in getattr(t, 'final_libs', set()):
         return
 
     for d in t.samba_deps_extended:
@@ -838,16 +838,16 @@ def show_library_loop(bld, lib1, lib2, path, seen,):
         if d == lib2:
             Logs.warn('library loop path: ' + path2)
             return
-        show_library_loop(bld, d, lib2, path2, seen,)
+        show_library_loop(bld, d, lib2, path2, seen)
         seen.remove(d)
 
 
-def calculate_final_deps(bld, tgt_list, loops,):
+def calculate_final_deps(bld, tgt_list, loops):
     '''calculate the final library and object dependencies'''
     for t in tgt_list:
         # start with the maximum possible list
-        t.final_libs    = t.direct_libs.union(indirect_libs(bld, t, set(), loops,))
-        t.final_objects = t.direct_objects.union(indirect_objects(bld, t, set(), loops,))
+        t.final_libs    = t.direct_libs.union(indirect_libs(bld, t, set(), loops))
+        t.final_objects = t.direct_objects.union(indirect_objects(bld, t, set(), loops))
 
     for t in tgt_list:
         # don't depend on ourselves
@@ -859,8 +859,8 @@ def calculate_final_deps(bld, tgt_list, loops,):
     # handle any non-shared binaries
     for t in tgt_list:
         if t.samba_type == 'BINARY' and bld.NONSHARED_BINARY(t.sname):
-            subsystem_list = LOCAL_CACHE(bld, 'INIT_FUNCTIONS',)
-            targets = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+            subsystem_list = LOCAL_CACHE(bld, 'INIT_FUNCTIONS')
+            targets = LOCAL_CACHE(bld, 'TARGET_TYPE')
 
             # replace lib deps with objlist deps
             for l in t.final_libs:
@@ -870,7 +870,7 @@ def calculate_final_deps(bld, tgt_list, loops,):
                     Logs.error('ERROR: subsystem %s not found' % objname)
                     sys.exit(1)
                 t.final_objects.add(objname)
-                t.final_objects = t.final_objects.union(extended_objects(bld, t2, set(),))
+                t.final_objects = t.final_objects.union(extended_objects(bld, t2, set()))
                 if l in subsystem_list:
                     # its a subsystem - we also need the contents of any modules
                     for d in subsystem_list[l]:
@@ -886,7 +886,7 @@ def calculate_final_deps(bld, tgt_list, loops,):
                             Logs.error('ERROR: subsystem %s not found' % objname)
                             sys.exit(1)
                         t.final_objects.add(objname)
-                        t.final_objects = t.final_objects.union(extended_objects(bld, t2, set(),))
+                        t.final_objects = t.final_objects.union(extended_objects(bld, t2, set()))
             t.final_libs = set()
 
     # find any library loops
@@ -895,22 +895,22 @@ def calculate_final_deps(bld, tgt_list, loops,):
             for l in t.final_libs.copy():
                 t2 = bld.get_tgen_by_name(l)
                 if t.sname in t2.final_libs:
-                    if getattr(bld.env, "ALLOW_CIRCULAR_LIB_DEPENDENCIES", False,):
+                    if getattr(bld.env, "ALLOW_CIRCULAR_LIB_DEPENDENCIES", False):
                         # we could break this in either direction. If one of the libraries
                         # has a version number, and will this be distributed publicly, then
                         # we should make it the lower level library in the DAG
                         Logs.warn('deps: removing library loop %s from %s' % (t.sname, t2.sname))
-                        dependency_loop(loops, t, t2.sname,)
+                        dependency_loop(loops, t, t2.sname)
                         t2.final_libs.remove(t.sname)
                     else:
                         Logs.error('ERROR: circular library dependency between %s and %s'
                             % (t.sname, t2.sname))
-                        show_library_loop(bld, t.sname, t2.sname, t.sname, set(),)
-                        show_library_loop(bld, t2.sname, t.sname, t2.sname, set(),)
+                        show_library_loop(bld, t.sname, t2.sname, t.sname, set())
+                        show_library_loop(bld, t2.sname, t.sname, t2.sname, set())
                         sys.exit(1)
 
     for loop in loops:
-        debug('deps: Found dependency loops for target %s : %s', loop, loops[loop],)
+        debug('deps: Found dependency loops for target %s : %s', loop, loops[loop])
 
     # we now need to make corrections for any library loops we broke up
     # any target that depended on the target of the loop and doesn't
@@ -930,21 +930,21 @@ def calculate_final_deps(bld, tgt_list, loops,):
                         t2 = bld.get_tgen_by_name(d)
                         if t2.samba_type == 'LIBRARY':
                             if t.sname in t2.final_libs:
-                                debug('deps: removing expansion %s from %s', d, t.sname,)
+                                debug('deps: removing expansion %s from %s', d, t.sname)
                                 diff.remove(d)
                     if diff:
                         debug('deps: Expanded target %s by loop %s libraries (loop %s) %s', t.sname, loop,
-                              loops[loop], diff,)
+                              loops[loop], diff)
                         t.final_libs = t.final_libs.union(diff)
 
     # remove objects that are also available in linked libs
     count = 0
-    while reduce_objects(bld, tgt_list,):
+    while reduce_objects(bld, tgt_list):
         count += 1
         if count > 100:
             Logs.warn("WARNING: Unable to remove all inter-target object duplicates")
             break
-    debug('deps: Object reduction took %u iterations', count,)
+    debug('deps: Object reduction took %u iterations', count)
 
     # add in any syslib dependencies
     for t in tgt_list:
@@ -977,7 +977,7 @@ def calculate_final_deps(bld, tgt_list, loops,):
     debug('deps: removed duplicate dependencies')
 
 
-def show_dependencies(bld, target, seen,):
+def show_dependencies(bld, target, seen):
     '''recursively show the dependencies of target'''
 
     if target in seen:
@@ -995,14 +995,14 @@ def show_dependencies(bld, target, seen,):
     seen.add(target)
 
     for t2 in t.direct_objects:
-        show_dependencies(bld, t2, seen,)
+        show_dependencies(bld, t2, seen)
 
 
-def show_object_duplicates(bld, tgt_list,):
+def show_object_duplicates(bld, tgt_list):
     '''show a list of object files that are included in more than
     one library or binary'''
 
-    targets = LOCAL_CACHE(bld, 'TARGET_TYPE',)
+    targets = LOCAL_CACHE(bld, 'TARGET_TYPE')
 
     used_by = {}
 
@@ -1011,7 +1011,7 @@ def show_object_duplicates(bld, tgt_list,):
     for t in tgt_list:
         if not targets[t.sname] in [ 'LIBRARY', 'PYTHON' ]:
             continue
-        for n in getattr(t, 'final_objects', set(),):
+        for n in getattr(t, 'final_objects', set()):
             t2 = bld.get_tgen_by_name(n)
             if not n in used_by:
                 used_by[n] = set()
@@ -1023,10 +1023,10 @@ def show_object_duplicates(bld, tgt_list,):
 
     Logs.info("showing indirect dependency counts (sorted by count)")
 
-    def indirect_count(t,):
+    def indirect_count(t):
         return len(t.indirect_objects)
 
-    sorted_list = sorted(tgt_list, key=indirect_count, reverse=True,)
+    sorted_list = sorted(tgt_list, key=indirect_count, reverse=True)
     for t in sorted_list:
         if len(t.indirect_objects) > 1:
             Logs.info("%s depends on %u indirect objects" % (t.sname, len(t.indirect_objects)))
@@ -1045,7 +1045,7 @@ savedeps_envvars = ['NONSHARED_BINARIES', 'GLOBAL_DEPENDENCIES', 'EXTRA_CFLAGS',
 savedeps_caches  = ['GLOBAL_DEPENDENCIES', 'TARGET_TYPE', 'INIT_FUNCTIONS', 'SYSLIB_DEPS']
 savedeps_files   = ['buildtools/wafsamba/samba_deps.py']
 
-def save_samba_deps(bld, tgt_list,):
+def save_samba_deps(bld, tgt_list):
     '''save the dependency calculations between builds, to make
        further builds faster'''
     denv = ConfigSet.ConfigSet()
@@ -1061,10 +1061,10 @@ def save_samba_deps(bld, tgt_list,):
     denv.files  = {}
 
     for f in savedeps_files:
-        denv.files[f] = os.stat(os.path.join(bld.srcnode.abspath(), f,)).st_mtime
+        denv.files[f] = os.stat(os.path.join(bld.srcnode.abspath(), f)).st_mtime
 
     for c in savedeps_caches:
-        denv.caches[c] = LOCAL_CACHE(bld, c,)
+        denv.caches[c] = LOCAL_CACHE(bld, c)
 
     for e in savedeps_envvars:
         denv.envvar[e] = bld.env[e]
@@ -1073,7 +1073,7 @@ def save_samba_deps(bld, tgt_list,):
         # save all the input attributes for each target
         tdeps = {}
         for attr in savedeps_inputs:
-            v = getattr(t, attr, None,)
+            v = getattr(t, attr, None)
             if v is not None:
                 tdeps[attr] = v
         if tdeps != {}:
@@ -1082,7 +1082,7 @@ def save_samba_deps(bld, tgt_list,):
         # save all the output attributes for each target
         tdeps = {}
         for attr in savedeps_outputs:
-            v = getattr(t, attr, None,)
+            v = getattr(t, attr, None)
             if v is not None:
                 tdeps[attr] = v
         if tdeps != {}:
@@ -1095,14 +1095,14 @@ def save_samba_deps(bld, tgt_list,):
         if tdeps != {}:
             denv.outenv[t.sname] = tdeps
 
-    depsfile = os.path.join(bld.cache_dir, "sambadeps",)
+    depsfile = os.path.join(bld.cache_dir, "sambadeps")
     denv.store_fast(depsfile)
 
 
 
-def load_samba_deps(bld, tgt_list,):
+def load_samba_deps(bld, tgt_list):
     '''load a previous set of build dependencies if possible'''
-    depsfile = os.path.join(bld.cache_dir, "sambadeps",)
+    depsfile = os.path.join(bld.cache_dir, "sambadeps")
     denv = ConfigSet.ConfigSet()
     try:
         debug('deps: checking saved dependencies')
@@ -1118,12 +1118,12 @@ def load_samba_deps(bld, tgt_list,):
     for f in savedeps_files:
         if f not in denv.files:
             return False
-        if denv.files[f] != os.stat(os.path.join(bld.srcnode.abspath(), f,)).st_mtime:
+        if denv.files[f] != os.stat(os.path.join(bld.srcnode.abspath(), f)).st_mtime:
             return False
 
     # check if caches are the same
     for c in savedeps_caches:
-        if c not in denv.caches or denv.caches[c] != LOCAL_CACHE(bld, c,):
+        if c not in denv.caches or denv.caches[c] != LOCAL_CACHE(bld, c):
             return False
 
     # check if caches are the same
@@ -1135,7 +1135,7 @@ def load_samba_deps(bld, tgt_list,):
     for t in tgt_list:
         tdeps = {}
         for attr in savedeps_inputs:
-            v = getattr(t, attr, None,)
+            v = getattr(t, attr, None)
             if v is not None:
                 tdeps[attr] = v
         if t.sname in denv.input:
@@ -1151,7 +1151,7 @@ def load_samba_deps(bld, tgt_list,):
         if not t.sname in denv.output: continue
         tdeps = denv.output[t.sname]
         for a in tdeps:
-            setattr(t, a, tdeps[a],)
+            setattr(t, a, tdeps[a])
 
     # put output env vars in place
     for t in tgt_list:
@@ -1164,7 +1164,7 @@ def load_samba_deps(bld, tgt_list,):
     return True
 
 
-def generate_clangdb(bld,):
+def generate_clangdb(bld):
     classes = []
     for x in ('c', 'cxx'):
         cls = Task.classes.get(x)
@@ -1175,7 +1175,7 @@ def generate_clangdb(bld,):
     tasks = []
     for g in bld.groups:
         for tg in g:
-            if isinstance(tg, Task.Task,):
+            if isinstance(tg, Task.Task):
                 lst = [tg]
             else:
                 lst = tg.tasks
@@ -1184,14 +1184,14 @@ def generate_clangdb(bld,):
                     task.last_cmd
                 except AttributeError:
                     continue
-                if isinstance(task, task_classes,):
+                if isinstance(task, task_classes):
                     tasks.append(task)
     if len(tasks) == 0:
         return
 
     database_file = bld.bldnode.make_node('compile_commands.json')
     Logs.info('Build commands will be stored in %s',
-              database_file.path_from(bld.path),)
+              database_file.path_from(bld.path))
     try:
         root = database_file.read_json()
     except IOError:
@@ -1211,7 +1211,7 @@ def generate_clangdb(bld,):
     database_file.write_json(root)
 
 
-def check_project_rules(bld,):
+def check_project_rules(bld):
     '''check the project rules - ensuring the targets are sane'''
 
     loops = {}
@@ -1219,12 +1219,12 @@ def check_project_rules(bld,):
 
     tgt_list = get_tgt_list(bld)
 
-    add_samba_attributes(bld, tgt_list,)
+    add_samba_attributes(bld, tgt_list)
 
     force_project_rules = (Options.options.SHOWDEPS or
                            Options.options.SHOW_DUPLICATES)
 
-    if not force_project_rules and load_samba_deps(bld, tgt_list,):
+    if not force_project_rules and load_samba_deps(bld, tgt_list):
         return
 
     timer = Utils.Timer()
@@ -1234,7 +1234,7 @@ def check_project_rules(bld,):
 
     debug('deps: project rules checking started')
 
-    replace_builtin_subsystem_deps(bld, tgt_list,)
+    replace_builtin_subsystem_deps(bld, tgt_list)
 
     debug("deps: replace_builtin_subsystem_deps: %s" % str(timer))
 
@@ -1242,37 +1242,37 @@ def check_project_rules(bld,):
 
     debug("deps: expand_subsystem_deps: %s" % str(timer))
 
-    replace_grouping_libraries(bld, tgt_list,)
+    replace_grouping_libraries(bld, tgt_list)
 
     debug("deps: replace_grouping_libraries: %s" % str(timer))
 
-    build_direct_deps(bld, tgt_list,)
+    build_direct_deps(bld, tgt_list)
 
     debug("deps: build_direct_deps: %s" % str(timer))
 
-    break_dependency_loops(bld, tgt_list,)
+    break_dependency_loops(bld, tgt_list)
 
     debug("deps: break_dependency_loops: %s" % str(timer))
 
     if Options.options.SHOWDEPS:
-            show_dependencies(bld, Options.options.SHOWDEPS, set(),)
+            show_dependencies(bld, Options.options.SHOWDEPS, set())
 
-    calculate_final_deps(bld, tgt_list, loops,)
+    calculate_final_deps(bld, tgt_list, loops)
 
     debug("deps: calculate_final_deps: %s" % str(timer))
 
     if Options.options.SHOW_DUPLICATES:
-            show_object_duplicates(bld, tgt_list,)
+            show_object_duplicates(bld, tgt_list)
 
     # run the various attribute generators
     for f in [ build_dependencies, build_includes, add_init_functions ]:
-        debug('deps: project rules checking %s', f,)
+        debug('deps: project rules checking %s', f)
         for t in tgt_list: f(t)
         debug("deps: %s: %s" % (f, str(timer)))
 
     debug('deps: project rules stage1 completed')
 
-    if not check_duplicate_sources(bld, tgt_list,):
+    if not check_duplicate_sources(bld, tgt_list):
         Logs.error("Duplicate sources present - aborting")
         sys.exit(1)
 
@@ -1284,15 +1284,15 @@ def check_project_rules(bld,):
 
     debug("deps: check_group_ordering: %s" % str(timer))
 
-    show_final_deps(bld, tgt_list,)
+    show_final_deps(bld, tgt_list)
 
     debug("deps: show_final_deps: %s" % str(timer))
 
     debug('deps: project rules checking completed - %u targets checked',
-          len(tgt_list),)
+          len(tgt_list))
 
     if not bld.is_install:
-        save_samba_deps(bld, tgt_list,)
+        save_samba_deps(bld, tgt_list)
 
     debug("deps: save_samba_deps: %s" % str(timer))
 
@@ -1303,7 +1303,7 @@ def check_project_rules(bld,):
         bld.add_post_fun(generate_clangdb)
 
 
-def CHECK_PROJECT_RULES(bld,):
+def CHECK_PROJECT_RULES(bld):
     '''enable checking of project targets for sanity'''
     if bld.env.added_project_rules:
         return

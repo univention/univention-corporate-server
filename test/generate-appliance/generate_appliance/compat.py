@@ -25,7 +25,8 @@ except ImportError:
             choices: Any = None,
             required: bool = False,
             help: Optional[str] = None,
-            metavar: Optional[str] = None,) -> None:
+            metavar: Optional[str] = None,
+        ) -> None:
             _option_strings = []
             for option_string in option_strings:
                 _option_strings.append(option_string)
@@ -37,11 +38,11 @@ except ImportError:
             if help is not None and default is not None:
                 help += " (default: %(default)s)"
 
-            Action.__init__(self, option_strings=_option_strings, dest=dest, nargs=0, default=default, type=type, choices=choices, required=required, help=help, metavar=metavar,)
+            Action.__init__(self, option_strings=_option_strings, dest=dest, nargs=0, default=default, type=type, choices=choices, required=required, help=help, metavar=metavar)
 
-        def __call__(self, parser: ArgumentParser, namespace: Namespace, values: Any, option_string: Optional[str] = None,) -> None:
+        def __call__(self, parser: ArgumentParser, namespace: Namespace, values: Any, option_string: Optional[str] = None) -> None:
             if option_string is not None and option_string in self.option_strings:
-                setattr(namespace, self.dest, not option_string.startswith('--no-'),)
+                setattr(namespace, self.dest, not option_string.startswith('--no-'))
 
         def format_usage(self) -> str:
             return ' | '.join(self.option_strings)

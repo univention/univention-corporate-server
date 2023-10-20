@@ -34,17 +34,17 @@ from univention.portal.handlers.portal_resource import PortalResource
 
 
 class LoginHandler(PortalResource):
-    async def post(self, portal_name,):
+    async def post(self, portal_name):
         portal = self.find_portal()
         await portal.login_user(self)
 
-    async def get(self, portal_name,):
+    async def get(self, portal_name):
         portal = self.find_portal()
         await portal.login_request(self)
 
 
 class LogoutHandler(PortalResource):
 
-    async def get(self, portal_name,):
+    async def get(self, portal_name):
         portal = self.find_portal()
         await portal.logout_user(self)

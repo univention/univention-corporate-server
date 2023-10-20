@@ -38,9 +38,9 @@ class Tester:
         self.ucr.__enter__()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback,):
-        self.udm.__exit__(exc_type, exc_value, traceback,)
-        self.ucr.__exit__(exc_type, exc_value, traceback,)
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.udm.__exit__(exc_type, exc_value, traceback)
+        self.ucr.__exit__(exc_type, exc_value, traceback)
 
     def test(self):
         mailsToTest, users = self.create_users_and_mail_addresses()
@@ -50,8 +50,8 @@ class Tester:
         test_cases2 = self.mail_sending_test_2(users)
         test_cases3 = self.mail_sending_test_3_tls(users)
 
-        self.wait_for_delivery(test_cases1, test_cases2, test_cases3,)
-        self.fail_if_any_mail_is_undelivered(test_cases1, test_cases2, test_cases3,)
+        self.wait_for_delivery(test_cases1, test_cases2, test_cases3)
+        self.fail_if_any_mail_is_undelivered(test_cases1, test_cases2, test_cases3)
 
     def create_users_and_mail_addresses(self):
         mailsToTest = []
@@ -75,50 +75,50 @@ class Tester:
             mailsToTest.extend([mail, mail.upper(), mail.lower()])
         return mailsToTest, users
 
-    def mail_sending_test_1(self, mailsToTest,):
+    def mail_sending_test_1(self, mailsToTest):
         test_cases = []
         for mail in mailsToTest:
             token = str(time.time())
             test_cases.append([token, mail, False])
             print('\nTOKEN = %s\n' % token)
-            send_mail(recipients=mail, msg=token, idstring=token, subject='Test',)
+            send_mail(recipients=mail, msg=token, idstring=token, subject='Test')
         return test_cases
 
-    def mail_sending_test_2(self, users,):
+    def mail_sending_test_2(self, users):
         test_cases = []
         for user in users:
             token = str(time.time())
             test_cases.append([token, user, False])
             print('\nTOKEN = %s\n' % token)
-            send_mail(recipients=user, msg=token, subject='Test',)
+            send_mail(recipients=user, msg=token, subject='Test')
         return test_cases
 
-    def mail_sending_test_3_tls(self, users,):
+    def mail_sending_test_3_tls(self, users):
         test_cases = []
         for user in users:
             token = str(time.time())
             test_cases.append([token, user, False])
             print('\nTOKEN = %s\n' % token)
-            send_mail(recipients=user, msg=token, subject='TestTLS', tls=True,)
+            send_mail(recipients=user, msg=token, subject='TestTLS', tls=True)
         return test_cases
 
-    def wait_for_delivery(self, test_cases1, test_cases2, test_cases3,):
+    def wait_for_delivery(self, test_cases1, test_cases2, test_cases3):
         print("\nWaiting up to %d seconds for delivering mails...\n" % (TIMEOUT, ))
-        for timeout in range(TIMEOUT, 0, -1,):
+        for timeout in range(TIMEOUT, 0, -1):
             print('Waiting up to %d seconds' % (timeout,))
             all_found = True
             for i, (token, mail, _found) in enumerate(test_cases1):
-                if file_search_mail(tokenlist=[token], mail_address=mail,):
+                if file_search_mail(tokenlist=[token], mail_address=mail):
                     test_cases1[i][2] = True
                 else:
                     all_found = False
             for i, (token, user, _found) in enumerate(test_cases2):
-                if file_search_mail(tokenlist=[token], user=user,):
+                if file_search_mail(tokenlist=[token], user=user):
                     test_cases2[i][2] = True
                 else:
                     all_found = False
             for i, (token, user, _found) in enumerate(test_cases3):
-                if file_search_mail(tokenlist=[token], user=user,):
+                if file_search_mail(tokenlist=[token], user=user):
                     test_cases3[i][2] = True
                 else:
                     all_found = False
@@ -128,7 +128,7 @@ class Tester:
                 print('All mails have successfully been delivered.')
                 break
 
-    def fail_if_any_mail_is_undelivered(self, test_cases1, test_cases2, test_cases3,):
+    def fail_if_any_mail_is_undelivered(self, test_cases1, test_cases2, test_cases3):
         for token, mail, found in test_cases1:
             if not found:
                 utils.fail('Mail sent to %r with token %r was not delivered' % (mail, token))

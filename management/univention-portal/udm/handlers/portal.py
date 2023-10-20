@@ -54,7 +54,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionNewPortal'],),
+        objectClasses=['top', 'univentionNewPortal'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -64,56 +65,67 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'displayName': univention.admin.property(
         short_description=_('Display name'),
         long_description=_('Headline of the portal. At least one entry; strongly encouraged to have one for en_US'),
         syntax=univention.admin.syntax.LocalizedDisplayName,
         multivalue=True,
-        required=True,),
+        required=True,
+    ),
     'showUmc': univention.admin.property(
         short_description=_('Show UMC categories and modules'),
         syntax=univention.admin.syntax.TrueFalseUp,
-        default='TRUE',),
+        default='TRUE',
+    ),
     'background': univention.admin.property(
         short_description=_('Background'),
         long_description=_('Background image of the Portal'),
         syntax=univention.admin.syntax.Base64BaseUpload,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'logo': univention.admin.property(
         short_description=_('Portal logo'),
         long_description=_('Logo image for the portal.'),
         syntax=univention.admin.syntax.Base64BaseUpload,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'ensureLogin': univention.admin.property(
         short_description=_('Redirect anonymous visitors to the login'),
         syntax=univention.admin.syntax.TrueFalseUp,
         default='FALSE',
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'userLinks': univention.admin.property(
         short_description=_('Entries in the user menu'),
         long_description=_('List of portal entries that are shown in the menu for the logged in user'),
         syntax=univention.admin.syntax.NewPortalEntries,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'menuLinks': univention.admin.property(
         short_description=_('Entries in the menu'),
         long_description=_('List of portal entries that are shown in the menu of the portal'),
         syntax=univention.admin.syntax.NewPortalCategoryEntries,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'categories': univention.admin.property(
         short_description=_('Categories'),
         syntax=univention.admin.syntax.NewPortalCategories,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'announcements': univention.admin.property(
         short_description=_('Announcements'),
         long_description=_('List of announcements that are shown in the portal'),
         syntax=univention.admin.syntax.NewPortalAnnouncements,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'defaultLinkTarget': univention.admin.property(
         short_description=_('Default browser tab for portal entries'),
         syntax=univention.admin.syntax.NewPortalDefaultLinkTarget,
         default='embedded',
-        dontsearch=True,),
+        dontsearch=True,
+    ),
 }
 
 layout = [
@@ -121,61 +133,61 @@ layout = [
         Group(_('Name'), layout=[
             ['name'],
             ['displayName'],
-        ],),
+        ]),
         Group(_('Categories'), layout=[
             ['categories'],
             ['showUmc'],
-        ],),
+        ]),
         Group(_('Link behaviour'), layout=[
             ['defaultLinkTarget'],
-        ],),
+        ]),
         Group(_('User menu'), layout=[
             ['userLinks'],
-        ],),
+        ]),
         Group(_('Menu'), layout=[
             ['menuLinks'],
-        ],),
+        ]),
         Group(_('Appearance'), layout=[
             ['logo'],
             ['background'],
-        ],),
+        ]),
         Group(_('Login'), layout=[
             ['ensureLogin'],
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 
-def mapTranslationValue(vals, encoding=(),):
+def mapTranslationValue(vals, encoding=()):
     return [u' '.join(val).encode(*encoding) for val in vals]
 
 
-def unmapTranslationValue(vals, encoding=(),):
-    return [val.decode(*encoding).split(u' ', 1,) for val in vals]
+def unmapTranslationValue(vals, encoding=()):
+    return [val.decode(*encoding).split(u' ', 1) for val in vals]
 
 
-def mapOrdered(ldap_values, encoding=(),):
+def mapOrdered(ldap_values, encoding=()):
     # ldap stores multi value fields unordered by default
     # you can change this by putting X-ORDERED 'VALUES' in your schema file
     # but then you literally get [b'{0}foo', b'{1}bar']
-    return [u'{{{}}}{}'.format(i, value,).encode(*encoding) for i, value in enumerate(ldap_values)]
+    return [u'{{{}}}{}'.format(i, value).encode(*encoding) for i, value in enumerate(ldap_values)]
 
 
-def unmapOrdered(udm_values, encoding=(),):
-    return [_[1] for _ in sorted((re.match(u'^{(\\d+)}(.*)', value.decode(*encoding),).groups() for value in udm_values), key=lambda n,: int(n[0]),)]
+def unmapOrdered(udm_values, encoding=()):
+    return [_[1] for _ in sorted((re.match(u'^{(\\d+)}(.*)', value.decode(*encoding)).groups() for value in udm_values), key=lambda n: int(n[0]))]
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('displayName', 'univentionNewPortalDisplayName', mapTranslationValue, unmapTranslationValue,)
-mapping.register('showUmc', 'univentionNewPortalShowUMC', None, univention.admin.mapping.ListToString,)
-mapping.register('ensureLogin', 'univentionNewPortalEnsureLogin', None, univention.admin.mapping.ListToString,)
-mapping.register('background', 'univentionNewPortalBackground', None, univention.admin.mapping.ListToString,)
-mapping.register('logo', 'univentionNewPortalLogo', None, univention.admin.mapping.ListToString,)
-mapping.register('userLinks', 'univentionNewPortalUserLinks', mapOrdered, unmapOrdered,)
-mapping.register('menuLinks', 'univentionNewPortalMenuLinks', mapOrdered, unmapOrdered,)
-mapping.register('categories', 'univentionNewPortalCategories', mapOrdered, unmapOrdered,)
-mapping.register('defaultLinkTarget', 'univentionNewPortalDefaultLinkTarget', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('displayName', 'univentionNewPortalDisplayName', mapTranslationValue, unmapTranslationValue)
+mapping.register('showUmc', 'univentionNewPortalShowUMC', None, univention.admin.mapping.ListToString)
+mapping.register('ensureLogin', 'univentionNewPortalEnsureLogin', None, univention.admin.mapping.ListToString)
+mapping.register('background', 'univentionNewPortalBackground', None, univention.admin.mapping.ListToString)
+mapping.register('logo', 'univentionNewPortalLogo', None, univention.admin.mapping.ListToString)
+mapping.register('userLinks', 'univentionNewPortalUserLinks', mapOrdered, unmapOrdered)
+mapping.register('menuLinks', 'univentionNewPortalMenuLinks', mapOrdered, unmapOrdered)
+mapping.register('categories', 'univentionNewPortalCategories', mapOrdered, unmapOrdered)
+mapping.register('defaultLinkTarget', 'univentionNewPortalDefaultLinkTarget', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

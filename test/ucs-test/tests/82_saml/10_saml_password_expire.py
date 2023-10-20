@@ -22,11 +22,11 @@ def test_normal_user():
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin='1')[1]
         # wrong password
-        SamlSession = samltest.SamlTest(username, 'aaaunivention',)
+        SamlSession = samltest.SamlTest(username, 'aaaunivention')
         with pytest.raises(samltest.SamlAuthenticationFailed):
             SamlSession.login_with_new_session_at_IdP()
         # correct password
-        SamlSession = samltest.SamlTest(username, 'univention',)
+        SamlSession = samltest.SamlTest(username, 'univention')
         with pytest.raises(samltest.SamlPasswordExpired):
             SamlSession.login_with_new_session_at_IdP()
 
@@ -35,14 +35,14 @@ def test_kinit_user():
     with udm_test.UCSTestUDM() as udm:
         dn, username = udm.create_user(pwdChangeNextLogin='1')
         lo = get_ldap_connection()
-        lo.modify(dn, [('userPassword', lo.get(dn, ['userPassword'],)['userPassword'], [b'{KINIT}'])],)
-        udm.verify_ldap_object(dn, {'userPassword': ['{KINIT}']},)
+        lo.modify(dn, [('userPassword', lo.get(dn, ['userPassword'])['userPassword'], [b'{KINIT}'])])
+        udm.verify_ldap_object(dn, {'userPassword': ['{KINIT}']})
         # wrong password
-        SamlSession = samltest.SamlTest(username, 'aaaunivention',)
+        SamlSession = samltest.SamlTest(username, 'aaaunivention')
         with pytest.raises(samltest.SamlAuthenticationFailed):
             SamlSession.login_with_new_session_at_IdP()
         # correct password
-        SamlSession = samltest.SamlTest(username, 'univention',)
+        SamlSession = samltest.SamlTest(username, 'univention')
         with pytest.raises(samltest.SamlPasswordExpired):
             SamlSession.login_with_new_session_at_IdP()
 
@@ -51,14 +51,14 @@ def test_k5key_user():
     with udm_test.UCSTestUDM() as udm:
         dn, username = udm.create_user(pwdChangeNextLogin='1')
         lo = get_ldap_connection()
-        lo.modify(dn, [('userPassword', lo.get(dn, ['userPassword'],)['userPassword'], [b'{K5KEY}'])],)
-        udm.verify_ldap_object(dn, {'userPassword': ['{K5KEY}']},)
+        lo.modify(dn, [('userPassword', lo.get(dn, ['userPassword'])['userPassword'], [b'{K5KEY}'])])
+        udm.verify_ldap_object(dn, {'userPassword': ['{K5KEY}']})
         # wrong password
-        SamlSession = samltest.SamlTest(username, 'aaaunivention',)
+        SamlSession = samltest.SamlTest(username, 'aaaunivention')
         with pytest.raises(samltest.SamlAuthenticationFailed):
             SamlSession.login_with_new_session_at_IdP()
         # correct password
-        SamlSession = samltest.SamlTest(username, 'univention',)
+        SamlSession = samltest.SamlTest(username, 'univention')
         with pytest.raises(samltest.SamlPasswordExpired):
             SamlSession.login_with_new_session_at_IdP()
 

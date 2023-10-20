@@ -37,7 +37,8 @@ def main():
     if missing_config_lines:
         msg = "The following lines are missing in {}:\n {}".format(
             config_file,
-            '\n '.join(missing_config_lines),)
+            '\n '.join(missing_config_lines),
+        )
         utils.fail(msg)
 
 

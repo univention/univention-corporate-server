@@ -58,20 +58,24 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=('top', 'person', 'univentionHost', 'univentionWindows'),),
+        objectClasses=('top', 'person', 'univentionHost', 'univentionWindows'),
+    ),
     'posix': univention.admin.option(
         short_description=_('Posix account'),
         default=True,
-        objectClasses=('posixAccount', 'shadowAccount'),),
+        objectClasses=('posixAccount', 'shadowAccount'),
+    ),
     'kerberos': univention.admin.option(
         short_description=_('Kerberos principal'),
         default=True,
-        objectClasses=('krb5Principal', 'krb5KDCEntry'),),
+        objectClasses=('krb5Principal', 'krb5KDCEntry'),
+    ),
     'samba': univention.admin.option(
         short_description=_('Samba account'),
         editable=True,
         default=True,
-        objectClasses=('sambaSamAccount',),),
+        objectClasses=('sambaSamAccount',),
+    ),
     'pki': pki_option(),
 }
 property_descriptions = dict({
@@ -82,99 +86,116 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         identifies=True,
-        readonly_when_synced=True,),
+        readonly_when_synced=True,
+    ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
-        readonly_when_synced=True,),
+        readonly_when_synced=True,
+    ),
     'operatingSystem': univention.admin.property(
         short_description=_('Operating system'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
-        readonly_when_synced=True,),
+        readonly_when_synced=True,
+    ),
     'operatingSystemVersion': univention.admin.property(
         short_description=_('Operating system version'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        readonly_when_synced=True,),
+        readonly_when_synced=True,
+    ),
     'domain': univention.admin.property(
         short_description=_('Domain'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'mac': univention.admin.property(
         short_description=_('MAC address'),
         long_description='',
         syntax=univention.admin.syntax.MAC_Address,
         multivalue=True,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'network': univention.admin.property(
         short_description=_('Network'),
         long_description='',
-        syntax=univention.admin.syntax.network,),
+        syntax=univention.admin.syntax.network,
+    ),
     'ip': univention.admin.property(
         short_description=_('IP address'),
         long_description='',
         syntax=univention.admin.syntax.ipAddress,
         multivalue=True,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'dnsEntryZoneForward': univention.admin.property(
         short_description=_('Forward zone for DNS entry'),
         long_description='',
         syntax=univention.admin.syntax.dnsEntry,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'dnsEntryZoneReverse': univention.admin.property(
         short_description=_('Reverse zone for DNS entry'),
         long_description='',
         syntax=univention.admin.syntax.dnsEntryReverse,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'dnsEntryZoneAlias': univention.admin.property(
         short_description=_('Zone for DNS alias'),
         long_description='',
         syntax=univention.admin.syntax.dnsEntryAlias,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'dnsAlias': univention.admin.property(
         short_description=_('DNS alias'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'dhcpEntryZone': univention.admin.property(
         short_description=_('DHCP service'),
         long_description='',
         syntax=univention.admin.syntax.dhcpEntry,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'password': univention.admin.property(
         short_description=_('Password'),
         long_description='',
         syntax=univention.admin.syntax.passwd,
         options=['kerberos', 'posix', 'samba'],
         dontsearch=True,
-        readonly_when_synced=True,),
+        readonly_when_synced=True,
+    ),
     'ntCompatibility': univention.admin.property(
         short_description=_('Initialize password with hostname'),
         long_description='Needed To Join NT4 Worstations',
         syntax=univention.admin.syntax.boolean,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'unixhome': univention.admin.property(
         short_description=_('Unix home directory'),
         long_description='',
         syntax=univention.admin.syntax.absolutePath,
         options=['posix'],
         required=True,
-        default=('/dev/null', []),),
+        default=('/dev/null', []),
+    ),
     'shell': univention.admin.property(
         short_description=_('Login shell'),
         long_description='',
         syntax=univention.admin.syntax.string,
         options=['posix'],
-        default=('/bin/false', []),),
+        default=('/bin/false', []),
+    ),
     'primaryGroup': univention.admin.property(
         short_description=_('Primary group'),
         long_description='',
@@ -182,26 +203,30 @@ property_descriptions = dict({
         include_in_default_search=True,
         options=['posix'],
         required=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'inventoryNumber': univention.admin.property(
         short_description=_('Inventory number'),
         long_description='',
         syntax=univention.admin.syntax.string,
         multivalue=True,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'groups': univention.admin.property(
         short_description=_('Groups'),
         long_description='',
         syntax=univention.admin.syntax.GroupDN,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'sambaRID': univention.admin.property(
         short_description=_('Relative ID'),
         long_description='',
         syntax=univention.admin.syntax.integer,
         dontsearch=True,
-        options=['samba'],),
-}, **pki_properties(),)
+        options=['samba'],
+    ),
+}, **pki_properties())
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
@@ -209,52 +234,52 @@ layout = [
             ['name', 'description'],
             ['operatingSystem', 'operatingSystemVersion'],
             'inventoryNumber',
-        ],),
+        ]),
         Group(_('Network settings '), layout=[
             'network',
             'mac',
             'ip',
-        ],),
+        ]),
         Group(_('DNS Forward and Reverse Lookup Zone'), layout=[
             'dnsEntryZoneForward',
             'dnsEntryZoneReverse',
-        ],),
+        ]),
         Group(_('DHCP'), layout=[
             'dhcpEntryZone',
-        ],),
-    ],),
+        ]),
+    ]),
     Tab(_('Account'), _('Account'), advanced=True, layout=[
         'password',
         'ntCompatibility',
         'primaryGroup',
-    ],),
+    ]),
     Tab(_('Unix account'), _('Unix account settings'), advanced=True, layout=[
         ['unixhome', 'shell'],
-    ],),
+    ]),
     Tab(_('Groups'), _('Group memberships'), advanced=True, layout=[
         'groups',
-    ],),
+    ]),
     Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
         'dnsEntryZoneAlias',
-    ],),
+    ]),
     pki_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
-mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString, encoding='ASCII',)
-mapping.register('inventoryNumber', 'univentionInventoryNumber',)
-mapping.register('mac', 'macAddress', encoding='ASCII',)
-mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString,)
-mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString,)
-mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString, encoding='ASCII',)
-mapping.register('operatingSystem', 'univentionOperatingSystem', None, univention.admin.mapping.ListToString,)
-mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('inventoryNumber', 'univentionInventoryNumber')
+mapping.register('mac', 'macAddress', encoding='ASCII')
+mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
+mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
+mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('operatingSystem', 'univentionOperatingSystem', None, univention.admin.mapping.ListToString)
+mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
 register_pki_mapping(mapping)
 
 # add Nagios extension
-nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout,)
+nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
 
 
 class object(ComputerObject):
@@ -265,17 +290,17 @@ class object(ComputerObject):
 
     def _ldap_modlist(self):
         if self.hasChanged('ntCompatibility') and self['ntCompatibility'] == '1':
-            self['password'] = self['name'].replace('$', '',).lower()
+            self['password'] = self['name'].replace('$', '').lower()
             self.modifypassword = 1
-        return super(object, self,)._ldap_modlist()
+        return super(object, self)._ldap_modlist()
 
     def link(self):
         pass
 
     @classmethod
-    def lookup_filter(cls, filter_s=None, lo=None,):
-        con = super(object, cls,).lookup_filter(filter_s, lo,)
-        con.expressions.append(univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionServerRole', 'windows_domaincontroller',)],))
+    def lookup_filter(cls, filter_s=None, lo=None):
+        con = super(object, cls).lookup_filter(filter_s, lo)
+        con.expressions.append(univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionServerRole', 'windows_domaincontroller')]))
         return con
 
 
@@ -283,5 +308,5 @@ lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr, canonical=False,):
-    return b'univentionHost' in attr.get('objectClass', [],) and b'univentionWindows' in attr.get('objectClass', [],) and b'windows_domaincontroller' not in attr.get('univentionServerRole', [],)
+def identify(dn, attr, canonical=False):
+    return b'univentionHost' in attr.get('objectClass', []) and b'univentionWindows' in attr.get('objectClass', []) and b'windows_domaincontroller' not in attr.get('univentionServerRole', [])

@@ -46,7 +46,7 @@ from univention.portal.user import User
 
 
 class Session(object):
-    def __init__(self, nonce,):
+    def __init__(self, nonce):
         self.nonce = nonce
         self.user = None
 
@@ -68,22 +68,22 @@ class Authenticator(metaclass=Plugin):
     This base class does nothing...
     """
 
-    def get_auth_mode(self, request,):  # pragma: no cover
+    def get_auth_mode(self, request):  # pragma: no cover
         return "ucs"
 
-    async def login_request(self, request,):  # pragma: no cover
+    async def login_request(self, request):  # pragma: no cover
         pass
 
-    async def login_user(self, request,):  # pragma: no cover
+    async def login_user(self, request):  # pragma: no cover
         pass
 
-    async def logout_user(self, request,):  # pragma: no cover
+    async def logout_user(self, request):  # pragma: no cover
         pass
 
-    async def get_user(self, request,):  # pragma: no cover
-        return User(username=None, display_name=None, groups=[], headers={},)
+    async def get_user(self, request):  # pragma: no cover
+        return User(username=None, display_name=None, groups=[], headers={})
 
-    def refresh(self, reason=None,):  # pragma: no cover
+    def refresh(self, reason=None):  # pragma: no cover
         pass
 
 
@@ -100,25 +100,25 @@ class UMCAuthenticator(Authenticator):
             As UMC does not return groups, we need a cache object that gets us the groups for the username.
     """
 
-    def __init__(self, auth_mode, umc_session_url, group_cache,):
+    def __init__(self, auth_mode, umc_session_url, group_cache):
         self.auth_mode = auth_mode
         umc_base_url = config.fetch("umc_base_url")
-        self.umc_session_url = urljoin(umc_base_url, 'get/session-info',)
+        self.umc_session_url = urljoin(umc_base_url, 'get/session-info')
         self.group_cache = group_cache
 
-    def get_auth_mode(self, request,):
+    def get_auth_mode(self, request):
         return self.auth_mode
 
-    def refresh(self, reason=None,):
+    def refresh(self, reason=None):
         return self.group_cache.refresh(reason=reason)
 
-    async def get_user(self, request,):
+    async def get_user(self, request):
         cookies = {key: morsel.value for key, morsel in request.cookies.items()}
         username, display_name = await self._get_username(cookies)
-        groups = self.group_cache.get().get(username, [],)
-        return User(username, display_name=display_name, groups=groups, headers=dict(request.request.headers),)
+        groups = self.group_cache.get().get(username, [])
+        return User(username, display_name=display_name, groups=groups, headers=dict(request.request.headers))
 
-    async def _get_username(self, cookies,):
+    async def _get_username(self, cookies):
         headers = {}
         for cookie in cookies:
             if cookie.startswith("UMCSessionId"):
@@ -132,7 +132,7 @@ class UMCAuthenticator(Authenticator):
             return None, None
         get_logger("user").debug("searching user for cookies=%r" % cookies)
 
-        username = await self._ask_umc(cookies, headers,)
+        username = await self._ask_umc(cookies, headers)
         if username is None:
             get_logger("user").debug("no user found")
             return None, None
@@ -140,10 +140,10 @@ class UMCAuthenticator(Authenticator):
             get_logger("user").debug("found %s" % (username,))
             return username.lower(), username
 
-    async def _ask_umc(self, cookies, headers,):
+    async def _ask_umc(self, cookies, headers):
         try:
             headers['Cookie'] = '; '.join('='.join(c) for c in cookies.items())
-            req = HTTPRequest(self.umc_session_url, method="GET", headers=headers,)
+            req = HTTPRequest(self.umc_session_url, method="GET", headers=headers)
             http_client = AsyncHTTPClient()
             response = await http_client.fetch(req)
             data = json.loads(response.body.decode('UTF-8'))
@@ -163,8 +163,8 @@ class UMCAuthenticator(Authenticator):
 class UMCAndSecretAuthenticator(UMCAuthenticator):
     """Authenticate with a private secret and become any user (god mode)"""
 
-    async def get_user(self, request,):
-        user = await super(UMCAndSecretAuthenticator, self,).get_user(request)
+    async def get_user(self, request):
+        user = await super(UMCAndSecretAuthenticator, self).get_user(request)
         if user and user.username:
             return user
 
@@ -175,12 +175,12 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
         try:
             if not authorization.lower().startswith('basic '):
                 raise ValueError()
-            display_name, password = base64.b64decode(authorization.split(' ', 1,)[1].encode('ISO8859-1')).decode('UTF-8').split(':', 1,)
+            display_name, password = base64.b64decode(authorization.split(' ', 1)[1].encode('ISO8859-1')).decode('UTF-8').split(':', 1)
         except (ValueError, IndexError, binascii.Error):
             raise HTTPError(400)
 
         username = display_name.lower()
-        get_logger("user").debug("received basic auth request with username=%r", username,)
+        get_logger("user").debug("received basic auth request with username=%r", username)
         try:
             with open(config.fetch("portal-secret-file")) as fd:  # noqa: ASYNC101
                 config_secret = fd.read().strip()
@@ -189,8 +189,8 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
 
         # compare hashed password to prevent time based side channel attack
         if hashlib.sha512(password.encode('utf-8')).hexdigest() != hashlib.sha512(config_secret.encode('utf-8')).hexdigest():
-            get_logger("user").warning("password mismatch: %s != %s", config_secret, password,)
+            get_logger("user").warning("password mismatch: %s != %s", config_secret, password)
             return user
 
-        groups = self.group_cache.get().get(username, [],)
-        return User(username, display_name, groups, headers=dict(request.request.headers),)
+        groups = self.group_cache.get().get(username, [])
+        return User(username, display_name, groups, headers=dict(request.request.headers))

@@ -41,7 +41,7 @@ from errno import EEXIST
 portal_path = "/usr/share/univention-portal"
 
 
-def handler(config_registry, changes,):
+def handler(config_registry, changes):
     old, new = changes['portal/paths']
     old = [o.strip() for o in old.split(",")] if old else []
     new = [n.strip() for n in new.split(",")] if new else []
@@ -60,7 +60,7 @@ def handler(config_registry, changes,):
         path = os.path.normpath("/var/www" + path)
         if os.path.islink(path):
             link_target = os.path.realpath(path)
-            print("{} already links (to {}). Skipping...".format(path, link_target,))
+            print("{} already links (to {}). Skipping...".format(path, link_target))
         else:
             print("Linking {} to portal content...".format(path))
             try:
@@ -71,9 +71,9 @@ def handler(config_registry, changes,):
                     if exc.errno != EEXIST:
                         raise
             except OSError as exc:
-                print("Error creating {}: {}!".format(dirname, exc,))
+                print("Error creating {}: {}!".format(dirname, exc))
             else:
                 try:
-                    os.symlink(portal_path, path,)
+                    os.symlink(portal_path, path)
                 except OSError as exc:
-                    print("Error creating a link from {} to {}: {}!".format(path, portal_path, exc,))
+                    print("Error creating a link from {} to {}: {}!".format(path, portal_path, exc))

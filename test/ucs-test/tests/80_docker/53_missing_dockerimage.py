@@ -15,7 +15,7 @@ if __name__ == '__main__':
         app_name = get_app_name()
         app_version = get_app_version()
 
-        app = App(name=app_name, version=app_version,)
+        app = App(name=app_name, version=app_version)
 
         try:
             # DockerImage is missing, this should not work

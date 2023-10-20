@@ -27,22 +27,22 @@ BANNED = ('/tmp', '/proc', '/sys', '/dev')
 
 s_process = r'(?:clone|fork|vfork)\(.*?(?P<npid>\d+)'
 s_file = r'(?P<call>\w+)\("(?P<path>([^"\\]|\\.)*)"(.*)'
-re_lines = re.compile(r'^(?P<pid>\d+)\s+(?:(?:%s)|(?:%s))\r*$' % (s_file, s_process), re.IGNORECASE | re.MULTILINE,)
+re_lines = re.compile(r'^(?P<pid>\d+)\s+(?:(?:%s)|(?:%s))\r*$' % (s_file, s_process), re.IGNORECASE | re.MULTILINE)
 strace_lock = threading.Lock()
 
-def configure(conf,):
+def configure(conf):
 	conf.find_program('strace')
 
-def task_method(func,):
+def task_method(func):
 	# Decorator function to bind/replace methods on the base Task class
 	#
 	# The methods Task.exec_command and Task.sig_implicit_deps already exists and are rarely overridden
 	# we thus expect that we are the only ones doing this
 	try:
-		setattr(Task.Task, 'nostrace_%s' % func.__name__, getattr(Task.Task, func.__name__,),)
+		setattr(Task.Task, 'nostrace_%s' % func.__name__, getattr(Task.Task, func.__name__))
 	except AttributeError:
 		pass
-	setattr(Task.Task, func.__name__, func,)
+	setattr(Task.Task, func.__name__, func)
 	return func
 
 @task_method
@@ -64,23 +64,23 @@ def get_strace_args(self):
 	return (self.env.STRACE or ['strace']) + ['-e', TRACECALLS, '-f', '-o', self.get_strace_file()]
 
 @task_method
-def exec_command(self, cmd,**kw):
+def exec_command(self, cmd, **kw):
 	bld = self.generator.bld
 	if not 'cwd' in kw:
 		kw['cwd'] = self.get_cwd()
 
 	args = self.get_strace_args()
 	fname = self.get_strace_file()
-	if isinstance(cmd, list,):
+	if isinstance(cmd, list):
 		cmd = args + cmd
 	else:
 		cmd = '%s %s' % (' '.join(args), cmd)
 
 	try:
-		ret = bld.exec_command(cmd, **kw,)
+		ret = bld.exec_command(cmd, **kw)
 	finally:
 		if not ret:
-			self.parse_strace_deps(fname, kw['cwd'],)
+			self.parse_strace_deps(fname, kw['cwd'])
 	return ret
 
 @task_method
@@ -89,7 +89,7 @@ def sig_implicit_deps(self):
 	return
 
 @task_method
-def parse_strace_deps(self, path, cwd,):
+def parse_strace_deps(self, path, cwd):
 	# uncomment the following line to disable the dependencies and force a file scan
 	# return
 	try:
@@ -100,7 +100,7 @@ def parse_strace_deps(self, path, cwd,):
 		except OSError:
 			pass
 
-	if not isinstance(cwd, str,):
+	if not isinstance(cwd, str):
 		cwd = cwd.abspath()
 
 	nodes = []
@@ -115,22 +115,22 @@ def parse_strace_deps(self, path, cwd,):
 
 	global BANNED
 	done = set()
-	for m in re.finditer(re_lines, cnt,):
+	for m in re.finditer(re_lines, cnt):
 		# scraping the output of strace
 		pid = m.group('pid')
 		if m.group('npid'):
 			npid = m.group('npid')
-			pid_to_cwd[npid] = pid_to_cwd.get(pid, cwd,)
+			pid_to_cwd[npid] = pid_to_cwd.get(pid, cwd)
 			continue
 
-		p = m.group('path').replace('\\"', '"',)
+		p = m.group('path').replace('\\"', '"')
 
 		if p == '.' or m.group().find('= -1 ENOENT') > -1:
 			# just to speed it up a bit
 			continue
 
 		if not os.path.isabs(p):
-			p = os.path.join(pid_to_cwd.get(pid, cwd,), p,)
+			p = os.path.join(pid_to_cwd.get(pid, cwd), p)
 
 		call = m.group('call')
 		if call == 'chdir':
@@ -162,7 +162,7 @@ def parse_strace_deps(self, path, cwd,):
 
 	# record the dependencies then force the task signature recalculation for next time
 	if Logs.verbose:
-		Logs.debug('deps: real scanner for %r returned %r', self, nodes,)
+		Logs.debug('deps: real scanner for %r returned %r', self, nodes)
 	bld = self.generator.bld
 	bld.node_deps[self.uid()] = nodes
 	bld.raw_deps[self.uid()] = []

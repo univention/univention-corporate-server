@@ -48,4 +48,4 @@ if "SYSTEM_GROUPS_USER" in os.environ:
     except KeyError:
         os.environ["USERDB_KEYS"] = "acl_groups"
 
-os.execv(sys.argv[1], sys.argv[1:],)  # noqa: S606
+os.execv(sys.argv[1], sys.argv[1:])  # noqa: S606

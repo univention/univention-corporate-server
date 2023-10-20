@@ -40,58 +40,64 @@ from _pytest.config import Config  # noqa: F401
 from _pytest.config.argparsing import Parser  # noqa: F401
 
 
-def pytest_addoption(parser,):
+def pytest_addoption(parser):
     # type: (Parser) -> None
     parser.addoption(
         "--ucs-test-tags-prohibited",
         action="append",
         metavar="TAG",
         default=[],
-        help="Skip tests with this tag",)
+        help="Skip tests with this tag",
+    )
     parser.addoption(
         "--ucs-test-tags-required",
         action="append",
         metavar="TAG",
         default=[],
-        help="Only run tests with this tag",)
+        help="Only run tests with this tag",
+    )
     parser.addoption(
         "--ucs-test-tags-ignore",
         action="append",
         metavar="TAG",
         default=[],
-        help="Neither require nor prohibit this tag",)
+        help="Neither require nor prohibit this tag",
+    )
     parser.addoption(
         "--ucs-test-default-tags",
         action="append",
         metavar="TAG",
         default=[],
-        help="The tags for the entire test case, if the test function does not specify any",)
+        help="The tags for the entire test case, if the test function does not specify any",
+    )
     parser.addoption(
         "--ucs-test-exposure",
         choices=('safe', 'careful', 'dangerous'),
-        help="Run more dangerous tests",)
+        help="Run more dangerous tests",
+    )
     parser.addoption(
         "--ucs-test-default-exposure",
         choices=('safe', 'careful', 'dangerous'),
-        help="The exposure of the test",)
+        help="The exposure of the test",
+    )
 
 
-def pytest_configure(config,):
+def pytest_configure(config):
     # type: (Config) -> None
-    config.addinivalue_line("markers", "slow: test case is slow",)
-    config.addinivalue_line("markers", "tags(name): tag a test case",)
-    config.addinivalue_line("markers", "roles(names): specify roles",)
-    config.addinivalue_line("markers", "exposure(exposure): run dangerous tests?",)
+    config.addinivalue_line("markers", "slow: test case is slow")
+    config.addinivalue_line("markers", "tags(name): tag a test case")
+    config.addinivalue_line("markers", "roles(names): specify roles")
+    config.addinivalue_line("markers", "exposure(exposure): run dangerous tests?")
 
 
-def pytest_runtest_setup(item,):
+def pytest_runtest_setup(item):
     # type: (pytest.Item) -> None
     check_tags(item)
     check_roles(item)
     check_exposure(item)
 
 
-def check_tags(item,):
+def check_tags(item):
     # type: (pytest.Item) -> None
     tags_required = set(item.config.getoption("--ucs-test-tags-required") or [])
     tags_prohibited = set(item.config.getoption("--ucs-test-tags-prohibited") or [])
@@ -99,7 +105,7 @@ def check_tags(item,):
         tag
         for mark in item.iter_markers(name="tags")
         for tag in mark.args
-    } or set(item.config.getoption("--ucs-test-default-tags", [],))
+    } or set(item.config.getoption("--ucs-test-default-tags", []))
 
     prohibited = tags & tags_prohibited
     if prohibited:
@@ -110,7 +116,7 @@ def check_tags(item,):
             pytest.skip('De-selected by tag: %s' % (' '.join(tags_required),))
 
 
-def check_roles(item,):
+def check_roles(item):
     # type: (pytest.Item) -> None
     from univention.config_registry import ucr
     from univention.testing.data import CheckRoles
@@ -136,7 +142,7 @@ def check_roles(item,):
         pytest.skip('Wrong role: %s not in (%s)' % (ucr['server/role'], ','.join(roles)))
 
 
-def check_exposure(item,):
+def check_exposure(item):
     # type: (pytest.Item) -> None
     from univention.testing.data import CheckExposure
     required_exposure = item.config.getoption("--ucs-test-exposure")
@@ -145,6 +151,6 @@ def check_exposure(item,):
     try:
         exposure = next(mark.args[0] for mark in item.iter_markers(name="exposure"))
     except StopIteration:
-        exposure = item.config.getoption("--ucs-test-default-exposure", "safe",)
+        exposure = item.config.getoption("--ucs-test-default-exposure", "safe")
     if CheckExposure.STATES.index(exposure) > CheckExposure.STATES.index(required_exposure):
         pytest.skip(f'Too dangerous: {exposure} > {required_exposure}')

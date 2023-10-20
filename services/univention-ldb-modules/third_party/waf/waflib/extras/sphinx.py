@@ -33,9 +33,9 @@ from waflib import Task
 from waflib.TaskGen import feature, after_method
 
 
-def configure(cnf,):
+def configure(cnf):
     """Check if sphinx-build program is available and loads gnu_dirs tool."""
-    cnf.find_program('sphinx-build', var='SPHINX_BUILD', mandatory=False,)
+    cnf.find_program('sphinx-build', var='SPHINX_BUILD', mandatory=False)
     cnf.load('gnu_dirs')
 
 
@@ -45,21 +45,21 @@ def build_sphinx(self):
     """
     if not self.env.SPHINX_BUILD:
         self.bld.fatal('Program SPHINX_BUILD not defined.')
-    if not getattr(self, 'sphinx_source', None,):
+    if not getattr(self, 'sphinx_source', None):
         self.bld.fatal('Attribute sphinx_source not defined.')
-    if not isinstance(self.sphinx_source, Node,):
+    if not isinstance(self.sphinx_source, Node):
         self.sphinx_source = self.path.find_node(self.sphinx_source)
     if not self.sphinx_source:
         self.bld.fatal('Can\'t find sphinx_source: %r' % self.sphinx_source)
 
     # In the taskgen we have the complete list of formats
-    Utils.def_attrs(self, sphinx_output_format='html',)
+    Utils.def_attrs(self, sphinx_output_format='html')
     self.sphinx_output_format = Utils.to_list(self.sphinx_output_format)
 
-    self.env.SPHINX_OPTIONS = getattr(self, 'sphinx_options', [],)
+    self.env.SPHINX_OPTIONS = getattr(self, 'sphinx_options', [])
 
     for source_file in self.sphinx_source.ant_glob('**/*'):
-        self.bld.add_manual_dependency(self.sphinx_source, source_file,)
+        self.bld.add_manual_dependency(self.sphinx_source, source_file)
 
     for cfmt in self.sphinx_output_format:
         sphinx_build_task = self.create_task('SphinxBuildingTask')
@@ -72,10 +72,10 @@ def build_sphinx(self):
         sphinx_build_task.set_outputs(sphinx_build_task.sphinx_output_directory)
         sphinx_build_task.sphinx_output_directory.mkdir()
 
-        Utils.def_attrs(sphinx_build_task, install_path=getattr(self, 'install_path_' + cfmt, getattr(self, 'install_path', get_install_path(sphinx_build_task),),),)
+        Utils.def_attrs(sphinx_build_task, install_path=getattr(self, 'install_path_' + cfmt, getattr(self, 'install_path', get_install_path(sphinx_build_task))))
 
 
-def get_install_path(object,):
+def get_install_path(object):
     if object.env.SPHINX_OUTPUT_FORMAT == 'man':
         return object.env.MANDIR
     elif object.env.SPHINX_OUTPUT_FORMAT == 'info':
@@ -111,10 +111,10 @@ class SphinxBuildingTask(Task.Task):
 
 
     def add_install(self):
-        nodes = self.sphinx_output_directory.ant_glob('**/*', quiet=True,)
+        nodes = self.sphinx_output_directory.ant_glob('**/*', quiet=True)
         self.outputs += nodes
         self.generator.add_install_files(install_to=self.install_path,
                                          install_from=nodes,
                                          postpone=False,
                                          cwd=self.sphinx_output_directory.make_node(self.env.SPHINX_OUTPUT_FORMAT),
-                                         relative_trick=True,)
+                                         relative_trick=True)

@@ -10,11 +10,11 @@ from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 
 if __name__ == '__main__':
     with Appcenter() as appcenter:
-        app = tiny_app(get_app_name(), get_app_version(),)
+        app = tiny_app(get_app_name(), get_app_version())
         try:
             app.set_ini_parameter(
                 DockerScriptConfigure='/tmp/configure',
-                DockerScriptSetup='/tmp/setup',)
+                DockerScriptSetup='/tmp/setup')
             app.add_script(configure='''#!/bin/sh
 set -x
 echo "Configuring the App"

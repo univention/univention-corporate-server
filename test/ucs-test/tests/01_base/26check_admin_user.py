@@ -41,8 +41,8 @@ def check_user_groups_sids():
         if not sid_in_ldap:
             utils.fail("The 'sambaSID' for '%s' is empty." % key)
 
-        print("\nRecord:", key,)
-        print("SID:", sid_in_ldap,)
+        print("\nRecord:", key)
+        print("SID:", sid_in_ldap)
 
         if not (sid_in_ldap.startswith('S-1-5-21-') and sid_in_ldap.endswith(sid_ending)):
             print("\nThe SID '%s' for '%s' is incorrect. Expected to start "
@@ -83,22 +83,22 @@ def get_localized_translations():
 
     for num, val in enumerate(ucr_translations):
         # get a translation or pick a default English name:
-        translated_groups.append(UCR.get('groups/default/' + val, default_english[num],))
+        translated_groups.append(UCR.get('groups/default/' + val, default_english[num]))
 
     return translated_username, translated_groups
 
 
-def create_and_run_process(cmd, stdin=None, std_input=None, shell=False, stdout=PIPE,):
+def create_and_run_process(cmd, stdin=None, std_input=None, shell=False, stdout=PIPE):
     """
     Creates a process as a Popen instance with a given 'cmd'
     and executes it. When stdin is needed, it can be provided as kwarg.
     To write to a file an istance can be provided to stdout.
     """
-    proc = Popen(cmd, stdin=stdin, stdout=stdout, stderr=PIPE, shell=shell, close_fds=True,)
+    proc = Popen(cmd, stdin=stdin, stdout=stdout, stderr=PIPE, shell=shell, close_fds=True)
     return proc.communicate(input=std_input)
 
 
-def get_sid_for_user_group(name,):
+def get_sid_for_user_group(name):
     """
     Returns a SID for a given 'name'.
     Name should include the uid=... or cn=...
@@ -106,24 +106,24 @@ def get_sid_for_user_group(name,):
     stdout, stderr = create_and_run_process(('univention-ldapsearch', name))
 
     if stderr:
-        print("\nThe following message occurred in stderr:", stderr.decode('UTF-8', 'replace',),)
+        print("\nThe following message occurred in stderr:", stderr.decode('UTF-8', 'replace'))
 
-    sed_stdout, sed_stderr = create_and_run_process(("sed", "-n", "s/^sambaSID: //p"), PIPE, stdout,)
+    sed_stdout, sed_stderr = create_and_run_process(("sed", "-n", "s/^sambaSID: //p"), PIPE, stdout)
 
     if sed_stderr:
-        print("\nThe following message occurred in stderr:", sed_stderr.decode('UTF-8', 'replace',),)
+        print("\nThe following message occurred in stderr:", sed_stderr.decode('UTF-8', 'replace'))
 
     return sed_stdout.decode('UTF-8').strip('\n')
 
 
-def get_members_in_group(group_name,):
+def get_members_in_group(group_name):
     """Returns a list of members as found via 'getent' for a given 'group_name'."""
     cmd = ('getent', 'group', group_name)
     stdout, stderr = create_and_run_process(cmd)
 
     if stderr:
         print("\nThe following message occurred in stderr while using 'getent':")
-        print(stderr.decode('UTF-8', 'replace',))
+        print(stderr.decode('UTF-8', 'replace'))
 
     stdout = stdout.strip().decode('UTF-8')
     if not stdout:
@@ -133,8 +133,8 @@ def get_members_in_group(group_name,):
     # remove the group name, password, gid and separate members by commas:
     members = stdout[(stdout.rfind(':') + 1):].split(',')
 
-    print("\nGroup:", group_name,)
-    print("Members of the group:", members,)
+    print("\nGroup:", group_name)
+    print("Members of the group:", members)
     return members
 
 
@@ -145,7 +145,7 @@ if __name__ == '__main__':
     Check SIDs for Administrator and groups where applicable.
     """
     test_username, test_groups = get_localized_translations()
-    print("\nUser name to be tested:", test_username,)
+    print("\nUser name to be tested:", test_username)
     print(f"Groups where {test_username} should be a member: {test_groups}")
 
     check_user_in_groups()

@@ -80,7 +80,7 @@ class ListenerModuleConfiguration(object):
         _keys = self.get_configuration_keys()
         for k, _v in list(kwargs.items()):
             if k in _keys:
-                setattr(self, k, kwargs.pop(k),)
+                setattr(self, k, kwargs.pop(k))
         self.logger = get_logger(self.get_name())
         self._run_checks()
 
@@ -93,7 +93,7 @@ class ListenerModuleConfiguration(object):
         allowed_name_chars = string.ascii_letters + string.digits + ',.-_'
 
         for attr in self._mandatory_attributes:
-            if not getattr(self, f'get_{attr}', lambda: '',)() and not getattr(self, attr, '',):
+            if not getattr(self, f'get_{attr}', lambda: '')() and not getattr(self, attr, ''):
                 raise ListenerModuleConfigurationError(f'Missing or empty {attr!r} attribute in configuration.')
         if set(self.get_name()) - set(allowed_name_chars):
             raise ListenerModuleConfigurationError(
@@ -150,7 +150,7 @@ class ListenerModuleConfiguration(object):
         :return: attributes of matching LDAP objects the module will be notified about if changed
         :rtype: list(str)
         """
-        assert isinstance(self.attributes, list,)
+        assert isinstance(self.attributes, list)
         return self.attributes
 
     def get_priority(self):
@@ -159,7 +159,7 @@ class ListenerModuleConfiguration(object):
         :return: priority of the handler. Defines the order in which this module is executed inside the listener
         :rtype: float
         """
-        priority = getattr(self, "priority", 50.0,)
+        priority = getattr(self, "priority", 50.0)
         return float(priority)
 
     def get_listener_module_instance(self, *args, **kwargs):
@@ -173,7 +173,7 @@ class ListenerModuleConfiguration(object):
         :rtype: ListenerModuleHandler
         """
         cls = self.get_listener_module_class()
-        return cls(*args, **kwargs,)
+        return cls(*args, **kwargs)
 
     def get_listener_module_class(self):
         # type: () -> Type[ListenerModuleHandler]
@@ -194,4 +194,4 @@ class ListenerModuleConfiguration(object):
         :return: whether the listener module should be activated
         :rtype: bool
         """
-        return not listener.configRegistry.is_true(f'listener/module/{self.get_name()}/deactivate', False,)
+        return not listener.configRegistry.is_true(f'listener/module/{self.get_name()}/deactivate', False)

@@ -51,7 +51,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['ms-net-ieee-80211-GroupPolicy', 'top'],),
+        objectClasses=['ms-net-ieee-80211-GroupPolicy', 'top'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -59,45 +60,50 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'ms-net-ieee-80211-GP-PolicyReserved': univention.admin.property(
         short_description=_('Policy Reserved'),
         long_description='',
-        syntax=univention.admin.syntax.TextArea,),
+        syntax=univention.admin.syntax.TextArea,
+    ),
     'ms-net-ieee-80211-GP-PolicyData': univention.admin.property(
         short_description=_('Policy Data'),
         long_description='',
         syntax=univention.admin.syntax.TextArea,
-        size='Two',),
+        size='Two',
+    ),
     'ms-net-ieee-80211-GP-PolicyGUID': univention.admin.property(
         short_description=_('Policy GUID'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
 }
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('General'), layout=[
             ["name", "description"],
-        ],),
+        ]),
         Group(_('Policy settings'), layout=[
             'ms-net-ieee-80211-GP-PolicyGUID',
             'ms-net-ieee-80211-GP-PolicyData',
             'ms-net-ieee-80211-GP-PolicyReserved',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
-mapping.register('ms-net-ieee-80211-GP-PolicyReserved', 'ms-net-ieee-80211-GP-PolicyReserved', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
-mapping.register('ms-net-ieee-80211-GP-PolicyData', 'ms-net-ieee-80211-GP-PolicyData', None, univention.admin.mapping.ListToString,)
-mapping.register('ms-net-ieee-80211-GP-PolicyGUID', 'ms-net-ieee-80211-GP-PolicyGUID', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.register('ms-net-ieee-80211-GP-PolicyReserved', 'ms-net-ieee-80211-GP-PolicyReserved', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('ms-net-ieee-80211-GP-PolicyData', 'ms-net-ieee-80211-GP-PolicyData', None, univention.admin.mapping.ListToString)
+mapping.register('ms-net-ieee-80211-GP-PolicyGUID', 'ms-net-ieee-80211-GP-PolicyGUID', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

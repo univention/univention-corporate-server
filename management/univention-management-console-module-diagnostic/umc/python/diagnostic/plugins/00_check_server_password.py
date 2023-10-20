@@ -56,30 +56,30 @@ links = [{
 }]
 
 
-def fix_machine_password(umc_instance: Instance,) -> None:
+def fix_machine_password(umc_instance: Instance) -> None:
     role = configRegistry.get('server/role')
     valid_roles = ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
     if role in valid_roles:
-        restore_machine_password(role, umc_instance.get_user_ldap_connection(),)
+        restore_machine_password(role, umc_instance.get_user_ldap_connection())
 
-        if configRegistry.is_true('server/password/change', True,):
+        if configRegistry.is_true('server/password/change', True):
             change_server_password()
-        return run(umc_instance, retest=True,)
+        return run(umc_instance, retest=True)
 
     error_description = _('Unable to fix machine password on {}').format(role)
     raise Critical(description=error_description)
 
 
-def reset_password_change(umc_instance: Instance,) -> None:
+def reset_password_change(umc_instance: Instance) -> None:
     MODULE.process('Resetting server/password/change')
     ucr_unset(['server/password/change'])
-    return run(umc_instance, retest=True,)
+    return run(umc_instance, retest=True)
 
 
-def reset_password_interval(umc_instance: Instance,) -> None:
+def reset_password_interval(umc_instance: Instance) -> None:
     MODULE.process('Resetting server/password/interval=21')
     ucr_set(['server/password/interval=21'])
-    return run(umc_instance, retest=True,)
+    return run(umc_instance, retest=True)
 
 
 actions = {
@@ -89,7 +89,7 @@ actions = {
 }
 
 
-def check_machine_password(master: bool = True,) -> bool:
+def check_machine_password(master: bool = True) -> bool:
     try:
         univention.uldap.getMachineConnection(ldap_master=master)
     except ldap.INVALID_CREDENTIALS:
@@ -98,15 +98,15 @@ def check_machine_password(master: bool = True,) -> bool:
 
 
 def change_server_password() -> None:
-    interval = configRegistry.get_int('server/password/interval', 21,)
+    interval = configRegistry.get_int('server/password/interval', 21)
     ucr_set('server/password/interval=-1')
     try:
         cmd = ['/usr/lib/univention-server/server_password_change']
-        output = subprocess.check_output(cmd, stderr=subprocess.STDOUT,)
-        MODULE.process('Output of server_password_change:\n%s' % (output.decode('UTF-8', 'replace',),))
+        output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+        MODULE.process('Output of server_password_change:\n%s' % (output.decode('UTF-8', 'replace'),))
     except subprocess.CalledProcessError as exc:
         MODULE.error('Error running server_password_change')
-        MODULE.error('Output:\n%s' % (exc.output.decode('UTF-8', 'replace',),))
+        MODULE.error('Output:\n%s' % (exc.output.decode('UTF-8', 'replace'),))
         error_descriptions = [
             _('Calling /usr/lib/univention-server/server_password_change failed.'),
             _('Please see {sdb} for more information.'),
@@ -117,27 +117,27 @@ def change_server_password() -> None:
         ucr_set(f'server/password/interval={interval}')
 
 
-def restore_machine_password(role: str, ldap_connection: univention.admin.uldap.access,) -> None:
+def restore_machine_password(role: str, ldap_connection: univention.admin.uldap.access) -> None:
     with open('/etc/machine.secret') as fob:
         password = fob.read().rstrip('\n')
 
     if not password:
         password = univention.lib.misc.createMachinePassword()
-        with open('/etc/machine.secret', 'w',) as fob:
+        with open('/etc/machine.secret', 'w') as fob:
             fob.write(password)
 
     computers = udm_modules.get(f'computers/{role}')
     position = univention.admin.uldap.position(ldap_connection.base)
-    udm_modules.init(ldap_connection, position, computers,)
-    filter_expr = ldap.filter.filter_format('(cn=%s)', (socket.gethostname(),),)
-    for computer in computers.lookup(None, ldap_connection, filter_expr,):
+    udm_modules.init(ldap_connection, position, computers)
+    filter_expr = ldap.filter.filter_format('(cn=%s)', (socket.gethostname(),))
+    for computer in computers.lookup(None, ldap_connection, filter_expr):
         MODULE.process('Restoring password of UDM computer object')
         computer.open()
         computer['password'] = password
         computer.modify()
 
 
-def run(_umc_instance: Instance, retest: bool = False,) -> None:
+def run(_umc_instance: Instance, retest: bool = False) -> None:
     error_descriptions = []
     buttons = [{
         'action': 'fix_machine_password',
@@ -153,8 +153,8 @@ def run(_umc_instance: Instance, retest: bool = False,) -> None:
         error = _('Authentication against the Primary LDAP failed with the machine password.')
         error_descriptions.append(error)
 
-    password_change = configRegistry.is_true('server/password/change', True,)
-    change_interval = configRegistry.get_int('server/password/interval', 21,)
+    password_change = configRegistry.is_true('server/password/change', True)
+    change_interval = configRegistry.get_int('server/password/interval', 21)
 
     error_change = _('Note that password rotation is disabled via the UCR variable server/password/change.')
     error_interval = _('Note that server/password/interval is set to {}.')
@@ -177,7 +177,7 @@ def run(_umc_instance: Instance, retest: bool = False,) -> None:
             })
 
             MODULE.error('\n'.join(error_descriptions))
-            raise Critical(description=' '.join(error_descriptions), buttons=buttons,)
+            raise Critical(description=' '.join(error_descriptions), buttons=buttons)
     if retest:
         raise ProblemFixed(buttons=[])
 

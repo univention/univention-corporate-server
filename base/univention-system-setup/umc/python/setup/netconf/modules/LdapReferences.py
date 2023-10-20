@@ -27,8 +27,8 @@ class PhaseLdapReferences(AddressMap, LdapChange):
         ("portals/entry", "link", 2),
     )
 
-    def __init__(self, changeset: ChangeSet,) -> None:
-        super(PhaseLdapReferences, self,).__init__(changeset)
+    def __init__(self, changeset: ChangeSet) -> None:
+        super(PhaseLdapReferences, self).__init__(changeset)
         modules.update()
 
     def post(self) -> None:
@@ -37,38 +37,38 @@ class PhaseLdapReferences(AddressMap, LdapChange):
             for module, udm_property, replace_type in self._iterate_objects():
                 # ldap_attribute = module.mapping.mapName(udm_property)
                 # force = not module.property_descriptions[udm_property].multivalue
-                objects = module.lookup(None, self.ldap, None,)
+                objects = module.lookup(None, self.ldap, None)
                 for obj in objects:
-                    self._rewrite_object(obj, udm_property, replace_type,)
+                    self._rewrite_object(obj, udm_property, replace_type)
         except (LDAPError, UniventionBaseException) as ex:
-            self.logger.warning("Failed LDAP: %s", ex, exc_info=True,)
+            self.logger.warning("Failed LDAP: %s", ex, exc_info=True)
 
     def _iterate_objects(self) -> Iterator[Tuple[Any, str, int]]:
         for module_name, udm_property, replace_type in self.referers:
             module = modules.get(module_name)
             if not module:
-                self.logger.debug("Unknown module '%s", module_name,)
+                self.logger.debug("Unknown module '%s", module_name)
                 continue
-            self.logger.info("Processing %s", module_name,)
-            modules.init(self.ldap, self.position, module,)
+            self.logger.info("Processing %s", module_name)
+            modules.init(self.ldap, self.position, module)
             yield module, udm_property, replace_type
 
-    def _rewrite_object(self, obj: Any, udm_property: str, replace_type: int,) -> None:
+    def _rewrite_object(self, obj: Any, udm_property: str, replace_type: int) -> None:
         obj.open()
         try:
             old_values = obj[udm_property]
             if self._replace_type[replace_type] == "complete_match":
                 new_values = [
-                    self.ip_mapping.get(value, value,)
+                    self.ip_mapping.get(value, value)
                     for value in old_values
                 ]
             elif self._replace_type[replace_type] == "link_replace":
                 new_values = []
                 for old_value in old_values:
                     for old_ip in self.ip_mapping.keys():
-                        new_ip = self.ip_mapping.get(old_ip, old_ip,)
+                        new_ip = self.ip_mapping.get(old_ip, old_ip)
                         loc, link = old_value
-                        link = link.replace("//%s/" % old_ip, "//%s/" % new_ip,)
+                        link = link.replace("//%s/" % old_ip, "//%s/" % new_ip)
                         new_value = [loc, link]
                         if new_value not in new_values:
                             new_values.append(new_value)
@@ -77,7 +77,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
             if old_values == new_values:
                 return
             obj[udm_property] = new_values
-            self.logger.info("Updating '%s' with '%r'...", obj.dn, obj.diff(),)
+            self.logger.info("Updating '%s' with '%r'...", obj.dn, obj.diff())
             if not self.changeset.no_act:
                 obj.modify()
         except KeyError:

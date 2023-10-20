@@ -24,26 +24,26 @@ from univention.testing import strings, utils
 class Test_LDAPSchema:
     """Test udm settings/ldapschema"""
 
-    @pytest.mark.tags('udm-ldapextensions', 'apptest',)
+    @pytest.mark.tags('udm-ldapextensions', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('dangerous')
-    def test_create_ldap_schema(self, udm,):
+    def test_create_ldap_schema(self, udm):
         """Create a valid ldap schema object"""
         schema_name = uts.random_name()
         filename = '90%s' % uts.random_name()
         data = '# schema test'
-        schema = udm.create_object('settings/ldapschema', position=udm.UNIVENTION_CONTAINER, name=schema_name, filename=filename, data=(base64.b64encode(bz2.compress(data.encode('UTF-8')))).decode('ASCII'),)
-        utils.verify_ldap_object(schema, {'cn': [schema_name]},)
+        schema = udm.create_object('settings/ldapschema', position=udm.UNIVENTION_CONTAINER, name=schema_name, filename=filename, data=(base64.b64encode(bz2.compress(data.encode('UTF-8')))).decode('ASCII'))
+        utils.verify_ldap_object(schema, {'cn': [schema_name]})
 
-        udm.remove_object('settings/ldapschema', dn=schema,)
+        udm.remove_object('settings/ldapschema', dn=schema)
         with pytest.raises(utils.LDAPObjectNotFound):
-            utils.verify_ldap_object(schema, {'cn': [schema_name]}, retry_count=1,)
+            utils.verify_ldap_object(schema, {'cn': [schema_name]}, retry_count=1)
 
-    @pytest.mark.tags('udm-ldapextensions', 'apptest',)
+    @pytest.mark.tags('udm-ldapextensions', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('dangerous')
-    @pytest.mark.parametrize('active', ['TRUE', 'FALSE'],)
-    def test_create_full_ldap_schema(self, udm, active,):
+    @pytest.mark.parametrize('active', ['TRUE', 'FALSE'])
+    def test_create_full_ldap_schema(self, udm, active):
         """Create a full ldap schema objects"""
         schema_name = uts.random_name()
         filename = '90%s' % uts.random_name()
@@ -61,7 +61,7 @@ class Test_LDAPSchema:
             packageversion=package_version,
             appidentifier=appidentifier,
             package=[package],
-            active=active,)
+            active=active)
 
         utils.verify_ldap_object(schema, {
             'cn': [schema_name],
@@ -72,55 +72,55 @@ class Test_LDAPSchema:
             'univentionAppIdentifier': [appidentifier],
             'univentionLDAPSchemaActive': [active],
             'univentionObjectType': ['settings/ldapschema'],
-        },)
+        })
 
 
 class Test_LDAPACL:
     """Test udm settings/ldapacl"""
 
-    @pytest.mark.tags('udm-ldapextensions', 'apptest',)
+    @pytest.mark.tags('udm-ldapextensions', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('dangerous')
-    def test_create_invalid_ldap_schema(self, udm,):
+    def test_create_invalid_ldap_schema(self, udm):
         """Try to create invalid ldap schema objects"""
         schema_name = uts.random_name()
         filename = '/90%s' % uts.random_name()
         data = '# schema test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-            udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'),)
+            udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'))
 
         schema_name = uts.random_name()
         filename = '90%s' % uts.random_name()
         data = '# schema test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-            udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(data.encode('UTF-8')).decode('ASCII'),)
+            udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(data.encode('UTF-8')).decode('ASCII'))
 
         schema_name = uts.random_name()
         filename = '90%s' % uts.random_name()
         data = '# schema test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-            udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'), active='YES',)
+            udm.create_object('settings/ldapschema', name=schema_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'), active='YES')
 
-    @pytest.mark.tags('udm-ldapextensions', 'apptest',)
+    @pytest.mark.tags('udm-ldapextensions', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('dangerous')
-    def test_create_ldap_acl(self, udm,):
+    def test_create_ldap_acl(self, udm):
         """Create a valid ldap acl object"""
         acl_name = uts.random_name()
         filename = '90%s' % uts.random_name()
         data = '# access to  *'
-        acl = udm.create_object('settings/ldapacl', position=udm.UNIVENTION_CONTAINER, name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'),)
-        utils.verify_ldap_object(acl, {'cn': [acl_name]},)
+        acl = udm.create_object('settings/ldapacl', position=udm.UNIVENTION_CONTAINER, name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'))
+        utils.verify_ldap_object(acl, {'cn': [acl_name]})
 
-        udm.remove_object('settings/ldapacl', dn=acl,)
+        udm.remove_object('settings/ldapacl', dn=acl)
         with pytest.raises(utils.LDAPObjectNotFound):
-            utils.verify_ldap_object(acl, {'cn': [acl_name]}, retry_count=1,)
+            utils.verify_ldap_object(acl, {'cn': [acl_name]}, retry_count=1)
 
-    @pytest.mark.tags('udm-ldapextensions', 'apptest',)
+    @pytest.mark.tags('udm-ldapextensions', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('dangerous')
-    @pytest.mark.parametrize('active', ['TRUE', 'FALSE'],)
-    def test_create_full_ldap_acl(self, udm, active,):
+    @pytest.mark.parametrize('active', ['TRUE', 'FALSE'])
+    def test_create_full_ldap_acl(self, udm, active):
         """Create a full ldap acl objects"""
         acl_name = uts.random_name()
         filename = '90%s' % uts.random_name()
@@ -142,7 +142,7 @@ class Test_LDAPACL:
             appidentifier=appidentifier,
             ucsversionstart=ucsversionstart,
             ucsversionend=ucsversionend,
-            active=active,)
+            active=active)
 
         utils.verify_ldap_object(acl, {
             'cn': [acl_name],
@@ -155,66 +155,66 @@ class Test_LDAPACL:
             'univentionUCSVersionEnd': [ucsversionend],
             'univentionLDAPACLActive': [active],
             'univentionObjectType': ['settings/ldapacl'],
-        },)
+        })
 
-    @pytest.mark.tags('udm-ldapextensions', 'apptest',)
+    @pytest.mark.tags('udm-ldapextensions', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('dangerous')
-    def test_create_invalid_ldap_acl(self, udm,):
+    def test_create_invalid_ldap_acl(self, udm):
         """Try to create invalid ldap acl objects"""
         acl_name = uts.random_name()
         filename = '/90%s' % uts.random_name()
         data = '# acl test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-            udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'),)
+            udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'))
 
         acl_name = uts.random_name()
         filename = '90%s' % uts.random_name()
         data = '# acl test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-            udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(data.encode('UTF-8')).decode('ASCII'),)
+            udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(data.encode('UTF-8')).decode('ASCII'))
 
         acl_name = uts.random_name()
         filename = '90%s' % uts.random_name()
         data = '# acl test'
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
-            udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'), active='YES',)
+            udm.create_object('settings/ldapacl', name=acl_name, filename=filename, data=base64.b64encode(bz2.compress(data.encode('UTF-8'))).decode('ASCII'), active='YES')
 
 
 # TODO: add a test case for subdirectories
-@pytest.mark.parametrize('modify', [False, True],)
-@pytest.mark.parametrize('prefix', ['/', '../../../../../../../../../'],)
+@pytest.mark.parametrize('modify', [False, True])
+@pytest.mark.parametrize('prefix', ['/', '../../../../../../../../../'])
 @pytest.mark.parametrize('path,position,attr,ocs', [
     ('/var/lib/univention-ldap/local-schema', 'cn=ldapschema,cn=univention', 'univentionLDAPSchemaFilename', 'univentionLDAPExtensionSchema'),
     ('/etc/univention/templates/files/etc/ldap/slapd.conf.d/', 'cn=ldapacl,cn=univention', 'univentionLDAPACLFilename', 'univentionLDAPExtensionACL'),
-],)
-@pytest.mark.parametrize('name', ['etc/passwd3'],)
-def test_filename_validation(udm, lo, modify, prefix, path, position, attr, ocs, name,):
+])
+@pytest.mark.parametrize('name', ['etc/passwd3'])
+def test_filename_validation(udm, lo, modify, prefix, path, position, attr, ocs, name):
     """Creates Schema and ACL extensions in invalid paths"""
     # bugs: [41780]
-    def err(filename,):
+    def err(filename):
         return '%r exists (content=%r)' % (filename, open(filename).read())
 
     pos = '%s,%s' % (position, udm.LDAP_BASE)
     filename = filename_modify = '%s%s%s' % (prefix, name, strings.random_string())
     if modify:
         dn_modify = '%s=%s,%s' % (attr, ldap.dn.escape_dn_chars(filename), pos)
-        filename = filename.replace('/', '',).replace('.', '',)
+        filename = filename.replace('/', '').replace('.', '')
     dn = '%s=%s,%s' % (attr, ldap.dn.escape_dn_chars(filename), pos)
-    fullpath = os.path.join(path, filename,)
-    fullpath_modify = os.path.join(path, filename_modify,)
+    fullpath = os.path.join(path, filename)
+    fullpath_modify = os.path.join(path, filename_modify)
     attrs = {
         attr: [filename.encode('UTF-8')],
         'cn': [filename.encode('UTF-8')],
         'objectClass': [b'top', b'univentionObjectMetadata', ocs.encode('UTF-8')],
         'univentionOwnedByPackage': [b'foo'],
         'univentionOwnedByPackageVersion': [b'1'],
-        attr.replace('Filename', 'Data',): [bz2.compress(b'\n' if modify else b'root:$6$5cAInBgG$7rdZuEujGK1QFoprcNspXsXHsymW3Txp0kDyHFsE.omI.3T0xek3KIneFPZ99Z8dwZnZ2I2O/Tk8x4mNNGSE4.:16965:0:99999:7:::')],
-        attr.replace('Filename', 'Active',): [b'TRUE'],
+        attr.replace('Filename', 'Data'): [bz2.compress(b'\n' if modify else b'root:$6$5cAInBgG$7rdZuEujGK1QFoprcNspXsXHsymW3Txp0kDyHFsE.omI.3T0xek3KIneFPZ99Z8dwZnZ2I2O/Tk8x4mNNGSE4.:16965:0:99999:7:::')],
+        attr.replace('Filename', 'Active'): [b'TRUE'],
     }
     al = [(key, list(val)) for key, val in attrs.items()]
     print(('Creating', dn))
-    dn = lo.add(dn, al,) or dn
+    dn = lo.add(dn, al) or dn
     try:
         utils.wait_for_replication_and_postrun()
         if modify:
@@ -226,7 +226,7 @@ def test_filename_validation(udm, lo, modify, prefix, path, position, attr, ocs,
             dn = lo.modify(dn, [
                 (attr, filename.encode('UTF-8'), filename_modify.encode('UTF-8')),
                 ('cn', filename.encode('UTF-8'), filename_modify.encode('UTF-8')),
-            ],) or dn
+            ]) or dn
             print(('Modified', dn))
             assert dn == dn_modify
             utils.wait_for_replication_and_postrun()
@@ -239,10 +239,10 @@ def test_filename_validation(udm, lo, modify, prefix, path, position, attr, ocs,
             assert not os.path.exists(fullpath_modify + '.info'), err(fullpath_modify + '.info')
 
         # create fake files and see if the listener would remove them.
-        with open(fullpath_modify, 'w',) as fd:
+        with open(fullpath_modify, 'w') as fd:
             fd.write('TEMP')
         if ocs == 'univentionLDAPExtensionACL':
-            with open(fullpath_modify + '.info', 'w',) as fd:
+            with open(fullpath_modify + '.info', 'w') as fd:
                 fd.write('TEMP')
     finally:
         lo.delete(dn)
@@ -282,33 +282,34 @@ class Bunch:
         return str(self)
 
 
-@pytest.mark.tags('udm-ldapextensions', 'apptest',)
+@pytest.mark.tags('udm-ldapextensions', 'apptest')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('dangerous')
-def test_create_portal_entry(udm, ucr,):
+def test_create_portal_entry(udm, ucr):
     """Create a UMC portal entry"""
     portal = Bunch(
         name=uts.random_name(),
         displayName='"de_DE" "%s"' % (uts.random_name(),),
         logo=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),
-        background=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),)
+        background=base64.b64encode(uts.random_name().encode('utf-8')).decode('ASCII'),
+    )
 
     kwargs = portal.__dict__.copy()
     kwargs['portalComputers'] = [ucr.get('ldap/hostdn')]
 
-    dn = udm.create_object('portals/portal', **kwargs,)
+    dn = udm.create_object('portals/portal', **kwargs)
     utils.verify_ldap_object(dn, {
         'cn': [portal.name],
         'univentionNewPortalLogo': [portal.logo],
-        'univentionNewPortalDisplayName': [portal.displayName.replace('"', '',)],
+        'univentionNewPortalDisplayName': [portal.displayName.replace('"', '')],
         'univentionNewPortalBackground': [portal.background],
-    },)
+    })
 
 
 @pytest.mark.roles('domaincontroller_master')
-@pytest.mark.tags('udm-ldapextensions', 'apptest',)
+@pytest.mark.tags('udm-ldapextensions', 'apptest')
 @pytest.mark.exposure('dangerous')
-def test_create_data(udm, ucr,):
+def test_create_data(udm, ucr):
     """Create a settings/data object"""
     data = uts.random_name(500)
     kwargs = {
@@ -325,7 +326,7 @@ def test_create_data(udm, ucr,):
         "packageversion": uts.random_version(),
     }
 
-    dn = udm.create_object('settings/data', **kwargs,)
+    dn = udm.create_object('settings/data', **kwargs)
 
     utils.verify_ldap_object(
         dn,
@@ -340,11 +341,12 @@ def test_create_data(udm, ucr,):
             'univentionDataMeta': kwargs['meta'],
             'univentionOwnedByPackage': [kwargs['package']],
             'univentionOwnedByPackageVersion': [kwargs['packageversion']],
-        },)
+        },
+    )
 
 
 file_name = uts.random_name()
-file_path = os.path.join('/tmp', file_name,)
+file_path = os.path.join('/tmp', file_name)
 
 
 @pytest.fixture()
@@ -356,7 +358,7 @@ def remove_tmp_file():
         pass
 
 
-shutil.copy('/etc/hosts', file_path,)
+shutil.copy('/etc/hosts', file_path)
 kwargs = {
     "data_type": uts.random_name(),
     "ucsversionstart": uts.random_ucs_version(),
@@ -367,11 +369,11 @@ kwargs = {
 }
 
 
-def run_cmd(cmd,):
+def run_cmd(cmd):
     print(f'Running: {cmd!r}')
-    cmd_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+    cmd_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cmd_out, cmd_err = cmd_proc.communicate()
-    cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace',), cmd_err.decode('UTF-8', 'replace',)
+    cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
     print(f'exit code: {cmd_proc.returncode!r}')
     print(f'stdout:-----\n{cmd_out}\n-----')
     print(f'stderr:-----\n{cmd_err}\n-----')
@@ -379,13 +381,13 @@ def run_cmd(cmd,):
 
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('dangerous')
-@pytest.mark.tags('udm-ldapextensions', 'apptest',)
-def test_register_data(udm, ucr, remove_tmp_file,):
+@pytest.mark.tags('udm-ldapextensions', 'apptest')
+def test_register_data(udm, ucr, remove_tmp_file):
     """Register a settings/data object"""
     ldap_base = ucr['ldap/base']
     # make sure object is remove at the end
     dn = f'cn={file_name},cn=data,cn=univention,{ldap_base}'
-    udm._cleanup.setdefault('settings/data', [],).append(dn)
+    udm._cleanup.setdefault('settings/data', []).append(dn)
     register_cmd = [
         'ucs_registerLDAPExtension',
         '--binddn', 'cn=admin,{}'.format(ucr['ldap/base']),
@@ -422,7 +424,8 @@ def test_register_data(udm, ucr, remove_tmp_file,):
             'univentionDataMeta': kwargs['meta'],
             'univentionOwnedByPackage': [kwargs['package']],
             'univentionOwnedByPackageVersion': [kwargs['packageversion']],
-        },)
+        },
+    )
 
     nums = kwargs['packageversion'].split('.')
     num0 = int(nums[0])
@@ -458,5 +461,6 @@ def test_register_data(udm, ucr, remove_tmp_file,):
             'univentionDataMeta': kwargs['meta'],
             'univentionOwnedByPackage': [kwargs['package']],
             'univentionOwnedByPackageVersion': [kwargs['packageversion']],
-        },)
+        },
+    )
     print('OK: object unchanged.')

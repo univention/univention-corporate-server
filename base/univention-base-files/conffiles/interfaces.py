@@ -42,9 +42,9 @@ PRIMARY = 'interfaces/primary'
 GATEWAYS = {'gateway', 'ipv6/gateway'}
 
 
-def _common(ucr, changes, command,):
+def _common(ucr, changes, command):
     """Run command on changed interfaces."""
-    if not ucr.is_true('interfaces/restart/auto', True,):
+    if not ucr.is_true('interfaces/restart/auto', True):
         return
     interfaces = set()
     if GATEWAYS & set(changes):
@@ -62,17 +62,17 @@ def _common(ucr, changes, command,):
             if not match:
                 continue
             iface, _subkey, _ipv6_name = match.groups()
-            interfaces.add(iface.replace('_', ':',))
+            interfaces.add(iface.replace('_', ':'))
     # Shutdown changed interfaces
     for iface in interfaces:
         call((command, iface))
 
 
-def preinst(ucr, changes,):
+def preinst(ucr, changes):
     """Pre run handler to shutdown changed interfaces."""
-    _common(ucr, changes, 'ifdown',)
+    _common(ucr, changes, 'ifdown')
 
 
-def postinst(ucr, changes,):
+def postinst(ucr, changes):
     """Post run handler to start changed interfaces."""
-    _common(ucr, changes, 'ifup',)
+    _common(ucr, changes, 'ifup')

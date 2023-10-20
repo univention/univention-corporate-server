@@ -38,9 +38,9 @@ c cc cxx cpp c++ java ii ixx ipp i++ inl h hh hxx hpp h++ idl odl cs php php3
 inc m mm py f90c cc cxx cpp c++ java ii ixx ipp i++ inl h hh hxx
 '''.split())
 
-re_rl = re.compile('\\\\\r*\n', re.MULTILINE,)
-re_nl = re.compile('\r*\n', re.M,)
-def parse_doxy(txt,):
+re_rl = re.compile('\\\\\r*\n', re.MULTILINE)
+re_nl = re.compile('\r*\n', re.M)
+def parse_doxy(txt):
 	'''
 	Parses a doxygen file.
 	Returns an ordered dictionary. We cannot return a default dictionary, as the
@@ -48,7 +48,7 @@ def parse_doxy(txt,):
 	'@INCLUDE' lines.
 	'''
 	tbl = OrderedDict()
-	txt   = re_rl.sub('', txt,)
+	txt   = re_rl.sub('', txt)
 	lines = re_nl.split(txt)
 	for x in lines:
 		x = x.strip()
@@ -83,12 +83,12 @@ class doxygen(Task.Task):
 			if not x.hasrun:
 				return Task.ASK_LATER
 
-		if not getattr(self, 'pars', None,):
+		if not getattr(self, 'pars', None):
 			txt = self.inputs[0].read()
 			self.pars = parse_doxy(txt)
 
 			# Override with any parameters passed to the task generator
-			if getattr(self.generator, 'pars', None,):
+			if getattr(self.generator, 'pars', None):
 				for k, v in self.generator.pars.items():
 					self.pars[k] = v
 
@@ -101,7 +101,7 @@ class doxygen(Task.Task):
 			output_node.mkdir()
 			self.pars['OUTPUT_DIRECTORY'] = output_node.abspath()
 
-			self.doxy_inputs = getattr(self, 'doxy_inputs', [],)
+			self.doxy_inputs = getattr(self, 'doxy_inputs', [])
 			if not self.pars.get('INPUT'):
 				self.doxy_inputs.append(self.inputs[0].parent)
 			else:
@@ -114,7 +114,7 @@ class doxygen(Task.Task):
 						self.generator.bld.fatal('Could not find the doxygen input %r' % i)
 					self.doxy_inputs.append(node)
 
-		if not getattr(self, 'output_dir', None,):
+		if not getattr(self, 'output_dir', None):
 			bld = self.generator.bld
 			# Output path is always an absolute path as it was transformed above.
 			self.output_dir = bld.root.find_dir(self.pars['OUTPUT_DIRECTORY'])
@@ -127,9 +127,9 @@ class doxygen(Task.Task):
 		return ret
 
 	def scan(self):
-		exclude_patterns = self.pars.get('EXCLUDE_PATTERNS','',).split()
-		exclude_patterns = [pattern.replace('*/', '**/',) for pattern in exclude_patterns]
-		file_patterns = self.pars.get('FILE_PATTERNS','',).split()
+		exclude_patterns = self.pars.get('EXCLUDE_PATTERNS','').split()
+		exclude_patterns = [pattern.replace('*/', '**/') for pattern in exclude_patterns]
+		file_patterns = self.pars.get('FILE_PATTERNS','').split()
 		if not file_patterns:
 			file_patterns = DOXY_FILE_PATTERNS.split()
 		if self.pars.get('RECURSIVE') == 'YES':
@@ -138,7 +138,7 @@ class doxygen(Task.Task):
 		names = []
 		for node in self.doxy_inputs:
 			if os.path.isdir(node.abspath()):
-				for m in node.ant_glob(incl=file_patterns, excl=exclude_patterns,):
+				for m in node.ant_glob(incl=file_patterns, excl=exclude_patterns):
 					nodes.append(m)
 			else:
 				nodes.append(node)
@@ -149,29 +149,29 @@ class doxygen(Task.Task):
 		code = '\n'.join(['%s = %s' % (x, dct[x]) for x in self.pars])
 		code = code.encode() # for python 3
 		#fmt = DOXY_STR % (self.inputs[0].parent.abspath())
-		cmd = Utils.subst_vars(DOXY_STR, self.env,)
+		cmd = Utils.subst_vars(DOXY_STR, self.env)
 		env = self.env.env or None
-		proc = Utils.subprocess.Popen(cmd, shell=True, stdin=Utils.subprocess.PIPE, env=env, cwd=self.inputs[0].parent.abspath(),)
+		proc = Utils.subprocess.Popen(cmd, shell=True, stdin=Utils.subprocess.PIPE, env=env, cwd=self.inputs[0].parent.abspath())
 		proc.communicate(code)
 		return proc.returncode
 
 	def post_run(self):
-		nodes = self.output_dir.ant_glob('**/*', quiet=True,)
+		nodes = self.output_dir.ant_glob('**/*', quiet=True)
 		for x in nodes:
 			self.generator.bld.node_sigs[x] = self.uid()
 		self.add_install()
 		return Task.Task.post_run(self)
 
 	def add_install(self):
-		nodes = self.output_dir.ant_glob('**/*', quiet=True,)
+		nodes = self.output_dir.ant_glob('**/*', quiet=True)
 		self.outputs += nodes
-		if getattr(self.generator, 'install_path', None,):
-			if not getattr(self.generator, 'doxy_tar', None,):
+		if getattr(self.generator, 'install_path', None):
+			if not getattr(self.generator, 'doxy_tar', None):
 				self.generator.add_install_files(install_to=self.generator.install_path,
 					install_from=self.outputs,
 					postpone=False,
 					cwd=self.output_dir,
-					relative_trick=True,)
+					relative_trick=True)
 
 class tar(Task.Task):
 	"quick tar creation"
@@ -179,14 +179,14 @@ class tar(Task.Task):
 	color   = 'RED'
 	after   = ['doxygen']
 	def runnable_status(self):
-		for x in getattr(self, 'input_tasks', [],):
+		for x in getattr(self, 'input_tasks', []):
 			if not x.hasrun:
 				return Task.ASK_LATER
 
-		if not getattr(self, 'tar_done_adding', None,):
+		if not getattr(self, 'tar_done_adding', None):
 			# execute this only once
 			self.tar_done_adding = True
-			for x in getattr(self, 'input_tasks', [],):
+			for x in getattr(self, 'input_tasks', []):
 				self.set_inputs(x.outputs)
 			if not self.inputs:
 				return Task.SKIP_ME
@@ -198,20 +198,20 @@ class tar(Task.Task):
 
 @feature('doxygen')
 def process_doxy(self):
-	if not getattr(self, 'doxyfile', None,):
+	if not getattr(self, 'doxyfile', None):
 		self.bld.fatal('no doxyfile variable specified??')
 
 	node = self.doxyfile
-	if not isinstance(node, Node.Node,):
+	if not isinstance(node, Node.Node):
 		node = self.path.find_resource(node)
 	if not node:
 		self.bld.fatal('doxygen file %s not found' % self.doxyfile)
 
 	# the task instance
-	dsk = self.create_task('doxygen', node, always_run=getattr(self, 'always', False,),)
+	dsk = self.create_task('doxygen', node, always_run=getattr(self, 'always', False))
 
-	if getattr(self, 'doxy_tar', None,):
-		tsk = self.create_task('tar', always_run=getattr(self, 'always', False,),)
+	if getattr(self, 'doxy_tar', None):
+		tsk = self.create_task('tar', always_run=getattr(self, 'always', False))
 		tsk.input_tasks = [dsk]
 		tsk.set_outputs(self.path.find_or_declare(self.doxy_tar))
 		if self.doxy_tar.endswith('bz2'):
@@ -220,10 +220,10 @@ def process_doxy(self):
 			tsk.env['TAROPTS'] = ['czf']
 		else:
 			tsk.env['TAROPTS'] = ['cf']
-		if getattr(self, 'install_path', None,):
-			self.add_install_files(install_to=self.install_path, install_from=tsk.outputs,)
+		if getattr(self, 'install_path', None):
+			self.add_install_files(install_to=self.install_path, install_from=tsk.outputs)
 
-def configure(conf,):
+def configure(conf):
 	'''
 	Check if doxygen and tar commands are present in the system
 
@@ -232,5 +232,5 @@ def configure(conf,):
 	TAR environmental variables.
 	'''
 
-	conf.find_program('doxygen', var='DOXYGEN', mandatory=False,)
-	conf.find_program('tar', var='TAR', mandatory=False,)
+	conf.find_program('doxygen', var='DOXYGEN', mandatory=False)
+	conf.find_program('tar', var='TAR', mandatory=False)

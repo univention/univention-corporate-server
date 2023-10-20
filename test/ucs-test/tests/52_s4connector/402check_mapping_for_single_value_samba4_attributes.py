@@ -42,9 +42,9 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
                             print(f'WARN: "{con_attribute}": Mapping for Samba4 attribute should be adjusted to single_value=False.')
         return result
 
-    def is_single_value_in_s4(self, s4_attribute,):
-        ldap_filter = ldap.filter.filter_format('lDAPDisplayName=%s', (s4_attribute,),)
-        resultlist = self._s4__search_s4(base=f'CN=Schema,CN=Configuration,{self.lo_s4.base}', scope=ldap.SCOPE_SUBTREE, filter=ldap_filter, attrlist=['isSingleValued'], show_deleted=False,)
+    def is_single_value_in_s4(self, s4_attribute):
+        ldap_filter = ldap.filter.filter_format('lDAPDisplayName=%s', (s4_attribute,))
+        resultlist = self._s4__search_s4(base=f'CN=Schema,CN=Configuration,{self.lo_s4.base}', scope=ldap.SCOPE_SUBTREE, filter=ldap_filter, attrlist=['isSingleValued'], show_deleted=False)
         if not resultlist:
             print("WARN: con_attribute %s not found in Samba4 schema")
             return

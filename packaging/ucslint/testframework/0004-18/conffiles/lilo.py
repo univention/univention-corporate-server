@@ -23,7 +23,7 @@ def unlock():
     os.remove(lockfile)
 
 
-def handler(baseConfig, changes,):
+def handler(baseConfig, changes):
     rc = lock()
     if not rc:
         return False

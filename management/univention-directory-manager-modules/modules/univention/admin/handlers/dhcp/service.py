@@ -55,7 +55,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionDhcpService'],),
+        objectClasses=['top', 'univentionDhcpService'],
+    ),
 }
 property_descriptions = {
     'service': univention.admin.property(
@@ -65,19 +66,20 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
 }
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('DHCP service description'), layout=[
             'service',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('service', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('service', 'cn', None, univention.admin.mapping.ListToString)
 
 add_dhcp_options(__name__)
 
@@ -85,8 +87,8 @@ add_dhcp_options(__name__)
 class object(DHCPBase):
     module = module
 
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[],):
-        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes,)
+    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
         if not self.dn and not self.position:
             raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
@@ -94,15 +96,15 @@ class object(DHCPBase):
     def unmapped_lookup_filter():
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.conjunction('|', [
-                univention.admin.filter.expression('objectClass', 'dhcpService',),
-                univention.admin.filter.expression('objectClass', 'univentionDhcpService',),
-            ],),
-        ],)
+                univention.admin.filter.expression('objectClass', 'dhcpService'),
+                univention.admin.filter.expression('objectClass', 'univentionDhcpService'),
+            ]),
+        ])
 
 
-def identify(dn, attr,):
-    return b'dhcpService' in attr.get('objectClass', [],) \
-        or b'univentionDhcpService' in attr.get('objectClass', [],)
+def identify(dn, attr):
+    return b'dhcpService' in attr.get('objectClass', []) \
+        or b'univentionDhcpService' in attr.get('objectClass', [])
 
 
 lookup_filter = object.lookup_filter

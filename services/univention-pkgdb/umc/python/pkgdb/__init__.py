@@ -217,20 +217,20 @@ class Instance(Base):
 
         self._update_system_roles_and_versions()
 
-    def connection(func,):
+    def connection(func):
         def _connect(self, *args, **kwargs):
             if self.dbConnection is None:
                 self.connect()
             else:
                 self.test_connection()
-            return func(self, *args, **kwargs,)
+            return func(self, *args, **kwargs)
 
         return _connect
 
     def connect(self):
         # Create a connection to the pkgdb
         try:
-            self.dbConnection = updb.open_database_connection(self.ucr, pkgdbu=True,)
+            self.dbConnection = updb.open_database_connection(self.ucr, pkgdbu=True)
         except pgdb.InternalError as ex:
             MODULE.error('Could not establish connection to the PostgreSQL server: %s' % (ex,))
             raise UMC_Error(_('Could not establish connection to the database.\n\n%s') % (_server_not_running_msg(),))
@@ -272,11 +272,12 @@ class Instance(Base):
         return [version[0] for version in updb.sql_getall_systemversions(self.cursor)]
 
     @sanitize(
-        page=ChoicesSanitizer(choices=PAGES, required=True,),
-        key=ChoicesSanitizer(choices=CRITERIA_OPERATOR.keys()),)
+        page=ChoicesSanitizer(choices=PAGES, required=True),
+        key=ChoicesSanitizer(choices=CRITERIA_OPERATOR.keys()),
+    )
     @connection
     @simple_response
-    def query(self, page, key, pattern='',):
+    def query(self, page, key, pattern=''):
         """
         Query to fill the grid. The structure of the corresponding grid
         has already been fetched by the 'pkgdb/columns' command.
@@ -286,27 +287,27 @@ class Instance(Base):
 
         function = desc['function']
 
-        kwargs = desc.get('args', {},)
-        kwargs['query'] = _make_query(key, operator, pattern,)
+        kwargs = desc.get('args', {})
+        kwargs['query'] = _make_query(key, operator, pattern)
 
-        result = function(self.cursor, **kwargs,)
+        result = function(self.cursor, **kwargs)
 
-        names = desc.get('db_fields', desc['columns'],)
-        return [_convert_to_grid(record, names,) for record in result]
+        names = desc.get('db_fields', desc['columns'])
+        return [_convert_to_grid(record, names) for record in result]
 
-    @sanitize(page=ChoicesSanitizer(choices=PAGES, required=True,))
+    @sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
     @connection
     @simple_response
     @log
-    def keys(self, page,):
+    def keys(self, page):
         """returns the set of search criteria suitable for the given page."""
         return _combobox_data(CRITERIA[page])
 
-    @sanitize(page=ChoicesSanitizer(choices=PAGES, required=True,))
+    @sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
     @connection
     @simple_response
     @log
-    def proposals(self, page, key='',):
+    def proposals(self, page, key=''):
         """
         returns proposals for the query pattern that can be
         presented in the frontend. This can be a single pattern
@@ -320,11 +321,11 @@ class Instance(Base):
         # fallback for everything not explicitly listed here.
         return ''
 
-    @sanitize(page=ChoicesSanitizer(choices=PAGES, required=True,))
+    @sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
     @connection
     @simple_response
     @log
-    def columns(self, page, key='',):
+    def columns(self, page, key=''):
         """
         returns the structure of the results grid for a given
         page+key combination. Note that design properties (width etc)
@@ -333,12 +334,12 @@ class Instance(Base):
         return QUERIES[page]['columns']
 
 
-def _combobox_data(data,):
+def _combobox_data(data):
     """returns a (id, label) dict with translated values"""
     return [{"id": identifier, "label": _id_to_label(identifier)} for identifier in data]
 
 
-def _make_query(key, operator, pattern,):
+def _make_query(key, operator, pattern):
     """
     consumes a tuple of 'key','operator','pattern' and converts it
     into a valid Postgres WHERE clause. Features here:
@@ -348,25 +349,25 @@ def _make_query(key, operator, pattern,):
       regular expression
     """
 
-    def __make_query(key, operator, pattern,):
+    def __make_query(key, operator, pattern):
         if not key:
             return None
 
         # Translate keyed values. That function returns the input
         # value unchanged if there's no reason to translate anything.
-        pattern = _coded_value(key, pattern,)
+        pattern = _coded_value(key, pattern)
 
         pattern = pgdb.escape_string(pattern)
-        key = key.replace('\\', '\\\\',).replace('"', r'\"',)
+        key = key.replace('\\', '\\\\').replace('"', r'\"')
 
         if '~' in operator:
 
             # 1. dot is not a wildcard here but rather a literal dot
-            pattern = pattern.replace('.', r'\.',)
+            pattern = pattern.replace('.', r'\.')
 
             # 2. a * indicates to not do a substring search
             if '*' in pattern:
-                pattern = pattern.replace('*', '.*',)
+                pattern = pattern.replace('*', '.*')
                 pattern = '^%s$' % (pattern)
 
             # 3. empty pattern means search for everything
@@ -377,54 +378,54 @@ def _make_query(key, operator, pattern,):
 
     if pattern in MAPPED_PATTERNS_TO_KEYS:
         patterns = MAPPED_PATTERNS_TO_KEYS[pattern]
-        return ' OR '.join(__make_query(key, operator, pattern,) for pattern in patterns)
+        return ' OR '.join(__make_query(key, operator, pattern) for pattern in patterns)
     else:
-        keys = MAPPED_TABLES.get(key, [key],)
-        return ' OR '.join(__make_query(key, operator, pattern,) for key in keys)
+        keys = MAPPED_TABLES.get(key, [key])
+        return ' OR '.join(__make_query(key, operator, pattern) for key in keys)
 
 
-def _decoded_value(field, key,):
+def _decoded_value(field, key):
     """
     accepts a field name and the database value of this field
     and translates this into the codeword that represents this value.
     """
     if field in CODED_VALUES:
-        return CODED_VALUES[field].get(str(key), key,)
+        return CODED_VALUES[field].get(str(key), key)
     # unchanged if no match
     return key
 
 
-def _coded_value(field, value,):
+def _coded_value(field, value):
     """
     this is the inverse of the above function: it accepts a field name
     and a value and translates it back into the 'keyed' value to be
     used when talking to the database.
     """
     if field in DECODED_VALUES:
-        return DECODED_VALUES[field].get(str(value), value,)
+        return DECODED_VALUES[field].get(str(value), value)
     # unchanged if no match
     return value
 
 
-def _convert_to_grid(data, names,):
+def _convert_to_grid(data, names):
     """
     The queries here return arrays of values. But our grid
     only accepts dicts where the values are prefixed by
     the field names. This function converts one record.
     """
     # find smaller length
-    length = min(len(data), len(names),)
+    length = min(len(data), len(names))
 
     # This expression does the main work:
     # (1) assigns the field name to a value
     # (2) converts database representation into keyed values (_decoded_value)
     # (3) translates keyed values for display (_id_to_label)
-    return {names[i]: _id_to_label(_decoded_value(names[i], data[i],)) for i in range(length)}
+    return {names[i]: _id_to_label(_decoded_value(names[i], data[i])) for i in range(length)}
 
 
-def _id_to_label(identifier,):
+def _id_to_label(identifier):
     """
     translates any id into the corresponding label.
     if no translation found -> returns id unchanged.
     """
-    return LABELS.get(identifier, identifier,)
+    return LABELS.get(identifier, identifier)

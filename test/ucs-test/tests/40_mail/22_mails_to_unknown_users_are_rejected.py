@@ -14,10 +14,10 @@ from univention.testing import utils
 from essential.mail import send_mail
 
 
-def check_sending_mail(username, password, recipient_email, should_be_accepted,):
+def check_sending_mail(username, password, recipient_email, should_be_accepted):
     token = str(time.time())
     try:
-        ret_code = send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password,)
+        ret_code = send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password)
         if bool(ret_code) == should_be_accepted:
             utils.fail('Sending should_be_accepted = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_accepted, ret_code))
     except smtplib.SMTPRecipientsRefused as exc:
@@ -33,7 +33,8 @@ def main():
             set={
                 'name': maildomain,
             },
-            position="cn=domain,cn=mail,{}".format(ucr.get("ldap/base")),)
+            position="cn=domain,cn=mail,{}".format(ucr.get("ldap/base")),
+        )
 
         password = 'univention'
         recipient_email = '%s@%s' % (uts.random_name(), maildomain)
@@ -46,8 +47,8 @@ def main():
             },
         )
 
-        check_sending_mail(recipient_email, password, recipient_email, True,)
-        check_sending_mail(recipient_email, password, unknown_email, False,)
+        check_sending_mail(recipient_email, password, recipient_email, True)
+        check_sending_mail(recipient_email, password, unknown_email, False)
 
 
 if __name__ == '__main__':

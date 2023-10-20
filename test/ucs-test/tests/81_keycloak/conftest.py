@@ -86,7 +86,7 @@ def keycloak_admin() -> str:
 def keycloak_settings() -> dict:
     apps_cache = Apps()
     settings = {}
-    candidate = apps_cache.find("keycloak", latest=True,)
+    candidate = apps_cache.find("keycloak", latest=True)
     configure = get_action('configure')
     for setting in configure.list_config(candidate):
         settings[setting["name"]] = setting["value"]
@@ -106,12 +106,12 @@ def keycloak_app_version() -> str:
 @pytest.fixture()
 def change_app_setting():
     apps_cache = Apps()
-    app = apps_cache.find("keycloak", latest=True,)
+    app = apps_cache.find("keycloak", latest=True)
     configure = get_action('configure')
     settings = configure.list_config(app)
     revert_changes = {}
 
-    def _func(app_id: str, changes: dict, revert: bool = True,) -> None:
+    def _func(app_id: str, changes: dict, revert: bool = True) -> None:
         known_settings = {x.get("name"): x.get("value") for x in settings}
         for change in changes:
             if change in known_settings:
@@ -119,16 +119,16 @@ def change_app_setting():
                     revert_changes[change] = known_settings[change]
             else:
                 raise Exception(f"Unknown setting: {change}")
-        configure.call(app=app, set_vars=changes,)
+        configure.call(app=app, set_vars=changes)
 
     yield _func
 
     if revert_changes:
-        configure.call(app=app, set_vars=revert_changes,)
+        configure.call(app=app, set_vars=revert_changes)
 
 
 @pytest.fixture()
-def upgrade_status_obj(ucr_proper,) -> SettingsDataObject:
+def upgrade_status_obj(ucr_proper) -> SettingsDataObject:
     udm = UDM.admin().version(2)
     mod = udm.get("settings/data")
     obj = mod.get(f"cn=keycloak,cn=data,cn=univention,{ucr_proper.get('ldap/base')}")
@@ -136,13 +136,13 @@ def upgrade_status_obj(ucr_proper,) -> SettingsDataObject:
 
     yield obj
 
-    obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=orig_value,)
+    obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=orig_value)
     obj.save()
 
 
 class UnverfiedUser(object):
 
-    def __init__(self, udm: UCSTestUDM, password: str = "univention",):
+    def __init__(self, udm: UCSTestUDM, password: str = "univention"):
         self.ldap = get_ldap_connection(primary=True)
         self.password = password
         self.dn, self.username = udm.create_user(password=password)
@@ -152,7 +152,7 @@ class UnverfiedUser(object):
             ("univentionPasswordRecoveryEmailVerified", [""], [b"FALSE"]),
             ("univentionRegisteredThroughSelfService", [""], [b"TRUE"]),
         ]
-        self.ldap.modify(self.dn, changes,)
+        self.ldap.modify(self.dn, changes)
         wait_for_listener_replication()
 
     def verify(self) -> None:
@@ -160,7 +160,7 @@ class UnverfiedUser(object):
         changes = [
             ("univentionPasswordRecoveryEmailVerified", [""], [b"TRUE"]),
         ]
-        self.ldap.modify(self.dn, changes,)
+        self.ldap.modify(self.dn, changes)
         wait_for_listener_replication()
 
 
@@ -172,7 +172,7 @@ def unverified_user() -> dict:
 
 
 @pytest.fixture()
-def portal_config(ucr_proper: ConfigRegistry,) -> SimpleNamespace:
+def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
     portal_fqdn = ucr_proper["umc/saml/sp-server"] if ucr_proper["umc/saml/sp-server"] else f"{ucr_proper['hostname']}.{ucr_proper['domainname']}"
     config = {
         "url": f"https://{portal_fqdn}/univention/portal",
@@ -199,8 +199,8 @@ def portal_config(ucr_proper: ConfigRegistry,) -> SimpleNamespace:
 
 
 @pytest.fixture()
-def keycloak_config(ucr_proper: ConfigRegistry,) -> SimpleNamespace:
-    server = ucr_proper.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{ucr_proper['domainname']}",)
+def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
+    server = ucr_proper.get("keycloak/server/sso/fqdn", f"ucs-sso-ng.{ucr_proper['domainname']}")
     path = ucr_proper["keycloak/server/sso/path"] if ucr_proper["keycloak/server/sso/path"] else ""
     url = f"https://{server}{path}"
     config = {
@@ -255,7 +255,7 @@ def selenium() -> webdriver.Chrome:
     #chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("ignore-certificate-errors")
     # seems not to work for keycloak
-    chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'de_DE'},)
+    chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'de_DE'})
     driver = webdriver.Chrome(options=chrome_options)
     yield driver
     print(driver.page_source)
@@ -263,7 +263,7 @@ def selenium() -> webdriver.Chrome:
 
 
 @pytest.fixture()
-def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace,):
+def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
 
     def _func(
         username: str,
@@ -273,67 +273,70 @@ def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleN
         new_password_confirm: Optional[str] = None,
         verify_login: Optional[bool] = True,
         url: Optional[str] = portal_config.url,
-        no_login: bool = False,) -> webdriver.Chrome:
+        no_login: bool = False,
+    ) -> webdriver.Chrome:
         selenium.get(url)
-        wait_for_id(selenium, portal_config.categories_id,)
+        wait_for_id(selenium, portal_config.categories_id)
         assert selenium.title == portal_config.title
         lang = selenium.execute_script("return window.navigator.userLanguage || window.navigator.language")
         sso_login_tile = portal_config.sso_login_tile if lang == "en-US" else portal_config.sso_login_tile_de
-        get_portal_tile(selenium, sso_login_tile, portal_config,).click()
+        get_portal_tile(selenium, sso_login_tile, portal_config).click()
         # login
-        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login,)
+        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
         # check password change
         if new_password:
             new_password_confirm = new_password_confirm if new_password_confirm else new_password
-            keycloak_password_change(selenium, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with,)
+            keycloak_password_change(selenium, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
         if fails_with or no_login:
             return selenium
         # check that we are logged in
         if verify_login:
-            wait_for_id(selenium, portal_config.header_menu_id,)
+            wait_for_id(selenium, portal_config.header_menu_id)
         return selenium
 
     return _func
 
 
 @pytest.fixture()
-def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamespace,):
+def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamespace):
 
     def _func(
         username: str,
         password: str,
         fails_with: Optional[str] = None,
         url: Optional[str] = keycloak_config.url,
-        no_login: bool = False,) -> webdriver.Chrome:
+        no_login: bool = False,
+    ) -> webdriver.Chrome:
         selenium.get(url)
-        wait_for_class(selenium, keycloak_config.admin_console_class,)
+        wait_for_class(selenium, keycloak_config.admin_console_class)
         assert selenium.title == keycloak_config.title
-        admin_console = wait_for_class(selenium, keycloak_config.admin_console_class,)[0]
-        admin_console.find_element(By.TAG_NAME, "a",).click()
-        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with, no_login=no_login,)
+        admin_console = wait_for_class(selenium, keycloak_config.admin_console_class)[0]
+        admin_console.find_element(By.TAG_NAME, "a").click()
+        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
         if fails_with or no_login:
             return selenium
         # check that we are logged in
-        wait_for_id(selenium, keycloak_config.main_content_page_container_id,)
+        wait_for_id(selenium, keycloak_config.main_content_page_container_id)
         return selenium
 
     return _func
 
 
 @pytest.fixture()
-def domain_admins_dn(ucr_proper: ConfigRegistry,) -> str:
+def domain_admins_dn(ucr_proper: ConfigRegistry) -> str:
     return f"cn={custom_groupname('Domain Admins')},cn=groups,{ucr_proper['ldap/base']}"
 
 
 @pytest.fixture()
-def keycloak_administrator_connection(keycloak_config: SimpleNamespace, admin_account: UCSTestDomainAdminCredentials,) -> KeycloakAdmin:
+def keycloak_administrator_connection(keycloak_config: SimpleNamespace, admin_account: UCSTestDomainAdminCredentials) -> KeycloakAdmin:
     session = KeycloakAdmin(
         server_url=keycloak_config.url,
         username=admin_account.username,
         password=admin_account.bindpw,
         realm_name="ucs",
         user_realm_name="master",
-        verify=True,)
+        verify=True,
+    )
     session.path = keycloak_config.path
     return session
 
@@ -342,7 +345,8 @@ def keycloak_administrator_connection(keycloak_config: SimpleNamespace, admin_ac
 def keycloak_admin_connection(
     keycloak_config: SimpleNamespace,
     keycloak_admin: str,
-    keycloak_secret: str,) -> KeycloakAdmin:
+    keycloak_secret: str,
+) -> KeycloakAdmin:
     if keycloak_secret:
         session = KeycloakAdmin(
             server_url=keycloak_config.url,
@@ -350,18 +354,20 @@ def keycloak_admin_connection(
             password=keycloak_secret,
             realm_name="ucs",
             user_realm_name="master",
-            verify=True,)
+            verify=True,
+        )
         session.path = keycloak_config.path
         return session
 
 
 @pytest.fixture()
-def keycloak_openid_connection(keycloak_config: SimpleNamespace,) -> KeycloakOpenID:
+def keycloak_openid_connection(keycloak_config: SimpleNamespace) -> KeycloakOpenID:
     return KeycloakOpenID(
         server_url=keycloak_config.url,
         client_id="admin-cli",
         realm_name="ucs",
-        client_secret_key="secret",)
+        client_secret_key="secret",
+    )
 
 
 @pytest.fixture()
@@ -370,7 +376,8 @@ def legacy_authorization_setup_saml(
     ucr: ConfigRegistry,
     keycloak_administrator_connection: KeycloakAdmin,
     admin_account: UCSTestDomainAdminCredentials,
-    portal_config: SimpleNamespace,) -> SimpleNamespace:
+    portal_config: SimpleNamespace,
+) -> SimpleNamespace:
 
     group_dn, group_name = udm.create_group()
     user_dn, user_name = udm.create_user(password="univention")
@@ -381,7 +388,7 @@ def legacy_authorization_setup_saml(
         # create flow
         run_command(["univention-keycloak", "legacy-authentication-flow", "create"])
         # create config
-        legacy_auth_config_create(keycloak_administrator_connection, ucr["ldap/base"], groups,)
+        legacy_auth_config_create(keycloak_administrator_connection, ucr["ldap/base"], groups)
         # add flow to client
         run_command(["univention-keycloak", "client-auth-flow", "--clientid", saml_client, "--auth-flow", "browser flow with legacy app authorization"])
         yield SimpleNamespace(
@@ -390,11 +397,12 @@ def legacy_authorization_setup_saml(
             group_dn=group_dn,
             user=user_name,
             user_dn=user_dn,
-            password="univention",)
+            password="univention",
+        )
     finally:
         # cleanup
         run_command(["univention-keycloak", "legacy-authentication-flow", "delete"])
-        legacy_auth_config_remove(keycloak_administrator_connection, groups,)
+        legacy_auth_config_remove(keycloak_administrator_connection, groups)
 
 
 @pytest.fixture()
@@ -402,7 +410,8 @@ def legacy_authorization_setup_oidc(
     udm: UCSTestUDM,
     ucr: ConfigRegistry,
     keycloak_administrator_connection: KeycloakAdmin,
-    admin_account: UCSTestDomainAdminCredentials,) -> SimpleNamespace:
+    admin_account: UCSTestDomainAdminCredentials,
+) -> SimpleNamespace:
 
     group_dn, group_name = udm.create_group()
     user_dn, user_name = udm.create_user(password="univention")
@@ -423,9 +432,9 @@ def legacy_authorization_setup_oidc(
         client_data = keycloak_administrator_connection.get_client(client_id)
         client_data["authenticationFlowBindingOverrides"]["direct grant"] = flow_id
         client_data["authenticationFlowBindingOverrides"]["direct_grant"] = flow_id
-        keycloak_administrator_connection.update_client(client_id, client_data,)
+        keycloak_administrator_connection.update_client(client_id, client_data)
         # create config
-        legacy_auth_config_create(keycloak_administrator_connection, ucr["ldap/base"], groups,)
+        legacy_auth_config_create(keycloak_administrator_connection, ucr["ldap/base"], groups)
         yield SimpleNamespace(
             client=client,
             client_secret=client_secret,
@@ -433,9 +442,10 @@ def legacy_authorization_setup_oidc(
             group_dn=group_dn,
             user=user_name,
             user_dn=user_dn,
-            password="univention",)
+            password="univention",
+        )
     finally:
         # cleanup
         run_command(["univention-keycloak", "legacy-authentication-flow", "delete", "--flow", "direct grant"])
-        legacy_auth_config_remove(keycloak_administrator_connection, groups,)
+        legacy_auth_config_remove(keycloak_administrator_connection, groups)
         keycloak_administrator_connection.delete_client(client_id)

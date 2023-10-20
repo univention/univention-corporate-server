@@ -54,22 +54,22 @@ _ = umc.Translation('univention-management-console-module-quota').translate
 
 class UserQuota(dict):
 
-    def __init__(self, partition, user, bused, bsoft, bhard, btime, fused, fsoft, fhard, ftime,):
+    def __init__(self, partition, user, bused, bsoft, bhard, btime, fused, fsoft, fhard, ftime):
         self['id'] = '%s@%s' % (user, partition)
         self['partitionDevice'] = partition
         self['user'] = user
-        self['sizeLimitUsed'] = block2byte(bused, 'MB',)
-        self['sizeLimitSoft'] = block2byte(bsoft, 'MB',)
-        self['sizeLimitHard'] = block2byte(bhard, 'MB',)
+        self['sizeLimitUsed'] = block2byte(bused, 'MB')
+        self['sizeLimitSoft'] = block2byte(bsoft, 'MB')
+        self['sizeLimitHard'] = block2byte(bhard, 'MB')
 
         self['fileLimitUsed'] = fused
         self['fileLimitSoft'] = fsoft
         self['fileLimitHard'] = fhard
 
-        self.set_time('sizeLimitTime', btime,)
-        self.set_time('fileLimitTime', ftime,)
+        self.set_time('sizeLimitTime', btime)
+        self.set_time('fileLimitTime', ftime)
 
-    def set_time(self, time, value,):
+    def set_time(self, time, value):
         if not value:
             self[time] = '-'
         elif value == 'none':
@@ -80,7 +80,7 @@ class UserQuota(dict):
             self[time] = value
 
 
-def repquota(partition,):
+def repquota(partition):
     # find filesystem type
     fs = fstab.File()
     part = fs.find(spec=partition)
@@ -91,12 +91,12 @@ def repquota(partition,):
     # -C == do not try to resolve all users at once
     # -v == verbose
     cmd = ['/usr/sbin/repquota', '-C', '-v', partition] + args
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, stderr = proc.communicate()
     return (stdout, proc.returncode)
 
 
-def repquota_parse(partition, output,):
+def repquota_parse(partition, output):
     result = []
     if not output:
         return result
@@ -109,12 +109,12 @@ def repquota_parse(partition, output,):
         grp = matches.groupdict()
         if not grp['user'] or grp['user'] == 'root':
             continue
-        quota = UserQuota(partition, grp['user'], grp['bused'], grp['bsoft'], grp['bhard'], grp['btime'], grp['fused'], grp['fsoft'], grp['fhard'], grp['ftime'],)
+        quota = UserQuota(partition, grp['user'], grp['bused'], grp['bsoft'], grp['bhard'], grp['btime'], grp['fused'], grp['fsoft'], grp['fhard'], grp['ftime'])
         result.append(quota)
     return result
 
 
-def setquota(partition, user, bsoft, bhard, fsoft, fhard,):
+def setquota(partition, user, bsoft, bhard, fsoft, fhard):
     return subprocess.call(['/usr/sbin/setquota', '--always-resolve', '-u', user, str(bsoft), str(bhard), str(fsoft), str(fhard), partition])
 
 
@@ -122,7 +122,7 @@ class QuotaActivationError(Exception):
     pass
 
 
-def usrquota_is_active(fstab_entry, mt=None,):
+def usrquota_is_active(fstab_entry, mt=None):
     if not mt:
         try:
             mt = fstab.File('/etc/mtab')
@@ -137,13 +137,13 @@ def usrquota_is_active(fstab_entry, mt=None,):
     return bool(mtab_entry.hasopt('usrquota'))
 
 
-def quota_is_enabled(fstab_entry,):
+def quota_is_enabled(fstab_entry):
     local_env = os.environ.copy()
     local_env["LC_MESSAGES"] = "C"
     cmd = ("/sbin/quotaon", "-p", "-u", fstab_entry.mount_point)
-    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=local_env,)
+    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=local_env)
     stdout, stderr = p1.communicate()
-    stdout = stdout.decode('UTF-8', 'replace',)
+    stdout = stdout.decode('UTF-8', 'replace')
     if "not found or has no quota enabled" in stdout:
         return False
     else:
@@ -156,13 +156,13 @@ def quota_is_enabled(fstab_entry,):
             return None  # tertium datur
 
 
-def activate_quota(partition, activate,):
-    partitions = [partition] if not isinstance(partition, list,) else partition
+def activate_quota(partition, activate):
+    partitions = [partition] if not isinstance(partition, list) else partition
     result = []
     try:
         fs = fstab.File()
     except IOError as error:
-        raise UMC_Error(_('Could not open %s') % error.filename, 500,)
+        raise UMC_Error(_('Could not open %s') % error.filename, 500)
 
     failed = []
     for device in partitions:
@@ -172,7 +172,7 @@ def activate_quota(partition, activate,):
             continue
 
         try:
-            status = _do_activate_quota_partition(fs, fstab_entry, activate,)
+            status = _do_activate_quota_partition(fs, fstab_entry, activate)
         except QuotaActivationError as exc:
             failed.append('%s: %s' % (fstab_entry.spec, exc))
             continue
@@ -191,10 +191,10 @@ def activate_quota(partition, activate,):
         raise UMC_Error(message)
 
     message = _('Quota support successfully activated') if activate else _('Quota support successfully deactivated')
-    raise UMC_Error(message, 200, {'objects': result},)
+    raise UMC_Error(message, 200, {'objects': result})
 
 
-def _do_activate_quota_partition(fs, fstab_entry, activate,):
+def _do_activate_quota_partition(fs, fstab_entry, activate):
     quota_enabled = quota_is_enabled(fstab_entry)
     if not (activate ^ quota_enabled):
         return {'partitionDevice': fstab_entry.spec, 'message': _('Quota already en/disabled')}
@@ -215,12 +215,12 @@ def _do_activate_quota_partition(fs, fstab_entry, activate,):
     else:
         return {'partitionDevice': fstab_entry.spec, 'message': _('Unknown filesystem')}
 
-    activation_function(fstab_entry, activate,)
+    activation_function(fstab_entry, activate)
 
     return {'partitionDevice': fstab_entry.spec, 'message': _('Operation was successful')}
 
 
-def _activate_quota_xfs(fstab_entry, activate=True,):
+def _activate_quota_xfs(fstab_entry, activate=True):
     if fstab_entry.mount_point != '/':
         if subprocess.call(('/bin/umount', fstab_entry.spec)):
             raise QuotaActivationError(_('Unmounting the partition has failed'))
@@ -232,12 +232,12 @@ def _activate_quota_xfs(fstab_entry, activate=True,):
         raise QuotaActivationError(_('Restarting the quota services has failed'))
 
 
-def enable_quota_in_kernel(activate,):
+def enable_quota_in_kernel(activate):
     ucr.load()
-    grub_append = ucr.get('grub/append', '',)
+    grub_append = ucr.get('grub/append', '')
     flags = []
     option = 'usrquota'
-    match = re.match(r'rootflags=([^\s]*)', grub_append,)
+    match = re.match(r'rootflags=([^\s]*)', grub_append)
     if match:
         flags = match.group(1).split(',')
     if activate and option not in flags:
@@ -254,7 +254,7 @@ def enable_quota_in_kernel(activate,):
         if flags:
             new_grub_append = '%s %s' % (grub_append, flags)
     else:
-        new_grub_append = re.sub(r'rootflags=[^\s]*', flags, grub_append,)
+        new_grub_append = re.sub(r'rootflags=[^\s]*', flags, grub_append)
 
     if new_grub_append != grub_append:
         MODULE.info('Replacing grub/append from %s to %s' % (grub_append, new_grub_append))
@@ -263,7 +263,7 @@ def enable_quota_in_kernel(activate,):
         raise QuotaActivationError(_('To %s quota support for the root filesystem the system has to be rebooted.') % (status,))
 
 
-def _activate_quota_ext(fstab_entry, activate=True,):
+def _activate_quota_ext(fstab_entry, activate=True):
     if activate:
         # First remount the partition with option "usrquota" if it isn't already
         if not usrquota_is_active(fstab_entry):
@@ -306,7 +306,7 @@ _units = ('B', 'KB', 'MB', 'GB', 'TB')
 _size_regex = re.compile('(?P<size>[0-9.]+)(?P<unit>(B|KB|MB|GB|TB))?')
 
 
-def block2byte(size, convertTo, block_size=1024,):
+def block2byte(size, convertTo, block_size=1024):
     size = int(size) * float(block_size)
     unit = 0
     if convertTo in _units:
@@ -316,12 +316,12 @@ def block2byte(size, convertTo, block_size=1024,):
     return size
 
 
-def byte2block(size, unit='MB', block_size=1024,):
+def byte2block(size, unit='MB', block_size=1024):
     factor = 0
     if unit in _units:
         while _units[factor] != unit:
             factor += 1
-        size = float(size) * math.pow(1024, factor,)
+        size = float(size) * math.pow(1024, factor)
         return int(size / float(block_size))
     else:
         return ''

@@ -18,25 +18,25 @@ URI_OTRS = 'https://gorm.knut.univention.de/otrs/index.pl?Action=AgentTicketSear
 class HTML(TestFormatInterface):
     """Create simple HTML report."""
 
-    def __init__(self, stream=sys.stdout,):  # type: (IO[str]) -> None
+    def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
         super().__init__(stream)
 
-    def begin_run(self, environment, count=1,):  # type: (TestEnvironment, int) -> None
+    def begin_run(self, environment, count=1):  # type: (TestEnvironment, int) -> None
         """Called before first test."""
-        super().begin_run(environment, count,)
-        print('<html>', file=self.stream,)
-        print('<head>', file=self.stream,)
-        print('<title>ucs-test</title>', file=self.stream,)
-        print('</head>', file=self.stream,)
-        print('<body>', file=self.stream,)
+        super().begin_run(environment, count)
+        print('<html>', file=self.stream)
+        print('<head>', file=self.stream)
+        print('<title>ucs-test</title>', file=self.stream)
+        print('</head>', file=self.stream)
+        print('<body>', file=self.stream)
 
-    def begin_section(self, section,):  # type: (str) -> None
+    def begin_section(self, section):  # type: (str) -> None
         """Called before each section."""
         super().begin_section(section)
-        print(f'<h2>Section {escape_xml(section)}</h2>', file=self.stream,)
-        print('<table>', file=self.stream,)
+        print(f'<h2>Section {escape_xml(section)}</h2>', file=self.stream)
+        print('<table>', file=self.stream)
 
-    def end_test(self, result,):  # type: (TestResult) -> None
+    def end_test(self, result):  # type: (TestResult) -> None
         """Called after each test."""
         title = escape_xml(result.case.uid)
         if result.case.description:
@@ -53,25 +53,25 @@ class HTML(TestFormatInterface):
                 (escape_xml(URI_OTRS % tick), tick)
                 for tick in result.case.otrs]
             title = '%s (%s)' % (title, ', '.join(links))
-        msg = TestCodes.MESSAGE.get(result.reason, TestCodes.REASON_INTERNAL,)
-        colorname = TestCodes.COLOR.get(result.reason, 'BLACK',)
+        msg = TestCodes.MESSAGE.get(result.reason, TestCodes.REASON_INTERNAL)
+        colorname = TestCodes.COLOR.get(result.reason, 'BLACK')
         msg = '<span style="color:%s;">%s</span>' % \
             (colorname.lower(), escape_xml(msg))
-        print(f'<tr><td>{title}</td><td>{msg}</td></tr>', file=self.stream,)
+        print(f'<tr><td>{title}</td><td>{msg}</td></tr>', file=self.stream)
         super().end_test(result)
 
     def end_section(self):  # type: () -> None
         """Called after each section."""
-        print('</table>', file=self.stream,)
+        print('</table>', file=self.stream)
         super().end_section()
 
     def end_run(self):  # type: () -> None
         """Called after all test."""
-        print('</body>', file=self.stream,)
-        print('</html>', file=self.stream,)
+        print('</body>', file=self.stream)
+        print('</html>', file=self.stream)
         super().end_run()
 
-    def format(self, result,):  # type: (TestResult) -> None
+    def format(self, result):  # type: (TestResult) -> None
         """
         Format single test.
 

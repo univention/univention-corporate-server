@@ -40,7 +40,7 @@ PFS_CIPHERS = (
 
 def check_pfs_cipher():
     """Makes a localhost connection with openssl client and looks for cipher used."""
-    print("\nExpecting one of the following ciphers to be used:", PFS_CIPHERS,)
+    print("\nExpecting one of the following ciphers to be used:", PFS_CIPHERS)
     openssl_out = run_openssl().decode('UTF-8')
     print('-----------CUTCUTCUT----------------')
     print(openssl_out)
@@ -59,22 +59,22 @@ def run_openssl():
     cmd = ('openssl', 's_client', '-starttls', 'smtp', '-crlf', '-connect', '127.0.0.1:25', '-reconnect')
 
     # run the openssl client:
-    proc = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE,)
+    proc = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     stdout, stderr = proc.communicate()
 
     if stderr:
-        print("The following message(s) appeared in STDERR:\n", stderr.decode('UTF-8', 'replace',),)
+        print("The following message(s) appeared in STDERR:\n", stderr.decode('UTF-8', 'replace'))
     if not stdout:
         utils.fail("The 'openssl' client did not produce any output to STDOUT")
 
-    print("Openssl client STDOUT:\n", stdout,)
+    print("Openssl client STDOUT:\n", stdout)
     # grep for cipher:
     cmd = ('grep', '--ignore-case', 'cipher')
-    proc = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE,)
+    proc = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     grep_stdout, stderr = proc.communicate(stdout)
 
     if stderr:
-        print(("The following message(s) appeared in STDERR while grep'ing for 'cipher':\n", stderr.decode('UTF-8', 'replace',)))
+        print(("The following message(s) appeared in STDERR while grep'ing for 'cipher':\n", stderr.decode('UTF-8', 'replace')))
     if not grep_stdout:
         utils.fail("No 'cipher' string was found in the output from openssl client. Probably TLS/PFS does not work.")
 

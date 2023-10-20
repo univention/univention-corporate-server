@@ -53,13 +53,15 @@ _properties = {
         long_description=_('Additional options for DHCP'),
         syntax=univention.admin.syntax.string,
         multivalue=True,
-        options=['options'],),
+        options=['options'],
+    ),
     'statements': univention.admin.property(
         short_description=_('DHCP Statements'),
         long_description=_('Additional statements for DHCP'),
         syntax=univention.admin.syntax.TextArea,
         multivalue=True,
-        options=['options'],),
+        options=['options'],
+    ),
 }
 _options = {
     'options': univention.admin.option(
@@ -67,7 +69,8 @@ _options = {
         long_description=_("Allow adding custom DHCP options. Experts only!"),
         default=False,
         editable=True,
-        objectClasses=['dhcpOptions'],),
+        objectClasses=['dhcpOptions'],
+    ),
 }
 _mappings = (
     ('option', 'dhcpOption', None, None, 'ASCII'),
@@ -75,15 +78,15 @@ _mappings = (
 )
 
 
-def rangeMap(value, encoding=(),):
+def rangeMap(value, encoding=()):
     return [u' '.join(x).encode(*encoding) for x in value]
 
 
-def rangeUnmap(value, encoding=(),):
+def rangeUnmap(value, encoding=()):
     return [x.decode(*encoding).split() for x in value]
 
 
-def add_dhcp_options(module_name,):
+def add_dhcp_options(module_name):
     module = sys.modules[module_name]
 
     options = module.options
@@ -101,10 +104,11 @@ def add_dhcp_options(module_name,):
         _('Low-level DHCP configuration'),
         _('Custom DHCP options'),
         advanced=True,
-        layout=['option', 'statements'],))
+        layout=['option', 'statements'],
+    ))
 
 
-def check_range_overlap(ranges,):  # type: (Sequence[Range]) -> None
+def check_range_overlap(ranges):  # type: (Sequence[Range]) -> None
     """
     Check IPv4 address ranges for overlapping
 
@@ -141,7 +145,7 @@ def check_range_overlap(ranges,):  # type: (Sequence[Range]) -> None
         prev.append(r1)
 
 
-def check_range_subnet(subnet, ranges,):  # type: (IPv4Network, Sequence[Range]) -> None
+def check_range_subnet(subnet, ranges):  # type: (IPv4Network, Sequence[Range]) -> None
     """
     Check IPv4 address ranges are inside the given network.
 
@@ -187,14 +191,14 @@ class DHCPBase(simpleLdap):
 
 class DHCPBaseSubnet(DHCPBase):
     def ready(self):
-        super(DHCPBaseSubnet, self,).ready()
+        super(DHCPBaseSubnet, self).ready()
 
         try:
             subnet = IPv4Network(u'%(subnet)s/%(subnetmask)s' % self.info)
         except ValueError:
-            raise uex.valueError(_('The subnet mask does not match the subnet.'), property='subnetmask',)
+            raise uex.valueError(_('The subnet mask does not match the subnet.'), property='subnetmask')
 
         if self.hasChanged('range') or not self.exists():
             ranges = [tuple(IPv4Address(u'%s' % (ip,)) for ip in range_) for range_ in self['range']]
             check_range_overlap(ranges)
-            check_range_subnet(subnet, ranges,)
+            check_range_subnet(subnet, ranges)

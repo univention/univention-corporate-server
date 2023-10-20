@@ -54,7 +54,7 @@ portal_logger = get_base_logger().getChild('portalentries')
 
 
 class _Link(object):
-    def __init__(self, protocol=None, host=None, port=None, path=None, full=None,):
+    def __init__(self, protocol=None, host=None, port=None, path=None, full=None):
         self.protocol = protocol
         self.host = host
         self.port = port
@@ -78,10 +78,10 @@ class _Link(object):
     __bool__ = __nonzero__
 
 
-def _handler(ucr, changes,):
+def _handler(ucr, changes):
     changed_entries = set()
     for key in changes.keys():
-        match = re.match('ucs/web/overview/entries/(admin|service)/([^/]+)/.*', key,)
+        match = re.match('ucs/web/overview/entries/(admin|service)/([^/]+)/.*', key)
         if match:
             changed_entries.add(match.group(2))
     changed_entries -= {'umc', 'invalid-certificate-list', 'root-certificate', 'ldap-master'}
@@ -109,7 +109,7 @@ def _handler(ucr, changes,):
     for changed_entry in changed_entries:
         attr_entries[changed_entry] = {}
     for ucr_key in ucr.keys():
-        match = re.match('ucs/web/overview/entries/([^/]+)/([^/]+)/(.*)', ucr_key,)
+        match = re.match('ucs/web/overview/entries/([^/]+)/([^/]+)/(.*)', ucr_key)
         if not match:
             continue
         category = match.group(1)
@@ -152,27 +152,27 @@ def _handler(ucr, changes,):
                 try:
                     if value.startswith('/univention-management-console'):
                         value = '/univention%s' % value[30:]
-                    with open('/var/www/%s' % value, 'rb',) as fd:
+                    with open('/var/www/%s' % value, 'rb') as fd:
                         entry['icon'] = b64encode(fd.read()).decode('ASCII')
                 except EnvironmentError:
                     pass
             elif key == 'label':
-                entry.setdefault('displayName', [],)
+                entry.setdefault('displayName', [])
                 entry['displayName'].append(('en_US', value))
             elif key == 'label/de':
-                entry.setdefault('displayName', [],)
+                entry.setdefault('displayName', [])
                 entry['displayName'].append(('de_DE', value))
             elif key == 'label/fr':
-                entry.setdefault('displayName', [],)
+                entry.setdefault('displayName', [])
                 entry['displayName'].append(('fr_FR', value))
             elif key == 'description':
-                entry.setdefault('description', [],)
+                entry.setdefault('description', [])
                 entry['description'].append(('en_US', value))
             elif key == 'description/de':
-                entry.setdefault('description', [],)
+                entry.setdefault('description', [])
                 entry['description'].append(('de_DE', value))
             elif key == 'description/fr':
-                entry.setdefault('description', [],)
+                entry.setdefault('description', [])
                 entry['description'].append(('fr_FR', value))
             elif key == 'link-target':
                 entry['linkTarget'] = value
@@ -182,7 +182,7 @@ def _handler(ucr, changes,):
                 portal_logger.info("Don't know how to handle UCR key %s" % ucr_key)
     for cn, attrs in attr_entries.items():
         dn = 'cn=%s,%s' % (escape_dn_chars(cn), pos.getDn())
-        unprocessed_links = attrs.pop('_links', [],)
+        unprocessed_links = attrs.pop('_links', [])
         my_links = set()
         no_ports = all(not link.port for link in unprocessed_links)
         for link in unprocessed_links:
@@ -205,7 +205,7 @@ def _handler(ucr, changes,):
         portal_logger.debug('Attrs: %r' % attrs)
         portal_logger.debug('Links: %r' % my_links)
         try:
-            obj = init_object('portals/entry', lo, pos, dn,)
+            obj = init_object('portals/entry', lo, pos, dn)
         except AttributeError:
             portal_logger.error('The handler is not ready yet. Portal modules are not installed. You may have to set the variables again.')
             return
@@ -216,7 +216,7 @@ def _handler(ucr, changes,):
                 attrs['link'] = my_links
                 attrs['activated'] = True
                 try:
-                    create_object_if_not_exists('portals/entry', lo, pos, **attrs,)
+                    create_object_if_not_exists('portals/entry', lo, pos, **attrs)
                 except udm_errors.insufficientInformation as exc:
                     portal_logger.info('Cannot create: %s' % exc)
                 try:
@@ -224,10 +224,10 @@ def _handler(ucr, changes,):
                     category_pos.setDn('cn=category,cn=portals,cn=univention')
                     category_dn = 'cn=domain-%s,%s' % (escape_dn_chars(category), category_pos.getDn())
                     portal_logger.debug('Adding entry to %s' % (category_dn,))
-                    obj = init_object('portals/category', lo, category_pos, category_dn,)
+                    obj = init_object('portals/category', lo, category_pos, category_dn)
                     entries = obj['entries']
                     entries.append(dn)
-                    modify_object('portals/category', lo, category_pos, category_dn, entries=entries,)
+                    modify_object('portals/category', lo, category_pos, category_dn, entries=entries)
                 except udm_errors.noObject:
                     portal_logger.debug('DN not found...')
             continue
@@ -238,16 +238,16 @@ def _handler(ucr, changes,):
         portal_logger.debug('New links: %r' % links)
         if not links:
             portal_logger.debug('Removing DN')
-            remove_object_if_exists('portals/entry', lo, pos, dn,)
+            remove_object_if_exists('portals/entry', lo, pos, dn)
         else:
             portal_logger.debug('Modifying DN')
             attrs['link'] = links
-            modify_object('portals/entry', lo, pos, dn, **attrs,)
+            modify_object('portals/entry', lo, pos, dn, **attrs)
 
 
-def handler(ucr, changes,):
+def handler(ucr, changes):
     try:
-        _handler(ucr, changes,)
+        _handler(ucr, changes)
     except SERVER_DOWN:
         portal_logger.error('LDAP server is not available.')
     except Exception:

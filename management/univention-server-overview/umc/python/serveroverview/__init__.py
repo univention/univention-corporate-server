@@ -46,7 +46,7 @@ class Instance(Base):
     def query(self):
         udm_modules.update()
         lo, po = get_machine_connection()
-        servers = udm_modules.lookup('computers/computer', None, lo, filter='(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(!(univentionObjectFlag=docker)))', base=ucr['ldap/base'], scope='sub',)
+        servers = udm_modules.lookup('computers/computer', None, lo, filter='(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(!(univentionObjectFlag=docker)))', base=ucr['ldap/base'], scope='sub')
 
         result = [{
             "dn": i.dn,

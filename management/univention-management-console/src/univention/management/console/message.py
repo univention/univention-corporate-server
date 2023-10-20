@@ -80,10 +80,10 @@ class Message(object):
     :param options: options passed to the command handler. This works for request messages with MIME type application/JSON only.
     """
 
-    RESPONSE, REQUEST = range(0, 2,)
+    RESPONSE, REQUEST = range(0, 2)
     __counter = 0
 
-    def __init__(self, type=REQUEST, command=u'', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None,):
+    def __init__(self, type=REQUEST, command=u'', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
         # type: (RequestType, str, str, bytes, List[str], Dict[str, Any]) -> None
         self.id = None  # type: Optional[str]
         if mime_type == MIMETYPE_JSON:
@@ -117,7 +117,7 @@ class Message(object):
         self._create_id()
 
     # JSON body properties
-    def _set_key(self, key, value, cast=None,):
+    def _set_key(self, key, value, cast=None):
         if self.mimetype == MIMETYPE_JSON:
             if cast is not None:
                 self.body[key] = cast(value)
@@ -126,37 +126,37 @@ class Message(object):
         else:
             PARSER.warn('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
 
-    def _get_key(self, key, default=None,):
-        if isinstance(default, dict,):
+    def _get_key(self, key, default=None):
+        if isinstance(default, dict):
             default = default.copy()
         if self.mimetype == MIMETYPE_JSON:
-            if isinstance(default, dict,):
-                self.body.setdefault(key, default,)
-            return self.body.get(key, default,)
+            if isinstance(default, dict):
+                self.body.setdefault(key, default)
+            return self.body.get(key, default)
         else:
             PARSER.info('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
             return default
 
     #: contains a human readable error message
-    message = property(lambda self: self._get_key('message'), lambda self, value,: self._set_key('message', value,),)
+    message = property(lambda self: self._get_key('message'), lambda self, value: self._set_key('message', value))
 
     #: contains error information
-    error = property(lambda self: self._get_key('error'), lambda self, value,: self._set_key('error', value,),)
+    error = property(lambda self: self._get_key('error'), lambda self, value: self._set_key('error', value))
 
     #: contains the data that represents the result of the request
-    result = property(lambda self: self._get_key('result'), lambda self, value,: self._set_key('result', value,),)
+    result = property(lambda self: self._get_key('result'), lambda self, value: self._set_key('result', value))
 
     #: contains the HTTP status code defining the success or failure of a request
-    status = property(lambda self: self._get_key('status'), lambda self, value,: self._set_key('status', value, int,),)
+    status = property(lambda self: self._get_key('status'), lambda self, value: self._set_key('status', value, int))
 
     #: contains the reason phrase for the status code
-    reason = property(lambda self: self._get_key('reason'), lambda self, value,: self._set_key('reason', value,),)
+    reason = property(lambda self: self._get_key('reason'), lambda self, value: self._set_key('reason', value))
 
     #: defines options to pass on to the module command
-    options = property(lambda self: self._get_key('options'), lambda self, value,: self._set_key('options', value,),)
+    options = property(lambda self: self._get_key('options'), lambda self, value: self._set_key('options', value))
 
     #: flavor of the request
-    flavor = property(lambda self: self._get_key('flavor'), lambda self, value,: self._set_key('flavor', value,),)
+    flavor = property(lambda self: self._get_key('flavor'), lambda self, value: self._set_key('flavor', value))
 
 
 class Request(Message):
@@ -164,9 +164,9 @@ class Request(Message):
 
     _user_connections = set()  # prevent garbage collection
 
-    def __init__(self, command, arguments=None, options=None, mime_type=MIMETYPE_JSON,):
+    def __init__(self, command, arguments=None, options=None, mime_type=MIMETYPE_JSON):
         # type: (str, Any, Any, str) -> None
-        Message.__init__(self, Message.REQUEST, command, arguments=arguments, options=options, mime_type=mime_type,)
+        Message.__init__(self, Message.REQUEST, command, arguments=arguments, options=options, mime_type=mime_type)
         self._create_id()
         self.username = None
         self.password = None
@@ -179,28 +179,28 @@ class Request(Message):
         if self.auth_type is not None:
             raise PasswordRequired()
 
-    def get_user_ldap_connection(self, no_cache=False,**kwargs):
+    def get_user_ldap_connection(self, no_cache=False, **kwargs):
         if not self.user_dn:
             return  # local user (probably root)
         try:
-            lo, po = get_user_connection(bind=self.bind_user_connection, write=kwargs.pop('write', False,), follow_referral=True, no_cache=no_cache, **kwargs,)
+            lo, po = get_user_connection(bind=self.bind_user_connection, write=kwargs.pop('write', False), follow_referral=True, no_cache=no_cache, **kwargs)
             if not no_cache:
                 self._user_connections.add(lo)
             return lo
         except (ldap.LDAPError, udm_errors.base) as exc:
             CORE.warn('Failed to open LDAP connection for user %s: %s' % (self.user_dn, exc))
 
-    def bind_user_connection(self, lo,):
+    def bind_user_connection(self, lo):
         CORE.process('LDAP bind for user %r.' % (self.user_dn,))
         try:
             if self.auth_type == 'SAML':
                 lo.lo.bind_saml(self.password)
-                if not lo.lo.compare_dn(lo.binddn, self.user_dn,):
+                if not lo.lo.compare_dn(lo.binddn, self.user_dn):
                     CORE.warn('SAML binddn does not match: %r != %r' % (lo.binddn, self.user_dn))
                     self.user_dn = lo.binddn
             else:
                 try:
-                    lo.lo.bind(self.user_dn, self.password,)
+                    lo.lo.bind(self.user_dn, self.password)
                 except ldap.INVALID_CREDENTIALS:  # workaround for Bug #44382: the password might be a SAML message, try to authenticate via SAML
                     etype, exc, etraceback = sys.exc_info()
                     CORE.error('LDAP authentication for %r failed: %s' % (self.user_dn, exc))
@@ -211,13 +211,13 @@ class Request(Message):
                         lo.lo.bind_saml(self.password)
                     except ldap.OTHER:
                         CORE.error('SAML authentication failed.')
-                        six.reraise(etype, exc, etraceback,)
+                        six.reraise(etype, exc, etraceback)
                     CORE.error('Wrong authentication type. Resetting.')
                     self.auth_type = 'SAML'
         except ldap.INVALID_CREDENTIALS:
             etype, exc, etraceback = sys.exc_info()
             exc = etype('An error during LDAP authentication happened. Auth type: %s; SAML message length: %s; DN length: %s; Original Error: %s' % (self.auth_type, len(self.password or '') if len(self.password or '') > 25 else False, len(self.user_dn or ''), exc))
-            six.reraise(etype, exc, etraceback,)
+            six.reraise(etype, exc, etraceback)
 
 
 class Response(Message):
@@ -226,9 +226,9 @@ class Response(Message):
     frontend to the console daemon
     """
 
-    def __init__(self, request=None, data=None, mime_type=MIMETYPE_JSON,):
+    def __init__(self, request=None, data=None, mime_type=MIMETYPE_JSON):
         # type: (Request, Any, str) -> None
-        Message.__init__(self, Message.RESPONSE, mime_type=mime_type,)
+        Message.__init__(self, Message.RESPONSE, mime_type=mime_type)
         if request:
             self.id = request.id
             self.command = request.command
@@ -240,7 +240,7 @@ class Response(Message):
 
     recreate_id = None
 
-    def set_body(self, filename, mimetype=None,):
+    def set_body(self, filename, mimetype=None):
         # type: (str, Optional[str]) -> None
         """
         Set body of response by guessing the mime type of the given
@@ -256,6 +256,6 @@ class Response(Message):
             PROTOCOL.process('Failed to guess MIME type of %s' % filename)
             raise TypeError('Unknown mime type')
 
-        with open(filename, 'rb',) as fd:
+        with open(filename, 'rb') as fd:
             # FIXME: should check size first
             self.body = fd.read()

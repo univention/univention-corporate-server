@@ -16,7 +16,7 @@ import os
 class Test_DellogProcess:
     """Tests regarding the delete log files in ldap/logging/dellogdir"""
 
-    def test_correct_files(self, udm, ucr,):
+    def test_correct_files(self, udm, ucr):
         """
         Create and remove a ldap user object.
 
@@ -34,7 +34,7 @@ class Test_DellogProcess:
         # should remove all files if working correctly
         assert len(os.listdir(dellog_directory)) == 0
 
-    def test_corrupted_file(self, udm, ucr,):
+    def test_corrupted_file(self, udm, ucr):
         """
         Test effects of a corrupted file
 
@@ -44,8 +44,8 @@ class Test_DellogProcess:
         dellog_directory = ucr["ldap/logging/dellogdir"]
 
         # Create corrupted file
-        corrupted_file_path = os.path.join(dellog_directory, "00001",)
-        with open(corrupted_file_path, "w",) as f:
+        corrupted_file_path = os.path.join(dellog_directory, "00001")
+        with open(corrupted_file_path, "w") as f:
             f.write("")
 
         # analogous to test case 'test_correct_files'

@@ -36,7 +36,7 @@ def udm_license_module():
         _udm_license_module.delete_created_users()
 
 
-def test_free_license(udm_license_module,):
+def test_free_license(udm_license_module):
     """
     Uploads a free license, checks its info, attempts to create
     computers and users and removes those that were created after
@@ -62,7 +62,7 @@ def test_free_license(udm_license_module,):
     udm_license_module.delete_created_users()
 
 
-def test_expired_license(udm_license_module,):
+def test_expired_license(udm_license_module):
     """
     Uploads an expired license, attempts to create computers and users
     with it
@@ -80,7 +80,7 @@ def test_expired_license(udm_license_module,):
     udm_license_module.restart_umc_server()
 
 
-def test_valid_license(udm_license_module,):
+def test_valid_license(udm_license_module):
     """Uploads a valid license, creates 10 computers and users with it"""
     udm_license_module.get_valid_license()
 
@@ -100,7 +100,7 @@ def test_valid_license(udm_license_module,):
     udm_license_module.delete_created_users()
 
 
-def test_modified_signature(udm_license_module,):
+def test_modified_signature(udm_license_module):
     """
     Modifies the current license LDAP object and tries to create
     a number of computers and users after
@@ -115,7 +115,7 @@ def test_modified_signature(udm_license_module,):
     udm_license_module.modified_license_limits_check('user')
 
 
-def test_junk_license(udm_license_module,):
+def test_junk_license(udm_license_module):
     """
     Uploads a 'junk' license and tries to create computers
     and users with it
@@ -135,7 +135,7 @@ def test_junk_license(udm_license_module,):
 class UDMLicenseManagement(UDMModule):
 
     def __init__(self):
-        super(UDMLicenseManagement, self,).__init__()
+        super(UDMLicenseManagement, self).__init__()
         self.LicenseClient = None
         self.ldap_base = self.ucr.get('ldap/base')
         self.license_dn = "cn=admin,cn=license,cn=univention," + self.ldap_base
@@ -163,10 +163,10 @@ class UDMLicenseManagement(UDMModule):
         Selects the ip addresses subnet for the test by getting 'eth0' network
         UCR variable and removing its ending
         """
-        test_network_ip = self.ucr['interfaces/%s/network' % self.ucr.get('interfaces/primary', 'eth0',)]
+        test_network_ip = self.ucr['interfaces/%s/network' % self.ucr.get('interfaces/primary', 'eth0')]
         self.test_network_ip = test_network_ip[:test_network_ip.rfind('.') + 1]
 
-    def create_many_users_computers(self, obj_type, amount,):
+    def create_many_users_computers(self, obj_type, amount):
         """
         Creates a given 'amount' of computers or users depending on given
         'obj_type', returns number of objects totally created
@@ -181,11 +181,11 @@ class UDMLicenseManagement(UDMModule):
             self.create_connection_authenticate()
             obj_name = obj_name_base + str(obj)
             if obj_type == 'computer':
-                request_result = self.create_computer(obj_name, [self.test_network_ip + str(obj + 51)], [], [],)
+                request_result = self.create_computer(obj_name, [self.test_network_ip + str(obj + 51)], [], [])
             elif obj_type == 'user':
                 # use translated group name for non-Enlish AD case: Bug #37921
                 domain_users = self.get_groupname_translation('domainusers')
-                request_result = self.create_user(obj_name, 'Univention@99', domain_users,)
+                request_result = self.create_user(obj_name, 'Univention@99', domain_users)
             if request_result[0].get("success"):
                 if obj_type == 'computer':
                     self.computers_to_delete.append(obj_name)
@@ -196,7 +196,7 @@ class UDMLicenseManagement(UDMModule):
                 return obj
         return amount
 
-    def create_user(self, username, password, groupname, group_container="groups",):
+    def create_user(self, username, password, groupname, group_container="groups"):
         """
         Creates a test user by making a UMC-request 'udm/add'
         with a provided 'username', 'password' and 'groupname'
@@ -225,7 +225,7 @@ class UDMLicenseManagement(UDMModule):
             },
             "options": {"container": "cn=users," + self.ldap_base, "objectType": "users/user"},
         }]
-        return self.request("udm/add", options, "users/user",)
+        return self.request("udm/add", options, "users/user")
 
     def check_free_license_info(self):
         """
@@ -249,7 +249,7 @@ class UDMLicenseManagement(UDMModule):
         assert license_info['users'] == 5
         assert not license_info['servers']
 
-    def import_new_license(self, license_file,):
+    def import_new_license(self, license_file):
         """
         Reads the given 'license_file' and makes a 'udm/license/import' UMC
         request with the license details in options to import it
@@ -261,7 +261,7 @@ class UDMLicenseManagement(UDMModule):
             license_text = license.read()
 
         options = {"license": license_text}
-        request_result = self.request('udm/license/import', options,)
+        request_result = self.request('udm/license/import', options)
         assert request_result[0]["success"]
 
     def dump_current_license_to_file(self):
@@ -271,18 +271,18 @@ class UDMLicenseManagement(UDMModule):
         """
         license_file = self.initial_license_file
         print("\nSaving initial license to file: '%s'" % license_file)
-        with open(license_file, 'w',) as license:
-            proc = Popen(("univention-ldapsearch", "-LLLb", self.license_dn), stdout=license, stderr=PIPE,)
+        with open(license_file, 'w') as license:
+            proc = Popen(("univention-ldapsearch", "-LLLb", self.license_dn), stdout=license, stderr=PIPE)
             stdout, stderr = proc.communicate()
             assert not stderr
             assert proc.returncode == 0
 
-    def modify_license_signature(self, new_signature,):
+    def modify_license_signature(self, new_signature):
         """Modifies the license signature to a given 'new_signature'"""
         # in changes "foo" stands as a dummy for 'old-values':
         changes = [('univentionLicenseSignature', b"foo", new_signature.encode("UTF-8"))]
         admin_ldap_conn = uldap.getAdminConnection()
-        admin_ldap_conn.modify(self.license_dn, changes,)
+        admin_ldap_conn.modify(self.license_dn, changes)
 
     def delete_created_computers(self):
         """
@@ -290,8 +290,8 @@ class UDMLicenseManagement(UDMModule):
         list with a check if each of them exists
         """
         for computer in self.computers_to_delete:
-            if self.check_obj_exists(computer, "computers/windows",):
-                self.delete_obj(computer, 'computers', 'computers/windows',)
+            if self.check_obj_exists(computer, "computers/windows"):
+                self.delete_obj(computer, 'computers', 'computers/windows')
         self.computers_to_delete = []
 
     def delete_created_users(self):
@@ -300,34 +300,34 @@ class UDMLicenseManagement(UDMModule):
         list with a check if each of them exists
         """
         for user in self.users_to_delete:
-            if self.check_obj_exists(user, "users/user", "users/user",):
-                self.delete_obj(user, 'users/user', 'users/user',)
+            if self.check_obj_exists(user, "users/user", "users/user"):
+                self.delete_obj(user, 'users/user', 'users/user')
         self.users_to_delete = []
 
-    def free_license_limits_check(self, obj_type,):
+    def free_license_limits_check(self, obj_type):
         """Checks the free license user/computer creation limits"""
-        amount_created = self.create_many_users_computers(obj_type, 10,)
+        amount_created = self.create_many_users_computers(obj_type, 10)
         # 6 since license won't lock with only 5 users/computers
         assert amount_created <= 6
 
-    def expired_license_limits_check(self, obj_type,):
+    def expired_license_limits_check(self, obj_type):
         """Checks the expired license user/computer creation limits"""
-        amount_created = self.create_many_users_computers(obj_type, 10,)
+        amount_created = self.create_many_users_computers(obj_type, 10)
         assert amount_created == 0
 
-    def valid_license_limits_check(self, obj_type,):
+    def valid_license_limits_check(self, obj_type):
         """Checks the valid license user/computer creation"""
-        amount_created = self.create_many_users_computers(obj_type, 10,)
+        amount_created = self.create_many_users_computers(obj_type, 10)
         assert amount_created == 10
 
-    def modified_license_limits_check(self, obj_type,):
+    def modified_license_limits_check(self, obj_type):
         """Checks the modified license user/computer creation"""
-        amount_created = self.create_many_users_computers(obj_type, 10,)
+        amount_created = self.create_many_users_computers(obj_type, 10)
         assert amount_created == 0
 
-    def junk_license_limits_check(self, obj_type,):
+    def junk_license_limits_check(self, obj_type):
         """Checks the 'junk' license user/computer creation"""
-        amount_created = self.create_many_users_computers(obj_type, 10,)
+        amount_created = self.create_many_users_computers(obj_type, 10)
         assert amount_created == 0
 
     def get_valid_license(self):
@@ -338,13 +338,13 @@ class UDMLicenseManagement(UDMModule):
         print("\nObtaining a valid license for the test:")
         end_date = time()
         end_date += 2630000  # approx. amount of seconds in 1 month
-        end_date = strftime('%d.%m.%Y', localtime(end_date),)
+        end_date = strftime('%d.%m.%Y', localtime(end_date))
 
         if self.LicenseClient is None:
             self.LicenseClient = TestLicenseClient()
         valid_license_file = self.temp_license_folder + '/ValidTest.license'
         if not path.exists(valid_license_file):
-            self.LicenseClient.main(base_dn=self.ldap_base, end_date=end_date, license_file=valid_license_file,)
+            self.LicenseClient.main(base_dn=self.ldap_base, end_date=end_date, license_file=valid_license_file)
 
     def get_expired_license(self):
         """
@@ -356,11 +356,11 @@ class UDMLicenseManagement(UDMModule):
             self.LicenseClient = TestLicenseClient()
         end_date = time()
         end_date -= 2630000  # approx. amount of seconds in 1 month
-        end_date = strftime('%d.%m.%Y', localtime(end_date),)
+        end_date = strftime('%d.%m.%Y', localtime(end_date))
 
         expired_license_file = (self.temp_license_folder + '/ExpiredTest.license')
         if not path.exists(expired_license_file):
-            self.LicenseClient.main(base_dn=self.ldap_base, end_date=end_date, license_file=expired_license_file,)
+            self.LicenseClient.main(base_dn=self.ldap_base, end_date=end_date, license_file=expired_license_file)
 
     def modify_free_license_template(self):
         """
@@ -368,7 +368,7 @@ class UDMLicenseManagement(UDMModule):
         BaseDN. Skipps the test if Free license template was not found.
         """
         print("\nModifing the Free license template for the test")
-        with open('FreeForPersonalUseTest.license', 'r+',) as free_license:
+        with open('FreeForPersonalUseTest.license', 'r+') as free_license:
             lines = free_license.readlines()
             free_license.seek(0)
             for line in lines:
@@ -384,8 +384,8 @@ class UDMLicenseManagement(UDMModule):
         print("\nGenerating a junk license based on valid license for the test")
         self.get_valid_license()
         junk_license_file = self.temp_license_folder + '/JunkTest.license'
-        file_copy(self.temp_license_folder + '/ValidTest.license', junk_license_file,)
-        with open(junk_license_file, 'r+',) as junk_license:
+        file_copy(self.temp_license_folder + '/ValidTest.license', junk_license_file)
+        with open(junk_license_file, 'r+') as junk_license:
             lines = junk_license.readlines()
             junk_license.seek(0)
             for line in lines:

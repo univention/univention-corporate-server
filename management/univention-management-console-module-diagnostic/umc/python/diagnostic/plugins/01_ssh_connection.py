@@ -53,11 +53,11 @@ run_descr = ['This can be checked by running:  univention-ssh /etc/machine.secre
 
 class IgnorePolicy(paramiko.MissingHostKeyPolicy):
 
-    def missing_host_key(self, client, hostname, key,):
+    def missing_host_key(self, client, hostname, key):
         pass
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     # Now a workaround for paramico logging to connector-s4.log
     # because one of the diagnostic plugins instantiates s4connector.s4.s4()
     # which initializes univention.debug2, which initializes logging.basicConfig
@@ -78,9 +78,9 @@ def run(_umc_instance: Instance,) -> None:
         'computers/memberserver']
     for role in roles:
         udm_obj = modules.get(role)
-        modules.init(lo, position, udm_obj,)
-        for host in udm_obj.lookup(None, lo, 'cn=*',):
-            if 'docker' in host.oldattr.get('univentionObjectFlag', [],):
+        modules.init(lo, position, udm_obj)
+        for host in udm_obj.lookup(None, lo, 'cn=*'):
+            if 'docker' in host.oldattr.get('univentionObjectFlag', []):
                 continue
             if not host.get('ip'):
                 continue
@@ -117,7 +117,7 @@ def run(_umc_instance: Instance,) -> None:
 
         fqdn = host + '.' + ucr['domainname']
         try:
-            client.connect(fqdn, port=22, username=ucr['hostname'] + '$', password=password, timeout=2, banner_timeout=2, allow_agent=False,)
+            client.connect(fqdn, port=22, username=ucr['hostname'] + '$', password=password, timeout=2, banner_timeout=2, allow_agent=False)
             client.close()
         except paramiko.BadHostKeyException:
             bad[fqdn] = key_msg + '!'
@@ -142,7 +142,7 @@ def run(_umc_instance: Instance,) -> None:
         msg += '\n'
         log_msg = msg.splitlines()
         for line in log_msg:
-            if not re.match(r'^\s*$', line,):
+            if not re.match(r'^\s*$', line):
                 MODULE.error("%s" % line)
         MODULE.error("%s" % data)
         raise Critical(msg % data)

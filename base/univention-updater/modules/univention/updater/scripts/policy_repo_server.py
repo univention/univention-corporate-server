@@ -40,20 +40,20 @@ from univention.config_registry import ConfigRegistry, handler_set
 from univention.lib.policy_result import PolicyResultFailed, policy_result
 
 
-def query_policy(ldap_hostdn: str,) -> Tuple[str, str]:
+def query_policy(ldap_hostdn: str) -> Tuple[str, str]:
     """Retrieve updateServer and version from policy."""
     try:
         results, _policies = policy_result(ldap_hostdn)
     except PolicyResultFailed as ex:
         sys.exit("failed to execute univention_policy_result: %s" % ex)
 
-    server = one(results, "univentionRepositoryServer",)  # univentionPolicyRepositorySync
-    update = one(results, "univentionUpdateVersion",)  # univentionPolicyUpdate
+    server = one(results, "univentionRepositoryServer")  # univentionPolicyRepositorySync
+    update = one(results, "univentionUpdateVersion")  # univentionPolicyUpdate
 
     return (server, update)
 
 
-def one(results: Dict[str, List[str]], key: str,) -> str:
+def one(results: Dict[str, List[str]], key: str) -> str:
     try:
         return results[key][0]
     except LookupError:

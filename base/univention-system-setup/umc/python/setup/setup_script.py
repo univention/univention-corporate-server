@@ -58,7 +58,7 @@ from univention.management.console.modules.setup.util import PATH_PROFILE, PATH_
 
 
 def setup_i18n() -> Translation:
-    locale.setlocale(locale.LC_ALL, "",)
+    locale.setlocale(locale.LC_ALL, "")
     translation = Translation('univention-system-setup-scripts')
     translation.set_language()
     return translation.translate
@@ -69,7 +69,7 @@ _ = setup_i18n()
 
 class Profile(dict):
 
-    def load(self, filename: str = PATH_PROFILE,) -> None:
+    def load(self, filename: str = PATH_PROFILE) -> None:
         with open(filename) as profile:
             for line in profile:
                 line = line.strip()
@@ -77,7 +77,7 @@ class Profile(dict):
                     continue
                 if line.startswith('#'):
                     continue
-                key, value = line.split('=', 1,)
+                key, value = line.split('=', 1)
                 for delim in ("'", '"'):
                     if value.startswith(delim) and value.endswith(delim):
                         value = value[1:-1]
@@ -85,24 +85,24 @@ class Profile(dict):
                 self[key] = value
         self._filename = filename
 
-    def hide(self, key: str,) -> None:
+    def hide(self, key: str) -> None:
         filename = self._filename
         with open(filename) as profile:
             all_lines = profile.readlines()
-        with open(filename, 'w',) as profile:
+        with open(filename, 'w') as profile:
             for line in all_lines:
                 if line.startswith('%s=' % key):
                     line = '#%s="********"\n' % key
                 profile.write(line)
 
-    def is_true(self, key: str,) -> bool:
+    def is_true(self, key: str) -> bool:
         value = self.get(key)
         if value:
             value = value.lower()
         ucr = ConfigRegistry()
         return ucr.is_true(value=value)
 
-    def get_list(self, key: str, split_by=' ',) -> List[str]:
+    def get_list(self, key: str, split_by=' ') -> List[str]:
         """
         Retrieve the value of var_name from the profile file.
         Return the string as a list split by split_by.
@@ -118,7 +118,7 @@ class TransactionalUcr(object):
         self.ucr.load()
         self.changes: Dict[str, Optional[str]] = {}
 
-    def set(self, key: str, value: str,) -> None:
+    def set(self, key: str, value: str) -> None:
         """
         Set the value of key of UCR.
         Does not save immediately.
@@ -128,7 +128,7 @@ class TransactionalUcr(object):
         orig_val = self.ucr.get(key)
         if orig_val == value:
             # in case it was overwritten previously
-            self.changes.pop(key, None,)
+            self.changes.pop(key, None)
         else:
             self.changes[key] = value
 
@@ -140,11 +140,11 @@ class TransactionalUcr(object):
         do it (e.g. in down()).
         """
         if self.changes:
-            ucr_update(self.ucr, self.changes,)
+            ucr_update(self.ucr, self.changes)
             # reset (in case it is called multiple) times in a script
             self.changes.clear()
 
-    def get(self, key: str, search_in_changes=True,) -> Optional[str]:
+    def get(self, key: str, search_in_changes=True) -> Optional[str]:
         """
         Retrieve the value of key from ucr.
         If search_in_changes, it first looks in (not yet committed) values.
@@ -159,7 +159,7 @@ class TransactionalUcr(object):
     def __enter__(self) -> "TransactionalUcr":
         return self
 
-    def __exit__(self, exc_type: Type[BaseException], exc_value: BaseException, traceback: TracebackType,) -> None:
+    def __exit__(self, exc_type: Type[BaseException], exc_value: BaseException, traceback: TracebackType) -> None:
         if exc_type is None:
             self.commit()
 
@@ -231,7 +231,7 @@ class SetupScript(object):
         self.profile = self.parse_profile()
 
         try:
-            self.up(*args, **kwargs,)
+            self.up(*args, **kwargs)
         except Exception as exc:
             # save caught exception. raise later (in run())
             self._broken: Optional[Exception] = exc
@@ -244,7 +244,7 @@ class SetupScript(object):
         profile.load()
         return profile
 
-    def inform_progress_parser(self, progress_attribute: str, msg: object,) -> None:
+    def inform_progress_parser(self, progress_attribute: str, msg: object) -> None:
         """
         Internal method to inform progress parser.
 
@@ -256,44 +256,44 @@ class SetupScript(object):
         sys.stdout.write('%s\n' % (msg,))
         sys.stdout.flush()
 
-    def header(self, msg: object,) -> None:
+    def header(self, msg: object) -> None:
         """
         Write header info of this script (for log file and parser).
 
         Called automatically by run(). Probably unneeded for developers
         """
-        print('===', self.script_name, datetime.now().strftime('(%Y-%m-%d %H:%M:%S)'), '===',)
-        self.inform_progress_parser('name', '%s %s' % (self.script_name, msg),)
+        print('===', self.script_name, datetime.now().strftime('(%Y-%m-%d %H:%M:%S)'), '===')
+        self.inform_progress_parser('name', '%s %s' % (self.script_name, msg))
 
-    def message(self, msg: object,) -> None:
+    def message(self, msg: object) -> None:
         """Write a harmless __MSG__: for the parser"""
-        self.inform_progress_parser('msg', msg,)
+        self.inform_progress_parser('msg', msg)
 
-    def error(self, msg: object,) -> None:
+    def error(self, msg: object) -> None:
         """
         Write a non-critical __ERR__: for the parser
         The parser will save the error and inform the frontend
         that something went wrong
         """
-        self.inform_progress_parser('err', msg,)
+        self.inform_progress_parser('err', msg)
 
-    def join_error(self, msg: object,) -> None:
+    def join_error(self, msg: object) -> None:
         """
         Write a critical __JOINERR__: for the parser.
         The parser will save it and inform the frontend that something
         went terribly wrong leaving the system in an unjoined state
         """
-        self.inform_progress_parser('joinerr', msg,)
+        self.inform_progress_parser('joinerr', msg)
 
-    def steps(self, steps: int,) -> None:
+    def steps(self, steps: int) -> None:
         """
         Total number of __STEPS__: to come throughout the whole
         script. Progress within the script should be done with
         step() which is relative to steps()
         """
-        self.inform_progress_parser('steps', steps,)
+        self.inform_progress_parser('steps', steps)
 
-    def step(self, step: Optional[int] = None,) -> None:
+    def step(self, step: Optional[int] = None) -> None:
         """
         Inform parser that the next __STEP__: in this script
         was done. You can provide an exact number or None
@@ -301,13 +301,13 @@ class SetupScript(object):
         """
         if step is not None:
             self._step = step
-        self.inform_progress_parser('step', self._step,)
+        self.inform_progress_parser('step', self._step)
         self._step += 1
 
     def log(self, *msgs: object) -> None:
         """Log messages in a log file"""
         for msg in msgs:
-            print(msg, end=' ',)
+            print(msg, end=' ')
         print('')
 
     def run(self) -> bool:
@@ -375,10 +375,10 @@ class SetupScript(object):
 
 class _PackageManagerLoggerHandlerWithoutProcess(_PackageManagerLoggerHandler):
 
-    def emit(self, record: logging.LogRecord,) -> None:
+    def emit(self, record: logging.LogRecord) -> None:
         if record.name == 'packagemanager.dpkg.process':
             return
-        super(_PackageManagerLoggerHandlerWithoutProcess, self,).emit(record)
+        super(_PackageManagerLoggerHandlerWithoutProcess, self).emit(record)
 
 
 class AptScript(SetupScript):
@@ -392,7 +392,7 @@ class AptScript(SetupScript):
 
     def up(self, *args, **kwargs) -> None:
         self.package_manager = PackageManager(always_noninteractive=False)
-        handler = _PackageManagerLoggerHandlerWithoutProcess(self.message, self.step, self.error,)
+        handler = _PackageManagerLoggerHandlerWithoutProcess(self.message, self.step, self.error)
         self.package_manager.logger.addHandler(handler)
 
         self.roles_package_map = {
@@ -420,7 +420,7 @@ class AptScript(SetupScript):
         with self.noninteractive():
             return self.package_manager.update()
 
-    def get_package(self, pkg_name: str,) -> Optional[apt.package.Package]:
+    def get_package(self, pkg_name: str) -> Optional[apt.package.Package]:
         return self.package_manager.get_package(pkg_name)
 
     def finish_task(self, *log_msgs: object) -> None:
@@ -436,16 +436,17 @@ class AptScript(SetupScript):
     def reopen_cache(self) -> None:
         self.package_manager.reopen_cache()
 
-    def mark_auto(self, auto: bool,*pkgs: str) -> None:
-        self.package_manager.mark_auto(auto, *pkgs,)
+    def mark_auto(self, auto: bool, *pkgs: str) -> None:
+        self.package_manager.mark_auto(auto, *pkgs)
 
     def commit(
         self,
         install: Iterable[str] = [],
         remove: Iterable[str] = [],
-        msg_if_failed: str = '',) -> bool:
+        msg_if_failed: str = '',
+    ) -> bool:
         with self.noninteractive():
-            return self.package_manager.commit(install, remove, msg_if_failed=msg_if_failed,)
+            return self.package_manager.commit(install, remove, msg_if_failed=msg_if_failed)
 
     def install(self, *pkg_names: str) -> bool:
         with self.noninteractive():
@@ -455,7 +456,7 @@ class AptScript(SetupScript):
         with self.noninteractive():
             return self.package_manager.uninstall(*pkg_names)
 
-    def get_package_for_role(self, role_name: str,) -> Optional[apt.package.Package]:
+    def get_package_for_role(self, role_name: str) -> Optional[apt.package.Package]:
         """
         Searches for the meta-package that belongs
         to the given role_name
@@ -476,7 +477,7 @@ class AptScript(SetupScript):
         self.package_manager.unlock()
 
 
-def main(setup_script: SetupScript, exit: bool = True,) -> int:
+def main(setup_script: SetupScript, exit: bool = True) -> int:
     '''
     Helper function to run the setup_script and evaluate its
     return code as a "shell-compatible" one. You may sys.exit immediately

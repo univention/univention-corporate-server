@@ -56,9 +56,9 @@ attributetype ( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFre
 ''' % {'attribute_id': attribute_id}
 
 package = DebianPackage(name=package_name)
-package.create_join_script_from_buffer(join_script_name, joinscript_buffer,)
-package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer,)
-package.create_usr_share_file_from_buffer(schema_name, schema_buffer,)
+package.create_join_script_from_buffer(join_script_name, joinscript_buffer)
+package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer)
+package.create_usr_share_file_from_buffer(schema_name, schema_buffer)
 package.build()
 
 package.install()
@@ -71,7 +71,7 @@ try:
     # register the second time
     call_join_script(join_script_name)
     expected_dn = 'cn=%s,cn=ldapschema,cn=univention,%s' % (schema_name, ucr.get('ldap/base'))
-    verify_ldap_object(expected_dn, {'univentionLDAPSchemaActive': ['TRUE']},)
+    verify_ldap_object(expected_dn, {'univentionLDAPSchemaActive': ['TRUE']})
 
     schema = fetch_schema_from_ldap_master()
     attribute_identifier = "( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s" % {'attribute_id': attribute_id}

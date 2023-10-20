@@ -33,7 +33,7 @@
 
 """Univention Lib Python module."""
 
-__path__ = __import__('pkgutil').extend_path(__path__, __name__,)
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)
 
 __all__ = ('get_lock', 'release_lock', 'Translation', 'NullTranslation', 'Locale', 'I18N_Error')
 

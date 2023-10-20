@@ -49,7 +49,7 @@ class Parser(object):
     START = '<@'
     END = '@>'
 
-    def __init__(self, filename=None, data=None,):
+    def __init__(self, filename=None, data=None):
         if filename:
             self._filename = filename
             fd = open(self._filename)
@@ -63,7 +63,7 @@ class Parser(object):
         self._context = self._tokens
         self._stack = [self._tokens]
 
-    def parse_token(self, token,):
+    def parse_token(self, token):
         attrs = {}
         closing = False
         m = Parser.REGEX_OPEN.match(token)
@@ -73,9 +73,9 @@ class Parser(object):
                 raise SyntaxError("failed to parse token: '%s'" % token)
             closing = True
         d = m.groupdict()
-        if not closing and d.get('attrs', None,):
+        if not closing and d.get('attrs', None):
             for attr in shlex.split(d['attrs']):
-                key, value = attr.split('=', 1,)
+                key, value = attr.split('=', 1)
                 attrs[key] = value
 
         return (d['tag'], attrs, closing)
@@ -100,7 +100,7 @@ class Parser(object):
         end = self._data.find(Parser.END)
         if end < 0:
             max_len = len(self._data) - start
-            raise SyntaxError('No matching end tag (tag: %s)' % self._data[start: min(20, max_len,)])
+            raise SyntaxError('No matching end tag (tag: %s)' % self._data[start: min(20, max_len)])
         name, attrs, closing = self.parse_token(self._data[start: end + len(Parser.END)])
         self._data = self._data[end + len(Parser.END):]
         if name == 'attribute':
@@ -108,13 +108,13 @@ class Parser(object):
         elif name == 'policy':
             return PolicyToken(attrs)
         elif name == 'query':
-            return QueryToken(attrs, closing,)
+            return QueryToken(attrs, closing)
         elif name == 'resolve':
-            return ResolveToken(attrs, closing,)
+            return ResolveToken(attrs, closing)
         elif name == 'header':
-            return HeaderToken(attrs, closing,)
+            return HeaderToken(attrs, closing)
         elif name == 'footer':
-            return FooterToken(attrs, closing,)
+            return FooterToken(attrs, closing)
         elif name == 'date':
             return DateToken(attrs)
         else:
@@ -123,16 +123,16 @@ class Parser(object):
     def tokenize(self):
         token = self.next_token()
         while token:
-            if isinstance(token, (TextToken, AttributeToken, PolicyToken, DateToken),):
-                if isinstance(token, TextToken,):
-                    if token.data == '\n' and len(self._context) and isinstance(self._context[-1], HeaderToken,):
+            if isinstance(token, (TextToken, AttributeToken, PolicyToken, DateToken)):
+                if isinstance(token, TextToken):
+                    if token.data == '\n' and len(self._context) and isinstance(self._context[-1], HeaderToken):
                         # ignore line feed after header
                         pass
                     else:
                         self._context.append(token)
                 else:
                     self._context.append(token)
-            elif isinstance(token, IContextToken,):
+            elif isinstance(token, IContextToken):
                 if not token.closing:
                     self._stack.append(self._context)
                     self._context.append(token)
@@ -144,16 +144,16 @@ class Parser(object):
         # strip header and footer, if exist
         trash = []
         for i in range(len(self._context)):
-            if isinstance(self._context[i], HeaderToken,):
+            if isinstance(self._context[i], HeaderToken):
                 self._header = self._context[i]
-                if len(self._header) and isinstance(self._header[0], TextToken,):
+                if len(self._header) and isinstance(self._header[0], TextToken):
                     self._header = self._header[0]
                 trash.append(i)
-            elif isinstance(self._context[i], FooterToken,):
+            elif isinstance(self._context[i], FooterToken):
                 self._footer = self._context[i]
-                if len(self._footer) and isinstance(self._footer[0], TextToken,):
+                if len(self._footer) and isinstance(self._footer[0], TextToken):
                     self._footer = self._footer[0]
-                if i > 0 and isinstance(self._context[i - 1], TextToken,) and \
+                if i > 0 and isinstance(self._context[i - 1], TextToken) and \
                         self._context[i - 1].data == '\n':
                     trash.append(i - 1)
                 trash.append(i)

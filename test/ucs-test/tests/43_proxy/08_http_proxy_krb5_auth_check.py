@@ -23,31 +23,31 @@ from essential.simplesquid import SimpleSquid
 
 
 class kerberos_ticket:
-    def __init__(self, hostname,):
+    def __init__(self, hostname):
         self.hostname = hostname
 
     def __enter__(self):
         subprocess.call(['kdestroy'])
         subprocess.check_call(['kinit', '--password-file=/etc/machine.secret', self.hostname + '$'])  # get kerberos ticket
 
-    def __exit__(self, exc_type, exc_value, traceback,):
+    def __exit__(self, exc_type, exc_value, traceback):
         subprocess.call(['kdestroy'])
 
 
-def check_no_ticket(host, url,):
+def check_no_ticket(host, url):
     print('Check proxy without kerberos ticket...')
     subprocess.call(['kdestroy'])  # delete all active kerberos tickets
-    curl = SimpleCurl(proxy=host, password='will_be_ignored', auth=pycurl.HTTPAUTH_GSSNEGOTIATE,)
+    curl = SimpleCurl(proxy=host, password='will_be_ignored', auth=pycurl.HTTPAUTH_GSSNEGOTIATE)
     result = curl.response(url)
     if result != 407:
         utils.fail('Kerberos proxy auth check failed, http_code = %r, expected = %r' % (result, '407'))
     print('Success: Proxy does not work without kerberos ticket')
 
 
-def check_with_ticket(host, url, hostname,):
+def check_with_ticket(host, url, hostname):
     print('Check proxy with kerberos ticket...')
     with kerberos_ticket(hostname):
-        curl = SimpleCurl(proxy=host, password='will_be_ignored', auth=pycurl.HTTPAUTH_GSSNEGOTIATE,)
+        curl = SimpleCurl(proxy=host, password='will_be_ignored', auth=pycurl.HTTPAUTH_GSSNEGOTIATE)
         result = curl.response(url)
     if result != 200:
         utils.fail('Kerberos proxy auth check failed, http_code = %r, expected = %r' % (result, '200'))
@@ -65,8 +65,8 @@ def main():
             handler_set(['squid/krb5auth=yes'])
             handler_unset(['squid/ntlmauth', 'squid/basicauth'])
             squid.reconfigure()
-            check_no_ticket(host, url,)
-            check_with_ticket(host, url, hostname,)
+            check_no_ticket(host, url)
+            check_with_ticket(host, url, hostname)
     finally:
         squid.reconfigure()  # Reset auth methods
 

@@ -49,17 +49,17 @@ def main():
                 reload_amavis_postfix()
 
                 spam_folder = get_spam_folder_name()
-                file_search_mail_with_waiting_loop = WaitForNonzeroResultOrTimeout(file_search_mail, TIMEOUT,)
+                file_search_mail_with_waiting_loop = WaitForNonzeroResultOrTimeout(file_search_mail, TIMEOUT)
 
                 token1 = str(time.time())
-                send_mail(recipients=mail, msg=token1, idstring=token1, subject='Normal',)
-                if not file_search_mail_with_waiting_loop(tokenlist=[token1, 'X-Spam-Flag: NO'], mail_address=mail,):
+                send_mail(recipients=mail, msg=token1, idstring=token1, subject='Normal')
+                if not file_search_mail_with_waiting_loop(tokenlist=[token1, 'X-Spam-Flag: NO'], mail_address=mail):
                     utils.fail('Mail sent with token = %r to %s was not delivered' % (token1, mail))
                 print('*** Mail without spam successfully delivered')
 
                 token2 = str(time.time())
-                send_mail(recipients=mail, msg=token2, gtube=True, subject='Filter',)
-                if not file_search_mail_with_waiting_loop(tokenlist=[token2, 'X-Spam-Flag: YES'], mail_address=mail, folder=spam_folder,):
+                send_mail(recipients=mail, msg=token2, gtube=True, subject='Filter')
+                if not file_search_mail_with_waiting_loop(tokenlist=[token2, 'X-Spam-Flag: YES'], mail_address=mail, folder=spam_folder):
                     utils.fail('Spam sent with token = %r to %s sent with filter, was not delivered to spam folder, or does not have a spam flag' % (token2, mail))
                 print('*** Mail with spam successfully delivered and detected as SPAM')
 
@@ -67,8 +67,8 @@ def main():
                 reload_amavis_postfix()
 
                 token3 = str(time.time())
-                send_mail(recipients=mail, msg=token3, gtube=True, subject='No Filter',)
-                if not file_search_mail_with_waiting_loop(tokenlist=[token3], mail_address=mail,):
+                send_mail(recipients=mail, msg=token3, gtube=True, subject='No Filter')
+                if not file_search_mail_with_waiting_loop(tokenlist=[token3], mail_address=mail):
                     utils.fail('Spam sent with token = %r to %s sent without filter, was not delivered to main mail folder' % (token3, mail))
                 print('*** Mail with spam successfully delivered while spam detection is turned off')
         finally:

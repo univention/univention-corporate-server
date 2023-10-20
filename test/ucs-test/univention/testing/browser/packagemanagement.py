@@ -75,16 +75,16 @@ class PackageAction(enum.Enum):
 class PackageManagement:
     """Class for the Package Management UCS Module"""
 
-    def __init__(self, tester: UMCBrowserTest,) -> None:
+    def __init__(self, tester: UMCBrowserTest) -> None:
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
         self.module_name = _("Package Management")
         self.grid_load_url = re.compile(".*univention/command/appcenter/packages/query.*")
         self.inital_grid_load_url = re.compile(".*univention/command/appcenter/packages/sections.*")
 
-    def navigate(self, username="Administrator", password="univention",):
-        self.tester.login(username, password,)
-        self.tester.open_module(self.module_name, self.inital_grid_load_url,)
+    def navigate(self, username="Administrator", password="univention"):
+        self.tester.login(username, password)
+        self.tester.open_module(self.module_name, self.inital_grid_load_url)
 
     def find_small_package(self) -> str:
         """
@@ -110,18 +110,18 @@ class PackageManagement:
 
         raise Exception("Failed to find a small package")
 
-    def search_for_package(self, name: str,):
+    def search_for_package(self, name: str):
         search_bar = self.page.locator("[name=pattern]")
         search_bar.fill("")
         search_bar.type(name)
         with self.page.expect_response(self.grid_load_url):
             search_bar.press("Enter")
 
-    def do_package_action(self, name: str, action: PackageAction,):
+    def do_package_action(self, name: str, action: PackageAction):
         logger.info("Action %s on package %s" % (action, name))
         self.search_for_package(name)
-        self.tester.check_checkbox_in_grid_by_name(name, 0,)
-        self.page.get_by_role("button", name=str(action), exact=True,).click()
+        self.tester.check_checkbox_in_grid_by_name(name, 0)
+        self.page.get_by_role("button", name=str(action), exact=True).click()
 
         self.handle_confirmation_dialog(str(action))
         self.handle_action_dialog()
@@ -129,28 +129,28 @@ class PackageManagement:
         with self.page.expect_response(self.grid_load_url):
             pass
 
-    def handle_confirmation_dialog(self, action: str,):
-        dialog = self.page.get_by_role("dialog", name=_("Confirmation"),)
-        dialog.get_by_role("button", name=action,).click()
+    def handle_confirmation_dialog(self, action: str):
+        dialog = self.page.get_by_role("dialog", name=_("Confirmation"))
+        dialog.get_by_role("button", name=action).click()
         expect(dialog).to_have_count(0)
 
     def handle_action_dialog(self):
         dialog = self.page.get_by_role("dialog")
-        expect(dialog).to_have_count(0, timeout=3 * MIN,)
+        expect(dialog).to_have_count(0, timeout=3 * MIN)
 
         pbar = self.page.get_by_role("progressbar")
-        expect(pbar).to_have_count(0, timeout=3 * MIN,)
+        expect(pbar).to_have_count(0, timeout=3 * MIN)
 
-    def install_package(self, name: str,):
+    def install_package(self, name: str):
         """Installs a package that is automatically chosen to be both small in size and has no dependencies and verifies that it is installed"""
-        self.do_package_action(name, PackageAction.Install,)
+        self.do_package_action(name, PackageAction.Install)
         self.verify_package_status(PackageAction.Install)
 
-    def uninstall_package(self, name: str,):
-        self.do_package_action(name, PackageAction.Uninstall,)
+    def uninstall_package(self, name: str):
+        self.do_package_action(name, PackageAction.Uninstall)
         self.verify_package_status(PackageAction.Uninstall)
 
-    def verify_package_status(self, expected: PackageAction,):
+    def verify_package_status(self, expected: PackageAction):
         """
         Verify that the package actually got (un)installed
 

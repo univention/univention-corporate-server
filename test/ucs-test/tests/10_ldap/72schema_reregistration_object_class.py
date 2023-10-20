@@ -59,9 +59,9 @@ objectclass ( 1.3.6.1.4.1.7165.2.2.12 NAME 'sambaConfigOption' SUP top STRUCTURA
 '''
 
 package = DebianPackage(name=package_name)
-package.create_join_script_from_buffer(join_script_name, joinscript_buffer,)
-package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer,)
-package.create_usr_share_file_from_buffer(schema_name, schema_buffer,)
+package.create_join_script_from_buffer(join_script_name, joinscript_buffer)
+package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer)
+package.create_usr_share_file_from_buffer(schema_name, schema_buffer)
 package.build()
 
 package.install()
@@ -72,7 +72,7 @@ try:
     sleep(5)
 
     expected_dn = 'cn=%s,cn=ldapschema,cn=univention,%s' % (schema_name, ucr.get('ldap/base'))
-    verify_ldap_object(expected_dn, {'univentionLDAPSchemaActive': ['FALSE']},)
+    verify_ldap_object(expected_dn, {'univentionLDAPSchemaActive': ['FALSE']})
 finally:
     call_unjoin_script(unjoin_script_name)
     package.remove()

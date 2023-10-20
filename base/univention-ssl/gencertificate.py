@@ -58,7 +58,7 @@ SSLDIR = '/etc/univention/ssl'
 _delay = None
 
 
-def domain(info: Dict[str, List[bytes]],) -> str:
+def domain(info: Dict[str, List[bytes]]) -> str:
     """
     Return domain name of machine account.
 
@@ -70,17 +70,17 @@ def domain(info: Dict[str, List[bytes]],) -> str:
         return configRegistry['domainname']
 
 
-def wildcard_certificate(info: Dict[str, List[bytes]],) -> bool:
+def wildcard_certificate(info: Dict[str, List[bytes]]) -> bool:
     """
     Check if a wildcard certificate should be created for the host.
 
     :param info: LDAP attribute values.
     :returns: `True` for a wildcard name, `False` otherwise.
     """
-    return b'Wildcard Certificate' in info.get('univentionService', [],)
+    return b'Wildcard Certificate' in info.get('univentionService', [])
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str = '',) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str = '') -> None:
     """
     Handle changes to 'dn'.
 
@@ -98,7 +98,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         if _delay:
             (old_dn, old) = _delay
             if command != 'a' or old['entryUUID'] != new['entryUUID']:
-                ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Non-consecutive move %s -> %s', old_dn, dn,)
+                ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Non-consecutive move %s -> %s', old_dn, dn)
                 (old_dn, old) = (None, None)
         _delay = None
 
@@ -106,47 +106,47 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         new_cn = new['cn'][0].decode('UTF-8') if new else ""
         if new and not old:
             # changeType: add
-            create_certificate(new_cn, domain(new),)
+            create_certificate(new_cn, domain(new))
             if wildcard_certificate(new):
-                create_certificate('*.%s' % new_cn, domain(new),)
+                create_certificate('*.%s' % new_cn, domain(new))
         elif old and not new:
             # changeType: delete
             if command == 'r':
                 _delay = (dn, old)
             else:
-                remove_certificate(old_cn, domainname=domain(old),)
-                remove_certificate('*.%s' % old_cn, domainname=domain(old),)
+                remove_certificate(old_cn, domainname=domain(old))
+                remove_certificate('*.%s' % old_cn, domainname=domain(old))
         elif old and new:
             # changeType: modify
             old_domain = domain(old)
             new_domain = domain(new)
 
             if new_domain != old_domain:
-                remove_certificate(old_cn, old_domain,)
-                create_certificate(new_cn, new_domain,)
-                remove_certificate('*.%s' % old_cn, old_domain,)
+                remove_certificate(old_cn, old_domain)
+                create_certificate(new_cn, new_domain)
+                remove_certificate('*.%s' % old_cn, old_domain)
                 if wildcard_certificate(new):
-                    create_certificate('*.%s' % new_cn, new_domain,)
+                    create_certificate('*.%s' % new_cn, new_domain)
             else:
                 if wildcard_certificate(new) and not wildcard_certificate(old):
-                    create_certificate('*.%s' % new_cn, domain(new),)
+                    create_certificate('*.%s' % new_cn, domain(new))
                 if not wildcard_certificate(new) and wildcard_certificate(old):
-                    remove_certificate('*.%s' % old_cn, domainname=domain(old),)
+                    remove_certificate('*.%s' % old_cn, domainname=domain(old))
 
         if new:
             # Reset permissions
             fqdn = "%s.%s" % (new_cn, domain(new))
-            certpath = os.path.join(SSLDIR, fqdn,)
-            fix_permissions(certpath, dn, new,)
+            certpath = os.path.join(SSLDIR, fqdn)
+            fix_permissions(certpath, dn, new)
             if wildcard_certificate(new):
                 fqdn = "*.%s.%s" % (new_cn, domain(new))
-                certpath = os.path.join(SSLDIR, fqdn,)
-                fix_permissions(certpath, dn, new,)
+                certpath = os.path.join(SSLDIR, fqdn)
+                fix_permissions(certpath, dn, new)
     finally:
         unsetuid()
 
 
-def fix_permissions(certpath: str, dn: str, new: Dict[str, List[bytes]],) -> None:
+def fix_permissions(certpath: str, dn: str, new: Dict[str, List[bytes]]) -> None:
     """
     Set file permission on directory and files within.
 
@@ -155,7 +155,7 @@ def fix_permissions(certpath: str, dn: str, new: Dict[str, List[bytes]],) -> Non
     :param new: LDAP attribute values.
     """
     try:
-        uidNumber = int(new.get('uidNumber', [b'0'],)[0].decode('ASCII'))
+        uidNumber = int(new.get('uidNumber', [b'0'])[0].decode('ASCII'))
     except (LookupError, TypeError, ValueError):
         uidNumber = 0
 
@@ -163,24 +163,24 @@ def fix_permissions(certpath: str, dn: str, new: Dict[str, List[bytes]],) -> Non
         ent = grp.getgrnam('DC Backup Hosts')
         gidNumber = int(ent.gr_gid)
     except (LookupError, TypeError, ValueError):
-        ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % dn,)
+        ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % dn)
         gidNumber = 0
 
     for directory, _dirnames, filenames in os.walk(certpath):
-        ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber),)
-        os.chown(directory, uidNumber, gidNumber,)
-        os.chmod(directory, 0o750,)
+        ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
+        os.chown(directory, uidNumber, gidNumber)
+        os.chmod(directory, 0o750)
 
         for fname in filenames:
-            filename = os.path.join(directory, fname,)
+            filename = os.path.join(directory, fname)
             if os.path.islink(filename):
                 continue
-            ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (filename, uidNumber, gidNumber),)
-            os.chown(filename, uidNumber, gidNumber,)
-            os.chmod(filename, 0o640,)
+            ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (filename, uidNumber, gidNumber))
+            os.chown(filename, uidNumber, gidNumber)
+            os.chmod(filename, 0o640)
 
 
-def create_certificate(hostname: str, domainname: str,) -> None:
+def create_certificate(hostname: str, domainname: str) -> None:
     """
     Create SSL host certificate.
 
@@ -188,18 +188,18 @@ def create_certificate(hostname: str, domainname: str,) -> None:
     :param domainname: domain name,
     """
     fqdn = '%s.%s' % (hostname, domainname)
-    certpath = os.path.join(SSLDIR, fqdn,)
-    link_path = os.path.join(SSLDIR, hostname,)
+    certpath = os.path.join(SSLDIR, fqdn)
+    link_path = os.path.join(SSLDIR, hostname)
 
     if os.path.exists(certpath):
-        ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Certificate for host %s already exists' % (fqdn,),)
+        ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Certificate for host %s already exists' % (fqdn,))
         if os.path.islink(link_path):
             return
     else:
         if len(fqdn) > 64:
-            ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: FQDN %r is longer than 64 characters, setting Common Name to hostname.' % fqdn,)
+            ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: FQDN %r is longer than 64 characters, setting Common Name to hostname.' % fqdn)
 
-        ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Creating certificate %s' % hostname,)
+        ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Creating certificate %s' % hostname)
         subprocess.call(('/usr/sbin/univention-certificate', 'new', '-name', fqdn))
 
     # Create symlink
@@ -207,14 +207,14 @@ def create_certificate(hostname: str, domainname: str,) -> None:
         os.remove(link_path)
     except EnvironmentError as ex:
         if ex.errno != ENOENT:
-            ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to remove %s: %s' % (link_path, ex),)
+            ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to remove %s: %s' % (link_path, ex))
     try:
-        os.symlink(fqdn, link_path,)
+        os.symlink(fqdn, link_path)
     except EnvironmentError as ex:
-        ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to create %s: %s' % (link_path, ex),)
+        ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to create %s: %s' % (link_path, ex))
 
 
-def remove_certificate(hostname: str, domainname: str,) -> None:
+def remove_certificate(hostname: str, domainname: str) -> None:
     """
     Remove SSL host certificate.
 
@@ -222,13 +222,13 @@ def remove_certificate(hostname: str, domainname: str,) -> None:
     :param domainname: domain name,
     """
     fqdn = '%s.%s' % (hostname, domainname)
-    ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Revoke certificate %s' % (fqdn,),)
+    ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Revoke certificate %s' % (fqdn,))
     subprocess.call(('/usr/sbin/univention-certificate', 'revoke', '-name', fqdn))
 
-    link_path = os.path.join(SSLDIR, hostname,)
+    link_path = os.path.join(SSLDIR, hostname)
     if os.path.exists(link_path):
         os.remove(link_path)
 
-    certpath = os.path.join(SSLDIR, fqdn,)
+    certpath = os.path.join(SSLDIR, fqdn)
     if os.path.exists(certpath):
-        rmtree(certpath, ignore_errors=True,)
+        rmtree(certpath, ignore_errors=True)

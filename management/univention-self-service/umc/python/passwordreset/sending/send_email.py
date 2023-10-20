@@ -66,8 +66,8 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 class SendEmail(UniventionSelfServiceTokenEmitter):
 
     def __init__(self, *args, **kwargs):
-        super(SendEmail, self,).__init__(*args, **kwargs,)
-        self.server = self.ucr.get("umc/self-service/passwordreset/email/server", "localhost",)
+        super(SendEmail, self).__init__(*args, **kwargs)
+        self.server = self.ucr.get("umc/self-service/passwordreset/email/server", "localhost")
 
     @staticmethod
     def send_method():
@@ -89,7 +89,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 
     @property
     def token_length(self):
-        length = self.ucr.get("umc/self-service/passwordreset/email/token_length", 64,)
+        length = self.ucr.get("umc/self-service/passwordreset/email/token_length", 64)
         try:
             length = int(length)
         except ValueError:
@@ -106,10 +106,10 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
             txt = fp.read()
 
         fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
-        frontend_server = self.ucr.get("umc/self-service/passwordreset/email/webserver_address", fqdn,)
+        frontend_server = self.ucr.get("umc/self-service/passwordreset/email/webserver_address", fqdn)
         links = {
             'link': f"https://{frontend_server}/univention/selfservice/#/selfservice/newpassword/",
-            'tokenlink': "https://{fqdn}/univention/selfservice/#/selfservice/newpassword/?token={token}&username={username}".format(fqdn=frontend_server, username=quote(self.data["username"]), token=quote(self.data["token"]),),
+            'tokenlink': "https://{fqdn}/univention/selfservice/#/selfservice/newpassword/?token={token}&username={username}".format(fqdn=frontend_server, username=quote(self.data["username"]), token=quote(self.data["token"])),
         }
 
         formatter_dict = self.data['user_properties']
@@ -118,17 +118,17 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 
         txt = txt.format(**formatter_dict)
 
-        msg = MIMENonMultipart('text', 'plain', charset='utf-8',)
+        msg = MIMENonMultipart('text', 'plain', charset='utf-8')
         cs = email.charset.Charset("utf-8")
         cs.body_encoding = email.charset.QP
-        msg["Subject"] = self.ucr.get("umc/self-service/passwordreset/email/subject", "Password reset",)
+        msg["Subject"] = self.ucr.get("umc/self-service/passwordreset/email/subject", "Password reset")
         msg["Date"] = formatdate(localtime=True)
-        msg["From"] = self.ucr.get("umc/self-service/passwordreset/email/sender_address", f"Password Reset Service <noreply@{fqdn}>",)
+        msg["From"] = self.ucr.get("umc/self-service/passwordreset/email/sender_address", f"Password Reset Service <noreply@{fqdn}>")
         msg["To"] = self.data["address"]
-        msg.set_payload(txt, charset=cs,)
+        msg.set_payload(txt, charset=cs)
 
         smtp = smtplib.SMTP(self.server)
-        smtp.sendmail(msg["From"], self.data["address"], msg.as_string(),)
+        smtp.sendmail(msg["From"], self.data["address"], msg.as_string())
         smtp.quit()
         self.log("Sent mail with token to address {}.".format(self.data["address"]))
 

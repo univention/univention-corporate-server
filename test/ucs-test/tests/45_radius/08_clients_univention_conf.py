@@ -69,10 +69,10 @@ def main():
                 name = uts.random_string()
                 addr = uts.random_ip()
                 secret = uts.random_string()
-                virtual_server = uts.random_string() if random.randint(0, 1,) else ''
+                virtual_server = uts.random_string() if random.randint(0, 1) else ''
                 nas_type = nas_types[i]
-                dn = udm.create_object(role, position='cn=computers,{}'.format(ucr.get('ldap/base')), name=name, ip=[addr], wait_for_replication=False,)
-                computers.append(Bunch(role=role, dn=dn, name=name, addr=addr, secret=secret, nas_type=nas_type, virtual_server=virtual_server, removed=False,))
+                dn = udm.create_object(role, position='cn=computers,{}'.format(ucr.get('ldap/base')), name=name, ip=[addr], wait_for_replication=False)
+                computers.append(Bunch(role=role, dn=dn, name=name, addr=addr, secret=secret, nas_type=nas_type, virtual_server=virtual_server, removed=False))
             utils.wait_for_replication()
 
             print('*** add RADIUS options')
@@ -83,17 +83,18 @@ def main():
                     options=['kerberos', 'samba', 'posix', 'radiusAuthenticator'],
                     univentionRadiusClientSharedSecret=computer.secret,
                     univentionRadiusClientType=computer.nas_type,
-                    univentionRadiusClientVirtualServer=computer.virtual_server,)
+                    univentionRadiusClientVirtualServer=computer.virtual_server,
+                )
                 utils.verify_ldap_object(
                     computer.dn,
                     expected_attr={
                         'univentionRadiusClientSharedSecret': [computer.secret],
                         'univentionRadiusClientType': [computer.nas_type],
                         'univentionRadiusClientVirtualServer': [computer.virtual_server] if computer.virtual_server else [],
-                    },)
+                    })
             utils.wait_for_replication_and_postrun()
 
-            def check_file_content(computers,):
+            def check_file_content(computers):
                 print('*** checking /etc/freeradius/3.0/clients.univention.conf')
                 with open('/etc/freeradius/3.0/clients.univention.conf') as fd:
                     content = fd.read()
@@ -103,31 +104,32 @@ def main():
                         '{}\n'
                         '##############################'
                     ).format(content))
-                    content = re.sub(r'\s+', ' ', content,)
+                    content = re.sub(r'\s+', ' ', content)
 
-                def in_content(content, name, txt,):
+                def in_content(content, name, txt):
                     assert txt in content, f'cannot find "{txt}" for computer {name}'
 
-                def not_in_content(content, name, txt,):
+                def not_in_content(content, name, txt):
                     assert txt not in content, f'unexpectedly found "{txt}" for computer {name}'
 
                 for computer in computers:
                     func = not_in_content if computer.removed else in_content
-                    func(content, computer.name, f'client {computer.name} {{',)
-                    func(content, computer.name, f'ipaddr = {computer.addr}',)
-                    func(content, computer.name, f'secret = {computer.secret}',)
-                    func(content, computer.name, f'nas_type = {computer.nas_type}',)
+                    func(content, computer.name, f'client {computer.name} {{')
+                    func(content, computer.name, f'ipaddr = {computer.addr}')
+                    func(content, computer.name, f'secret = {computer.secret}')
+                    func(content, computer.name, f'nas_type = {computer.nas_type}')
                     if not computer.removed:
                         if computer.virtual_server:
-                            func(content, computer.name, f'virtual_server = {computer.virtual_server}',)
+                            func(content, computer.name, f'virtual_server = {computer.virtual_server}')
                         else:
-                            func(content, computer.name, '# virtual_server = ...not specified...',)
+                            func(content, computer.name, '# virtual_server = ...not specified...')
 
             utils.retry_on_error(
                 lambda: check_file_content(computers),
                 exceptions=AssertionError,
                 retry_count=5,
-                delay=2,)
+                delay=2,
+            )
 
             print('*** change RADIUS values')
             for computer in computers:
@@ -140,24 +142,27 @@ def main():
                     options=['kerberos', 'samba', 'posix', 'radiusAuthenticator'],
                     univentionRadiusClientSharedSecret=computer.secret,
                     univentionRadiusClientType=computer.nas_type,
-                    univentionRadiusClientVirtualServer=computer.virtual_server,)
+                    univentionRadiusClientVirtualServer=computer.virtual_server,
+                )
             utils.wait_for_replication_and_postrun()
             utils.retry_on_error(
                 lambda: check_file_content(computers),
                 exceptions=AssertionError,
                 retry_count=5,
-                delay=2,)
+                delay=2,
+            )
 
             print('*** remove a computer')
             computer = computers[-1]
-            udm.remove_object(computer.role, dn=computer.dn,)
+            udm.remove_object(computer.role, dn=computer.dn)
             computer.removed = True
             utils.wait_for_replication_and_postrun()
             utils.retry_on_error(
                 lambda: check_file_content(computers),
                 exceptions=AssertionError,
                 retry_count=5,
-                delay=2,)
+                delay=2,
+            )
 
             print('*** remove RADIUS settings')
             computer = computers[-2]
@@ -167,14 +172,16 @@ def main():
                 options=['kerberos', 'samba', 'posix'],
                 univentionRadiusClientSharedSecret='',
                 univentionRadiusClientType='',
-                univentionRadiusClientVirtualServer='',)
+                univentionRadiusClientVirtualServer='',
+            )
             computer.removed = True
             utils.wait_for_replication_and_postrun()
             utils.retry_on_error(
                 lambda: check_file_content(computers),
                 exceptions=AssertionError,
                 retry_count=5,
-                delay=2,)
+                delay=2,
+            )
 
 
 if __name__ == '__main__':

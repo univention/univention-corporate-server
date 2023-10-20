@@ -33,14 +33,14 @@
 from univention.udm import UDM, NoObject
 
 
-def handler(configRegistry, changes,):
+def handler(configRegistry, changes):
     if configRegistry.get('server/role') != "domaincontroller_master":
         print('self-service-links module can only run on role Primary Directory Node')
         return
 
     udm = UDM.machine().version(3)
     for key, (_old, new) in changes.items():
-        activated = configRegistry.is_true(None, value=new,)
+        activated = configRegistry.is_true(None, value=new)
         name = {
             'umc/self-service/profiledata/enabled': 'self-service-my-profile',
             'umc/self-service/protect-account/backend/enabled': 'self-service-protect-account',
@@ -57,4 +57,4 @@ def handler(configRegistry, changes,):
             continue
         obj.props.activated = activated
         obj.save()
-        print(obj.dn, 'active state set to', activated,)
+        print(obj.dn, 'active state set to', activated)

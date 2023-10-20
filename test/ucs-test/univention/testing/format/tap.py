@@ -17,15 +17,15 @@ class TAP(TestFormatInterface):
     <http://testanything.org/wiki/index.php/Main_Page>
     """
 
-    def __init__(self, stream=sys.stdout,):  # type: (IO[str]) -> None
+    def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
         super().__init__(stream)
 
-    def begin_run(self, environment, count=1,):  # type: (TestEnvironment, int) -> None
+    def begin_run(self, environment, count=1):  # type: (TestEnvironment, int) -> None
         """Called before first test."""
-        super().begin_run(environment, count,)
+        super().begin_run(environment, count)
         print("1..%d" % (count,))
 
-    def end_test(self, result,):  # type: (TestResult) -> None
+    def end_test(self, result):  # type: (TestResult) -> None
         """Called after each test."""
         if result.result == TestCodes.RESULT_OKAY:
             prefix = 'ok'
@@ -36,10 +36,10 @@ class TAP(TestFormatInterface):
         else:
             prefix = 'not ok'
             suffix = ''
-        print(f'{prefix} {result.case.uid}{suffix}', file=self.stream,)
+        print(f'{prefix} {result.case.uid}{suffix}', file=self.stream)
         super().end_test(result)
 
-    def format(self, result,):  # type: (TestResult) -> None
+    def format(self, result):  # type: (TestResult) -> None
         """
         >>> from univention.testing.data import TestCase
         >>> te = TestEnvironment()

@@ -29,7 +29,7 @@ def create_app():
     app_name = get_app_name()
     app_version = get_app_version()
 
-    app = App(name=app_name, version=app_version,)
+    app = App(name=app_name, version=app_version)
 
     package_name1 = get_app_name()
     package_name2 = get_app_name()
@@ -53,17 +53,17 @@ def create_app():
 
     app.add_to_local_appcenter()
 
-    package1 = DebianPackage(name=package_name1, version='0.1',)
+    package1 = DebianPackage(name=package_name1, version='0.1')
     package1.build()
-    copy_package_to_appcenter(ucr['version/version'], app.app_directory, package1.get_binary_name(),)
+    copy_package_to_appcenter(ucr['version/version'], app.app_directory, package1.get_binary_name())
 
-    package2 = DebianPackage(name=package_name2, version='0.1',)
+    package2 = DebianPackage(name=package_name2, version='0.1')
     package2.build()
-    copy_package_to_appcenter(ucr['version/version'], app.app_directory, package2.get_binary_name(),)
+    copy_package_to_appcenter(ucr['version/version'], app.app_directory, package2.get_binary_name())
 
-    package3 = DebianPackage(name=package_name3, version='0.1',)
+    package3 = DebianPackage(name=package_name3, version='0.1')
     package3.build()
-    copy_package_to_appcenter(ucr['version/version'], app.app_directory, package3.get_binary_name(),)
+    copy_package_to_appcenter(ucr['version/version'], app.app_directory, package3.get_binary_name())
 
     try:
         appcenter.update()

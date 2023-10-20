@@ -95,7 +95,7 @@ class Watched_File(object):
     rather basic 'stat' calls, monitoring mtime and size.
     """
 
-    def __init__(self, path: str, count: int = 2,) -> None:
+    def __init__(self, path: str, count: int = 2) -> None:
         self._file = path
         self._count = count
 
@@ -131,7 +131,7 @@ class Watched_File(object):
             if self._unchanged_count >= self._count:
                 # Don't record new timestamp if MD5 of file is the same
                 try:
-                    with open(self._file, 'rb',) as fd:
+                    with open(self._file, 'rb') as fd:
                         hash_ = md5(fd.read()).hexdigest()
                 except EnvironmentError:
                     pass
@@ -151,9 +151,9 @@ class Watched_File(object):
 class Watched_Files(object):
     """Convenience class to monitor more than one file at a time."""
 
-    def __init__(self, files: Iterable[str], count: int = 2,) -> None:
+    def __init__(self, files: Iterable[str], count: int = 2) -> None:
         self._count = count
-        self._files = [Watched_File(f, 0,) for f in files]
+        self._files = [Watched_File(f, 0) for f in files]
         self._last_returned_stamp = 0  # the last result we returned to the caller. will be returned as long as there are not enough changes.
         self._unchanged_count = 0  # incremented if size and timestamp didn't change
         self._last_stamp = 0  # last timestamp we've seen
@@ -202,7 +202,7 @@ class Instance(Base):
 
             with open(status_file) as fd:
                 info = dict(
-                    line.strip().split('=', 1,)  # type: ignore
+                    line.strip().split('=', 1)  # type: ignore
                     for line in fd
                 )  # type: Dict[str, str]
 
@@ -224,8 +224,8 @@ class Instance(Base):
             return default
 
         version = self.uu.current_version
-        for _ver, data in self.uu.get_releases(version, version,):
-            status = data.get('status', 'unmaintained',)
+        for _ver, data in self.uu.get_releases(version, version):
+            status = data.get('status', 'unmaintained')
 
             maintenance_extended = status == 'extended'
             show_warning = maintenance_extended or status != 'maintained'
@@ -268,10 +268,10 @@ class Instance(Base):
         return result
 
     @sanitize(
-        hooks=ListSanitizer(StringSanitizer(minimum=1), required=True,),
+        hooks=ListSanitizer(StringSanitizer(minimum=1), required=True),
     )
     @threaded
-    def call_hooks(self, request,) -> None:
+    def call_hooks(self, request) -> None:
         """Calls the specified hooks and returns data given back by each hook"""
         result = {}
         hookmanager = HookManager(HOOK_DIRECTORY)  # , raise_exceptions=False
@@ -336,19 +336,19 @@ class Instance(Base):
             MODULE.error(msg)
         return False
 
-    def status(self, request,) -> None:  # TODO: remove unneeded things
+    def status(self, request) -> None:  # TODO: remove unneeded things
         """One call for all single-value variables."""
         result = {}  # type: Dict[str, Any]
         ucr.load()
 
         try:
-            result['erratalevel'] = int(ucr.get('version/erratalevel', 0,))
+            result['erratalevel'] = int(ucr.get('version/erratalevel', 0))
         except ValueError:
             result['erratalevel'] = 0
 
         result['appliance_mode'] = ucr.is_true('server/appliance')
         result['timestamp'] = int(time())
-        result['reboot_required'] = ucr.is_true('update/reboot/required', False,)
+        result['reboot_required'] = ucr.is_true('update/reboot/required', False)
 
         try:
             # be as current as possible.
@@ -402,9 +402,9 @@ class Instance(Base):
                 _('Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server.'),
                 _('This is the error message:'),
                 exc,
-            ), traceback=format_exc(),)
+            ), traceback=format_exc())
 
-        self.finished(request.id, [result],)
+        self.finished(request.id, [result])
 
     @simple_response
     def running(self) -> str:
@@ -415,10 +415,11 @@ class Instance(Base):
         return self.__which_job_is_running()
 
     @sanitize(
-        job=ChoicesSanitizer(list(INSTALLERS) + [''], required=True,),
-        count=IntegerSanitizer(default=0),)
+        job=ChoicesSanitizer(list(INSTALLERS) + [''], required=True),
+        count=IntegerSanitizer(default=0),
+    )
     @simple_response
-    def updater_log_file(self, job: str, count: int,) -> Union[None, float, List[str]]:
+    def updater_log_file(self, job: str, count: int) -> Union[None, float, List[str]]:
         """
         returns the content of the log file associated with
         the job.
@@ -449,9 +450,9 @@ class Instance(Base):
 
         # don't read complete file if we have an 'ignore' count
         count += self._logfile_start_line
-        return self._logview(fname, -count,)
+        return self._logview(fname, -count)
 
-    def _logview(self, fname: str, count: int,) -> List[str]:
+    def _logview(self, fname: str, count: int) -> List[str]:
         """
         Contains all functions needed to view or 'tail' an arbitrary text file.
 
@@ -462,12 +463,12 @@ class Instance(Base):
         """
         lines = []
         try:
-            with open(fname, 'rb',) as fd:
+            with open(fname, 'rb') as fd:
                 for line in fd:
                     if (count < 0):
                         count += 1
                     else:
-                        lines.append(line.rstrip().decode('utf-8', 'replace',))
+                        lines.append(line.rstrip().decode('utf-8', 'replace'))
                         if (count > 0) and (len(lines) > count):
                             lines.pop(0)
         except EnvironmentError:
@@ -475,10 +476,10 @@ class Instance(Base):
         return lines
 
     @sanitize(
-        job=ChoicesSanitizer(INSTALLERS, required=True,),
+        job=ChoicesSanitizer(INSTALLERS, required=True),
     )
     @simple_response
-    def updater_job_status(self, job: str,) -> Dict[str, Any]:  # TODO: remove this completely
+    def updater_job_status(self, job: str) -> Dict[str, Any]:  # TODO: remove this completely
         """Returns the status of the current/last update even if the job is not running anymore."""
         result = {}  # type: Dict[str, Any]
         try:
@@ -494,10 +495,11 @@ class Instance(Base):
         return result
 
     @sanitize(
-        job=ChoicesSanitizer(INSTALLERS, required=True,),
-        detail=StringSanitizer(r'^[A-Za-z0-9\.\- ]*$'),)
+        job=ChoicesSanitizer(INSTALLERS, required=True),
+        detail=StringSanitizer(r'^[A-Za-z0-9\.\- ]*$'),
+    )
     @simple_response
-    def run_installer(self, job: str, detail: str = '',) -> Dict[str, int]:
+    def run_installer(self, job: str, detail: str = '') -> Dict[str, int]:
         """
         This is the function that invokes any kind of installer. Arguments accepted:
 
@@ -516,7 +518,7 @@ class Instance(Base):
         # remember initial lines of logfile before starting update to not show it in the frontend
         logfile = spec['logfile']
         try:
-            with open(logfile, 'rb',) as fd:
+            with open(logfile, 'rb') as fd:
                 self._logfile_start_line = sum(1 for line in fd)
         except EnvironmentError:
             pass
@@ -529,7 +531,7 @@ class Instance(Base):
 %s
 %s < /dev/null
 %s''' % (spec["prejob"], command, spec["postjob"])
-        atjobs.add(command, comments={"lines": self._logfile_start_line},)
+        atjobs.add(command, comments={"lines": self._logfile_start_line})
 
         return {'status': 0}
 
@@ -541,7 +543,7 @@ class Instance(Base):
                 if cmd in atjob.command:
                     self._current_job = job
                     try:
-                        self._logfile_start_line = int(atjob.comments.get('lines', 0,))
+                        self._logfile_start_line = int(atjob.comments.get('lines', 0))
                     except ValueError:
                         pass
                     return job
@@ -613,7 +615,7 @@ class HookManager:
     []
     """
 
-    def __init__(self, module_dir: str, raise_exceptions: bool = True,) -> None:
+    def __init__(self, module_dir: str, raise_exceptions: bool = True) -> None:
         """
         :param module_dir: path to directory that contains Python modules with hook functions
         :param raise_exceptions: if `False`, all exceptions while loading Python modules will be dropped and all exceptions while calling hooks will be caught and returned in result list
@@ -632,7 +634,7 @@ class HookManager:
                 if f.endswith('.py') and len(f) > 3:
                     modname = f[0:-3]
                     try:
-                        spec = importlib.util.spec_from_file_location(modname, os.path.join(self.__module_dir, f,),)
+                        spec = importlib.util.spec_from_file_location(modname, os.path.join(self.__module_dir, f))
                         module = importlib.util.module_from_spec(spec)
                         spec.loader.exec_module(module)  # type: ignore
                         self.__loaded_modules[modname] = module
@@ -648,12 +650,12 @@ class HookManager:
                     # if returned function is not callable then continue
                     if not callable(func):
                         continue
-                    self.__registered_hooks.setdefault(hookname, [],).append(func)
+                    self.__registered_hooks.setdefault(hookname, []).append(func)
             except Exception:
                 if self.__raise_exceptions:
                     raise
 
-    def set_raise_exceptions(self, val: bool,) -> None:
+    def set_raise_exceptions(self, val: bool) -> None:
         """
         Enable or disable raising exceptions.
 
@@ -668,16 +670,16 @@ class HookManager:
         """returns a list of hook names that have been defined by loaded Python modules."""
         return self.__registered_hooks.keys()
 
-    def call_hook(self, name: str,*args: Any, **kwargs: Any) -> List[Any]:
+    def call_hook(self, name: str, *args: Any, **kwargs: Any) -> List[Any]:
         """
         All additional arguments are passed to hook methods.
         If `self.__raise_exceptions` is `False`, all exceptions while calling hooks will be caught and returned in result list.
         If return value is an empty list, no hook has been called.
         """
         result = []
-        for func in self.__registered_hooks.get(name, [],):
+        for func in self.__registered_hooks.get(name, []):
             try:
-                res = func(*args, **kwargs,)
+                res = func(*args, **kwargs)
                 result.append(res)
             except Exception as e:
                 if self.__raise_exceptions:

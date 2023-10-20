@@ -21,7 +21,7 @@ class TestUMCGroupsCreation(UMCBase):
         super().__init__()
         self.ldap_base = None
 
-    def create_group(self, groupname, policynames={},):
+    def create_group(self, groupname, policynames={}):
         """
         Creates a group with a provided 'groupname' and provided
         'policynames' if any for the test by making a UMC-request 'udm/add'.
@@ -38,7 +38,7 @@ class TestUMCGroupsCreation(UMCBase):
         ]
 
         try:
-            request_result = self.client.umc_command('udm/add', options, 'groups/group',).result
+            request_result = self.client.umc_command('udm/add', options, 'groups/group').result
             if not request_result:
                 utils.fail("Request 'udm/add' group failed. Response: %r\nRequest options: %r\n"
                            "hostname: %r" % (request_result, options, self.hostname))
@@ -49,14 +49,14 @@ class TestUMCGroupsCreation(UMCBase):
             utils.fail("Exception while making 'udm/add' group request: %s" %
                        exc)
 
-    def add_group_policy(self, groupname, policyname,):
+    def add_group_policy(self, groupname, policyname):
         """
         Adds the provided 'policyname' to the provided 'groupname'
         by making a UMC 'udm/put' request with respective options.
         """
         options = [{"object": {"$policies$": {"policies/umc": ["cn=" + policyname + ",cn=UMC,cn=policies," + self.ldap_base]}, "$dn$": "cn=" + groupname + ",cn=groups," + self.ldap_base}, "options": {}}]
         try:
-            request_result = self.client.umc_command('udm/put', options, 'groups/group',).result
+            request_result = self.client.umc_command('udm/put', options, 'groups/group').result
             if not request_result:
                 utils.fail(f"Request 'udm/put' to add policy to a group with options '{options}' failed, hostname {self.hostname}")
             if not request_result[0].get('success'):
@@ -64,14 +64,14 @@ class TestUMCGroupsCreation(UMCBase):
         except Exception as exc:
             utils.fail("Exception while making 'udm/put' request: %s" % exc)
 
-    def get_group_by_name(self, groupname,):
+    def get_group_by_name(self, groupname):
         """
         Returns the group data with 'groupname' by making a 'udm/get'
         UMC request.
         """
         options = ["cn=" + groupname + ",cn=groups," + self.ldap_base]
         try:
-            request_result = self.client.umc_command('udm/get', options, 'groups/group',).result
+            request_result = self.client.umc_command('udm/get', options, 'groups/group').result
             if not request_result:
                 utils.fail(f"Request 'udm/get' with options '{options}' failed, hostname '{self.hostname}'")
             return request_result
@@ -89,11 +89,11 @@ class TestUMCGroupsCreation(UMCBase):
         try:
             print("Creating a test group with a name '%s'" % test_groupname)
             self.create_group(test_groupname)
-            if not self.check_obj_exists(test_groupname, "groups/group",):
+            if not self.check_obj_exists(test_groupname, "groups/group"):
                 utils.fail("Failed to query the newly created group '%s'" % test_groupname)
 
             print(f"Adding a '{policyname}' policy to a test group '{test_groupname}'")
-            self.add_group_policy(test_groupname, policyname,)
+            self.add_group_policy(test_groupname, policyname)
 
             print(f"Checking test group '{test_groupname}' policies for '{policyname}'")
             group_policies = self.get_group_by_name(test_groupname)[0].get('$policies$')
@@ -107,8 +107,8 @@ class TestUMCGroupsCreation(UMCBase):
                 utils.fail(f"The policy '{policyname}' is not in a group '{test_groupname}' policies '{group_policies}'")
         finally:
             print("Removing created test group if it exists")
-            if self.check_obj_exists(test_groupname, "groups/group",):
-                self.delete_obj(test_groupname, "groups", "groups/group",)
+            if self.check_obj_exists(test_groupname, "groups/group"):
+                self.delete_obj(test_groupname, "groups", "groups/group")
 
 
 if __name__ == '__main__':

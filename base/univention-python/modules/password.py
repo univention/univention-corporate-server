@@ -47,7 +47,7 @@ try:
     from samba import check_password_quality as samba_check_password_quality
 except ImportError:
     def samba_check_password_quality(*args, **kwargs):
-        ud.debug(ud.LDAP, ud.ERROR, 'samba_check_password_quality() is not available in Python 2. Not checking password quality.',)
+        ud.debug(ud.LDAP, ud.ERROR, 'samba_check_password_quality() is not available in Python 2. Not checking password quality.')
         return True  # not available, use Python 3
 
 
@@ -57,7 +57,7 @@ class CheckFailed(Exception):
 
 class Check(object):
 
-    def __init__(self, lo, username=None,):
+    def __init__(self, lo, username=None):
         self.ConfigRegistry = ucr.ConfigRegistry()
         self.ConfigRegistry.load()
 
@@ -81,42 +81,42 @@ class Check(object):
         elif os.path.exists('/etc/machine.secret'):
             self.lo = univention.uldap.getMachineConnection(start_tls=2)
         else:
-            self.lo = univention.uldap.access(host=self.ConfigRegistry.get('ldap/master'), base=self.ConfigRegistry.get('ldap/base'), start_tls=2,)
+            self.lo = univention.uldap.access(host=self.ConfigRegistry.get('ldap/master'), base=self.ConfigRegistry.get('ldap/base'), start_tls=2)
 
     def _systemPolicy(self):
-        if self.ConfigRegistry.get('password/quality/credit/digits', '0',):
-            cracklib.DIG_CREDIT = int(self.ConfigRegistry.get('password/quality/credit/digits', '0',)) * -1
-        if self.ConfigRegistry.get('password/quality/credit/upper', '0',):
-            cracklib.UP_CREDIT = int(self.ConfigRegistry.get('password/quality/credit/upper', '0',)) * -1
-        if self.ConfigRegistry.get('password/quality/credit/lower', '0',):
-            cracklib.LOW_CREDIT = int(self.ConfigRegistry.get('password/quality/credit/lower', '0',)) * -1
-        if self.ConfigRegistry.get('password/quality/credit/other', '0',):
-            cracklib.OTH_CREDIT = int(self.ConfigRegistry.get('password/quality/credit/other', '0',)) * -1
-        self.forbidden_chars = self.ConfigRegistry.get('password/quality/forbidden/chars', '',)
-        self.required_chars = self.ConfigRegistry.get('password/quality/required/chars', '',)
+        if self.ConfigRegistry.get('password/quality/credit/digits', '0'):
+            cracklib.DIG_CREDIT = int(self.ConfigRegistry.get('password/quality/credit/digits', '0')) * -1
+        if self.ConfigRegistry.get('password/quality/credit/upper', '0'):
+            cracklib.UP_CREDIT = int(self.ConfigRegistry.get('password/quality/credit/upper', '0')) * -1
+        if self.ConfigRegistry.get('password/quality/credit/lower', '0'):
+            cracklib.LOW_CREDIT = int(self.ConfigRegistry.get('password/quality/credit/lower', '0')) * -1
+        if self.ConfigRegistry.get('password/quality/credit/other', '0'):
+            cracklib.OTH_CREDIT = int(self.ConfigRegistry.get('password/quality/credit/other', '0')) * -1
+        self.forbidden_chars = self.ConfigRegistry.get('password/quality/forbidden/chars', '')
+        self.required_chars = self.ConfigRegistry.get('password/quality/required/chars', '')
 
         # to be compatible with UCS 2.3 kerberos check_cracklib.py
-        if self.ConfigRegistry.get('password/quality/length/min', None,):
+        if self.ConfigRegistry.get('password/quality/length/min', None):
             self.min_length = int(self.ConfigRegistry.get('password/quality/length/min'))
-        if self.ConfigRegistry.get('password/quality/ascii_lowercase', None,):
+        if self.ConfigRegistry.get('password/quality/ascii_lowercase', None):
             cracklib.ASCII_LOWERCASE = self.ConfigRegistry.get('password/quality/ascii_lowercase')
-        if self.ConfigRegistry.get('password/quality/ascii_uppercase', None,):
+        if self.ConfigRegistry.get('password/quality/ascii_uppercase', None):
             cracklib.ASCII_UPPERCASE = self.ConfigRegistry.get('password/quality/ascii_uppercase')
-        if self.ConfigRegistry.get('password/quality/diff_ok', None,):
+        if self.ConfigRegistry.get('password/quality/diff_ok', None):
             cracklib.DIFF_OK = int(self.ConfigRegistry.get('password/quality/diff_ok'))
 
         # optionally activate Microsoft standard criteria
-        self.mspolicy = self.ConfigRegistry.get('password/quality/mspolicy', None,)
+        self.mspolicy = self.ConfigRegistry.get('password/quality/mspolicy', None)
         # normalize True values
         self.mspolicy = self.ConfigRegistry.is_true(value=self.mspolicy) or self.mspolicy
 
-    def _userPolicy(self, username,):
+    def _userPolicy(self, username):
         # username or kerberos principal
         try:
             if '@' in self.username:
-                dn = self.lo.searchDn(filter_format('krb5PrincipalName=%s', [username],))[0]
+                dn = self.lo.searchDn(filter_format('krb5PrincipalName=%s', [username]))[0]
             else:
-                dn = self.lo.searchDn(filter_format('(&(uid=%s)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson))))', [username],))[0]
+                dn = self.lo.searchDn(filter_format('(&(uid=%s)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson))))', [username]))[0]
         except IndexError:
             raise CheckFailed('User was not found.')
 
@@ -129,11 +129,11 @@ class Check(object):
             if policy_result['univentionPolicyPWHistory'].get('univentionPWHistoryLen'):
                 self.history_length = int(policy_result['univentionPolicyPWHistory']['univentionPWHistoryLen']['value'][0])
             if policy_result['univentionPolicyPWHistory'].get('univentionPWQualityCheck'):
-                univentionPasswordQualityCheck = policy_result['univentionPolicyPWHistory']['univentionPWQualityCheck']['value'][0].decode('ASCII', 'replace',)
+                univentionPasswordQualityCheck = policy_result['univentionPolicyPWHistory']['univentionPWQualityCheck']['value'][0].decode('ASCII', 'replace')
                 self.enableQualityCheck = self.ConfigRegistry.is_true(value=univentionPasswordQualityCheck)
-        self.pwhistory = self.lo.search(base=dn, attr=['pwhistory'],)[0][1].get('pwhistory')
+        self.pwhistory = self.lo.search(base=dn, attr=['pwhistory'])[0][1].get('pwhistory')
 
-    def check(self, password, username=None, displayname=None,):
+    def check(self, password, username=None, displayname=None):
         if self.min_length > 0:
             if len(password) < self.min_length:
                 raise CheckFailed('Password is too short')
@@ -156,7 +156,7 @@ class Check(object):
                 if username and len(username) > 3 and username.lower() in password.lower():
                     raise CheckFailed('Password contains user account name.')
                 if displayname:
-                    for namepart in re.split('[-,._# \t]+', displayname,):
+                    for namepart in re.split('[-,._# \t]+', displayname):
                         if len(namepart) > 3 and namepart.lower() in password.lower():
                             raise CheckFailed('Password contains parts of the full user name.')
             if self.mspolicy == 'sufficient':
@@ -198,7 +198,7 @@ class Check(object):
 #    pwdCheck.check('univention')
 
 
-def password_config(scope=None,):
+def password_config(scope=None):
     """
     Read password configuration options from UCR.
 
@@ -209,22 +209,22 @@ def password_config(scope=None,):
     :rtype: :class:`dict`
     """
     default_cfg = {
-        'digits': ucr.ucr.get_int('password/quality/credit/digits', 6,),
-        'lower': ucr.ucr.get_int('password/quality/credit/lower', 6,),
-        'other': ucr.ucr.get_int('password/quality/credit/other', 0,),
-        'upper': ucr.ucr.get_int('password/quality/credit/upper', 6,),
-        'forbidden': ucr.ucr.get('password/quality/forbidden/chars', '0Ol1I',),
-        'min_length': ucr.ucr.get_int('password/quality/length/min', 24,),
+        'digits': ucr.ucr.get_int('password/quality/credit/digits', 6),
+        'lower': ucr.ucr.get_int('password/quality/credit/lower', 6),
+        'other': ucr.ucr.get_int('password/quality/credit/other', 0),
+        'upper': ucr.ucr.get_int('password/quality/credit/upper', 6),
+        'forbidden': ucr.ucr.get('password/quality/forbidden/chars', '0Ol1I'),
+        'min_length': ucr.ucr.get_int('password/quality/length/min', 24),
     }
 
     if scope:
         cfg = {
-            'digits': ucr.ucr.get_int('password/%s/quality/credit/digits' % scope, default_cfg.get('digits'),),
-            'lower': ucr.ucr.get_int('password/%s/quality/credit/lower' % scope, default_cfg.get('lower'),),
-            'other': ucr.ucr.get_int('password/%s/quality/credit/other' % scope, default_cfg.get('other'),),
-            'upper': ucr.ucr.get_int('password/%s/quality/credit/upper' % scope, default_cfg.get('upper'),),
-            'forbidden': ucr.ucr.get('password/%s/quality/forbidden/chars' % scope, default_cfg.get('forbidden'),),
-            'min_length': ucr.ucr.get_int('password/%s/quality/length/min' % scope, default_cfg.get('min_length'),),
+            'digits': ucr.ucr.get_int('password/%s/quality/credit/digits' % scope, default_cfg.get('digits')),
+            'lower': ucr.ucr.get_int('password/%s/quality/credit/lower' % scope, default_cfg.get('lower')),
+            'other': ucr.ucr.get_int('password/%s/quality/credit/other' % scope, default_cfg.get('other')),
+            'upper': ucr.ucr.get_int('password/%s/quality/credit/upper' % scope, default_cfg.get('upper')),
+            'forbidden': ucr.ucr.get('password/%s/quality/forbidden/chars' % scope, default_cfg.get('forbidden')),
+            'min_length': ucr.ucr.get_int('password/%s/quality/length/min' % scope, default_cfg.get('min_length')),
         }
     else:
         cfg = default_cfg
@@ -232,7 +232,7 @@ def password_config(scope=None,):
     return cfg
 
 
-def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_length=24,):
+def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_length=24):
     """
     Generate random password using given parameters. Whitespaces are implicitly forbidden.
 
@@ -270,7 +270,7 @@ def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_len
 
     available_chars = set(string.printable) - exclude_characters
     if not available_chars:
-        raise ValueError('All available characters are excluded by the rule: %r', (exclude_characters,),)
+        raise ValueError('All available characters are excluded by the rule: %r', (exclude_characters,))
 
     rnd = SystemRandom()
 
@@ -282,31 +282,31 @@ def generate_password(digits=6, lower=6, other=0, upper=6, forbidden='', min_len
     random_list = []
     if digits > 0:
         if digit_characters:
-            random_list.extend(rnd.choices(digit_characters, k=digits,))
+            random_list.extend(rnd.choices(digit_characters, k=digits))
         else:
             raise ValueError('There are %s digits requested but digits pool is empty' % (digits,))
 
     if lower > 0:
         if ascii_lowercase:
-            random_list.extend(rnd.choices(ascii_lowercase, k=lower,))
+            random_list.extend(rnd.choices(ascii_lowercase, k=lower))
         else:
             raise ValueError('There are %s lowercase characters requested but lowercase pool is empty' % (lower,))
 
     if upper > 0:
         if ascii_uppercase:
-            random_list.extend(rnd.choices(ascii_uppercase, k=upper,))
+            random_list.extend(rnd.choices(ascii_uppercase, k=upper))
         else:
             raise ValueError('There are %s uppercase characters requested but uppercase pool is empty' % (upper,))
 
     if other > 0:
         if special_characters:
-            random_list.extend(rnd.choices(special_characters, k=other,))
+            random_list.extend(rnd.choices(special_characters, k=other))
         else:
             raise ValueError('There are %s special characters requested but special characters pool is empty' % (other,))
 
     if min_length > len(random_list):
         available_char_pool = ''.join(set(digit_characters + ascii_lowercase + ascii_uppercase + special_characters))
-        random_list.extend(rnd.choices(available_char_pool, k=min_length - len(random_list),))
+        random_list.extend(rnd.choices(available_char_pool, k=min_length - len(random_list)))
 
     rnd.shuffle(random_list)
     res = ''.join(random_list)

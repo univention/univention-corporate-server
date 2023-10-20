@@ -61,11 +61,11 @@ Ant patterns for files and folders to exclude while doing the
 recursive traversal in :py:meth:`waflib.Node.Node.ant_glob`
 """
 
-def ant_matcher(s, ignorecase,):
+def ant_matcher(s, ignorecase):
 	reflags = re.I if ignorecase else 0
 	ret = []
 	for x in Utils.to_list(s):
-		x = x.replace('\\', '/',).replace('//', '/',)
+		x = x.replace('\\', '/').replace('//', '/')
 		if x.endswith('/'):
 			x += '**'
 		accu = []
@@ -73,18 +73,18 @@ def ant_matcher(s, ignorecase,):
 			if k == '**':
 				accu.append(k)
 			else:
-				k = k.replace('.', '[.]',).replace('*', '.*',).replace('?', '.',).replace('+', '\\+',)
+				k = k.replace('.', '[.]').replace('*', '.*').replace('?', '.').replace('+', '\\+')
 				k = '^%s$' % k
 				try:
-					exp = re.compile(k, flags=reflags,)
+					exp = re.compile(k, flags=reflags)
 				except Exception as e:
-					raise Errors.WafError('Invalid pattern: %s' % k, e,)
+					raise Errors.WafError('Invalid pattern: %s' % k, e)
 				else:
 					accu.append(exp)
 		ret.append(accu)
 	return ret
 
-def ant_sub_filter(name, nn,):
+def ant_sub_filter(name, nn):
 	ret = []
 	for lst in nn:
 		if not lst:
@@ -100,9 +100,9 @@ def ant_sub_filter(name, nn,):
 			ret.append(lst[1:])
 	return ret
 
-def ant_sub_matcher(name, pats,):
-	nacc = ant_sub_filter(name, pats[0],)
-	nrej = ant_sub_filter(name, pats[1],)
+def ant_sub_matcher(name, pats):
+	nacc = ant_sub_filter(name, pats[0])
+	nrej = ant_sub_filter(name, pats[1])
 	if [] in nrej:
 		nacc = []
 	return [nacc, nrej]
@@ -121,7 +121,7 @@ class Node(object):
 	"""
 
 	__slots__ = ('name', 'parent', 'children', 'cache_abspath', 'cache_isdir')
-	def __init__(self, name, parent,):
+	def __init__(self, name, parent):
 		"""
 		.. note:: Use :py:func:`Node.make_node` or :py:func:`Node.find_node` instead of calling this constructor
 		"""
@@ -132,7 +132,7 @@ class Node(object):
 				raise Errors.WafError('node %s exists in the parent files %r already' % (name, parent))
 			parent.children[name] = self
 
-	def __setstate__(self, data,):
+	def __setstate__(self, data):
 		"Deserializes node information, used for persistence"
 		self.name = data[0]
 		self.parent = data[1]
@@ -142,7 +142,7 @@ class Node(object):
 
 	def __getstate__(self):
 		"Serializes node information, used for persistence"
-		return (self.name, self.parent, getattr(self, 'children', None,))
+		return (self.name, self.parent, getattr(self, 'children', None))
 
 	def __str__(self):
 		"""
@@ -168,7 +168,7 @@ class Node(object):
 		"""
 		raise Errors.WafError('nodes are not supposed to be copied')
 
-	def read(self, flags='r', encoding='latin-1',):
+	def read(self, flags='r', encoding='latin-1'):
 		"""
 		Reads and returns the contents of the file represented by this node, see :py:func:`waflib.Utils.readf`::
 
@@ -182,9 +182,9 @@ class Node(object):
 		:rtype: string or bytes
 		:return: File contents
 		"""
-		return Utils.readf(self.abspath(), flags, encoding,)
+		return Utils.readf(self.abspath(), flags, encoding)
 
-	def write(self, data, flags='w', encoding='latin-1',):
+	def write(self, data, flags='w', encoding='latin-1'):
 		"""
 		Writes data to the file represented by this node, see :py:func:`waflib.Utils.writef`::
 
@@ -198,9 +198,9 @@ class Node(object):
 		:param encoding: encoding value for Python3
 		:type encoding: string
 		"""
-		Utils.writef(self.abspath(), data, flags, encoding,)
+		Utils.writef(self.abspath(), data, flags, encoding)
 
-	def read_json(self, convert=True, encoding='utf-8',):
+	def read_json(self, convert=True, encoding='utf-8'):
 		"""
 		Reads and parses the contents of this node as JSON (Python ≥ 2.6)::
 
@@ -224,22 +224,22 @@ class Node(object):
 			except NameError:
 				_type = str
 
-			def convert(value,):
-				if isinstance(value, list,):
+			def convert(value):
+				if isinstance(value, list):
 					return [convert(element) for element in value]
-				elif isinstance(value, _type,):
+				elif isinstance(value, _type):
 					return str(value)
 				else:
 					return value
 
-			def object_pairs(pairs,):
+			def object_pairs(pairs):
 				return dict((str(pair[0]), convert(pair[1])) for pair in pairs)
 
 			object_pairs_hook = object_pairs
 
-		return json.loads(self.read(encoding=encoding), object_pairs_hook=object_pairs_hook,)
+		return json.loads(self.read(encoding=encoding), object_pairs_hook=object_pairs_hook)
 
-	def write_json(self, data, pretty=True,):
+	def write_json(self, data, pretty=True):
 		"""
 		Writes a python object as JSON to disk (Python ≥ 2.6) as UTF-8 data (JSON standard)::
 
@@ -260,8 +260,8 @@ class Node(object):
 			indent = None
 			separators = (',', ':')
 			newline = ''
-		output = json.dumps(data, indent=indent, separators=separators, sort_keys=sort_keys,) + newline
-		self.write(output, encoding='utf-8',)
+		output = json.dumps(data, indent=indent, separators=separators, sort_keys=sort_keys) + newline
+		self.write(output, encoding='utf-8')
 
 	def exists(self):
 		"""
@@ -279,16 +279,16 @@ class Node(object):
 		"""
 		return os.path.isdir(self.abspath())
 
-	def chmod(self, val,):
+	def chmod(self, val):
 		"""
 		Changes the file/dir permissions::
 
 			def build(bld):
 				bld.path.chmod(493) # 0755
 		"""
-		os.chmod(self.abspath(), val,)
+		os.chmod(self.abspath(), val)
 
-	def delete(self, evict=True,):
+	def delete(self, evict=True):
 		"""
 		Removes the file/folder from the filesystem (equivalent to `rm -rf`), and remove this object from the Node tree.
 		Do not use this object after calling this method.
@@ -318,7 +318,7 @@ class Node(object):
 
 		:rtype: string
 		"""
-		k = max(0, self.name.rfind('.'),)
+		k = max(0, self.name.rfind('.'))
 		return self.name[k:]
 
 	def height(self):
@@ -374,7 +374,7 @@ class Node(object):
 			except AttributeError:
 				self.children = self.dict_class()
 
-	def find_node(self, lst,):
+	def find_node(self, lst):
 		"""
 		Finds a node on the file system (files or folders), and creates the corresponding Node objects if it exists
 
@@ -384,7 +384,7 @@ class Node(object):
 		:rtype: :py:class:´waflib.Node.Node´
 		"""
 
-		if isinstance(lst, str,):
+		if isinstance(lst, str):
 			lst = [x for x in Utils.split_path(lst) if x and x != '.']
 
 		if lst and lst[0].startswith('\\\\') and not self.parent:
@@ -410,7 +410,7 @@ class Node(object):
 					pass
 
 			# optimistic: create the node first then look if it was correct to do so
-			cur = self.__class__(x, cur,)
+			cur = self.__class__(x, cur)
 			if not cur.exists():
 				cur.evict()
 				return None
@@ -421,7 +421,7 @@ class Node(object):
 
 		return cur
 
-	def make_node(self, lst,):
+	def make_node(self, lst):
 		"""
 		Returns or creates a Node object corresponding to the input path without considering the filesystem.
 
@@ -429,7 +429,7 @@ class Node(object):
 		:type lst: string or list of string
 		:rtype: :py:class:´waflib.Node.Node´
 		"""
-		if isinstance(lst, str,):
+		if isinstance(lst, str):
 			lst = [x for x in Utils.split_path(lst) if x and x != '.']
 
 		cur = self
@@ -446,10 +446,10 @@ class Node(object):
 				pass
 			else:
 				continue
-			cur = self.__class__(x, cur,)
+			cur = self.__class__(x, cur)
 		return cur
 
-	def search_node(self, lst,):
+	def search_node(self, lst):
 		"""
 		Returns a Node previously defined in the data structure. The filesystem is not considered.
 
@@ -457,7 +457,7 @@ class Node(object):
 		:type lst: string or list of string
 		:rtype: :py:class:´waflib.Node.Node´ or None if there is no entry in the Node datastructure
 		"""
-		if isinstance(lst, str,):
+		if isinstance(lst, str):
 			lst = [x for x in Utils.split_path(lst) if x and x != '.']
 
 		cur = self
@@ -471,7 +471,7 @@ class Node(object):
 					return None
 		return cur
 
-	def path_from(self, node,):
+	def path_from(self, node):
 		"""
 		Path of this node seen from the other::
 
@@ -554,7 +554,7 @@ class Node(object):
 			self.cache_abspath = val
 			return val
 
-	def is_child_of(self, node,):
+	def is_child_of(self, node):
 		"""
 		Returns whether the object belongs to a subtree of the input node::
 
@@ -573,7 +573,7 @@ class Node(object):
 			p = p.parent
 		return p is node
 
-	def ant_iter(self, accept=None, maxdepth=25, pats=[], dir=False, src=True, remove=True, quiet=False,):
+	def ant_iter(self, accept=None, maxdepth=25, pats=[], dir=False, src=True, remove=True, quiet=False):
 		"""
 		Recursive method used by :py:meth:`waflib.Node.ant_glob`.
 
@@ -606,7 +606,7 @@ class Node(object):
 					self.children[x].evict()
 
 		for name in dircont:
-			npats = accept(name, pats,)
+			npats = accept(name, pats)
 			if npats and npats[0]:
 				accepted = [] in npats[0]
 
@@ -623,7 +623,7 @@ class Node(object):
 				if isdir:
 					node.cache_isdir = True
 					if maxdepth:
-						for k in node.ant_iter(accept=accept, maxdepth=maxdepth - 1, pats=npats, dir=dir, src=src, remove=remove, quiet=quiet,):
+						for k in node.ant_iter(accept=accept, maxdepth=maxdepth - 1, pats=npats, dir=dir, src=src, remove=remove, quiet=quiet):
 							yield k
 
 	def ant_glob(self, *k, **kw):
@@ -704,20 +704,20 @@ class Node(object):
 		:returns: The corresponding Node objects as a list or as a generator object (generator=True)
 		:rtype: by default, list of :py:class:`waflib.Node.Node` instances
 		"""
-		src = kw.get('src', True,)
+		src = kw.get('src', True)
 		dir = kw.get('dir')
-		excl = kw.get('excl', exclude_regs,)
-		incl = k and k[0] or kw.get('incl', '**',)
-		remove = kw.get('remove', True,)
-		maxdepth = kw.get('maxdepth', 25,)
-		ignorecase = kw.get('ignorecase', False,)
-		quiet = kw.get('quiet', False,)
-		pats = (ant_matcher(incl, ignorecase,), ant_matcher(excl, ignorecase,))
+		excl = kw.get('excl', exclude_regs)
+		incl = k and k[0] or kw.get('incl', '**')
+		remove = kw.get('remove', True)
+		maxdepth = kw.get('maxdepth', 25)
+		ignorecase = kw.get('ignorecase', False)
+		quiet = kw.get('quiet', False)
+		pats = (ant_matcher(incl, ignorecase), ant_matcher(excl, ignorecase))
 
 		if kw.get('generator'):
-			return Utils.lazy_generator(self.ant_iter, (ant_sub_matcher, maxdepth, pats, dir, src, remove, quiet),)
+			return Utils.lazy_generator(self.ant_iter, (ant_sub_matcher, maxdepth, pats, dir, src, remove, quiet))
 
-		it = self.ant_iter(ant_sub_matcher, maxdepth, pats, dir, src, remove, quiet,)
+		it = self.ant_iter(ant_sub_matcher, maxdepth, pats, dir, src, remove, quiet)
 		if kw.get('flat'):
 			# returns relative paths as a space-delimited string
 			# prefer Node objects whenever possible
@@ -806,7 +806,7 @@ class Node(object):
 			lst[0] = lst[0][0]
 		return self.ctx.bldnode.make_node(['__root__'] + lst)
 
-	def find_resource(self, lst,):
+	def find_resource(self, lst):
 		"""
 		Use this method in the build phase to find source files corresponding to the relative path given.
 
@@ -818,7 +818,7 @@ class Node(object):
 		:returns: the corresponding Node object or None
 		:rtype: :py:class:`waflib.Node.Node`
 		"""
-		if isinstance(lst, str,):
+		if isinstance(lst, str):
 			lst = [x for x in Utils.split_path(lst) if x and x != '.']
 
 		node = self.get_bld().search_node(lst)
@@ -828,7 +828,7 @@ class Node(object):
 			return None
 		return node
 
-	def find_or_declare(self, lst,):
+	def find_or_declare(self, lst):
 		"""
 		Use this method in the build phase to declare output files which
 		are meant to be written in the build directory.
@@ -839,14 +839,14 @@ class Node(object):
 		:param lst: relative path
 		:type lst: string or list of string
 		"""
-		if isinstance(lst, str,) and os.path.isabs(lst):
+		if isinstance(lst, str) and os.path.isabs(lst):
 			node = self.ctx.root.make_node(lst)
 		else:
 			node = self.get_bld().make_node(lst)
 		node.parent.mkdir()
 		return node
 
-	def find_dir(self, lst,):
+	def find_dir(self, lst):
 		"""
 		Searches for a folder on the filesystem (see :py:meth:`waflib.Node.Node.find_node`)
 
@@ -855,7 +855,7 @@ class Node(object):
 		:returns: The corresponding Node object or None if there is no such folder
 		:rtype: :py:class:`waflib.Node.Node`
 		"""
-		if isinstance(lst, str,):
+		if isinstance(lst, str):
 			lst = [x for x in Utils.split_path(lst) if x and x != '.']
 
 		node = self.find_node(lst)
@@ -864,7 +864,7 @@ class Node(object):
 		return node
 
 	# helpers for building things
-	def change_ext(self, ext, ext_in=None,):
+	def change_ext(self, ext, ext_in=None):
 		"""
 		Declares a build node with a distinct extension; this is uses :py:meth:`waflib.Node.Node.find_or_declare`
 

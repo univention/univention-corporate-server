@@ -49,17 +49,17 @@ available_categories = Literal["All", "User", "PID", "Command"]
 
 
 class ProcessOverview:
-    def __init__(self, tester: UMCBrowserTest,):
+    def __init__(self, tester: UMCBrowserTest):
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
         self.module_name = _("Process overview")
         self.grid_load_url = re.compile(".*univention/command/top/query.*")
 
-    def navigate(self, username="Administrator", password="univention",):
-        self.tester.login(username, password,)
-        self.tester.open_module(self.module_name, self.grid_load_url,)
+    def navigate(self, username="Administrator", password="univention"):
+        self.tester.login(username, password)
+        self.tester.open_module(self.module_name, self.grid_load_url)
 
-    def search(self, category: available_categories, text: str,):
+    def search(self, category: available_categories, text: str):
         """
         Run a search
 
@@ -82,7 +82,7 @@ class ProcessOverview:
         with self.page.expect_response(self.grid_load_url):
             search_textbox.press("Enter")
 
-    def ensure_process(self, process: subprocess.Popen, category: available_categories,):
+    def ensure_process(self, process: subprocess.Popen, category: available_categories):
         """
         Ensures that a process is running, either by PID or Command
 
@@ -92,11 +92,11 @@ class ProcessOverview:
         """
         process_name = " ".join(process.args)
         if category == "PID":
-            self.search("PID", str(process.pid),)
+            self.search("PID", str(process.pid))
         else:
-            self.search("Command", process_name,)
+            self.search("Command", process_name)
 
-    def kill_process(self, process: subprocess.Popen, force: bool,):
+    def kill_process(self, process: subprocess.Popen, force: bool):
         """
         Kills the process given by process and ensures that is was actually killed
 
@@ -106,16 +106,16 @@ class ProcessOverview:
 
         """
         process_pid = str(process.pid)
-        self.search("PID", process_pid,)
-        self.page.get_by_role("gridcell", name=str(process_pid),).click()
+        self.search("PID", process_pid)
+        self.page.get_by_role("gridcell", name=str(process_pid)).click()
 
-        button = self.page.get_by_role("button", name=f"{_('Force termination') if force else _('Terminate')}",)
+        button = self.page.get_by_role("button", name=f"{_('Force termination') if force else _('Terminate')}")
         button.click()
 
         # without this sleep the button sometimes doesn't get clicked correctly
         time.sleep(1)
         confirmation_dialog = self.page.get_by_role("dialog")
-        confirmation_dialog.get_by_role("button", name="Ok",).click()
+        confirmation_dialog.get_by_role("button", name="Ok").click()
         expect(confirmation_dialog).to_be_hidden()
 
         with self.page.expect_response(self.grid_load_url):
@@ -125,6 +125,6 @@ class ProcessOverview:
         return_code = process.poll()
         assert expected_return_code == return_code, f"Expected return code to be {expected_return_code} but got {return_code}"
 
-        self.search("PID", process_pid,)
-        cell = self.page.get_by_role("gridcell", name=process_pid,)
+        self.search("PID", process_pid)
+        cell = self.page.get_by_role("gridcell", name=process_pid)
         expect(cell).to_be_hidden()

@@ -45,21 +45,22 @@ from .exceptions import MultipleObjects, NoObject
 from .plugins import Plugin
 
 
-LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'),)
+LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'))
 
 
 class BaseObjectProperties(object):
     """Container for |UDM| properties."""
 
-    def __init__(self, udm_obj,):
+    def __init__(self, udm_obj):
         self._udm_obj = udm_obj
 
     def __repr__(self):
         return '{}({})'.format(
             self.__class__.__name__,
-            pprint.pformat({k: v for k, v in self.__dict__.items() if not str(k).startswith('_')}, indent=2,),)
+            pprint.pformat({k: v for k, v in self.__dict__.items() if not str(k).startswith('_')}, indent=2),
+        )
 
-    def __deepcopy__(self, memo,):
+    def __deepcopy__(self, memo):
         id_self = id(self)
         if not memo.get(id_self):
             memo[id_self] = {}
@@ -122,7 +123,8 @@ class BaseObject(object):
         return '{}({!r}, {!r})'.format(
             self.__class__.__name__,
             self._udm_module.name if self._udm_module else '<not initialized>',
-            self.dn,)
+            self.dn,
+        )
 
     def reload(self):
         """
@@ -143,7 +145,7 @@ class BaseObject(object):
         """
         raise NotImplementedError()
 
-    def delete(self, remove_childs=False,):
+    def delete(self, remove_childs=False):
         """
         Remove the object (and optionally its child nodes) from the LDAP database.
 
@@ -162,22 +164,23 @@ class BaseModuleMetadata(object):
     auto_reload = True
     r"""Whether |UDM| objects should be ``reload()``\ ed after saving."""
 
-    def __init__(self, meta,):
+    def __init__(self, meta):
         self.supported_api_versions = []
         self.suitable_for = []
         self.used_api_version = None
         self._udm_module = None
-        if hasattr(meta, 'supported_api_versions',):
+        if hasattr(meta, 'supported_api_versions'):
             self.supported_api_versions = meta.supported_api_versions
-        if hasattr(meta, 'suitable_for',):
+        if hasattr(meta, 'suitable_for'):
             self.suitable_for = meta.suitable_for
 
     def __repr__(self):
         return '{}({})'.format(
             self.__class__.__name__,
-            ', '.join('{}={!r}'.format(k, v,) for k, v in self.__dict__.items() if not str(k).startswith('_')),)
+            ', '.join('{}={!r}'.format(k, v) for k, v in self.__dict__.items() if not str(k).startswith('_')),
+        )
 
-    def instance(self, udm_module, api_version,):
+    def instance(self, udm_module, api_version):
         cpy = copy.deepcopy(self)
         cpy._udm_module = udm_module
         cpy.used_api_version = api_version
@@ -192,7 +195,7 @@ class BaseModuleMetadata(object):
         """
         raise NotImplementedError()
 
-    def lookup_filter(self, filter_s=None,):
+    def lookup_filter(self, filter_s=None):
         """
         Filter the UDM module uses to find its corresponding LDAP objects.
 
@@ -228,10 +231,10 @@ class BaseModuleMetadata(object):
 class ModuleMeta(Plugin):
     udm_meta_class = BaseModuleMetadata
 
-    def __new__(mcs, name, bases, attrs,):
-        meta = attrs.pop('Meta', None,)
+    def __new__(mcs, name, bases, attrs):
+        meta = attrs.pop('Meta', None)
         new_cls_meta = mcs.udm_meta_class(meta)
-        new_cls = super(ModuleMeta, mcs,).__new__(mcs, name, bases, attrs,)
+        new_cls = super(ModuleMeta, mcs).__new__(mcs, name, bases, attrs)
         new_cls.meta = new_cls_meta
         return new_cls
 
@@ -275,15 +278,15 @@ class BaseModule(with_metaclass(ModuleMeta)):
         supported_api_versions = ()
         suitable_for = []
 
-    def __init__(self, name, connection, api_version,):
+    def __init__(self, name, connection, api_version):
         self.connection = connection
         self.name = name
-        self.meta = self.meta.instance(self, api_version,)
+        self.meta = self.meta.instance(self, api_version)
 
     def __repr__(self):
-        return '{}({!r})'.format(self.__class__.__name__, self.name,)
+        return '{}({!r})'.format(self.__class__.__name__, self.name)
 
-    def new(self, superordinate=None,):
+    def new(self, superordinate=None):
         """
         Create a new, unsaved :py:class:`BaseObject` object.
 
@@ -295,7 +298,7 @@ class BaseModule(with_metaclass(ModuleMeta)):
         """
         raise NotImplementedError()
 
-    def get(self, dn,):
+    def get(self, dn):
         """
         Load |UDM| object from |LDAP|.
 
@@ -307,7 +310,7 @@ class BaseModule(with_metaclass(ModuleMeta)):
         """
         raise NotImplementedError()
 
-    def get_by_id(self, id,):
+    def get_by_id(self, id):
         """
         Load |UDM| object from |LDAP| by searching for its ID.
 
@@ -320,17 +323,17 @@ class BaseModule(with_metaclass(ModuleMeta)):
         :raises univention.udm.exceptions.NoObject: if no object is found with ID `id`
         :raises univention.udm.exceptions.MultipleObjects: if more than one object is found with ID `id`
         """
-        filter_s = filter_format('{}=%s'.format(self.meta.identifying_property), (id,),)
+        filter_s = filter_format('{}=%s'.format(self.meta.identifying_property), (id,))
         res = list(self.search(filter_s))
         if not res:
-            raise NoObject('No object found for {!r}.'.format(filter_s), module_name=self.name,)
+            raise NoObject('No object found for {!r}.'.format(filter_s), module_name=self.name)
         elif len(res) > 1:
             raise MultipleObjects(
                 'Searching in module {!r} with identifying_property {!r} (filter: {!r}) returned {} objects.'.format(
-                    self.name, self.meta.identifying_property, filter_s, len(res),), module_name=self.name,)
+                    self.name, self.meta.identifying_property, filter_s, len(res)), module_name=self.name)
         return res[0]
 
-    def search(self, filter_s='', base='', scope='sub', sizelimit=0,):
+    def search(self, filter_s='', base='', scope='sub', sizelimit=0):
         """
         Get all |UDM| objects from |LDAP| that match the given filter.
 

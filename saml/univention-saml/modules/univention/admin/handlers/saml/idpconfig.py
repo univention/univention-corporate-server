@@ -52,7 +52,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionSAMLIdpConfig'],),
+        objectClasses=['top', 'univentionSAMLIdpConfig'],
+    ),
 }
 
 property_descriptions = {
@@ -62,12 +63,14 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'LdapGetAttributes': univention.admin.property(
         short_description=_(u'LDAP attribute name'),
         long_description=_(u'A list of ldap attribute names that the IdP is allowed to fetch from LDAP'),
         syntax=univention.admin.syntax.string,
-        multivalue=True,),
+        multivalue=True,
+    ),
 }
 
 layout = [
@@ -75,13 +78,13 @@ layout = [
         Group(_('SAML identity provider settings'), layout=[
             ["id"],
             ["LdapGetAttributes"],
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('id', 'id', None, univention.admin.mapping.ListToString, encoding='ASCII',)
-mapping.register('LdapGetAttributes', 'LdapGetAttributes', None, None, encoding='ASCII',)
+mapping.register('id', 'id', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('LdapGetAttributes', 'LdapGetAttributes', None, None, encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):

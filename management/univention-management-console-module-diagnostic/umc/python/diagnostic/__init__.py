@@ -51,8 +51,8 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 class Problem(Exception):
 
-    def __init__(self, description: str = "",**kwargs: Any) -> None:
-        super(Problem, self,).__init__(description)
+    def __init__(self, description: str = "", **kwargs: Any) -> None:
+        super(Problem, self).__init__(description)
         self.kwargs = kwargs
         kwargs['type'] = self.__class__.__name__.lower()
         if description:
@@ -90,25 +90,26 @@ class Instance(Base, ProgressMixin):
 
     @sanitize(
         plugin=StringSanitizer(required=True),
-        args=DictSanitizer({}),)
+        args=DictSanitizer({}),
+    )
     @simple_response(with_progress=True)
-    def run(self, plugin: str, args: Any = None,):
+    def run(self, plugin: str, args: Any = None):
         plug = self.get(plugin)
         MODULE.process('Running %s' % (plug,))
         for line in plug.run_descr:
             MODULE.process(line)
         args = args or {}
 
-        return plug.execute(self, **args,)
+        return plug.execute(self, **args)
 
     def new_progress(self, *args: Any, **kwargs: Any) -> Any:
-        progress = super(Instance, self,).new_progress(*args, **kwargs,)
+        progress = super(Instance, self).new_progress(*args, **kwargs)
         progress.retry_after = 600
         return progress
 
     @sanitize(pattern=PatternSanitizer(default='.*'))
     @simple_response
-    def query(self, pattern: Pattern[str],) -> List[Dict[str, Any]]:
+    def query(self, pattern: Pattern[str]) -> List[Dict[str, Any]]:
         return [plugin.dict for plugin in self if plugin.match(pattern)]
 
     @property
@@ -128,9 +129,9 @@ class Instance(Base, ProgressMixin):
             except ImportError as exc:
                 MODULE.error('Could not load plugin %r: %r' % (plugin, exc))
                 raise
-        self.modules = OrderedDict(sorted(self.modules.items(), key=lambda t,: t[0],))
+        self.modules = OrderedDict(sorted(self.modules.items(), key=lambda t: t[0]))
 
-    def get(self, plugin: str,) -> "Plugin":
+    def get(self, plugin: str) -> "Plugin":
         return self.modules[plugin]
 
     def __iter__(self) -> Iterator["Plugin"]:
@@ -220,21 +221,21 @@ class Plugin(object):
     @property
     def title(self) -> str:
         u"""A title for the problem"""
-        return getattr(self.module, 'title', '',)
+        return getattr(self.module, 'title', '')
 
     @property
     def description(self) -> str:
         u"""A description of the problem and how to solve it"""
-        return getattr(self.module, 'description', '',)
+        return getattr(self.module, 'description', '')
 
     @property
     def buttons(self) -> List[Dict[str, str]]:
         u"""Buttons which are displayed e.g. to automatically solve the problem"""
-        return list(getattr(self.module, 'buttons', [],))
+        return list(getattr(self.module, 'buttons', []))
 
     @property
     def run_descr(self) -> List[str]:
-        return list(getattr(self.module, 'run_descr', [],))
+        return list(getattr(self.module, 'run_descr', []))
 
     @property
     def umc_modules(self) -> List[Dict[str, Any]]:
@@ -242,7 +243,7 @@ class Plugin(object):
         References to UMC modules which can help solving the problem.
         (module, flavor, properties)
         """
-        return getattr(self.module, 'umc_modules', [],)
+        return getattr(self.module, 'umc_modules', [])
 
     @property
     def links(self) -> List[Dict[str, str]]:
@@ -250,13 +251,13 @@ class Plugin(object):
         Links to e.g. related SDB articles
         (url, link_name)
         """
-        return getattr(self.module, 'links', [],)
+        return getattr(self.module, 'links', [])
 
     @property
     def actions(self) -> Dict[str, Callable[[Instance], Optional[Dict[str, Any]]]]:
-        return getattr(self.module, 'actions', {},)
+        return getattr(self.module, 'actions', {})
 
-    def __init__(self, plugin: str,) -> None:
+    def __init__(self, plugin: str) -> None:
         self.plugin = plugin
         self.load()
 
@@ -264,16 +265,17 @@ class Plugin(object):
         self.module = __import__(
             'univention.management.console.modules.diagnostic.plugins.%s' % (self.plugin,),
             fromlist=['univention.management.console.modules.diagnostic'],
-            level=0,)
+            level=0,
+        )
 
-    def execute(self, umc_module: Instance, action=None,**kwargs: Any) -> Dict[str, Any]:
+    def execute(self, umc_module: Instance, action=None, **kwargs: Any) -> Dict[str, Any]:
         success = True
         errors: Dict[str, Any] = {}
-        execute = self.actions.get(action, self.module.run,)
+        execute = self.actions.get(action, self.module.run)
         try:
             try:
-                ret = execute(umc_module, **kwargs,)
-                if isinstance(ret, dict,):
+                ret = execute(umc_module, **kwargs)
+                if isinstance(ret, dict):
                     errors.update(ret)
             except Problem:
                 raise
@@ -289,10 +291,10 @@ class Plugin(object):
         }
         result.update(self.dict)
         result.update(errors)
-        result.setdefault('buttons', [],).insert(0, {'label': _('Test again')},)
+        result.setdefault('buttons', []).insert(0, {'label': _('Test again')})
         return result
 
-    def match(self, pattern: Pattern[str],) -> Optional[Match]:
+    def match(self, pattern: Pattern[str]) -> Optional[Match]:
         return pattern.match(self.title) or pattern.match(self.description)
 
     def __str__(self) -> str:

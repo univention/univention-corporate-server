@@ -75,7 +75,7 @@ try:
     )
 
     from typing_extensions import Literal  # noqa: F401
-    _TS = TypeVar("_TS", bound="_UCSServer",)
+    _TS = TypeVar("_TS", bound="_UCSServer")
 except ImportError:
     pass
 
@@ -94,7 +94,7 @@ MIN_GZIP = 100  # size of non-empty gzip file
 UUID_NULL = '00000000-0000-0000-0000-000000000000'
 
 
-def verify_script(script, signature,):
+def verify_script(script, signature):
     # type: (bytes, bytes) -> Optional[bytes]
     """
     Verify detached signature of script:
@@ -115,13 +115,13 @@ def verify_script(script, signature,):
     """
     # write signature to temporary file
     sig_fd, sig_name = tempfile.mkstemp()
-    os.write(sig_fd, signature,)
+    os.write(sig_fd, signature)
     os.close(sig_fd)
 
     # verify script
     cmd = ["apt-key", "verify", sig_name, "-"]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT, close_fds=True,)
+                            stderr=subprocess.STDOUT, close_fds=True)
     stdout, _stderr = proc.communicate(script)
     ret = proc.wait()
     return stdout if ret != 0 else None
@@ -132,13 +132,13 @@ class _UCSRepo(UCS_Version):
 
     ARCHS = {'all', 'amd64'}
 
-    def __init__(self, release=None,**kwargs):
+    def __init__(self, release=None, **kwargs):
         # type: (Optional[UCS_Version], **Any) -> None
         if release:
-            super(_UCSRepo, self,).__init__(release)
+            super(_UCSRepo, self).__init__(release)
         for (k, v) in kwargs.items():
-            if isinstance(v, str,) and '%(' in v:
-                self.__dict__[k] = _UCSRepo._substitution(v, self.__dict__,)
+            if isinstance(v, str) and '%(' in v:
+                self.__dict__[k] = _UCSRepo._substitution(v, self.__dict__)
             else:
                 self.__dict__[k] = v
 
@@ -146,15 +146,15 @@ class _UCSRepo(UCS_Version):
         # type: () -> str
         return '%s(**%r)' % (self.__class__.__name__, self.__dict__)
 
-    def __eq__(self, other,):
+    def __eq__(self, other):
         # type: (object) -> bool
-        return isinstance(other, _UCSRepo,) and self.path() == other.path()
+        return isinstance(other, _UCSRepo) and self.path() == other.path()
 
-    def __ne__(self, other,):
+    def __ne__(self, other):
         # type: (object) -> bool
-        return not isinstance(other, _UCSRepo,) or self.path() != other.path()
+        return not isinstance(other, _UCSRepo) or self.path() != other.path()
 
-    def _format(self, format,):
+    def _format(self, format):
         # type: (str) -> str
         """Format longest path for directory/file access."""
         while True:
@@ -183,7 +183,7 @@ class _UCSRepo(UCS_Version):
         '2.3'
         """
 
-        def __init__(self, format, values,):
+        def __init__(self, format, values):
             # type: (str, Any) -> None
             self.format = format
             self.values = values
@@ -202,7 +202,7 @@ class _UCSRepo(UCS_Version):
             # type: () -> str
             return repr(self.format)
 
-    def deb(self, server, type="deb",):
+    def deb(self, server, type="deb"):
         # type: (_UCSServer, str) -> str
         """
         Format for :file:`/etc/apt/sources.list`.
@@ -214,7 +214,7 @@ class _UCSRepo(UCS_Version):
         """
         raise NotImplementedError()
 
-    def path(self, filename=None,):
+    def path(self, filename=None):
         # type: (str) -> str
         """
         Format pool for directory/file access.
@@ -225,7 +225,7 @@ class _UCSRepo(UCS_Version):
         """
         raise NotImplementedError()
 
-    def clean(self, server,):
+    def clean(self, server):
         # type: (_UCSServer) -> str
         """
         Format for :file:`/etc/apt/mirror.list`
@@ -240,12 +240,12 @@ class _UCSRepo(UCS_Version):
 class UCSRepoPool5(_UCSRepo):
     """APT repository using the debian pool structure (ucs5 and above)."""
 
-    def __init__(self, release=None,**kwargs):
+    def __init__(self, release=None, **kwargs):
         # type: (UCS_Version, **Any) -> None
-        kwargs.setdefault('version', UCS_Version.FORMAT,)
-        kwargs.setdefault('patch', UCS_Version.FULLFORMAT,)
-        kwargs.setdefault('errata', False,)
-        super(UCSRepoPool5, self,).__init__(release, **kwargs,)
+        kwargs.setdefault('version', UCS_Version.FORMAT)
+        kwargs.setdefault('patch', UCS_Version.FULLFORMAT)
+        kwargs.setdefault('errata', False)
+        super(UCSRepoPool5, self).__init__(release, **kwargs)
 
     @property
     def _suite(self):  # type: () -> str
@@ -260,9 +260,9 @@ class UCSRepoPool5(_UCSRepo):
         >>> UCSRepoPool5(major=5, minor=1, patchlevel=0, errata=True)._suite
         'errata510'
         """
-        return "{1}{0.major}{0.minor}{0.patchlevel}".format(self, "errata" if self.errata else "ucs",)
+        return "{1}{0.major}{0.minor}{0.patchlevel}".format(self, "errata" if self.errata else "ucs")
 
-    def deb(self, server, type="deb", mirror=False,):
+    def deb(self, server, type="deb", mirror=False):
         # type: (_UCSServer, str, bool) -> str
         """
         Format for :file:`/etc/apt/sources.list`.
@@ -285,7 +285,7 @@ class UCSRepoPool5(_UCSRepo):
         components = "main main/debian-installer" if mirror and not self.errata and type == "deb" else "main"
         return "%s %s %s %s" % (type, server, self._suite, components)
 
-    def path(self, filename=None,):
+    def path(self, filename=None):
         # type: (str) -> str
         """
         Format pool for directory/file access.
@@ -299,7 +299,7 @@ class UCSRepoPool5(_UCSRepo):
         >>> UCSRepoPool5(major=5, minor=1, patchlevel=0, errata=True).path()
         'dists/errata510/InRelease'
         """
-        return "dists/{}/{}".format(self._suite, filename or 'InRelease',)
+        return "dists/{}/{}".format(self._suite, filename or 'InRelease')
 
 
 class UCSRepoPool(_UCSRepo):
@@ -307,11 +307,11 @@ class UCSRepoPool(_UCSRepo):
 
     def __init__(self, **kw):
         # type: (**Any) -> None
-        kw.setdefault('version', UCS_Version.FORMAT,)
-        kw.setdefault('patch', UCS_Version.FULLFORMAT,)
-        super(UCSRepoPool, self,).__init__(**kw)
+        kw.setdefault('version', UCS_Version.FORMAT)
+        kw.setdefault('patch', UCS_Version.FULLFORMAT)
+        super(UCSRepoPool, self).__init__(**kw)
 
-    def deb(self, server, type="deb",):
+    def deb(self, server, type="deb"):
         # type: (_UCSServer, str) -> str
         """
         Format for :file:`/etc/apt/sources.list`.
@@ -326,9 +326,9 @@ class UCSRepoPool(_UCSRepo):
         'deb https://updates.software-univention.de/2.3/maintained/ 2.3-1/amd64/'
         """
         fmt = "%(version)s/%(part)s/ %(patch)s/%(arch)s/"
-        return "%s %s%s" % (type, server, super(UCSRepoPool, self,)._format(fmt))
+        return "%s %s%s" % (type, server, super(UCSRepoPool, self)._format(fmt))
 
-    def path(self, filename=None,):
+    def path(self, filename=None):
         # type: (str) -> str
         """
         Format pool for directory/file access.
@@ -347,9 +347,9 @@ class UCSRepoPool(_UCSRepo):
         '2.3/maintained/2.3-1/amd64/Packages.gz'
         """
         fmt = "%(version)s/%(part)s/%(patch)s/%(arch)s/" + (filename or 'Packages.gz')
-        return super(UCSRepoPool, self,)._format(fmt)
+        return super(UCSRepoPool, self)._format(fmt)
 
-    def clean(self, server,):
+    def clean(self, server):
         # type: (_UCSServer) -> str
         """
         Format for :file:`/etc/apt/mirror.list`
@@ -359,7 +359,7 @@ class UCSRepoPool(_UCSRepo):
         :rtype: str
         """
         fmt = "%(version)s/%(part)s/%(patch)s/"  # %(arch)s/
-        return "clean %s%s" % (server, super(UCSRepoPool, self,)._format(fmt))
+        return "clean %s%s" % (server, super(UCSRepoPool, self)._format(fmt))
 
 
 class UCSRepoPoolNoArch(_UCSRepo):
@@ -369,11 +369,11 @@ class UCSRepoPoolNoArch(_UCSRepo):
 
     def __init__(self, **kw):
         # type: (**Any) -> None
-        kw.setdefault('version', UCS_Version.FORMAT,)
-        kw.setdefault('patch', UCS_Version.FULLFORMAT,)
-        super(UCSRepoPoolNoArch, self,).__init__(**kw)
+        kw.setdefault('version', UCS_Version.FORMAT)
+        kw.setdefault('patch', UCS_Version.FULLFORMAT)
+        super(UCSRepoPoolNoArch, self).__init__(**kw)
 
-    def deb(self, server, type="deb",):
+    def deb(self, server, type="deb"):
         # type: (_UCSServer, str) -> str
         """
         Format for :file:`/etc/apt/sources.list`.
@@ -388,9 +388,9 @@ class UCSRepoPoolNoArch(_UCSRepo):
         'deb https://updates.software-univention.de/2.3/maintained/component/comp/ ./'
         """
         fmt = "%(version)s/%(part)s/%(patch)s/ ./"
-        return "%s %s%s" % (type, server, super(UCSRepoPoolNoArch, self,)._format(fmt))
+        return "%s %s%s" % (type, server, super(UCSRepoPoolNoArch, self)._format(fmt))
 
-    def path(self, filename=None,):
+    def path(self, filename=None):
         # type: (str) -> str
         """
         Format pool for directory/file access. Returns relative path.
@@ -409,9 +409,9 @@ class UCSRepoPoolNoArch(_UCSRepo):
         '2.3/maintained/component/comp/Packages.gz'
         """
         fmt = "%(version)s/%(part)s/%(patch)s/" + (filename or 'Packages.gz')
-        return super(UCSRepoPoolNoArch, self,)._format(fmt)
+        return super(UCSRepoPoolNoArch, self)._format(fmt)
 
-    def clean(self, server,):
+    def clean(self, server):
         # type: (_UCSServer) -> str
         """
         Format for :file:`/etc/apt/mirror.list`
@@ -421,14 +421,14 @@ class UCSRepoPoolNoArch(_UCSRepo):
         :rtype: str
         """
         fmt = "%(version)s/%(part)s/%(patch)s/"
-        return "clean %s%s" % (server, super(UCSRepoPoolNoArch, self,)._format(fmt))
+        return "clean %s%s" % (server, super(UCSRepoPoolNoArch, self)._format(fmt))
 
 
 class _UCSServer(object):
     """Abstrace base class to access UCS compatible update server."""
 
     @classmethod
-    def load_credentials(self, ucr,):
+    def load_credentials(self, ucr):
         # type: (ConfigRegistry) -> None
         """
         Load credentials from UCR.
@@ -436,7 +436,7 @@ class _UCSServer(object):
         :param ConfigRegistry ucr: An UCR instance.
         """
 
-    def join(self, rel,):
+    def join(self, rel):
         # type: (str) -> str
         """
         Return joined URI without credential.
@@ -447,7 +447,7 @@ class _UCSServer(object):
         """
         raise NotImplementedError()
 
-    def access(self, repo, filename=None, get=False,):
+    def access(self, repo, filename=None, get=False):
         # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, bytes]
         """
         Access URI and optionally get data.
@@ -464,7 +464,7 @@ class _UCSServer(object):
         """
         raise NotImplementedError()
 
-    def __add__(self, rel,):
+    def __add__(self, rel):
         # type: (_TS, str) -> _TS
         """
         Append relative path component.
@@ -480,13 +480,13 @@ class _UCSServer(object):
         # type: () -> str
         raise NotImplementedError()
 
-    def __eq__(self, other,):
+    def __eq__(self, other):
         # type: (object) -> bool
-        return isinstance(other, _UCSServer,) and self.prefix == other.prefix
+        return isinstance(other, _UCSServer) and self.prefix == other.prefix
 
-    def __ne__(self, other,):
+    def __ne__(self, other):
         # type: (object) -> bool
-        return not isinstance(other, _UCSServer,) or self.prefix != other.prefix
+        return not isinstance(other, _UCSServer) or self.prefix != other.prefix
 
 
 class UCSHttpServer(_UCSServer):
@@ -495,17 +495,17 @@ class UCSHttpServer(_UCSServer):
     class HTTPHeadHandler(urllib2.BaseHandler):
         """Handle fallback from HEAD to GET if unimplemented."""
 
-        def http_error_501(self, req, fp, code, msg, headers,):  # httplib.NOT_IMPLEMENTED
+        def http_error_501(self, req, fp, code, msg, headers):  # httplib.NOT_IMPLEMENTED
             # type: (urllib2.Request, Any, int, str, Dict) -> Any
             m = req.get_method()
             if m == 'HEAD' == UCSHttpServer.http_method:
-                ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % req,)
+                ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % req)
                 UCSHttpServer.http_method = 'GET'
-                return self.parent.open(req, timeout=req.timeout,)
+                return self.parent.open(req, timeout=req.timeout)
             else:
                 return None
 
-    def __init__(self, baseurl, user_agent=None, timeout=None,):
+    def __init__(self, baseurl, user_agent=None, timeout=None):
         # type: (UcsRepoUrl, str, float) -> None
         """
         Setup URL handler for accessing a UCS repository server.
@@ -527,7 +527,7 @@ class UCSHttpServer(_UCSServer):
     auth_handler = urllib2.HTTPBasicAuthHandler(password_manager)
     proxy_handler = urllib2.ProxyHandler()
     # No need for ProxyBasicAuthHandler, since ProxyHandler parses netloc for @
-    opener = urllib2.build_opener(head_handler, auth_handler, proxy_handler,)
+    opener = urllib2.build_opener(head_handler, auth_handler, proxy_handler)
     failed_hosts = set()  # type: Set[str]
 
     @property
@@ -540,40 +540,40 @@ class UCSHttpServer(_UCSServer):
         # type: () -> None
         """Reload proxy settings and reset failed hosts."""
         self.proxy_handler = urllib2.ProxyHandler()
-        self.opener = urllib2.build_opener(self.head_handler, self.auth_handler, self.proxy_handler,)
+        self.opener = urllib2.build_opener(self.head_handler, self.auth_handler, self.proxy_handler)
         self.failed_hosts.clear()
 
     @classmethod
-    def load_credentials(self, ucr,):
+    def load_credentials(self, ucr):
         # type: (ConfigRegistry) -> None
         """
         Load credentials from UCR.
 
         :param ConfigRegistry ucr: An UCR instance.
         """
-        uuid = ucr.get('uuid/license', UUID_NULL,)
+        uuid = ucr.get('uuid/license', UUID_NULL)
 
         groups = {}  # type: Dict[str, Dict[str, str]]
         for key, value in ucr.items():
             match = RE_CREDENTIALS.match(key)
             if match:
                 realm, key = match.groups()
-                cfg = groups.setdefault(realm, {},)
+                cfg = groups.setdefault(realm, {})
                 cfg[key] = value
 
         for realm, cfg in groups.items():
             try:
                 uris = cfg.pop('uris').split()
             except KeyError:
-                self.log.error('Incomplete credentials for realm "%s": %r', realm, cfg,)
+                self.log.error('Incomplete credentials for realm "%s": %r', realm, cfg)
                 continue
-            username = cfg.pop('username', uuid,)
-            password = cfg.pop('password', uuid,)
+            username = cfg.pop('username', uuid)
+            password = cfg.pop('password', uuid)
             if cfg:
-                self.log.warning('Extra credentials for realm "%s": %r', realm, cfg,)
+                self.log.warning('Extra credentials for realm "%s": %r', realm, cfg)
 
-            self.password_manager.add_password(realm, uris, username, password,)
-            self.log.info('Loaded credentials for realm "%s"', realm,)
+            self.password_manager.add_password(realm, uris, username, password)
+            self.log.info('Loaded credentials for realm "%s"', realm)
 
     def __str__(self):
         # type: () -> str
@@ -589,7 +589,7 @@ class UCSHttpServer(_UCSServer):
             self.timeout,
         )
 
-    def __add__(self, rel,):
+    def __add__(self, rel):
         # type: (str) -> UCSHttpServer
         """
         Append relative path component.
@@ -602,7 +602,7 @@ class UCSHttpServer(_UCSServer):
         uri.baseurl += rel
         return uri
 
-    def join(self, rel,):
+    def join(self, rel):
         # type: (str) -> str
         """
         Return joined URI without credential.
@@ -613,7 +613,7 @@ class UCSHttpServer(_UCSServer):
         """
         return (self.baseurl + rel).public()
 
-    def access(self, repo, filename=None, get=False,):
+    def access(self, repo, filename=None, get=False):
         # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, bytes]
         """
         Access URI and optionally get data.
@@ -634,7 +634,7 @@ class UCSHttpServer(_UCSServer):
             UCSHttpServer.opener.addheaders = [('User-agent', self.user_agent)]
         uri = self.join(rel)
         if self.baseurl.username and self.baseurl.password:
-            UCSHttpServer.password_manager.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password,)
+            UCSHttpServer.password_manager.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
         req = urllib2.Request(uri)
 
         def get_host():
@@ -642,44 +642,44 @@ class UCSHttpServer(_UCSServer):
             return req.host if six.PY3 else req.get_host()  # type: ignore
 
         if get_host() in self.failed_hosts:
-            self.log.error('Already failed %s', get_host(),)
-            raise DownloadError(uri, -1,)
+            self.log.error('Already failed %s', get_host())
+            raise DownloadError(uri, -1)
         if not get and UCSHttpServer.http_method != 'GET':
             # Overwrite get_method() to return "HEAD"
-            def get_method(self, orig=req.get_method,):
+            def get_method(self, orig=req.get_method):
                 method = orig()
                 if method == 'GET':
                     return UCSHttpServer.http_method
                 else:
                     return method
-            req.get_method = functools.partial(get_method, req,) if six.PY3 else instancemethod(get_method, req, urllib2.Request,)  # type: ignore
+            req.get_method = functools.partial(get_method, req) if six.PY3 else instancemethod(get_method, req, urllib2.Request)  # type: ignore
 
-        self.log.info('Requesting %s', req.get_full_url(),)
-        ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()),)
+        self.log.info('Requesting %s', req.get_full_url())
+        ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()))
         try:
-            res = UCSHttpServer.opener.open(req, timeout=self.timeout,)
+            res = UCSHttpServer.opener.open(req, timeout=self.timeout)
             assert res
             try:
                 # <http://tools.ietf.org/html/rfc2617#section-2>
                 try:
                     auth = req.unredirected_hdrs['Authorization']
-                    scheme, credentials = auth.split(' ', 1,)
+                    scheme, credentials = auth.split(' ', 1)
                     if scheme.lower() != 'basic':
                         raise ValueError('Only "Basic" authorization is supported')
                     try:
                         basic = base64.b64decode(credentials).decode('ISO8859-1')
                     except Exception:
                         raise ValueError('Invalid base64')
-                    self.baseurl.username, self.baseurl.password = basic.split(':', 1,)
+                    self.baseurl.username, self.baseurl.password = basic.split(':', 1)
                 except KeyError:
                     pass
                 except ValueError as ex:
-                    self.log.info("Failed to decode %s: %s", auth, ex,)
+                    self.log.info("Failed to decode %s: %s", auth, ex)
                 code = res.getcode()
                 assert code
-                size = int(res.info().get('content-length', 0,))
+                size = int(res.info().get('content-length', 0))
                 content = res.read()
-                self.log.info("Got %s %s: %d %d", req.get_method(), req.get_full_url(), code, size,)
+                self.log.info("Got %s %s: %d %d", req.get_method(), req.get_full_url(), code, size)
                 return (code, size, content)
             finally:
                 res.close()
@@ -693,27 +693,27 @@ class UCSHttpServer(_UCSServer):
         # GAI:-2   | HTTP:502/4URL:111  URL:110  GAI:-2  HTTP:407 | Host name unknown
         # HTTP:401 | HTTP:401  URL:111  URL:110  GAI:-2  HTTP:407 | Authorization required
         except urllib_error.HTTPError as res:
-            self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), res, exc_info=True,)
+            self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), res, exc_info=True)
             if res.code == httplib.UNAUTHORIZED:  # 401
-                raise ConfigurationError(uri, 'credentials not accepted',)
+                raise ConfigurationError(uri, 'credentials not accepted')
             if res.code == httplib.PROXY_AUTHENTICATION_REQUIRED:  # 407
-                raise ProxyError(uri, 'credentials not accepted',)
+                raise ProxyError(uri, 'credentials not accepted')
             if res.code in (httplib.BAD_GATEWAY, httplib.GATEWAY_TIMEOUT):  # 502 504
                 self.failed_hosts.add(get_host())
-                raise ConfigurationError(uri, 'host is unresolvable',)
-            raise DownloadError(uri, res.code,)
+                raise ConfigurationError(uri, 'host is unresolvable')
+            raise DownloadError(uri, res.code)
         except urllib_error.URLError as e:
-            self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), e, exc_info=True,)
-            if isinstance(e.reason, six.string_types,):
+            self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), e, exc_info=True)
+            if isinstance(e.reason, six.string_types):
                 reason = e.reason
-            elif isinstance(e.reason, socket.timeout,):
-                raise ConfigurationError(uri, 'timeout in network connection',)
+            elif isinstance(e.reason, socket.timeout):
+                raise ConfigurationError(uri, 'timeout in network connection')
             else:
                 try:
                     reason = e.reason.args[1]  # default value for error message
                 except IndexError:
                     reason = str(e)  # unknown
-                if isinstance(e.reason, socket.gaierror,):
+                if isinstance(e.reason, socket.gaierror):
                     if e.reason.args[0] == socket.EAI_NONAME:  # -2
                         reason = 'host is unresolvable'
                 else:
@@ -725,18 +725,18 @@ class UCSHttpServer(_UCSServer):
             selector = req.selector if six.PY3 else req.get_selector()  # type: ignore
             if selector.startswith('/'):  # direct
                 self.failed_hosts.add(get_host())
-                raise ConfigurationError(uri, reason,)
+                raise ConfigurationError(uri, reason)
             else:  # proxy
-                raise ProxyError(uri, reason,)
+                raise ProxyError(uri, reason)
         except socket.timeout as ex:
-            self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), ex, exc_info=True,)
-            raise ConfigurationError(uri, 'timeout in network connection',)
+            self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), ex, exc_info=True)
+            raise ConfigurationError(uri, 'timeout in network connection')
 
 
 class UCSLocalServer(_UCSServer):
     """Access to UCS compatible local update server."""
 
-    def __init__(self, prefix,):
+    def __init__(self, prefix):
         # type: (str) -> None
         """
         Setup URL handler for accessing a UCS repository server.
@@ -763,7 +763,7 @@ class UCSLocalServer(_UCSServer):
         """Return canonical string representation."""
         return 'UCSLocalServer(prefix=%r)' % (self.prefix,)
 
-    def __add__(self, rel,):
+    def __add__(self, rel):
         # type: (str) -> UCSLocalServer
         """
         Append relative path component.
@@ -776,7 +776,7 @@ class UCSLocalServer(_UCSServer):
         uri._prefix += str(rel).lstrip('/')
         return uri
 
-    def join(self, rel,):
+    def join(self, rel):
         # type: (str) -> str
         """
         Return joined URI without credential.
@@ -789,7 +789,7 @@ class UCSLocalServer(_UCSServer):
         uri += str(rel).lstrip('/')
         return uri
 
-    def access(self, repo, filename=None, get=False,):
+    def access(self, repo, filename=None, get=False):
         # type: (Optional[_UCSRepo], str, bool) -> Tuple[int, int, bytes]
         """
         Access URI and optionally get data.
@@ -807,21 +807,21 @@ class UCSLocalServer(_UCSServer):
         rel = filename if repo is None else repo.path(filename)
         assert rel is not None
         uri = self.join(rel)
-        ud.debug(ud.NETWORK, ud.ALL, "updater: %s" % (uri,),)
+        ud.debug(ud.NETWORK, ud.ALL, "updater: %s" % (uri,))
         # urllib2.urlopen() doesn't work for directories
         assert uri.startswith('file://')
         path = uri[len('file://'):]
         if os.path.exists(path):
             if os.path.isdir(path):
-                self.log.info("Got %s", path,)
+                self.log.info("Got %s", path)
                 return (httplib.OK, 0, b'')  # 200
             elif os.path.isfile(path):
-                with open(path, 'rb',) as f:
+                with open(path, 'rb') as f:
                     data = f.read()
-                self.log.info("Got %s: %d", path, len(data),)
+                self.log.info("Got %s: %d", path, len(data))
                 return (httplib.OK, len(data), data)  # 200
-        self.log.error("Failed %s", path,)
-        raise DownloadError(uri, -1,)
+        self.log.error("Failed %s", path)
+        raise DownloadError(uri, -1)
 
 
 class Component(object):
@@ -833,28 +833,28 @@ class Component(object):
     UNKNOWN = 'unknown'
     PERMISSION_DENIED = 'permission_denied'
 
-    def __init__(self, updater, name,):
+    def __init__(self, updater, name):
         # type: (UniventionUpdater, str) -> None
         self.updater = updater
         self.name = name
 
-    def __lt__(self, other,):
-        return self.name < other.name if isinstance(other, Component,) else NotImplemented
+    def __lt__(self, other):
+        return self.name < other.name if isinstance(other, Component) else NotImplemented
 
-    def __le__(self, other,):
-        return self.name <= other.name if isinstance(other, Component,) else NotImplemented
+    def __le__(self, other):
+        return self.name <= other.name if isinstance(other, Component) else NotImplemented
 
-    def __eq__(self, other,):
-        return isinstance(other, Component,) and self.name == other.name
+    def __eq__(self, other):
+        return isinstance(other, Component) and self.name == other.name
 
-    def __ne__(self, other,):
-        return not isinstance(other, Component,) or self.name != other.name
+    def __ne__(self, other):
+        return not isinstance(other, Component) or self.name != other.name
 
-    def __ge__(self, other,):
-        return self.name >= other.name if isinstance(other, Component,) else NotImplemented
+    def __ge__(self, other):
+        return self.name >= other.name if isinstance(other, Component) else NotImplemented
 
-    def __gt__(self, other,):
-        return self.name > other.name if isinstance(other, Component,) else NotImplemented
+    def __gt__(self, other):
+        return self.name > other.name if isinstance(other, Component) else NotImplemented
 
     def __hash__(self):
         return hash(self.name)
@@ -863,11 +863,11 @@ class Component(object):
         # type: () -> str
         return "Component({.name})".format(self)
 
-    def ucrv(self, key="",):
+    def ucrv(self, key=""):
         # type: (str) -> str
-        return "/".join(filter(None, ("repository", "online", "component", self.name, key),))
+        return "/".join(filter(None, ("repository", "online", "component", self.name, key)))
 
-    def __getitem__(self, key,):
+    def __getitem__(self, key):
         # type: (str) -> str
         return self.updater.configRegistry.get(self.ucrv(key)) or ""
 
@@ -877,13 +877,13 @@ class Component(object):
 
     __nonzero__ = __bool__
 
-    def _versions(self, start=None, end=None,):
+    def _versions(self, start=None, end=None):
         # type: (Optional[UCS_Version], Optional[UCS_Version]) -> Set[UCS_Version]
         version = self["version"]
         versions = set(RE_SPLIT_MULTI.split(version))
         return {
             UCS_Version(ver.mm + (0,))
-            for ver, _data in self.updater.get_releases(start, end,)
+            for ver, _data in self.updater.get_releases(start, end)
             if {ver.FORMAT % ver, "current", ""} & versions
         }
 
@@ -908,7 +908,7 @@ class Component(object):
             for pkg in RE_SPLIT_MULTI.split(self[var])
         } - {""}
 
-    def defaultpackage_installed(self, ignore_invalid_package_names=True,):
+    def defaultpackage_installed(self, ignore_invalid_package_names=True):
         # type: (bool) -> Optional[bool]
         """
         Returns installation status of component's default packages
@@ -940,14 +940,14 @@ class Component(object):
 
         cmd = ['/usr/bin/dpkg-query', '-W', '-f', '${Status}\\n']
         cmd.extend(pkglist)
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
-        stdout, stderr = (data.decode("UTF-8", errors="replace",) for data in p.communicate())
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in p.communicate())
         # count number of "Status: install ok installed" lines
         installed_correctly = [x for x in stdout.splitlines() if x.endswith(' ok installed')]
         # if pkg count and number of counted lines match, all packages are installed
         return len(pkglist) == len(installed_correctly)
 
-    def baseurl(self, for_mirror_list=False,):
+    def baseurl(self, for_mirror_list=False):
         # type: (bool) -> UcsRepoUrl
         r"""
         Calculate the base URL for a component.
@@ -1001,25 +1001,25 @@ class Component(object):
         """
         c_prefix = self.ucrv()
         if self.updater.is_repository_server:
-            m_url = UcsRepoUrl(self.updater.configRegistry, 'repository/mirror',)
+            m_url = UcsRepoUrl(self.updater.configRegistry, 'repository/mirror')
             c_enabled = bool(self)
-            c_localmirror = self.updater.configRegistry.is_true(self.ucrv("localmirror"), c_enabled,)
+            c_localmirror = self.updater.configRegistry.is_true(self.ucrv("localmirror"), c_enabled)
 
             if for_mirror_list:  # mirror.list
                 if c_localmirror:
-                    return UcsRepoUrl(self.updater.configRegistry, c_prefix, m_url,)
+                    return UcsRepoUrl(self.updater.configRegistry, c_prefix, m_url)
             else:  # sources.list
                 if c_enabled:
                     if c_localmirror:
                         return self.updater.repourl
                     else:
-                        return UcsRepoUrl(self.updater.configRegistry, c_prefix, m_url,)
+                        return UcsRepoUrl(self.updater.configRegistry, c_prefix, m_url)
         else:
-            return UcsRepoUrl(self.updater.configRegistry, c_prefix, self.updater.repourl,)
+            return UcsRepoUrl(self.updater.configRegistry, c_prefix, self.updater.repourl)
 
-        raise CannotResolveComponentServerError(self.name, for_mirror_list,)
+        raise CannotResolveComponentServerError(self.name, for_mirror_list)
 
-    def server(self, for_mirror_list=False,):
+    def server(self, for_mirror_list=False):
         # type: (bool) -> UCSHttpServer
         """
         Return :py:class:`UCSHttpServer` for component as configures via UCR.
@@ -1038,15 +1038,16 @@ class Component(object):
         server = UCSHttpServer(
             baseurl=c_url,
             user_agent=user_agent,
-            timeout=self.updater.timeout,)
+            timeout=self.updater.timeout,
+        )
         try:
             # if prefix.lower() == 'none' ==> use no prefix
             if prefix and prefix.lower().strip('/') == 'none':
                 try:
-                    assert server.access(None, '',)
+                    assert server.access(None, '')
                 except DownloadError as e:
                     uri, code = e.args
-                    raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (self.name, uri),)
+                    raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (self.name, uri))
             else:
                 # FIXME: PMH stop iterating
                 for testserver in [
@@ -1059,19 +1060,19 @@ class Component(object):
                     if prefix:  # append prefix if defined
                         testserver = testserver + '%s/' % (prefix.strip('/'),)
                     try:
-                        assert testserver.access(None, '',)
+                        assert testserver.access(None, '')
                         return testserver
                     except DownloadError as e:
-                        ud.debug(ud.NETWORK, ud.ALL, "%s" % e,)
+                        ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
                         uri, code = e.args
-                raise ConfigurationError(uri, 'non-existing component prefix: %s' % (uri,),)
+                raise ConfigurationError(uri, 'non-existing component prefix: %s' % (uri,))
 
         except ConfigurationError:
             if self.updater.check_access:
                 raise
         return server
 
-    def versions(self, start, end, for_mirror_list=False,):
+    def versions(self, start, end, for_mirror_list=False):
         # type: (UCS_Version, UCS_Version, bool) -> Iterator[Tuple[UCSHttpServer, _UCSRepo]]
         """
         Iterate component versions.
@@ -1083,8 +1084,8 @@ class Component(object):
         :returns: A iterator returning 2-tuples (server, ver).
         """
         server = self.server(for_mirror_list=for_mirror_list)
-        struct = self.layout(prefix=server, patch=self.name,)
-        versions = self._versions(start, end,)
+        struct = self.layout(prefix=server, patch=self.name)
+        versions = self._versions(start, end)
         parts = self._parts
 
         for ver in sorted(versions):
@@ -1092,7 +1093,7 @@ class Component(object):
             for struct.part in parts:
                 yield server, struct
 
-    def repositories(self, start, end, clean=False, for_mirror_list=False, failed=None,):
+    def repositories(self, start, end, clean=False, for_mirror_list=False, failed=None):
         # type: (UCS_Version, UCS_Version, bool, bool, Optional[Set[Tuple[Component, str]]]) -> Iterator[str]
         """
         Return list of Debian repository statements for requested component.
@@ -1104,10 +1105,10 @@ class Component(object):
         :param failed: A set to recive the failed component names.
         :returns: A list of strings with APT statements.
         """
-        for server, struct in self.versions(start, end, for_mirror_list,):
+        for server, struct in self.versions(start, end, for_mirror_list):
             try:
                 for struct.arch in sorted(struct.ARCHS):
-                    assert server.access(struct, "Packages.gz",)
+                    assert server.access(struct, "Packages.gz")
                     yield struct.deb(server)
 
                 if clean:
@@ -1115,8 +1116,8 @@ class Component(object):
 
                 if self.updater.sources:
                     struct.arch = "source"
-                    assert server.access(struct, "Sources.gz",)
-                    yield struct.deb(server, "deb-src",)
+                    assert server.access(struct, "Sources.gz")
+                    yield struct.deb(server, "deb-src")
             except DownloadError as ex:
                 if failed is not None:
                     failed.add((self, str(ex)))
@@ -1191,7 +1192,7 @@ class Component(object):
 class UniventionUpdater(object):
     """Handle UCS package repositories."""
 
-    def __init__(self, check_access=True,):
+    def __init__(self, check_access=True):
         # type: (bool) -> None
         """
         Create new updater with settings from UCR.
@@ -1210,19 +1211,19 @@ class UniventionUpdater(object):
     def config_repository(self):
         # type: () -> None
         """Retrieve configuration to access repository. Overridden by :py:class:`univention.updater.UniventionMirror`."""
-        self.online_repository = self.configRegistry.is_true('repository/online', True,)
-        self.repourl = UcsRepoUrl(self.configRegistry, 'repository/online',)
-        self.sources = self.configRegistry.is_true('repository/online/sources', False,)
-        self.timeout = float(self.configRegistry.get('repository/online/timeout', 30,))
-        self.script_verify = self.configRegistry.is_true('repository/online/verify', True,)
-        UCSHttpServer.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD',).upper()
+        self.online_repository = self.configRegistry.is_true('repository/online', True)
+        self.repourl = UcsRepoUrl(self.configRegistry, 'repository/online')
+        self.sources = self.configRegistry.is_true('repository/online/sources', False)
+        self.timeout = float(self.configRegistry.get('repository/online/timeout', 30))
+        self.script_verify = self.configRegistry.is_true('repository/online/verify', True)
+        UCSHttpServer.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD').upper()
 
     def ucr_reinit(self):
         # type: () -> None
         """Re-initialize settings."""
         self.configRegistry.load()
 
-        self.is_repository_server = self.configRegistry.is_true('local/repository', False,)
+        self.is_repository_server = self.configRegistry.is_true('local/repository', False)
 
         reinitUCSHttpServer = False
         if 'proxy/http' in self.configRegistry and self.configRegistry['proxy/http']:
@@ -1240,7 +1241,7 @@ class UniventionUpdater(object):
 
         # UCS version
         self.current_version = UCS_Version("%(version/version)s-%(version/patchlevel)s" % self.configRegistry)
-        self.erratalevel = int(self.configRegistry.get('version/erratalevel', 0,))
+        self.erratalevel = int(self.configRegistry.get('version/erratalevel', 0))
 
         # UniventionMirror needs to provide its own settings
         self.config_repository()
@@ -1258,7 +1259,8 @@ class UniventionUpdater(object):
         self.server = UCSHttpServer(
             baseurl=self.repourl,
             user_agent=user_agent,
-            timeout=self.timeout,)
+            timeout=self.timeout,
+        )
         self._get_releases()
 
     def _get_releases(self):
@@ -1267,32 +1269,32 @@ class UniventionUpdater(object):
         try:
             if not self.repourl.path:
                 try:
-                    _code, _size, data = self.server.access(None, '/univention-repository/ucs-releases.json', get=True,)
+                    _code, _size, data = self.server.access(None, '/univention-repository/ucs-releases.json', get=True)
                     self.server += '/univention-repository/'
                     self.log.info('Using detected prefix /univention-repository/')
                     self.releases = json.loads(data)
                 except DownloadError as e:
                     self.log.info('No prefix /univention-repository/ detected, using /')
-                    ud.debug(ud.NETWORK, ud.ALL, "%s" % e,)
+                    ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
             # Validate server settings
             try:
-                _code, _size, data = self.server.access(None, 'ucs-releases.json', get=True,)
-                self.log.info('Using configured prefix %s', self.repourl.path,)
+                _code, _size, data = self.server.access(None, 'ucs-releases.json', get=True)
+                self.log.info('Using configured prefix %s', self.repourl.path)
                 self.releases = json.loads(data)
             except DownloadError as e:
-                self.log.error('Failed configured prefix %s', self.repourl.path, exc_info=True,)
+                self.log.error('Failed configured prefix %s', self.repourl.path, exc_info=True)
                 uri, code = e.args
-                raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri),)
+                raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri))
         except ConfigurationError as e:
             if self.check_access:
-                self.log.fatal('Failed server detection: %s', e, exc_info=True,)
+                self.log.fatal('Failed server detection: %s', e, exc_info=True)
                 raise
             self.releases = {"error": str(e)}
         except (ValueError, LookupError) as exc:
-            ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,),)
+            ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
             self.releases = {"error": str(exc)}
 
-    def get_releases(self, start=None, end=None,):
+    def get_releases(self, start=None, end=None):
         # type: (Optional[UCS_Version], Optional[UCS_Version]) -> Iterator[Tuple[UCS_Version, Dict[str, Any]]]
         """
         Return UCS releases in range.
@@ -1301,7 +1303,7 @@ class UniventionUpdater(object):
         :param end: Maximum allowed version.
         :returns: Iterator of 2-tuples (UCS_Version, data).
         """
-        for major_release in self.releases.get('releases', [],):
+        for major_release in self.releases.get('releases', []):
             for minor_release in major_release['minors']:
                 for patchlevel_release in minor_release['patchlevels']:
                     ver = UCS_Version((
@@ -1313,9 +1315,9 @@ class UniventionUpdater(object):
                         continue
                     if end and ver > end:
                         continue
-                    yield (ver, dict(patchlevel_release, major=major_release['major'], minor=minor_release['minor'],))
+                    yield (ver, dict(patchlevel_release, major=major_release['major'], minor=minor_release['minor']))
 
-    def get_next_version(self, version, components=[], errorsto='stderr',):
+    def get_next_version(self, version, components=[], errorsto='stderr'):
         # type: (UCS_Version, Iterable[Component], Literal["stderr", "exception", "none"]) -> Optional[UCS_Version]
         """
         Check if a new patchlevel, minor or major release is available for the given version.
@@ -1333,25 +1335,25 @@ class UniventionUpdater(object):
         except ValueError:
             return None
 
-        self.log.info('Found version %s', ver,)
+        self.log.info('Found version %s', ver)
 
         failed = set()  # type: Set[Tuple[Component, str]]
         for component in components:
-            self.log.info('Checking for component %s', component.name,)
-            any(component.repositories(ver, ver, failed=failed if component.current else set(),))
+            self.log.info('Checking for component %s', component.name)
+            any(component.repositories(ver, ver, failed=failed if component.current else set()))
 
         if failed:
-            ex = RequiredComponentError(str(ver), {comp.name for comp, ex in failed},)
+            ex = RequiredComponentError(str(ver), {comp.name for comp, ex in failed})
             if errorsto == 'exception':
                 raise ex
             elif errorsto == 'stderr':
-                print(ex, file=sys.stderr,)
+                print(ex, file=sys.stderr)
             return None
 
-        self.log.info('Going for version %s', ver,)
+        self.log.info('Going for version %s', ver)
         return ver
 
-    def get_all_available_release_updates(self, ucs_version=None,):
+    def get_all_available_release_updates(self, ucs_version=None):
         # type: (Optional[UCS_Version]) -> Tuple[List[UCS_Version], Optional[Set[str]]]
         """
         Returns a list of all available release updates - the function takes required components into account
@@ -1368,19 +1370,19 @@ class UniventionUpdater(object):
         result = []  # type: List[UCS_Version]
         while ucs_version:
             try:
-                ucs_version = self.get_next_version(ucs_version, components, errorsto='exception',)
+                ucs_version = self.get_next_version(ucs_version, components, errorsto='exception')
             except RequiredComponentError as ex:
-                self.log.warning('Update blocked by components %s', ', '.join(ex.components),)
+                self.log.warning('Update blocked by components %s', ', '.join(ex.components))
                 # ex.components blocks update to next version ==> return current list and blocking component
                 return result, ex.components
 
             if not ucs_version:
                 break
             result.append(ucs_version)
-        self.log.info('Found release updates %r', result,)
+        self.log.info('Found release updates %r', result)
         return result, None
 
-    def release_update_available(self, ucs_version=None, errorsto='stderr',):
+    def release_update_available(self, ucs_version=None, errorsto='stderr'):
         # type: (Optional[UCS_Version], Literal["stderr", "exception", "none"]) -> Optional[UCS_Version]
         """
         Check if an update is available for the `ucs_version`.
@@ -1392,9 +1394,9 @@ class UniventionUpdater(object):
         """
         ucs_version = ucs_version or self.current_version
         components = self.get_components(only_current=True)
-        return self.get_next_version(UCS_Version(ucs_version), components, errorsto,)
+        return self.get_next_version(UCS_Version(ucs_version), components, errorsto)
 
-    def release_update_temporary_sources_list(self, version,):
+    def release_update_temporary_sources_list(self, version):
         # type: (UCS_Version) -> List[str]
         """
         Return list of Debian repository statements for the release update including all enabled components.
@@ -1406,18 +1408,18 @@ class UniventionUpdater(object):
         result = [UCSRepoPool5(version).deb(self.server)]
         for comp in self.get_components():
             try:
-                result += list(comp.repositories(version, version, failed=set(),))
+                result += list(comp.repositories(version, version, failed=set()))
             except (ConfigurationError, ProxyError):
                 if comp.current:
                     raise
 
         return result
 
-    def component(self, name,):
+    def component(self, name):
         # type: (str) -> Component
-        return Component(self, name,)
+        return Component(self, name)
 
-    def get_components(self, only_localmirror_enabled=False, all=False, only_current=False,):
+    def get_components(self, only_localmirror_enabled=False, all=False, only_current=False):
         # type: (bool, bool, bool) -> Set[Component]
         """
         Retrieve all (enabled) components from registry as set().
@@ -1440,7 +1442,7 @@ class UniventionUpdater(object):
             comp = self.component(component)
             enabled = bool(comp)
             if only_localmirror_enabled:
-                enabled = self.configRegistry.is_true(comp.ucrv("localmirror"), enabled,)
+                enabled = self.configRegistry.is_true(comp.ucrv("localmirror"), enabled)
             if only_current and not comp.current:
                 continue
             if all or enabled:
@@ -1455,30 +1457,30 @@ class UniventionUpdater(object):
         :return: A 3-tuple (new, upgraded, removed).
         :rtype: tuple(list[str], list[str], list[str])
         """
-        env = dict(os.environ, LC_ALL="C.UTF-8",)
+        env = dict(os.environ, LC_ALL="C.UTF-8")
 
-        proc = subprocess.Popen(("univention-config-registry", "commit", Component.FN_APTSOURCES), stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
-        stdout, stderr = (data.decode("UTF-8", errors="replace",) for data in proc.communicate())
+        proc = subprocess.Popen(("univention-config-registry", "commit", Component.FN_APTSOURCES), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
         if stderr:
-            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr,)
+            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
         if stdout:
-            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout,)
+            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
         # FIXME: error handling
 
-        proc = subprocess.Popen(cmd_update, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
-        stdout, stderr = (data.decode("UTF-8", errors="replace",) for data in proc.communicate())
+        proc = subprocess.Popen(cmd_update, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
         if stderr:
-            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr,)
+            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
         if stdout:
-            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout,)
+            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
         # FIXME: error handling
 
-        proc = subprocess.Popen(cmd_dist_upgrade_sim, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
-        stdout, stderr = (data.decode("UTF-8", errors="replace",) for data in proc.communicate())
+        proc = subprocess.Popen(cmd_dist_upgrade_sim, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
         if stderr:
-            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr,)
+            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
         if stdout:
-            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout,)
+            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
 
         if proc.returncode == 100:
             raise UnmetDependencyError(stderr)
@@ -1495,23 +1497,23 @@ class UniventionUpdater(object):
                 #    Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
                 if len(line_split) > 3:
                     if line_split[2].startswith('[') and line_split[2].endswith(']'):
-                        ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of upgraded packages' % line_split[1],)
-                        upgraded_packages.append((line_split[1], line_split[2].replace('[', '',).replace(']', '',), line_split[3].replace('(', '',)))
+                        ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of upgraded packages' % line_split[1])
+                        upgraded_packages.append((line_split[1], line_split[2].replace('[', '').replace(']', ''), line_split[3].replace('(', '')))
                     else:
-                        ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of new packages' % line_split[1],)
-                        new_packages.append((line_split[1], line_split[2].replace('(', '',)))
+                        ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of new packages' % line_split[1])
+                        new_packages.append((line_split[1], line_split[2].replace('(', '')))
                 else:
-                    ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line,)
+                    ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
                     continue
             elif line.startswith('Remv '):
                 if len(line_split) > 3:
-                    ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1],)
-                    removed_packages.append((line_split[1], line_split[2].replace('(', '',)))
+                    ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
+                    removed_packages.append((line_split[1], line_split[2].replace('(', '')))
                 elif len(line_split) > 2:
-                    ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1],)
+                    ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of removed packages' % line_split[1])
                     removed_packages.append((line_split[1], 'unknown'))
                 else:
-                    ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line,)
+                    ud.debug(ud.NETWORK, ud.WARN, 'unable to parse the update line: %s' % line)
                     continue
 
         return (new_packages, upgraded_packages, removed_packages)
@@ -1524,11 +1526,11 @@ class UniventionUpdater(object):
         :returns: a 3-tuple (return_code, stdout, stderr)
         :rtype: tuple(int, str, str)
         """
-        env = dict(os.environ, DEBIAN_FRONTEND="noninteractive",)
-        with open("/var/log/univention/updater.log", "a",) as log:
-            return subprocess.call(cmd_dist_upgrade, shell=True, env=env, stdout=log, stderr=log,)
+        env = dict(os.environ, DEBIAN_FRONTEND="noninteractive")
+        with open("/var/log/univention/updater.log", "a") as log:
+            return subprocess.call(cmd_dist_upgrade, shell=True, env=env, stdout=log, stderr=log)
 
-    def print_component_repositories(self, clean=False, start=None, end=None, for_mirror_list=False,):
+    def print_component_repositories(self, clean=False, start=None, end=None, for_mirror_list=False):
         # type: (bool, Optional[UCS_Version], Optional[UCS_Version], bool) -> str
         """
         Return a string of Debian repository statements for all enabled components.
@@ -1544,12 +1546,12 @@ class UniventionUpdater(object):
             return ''
 
         if clean:
-            clean = self.configRegistry.is_true('online/repository/clean', False,)
+            clean = self.configRegistry.is_true('online/repository/clean', False)
 
         result = []  # type: List[str]
         failed = set()  # type: Set[Tuple[Component, str]]
         for comp in sorted(self.get_components(only_localmirror_enabled=for_mirror_list)):
-            result += comp.repositories(start, end, clean=clean, for_mirror_list=for_mirror_list, failed=failed,)
+            result += comp.repositories(start, end, clean=clean, for_mirror_list=for_mirror_list, failed=failed)
         result += ["# Component %s: %s" % (comp.name, ex) for comp, ex in failed]
 
         return '\n'.join(result)
@@ -1566,17 +1568,17 @@ class UniventionUpdater(object):
         # USER_AGENT='UCS updater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 4c52d2da-d04d-4b05-a593-1974ee851fc8'
         # USER_AGENT='UCS updater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 00000000-0000-0000-0000-000000000000'
         return '%s - %s-%s errata%s - %s - %s - %s - %s' % (
-            self.configRegistry.get('updater/identify', 'UCS',),
+            self.configRegistry.get('updater/identify', 'UCS'),
             self.configRegistry.get('version/version'), self.configRegistry.get('version/patchlevel'),
             self.configRegistry.get('version/erratalevel'),
-            self.configRegistry.get('uuid/system', UUID_NULL,),
-            self.configRegistry.get('uuid/license', UUID_NULL,),
-            ','.join(self.configRegistry.get('repository/app_center/installed', '',).split('-')),
-            self.configRegistry.get('updater/statistics', '',),
+            self.configRegistry.get('uuid/system', UUID_NULL),
+            self.configRegistry.get('uuid/license', UUID_NULL),
+            ','.join(self.configRegistry.get('repository/app_center/installed', '').split('-')),
+            self.configRegistry.get('updater/statistics', ''),
         )
 
     @staticmethod
-    def call_sh_files(scripts, logname,*args):
+    def call_sh_files(scripts, logname, *args):
         # type: (Iterable[Tuple[_UCSServer, _UCSRepo, Optional[str], str, bytes]], str, *str) -> Iterator[Tuple[str, str]]
         """
         Get pre- and postup.sh files and call them in the right order::
@@ -1604,10 +1606,10 @@ class UniventionUpdater(object):
             :returns: The exit code of the child process.
             :rtype: int
             """
-            commandline = ' '.join(["'%s'" % a.replace("'", "'\\''",) for a in cmd])
-            ud.debug(ud.NETWORK, ud.INFO, "Calling %s" % commandline,)
-            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
-            tee = subprocess.Popen(('tee', '-a', logname), stdin=p.stdout,)
+            commandline = ' '.join(["'%s'" % a.replace("'", "'\\''") for a in cmd])
+            ud.debug(ud.NETWORK, ud.INFO, "Calling %s" % commandline)
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            tee = subprocess.Popen(('tee', '-a', logname), stdin=p.stdout)
             # Order is important! See bug #16454
             tee.wait()
             p.wait()
@@ -1624,36 +1626,36 @@ class UniventionUpdater(object):
                     continue
                 assert data is not None
                 uri = server.join(path)
-                name = os.path.join(tempdir, uri.replace("/", "_",),)
+                name = os.path.join(tempdir, uri.replace("/", "_"))
                 try:
-                    with open(name, "wb",) as fd:
+                    with open(name, "wb") as fd:
                         fd.write(data)
-                        os.fchmod(fd.fileno(), 0o744,)
+                        os.fchmod(fd.fileno(), 0o744)
 
-                    ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name),)
-                    is_component = hasattr(struct, 'part',) and struct.part.endswith('/component')
+                    ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
+                    is_component = hasattr(struct, 'part') and struct.part.endswith('/component')
                     memo = comp if is_component else main
                     memo[phase].append((name, str(struct.patch)))
                 except EnvironmentError as ex:
-                    ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s: %s" % (uri, name, ex),)
+                    ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s: %s" % (uri, name, ex))
 
             # call component/preup.sh pre $args
             yield "preup", "pre"
             for (script, patch) in comp['preup']:
-                if call(script, 'pre', *args,) != 0:
-                    raise PreconditionError('preup', 'pre', patch, script,)
+                if call(script, 'pre', *args) != 0:
+                    raise PreconditionError('preup', 'pre', patch, script)
 
             # call $next_version/preup.sh
             yield "preup", "main"
             for (script, patch) in main['preup']:
-                if call(script, *args,) != 0:
-                    raise PreconditionError('preup', 'main', patch, script,)
+                if call(script, *args) != 0:
+                    raise PreconditionError('preup', 'main', patch, script)
 
             # call component/preup.sh post $args
             yield "preup", "post"
             for (script, patch) in comp['preup']:
-                if call(script, 'post', *args,) != 0:
-                    raise PreconditionError('preup', 'post', patch, script,)
+                if call(script, 'post', *args) != 0:
+                    raise PreconditionError('preup', 'post', patch, script)
 
             # call $update/commands/distupgrade or $update/commands/upgrade
             yield "update", "main"
@@ -1661,25 +1663,25 @@ class UniventionUpdater(object):
             # call component/postup.sh pos $args
             yield "postup", "pre"
             for (script, patch) in comp['postup']:
-                if call(script, 'pre', *args,) != 0:
-                    raise PreconditionError('postup', 'pre', patch, script,)
+                if call(script, 'pre', *args) != 0:
+                    raise PreconditionError('postup', 'pre', patch, script)
 
             # call $next_version/postup.sh
             yield "postup", "main"
             for (script, patch) in main['postup']:
-                if call(script, *args,) != 0:
-                    raise PreconditionError('postup', 'main', patch, script,)
+                if call(script, *args) != 0:
+                    raise PreconditionError('postup', 'main', patch, script)
 
             # call component/postup.sh post $args
             yield "postup", "post"
             for (script, patch) in comp['postup']:
-                if call(script, 'post', *args,) != 0:
-                    raise PreconditionError('postup', 'post', patch, script,)
+                if call(script, 'post', *args) != 0:
+                    raise PreconditionError('postup', 'post', patch, script)
 
         # clean up
         yield "update", "post"
 
-    def get_sh_files(self, start, end, mirror=False,):
+    def get_sh_files(self, start, end, mirror=False):
         # type: (UCS_Version, UCS_Version, bool) -> Iterator[Tuple[_UCSServer, _UCSRepo, Optional[str], str, bytes]]
         """
         Return all preup- and postup-scripts of repositories.
@@ -1694,47 +1696,47 @@ class UniventionUpdater(object):
         """
         def all_repos():
             # type: () -> Iterator[Tuple[_UCSServer, _UCSRepo, bool]]
-            self.log.info('Searching releases [%s..%s]', start, end,)
-            for ver, _data in self.get_releases(start, end,):
-                yield self.server, UCSRepoPool5(release=ver, prefix=self.server,), True
+            self.log.info('Searching releases [%s..%s]', start, end)
+            for ver, _data in self.get_releases(start, end):
+                yield self.server, UCSRepoPool5(release=ver, prefix=self.server), True
 
-            self.log.info('Searching components [%s..%s]', start, end,)
+            self.log.info('Searching components [%s..%s]', start, end)
             components = self.get_components(only_localmirror_enabled=mirror)
             for comp in components:
-                for server, struct in comp.versions(start, end, mirror,):
+                for server, struct in comp.versions(start, end, mirror):
                     struct.arch = "all"
-                    self.log.info('Component %s from %s versions %r', comp.name, server, struct,)
+                    self.log.info('Component %s from %s versions %r', comp.name, server, struct)
                     yield server, struct, comp.current
 
         for server, struct, critical in all_repos():
-            uses_proxy = hasattr(server, "proxy_handler",) and server.proxy_handler.proxies  # type: ignore
+            uses_proxy = hasattr(server, "proxy_handler") and server.proxy_handler.proxies  # type: ignore
             for phase in ('preup', 'postup'):
                 name = '%s.sh' % phase
                 path = struct.path(name)
-                ud.debug(ud.NETWORK, ud.ALL, "Accessing %s" % path,)
+                ud.debug(ud.NETWORK, ud.ALL, "Accessing %s" % path)
                 try:
-                    _code, _size, script = server.access(struct, name, get=True,)
+                    _code, _size, script = server.access(struct, name, get=True)
                     # Bug #37031: dansguarding is lying and returns 200 even for blocked content
                     if not script.startswith(b'#!') and uses_proxy:
                         uri = server.join(path)
-                        raise ProxyError(uri, "download blocked by proxy?",)
+                        raise ProxyError(uri, "download blocked by proxy?")
                     if self.script_verify and struct >= UCS_Version((3, 2, 0)):
                         name_gpg = name + '.gpg'
                         path_gpg = struct.path(name_gpg)
                         try:
-                            _code, _size, signature = server.access(struct, name_gpg, get=True,)
+                            _code, _size, signature = server.access(struct, name_gpg, get=True)
                             if not signature.startswith(b"-----BEGIN PGP SIGNATURE-----") and uses_proxy:
                                 uri = server.join(path_gpg)
-                                raise ProxyError(uri, "download blocked by proxy?",)
+                                raise ProxyError(uri, "download blocked by proxy?")
                         except DownloadError:
-                            raise VerificationError(path_gpg, "Signature download failed",)
-                        error = verify_script(script, signature,)
+                            raise VerificationError(path_gpg, "Signature download failed")
+                        error = verify_script(script, signature)
                         if error is not None:
-                            raise VerificationError(path, "Invalid signature: %r" % error,)
+                            raise VerificationError(path, "Invalid signature: %r" % error)
                         yield server, struct, None, path_gpg, signature
                     yield server, struct, phase, path, script
                 except DownloadError as e:
-                    ud.debug(ud.NETWORK, ud.ALL, "%s" % e,)
+                    ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
                 except ConfigurationError:
                     if critical:
                         raise
@@ -1748,5 +1750,5 @@ class LocalUpdater(UniventionUpdater):
         UniventionUpdater.__init__(self)
         self.log = logging.getLogger('updater.LocalUpdater')
         self.log.addHandler(logging.NullHandler())
-        repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository',)
+        repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
         self.server = UCSLocalServer("%s/mirror/" % repository_path)  # type: _UCSServer

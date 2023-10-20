@@ -15,10 +15,10 @@ from univention.testing import utils
 from essential.mail import restart_postfix, send_mail
 
 
-def check_sending_mail(sender, recipient, username, password, should_be_accepted,):
+def check_sending_mail(sender, recipient, username, password, should_be_accepted):
     token = str(time.time())
     try:
-        ret_code = send_mail(recipients=recipient, sender=sender, msg=token, port=587, tls=True, username=username, password=password, debuglevel=0,)
+        ret_code = send_mail(recipients=recipient, sender=sender, msg=token, port=587, tls=True, username=username, password=password, debuglevel=0)
         if bool(ret_code) == should_be_accepted:
             utils.fail('Sending should_be_accepted = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_accepted, ret_code))
     except smtplib.SMTPRecipientsRefused as ex:
@@ -28,7 +28,7 @@ def check_sending_mail(sender, recipient, username, password, should_be_accepted
 
 def main():
     cmd = ['/etc/init.d/postfix', 'restart']
-    with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w',),):
+    with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
         with ucr_test.UCSTestConfigRegistry() as ucr:
             with udm_test.UCSTestUDM() as udm:
                 handler_set(['mail/postfix/policy/listfilter=yes', 'mail/postfix/greylisting=no'])
@@ -77,28 +77,28 @@ def main():
 
                 for sender in ('noreply@univention.de', mails[1], '<>'):
                     print("\n>>> sending mail to user 1 (%s): sender=%s -> allowed" % (mails[1], sender))
-                    check_sending_mail(sender, mails[1], mails[1], password, True,)
+                    check_sending_mail(sender, mails[1], mails[1], password, True)
 
                 print("\n>>> sending to unrestricted mail group %r with a null sender -> allowed" % group1_mail)
-                check_sending_mail('<>', group1_mail, mails[0], password, True,)
+                check_sending_mail('<>', group1_mail, mails[0], password, True)
                 print("\n>>> sending to unrestricted mail group %r with a member posix account -> allowed" % group1_mail)
-                check_sending_mail(mails[0], group1_mail, mails[0], password, True,)
+                check_sending_mail(mails[0], group1_mail, mails[0], password, True)
                 print("\n>>> sending to unrestricted mail group %r with a non-member -> allowed" % group1_mail)
-                check_sending_mail(mails[1], group1_mail, mails[1], password, True,)
+                check_sending_mail(mails[1], group1_mail, mails[1], password, True)
                 print("\n>>> sending to restricted mail group %r with a null sender -> not allowed" % group2_mail)
-                check_sending_mail('<>', group2_mail, mails[4], password, False,)
+                check_sending_mail('<>', group2_mail, mails[4], password, False)
                 print("\n>>> sending to restricted mail group %r with a member posix account -> not allowed" % group2_mail)
-                check_sending_mail(mails[4], group2_mail, mails[4], password, False,)
+                check_sending_mail(mails[4], group2_mail, mails[4], password, False)
                 print("\n>>> sending to restricted mail group %r with a non-member -> not allowed" % group2_mail)
-                check_sending_mail(mails[3], group2_mail, mails[3], password, False,)
+                check_sending_mail(mails[3], group2_mail, mails[3], password, False)
                 print("\n>>> sending to restricted mail group %r with a non-member posix account but as a user in allowedEmailUsers using its mailPrimaryAddress -> allowed" % group2_mail)
-                check_sending_mail(mails[2], group2_mail, mails[2], password, True,)
+                check_sending_mail(mails[2], group2_mail, mails[2], password, True)
                 print("\n>>> sending to restricted mail group %r with a non-member posix account but as a user in allowedEmailUsers using its mailAlternativeAddress -> allowed" % group2_mail)
-                check_sending_mail(alts[2], group2_mail, mails[2], password, True,)
+                check_sending_mail(alts[2], group2_mail, mails[2], password, True)
                 print("\n>>> sending to restricted mail group %r with a non-member posix account but as a member of a group in allowedEmailGroups using its mailPrimaryAddress -> allowed" % group2_mail)
-                check_sending_mail(mails[0], group2_mail, mails[0], password, True,)
+                check_sending_mail(mails[0], group2_mail, mails[0], password, True)
                 print("\n>>> sending to restricted mail group %r with a non-member posix account but as a member of a group in allowedEmailGroups using its mailAlternativeAddress -> allowed" % group2_mail)
-                check_sending_mail(alts[0], group2_mail, mails[0], password, True,)
+                check_sending_mail(alts[0], group2_mail, mails[0], password, True)
 
 
 if __name__ == '__main__':

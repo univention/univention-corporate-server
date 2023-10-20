@@ -51,8 +51,8 @@ def main():
             })
 
         # create folder with mailPrimaryAddress (mpa)
-        dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=True, user_permission=['"%s" "%s"' % (user_addr, 'all')],)
-        folder = Bunch(dn=dn, name=name, mail_address=address,)
+        dn, name, address = create_shared_mailfolder(udm, fqdn, mailAddress=True, user_permission=['"%s" "%s"' % (user_addr, 'all')])
+        folder = Bunch(dn=dn, name=name, mail_address=address)
 
         # check folder with mail address
         path = get_dovecot_maildir(folder.mail_address)
@@ -87,18 +87,18 @@ def main():
             # send email to each shared folder with mail address
             #
             print(f'Sending with settings {ucr_settings}')
-            syslog.syslog(syslog.LOG_INFO, f'Sending with settings {ucr_settings}.',)
+            syslog.syslog(syslog.LOG_INFO, f'Sending with settings {ucr_settings}.')
             msgid = uts.random_name()
-            send_mail(recipients=[old_address], messageid=msgid, server=fqdn,)
+            send_mail(recipients=[old_address], messageid=msgid, server=fqdn)
             for _ in range(TIMEOUT_MAIL):
                 try:
-                    found = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (old_address,), use_ssl=True,)
+                    found = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (old_address,), use_ssl=True)
                 except AssertionError as exc:
                     print(exc)
                     found = False
                 if found:
                     print('Found mail in shared folder sent to %r' % ('shared/%s' % (old_address,),))
-                    syslog.syslog(syslog.LOG_INFO, f'Found mail in shared folder sent to shared/{old_address}',)
+                    syslog.syslog(syslog.LOG_INFO, f'Found mail in shared folder sent to shared/{old_address}')
                     break
                 time.sleep(1)
             else:
@@ -117,11 +117,11 @@ def main():
             print('==> FOLDER NEW: %r' % (new_dir,))
             print('==> RENAME=%r' % (flag_rename,))
             print('==> DELETE=%r' % (flag_delete,))
-            udm.modify_object('mail/folder', dn=folder.dn, set={'mailPrimaryAddress': new_address},)
+            udm.modify_object('mail/folder', dn=folder.dn, set={'mailPrimaryAddress': new_address})
 
             if os.path.exists(old_dir):
                 utils.fail('Test %d: old_dir = %r has not been renamed! %r' % (i, old_dir, folder))
-            cnt = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True,)
+            cnt = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True)
             if not cnt:
                 print('Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt))
                 time.sleep(180)
@@ -131,7 +131,7 @@ def main():
         # remove shared folder
         #
         folder.mail_address = new_address
-        udm.remove_object('mail/folder', dn=folder.dn,)
+        udm.remove_object('mail/folder', dn=folder.dn)
 
         # check folder with mail address
         path = get_dovecot_maildir(folder.mail_address)

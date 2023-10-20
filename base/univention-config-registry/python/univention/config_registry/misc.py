@@ -54,7 +54,7 @@ __all__ = [
 ]
 
 
-def replace_dict(line, dictionary,):
+def replace_dict(line, dictionary):
     # type: (str, Dict[str, str]) -> str
     """
     Map any character from line to its value from dictionary.
@@ -62,10 +62,10 @@ def replace_dict(line, dictionary,):
     >>> replace_dict('kernel', {'e': 'E', 'k': '', 'n': 'pp'})
     'ErppEl'
     """
-    return ''.join(dictionary.get(_, _,) for _ in line)
+    return ''.join(dictionary.get(_, _) for _ in line)
 
 
-def replace_umlaut(line,):
+def replace_umlaut(line):
     # type: (str) -> str
     u"""
     Replace german umlauts.
@@ -73,7 +73,7 @@ def replace_umlaut(line,):
     >>> replace_umlaut(u'überschrieben') == u'ueberschrieben'
     True
     """
-    return replace_dict(line, UMLAUTS,)  # pylint: disable-msg=E1101
+    return replace_dict(line, UMLAUTS)  # pylint: disable-msg=E1101
 
 
 UMLAUTS = {  # type: ignore # pylint: disable-msg=W0612
@@ -87,7 +87,7 @@ UMLAUTS = {  # type: ignore # pylint: disable-msg=W0612
 }
 
 
-def asciify(text,):
+def asciify(text):
     # type: (str) -> str
     """
     Replace any non-ASCII characters.
@@ -95,10 +95,10 @@ def asciify(text,):
     :param text: Input text.
     :returns: Replaced text.
     """
-    return text.encode('ascii', 'replace',).decode("ascii")
+    return text.encode('ascii', 'replace').decode("ascii")
 
 
-def key_shell_escape(line,):
+def key_shell_escape(line):
     # type: (str) -> str
     """
     Escape variable name by substituting shell invalid characters by '_'.
@@ -124,7 +124,7 @@ VALID_CHARS = (  # type: ignore # pylint: disable-msg=W0612
     string.ascii_letters + string.digits + '_')
 
 
-def validate_key(key, out=sys.stderr,):
+def validate_key(key, out=sys.stderr):
     # type: (str, IO) -> bool
     """
     Check if key consists of only shell valid characters.
@@ -137,25 +137,25 @@ def validate_key(key, out=sys.stderr,):
     key = replace_umlaut(key)
 
     if old != key:
-        print('Umlauts in config variable key are not recommended. Please consider renaming "%s" to %s.' % (old, key), file=out,)
+        print('Umlauts in config variable key are not recommended. Please consider renaming "%s" to %s.' % (old, key), file=out)
         # return False  # Bug #53742
 
     if len(key) > 0:
         if ': ' in key:
-            print('Please fix invalid ": " in config variable key "%s".' % (key,), file=out,)
+            print('Please fix invalid ": " in config variable key "%s".' % (key,), file=out)
             return False
         match = INVALID_KEY_CHARS.search(key)
 
         if not match:
             return True
-        print('Please fix invalid character "%s" in config variable key "%s".' % (match.group(), key), file=out,)
+        print('Please fix invalid character "%s" in config variable key "%s".' % (match.group(), key), file=out)
     return False
 
 
 INVALID_KEY_CHARS = re.compile('[][\r\n!"#$%&\'()+,;<=>?\\\\`{}§]')
 
 
-def directory_files(directory,):
+def directory_files(directory):
     # type: (str) -> List[str]
     """
     Return a list of all files below the given directory.
@@ -166,7 +166,7 @@ def directory_files(directory,):
     result = []
     for dirpath, _dirnames, filenames in os.walk(directory):
         for filename in filenames:
-            filename = os.path.join(dirpath, filename,)
+            filename = os.path.join(dirpath, filename)
             if os.path.isfile(filename):
                 result.append(filename)
     return result

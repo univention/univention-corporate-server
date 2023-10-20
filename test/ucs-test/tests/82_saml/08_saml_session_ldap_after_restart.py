@@ -17,7 +17,7 @@ def main():
 
     account = utils.UCSTestDomainAdminCredentials()
 
-    SamlSession = samltest.SamlTest(account.username, account.bindpw,)
+    SamlSession = samltest.SamlTest(account.username, account.bindpw)
     SamlSession.login_with_new_session_at_IdP()
     subprocess.call(['/etc/init.d/slapd', 'restart'])
     SamlSession.test_logged_in_status()

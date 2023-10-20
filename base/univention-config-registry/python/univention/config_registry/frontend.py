@@ -86,14 +86,14 @@ _SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES, _SHOW_DEFAULT, _S
 class UnknownKeyException(Exception):
     """Query for unknown key: no info file nor set."""
 
-    def __init__(self, value,):
-        Exception.__init__(self, value,)
+    def __init__(self, value):
+        Exception.__init__(self, value)
 
     def __str__(self):
         return 'W: Unknown key: "%s"' % self.args
 
 
-def replog(ucr, var, old_value, value=None,):
+def replog(ucr, var, old_value, value=None):
     # type: (ConfigRegistry, str, Optional[str], Optional[str]) -> None
     """
     This function writes a new entry to replication logfile if
@@ -104,7 +104,7 @@ def replog(ucr, var, old_value, value=None,):
     :param old_value: Old UCR variable value.
     :param value: New UCR variable value. `None` is now unset.
     """
-    if ucr.is_true('ucr/replog/enabled', False,):
+    if ucr.is_true('ucr/replog/enabled', False):
         if value is not None:
             method = 'set'
             varvalue = "%s=%s" % (var, escape_value(value))
@@ -116,7 +116,7 @@ def replog(ucr, var, old_value, value=None,):
             ConfigRegistry.LDAP: '--ldap-policy ',
             ConfigRegistry.FORCED: '--force ',
             ConfigRegistry.SCHEDULE: '--schedule ',
-        }.get(ucr.scope, '',)
+        }.get(ucr.scope, '')
 
         if old_value is None:
             old_value = "[Previously undefined]"
@@ -124,16 +124,16 @@ def replog(ucr, var, old_value, value=None,):
         log = u'%s: %s %s%s old:%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue, old_value)
         try:
             if not os.path.isfile(REPLOG_FILE):
-                os.close(os.open(REPLOG_FILE, os.O_CREAT, 0o640,))
+                os.close(os.open(REPLOG_FILE, os.O_CREAT, 0o640))
 
-            with open(REPLOG_FILE, "a+", encoding='utf-8',) as logfile:
+            with open(REPLOG_FILE, "a+", encoding='utf-8') as logfile:
                 logfile.write(log)
         except EnvironmentError as ex:
-            print("E: exception occurred while writing to replication log: %s" % (ex,), file=sys.stderr,)
+            print("E: exception occurred while writing to replication log: %s" % (ex,), file=sys.stderr)
             exception_occured()
 
 
-def handler_set(args, opts={}, quiet=False,):
+def handler_set(args, opts={}, quiet=False):
     # type: (List[str], Dict[str, Any], bool) -> None
     """
     Set config registry variables in args.
@@ -145,7 +145,7 @@ def handler_set(args, opts={}, quiet=False,):
     """
     ucr = ConfigRegistry()
     ucr.load()
-    ignore_check = opts.get('ignore-check') or ucr.is_true('ucr/check/type', True,)
+    ignore_check = opts.get('ignore-check') or ucr.is_true('ucr/check/type', True)
 
     ucr = _ucr_from_opts(opts)
     info = _get_config_registry_info()
@@ -155,7 +155,7 @@ def handler_set(args, opts={}, quiet=False,):
             sep_set = arg.find('=')  # set
             sep_def = arg.find('?')  # set if not already set
             if sep_set == -1 and sep_def == -1:
-                print("W: Missing value for config registry variable '%s'" % (arg,), file=sys.stderr,)
+                print("W: Missing value for config registry variable '%s'" % (arg,), file=sys.stderr)
                 continue
             else:
                 if sep_set > 0 and sep_def == -1:
@@ -163,7 +163,7 @@ def handler_set(args, opts={}, quiet=False,):
                 elif sep_def > 0 and sep_set == -1:
                     sep = sep_def
                 else:
-                    sep = min(sep_set, sep_def,)
+                    sep = min(sep_set, sep_def)
             key = arg[0:sep]
             value = arg[sep + 1:]
             key_exists = key in ucr._layer
@@ -180,20 +180,20 @@ def handler_set(args, opts={}, quiet=False,):
                         validator = Type(vinfo)
                     except (TypeError, ValueError):
                         if ignore_check:
-                            print('W: Invalid UCR type definition for type %r of %r, but set anyway' % (vinfo.get('type'), key), file=sys.stderr,)
+                            print('W: Invalid UCR type definition for type %r of %r, but set anyway' % (vinfo.get('type'), key), file=sys.stderr)
                         else:
-                            print('E: Invalid UCR type definition for type %r of %r, value %r not set' % (vinfo.get('type'), key, value), file=sys.stderr,)
+                            print('E: Invalid UCR type definition for type %r of %r, value %r not set' % (vinfo.get('type'), key, value), file=sys.stderr)
                             opts['exit_code'] = 1
-                            opts.setdefault('type_def_error', [],).append((key, vinfo.get('type'), value))
+                            opts.setdefault('type_def_error', []).append((key, vinfo.get('type'), value))
                             continue  # do not set value and continue with next element of for loop to be set
                     else:
                         if not validator.check(value):
                             if ignore_check:
-                                print('W: Value %r incompatible for %r, but setting anyway' % (value, key), file=sys.stderr,)
+                                print('W: Value %r incompatible for %r, but setting anyway' % (value, key), file=sys.stderr)
                             else:
-                                print('E: Value %r incompatible for %r' % (value, key), file=sys.stderr,)
+                                print('E: Value %r incompatible for %r' % (value, key), file=sys.stderr)
                                 opts['exit_code'] = 2
-                                opts.setdefault('type_errors', [],).append((key, value))
+                                opts.setdefault('type_errors', []).append((key, value))
                                 continue  # do not set value and continue with next element of for loop to be set
                 changes[key] = value
             else:
@@ -206,10 +206,10 @@ def handler_set(args, opts={}, quiet=False,):
                         print('Not setting %s' % key)
         changed = ucr.update(changes)
 
-    _run_changed(ucr, changed, "" if quiet else 'W: %s is overridden by scope "%s"',)
+    _run_changed(ucr, changed, "" if quiet else 'W: %s is overridden by scope "%s"')
 
 
-def handler_unset(args, opts={},):
+def handler_unset(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> None
     """
     Unset config registry variables in args.
@@ -226,13 +226,13 @@ def handler_unset(args, opts={},):
                 changes[arg] = None
             else:
                 msg = "W: The config registry variable '%s' does not exist"
-                print(msg % (arg,), file=sys.stderr,)
+                print(msg % (arg,), file=sys.stderr)
         changed = ucr.update(changes)
 
-    _run_changed(ucr, changed, 'W: %s is still set in scope "%s"',)
+    _run_changed(ucr, changed, 'W: %s is still set in scope "%s"')
 
 
-def ucr_update(ucr, changes,):
+def ucr_update(ucr, changes):
     # type: (ConfigRegistry, Dict[str, Optional[str]]) -> None
     """
     Set or unset the given config registry variables.
@@ -242,10 +242,10 @@ def ucr_update(ucr, changes,):
     """
     with ucr:
         changed = ucr.update(changes)
-    _run_changed(ucr, changed,)
+    _run_changed(ucr, changed)
 
 
-def _run_changed(ucr, changed, msg="",):
+def _run_changed(ucr, changed, msg=""):
     # type: (ConfigRegistry, Dict[str, Tuple[Optional[str], Optional[str]]], str) -> None
     """
     Run handlers for changed UCR variables.
@@ -256,26 +256,26 @@ def _run_changed(ucr, changed, msg="",):
     """
     visible = {}  # type: Dict[str, Tuple[Optional[str], Optional[str]]]
     for key, (old_value, new_value) in changed.items():
-        replog(ucr, key, old_value, new_value,)
+        replog(ucr, key, old_value, new_value)
 
         reg = ucr.scope
         while old_value is None and reg > 0:
             reg -= 1
             old_value = ucr._registry[reg].get(key)
 
-        reg, new_value = ucr.get(key, (0, None), getscope=True,)
+        reg, new_value = ucr.get(key, (0, None), getscope=True)
         if reg > ucr.scope:
             if msg:
-                print(msg % (key, SCOPE[reg]), file=sys.stderr,)
+                print(msg % (key, SCOPE[reg]), file=sys.stderr)
         else:
             visible[key] = (old_value, new_value)
 
     handlers = ConfigHandlers()
     handlers.load()
-    handlers(list(visible), (ucr, visible),)
+    handlers(list(visible), (ucr, visible))
 
 
-def _ucr_from_opts(opts,):
+def _ucr_from_opts(opts):
     # type: (Dict[str, Any]) -> ConfigRegistry
     """
     Create :py:class:`ConfigRegistry` instance according to requested layer.
@@ -283,11 +283,11 @@ def _ucr_from_opts(opts,):
     :param opts: Command line options.
     :returns: A new UCR instance.
     """
-    if opts.get('ldap-policy', False,):
+    if opts.get('ldap-policy', False):
         scope = ConfigRegistry.LDAP
-    elif opts.get('force', False,):
+    elif opts.get('force', False):
         scope = ConfigRegistry.FORCED
-    elif opts.get('schedule', False,):
+    elif opts.get('schedule', False):
         scope = ConfigRegistry.SCHEDULE
     else:
         scope = ConfigRegistry.NORMAL
@@ -295,7 +295,7 @@ def _ucr_from_opts(opts,):
     return ucr
 
 
-def handler_dump(args, opts={},):
+def handler_dump(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> Iterator[str]
     """
     Dump all variables.
@@ -309,7 +309,7 @@ def handler_dump(args, opts={},):
         yield line
 
 
-def handler_update(args, opts={},):
+def handler_update(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> None
     """
     Update handlers.
@@ -325,7 +325,7 @@ def handler_update(args, opts={},):
     _register_variable_default_values(ucr)
 
 
-def handler_commit(args, opts={},):
+def handler_commit(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> None
     """
     Commit all registered templated files.
@@ -338,10 +338,10 @@ def handler_commit(args, opts={},):
 
     handlers = ConfigHandlers()
     handlers.load()
-    handlers.commit(ucr, args,)
+    handlers.commit(ucr, args)
 
 
-def handler_register(args, opts={},):
+def handler_register(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> None
     """
     Register new `.info` file.
@@ -360,11 +360,11 @@ def handler_register(args, opts={},):
     # diversion is (re-)done when >= 1.
 
     _register_variable_default_values(ucr)
-    handlers.register(args[0], ucr,)
+    handlers.register(args[0], ucr)
     # handlers.commit((ucr, {}))
 
 
-def handler_unregister(args, opts={},):
+def handler_unregister(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> None
     """
     Unregister old `.info` file.
@@ -377,21 +377,21 @@ def handler_unregister(args, opts={},):
 
     handlers = ConfigHandlers()
     cur = handlers.update()  # cache must be current
-    obsolete = handlers.unregister(args[0], ucr,)
+    obsolete = handlers.unregister(args[0], ucr)
     handlers.update_divert(cur - obsolete)
     _register_variable_default_values(ucr)
 
 
-def handler_filter(args, opts={},):
+def handler_filter(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> None
     """Run filter on STDIN to STDOUT."""
     ucr = ConfigRegistry()
     ucr.load()
     stdout = sys.stdout if six.PY2 else sys.stdout.buffer  # type: IO[bytes] # type: ignore
-    stdout.write(run_filter(sys.stdin.read(), ucr, opts=opts,))
+    stdout.write(run_filter(sys.stdin.read(), ucr, opts=opts))
 
 
-def handler_search(args, opts={},):
+def handler_search(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> Iterator[str]
     """
     Search for registry variable.
@@ -399,12 +399,12 @@ def handler_search(args, opts={},):
     :param args: Command line arguments.
     :param opts: Command line options.
     """
-    search_keys = opts.get('key', False,)
-    search_values = opts.get('value', False,)
-    search_all = opts.get('all', False,)
+    search_keys = opts.get('key', False)
+    search_values = opts.get('value', False)
+    search_all = opts.get('all', False)
     count_search = int(search_keys) + int(search_values) + int(search_all)
     if count_search > 1:
-        print('E: at most one out of [--key|--value|--all] may be set', file=sys.stderr,)
+        print('E: at most one out of [--key|--value|--all] may be set', file=sys.stderr)
         sys.exit(1)
     elif count_search == 0:
         search_keys = True
@@ -415,30 +415,30 @@ def handler_search(args, opts={},):
         try:
             search = re.compile('|'.join('(?:%s)' % (_,) for _ in args)).search
         except re.error as ex:
-            print('E: invalid regular expression: %s' % (ex,), file=sys.stderr,)
+            print('E: invalid regular expression: %s' % (ex,), file=sys.stderr)
             sys.exit(1)
     else:
-        def search(x,):
+        def search(x):
             return True
 
     info = _get_config_registry_info()
 
-    category = opts.get('category', None,)
+    category = opts.get('category', None)
     if category and not info.get_category(category):
-        print('E: unknown category: "%s"' % (category,), file=sys.stderr,)
+        print('E: unknown category: "%s"' % (category,), file=sys.stderr)
         sys.exit(1)
 
     ucr = ConfigRegistry()
     ucr.load()
 
     details = _SHOW_EMPTY | _SHOW_DESCRIPTION
-    if opts.get('non-empty', False,):
+    if opts.get('non-empty', False):
         details &= ~_SHOW_EMPTY
-    if opts.get('brief', False,) or ucr.is_true('ucr/output/brief', False,):
+    if opts.get('brief', False) or ucr.is_true('ucr/output/brief', False):
         details &= ~_SHOW_DESCRIPTION
-    if ucr.is_true('ucr/output/scope', False,):
+    if ucr.is_true('ucr/output/scope', False):
         details |= _SHOW_SCOPE
-    if opts.get('verbose', False,):
+    if opts.get('verbose', False):
         details |= _SHOW_CATEGORIES | _SHOW_DESCRIPTION
 
     all_vars = {}  # type: Dict[str, Tuple[Optional[str], Optional[cri.Variable], Optional[int]]] # key: (value, vinfo, scope)
@@ -454,19 +454,19 @@ def handler_search(args, opts={},):
         if any((
                 search_keys and search(key),
                 search_values and value2 and search(value2),
-                search_all and vinfo and search(vinfo.get('description', '',)),
+                search_all and vinfo and search(vinfo.get('description', '')),
         )):
-            yield variable_info_string(key, value2, vinfo, details=details,)
+            yield variable_info_string(key, value2, vinfo, details=details)
 
     if _SHOW_EMPTY & details and not OPT_FILTERS['shell'][2]:
         patterns = {}  # type: Dict
         for arg in args or ('',):
             patterns.update(info.describe_search_term(arg))
         for pattern, vinfo in patterns.items():
-            yield variable_info_string(pattern, None, vinfo, details=details,)
+            yield variable_info_string(pattern, None, vinfo, details=details)
 
 
-def handler_get(args, opts={},):
+def handler_get(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> Iterator[str]
     """
     Return config registry variable.
@@ -486,7 +486,7 @@ def handler_get(args, opts={},):
         yield value
 
 
-def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION,):
+def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
     # type: (str, Optional[str], Optional[cri.Variable], Optional[int], int) -> str
     """
     Format UCR variable key, value, description, scope, categories and default value.
@@ -525,10 +525,10 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
         info.append(' ' + description)
 
     if variable_info and _SHOW_CATEGORIES & details:
-        info.append(' Categories: ' + variable_info.get('categories', 'none',))
+        info.append(' Categories: ' + variable_info.get('categories', 'none'))
 
     if variable_info and _SHOW_DEFAULT & details:
-        info.append(' Default: ' + variable_info.get('default', '(not set)',))
+        info.append(' Default: ' + variable_info.get('default', '(not set)'))
 
     if variable_info and _SHOW_TYPE & details:
         try:
@@ -543,7 +543,7 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
     return '\n'.join(info)
 
 
-def handler_info(args, opts={},):
+def handler_info(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> Iterator[str]
     """
     Print variable info.
@@ -558,14 +558,14 @@ def handler_info(args, opts={},):
     for arg in args:
         try:
             yield variable_info_string(
-                arg, ucr.get(arg, None,),
+                arg, ucr.get(arg, None),
                 info.get_variable(arg),
-                details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES | _SHOW_DEFAULT | _SHOW_TYPE,)
+                details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES | _SHOW_DEFAULT | _SHOW_TYPE)
         except UnknownKeyException as ex:
-            print(ex, file=sys.stderr,)
+            print(ex, file=sys.stderr)
 
 
-def handler_version(args, opts={},):
+def handler_version(args, opts={}):
     # type: (List[str], Dict[str, Any]) -> NoReturn
     """
     Print version info.
@@ -577,7 +577,7 @@ def handler_version(args, opts={},):
     sys.exit(0)
 
 
-def handler_help(args, opts={}, out=sys.stdout,):
+def handler_help(args, opts={}, out=sys.stdout):
     # type: (List[str], Dict[str, Any], IO) -> None
     """
     Print config registry command line usage.
@@ -656,15 +656,15 @@ Actions:
 Description:
   univention-config-registry is a tool to handle the basic configuration for
   Univention Corporate Server (UCS)
-''', file=out,)
+''', file=out)
     sys.exit(0)
 
 
-def missing_parameter(action,):
+def missing_parameter(action):
     # type: (str) -> NoReturn
     """Print missing parameter error."""
-    print('E: too few arguments for command [%s]' % (action,), file=sys.stderr,)
-    print('try `univention-config-registry --help` for more information', file=sys.stderr,)
+    print('E: too few arguments for command [%s]' % (action,), file=sys.stderr)
+    print('try `univention-config-registry --help` for more information', file=sys.stderr)
     sys.exit(1)
 
 
@@ -674,7 +674,7 @@ def _get_config_registry_info():
     return cri.ConfigRegistryInfo(install_mode=False)
 
 
-def _register_variable_default_values(ucr,):
+def _register_variable_default_values(ucr):
     # type: (ConfigRegistry) -> None
     """Create base-default.conf layer containig all default values"""
     info = _get_config_registry_info()
@@ -693,7 +693,7 @@ def _register_variable_default_values(ucr,):
     changed = {key: (old, new) for key, (old, new) in _ucr.update(defaults).items() if old != new}
     _ucr.save()
     ucr.load()
-    _run_changed(ucr, changed, 'I: %s will be set in scope "%s"',)
+    _run_changed(ucr, changed, 'I: %s will be set in scope "%s"')
 
 
 HANDLERS = {
@@ -715,7 +715,7 @@ OPT_ACTIONS = {
     # name: [function, state, (alias list)]
     'help': [handler_help, False, ('-h', '-?')],
     'version': [handler_version, False, ('-v',)],
-    'debug': [lambda args,: None, False, ()],
+    'debug': [lambda args: None, False, ()],
 }  # type: Dict[str, List]
 
 # filter options: these options define filter for the output
@@ -756,7 +756,7 @@ OPT_COMMANDS = {
 }  # type: Dict[str, Dict[str, List]]
 
 
-def main(args,):
+def main(args):
     # type: (List[str]) -> int
     """Run config registry."""
     try:
@@ -776,7 +776,7 @@ def main(args,):
                 try:
                     OPT_FILTERS[arg[2:]][2] = True
                 except LookupError:
-                    print('E: unknown option %s' % (arg,), file=sys.stderr,)
+                    print('E: unknown option %s' % (arg,), file=sys.stderr)
                     sys.exit(1)
 
         # is action already defined by global option?
@@ -788,7 +788,7 @@ def main(args,):
         try:
             action = args.pop(0)
         except IndexError:
-            print('E: missing action, see --help', file=sys.stderr,)
+            print('E: missing action, see --help', file=sys.stderr)
             sys.exit(1)
         # COMPAT: the 'shell' command is now an option and equivalent to
         # --shell search
@@ -821,11 +821,11 @@ def main(args,):
         # if a filter option is set: verify that a valid command is given
         for name, (_prio, func, state, actions) in OPT_FILTERS.items():
             if state and action not in actions:
-                print('E: invalid option --%s for command %s' % (name, action), file=sys.stderr,)
+                print('E: invalid option --%s for command %s' % (name, action), file=sys.stderr)
                 sys.exit(1)
 
         # check command options
-        cmd_opts = OPT_COMMANDS.get(action, {},)
+        cmd_opts = OPT_COMMANDS.get(action, {})
         while args and args[0].startswith('--'):
             arg = args.pop(0)
             if action in ('set', 'unset') and arg == '--forced':
@@ -833,7 +833,7 @@ def main(args,):
             try:
                 cmd_opt_tuple = cmd_opts[arg[2:]]
             except LookupError:
-                print('E: invalid option %s for command %s' % (arg, action), file=sys.stderr,)
+                print('E: invalid option %s for command %s' % (arg, action), file=sys.stderr)
                 sys.exit(1)
             else:
                 if cmd_opt_tuple[0] == BOOL:
@@ -843,7 +843,7 @@ def main(args,):
                         cmd_opt_tuple[1] = args.pop(0)
                     except IndexError:
                         msg = 'E: option %s for command %s expects an argument'
-                        print(msg % (arg, action), file=sys.stderr,)
+                        print(msg % (arg, action), file=sys.stderr)
                         sys.exit(1)
 
         # Drop type
@@ -853,7 +853,7 @@ def main(args,):
         try:
             handler_func, min_args = HANDLERS[action]
         except LookupError:
-            print('E: unknown action "%s", see --help' % (action,), file=sys.stderr,)
+            print('E: unknown action "%s", see --help' % (action,), file=sys.stderr)
             sys.exit(1)
         else:
             # enough arguments?
@@ -862,7 +862,7 @@ def main(args,):
 
             # if any filter option is set
             cmd_opts['exit_code'] = 0
-            result = handler_func(args, cmd_opts,)
+            result = handler_func(args, cmd_opts)
             if result is None:
                 return cmd_opts['exit_code']
 
@@ -871,7 +871,7 @@ def main(args,):
             for (_prio, filter_func, state, _actions) in sorted(OPT_FILTERS.values()):
                 if not state:
                     continue
-                results = filter_func(args, results,)
+                results = filter_func(args, results)
 
             for line in results:
                 print(line)

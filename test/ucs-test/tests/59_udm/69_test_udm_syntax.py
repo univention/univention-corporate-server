@@ -21,8 +21,8 @@ import univention.testing.udm as udm_test
     ('boolean', ('1', '0', ''), ('True', 'False', 'TRUE', 'FALSE', 'true', 'false', 'yes', 'no', 'Yes', 'No', 'YES', 'NO')),
     ('emailAddress', ('foo@example.com', 'foo+bar@example.com', 'foo-bar@example.com', 'foo@sub.sub.sub.domain.example.com', ''), ('foo', 'example.com', '@', 'foo', 'foo@', '@example.com')),
     ('emailAddressTemplate', ('foo@example.com', 'foo+bar@example.com', 'foo-bar@example.com', 'foo@sub.sub.sub.domain.example.com', ''), ('foo', 'example.com', '@', 'foo', 'foo@', '@example.com')),
-],)
-def test_udm_syntax(udm, syntax, valid_values, invalid_values, verify_ldap_object,):
+])
+def test_udm_syntax(udm, syntax, valid_values, invalid_values, verify_ldap_object):
     """Apply valid/invalid values for various UDM syntaxes"""
     cli_name = uts.random_string()
     udm.create_object(
@@ -34,7 +34,8 @@ def test_udm_syntax(udm, syntax, valid_values, invalid_values, verify_ldap_objec
         module='users/user',
         objectClass='univentionFreeAttributes',
         ldapMapping='univentionFreeAttribute15',
-        syntax=syntax,)
+        syntax=syntax,
+    )
 
     # check valid values
     for value in valid_values:
@@ -42,7 +43,7 @@ def test_udm_syntax(udm, syntax, valid_values, invalid_values, verify_ldap_objec
         if syntax in ('emailAddress', 'emailAddressTemplate'):
             verify_ldap_object(user_dn, {
                 'univentionFreeAttribute15': [value] if value else [],
-            },)
+            })
 
     # check invalid values
     for value in invalid_values:
@@ -50,10 +51,10 @@ def test_udm_syntax(udm, syntax, valid_values, invalid_values, verify_ldap_objec
             udm.create_user(**{cli_name: value})
 
 
-def test_complex_syntax_doublequote_parsing(udm, verify_ldap_object,):
+def test_complex_syntax_doublequote_parsing(udm, verify_ldap_object):
     """Verify the option to use doublequotes in complex-syntax values (Bug #27241)"""
     user_dn, username = udm.create_user()
-    udm.modify_object('users/user', dn=user_dn, umcProperty=r'"foo" "b\"ar"',)
+    udm.modify_object('users/user', dn=user_dn, umcProperty=r'"foo" "b\"ar"')
     verify_ldap_object(user_dn, {
         'univentionUMCProperty': [r'foo=b"ar'],
-    },)
+    })

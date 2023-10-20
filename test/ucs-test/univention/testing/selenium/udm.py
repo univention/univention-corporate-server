@@ -54,27 +54,27 @@ class UDMBase:
 
     name = None
 
-    def __init__(self, selenium,):
+    def __init__(self, selenium):
         # type: (Any) -> None
         self.selenium = selenium
 
-    def _get_search_value(self, objectname,):
+    def _get_search_value(self, objectname):
         # type: (Any) -> str
         return objectname
 
-    def _get_grid_value(self, objectname,):
+    def _get_grid_value(self, objectname):
         # type: (Any) -> str
         return objectname
 
-    def exists(self, objectname,):
+    def exists(self, objectname):
         # type: (str) -> bool
-        print('*** check if object exists', objectname,)
+        print('*** check if object exists', objectname)
         # This method will work with *most* UDM modules.
         self.search(self._get_search_value(objectname))
         time.sleep(5)
         self.selenium.wait_until_all_standby_animations_disappeared()
         try:
-            self.selenium.wait_for_text(self._get_grid_value(objectname), timeout=1,)
+            self.selenium.wait_for_text(self._get_grid_value(objectname), timeout=1)
             return True
         except TimeoutException:
             pass
@@ -83,9 +83,9 @@ class UDMBase:
     def open_module(self):
         self.selenium.open_module(self.name)
 
-    def open_details(self, objectname,):
+    def open_details(self, objectname):
         # type: (str) -> None
-        print('*** open detail page of object', objectname,)
+        print('*** open detail page of object', objectname)
         # This method will work with *most* UDM modules.
         self.search(self._get_search_value(objectname))
         self.selenium.click_grid_entry(self._get_grid_value(objectname))
@@ -103,9 +103,9 @@ class UDMBase:
         self.selenium.click_button(_('Save'))
         self.wait_for_main_grid_load()
 
-    def delete(self, objectname,):
+    def delete(self, objectname):
         # type: (str) -> None
-        print('*** remove the object with name=', objectname,)
+        print('*** remove the object with name=', objectname)
         # This method will work with *most* UDM modules.
         self.search(self._get_search_value(objectname))
 
@@ -120,12 +120,12 @@ class UDMBase:
         # FIXME: this waits forever and let's the test fail when no grid entries exists.
         # self.wait_for_main_grid_load()
 
-    def search(self, objectname,):
+    def search(self, objectname):
         # type: (str) -> None
-        print('*** searching for objects with name=', objectname,)
+        print('*** searching for objects with name=', objectname)
         # This method will work with *most* UDM modules.
         xpath = '//input[@name="objectPropertyValue"]'
-        elems = webdriver.support.ui.WebDriverWait(xpath, 60,).until(
+        elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
             self.selenium.get_all_enabled_elements,
         )
         elems[0].clear()
@@ -134,19 +134,19 @@ class UDMBase:
         self.wait_for_main_grid_load()
         elems[0].clear()
 
-    def wait_for_main_grid_load(self, timeout=60,):
+    def wait_for_main_grid_load(self, timeout=60):
         # type: (int) -> None
         print('*** waiting for main grid load')
         self.selenium.wait_until_standby_animation_appears_and_disappears()
 
-    def open_add_dialog(self, container=None, template=None,):
+    def open_add_dialog(self, container=None, template=None):
         # type: (Optional[str], Optional[str]) -> None
         print('*** open the add dialog')
         self.selenium.click_button(_('Add'))
         self.selenium.wait_until_all_standby_animations_disappeared()
 
         try:
-            self.selenium.wait_for_text(_('This UCS system is part of an Active Directory domain'), timeout=1,)
+            self.selenium.wait_for_text(_('This UCS system is part of an Active Directory domain'), timeout=1)
         except TimeoutException:
             pass
         else:
@@ -154,13 +154,13 @@ class UDMBase:
             # FIXME: clicking Next on the page with the active directory warning
             # cuts the dialog in half and the dom elements are not clickable/visible.
             # This is a workaround
-            dialogs = self.selenium.driver.find_elements(By.CLASS_NAME, 'umcUdmNewObjectDialog',)
+            dialogs = self.selenium.driver.find_elements(By.CLASS_NAME, 'umcUdmNewObjectDialog')
             if len(dialogs):
                 self.selenium.driver.execute_script('dijit.byId("%s")._position()' % (dialogs[0].get_attribute('widgetid')))
 
         click_next = False
         try:
-            self.selenium.wait_for_text(_('Container'), timeout=1,)
+            self.selenium.wait_for_text(_('Container'), timeout=1)
             click_next = True
         except TimeoutException:
             pass
@@ -168,13 +168,13 @@ class UDMBase:
         # FIXME: select the given container
 
         try:
-            self.selenium.wait_for_text(_("User template"), timeout=1,)
+            self.selenium.wait_for_text(_("User template"), timeout=1)
             click_next = True
         except TimeoutException:
             pass
 
         if template is not None:
-            self.selenium.enter_input_combobox('objectTemplate', template,)
+            self.selenium.enter_input_combobox('objectTemplate', template)
 
         if click_next:
             self.selenium.click_button(_('Next'))
@@ -189,13 +189,13 @@ class UDMBase:
 class Portals(UDMBase):
     name = _('Portal settings')
 
-    def __init__(self, selenium,):
+    def __init__(self, selenium):
         # type: (Any) -> None
         super().__init__(selenium)
         self.ucr = ucr_test.UCSTestConfigRegistry()
         self.ucr.load()
 
-    def add(self, portalname=None, hostname=None,):
+    def add(self, portalname=None, hostname=None):
         # type: (Optional[str], Optional[str]) -> str
         if portalname is None:
             portalname = uts.random_string()
@@ -203,17 +203,17 @@ class Portals(UDMBase):
         self.open_add_dialog()
 
         # FIXME add this to the open_add_dialog() function
-        self.selenium.enter_input_combobox('objectType', 'Portal: Portal',)
+        self.selenium.enter_input_combobox('objectType', 'Portal: Portal')
         self.selenium.wait_until_standby_animation_appears_and_disappears()
         self.selenium.click_button('Next')
 
         self.selenium.wait_until_standby_animation_appears_and_disappears()
-        self.selenium.enter_input("name", portalname,)
-        self.selenium.enter_input_combobox('__displayName-0-0', 'en_US', with_click=False,)
-        self.selenium.enter_input('__displayName-0-1', uts.random_string(),)
+        self.selenium.enter_input("name", portalname)
+        self.selenium.enter_input_combobox('__displayName-0-0', 'en_US', with_click=False)
+        self.selenium.enter_input('__displayName-0-1', uts.random_string())
 
         if hostname is not None:
-            self.selenium.enter_input_combobox('__portalComputers-0-0', hostname,)
+            self.selenium.enter_input_combobox('__portalComputers-0-0', hostname)
 
         self.selenium.click_button(_("Create portal"))
         self.wait_for_main_grid_load()
@@ -224,13 +224,13 @@ class Portals(UDMBase):
 class Computers(UDMBase):
     name = _('Computers')
 
-    def add(self, computername=None,):
+    def add(self, computername=None):
         # type: (Optional[str]) -> str
         if computername is None:
             computername = uts.random_string()
 
         self.open_add_dialog()
-        self.selenium.enter_input("name", computername,)
+        self.selenium.enter_input("name", computername)
         self.selenium.click_button(_("Create computer"))
         self.selenium.wait_for_text(_('has been created'))
         self.selenium.click_button(_('Cancel'))
@@ -242,14 +242,14 @@ class Computers(UDMBase):
 class Groups(UDMBase):
     name = _("Groups")
 
-    def add(self, groupname=None,):
+    def add(self, groupname=None):
         # type: (Optional[str]) -> str
         if groupname is None:
             groupname = uts.random_string()
 
         self.open_add_dialog()
         self.selenium.wait_for_text(_("Members of this group"))
-        self.selenium.enter_input("name", groupname,)
+        self.selenium.enter_input("name", groupname)
         self.selenium.click_button(_("Create group"))
         self.wait_for_main_grid_load()
 
@@ -259,13 +259,13 @@ class Groups(UDMBase):
 class Policies(UDMBase):
     name = _('Policies')
 
-    def add(self, policyname=None,):
+    def add(self, policyname=None):
         # type: (Optional[str]) -> str
         if policyname is None:
             policyname = uts.random_string()
 
         self.open_add_dialog()
-        self.selenium.enter_input("name", policyname,)
+        self.selenium.enter_input("name", policyname)
         self.selenium.click_button(_("Create policy"))
         self.wait_for_main_grid_load()
 
@@ -281,7 +281,7 @@ class Policies(UDMBase):
 class Users(UDMBase):
     name = _("Users")
 
-    def __init__(self, selenium,):
+    def __init__(self, selenium):
         # type: (Any) -> None
         super().__init__(selenium)
         self.ucr = ucr_test.UCSTestConfigRegistry()
@@ -290,7 +290,7 @@ class Users(UDMBase):
     def get_description(self):
         # type: () -> str
         xpath = '//input[@name="description"]'
-        elems = webdriver.support.ui.WebDriverWait(xpath, 60,).until(
+        elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
             self.selenium.get_all_enabled_elements,
         )
         return elems[0].get_attribute('value')
@@ -298,7 +298,7 @@ class Users(UDMBase):
     def get_primary_mail(self):
         # type: () -> str
         xpath = '//input[@name="mailPrimaryAddress"]'
-        elems = webdriver.support.ui.WebDriverWait(xpath, 60,).until(
+        elems = webdriver.support.ui.WebDriverWait(xpath, 60).until(
             self.selenium.get_all_enabled_elements,
         )
         return elems[0].get_attribute('value')
@@ -309,7 +309,8 @@ class Users(UDMBase):
             firstname='',  # type: str
             lastname=None,  # type: Optional[str]
             username=None,  # type: Optional[str]
-            password='univention',):  # type: (...) -> Dict[str, str]
+            password='univention',  # type: str
+    ):  # type: (...) -> Dict[str, str]
         if username is None:
             username = uts.random_string()
         if lastname is None:
@@ -318,14 +319,14 @@ class Users(UDMBase):
         self.open_add_dialog(template=template)
 
         self.selenium.wait_for_text(_("First name"))
-        self.selenium.enter_input("firstname", firstname,)
-        self.selenium.enter_input("lastname", lastname,)
-        self.selenium.enter_input("username", username,)
+        self.selenium.enter_input("firstname", firstname)
+        self.selenium.enter_input("lastname", lastname)
+        self.selenium.enter_input("username", username)
 
         self.selenium.click_button(_("Next"))
         self.selenium.wait_for_text(_("Password"))
-        self.selenium.enter_input("password_1", password,)
-        self.selenium.enter_input("password_2", password,)
+        self.selenium.enter_input("password_1", password)
+        self.selenium.enter_input("password_2", password)
         self.selenium.click_button(_("Create user"))
         self.selenium.wait_for_text(_('has been created'))
         self.selenium.click_button(_('Cancel'))
@@ -333,35 +334,35 @@ class Users(UDMBase):
 
         return {'username': username, 'lastname': lastname}
 
-    def copy(self, user, username='', lastname='', password='univention',**kwargs):
+    def copy(self, user, username='', lastname='', password='univention', **kwargs):
         username = username or uts.random_string()
         self.search(user)
         self.selenium.click_checkbox_of_grid_entry(user)
         self.selenium.click_text(_('more'))
         self.selenium.click_text(_('Copy'))
         try:
-            self.selenium.wait_for_any_text_in_list(['Container', 'Template'], timeout=5,)
+            self.selenium.wait_for_any_text_in_list(['Container', 'Template'], timeout=5)
             self.selenium.click_button('Next')
         except TimeoutException:
             pass
         finally:
             self.selenium.wait_until_standby_animation_appears_and_disappears()
 
-        self.selenium.enter_input('username', username,)
-        self.selenium.enter_input('lastname', lastname or uts.random_string(),)
-        self.selenium.enter_input('password_1', password,)
-        self.selenium.enter_input('password_2', password,)
+        self.selenium.enter_input('username', username)
+        self.selenium.enter_input('lastname', lastname or uts.random_string())
+        self.selenium.enter_input('password_1', password)
+        self.selenium.enter_input('password_2', password)
         for key, value in kwargs.items():
-            self.selenium.enter_input(key, value,)
+            self.selenium.enter_input(key, value)
         self.selenium.click_text(_('Create user'))
         self.selenium.wait_until_standby_animation_appears_and_disappears()
         # TODO: check for error
         return username
 
-    def _get_search_value(self, user,):
+    def _get_search_value(self, user):
         # type: (Mapping[str, str]) -> str
         return user['username']
 
-    def _get_grid_value(self, user,):
+    def _get_grid_value(self, user):
         # type: (Mapping[str, str]) -> str
         return user['lastname'] if self.ucr.get('ad/member') else user['username']

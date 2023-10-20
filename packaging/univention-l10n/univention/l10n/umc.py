@@ -106,7 +106,7 @@ PO_METADATA = {
 class UMC_Module(dict):
 
     def __init__(self, *args):
-        dict.__init__(self, *args,)
+        dict.__init__(self, *args)
         for key in (MODULE, PYTHON, JAVASCRIPT, DEFINITION, CATEGORY, ICONS):
             if self.get(key):
                 self[key] = self[key][0]
@@ -144,7 +144,7 @@ class UMC_Module(dict):
         except KeyError:
             return None
 
-    def _iter_files(self, base, suffix,):
+    def _iter_files(self, base, suffix):
         # type: (Optional[str], str) -> Iterator[str]
         """Iterate over all files below base ending with suffix."""
         if base is None:
@@ -156,25 +156,25 @@ class UMC_Module(dict):
             # we are only interested in .js files
             for ifile in files:
                 if ifile.endswith(suffix):
-                    yield os.path.join(dirname, ifile,)
+                    yield os.path.join(dirname, ifile)
 
     @property
     def js_files(self):
         # type: () -> Iterator[str]
         """Iterate over all JavaScript UMC files."""
-        return self._iter_files(self.js_path, '.js',)
+        return self._iter_files(self.js_path, '.js')
 
     @property
     def html_files(self):
         # type: () -> Iterator[str]
         """Iterate over all JavaScript HTML files."""
-        return self._iter_files(self.js_path, '.html',)
+        return self._iter_files(self.js_path, '.html')
 
     @property
     def css_files(self):
         # type: () -> Iterator[str]
         """Iterate over all Javascript CSS files."""
-        return self._iter_files(self.js_path, '.css',)
+        return self._iter_files(self.js_path, '.css')
 
     @property
     def module_name(self):
@@ -198,7 +198,7 @@ class UMC_Module(dict):
     def python_files(self):
         # type: () -> Iterator[str]
         """Iterate over all Python UMC files."""
-        return self._iter_files(self.python_path, '.py',)
+        return self._iter_files(self.python_path, '.py')
 
     @property
     def python_po_files(self):
@@ -209,7 +209,7 @@ class UMC_Module(dict):
         except KeyError:
             return
         for lang in LANGUAGES:
-            yield os.path.join(path, '%s.po' % lang,)
+            yield os.path.join(path, '%s.po' % lang)
 
     @property
     def js_po_files(self):
@@ -219,7 +219,7 @@ class UMC_Module(dict):
         if not path:  # might be an empty string
             return
         for lang in LANGUAGES:
-            yield os.path.join(path, '%s.po' % lang,)
+            yield os.path.join(path, '%s.po' % lang)
 
     @property
     def xml_po_files(self):
@@ -229,7 +229,7 @@ class UMC_Module(dict):
             return
         dirpath = os.path.dirname(self.xml_definition)
         for lang in LANGUAGES:
-            path = os.path.join(dirpath, '%s.po' % lang,)
+            path = os.path.join(dirpath, '%s.po' % lang)
             yield (lang, path)
 
     @property
@@ -239,7 +239,7 @@ class UMC_Module(dict):
         return self.get(ICONS)
 
 
-def read_modules(package, core=False,):
+def read_modules(package, core=False):
     # type: (str, bool) -> List[UMC_Module]
     """
     Read |UMC| module definition from :file:`debian/<package>.umc-modules`.
@@ -250,21 +250,21 @@ def read_modules(package, core=False,):
     """
     modules = []  # type: List[UMC_Module]
 
-    file_umc_module = os.path.join('debian/', package + '.umc-modules',)
+    file_umc_module = os.path.join('debian/', package + '.umc-modules')
     file_control = os.path.join('debian/control')
 
     if not os.path.isfile(file_umc_module):
         return modules
 
     provides = []
-    with io.open(file_control, 'r', encoding='utf-8',) as fd_control:
+    with io.open(file_control, 'r', encoding='utf-8') as fd_control:
         with warnings.catch_warnings():  # debian/deb822.py:982: UserWarning: cannot parse package relationship "${python3:Depends}", returning it raw
             for pkg in Packages.iter_paragraphs(fd_control):
                 if pkg.get('Package') == package:
                     provides = [p[0]['name'] for p in pkg.relations['provides']]
                     break
 
-    with open(file_umc_module, 'rb',) as fd_umc:
+    with open(file_umc_module, 'rb') as fd_umc:
         for item in Deb822.iter_paragraphs(fd_umc):
             item = {k: [v] for k, v in item.items()}  # simulate dh_ucs.parseRfc822 behaviour
             # required fields
@@ -284,7 +284,7 @@ def read_modules(package, core=False,):
     return modules
 
 
-def module_xml2po(module, po_file, language, template=False,):
+def module_xml2po(module, po_file, language, template=False):
     # type: (UMC_Module, str, str, bool) -> None
     """
     Create a PO file the |XML| definition of an |UMC| module.
@@ -302,17 +302,17 @@ def module_xml2po(module, po_file, language, template=False,):
     po.metadata['POT-Creation-Date'] = formatdate(localtime=True)
     po.metadata['Language'] = language
 
-    def _append_po_entry(xml_entry,):
+    def _append_po_entry(xml_entry):
         """
         Helper function to access text property of XML elements and to find the
         corresponding po-entry.
         """
         if xml_entry is not None and xml_entry.text is not None:  # important to use "xml_entry is not None"!
-            entry = polib.POEntry(msgid=xml_entry.text, msgstr='',)
+            entry = polib.POEntry(msgid=xml_entry.text, msgstr='')
             try:
                 po.append(entry)
             except ValueError as exc:  # Entry "..." already exists
-                print('Warning: Appending %r to po file failed: %s' % (xml_entry.text, exc), file=sys.stderr,)
+                print('Warning: Appending %r to po file failed: %s' % (xml_entry.text, exc), file=sys.stderr)
 
     if module.xml_definition and os.path.isfile(module.xml_definition):
         tree = ET.ElementTree(file=module.xml_definition)
@@ -333,12 +333,12 @@ def module_xml2po(module, po_file, language, template=False,):
             _append_po_entry(cat.find('name'))
 
     po.save(pot_file)
-    merge_po_file(po_file, pot_file,)
+    merge_po_file(po_file, pot_file)
     if not template:
         os.unlink(pot_file)
 
 
-def create_po_file(po_file, package, files, language='python', template=False,):
+def create_po_file(po_file, package, files, language='python', template=False):
     # type: (str, str, Union[str, Iterable[str]], str, bool) -> None
     """
     Create a PO file for a defined set of files.
@@ -353,7 +353,7 @@ def create_po_file(po_file, package, files, language='python', template=False,):
 
     if os.path.isfile(pot_file):
         os.unlink(pot_file)
-    if isinstance(files, six.string_types,):
+    if isinstance(files, six.string_types):
         files = [files]
     call(
         'xgettext',
@@ -367,7 +367,7 @@ def create_po_file(po_file, package, files, language='python', template=False,):
         '--language', language,
         '--output', pot_file,
         *files,
-        errmsg='xgettext failed for the files: %r' % (list(files),),  # noqa: COM812
+        errmsg='xgettext failed for the files: %r' % (list(files),)  # noqa: COM812
     )
 
     po = polib.pofile(pot_file)
@@ -379,12 +379,12 @@ def create_po_file(po_file, package, files, language='python', template=False,):
             pass
 
     po.save()
-    merge_po_file(po_file, pot_file,)
+    merge_po_file(po_file, pot_file)
     if not template:
         os.unlink(pot_file)
 
 
-def merge_po_file(po_file, pot_file,):
+def merge_po_file(po_file, pot_file):
     # type: (str, str) -> None
     """
     Merge :file:`.po` file with new :file:`.pot` file.
@@ -393,12 +393,12 @@ def merge_po_file(po_file, pot_file,):
     :param pot_file: PO template file.
     """
     if os.path.isfile(po_file):
-        merge_po(pot_file, po_file,)
+        merge_po(pot_file, po_file)
     else:
-        call('cp', pot_file, po_file,)
+        call('cp', pot_file, po_file)
 
 
-def create_mo_file(po_file, mo_file='',):
+def create_mo_file(po_file, mo_file=''):
     # type: (str, str) -> None
     """
     Compile textual message catalog (`.po`) to binary message catalog (`.mo`).
@@ -412,26 +412,27 @@ def create_mo_file(po_file, mo_file='',):
         mo_file = head + '.mo'
 
     cmd = ('msgattrib', '--only-fuzzy', '--no-wrap', po_file)
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     out, err = proc.communicate()
     if out:
-        raise Error(u"Error: '{}' contains 'fuzzy' translations:\n{}".format(po_file, out.decode('utf-8', 'replace',),))
+        raise Error(u"Error: '{}' contains 'fuzzy' translations:\n{}".format(po_file, out.decode('utf-8', 'replace')))
 
     make_parent_dir(mo_file)
 
     call(
         'msgfmt', '--check', '--output-file', mo_file, po_file,
-        errmsg='Failed to compile translation file from %s.' % (po_file,),)
+        errmsg='Failed to compile translation file from %s.' % (po_file,),
+    )
 
 
-def create_json_file(po_file,):
+def create_json_file(po_file):
     # type: (str) -> None
     """
     Compile textual message catalog (`.po`) to |JSON| message catalog.
 
     :param po_file: File name of the textual message catalog.
     """
-    json_file = po_file.replace('.po', '.json',)
+    json_file = po_file.replace('.po', '.json')
     pofile = polib.pofile(po_file)
     data = {}
 
@@ -445,14 +446,14 @@ def create_json_file(po_file,):
     # The rules get parsed from the pofile and put into the json file as
     # entries, if there are any. Parsing happens with regular expressions.
     if has_plurals:
-        nplurals_start = re.search(r"nplurals\s*=\s*", plural_rules,)
-        nplurals_end = re.search(r"nplurals\s*=\s*[\d]+", plural_rules,)
+        nplurals_start = re.search(r"nplurals\s*=\s*", plural_rules)
+        nplurals_end = re.search(r"nplurals\s*=\s*[\d]+", plural_rules)
 
         # The $plural$ string contains everything from "plural=" to the last
         # ';'. This is a useful, since it would include illegal code, which
         # can then be found later and generate an error.
-        plural_start = re.search(r"plural\s*=\s*", plural_rules,)
-        plural_end = re.search(r'plural\s*=.*;', plural_rules,)
+        plural_start = re.search(r"plural\s*=\s*", plural_rules)
+        plural_end = re.search(r'plural\s*=.*;', plural_rules)
 
         if nplurals_start is None or nplurals_end is None or plural_start is None or plural_end is None:
             raise Error('The plural rules in %s\'s header entry "Plural-Forms" seem to be incorrect.' % (po_file))
@@ -463,7 +464,7 @@ def create_json_file(po_file,):
         # The expression in data["$plural$"] will be evaluated via eval() in
         # javascript. To avoid malicious code injection a simple check is
         # performed here.
-        if not re.match(r"^[\s\dn=?!&|%:()<>]+$", data["$plural$"],):
+        if not re.match(r"^[\s\dn=?!&|%:()<>]+$", data["$plural$"]):
             raise Error('There are illegal characters in the "plural" expression in %s\'s header entry "Plural-Forms".' % (po_file))
 
     for entry in pofile:
@@ -473,16 +474,16 @@ def create_json_file(po_file,):
             raise Error("There are plural forms in %s, but no rules in the file's header." % (po_file))
         elif entry.msgstr_plural:
             entries = entry.msgstr_plural.items()
-            entries = sorted(entries, key=lambda x,: int(x[0]),)
+            entries = sorted(entries, key=lambda x: int(x[0]))
             data[entry.msgid] = [x[1] for x in entries]
             if len(data[entry.msgid]) != int(data["$nplurals$"]):
                 raise Error('The amount of plural forms for a translation in %s doesn\'t match "nplurals" from the file\'s header entry "Plural-Forms".' % (po_file))
 
-    with open(json_file, 'w',) as fd:
-        json.dump(data, fd,)
+    with open(json_file, 'w') as fd:
+        json.dump(data, fd)
 
 
-def po_to_json(po_path, json_output_path,):
+def po_to_json(po_path, json_output_path):
     # type: (str, str) -> None
     """
     Convert translation file to `JSON` file.
@@ -492,4 +493,4 @@ def po_to_json(po_path, json_output_path,):
     """
     create_json_file(po_path)
     make_parent_dir(json_output_path)
-    os.rename(po_path.replace('.po', '.json',), json_output_path,)
+    os.rename(po_path.replace('.po', '.json'), json_output_path)

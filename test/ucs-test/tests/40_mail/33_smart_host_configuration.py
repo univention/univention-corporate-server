@@ -23,7 +23,7 @@ from essential.mail import check_delivery, restart_postfix, send_mail
 TIMEOUT = 90  # sec
 
 
-def check_delivery_mailsink(token, mailsink_file, should_be_delivered,):
+def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
     delivered = False
     print("Waiting for an email delivery to a mailsink")
     for _i in range(TIMEOUT):
@@ -37,12 +37,12 @@ def check_delivery_mailsink(token, mailsink_file, should_be_delivered,):
         utils.fail('Mail sent with token = %r, Delivered to the mail sink = %r' % (token, delivered))
 
 
-def wait_for_dns(hosts,):
+def wait_for_dns(hosts):
     for host, ip in hosts:
         found = None
         for _i in range(TIMEOUT):
             try:
-                found = dns.resolver.query(host, 'A',)[0].address
+                found = dns.resolver.query(host, 'A')[0].address
                 break
             except dns.resolver.NXDOMAIN:
                 time.sleep(1)
@@ -66,19 +66,20 @@ def main():
                         'dnsEntryZoneForward': 'zoneName=%s,cn=dns,%s %s' % (
                             domain, basedn, dcslave_ip),
                     },
-                    position='cn=computers,%s' % basedn,)
+                    position='cn=computers,%s' % basedn,
+                )
                 dcslave_fqdn = '%s.%s' % (dcslave, domain)
                 handler_set(['mail/relayhost=%s' % dcslave_fqdn])
                 port = 60025
-                nethelper.add_redirection(dcslave_ip, 25, port,)
+                nethelper.add_redirection(dcslave_ip, 25, port)
                 wait_for_dns([(dcslave, dcslave_ip)])
                 restart_postfix()
-                with tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp',) as fp, MailSink('127.0.0.1', port, filename=fp.name,):
+                with tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp') as fp, MailSink('127.0.0.1', port, filename=fp.name):
                     recipient = 'noreply@univention.de'
                     token = str(time.time())
-                    send_mail(recipients=recipient, msg=token,)
-                    check_delivery_mailsink(token, fp.name, True,)
-                    check_delivery(token, recipient, False,)
+                    send_mail(recipients=recipient, msg=token)
+                    check_delivery_mailsink(token, fp.name, True)
+                    check_delivery(token, recipient, False)
 
 
 if __name__ == '__main__':

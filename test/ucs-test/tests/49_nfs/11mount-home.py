@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     with UCSTestUDM() as udm:
         share_name = random_name()
-        share_path = join('/mnt', share_name,)
+        share_path = join('/mnt', share_name)
         share_prop = {
             "name": share_name,
             "host": '%(ldap/master)s' % ucr,
@@ -31,14 +31,14 @@ if __name__ == '__main__':
             "root_squash": '0',
             "options": ['nfs'],
         }
-        share = udm.create_object('shares/share', **share_prop,)
+        share = udm.create_object('shares/share', **share_prop)
 
         user_name = random_username()
-        user_home = join('/home', user_name,)
+        user_home = join('/home', user_name)
         user_prop = {
             "username": user_name,
             "unixhome": user_home,
-            "primaryGroup": 'cn=%s,cn=groups,%s' % (ucr.get('groups/default/domainadmins', 'Domain Admins',), ucr['ldap/base']),
+            "primaryGroup": 'cn=%s,cn=groups,%s' % (ucr.get('groups/default/domainadmins', 'Domain Admins'), ucr['ldap/base']),
             "homeShare": share,
             "homeSharePath": user_name,
         }
@@ -49,7 +49,7 @@ if __name__ == '__main__':
         wait_for_replication()
 
         print('1st login...')
-        p1 = Popen(('su', '-c', 'cat', '-l', user_name), stdin=PIPE,)
+        p1 = Popen(('su', '-c', 'cat', '-l', user_name), stdin=PIPE)
         for _ in range(60):
             if ismount(user_home):
                 break
@@ -58,13 +58,13 @@ if __name__ == '__main__':
             fail('Failed to mount %r' % user_home)
 
         print('2nd login...')
-        p2 = Popen(('su', '-c', 'df .', '-l', user_name), stdout=PIPE,)
+        p2 = Popen(('su', '-c', 'df .', '-l', user_name), stdout=PIPE)
 
         p1.communicate(b'1st')
         stdout, _stderr = p2.communicate()
         stdout = stdout.decode('UTF-8')
         ret = (p1.wait(), p2.wait())
-        print(stdout, ret,)
+        print(stdout, ret)
 
         Popen(('umount', '-l', '-f', user_home)).wait()
 

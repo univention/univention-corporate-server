@@ -33,38 +33,39 @@ class TestUMCUserAuthentication(UMCBase):
         self.test_user_dn = self.UDM.create_user(
             password=self.test_password,
             username=self.test_username,
-            policy_reference='cn=default-umc-all,cn=UMC,cn=policies,%s' % self.ucr['ldap/base'],)[0]
+            policy_reference='cn=default-umc-all,cn=UMC,cn=policies,%s' % self.ucr['ldap/base'],
+        )[0]
         utils.verify_ldap_object(self.test_user_dn)
 
     def set_image_jpeg(self):
-        with open('./34_userphoto.jpeg', 'rb',) as fd:
+        with open('./34_userphoto.jpeg', 'rb') as fd:
             image = fd.read()
         assert image == base64.b64decode(self.set_image(image)), "Failed to set JPEG user photo"
 
     def set_image_jpg(self):
-        with open('./34_userphoto.jpg', 'rb',) as fd:
+        with open('./34_userphoto.jpg', 'rb') as fd:
             image = fd.read()
         assert image == base64.b64decode(self.set_image(image)), "Failed to set JPG user photo"
 
     def set_image_png(self):
-        with open('./34_userphoto.png', 'rb',) as fd:
+        with open('./34_userphoto.png', 'rb') as fd:
             image = fd.read()
         image = base64.b64decode(self.set_image(image))
         with NamedTemporaryFile(mode='wb') as tempfile:
             tempfile.write(image)
             tempfile.flush()
-            p = subprocess.Popen(['/usr/bin/file', '-i', tempfile.name], stdout=subprocess.PIPE,)
+            p = subprocess.Popen(['/usr/bin/file', '-i', tempfile.name], stdout=subprocess.PIPE)
             stdout, stderr = p.communicate()
             assert b'image/jpeg' in stdout, f"Failed to set PNG user photo (not converted to JPEG): {stdout!r}"
 
     def unset_image(self):
         assert not self.set_image(""), "Failed to unset user photo"
 
-    def set_image(self, jpegPhoto,):
+    def set_image(self, jpegPhoto):
         if jpegPhoto:
             jpegPhoto = base64.b64encode(jpegPhoto).decode('ASCII')  # TODO: make umcp/upload request
-        self.modify_object([{"object": {"jpegPhoto": jpegPhoto, "$dn$": self.test_user_dn}}], 'users/user',)
-        response = self.get_object([self.test_user_dn], 'users/user',)
+        self.modify_object([{"object": {"jpegPhoto": jpegPhoto, "$dn$": self.test_user_dn}}], 'users/user')
+        response = self.get_object([self.test_user_dn], 'users/user')
         return response[0].get('jpegPhoto')
 
     def main(self):

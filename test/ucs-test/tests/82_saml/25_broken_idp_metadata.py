@@ -26,19 +26,19 @@ class move_idp_metadata:
     def __enter__(self):
         for metadata_file in os.listdir(self.metadata_dir):
             metadata_file_fullpath = self.metadata_dir + metadata_file
-            os.rename(metadata_file_fullpath, metadata_file_fullpath + '.backup',)
+            os.rename(metadata_file_fullpath, metadata_file_fullpath + '.backup')
         restart_umc()
 
-    def __exit__(self, exc_type, exc_value, traceback,):
+    def __exit__(self, exc_type, exc_value, traceback):
         for metadata_file in os.listdir(self.metadata_dir):
             metadata_file_fullpath = self.metadata_dir + metadata_file
-            os.rename(metadata_file_fullpath, metadata_file_fullpath.replace('.backup', '',),)
+            os.rename(metadata_file_fullpath, metadata_file_fullpath.replace('.backup', ''))
         restart_umc()
 
 
 def main():
     account = utils.UCSTestDomainAdminCredentials()
-    SamlSession = samltest.SamlTest(account.username, account.bindpw,)
+    SamlSession = samltest.SamlTest(account.username, account.bindpw)
     with move_idp_metadata():
         try:
             SamlSession.login_with_new_session_at_IdP()

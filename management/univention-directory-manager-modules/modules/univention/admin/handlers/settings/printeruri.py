@@ -55,7 +55,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPrinterURIs'],),
+        objectClasses=['top', 'univentionPrinterURIs'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -64,14 +65,16 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'printeruri': univention.admin.property(
         short_description=_('Printer URI'),
         long_description=_('Printer URI'),
         syntax=univention.admin.syntax.string,
         multivalue=True,
         include_in_default_search=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
 }
 
 layout = [
@@ -79,14 +82,14 @@ layout = [
         Group(_('General printer URI list settings'), layout=[
             'name',
             'printeruri',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('printeruri', 'printerURI',)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('printeruri', 'printerURI')
 
 
 class object(univention.admin.handlers.simpleLdap):

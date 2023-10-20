@@ -51,33 +51,34 @@ expected_entries: Dict[str, List[List[str]]] = {
 }
 
 
-def get_entries_for_role(role: str,) -> List[List[str]]:
+def get_entries_for_role(role: str) -> List[List[str]]:
     return expected_entries[role]
 
 
-def test_portal_entries_appear_as_expected(umc_browser_test: UMCBrowserTest, ucr,):
+def test_portal_entries_appear_as_expected(umc_browser_test: UMCBrowserTest, ucr):
     page = umc_browser_test.page
     role = ucr.get("server/role")
 
     if role == "domaincontroller_master":
         entries = get_entries_for_role("domaincontroller_master_single")
         page.goto(umc_browser_test.base_url)
-        check_if_expected_entries_are_shown(page, entries,)
+        check_if_expected_entries_are_shown(page, entries)
     elif role in ["domaincontroller_backup", "domaincontroller_slave"]:
         # check the master
         entries = get_entries_for_role("domaincontroller_master_multi")
         page.goto(f"https://{ucr.get('ldap/master')}/")
-        check_if_expected_entries_are_shown(page, entries,)
+        check_if_expected_entries_are_shown(page, entries)
 
         # check member/slave
         entries = get_entries_for_role(role)
         page.goto(umc_browser_test.base_url)
-        check_if_expected_entries_are_shown(page, entries,)
+        check_if_expected_entries_are_shown(page, entries)
 
 
 def check_if_expected_entries_are_shown(
     page: Page,
-    entries: List[List[str]],):
+    entries: List[List[str]],
+):
     for entry in entries:
         (header, group, tooltip) = entry
         expect(page.get_by_text(header)).to_be_visible()
@@ -86,5 +87,5 @@ def check_if_expected_entries_are_shown(
         expect(system_and_domain_settings).to_be_visible()
 
         system_and_domain_settings.hover()
-        tooltip_loc = page.get_by_role("tooltip", name=tooltip,)
+        tooltip_loc = page.get_by_role("tooltip", name=tooltip)
         expect(tooltip_loc).to_be_visible()

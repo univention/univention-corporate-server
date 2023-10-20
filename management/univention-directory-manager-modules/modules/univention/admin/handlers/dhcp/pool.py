@@ -59,7 +59,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionDhcpPool'],),
+        objectClasses=['top', 'univentionDhcpPool'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -69,33 +70,40 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'range': univention.admin.property(
         short_description=_('IP range for dynamic assignment'),
         long_description=_('Define a pool of addresses available for dynamic address assignment.'),
         syntax=univention.admin.syntax.IPv4_AddressRange,
         multivalue=True,
-        required=True,),
+        required=True,
+    ),
     'failover_peer': univention.admin.property(
         short_description=_('Failover peer configuration'),
         long_description=_('The name of the "failover peer" configuration to use.'),
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'known_clients': univention.admin.property(
         short_description=_('Allow known clients'),
         long_description=_('Addresses from this pool are given to clients which have a DHCP host entry matching their MAC address, but with no IP address assigned.'),
-        syntax=univention.admin.syntax.AllowDeny,),
+        syntax=univention.admin.syntax.AllowDeny,
+    ),
     'unknown_clients': univention.admin.property(
         short_description=_('Allow unknown clients'),
         long_description=_('Addresses from this pool are given to clients, which do not have a DHCP host entry matching their MAC address.'),
-        syntax=univention.admin.syntax.AllowDeny,),
+        syntax=univention.admin.syntax.AllowDeny,
+    ),
     'dynamic_bootp_clients': univention.admin.property(
         short_description=_('Allow dynamic BOOTP clients'),
         long_description=_('Addresses from this pool are given to clients using the old BOOTP protocol, which has no mechanism to free addresses again.'),
-        syntax=univention.admin.syntax.AllowDeny,),
+        syntax=univention.admin.syntax.AllowDeny,
+    ),
     'all_clients': univention.admin.property(
         short_description=_('All clients'),
         long_description=_('Globally enable or disable this pool.'),
-        syntax=univention.admin.syntax.AllowDeny,),
+        syntax=univention.admin.syntax.AllowDeny,
+    ),
 }
 
 layout = [
@@ -103,20 +111,20 @@ layout = [
         Group(_('General DHCP pool settings'), layout=[
             'name',
             'range',
-        ],),
-    ],),
+        ]),
+    ]),
     Tab(_('Advanced'), _('Advanced DHCP pool options'), advanced=True, layout=[
         'failover_peer',
         ['known_clients', 'unknown_clients'],
         ['dynamic_bootp_clients', 'all_clients'],
-    ],),
+    ]),
 ]
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap,)
-mapping.register('failover_peer', 'univentionDhcpFailoverPeer', None, univention.admin.mapping.ListToString, encoding='ASCII',)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
+mapping.register('failover_peer', 'univentionDhcpFailoverPeer', None, univention.admin.mapping.ListToString, encoding='ASCII')
 
 add_dhcp_options(__name__)
 
@@ -135,8 +143,8 @@ class object(DHCPBase):
     def open(self):
         univention.admin.handlers.simpleLdap.open(self)
 
-        for i in [x.decode('UTF-8') for x in self.oldattr.get('dhcpPermitList', [],)]:
-            permit, name = i.split(u' ', 1,)
+        for i in [x.decode('UTF-8') for x in self.oldattr.get('dhcpPermitList', [])]:
+            permit, name = i.split(u' ', 1)
             if name in self.permits_dhcp2udm:
                 prop = self.permits_dhcp2udm[name]
                 self[prop] = permit
@@ -144,7 +152,7 @@ class object(DHCPBase):
         self.save()
 
     def ready(self):
-        super(object, self,).ready()
+        super(object, self).ready()
         # Use ipaddress.IPv4Interface().network to be liberal with subnet notation
         subnet = ipaddress.IPv4Interface(u'%(subnet)s/%(subnetmask)s' % self.superordinate.info).network
         for addresses in self.info['range']:
@@ -155,7 +163,7 @@ class object(DHCPBase):
     def _ldap_modlist(self):
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
         if self.hasChanged(self.permits_udm2dhcp.keys()):
-            old = self.oldattr.get('dhcpPermitList', [],)
+            old = self.oldattr.get('dhcpPermitList', [])
             new = copy.deepcopy(old)
 
             for prop, value in self.permits_udm2dhcp.items():
@@ -171,17 +179,17 @@ class object(DHCPBase):
                     pass
 
             ml.append(('dhcpPermitList', old, new))
-        if self.info.get('failover_peer', None,) and not self.info.get('dynamic_bootp_clients', None,) == 'deny':
+        if self.info.get('failover_peer', None) and not self.info.get('dynamic_bootp_clients', None) == 'deny':
             raise univention.admin.uexceptions.bootpXORFailover
         return ml
 
     @classmethod
-    def rewrite_filter(cls, filter, mapping,):
+    def rewrite_filter(cls, filter, mapping):
         if filter.variable in cls.permits_udm2dhcp:
             filter.value = '%s %s' % (filter.value.strip('*'), cls.permits_udm2dhcp[filter.variable])
             filter.variable = 'dhcpPermitList'
         else:
-            super(object, cls,).rewrite_filter(filter, mapping,)
+            super(object, cls).rewrite_filter(filter, mapping)
 
 
 lookup_filter = object.lookup_filter

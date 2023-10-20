@@ -10,4 +10,4 @@ class PhaseRestartBind(RestartService, NotNetworkOnly):
 
     def post(self) -> None:
         self.call(['find', '/var/cache/bind', '-type', 'f', '-delete'])
-        super(PhaseRestartBind, self,).post()
+        super(PhaseRestartBind, self).post()

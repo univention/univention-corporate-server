@@ -64,7 +64,7 @@ __comment_pattern = re.compile('^"*/.*#[ \t]*LDAP:[ \t]*(.*)')
 tmpFile = '/var/cache/univention-directory-listener/nfs-shares.oldObject'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str,) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
     # create tmp dir
     tmpDir = os.path.dirname(tmpFile)
     listener.setuid(0)
@@ -72,7 +72,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         if not os.path.exists(tmpDir):
             os.makedirs(tmpDir)
     except Exception as exc:
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc),)
+        ud.debug(ud.LISTENER, ud.ERROR, "%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
         return
     finally:
         listener.unsetuid()
@@ -88,36 +88,36 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
     try:
         # object was renamed -> save old object
         if command == "r" and old:
-            with open(tmpFile, "wb",) as fp:
-                os.chmod(tmpFile, 0o600,)
-                pickle.dump({"dn": dn, "old": old}, fp,)
+            with open(tmpFile, "wb") as fp:
+                os.chmod(tmpFile, 0o600)
+                pickle.dump({"dn": dn, "old": old}, fp)
         elif command == "a" and not old and os.path.isfile(tmpFile):
-            with open(tmpFile, "rb",) as fp:
+            with open(tmpFile, "rb") as fp:
                 p = pickle.load(fp)
-            oldObject = p.get("old", {},)
+            oldObject = p.get("old", {})
             os.remove(tmpFile)
     except Exception as exc:
         if os.path.isfile(tmpFile):
             os.remove(tmpFile)
-        ud.debug(ud.LISTENER, ud.ERROR, "%s: could not read/write tmp file %s (%s)" % (name, tmpFile, exc),)
+        ud.debug(ud.LISTENER, ud.ERROR, "%s: could not read/write tmp file %s (%s)" % (name, tmpFile, exc))
     finally:
         listener.unsetuid()
 
     # update exports file
-    lines = _read(lambda match,: not match or match.group(1) != _quote(dn))
+    lines = _read(lambda match: not match or match.group(1) != _quote(dn))
 
-    if new and b'univentionShareNFS' in new.get('objectClass', [],):
+    if new and b'univentionShareNFS' in new.get('objectClass', []):
         path = new['univentionSharePath'][0].decode('UTF-8')
         options = [
-            'rw' if new.get('univentionShareWriteable', [b''],)[0] == b'yes' else 'ro',
-            'root_squash' if new.get('univentionShareNFSRootSquash', [b''],)[0] == b'yes' else 'no_root_squash',
-            'async' if new.get('univentionShareNFSSync', [b''],)[0] == b'async' else 'sync',
-            'subtree_check' if new.get('univentionShareNFSSubTree', [b''],)[0] == b'yes' else 'no_subtree_check',
-        ] + [cs.decode('UTF-8') for cs in new.get('univentionShareNFSCustomSetting', [],)]
+            'rw' if new.get('univentionShareWriteable', [b''])[0] == b'yes' else 'ro',
+            'root_squash' if new.get('univentionShareNFSRootSquash', [b''])[0] == b'yes' else 'no_root_squash',
+            'async' if new.get('univentionShareNFSSync', [b''])[0] == b'async' else 'sync',
+            'subtree_check' if new.get('univentionShareNFSSubTree', [b''])[0] == b'yes' else 'no_subtree_check',
+        ] + [cs.decode('UTF-8') for cs in new.get('univentionShareNFSCustomSetting', [])]
         lines.append('%s -%s %s # LDAP:%s' % (
             _exports_escape(path),
             _quote(','.join(options)),
-            _quote(' '.join(nfs_allowed.decode('ASCII') for nfs_allowed in new.get('univentionShareNFSAllowed', [b'*'],))),
+            _quote(' '.join(nfs_allowed.decode('ASCII') for nfs_allowed in new.get('univentionShareNFSAllowed', [b'*']))),
             _quote(dn),
         ))
 
@@ -128,9 +128,9 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
             # object was renamed
             if not old and oldObject and command == "a":
                 old = oldObject
-            ret = univention.lib.listenerSharePath.createOrRename(old, new, listener.configRegistry,)
+            ret = univention.lib.listenerSharePath.createOrRename(old, new, listener.configRegistry)
             if ret:
-                ud.debug(ud.LISTENER, ud.ERROR, "%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret),)
+                ud.debug(ud.LISTENER, ud.ERROR, "%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
         finally:
             listener.unsetuid()
     else:
@@ -139,26 +139,26 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 
 def clean() -> None:
     # clear exports file
-    lines = _read(lambda match,: not match)
+    lines = _read(lambda match: not match)
     _write(lines)
 
 
-def _read(keep=lambda match,: True,):
+def _read(keep=lambda match: True):
     with open(__exports) as fp:
         return [line.strip() for line in fp if keep(__comment_pattern.match(line))]
 
 
-def _write(lines: List[str],) -> None:
+def _write(lines: List[str]) -> None:
     listener.setuid(0)
     try:
-        ud.debug(ud.LISTENER, ud.PROCESS, 'Writing /etc/exports with %d lines' % (len(lines),),)
-        with open(__exports, 'w',) as fp:
+        ud.debug(ud.LISTENER, ud.PROCESS, 'Writing /etc/exports with %d lines' % (len(lines),))
+        with open(__exports, 'w') as fp:
             fp.write('\n'.join(lines) + '\n')
     finally:
         listener.unsetuid()
 
 
-def _exports_escape(text: str,) -> str:
+def _exports_escape(text: str) -> str:
     r"""
     Escape path for /etc/exports.
 
@@ -175,9 +175,9 @@ def _exports_escape(text: str,) -> str:
     return '"%s"' % (''.join(r'\%03o' % (ord(c),) if c < ' ' or c == '"' else c for c in text),)
 
 
-def _quote(text: str,) -> str:
+def _quote(text: str) -> str:
     return _exports_escape(text)[1:-1]
 
 
 def postrun() -> None:
-    listener.run('/bin/systemctl', ['systemctl', 'reload-or-restart', 'nfs-kernel-server.service'], uid=0,)
+    listener.run('/bin/systemctl', ['systemctl', 'reload-or-restart', 'nfs-kernel-server.service'], uid=0)

@@ -20,7 +20,7 @@ try:
 except ImportError:
 	urlencode = urllib.urlencode
 
-def safe_urlencode(data,):
+def safe_urlencode(data):
 	x = urlencode(data)
 	try:
 		x = x.encode('utf-8')
@@ -38,25 +38,25 @@ try:
 except ImportError:
 	from urllib2 import Request, urlopen
 
-DISTNETCACHE = os.environ.get('DISTNETCACHE', '/tmp/distnetcache',)
-DISTNETSERVER = os.environ.get('DISTNETSERVER', 'http://localhost:8000/cgi-bin/',)
+DISTNETCACHE = os.environ.get('DISTNETCACHE', '/tmp/distnetcache')
+DISTNETSERVER = os.environ.get('DISTNETSERVER', 'http://localhost:8000/cgi-bin/')
 TARFORMAT = 'w:bz2'
 TIMEOUT = 60
 REQUIRES = 'requires.txt'
 
-re_com = re.compile(r'\s*#.*', re.M,)
+re_com = re.compile(r'\s*#.*', re.M)
 
-def total_version_order(num,):
+def total_version_order(num):
 	lst = num.split('.')
 	template = '%10s' * len(lst)
 	ret = template % tuple(lst)
 	return ret
 
 def get_distnet_cache():
-	return getattr(Context.g_module, 'DISTNETCACHE', DISTNETCACHE,)
+	return getattr(Context.g_module, 'DISTNETCACHE', DISTNETCACHE)
 
 def get_server_url():
-	return getattr(Context.g_module, 'DISTNETSERVER', DISTNETSERVER,)
+	return getattr(Context.g_module, 'DISTNETSERVER', DISTNETSERVER)
 
 def get_download_url():
 	return '%s/download.py' % get_server_url()
@@ -68,7 +68,7 @@ def get_resolve_url():
 	return '%s/resolve.py' % get_server_url()
 
 def send_package_name():
-	out = getattr(Context.g_module, 'out', 'build',)
+	out = getattr(Context.g_module, 'out', 'build')
 	pkgfile = '%s/package_to_upload.tarfile' % out
 	return pkgfile
 
@@ -87,48 +87,48 @@ class package(Context.Context):
 		if not pkgfile in files:
 			if not REQUIRES in files:
 				files.append(REQUIRES)
-			self.make_tarfile(pkgfile, files, add_to_package=False,)
+			self.make_tarfile(pkgfile, files, add_to_package=False)
 
-	def make_tarfile(self, filename, files,**kw):
-		if kw.get('add_to_package', True,):
+	def make_tarfile(self, filename, files, **kw):
+		if kw.get('add_to_package', True):
 			self.files.append(filename)
 
-		with tarfile.open(filename, TARFORMAT,) as tar:
+		with tarfile.open(filename, TARFORMAT) as tar:
 			endname = os.path.split(filename)[-1]
 			endname = endname.split('.')[0] + '/'
 			for x in files:
-				tarinfo = tar.gettarinfo(x, x,)
+				tarinfo = tar.gettarinfo(x, x)
 				tarinfo.uid   = tarinfo.gid   = 0
 				tarinfo.uname = tarinfo.gname = 'root'
 				tarinfo.size = os.stat(x).st_size
 
 				# TODO - more archive creation options?
-				if kw.get('bare', True,):
+				if kw.get('bare', True):
 					tarinfo.name = os.path.split(x)[1]
 				else:
 					tarinfo.name = endname + x # todo, if tuple, then..
-				Logs.debug('distnet: adding %r to %s', tarinfo.name, filename,)
-				with open(x, 'rb',) as f:
-					tar.addfile(tarinfo, f,)
-		Logs.info('Created %s', filename,)
+				Logs.debug('distnet: adding %r to %s', tarinfo.name, filename)
+				with open(x, 'rb') as f:
+					tar.addfile(tarinfo, f)
+		Logs.info('Created %s', filename)
 
 class publish(Context.Context):
 	fun = 'publish'
 	cmd = 'publish'
 	def execute(self):
-		if hasattr(Context.g_module, 'publish',):
+		if hasattr(Context.g_module, 'publish'):
 			Context.Context.execute(self)
 		mod = Context.g_module
 
-		rfile = getattr(self, 'rfile', send_package_name(),)
+		rfile = getattr(self, 'rfile', send_package_name())
 		if not os.path.isfile(rfile):
 			self.fatal('Create the release file with "waf release" first! %r' % rfile)
 
-		fdata = Utils.readf(rfile, m='rb',)
+		fdata = Utils.readf(rfile, m='rb')
 		data = safe_urlencode([('pkgdata', fdata), ('pkgname', mod.APPNAME), ('pkgver', mod.VERSION)])
 
-		req = Request(get_upload_url(), data,)
-		response = urlopen(req, timeout=TIMEOUT,)
+		req = Request(get_upload_url(), data)
+		response = urlopen(req, timeout=TIMEOUT)
 		data = response.read().strip()
 
 		if sys.hexversion>0x300000f:
@@ -138,7 +138,7 @@ class publish(Context.Context):
 			self.fatal('Could not publish the package %r' % data)
 
 class constraint(object):
-	def __init__(self, line='',):
+	def __init__(self, line=''):
 		self.required_line = line
 		self.info = []
 
@@ -165,7 +165,7 @@ class constraint(object):
 	def __repr__(self):
 		return "requires %s-%s" % (self.pkgname, self.required_version)
 
-	def human_display(self, pkgname, pkgver,):
+	def human_display(self, pkgname, pkgver):
 		return '%s-%s requires %s-%s' % (pkgname, pkgver, self.pkgname, self.required_version)
 
 	def why(self):
@@ -175,13 +175,13 @@ class constraint(object):
 				ret.append(x[1])
 		return ret
 
-	def add_reason(self, reason,):
+	def add_reason(self, reason):
 		self.info.append(('reason', reason))
 
-def parse_constraints(text,):
+def parse_constraints(text):
 	assert(text is not None)
 	constraints = []
-	text = re.sub(re_com, '', text,)
+	text = re.sub(re_com, '', text)
 	lines = text.splitlines()
 	for line in lines:
 		line = line.strip()
@@ -190,8 +190,8 @@ def parse_constraints(text,):
 		constraints.append(constraint(line))
 	return constraints
 
-def list_package_versions(cachedir, pkgname,):
-	pkgdir = os.path.join(cachedir, pkgname,)
+def list_package_versions(cachedir, pkgname):
+	pkgdir = os.path.join(cachedir, pkgname)
 	try:
 		versions = os.listdir(pkgdir)
 	except OSError:
@@ -205,25 +205,25 @@ class package_reader(Context.Context):
 	fun = 'solver'
 
 	def __init__(self, **kw):
-		Context.Context.__init__(self, **kw,)
+		Context.Context.__init__(self, **kw)
 
-		self.myproject = getattr(Context.g_module, 'APPNAME', 'project',)
-		self.myversion = getattr(Context.g_module, 'VERSION', '1.0',)
+		self.myproject = getattr(Context.g_module, 'APPNAME', 'project')
+		self.myversion = getattr(Context.g_module, 'VERSION', '1.0')
 		self.cache_constraints = {}
 		self.constraints = []
 
-	def compute_dependencies(self, filename=REQUIRES,):
+	def compute_dependencies(self, filename=REQUIRES):
 		text = Utils.readf(filename)
 		data = safe_urlencode([('text', text)])
 
 		if '--offline' in sys.argv:
 			self.constraints = self.local_resolve(text)
 		else:
-			req = Request(get_resolve_url(), data,)
+			req = Request(get_resolve_url(), data)
 			try:
-				response = urlopen(req, timeout=TIMEOUT,)
+				response = urlopen(req, timeout=TIMEOUT)
 			except URLError as e:
-				Logs.warn('The package server is down! %r', e,)
+				Logs.warn('The package server is down! %r', e)
 				self.constraints = self.local_resolve(text)
 			else:
 				ret = response.read()
@@ -243,34 +243,34 @@ class package_reader(Context.Context):
 
 				reasons = c.why()
 				if len(reasons) == 1:
-					Logs.error('%s but no matching package could be found in this repository', reasons[0],)
+					Logs.error('%s but no matching package could be found in this repository', reasons[0])
 				else:
-					Logs.error('Conflicts on package %r:', c.pkgname,)
+					Logs.error('Conflicts on package %r:', c.pkgname)
 					for r in reasons:
-						Logs.error('  %s', r,)
+						Logs.error('  %s', r)
 		if errors:
 			self.fatal('The package requirements cannot be satisfied!')
 
-	def load_constraints(self, pkgname, pkgver, requires=REQUIRES,):
+	def load_constraints(self, pkgname, pkgver, requires=REQUIRES):
 		try:
 			return self.cache_constraints[(pkgname, pkgver)]
 		except KeyError:
-			text = Utils.readf(os.path.join(get_distnet_cache(), pkgname, pkgver, requires,))
+			text = Utils.readf(os.path.join(get_distnet_cache(), pkgname, pkgver, requires))
 			ret = parse_constraints(text)
 			self.cache_constraints[(pkgname, pkgver)] = ret
 			return ret
 
-	def apply_constraint(self, domain, constraint,):
-		vname = constraint.required_version.replace('*', '.*',)
-		rev = re.compile(vname, re.M,)
+	def apply_constraint(self, domain, constraint):
+		vname = constraint.required_version.replace('*', '.*')
+		rev = re.compile(vname, re.M)
 		ret = [x for x in domain if rev.match(x)]
 		return ret
 
 	def trace(self, *k):
-		if getattr(self, 'debug', None,):
+		if getattr(self, 'debug', None):
 			Logs.error(*k)
 
-	def solve(self, packages_to_versions={}, packages_to_constraints={}, pkgname='', pkgver='', todo=[], done=[],):
+	def solve(self, packages_to_versions={}, packages_to_constraints={}, pkgname='', pkgver='', todo=[], done=[]):
 		# breadth first search
 		n_packages_to_versions = dict(packages_to_versions)
 		n_packages_to_constraints = dict(packages_to_constraints)
@@ -278,14 +278,14 @@ class package_reader(Context.Context):
 		self.trace("calling solve with %r    %r %r" % (packages_to_versions, todo, done))
 		done = done + [pkgname]
 
-		constraints = self.load_constraints(pkgname, pkgver,)
+		constraints = self.load_constraints(pkgname, pkgver)
 		self.trace("constraints %r" % constraints)
 
 		for k in constraints:
 			try:
 				domain = n_packages_to_versions[k.pkgname]
 			except KeyError:
-				domain = list_package_versions(get_distnet_cache(), k.pkgname,)
+				domain = list_package_versions(get_distnet_cache(), k.pkgname)
 
 
 			self.trace("constraints?")
@@ -295,14 +295,14 @@ class package_reader(Context.Context):
 			self.trace("domain before %s -> %s, %r" % (pkgname, k.pkgname, domain))
 
 			# apply the constraint
-			domain = self.apply_constraint(domain, k,)
+			domain = self.apply_constraint(domain, k)
 
 			self.trace("domain after %s -> %s, %r" % (pkgname, k.pkgname, domain))
 
 			n_packages_to_versions[k.pkgname] = domain
 
 			# then store the constraint applied
-			constraints = list(packages_to_constraints.get(k.pkgname, [],))
+			constraints = list(packages_to_constraints.get(k.pkgname, []))
 			constraints.append((pkgname, pkgver, k))
 			n_packages_to_constraints[k.pkgname] = constraints
 
@@ -321,12 +321,12 @@ class package_reader(Context.Context):
 
 		self.trace("fixed point %s" % n_pkgname)
 
-		return self.solve(tmp, n_packages_to_constraints, n_pkgname, n_pkgver, todo[1:], done,)
+		return self.solve(tmp, n_packages_to_constraints, n_pkgname, n_pkgver, todo[1:], done)
 
 	def get_results(self):
 		return '\n'.join([str(c) for c in self.constraints])
 
-	def solution_to_constraints(self, versions, constraints,):
+	def solution_to_constraints(self, versions, constraints):
 		solution = []
 		for p in versions:
 			c = constraint()
@@ -337,44 +337,44 @@ class package_reader(Context.Context):
 				c.required_version = versions[p][0]
 			else:
 				c.required_version = ''
-			for (from_pkgname, from_pkgver, c2) in constraints.get(p, '',):
-				c.add_reason(c2.human_display(from_pkgname, from_pkgver,))
+			for (from_pkgname, from_pkgver, c2) in constraints.get(p, ''):
+				c.add_reason(c2.human_display(from_pkgname, from_pkgver))
 		return solution
 
-	def local_resolve(self, text,):
+	def local_resolve(self, text):
 		self.cache_constraints[(self.myproject, self.myversion)] = parse_constraints(text)
 		p2v = OrderedDict({self.myproject: [self.myversion]})
-		(versions, constraints) = self.solve(p2v, {}, self.myproject, self.myversion, [],)
-		return self.solution_to_constraints(versions, constraints,)
+		(versions, constraints) = self.solve(p2v, {}, self.myproject, self.myversion, [])
+		return self.solution_to_constraints(versions, constraints)
 
-	def download_to_file(self, pkgname, pkgver, subdir, tmp,):
+	def download_to_file(self, pkgname, pkgver, subdir, tmp):
 		data = safe_urlencode([('pkgname', pkgname), ('pkgver', pkgver), ('pkgfile', subdir)])
-		req = urlopen(get_download_url(), data, timeout=TIMEOUT,)
-		with open(tmp, 'wb',) as f:
+		req = urlopen(get_download_url(), data, timeout=TIMEOUT)
+		with open(tmp, 'wb') as f:
 			while True:
 				buf = req.read(8192)
 				if not buf:
 					break
 				f.write(buf)
 
-	def extract_tar(self, subdir, pkgdir, tmpfile,):
+	def extract_tar(self, subdir, pkgdir, tmpfile):
 		with tarfile.open(tmpfile) as f:
 			temp = tempfile.mkdtemp(dir=pkgdir)
 			try:
 				f.extractall(temp)
-				os.rename(temp, os.path.join(pkgdir, subdir,),)
+				os.rename(temp, os.path.join(pkgdir, subdir))
 			finally:
 				try:
 					shutil.rmtree(temp)
 				except Exception:
 					pass
 
-	def get_pkg_dir(self, pkgname, pkgver, subdir,):
-		pkgdir = os.path.join(get_distnet_cache(), pkgname, pkgver,)
+	def get_pkg_dir(self, pkgname, pkgver, subdir):
+		pkgdir = os.path.join(get_distnet_cache(), pkgname, pkgver)
 		if not os.path.isdir(pkgdir):
 			os.makedirs(pkgdir)
 
-		target = os.path.join(pkgdir, subdir,)
+		target = os.path.join(pkgdir, subdir)
 
 		if os.path.exists(target):
 			return target
@@ -382,11 +382,11 @@ class package_reader(Context.Context):
 		(fd, tmp) = tempfile.mkstemp(dir=pkgdir)
 		try:
 			os.close(fd)
-			self.download_to_file(pkgname, pkgver, subdir, tmp,)
+			self.download_to_file(pkgname, pkgver, subdir, tmp)
 			if subdir == REQUIRES:
-				os.rename(tmp, target,)
+				os.rename(tmp, target)
 			else:
-				self.extract_tar(subdir, pkgdir, tmp,)
+				self.extract_tar(subdir, pkgdir, tmp)
 		finally:
 			try:
 				os.remove(tmp)
@@ -408,23 +408,23 @@ class package_reader(Context.Context):
 
 packages = package_reader()
 
-def load_tools(ctx, extra,):
+def load_tools(ctx, extra):
 	global packages
 	for c in packages:
-		packages.get_pkg_dir(c.pkgname, c.required_version, extra,)
-		noarchdir = packages.get_pkg_dir(c.pkgname, c.required_version, 'noarch',)
+		packages.get_pkg_dir(c.pkgname, c.required_version, extra)
+		noarchdir = packages.get_pkg_dir(c.pkgname, c.required_version, 'noarch')
 		for x in os.listdir(noarchdir):
 			if x.startswith('waf_') and x.endswith('.py'):
-				ctx.load([x.rstrip('.py')], tooldir=[noarchdir],)
+				ctx.load([x.rstrip('.py')], tooldir=[noarchdir])
 
-def options(opt,):
-	opt.add_option('--offline', action='store_true',)
+def options(opt):
+	opt.add_option('--offline', action='store_true')
 	packages.execute()
-	load_tools(opt, REQUIRES,)
+	load_tools(opt, REQUIRES)
 
-def configure(conf,):
-	load_tools(conf, conf.variant,)
+def configure(conf):
+	load_tools(conf, conf.variant)
 
-def build(bld,):
-	load_tools(bld, bld.variant,)
+def build(bld):
+	load_tools(bld, bld.variant)
 

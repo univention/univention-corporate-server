@@ -15,7 +15,7 @@ FC_FRAGMENT = '        program main\n        end     program main\n'
 FC_FRAGMENT2 = '        PROGRAM MAIN\n        END\n' # what's the actual difference between these?
 
 @conf
-def fc_flags(conf,):
+def fc_flags(conf):
 	"""
 	Defines common fortran configuration flags and file extensions
 	"""
@@ -48,14 +48,14 @@ def fc_flags(conf,):
 	v.SONAME_ST      = '-Wl,-h,%s'
 
 @conf
-def fc_add_flags(conf,):
+def fc_add_flags(conf):
 	"""
 	Adds FCFLAGS / LDFLAGS / LINKFLAGS from os.environ to conf.env
 	"""
-	conf.add_os_flags('FCPPFLAGS', dup=False,)
-	conf.add_os_flags('FCFLAGS', dup=False,)
-	conf.add_os_flags('LINKFLAGS', dup=False,)
-	conf.add_os_flags('LDFLAGS', dup=False,)
+	conf.add_os_flags('FCPPFLAGS', dup=False)
+	conf.add_os_flags('FCFLAGS', dup=False)
+	conf.add_os_flags('LINKFLAGS', dup=False)
+	conf.add_os_flags('LDFLAGS', dup=False)
 
 @conf
 def check_fortran(self, *k, **kw):
@@ -66,7 +66,7 @@ def check_fortran(self, *k, **kw):
 		fragment         = FC_FRAGMENT,
 		compile_filename = 'test.f',
 		features         = 'fc fcprogram',
-		msg              = 'Compiling a simple fortran app',)
+		msg              = 'Compiling a simple fortran app')
 
 @conf
 def check_fc(self, *k, **kw):
@@ -83,7 +83,7 @@ def check_fc(self, *k, **kw):
 		kw['compile_filename'] = 'test.f90'
 	if not 'code' in kw:
 		kw['code'] = FC_FRAGMENT
-	return self.check(*k, **kw,)
+	return self.check(*k, **kw)
 
 # ------------------------------------------------------------------------
 # --- These are the default platform modifiers, refactored here for
@@ -91,7 +91,7 @@ def check_fc(self, *k, **kw):
 # ------------------------------------------------------------------------
 
 @conf
-def fortran_modifier_darwin(conf,):
+def fortran_modifier_darwin(conf):
 	"""
 	Defines Fortran flags and extensions for OSX systems
 	"""
@@ -109,7 +109,7 @@ def fortran_modifier_darwin(conf,):
 	v.SONAME_ST         = ''
 
 @conf
-def fortran_modifier_win32(conf,):
+def fortran_modifier_win32(conf):
 	"""
 	Defines Fortran flags for Windows platforms
 	"""
@@ -125,17 +125,17 @@ def fortran_modifier_win32(conf,):
 	# Auto-import is enabled by default even without this option,
 	# but enabling it explicitly has the nice effect of suppressing the rather boring, debug-level messages
 	# that the linker emits otherwise.
-	v.append_value('LINKFLAGS', ['-Wl,--enable-auto-import'],)
+	v.append_value('LINKFLAGS', ['-Wl,--enable-auto-import'])
 
 @conf
-def fortran_modifier_cygwin(conf,):
+def fortran_modifier_cygwin(conf):
 	"""
 	Defines Fortran flags for use on cygwin
 	"""
 	fortran_modifier_win32(conf)
 	v = conf.env
 	v.fcshlib_PATTERN = 'cyg%s.dll'
-	v.append_value('LINKFLAGS_fcshlib', ['-Wl,--enable-auto-image-base'],)
+	v.append_value('LINKFLAGS_fcshlib', ['-Wl,--enable-auto-image-base'])
 	v.FCFLAGS_fcshlib = []
 
 # ------------------------------------------------------------------------
@@ -160,7 +160,7 @@ def check_fortran_dummy_main(self, *k, **kw):
 			self.check_cc(
 				fragment = 'int %s() { return 0; }\n' % (main or 'test'),
 				features = 'c fcprogram',
-				mandatory = True,
+				mandatory = True
 			)
 			if not main:
 				self.env.FC_MAIN = -1
@@ -182,9 +182,9 @@ POSIX_STATIC_EXT = re.compile(r'\S+\.a')
 POSIX_LIB_FLAGS = re.compile(r'-l\S+')
 
 @conf
-def is_link_verbose(self, txt,):
+def is_link_verbose(self, txt):
 	"""Returns True if 'useful' link options can be found in txt"""
-	assert isinstance(txt, str,)
+	assert isinstance(txt, str)
 	for line in txt.splitlines():
 		if not GCC_DRIVER_LINE.search(line):
 			if POSIX_STATIC_EXT.search(line) or POSIX_LIB_FLAGS.search(line):
@@ -204,7 +204,7 @@ def check_fortran_verbose_flag(self, *k, **kw):
 				fragment = FC_FRAGMENT2,
 				compile_filename = 'test.f',
 				linkflags = [x],
-				mandatory=True,)
+				mandatory=True)
 		except self.errors.ConfigurationError:
 			pass
 		else:
@@ -229,26 +229,26 @@ else:
 	LINKFLAGS_IGNORED.append(r'-lgcc*')
 RLINKFLAGS_IGNORED = [re.compile(f) for f in LINKFLAGS_IGNORED]
 
-def _match_ignore(line,):
+def _match_ignore(line):
 	"""Returns True if the line should be ignored (Fortran verbose flag test)"""
 	for i in RLINKFLAGS_IGNORED:
 		if i.match(line):
 			return True
 	return False
 
-def parse_fortran_link(lines,):
+def parse_fortran_link(lines):
 	"""Given the output of verbose link of Fortran compiler, this returns a
 	list of flags necessary for linking using the standard linker."""
 	final_flags = []
 	for line in lines:
 		if not GCC_DRIVER_LINE.match(line):
-			_parse_flink_line(line, final_flags,)
+			_parse_flink_line(line, final_flags)
 	return final_flags
 
 SPACE_OPTS = re.compile('^-[LRuYz]$')
 NOSPACE_OPTS = re.compile('^-[RL]')
 
-def _parse_flink_token(lexer, token, tmp_flags,):
+def _parse_flink_token(lexer, token, tmp_flags):
 	# Here we go (convention for wildcard is shell, not regex !)
 	#   1 TODO: we first get some root .a libraries
 	#   2 TODO: take everything starting by -bI:*
@@ -287,21 +287,21 @@ def _parse_flink_token(lexer, token, tmp_flags,):
 	t = lexer.get_token()
 	return t
 
-def _parse_flink_line(line, final_flags,):
+def _parse_flink_line(line, final_flags):
 	"""private"""
-	lexer = shlex.shlex(line, posix = True,)
+	lexer = shlex.shlex(line, posix = True)
 	lexer.whitespace_split = True
 
 	t = lexer.get_token()
 	tmp_flags = []
 	while t:
-		t = _parse_flink_token(lexer, t, tmp_flags,)
+		t = _parse_flink_token(lexer, t, tmp_flags)
 
 	final_flags.extend(tmp_flags)
 	return final_flags
 
 @conf
-def check_fortran_clib(self, autoadd=True,*k, **kw):
+def check_fortran_clib(self, autoadd=True, *k, **kw):
 	"""
 	Obtains the flags for linking with the C library
 	if this check works, add uselib='CLIB' to your task generators
@@ -315,11 +315,11 @@ def check_fortran_clib(self, autoadd=True,*k, **kw):
 			fragment = FC_FRAGMENT2,
 			compile_filename = 'test.f',
 			features = 'fc fcprogram_test',
-			linkflags = [self.env.FC_VERBOSE_FLAG],
+			linkflags = [self.env.FC_VERBOSE_FLAG]
 		)
 	except Exception:
 		self.end_msg(False)
-		if kw.get('mandatory', True,):
+		if kw.get('mandatory', True):
 			conf.fatal('Could not find the c library flags')
 	else:
 		out = self.test_bld.err
@@ -329,7 +329,7 @@ def check_fortran_clib(self, autoadd=True,*k, **kw):
 		return flags
 	return []
 
-def getoutput(conf, cmd, stdin=False,):
+def getoutput(conf, cmd, stdin=False):
 	"""
 	Obtains Fortran command outputs
 	"""
@@ -341,12 +341,12 @@ def getoutput(conf, cmd, stdin=False,):
 		env['LANG'] = 'C'
 	input = stdin and '\n'.encode() or None
 	try:
-		out, err = conf.cmd_and_log(cmd, env=env, output=0, input=input,)
+		out, err = conf.cmd_and_log(cmd, env=env, output=0, input=input)
 	except Errors.WafError as e:
 		# An WafError might indicate an error code during the command
 		# execution, in this case we still obtain the stderr and stdout,
 		# which we can use to find the version string.
-		if not (hasattr(e, 'stderr',) and hasattr(e, 'stdout',)):
+		if not (hasattr(e, 'stderr') and hasattr(e, 'stdout')):
 			raise e
 		else:
 			# Ignore the return code and return the original
@@ -385,13 +385,13 @@ def link_main_routines_tg_method(self):
 	The configuration test declares a unique task generator,
 	so we create other task generators from there for fortran link tests
 	"""
-	def write_test_file(task,):
+	def write_test_file(task):
 		task.outputs[0].write(task.generator.code)
 	bld = self.bld
-	bld(rule=write_test_file, target='main.c', code=MAIN_CODE % self.__dict__,)
-	bld(rule=write_test_file, target='test.f', code=ROUTINES_CODE,)
-	bld(features='fc fcstlib', source='test.f', target='test',)
-	bld(features='c fcprogram', source='main.c', target='app', use='test',)
+	bld(rule=write_test_file, target='main.c', code=MAIN_CODE % self.__dict__)
+	bld(rule=write_test_file, target='test.f', code=ROUTINES_CODE)
+	bld(features='fc fcstlib', source='test.f', target='test')
+	bld(features='c fcprogram', source='main.c', target='app', use='test')
 
 def mangling_schemes():
 	"""
@@ -404,9 +404,9 @@ def mangling_schemes():
 			for c in ("lower", "upper"):
 				yield (u, du, c)
 
-def mangle_name(u, du, c, name,):
+def mangle_name(u, du, c, name):
 	"""Mangle a name from a triplet (used in check_fortran_mangling)"""
-	return getattr(name, c,)() + u + (name.find('_') != -1 and du or '')
+	return getattr(name, c)() + u + (name.find('_') != -1 and du or '')
 
 @conf
 def check_fortran_mangling(self, *k, **kw):
@@ -430,9 +430,9 @@ def check_fortran_mangling(self, *k, **kw):
 				features           = 'link_main_routines_func',
 				msg                = 'nomsg',
 				errmsg             = 'nomsg',
-				dummy_func_nounder = mangle_name(u, du, c, 'foobar',),
-				dummy_func_under   = mangle_name(u, du, c, 'foo_bar',),
-				main_func_name     = self.env.FC_MAIN,
+				dummy_func_nounder = mangle_name(u, du, c, 'foobar'),
+				dummy_func_under   = mangle_name(u, du, c, 'foo_bar'),
+				main_func_name     = self.env.FC_MAIN
 			)
 		except self.errors.ConfigurationError:
 			pass
@@ -446,7 +446,7 @@ def check_fortran_mangling(self, *k, **kw):
 	return (u, du, c)
 
 @feature('pyext')
-@before_method('propagate_uselib_vars', 'apply_link',)
+@before_method('propagate_uselib_vars', 'apply_link')
 def set_lib_pat(self):
 	"""Sets the Fortran flags for linking with Python"""
 	self.env.fcshlib_PATTERN = self.env.pyext_PATTERN
@@ -463,7 +463,7 @@ def detect_openmp(self):
 				fragment     = 'program main\n  call omp_get_num_threads()\nend program main',
 				fcflags      = x,
 				linkflags    = x,
-				uselib_store = 'OPENMP',
+				uselib_store = 'OPENMP'
 			)
 		except self.errors.ConfigurationError:
 			pass
@@ -481,7 +481,7 @@ def check_gfortran_o_space(self):
 	self.env.stash()
 	self.env.FCLNK_TGT_F = ['-o', '']
 	try:
-		self.check_fc(msg='Checking if the -o link must be split from arguments', fragment=FC_FRAGMENT, features='fc fcshlib',)
+		self.check_fc(msg='Checking if the -o link must be split from arguments', fragment=FC_FRAGMENT, features='fc fcshlib')
 	except self.errors.ConfigurationError:
 		self.env.revert()
 	else:

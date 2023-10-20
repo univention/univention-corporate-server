@@ -66,11 +66,11 @@ def _get_config_registry_info() -> cri.ConfigRegistryInfo:
     return cri.ConfigRegistryInfo(install_mode=False)
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     error_descriptions: List[str] = []
 
     info = _get_config_registry_info()
-    ignore = {typ for typ in (typ.strip() for typ in ucr.get("diagnostic/check/64_check_ucr_types/ignore", "",).split(",")) if typ}
+    ignore = {typ for typ in (typ.strip() for typ in ucr.get("diagnostic/check/64_check_ucr_types/ignore", "").split(",")) if typ}
     for name, var in info.variables.items():
         try:
             validator = Type(var)

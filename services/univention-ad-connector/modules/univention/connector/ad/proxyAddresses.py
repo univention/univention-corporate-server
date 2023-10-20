@@ -37,11 +37,11 @@
 import univention.debug2 as ud
 
 
-def valid_mailaddress(val,):
+def valid_mailaddress(val):
     # invalid is: <transport>:<address> iff <transport>.lower() != smtp
     if not val:
         return
-    if isinstance(val, bytes,):
+    if isinstance(val, bytes):
         if b':' not in val:
             return val
         else:
@@ -55,32 +55,32 @@ def valid_mailaddress(val,):
                 return val
 
 
-def equal(values1, values2,):
+def equal(values1, values2):
     """
     This is called in these two ways:
     1. in sync_from_ucs: values1 are mapped ucs and values2 are        con
     2. in __set_values:  values1 are        ucs and values2 are mapped con
     """
-    ud.debug(ud.LDAP, ud.ALL, "proxyAddesses: values1: %r" % (values1,),)
-    ud.debug(ud.LDAP, ud.ALL, "proxyAddesses: values2: %r" % (values2,),)
+    ud.debug(ud.LDAP, ud.ALL, "proxyAddesses: values1: %r" % (values1,))
+    ud.debug(ud.LDAP, ud.ALL, "proxyAddesses: values2: %r" % (values2,))
     values_normalized = []
     for values in (values1, values2):
-        if not isinstance(values, (list, tuple),):
+        if not isinstance(values, (list, tuple)):
             values = [values]
         values_normalized.append(
-            [v for v in map(valid_mailaddress, values,) if v],
+            [v for v in map(valid_mailaddress, values) if v],
         )
     return set(values_normalized[0]) == set(values_normalized[1])
 
 
-def to_proxyAddresses(s4connector, key, object,):
+def to_proxyAddresses(s4connector, key, object):
     new_con_values = []
-    ucs_values = object['attributes'].get('mailPrimaryAddress', [],)
+    ucs_values = object['attributes'].get('mailPrimaryAddress', [])
     mailPrimaryAddress = ucs_values[0] if ucs_values else None
     if mailPrimaryAddress:
         new_con_value = b'SMTP:' + mailPrimaryAddress
         new_con_values.append(new_con_value)
-    for v in object['attributes'].get('mailAlternativeAddress', [],):
+    for v in object['attributes'].get('mailAlternativeAddress', []):
         if v == mailPrimaryAddress:
             continue
         new_con_value = b'smtp:' + v
@@ -88,16 +88,16 @@ def to_proxyAddresses(s4connector, key, object,):
     return new_con_values
 
 
-def to_mailPrimaryAddress(s4connector, key, object,):
-    for value in object['attributes'].get('proxyAddresses', [],):
+def to_mailPrimaryAddress(s4connector, key, object):
+    for value in object['attributes'].get('proxyAddresses', []):
         if value.startswith(b'SMTP:'):
             return [value[5:]]
     return []
 
 
-def to_mailAlternativeAddress(s4connector, key, object,):
+def to_mailAlternativeAddress(s4connector, key, object):
     new_ucs_values = []
-    for value in object['attributes'].get('proxyAddresses', [],):
+    for value in object['attributes'].get('proxyAddresses', []):
         if value.startswith(b'smtp:'):
             new_ucs_values.append(value[5:])
     return new_ucs_values

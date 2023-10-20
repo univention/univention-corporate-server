@@ -29,8 +29,8 @@ from univention.testing.utils import fail, get_ldap_connection
 from s4connector import connector_running_on_this_host, connector_setup
 
 
-def stderr(msg,):
-    print(msg, file=sys.stderr,)
+def stderr(msg):
+    print(msg, file=sys.stderr)
 
 
 class Users:
@@ -41,18 +41,18 @@ class Users:
         self.pos = position(self.lo.base)
         modules.update()
         self.udm_users = modules.get('users/user')
-        modules.init(self.lo, self.pos, self.udm_users,)
+        modules.init(self.lo, self.pos, self.udm_users)
         self.users = []
         self.uuids = []
 
-    def create_user(self, username,):
-        user = self.udm_users.object(None, self.lo, self.pos,)
+    def create_user(self, username):
+        user = self.udm_users.object(None, self.lo, self.pos)
         user.open()
         user["lastname"] = username
         user["password"] = "univention"
         user["username"] = username
         userdn = user.create()
-        uuid = self.lo.get(userdn, attr=['+'],)['entryUUID'][0].decode('UTF-8')
+        uuid = self.lo.get(userdn, attr=['+'])['entryUUID'][0].decode('UTF-8')
         self.uuids.append(uuid)
         self.users.append((userdn, user))
 
@@ -74,7 +74,7 @@ class Users:
     def check_every_user_is_deleted(self):
         for dn, _user in self.users:
             try:
-                verify_udm_object('users/user', dn, None,)
+                verify_udm_object('users/user', dn, None)
             except AssertionError:
                 stderr('%s still exists in UCS LDAP' % dn)
                 return False
@@ -83,7 +83,7 @@ class Users:
     def check_every_user_is_exists(self):
         for dn, _user in self.users:
             try:
-                verify_udm_object('users/user', dn, {'username': str2dn(dn)[0][0][1]},)
+                verify_udm_object('users/user', dn, {'username': str2dn(dn)[0][0][1]})
             except noObject:
                 stderr('%s does not exist in UCS LDAP' % dn)
                 return False
@@ -92,13 +92,13 @@ class Users:
     def check_UCS_added_table_is_clean(self):
         db = configdb('/etc/univention/connector/s4internal.sqlite')
         for uuid in self.uuids:
-            if db.get('UCS added', uuid,):
+            if db.get('UCS added', uuid):
                 stderr('%s found in UCS added database' % uuid)
                 return False
         return True
 
 
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.",)
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_no_leftovers_after_delete_in_ucs():
     """
     check that all objects are deleted if the (UCS) delete happens during
@@ -119,7 +119,7 @@ def test_no_leftovers_after_delete_in_ucs():
         name = random_name()
         try:
             # create users
-            for i in range(0, create_users,):
+            for i in range(0, create_users):
                 username = f"{name}{i}"
                 user_objects.create_user(username)
             # wait for the connector to pick up these changes
@@ -148,7 +148,7 @@ def test_no_leftovers_after_delete_in_ucs():
             user_objects.delete_users()
 
 
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.",)
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_do_not_delete_objects_with_different_id():
     '''
     Check if Users in UCS wont be deleted in sync_to_ucs if deleted "by" UCS
@@ -170,19 +170,19 @@ def test_do_not_delete_objects_with_different_id():
         create_users = 10
         try:
             # create users
-            for i in range(0, create_users,):
+            for i in range(0, create_users):
                 username = f"{name}{i}"
                 user_objects.create_user(username)
             # wait for the connector to pick up these changes
-            wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (username,),))
+            wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (username,)))
             time.sleep(10)
             # new delete everything and (re) create, without wait
             user_objects.delete_users()
-            for i in range(0, create_users,):
+            for i in range(0, create_users):
                 username = f"{name}{i}"
                 user_objects.create_user(username)
             # wait for the connector to pick up these changes
-            wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (username,),))
+            wait_for_drs_replication(filter_format('(sAMAccountName=%s)', (username,)))
             time.sleep(10)
             # now check that all users exists
             if not user_objects.check_every_user_is_exists():

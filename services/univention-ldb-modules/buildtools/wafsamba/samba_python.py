@@ -5,7 +5,7 @@ from waflib import Build, Logs, Utils, Configure, Errors
 from waflib.Configure import conf
 
 @conf
-def SAMBA_CHECK_PYTHON(conf, version=(3,6,0),):
+def SAMBA_CHECK_PYTHON(conf, version=(3,6,0)):
 
     # enable tool to build python extensions
     if conf.env.HAVE_PYTHON_H:
@@ -15,7 +15,7 @@ def SAMBA_CHECK_PYTHON(conf, version=(3,6,0),):
     interpreters = []
 
     conf.find_program('python3', var='PYTHON',
-                      mandatory=not conf.env.disable_python,)
+                      mandatory=not conf.env.disable_python)
     conf.load('python')
     path_python = conf.find_program('python3')
 
@@ -27,10 +27,10 @@ def SAMBA_CHECK_PYTHON(conf, version=(3,6,0),):
 
 
 @conf
-def SAMBA_CHECK_PYTHON_HEADERS(conf,):
+def SAMBA_CHECK_PYTHON_HEADERS(conf):
     if conf.env.disable_python:
 
-        conf.msg("python headers", "Check disabled due to --disable-python",)
+        conf.msg("python headers", "Check disabled due to --disable-python")
         # we don't want PYTHONDIR in config.h, as otherwise changing
         # --prefix causes a complete rebuild
         conf.env.DEFINES = [x for x in conf.env.DEFINES
@@ -44,7 +44,7 @@ def SAMBA_CHECK_PYTHON_HEADERS(conf,):
         conf.env["python_headers_checked"] = "yes"
 
     else:
-        conf.msg("python headers", "using cache",)
+        conf.msg("python headers", "using cache")
 
     # we don't want PYTHONDIR in config.h, as otherwise changing
     # --prefix causes a complete rebuild
@@ -52,17 +52,17 @@ def SAMBA_CHECK_PYTHON_HEADERS(conf,):
         if not x.startswith('PYTHONDIR=')
         and not x.startswith('PYTHONARCHDIR=')]
 
-def _check_python_headers(conf,):
+def _check_python_headers(conf):
     conf.check_python_headers()
 
     abi_pattern = os.path.splitext(conf.env['pyext_PATTERN'])[0]
     conf.env['PYTHON_SO_ABI_FLAG'] = abi_pattern % ''
     conf.env['PYTHON_LIBNAME_SO_ABI_FLAG'] = (
-        conf.env['PYTHON_SO_ABI_FLAG'].replace('_', '-',))
+        conf.env['PYTHON_SO_ABI_FLAG'].replace('_', '-'))
 
     for lib in conf.env['LINKFLAGS_PYEMBED']:
         if lib.startswith('-L'):
-            conf.env.append_unique('LIBPATH_PYEMBED', lib[2:],) # strip '-L'
+            conf.env.append_unique('LIBPATH_PYEMBED', lib[2:]) # strip '-L'
             conf.env['LINKFLAGS_PYEMBED'].remove(lib)
 
     # same as in waf 1.5, keep only '-fno-strict-aliasing'
@@ -90,7 +90,7 @@ def SAMBA_PYTHON(bld, name,
                  local_include=True,
                  vars=None,
                  install=True,
-                 enabled=True,):
+                 enabled=True):
     '''build a python extension for Samba'''
 
     # force-disable when we can't build python modules, so
@@ -118,7 +118,7 @@ def SAMBA_PYTHON(bld, name,
     # This must be in the -D compiler options
     cflags += ' -DPY_SSIZE_T_CLEAN=1'
 
-    source = bld.EXPAND_VARIABLES(source, vars=vars,)
+    source = bld.EXPAND_VARIABLES(source, vars=vars)
 
     if realname is not None:
         link_name = 'python/%s' % realname
@@ -141,12 +141,12 @@ def SAMBA_PYTHON(bld, name,
                       install_path='${PYTHONARCHDIR}',
                       allow_undefined_symbols=True,
                       install=install,
-                      enabled=enabled,)
+                      enabled=enabled)
 
 Build.BuildContext.SAMBA_PYTHON = SAMBA_PYTHON
 
 
-def pyembed_libname(bld, name,):
+def pyembed_libname(bld, name):
     if bld.env['PYTHON_SO_ABI_FLAG']:
         return name + bld.env['PYTHON_SO_ABI_FLAG']
     else:

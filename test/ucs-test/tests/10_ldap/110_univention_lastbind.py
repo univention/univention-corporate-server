@@ -20,7 +20,7 @@ from univention.udm import UDM
 try:
     import univention_lastbind
 except ImportError:
-    spec = importlib.util.spec_from_file_location('univention_lastbind', '/usr/share/univention-ldap/univention_lastbind.py',)
+    spec = importlib.util.spec_from_file_location('univention_lastbind', '/usr/share/univention-ldap/univention_lastbind.py')
     univention_lastbind = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(univention_lastbind)
 
@@ -61,7 +61,7 @@ def other_server():
 # but the schema for authTimestamp would no longer exist when lastbind
 # overlay is deactivatedd again.
 @pytest.fixture(scope="module")
-def activate_lastbind(bindpwdfile, other_server,):
+def activate_lastbind(bindpwdfile, other_server):
     handler_set(['ldap/overlay/lastbind=true'])
     subprocess.call(['service', 'slapd', 'restart'])
     if other_server:
@@ -70,9 +70,9 @@ def activate_lastbind(bindpwdfile, other_server,):
 
 
 @pytest.fixture(scope="module")
-def bindpwdfile(tmpdir_factory,):
+def bindpwdfile(tmpdir_factory):
     with UCSTestConfigRegistry() as ucr:
-        if ucr.get("tests/domainadmin/pwdfile", None,):
+        if ucr.get("tests/domainadmin/pwdfile", None):
             return str(ucr.get("tests/domainadmin/pwdfile"))
     path = tmpdir_factory.mktemp('data').join('bindpwdfile')
     path.write('univention')
@@ -85,8 +85,8 @@ def failbindpwdfile():
 
 
 @pytest.fixture()
-def binddn(ucr,):
-    if ucr.get("tests/domainadmin/account", None,):
+def binddn(ucr):
+    if ucr.get("tests/domainadmin/account", None):
         return str(ucr.get("tests/domainadmin/account"))
     else:
         return "uid=Administrator,cn=users,%s" % (ucr.get('ldap/base'),)
@@ -102,12 +102,12 @@ def readudm():
     return UDM.machine().version(2)
 
 
-def bind_for_timestamp(dn, host=None,):
+def bind_for_timestamp(dn, host=None):
     args = ['univention-ldapsearch', '-LLL', '-D', dn, '-w', 'univention', '-b', dn, 'authTimestamp']
     if host:
-        args.insert(1, "ldap://%s:7389" % host,)
-        args.insert(1, '-H',)
-    out = subprocess.check_output(args).decode('UTF-8', 'replace',)
+        args.insert(1, "ldap://%s:7389" % host)
+        args.insert(1, '-H')
+    out = subprocess.check_output(args).decode('UTF-8', 'replace')
     timestamp = [line.split()[1] for line in out.splitlines() if 'authTimestamp' in line]
     timestamp = timestamp[0] if len(timestamp) else None
     return timestamp
@@ -123,30 +123,30 @@ def bind_for_timestamp(dn, host=None,):
 
 
 @pytest.mark.slow()
-def test_save_timestamp(udm, readudm, binddn, bindpwdfile, capsys,):
+def test_save_timestamp(udm, readudm, binddn, bindpwdfile, capsys):
     dn, _ = udm.create_user()
     o = readudm.obj_by_dn(dn)
     timestamp = '2020010101Z'
     capsys.readouterr()  # flush
-    univention_lastbind.save_timestamp(o, timestamp,)
+    univention_lastbind.save_timestamp(o, timestamp)
     assert 'Warning: Could not save new timestamp "%s" to "lastbind" extended attribute of user "%s". Continuing' % (timestamp, o.dn) in capsys.readouterr()[1]
-    writeudm = univention_lastbind.get_writable_udm(binddn, bindpwdfile,)
+    writeudm = univention_lastbind.get_writable_udm(binddn, bindpwdfile)
     o = writeudm.obj_by_dn(dn)
-    univention_lastbind.save_timestamp(o, timestamp,)
+    univention_lastbind.save_timestamp(o, timestamp)
     #assert "INFO: Modified 'users/user' object" in capsys.readouterr()[1]  # make sure that this string is still printed on save so that we can check later that it is missing
     o.reload()
     assert o.props.lastbind == timestamp
     capsys.readouterr()  # flush
-    univention_lastbind.save_timestamp(o, None,)
+    univention_lastbind.save_timestamp(o, None)
     assert "INFO: Modified 'users/user' object" not in capsys.readouterr()[0]
     assert o.props.lastbind == timestamp
-    univention_lastbind.save_timestamp(o, timestamp,)
+    univention_lastbind.save_timestamp(o, timestamp)
     assert "INFO: Modified 'users/user' object" not in capsys.readouterr()[0]  # test no save happens when timestamp didn't change
     assert o.props.lastbind == timestamp
 
 
 @pytest.mark.slow()
-def test_main_single_server(activate_lastbind, binddn, bindpwdfile, udm, readudm,):
+def test_main_single_server(activate_lastbind, binddn, bindpwdfile, udm, readudm):
     o = readudm.obj_by_dn(udm.create_user()[0])
     assert o.props.lastbind is None
     timestamp = bind_for_timestamp(o.dn)
@@ -157,18 +157,18 @@ def test_main_single_server(activate_lastbind, binddn, bindpwdfile, udm, readudm
     assert o.props.lastbind == timestamp
 
 
-@pytest.mark.skipif(not is_multi_domain(), reason="Test only in multi domain",)
+@pytest.mark.skipif(not is_multi_domain(), reason="Test only in multi domain")
 @pytest.mark.slow()
-def test_main_multi_server(activate_lastbind, binddn, bindpwdfile, udm, readudm, other_server,):
+def test_main_multi_server(activate_lastbind, binddn, bindpwdfile, udm, readudm, other_server):
     assert other_server is not None
     o = readudm.obj_by_dn(udm.create_user()[0])
     assert o.props.lastbind is None
     local_timestamp = bind_for_timestamp(o.dn)
     assert local_timestamp is not None
     time.sleep(2)
-    other_timestamp = bind_for_timestamp(o.dn, other_server.props.fqdn,)
+    other_timestamp = bind_for_timestamp(o.dn, other_server.props.fqdn)
     assert other_timestamp is not None
-    youngest_timestamp = max(local_timestamp, other_timestamp,)
+    youngest_timestamp = max(local_timestamp, other_timestamp)
     assert youngest_timestamp is not None
     args = univention_lastbind.parse_args(['--binddn', binddn, '--bindpwdfile', bindpwdfile, '--user', o.dn])
     univention_lastbind.main(args)
@@ -186,17 +186,17 @@ def test_main_not_enough_arguments():
 
 
 @pytest.mark.slow()
-def test_server_down(ucr, udm, readudm, capsys,):
+def test_server_down(ucr, udm, readudm, capsys):
     mod = readudm.get('computers/%s' % (ucr.get('server/role'),))
     comp = mod.get_by_id(ucr.get('hostname'))
-    slave = udm.create_object('computers/domaincontroller_slave', name=uts.random_name(), dnsEntryZoneForward=comp.props.dnsEntryZoneForward[0][0],)
+    slave = udm.create_object('computers/domaincontroller_slave', name=uts.random_name(), dnsEntryZoneForward=comp.props.dnsEntryZoneForward[0][0])
     slave = readudm.obj_by_dn(slave)
     capsys.readouterr()  # flush
     univention_lastbind.get_ldap_connections()
     assert 'Server "%s" is not reachable. The "authTimestamp" will not be read from it. Continuing.' % (slave.props.fqdn,) in capsys.readouterr()[1]
 
 
-def test_invalid_user(binddn, bindpwdfile,):
+def test_invalid_user(binddn, bindpwdfile):
     user = 'qqqqqq'
     args = univention_lastbind.parse_args(['--user', user, '--binddn', binddn, '--bindpwdfile', bindpwdfile])
     with pytest.raises(univention_lastbind.ScriptError) as excinfo:
@@ -204,7 +204,7 @@ def test_invalid_user(binddn, bindpwdfile,):
     assert 'The provided user "%s" could not be found' % (user,) in str(excinfo.value)
 
 
-def test_tracebacks(binddn, failbinddn, bindpwdfile, failbindpwdfile, ucr,):
+def test_tracebacks(binddn, failbinddn, bindpwdfile, failbindpwdfile, ucr):
     args = univention_lastbind.parse_args(['--user', 'foo', '--binddn', binddn])
     with pytest.raises(univention_lastbind.ScriptError) as excinfo:
         univention_lastbind.main(args)

@@ -25,10 +25,10 @@ from univention.testing.utils import get_ldap_connection
 _ = Translation("ucs-test-browser").translate
 
 
-def test_add_user_photo(umc_browser_test: UMCBrowserTest, udm,):
+def test_add_user_photo(umc_browser_test: UMCBrowserTest, udm):
     page = umc_browser_test.page
     lo = get_ldap_connection()
-    user = create_test_user(udm, lo,)
+    user = create_test_user(udm, lo)
 
     user_module = UserModule(umc_browser_test)
     user_module.navigate()

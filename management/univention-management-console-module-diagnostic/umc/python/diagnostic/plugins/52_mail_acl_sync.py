@@ -50,7 +50,7 @@ title = _('Check IMAP shared folder ACLs')
 description = _('All shared folder ACLs are in sync with UDM.')
 run_descr = ['Checks if all IMAP shared Folder ACLs are in sync with UDM']
 
-_T = TypeVar("_T", bound="ACLDifferenceError",)
+_T = TypeVar("_T", bound="ACLDifferenceError")
 
 
 class ACLError(Exception):
@@ -58,8 +58,8 @@ class ACLError(Exception):
 
 
 class MailboxNotExistentError(ACLError):
-    def __init__(self, mailbox: str,) -> None:
-        super(ACLError, self,).__init__(mailbox)
+    def __init__(self, mailbox: str) -> None:
+        super(ACLError, self).__init__(mailbox)
         self.mailbox = mailbox
 
     def __str__(self) -> str:
@@ -68,8 +68,8 @@ class MailboxNotExistentError(ACLError):
 
 
 class ACLIdentifierError(Exception):
-    def __init__(self, identifier: str,) -> None:
-        super(ACLIdentifierError, self,).__init__(identifier)
+    def __init__(self, identifier: str) -> None:
+        super(ACLIdentifierError, self).__init__(identifier)
         self.identifier = identifier
 
 
@@ -80,8 +80,8 @@ class DuplicateIdentifierACLError(ACLIdentifierError):
 
 
 class ACLDifferenceError(ACLIdentifierError):
-    def __init__(self, identifier: str, udm_right, actual_right,) -> None:
-        super(ACLDifferenceError, self,).__init__(identifier)
+    def __init__(self, identifier: str, udm_right, actual_right) -> None:
+        super(ACLDifferenceError, self).__init__(identifier)
         self.udm_right = udm_right
         self.actual_right = actual_right
 
@@ -89,17 +89,17 @@ class ACLDifferenceError(ACLIdentifierError):
 class UserACLError(ACLDifferenceError):
     def __str__(self) -> str:
         msg = _('ACL right for user {id!r} is {udm!r} in UDM, but {imap!r} in IMAP.')
-        return msg.format(id=self.identifier, udm=self.udm_right, imap=self.actual_right,)
+        return msg.format(id=self.identifier, udm=self.udm_right, imap=self.actual_right)
 
 
 class GroupACLError(ACLDifferenceError):
     def __str__(self) -> str:
         msg = _('ACL right for group {id!r} is {udm!r} in UDM, but {imap!r} in IMAP.')
-        return msg.format(id=self.identifier, udm=self.udm_right, imap=self.actual_right,)
+        return msg.format(id=self.identifier, udm=self.udm_right, imap=self.actual_right)
 
 
 class MailFolder(object):
-    def __init__(self, udm_folder: simpleLdap,) -> None:
+    def __init__(self, udm_folder: simpleLdap) -> None:
         self.dn = udm_folder.dn
         self.name = udm_folder.get('name')
         self.mail_domain = udm_folder.get('mailDomain')
@@ -112,14 +112,14 @@ class MailFolder(object):
         return f'{self.name}@{self.mail_domain}'
 
     def acl(self) -> "ACL":
-        return ACL.from_udm(self._user_acl, self._group_acl,)
+        return ACL.from_udm(self._user_acl, self._group_acl)
 
     @classmethod
     def from_udm(cls) -> Iterator["MailFolder"]:
         univention.admin.modules.update()
         (ldap_connection, position) = univention.admin.uldap.getMachineConnection()
         module = udm_modules.get('mail/folder')
-        for instance in module.lookup(None, ldap_connection, '',):
+        for instance in module.lookup(None, ldap_connection, ''):
             instance.open()
             yield cls(instance)
 
@@ -127,20 +127,20 @@ class MailFolder(object):
 class ACL(object):
     RIGHTS = ('all', 'write', 'append', 'post', 'read', 'none')
 
-    def __init__(self, user_acl: Dict[str, str], group_acl: Dict[str, str],):
+    def __init__(self, user_acl: Dict[str, str], group_acl: Dict[str, str]):
         self.user_acl = user_acl
         self.group_acl = group_acl
 
     @classmethod
-    def from_udm(cls, user_acl: List[Tuple[str, str]], group_acl: List[Tuple[str, str]],) -> "ACL":
+    def from_udm(cls, user_acl: List[Tuple[str, str]], group_acl: List[Tuple[str, str]]) -> "ACL":
         """
         Transform the udm acls from [[id, right], [id, right], ..] to a dict
         from identifier to right, where right is the highest right in the acl.
         """
-        def simplify(acl_list: List[Tuple[str, str]],) -> Iterator[Tuple[str, str]]:
+        def simplify(acl_list: List[Tuple[str, str]]) -> Iterator[Tuple[str, str]]:
             merged: Dict[str, Set[str]] = {}
             for (identifier, right) in acl_list:
-                merged.setdefault(identifier, set(),).add(right)
+                merged.setdefault(identifier, set()).add(right)
 
             for (identifier, rights) in merged.items():
                 if len(rights) > 1:
@@ -149,20 +149,20 @@ class ACL(object):
                     udm_right = next(right for right in cls.RIGHTS if right in rights)
                     yield (identifier, udm_right)
 
-        return cls(dict(simplify(user_acl)), dict(simplify(group_acl)),)
+        return cls(dict(simplify(user_acl)), dict(simplify(group_acl)))
 
-    def difference(self, other: "ACL",) -> Iterator[ACLDifferenceError]:
-        user_diff = self._diff(UserACLError, self.user_acl, other.user_acl,)
-        group_diff = self._diff(GroupACLError, self.group_acl, other.group_acl,)
-        return it.chain(user_diff, group_diff,)
+    def difference(self, other: "ACL") -> Iterator[ACLDifferenceError]:
+        user_diff = self._diff(UserACLError, self.user_acl, other.user_acl)
+        group_diff = self._diff(GroupACLError, self.group_acl, other.group_acl)
+        return it.chain(user_diff, group_diff)
 
-    def _diff(self, exception: Type[_T], expected, actual,) -> Iterator[_T]:
+    def _diff(self, exception: Type[_T], expected, actual) -> Iterator[_T]:
         all_id = expected.keys() | actual.keys()
         for identifier in all_id:
-            exp = expected.get(identifier, 'none',)
-            act = actual.get(identifier, 'none',)
+            exp = expected.get(identifier, 'none')
+            act = actual.get(identifier, 'none')
             if exp != act:
-                yield exception(identifier, exp, act,)
+                yield exception(identifier, exp, act)
 
 
 class DovecotACL(ACL):
@@ -178,28 +178,28 @@ class DovecotACL(ACL):
     )
 
     @classmethod
-    def from_folder(cls, folder,):
+    def from_folder(cls, folder):
         acl_list = cls._get_dovecot_acl(folder)
         merged = {}
         for (identifier, rights) in acl_list.items():
             acl_type = 'group' if identifier.startswith('group=') else 'user'
-            udm_id = identifier.replace('user=', '', 1,) if identifier.startswith('user=') \
-                else identifier.replace('group=', '', 1,) if identifier.startswith('group=') \
+            udm_id = identifier.replace('user=', '', 1) if identifier.startswith('user=') \
+                else identifier.replace('group=', '', 1) if identifier.startswith('group=') \
                 else identifier
             udm_right = next(udm_right for (udm_right, dovecot_rights) in cls.DOVECOT_RIGHT_TRANSLATION if rights.issuperset(dovecot_rights))
-            merged.setdefault(acl_type, {},)[udm_id] = udm_right
-        return cls(merged.get('user', {},), merged.get('group', {},),)
+            merged.setdefault(acl_type, {})[udm_id] = udm_right
+        return cls(merged.get('user', {}), merged.get('group', {}))
 
     @staticmethod
-    def _get_dovecot_acl(folder: Any,) -> Dict[str, Set]:
+    def _get_dovecot_acl(folder: Any) -> Dict[str, Set]:
         mailbox = 'shared/{pm}' if folder.mail_address else '{cn}/INBOX'
-        admin_user = custom_username("Administrator", configRegistry,)
-        cmd = ('doveadm', 'acl', 'get', '-u', admin_user, mailbox.format(cn=folder.common_name, pm=folder.mail_address,))
-        output = subprocess.check_output(cmd, stderr=subprocess.PIPE,).decode('UTF-8', 'replace',).splitlines()
-        return {identifier.strip(): set(rights.strip().split()) for (identifier, rights) in (line.rsplit('  ', 1,) for line in output)}
+        admin_user = custom_username("Administrator", configRegistry)
+        cmd = ('doveadm', 'acl', 'get', '-u', admin_user, mailbox.format(cn=folder.common_name, pm=folder.mail_address))
+        output = subprocess.check_output(cmd, stderr=subprocess.PIPE).decode('UTF-8', 'replace').splitlines()
+        return {identifier.strip(): set(rights.strip().split()) for (identifier, rights) in (line.rsplit('  ', 1) for line in output)}
 
 
-def all_differences(acl_class: Type[DovecotACL],) -> Iterator[Tuple]:
+def all_differences(acl_class: Type[DovecotACL]) -> Iterator[Tuple]:
     for folder in MailFolder.from_udm():
         try:
             udm_acl = folder.acl()
@@ -210,7 +210,7 @@ def all_differences(acl_class: Type[DovecotACL],) -> Iterator[Tuple]:
             yield (folder, error)
 
 
-def udm_mail_link(folder,) -> Dict[str, Any]:
+def udm_mail_link(folder) -> Dict[str, Any]:
     return {
         'module': 'udm',
         'flavor': 'mail/mail',
@@ -223,7 +223,7 @@ def udm_mail_link(folder,) -> Dict[str, Any]:
     }
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     if not util.is_service_active('IMAP'):
         return
 
@@ -239,7 +239,7 @@ def run(_umc_instance: Instance,) -> None:
     ]
 
     modules = []
-    for (folder, group) in it.groupby(differences, lambda x,: x[0],):
+    for (folder, group) in it.groupby(differences, lambda x: x[0]):
         name = folder.common_name
         ed.append('')
         ed.append(_('In mail folder {name} (see {{udm:mail/mail}}):').format(name=name))
@@ -248,7 +248,7 @@ def run(_umc_instance: Instance,) -> None:
 
     if modules:
         MODULE.error('\n'.join(ed))
-        raise Warning(description='\n'.join(ed), umc_modules=modules,)
+        raise Warning(description='\n'.join(ed), umc_modules=modules)
 
 
 if __name__ == '__main__':

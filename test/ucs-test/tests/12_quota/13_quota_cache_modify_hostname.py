@@ -16,14 +16,14 @@ import quota_cache as qc
 SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 
 
-def create_share(host,):
+def create_share(host):
     name = uts.random_name()
     path = '/mnt/_%s' % name
-    return udm.create_object('shares/share', name=name, path=path, host=host,)
+    return udm.create_object('shares/share', name=name, path=path, host=host)
 
 
-def change_host(dn, host,):
-    udm.modify_object('shares/share', dn=dn, host=host,)
+def change_host(dn, host):
+    udm.modify_object('shares/share', dn=dn, host=host)
 
 
 if __name__ == '__main__':
@@ -43,9 +43,9 @@ if __name__ == '__main__':
         qc.cache_must_not_exists(share2)
         qc.cache_must_not_exists(share3)
 
-        change_host(share1, 'test.bar',)
-        change_host(share2, my_fqdn,)
-        change_host(share3, 'foo.bar',)
+        change_host(share1, 'test.bar')
+        change_host(share2, my_fqdn)
+        change_host(share3, 'foo.bar')
 
         utils.wait_for_replication_and_postrun()
 

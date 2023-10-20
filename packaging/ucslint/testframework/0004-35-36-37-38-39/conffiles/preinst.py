@@ -1,2 +1,2 @@
-def preinst(ucr, changes,):
+def preinst(ucr, changes):
     pass

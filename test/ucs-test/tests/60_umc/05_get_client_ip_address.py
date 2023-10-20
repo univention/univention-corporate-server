@@ -15,8 +15,8 @@ class Client(Client):
     ConnectionType = HTTPConnection
 
 
-def get_ip_address(host, username, password,):
-    client = Client(host, username, password,)
+def get_ip_address(host, username, password):
+    client = Client(host, username, password)
     return client.umc_get('ipaddress').data
 
 
@@ -29,17 +29,17 @@ def main():
     with network.NetworkRedirector() as nethelper:
         print('*** Check with different remote addresses')
         for addr2 in ('4.3.2.1', '1.1.1.1', '2.2.2.2'):
-            nethelper.add_loop('1.2.3.4', addr2,)
+            nethelper.add_loop('1.2.3.4', addr2)
 
-            result = get_ip_address('1.2.3.4', account.username, account.bindpw,)
+            result = get_ip_address('1.2.3.4', account.username, account.bindpw)
             print('Result: %r' % result)
             if addr2 not in result:
                 utils.fail(f'UMC webserver is unable to determine correct UMCP client address (expected={addr2!r} result={result!r})')
 
-            nethelper.remove_loop('1.2.3.4', addr2,)
+            nethelper.remove_loop('1.2.3.4', addr2)
 
         print('*** Check with localhost')
-        result = get_ip_address('localhost', account.username, account.bindpw,)
+        result = get_ip_address('localhost', account.username, account.bindpw)
         if result:
             utils.fails('Response is expected to be empty')
 

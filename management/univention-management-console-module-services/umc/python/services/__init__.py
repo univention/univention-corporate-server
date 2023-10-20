@@ -54,7 +54,7 @@ class Instance(Base):
 
     @sanitize(pattern=PatternSanitizer(default='.*'))
     @simple_response
-    def query(self, pattern: str,) -> List[Dict]:
+    def query(self, pattern: str) -> List[Dict]:
         ucr.load()
         srvs = ServiceInfo()
 
@@ -64,11 +64,11 @@ class Instance(Base):
 
         result = []
         for name, srv in srvs.services.items():
-            key = srv.get('start_type', f'{name}/autostart',)
+            key = srv.get('start_type', f'{name}/autostart')
             entry = {
                 'service': name,
-                'description': srv.get(f'description[{lang}]', srv.get('description'),),
-                'autostart': ucr.get(key, 'yes',),
+                'description': srv.get(f'description[{lang}]', srv.get('description')),
+                'autostart': ucr.get(key, 'yes'),
                 'isRunning': srv.running,
             }
             if entry['autostart'] not in ('yes', 'no', 'manually'):
@@ -81,26 +81,26 @@ class Instance(Base):
 
     @sanitize(StringSanitizer(required=True))
     @threaded
-    def start(self, request,) -> None:
-        return self._change_services(request.options, 'start',)
+    def start(self, request) -> None:
+        return self._change_services(request.options, 'start')
 
     @sanitize(StringSanitizer(required=True))
     @threaded
-    def stop(self, request,) -> None:
-        return self._change_services(request.options, 'stop',)
+    def stop(self, request) -> None:
+        return self._change_services(request.options, 'stop')
 
     @sanitize(StringSanitizer(required=True))
     @threaded
-    def restart(self, request,) -> None:
-        return self._change_services(request.options, 'restart',)
+    def restart(self, request) -> None:
+        return self._change_services(request.options, 'restart')
 
-    def _change_services(self, services: List[str], action: str,) -> Dict:
+    def _change_services(self, services: List[str], action: str) -> Dict:
         error_messages = []
         srvs = ServiceInfo()
         for srv in services:
             service = srvs.get_service(srv)
             try:
-                getattr(service, action,)()
+                getattr(service, action)()
             except ServiceError as exc:
                 MODULE.warn(f'Error during {action} of {srv}: {exc}')
                 error_messages.append('%s\n%s' % ({
@@ -114,24 +114,24 @@ class Instance(Base):
         return {'success': True}
 
     @sanitize(StringSanitizer(required=True))
-    def start_auto(self, request,) -> None:
-        self._change_start_type(request.options, 'yes',)
-        self.finished(request.id, {'success': True}, _('Successfully changed start type'),)
+    def start_auto(self, request) -> None:
+        self._change_start_type(request.options, 'yes')
+        self.finished(request.id, {'success': True}, _('Successfully changed start type'))
 
     @sanitize(StringSanitizer(required=True))
-    def start_manual(self, request,) -> None:
-        self._change_start_type(request.options, 'manually',)
-        self.finished(request.id, {'success': True}, _('Successfully changed start type'),)
+    def start_manual(self, request) -> None:
+        self._change_start_type(request.options, 'manually')
+        self.finished(request.id, {'success': True}, _('Successfully changed start type'))
 
     @sanitize(StringSanitizer(required=True))
-    def start_never(self, request,) -> None:
-        self._change_start_type(request.options, 'no',)
-        self.finished(request.id, {'success': True}, _('Successfully changed start type'),)
+    def start_never(self, request) -> None:
+        self._change_start_type(request.options, 'no')
+        self.finished(request.id, {'success': True}, _('Successfully changed start type'))
 
-    def _change_start_type(self, service_names: str, start_type: Any,) -> None:
+    def _change_start_type(self, service_names: str, start_type: Any) -> None:
         service_info = ServiceInfo()
         services = [(service_name, service_info.services[service_name]) for service_name in service_names if service_name in service_info.services]
-        values = ['%s=%s' % (service.get('start_type', f'{service_name}/autostart',), start_type) for service_name, service in services]
+        values = ['%s=%s' % (service.get('start_type', f'{service_name}/autostart'), start_type) for service_name, service in services]
         univention.config_registry.handler_set(values)
         failed = [x for x in service_names if not service_info.services.get(x)]
         if failed:

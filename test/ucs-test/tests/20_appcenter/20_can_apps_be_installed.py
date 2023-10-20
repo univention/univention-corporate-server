@@ -29,30 +29,30 @@ with UCSTestConfigRegistry():
 
     log_to_logfile()
 
-    def _packages_to_install(app,):
+    def _packages_to_install(app):
         return app.get_packages()
 
     def _apt_get_update():
         cmd = ['/usr/bin/apt-get', 'update']
         print('Executing the command: %s' % cmd)
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True,)
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True)
         (stdoutdata, stderrdata) = p.communicate()
         if p.returncode:
             print(f'apt-get update failed: {stdoutdata} {stderrdata}')
 
-    def _apt_get_simulate(app,):
+    def _apt_get_simulate(app):
         retcode = 0
-        for _i in range(0, 3,):
+        for _i in range(0, 3):
             if not app.without_repository:
                 print(f'Register app {app.id}')
                 # de register app, otherwise a second register (in case of an error) would not do nothing
-                register.call(apps=[app], register_task=['component'],)
-                register.call(apps=[app], register_task=['component'], do_it=True,)
+                register.call(apps=[app], register_task=['component'])
+                register.call(apps=[app], register_task=['component'], do_it=True)
                 _apt_get_update()
             packages = _packages_to_install(app)
             cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
             print('Executing the command: %s' % cmd)
-            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True,)
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True)
             (stdoutdata, stderrdata) = p.communicate()
             retcode = p.returncode
             if retcode == 0:
@@ -61,11 +61,11 @@ with UCSTestConfigRegistry():
                 print(s)
                 with open(s) as f:
                     print(f.read())
-            print(stdoutdata, stderrdata,)
+            print(stdoutdata, stderrdata)
             print('failed, try again ...')
             time.sleep(180)
         if not app.without_repository:
-            register.call(apps=[app], register_task=['component'],)
+            register.call(apps=[app], register_task=['component'])
             _apt_get_update()
         return retcode == 0
 

@@ -15,11 +15,11 @@ except ImportError:
 		from Queue import PriorityQueue
 	except ImportError:
 		class PriorityQueue(Queue):
-			def _init(self, maxsize,):
+			def _init(self, maxsize):
 				self.maxsize = maxsize
 				self.queue = []
-			def _put(self, item,):
-				heapq.heappush(self.queue, item,)
+			def _put(self, item):
+				heapq.heappush(self.queue, item)
 			def _get(self):
 				return heapq.heappop(self.queue)
 
@@ -41,19 +41,19 @@ class PriorityTasks(object):
 		return 'PriorityTasks: [%s]' % '\n  '.join(str(x) for x in self.lst)
 	def clear(self):
 		self.lst = []
-	def append(self, task,):
-		heapq.heappush(self.lst, task,)
-	def appendleft(self, task,):
+	def append(self, task):
+		heapq.heappush(self.lst, task)
+	def appendleft(self, task):
 		"Deprecated, do not use"
-		heapq.heappush(self.lst, task,)
+		heapq.heappush(self.lst, task)
 	def pop(self):
 		return heapq.heappop(self.lst)
-	def extend(self, lst,):
+	def extend(self, lst):
 		if self.lst:
 			for x in lst:
 				self.append(x)
 		else:
-			if isinstance(lst, list,):
+			if isinstance(lst, list):
 				self.lst = lst
 				heapq.heapify(lst)
 			else:
@@ -65,7 +65,7 @@ class Consumer(Utils.threading.Thread):
 	the coordinator :py:class:`waflib.Runner.Spawner`. There is one
 	instance per task to consume.
 	"""
-	def __init__(self, spawner, task,):
+	def __init__(self, spawner, task):
 		Utils.threading.Thread.__init__(self)
 		self.task = task
 		"""Task to execute"""
@@ -92,7 +92,7 @@ class Spawner(Utils.threading.Thread):
 	spawns a consuming thread :py:class:`waflib.Runner.Consumer` for each
 	:py:class:`waflib.Task.Task` instance.
 	"""
-	def __init__(self, master,):
+	def __init__(self, master):
 		Utils.threading.Thread.__init__(self)
 		self.master = master
 		""":py:class:`waflib.Runner.Parallel` producer instance"""
@@ -121,13 +121,13 @@ class Spawner(Utils.threading.Thread):
 			self.sem.acquire()
 			if not master.stop:
 				task.log_display(task.generator.bld)
-			Consumer(self, task,)
+			Consumer(self, task)
 
 class Parallel(object):
 	"""
 	Schedule the tasks obtained from the build context for execution.
 	"""
-	def __init__(self, bld, j=2,):
+	def __init__(self, bld, j=2):
 		"""
 		The initialization requires a build context reference
 		for computing the total number of jobs.
@@ -200,7 +200,7 @@ class Parallel(object):
 			return None
 		return self.outstanding.pop()
 
-	def postpone(self, tsk,):
+	def postpone(self, tsk):
 		"""
 		Adds the task to the list :py:attr:`waflib.Runner.Parallel.postponed`.
 		The order is scrambled so as to consume as many tasks in parallel as possible.
@@ -269,7 +269,7 @@ class Parallel(object):
 					self.total = self.bld.total()
 					break
 
-	def add_more_tasks(self, tsk,):
+	def add_more_tasks(self, tsk):
 		"""
 		If a task provides :py:attr:`waflib.Task.Task.more_tasks`, then the tasks contained
 		in that list are added to the current build and will be processed before the next build group.
@@ -279,10 +279,10 @@ class Parallel(object):
 		:param tsk: task instance
 		:type tsk: :py:attr:`waflib.Task.Task`
 		"""
-		if getattr(tsk, 'more_tasks', None,):
+		if getattr(tsk, 'more_tasks', None):
 			more = set(tsk.more_tasks)
 			groups_done = set()
-			def iteri(a, b,):
+			def iteri(a, b):
 				for x in a:
 					yield x
 				for x in b:
@@ -290,9 +290,9 @@ class Parallel(object):
 
 			# Update the dependency tree
 			# this assumes that task.run_after values were updated
-			for x in iteri(self.outstanding, self.incomplete,):
+			for x in iteri(self.outstanding, self.incomplete):
 				for k in x.run_after:
-					if isinstance(k, Task.TaskGroup,):
+					if isinstance(k, Task.TaskGroup):
 						if k not in groups_done:
 							groups_done.add(k)
 							for j in k.prev & more:
@@ -305,8 +305,8 @@ class Parallel(object):
 			self.incomplete.update(waiting)
 			self.total += len(tsk.more_tasks)
 
-	def mark_finished(self, tsk,):
-		def try_unfreeze(x,):
+	def mark_finished(self, tsk):
+		def try_unfreeze(x):
 			# DAG ancestors are likely to be in the incomplete set
 			# This assumes that the run_after contents have not changed
 			# after the build starts, else a deadlock may occur
@@ -322,7 +322,7 @@ class Parallel(object):
 
 		if tsk in self.revdeps:
 			for x in self.revdeps[tsk]:
-				if isinstance(x, Task.TaskGroup,):
+				if isinstance(x, Task.TaskGroup):
 					x.prev.remove(tsk)
 					if not x.prev:
 						for k in x.next:
@@ -335,7 +335,7 @@ class Parallel(object):
 					try_unfreeze(x)
 			del self.revdeps[tsk]
 
-		if hasattr(tsk, 'semaphore',):
+		if hasattr(tsk, 'semaphore'):
 			sem = tsk.semaphore
 			try:
 				sem.release(tsk)
@@ -364,7 +364,7 @@ class Parallel(object):
 		self.dirty = True
 		return tsk
 
-	def add_task(self, tsk,):
+	def add_task(self, tsk):
 		"""
 		Enqueue a Task to :py:attr:`waflib.Runner.Parallel.ready` so that consumers can run them.
 
@@ -374,8 +374,8 @@ class Parallel(object):
 		# TODO change in waf 2.1
 		self.ready.put(tsk)
 
-	def _add_task(self, tsk,):
-		if hasattr(tsk, 'semaphore',):
+	def _add_task(self, tsk):
+		if hasattr(tsk, 'semaphore'):
 			sem = tsk.semaphore
 			try:
 				sem.acquire(tsk)
@@ -394,7 +394,7 @@ class Parallel(object):
 		else:
 			self.add_task(tsk)
 
-	def process_task(self, tsk,):
+	def process_task(self, tsk):
 		"""
 		Processes a task and attempts to stop the build in case of errors
 		"""
@@ -402,21 +402,21 @@ class Parallel(object):
 		if tsk.hasrun != Task.SUCCESS:
 			self.error_handler(tsk)
 
-	def skip(self, tsk,):
+	def skip(self, tsk):
 		"""
 		Mark a task as skipped/up-to-date
 		"""
 		tsk.hasrun = Task.SKIPPED
 		self.mark_finished(tsk)
 
-	def cancel(self, tsk,):
+	def cancel(self, tsk):
 		"""
 		Mark a task as failed because of unsatisfiable dependencies
 		"""
 		tsk.hasrun = Task.CANCELED
 		self.mark_finished(tsk)
 
-	def error_handler(self, tsk,):
+	def error_handler(self, tsk):
 		"""
 		Called when a task cannot be executed. The flag :py:attr:`waflib.Runner.Parallel.stop` is set,
 		unless the build is executed with::
@@ -430,7 +430,7 @@ class Parallel(object):
 			self.stop = True
 		self.error.append(tsk)
 
-	def task_status(self, tsk,):
+	def task_status(self, tsk):
 		"""
 		Obtains the task status to decide whether to run it immediately or not.
 
@@ -519,7 +519,7 @@ class Parallel(object):
 			assert not self.postponed
 			assert not self.incomplete
 
-	def prio_and_split(self, tasks,):
+	def prio_and_split(self, tasks):
 		"""
 		Label input tasks with priority values, and return a pair containing
 		the tasks that are ready to run and the tasks that are necessarily
@@ -547,7 +547,7 @@ class Parallel(object):
 		groups_done = set()
 		for x in tasks:
 			for k in x.run_after:
-				if isinstance(k, Task.TaskGroup,):
+				if isinstance(k, Task.TaskGroup):
 					if k not in groups_done:
 						groups_done.add(k)
 						for j in k.prev:
@@ -556,8 +556,8 @@ class Parallel(object):
 					reverse[k].add(x)
 
 		# the priority number is not the tree depth
-		def visit(n,):
-			if isinstance(n, Task.TaskGroup,):
+		def visit(n):
+			if isinstance(n, Task.TaskGroup):
 				return sum(visit(k) for k in n.next)
 
 			if n.visited == 0:
@@ -581,7 +581,7 @@ class Parallel(object):
 			try:
 				visit(x)
 			except Errors.WafError:
-				self.debug_cycles(tasks, reverse,)
+				self.debug_cycles(tasks, reverse)
 
 		ready = []
 		waiting = []
@@ -594,20 +594,20 @@ class Parallel(object):
 				ready.append(x)
 		return (ready, waiting)
 
-	def debug_cycles(self, tasks, reverse,):
+	def debug_cycles(self, tasks, reverse):
 		tmp = {}
 		for x in tasks:
 			tmp[x] = 0
 
-		def visit(n, acc,):
-			if isinstance(n, Task.TaskGroup,):
+		def visit(n, acc):
+			if isinstance(n, Task.TaskGroup):
 				for k in n.next:
-					visit(k, acc,)
+					visit(k, acc)
 				return
 			if tmp[n] == 0:
 				tmp[n] = 1
-				for k in reverse.get(n, [],):
-					visit(k, [n] + acc,)
+				for k in reverse.get(n, []):
+					visit(k, [n] + acc)
 				tmp[n] = 2
 			elif tmp[n] == 1:
 				lst = []
@@ -618,5 +618,5 @@ class Parallel(object):
 						break
 				raise Errors.WafError('Task dependency cycle in "run_after" constraints: %s' % ''.join(lst))
 		for x in tasks:
-			visit(x, [],)
+			visit(x, [])
 

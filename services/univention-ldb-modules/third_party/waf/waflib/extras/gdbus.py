@@ -23,7 +23,7 @@ from waflib import Task, Errors, Utils
 from waflib.TaskGen import taskgen_method, before_method
 
 @taskgen_method
-def add_gdbus_file(self, filename, prefix, namespace, export=False,):
+def add_gdbus_file(self, filename, prefix, namespace, export=False):
 	"""
 	Adds a dbus file to the list of dbus files to process. Store them in the attribute *dbus_lst*.
 	:param filename: xml file to compile
@@ -35,7 +35,7 @@ def add_gdbus_file(self, filename, prefix, namespace, export=False,):
 	:param export: Export Headers?
 	:type export: boolean
 	"""
-	if not hasattr(self, 'gdbus_lst',):
+	if not hasattr(self, 'gdbus_lst'):
 		self.gdbus_lst = []
 	if not 'process_gdbus' in self.meths:
 		self.meths.append('process_gdbus')
@@ -49,13 +49,13 @@ def process_gdbus(self):
 	output_node = self.path.get_bld().make_node(['gdbus', self.get_name()])
 	sources = []
 
-	for filename, prefix, namespace, export in getattr(self, 'gdbus_lst', [],):
+	for filename, prefix, namespace, export in getattr(self, 'gdbus_lst', []):
 		node = self.path.find_resource(filename)
 		if not node:
 			raise Errors.WafError('file not found ' + filename)
 		c_file = output_node.find_or_declare(node.change_ext('.c').name)
 		h_file = output_node.find_or_declare(node.change_ext('.h').name)
-		tsk = self.create_task('gdbus_binding_tool', node, [c_file, h_file],)
+		tsk = self.create_task('gdbus_binding_tool', node, [c_file, h_file])
 		tsk.cwd = output_node.abspath()
 
 		tsk.env.GDBUS_CODEGEN_INTERFACE_PREFIX = prefix
@@ -66,9 +66,9 @@ def process_gdbus(self):
 	if sources:
 		output_node.mkdir()
 		self.source = Utils.to_list(self.source) + sources
-		self.includes = [output_node] + self.to_incnodes(getattr(self, 'includes', [],))
+		self.includes = [output_node] + self.to_incnodes(getattr(self, 'includes', []))
 		if export:
-			self.export_includes = [output_node] + self.to_incnodes(getattr(self, 'export_includes', [],))
+			self.export_includes = [output_node] + self.to_incnodes(getattr(self, 'export_includes', []))
 
 class gdbus_binding_tool(Task.Task):
 	"""
@@ -79,9 +79,9 @@ class gdbus_binding_tool(Task.Task):
 	run_str = '${GDBUS_CODEGEN} --interface-prefix ${GDBUS_CODEGEN_INTERFACE_PREFIX} --generate-c-code ${GDBUS_CODEGEN_OUTPUT} --c-namespace ${GDBUS_CODEGEN_NAMESPACE} --c-generate-object-manager ${SRC[0].abspath()}'
 	shell = True
 
-def configure(conf,):
+def configure(conf):
 	"""
 	Detects the program gdbus-codegen and sets ``conf.env.GDBUS_CODEGEN``
 	"""
-	conf.find_program('gdbus-codegen', var='GDBUS_CODEGEN',)
+	conf.find_program('gdbus-codegen', var='GDBUS_CODEGEN')
 

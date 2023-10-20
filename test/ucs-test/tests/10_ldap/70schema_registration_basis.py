@@ -59,9 +59,9 @@ attributetype ( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFre
 ''' % {'attribute_id': attribute_id}
 
 package = DebianPackage(name=package_name)
-package.create_join_script_from_buffer(join_script_name, joinscript_buffer,)
-package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer,)
-package.create_usr_share_file_from_buffer(schema_name, schema_buffer,)
+package.create_join_script_from_buffer(join_script_name, joinscript_buffer)
+package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer)
+package.create_usr_share_file_from_buffer(schema_name, schema_buffer)
 package.build()
 
 package.install()
@@ -82,7 +82,7 @@ try:
         fail('The attribute was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
 
     if ucr.get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
-        schema_file = os.path.join('/var/lib/univention-ldap/local-schema/', schema_name,)
+        schema_file = os.path.join('/var/lib/univention-ldap/local-schema/', schema_name)
         if not os.path.exists(schema_file):
             fail('The schema file was not found: %s' % schema_file)
 finally:

@@ -8,14 +8,14 @@ class PhaseRestartAllInterfaces(Phase):
     priority = 50
 
     def pre(self) -> None:
-        super(PhaseRestartAllInterfaces, self,).pre()
+        super(PhaseRestartAllInterfaces, self).pre()
         self.call(["ifdown", "--all", "--exclude", "lo"])
 
     def post(self) -> None:
-        super(PhaseRestartAllInterfaces, self,).post()
+        super(PhaseRestartAllInterfaces, self).post()
         self.call(["ifup", "--all"])
 
-    def _stop_old_interfaces(self, config: Interfaces,) -> None:  # FIXME: unused
+    def _stop_old_interfaces(self, config: Interfaces) -> None:  # FIXME: unused
         interfaces = [
             iface.name
             for _name, iface in config.all_interfaces
@@ -25,7 +25,7 @@ class PhaseRestartAllInterfaces(Phase):
             interfaces.reverse()
             self.call(["ifdown"] + interfaces)
 
-    def _start_new_interfaces(self, config: Interfaces,) -> None:  # FIXME: unused
+    def _start_new_interfaces(self, config: Interfaces) -> None:  # FIXME: unused
         interfaces = [
             iface.name
             for _name, iface in config.all_interfaces
@@ -35,7 +35,7 @@ class PhaseRestartAllInterfaces(Phase):
             self.call(["ifup"] + interfaces)
 
     @staticmethod
-    def _is_auto(iface: _Iface,) -> bool:
+    def _is_auto(iface: _Iface) -> bool:
         if iface.type in ("dhcp", "manual"):
             return True
         if not iface.start:

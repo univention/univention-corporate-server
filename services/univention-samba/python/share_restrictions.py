@@ -62,18 +62,18 @@ class Restrictions(dict):
     HOSTS_DENY = 'hosts deny'
     HOSTS_ALLOW = 'hosts allow'
 
-    def __init__(self, name,):
+    def __init__(self, name):
         dict.__init__(self, {
             Restrictions.INVALID_USERS: None,
             Restrictions.VALID_USERS: None,
             Restrictions.HOSTS_DENY: None,
             Restrictions.HOSTS_ALLOW: None,
-        },)
+        })
         self.name = name
         self.ucr = False
 
-    def _add(self, key, value,):
-        if not isinstance(value, (tuple, list, set),):
+    def _add(self, key, value):
+        if not isinstance(value, (tuple, list, set)):
             value = [value]
         value = ['"%s"' % x if ' ' in x else x for x in value]
         if self[key] is None:
@@ -86,32 +86,32 @@ class Restrictions(dict):
         return self[Restrictions.INVALID_USERS]
 
     @invalid_users.setter
-    def invalid_users(self, value,):
-        self._add(Restrictions.INVALID_USERS, value,)
+    def invalid_users(self, value):
+        self._add(Restrictions.INVALID_USERS, value)
 
     @property
     def valid_users(self):
         return self[Restrictions.VALID_USERS]
 
     @valid_users.setter
-    def valid_users(self, value,):
-        self._add(Restrictions.VALID_USERS, value,)
+    def valid_users(self, value):
+        self._add(Restrictions.VALID_USERS, value)
 
     @property
     def hosts_deny(self):
         return self[Restrictions.HOSTS_DENY]
 
     @hosts_deny.setter
-    def hosts_deny(self, value,):
-        self._add(Restrictions.HOSTS_DENY, value,)
+    def hosts_deny(self, value):
+        self._add(Restrictions.HOSTS_DENY, value)
 
     @property
     def hosts_allow(self):
         return self[Restrictions.HOSTS_ALLOW]
 
     @hosts_allow.setter
-    def hosts_allow(self, value,):
-        self._add(Restrictions.HOSTS_ALLOW, value,)
+    def hosts_allow(self, value):
+        self._add(Restrictions.HOSTS_ALLOW, value)
 
 
 class Share(Restrictions):
@@ -120,8 +120,8 @@ class Share(Restrictions):
 
 class Printer(Restrictions):
 
-    def __init__(self, name,):
-        Restrictions.__init__(self, name,)
+    def __init__(self, name):
+        Restrictions.__init__(self, name)
         self['smbname'] = None
 
     @property
@@ -129,7 +129,7 @@ class Printer(Restrictions):
         return self['smbname']
 
     @smbname.setter
-    def smbname(self, name,):
+    def smbname(self, name):
         self['smbname'] = name
 
 
@@ -158,7 +158,7 @@ class ShareConfiguration(object):
             os.remove(ShareConfiguration.GLOBAL_CONF)
 
         for item in os.listdir(ShareConfiguration.SHARES_DIR):
-            filename = os.path.join(ShareConfiguration.SHARES_DIR, item,)
+            filename = os.path.join(ShareConfiguration.SHARES_DIR, item)
             if os.path.isfile(filename) and filename.endswith(ShareConfiguration.POSTFIX):
                 os.remove(filename)
 
@@ -168,7 +168,7 @@ class ShareConfiguration(object):
             return
 
         for filename in os.listdir(ShareConfiguration.SHARES_UDM_DIR):
-            filename = os.path.join(ShareConfiguration.SHARES_UDM_DIR, filename,)
+            filename = os.path.join(ShareConfiguration.SHARES_UDM_DIR, filename)
             cfg = ConfigParser()
             cfg.read(filename)
             try:
@@ -176,10 +176,10 @@ class ShareConfiguration(object):
             except IndexError:
                 continue
 
-            if cfg.has_option(share.name, Restrictions.INVALID_USERS,):
-                share.invalid_users = shlex.split(cfg.get(share.name, Restrictions.INVALID_USERS,))
-            if cfg.has_option(share.name, Restrictions.HOSTS_DENY,):
-                share.hosts_deny = shlex.split(cfg.get(share.name, Restrictions.HOSTS_DENY,))
+            if cfg.has_option(share.name, Restrictions.INVALID_USERS):
+                share.invalid_users = shlex.split(cfg.get(share.name, Restrictions.INVALID_USERS))
+            if cfg.has_option(share.name, Restrictions.HOSTS_DENY):
+                share.hosts_deny = shlex.split(cfg.get(share.name, Restrictions.HOSTS_DENY))
 
             self._shares[share.name] = share
 
@@ -203,7 +203,7 @@ class ShareConfiguration(object):
 
         for filename in os.listdir(ShareConfiguration.PRINTERS_UDM_DIR):
             cfg = ConfigParser()
-            cfg.read(os.path.join(ShareConfiguration.PRINTERS_UDM_DIR, filename,))
+            cfg.read(os.path.join(ShareConfiguration.PRINTERS_UDM_DIR, filename))
             try:
                 prt_name = cfg.sections()[0]
             except IndexError:
@@ -213,8 +213,8 @@ class ShareConfiguration(object):
             if prt_name in self._printers:
                 prt = self._printers[prt_name]
             else:
-                if cfg.has_option(prt_name, 'printer name',):
-                    cups_name = cfg.get(prt_name, 'printer name',)
+                if cfg.has_option(prt_name, 'printer name'):
+                    cups_name = cfg.get(prt_name, 'printer name')
                     if cups_name in self._printers:
                         prt = self._printers[cups_name]
                         prt.smbname = prt_name
@@ -222,14 +222,14 @@ class ShareConfiguration(object):
             if prt is None:
                 continue
 
-            if cfg.has_option(prt_name, Restrictions.INVALID_USERS,):
-                prt.invalid_users = shlex.split(cfg.get(prt_name, Restrictions.INVALID_USERS,))
-            if cfg.has_option(prt_name, Restrictions.VALID_USERS,):
-                prt.valid_users = shlex.split(cfg.get(prt_name, Restrictions.VALID_USERS,))
-            if cfg.has_option(prt_name, Restrictions.HOSTS_DENY,):
-                prt.hosts_deny = shlex.split(cfg.get(prt_name, Restrictions.HOSTS_DENY,))
+            if cfg.has_option(prt_name, Restrictions.INVALID_USERS):
+                prt.invalid_users = shlex.split(cfg.get(prt_name, Restrictions.INVALID_USERS))
+            if cfg.has_option(prt_name, Restrictions.VALID_USERS):
+                prt.valid_users = shlex.split(cfg.get(prt_name, Restrictions.VALID_USERS))
+            if cfg.has_option(prt_name, Restrictions.HOSTS_DENY):
+                prt.hosts_deny = shlex.split(cfg.get(prt_name, Restrictions.HOSTS_DENY))
 
-    def _set_invalids(self, value, share, group,):
+    def _set_invalids(self, value, share, group):
         if share and group and value.lower() in ('true', 'yes', '1'):
             if share not in self._shares:
                 self._shares[share] = Share(share)
@@ -237,14 +237,14 @@ class ShareConfiguration(object):
             self._shares[share].ucr = True
             self._shares[share].invalid_users = '@' + group
 
-    def _set_denied_hosts(self, value, share,):
+    def _set_denied_hosts(self, value, share):
         if share not in self._shares:
             self._shares[share] = Share(share)
 
         self._shares[share].ucr = True
         self._shares[share].hosts_deny = shlex.split(value)
 
-    def _set_printmode_group(self, mode, group,):
+    def _set_printmode_group(self, mode, group):
         if mode not in ('none', 'all'):
             return
 
@@ -256,7 +256,7 @@ class ShareConfiguration(object):
             else:
                 prt.valid_users = group
 
-    def _set_printmode_hosts(self, hosts, mode,):
+    def _set_printmode_hosts(self, hosts, mode):
         if mode not in ('none', 'all'):
             return
 
@@ -268,7 +268,7 @@ class ShareConfiguration(object):
             else:
                 prt.hosts_allow = hosts
 
-    def _set_othershares(self, value, group,):
+    def _set_othershares(self, value, group):
         """
         append group to invalid users for all shares, except shares
         group (the groupname) and marktplatz
@@ -283,7 +283,7 @@ class ShareConfiguration(object):
             share.invalid_users = '@' + group
             share.ucr = True
 
-    def _set_othershares_hosts(self, value,):
+    def _set_othershares_hosts(self, value):
         if not value:
             return
 
@@ -294,12 +294,12 @@ class ShareConfiguration(object):
             share.ucr = True
 
     # set global options to -> globals
-    def _set_globals(self, value, option,):
+    def _set_globals(self, value, option):
         if option and value:
             self._globals[option] = value
 
     # set share options to -> shares
-    def _set_options(self, value, share, option,):
+    def _set_options(self, value, share, option):
         if share and option and value:
             if share not in self._shares:
                 return
@@ -325,7 +325,7 @@ class ShareConfiguration(object):
             for regex, func in _map.values():
                 match = regex.match(key)
                 if match:
-                    func(ucr[key], *match.groups(),)
+                    func(ucr[key], *match.groups())
 
     def read(self):
         # get available cups samba printers and valid/invalid users
@@ -344,7 +344,7 @@ class ShareConfiguration(object):
 
         # write conf file with global options
         if self.globals:
-            with open(ShareConfiguration.GLOBAL_CONF, 'w',) as fd:
+            with open(ShareConfiguration.GLOBAL_CONF, 'w') as fd:
                 fd.write("[global]\n")
                 fd.write(''.join('%s = %s\n' % item for item in self.globals.items()))
 
@@ -355,8 +355,8 @@ class ShareConfiguration(object):
             # write share conf only if we have ucr settings
             if not share.ucr:
                 continue
-            share_filename = os.path.join(ShareConfiguration.SHARES_DIR, quote(share.name, safe='',) + ShareConfiguration.POSTFIX,)
-            with open(share_filename, "w",) as fd:
+            share_filename = os.path.join(ShareConfiguration.SHARES_DIR, quote(share.name, safe='') + ShareConfiguration.POSTFIX)
+            with open(share_filename, "w") as fd:
                 fd.write("[" + share.name + "]\n")
                 for option in share:
                     if share[option] is None:
@@ -372,10 +372,10 @@ class ShareConfiguration(object):
             if not prt.ucr:
                 continue
 
-            filename = os.path.join(ShareConfiguration.SHARES_DIR, ShareConfiguration.PREFIX + prt.name + ShareConfiguration.POSTFIX,)
+            filename = os.path.join(ShareConfiguration.SHARES_DIR, ShareConfiguration.PREFIX + prt.name + ShareConfiguration.POSTFIX)
             includes.add('include = %s' % filename)
 
-            with open(filename, 'w',) as fd:
+            with open(filename, 'w') as fd:
                 if not prt.smbname:
                     fd.write('[%s]\n' % prt.name)
                 else:
@@ -392,7 +392,7 @@ class ShareConfiguration(object):
                         fd.write('\n')
 
         # all include statements go to this file (create file een if there is no include
-        with open(ShareConfiguration.INCLUDE_CONF, 'w',) as f:
+        with open(ShareConfiguration.INCLUDE_CONF, 'w') as f:
             f.write('\n'.join(includes) + '\n')
 
     @property

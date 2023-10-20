@@ -161,7 +161,7 @@ univention_feedback = True
 univention_pdf_show_source_license = True
 
 
-def adapt_settings_to_translation(app, config,):
+def adapt_settings_to_translation(app, config):
     """
     Sets the document title correctly according to the target language.
 
@@ -179,7 +179,8 @@ def adapt_settings_to_translation(app, config,):
 """
 
 
-def setup(app,):
+def setup(app):
     app.connect(
         "config-inited",
-        adapt_settings_to_translation,)
+        adapt_settings_to_translation,
+    )

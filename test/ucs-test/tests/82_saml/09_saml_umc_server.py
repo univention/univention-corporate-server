@@ -17,10 +17,10 @@ import samltest
 
 def __get_samlSession():
     account = utils.UCSTestDomainAdminCredentials()
-    return samltest.SamlTest(account.username, account.bindpw,)
+    return samltest.SamlTest(account.username, account.bindpw)
 
 
-def __test_umc_sp(samlSession, test_function,):
+def __test_umc_sp(samlSession, test_function):
     samlSession.login_with_new_session_at_IdP()
     test_function()
     samlSession.logout_at_IdP()
@@ -36,7 +36,7 @@ def test_umc_server():
 
     samlSession = __get_samlSession()
     try:
-        __test_umc_sp(samlSession, assert_module_testing,)
+        __test_umc_sp(samlSession, assert_module_testing)
     except samltest.SamlError:
         if samlSession.page.status_code == 503:
             pass
@@ -49,7 +49,7 @@ def test_umc_server():
         time.sleep(3)  # umc-server is not ready immediately
 
     samlSession = __get_samlSession()
-    __test_umc_sp(samlSession, samlSession.test_umc_server,)
+    __test_umc_sp(samlSession, samlSession.test_umc_server)
 
 
 def test_umc_ldap_con():
@@ -61,7 +61,7 @@ def test_umc_ldap_con():
 
     try:
         samlSession = __get_samlSession()
-        __test_umc_sp(samlSession, assert_slapd_testing,)
+        __test_umc_sp(samlSession, assert_slapd_testing)
     except samltest.SamlError:
         if samlSession.page.status_code == 503:
             pass
@@ -74,4 +74,4 @@ def test_umc_ldap_con():
 
     for _ in range(2):
         samlSession = __get_samlSession()
-        __test_umc_sp(samlSession, samlSession.test_slapd,)
+        __test_umc_sp(samlSession, samlSession.test_slapd)

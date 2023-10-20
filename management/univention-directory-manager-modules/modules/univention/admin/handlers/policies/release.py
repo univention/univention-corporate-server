@@ -71,7 +71,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyUpdate'],),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyUpdate'],
+    ),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -81,15 +82,18 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'activate': univention.admin.property(
         short_description=_('Activate release updates (Errata updates are activated by default).'),
         long_description='',
-        syntax=univention.admin.syntax.TrueFalseUp,),
+        syntax=univention.admin.syntax.TrueFalseUp,
+    ),
     'releaseVersion': univention.admin.property(
         short_description=_('Update to this UCS version'),
         long_description=_('Without specifying the most recent version will be used'),
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
 
 }, **dict([
     requiredObjectClassesProperty(),
@@ -97,7 +101,7 @@ property_descriptions = dict({
     fixedAttributesProperty(syntax=releaseFixedAttributes),
     emptyAttributesProperty(syntax=releaseFixedAttributes),
     ldapFilterProperty(),
-]),)
+]))
 
 layout = [
     Tab(_('General'), _('Automatic updates'), layout=[
@@ -105,15 +109,15 @@ layout = [
             'name',
             'activate',
             'releaseVersion',
-        ],),
-    ],),
+        ]),
+    ]),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('releaseVersion', 'univentionUpdateVersion', None, univention.admin.mapping.ListToString,)
-mapping.register('activate', 'univentionUpdateActivate', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('releaseVersion', 'univentionUpdateVersion', None, univention.admin.mapping.ListToString)
+mapping.register('activate', 'univentionUpdateActivate', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
 
 

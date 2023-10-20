@@ -41,15 +41,15 @@ from configparser import ConfigParser
 
 class Config(ConfigParser):
 
-    def __init__(self, filename='/etc/univention/directory/reports/config.ini',):
+    def __init__(self, filename='/etc/univention/directory/reports/config.ini'):
         ConfigParser.__init__(self)
         self._filename = filename
         self.read(filename)
         defaults = self.defaults()
-        self._oldHeader = defaults.get('header', None,)
-        self._oldFooter = defaults.get('footer', None,)
-        self.default_report_name = defaults.get('report', None,)
-        self.default_report_dir = defaults.get('output_dir', None,)
+        self._oldHeader = defaults.get('header', None)
+        self._oldFooter = defaults.get('footer', None)
+        self.default_report_name = defaults.get('report', None)
+        self.default_report_dir = defaults.get('output_dir', None)
         self._reports = {}
 
         # get the language, defaults to English if nothing is set
@@ -67,7 +67,7 @@ class Config(ConfigParser):
             tmpList = shlex.split(value)
             if len(tmpList) == 3:
                 # old format, insert empty string for 'directory'
-                tmpList.insert(2, '',)
+                tmpList.insert(2, '')
             if len(tmpList) != 4:
                 # wrong format
                 continue
@@ -79,7 +79,7 @@ class Config(ConfigParser):
             else:
                 self._reports[module] = [(name, dir, filename)]
 
-    def _get_report_entry(self, module, name=None,):
+    def _get_report_entry(self, module, name=None):
         """Find the correct internal report entry for a given a module and a report name."""
         # return None for non-existent module
         if module not in self._reports:
@@ -94,7 +94,7 @@ class Config(ConfigParser):
         # if anything fails, return None
         return None
 
-    def _guess_path(self, directory, fileName, alternativePath='',):
+    def _guess_path(self, directory, fileName, alternativePath=''):
         """
         Guess the correct path for a given template file. Possible paths:
         (1) directory/<language>/fileName
@@ -106,10 +106,10 @@ class Config(ConfigParser):
 
         # if the directory path is non-empty, this is how it should be, our first guess
         if directory:
-            guessedPaths.append(os.path.join(directory, self._lang, fileName,))
+            guessedPaths.append(os.path.join(directory, self._lang, fileName))
         # in case there is no language directory, our second guess
         # (works also for empty directory)
-        guessedPaths.append(os.path.join(directory, fileName,))
+        guessedPaths.append(os.path.join(directory, fileName))
         # if given, our last guess is the alternative path
         if alternativePath:
             guessedPaths.append(alternativePath)
@@ -121,27 +121,27 @@ class Config(ConfigParser):
                 return path
         return None
 
-    def get_header(self, module, name=None, suffix='.tex',):
-        report = self._get_report_entry(module, name,)
+    def get_header(self, module, name=None, suffix='.tex'):
+        report = self._get_report_entry(module, name)
         if not report:
             return None
-        return self._guess_path(report[1], 'header%s' % (suffix,), self._oldHeader,)
+        return self._guess_path(report[1], 'header%s' % (suffix,), self._oldHeader)
 
-    def get_footer(self, module, name=None, suffix='.tex',):
-        report = self._get_report_entry(module, name,)
+    def get_footer(self, module, name=None, suffix='.tex'):
+        report = self._get_report_entry(module, name)
         if not report:
             return None
-        return self._guess_path(report[1], 'footer%s' % (suffix,), self._oldFooter,)
+        return self._guess_path(report[1], 'footer%s' % (suffix,), self._oldFooter)
 
-    def get_report_names(self, module,):
-        reports = self._reports.get(module, [],)
+    def get_report_names(self, module):
+        reports = self._reports.get(module, [])
         return [item[0] for item in reports]
 
-    def get_report(self, module, name=None,):
-        report = self._get_report_entry(module, name,)
+    def get_report(self, module, name=None):
+        report = self._get_report_entry(module, name)
         if not report:
             return None
-        return self._guess_path(report[1], report[2],)
+        return self._guess_path(report[1], report[2])
 
     def get_output_dir(self):
         if self.default_report_dir and os.path.exists(self.default_report_dir):

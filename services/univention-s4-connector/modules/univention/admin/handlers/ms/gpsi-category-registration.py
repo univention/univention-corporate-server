@@ -51,7 +51,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['categoryRegistration', 'leaf'],),
+        objectClasses=['categoryRegistration', 'leaf'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -59,29 +60,35 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'managedBy': univention.admin.property(
         short_description=_('managed by'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'localizedDescription': univention.admin.property(
         short_description=_('localized description'),
         long_description='',
         multivalue=True,
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'localeID': univention.admin.property(
         short_description=_('locale ID'),
         long_description='',
         multivalue=True,
-        syntax=univention.admin.syntax.integer,),
+        syntax=univention.admin.syntax.integer,
+    ),
     'categoryId': univention.admin.property(
         short_description=_('category ID'),
         long_description='',
-        syntax=univention.admin.syntax.TextArea,),
+        syntax=univention.admin.syntax.TextArea,
+    ),
 }
 
 layout = [
@@ -92,17 +99,17 @@ layout = [
             'localizedDescription',
             'localeID',
             'categoryId',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
-mapping.register('managedBy', 'managedBy', None, univention.admin.mapping.ListToString,)
-mapping.register('localizedDescription', 'localizedDescription',)
-mapping.register('localeID', 'localeID',)
-mapping.register('categoryId', 'categoryId', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.register('managedBy', 'managedBy', None, univention.admin.mapping.ListToString)
+mapping.register('localizedDescription', 'localizedDescription')
+mapping.register('localeID', 'localeID')
+mapping.register('categoryId', 'categoryId', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 
 
 class object(univention.admin.handlers.simpleLdap):

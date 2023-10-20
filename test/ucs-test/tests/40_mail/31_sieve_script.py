@@ -16,7 +16,7 @@ from univention.testing import utils
 from essential.mail import check_delivery, send_mail
 
 
-def sieve_test(mail, expected_output,):
+def sieve_test(mail, expected_output):
     """Calls sieve-test"""
     cmd = [
         "sieve-connect",
@@ -26,11 +26,11 @@ def sieve_test(mail, expected_output,):
         "--remotesieve", "default",
         "--list",
     ]
-    print('**', cmd,)
-    pop = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,)
+    print('**', cmd)
+    pop = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     out, err = pop.communicate(input=b'univention\n')
     if expected_output.encode('UTF-8') not in out:
-        utils.fail(out, err,)
+        utils.fail(out, err)
 
 
 def main():
@@ -50,10 +50,10 @@ def main():
                 },
             )
 
-            sieve_test(usermail, '"default" ACTIVE',)
+            sieve_test(usermail, '"default" ACTIVE')
             token = str(time.time())
-            send_mail(recipients=usermail, msg=token, gtube=True,)
-            check_delivery(token, recipient_email=usermail, should_be_delivered=True, spam=True,)
+            send_mail(recipients=usermail, msg=token, gtube=True)
+            check_delivery(token, recipient_email=usermail, should_be_delivered=True, spam=True)
 
             handler_set(['mail/dovecot/sieve/spam=false'])
             utils.restart_listener()
@@ -65,10 +65,10 @@ def main():
                     'mailPrimaryAddress': usermail,
                 },
             )
-            sieve_test(usermail, '',)
+            sieve_test(usermail, '')
             token = str(time.time())
-            send_mail(recipients=usermail, msg=token, gtube=True,)
-            check_delivery(token, recipient_email=usermail, should_be_delivered=False, spam=True,)
+            send_mail(recipients=usermail, msg=token, gtube=True)
+            check_delivery(token, recipient_email=usermail, should_be_delivered=False, spam=True)
 
 
 if __name__ == '__main__':

@@ -34,5 +34,5 @@
 import doctest
 
 
-def test_docstrings(listenerSharePath,):
+def test_docstrings(listenerSharePath):
     assert doctest.testmod(listenerSharePath)

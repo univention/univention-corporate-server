@@ -56,7 +56,7 @@ def load():
 load.never_loaded = True
 
 
-def fetch(key,):
+def fetch(key):
     if load.never_loaded:
         load()
     return _DB[key]

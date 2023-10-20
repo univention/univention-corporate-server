@@ -72,7 +72,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpDns'],),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyDhcpDns'],
+    ),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -82,39 +83,42 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'domain_name': univention.admin.property(
         short_description=_('Domain name'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'domain_name_servers': univention.admin.property(
         short_description=_('Domain name servers'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        multivalue=True,),
+        multivalue=True,
+    ),
 }, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
     fixedAttributesProperty(syntax=dhcp_dnsFixedAttributes),
     emptyAttributesProperty(syntax=dhcp_dnsFixedAttributes),
     ldapFilterProperty(),
-]),)
+]))
 
 layout = [
     Tab(_('General'), _('Basic DNS settings'), layout=[
         Group(_('General DHCP DNS settings'), layout=[
             'name',
             ['domain_name', 'domain_name_servers'],
-        ],),
-    ],),
+        ]),
+    ]),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('domain_name', 'univentionDhcpDomainName', None, univention.admin.mapping.ListToString,)
-mapping.register('domain_name_servers', 'univentionDhcpDomainNameServers',)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('domain_name', 'univentionDhcpDomainName', None, univention.admin.mapping.ListToString)
+mapping.register('domain_name_servers', 'univentionDhcpDomainNameServers')
 register_policy_mapping(mapping)
 
 

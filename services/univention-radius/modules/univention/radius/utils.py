@@ -34,17 +34,17 @@
 # <https://www.gnu.org/licenses/>.
 
 
-def decode_stationId(stationId,):
+def decode_stationId(stationId):
     # type: (str) -> str
     norm = "".join(c for c in stationId.lower() if c in "0123456789abcdef")
-    return ":".join(norm[i:i + 2] for i in range(0, 12, 2,))
+    return ":".join(norm[i:i + 2] for i in range(0, 12, 2))
 
 
-def parse_username(username,):
+def parse_username(username):
     # type: (str) -> str
     """convert username from host/-format to $-format if required"""
     if not username.startswith('host/'):
         return username
-    username = username.split('/', 1,)[1]  # remove host/
-    username = username.split('.', 1,)[0]  # remove right of '.'
+    username = username.split('/', 1)[1]  # remove host/
+    username = username.split('.', 1)[0]  # remove right of '.'
     return username + '$'

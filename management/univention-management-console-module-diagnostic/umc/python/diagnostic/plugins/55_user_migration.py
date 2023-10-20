@@ -48,25 +48,25 @@ description = '\n'.join([
 run_descr = ['Checks user objects exist which are not migrated by using %s --check' % (SCRIPT,)]
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     if ucr.get('server/role') != 'domaincontroller_master':
         return
 
-    process = Popen([SCRIPT, '--check'], stderr=STDOUT, stdout=PIPE,)
+    process = Popen([SCRIPT, '--check'], stderr=STDOUT, stdout=PIPE)
     stdout_, stderr = process.communicate()
-    stdout = stdout_.decode('UTF-8', 'replace',)
+    stdout = stdout_.decode('UTF-8', 'replace')
     if process.returncode:
         MODULE.error(description + stdout)
         raise Critical(description + stdout, buttons=[{
             'action': 'migrate_users',
             'label': _('Migrate user objects'),
-        }],)
+        }])
 
 
-def migrate_users(_umc_instance: Instance,) -> None:
-    process = Popen([SCRIPT], stderr=STDOUT, stdout=PIPE,)
+def migrate_users(_umc_instance: Instance) -> None:
+    process = Popen([SCRIPT], stderr=STDOUT, stdout=PIPE)
     stdout_, stderr = process.communicate()
-    stdout = stdout_.decode('UTF-8', 'replace',)
+    stdout = stdout_.decode('UTF-8', 'replace')
     if process.returncode:
         MODULE.error('Error running univention-migrate-users-to-ucs4.3:\n%s' % (stdout,))
         raise Critical(_('The migration failed: %s') % (stdout,))

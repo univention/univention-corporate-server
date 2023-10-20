@@ -59,31 +59,31 @@ PXEBASE = '/var/lib/univention-client-boot/pxelinux.cfg'
 FQDN = '%(hostname)s.%(domainname)s' % listener.configRegistry
 URLBASE = listener.configRegistry.get(
     'pxe/installer/profiles',
-    'http://%s/univention-client-boot/preseed/' % (FQDN,),)
+    'http://%s/univention-client-boot/preseed/' % (FQDN,))
 
 
-def ip_to_hex(ip: str,) -> str:
+def ip_to_hex(ip: str) -> str:
     o = ip.split('.')
     if len(o) != 4:
         return ''
     return ''.join('%02X' % int(_) for _ in o)
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
     listener.configRegistry.load()
     pxeconfig = gen_pxe(new)
     remove_pxe(old)
     if pxeconfig:
-        create_pxe(new, pxeconfig,)
+        create_pxe(new, pxeconfig)
 
 
-def gen_pxe(new: Dict[str, List[bytes]],) -> str | None:
+def gen_pxe(new: Dict[str, List[bytes]]) -> str | None:
     args = [listener.configRegistry.get('pxe/installer/append')]
     if args[0] is None:
-        profile = new.get('univentionServerInstallationProfile', EMPTY,)[0].decode('UTF-8')
+        profile = new.get('univentionServerInstallationProfile', EMPTY)[0].decode('UTF-8')
         if not profile:
             return
-        url = urljoin(URLBASE, profile,)
+        url = urljoin(URLBASE, profile)
 
         vga = listener.configRegistry.get("pxe/installer/vga")
         args += [
@@ -99,15 +99,15 @@ def gen_pxe(new: Dict[str, List[bytes]],) -> str | None:
         # <https://wiki.debianforum.de/Debian-Installation_%C3%BCber_PXE,_TFTP_und_Preseed>
         args += [
             # Kernel
-            'quiet' if listener.configRegistry.is_true('pxe/installer/quiet', False,) else '',
-            'loglevel=%s' % listener.configRegistry.get('pxe/installer/loglevel', '0',),
+            'quiet' if listener.configRegistry.is_true('pxe/installer/quiet', False) else '',
+            'loglevel=%s' % listener.configRegistry.get('pxe/installer/loglevel', '0'),
             # Debian installer
             'auto-install/enable=true',
             'preseed/url=%s' % (url,),
-            'mirror/http/hostname=%s' % (listener.configRegistry.get("repository/online/server", FQDN,),),
+            'mirror/http/hostname=%s' % (listener.configRegistry.get("repository/online/server", FQDN),),
             # 'DEBCONF_DEBUG=5',
         ]
-    args.append(new.get('univentionServerInstallationOption', EMPTY,)[0].decode('UTF-8'))
+    args.append(new.get('univentionServerInstallationOption', EMPTY)[0].decode('UTF-8'))
     # <http://www.syslinux.org/wiki/index.php/SYSLINUX>: The entire APPEND
     # statement must be on a single line. A feature to break up a long line
     # into multiple lines will be added eventually.
@@ -128,23 +128,23 @@ def gen_pxe(new: Dict[str, List[bytes]],) -> str | None:
             LABEL local
                 LOCALBOOT 0
             ''') % {
-        'kernel': listener.configRegistry.get('pxe/installer/kernel', 'linux',),
-        'initrd': listener.configRegistry.get('pxe/installer/initrd', 'initrd.gz',),
+        'kernel': listener.configRegistry.get('pxe/installer/kernel', 'linux'),
+        'initrd': listener.configRegistry.get('pxe/installer/initrd', 'initrd.gz'),
         'append': append,
-        'ipappend': listener.configRegistry.get('pxe/installer/ipappend', '0',),
+        'ipappend': listener.configRegistry.get('pxe/installer/ipappend', '0'),
     }
 
 
-def remove_pxe(old: Dict[str, List[bytes]],) -> None:
+def remove_pxe(old: Dict[str, List[bytes]]) -> None:
     try:
         basename = ip_to_hex(old['aRecord'][0].decode('ASCII'))
     except LookupError:
         return
     else:
         if not basename:
-            ud.debug(ud.LISTENER, ud.ERROR, 'PXE: invalid old IP address %r' % (old['aRecord'][0],),)
+            ud.debug(ud.LISTENER, ud.ERROR, 'PXE: invalid old IP address %r' % (old['aRecord'][0],))
             return
-        filename = os.path.join(PXEBASE, basename,)
+        filename = os.path.join(PXEBASE, basename)
         listener.setuid(0)
         try:
             if os.path.exists(filename):
@@ -153,24 +153,24 @@ def remove_pxe(old: Dict[str, List[bytes]],) -> None:
             listener.unsetuid()
 
 
-def create_pxe(new: Dict[str, List[bytes]], pxeconfig: str,) -> None:
+def create_pxe(new: Dict[str, List[bytes]], pxeconfig: str) -> None:
     try:
         basename = ip_to_hex(new['aRecord'][0].decode('ASCII'))
     except LookupError:
         return
     else:
         cn = new['cn'][0].decode('UTF-8')
-        ud.debug(ud.LISTENER, ud.INFO, 'PXE: writing configuration for host %s' % cn,)
+        ud.debug(ud.LISTENER, ud.INFO, 'PXE: writing configuration for host %s' % cn)
 
         if not basename:
-            ud.debug(ud.LISTENER, ud.ERROR, 'PXE: invalid new IP address %s' % new['aRecord'][0],)
+            ud.debug(ud.LISTENER, ud.ERROR, 'PXE: invalid new IP address %s' % new['aRecord'][0])
             return
-        filename = os.path.join(PXEBASE, basename,)
+        filename = os.path.join(PXEBASE, basename)
 
-        if new.get('univentionServerReinstall', EMPTY,)[0] == b'1':
+        if new.get('univentionServerReinstall', EMPTY)[0] == b'1':
             listener.setuid(0)
             try:
-                with open(filename, 'w',) as fd:
+                with open(filename, 'w') as fd:
                     fd.write(pxeconfig)
             finally:
                 listener.unsetuid()

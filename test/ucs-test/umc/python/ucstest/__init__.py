@@ -57,7 +57,7 @@ class FakeThread:
 
 
 def joinscript():
-    process = subprocess.Popen(['/bin/sh'], stdin=subprocess.PIPE,)
+    process = subprocess.Popen(['/bin/sh'], stdin=subprocess.PIPE)
     process.communicate(b'''
     . /usr/share/univention-lib/umc.sh
 
@@ -78,7 +78,7 @@ class Instance(Base):
     def respond(self):
         return True
 
-    def norespond(self, request,):
+    def norespond(self, request):
         pass
 
     @simple_response
@@ -87,7 +87,7 @@ class Instance(Base):
 
     @simple_response
     def threaded_traceback(self):
-        def _throw_exception(_1, _2,):
+        def _throw_exception(_1, _2):
             raise ThreadedError()
         return _throw_exception
 
@@ -95,7 +95,7 @@ class Instance(Base):
     def umc_error_traceback(self):
         raise UMC_Error("This is an UMC Error")
 
-    def traceback_as_thread_result(self, request,):
+    def traceback_as_thread_result(self, request):
         # UVMM uses this to pass-through traceback from internal umc calls to the frontend
         result = None
         try:
@@ -104,9 +104,9 @@ class Instance(Base):
             etype, result, _ = sys.exc_info()
             thread = FakeThread()
             thread.exc_info = (etype, result, None)
-        self.thread_finished_callback(thread, result, request,)
+        self.thread_finished_callback(thread, result, request)
 
-    def umc_error_as_thread_result(self, request,):
+    def umc_error_as_thread_result(self, request):
         # UVMM uses this to pass-through traceback from internal umc calls to the frontend
         result = None
         try:
@@ -115,4 +115,4 @@ class Instance(Base):
             etype, result, _ = sys.exc_info()
             thread = FakeThread()
             thread.exc_info = (etype, result, None)
-        self.thread_finished_callback(thread, result, request,)
+        self.thread_finished_callback(thread, result, request)

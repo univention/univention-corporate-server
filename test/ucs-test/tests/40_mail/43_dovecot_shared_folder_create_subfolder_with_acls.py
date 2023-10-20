@@ -45,16 +45,16 @@ def main():
             })
 
         imap = ImapMail()
-        imap.get_connection('localhost', user_addr1, 'univention',)
+        imap.get_connection('localhost', user_addr1, 'univention')
         imap.connection.logout()
         imap = ImapMail()
-        imap.get_connection('localhost', user_addr2, 'univention',)
+        imap.get_connection('localhost', user_addr2, 'univention')
         imap.connection.logout()
 
         token = uts.random_name()
-        send_mail(recipients=[user_addr1, user_addr2], msg=token, subject='Test',)
-        check_delivery(token, user_addr1, True,)
-        check_delivery(token, user_addr2, True,)
+        send_mail(recipients=[user_addr1, user_addr2], msg=token, subject='Test')
+        check_delivery(token, user_addr1, True)
+        check_delivery(token, user_addr2, True)
 
         print('*** OK: mails were received by users')
 
@@ -65,9 +65,10 @@ def main():
                 fqdn,
                 mailAddress=random_email() if with_email else None,
                 user_permission=[
-                    '"{}" "{}"'.format(user_addr1, 'all',),
-                    '"{}" "{}"'.format(user_addr2, 'read',),
-                ],)
+                    '"{}" "{}"'.format(user_addr1, 'all'),
+                    '"{}" "{}"'.format(user_addr2, 'read'),
+                ],
+            )
             utils.wait_for_replication()
 
             folder_path = get_dovecot_shared_folder_maildir(folder_name)
@@ -80,11 +81,11 @@ def main():
             # with user1 still logged in is kept until the subfolder is created.
 
             imap1 = ImapMail()
-            imap1.get_connection('localhost', user_addr1, 'univention',)
+            imap1.get_connection('localhost', user_addr1, 'univention')
             retry = TIMEOUT_MAIL
             while True:
                 try:
-                    imap1.copy('1', 'INBOX', folder_name,)
+                    imap1.copy('1', 'INBOX', folder_name)
                     break
                 except AssertionError as exc:
                     if retry > 0:
@@ -98,29 +99,29 @@ def main():
             print('*** OK: user1 can write to shared folder')
 
             imap = ImapMail()
-            imap.get_connection('localhost', user_addr2, 'univention',)
+            imap.get_connection('localhost', user_addr2, 'univention')
             try:
-                imap.copy('1', 'INBOX', folder_name,)
+                imap.copy('1', 'INBOX', folder_name)
                 utils.fail('User with read-only permission copied message to shared folder.')
             except AssertionError:
                 print('*** OK: user2 cannot write to shared folder')
             imap.connection.logout()
 
-            subfolder_name1 = imap1.create_subfolder(folder_name, uts.random_name(),)
+            subfolder_name1 = imap1.create_subfolder(folder_name, uts.random_name())
             print('*** OK: user1 can create subfolder')
-            imap1.copy('1', 'INBOX', subfolder_name1,)
+            imap1.copy('1', 'INBOX', subfolder_name1)
             print('*** OK: user1 can write to subfolder')
             imap1.connection.logout()
 
             imap = ImapMail()
-            imap.get_connection('localhost', user_addr2, 'univention',)
+            imap.get_connection('localhost', user_addr2, 'univention')
             try:
-                imap.copy('1', 'INBOX', subfolder_name1,)
+                imap.copy('1', 'INBOX', subfolder_name1)
                 utils.fail('User with read-only permission wrote to subfolder created by user1.')
             except AssertionError:
                 print('*** OK: user2 cannot write to subfolder created by user1')
             try:
-                imap.create_subfolder(folder_name, uts.random_name(),)
+                imap.create_subfolder(folder_name, uts.random_name())
                 utils.fail('User with read-only permission created subfolder.')
             except AssertionError:
                 print('*** OK: user2 cannot create subfolder')
@@ -132,7 +133,7 @@ def main():
             imap.connection.logout()
 
             imap = ImapMail()
-            imap.get_connection('localhost', user_addr1, 'univention',)
+            imap.get_connection('localhost', user_addr1, 'univention')
             imap.delete_folder(subfolder_name1)
             print('*** OK: user1 can delete subfolder created by user1.')
             imap.connection.logout()

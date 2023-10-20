@@ -105,34 +105,34 @@ class UCSTestDomainAdminCredentials:
     ''
     """
 
-    def __init__(self, ucr=None,):
+    def __init__(self, ucr=None):
         # type: (Optional[ConfigRegistry]) -> None
         if ucr is None:
             ucr = UCR
             ucr.load()
-        self.binddn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%(ldap/base)s' % ucr,)
+        self.binddn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%(ldap/base)s' % ucr)
         self.pwdfile = ucr.get('tests/domainadmin/pwdfile')
         if self.pwdfile:
             with open(self.pwdfile) as f:
                 self.bindpw = f.read().strip('\n\r')
         else:
-            self.bindpw = ucr.get('tests/domainadmin/pwd', 'univention',)
+            self.bindpw = ucr.get('tests/domainadmin/pwd', 'univention')
         if self.binddn:
-            self.username = uldap.explodeDn(self.binddn, 1,)[0]  # type: Optional[Text]
+            self.username = uldap.explodeDn(self.binddn, 1)[0]  # type: Optional[Text]
         else:
             self.username = None
 
 
-def get_ldap_connection(admin_uldap=False, primary=False,):
+def get_ldap_connection(admin_uldap=False, primary=False):
     # type: (bool, bool) -> access
     ucr = UCR
     ucr.load()
 
     if primary:
-        port = int(ucr.get('ldap/master/port', 7389,))
+        port = int(ucr.get('ldap/master/port', 7389))
         ldap_servers = [ucr['ldap/master']]
     else:
-        port = int(ucr.get('ldap/server/port', 7389,))
+        port = int(ucr.get('ldap/server/port', 7389))
         ldap_servers = []
         if ucr['ldap/server/name']:
             ldap_servers.append(ucr['ldap/server/name'])
@@ -143,7 +143,7 @@ def get_ldap_connection(admin_uldap=False, primary=False,):
 
     for ldap_server in ldap_servers:
         try:
-            lo = uldap.access(host=ldap_server, port=port, base=ucr['ldap/base'], binddn=creds.binddn, bindpw=creds.bindpw, start_tls=2, follow_referral=True,)
+            lo = uldap.access(host=ldap_server, port=port, base=ucr['ldap/base'], binddn=creds.binddn, bindpw=creds.bindpw, start_tls=2, follow_referral=True)
             if admin_uldap:
                 lo = access(lo=lo)
             return lo
@@ -152,7 +152,7 @@ def get_ldap_connection(admin_uldap=False, primary=False,):
     raise ldap.SERVER_DOWN()
 
 
-def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10,):
+def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
     # type: (Callable[..., _T], Tuple[Type[Exception], ...], int, float) -> _T
     """
     This function calls the given function `func`.
@@ -190,7 +190,8 @@ def verify_ldap_object(
         primary=False,  # type: bool
         pre_check=None,  # type: Optional[Callable[..., None]]
         pre_check_kwargs=None,  # type: Optional[Dict[str, Any]]
-        not_expected_attr=None,):  # type: (...) -> None
+        not_expected_attr=None,  # type: Optional[Dict[str, str]]
+):  # type: (...) -> None
     """
     Verify [non]existence and attributes of LDAP object.
 
@@ -215,20 +216,20 @@ def verify_ldap_object(
     """
     ucr = UCR
     ucr.load()
-    retry_count = int(ucr.get("tests/verify_ldap_object/retry_count", retry_count,))
-    delay = int(ucr.get("tests/verify_ldap_object/delay", delay,))
+    retry_count = int(ucr.get("tests/verify_ldap_object/retry_count", retry_count))
+    delay = int(ucr.get("tests/verify_ldap_object/delay", delay))
 
     if pre_check:
         pre_check(**(pre_check_kwargs or {}))
 
     return retry_on_error(
-        functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist, primary, not_expected_attr,),
+        functools.partial(__verify_ldap_object, baseDn, expected_attr, strict, should_exist, primary, not_expected_attr),
         (LDAPUnexpectedObjectFound, LDAPObjectNotFound, LDAPObjectValueMissing, LDAPObjectUnexpectedValue),
         retry_count,
-        delay,)
+        delay)
 
 
-def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, primary=False, not_expected_attr=None,):
+def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, primary=False, not_expected_attr=None):
     # type: (str, Optional[Dict[str, str]], bool, bool, bool, Optional[Dict[str, str]]) -> None
     if expected_attr is None:
         expected_attr = {}
@@ -239,7 +240,8 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
             filter='(objectClass=*)',
             base=baseDn,
             scope=ldap.SCOPE_BASE,
-            attr=set(chain(expected_attr.keys(), not_expected_attr.keys(),)),)[0]
+            attr=set(chain(expected_attr.keys(), not_expected_attr.keys())),
+        )[0]
     except (ldap.NO_SUCH_OBJECT, IndexError):
         if should_exist:
             raise LDAPObjectNotFound('DN: %s' % baseDn)
@@ -251,8 +253,8 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
     values_missing = {}
     unexpected_values = {}
     for attribute, expected_values_ in expected_attr.items():
-        found_values = set(attr.get(attribute, [],))
-        expected_values = {x if isinstance(x, bytes,) else x.encode('UTF-8') for x in expected_values_}
+        found_values = set(attr.get(attribute, []))
+        expected_values = {x if isinstance(x, bytes) else x.encode('UTF-8') for x in expected_values_}
 
         difference = expected_values - found_values
         if difference:
@@ -266,8 +268,8 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
     for attribute, not_expected_values_ in not_expected_attr.items():
         if strict and attribute in expected_attr.keys():
             continue
-        found_values = set(attr.get(attribute, [],))
-        not_expected_values = {x if isinstance(x, bytes,) else x.encode('UTF-8') for x in not_expected_values_}
+        found_values = set(attr.get(attribute, []))
+        not_expected_values = {x if isinstance(x, bytes) else x.encode('UTF-8') for x in not_expected_values_}
         intersection = found_values.intersection(not_expected_values)
         if intersection:
             unexpected_values[attribute] = intersection
@@ -279,8 +281,8 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
             "%s: %r, %s %s" % (
                 attribute,
                 attr.get(attribute),
-                ('missing: %r;' % "', ".join(x.decode('UTF-8', 'replace',) for x in difference_missing)) if difference_missing else '',
-                ('unexpected: %r' % "', ".join(x.decode('UTF-8', 'replace',) for x in difference_unexpected)) if difference_unexpected else '',
+                ('missing: %r;' % "', ".join(x.decode('UTF-8', 'replace') for x in difference_missing)) if difference_missing else '',
+                ('unexpected: %r' % "', ".join(x.decode('UTF-8', 'replace') for x in difference_unexpected)) if difference_unexpected else '',
             ) for attribute, (difference_missing, difference_unexpected) in mixed.items()),
     )
 
@@ -295,14 +297,15 @@ def s4connector_present():
     ucr = ConfigRegistry()
     ucr.load()
 
-    if ucr.is_true('directory/manager/samba3/legacy', False,):
+    if ucr.is_true('directory/manager/samba3/legacy', False):
         return False
-    if ucr.is_false('directory/manager/samba3/legacy', False,):
+    if ucr.is_false('directory/manager/samba3/legacy', False):
         return True
 
     for _dn, attr in get_ldap_connection().search(
             filter='(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))',
-            attr=['aRecord'],):
+            attr=['aRecord'],
+    ):
         if 'aRecord' in attr:
             return True
     return False
@@ -375,7 +378,7 @@ class AutomaticListenerRestart:
         # type: () -> AutomaticListenerRestart
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback,):
+    def __exit__(self, exc_type, exc_value, traceback):
         # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
         restart_listener()
 
@@ -402,7 +405,7 @@ class AutoCallCommand:
             pass
     """
 
-    def __init__(self, enter_cmd=None, exit_cmd=None, stdout=None, stderr=None,):
+    def __init__(self, enter_cmd=None, exit_cmd=None, stdout=None, stderr=None):
         # type: (Optional[Sequence[str]], Optional[Sequence[str]], Optional[IO[str]], Optional[IO[str]]) -> None
         self.enter_cmd = None
         if type(enter_cmd) in (list, tuple):
@@ -416,13 +419,13 @@ class AutoCallCommand:
     def __enter__(self):
         # type: () -> AutoCallCommand
         if self.enter_cmd:
-            subprocess.call(self.enter_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr,)
+            subprocess.call(self.enter_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr)
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback,):
+    def __exit__(self, exc_type, exc_value, traceback):
         # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
         if self.exit_cmd:
-            subprocess.call(self.exit_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr,)
+            subprocess.call(self.exit_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr)
 
 
 class FollowLogfile:
@@ -443,28 +446,28 @@ class FollowLogfile:
                 pass
     """
 
-    def __init__(self, logfiles, always=False,):
+    def __init__(self, logfiles, always=False):
         # type: (Iterable[str], bool) -> None
         """
         :param logfiles: list of absolute filenames to read from
         :param always: bool, if True: print logfile change also if no error occurred (default=False)
         """
-        assert isinstance(always, bool,)
+        assert isinstance(always, bool)
         self.always = always
-        self.logfile_pos = dict.fromkeys(logfiles, 0,)  # type: Dict[str, int]
+        self.logfile_pos = dict.fromkeys(logfiles, 0)  # type: Dict[str, int]
 
     def __enter__(self):
         # type: () -> FollowLogfile
         self.logfile_pos.update((logfile, os.path.getsize(logfile)) for logfile in self.logfile_pos)
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback,):
+    def __exit__(self, exc_type, exc_value, traceback):
         # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
         if self.always or exc_type:
             for logfile, pos in self.logfile_pos.items():
                 with open(logfile) as log:
-                    log.seek(pos, 0,)
-                    print(logfile.center(79, "=",))
+                    log.seek(pos, 0)
+                    print(logfile.center(79, "="))
                     sys.stdout.writelines(log)
                     print("=" * 79)
 
@@ -477,7 +480,7 @@ class ReplicationType(IntEnum):
     DRS = 5
 
 
-def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun=False, ldap_filter=None, verbose=True,):
+def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun=False, ldap_filter=None, verbose=True):
     # type: (bool, Optional[str], bool) -> None
     """Wait for all kind of replications"""
     # the order matters!
@@ -488,10 +491,10 @@ def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun
         conditions.append((ReplicationType.S4C_FROM_UCS, ldap_filter))
     if ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave'):
         conditions.append((ReplicationType.DRS, ldap_filter))
-    wait_for(conditions, verbose=True,)
+    wait_for(conditions, verbose=True)
 
 
-def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun=False, ldap_filter=None, verbose=True,):
+def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun=False, ldap_filter=None, verbose=True):
     # type: (bool, Optional[str], bool) -> None
     """Wait for all kind of replications"""
     conditions = []
@@ -506,10 +509,10 @@ def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun=
         conditions.append((ReplicationType.LISTENER, 'postrun'))
     else:
         conditions.append((ReplicationType.LISTENER, None))
-    wait_for(conditions, verbose=True,)
+    wait_for(conditions, verbose=True)
 
 
-def wait_for(conditions=None, verbose=True,):
+def wait_for(conditions=None, verbose=True):
     # type: (Optional[List[Tuple[ReplicationType, Any]]], bool) -> None
     """Wait for all kind of replications"""
     for replicationtype, detail in conditions or []:
@@ -529,18 +532,18 @@ def wait_for(conditions=None, verbose=True,):
                 # TODO: search in OpenLDAP with filter=detail
                 pass
         elif replicationtype == ReplicationType.DRS:
-            if not isinstance(detail, dict,):
+            if not isinstance(detail, dict):
                 detail = {'ldap_filter': detail}
-            wait_for_drs_replication(verbose=verbose, **detail,)
+            wait_for_drs_replication(verbose=verbose, **detail)
 
 
 def wait_for_drs_replication(*args, **kwargs):
     # type: (*Any, **Any) -> None
     from univention.testing.ucs_samba import wait_for_drs_replication
-    return wait_for_drs_replication(*args, **kwargs,)
+    return wait_for_drs_replication(*args, **kwargs)
 
 
-def wait_for_listener_replication(verbose=True,):
+def wait_for_listener_replication(verbose=True):
     # type: (bool) -> None
     sys.stdout.flush()
     time.sleep(1)  # Give the notifier some time to increase its transaction id
@@ -550,13 +553,13 @@ def wait_for_listener_replication(verbose=True,):
         # The "-c 1" option ensures listener and notifier id are equal.
         # Otherwise the check is successful as long as the listener id changed since the last check.
         cmd = ('/usr/lib/nagios/plugins/check_univention_replication', '-c', '1')
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, _stderr = proc.communicate()
         if proc.returncode == 0:
             if verbose:
                 print('Done: replication complete.')
             return
-        print('.', end=' ',)
+        print('.', end=' ')
         time.sleep(1)
 
     print('Error: replication incomplete.')
@@ -570,7 +573,7 @@ def get_lid():
         return int(notifier_id.readline())
 
 
-def wait_for_listener_replication_and_postrun(verbose=True,):
+def wait_for_listener_replication_and_postrun(verbose=True):
     # type: (bool) -> None
     # Postrun function in listener modules are called after 15 seconds without any events
     wait_for_listener_replication(verbose=verbose)
@@ -580,7 +583,7 @@ def wait_for_listener_replication_and_postrun(verbose=True,):
     seconds_since_last_change = 0
     for _ in range(300):
         time.sleep(1)
-        print('.', end=' ',)
+        print('.', end=' ')
         if lid == get_lid():
             seconds_since_last_change += 1
         else:
@@ -597,7 +600,7 @@ def wait_for_listener_replication_and_postrun(verbose=True,):
     raise LDAPReplicationFailed
 
 
-def wait_for_s4connector_replication(verbose=True,):
+def wait_for_s4connector_replication(verbose=True):
     # type: (bool) -> None
     if verbose:
         print('Waiting for connector replication')
@@ -606,11 +609,11 @@ def wait_for_s4connector_replication(verbose=True,):
         univention.testing.ucs_samba.wait_for_s4connector(17)
     except OSError as exc:  # nagios not installed
         if verbose:
-            print(f'Nagios not installed: {exc}', file=sys.stderr,)
+            print(f'Nagios not installed: {exc}', file=sys.stderr)
         time.sleep(16)
     except univention.testing.ucs_samba.WaitForS4ConnectorTimeout:
         if verbose:
-            print('Warning: S4 Connector replication was not finished after 17 seconds', file=sys.stderr,)
+            print('Warning: S4 Connector replication was not finished after 17 seconds', file=sys.stderr)
 
 
 # backwards compatibility
@@ -619,20 +622,20 @@ wait_for_replication_and_postrun = wait_for_listener_replication_and_postrun
 wait_for_connector_replication = wait_for_s4connector_replication
 
 
-def package_installed(package,):
+def package_installed(package):
     # type: (str) -> bool
     sys.stdout.flush()
-    with open('/dev/null', 'w',) as null:
-        return (subprocess.call("dpkg-query -W -f '${Status}' %s | grep -q ^install" % package, stderr=null, shell=True,) == 0)
+    with open('/dev/null', 'w') as null:
+        return (subprocess.call("dpkg-query -W -f '${Status}' %s | grep -q ^install" % package, stderr=null, shell=True) == 0)
 
 
-def fail(log_message=None, returncode=1,):
+def fail(log_message=None, returncode=1):
     # type: (Optional[str], int) -> NoReturn
     print('### FAIL ###')
     if log_message:
         print('%s\n###      ###' % log_message)
         if sys.exc_info()[-1]:
-            print(traceback.format_exc(), file=sys.stderr,)
+            print(traceback.format_exc(), file=sys.stderr)
     sys.exit(returncode)
 
 
@@ -643,23 +646,23 @@ def uppercase_in_ldap_base():
     return not ucr.get('ldap/base').islower()
 
 
-def is_udp_port_open(port, ip=None,):
+def is_udp_port_open(port, ip=None):
     # type: (int, Optional[str]) -> bool
     if ip is None:
         ip = '127.0.0.1'
     try:
-        udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM,)
+        udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         udp_sock.connect((ip, int(port)))
-        os.write(udp_sock.fileno(), b'X',)
-        os.write(udp_sock.fileno(), b'X',)
-        os.write(udp_sock.fileno(), b'X',)
+        os.write(udp_sock.fileno(), b'X')
+        os.write(udp_sock.fileno(), b'X')
+        os.write(udp_sock.fileno(), b'X')
         return True
     except OSError as ex:
         print(f'is_udp_port_open({port}) failed: {ex}')
     return False
 
 
-def is_port_open(port, hosts=None, timeout=60,):
+def is_port_open(port, hosts=None, timeout=60):
     # type: (int, Optional[Iterable[str]], float) -> bool
     """
     check if port is open, if host == None check
@@ -676,7 +679,7 @@ def is_port_open(port, hosts=None, timeout=60,):
     for host in hosts:
         address = (host, int(port))
         try:
-            connection = socket.create_connection(address, timeout,)
+            connection = socket.create_connection(address, timeout)
             connection.close()
             return True
         except OSError as ex:

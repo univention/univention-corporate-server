@@ -22,10 +22,10 @@ Dict mapping the platform names to lists of names of Fortran compilers to try, i
 
 def default_compilers():
 	build_platform = Utils.unversioned_sys_platform()
-	possible_compiler_list = fc_compiler.get(build_platform, fc_compiler['default'],)
+	possible_compiler_list = fc_compiler.get(build_platform, fc_compiler['default'])
 	return ' '.join(possible_compiler_list)
 
-def configure(conf,):
+def configure(conf):
 	"""
 	Detects a suitable Fortran compiler
 
@@ -35,7 +35,7 @@ def configure(conf,):
 		test_for_compiler = conf.options.check_fortran_compiler or default_compilers()
 	except AttributeError:
 		conf.fatal("Add options(opt): opt.load('compiler_fc')")
-	for compiler in re.split('[ ,]+', test_for_compiler,):
+	for compiler in re.split('[ ,]+', test_for_compiler):
 		conf.env.stash()
 		conf.start_msg('Checking for %r (Fortran compiler)' % compiler)
 		try:
@@ -43,7 +43,7 @@ def configure(conf,):
 		except conf.errors.ConfigurationError as e:
 			conf.env.revert()
 			conf.end_msg(False)
-			Logs.debug('compiler_fortran: %r', e,)
+			Logs.debug('compiler_fortran: %r', e)
 		else:
 			if conf.env.FC:
 				conf.end_msg(conf.env.get_flat('FC'))
@@ -55,7 +55,7 @@ def configure(conf,):
 	else:
 		conf.fatal('could not configure a Fortran compiler!')
 
-def options(opt,):
+def options(opt):
 	"""
 	This is how to provide compiler preferences on the command-line::
 
@@ -66,7 +66,7 @@ def options(opt,):
 	fortran_compiler_opts = opt.add_option_group('Configuration options')
 	fortran_compiler_opts.add_option('--check-fortran-compiler', default=None,
 			help='list of Fortran compiler to try [%s]' % test_for_compiler,
-		dest="check_fortran_compiler",)
+		dest="check_fortran_compiler")
 
 	for x in test_for_compiler.split():
 		opt.load('%s' % x)

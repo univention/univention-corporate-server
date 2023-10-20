@@ -37,18 +37,18 @@
 import pytest
 
 
-def test_get_dynamic_classes(dynamic_class,):
+def test_get_dynamic_classes(dynamic_class):
     assert dynamic_class("Portal")
     with pytest.raises(KeyError):
         dynamic_class("NotExistingPortal...")
 
 
-def test_arg_kwargs(mocker,):
+def test_arg_kwargs(mocker):
     import datetime
 
     from univention.portal import factory
 
-    mocker.patch.object(factory, "get_dynamic_classes", return_value=datetime.timedelta,)
+    mocker.patch.object(factory, "get_dynamic_classes", return_value=datetime.timedelta)
     delta_def = {"type": "class", "class": "timedelta", "args": [{"type": "static", "value": 0}, {"type": "static", "value": 10}], "kwargs": {"microseconds": {"type": "static", "value": 500}}}
     delta = factory.make_arg(delta_def)
     assert delta.days == 0
@@ -56,7 +56,7 @@ def test_arg_kwargs(mocker,):
     assert delta.microseconds == 500
 
 
-def test_make_portal_standard(dynamic_class,):
+def test_make_portal_standard(dynamic_class):
     from univention.portal import factory
 
     # more or less `univention-portal add ""`
@@ -110,7 +110,7 @@ def test_make_portal_standard(dynamic_class,):
         "type": "class",
     }
     portal = factory.make_portal(portal_def)
-    assert isinstance(portal, Portal,)
+    assert isinstance(portal, Portal)
 
 
 def test_make_portal_unknown():

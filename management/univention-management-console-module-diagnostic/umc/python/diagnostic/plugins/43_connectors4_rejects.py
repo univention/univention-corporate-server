@@ -59,9 +59,9 @@ class MissingConfigurationKey(KeyError):
         return f'{self.__class__.__name__}: {super().__str__()}'
 
 
-def get_s4_connector(configbasename: str = 'connector',):
+def get_s4_connector(configbasename: str = 'connector'):
     try:
-        s4 = univention.s4connector.s4.s4.main(configRegistry, configbasename,)
+        s4 = univention.s4connector.s4.s4.main(configRegistry, configbasename)
     except SystemExit as error:
         MODULE.error('Missing Configuration key %s' % (error,))
         raise MissingConfigurationKey(error.code)
@@ -70,19 +70,19 @@ def get_s4_connector(configbasename: str = 'connector',):
         return s4
 
 
-def get_ucs_rejected(s4,) -> Iterator[Tuple[str, str, str]]:
+def get_ucs_rejected(s4) -> Iterator[Tuple[str, str, str]]:
     for (filename, dn) in s4.list_rejected_ucs():
         s4_dn = s4.get_dn_by_ucs(dn)
         yield (filename, dn.strip(), s4_dn.strip())
 
 
-def get_s4_rejected(s4,) -> Iterator[Tuple[object, str, str]]:
+def get_s4_rejected(s4) -> Iterator[Tuple[object, str, str]]:
     for (s4_id, dn) in s4.list_rejected():
         ucs_dn = s4.get_dn_by_con(dn)
         yield (s4_id, dn.strip(), ucs_dn.strip())
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     if not util.is_service_active('S4 Connector'):
         return
 
@@ -105,21 +105,21 @@ def run(_umc_instance: Instance,) -> None:
 
     if ucs_rejects or s4_rejects:
         error_description = _('Found {ucs} UCS rejects and {s4} S4 rejects. See {{sdb}} for more information.')
-        error_description = error_description.format(ucs=len(ucs_rejects), s4=len(s4_rejects),)
+        error_description = error_description.format(ucs=len(ucs_rejects), s4=len(s4_rejects))
         error_descriptions = [error_description]
         if ucs_rejects:
             error_descriptions.append(_('UCS rejected:'))
             for (filename, ucs_dn, s4_dn) in ucs_rejects:
                 s4_dn = s4_dn if s4_dn else _('not found')
                 line = _('UCS DN: {ucs}, S4 DN: {s4}, Filename: {fn}')
-                line = line.format(ucs=ucs_dn, s4=s4_dn, fn=filename,)
+                line = line.format(ucs=ucs_dn, s4=s4_dn, fn=filename)
                 error_descriptions.append(line)
         if s4_rejects:
             error_descriptions.append(_('S4 rejected:'))
             for (_s4_id, s4_dn, ucs_dn) in s4_rejects:
                 ucs_dn = ucs_dn if ucs_dn else _('not found')
                 line = _('S4 DN: {s4}, UCS DN: {ucs}')
-                line = line.format(s4=s4_dn, ucs=ucs_dn,)
+                line = line.format(s4=s4_dn, ucs=ucs_dn)
                 error_descriptions.append(line)
         MODULE.error('\n'.join(error_descriptions))
         raise Warning(description='\n'.join(error_descriptions))

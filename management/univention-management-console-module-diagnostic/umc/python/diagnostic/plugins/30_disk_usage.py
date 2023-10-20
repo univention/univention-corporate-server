@@ -48,12 +48,12 @@ DISK_USAGE_THRESHOLD = 90
 run_descr = ['Checks if enough free disk space is available']
 
 
-def is_valid_mount_point(disk_parition,) -> bool:
+def is_valid_mount_point(disk_parition) -> bool:
     conditions: List[Callable[..., bool]] = [
-        lambda dp,: dp.mountpoint != "/var/lib/docker/overlay",
-        lambda dp,: "iso" not in dp.fstype,
-        lambda dp,: (dp.device.startswith("/dev/loop") and "ro" not in dp.opts),
-        lambda dp,: "squashfs" not in dp.fstype,
+        lambda dp: dp.mountpoint != "/var/lib/docker/overlay",
+        lambda dp: "iso" not in dp.fstype,
+        lambda dp: (dp.device.startswith("/dev/loop") and "ro" not in dp.opts),
+        lambda dp: "squashfs" not in dp.fstype,
     ]
 
     return all(condition(disk_parition) for condition in conditions)
@@ -71,7 +71,7 @@ def high_disk_usage() -> Dict[str, float]:
 
 
 def local_repository_exists() -> bool:
-    return ucr.is_true('local/repository', False,)
+    return ucr.is_true('local/repository', False)
 
 
 def is_varlog_own_partition() -> bool:
@@ -80,29 +80,29 @@ def is_varlog_own_partition() -> bool:
 
 
 def high_log_levels() -> bool:
-    def is_high(variable: str, default: int,) -> bool:
-        return ucr.get_int(variable, default,) > default
+    def is_high(variable: str, default: int) -> bool:
+        return ucr.get_int(variable, default) > default
 
-    def is_on(variable: str,) -> bool:
-        return ucr.is_true(variable, False,)
+    def is_on(variable: str) -> bool:
+        return ucr.is_true(variable, False)
 
     return any((
-        is_high('connector/debug/function', 0,),
-        is_high('connector/debug/level', 2,),
-        is_high('samba/debug/level', 33,),
-        is_high('directory/manager/cmd/debug/level', 0,),
-        is_high('dns/debug/level', 0,),
-        is_high('dns/dlz/debug/level', 0,),
-        is_high('listener/debug/level', 2,),
-        is_high('mail/postfix/ldaptable/debuglevel', 0,),
-        is_high('notifier/debug/level', 1,),
-        is_high('nscd/debug/level', 0,),
-        is_high('stunnel/debuglevel', 4,),
-        is_high('umc/module/debug/level', 2,),
-        is_high('umc/server/debug/level', 2,),
-        is_high('grub/loglevel', 0,),
-        is_high('mail/postfix/smtp/tls/loglevel', 0,),
-        is_high('mail/postfix/smtpd/tls/loglevel', 0,),
+        is_high('connector/debug/function', 0),
+        is_high('connector/debug/level', 2),
+        is_high('samba/debug/level', 33),
+        is_high('directory/manager/cmd/debug/level', 0),
+        is_high('dns/debug/level', 0),
+        is_high('dns/dlz/debug/level', 0),
+        is_high('listener/debug/level', 2),
+        is_high('mail/postfix/ldaptable/debuglevel', 0),
+        is_high('notifier/debug/level', 1),
+        is_high('nscd/debug/level', 0),
+        is_high('stunnel/debuglevel', 4),
+        is_high('umc/module/debug/level', 2),
+        is_high('umc/server/debug/level', 2),
+        is_high('grub/loglevel', 0),
+        is_high('mail/postfix/smtp/tls/loglevel', 0),
+        is_high('mail/postfix/smtpd/tls/loglevel', 0),
         is_on('kerberos/defaults/debug'),
         is_on('mail/postfix/smtpd/debug'),
         is_on('samba4/sysvol/sync/debug'),
@@ -110,8 +110,8 @@ def high_log_levels() -> bool:
         is_on('saml/idp/log/debug/enabled'),
         is_on('pdate/check/boot/debug'),
         is_on('update/check/cron/debug'),
-        ucr.get('apache2/loglevel', 'warn',) in ('notice', 'info', 'debug'),
-        ucr.get('ldap/debug/level', 'none',) not in ('none', '0'),
+        ucr.get('apache2/loglevel', 'warn') in ('notice', 'info', 'debug'),
+        ucr.get('ldap/debug/level', 'none') not in ('none', '0'),
     ))
 
 
@@ -123,7 +123,7 @@ def solutions() -> Iterator[str]:
         yield _('You may want to move the local repository to another server.')
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     high = high_disk_usage()
     tmpl = _('- Disk for mountpoint %(mp)s is %(pc)s%% full.')
     disk_errors = [tmpl % {'mp': mp, 'pc': pc} for (mp, pc) in high.items()]
@@ -147,8 +147,8 @@ def run(_umc_instance: Instance,) -> None:
 
         if problem_on_root:
             MODULE.error('\n'.join(error_descriptions))
-            raise Critical('\n'.join(error_descriptions), umc_modules=umc_modules,)
-        raise Warning('\n'.join(error_descriptions), umc_modules=umc_modules,)
+            raise Critical('\n'.join(error_descriptions), umc_modules=umc_modules)
+        raise Warning('\n'.join(error_descriptions), umc_modules=umc_modules)
 
 
 if __name__ == '__main__':

@@ -12,10 +12,10 @@ from univention.testing import utils
 
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('dangerous')
-def test_remove_values_from_ucr_policy(udm,):
+def test_remove_values_from_ucr_policy(udm):
     """Test removing values from UCR policy"""
     # bugs: [43562]
-    policy = udm.create_object('policies/registry', name='test', registry=['foo bar', 'bar baz'],)
-    utils.verify_ldap_object(policy, {'univentionRegistry;entry-hex-666f6f': ['bar'], 'univentionRegistry;entry-hex-626172': ['baz']},)
-    udm.modify_object('policies/registry', dn=policy, remove={'registry': ['bar baz']},)
-    utils.verify_ldap_object(policy, {'univentionRegistry;entry-hex-666f6f': ['bar']},)
+    policy = udm.create_object('policies/registry', name='test', registry=['foo bar', 'bar baz'])
+    utils.verify_ldap_object(policy, {'univentionRegistry;entry-hex-666f6f': ['bar'], 'univentionRegistry;entry-hex-626172': ['baz']})
+    udm.modify_object('policies/registry', dn=policy, remove={'registry': ['bar baz']})
+    utils.verify_ldap_object(policy, {'univentionRegistry;entry-hex-666f6f': ['bar']})

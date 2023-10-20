@@ -14,10 +14,10 @@ import subprocess
 from univention.testing import utils
 
 
-def run_command(cmd,):
+def run_command(cmd):
     """Runs cmd command in terminal"""
     print(' ** %r' % cmd)
-    popen_obj = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+    popen_obj = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = popen_obj.communicate()
     ret = popen_obj.returncode
     if ret != 0:
@@ -33,7 +33,7 @@ def apt_update():
     return run_command(cmd)
 
 
-def test_install(pkg_name,):
+def test_install(pkg_name):
     """Simulate packages installation"""
     cmd = ['apt-get', '-s', 'install', pkg_name]
     return run_command(cmd)
@@ -48,7 +48,7 @@ def get_packets_list():
         'univentionPackageDefinition',
     ]
     search_result = run_command(cmd)
-    return re.findall(re.compile(r'univentionPackageDefinition: (\w*)\n'), search_result,)
+    return re.findall(re.compile(r'univentionPackageDefinition: (\w*)\n'), search_result)
 
 
 def main():

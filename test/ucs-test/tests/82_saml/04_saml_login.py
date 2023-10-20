@@ -13,10 +13,10 @@ import samltest
 
 def __get_samlSession():
     account = utils.UCSTestDomainAdminCredentials()
-    return samltest.SamlTest(account.username, account.bindpw,)
+    return samltest.SamlTest(account.username, account.bindpw)
 
 
-def __test_umc_sp(samlSession, test_function,):
+def __test_umc_sp(samlSession, test_function):
     samlSession.login_with_new_session_at_IdP()
     test_function()
     samlSession.logout_at_IdP()
@@ -26,4 +26,4 @@ def __test_umc_sp(samlSession, test_function,):
 
 def test_umc_web_server():
     samlSession = __get_samlSession()
-    __test_umc_sp(samlSession, samlSession.test_logged_in_status,)
+    __test_umc_sp(samlSession, samlSession.test_logged_in_status)

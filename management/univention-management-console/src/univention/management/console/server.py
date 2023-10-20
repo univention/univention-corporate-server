@@ -68,15 +68,15 @@ try:
 except ImportError:
     _exit_function = None
 
-pool = ThreadPoolExecutor(max_workers=ucr.get_int('umc/http/maxthreads', 35,))
+pool = ThreadPoolExecutor(max_workers=ucr.get_int('umc/http/maxthreads', 35))
 
 
 class Application(TApplication):
     """The tornado application with all UMC resources"""
 
     def __init__(self, **settings):
-        tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console',)
-        super(Application, self,).__init__([
+        tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
+        super(Application, self).__init__([
             (r'/', Index),
             (r'/auth/?', Auth),
             (r'/upload/?', Upload),
@@ -103,7 +103,7 @@ class Application(TApplication):
             (r'/saml/iframe/?', SamlIframeACS),
             (r'/logout/?', Logout),
             (r'()/(.+)', Command),
-        ], default_handler_class=Nothing, **settings,)
+        ], default_handler_class=Nothing, **settings)
 
         SamlACS.reload()
 
@@ -112,7 +112,7 @@ def tornado_log_reopen():
     for logname in ('tornado.access', 'tornado.application', 'tornado.general'):
         logger = logging.getLogger(logname)
         for handler in logger.handlers:
-            if isinstance(handler, logging.handlers.RotatingFileHandler,):
+            if isinstance(handler, logging.handlers.RotatingFileHandler):
                 handler.doRollover()
 
 
@@ -122,19 +122,24 @@ class Server(object):
     def __init__(self):
         self.parser = ArgumentParser()
         self.parser.add_argument(
-            '-d', '--debug', type=int, default=ucr.get_int('umc/server/debug/level', 1,),
-            help='if given then debugging is activated and set to the specified level [default: %(default)s]',)
+            '-d', '--debug', type=int, default=ucr.get_int('umc/server/debug/level', 1),
+            help='if given then debugging is activated and set to the specified level [default: %(default)s]',
+        )
         self.parser.add_argument(
             '-L', '--log-file', default='/var/log/univention/management-console-server.log',
-            help='specifies an alternative log file [default: %(default)s]',)
+            help='specifies an alternative log file [default: %(default)s]',
+        )
         self.parser.add_argument(
-            '-p', '--port', default=ucr.get_int('umc/http/port', 8090,), type=int,
-            help='defines an alternative port number [default %(default)s]',)
+            '-p', '--port', default=ucr.get_int('umc/http/port', 8090), type=int,
+            help='defines an alternative port number [default %(default)s]',
+        )
         self.parser.add_argument(
             '-c', '--processes', type=int, default=1,  # ucr.get_int('umc/http/processes', 1),
-            help='How many processes to fork. 0 means auto detection [default: %(default)s].',)
+            help='How many processes to fork. 0 means auto detection [default: %(default)s].',
+        )
         self.parser.add_argument(
-            '--no-daemonize-module-processes', action='store_true', help='starts modules in foreground so that logs go to stdout',)
+            '--no-daemonize-module-processes', action='store_true', help='starts modules in foreground so that logs go to stdout',
+        )
         self.options = self.parser.parse_args()
         saml.PORT = self.options.port
         self._child_number = None
@@ -143,9 +148,9 @@ class Server(object):
         # os.environ['LANG'] = locale.normalize(self.options.language)
 
         # init logging
-        log_init(self.options.log_file, self.options.debug, self.options.processes > 1,)
+        log_init(self.options.log_file, self.options.debug, self.options.processes > 1)
 
-    def signal_handler_hup(self, signo, frame,):
+    def signal_handler_hup(self, signo, frame):
         """Handler for the reload action"""
         CORE.process('Got SIGHUP')
         ucr.load()
@@ -153,7 +158,7 @@ class Server(object):
         tornado_log_reopen()
         self._inform_childs(signal)
 
-    def signal_handler_reload(self, signo, frame,):
+    def signal_handler_reload(self, signo, frame):
         CORE.process('Got SIGUSR1')
         log_reopen()
         tornado_log_reopen()
@@ -161,7 +166,7 @@ class Server(object):
         self.reload()
         self._inform_childs(signal)
 
-    def signal_handler_stop(self, signo, frame,):
+    def signal_handler_stop(self, signo, frame):
         CORE.warn('Shutting down all open connections')
         self._inform_childs(signal)
         raise SystemExit(0)
@@ -173,7 +178,7 @@ class Server(object):
         moduleManager.load()
         categoryManager.load()
 
-    def _inform_childs(self, signal,):
+    def _inform_childs(self, signal):
         if self._child_number is not None:
             return  # we are the child process
         try:
@@ -182,25 +187,25 @@ class Server(object):
             children = []
         for _child, pid in children:
             try:
-                os.kill(pid, signal,)
+                os.kill(pid, signal)
             except EnvironmentError as exc:
                 CORE.process('Failed sending signal %d to process %d: %s' % (signal, pid, exc))
 
     def run(self):
         n = SystemdNotifier()
-        signal.signal(signal.SIGHUP, self.signal_handler_hup,)
-        signal.signal(signal.SIGUSR1, self.signal_handler_reload,)
-        signal.signal(signal.SIGTERM, self.signal_handler_stop,)
+        signal.signal(signal.SIGHUP, self.signal_handler_hup)
+        signal.signal(signal.SIGUSR1, self.signal_handler_reload)
+        signal.signal(signal.SIGTERM, self.signal_handler_stop)
 
         tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
         try:
-            fd_limit = ucr.get_int('umc/http/max-open-file-descriptors', 65535,)
-            resource.setrlimit(resource.RLIMIT_NOFILE, (fd_limit, fd_limit),)
+            fd_limit = ucr.get_int('umc/http/max-open-file-descriptors', 65535)
+            resource.setrlimit(resource.RLIMIT_NOFILE, (fd_limit, fd_limit))
         except (ValueError, resource.error) as exc:
             CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
 
         # bind sockets
-        sockets = bind_sockets(self.options.port, ucr.get('umc/http/interface', '127.0.0.1',), backlog=ucr.get_int('umc/http/requestqueuesize', 100,), reuse_port=True,)
+        sockets = bind_sockets(self.options.port, ucr.get('umc/http/interface', '127.0.0.1'), backlog=ucr.get_int('umc/http/requestqueuesize', 100), reuse_port=True)
 
         # start sub worker processes
         if self.options.processes != 1:
@@ -214,10 +219,10 @@ class Server(object):
             CORE.process('Starting with %r processes' % (self.options.processes,))
             n.notify("READY=1")
             try:
-                self._child_number = tornado.process.fork_processes(self.options.processes, 0,)
+                self._child_number = tornado.process.fork_processes(self.options.processes, 0)
             except RuntimeError as exc:
                 CORE.warn('Child process died: %s' % (exc,))
-                os.kill(os.getpid(), signal.SIGTERM,)
+                os.kill(os.getpid(), signal.SIGTERM)
                 raise SystemExit(str(exc))
             except KeyboardInterrupt:
                 raise SystemExit(0)
@@ -225,24 +230,26 @@ class Server(object):
                 shared_memory.children[self._child_number] = os.getpid()
 
         application = Application(
-            serve_traceback=ucr.is_true('umc/http/show_tracebacks', True,),
-            no_daemonize_module_processes=self.options.no_daemonize_module_processes,)
+            serve_traceback=ucr.is_true('umc/http/show_tracebacks', True),
+            no_daemonize_module_processes=self.options.no_daemonize_module_processes,
+        )
         server = HTTPServer(
             application,
-            idle_connection_timeout=ucr.get_int('umc/http/response-timeout', 310,),  # TODO: is this correct? should be internal response timeout
-            max_body_size=ucr.get_int('umc/http/max_request_body_size', 104857600,),)
+            idle_connection_timeout=ucr.get_int('umc/http/response-timeout', 310),  # TODO: is this correct? should be internal response timeout
+            max_body_size=ucr.get_int('umc/http/max_request_body_size', 104857600),
+        )
         self.server = server
         server.add_sockets(sockets)
 
         if self.options.log_file in {'stdout', 'stderr', '/dev/stdout', '/dev/stderr'}:
             channel = logging.StreamHandler(sys.stdout if self.options.log_file in {'stdout', '/dev/stdout'} else sys.stderr)
         else:
-            channel = logging.handlers.RotatingFileHandler(self.options.log_file, 'a+',)
+            channel = logging.handlers.RotatingFileHandler(self.options.log_file, 'a+')
 
-        channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S',))
+        channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
         for logname in ('tornado.access', 'tornado.application', 'tornado.general'):
             logger = logging.getLogger(logname)
-            logger.setLevel({ud.INFO: logging.INFO, ud.WARN: logging.WARNING, ud.ERROR: logging.ERROR, ud.ALL: logging.DEBUG, ud.PROCESS: logging.INFO}.get(ucr.get_int('umc/server/tornado-debug/level', 0,), logging.ERROR,))
+            logger.setLevel({ud.INFO: logging.INFO, ud.WARN: logging.WARNING, ud.ERROR: logging.ERROR, ud.ALL: logging.DEBUG, ud.PROCESS: logging.INFO}.get(ucr.get_int('umc/server/tornado-debug/level', 0), logging.ERROR))
             logger.addHandler(channel)
 
         self.reload()

@@ -48,7 +48,7 @@ import univention.config_registry
 
 class UpdatePrinterModels(object):
 
-    def __init__(self, options,):
+    def __init__(self, options):
         self.options = options
         self.ucr = univention.config_registry.ConfigRegistry()
         self.ucr.load()
@@ -59,23 +59,23 @@ class UpdatePrinterModels(object):
         self.ldap_connection()
         univention.admin.modules.update()
         self.models = univention.admin.modules.get('settings/printermodel')
-        univention.admin.modules.init(self.lo, self.position, self.models,)
+        univention.admin.modules.init(self.lo, self.position, self.models)
 
     def ldap_connection(self):
         if self.options.binddn and self.options.bindpwd:
             self.lo = univention.admin.uldap.access(
                 host=self.ucr['ldap/master'],
-                port=int(self.ucr.get('ldap/master/port', '7389',)),
+                port=int(self.ucr.get('ldap/master/port', '7389')),
                 base=self.ucr['ldap/base'],
                 binddn=self.options.binddn,
                 bindpw=self.options.bindpwd,
-                start_tls=2,)
+                start_tls=2)
             self.position = univention.admin.uldap.position(self.ucr['ldap/base'])
         else:
             self.lo, self.position = univention.admin.uldap.getAdminConnection()
 
-    def get_nickname_from_ppd(self, ppd,):
-        filename = os.path.join('/usr/share/ppd/', ppd,)
+    def get_nickname_from_ppd(self, ppd):
+        filename = os.path.join('/usr/share/ppd/', ppd)
         if not os.path.isfile(filename):
             if ':' in ppd:
                 try:
@@ -85,23 +85,23 @@ class UpdatePrinterModels(object):
                 except subprocess.CalledProcessError:
                     pass
             return
-        with (gzip.open(filename, 'rb',) if filename.endswith('.ppd.gz') else open(filename, 'rb',)) as fd:
+        with (gzip.open(filename, 'rb') if filename.endswith('.ppd.gz') else open(filename, 'rb')) as fd:
             return self._get_nickname_from_ppd(fd)
 
-    def _get_nickname_from_ppd(self, fd,):
+    def _get_nickname_from_ppd(self, fd):
         nickname = None
         for line in fd:
             if line.startswith(b'*NickName:'):
-                line = line.decode('UTF-8', 'replace',).split(':', 1,)[1]
+                line = line.decode('UTF-8', 'replace').split(':', 1)[1]
                 nickname = shlex.split(line)[0]
                 return nickname
 
     def check_duplicates(self):
-        for obj in self.models.lookup(None, self.lo, '',):
+        for obj in self.models.lookup(None, self.lo, ''):
             ppds = {}
             for model in obj['printmodel']:
                 ppd = model[0]
-                ppds.setdefault(ppd, [],).append(model)
+                ppds.setdefault(ppd, []).append(model)
 
             duplicated_ppds = [_ppd for _ppd, model in ppds.items() if len(model) > 1]
             replacement_ppds = [
@@ -112,8 +112,8 @@ class UpdatePrinterModels(object):
             if duplicated_ppds:
                 if self.options.verbose:
                     print('removing duplicate models for %s:' % obj.dn)
-                    print('replace:', [' '.join(ppd_model) for ppd_model in obj['printmodel'] if ppd_model[0] in duplicated_ppds],)
-                    print('with:', [' '.join(ppd_model) for ppd_model in replacement_ppds],)
+                    print('replace:', [' '.join(ppd_model) for ppd_model in obj['printmodel'] if ppd_model[0] in duplicated_ppds])
+                    print('with:', [' '.join(ppd_model) for ppd_model in replacement_ppds])
 
                 if not options.dry_run:
                     obj.open()
@@ -121,7 +121,7 @@ class UpdatePrinterModels(object):
                     obj.modify()
 
     def mark_as_obsolete(self):
-        obj = self.models.lookup(None, self.lo, ldap.filter.filter_format('name=%s', [options.name],),)
+        obj = self.models.lookup(None, self.lo, ldap.filter.filter_format('name=%s', [options.name]))
         if obj:
             obj = obj[0]
             obj.open()
@@ -147,15 +147,15 @@ class UpdatePrinterModels(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dry-run', '-d', action='store_true', help='Do not modify objects',)
-    parser.add_argument('--verbose', '-v', action='store_true', help='Enable verbose output',)
-    parser.add_argument('--check-duplicate', '-c', action='store_true', help='Check for duplicate models',)
-    parser.add_argument('--binddn', help='LDAP bind dn for UDM CLI operation',)
-    parser.add_argument('--bindpwd', help='LDAP bind password for bind dn',)
-    parser.add_argument('--bindpwdfile', help='LDAP bind password file for bind dn',)
-    parser.add_argument('--name', help='name of the settings/printermodel object to modify',)
-    parser.add_argument('--version', help='only available in this version or older', default='4.4',)
-    parser.add_argument('models', nargs='*',)
+    parser.add_argument('--dry-run', '-d', action='store_true', help='Do not modify objects')
+    parser.add_argument('--verbose', '-v', action='store_true', help='Enable verbose output')
+    parser.add_argument('--check-duplicate', '-c', action='store_true', help='Check for duplicate models')
+    parser.add_argument('--binddn', help='LDAP bind dn for UDM CLI operation')
+    parser.add_argument('--bindpwd', help='LDAP bind password for bind dn')
+    parser.add_argument('--bindpwdfile', help='LDAP bind password file for bind dn')
+    parser.add_argument('--name', help='name of the settings/printermodel object to modify')
+    parser.add_argument('--version', help='only available in this version or older', default='4.4')
+    parser.add_argument('models', nargs='*')
     options = parser.parse_args()
 
     if options.name and options.models:

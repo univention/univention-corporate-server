@@ -58,7 +58,7 @@ class File(list):
     _is_comment = re.compile('[ \t]*#').search
     _filesystems = ('ext2', 'xfs', 'nfs', 'proc', 'auto', 'swap')
 
-    def __init__(self, file='/etc/fstab',):
+    def __init__(self, file='/etc/fstab'):
         # type: (str) -> None
         list.__init__(self)
         self.__file = file
@@ -70,7 +70,7 @@ class File(list):
         with open(self.__file) as fd:
             for _line in fd:
                 line = self.__parse(_line)
-                if not isinstance(line, Entry,) and _line.strip() and not _line.strip().startswith('#'):
+                if not isinstance(line, Entry) and _line.strip() and not _line.strip().startswith('#'):
                     raise InvalidEntry('The following is not a valid fstab entry: %r' % (_line,))  # TODO
                 self.append(line)
 
@@ -86,14 +86,14 @@ class File(list):
         for entry in self:
             found = True
             for arg, value in kargs.items():
-                if not hasattr(entry, arg,) or getattr(entry, arg,) != value:
+                if not hasattr(entry, arg) or getattr(entry, arg) != value:
                     found = False
                     break
             if found:
                 return entry
         return None
 
-    def get(self, filesystem=[], ignore_root=True,):
+    def get(self, filesystem=[], ignore_root=True):
         # type: (Container[str], bool) -> List[Entry]
         """
         Return list of entries matching a list of file system types.
@@ -106,7 +106,7 @@ class File(list):
         """
         result = []
         for entry in self:
-            if isinstance(entry, str,):
+            if isinstance(entry, str):
                 continue
             if ignore_root and entry.mount_point == '/':
                 continue
@@ -114,14 +114,14 @@ class File(list):
                 result.append(entry)
         return result
 
-    def save(self, filename=None,):
+    def save(self, filename=None):
         # type: (Optional[str]) -> None
         """Save entries to file."""
-        with open(filename or self.__file, 'w',) as fd:
+        with open(filename or self.__file, 'w') as fd:
             for line in self:
                 fd.write('%s\n' % (line,))
 
-    def __parse(self, line,):
+    def __parse(self, line):
         # type: (str) -> Union[Entry, str]
         """
         Parse file system table line.
@@ -143,12 +143,12 @@ class File(list):
             return line
 
         line, has_comment, comment = line.partition('#')
-        fields = line.split(None, 5,)
+        fields = line.split(None, 5)
         rem = has_comment + comment if has_comment or line.endswith('\t') else None
         if len(fields) < 3 or (len(fields) < 6 and rem):
             return line + has_comment + comment
 
-        return Entry(*fields, comment=rem,)  # type: ignore
+        return Entry(*fields, comment=rem)  # type: ignore
 
 
 class Entry(object):
@@ -170,24 +170,24 @@ class Entry(object):
     _quote_dict = {c: r'\%s' % oct(ord(c)) for c in ' \t\n\r\\'}
     _quote_re = re.compile(r'\\0([0-7]+)')
 
-    def __init__(self, spec, mount_point, fs_type, options='', dump=None, passno=None, comment=None,):
+    def __init__(self, spec, mount_point, fs_type, options='', dump=None, passno=None, comment=None):
         # type: (str, str, str, Union[str,list], Optional[str], Optional[str], Optional[str]) -> None
         self.spec = self.unquote(spec.strip())
         if self.spec.startswith('UUID='):
             self.uuid = self.spec[5:]  # type: Optional[str]
-            uuid_dev = os.path.join('/dev/disk/by-uuid', self.uuid,)
+            uuid_dev = os.path.join('/dev/disk/by-uuid', self.uuid)
             if os.path.exists(uuid_dev):
                 self.spec = os.path.realpath(uuid_dev)
         else:
             self.uuid = None
         self.mount_point = self.unquote(mount_point.strip())
         self.type = self.unquote(fs_type.strip())
-        self.options = self.unquote(options).split(',') if options and not isinstance(options, list,) else (options or [])
+        self.options = self.unquote(options).split(',') if options and not isinstance(options, list) else (options or [])
         self.dump = int(dump) if dump is not None else None
         self.passno = int(passno) if passno is not None else None
         self.comment = comment
 
-    def __str__(self, delim='\t',):
+    def __str__(self, delim='\t'):
         # type: (str) -> str
         """
         Return the canonical string representation of the object.
@@ -203,8 +203,8 @@ class Entry(object):
             self.quote(self.mount_point),
             self.quote(self.type),
             self.quote(','.join(self.options or (['defaults'] if any([self.dump, self.passno, self.comment]) else []))) or None,
-            str(self.dump or 0) if isinstance(self.dump, int,) or any([self.passno, self.comment]) else self.dump,
-            str(self.passno or 0) if isinstance(self.passno, int,) or any([self.comment]) else self.passno,
+            str(self.dump or 0) if isinstance(self.dump, int) or any([self.passno, self.comment]) else self.dump,
+            str(self.passno or 0) if isinstance(self.passno, int) or any([self.comment]) else self.passno,
             self.comment,
         ]
         return delim.join(e for e in h if e is not None)
@@ -228,7 +228,7 @@ class Entry(object):
         return "univention.lib.fstab.Entry(%s)" % ', '.join(h)
 
     @classmethod
-    def quote(cls, s,):
+    def quote(cls, s):
         # type: (str) -> str
         """
         Quote string to octal.
@@ -236,10 +236,10 @@ class Entry(object):
         >>> Entry.quote('a b')
         'a\\\\040b'
         """
-        return ''.join([cls._quote_dict.get(c, c,) for c in s])
+        return ''.join([cls._quote_dict.get(c, c) for c in s])
 
     @classmethod
-    def unquote(cls, s,):
+    def unquote(cls, s):
         # type: (str) -> str
         """
         Unquote octal to string.
@@ -247,9 +247,9 @@ class Entry(object):
         >>> Entry.unquote('a\\040b')
         'a b'
         """
-        return cls._quote_re.sub(lambda m,: chr(int(m.group(1), 8,)), s,)
+        return cls._quote_re.sub(lambda m: chr(int(m.group(1), 8)), s)
 
-    def hasopt(self, opt,):
+    def hasopt(self, opt):
         # type: (str) -> List[str]
         """
         Search for an option matching OPT.

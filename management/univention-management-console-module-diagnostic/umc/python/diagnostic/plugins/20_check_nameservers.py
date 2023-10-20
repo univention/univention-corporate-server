@@ -63,7 +63,7 @@ class RecordNotFound(Exception):
 
 
 class ZoneError(Exception):
-    def __init__(self, nameserver: "NameServer",) -> None:
+    def __init__(self, nameserver: "NameServer") -> None:
         self.nameserver = nameserver
 
     @property
@@ -84,7 +84,7 @@ class CnameAsNameServer(ZoneError):
 
 
 class Zone(object):
-    def __init__(self, udm_zone: simpleLdap, domainname: str,) -> None:
+    def __init__(self, udm_zone: simpleLdap, domainname: str) -> None:
         self.udm_zone = udm_zone
         self.domainname = domainname
 
@@ -105,7 +105,7 @@ class Zone(object):
 
     def nameserver(self) -> Iterator:
         for nameserver in self.udm_zone.get('nameserver'):
-            yield NameServer(self, nameserver,)
+            yield NameServer(self, nameserver)
 
     def umc_link(self) -> Tuple[str, Dict[str, Any]]:
         text = 'udm:dns/dns'
@@ -123,7 +123,7 @@ class Zone(object):
 
 
 class NameServer(object):
-    def __init__(self, zone: Zone, nameserver: str,) -> None:
+    def __init__(self, zone: Zone, nameserver: str) -> None:
         self.zone = zone
         self._nameserver = nameserver
 
@@ -142,16 +142,16 @@ class NameServer(object):
         return not self.is_qualified() or \
             self.nameserver().endswith(self.zone.domainname)
 
-    def _generate_splits(self, fqdn: str,) -> Iterator[Tuple[str, str]]:
+    def _generate_splits(self, fqdn: str) -> Iterator[Tuple[str, str]]:
         zn = fqdn
         while '.' in zn and zn != self.zone.domainname:
-            (rdn, zn) = zn.split('.', 1,)
+            (rdn, zn) = zn.split('.', 1)
             if rdn and zn:
                 yield (rdn, zn)
 
     def build_filter(self) -> str:
         template = '(&(relativeDomainName=%s)(zoneName=%s))'
-        expressions = (ldap.filter.filter_format(template, (rdn, zn),) for (rdn, zn) in self._generate_splits(self.fqdn()))
+        expressions = (ldap.filter.filter_format(template, (rdn, zn)) for (rdn, zn) in self._generate_splits(self.fqdn()))
         return '(|{})'.format(''.join(expressions))
 
 
@@ -161,20 +161,20 @@ class UDM(object):
         univention.admin.modules.update()
         (self.ldap_connection, self.position) = univention.admin.uldap.getMachineConnection()
 
-    def lookup(self, module_name: str, filter_expression: str = '',) -> Iterator[simpleLdap]:
+    def lookup(self, module_name: str, filter_expression: str = '') -> Iterator[simpleLdap]:
         module = udm_modules.get(module_name)
-        for instance in module.lookup(None, self.ldap_connection, filter_expression,):
+        for instance in module.lookup(None, self.ldap_connection, filter_expression):
             instance.open()
             yield instance
 
-    def find(self, nameserver: NameServer,) -> simpleLdap:
+    def find(self, nameserver: NameServer) -> simpleLdap:
         filter_expression = nameserver.build_filter()
         MODULE.process("Trying to find nameserver %s in UDM/LDAP" % (nameserver.fqdn()))
         MODULE.process("Similar to running: univention-ldapsearch '%s'" % (filter_expression))
         for (dn, attr) in self.ldap_connection.search(filter_expression):
             if dn:
-                for module in udm_modules.identify(dn, attr,):
-                    record = udm_objects.get(module, None, self.ldap_connection, self.position, dn, attr=attr, attributes=attr,)
+                for module in udm_modules.identify(dn, attr):
+                    record = udm_objects.get(module, None, self.ldap_connection, self.position, dn, attr=attr, attributes=attr)
                     record.open()
                     return record
         raise RecordNotFound()
@@ -182,18 +182,18 @@ class UDM(object):
     def all_zones(self) -> Iterator[Zone]:
         domainname = ucr.get('domainname')
         for zone in self.lookup('dns/forward_zone'):
-            yield Zone(zone, domainname,)
+            yield Zone(zone, domainname)
         for zone in self.lookup('dns/reverse_zone'):
-            yield Zone(zone, domainname,)
+            yield Zone(zone, domainname)
 
-    def check_zone(self, zone: Zone,) -> Iterator[ZoneError]:
+    def check_zone(self, zone: Zone) -> Iterator[ZoneError]:
         for nameserver in zone.nameserver():
             try:
                 record = self.find(nameserver)
             except RecordNotFound:
                 if not nameserver.is_in_zone():
                     try:
-                        socket.getaddrinfo(nameserver.fqdn(), None,)
+                        socket.getaddrinfo(nameserver.fqdn(), None)
                     except socket.gaierror:
                         yield NoHostRecord(nameserver)
                 else:
@@ -214,7 +214,7 @@ def find_all_zone_problems() -> Iterator[ZoneError]:
             yield error
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     ed = [' '.join([
         _('Found errors in the nameserver entries of the following zones.'),
         _('Please refer to {sdb} for further information.'),
@@ -222,18 +222,18 @@ def run(_umc_instance: Instance,) -> None:
     modules = []
     tmpl_forward = _('In forward zone {name} (see {{{link}}}):')
     tmpl_reverse = _('In reverse zone {name} (see {{{link}}}):')
-    for (zone, group) in it.groupby(find_all_zone_problems(), lambda error,: error.zone,):
+    for (zone, group) in it.groupby(find_all_zone_problems(), lambda error: error.zone):
         (text, link) = zone.umc_link()
         ed.append('')
         if zone.kind == 'dns/forward_zone':
-            ed.append(tmpl_forward.format(kind=zone.kind, name=zone.zone, link=text,))
+            ed.append(tmpl_forward.format(kind=zone.kind, name=zone.zone, link=text))
         elif zone.kind == 'dns/reverse_zone':
-            ed.append(tmpl_reverse.format(kind=zone.kind, name=zone.zone, link=text,))
+            ed.append(tmpl_reverse.format(kind=zone.kind, name=zone.zone, link=text))
         ed.extend(str(error) for error in group)
         modules.append(link)
 
     if modules:
-        raise Warning(description='\n'.join(ed), umc_modules=modules,)
+        raise Warning(description='\n'.join(ed), umc_modules=modules)
 
 
 if __name__ == '__main__':

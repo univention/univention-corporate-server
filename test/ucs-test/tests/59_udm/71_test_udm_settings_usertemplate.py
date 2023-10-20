@@ -28,27 +28,27 @@ def email():
     return '%s.%s' % (random_name(), MAIL_DOMAIN)
 
 
-@pytest.mark.tags('udm-ldapextensions', 'apptest',)
+@pytest.mark.tags('udm-ldapextensions', 'apptest')
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('dangerous')
-def test_create_usertemplate(udm,):
+def test_create_usertemplate(udm):
     """Create a usertemplate object and remove it"""
     template_name = uts.random_name()
-    template = udm.create_object('settings/usertemplate', name=template_name,)
-    utils.verify_ldap_object(template, {'cn': [template_name]},)
+    template = udm.create_object('settings/usertemplate', name=template_name)
+    utils.verify_ldap_object(template, {'cn': [template_name]})
 
-    udm.remove_object('settings/usertemplate', dn=template,)
-    utils.verify_ldap_object(template, should_exist=False,)
+    udm.remove_object('settings/usertemplate', dn=template)
+    utils.verify_ldap_object(template, should_exist=False)
 
 
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 # @pytest.mark.bugs(42765,43428,29672)
-def test_use_usertemplate(udm,):
+def test_use_usertemplate(udm):
     """Use a usertemplate object"""
     template_name = random_name()
 
-    udm.create_object('mail/domain', wait_for_replication=False, name=MAIL_DOMAIN,)
+    udm.create_object('mail/domain', wait_for_replication=False, name=MAIL_DOMAIN)
 
     dn_secretary = udm.create_user(wait_for_replication=False)[0]
 
@@ -58,7 +58,7 @@ def test_use_usertemplate(udm,):
 
     host = random_domain_name()
     path = '/%s' % (random_name(),)
-    dn_share = udm.create_object('shares/share', wait_for_replication=False, name=random_name(), path=path, host=host,)
+    dn_share = udm.create_object('shares/share', wait_for_replication=False, name=random_name(), path=path, host=host)
 
     properties = {
         "name": template_name,
@@ -96,7 +96,7 @@ def test_use_usertemplate(udm,):
         # FIXME: CTX...
     }
     properties['e-mail'] = email()
-    dn_template = udm.create_object(MOD_TMPL, wait_for_replication=False, **properties,)
+    dn_template = udm.create_object(MOD_TMPL, wait_for_replication=False, **properties)
     utils.verify_ldap_object(dn_template, {
         'univentionObjectType': [MOD_TMPL],
         'cn': [template_name],
@@ -133,7 +133,7 @@ def test_use_usertemplate(udm,):
         'mailPrimaryAddress': [properties['mailPrimaryAddress']],
         'mailAlternativeAddress': properties['mailAlternativeAddress'],
         'userOptionsPreset': properties['_options'],
-    },)
+    })
 
     user_properties = {
         'lastname': random_name(),
@@ -151,7 +151,7 @@ def test_use_usertemplate(udm,):
                 'objectTemplate': dn_template,
             },
         }]
-        request = umc.umc_command('udm/add', options, MOD_USER,)
+        request = umc.umc_command('udm/add', options, MOD_USER)
         dn_user = request.result[0]['$dn$']
     else:
         co = None
@@ -159,17 +159,17 @@ def test_use_usertemplate(udm,):
 
         udm_modules.update()
         mod_tmpl = udm_modules.get(MOD_TMPL)
-        udm_modules.init(lo, po, mod_tmpl,)
-        obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template,)
+        udm_modules.init(lo, po, mod_tmpl)
+        obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template)
 
         mod_user = udm_modules.get(MOD_USER)
-        udm_modules.init(lo, po, mod_user, template_object=obj_tmpl,)
-        obj_user = mod_user.object(None, lo, po,)
+        udm_modules.init(lo, po, mod_user, template_object=obj_tmpl)
+        obj_user = mod_user.object(None, lo, po)
         obj_user.open()
         obj_user.info.update(user_properties)
         dn_user = obj_user.create()
 
-    udm._cleanup.setdefault(MOD_USER, [],).append(dn_user)
+    udm._cleanup.setdefault(MOD_USER, []).append(dn_user)
     print('dn_user=%s' % (dn_user,))
 
     utils.verify_ldap_object(dn_user, {
@@ -209,7 +209,7 @@ def test_use_usertemplate(udm,):
         'krb5MaxRenew': ['604800'],
         'krb5KDCFlags': ['254'],
         'krb5KeyVersionNumber': ['1'],
-    },)
+    })
 
 
 def test_replacements():
@@ -269,15 +269,15 @@ def test_replacements():
         'ÿ': 'y',
     }
     for umlaut, expected in previously_hard_coded_umlauts.items():
-        if isinstance(umlaut, bytes,):
+        if isinstance(umlaut, bytes):
             umlaut = umlaut.decode('UTF-8')
         assert unidecode.unidecode(umlaut) == expected
 
 
-def create_template(udm, host, path,):
+def create_template(udm, host, path):
     template_name = random_name()
-    udm.create_object('mail/domain', wait_for_replication=False, name=MAIL_DOMAIN,)
-    dn_share = udm.create_object('shares/share', wait_for_replication=False, name=random_name(), path=path, host=host,)
+    udm.create_object('mail/domain', wait_for_replication=False, name=MAIL_DOMAIN)
+    dn_share = udm.create_object('shares/share', wait_for_replication=False, name=random_name(), path=path, host=host)
     properties = {
         "name": template_name,
         "mailPrimaryAddress": '<:umlauts><firstname>.<lastname><:lower>@%s' % (MAIL_DOMAIN,),
@@ -292,7 +292,7 @@ def create_template(udm, host, path,):
         "homeSharePath": '<:umlauts><username>[0]/<username>',
         "departmentNumber": random_int(),
     }
-    dn_template = udm.create_object(MOD_TMPL, wait_for_replication=False, **properties,)
+    dn_template = udm.create_object(MOD_TMPL, wait_for_replication=False, **properties)
     print("verify that template was created as expected.")
     utils.verify_ldap_object(dn_template, {
         'univentionObjectType': [MOD_TMPL],
@@ -308,28 +308,28 @@ def create_template(udm, host, path,):
         'userHomeSharePathPreset': [properties['homeSharePath']],
         'mailPrimaryAddress': [properties['mailPrimaryAddress']],
         'mailAlternativeAddress': properties['mailAlternativeAddress'],
-    },)
+    })
     return properties, dn_template
 
 
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 # @pytest.mark.bugs(52878)
-def test_use_usertemplate_umlauts(udm,):
+def test_use_usertemplate_umlauts(udm):
     """Test umlauts for usertemplate object"""
     host = random_domain_name()
     path = '/%s' % (random_name(),)
-    properties, dn_template = create_template(udm, host, path,)
+    properties, dn_template = create_template(udm, host, path)
     co = None
     lo, po = getAdminConnection()
     udm_modules.update()
     # get udm module settings/usertemplate
     mod_tmpl = udm_modules.get(MOD_TMPL)
     # the mod_tmpl module is being initialized here
-    udm_modules.init(lo, po, mod_tmpl,)
-    obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template,)
+    udm_modules.init(lo, po, mod_tmpl)
+    obj_tmpl = mod_tmpl.object(co, lo, po, dn=dn_template)
     mod_user = udm_modules.get(MOD_USER)
-    udm_modules.init(lo, po, mod_user, template_object=obj_tmpl,)
+    udm_modules.init(lo, po, mod_user, template_object=obj_tmpl)
     usernames = [
         ("Pınar", "Ağrı", "pinar", "agri"),
         ("ÇçĞğ", "İıŞş", "ccgg", "iiss"),
@@ -350,19 +350,19 @@ def test_use_usertemplate_umlauts(udm,):
             'password': PASSWORD,
             'username': random_name(),
         }
-        obj_user = mod_user.object(None, lo, po,)
+        obj_user = mod_user.object(None, lo, po)
         obj_user.open()
         obj_user.info.update(user_properties)
         dn_user = obj_user.create()
-        udm._cleanup.setdefault(MOD_USER, [],).append(dn_user)
+        udm._cleanup.setdefault(MOD_USER, []).append(dn_user)
         print('verify that email attributes of dn_user=%s are set as expected' % (dn_user,))
         utils.verify_ldap_object(dn_user, {
             'mailPrimaryAddress': ['%s.%s@%s' % (expected_firstname, expected_lastname, MAIL_DOMAIN)],
             'mailAlternativeAddress': ['%s@%s' % (user_properties['username'], MAIL_DOMAIN), '%s@%s' % (expected_lastname, MAIL_DOMAIN)],
-        },)
+        })
 
 
-def test_usertemplate_filter(udm, ucr,):
+def test_usertemplate_filter(udm, ucr):
     properties = {
         'CLIName': 'mail',
         'copyable': '0',
@@ -387,8 +387,8 @@ def test_usertemplate_filter(udm, ucr,):
         'tabPosition': '11',
         'valueRequired': '0',
     }
-    extended_attribute = udm.create_object('settings/extended_attribute', position='cn=custom attributes,cn=univention,%s' % (ucr.get('ldap/base')), **properties,)
-    utils.verify_ldap_object(extended_attribute, should_exist=True,)
+    extended_attribute = udm.create_object('settings/extended_attribute', position='cn=custom attributes,cn=univention,%s' % (ucr.get('ldap/base')), **properties)
+    utils.verify_ldap_object(extended_attribute, should_exist=True)
 
-    template = udm.create_object('settings/usertemplate', name=uts.random_name(), mail='<username>@example.com',)
-    utils.verify_ldap_object(template, {'mail': ['<username>@example.com'], 'objectClass': ['top', 'univentionUserTemplate', 'univentionObject']}, strict=True, should_exist=True,)
+    template = udm.create_object('settings/usertemplate', name=uts.random_name(), mail='<username>@example.com')
+    utils.verify_ldap_object(template, {'mail': ['<username>@example.com'], 'objectClass': ['top', 'univentionUserTemplate', 'univentionObject']}, strict=True, should_exist=True)

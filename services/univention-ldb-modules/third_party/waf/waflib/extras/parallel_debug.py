@@ -124,11 +124,11 @@ COMPILE_TEMPLATE = '''def f(project):
 	%s
 	return ''.join(lst)
 '''
-reg_act = re.compile(r"(?P<backslash>\\)|(?P<dollar>\$\$)|(?P<subst>\$\{(?P<code>[^}]*?)\})", re.M,)
-def compile_template(line,):
+reg_act = re.compile(r"(?P<backslash>\\)|(?P<dollar>\$\$)|(?P<subst>\$\{(?P<code>[^}]*?)\})", re.M)
+def compile_template(line):
 
 	extr = []
-	def repl(match,):
+	def repl(match):
 		g = match.group
 		if g('dollar'):
 			return "$"
@@ -139,7 +139,7 @@ def compile_template(line,):
 			return "<<|@|>>"
 		return None
 
-	line2 = reg_act.sub(repl, line,)
+	line2 = reg_act.sub(repl, line)
 	params = line2.split('<<|@|>>')
 	assert(extr)
 
@@ -148,7 +148,7 @@ def compile_template(line,):
 	buf = []
 	app = buf.append
 
-	def app(txt,):
+	def app(txt):
 		buf.append(indent * '\t' + txt)
 
 	for x in range(len(extr)):
@@ -199,7 +199,7 @@ color2code = {
 mp = {}
 info = [] # list of (text,color)
 
-def map_to_color(name,):
+def map_to_color(name):
 	if name in mp:
 		return mp[name]
 	try:
@@ -220,7 +220,7 @@ def process(self):
 	except KeyError:
 		pass
 
-	self.generator.bld.producer.set_running(1, self,)
+	self.generator.bld.producer.set_running(1, self)
 
 	try:
 		ret = self.run()
@@ -248,7 +248,7 @@ def process(self):
 	if self.hasrun != Task.SUCCESS:
 		m.error_handler(self)
 
-	self.generator.bld.producer.set_running(-1, self,)
+	self.generator.bld.producer.set_running(-1, self)
 
 Task.Task.process_back = Task.Task.process
 Task.Task.process = process
@@ -267,7 +267,7 @@ def do_start(self):
 Runner.Parallel.start = do_start
 
 lock_running = threading.Lock()
-def set_running(self, by, tsk,):
+def set_running(self, by, tsk):
 	with lock_running:
 		try:
 			cache = self.lock_cache
@@ -285,15 +285,15 @@ def set_running(self, by, tsk,):
 			i = cache[tsk]
 			del cache[tsk]
 
-		self.taskinfo.put( (i, id(tsk), time.time(), tsk.__class__.__name__, self.processed, self.count, by, ",".join(map(str, tsk.outputs,)))  )
+		self.taskinfo.put( (i, id(tsk), time.time(), tsk.__class__.__name__, self.processed, self.count, by, ",".join(map(str, tsk.outputs)))  )
 Runner.Parallel.set_running = set_running
 
-def name2class(name,):
-	return name.replace(' ', '_',).replace('.', '_',)
+def name2class(name):
+	return name.replace(' ', '_').replace('.', '_')
 
-def make_picture(producer,):
+def make_picture(producer):
 	# first, cast the parameters
-	if not hasattr(producer.bld, 'path',):
+	if not hasattr(producer.bld, 'path'):
 		return
 
 	tmp = []
@@ -319,7 +319,7 @@ def make_picture(producer,):
 				continue
 
 			info.append((name, map_to_color(name)))
-		info.sort(key=lambda x,: x[0])
+		info.sort(key=lambda x: x[0])
 
 	thread_count = 0
 	acc = []
@@ -360,7 +360,7 @@ def make_picture(producer,):
 
 		begin = line[2]
 		thread_id = line[0]
-		for y in range(x + 1, len(tmp),):
+		for y in range(x + 1, len(tmp)):
 			line = tmp[y]
 			if line[1] == id:
 				end = line[2]
@@ -449,14 +449,14 @@ def make_picture(producer,):
 
 	node = producer.bld.path.make_node('pdebug.svg')
 	node.write(txt)
-	Logs.warn('Created the diagram %r', node,)
+	Logs.warn('Created the diagram %r', node)
 
-def options(opt,):
+def options(opt):
 	opt.add_option('--dtitle', action='store', default='Parallel build representation for %r' % ' '.join(sys.argv),
-		help='title for the svg diagram', dest='dtitle',)
-	opt.add_option('--dwidth', action='store', type='int', help='diagram width', default=800, dest='dwidth',)
-	opt.add_option('--dtime', action='store', type='float', help='recording interval in seconds', default=0.009, dest='dtime',)
-	opt.add_option('--dband', action='store', type='int', help='band width', default=22, dest='dband',)
-	opt.add_option('--dmaxtime', action='store', type='float', help='maximum time, for drawing fair comparisons', default=0, dest='dmaxtime',)
-	opt.add_option('--dnotooltip', action='store_true', help='disable tooltips', default=False, dest='dnotooltip',)
+		help='title for the svg diagram', dest='dtitle')
+	opt.add_option('--dwidth', action='store', type='int', help='diagram width', default=800, dest='dwidth')
+	opt.add_option('--dtime', action='store', type='float', help='recording interval in seconds', default=0.009, dest='dtime')
+	opt.add_option('--dband', action='store', type='int', help='band width', default=22, dest='dband')
+	opt.add_option('--dmaxtime', action='store', type='float', help='maximum time, for drawing fair comparisons', default=0, dest='dmaxtime')
+	opt.add_option('--dnotooltip', action='store_true', help='disable tooltips', default=False, dest='dnotooltip')
 

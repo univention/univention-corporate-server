@@ -60,10 +60,10 @@ Dict mapping the platform names to Waf tools finding specific C++ compilers::
 
 def default_compilers():
 	build_platform = Utils.unversioned_sys_platform()
-	possible_compiler_list = cxx_compiler.get(build_platform, cxx_compiler['default'],)
+	possible_compiler_list = cxx_compiler.get(build_platform, cxx_compiler['default'])
 	return ' '.join(possible_compiler_list)
 
-def configure(conf,):
+def configure(conf):
 	"""
 	Detects a suitable C++ compiler
 
@@ -74,7 +74,7 @@ def configure(conf,):
 	except AttributeError:
 		conf.fatal("Add options(opt): opt.load('compiler_cxx')")
 
-	for compiler in re.split('[ ,]+', test_for_compiler,):
+	for compiler in re.split('[ ,]+', test_for_compiler):
 		conf.env.stash()
 		conf.start_msg('Checking for %r (C++ compiler)' % compiler)
 		try:
@@ -82,7 +82,7 @@ def configure(conf,):
 		except conf.errors.ConfigurationError as e:
 			conf.env.revert()
 			conf.end_msg(False)
-			debug('compiler_cxx: %r', e,)
+			debug('compiler_cxx: %r', e)
 		else:
 			if conf.env.CXX:
 				conf.end_msg(conf.env.get_flat('CXX'))
@@ -94,7 +94,7 @@ def configure(conf,):
 	else:
 		conf.fatal('could not configure a C++ compiler!')
 
-def options(opt,):
+def options(opt):
 	"""
 	This is how to provide compiler preferences on the command-line::
 
@@ -105,7 +105,7 @@ def options(opt,):
 	cxx_compiler_opts = opt.add_option_group('Configuration options')
 	cxx_compiler_opts.add_option('--check-cxx-compiler', default=None,
 		help='list of C++ compilers to try [%s]' % test_for_compiler,
-		dest="check_cxx_compiler",)
+		dest="check_cxx_compiler")
 
 	for x in test_for_compiler.split():
 		opt.load('%s' % x)

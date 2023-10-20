@@ -69,15 +69,17 @@ property_descriptions = {
         syntax=univention.admin.syntax.string_numbers_letters_dots,
         include_in_default_search=True,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'displayName': univention.admin.property(
         short_description=_('Display name'),
         long_description='',
         syntax=univention.admin.syntax.LocalizedDisplayName,
         multivalue=True,
-        required=True,),
+        required=True,
+    ),
 }
-layout = [Tab(_('General'), _('Basic settings'), layout=["name"],)]
+layout = [Tab(_('General'), _('Basic settings'), layout=["name"])]
 mapping = univention.admin.mapping.mapping()
 
 
@@ -85,14 +87,14 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0,):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     res = []
     for child in childmodules:
         portal_module = univention.admin.modules.get(child)
-        res.extend(portal_module.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit,))
+        res.extend(portal_module.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
 
     return res
 
 
-def identify(dn, attr, canonical=False,):
+def identify(dn, attr, canonical=False):
     pass

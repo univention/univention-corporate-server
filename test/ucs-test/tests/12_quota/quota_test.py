@@ -13,37 +13,37 @@ import quota_cache as qc
 
 class QuotaCheck:
 
-    def __init__(self, quota_type="usrquota", fs_type="ext4",):
+    def __init__(self, quota_type="usrquota", fs_type="ext4"):
         ucr = ucr_test.UCSTestConfigRegistry()
         ucr.load()
         self.ldap_base = ucr.get('ldap/base')
         self.my_fqdn = '%(hostname)s.%(domainname)s' % ucr
         account = utils.UCSTestDomainAdminCredentials()
-        self.umc_client = Client(self.my_fqdn, username=account.username, password=account.bindpw,)
+        self.umc_client = Client(self.my_fqdn, username=account.username, password=account.bindpw)
         self.share_name = uts.random_name()
         self.share_name2 = uts.random_name()
         self.username = uts.random_name()
         self.quota_type = quota_type
         self.fs_type = fs_type
 
-    def _activate_quota(self, loop_dev,):
+    def _activate_quota(self, loop_dev):
         print("Enable quota")
         options = {"partitionDevice": loop_dev}
-        self.umc_client.umc_command('quota/partitions/activate', options,).result  # noqa: B018
+        self.umc_client.umc_command('quota/partitions/activate', options).result  # noqa: B018
 
-    def _check_quota_settings(self, loop_dev, expected_values={},):
+    def _check_quota_settings(self, loop_dev, expected_values={}):
         print("Check quota settings")
         options = {"filter": "*", "partitionDevice": loop_dev}
-        user_quotas = self.umc_client.umc_command('quota/users/query', options,).result
+        user_quotas = self.umc_client.umc_command('quota/users/query', options).result
         expected_user_quota = {
-            'fileLimitHard': '{}'.format(expected_values.get('fhard', 15,)),
-            'fileLimitSoft': '{}'.format(expected_values.get('fsoft', 10,)),
+            'fileLimitHard': '{}'.format(expected_values.get('fhard', 15)),
+            'fileLimitSoft': '{}'.format(expected_values.get('fsoft', 10)),
             'fileLimitTime': '-',
             'fileLimitUsed': '1',
             'id': f'{self.username}@{loop_dev}',
             'partitionDevice': f'{loop_dev}',
-            'sizeLimitHard': float(expected_values.get('bhard', 4,)),
-            'sizeLimitSoft': float(expected_values.get('bsoft', 1,)),
+            'sizeLimitHard': float(expected_values.get('bhard', 4)),
+            'sizeLimitSoft': float(expected_values.get('bsoft', 1)),
             'sizeLimitTime': '-',
             'sizeLimitUsed': float(0),
             'user': f'{self.username}',
@@ -52,7 +52,7 @@ class QuotaCheck:
         assert expected_user_quota in user_quotas, "Quota was not set through pam"
 
     def test_quota_pam(self):
-        with TempFilesystem(self.quota_type, fs_type=self.fs_type,) as tfs, udm_test.UCSTestUDM() as udm:
+        with TempFilesystem(self.quota_type, fs_type=self.fs_type) as tfs, udm_test.UCSTestUDM() as udm:
             quota_policy = {
                 "inodeSoftLimit": '10',
                 "inodeHardLimit": '15',
@@ -65,15 +65,16 @@ class QuotaCheck:
             self._activate_quota(tfs.loop_dev)
             print("Create Share")
             share = udm.create_object(
-                'shares/share', name=self.share_name, path=tfs.mount_point, host=self.my_fqdn, directorymode="0777",)
+                'shares/share', name=self.share_name, path=tfs.mount_point, host=self.my_fqdn, directorymode="0777",
+            )
             utils.wait_for_replication_and_postrun()
             qc.cache_must_exists(share)
             print("Create user")
-            udm.create_user(username=self.username, check_for_drs_replication=False, wait_for=False,)
+            udm.create_user(username=self.username, check_for_drs_replication=False, wait_for=False)
             print("Create quota policy")
-            policy = self.create_quota_policy(udm, quota_policy,)
+            policy = self.create_quota_policy(udm, quota_policy)
             print("Append quota policy")
-            udm.modify_object("shares/share", dn=share, policy_reference=policy,)
+            udm.modify_object("shares/share", dn=share, policy_reference=policy)
             utils.wait_for_replication_and_postrun()
             qc.check_values(
                 share,
@@ -81,12 +82,13 @@ class QuotaCheck:
                 quota_policy["inodeHardLimit"],
                 quota_policy["spaceSoftLimit"],
                 quota_policy["spaceHardLimit"],
-                quota_policy["reapplyQuota"],)
+                quota_policy["reapplyQuota"],
+            )
             self.touch_file(tfs.mount_point)
             self._check_quota_settings(tfs.loop_dev)
 
     def test_quota_pam_policy_removal(self):
-        with TempFilesystem(self.quota_type, fs_type=self.fs_type,) as tfs, udm_test.UCSTestUDM() as udm:
+        with TempFilesystem(self.quota_type, fs_type=self.fs_type) as tfs, udm_test.UCSTestUDM() as udm:
             quota_policy = {
                 "inodeSoftLimit": '10',
                 "inodeHardLimit": '15',
@@ -105,15 +107,16 @@ class QuotaCheck:
             self._activate_quota(tfs.loop_dev)
             print("Create Share")
             share = udm.create_object(
-                'shares/share', name=self.share_name, path=tfs.mount_point, host=self.my_fqdn, directorymode="0777",)
+                'shares/share', name=self.share_name, path=tfs.mount_point, host=self.my_fqdn, directorymode="0777",
+            )
             utils.wait_for_replication_and_postrun()
             qc.cache_must_exists(share)
             print("Create user")
-            udm.create_user(username=self.username, check_for_drs_replication=False,)
+            udm.create_user(username=self.username, check_for_drs_replication=False)
             print("Create quota policy")
-            policy = self.create_quota_policy(udm, quota_policy,)
+            policy = self.create_quota_policy(udm, quota_policy)
             print("Append quota policy")
-            udm.modify_object("shares/share", dn=share, policy_reference=policy,)
+            udm.modify_object("shares/share", dn=share, policy_reference=policy)
             utils.wait_for_replication_and_postrun()
             qc.check_values(
                 share,
@@ -121,48 +124,51 @@ class QuotaCheck:
                 quota_policy["inodeHardLimit"],
                 quota_policy["spaceSoftLimit"],
                 quota_policy["spaceHardLimit"],
-                quota_policy["reapplyQuota"],)
+                quota_policy["reapplyQuota"],
+            )
             print("Simulate login")
             self.touch_file(tfs.mount_point)
             print("Remove quota policy")
-            udm.modify_object("shares/share", dn=share, policy_dereference=policy,)
+            udm.modify_object("shares/share", dn=share, policy_dereference=policy)
             utils.wait_for_replication_and_postrun()
             print("Simulate login")
             self.touch_file(tfs.mount_point)
-            self._check_quota_settings(tfs.loop_dev, expected_result,)
+            self._check_quota_settings(tfs.loop_dev, expected_result)
 
-    def test_two_shares_on_one_mount(self, quota_policies, expected_result,):
-        with TempFilesystem(self.quota_type, fs_type=self.fs_type,) as tfs, udm_test.UCSTestUDM() as udm:
+    def test_two_shares_on_one_mount(self, quota_policies, expected_result):
+        with TempFilesystem(self.quota_type, fs_type=self.fs_type) as tfs, udm_test.UCSTestUDM() as udm:
             self._activate_quota(tfs.loop_dev)
             print("Create Shares")
 
-            share1_path = os.path.join(tfs.mount_point, self.share_name,)
-            share2_path = os.path.join(tfs.mount_point, self.share_name2,)
+            share1_path = os.path.join(tfs.mount_point, self.share_name)
+            share2_path = os.path.join(tfs.mount_point, self.share_name2)
             os.mkdir(share1_path)
             os.mkdir(share2_path)
 
             share1 = udm.create_object(
-                'shares/share', name=self.share_name, path=share1_path, host=self.my_fqdn, directorymode="0777",)
+                'shares/share', name=self.share_name, path=share1_path, host=self.my_fqdn, directorymode="0777",
+            )
             share2 = udm.create_object(
-                'shares/share', name=self.share_name2, path=share2_path, host=self.my_fqdn, directorymode="0777",)
+                'shares/share', name=self.share_name2, path=share2_path, host=self.my_fqdn, directorymode="0777",
+            )
             utils.wait_for_replication_and_postrun()
             qc.cache_must_exists(share1)
             qc.cache_must_exists(share2)
             print("Create user")
-            udm.create_user(username=self.username, check_for_drs_replication=False,)
+            udm.create_user(username=self.username, check_for_drs_replication=False)
             print("Create quota policies")
             policies = []
             for quota_policy in quota_policies:
-                policies.append(self.create_quota_policy(udm, quota_policy,))
+                policies.append(self.create_quota_policy(udm, quota_policy))
             print("Append quota policies")
-            udm.modify_object("shares/share", dn=share1, policy_reference=policies[0],)
-            udm.modify_object("shares/share", dn=share2, policy_reference=policies[1],)
+            udm.modify_object("shares/share", dn=share1, policy_reference=policies[0])
+            udm.modify_object("shares/share", dn=share2, policy_reference=policies[1])
             utils.wait_for_replication_and_postrun()
             self.touch_file(tfs.mount_point)
-            self._check_quota_settings(tfs.loop_dev, expected_result,)
+            self._check_quota_settings(tfs.loop_dev, expected_result)
 
     def test_two_shares_on_one_mount_only_one_policy(self):
-        with TempFilesystem(self.quota_type, fs_type=self.fs_type,) as tfs, udm_test.UCSTestUDM() as udm:
+        with TempFilesystem(self.quota_type, fs_type=self.fs_type) as tfs, udm_test.UCSTestUDM() as udm:
             quota_policy = {
                 "inodeSoftLimit": '10',
                 "inodeHardLimit": '15',
@@ -175,39 +181,41 @@ class QuotaCheck:
             self._activate_quota(tfs.loop_dev)
             print("Create Shares")
 
-            share1_path = os.path.join(tfs.mount_point, self.share_name,)
-            share2_path = os.path.join(tfs.mount_point, self.share_name2,)
+            share1_path = os.path.join(tfs.mount_point, self.share_name)
+            share2_path = os.path.join(tfs.mount_point, self.share_name2)
             os.mkdir(share1_path)
             os.mkdir(share2_path)
 
             share1 = udm.create_object(
-                'shares/share', name=self.share_name, path=share1_path, host=self.my_fqdn, directorymode="0777",)
+                'shares/share', name=self.share_name, path=share1_path, host=self.my_fqdn, directorymode="0777",
+            )
             share2 = udm.create_object(
-                'shares/share', name=self.share_name2, path=share2_path, host=self.my_fqdn, directorymode="0777",)
+                'shares/share', name=self.share_name2, path=share2_path, host=self.my_fqdn, directorymode="0777",
+            )
             utils.wait_for_replication_and_postrun()
             qc.cache_must_exists(share1)
             qc.cache_must_exists(share2)
             print("Create user")
-            udm.create_user(username=self.username, check_for_drs_replication=False,)
+            udm.create_user(username=self.username, check_for_drs_replication=False)
             print("Create quota policy")
-            policy = self.create_quota_policy(udm, quota_policy,)
+            policy = self.create_quota_policy(udm, quota_policy)
             print("Append quota policy")
-            udm.modify_object("shares/share", dn=share1, policy_reference=policy,)
+            udm.modify_object("shares/share", dn=share1, policy_reference=policy)
             utils.wait_for_replication_and_postrun()
             self.touch_file(tfs.mount_point)
             self._check_quota_settings(tfs.loop_dev)
 
-    def touch_file(self, mountpoint,):
+    def touch_file(self, mountpoint):
         print(f"Write file on filesystem as user: {self.username}")
         subprocess.check_call([
             "sudo",
             "--user",
             self.username,
             "touch",
-            os.path.join(mountpoint, "foo",),
+            os.path.join(mountpoint, "foo"),
         ])
 
-    def create_quota_policy(self, udm, quota_policy,):
+    def create_quota_policy(self, udm, quota_policy):
         return udm.create_object(
             'policies/share_userquota',
             position='cn=userquota,cn=shares,cn=policies,%s' % self.ldap_base,
@@ -216,12 +224,13 @@ class QuotaCheck:
             hardLimitSpace=quota_policy["spaceHardLimit"],
             softLimitInodes=quota_policy["inodeSoftLimit"],
             hardLimitInodes=quota_policy["inodeHardLimit"],
-            reapplyeverylogin=quota_policy["reapplyQuota"],)
+            reapplyeverylogin=quota_policy["reapplyQuota"],
+        )
 
 
 class TempFilesystem:
 
-    def __init__(self, quota_type, fs_type='ext4',):
+    def __init__(self, quota_type, fs_type='ext4'):
         self.filename = "/tmp/30_quota_pam.fs"
         self.mount_point = "/mnt/30_quota_pam"
         self.quota_type = quota_type
@@ -250,7 +259,7 @@ class TempFilesystem:
         self.loop_dev = subprocess.check_output(["losetup", "--find"]).decode('UTF-8').strip("\n")
         subprocess.check_call(["losetup", self.loop_dev, self.filename])
         print("Mount file")
-        file_mntent = Entry(self.loop_dev, self.mount_point, self.fs_type, options=[self.quota_type],)
+        file_mntent = Entry(self.loop_dev, self.mount_point, self.fs_type, options=[self.quota_type])
         etc_fstab = File()
         etc_fstab.append(file_mntent)
         etc_fstab.save()

@@ -37,7 +37,7 @@ import sys
 import univention.debug as ud
 
 
-is_interactive = bool(getattr(sys, 'ps1', sys.flags.interactive,))
+is_interactive = bool(getattr(sys, 'ps1', sys.flags.interactive))
 
 
 class UDebug(object):
@@ -53,36 +53,36 @@ class UDebug(object):
     }
 
     @classmethod
-    def all(cls, msg,):
+    def all(cls, msg):
         """Write a debug message with level ALL (as in DEBUG)"""
-        cls._log(ud.ALL, msg,)
+        cls._log(ud.ALL, msg)
 
     debug = all
 
     @classmethod
-    def error(cls, msg,):
+    def error(cls, msg):
         """Write a debug message with level ERROR"""
-        cls._log(ud.ERROR, msg,)
+        cls._log(ud.ERROR, msg)
 
     @classmethod
-    def info(cls, msg,):
+    def info(cls, msg):
         """Write a debug message with level INFO"""
-        cls._log(ud.INFO, msg,)
+        cls._log(ud.INFO, msg)
 
     @classmethod
-    def process(cls, msg,):
+    def process(cls, msg):
         """Write a debug message with level PROCESS"""
-        cls._log(ud.PROCESS, msg,)
+        cls._log(ud.PROCESS, msg)
 
     @classmethod
-    def warn(cls, msg,):
+    def warn(cls, msg):
         """Write a debug message with level WARN"""
-        cls._log(ud.WARN, msg,)
+        cls._log(ud.WARN, msg)
 
     warning = warn
 
     @classmethod
-    def _log(cls, level, msg,):
-        ud.debug(cls.target, level, msg,)
+    def _log(cls, level, msg):
+        ud.debug(cls.target, level, msg)
         if is_interactive and level <= ud.INFO:
-            print('{}: {}'.format(cls.level2str[level], msg,))
+            print('{}: {}'.format(cls.level2str[level], msg))

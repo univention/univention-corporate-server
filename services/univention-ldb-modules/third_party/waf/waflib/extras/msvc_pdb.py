@@ -4,17 +4,17 @@
 
 from waflib import TaskGen
 
-@TaskGen.feature('c', 'cxx', 'fc',)
+@TaskGen.feature('c', 'cxx', 'fc')
 @TaskGen.after_method('propagate_uselib_vars')
 def add_pdb_per_object(self):
 	"""For msvc/fortran, specify a unique compile pdb per object, to work
 	around LNK4099. Flags are updated with a unique /Fd flag based on the
 	task output name. This is separate from the link pdb.
 	"""
-	if not hasattr(self, 'compiled_tasks',):
+	if not hasattr(self, 'compiled_tasks'):
 		return
 
-	link_task = getattr(self, 'link_task', None,)
+	link_task = getattr(self, 'link_task', None)
 
 	for task in self.compiled_tasks:
 		if task.inputs and task.inputs[0].name.lower().endswith('.rc'):

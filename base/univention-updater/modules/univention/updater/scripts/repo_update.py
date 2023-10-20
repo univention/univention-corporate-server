@@ -54,18 +54,18 @@ configRegistry = ConfigRegistry()
 configRegistry.load()
 
 # base directory for local repository
-_mirror_base = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository',)
+_mirror_base = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
 # directory of current version's repository
 _current_version = '%s-%s' % (configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))
-_repo_base = os.path.join(_mirror_base, 'mirror', configRegistry.get('version/version'), 'maintained', '%s-0' % configRegistry.get('version/version'),)
+_repo_base = os.path.join(_mirror_base, 'mirror', configRegistry.get('version/version'), 'maintained', '%s-0' % configRegistry.get('version/version'))
 
 
-def copy_repository(options: Namespace, source: str, version: UCS_Version,) -> None:
+def copy_repository(options: Namespace, source: str, version: UCS_Version) -> None:
     """Copy packages and scripts belonging to version from source directory into local repository"""
-    print('Please be patient, copying packages ...', end=' ',)
+    print('Please be patient, copying packages ...', end=' ')
     sys.stdout.flush()
 
-    dest_repo = os.path.join(_mirror_base, 'mirror', '%(major)s.%(minor)s/maintained/%(major)s.%(minor)s-%(patchlevel)s' % version,)
+    dest_repo = os.path.join(_mirror_base, 'mirror', '%(major)s.%(minor)s/maintained/%(major)s.%(minor)s-%(patchlevel)s' % version)
 
     # check if repository already exists
     if os.path.isdir(os.path.join(dest_repo)):
@@ -73,38 +73,38 @@ def copy_repository(options: Namespace, source: str, version: UCS_Version,) -> N
     else:
         # create directory structure
         for arch in urepo.ARCHITECTURES:
-            makedirs(os.path.join(dest_repo, arch,))
+            makedirs(os.path.join(dest_repo, arch))
 
     # copy packages to new directory structure
-    urepo.copy_package_files(source, dest_repo,)
+    urepo.copy_package_files(source, dest_repo)
 
     # create Packages files
-    print('Packages ...', end=' ',)
-    urepo.gen_indexes(dest_repo, version,)
+    print('Packages ...', end=' ')
+    urepo.gen_indexes(dest_repo, version)
 
-    print('Scripts ...', end=' ',)
+    print('Scripts ...', end=' ')
     for script in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
-        if os.path.exists(os.path.join(source, script,)):
-            shutil.copy2(os.path.join(source, script,), os.path.join(dest_repo, 'all', script,),)
+        if os.path.exists(os.path.join(source, script)):
+            shutil.copy2(os.path.join(source, script), os.path.join(dest_repo, 'all', script))
     print('Done.')
 
 
-def update_net(options: Namespace,) -> None:
+def update_net(options: Namespace) -> None:
     """Copy packages and scripts from remote mirror into local repository"""
     mirror = UniventionMirror()
     # update local repository if available
     urepo.assert_local_repository()
     # mirror.run calls "apt-mirror", which needs /etc/apt/mirror.conf, which is
     # only generated with repository/mirror=true
-    if not configRegistry.is_true('repository/mirror', False,):
+    if not configRegistry.is_true('repository/mirror', False):
         print('Error: Mirroring for the local repository is disabled. Set the Univention Configuration Registry variable repository/mirror to yes.')
         sys.exit(1)
 
     # create mirror_base and symbolic link "univention-repository" if missing
-    destdir = os.path.join(configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository',), 'mirror',)
+    destdir = os.path.join(configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository'), 'mirror')
     makedirs(destdir)
     try:
-        os.symlink('.', os.path.join(destdir, 'univention-repository',),)
+        os.symlink('.', os.path.join(destdir, 'univention-repository'))
     except EnvironmentError as e:
         if e.errno != errno.EEXIST:
             raise
@@ -144,25 +144,25 @@ def parse_args() -> Namespace:
     parser.add_argument(
         '-s', '--sync-only', action='store_true',
         dest='sync',
-        help='if given no new release repositories will be added, just the existing will be updated',)
+        help='if given no new release repositories will be added, just the existing will be updated')
     parser.add_argument(
         '-E', '--errata-only', action='store_true',
-        help='if given only errata repositories will be updated',)
+        help='if given only errata repositories will be updated')
     parser.add_argument(
         '-u', '--updateto',
         dest='update_to', default='',
-        help='if given the repository is updated to the specified version but not higher',)
+        help='if given the repository is updated to the specified version but not higher')
     parser.add_argument(
         "command",
         choices=("net", ),
-        help="Update command",)
+        help="Update command")
 
     return parser.parse_args()
 
 
 def main() -> None:
     # PATH does not contain */sbin when called from cron
-    os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',)
+    os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin')
 
     options = parse_args()
 

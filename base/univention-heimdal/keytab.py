@@ -54,7 +54,7 @@ base_domain = '.'.join(x[0][1] for x in ldap.dn.str2dn(listener.configRegistry['
 realm = listener.configRegistry['kerberos/realm']
 server_role = listener.configRegistry['server/role']
 ldap_master = listener.configRegistry['ldap/master']
-samba4_role = listener.configRegistry.get('samba4/role', '',)
+samba4_role = listener.configRegistry.get('samba4/role', '')
 
 
 description = 'Kerberos 5 keytab maintainance'
@@ -90,7 +90,7 @@ def clean() -> None:
         listener.unsetuid()
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> Any:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> Any:
     # don't do anything here if this system is joined as a Samba/AD DC
     if samba4_role.upper() in ('DC', 'RODC'):
         return
@@ -99,7 +99,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) 
         return
 
     if server_role == 'memberserver':
-        ud.debug(ud.LISTENER, ud.PROCESS, 'Fetching %s from %s' % (K5TAB, ldap_master),)
+        ud.debug(ud.LISTENER, ud.PROCESS, 'Fetching %s from %s' % (K5TAB, ldap_master))
         listener.setuid(0)
         try:
             if os.path.exists(K5TAB):
@@ -109,17 +109,17 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) 
                 call(['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), K5TAB])
                 if not os.path.exists(K5TAB):
                     if count > 30:
-                        ud.debug(ud.LISTENER, ud.ERROR, 'E: failed to download keytab for Managed Node',)
+                        ud.debug(ud.LISTENER, ud.ERROR, 'E: failed to download keytab for Managed Node')
                         return -1
-                    ud.debug(ud.LISTENER, ud.WARN, 'W: failed to download keytab for Managed Node, retry',)
+                    ud.debug(ud.LISTENER, ud.WARN, 'W: failed to download keytab for Managed Node, retry')
                     count += 1
                     time.sleep(2)
-            os.chown(K5TAB, 0, 0,)
-            os.chmod(K5TAB, 0o600,)
+            os.chown(K5TAB, 0, 0)
+            os.chmod(K5TAB, 0o600)
         finally:
             listener.unsetuid()
     else:
-        ud.debug(ud.LISTENER, ud.PROCESS, 'Exporting %s on %s' % (K5TAB, server_role),)
+        ud.debug(ud.LISTENER, ud.PROCESS, 'Exporting %s on %s' % (K5TAB, server_role))
         listener.setuid(0)
         try:
             if old:

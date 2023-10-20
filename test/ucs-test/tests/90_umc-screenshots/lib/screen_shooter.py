@@ -6,7 +6,7 @@ import univention.testing.udm as udm_test
 
 
 class BaseScreenShooter:
-    def __init__(self, translator=None,):
+    def __init__(self, translator=None):
         self.args = self.parse_args()
         if translator is not None:
             translator.set_language(self.args.language)
@@ -21,16 +21,17 @@ class BaseScreenShooter:
         self.selenium.__enter__()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback,):
-        self.udm.__exit__(exc_type, exc_value, traceback,)
-        self.selenium.__exit__(exc_type, exc_value, traceback,)
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.udm.__exit__(exc_type, exc_value, traceback)
+        self.selenium.__exit__(exc_type, exc_value, traceback)
 
     def parse_args(self):
         parser = argparse.ArgumentParser(description='Script for taking screenshots of the UMC.')
         parser.add_argument(
             '-l', '--language', dest='language', default='en', help='Two digit'
             ' language code. Defines the language the screenshots will be made'
-            ' with. Default is "en".',)
+            ' with. Default is "en".',
+        )
         args = parser.parse_args()
         return args
 

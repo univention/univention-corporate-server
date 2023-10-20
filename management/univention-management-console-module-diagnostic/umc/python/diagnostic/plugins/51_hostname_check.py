@@ -48,19 +48,19 @@ links = [{
     'label': _('RFC 1123 - 2.1 Host Names and Numbers'),
 }]
 
-VALID_HOSTNAME = re.compile(r"^(?!-)[A-Z0-9-]{1,63}(?<!-)$", re.IGNORECASE,)
+VALID_HOSTNAME = re.compile(r"^(?!-)[A-Z0-9-]{1,63}(?<!-)$", re.IGNORECASE)
 run_descr = ['Checks for non-compliant hostnames. Check https://tools.ietf.org/html/rfc1123#section-2 for the syntax of hostnames']
 
 
 def univention_hostnames() -> Iterator[str]:
     lo = univention.uldap.getMachineConnection()
-    for (dn, attr) in lo.search('(objectClass=univentionHost)', attr=['cn'],):
+    for (dn, attr) in lo.search('(objectClass=univentionHost)', attr=['cn']):
         if dn is not None:
             for hostname in attr.get('cn'):
                 yield hostname.decode('UTF-8')
 
 
-def compliant_hostname(hostname: str,) -> bool:
+def compliant_hostname(hostname: str) -> bool:
     return bool(VALID_HOSTNAME.match(hostname))
 
 
@@ -70,7 +70,7 @@ def non_compliant_hostnames() -> Iterator[str]:
             yield hostname
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     hostnames = list(non_compliant_hostnames())
     if hostnames:
         invalid = _('The following non-compliant hostnames have been found: {hostnames}.')

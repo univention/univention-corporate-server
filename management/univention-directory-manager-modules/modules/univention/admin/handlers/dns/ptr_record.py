@@ -60,7 +60,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'dNSZone'],),
+        objectClasses=['top', 'dNSZone'],
+    ),
 }
 property_descriptions = {
     'address': univention.admin.property(
@@ -68,44 +69,47 @@ property_descriptions = {
         long_description=_('The host part of the IP address in reverse notation (e.g. \"172.16.1.2/16\" -> \"2.1\" or \"2001:0db8:0100::0007:0008/96\" -> \"8.0.0.0.7.0.0.0\").'),
         syntax=univention.admin.syntax.dnsPTR,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'ip': univention.admin.property(
         short_description=_('IP Address'),
         long_description='',
         syntax=univention.admin.syntax.ipAddress,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'ptr_record': univention.admin.property(
         short_description=_('Pointer record'),
         long_description=_("FQDNs must end with a dot."),
         syntax=univention.admin.syntax.dnsName,
         multivalue=True,
         include_in_default_search=True,
-        required=True,),
+        required=True,
+    ),
 }
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('General pointer record settings'), layout=[
             ['ip', 'ptr_record'],
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('address', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII',)
-mapping.register('ptr_record', 'pTRRecord', encoding='ASCII',)
+mapping.register('address', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('ptr_record', 'pTRRecord', encoding='ASCII')
 
 
-def ipv6(string,):
+def ipv6(string):
     """
     >>> ipv6('0123456789abcdef0123456789abcdef')
     '0123:4567:89ab:cdef:0123:4567:89ab:cdef'
     """
     assert len(string) == 32, string
-    return ':'.join(string[i:i + 4] for i in range(0, 32, 4,))
+    return ':'.join(string[i:i + 4] for i in range(0, 32, 4))
 
 
-def calc_ip(rev, subnet,):
+def calc_ip(rev, subnet):
     """
     >>> calc_ip(rev='8.0.0.0.7.0.0.0.6.0.0.0.5.0.0.0.4.0.0', subnet='0001:0002:0003:0').exploded
     '0001:0002:0003:0004:0005:0006:0007:0008'
@@ -125,7 +129,7 @@ def calc_ip(rev, subnet,):
     return ip
 
 
-def calc_rev(ip, subnet,):
+def calc_rev(ip, subnet):
     """
     >>> calc_rev(ip='1.2.3.4', subnet='1.2')
     '4.3'
@@ -139,7 +143,7 @@ def calc_rev(ip, subnet,):
         prefix = len(string)
         assert 1 <= prefix < 32
         string += '0' * (32 - prefix)
-        net = ipaddress.IPv6Network(u'%s/%d' % (ipv6(string), 4 * prefix), strict=False,)
+        net = ipaddress.IPv6Network(u'%s/%d' % (ipv6(string), 4 * prefix), strict=False)
         addr = ipaddress.IPv6Address(u'%s' % (ip,))
         host = ''.join(addr.exploded.split(':'))
     else:
@@ -147,7 +151,7 @@ def calc_rev(ip, subnet,):
         prefix = len(octets)
         assert 1 <= prefix < 4
         octets += ['0'] * (4 - prefix)
-        net = ipaddress.IPv4Network(u'%s/%d' % ('.'.join(octets), 8 * prefix), strict=False,)
+        net = ipaddress.IPv4Network(u'%s/%d' % ('.'.join(octets), 8 * prefix), strict=False)
         addr = ipaddress.IPv4Address(u'%s' % (ip,))
         host = addr.exploded.split('.')
     if addr not in net:
@@ -160,76 +164,76 @@ class object(univention.admin.handlers.simpleLdap):
 
     def description(self):
         try:
-            return calc_ip(self.info['address'], self.superordinate.info['subnet'],).compressed
+            return calc_ip(self.info['address'], self.superordinate.info['subnet']).compressed
         except (LookupError, ValueError, AssertionError) as ex:
-            ud.debug(ud.ADMIN, ud.WARN, 'Failed to parse dn=%s: (%s)' % (self.dn, ex),)
-            return super(object, self,).description()
+            ud.debug(ud.ADMIN, ud.WARN, 'Failed to parse dn=%s: (%s)' % (self.dn, ex))
+            return super(object, self).description()
 
     def open(self):
-        super(object, self,).open()
+        super(object, self).open()
         try:
-            self.info['ip'] = calc_ip(self.info['address'], self.superordinate.info['subnet'],).compressed
+            self.info['ip'] = calc_ip(self.info['address'], self.superordinate.info['subnet']).compressed
             self.save()
         except (LookupError, ValueError, AssertionError) as ex:
-            ud.debug(ud.ADMIN, ud.WARN, 'Failed to parse dn=%s: (%s)' % (self.dn, ex),)
+            ud.debug(ud.ADMIN, ud.WARN, 'Failed to parse dn=%s: (%s)' % (self.dn, ex))
 
     def ready(self):
         old_ip = self.oldinfo.get('ip')
         new_ip = self.info.get('ip')
         if old_ip != new_ip:
             try:
-                self.info['address'] = calc_rev(new_ip, self.superordinate.info['subnet'],)
+                self.info['address'] = calc_rev(new_ip, self.superordinate.info['subnet'])
             except (LookupError, ValueError, AssertionError) as ex:
-                ud.debug(ud.ADMIN, ud.WARN, 'Failed to handle address: dn=%s addr=%r (%s)' % (self.dn, new_ip, ex),)
+                ud.debug(ud.ADMIN, ud.WARN, 'Failed to handle address: dn=%s addr=%r (%s)' % (self.dn, new_ip, ex))
                 raise univention.admin.uexceptions.InvalidDNS_Information(_('Reverse zone and IP address are incompatible.'))
-        super(object, self,).ready()
+        super(object, self).ready()
 
     def _updateZone(self):
         if self.update_zone:
             self.superordinate.open()
             self.superordinate.modify()
 
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True,):
+    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
         self.update_zone = update_zone
-        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes,)
+        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
     def _ldap_addlist(self):
-        return super(object, self,)._ldap_addlist() + [
-            (self.superordinate.mapping.mapName('subnet'), self.superordinate.mapping.mapValue('subnet', self.superordinate['subnet'],)),
+        return super(object, self)._ldap_addlist() + [
+            (self.superordinate.mapping.mapName('subnet'), self.superordinate.mapping.mapValue('subnet', self.superordinate['subnet'])),
         ]
 
     def _ldap_post_modify(self):
-        super(object, self,)._ldap_post_modify()
+        super(object, self)._ldap_post_modify()
         if self.hasChanged(self.descriptions.keys()):
             self._updateZone()
 
     def _ldap_post_create(self):
-        super(object, self,)._ldap_post_create()
+        super(object, self)._ldap_post_create()
         self._updateZone()
 
     def _ldap_post_remove(self):
-        super(object, self,)._ldap_post_remove()
+        super(object, self)._ldap_post_remove()
         self._updateZone()
 
     @classmethod
-    def lookup_filter_superordinate(cls, filter, superordinate,):
-        filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('subnet', superordinate['subnet'],), escape=True,))
-        filter = rewrite_rev(filter, superordinate.info['subnet'],)
+    def lookup_filter_superordinate(cls, filter, superordinate):
+        filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('subnet', superordinate['subnet']), escape=True))
+        filter = rewrite_rev(filter, superordinate.info['subnet'])
         return filter
 
     @classmethod
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone',),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@',)],),
+            univention.admin.filter.expression('objectClass', 'dNSZone'),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
             univention.admin.filter.conjunction('|', [
-                univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False,),
-                univention.admin.filter.expression('zoneName', '*.ip6.arpa', escape=False,),
-            ],),
-        ],)
+                univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False),
+                univention.admin.filter.expression('zoneName', '*.ip6.arpa', escape=False),
+            ]),
+        ])
 
 
-def rewrite_rev(filter, subnet,):
+def rewrite_rev(filter, subnet):
     """
     Rewrite LDAP filter expression and convert (ip) -> (zone,reversed)
 
@@ -252,15 +256,15 @@ def rewrite_rev(filter, subnet,):
     >>> rewrite_rev(expression('ip', '1:2:3:*', escape=False), subnet='0001:0002')
     conjunction('&', [expression('zoneName', '2.0.0.0.1.0.0.0.ip6.arpa', '='), expression('relativeDomainName', '*.3.0.0.0', '=')])
     """
-    if isinstance(filter, conjunction,):
-        filter.expressions = [rewrite_rev(expr, subnet,) for expr in filter.expressions]
-    if isinstance(filter, expression,) and filter.variable == 'ip':
+    if isinstance(filter, conjunction):
+        filter.expressions = [rewrite_rev(expr, subnet) for expr in filter.expressions]
+    if isinstance(filter, expression) and filter.variable == 'ip':
         if ':' in subnet:
             string = ''.join(subnet.split(':'))
             prefix = len(string)
             assert 1 <= prefix < 32
             addr = ''.join(
-                part if '*' in part else part.rjust(4, '0',)[-4:]
+                part if '*' in part else part.rjust(4, '0')[-4:]
                 for part in filter.value.split(':')
             )
             suffix = '.ip6.arpa'
@@ -272,9 +276,9 @@ def rewrite_rev(filter, subnet,):
             suffix = '.in-addr.arpa'
         addr_net, addr_host = ('.'.join(reversed(_)) for _ in (addr[:prefix], addr[prefix:]))
         filter = conjunction('&', [
-            expression('zoneName', addr_net + suffix,),
-            expression('relativeDomainName', addr_host or '*', escape=False,),
-        ],)
+            expression('zoneName', addr_net + suffix),
+            expression('relativeDomainName', addr_host or '*', escape=False),
+        ])
     return filter
 
 
@@ -282,9 +286,9 @@ lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr,):
+def identify(dn, attr):
     return all([
-        b'dNSZone' in attr.get('objectClass', [],),
-        b'@' not in attr.get('relativeDomainName', [],),
-        (attr.get('zoneName', [b''],)[0].decode('ASCII').endswith(ARPA_IP4) or attr.get('zoneName', [b''],)[0].decode('ASCII').endswith(ARPA_IP6)),
+        b'dNSZone' in attr.get('objectClass', []),
+        b'@' not in attr.get('relativeDomainName', []),
+        (attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP4) or attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP6)),
     ])

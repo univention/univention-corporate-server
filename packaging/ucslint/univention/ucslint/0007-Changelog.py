@@ -45,7 +45,7 @@ REticket = re.compile(
     |Issue:?[ ]\#[0-9]{1,6} # Redmine
     |Ticket(\#:[ ]|:?[ ]\#)2[0-9]{3}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(?:1[0-9]{7}|21[0-9]{6})) # OTRS
     (?![0-9]) # not followed by additional digits
-    ''', re.VERBOSE,)
+    ''', re.VERBOSE)
 RECENT_ENTRIES = 2
 
 
@@ -61,39 +61,39 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0007-6': (uub.RESULT_WARN, 'old debian/changelog entries are not strict-monotonically increasing by version'),
         }
 
-    def check(self, path: str,) -> None:
+    def check(self, path: str) -> None:
         super().check(path)
 
-        fn = os.path.join(path, 'debian', 'changelog',)
+        fn = os.path.join(path, 'debian', 'changelog')
         try:
             with open(fn) as stream:
-                changelog = Changelog(stream, strict=True,)
+                changelog = Changelog(stream, strict=True)
         except OSError as ex:
-            self.addmsg('0007-1', 'failed to open and read file: %s' % ex, fn,)
+            self.addmsg('0007-1', 'failed to open and read file: %s' % ex, fn)
             return
         except ChangelogParseError as ex:
-            self.addmsg('0007-1', str(ex), fn,)
+            self.addmsg('0007-1', str(ex), fn)
             return
 
         for change in changelog[0].changes():
             if REticket.search(change):
                 break
         else:
-            self.addmsg('0007-2', 'latest changelog entry does not contain bug/ticket/issue number', fn,)
+            self.addmsg('0007-2', 'latest changelog entry does not contain bug/ticket/issue number', fn)
 
         last = None
         for nr, block in enumerate(changelog):
             if last:
                 if mktime_tz(parsedate_tz(last.date)) <= mktime_tz(parsedate_tz(block.date)):
                     if nr < RECENT_ENTRIES:
-                        self.addmsg('0007-3', f'not strict-monotonically increasing by time: {last.date} <= {block.date}', fn,)
+                        self.addmsg('0007-3', f'not strict-monotonically increasing by time: {last.date} <= {block.date}', fn)
                     else:
-                        self.addmsg('0007-5', f'old not strict-monotonically increasing by time: {last.date} <= {block.date}', fn,)
+                        self.addmsg('0007-5', f'old not strict-monotonically increasing by time: {last.date} <= {block.date}', fn)
 
                 if last.version <= block.version:
                     if nr < RECENT_ENTRIES:
-                        self.addmsg('0007-4', f'not strict-monotonically increasing by version: {last.version} <= {block.version}', fn,)
+                        self.addmsg('0007-4', f'not strict-monotonically increasing by version: {last.version} <= {block.version}', fn)
                     else:
-                        self.addmsg('0007-6', f'old not strict-monotonically increasing by version: {last.version} <= {block.version}', fn,)
+                        self.addmsg('0007-6', f'old not strict-monotonically increasing by version: {last.version} <= {block.version}', fn)
 
             last = block

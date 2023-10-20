@@ -53,7 +53,7 @@ class Bunch:
         return str(self)
 
 
-def check_delivery_mailsink(token, mailsink_files, should_be_delivered,):
+def check_delivery_mailsink(token, mailsink_files, should_be_delivered):
     delivered = False
     print("Waiting for an email delivery")
     for _i in range(TIMEOUT):
@@ -70,7 +70,7 @@ def check_delivery_mailsink(token, mailsink_files, should_be_delivered,):
         utils.fail('Mail sent with token = %r, delivered to the mail sink = %r   expected=%r' % (token, delivered, should_be_delivered))
 
 
-def send_and_check(user, sink_files, in_mail_sink, in_local,):
+def send_and_check(user, sink_files, in_mail_sink, in_local):
     # send mails
     for addr, msg in (
             (user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
@@ -80,13 +80,14 @@ def send_and_check(user, sink_files, in_mail_sink, in_local,):
         token = f'token: {str(time.time())!r}'
         send_mail(
             recipients=addr,
-            msg=token,)
+            msg=token,
+        )
         # check if mail has been delivered to mailsink AND locally
-        check_delivery_mailsink(token, [x.name for x in sink_files], in_mail_sink,)
-        check_delivery(token, user.mailPrimaryAddress, in_local,)
+        check_delivery_mailsink(token, [x.name for x in sink_files], in_mail_sink)
+        check_delivery(token, user.mailPrimaryAddress, in_local)
 
 
-def test_mail_forward(mail_copy_to_self,):
+def test_mail_forward(mail_copy_to_self):
     set_mail_forward_copy_to_self_ucrv(mail_copy_to_self)
     mail_copy_to_self = mail_copy_to_self == 'yes'
     with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, MailSinkGuard() as mail_sink_guard, NetworkRedirector() as nethelper:
@@ -95,17 +96,17 @@ def test_mail_forward(mail_copy_to_self,):
         # get IP addresses of the MX of "univention.de"
         # FIXME: perform a dynamic lookup
         mx_addresses = [
-            dns.resolver.query('mx00.kundenserver.de', 'A',)[0].address,
-            dns.resolver.query('mx01.kundenserver.de', 'A',)[0].address,
+            dns.resolver.query('mx00.kundenserver.de', 'A')[0].address,
+            dns.resolver.query('mx01.kundenserver.de', 'A')[0].address,
         ]
         # setup mailsink and network redirector
-        port = random.randint(60000, 61000,)
+        port = random.randint(60000, 61000)
         sink_files = []
         mail_sinks = []
         for mx_addr in mx_addresses:
-            tmpfd = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp',)
-            nethelper.add_redirection(mx_addr, 25, port,)
-            sink = MailSink('127.0.0.1', port, filename=tmpfd.name,)
+            tmpfd = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
+            nethelper.add_redirection(mx_addr, 25, port)
+            sink = MailSink('127.0.0.1', port, filename=tmpfd.name)
             mail_sink_guard.add(sink)
             sink.start()
             port += 1
@@ -136,7 +137,7 @@ def test_mail_forward(mail_copy_to_self,):
                     'mailForwardAddress': user.mailForwardAddress,
                     'mailForwardCopyToSelf': '1',
                 },
-                strict=True,)
+                strict=True)
         else:
             utils.verify_ldap_object(
                 user.dn,
@@ -146,17 +147,17 @@ def test_mail_forward(mail_copy_to_self,):
                     'mailAlternativeAddress': user.mailAlternativeAddress,
                     'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
                 },
-                strict=True,)
+                strict=True)
 
-        send_and_check(user, sink_files, in_mail_sink=True, in_local=True,)
+        send_and_check(user, sink_files, in_mail_sink=True, in_local=True)
         # disable copy to self
         udm.modify_object(
             'users/user',
             dn=user.dn,
             set={
                 'mailForwardCopyToSelf': '0',
-            },)
-        send_and_check(user, sink_files, in_mail_sink=True, in_local=False,)
+            })
+        send_and_check(user, sink_files, in_mail_sink=True, in_local=False)
 
 
 if __name__ == '__main__':

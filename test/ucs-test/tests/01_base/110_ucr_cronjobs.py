@@ -17,7 +17,7 @@ from univention.config_registry import handler_set, handler_unset
 from univention.testing import utils
 
 
-def ucr_cron(name, time_s, command, description=None, mailto=None, user=None,):
+def ucr_cron(name, time_s, command, description=None, mailto=None, user=None):
     ret = [
         f"cron/{name}/command={command}",
         f"cron/{name}/time={time_s}",
@@ -53,7 +53,7 @@ def main():
 
     # find next minute at least 30s from now
     now = datetime.datetime.now()
-    for somemore in range(30, 80, 10,):
+    for somemore in range(30, 80, 10):
         then = now + datetime.timedelta(seconds=somemore)
         if then.minute > now.minute:
             break
@@ -61,7 +61,7 @@ def main():
     time_s = f"{then.minute} {then.hour} * * *"
     token = str(time.time())
     name = uts.random_name()
-    ucrs = ucr_cron(name, time_s, f"echo {token}", name, "root",)
+    ucrs = ucr_cron(name, time_s, f"echo {token}", name, "root")
     try:
         handler_set(ucrs)
 
@@ -72,25 +72,26 @@ def main():
             day=then.day,
             hour=then.hour,
             minute=then.minute,
-            second=10,)
+            second=10,
+        )
         if not now > cron_plus_ten:
             print(f"Sleeping {(cron_plus_ten - now).seconds} seconds...")
             time.sleep((cron_plus_ten - now).seconds)
     finally:
         if ucrs:
-            handler_unset(map(lambda x,: x.split("=")[0], ucrs,))
+            handler_unset(map(lambda x: x.split("=")[0], ucrs))
 
     # look for mail
     with ucr_test.UCSTestConfigRegistry() as ucr:
-        root_mail_alias = ucr.get("mail/alias/root", "",)
+        root_mail_alias = ucr.get("mail/alias/root", "")
     if "systemmail" in root_mail_alias:
         mailbox = "/var/mail/systemmail"
     else:
         mailbox = "/var/mail/root"
 
-    with open(mailbox, 'rb',) as f:
+    with open(mailbox, 'rb') as f:
         for line in f:
-            if token in line.decode('UTF-8', 'replace',):
+            if token in line.decode('UTF-8', 'replace'):
                 break
         else:
             utils.fail(f"Token '{token}' not found in /var/mail/root at {datetime.datetime.now()}, UCRs: {ucrs}.")

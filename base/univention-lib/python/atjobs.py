@@ -62,7 +62,7 @@ SCRIPT_PREFIX = '# --- Univention-Lib at job  ---'
 COMMENT_PREFIX = '# Comment: '
 
 
-def add(cmd, execTime=None, comments={},):
+def add(cmd, execTime=None, comments={}):
     # type: (str, Union[None, int, float, datetime.datetime], Optional[Mapping[str, str]]) -> Optional[AtJob]
     """
     Add a new command to the job queue given a time
@@ -74,7 +74,7 @@ def add(cmd, execTime=None, comments={},):
     :returns: The created job or `None`.
     :rtype: AtJob or None
     """
-    if isinstance(execTime, (int, float),):
+    if isinstance(execTime, (int, float)):
         start = datetime.datetime.fromtimestamp(execTime)  # type: Optional[datetime.datetime]
     else:
         start = execTime
@@ -90,8 +90,8 @@ def add(cmd, execTime=None, comments={},):
 
     # prevent injections from user supplied input
     # by encoding newlines
-    def _encode_comment(value,):
-        if isinstance(value, bytes,):
+    def _encode_comment(value):
+        if isinstance(value, bytes):
             try:
                 value = value.decode('utf-8')
             except UnicodeDecodeError:
@@ -100,10 +100,10 @@ def add(cmd, execTime=None, comments={},):
 
     # add comments
     if comments:
-        cmd = '\n'.join('%s%s:%s' % (COMMENT_PREFIX, _encode_comment(c[0]).replace(':', '',), _encode_comment(c[1])) for c in comments.items()) + '\n' + SCRIPT_PREFIX + '\n' + cmd
+        cmd = '\n'.join('%s%s:%s' % (COMMENT_PREFIX, _encode_comment(c[0]).replace(':', ''), _encode_comment(c[1])) for c in comments.items()) + '\n' + SCRIPT_PREFIX + '\n' + cmd
 
     # add job
-    p = subprocess.Popen(atCmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,)
+    p = subprocess.Popen(atCmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # send the job to stdin
     out = p.communicate(cmd.encode('UTF-8'))
@@ -115,7 +115,7 @@ def add(cmd, execTime=None, comments={},):
     return None
 
 
-def reschedule(nr, execTime=None,):
+def reschedule(nr, execTime=None):
     # type: (int, Optional[float]) -> Optional[AtJob]
     """
     Re-schedules the at job with the given number for the specified time.
@@ -127,17 +127,17 @@ def reschedule(nr, execTime=None,):
     :rtype: AtJob or None
     :raises: AttributeError: if the job cannot be found.
     """
-    atjob = load(nr, extended=True,)
+    atjob = load(nr, extended=True)
     if atjob is None:
         raise AttributeError('Could not find at job %s' % nr)
     if atjob.command is None:
         raise AttributeError('The command of the at job is not available')
     atjob.rm()
 
-    return add(atjob.command, execTime, atjob.comments,)
+    return add(atjob.command, execTime, atjob.comments)
 
 
-def list(extended=False,):
+def list(extended=False):
     # type: (bool) -> List[AtJob]
     """
     Returns a list of all registered jobs.
@@ -148,8 +148,8 @@ def list(extended=False,):
 
     This can be used to re-schedule a job.
     """
-    p = subprocess.Popen('/usr/bin/atq', stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
-    out = p.communicate()[0].decode('UTF-8', 'replace',).splitlines()
+    p = subprocess.Popen('/usr/bin/atq', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out = p.communicate()[0].decode('UTF-8', 'replace').splitlines()
     jobs = []
     for line in out:
         ijob = _parseJob(line)
@@ -163,7 +163,7 @@ def list(extended=False,):
     return jobs
 
 
-def load(nr, extended=False,):
+def load(nr, extended=False):
     # type: (int, bool) -> Optional[AtJob]
     """
     Load the job given.
@@ -179,7 +179,7 @@ def load(nr, extended=False,):
     return None
 
 
-def remove(nr,):
+def remove(nr):
     # type: (int) -> Optional[int]
     """
     Removes the at job with the given number.
@@ -192,7 +192,7 @@ def remove(nr,):
     return None
 
 
-def _parseScript(job,):
+def _parseScript(job):
     # type: (AtJob) -> None
     """
     Internal function to load the job details by parsing the job of :command:`atq`.
@@ -200,8 +200,8 @@ def _parseScript(job,):
     :param AtJob job: A job.
     """
     # FIXME: This should be a method of the class.
-    p = subprocess.Popen(['/usr/bin/at', '-c', str(job.nr)], stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
-    out = p.communicate()[0].decode('UTF-8', 'replace',).splitlines()
+    p = subprocess.Popen(['/usr/bin/at', '-c', str(job.nr)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out = p.communicate()[0].decode('UTF-8', 'replace').splitlines()
     job.comments = {}
     script = False
     job.command = ''
@@ -212,7 +212,7 @@ def _parseScript(job,):
         if line.startswith(COMMENT_PREFIX):
             line = line[len(COMMENT_PREFIX):]
             try:
-                key, value = line.split(':', 1,)
+                key, value = line.split(':', 1)
             except ValueError:
                 continue
             try:
@@ -224,7 +224,7 @@ def _parseScript(job,):
             script = True
 
 
-def _parseJob(string,):
+def _parseJob(string):
     # type: (str) -> Optional[AtJob]
     """
     Internal method to parse output of :command:`atq`.
@@ -237,11 +237,11 @@ def _parseJob(string,):
     try:
         # change the time locale temporarily to 'C' as atq uses English date format
         # ignoring the currently set locale
-        locale.setlocale(locale.LC_TIME, 'C',)
+        locale.setlocale(locale.LC_TIME, 'C')
 
         # parse string
         tmp = _regWhiteSpace.split(string)
-        execTime = datetime.datetime.strptime(' '.join(tmp[1:6]), _dateTimeFormatRead,)
+        execTime = datetime.datetime.strptime(' '.join(tmp[1:6]), _dateTimeFormatRead)
         isRunning = tmp[6] == '='
         owner = tmp[7]
         nr = int(tmp[0])
@@ -250,9 +250,9 @@ def _parseJob(string,):
         return None
     finally:
         # reset locale to default
-        locale.setlocale(locale.LC_TIME, timeLocale,)
+        locale.setlocale(locale.LC_TIME, timeLocale)
 
-    return AtJob(nr, owner, execTime, isRunning,)
+    return AtJob(nr, owner, execTime, isRunning)
 
 
 class AtJob(object):
@@ -266,7 +266,7 @@ class AtJob(object):
     :param bool isRunning: `True` is the jub is currently running, `False` otherwise.
     """
 
-    def __init__(self, nr, owner, execTime, isRunning,):
+    def __init__(self, nr, owner, execTime, isRunning):
         # type: (int, str, datetime.datetime, bool) -> None
         self.nr = nr
         self.owner = owner
@@ -289,6 +289,6 @@ class AtJob(object):
     def rm(self):
         # type: () -> int
         """Remove the job from the queue."""
-        p = subprocess.Popen(['/usr/bin/atrm', str(self.nr)], stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+        p = subprocess.Popen(['/usr/bin/atrm', str(self.nr)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         p.communicate()
         return p.returncode == 0

@@ -62,23 +62,25 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'password': univention.admin.property(
         short_description=_('Password'),
         long_description='',
         syntax=univention.admin.syntax.userPasswd,
         required=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
 }
 
 layout = [
     Tab(_('Change password'), _('Change password'), [
-        'password'],),
+        'password']),
 ]
 
 object = univention.admin.handlers.users.user.object
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0,):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     dn = lo.whoami()
-    return [user for user in univention.admin.handlers.users.user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit,) if lo.compare_dn(dn, user.dn,)]
+    return [user for user in univention.admin.handlers.users.user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit) if lo.compare_dn(dn, user.dn)]

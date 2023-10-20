@@ -48,7 +48,7 @@ with UCSTestConfigRegistry() as ucr_test:
         print('Executing a server password change')
         try:
             cmd = ['/usr/lib/univention-server/server_password_change']
-            output = subprocess.check_output(cmd).decode('UTF-8', 'replace',)
+            output = subprocess.check_output(cmd).decode('UTF-8', 'replace')
             print('Output of server_password_change:\n%s' % (output))
         except subprocess.CalledProcessError:
             fail('Error running server_password_change')
@@ -66,7 +66,7 @@ with UCSTestConfigRegistry() as ucr_test:
             print('Creating user %s succeeded: ' % user_name)
         # Check if user can be authenticated with current password
         try:
-            umc_client.authenticate(user_name, default_password,)
+            umc_client.authenticate(user_name, default_password)
         except Exception as exc:
             fail('User cannot be authenticated: %s' % exc)
         else:
@@ -118,7 +118,7 @@ with UCSTestConfigRegistry() as ucr_test:
         timeout = 600
         while (not new_password_worked) and (time.time() < t + timeout):
             try:
-                umc_client.authenticate(user_name, new_password,)
+                umc_client.authenticate(user_name, new_password)
             except Exception:
                 time.sleep(5)
                 pass

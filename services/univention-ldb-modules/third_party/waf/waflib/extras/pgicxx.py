@@ -11,8 +11,8 @@ cxx_compiler['linux'].append('pgicxx')
 
 from waflib.extras import pgicc
 
-def configure(conf,):
-	conf.find_pgi_compiler('CXX', 'pgCC',)
+def configure(conf):
+	conf.find_pgi_compiler('CXX', 'pgCC')
 	conf.find_ar()
 	conf.gxx_common_flags()
 	conf.cxx_load_tools()

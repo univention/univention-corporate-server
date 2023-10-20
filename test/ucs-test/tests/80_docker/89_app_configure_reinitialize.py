@@ -9,17 +9,17 @@
 from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 
 
-def assert_content(app, expected,):
+def assert_content(app, expected):
     app.reload_container_id()
     configured_file = app.file('/tmp/configure.output')
-    print('Searching in', configured_file, 'for', expected,)
+    print('Searching in', configured_file, 'for', expected)
     content = open(configured_file).read()
     assert content == expected, f'{content!r} != {expected!r}'
 
 
 if __name__ == '__main__':
     with Appcenter() as appcenter:
-        app = tiny_app(get_app_name(), get_app_version(),)
+        app = tiny_app(get_app_name(), get_app_version())
         try:
             app.set_ini_parameter(
                 DockerScriptConfigure='/tmp/configure',
@@ -48,11 +48,11 @@ exit 0
             app.install()
             app.verify(joined=False)
             app.configure({'CONFIGURE_PARAM': 'test1'})
-            assert_content(app, 'test1',)
+            assert_content(app, 'test1')
             app.configure({'CONFIGURE_PARAM': 'test2'})
-            assert_content(app, 'test2',)
+            assert_content(app, 'test2')
             app.configure({'CONFIGURE_PARAM': None})
-            assert_content(app, '',)
+            assert_content(app, '')
         finally:
             app.uninstall()
             app.remove()

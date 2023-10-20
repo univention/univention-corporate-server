@@ -48,10 +48,10 @@ class Info(UniventionAppAction):
 
     help = 'Show general info'
 
-    def setup_parser(self, parser,):
-        parser.add_argument('--as-json', action='store_true', help='Output in a machine readable format',)
+    def setup_parser(self, parser):
+        parser.add_argument('--as-json', action='store_true', help='Output in a machine readable format')
 
-    def main(self, args,):
+    def main(self, args):
         if args.as_json:
             self._as_json()
         else:
@@ -74,7 +74,7 @@ class Info(UniventionAppAction):
         return '%s-%s errata%s' % (ucr_get('version/version'), ucr_get('version/patchlevel'), ucr_get('version/erratalevel'))
 
     @classmethod
-    def is_compatible(cls, other_version, function=None,):
+    def is_compatible(cls, other_version, function=None):
         if other_version is None:
             return False
         return LooseVersion(other_version) >= LooseVersion("5.0-0")

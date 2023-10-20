@@ -70,13 +70,13 @@ class Server:
 
     child_id = None
 
-    def run(self, args,):
+    def run(self, args):
         self.child_id = None
         setproctitle(proctitle + '   # server')
         # locale must be set before importing UDM!
-        log_init('/dev/stdout', args.debug, args.processes != 1,)
+        log_init('/dev/stdout', args.debug, args.processes != 1)
         language = str(Locale(args.language))
-        locale.setlocale(locale.LC_MESSAGES, language,)
+        locale.setlocale(locale.LC_MESSAGES, language)
         os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
         Translation.set_all_languages(language)
 
@@ -87,7 +87,7 @@ class Server:
 
         # tornado logging
         channel = logging.StreamHandler()
-        channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S',))
+        channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
         logger = logging.getLogger()
         logger.setLevel(logging.INFO)
         logger.addHandler(channel)
@@ -101,15 +101,15 @@ class Server:
         # bind sockets
         socks = []
         if args.port:
-            socks.extend(bind_sockets(args.port, '127.0.0.1', reuse_port=True,))
+            socks.extend(bind_sockets(args.port, '127.0.0.1', reuse_port=True))
 
         if args.unix_socket:
             socks.append(bind_unix_socket(args.unix_socket))
 
         # signal handers
-        signal.signal(signal.SIGTERM, partial(self.signal_handler_stop, None,),)
-        signal.signal(signal.SIGINT, partial(self.signal_handler_stop, None,),)
-        signal.signal(signal.SIGHUP, self.signal_handler_reload,)
+        signal.signal(signal.SIGTERM, partial(self.signal_handler_stop, None))
+        signal.signal(signal.SIGINT, partial(self.signal_handler_stop, None))
+        signal.signal(signal.SIGHUP, self.signal_handler_reload)
 
         # start mutliprocessing
         if args.processes != 1:
@@ -117,43 +117,43 @@ class Server:
                 atexit.unregister(_exit_function)
             self.socks = socks
             try:
-                child_id = tornado.process.fork_processes(args.processes, 0,)
+                child_id = tornado.process.fork_processes(args.processes, 0)
             except RuntimeError as exc:  # tornados way to exit from multiprocessing on failures
                 CORE.info(f'Stopped process: {exc}')
-                self.signal_handler_stop(None, signal.SIGTERM, None,)
+                self.signal_handler_stop(None, signal.SIGTERM, None)
             else:
                 self.start_child(child_id)
                 CORE.info('process ended')
         else:
             self.run_server(socks)
 
-    def start_child(self, child_id,):
+    def start_child(self, child_id):
         setproctitle(proctitle + f'   # child {child_id}')
         self.child_id = child_id
         CORE.info(f'Started child {self.child_id}')
         shared_memory.children[self.child_id] = os.getpid()
         self.run_server(self.socks)
 
-    def run_server(self, socks,):
+    def run_server(self, socks):
         from univention.admin.rest.module import Application
-        application = Application(serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True,))
+        application = Application(serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True))
 
         server = HTTPServer(application)
         server.add_sockets(socks)
 
         # signal handers (after forking)
-        signal.signal(signal.SIGTERM, partial(self.signal_handler_stop, server,),)
-        signal.signal(signal.SIGINT, partial(self.signal_handler_stop, server,),)
-        signal.signal(signal.SIGHUP, self.signal_handler_reload,)
+        signal.signal(signal.SIGTERM, partial(self.signal_handler_stop, server))
+        signal.signal(signal.SIGINT, partial(self.signal_handler_stop, server))
+        signal.signal(signal.SIGHUP, self.signal_handler_reload)
 
         try:
             tornado.ioloop.IOLoop.current().start()
         except Exception:
             CORE.error(traceback.format_exc())
-            self.signal_handler_stop(server, signal.SIGTERM, None,)
+            self.signal_handler_stop(server, signal.SIGTERM, None)
             raise
 
-    def signal_handler_stop(self, server, sig, frame,):
+    def signal_handler_stop(self, server, sig, frame):
         if self.child_id is None:
             try:
                 children_pids = list(shared_memory.children.values())
@@ -161,19 +161,19 @@ class Server:
                 children_pids = []
             CORE.info(f'stopping children: {children_pids!r}')
             for pid in children_pids:
-                self.safe_kill(pid, sig,)
+                self.safe_kill(pid, sig)
 
             shared_memory.shutdown()
         else:
             CORE.info('shutting down in one second')
 
         io_loop = tornado.ioloop.IOLoop.current()
-        loop = getattr(io_loop, 'asyncio_loop', io_loop,)  # Support Python2+3 Tornado version
+        loop = getattr(io_loop, 'asyncio_loop', io_loop)  # Support Python2+3 Tornado version
 
-        def stop_loop(deadline,):
+        def stop_loop(deadline):
             now = time.time()
             if now < deadline:  # and (io_loop.callbacks or io_loop.timeouts):  # FIXME: neither _UnixSelectorEventLoop nor AsyncIOMainLoop have callbacks
-                io_loop.add_timeout(now + 1, stop_loop, deadline,)
+                io_loop.add_timeout(now + 1, stop_loop, deadline)
             else:
                 loop.stop()
 
@@ -185,31 +185,31 @@ class Server:
 
         io_loop.add_callback_from_signal(shutdown)
 
-    def signal_handler_reload(self, signal, frame,):
+    def signal_handler_reload(self, signal, frame):
         if self.child_id is None:
             for pid in shared_memory.children.values():
-                self.safe_kill(pid, signal,)
+                self.safe_kill(pid, signal)
         ucr.load()
         log_reopen()
 
-    def safe_kill(self, pid, signo,):
+    def safe_kill(self, pid, signo):
         try:
-            os.kill(pid, signo,)
+            os.kill(pid, signo)
         except OSError as exc:
             CORE.error(f'Could not kill({signo}) {pid}: {exc}')
         else:
-            os.waitpid(pid, os.WNOHANG,)
+            os.waitpid(pid, os.WNOHANG)
 
     @classmethod
     def main(cls):
         server = cls()
 
         parser = argparse.ArgumentParser()
-        parser.add_argument('-d', '--debug', type=int, default=ucr.get_int('directory/manager/rest/debug/level'), help='debug level',)
-        parser.add_argument('-l', '--language', default='C', help='The process locale',)
-        parser.add_argument('-s', '--unix-socket', help='Bind to a UNIX socket',)
-        parser.add_argument('-p', '--port', help='Bind to a TCP port',)
-        parser.add_argument('-c', '--processes', type=int, default=ucr.get_int('directory/manager/rest/processes'), help='How many processes should be forked',)
+        parser.add_argument('-d', '--debug', type=int, default=ucr.get_int('directory/manager/rest/debug/level'), help='debug level')
+        parser.add_argument('-l', '--language', default='C', help='The process locale')
+        parser.add_argument('-s', '--unix-socket', help='Bind to a UNIX socket')
+        parser.add_argument('-p', '--port', help='Bind to a TCP port')
+        parser.add_argument('-c', '--processes', type=int, default=ucr.get_int('directory/manager/rest/processes'), help='How many processes should be forked')
 
         args = parser.parse_args()
         server.run(args)

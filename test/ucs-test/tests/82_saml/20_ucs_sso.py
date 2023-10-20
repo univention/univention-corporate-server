@@ -12,11 +12,11 @@ import univention.testing.ucr as ucr_test
 from univention.testing.utils import fail, get_ldap_connection
 
 
-def _check_record_type(record_type,):
+def _check_record_type(record_type):
     print(f'Checking record type: {record_type}')
     dns_entries = set()
     try:
-        for addr in dns.resolver.query('ucs-sso.%s' % ucr.get('domainname'), record_type,):
+        for addr in dns.resolver.query('ucs-sso.%s' % ucr.get('domainname'), record_type):
             dns_entries.add(addr.address)
     except dns.resolver.NoAnswer:
         pass
@@ -26,7 +26,7 @@ def _check_record_type(record_type,):
     lo = get_ldap_connection()
     ldap_record_name = {'A': 'aRecord', 'AAAA': 'aAAARecord'}
     ldap_filter = '(|(univentionServerRole=master)(univentionServerRole=backup))'
-    for res in lo.search(ldap_filter, attr=[ldap_record_name[record_type]],):
+    for res in lo.search(ldap_filter, attr=[ldap_record_name[record_type]]):
         if res[1]:
             for ip in res[1].get(ldap_record_name[record_type]):
                 if record_type == 'AAAA':

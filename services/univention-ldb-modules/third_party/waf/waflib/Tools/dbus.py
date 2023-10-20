@@ -23,7 +23,7 @@ from waflib import Task, Errors
 from waflib.TaskGen import taskgen_method, before_method
 
 @taskgen_method
-def add_dbus_file(self, filename, prefix, mode,):
+def add_dbus_file(self, filename, prefix, mode):
 	"""
 	Adds a dbus file to the list of dbus files to process. Store them in the attribute *dbus_lst*.
 
@@ -34,7 +34,7 @@ def add_dbus_file(self, filename, prefix, mode,):
 	:param mode: dbus binding tool mode (--mode=mode)
 	:type mode: string
 	"""
-	if not hasattr(self, 'dbus_lst',):
+	if not hasattr(self, 'dbus_lst'):
 		self.dbus_lst = []
 	if not 'process_dbus' in self.meths:
 		self.meths.append('process_dbus')
@@ -45,11 +45,11 @@ def process_dbus(self):
 	"""
 	Processes the dbus files stored in the attribute *dbus_lst* to create :py:class:`waflib.Tools.dbus.dbus_binding_tool` instances.
 	"""
-	for filename, prefix, mode in getattr(self, 'dbus_lst', [],):
+	for filename, prefix, mode in getattr(self, 'dbus_lst', []):
 		node = self.path.find_resource(filename)
 		if not node:
 			raise Errors.WafError('file not found ' + filename)
-		tsk = self.create_task('dbus_binding_tool', node, node.change_ext('.h'),)
+		tsk = self.create_task('dbus_binding_tool', node, node.change_ext('.h'))
 		tsk.env.DBUS_BINDING_TOOL_PREFIX = prefix
 		tsk.env.DBUS_BINDING_TOOL_MODE   = mode
 
@@ -62,9 +62,9 @@ class dbus_binding_tool(Task.Task):
 	run_str = '${DBUS_BINDING_TOOL} --prefix=${DBUS_BINDING_TOOL_PREFIX} --mode=${DBUS_BINDING_TOOL_MODE} --output=${TGT} ${SRC}'
 	shell   = True # temporary workaround for #795
 
-def configure(conf,):
+def configure(conf):
 	"""
 	Detects the program dbus-binding-tool and sets ``conf.env.DBUS_BINDING_TOOL``
 	"""
-	conf.find_program('dbus-binding-tool', var='DBUS_BINDING_TOOL',)
+	conf.find_program('dbus-binding-tool', var='DBUS_BINDING_TOOL')
 

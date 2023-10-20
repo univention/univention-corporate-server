@@ -34,10 +34,10 @@ class UMCTester(object):
         self.restore_status_file()
 
     def save_status_file(self):
-        copyfile('/var/univention-join/status', '/var/univention-join/status.bak',)
+        copyfile('/var/univention-join/status', '/var/univention-join/status.bak')
 
     def restore_status_file(self):
-        os.rename('/var/univention-join/status.bak', '/var/univention-join/status',)
+        os.rename('/var/univention-join/status.bak', '/var/univention-join/status')
 
     def join_domain(self):
         self.selenium.open_module(_('Domain join'))
@@ -45,11 +45,11 @@ class UMCTester(object):
         self.selenium.click_button(_('Rejoin'))
 
         self.selenium.wait_for_text(_('Confirmation'))
-        self.selenium.enter_input('username', self.selenium.umcLoginUsername,)
-        self.selenium.enter_input('password', self.selenium.umcLoginPassword,)
+        self.selenium.enter_input('username', self.selenium.umcLoginUsername)
+        self.selenium.enter_input('password', self.selenium.umcLoginPassword)
         self.selenium.click_button(_('Rejoin system'))
 
-        self.selenium.wait_for_text(_('A reboot of the server is recommended'), timeout=600,)
+        self.selenium.wait_for_text(_('A reboot of the server is recommended'), timeout=600)
         self.selenium.click_button(_('Cancel'))
 
     def test_if_login_works(self):

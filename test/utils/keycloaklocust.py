@@ -19,54 +19,54 @@ WAIT_MAX = 1
 
 
 @events.init.add_listener
-def on_init(environment,**kwargs):
+def on_init(environment, **kwargs):
     JmeterListener(environment)
 
 
-def logout_at_idp(client, host,):
+def logout_at_idp(client, host):
     logout = "/univention/logout"
     uri = host + logout
-    with client.get(uri, name="/univention/logout/", allow_redirects=True, timeout=30, catch_response=True,) as req3:
+    with client.get(uri, name="/univention/logout/", allow_redirects=True, timeout=30, catch_response=True) as req3:
         if not (200 <= req3.status_code <= 399):
             return
 
 
-def login_at_idp_with_credentials(client, login_link, user,):
+def login_at_idp_with_credentials(client, login_link, user):
     data = {'username': user.username, 'password': user.password}
     name = login_link.split("?")[0]
-    with client.post(login_link, name=name, allow_redirects=True, timeout=30, catch_response=True, data=data,) as res:
+    with client.post(login_link, name=name, allow_redirects=True, timeout=30, catch_response=True, data=data) as res:
         if res.status_code != 200:
             return
-        soup = BeautifulSoup(res.content, features="lxml",)
-        saml_response = soup.find("input", {"name": "SAMLResponse"},)
+        soup = BeautifulSoup(res.content, features="lxml")
+        saml_response = soup.find("input", {"name": "SAMLResponse"})
         if not saml_response:
             res.failure(f"no saml response in: {res.text}")
             return
 
 
-def entry(client, host, user,):
+def entry(client, host, user):
     entry = "/univention/saml/"
     uri = host + entry
     try:
-        with client.get(uri, name=uri, allow_redirects=True, timeout=30, catch_response=True,) as res:
+        with client.get(uri, name=uri, allow_redirects=True, timeout=30, catch_response=True) as res:
             if res.status_code == 401:
-                soup = BeautifulSoup(res.content.decode("utf8"), "html.parser",)
+                soup = BeautifulSoup(res.content.decode("utf8"), "html.parser")
                 title = soup.find("title")
                 if title and "Kerberos" in title.text:
                     res.success()
                     action = soup.find("body").findChild("form").attrs.get("action")
-                    res = client.post(action, name=action, allow_redirects=True, timeout=30, catch_response=True,)
+                    res = client.post(action, name=action, allow_redirects=True, timeout=30, catch_response=True)
 
             if res.status_code != 200:
                 return
             if res.content is None or len(res.content) == 0:
                 return
-            soup = BeautifulSoup(res.content, features="lxml",)
-            login_link = soup.find("form", {"id": "kc-form-login"},)
+            soup = BeautifulSoup(res.content, features="lxml")
+            login_link = soup.find("form", {"id": "kc-form-login"})
             if not login_link:
                 return
             login_link = html.unescape(login_link.get("action"))
-        login_at_idp_with_credentials(client, login_link, user,)
+        login_at_idp_with_credentials(client, login_link, user)
     finally:
         pass
         #logout_at_idp(client, host)
@@ -94,16 +94,16 @@ class TestData(object):
     def groups(self) -> List[str]:
         return self.group_list
 
-    def user(self, username: str,) -> SimpleNamespace:
+    def user(self, username: str) -> SimpleNamespace:
         return SimpleNamespace(**self.user_cache[username])
 
     def random_user(self) -> SimpleNamespace:
         return SimpleNamespace(**self.user_cache[random.choice(self.user_list)])
 
-    def random_users(self, k: int = 10,) -> List[SimpleNamespace]:
+    def random_users(self, k: int = 10) -> List[SimpleNamespace]:
         return [
             SimpleNamespace(**self.user_cache[user])
-            for user in random.sample(self.user_list, k=k,)
+            for user in random.sample(self.user_list, k=k)
         ]
 
     def walk_users(self) -> SimpleNamespace:
@@ -115,16 +115,16 @@ class TestData(object):
         self.user_index += 1
         return SimpleNamespace(**user)
 
-    def group(self, name: str,) -> SimpleNamespace:
+    def group(self, name: str) -> SimpleNamespace:
         return SimpleNamespace(**self.db["groups"][name])
 
     def random_group(self) -> SimpleNamespace:
         return SimpleNamespace(**self.group_cache[random.choice(self.group_list)])
 
-    def random_groups(self, k: int = 10,) -> List[SimpleNamespace]:
+    def random_groups(self, k: int = 10) -> List[SimpleNamespace]:
         return [
             SimpleNamespace(**self.group_cache[group])
-            for group in random.sample(self.group_list, k=k,)
+            for group in random.sample(self.group_list, k=k)
         ]
 
     def walk_groups(self) -> SimpleNamespace:
@@ -146,7 +146,7 @@ class PrimaryAndBackup(HttpUser):
     def get_samlSession(self):
         user = self.td.walk_users()
         host = random.choice(self.hosts)
-        entry(self.client, host, user,)
+        entry(self.client, host, user)
 
 
 class PrimaryOnly(HttpUser):
@@ -157,4 +157,4 @@ class PrimaryOnly(HttpUser):
     @task
     def get_samlSession(self):
         user = self.td.walk_users()
-        entry(self.client, self.host, user,)
+        entry(self.client, self.host, user)

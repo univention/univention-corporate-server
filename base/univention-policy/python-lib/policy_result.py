@@ -39,12 +39,12 @@ from subprocess import PIPE, Popen
 
 class PolicyResultFailed(Exception):
 
-    def __init__(self, message, returncode,):
-        super(PolicyResultFailed, self,).__init__(message)
+    def __init__(self, message, returncode):
+        super(PolicyResultFailed, self).__init__(message)
         self.returncode = returncode
 
 
-def policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None,):
+def policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
     """
     Return a tuple of hash-lists, mapping attributes to a list of values and
     mapping attributes to the matching Policy-DN.
@@ -55,32 +55,32 @@ def policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None,)
     results['univentionDhcpDomainNameServers']
     ['192.168.0.111']
     """
-    results, policies = _policy_result(dn, binddn, bindpw, encoding, ldap_server,)
+    results, policies = _policy_result(dn, binddn, bindpw, encoding, ldap_server)
     return (
-        {_replace_ucr_key(key, encoding,): value for key, value in results.items()},
-        {_replace_ucr_key(key, encoding,): value for key, value in policies.items()},
+        {_replace_ucr_key(key, encoding): value for key, value in results.items()},
+        {_replace_ucr_key(key, encoding): value for key, value in policies.items()},
     )
 
 
-def ucr_policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None,):
+def ucr_policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
     """
     Return a tuple of hash-lists, mapping attributes to a list of values and
     mapping attributes to the matching Policy-DN.
     """
-    results, policies = _policy_result(dn, binddn, bindpw, encoding, ldap_server,)
+    results, policies = _policy_result(dn, binddn, bindpw, encoding, ldap_server)
     return (
-        {_replace_ucr_key(key, encoding,): value for key, value in results.items() if key.startswith('univentionRegistry;entry-hex-')},
-        {_replace_ucr_key(key, encoding,): value for key, value in policies.items() if key.startswith('univentionRegistry;entry-hex-')},
+        {_replace_ucr_key(key, encoding): value for key, value in results.items() if key.startswith('univentionRegistry;entry-hex-')},
+        {_replace_ucr_key(key, encoding): value for key, value in policies.items() if key.startswith('univentionRegistry;entry-hex-')},
     )
 
 
-def _replace_ucr_key(current_attribute, encoding,):
+def _replace_ucr_key(current_attribute, encoding):
     if current_attribute.startswith('univentionRegistry;entry-hex-'):
-        current_attribute = codecs.decode(current_attribute.replace('univentionRegistry;entry-hex-', '',), 'hex',).decode(encoding)
+        current_attribute = codecs.decode(current_attribute.replace('univentionRegistry;entry-hex-', ''), 'hex').decode(encoding)
     return current_attribute
 
 
-def _policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None,):
+def _policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
     if not binddn:
         import univention.config_registry
         cr = univention.config_registry.ConfigRegistry()
@@ -92,21 +92,21 @@ def _policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None,
     if ldap_server:
         command.extend(["-h", ldap_server])
     command.append(dn)
-    p = Popen(command, stdout=PIPE, stderr=PIPE,)
+    p = Popen(command, stdout=PIPE, stderr=PIPE)
     stdout, stderr = p.communicate()
     if p.returncode != 0:
-        raise PolicyResultFailed("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr.decode('utf-8', 'replace',)}, returncode=p.returncode,)
+        raise PolicyResultFailed("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr.decode('utf-8', 'replace')}, returncode=p.returncode)
 
     results = {}  # Attribute -> [Values...]
     policies = {}  # Attribute -> Policy-DN
     current_attribute = None
     policy = None
 
-    for line in stdout.decode(encoding, 'replace',).splitlines():
+    for line in stdout.decode(encoding, 'replace').splitlines():
         if line.startswith('Attribute: '):
             current_attribute = line[len('Attribute: '):]
             policies[current_attribute] = policy
-            current_values = results.setdefault(current_attribute, [],)
+            current_values = results.setdefault(current_attribute, [])
         elif line.startswith('Value: '):
             value = line[len('Value: '):]
             current_values.append(value)

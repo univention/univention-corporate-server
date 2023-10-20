@@ -76,9 +76,9 @@ if six.PY3:
     from itertools import zip_longest
 
     class LooseVersion(LooseVersion):
-        def _cmp(self, other,):
-            for i, j in zip_longest(self.version, other.version, fillvalue='',):
-                if not isinstance(i, type(j),):
+        def _cmp(self, other):
+            for i, j in zip_longest(self.version, other.version, fillvalue=''):
+                if not isinstance(i, type(j)):
                     i = str(i)
                     j = str(j)
                 if i == j:
@@ -92,7 +92,7 @@ if six.PY3:
 
 class CaseSensitiveConfigParser(RawConfigParser):
 
-    def optionxform(self, optionstr,):
+    def optionxform(self, optionstr):
         return optionstr
 
 
@@ -101,13 +101,13 @@ class Requirement(UniventionMetaInfo):
     auto_set_name = True
     pop = True
 
-    def __init__(self, actions, hard, func,):
+    def __init__(self, actions, hard, func):
         self.actions = actions
         self.hard = hard
         self.func = func
 
-    def test(self, app, function, package_manager,):
-        method = getattr(app, self.name,)
+    def test(self, app, function, package_manager):
+        method = getattr(app, self.name)
         kwargs = {}
         arguments = inspect.getfullargspec(method).args[1:]  # remove self
         if 'function' in arguments:
@@ -116,25 +116,25 @@ class Requirement(UniventionMetaInfo):
             kwargs['package_manager'] = package_manager
         return method(**kwargs)
 
-    def contribute_to_class(self, klass, name,):
-        super(Requirement, self,).contribute_to_class(klass, name,)
-        setattr(klass, name, self.func,)
+    def contribute_to_class(self, klass, name):
+        super(Requirement, self).contribute_to_class(klass, name)
+        setattr(klass, name, self.func)
 
 
 def hard_requirement(*actions):
-    return lambda func,: Requirement(actions, True, func,)
+    return lambda func: Requirement(actions, True, func)
 
 
 def soft_requirement(*actions):
-    return lambda func,: Requirement(actions, False, func,)
+    return lambda func: Requirement(actions, False, func)
 
 
 class AppAttribute(UniventionMetaInfo):
     save_as_list = '_attrs'
     auto_set_name = True
 
-    def __init__(self, required=False, default=None, regex=None, choices=None, localisable=False, localisable_by_file=None, strict=True,):
-        super(AppAttribute, self,).__init__()
+    def __init__(self, required=False, default=None, regex=None, choices=None, localisable=False, localisable_by_file=None, strict=True):
+        super(AppAttribute, self).__init__()
         self.regex = regex
         self.default = default
         self.required = required
@@ -143,53 +143,53 @@ class AppAttribute(UniventionMetaInfo):
         self.localisable_by_file = localisable_by_file
         self.strict = strict
 
-    def test_regex(self, regex, value,):
-        if value is not None and not re.match(regex, value,):
+    def test_regex(self, regex, value):
+        if value is not None and not re.match(regex, value):
             raise ValueError('Invalid format')
 
-    def test_choices(self, value,):
+    def test_choices(self, value):
         if value is not None and value not in self.choices:
             raise ValueError('Not allowed')
 
-    def test_required(self, value,):
+    def test_required(self, value):
         if value is None:
             raise ValueError('Value required')
 
-    def test_type(self, value, instance_type,):
+    def test_type(self, value, instance_type):
         if value is not None:
             if instance_type is None:
                 instance_type = string_types
-            if not isinstance(value, instance_type,):
+            if not isinstance(value, instance_type):
                 raise ValueError('Wrong type')
 
-    def test(self, value,):
+    def test(self, value):
         try:
             if self.required:
                 self.test_required(value)
-            self.test_type(value, string_types,)
+            self.test_type(value, string_types)
             if self.choices:
                 self.test_choices(value)
             if self.regex:
-                self.test_regex(self.regex, value,)
+                self.test_regex(self.regex, value)
         except ValueError as e:
             if self.strict:
                 raise
             else:
                 app_logger.warning(str(e))
 
-    def parse(self, value,):
+    def parse(self, value):
         return value
 
-    def get_value(self, component_id, ini_parser, meta_parser, locale,):
-        ini_attr_name = self.name.replace('_', '',)
+    def get_value(self, component_id, ini_parser, meta_parser, locale):
+        ini_attr_name = self.name.replace('_', '')
         priority_sections = [(meta_parser, 'Application'), (ini_parser, 'Application')]
         if self.localisable and locale:
-            priority_sections.insert(0, (meta_parser, locale),)
-            priority_sections.insert(2, (ini_parser, locale),)
+            priority_sections.insert(0, (meta_parser, locale))
+            priority_sections.insert(2, (ini_parser, locale))
         value = self.default
         for parser, section in priority_sections:
             try:
-                value = parser.get(section, ini_attr_name,)
+                value = parser.get(section, ini_attr_name)
             except (NoSectionError, NoOptionError):
                 pass
             else:
@@ -198,19 +198,19 @@ class AppAttribute(UniventionMetaInfo):
         self.test(value)
         return value
 
-    def post_creation(self, app,):
+    def post_creation(self, app):
         pass
 
     # TODO: remove. deprecated
-    def parse_with_ini_file(self, value, ini_file,):
+    def parse_with_ini_file(self, value, ini_file):
         return self.parse(value)
 
     # TODO: remove. deprecated
-    def get(self, value, ini_file,):
+    def get(self, value, ini_file):
         if value is None:
             value = copy(self.default)
         try:
-            value = self.parse_with_ini_file(value, ini_file,)
+            value = self.parse_with_ini_file(value, ini_file)
         except ValueError as exc:
             raise ValueError('%s: %s (%r): %s' % (ini_file, self.name, value, exc))
         else:
@@ -219,21 +219,21 @@ class AppAttribute(UniventionMetaInfo):
 
 
 class AppComponentIDAttribute(AppAttribute):
-    def get_value(self, component_id, ini_parser, meta_parser, locale,):
+    def get_value(self, component_id, ini_parser, meta_parser, locale):
         return component_id
 
 
 class AppUCSVersionAttribute(AppAttribute):
-    def get_value(self, component_id, ini_parser, meta_parser, locale,):
+    def get_value(self, component_id, ini_parser, meta_parser, locale):
         return ucr_get('version/version')
 
 
 class AppBooleanAttribute(AppAttribute):
 
-    def test_type(self, value, instance_type,):
-        super(AppBooleanAttribute, self,).test_type(value, bool,)
+    def test_type(self, value, instance_type):
+        super(AppBooleanAttribute, self).test_type(value, bool)
 
-    def parse(self, value,):
+    def parse(self, value):
         if value in [True, False]:
             return value
         if value is not None:
@@ -248,89 +248,89 @@ class AppBooleanAttribute(AppAttribute):
 
 class AppIntAttribute(AppAttribute):
 
-    def test_type(self, value, instance_type,):
-        super(AppIntAttribute, self,).test_type(value, int,)
+    def test_type(self, value, instance_type):
+        super(AppIntAttribute, self).test_type(value, int)
 
-    def parse(self, value,):
+    def parse(self, value):
         if value is not None:
             return int(value)
 
 
 class AppListAttribute(AppAttribute):
 
-    def parse(self, value,):
+    def parse(self, value):
         if value == '':
             value = None
-        if isinstance(value, string_types,):
-            value = re.split(r'\s*,\s*', value,)
+        if isinstance(value, string_types):
+            value = re.split(r'\s*,\s*', value)
         if value is None:
             value = []
         return value
 
-    def test_required(self, value,):
+    def test_required(self, value):
         if not value:
             raise ValueError('Value required')
 
-    def test_type(self, value, instance_type,):
-        super(AppListAttribute, self,).test_type(value, list,)
+    def test_type(self, value, instance_type):
+        super(AppListAttribute, self).test_type(value, list)
 
-    def test_choices(self, value,):
+    def test_choices(self, value):
         if not value:
             return
         for val in value:
-            super(AppListAttribute, self,).test_choices(val)
+            super(AppListAttribute, self).test_choices(val)
 
-    def test_regex(self, regex, value,):
+    def test_regex(self, regex, value):
         if not value:
             return
         for val in value:
-            super(AppListAttribute, self,).test_regex(regex, val,)
+            super(AppListAttribute, self).test_regex(regex, val)
 
 
 class AppFromFileAttribute(AppAttribute):
-    def __init__(self, klass,):
+    def __init__(self, klass):
         self.klass = klass
 
-    def get_value(self, component_id, ini_file, meta_parser, locale,):
+    def get_value(self, component_id, ini_file, meta_parser, locale):
         return None
 
-    def post_creation(self, app,):
-        values = getattr(app, 'get_%s' % self.name,)()
-        setattr(app, self.name, [value.to_dict() for value in values],)
+    def post_creation(self, app):
+        values = getattr(app, 'get_%s' % self.name)()
+        setattr(app, self.name, [value.to_dict() for value in values])
 
-    def contribute_to_class(self, klass, name,):
-        super(AppFromFileAttribute, self,).contribute_to_class(klass, name,)
+    def contribute_to_class(self, klass, name):
+        super(AppFromFileAttribute, self).contribute_to_class(klass, name)
 
-        def _get_objects_fn(_self,):
+        def _get_objects_fn(_self):
             cache_name = '_%s_cache' % name
-            if not hasattr(_self, cache_name,):
-                app_attributes = self.klass.all_from_file(_self.get_cache_file(name), _self.get_locale(),)
+            if not hasattr(_self, cache_name):
+                app_attributes = self.klass.all_from_file(_self.get_cache_file(name), _self.get_locale())
                 if name == "settings":
-                    custom_settings_file = os.path.join(DATA_DIR, _self.id, 'custom.settings',)
+                    custom_settings_file = os.path.join(DATA_DIR, _self.id, 'custom.settings')
                     if os.path.isfile(custom_settings_file):
                         app_logger.debug("custom settings {} file found".format(custom_settings_file))
-                        app_attributes += self.klass.all_from_file(custom_settings_file, _self.get_locale(),)
-                setattr(_self, cache_name, app_attributes,)
-            return getattr(_self, cache_name,)
+                        app_attributes += self.klass.all_from_file(custom_settings_file, _self.get_locale())
+                setattr(_self, cache_name, app_attributes)
+            return getattr(_self, cache_name)
 
-        setattr(klass, 'get_%s' % name, _get_objects_fn,)
+        setattr(klass, 'get_%s' % name, _get_objects_fn)
 
 
 class AppRatingAttribute(AppListAttribute):
-    def post_creation(self, app,):
+    def post_creation(self, app):
         value = []
         ratings = app.get_app_cache_obj().get_appcenter_cache_obj().get_ratings()
         meta_parser = read_ini_file(app.get_cache_file('meta'))
         for rating in ratings:
             try:
-                val = int(meta_parser.get('Application', rating.name,))
+                val = int(meta_parser.get('Application', rating.name))
             except (ValueError, TypeError, NoSectionError, NoOptionError):
                 pass
             else:
                 rating = rating.to_dict()
                 rating['value'] = val
                 value.append(rating)
-        setattr(app, self.name, value,)
+        setattr(app, self.name, value)
 
 
 # TODO: remove; unused
@@ -338,11 +338,11 @@ class AppLocalisedListAttribute(AppListAttribute):
     _cache = {}
 
     @classmethod
-    def _translate(cls, fname, locale, value, reverse=False,):
+    def _translate(cls, fname, locale, value, reverse=False):
         if fname not in cls._cache:
             cls._cache[fname] = translations = {}
-            cached_file = os.path.join(CACHE_DIR, '.%s' % fname,)
-            localiser = read_ini_file(cached_file, CaseSensitiveConfigParser,)
+            cached_file = os.path.join(CACHE_DIR, '.%s' % fname)
+            localiser = read_ini_file(cached_file, CaseSensitiveConfigParser)
             for section in localiser.sections():
                 translations[section] = dict(localiser.items(section))
         translations = cls._cache[fname].get(locale)
@@ -357,72 +357,72 @@ class AppLocalisedListAttribute(AppListAttribute):
                     value = translations[value]
         return value
 
-    def get_value(self, component_id, ini_parser, meta_parser, locale,):
-        value = super(AppLocalisedListAttribute, self,).get_value(component_id, ini_parser, meta_parser, locale,)
+    def get_value(self, component_id, ini_parser, meta_parser, locale):
+        value = super(AppLocalisedListAttribute, self).get_value(component_id, ini_parser, meta_parser, locale)
         if self.localisable_by_file and locale:
             for i, val in enumerate(value):
-                value[i] = self._translate(self.localisable_by_file, locale, val,)
+                value[i] = self._translate(self.localisable_by_file, locale, val)
         return value
 
 
 class AppLocalisedAppCategoriesAttribute(AppListAttribute):
-    def post_creation(self, app,):
-        value = getattr(app, self.name,)
+    def post_creation(self, app):
+        value = getattr(app, self.name)
         cache = app.get_app_cache_obj().get_appcenter_cache_obj()
-        value = [cache.get_app_categories().get(val.lower(), val,) for val in value]
-        setattr(app, self.name, value,)
+        value = [cache.get_app_categories().get(val.lower(), val) for val in value]
+        setattr(app, self.name, value)
 
 
 class AppAttributeOrFalseOrNone(AppBooleanAttribute):
 
-    def __init__(self, required=False, default=None, regex=None, choices=None, localisable=False, localisable_by_file=None, strict=True,):
+    def __init__(self, required=False, default=None, regex=None, choices=None, localisable=False, localisable_by_file=None, strict=True):
         choices = (choices or [])[:]
         choices.extend([None, False])
-        super(AppAttributeOrFalseOrNone, self,).__init__(required, default, regex, choices, localisable, localisable_by_file, strict,)
+        super(AppAttributeOrFalseOrNone, self).__init__(required, default, regex, choices, localisable, localisable_by_file, strict)
 
-    def parse(self, value,):
+    def parse(self, value):
         if value == 'False':
             value = False
         elif value == 'None':
             value = None
         return value
 
-    def test_type(self, value, instance_type,):
+    def test_type(self, value, instance_type):
         if value is not False and value is not None:
-            super(AppBooleanAttribute, self,).test_type(value, string_types,)
+            super(AppBooleanAttribute, self).test_type(value, string_types)
 
 
 class AppAttributeOrTrueOrNone(AppBooleanAttribute):
-    def parse(self, value,):
+    def parse(self, value):
         if value == 'True':
             value = True
         elif value == 'None':
             value = None
         return value
 
-    def test_type(self, value, instance_type,):
+    def test_type(self, value, instance_type):
         if value is not True and value is not None:
-            super(AppBooleanAttribute, self,).test_type(value, string_types,)
+            super(AppBooleanAttribute, self).test_type(value, string_types)
 
 
 class AppFileAttribute(AppAttribute):
     # TODO: UCR TOKEN
 
-    def __init__(self, required=False, default=None, regex=None, choices=None, localisable=True,):
+    def __init__(self, required=False, default=None, regex=None, choices=None, localisable=True):
         # localisable=True !
-        super(AppFileAttribute, self,).__init__(required, default, regex, choices, localisable,)
+        super(AppFileAttribute, self).__init__(required, default, regex, choices, localisable)
 
-    def get_value(self, component_id, ini_parser, meta_parser, locale,):
+    def get_value(self, component_id, ini_parser, meta_parser, locale):
         return None
 
-    def post_creation(self, app,):
+    def post_creation(self, app):
         value = None
         fname = self.name.upper()
         filenames = [fname, '%s_EN' % fname]
         if self.localisable:
             locale = app.get_locale()
             if locale:
-                filenames.insert(0, '%s_%s' % (fname, locale.upper()),)
+                filenames.insert(0, '%s_%s' % (fname, locale.upper()))
         for filename in filenames:
             try:
                 with open(app.get_cache_file(filename)) as fd:
@@ -431,10 +431,10 @@ class AppFileAttribute(AppAttribute):
                 pass
             else:
                 break
-        setattr(app, self.name, value,)
+        setattr(app, self.name, value)
 
     # TODO: remove. deprecated - attention: install_base.py uses it
-    def get_filename(self, ini_file,):
+    def get_filename(self, ini_file):
         directory = os.path.dirname(ini_file)
         component_id = os.path.splitext(os.path.basename(ini_file))[0]
         fname = self.name.upper()
@@ -442,24 +442,24 @@ class AppFileAttribute(AppAttribute):
         if self.localisable:
             locale = get_locale()
             if locale:
-                localised_file_exts.insert(0, '%s_%s' % (fname, locale.upper()),)
+                localised_file_exts.insert(0, '%s_%s' % (fname, locale.upper()))
         for localised_file_ext in localised_file_exts:
-            filename = os.path.join(directory, '%s.%s' % (component_id, localised_file_ext),)
+            filename = os.path.join(directory, '%s.%s' % (component_id, localised_file_ext))
             if os.path.exists(filename):
                 return filename
 
 
 class AppDockerScriptAttribute(AppAttribute):
 
-    def set_name(self, name,):
-        self.default = os.path.join(CONTAINER_SCRIPTS_PATH, name[14:],)
-        super(AppDockerScriptAttribute, self,).set_name(name)
+    def set_name(self, name):
+        self.default = os.path.join(CONTAINER_SCRIPTS_PATH, name[14:])
+        super(AppDockerScriptAttribute, self).set_name(name)
 
 
 class AppMetaClass(UniventionMetaClass):
 
-    def __new__(mcs, name, bases, attrs,):
-        new_cls = super(AppMetaClass, mcs,).__new__(mcs, name, bases, attrs,)
+    def __new__(mcs, name, bases, attrs):
+        new_cls = super(AppMetaClass, mcs).__new__(mcs, name, bases, attrs)
         # cleanup attrs
         offset = 0
         for i, attr in enumerate(new_cls._attrs[:]):
@@ -468,7 +468,7 @@ class AppMetaClass(UniventionMetaClass):
             except KeyError:
                 pass
             else:
-                if not isinstance(explicit_attr, AppAttribute,):
+                if not isinstance(explicit_attr, AppAttribute):
                     app_logger.debug('Removing %s for %r' % (attr.name, explicit_attr))
                     new_cls._attrs.pop(i + offset)
                     offset -= 1
@@ -483,7 +483,7 @@ class AppMetaClass(UniventionMetaClass):
         return new_cls
 
 
-class App(with_metaclass(AppMetaClass, object,)):
+class App(with_metaclass(AppMetaClass, object)):
     """
     This is the main App class. It represents *one version* of the App in
     the Univention App Center. It is mainly a container for a parsed ini
@@ -856,14 +856,14 @@ class App(with_metaclass(AppMetaClass, object,)):
         With version 2 UDM REST API type information are saved.
     """
 
-    id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True,)
+    id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
     """The required ID"""
 
-    code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True,)
+    code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True)
     component_id = AppComponentIDAttribute(required=True)
     ucs_version = AppUCSVersionAttribute(required=True)
 
-    name = AppAttribute(required=True, localisable=True,)
+    name = AppAttribute(required=True, localisable=True)
     version = AppAttribute(required=True)
     install_permissions = AppBooleanAttribute(default=False)
     install_permissions_message = AppAttribute(localisable=True)
@@ -898,9 +898,9 @@ class App(with_metaclass(AppMetaClass, object,)):
     web_interface_name = AppAttribute(localisable=True)
     web_interface_port_http = AppIntAttribute(default=80)
     web_interface_port_https = AppIntAttribute(default=443)
-    web_interface_proxy_scheme = AppAttribute(default='both', choices=['http', 'https', 'both'],)
+    web_interface_proxy_scheme = AppAttribute(default='both', choices=['http', 'https', 'both'])
     auto_mod_proxy = AppBooleanAttribute(default=True)
-    ucs_overview_category = AppAttributeOrFalseOrNone(default='service', choices=['admin', 'service'],)
+    ucs_overview_category = AppAttributeOrFalseOrNone(default='service', choices=['admin', 'service'])
     background_color = AppAttribute()
     web_interface_link_target = AppAttribute(default='newwindow')
 
@@ -951,8 +951,8 @@ class App(with_metaclass(AppMetaClass, object,)):
     ports_redirection = AppListAttribute(regex=r'^\d+:\d+$')
     ports_redirection_udp = AppListAttribute(regex=r'^\d+:\d+$')
 
-    server_role = AppListAttribute(default=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'], choices=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],)
-    supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'],)
+    server_role = AppListAttribute(default=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'], choices=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'])
+    supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'])
     min_physical_ram = AppIntAttribute(default=0)
     min_free_disk_space = AppIntAttribute(default=None)
 
@@ -975,7 +975,7 @@ class App(with_metaclass(AppMetaClass, object,)):
     docker_allowed_images = AppListAttribute()
     docker_shell_command = AppAttribute(default='/bin/bash')
     docker_volumes = AppListAttribute()
-    docker_server_role = AppAttribute(default='memberserver', choices=['memberserver', 'domaincontroller_slave'],)
+    docker_server_role = AppAttribute(default='memberserver', choices=['memberserver', 'domaincontroller_slave'])
     docker_script_init = AppAttribute()
     docker_script_setup = AppDockerScriptAttribute()
     docker_script_store_data = AppDockerScriptAttribute()
@@ -996,7 +996,7 @@ class App(with_metaclass(AppMetaClass, object,)):
 
     vote_for_app = AppBooleanAttribute()
 
-    def __init__(self, _attrs, _cache,**kwargs):
+    def __init__(self, _attrs, _cache, **kwargs):
         if kwargs:
             _attrs.update(kwargs)
         self._weak_ref_app_cache = None
@@ -1004,7 +1004,7 @@ class App(with_metaclass(AppMetaClass, object,)):
         self._install_permissions_exist = None
         self.set_app_cache_obj(_cache)
         for attr in self._attrs:
-            setattr(self, attr.name, _attrs.get(attr.name),)
+            setattr(self, attr.name, _attrs.get(attr.name))
         self.ucs_version = self.get_ucs_version()  # compatibility
         if self.docker:
             if self.min_free_disk_space is None:
@@ -1012,8 +1012,8 @@ class App(with_metaclass(AppMetaClass, object,)):
             self.supported_architectures = ['amd64']
             if self.plugin_of:
                 for script in ['docker_script_restore_data_before_setup', 'docker_script_restore_data_after_setup']:
-                    if getattr(self, script,) == self.get_attr(script).default:
-                        setattr(self, script, '',)
+                    if getattr(self, script) == self.get_attr(script).default:
+                        setattr(self, script, '')
         else:
             self.auto_mod_proxy = False
             self.ports_redirection = []
@@ -1021,7 +1021,7 @@ class App(with_metaclass(AppMetaClass, object,)):
     def attrs_dict(self):
         ret = {}
         for attr in self._attrs:
-            ret[attr.name] = getattr(self, attr.name,)
+            ret[attr.name] = getattr(self, attr.name)
         return ret
 
     def install_permissions_exist(self):
@@ -1047,7 +1047,7 @@ class App(with_metaclass(AppMetaClass, object,)):
                 # appcenter-docker is not installed
                 return None
             yml_file = self.get_cache_file('compose')
-            content = yaml.load(ucr_run_filter(open(yml_file).read()), yaml.RoundTripLoader, preserve_quotes=True,)
+            content = yaml.load(ucr_run_filter(open(yml_file).read()), yaml.RoundTripLoader, preserve_quotes=True)
             image = content['services'][self.docker_main_service]['image']
             return image
         else:
@@ -1085,29 +1085,29 @@ class App(with_metaclass(AppMetaClass, object,)):
         return 'App(id="%s", version="%s", ucs_version="%s", server="%s")' % (self.id, self.version, self.get_ucs_version(), self.get_server())
 
     @classmethod
-    def _get_meta_parser(cls, ini_file, ini_parser,):
+    def _get_meta_parser(cls, ini_file, ini_parser):
         component_id = os.path.splitext(os.path.basename(ini_file))[0]
-        meta_file = os.path.join(os.path.dirname(ini_file), '%s.meta' % component_id,)
+        meta_file = os.path.join(os.path.dirname(ini_file), '%s.meta' % component_id)
         return read_ini_file(meta_file)
 
     @classmethod
-    def from_ini(cls, ini_file, locale=True, cache=None,):
+    def from_ini(cls, ini_file, locale=True, cache=None):
         # app_logger.debug('Loading app from %s' % ini_file)
         if locale is True:
             locale = get_locale()
         component_id = os.path.splitext(os.path.basename(ini_file))[0]
         ini_parser = read_ini_file(ini_file)
-        meta_parser = cls._get_meta_parser(ini_file, ini_parser,)
+        meta_parser = cls._get_meta_parser(ini_file, ini_parser)
         attr_values = {}
         for attr in cls._attrs:
             value = None
             try:
-                value = attr.get_value(component_id, ini_parser, meta_parser, locale,)
+                value = attr.get_value(component_id, ini_parser, meta_parser, locale)
             except ValueError as e:
                 app_logger.warning('Ignoring %s because of %s: %s' % (ini_file, attr.name, e))
                 return
             attr_values[attr.name] = value
-        return cls(attr_values, cache,)
+        return cls(attr_values, cache)
 
     @property
     def docker(self):
@@ -1169,12 +1169,12 @@ class App(with_metaclass(AppMetaClass, object,)):
         return 'appcenter/apps/%s/pinned' % self.id
 
     @classmethod
-    def get_attr(cls, attr_name,):
+    def get_attr(cls, attr_name):
         for attr in cls._attrs:
             if attr.name == attr_name:
                 return attr
 
-    def get_packages(self, additional=True,):
+    def get_packages(self, additional=True):
         packages = []
         packages.extend(self.default_packages)
         if additional:
@@ -1202,11 +1202,11 @@ class App(with_metaclass(AppMetaClass, object,)):
 
     def is_installed(self):
         if self.docker and not container_mode():
-            return ucr_get(self.ucr_status_key) in ['installed', 'stalled'] and ucr_get(self.ucr_version_key) == self.version and ucr_get(self.ucr_ucs_version_key, self.get_ucs_version(),) == self.get_ucs_version()
+            return ucr_get(self.ucr_status_key) in ['installed', 'stalled'] and ucr_get(self.ucr_version_key) == self.version and ucr_get(self.ucr_ucs_version_key, self.get_ucs_version()) == self.get_ucs_version()
         else:
             if not self.without_repository and not ucr_includes(self.ucr_component_key):
                 return False
-            return packages_are_installed(self.default_packages, strict=False,)
+            return packages_are_installed(self.default_packages, strict=False)
 
     def is_ucs_component(self):
         english_cache = self.get_app_cache_obj().copy(locale='en')
@@ -1222,30 +1222,30 @@ class App(with_metaclass(AppMetaClass, object,)):
         return 'UCS components' in app.categories
 
     def get_share_dir(self):
-        return os.path.join(SHARE_DIR, self.id,)
+        return os.path.join(SHARE_DIR, self.id)
 
-    def get_share_file(self, ext,):
-        return os.path.join(self.get_share_dir(), '%s.%s' % (self.id, ext),)
+    def get_share_file(self, ext):
+        return os.path.join(self.get_share_dir(), '%s.%s' % (self.id, ext))
 
     def get_data_dir(self):
-        return os.path.join(DATA_DIR, self.id, 'data',)
+        return os.path.join(DATA_DIR, self.id, 'data')
 
     def get_conf_dir(self):
-        return os.path.join(DATA_DIR, self.id, 'conf',)
+        return os.path.join(DATA_DIR, self.id, 'conf')
 
-    def get_conf_file(self, fname,):
+    def get_conf_file(self, fname):
         if fname.startswith('/'):
             fname = fname[1:]
-        fname = os.path.join(self.get_conf_dir(), fname,)
+        fname = os.path.join(self.get_conf_dir(), fname)
         if not os.path.exists(fname):
             mkdir(os.path.dirname(fname))
         return fname
 
     def get_compose_dir(self):
-        return os.path.join(DATA_DIR, self.id, 'compose',)
+        return os.path.join(DATA_DIR, self.id, 'compose')
 
-    def get_compose_file(self, fname,):
-        return os.path.join(self.get_compose_dir(), fname,)
+    def get_compose_file(self, fname):
+        return os.path.join(self.get_compose_dir(), fname)
 
     def get_ucs_version(self):
         app_cache = self.get_app_cache_obj()
@@ -1270,14 +1270,14 @@ class App(with_metaclass(AppMetaClass, object,)):
             self.set_app_cache_obj(app_cache)
         return self._weak_ref_app_cache()
 
-    def set_app_cache_obj(self, app_cache_obj,):
+    def set_app_cache_obj(self, app_cache_obj):
         if app_cache_obj:
             self._weak_ref_app_cache = ref(app_cache_obj)
         else:
             self._weak_ref_app_cache = None
 
-    def get_cache_file(self, ext,):
-        return os.path.join(self.get_cache_dir(), '%s.%s' % (self.component_id, ext),)
+    def get_cache_file(self, ext):
+        return os.path.join(self.get_cache_dir(), '%s.%s' % (self.component_id, ext))
 
     def get_ini_file(self):
         return self.get_cache_file('ini')
@@ -1293,7 +1293,7 @@ class App(with_metaclass(AppMetaClass, object,)):
 
     @property
     def secret_on_host(self):
-        return os.path.join(DATA_DIR, self.id, 'machine.secret',)
+        return os.path.join(DATA_DIR, self.id, 'machine.secret')
 
     def get_thumbnail_urls(self):
         if not self.thumbnails:
@@ -1313,20 +1313,20 @@ class App(with_metaclass(AppMetaClass, object,)):
             thumbnails.append('%s/meta-inf/%s/%s%s' % (self.get_server(), ucs_version, app_path, ithumb))
         return thumbnails
 
-    def get_localised(self, key, loc=None,):
+    def get_localised(self, key, loc=None):
         from univention.appcenter.actions import get_action
         get = get_action('get')()
         keys = [(loc, key)]
-        for _section, _name, value in get.get_values(self, keys, warn=False,):
+        for _section, _name, value in get.get_values(self, keys, warn=False):
             return value
 
-    def get_localised_list(self, key, loc=None,):
+    def get_localised_list(self, key, loc=None):
         from univention.appcenter.actions import get_action
         get = get_action('get')()
         ret = []
-        key = key.replace('_', '',).lower()
+        key = key.replace('_', '').lower()
         keys = [(None, key), ('de', key)]
-        for section, _name, value in get.get_values(self, keys, warn=False,):
+        for section, _name, value in get.get_values(self, keys, warn=False):
             if value is None:
                 continue
             if section is None:
@@ -1335,7 +1335,7 @@ class App(with_metaclass(AppMetaClass, object,)):
             ret.append(value)
         return ret
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_have_install_permissions(self):
         """You need to buy the App to install this version."""
         if not self.install_permissions_exist():
@@ -1357,7 +1357,7 @@ class App(with_metaclass(AppMetaClass, object,)):
                 return {'required_version': self.required_app_version_upgrade}
         return True
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_have_fitting_ucs_version(self):
         """The application requires UCS version %(required_version)s."""
         required_ucs_version = None
@@ -1373,11 +1373,11 @@ class App(with_metaclass(AppMetaClass, object,)):
                     return True
         if required_ucs_version is None:
             return {'required_version': self.get_ucs_version()}
-        major, minor = ucr_get('version/version').split('.', 1,)
+        major, minor = ucr_get('version/version').split('.', 1)
         patchlevel = ucr_get('version/patchlevel')
         errata = ucr_get('version/erratalevel')
-        version_bits = re.match(r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$', required_ucs_version,).groups()
-        comparisons = zip(version_bits, [major, minor, patchlevel, errata],)
+        version_bits = re.match(r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$', required_ucs_version).groups()
+        comparisons = zip(version_bits, [major, minor, patchlevel, errata])
         for required, present in comparisons:
             if int(required or 0) > int(present):
                 return {'required_version': required_ucs_version}
@@ -1385,7 +1385,7 @@ class App(with_metaclass(AppMetaClass, object,)):
                 return True
         return True
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_have_fitting_kernel_version(self):
         if self.docker:
             kernel = LooseVersion(os.uname()[2])
@@ -1393,7 +1393,7 @@ class App(with_metaclass(AppMetaClass, object,)):
                 return False
         return True
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_not_be_vote_for_app(self):
         """
         The application is not yet installable. Vote for this app
@@ -1402,15 +1402,15 @@ class App(with_metaclass(AppMetaClass, object,)):
         """
         return not self.vote_for_app
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_not_be_docker_if_docker_is_disabled(self):
         """
         The application uses a container technology while the App Center
         is configured to not not support it
         """
-        return not self.docker or ucr_is_true('appcenter/docker', True,)
+        return not self.docker or ucr_is_true('appcenter/docker', True)
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_not_be_docker_in_docker(self):
         """
         The application uses a container technology while the system
@@ -1419,7 +1419,7 @@ class App(with_metaclass(AppMetaClass, object,)):
         """
         return not self.docker or not container_mode()
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_have_valid_license(self):
         """
         For the installation of this application, a UCS license key
@@ -1446,7 +1446,7 @@ class App(with_metaclass(AppMetaClass, object,)):
         """
         return not self.end_of_life
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_have_supported_architecture(self):
         """
         This application only supports %(supported)s as
@@ -1477,21 +1477,21 @@ class App(with_metaclass(AppMetaClass, object,)):
                 return {'supported': supported, 'msg': msg}
         return True
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_be_joined_if_master_packages(self):
         """This application requires an extension of the LDAP schema"""
         is_joined = os.path.exists('/var/univention-join/joined')
         return bool(is_joined or not self.default_packages_master)
 
-    @hard_requirement('install', 'upgrade', 'remove',)
-    def must_not_have_concurrent_operation(self, package_manager,):
+    @hard_requirement('install', 'upgrade', 'remove')
+    def must_not_have_concurrent_operation(self, package_manager):
         """Another package operation is in progress"""
         if self.docker:
             return True
         else:
             return package_manager.progress_state._finished  # TODO: package_manager.is_finished()
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_have_correct_server_role(self):
         """
         The application cannot be installed on the current server
@@ -1506,8 +1506,8 @@ class App(with_metaclass(AppMetaClass, object,)):
             }
         return True
 
-    @hard_requirement('install', 'upgrade',)
-    def must_have_no_conflicts_packages(self, package_manager,):
+    @hard_requirement('install', 'upgrade')
+    def must_have_no_conflicts_packages(self, package_manager):
         """The application conflicts with the following packages: %r"""
         conflict_packages = []
         for pkgname in self.conflicted_system_packages:
@@ -1517,7 +1517,7 @@ class App(with_metaclass(AppMetaClass, object,)):
             return conflict_packages
         return True
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_have_no_conflicts_apps(self):
         """
         The application conflicts with the following applications:
@@ -1538,7 +1538,7 @@ class App(with_metaclass(AppMetaClass, object,)):
         for i in self.ports_exclusive:
             ports.append(i)
         for i in self.ports_redirection:
-            ports.append(i.split(':', 1,)[0])
+            ports.append(i.split(':', 1)[0])
         for app_id, _container_port, host_port in app_ports():
             if app_id != self.id and str(host_port) in ports:
                 conflictedapps.add(app_id)
@@ -1547,7 +1547,7 @@ class App(with_metaclass(AppMetaClass, object,)):
             return [{'id': app.id, 'name': app.name} for app in conflictedapps if app]
         return True
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def must_have_no_unmet_dependencies(self):
         """The application requires the following applications: %r"""
         from univention.appcenter.app_cache import Apps
@@ -1663,8 +1663,8 @@ class App(with_metaclass(AppMetaClass, object,)):
             return {'minimum': required_free_disk_space, 'current': current_free_disk_space}
         return True
 
-    @soft_requirement('install', 'upgrade',)
-    def shall_have_enough_ram(self, function,):
+    @soft_requirement('install', 'upgrade')
+    def shall_have_enough_ram(self, function):
         """
         The application requires %(minimum)d MB of free RAM but only
         %(current)d MB are available.
@@ -1683,7 +1683,7 @@ class App(with_metaclass(AppMetaClass, object,)):
             return {'minimum': required_ram, 'current': current_ram}
         return True
 
-    @soft_requirement('install', 'upgrade',)
+    @soft_requirement('install', 'upgrade')
     def shall_only_be_installed_in_ad_env_with_password_service(self):
         """
         The application requires the password service to be set up
@@ -1691,7 +1691,7 @@ class App(with_metaclass(AppMetaClass, object,)):
         """
         return not self._has_active_ad_member_issue('password')
 
-    @hard_requirement('install', 'upgrade',)
+    @hard_requirement('install', 'upgrade')
     def shall_not_be_docker_if_discouraged(self):
         """
         The application has not been approved to migrate all
@@ -1711,7 +1711,7 @@ class App(with_metaclass(AppMetaClass, object,)):
             ret = ucr_is_true('appcenter/prudence/docker/%s' % self.plugin_of)
         return ret
 
-    def check(self, function,):
+    def check(self, function):
         from univention.appcenter.app_cache import Apps
         package_manager = get_package_manager()
         hard_problems = {}
@@ -1725,7 +1725,7 @@ class App(with_metaclass(AppMetaClass, object,)):
         for requirement in self._requirements:
             if function not in requirement.actions:
                 continue
-            result = requirement.test(self, function, package_manager,)
+            result = requirement.test(self, function, package_manager)
             if result is not True:
                 if requirement.hard:
                     hard_problems[requirement.name] = result
@@ -1738,10 +1738,10 @@ class App(with_metaclass(AppMetaClass, object,)):
         allowed_roles = self.server_role
         return not allowed_roles or server_role in allowed_roles
 
-    def _has_active_ad_member_issue(self, issue,):
-        return ucr_is_true('ad/member') and getattr(self, 'ad_member_issue_%s' % issue, False,)
+    def _has_active_ad_member_issue(self, issue):
+        return ucr_is_true('ad/member') and getattr(self, 'ad_member_issue_%s' % issue, False)
 
-    def __lt__(self, other,):
+    def __lt__(self, other):
         """
         >>> from argparse import Namespace
         >>> cache1 = Namespace(get_ucs_version=lambda: '1')
@@ -1755,19 +1755,19 @@ class App(with_metaclass(AppMetaClass, object,)):
         >>> App({}, cache1, id=1, component_id=1) < App({}, cache1, id=1, component_id=2)
         True
         """
-        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) < (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App,) else NotImplemented
+        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) < (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
 
-    def __le__(self, other,):
-        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) <= (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App,) else NotImplemented
+    def __le__(self, other):
+        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) <= (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
 
-    def __eq__(self, other,):
-        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) == (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App,) else NotImplemented
+    def __eq__(self, other):
+        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) == (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
 
-    def __ne__(self, other,):
-        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) != (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App,) else NotImplemented
+    def __ne__(self, other):
+        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) != (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
 
-    def __ge__(self, other,):
-        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) >= (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App,) else NotImplemented
+    def __ge__(self, other):
+        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) >= (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
 
-    def __gt__(self, other,):
-        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) > (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App,) else NotImplemented
+    def __gt__(self, other):
+        return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) > (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented

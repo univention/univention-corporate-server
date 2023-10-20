@@ -40,7 +40,7 @@ import os
 from typing import IO, Optional  # noqa: F401
 
 
-def get_lock(name, nonblocking=False,):
+def get_lock(name, nonblocking=False):
     # type: (str, bool) -> Optional[IO[str]]
     """
     Get a exclusive lock.
@@ -66,12 +66,12 @@ def get_lock(name, nonblocking=False,):
     >>>     release_lock(fd)
     """
     fn = "/var/run/%s.pid" % name
-    fd = open(fn, 'w',)
+    fd = open(fn, 'w')
     try:
         if nonblocking:
-            fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB,)
+            fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
         else:
-            fcntl.lockf(fd, fcntl.LOCK_EX,)
+            fcntl.lockf(fd, fcntl.LOCK_EX)
     except IOError as e:
         if e.errno == 11:
             return None
@@ -81,12 +81,12 @@ def get_lock(name, nonblocking=False,):
     return fd
 
 
-def release_lock(fd,):
+def release_lock(fd):
     # type: (IO[str]) -> None
     """
     Releases the previously gained lock.
 
     :param file fd: The file descriptor of the lock file.
     """
-    fcntl.lockf(fd, fcntl.LOCK_UN,)
+    fcntl.lockf(fd, fcntl.LOCK_UN)
     fd.close()

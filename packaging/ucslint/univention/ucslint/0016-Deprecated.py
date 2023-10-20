@@ -51,30 +51,30 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0016-6': (uub.RESULT_WARN, 'Use of deprecated "debian/*.univention-baseconfig"'),
         }
 
-    def check(self, path: str,) -> None:
+    def check(self, path: str) -> None:
         """the real check"""
         super().check(path)
 
         tester = uub.UPCFileTester()
         tester.addTest(
             re.compile(r'''(?:(?<=['" \t])|^)(?:/usr/sbin/)?univention-admin(?=['" \t]|$)'''),
-            '0016-2', 'Use of deprecated "univention-admin"', cntmax=0,)
+            '0016-2', 'Use of deprecated "univention-admin"', cntmax=0)
         tester.addTest(
             re.compile(r'''(?:(?<=['" \t])|^)(?:/usr/sbin/)?univention-baseconfig(?=["' \t]|$)'''),
-            '0016-3', 'Use of deprecated "univention-baseconfig"', cntmax=0,)
+            '0016-3', 'Use of deprecated "univention-baseconfig"', cntmax=0)
         tester.addTest(
             re.compile(r'''\bfrom\b.+\bunivention_baseconfig\b.+\bimport\b|\bimport\b.+\bunivention_baseconfig\b'''),
-            '0016-4', 'Use of deprecated "univention_baseconfig"', cntmax=0,)
+            '0016-4', 'Use of deprecated "univention_baseconfig"', cntmax=0)
         tester.addTest(
             re.compile(r'''@%@BCWARNING=.+?@%@'''),
-            '0016-5', 'Use of deprecated "@%@BCWARNING=@%@"', cntmax=0,)
+            '0016-5', 'Use of deprecated "@%@BCWARNING=@%@"', cntmax=0)
 
         ignore_suffixes = ('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.txt')
         ignore_files = ('changelog', 'README')
-        for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=ignore_suffixes, ignore_files=ignore_files,):
+        for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=ignore_suffixes, ignore_files=ignore_files):
             tester.open(fn)
             msglist = tester.runTests()
             self.msg.extend(msglist)
 
-        for fn in uub.FilteredDirWalkGenerator(os.path.join(path, 'debian',), suffixes=('.univention-baseconfig',),):
-            self.addmsg('0016-6', 'Use of deprecated "debian/*.univention-baseconfig"', fn,)
+        for fn in uub.FilteredDirWalkGenerator(os.path.join(path, 'debian'), suffixes=('.univention-baseconfig',)):
+            self.addmsg('0016-6', 'Use of deprecated "debian/*.univention-baseconfig"', fn)

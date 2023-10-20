@@ -29,32 +29,32 @@ def max_duration():
     return 150  # EC2 m3.medium PV
 
 
-def doJobs(job, num,):
+def doJobs(job, num):
     children = set()
     start = time.time()
     for _ in range(num):
         child = os.fork()
         if child:
-            os.write(1, b'<',)
+            os.write(1, b'<')
             children.add(child)
         else:
             os._exit(job.run())
     # wait for the children and check the status
     while children:
-        pid, status = os.waitpid(0, 0,)
-        os.write(1, b'>',)
+        pid, status = os.waitpid(0, 0)
+        os.write(1, b'>')
         if os.WIFSIGNALED(status):
             utils.fail('job %d failed with signal %d' % (pid, os.WTERMSIG(status)))
         elif os.WIFEXITED(status) and os.WEXITSTATUS(status):
             utils.fail('job %d failed with status %d' % (pid, os.WEXITSTATUS(status)))
         children.remove(pid)
     end = time.time()
-    os.write(1, b" %.2f\n" % (end - start,),)
+    os.write(1, b" %.2f\n" % (end - start,))
 
 
 class Job:
 
-    def __init__(self, ucr,):
+    def __init__(self, ucr):
         self.account = utils.UCSTestDomainAdminCredentials()
         self.host = '%(hostname)s.%(domainname)s' % ucr
         self.url = 'http://' + self.host + '/univention/'
@@ -62,12 +62,12 @@ class Job:
     def run(self):
         c = pycurl.Curl()
         try:
-            c.setopt(pycurl.PROXY, self.host,)
-            c.setopt(pycurl.PROXYPORT, 3128,)
-            c.setopt(pycurl.PROXYAUTH, pycurl.HTTPAUTH_NTLM,)
-            c.setopt(pycurl.PROXYUSERPWD, f"{self.account.username}:{self.account.bindpw}",)
-            c.setopt(pycurl.URL, self.url,)
-            c.setopt(pycurl.NOBODY, 1,)
+            c.setopt(pycurl.PROXY, self.host)
+            c.setopt(pycurl.PROXYPORT, 3128)
+            c.setopt(pycurl.PROXYAUTH, pycurl.HTTPAUTH_NTLM)
+            c.setopt(pycurl.PROXYUSERPWD, f"{self.account.username}:{self.account.bindpw}")
+            c.setopt(pycurl.URL, self.url)
+            c.setopt(pycurl.NOBODY, 1)
             try:
                 c.perform()
                 # check if NTLM auth is available
@@ -100,13 +100,13 @@ def main():
         # /var/log/syslog: (squid) Too many queued ntlmauthenticator requests
         # <http://wiki.squid-cache.org/KnowledgeBase/TooManyQueued>
         total = 30 + 60 * 40  # 30 for cold-LDAP-cache, 40 for hot-cache
-        MAX_CONCURRENT = 2 * int(ucr.get("squid/ntlmauth/children", 10,)) * 2 + 1
+        MAX_CONCURRENT = 2 * int(ucr.get("squid/ntlmauth/children", 10)) * 2 + 1
         concurrent = 0
 
         job = Job(ucr)
         while total > 0:
-            concurrent = min(concurrent + 1, MAX_CONCURRENT, total,)
-            doJobs(job, concurrent,)
+            concurrent = min(concurrent + 1, MAX_CONCURRENT, total)
+            doJobs(job, concurrent)
             total -= concurrent
 
         end = time.time()

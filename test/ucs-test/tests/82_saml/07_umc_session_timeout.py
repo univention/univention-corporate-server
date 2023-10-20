@@ -24,7 +24,7 @@ def main():
         subprocess.check_call(['/usr/share/univention-management-console/saml/update_metadata'])
         utils.wait_for_listener_replication()
         account = utils.UCSTestDomainAdminCredentials()
-        SamlSession = samltest.SamlTest(account.username, account.bindpw,)
+        SamlSession = samltest.SamlTest(account.username, account.bindpw)
         try:
             SamlSession.login_with_new_session_at_IdP()
             SamlSession.test_logged_in_status()

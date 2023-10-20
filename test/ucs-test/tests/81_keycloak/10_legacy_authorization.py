@@ -28,8 +28,8 @@ EXPECTED_EXECUTIONS = [
 ]
 
 
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret",)
-def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connection,):
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connection):
     flows = keycloak_administrator_connection.get_authentication_flows()
     remove = False
     if not any(x["alias"] == LEGACY_APP_AUTHORIZATION_NAME for x in flows):
@@ -53,11 +53,11 @@ def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connectio
             assert not any(x["alias"] == LEGACY_APP_AUTHORIZATION_NAME for x in flows)
 
 
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret",)
-def test_legacy_authorization_saml(legacy_authorization_setup_saml, keycloak_config, keycloak_administrator_connection, portal_login_via_keycloak,):
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_legacy_authorization_saml(legacy_authorization_setup_saml, keycloak_config, keycloak_administrator_connection, portal_login_via_keycloak):
 
     # verify logon not possible
-    driver = portal_login_via_keycloak(legacy_authorization_setup_saml.user, "univention", verify_login=False,)
+    driver = portal_login_via_keycloak(legacy_authorization_setup_saml.user, "univention", verify_login=False)
     assert "You do not have the needed privileges to access" in driver.page_source
 
     # add user to group
@@ -72,11 +72,11 @@ def test_legacy_authorization_saml(legacy_authorization_setup_saml, keycloak_con
     keycloak_administrator_connection.delete_user(user_id)
 
     # verify logon
-    assert portal_login_via_keycloak(legacy_authorization_setup_saml.user, "univention",)
+    assert portal_login_via_keycloak(legacy_authorization_setup_saml.user, "univention")
 
 
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret",)
-def test_legacy_authorization_oidc(legacy_authorization_setup_oidc, keycloak_config, keycloak_administrator_connection,):
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_legacy_authorization_oidc(legacy_authorization_setup_oidc, keycloak_config, keycloak_administrator_connection):
 
     # verify logon not possible
     resp = requests.post(
@@ -87,7 +87,8 @@ def test_legacy_authorization_oidc(legacy_authorization_setup_oidc, keycloak_con
             "username": legacy_authorization_setup_oidc.user,
             "password": legacy_authorization_setup_oidc.password,
             "grant_type": "password",
-        },)
+        },
+    )
     assert resp.json().get("error") == "unknown_error"  # https://github.com/keycloak/keycloak/issues/13368
 
     # add user to group
@@ -110,5 +111,6 @@ def test_legacy_authorization_oidc(legacy_authorization_setup_oidc, keycloak_con
             "username": legacy_authorization_setup_oidc.user,
             "password": legacy_authorization_setup_oidc.password,
             "grant_type": "password",
-        },)
+        },
+    )
     assert resp.json().get("access_token")

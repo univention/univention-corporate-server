@@ -126,24 +126,24 @@ import listener
 
 
 listener.configRegistry.load()
-fqdn = '{}.{}'.format(listener.configRegistry['hostname'].lower(), listener.configRegistry['domainname'].lower(),)
+fqdn = '{}.{}'.format(listener.configRegistry['hostname'].lower(), listener.configRegistry['domainname'].lower())
 
 name = 'dovecot-shared-folder'
 description = 'Create shared folders for Dovecot'
 filter = '(objectClass=univentionMailSharedFolder)'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> None:
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
     # ignore object, if this local system is not affected
 
-    new_mail_home_server = new.get('univentionMailHomeServer', [b''],)[0].decode('UTF-8').lower()
-    old_mail_home_server = old.get('univentionMailHomeServer', [b''],)[0].decode('UTF-8').lower()
+    new_mail_home_server = new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
+    old_mail_home_server = old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
 
     if fqdn not in (new_mail_home_server, old_mail_home_server):
         return
 
     listener.configRegistry.load()
-    dl = DovecotSharedFolderListener(listener, name,)
+    dl = DovecotSharedFolderListener(listener, name)
 
     #
     # Create a new shared folder
@@ -163,5 +163,5 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) 
     # Modify a shared folder
     #
     if old and new:
-        dl.mod_shared_folder(old, new,)
+        dl.mod_shared_folder(old, new)
         return

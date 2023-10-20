@@ -26,9 +26,9 @@ import requests
 
 class KeycloakError(Exception):
     def __init__(self, error_message="", response_code=None,
-                 response_body=None,):
+                 response_body=None):
 
-        Exception.__init__(self, error_message,)
+        Exception.__init__(self, error_message)
 
         self.response_code = response_code
         self.response_body = response_body
@@ -36,7 +36,7 @@ class KeycloakError(Exception):
 
     def __str__(self):
         if self.response_code is not None:
-            return "{0}: {1}".format(self.response_code, self.error_message,)
+            return "{0}: {1}".format(self.response_code, self.error_message)
         else:
             return "{0}".format(self.error_message)
 
@@ -76,7 +76,7 @@ class KeycloakInvalidTokenError(KeycloakOperationError):
     pass
 
 
-def raise_error_from_response(response, error, expected_codes=None, skip_exists=False,):
+def raise_error_from_response(response, error, expected_codes=None, skip_exists=False):
     if expected_codes is None:
         expected_codes = [200, 201, 204]
 
@@ -97,12 +97,12 @@ def raise_error_from_response(response, error, expected_codes=None, skip_exists=
     except (KeyError, ValueError):
         message = response.content
 
-    if isinstance(error, dict,):
-        error = error.get(response.status_code, KeycloakOperationError,)
+    if isinstance(error, dict):
+        error = error.get(response.status_code, KeycloakOperationError)
     else:
         if response.status_code == 401:
             error = KeycloakAuthenticationError
 
     raise error(error_message=message,
                 response_code=response.status_code,
-                response_body=response.content,)
+                response_body=response.content)

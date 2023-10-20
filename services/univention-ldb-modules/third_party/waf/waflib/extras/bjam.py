@@ -6,14 +6,14 @@ from waflib import Logs
 from waflib.TaskGen import feature, after_method
 from waflib.Task import Task, always_run
 
-def options(opt,):
+def options(opt):
 	grp = opt.add_option_group('Bjam Options')
-	grp.add_option('--bjam_src', default=None, help='You can find it in <boost root>/tools/jam/src',)
-	grp.add_option('--bjam_uname', default='linuxx86_64', help='bjam is built in <src>/bin.<uname>/bjam',)
-	grp.add_option('--bjam_config', default=None,)
-	grp.add_option('--bjam_toolset', default=None,)
+	grp.add_option('--bjam_src', default=None, help='You can find it in <boost root>/tools/jam/src')
+	grp.add_option('--bjam_uname', default='linuxx86_64', help='bjam is built in <src>/bin.<uname>/bjam')
+	grp.add_option('--bjam_config', default=None)
+	grp.add_option('--bjam_toolset', default=None)
 
-def configure(cnf,):
+def configure(cnf):
 	if not cnf.env.BJAM_SRC:
 		cnf.env.BJAM_SRC = cnf.options.bjam_src
 	if not cnf.env.BJAM_UNAME:
@@ -21,7 +21,7 @@ def configure(cnf,):
 	try:
 		cnf.find_program('bjam', path_list=[
 			cnf.env.BJAM_SRC + sep + 'bin.' + cnf.env.BJAM_UNAME
-		],)
+		])
 	except Exception:
 		cnf.env.BJAM = None
 	if not cnf.env.BJAM_CONFIG:
@@ -36,7 +36,7 @@ def process_bjam(self):
 		self.create_task('bjam_creator')
 	self.create_task('bjam_build')
 	self.create_task('bjam_installer')
-	if getattr(self, 'always', False,):
+	if getattr(self, 'always', False):
 		always_run(bjam_creator)
 		always_run(bjam_build)
 	always_run(bjam_installer)
@@ -58,7 +58,7 @@ class bjam_creator(Task):
 			return 0
 		bjam_cmd = ['./build.sh']
 		Logs.debug('runner: ' + bjam.srcpath() + '> ' + str(bjam_cmd))
-		result = self.exec_command(bjam_cmd, cwd=bjam.srcpath(),)
+		result = self.exec_command(bjam_cmd, cwd=bjam.srcpath())
 		if not result == 0:
 			Logs.error('bjam failed')
 			return -1
@@ -78,7 +78,7 @@ class bjam_build(Task):
 		gen = self.generator
 		path = gen.path
 		bld = gen.bld
-		if hasattr(gen, 'root',):
+		if hasattr(gen, 'root'):
 			build_root = path.find_node(gen.root)
 		else:
 			build_root = path
@@ -104,7 +104,7 @@ class bjam_build(Task):
 			['variant=' + 'release']
 		)
 		Logs.debug('runner: ' + build_root.srcpath() + '> ' + str(cmd))
-		ret = self.exec_command(cmd, cwd=build_root.srcpath(),)
+		ret = self.exec_command(cmd, cwd=build_root.srcpath())
 		if ret != 0:
 			return ret
 		self.set_outputs(path.get_bld().ant_glob('lib/*') + path.get_bld().ant_glob('bin/*'))
@@ -120,9 +120,9 @@ class bjam_installer(Task):
 			for n in path.get_bld().ant_glob(pat):
 				try:
 					t = readlink(n.srcpath())
-					gen.bld.symlink_as(sep.join([idir, n.name]), t, postpone=False,)
+					gen.bld.symlink_as(sep.join([idir, n.name]), t, postpone=False)
 				except OSError:
 					files.append(n)
-			gen.bld.install_files(idir, files, postpone=False,)
+			gen.bld.install_files(idir, files, postpone=False)
 		return 0
 

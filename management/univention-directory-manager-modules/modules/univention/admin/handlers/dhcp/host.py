@@ -56,7 +56,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionDhcpHost'],),
+        objectClasses=['top', 'univentionDhcpHost'],
+    ),
 }
 property_descriptions = {
     'host': univention.admin.property(
@@ -65,19 +66,22 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'hwaddress': univention.admin.property(
         short_description=_('Hardware address'),
         long_description=_('Currently, only the ethernet and token-ring types are recognized. \
 The hardware-address should be a set of hexadecimal octets (numbers from 0 through ff) separated by colons.'),
         syntax=univention.admin.syntax.DHCP_HardwareAddress,
-        required=True,),
+        required=True,
+    ),
     'fixedaddress': univention.admin.property(
         short_description=_('Fixed IP addresses'),
         long_description=_('Assign one or more fixed IP addresses. \
 Each address should be either an IP address or a domain name that resolves to one or more IP addresses.'),
         syntax=univention.admin.syntax.hostOrIP,
-        multivalue=True,),
+        multivalue=True,
+    ),
 }
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
@@ -85,20 +89,20 @@ layout = [
             'host',
             'hwaddress',
             'fixedaddress',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 
-def unmapHWAddress(old, encoding=(),):
-    ud.debug(ud.ADMIN, ud.INFO, 'host.py: unmapHWAddress: old: %s' % old,)
+def unmapHWAddress(old, encoding=()):
+    ud.debug(ud.ADMIN, ud.INFO, 'host.py: unmapHWAddress: old: %s' % old)
     if not old:
         return [u'', u'']
     return old[0].decode(*encoding).split(u' ')
 
 
-def mapHWAddress(old, encoding=(),):
-    ud.debug(ud.ADMIN, ud.INFO, 'host.py: mapHWAddress: old: %s' % old,)
+def mapHWAddress(old, encoding=()):
+    ud.debug(ud.ADMIN, ud.INFO, 'host.py: mapHWAddress: old: %s' % old)
     if not old[0]:
         return b''
     else:
@@ -110,9 +114,9 @@ def mapHWAddress(old, encoding=(),):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('host', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('hwaddress', 'dhcpHWAddress', mapHWAddress, unmapHWAddress,)
-mapping.register('fixedaddress', 'univentionDhcpFixedAddress', encoding='ASCII',)
+mapping.register('host', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('hwaddress', 'dhcpHWAddress', mapHWAddress, unmapHWAddress)
+mapping.register('fixedaddress', 'univentionDhcpFixedAddress', encoding='ASCII')
 
 add_dhcp_options(__name__)
 

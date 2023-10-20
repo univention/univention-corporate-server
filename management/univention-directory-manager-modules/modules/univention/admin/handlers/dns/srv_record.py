@@ -56,7 +56,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'dNSZone'],),
+        objectClasses=['top', 'dNSZone'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -65,19 +66,22 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsSRVName,
         include_in_default_search=True,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'location': univention.admin.property(
         short_description=_('Location'),
         long_description=_('The host providing the service.'),
         syntax=univention.admin.syntax.dnsSRVLocation,
         multivalue=True,
-        required=True,),
+        required=True,
+    ),
     'zonettl': univention.admin.property(
         short_description=_('Time to live'),
         long_description=_('The time this entry may be cached.'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         default=(('3', 'hours'), []),
-        dontsearch=True,),
+        dontsearch=True,
+    ),
 }
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
@@ -85,19 +89,19 @@ layout = [
             'name',
             'location',
             'zonettl',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 
-def unmapName(old, encoding=(),):
-    items = old[0].decode(*encoding).split(u'.', 2,)
+def unmapName(old, encoding=()):
+    items = old[0].decode(*encoding).split(u'.', 2)
     items[0] = items[0][1:]
     items[1] = items[1][1:]
     return items
 
 
-def mapName(old, encoding=(),):
+def mapName(old, encoding=()):
     if len(old) == 1:
         return old[0].encode(*encoding)
     if len(old) == 3 and old[2]:
@@ -105,14 +109,14 @@ def mapName(old, encoding=(),):
     return u'_{}._{}'.format(*old[:2]).encode(*encoding)
 
 
-def unmapLocation(old, encoding=(),):
+def unmapLocation(old, encoding=()):
     new = []
     for i in old:
-        new.append(i.decode(*encoding).split(u' ', 3,))
+        new.append(i.decode(*encoding).split(u' ', 3))
     return new
 
 
-def mapLocation(old, encoding=(),):
+def mapLocation(old, encoding=()):
     new = []
     for i in old:
         new.append(u' '.join(i).encode(*encoding))
@@ -120,9 +124,9 @@ def mapLocation(old, encoding=(),):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'relativeDomainName', mapName, unmapName, encoding='ASCII',)
-mapping.register('location', 'sRVRecord', mapLocation, unmapLocation, encoding='ASCII',)
-mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval,)
+mapping.register('name', 'relativeDomainName', mapName, unmapName, encoding='ASCII')
+mapping.register('location', 'sRVRecord', mapLocation, unmapLocation, encoding='ASCII')
+mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -133,41 +137,41 @@ class object(univention.admin.handlers.simpleLdap):
             self.superordinate.open()
             self.superordinate.modify()
 
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True,):
+    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
         self.update_zone = update_zone
-        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes,)
+        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
     def _ldap_addlist(self):
-        return super(object, self,)._ldap_addlist() + [
-            (self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'],)),
+        return super(object, self)._ldap_addlist() + [
+            (self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
         ]
 
     def _ldap_post_create(self):
-        super(object, self,)._ldap_post_create()
+        super(object, self)._ldap_post_create()
         self._updateZone()
 
     def _ldap_post_modify(self):
-        super(object, self,)._ldap_post_modify()
+        super(object, self)._ldap_post_modify()
         if self.hasChanged(self.descriptions.keys()):
             self._updateZone()
 
     def _ldap_post_remove(self):
-        super(object, self,)._ldap_post_remove()
+        super(object, self)._ldap_post_remove()
         self._updateZone()
 
     @classmethod
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone',),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@',)],),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False,)],),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa', escape=False,)],),
-            univention.admin.filter.expression('sRVRecord', '*', escape=False,),
-        ],)
+            univention.admin.filter.expression('objectClass', 'dNSZone'),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa', escape=False)]),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.ip6.arpa', escape=False)]),
+            univention.admin.filter.expression('sRVRecord', '*', escape=False),
+        ])
 
     @classmethod
-    def lookup_filter_superordinate(cls, filter, superordinate,):
-        filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('zone', superordinate['zone'],), escape=True,))
+    def lookup_filter_superordinate(cls, filter, superordinate):
+        filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('zone', superordinate['zone']), escape=True))
         return filter
 
 
@@ -175,11 +179,11 @@ lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr, canonical=False,):
+def identify(dn, attr, canonical=False):
     return all([
-        b'dNSZone' in attr.get('objectClass', [],),
-        b'@' not in attr.get('relativeDomainName', [],),
-        not attr.get('zoneName', [b'.in-addr.arpa'],)[0].decode('ASCII').endswith(ARPA_IP4),
-        not attr.get('zoneName', [b'.ip6.arpa'],)[0].decode('ASCII').endswith(ARPA_IP6),
-        attr.get('sRVRecord', [],),
+        b'dNSZone' in attr.get('objectClass', []),
+        b'@' not in attr.get('relativeDomainName', []),
+        not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('ASCII').endswith(ARPA_IP4),
+        not attr.get('zoneName', [b'.ip6.arpa'])[0].decode('ASCII').endswith(ARPA_IP6),
+        attr.get('sRVRecord', []),
     ])

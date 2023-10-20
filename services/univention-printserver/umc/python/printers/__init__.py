@@ -52,9 +52,9 @@ _ = Translation('univention-management-console-module-printers').translate
 
 class Instance(Base):
 
-    @sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(choices=['printer', 'description', 'location'], required=True,),)
+    @sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(choices=['printer', 'description', 'location'], required=True))
     @simple_response
-    def list_printers(self, key, pattern,):
+    def list_printers(self, key, pattern):
         """Lists the printers for the overview grid."""
         result = []
         plist = self._list_printers()
@@ -71,7 +71,7 @@ class Instance(Base):
 
     @simple_response
     @log
-    def get_printer(self, printer='',):
+    def get_printer(self, printer=''):
         """gets detail data for one printer."""
         result = self._printer_details(printer)
         result['printer'] = printer
@@ -96,12 +96,12 @@ class Instance(Base):
         with open('/etc/machine.secret') as fd:
             password = fd.readline().strip()
         server = ucr.get('ldap/server/name')
-        udm = UDM.credentials(identity, password, server=server,).version(2)
+        udm = UDM.credentials(identity, password, server=server).version(2)
         users = udm.get('users/user').search()
         return [user.props.username for user in users]
 
     @simple_response
-    def list_jobs(self, printer='',):
+    def list_jobs(self, printer=''):
         """lists jobs for a given printer, directly suitable for the grid"""
         # NOTE: we don't set language to 'neutral' since it is useful
         #       to get localized date/time strings.
@@ -126,7 +126,7 @@ class Instance(Base):
         """returns a list of printers, along with their 'enabled' status."""
         result = []
         expr = re.compile(r'printer\s+(\S+)\s.*?(\S+abled)')
-        (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p'], {'LANG': 'C'},)
+        (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p'], {'LANG': 'C'})
         if status == 0:
             for line in stdout.split("\n"):
                 mobj = expr.match(line)
@@ -135,9 +135,9 @@ class Instance(Base):
                     result.append(entry)
         return result
 
-    def _printer_status(self, printer,):
+    def _printer_status(self, printer):
         """returns the 'enabled' status of a printer"""
-        (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p', printer], {'LANG': 'C'},)
+        (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p', printer], {'LANG': 'C'})
         if status == 0:
             if ' enabled ' in stdout:
                 return 'enabled'
@@ -145,11 +145,11 @@ class Instance(Base):
                 return 'disabled'
         return 'unknown'
 
-    def _printer_details(self, printer,):
+    def _printer_details(self, printer):
         """returns as much as possible details about a printer."""
         result = {}
         expr = re.compile(r'\s+([^\s\:]+)\:\s*(.*?)$')
-        (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-l', '-p', printer], {'LANG': 'C'},)
+        (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-l', '-p', printer], {'LANG': 'C'})
         if status == 0:
             for line in stdout.split("\n"):
                 mobj = expr.match(line)
@@ -160,7 +160,7 @@ class Instance(Base):
 
     @simple_response
     @log
-    def enable_printer(self, printer='', on=False,):
+    def enable_printer(self, printer='', on=False):
         """enable or disable a printer, depending on args."""
         cmd = 'univention-cups-enable' if on else 'univention-cups-disable'
         (stdout, stderr, status) = self._shell_command([cmd, printer])
@@ -170,7 +170,7 @@ class Instance(Base):
 
     @simple_response
     @log
-    def cancel_jobs(self, jobs, printer='',):
+    def cancel_jobs(self, jobs, printer=''):
         """
         cancels one or more print jobs. Job IDs are passed
         as an array that can be directly passed on to the
@@ -184,8 +184,8 @@ class Instance(Base):
         if status:
             raise UMC_Error(_('Could not cancel job: %s') % (stderr,))
 
-    def _shell_command(self, args, env=None,):
-        proc = subprocess.Popen(args=args, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env,)
+    def _shell_command(self, args, env=None):
+        proc = subprocess.Popen(args=args, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
         stdout, stderr = proc.communicate()
-        stdout, stderr = stdout.decode('UTF-8', 'replace',), stderr.decode('UTF-8', 'replace',)
+        stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
         return (stdout, stderr, proc.returncode)

@@ -10,7 +10,7 @@ import traceback, sys
 
 class WafError(Exception):
 	"""Base class for all Waf errors"""
-	def __init__(self, msg='', ex=None,):
+	def __init__(self, msg='', ex=None):
 		"""
 		:param msg: error message
 		:type msg: string
@@ -19,13 +19,13 @@ class WafError(Exception):
 		"""
 		Exception.__init__(self)
 		self.msg = msg
-		assert not isinstance(msg, Exception,)
+		assert not isinstance(msg, Exception)
 
 		self.stack = []
 		if ex:
 			if not msg:
 				self.msg = str(ex)
-			if isinstance(ex, WafError,):
+			if isinstance(ex, WafError):
 				self.stack = ex.stack
 			else:
 				self.stack = traceback.extract_tb(sys.exc_info()[2])
@@ -37,13 +37,13 @@ class WafError(Exception):
 
 class BuildError(WafError):
 	"""Error raised during the build and install phases"""
-	def __init__(self, error_tasks=[],):
+	def __init__(self, error_tasks=[]):
 		"""
 		:param error_tasks: tasks that could not complete normally
 		:type error_tasks: list of task objects
 		"""
 		self.tasks = error_tasks
-		WafError.__init__(self, self.format_error(),)
+		WafError.__init__(self, self.format_error())
 
 	def format_error(self):
 		"""Formats the error messages from the tasks that failed"""

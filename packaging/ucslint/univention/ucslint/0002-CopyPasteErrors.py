@@ -50,19 +50,20 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0002-3': (uub.RESULT_ERROR, 'found domainname used in QA'),
         }
 
-    def check(self, path: str,) -> None:
+    def check(self, path: str) -> None:
         super().check(path)
 
         tester = uub.UPCFileTester()
-        tester.addTest(re.compile(r'dc=univention,dc=(?:local|qa|test)'), '0002-2', 'contains invalid basedn', cntmax=0,)
-        tester.addTest(re.compile(r'univention\.(?:local|qa|test)'), '0002-3', 'contains invalid domainname', cntmax=0,)
+        tester.addTest(re.compile(r'dc=univention,dc=(?:local|qa|test)'), '0002-2', 'contains invalid basedn', cntmax=0)
+        tester.addTest(re.compile(r'univention\.(?:local|qa|test)'), '0002-3', 'contains invalid domainname', cntmax=0)
 
         for fn in chain(
-                uub.FilteredDirWalkGenerator(join(path, 'conffiles',)),
-                uub.FilteredDirWalkGenerator(join(path, 'debian',)),):
+                uub.FilteredDirWalkGenerator(join(path, 'conffiles')),
+                uub.FilteredDirWalkGenerator(join(path, 'debian')),
+        ):
             try:
                 tester.open(fn)
             except OSError:
-                self.addmsg('0002-1', 'failed to open and read file', fn,)
+                self.addmsg('0002-1', 'failed to open and read file', fn)
             else:
                 self.msg += tester.runTests()

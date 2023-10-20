@@ -20,7 +20,7 @@ import univention.testing.ucr as ucr_test
 from univention.testing import utils
 
 
-def get_testparm_var(sectionname, varname,):
+def get_testparm_var(sectionname, varname):
     path_testparm = "/usr/bin/testparm"
     if not os.path.exists(path_testparm):
         utils.fail(f"ERROR: {path_testparm} missing")
@@ -29,13 +29,13 @@ def get_testparm_var(sectionname, varname,):
         path_testparm, "-slv",
         "--section-name=%s" % sectionname,
         "--parameter-name=%s" % varname]
-    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True,)
+    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     (out, err) = p1.communicate()
     return out.strip()
 
 
-def check_spoolss_architecture(expected_value,):
-    spoolss_architecture = get_testparm_var("global", "spoolss: architecture",)
+def check_spoolss_architecture(expected_value):
+    spoolss_architecture = get_testparm_var("global", "spoolss: architecture")
     if spoolss_architecture.decode('UTF-8') != expected_value:
         utils.fail(f"Wrong value for samba option 'spoolss: architecture', expected '{expected_value}', got '{spoolss_architecture}'")
     else:
@@ -55,7 +55,7 @@ expected_spoolss_architecture = {
 }
 
 
-def test_run(ucr, arch,):
+def test_run(ucr, arch):
     ucr_var = "samba/spoolss/architecture"
 
     ucr.load()
@@ -76,6 +76,6 @@ def test_run(ucr, arch,):
 
 if __name__ == '__main__':
     with ucr_test.UCSTestConfigRegistry() as ucr:
-        test_run(ucr, None,)
-        test_run(ucr, "x32",)
-        test_run(ucr, "x64",)
+        test_run(ucr, None)
+        test_run(ucr, "x32")
+        test_run(ucr, "x64")

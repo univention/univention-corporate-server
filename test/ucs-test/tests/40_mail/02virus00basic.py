@@ -46,24 +46,24 @@ def main():
                 )
 
                 token1 = str(time.time())
-                send_mail(recipients=mail, msg=token1, virus=True, subject='Filter on',)
+                send_mail(recipients=mail, msg=token1, virus=True, subject='Filter on')
                 time.sleep(5)
 
                 deactivate_spam_detection()
                 reload_amavis_postfix()
 
                 token2 = str(time.time())
-                send_mail(recipients=mail, msg=token2, virus=True, subject='Filter off',)
+                send_mail(recipients=mail, msg=token2, virus=True, subject='Filter off')
 
                 while TIMEOUT > 0:
                     print('Waiting up to %d seconds' % (TIMEOUT,))
                     TIMEOUT -= 1
-                    if all([virus_detected_and_quarantined(token1, mail_address=mail,), virus_detected_and_quarantined(token2, mail_address=mail,)]):
+                    if all([virus_detected_and_quarantined(token1, mail_address=mail), virus_detected_and_quarantined(token2, mail_address=mail)]):
                         break
                     time.sleep(1)
 
                 for token in [token1, token2]:
-                    if not virus_detected_and_quarantined(token, mail_address=mail,):
+                    if not virus_detected_and_quarantined(token, mail_address=mail):
                         utils.fail('Virus sent with token = %r was not delivered correctly with a warning' % token)
 
         finally:

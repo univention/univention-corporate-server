@@ -14,7 +14,7 @@ from univention.testing import utils
 
 
 def get_current_license_user_count():
-    for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE,).communicate()[0].decode('UTF-8').split('\n'):
+    for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8').split('\n'):
         if line.startswith('Accounts:') or line.startswith('Users:'):
             return int(line.split('of')[0].split()[-1])
 

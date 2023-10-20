@@ -33,11 +33,11 @@ def main():
     with UCSTestUDM() as udm:
         # create an ldap container:
         try:
-            container = udm.create_object('container/cn', position=ucr.get('ldap/base'), name='ucs_test_' + uts.random_string(),)
+            container = udm.create_object('container/cn', position=ucr.get('ldap/base'), name='ucs_test_' + uts.random_string())
         except UCSTestUDM_CreateUDMObjectFailed:
             print('udm.create_object failed, wait for 30 seconds and try again ...')
             sleep(30)
-            container = udm.create_object('container/cn', position=ucr.get('ldap/base'), name='ucs_test_' + uts.random_string(),)
+            container = udm.create_object('container/cn', position=ucr.get('ldap/base'), name='ucs_test_' + uts.random_string())
 
         # create a test user inside container:
         user_name = 'ucs_test_' + uts.random_string()
@@ -50,7 +50,7 @@ def main():
         }
 
         print("\nCreating a user for the test:")
-        udm.create_user('users/user', **user_kwargs,)
+        udm.create_user('users/user', **user_kwargs)
         sleep(10)  # wait a bit before trying to authenticate
 
         # generate new user passwords (complex and simple ones):
@@ -60,19 +60,19 @@ def main():
         # try to authenticate and change password of the user
         # to the 'complex' one (should work):
         print("\nTrying to change user password to '%s':" % complex_password)
-        client = Client(None, user_name, user_password,)
+        client = Client(None, user_name, user_password)
         response = client.umc_set({'password': {'password': user_password, 'new_password': complex_password}})
-        print("RESPONSE:", response,)
+        print("RESPONSE:", response)
         if response.status != 200:
             utils.fail("Changing user password did not work in the case it should")
 
         # try to authenticate with a new user password
         # and change it to a simple one (should not work):
         print("\nTrying to change user password to '%s':" % simple_password)
-        client = Client(None, user_name, complex_password,)
+        client = Client(None, user_name, complex_password)
         with pytest.raises(BadRequest):
             response = client.umc_set({'password': {'password': complex_password, 'new_password': simple_password}})
-            print("RESPONSE:", response,)
+            print("RESPONSE:", response)
             if response.status == 200:
                 utils.fail("Changing user password worked in the case it should not")
 

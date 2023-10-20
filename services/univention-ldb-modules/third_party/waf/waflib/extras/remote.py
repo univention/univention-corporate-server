@@ -128,7 +128,7 @@ class init(Context.Context):
 		lst = ['remote']
 		for k in Options.commands:
 			if k.endswith('_all'):
-				name = k.replace('_all', '',)
+				name = k.replace('_all', '')
 				for x in Context.g_module.variants:
 					lst.append('%s_%s' % (name, x))
 			else:
@@ -136,9 +136,9 @@ class init(Context.Context):
 		del Options.commands[:]
 		Options.commands += lst
 
-	def make_variant(self, x,):
+	def make_variant(self, x):
 		for y in (BuildContext, CleanContext, InstallContext, UninstallContext):
-			name = y.__name__.replace('Context','',).lower()
+			name = y.__name__.replace('Context','').lower()
 			class tmp(y):
 				cmd = name + '_' + x
 				fun = 'build'
@@ -148,7 +148,7 @@ class init(Context.Context):
 			fun = 'configure'
 			variant = x
 			def __init__(self, **kw):
-				ConfigurationContext.__init__(self, **kw,)
+				ConfigurationContext.__init__(self, **kw)
 				self.setenv(x)
 
 class remote(BuildContext):
@@ -159,8 +159,8 @@ class remote(BuildContext):
 		lst = []
 		for v in Context.g_module.variants:
 			self.env.HOST = self.login_to_host(self.variant_to_login(v))
-			cmd = Utils.subst_vars('${SSH_KEYSCAN} -t rsa,ecdsa ${HOST}', self.env,)
-			out, err = self.cmd_and_log(cmd, output=Context.BOTH, quiet=Context.BOTH,)
+			cmd = Utils.subst_vars('${SSH_KEYSCAN} -t rsa,ecdsa ${HOST}', self.env)
+			out, err = self.cmd_and_log(cmd, output=Context.BOTH, quiet=Context.BOTH)
 			lst.append(out.strip())
 		return lst
 
@@ -169,29 +169,29 @@ class remote(BuildContext):
 		When WAF_SSH_KEY points to a private key, a .ssh directory will be created in the build directory
 		Make sure that the ssh key does not prompt for a password
 		"""
-		key = os.environ.get('WAF_SSH_KEY', '',)
+		key = os.environ.get('WAF_SSH_KEY', '')
 		if not key:
 			return
 		if not os.path.isfile(key):
 			self.fatal('Key in WAF_SSH_KEY must point to a valid file')
-		self.ssh_dir = os.path.join(self.path.abspath(), 'build', '.ssh',)
-		self.ssh_hosts = os.path.join(self.ssh_dir, 'known_hosts',)
-		self.ssh_key = os.path.join(self.ssh_dir, os.path.basename(key),)
-		self.ssh_config = os.path.join(self.ssh_dir, 'config',)
+		self.ssh_dir = os.path.join(self.path.abspath(), 'build', '.ssh')
+		self.ssh_hosts = os.path.join(self.ssh_dir, 'known_hosts')
+		self.ssh_key = os.path.join(self.ssh_dir, os.path.basename(key))
+		self.ssh_config = os.path.join(self.ssh_dir, 'config')
 		for x in self.ssh_hosts, self.ssh_key, self.ssh_config:
 			if not os.path.isfile(x):
 				if not os.path.isdir(self.ssh_dir):
 					os.makedirs(self.ssh_dir)
-				Utils.writef(self.ssh_key, Utils.readf(key), 'wb',)
-				os.chmod(self.ssh_key, 448,)
+				Utils.writef(self.ssh_key, Utils.readf(key), 'wb')
+				os.chmod(self.ssh_key, 448)
 
-				Utils.writef(self.ssh_hosts, '\n'.join(self.get_ssh_hosts()),)
-				os.chmod(self.ssh_key, 448,)
+				Utils.writef(self.ssh_hosts, '\n'.join(self.get_ssh_hosts()))
+				os.chmod(self.ssh_key, 448)
 
-				Utils.writef(self.ssh_config, 'UserKnownHostsFile %s' % self.ssh_hosts, 'wb',)
-				os.chmod(self.ssh_config, 448,)
+				Utils.writef(self.ssh_config, 'UserKnownHostsFile %s' % self.ssh_hosts, 'wb')
+				os.chmod(self.ssh_config, 448)
 		self.env.SSH_OPTS = ['-F', self.ssh_config, '-i', self.ssh_key]
-		self.env.append_value('RSYNC_SEND_OPTS', '--exclude=build/.ssh',)
+		self.env.append_value('RSYNC_SEND_OPTS', '--exclude=build/.ssh')
 
 	def skip_unbuildable_variant(self):
 		# skip variants that cannot be built on this OS
@@ -202,16 +202,16 @@ class remote(BuildContext):
 				if c != Utils.unversioned_sys_platform():
 					Options.commands.remove(k)
 
-	def login_to_host(self, login,):
-		return re.sub(r'(\w+@)', '', login,)
+	def login_to_host(self, login):
+		return re.sub(r'(\w+@)', '', login)
 
-	def variant_to_login(self, variant,):
+	def variant_to_login(self, variant):
 		"""linux_32_debug -> search env.LINUX_32 and then env.LINUX"""
 		x = variant[:variant.rfind('_')]
-		ret = os.environ.get('REMOTE_' + x.upper(), '',)
+		ret = os.environ.get('REMOTE_' + x.upper(), '')
 		if not ret:
 			x = x[:x.find('_')]
-			ret = os.environ.get('REMOTE_' + x.upper(), '',)
+			ret = os.environ.get('REMOTE_' + x.upper(), '')
 		if not ret:
 			ret = '%s@localhost' % getpass.getuser()
 		return ret
@@ -228,7 +228,7 @@ class remote(BuildContext):
 		self.srcnode = self.root.find_node(self.top_dir)
 		self.path = self.srcnode
 
-		self.out_dir = os.path.join(self.top_dir, Context.g_module.out,)
+		self.out_dir = os.path.join(self.top_dir, Context.g_module.out)
 		self.bldnode = self.root.make_node(self.out_dir)
 		self.bldnode.mkdir()
 
@@ -250,18 +250,18 @@ class remote(BuildContext):
 					dct[variant] = [x]
 				Options.commands.remove(x)
 
-	def custom_options(self, login,):
+	def custom_options(self, login):
 		try:
 			return Context.g_module.host_options[login]
 		except (AttributeError, KeyError):
 			return {}
 
 	def recurse(self, *k, **kw):
-		self.env.RSYNC = getattr(Context.g_module, 'rsync', 'rsync -a --chmod=u+rwx',)
-		self.env.SSH = getattr(Context.g_module, 'ssh', 'ssh',)
-		self.env.SSH_KEYSCAN = getattr(Context.g_module, 'ssh_keyscan', 'ssh-keyscan',)
+		self.env.RSYNC = getattr(Context.g_module, 'rsync', 'rsync -a --chmod=u+rwx')
+		self.env.SSH = getattr(Context.g_module, 'ssh', 'ssh')
+		self.env.SSH_KEYSCAN = getattr(Context.g_module, 'ssh_keyscan', 'ssh-keyscan')
 		try:
-			self.env.WAF = getattr(Context.g_module, 'waf',)
+			self.env.WAF = getattr(Context.g_module, 'waf')
 		except AttributeError:
 			try:
 				os.stat('waf')
@@ -273,7 +273,7 @@ class remote(BuildContext):
 		self.extract_groups_of_builds()
 		self.setup_private_ssh_key()
 		for k, v in self.vgroups.items():
-			task = self(rule=rsync_and_ssh, always=True,)
+			task = self(rule=rsync_and_ssh, always=True)
 			task.env.login = self.variant_to_login(k)
 
 			task.env.commands = []
@@ -284,20 +284,20 @@ class remote(BuildContext):
 				task.env[opt] = value
 		self.jobs = len(self.vgroups)
 
-	def make_mkdir_command(self, task,):
-		return Utils.subst_vars('${SSH} ${SSH_OPTS} ${login} "rm -fr ${remote_dir} && mkdir -p ${remote_dir}"', task.env,)
+	def make_mkdir_command(self, task):
+		return Utils.subst_vars('${SSH} ${SSH_OPTS} ${login} "rm -fr ${remote_dir} && mkdir -p ${remote_dir}"', task.env)
 
-	def make_send_command(self, task,):
-		return Utils.subst_vars('${RSYNC} ${RSYNC_SEND_OPTS} -e "${SSH} ${SSH_OPTS}" ${local_dir} ${login}:${remote_dir}', task.env,)
+	def make_send_command(self, task):
+		return Utils.subst_vars('${RSYNC} ${RSYNC_SEND_OPTS} -e "${SSH} ${SSH_OPTS}" ${local_dir} ${login}:${remote_dir}', task.env)
 
-	def make_exec_command(self, task,):
+	def make_exec_command(self, task):
 		txt = '''${SSH} ${SSH_OPTS} ${login} "cd ${remote_dir} && ${WAF} ${commands}"'''
-		return Utils.subst_vars(txt, task.env,)
+		return Utils.subst_vars(txt, task.env)
 
-	def make_save_command(self, task,):
-		return Utils.subst_vars('${RSYNC} ${RSYNC_SAVE_OPTS} -e "${SSH} ${SSH_OPTS}" ${login}:${remote_dir_variant} ${build_dir}', task.env,)
+	def make_save_command(self, task):
+		return Utils.subst_vars('${RSYNC} ${RSYNC_SAVE_OPTS} -e "${SSH} ${SSH_OPTS}" ${login}:${remote_dir_variant} ${build_dir}', task.env)
 
-def rsync_and_ssh(task,):
+def rsync_and_ssh(task):
 
 	# remove a warning
 	task.uid_ = id(task)

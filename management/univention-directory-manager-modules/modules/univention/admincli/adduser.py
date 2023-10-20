@@ -51,7 +51,7 @@ import univention.config_registry
 import univention.debug as ud
 
 
-def status(msg,):
+def status(msg):
     # univention-adduser is called by Samba when doing "vampire." Since
     # vampire produces a lot of output, and we'd like to print a moderate
     # log, we prepend UNIVENTION to our output. That way we can identify
@@ -60,32 +60,32 @@ def status(msg,):
     return out
 
 
-def nscd_invalidate(table,):
+def nscd_invalidate(table):
     if table:
-        ud.debug(ud.ADMIN, ud.INFO, 'NSCD: --invalidate %s' % (table,),)
+        ud.debug(ud.ADMIN, ud.INFO, 'NSCD: --invalidate %s' % (table,))
         try:
-            subprocess.check_call(['/usr/sbin/nscd', '--invalidate', table], close_fds=True,)
+            subprocess.check_call(['/usr/sbin/nscd', '--invalidate', table], close_fds=True)
         except (EnvironmentError, subprocess.CalledProcessError):
-            ud.debug(ud.ADMIN, ud.INFO, 'NSCD: failed',)
+            ud.debug(ud.ADMIN, ud.INFO, 'NSCD: failed')
         else:
-            ud.debug(ud.ADMIN, ud.INFO, 'NSCD: ok',)
+            ud.debug(ud.ADMIN, ud.INFO, 'NSCD: ok')
 
 
-def get_user_object(user, position, lo,):
+def get_user_object(user, position, lo):
     try:
         # user Account
-        return univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(username=%s)', [user],), required=True, unique=True,)[0]
+        return univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(username=%s)', [user]), required=True, unique=True)[0]
     except Exception:
         # machine Account
         for handler in [univention.admin.handlers.computers.windows, univention.admin.handlers.computers.domaincontroller_master, univention.admin.handlers.computers.domaincontroller_slave, univention.admin.handlers.computers.domaincontroller_backup, univention.admin.handlers.computers.memberserver]:
             try:
-                return univention.admin.modules.lookup(handler, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(uid=%s)', [user],), required=True, unique=True,)[0]
+                return univention.admin.modules.lookup(handler, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(uid=%s)', [user]), required=True, unique=True)[0]
             except Exception:  # noqa: S112
                 continue
     return 'ERROR: account not found, nothing modified'
 
 
-def _decode(args,):
+def _decode(args):
     for arg in args:
         try:
             yield arg.decode('utf-8')
@@ -93,8 +93,8 @@ def _decode(args,):
             yield arg.decode('latin-1')
 
 
-def doit(arglist,):
-    ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION,)
+def doit(arglist):
+    ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
     out = []
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
@@ -120,16 +120,16 @@ def doit(arglist,):
         scope = 'user'
         op = 'primarygroup'
 
-    opts, args = getopt.getopt(arglist[1:], '', ['status-fd=', 'status-fifo='],)
+    opts, args = getopt.getopt(arglist[1:], '', ['status-fd=', 'status-fifo='])
 
     try:
         lo, position = univention.admin.uldap.getAdminConnection()
     except Exception as exc:
-        ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,),)
+        ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
         try:
             lo, position = univention.admin.uldap.getMachineConnection()
         except Exception as exc2:
-            ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc2,),)
+            ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc2,))
             out.append('authentication error: %s' % (exc,))
             out.append('authentication error: %s' % (exc2,))
             return out
@@ -147,19 +147,19 @@ def doit(arglist,):
             if configRegistry.get('samba/defaultcontainer/computer'):
                 position.setDn(configRegistry['samba/defaultcontainer/computer'])
             else:
-                position.setDn(univention.admin.config.getDefaultContainer(lo, 'computers/windows',))
+                position.setDn(univention.admin.config.getDefaultContainer(lo, 'computers/windows'))
         elif scope == 'group':
             group = args[0]
             if configRegistry.get('samba/defaultcontainer/group'):
                 position.setDn(configRegistry['samba/defaultcontainer/group'])
             else:
-                position.setDn(univention.admin.config.getDefaultContainer(lo, 'groups/group',))
+                position.setDn(univention.admin.config.getDefaultContainer(lo, 'groups/group'))
         else:
             user = args[0]
             if configRegistry.get('samba/defaultcontainer/user'):
                 position.setDn(configRegistry['samba/defaultcontainer/user'])
             else:
-                position.setDn(univention.admin.config.getDefaultContainer(lo, 'users/user',))
+                position.setDn(univention.admin.config.getDefaultContainer(lo, 'users/user'))
         action = op + scope
 
     elif len(args) == 2:
@@ -175,25 +175,25 @@ def doit(arglist,):
 
     if action == 'adduser':
         out.append(status(u'Adding user %s' % (user,)))
-        object = univention.admin.handlers.users.user.object(None, lo, position=position,)
+        object = univention.admin.handlers.users.user.object(None, lo, position=position)
         object.open()
         object['username'] = user
         object['lastname'] = user.encode('utf-8').decode('ASCII')
-        object['password'] = subprocess.check_output(['/usr/bin/makepasswd', '--minchars=8'], close_fds=True,).strip().decode('ASCII', 'ignore',)
-        object['primaryGroup'] = univention.admin.config.getDefaultValue(lo, 'group',)
+        object['password'] = subprocess.check_output(['/usr/bin/makepasswd', '--minchars=8'], close_fds=True).strip().decode('ASCII', 'ignore')
+        object['primaryGroup'] = univention.admin.config.getDefaultValue(lo, 'group')
         object.create()
         nscd_invalidate('passwd')
 
     elif action == 'deluser':
         out.append(status(u'Removing user %s' % (user,)))
-        object = univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDomain(), filter=filter_format(u'(username=%s)', [user],), required=True, unique=True,)[0]
+        object = univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDomain(), filter=filter_format(u'(username=%s)', [user]), required=True, unique=True)[0]
         object.open()
         object.remove()
         nscd_invalidate('passwd')
 
     elif action == 'addgroup':
         out.append(status(u'Adding group %s' % (group,)))
-        object = univention.admin.handlers.groups.group.object(None, lo, position=position,)
+        object = univention.admin.handlers.groups.group.object(None, lo, position=position)
         object.open()
         object.options = ['posix']
         object['name'] = group
@@ -202,20 +202,20 @@ def doit(arglist,):
 
     elif action == 'delgroup':
         out.append(status(u'Removing group %s' % (group,)))
-        object = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDomain(), filter=filter_format(u'(name=%s)', [group],), required=True, unique=True,)[0]
+        object = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDomain(), filter=filter_format(u'(name=%s)', [group]), required=True, unique=True)[0]
         object.open()
         object.remove()
         nscd_invalidate('group')
 
     elif action == 'addusertogroup':
-        if group in configRegistry.get('samba/addusertogroup/filter/group', '',).split(','):
+        if group in configRegistry.get('samba/addusertogroup/filter/group', '').split(','):
             out.append(status(u'addusertogroup: filter protects group "%s"' % (group,)))
             return out
         out.append(status(u'Adding user %s to group %s' % (user, group)))
-        groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(name=%s)', [group],), required=True, unique=True,)[0]
+        groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(name=%s)', [group]), required=True, unique=True)[0]
         groupobject.open()
-        userobject = get_user_object(user, position, lo,)
-        if isinstance(userobject, six.string_types,):
+        userobject = get_user_object(user, position, lo)
+        if isinstance(userobject, six.string_types):
             out.append(userobject)
             return out
 
@@ -229,11 +229,11 @@ def doit(arglist,):
 
     elif action == 'deluserfromgroup':
         out.append(status(u'Removing user %s from group %s' % (user, group)))
-        groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(name=%s)', [group],), required=True, unique=True,)[0]
+        groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(name=%s)', [group]), required=True, unique=True)[0]
         groupobject.open()
 
-        userobject = get_user_object(user, position, lo,)
-        if isinstance(userobject, six.string_types,):
+        userobject = get_user_object(user, position, lo)
+        if isinstance(userobject, six.string_types):
             out.append(userobject)
             return out
 
@@ -245,18 +245,18 @@ def doit(arglist,):
 
     elif action == 'addmachine':
         out.append(status(u'Adding machine %s' % (machine,)))
-        object = univention.admin.handlers.computers.windows.object(None, lo, position=position,)
+        object = univention.admin.handlers.computers.windows.object(None, lo, position=position)
         object.open()
         object.options = ['posix']
         object['name'] = machine
-        object['primaryGroup'] = univention.admin.config.getDefaultValue(lo, 'computerGroup',)
+        object['primaryGroup'] = univention.admin.config.getDefaultValue(lo, 'computerGroup')
         object.create()
         nscd_invalidate('hosts')
         nscd_invalidate('passwd')
 
     elif action == 'delmachine':
         out.append(status(u'Removing machine %s' % (machine,)))
-        object = univention.admin.modules.lookup(univention.admin.handlers.computers.windows, None, lo, scope='domain', base=position.getDomain(), filter=filter_format(u'(name=%s)', [machine],), required=True, unique=True,)[0]
+        object = univention.admin.modules.lookup(univention.admin.handlers.computers.windows, None, lo, scope='domain', base=position.getDomain(), filter=filter_format(u'(name=%s)', [machine]), required=True, unique=True)[0]
         object.open()
         object.remove()
         nscd_invalidate('hosts')
@@ -264,14 +264,14 @@ def doit(arglist,):
     elif action == 'setprimarygroup':
         out.append(status(u'Set primary group %s for user %s' % (group, user)))
         try:
-            groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(name=%s)', [group],), required=True, unique=True,)[0]
+            groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(name=%s)', [group]), required=True, unique=True)[0]
         except Exception:
             out.append('ERROR: group not found, nothing modified')
             return out
         groupobject.open()
 
-        userobject = get_user_object(user, position, lo,)
-        if isinstance(userobject, six.string_types,):
+        userobject = get_user_object(user, position, lo)
+        if isinstance(userobject, six.string_types):
             out.append(userobject)
             return out
 

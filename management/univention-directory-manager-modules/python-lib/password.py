@@ -47,7 +47,7 @@ import univention.admin.uldap
 univention.admin.modules.update()
 
 
-def change(username, password,):
+def change(username, password):
     """
     Change the password of the given user
 
@@ -62,13 +62,13 @@ def change(username, password,):
 
     module = univention.admin.modules.get('users/user')
 
-    univention.admin.modules.init(lo, pos, module,)
+    univention.admin.modules.init(lo, pos, module)
 
     if '@' in username:  # krb5Principal
-        filter = filter_format('krb5PrincipalName=%s', [username],)
+        filter = filter_format('krb5PrincipalName=%s', [username])
     else:
-        filter = filter_format('uid=%s', [username],)
-    objects = module.lookup(None, lo, filter, superordinate=None, unique=True, required=True, timeout=-1, sizelimit=0,)
+        filter = filter_format('uid=%s', [username])
+    objects = module.lookup(None, lo, filter, superordinate=None, unique=True, required=True, timeout=-1, sizelimit=0)
 
     # search was unique and required
     object = objects[0]

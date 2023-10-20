@@ -76,23 +76,23 @@ class LDAP(object):
     def __init__(self):
         self.__ldap_connections = {}
 
-    def user_connection(self, func=None, bind=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False,**kwargs):
+    def user_connection(self, func=None, bind=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
         host = ucr.get('ldap/master' if write else 'ldap/server/name')
-        port = ucr.get_int('ldap/master/port' if write else 'ldap/server/port', 7389,)
+        port = ucr.get_int('ldap/master/port' if write else 'ldap/server/port', 7389)
         base = ucr.get('ldap/base')
-        return self.connection(func, bind, host, port, base, loarg, poarg, no_cache, **kwargs,)
+        return self.connection(func, bind, host, port, base, loarg, poarg, no_cache, **kwargs)
 
-    def connection(self, func=None, bind=None, host=None, port=None, base=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False,**kwargs):
+    def connection(self, func=None, bind=None, host=None, port=None, base=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
         hash_ = ('connection', no_cache, bind, host, port, base, tuple(kwargs.items()))
 
         def connection():
-            lo = _access(host=host, port=port, base=base, **kwargs,)
+            lo = _access(host=host, port=port, base=base, **kwargs)
             if bind is not None:
                 bind(lo)
             return lo, _position(lo.base)
-        return self._wrapped(func, hash_, connection, loarg, poarg, no_cache,)
+        return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
-    def machine_connection(self, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False,**kwargs):
+    def machine_connection(self, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
         hash_ = ('machine', no_cache, bool(write), tuple(kwargs.items()))
         kwargs.update({'ldap_master': write})
 
@@ -103,9 +103,9 @@ class LDAP(object):
                 if exc.errno == ENOENT:
                     return  # /etc/machine.secret does not exists
                 raise
-        return self._wrapped(func, hash_, connection, loarg, poarg, no_cache,)
+        return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
-    def admin_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False,**kwargs):
+    def admin_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
         hash_ = ('admin', no_cache, tuple(kwargs.items()))
 
         def connection():
@@ -115,43 +115,43 @@ class LDAP(object):
                 if exc.errno == ENOENT:
                     return  # /etc/ldap.secret does not exists
                 raise
-        return self._wrapped(func, hash_, connection, loarg, poarg, no_cache,)
+        return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
-    def backup_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False,**kwargs):
+    def backup_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
         hash_ = ('backup', no_cache, tuple(kwargs.items()))
 
         def connection():
             lo = _getBackupConnection(**kwargs)
             return _access(lo=lo), _position(lo.base)
-        return self._wrapped(func, hash_, connection, loarg, poarg, no_cache,)
+        return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
     def get_connection(self, *args, **kwargs):
-        @self.connection(*args, **kwargs,)
-        def connection(ldap_connection=None, ldap_position=None,):
+        @self.connection(*args, **kwargs)
+        def connection(ldap_connection=None, ldap_position=None):
             return ldap_connection, ldap_position
         return connection()
 
     def get_user_connection(self, *args, **kwargs):
-        @self.user_connection(*args, **kwargs,)
-        def connection(ldap_connection=None, ldap_position=None,):
+        @self.user_connection(*args, **kwargs)
+        def connection(ldap_connection=None, ldap_position=None):
             return ldap_connection, ldap_position
         return connection()
 
     def get_machine_connection(self, *args, **kwargs):
-        @self.machine_connection(*args, **kwargs,)
-        def connection(ldap_connection=None, ldap_position=None,):
+        @self.machine_connection(*args, **kwargs)
+        def connection(ldap_connection=None, ldap_position=None):
             return ldap_connection, ldap_position
         return connection()
 
     def get_admin_connection(self, *args, **kwargs):
-        @self.admin_connection(*args, **kwargs,)
-        def connection(ldap_connection=None, ldap_position=None,):
+        @self.admin_connection(*args, **kwargs)
+        def connection(ldap_connection=None, ldap_position=None):
             return ldap_connection, ldap_position
         return connection()
 
     def get_backup_connection(self, *args, **kwargs):
-        @self.backup_connection(*args, **kwargs,)
-        def connection(ldap_connection=None, ldap_position=None,):
+        @self.backup_connection(*args, **kwargs)
+        def connection(ldap_connection=None, ldap_position=None):
             return ldap_connection, ldap_position
         return connection()
 
@@ -166,12 +166,12 @@ class LDAP(object):
         else:
             for key, conn in list(self.__ldap_connections.items()):
                 if conn[0] in connections:
-                    self.__ldap_connections.pop(key, None,)
+                    self.__ldap_connections.pop(key, None)
 
-    def _wrapped(self, func, hash_, connection, loarg, poarg, no_cache=False,):
-        def setter(conn,):
+    def _wrapped(self, func, hash_, connection, loarg, poarg, no_cache=False):
+        def setter(conn):
             if conn is None:
-                self.__ldap_connections.pop(hash_, None,)
+                self.__ldap_connections.pop(hash_, None)
             else:
                 self.__ldap_connections[hash_] = conn
 
@@ -194,13 +194,13 @@ class LDAP(object):
                     lo, po = None, None
             return lo, po
 
-        def _decorator(func,):
+        def _decorator(func):
             @functools.wraps(func)
             def _decorated(*args, **kwargs):
                 kwargs[loarg], kwargs[poarg] = lo, po = getter()
 
                 try:
-                    result = func(*args, **kwargs,)
+                    result = func(*args, **kwargs)
                     if not no_cache:
                         setter((lo, po))
                     return result

@@ -51,20 +51,20 @@ modrdn = '1'
 cache_dir = '/var/cache/univention-directory-listener/selfservice-invitation'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str,) -> None:
-    if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True,):
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
+    if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
         return
 
-    if listener.configRegistry.get('server/role', 'undefined',) != 'domaincontroller_master':
+    if listener.configRegistry.get('server/role', 'undefined') != 'domaincontroller_master':
         return
 
     if new and not old and command == 'a':
-        filename = os.path.join(cache_dir, new.get('uid')[0].decode('UTF-8').replace('/', '',) + '.send',)
-        ud.debug(ud.LISTENER, ud.PROCESS, '%s: trigger selfservice invitation for %r' % (name, dn),)
+        filename = os.path.join(cache_dir, new.get('uid')[0].decode('UTF-8').replace('/', '') + '.send')
+        ud.debug(ud.LISTENER, ud.PROCESS, '%s: trigger selfservice invitation for %r' % (name, dn))
         try:
             os.mknod(filename)
         except OSError as exc:
-            if hasattr(exc, 'errno',) and exc.errno == 17:
+            if hasattr(exc, 'errno') and exc.errno == 17:
                 pass
             else:
                 raise

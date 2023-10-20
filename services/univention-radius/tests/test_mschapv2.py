@@ -25,6 +25,6 @@ def test_nthash():
     ('04b8e0ba74289cc540826bab1dee63ae', 'ffffff0011223344', 'c951c8b1ddf71b2f8ec0be33f21ad93b7cd5fb2cd6cf51c5'),
     # see https://forge.univention.org/bugzilla/show_bug.cgi?id=38785
     ('00563126f04f3875c417f789b00e72d2', '5355f4fc60c8888a', '9681672b365655d0592c3e4009547b9e11bc751b6e97943b'),
-],)
-def test_mschapv2(key, data, exp,):
-    assert mut.ChallengeResponse(a2b_hex(data), a2b_hex(key),) == a2b_hex(exp)
+])
+def test_mschapv2(key, data, exp):
+    assert mut.ChallengeResponse(a2b_hex(data), a2b_hex(key)) == a2b_hex(exp)

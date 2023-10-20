@@ -15,8 +15,8 @@ from univention.testing.utils import wait_for_listener_replication
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
 
 
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret",)
-def test_create_oidc_client(keycloak_administrator_connection,):
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_create_oidc_client(keycloak_administrator_connection):
     """Creates and delete OIDC client in Keycloak"""
     client_id = 'foo-cli'
     args = ['univention-keycloak', 'oidc/rp', 'create', '--app-url=', client_id]
@@ -28,8 +28,8 @@ def test_create_oidc_client(keycloak_administrator_connection,):
     assert not keycloak_administrator_connection.get_client_id(client_id)
 
 
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret",)
-def test_upgrade_config_status(keycloak_app_version,):
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_upgrade_config_status(keycloak_app_version):
     """no upgrade needed after installation"""
     upgrades = run_command(["univention-keycloak", "upgrade-config", "--json", "--get-upgrade-steps"])
     upgrades = json.loads(upgrades)
@@ -41,8 +41,8 @@ def test_upgrade_config_status(keycloak_app_version,):
     assert upgrades.get("domain_config_init")
 
 
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret",)
-def test_upgrade_config_pending_upgrades(upgrade_status_obj,):
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_upgrade_config_pending_upgrades(upgrade_status_obj):
     """
     remove domain config version and checks for updates
     there should be at least one update
@@ -50,7 +50,7 @@ def test_upgrade_config_pending_upgrades(upgrade_status_obj,):
     data = json.loads(upgrade_status_obj.props.data.raw)
     del data["domain_config_version"]
     raw_value = json.dumps(data).encode("ascii")
-    upgrade_status_obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=raw_value,)
+    upgrade_status_obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=raw_value)
     upgrade_status_obj.save()
     wait_for_listener_replication()
     pending_upgrades = run_command(["univention-keycloak", "upgrade-config", "--json", "--get-upgrade-steps"])
@@ -58,8 +58,8 @@ def test_upgrade_config_pending_upgrades(upgrade_status_obj,):
     assert len(pending_upgrades) > 0
 
 
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret",)
-def test_user_attribute_ldap_mapper(keycloak_administrator_connection,):
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_user_attribute_ldap_mapper(keycloak_administrator_connection):
     # create
     name = random_string()
     parent_id = keycloak_administrator_connection.get_components(query={"name": "ldap-provider", "type": "org.keycloak.storage.UserStorageProvider"})[0]["id"]
@@ -81,8 +81,8 @@ def test_user_attribute_ldap_mapper(keycloak_administrator_connection,):
     assert len(mapper) == 0
 
 
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret",)
-def test_saml_client_user_attribute_mapper(keycloak_administrator_connection,):
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
+def test_saml_client_user_attribute_mapper(keycloak_administrator_connection):
     # create
     name = random_string()
     clients = json.loads(run_command(["univention-keycloak", "saml/sp", "get", "--json"]))
@@ -121,7 +121,7 @@ def test_saml_client_user_attribute_mapper(keycloak_administrator_connection,):
     assert name not in mappers
 
 
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret",)
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
 def test_messages():
     languages = json.loads(run_command(["univention-keycloak", "messages", "get-locales", "--json"]))
     for lang in languages:
@@ -139,14 +139,14 @@ def test_messages():
         assert key not in messages
 
 
-@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret",)
+@pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails on hosts without keycloak.secret")
 def test_login_links():
     languages = json.loads(run_command(["univention-keycloak", "messages", "get-locales", "--json"]))
     for lang in languages:
         existing_links = json.loads(run_command(["univention-keycloak", "login-links", "get", lang, "--json"]))
         try:
             # create
-            number = str(random_int(1, 12,))
+            number = str(random_int(1, 12))
             desc = random_string()
             href = random_string()
             run_command(["univention-keycloak", "login-links", "set", lang, number, desc, href])

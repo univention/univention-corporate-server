@@ -32,15 +32,15 @@ ucr = ConfigRegistry()
 ucr.load()
 
 
-def get_entryUUID(lo, dn,):
-    result = lo.search(base=dn, scope=ldap.SCOPE_BASE, attr=['*', '+'],)
+def get_entryUUID(lo, dn):
+    result = lo.search(base=dn, scope=ldap.SCOPE_BASE, attr=['*', '+'])
     print(f'DN: {dn}\n{result}')
     return result[0][1].get('entryUUID')[0]
 
 
-def create_listener_module_for_computer(computer_name,):
+def create_listener_module_for_computer(computer_name):
     filename = '/usr/lib/univention-directory-listener/system/%s-test.py' % (computer_name)
-    fd = open(filename, 'w',)
+    fd = open(filename, 'w')
     fd.write('''
 from __future__ import absolute_import
 
@@ -65,7 +65,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
     restart_listener()
 
 
-def remove_listener_module_for_computer(computer_name,):
+def remove_listener_module_for_computer(computer_name):
     filename = '/usr/lib/univention-directory-listener/system/%s-test.py' % (computer_name)
     if os.path.exists(filename):
         os.remove(filename)
@@ -82,28 +82,28 @@ computer_name = random_name()
 create_listener_module_for_computer(computer_name)
 
 position = 'cn=memberserver,cn=computers,%s' % (ucr.get('ldap/base'))
-container = udm.create_object('container/cn', name=container_name, position=position, wait_for_replication=True,)
-computer = udm.create_object('computers/linux', name=computer_name, position=container, wait_for_replication=True,)
+container = udm.create_object('container/cn', name=container_name, position=position, wait_for_replication=True)
+computer = udm.create_object('computers/linux', name=computer_name, position=container, wait_for_replication=True)
 
 lo = uldap.getMachineConnection()
 
 # read computer uuid
-computer_UUID = get_entryUUID(lo, computer,)
+computer_UUID = get_entryUUID(lo, computer)
 
 # Stop listener
 stop_listener()
 
-udm.modify_object('computers/linux', dn=computer, description=computer_name, wait_for_replication=False,)
+udm.modify_object('computers/linux', dn=computer, description=computer_name, wait_for_replication=False)
 
 # move container to the same position of the new container
 new_computer_dn = f'cn={computer_name},{position}'
-udm.move_object('computers/linux', dn=computer, position=position, wait_for_replication=False,)
+udm.move_object('computers/linux', dn=computer, position=position, wait_for_replication=False)
 
 start_listener()
 
 wait_for_replication()
 
-new_computer_UUID = get_entryUUID(lo, new_computer_dn,)
+new_computer_UUID = get_entryUUID(lo, new_computer_dn)
 
 # The container should have be replaced by the computer object
 if computer_UUID != new_computer_UUID:

@@ -56,7 +56,7 @@ class RequiredComponentError(UpdaterException):
     :type components: set(str)
     """
 
-    def __init__(self, version, components,):
+    def __init__(self, version, components):
         # type: (str, Set[str]) -> None
         self.version = version
         self.components = components
@@ -95,9 +95,9 @@ class PreconditionError(UpdaterException):
     univention.updater.errors.PreconditionError: ('preup', 'main', None, 'preup.sh')
     """
 
-    def __init__(self, phase, order, component, script,):
+    def __init__(self, phase, order, component, script):
         # type: (str, str, str, str) -> None
-        Exception.__init__(self, phase, order, component, script,)
+        Exception.__init__(self, phase, order, component, script)
 
 
 class DownloadError(UpdaterException):
@@ -158,7 +158,7 @@ class CannotResolveComponentServerError(ConfigurationError):
     univention.updater.errors.CannotResolveComponentServerError: Cannot resolve component server for disabled component 'comp' (mirror_list=False).
     """
 
-    def __init__(self, component, for_mirror_list,):
+    def __init__(self, component, for_mirror_list):
         # type: (str, bool) -> None
         self.component = component
         self.for_mirror_list = for_mirror_list

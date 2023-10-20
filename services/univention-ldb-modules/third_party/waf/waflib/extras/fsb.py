@@ -11,15 +11,15 @@ Yet, if you are using this, speed is probably a minor concern
 
 from waflib import Build
 
-def options(opt,):
+def options(opt):
 	pass
 
-def configure(conf,):
+def configure(conf):
 	pass
 
 class FSBContext(Build.BuildContext):
 	def __call__(self, *k, **kw):
-		ret = Build.BuildContext.__call__(self, *k, **kw,)
+		ret = Build.BuildContext.__call__(self, *k, **kw)
 
 		# evaluate the results immediately
 		Build.BuildContext.compile(self)

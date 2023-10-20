@@ -45,12 +45,12 @@ if __name__ == '__main__':
     test_srv_record_dn = "relativeDomainName=%s,%s" % (test_relativeDomainName, forward_zone_dn)
     test_fqdn = ".".join((test_relativeDomainName, domainname))
 
-    dnstests.check_ldap_object(test_srv_record_dn, 'Service Record', 'sRVRecord', location,)
+    dnstests.check_ldap_object(test_srv_record_dn, 'Service Record', 'sRVRecord', location)
     s4connector.wait_for_sync(30)
-    dnstests.test_dns_service_record(test_fqdn, location,)
-    dnstests.check_ldap_object(test_srv_record_dn, 'Modified Service Record', 'sRVRecord', location,)
+    dnstests.test_dns_service_record(test_fqdn, location)
+    dnstests.check_ldap_object(test_srv_record_dn, 'Modified Service Record', 'sRVRecord', location)
 
-    dnstests.udm_remove_dns_record_object('dns/srv_record', test_srv_record_dn,)
-    utils.verify_ldap_object(test_srv_record_dn, should_exist=False,)
+    dnstests.udm_remove_dns_record_object('dns/srv_record', test_srv_record_dn)
+    utils.verify_ldap_object(test_srv_record_dn, should_exist=False)
     s4connector.wait_for_sync()
-    dnstests.test_dns_service_record(test_fqdn, ".*", should_exist=False,)
+    dnstests.test_dns_service_record(test_fqdn, ".*", should_exist=False)

@@ -39,24 +39,24 @@ def link_lib_test_fun(self):
 	The configuration test :py:func:`waflib.Configure.run_build` declares a unique task generator,
 	so we need to create other task generators from here to check if the linker is able to link libraries.
 	"""
-	def write_test_file(task,):
+	def write_test_file(task):
 		task.outputs[0].write(task.generator.code)
 
 	rpath = []
-	if getattr(self, 'add_rpath', False,):
+	if getattr(self, 'add_rpath', False):
 		rpath = [self.bld.path.get_bld().abspath()]
 
 	mode = self.mode
 	m = '%s %s' % (mode, mode)
 	ex = self.test_exec and 'test_exec' or ''
 	bld = self.bld
-	bld(rule=write_test_file, target='test.' + mode, code=LIB_CODE,)
-	bld(rule=write_test_file, target='main.' + mode, code=MAIN_CODE,)
-	bld(features='%sshlib' % m, source='test.' + mode, target='test',)
-	bld(features='%sprogram %s' % (m, ex), source='main.' + mode, target='app', use='test', rpath=rpath,)
+	bld(rule=write_test_file, target='test.' + mode, code=LIB_CODE)
+	bld(rule=write_test_file, target='main.' + mode, code=MAIN_CODE)
+	bld(features='%sshlib' % m, source='test.' + mode, target='test')
+	bld(features='%sprogram %s' % (m, ex), source='main.' + mode, target='app', use='test', rpath=rpath)
 
 @conf
-def check_library(self, mode=None, test_exec=True,):
+def check_library(self, mode=None, test_exec=True):
 	"""
 	Checks if libraries can be linked with the current linker. Uses :py:func:`waflib.Tools.c_tests.link_lib_test_fun`.
 
@@ -72,7 +72,7 @@ def check_library(self, mode=None, test_exec=True,):
 		features = 'link_lib_test',
 		msg = 'Checking for libraries',
 		mode = mode,
-		test_exec = test_exec,)
+		test_exec = test_exec)
 
 ########################################################################################
 
@@ -117,7 +117,7 @@ def check_inline(self, **kw):
 		else:
 			self.end_msg(x)
 			if x != 'inline':
-				self.define('inline', x, quote=False,)
+				self.define('inline', x, quote=False)
 			return x
 	self.fatal('could not use inline functions')
 
@@ -172,7 +172,7 @@ def check_large_file(self, **kw):
 	except self.errors.ConfigurationError:
 		pass
 	else:
-		self.define('_FILE_OFFSET_BITS', 64,)
+		self.define('_FILE_OFFSET_BITS', 64)
 		return ret
 
 	self.fatal('There is no support for large files')
@@ -219,7 +219,7 @@ def grep_for_endianness_fun(self):
 	"""
 	Used by the endianness configuration test
 	"""
-	self.create_task('grep_for_endianness', self.link_task.outputs[0],)
+	self.create_task('grep_for_endianness', self.link_task.outputs[0])
 
 @conf
 def check_endianness(self):
@@ -232,6 +232,6 @@ def check_endianness(self):
 
 	self.check(fragment=ENDIAN_FRAGMENT, features='c cshlib grep_for_endianness',
 		msg='Checking for endianness', define='ENDIANNESS', tmp=tmp,
-		okmsg=check_msg, confcache=None,)
+		okmsg=check_msg, confcache=None)
 	return tmp[0]
 

@@ -31,7 +31,7 @@ class PortalContext:
 
 
 @pytest.fixture()
-def portal_context(ucr,):
+def portal_context(ucr):
     old_portal_dn = ucr.get("portal/default-dn")
     portal_context = PortalContext()
 
@@ -41,10 +41,10 @@ def portal_context(ucr,):
     except Exception:
         logger.exception("failed to delete created portal with ")
     finally:
-        set_portal(old_portal_dn, ucr,)
+        set_portal(old_portal_dn, ucr)
 
 
-def test_portal(umc_browser_test: UMCBrowserTest, ucr, portal_context,):
+def test_portal(umc_browser_test: UMCBrowserTest, ucr, portal_context):
     portal_module = PortalModule(umc_browser_test)
     portal_module.navigate()
 
@@ -55,13 +55,13 @@ def test_portal(umc_browser_test: UMCBrowserTest, ucr, portal_context,):
     portal_context.dn = portal.dn
     portal_dname = portal.props.displayName["en_US"]
 
-    set_portal(portal.dn, ucr,)
+    set_portal(portal.dn, ucr)
 
     umc_browser_test.login(location="/univention/portal")
     portal_name = umc_browser_test.page.get_by_text(portal_dname)
-    expect(portal_name, f"expected new portal name '{portal_name}' to be visible",).to_be_visible()
+    expect(portal_name, f"expected new portal name '{portal_name}' to be visible").to_be_visible()
 
 
-def set_portal(dn: str, ucr,):
+def set_portal(dn: str, ucr):
     ucr.handler_set([f"portal/default-dn={dn}"])
-    subprocess.run(["univention-portal", "update"], check=True,)
+    subprocess.run(["univention-portal", "update"], check=True)

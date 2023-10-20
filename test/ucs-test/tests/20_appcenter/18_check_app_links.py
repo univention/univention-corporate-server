@@ -47,7 +47,7 @@ url = r"""
            'anyl': anyl,
            'punc': punc}
 
-url_re = re.compile(url, re.VERBOSE | re.MULTILINE,)
+url_re = re.compile(url, re.VERBOSE | re.MULTILINE)
 
 # these links return 403 -> Bug #39730
 forbidden_links = {}
@@ -75,14 +75,14 @@ class MyHTMLParser(HTMLParser):
         HTMLParser.__init__(self)
         self.href = []
 
-    def handle_starttag(self, tag, attrs,):
+    def handle_starttag(self, tag, attrs):
         if tag == "a":
             for name, value in attrs:
                 if name == "href":
                     self.href.append(value)
 
 
-def findall_urls_from_readme(app,):
+def findall_urls_from_readme(app):
     """Readme files are html snippets, check with html parser"""
     files_to_check = []
     all_urls = {}
@@ -90,7 +90,7 @@ def findall_urls_from_readme(app,):
         for f in glob.glob('%s*' % app.get_cache_file(readme_file)):
             files_to_check.append(f)
     for filename in files_to_check:
-        print("\nChecking file:", filename,)
+        print("\nChecking file:", filename)
         parser = MyHTMLParser()
         try:
             with open(filename) as fd:
@@ -108,11 +108,11 @@ def findall_urls_from_readme(app,):
     return all_urls
 
 
-def findall_urls_from_ini(app,):
+def findall_urls_from_ini(app):
     all_urls = {}
     files_to_check = [app.get_ini_file()]
     for filename in files_to_check:
-        print("\nChecking file:", filename,)
+        print("\nChecking file:", filename)
         try:
             with open(filename) as ini_file:
                 for line in ini_file:
@@ -120,7 +120,7 @@ def findall_urls_from_ini(app,):
                         url = url_re.findall(line)
                         for u in url:
                             print('found URL - %s' % u)
-                            u = re.sub(r'<[^>]+>', '', u,)
+                            u = re.sub(r'<[^>]+>', '', u)
                             if all_urls.get(u):
                                 all_urls[u].append(filename)
                             else:
@@ -137,22 +137,22 @@ def check_files():
     """
     links = {}
     for app in get_requested_apps():
-        print("\nChecking App:", app,)
+        print("\nChecking App:", app)
         links[app.id] = findall_urls_from_ini(app)
         links[app.id].update(findall_urls_from_readme(app))
     bad_links = []
     for app in links:
         for link in links[app]:
             if link in forbidden_links:
-                print("Ignore link:", link,)
+                print("Ignore link:", link)
                 continue
             time.sleep(1)
-            print("Checking link:", link,)
+            print("Checking link:", link)
             requests_timeout = 10
             headers = requests.utils.default_headers()
             headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0'})
             try:
-                r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers,)  # noqa: S501
+                r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers)  # noqa: S501
             except Exception as exc:
                 print("Response code indicates a problem. %s" % str(exc))
                 bad_links.append(f'Link: {link} App: {app} File: {links[app][link]}')

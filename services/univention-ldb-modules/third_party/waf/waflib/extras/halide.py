@@ -50,27 +50,28 @@ class run_halide_gen(Task.Task):
 		stuff += ("[%s]" % (",".join(
 		 ('%s=%s' % (k,v)) for k, v in sorted(self.env.env.items()))))
 		return Task.Task.__str__(self).replace(self.__class__.__name__,
-		 stuff,)
+		 stuff)
 
 @TaskGen.feature('halide')
 @TaskGen.before_method('process_source')
 def halide(self):
 	Utils.def_attrs(self,
 	 args=[],
-	 halide_env={},)
+	 halide_env={},
+	)
 
 	bld = self.bld
 
 	env = self.halide_env
 	try:
-		if isinstance(env, str,):
+		if isinstance(env, str):
 			env = dict(x.split('=') for x in env.split())
-		elif isinstance(env, list,):
+		elif isinstance(env, list):
 			env = dict(x.split('=') for x in env)
-		assert isinstance(env, dict,)
+		assert isinstance(env, dict)
 	except Exception as e:
-		if not isinstance(e, ValueError,) \
-		 and not isinstance(e, AssertionError,):
+		if not isinstance(e, ValueError) \
+		 and not isinstance(e, AssertionError):
 			raise
 		raise Errors.WafError(
 		 "halide_env must be under the form" \
@@ -84,7 +85,7 @@ def halide(self):
 
 	args = Utils.to_list(self.args)
 
-	def change_ext(src, ext,):
+	def change_ext(src, ext):
 		# Return a node with a new extension, in an appropriate folder
 		name = src.name
 		xpos = src.name.rfind('.')
@@ -97,28 +98,28 @@ def halide(self):
 			node = bld.bldnode.find_or_declare(newname)
 		return node
 
-	def to_nodes(self, lst, path=None,):
+	def to_nodes(self, lst, path=None):
 		tmp = []
 		path = path or self.path
 		find = path.find_or_declare
 
-		if isinstance(lst, self.path.__class__,):
+		if isinstance(lst, self.path.__class__):
 			lst = [lst]
 
 		for x in Utils.to_list(lst):
-			if isinstance(x, str,):
+			if isinstance(x, str):
 				node = find(x)
 			else:
 				node = x
 			tmp.append(node)
 		return tmp
 
-	tgt = to_nodes(self, self.target,)
+	tgt = to_nodes(self, self.target)
 	if not tgt:
-		tgt = [change_ext(src, '.o',), change_ext(src, '.h',)]
+		tgt = [change_ext(src, '.o'), change_ext(src, '.h')]
 	cwd = tgt[0].parent.abspath()
-	task = self.create_task('run_halide_gen', src, tgt, cwd=cwd,)
-	task.env.append_unique('HALIDE_ARGS', args,)
+	task = self.create_task('run_halide_gen', src, tgt, cwd=cwd)
+	task.env.append_unique('HALIDE_ARGS', args)
 	if task.env.env == []:
 		task.env.env = {}
 	task.env.env.update(env)
@@ -131,19 +132,20 @@ def halide(self):
 		self.compiled_tasks = [task]
 	self.source = []
 
-def configure(conf,):
+def configure(conf):
 	if Options.options.halide_root is None:
-		conf.check_cfg(package='Halide', args='--cflags --libs',)
+		conf.check_cfg(package='Halide', args='--cflags --libs')
 	else:
 		halide_root = Options.options.halide_root
-		conf.env.INCLUDES_HALIDE = [ os.path.join(halide_root, "include",) ]
-		conf.env.LIBPATH_HALIDE = [ os.path.join(halide_root, "lib",) ]
+		conf.env.INCLUDES_HALIDE = [ os.path.join(halide_root, "include") ]
+		conf.env.LIBPATH_HALIDE = [ os.path.join(halide_root, "lib") ]
 		conf.env.LIB_HALIDE = ["Halide"]
 
 		# You might want to add this, while upstream doesn't fix it
 		#conf.env.LIB_HALIDE += ['ncurses', 'dl', 'pthread']
 
-def options(opt,):
+def options(opt):
 	opt.add_option('--halide-root',
-	 help="path to Halide include and lib files",)
+	 help="path to Halide include and lib files",
+	)
 

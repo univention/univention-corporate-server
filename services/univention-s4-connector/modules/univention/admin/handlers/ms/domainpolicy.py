@@ -51,7 +51,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['domainPolicy', 'leaf', 'top'],),
+        objectClasses=['domainPolicy', 'leaf', 'top'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -59,102 +60,126 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'qualityOfService': univention.admin.property(
         short_description=_('Quality of service'),
         long_description='',
-        syntax=univention.admin.syntax.integer,),
+        syntax=univention.admin.syntax.integer,
+    ),
     'pwdProperties': univention.admin.property(
         short_description=_('Password properties'),
         long_description='',
-        syntax=univention.admin.syntax.integer,),
+        syntax=univention.admin.syntax.integer,
+    ),
     'pwdHistoryLength': univention.admin.property(
         short_description=_('Password history length'),
         long_description='',
-        syntax=univention.admin.syntax.integer,),
+        syntax=univention.admin.syntax.integer,
+    ),
     'publicKeyPolicy': univention.admin.property(
         short_description=_('Publickey policy'),
         long_description='',
-        syntax=univention.admin.syntax.TextArea,),
+        syntax=univention.admin.syntax.TextArea,
+    ),
     'proxyLifetime': univention.admin.property(
         short_description=_('Proxy lifetime'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'minTicketAge': univention.admin.property(
         short_description=_('Minimum ticket age'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'minPwdLength': univention.admin.property(
         short_description=_('Minimum password length'),
         long_description='',
-        syntax=univention.admin.syntax.integer,),
+        syntax=univention.admin.syntax.integer,
+    ),
     'minPwdAge': univention.admin.property(
         short_description=_('Minimum password age'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'maxTicketAge': univention.admin.property(
         short_description=_('Maximum ticket age'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'maxRenewAge': univention.admin.property(
         short_description=_('Maximum renew age'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'maxPwdAge': univention.admin.property(
         short_description=_('Maximum password age'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'managedBy': univention.admin.property(
         short_description=_('Managed by'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'lockoutThreshold': univention.admin.property(
         short_description=_('Lockout threshold'),
         long_description='',
-        syntax=univention.admin.syntax.integer,),
+        syntax=univention.admin.syntax.integer,
+    ),
     'lockoutDuration': univention.admin.property(
         short_description=_('Lockout duration'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'lockOutObservationWindow': univention.admin.property(
         short_description=_('Lockout observation window'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'ipsecPolicyReference': univention.admin.property(
         short_description=_('IP-security policy reference'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'forceLogoff': univention.admin.property(
         short_description=_('Force logoff'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'eFSPolicy': univention.admin.property(
         short_description=_('EFS policy'),
         long_description='',
         syntax=univention.admin.syntax.TextArea,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'domainWidePolicy': univention.admin.property(
         short_description=_('Domain wide policy'),
         long_description='',
         syntax=univention.admin.syntax.TextArea,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'domainPolicyReference': univention.admin.property(
         short_description=_('Domain policy reference'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'domainCAs': univention.admin.property(
         short_description=_('Domain CAs'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'defaultLocalPolicyObject': univention.admin.property(
         short_description=_('Default local policy object'),
         long_description='',
-        syntax=univention.admin.syntax.string,),
+        syntax=univention.admin.syntax.string,
+    ),
     'authenticationOptions': univention.admin.property(
         short_description=_('Authentication options'),
         long_description='',
-        syntax=univention.admin.syntax.integer,),
+        syntax=univention.admin.syntax.integer,
+    ),
 }
 
 layout = [
@@ -184,49 +209,49 @@ layout = [
             'domainCAs',
             'defaultLocalPolicyObject',
             'authenticationOptions',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 
-def multivalueMapBase64(data,):
+def multivalueMapBase64(data):
     if data:
         return [univention.admin.mapping.mapBase64(d) for d in data]
     return []
 
 
-def multivalueUnmapBase64(data,):
+def multivalueUnmapBase64(data):
     if data:
         return [univention.admin.mapping.unmapBase64(data)]  # stupid broken function in UDM
     return []
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
-mapping.register('qualityOfService', 'qualityOfService', None, univention.admin.mapping.ListToString,)
-mapping.register('pwdProperties', 'pwdProperties', None, univention.admin.mapping.ListToString,)
-mapping.register('pwdHistoryLength', 'pwdHistoryLength', None, univention.admin.mapping.ListToString,)
-mapping.register('publicKeyPolicy', 'publicKeyPolicy', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64,)
-mapping.register('proxyLifetime', 'proxyLifetime', None, univention.admin.mapping.ListToString,)
-mapping.register('minTicketAge', 'minTicketAge', None, univention.admin.mapping.ListToString,)
-mapping.register('minPwdLength', 'minPwdLength', None, univention.admin.mapping.ListToString,)
-mapping.register('minPwdAge', 'minPwdAge', None, univention.admin.mapping.ListToString,)
-mapping.register('maxTicketAge', 'maxTicketAge', None, univention.admin.mapping.ListToString,)
-mapping.register('maxRenewAge', 'maxRenewAge', None, univention.admin.mapping.ListToString,)
-mapping.register('maxPwdAge', 'maxPwdAge', None, univention.admin.mapping.ListToString,)
-mapping.register('managedBy', 'managedBy', None, univention.admin.mapping.ListToString,)
-mapping.register('lockoutThreshold', 'lockoutThreshold', None, univention.admin.mapping.ListToString,)
-mapping.register('lockoutDuration', 'lockoutDuration', None, univention.admin.mapping.ListToString,)
-mapping.register('lockOutObservationWindow', 'lockOutObservationWindow', None, univention.admin.mapping.ListToString,)
-mapping.register('ipsecPolicyReference', 'ipsecPolicyReference', None, univention.admin.mapping.ListToString,)
-mapping.register('forceLogoff', 'forceLogoff', None, univention.admin.mapping.ListToString,)
-mapping.register('eFSPolicy', 'eFSPolicy', multivalueMapBase64, multivalueUnmapBase64,)
-mapping.register('domainWidePolicy', 'domainWidePolicy', multivalueMapBase64, multivalueUnmapBase64,)
-mapping.register('domainPolicyReference', 'domainPolicyReference', None, univention.admin.mapping.ListToString,)
-mapping.register('domainCAs', 'domainCAs',)
-mapping.register('defaultLocalPolicyObject', 'defaultLocalPolicyObject', None, univention.admin.mapping.ListToString,)
-mapping.register('authenticationOptions', 'authenticationOptions', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.register('qualityOfService', 'qualityOfService', None, univention.admin.mapping.ListToString)
+mapping.register('pwdProperties', 'pwdProperties', None, univention.admin.mapping.ListToString)
+mapping.register('pwdHistoryLength', 'pwdHistoryLength', None, univention.admin.mapping.ListToString)
+mapping.register('publicKeyPolicy', 'publicKeyPolicy', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('proxyLifetime', 'proxyLifetime', None, univention.admin.mapping.ListToString)
+mapping.register('minTicketAge', 'minTicketAge', None, univention.admin.mapping.ListToString)
+mapping.register('minPwdLength', 'minPwdLength', None, univention.admin.mapping.ListToString)
+mapping.register('minPwdAge', 'minPwdAge', None, univention.admin.mapping.ListToString)
+mapping.register('maxTicketAge', 'maxTicketAge', None, univention.admin.mapping.ListToString)
+mapping.register('maxRenewAge', 'maxRenewAge', None, univention.admin.mapping.ListToString)
+mapping.register('maxPwdAge', 'maxPwdAge', None, univention.admin.mapping.ListToString)
+mapping.register('managedBy', 'managedBy', None, univention.admin.mapping.ListToString)
+mapping.register('lockoutThreshold', 'lockoutThreshold', None, univention.admin.mapping.ListToString)
+mapping.register('lockoutDuration', 'lockoutDuration', None, univention.admin.mapping.ListToString)
+mapping.register('lockOutObservationWindow', 'lockOutObservationWindow', None, univention.admin.mapping.ListToString)
+mapping.register('ipsecPolicyReference', 'ipsecPolicyReference', None, univention.admin.mapping.ListToString)
+mapping.register('forceLogoff', 'forceLogoff', None, univention.admin.mapping.ListToString)
+mapping.register('eFSPolicy', 'eFSPolicy', multivalueMapBase64, multivalueUnmapBase64)
+mapping.register('domainWidePolicy', 'domainWidePolicy', multivalueMapBase64, multivalueUnmapBase64)
+mapping.register('domainPolicyReference', 'domainPolicyReference', None, univention.admin.mapping.ListToString)
+mapping.register('domainCAs', 'domainCAs')
+mapping.register('defaultLocalPolicyObject', 'defaultLocalPolicyObject', None, univention.admin.mapping.ListToString)
+mapping.register('authenticationOptions', 'authenticationOptions', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

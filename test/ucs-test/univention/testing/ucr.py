@@ -61,7 +61,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
     def __init__(self, *args, **kwargs):
         # type: (*Any, **Any) -> None
         """initialise object"""
-        ConfigRegistry.__init__(self, *args, **kwargs,)
+        ConfigRegistry.__init__(self, *args, **kwargs)
         self.__original_registry = None  # type: Optional[Dict[int, Dict[str, str]]]
 
     def ucr_update(self, *args):
@@ -98,7 +98,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
             # remove new variables
             keylist = set(self._registry[regtype]) - set(self.__original_registry[regtype])
             if keylist:
-                self.handler_unset(list(keylist), {option: True},)
+                self.handler_unset(list(keylist), {option: True})
 
             # add/revert existing variables
             changes = [
@@ -107,7 +107,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
                 if origval != self._registry[regtype].get(key)
             ]
             if changes:
-                self.handler_set(changes, {option: True},)
+                self.handler_set(changes, {option: True})
         # load new/original values
         self.load()
 
@@ -116,7 +116,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
         self.load()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback,):
+    def __exit__(self, exc_type, exc_value, traceback):
         # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
         self.revert_to_original_registry()
 
@@ -142,9 +142,9 @@ if __name__ == '__main__':
 
     with UCSTestConfigRegistry() as ucr2:
         print('Old values...')
-        print(ucr2.get('foo/bar', '<unset>',))
-        print(ucr2.get('repository/online/server', '<unset>',))
-        print(ucr2.get('server/role', '<unset>',))
+        print(ucr2.get('foo/bar', '<unset>'))
+        print(ucr2.get('repository/online/server', '<unset>'))
+        print(ucr2.get('server/role', '<unset>'))
         print('Setting some variables...')
         ucr2.handler_set(['foo/bar=ding/dong'])
         ucr2.handler_set(['repository/online/server=ftp.debian.org'])

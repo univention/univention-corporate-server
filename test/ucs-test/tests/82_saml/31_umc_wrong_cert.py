@@ -16,9 +16,9 @@ import samltest
 
 
 def main():
-    with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'rb',) as ca_file:
+    with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'rb') as ca_file:
         cert = ca_file.read()
-    with samltest.SPCertificate(cert, update_metadata=False,):
+    with samltest.SPCertificate(cert, update_metadata=False):
         umc_cert_fail()
 
 

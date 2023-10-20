@@ -71,7 +71,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPolicy', 'univentionPolicyRepositoryServer'],),
+        objectClasses=['top', 'univentionPolicy', 'univentionPolicyRepositoryServer'],
+    ),
 }
 property_descriptions = dict({
     'name': univention.admin.property(
@@ -81,12 +82,14 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'repositoryServer': univention.admin.property(
         short_description=_('Repository server'),
         long_description='',
         syntax=univention.admin.syntax.UCS_Server,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
 
 }, **dict([
     requiredObjectClassesProperty(),
@@ -94,21 +97,21 @@ property_descriptions = dict({
     fixedAttributesProperty(syntax=ldapServerFixedAttributes),
     emptyAttributesProperty(syntax=ldapServerFixedAttributes),
     ldapFilterProperty(),
-]),)
+]))
 
 layout = [
     Tab(_('General'), _('Update'), layout=[
         Group(_('General repository server settings'), layout=[
             'name',
             'repositoryServer',
-        ],),
-    ],),
+        ]),
+    ]),
     policy_object_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('repositoryServer', 'univentionRepositoryServer', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('repositoryServer', 'univentionRepositoryServer', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
 
 

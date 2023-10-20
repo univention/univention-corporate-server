@@ -49,14 +49,14 @@ class LockingDB(object):
     https://forge.univention.org/bugzilla/show_bug.cgi?id=35391
     """
 
-    def __init__(self, filename,):
+    def __init__(self, filename):
         self.filename = filename
         self._dbcon = sqlite3.connect(self.filename)
         self.s4cache = {}
 
         self.__create_tables()
 
-    def lock_ucs(self, uuid,):
+    def lock_ucs(self, uuid):
         if not uuid:
             return
 
@@ -69,9 +69,9 @@ class LockingDB(object):
             ("INSERT INTO UCS_LOCK(uuid) VALUES(?);", (str(uuid),)),
         ]
 
-        self.__execute_sql_commands(sql_commands, fetch_result=False,)
+        self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-    def unlock_ucs(self, uuid,):
+    def unlock_ucs(self, uuid):
         if not uuid:
             return
 
@@ -79,9 +79,9 @@ class LockingDB(object):
             ("DELETE FROM UCS_LOCK WHERE uuid = ?;", (str(uuid),)),
         ]
 
-        self.__execute_sql_commands(sql_commands, fetch_result=False,)
+        self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-    def lock_s4(self, guid,):
+    def lock_s4(self, guid):
         if not guid:
             return
 
@@ -89,9 +89,9 @@ class LockingDB(object):
             ("INSERT INTO S4_LOCK(guid) VALUES(?);", (str(guid),)),
         ]
 
-        self.__execute_sql_commands(sql_commands, fetch_result=False,)
+        self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-    def unlock_s4(self, guid,):
+    def unlock_s4(self, guid):
         if not guid:
             return
 
@@ -99,9 +99,9 @@ class LockingDB(object):
             ("DELETE FROM S4_LOCK WHERE guid = ?;", (str(guid),)),
         ]
 
-        self.__execute_sql_commands(sql_commands, fetch_result=False,)
+        self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-    def is_ucs_locked(self, uuid,):
+    def is_ucs_locked(self, uuid):
         if not uuid:
             return False
 
@@ -109,14 +109,14 @@ class LockingDB(object):
             ("SELECT id FROM UCS_LOCK WHERE uuid=?;", (str(uuid),)),
         ]
 
-        rows = self.__execute_sql_commands(sql_commands, fetch_result=True,)
+        rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
 
         if rows:
             return True
 
         return False
 
-    def is_s4_locked(self, guid,):
+    def is_s4_locked(self, guid):
         if not guid:
             return False
 
@@ -124,7 +124,7 @@ class LockingDB(object):
             ("SELECT id FROM S4_LOCK WHERE guid=?;", (str(guid),)),
         ]
 
-        rows = self.__execute_sql_commands(sql_commands, fetch_result=True,)
+        rows = self.__execute_sql_commands(sql_commands, fetch_result=True)
 
         if rows:
             return True
@@ -139,29 +139,29 @@ class LockingDB(object):
             "CREATE INDEX IF NOT EXISTS ucs_lock_uuid ON ucs_lock(uuid);",
         ]
 
-        self.__execute_sql_commands(sql_commands, fetch_result=False,)
+        self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-    def __execute_sql_commands(self, sql_commands, fetch_result=False,):
+    def __execute_sql_commands(self, sql_commands, fetch_result=False):
         for _i in [1, 2]:
             try:
                 cur = self._dbcon.cursor()
                 for sql_command in sql_commands:
-                    if isinstance(sql_command, tuple,):
-                        ud.debug(ud.LDAP, ud.ALL, "LockingDB: Execute SQL command: %r, %r" % (sql_command[0], sql_command[1]),)
-                        cur.execute(sql_command[0], sql_command[1],)
+                    if isinstance(sql_command, tuple):
+                        ud.debug(ud.LDAP, ud.ALL, "LockingDB: Execute SQL command: %r, %r" % (sql_command[0], sql_command[1]))
+                        cur.execute(sql_command[0], sql_command[1])
                     else:
-                        ud.debug(ud.LDAP, ud.ALL, "LockingDB: Execute SQL command: %r" % (sql_command,),)
+                        ud.debug(ud.LDAP, ud.ALL, "LockingDB: Execute SQL command: %r" % (sql_command,))
                         cur.execute(sql_command)
                 self._dbcon.commit()
                 if fetch_result:
                     rows = cur.fetchall()
                 cur.close()
                 if fetch_result:
-                    ud.debug(ud.LDAP, ud.ALL, "LockingDB: Return SQL result: %r" % (rows,),)
+                    ud.debug(ud.LDAP, ud.ALL, "LockingDB: Return SQL result: %r" % (rows,))
                     return rows
                 return None
             except sqlite3.Error as exp:
-                ud.debug(ud.LDAP, ud.WARN, "LockingDB: sqlite: %r. SQL command was: %r" % (exp, sql_commands),)
+                ud.debug(ud.LDAP, ud.WARN, "LockingDB: sqlite: %r. SQL command was: %r" % (exp, sql_commands))
                 if self._dbcon:
                     self._dbcon.close()
                 self._dbcon = sqlite3.connect(self.filename)

@@ -44,7 +44,7 @@ description = _('No problems found with modified UCR templates')
 run_descr = ['This can be checked by running: univention-check-templates']
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     cmd = ['univention-check-templates']
     try:
         subprocess.check_output(cmd)
@@ -57,7 +57,7 @@ def run(_umc_instance: Instance,) -> None:
         ]
         if error.output:
             MODULE.error('\n'.join(error_description))
-            error_description.extend(('\n\n', error.output.decode('UTF-8', 'replace',)))
+            error_description.extend(('\n\n', error.output.decode('UTF-8', 'replace')))
         raise Warning(' '.join(error_description))
 
 

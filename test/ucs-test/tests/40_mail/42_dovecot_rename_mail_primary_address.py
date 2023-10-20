@@ -42,13 +42,13 @@ def main():
             # send email to each user
             #
             for _dn, _name, addr, msgid in userbase:
-                send_mail(recipients=[addr], messageid=msgid, server=fqdn,)
+                send_mail(recipients=[addr], messageid=msgid, server=fqdn)
             loopcnt = 60
             while loopcnt > 0:
                 loopcnt -= 1
                 found = 0
                 for _dn, _name, addr, msgid in userbase:
-                    if imap_search_mail(messageid=msgid, server=fqdn, imap_user=addr, imap_folder='INBOX', use_ssl=True,):
+                    if imap_search_mail(messageid=msgid, server=fqdn, imap_user=addr, imap_folder='INBOX', use_ssl=True):
                         found += 1
                 print('Found %d of %d mails' % (found, len(userbase)))
                 if found == len(userbase):
@@ -82,7 +82,7 @@ def main():
                 ])
                 subprocess.call(['systemctl', 'restart', 'univention-directory-listener'])
                 new_mpa = random_email()
-                udm.modify_object('users/user', dn=userbase[i][0], set={'mailPrimaryAddress': new_mpa}, check_for_drs_replication=True,)
+                udm.modify_object('users/user', dn=userbase[i][0], set={'mailPrimaryAddress': new_mpa}, check_for_drs_replication=True)
 
                 new_dir = get_dovecot_maildir(new_mpa)
                 if not os.path.exists(new_dir):
@@ -91,17 +91,17 @@ def main():
                 if i == 0:
                     if not os.path.exists(old_dir):
                         utils.fail('Test %d: old_dir = %r has been removed unexpectedly! %r' % (i, old_dir, userbase[i]))
-                    if imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=new_mpa, imap_folder='INBOX', use_ssl=True,):
+                    if imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=new_mpa, imap_folder='INBOX', use_ssl=True):
                         utils.fail('Test %d: msgid found unexpectedly' % (i,))
                 elif i == 1:
                     if os.path.exists(old_dir):
                         utils.fail('Test %d: old_dir = %r has not been removed! %r' % (i, old_dir, userbase[i]))
-                    if imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=new_mpa, imap_folder='INBOX', use_ssl=True,):
+                    if imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=new_mpa, imap_folder='INBOX', use_ssl=True):
                         utils.fail('Test %d: msgid found unexpectedly' % (i,))
                 elif i == 2 or i == 3:
                     if os.path.exists(old_dir):
                         utils.fail('Test %d: old_dir = %r has not been renamed! %r' % (i, old_dir, userbase[i]))
-                    cnt = imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=new_mpa, imap_folder='INBOX', use_ssl=True,)
+                    cnt = imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=new_mpa, imap_folder='INBOX', use_ssl=True)
                     if not cnt:
                         print('Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt))
                         utils.fail('Test %d: maildir does not contain old mails' % (i,))

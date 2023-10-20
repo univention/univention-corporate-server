@@ -56,7 +56,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionUDMOption'],),
+        objectClasses=['top', 'univentionUDMOption'],
+    ),
 }
 
 property_descriptions = {
@@ -67,53 +68,63 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'shortDescription': univention.admin.property(
         short_description=_('Default short description'),
         long_description=_('Short description for the option as shown on the Option tab.'),
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
-        required=True,),
+        required=True,
+    ),
     'longDescription': univention.admin.property(
         short_description=_('Default long description'),
         long_description=_('Long description for the option as shown on the Option tab.'),
         syntax=univention.admin.syntax.string,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'translationShortDescription': univention.admin.property(
         short_description=_('Translations of short description'),
         long_description=_('Translations of the short description for the option as shown on the Option tab'),
         syntax=univention.admin.syntax.translationTupleShortDescription,
         multivalue=True,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'translationLongDescription': univention.admin.property(
         short_description=_('Translations of long description'),
         long_description=_('Translations of the long description for the option as shown on the Option tab'),
         syntax=univention.admin.syntax.translationTupleLongDescription,
         multivalue=True,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'default': univention.admin.property(
         short_description=_('Default'),
         long_description=_('Enable option by default.'),
-        syntax=univention.admin.syntax.boolean,),
+        syntax=univention.admin.syntax.boolean,
+    ),
     'editable': univention.admin.property(
         short_description=_('Editable'),
         long_description=_('Option may be repeatedly turned on and off.'),
-        syntax=univention.admin.syntax.boolean,),
+        syntax=univention.admin.syntax.boolean,
+    ),
     'module': univention.admin.property(
         short_description=_('Needed module'),
         long_description=_('List of modules this option applies to.'),
         syntax=univention.admin.syntax.univentionAdminModules,
         multivalue=True,
-        required=True,),
+        required=True,
+    ),
     'objectClass': univention.admin.property(
         short_description=_('LDAP object class'),
         long_description=_('Mapping to LDAP objectClasses'),
         syntax=univention.admin.syntax.ldapObjectClass,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'isApp': univention.admin.property(
         short_description=_('Application'),
         long_description=_('Specifies that the option belongs to a UCS Application'),
-        syntax=univention.admin.syntax.boolean,),
+        syntax=univention.admin.syntax.boolean,
+    ),
 }
 
 layout = [
@@ -124,19 +135,19 @@ layout = [
             ["translationShortDescription", "translationLongDescription"],
             ["default", "editable", "isApp"],
             ['module', "objectClass"],
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('shortDescription', 'univentionUDMOptionShortDescription', None, univention.admin.mapping.ListToString,)
-mapping.register('longDescription', 'univentionUDMOptionLongDescription', None, univention.admin.mapping.ListToString,)
-mapping.register('default', 'univentionUDMOptionDefault', None, univention.admin.mapping.ListToString, encoding='ASCII',)
-mapping.register('editable', 'univentionUDMOptionEditable', None, univention.admin.mapping.ListToString, encoding='ASCII',)
-mapping.register('module', 'univentionUDMOptionModule',)
-mapping.register('objectClass', 'univentionUDMOptionObjectClass',)
-mapping.register('isApp', 'univentionUDMOptionIsApp', None, univention.admin.mapping.ListToString, encoding='ASCII',)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('shortDescription', 'univentionUDMOptionShortDescription', None, univention.admin.mapping.ListToString)
+mapping.register('longDescription', 'univentionUDMOptionLongDescription', None, univention.admin.mapping.ListToString)
+mapping.register('default', 'univentionUDMOptionDefault', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('editable', 'univentionUDMOptionEditable', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('module', 'univentionUDMOptionModule')
+mapping.register('objectClass', 'univentionUDMOptionObjectClass')
+mapping.register('isApp', 'univentionUDMOptionIsApp', None, univention.admin.mapping.ListToString, encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -153,7 +164,7 @@ class object(univention.admin.handlers.simpleLdap):
                 if key.startswith('univentionUDMOptionTranslation%s;entry-' % transKey)
             ]
 
-            debug(ADMIN, INFO, 'extended_option: added translations for %s: %s' % (transKey, translations),)
+            debug(ADMIN, INFO, 'extended_option: added translations for %s: %s' % (transKey, translations))
             self['translation%s' % transKey] = translations
 
         self.save()
@@ -167,15 +178,15 @@ class object(univention.admin.handlers.simpleLdap):
                 oldlist = {}
                 newlist = {}
 
-                for lang, txt in self.oldinfo.get('translation%s' % transKey, [],):
-                    lang = lang.replace('_', '-',)
+                for lang, txt in self.oldinfo.get('translation%s' % transKey, []):
+                    lang = lang.replace('_', '-')
                     oldlist[lang] = txt.encode('UTF-8')
                     if lang not in newlist:
                         newlist[lang] = b''
 
                 # duplicate lang entries will be removed due to use of dictionary
-                for lang, txt in self.info.get('translation%s' % transKey, [],):
-                    lang = lang.replace('_', '-',)
+                for lang, txt in self.info.get('translation%s' % transKey, []):
+                    lang = lang.replace('_', '-')
                     newlist[lang] = txt.encode('UTF-8')
                     if lang not in oldlist:
                         oldlist[lang] = b''

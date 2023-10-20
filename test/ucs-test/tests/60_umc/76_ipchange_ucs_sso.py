@@ -40,30 +40,31 @@ if __name__ == '__main__':
             password='univention',
             network='cn=default,cn=networks,%s' % ucr.get('ldap/base'),
             univentionService='univention-saml',
-            check_for_drs_replication=False,)
+            check_for_drs_replication=False,
+        )
 
         lo = utils.get_ldap_connection()
         computer_object = lo.get(computer)
         print(computer_object)
         ip = computer_object['aRecord']
-        utils.verify_ldap_object(computer, {'aRecord': ip},)
+        utils.verify_ldap_object(computer, {'aRecord': ip})
 
-        for ucs_sso_dn, ucs_sso_object in lo.search('relativeDomainName=ucs-sso', unique=True, required=True,):
+        for ucs_sso_dn, ucs_sso_object in lo.search('relativeDomainName=ucs-sso', unique=True, required=True):
             ips = ucs_sso_object.get('aRecord')
             break
         else:
             raise ValueError('no ucs-sso host found.')
 
-        lo.modify(ucs_sso_dn, [('aRecord', ips, ips + ip)],)
+        lo.modify(ucs_sso_dn, [('aRecord', ips, ips + ip)])
         try:
             new_ip = '1.2.3.10'
 
-            iface = ucr.get('interfaces/primary', 'eth0',)
-            client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention',)
-            client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role},)
+            iface = ucr.get('interfaces/primary', 'eth0')
+            client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
+            client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
 
             utils.wait_for_replication()
-            utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True,)
-            utils.verify_ldap_object(ucs_sso_dn, {'aRecord': ips + [new_ip]}, strict=True,)
+            utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True)
+            utils.verify_ldap_object(ucs_sso_dn, {'aRecord': ips + [new_ip]}, strict=True)
         finally:
-            lo.modify(ucs_sso_dn, [('aRecord', lo.get(ucs_sso_dn).get('aRecord'), ips)],)
+            lo.modify(ucs_sso_dn, [('aRecord', lo.get(ucs_sso_dn).get('aRecord'), ips)])

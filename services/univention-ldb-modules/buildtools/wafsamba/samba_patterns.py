@@ -4,18 +4,18 @@ import sys
 from waflib import Build
 from wafsamba import samba_version_file
 
-def write_version_header(task,):
+def write_version_header(task):
     '''print version.h contents'''
     src = task.inputs[0].srcpath(task.env)
 
-    version = samba_version_file(src, task.env.srcdir, env=task.env, is_install=task.generator.bld.is_install,)
+    version = samba_version_file(src, task.env.srcdir, env=task.env, is_install=task.generator.bld.is_install)
     string = str(version)
 
     task.outputs[0].write(string)
     return 0
 
 
-def SAMBA_MKVERSION(bld, target, source='VERSION',):
+def SAMBA_MKVERSION(bld, target, source='VERSION'):
     '''generate the version.h header for Samba'''
 
     # We only force waf to re-generate this file if we are installing,
@@ -26,11 +26,11 @@ def SAMBA_MKVERSION(bld, target, source='VERSION',):
                             group='setup',
                             source=source,
                             target=target,
-                            always=bld.is_install,)
+                            always=bld.is_install)
 Build.BuildContext.SAMBA_MKVERSION = SAMBA_MKVERSION
 
 
-def write_build_options_header(fp,):
+def write_build_options_header(fp):
     '''write preamble for build_options.c'''
     fp.write("/*\n"
              "   Unix SMB/CIFS implementation.\n"
@@ -132,7 +132,7 @@ def write_build_options_header(fp,):
              "                     get_dyn_BINDDNS_DIR());\n"
              "\n")
 
-def write_build_options_footer(fp,):
+def write_build_options_footer(fp):
     fp.write("       /* Output the sizes of the various cluster features */\n"
              "       output(screen, \"\\n%s\", cluster_support_features());\n"
              "\n"
@@ -169,7 +169,7 @@ def write_build_options_footer(fp,):
              "                      \"   %s\\n\", STRING_STATIC_MODULES);\n"
              "}\n")
 
-def write_build_options_section(fp, keys, section,):
+def write_build_options_section(fp, keys, section):
     fp.write("\n\t/* Show %s */\n" % section)
     fp.write("       output(screen, \"\\n%s:\\n\");\n\n" % section)
 
@@ -179,7 +179,7 @@ def write_build_options_section(fp, keys, section,):
         fp.write("#endif\n")
     fp.write("\n")
 
-def write_build_options(task,):
+def write_build_options(task):
     tbl = task.env
     keys_option_with = []
     keys_option_utmp = []
@@ -188,10 +188,10 @@ def write_build_options(task,):
     keys_header_other = []
     keys_misc = []
     if sys.hexversion>0x300000f:
-        trans_table = bytes.maketrans(b'.-()', b'____',)
+        trans_table = bytes.maketrans(b'.-()', b'____')
     else:
         import string
-        trans_table = string.maketrans('.-()', '____',)
+        trans_table = string.maketrans('.-()', '____')
 
     for key in tbl:
         if key.startswith("HAVE_UT_UT_") or key.find("UTMP") >= 0:
@@ -212,23 +212,23 @@ def write_build_options(task,):
             keys_misc.append(key.translate(trans_table))
 
     tgt = task.outputs[0].bldpath(task.env)
-    f = open(tgt, 'w',)
+    f = open(tgt, 'w')
     write_build_options_header(f)
-    write_build_options_section(f, keys_header_sys, "System Headers",)
-    write_build_options_section(f, keys_header_other, "Headers",)
-    write_build_options_section(f, keys_option_utmp, "UTMP Options",)
-    write_build_options_section(f, keys_option_have, "HAVE_* Defines",)
-    write_build_options_section(f, keys_option_with, "--with Options",)
-    write_build_options_section(f, keys_misc, "Build Options",)
+    write_build_options_section(f, keys_header_sys, "System Headers")
+    write_build_options_section(f, keys_header_other, "Headers")
+    write_build_options_section(f, keys_option_utmp, "UTMP Options")
+    write_build_options_section(f, keys_option_have, "HAVE_* Defines")
+    write_build_options_section(f, keys_option_with, "--with Options")
+    write_build_options_section(f, keys_misc, "Build Options")
     write_build_options_footer(f)
     f.close()
     return 0
 
 
-def SAMBA_BLDOPTIONS(bld, target,):
+def SAMBA_BLDOPTIONS(bld, target):
     '''generate the bld_options.c for Samba'''
     t = bld.SAMBA_GENERATOR(target,
                             rule=write_build_options,
                             dep_vars=['defines'],
-                            target=target,)
+                            target=target)
 Build.BuildContext.SAMBA_BLDOPTIONS = SAMBA_BLDOPTIONS

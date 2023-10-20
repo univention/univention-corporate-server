@@ -49,11 +49,11 @@ _ = translator.translate
 
 class AppCenter:
 
-    def __init__(self, selenium,):
+    def __init__(self, selenium):
         # type: (Any) -> None
         self.selenium = selenium
 
-    def install_app(self, app_name,):
+    def install_app(self, app_name):
         # type: (str) -> None
         # TODO: Make sure the license is activated!
         self.open_app(app_name)
@@ -62,7 +62,7 @@ class AppCenter:
 
         # ChooseHostWizard
         try:
-            self.selenium.wait_for_text(_('In order to proceed with the installation'), timeout=20,)
+            self.selenium.wait_for_text(_('In order to proceed with the installation'), timeout=20)
         except TimeoutException:
             pass
         else:
@@ -77,13 +77,13 @@ class AppCenter:
             while not install_clicked and x < max_pages:
                 x += 1
                 try:
-                    self.selenium.click_buttons([_('Accept license'), _('Next'), _('Continue anyway')], timeout=0,)
+                    self.selenium.click_buttons([_('Accept license'), _('Next'), _('Continue anyway')], timeout=0)
                 except TimeoutException:
                     pass
                 else:
                     continue
                 try:
-                    self.selenium.click_buttons([_('Install app'), _('Install anyway'), _('Start installation')], timeout=0,)
+                    self.selenium.click_buttons([_('Install app'), _('Install anyway'), _('Start installation')], timeout=0)
                     install_clicked = True
                 except TimeoutException:
                     pass
@@ -95,20 +95,20 @@ class AppCenter:
             # header of progress bar
             self.selenium.wait_for_any_text_in_list([_('Installing'), 'Installiere'])
 
-        self.selenium.wait_for_any_text_in_list([_('Install Information'), _('Uninstall'), _('Manage domain wide installations'), _('Manage installations'), _('Manage installation')], timeout=900,)
+        self.selenium.wait_for_any_text_in_list([_('Install Information'), _('Uninstall'), _('Manage domain wide installations'), _('Manage installations'), _('Manage installation')], timeout=900)
         # readme install
         try:
-            self.selenium.click_button(_('Back to overview'), timeout=1,)
+            self.selenium.click_button(_('Back to overview'), timeout=1)
         except TimeoutException:
             pass
         self.selenium.wait_until_all_standby_animations_disappeared()
 
-    def uninstall_app(self, app_name,):
+    def uninstall_app(self, app_name):
         # type: (str) -> None
         self.open_app(app_name)
-        self.selenium.click_buttons([_('Manage installations'), _('Manage installation')], timeout=10,)
+        self.selenium.click_buttons([_('Manage installations'), _('Manage installation')], timeout=10)
         try:
-            self.selenium.click_element("//*[contains(text(), 'this computer')]", right_click=True,)
+            self.selenium.click_element("//*[contains(text(), 'this computer')]", right_click=True)
             self.selenium.click_element(expand_path('//td[@containsClass="dijitMenuItemLabel"][text() = "Uninstall"]'))
         except TimeoutException:
             self.selenium.click_button(_('Uninstall'))
@@ -119,7 +119,7 @@ class AppCenter:
         self.selenium.wait_for_text(_('Install'))
         self.selenium.wait_until_all_standby_animations_disappeared()
 
-    def upgrade_app(self, app,):
+    def upgrade_app(self, app):
         # type: (str) -> None
         self.open_app(app)
 
@@ -127,19 +127,19 @@ class AppCenter:
         self.selenium.click_button(_('Upgrade'))
 
         try:
-            self.selenium.wait_for_text(_('Upgrade Information'), timeout=5,)
+            self.selenium.wait_for_text(_('Upgrade Information'), timeout=5)
         except TimeoutException:
             pass
         else:
-            self.selenium.click_button(_('Upgrade'), xpath_prefix=expand_path('//[@containsClass="dijitDialog"]'),)
+            self.selenium.click_button(_('Upgrade'), xpath_prefix=expand_path('//[@containsClass="dijitDialog"]'))
 
         self.selenium.wait_until_progress_bar_finishes()
         self.selenium.wait_for_text(_('Upgrade of %s') % (app,))
         self.selenium.click_button(_('Upgrade'))
         self.selenium.wait_until_progress_bar_finishes(timeout=900)
-        self.selenium.wait_for_text(_('More information'), timeout=900,)
+        self.selenium.wait_for_text(_('More information'), timeout=900)
 
-    def search_for_apps(self, text, category="",):
+    def search_for_apps(self, text, category=""):
         # type: (str, str) -> None
         self.open()
 
@@ -148,13 +148,14 @@ class AppCenter:
 
         search_field = self.selenium.driver.find_element(
             By.XPATH,
-            '//*[contains(text(), "%s")]/../input' % ('Search applications...',),)
+            '//*[contains(text(), "%s")]/../input' % ('Search applications...',),
+        )
         search_field.send_keys(text)
         sleep(2)
 
         return self.selenium.get_gallery_items()
 
-    def select_search_category(self, category,):
+    def select_search_category(self, category):
         # type: (str) -> None
         self.selenium.show_notifications(False)
         self.selenium.click_element(
@@ -166,18 +167,18 @@ class AppCenter:
         )
         sleep(2)
 
-    def click_app_tile(self, app_name,):
+    def click_app_tile(self, app_name):
         # type: (str) -> None
         self.selenium.click_element(expand_path(f'//*[@containsClass="umcTile__name"][text() = "{app_name}"]'))
 
-    def open(self, do_reload=True,):
+    def open(self, do_reload=True):
         # type: (bool) -> None
         # TODO: check if appcenter is already opened with the overview site
-        self.selenium.open_module(_('App Center'), do_reload=do_reload, wait_for_standby=False,)
+        self.selenium.open_module(_('App Center'), do_reload=do_reload, wait_for_standby=False)
         self.close_info_dialog_if_visisble()
         self.selenium.wait_until_standby_animation_appears_and_disappears()
 
-    def open_app(self, app_name,):
+    def open_app(self, app_name):
         # type: (str) -> None
         # TODO: check if appcenter is already opened with the app page
         self.open()
@@ -188,7 +189,7 @@ class AppCenter:
     def close_info_dialog_if_visisble(self):
         # type: () -> None
         try:
-            self.selenium.wait_for_text(_('Do not show this message again'), timeout=15,)
+            self.selenium.wait_for_text(_('Do not show this message again'), timeout=15)
             self.selenium.click_button(_('Continue'))
         except TimeoutException:
             print('"Do not show this message again" not detected in 15 seconds')

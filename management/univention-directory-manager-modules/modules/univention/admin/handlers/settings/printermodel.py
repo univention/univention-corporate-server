@@ -57,7 +57,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionPrinterModels'],),
+        objectClasses=['top', 'univentionPrinterModels'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -66,13 +67,15 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'printmodel': univention.admin.property(
         short_description=_('Printer Model'),
         long_description=_('Printer Model'),
         syntax=univention.admin.syntax.printerModel,
         multivalue=True,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
 }
 
 layout = [
@@ -80,18 +83,18 @@ layout = [
         Group(_('General printer driver list settings'), layout=[
             'name',
             'printmodel',
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 
-def unmapDriverList(ldap_value, encoding=(),):
+def unmapDriverList(ldap_value, encoding=()):
     return [shlex.split(x.decode(*encoding)) for x in ldap_value]
 
 
-def mapDriverList(udm_value, encoding=(),):
-    def q(s,):
-        return s.replace(u'"', u'\\"',)
+def mapDriverList(udm_value, encoding=()):
+    def q(s):
+        return s.replace(u'"', u'\\"')
     ldap_attr_list = []
     for x in udm_value:
         value = u'"%s" "%s"' % (q(x[0]), q(x[1]))
@@ -100,19 +103,19 @@ def mapDriverList(udm_value, encoding=(),):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('printmodel', 'printerModel', mapDriverList, unmapDriverList,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('printmodel', 'printerModel', mapDriverList, unmapDriverList)
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
     @classmethod
-    def rewrite_filter(cls, filter, mapping,):
+    def rewrite_filter(cls, filter, mapping):
         if filter.variable == 'printmodel':
             filter.variable = 'printerModel'
         else:
-            super(object, cls,).rewrite_filter(filter, mapping,)
+            super(object, cls).rewrite_filter(filter, mapping)
 
 
 lookup = object.lookup

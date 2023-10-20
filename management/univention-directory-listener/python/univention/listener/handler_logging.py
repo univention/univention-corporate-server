@@ -95,8 +95,8 @@ class UniFileHandler(WatchedFileHandler):
         try:
             if old_uid != 0:
                 listener.setuid(0)
-            os.chown(self.baseFilename, listener_uid, adm_gid,)
-            os.chmod(self.baseFilename, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP,)
+            os.chown(self.baseFilename, listener_uid, adm_gid)
+            os.chmod(self.baseFilename, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
         finally:
             if old_uid != 0:
                 listener.unsetuid()
@@ -119,19 +119,19 @@ class ModuleHandler(logging.Handler):
         "NOTSET": ud.INFO,
     }
 
-    def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER,):
+    def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):
         # type: (int, int) -> None
         self._udebug_facility = udebug_facility
-        super(ModuleHandler, self,).__init__(level)
+        super(ModuleHandler, self).__init__(level)
 
-    def emit(self, record,):
+    def emit(self, record):
         # type: (logging.LogRecord) -> None
         msg = self.format(record)
-        if PY2 and isinstance(msg, text_type,):
+        if PY2 and isinstance(msg, text_type):
             msg = msg.encode('utf-8')
-        msg = '{}: {}'.format(record.name.rsplit('.')[-1], msg,)
+        msg = '{}: {}'.format(record.name.rsplit('.')[-1], msg)
         udebug_level = self.LOGGING_TO_UDEBUG[record.levelname]
-        ud.debug(self._udebug_facility, udebug_level, msg,)
+        ud.debug(self._udebug_facility, udebug_level, msg)
 
 
 __LF_D = '%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s'
@@ -175,22 +175,22 @@ _ucr = ConfigRegistry()
 _ucr.load()
 
 
-def _get_ucr_int(ucr_key, default,):
+def _get_ucr_int(ucr_key, default):
     # type: (str, int) -> int
     try:
-        return int(_ucr.get(ucr_key, default,))
+        return int(_ucr.get(ucr_key, default))
     except ValueError:
         return default
 
 
-_listener_debug_level = _get_ucr_int('listener/debug/level', 2,)
-_listener_debug_level_str = UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[max(0, min(4, _listener_debug_level,),)]
-_listener_module_handler = ModuleHandler(level=getattr(logging, _listener_debug_level_str,))
+_listener_debug_level = _get_ucr_int('listener/debug/level', 2)
+_listener_debug_level_str = UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[max(0, min(4, _listener_debug_level))]
+_listener_module_handler = ModuleHandler(level=getattr(logging, _listener_debug_level_str))
 listener_module_root_logger = logging.getLogger('listener module')
-listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str,))
+listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str))
 
 
-def get_logger(name, path=None,):
+def get_logger(name, path=None):
     # type: (str, Optional[str]) -> logging.Logger
     """
     Get a logging instance. Caching wrapper for
@@ -203,10 +203,10 @@ def get_logger(name, path=None,):
     :rtype: logging.Logger
     """
     if name not in _logger_cache:
-        file_name = name.replace('/', '_',)
-        logger_name = name.replace('.', '_',)
+        file_name = name.replace('/', '_')
+        logger_name = name.replace('.', '_')
         log_dir = '/var/log/univention/listener_modules'
-        file_path = path or os.path.join(log_dir, f'{file_name}.log',)
+        file_path = path or os.path.join(log_dir, f'{file_name}.log')
         listener_uid = pwd.getpwnam('listener').pw_uid
         adm_grp = grp.getgrnam('adm').gr_gid
         if not os.path.isdir(log_dir):
@@ -215,18 +215,19 @@ def get_logger(name, path=None,):
                 if old_uid != 0:
                     listener.setuid(0)
                 os.mkdir(log_dir)
-                os.chown(log_dir, listener_uid, adm_grp,)
+                os.chown(log_dir, listener_uid, adm_grp)
                 os.chmod(
                     log_dir,
-                    stat.S_ISGID | stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP,)
+                    stat.S_ISGID | stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP,
+                )
             finally:
                 if old_uid != 0:
                     listener.unsetuid()
-        _logger_cache[name] = get_listener_logger(logger_name, file_path,)
+        _logger_cache[name] = get_listener_logger(logger_name, file_path)
     return _logger_cache[name]
 
 
-def calculate_loglevel(name,):
+def calculate_loglevel(name):
     # type: (str) -> str
     """
     Returns the higher of `listener/debug/level` and `listener/module/<name>/debug/level`
@@ -236,12 +237,12 @@ def calculate_loglevel(name,):
     :return: log level
     :rtype: int
     """
-    listener_module_debug_level = _get_ucr_int(f'listener/module/{name}/debug/level', 2,)
+    listener_module_debug_level = _get_ucr_int(f'listener/module/{name}/debug/level', 2)
     # 0 <= ucr level <= 4
-    return UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[min(4, max(0, _listener_debug_level, listener_module_debug_level,),)]
+    return UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[min(4, max(0, _listener_debug_level, listener_module_debug_level))]
 
 
-def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatter_kwargs=None,):
+def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatter_kwargs=None):
     # type: (str, str, Optional[str], Optional[Dict[str, Any]], Optional[Dict[str, Any]]) -> logging.Logger
     """
     Get a logger object below the listener module root logger. The logger
@@ -276,11 +277,11 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
     :return: a Python logging object
     :rtype: logging.Logger
     """
-    assert isinstance(filename, string_types,)
-    assert isinstance(name, string_types,)
+    assert isinstance(filename, string_types)
+    assert isinstance(name, string_types)
     if not name:
         name = 'noname'
-    name = name.replace('.', '_',)  # don't mess up logger hierarchy
+    name = name.replace('.', '_')  # don't mess up logger hierarchy
     cache_key = f'{name}-{filename}'
     logger_name = f'{listener_module_root_logger.name}.{name}'
     _logger = logging.getLogger(logger_name)
@@ -288,17 +289,17 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
     if not level:
         level = calculate_loglevel(name)
 
-    if cache_key in _handler_cache and getattr(logging, level,) >= _handler_cache[cache_key].level:
+    if cache_key in _handler_cache and getattr(logging, level) >= _handler_cache[cache_key].level:
         return _logger
 
-    if not isinstance(handler_kwargs, Mapping,):
+    if not isinstance(handler_kwargs, Mapping):
         handler_kwargs = {}
-    if not isinstance(formatter_kwargs, Mapping,):
+    if not isinstance(formatter_kwargs, Mapping):
         formatter_kwargs = {}
 
     # The logger objects level must be the lowest of all handlers, or handlers
     # with a higher level will not be able to log anything.
-    if getattr(logging, level,) < _logger.level:
+    if getattr(logging, level) < _logger.level:
         _logger.setLevel(level)
 
     if _logger.level == logging.NOTSET:
@@ -312,7 +313,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
     if cache_key in _handler_cache:
         # Check if loglevel from this request is lower than the one used in
         # the cached loggers handler. We do only lower level, never raise it.
-        if getattr(logging, level,) < _handler_cache[cache_key].level:
+        if getattr(logging, level) < _handler_cache[cache_key].level:
             handler = _handler_cache[cache_key]
             handler.setLevel(level)
             formatter_cls = fmt_kwargs.pop('cls')  # type: Type[logging.Formatter]
@@ -320,7 +321,7 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
             handler.setFormatter(formatter)
     else:
         # Create handler and formatter from scratch.
-        handler = UniFileHandler(filename=filename, **handler_kwargs,)
+        handler = UniFileHandler(filename=filename, **handler_kwargs)
         handler.set_name(logger_name)
         handler.setLevel(level)
         formatter_cls = fmt_kwargs.pop('cls')
@@ -333,14 +334,14 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
     return _logger
 
 
-def _log_to_syslog(level, msg,):
+def _log_to_syslog(level, msg):
     # type: (int, str) -> None
     if not __syslog_opened:
-        syslog.openlog('Listener', 0, syslog.LOG_SYSLOG,)
+        syslog.openlog('Listener', 0, syslog.LOG_SYSLOG)
 
-    syslog.syslog(level, msg,)
+    syslog.syslog(level, msg)
 
 
-def info_to_syslog(msg,):
+def info_to_syslog(msg):
     # type: (str) -> None
-    _log_to_syslog(syslog.LOG_INFO, msg,)
+    _log_to_syslog(syslog.LOG_INFO, msg)

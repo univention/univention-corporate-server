@@ -16,10 +16,10 @@ if __name__ == '__main__':
     with Appcenter() as appcenter:
         version = get_app_version()
 
-        app = tiny_app(name='app', version=version,)
-        exclusive = tiny_app(name='exclusive', version=version,)
-        redirect = tiny_app(name='redirect', version=version,)
-        dummy = tiny_app(name='dummy', version=version,)
+        app = tiny_app(name='app', version=version)
+        exclusive = tiny_app(name='exclusive', version=version)
+        redirect = tiny_app(name='redirect', version=version)
+        dummy = tiny_app(name='dummy', version=version)
 
         for port in [21, 23, 40021, 40023]:
             assert not is_port_open(port)
@@ -27,17 +27,17 @@ if __name__ == '__main__':
         try:
             app.set_ini_parameter(
                 PortsExclusive='21,23,40023',
-                DockerScriptSetup='/usr/sbin/app-setup',)
+                DockerScriptSetup='/usr/sbin/app-setup')
             app.add_script(setup='#!/bin/sh')
 
             exclusive.set_ini_parameter(
                 PortsExclusive='23,24',
-                DockerScriptSetup='/usr/sbin/%s-setup',)
+                DockerScriptSetup='/usr/sbin/%s-setup')
             exclusive.add_script(setup='#!/bin/sh')
 
             redirect.set_ini_parameter(
                 PortsRedirection='40021:21,40023:23',
-                DockerScriptSetup='/usr/sbin/%s-setup',)
+                DockerScriptSetup='/usr/sbin/%s-setup')
             redirect.add_script(setup='#!/bin/sh')
 
             dummy.set_ini_parameter(

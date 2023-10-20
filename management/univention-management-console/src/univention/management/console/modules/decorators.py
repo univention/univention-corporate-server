@@ -158,51 +158,51 @@ def sanitize(*args, **kwargs):
     *@simple_response*. You need to do it in *@sanitize* now.
     """
     if args:
-        return sanitize_list(args[0], **kwargs,)
+        return sanitize_list(args[0], **kwargs)
     else:
         return sanitize_dict(kwargs)
 
 
-def sanitize_list(sanitizer,**kwargs):
-    return lambda function,: _sanitize_list(function, sanitizer, kwargs,)
+def sanitize_list(sanitizer, **kwargs):
+    return lambda function: _sanitize_list(function, sanitizer, kwargs)
 
 
-def sanitize_dict(sanitized_attrs,**kwargs):
-    return lambda function,: _sanitize_dict(function, sanitized_attrs, kwargs,)
+def sanitize_dict(sanitized_attrs, **kwargs):
+    return lambda function: _sanitize_dict(function, sanitized_attrs, kwargs)
 
 
-def _sanitize_dict(function, sanitized_attrs, sanitizer_parameters,):
+def _sanitize_dict(function, sanitized_attrs, sanitizer_parameters):
     defaults = {'default': {}, 'required': True, 'may_change_value': True}
     defaults.update(sanitizer_parameters)
-    return _sanitize(function, DictSanitizer(sanitized_attrs, **defaults,),)
+    return _sanitize(function, DictSanitizer(sanitized_attrs, **defaults))
 
 
-def _sanitize_list(function, sanitizer, sanitizer_parameters,):
+def _sanitize_list(function, sanitizer, sanitizer_parameters):
     defaults = {'default': [], 'required': True, 'may_change_value': True}
     defaults.update(sanitizer_parameters)
-    return _sanitize(function, ListSanitizer(sanitizer, **defaults,),)
+    return _sanitize(function, ListSanitizer(sanitizer, **defaults))
 
 
-def _sanitize(function, sanitizer,):
-    def _response(self, request,):
-        request.options = sanitize_args(sanitizer, 'request.options', {'request.options': request.options},)
-        return function(self, request,)
-    copy_function_meta_data(function, _response,)
+def _sanitize(function, sanitizer):
+    def _response(self, request):
+        request.options = sanitize_args(sanitizer, 'request.options', {'request.options': request.options})
+        return function(self, request)
+    copy_function_meta_data(function, _response)
     return _response
 
 
-def sanitize_args(sanitizer, name, args,):
+def sanitize_args(sanitizer, name, args):
     try:
         try:
-            return sanitizer.sanitize(name, args,)
+            return sanitizer.sanitize(name, args)
         except MultiValidationError:
             raise
         except ValidationError as exc:
             multi_error = MultiValidationError()
-            multi_error.add_error(exc, name,)
+            multi_error.add_error(exc, name)
             raise multi_error
     except MultiValidationError as exc:
-        raise UnprocessableEntity(str(exc), result=exc.result(),)
+        raise UnprocessableEntity(str(exc), result=exc.result())
 
 
 class SimpleThread(object):
@@ -227,7 +227,7 @@ class SimpleThread(object):
 
     running_threads = 0
 
-    def __init__(self, name, function, callback,):
+    def __init__(self, name, function, callback):
         # type: (str, Callable[..., _T], Callable[[SimpleThread, Union[BaseException, None, _T]], None]) -> None
         self._name = name
         self._function = function
@@ -245,8 +245,8 @@ class SimpleThread(object):
             SimpleThread.running_threads += 1
 
         io_loop = tornado.ioloop.IOLoop.current()
-        future = io_loop.run_in_executor(None, self._run, *args, **kwargs,)
-        io_loop.add_future(future, lambda f,: self.announce(),)
+        future = io_loop.run_in_executor(None, self._run, *args, **kwargs)
+        io_loop.add_future(future, lambda f: self.announce())
 
     def _run(self, *args, **kwargs):
         # type: (Optional[Tuple], Optional[Dict]) -> None
@@ -256,7 +256,7 @@ class SimpleThread(object):
         within it.
         """
         try:
-            result = self._function(*args, **kwargs,)  # type: Union[BaseException, _T]
+            result = self._function(*args, **kwargs)  # type: Union[BaseException, _T]
             trace = None  # type: Optional[List[str]]
             exc_info = None  # type: Optional[Tuple[Optional[Type[BaseException]], Optional[BaseException], None]]
         except BaseException as exc:
@@ -334,24 +334,24 @@ class SimpleThread(object):
         with self._lock:
             SimpleThread.running_threads -= 1
 
-        self._callback(self, self._result,)
+        self._callback(self, self._result)
 
 
-def threaded(function=None,):
+def threaded(function=None):
     """
     Execute the given function as background task in a thread.
     The return value is the response result.
     The regular error handling is done if a exception happens inside the thread.
     """
 
-    def _response(self, request,*args, **kwargs):
-        thread = SimpleThread('@threaded', function, lambda r, t,: self.thread_finished_callback(r, t, request,),)
-        thread.run(self, request, *args, **kwargs,)
-    copy_function_meta_data(function, _response,)
+    def _response(self, request, *args, **kwargs):
+        thread = SimpleThread('@threaded', function, lambda r, t: self.thread_finished_callback(r, t, request))
+        thread.run(self, request, *args, **kwargs)
+    copy_function_meta_data(function, _response)
     return _response
 
 
-def simple_response(function=None, with_flavor=None, with_progress=False, with_request=False,):
+def simple_response(function=None, with_flavor=None, with_progress=False, with_request=False):
     '''
     If your function is as simple as: "Just return some variables"
     this decorator is for you.
@@ -431,27 +431,27 @@ def simple_response(function=None, with_flavor=None, with_progress=False, with_r
 
     '''
     if function is None:
-        return lambda f,: simple_response(f, with_flavor, with_progress, with_request,)
+        return lambda f: simple_response(f, with_flavor, with_progress, with_request)
 
     if with_progress is True:
         with_progress = 'progress'
 
     # fake a generator function that yields whatever the original
     # function returned
-    def _fake_func(self, iterator,*args):
+    def _fake_func(self, iterator, *args):
         for args in iterator:
             break
-        yield function(self, *args,)
-    copy_function_meta_data(function, _fake_func, copy_arg_inspect=True,)
+        yield function(self, *args)
+    copy_function_meta_data(function, _fake_func, copy_arg_inspect=True)
     # fake another variable name
     # the name is not important as it is removed from the list while
     # being processed. Even a variable named 'iterator' in the original
     # function does not break anything
     _fake_func._original_argument_names = ['self', 'iterator'] + _fake_func._original_argument_names[1:]
 
-    _multi_response = _eval_simple_decorated_function(_fake_func, with_flavor, with_request=with_request,)
+    _multi_response = _eval_simple_decorated_function(_fake_func, with_flavor, with_request=with_request)
 
-    def _response(self, request,*args, **kwargs):
+    def _response(self, request, *args, **kwargs):
         # other arguments than request won't be propagated
         # needed for @LDAP_Connection
 
@@ -462,36 +462,36 @@ def simple_response(function=None, with_flavor=None, with_progress=False, with_r
             progress_obj = self.new_progress()
             request.options[0][with_progress] = progress_obj
 
-            def _thread(self, progress_obj, _multi_response, request,):
+            def _thread(self, progress_obj, _multi_response, request):
                 try:
-                    result = _multi_response(self, request,)
+                    result = _multi_response(self, request)
                 except Exception:
                     progress_obj.exception(sys.exc_info())
                 else:
                     progress_obj.finish_with_result(result[0])
-            thread = SimpleThread('simple_response', _thread, lambda t, r,: None,)
-            thread.run(self, progress_obj, _multi_response, request,)
+            thread = SimpleThread('simple_response', _thread, lambda t, r: None)
+            thread.run(self, progress_obj, _multi_response, request)
             # thread = Thread(target=_thread, args=[self, progress_obj, _multi_response, request])
             # thread.start()
-            self.finished(request.id, progress_obj.initialised(),)
+            self.finished(request.id, progress_obj.initialised())
         else:
-            result = _multi_response(self, request,)
-            if not isinstance(result[0], types.FunctionType,):
-                self.finished(request.id, result[0],)
+            result = _multi_response(self, request)
+            if not isinstance(result[0], types.FunctionType):
+                self.finished(request.id, result[0])
             else:
                 # return value is a function which is meant to be executed as thread
                 # TODO: replace notfier by threading
 
-                thread = SimpleThread('simple_response', result[0], lambda r, t,: self.thread_finished_callback(r, t, request,),)
-                thread.run(self, request,)
+                thread = SimpleThread('simple_response', result[0], lambda r, t: self.thread_finished_callback(r, t, request))
+                thread.run(self, request)
     if with_progress:
         _response = sanitize_dict({})(_response)
 
-    copy_function_meta_data(function, _response,)
+    copy_function_meta_data(function, _response)
     return _response
 
 
-def multi_response(function=None, with_flavor=None, single_values=False, progress=False,):
+def multi_response(function=None, with_flavor=None, single_values=False, progress=False):
     """
     This decorator acts similar to :func:`simple_response` but
     can handle a list of dicts instead of a single dict.
@@ -533,17 +533,17 @@ def multi_response(function=None, with_flavor=None, single_values=False, progres
                     pass
     """
     if function is None:
-        return lambda f,: multi_response(f, with_flavor, single_values, progress,)
-    response_func = _eval_simple_decorated_function(function, with_flavor, single_values, progress,)
+        return lambda f: multi_response(f, with_flavor, single_values, progress)
+    response_func = _eval_simple_decorated_function(function, with_flavor, single_values, progress)
 
-    def _response(self, request,):
-        result = response_func(self, request,)
-        self.finished(request.id, result,)
-    copy_function_meta_data(function, _response,)
+    def _response(self, request):
+        result = response_func(self, request)
+        self.finished(request.id, result)
+    copy_function_meta_data(function, _response)
     return _response
 
 
-def _eval_simple_decorated_function(function, with_flavor, single_values=False, progress=False, with_request=False,):
+def _eval_simple_decorated_function(function, with_flavor, single_values=False, progress=False, with_request=False):
     # name of flavor argument. default: 'flavor' (if given, of course)
     if with_flavor is True:
         with_flavor = 'flavor'
@@ -555,10 +555,10 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
     # remove self, remove iterator
     arguments = arguments[2:]
     # use defaults as dict
-    defaults = dict(zip(arguments[-len(defaults):], defaults,)) if defaults else {}
+    defaults = dict(zip(arguments[-len(defaults):], defaults)) if defaults else {}
 
-    @sanitize(DictSanitizer({arg: Sanitizer(required=arg not in defaults and arg not in (with_flavor, with_request), default=defaults.get(arg),) for arg in arguments}, _copy_value=False,) if not single_values else None)
-    def _response(self, request,):
+    @sanitize(DictSanitizer({arg: Sanitizer(required=arg not in defaults and arg not in (with_flavor, with_request), default=defaults.get(arg)) for arg in arguments}, _copy_value=False) if not single_values else None)
+    def _response(self, request):
         # single_values: request.options is, e.g., ["id1", "id2", "id3"], no need for complicated dicts
         if not single_values:
             # normalize the whole request.options
@@ -570,42 +570,42 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
                     element[with_request] = request
 
         # checked for required arguments, set default... now run!
-        iterator = RequestOptionsIterator(request.options, arguments, single_values,)
+        iterator = RequestOptionsIterator(request.options, arguments, single_values)
         nones = [None] * len(arguments)
         if progress:
             number = len(request.options)
             if progress is True:
                 progress_title = None
             else:
-                if isinstance(progress, (list, tuple),):
+                if isinstance(progress, (list, tuple)):
                     progress_title, progress_msg = progress
                 else:
                     progress_title, progress_msg = progress, None
                 if '%d' in progress_title:
                     progress_title = progress_title % number
-            progress_obj = self.new_progress(progress_title, number,)
+            progress_obj = self.new_progress(progress_title, number)
 
-            def _thread(self, progress_obj, iterator, nones,):
+            def _thread(self, progress_obj, iterator, nones):
                 try:
-                    for res in function(self, iterator, *nones,):
+                    for res in function(self, iterator, *nones):
                         if progress_msg:
                             res_msg = progress_msg % res
-                        progress_obj.progress(res, res_msg,)
+                        progress_obj.progress(res, res_msg)
                 except Exception:
                     progress_obj.exception(sys.exc_info())
                 else:
                     progress_obj.finish()
-            thread = Thread(target=_thread, args=[self, progress_obj, iterator, nones],)
+            thread = Thread(target=_thread, args=[self, progress_obj, iterator, nones])
             thread.start()
             return progress_obj.initialised()
         else:
-            return list(function(self, iterator, *nones,))
+            return list(function(self, iterator, *nones))
     return _response
 
 
 class RequestOptionsIterator(object):
 
-    def __init__(self, everything, names, single_values,):
+    def __init__(self, everything, names, single_values):
         self.everything = everything
         self.names = names
         self.single_values = single_values
@@ -634,20 +634,20 @@ class RequestOptionsIterator(object):
     next = __next__  # Python 2
 
 
-def arginspect(function,):
+def arginspect(function):
     argspec = inspect.getfullargspec(function)
-    if hasattr(function, '_original_argument_names',):
+    if hasattr(function, '_original_argument_names'):
         arguments = function._original_argument_names
     else:
         arguments = argspec.args
-    if hasattr(function, '_original_argument_defaults',):
+    if hasattr(function, '_original_argument_defaults'):
         defaults = function._original_argument_defaults
     else:
         defaults = argspec.defaults
     return arguments, defaults
 
 
-def copy_function_meta_data(original_function, new_function, copy_arg_inspect=False,):
+def copy_function_meta_data(original_function, new_function, copy_arg_inspect=False):
     # set function attrs to allow another arginspect to get original info
     # (used in @simple_response / @log - combo)
     if copy_arg_inspect:
@@ -662,7 +662,7 @@ def copy_function_meta_data(original_function, new_function, copy_arg_inspect=Fa
     new_function.__module__ = original_function.__module__
 
 
-def log(function=None, sensitives=None, customs=None, single_values=False,):
+def log(function=None, sensitives=None, customs=None, single_values=False):
     '''
     Log decorator to be used with
     :func:`simple_response`::
@@ -713,18 +713,18 @@ def log(function=None, sensitives=None, customs=None, single_values=False,):
             <date>  MODULE      ( INFO    ) : multi_my_func returned: ['value1__value2', 'value3__value4']
     '''
     if function is None:
-        return lambda f,: log(f, sensitives, customs, single_values,)
+        return lambda f: log(f, sensitives, customs, single_values)
     if customs is None:
         customs = {}
     if sensitives is None:
         sensitives = []
     for sensitive in sensitives:
-        customs[sensitive] = lambda x,: '********'
+        customs[sensitive] = lambda x: '********'
 
-    def _log(names, args,):
+    def _log(names, args):
         if single_values:
             args = [args]
-        return ['%s=%r' % (name, customs.get(name, lambda x,: x,)(arg)) for name, arg in zip(names, args,)]
+        return ['%s=%r' % (name, customs.get(name, lambda x: x)(arg)) for name, arg in zip(names, args)]
 
     # including self
     names, _ = arginspect(function)
@@ -734,16 +734,16 @@ def log(function=None, sensitives=None, customs=None, single_values=False,):
         # remove self, iterator
         names = names[2:]
 
-        def _response(self, iterator,*args):
+        def _response(self, iterator, *args):
             arg_reprs = []
             for element in iterator:
-                arg_repr = _log(names, element,)
+                arg_repr = _log(names, element)
                 if arg_repr:
                     arg_reprs.append(arg_repr)
             if arg_reprs:
                 MODULE.info('%s got: [%s]' % (name, '], ['.join(', '.join(arg_repr) for arg_repr in arg_reprs)))
             result = []
-            for res in function(self, iterator, *args,):
+            for res in function(self, iterator, *args):
                 result.append(res)
                 yield res
             MODULE.info('%s returned: %r' % (name, result))
@@ -752,27 +752,27 @@ def log(function=None, sensitives=None, customs=None, single_values=False,):
         names = names[1:]
 
         def _response(self, *args):
-            arg_repr = _log(names, args,)
+            arg_repr = _log(names, args)
             if arg_repr:
                 MODULE.info('%s got: %s' % (name, ', '.join(arg_repr)))
-            result = function(self, *args,)
+            result = function(self, *args)
             MODULE.info('%s returned: %r' % (name, result))
             return result
-    copy_function_meta_data(function, _response, copy_arg_inspect=True,)
+    copy_function_meta_data(function, _response, copy_arg_inspect=True)
     return _response
 
 
-def file_upload(function,):
+def file_upload(function):
     """
     This decorator restricts requests to be
     UPLOAD-commands. Simple, yet effective
     """
 
-    def _response(self, request,):
+    def _response(self, request):
         if request.command != 'UPLOAD':
             raise UMC_Error(_('%s can only be used as UPLOAD') % (function.__name__))
-        return function(self, request,)
-    copy_function_meta_data(function, _response,)
+        return function(self, request)
+    copy_function_meta_data(function, _response)
     prevent_referer_check(_response)
     prevent_xsrf_check(_response)
     return _response
@@ -782,32 +782,32 @@ class reloading_ucr(object):
 
     _last_reload = {}
 
-    def __init__(self, ucr, timeout=0.2,):
+    def __init__(self, ucr, timeout=0.2):
         self._ucr = ucr
         self._timeout = timeout
 
-    def __call__(self, func,):
+    def __call__(self, func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            last_reload = self._last_reload.get(id(self._ucr), 0,)
+            last_reload = self._last_reload.get(id(self._ucr), 0)
             if last_reload == 0 or time.time() - last_reload > self._timeout:
                 self._ucr.load()
                 self._last_reload[id(self._ucr)] = time.time()
-            return func(*args, **kwargs,)
+            return func(*args, **kwargs)
         return wrapper
 
 
-def require_password(function,):
+def require_password(function):
     @functools.wraps(function)
-    def _decorated(self, request,*args, **kwargs):
+    def _decorated(self, request, *args, **kwargs):
         request.require_password()
-        return function(self, request, *args, **kwargs,)
+        return function(self, request, *args, **kwargs)
     return _decorated
 
 
-def allow_get_request(function=None, xsrf_check=False, referer_check=False,):
+def allow_get_request(function=None, xsrf_check=False, referer_check=False):
     """Allows HTTP GET requests. Additionally prevents the XSRF check and the referer check."""
-    def _decorator(function,):
+    def _decorator(function):
         if not xsrf_check:
             prevent_xsrf_check(function)
         if not referer_check:
@@ -819,12 +819,12 @@ def allow_get_request(function=None, xsrf_check=False, referer_check=False,):
     return _decorator(function)
 
 
-def prevent_xsrf_check(function,):
+def prevent_xsrf_check(function):
     function.xsrf_protection = False
     return function
 
 
-def prevent_referer_check(function,):
+def prevent_referer_check(function):
     function.referer_protection = False
     return function
 

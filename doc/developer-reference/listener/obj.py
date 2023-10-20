@@ -28,15 +28,15 @@ class LocalLdap(object):
         self.data: Dict[str, str] = {}
         self.con: Optional[ldap.ldapobject.LDAPObject] = None
 
-    def setdata(self, key: str, value: str,):
+    def setdata(self, key: str, value: str):
         self.data[key] = value
 
     def prerun(self) -> None:
         try:
             self.con = ldap.initialize('ldaps://%s:%d' % (self.data["ldapserver"], self.PORT))
-            self.con.simple_bind_s(self.data["binddn"], self.data["bindpw"],)
+            self.con.simple_bind_s(self.data["binddn"], self.data["bindpw"])
         except ldap.LDAPError as ex:
-            ud.debug(ud.LISTENER, ud.ERROR, str(ex),)
+            ud.debug(ud.LISTENER, ud.ERROR, str(ex))
 
     def postrun(self) -> None:
         if not self.con:
@@ -45,7 +45,7 @@ class LocalLdap(object):
             self.con.unbind()
             self.con = None
         except ldap.LDAPError as ex:
-            ud.debug(ud.LISTENER, ud.ERROR, str(ex),)
+            ud.debug(ud.LISTENER, ud.ERROR, str(ex))
 
 
 class LocalFile(object):
@@ -56,22 +56,22 @@ class LocalFile(object):
         try:
             ent = getpwnam(self.USER)
             with SetUID():
-                with open(self.LOG, "w",):
+                with open(self.LOG, "w"):
                     pass
-                os.chown(self.LOG, ent.pw_uid, -1,)
+                os.chown(self.LOG, ent.pw_uid, -1)
         except OSError as ex:
-            ud.debug(ud.LISTENER, ud.ERROR, str(ex),)
+            ud.debug(ud.LISTENER, ud.ERROR, str(ex))
 
-    def log(self, msg,) -> None:
-        with open(self.LOG, 'a',) as log:
-            print(msg, file=log,)
+    def log(self, msg) -> None:
+        with open(self.LOG, 'a') as log:
+            print(msg, file=log)
 
     def clean(self) -> None:
         try:
             with SetUID():
                 os.remove(self.LOG)
         except OSError as ex:
-            ud.debug(ud.LISTENER, ud.ERROR, str(ex),)
+            ud.debug(ud.LISTENER, ud.ERROR, str(ex))
 
 
 class ReferentialIntegrityCheck(LocalLdap, LocalFile):
@@ -83,7 +83,7 @@ class ReferentialIntegrityCheck(LocalLdap, LocalFile):
     }
 
     def __init__(self) -> None:
-        super(ReferentialIntegrityCheck, self,).__init__()
+        super(ReferentialIntegrityCheck, self).__init__()
         self._delay: Optional[Tuple[str, Dict[str, List[bytes]]]] = None
 
     def handler(
@@ -91,30 +91,31 @@ class ReferentialIntegrityCheck(LocalLdap, LocalFile):
             dn: str,
             new: Dict[str, List[bytes]],
             old: Dict[str, List[bytes]],
-            command: str = '',) -> None:
+            command: str = '',
+    ) -> None:
         if self._delay:
             old_dn, old = self._delay
             self._delay = None
             if command == "a" and old['entryUUID'] == new['entryUUID']:
-                self.handler_move(old_dn, old, dn, new,)
+                self.handler_move(old_dn, old, dn, new)
                 return
-            self.handler_remove(old_dn, old,)
+            self.handler_remove(old_dn, old)
 
         if command == "n" and dn == "cn=Subschema":
-            self.handler_schema(old, new,)
+            self.handler_schema(old, new)
         elif new and not old:
-            self.handler_add(dn, new,)
+            self.handler_add(dn, new)
         elif new and old:
-            self.handler_modify(dn, old, new,)
+            self.handler_modify(dn, old, new)
         elif not new and old:
             if command == "r":
                 self._delay = (dn, old)
             else:
-                self.handler_remove(dn, old,)
+                self.handler_remove(dn, old)
         else:
             pass  # ignore, reserved for future use
 
-    def handler_add(self, dn: str, new: Dict[str, List[bytes]],) -> None:
+    def handler_add(self, dn: str, new: Dict[str, List[bytes]]) -> None:
         if not self._validate(new):
             self.log("New invalid object: " + dn)
 
@@ -122,12 +123,13 @@ class ReferentialIntegrityCheck(LocalLdap, LocalFile):
             self,
             dn: str,
             old: Dict[str, List[bytes]],
-            new: Dict[str, List[bytes]],) -> None:
+            new: Dict[str, List[bytes]],
+    ) -> None:
         valid = (self._validate(old), self._validate(new))
         msg = self.MESSAGES[valid]
         self.log(msg + dn)
 
-    def handler_remove(self, dn: str, old: Dict[str, List[bytes]],) -> None:
+    def handler_remove(self, dn: str, old: Dict[str, List[bytes]]) -> None:
         if not self._validate(old):
             self.log("Removed invalid: " + dn)
 
@@ -136,7 +138,8 @@ class ReferentialIntegrityCheck(LocalLdap, LocalFile):
             old_dn: str,
             old: Dict[str, List[bytes]],
             new_dn: str,
-            new: Dict[str, List[bytes]],) -> None:
+            new: Dict[str, List[bytes]],
+    ) -> None:
         valid = (self._validate(old), self._validate(new))
         msg = self.MESSAGES[valid]
         self.log("%s %s -> %s" % (msg, old_dn, new_dn))
@@ -144,19 +147,20 @@ class ReferentialIntegrityCheck(LocalLdap, LocalFile):
     def handler_schema(
             self,
             old: Dict[str, List[bytes]],
-            new: Dict[str, List[bytes]],) -> None:
+            new: Dict[str, List[bytes]],
+    ) -> None:
         self.log("Schema change")
 
-    def _validate(self, data: Dict[str, List[bytes]],) -> bool:
+    def _validate(self, data: Dict[str, List[bytes]]) -> bool:
         assert self.con
         try:
             for dn in data["uniqueMember"]:
-                self.con.search_ext_s(dn, ldap.SCOPE_BASE, attrlist=[], attrsonly=1,)
+                self.con.search_ext_s(dn, ldap.SCOPE_BASE, attrlist=[], attrsonly=1)
             return True
         except ldap.NO_SUCH_OBJECT:
             return False
         except ldap.LDAPError as ex:
-            ud.debug(ud.LISTENER, ud.ERROR, str(ex),)
+            ud.debug(ud.LISTENER, ud.ERROR, str(ex))
             return False
 
 

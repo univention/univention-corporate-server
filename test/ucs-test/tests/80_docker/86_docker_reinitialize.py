@@ -27,7 +27,7 @@ services:
         image: {image}
         command: /sbin/init
         restart: always
-'''.replace('\t', '  ',)
+'''.replace('\t', '  ')
 
 SETTINGS = '''
 [TEST_KEY]
@@ -54,11 +54,12 @@ univention-app reinitialize %s
 fi
 ''' % name
 
-        app = App(name=name, version='1', build_package=False, call_join_scripts=False,)
+        app = App(name=name, version='1', build_package=False, call_join_scripts=False)
         try:
             app.set_ini_parameter(
                 DockerMainService='test1',
-                DockerScriptSetup='',)
+                DockerScriptSetup='',
+            )
             app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.6'))
             app.add_script(settings=SETTINGS)
             app.add_script(store_data=store_data)
@@ -67,10 +68,10 @@ fi
             appcenter.update()
             app.install()
             app.verify(joined=False)
-            env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True,)
+            env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
             assert 'TEST_KEY=1' in env, env
-            subprocess.call('univention-app configure %s --set TEST_KEY=2' % name, shell=True,)
-            env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True,)
+            subprocess.call('univention-app configure %s --set TEST_KEY=2' % name, shell=True)
+            env = subprocess.check_output('univention-app shell %s env' % name, shell=True, text=True)
             assert 'TEST_KEY=2' in env, env
             assert 'EMPTY_KEY' not in env, env
         finally:

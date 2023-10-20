@@ -50,8 +50,8 @@ from saml2.md import NAMESPACE
 workaround = set()
 
 
-def handler(config_registry, changes,):
-    if not isinstance(changes.get('umc/saml/idp-server'), (list, tuple),):
+def handler(config_registry, changes):
+    if not isinstance(changes.get('umc/saml/idp-server'), (list, tuple)):
         # workaround for Bug #39444
         print('skipping UCR registration')
         return
@@ -69,7 +69,7 @@ def handler(config_registry, changes,):
         metadata_download_failed.append(saml_idp)
     elif not valid_metadata(saml_idp):
         metadata_validation_failed.append(saml_idp)
-    remove_saml_logout_soap_binding(config_registry, saml_idp,)
+    remove_saml_logout_soap_binding(config_registry, saml_idp)
     reload_webserver()
     if not rewrite_sasl_configuration():
         raise SystemExit('Could not rewrite SASL configuration for UMC.')
@@ -79,9 +79,9 @@ def handler(config_registry, changes,):
         raise SystemExit('IDP metadata not valid for %s' % (', '.join(metadata_validation_failed),))
 
 
-def remove_saml_logout_soap_binding(config_registry, saml_idp,):
+def remove_saml_logout_soap_binding(config_registry, saml_idp):
     """Remove the saml logout SOAP binding from the IDP metadata"""
-    if not config_registry.is_true("umc/saml/idp-server/remove-soap-logout", True,):
+    if not config_registry.is_true("umc/saml/idp-server/remove-soap-logout", True):
         return
     idp = str(urlparse(saml_idp).netloc)
     filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
@@ -94,7 +94,7 @@ def remove_saml_logout_soap_binding(config_registry, saml_idp,):
             endpoint.getparent().remove(endpoint)
             modified = True
     if modified:
-        with open(filename, 'wb',) as xmlfile:
+        with open(filename, 'wb') as xmlfile:
             xmlfile.write(lxml.tostring(dom_xml))
 
 
@@ -103,7 +103,7 @@ def cleanup():
         os.remove(metadata)
 
 
-def valid_metadata(saml_idp,):
+def valid_metadata(saml_idp):
     idp = str(urlparse(saml_idp).netloc)
     filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
     try:
@@ -114,10 +114,10 @@ def valid_metadata(saml_idp,):
     return True
 
 
-def download_idp_metadata(metadata,):
+def download_idp_metadata(metadata):
     idp = str(urlparse(metadata).netloc)
     filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
-    for i in range(0, 60,):
+    for i in range(0, 60):
         print('Try to download idp metadata (%s/60)' % (i + 1))
         rc = call([
             '/usr/bin/curl',
@@ -151,4 +151,4 @@ def reload_webserver():
 
 if __name__ == '__main__':
     from univention.config_registry import ucr
-    handler(ucr, {'umc/saml/idp-server': []},)
+    handler(ucr, {'umc/saml/idp-server': []})

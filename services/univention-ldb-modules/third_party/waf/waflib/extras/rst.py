@@ -36,7 +36,7 @@ from waflib.TaskGen import feature, before_method
 
 rst_progs = "rst2html rst2xetex rst2latex rst2xml rst2pdf rst2s5 rst2man rst2odt rst2rtf".split()
 
-def parse_rst_node(task, node, nodes, names, seen, dirs=None,):
+def parse_rst_node(task, node, nodes, names, seen, dirs=None):
 	# TODO add extensibility, to handle custom rst include tags...
 	if dirs is None:
 		dirs = (node.parent,node.get_bld().parent)
@@ -45,20 +45,20 @@ def parse_rst_node(task, node, nodes, names, seen, dirs=None,):
 		return
 	seen.append(node)
 	code = node.read()
-	re_rst = re.compile(r'^\s*.. ((?P<subst>\|\S+\|) )?(?P<type>include|image|figure):: (?P<file>.*)$', re.M,)
+	re_rst = re.compile(r'^\s*.. ((?P<subst>\|\S+\|) )?(?P<type>include|image|figure):: (?P<file>.*)$', re.M)
 	for match in re_rst.finditer(code):
 		ipath = match.group('file')
 		itype = match.group('type')
-		Logs.debug('rst: visiting %s: %s', itype, ipath,)
+		Logs.debug('rst: visiting %s: %s', itype, ipath)
 		found = False
 		for d in dirs:
-			Logs.debug('rst: looking for %s in %s', ipath, d.abspath(),)
+			Logs.debug('rst: looking for %s in %s', ipath, d.abspath())
 			found = d.find_node(ipath)
 			if found:
-				Logs.debug('rst: found %s as %s', ipath, found.abspath(),)
+				Logs.debug('rst: found %s as %s', ipath, found.abspath())
 				nodes.append((itype, found))
 				if itype == 'include':
-					parse_rst_node(task, found, nodes, names, seen,)
+					parse_rst_node(task, found, nodes, names, seen)
 				break
 		if not found:
 			names.append((itype, ipath))
@@ -82,15 +82,15 @@ class docutils(Task.Task):
 		if not node:
 			return (nodes, names)
 
-		parse_rst_node(self, node, nodes, names, seen,)
+		parse_rst_node(self, node, nodes, names, seen)
 
-		Logs.debug('rst: %r: found the following file deps: %r', self, nodes,)
+		Logs.debug('rst: %r: found the following file deps: %r', self, nodes)
 		if names:
-			Logs.warn('rst: %r: could not find the following file deps: %r', self, names,)
+			Logs.warn('rst: %r: could not find the following file deps: %r', self, names)
 
 		return ([v for (t,v) in nodes], [v for (t,v) in names])
 
-	def check_status(self, msg, retcode,):
+	def check_status(self, msg, retcode):
 		"""
 		Check an exit status and raise an error with a particular message
 
@@ -112,7 +112,7 @@ class rst2html(docutils):
 	color = 'BLUE'
 
 	def __init__(self, *args, **kw):
-		docutils.__init__(self, *args, **kw,)
+		docutils.__init__(self, *args, **kw)
 		self.command = self.generator.env.RST2HTML
 		self.attributes = ['stylesheet']
 
@@ -120,11 +120,11 @@ class rst2html(docutils):
 		nodes, names = docutils.scan(self)
 
 		for attribute in self.attributes:
-			stylesheet = getattr(self.generator, attribute, None,)
+			stylesheet = getattr(self.generator, attribute, None)
 			if stylesheet is not None:
 				ssnode = self.generator.to_nodes(stylesheet)[0]
 				nodes.append(ssnode)
-				Logs.debug('rst: adding dep to %s %s', attribute, stylesheet,)
+				Logs.debug('rst: adding dep to %s %s', attribute, stylesheet)
 
 		return nodes, names
 
@@ -134,30 +134,30 @@ class rst2html(docutils):
 		dst = self.outputs[0].path_from(cwdn)
 
 		cmd = self.command + [src, dst]
-		cmd += Utils.to_list(getattr(self.generator, 'options', [],))
+		cmd += Utils.to_list(getattr(self.generator, 'options', []))
 		for attribute in self.attributes:
-			stylesheet = getattr(self.generator, attribute, None,)
+			stylesheet = getattr(self.generator, attribute, None)
 			if stylesheet is not None:
 				stylesheet = self.generator.to_nodes(stylesheet)[0]
 				cmd += ['--%s' % attribute, stylesheet.path_from(cwdn)]
 
-		return self.exec_command(cmd, cwd=cwdn.abspath(),)
+		return self.exec_command(cmd, cwd=cwdn.abspath())
 
 class rst2s5(rst2html):
 	def __init__(self, *args, **kw):
-		rst2html.__init__(self, *args, **kw,)
+		rst2html.__init__(self, *args, **kw)
 		self.command = self.generator.env.RST2S5
 		self.attributes = ['stylesheet']
 
 class rst2latex(rst2html):
 	def __init__(self, *args, **kw):
-		rst2html.__init__(self, *args, **kw,)
+		rst2html.__init__(self, *args, **kw)
 		self.command = self.generator.env.RST2LATEX
 		self.attributes = ['stylesheet']
 
 class rst2xetex(rst2html):
 	def __init__(self, *args, **kw):
-		rst2html.__init__(self, *args, **kw,)
+		rst2html.__init__(self, *args, **kw)
 		self.command = self.generator.env.RST2XETEX
 		self.attributes = ['stylesheet']
 
@@ -169,9 +169,9 @@ class rst2pdf(docutils):
 		dst = self.outputs[0].path_from(cwdn)
 
 		cmd = self.generator.env.RST2PDF + [src, '-o', dst]
-		cmd += Utils.to_list(getattr(self.generator, 'options', [],))
+		cmd += Utils.to_list(getattr(self.generator, 'options', []))
 
-		return self.exec_command(cmd, cwd=cwdn.abspath(),)
+		return self.exec_command(cmd, cwd=cwdn.abspath())
 
 
 @feature('rst')
@@ -182,16 +182,16 @@ def apply_rst(self):
 	"""
 
 	if self.target:
-		if isinstance(self.target, Node.Node,):
+		if isinstance(self.target, Node.Node):
 			tgt = self.target
-		elif isinstance(self.target, str,):
+		elif isinstance(self.target, str):
 			tgt = self.path.get_bld().make_node(self.target)
 		else:
 			self.bld.fatal("rst: Don't know how to build target name %s which is not a string or Node for %s" % (self.target, self))
 	else:
 		tgt = None
 
-	tsk_type = getattr(self, 'type', None,)
+	tsk_type = getattr(self, 'type', None)
 
 	src = self.to_nodes(self.source)
 	assert len(src) == 1
@@ -215,7 +215,7 @@ def apply_rst(self):
 
 	deps_lst = []
 
-	if getattr(self, 'deps', None,):
+	if getattr(self, 'deps', None):
 		deps = self.to_list(self.deps)
 		for filename in deps:
 			n = self.path.find_resource(filename)
@@ -225,7 +225,7 @@ def apply_rst(self):
 				deps_lst.append(n)
 
 	try:
-		task = self.create_task(self.type, src, tgt,)
+		task = self.create_task(self.type, src, tgt)
 	except KeyError:
 		self.bld.fatal("rst: Task of type %s not implemented (created by %s)" % (self.type, self))
 
@@ -241,9 +241,9 @@ def apply_rst(self):
 		except KeyError:
 			self.bld.node_deps[task.uid()] = deps_lst
 
-	inst_to = getattr(self, 'install_path', None,)
+	inst_to = getattr(self, 'install_path', None)
 	if inst_to:
-		self.install_task = self.add_install_files(install_to=inst_to, install_from=task.outputs[:],)
+		self.install_task = self.add_install_files(install_to=inst_to, install_from=task.outputs[:])
 
 	self.source = []
 
@@ -256,5 +256,5 @@ def configure(self):
 	if programs were not found.
 	"""
 	for p in rst_progs:
-		self.find_program(p, mandatory=False,)
+		self.find_program(p, mandatory=False)
 

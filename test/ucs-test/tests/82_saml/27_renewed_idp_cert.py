@@ -57,7 +57,7 @@ def main():
     renew_sso_cert()
     reload_idp_metadata()
     account = utils.UCSTestDomainAdminCredentials()
-    SamlSession = samltest.SamlTest(account.username, account.bindpw,)
+    SamlSession = samltest.SamlTest(account.username, account.bindpw)
     try:
         # Previously umc had a segfault here
         SamlSession.login_with_new_session_at_IdP()

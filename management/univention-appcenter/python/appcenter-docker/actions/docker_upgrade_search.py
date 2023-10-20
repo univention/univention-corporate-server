@@ -42,15 +42,15 @@ from univention.appcenter.actions.upgrade_search import UpgradeSearch
 
 class UpgradeSearch(UpgradeSearch, DockerActionMixin):
 
-    def _check_for_upgrades(self, app,):
-        upgrade_available = super(UpgradeSearch, self,)._check_for_upgrades(app)
+    def _check_for_upgrades(self, app):
+        upgrade_available = super(UpgradeSearch, self)._check_for_upgrades(app)
         docker = self._get_docker(app)
         if not docker:
             return upgrade_available
         if not docker.is_running():
             self.log('%s: Not running, cannot check further' % app)
             return upgrade_available or None
-        result = self._execute_container_script(app, 'update_available', credentials=False, output=True,)
+        result = self._execute_container_script(app, 'update_available', credentials=False, output=True)
         if result is not None:
             process, log = result
             if process.returncode != 0:

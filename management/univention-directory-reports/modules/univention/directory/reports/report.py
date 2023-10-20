@@ -46,16 +46,16 @@ _ = Translation('univention-directory-reports').translate
 
 class Report(object):
 
-    def __init__(self, lo, config=None,):
+    def __init__(self, lo, config=None):
         self.lo = lo
         self.config = config or Config()
 
-    def create(self, module, report, objects,):
+    def create(self, module, report, objects):
         """Create a report of objects for the specified module in the specified report type format"""
         connect(access=self.lo)
         clear_cache()
 
-        template = self.config.get_report(module, report,)
+        template = self.config.get_report(module, report)
         if template is None:
             if not module:
                 raise ReportError(_('Please specify a module.'))
@@ -66,9 +66,9 @@ class Report(object):
             raise ReportError(_('No %r report exists for the module %r.') % (report, module))
 
         suffix = '.rml' if Document.get_type(template) == Document.TYPE_RML else '.tex'
-        header = self.config.get_header(module, report, suffix,)
-        footer = self.config.get_footer(module, report, suffix,)
-        doc = Document(template, header=header, footer=footer,)
+        header = self.config.get_header(module, report, suffix)
+        footer = self.config.get_footer(module, report, suffix)
+        doc = Document(template, header=header, footer=footer)
 
         tmpfile = doc.create_source(objects)
         pdffile = tmpfile

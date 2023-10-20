@@ -25,12 +25,12 @@ def cleanup_restart_firewall():
     restart_firewall()
 
 
-@pytest.mark.parametrize('database', ['mysql', 'postgresql'],)
-def test_database_integration(appcenter, database,):
+@pytest.mark.parametrize('database', ['mysql', 'postgresql'])
+def test_database_integration(appcenter, database):
     try:
         app_name = get_app_name()
         app_version = get_app_version()
-        app = tiny_app(app_name, app_version,)
+        app = tiny_app(app_name, app_version)
         app.set_ini_parameter(Database=database)
         app.add_script(uinst=dedent('''\
             #!/bin/bash
@@ -44,12 +44,12 @@ def test_database_integration(appcenter, database,):
         app.add_to_local_appcenter()
         appcenter.update()
         for i in [1, 2]:
-            print('#### ', i,)
+            print('#### ', i)
             app.install()
             if database == 'mysql':
-                output = check_output(['mysql', '-u', 'root', '-p%s' % (open('/etc/mysql.secret').read().strip()), 'INFORMATION_SCHEMA', '-e', "SELECT SCHEMA_NAME FROM SCHEMATA WHERE SCHEMA_NAME = '%s'" % app_name], text=True,)  # noqa: S608
+                output = check_output(['mysql', '-u', 'root', '-p%s' % (open('/etc/mysql.secret').read().strip()), 'INFORMATION_SCHEMA', '-e', "SELECT SCHEMA_NAME FROM SCHEMATA WHERE SCHEMA_NAME = '%s'" % app_name], text=True)  # noqa: S608
             elif database == 'postgresql':
-                output = check_output(['su', 'postgres', '-c', 'psql -l'], text=True,)
+                output = check_output(['su', 'postgres', '-c', 'psql -l'], text=True)
             print(output)
             assert app_name in output, 'No %s database named %s found in run #%d' % (database, app_name, i)
             app.uninstall()

@@ -38,7 +38,7 @@ from typing import Dict  # noqa: F401
 from univention.config_registry import ConfigRegistry  # noqa: F401
 
 
-def _getBoolDefault(varGlobal, varLocal, settings, configRegistry,):
+def _getBoolDefault(varGlobal, varLocal, settings, configRegistry):
     # type: (str, str, Dict[str, str], ConfigRegistry) -> None
     """
     Get default value of type boolean.
@@ -49,15 +49,15 @@ def _getBoolDefault(varGlobal, varLocal, settings, configRegistry,):
     :param ConfigRegistry configRegistry: An |UCR| instance.
     """
     configName = varGlobal.split("/")[-1]
-    if configRegistry.is_true(varGlobal, True,):
+    if configRegistry.is_true(varGlobal, True):
         settings[configName] = configName
     if configRegistry.is_false(varLocal) and settings.get(configName):
         del settings[configName]
-    if configRegistry.is_true(varLocal, False,):
+    if configRegistry.is_true(varLocal, False):
         settings[configName] = configName
 
 
-def getLogrotateConfig(name, configRegistry,):
+def getLogrotateConfig(name, configRegistry):
     # type: (str, ConfigRegistry) -> Dict[str, str]
     """
     Build aggregated configuration for log file rotation.
@@ -82,8 +82,8 @@ def getLogrotateConfig(name, configRegistry,):
         if configRegistry.get(var + "create"):
             settings["create"] = "create " + configRegistry[var + "create"]
 
-    _getBoolDefault("logrotate/missingok", "logrotate/" + name + "/missingok", settings, configRegistry,)
-    _getBoolDefault("logrotate/compress", "logrotate/" + name + "/compress", settings, configRegistry,)
-    _getBoolDefault("logrotate/notifempty", "logrotate/" + name + "/notifempty", settings, configRegistry,)
+    _getBoolDefault("logrotate/missingok", "logrotate/" + name + "/missingok", settings, configRegistry)
+    _getBoolDefault("logrotate/compress", "logrotate/" + name + "/compress", settings, configRegistry)
+    _getBoolDefault("logrotate/notifempty", "logrotate/" + name + "/notifempty", settings, configRegistry)
 
     return settings

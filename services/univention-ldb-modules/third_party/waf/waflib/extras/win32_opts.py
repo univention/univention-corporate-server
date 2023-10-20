@@ -46,7 +46,7 @@ if Utils.is_win32:
 		else:
 			# an opportunity to list the files and the timestamps at once
 			findData = ctypes.wintypes.WIN32_FIND_DATAW()
-			find     = FindFirstFile(TP % self.parent.abspath(), ctypes.byref(findData),)
+			find     = FindFirstFile(TP % self.parent.abspath(), ctypes.byref(findData))
 
 			if find == INVALID_HANDLE_VALUE:
 				cache[id(self.parent)] = {}
@@ -61,7 +61,7 @@ if Utils.is_win32:
 							ts = findData.ftLastWriteTime
 							d = (ts.dwLowDateTime << 32) | ts.dwHighDateTime
 							lst_files[str(findData.cFileName)] = d
-					if not FindNextFile(find, ctypes.byref(findData),):
+					if not FindNextFile(find, ctypes.byref(findData)):
 						break
 			except Exception:
 				cache[id(self.parent)] = {}
@@ -76,10 +76,10 @@ if Utils.is_win32:
 				return Build.hashes_md5_tstamp[fname][1]
 
 		try:
-			fd = os.open(fname, os.O_BINARY | os.O_RDONLY | os.O_NOINHERIT,)
+			fd = os.open(fname, os.O_BINARY | os.O_RDONLY | os.O_NOINHERIT)
 		except OSError:
 			raise IOError('Cannot read from %r' % fname)
-		f = os.fdopen(fd, 'rb',)
+		f = os.fdopen(fd, 'rb')
 		m = Utils.md5()
 		rb = 1
 		try:
@@ -119,10 +119,10 @@ if Utils.is_win32:
 
 			curpath = self.parent.abspath()
 			findData = ctypes.wintypes.WIN32_FIND_DATAW()
-			find     = FindFirstFile(TP % curpath, ctypes.byref(findData),)
+			find     = FindFirstFile(TP % curpath, ctypes.byref(findData))
 
 			if find == INVALID_HANDLE_VALUE:
-				Logs.error("invalid win32 handle isfile_cached %r", self.abspath(),)
+				Logs.error("invalid win32 handle isfile_cached %r", self.abspath())
 				return os.path.isfile(self.abspath())
 
 			try:
@@ -131,19 +131,19 @@ if Utils.is_win32:
 						thatsadir = findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
 						if not thatsadir:
 							c1.append(str(findData.cFileName))
-					if not FindNextFile(find, ctypes.byref(findData),):
+					if not FindNextFile(find, ctypes.byref(findData)):
 						break
 			except Exception as e:
-				Logs.error('exception while listing a folder %r %r', self.abspath(), e,)
+				Logs.error('exception while listing a folder %r %r', self.abspath(), e)
 				return os.path.isfile(self.abspath())
 			finally:
 				FindClose(find)
 		return self.name in c1
 	Node.Node.isfile_cached = isfile_cached
 
-	def find_or_declare_win32(self, lst,):
+	def find_or_declare_win32(self, lst):
 		# assuming that "find_or_declare" is called before the build starts, remove the calls to os.path.isfile
-		if isinstance(lst, str,):
+		if isinstance(lst, str):
 			lst = [x for x in Utils.split_path(lst) if x and x != '.']
 
 		node = self.get_bld().search_node(lst)

@@ -54,13 +54,14 @@ nagios_properties = {
         long_description='',
         syntax=univention.admin.syntax.nagiosServiceDn,
         multivalue=True,
-        options=['nagios'],),
+        options=['nagios'],
+    ),
 }
 
 
 nagios_tab_A = Tab(_('Nagios services'), _('Nagios Service Settings'), advanced=True, layout=[
     "nagiosServices",
-],)
+])
 
 
 nagios_options = {
@@ -68,11 +69,12 @@ nagios_options = {
         short_description=_('Nagios support'),
         default=0,
         editable=True,
-        objectClasses=['univentionNagiosHostClass'],),
+        objectClasses=['univentionNagiosHostClass'],
+    ),
 }
 
 
-def addPropertiesMappingOptionsAndLayout(new_property, new_mapping, new_options, new_layout,):
+def addPropertiesMappingOptionsAndLayout(new_property, new_mapping, new_options, new_layout):
     """Add Nagios properties."""
     # FIXME: property_descriptions is not changed atomically during module initialization
     for key, value in nagios_properties.items():
@@ -91,10 +93,10 @@ class Support(object):
         self.nagiosRemoveFromServices = False
 
     def __getFQDN(self):
-        hostname = self.oldattr.get("cn", [b''],)[0].decode('UTF-8')
-        domain = self.oldattr.get("associatedDomain", [b''],)[0].decode('UTF-8')
+        hostname = self.oldattr.get("cn", [b''])[0].decode('UTF-8')
+        domain = self.oldattr.get("associatedDomain", [b''])[0].decode('UTF-8')
         if not domain:
-            domain = configRegistry.get("domainname", None,)
+            domain = configRegistry.get("domainname", None)
         if domain and hostname:
             return hostname + "." + domain
 
@@ -104,33 +106,33 @@ class Support(object):
         fqdn = self.__getFQDN()
 
         if fqdn:
-            return self.lo.searchDn(filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))', [fqdn],), base=self.position.getDomain(),)
+            return self.lo.searchDn(filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))', [fqdn]), base=self.position.getDomain())
         return []
 
     def nagios_open(self):
         if 'nagios' in self.options:
             self['nagiosServices'] = self.nagiosGetAssignedServices()
 
-    def nagios_ldap_modlist(self, ml,):
+    def nagios_ldap_modlist(self, ml):
         if 'nagios' in self.options:
             if ('ip' not in self.info) or (not self.info['ip']) or (len(self.info['ip']) == 1 and self.info['ip'][0] == ''):
                 raise univention.admin.uexceptions.nagiosARecordRequired()
-            if not self.info.get('domain', None,):
+            if not self.info.get('domain', None):
                 if ('dnsEntryZoneForward' not in self.info) or (not self.info['dnsEntryZoneForward']) or (len(self.info['dnsEntryZoneForward']) == 1 and self.info['dnsEntryZoneForward'][0] == ''):
                     raise univention.admin.uexceptions.nagiosDNSForwardZoneEntryRequired()
 
         # add nagios option
         if self.option_toggled('nagios') and 'nagios' in self.options:
-            ud.debug(ud.ADMIN, ud.INFO, 'added nagios option',)
-            if b'univentionNagiosHostClass' not in self.oldattr.get('objectClass', [],):
-                ml.insert(0, ('univentionNagiosEnabled', b'', b'1'),)
+            ud.debug(ud.ADMIN, ud.INFO, 'added nagios option')
+            if b'univentionNagiosHostClass' not in self.oldattr.get('objectClass', []):
+                ml.insert(0, ('univentionNagiosEnabled', b'', b'1'))
 
         # remove nagios option
         if self.option_toggled('nagios') and 'nagios' not in self.options:
-            ud.debug(ud.ADMIN, ud.INFO, 'remove nagios option',)
+            ud.debug(ud.ADMIN, ud.INFO, 'remove nagios option')
             for key in ['univentionNagiosParent', 'univentionNagiosEmail', 'univentionNagiosEnabled']:
-                if self.oldattr.get(key, [],):
-                    ml.insert(0, (key, self.oldattr.get(key, [],), b''),)
+                if self.oldattr.get(key, []):
+                    ml.insert(0, (key, self.oldattr.get(key, []), b''))
 
             # trigger deletion from services
             self.nagiosRemoveFromServices = True
@@ -141,16 +143,16 @@ class Support(object):
     def nagios_ldap_pre_create(self):
         pass
 
-    def __change_fqdn(self, oldfqdn, newfqdn,):
+    def __change_fqdn(self, oldfqdn, newfqdn):
         oldfqdn = oldfqdn.encode('utf-8')
         newfqdn = newfqdn.encode('utf-8')
         for servicedn in self.oldinfo['nagiosServices']:
-            oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname',)
+            oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
             if oldfqdn in oldmembers:
                 newmembers = copy.deepcopy(oldmembers)
                 newmembers.remove(oldfqdn)
                 newmembers.append(newfqdn)
-                self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)],)  # TODO: why not simply ('univentionNagiosHostname', oldfqdn, newfqdn) ?
+                self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])  # TODO: why not simply ('univentionNagiosHostname', oldfqdn, newfqdn) ?
 
     def nagiosModifyServiceList(self):
         fqdn = ''
@@ -159,15 +161,15 @@ class Support(object):
             if self.hasChanged('name') and self.hasChanged('domain'):
                 oldfqdn = u'%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
                 newfqdn = u'%s.%s' % (self['name'], self['domain'])
-                self.__change_fqdn(oldfqdn, newfqdn,)
+                self.__change_fqdn(oldfqdn, newfqdn)
             elif self.hasChanged('name'):
                 oldfqdn = u'%s.%s' % (self.oldinfo['name'], self['domain'])
                 newfqdn = u'%s.%s' % (self['name'], self['domain'])
-                self.__change_fqdn(oldfqdn, newfqdn,)
+                self.__change_fqdn(oldfqdn, newfqdn)
             elif self.hasChanged('domain'):
                 oldfqdn = u'%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
                 newfqdn = u'%s.%s' % (self['name'], self['domain'])
-                self.__change_fqdn(oldfqdn, newfqdn,)
+                self.__change_fqdn(oldfqdn, newfqdn)
 
         fqdn = '%s.%s' % (self['name'], configRegistry.get("domainname"))
         if self.has_property('domain') and self['domain']:
@@ -175,28 +177,28 @@ class Support(object):
 
         # remove host from services
         if 'nagios' in self.old_options:
-            for servicedn in self.oldinfo.get('nagiosServices', [],):
-                if servicedn not in self.info.get('nagiosServices', [],):
-                    oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname',)
+            for servicedn in self.oldinfo.get('nagiosServices', []):
+                if servicedn not in self.info.get('nagiosServices', []):
+                    oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
                     newmembers = [x for x in oldmembers if x.decode('UTF-8').lower() != fqdn.lower()]
-                    self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)],)
+                    self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
 
         if 'nagios' in self.options:
             # add host to new services
-            ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NMSL: nagios in options',)
-            for servicedn in self.info.get('nagiosServices', [],):
+            ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NMSL: nagios in options')
+            for servicedn in self.info.get('nagiosServices', []):
                 if not servicedn:
                     continue
-                ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NMSL: servicedn %s' % servicedn,)
+                ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NMSL: servicedn %s' % servicedn)
                 if 'nagios' not in self.old_options or servicedn not in self.oldinfo['nagiosServices']:
-                    ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NMSL: add',)
+                    ud.debug(ud.ADMIN, ud.INFO, 'nagios.py: NMSL: add')
                     # option nagios was freshly enabled or service has been enabled just now
-                    oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname',)
+                    oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
                     newmembers = copy.deepcopy(oldmembers)
                     newmembers.append(fqdn.encode('UTF-8'))
-                    ud.debug(ud.ADMIN, ud.WARN, 'nagios.py: NMSL: oldmembers: %s' % oldmembers,)
-                    ud.debug(ud.ADMIN, ud.WARN, 'nagios.py: NMSL: newmembers: %s' % newmembers,)
-                    self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)],)
+                    ud.debug(ud.ADMIN, ud.WARN, 'nagios.py: NMSL: oldmembers: %s' % oldmembers)
+                    ud.debug(ud.ADMIN, ud.WARN, 'nagios.py: NMSL: newmembers: %s' % newmembers)
+                    self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
 
     def nagiosRemoveHostFromServices(self):
         self.nagiosRemoveFromServices = False
@@ -204,12 +206,12 @@ class Support(object):
 
         if fqdn:
             searchResult = self.lo.search(
-                filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))', [fqdn],),
-                base=self.position.getDomain(), attr=['univentionNagiosHostname'],)
+                filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))', [fqdn]),
+                base=self.position.getDomain(), attr=['univentionNagiosHostname'])
 
             for (dn, attrs) in searchResult:
                 newattrs = [x for x in attrs['univentionNagiosHostname'] if x.decode('UTF-8').lower() != fqdn.lower()]
-                self.lo.modify(dn, [('univentionNagiosHostname', attrs['univentionNagiosHostname'], newattrs)],)
+                self.lo.modify(dn, [('univentionNagiosHostname', attrs['univentionNagiosHostname'], newattrs)])
 
     def nagiosRemoveHostFromParent(self):
         self.nagiosRemoveFromParent = False
@@ -218,12 +220,12 @@ class Support(object):
 
         if fqdn:
             searchResult = self.lo.search(
-                filter=filter_format('(&(objectClass=univentionNagiosHostClass)(univentionNagiosParent=%s))', [fqdn],),
-                base=self.position.getDomain(), attr=['univentionNagiosParent'],)
+                filter=filter_format('(&(objectClass=univentionNagiosHostClass)(univentionNagiosParent=%s))', [fqdn]),
+                base=self.position.getDomain(), attr=['univentionNagiosParent'])
 
             for (dn, attrs) in searchResult:
                 newattrs = [x for x in attrs['univentionNagiosParent'] if x.decode('UTF-8').lower() != fqdn.lower()]
-                self.lo.modify(dn, [('univentionNagiosParent', attrs['univentionNagiosParent'], newattrs)],)
+                self.lo.modify(dn, [('univentionNagiosParent', attrs['univentionNagiosParent'], newattrs)])
 
     def nagios_ldap_post_modify(self):
         if self.nagiosRemoveFromServices:

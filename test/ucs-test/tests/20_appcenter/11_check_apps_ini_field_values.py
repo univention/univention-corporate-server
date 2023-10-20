@@ -25,7 +25,7 @@ def fail_the_test():
     failures_counter += 1
 
 
-def check_file(filename,):
+def check_file(filename):
     """
     Creates an instance of RawConfigParser, reads a given 'filename' and
     checks if any option from the 'OPTIONS_TO_CHECK' has empty value, i.e:
@@ -38,9 +38,9 @@ def check_file(filename,):
 
     for option in OPTIONS_TO_CHECK:
         # it is allowed to have no 'option' in the .ini file.
-        if IniConfig.has_option('Application', option,):
+        if IniConfig.has_option('Application', option):
             # if an 'option' is present - it should have a value assigned:
-            option_value = IniConfig.get('Application', option,)
+            option_value = IniConfig.get('Application', option)
 
             if not option_value:
                 # 'option' has no value assigned, a failure case:
@@ -56,16 +56,16 @@ def check_file(filename,):
                       % (option, filename, option_value))
 
 
-def check_ini_files(dirname,):
+def check_ini_files(dirname):
     """
     Determines the path to App Center Cache dir with .ini files and checks
     all .inis there one by one.
     """
-    print("\nThe path to Appcenter .ini files is:", dirname,)
+    print("\nThe path to Appcenter .ini files is:", dirname)
     if not path.exists(dirname):
         utils.fail("The path to App center .ini files does not exist.")
 
-    test_path = [fname for fname in glob(path.join(dirname, '*.ini',)) if not path.basename(fname).startswith('.')]
+    test_path = [fname for fname in glob(path.join(dirname, '*.ini')) if not path.basename(fname).startswith('.')]
     for filename in test_path:
         try:
             check_file(filename)

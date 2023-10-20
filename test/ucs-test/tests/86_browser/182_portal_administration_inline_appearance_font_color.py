@@ -46,7 +46,8 @@ class UMCTester(object):
         self.dummy_portal_dn = self.udm_test.create_object(
             'settings/portal',  # TODO: migrate to new portal
             name=uts.random_string(),
-            displayName=['en_US ' + self.dummy_portal_title],)
+            displayName=['en_US ' + self.dummy_portal_title],
+        )
         logger.info('Saving previous set portal of host')
         udm = UDM.admin().version(1)
         machine = udm.obj_by_dn(self.ucr['ldap/hostdn'])
@@ -70,7 +71,7 @@ class UMCTester(object):
 
         logger.info('Setting new font-color')
         self.selenium.click_button('Appearance')
-        self.selenium.enter_input_combobox('fontColor', 'White',)
+        self.selenium.enter_input_combobox('fontColor', 'White')
         self.selenium.click_button('Save')
         self.selenium.wait_until_all_dialogues_closed()
 
@@ -78,7 +79,7 @@ class UMCTester(object):
         time.sleep(10)  # wait for the css to be reloaded
 
         logger.info('Checking whether changing the font color worked')
-        title_node_font_color = self.selenium.driver.find_element(By.ID, 'portalTitle',).value_of_css_property('color')
+        title_node_font_color = self.selenium.driver.find_element(By.ID, 'portalTitle').value_of_css_property('color')
         if 'rgba(255, 255, 255, 1)' not in title_node_font_color:
             # the appearance changes should be hot reloaded so this is a fail
             # but check if the color was changed at all
@@ -87,14 +88,14 @@ class UMCTester(object):
             self.selenium.driver.get(self.selenium.base_url)
             self.selenium.wait_for_text(self.dummy_portal_title)
 
-            title_node_font_color = self.selenium.driver.find_element(By.ID, 'portalTitle',).value_of_css_property('color')
+            title_node_font_color = self.selenium.driver.find_element(By.ID, 'portalTitle').value_of_css_property('color')
             if 'rgba(255, 255, 255, 1)' not in title_node_font_color:
                 raise ChangeFontColorError('Changing the font color did not work')
             raise ChangeFontColorError('The font color should be hot reloaded after a save but it was not')
 
     def cleanup(self):
         logger.info('Cleanup')
-        if hasattr(self, 'previous_portal',):
+        if hasattr(self, 'previous_portal'):
             logger.info('Restore previously set portal on host')
             udm = UDM.admin().version(1)
             machine = udm.obj_by_dn(self.ucr['ldap/hostdn'])

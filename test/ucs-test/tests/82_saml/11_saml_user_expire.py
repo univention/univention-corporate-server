@@ -26,10 +26,10 @@ def test_expired_account():
     yesterday = datetime.now() - timedelta(days=1)
     with udm_test.UCSTestUDM() as udm:
         testcase_user_name = udm.create_user(userexpiry=yesterday.isoformat()[:10])[1]
-        SamlSession = samltest.SamlTest(testcase_user_name, 'aaaunivention',)
+        SamlSession = samltest.SamlTest(testcase_user_name, 'aaaunivention')
         with pytest.raises(samltest.SamlAuthenticationFailed):
             SamlSession.login_with_new_session_at_IdP()
-        SamlSession = samltest.SamlTest(testcase_user_name, 'univention',)
+        SamlSession = samltest.SamlTest(testcase_user_name, 'univention')
         with pytest.raises(samltest.SamlAccountExpired):
             SamlSession.login_with_new_session_at_IdP()
 
@@ -38,7 +38,7 @@ def test_unexpired_account():
     tomorrow = datetime.now() + timedelta(days=1)
     with udm_test.UCSTestUDM() as udm:
         testcase_user_name = udm.create_user(userexpiry=tomorrow.isoformat()[:10])[1]
-        SamlSession = samltest.SamlTest(testcase_user_name, 'univention',)
+        SamlSession = samltest.SamlTest(testcase_user_name, 'univention')
         SamlSession.login_with_new_session_at_IdP()
         SamlSession.test_logged_in_status()
 

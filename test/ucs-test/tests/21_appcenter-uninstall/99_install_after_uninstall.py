@@ -23,19 +23,19 @@ from appcenteruninstalltest import get_requested_apps
 log_to_stream()
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
-username = uldap.explodeDn(ucr['tests/domainadmin/account'], 1,)[0]
+username = uldap.explodeDn(ucr['tests/domainadmin/account'], 1)[0]
 pwdfile = ucr['tests/domainadmin/pwdfile']
 install = get_action('install')
 info = get_action('info')
 
 apps = []
 for app in get_requested_apps():
-    print('Checking', app,)
+    print('Checking', app)
     if not app._allowed_on_local_server():
         print('Not allowed ... skipping')
         continue
     apps.append(app)
 
-if not install.call(app=apps, noninteractive=True, pwdfile=pwdfile, username=username,):
+if not install.call(app=apps, noninteractive=True, pwdfile=pwdfile, username=username):
     info.call()
     utils.fail('Failed to re-install apps')

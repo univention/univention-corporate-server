@@ -29,7 +29,7 @@ EXP = '1.3.6.1.4.1.4203.666.11.1.'
 ENTRY_DN = ("1.3.6.1.4.1.4203.666.1.33", "1.3.6.1.1.20")
 
 
-def s2t(oid: str,) -> Tuple[int, ...]:
+def s2t(oid: str) -> Tuple[int, ...]:
     return tuple(int(i) for i in oid.split("."))
 
 
@@ -48,13 +48,13 @@ def dump_schema() -> Iterator[Tuple[Tuple[int, ...], str, str]]:
         (ldap.schema.ObjectClass, "objectClass"),
     ):
         for oid in schema.listall(typ):
-            entry = schema.get_obj(typ, oid,)
+            entry = schema.get_obj(typ, oid)
             names = "|".join(sorted(entry.names))
 
             if oid.startswith(EXP):
-                exp, pub = oid, oid.replace(EXP, PUB,)
+                exp, pub = oid, oid.replace(EXP, PUB)
             elif oid.startswith(PUB):
-                exp, pub = oid.replace(PUB, EXP,), oid
+                exp, pub = oid.replace(PUB, EXP), oid
             elif oid in ENTRY_DN:
                 exp, pub = ENTRY_DN
             else:
@@ -75,7 +75,7 @@ def main() -> None:
 
     for i, mod in enumerate(walk_modules()):
         if sys.stderr.isatty():
-            print(f"\r{i}: {mod}", end="\r", file=sys.stderr,)
+            print(f"\r{i}: {mod}", end="\r", file=sys.stderr)
 
         with NamedTemporaryFile("w") as tmp:
             tmp.write(f"moduleload {mod}.so" if mod else "")
@@ -85,7 +85,7 @@ def main() -> None:
             proc = Popen(cmd)
             try:
                 for key, line, name in dump_schema():
-                    _, _, mods = schema.setdefault(key, (line, name, set()),)
+                    _, _, mods = schema.setdefault(key, (line, name, set()))
                     if "" not in mods:
                         mods.add(mod)
             finally:

@@ -23,24 +23,25 @@ def main():
         autocallcmd1 = ['doveadm', 'reload']
         autocallcmd2 = ['doveadm', 'log', 'reopen']
         logfiles = ['/var/log/auth.log', '/var/log/univention/listener.log', '/var/log/dovecot.log']
-        with utils.AutoCallCommand(enter_cmd=autocallcmd1, exit_cmd=autocallcmd1,):
+        with utils.AutoCallCommand(enter_cmd=autocallcmd1, exit_cmd=autocallcmd1):
             with udm_test.UCSTestUDM() as udm:
                 with utils.FollowLogfile(logfiles=logfiles):
-                    with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2,):
+                    with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2):
                         password = uts.random_string()
                         mailAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
                         udm.create_user(
                             password=password,
-                            mailPrimaryAddress=mailAddress,)
+                            mailPrimaryAddress=mailAddress,
+                        )
                         try:
                             print('* Test imap login with the correct password:')
                             imap = MailClient_SSL('%(hostname)s.%(domainname)s' % ucr)
-                            if imap.login_ok(mailAddress, password,):
+                            if imap.login_ok(mailAddress, password):
                                 utils.fail('IMAP login failed with the correct password')
 
                             print('* Test imap login with the wrong password:')
                             imap = MailClient_SSL('%(hostname)s.%(domainname)s' % ucr)
-                            if imap.login_ok(mailAddress, uts.random_name(), expected_to_succeed=False,):
+                            if imap.login_ok(mailAddress, uts.random_name(), expected_to_succeed=False):
                                 utils.fail('IMAP login succeeded with the wrong password')
                         finally:
                             try:

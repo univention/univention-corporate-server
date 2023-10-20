@@ -54,37 +54,38 @@ class Instance(Base):
         # this initialization method is called when the
         # module process is started and the configuration from the
         # UMC server is completed
-        super(Instance, self,).init()
+        super(Instance, self).init()
 
-    def configuration(self, request,):
+    def configuration(self, request):
         """Returns a directionary of initial values for the form."""
         self.finished(request.id, {
             'sender': request.username + '@example.com',
             'subject': 'Test mail from PACKAGENAME',
             'recipient': 'test@example.com',
-        },)
+        })
 
     @sanitize(
         sender=StringSanitizer(required=True),
         recipient=StringSanitizer(required=True),
         subject=StringSanitizer(required=True),
-        message=StringSanitizer(required=True),)
+        message=StringSanitizer(required=True),
+    )
     @simple_response
-    def send(self, sender, recipient, subject, message,):
-        def _send_thread(self, request,):
+    def send(self, sender, recipient, subject, message):
+        def _send_thread(self, request):
             MODULE.info('sending mail: thread running')
 
-            msg = MIMENonMultipart('text', 'plain', charset='utf-8',)
+            msg = MIMENonMultipart('text', 'plain', charset='utf-8')
             cs = email.charset.Charset("utf-8")
             cs.body_encoding = email.charset.QP
             msg["Subject"] = subject
             msg["From"] = sender
             msg["To"] = recipient
-            msg.set_payload(message, charset=cs,)
+            msg.set_payload(message, charset=cs)
 
             server = smtplib.SMTP('localhost')
             server.set_debuglevel(0)
-            server.sendmail(sender, recipient, msg.as_string(),)
+            server.sendmail(sender, recipient, msg.as_string())
             server.quit()
             return True
 

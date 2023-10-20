@@ -131,7 +131,7 @@ class UDM(object):
 
     _module_object_cache = {}
 
-    def __init__(self, connection, api_version=None,):
+    def __init__(self, connection, api_version=None):
         """
         Use the provided connection.
 
@@ -160,7 +160,7 @@ class UDM(object):
         return cls(connection)
 
     @classmethod
-    def machine(cls, prefer_local_connection=False,):
+    def machine(cls, prefer_local_connection=False):
         """
         Use a machine connection.
 
@@ -182,7 +182,8 @@ class UDM(object):
             password,
             base=None,
             server=None,
-            port=None,):
+            port=None,
+    ):
         """
         Use the provided credentials to open an LDAP connection.
 
@@ -199,10 +200,10 @@ class UDM(object):
         :raises univention.udm.exceptions.ConnectionError: Invalid credentials, server down, etc.
         """
         from .connections import LDAP_connection
-        connection = LDAP_connection.get_credentials_connection(identity, password, base, server, port,)
+        connection = LDAP_connection.get_credentials_connection(identity, password, base, server, port)
         return cls(connection)
 
-    def version(self, api_version,):
+    def version(self, api_version):
         """
         Set the version of the API that the UDM modules must support.
 
@@ -216,15 +217,15 @@ class UDM(object):
         :rtype: univention.udm.udm.UDM
         :raises univention.udm.exceptions.ApiVersionMustNotChange: if called twice
         """
-        if not isinstance(api_version, int,):
-            raise ApiVersionNotSupported("Argument 'api_version' must be an int.", requested_version=api_version,)
+        if not isinstance(api_version, int):
+            raise ApiVersionNotSupported("Argument 'api_version' must be an int.", requested_version=api_version)
         if self._api_version is None:
             self._api_version = api_version
         else:
             raise ApiVersionMustNotChange()
         return self
 
-    def get(self, name,):
+    def get(self, name):
         """
         Get an object of :py:class:`BaseModule` (or of a subclass) for UDM
         module `name`.
@@ -243,19 +244,19 @@ class UDM(object):
                 if self.api_version not in module.meta.supported_api_versions:
                     continue
                 for suitable in module.meta.suitable_for:
-                    if fnmatch(name, suitable,):
+                    if fnmatch(name, suitable):
                         suitable_modules.append((suitable.count('*'), module))
                         break
             suitable_modules.sort(key=itemgetter(0))
             try:
                 klass = suitable_modules[0][1]
             except IndexError:
-                raise ApiVersionNotSupported(module_name=name, requested_version=self.api_version,)
+                raise ApiVersionNotSupported(module_name=name, requested_version=self.api_version)
             else:
-                self._module_object_cache[key] = klass(name, self.connection, self.api_version,)
+                self._module_object_cache[key] = klass(name, self.connection, self.api_version)
         return self._module_object_cache[key]
 
-    def obj_by_dn(self, dn,):
+    def obj_by_dn(self, dn):
         """
         Try to load an UDM object from LDAP. Guess the required UDM module
         from the ``univentionObjectType`` LDAP attribute of the LDAP object.
@@ -272,7 +273,7 @@ class UDM(object):
         """
         if self.connection.__module__ != 'univention.admin.uldap':
             raise NotImplementedError('obj_by_dn() can only be used with an LDAP connection.')
-        ldap_obj = self.connection.get(dn, attr=[str('univentionObjectType')],)
+        ldap_obj = self.connection.get(dn, attr=[str('univentionObjectType')])
         if not ldap_obj:
             raise NoObject(dn=dn)
         uot = ldap_obj['univentionObjectType'][0].decode('utf-8')

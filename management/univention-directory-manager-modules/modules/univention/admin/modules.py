@@ -82,17 +82,17 @@ try:
         extended_udm_attributes = []  # type: List[univention.admin.extended_attribute]
 
         class object:
-            def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None,):
+            def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
                 # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, str, univention.admin.handlers.simpleLdap, univention.admin.handlers._Attributes) -> None
                 pass
 
         @staticmethod
-        def identify(dn, attr,):
+        def identify(dn, attr):
             # type: (str, Dict[str, List[Any]]) -> bool
             pass
 
         @staticmethod
-        def lookup(co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0,):
+        def lookup(co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0):
             # type: (None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> List[Any]
             pass
 
@@ -111,9 +111,9 @@ containers = []  # type: List[UdmModule]
 
 
 @univention.admin._ldap_cache(ttl=3600)
-def _ldap_operational_attribute_names(lo,):  # type: (univention.admin.uldap.access) -> Set[str]
+def _ldap_operational_attribute_names(lo):  # type: (univention.admin.uldap.access) -> Set[str]
     schema = lo.get_schema()
-    attrs = [schema.get_obj(ldap.schema.models.AttributeType, x,) for x in schema.listall(ldap.schema.models.AttributeType)]
+    attrs = [schema.get_obj(ldap.schema.models.AttributeType, x) for x in schema.listall(ldap.schema.models.AttributeType)]
     usages = [ldap.schema.models.AttributeUsage[o] for o in ('directoryoperation', 'dsaoperation', 'distributedoperation')]
     return {n.lower() for a in attrs for n in a.names if a.usage in usages}
 
@@ -129,18 +129,18 @@ def update():
     univention.admin.syntax.import_syntax_files()
     univention.admin.hook.import_hook_files()
 
-    def _walk(root, dir, files,):
+    def _walk(root, dir, files):
         # type: (str, str, List[str]) -> None
         for file in files:
             if not file.endswith('.py') or file.startswith('__'):
                 continue
-            package = os.path.join(dir, file,)[len(root) + 1:-len('.py')]
-            ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % (package,),)
+            package = os.path.join(dir, file)[len(root) + 1:-len('.py')]
+            ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % (package,))
             modulepackage = '.'.join(package.split(os.path.sep))
             m = importlib.import_module('univention.admin.handlers.%s' % (modulepackage,))  # type: Any
             m.initialized = False
-            if not hasattr(m, 'module',):
-                ud.debug(ud.ADMIN, ud.ERROR, 'admin.modules.update: attribute "module" is missing in module %r' % (modulepackage,),)
+            if not hasattr(m, 'module'):
+                ud.debug(ud.ADMIN, ud.ERROR, 'admin.modules.update: attribute "module" is missing in module %r' % (modulepackage,))
                 continue
             _modules[m.module] = m
             if isContainer(m):
@@ -150,7 +150,7 @@ def update():
 
     for root in univention.admin.handlers.__path__:  # type: ignore
         for w_root, _w_dirs, w_files in os.walk(root):
-            _walk(root, w_root, w_files,)
+            _walk(root, w_root, w_files)
     modules = _modules
     _superordinates = superordinates
 
@@ -159,7 +159,7 @@ def update():
     univention.admin.syntax.update_choices()
 
 
-def get(module,):
+def get(module):
     # type: (UdmName) -> UdmModule
     """
     Get |UDM| module.
@@ -170,12 +170,12 @@ def get(module,):
     # FIXME: raise Exception instead of returning None
     if not module:
         return None  # type: ignore
-    if isinstance(module, six.string_types,):
+    if isinstance(module, six.string_types):
         return modules.get(module)  # type: ignore
     return module
 
 
-def get_module(module,):
+def get_module(module):
     # type: (UdmName) -> Optional[UdmModule]
     """
     interim function, must only be used by `univention-directory-manager-modules`!
@@ -186,12 +186,12 @@ def get_module(module,):
     :returns: the module or `None` if no module exists with the requested name.
     """
     if not modules:
-        ud.debug(ud.ADMIN, ud.WARN, 'univention.admin.modules.update() was not called',)
+        ud.debug(ud.ADMIN, ud.WARN, 'univention.admin.modules.update() was not called')
         update()
     return get(module)
 
 
-def init(lo, position, module, template_object=None, force_reload=False,):
+def init(lo, position, module, template_object=None, force_reload=False):
     # type: (univention.admin.uldap.access, univention.admin.uldap.position, UdmModule, univention.admin.handlers.simpleLdap, bool) -> None
     """
     Initialize |UDM| handler module.
@@ -212,31 +212,31 @@ def init(lo, position, module, template_object=None, force_reload=False,):
             # TODO: remove when droppng Python2.7 support and all super(object, self) calls have been replaced with super()
             reload_module(univention.admin.modules.get('users/self'))  # type: ignore
     # reset property descriptions to defaults if possible
-    if hasattr(module, 'default_property_descriptions',):
+    if hasattr(module, 'default_property_descriptions'):
         module.property_descriptions = copy.deepcopy(module.default_property_descriptions)
         # ud.debug(ud.ADMIN, ud.INFO, 'modules_init: reset default descriptions')
 
     # overwrite property descriptions
-    univention.admin.ucr_overwrite_properties(module, lo,)
+    univention.admin.ucr_overwrite_properties(module, lo)
 
     # check for properties with the syntax class LDAP_Search
     for pname, prop in module.property_descriptions.items():
         if prop.syntax.name == 'LDAP_Search':
             prop.syntax._load(lo)
             if prop.syntax.viewonly:
-                module.mapping.unregister(pname, False,)
-        elif univention.admin.syntax.is_syntax(prop.syntax, univention.admin.syntax.complex,) and hasattr(prop.syntax, 'subsyntaxes',):
+                module.mapping.unregister(pname, False)
+        elif univention.admin.syntax.is_syntax(prop.syntax, univention.admin.syntax.complex) and hasattr(prop.syntax, 'subsyntaxes'):
             for _text, subsyn in prop.syntax.subsyntaxes:
                 if subsyn.name == 'LDAP_Search':
                     subsyn._load(lo)
 
     # add new properties
-    update_extended_options(lo, module, position,)
-    update_extended_attributes(lo, module, position,)
+    update_extended_options(lo, module, position)
+    update_extended_attributes(lo, module, position)
 
     # get defaults from template
     if template_object:
-        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got template object %s' % template_object.dn,)
+        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got template object %s' % template_object.dn)
         template_object.open()
 
         # add template defaults
@@ -248,9 +248,9 @@ def init(lo, position, module, template_object=None, force_reload=False,):
             elif key not in {"name", "description"}:  # these keys are part of the template itself
                 module.property_descriptions[key].base_default = copy.copy(tmpl)
                 module.property_descriptions[key].templates.append(template_object)
-        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions,)
+        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions)
     else:
-        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got no template',)
+        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got no template')
 
     # re-build layout if there any overwrites defined
     univention.admin.ucr_overwrite_module_layout(module)
@@ -261,27 +261,27 @@ def init(lo, position, module, template_object=None, force_reload=False,):
     module.initialized = True
 
 
-def update_extended_options(lo, module, position,):
+def update_extended_options(lo, module, position):
     # type: (univention.admin.uldap.access, UdmModule, univention.admin.uldap.position) -> None
     """Overwrite options defined via |LDAP|."""
     # get current language
     lang = locale.getlocale(locale.LC_MESSAGES)[0]
-    ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_options: LANG=%s' % lang,)
+    ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_options: LANG=%s' % lang)
 
-    module_filter = filter_format('(univentionUDMOptionModule=%s)', [name(module)],)
+    module_filter = filter_format('(univentionUDMOptionModule=%s)', [name(module)])
     if name(module) == 'settings/usertemplate':
         module_filter = '(|(univentionUDMOptionModule=users/user)%s)' % (module_filter,)
 
     # append UDM extended options
-    new_options = copy.copy(module.options) if hasattr(module, 'options',) else {}
-    for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,),):
-        oname = attrs['cn'][0].decode('UTF-8', 'replace',)
-        shortdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationShortDescription;entry-%s', 'univentionUDMOptionShortDescription',)
-        longdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationLongDescription;entry-%s', 'univentionUDMOptionLongDescription',)
-        default = attrs.get('univentionUDMOptionDefault', [b'0'],)[0] == b'1'
-        editable = attrs.get('univentionUDMOptionEditable', [b'0'],)[0] == b'1'
-        classes = [x.decode('UTF-8', 'replace',) for x in attrs.get('univentionUDMOptionObjectClass', [],)]
-        is_app_option = attrs.get('univentionUDMOptionIsApp', [b'0'],)[0] == b'1'
+    new_options = copy.copy(module.options) if hasattr(module, 'options') else {}
+    for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
+        oname = attrs['cn'][0].decode('UTF-8', 'replace')
+        shortdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationShortDescription;entry-%s', 'univentionUDMOptionShortDescription')
+        longdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationLongDescription;entry-%s', 'univentionUDMOptionLongDescription')
+        default = attrs.get('univentionUDMOptionDefault', [b'0'])[0] == b'1'
+        editable = attrs.get('univentionUDMOptionEditable', [b'0'])[0] == b'1'
+        classes = [x.decode('UTF-8', 'replace') for x in attrs.get('univentionUDMOptionObjectClass', [])]
+        is_app_option = attrs.get('univentionUDMOptionIsApp', [b'0'])[0] == b'1'
 
         new_options[oname] = univention.admin.option(
             short_description=shortdesc,
@@ -289,7 +289,7 @@ def update_extended_options(lo, module, position,):
             default=default,
             editable=editable,
             objectClasses=classes,
-            is_app_option=is_app_option,)
+            is_app_option=is_app_option)
     module.options = new_options
 
 
@@ -297,75 +297,75 @@ class EA_Layout(dict):
     """Extended attribute layout."""
 
     def __init__(self, **kwargs):
-        dict.__init__(self, kwargs,)
+        dict.__init__(self, kwargs)
 
     @property
     def name(self):
         # type: () -> str
-        return self.get('name', '',)
+        return self.get('name', '')
 
     @property
     def overwrite(self):
         # type: () -> Optional[str]
-        return self.get('overwrite', None,)
+        return self.get('overwrite', None)
 
     @property
     def tabName(self):
         # type: () -> str
-        return self.get('tabName', '',)
+        return self.get('tabName', '')
 
     @property
     def groupName(self):
         # type: () -> str
-        return self.get('groupName', '',)
+        return self.get('groupName', '')
 
     @property
     def position(self):
         # type: () -> int
-        return self.get('position', -1,)
+        return self.get('position', -1)
 
     @property
     def groupPosition(self):
         # type: () -> int
-        return self.get('groupPosition', -1,)
+        return self.get('groupPosition', -1)
 
     @property
     def advanced(self):
         # type: () -> bool
-        return self.get('advanced', False,)
+        return self.get('advanced', False)
 
     @property
     def is_app_tab(self):
         # type: () -> bool
-        return self.get('is_app_tab', False,)
+        return self.get('is_app_tab', False)
 
-    def __lt__(self, other,):
+    def __lt__(self, other):
         return (self.groupName, self.position) < (other.groupName, other.position)
 
-    def __gt__(self, other,):
+    def __gt__(self, other):
         return (self.groupName, self.position) > (other.groupName, other.position)
 
-    def __eq__(self, other,):
+    def __eq__(self, other):
         return (self.groupName, self.position) == (other.groupName, other.position)
 
-    def __le__(self, other,):
+    def __le__(self, other):
         return (self.groupName, self.position) <= (other.groupName, other.position)
 
-    def __ge__(self, other,):
+    def __ge__(self, other):
         return (self.groupName, self.position) >= (other.groupName, other.position)
 
-    def __ne__(self, other,):
+    def __ne__(self, other):
         return (self.groupName, self.position) != (other.groupName, other.position)
 
     def __hash__(self):
         return hash((self.groupName, self.position))
 
 
-def update_extended_attributes(lo, module, position,):
+def update_extended_attributes(lo, module, position):
     # type: (univention.admin.uldap.access, UdmModule, univention.admin.uldap.position) -> None
     """Load extended attribute from |LDAP| and modify |UDM| handler."""
     # add list of tabnames created by extended attributes
-    if not hasattr(module, 'extended_attribute_tabnames',):
+    if not hasattr(module, 'extended_attribute_tabnames'):
         module.extended_attribute_tabnames = []
 
     # append UDM extended attributes
@@ -373,62 +373,62 @@ def update_extended_attributes(lo, module, position,):
     overwriteTabList = []  # type: List[str]
     module.extended_udm_attributes = []
 
-    module_filter = filter_format('(univentionUDMPropertyModule=%s)', [name(module)],)
+    module_filter = filter_format('(univentionUDMPropertyModule=%s)', [name(module)])
     if name(module) == 'settings/usertemplate':
         module_filter = '(|(univentionUDMPropertyModule=users/user)%s)' % (module_filter,)
 
     new_property_descriptions = copy.copy(module.property_descriptions)
-    for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,),):
+    for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
         # get CLI name
-        pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace',)
-        object_class = attrs.get('univentionUDMPropertyObjectClass', [],)[0].decode('UTF-8', 'replace',)
-        ldap_attribute_name = attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace',)
-        if name(module) == 'settings/usertemplate' and object_class == 'univentionMail' and b'settings/usertemplate' not in attrs.get('univentionUDMPropertyModule', [],):
+        pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
+        object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0].decode('UTF-8', 'replace')
+        ldap_attribute_name = attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace')
+        if name(module) == 'settings/usertemplate' and object_class == 'univentionMail' and b'settings/usertemplate' not in attrs.get('univentionUDMPropertyModule', []):
             continue  # since "mail" is a default option, creating a usertemplate with any mail attribute would raise Object class violation: object class 'univentionMail' requires attribute 'uid'
 
         # get syntax
-        propertySyntaxString = attrs.get('univentionUDMPropertySyntax', [b''],)[0].decode('utf-8', 'replace',)
-        if propertySyntaxString and hasattr(univention.admin.syntax, propertySyntaxString,):
-            propertySyntax = getattr(univention.admin.syntax, propertySyntaxString,)
+        propertySyntaxString = attrs.get('univentionUDMPropertySyntax', [b''])[0].decode('utf-8', 'replace')
+        if propertySyntaxString and hasattr(univention.admin.syntax, propertySyntaxString):
+            propertySyntax = getattr(univention.admin.syntax, propertySyntaxString)
         else:
-            if lo.searchDn(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [propertySyntaxString],)):
+            if lo.searchDn(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [propertySyntaxString])):
                 propertySyntax = univention.admin.syntax.LDAP_Search(propertySyntaxString)
             else:
                 propertySyntax = univention.admin.syntax.string()
 
         # get hooks
-        propertyHookString = attrs.get('univentionUDMPropertyHook', [b''],)[0].decode('utf-8', 'replace',)
+        propertyHookString = attrs.get('univentionUDMPropertyHook', [b''])[0].decode('utf-8', 'replace')
         propertyHook = None
-        if propertyHookString and hasattr(univention.admin.hook, propertyHookString,):
-            propertyHook = getattr(univention.admin.hook, propertyHookString,)()
+        if propertyHookString and hasattr(univention.admin.hook, propertyHookString):
+            propertyHook = getattr(univention.admin.hook, propertyHookString)()
 
         # get default value
-        propertyDefault = [x.decode('UTF-8') if x is not None else x for x in attrs.get('univentionUDMPropertyDefault', [None],)]
+        propertyDefault = [x.decode('UTF-8') if x is not None else x for x in attrs.get('univentionUDMPropertyDefault', [None])]
 
         # value may change
         try:
-            mayChange = int(attrs.get('univentionUDMPropertyValueMayChange', [b'0'],)[0])
+            mayChange = int(attrs.get('univentionUDMPropertyValueMayChange', [b'0'])[0])
         except ValueError:
-            ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange threw exception - assuming mayChange=0',)
+            ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange threw exception - assuming mayChange=0')
             mayChange = 0
 
         # value is editable (only via hooks or direkt module.info[] access)
-        editable = attrs.get('univentionUDMPropertyValueNotEditable', [b'0'],)[0] not in [b'1', b'TRUE']
+        editable = attrs.get('univentionUDMPropertyValueNotEditable', [b'0'])[0] not in [b'1', b'TRUE']
 
-        copyable = attrs.get('univentionUDMPropertyCopyable', [b'0'],)[0] not in [b'1', b'TRUE']
+        copyable = attrs.get('univentionUDMPropertyCopyable', [b'0'])[0] not in [b'1', b'TRUE']
 
         # value is required
-        valueRequired = (attrs.get('univentionUDMPropertyValueRequired', [b'0'],)[0].upper() in [b'1', b'TRUE'])
+        valueRequired = (attrs.get('univentionUDMPropertyValueRequired', [b'0'])[0].upper() in [b'1', b'TRUE'])
 
         # value not available for searching
         try:
-            doNotSearch = int(attrs.get('univentionUDMPropertyDoNotSearch', [b'0'],)[0])
+            doNotSearch = int(attrs.get('univentionUDMPropertyDoNotSearch', [b'0'])[0])
         except ValueError:
-            ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch threw exception - assuming doNotSearch=0',)
+            ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch threw exception - assuming doNotSearch=0')
             doNotSearch = 0
 
         # check if CA is multivalue property
-        if attrs.get('univentionUDMPropertyMultivalue', [b''],)[0] == b'1':
+        if attrs.get('univentionUDMPropertyMultivalue', [b''])[0] == b'1':
             multivalue = True
             map_method = None
             unmap_method = None
@@ -443,60 +443,61 @@ def update_extended_attributes(lo, module, position,):
             propertyDefault = propertyDefault[0]
 
         # Show this attribute in UDM/UMC?
-        if attrs.get('univentionUDMPropertyLayoutDisable', [b''],)[0] == b'1':
+        if attrs.get('univentionUDMPropertyLayoutDisable', [b''])[0] == b'1':
             layoutDisabled = True
         else:
             layoutDisabled = False
 
         # get current language
         lang = locale.getlocale(locale.LC_MESSAGES)[0]
-        ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: LANG = %s' % str(lang),)
+        ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: LANG = %s' % str(lang))
 
         # get descriptions
-        shortdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationShortDescription;entry-%s', 'univentionUDMPropertyShortDescription',)
-        longdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationLongDescription;entry-%s', 'univentionUDMPropertyLongDescription',)
+        shortdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationShortDescription;entry-%s', 'univentionUDMPropertyShortDescription')
+        longdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationLongDescription;entry-%s', 'univentionUDMPropertyLongDescription')
 
         # create property
-        fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth', [b'0'],)[0].upper() in [b'1', b'TRUE'])
+        fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth', [b'0'])[0].upper() in [b'1', b'TRUE'])
         new_property_descriptions[pname] = univention.admin.property(
             short_description=shortdesc,
             long_description=longdesc,
             syntax=propertySyntax,
             multivalue=multivalue,
-            options=[x.decode('UTF-8', 'replace',) for x in attrs.get('univentionUDMPropertyOptions', [],)],
+            options=[x.decode('UTF-8', 'replace') for x in attrs.get('univentionUDMPropertyOptions', [])],
             required=valueRequired,
             may_change=mayChange,
             dontsearch=doNotSearch,
             default=propertyDefault,
             editable=editable,
             copyable=copyable,
-            size='Two' if fullWidth else None,)
+            size='Two' if fullWidth else None,
+        )
 
         # add LDAP mapping
         if ldap_attribute_name.lower() != 'objectclass':
-            module.mapping.register(pname, ldap_attribute_name, unmap_method, map_method,)
+            module.mapping.register(pname, ldap_attribute_name, unmap_method, map_method)
         else:
-            module.mapping.register(pname, ldap_attribute_name, univention.admin.mapping.nothing, univention.admin.mapping.nothing,)
+            module.mapping.register(pname, ldap_attribute_name, univention.admin.mapping.nothing, univention.admin.mapping.nothing)
 
-        if hasattr(module, 'layout',):
-            tabname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationTabName;entry-%s', 'univentionUDMPropertyLayoutTabName', _('Custom'),)
-            overwriteTab = (attrs.get('univentionUDMPropertyLayoutOverwriteTab', [b'0'],)[0].upper() in [b'1', b'TRUE'])
+        if hasattr(module, 'layout'):
+            tabname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationTabName;entry-%s', 'univentionUDMPropertyLayoutTabName', _('Custom'))
+            overwriteTab = (attrs.get('univentionUDMPropertyLayoutOverwriteTab', [b'0'])[0].upper() in [b'1', b'TRUE'])
             # in the first generation of extended attributes of version 2
             # this field was a position defining the attribute to
             # overwrite. now it is the name of the attribute to overwrite
-            overwriteProp = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [b''],)[0].decode('UTF-8', 'replace',)
+            overwriteProp = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [b''])[0].decode('UTF-8', 'replace')
             if overwriteProp == '0':
                 overwriteProp = None
-            deleteObjectClass = (attrs.get('univentionUDMPropertyDeleteObjectClass', [b'0'],)[0].upper() in [b'1', b'TRUE'])
-            tabAdvanced = (attrs.get('univentionUDMPropertyLayoutTabAdvanced', [b'0'],)[0].upper() in [b'1', b'TRUE'])
+            deleteObjectClass = (attrs.get('univentionUDMPropertyDeleteObjectClass', [b'0'])[0].upper() in [b'1', b'TRUE'])
+            tabAdvanced = (attrs.get('univentionUDMPropertyLayoutTabAdvanced', [b'0'])[0].upper() in [b'1', b'TRUE'])
 
-            groupname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationGroupName;entry-%s', 'univentionUDMPropertyLayoutGroupName',)
+            groupname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationGroupName;entry-%s', 'univentionUDMPropertyLayoutGroupName')
             try:
-                groupPosition = int(attrs.get('univentionUDMPropertyLayoutGroupPosition', [b'-1'],)[0])
+                groupPosition = int(attrs.get('univentionUDMPropertyLayoutGroupPosition', [b'-1'])[0])
             except TypeError:
                 groupPosition = 0
 
-            ud.debug(ud.ADMIN, ud.INFO, 'update_extended_attributes: extended attribute (LDAP): %r' % (attrs,),)
+            ud.debug(ud.ADMIN, ud.INFO, 'update_extended_attributes: extended attribute (LDAP): %r' % (attrs,))
 
             # only one is possible ==> overwriteTab wins
             if overwriteTab and overwriteProp:
@@ -505,7 +506,7 @@ def update_extended_attributes(lo, module, position,):
             # add tab name to list if missing
             if tabname not in properties4tabs and not layoutDisabled:
                 properties4tabs[tabname] = []
-                ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: custom fields init for tab %s' % tabname,)
+                ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: custom fields init for tab %s' % tabname)
 
             # remember tab for purging if required
             if overwriteTab and tabname not in overwriteTabList and not layoutDisabled:
@@ -514,13 +515,13 @@ def update_extended_attributes(lo, module, position,):
             if not layoutDisabled:
                 # get position on tab
                 # -1 == append on top
-                priority = attrs.get('univentionUDMPropertyLayoutPosition', [b'-1'],)[0].decode('UTF-8', 'replace',)
+                priority = attrs.get('univentionUDMPropertyLayoutPosition', [b'-1'])[0].decode('UTF-8', 'replace')
                 try:
                     priority = int(priority)
                     if priority < 1:
                         priority = -1
                 except ValueError:
-                    ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname,)
+                    ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
                     priority = -1
 
                 if priority == -1 and properties4tabs[tabname]:
@@ -535,9 +536,10 @@ def update_extended_attributes(lo, module, position,):
                     fullWidth=fullWidth,
                     groupName=groupname,
                     groupPosition=groupPosition,
-                    is_app_tab=any(option in [key for (key, value) in getattr(module, 'options', {},).items() if value.is_app_option] for option in attrs.get('univentionUDMPropertyOptions', [],)),))
+                    is_app_tab=any(option in [key for (key, value) in getattr(module, 'options', {}).items() if value.is_app_option] for option in attrs.get('univentionUDMPropertyOptions', [])),
+                ))
             else:
-                for tab in getattr(module, 'layout', [],):
+                for tab in getattr(module, 'layout', []):
                     tab.remove(pname)
 
             module.extended_udm_attributes.append(univention.admin.extended_attribute(
@@ -546,7 +548,8 @@ def update_extended_attributes(lo, module, position,):
                 ldapMapping=ldap_attribute_name,
                 deleteObjClass=deleteObjectClass,
                 syntax=propertySyntaxString,
-                hook=propertyHook,))
+                hook=propertyHook,
+            ))
 
             if ldap_attribute_name.lower() in _ldap_operational_attribute_names(lo):
                 module.object._static_ldap_attributes.add(ldap_attribute_name)
@@ -576,7 +579,7 @@ def update_extended_attributes(lo, module, position,):
                     break
             else:
                 # tab not found in current layout, so add it
-                currentTab = Tab(tabname, tabname, advanced=True,)
+                currentTab = Tab(tabname, tabname, advanced=True)
                 module.layout.append(currentTab)
                 # remember tabs that have been added by UDM extended attributes
                 if tabname not in module.extended_attribute_tabnames:
@@ -594,12 +597,12 @@ def update_extended_attributes(lo, module, position,):
                 # if groupName is set check if it exists, otherwise create it
                 if ea_layout.groupName:
                     for item in currentTab.layout:
-                        if isinstance(item, ILayoutElement,) and item.label == ea_layout.groupName:
+                        if isinstance(item, ILayoutElement) and item.label == ea_layout.groupName:
                             break
                     else:  # group does not exist
                         grp = Group(ea_layout.groupName)
                         if ea_layout.groupPosition > 0:
-                            currentTab.layout.insert(ea_layout.groupPosition - 1, grp,)
+                            currentTab.layout.insert(ea_layout.groupPosition - 1, grp)
                         else:
                             currentTab.layout.append(grp)
 
@@ -613,22 +616,22 @@ def update_extended_attributes(lo, module, position,):
                 elif ea_layout.overwrite and not freshTab:  # we want to overwrite an existing property
                     # in the global fields ...
                     if not ea_layout.groupName:
-                        replaced, layout = currentTab.replace(ea_layout.overwrite, ea_layout.name, recursive=True,)
+                        replaced, layout = currentTab.replace(ea_layout.overwrite, ea_layout.name, recursive=True)
                         if not replaced:  # the property was not found so we'll append it
                             currentTab.layout.append(ea_layout.name)
                     else:
                         for item in currentTab.layout:
-                            if isinstance(item, ILayoutElement,) and item.label == ea_layout.groupName:
-                                replaced, layout = item.replace(ea_layout.overwrite, ea_layout.name,)
+                            if isinstance(item, ILayoutElement) and item.label == ea_layout.groupName:
+                                replaced, layout = item.replace(ea_layout.overwrite, ea_layout.name)
                                 if not replaced:  # the property was not found so we'll append it
                                     item.layout.append(ea_layout.name)
                 else:
                     if not ea_layout.groupName:
-                        currentTab.insert(ea_layout.position, ea_layout.name,)
+                        currentTab.insert(ea_layout.position, ea_layout.name)
                     else:
                         for item in currentTab.layout:
-                            if isinstance(item, ILayoutElement,) and item.label == ea_layout.groupName:
-                                item.insert(ea_layout.position, ea_layout.name,)
+                            if isinstance(item, ILayoutElement) and item.label == ea_layout.groupName:
+                                item.insert(ea_layout.position, ea_layout.name)
                                 break
 
     # check for properties with the syntax class LDAP_Search
@@ -636,14 +639,14 @@ def update_extended_attributes(lo, module, position,):
         if prop.syntax.name == 'LDAP_Search':
             prop.syntax._load(lo)
             if prop.syntax.viewonly:
-                module.mapping.unregister(pname, False,)
-        elif univention.admin.syntax.is_syntax(prop.syntax, univention.admin.syntax.complex,) and hasattr(prop.syntax, 'subsyntaxes',):
+                module.mapping.unregister(pname, False)
+        elif univention.admin.syntax.is_syntax(prop.syntax, univention.admin.syntax.complex) and hasattr(prop.syntax, 'subsyntaxes'):
             for _text, subsyn in prop.syntax.subsyntaxes:
                 if subsyn.name == 'LDAP_Search':
                     subsyn._load(lo)
 
 
-def identify(dn, attr, module_name='', canonical=0, module_base=None,):
+def identify(dn, attr, module_name='', canonical=0, module_base=None):
     # type: (str, Dict[str, List[Any]], str, int, Optional[str]) -> List[UdmModule]
     """
     Return list of |UDM| handlers capable of handling the given |LDAP| object.
@@ -656,26 +659,26 @@ def identify(dn, attr, module_name='', canonical=0, module_base=None,):
     :returns: the list of |UDM| modules.
     """
     res = [m for m in (
-        modules.get(mt.decode('ASCII', 'replace',)) for mt in attr.get('univentionObjectType', [],)
+        modules.get(mt.decode('ASCII', 'replace')) for mt in attr.get('univentionObjectType', [])
     ) if m]
     if not res:
         for name, module in modules.items():
             if module_base is not None and not name.startswith(module_base):
                 continue
-            if not hasattr(module, 'identify',):
-                ud.debug(ud.ADMIN, ud.INFO, 'module %s does not provide identify' % module,)
+            if not hasattr(module, 'identify'):
+                ud.debug(ud.ADMIN, ud.INFO, 'module %s does not provide identify' % module)
                 continue
 
-            if (not module_name or module_name == module.module) and module.identify(dn, attr,):
+            if (not module_name or module_name == module.module) and module.identify(dn, attr):
                 res.append(module)
     if not res:
-        ud.debug(ud.ADMIN, ud.INFO, 'object could not be identified',)
+        ud.debug(ud.ADMIN, ud.INFO, 'object could not be identified')
     for r in res:
-        ud.debug(ud.ADMIN, ud.INFO, 'identify: found module %s on %s' % (r.module, dn),)
+        ud.debug(ud.ADMIN, ud.INFO, 'identify: found module %s on %s' % (r.module, dn))
     return res
 
 
-def identifyOne(dn, attr, type='',):
+def identifyOne(dn, attr, type=''):
     # type: (str, Dict[str, List[Any]], str) -> Optional[UdmModule]
     """
     Return the |UDM| handler capable of handling the given |LDAP| object.
@@ -685,22 +688,22 @@ def identifyOne(dn, attr, type='',):
     :param type: If given only the given module name is used if it is capable to handle the object.
     :returns: the |UDM| modules or `None`.
     """
-    res = identify(dn, attr, type,)
+    res = identify(dn, attr, type)
     if len(res) != 1:
         return None
     else:
         return res[0]
 
 
-def recognize(module_name, dn, attr,):
+def recognize(module_name, dn, attr):
     # type: (str, str, Dict[str, List[Any]]) -> bool
     module = get(module_name)
-    if not hasattr(module, 'identify',):
+    if not hasattr(module, 'identify'):
         return False
-    return module.identify(dn, attr,)
+    return module.identify(dn, attr)
 
 
-def name(module,):
+def name(module):
     # type: (UdmName) -> str
     """Return name of module."""
     if not module:
@@ -708,17 +711,17 @@ def name(module,):
     return get(module).module
 
 
-def superordinate_names(module_name,):
+def superordinate_names(module_name):
     # type: (UdmName) -> List[str]
     """Return name of superordinate module."""
     module = get(module_name)
-    names = getattr(module, 'superordinate', [],)
-    if isinstance(names, six.string_types,):
+    names = getattr(module, 'superordinate', [])
+    if isinstance(names, six.string_types):
         names = [names]
     return names
 
 
-def superordinate_name(module_name,):
+def superordinate_name(module_name):
     """
     Return name of first superordinate module.
 
@@ -729,7 +732,7 @@ def superordinate_name(module_name,):
     return names[0] if names else None
 
 
-def superordinate(module,):
+def superordinate(module):
     """
     Return instance of superordinate module.
 
@@ -739,13 +742,13 @@ def superordinate(module,):
     return get(superordinate_name(module))
 
 
-def superordinates(module,):
+def superordinates(module):
     # type: (UdmName) -> List[Optional[UdmModule]]
     """Return instance of superordinate module."""
     return [get(x) for x in superordinate_names(module)]
 
 
-def subordinates(module,):
+def subordinates(module):
     # type: (UdmName) -> List[UdmModule]
     """
     Return list of instances of subordinate modules.
@@ -756,7 +759,7 @@ def subordinates(module,):
     return [mod for mod in modules.values() if name(module) in superordinate_names(mod) and not isContainer(mod)]
 
 
-def find_superordinate(dn, co, lo,):
+def find_superordinate(dn, co, lo):
     # type: (str, None, univention.admin.uldap.access) -> Optional[UdmModule]
     """
     For a given |DN|, search in the |LDAP| path whether this LDAP object is
@@ -770,30 +773,30 @@ def find_superordinate(dn, co, lo,):
     # walk up the ldap path and stop if we find an object type that is a superordinate
     while dn:
         attr = lo.get(dn)
-        module = identifyOne(dn, attr,)
+        module = identifyOne(dn, attr)
         if module and isSuperordinate(module):
             return get(module)
         dn = lo.parentDn(dn)
     return None
 
 
-def layout(module_name, object=None,):
+def layout(module_name, object=None):
     # type: (UdmName, Any) -> List[Tab]
     """return layout of properties"""
     module = get(module_name)
     defining_layout = None
     if object:
-        ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout: got a defined object',)
+        ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout: got a defined object')
 
-    if object and hasattr(object, 'layout',):  # for dynamic modules like users/self
-        ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: layout is defined by the object',)
+    if object and hasattr(object, 'layout'):  # for dynamic modules like users/self
+        ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: layout is defined by the object')
         defining_layout = object.layout
-    elif hasattr(module, 'layout',):
+    elif hasattr(module, 'layout'):
         defining_layout = module.layout
-        ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: layout is defined by the module',)
+        ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: layout is defined by the module')
 
     if defining_layout:
-        if object and hasattr(object, 'options',):
+        if object and hasattr(object, 'options'):
             layout = []
             for tab in defining_layout:
                 empty = True
@@ -803,7 +806,7 @@ def layout(module_name, object=None,):
                     for row in line:
                         single = False
                         nrow = []
-                        if isinstance(row, six.string_types,):
+                        if isinstance(row, six.string_types):
                             single = True
                             row = [row]
                         for field in row:
@@ -822,24 +825,24 @@ def layout(module_name, object=None,):
                     ntab = copy.deepcopy(tab)
                     ntab.layout = fields
                     layout.append(ntab)
-            ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: return layout decreased by given options',)
+            ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: return layout decreased by given options')
             return layout
         else:
-            ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: return defining_layout.',)
+            ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: return defining_layout.')
             return defining_layout
 
     else:
         return []
 
 
-def options(module_name,):
+def options(module_name):
     # type: (UdmName) -> Dict[str, Any]
     """return options available for module"""
     module = get(module_name)
-    return getattr(module, 'options', {},)
+    return getattr(module, 'options', {})
 
 
-def attributes(module_name,):
+def attributes(module_name):
     # type: (UdmName) -> List[Dict[str, str]]
     """
     Return attributes for module.
@@ -853,7 +856,7 @@ def attributes(module_name,):
     ]
 
 
-def short_description(module_name,):
+def short_description(module_name):
     # type: (UdmName) -> str
     """
     Return short description for module.
@@ -862,7 +865,7 @@ def short_description(module_name,):
     :returns: The short descriptive text.
     """
     module = get(module_name)
-    if hasattr(module, 'short_description',):
+    if hasattr(module, 'short_description'):
         return module.short_description
     modname = name(module)
     if modname:
@@ -870,7 +873,7 @@ def short_description(module_name,):
     return repr(module)
 
 
-def policy_short_description(module_name,):
+def policy_short_description(module_name):
     # type: (UdmName) -> str
     """
     Return short description for policy module primarily used for tab headers.
@@ -879,10 +882,10 @@ def policy_short_description(module_name,):
     :returns: The short descriptive text.
     """
     module = get(module_name)
-    return getattr(module, 'policy_short_description', short_description(module),)
+    return getattr(module, 'policy_short_description', short_description(module))
 
 
-def long_description(module_name,):
+def long_description(module_name):
     # type: (UdmName) -> str
     """
     Return long description for module.
@@ -891,10 +894,10 @@ def long_description(module_name,):
     :returns: The long descriptive text.
     """
     module = get(module_name)
-    return getattr(module, 'long_description', short_description(module),)
+    return getattr(module, 'long_description', short_description(module))
 
 
-def childs(module_name,):
+def childs(module_name):
     # type: (UdmName) -> bool
     """
     Return whether module may have subordinate modules.
@@ -903,10 +906,10 @@ def childs(module_name,):
     :returns: `True` if the module has children, `False` otherwise.
     """
     module = get(module_name)
-    return getattr(module, 'childs', False,)
+    return getattr(module, 'childs', False)
 
 
-def virtual(module_name,):
+def virtual(module_name):
     # type: (UdmName) -> bool
     """
     Return whether the module is virtual (alias for other modules).
@@ -915,10 +918,10 @@ def virtual(module_name,):
     :returns: `True` if the module is virtual, `False` otherwise.
     """
     module = get(module_name)
-    return getattr(module, 'virtual', False,)
+    return getattr(module, 'virtual', False)
 
 
-def lookup(module_name, co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0,):
+def lookup(module_name, co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0):
     # type: (UdmName, None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> List[Any]
     """
     Return objects of module that match the given criteria.
@@ -928,14 +931,14 @@ def lookup(module_name, co, lo, filter='', base='', superordinate=None, scope='b
     module = get(module_name)
     tmpres = []
 
-    if hasattr(module, 'lookup',):
-        tmpres = module.lookup(co, lo, filter, base=base, superordinate=superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit,)
+    if hasattr(module, 'lookup'):
+        tmpres = module.lookup(co, lo, filter, base=base, superordinate=superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
 
     # check for 'None' items just in case...
     return [item for item in tmpres if item]
 
 
-def isSuperordinate(module,):
+def isSuperordinate(module):
     # type: (UdmName) -> bool
     """
     Check if the module is a |UDM| superordinate module.
@@ -946,7 +949,7 @@ def isSuperordinate(module,):
     return name(module) in _superordinates
 
 
-def isContainer(module,):
+def isContainer(module):
     # type: (UdmModule) -> bool
     """
     Check if the module is a |UDM| container module.
@@ -957,7 +960,7 @@ def isContainer(module,):
     return name(module).startswith('container/')
 
 
-def isPolicy(module,):
+def isPolicy(module):
     # type: (UdmModule) -> bool
     """
     Check if the module is a |UDM| policy module.
@@ -968,7 +971,7 @@ def isPolicy(module,):
     return name(module).startswith('policies/')
 
 
-def defaultPosition(module, superordinate=None,):
+def defaultPosition(module, superordinate=None):
     # type: (UdmModule, Any) -> str
     """
     Returns default position for object of module.
@@ -987,7 +990,7 @@ def defaultPosition(module, superordinate=None,):
     return base
 
 
-def supports(module_name, operation,):
+def supports(module_name, operation):
     # type: (str, str) -> bool
     """
     Check if module supports operation
@@ -997,12 +1000,12 @@ def supports(module_name, operation,):
     :returns: `True` if the operation is supported, `False` otherwise.
     """
     module = get(module_name)
-    if not hasattr(module, 'operations',):
+    if not hasattr(module, 'operations'):
         return True
     return operation in module.operations
 
 
-def objectType(co, lo, dn, attr=None, modules=[], module_base=None,):
+def objectType(co, lo, dn, attr=None, modules=[], module_base=None):
     # type: (None, univention.admin.uldap.access, str, Optional[Dict[str, List[bytes]]], List[UdmModule], Optional[str]) -> List[str]
     if not dn:
         return []
@@ -1015,21 +1018,21 @@ def objectType(co, lo, dn, attr=None, modules=[], module_base=None,):
         return [x.decode('utf-8') for x in ot]
 
     if not modules:
-        modules = identify(dn, attr, module_base=module_base,)
+        modules = identify(dn, attr, module_base=module_base)
 
     return [name(mod) for mod in modules]
 
 
-def objectShadowType(co, lo, dn, attr=None, modules=[],):
+def objectShadowType(co, lo, dn, attr=None, modules=[]):
     # type: (None, univention.admin.uldap.access, str, Optional[Dict[str, List[bytes]]], List[UdmModule]) -> List[Any]
     # FIXME: This returns a nested List[...List[str]] for containers!
     return [
-        objectShadowType(co, lo, lo.parentDn(dn),) if otype and otype.startswith('container/') else otype
-        for otype in objectType(co, lo, dn, attr, modules,)
+        objectShadowType(co, lo, lo.parentDn(dn)) if otype and otype.startswith('container/') else otype
+        for otype in objectType(co, lo, dn, attr, modules)
     ]
 
 
-def findObject(co, lo, dn, type, attr=None, module_base=None,):
+def findObject(co, lo, dn, type, attr=None, module_base=None):
     # type: (None, univention.admin.uldap.access, str, str, Optional[Dict[str, List[bytes]]], Optional[str]) -> Optional[Any]
     if attr is None:
         attr = lo.get(dn)
@@ -1038,11 +1041,11 @@ def findObject(co, lo, dn, type, attr=None, module_base=None,):
     ndn = dn
     nattr = attr
     while True:
-        for module in identify(ndn, nattr,):
+        for module in identify(ndn, nattr):
             if module and module.module == type:
                 s = superordinate(module)
-                so = findObject(co, lo, ndn, s,) if s else None
-                return module.object(co, lo, ndn, superordinate=so,)
+                so = findObject(co, lo, ndn, s) if s else None
+                return module.object(co, lo, ndn, superordinate=so)
         ndn = lo.parentDn(ndn)
         if not ndn:
             break
@@ -1050,7 +1053,7 @@ def findObject(co, lo, dn, type, attr=None, module_base=None,):
     return None
 
 
-def policyOc(module_name,):
+def policyOc(module_name):
     # type: (UdmName) -> str
     """
     Return the |LDAP| objectClass used to store the policy.
@@ -1059,10 +1062,10 @@ def policyOc(module_name,):
     :returns: the objectClass.
     """
     module = get(module_name)
-    return getattr(module, 'policy_oc', '',)
+    return getattr(module, 'policy_oc', '')
 
 
-def policiesGroup(module_name,):
+def policiesGroup(module_name):
     # type: (UdmName) -> str
     """
     Return the name of the group the |UDM| policy belongs to.
@@ -1071,7 +1074,7 @@ def policiesGroup(module_name,):
     :returns: the group name.
     """
     module = get(module_name)
-    return getattr(module, 'policies_group', 'top',)
+    return getattr(module, 'policies_group', 'top')
 
 
 def policies():
@@ -1081,14 +1084,14 @@ def policies():
         if not isPolicy(mod):
             continue
         if name(mod) != "policies/policy":
-            res.setdefault(policiesGroup(mod), [],).append(name(mod))
+            res.setdefault(policiesGroup(mod), []).append(name(mod))
     return [
-        univention.admin.policiesGroup(id=groupname, members=sorted(members),)
+        univention.admin.policiesGroup(id=groupname, members=sorted(members))
         for groupname, members in sorted(res.items())
     ]
 
 
-def policyTypes(module_name,):
+def policyTypes(module_name):
     # type: (str) -> List[str]
     """
     Returns a list of policy types applying to the given module.
@@ -1103,11 +1106,11 @@ def policyTypes(module_name,):
     return [
         name
         for name, module in modules.items()
-        if name.startswith('policies/') and module_name in getattr(module, 'policy_apply_to', (),)
+        if name.startswith('policies/') and module_name in getattr(module, 'policy_apply_to', ())
     ]
 
 
-def policyPositionDnPrefix(module_name,):
+def policyPositionDnPrefix(module_name):
     # type: (UdmName) -> str
     """
     Return the relative |DN| for a policy.
@@ -1116,7 +1119,7 @@ def policyPositionDnPrefix(module_name,):
     :return: A |DN| string to append to the |LDAP| base to get the container for the policy.
     """
     module = get(module_name)
-    if not hasattr(module, 'policy_position_dn_prefix',):
+    if not hasattr(module, 'policy_position_dn_prefix'):
         return ""
     policy_position_dn_prefix = module.policy_position_dn_prefix
     if policy_position_dn_prefix.endswith(','):
@@ -1124,7 +1127,7 @@ def policyPositionDnPrefix(module_name,):
     return policy_position_dn_prefix
 
 
-def defaultContainers(module,):
+def defaultContainers(module):
     # type: (univention.admin.handlers.simpleLdap) -> List[str]
     """
     Checks for the attribute default_containers that should contain a
@@ -1134,10 +1137,10 @@ def defaultContainers(module,):
     :returns: a list of DNs.
     """
     base = configRegistry['ldap/base']
-    return ['%s,%s' % (rdn, base) for rdn in getattr(module, 'default_containers', [],)]
+    return ['%s,%s' % (rdn, base) for rdn in getattr(module, 'default_containers', [])]
 
 
-def childModules(module_name,):
+def childModules(module_name):
     # type: (UdmName) -> List[str]
     """
     Return child modules if module is a super module.
@@ -1146,20 +1149,20 @@ def childModules(module_name,):
     :returns: List of child module names.
     """
     module = get(module_name)
-    return list(getattr(module, 'childmodules', [],))
+    return list(getattr(module, 'childmodules', []))
 
 
-def _get_translation(locale, attrs, name, defaultname, default=u'',):
+def _get_translation(locale, attrs, name, defaultname, default=u''):
     # type: (str, Any, str, str, str) -> str
     if locale:
-        locale = locale.replace(u'_', u'-',).lower()
+        locale = locale.replace(u'_', u'-').lower()
         if name % (locale,) in attrs:
-            return attrs[name % (locale,)][0].decode('UTF-8', 'replace',)
-        locale = locale.split(u'-', 1,)[0]
+            return attrs[name % (locale,)][0].decode('UTF-8', 'replace')
+        locale = locale.split(u'-', 1)[0]
         name_short_lang = name % (locale,)
         if name_short_lang in attrs:
-            return attrs[name_short_lang][0].decode('UTF-8', 'replace',)
+            return attrs[name_short_lang][0].decode('UTF-8', 'replace')
         for key in attrs:
             if key.startswith(name_short_lang):
-                return attrs[key][0].decode('UTF-8', 'replace',)
-    return attrs.get(defaultname, [default.encode('utf-8')],)[0].decode('UTF-8', 'replace',)
+                return attrs[key][0].decode('UTF-8', 'replace')
+    return attrs.get(defaultname, [default.encode('utf-8')])[0].decode('UTF-8', 'replace')

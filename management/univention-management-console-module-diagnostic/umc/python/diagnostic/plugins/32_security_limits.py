@@ -63,28 +63,28 @@ actions = {}  # filled at bottom
 run_descr = ['checks samba logfile /var/log/samba/log.smbd for "too many open files" messages', 'and checks if ucr get samba/max_open_files is set to the suggested value of 32808']
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     MODULE.info('Checking samba logfiles for "Too many open files" messages')
     counter = 0
     try:
-        with open('/var/log/samba/log.smbd', 'rb',) as fd:
+        with open('/var/log/samba/log.smbd', 'rb') as fd:
             for line in fd:
-                counter += len(re.findall(b'Too many open files', line,))
+                counter += len(re.findall(b'Too many open files', line))
     except OSError:
         return  # logfile does not exists
 
-    max_open_files = ucr.get_int('samba/max_open_files', 32808,)
+    max_open_files = ucr.get_int('samba/max_open_files', 32808)
     MODULE.process("open files: %s , max open files: %s" % (counter, max_open_files))
     if counter and max_open_files < suggested_max_open_files:
         raise Critical(umc_modules=[{'module': 'ucr'}])
 
 
-def adjust(_umc_instance: Instance,) -> None:
+def adjust(_umc_instance: Instance) -> None:
     MODULE.process('Setting samba/max_open_files')
     handler_set([
         'samba/max_open_files=%d' % (suggested_max_open_files,),
     ])
-    raise ProblemFixed(_('The limits have been adjusted to the suggested value.'), buttons=[],)
+    raise ProblemFixed(_('The limits have been adjusted to the suggested value.'), buttons=[])
 
 
 actions['adjust'] = adjust

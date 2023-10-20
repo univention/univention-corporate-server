@@ -21,7 +21,7 @@ from univention.testing.strings import random_string, random_username
 def close_all_processes():
     """force all module processes to close"""
     yield
-    subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'], close_fds=True,)
+    subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'], close_fds=True)
     time.sleep(3)
 
 
@@ -29,8 +29,9 @@ def close_all_processes():
     'login_with_mail, subject', [
         (False, False),
         (True, 'Passwort zurücksetzen'),
-    ],)
-def test_reset_via_email(ucr, login_with_mail, subject,):
+    ],
+)
+def test_reset_via_email(ucr, login_with_mail, subject):
     # don't explicitly set the default to test non-existant ucr variable
     if subject:
         ucr.handler_set([f"umc/self-service/passwordreset/email/subject={subject}"])
@@ -49,7 +50,7 @@ def test_reset_via_email(ucr, login_with_mail, subject,):
         # def contact(user): @florian: will be deleted!
         email = 'foo@example.com'
         mobile = '+0176123456'
-        user.set_contact(email=email, mobile=mobile,)
+        user.set_contact(email=email, mobile=mobile)
         assert user.get_contact().get('email') == email, 'Setting mail address failed'
 
         # def reset_method_email(user): @florian will be deleted!
@@ -74,7 +75,7 @@ def test_reset_via_email(ucr, login_with_mail, subject,):
         assert token, f'Could not parse token from mail. Is there a token in it? {mail!r}'
 
         user.password = random_string()
-        user.set_password(token, user.password,)
+        user.set_password(token, user.password)
 
         assert user.get_contact() == {'email': email}, 'Login with the new password seems to have failed'
 

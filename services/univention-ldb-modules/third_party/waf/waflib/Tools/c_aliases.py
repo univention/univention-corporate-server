@@ -7,7 +7,7 @@
 from waflib import Utils, Errors
 from waflib.Configure import conf
 
-def get_extensions(lst,):
+def get_extensions(lst):
 	"""
 	Returns the file extensions for the list of files given as input
 
@@ -18,7 +18,7 @@ def get_extensions(lst,):
 	"""
 	ret = []
 	for x in Utils.to_list(lst):
-		if not isinstance(x, str,):
+		if not isinstance(x, str):
 			x = x.name
 		ret.append(x[x.rfind('.') + 1:])
 	return ret
@@ -38,7 +38,7 @@ def sniff_features(**kw):
 	:return: the list of features for a task generator processing the source files
 	:rtype: list of string
 	"""
-	exts = get_extensions(kw.get('source', [],))
+	exts = get_extensions(kw.get('source', []))
 	typ = kw['typ']
 	feats = []
 
@@ -71,11 +71,11 @@ def sniff_features(**kw):
 			if x in ('cxx', 'd', 'fc', 'c', 'asm'):
 				feats.append(x + typ)
 				will_link = True
-		if not will_link and not kw.get('features', [],):
+		if not will_link and not kw.get('features', []):
 			raise Errors.WafError('Unable to determine how to link %r, try adding eg: features="c cshlib"?' % kw)
 	return feats
 
-def set_features(kw, typ,):
+def set_features(kw, typ):
 	"""
 	Inserts data in the input dict *kw* based on existing data and on the type of target
 	required (typ).
@@ -86,10 +86,10 @@ def set_features(kw, typ,):
 	:type typ: string
 	"""
 	kw['typ'] = typ
-	kw['features'] = Utils.to_list(kw.get('features', [],)) + Utils.to_list(sniff_features(**kw))
+	kw['features'] = Utils.to_list(kw.get('features', [])) + Utils.to_list(sniff_features(**kw))
 
 @conf
-def program(bld,*k, **kw):
+def program(bld, *k, **kw):
 	"""
 	Alias for creating programs by looking at the file extensions::
 
@@ -99,11 +99,11 @@ def program(bld,*k, **kw):
 			# bld(features='c cprogram', source='foo.c', target='app')
 
 	"""
-	set_features(kw, 'program',)
-	return bld(*k, **kw,)
+	set_features(kw, 'program')
+	return bld(*k, **kw)
 
 @conf
-def shlib(bld,*k, **kw):
+def shlib(bld, *k, **kw):
 	"""
 	Alias for creating shared libraries by looking at the file extensions::
 
@@ -113,11 +113,11 @@ def shlib(bld,*k, **kw):
 			# bld(features='c cshlib', source='foo.c', target='app')
 
 	"""
-	set_features(kw, 'shlib',)
-	return bld(*k, **kw,)
+	set_features(kw, 'shlib')
+	return bld(*k, **kw)
 
 @conf
-def stlib(bld,*k, **kw):
+def stlib(bld, *k, **kw):
 	"""
 	Alias for creating static libraries by looking at the file extensions::
 
@@ -127,11 +127,11 @@ def stlib(bld,*k, **kw):
 			# bld(features='cxx cxxstlib', source='foo.cpp', target='app')
 
 	"""
-	set_features(kw, 'stlib',)
-	return bld(*k, **kw,)
+	set_features(kw, 'stlib')
+	return bld(*k, **kw)
 
 @conf
-def objects(bld,*k, **kw):
+def objects(bld, *k, **kw):
 	"""
 	Alias for creating object files by looking at the file extensions::
 
@@ -141,6 +141,6 @@ def objects(bld,*k, **kw):
 			# bld(features='c', source='foo.c', target='app')
 
 	"""
-	set_features(kw, 'objects',)
-	return bld(*k, **kw,)
+	set_features(kw, 'objects')
+	return bld(*k, **kw)
 

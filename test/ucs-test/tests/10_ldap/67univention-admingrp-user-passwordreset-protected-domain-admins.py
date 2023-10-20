@@ -19,7 +19,7 @@ default_password = 'univention'
 
 
 class Account:
-    def __init__(self, description, dn, name, password=default_password,):
+    def __init__(self, description, dn, name, password=default_password):
         self.description = description
         self.dn = dn
         self.name = name
@@ -39,7 +39,7 @@ with UCSTestConfigRegistry() as ucr:
         try:
             what = 'Plain user'
             user_dn, user_name = udm.create_user()
-            plain_user = Account(what, user_dn, user_name,)
+            plain_user = Account(what, user_dn, user_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -49,7 +49,7 @@ with UCSTestConfigRegistry() as ucr:
         try:
             what = 'Helpdesk user'
             helpdesk_user_dn, helpdesk_user_name = udm.create_user()
-            helpdesk_user = Account(what, helpdesk_user_dn, helpdesk_user_name,)
+            helpdesk_user = Account(what, helpdesk_user_dn, helpdesk_user_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -59,7 +59,7 @@ with UCSTestConfigRegistry() as ucr:
         try:
             what = 'Domain Admin 1'
             domainadmin1_dn, domainadmin1_name = udm.create_user()
-            domainadmin1 = Account(what, domainadmin1_dn, domainadmin1_name,)
+            domainadmin1 = Account(what, domainadmin1_dn, domainadmin1_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -69,7 +69,7 @@ with UCSTestConfigRegistry() as ucr:
         try:
             udm.modify_object("users/user", dn=domainadmin1.dn, set={
                 'groups': [domain_admins_dn],
-            },)
+            })
         except Exception as exc:
             fail(f'Could not add {domainadmin1} to the group "Domain Admins": {exc}')
         else:
@@ -79,7 +79,7 @@ with UCSTestConfigRegistry() as ucr:
         try:
             what = 'Domain Admin 2'
             domainadmin2_dn, domainadmin2_name = udm.create_user()
-            domainadmin2 = Account(what, domainadmin2_dn, domainadmin2_name,)
+            domainadmin2 = Account(what, domainadmin2_dn, domainadmin2_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -89,7 +89,7 @@ with UCSTestConfigRegistry() as ucr:
         try:
             udm.modify_object("users/user", dn=domainadmin2.dn, set={
                 'primaryGroup': [domain_admins_dn],
-            },)
+            })
         except Exception as exc:
             fail(f'Cannot set the  primary group of {domainadmin2} to "Domain Admins": {exc}')
         else:
@@ -99,7 +99,7 @@ with UCSTestConfigRegistry() as ucr:
         try:
             udm.modify_object("users/user", dn=helpdesk_user.dn, set={
                 "groups": user_password_admins_dn,
-            },)
+            })
         except Exception as exc:
             fail(f'Could not add {helpdesk_user} to group "User Password Admins": {exc}')
         else:
@@ -112,7 +112,7 @@ with UCSTestConfigRegistry() as ucr:
         try:
             udm.modify_object('users/user', binddn=helpdesk_user.dn, bindpwd=helpdesk_user.password, dn=domainadmin1.dn, set={
                 'password': uts.random_string(),
-            },)
+            })
         except Exception:
             print(f'OK: {helpdesk_user} cannot reset password of {domainadmin1}, as expected')
         else:
@@ -122,7 +122,7 @@ with UCSTestConfigRegistry() as ucr:
         try:
             udm.modify_object('users/user', binddn=helpdesk_user.dn, bindpwd=helpdesk_user.password, dn=domainadmin2.dn, set={
                 'password': uts.random_string(),
-            },)
+            })
         except Exception:
             print(f'OK: {helpdesk_user} cannot reset password of {domainadmin2}')
         else:
@@ -132,7 +132,7 @@ with UCSTestConfigRegistry() as ucr:
         try:
             udm.modify_object('users/user', binddn=helpdesk_user.dn, bindpwd=helpdesk_user.password, dn=plain_user.dn, set={
                 'password': uts.random_string(),
-            },)
+            })
         except Exception as exc:
             fail(f'{helpdesk_user} cannot reset password of {plain_user}: {exc}')
         else:

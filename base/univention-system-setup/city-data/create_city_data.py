@@ -42,8 +42,8 @@ import _util
 
 def main() -> None:
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("outfile", type=FileType("w"),)
-    parser.add_argument("locales", nargs="+",)
+    parser.add_argument("outfile", type=FileType("w"))
+    parser.add_argument("locales", nargs="+")
     opt = parser.parse_args()
 
     print('generating city data...')
@@ -54,11 +54,11 @@ def main() -> None:
 
     for ilocale in opt.locales + ['']:
         print('loading data for locale %s' % ilocale)
-        city_names = _util.get_localized_names(city_geonameids, ilocale,)
+        city_names = _util.get_localized_names(city_geonameids, ilocale)
         for iid, ilabel in city_names.items():
-            city_data[iid].setdefault('label', {},)[ilocale] = ilabel
+            city_data[iid].setdefault('label', {})[ilocale] = ilabel
 
-    json.dump(list(city_data.values()), opt.outfile, ensure_ascii=False, indent=2, sort_keys=True,)
+    json.dump(list(city_data.values()), opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
     opt.outfile.write("\n")
 
     print('... done :)')

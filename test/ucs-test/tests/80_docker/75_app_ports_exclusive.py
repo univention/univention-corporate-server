@@ -30,7 +30,9 @@ if __name__ == '__main__':
                 DockerImage='instantlinux/proftpd',
                 PortsExclusive=','.join(ports),
                 DefaultPackages=','.join(packages),
-                DockerInjectEnvFile='main',)
+                DockerInjectEnvFile='main',
+                # DockerScriptSetup='/usr/sbin/%s-setup' % app.app_name
+            )
             #app.add_script(env='\nPASV_ADDRESS=localhost\n')
             app.add_script(env='\nPASV_ADDRESS=0.0.0.0\n')
             #app.add_script(setup=dedent('''\

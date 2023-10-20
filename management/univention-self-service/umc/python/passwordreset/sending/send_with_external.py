@@ -65,8 +65,8 @@ ucr.load()
 class SendWithExternal(UniventionSelfServiceTokenEmitter):
 
     def __init__(self, *args, **kwargs):
-        super(SendWithExternal, self,).__init__(*args, **kwargs,)
-        self.cmd = self.ucr.get("umc/self-service/passwordreset/external/command", "",).split()
+        super(SendWithExternal, self).__init__(*args, **kwargs)
+        self.cmd = self.ucr.get("umc/self-service/passwordreset/external/command", "").split()
         if not self.cmd:
             raise ValueError("SendWithExternal: UCR umc/self-service/passwordreset/external/command must contain the path to the program to execute.")
 
@@ -76,7 +76,7 @@ class SendWithExternal(UniventionSelfServiceTokenEmitter):
 
     @staticmethod
     def send_method_label():
-        return ucr.get("umc/self-service/passwordreset/external/method_label", _("External"),)
+        return ucr.get("umc/self-service/passwordreset/external/method_label", _("External"))
 
     @staticmethod
     def is_enabled():
@@ -90,7 +90,7 @@ class SendWithExternal(UniventionSelfServiceTokenEmitter):
     @property
     def token_length(self):
         ucr.load()
-        length = ucr.get("umc/self-service/passwordreset/external/token_length", 64,)
+        length = ucr.get("umc/self-service/passwordreset/external/token_length", 64)
         try:
             length = int(length)
         except ValueError:
@@ -113,9 +113,9 @@ class SendWithExternal(UniventionSelfServiceTokenEmitter):
         #
 
         self.log(f"Starting external program {self.cmd}...")
-        cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+        cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cmd_out, cmd_err = cmd_proc.communicate()
-        cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace',), cmd_err.decode('UTF-8', 'replace',)
+        cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
         cmd_exit = cmd_proc.wait()
 
         if cmd_out:

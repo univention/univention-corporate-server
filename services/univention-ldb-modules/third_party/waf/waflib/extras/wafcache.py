@@ -68,13 +68,13 @@ except ImportError:
 base_cache = os.path.expanduser('~/.cache/')
 if not os.path.isdir(base_cache):
 	base_cache = '/tmp/'
-default_wafcache_dir = os.path.join(base_cache, 'wafcache_' + getpass.getuser(),)
+default_wafcache_dir = os.path.join(base_cache, 'wafcache_' + getpass.getuser())
 
-CACHE_DIR = os.environ.get('WAFCACHE', default_wafcache_dir,)
+CACHE_DIR = os.environ.get('WAFCACHE', default_wafcache_dir)
 WAFCACHE_CMD = os.environ.get('WAFCACHE_CMD')
-TRIM_MAX_FOLDERS = int(os.environ.get('WAFCACHE_TRIM_MAX_FOLDER', 1000000,))
-EVICT_INTERVAL_MINUTES = int(os.environ.get('WAFCACHE_EVICT_INTERVAL_MINUTES', 3,))
-EVICT_MAX_BYTES = int(os.environ.get('WAFCACHE_EVICT_MAX_BYTES', 10**10,))
+TRIM_MAX_FOLDERS = int(os.environ.get('WAFCACHE_TRIM_MAX_FOLDER', 1000000))
+EVICT_INTERVAL_MINUTES = int(os.environ.get('WAFCACHE_EVICT_INTERVAL_MINUTES', 3))
+EVICT_MAX_BYTES = int(os.environ.get('WAFCACHE_EVICT_MAX_BYTES', 10**10))
 WAFCACHE_NO_PUSH = 1 if os.environ.get('WAFCACHE_NO_PUSH') else 0
 WAFCACHE_VERBOSITY = 1 if os.environ.get('WAFCACHE_VERBOSITY') else 0
 WAFCACHE_STATS = 1 if os.environ.get('WAFCACHE_STATS') else 0
@@ -109,20 +109,20 @@ def can_retrieve_cache(self):
 
 	files_to = [node.abspath() for node in self.outputs]
 	proc = get_process()
-	err = cache_command(proc, ssig, [], files_to,)
+	err = cache_command(proc, ssig, [], files_to)
 	process_pool.append(proc)
 	if err.startswith(OK):
 		if WAFCACHE_VERBOSITY:
-			Logs.pprint('CYAN', '  Fetched %r from cache' % files_to,)
+			Logs.pprint('CYAN', '  Fetched %r from cache' % files_to)
 		else:
-			Logs.debug('wafcache: fetched %r from cache', files_to,)
+			Logs.debug('wafcache: fetched %r from cache', files_to)
 		if WAFCACHE_STATS:
 			self.generator.bld.cache_hits += 1
 	else:
 		if WAFCACHE_VERBOSITY:
-			Logs.pprint('YELLOW', '  No cache entry %s' % files_to,)
+			Logs.pprint('YELLOW', '  No cache entry %s' % files_to)
 		else:
-			Logs.debug('wafcache: No cache entry %s: %s', files_to, err,)
+			Logs.debug('wafcache: No cache entry %s: %s', files_to, err)
 		return False
 
 	self.cached = True
@@ -132,7 +132,7 @@ def put_files_cache(self):
 	"""
 	New method for waf Task classes
 	"""
-	if WAFCACHE_NO_PUSH or getattr(self, 'cached', None,) or not self.outputs:
+	if WAFCACHE_NO_PUSH or getattr(self, 'cached', None) or not self.outputs:
 		return
 
 	files_from = []
@@ -151,10 +151,10 @@ def put_files_cache(self):
 		except KeyError:
 			pass
 
-	delattr(self, 'cache_sig',)
+	delattr(self, 'cache_sig')
 	sig = self.signature()
 
-	def _async_put_files_cache(bld, ssig, files_from,):
+	def _async_put_files_cache(bld, ssig, files_from):
 		proc = get_process()
 		if WAFCACHE_ASYNC_WORKERS:
 			with bld.wafcache_lock:
@@ -163,34 +163,34 @@ def put_files_cache(self):
 					return
 				bld.wafcache_procs.add(proc)
 
-		err = cache_command(proc, ssig, files_from, [],)
+		err = cache_command(proc, ssig, files_from, [])
 		process_pool.append(proc)
 		if err.startswith(OK):
 			if WAFCACHE_VERBOSITY:
-				Logs.pprint('CYAN', '  Successfully uploaded %s to cache' % files_from,)
+				Logs.pprint('CYAN', '  Successfully uploaded %s to cache' % files_from)
 			else:
-				Logs.debug('wafcache: Successfully uploaded %r to cache', files_from,)
+				Logs.debug('wafcache: Successfully uploaded %r to cache', files_from)
 			if WAFCACHE_STATS:
 				bld.cache_puts += 1
 		else:
 			if WAFCACHE_VERBOSITY:
-				Logs.pprint('RED', '  Error caching step results %s: %s' % (files_from, err),)
+				Logs.pprint('RED', '  Error caching step results %s: %s' % (files_from, err))
 			else:
-				Logs.debug('wafcache: Error caching results %s: %s', files_from, err,)
+				Logs.debug('wafcache: Error caching results %s: %s', files_from, err)
 
 	if old_sig == sig:
 		ssig = Utils.to_hex(self.uid() + sig)
 		if WAFCACHE_ASYNC_WORKERS:
-			fut = bld.wafcache_executor.submit(_async_put_files_cache, bld, ssig, files_from,)
+			fut = bld.wafcache_executor.submit(_async_put_files_cache, bld, ssig, files_from)
 			bld.wafcache_uploads.append(fut)
 		else:
-			_async_put_files_cache(bld, ssig, files_from,)
+			_async_put_files_cache(bld, ssig, files_from)
 	else:
-		Logs.debug('wafcache: skipped %r upload due to late input modifications %r', self.outputs, self.inputs,)
+		Logs.debug('wafcache: skipped %r upload due to late input modifications %r', self.outputs, self.inputs)
 
 	bld.task_sigs[self.uid()] = self.cache_sig
 
-def hash_env_vars(self, env, vars_lst,):
+def hash_env_vars(self, env, vars_lst):
 	"""
 	Reimplement BuildContext.hash_env_vars so that the resulting hash does not depend on local paths
 	"""
@@ -211,12 +211,12 @@ def hash_env_vars(self, env, vars_lst,):
 			pass
 
 	v = str([env[a] for a in vars_lst])
-	v = v.replace(self.srcnode.abspath().__repr__()[:-1], '',)
+	v = v.replace(self.srcnode.abspath().__repr__()[:-1], '')
 	m = Utils.md5()
 	m.update(v.encode())
 	ret = m.digest()
 
-	Logs.debug('envhash: %r %r', ret, v,)
+	Logs.debug('envhash: %r %r', ret, v)
 
 	cache[idx] = ret
 
@@ -243,25 +243,25 @@ def make_cached(cls):
 	"""
 	Enable the waf cache for a given task class
 	"""
-	if getattr(cls, 'nocache', None,) or getattr(cls, 'has_cache', False,):
+	if getattr(cls, 'nocache', None) or getattr(cls, 'has_cache', False):
 		return
 
 	full_name = "%s.%s" % (cls.__module__, cls.__name__)
 	if full_name in ('waflib.Tools.ccroot.vnum', 'waflib.Build.inst'):
 		return
 
-	m1 = getattr(cls, 'run', None,)
+	m1 = getattr(cls, 'run', None)
 	def run(self):
-		if getattr(self, 'nocache', False,):
+		if getattr(self, 'nocache', False):
 			return m1(self)
 		if self.can_retrieve_cache():
 			return 0
 		return m1(self)
 	cls.run = run
 
-	m2 = getattr(cls, 'post_run', None,)
+	m2 = getattr(cls, 'post_run', None)
 	def post_run(self):
-		if getattr(self, 'nocache', False,):
+		if getattr(self, 'nocache', False):
 			return m2(self)
 		ret = m2(self)
 		self.put_files_cache()
@@ -280,14 +280,14 @@ def get_process():
 	except IndexError:
 		filepath = os.path.dirname(os.path.abspath(__file__)) + os.sep + 'wafcache.py'
 		cmd = [sys.executable, '-c', Utils.readf(filepath)]
-		return subprocess.Popen(cmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, bufsize=0,)
+		return subprocess.Popen(cmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, bufsize=0)
 
 def atexit_pool():
 	for proc in process_pool:
 		proc.kill()
 atexit.register(atexit_pool)
 
-def build(bld,):
+def build(bld):
 	"""
 	Called during the build process to enable file caching
 	"""
@@ -305,7 +305,7 @@ def build(bld,):
 			bld.wafcache_stop = False
 			bld.wafcache_lock = threading.Lock()
 
-		def finalize_upload_async(bld,):
+		def finalize_upload_async(bld):
 			if WAFCACHE_ASYNC_NOWAIT:
 				with bld.wafcache_lock:
 					bld.wafcache_stop = True
@@ -318,7 +318,7 @@ def build(bld,):
 
 				bld.wafcache_procs.clear()
 			else:
-				Logs.pprint('CYAN', '... waiting for wafcache uploads to complete (%s uploads)' % len(bld.wafcache_uploads),)
+				Logs.pprint('CYAN', '... waiting for wafcache uploads to complete (%s uploads)' % len(bld.wafcache_uploads))
 			bld.wafcache_executor.shutdown(wait=True)
 		bld.add_post_fun(finalize_upload_async)
 
@@ -326,12 +326,12 @@ def build(bld,):
 		# Init counter for statistics and hook to print results at the end
 		bld.cache_reqs = bld.cache_hits = bld.cache_puts = 0
 
-		def printstats(bld,):
+		def printstats(bld):
 			hit_ratio = 0
 			if bld.cache_reqs > 0:
 				hit_ratio = (bld.cache_hits / bld.cache_reqs) * 100
 			Logs.pprint('CYAN', '  wafcache stats: %s requests, %s hits (ratio: %.2f%%), %s writes' %
-					 (bld.cache_reqs, bld.cache_hits, hit_ratio, bld.cache_puts), )
+					 (bld.cache_reqs, bld.cache_hits, hit_ratio, bld.cache_puts) )
 		bld.add_post_fun(printstats)
 
 	if process_pool:
@@ -349,7 +349,7 @@ def build(bld,):
 	for x in reversed(list(Task.classes.values())):
 		make_cached(x)
 
-def cache_command(proc, sig, files_from, files_to,):
+def cache_command(proc, sig, files_from, files_to):
 	"""
 	Create a command for cache worker processes, returns a pickled
 	base64-encoded tuple containing the task signature, a list of files to
@@ -370,7 +370,7 @@ try:
 except NameError:
 	copyfun = shutil.copy2
 
-def atomic_copy(orig, dest,):
+def atomic_copy(orig, dest):
 	"""
 	Copy files to the cache, the operation is atomic for a given file
 	"""
@@ -383,14 +383,14 @@ def atomic_copy(orig, dest,):
 		pass
 
 	try:
-		copyfun(orig, tmp,)
+		copyfun(orig, tmp)
 	except OSError as e:
 		if e.errno == errno.EXDEV:
 			copyfun = shutil.copy2
-			copyfun(orig, tmp,)
+			copyfun(orig, tmp)
 		else:
 			raise
-	os.rename(tmp, dest,)
+	os.rename(tmp, dest)
 
 def lru_trim():
 	"""
@@ -403,19 +403,19 @@ def lru_trim():
 	lst = []
 	for up in os.listdir(CACHE_DIR):
 		if len(up) == 2:
-			sub = os.path.join(CACHE_DIR, up,)
+			sub = os.path.join(CACHE_DIR, up)
 			for hval in os.listdir(sub):
-				path = os.path.join(sub, hval,)
+				path = os.path.join(sub, hval)
 
 				size = 0
 				for fname in os.listdir(path):
 					try:
-						size += os.lstat(os.path.join(path, fname,)).st_size
+						size += os.lstat(os.path.join(path, fname)).st_size
 					except OSError:
 						pass
 				lst.append((os.stat(path).st_mtime, size, path))
 
-	lst.sort(key=lambda x,: x[0])
+	lst.sort(key=lambda x: x[0])
 	lst.reverse()
 
 	tot = sum(x[1] for x in lst)
@@ -429,7 +429,7 @@ def lru_trim():
 		except OSError:
 			pass
 		try:
-			os.rename(path, tmp,)
+			os.rename(path, tmp)
 		except OSError:
 			sys.stderr.write('Could not rename %r to %r\n' % (path, tmp))
 		else:
@@ -444,12 +444,12 @@ def lru_evict():
 	"""
 	Reduce the cache size
 	"""
-	lockfile = os.path.join(CACHE_DIR, 'all.lock',)
+	lockfile = os.path.join(CACHE_DIR, 'all.lock')
 	try:
 		st = os.stat(lockfile)
 	except EnvironmentError as e:
 		if e.errno == errno.ENOENT:
-			with open(lockfile, 'w',) as f:
+			with open(lockfile, 'w') as f:
 				f.write('')
 			return
 		else:
@@ -458,17 +458,17 @@ def lru_evict():
 	if st.st_mtime < time.time() - EVICT_INTERVAL_MINUTES * 60:
 		# check every EVICT_INTERVAL_MINUTES minutes if the cache is too big
 		# OCLOEXEC is unnecessary because no processes are spawned
-		fd = os.open(lockfile, os.O_RDWR | os.O_CREAT, 0o755,)
+		fd = os.open(lockfile, os.O_RDWR | os.O_CREAT, 0o755)
 		try:
 			try:
-				fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB,)
+				fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
 			except EnvironmentError:
 				if WAFCACHE_VERBOSITY:
 					sys.stderr.write('wafcache: another cleaning process is running\n')
 			else:
 				# now dow the actual cleanup
 				lru_trim()
-				os.utime(lockfile, None,)
+				os.utime(lockfile, None)
 		finally:
 			os.close(fd)
 
@@ -476,39 +476,39 @@ class netcache(object):
 	def __init__(self):
 		self.http = urllib3.PoolManager()
 
-	def url_of(self, sig, i,):
+	def url_of(self, sig, i):
 		return "%s/%s/%s" % (CACHE_DIR, sig, i)
 
-	def upload(self, file_path, sig, i,):
-		url = self.url_of(sig, i,)
-		with open(file_path, 'rb',) as f:
+	def upload(self, file_path, sig, i):
+		url = self.url_of(sig, i)
+		with open(file_path, 'rb') as f:
 			file_data = f.read()
 		r = self.http.request('POST', url, timeout=60,
-			fields={ 'file': ('%s/%s' % (sig, i), file_data), },)
+			fields={ 'file': ('%s/%s' % (sig, i), file_data), })
 		if r.status >= 400:
 			raise OSError("Invalid status %r %r" % (url, r.status))
 
-	def download(self, file_path, sig, i,):
-		url = self.url_of(sig, i,)
-		with self.http.request('GET', url, preload_content=False, timeout=60,) as inf:
+	def download(self, file_path, sig, i):
+		url = self.url_of(sig, i)
+		with self.http.request('GET', url, preload_content=False, timeout=60) as inf:
 			if inf.status >= 400:
 				raise OSError("Invalid status %r %r" % (url, inf.status))
-			with open(file_path, 'wb',) as out:
-				shutil.copyfileobj(inf, out,)
+			with open(file_path, 'wb') as out:
+				shutil.copyfileobj(inf, out)
 
-	def copy_to_cache(self, sig, files_from, files_to,):
+	def copy_to_cache(self, sig, files_from, files_to):
 		try:
 			for i, x in enumerate(files_from):
 				if not os.path.islink(x):
-					self.upload(x, sig, i,)
+					self.upload(x, sig, i)
 		except Exception:
 			return traceback.format_exc()
 		return OK
 
-	def copy_from_cache(self, sig, files_from, files_to,):
+	def copy_from_cache(self, sig, files_from, files_to):
 		try:
 			for i, x in enumerate(files_to):
-				self.download(x, sig, i,)
+				self.download(x, sig, i)
 		except Exception:
 			return traceback.format_exc()
 		return OK
@@ -523,7 +523,7 @@ class fcache(object):
 		if not os.path.exists(CACHE_DIR):
 			raise ValueError('Could not initialize the cache directory')
 
-	def copy_to_cache(self, sig, files_from, files_to,):
+	def copy_to_cache(self, sig, files_from, files_to):
 		"""
 		Copy files to the cache, existing files are overwritten,
 		and the copy is atomic only for a given file, not for all files
@@ -531,8 +531,8 @@ class fcache(object):
 		"""
 		try:
 			for i, x in enumerate(files_from):
-				dest = os.path.join(CACHE_DIR, sig[:2], sig, str(i),)
-				atomic_copy(x, dest,)
+				dest = os.path.join(CACHE_DIR, sig[:2], sig, str(i))
+				atomic_copy(x, dest)
 		except Exception:
 			return traceback.format_exc()
 		else:
@@ -544,30 +544,30 @@ class fcache(object):
 				return traceback.format_exc()
 		return OK
 
-	def copy_from_cache(self, sig, files_from, files_to,):
+	def copy_from_cache(self, sig, files_from, files_to):
 		"""
 		Copy files from the cache
 		"""
 		try:
 			for i, x in enumerate(files_to):
-				orig = os.path.join(CACHE_DIR, sig[:2], sig, str(i),)
-				atomic_copy(orig, x,)
+				orig = os.path.join(CACHE_DIR, sig[:2], sig, str(i))
+				atomic_copy(orig, x)
 
 			# success! update the cache time
-			os.utime(os.path.join(CACHE_DIR, sig[:2], sig,), None,)
+			os.utime(os.path.join(CACHE_DIR, sig[:2], sig), None)
 		except Exception:
 			return traceback.format_exc()
 		return OK
 
 class bucket_cache(object):
-	def bucket_copy(self, source, target,):
+	def bucket_copy(self, source, target):
 		if WAFCACHE_CMD:
-			def replacer(match,):
+			def replacer(match):
 				if match.group('src'):
 					return source
 				elif match.group('tgt'):
 					return target
-			cmd = [re_waf_cmd.sub(replacer, x,) for x in shlex.split(WAFCACHE_CMD)]
+			cmd = [re_waf_cmd.sub(replacer, x) for x in shlex.split(WAFCACHE_CMD)]
 		elif CACHE_DIR.startswith('s3://'):
 			cmd = ['aws', 's3', 'cp', source, target]
 		elif CACHE_DIR.startswith('gs://'):
@@ -575,31 +575,31 @@ class bucket_cache(object):
 		else:
 			cmd = ['mc', 'cp', source, target]
 
-		proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+		proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		out, err = proc.communicate()
 		if proc.returncode:
 			raise OSError('Error copy %r to %r using: %r (exit %r):\n  out:%s\n  err:%s' % (
 				source, target, cmd, proc.returncode, out.decode(errors='replace'), err.decode(errors='replace')))
 
-	def copy_to_cache(self, sig, files_from, files_to,):
+	def copy_to_cache(self, sig, files_from, files_to):
 		try:
 			for i, x in enumerate(files_from):
-				dest = os.path.join(CACHE_DIR, sig[:2], sig, str(i),)
-				self.bucket_copy(x, dest,)
+				dest = os.path.join(CACHE_DIR, sig[:2], sig, str(i))
+				self.bucket_copy(x, dest)
 		except Exception:
 			return traceback.format_exc()
 		return OK
 
-	def copy_from_cache(self, sig, files_from, files_to,):
+	def copy_from_cache(self, sig, files_from, files_to):
 		try:
 			for i, x in enumerate(files_to):
-				orig = os.path.join(CACHE_DIR, sig[:2], sig, str(i),)
-				self.bucket_copy(orig, x,)
+				orig = os.path.join(CACHE_DIR, sig[:2], sig, str(i))
+				self.bucket_copy(orig, x)
 		except EnvironmentError:
 			return traceback.format_exc()
 		return OK
 
-def loop(service,):
+def loop(service):
 	"""
 	This function is run when this file is run as a standalone python script,
 	it assumes a parent process that will communicate the commands to it
@@ -619,10 +619,10 @@ def loop(service,):
 	[sig, files_from, files_to] = cPickle.loads(base64.b64decode(txt))
 	if files_from:
 		# TODO return early when pushing files upstream
-		ret = service.copy_to_cache(sig, files_from, files_to,)
+		ret = service.copy_to_cache(sig, files_from, files_to)
 	elif files_to:
 		# the build process waits for workers to (possibly) obtain files from the cache
-		ret = service.copy_from_cache(sig, files_from, files_to,)
+		ret = service.copy_from_cache(sig, files_from, files_to)
 	else:
 		ret = "Invalid command"
 

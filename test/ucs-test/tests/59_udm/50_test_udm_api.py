@@ -33,10 +33,10 @@ from univention.udm.exceptions import (
 )
 
 
-ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0,)
-ud.set_level(ud.ADMIN, ud.ALL,)
+ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
+ud.set_level(ud.ADMIN, ud.ALL)
 
-PostalAddress = namedtuple('PostalAddress', ['street', 'zipcode', 'city'],)
+PostalAddress = namedtuple('PostalAddress', ['street', 'zipcode', 'city'])
 
 
 class TestUdmUsersBasic(TestCase):
@@ -69,7 +69,8 @@ class TestUdmUsersBasic(TestCase):
                     'mail/domain',
                     position='cn=domain,cn=mail,{}'.format(cls.ucr_test['ldap/base']),
                     name=cls.mail_domain,
-                    wait_for_replication=True,)
+                    wait_for_replication=True,
+                )
             except UCSTestUDM_CreateUDMObjectFailed as exc:
                 print(f'Creating mail domain {cls.mail_domain!r} failed: {exc}')
 
@@ -103,7 +104,7 @@ class TestUdmUsersBasic(TestCase):
         self._user0_attrs.update(attrs)
         print(f'Creating user with attrs: {attrs!r}')
         for k, v in attrs.items():
-            setattr(obj.props, k, v,)
+            setattr(obj.props, k, v)
         obj.save()
         print(f'Created {obj!r}.')
         print('Verifying...')
@@ -114,10 +115,11 @@ class TestUdmUsersBasic(TestCase):
                 'uid': [attrs['username']],
                 'sn': [attrs['lastname']],
                 'givenName': [attrs['firstname']],
-                'displayName': ['{} {}'.format(attrs['firstname'], attrs['lastname'],)],
+                'displayName': ['{} {}'.format(attrs['firstname'], attrs['lastname'])],
             },
             strict=False,
-            should_exist=True,)
+            should_exist=True,
+        )
         obj2 = user_mod.get_by_id(obj.props.username)
         assert obj2.dn == obj.dn
 
@@ -146,7 +148,7 @@ class TestUdmUsersBasic(TestCase):
             'password': random_username(),
         }
         for k, v in attrs.items():
-            setattr(obj.props, k, v,)
+            setattr(obj.props, k, v)
         assert obj.save()
         obj.props.username = 'Administrator'
         with self.assertRaises(ModifyError):
@@ -164,7 +166,7 @@ class TestUdmUsersBasic(TestCase):
         }
         print(f'Modifying {obj!r} with attrs: {attrs!r}')
         for k, v in attrs.items():
-            setattr(obj.props, k, v,)
+            setattr(obj.props, k, v)
         obj.save()
         print('Verifying...')
         utils.verify_ldap_object(
@@ -175,16 +177,17 @@ class TestUdmUsersBasic(TestCase):
                 'description': [attrs['description']],
                 'mailPrimaryAddress': [attrs['mailPrimaryAddress']],
                 'departmentNumber': [attrs['departmentNumber']],
-                'displayName': ['{} {}'.format(attrs['firstname'], attrs['lastname'],)],
+                'displayName': ['{} {}'.format(attrs['firstname'], attrs['lastname'])],
             },
             strict=False,
-            should_exist=True,)
+            should_exist=True,
+        )
 
     def test_modify_user_homePostalAddress_udm1_generic(self):
         addresses = [
-            PostalAddress(random_string(), random_string(), random_string(),),
-            PostalAddress(random_string(), random_string(), random_string(),),
-            PostalAddress(random_string(), random_string(), random_string(),),
+            PostalAddress(random_string(), random_string(), random_string()),
+            PostalAddress(random_string(), random_string(), random_string()),
+            PostalAddress(random_string(), random_string(), random_string()),
         ]
         dn, username = self.udm_test.create_user()
         utils.verify_ldap_object(
@@ -192,7 +195,8 @@ class TestUdmUsersBasic(TestCase):
             expected_attr={
                 'uid': [username],
                 'homePostalAddress': [],
-            },)
+            },
+        )
         obj = UDM.admin().version(0).get('users/user').get(dn)
         assert username == obj.props.username
         obj.props.homePostalAddress = [[ad.street, ad.zipcode, ad.city] for ad in addresses]
@@ -201,13 +205,14 @@ class TestUdmUsersBasic(TestCase):
             dn,
             expected_attr={
                 'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad._asdict()) for ad in addresses],
-            },)
+            },
+        )
 
     def test_modify_user_homePostalAddress_as_dict(self):
         addresses = [
-            PostalAddress(random_string(), random_string(), random_string(),),
-            PostalAddress(random_string(), random_string(), random_string(),),
-            PostalAddress(random_string(), random_string(), random_string(),),
+            PostalAddress(random_string(), random_string(), random_string()),
+            PostalAddress(random_string(), random_string(), random_string()),
+            PostalAddress(random_string(), random_string(), random_string()),
         ]
         dn, username = self.udm_test.create_user()
         utils.verify_ldap_object(
@@ -215,7 +220,8 @@ class TestUdmUsersBasic(TestCase):
             expected_attr={
                 'uid': [username],
                 'homePostalAddress': [],
-            },)
+            },
+        )
         obj = UDM.admin().version(1).get('users/user').get(dn)
         assert username == obj.props.username
         obj.props.homePostalAddress.extend([ad._asdict() for ad in addresses])
@@ -224,7 +230,8 @@ class TestUdmUsersBasic(TestCase):
             dn,
             expected_attr={
                 'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad._asdict()) for ad in addresses],
-            },)
+            },
+        )
 
     def test_read_user(self):
         obj = self.user_objects[0]
@@ -233,17 +240,17 @@ class TestUdmUsersBasic(TestCase):
         del expected_properties['password']
         expected_properties.update({
             'e-mail': [],
-            'displayName': '{} {}'.format(self._user0_attrs['firstname'], self._user0_attrs['lastname'],),
+            'displayName': '{} {}'.format(self._user0_attrs['firstname'], self._user0_attrs['lastname']),
         })
-        if hasattr(obj.props, 'oxDisplayName',):
+        if hasattr(obj.props, 'oxDisplayName'):
             expected_properties['oxDisplayName'] = expected_properties['displayName']
             expected_properties['oxTimeZone'] = self.udm.obj_by_dn(
                 'cn=oxTimeZone,cn=open-xchange,cn=custom attributes,cn=univention,{}'.format(self.ucr_test['ldap/base']),
             ).props.default
-        if hasattr(obj.props, 'mailUserQuota',):
+        if hasattr(obj.props, 'mailUserQuota'):
             expected_properties['mailUserQuota'] = 0
         for k, v in expected_properties.items():
-            got = getattr(obj.props, k,)
+            got = getattr(obj.props, k)
             assert got == v, f'Expected for {k!r}: {v!r} got: {got!r}'
         with self.assertRaises(UnknownProperty):
             obj.props.unknown = 'Unknown'
@@ -264,7 +271,8 @@ class TestUdmUsersBasic(TestCase):
         print('Verifying...')
         utils.verify_ldap_object(
             obj.dn,
-            should_exist=False,)
+            should_exist=False,
+        )
         with self.assertRaises(DeletedError):
             obj.save()
         with self.assertRaises(DeletedError):
@@ -286,7 +294,7 @@ class TestUdmGenericVariousModules(TestCase):
         univention.admin.modules.update()
         cls.avail_modules = sorted(mod for mod in univention.admin.modules.modules.keys())
 
-    def get_new_obj(self, mod,):
+    def get_new_obj(self, mod):
         try:
             return mod.new()
         except NoSuperordinate as exc:
@@ -297,12 +305,12 @@ class TestUdmGenericVariousModules(TestCase):
         except AttributeError:
             print(f'Got NoSuperordinate exception ({exc_thrown}), but {mod.name!r} has no "superordinate" attribute!')
             raise exc_thrown.with_traceback(None)
-        if isinstance(sup_modules, str,):
+        if isinstance(sup_modules, str):
             sup_modules = [sup_modules]
         for sup_module in sup_modules:
             for obj in self.udm.get(sup_module).search():
                 print('Using {!r} object at {!r} as superordinate for model of {!r} object.'.format(
-                    sup_module, obj.dn, mod.name,))
+                    sup_module, obj.dn, mod.name))
                 return mod.new(obj)
         raise exc_thrown.with_traceback(None)
 
@@ -314,7 +322,7 @@ class TestUdmGenericVariousModules(TestCase):
             mod = self.udm.get(mod_name)
             if mod_name in mail_and_ox_modules:
                 assert mod.__class__.__name__ == 'GenericModule', 'Wrong UDM module, expected {!r}, got {!r}.'.format(
-                    'GenericModule', mod.__class__.__name__,)
+                    'GenericModule', mod.__class__.__name__)
         print('OK: all modules could be loaded.')
         len_module_object_cache = len(UDM._module_object_cache)
         assert len_module_object_cache == len(self.avail_modules), f'UDM._module_object_cache has {len_module_object_cache} entries (should be {len(self.avail_modules)}).'
@@ -421,12 +429,12 @@ class TestUdmLDAPConnection(TestCase):
 
     def test_admin_io_error(self):
         try:
-            os.rename('/etc/ldap.secret', '/etc/ldap.secret.test',)
+            os.rename('/etc/ldap.secret', '/etc/ldap.secret.test')
             with self.assertRaises(ConnectionError) as cm:
                 UDM.admin()
             assert str(cm.exception) == 'Could not read secret file'
         finally:
-            os.rename('/etc/ldap.secret.test', '/etc/ldap.secret',)
+            os.rename('/etc/ldap.secret.test', '/etc/ldap.secret')
 
     def test_machine(self):
         mod = UDM.machine().version(0).get('users/user')
@@ -444,22 +452,22 @@ class TestUdmLDAPConnection(TestCase):
     def test_machine_credentials_error(self):
         pw = open('/etc/machine.secret').read()
         try:
-            open('/etc/machine.secret', 'w',).write('garbage')
+            open('/etc/machine.secret', 'w').write('garbage')
             with self.assertRaises(ConnectionError) as cm:
                 UDM.machine()
             assert str(cm.exception) == 'Credentials invalid'
         finally:
-            open('/etc/machine.secret', 'w',).write(pw)
+            open('/etc/machine.secret', 'w').write(pw)
 
     def test_credentials(self):
         password = uts.random_name()
         dn, username = self.udm_test.create_user(password=password)
-        mod = UDM.credentials(identity=username, password=password,).version(0).get('users/user')
+        mod = UDM.credentials(identity=username, password=password).version(0).get('users/user')
         assert mod.connection.binddn == dn
 
         password = uts.random_name()
         dn, username = self.udm_test.create_user(password=password)
-        mod = UDM.credentials(identity=dn, password=password,).version(0).get('users/user')
+        mod = UDM.credentials(identity=dn, password=password).version(0).get('users/user')
         assert mod.connection.binddn == dn
 
     def test_local(self):
@@ -467,18 +475,18 @@ class TestUdmLDAPConnection(TestCase):
         dn, username = self.udm_test.create_user(password=password)
         server = self.ucr_test['ldap/server/name']
         port = self.ucr_test['ldap/server/port']
-        mod = UDM.credentials(identity=username, password=password, server=server, port=port,).version(0).get('users/user')
+        mod = UDM.credentials(identity=username, password=password, server=server, port=port).version(0).get('users/user')
         assert mod.connection.binddn == dn
 
     def test_credentials_error(self):
         username = uts.random_name()
         password = uts.random_name()
         with self.assertRaises(ConnectionError) as cm:
-            UDM.credentials(identity=username, password=password,)
+            UDM.credentials(identity=username, password=password)
         assert str(cm.exception) == 'Cannot get DN for username'
 
         with self.assertRaises(ConnectionError) as cm:
-            UDM.credentials(identity='Administrator', password=password,)
+            UDM.credentials(identity='Administrator', password=password)
         assert str(cm.exception) == 'Credentials invalid'
 
 
@@ -628,7 +636,7 @@ class TestEncoders(TestCase):
         }
         print(f'Creating user with attrs: {attrs!r}')
         for k, v in attrs.items():
-            setattr(obj.props, k, v,)
+            setattr(obj.props, k, v)
         obj.save()
         assert obj.props.secretary.objs == []
 
@@ -642,7 +650,7 @@ class TestEncoders(TestCase):
         }
         print(f'Creating user with attrs: {attrs!r}')
         for k, v in attrs.items():
-            setattr(obj2.props, k, v,)
+            setattr(obj2.props, k, v)
         obj2.save()
 
         obj.props.secretary.append(obj2.dn)
@@ -651,21 +659,22 @@ class TestEncoders(TestCase):
 
 
 @pytest.fixture()
-def simple_udm(ucr,):  # type: () -> UDM
+def simple_udm(ucr):  # type: () -> UDM
     account = utils.UCSTestDomainAdminCredentials()
     return UDM.credentials(
         account.binddn,
         account.bindpw,
         ucr["ldap/base"],
         ucr["ldap/master"],
-        ucr["ldap/master/port"],).version(1)
+        ucr["ldap/master/port"],
+    ).version(1)
 
 
 @pytest.fixture()
-def schedule_delete_udm_obj(simple_udm,):
+def schedule_delete_udm_obj(simple_udm):
     objs = []  # type: List[Tuple[str, str]]
 
-    def _func(dn, udm_mod,):  # type: (str, str) -> None
+    def _func(dn, udm_mod):  # type: (str, str) -> None
         objs.append((dn, udm_mod))
 
     yield _func
@@ -684,14 +693,14 @@ def schedule_delete_udm_obj(simple_udm,):
             print(f"UDM {udm_mod_name!r} object {dn!r} not deleted, it had not been saved.")
 
 
-def test_remove_children(ldap_base, schedule_delete_udm_obj, simple_udm,):
+def test_remove_children(ldap_base, schedule_delete_udm_obj, simple_udm):
     """Test 'remove' operation in UDM API"""
     # bugs: [53620]
     cn_mod = simple_udm.get("container/cn")
     cn_obj = cn_mod.new(ldap_base)
     cn_obj.props.name = random_username()
     cn_obj.save()
-    schedule_delete_udm_obj(cn_obj.dn, "container/cn",)
+    schedule_delete_udm_obj(cn_obj.dn, "container/cn")
     cn_obj_dn = cn_obj.dn
     assert cn_mod.get(cn_obj_dn)
 
@@ -701,7 +710,7 @@ def test_remove_children(ldap_base, schedule_delete_udm_obj, simple_udm,):
     user_obj.props.username = random_username()
     user_obj.props.password = random_username()
     user_obj.save()
-    schedule_delete_udm_obj(user_obj.dn, "users/user",)
+    schedule_delete_udm_obj(user_obj.dn, "users/user")
     user_obj_dn = user_obj.dn
 
     user_obj2 = users_mod.get(user_obj_dn)
@@ -717,14 +726,14 @@ def test_remove_children(ldap_base, schedule_delete_udm_obj, simple_udm,):
         users_mod.get(user_obj_dn)
 
 
-def test_remove_children_missing(ldap_base, schedule_delete_udm_obj, simple_udm,):
+def test_remove_children_missing(ldap_base, schedule_delete_udm_obj, simple_udm):
     """Test 'remove' operation in UDM API"""
     # bugs: [53620]
     cn_mod = simple_udm.get("container/cn")
     cn_obj = cn_mod.new(ldap_base)
     cn_obj.props.name = random_username()
     cn_obj.save()
-    schedule_delete_udm_obj(cn_obj.dn, "container/cn",)
+    schedule_delete_udm_obj(cn_obj.dn, "container/cn")
     cn_obj_dn = cn_obj.dn
     assert cn_mod.get(cn_obj_dn)
 
@@ -734,7 +743,7 @@ def test_remove_children_missing(ldap_base, schedule_delete_udm_obj, simple_udm,
     user_obj.props.username = random_username()
     user_obj.props.password = random_username()
     user_obj.save()
-    schedule_delete_udm_obj(user_obj.dn, "users/user",)
+    schedule_delete_udm_obj(user_obj.dn, "users/user")
     user_obj_dn = user_obj.dn
 
     user_obj2 = users_mod.get(user_obj_dn)

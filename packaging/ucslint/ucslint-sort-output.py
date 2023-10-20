@@ -18,9 +18,9 @@ RE_ID = re.compile(r'^([UWEIS]:\d{4}-[BEFNW]?\d+)(?=: )')
 def main() -> None:
     """Sort ucslint output for stable comparison."""
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument('content', type=FileType("r"), default='-', nargs='?', help="input",)
-    parser.add_argument('--group', '-g', action='store_true', help='Group consecutive entries',)
-    parser.add_argument('--summary', '-s', action='store_true', help='Print summary',)
+    parser.add_argument('content', type=FileType("r"), default='-', nargs='?', help="input")
+    parser.add_argument('--group', '-g', action='store_true', help='Group consecutive entries')
+    parser.add_argument('--summary', '-s', action='store_true', help='Print summary')
     args = parser.parse_args()
 
     eventlist = sorted(parse_content(args.content))
@@ -44,11 +44,11 @@ def main() -> None:
 
     if summary:
         print()
-        for group, count in sorted(summary.items(), key=itemgetter(1), reverse=True,):
+        for group, count in sorted(summary.items(), key=itemgetter(1), reverse=True):
             print('%-12s %d' % (group, count))
 
 
-def parse_content(content: IO[str],) -> List[str]:
+def parse_content(content: IO[str]) -> List[str]:
     eventlist: List[str] = []
 
     tmplines: List[str] = []

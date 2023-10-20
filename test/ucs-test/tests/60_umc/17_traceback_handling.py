@@ -19,11 +19,11 @@ from univention.management.console.modules.ucstest import joinscript, unjoinscri
 
 
 @pytest.mark.parametrize('path,expected_trace', [
-    ("ucstest/non_threaded_traceback", re.compile("raise NonThreadedError\\(\\)\n(univention.management.console.modules.ucstest.)?NonThreadedError", re.M,)),
-    ("ucstest/threaded_traceback", re.compile("raise ThreadedError\\(\\)\n(univention.management.console.modules.ucstest.)?ThreadedError", re.M,)),
-    ("ucstest/traceback_as_thread_result", re.compile("(univention.management.console.modules.ucstest.)?ThreadedError", re.M,)),
-],)
-def test_umc_tracebacks(Client, path, expected_trace,):
+    ("ucstest/non_threaded_traceback", re.compile("raise NonThreadedError\\(\\)\n(univention.management.console.modules.ucstest.)?NonThreadedError", re.M)),
+    ("ucstest/threaded_traceback", re.compile("raise ThreadedError\\(\\)\n(univention.management.console.modules.ucstest.)?ThreadedError", re.M)),
+    ("ucstest/traceback_as_thread_result", re.compile("(univention.management.console.modules.ucstest.)?ThreadedError", re.M)),
+])
+def test_umc_tracebacks(Client, path, expected_trace):
     joinscript()
     try:
         umc_client = Client.get_test_connection()
@@ -40,8 +40,8 @@ def test_umc_tracebacks(Client, path, expected_trace,):
 @pytest.mark.parametrize('path,expected_error', [
     ("ucstest/umc_error_traceback", "This is an UMC Error"),
     ("ucstest/umc_error_as_thread_result", "This is an UMC Error"),
-],)
-def test_umc_errors(Client, path, expected_error,):
+])
+def test_umc_errors(Client, path, expected_error):
     joinscript()
     try:
         umc_client = Client.get_test_connection()

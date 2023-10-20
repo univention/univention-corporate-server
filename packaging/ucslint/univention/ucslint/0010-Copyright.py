@@ -66,29 +66,29 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0010-6': (uub.RESULT_WARN, 'debian/copyright is not machine-readable DEP-5'),
         }
 
-    def check(self, path: str,) -> None:
+    def check(self, path: str) -> None:
         super().check(path)
 
         check_files: List[str] = []
 
         # check if copyright file is missing
-        fn = os.path.join(path, 'debian', 'copyright',)
+        fn = os.path.join(path, 'debian', 'copyright')
         try:
             with open(fn) as stream:
                 line = stream.readline().rstrip()
                 if line != DEP5:
-                    self.addmsg('0010-6', 'not machine-readable DEP-5', fn,)
+                    self.addmsg('0010-6', 'not machine-readable DEP-5', fn)
         except OSError:
-            self.addmsg('0010-5', 'file is missing', fn,)
+            self.addmsg('0010-5', 'file is missing', fn)
 
         # looking for files below debian/
-        for f in os.listdir(os.path.join(path, 'debian',)):
-            fn = os.path.join(path, 'debian', f,)
+        for f in os.listdir(os.path.join(path, 'debian')):
+            fn = os.path.join(path, 'debian', f)
             if f.endswith(('.preinst', '.postinst', '.prerm', '.postrm')) or f in ['preinst', 'postinst', 'prerm', 'postrm', 'copyright']:
                 check_files.append(fn)
 
         # looking for Python files
-        for fn in uub.FilteredDirWalkGenerator(path, reHashBang=RE_HASHBANG, readSize=100,):
+        for fn in uub.FilteredDirWalkGenerator(path, reHashBang=RE_HASHBANG, readSize=100):
             check_files.append(fn)
 
         # check files for copyright
@@ -97,7 +97,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 with open(fn) as fd:
                     content = fd.read()
             except (OSError, UnicodeDecodeError):
-                self.addmsg('0010-1', 'failed to open and read file', fn,)
+                self.addmsg('0010-1', 'failed to open and read file', fn)
                 continue
             self.debug('testing %s' % fn)
 
@@ -105,19 +105,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 continue
 
             if not self.is_agpl3(content):
-                self.addmsg('0010-2', 'file contains no copyright text block', fn,)
+                self.addmsg('0010-2', 'file contains no copyright text block', fn)
                 continue
 
             # copyright text block is present - lets check if it's outdated
             match = RE_COPYRIGHT_VERSION.search(content)
             if not match:
-                self.addmsg('0010-4', 'cannot find copyright line containing year', fn,)
+                self.addmsg('0010-4', 'cannot find copyright line containing year', fn)
             else:
                 years = match.group(1)
                 current_year = str(time.localtime()[0])
                 if current_year not in years:
                     self.debug(f'Current year={current_year}  years="{years}"')
-                    self.addmsg('0010-3', 'copyright line seems to be outdated', fn,)
+                    self.addmsg('0010-3', 'copyright line seems to be outdated', fn)
 
     SPDX = "SPDX-License-Identifier: AGPL-3.0-only"
     AGPL = (
@@ -129,7 +129,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         'You should have received a copy of the GNU Affero General Public',
     )
 
-    def is_agpl3(self, content: str,) -> bool:
+    def is_agpl3(self, content: str) -> bool:
         if self.SPDX in content:
             return True
 

@@ -20,7 +20,7 @@ default_password = 'univention'
 
 class Account:
 
-    def __init__(self, description, dn, name, password=default_password,):
+    def __init__(self, description, dn, name, password=default_password):
         self.description = description
         self.dn = dn
         self.name = name
@@ -37,7 +37,7 @@ try:
         try:
             what = 'Helpdesk group'
             helpdesk_group1_dn, helpdesk_group1_name = udm.create_group()
-            helpdesk_group1 = Account(what, helpdesk_group1_dn, helpdesk_group1_name,)
+            helpdesk_group1 = Account(what, helpdesk_group1_dn, helpdesk_group1_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -47,7 +47,7 @@ try:
         try:
             what = 'Helpdesk user'
             helpdesk_user1_dn, helpdesk_user1_name = udm.create_user()
-            helpdesk_user1 = Account(what, helpdesk_user1_dn, helpdesk_user1_name,)
+            helpdesk_user1 = Account(what, helpdesk_user1_dn, helpdesk_user1_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -57,7 +57,7 @@ try:
         try:
             what = 'Helpdesk user'
             helpdesk_user2_dn, helpdesk_user2_name = udm.create_user()
-            helpdesk_user2 = Account(what, helpdesk_user2_dn, helpdesk_user2_name,)
+            helpdesk_user2 = Account(what, helpdesk_user2_dn, helpdesk_user2_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -67,7 +67,7 @@ try:
         try:
             what = 'Unprotected user'
             unprotected_user_dn, unprotected_user_name = udm.create_user()
-            unprotected_user = Account(what, unprotected_user_dn, unprotected_user_name,)
+            unprotected_user = Account(what, unprotected_user_dn, unprotected_user_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -78,7 +78,7 @@ try:
             what = 'helpdesk user'
             udm.modify_object('groups/group', dn=helpdesk_group1.dn, append={
                 'users': [helpdesk_user1.dn],
-            },)
+            })
         except Exception as exc:
             fail(f'Adding {helpdesk_user1} to corresponding group {helpdesk_group1.name} failed: {exc}')
         else:
@@ -88,7 +88,7 @@ try:
         try:
             what = 'Helpdesk group'
             helpdesk_group2_dn, helpdesk_group2_name = udm.create_group()
-            helpdesk_group2 = Account(what, helpdesk_group2_dn, helpdesk_group2_name,)
+            helpdesk_group2 = Account(what, helpdesk_group2_dn, helpdesk_group2_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -99,7 +99,7 @@ try:
             what = 'helpdesk user'
             udm.modify_object('groups/group', dn=helpdesk_group2.dn, append={
                 'users': [helpdesk_user2.dn],
-            },)
+            })
         except Exception as exc:
             fail(f'Adding {helpdesk_user2} to corresponding group {helpdesk_group2.name} failed: {exc}')
         else:
@@ -109,7 +109,7 @@ try:
         try:
             udm.modify_object('groups/group', dn=helpdesk_group1.dn, append={
                 'nestedGroup': [helpdesk_group2.dn],
-            },)
+            })
         except Exception as exc:
             fail(f'Cannot create nested group: {exc}')
         else:
@@ -131,7 +131,7 @@ try:
                 'password': 'univention2',
                 'overridePWHistory': 1,
                 'overridePWLength': 1,
-            },)
+            })
         except Exception as exc:
             fail(f'{helpdesk_user1} cannot reset password of {unprotected_user}: {exc}')
         else:
@@ -143,7 +143,7 @@ try:
                 'password': 'univention2',
                 'overridePWHistory': 1,
                 'overridePWLength': 1,
-            },)
+            })
         except Exception:
             print(f'OK: Nested {helpdesk_user2} cannot reset password of {unprotected_user}, as it should be')
         else:
@@ -159,7 +159,7 @@ try:
                 'password': uts.random_string(),
                 'overridePWHistory': 1,
                 'overridePWLength': 1,
-            },)
+            })
         except Exception as exc:
             fail(f'{helpdesk_user1} can not set password of {unprotected_user}: {exc}')
         else:
@@ -171,7 +171,7 @@ try:
                 'password': uts.random_string(),
                 'overridePWHistory': 1,
                 'overridePWLength': 1,
-            },)
+            })
         except Exception as exc:
             fail(f'{helpdesk_user2} user can not reset password of {unprotected_user}: {exc}')
         else:

@@ -75,9 +75,9 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 MEMCACHED_SOCKET = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
 MEMCACHED_MAX_KEY = 250
 
-SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"),)
+SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
 IS_SELFSERVICE_MASTER = '%(hostname)s.%(domainname)s' % ucr == SELFSERVICE_MASTER
-UDM_REST_SERVER = ucr.get('self-service/udm-rest-server', '%(hostname)s.%(domainname)s' % ucr,)
+UDM_REST_SERVER = ucr.get('self-service/udm-rest-server', '%(hostname)s.%(domainname)s' % ucr)
 DISALLOW_AUTHENTICATION = not ucr.is_true('umc/self-service/allow-authenticated-use')
 
 DEREGISTRATION_TIMESTAMP_FORMATTING = '%Y%m%d%H%M%SZ'
@@ -91,44 +91,44 @@ if IS_SELFSERVICE_MASTER:
         MODULE.error('Could not load udm module: %s' % (exc,))
 
 
-def forward_to_master(func,):
+def forward_to_master(func):
     @wraps(func)
-    def _decorator(self, request,*args, **kwargs):
+    def _decorator(self, request, *args, **kwargs):
         if not IS_SELFSERVICE_MASTER:
             try:
-                language = str(self.locale).split('.')[0].replace('_', '-',)
-                client = Client(SELFSERVICE_MASTER, language=language,)
+                language = str(self.locale).split('.')[0].replace('_', '-')
+                client = Client(SELFSERVICE_MASTER, language=language)
                 client.authenticate_with_machine_account()
-                response = client.umc_command(request.arguments[0], request.options,)
+                response = client.umc_command(request.arguments[0], request.options)
             except (Unauthorized, ConnectionError) as exc:
-                raise UMC_Error(_('The connection to the server could not be established. Please try again later. Error message was: %s') % (exc,), status=503,)
+                raise UMC_Error(_('The connection to the server could not be established. Please try again later. Error message was: %s') % (exc,), status=503)
             except HTTPError as exc:
                 response = exc.response
-            self.finished(request.id, response.result, message=response.message, status=response.status,)
+            self.finished(request.id, response.result, message=response.message, status=response.status)
             return
-        return func(self, request, *args, **kwargs,)
+        return func(self, request, *args, **kwargs)
     return _decorator
 
 
-def forward_to_master_if_authentication_disabled(func,):
+def forward_to_master_if_authentication_disabled(func):
     if DISALLOW_AUTHENTICATION:
         return forward_to_master(func)
     return func
 
 
-def prevent_denial_of_service(func,):
-    def _pretty_time(sec,):
+def prevent_denial_of_service(func):
+    def _pretty_time(sec):
         if sec <= 60:
             return _("one minute")
-        m, s = divmod(sec, 60,)
+        m, s = divmod(sec, 60)
         if m < 60:
             return _("{} minutes").format(m + 1)
         elif m == 60:
             return _("one hour")  # and one minute, but nvm
-        h, m = divmod(m, 60,)
+        h, m = divmod(m, 60)
         return _("{} hours").format(h + 1)
 
-    def _check_limits(memcache, limits,):
+    def _check_limits(memcache, limits):
         limit_reached = False
         _max_wait = datetime.datetime.utcnow()
         for key, decay, limit in limits:
@@ -149,16 +149,17 @@ def prevent_denial_of_service(func,):
                         key: count,
                         f"{key}:exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=decay),
                     },
-                    decay,)
+                    decay,
+                )
             if count > limit:
                 limit_reached = True
-                _max_wait = max(_max_wait, memcache.get(f"{key}:exp"),)
+                _max_wait = max(_max_wait, memcache.get(f"{key}:exp"))
         return limit_reached, _max_wait
 
     @wraps(func)
     def _decorated(self, *args, **kwargs):
         # check total request limits
-        total_limit_reached, total_max_wait = _check_limits(self.memcache, self.total_limits,)
+        total_limit_reached, total_max_wait = _check_limits(self.memcache, self.total_limits)
 
         # check user request limits
         try:
@@ -182,21 +183,21 @@ def prevent_denial_of_service(func,):
             (f"{username}_day", 86400, self.limit_user_day),
         ]
 
-        user_limit_reached, user_max_wait = _check_limits(self.memcache, user_limits,)
+        user_limit_reached, user_max_wait = _check_limits(self.memcache, user_limits)
 
         if total_limit_reached or user_limit_reached:
-            time_s = _pretty_time((max(total_max_wait, user_max_wait,) - datetime.datetime.utcnow()).total_seconds())
+            time_s = _pretty_time((max(total_max_wait, user_max_wait) - datetime.datetime.utcnow()).total_seconds())
             raise ConnectionLimitReached(time_s)
 
-        return func(self, *args, **kwargs,)
+        return func(self, *args, **kwargs)
     return _decorated
 
 
 class ConnectionLimitReached(UMC_Error):
     status = 503
 
-    def __init__(self, seconds,):
-        super(ConnectionLimitReached, self,).__init__(_("The allowed maximum number of connections to the server has been reached. Please retry in {}.").format(seconds))
+    def __init__(self, seconds):
+        super(ConnectionLimitReached, self).__init__(_("The allowed maximum number of connections to the server has been reached. Please retry in {}.").format(seconds))
 
 
 class ServiceForbidden(UMC_Error):
@@ -204,14 +205,14 @@ class ServiceForbidden(UMC_Error):
     status = 403
 
     def __init__(self):
-        super(ServiceForbidden, self,).__init__(_("Either username or password is incorrect or you are not allowed to use this service."))
+        super(ServiceForbidden, self).__init__(_("Either username or password is incorrect or you are not allowed to use this service."))
 
 
 class TokenNotFound(UMC_Error):
     status = 400
 
     def __init__(self):
-        super(TokenNotFound, self,).__init__(
+        super(TokenNotFound, self).__init__(
             _("The token you supplied is either expired or invalid. Please request a new one."))
 
 
@@ -219,7 +220,7 @@ class NoMethodsAvailable(UMC_Error):
     status = 403
 
     def __init__(self):
-        super(NoMethodsAvailable, self,).__init__(_('No contact information is stored for this user. Resetting the password is not possible.'))
+        super(NoMethodsAvailable, self).__init__(_('No contact information is stored for this user. Resetting the password is not possible.'))
 
 
 class TokenSendMessage(UMC_Error):
@@ -233,18 +234,18 @@ class Instance(Base):
 
     def init(self):
         if not ucr.is_true("umc/self-service/enabled"):
-            raise UMC_Error(_('The password reset service is disabled via configuration registry.'), status=503,)
+            raise UMC_Error(_('The password reset service is disabled via configuration registry.'), status=503)
 
         self._usersmod = None
         self.groupmod = None
 
-        self.token_validity_period = ucr.get_int("umc/self-service/passwordreset/token_validity_period", 3600,)
-        limit_total_minute = ucr.get_int("umc/self-service/passwordreset/limit/total/minute", 0,)
-        limit_total_hour = ucr.get_int("umc/self-service/passwordreset/limit/total/hour", 0,)
-        limit_total_day = ucr.get_int("umc/self-service/passwordreset/limit/total/day", 0,)
-        self.limit_user_minute = ucr.get_int("umc/self-service/passwordreset/limit/per_user/minute", 0,)
-        self.limit_user_hour = ucr.get_int("umc/self-service/passwordreset/limit/per_user/hour", 0,)
-        self.limit_user_day = ucr.get_int("umc/self-service/passwordreset/limit/per_user/day", 0,)
+        self.token_validity_period = ucr.get_int("umc/self-service/passwordreset/token_validity_period", 3600)
+        limit_total_minute = ucr.get_int("umc/self-service/passwordreset/limit/total/minute", 0)
+        limit_total_hour = ucr.get_int("umc/self-service/passwordreset/limit/total/hour", 0)
+        limit_total_day = ucr.get_int("umc/self-service/passwordreset/limit/total/day", 0)
+        self.limit_user_minute = ucr.get_int("umc/self-service/passwordreset/limit/per_user/minute", 0)
+        self.limit_user_hour = ucr.get_int("umc/self-service/passwordreset/limit/per_user/hour", 0)
+        self.limit_user_day = ucr.get_int("umc/self-service/passwordreset/limit/per_user/day", 0)
 
         self.total_limits = [
             ("t:c_minute", 60, limit_total_minute),
@@ -257,7 +258,7 @@ class Instance(Base):
             atexit.register(self.db.close_db)
             if not self.db.table_exists():
                 self.db.create_table()
-            self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True,)
+            self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True)
 
         self.send_plugins = get_sending_plugins(MODULE.process)
         self.password_reset_plugins = {k: v for k, v in self.send_plugins.items() if v.message_application() == 'password_reset'}
@@ -269,15 +270,15 @@ class Instance(Base):
             self._usersmod = univention.admin.modules.get('users/user')
             if not self._usersmod.initialized:
                 lo, po = get_machine_connection()
-                univention.admin.modules.init(lo, po, self._usersmod,)
+                univention.admin.modules.init(lo, po, self._usersmod)
         return self._usersmod
 
     @forward_to_master
     @sanitize(
-        username=StringSanitizer(required=True, minimum=1,),
-        password=StringSanitizer(required=True, minimum=1,),)
+        username=StringSanitizer(required=True, minimum=1),
+        password=StringSanitizer(required=True, minimum=1))
     @simple_response
-    def get_service_specific_passwords(self, username, password,):
+    def get_service_specific_passwords(self, username, password):
         """
         Get users (possible) service specific passwords.
 
@@ -288,24 +289,24 @@ class Instance(Base):
             MODULE.error(f'get_service_specific_passwords(): {msg}')
             raise UMC_Error(msg)
 
-        dn, username = self.auth(username, password,)
+        dn, username = self.auth(username, password)
         ret = []
         # we only have radius as a service specific password: setting
         # the backend to true means that the admin wants to allow
         # radius password. at some point we would need to know which
         # services should actually be managed
         ldap_connection, ldap_position = getMachineConnection()
-        radius_passwords = ldap_connection.get(dn, attr=['univentionRadiusPassword'],).get('univentionRadiusPassword', [],)
+        radius_passwords = ldap_connection.get(dn, attr=['univentionRadiusPassword']).get('univentionRadiusPassword', [])
         ret.append({'type': 'radius', 'set': len(radius_passwords)})
         return ret
 
     @forward_to_master
     @sanitize(
-        username=StringSanitizer(required=True, minimum=1,),
-        password=StringSanitizer(required=True, minimum=1,),
-        password_type=StringSanitizer(required=True, minimum=1,),)
+        username=StringSanitizer(required=True, minimum=1),
+        password=StringSanitizer(required=True, minimum=1),
+        password_type=StringSanitizer(required=True, minimum=1))
     @simple_response
-    def set_service_specific_passwords(self, username, password, password_type,):
+    def set_service_specific_passwords(self, username, password, password_type):
         """
         Set a new service specific password.
 
@@ -316,10 +317,10 @@ class Instance(Base):
             MODULE.error(f'get_service_specific_passwords(): {msg}')
             raise UMC_Error(msg)
 
-        dn, username = self.auth(username, password,)
+        dn, username = self.auth(username, password)
         MODULE.error(f'set_service_specific_passwords(): Setting {password_type} password for {username}')
         if password_type == 'radius':
-            udm = UDMRest.http('https://%s/univention/udm/' % UDM_REST_SERVER, 'cn=admin', open('/etc/ldap.secret').read(),)
+            udm = UDMRest.http('https://%s/univention/udm/' % UDM_REST_SERVER, 'cn=admin', open('/etc/ldap.secret').read())
             user_obj = udm.get('users/user').get(dn)
             service_specific_password = user_obj.generate_service_specific_password('radius')
         else:
@@ -330,10 +331,10 @@ class Instance(Base):
 
     @forward_to_master
     @sanitize(
-        username=StringSanitizer(required=True, minimum=1,),
-        password=StringSanitizer(required=True, minimum=1,),)
+        username=StringSanitizer(required=True, minimum=1),
+        password=StringSanitizer(required=True, minimum=1))
     @simple_response
-    def get_contact(self, username, password,):
+    def get_contact(self, username, password):
         """
         Get users contact data.
 
@@ -344,8 +345,8 @@ class Instance(Base):
             MODULE.error(f'get_contact(): {msg}')
             raise UMC_Error(msg)
 
-        dn, username = self.auth(username, password,)
-        if self.is_blacklisted(username, 'passwordreset',):  # FIXME: should be 'protect-account'
+        dn, username = self.auth(username, password)
+        if self.is_blacklisted(username, 'passwordreset'):  # FIXME: should be 'protect-account'
             raise ServiceForbidden()
 
         user = self.get_udm_user(username=username)
@@ -360,12 +361,12 @@ class Instance(Base):
 
     @forward_to_master
     @sanitize(
-        username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1,),
-        password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1,),)
+        username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1),
+        password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1))
     @simple_response
-    def get_user_attributes(self, username=None, password=None,):  # MUST be supported until UCS 4.4-7 is out of maintenance
-        dn, username = self.authenticate_user(username, password,)
-        if self.is_blacklisted(username, 'profiledata',):
+    def get_user_attributes(self, username=None, password=None):  # MUST be supported until UCS 4.4-7 is out of maintenance
+        dn, username = self.authenticate_user(username, password)
+        if self.is_blacklisted(username, 'profiledata'):
             raise ServiceForbidden()
 
         user = self.get_udm_user_by_dn(dn)
@@ -373,7 +374,7 @@ class Instance(Base):
         user.set_default_values()
         properties = user.info.copy()
         widget_descriptions = [
-            dict(wd, value=properties.get(wd['id']),) for wd in self._get_user_attributes_descriptions()
+            dict(wd, value=properties.get(wd['id'])) for wd in self._get_user_attributes_descriptions()
             if user.has_property(wd['id'])
         ]
         # TODO make layout configurable via ucr ?
@@ -386,15 +387,15 @@ class Instance(Base):
 
     @forward_to_master_if_authentication_disabled
     @sanitize(
-        username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1,),
-        password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1,),)
+        username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1),
+        password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1))
     @simple_response
-    def get_user_attributes_values(self, attributes, username=None, password=None,):
-        dn, username = self.authenticate_user(username, password,)
-        if self.is_blacklisted(username, 'profiledata',):
+    def get_user_attributes_values(self, attributes, username=None, password=None):
+        dn, username = self.authenticate_user(username, password)
+        if self.is_blacklisted(username, 'profiledata'):
             raise ServiceForbidden()
 
-        user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '',).split(',')]
+        user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
 
         user = self.get_udm_user_by_dn(dn)
         user.set_defaults = True
@@ -410,8 +411,8 @@ class Instance(Base):
         return self._get_user_attributes_descriptions()
 
     def _get_user_attributes_descriptions(self):
-        user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '',).split(',')]
-        read_only_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes/read-only', '',).split(',')]
+        user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
+        read_only_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes/read-only', '').split(',')]
         widget_descriptions = []
         label_overwrites = {
             'jpegPhoto': _('Your picture'),
@@ -424,7 +425,7 @@ class Instance(Base):
                 continue
             widget_description = {
                 'id': propname,
-                'label': label_overwrites.get(propname, prop.short_description,),
+                'label': label_overwrites.get(propname, prop.short_description),
                 'description': prop.long_description,
                 'syntax': prop.syntax.name,
                 'size': prop.size or prop.syntax.size,
@@ -446,11 +447,11 @@ class Instance(Base):
     def get_registration_attributes(self):
         ucr.load()
         property_ids = ['PasswordRecoveryEmail', 'password']
-        for id_ in [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '',).split(',') if attr.strip()]:
+        for id_ in [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',') if attr.strip()]:
             if id_ not in property_ids:
                 property_ids.append(id_)
         lo, po = get_machine_connection()
-        users_mod = UDM_Module('users/user', True, lo, po,)
+        users_mod = UDM_Module('users/user', True, lo, po)
         properties = {prop['id']: prop for prop in users_mod.properties(None)}
         not_existing = set(property_ids) - set(properties.keys())
         properties = {k: v for (k, v) in properties.items() if 'dynamicValues' not in v and 'udm' not in v['type']}  # filter out not supported props
@@ -469,32 +470,32 @@ class Instance(Base):
             'layout': [prop['id'] for prop in properties],
         }
 
-    def _update_required_attr_of_props_for_registration(self, properties,):
+    def _update_required_attr_of_props_for_registration(self, properties):
         for k in properties.keys():
-            if isinstance(properties[k], dict,):
+            if isinstance(properties[k], dict):
                 properties[k]['required'] = False
             else:
                 properties[k].required = False
-        required_ids = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes/required', '',).split(',') if attr.strip()])
+        required_ids = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes/required', '').split(',') if attr.strip()])
         for id_ in required_ids:
             if id_ in properties:
-                if isinstance(properties[id_], dict,):
+                if isinstance(properties[id_], dict):
                     properties[id_]['required'] = True
                 else:
                     properties[id_].required = True
 
     @forward_to_master_if_authentication_disabled
     @sanitize(
-        username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1,),
-        password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1,),)
+        username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1),
+        password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1))
     @simple_response
-    def validate_user_attributes(self, username, password, attributes,):
-        dn, username = self.authenticate_user(username, password,)
-        if self.is_blacklisted(username, 'profiledata',):
+    def validate_user_attributes(self, username, password, attributes):
+        dn, username = self.authenticate_user(username, password)
+        if self.is_blacklisted(username, 'profiledata'):
             raise ServiceForbidden()
         return self._validate_user_attributes(attributes)
 
-    def _validate_user_attributes(self, attributes, map_properties_func=None,):
+    def _validate_user_attributes(self, attributes, map_properties_func=None):
         res = {}
         properties = self.usersmod.property_descriptions
         if map_properties_func:
@@ -507,7 +508,7 @@ class Instance(Base):
 
             isValid = True
             message = ''
-            if prop.multivalue and isinstance(value, (tuple, list),):
+            if prop.multivalue and isinstance(value, (tuple, list)):
                 isValid = []
                 message = []
                 for ival in value:
@@ -539,30 +540,30 @@ class Instance(Base):
 
     @forward_to_master_if_authentication_disabled
     @sanitize(
-        username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1,),
-        password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1,),)
+        username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1),
+        password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1))
     @simple_response(with_request=True)
-    def set_user_attributes(self, request, attributes, username=None, password=None,):
-        dn, username = self.authenticate_user(username, password,)
+    def set_user_attributes(self, request, attributes, username=None, password=None):
+        dn, username = self.authenticate_user(username, password)
         username = username or request.username
         if password:
-            dn, username = self.auth(username, password,)
-            lo, po = get_user_connection(binddn=dn, bindpw=password,)
+            dn, username = self.auth(username, password)
+            lo, po = get_user_connection(binddn=dn, bindpw=password)
         else:
             lo = request.get_user_ldap_connection(write=True)
             po = univention.admin.uldap.position(lo.base)
 
-        if self.is_blacklisted(username, 'profiledata',):
+        if self.is_blacklisted(username, 'profiledata'):
             raise ServiceForbidden()
 
-        user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '',).split(',')]
-        read_only_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes/read-only', '',).split(',')]
+        user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
+        read_only_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes/read-only', '').split(',')]
 
         for attr in attributes:
             if attr in read_only_attributes:
                 MODULE.error('set_user_attributes(): attribute %s is read-only' % (attr,))
                 raise UMC_Error(_('The attribute %s is read-only.') % (attr,))
-        user = self.usersmod.object(None, lo, po, dn,)
+        user = self.usersmod.object(None, lo, po, dn)
         user.open()
         for propname, value in attributes.items():
             if propname in user_attributes and user.has_property(propname):
@@ -577,22 +578,23 @@ class Instance(Base):
     def _get_password_complexity_message(self):
         return ucr.get(
             'umc/login/password-complexity-message/%s' % (self.locale.language,),
-            ucr.get('umc/login/password-complexity-message/en', '',),)
+            ucr.get('umc/login/password-complexity-message/en', ''),
+        )
 
     @forward_to_master
     @simple_response
-    def create_self_registered_account(self, attributes,):
+    def create_self_registered_account(self, attributes):
         MODULE.info(f'create_self_registered_account(): attributes: {attributes}')
         ucr.load()
-        if ucr.is_false('umc/self-service/account-registration/backend/enabled', True,):
+        if ucr.is_false('umc/self-service/account-registration/backend/enabled', True):
             msg = _('The account registration was disabled via the Univention Configuration Registry.')
             MODULE.error(f'create_self_registered_account(): {msg}')
             raise UMC_Error(msg)
         # filter out attributes that are not valid to set
-        allowed_to_set = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '',).split(',') if attr.strip()])
+        allowed_to_set = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',') if attr.strip()])
         attributes = {k: v for (k, v) in attributes.items() if k in allowed_to_set}
         # validate attributes
-        res = self._validate_user_attributes(attributes, self._update_required_attr_of_props_for_registration,)
+        res = self._validate_user_attributes(attributes, self._update_required_attr_of_props_for_registration)
         # check username taken
         if 'username' in attributes:
             try:
@@ -604,7 +606,7 @@ class Instance(Base):
                     'isValid': False,
                     'message': _('The username is already taken'),
                 }
-        invalid = {k: v for (k, v) in res.items() if not (all(v['isValid']) if isinstance(v['isValid'], list,) else v['isValid'])}
+        invalid = {k: v for (k, v) in res.items() if not (all(v['isValid']) if isinstance(v['isValid'], list) else v['isValid'])}
         if len(invalid):
             return {
                 'success': False,
@@ -613,7 +615,7 @@ class Instance(Base):
             }
 
         # check for missing required attributes from umc/self-service/account-registration/udm_attributes/required
-        required_attrs = [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes/required', '',).split(',') if attr.strip()]
+        required_attrs = [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes/required', '').split(',') if attr.strip()]
         not_found = [attr for attr in required_attrs if attr not in attributes]
         if not_found:
             msg = _('The account could not be created:\nInformation provided is not sufficient. The following properties are missing:\n%s') % ('\n'.join(not_found),)
@@ -624,13 +626,13 @@ class Instance(Base):
         lo, po = get_admin_connection()
 
         # get usertemplate
-        template_dn = ucr.get('umc/self-service/account-registration/usertemplate', '',)
+        template_dn = ucr.get('umc/self-service/account-registration/usertemplate', '')
         usertemplate = None
         if template_dn:
             usertemplate_mod = univention.admin.modules.get('settings/usertemplate')
-            univention.admin.modules.init(lo, po, usertemplate_mod, None, True,)
+            univention.admin.modules.init(lo, po, usertemplate_mod, None, True)
             try:
-                usertemplate = usertemplate_mod.object(None, lo, None, template_dn,)
+                usertemplate = usertemplate_mod.object(None, lo, None, template_dn)
             except udm_errors.noObject:
                 msg = _('The user template "{template_dn}" set by the "umc/self-service/account-registration/usertemplate" UCR variable does not exist. A user account can not be created. Please contact your system administrator.').format(template_dn=template_dn)
                 MODULE.error(f'create_self_registered_account(): {msg}')
@@ -638,12 +640,12 @@ class Instance(Base):
 
         # init user module with template
         usersmod = univention.admin.modules.get('users/user')
-        univention.admin.modules.init(lo, po, usersmod, usertemplate, True,)
+        univention.admin.modules.init(lo, po, usersmod, usertemplate, True)
 
         # get user container
         udm = UDM.machine().version(2)
         user_position = univention.admin.uldap.position(po.getBase())
-        container_dn = ucr.get('umc/self-service/account-registration/usercontainer', None,)
+        container_dn = ucr.get('umc/self-service/account-registration/usercontainer', None)
         if container_dn:
             try:
                 container = udm.obj_by_dn(container_dn)
@@ -666,7 +668,7 @@ class Instance(Base):
         # create user
         attributes['PasswordRecoveryEmailVerified'] = 'FALSE'
         attributes['RegisteredThroughSelfService'] = 'TRUE'
-        new_user = usersmod.object(None, lo, user_position,)
+        new_user = usersmod.object(None, lo, user_position)
         new_user.open()
         for key, value in attributes.items():
             if key in new_user and value:
@@ -674,7 +676,7 @@ class Instance(Base):
         try:
             new_user.create()
         except univention.admin.uexceptions.base as exc:
-            password_complexity_message = self._get_password_complexity_message() if isinstance(exc, (udm_errors.pwToShort, udm_errors.pwQuality),) else ''
+            password_complexity_message = self._get_password_complexity_message() if isinstance(exc, (udm_errors.pwToShort, udm_errors.pwQuality)) else ''
             MODULE.error('create_self_registered_account(): could not create user: %s' % (exc,))
             return {
                 'success': False,
@@ -695,7 +697,8 @@ class Instance(Base):
                 new_user['username'],
                 'verify_email',
                 new_user['PasswordRecoveryEmail'],
-                user_info,)
+                user_info,
+            )
         except Exception:
             MODULE.error('could not send message: %s' % (traceback.format_exc(),))
             verify_token_successfully_send = False
@@ -710,7 +713,7 @@ class Instance(Base):
             },
         }
 
-    def _extract_user_properties(self, user_obj,):
+    def _extract_user_properties(self, user_obj):
         message_fields = [
             'username',
             'title',
@@ -722,7 +725,7 @@ class Instance(Base):
             'lastname',
             'mailPrimaryAddress',
         ]
-        info_out = {field: user_obj.info.get(field, '',) for field in message_fields}
+        info_out = {field: user_obj.info.get(field, '') for field in message_fields}
         return info_out
 
     @forward_to_master
@@ -730,10 +733,10 @@ class Instance(Base):
     @sanitize(
         username=StringSanitizer(required=True))
     @simple_response
-    def send_verification_token(self, username,):
+    def send_verification_token(self, username):
         MODULE.info(f"send_verification_token(): username: {username}")
         ucr.load()
-        if ucr.is_false('umc/self-service/account-verification/backend/enabled', True,):
+        if ucr.is_false('umc/self-service/account-verification/backend/enabled', True):
             msg = _('The account verification was disabled via the Univention Configuration Registry.')
             MODULE.error(f'send_verification_token(): {msg}')
             raise UMC_Error(msg)
@@ -754,7 +757,7 @@ class Instance(Base):
             if not email:
                 return invalid_information
         user_info = self._extract_user_properties(user._orig_udm_object)
-        self.send_message(username, 'verify_email', email, user_info,)
+        self.send_message(username, 'verify_email', email, user_info)
         return {
             'success': True,
             'data': {
@@ -768,29 +771,29 @@ class Instance(Base):
         username=StringSanitizer(required=True),
         password=StringSanitizer(required=True),
         email=StringSanitizer(required=False),
-        mobile=StringSanitizer(required=False),)
+        mobile=StringSanitizer(required=False))
     @simple_response
-    def set_contact(self, username, password, email=None, mobile=None,):
+    def set_contact(self, username, password, email=None, mobile=None):
         if ucr.is_false('umc/self-service/protect-account/backend/enabled'):
             msg = _('The account protection was disabled via the Univention Configuration Registry.')
             MODULE.error(f'set_contact(): {msg}')
             raise UMC_Error(msg)
         MODULE.info(f"set_contact(): username: {username} password: ***** email: {email} mobile: {mobile}")
-        dn, username = self.auth(username, password,)
-        if self.is_blacklisted(username, 'passwordreset',):
+        dn, username = self.auth(username, password)
+        if self.is_blacklisted(username, 'passwordreset'):
             raise ServiceForbidden()
         try:
-            return self.set_contact_data(dn, email, mobile,)
+            return self.set_contact_data(dn, email, mobile)
         except Exception:
-            raise UMC_Error(_('Changing contact data failed.'), status=500,)
+            raise UMC_Error(_('Changing contact data failed.'), status=500)
 
     @forward_to_master
     @prevent_denial_of_service
     @sanitize(
         username=StringSanitizer(required=True),
-        method=StringSanitizer(required=True),)
+        method=StringSanitizer(required=True))
     @simple_response
-    def send_token(self, username, method,):
+    def send_token(self, username, method):
         if ucr.is_false('umc/self-service/passwordreset/backend/enabled'):
             msg = _('The password reset was disabled via the Univention Configuration Registry.')
             MODULE.error(f'send_token(): {msg}')
@@ -802,7 +805,7 @@ class Instance(Base):
             MODULE.error(f"send_token() method '{method}' not in {self.password_reset_plugins.keys()}.")
             raise UMC_Error(_("Unknown recovery method '{}'.").format(method))
 
-        if self.is_blacklisted(username, 'passwordreset',):
+        if self.is_blacklisted(username, 'passwordreset'):
             raise TokenSendMessage()
 
         # check if the user has the required attribute set
@@ -812,7 +815,7 @@ class Instance(Base):
         if len(user[plugin.udm_property]) > 0:
             # found contact info
             user_info = self._extract_user_properties(user)
-            self.send_message(username, method, user[plugin.udm_property], user_info,)
+            self.send_message(username, method, user[plugin.udm_property], user_info)
 
         raise TokenSendMessage()
 
@@ -821,12 +824,13 @@ class Instance(Base):
     @sanitize(
         token=StringSanitizer(required=True),
         username=StringSanitizer(required=True),
-        method=StringSanitizer(required=True),)
+        method=StringSanitizer(required=True),
+    )
     @simple_response
-    def verify_contact(self, token, username, method,):
+    def verify_contact(self, token, username, method):
         MODULE.info(f'verify_contact(): token: {token} username: {username} method: {method}')
         ucr.load()
-        if ucr.is_false('umc/self-service/account-verification/backend/enabled', True,):
+        if ucr.is_false('umc/self-service/account-verification/backend/enabled', True):
             msg = _('The account verification was disabled via the Univention Configuration Registry.')
             MODULE.error(f'verify_contact(): {msg}')
             raise UMC_Error(msg)
@@ -838,11 +842,11 @@ class Instance(Base):
                 'success': False,
                 'failType': 'INVALID_INFORMATION',
             }
-        next_steps = ucr.get('umc/self-service/account-verification/next-steps/%s' % self.locale.language, '',)
+        next_steps = ucr.get('umc/self-service/account-verification/next-steps/%s' % self.locale.language, '')
         if not next_steps:
-            next_steps = ucr.get('umc/self-service/account-verification/next-steps', '',)
+            next_steps = ucr.get('umc/self-service/account-verification/next-steps', '')
         plugin = self._get_send_plugin(method)
-        if getattr(user.props, plugin.udm_property,) == 'TRUE':  # cleanup. map property to actual boolean?
+        if getattr(user.props, plugin.udm_property) == 'TRUE':  # cleanup. map property to actual boolean?
             return {
                 'success': True,
                 'successType': 'ALREADY_VERIFIED',
@@ -851,10 +855,10 @@ class Instance(Base):
                     'nextSteps': next_steps,
                 },
             }
-        self._check_token(username, token, token_application=plugin.message_application(),)
-        setattr(user.props, plugin.udm_property, 'TRUE',)
+        self._check_token(username, token, token_application=plugin.message_application())
+        setattr(user.props, plugin.udm_property, 'TRUE')
         user.save()
-        self.db.delete_tokens(token=token, username=username,)
+        self.db.delete_tokens(token=token, username=username)
         return {
             'success': True,
             'successType': 'VERIFIED',
@@ -868,32 +872,33 @@ class Instance(Base):
     @prevent_denial_of_service
     @sanitize(
         username=StringSanitizer(required=True),
-        password=StringSanitizer(required=True),)
+        password=StringSanitizer(required=True),
+    )
     @simple_response
-    def deregister_account(self, username, password,):
+    def deregister_account(self, username, password):
         MODULE.info(f"deregister_account(): username: {username} password: *****")
         ucr.load()
-        if ucr.is_false('umc/self-service/account-deregistration/enabled', True,):
+        if ucr.is_false('umc/self-service/account-deregistration/enabled', True):
             msg = _('The account deregistration was disabled via the Univention Configuration Registry.')
             MODULE.error(f'deregister_account(): {msg}')
             raise UMC_Error(msg)
-        dn, username = self.auth(username, password,)
-        if self.is_blacklisted(username, 'account-deregistration',):
+        dn, username = self.auth(username, password)
+        if self.is_blacklisted(username, 'account-deregistration'):
             raise ServiceForbidden()
         try:
             return self._deregister_account(username)
         except Exception:
-            raise UMC_Error(_('Account could not be deleted'), status=500,)
+            raise UMC_Error(_('Account could not be deleted'), status=500)
 
-    def _deregister_account(self, username,):
+    def _deregister_account(self, username):
         try:
             user = UDM.admin().version(2).get('users/user').get_by_id(username)
             user.props.DeregisteredThroughSelfService = 'TRUE'
-            user.props.DeregistrationTimestamp = datetime.datetime.strftime(datetime.datetime.utcnow(), DEREGISTRATION_TIMESTAMP_FORMATTING,)
+            user.props.DeregistrationTimestamp = datetime.datetime.strftime(datetime.datetime.utcnow(), DEREGISTRATION_TIMESTAMP_FORMATTING)
             user.props.disabled = True
             user.save()
             try:
-                self._notify_about_account_deregistration(user.props.username, user.props.PasswordRecoveryEmail,)
+                self._notify_about_account_deregistration(user.props.username, user.props.PasswordRecoveryEmail)
             except Exception:
                 MODULE.error(f"_deregister_account(): sending of email failed: {traceback.format_exc()}")
             return
@@ -901,7 +906,7 @@ class Instance(Base):
             MODULE.error(f"_deregister_account(): {traceback.format_exc()}")
             raise
 
-    def _notify_about_account_deregistration(self, username, mail,):
+    def _notify_about_account_deregistration(self, username, mail):
         if not mail:
             return
         ucr.load()
@@ -913,16 +918,16 @@ class Instance(Base):
         with open(path) as fp:
             txt = fp.read()
         txt = txt.format(username=username)
-        msg = MIMENonMultipart('text', 'plain', charset='utf-8',)
-        msg["Subject"] = ucr.get("umc/self-service/account-deregistration/email/subject", "Account deletion",)
+        msg = MIMENonMultipart('text', 'plain', charset='utf-8')
+        msg["Subject"] = ucr.get("umc/self-service/account-deregistration/email/subject", "Account deletion")
         msg["Date"] = formatdate(localtime=True)
-        msg["From"] = ucr.get("umc/self-service/account-deregistration/email/sender_address", "Password Reset Service <noreply@{}>".format(".".join([ucr["hostname"], ucr["domainname"]])),)
+        msg["From"] = ucr.get("umc/self-service/account-deregistration/email/sender_address", "Password Reset Service <noreply@{}>".format(".".join([ucr["hostname"], ucr["domainname"]])))
         msg["To"] = mail
         cs = email.charset.Charset("utf-8")
         cs.body_encoding = email.charset.QP
-        msg.set_payload(txt, charset=cs,)
-        smtp = smtplib.SMTP(ucr.get("umc/self-service/account-deregistration/email/server", "localhost",))
-        smtp.sendmail(msg["From"], msg["To"], msg.as_string(),)
+        msg.set_payload(txt, charset=cs)
+        smtp = smtplib.SMTP(ucr.get("umc/self-service/account-deregistration/email/server", "localhost"))
+        smtp.sendmail(msg["From"], msg["To"], msg.as_string())
         smtp.quit()
 
     @forward_to_master
@@ -930,37 +935,37 @@ class Instance(Base):
     @sanitize(
         token=StringSanitizer(required=True),
         username=StringSanitizer(required=True),
-        password=StringSanitizer(required=True),)  # new_password(!)
+        password=StringSanitizer(required=True))  # new_password(!)
     @simple_response
-    def set_password(self, token, username, password,):
+    def set_password(self, token, username, password):
         MODULE.info(f"set_password(): username: '{username}'.")
         username = self.email2username(username)
-        token_from_db = self._check_token(username, token,)
+        token_from_db = self._check_token(username, token)
 
         # token is correct and valid
         MODULE.info(f"Receive valid token for '{username}'.")
-        if self.is_blacklisted(username, 'passwordreset',):
+        if self.is_blacklisted(username, 'passwordreset'):
             # this should not happen
             MODULE.error(f"Found token in DB for blacklisted user '{username}'.")
-            self.db.delete_tokens(token=token, username=username,)
+            self.db.delete_tokens(token=token, username=username)
             raise ServiceForbidden()  # TokenNotFound() ?
 
         plugin = self._get_send_plugin(token_from_db['method'])
         email_verified = plugin.password_reset_verified_recovery_email()
-        ret = self.udm_set_password(username, password, email_verified=email_verified,)
-        self.db.delete_tokens(token=token, username=username,)
+        ret = self.udm_set_password(username, password, email_verified=email_verified)
+        self.db.delete_tokens(token=token, username=username)
         if ret:
-            raise UMC_Error(_("Successfully changed your password."), status=200,)
-        raise UMC_Error(_('Failed to change password.'), status=500,)
+            raise UMC_Error(_("Successfully changed your password."), status=200)
+        raise UMC_Error(_('Failed to change password.'), status=500)
 
-    def _check_token(self, username, token, token_application='password_reset',):
+    def _check_token(self, username, token, token_application='password_reset'):
         try:
-            token_from_db = self.db.get_one(token=token, username=username,)
+            token_from_db = self.db.get_one(token=token, username=username)
         except MultipleTokensInDB as e:
             # this should not happen, delete all tokens, raise Exception
             # regardless of correctness of token
             MODULE.error(f"set_password(): {e}")
-            self.db.delete_tokens(token=token, username=username,)
+            self.db.delete_tokens(token=token, username=username)
             raise TokenNotFound()
 
         if not token_from_db:
@@ -971,13 +976,13 @@ class Instance(Base):
         if (datetime.datetime.utcnow() - token_from_db["timestamp"]).total_seconds() >= self.token_validity_period:
             # token is correct but expired
             MODULE.info(f"Receive correct but expired token for '{username}'.")
-            self.db.delete_tokens(token=token, username=username,)
+            self.db.delete_tokens(token=token, username=username)
             raise TokenNotFound()
 
         if self._get_send_plugin(token_from_db['method']).message_application() != token_application:
             # token is correct but should not be used for this application
             MODULE.info(f"Receive correct token for '{username}' but it should be used for another application.")
-            self.db.delete_tokens(token=token, username=username,)
+            self.db.delete_tokens(token=token, username=username)
             raise TokenNotFound()
         return token_from_db
 
@@ -998,13 +1003,13 @@ class Instance(Base):
         return reset_methods
 
     @staticmethod
-    def create_token(length,):
+    def create_token(length):
         # remove easily confusable characters
         chars = ''.join(set(string.ascii_letters) | set(string.digits) - {"0", "O", "1", "I", "l"})
         rand = random.SystemRandom()
         return ''.join(rand.choice(chars) for _ in range(length))
 
-    def send_message(self, username, method, address, user_properties,):
+    def send_message(self, username, method, address, user_properties):
         plugin = self._get_send_plugin(method)
         try:
             token_from_db = self.db.get_one(username=username)
@@ -1018,30 +1023,30 @@ class Instance(Base):
         if token_from_db:
             # replace with fresh token
             MODULE.info(f"send_token(): Updating token for user '{username}'...")
-            self.db.update_token(username, method, token,)
+            self.db.update_token(username, method, token)
         else:
             # store a new token
             MODULE.info(f"send_token(): Adding new token for user '{username}'...")
-            self.db.insert_token(username, method, token,)
+            self.db.insert_token(username, method, token)
         try:
-            self._call_send_msg_plugin(username, method, address, token, user_properties,)
+            self._call_send_msg_plugin(username, method, address, token, user_properties)
         except Exception:
             MODULE.error("send_token(): Error sending token with via '{method}' to '{username}'.".format(
-                method=method, username=username,))
+                method=method, username=username))
             self.db.delete_tokens(username=username)
             raise
         return True
 
-    def _get_send_plugin(self, method,):
+    def _get_send_plugin(self, method):
         try:
             plugin = self.send_plugins[method]
             if not plugin.is_enabled:
                 raise KeyError
         except KeyError:
-            raise UMC_Error("Unknown send message method", status=500,)
+            raise UMC_Error("Unknown send message method", status=500)
         return plugin
 
-    def _call_send_msg_plugin(self, username, method, address, token, user_properties,):
+    def _call_send_msg_plugin(self, username, method, address, token, user_properties):
         MODULE.info(f"send_message(): username: {username} method: {method} address: {address}")
         plugin = self._get_send_plugin(method)
 
@@ -1056,34 +1061,34 @@ class Instance(Base):
             plugin.send()
         except Exception as exc:
             MODULE.error('Unknown error: %s' % (traceback.format_exc(),))
-            raise UMC_Error(_("Error sending token: {}").format(exc), status=500,)
+            raise UMC_Error(_("Error sending token: {}").format(exc), status=500)
         return True
 
     @staticmethod
     @machine_connection
-    def auth(username, password, ldap_connection=None, ldap_position=None,):
-        filter_s = filter_format("(|(uid=%s)(mailPrimaryAddress=%s))", (username, username),)
+    def auth(username, password, ldap_connection=None, ldap_position=None):
+        filter_s = filter_format("(|(uid=%s)(mailPrimaryAddress=%s))", (username, username))
         users = ldap_connection.search(filter=filter_s)
         try:
             binddn, userdict = users[0]
-            get_user_connection(binddn=binddn, bindpw=password,)
+            get_user_connection(binddn=binddn, bindpw=password)
         except (udm_errors.authFail, IndexError):
             raise ServiceForbidden()
         return binddn, userdict["uid"][0].decode('utf-8')
 
-    def authenticate_user(self, username=None, password=None,):
+    def authenticate_user(self, username=None, password=None):
         """Check if the user is already authenticated (via UMC/SAML login) or use the credentials provided via the form."""
         if username and password:  # credentials provided, use them
-            dn, username = self.auth(username, password,)
+            dn, username = self.auth(username, password)
             return (dn, username)
         elif self.user_dn and self.username and not DISALLOW_AUTHENTICATION:  # logged in via SAML/UMC
             return (self.user_dn, self.username)
         else:  # malformed request, cannot really happen
             raise UMC_Error('Please provide username and password.')
 
-    def set_contact_data(self, dn, email, mobile,):
+    def set_contact_data(self, dn, email, mobile):
         try:
-            user = self.get_udm_user_by_dn(userdn=dn, admin=True,)
+            user = self.get_udm_user_by_dn(userdn=dn, admin=True)
             old_email = user['PasswordRecoveryEmail']
             if email is not None and email.lower() != old_email.lower():
                 try:
@@ -1098,10 +1103,10 @@ class Instance(Base):
             verification_email_send = False
             if user['RegisteredThroughSelfService'] == 'TRUE':
                 if old_email is not None and old_email.lower() != email.lower():
-                    self._notify_about_email_change(user['username'], old_email, email,)
+                    self._notify_about_email_change(user['username'], old_email, email)
                 if email is not None and email.lower() != old_email.lower():
                     user_info = self._extract_user_properties(user)
-                    self.send_message(user['username'], 'verify_email', email, user_info,)
+                    self.send_message(user['username'], 'verify_email', email, user_info)
                     verification_email_send = True
             return {
                 'verificationEmailSend': verification_email_send,
@@ -1111,7 +1116,7 @@ class Instance(Base):
             MODULE.error(f"set_contact_data(): {traceback.format_exc()}")
             raise
 
-    def _notify_about_email_change(self, username, old_email, new_email,):
+    def _notify_about_email_change(self, username, old_email, new_email):
         if not old_email:
             return
         new_email = new_email or ''
@@ -1123,20 +1128,20 @@ class Instance(Base):
             path = "/usr/share/univention-self-service/email_bodies/email_change_notification_email_body.txt"
         with open(path) as fp:
             txt = fp.read()
-        txt = txt.format(username=username, old_email=old_email, new_email=new_email,)
-        msg = MIMENonMultipart('text', 'plain', charset='utf-8',)
-        msg["Subject"] = ucr.get("umc/self-service/email-change-notification/email/subject", "Account recovery email changed",)
+        txt = txt.format(username=username, old_email=old_email, new_email=new_email)
+        msg = MIMENonMultipart('text', 'plain', charset='utf-8')
+        msg["Subject"] = ucr.get("umc/self-service/email-change-notification/email/subject", "Account recovery email changed")
         msg["Date"] = formatdate(localtime=True)
-        msg["From"] = ucr.get("umc/self-service/passwordreset/email/sender_address", "Password Reset Service <noreply@{}>".format(".".join([ucr["hostname"], ucr["domainname"]])),)
+        msg["From"] = ucr.get("umc/self-service/passwordreset/email/sender_address", "Password Reset Service <noreply@{}>".format(".".join([ucr["hostname"], ucr["domainname"]])))
         msg["To"] = old_email
         cs = email.charset.Charset("utf-8")
         cs.body_encoding = email.charset.QP
-        msg.set_payload(txt, charset=cs,)
-        smtp = smtplib.SMTP(ucr.get("umc/self-service/passwordreset/email/server", "localhost",))
-        smtp.sendmail(msg["From"], msg["To"], msg.as_string(),)
+        msg.set_payload(txt, charset=cs)
+        smtp = smtplib.SMTP(ucr.get("umc/self-service/passwordreset/email/server", "localhost"))
+        smtp.sendmail(msg["From"], msg["To"], msg.as_string())
         smtp.quit()
 
-    def admember_set_password(self, username, password,):
+    def admember_set_password(self, username, password):
         ldb_url = ucr.get('connector/ad/ldap/host')
         ldb_url = 'ldaps://%s' % (ldb_url,) if ucr.is_true('connector/ad/ldap/ldaps') else 'ldap://%s' % (ldb_url,)
         try:
@@ -1144,9 +1149,9 @@ class Instance(Base):
             with open(dict(ucr)['ad/reset/password']) as fd:
                 reset_password = fd.readline().strip()
         except (EnvironmentError, KeyError):
-            raise UMC_Error(_('The configuration of the password reset service is not complete. The UCR variables "ad/reset/username" and "ad/reset/password" need to be set properly. Please inform an administrator.'), status=500,)
-        process = Popen(['samba-tool', 'user', 'setpassword', '--username', reset_username, '--password', reset_password, '--filter', filter_format('samaccountname=%s', (username,),), '--newpassword', password, '-H', ldb_url], stdout=PIPE, stderr=STDOUT,)
-        stdouterr = process.communicate()[0].decode('utf-8', 'replace',)
+            raise UMC_Error(_('The configuration of the password reset service is not complete. The UCR variables "ad/reset/username" and "ad/reset/password" need to be set properly. Please inform an administrator.'), status=500)
+        process = Popen(['samba-tool', 'user', 'setpassword', '--username', reset_username, '--password', reset_password, '--filter', filter_format('samaccountname=%s', (username,)), '--newpassword', password, '-H', ldb_url], stdout=PIPE, stderr=STDOUT)
+        stdouterr = process.communicate()[0].decode('utf-8', 'replace')
 
         if stdouterr:
             MODULE.process('samba-tool user setpassword: %s' % (stdouterr,))
@@ -1156,10 +1161,10 @@ class Instance(Base):
             return False
         return True
 
-    def udm_set_password(self, username, password, email_verified,):
-        user = self.get_udm_user(username=username, admin=True,)
-        if ucr.is_true('ad/member') and 'synced' in user.get('objectFlag', [],):
-            success = self.admember_set_password(username, password,)
+    def udm_set_password(self, username, password, email_verified):
+        user = self.get_udm_user(username=username, admin=True)
+        if ucr.is_true('ad/member') and 'synced' in user.get('objectFlag', []):
+            success = self.admember_set_password(username, password)
         else:
             user["password"] = password
             user["pwdChangeNextLogin"] = 0
@@ -1169,7 +1174,7 @@ class Instance(Base):
         try:
             user.modify()
         except (udm_errors.pwToShort, udm_errors.pwQuality) as exc:
-            password_complexity_message = ucr.get('umc/login/password-complexity-message/%s' % (self.locale.language,), ucr.get('umc/login/password-complexity-message/en', '',),)
+            password_complexity_message = ucr.get('umc/login/password-complexity-message/%s' % (self.locale.language,), ucr.get('umc/login/password-complexity-message/en', ''))
             raise UMC_Error(("%s %s" % (exc, password_complexity_message)).rstrip())
         except udm_errors.pwalreadyused as exc:
             raise UMC_Error(exc.message)
@@ -1181,14 +1186,14 @@ class Instance(Base):
 
     # TODO: decoratorize
     @machine_connection
-    def is_blacklisted(self, username, feature, ldap_connection=None, ldap_position=None,):
-        def listize(li,):
+    def is_blacklisted(self, username, feature, ldap_connection=None, ldap_position=None):
+        def listize(li):
             return [x.strip().lower() for x in li.split(",") if x.strip()]
 
-        bl_users = listize(ucr.get(f"umc/self-service/{feature}/blacklist/users", "",))
-        bl_groups = listize(ucr.get(f"umc/self-service/{feature}/blacklist/groups", "",))
-        wh_users = listize(ucr.get(f"umc/self-service/{feature}/whitelist/users", "",))
-        wh_groups = listize(ucr.get(f"umc/self-service/{feature}/whitelist/groups", "",))
+        bl_users = listize(ucr.get(f"umc/self-service/{feature}/blacklist/users", ""))
+        bl_groups = listize(ucr.get(f"umc/self-service/{feature}/blacklist/groups", ""))
+        wh_users = listize(ucr.get(f"umc/self-service/{feature}/whitelist/users", ""))
+        wh_groups = listize(ucr.get(f"umc/self-service/{feature}/whitelist/groups", ""))
 
         username = self.email2username(username)
 
@@ -1199,7 +1204,7 @@ class Instance(Base):
 
         # get groups
         try:
-            filter_s = filter_format("(|(uid=%s)(mailPrimaryAddress=%s))", (username, username),)
+            filter_s = filter_format("(|(uid=%s)(mailPrimaryAddress=%s))", (username, username))
             userdn = ldap_connection.searchDn(filter=filter_s)[0]
             groups_dns = self.get_groups(userdn)
             for group_dn in list(groups_dns):
@@ -1230,7 +1235,7 @@ class Instance(Base):
         MODULE.info(f"is_blacklisted(username: {username}, feature: {feature}): neither black nor white listed")
         return bool(wh_users or wh_groups)
 
-    def get_groups(self, userdn,):
+    def get_groups(self, userdn):
         user = self.get_udm_user_by_dn(userdn=userdn)
         groups = user["groups"]
         prim_group = user["primaryGroup"]
@@ -1238,63 +1243,63 @@ class Instance(Base):
             groups.append(prim_group)
         return groups
 
-    def get_nested_groups(self, groupdn,):
+    def get_nested_groups(self, groupdn):
         group = self.get_udm_group(groupdn)
         res = group["memberOf"] or []
         for ng in list(res):
             res.extend(self.get_nested_groups(ng))
         return res
 
-    def dns_to_groupname(self, dns,):
+    def dns_to_groupname(self, dns):
         names = []
         for groupdn in dns:
             group = self.get_udm_group(groupdn)
             names.append(group["name"])
         return names
 
-    def get_udm_user_by_dn(self, userdn, admin=False,):
+    def get_udm_user_by_dn(self, userdn, admin=False):
         if admin:
             lo, po = get_admin_connection()
         else:
             lo, po = get_machine_connection()
-        user = self.usersmod.object(None, lo, po, userdn,)
+        user = self.usersmod.object(None, lo, po, userdn)
         user.open()
         return user
 
-    def get_udm_user(self, username, admin=False,):
-        filter_s = filter_format('(|(uid=%s)(mailPrimaryAddress=%s))', (username, username),)
+    def get_udm_user(self, username, admin=False):
+        filter_s = filter_format('(|(uid=%s)(mailPrimaryAddress=%s))', (username, username))
 
         lo, po = get_machine_connection()
         dn = lo.searchDn(filter=filter_s)[0]
-        return self.get_udm_user_by_dn(dn, admin=admin,)
+        return self.get_udm_user_by_dn(dn, admin=admin)
 
     @machine_connection
-    def get_udm_group(self, groupdn, ldap_connection=None, ldap_position=None,):
+    def get_udm_group(self, groupdn, ldap_connection=None, ldap_position=None):
         # reuse module for recursive lookups by get_nested_groups()
         if not self.groupmod:
             univention.admin.modules.update()
             self.groupmod = univention.admin.modules.get("groups/group")
-            univention.admin.modules.init(ldap_connection, ldap_position, self.groupmod,)
+            univention.admin.modules.init(ldap_connection, ldap_position, self.groupmod)
 
-        group = self.groupmod.object(None, ldap_connection, ldap_position, groupdn,)
+        group = self.groupmod.object(None, ldap_connection, ldap_position, groupdn)
         group.open()
         return group
 
     @machine_connection  # TODO: overwrite StringSanitizer and do it there
-    def email2username(self, email, ldap_connection=None, ldap_position=None,):
+    def email2username(self, email, ldap_connection=None, ldap_position=None):
         if "@" not in email:
             return email
 
         # cache email->username in memcache
         username = self.memcache.get(f"e2u:{email}")
         if not username:
-            mailf = filter_format("(mailPrimaryAddress=%s)", (email,),)
+            mailf = filter_format("(mailPrimaryAddress=%s)", (email,))
             users = ldap_connection.search(filter=mailf)
             try:
                 _, userdict = users[0]
             except IndexError:
                 return email
             username = userdict["uid"][0].decode('utf-8')
-            self.memcache.set(f"e2u:{email}", username, 300,)
+            self.memcache.set(f"e2u:{email}", username, 300)
 
         return username

@@ -62,9 +62,9 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 class SendSMS(UniventionSelfServiceTokenEmitter):
 
     def __init__(self, *args, **kwargs):
-        super(SendSMS, self,).__init__(*args, **kwargs,)
+        super(SendSMS, self).__init__(*args, **kwargs)
 
-        self.cmd = self.ucr.get("umc/self-service/passwordreset/sms/command", "",).split()
+        self.cmd = self.ucr.get("umc/self-service/passwordreset/sms/command", "").split()
         if not self.cmd:
             raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/command must contain the path to the program to execute.")
 
@@ -85,7 +85,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
             with open(self.password_file) as pw_file:
                 self.sms_username, self.sms_password = pw_file.readline().strip().split(":")
         except ValueError as ve:
-            self.log("SendSMS: Format of sms secrets file ({}) is 'username:password'. Error: {}").format(self.password_file, ve,)
+            self.log("SendSMS: Format of sms secrets file ({}) is 'username:password'. Error: {}").format(self.password_file, ve)
             self.log(f"SendSMS: Format error in sms secrets file ({self.password_file}): {ve}")
             raise
         except (OSError, IOError) as e:
@@ -112,7 +112,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 
     @property
     def token_length(self):
-        length = self.ucr.get("umc/self-service/passwordreset/sms/token_length", 12,)
+        length = self.ucr.get("umc/self-service/passwordreset/sms/token_length", 12)
         try:
             length = int(length)
         except ValueError:
@@ -138,9 +138,9 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
         #
 
         print(f"Starting external program {self.cmd}...")
-        cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+        cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         cmd_out, cmd_err = cmd_proc.communicate()
-        cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace',), cmd_err.decode('UTF-8', 'replace',)
+        cmd_out, cmd_err = cmd_out.decode('UTF-8', 'replace'), cmd_err.decode('UTF-8', 'replace')
         cmd_exit = cmd_proc.wait()
 
         if cmd_out:

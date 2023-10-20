@@ -16,12 +16,12 @@ from univention.testing.strings import random_string, random_username
 from univention.udm import UDM
 
 
-ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0,)
-ud.set_level(ud.ADMIN, ud.ALL,)
+ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
+ud.set_level(ud.ADMIN, ud.ALL)
 
 CWD = os.path.dirname(os.path.abspath(__file__))
 
-PostalAddress = namedtuple('PostalAddress', ['street', 'zipcode', 'city'],)
+PostalAddress = namedtuple('PostalAddress', ['street', 'zipcode', 'city'])
 
 
 class TestUdmUsersBasic(TestCase):
@@ -38,7 +38,7 @@ class TestUdmUsersBasic(TestCase):
         obj.props.username = obj.props.lastname
         obj.props.password = random_string()
 
-        jpg_content = open(f'{CWD}/example_user_jpeg_photo.jpg', 'rb',).read()
+        jpg_content = open(f'{CWD}/example_user_jpeg_photo.jpg', 'rb').read()
         obj.props.jpegPhoto = jpg_content
         obj.save()
         try:

@@ -50,29 +50,30 @@ _ = Translation('univention-management-console-module-quota').translate
 
 class LimitSanitizer(IntegerSanitizer):
 
-    def _sanitize(self, value, name, further_arguments,):
+    def _sanitize(self, value, name, further_arguments):
         if not value:
             return self.default
-        return super(LimitSanitizer, self,)._sanitize(value, name, further_arguments,)
+        return super(LimitSanitizer, self)._sanitize(value, name, further_arguments)
 
 
 class Commands(object):
 
     @sanitize(
         partitionDevice=StringSanitizer(required=True),
-        filter=PatternSanitizer(default='.*'),)
-    def users_query(self, request,):
+        filter=PatternSanitizer(default='.*'),
+    )
+    def users_query(self, request):
         partitionDevice = request.options['partitionDevice']
         self._check_error(partitionDevice)
 
-        def _thread(request,):
+        def _thread(request):
             stdout, returncode = tools.repquota(request.options['partitionDevice'])
-            return self._users_query(partitionDevice, request, stdout, returncode,)
+            return self._users_query(partitionDevice, request, stdout, returncode)
 
-        thread = SimpleThread('repquota', _thread, lambda r, t,: self.thread_finished_callback(r, t, request,),)
+        thread = SimpleThread('repquota', _thread, lambda r, t: self.thread_finished_callback(r, t, request))
         thread.run(request)
 
-    def _users_query(self, partition, request, stdout, status,):
+    def _users_query(self, partition, request, stdout, status):
         """
         This function is invoked when a repquota process has died and
         there is output to parse that is restructured as UMC Dialog
@@ -92,55 +93,56 @@ class Commands(object):
                 header += 1
         except IndexError:
             pass
-        output = [x.decode('UTF-8', 'replace',) for x in callbackResult[header + 1:]]
-        quotas = tools.repquota_parse(partition, output,)
+        output = [x.decode('UTF-8', 'replace') for x in callbackResult[header + 1:]]
+        quotas = tools.repquota_parse(partition, output)
         return [q for q in quotas if request.options['filter'].match(q['user'])]
 
     @sanitize(
         partitionDevice=StringSanitizer(required=True),
         user=StringSanitizer(required=True),
-        sizeLimitSoft=LimitSanitizer(default=0, required=True,),
-        sizeLimitHard=LimitSanitizer(default=0, required=True,),
-        fileLimitSoft=LimitSanitizer(default=0, required=True,),
-        fileLimitHard=LimitSanitizer(default=0, required=True,),)
+        sizeLimitSoft=LimitSanitizer(default=0, required=True),
+        sizeLimitHard=LimitSanitizer(default=0, required=True),
+        fileLimitSoft=LimitSanitizer(default=0, required=True),
+        fileLimitHard=LimitSanitizer(default=0, required=True),
+    )
     @simple_response
-    def users_set(self, partitionDevice, user, sizeLimitSoft, sizeLimitHard, fileLimitSoft, fileLimitHard,):
-        def _thread(self, request,):
+    def users_set(self, partitionDevice, user, sizeLimitSoft, sizeLimitHard, fileLimitSoft, fileLimitHard):
+        def _thread(self, request):
             self._check_error(partitionDevice)
 
-            if tools.setquota(partitionDevice, user, tools.byte2block(sizeLimitSoft), tools.byte2block(sizeLimitHard), fileLimitSoft, fileLimitHard,):
+            if tools.setquota(partitionDevice, user, tools.byte2block(sizeLimitSoft), tools.byte2block(sizeLimitHard), fileLimitSoft, fileLimitHard):
                 raise UMC_Error(_('Failed to modify quota settings for user %(user)s on partition %(partition)s.') % {'user': user, 'partition': partitionDevice})
         return _thread
 
     @threaded
-    def users_remove(self, request,):
+    def users_remove(self, request):
         partitions = []
         failed = []
 
         # Determine different partitions
         for obj in request.options:
-            partitions.append(obj['object'].split('@', 1,)[-1])
+            partitions.append(obj['object'].split('@', 1)[-1])
         for partition in set(partitions):
             self._check_error(partition)
 
         # Remove user quota
         for obj in request.options:
             (user, _, partition) = obj['object'].partition('@')
-            if not isinstance(user, str,):  # Py2
+            if not isinstance(user, str):  # Py2
                 user = user.encode('utf-8')
-            if tools.setquota(partition, user, 0, 0, 0, 0,):
+            if tools.setquota(partition, user, 0, 0, 0, 0):
                 failed.append(user)
 
         if failed:
             raise UMC_Error(_('Could not remove the following user: %s') % ', '.join(failed))
 
-    def _check_error(self, partition_name,):
+    def _check_error(self, partition_name):
         try:
             fs = fstab.File('/etc/fstab')
             mt = fstab.File('/etc/mtab')
         except IOError as error:
             MODULE.error('Could not open %s' % error.filename)
-            raise UMC_Error(_('Could not open %s') % error.filename, 500,)
+            raise UMC_Error(_('Could not open %s') % error.filename, 500)
 
         partition = fs.find(spec=partition_name)
         if partition:

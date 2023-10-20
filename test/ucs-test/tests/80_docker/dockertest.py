@@ -101,10 +101,10 @@ class UCSTest_DockerApp_RegisterFailed(Exception):
     pass
 
 
-def tiny_app(name=None, version=None,):
+def tiny_app(name=None, version=None):
     name = name or get_app_name()
     version = version or '1'
-    app = App(name=name, version=version, build_package=False,)
+    app = App(name=name, version=version, build_package=False)
     app.set_ini_parameter(
         DockerImage='docker-test.software-univention.de/alpine:3.6',
         DockerScriptInit='/sbin/init',
@@ -115,14 +115,15 @@ def tiny_app(name=None, version=None,):
         DockerScriptUpdateAvailable='',
         DockerScriptUpdatePackages='',
         DockerScriptUpdateRelease='',
-        DockerScriptUpdateAppVersion='',)
+        DockerScriptUpdateAppVersion='',
+    )
     return app
 
 
-def tiny_app_apache(name=None, version=None,):
+def tiny_app_apache(name=None, version=None):
     name = name or get_app_name()
     version = version or '1'
-    app = App(name=name, version=version, build_package=False,)
+    app = App(name=name, version=version, build_package=False)
     app.set_ini_parameter(
         DockerImage='docker-test.software-univention.de/nimmis/alpine-apache',
         DockerScriptInit='/boot.sh',
@@ -133,45 +134,46 @@ def tiny_app_apache(name=None, version=None,):
         DockerScriptUpdateAvailable='',
         DockerScriptUpdatePackages='',
         DockerScriptUpdateRelease='',
-        DockerScriptUpdateAppVersion='',)
+        DockerScriptUpdateAppVersion='',
+    )
     return app
 
 
-def docker_login(server='docker.software-univention.de',):
+def docker_login(server='docker.software-univention.de'):
     cmd = ['docker', 'login', '-u', 'ucs', '-p', 'readonly', server]
-    error_handling_call(cmd, exc=UCSTest_Docker_LoginFailed,)
+    error_handling_call(cmd, exc=UCSTest_Docker_LoginFailed)
 
 
-def docker_pull(image, server='docker.software-univention.de',):
+def docker_pull(image, server='docker.software-univention.de'):
     cmd = ['docker', 'pull', '%s/%s' % (server, image)]
-    error_handling_call(cmd, exc=UCSTest_Docker_PullFailed,)
+    error_handling_call(cmd, exc=UCSTest_Docker_PullFailed)
 
 
-def docker_image_is_present(imgname,):
+def docker_image_is_present(imgname):
     cmd = ['docker', 'inspect', imgname]
-    with open('/dev/null', 'w',) as devnull:
-        p = subprocess.Popen(cmd, close_fds=True, stdout=devnull,)
+    with open('/dev/null', 'w') as devnull:
+        p = subprocess.Popen(cmd, close_fds=True, stdout=devnull)
         p.wait()
         return p.returncode == 0
 
 
-def remove_docker_image(imgname,):
+def remove_docker_image(imgname):
     cmd = ['docker', 'rmi', imgname]
-    p = subprocess.Popen(cmd, close_fds=True,)
+    p = subprocess.Popen(cmd, close_fds=True)
     p.wait()
     return p.returncode == 0
 
 
-def pull_docker_image(imgname,):
+def pull_docker_image(imgname):
     cmd = ['docker', 'pull', imgname]
-    p = subprocess.Popen(cmd, close_fds=True,)
+    p = subprocess.Popen(cmd, close_fds=True)
     p.wait()
     return p.returncode == 0
 
 
 def restart_docker():
     cmd = ['invoke-rc.d', 'docker', 'restart']
-    p = subprocess.Popen(cmd, close_fds=True,)
+    p = subprocess.Popen(cmd, close_fds=True)
     p.wait()
     return p.returncode == 0
 
@@ -185,12 +187,12 @@ def get_app_version():
     return random_version()
 
 
-def copy_package_to_appcenter(ucs_version, app_directory, package_name,):
-    target = os.path.join('/var/www/univention-repository/%s/maintained/component' % ucs_version, '%s/all' % app_directory,)
+def copy_package_to_appcenter(ucs_version, app_directory, package_name):
+    target = os.path.join('/var/www/univention-repository/%s/maintained/component' % ucs_version, '%s/all' % app_directory)
     print('cp %s %s' % (package_name, target))
     if not os.path.exists(target):
         os.makedirs(target)
-    shutil.copy(package_name, target,)
+    shutil.copy(package_name, target)
     command = '''
         set -x -e;
         cd /var/www/univention-repository/%(version)s/maintained/component;
@@ -199,19 +201,19 @@ def copy_package_to_appcenter(ucs_version, app_directory, package_name,):
     ''' % {'version': ucs_version, 'app': app_directory}
     print('Creating packages in local repository:')
     print(command)
-    print(subprocess.check_output(command, shell=True, text=True,))
+    print(subprocess.check_output(command, shell=True, text=True))
 
 
 def error_handling_call(*args, exc=Exception, **kwargs):
     try:
-        print(subprocess.check_output(*args, **kwargs, stderr=subprocess.STDOUT,).decode('UTF-8', 'replace',))
+        print(subprocess.check_output(*args, **kwargs, stderr=subprocess.STDOUT).decode('UTF-8', 'replace'))
     except subprocess.CalledProcessError as ex:
-        raise exc('%s: %s' % (ex, ex.output.decode('UTF-8', 'replace',)))
+        raise exc('%s: %s' % (ex, ex.output.decode('UTF-8', 'replace')))
 
 
 class App:
 
-    def __init__(self, name, version, container_version=None, app_directory_suffix=None, package_name=None, build_package=True, call_join_scripts=True,):
+    def __init__(self, name, version, container_version=None, app_directory_suffix=None, package_name=None, build_package=True, call_join_scripts=True):
         self.app_name = name
         self.app_version = version
         self.call_join_scripts = call_join_scripts
@@ -234,7 +236,7 @@ class App:
         self.ucr.load()
 
         if build_package:
-            self.package = DebianPackage(name=self.package_name, version=self.package_version,)
+            self.package = DebianPackage(name=self.package_name, version=self.package_version)
             self.package.build()
         else:
             self.package = None
@@ -279,7 +281,7 @@ class App:
     def add_to_local_appcenter(self):
         self._dump_ini()
         if self.package:
-            copy_package_to_appcenter(self.ucs_version, self.app_directory, self.package.get_binary_name(),)
+            copy_package_to_appcenter(self.ucs_version, self.app_directory, self.package.get_binary_name())
         self._dump_scripts()
 
     def add_script(self, **kwargs):
@@ -297,7 +299,7 @@ class App:
         cmd.append('--pwdfile=%s' % self.admin_pwdfile)
         cmd.append('%s=%s' % (self.app_name, self.app_version))
         print(cmd)
-        error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_InstallationFailed,)
+        error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_InstallationFailed)
 
         self.reload_container_id()
 
@@ -307,13 +309,13 @@ class App:
         self.ucr.load()
         self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
 
-    def file(self, fname,):
+    def file(self, fname):
         if fname.startswith('/'):
             fname = fname[1:]
-        dirname = subprocess.check_output(['docker', 'inspect', '--format={{.GraphDriver.Data.MergedDir}}', self.container_id], text=True,).strip()
-        return os.path.join(dirname, fname,)
+        dirname = subprocess.check_output(['docker', 'inspect', '--format={{.GraphDriver.Data.MergedDir}}', self.container_id], text=True).strip()
+        return os.path.join(dirname, fname)
 
-    def configure(self, args,):
+    def configure(self, args):
         set_vars = []
         unset_vars = []
         for key, value in args.items():
@@ -326,10 +328,10 @@ class App:
             cmd.extend(['--set'] + set_vars)
         if unset_vars:
             cmd.extend(['--unset'] + unset_vars)
-        error_handling_call(cmd, exc=UCSTest_DockerApp_ConfigureFailed,)
+        error_handling_call(cmd, exc=UCSTest_DockerApp_ConfigureFailed)
 
     def install_via_umc(self):
-        def _thread(event, options,):
+        def _thread(event, options):
             try:
                 client.umc_command("appcenter/keep_alive")
             finally:
@@ -343,38 +345,38 @@ class App:
             "application": self.app_name,
             "app": self.app_name,
             "force": True}
-        resp = client.umc_command('appcenter/docker/invoke', options,).result
+        resp = client.umc_command('appcenter/docker/invoke', options).result
         progress_id = resp.get('id')
         if not resp:
-            raise UCTTest_DockerApp_UMCInstallFailed(resp, None,)
+            raise UCTTest_DockerApp_UMCInstallFailed(resp, None)
         errors = []
         finished = False
         progress = None
         event = threading.Event()
-        threading.Thread(target=_thread, args=(event, options),).start()
+        threading.Thread(target=_thread, args=(event, options)).start()
         while not (event.wait(3) and finished):
             options = {"progress_id": progress_id}
-            progress = client.umc_command('appcenter/docker/progress', options, print_request_data=False, print_response=False,).result
-            progress.get('info', None,)
-            for i in progress.get('intermediate', [],):
+            progress = client.umc_command('appcenter/docker/progress', options, print_request_data=False, print_response=False).result
+            progress.get('info', None)
+            for i in progress.get('intermediate', []):
                 if i['level'] in ['ERROR', 'CRITICAL']:
                     errors.append(i)
-            finished = progress.get('finished', False,)
-        if not progress['result'].get('success', False,) or not progress['result'].get('can_continue', False,):
-            raise UCTTest_DockerApp_UMCInstallFailed(progress, errors,)
+            finished = progress.get('finished', False)
+        if not progress['result'].get('success', False) or not progress['result'].get('can_continue', False):
+            raise UCTTest_DockerApp_UMCInstallFailed(progress, errors)
         self.reload_container_id()
         self.installed = True
         if errors:
-            raise UCTTest_DockerApp_UMCInstallFailed(None, errors,)
+            raise UCTTest_DockerApp_UMCInstallFailed(None, errors)
 
     def _update(self):
-        error_handling_call(['univention-app', 'update'], exc=UCSTest_DockerApp_UpdateFailed,)
+        error_handling_call(['univention-app', 'update'], exc=UCSTest_DockerApp_UpdateFailed)
 
     def register(self):
         print('App.register()')
         cmd = ['univention-app', 'register', '--app']
         print(cmd)
-        error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_RegisterFailed,)
+        error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_RegisterFailed)
 
     def upgrade(self):
         print('App.upgrade()')
@@ -387,17 +389,17 @@ class App:
         cmd.append('--pwdfile=%s' % self.admin_pwdfile)
         cmd.append('%s=%s' % (self.app_name, self.app_version))
         print(cmd)
-        error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_UpgradeFailed,)
+        error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_UpgradeFailed)
         self.reload_container_id()
         self.installed = True
 
-    def verify(self, joined=False,):
+    def verify(self, joined=False):
         print('App.verify()')
-        error_handling_call('univention-app status %s=%s' % (self.app_name, self.app_version), shell=True, exc=UCSTest_DockerApp_VerifyFailed,)
+        error_handling_call('univention-app status %s=%s' % (self.app_name, self.app_version), shell=True, exc=UCSTest_DockerApp_VerifyFailed)
 
         if self.package:
             try:
-                output = subprocess.check_output('univention-app shell %s=%s dpkg-query -W %s' % (self.app_name, self.app_version, self.package_name), shell=True, text=True,)
+                output = subprocess.check_output('univention-app shell %s=%s dpkg-query -W %s' % (self.app_name, self.app_version, self.package_name), shell=True, text=True)
                 expected_output1 = '%s\t%s\r\n' % (self.package_name, self.package_version)
                 expected_output2 = '%s\t%s\n' % (self.package_name, self.package_version)
                 if output not in [expected_output1, expected_output2]:
@@ -416,11 +418,11 @@ class App:
             cmd.append('--pwdfile=%s' % self.admin_pwdfile)
             cmd.append('%s=%s' % (self.app_name, self.app_version))
             print(cmd)
-            error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_RemoveFailed,)
+            error_handling_call(' '.join(cmd), shell=True, exc=UCSTest_DockerApp_RemoveFailed)
 
-    def execute_command_in_container(self, cmd,):
+    def execute_command_in_container(self, cmd):
         print('Execute: %s' % cmd)
-        return subprocess.check_output('docker exec %s %s' % (self.container_id, cmd), stderr=subprocess.STDOUT, shell=True, text=True,)
+        return subprocess.check_output('docker exec %s %s' % (self.container_id, cmd), stderr=subprocess.STDOUT, shell=True, text=True)
 
     def remove(self):
         print('App.remove()')
@@ -434,8 +436,8 @@ class App:
         if self.ucs_version == '4.2' and not os.path.exists('/var/www/meta-inf/4.1'):
             os.makedirs('/var/www/meta-inf/4.1')
 
-        target = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, '%s.ini' % self.app_directory,)
-        f = open(target, 'w',)
+        target = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, '%s.ini' % self.app_directory)
+        f = open(target, 'w')
         print('Write ini file: %s' % target)
         f.write('[Application]\n')
         print('[Application]')
@@ -444,22 +446,22 @@ class App:
             print('%s: %s' % (key, self.ini[key]))
         print()
         f.close()
-        svg = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, self.ini.get('Logo'),)
-        f = open(svg, 'w',)
+        svg = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, self.ini.get('Logo'))
+        f = open(svg, 'w')
         f.write(get_dummy_svg())
         f.close()
 
     def _dump_scripts(self):
         for script in self.scripts.keys():
-            comp_path = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucs_version, '%s' % self.app_directory,)
+            comp_path = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucs_version, '%s' % self.app_directory)
             if not os.path.exists(comp_path):
                 os.makedirs(comp_path)
-            target = os.path.join(comp_path, script,)
+            target = os.path.join(comp_path, script)
 
             print('Create %s' % target)
             print(self.scripts[script])
 
-            with open(target, 'w',) as f:
+            with open(target, 'w') as f:
                 f.write(self.scripts[script])
 
     def configure_tinyapp_modproxy(self):
@@ -476,12 +478,12 @@ class App:
         self.execute_command_in_container('mkdir /web/html/%s' % self.app_name)
         self.execute_command_in_container('/bin/sh -c "echo TEST-%s > /web/html/%s/index.txt"' % (self.app_name, self.app_name))
 
-    def verify_basic_modproxy_settings_tinyapp(self, http=True, https=True,):
+    def verify_basic_modproxy_settings_tinyapp(self, http=True, https=True):
         fqdn = '%(hostname)s.%(domainname)s' % self.ucr
         test_string = 'TEST-%s\n' % self.app_name
         protocols = {'http': http, 'https': https}
         for protocol, should_succeed in protocols.items():
-            response = requests.get(f'{protocol}://{fqdn}/{self.app_name}/index.txt', verify=False,)  # noqa: S501
+            response = requests.get(f'{protocol}://{fqdn}/{self.app_name}/index.txt', verify=False)  # noqa: S501
             try:
                 response.raise_for_status()
             except requests.exceptions.HTTPError:
@@ -497,7 +499,7 @@ class App:
 
 
 class Appcenter:
-    def __init__(self, version=None,):
+    def __init__(self, version=None):
         self.meta_inf_created = False
         self.univention_repository_created = False
         self.ucr = UCSTestConfigRegistry()
@@ -506,13 +508,13 @@ class Appcenter:
 
         if os.path.exists('/var/www/meta-inf'):
             print('ERROR: /var/www/meta-inf already exists')
-            shutil.rmtree('/var/www/meta-inf', True,)
-            shutil.rmtree('/var/www/univention-repository', True,)
+            shutil.rmtree('/var/www/meta-inf', True)
+            shutil.rmtree('/var/www/univention-repository', True)
             raise AppcenterMetainfAlreadyExists()
         if os.path.exists('/var/www/univention-repository'):
             print('ERROR: /var/www/univention-repository already exists')
-            shutil.rmtree('/var/www/meta-inf', True,)
-            shutil.rmtree('/var/www/univention-repository', True,)
+            shutil.rmtree('/var/www/meta-inf', True)
+            shutil.rmtree('/var/www/univention-repository', True)
             raise AppcenterRepositoryAlreadyExists()
 
         if not version:
@@ -532,27 +534,27 @@ class Appcenter:
         print(repr(self))
 
     def _write_suggestions_json(self):
-        with open('/var/www/meta-inf/suggestions.json', 'w',) as f:
+        with open('/var/www/meta-inf/suggestions.json', 'w') as f:
             f.write('{"v1": []}')
 
-    def _write_ucs_ini(self, content,):
-        with open('/var/www/meta-inf/ucs.ini', 'w',) as f:
+    def _write_ucs_ini(self, content):
+        with open('/var/www/meta-inf/ucs.ini', 'w') as f:
             f.write(content)
 
-    def add_ucs_version_to_appcenter(self, version,):
+    def add_ucs_version_to_appcenter(self, version):
         if not os.path.exists('/var/www/meta-inf'):
-            os.makedirs('/var/www/meta-inf', 0o755,)
+            os.makedirs('/var/www/meta-inf', 0o755)
             self.meta_inf_created = True
 
         if not os.path.exists('/var/www/univention-repository'):
-            os.makedirs('/var/www/univention-repository', 0o755,)
+            os.makedirs('/var/www/univention-repository', 0o755)
             self.univention_repository_created = True
 
         os.makedirs('/var/www/univention-repository/%s/maintained/component' % version)
         os.makedirs('/var/www/meta-inf/%s' % version)
 
         if not os.path.exists('/var/www/meta-inf/categories.ini'):
-            with open('/var/www/meta-inf/categories.ini', 'w',) as f:
+            with open('/var/www/meta-inf/categories.ini', 'w') as f:
                 f.write('''[de]
 Administration=Administration
 Business=Business
@@ -563,7 +565,7 @@ UCS components=UCS-Komponenten
 Virtualization=Virtualisierung''')
 
         if not os.path.exists('/var/www/meta-inf/app-categories.ini'):
-            with open('/var/www/meta-inf/app-categories.ini', 'w',) as f:
+            with open('/var/www/meta-inf/app-categories.ini', 'w') as f:
                 f.write(
                     '[de]\n'
                     'Backup & Archiving=Backup & Archivierung\n'
@@ -584,9 +586,9 @@ Virtualization=Virtualisierung''')
                     'Storage=Speicher\n'
                     'Telephony=Telefonie\n'
                     'Virtualization=Virtualisierung\n')
-            with open('/var/www/meta-inf/rating.ini', 'w',) as f:
+            with open('/var/www/meta-inf/rating.ini', 'w') as f:
                 f.write('# rating stuff\n')
-            with open('/var/www/meta-inf/license_types.ini', 'w',) as f:
+            with open('/var/www/meta-inf/license_types.ini', 'w') as f:
                 f.write('# license stuff')
 
         handler_set([
@@ -597,7 +599,7 @@ Virtualization=Virtualisierung''')
 
     def update(self):
         for vv in os.listdir('/var/www/meta-inf/'):
-            directory = os.path.join('/var/www/meta-inf/', vv,)
+            directory = os.path.join('/var/www/meta-inf/', vv)
             if not os.path.isdir(directory):
                 continue
             print('create_appcenter_json.py for %s' % vv)
@@ -605,13 +607,13 @@ Virtualization=Virtualisierung''')
                 './create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s -t /var/www/meta-inf/%(version)s/all.tar' % {
                     'version': vv,
                     'fqdn': '%(hostname)s.%(domainname)s' % self.ucr,
-                }, shell=True,)
+                }, shell=True)
             subprocess.check_call(
                 'zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' % {
                     'version': vv,
                     'fqdn': '%(hostname)s.%(domainname)s' % self.ucr,
-                }, shell=True,)
-        subprocess.check_call('univention-app update', shell=True,)
+                }, shell=True)
+        subprocess.check_call('univention-app update', shell=True)
 
     def cleanup(self):
         if self.meta_inf_created:
@@ -623,7 +625,7 @@ Virtualization=Virtualisierung''')
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback,):
+    def __exit__(self, exc_type, exc_value, traceback):
         if exc_type:
             print('Cleanup after exception: %s %s' % (exc_type, exc_value))
         try:

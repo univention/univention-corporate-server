@@ -28,20 +28,20 @@ from waflib.TaskGen import before_method, feature, extension
 from waflib.Configure import conf
 
 @feature('rubyext')
-@before_method('apply_incpaths', 'process_source', 'apply_bundle', 'apply_link',)
+@before_method('apply_incpaths', 'process_source', 'apply_bundle', 'apply_link')
 def init_rubyext(self):
 	"""
 	Add required variables for ruby extensions
 	"""
 	self.install_path = '${ARCHDIR_RUBY}'
-	self.uselib = self.to_list(getattr(self, 'uselib', '',))
+	self.uselib = self.to_list(getattr(self, 'uselib', ''))
 	if not 'RUBY' in self.uselib:
 		self.uselib.append('RUBY')
 	if not 'RUBYEXT' in self.uselib:
 		self.uselib.append('RUBYEXT')
 
 @feature('rubyext')
-@before_method('apply_link', 'propagate_uselib_vars',)
+@before_method('apply_link', 'propagate_uselib_vars')
 def apply_ruby_so_name(self):
 	"""
 	Strip the *lib* prefix from ruby extensions
@@ -49,14 +49,14 @@ def apply_ruby_so_name(self):
 	self.env.cshlib_PATTERN = self.env.cxxshlib_PATTERN = self.env.rubyext_PATTERN
 
 @conf
-def check_ruby_version(self, minver=(),):
+def check_ruby_version(self, minver=()):
 	"""
 	Checks if ruby is installed.
 	If installed the variable RUBY will be set in environment.
 	The ruby binary can be overridden by ``--with-ruby-binary`` command-line option.
 	"""
 
-	ruby = self.find_program('ruby', var='RUBY', value=Options.options.rubybinary,)
+	ruby = self.find_program('ruby', var='RUBY', value=Options.options.rubybinary)
 
 	try:
 		version = self.cmd_and_log(ruby + ['-e', 'puts defined?(VERSION) ? VERSION : RUBY_VERSION']).strip()
@@ -65,7 +65,7 @@ def check_ruby_version(self, minver=(),):
 	self.env.RUBY_VERSION = version
 
 	try:
-		ver = tuple(map(int, version.split('.'),))
+		ver = tuple(map(int, version.split('.')))
 	except Errors.WafError:
 		self.fatal('unsupported ruby version %r' % version)
 
@@ -75,7 +75,7 @@ def check_ruby_version(self, minver=(),):
 		if ver < minver:
 			self.fatal('ruby is too old %r' % ver)
 
-	self.msg('Checking for ruby version %s' % cver, version,)
+	self.msg('Checking for ruby version %s' % cver, version)
 
 @conf
 def check_ruby_ext_devel(self):
@@ -88,12 +88,12 @@ def check_ruby_ext_devel(self):
 	if not self.env.CC_NAME and not self.env.CXX_NAME:
 		self.fatal('load a c/c++ compiler first')
 
-	version = tuple(map(int, self.env.RUBY_VERSION.split("."),))
+	version = tuple(map(int, self.env.RUBY_VERSION.split(".")))
 
-	def read_out(cmd,):
+	def read_out(cmd):
 		return Utils.to_list(self.cmd_and_log(self.env.RUBY + ['-rrbconfig', '-e', cmd]))
 
-	def read_config(key,):
+	def read_config(key):
 		return read_out('puts RbConfig::CONFIG[%r]' % key)
 
 	cpppath = archdir = read_config('archdir')
@@ -103,9 +103,9 @@ def check_ruby_ext_devel(self):
 		cpppath += ruby_hdrdir
 		if version >= (2, 0, 0):
 			cpppath += read_config('rubyarchhdrdir')
-		cpppath += [os.path.join(ruby_hdrdir[0], read_config('arch')[0],)]
+		cpppath += [os.path.join(ruby_hdrdir[0], read_config('arch')[0])]
 
-	self.check(header_name='ruby.h', includes=cpppath, errmsg='could not find ruby header file', link_header_test=False,)
+	self.check(header_name='ruby.h', includes=cpppath, errmsg='could not find ruby header file', link_header_test=False)
 
 	self.env.LIBPATH_RUBYEXT = read_config('libdir')
 	self.env.LIBPATH_RUBYEXT += archdir
@@ -138,7 +138,7 @@ def check_ruby_ext_devel(self):
 		self.env.LIBDIR_RUBY = read_config('sitelibdir')[0]
 
 @conf
-def check_ruby_module(self, module_name,):
+def check_ruby_module(self, module_name):
 	"""
 	Check if the selected ruby interpreter can require the given ruby module::
 
@@ -157,8 +157,8 @@ def check_ruby_module(self, module_name,):
 	self.end_msg(True)
 
 @extension('.rb')
-def process(self, node,):
-	return self.create_task('run_ruby', node,)
+def process(self, node):
+	return self.create_task('run_ruby', node)
 
 class run_ruby(Task.Task):
 	"""
@@ -176,11 +176,11 @@ class run_ruby(Task.Task):
 	"""
 	run_str = '${RUBY} ${RBFLAGS} -I ${SRC[0].parent.abspath()} ${SRC}'
 
-def options(opt,):
+def options(opt):
 	"""
 	Add the ``--with-ruby-archdir``, ``--with-ruby-libdir`` and ``--with-ruby-binary`` options
 	"""
-	opt.add_option('--with-ruby-archdir', type='string', dest='rubyarchdir', help='Specify directory where to install arch specific files',)
-	opt.add_option('--with-ruby-libdir', type='string', dest='rubylibdir', help='Specify alternate ruby library path',)
-	opt.add_option('--with-ruby-binary', type='string', dest='rubybinary', help='Specify alternate ruby binary',)
+	opt.add_option('--with-ruby-archdir', type='string', dest='rubyarchdir', help='Specify directory where to install arch specific files')
+	opt.add_option('--with-ruby-libdir', type='string', dest='rubylibdir', help='Specify alternate ruby library path')
+	opt.add_option('--with-ruby-binary', type='string', dest='rubybinary', help='Specify alternate ruby binary')
 

@@ -59,15 +59,18 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionBase'],),
+        objectClasses=['top', 'univentionBase'],
+    ),
     'kerberos': univention.admin.option(
         short_description=_('Kerberos realm'),
         objectClasses=['krb5Realm'],
-        default=True,),
+        default=True,
+    ),
     'samba': univention.admin.option(
         short_description=_('Samba'),
         objectClasses=['sambaDomain'],
-        default=True,),
+        default=True,
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -77,19 +80,22 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'dnsForwardZone': univention.admin.property(
         short_description=_('DNS forward lookup zone'),
         long_description='',
         syntax=univention.admin.syntax.DNS_ForwardZone,
         multivalue=True,
-        may_change=False,),
+        may_change=False,
+    ),
     'dnsReverseZone': univention.admin.property(
         short_description=_('DNS reverse lookup zone'),
         long_description='',
         syntax=univention.admin.syntax.DNS_ReverseZone,
         multivalue=True,
-        may_change=False,),
+        may_change=False,
+    ),
     'sambaDomainName': univention.admin.property(
         short_description=_('Samba domain name'),
         long_description='',
@@ -97,26 +103,30 @@ property_descriptions = {
         multivalue=True,
         options=['samba'],
         required=True,
-        default=(configRegistry.get('domainname', '',).upper(), []),),
+        default=(configRegistry.get('domainname', '').upper(), []),
+    ),
     'sambaSID': univention.admin.property(
         short_description=_('Samba SID'),
         long_description='',
         syntax=univention.admin.syntax.string,
         options=['samba'],
         required=True,
-        may_change=False,),
+        may_change=False,
+    ),
     'sambaNextUserRid': univention.admin.property(
         short_description=_('Samba Next User RID'),
         long_description='',
         syntax=univention.admin.syntax.string,
         options=['samba'],
-        default=('1000', []),),
+        default=('1000', []),
+    ),
     'sambaNextGroupRid': univention.admin.property(
         short_description=_('Samba Next Group RID'),
         long_description='',
         syntax=univention.admin.syntax.string,
         options=['samba'],
-        default=('1000', []),),
+        default=('1000', []),
+    ),
     'kerberosRealm': univention.admin.property(
         short_description=_('Kerberos realm'),
         long_description='',
@@ -124,58 +134,59 @@ property_descriptions = {
         options=['kerberos'],
         required=True,
         may_change=False,
-        default=(configRegistry.get('domainname', '',).upper(), []),),
+        default=(configRegistry.get('domainname', '').upper(), []),
+    ),
 }
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('Domain container description'), layout=[
             "name",
-        ],),
-    ],),
+        ]),
+    ]),
     Tab(_('DNS'), _('DNS Zones'), advanced=True, layout=[
         ["dnsForwardZone", "dnsReverseZone"],
-    ],),
+    ]),
     Tab(_('Samba'), _('Samba Settings'), advanced=True, layout=[
         ["sambaDomainName", "sambaSID"],
         ["sambaNextUserRid", "sambaNextGroupRid"],
-    ],),
+    ]),
     Tab(_('Kerberos'), _('Kerberos Settings'), advanced=True, layout=[
         'kerberosRealm',
-    ],),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'dc', None, univention.admin.mapping.ListToString,)
-mapping.register('sambaDomainName', 'sambaDomainName',)
-mapping.register('sambaSID', 'sambaSID', None, univention.admin.mapping.ListToString, encoding='ASCII',)
-mapping.register('sambaNextUserRid', 'sambaNextUserRid', None, univention.admin.mapping.ListToString,)
-mapping.register('sambaNextGroupRid', 'sambaNextGroupRid', None, univention.admin.mapping.ListToString,)
-mapping.register('kerberosRealm', 'krb5RealmName', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'dc', None, univention.admin.mapping.ListToString)
+mapping.register('sambaDomainName', 'sambaDomainName')
+mapping.register('sambaSID', 'sambaSID', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('sambaNextUserRid', 'sambaNextUserRid', None, univention.admin.mapping.ListToString)
+mapping.register('sambaNextGroupRid', 'sambaNextGroupRid', None, univention.admin.mapping.ListToString)
+mapping.register('kerberosRealm', 'krb5RealmName', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None,):
-        super(object, self,).__init__(co, lo, position, dn, superordinate, attributes,)
+    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
+        super(object, self).__init__(co, lo, position, dn, superordinate, attributes)
         if not self.info.get('name'):
-            self.info['name'] = self.oldattr.get('l', self.oldattr.get('o', self.oldattr.get('c', self.oldattr.get('ou', self.oldattr.get('dc', [b''],),),),),)[0].decode('UTF-8')
+            self.info['name'] = self.oldattr.get('l', self.oldattr.get('o', self.oldattr.get('c', self.oldattr.get('ou', self.oldattr.get('dc', [b''])))))[0].decode('UTF-8')
             self.save()
 
     def open(self):
         univention.admin.handlers.simpleLdap.open(self)
 
         if self.exists():
-            self['dnsForwardZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(!(zoneName=*.in-addr.arpa)))',)
-            self['dnsReverseZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*.in-addr.arpa))',)
+            self['dnsForwardZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(!(zoneName=*.in-addr.arpa)))')
+            self['dnsReverseZone'] = self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*.in-addr.arpa))')
             self.save()
 
     @classmethod
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'univentionBase',),
-        ],)
+            univention.admin.filter.expression('objectClass', 'univentionBase'),
+        ])
 
 
 lookup = object.lookup

@@ -31,7 +31,7 @@ class TestUMCnonUCRpolicies(UMCBase):
         # self.test_user_dn = ''
         self.test_user_2_dn = ''
 
-    def get_user_policy(self, user_dn, policy_dn=None, flavor="navigation",):
+    def get_user_policy(self, user_dn, policy_dn=None, flavor="navigation"):
         """Makes a 'udm/object/policies' request and returns result"""
         options = [{
             "objectType": "users/user",
@@ -40,7 +40,7 @@ class TestUMCnonUCRpolicies(UMCBase):
             "objectDN": user_dn,
             "container": None,
         }]
-        request_result = self.client.umc_command('udm/object/policies', options, flavor,).result
+        request_result = self.client.umc_command('udm/object/policies', options, flavor).result
         if not request_result:
             utils.fail("The object policy response result should not be empty")
         return request_result
@@ -52,10 +52,10 @@ class TestUMCnonUCRpolicies(UMCBase):
         for the test.
         """
         print("\nCreating a 'base_test_container' in the 'ldap_base':\n")
-        self.base_container_dn = self.UDM.create_object('container/cn', name='base_test_container', position=self.ldap_base,)
+        self.base_container_dn = self.UDM.create_object('container/cn', name='base_test_container', position=self.ldap_base)
 
         print("\nCreating an 'intermediate_test_container' inside the 'base_test_container':\n")
-        self.intermediate_container_dn = self.UDM.create_object('container/cn', name='intermediate_test_container', position=self.base_container_dn,)
+        self.intermediate_container_dn = self.UDM.create_object('container/cn', name='intermediate_test_container', position=self.base_container_dn)
 
     def create_test_policies(self):
         """
@@ -78,7 +78,8 @@ class TestUMCnonUCRpolicies(UMCBase):
                 "pwQualityCheck": False,
                 "pwLength": "5",
                 "$policies$": {},
-            },)
+            },
+        )
 
         print("\nCreating a policy for the 'intermediate_test_container':\n")
         self.intermediate_policy_dn = self.UDM.create_object(
@@ -90,7 +91,8 @@ class TestUMCnonUCRpolicies(UMCBase):
                 "pwQualityCheck": False,
                 "pwLength": "4",
                 "$policies$": {},
-            },)
+            },
+        )
 
         print("\nCreating a policy to be used by one of the 'umc_test_user's:\n")
         self.user_policy_dn = self.UDM.create_object(
@@ -102,7 +104,8 @@ class TestUMCnonUCRpolicies(UMCBase):
                 "pwQualityCheck": False,
                 "pwLength": "3",
                 "$policies$": {},
-            },)
+            },
+        )
 
     def create_test_users(self):
         """
@@ -121,7 +124,8 @@ class TestUMCnonUCRpolicies(UMCBase):
         print("\nCreating a second test user with samba and without user policy applied inside the 'intermediate_test_container':\n")
         self.test_user_2_dn = self.UDM.create_user(
             position=self.intermediate_container_dn,
-            username='umc_test_user_' + random_username(),)[0]
+            username='umc_test_user_' + random_username(),
+        )[0]
 
     def check_single_and_multiple_policies(self):
         """
@@ -131,21 +135,21 @@ class TestUMCnonUCRpolicies(UMCBase):
         print("\nChecking handling of single and multiple (inherited) policies:")
 
         print("\nApplying a 'umc_test_policy_base' to the 'base_test_container', checking correct inheritance:\n")
-        self.UDM.modify_object('container/cn', **{'dn': self.base_container_dn, 'policy_reference': self.base_policy_dn},)  # noqa: PIE804
+        self.UDM.modify_object('container/cn', **{'dn': self.base_container_dn, 'policy_reference': self.base_policy_dn})  # noqa: PIE804
 
         # Second user should have inherited policy from the base container:
-        self.check_policies('5', '5', self.test_user_2_dn,)
+        self.check_policies('5', '5', self.test_user_2_dn)
 
         # First user with own 'umc_test_user_policy' winning over container
         # policies as the closest policy:
         # self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
 
         print("\nApplying a 'umc_test_policy_intermediate' to the 'intermediate_test_container', checking correct inheritance:\n")
-        self.UDM.modify_object('container/cn', **{'dn': self.intermediate_container_dn, 'policy_reference': self.intermediate_policy_dn},)  # noqa: PIE804
+        self.UDM.modify_object('container/cn', **{'dn': self.intermediate_container_dn, 'policy_reference': self.intermediate_policy_dn})  # noqa: PIE804
 
         # Second user should have inherited policy from the intermediate
         # container winning as the closest policy:
-        self.check_policies('4', '4', self.test_user_2_dn,)
+        self.check_policies('4', '4', self.test_user_2_dn)
 
         # First user with own 'umc_test_user_policy' winning over container
         # policies as the closest policy:
@@ -157,27 +161,27 @@ class TestUMCnonUCRpolicies(UMCBase):
         correctly.
         """
         print("\nAdding a Fixed attribute 'univentionPWLength' to the 'umc_test_policy_base' and checking correct inheritance:\n")
-        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'fixedAttributes': ['univentionPWLength']},)  # noqa: PIE804
+        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'fixedAttributes': ['univentionPWLength']})  # noqa: PIE804
 
         # Both users should have pwLength=5 (Fixed attribute from the
         # base container) and Length=4 (inherited from intermediate container)
-        self.check_policies('4', '5', self.test_user_2_dn,)
+        self.check_policies('4', '5', self.test_user_2_dn)
         # self.check_policies('4', '5', self.test_user_dn)
 
         print("\nAdding an Empty attribute 'univentionPWLength' to the 'umc_test_policy_intermediate' and checking correct inheritance:\n")
-        self.UDM.modify_object('policies/pwhistory', **{'dn': self.intermediate_policy_dn, 'emptyAttributes': ['univentionPWLength']},)  # noqa: PIE804
+        self.UDM.modify_object('policies/pwhistory', **{'dn': self.intermediate_policy_dn, 'emptyAttributes': ['univentionPWLength']})  # noqa: PIE804
 
         # Both users should have pwLength=5 (Even with empty attribute in
         # intermediate container due to Fixed attribute on the base container)
-        self.check_policies('4', '5', self.test_user_2_dn,)
+        self.check_policies('4', '5', self.test_user_2_dn)
         # self.check_policies('4', '5', self.test_user_dn)
 
         print("\nRemoving Fixed attribute from the 'umc_test_policy_base':\n")
-        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'set': {'fixedAttributes': ""}},)  # noqa: PIE804
+        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'set': {'fixedAttributes': ""}})  # noqa: PIE804
 
         # Both users should have an empty pwLength (due to empty attribute
         # on the intermediate container):
-        self.check_policies('4', '', self.test_user_2_dn,)
+        self.check_policies('4', '', self.test_user_2_dn)
         # self.check_policies('4', '', self.test_user_dn)
 
     def check_required_excluded_object_classes(self):
@@ -186,29 +190,29 @@ class TestUMCnonUCRpolicies(UMCBase):
         inherited correctly.
         """
         print("\nAdding a 'sambaSamAccount' as a required object class to the 'umc_test_policy_intermediate' and checking correct inheritance:\n")
-        self.UDM.modify_object('policies/pwhistory', **{'dn': self.intermediate_policy_dn, 'requiredObjectClasses': ["sambaSamAccount"]},)  # noqa: PIE804
+        self.UDM.modify_object('policies/pwhistory', **{'dn': self.intermediate_policy_dn, 'requiredObjectClasses': ["sambaSamAccount"]})  # noqa: PIE804
 
         # Second user (with Samba) should have an intermediate container policy
         # (Length=4 and empty pwLength), first user (without Samba) should have
         # own 'umc_test_user_policy' winning (Length=pwLength=3):
-        self.check_policies('4', '', self.test_user_2_dn,)
+        self.check_policies('4', '', self.test_user_2_dn)
         # self.check_policies('3', '3', self.test_user_dn, self.user_policy_dn)
 
         print("\nAdding 'sambaSamAccount' to the excluded object class of the 'umc_test_policy_base' and checking correct inheritance:\n")
-        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'prohibitedObjectClasses': ["sambaSamAccount"]},)  # noqa: PIE804
+        self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'prohibitedObjectClasses': ["sambaSamAccount"]})  # noqa: PIE804
 
         # Second user (with Samba) should have an intertmediate container
         # policy (Length=4 and an empty pwLength), first user (without Samba)
         # should have base container policy inherited (Length=pwLength=5):
-        self.check_policies('4', '', self.test_user_2_dn,)
+        self.check_policies('4', '', self.test_user_2_dn)
         # self.check_policies('5', '5', self.test_user_dn)
 
-    def assert_policies(self, should_be, in_fact,):
+    def assert_policies(self, should_be, in_fact):
         """Asserts that 'in_fact' equals 'should_be'."""
         if in_fact != should_be:
             utils.fail(f"The user object policy was reported as '{in_fact}', while should be '{should_be}'")
 
-    def check_policies(self, length, pw_length, user_dn, user_policy_dn=None,):
+    def check_policies(self, length, pw_length, user_dn, user_policy_dn=None):
         """
         Creates a 'should_be' set with the given 'length' and 'pw_length'
         values; Makes a 'udm/object/policy' UMC request for a given
@@ -217,13 +221,13 @@ class TestUMCnonUCRpolicies(UMCBase):
         Calls assertion method with 'should_be' and 'in_fact' sets.
         """
         should_be = {('length', length), ('pwLength', pw_length)}
-        obj_policy = self.get_user_policy(user_dn, user_policy_dn,)
+        obj_policy = self.get_user_policy(user_dn, user_policy_dn)
 
         in_fact = set()
         in_fact.add(('length', obj_policy[0].get('length').get('value')))
         in_fact.add(('pwLength', obj_policy[0].get('pwLength').get('value')))
 
-        self.assert_policies(should_be, in_fact,)
+        self.assert_policies(should_be, in_fact)
 
     def main(self):
         """A test to check non-UCR policies handling by the UMC"""

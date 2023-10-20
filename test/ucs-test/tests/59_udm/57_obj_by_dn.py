@@ -13,8 +13,8 @@ from univention.testing.ucr import UCSTestConfigRegistry
 from univention.udm import UDM, NoObject
 
 
-ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0,)
-ud.set_level(ud.ADMIN, ud.ALL,)
+ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
+ud.set_level(ud.ADMIN, ud.ALL)
 
 
 class TestUdmAutoOpen(TestCase):

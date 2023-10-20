@@ -60,22 +60,22 @@ BACKUP_DIR = '/var/lib/univention-appcenter/backups'
 class DockerActionMixin(object):
 
     @classmethod
-    def _get_docker(cls, app,):
+    def _get_docker(cls, app):
         if not app.docker:
             return
         if app.uses_docker_compose():
-            return MultiDocker(app, cls.logger,)
-        return Docker(app, cls.logger,)
+            return MultiDocker(app, cls.logger)
+        return Docker(app, cls.logger)
 
-    def _store_data(self, app,):
+    def _store_data(self, app):
         if app.docker_script_store_data:
-            process = self._execute_container_script(app, 'store_data', credentials=False,)
+            process = self._execute_container_script(app, 'store_data', credentials=False)
             if not process or process.returncode != 0:
                 self.fatal('Image upgrade script (pre) failed')
                 return False
         return True
 
-    def _backup_container(self, app, remove=False,):
+    def _backup_container(self, app, remove=False):
         docker = self._get_docker(app)
         if docker.exists():
             if not Start.call(app=app):
@@ -91,16 +91,16 @@ class DockerActionMixin(object):
                 # New backup
                 image_repo = 'appcenter-backup-%s' % app.id
                 image_name = '%s:%d' % (image_repo, time.time())
-                shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf',),)
+                shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
         else:
             self.fatal('No container found. Unable to run store_data!')
 
-    def _execute_container_script(self, app, interface, args=None, credentials=True, output=False, cmd_args=None, cmd_kwargs=None,):
+    def _execute_container_script(self, app, interface, args=None, credentials=True, output=False, cmd_args=None, cmd_kwargs=None):
         cmd_args = cmd_args or []
         cmd_kwargs = cmd_kwargs or {}
         self.log('Executing interface %s for %s' % (interface, app.id))
         docker = self._get_docker(app)
-        interface_file = getattr(app, 'docker_script_%s' % interface,)
+        interface_file = getattr(app, 'docker_script_%s' % interface)
         if not interface_file:
             self.log('No interface defined')
             return None
@@ -109,18 +109,18 @@ class DockerActionMixin(object):
         if os.path.exists(remote_interface_script):
             self.log("Copying App Center's %s to container's %s" % (interface, interface_file))
             mkdir(os.path.dirname(container_interface_script))
-            shutil.copy2(remote_interface_script, container_interface_script,)
-            os.chmod(container_interface_script, 0o755,)  # -rwxr-xr-x
+            shutil.copy2(remote_interface_script, container_interface_script)
+            os.chmod(container_interface_script, 0o755)  # -rwxr-xr-x
         if not os.path.exists(container_interface_script):
             self.warn('Interface script %s not found!' % interface_file)
             return None
         with docker.tmp_file() as error_file:
             with docker.tmp_file() as password_file:
                 if credentials:
-                    self._get_ldap_connection(args, allow_machine_connection=False, allow_admin_connection=False,)  # to get a working username/password
+                    self._get_ldap_connection(args, allow_machine_connection=False, allow_admin_connection=False)  # to get a working username/password
                     username = self._get_username(args)
                     password = self._get_password(args)
-                    with open(password_file.name, 'w',) as f:
+                    with open(password_file.name, 'w') as f:
                         f.write(password)
                     cmd_kwargs['username'] = username
                     cmd_kwargs['password_file'] = password_file.container_path
@@ -134,7 +134,7 @@ class DockerActionMixin(object):
                 if output:
                     logger = LogCatcher(self.logger)
                     cmd_kwargs['_logger'] = logger
-                process = docker.execute(interface_file, *cmd_args, **cmd_kwargs,)
+                process = docker.execute(interface_file, *cmd_args, **cmd_kwargs)
                 if process.returncode != 0:
                     with open(error_file.name) as error_handle:
                         for line in error_handle:
@@ -143,14 +143,14 @@ class DockerActionMixin(object):
                     return process, logger
                 return process
 
-    def _copy_files_into_container(self, app,*filenames):
+    def _copy_files_into_container(self, app, *filenames):
         docker = self._get_docker(app)
         for filename in filenames:
             if filename:
                 self.debug('Copying %s into container' % filename)
-                shutil.copy2(filename, docker.path(filename),)
+                shutil.copy2(filename, docker.path(filename))
 
-    def _start_docker_image(self, app, hostdn, password, args,):
+    def _start_docker_image(self, app, hostdn, password, args):
         docker = self._get_docker(app)
         if not docker:
             return
@@ -159,7 +159,7 @@ class DockerActionMixin(object):
             docker.pull()
 
         self.log('Initializing app image')
-        hostname = explode_dn(hostdn, 1,)[0]
+        hostname = explode_dn(hostdn, 1)[0]
         set_vars = (args.set_vars or {}).copy()
         after_image_configuration = {}
         for setting in app.get_settings():
@@ -180,9 +180,9 @@ class DockerActionMixin(object):
         ucr_keys_list = list(ucr_keys())
         for var in ['nameserver.*', 'repository/online/server', 'repository/app_center/server', 'update/secure_apt', 'appcenter/index/verify', 'ldap/base', 'ldap/server.*', 'ldap/master.*', 'locale.*', 'domainname']:
             for key in ucr_keys_list:
-                if re.match(var, key,):
+                if re.match(var, key):
                     set_vars[key] = ucr_get(key)
-        if ucr_is_true('appcenter/docker/container/proxy/settings', default=True,):
+        if ucr_is_true('appcenter/docker/container/proxy/settings', default=True):
             if ucr_get('proxy/http'):
                 set_vars['proxy/http'] = ucr_get('proxy/http')
                 set_vars['http_proxy'] = ucr_get('proxy/http')
@@ -216,7 +216,7 @@ class DockerActionMixin(object):
             except DatabaseError as exc:
                 raise DatabaseConnectorError(str(exc))
 
-        container = docker.create(hostname, set_vars,)
+        container = docker.create(hostname, set_vars)
         self.log('Preconfiguring container %s' % container)
         autostart = 'yes'
         if not Start.call(app=app):
@@ -241,7 +241,8 @@ docker inspect:
                 app=app, container=docker.container,
                 clogs=clogs, dlogs=dlogs,
                 state=inspect.get('State'),
-                graphdriver=inspect.get('GraphDriver'),)
+                graphdriver=inspect.get('GraphDriver'),
+            )
             raise AppCenterErrorContainerStart(msg)
         # copy password files
         if os.path.isfile(app.secret_on_host):
@@ -250,24 +251,24 @@ docker inspect:
             f_dir = os.path.dirname(f_name)
             # if the container start takes a little longer the f_dir may not exist yet
             # so wait max 60s
-            for _i in range(0, 12,):
+            for _i in range(0, 12):
                 if os.path.isdir(f_dir):
                     break
                 time.sleep(5)
             try:
-                with open(f_name, 'w',) as f:
-                    os.chmod(f_name, 0o600,)
+                with open(f_name, 'w') as f:
+                    os.chmod(f_name, 0o600)
                     f.write(password)
             except Exception as exc:
                 raise DockerCouldNotStartContainer('Could not copy machine.secret to container: %s (%s)' % (str(exc), docker.logs()))
         if database_password_file:
-            docker.cp_to_container(database_password_file, database_password_file,)
+            docker.cp_to_container(database_password_file, database_password_file)
         # update timezone in container
         logfile_logger = get_logfile_logger('docker.base')
-        docker.execute('rm', '-f', '/etc/timezone', '/etc/localtime', _logger=logfile_logger,)
-        docker.cp_to_container('/etc/timezone', '/etc/timezone', _logger=logfile_logger,)
-        docker.cp_to_container('/etc/localtime', '/etc/localtime', _logger=logfile_logger,)
+        docker.execute('rm', '-f', '/etc/timezone', '/etc/localtime', _logger=logfile_logger)
+        docker.cp_to_container('/etc/timezone', '/etc/timezone', _logger=logfile_logger)
+        docker.cp_to_container('/etc/localtime', '/etc/localtime', _logger=logfile_logger)
         # configure app
         after_image_configuration.update(set_vars)
         configure = get_action('configure')
-        configure.call(app=app, autostart=autostart, run_script='no', set_vars=after_image_configuration,)
+        configure.call(app=app, autostart=autostart, run_script='no', set_vars=after_image_configuration)

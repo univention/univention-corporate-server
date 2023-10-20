@@ -50,7 +50,7 @@ class UcsRepoUrl(object):
 
     DEFAULT = 'https://updates.software-univention.de/'
 
-    def __init__(self, ucr, prefix, default=None,):
+    def __init__(self, ucr, prefix, default=None):
         # type: (ConfigRegistry, str, Union[None, str, UcsRepoUrl]) -> None
         """
         >>> UcsRepoUrl({'_/server': 'hostname'}, '_').path
@@ -68,11 +68,11 @@ class UcsRepoUrl(object):
         >>> UcsRepoUrl({}, '').private() == UcsRepoUrl.DEFAULT
         True
         """
-        def ucrv(key, default=None,):
+        def ucrv(key, default=None):
             # type: (str, _T) -> _T
-            return ucr.get('%s/%s' % (prefix, key), default,)
+            return ucr.get('%s/%s' % (prefix, key), default)
 
-        server = ucrv('server', '',)
+        server = ucrv('server', '')
         url = urlsplit(server)
         if url.scheme:
             self.scheme = url.scheme
@@ -84,22 +84,22 @@ class UcsRepoUrl(object):
         else:
             if default is None:
                 default = self.DEFAULT
-            elif isinstance(default, UcsRepoUrl,):
+            elif isinstance(default, UcsRepoUrl):
                 default = default.private()
             defaults = urlsplit(default)
 
-            self.username = ucrv('username', defaults.username,)
-            self.password = ucrv('password', defaults.password,)
+            self.username = ucrv('username', defaults.username)
+            self.password = ucrv('password', defaults.password)
             if server:
                 self.hostname = server
-                port = ucrv('port', 80,)
+                port = ucrv('port', 80)
                 self.scheme = 'https' if port == 443 else 'http'
-                prefix = ucrv('prefix', None,)
+                prefix = ucrv('prefix', None)
             else:
                 self.hostname = defaults.hostname
-                port = ucrv('port', defaults.port,)
+                port = ucrv('port', defaults.port)
                 self.scheme = defaults.scheme
-                prefix = ucrv('prefix', defaults.path,)
+                prefix = ucrv('prefix', defaults.path)
         self.port = int(port if port else 443 if self.scheme == 'https' else 80)
         if prefix:
             prefix = prefix.strip('/')
@@ -176,7 +176,7 @@ class UcsRepoUrl(object):
             self.private(),
         )
 
-    def __eq__(self, other,):
+    def __eq__(self, other):
         # type: (object) -> bool
         """
         >>> UcsRepoUrl({}, '') == UcsRepoUrl({}, '')
@@ -184,9 +184,9 @@ class UcsRepoUrl(object):
         >>> UcsRepoUrl({}, '') == UcsRepoUrl({'_/server': 'other'}, '_')
         False
         """
-        return isinstance(other, UcsRepoUrl,) and self.private() == other.private()
+        return isinstance(other, UcsRepoUrl) and self.private() == other.private()
 
-    def __add__(self, rel,):
+    def __add__(self, rel):
         # type: (str) -> UcsRepoUrl
         """
         Append relative path component.

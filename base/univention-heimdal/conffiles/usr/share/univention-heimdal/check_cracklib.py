@@ -47,7 +47,7 @@ def main():
             continue
 
         try:
-            key, val = line.split(': ', 1,)
+            key, val = line.split(': ', 1)
         except Exception:
             print('key value pair is not correct: %s' % (line,))
             sys.exit(1)
@@ -58,7 +58,7 @@ def main():
         sys.exit(1)
 
     if 'principal' in params:
-        pwdCheck = univention.password.Check(None, params['principal'],)
+        pwdCheck = univention.password.Check(None, params['principal'])
         try:
             pwdCheck.check(params['new-password'])
             print('APPROVED')
@@ -70,5 +70,5 @@ try:
     main()
 except Exception:
     import traceback
-    print(traceback.format_exc().replace('\n', ' ',))  # heimdal-kdc / kpasswd only displays the first line as error message.
+    print(traceback.format_exc().replace('\n', ' '))  # heimdal-kdc / kpasswd only displays the first line as error message.
     sys.exit(1)

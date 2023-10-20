@@ -25,12 +25,12 @@ MAPPED_UDM_PROPERTIES = [
 
 
 def setup_kelvin_traeger():
-    with open('/var/lib/ucs-school-import/configs/kelvin.json', 'r+w',) as fp:
+    with open('/var/lib/ucs-school-import/configs/kelvin.json', 'r+w') as fp:
         config = json.load(fp)
         config['configuration_checks'] = ['defaults', 'class_overwrites', 'mapped_udm_properties']
         config['mapped_udm_properties'] = MAPPED_UDM_PROPERTIES
         fp.seek(0)
-        json.dump(config, fp, indent=4, sort_keys=True,)
+        json.dump(config, fp, indent=4, sort_keys=True)
 
 
 def create_extended_attr():
@@ -62,7 +62,7 @@ def create_extended_attr():
         'disableUDMWeb': '0',
     }
     for key, value in props.items():
-        setattr(ucsschool_id_connector_last_update.props, key, value,)
+        setattr(ucsschool_id_connector_last_update.props, key, value)
 
     ucsschool_id_connector_last_update.options.extend(('ucsschoolStudent', 'ucsschoolTeacher', 'ucsschoolStaff', 'ucsschoolAdministrator'))
     try:
@@ -91,7 +91,7 @@ def create_extended_attr():
         'disableUDMWeb': '1',
     }
     for key, value in props.items():
-        setattr(ucsschool_id_connector_pw.props, key, value,)
+        setattr(ucsschool_id_connector_pw.props, key, value)
 
     ucsschool_id_connector_pw.options.extend(('ucsschoolStudent', 'ucsschoolTeacher', 'ucsschoolStaff', 'ucsschoolAdministrator'))
     try:

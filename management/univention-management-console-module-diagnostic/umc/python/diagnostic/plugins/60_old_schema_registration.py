@@ -80,7 +80,7 @@ SCHEMA_FILES = {
 }
 
 
-def udm_schema_obj_exists(name: str,) -> bool:
+def udm_schema_obj_exists(name: str) -> bool:
     name = os.path.splitext(os.path.basename(name))[0]
     udm = UDM.admin().version(1)
     try:
@@ -91,11 +91,11 @@ def udm_schema_obj_exists(name: str,) -> bool:
         return True
 
 
-def create_udm_schema_obj(pname: str, pversion: str, fname: str,) -> None:
+def create_udm_schema_obj(pname: str, pversion: str, fname: str) -> None:
     subprocess.check_call(['sh', '-c', '. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --packagename "$1" --packageversion "$2" --schema "$3"', pname, pversion, fname])
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     if ucr.get('server/role') != 'domaincontroller_master':
         return
 
@@ -111,17 +111,17 @@ def run(_umc_instance: Instance,) -> None:
         raise Warning(description + '\n' + _('The following files seem to be registered in the old way:') + '\n * ' + '\n * '.join(unregistered), buttons=[{
             'action': 'register_schema',
             'label': _('Register Schema files'),
-        }],)
+        }])
 
 
-def register_schema(_umc_instance: Instance,) -> None:
+def register_schema(_umc_instance: Instance) -> None:
     for fname in sorted(SCHEMA_FILES):
         if not os.path.exists(fname):
             continue
         info = SCHEMA_FILES[fname]
         if not udm_schema_obj_exists(fname):
             try:
-                create_udm_schema_obj(info['package'], info['packageversion'], fname,)
+                create_udm_schema_obj(info['package'], info['packageversion'], fname)
             except Exception as exc:
                 raise Critical(_('The registration failed: %s') % (exc,))
     raise ProblemFixed(buttons=[])

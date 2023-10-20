@@ -48,10 +48,10 @@ class Reinitialize(Upgrade):
 
     help = 'Reinitilize Docker App. Mainly used internally.'
 
-    def setup_parser(self, parser,):
-        parser.add_argument('app', action=StoreAppAction, help='The ID of the App in whose environment COMMANDS shall be executed',)
+    def setup_parser(self, parser):
+        parser.add_argument('app', action=StoreAppAction, help='The ID of the App in whose environment COMMANDS shall be executed')
 
-    def main(self, args,):
+    def main(self, args):
         app = args.app
         if not app.docker:
             self.warn('Only works for Docker Apps')
@@ -82,5 +82,5 @@ class Reinitialize(Upgrade):
             pull_image=False,
             remove_image=False,
             backup=True,
-            noninteractive=True,)
-        self._upgrade_image(app, _args,)
+            noninteractive=True)
+        self._upgrade_image(app, _args)

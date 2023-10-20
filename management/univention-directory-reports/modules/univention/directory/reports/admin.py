@@ -72,7 +72,7 @@ TEX_ESCAPE = {
 }
 
 
-def texClean(str,):
+def texClean(str):
     u"""
     Escape string for use in LaTeX.
 
@@ -83,17 +83,17 @@ def texClean(str,):
     >>> texClean('€°´')
     'EUR$^{\\\\circ}$'
     """
-    esc = ''.join([TEX_ESCAPE.get(c, c,) for c in str])
+    esc = ''.join([TEX_ESCAPE.get(c, c) for c in str])
     # str is NOT unicode, so '€°´' are non-ASCII characters, which use multiple bytes. See Bug #16637
-    esc = esc.replace('€', 'EUR',)
-    esc = esc.replace('°', '$^{\\circ}$',)
-    esc = esc.replace('´', '',)
+    esc = esc.replace('€', 'EUR')
+    esc = esc.replace('°', '$^{\\circ}$')
+    esc = esc.replace('´', '')
     return esc
 
 
 class AdminConnection(object):
 
-    def __init__(self, userdn=None, password=None, host='localhost', base=None, start_tls=2, access=None, format=None,):
+    def __init__(self, userdn=None, password=None, host='localhost', base=None, start_tls=2, access=None, format=None):
         self._cached = {}
         self._modules = {}
         self._policies = {}
@@ -109,7 +109,7 @@ class AdminConnection(object):
         if access:
             self._access = access
         else:
-            self._access = ua_ldap.access(host=host, base=self._base, binddn=userdn, bindpw=password, start_tls=start_tls,)
+            self._access = ua_ldap.access(host=host, base=self._base, binddn=userdn, bindpw=password, start_tls=start_tls)
         ua_modules.update()
 
     def __repr__(self):
@@ -117,14 +117,14 @@ class AdminConnection(object):
         val = (self.__class__.__name__, self._access.binddn, self._access.bindpw, self._access.host, self._access.base, self._access.start_tls, self._access, self._format)
         return fmt % val
 
-    def cache_object(self, obj,):
-        return self.get_object(ua_objects.module(obj), obj.dn,)
+    def cache_object(self, obj):
+        return self.get_object(ua_objects.module(obj), obj.dn)
 
     def clear_cache(self):
         del self._cached
         self._cached = {}
 
-    def get_object(self, module, dn,):
+    def get_object(self, module, dn):
         if dn in self.__reverse:  # this value has been escaped => use <self.__reverse> to unescape
             possible_real_DNs = set()
             for possible_real_DN_set in self.__reverse[dn].values():
@@ -134,27 +134,27 @@ class AdminConnection(object):
                 raise ValueError('ambiguous DNs, cannot unescape %s (possibilities: %s)' % (repr(dn), repr(possible_real_DNs)))
             dn = possible_real_DNs[0]
         try:
-            return self.get_object_real(module, dn,)
+            return self.get_object_real(module, dn)
         except ua_exceptions.noObject:
             return None
 
-    def get_object_real(self, module, dn,):
+    def get_object_real(self, module, dn):
         if dn in self._cached:
             return self._cached[dn]
-        if isinstance(module, six.string_types,):
+        if isinstance(module, six.string_types):
             if module in self._modules:
                 module = self._modules[module]
             else:
                 name = module
                 module = ua_modules.get(name)
-                ua_modules.init(self._access, self._position, module,)
+                ua_modules.init(self._access, self._position, module)
                 self._modules[name] = module
         elif module is None:
             module = self.identify(dn)
             if not module:
                 return None
-            ua_modules.init(self._access, self._position, module,)
-        new = ua_objects.get(module, None, self._access, position=self._position, dn=dn,)
+            ua_modules.init(self._access, self._position, module)
+        new = ua_objects.get(module, None, self._access, position=self._position, dn=dn)
         # if the object is not valid it should be displayed as an empty object
         try:
             new.open()
@@ -162,12 +162,12 @@ class AdminConnection(object):
             # write the traceback in the logfile
             import traceback
 
-            ud.debug(ud.ADMIN, ud.ERROR, 'The object %s could not be opened' % dn,)
-            ud.debug(ud.ADMIN, ud.ERROR, 'Traceback: %s' % (traceback.format_exc(),),)
+            ud.debug(ud.ADMIN, ud.ERROR, 'The object %s could not be opened' % dn)
+            ud.debug(ud.ADMIN, ud.ERROR, 'Traceback: %s' % (traceback.format_exc(),))
         for key, value in new.items():
             from univention.directory.reports.document import Document
             if self._format in (Document.TYPE_LATEX, Document.TYPE_RML):
-                i, j = self.format_property(new.descriptions, key, value,)
+                i, j = self.format_property(new.descriptions, key, value)
                 new.info[i] = j
             else:
                 new.info[key] = value
@@ -177,46 +177,46 @@ class AdminConnection(object):
 
         return new
 
-    def identify(self, dn,):
-        res = self._access.search(base=dn, scope='base',)
+    def identify(self, dn):
+        res = self._access.search(base=dn, scope='base')
         if res:
-            mods = ua_modules.identify(dn, res[0][1],)
+            mods = ua_modules.identify(dn, res[0][1])
             if mods:
                 return mods[0]
         return None
 
     # store the old value of every attribute (if it is a string) in <self.__reverse> to enable <get_object()> to reverse the escaping
-    def format_property(self, props, oldkey, oldvalue,):
-        (newkey, newvalue) = self.format_property_real(props, oldkey, oldvalue,)
+    def format_property(self, props, oldkey, oldvalue):
+        (newkey, newvalue) = self.format_property_real(props, oldkey, oldvalue)
         assert newkey == oldkey
         key = oldkey
-        if isinstance(newvalue, (list, tuple),):  # multivalue => unpack
-            for (newv, oldv) in zip(newvalue, oldvalue,):
-                if isinstance(oldv, str,) and newv != oldv:  # only consider strings, because DNs are always strings
+        if isinstance(newvalue, (list, tuple)):  # multivalue => unpack
+            for (newv, oldv) in zip(newvalue, oldvalue):
+                if isinstance(oldv, str) and newv != oldv:  # only consider strings, because DNs are always strings
                     if newv not in self.__reverse:
                         self.__reverse[newv] = {}
-                    oldvalues = self.__reverse[newv].get(key, set(),)
+                    oldvalues = self.__reverse[newv].get(key, set())
                     oldvalues.add(oldv)
                     self.__reverse[newv][key] = oldvalues
         else:
-            if isinstance(oldvalue, str,) and newvalue != oldvalue:  # only consider strings, because DNs are always strings
+            if isinstance(oldvalue, str) and newvalue != oldvalue:  # only consider strings, because DNs are always strings
                 if newvalue not in self.__reverse:
                     self.__reverse[newvalue] = {}
-                oldvalues = self.__reverse[newvalue].get(key, set(),)
+                oldvalues = self.__reverse[newvalue].get(key, set())
                 oldvalues.add(oldvalue)
                 self.__reverse[newvalue][key] = oldvalues
         return (key, newvalue)
 
-    def format_property_real(self, props, key, value,):
-        prop = props.get(key, None,)
+    def format_property_real(self, props, key, value):
+        prop = props.get(key, None)
 
         if not prop:
             return (key, value)
         else:
-            if isinstance(value, (list, tuple),):
+            if isinstance(value, (list, tuple)):
                 result = []
                 for v in value:
-                    if isinstance(v, (list, tuple),):
+                    if isinstance(v, (list, tuple)):
                         for i in v:
                             result.append(self.escape(str(i)))
                     else:
@@ -226,19 +226,19 @@ class AdminConnection(object):
                 value = self.escape(value)
             filter = filter_get(prop.syntax)
             if filter:
-                return filter(prop, key, value,)
+                return filter(prop, key, value)
 
         return (key, value)
 
-    def escape(self, value,):
+    def escape(self, value):
         from univention.directory.reports.document import Document
         if self._format == Document.TYPE_LATEX:
             return texClean(value)
         elif self._format == Document.TYPE_RML:
-            return escape(value, quote=True,)
+            return escape(value, quote=True)
         return value
 
-    def _get_policies(self, obj,):
+    def _get_policies(self, obj):
         dict = {}
         policies = self._access.getPolicies(obj.dn)
         for policy_oc, attrs in policies.items():
@@ -249,23 +249,23 @@ class AdminConnection(object):
             for attr_name, value_dict in attrs.items():
                 dict[attr_name] = value_dict['value']
 
-            for key, value in ua_mapping.mapDict(module.mapping, dict,).items():
+            for key, value in ua_mapping.mapDict(module.mapping, dict).items():
                 from univention.directory.reports.document import Document
                 if self._format in (Document.TYPE_LATEX, Document.TYPE_RML):
-                    i, j = self.format_property(module.property_descriptions, key, value,)
+                    i, j = self.format_property(module.property_descriptions, key, value)
                     obj.info[i] = j
                 else:
                     obj.info[key] = value
 
 
-def connect(userdn=None, password=None, host='localhost', base=None, start_tls=2, access=None,):
+def connect(userdn=None, password=None, host='localhost', base=None, start_tls=2, access=None):
     global _admin
     if _admin:
         return
-    _admin = AdminConnection(userdn, password, host, base, start_tls, access,)
+    _admin = AdminConnection(userdn, password, host, base, start_tls, access)
 
 
-def cache_object(obj,):
+def cache_object(obj):
     if not _admin:
         return None
     return _admin.cache_object(obj)
@@ -277,21 +277,21 @@ def clear_cache():
     _admin.clear_cache()
 
 
-def get_object(module, dn,):
+def get_object(module, dn):
     if not _admin:
         return None
     try:
-        return _admin.get_object(module, dn,)
+        return _admin.get_object(module, dn)
     except ua_exceptions.ldapError:
         return None
 
 
-def set_format(format,):
+def set_format(format):
     if _admin:
         _admin._format = format
 
 
-def identify(dn,):
+def identify(dn):
     return _admin.identfy(dn)
 
 

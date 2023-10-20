@@ -23,7 +23,7 @@ default_password = 'univention'
 
 
 class Account:
-    def __init__(self, description, dn, name, password=default_password,):
+    def __init__(self, description, dn, name, password=default_password):
         self.description = description
         self.dn = dn
         self.name = name
@@ -40,17 +40,17 @@ try:
         try:
             what = 'Helpdesk group'
             hdgroup_dn, hdgroup_name = udm.create_group()
-            helpdesk_group = Account(what, hdgroup_dn, hdgroup_name,)
+            helpdesk_group = Account(what, hdgroup_dn, hdgroup_name)
         except Exception as exc:
-            fail(f'Creating {what} failed: {exc}', ucstest_errorcode,)
+            fail(f'Creating {what} failed: {exc}', ucstest_errorcode)
 
         # create new user
         try:
             what = 'Helpdesk user'
             hduser_dn, hduser_name = udm.create_user()
-            helpdesk_user = Account(what, hduser_dn, hduser_name,)
+            helpdesk_user = Account(what, hduser_dn, hduser_name)
         except Exception as exc:
-            fail(f'Creating {what} failed: {exc}', ucstest_errorcode,)
+            fail(f'Creating {what} failed: {exc}', ucstest_errorcode)
 
         # add user to corresponding group
         udm.modify_object(
@@ -58,15 +58,16 @@ try:
             dn=helpdesk_group.dn,
             append={
                 'users': [helpdesk_user.dn],
-            },)
+            },
+        )
 
         # create new protected test user
         try:
             what = 'Protected user'
             prot_user_dn, prot_user_name = udm.create_user()
-            prot_user = Account(what, prot_user_dn, prot_user_name,)
+            prot_user = Account(what, prot_user_dn, prot_user_name)
         except Exception as exc:
-            fail(f'Creating {what} failed: {exc}', ucstest_errorcode,)
+            fail(f'Creating {what} failed: {exc}', ucstest_errorcode)
 
         # Deactivate LDAP ACL
         pattern = re.compile(r'^ldap\/acl\/user\/passwordreset\/accesslist\/groups.[^:]+')
@@ -74,7 +75,7 @@ try:
         aclvalue = ''
         for item in ucr.items():
             key, value = item
-            match = re.search(pattern, key,)
+            match = re.search(pattern, key)
             if match:
                 aclkey, aclvalue = key, value
                 break

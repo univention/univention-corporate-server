@@ -33,11 +33,11 @@ with test:
     # Wird eine Nachfrage mit zu installierenden Paketen angezeigt? Auch für sich in der Domäne befindlichen Master und Backupsystemen (falls MasterPackages eingetragen sind)?
     test.wait_for_text("Installation of Self Service")
     test.click_text("More information")
-    test.wait_for_text("univention-self-service-passwordreset-umc", timeout=3,)
+    test.wait_for_text("univention-self-service-passwordreset-umc", timeout=3)
     # test.wait_for_text("univention-self-service-master", timeout=3)  # Bug https://forge.univention.org/bugzilla/show_bug.cgi?id=49183
     try:
         # Werden wichtige System-Pakete deinstalliert (z.B. univention-server-master)?
-        test.wait_for_text("univention-server-", timeout=1,)
+        test.wait_for_text("univention-server-", timeout=1)
     except TimeoutException:
         pass
     else:
@@ -61,7 +61,7 @@ with test:
         if ucr_get(key) != value:
             raise ValueError('%s: %r' % (key, ucr_get(key)))
     lo, pos = get_machine_connection()
-    app_obj = search_objects('appcenter/app', lo, pos,)[0]
+    app_obj = search_objects('appcenter/app', lo, pos)[0]
     assert app_obj.dn == 'univentionAppID=self-service_4.0,cn=self-service,cn=apps,cn=univention,%s' % ucr_get('ldap/base')
 
     # Können Apps mit NotifyVendor=Yes installiert werden (sollte nicht so sein) ?
@@ -82,7 +82,7 @@ with test:
 
     # License-Key über univention-E-Mail-Adresse anfordern + eintragen.
     # Ohne erneuten Login sollte danach eine Installation möglich sein.
-    subprocess.call(['/bin/bash -c ". /root/utils.sh && import_license"'], shell=True,)
+    subprocess.call(['/bin/bash -c ". /root/utils.sh && import_license"'], shell=True)
     test.click_button("Install")
     test.wait_for_text("License Agreement")
     test.click_button("Accept license")
@@ -104,13 +104,13 @@ with test:
             raise ValueError('%s: %r' % (key, ucr_get(key)))
     try:
         # Werden wichtige System-Pakete deinstalliert (z.B. univention-server-master)?
-        test.wait_for_text("univention-server-", timeout=1,)
+        test.wait_for_text("univention-server-", timeout=1)
     except TimeoutException:
         pass
     else:
         raise ValueError("I *DID* find a dangerous package")
 
     # Bei Deinstallation einer App mit LDAP-Schema-Erweiterungen sollten die Schema-Pakete nicht deinstalliert werden.
-    output = subprocess.check_output(['dpkg -s univention-self-service-master | grep Status'], shell=True,)
+    output = subprocess.check_output(['dpkg -s univention-self-service-master | grep Status'], shell=True)
     if output != b'Status: install ok installed\n':
         raise ValueError('Master package removed!')

@@ -52,42 +52,42 @@ attributes = ['univentionService']
 ldap_info: Dict[str, Any] = {}
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]],) -> None:
-    if new and b'Software Monitor' in new.get('univentionService', (),):
+def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+    if new and b'Software Monitor' in new.get('univentionService', ()):
         with SetUID(0):
             ucr.handler_set(('pkgdb/scan=yes', ))
-    elif old and b'Software Monitor' in old.get('univentionService', (),):
+    elif old and b'Software Monitor' in old.get('univentionService', ()):
         if not ldap_info['lo']:
             ldap_reconnect()
-        if ldap_info['lo'] and not ldap_info['lo'].search(filter='(&%s(univentionService=Software Monitor))' % filter, attr=['univentionService'],):
+        if ldap_info['lo'] and not ldap_info['lo'].search(filter='(&%s(univentionService=Software Monitor))' % filter, attr=['univentionService']):
             with SetUID(0):
                 ucr.handler_set(('pkgdb/scan=no', ))
 
 
 def ldap_reconnect() -> None:
-    ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: ldap reconnect triggered',)
+    ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: ldap reconnect triggered')
     if 'ldapserver' in ldap_info and 'basedn' in ldap_info and 'binddn' in ldap_info and 'bindpw' in ldap_info:
         try:
-            ldap_info['lo'] = univention.uldap.access(host=ldap_info['ldapserver'], base=ldap_info['basedn'], binddn=ldap_info['binddn'], bindpw=ldap_info['bindpw'], start_tls=2,)
+            ldap_info['lo'] = univention.uldap.access(host=ldap_info['ldapserver'], base=ldap_info['basedn'], binddn=ldap_info['binddn'], bindpw=ldap_info['bindpw'], start_tls=2)
         except ValueError as ex:
-            ud.debug(ud.LISTENER, ud.ERROR, 'pkgdb-watch: ldap reconnect failed: %s' % (ex,),)
+            ud.debug(ud.LISTENER, ud.ERROR, 'pkgdb-watch: ldap reconnect failed: %s' % (ex,))
             ldap_info['lo'] = None
         else:
             if ldap_info['lo'] is None:
-                ud.debug(ud.LISTENER, ud.ERROR, 'pkgdb-watch: ldap reconnect failed',)
+                ud.debug(ud.LISTENER, ud.ERROR, 'pkgdb-watch: ldap reconnect failed')
 
 
-def setdata(key: str, value: str,) -> None:
+def setdata(key: str, value: str) -> None:
     if key == 'bindpw':
-        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed key="%s" value="<HIDDEN>"' % key,)
+        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed key="%s" value="<HIDDEN>"' % key)
     else:
-        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed key="%s" value="%s"' % (key, value),)
+        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed key="%s" value="%s"' % (key, value))
 
     if key in ['ldapserver', 'basedn', 'binddn', 'bindpw']:
         ldap_info[key] = value
     else:
-        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed unknown data (key="%s" value="%s")' % (key, value),)
+        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed unknown data (key="%s" value="%s")' % (key, value))
 
     if key == 'ldapserver':
-        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: ldap server changed to %s' % value,)
+        ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: ldap server changed to %s' % value)
         ldap_reconnect()

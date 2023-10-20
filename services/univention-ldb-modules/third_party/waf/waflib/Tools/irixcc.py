@@ -11,9 +11,9 @@ from waflib.Tools import ccroot, ar
 from waflib.Configure import conf
 
 @conf
-def find_irixcc(conf,):
+def find_irixcc(conf):
 	v = conf.env
-	cc = conf.find_program('cc', var='CC',)
+	cc = conf.find_program('cc', var='CC')
 	try:
 		conf.cmd_and_log(cc + ['-version'])
 	except Errors.WafError:
@@ -21,7 +21,7 @@ def find_irixcc(conf,):
 	v.CC_NAME = 'irix'
 
 @conf
-def irixcc_common_flags(conf,):
+def irixcc_common_flags(conf):
 	v = conf.env
 
 	v.CC_SRC_F            = ''
@@ -44,7 +44,7 @@ def irixcc_common_flags(conf,):
 	v.cshlib_PATTERN      = 'lib%s.so'
 	v.cstlib_PATTERN      = 'lib%s.a'
 
-def configure(conf,):
+def configure(conf):
 	conf.find_irixcc()
 	conf.find_ar()
 	conf.irixcc_common_flags()

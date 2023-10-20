@@ -55,13 +55,13 @@ if __name__ == '__main__':
     lp = LoadParm()
     creds = Credentials()
     creds.guess(lp)
-    samdb = SamDB(url='/var/lib/samba/private/sam.ldb', session_info=system_session(), credentials=creds, lp=lp,)
+    samdb = SamDB(url='/var/lib/samba/private/sam.ldb', session_info=system_session(), credentials=creds, lp=lp)
 
     domain_dn = samdb.domain_dn()
-    res = samdb.search(args.dn, scope=ldb.SCOPE_BASE, attrs=["objectGuid"],)
+    res = samdb.search(args.dn, scope=ldb.SCOPE_BASE, attrs=["objectGuid"])
 
     for msg in res:
-        guid = msg.get("objectGuid", idx=0,)
+        guid = msg.get("objectGuid", idx=0)
         print(base64.b64encode(guid).decode('ASCII'))
 
     sys.exit(0)

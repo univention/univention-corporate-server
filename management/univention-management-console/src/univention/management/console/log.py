@@ -63,13 +63,13 @@ _log_pid = None
 def _reset_debug_loglevel():
     global _debug_loglevel
     ucr.load()
-    _debug_loglevel = max(ucr.get_int('umc/server/debug/level', 2,), ucr.get_int('umc/module/debug/level', 2,),)
+    _debug_loglevel = max(ucr.get_int('umc/server/debug/level', 2), ucr.get_int('umc/module/debug/level', 2))
 
 
 _reset_debug_loglevel()
 
 
-def log_init(filename, log_level=2, log_pid=None,):
+def log_init(filename, log_level=2, log_pid=None):
     """
     Initializes Univention debug.
 
@@ -79,10 +79,10 @@ def log_init(filename, log_level=2, log_pid=None,):
     """
     if not os.path.isabs(filename) and filename not in {'stdout', 'stderr'}:
         filename = '/var/log/univention/%s.log' % filename
-    fd = ud.init(filename, ud.FLUSH, ud.NO_FUNCTION,)
+    fd = ud.init(filename, ud.FLUSH, ud.NO_FUNCTION)
     adm = grp.getgrnam('adm')
-    os.fchown(fd.fileno(), 0, adm.gr_gid,)
-    os.fchmod(fd.fileno(), 0o640,)
+    os.fchown(fd.fileno(), 0, adm.gr_gid)
+    os.fchmod(fd.fileno(), 0o640)
     log_set_level(log_level)
 
     global _debug_ready, _log_pid
@@ -93,14 +93,14 @@ def log_init(filename, log_level=2, log_pid=None,):
     return fd
 
 
-def log_set_level(level=0,):
+def log_set_level(level=0):
     """
     Sets the log level for all components.
 
     :param int level: log level to set
     """
     for component in COMPONENTS:
-        ud.set_level(component, level,)
+        ud.set_level(component, level)
 
 
 def log_reopen():
@@ -120,9 +120,9 @@ class ILogger(object):
     :param int id: id of the component to use
     """
 
-    def __init__(self, id,):
-        self._id = getattr(ud, id,)
-        fallbackLoggingFormatter = logging.Formatter('%%(asctime)s.%%(msecs)03d %(component)-11s ( %%(level)-7s ) : %%(message)s' % {'component': id}, '%d.%m.%y %H:%M:%S',)
+    def __init__(self, id):
+        self._id = getattr(ud, id)
+        fallbackLoggingFormatter = logging.Formatter('%%(asctime)s.%%(msecs)03d %(component)-11s ( %%(level)-7s ) : %%(message)s' % {'component': id}, '%d.%m.%y %H:%M:%S')
         fallbackLoggingHandler = logging.StreamHandler()
         fallbackLoggingHandler.setFormatter(fallbackLoggingFormatter)
         self._fallbackLogger = logging.getLogger('UMC.%s' % id)
@@ -135,36 +135,36 @@ class ILogger(object):
             {'level': 'INFO'},
         ]
 
-    def error(self, message,):
+    def error(self, message):
         """Write a debug message with level ERROR"""
-        self.__log(ud.ERROR, message, self._fallbackLogger.error,)
+        self.__log(ud.ERROR, message, self._fallbackLogger.error)
 
-    def warn(self, message,):
+    def warn(self, message):
         """Write a debug message with level WARN"""
-        self.__log(ud.WARN, message, self._fallbackLogger.warning,)
+        self.__log(ud.WARN, message, self._fallbackLogger.warning)
 
-    def process(self, message,):
+    def process(self, message):
         """Write a debug message with level PROCESS"""
-        self.__log(ud.PROCESS, message, self._fallbackLogger.info,)
+        self.__log(ud.PROCESS, message, self._fallbackLogger.info)
 
-    def info(self, message,):
+    def info(self, message):
         """Write a debug message with level INFO"""
-        self.__log(ud.INFO, message, self._fallbackLogger.debug,)
+        self.__log(ud.INFO, message, self._fallbackLogger.debug)
 
-    def debug(self, message,):
+    def debug(self, message):
         """Write a debug message with level INFO"""
-        self.__log(ud.ALL, message, self._fallbackLogger.debug,)
+        self.__log(ud.ALL, message, self._fallbackLogger.debug)
 
-    def __log(self, level, message, logger,):
+    def __log(self, level, message, logger):
         if _log_pid:
             message = '%s: %s' % (os.getpid(), message)
         if _debug_ready:
             try:
-                ud.debug(self._id, level, message,)
+                ud.debug(self._id, level, message)
             except TypeError:
-                ud.debug(self._id, ud.ERROR, 'Could not log message %r' % (message,),)
+                ud.debug(self._id, ud.ERROR, 'Could not log message %r' % (message,))
         elif _debug_loglevel >= level:
-            logger(message, extra=self._extras[level],)
+            logger(message, extra=self._extras[level])
 
 
 CORE = ILogger('MAIN')

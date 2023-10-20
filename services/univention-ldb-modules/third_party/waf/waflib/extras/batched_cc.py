@@ -47,7 +47,7 @@ class batch(Task.Task):
 		return 'Batch compilation for %d slaves' % len(self.slaves)
 
 	def __init__(self, *k, **kw):
-		Task.Task.__init__(self, *k, **kw,)
+		Task.Task.__init__(self, *k, **kw)
 		self.slaves = []
 		self.inputs = []
 		self.hasrun = 0
@@ -56,7 +56,7 @@ class batch(Task.Task):
 		count += 1
 		self.idx = count
 
-	def add_slave(self, slave,):
+	def add_slave(self, slave):
 		self.slaves.append(slave)
 		self.set_run_after(slave)
 
@@ -102,8 +102,8 @@ class batch(Task.Task):
 		for t in slaves:
 			t.old_post_run()
 
-def hook(cls_type,):
-	def n_hook(self, node,):
+def hook(cls_type):
+	def n_hook(self, node):
 
 		ext = '.obj' if self.env.CC_NAME == 'msvc' else '.o'
 		name = node.name
@@ -117,20 +117,20 @@ def hook(cls_type,):
 		outdir.mkdir()
 		out = outdir.find_or_declare(basename)
 
-		task = self.create_task(cls_type, node, out,)
+		task = self.create_task(cls_type, node, out)
 
 		try:
 			self.compiled_tasks.append(task)
 		except AttributeError:
 			self.compiled_tasks = [task]
 
-		if not getattr(self, 'masters', None,):
+		if not getattr(self, 'masters', None):
 			self.masters = {}
 			self.allmasters = []
 
-		def fix_path(tsk,):
+		def fix_path(tsk):
 			if self.env.CC_NAME == 'msvc':
-				tsk.env.append_unique('CXX_TGT_F_BATCHED', '/Fo%s\\' % outdir.abspath(),)
+				tsk.env.append_unique('CXX_TGT_F_BATCHED', '/Fo%s\\' % outdir.abspath())
 
 		if not node.parent in self.masters:
 			m = self.masters[node.parent] = self.master = self.create_task('batch')
@@ -147,12 +147,12 @@ def hook(cls_type,):
 	return n_hook
 
 extension('.c')(hook('c'))
-extension('.cpp','.cc','.cxx','.C','.c++',)(hook('cxx'))
+extension('.cpp','.cc','.cxx','.C','.c++')(hook('cxx'))
 
-@feature('cprogram', 'cshlib', 'cstaticlib', 'cxxprogram', 'cxxshlib', 'cxxstlib',)
+@feature('cprogram', 'cshlib', 'cstaticlib', 'cxxprogram', 'cxxshlib', 'cxxstlib')
 @after_method('apply_link')
 def link_after_masters(self):
-	if getattr(self, 'allmasters', None,):
+	if getattr(self, 'allmasters', None):
 		for m in self.allmasters:
 			self.link_task.set_run_after(m)
 
@@ -166,8 +166,8 @@ for x in ('c', 'cxx'):
 	def post_run(self):
 		pass
 
-	setattr(t, 'oldrun', getattr(t, 'run', None,),)
-	setattr(t, 'run', run,)
-	setattr(t, 'old_post_run', t.post_run,)
-	setattr(t, 'post_run', post_run,)
+	setattr(t, 'oldrun', getattr(t, 'run', None))
+	setattr(t, 'run', run)
+	setattr(t, 'old_post_run', t.post_run)
+	setattr(t, 'post_run', post_run)
 

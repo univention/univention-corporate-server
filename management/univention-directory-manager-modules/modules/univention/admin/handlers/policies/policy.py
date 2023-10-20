@@ -55,7 +55,7 @@ help_text = _('<p>Policies are objects that can be connected with other objects 
 operations = ['search']
 childmodules = []
 for pol in univention.admin.handlers.policies.policies:
-    if hasattr(pol, 'module',):
+    if hasattr(pol, 'module'):
         childmodules.append(pol.module)
 virtual = True
 property_descriptions = {
@@ -65,9 +65,10 @@ property_descriptions = {
         syntax=univention.admin.syntax.policyName,
         include_in_default_search=True,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
 }
-layout = [Tab(_('General'), _('Basic settings'), layout=["name"],)]
+layout = [Tab(_('General'), _('Basic settings'), layout=["name"])]
 
 mapping = univention.admin.mapping.mapping()
 
@@ -76,14 +77,14 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0,):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     res = []
     for pol in univention.admin.handlers.policies.policies:
-        r = pol.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit,)
+        r = pol.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
         res.extend(r)
 
     return res
 
 
-def identify(dn, attr, canonical=False,):
+def identify(dn, attr, canonical=False):
     pass

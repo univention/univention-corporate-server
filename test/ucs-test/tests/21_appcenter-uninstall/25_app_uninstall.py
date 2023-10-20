@@ -17,16 +17,16 @@ from univention.testing import utils
 from appcenteruninstalltest import get_requested_apps
 
 
-def check_status(app,):
+def check_status(app):
     if app.docker:
         print('    Checking removed Docker Container')
         assert ucr_get('appcenter/apps/%s/status' % app.id) is None
     else:
         packages = app.default_packages
-        print('    Checking packages', ', '.join(packages),)
+        print('    Checking packages', ', '.join(packages))
         for package in packages:
             try:
-                output = subprocess.check_output(['dpkg', '-s', package], stderr=subprocess.STDOUT,).decode('utf-8')
+                output = subprocess.check_output(['dpkg', '-s', package], stderr=subprocess.STDOUT).decode('utf-8')
             except subprocess.CalledProcessError:
                 pass
             else:
@@ -38,7 +38,7 @@ def check_status(app,):
             packages = app.default_packages_master
             if packages:
                 try:
-                    output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT,).decode('utf-8')
+                    output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT).decode('utf-8')
                 except subprocess.CalledProcessError:
                     utils.fail('ERROR: MasterPackages are not installed!')
                 else:
@@ -51,28 +51,28 @@ def check_status(app,):
             utils.fail('FAIL: component %s still active' % app.component)
 
 
-def check_ldap(app,):
+def check_ldap(app):
     dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app.id, app.version, app.id, ucr_get('ldap/base'))
     try:
-        utils.verify_ldap_object(dn, should_exist=False,)
+        utils.verify_ldap_object(dn, should_exist=False)
     except utils.LDAPUnexpectedObjectFound:
         utils.fail('FAIL: %s still exists' % dn)
 
 
-def check_webinterface(app,):
-    print('    Webinterface for', app,)
+def check_webinterface(app):
+    print('    Webinterface for', app)
     for key in ucr_keys():
-        if re.match('ucs/web/overview/entries/.*/%s/link', key,):
+        if re.match('ucs/web/overview/entries/.*/%s/link', key):
             utils.fail('FAIL: webinterface still configured' % app.id)
 
 
-def _check_url(url,):
-    print('       Checking', url,)
+def _check_url(url):
+    print('       Checking', url)
     import lxml
     import requests
     requests_timeout = 30
-    r = requests.get(url, timeout=requests_timeout, verify=False,)  # noqa: S501
-    print('       ...', r.status_code,)
+    r = requests.get(url, timeout=requests_timeout, verify=False)  # noqa: S501
+    print('       ...', r.status_code)
     assert not str(r.status_code).startswith(('4', '5'))
 
     # check meta refresh
@@ -92,7 +92,7 @@ def _check_url(url,):
 
 
 for app in get_requested_apps():
-    print('Checking', app,)
+    print('Checking', app)
     if not app._allowed_on_local_server():
         print('Not allowed ... skipping')
         continue

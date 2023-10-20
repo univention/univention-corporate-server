@@ -89,7 +89,7 @@ try:
 except ImportError:
 	from pipes import quote
 
-def get_chost_stuff(conf,):
+def get_chost_stuff(conf):
 	"""
 	Get the CHOST environment variable contents
 	"""
@@ -97,17 +97,17 @@ def get_chost_stuff(conf,):
 	chost_envar = None
 	if conf.env.CHOST:
 		chost = conf.env.CHOST[0]
-		chost_envar = chost.replace('-', '_',)
+		chost_envar = chost.replace('-', '_')
 	return chost, chost_envar
 
 
 @Configure.conf
-def xcheck_var(conf, name, wafname=None, cross=False,):
+def xcheck_var(conf, name, wafname=None, cross=False):
 	wafname = wafname or name
 
 	if wafname in conf.env:
 		value = conf.env[wafname]
-		if isinstance(value, str,):
+		if isinstance(value, str):
 			value = [value]
 	else:
 		envar = os.environ.get(name)
@@ -120,10 +120,10 @@ def xcheck_var(conf, name, wafname=None, cross=False,):
 		pretty = 'cross-compilation %s' % wafname
 	else:
 		pretty = wafname
-	conf.msg('Will use %s' % pretty, " ".join(quote(x) for x in value),)
+	conf.msg('Will use %s' % pretty, " ".join(quote(x) for x in value))
 
 @Configure.conf
-def xcheck_host_prog(conf, name, tool, wafname=None,):
+def xcheck_host_prog(conf, name, tool, wafname=None):
 	wafname = wafname or name
 
 	chost, chost_envar = get_chost_stuff(conf)
@@ -136,7 +136,7 @@ def xcheck_host_prog(conf, name, tool, wafname=None,):
 		value = Utils.to_list(specific)
 		conf.env[wafname] += value
 		conf.msg('Will use cross-compilation %s from %s_%s' % (name, chost_envar, name),
-		 " ".join(quote(x) for x in value),)
+		 " ".join(quote(x) for x in value))
 		return
 	else:
 		envar = os.environ.get('HOST_%s' % name)
@@ -144,7 +144,7 @@ def xcheck_host_prog(conf, name, tool, wafname=None,):
 			value = Utils.to_list(envar)
 			conf.env[wafname] = value
 			conf.msg('Will use cross-compilation %s from HOST_%s' % (name, name),
-			 " ".join(quote(x) for x in value),)
+			 " ".join(quote(x) for x in value))
 			return
 
 	if conf.env[wafname]:
@@ -156,10 +156,10 @@ def xcheck_host_prog(conf, name, tool, wafname=None,):
 
 	if value:
 		conf.env[wafname] = value
-		conf.msg('Will use cross-compilation %s from CHOST' % wafname, value,)
+		conf.msg('Will use cross-compilation %s from CHOST' % wafname, value)
 
 @Configure.conf
-def xcheck_host_envar(conf, name, wafname=None,):
+def xcheck_host_envar(conf, name, wafname=None):
 	wafname = wafname or name
 
 	chost, chost_envar = get_chost_stuff(conf)
@@ -173,7 +173,7 @@ def xcheck_host_envar(conf, name, wafname=None,):
 		conf.env[wafname] += value
 		conf.msg('Will use cross-compilation %s from %s_%s' \
 		 % (name, chost_envar, name),
-		 " ".join(quote(x) for x in value),)
+		 " ".join(quote(x) for x in value))
 		return
 
 
@@ -185,24 +185,24 @@ def xcheck_host_envar(conf, name, wafname=None,):
 
 	conf.env[wafname] = value
 	conf.msg('Will use cross-compilation %s from HOST_%s' % (name, name),
-	 " ".join(quote(x) for x in value),)
+	 " ".join(quote(x) for x in value))
 
 
 @Configure.conf
-def xcheck_host(conf,):
-	conf.xcheck_var('CHOST', cross=True,)
+def xcheck_host(conf):
+	conf.xcheck_var('CHOST', cross=True)
 	conf.env.CHOST = conf.env.CHOST or [conf.env.DEST_OS]
-	conf.env.DEST_OS = conf.env.CHOST[0].replace('-','_',)
-	conf.xcheck_host_prog('CC', 'gcc',)
-	conf.xcheck_host_prog('CXX', 'g++',)
-	conf.xcheck_host_prog('LINK_CC', 'gcc',)
-	conf.xcheck_host_prog('LINK_CXX', 'g++',)
-	conf.xcheck_host_prog('AR', 'ar',)
-	conf.xcheck_host_prog('AS', 'as',)
-	conf.xcheck_host_prog('LD', 'ld',)
+	conf.env.DEST_OS = conf.env.CHOST[0].replace('-','_')
+	conf.xcheck_host_prog('CC', 'gcc')
+	conf.xcheck_host_prog('CXX', 'g++')
+	conf.xcheck_host_prog('LINK_CC', 'gcc')
+	conf.xcheck_host_prog('LINK_CXX', 'g++')
+	conf.xcheck_host_prog('AR', 'ar')
+	conf.xcheck_host_prog('AS', 'as')
+	conf.xcheck_host_prog('LD', 'ld')
 	conf.xcheck_host_envar('CFLAGS')
 	conf.xcheck_host_envar('CXXFLAGS')
-	conf.xcheck_host_envar('LDFLAGS', 'LINKFLAGS',)
+	conf.xcheck_host_envar('LDFLAGS', 'LINKFLAGS')
 	conf.xcheck_host_envar('LIB')
 	conf.xcheck_host_envar('PKG_CONFIG_LIBDIR')
 	conf.xcheck_host_envar('PKG_CONFIG_PATH')
@@ -215,7 +215,7 @@ def xcheck_host(conf,):
 	if conf.env.PKG_CONFIG_PATH:
 		conf.env.env['PKG_CONFIG_PATH'] = conf.env.PKG_CONFIG_PATH[0]
 
-def configure(conf,):
+def configure(conf):
 	"""
 	Configuration example for gcc, it will not work for g++/clang/clang++
 	"""

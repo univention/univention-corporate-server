@@ -46,13 +46,13 @@ from univention.portal.extensions.portal import Portal
 from univention.portal.extensions.reloader import MtimeBasedLazyFileReloader
 
 
-def test_imports(dynamic_class,):
+def test_imports(dynamic_class):
     assert dynamic_class("Portal")
 
 
 class StubReloader(MtimeBasedLazyFileReloader):
 
-    def __init__(self, portal_file,):
+    def __init__(self, portal_file):
         super().__init__(portal_file)
         self.content = {}
 
@@ -60,18 +60,18 @@ class StubReloader(MtimeBasedLazyFileReloader):
         with open(self._cache_file) as portal_cache:
             return json.load(portal_cache)
 
-    def update_portal_cache(self, portal_data: dict,):
+    def update_portal_cache(self, portal_data: dict):
         self.content = portal_data
         self.refresh("force")
 
     def _refresh(self):  # pragma: no cover
-        with tempfile.NamedTemporaryFile(mode="w", delete=False,) as fd:
-            json.dump(self.content, fd, sort_keys=True, indent=4,)
+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
+            json.dump(self.content, fd, sort_keys=True, indent=4)
         return fd
 
 
 @pytest.fixture()
-def mocked_user(mocker,):
+def mocked_user(mocker):
     user = mocker.Mock()
     user.username = "hindenkampp"
     user.display_name = "Hans Hindenkampp"
@@ -81,7 +81,7 @@ def mocked_user(mocker,):
 
 
 @pytest.fixture()
-def mocked_anonymous_user(mocker,):
+def mocked_anonymous_user(mocker):
     user = mocker.Mock()
     user.username = None
     user.display_name = None
@@ -91,33 +91,33 @@ def mocked_anonymous_user(mocker,):
 
 
 @pytest.fixture()
-def portal_file(get_file_path,):
+def portal_file(get_file_path):
     return get_file_path("portal_cache.json")
 
 
 @pytest.fixture()
-def reloader(portal_file,):
+def reloader(portal_file):
     return StubReloader(portal_file=portal_file)
 
 
 @pytest.fixture()
-def portal_data(reloader,):
+def portal_data(reloader):
     original_data = reloader.get_portal_cache_json()
     yield reloader
     reloader.update_portal_cache(original_data)
 
 
 @pytest.fixture()
-def standard_portal(dynamic_class, mocker, portal_file, reloader,):
+def standard_portal(dynamic_class, mocker, portal_file, reloader):
     # Portal = dynamic_class("Portal")
     scorer = dynamic_class("Scorer")()
-    portal_cache = dynamic_class("PortalFileCache")(portal_file, reloader,)
-    authenticator = dynamic_class("UMCAuthenticator")("ucs", "session_url", "group_cache",)
-    return Portal(scorer, portal_cache, authenticator,)
+    portal_cache = dynamic_class("PortalFileCache")(portal_file, reloader)
+    authenticator = dynamic_class("UMCAuthenticator")("ucs", "session_url", "group_cache")
+    return Portal(scorer, portal_cache, authenticator)
 
 
 @pytest.fixture()
-def mocked_portal(dynamic_class, mocker,):
+def mocked_portal(dynamic_class, mocker):
     async def async_magic():
         return
 
@@ -125,21 +125,21 @@ def mocked_portal(dynamic_class, mocker,):
     scorer = mocker.Mock()
     portal_cache = mocker.Mock()
     authenticator = mocker.Mock()
-    mocker.MagicMock.__await__ = lambda x,: async_magic().__await__()
+    mocker.MagicMock.__await__ = lambda x: async_magic().__await__()
     authenticator.get_user = mocker.MagicMock()
     authenticator.login_user = mocker.MagicMock()
     authenticator.login_request = mocker.MagicMock()
-    return Portal(scorer, portal_cache, authenticator,)
+    return Portal(scorer, portal_cache, authenticator)
 
 
 class TestPortal:
-    def test_user(self, mocked_portal, mocker,):
+    def test_user(self, mocked_portal, mocker):
         request = "request"
         loop = asyncio.get_event_loop()
         loop.run_until_complete(mocked_portal.get_user(request))
         mocked_portal.authenticator.get_user.assert_called_once_with(request)
 
-    def test_login(self, mocked_portal, mocker,):
+    def test_login(self, mocked_portal, mocker):
         request = "request"
         loop = asyncio.get_event_loop()
         loop.run_until_complete(mocked_portal.login_user(request))
@@ -147,8 +147,8 @@ class TestPortal:
         mocked_portal.authenticator.login_user.assert_called_once_with(request)
         mocked_portal.authenticator.login_request.assert_called_once_with(request)
 
-    def test_visible_content(self, mocked_user, standard_portal,):
-        content = standard_portal.get_visible_content(mocked_user, False,)
+    def test_visible_content(self, mocked_user, standard_portal):
+        content = standard_portal.get_visible_content(mocked_user, False)
         expected_content = {
             "category_dns": ["cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
             "entry_dns": ["cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
@@ -157,23 +157,23 @@ class TestPortal:
         }
         assert content == expected_content
 
-    def test_user_links(self, mocked_user, mocked_anonymous_user, standard_portal,):
-        content_with_user = standard_portal.get_visible_content(mocked_user, False,)
-        content_no_user = standard_portal.get_visible_content(mocked_anonymous_user, False,)
+    def test_user_links(self, mocked_user, mocked_anonymous_user, standard_portal):
+        content_with_user = standard_portal.get_visible_content(mocked_user, False)
+        content_no_user = standard_portal.get_visible_content(mocked_anonymous_user, False)
         content_with_user = standard_portal.get_user_links(content_with_user)
         content_no_user = standard_portal.get_user_links(content_no_user)
         expected_content = []
         assert content_no_user == expected_content
         assert content_with_user == expected_content
 
-    def test_menu_links(self, mocked_user, standard_portal,):
-        content = standard_portal.get_visible_content(mocked_user, False,)
+    def test_menu_links(self, mocked_user, standard_portal):
+        content = standard_portal.get_visible_content(mocked_user, False)
         content = standard_portal.get_menu_links(content)
         expected_content = []
         assert content == expected_content
 
-    def test_portal_entries(self, mocked_user, standard_portal,):
-        content = standard_portal.get_visible_content(mocked_user, False,)
+    def test_portal_entries(self, mocked_user, standard_portal):
+        content = standard_portal.get_visible_content(mocked_user, False)
         content = standard_portal.get_entries(content)
         expected_content = [
             {
@@ -236,14 +236,14 @@ class TestPortal:
         ]
         assert content == expected_content
 
-    def test_folders(self, mocked_user, standard_portal,):
-        content = standard_portal.get_visible_content(mocked_user, False,)
+    def test_folders(self, mocked_user, standard_portal):
+        content = standard_portal.get_visible_content(mocked_user, False)
         content = standard_portal.get_folders(content)
         expected_content = []
         assert content == expected_content
 
-    def test_categories(self, mocked_user, standard_portal,):
-        content = standard_portal.get_visible_content(mocked_user, False,)
+    def test_categories(self, mocked_user, standard_portal):
+        content = standard_portal.get_visible_content(mocked_user, False)
         content = standard_portal.get_categories(content)
         expected_content = [
             {
@@ -254,10 +254,10 @@ class TestPortal:
         ]
         assert content == expected_content
 
-    def test_meta(self, mocked_user, standard_portal,):
-        content = standard_portal.get_visible_content(mocked_user, False,)
+    def test_meta(self, mocked_user, standard_portal):
+        content = standard_portal.get_visible_content(mocked_user, False)
         categories = standard_portal.get_categories(content)
-        content = standard_portal.get_meta(content, categories,)
+        content = standard_portal.get_meta(content, categories)
         expected_content = {
             "anonymousEmpty": [],
             "autoLayoutCategories": False,
@@ -279,14 +279,14 @@ class TestPortal:
         }
         assert content == expected_content
 
-    def test_refresh(self, mocked_portal, mocker,):
+    def test_refresh(self, mocked_portal, mocker):
         mocked_portal.portal_cache.refresh = mocker.Mock(return_value=None)
         mocked_portal.authenticator.refresh = mocker.Mock(return_value=None)
         assert mocked_portal.refresh() is None
         mocked_portal.portal_cache.refresh.assert_called_once()
         mocked_portal.authenticator.refresh.assert_called_once()
 
-    def test_score(self, mocked_portal, mocker,):
+    def test_score(self, mocked_portal, mocker):
         mocked_portal.scorer.score = mocker.Mock(return_value=5)
         request = mocker.Mock()
         assert mocked_portal.score(request) == 5
@@ -296,21 +296,23 @@ class TestPortal:
     @pytest.mark.parametrize("umc_base_url", [
         "http://ucshost.test/univention",
         "http://ucshost.test/univention/",
-    ],)
+    ])
     def test_umc_portal_request_umc_get_uses_configured_url(
-        self, umc_base_url, mocker, mock_portal_config,):
+        self, umc_base_url, mocker, mock_portal_config,
+    ):
         from univention.portal.extensions.portal import UMCPortal
 
         requests_post = mocker.patch('requests.post')
         mock_portal_config({"umc_base_url": umc_base_url})
-        portal = UMCPortal(mock.Mock(), mock.Mock(), "stub-secret",)
-        portal._request_umc_get('stub_path', mock.Mock(),)
+        portal = UMCPortal(mock.Mock(), mock.Mock(), "stub-secret")
+        portal._request_umc_get('stub_path', mock.Mock())
 
         requests_post.assert_called_with(
             "http://ucshost.test/univention/get/stub_path",
-            json=mock.ANY, headers=mock.ANY,)
+            json=mock.ANY, headers=mock.ANY,
+        )
 
-    def test_announcement(self, mocked_user, portal_data, standard_portal,):
+    def test_announcement(self, mocked_user, portal_data, standard_portal):
         input_announcement = {
             "allowedGroups": [],
             "dn": "cn=Testannouncment,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
@@ -336,7 +338,7 @@ class TestPortal:
         modifiable_data["announcements"] = input_announcements
 
         portal_data.update_portal_cache(modifiable_data)
-        content = standard_portal.get_visible_content(mocked_user, False,)
+        content = standard_portal.get_visible_content(mocked_user, False)
         result_announcements = standard_portal.get_announcements(content)
 
         assert input_announcement["dn"] in content["announcement_dns"]
@@ -344,7 +346,7 @@ class TestPortal:
         assert input_announcement in result_announcements
         assert len(result_announcements) == 1
 
-    def test_announcements(self, mocked_user, portal_data, standard_portal,):
+    def test_announcements(self, mocked_user, portal_data, standard_portal):
         past_announcement = {
             "allowedGroups": [],
             "dn": "cn=Testannouncment1,cn=announcement,cn=portals,cn=univention,dc=some-testenv,dc=intranet",
@@ -402,7 +404,7 @@ class TestPortal:
         modifiable_data['announcements'] = input_announcements
 
         portal_data.update_portal_cache(modifiable_data)
-        content = standard_portal.get_visible_content(mocked_user, False,)
+        content = standard_portal.get_visible_content(mocked_user, False)
         result_announcements = standard_portal.get_announcements(content)
 
         assert present_announcement["dn"] in content["announcement_dns"]
@@ -410,13 +412,13 @@ class TestPortal:
         assert present_announcement in result_announcements
         assert len(result_announcements) == 1
 
-    def test_announcement_groups(self, portal_data, standard_portal,):
+    def test_announcement_groups(self, portal_data, standard_portal):
 
         test_user = user.User(
             username="hindenkampp",
             display_name="Hans Hindenkampp",
             groups=["public_society"],
-            headers={},)
+            headers={})
 
         visible_announcement_1 = {
             "allowedGroups": [],
@@ -475,7 +477,7 @@ class TestPortal:
         modifiable_data['announcements'] = input_announcements
 
         portal_data.update_portal_cache(modifiable_data)
-        content = standard_portal.get_visible_content(test_user, False,)
+        content = standard_portal.get_visible_content(test_user, False)
         result_announcements = standard_portal.get_announcements(content)
 
         assert visible_announcement_1["dn"] in content['announcement_dns']

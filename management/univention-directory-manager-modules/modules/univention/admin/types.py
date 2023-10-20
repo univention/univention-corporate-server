@@ -93,7 +93,7 @@ class TypeHint(object):
 
     _dependencies = None
 
-    def __init__(self, property, property_name, syntax=None,):
+    def __init__(self, property, property_name, syntax=None):
         self.property = property
         self.property_name = property_name
         self.syntax = syntax or self._syntax
@@ -102,9 +102,9 @@ class TypeHint(object):
     def _syntax(self):
         # ensure we have an instance of the syntax class and not the type
         syntax = self.property.syntax
-        return syntax() if isinstance(syntax, type,) else syntax
+        return syntax() if isinstance(syntax, type) else syntax
 
-    def decode(self, value,):
+    def decode(self, value):
         """
         Decode the given value from an UDM object's property into a Python type.
         This must be graceful. Invalid values set at UDM object properties should not cause an exception!
@@ -117,7 +117,7 @@ class TypeHint(object):
             return
         return self.decode_value(value)
 
-    def encode(self, value,):
+    def encode(self, value):
         """
         Encode a value of Python type into a string / list / None / etc. suitable for setting at the UDM object.
 
@@ -132,13 +132,13 @@ class TypeHint(object):
         self.type_check_subitems(value)
         return self.encode_value(value)
 
-    def decode_json(self, value,):
+    def decode_json(self, value):
         return self.to_json_type(self.decode(value))
 
-    def encode_json(self, value,):
+    def encode_json(self, value):
         return self.encode(self.from_json_type(value))
 
-    def to_json_type(self, value,):
+    def to_json_type(self, value):
         """
         Transform the value resulting from :func:`self.decode` into something suitable to transmit via JSON.
 
@@ -147,13 +147,13 @@ class TypeHint(object):
         if value is None:
             return
         value = self._to_json_type(value)
-        if isinstance(value, bytes,):
+        if isinstance(value, bytes):
             # fallback for wrong implemented types
             # JSON cannot handle non-UTF-8 bytes
-            value = value.decode('utf-8', 'strict',)
+            value = value.decode('utf-8', 'strict')
         return value
 
-    def from_json_type(self, value,):
+    def from_json_type(self, value):
         """
         Transform a value from a JSON object into the internal Python type.
 
@@ -167,7 +167,7 @@ class TypeHint(object):
         value = self._from_json_type(value)
         return value
 
-    def decode_value(self, value,):
+    def decode_value(self, value):
         """
         Decode the value into a Python object.
 
@@ -176,10 +176,10 @@ class TypeHint(object):
         try:
             return self.syntax.parse(value)
         except univention.admin.uexceptions.valueError as exc:
-            ud.debug(ud.ADMIN, ud.WARN, 'ignoring invalid property %s value=%r is invalid: %s' % (self.property_name, value, exc),)
+            ud.debug(ud.ADMIN, ud.WARN, 'ignoring invalid property %s value=%r is invalid: %s' % (self.property_name, value, exc))
             return value
 
-    def encode_value(self, value,):
+    def encode_value(self, value):
         """
         Encode the value into a UDM property value.
 
@@ -187,34 +187,34 @@ class TypeHint(object):
         """
         return self.syntax.parse(value)
 
-    def _from_json_type(self, value,):
+    def _from_json_type(self, value):
         return value
 
-    def _to_json_type(self, value,):
+    def _to_json_type(self, value):
         return value
 
-    def type_check(self, value, types=None,):
+    def type_check(self, value, types=None):
         """Checks if the value has the correct Python type."""
-        if not isinstance(value, types or self._python_types,):
+        if not isinstance(value, types or self._python_types):
             must = '%s (%s)' % (self._openapi_type, self._openapi_format) if self._openapi_format else '%s' % (self._openapi_type,)
             actual = type(value).__name__
-            ud.debug(ud.ADMIN, ud.WARN, '%r: Value=%r %r' % (self.property_name, value, type(self).__name__),)
+            ud.debug(ud.ADMIN, ud.WARN, '%r: Value=%r %r' % (self.property_name, value, type(self).__name__))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Value must be of type %s not %s.') % (must, actual))
 
-    def type_check_json(self, value,):
-        self.type_check(value, self._json_type,)
+    def type_check_json(self, value):
+        self.type_check(value, self._json_type)
 
-    def type_check_subitems(self, value,):
+    def type_check_subitems(self, value):
         pass
 
-    def tostring(self, value,):
+    def tostring(self, value):
         """A printable representation for e.g. the CLI or grid columns in UMC"""
         if self.property.multivalue:
             return [self.syntax.tostring(val) for val in value]
         else:
             return self.syntax.tostring(value)
 
-    def parse_command_line(self, value,):
+    def parse_command_line(self, value):
         """Parse a string from the command line"""
         return self.syntax.parse_command_line(value)
 
@@ -239,15 +239,15 @@ class TypeHint(object):
         #    definition['example'] = self.syntax.choices[0][0]
         return definition
 
-    def get_choices(self, lo, options,):
-        return self.syntax.get_choices(lo, options,)
+    def get_choices(self, lo, options):
+        return self.syntax.get_choices(lo, options)
 
     def has_choices(self):
         opts = self.syntax.get_widget_options()
         return opts.get('dynamicValues') or opts.get('staticValues') or opts.get('type') == 'umc/modules/udm/MultiObjectSelect'
 
     @classmethod
-    def detect(cls, property, name,):
+    def detect(cls, property, name):
         """
         Detect the :class:`univention.admin.types.TypeHint` type of a property automatically.
 
@@ -260,26 +260,26 @@ class TypeHint(object):
         singlevalue: `syntax.type_class` is used.
         """
         if property.type_class:
-            return property.type_class(property, name,)
+            return property.type_class(property, name)
 
         syntax = property.syntax() if inspect.isclass(property.syntax) else property.syntax
         type_class = syntax.type_class
         if not type_class:
-            ud.debug(ud.ADMIN, ud.WARN, 'Unknown type for property %r: %s' % (name, syntax.name),)
+            ud.debug(ud.ADMIN, ud.WARN, 'Unknown type for property %r: %s' % (name, syntax.name))
             type_class = cls
 
         if not property.multivalue:
-            return type_class(property, name,)
+            return type_class(property, name)
         else:
             if syntax.type_class_multivalue:
-                return syntax.type_class_multivalue(property, name,)
+                return syntax.type_class_multivalue(property, name)
 
         # create a default type inheriting from a set
         # (LDAP attributes do not have a defined order - unless the "ordered" overlay module is activated and the attribute schema defines it)
         class MultivaluePropertyType(SetType):
             item_type = type_class
 
-        return MultivaluePropertyType(property, name,)
+        return MultivaluePropertyType(property, name)
 
 
 class NoneType(TypeHint):
@@ -292,7 +292,7 @@ class BooleanType(TypeHint):
     _python_types = bool  # type: _Types
     _openapi_type = 'boolean'
 
-    def decode_value(self, value,):
+    def decode_value(self, value):
         try:
             if self.syntax.parse(True) == value:
                 return True
@@ -302,7 +302,7 @@ class BooleanType(TypeHint):
                 return None
         except univention.admin.uexceptions.valueError:
             pass
-        ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a boolean: %r' % (self.property_name, self.syntax.name, value),)
+        ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a boolean: %r' % (self.property_name, self.syntax.name, value))
         return value
 
 
@@ -317,11 +317,11 @@ class IntegerType(TypeHint):
     _openapi_type = 'integer'
     # _openapi_format: int32, int64
 
-    def decode_value(self, value,):
+    def decode_value(self, value):
         try:
             value = int(value)
         except ValueError:
-            ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a integer: %r' % (self.property_name, self.syntax.name, value),)
+            ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a integer: %r' % (self.property_name, self.syntax.name, value))
         return value
 
 
@@ -336,9 +336,9 @@ class StringType(TypeHint):
     _encoding = 'UTF-8'
     _openapi_type = 'string'
 
-    def decode_value(self, value,):
-        if isinstance(value, bytes,):
-            value = value.decode(self._encoding, 'strict',)
+    def decode_value(self, value):
+        if isinstance(value, bytes):
+            value = value.decode(self._encoding, 'strict')
         return value
 
 
@@ -358,8 +358,8 @@ class DistinguishedNameType(StringType):
     _openapi_regex = '^.+=.+$'
     _minimum = 3
 
-    def encode_value(self, value,):
-        value = super(DistinguishedNameType, self,).encode_value(value)
+    def encode_value(self, value):
+        value = super(DistinguishedNameType, self).encode_value(value)
         try:
             return ldap.dn.dn2str(ldap.dn.str2dn(value))
         except ldap.DECODING_ERROR:
@@ -391,12 +391,12 @@ class BinaryType(TypeHint):
     _openapi_type = 'string'
     _openapi_format = 'binary'
 
-    def _to_json_type(self, value,):
-        return value.decode(self._json_encoding, 'strict',)
+    def _to_json_type(self, value):
+        return value.decode(self._json_encoding, 'strict')
 
-    def _from_json_type(self, value,):
+    def _from_json_type(self, value):
         try:
-            return value.encode(self._json_encoding, 'strict',)
+            return value.encode(self._json_encoding, 'strict')
         except UnicodeEncodeError:
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Binary data have invalid encoding (expected: %s).') % (self._encoding,))
 
@@ -414,22 +414,22 @@ class DateType(StringType):
     _json_type = unicode
     _openapi_format = 'date'
 
-    def decode_value(self, value,):
+    def decode_value(self, value):
         if value == '':
             return
         return self.syntax.to_datetime(value)
 
-    def encode_value(self, value,):
+    def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value,):  # type: (datetime.date) -> unicode
+    def _to_json_type(self, value):  # type: (datetime.date) -> unicode
         return unicode(value.isoformat())
 
-    def _from_json_type(self, value,):  # type: (unicode) -> datetime.date
+    def _from_json_type(self, value):  # type: (unicode) -> datetime.date
         try:
-            return datetime.date(*time.strptime(value, '%Y-%m-%d',)[0:3])
+            return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
         except ValueError:
-            ud.debug(ud.ADMIN, ud.INFO, 'Wrong date format: %r' % (value,),)
+            ud.debug(ud.ADMIN, ud.INFO, 'Wrong date format: %r' % (value,))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Date does not match format "%Y-%m-%d".'))
 
 
@@ -446,22 +446,22 @@ class TimeType(StringType):
     _json_type = unicode
     _openapi_format = 'time'
 
-    def decode_value(self, value,):
+    def decode_value(self, value):
         if value == '':
             return
         return self.syntax.to_datetime(value)
 
-    def encode_value(self, value,):
+    def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value,):  # type: (datetime.time) -> unicode
+    def _to_json_type(self, value):  # type: (datetime.time) -> unicode
         return unicode(value.replace(microsecond=0).isoformat())
 
-    def _from_json_type(self, value,):  # type: (unicode) -> datetime.time
+    def _from_json_type(self, value):  # type: (unicode) -> datetime.time
         try:
-            return datetime.time(*time.strptime(value, '%H:%M:%S',)[3:6])
+            return datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
         except ValueError:
-            ud.debug(ud.ADMIN, ud.INFO, 'Wrong time format: %r' % (value,),)
+            ud.debug(ud.ADMIN, ud.INFO, 'Wrong time format: %r' % (value,))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Time does not match format "%H:%M:%S".'))
 
 
@@ -481,22 +481,22 @@ class DateTimeType(StringType):
     _json_type = unicode
     _openapi_format = 'date-time'
 
-    def decode_value(self, value,):
+    def decode_value(self, value):
         if value == '':
             return
         return self.syntax.to_datetime(value)
 
-    def encode_value(self, value,):
+    def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value,):  # type: (datetime.datetime) -> unicode
+    def _to_json_type(self, value):  # type: (datetime.datetime) -> unicode
         return u' '.join((value.date().isoformat(), value.time().replace(microsecond=0).isoformat()))
 
-    def _from_json_type(self, value,):  # type: (unicode) -> datetime.datetime
+    def _from_json_type(self, value):  # type: (unicode) -> datetime.datetime
         try:
-            return datetime.datetime(*time.strptime(value, '%Y-%m-%dT%H:%M:%S',)[:6])  # FIXME: parse Z at the end
+            return datetime.datetime(*time.strptime(value, '%Y-%m-%dT%H:%M:%S')[:6])  # FIXME: parse Z at the end
         except ValueError:
-            ud.debug(ud.ADMIN, ud.INFO, 'Wrong datetime format: %r' % (value,),)
+            ud.debug(ud.ADMIN, ud.INFO, 'Wrong datetime format: %r' % (value,))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Datetime does not match format "%Y-%m-%dT%H:%M:%S".'))
 
 
@@ -509,26 +509,26 @@ class ArrayType(TypeHint):
 class ListType(ArrayType):
     item_type = None  # type: Optional[Type[TypeHint]] # must be set in subclasses
 
-    def type_check_subitems(self, value,):
-        item_type = self.item_type(self.property, self.property_name,)
+    def type_check_subitems(self, value):
+        item_type = self.item_type(self.property, self.property_name)
         for item in value:
             item_type.type_check(item)
 
     def openapi_definition(self):
-        definition = super(ListType, self,).openapi_definition()
-        definition['items'] = self.item_type(self.property, self.property_name,).get_openapi_definition()
+        definition = super(ListType, self).openapi_definition()
+        definition['items'] = self.item_type(self.property, self.property_name).get_openapi_definition()
         definition['minItems'] = self._minimum
         definition['maxItems'] = self._maximum
         definition['uniqueItems'] = self._openapi_unique
         return definition
 
-    def encode_value(self, value,):
-        item_type = self.item_type(self.property, self.property_name,)
+    def encode_value(self, value):
+        item_type = self.item_type(self.property, self.property_name)
         value = [item_type.encode(val) for val in value]
         return [val for val in value if val is not None]
 
-    def decode_value(self, value,):
-        item_type = self.item_type(self.property, self.property_name,)
+    def decode_value(self, value):
+        item_type = self.item_type(self.property, self.property_name)
         return [item_type.decode(val) for val in value]
 
 
@@ -536,11 +536,11 @@ class SetType(ListType):
     _openapi_unique = True
 
     # FIXME: this must be done after applying the mapping from property to attribute value
-    def __encode_value(self, value,):
+    def __encode_value(self, value):
         # disallow duplicates without re-arranging the order
         # This should prevent that we run into "Type or value exists: attributename: value #0 provided more than once" errors
         # we can't do it completely because equality is defined in the LDAP server schema (e.g. DN syntax: 'dc = foo' equals 'dc=foo' equals 'DC=Foo')
-        value = super(SetType, self,).encode_value(value)
+        value = super(SetType, self).encode_value(value)
         if len(value) != len(set(value)):
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Duplicated entries.'))
         return value
@@ -558,33 +558,33 @@ class ListOfItems(ArrayType):
     def maximum(self):
         return len(self.item_types)
 
-    def type_check_subitems(self, value,):
+    def type_check_subitems(self, value):
         if not (self._minimum <= len(value) <= self._maximum):
             univention.admin.uexceptions.valueInvalidSyntax(_('Must have at least %d values.') % (self._minimum,))
 
-        for item_type, item in zip(self.item_types, value,):
-            item_type = item_type(self.property, self.property_name,)
+        for item_type, item in zip(self.item_types, value):
+            item_type = item_type(self.property, self.property_name)
             item_type.type_check(item)
 
-    def encode_value(self, value,):
+    def encode_value(self, value):
         return [
-            item_type(self.property, self.property_name,).encode(val)
-            for item_type, val in zip(self.item_types, value,)
+            item_type(self.property, self.property_name).encode(val)
+            for item_type, val in zip(self.item_types, value)
         ]
 
-    def decode_value(self, value,):
+    def decode_value(self, value):
         return [
-            item_type(self.property, self.property_name,).decode(val)
-            for item_type, val in zip(self.item_types, value,)
+            item_type(self.property, self.property_name).decode(val)
+            for item_type, val in zip(self.item_types, value)
         ]
 
     def openapi_definition(self):
-        definition = super(ListOfItems, self,).openapi_definition()
+        definition = super(ListOfItems, self).openapi_definition()
         definition['minItems'] = self._minimum
         definition['maxItems'] = self._maximum
         definition['uniqueItems'] = self._openapi_unique
-        items = [item(self.property, self.property_name,).get_openapi_definition() for item in self.item_types]
-        _items = [tuple(item.items()) if isinstance(item, dict,) else item for item in items]
+        items = [item(self.property, self.property_name).get_openapi_definition() for item in self.item_types]
+        _items = [tuple(item.items()) if isinstance(item, dict) else item for item in items]
         if len(set(_items)) == 1:
             definition['items'] = items[0]
         else:
@@ -600,7 +600,7 @@ class DictionaryType(TypeHint):
 
     properties = None
 
-    def decode_value(self, value,):
+    def decode_value(self, value):
         return self.syntax.todict(value)
         # if not self.syntax.subsyntax_key_value and self.property.multivalue and isinstance(value, (list, tuple)):
         #    value = [self.syntax.todict(val) for val in value]
@@ -608,18 +608,18 @@ class DictionaryType(TypeHint):
         #    value = self.syntax.todict(value)
         # return value
 
-    def encode_value(self, value,):
+    def encode_value(self, value):
         return self.syntax.fromdict(value)
 
     def openapi_definition(self):
-        definition = super(DictionaryType, self,).openapi_definition()
+        definition = super(DictionaryType, self).openapi_definition()
         definition['additionalProperties'] = True
         definition['minProperties'] = self._minimum
         definition['maxProperties'] = self._maximum
 
         if self.properties:
             definition['properties'] = {
-                name: prop(self.property, self.property_name,).get_openapi_definition() if prop else {'description': '%s:%s has no definition' % (self.property_name, name)}
+                name: prop(self.property, self.property_name).get_openapi_definition() if prop else {'description': '%s:%s has no definition' % (self.property_name, name)}
                 for name, prop in self.properties.items()
             }
             definition['additionalProperties'] = False
@@ -634,9 +634,9 @@ class KeyValueDictionaryType(DictionaryType):
     value_type = None  # type: Optional[_Types]
 
     def openapi_definition(self):
-        definition = super(DictionaryType, self,).openapi_definition()
-        definition['additionalProperties'] = self.value_type(self.property, self.property_name,).get_openapi_definition()
-        definition.pop('properties', None,)
+        definition = super(DictionaryType, self).openapi_definition()
+        definition['additionalProperties'] = self.value_type(self.property, self.property_name).get_openapi_definition()
+        definition.pop('properties', None)
         return definition
 
 
@@ -645,13 +645,13 @@ class SambaLogonHours(ListType):
     item_type = StringType
     _weekdays = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
 
-    def decode_value(self, value,):
-        return ['{} {}-{}'.format(self._weekdays[v // 24], v % 24, v % 24 + 1,) for v in value]
+    def decode_value(self, value):
+        return ['{} {}-{}'.format(self._weekdays[v // 24], v % 24, v % 24 + 1) for v in value]
 
-    def encode_value(self, value,):
+    def encode_value(self, value):
         try:
             values = [v.split() for v in value]
-            return [self._weekdays.index(w) * 24 + int(h.split('-', 1,)[0]) for w, h in values]
+            return [self._weekdays.index(w) * 24 + int(h.split('-', 1)[0]) for w, h in values]
         except (IndexError, ValueError):
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid format for SambaLogonHours.'))
 
@@ -661,19 +661,19 @@ class AppcenterTranslation(KeyValueDictionaryType):
     key_type = StringType
     value_type = StringType
 
-    def decode_value(self, value,):
+    def decode_value(self, value):
         value = [x.partition(' ')[::2] for x in value]
         return {k.lstrip('[').rstrip(']'): v for k, v in value}
 
-    def encode_value(self, value,):
-        value = ['[{}] {}'.format(k, v,) for k, v in value.items()]
-        return super(AppcenterTranslation, self,).encode_value(value)
+    def encode_value(self, value):
+        value = ['[{}] {}'.format(k, v) for k, v in value.items()]
+        return super(AppcenterTranslation, self).encode_value(value)
 
 
 class UnixTimeinterval(IntegerType):
 
-    def decode_value(self, value,):
+    def decode_value(self, value):
         return self.syntax.to_integer(value)
 
-    def encode_value(self, value,):
+    def encode_value(self, value):
         return self.syntax.from_integer(value)

@@ -37,11 +37,11 @@ from univentionunittests import import_module
 
 @pytest.fixture(scope="module")
 def ldap_cache():
-    module = import_module("univention.ldap_cache.cache", "src/", "univention.ldap_cache.cache", use_installed=False,)
+    module = import_module("univention.ldap_cache.cache", "src/", "univention.ldap_cache.cache", use_installed=False)
     return module
 
 
-def test_init_shard(ldap_cache,):
+def test_init_shard(ldap_cache):
     # TODO: Finish this test
     caches = ldap_cache.LmdbCaches()
     cache0 = caches.add_cache_class(ldap_cache.EntryUUID)

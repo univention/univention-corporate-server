@@ -22,7 +22,7 @@ EXTRA_LOCK = '.old_srcdir'
 old1 = Build.BuildContext.store
 def store(self):
 	old1(self)
-	db = os.path.join(self.variant_dir, EXTRA_LOCK,)
+	db = os.path.join(self.variant_dir, EXTRA_LOCK)
 	env = ConfigSet.ConfigSet()
 	env.SRCDIR = self.srcnode.abspath()
 	env.store(db)
@@ -35,7 +35,7 @@ def init_dirs(self):
 		raise Errors.WafError('The project was not configured: run "waf configure" first!')
 
 	srcdir = None
-	db = os.path.join(self.variant_dir, EXTRA_LOCK,)
+	db = os.path.join(self.variant_dir, EXTRA_LOCK)
 	env = ConfigSet.ConfigSet()
 	try:
 		env.load(db)
@@ -45,7 +45,7 @@ def init_dirs(self):
 
 	if srcdir:
 		d = self.root.find_node(srcdir)
-		if d and srcdir != self.top_dir and getattr(d, 'children', '',):
+		if d and srcdir != self.top_dir and getattr(d, 'children', ''):
 			srcnode = self.root.make_node(self.top_dir)
 			print("relocating the source directory %r -> %r" % (srcdir, self.top_dir))
 			srcnode.children = {}
@@ -74,10 +74,10 @@ def uid(self):
 		return self.uid_
 Task.Task.uid = uid
 
-@feature('c', 'cxx', 'd', 'go', 'asm', 'fc', 'includes',)
-@after_method('propagate_uselib_vars', 'process_source',)
+@feature('c', 'cxx', 'd', 'go', 'asm', 'fc', 'includes')
+@after_method('propagate_uselib_vars', 'process_source')
 def apply_incpaths(self):
-	lst = self.to_incnodes(self.to_list(getattr(self, 'includes', [],)) + self.env['INCLUDES'])
+	lst = self.to_incnodes(self.to_list(getattr(self, 'includes', [])) + self.env['INCLUDES'])
 	self.includes_nodes = lst
 	bld = self.bld
 	self.env['INCPATHS'] = [x.is_child_of(bld.srcnode) and x.path_from(bld.bldnode) or x.abspath() for x in lst]

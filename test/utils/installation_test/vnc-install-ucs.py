@@ -13,11 +13,11 @@ from yaml import safe_load
 
 class UCSInstallation(VNCInstallation):
 
-    def load_translation(self, language: str,) -> Dict[str, str]:
-        name = join(dirname(__file__), "languages.yaml",)
+    def load_translation(self, language: str) -> Dict[str, str]:
+        name = join(dirname(__file__), "languages.yaml")
         with open(name) as fd:
             return {
-                key: values.get(self.args.language, "",)
+                key: values.get(self.args.language, "")
                 for key, values in safe_load(fd).items()
             }
 
@@ -33,9 +33,9 @@ class UCSInstallation(VNCInstallation):
         import shlex
         import subprocess
         if self.args.password and self.args.ip:
-            subprocess.check_call("utils/sshpass -v -p %s ssh  -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@%s -C %s" % (shlex.quote(self.args.password), shlex.quote(self.args.ip), shlex.quote("set -x; ucr set repository/online/server='http://apt.knut.univention.de/' repository/online=yes; echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/all/' >>/etc/apt/sources.list; echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/$(ARCH)/' >>/etc/apt/sources.list; apt-get update; echo erledigt")), shell=True,)
+            subprocess.check_call("utils/sshpass -v -p %s ssh  -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@%s -C %s" % (shlex.quote(self.args.password), shlex.quote(self.args.ip), shlex.quote("set -x; ucr set repository/online/server='http://apt.knut.univention.de/' repository/online=yes; echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/all/' >>/etc/apt/sources.list; echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/$(ARCH)/' >>/etc/apt/sources.list; apt-get update; echo erledigt")), shell=True)
         else:
-            print('########## error', self.args.password, self.args.ip,)
+            print('########## error', self.args.password, self.args.ip)
 
         self.finish()
         if self.args.second_interface:
@@ -55,7 +55,7 @@ class UCSInstallation(VNCInstallation):
 
         Automatic boot in 60 seconds...
         """
-        if self.text_is_visible('Univention Corporate Server Installer', wait=False,):
+        if self.text_is_visible('Univention Corporate Server Installer', wait=False):
             if self.args.ip:
                 self.client.keyPress('down')
             self.type('\n')
@@ -79,8 +79,8 @@ class UCSInstallation(VNCInstallation):
         [Screenshot]  [Go Back] [Continue]
         """
         for _ in range(3):
-            self.wait_for_text('Select a language', timeout=120,)
-            self.click_at(250, 250,)
+            self.wait_for_text('Select a language', timeout=120)
+            self.click_at(250, 250)
             self.type('english_language_name')
             self.type("\n")
             if self.text_is_visible('select_location'):
@@ -107,7 +107,7 @@ class UCSInstallation(VNCInstallation):
          weitere
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        self.click_at(250, 250,)
+        self.click_at(250, 250)
         self.type('location')
         self.type("\n")
 
@@ -123,7 +123,7 @@ class UCSInstallation(VNCInstallation):
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
         self.wait_for_text('select_keyboard')
-        self.click_at(250, 250,)
+        self.click_at(250, 250)
         self.type('us_keyboard_layout')
         self.type("\n")
 
@@ -136,7 +136,7 @@ class UCSInstallation(VNCInstallation):
         # Netzwerk einrichten
         if self.args.ip:
             self.network_setup()
-            self.click_at(100, 320,)
+            self.click_at(100, 320)
 
         """
         # Benutzer und Passwörter einrichten
@@ -198,12 +198,12 @@ class UCSInstallation(VNCInstallation):
         """
         # Zusätzliche Software installieren
         """
-        sleep(50, "disk.partition install",)
+        sleep(50, "disk.partition install")
 
         """
         # GRUB-Bootloader auf einer Festplatte installieren
         """
-        self.wait_for_text('GRUB', timeout=1300,)
+        self.wait_for_text('GRUB', timeout=1300)
         self.click_on('GRUB')
         self.client.keyPress('enter')
 
@@ -220,9 +220,9 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        self.wait_for_text('finish_installation', timeout=-1300,)
+        self.wait_for_text('finish_installation', timeout=-1300)
         self.click_on('continue')
-        sleep(30, "reboot",)
+        sleep(30, "reboot")
 
     @verbose("DISK")
     def disk_setup(self) -> None:
@@ -242,7 +242,7 @@ class UCSInstallation(VNCInstallation):
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
         self.wait_for_text('partition_disks')
-        sub = getattr(self, "_disk_%s" % (self.args.role,), self._disk_default,)
+        sub = getattr(self, "_disk_%s" % (self.args.role,), self._disk_default)
         sub()
 
     def _disk_applianceLVM(self) -> None:
@@ -591,7 +591,7 @@ class UCSInstallation(VNCInstallation):
         if not self.text_is_visible('ip_address'):
             # always use first interface
             self.click_on('continue')
-            sleep(60, "net.detect",)
+            sleep(60, "net.detect")
 
         if not self.args.ip:
             raise ValueError("No IP address")
@@ -642,10 +642,10 @@ class UCSInstallation(VNCInstallation):
         self.type('\n')
 
     def _network_repo(self):
-        sleep(120, "net.dns",)
+        sleep(120, "net.dns")
         if self.text_is_visible('repositories_not_reachable'):
             self.type('\n')
-            sleep(30, "net.dns2",)
+            sleep(30, "net.dns2")
 
     @verbose("SETUP")
     def setup(self) -> None:
@@ -662,8 +662,8 @@ class UCSInstallation(VNCInstallation):
 
         [Weiter]
         """
-        self.wait_for_text('domain_setup', timeout=-300,)
-        sub = getattr(self, "_setup_%s" % (self.args.role,),)
+        self.wait_for_text('domain_setup', timeout=-300)
+        sub = getattr(self, "_setup_%s" % (self.args.role,))
         sub()
 
     def _setup_master(self) -> None:
@@ -682,7 +682,7 @@ class UCSInstallation(VNCInstallation):
         self.type('home')
         self.go_next()
 
-    def _setup_joined(self, role_text: str,) -> None:
+    def _setup_joined(self, role_text: str) -> None:
         self.click_on('join_domain')
         self.go_next()
         if self.text_is_visible('no_dc_dns'):
@@ -727,7 +727,7 @@ class UCSInstallation(VNCInstallation):
         [x] Confirm before quitting with Ctrl-Q
         [Cancel] [Quit Firefox]
         """
-        if self.text_is_visible("Close windows and quit Firefox?", timeout=-3,):
+        if self.text_is_visible("Close windows and quit Firefox?", timeout=-3):
             self.type('\n')
 
         self.wait_for_text('univention')
@@ -742,8 +742,8 @@ class UCSInstallation(VNCInstallation):
         self.wait_for_text('ad_account_information')
         self.click_on('address_ad')
         self.type("\t")
-        self.type(self.args.join_user + "\t", clear=True,)
-        self.type(self.args.join_password, clear=True,)
+        self.type(self.args.join_user + "\t", clear=True)
+        self.type(self.args.join_password, clear=True)
         self.go_next()
 
     @verbose("JOIN")
@@ -753,8 +753,8 @@ class UCSInstallation(VNCInstallation):
         self.wait_for_text('start_join')
         self.click_on('hostname_primary')
         self.type('\t')
-        self.type(self.args.join_user + "\t", clear=True,)
-        self.type(self.args.join_password, clear=True,)
+        self.type(self.args.join_user + "\t", clear=True)
+        self.type(self.args.join_password, clear=True)
         self.go_next()
 
     def hostname(self) -> None:
@@ -772,7 +772,7 @@ class UCSInstallation(VNCInstallation):
         else:
             self.wait_for_text('system_name')
 
-        self.type(self.args.fqdn, clear=True,)
+        self.type(self.args.fqdn, clear=True)
         if self.args.role == 'master':
             self.type('\t')
 
@@ -806,7 +806,7 @@ class UCSInstallation(VNCInstallation):
         """
         self.wait_for_text('confirm_config')
         self.type('\n')
-        sleep(self.setup_finish_sleep, "FINISH",)
+        sleep(self.setup_finish_sleep, "FINISH")
 
         """
         # UCS-Einrichtung erfolgreich
@@ -817,14 +817,14 @@ class UCSInstallation(VNCInstallation):
         """
         for i in range(3):
             try:
-                self.wait_for_text('setup_successful', timeout=-2100,)
+                self.wait_for_text('setup_successful', timeout=-2100)
             except Exception:  # vncdotool.client.VNCDoException:
-                sleep(self.setup_finish_sleep, "FINISH",)
+                sleep(self.setup_finish_sleep, "FINISH")
         self.type('\t\n')
         self.wait_for_text('univention')
 
     @verbose("KVM")
-    def configure_kvm_network(self, iface: str,) -> None:
+    def configure_kvm_network(self, iface: str) -> None:
         self.wait_for_text('corporate server')
         self.type('\n')
         sleep(3)
@@ -832,7 +832,7 @@ class UCSInstallation(VNCInstallation):
         sleep(5)
         self.type(self.args.password + "\n")
         self.type('ucr set interfaces-%s-tzpe`manual\n' % iface)
-        sleep(30, "kvm.ucr",)
+        sleep(30, "kvm.ucr")
         self.type('ip link set %s up\n' % iface)
         self.type('echo ')
         self.client.keyDown('shift')
@@ -846,44 +846,52 @@ class UCSInstallation(VNCInstallation):
 
     @verbose("NEXT")
     def go_next(self) -> None:
-        self.click_at(910, 700,)
+        self.click_at(910, 700)
 
 
 def main() -> None:
     parser = ArgumentParser(
         description=__doc__,
         parents=[build_parser()],
-        formatter_class=ArgumentDefaultsHelpFormatter,)
+        formatter_class=ArgumentDefaultsHelpFormatter,
+    )
     parser.add_argument(
         '--language',
         choices=['deu', 'eng', 'fra'],
         default="deu",
-        help="Select text language",)
+        help="Select text language",
+    )
     parser.add_argument(
         "--role",
         default="master",
         choices=["master", "backup", "slave", "member", "admember", "applianceEC2", "applianceLVM"],
-        help="UCS system role",)
+        help="UCS system role",
+    )
     parser.add_argument(
         "--school-dep",
         choices=["central", "edu", "adm"],
-        help="Select UCS@school role",)
+        help="Select UCS@school role",
+    )
 
     group = parser.add_argument_group("Network settings")
     group.add_argument(
         "--ip",
-        help="IPv4 address if DHCP is unavailable",)
+        help="IPv4 address if DHCP is unavailable",
+    )
     group.add_argument(
         "--netmask",
-        help="Network netmask",)
+        help="Network netmask",
+    )
     group.add_argument(
         "--gateway",
         help="Default router address",
-        metavar="IP",)
+        metavar="IP",
+    )
     parser.add_argument(
         "--second-interface",
         help="configure second interface",
-        metavar="IFACE",)
+        metavar="IFACE",
+    )
     args = parser.parse_args()
 
     if args.role in {'slave', 'backup', 'member', 'admember'}:

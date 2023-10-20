@@ -34,7 +34,9 @@ if __name__ == '__main__':
                 DockerInjectEnvFile='main',
                 PortsRedirection=','.join(ports),
                 PortsRedirectionUDP=','.join(udp_ports),
-                DefaultPackages=','.join(packages),)
+                DefaultPackages=','.join(packages),
+                #DockerScriptSetup='/usr/sbin/%s-setup' % app.app_name
+            )
             app.add_script(env='\nPASV_ADDRESS=0.0.0.0\n')
 #            app.add_script(setup=dedent('''\
 #                #!/bin/bash

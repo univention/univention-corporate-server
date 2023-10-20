@@ -61,7 +61,7 @@ class LicenseImport(ldif.LDIFParser):
     dncount = 0
     base = None
 
-    def check(self, base,):
+    def check(self, base):
         # call parse from ldif.LDIFParser
         try:
             self.parse()
@@ -87,7 +87,7 @@ class LicenseImport(ldif.LDIFParser):
         if self.base.lower() not in [base.lower(), 'free for personal use edition', 'ucs core edition']:
             raise LicenseError(_("The license can not be applied. The LDAP base does not match (expected %(expected)s, found: %(found)s).") % {'expected': base, 'found': self.base})
 
-    def handle(self, dn, entry,):
+    def handle(self, dn, entry):
         """
         This method is invoked by LDIFParser.parse for each object
         in the ldif file
@@ -108,16 +108,16 @@ class LicenseImport(ldif.LDIFParser):
         # for atr in entry:
         #     self.mod_list.insert( 0, ( ldap.MOD_REPLACE, atr, entry[ atr ] ) )
 
-    def write(self, ldap_connection,):
+    def write(self, ldap_connection):
         ldap_con = ldap_connection.lo.lo
         try:
-            ldap_con.add_s(self.dn, self.addlist,)
+            ldap_con.add_s(self.dn, self.addlist)
         except ldap.ALREADY_EXISTS:
             ldap_con.delete_s(self.dn)
-            ldap_con.add_s(self.dn, self.addlist,)
+            ldap_con.add_s(self.dn, self.addlist)
 
 
-def check_license(ldap_connection, ignore_core_edition=False,):
+def check_license(ldap_connection, ignore_core_edition=False):
     try:
         try:
             _check_license(ldap_connection)
@@ -158,7 +158,7 @@ def check_license(ldap_connection, ignore_core_edition=False,):
         raise LicenseError(_('You are currently using the "Free for personal use" edition of Univention Corporate Server.'))
 
 
-def _check_license(ldap_connection,):
+def _check_license(ldap_connection):
     mapping = {
         1: udm_errors.licenseClients,
         2: udm_errors.licenseAccounts,
@@ -172,7 +172,7 @@ def _check_license(ldap_connection,):
         10: udm_errors.licenseDVSUsers,
         11: udm_errors.licenseDVSClients,
     }
-    code = univention.admin.license.init_select(ldap_connection, 'admin',)
+    code = univention.admin.license.init_select(ldap_connection, 'admin')
     ldap_connection._validateLicense()  # throws more exceptions in case the license could not be found
     if code in mapping:
         raise mapping[code]
@@ -182,7 +182,7 @@ def _check_license(ldap_connection,):
 # and hide urllib_request completely
 # i.e. it should be unnecessary to import them directly
 # in a module
-def install_opener(ucr,):
+def install_opener(ucr):
     proxy_http = ucr.get('proxy/http')
     if proxy_http:
         proxy = ProxyHandler({'http': proxy_http, 'https': proxy_http})
@@ -190,7 +190,7 @@ def install_opener(ucr,):
         urllib_request.install_opener(opener)
 
 
-def urlopen(request,):
+def urlopen(request):
     # use this in __init__
     # to have the proxy handler installed globally
     return urllib_request.urlopen(request)
@@ -204,7 +204,7 @@ def dump_license():
         del _pos
         # just one license (should be always the case)
         # return the dictionary without the dn
-        data = ldif.CreateLDIF(data[0][0], data[0][1],)
+        data = ldif.CreateLDIF(data[0][0], data[0][1])
         return data
     except Exception as e:
         # no udm, no ldap, malformed return value, whatever

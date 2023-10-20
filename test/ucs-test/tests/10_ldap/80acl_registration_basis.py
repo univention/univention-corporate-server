@@ -32,9 +32,9 @@ with UCSTestUDM() as udm:
     join_script_name = '66%s.inst' % package_name
 
     user_dn, _username = udm.create_user(password='univention')
-    container = udm.create_object('container/cn', name=container_name,)
+    container = udm.create_object('container/cn', name=container_name)
     try:
-        set_container_description(user_dn, container,)
+        set_container_description(user_dn, container)
     except ldap.INSUFFICIENT_ACCESS:
         pass
     else:
@@ -58,8 +58,8 @@ access to dn.base="%(container)s" attrs="description"
 ''' % {'container': container, 'user_dn': user_dn}
 
     package = DebianPackage(name=package_name)
-    package.create_join_script_from_buffer(join_script_name, joinscript_buffer,)
-    package.create_usr_share_file_from_buffer(acl_name, acl_buffer,)
+    package.create_join_script_from_buffer(join_script_name, joinscript_buffer)
+    package.create_usr_share_file_from_buffer(acl_name, acl_buffer)
     package.build()
     package.install()
 
@@ -68,7 +68,7 @@ access to dn.base="%(container)s" attrs="description"
     # The ldap server needs a few seconds
     sleep(5)
 
-    set_container_description(user_dn, container,)
+    set_container_description(user_dn, container)
 
     package.uninstall()
     package.remove()

@@ -47,7 +47,7 @@ except ImportError:
     pass
 
 
-def _clean_header(po_path,):
+def _clean_header(po_path):
     # type: (str) -> None
     pof = polib.pofile(po_path)
     pof.header = ""
@@ -58,7 +58,7 @@ def _clean_header(po_path,):
     pof.save(po_path)
 
 
-def concatenate_po(src_po_path, dest_po_path,):
+def concatenate_po(src_po_path, dest_po_path):
     # type: (str, str) -> None
     """
     Append first to second `.po` file.
@@ -71,11 +71,12 @@ def concatenate_po(src_po_path, dest_po_path,):
         '--unique',
         '--output', dest_po_path,
         src_po_path,
-        dest_po_path,)
+        dest_po_path,
+    )
     _clean_header(dest_po_path)
 
 
-def create_empty_po(binary_pkg_name, new_po_path,):
+def create_empty_po(binary_pkg_name, new_po_path):
     # type: (str, str) -> None
     """
     Create a new empty `.po` file.
@@ -96,11 +97,11 @@ def create_empty_po(binary_pkg_name, new_po_path,):
         # Suppress warning about /dev/null being an unknown source type
         '--language', 'C',
         '-o', new_po_path,
-        '/dev/null',)
+        '/dev/null')
     _clean_header(new_po_path)
 
 
-def merge_po(template, translation,):
+def merge_po(template, translation):
     # type: (str, str) -> None
     """
     Merge old translation with new template file.
@@ -114,10 +115,10 @@ def merge_po(template, translation,):
         '--sort-output',
         '--backup=off',
         translation,
-        template,)
+        template)
 
 
-def join_existing(language, output_file, input_files, cwd=os.getcwd(),):
+def join_existing(language, output_file, input_files, cwd=os.getcwd()):
     # type: (str, str, Union[str, List[str]], str) -> None
     """
     Extract strings from source code and merge into existing translation file.
@@ -129,11 +130,11 @@ def join_existing(language, output_file, input_files, cwd=os.getcwd(),):
     """
     if not os.path.isfile(output_file):
         raise Error("Can't join input files into {}. File does not exist.".format(output_file))
-    if not isinstance(input_files, list,):
+    if not isinstance(input_files, list):
         input_files = [input_files]
     # make input_files relative so the location lines in the resulting po
     # will be relative to cwd
-    input_files = [os.path.relpath(p, start=cwd,) for p in input_files]
+    input_files = [os.path.relpath(p, start=cwd) for p in input_files]
     call(
         'xgettext',
         '--from-code=UTF-8',
@@ -143,10 +144,10 @@ def join_existing(language, output_file, input_files, cwd=os.getcwd(),):
         '--keyword=N_:1',
         '-o', output_file,
         *input_files,
-        cwd=cwd,)
+        cwd=cwd)
 
 
-def univention_location_lines(pot_path, abs_path_source_pkg,):
+def univention_location_lines(pot_path, abs_path_source_pkg):
     # type: (str, str) -> None
     """
     Convert absolute paths to relative paths.
@@ -157,7 +158,7 @@ def univention_location_lines(pot_path, abs_path_source_pkg,):
     po_file = polib.pofile(pot_path)
     for entry in po_file:
         entry.occurrences = [
-            ((os.path.relpath(path, start=abs_path_source_pkg,), linenum))
+            ((os.path.relpath(path, start=abs_path_source_pkg), linenum))
             for path, linenum in entry.occurrences
         ]
     po_file.save(pot_path)

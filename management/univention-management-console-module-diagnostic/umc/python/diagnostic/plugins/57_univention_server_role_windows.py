@@ -52,9 +52,9 @@ _WINDOWS_SERVER_ROLES = {
 }
 
 
-def udm_objects_without_ServerRole(lo: access,) -> Dict[str, List[str]]:
+def udm_objects_without_ServerRole(lo: access) -> Dict[str, List[str]]:
     objs: Dict[str, List[str]] = {}
-    result = lo.search('(&(objectClass=univentionWindows)(!(univentionServerRole=*)))', attr=['univentionObjectType'],)
+    result = lo.search('(&(objectClass=univentionWindows)(!(univentionServerRole=*)))', attr=['univentionObjectType'])
     if result:
         ldap_base = ucr.get('ldap/base')
         for dn, attrs in result:
@@ -65,13 +65,13 @@ def udm_objects_without_ServerRole(lo: access,) -> Dict[str, List[str]]:
             except KeyError:
                 univentionObjectType = None
 
-            server_role = _WINDOWS_SERVER_ROLES.get(univentionObjectType, "",)
-            objs.setdefault(server_role, [],).append(dn)
+            server_role = _WINDOWS_SERVER_ROLES.get(univentionObjectType, "")
+            objs.setdefault(server_role, []).append(dn)
 
     return objs
 
 
-def run(_umc_instance: Instance,) -> None:
+def run(_umc_instance: Instance) -> None:
     if ucr.get('server/role') != 'domaincontroller_master':
         return
 
@@ -95,12 +95,12 @@ def run(_umc_instance: Instance,) -> None:
             raise Warning(description + details, buttons=[{
                 'action': 'migrate_objects',
                 'label': _('Migrate %d LDAP objects') % fixable_objs,
-            }],)
+            }])
         else:
-            raise Warning(description + details, buttons=[],)
+            raise Warning(description + details, buttons=[])
 
 
-def migrate_objects(_umc_instance: Instance,) -> None:
+def migrate_objects(_umc_instance: Instance) -> None:
     lo, pos = getAdminConnection()
     objs = udm_objects_without_ServerRole(lo)
     for server_role in sorted(objs):
@@ -108,7 +108,7 @@ def migrate_objects(_umc_instance: Instance,) -> None:
             continue
         for dn in objs[server_role]:
             changes = [('univentionServerRole', None, server_role)]
-            lo.modify(dn, changes,)
+            lo.modify(dn, changes)
     raise ProblemFixed(buttons=[])
 
 

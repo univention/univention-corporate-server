@@ -25,14 +25,14 @@ class Test_LogrotationReload:
     def logfiles(self):
         pid = self.pid()
         for file_ in os.listdir('/proc/%d/fd/' % (pid,)):
-            file_ = os.path.join('/proc/%d/fd/' % (pid,), file_,)
+            file_ = os.path.join('/proc/%d/fd/' % (pid,), file_)
             if os.path.islink(file_) and os.readlink(file_) == self.LOGFILE:
                 yield file_
 
-    def stat(self, logfile,):
+    def stat(self, logfile):
         assert logfile
         stat = os.stat(logfile)
-        print(logfile, stat,)
+        print(logfile, stat)
         return stat
 
     def test_logrotation(self):
@@ -51,8 +51,8 @@ class Test_LogrotationReload:
             new_stats = [self.stat(logfile) for logfile in logfiles]
             assert len(new_stats) == 2
 
-            assert not os.path.samestat(old_stats[0], new_stats[0],)
-            assert not os.path.samestat(old_stats[0], new_stats[1],)
+            assert not os.path.samestat(old_stats[0], new_stats[0])
+            assert not os.path.samestat(old_stats[0], new_stats[1])
 
     def service_restart(self):
         check_call(['systemctl', 'restart', os.path.basename(self.SERVICE)])

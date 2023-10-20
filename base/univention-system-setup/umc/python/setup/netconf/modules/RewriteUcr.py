@@ -17,19 +17,19 @@ class PhaseRewriteUcr(AddressMap):
     priority = 95
 
     def check(self) -> None:
-        super(PhaseRewriteUcr, self,).check()
+        super(PhaseRewriteUcr, self).check()
         if self.old_primary is None:
             raise SkipPhase('No old primary IP')
 
     def pre(self) -> None:
         for key in self.variables:
-            value = self.changeset.ucr.get(key, None,)
+            value = self.changeset.ucr.get(key, None)
             if value is None:
                 continue
             try:
                 new_ip = self.ip_mapping[value]
             except KeyError:
-                self.logger.debug("Keeping '%s'='%s'", key, value,)
+                self.logger.debug("Keeping '%s'='%s'", key, value)
                 continue
-            self.logger.info("Updating '%s'='%s'", key, new_ip,)
+            self.logger.info("Updating '%s'='%s'", key, new_ip)
             self.changeset.ucr_changes[key] = new_ip

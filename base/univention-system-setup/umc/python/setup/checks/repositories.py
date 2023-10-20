@@ -27,29 +27,29 @@ def get_unreachable_repository_servers() -> List[str]:
 
     processes = start_curl_processes(servers)
     wait_for_processes_to_finish(processes)
-    log_warnings_about_unreachable_repository_servers(zip(servers, processes,))
-    return [server for server, process in zip(servers, processes,) if process.returncode != 0]
+    log_warnings_about_unreachable_repository_servers(zip(servers, processes))
+    return [server for server, process in zip(servers, processes) if process.returncode != 0]
 
 
-def start_curl_processes(servers: Iterable[str],) -> List[subprocess.Popen]:
+def start_curl_processes(servers: Iterable[str]) -> List[subprocess.Popen]:
     ENV = {
         envvar: UCR[ucrvar]
         for (envvar, ucrvar) in PROXY_MAP.items()
         if ucrvar in UCR
     }
-    env = dict(environ, **ENV,)
+    env = dict(environ, **ENV)
     return [
-        subprocess.Popen(['curl', '--max-time', '10', server], env=env,)
+        subprocess.Popen(['curl', '--max-time', '10', server], env=env)
         for server in servers
     ]
 
 
-def wait_for_processes_to_finish(processes: Iterable[subprocess.Popen],) -> None:
+def wait_for_processes_to_finish(processes: Iterable[subprocess.Popen]) -> None:
     for process in processes:
         process.wait()
 
 
-def log_warnings_about_unreachable_repository_servers(servers_with_curl_processes: Iterable[Tuple[str, subprocess.Popen]],) -> None:
+def log_warnings_about_unreachable_repository_servers(servers_with_curl_processes: Iterable[Tuple[str, subprocess.Popen]]) -> None:
     for server, process in servers_with_curl_processes:
         if process.returncode != 0:
             MODULE.warn(

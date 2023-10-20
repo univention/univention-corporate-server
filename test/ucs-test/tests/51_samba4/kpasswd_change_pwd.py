@@ -10,11 +10,11 @@ import univention.config_registry
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("-u", "--username",)
-    parser.add_argument("-p", "--password",)
-    parser.add_argument("-n", "--newpassword",)
-    parser.add_argument("-a", "--adminname",)
-    parser.add_argument("-m", "--adminpassword",)
+    parser.add_argument("-u", "--username")
+    parser.add_argument("-p", "--password")
+    parser.add_argument("-n", "--newpassword")
+    parser.add_argument("-a", "--adminname")
+    parser.add_argument("-m", "--adminpassword")
 
     opts = parser.parse_args()
     if not opts.username or not opts.password or not opts.newpassword:
@@ -34,10 +34,10 @@ if __name__ == "__main__":
         authpassword = opts.password
     cmd += ' %s' % (opts.username,)
 
-    kpasswd = pexpect.spawn(cmd, timeout=20,)  # logfile=sys.stdout
+    kpasswd = pexpect.spawn(cmd, timeout=20)  # logfile=sys.stdout
     status = kpasswd.expect([pexpect.TIMEOUT, b"%s@%s's Password: " % (authusername.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII'))])
     if status == 0:  # timeout
-        print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before.decode('UTF-8', 'replace',),))
+        print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before.decode('UTF-8', 'replace'),))
         sys.exit(120)
 
     assert (status == 1), "password prompt"
@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
     status = kpasswd.expect([pexpect.TIMEOUT, b'New password for %s@%s:' % (opts.username.encode('UTF-8'), ucr['kerberos/realm'].encode('ASCII')), "kpasswd: krb5_get_init_creds: Preauthentication failed"])
     if status == 0:  # timeout
-        print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before.decode('UTF-8', 'replace',),))
+        print('kpasswd behaved unexpectedly! Output:\n\t%r' % (kpasswd.before.decode('UTF-8', 'replace'),))
         sys.exit(120)
     elif status == 2:  # timeout
         print('Preauthentication failed!')

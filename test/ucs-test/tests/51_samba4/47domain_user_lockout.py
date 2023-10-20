@@ -30,23 +30,23 @@ hostname = ucr['ldap/server/name']
 test_username = 'ucs_test_samba4_user_' + random_username(4)
 
 
-def remove_samba_warnings(input_str: str,) -> str:
+def remove_samba_warnings(input_str: str) -> str:
     """Remove the Samba Warning/Note from the given input_str."""
     # ignoring following messages (Bug #37362):
-    input_str = input_str.replace('WARNING: No path in service IPC$ - making it unavailable!', '',)
-    return input_str.replace('NOTE: Service IPC$ is flagged unavailable.', '',).strip()
+    input_str = input_str.replace('WARNING: No path in service IPC$ - making it unavailable!', '')
+    return input_str.replace('NOTE: Service IPC$ is flagged unavailable.', '').strip()
 
 
-def create_and_run_process(cmd: Sequence[str],) -> Tuple[str, str]:
+def create_and_run_process(cmd: Sequence[str]) -> Tuple[str, str]:
     """
     Create a process as a Popen instance with a given 'cmd'
     and 'communicates' with it. Returns (stdout, stderr).
     """
-    proc = subprocess.run(cmd, capture_output=True, check=False, encoding="UTF-8",)
+    proc = subprocess.run(cmd, capture_output=True, check=False, encoding="UTF-8")
     return remove_samba_warnings(proc.stdout), remove_samba_warnings(proc.stderr)
 
 
-def try_to_authenticate(password: str,) -> Tuple[str, str]:
+def try_to_authenticate(password: str) -> Tuple[str, str]:
     """
     Authenticate 'test_username' user with given 'password'
     using smbclient and execute an 'ls'. Returns (stdout, stderr).
@@ -67,7 +67,7 @@ def try_to_authenticate(password: str,) -> Tuple[str, str]:
         dump_account()
 
 
-def set_lockout_settings(lock_duration: Union[int, str], lock_threshold: Union[int, str],) -> None:
+def set_lockout_settings(lock_duration: Union[int, str], lock_threshold: Union[int, str]) -> None:
     """Set the lockout settings to given values."""
     print(f"# Setting account lockout settings: duration={lock_duration}m; threshold={lock_threshold}")
 
@@ -86,7 +86,7 @@ def set_lockout_settings(lock_duration: Union[int, str], lock_threshold: Union[i
         print(out)
 
 
-def create_delete_test_user(should_exist: bool,) -> None:
+def create_delete_test_user(should_exist: bool) -> None:
     """
     Create or delete the 'test_username' depending on the given argument
     via 'samba-tool'. User password is TEST_USER_PASS.
@@ -107,7 +107,7 @@ def create_delete_test_user(should_exist: bool,) -> None:
         print(out)
 
 
-def check_no_errors_present_in_output(stdout: str, stderr: str,) -> None:
+def check_no_errors_present_in_output(stdout: str, stderr: str) -> None:
     """
     Fail the test if there are signs of errors found in the given
     'stdout' or 'stderr'.
@@ -130,7 +130,7 @@ def check_no_errors_present_in_output(stdout: str, stderr: str,) -> None:
         utils.fail(f"An error occurred. \nSTDOUT: '{stdout}'. STDERR: '{stderr}'")
 
 
-def check_error_present_in_output(stdout: str, stderr: str,) -> None:
+def check_error_present_in_output(stdout: str, stderr: str) -> None:
     """
     Fail the test if there is no 'NT_STATUS_ACCOUNT_LOCKED_OUT' error in
     the given stdout or stderr.
@@ -160,7 +160,7 @@ def dump_account() -> None:
     for key in ("badPasswordTime", "lockoutTime"):  # "lastLogonTimestamp", "lastLogon"
         try:
             val = vals[key]  # 100ns since ANSI/MS Epoch
-            dt = datetime(1601, 1, 1,) + timedelta(microseconds=int(val) / 10)
+            dt = datetime(1601, 1, 1) + timedelta(microseconds=int(val) / 10)
             print(f"  {key:20}\t{dt}Z")
         except (LookupError, ValueError):
             continue
@@ -188,7 +188,7 @@ def main() -> None:
     try:
         create_delete_test_user(True)
 
-        set_lockout_settings(LOCKOUT_DURATION, LOCKOUT_THRESHOLD,)
+        set_lockout_settings(LOCKOUT_DURATION, LOCKOUT_THRESHOLD)
         hist = []  # type: List[str]
         hist += dump_pwpolicy()
 
@@ -198,20 +198,20 @@ def main() -> None:
         print(f"# Authenticating user '{test_username}' with correct password '{TEST_USER_PASS}'")
         hist += dump_pwpolicy()
         stdout, stderr = try_to_authenticate(TEST_USER_PASS)
-        check_no_errors_present_in_output(stdout, stderr,)
+        check_no_errors_present_in_output(stdout, stderr)
         print("# OKAY: login worked")
 
         print(f"# Locking out user '{test_username}' by authenticating with wrong password {LOCKOUT_THRESHOLD + 1} times:")
         for attempt in range(LOCKOUT_THRESHOLD + 1):
             hist += dump_pwpolicy()
             stdout, stderr = try_to_authenticate(f"{attempt}{TEST_USER_PASS}")
-        check_error_present_in_output(stdout, stderr,)
+        check_error_present_in_output(stdout, stderr)
         print("# OKAY: account should be locked now")
 
         print(f"# Authenticating user '{test_username}' with correct password '{TEST_USER_PASS}' on locked out account:")
         hist += dump_pwpolicy()
         stdout, stderr = try_to_authenticate(TEST_USER_PASS)
-        check_error_present_in_output(stdout, stderr,)
+        check_error_present_in_output(stdout, stderr)
         print("# OKAY: login failed for locked account")
 
         for delay in (LOCKOUT_DURATION * 60, 10, 20, 30):
@@ -227,10 +227,10 @@ def main() -> None:
             print("\n".join(hist))
             # breakpoint()
 
-        check_no_errors_present_in_output(stdout, stderr,)
+        check_no_errors_present_in_output(stdout, stderr)
         print("# OKAY: login succeeded for unlocked account")
     finally:
-        set_lockout_settings('default', 'default',)
+        set_lockout_settings('default', 'default')
 
         create_delete_test_user(False)
 

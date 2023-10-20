@@ -28,30 +28,30 @@ class TestUMCUserModules(UMCBase):
             test_group_dn = udm.create_group(name=test_groupname)[0]
             utils.verify_ldap_object(test_group_dn)
 
-            test_user_dn = udm.create_user(password=test_password, username=test_username, primaryGroup=test_group_dn,)[0]
+            test_user_dn = udm.create_user(password=test_password, username=test_username, primaryGroup=test_group_dn)[0]
             utils.verify_ldap_object(test_user_dn)
 
             # case 1: there is no group policy and thus no modules
             # should be available to the user:
             print("Checking if user '%s' has no access to umc modules" % test_username)
-            user_modules = self.list_umc_modules(test_username, test_password,)
+            user_modules = self.list_umc_modules(test_username, test_password)
             assert len(user_modules) == 0, f"The newly created test user '{test_username}' in test group '{test_groupname}' has access to the following modules '{user_modules}', when should not have access to any"
 
             # case 2: create custom policy and add it to the test group,
             # check available modules for the user:
             print(f"Checking if user '{test_username}' has access to only one module with custom test policy '{test_policyname}' applied to group '{test_groupname}'")
-            test_policy_dn = udm.create_object('policies/umc', name=test_policyname, allow=test_operation_set,)
+            test_policy_dn = udm.create_object('policies/umc', name=test_policyname, allow=test_operation_set)
             utils.verify_ldap_object(test_policy_dn)
 
-            udm.modify_object('groups/group', **{'dn': test_group_dn, 'policy_reference': test_policy_dn},)  # noqa: PIE804
+            udm.modify_object('groups/group', **{'dn': test_group_dn, 'policy_reference': test_policy_dn})  # noqa: PIE804
 
-            user_modules = self.list_umc_modules(test_username, test_password,)
+            user_modules = self.list_umc_modules(test_username, test_password)
             assert len(user_modules) == 1, "Expected only the UCR module"
 
             assert user_modules[0].get('id') == 'ucr', f'Wrong module returned, expected ID==ucr: {user_modules!r}'
 
-    def list_umc_modules(self, username, password,):
-        client = Client(None, username, password,)
+    def list_umc_modules(self, username, password):
+        client = Client(None, username, password)
         modules = client.umc_get('modules').data.get('modules')
         modules = [mod for mod in modules if mod['id'] not in ('passwordreset',)]  # self-service might be installed, which offers a anonymous module
         return modules

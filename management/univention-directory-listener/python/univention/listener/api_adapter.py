@@ -51,7 +51,7 @@ class ListenerModuleAdapter(object):
             globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
     """
 
-    def __init__(self, module_configuration,*args, **kwargs):
+    def __init__(self, module_configuration, *args, **kwargs):
         # type: (ListenerModuleConfiguration, *Any, **Any) -> None
         """:param ListenerModuleConfiguration module_configuration: configuration object"""
         self.config = module_configuration
@@ -105,7 +105,7 @@ class ListenerModuleAdapter(object):
             "setdata": setdata,
         }
 
-    def _setdata(self, key, value,):
+    def _setdata(self, key, value):
         # type: (str, str) -> None
         """
         Store LDAP connection credentials passes by the listener (one by one)
@@ -121,7 +121,8 @@ class ListenerModuleAdapter(object):
                 self._ldap_cred['basedn'],
                 self._ldap_cred['binddn'],
                 self._ldap_cred['bindpw'],
-                self._ldap_cred['ldapserver'],)
+                self._ldap_cred['ldapserver'],
+            )
             self._ldap_cred.clear()
 
     @property
@@ -132,7 +133,7 @@ class ListenerModuleAdapter(object):
             self._module_handler_obj = self.config.get_listener_module_instance()
         return self._module_handler_obj
 
-    def _handler(self, dn, new, old, command,):
+    def _handler(self, dn, new, old, command):
         # type: (str, Mapping[str, Sequence[bytes]], Mapping[str, Sequence[bytes]], str) -> None
         """
         Function called by listener when a LDAP object matching the filter is
@@ -154,22 +155,22 @@ class ListenerModuleAdapter(object):
 
         try:
             if old and not new:
-                self._module_handler.remove(dn, old,)
+                self._module_handler.remove(dn, old)
             elif old and new:
-                if self._renamed and not self._module_handler.diff(old, new,):
+                if self._renamed and not self._module_handler.diff(old, new):
                     # ignore second modify call after a move if no non-metadata
                     # attribute changed
                     self._rename = self._renamed = False
                     return
-                self._module_handler.modify(dn, old, new, self._saved_old_dn if self._rename else None,)
+                self._module_handler.modify(dn, old, new, self._saved_old_dn if self._rename else None)
                 self._renamed = self._rename
                 self._rename = False
                 self._saved_old_dn = None
             elif not old and new:
-                self._module_handler.create(dn, new,)
+                self._module_handler.create(dn, new)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self._module_handler.error_handler(dn, old, new, command, exc_type, exc_value, exc_traceback,)
+            self._module_handler.error_handler(dn, old, new, command, exc_type, exc_value, exc_traceback)
 
     def _lazy_initialize(self):
         # type: () -> None

@@ -30,11 +30,11 @@ NUMBER_OF_NOT_RESPONDING_REQUESTS = 100
 
 class AsyncClient(Client):
 
-    def async_request(self, path,):
+    def async_request(self, path):
         cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
-        headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'},)
-        connection = httplib.HTTPSConnection(self.hostname, timeout=10,)
-        connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers,)
+        headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'})
+        connection = httplib.HTTPSConnection(self.hostname, timeout=10)
+        connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers)
         return connection
 
 

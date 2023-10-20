@@ -3,7 +3,7 @@ from waflib import Utils, Context
 import samba_utils
 from samba_git import find_git
 
-def git_version_summary(path, env=None,):
+def git_version_summary(path, env=None):
     git = find_git(env)
 
     if git is None:
@@ -14,7 +14,7 @@ def git_version_summary(path, env=None,):
     environ = dict(os.environ)
     environ["GIT_DIR"] = '%s/.git' % path
     environ["GIT_WORK_TREE"] = path
-    git = samba_utils.get_string(Utils.cmd_output(env.GIT + ' show --pretty=format:"%h%n%ct%n%H%n%cd" --stat HEAD', silent=True, env=environ,))
+    git = samba_utils.get_string(Utils.cmd_output(env.GIT + ' show --pretty=format:"%h%n%ct%n%H%n%cd" --stat HEAD', silent=True, env=environ))
 
     lines = git.splitlines()
     if not lines or len(lines) < 4:
@@ -30,7 +30,7 @@ def git_version_summary(path, env=None,):
     ret = "GIT-" + fields["GIT_COMMIT_ABBREV"]
 
     if env.GIT_LOCAL_CHANGES:
-        clean = Utils.cmd_output('%s diff HEAD | wc -l' % env.GIT, silent=True,).strip()
+        clean = Utils.cmd_output('%s diff HEAD | wc -l' % env.GIT, silent=True).strip()
         if clean == "0":
             fields["COMMIT_IS_CLEAN"] = 1
         else:
@@ -40,7 +40,7 @@ def git_version_summary(path, env=None,):
     return (ret, fields)
 
 
-def distversion_version_summary(path,):
+def distversion_version_summary(path):
     #get version from .distversion file
     suffix = None
     fields = {}
@@ -74,7 +74,7 @@ def distversion_version_summary(path,):
 
 class SambaVersion(object):
 
-    def __init__(self, version_dict, path, env=None, is_install=True,):
+    def __init__(self, version_dict, path, env=None, is_install=True):
         '''Determine the version number of samba
 
 See VERSION for the format.  Entries on that file are
@@ -97,9 +97,9 @@ also accepted as dictionary entries here
 
         for a, b in version_dict.items():
             if a.startswith("SAMBA_VERSION_"):
-                setattr(self, a[14:], b,)
+                setattr(self, a[14:], b)
             else:
-                setattr(self, a, b,)
+                setattr(self, a, b)
 
         if self.IS_GIT_SNAPSHOT == "yes":
             self.IS_SNAPSHOT=True
@@ -143,9 +143,9 @@ also accepted as dictionary entries here
             if not is_install:
                 suffix = "DEVELOPERBUILD"
                 self.vcs_fields = {}
-            elif os.path.exists(os.path.join(path, ".git",)):
-                suffix, self.vcs_fields = git_version_summary(path, env=env,)
-            elif os.path.exists(os.path.join(path, ".distversion",)):
+            elif os.path.exists(os.path.join(path, ".git")):
+                suffix, self.vcs_fields = git_version_summary(path, env=env)
+            elif os.path.exists(os.path.join(path, ".distversion")):
                 suffix, self.vcs_fields = distversion_version_summary(path)
             else:
                 suffix = "UNKNOWN"
@@ -201,7 +201,7 @@ also accepted as dictionary entries here
             string_types = str
             if sys.version_info[0] < 3:
                 string_types = basestring
-            if isinstance(value, string_types,):
+            if isinstance(value, string_types):
                 string += "\"%s\"" % value
             elif type(value) is int:
                 string += "%d" % value
@@ -232,10 +232,10 @@ also accepted as dictionary entries here
         return string
 
 
-def samba_version_file(version_file, path, env=None, is_install=True,):
+def samba_version_file(version_file, path, env=None, is_install=True):
     '''Parse the version information from a VERSION file'''
 
-    f = open(version_file, 'r',)
+    f = open(version_file, 'r')
     version_dict = {}
     for line in f:
         line = line.strip()
@@ -252,16 +252,16 @@ def samba_version_file(version_file, path, env=None, is_install=True,):
             print("Failed to parse line %s from %s" % (line, version_file))
             raise
 
-    return SambaVersion(version_dict, path, env=env, is_install=is_install,)
+    return SambaVersion(version_dict, path, env=env, is_install=is_install)
 
 
 
-def load_version(env=None, is_install=True,):
+def load_version(env=None, is_install=True):
     '''load samba versions either from ./VERSION or git
     return a version object for detailed breakdown'''
     if not env:
         env = samba_utils.LOAD_ENVIRONMENT()
 
-    version = samba_version_file("./VERSION", ".", env, is_install=is_install,)
+    version = samba_version_file("./VERSION", ".", env, is_install=is_install)
     Context.g_module.VERSION = version.STRING
     return version

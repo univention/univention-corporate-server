@@ -35,7 +35,7 @@ from univention.portal import config
 
 
 class User(object):
-    def __init__(self, username, display_name, groups, headers,):
+    def __init__(self, username, display_name, groups, headers):
         self.username = username
         self.display_name = display_name
         self.groups = [group.lower() for group in groups]
@@ -50,5 +50,5 @@ class User(object):
     def is_anonymous(self):
         return self.username is None
 
-    def is_member_of(self, group,):
+    def is_member_of(self, group):
         return group.lower() in self.groups

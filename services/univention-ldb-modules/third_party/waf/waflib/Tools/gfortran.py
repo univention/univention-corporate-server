@@ -9,47 +9,47 @@ from waflib.Tools import fc, fc_config, fc_scan, ar
 from waflib.Configure import conf
 
 @conf
-def find_gfortran(conf,):
+def find_gfortran(conf):
 	"""Find the gfortran program (will look in the environment variable 'FC')"""
-	fc = conf.find_program(['gfortran','g77'], var='FC',)
+	fc = conf.find_program(['gfortran','g77'], var='FC')
 	# (fallback to g77 for systems, where no gfortran is available)
 	conf.get_gfortran_version(fc)
 	conf.env.FC_NAME = 'GFORTRAN'
 
 @conf
-def gfortran_flags(conf,):
+def gfortran_flags(conf):
 	v = conf.env
 	v.FCFLAGS_fcshlib = ['-fPIC']
 	v.FORTRANMODFLAG = ['-J', ''] # template for module path
 	v.FCFLAGS_DEBUG = ['-Werror'] # why not
 
 @conf
-def gfortran_modifier_win32(conf,):
+def gfortran_modifier_win32(conf):
 	fc_config.fortran_modifier_win32(conf)
 
 @conf
-def gfortran_modifier_cygwin(conf,):
+def gfortran_modifier_cygwin(conf):
 	fc_config.fortran_modifier_cygwin(conf)
 
 @conf
-def gfortran_modifier_darwin(conf,):
+def gfortran_modifier_darwin(conf):
 	fc_config.fortran_modifier_darwin(conf)
 
 @conf
-def gfortran_modifier_platform(conf,):
+def gfortran_modifier_platform(conf):
 	dest_os = conf.env.DEST_OS or Utils.unversioned_sys_platform()
-	gfortran_modifier_func = getattr(conf, 'gfortran_modifier_' + dest_os, None,)
+	gfortran_modifier_func = getattr(conf, 'gfortran_modifier_' + dest_os, None)
 	if gfortran_modifier_func:
 		gfortran_modifier_func()
 
 @conf
-def get_gfortran_version(conf, fc,):
+def get_gfortran_version(conf, fc):
 	"""Get the compiler version"""
 
 	# ensure this is actually gfortran, not an imposter.
-	version_re = re.compile(r"GNU\s*Fortran", re.I,).search
+	version_re = re.compile(r"GNU\s*Fortran", re.I).search
 	cmd = fc + ['--version']
-	out, err = fc_config.getoutput(conf, cmd, stdin=False,)
+	out, err = fc_config.getoutput(conf, cmd, stdin=False)
 	if out:
 		match = version_re(out)
 	else:
@@ -59,7 +59,7 @@ def get_gfortran_version(conf, fc,):
 
 	# --- now get more detailed info -- see c_config.get_cc_version
 	cmd = fc + ['-dM', '-E', '-']
-	out, err = fc_config.getoutput(conf, cmd, stdin=True,)
+	out, err = fc_config.getoutput(conf, cmd, stdin=True)
 
 	if out.find('__GNUC__') < 0:
 		conf.fatal('Could not determine the compiler type')
@@ -75,15 +75,15 @@ def get_gfortran_version(conf, fc,):
 			val = lst[2]
 			k[key] = val
 
-	def isD(var,):
+	def isD(var):
 		return var in k
 
-	def isT(var,):
+	def isT(var):
 		return var in k and k[var] != '0'
 
 	conf.env.FC_VERSION = (k['__GNUC__'], k['__GNUC_MINOR__'], k['__GNUC_PATCHLEVEL__'])
 
-def configure(conf,):
+def configure(conf):
 	conf.find_gfortran()
 	conf.find_ar()
 	conf.fc_flags()

@@ -55,7 +55,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'univentionNewPortalFolder'],),
+        objectClasses=['top', 'univentionNewPortalFolder'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -65,69 +66,72 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'displayName': univention.admin.property(
         short_description=_('Display name'),
         long_description=_('Headline of the folder. At least one entry; strongly encouraged to have one for en_US'),
         syntax=univention.admin.syntax.LocalizedDisplayName,
         multivalue=True,
-        required=True,),
+        required=True,
+    ),
     'entries': univention.admin.property(
         short_description=_('Entry'),
         long_description=_('List of portal entries and/or portal folders shown in this folder'),
         syntax=univention.admin.syntax.NewPortalEntries,
-        multivalue=True,),
+        multivalue=True,
+    ),
 }
 
 layout = [
     Tab(_('General'), _('Entry options'), layout=[
         Group(_('General'), layout=[
             ["name"],
-        ],),
+        ]),
         Group(_('Display name'), layout=[
             ["displayName"],
-        ],),
+        ]),
         Group(_('Entries'), layout=[
             ["entries"],
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 
-def mapTranslationValue(vals, encoding=(),):
+def mapTranslationValue(vals, encoding=()):
     return [u' '.join(val).encode(*encoding) for val in vals]
 
 
-def unmapTranslationValue(vals, encoding=(),):
-    return [val.decode(*encoding).split(u' ', 1,) for val in vals]
+def unmapTranslationValue(vals, encoding=()):
+    return [val.decode(*encoding).split(u' ', 1) for val in vals]
 
 
-def mapOrdered(ldap_values, encoding=(),):
+def mapOrdered(ldap_values, encoding=()):
     # ldap stores multi value fields unordered by default
     # you can change this by putting X-ORDERED 'VALUES' in your schema file
     # but then you literally get [b'{0}foo', b'{1}bar']
-    return [u'{{{}}}{}'.format(i, value,).encode(*encoding) for i, value in enumerate(ldap_values)]
+    return [u'{{{}}}{}'.format(i, value).encode(*encoding) for i, value in enumerate(ldap_values)]
 
 
-def unmapOrdered(udm_values, encoding=(),):
-    return [_[1] for _ in sorted((re.match(u'^{(\\d+)}(.*)', value.decode(*encoding),).groups() for value in udm_values), key=lambda n,: int(n[0]),)]
+def unmapOrdered(udm_values, encoding=()):
+    return [_[1] for _ in sorted((re.match(u'^{(\\d+)}(.*)', value.decode(*encoding)).groups() for value in udm_values), key=lambda n: int(n[0]))]
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('displayName', 'univentionNewPortalFolderDisplayName', mapTranslationValue, unmapTranslationValue,)
-mapping.register('entries', 'univentionNewPortalFolderEntries', mapOrdered, unmapOrdered,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('displayName', 'univentionNewPortalFolderDisplayName', mapTranslationValue, unmapTranslationValue)
+mapping.register('entries', 'univentionNewPortalFolderEntries', mapOrdered, unmapOrdered)
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _ldap_post_remove(self):
-        for category_obj in univention.admin.modules.lookup('portals/category', None, self.lo, filter=filter_format('entries=%s', [self.dn],), scope='sub',):
+        for category_obj in univention.admin.modules.lookup('portals/category', None, self.lo, filter=filter_format('entries=%s', [self.dn]), scope='sub'):
             category_obj.open()
             category_obj['entries'].remove(self.dn)
             category_obj.modify()
-        for folder_obj in univention.admin.modules.lookup('portals/folder', None, self.lo, filter=filter_format('entries=%s', [self.dn],), scope='sub',):
+        for folder_obj in univention.admin.modules.lookup('portals/folder', None, self.lo, filter=filter_format('entries=%s', [self.dn]), scope='sub'):
             folder_obj.open()
             folder_obj['entries'].remove(self.dn)
             folder_obj.modify()

@@ -47,7 +47,7 @@ def get_package_cache_dir(self):
 	return cache
 
 @conf
-def download_archive(self, src, dst,):
+def download_archive(self, src, dst):
 	for x in self.env.PACKAGE_REPO:
 		url = '/'.join((x, src))
 		try:
@@ -64,7 +64,7 @@ def download_archive(self, src, dst,):
 		else:
 			tmp = self.root.make_node(dst)
 			tmp.write(web.read())
-			Logs.warn('Downloaded %s from %s', tmp.abspath(), url,)
+			Logs.warn('Downloaded %s from %s', tmp.abspath(), url)
 			break
 	else:
 		self.fatal('Could not get the package %s' % src)

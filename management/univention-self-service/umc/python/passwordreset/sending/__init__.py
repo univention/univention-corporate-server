@@ -5,20 +5,20 @@ import os
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
 
 
-def get_plugins(log,):
+def get_plugins(log):
     plugins = {}
 
     def find_plugins():
         _plugins = []
         _dir = os.path.dirname(__file__)
         for _file in os.listdir(_dir):
-            if _file.endswith(".py") and _file != "__init__.py" and os.path.isfile(os.path.join(_dir, _file,)):
+            if _file.endswith(".py") and _file != "__init__.py" and os.path.isfile(os.path.join(_dir, _file)):
                 _plugins.append(_file[:-3])
         return _plugins
 
-    def load_plugin(_module,):
+    def load_plugin(_module):
         res = importlib.import_module(f'univention.management.console.modules.passwordreset.sending.{_module}')
-        for possible_plugin_class in inspect.getmembers(res, lambda m,: inspect.isclass(m) and m is not UniventionSelfServiceTokenEmitter and issubclass(m, UniventionSelfServiceTokenEmitter,),):
+        for possible_plugin_class in inspect.getmembers(res, lambda m: inspect.isclass(m) and m is not UniventionSelfServiceTokenEmitter and issubclass(m, UniventionSelfServiceTokenEmitter)):
             return possible_plugin_class[1]
         return None
 

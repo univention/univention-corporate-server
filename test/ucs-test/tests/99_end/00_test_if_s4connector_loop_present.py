@@ -21,7 +21,7 @@ ucr.load()
 
 
 def get_rejected():
-    s4 = univention.s4connector.s4.s4.main(ucr, 'connector',)
+    s4 = univention.s4connector.s4.s4.main(ucr, 'connector')
     rejected = []
     for (_filename, dn) in s4.list_rejected():
         rejected.append(dn)
@@ -40,12 +40,12 @@ def count_connector_log_lines():
         return len(f.readlines())
 
 
-def looping_objects(log,):
+def looping_objects(log):
     rejected = get_rejected()
     cleaned_log = []
     for i in log:
         if "sync AD > UCS" in i or 'sync UCS > AD' in i:
-            i = i.rsplit(']', 1,)[1].strip(" '").lower()
+            i = i.rsplit(']', 1)[1].strip(" '").lower()
             if i not in cleaned_log and i not in rejected:
                 cleaned_log.append(i)
     return cleaned_log
@@ -69,7 +69,7 @@ def check_if_looping():
 
         print('ERROR: postrun never ran, ldap replication failed, most likely because of an s4con loop. Stopping the loop')
         # setting syncmode to read to stop the loop
-        sync_mode = ucr.get('connector/s4/mapping/syncmode', 'sync',)
+        sync_mode = ucr.get('connector/s4/mapping/syncmode', 'sync')
 
         try:
             ucr_set(['connector/s4/mapping/syncmode=read'])

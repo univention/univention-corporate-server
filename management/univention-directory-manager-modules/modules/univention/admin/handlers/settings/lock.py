@@ -55,7 +55,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['lock'],),
+        objectClasses=['lock'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -65,26 +66,28 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
-        identifies=True,),
+        identifies=True,
+    ),
     'locktime': univention.admin.property(
         short_description=_('Lock Time'),
         long_description=_('Locked until'),
         syntax=univention.admin.syntax.string,
         required=True,
-        may_change=False,),
+        may_change=False,
+    ),
 }
 
 layout = [
     Tab(_('General'), _('Lock Information'), layout=[
         Group(_('General lock settings'), layout=[
             ['name', 'locktime'],
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('locktime', 'lockTime', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('locktime', 'lockTime', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

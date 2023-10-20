@@ -63,7 +63,7 @@ class Service(uit.LocalizedDictionary):
 
     def __init__(self, *args, **kwargs):
         # type: (*Any, **Any) -> None
-        uit.LocalizedDictionary.__init__(self, *args, **kwargs,)
+        uit.LocalizedDictionary.__init__(self, *args, **kwargs)
         self.running = False
 
     def __repr__(self):
@@ -76,7 +76,7 @@ class Service(uit.LocalizedDictionary):
     def check(self):
         # type: () -> List[str]
         """Check service entry for validity, returning list of incomplete entries."""
-        incomplete = [key for key in self.REQUIRED if not self.get(key, None,)]
+        incomplete = [key for key in self.REQUIRED if not self.get(key, None)]
         unknown = [key for key in self.keys() if key.lower() not in self.KNOWN]
         return incomplete + unknown
 
@@ -112,14 +112,14 @@ class Service(uit.LocalizedDictionary):
         except EnvironmentError:
             return u''
 
-    def _change_state(self, action,):
+    def _change_state(self, action):
         # type: (str) -> bool
         rc, output = self.__change_state(action)
         if rc:
             raise ServiceError(self.status() or output)
         return True
 
-    def __change_state(self, action,):
+    def __change_state(self, action):
         # type: (str) -> Tuple[int, str]
         if self.get('init_script'):
             # samba currently must not be started via systemd
@@ -130,19 +130,19 @@ class Service(uit.LocalizedDictionary):
 
     def _service_name(self):
         # type: () -> str
-        service_name = self.get('systemd', self.get('name'),)
+        service_name = self.get('systemd', self.get('name'))
         if service_name.endswith('.service'):
-            service_name = service_name.rsplit('.', 1,)[0]
+            service_name = service_name.rsplit('.', 1)[0]
         return service_name
 
-    def _exec(self, args,):
+    def _exec(self, args):
         # type: (Sequence[str]) -> Tuple[int, str]
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True,)
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
         output = process.communicate()[0]
-        return process.returncode, output.decode('utf-8', 'replace',).strip()
+        return process.returncode, output.decode('utf-8', 'replace').strip()
 
 
-def pidof(name, docker='/var/run/docker.pid',):
+def pidof(name, docker='/var/run/docker.pid'):
     # type: (str, str) -> List[int]
     """
     Return list of process IDs matching name.
@@ -157,25 +157,25 @@ def pidof(name, docker='/var/run/docker.pid',):
     log = getLogger(__name__)
 
     children = {}  # type: Dict[int, List[int]]
-    if isinstance(docker, six.string_types,):
+    if isinstance(docker, six.string_types):
         try:
             with open(docker) as stream:
-                docker = int(stream.read(), 10,)
-            log.info('Found docker.pid=%d', docker,)
+                docker = int(stream.read(), 10)
+            log.info('Found docker.pid=%d', docker)
         except (EnvironmentError, ValueError) as ex:
-            log.info('No docker found: %s', ex,)
+            log.info('No docker found: %s', ex)
 
     cmd = shlex.split(name)
     for proc in os.listdir('/proc'):
         try:
-            pid = int(proc, 10,)
+            pid = int(proc, 10)
         except ValueError:
             continue
-        cmdline = os.path.join('/proc', proc, 'cmdline',)
+        cmdline = os.path.join('/proc', proc, 'cmdline')
         try:
-            with open(cmdline, 'rb',) as fd:
-                commandline = fd.read().rstrip(b'\x00').decode('UTF-8', 'replace',)
-            link = os.readlink(os.path.join('/proc', proc, 'exe',))
+            with open(cmdline, 'rb') as fd:
+                commandline = fd.read().rstrip(b'\x00').decode('UTF-8', 'replace')
+            link = os.readlink(os.path.join('/proc', proc, 'exe'))
         except EnvironmentError:
             continue
         # kernel thread
@@ -183,33 +183,33 @@ def pidof(name, docker='/var/run/docker.pid',):
             continue
 
         if docker:
-            stat = os.path.join('/proc', proc, 'stat',)
+            stat = os.path.join('/proc', proc, 'stat')
             status = None
             try:
-                with open(stat, 'rb',) as fd:
+                with open(stat, 'rb') as fd:
                     status = fd.readline()
-                ppid = int(status[status.rfind(b')') + 2:].split()[1], 10,)
-                children.setdefault(ppid, [],).append(pid)
+                ppid = int(status[status.rfind(b')') + 2:].split()[1], 10)
+                children.setdefault(ppid, []).append(pid)
             except (EnvironmentError, ValueError) as ex:
-                log.error('Failed getting parent: %s: %r', ex, status,)
+                log.error('Failed getting parent: %s: %r', ex, status)
 
-        def _running(cmd, link, commandline,):
+        def _running(cmd, link, commandline):
             # type: () -> Iterator[bool]
             yield cmd == [link]
             args = commandline.split('\x00') if '\x00' in commandline else shlex.split(commandline)
             yield len(cmd) == 1 and cmd[0] in args  # FIXME: it detects "vim /usr/sbin/service" as running process!
-            yield len(cmd) > 1 and all(a == c for a, c in zip(args, cmd,))
-        if any(_running(cmd, link, commandline,)):
-            log.info('found %d: %r', pid, commandline,)
+            yield len(cmd) > 1 and all(a == c for a, c in zip(args, cmd))
+        if any(_running(cmd, link, commandline)):
+            log.info('found %d: %r', pid, commandline)
             result.add(pid)
 
     if docker:
-        remove = children.pop(docker, [],)
+        remove = children.pop(docker, [])
         while remove:
             pid = remove.pop()
-            log.debug('Removing docker child %s', pid,)
+            log.debug('Removing docker child %s', pid)
             result.discard(pid)
-            remove += children.pop(pid, [],)
+            remove += children.pop(pid, [])
 
     return list(result)
 
@@ -220,7 +220,7 @@ class ServiceInfo(object):
     CUSTOMIZED = '_customized'
     FILE_SUFFIX = '.cfg'
 
-    def __init__(self, install_mode=False,):
+    def __init__(self, install_mode=False):
         # type: (bool) -> None
         self.services = {}  # type: Dict
         if not install_mode:
@@ -250,16 +250,16 @@ class ServiceInfo(object):
     def write_customized(self):
         # type: () -> bool
         """Save service cusomization."""
-        filename = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED,)
+        filename = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED)
         try:
-            with open(filename, 'w',) as fd:
+            with open(filename, 'w') as fd:
                 cfg = uit.UnicodeConfig()
                 for name, srv in self.services.items():
                     cfg.add_section(name)
                     for key in srv.keys():
                         items = srv.normalize(key)
                         for item, value in items.items():
-                            cfg.set(name, item, value,)
+                            cfg.set(name, item, value)
 
                 cfg.write(fd)
 
@@ -267,7 +267,7 @@ class ServiceInfo(object):
         except EnvironmentError:
             return False
 
-    def read_services(self, filename=None, package=None, override=False,):
+    def read_services(self, filename=None, package=None, override=False):
         # type: (Optional[str], Optional[str], bool) -> None
         """
         Read start/stop levels of services.
@@ -280,7 +280,7 @@ class ServiceInfo(object):
         if not filename:
             if not package:
                 raise AttributeError("neither 'filename' nor 'package' is specified")
-            filename = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, package + ServiceInfo.FILE_SUFFIX,)
+            filename = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, package + ServiceInfo.FILE_SUFFIX)
         cfg = uit.UnicodeConfig()
         cfg.read(filename)
         for sec in cfg.sections():
@@ -291,11 +291,11 @@ class ServiceInfo(object):
             srv['name'] = sec
             for name, value in cfg.items(sec):
                 srv[name] = value
-            for path in srv.get('programs', '',).split(','):
+            for path in srv.get('programs', '').split(','):
                 # "programs" defines the "/proc/self/cmdline" of the service,
                 # not the executable, therefore we test for a leading "/":
                 # check if it is a real file    split to remove parameters
-                if path.startswith('/') and not os.path.exists(path.split(' ', 1,)[0]):
+                if path.startswith('/') and not os.path.exists(path.split(' ', 1)[0]):
                     break  # ==> do not execute else
             else:
                 self.services[sec] = srv
@@ -303,12 +303,12 @@ class ServiceInfo(object):
     def __load_services(self):
         # type: () -> None
         """Load definition of all defined services."""
-        path = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES,)
+        path = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES)
         for entry in os.listdir(path):
             # customized service descrptions are read afterwards
             if entry == ServiceInfo.CUSTOMIZED:
                 continue
-            cfgfile = os.path.join(path, entry,)
+            cfgfile = os.path.join(path, entry)
             if os.path.isfile(cfgfile) and cfgfile.endswith(ServiceInfo.FILE_SUFFIX):
                 self.read_services(cfgfile)
         # read modified/added service descriptions
@@ -317,8 +317,8 @@ class ServiceInfo(object):
     def read_customized(self):
         # type: () -> None
         """Read service cusomization."""
-        custom = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED,)
-        self.read_services(custom, override=True,)
+        custom = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED)
+        self.read_services(custom, override=True)
 
     def get_services(self):
         # type: () -> Iterable[str]
@@ -329,7 +329,7 @@ class ServiceInfo(object):
         """
         return self.services.keys()
 
-    def get_service(self, name,):
+    def get_service(self, name):
         # type: (str) -> Optional[Service]
         """
         Return the service object associated with the given name.
@@ -337,9 +337,9 @@ class ServiceInfo(object):
         :param name: Service name.
         :returns: description object or `None`.
         """
-        return self.services.get(name, None,)
+        return self.services.get(name, None)
 
-    def add_service(self, name, service,):
+    def add_service(self, name, service):
         # type: (str, Service) -> None
         """
         Add a new service object or overrides an old entry.

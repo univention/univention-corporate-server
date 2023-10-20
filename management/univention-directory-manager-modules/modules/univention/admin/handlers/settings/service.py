@@ -54,7 +54,8 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['univentionServiceObject'],),
+        objectClasses=['univentionServiceObject'],
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -63,19 +64,20 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
 }
 
 layout = [
     Tab(_('General'), _('Basic values'), layout=[
         Group(_('General service settings'), layout=[
             "name",
-        ],),
-    ],),
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

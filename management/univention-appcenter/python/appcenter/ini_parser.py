@@ -52,7 +52,7 @@ ini_logger = get_base_logger().getChild('ini')
 
 
 class NoValueError(Exception):
-    def __init__(self, name, section,):
+    def __init__(self, name, section):
         self.name = name
         self.section = section
 
@@ -61,7 +61,7 @@ class NoValueError(Exception):
 
 
 class ParseError(Exception):
-    def __init__(self, name, section, message,):
+    def __init__(self, name, section, message):
         self.name = name
         self.section = section
         self.message = message
@@ -70,10 +70,10 @@ class ParseError(Exception):
         return 'Cannot parse %s in %s: %s' % (self.name, self.section, self.message)
 
 
-def read_ini_file(filename, parser_class=RawConfigParser,):
+def read_ini_file(filename, parser_class=RawConfigParser):
     parser = parser_class()
     try:
-        with codecs.open(filename, 'r', 'utf-8',) as f:
+        with codecs.open(filename, 'r', 'utf-8') as f:
             parser.read_file(f)
     except TypeError:
         pass
@@ -93,58 +93,58 @@ class IniSectionAttribute(UniventionMetaInfo):
     pop = True
     auto_set_name = True
 
-    def __init__(self, required=False, default=None, localisable=False, choices=None,):
+    def __init__(self, required=False, default=None, localisable=False, choices=None):
         self.required = required
         self.default = deepcopy(default)
         self.localisable = localisable
         self.choices = choices
 
     def _canonical_name(self):
-        return re.sub('_', '', self.name,)
+        return re.sub('_', '', self.name)
 
     @classmethod
-    def _fetch_from_parser(cls, parser, section, name,):
-        return parser.get(section, name,)
+    def _fetch_from_parser(cls, parser, section, name):
+        return parser.get(section, name)
 
-    def get(self, parser, section, locale,):
+    def get(self, parser, section, locale):
         name = self._canonical_name()
         names = [name]
         if self.localisable and locale:
-            names.insert(0, '%s[%s]' % (name, locale),)
+            names.insert(0, '%s[%s]' % (name, locale))
         for name in names:
             try:
-                value = self._fetch_from_parser(parser, section, name,)
+                value = self._fetch_from_parser(parser, section, name)
             except (NoSectionError, NoOptionError):
                 pass
             else:
                 try:
                     return self.parse(value)
                 except ValueError as exc:
-                    raise ParseError(name, section, str(exc),)
+                    raise ParseError(name, section, str(exc))
 
         if self.required:
-            raise NoValueError(self.name, section,)
+            raise NoValueError(self.name, section)
         return self.default
 
-    def parse(self, value,):
+    def parse(self, value):
         if self.choices and value not in self.choices:
             raise ValueError('%r not in %r' % (value, self.choices))
         return value
 
 
 class IniSectionBooleanAttribute(IniSectionAttribute):
-    def _fetch_from_parser(self, parser, section, name,):
+    def _fetch_from_parser(self, parser, section, name):
         try:
-            return parser.getboolean(section, name,)
+            return parser.getboolean(section, name)
         except ValueError:
-            raise ParseError(name, section, 'Not a Boolean',)
+            raise ParseError(name, section, 'Not a Boolean')
 
 
 class IniSectionListAttribute(IniSectionAttribute):
-    def __init__(self, required=False, default=[], localisable=False, choices=None,):
-        super(IniSectionListAttribute, self,).__init__(required, default, localisable, choices,)
+    def __init__(self, required=False, default=[], localisable=False, choices=None):
+        super(IniSectionListAttribute, self).__init__(required, default, localisable, choices)
 
-    def parse(self, value,):
+    def parse(self, value):
         '''
         Returns a list; splits on "," (stripped, whitespaces before
         and after are removed).  If a single value needs to contain a
@@ -152,8 +152,8 @@ class IniSectionListAttribute(IniSectionAttribute):
         '''
         if value is None:
             return []
-        value = re.split(r'(?<=[^\\])\s*,\s*', value,)
-        values = [re.sub(r'\\,', ',', val,) for val in value]
+        value = re.split(r'(?<=[^\\])\s*,\s*', value)
+        values = [re.sub(r'\\,', ',', val) for val in value]
         if self.choices:
             for val in values:
                 if val not in self.choices:
@@ -161,43 +161,43 @@ class IniSectionListAttribute(IniSectionAttribute):
         return values
 
 
-class IniSectionObject(with_metaclass(UniventionMetaClass, object,)):
+class IniSectionObject(with_metaclass(UniventionMetaClass, object)):
     _main_attr_name = 'name'
 
     def __init__(self, **kwargs):
         for attr in self._attrs.values():
-            setattr(self, attr.name, kwargs.get(attr.name, attr.default,),)
-        setattr(self, self._main_attr_name, kwargs.get(self._main_attr_name),)
+            setattr(self, attr.name, kwargs.get(attr.name, attr.default))
+        setattr(self, self._main_attr_name, kwargs.get(self._main_attr_name))
 
     def __repr__(self):
-        return '%s(%s=%r)' % (self.__class__.__name__, self._main_attr_name, getattr(self, self._main_attr_name,))
+        return '%s(%s=%r)' % (self.__class__.__name__, self._main_attr_name, getattr(self, self._main_attr_name))
 
     def to_dict(self):
-        ret = {self._main_attr_name: getattr(self, self._main_attr_name,)}
+        ret = {self._main_attr_name: getattr(self, self._main_attr_name)}
         for key, value in self._attrs.items():
-            ret[key] = getattr(self, value.name,)
+            ret[key] = getattr(self, value.name)
         return ret
 
     @classmethod
-    def from_parser(cls, parser, section, locale,):
-        return cls.build(parser, section, locale,)
+    def from_parser(cls, parser, section, locale):
+        return cls.build(parser, section, locale)
 
     @classmethod
-    def build(cls, parser, section, locale,):
+    def build(cls, parser, section, locale):
         kwargs = {cls._main_attr_name: section}
         for attr in cls._attrs.values():
-            kwargs[attr.name] = attr.get(parser, section, locale,)
+            kwargs[attr.name] = attr.get(parser, section, locale)
         return cls(**kwargs)
 
     @classmethod
-    def all_from_file(cls, fname, locale=None,):
+    def all_from_file(cls, fname, locale=None):
         if locale is None:
             locale = get_locale()
         ret = []
         parser = read_ini_file(fname)
         for section in parser.sections():
             try:
-                obj = cls.from_parser(parser, section, locale,)
+                obj = cls.from_parser(parser, section, locale)
             except (NoValueError, ParseError) as exc:
                 ini_logger.warning('%s: %s' % (fname, exc))
             else:
@@ -207,33 +207,33 @@ class IniSectionObject(with_metaclass(UniventionMetaClass, object,)):
 
 class TypedIniSectionObjectMetaClass(UniventionMetaClass):
     @classmethod
-    def _add_class_type(mcs, name, base, klass,):
-        if hasattr(base, '_class_types',):
+    def _add_class_type(mcs, name, base, klass):
+        if hasattr(base, '_class_types'):
             base._class_types[name] = klass
             for _base in base.__bases__:
-                mcs._add_class_type(name, _base, klass,)
+                mcs._add_class_type(name, _base, klass)
 
-    def __new__(mcs, name, bases, attrs,):
-        new_cls = super(TypedIniSectionObjectMetaClass, mcs,).__new__(mcs, name, bases, attrs,)
+    def __new__(mcs, name, bases, attrs):
+        new_cls = super(TypedIniSectionObjectMetaClass, mcs).__new__(mcs, name, bases, attrs)
         new_cls._class_types = {}
         for base in bases:
-            mcs._add_class_type(name, base, new_cls,)
+            mcs._add_class_type(name, base, new_cls)
         return new_cls
 
 
-class TypedIniSectionObject(with_metaclass(TypedIniSectionObjectMetaClass, IniSectionObject,)):
+class TypedIniSectionObject(with_metaclass(TypedIniSectionObjectMetaClass, IniSectionObject)):
     _type_attr = 'type'
 
     @classmethod
-    def get_class(cls, name,):
-        return cls._class_types.get(name, cls,)
+    def get_class(cls, name):
+        return cls._class_types.get(name, cls)
 
     @classmethod
-    def from_parser(cls, parser, section, locale,):
+    def from_parser(cls, parser, section, locale):
         try:
-            value = parser.get(section, cls._type_attr,)
+            value = parser.get(section, cls._type_attr)
         except (NoSectionError, NoOptionError):
             attr = cls._attrs.get(cls._type_attr)
             value = attr.default if attr else None
         klass = cls.get_class(value)
-        return klass.build(parser, section, locale,)
+        return klass.build(parser, section, locale)

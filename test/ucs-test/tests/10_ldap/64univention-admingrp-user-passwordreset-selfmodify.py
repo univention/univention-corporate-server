@@ -19,7 +19,7 @@ default_password = 'univention'
 
 
 class Account:
-    def __init__(self, description, dn, name, password=default_password,):
+    def __init__(self, description, dn, name, password=default_password):
         self.description = description
         self.dn = dn
         self.name = name
@@ -32,11 +32,11 @@ class Account:
 try:
     with UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm:
 
-        def change_own_password_to_random(account,):
+        def change_own_password_to_random(account):
             try:
                 udm.modify_object('users/user', binnddn=account.dn, bindpwd=account.password, dn=account.dn, set={
                     'password': uts.random_string(),
-                },)
+                })
             except Exception:
                 fail('%s can not change its own password' % account)
             else:
@@ -46,7 +46,7 @@ try:
         try:
             what = "Helpdesk group"
             helpdesk_group_dn, helpdesk_group_name = udm.create_group()
-            helpdesk_group = Account(what, helpdesk_group_dn, helpdesk_group_name,)
+            helpdesk_group = Account(what, helpdesk_group_dn, helpdesk_group_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -56,7 +56,7 @@ try:
         try:
             what = "Helpdesk user"
             helpdesk_user_dn, helpdesk_user_name = udm.create_user()
-            helpdesk_user = Account(what, helpdesk_user_dn, helpdesk_user_name,)
+            helpdesk_user = Account(what, helpdesk_user_dn, helpdesk_user_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -66,7 +66,7 @@ try:
         try:
             what = "Protected user"
             protected_user_dn, protected_user_name = udm.create_user()
-            protected_user = Account(what, protected_user_dn, protected_user_name,)
+            protected_user = Account(what, protected_user_dn, protected_user_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -76,7 +76,7 @@ try:
         try:
             what = "Unprotected user"
             unprotected_user_dn, unprotected_user_name = udm.create_user()
-            unprotected_user = Account(what, unprotected_user_dn, unprotected_user_name,)
+            unprotected_user = Account(what, unprotected_user_dn, unprotected_user_name)
         except Exception as exc:
             fail(f'Creating {what} failed: {exc}')
         else:
@@ -86,7 +86,7 @@ try:
         try:
             udm.modify_object('groups/group', dn=helpdesk_group.dn, append={
                 'users': [helpdesk_user.dn],
-            },)
+            })
         except Exception as exc:
             fail(f'Adding {helpdesk_user} to corresponding group {helpdesk_group} failed: {exc}')
         else:

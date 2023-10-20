@@ -39,17 +39,17 @@ with UCSTestUDM() as udm:
     join_script_name = '66%s.inst' % package_name
 
     user_dn, _username = udm.create_user(password='univention')
-    container_current = udm.create_object('container/cn', name=container_name_current,)
-    container_new = udm.create_object('container/cn', name=container_name_new,)
+    container_current = udm.create_object('container/cn', name=container_name_current)
+    container_new = udm.create_object('container/cn', name=container_name_new)
     try:
-        set_container_description(user_dn, container_current,)
+        set_container_description(user_dn, container_current)
     except ldap.INSUFFICIENT_ACCESS:
         pass
     else:
         fail('New user was able to modify %s' % container_current)
 
     try:
-        set_container_description(user_dn, container_new,)
+        set_container_description(user_dn, container_new)
     except ldap.INSUFFICIENT_ACCESS:
         pass
     else:
@@ -87,9 +87,9 @@ access to dn.base="%(container)s" attrs="description"
 ''' % {'container': container_new, 'user_dn': user_dn}
 
     package = DebianPackage(name=package_name)
-    package.create_join_script_from_buffer(join_script_name, joinscript_buffer,)
-    package.create_usr_share_file_from_buffer(acl_name_current, acl_buffer_current,)
-    package.create_usr_share_file_from_buffer(acl_name_new, acl_buffer_new,)
+    package.create_join_script_from_buffer(join_script_name, joinscript_buffer)
+    package.create_usr_share_file_from_buffer(acl_name_current, acl_buffer_current)
+    package.create_usr_share_file_from_buffer(acl_name_new, acl_buffer_new)
     package.build()
     package.install()
 
@@ -98,10 +98,10 @@ access to dn.base="%(container)s" attrs="description"
     # The ldap server needs a few seconds
     sleep(5)
 
-    set_container_description(user_dn, container_current,)
+    set_container_description(user_dn, container_current)
 
     try:
-        set_container_description(user_dn, container_new,)
+        set_container_description(user_dn, container_new)
     except ldap.INSUFFICIENT_ACCESS:
         pass
     else:

@@ -57,26 +57,26 @@ from univention.appcenter.udm import get_admin_connection, get_connection, get_m
 class CredentialsAction(UniventionAppAction):
 
     def __init__(self):
-        super(CredentialsAction, self,).__init__()
+        super(CredentialsAction, self).__init__()
         self._username = None
         self._userdn = None
         self._password = None
 
-    def setup_parser(self, parser,):
-        parser.add_argument('--noninteractive', action='store_true', help='Do not prompt for anything, just agree or skip',)
-        parser.add_argument('--username', default='Administrator', help='The username used for registering the app. Default: %(default)s',)
-        parser.add_argument('--pwdfile', help='Filename containing the password for registering the app. See --username',)
-        parser.add_argument('--password', help=SUPPRESS,)
+    def setup_parser(self, parser):
+        parser.add_argument('--noninteractive', action='store_true', help='Do not prompt for anything, just agree or skip')
+        parser.add_argument('--username', default='Administrator', help='The username used for registering the app. Default: %(default)s')
+        parser.add_argument('--pwdfile', help='Filename containing the password for registering the app. See --username')
+        parser.add_argument('--password', help=SUPPRESS)
 
-    def check_user_credentials(self, args,):
+    def check_user_credentials(self, args):
         try:
-            lo, pos = self._get_ldap_connection(args, allow_machine_connection=False, allow_admin_connection=False,)
+            lo, pos = self._get_ldap_connection(args, allow_machine_connection=False, allow_admin_connection=False)
         except ConnectionFailed:
             return False
         else:
             return True
 
-    def _get_username(self, args,):
+    def _get_username(self, args):
         if self._username is not None:
             return self._username
         if args.username:
@@ -89,7 +89,7 @@ class CredentialsAction(UniventionAppAction):
             self._username = username
             return username
 
-    def _get_password(self, args, ask=True,):
+    def _get_password(self, args, ask=True):
         username = self._get_username(args)
         if not username:
             return None
@@ -104,14 +104,14 @@ class CredentialsAction(UniventionAppAction):
             self._password = self._get_password_for(username)
         return self._password
 
-    def _get_password_for(self, username,):
+    def _get_password_for(self, username):
         try:
             return getpass('Password for %s: ' % username)
         except (EOFError, KeyboardInterrupt):
             raise CredentialsNoPasswordError()
 
     @contextmanager
-    def _get_password_file(self, args=None, password=None,):
+    def _get_password_file(self, args=None, password=None):
         if password is None:
             password = self._get_password(args)
         if not password:
@@ -122,12 +122,12 @@ class CredentialsAction(UniventionAppAction):
                 password_file.flush()
                 yield password_file.name
 
-    def _get_userdn(self, args,):
+    def _get_userdn(self, args):
         username = self._get_username(args)
         if not username:
             return None
-        lo, pos = self._get_ldap_connection(args=None, allow_machine_connection=True,)
-        users = search_objects('users/user', lo, pos, uid=username,)
+        lo, pos = self._get_ldap_connection(args=None, allow_machine_connection=True)
+        users = search_objects('users/user', lo, pos, uid=username)
         if users:
             return users[0].dn
         else:
@@ -157,7 +157,7 @@ class CredentialsAction(UniventionAppAction):
         except ldap.SERVER_DOWN:
             raise ConnectionFailedServerDown()
 
-    def _get_ldap_connection(self, args, allow_machine_connection=False, allow_admin_connection=True,):
+    def _get_ldap_connection(self, args, allow_machine_connection=False, allow_admin_connection=True):
         if allow_admin_connection and ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
             try:
                 return self._get_admin_connection()
@@ -186,7 +186,7 @@ class CredentialsAction(UniventionAppAction):
                 try:
                     if not userdn or not password:
                         raise ldap.INVALID_CREDENTIALS()
-                    return get_connection(userdn, password,)
+                    return get_connection(userdn, password)
                 except ldap.CONNECT_ERROR as exc:
                     raise ConnectionFailedConnectError(exc)
                 except ldap.SERVER_DOWN:

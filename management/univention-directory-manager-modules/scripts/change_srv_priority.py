@@ -62,11 +62,11 @@ def main():
 
     lo, position = univention.admin.uldap.getAdminConnection()
     forward_module = univention.admin.modules.get('dns/forward_zone')
-    forward_zones = univention.admin.modules.lookup(forward_module, None, lo, scope='sub', superordinate=None, base=configRegistry.get('ldap_base'),)
+    forward_zones = univention.admin.modules.lookup(forward_module, None, lo, scope='sub', superordinate=None, base=configRegistry.get('ldap_base'))
 
     srv_module = univention.admin.modules.get('dns/srv_record')
     for forward_zone in forward_zones:
-        srv_records = univention.admin.modules.lookup(srv_module, None, lo, scope='sub', superordinate=forward_zone, base=configRegistry.get('ldap_base'),)
+        srv_records = univention.admin.modules.lookup(srv_module, None, lo, scope='sub', superordinate=forward_zone, base=configRegistry.get('ldap_base'))
 
         for srv_record in srv_records:
             name = srv_record.get('name')

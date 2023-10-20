@@ -22,17 +22,17 @@ if __name__ == '__main__':
         revzone = dnstests.random_reverse_zone()
         test_nameserver = dnstests.get_hostname_of_ldap_master()
         ptr_record = uts.random_name()
-        test_address = random.randrange(1, 254,)
+        test_address = random.randrange(1, 254)
         zone_ip_parts = revzone.split('.')
         reverse_ip = f'{zone_ip_parts[2]}.{zone_ip_parts[1]}.{zone_ip_parts[0]}.in-addr.arpa'
-        test_zone_dn = udm.create_object('dns/reverse_zone', subnet=revzone, nameserver=test_nameserver,)
+        test_zone_dn = udm.create_object('dns/reverse_zone', subnet=revzone, nameserver=test_nameserver)
         # dnstests.check_ldap_object(test_zone_dn, 'Reverse Zone', '', '')
-        test_ptr_dn = udm.create_object('dns/ptr_record', address=test_address, superordinate=test_zone_dn, ptr_record=ptr_record,)
+        test_ptr_dn = udm.create_object('dns/ptr_record', address=test_address, superordinate=test_zone_dn, ptr_record=ptr_record)
         # dnstests.check_ldap_object(test_ptr_dn, 'Pointer Record', 'pTRRecord', ptr_record)
         s4connector.wait_for_sync(30)
-        dnstests.test_dns_pointer_record(reverse_ip, test_address, ptr_record,)
-        dnstests.check_ldap_object(test_zone_dn, 'Reverse Zone', '', '',)
-        dnstests.check_ldap_object(test_ptr_dn, 'Pointer Record', 'pTRRecord', ptr_record + '.',)
+        dnstests.test_dns_pointer_record(reverse_ip, test_address, ptr_record)
+        dnstests.check_ldap_object(test_zone_dn, 'Reverse Zone', '', '')
+        dnstests.check_ldap_object(test_ptr_dn, 'Pointer Record', 'pTRRecord', ptr_record + '.')
 
     s4connector.wait_for_sync()
     # Removing a DNS zone triggers bind reload in postrun, better check:

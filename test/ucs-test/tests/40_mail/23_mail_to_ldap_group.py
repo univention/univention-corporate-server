@@ -28,7 +28,7 @@ def main():
             logfiles = ['/var/log/mail.log', '/var/log/auth.log', '/var/log/univention/listener.log']
             autocallcmd = ['true']
         with utils.FollowLogfile(logfiles=logfiles):
-            with utils.AutoCallCommand(enter_cmd=autocallcmd, exit_cmd=autocallcmd,):
+            with utils.AutoCallCommand(enter_cmd=autocallcmd, exit_cmd=autocallcmd):
                 with udm_test.UCSTestUDM() as udm:
                     domain = ucr.get('domainname')
                     password = 'univention'
@@ -42,12 +42,13 @@ def main():
                                 'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
                                 'mailPrimaryAddress': mail if i > 0 else '',
                             },
-                            check_for_drs_replication=True,)
+                            check_for_drs_replication=True,
+                        )
                         mails_list.append(mail)
                         users_list.append(user_dn)
                     group_name = uts.random_name()
                     group_mail = '%s@%s' % (group_name, domain)
-                    print('Users List = ', users_list,)
+                    print('Users List = ', users_list)
                     group_dn = udm.create_object(
                         'groups/group',
                         set={
@@ -56,22 +57,24 @@ def main():
                             'users': users_list[0],
                         },
                         position='cn=groups,%s' % ucr.get('ldap/base'),
-                        check_for_drs_replication=True,)
+                        check_for_drs_replication=True,
+                    )
                     udm.modify_object(
                         'groups/group',
                         dn=group_dn,
                         append={
                             'users': users_list[1:3],
                         },
-                        check_for_drs_replication=True,)
+                        check_for_drs_replication=True,
+                    )
                     token = str(time.time())
-                    send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password,)
+                    send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
                     for i, mail in enumerate(mails_list):
                         should_be_delivered = False
                         if i in [1, 2]:
                             should_be_delivered = True
-                        print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered),)
-                        check_delivery(token, mail, should_be_delivered,)
+                        print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered))
+                        check_delivery(token, mail, should_be_delivered)
 
                     udm.modify_object(
                         'groups/group',
@@ -79,14 +82,15 @@ def main():
                         append={
                             'users': [users_list[3]],
                         },
-                        check_for_drs_replication=True,)
-                    send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password,)
+                        check_for_drs_replication=True,
+                    )
+                    send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
                     for i, mail in enumerate(mails_list):
                         should_be_delivered = True
                         if i == 0:
                             should_be_delivered = False
-                        print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered),)
-                        check_delivery(token, mail, should_be_delivered,)
+                        print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered))
+                        check_delivery(token, mail, should_be_delivered)
 
                     udm.modify_object(
                         'users/user',
@@ -94,12 +98,13 @@ def main():
                         set={
                             'mailPrimaryAddress': mails_list[0],
                         },
-                        check_for_drs_replication=True,)
-                    send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password,)
+                        check_for_drs_replication=True,
+                    )
+                    send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
                     for i, mail in enumerate(mails_list):
                         should_be_delivered = True
-                        print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered),)
-                        check_delivery(token, mail, should_be_delivered,)
+                        print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered))
+                        check_delivery(token, mail, should_be_delivered)
 
 
 if __name__ == '__main__':

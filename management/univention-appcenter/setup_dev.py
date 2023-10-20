@@ -45,4 +45,5 @@ setup(
     ],
     package_dir={
         'univention.appcenter.actions': 'python/appcenter-dev/actions',
-    },)
+    },
+)

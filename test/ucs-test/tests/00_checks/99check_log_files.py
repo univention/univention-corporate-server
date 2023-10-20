@@ -45,7 +45,7 @@ class CheckLogFiles:
         last_line = ''
 
         for line in self.log_file:
-            line = line.decode('UTF-8', 'replace',)
+            line = line.decode('UTF-8', 'replace')
             trace_message += line
             self.line_counter += 1
             trace_line += 1
@@ -62,7 +62,7 @@ class CheckLogFiles:
         else:
             return 'Last Traceback "%s" repeats one more time.\n' % last_line
 
-    def check_for_tracebacks(self, line, errors, msg,):
+    def check_for_tracebacks(self, line, errors, msg):
         """
         Looks for the signs of a traceback in a 'line'.
         Extracts the traceback message and appends it to the
@@ -74,7 +74,7 @@ class CheckLogFiles:
 
         return errors
 
-    def check_extra_lines(self, previous_line, pre_previous_line, definition,):
+    def check_extra_lines(self, previous_line, pre_previous_line, definition):
         """
         Looks through the given previous and pre_previous lines to check if
         a 'failed.' message can be ignored. Returns True if so.
@@ -82,7 +82,7 @@ class CheckLogFiles:
         if (definition.ignore_extra(previous_line) and definition.ignore_extra(pre_previous_line)):
             return True
 
-    def check_line(self, line, previous_line, pre_previous_line, definition, result, msg,):
+    def check_line(self, line, previous_line, pre_previous_line, definition, result, msg):
         """
         Checks a single 'line' against patterns from 'definition' and
         adds message 'msg' to list 'result' if pattern is in 'wanted'.
@@ -94,7 +94,7 @@ class CheckLogFiles:
 
         if definition.wanted(line):
             if line == 'failed.':  # special case, Bug #36160
-                if self.check_extra_lines(previous_line, pre_previous_line, definition,):
+                if self.check_extra_lines(previous_line, pre_previous_line, definition):
                     return result  # ignore the 'failed.' message
 
             result.append(msg)
@@ -102,7 +102,7 @@ class CheckLogFiles:
 
         return result
 
-    def check_log_file(self, filename,):
+    def check_log_file(self, filename):
         """
         Checks file 'filename' for issues, returns 2-tuple (warnings, errors).
         Tracebacks would also be included to 'Errors'.
@@ -121,21 +121,21 @@ class CheckLogFiles:
 
         try:
             if basename.endswith('.gz'):
-                self.log_file = gzip.open(filename, "rb",)
+                self.log_file = gzip.open(filename, "rb")
             else:
-                self.log_file = open(filename, "rb",)
+                self.log_file = open(filename, "rb")
 
             for line in self.log_file:
                 self.line_counter += 1
-                line = line.decode('UTF-8', 'replace',).strip()
+                line = line.decode('UTF-8', 'replace').strip()
 
                 msg = f"{basename}:{self.line_counter}, {line}"
-                errors = self.check_for_tracebacks(line, errors, msg,)
+                errors = self.check_for_tracebacks(line, errors, msg)
 
                 # skip the message if it is repeated from the previous line:
                 if line != previous_line:
-                    errors = self.check_line(line, previous_line, pre_previous_line, self.errors, errors, msg,)
-                    warnings = self.check_line(line, previous_line, pre_previous_line, self.warnings, warnings, msg,)
+                    errors = self.check_line(line, previous_line, pre_previous_line, self.errors, errors, msg)
+                    warnings = self.check_line(line, previous_line, pre_previous_line, self.warnings, warnings, msg)
 
                 pre_previous_line = previous_line
                 previous_line = line
@@ -186,7 +186,7 @@ class CheckLogFiles:
         InstallProfile = Profile()
         try:
             InstallProfile.load(filename='/etc/univention/installation_profile')
-            if bool(re.match('false', InstallProfile.get_list('call_master_joinscripts')[0], re.IGNORECASE,)):
+            if bool(re.match('false', InstallProfile.get_list('call_master_joinscripts')[0], re.IGNORECASE)):
                 print("\nThe 'call_master_joinscripts' is 'false' in "
                       "'/etc/univention/installation_profile', adjusting "
                       "patterns to ignore respective 'join' messages.")
@@ -198,7 +198,7 @@ class CheckLogFiles:
                   % exc)
             self.extend_log_ignore_definitions()
 
-    def main(self, log_files,):
+    def main(self, log_files):
         """
         Looks for Errors, Tracebacks and Warnings in the given list of
         'log_files'. Test fails if Errors (or/and Tracebacks) were found.

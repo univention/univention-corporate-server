@@ -33,13 +33,13 @@ class TestConnection(unittest.TestCase):
         self._conn = ConnectionManager(
             base_url="http://localhost/",
             headers={},
-            timeout=60,)
+            timeout=60)
 
     @all_requests
-    def response_content_success(self, url, request,):
+    def response_content_success(self, url, request):
         headers = {'content-type': 'application/json'}
         content = b'response_ok'
-        return response(200, content, headers, None, 5, request,)
+        return response(200, content, headers, None, 5, request)
 
     def test_raw_get(self):
         with HTTMock(self.response_content_success):
@@ -48,37 +48,37 @@ class TestConnection(unittest.TestCase):
         assert resp.status_code == 200
 
     def test_raw_post(self):
-        @urlmatch(path="/known_path", method="post",)
-        def response_post_success(url, request,):
+        @urlmatch(path="/known_path", method="post")
+        def response_post_success(url, request):
             headers = {'content-type': 'application/json'}
             content = 'response'.encode("utf-8")
-            return response(201, content, headers, None, 5, request,)
+            return response(201, content, headers, None, 5, request)
 
         with HTTMock(response_post_success):
             resp = self._conn.raw_post("/known_path",
-                                       {'field': 'value'},)
+                                       {'field': 'value'})
         assert resp.content == b"response"
         assert resp.status_code == 201
 
     def test_raw_put(self):
-        @urlmatch(netloc="localhost", path="/known_path", method="put",)
-        def response_put_success(url, request,):
+        @urlmatch(netloc="localhost", path="/known_path", method="put")
+        def response_put_success(url, request):
             headers = {'content-type': 'application/json'}
             content = 'response'.encode("utf-8")
-            return response(200, content, headers, None, 5, request,)
+            return response(200, content, headers, None, 5, request)
 
         with HTTMock(response_put_success):
             resp = self._conn.raw_put("/known_path",
-                                      {'field': 'value'},)
+                                      {'field': 'value'})
         assert resp.content == b"response"
         assert resp.status_code == 200
 
     def test_raw_get_fail(self):
-        @urlmatch(netloc="localhost", path="/known_path", method="get",)
-        def response_get_fail(url, request,):
+        @urlmatch(netloc="localhost", path="/known_path", method="get")
+        def response_get_fail(url, request):
             headers = {'content-type': 'application/json'}
             content = "404 page not found".encode("utf-8")
-            return response(404, content, headers, None, 5, request,)
+            return response(404, content, headers, None, 5, request)
 
         with HTTMock(response_get_fail):
             resp = self._conn.raw_get("/known_path")
@@ -87,72 +87,72 @@ class TestConnection(unittest.TestCase):
         assert resp.status_code == 404
 
     def test_raw_post_fail(self):
-        @urlmatch(netloc="localhost", path="/known_path", method="post",)
-        def response_post_fail(url, request,):
+        @urlmatch(netloc="localhost", path="/known_path", method="post")
+        def response_post_fail(url, request):
             headers = {'content-type': 'application/json'}
             content = str(["Start can't be blank"]).encode("utf-8")
-            return response(404, content, headers, None, 5, request,)
+            return response(404, content, headers, None, 5, request)
 
         with HTTMock(response_post_fail):
             resp = self._conn.raw_post("/known_path",
-                                       {'field': 'value'},)
+                                       {'field': 'value'})
         assert resp.content == str(["Start can't be blank"]).encode("utf-8")
         assert resp.status_code == 404
 
     def test_raw_put_fail(self):
-        @urlmatch(netloc="localhost", path="/known_path", method="put",)
-        def response_put_fail(url, request,):
+        @urlmatch(netloc="localhost", path="/known_path", method="put")
+        def response_put_fail(url, request):
             headers = {'content-type': 'application/json'}
             content = str(["Start can't be blank"]).encode("utf-8")
-            return response(404, content, headers, None, 5, request,)
+            return response(404, content, headers, None, 5, request)
 
         with HTTMock(response_put_fail):
             resp = self._conn.raw_put("/known_path",
-                                      {'field': 'value'},)
+                                      {'field': 'value'})
         assert resp.content == str(["Start can't be blank"]).encode("utf-8")
         assert resp.status_code == 404
 
     def test_add_param_headers(self):
-        self._conn.add_param_headers("test", "value",)
+        self._conn.add_param_headers("test", "value")
         assert self._conn.headers == {'test': 'value'}
 
     def test_del_param_headers(self):
-        self._conn.add_param_headers("test", "value",)
+        self._conn.add_param_headers("test", "value")
         self._conn.del_param_headers("test")
         assert self._conn.headers == {}
 
     def test_clean_param_headers(self):
-        self._conn.add_param_headers("test", "value",)
+        self._conn.add_param_headers("test", "value")
         assert self._conn.headers == {'test': 'value'}
         self._conn.clean_headers()
         assert self._conn.headers == {}
 
     def test_exist_param_headers(self):
-        self._conn.add_param_headers("test", "value",)
+        self._conn.add_param_headers("test", "value")
         assert self._conn.exist_param_headers("test") is True
         assert self._conn.exist_param_headers("test_no") is False
 
     def test_get_param_headers(self):
-        self._conn.add_param_headers("test", "value",)
+        self._conn.add_param_headers("test", "value")
         assert self._conn.exist_param_headers("test") is True
         assert self._conn.exist_param_headers("test_no") is False
 
     def test_get_headers(self):
-        self._conn.add_param_headers("test", "value",)
+        self._conn.add_param_headers("test", "value")
         assert self._conn.headers == {'test': 'value'}
 
     def test_KeycloakAdmin_custom_header(self):
 
         class FakeToken:
             @staticmethod
-            def get(string_val,):
+            def get(string_val):
                 return "faketoken"
 
         fake_token = FakeToken()
 
-        with mock.patch.object(KeycloakOpenID, "__init__", return_value=None,) as mock_keycloak_open_id:
-            with mock.patch("keycloak.keycloak_openid.KeycloakOpenID.token", return_value=fake_token,):
-                with mock.patch("keycloak.connection.ConnectionManager.__init__", return_value=None,) as mock_connection_manager:
+        with mock.patch.object(KeycloakOpenID, "__init__", return_value=None) as mock_keycloak_open_id:
+            with mock.patch("keycloak.keycloak_openid.KeycloakOpenID.token", return_value=fake_token):
+                with mock.patch("keycloak.connection.ConnectionManager.__init__", return_value=None) as mock_connection_manager:
                     server_url = "https://localhost/auth/"
                     username = "admin"
                     password = "secret"
@@ -166,14 +166,14 @@ class TestConnection(unittest.TestCase):
                                   password=password,
                                   realm_name=realm_name,
                                   verify=False,
-                                  custom_headers=headers,)
+                                  custom_headers=headers)
 
                     mock_keycloak_open_id.assert_called_with(server_url=server_url,
                                                              realm_name=realm_name,
                                                              client_id='admin-cli',
                                                              client_secret_key=None,
                                                              verify=False,
-                                                             custom_headers=headers,)
+                                                             custom_headers=headers)
 
                     expected_header = {'Authorization': 'Bearer faketoken',
                                        'Content-Type': 'application/json',
@@ -183,4 +183,4 @@ class TestConnection(unittest.TestCase):
                     mock_connection_manager.assert_called_with(base_url=server_url,
                                                                headers=expected_header,
                                                                timeout=60,
-                                                               verify=False,)
+                                                               verify=False)

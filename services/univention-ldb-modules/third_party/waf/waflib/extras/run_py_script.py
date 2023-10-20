@@ -26,12 +26,12 @@ import os, re
 from waflib import Task, TaskGen, Logs
 
 
-def configure(conf,):
+def configure(conf):
 	"""TODO: Might need to be updated for Windows once
 	"PEP 397":http://www.python.org/dev/peps/pep-0397/ is settled.
 	"""
-	conf.find_program('python', var='PY2CMD', mandatory=False,)
-	conf.find_program('python3', var='PY3CMD', mandatory=False,)
+	conf.find_program('python', var='PY2CMD', mandatory=False)
+	conf.find_program('python3', var='PY3CMD', mandatory=False)
 	if not conf.env.PY2CMD and not conf.env.PY3CMD:
 		conf.fatal("No Python interpreter found!")
 
@@ -47,7 +47,7 @@ class run_py_3_script(Task.Task):
 
 @TaskGen.feature('run_py_script')
 @TaskGen.before_method('process_source')
-def apply_run_py_script(tg,):
+def apply_run_py_script(tg):
 	"""Task generator for running either Python 2 or Python 3 on a single
 	script.
 
@@ -63,7 +63,7 @@ def apply_run_py_script(tg,):
 	"""
 
 	# Set the Python version to use, default to 3.
-	v = getattr(tg, 'version', 3,)
+	v = getattr(tg, 'version', 3)
 	if v not in (2, 3):
 		raise ValueError("Specify the 'version' attribute for run_py_script task generator as integer 2 or 3.\n Got: %s" %v)
 
@@ -72,32 +72,32 @@ def apply_run_py_script(tg,):
 	tgt_nodes = [tg.path.find_or_declare(t) for t in tg.to_list(tg.target)]
 
 	# Create the task.
-	tsk = tg.create_task('run_py_%d_script' %v, src=src_node, tgt=tgt_nodes,)
+	tsk = tg.create_task('run_py_%d_script' %v, src=src_node, tgt=tgt_nodes)
 
 	# custom execution environment
 	# TODO use a list and  os.sep.join(lst) at the end instead of concatenating strings
 	tsk.env.env = dict(os.environ)
-	tsk.env.env['PYTHONPATH'] = tsk.env.env.get('PYTHONPATH', '',)
-	project_paths = getattr(tsk.env, 'PROJECT_PATHS', None,)
+	tsk.env.env['PYTHONPATH'] = tsk.env.env.get('PYTHONPATH', '')
+	project_paths = getattr(tsk.env, 'PROJECT_PATHS', None)
 	if project_paths and 'PROJECT_ROOT' in project_paths:
 		tsk.env.env['PYTHONPATH'] += os.pathsep + project_paths['PROJECT_ROOT'].abspath()
-	if getattr(tg, 'add_to_pythonpath', None,):
+	if getattr(tg, 'add_to_pythonpath', None):
 		tsk.env.env['PYTHONPATH'] += os.pathsep + tg.add_to_pythonpath
 
 	# Clean up the PYTHONPATH -- replace double occurrences of path separator
-	tsk.env.env['PYTHONPATH'] = re.sub(os.pathsep + '+', os.pathsep, tsk.env.env['PYTHONPATH'],)
+	tsk.env.env['PYTHONPATH'] = re.sub(os.pathsep + '+', os.pathsep, tsk.env.env['PYTHONPATH'])
 
 	# Clean up the PYTHONPATH -- doesn't like starting with path separator
 	if tsk.env.env['PYTHONPATH'].startswith(os.pathsep):
 		 tsk.env.env['PYTHONPATH'] = tsk.env.env['PYTHONPATH'][1:]
 
 	# dependencies (if the attribute 'deps' changes, trigger a recompilation)
-	for x in tg.to_list(getattr(tg, 'deps', [],)):
+	for x in tg.to_list(getattr(tg, 'deps', [])):
 		node = tg.path.find_resource(x)
 		if not node:
 			tg.bld.fatal('Could not find dependency %r for running %r' % (x, src_node.abspath()))
 		tsk.dep_nodes.append(node)
-	Logs.debug('deps: found dependencies %r for running %r', tsk.dep_nodes, src_node.abspath(),)
+	Logs.debug('deps: found dependencies %r for running %r', tsk.dep_nodes, src_node.abspath())
 
 	# Bypass the execution of process_source by setting the source to an empty list
 	tg.source = []

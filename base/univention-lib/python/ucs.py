@@ -49,7 +49,7 @@ class UCS_Version(object):
     _regexp = re.compile(r'(?P<major>[0-9]+)\.(?P<minor>[0-9]+)-(?P<patch>[0-9]+)')
     _format = re.compile(r'%([%afimp])')
 
-    def __init__(self, version,):
+    def __init__(self, version):
         # type: (Union[Tuple[int, int, int], List[int], str, UCS_Version]) -> None
         """
         :param version: must a :py:class:`str` matching the pattern `X.Y-Z` or a triple with major, minor and patchlevel.
@@ -64,11 +64,11 @@ class UCS_Version(object):
         >>> UCS_Version(v) == v
         True
         """
-        if isinstance(version, (tuple, list),):
-            self.mmp = map(int, version,)  # type: ignore
-        elif isinstance(version, six.string_types,):
+        if isinstance(version, (tuple, list)):
+            self.mmp = map(int, version)  # type: ignore
+        elif isinstance(version, six.string_types):
             self.set(version)
-        elif isinstance(version, UCS_Version,):
+        elif isinstance(version, UCS_Version):
             self.mmp = version.mmp
         else:
             raise TypeError("not a tuple, list or string")
@@ -86,11 +86,11 @@ class UCS_Version(object):
         return (self.major, self.minor, self.patchlevel)
 
     @mmp.setter
-    def mmp(self, mmp,):
+    def mmp(self, mmp):
         # type: (Union[List[int], Tuple[int, int, int]]) -> None
         (self.major, self.minor, self.patchlevel) = mmp
 
-    def __lt__(self, other,):
+    def __lt__(self, other):
         # type: (UCS_Version) -> bool
         """
         Compare to UCS versions.
@@ -104,9 +104,9 @@ class UCS_Version(object):
         >>> UCS_Version((1, 2, 3)) < UCS_Version((1, 2, 3))
         False
         """
-        return self.mmp < other.mmp if isinstance(other, UCS_Version,) else NotImplemented
+        return self.mmp < other.mmp if isinstance(other, UCS_Version) else NotImplemented
 
-    def __le__(self, other,):
+    def __le__(self, other):
         # type: (UCS_Version) -> bool
         """
         >>> UCS_Version((1, 2, 3)) <= UCS_Version((1, 2, 3))
@@ -114,9 +114,9 @@ class UCS_Version(object):
         >>> UCS_Version((1, 2, 3)) <= UCS_Version((1, 0, 0))
         False
         """
-        return self.mmp <= other.mmp if isinstance(other, UCS_Version,) else NotImplemented
+        return self.mmp <= other.mmp if isinstance(other, UCS_Version) else NotImplemented
 
-    def __eq__(self, other,):
+    def __eq__(self, other):
         # type: (object) -> bool
         """
         >>> UCS_Version((1, 0, 0)) == UCS_Version((1, 0, 0))
@@ -124,9 +124,9 @@ class UCS_Version(object):
         >>> UCS_Version((1, 0, 0)) == UCS_Version((2, 0, 0))
         False
         """
-        return isinstance(other, UCS_Version,) and self.mmp == other.mmp
+        return isinstance(other, UCS_Version) and self.mmp == other.mmp
 
-    def __ne__(self, other,):
+    def __ne__(self, other):
         # type: (object) -> bool
         """
         >>> UCS_Version((1, 0, 0)) != UCS_Version((1, 0, 0))
@@ -134,9 +134,9 @@ class UCS_Version(object):
         >>> UCS_Version((1, 0, 0)) != UCS_Version((2, 0, 0))
         True
         """
-        return not isinstance(other, UCS_Version,) or self.mmp != other.mmp
+        return not isinstance(other, UCS_Version) or self.mmp != other.mmp
 
-    def __ge__(self, other,):
+    def __ge__(self, other):
         # type: (UCS_Version) -> bool
         """
         >>> UCS_Version((1, 2, 3)) >= UCS_Version((1, 2, 3))
@@ -144,9 +144,9 @@ class UCS_Version(object):
         >>> UCS_Version((1, 0, 0)) >= UCS_Version((1, 2, 3))
         False
         """
-        return self.mmp >= other.mmp if isinstance(other, UCS_Version,) else NotImplemented
+        return self.mmp >= other.mmp if isinstance(other, UCS_Version) else NotImplemented
 
-    def __gt__(self, other,):
+    def __gt__(self, other):
         # type: (UCS_Version) -> bool
         """
         >>> UCS_Version((1, 2, 3)) > UCS_Version((1, 2, 3))
@@ -154,9 +154,9 @@ class UCS_Version(object):
         >>> UCS_Version((1, 2, 3)) > UCS_Version((1, 0, 0))
         True
         """
-        return self.mmp > other.mmp if isinstance(other, UCS_Version,) else NotImplemented
+        return self.mmp > other.mmp if isinstance(other, UCS_Version) else NotImplemented
 
-    def set(self, version,):
+    def set(self, version):
         # type: (str) -> None
         """
         Parse string and set version.
@@ -167,9 +167,9 @@ class UCS_Version(object):
         match = UCS_Version._regexp.match(version)
         if not match:
             raise ValueError('string %s does not match UCS version pattern' % version)
-        self.mmp = map(int, match.groups(),)  # type: ignore
+        self.mmp = map(int, match.groups())  # type: ignore
 
-    def __getitem__(self, k,):
+    def __getitem__(self, k):
         # type: (str) -> int
         """Dual natured dictionary: retrieve value from attribute."""
         return self.__dict__[k]
@@ -198,7 +198,7 @@ class UCS_Version(object):
         """
         return 'UCS_Version((%d,%d,%r))' % self.mmp
 
-    def __format__(self, fmt,):
+    def __format__(self, fmt):
         # type: (str) -> str
         """
         Support Format String Syntax:
@@ -215,7 +215,7 @@ class UCS_Version(object):
         * `%p`: The patch-level version, e.g. `3`.
         * `%%`: A literal `'%'` character.
         """
-        if not isinstance(fmt, str,):  # pragma: no cover
+        if not isinstance(fmt, str):  # pragma: no cover
             raise TypeError("must be str, not %s" % type(fmt).__name__)
         if fmt:
             val = {
@@ -226,7 +226,7 @@ class UCS_Version(object):
                 "m": self.FORMAT % self,
                 "f": str(self),
             }
-            return self._format.sub(lambda m,: val[m.group(1)], fmt,)
+            return self._format.sub(lambda m: val[m.group(1)], fmt)
         return str(self)
 
 

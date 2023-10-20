@@ -100,17 +100,17 @@ class ordered_iter_dict(dict):
 	"""Ordered dictionary that provides iteration from the most recently inserted keys first"""
 	def __init__(self, *k, **kw):
 		self.lst = deque()
-		dict.__init__(self, *k, **kw,)
+		dict.__init__(self, *k, **kw)
 	def clear(self):
 		dict.clear(self)
 		self.lst = deque()
-	def __setitem__(self, key, value,):
+	def __setitem__(self, key, value):
 		if key in dict.keys(self):
 			self.lst.remove(key)
-		dict.__setitem__(self, key, value,)
+		dict.__setitem__(self, key, value)
 		self.lst.append(key)
-	def __delitem__(self, key,):
-		dict.__delitem__(self, key,)
+	def __delitem__(self, key):
+		dict.__delitem__(self, key)
 		try:
 			self.lst.remove(key)
 		except ValueError:
@@ -136,7 +136,7 @@ class lru_cache(object):
 	A simple least-recently used cache with lazy allocation
 	"""
 	__slots__ = ('maxlen', 'table', 'head')
-	def __init__(self, maxlen=100,):
+	def __init__(self, maxlen=100):
 		self.maxlen = maxlen
 		"""
 		Maximum amount of elements in the cache
@@ -149,7 +149,7 @@ class lru_cache(object):
 		self.head.next = self.head
 		self.head.prev = self.head
 
-	def __getitem__(self, key,):
+	def __getitem__(self, key):
 		node = self.table[key]
 		# assert(key==node.key)
 		if node is self.head:
@@ -166,7 +166,7 @@ class lru_cache(object):
 
 		return node.val
 
-	def __setitem__(self, key, val,):
+	def __setitem__(self, key, val):
 		if key in self.table:
 			# update the value for an existing key
 			node = self.table[key]
@@ -192,7 +192,7 @@ class lru_cache(object):
 			self.table[key] = node
 
 class lazy_generator(object):
-	def __init__(self, fun, params,):
+	def __init__(self, fun, params):
 		self.fun = fun
 		self.params = params
 
@@ -213,7 +213,7 @@ is_win32 = os.sep == '\\' or sys.platform == 'win32' or os.name == 'nt' # msys2
 Whether this system is a Windows series
 """
 
-def readf(fname, m='r', encoding='latin-1',):
+def readf(fname, m='r', encoding='latin-1'):
 	"""
 	Reads an entire file into a string. See also :py:meth:`waflib.Node.Node.readf`::
 
@@ -234,18 +234,18 @@ def readf(fname, m='r', encoding='latin-1',):
 
 	if sys.hexversion > 0x3000000 and not 'b' in m:
 		m += 'b'
-		with open(fname, m,) as f:
+		with open(fname, m) as f:
 			txt = f.read()
 		if encoding:
 			txt = txt.decode(encoding)
 		else:
 			txt = txt.decode()
 	else:
-		with open(fname, m,) as f:
+		with open(fname, m) as f:
 			txt = f.read()
 	return txt
 
-def writef(fname, data, m='w', encoding='latin-1',):
+def writef(fname, data, m='w', encoding='latin-1'):
 	"""
 	Writes an entire file from a string.
 	See also :py:meth:`waflib.Node.Node.writef`::
@@ -267,10 +267,10 @@ def writef(fname, data, m='w', encoding='latin-1',):
 	if sys.hexversion > 0x3000000 and not 'b' in m:
 		data = data.encode(encoding)
 		m += 'b'
-	with open(fname, m,) as f:
+	with open(fname, m) as f:
 		f.write(data)
 
-def h_file(fname,):
+def h_file(fname):
 	"""
 	Computes a hash value for a file by using md5. Use the md5_tstamp
 	extension to get faster build hashes if necessary.
@@ -281,37 +281,37 @@ def h_file(fname,):
 	:rtype: string or bytes
 	"""
 	m = md5()
-	with open(fname, 'rb',) as f:
+	with open(fname, 'rb') as f:
 		while fname:
 			fname = f.read(200000)
 			m.update(fname)
 	return m.digest()
 
-def readf_win32(f, m='r', encoding='latin-1',):
+def readf_win32(f, m='r', encoding='latin-1'):
 	flags = os.O_NOINHERIT | os.O_RDONLY
 	if 'b' in m:
 		flags |= os.O_BINARY
 	if '+' in m:
 		flags |= os.O_RDWR
 	try:
-		fd = os.open(f, flags,)
+		fd = os.open(f, flags)
 	except OSError:
 		raise IOError('Cannot read from %r' % f)
 
 	if sys.hexversion > 0x3000000 and not 'b' in m:
 		m += 'b'
-		with os.fdopen(fd, m,) as f:
+		with os.fdopen(fd, m) as f:
 			txt = f.read()
 		if encoding:
 			txt = txt.decode(encoding)
 		else:
 			txt = txt.decode()
 	else:
-		with os.fdopen(fd, m,) as f:
+		with os.fdopen(fd, m) as f:
 			txt = f.read()
 	return txt
 
-def writef_win32(f, data, m='w', encoding='latin-1',):
+def writef_win32(f, data, m='w', encoding='latin-1'):
 	if sys.hexversion > 0x3000000 and not 'b' in m:
 		data = data.encode(encoding)
 		m += 'b'
@@ -321,19 +321,19 @@ def writef_win32(f, data, m='w', encoding='latin-1',):
 	if '+' in m:
 		flags |= os.O_RDWR
 	try:
-		fd = os.open(f, flags,)
+		fd = os.open(f, flags)
 	except OSError:
 		raise OSError('Cannot write to %r' % f)
-	with os.fdopen(fd, m,) as f:
+	with os.fdopen(fd, m) as f:
 		f.write(data)
 
-def h_file_win32(fname,):
+def h_file_win32(fname):
 	try:
-		fd = os.open(fname, os.O_BINARY | os.O_RDONLY | os.O_NOINHERIT,)
+		fd = os.open(fname, os.O_BINARY | os.O_RDONLY | os.O_NOINHERIT)
 	except OSError:
 		raise OSError('Cannot read from %r' % fname)
 	m = md5()
-	with os.fdopen(fd, 'rb',) as f:
+	with os.fdopen(fd, 'rb') as f:
 		while fname:
 			fname = f.read(200000)
 			m.update(fname)
@@ -343,7 +343,7 @@ def h_file_win32(fname,):
 readf_unix = readf
 writef_unix = writef
 h_file_unix = h_file
-if hasattr(os, 'O_NOINHERIT',) and sys.hexversion < 0x3040000:
+if hasattr(os, 'O_NOINHERIT') and sys.hexversion < 0x3040000:
 	# replace the default functions
 	readf = readf_win32
 	writef = writef_win32
@@ -353,13 +353,13 @@ try:
 	x = ''.encode('hex')
 except LookupError:
 	import binascii
-	def to_hex(s,):
+	def to_hex(s):
 		ret = binascii.hexlify(s)
-		if not isinstance(ret, str,):
+		if not isinstance(ret, str):
 			ret = ret.decode('utf-8')
 		return ret
 else:
-	def to_hex(s,):
+	def to_hex(s):
 		return s.encode('hex')
 
 to_hex.__doc__ = """
@@ -369,7 +369,7 @@ Return the hexadecimal representation of a string
 :type s: string
 """
 
-def listdir_win32(s,):
+def listdir_win32(s):
 	"""
 	Lists the contents of a folder in a portable manner.
 	On Win32, returns the list of drive letters: ['C:', 'X:', 'Z:'] when an empty string is given.
@@ -387,7 +387,7 @@ def listdir_win32(s,):
 			dlen = 4 # length of "?:\\x00"
 			maxdrives = 26
 			buf = ctypes.create_string_buffer(maxdrives * dlen)
-			ndrives = ctypes.windll.kernel32.GetLogicalDriveStringsA(maxdrives*dlen, ctypes.byref(buf),)
+			ndrives = ctypes.windll.kernel32.GetLogicalDriveStringsA(maxdrives*dlen, ctypes.byref(buf))
 			return [ str(buf.raw[4*i:4*i+2].decode('ascii')) for i in range(int(ndrives/dlen)) ]
 
 	if len(s) == 2 and s[1] == ":":
@@ -403,7 +403,7 @@ listdir = os.listdir
 if is_win32:
 	listdir = listdir_win32
 
-def num2ver(ver,):
+def num2ver(ver):
 	"""
 	Converts a string, tuple or version number into an integer. The number is supposed to have at most 4 digits::
 
@@ -413,9 +413,9 @@ def num2ver(ver,):
 	:type ver: string or tuple of numbers
 	:param ver: a version number
 	"""
-	if isinstance(ver, str,):
+	if isinstance(ver, str):
 		ver = tuple(ver.split('.'))
-	if isinstance(ver, tuple,):
+	if isinstance(ver, tuple):
 		ret = 0
 		for i in range(4):
 			if i < len(ver):
@@ -423,7 +423,7 @@ def num2ver(ver,):
 		return ret
 	return ver
 
-def to_list(val,):
+def to_list(val):
 	"""
 	Converts a string argument to a list by splitting it by spaces.
 	Returns the object if not a string::
@@ -435,7 +435,7 @@ def to_list(val,):
 	:rtype: list
 	:return: Argument converted to list
 	"""
-	if isinstance(val, str,):
+	if isinstance(val, str):
 		return val.split()
 	else:
 		return val
@@ -457,10 +457,10 @@ def console_encoding():
 				return 'cp%d' % codepage
 	return sys.stdout.encoding or ('cp1252' if is_win32 else 'latin-1')
 
-def split_path_unix(path,):
+def split_path_unix(path):
 	return path.split('/')
 
-def split_path_cygwin(path,):
+def split_path_cygwin(path):
 	if path.startswith('//'):
 		ret = path.split('/')[2:]
 		ret[0] = '/' + ret[0]
@@ -468,7 +468,7 @@ def split_path_cygwin(path,):
 	return path.split('/')
 
 re_sp = re.compile('[/\\\\]+')
-def split_path_win32(path,):
+def split_path_win32(path):
 	if path.startswith('\\\\'):
 		ret = re_sp.split(path)[1:]
 		ret[0] = '\\\\' + ret[0]
@@ -478,7 +478,7 @@ def split_path_win32(path,):
 	return re_sp.split(path)
 
 msysroot = None
-def split_path_msys(path,):
+def split_path_msys(path):
 	if path.startswith(('/', '\\')) and not path.startswith(('//', '\\\\')):
 		# msys paths can be in the form /usr/bin
 		global msysroot
@@ -509,7 +509,7 @@ Splits a path by / or \\; do not confuse this function with with ``os.path.split
 :return:     list of string
 """
 
-def check_dir(path,):
+def check_dir(path):
 	"""
 	Ensures that a directory exists (similar to ``mkdir -p``).
 
@@ -522,9 +522,9 @@ def check_dir(path,):
 			os.makedirs(path)
 		except OSError as e:
 			if not os.path.isdir(path):
-				raise Errors.WafError('Cannot create the folder %r' % path, ex=e,)
+				raise Errors.WafError('Cannot create the folder %r' % path, ex=e)
 
-def check_exe(name, env=None,):
+def check_exe(name, env=None):
 	"""
 	Ensures that a program exists
 
@@ -537,8 +537,8 @@ def check_exe(name, env=None,):
 	"""
 	if not name:
 		raise ValueError('Cannot execute an empty string!')
-	def is_exe(fpath,):
-		return os.path.isfile(fpath) and os.access(fpath, os.X_OK,)
+	def is_exe(fpath):
+		return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
 	fpath, fname = os.path.split(name)
 	if fpath and is_exe(name):
@@ -547,7 +547,7 @@ def check_exe(name, env=None,):
 		env = env or os.environ
 		for path in env['PATH'].split(os.pathsep):
 			path = path.strip('"')
-			exe_file = os.path.join(path, name,)
+			exe_file = os.path.join(path, name)
 			if is_exe(exe_file):
 				return os.path.abspath(exe_file)
 	return None
@@ -562,10 +562,10 @@ def def_attrs(cls, **kw):
 	:param kw: dictionary of attributes names and values.
 	"""
 	for k, v in kw.items():
-		if not hasattr(cls, k,):
-			setattr(cls, k, v,)
+		if not hasattr(cls, k):
+			setattr(cls, k, v)
 
-def quote_define_name(s,):
+def quote_define_name(s):
 	"""
 	Converts a string into an identifier suitable for C defines.
 
@@ -574,8 +574,8 @@ def quote_define_name(s,):
 	:rtype: string
 	:return: Identifier suitable for C defines
 	"""
-	fu = re.sub('[^a-zA-Z0-9]', '_', s,)
-	fu = re.sub('_+', '_', fu,)
+	fu = re.sub('[^a-zA-Z0-9]', '_', s)
+	fu = re.sub('_+', '_', fu)
 	fu = fu.upper()
 	return fu
 
@@ -587,16 +587,16 @@ except AttributeError:
 	import pipes
 	shell_quote = pipes.quote
 
-def shell_escape(cmd,):
+def shell_escape(cmd):
 	"""
 	Escapes a command:
 	['ls', '-l', 'arg space'] -> ls -l 'arg space'
 	"""
-	if isinstance(cmd, str,):
+	if isinstance(cmd, str):
 		return cmd
 	return ' '.join(shell_quote(x) for x in cmd)
 
-def h_list(lst,):
+def h_list(lst):
 	"""
 	Hashes lists of ordered data.
 
@@ -610,12 +610,12 @@ def h_list(lst,):
 	return md5(repr(lst).encode()).digest()
 
 if sys.hexversion < 0x3000000:
-	def h_list_python2(lst,):
+	def h_list_python2(lst):
 		return md5(repr(lst)).digest()
 	h_list_python2.__doc__ = h_list.__doc__
 	h_list = h_list_python2
 
-def h_fun(fun,):
+def h_fun(fun):
 	"""
 	Hash functions
 
@@ -627,7 +627,7 @@ def h_fun(fun,):
 	try:
 		return fun.code
 	except AttributeError:
-		if isinstance(fun, functools.partial,):
+		if isinstance(fun, functools.partial):
 			code = list(fun.args)
 			# The method items() provides a sequence of tuples where the first element
 			# represents an optional argument of the partial function application
@@ -649,7 +649,7 @@ def h_fun(fun,):
 			pass
 		return h
 
-def h_cmd(ins,):
+def h_cmd(ins):
 	"""
 	Hashes objects recursively
 
@@ -658,21 +658,21 @@ def h_cmd(ins,):
 	:rtype: string or bytes
 	"""
 	# this function is not meant to be particularly fast
-	if isinstance(ins, str,):
+	if isinstance(ins, str):
 		# a command is either a string
 		ret = ins
-	elif isinstance(ins, list,) or isinstance(ins, tuple,):
+	elif isinstance(ins, list) or isinstance(ins, tuple):
 		# or a list of functions/strings
 		ret = str([h_cmd(x) for x in ins])
 	else:
 		# or just a python function
 		ret = str(h_fun(ins))
 	if sys.hexversion > 0x3000000:
-		ret = ret.encode('latin-1', 'xmlcharrefreplace',)
+		ret = ret.encode('latin-1', 'xmlcharrefreplace')
 	return ret
 
 reg_subst = re.compile(r"(\\\\)|(\$\$)|\$\{([^}]+)\}")
-def subst_vars(expr, params,):
+def subst_vars(expr, params):
 	"""
 	Replaces ${VAR} with the value of VAR taken from a dict or a config set::
 
@@ -683,7 +683,7 @@ def subst_vars(expr, params,):
 	:param expr: String to perform substitution on
 	:param params: Dictionary or config set to look up variable values.
 	"""
-	def repl_var(m,):
+	def repl_var(m):
 		if m.group(1):
 			return '\\'
 		if m.group(2):
@@ -695,9 +695,9 @@ def subst_vars(expr, params,):
 			return params[m.group(3)]
 		# if you get a TypeError, it means that 'expr' is not a string...
 		# Utils.subst_vars(None, env)  will not work
-	return reg_subst.sub(repl_var, expr,)
+	return reg_subst.sub(repl_var, expr)
 
-def destos_to_binfmt(key,):
+def destos_to_binfmt(key):
 	"""
 	Returns the binary format based on the unversioned platform name,
 	and defaults to ``elf`` if nothing is found.
@@ -749,7 +749,7 @@ def unversioned_sys_platform():
 	if s == 'cli' and os.name == 'nt':
 		# ironpython is only on windows as far as we know
 		return 'win32'
-	return re.split(r'\d+$', s,)[0]
+	return re.split(r'\d+$', s)[0]
 
 def nada(*k, **kw):
 	"""
@@ -774,11 +774,11 @@ class Timer(object):
 
 	def __str__(self):
 		delta = self.now() - self.start_time
-		if not isinstance(delta, datetime.timedelta,):
+		if not isinstance(delta, datetime.timedelta):
 			delta = datetime.timedelta(seconds=delta)
 		days = delta.days
-		hours, rem = divmod(delta.seconds, 3600,)
-		minutes, seconds = divmod(rem, 60,)
+		hours, rem = divmod(delta.seconds, 3600)
+		minutes, seconds = divmod(rem, 60)
 		seconds += delta.microseconds * 1e-6
 		result = ''
 		if days:
@@ -792,11 +792,11 @@ class Timer(object):
 	def now(self):
 		return datetime.datetime.utcnow()
 
-	if hasattr(time, 'perf_counter',):
+	if hasattr(time, 'perf_counter'):
 		def now(self):
 			return time.perf_counter()
 
-def read_la_file(path,):
+def read_la_file(path):
 	"""
 	Reads property files, used by msvc.py
 
@@ -813,7 +813,7 @@ def read_la_file(path,):
 			pass
 	return dc
 
-def run_once(fun,):
+def run_once(fun):
 	"""
 	Decorator: let a function cache its results, use like this::
 
@@ -839,7 +839,7 @@ def run_once(fun,):
 	wrap.__name__ = fun.__name__
 	return wrap
 
-def get_registry_app_path(key, filename,):
+def get_registry_app_path(key, filename):
 	"""
 	Returns the value of a registry key for an executable
 
@@ -849,7 +849,7 @@ def get_registry_app_path(key, filename,):
 	if not winreg:
 		return None
 	try:
-		result = winreg.QueryValue(key, "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\%s.exe" % filename[0],)
+		result = winreg.QueryValue(key, "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\%s.exe" % filename[0])
 	except OSError:
 		pass
 	else:
@@ -870,10 +870,10 @@ def lib64():
 				return '64'
 	return ''
 
-def loose_version(ver_str,):
+def loose_version(ver_str):
 	# private for the time being!
 	# see #2402
-	lst = re.split(r'([.]|\\d+|[a-zA-Z])', ver_str,)
+	lst = re.split(r'([.]|\\d+|[a-zA-Z])', ver_str)
 	ver = []
 	for i, val in enumerate(lst):
 		try:
@@ -883,7 +883,7 @@ def loose_version(ver_str,):
 				ver.append(val)
 	return ver
 
-def sane_path(p,):
+def sane_path(p):
 	# private function for the time being!
 	return os.path.abspath(os.path.expanduser(p))
 
@@ -903,9 +903,9 @@ def get_process():
 	except IndexError:
 		filepath = os.path.dirname(os.path.abspath(__file__)) + os.sep + 'processor.py'
 		cmd = [sys.executable, '-c', readf(filepath)]
-		return subprocess.Popen(cmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, bufsize=0, close_fds=not is_win32,)
+		return subprocess.Popen(cmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, bufsize=0, close_fds=not is_win32)
 
-def run_prefork_process(cmd, kwargs, cargs,):
+def run_prefork_process(cmd, kwargs, cargs):
 	"""
 	Delegates process execution to a pre-forked process instance.
 	"""
@@ -914,11 +914,11 @@ def run_prefork_process(cmd, kwargs, cargs,):
 	try:
 		obj = base64.b64encode(cPickle.dumps([cmd, kwargs, cargs]))
 	except (TypeError, AttributeError):
-		return run_regular_process(cmd, kwargs, cargs,)
+		return run_regular_process(cmd, kwargs, cargs)
 
 	proc = get_process()
 	if not proc:
-		return run_regular_process(cmd, kwargs, cargs,)
+		return run_regular_process(cmd, kwargs, cargs)
 
 	proc.stdin.write(obj)
 	proc.stdin.write('\n'.encode())
@@ -938,14 +938,14 @@ def run_prefork_process(cmd, kwargs, cargs,):
 		elif ex == 'ValueError':
 			raise ValueError(trace)
 		elif ex == 'TimeoutExpired':
-			exc = TimeoutExpired(cmd, timeout=cargs['timeout'], output=out,)
+			exc = TimeoutExpired(cmd, timeout=cargs['timeout'], output=out)
 			exc.stderr = err
 			raise exc
 		else:
 			raise Exception(trace)
 	return ret, out, err
 
-def lchown(path, user=-1, group=-1,):
+def lchown(path, user=-1, group=-1):
 	"""
 	Change the owner/group of a path, raises an OSError if the
 	ownership change fails.
@@ -955,35 +955,35 @@ def lchown(path, user=-1, group=-1,):
 	:param group: group to change
 	:type group: int or str
 	"""
-	if isinstance(user, str,):
+	if isinstance(user, str):
 		import pwd
 		entry = pwd.getpwnam(user)
 		if not entry:
 			raise OSError('Unknown user %r' % user)
 		user = entry[2]
-	if isinstance(group, str,):
+	if isinstance(group, str):
 		import grp
 		entry = grp.getgrnam(group)
 		if not entry:
 			raise OSError('Unknown group %r' % group)
 		group = entry[2]
-	return os.lchown(path, user, group,)
+	return os.lchown(path, user, group)
 
-def run_regular_process(cmd, kwargs, cargs={},):
+def run_regular_process(cmd, kwargs, cargs={}):
 	"""
 	Executes a subprocess command by using subprocess.Popen
 	"""
-	proc = subprocess.Popen(cmd, **kwargs,)
+	proc = subprocess.Popen(cmd, **kwargs)
 	if kwargs.get('stdout') or kwargs.get('stderr'):
 		try:
 			out, err = proc.communicate(**cargs)
 		except TimeoutExpired:
-			if kwargs.get('start_new_session') and hasattr(os, 'killpg',):
-				os.killpg(proc.pid, signal.SIGKILL,)
+			if kwargs.get('start_new_session') and hasattr(os, 'killpg'):
+				os.killpg(proc.pid, signal.SIGKILL)
 			else:
 				proc.kill()
 			out, err = proc.communicate()
-			exc = TimeoutExpired(proc.args, timeout=cargs['timeout'], output=out,)
+			exc = TimeoutExpired(proc.args, timeout=cargs['timeout'], output=out)
 			exc.stderr = err
 			raise exc
 		status = proc.returncode
@@ -992,26 +992,26 @@ def run_regular_process(cmd, kwargs, cargs={},):
 		try:
 			status = proc.wait(**cargs)
 		except TimeoutExpired as e:
-			if kwargs.get('start_new_session') and hasattr(os, 'killpg',):
-				os.killpg(proc.pid, signal.SIGKILL,)
+			if kwargs.get('start_new_session') and hasattr(os, 'killpg'):
+				os.killpg(proc.pid, signal.SIGKILL)
 			else:
 				proc.kill()
 			proc.wait()
 			raise e
 	return status, out, err
 
-def run_process(cmd, kwargs, cargs={},):
+def run_process(cmd, kwargs, cargs={}):
 	"""
 	Executes a subprocess by using a pre-forked process when possible
 	or falling back to subprocess.Popen. See :py:func:`waflib.Utils.run_prefork_process`
 	and :py:func:`waflib.Utils.run_regular_process`
 	"""
 	if kwargs.get('stdout') and kwargs.get('stderr'):
-		return run_prefork_process(cmd, kwargs, cargs,)
+		return run_prefork_process(cmd, kwargs, cargs)
 	else:
-		return run_regular_process(cmd, kwargs, cargs,)
+		return run_regular_process(cmd, kwargs, cargs)
 
-def alloc_process_pool(n, force=False,):
+def alloc_process_pool(n, force=False):
 	"""
 	Allocates an amount of processes to the default pool so its size is at least *n*.
 	It is useful to call this function early so that the pre-forked
@@ -1025,7 +1025,7 @@ def alloc_process_pool(n, force=False,):
 	# mandatory on python2, unnecessary on python >= 3.2
 	global run_process, get_process, alloc_process_pool
 	if not force:
-		n = max(n - len(process_pool), 0,)
+		n = max(n - len(process_pool), 0)
 	try:
 		lst = [get_process() for x in range(n)]
 	except OSError:
@@ -1038,7 +1038,7 @@ def alloc_process_pool(n, force=False,):
 def atexit_pool():
 	for k in process_pool:
 		try:
-			os.kill(k.pid, 9,)
+			os.kill(k.pid, 9)
 		except OSError:
 			pass
 		else:

@@ -48,12 +48,12 @@ class ObjectNotFound(BaseException):
     pass
 
 
-def remove_ad_rejected(ad_dn,):
+def remove_ad_rejected(ad_dn):
     config = univention.connector.configdb('/etc/univention/%s/internal.sqlite' % CONFIGBASENAME)
     found = False
     for usn, rejected_dn, _retry_count in config.items('AD rejected'):
-        if univention.uldap.access.compare_dn(ad_dn, rejected_dn,):
-            config.remove_option('AD rejected', usn,)
+        if univention.uldap.access.compare_dn(ad_dn, rejected_dn):
+            config.remove_option('AD rejected', usn)
             found = True
 
     if not found:
@@ -62,7 +62,7 @@ def remove_ad_rejected(ad_dn,):
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument("-c", "--configbasename", help="", metavar="CONFIGBASENAME", default="connector",)
+    parser.add_argument("-c", "--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
     parser.add_argument('dn')
     options = parser.parse_args()
 

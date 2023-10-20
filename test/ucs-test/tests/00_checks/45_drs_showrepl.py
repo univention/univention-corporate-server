@@ -12,7 +12,7 @@ from subprocess import PIPE, Popen
 from univention.testing import utils
 
 
-proc = Popen(['samba-tool', 'drs', 'showrepl'], stdout=PIPE, stderr=PIPE,)
+proc = Popen(['samba-tool', 'drs', 'showrepl'], stdout=PIPE, stderr=PIPE)
 
 stdout, stderr = proc.communicate()
 stdout, stderr = stdout.decode("UTF-8"), stderr.decode("UTF-8")
@@ -31,5 +31,5 @@ if stderr.strip():
     if errors:
         utils.fail('samba-tool drsi showrepl returned on stderr: %s' % '\n'.join(errors))
 
-if re.search('ERR_', stdout,):
+if re.search('ERR_', stdout):
     utils.fail('samba-tool drsi showrepl returned a string with ERR_')

@@ -87,16 +87,16 @@ attributetype ( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFre
 ''' % {'attribute_id': attribute_id_update}
 
 
-package = DebianPackage(name=package_name, version='1.0',)
-package.create_join_script_from_buffer(join_script_name, joinscript_buffer,)
-package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer,)
-package.create_usr_share_file_from_buffer(schema_name, schema_buffer,)
+package = DebianPackage(name=package_name, version='1.0')
+package.create_join_script_from_buffer(join_script_name, joinscript_buffer)
+package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer)
+package.create_usr_share_file_from_buffer(schema_name, schema_buffer)
 package.build()
 
-package2 = DebianPackage(name=package_name, version='1.1',)
-package2.create_join_script_from_buffer(join_script_name, joinscript_buffer2,)
-package2.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer2,)
-package2.create_usr_share_file_from_buffer(schema_name, schema_buffer2,)
+package2 = DebianPackage(name=package_name, version='1.1')
+package2.create_join_script_from_buffer(join_script_name, joinscript_buffer2)
+package2.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer2)
+package2.create_usr_share_file_from_buffer(schema_name, schema_buffer2)
 package2.build()
 
 package.install()

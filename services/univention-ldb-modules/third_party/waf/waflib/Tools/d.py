@@ -36,8 +36,8 @@ class dstlib(stlink_task):
 	"Link object files into a d static library"
 	pass # do not remove
 
-@extension('.d', '.di', '.D',)
-def d_hook(self, node,):
+@extension('.d', '.di', '.D')
+def d_hook(self, node):
 	"""
 	Compile *D* files. To get .di files as well as .o files, set the following::
 
@@ -47,23 +47,23 @@ def d_hook(self, node,):
 	"""
 	ext = Utils.destos_to_binfmt(self.env.DEST_OS) == 'pe' and 'obj' or 'o'
 	out = '%s.%d.%s' % (node.name, self.idx, ext)
-	def create_compiled_task(self, name, node,):
-		task = self.create_task(name, node, node.parent.find_or_declare(out),)
+	def create_compiled_task(self, name, node):
+		task = self.create_task(name, node, node.parent.find_or_declare(out))
 		try:
 			self.compiled_tasks.append(task)
 		except AttributeError:
 			self.compiled_tasks = [task]
 		return task
 
-	if getattr(self, 'generate_headers', None,):
-		tsk = create_compiled_task(self, 'd_with_header', node,)
+	if getattr(self, 'generate_headers', None):
+		tsk = create_compiled_task(self, 'd_with_header', node)
 		tsk.outputs.append(node.change_ext(self.env.DHEADER_ext))
 	else:
-		tsk = create_compiled_task(self, 'd', node,)
+		tsk = create_compiled_task(self, 'd', node)
 	return tsk
 
 @taskgen_method
-def generate_header(self, filename,):
+def generate_header(self, filename):
 	"""
 	See feature request #104::
 
@@ -89,9 +89,9 @@ def process_header(self):
 		def build(bld):
 			bld.program(source='foo.d', target='app', header_lst='blah.d')
 	"""
-	for i in getattr(self, 'header_lst', [],):
+	for i in getattr(self, 'header_lst', []):
 		node = self.path.find_resource(i[0])
 		if not node:
 			raise Errors.WafError('file %r not found on d obj' % i[0])
-		self.create_task('d_header', node, node.change_ext('.di'),)
+		self.create_task('d_header', node, node.change_ext('.di'))
 

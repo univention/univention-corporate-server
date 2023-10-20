@@ -18,15 +18,15 @@ if __name__ == '__main__':
     url = 'https://docker.software-univention.de/v2/ucs-appbox-amd64/tags/list'
     username = 'ucs'
     password = 'readonly'
-    resp = requests.get(url, auth=(username, password),).content
+    resp = requests.get(url, auth=(username, password)).content
     data = json.loads(resp)
     image = 'docker.software-univention.de/ucs-appbox-amd64:' + max(data['tags'])
 
     # installation should fail if setup fails
     with Appcenter() as appcenter:
         app_name = get_app_name()
-        app = App(name=app_name, version='1.9', container_version=max(data['tags'])[:3], build_package=False,)
-        app.set_ini_parameter(DockerImage=image, DockerScriptSetup='/usr/sbin/setup',)
+        app = App(name=app_name, version='1.9', container_version=max(data['tags'])[:3], build_package=False)
+        app.set_ini_parameter(DockerImage=image, DockerScriptSetup='/usr/sbin/setup')
         app.add_script(setup='''#!/bin/bash
 echo "This message goes to stdout"
 echo "This message goes to stderr" >&2
@@ -52,8 +52,8 @@ exit 1
     # installation should succeed if setup is fine
     with Appcenter() as appcenter:
         app_name = get_app_name()
-        app = App(name=app_name, version='1.9', container_version=max(data['tags'])[:3], build_package=False,)
-        app.set_ini_parameter(DockerImage=image, DockerScriptSetup='/usr/sbin/setup',)
+        app = App(name=app_name, version='1.9', container_version=max(data['tags'])[:3], build_package=False)
+        app.set_ini_parameter(DockerImage=image, DockerScriptSetup='/usr/sbin/setup')
         app.add_script(setup='''#!/bin/bash
 echo "This message goes to stdout"
 echo "This message goes to stderr but script returns 0" >&2
@@ -71,10 +71,11 @@ exit 0
     with Appcenter() as appcenter:
         app_name = get_app_name()
         app_name = 'testapp'
-        app = App(name=app_name, version='1.9', container_version=max(data['tags'])[:3], build_package=False,)
+        app = App(name=app_name, version='1.9', container_version=max(data['tags'])[:3], build_package=False)
         app.set_ini_parameter(
             DockerImage=image,
-            DefaultPackages='mc',)
+            DefaultPackages='mc',
+        )
         app.add_to_local_appcenter()
         try:
             appcenter.update()

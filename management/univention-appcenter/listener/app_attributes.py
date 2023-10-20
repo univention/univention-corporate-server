@@ -73,30 +73,30 @@ class AppAttributes(ListenerModuleHandler):
 
     def _write_json(self):
         self.logger.info('Gathering AppAttributes...')
-        locales = [locale.split('.')[0] for locale in self.ucr.get('locale', 'en_US.UTF-8:UTF-8',).split() if '.' in locale]
+        locales = [locale.split('.')[0] for locale in self.ucr.get('locale', 'en_US.UTF-8:UTF-8').split() if '.' in locale]
         if 'en_US' not in locales:
             locales.append('en_US')
         cache = {}
         custom_attributes_base = 'cn=custom attributes,cn=univention,%s' % self.ucr.get('ldap/base')
         for current_locale in locales:
             locale_cache = cache[current_locale] = {}
-            app_objs = search_objects('appcenter/app', self.lo, self.po,)
+            app_objs = search_objects('appcenter/app', self.lo, self.po)
             apps = {}
             for app_obj in app_objs:
                 app_version = app_obj['version']
                 app_id = app_obj['id'][:-len(app_version) - 1]
-                app = AllApps().find(app_id, app_version=app_version,)
+                app = AllApps().find(app_id, app_version=app_version)
                 if app:
                     if app.id in apps and apps[app.id] > app:
                         continue
                     apps[app.id] = app
             for app in apps.values():
                 for attribute in app.umc_options_attributes:
-                    attribute, option_name = (attribute.split(':', 1,) * 2)[:2]
-                    objs = search_objects('settings/extended_attribute', self.lo, self.po, custom_attributes_base, CLIName=attribute,)
+                    attribute, option_name = (attribute.split(':', 1) * 2)[:2]
+                    objs = search_objects('settings/extended_attribute', self.lo, self.po, custom_attributes_base, CLIName=attribute)
                     for obj in objs:
                         for module in obj['module']:
-                            if search_objects('settings/extended_options', self.lo, self.po, custom_attributes_base, objectClass=obj['objectClass'], module=module,):
+                            if search_objects('settings/extended_options', self.lo, self.po, custom_attributes_base, objectClass=obj['objectClass'], module=module):
                                 # a newer version of the App is installed that uses the
                                 # superior settings/extended_option
                                 continue
@@ -141,7 +141,7 @@ class AppAttributes(ListenerModuleHandler):
                                 'attribute_name': obj['CLIName'],
                             }
                             base = dn2str(str2dn(obj.dn)[1:])
-                            for _obj in search_objects('settings/extended_attribute', self.lo, self.po, base, univentionUDMPropertyModule=module,):
+                            for _obj in search_objects('settings/extended_attribute', self.lo, self.po, base, univentionUDMPropertyModule=module):
                                 if obj.dn == _obj.dn:
                                     continue
                                 if _obj['disableUDMWeb'] == '1':
@@ -188,19 +188,19 @@ class AppAttributes(ListenerModuleHandler):
                                     group['layout'].append(unsorted)
         self.logger.info('Finished')
         tmp_fname = FNAME + '.tmp'
-        with open(tmp_fname, 'w',) as fd:
-            json.dump(cache, fd,)
-        shutil.move(tmp_fname, FNAME,)
+        with open(tmp_fname, 'w') as fd:
+            json.dump(cache, fd)
+        shutil.move(tmp_fname, FNAME)
 
-    def create(self, dn, new,):
+    def create(self, dn, new):
         with self.as_root():
             self._write_json_without_some_debug_output()
 
-    def modify(self, dn, old, new, old_dn,):
+    def modify(self, dn, old, new, old_dn):
         with self.as_root():
             self._write_json_without_some_debug_output()
 
-    def remove(self, dn, old,):
+    def remove(self, dn, old):
         with self.as_root():
             self._write_json_without_some_debug_output()
 

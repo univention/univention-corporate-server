@@ -76,19 +76,19 @@ class MailAllModule(GenericModule):
 
     _udm_object_class = MailAllObject
 
-    def _verify_univention_object_type(self, orig_udm_obj,):
+    def _verify_univention_object_type(self, orig_udm_obj):
         r"""Allow both `mail/\*` and `oxmail/\*` in `univentionObjectType`."""
-        uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldinfo', {},).get('univentionObjectType'))
+        uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldinfo', {}).get('univentionObjectType'))
         if uni_obj_type and uni_obj_type[0].startswith('mail/'):
             # oxmail/oxfolder -> .append(mail/folder)
-            uni_obj_type.append('oxmail/ox{}'.format(uni_obj_type[0].split('/', 1,)[1]))
+            uni_obj_type.append('oxmail/ox{}'.format(uni_obj_type[0].split('/', 1)[1]))
         elif uni_obj_type and uni_obj_type[0].startswith('oxmail/'):
             # mail/folder -> .append(oxmail/oxfolder)
-            uni_obj_type.append('mail/{}'.format(uni_obj_type[0].split('/', 1,)[1][2:]))
+            uni_obj_type.append('mail/{}'.format(uni_obj_type[0].split('/', 1)[1][2:]))
 
         # and now the original test
-        if uni_obj_type and self.name.split('/', 1,)[0] not in [uot.split('/', 1,)[0] for uot in uni_obj_type]:
-            raise WrongObjectType(dn=orig_udm_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type),)
+        if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
+            raise WrongObjectType(dn=orig_udm_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))
 
     class Meta:
         supported_api_versions = [1, 2, 3]

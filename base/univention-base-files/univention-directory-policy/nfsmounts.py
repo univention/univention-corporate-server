@@ -57,38 +57,38 @@ simulate = False
 MAGIC_LDAP = '#LDAP Entry DN:'
 
 
-def debug(msg: str, out: IO[str] = sys.stderr,) -> None:
+def debug(msg: str, out: IO[str] = sys.stderr) -> None:
     """Print verbose information 'msg' to 'out'."""
     if verbose:
-        print(msg, file=out,)
+        print(msg, file=out)
 
 
-def exit(result: int, message: Optional[str] = None,) -> None:
+def exit(result: int, message: Optional[str] = None) -> None:
     """Exit with optional error message."""
     script = os.path.basename(sys.argv[0])
     if message:
-        print('%s: %s' % (script, message), file=sys.stderr,)
+        print('%s: %s' % (script, message), file=sys.stderr)
     sys.exit(result)
 
 
-def query_policy(host_dn: str, server: Optional[str] = None, password_file: str = "/etc/machine.secret", verbose: bool = False,) -> Set[str]:
+def query_policy(host_dn: str, server: Optional[str] = None, password_file: str = "/etc/machine.secret", verbose: bool = False) -> Set[str]:
     """Get NFS shares from LDAP as per policy for dn."""
     debug('Retrieving policy for %s...\n' % (host_dn,))
     try:
-        (results, _) = policy_result(dn=host_dn, binddn=host_dn, bindpw=password_file, ldap_server=server,)
+        (results, _) = policy_result(dn=host_dn, binddn=host_dn, bindpw=password_file, ldap_server=server)
     except PolicyResultFailed as ex:
         if verbose:
-            print('WARN: failed to execute univention_policy_result: %s' % (ex,), file=sys.stderr,)
+            print('WARN: failed to execute univention_policy_result: %s' % (ex,), file=sys.stderr)
         sys.exit(1)
-    return set(results.get('univentionNFSMounts', [],))
+    return set(results.get('univentionNFSMounts', []))
 
 
 def main() -> None:
     # parse command line
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--dn', default=ucr['ldap/hostdn'], help=argparse.SUPPRESS,)
-    parser.add_argument('-s', '--simulate', action='store_true', help='simulate and show values to be set',)
-    parser.add_argument('-v', '--verbose', action='store_true', help='print verbose information',)
+    parser.add_argument('--dn', default=ucr['ldap/hostdn'], help=argparse.SUPPRESS)
+    parser.add_argument('-s', '--simulate', action='store_true', help='simulate and show values to be set')
+    parser.add_argument('-v', '--verbose', action='store_true', help='print verbose information')
     args = parser.parse_args()
 
     global simulate, verbose
@@ -99,11 +99,11 @@ def main() -> None:
         parser.error("ldap/hostdn is not set.")
     debug("Hostdn is %s\n" % args.dn)
 
-    to_mount = update_fstab(args, simulate,)
+    to_mount = update_fstab(args, simulate)
     mount(to_mount)
 
 
-def update_fstab(args: argparse.Namespace, simulate: bool,) -> Set[str]:
+def update_fstab(args: argparse.Namespace, simulate: bool) -> Set[str]:
     """remove all nfs mounts from the fstab"""
     debug("Rewriting /etc/fstab...\n")
     current_fstab = fstab.File('/etc/fstab')
@@ -113,7 +113,7 @@ def update_fstab(args: argparse.Namespace, simulate: bool,) -> Set[str]:
     for nfs_mount in nfs_mounts:
         debug("NFS Mount: %s ..." % nfs_mount)
 
-        data = get_nfs_data(nfs_mount, current_fstab.get(),)
+        data = get_nfs_data(nfs_mount, current_fstab.get())
         if data:
             dn, nfs_path_ip, mp = data
             comment = "%s %s" % (MAGIC_LDAP, dn)
@@ -121,7 +121,7 @@ def update_fstab(args: argparse.Namespace, simulate: bool,) -> Set[str]:
             if nfs_entry is not None:
                 debug("\n- %s" % (nfs_entry,))
                 current_fstab.remove(nfs_entry)
-            nfs_entry = fstab.Entry(nfs_path_ip, mp, "nfs", comment=comment,)
+            nfs_entry = fstab.Entry(nfs_path_ip, mp, "nfs", comment=comment)
             current_fstab.append(nfs_entry)
             debug("\n+ %s" % (nfs_entry,))
             to_mount.add(mp)
@@ -137,7 +137,7 @@ def update_fstab(args: argparse.Namespace, simulate: bool,) -> Set[str]:
     return to_mount
 
 
-def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry],) -> Optional[Tuple[str, str, str]]:
+def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[str, str, str]]:
     fields = nfs_mount.split(' ')  # dn_univentionShareNFS mount_point
     dn = fields[0]
     if not dn:
@@ -151,7 +151,7 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry],) -> Optional[Tuple[
             dn,
             ldap.SCOPE_SUBTREE,
             'objectclass=*',
-            attrlist=['univentionShareHost', 'univentionSharePath'],)
+            attrlist=['univentionShareHost', 'univentionSharePath'])
     except ldap.NO_SUCH_OBJECT:
         return None
 
@@ -172,7 +172,7 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry],) -> Optional[Tuple[
 
     # skip share if to self
     fqdn = "%(hostname)s.%(domainname)s" % ucr
-    if share_host == fqdn and overlap(share_path, mp,):
+    if share_host == fqdn and overlap(share_path, mp):
         debug('is self and %s overlaps %s, skipping\n' % (share_path, mp))
         return None
 
@@ -186,7 +186,7 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry],) -> Optional[Tuple[
     # get the ip of the share_host
     hostname, _, domain = share_host.partition('.')
     if hostname and _ and domain:
-        result = lo.lo.search_s(ucr['ldap/base'], ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (hostname, domain),), attrlist=['aRecord'],)
+        result = lo.lo.search_s(ucr['ldap/base'], ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (hostname, domain)), attrlist=['aRecord'])
         try:
             attributes = result[0][1]
             nfs_path_ip = "%s:%s" % (attributes['aRecord'][0].decode('ASCII'), share_path)
@@ -203,7 +203,7 @@ def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry],) -> Optional[Tuple[
     return dn, nfs_path_ip, mp
 
 
-def overlap(path_a: str, path_b: str,) -> bool:
+def overlap(path_a: str, path_b: str) -> bool:
     """
     Check if two paths overlap.
 
@@ -218,11 +218,12 @@ def overlap(path_a: str, path_b: str,) -> bool:
         a == b
         for a, b in zip(
             abspath(path_a).split(sep),
-            abspath(path_b).split(sep),)
+            abspath(path_b).split(sep),
+        )
     )
 
 
-def mount(to_mount: Set[str],) -> None:
+def mount(to_mount: Set[str]) -> None:
     """mount new NFS filesystems"""
     for mp in sorted(to_mount):
         if not os.path.exists(mp):

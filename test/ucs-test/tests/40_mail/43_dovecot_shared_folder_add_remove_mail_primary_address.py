@@ -58,8 +58,8 @@ def main():
                     utils.wait_for_replication()
 
                     # create folder
-                    dn, name, address = create_shared_mailfolder(udm, fqdn, user_permission=['"%s" "%s"' % (user_addr, 'all')],)
-                    folder = Bunch(dn=dn, name=name, mail_address=address,)
+                    dn, name, address = create_shared_mailfolder(udm, fqdn, user_permission=['"%s" "%s"' % (user_addr, 'all')])
+                    folder = Bunch(dn=dn, name=name, mail_address=address)
 
                     # check folder with mail address
                     old_path = get_dovecot_shared_folder_maildir(folder.name)
@@ -69,7 +69,7 @@ def main():
                     # add a primary mail address to shared folder
                     new_address = random_email()
                     new_path = get_dovecot_maildir(new_address)
-                    udm.modify_object('mail/folder', dn=folder.dn, set={'mailPrimaryAddress': new_address},)
+                    udm.modify_object('mail/folder', dn=folder.dn, set={'mailPrimaryAddress': new_address})
 
                     # check folder removal
                     if os.path.exists(old_path):
@@ -78,7 +78,7 @@ def main():
                         utils.fail('Test %d (flag_rename=%s): maildir %r for shared folder has not been created/renamed! %r' % (i, flag_rename, new_path, folder))
 
                     # remove primary mail address to shared folder
-                    udm.modify_object('mail/folder', dn=folder.dn, set={'mailPrimaryAddress': ''},)
+                    udm.modify_object('mail/folder', dn=folder.dn, set={'mailPrimaryAddress': ''})
 
                     # check folder removal
                     if not os.path.exists(old_path):

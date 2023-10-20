@@ -36,16 +36,16 @@ FALSE_INVALID = ('no ', ' no', '', "no2", "Off2", "Univention")
     ("SCHEDULE", "schedule"),
     ("FORCED", "forced"),
     ("CUSTOM", "custom"),
-],)
-def test_scope_names(layer, name,):
-    val = getattr(backend.ReadOnlyConfigRegistry, layer,)
+])
+def test_scope_names(layer, name):
+    val = getattr(backend.ReadOnlyConfigRegistry, layer)
     assert backend.SCOPE[val] == name
 
 
 class TestConfigRegistry(object):
     """Unit test for :py:class:`univention.config_registry.backend.ConfigRegistry`"""
 
-    def test_normal(self, tmpdir,):
+    def test_normal(self, tmpdir):
         """Create default registry."""
         assert (tmpdir / ConfigRegistry.BASES[ConfigRegistry.NORMAL]).exists()
 
@@ -54,14 +54,14 @@ class TestConfigRegistry(object):
         ConfigRegistry.LDAP,
         ConfigRegistry.SCHEDULE,
         ConfigRegistry.FORCED,
-    ],)
-    def test_levels(self, level, tmpdir,):
+    ])
+    def test_levels(self, level, tmpdir):
         """Create level registry."""
         _ucr = ConfigRegistry(write_registry=level)  # noqa: F841
         assert (tmpdir / ConfigRegistry.BASES[level]).exists()
 
-    @pytest.mark.parametrize("levels", range(1 << 4),)
-    def test_layering(self, levels,):
+    @pytest.mark.parametrize("levels", range(1 << 4))
+    def test_layering(self, levels):
         """Check layer priorities 50layer-priority"""
         msb = 0
         for layer in range(4):
@@ -75,7 +75,7 @@ class TestConfigRegistry(object):
         ucr.load()
         assert ucr["key"] == (str(msb) if levels else None)
 
-    def test_custom(self, tmpdir,):
+    def test_custom(self, tmpdir):
         """Create CUSTOM registry."""
         fname = tmpdir / 'custom.conf'
 
@@ -83,22 +83,22 @@ class TestConfigRegistry(object):
 
         assert fname.exists()
 
-    def test_custom_through_env(self, tmpucr,):
+    def test_custom_through_env(self, tmpucr):
         """Create CUSTOM registry through environment variable."""
         _ucr = ConfigRegistry(str(tmpucr))  # noqa: F841
 
         assert tmpucr.exists()
 
-    @pytest.mark.parametrize("path", ["/", "/does/not/exist"],)
-    def test_create_error(self, path, tmpdir,):
+    @pytest.mark.parametrize("path", ["/", "/does/not/exist"])
+    def test_create_error(self, path, tmpdir):
         with pytest.raises(SystemExit):
             ConfigRegistry(path)
 
-    def test_load(self, ucr0,):
+    def test_load(self, ucr0):
         """Load is fluent"""
         assert ucr0.load() is ucr0
 
-    def test_save_load(self, ucr0,):
+    def test_save_load(self, ucr0):
         """Save and re-load UCR."""
         ucr0['foo'] = 'bar'
         ucr0.save()
@@ -112,25 +112,25 @@ class TestConfigRegistry(object):
         ucr = ConfigRegistry()
         assert ucr['foo'] is None
 
-    def test_getitem(self, ucr0,):
+    def test_getitem(self, ucr0):
         """Test set ucr[key]."""
         ucr0['foo'] = 'bar'
         assert ucr0['foo'] == 'bar'
 
-    def test_empty_getitem(self, ucr0,):
+    def test_empty_getitem(self, ucr0):
         """Test empty ucr[key]."""
         ucr0['foo'] = ''
         assert ucr0['foo'] == ''
 
-    def test_unset_get(self, ucr0,):
+    def test_unset_get(self, ucr0):
         assert ucr0.get('foo') is None
 
-    def test_get(self, ucr0,):
+    def test_get(self, ucr0):
         """Test set ucr.get(key)."""
         ucr0['foo'] = 'bar'
         assert ucr0.get('foo') == 'bar'
 
-    def test_get_int(self, ucr0,):
+    def test_get_int(self, ucr0):
         """Test set ucr.get(key)."""
         ucr0['foo'] = '4'
         assert ucr0.get_int('foo') == 4
@@ -143,123 +143,123 @@ class TestConfigRegistry(object):
         ("10", "20", 10),
         ("string", None, None),
         ("string", "10", "10"),
-    ],)
-    def test_get_int_string(self, value, default, expected, ucr0,):
+    ])
+    def test_get_int_string(self, value, default, expected, ucr0):
         """Test set ucr.get_int(key, default)."""
         ucr0['foo'] = value
-        assert ucr0.get_int('foo', default,) == expected
+        assert ucr0.get_int('foo', default) == expected
 
-    def test_empty_get(self, ucr0,):
+    def test_empty_get(self, ucr0):
         """Test empty ucr.get(key)."""
         ucr0['foo'] = ''
         assert ucr0.get('foo') == ''
 
-    def test_default_get(self, ucr0,):
+    def test_default_get(self, ucr0):
         """Test ucr.get(key, default)."""
-        assert ucr0.get('foo', self,) is self
+        assert ucr0.get('foo', self) is self
 
-    def test_scope_get_normal(self, ucr0,):
+    def test_scope_get_normal(self, ucr0):
         """Test NORMAL ucr.get(key, default)."""
         ucr0['foo'] = 'bar'
-        assert ucr0.get('foo', getscope=True,) == (ConfigRegistry.NORMAL, 'bar')
+        assert ucr0.get('foo', getscope=True) == (ConfigRegistry.NORMAL, 'bar')
 
     def test_scope_get_ldap(self):
         """Test LDAP ucr.get(key, default)."""
         ucr = ConfigRegistry(write_registry=ConfigRegistry.LDAP)
         ucr['foo'] = 'bar'
-        assert ucr.get('foo', getscope=True,) == (ConfigRegistry.LDAP, 'bar')
+        assert ucr.get('foo', getscope=True) == (ConfigRegistry.LDAP, 'bar')
 
     def test_scope_get_schedule(self):
         """Test SCHEDULE ucr.get(key, default)."""
         ucr = ConfigRegistry(write_registry=ConfigRegistry.SCHEDULE)
         ucr['foo'] = 'bar'
-        assert ucr.get('foo', getscope=True,) == (ConfigRegistry.SCHEDULE, 'bar')
+        assert ucr.get('foo', getscope=True) == (ConfigRegistry.SCHEDULE, 'bar')
 
     def test_scope_get_forced(self):
         """Test FORCED ucr.get(key, default)."""
         ucr = ConfigRegistry(write_registry=ConfigRegistry.FORCED)
         ucr['foo'] = 'bar'
-        assert ucr.get('foo', getscope=True,) == (ConfigRegistry.FORCED, 'bar')
+        assert ucr.get('foo', getscope=True) == (ConfigRegistry.FORCED, 'bar')
 
-    def test_contains_unset(self, ucr0,):
+    def test_contains_unset(self, ucr0):
         """Test unset key in ucr."""
         assert 'foo' not in ucr0
 
-    def test_contains_set(self, ucr0,):
+    def test_contains_set(self, ucr0):
         """Test set key in ucr."""
         ucr0['foo'] = 'bar'
         assert 'foo' in ucr0
 
-    def test_pop(self, ucr0,):
+    def test_pop(self, ucr0):
         """Test set ucr.pop(key)."""
         ucr0['foo'] = 'bar'
         assert ucr0.pop('foo') == 'bar'
 
-    def test_popitem(self, ucr0,):
+    def test_popitem(self, ucr0):
         """Test set ucr.popitem()."""
         ucr0['foo'] = 'bar'
         assert ucr0.popitem() == ('foo', 'bar')
 
-    def test_setdefault(self, ucr0,):
+    def test_setdefault(self, ucr0):
         """Test set ucr.setdefault()."""
-        ucr0.setdefault('foo', 'bar',)
+        ucr0.setdefault('foo', 'bar')
         assert ucr0['foo'] == 'bar'
 
-    def test_dict(self, ucrf,):
+    def test_dict(self, ucrf):
         """Test merged items."""
         assert dict(ucrf) == {'foo': 'LDAP', 'bar': 'LDAP', 'baz': 'NORMAL'}
 
-    def test_items(self, ucrf,):
+    def test_items(self, ucrf):
         """Test merged items."""
         assert sorted(ucrf.items()) == sorted([('foo', 'LDAP'), ('bar', 'LDAP'), ('baz', 'NORMAL')])
 
-    def test_items_scopes(self, ucrf,):
+    def test_items_scopes(self, ucrf):
         """Test merged items."""
         assert sorted(ucrf.items(getscope=True)) == sorted([('foo', (ConfigRegistry.LDAP, 'LDAP')), ('bar', (ConfigRegistry.LDAP, 'LDAP')), ('baz', (ConfigRegistry.NORMAL, 'NORMAL'))])
 
-    def test_keys(self, ucrf,):
+    def test_keys(self, ucrf):
         """Test merged keys."""
         assert sorted(ucrf.keys()) == sorted(['foo', 'bar', 'baz'])
 
-    def test_values(self, ucrf,):
+    def test_values(self, ucrf):
         """Test merged values."""
         assert sorted(ucrf.values()) == sorted(['LDAP', 'LDAP', 'NORMAL'])
 
-    def test_clear(self, ucrf,):
+    def test_clear(self, ucrf):
         """Test set ucr.clear()."""
         ucrf.clear()
-        assert ucrf.get('foo', getscope=True,) == (ConfigRegistry.LDAP, 'LDAP')
-        assert ucrf.get('bar', getscope=True,) == (ConfigRegistry.LDAP, 'LDAP')
-        assert ucrf.get('baz', getscope=True,) is None
+        assert ucrf.get('foo', getscope=True) == (ConfigRegistry.LDAP, 'LDAP')
+        assert ucrf.get('bar', getscope=True) == (ConfigRegistry.LDAP, 'LDAP')
+        assert ucrf.get('baz', getscope=True) is None
 
-    def test_is_true_unset(self, ucr0,):
+    def test_is_true_unset(self, ucr0):
         """Test unset is_true()."""
         assert not ucr0.is_true('foo')
 
-    def test_is_true_default(self, ucr0,):
+    def test_is_true_default(self, ucr0):
         """Test is_true(default)."""
-        assert ucr0.is_true('foo', True,)
-        assert not ucr0.is_true('foo', False,)
+        assert ucr0.is_true('foo', True)
+        assert not ucr0.is_true('foo', False)
 
-    @pytest.mark.parametrize("value", TRUE_VALID,)
-    def test_is_true_valid(self, value, ucr0,):
+    @pytest.mark.parametrize("value", TRUE_VALID)
+    def test_is_true_valid(self, value, ucr0):
         """Test valid is_true()."""
         ucr0['foo'] = value
         assert ucr0.is_true('foo')
 
-    @pytest.mark.parametrize("value", TRUE_INVALID,)
-    def test_is_true_invalid(self, value, ucr0,):
+    @pytest.mark.parametrize("value", TRUE_INVALID)
+    def test_is_true_invalid(self, value, ucr0):
         """Test invalid is_true()."""
         ucr0['foo'] = value
         assert not ucr0.is_true('foo')
 
-    @pytest.mark.parametrize("value", TRUE_VALID,)
-    def test_is_true_valid_direct(self, value, ucr0,):
+    @pytest.mark.parametrize("value", TRUE_VALID)
+    def test_is_true_valid_direct(self, value, ucr0):
         """Test valid is_true(value)."""
         assert ucr0.is_true(value=value)
 
-    @pytest.mark.parametrize("value", TRUE_INVALID,)
-    def test_is_true_invalid_direct(self, value, ucr0,):
+    @pytest.mark.parametrize("value", TRUE_INVALID)
+    def test_is_true_invalid_direct(self, value, ucr0):
         """Test invalid is_true(value)."""
         assert not ucr0.is_true(value=value)
 
@@ -268,34 +268,34 @@ class TestConfigRegistry(object):
         ucr = ConfigRegistry()
         assert not ucr.is_false('foo')
 
-    def test_is_false_default(self, ucr0,):
+    def test_is_false_default(self, ucr0):
         """Test is_false(default)."""
-        assert ucr0.is_false('foo', True,)
-        assert not ucr0.is_false('foo', False,)
+        assert ucr0.is_false('foo', True)
+        assert not ucr0.is_false('foo', False)
 
-    @pytest.mark.parametrize("value", FALSE_VALID,)
-    def test_is_false_valid(self, value, ucr0,):
+    @pytest.mark.parametrize("value", FALSE_VALID)
+    def test_is_false_valid(self, value, ucr0):
         """Test valid is_false()."""
         ucr0['foo'] = value
         assert ucr0.is_false('foo')
 
-    @pytest.mark.parametrize("value", FALSE_INVALID,)
-    def test_is_false_invalid(self, value, ucr0,):
+    @pytest.mark.parametrize("value", FALSE_INVALID)
+    def test_is_false_invalid(self, value, ucr0):
         """Test invalid is_false()."""
         ucr0['foo'] = value
         assert not ucr0.is_false('foo')
 
-    @pytest.mark.parametrize("value", FALSE_VALID,)
-    def test_is_false_valid_direct(self, value, ucr0,):
+    @pytest.mark.parametrize("value", FALSE_VALID)
+    def test_is_false_valid_direct(self, value, ucr0):
         """Test valid is_false(value)."""
         assert ucr0.is_false(value=value)
 
-    @pytest.mark.parametrize("value", FALSE_INVALID,)
-    def test_is_false_invalid_direct(self, value, ucr0,):
+    @pytest.mark.parametrize("value", FALSE_INVALID)
+    def test_is_false_invalid_direct(self, value, ucr0):
         """Test valid is_false(value)."""
         assert not ucr0.is_false(value=value)
 
-    def test_update(self, ucr0,):
+    def test_update(self, ucr0):
         """Test update()."""
         ucr0['foo'] = 'foo'
         ucr0['bar'] = 'bar'
@@ -315,7 +315,7 @@ class TestConfigRegistry(object):
         assert ucr0.get('bam') is None
 
     @pytest.mark.slow()
-    def test_locking(self, ucr0,):
+    def test_locking(self, ucr0):
         """Test inter-process-locking."""
         delay = 1.0
         read_end, write_end = os.pipe()
@@ -324,7 +324,7 @@ class TestConfigRegistry(object):
         if not pid1:  # child 1
             os.close(read_end)
             ucr0.lock()
-            os.write(write_end, b'1',)
+            os.write(write_end, b'1')
             time.sleep(delay)
             ucr0.unlock()
             os._exit(0)
@@ -332,7 +332,7 @@ class TestConfigRegistry(object):
         pid2 = os.fork()
         if not pid2:  # child 2
             os.close(write_end)
-            os.read(read_end, 1,)
+            os.read(read_end, 1)
             ucr0.lock()
             time.sleep(delay)
             ucr0.unlock()
@@ -343,7 +343,7 @@ class TestConfigRegistry(object):
 
         timeout = time.time() + delay * 3
         while time.time() < timeout:
-            pid, status = os.waitpid(0, os.WNOHANG,)
+            pid, status = os.waitpid(0, os.WNOHANG)
             if (pid, status) == (0, 0):
                 time.sleep(0.1)
             elif pid == pid1:
@@ -360,7 +360,7 @@ class TestConfigRegistry(object):
         else:
             self.fail('Timeout')
 
-    def test_context(self, ucr0,):
+    def test_context(self, ucr0):
         with ucr0:
             ucr0["foo"] = "bar"
 
@@ -368,7 +368,7 @@ class TestConfigRegistry(object):
         ucr.load()
         assert ucr['foo'] == 'bar'
 
-    def test_context_error(self, ucr0,):
+    def test_context_error(self, ucr0):
         ex = ValueError()
         with pytest.raises(ValueError) as exc_info, ucr0:
             ucr0["foo"] = "bar"
@@ -387,7 +387,7 @@ class TestConfigRegistry(object):
         assert exc_info.value.code != 0
         assert io.getvalue() > ""
 
-    def test_str(self, ucr0,):
+    def test_str(self, ucr0):
         ucr0["foo"] = "bar"
         assert str(ucr0) == "foo: bar"
 
@@ -395,7 +395,7 @@ class TestConfigRegistry(object):
 class TestInternal(object):
     """Unit test for py:class:`univention.config_registry.backend._ConfigRegistry`"""
 
-    def test_load_backup(self, tmpdir,):
+    def test_load_backup(self, tmpdir):
         tmp = tmpdir / "test.conf"
         tmp.write("")
         bak = tmpdir / "test.conf.bak"
@@ -406,7 +406,7 @@ class TestInternal(object):
         assert ucr["foo"] == "bar"
         assert tmp.size() > 0
 
-    def test_busy(self, tmpdir,):
+    def test_busy(self, tmpdir):
         tmp = tmpdir / "test.conf"
         tmpdir.mkdir("test.conf.temp")
 
@@ -422,8 +422,8 @@ class TestInternal(object):
         ("a:b", {}),
         ("key: #value", {"key": "#value"}),
         ("key:  # value ", {"key": "# value"}),
-    ],)
-    def test_load_unusual(self, text, data, tmpdir,):
+    ])
+    def test_load_unusual(self, text, data, tmpdir):
         tmp = tmpdir / "test.conf"
         tmp.write("# univention_ base.conf\n" + text)
 
@@ -439,17 +439,17 @@ class TestInternal(object):
 
 
 class TestDefault(object):
-    def test_default(self, ucr0, tmpdir,):
+    def test_default(self, ucr0, tmpdir):
         ucr0._registry[ucr0.DEFAULTS]["key"] = "val"
         assert ucr0["key"] == "val"
         assert ucr0.items() == {"key": "val"}.items()
 
-    def test_subst(self, ucr0, tmpdir,):
+    def test_subst(self, ucr0, tmpdir):
         ucr0["ref"] = "val"
         ucr0._registry[ucr0.DEFAULTS]["key"] = "@%@ref@%@"
         assert ucr0["key"] == "val"
 
     @pytest.mark.timeout(timeout=3)
-    def test_recusrion(self, ucr0, tmpdir,):
+    def test_recusrion(self, ucr0, tmpdir):
         ucr0._registry[ucr0.DEFAULTS]["key"] = "@%@key@%@"
         assert ucr0["key"] == ""

@@ -67,122 +67,135 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.hostName,
         include_in_default_search=True,
         required=True,
-        identifies=True,),
+        identifies=True,
+    ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'mac': univention.admin.property(
         short_description=_('MAC address'),
         long_description='',
         syntax=univention.admin.syntax.MAC_Address,
         multivalue=True,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'network': univention.admin.property(
         short_description=_('Network'),
         long_description='',
-        syntax=univention.admin.syntax.network,),
+        syntax=univention.admin.syntax.network,
+    ),
     'ip': univention.admin.property(
         short_description=_('IP address'),
         long_description='',
         syntax=univention.admin.syntax.ipAddress,
         multivalue=True,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'dnsEntryZoneForward': univention.admin.property(
         short_description=_('Forward zone for DNS entry'),
         long_description='',
         syntax=univention.admin.syntax.dnsEntry,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'dnsEntryZoneReverse': univention.admin.property(
         short_description=_('Reverse zone for DNS entry'),
         long_description='',
         syntax=univention.admin.syntax.dnsEntryReverse,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'dnsEntryZoneAlias': univention.admin.property(
         short_description=_('Zone for DNS alias'),
         long_description='',
         syntax=univention.admin.syntax.dnsEntryAlias,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'dnsAlias': univention.admin.property(
         short_description=_('DNS alias'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        multivalue=True,),
+        multivalue=True,
+    ),
     'dhcpEntryZone': univention.admin.property(
         short_description=_('DHCP service'),
         long_description='',
         syntax=univention.admin.syntax.dhcpEntry,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'inventoryNumber': univention.admin.property(
         short_description=_('Inventory number'),
         long_description='',
         syntax=univention.admin.syntax.string,
         multivalue=True,
-        include_in_default_search=True,),
+        include_in_default_search=True,
+    ),
     'groups': univention.admin.property(
         short_description=_('Groups'),
         long_description='',
         syntax=univention.admin.syntax.GroupDN,
         multivalue=True,
-        dontsearch=True,),
+        dontsearch=True,
+    ),
     'domain': univention.admin.property(
         short_description=_('Domain'),
         long_description='',
         syntax=univention.admin.syntax.string,
-        include_in_default_search=True,),
-}, **pki_properties(),)
+        include_in_default_search=True,
+    ),
+}, **pki_properties())
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('Computer account'), layout=[
             ['name', 'description'],
             'inventoryNumber',
-        ],),
+        ]),
         Group(_('Network settings '), layout=[
             'network',
             'mac',
             'ip',
-        ],),
+        ]),
         Group(_('DNS Forward and Reverse Lookup Zone'), layout=[
             'dnsEntryZoneForward',
             'dnsEntryZoneReverse',
-        ],),
+        ]),
         Group(_('DHCP'), layout=[
             'dhcpEntryZone',
-        ],),
-    ],),
+        ]),
+    ]),
     Tab(_('Groups'), _('Group memberships'), advanced=True, layout=[
         "groups",
-    ],),
+    ]),
     Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
         'dnsEntryZoneAlias',
-    ],),
+    ]),
     pki_tab(),
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString,)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString,)
-mapping.register('inventoryNumber', 'univentionInventoryNumber',)
-mapping.register('mac', 'macAddress', encoding='ASCII',)
-mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString,)
-mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString, encoding='ASCII',)
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.register('inventoryNumber', 'univentionInventoryNumber')
+mapping.register('mac', 'macAddress', encoding='ASCII')
+mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
+mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString, encoding='ASCII')
 register_pki_mapping(mapping)
 
 # add Nagios extension
-nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout,)
+nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
 
 
 class object(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration):
     module = module
 
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[],):
-        univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes,)
+    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+        univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
         nagios.Support.__init__(self)
 
     def open(self):
@@ -196,11 +209,11 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegr
         self.save()
 
     def _ldap_pre_create(self):
-        super(object, self,)._ldap_pre_create()
+        super(object, self)._ldap_pre_create()
         self.nagios_ldap_pre_create()
 
     def _ldap_addlist(self):
-        al = super(object, self,)._ldap_addlist()
+        al = super(object, self)._ldap_addlist()
         return al + [('objectClass', [b'top', b'univentionHost', b'univentionClient', b'person'])]
 
     def _ldap_post_create(self):
@@ -230,32 +243,32 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegr
         univention.admin.handlers.simpleComputer.cleanup(self)
 
 
-def rewrite(filter, mapping,):
+def rewrite(filter, mapping):
     if filter.variable == 'ip':
         filter.variable = 'aRecord'
     else:
-        univention.admin.mapping.mapRewrite(filter, mapping,)
+        univention.admin.mapping.mapRewrite(filter, mapping)
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None,):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
     res = []
     filter_s = univention.admin.filter.replace_fqdn_filter(filter_s)
-    filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s,)
+    filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
     filter = univention.admin.filter.conjunction('&', [
-        univention.admin.filter.expression('objectClass', 'univentionHost',),
-        univention.admin.filter.expression('objectClass', 'univentionClient',),
-        univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount',)],),
-    ],)
+        univention.admin.filter.expression('objectClass', 'univentionHost'),
+        univention.admin.filter.expression('objectClass', 'univentionClient'),
+        univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
+    ])
 
     if filter_s:
         filter_p = univention.admin.filter.parse(filter_s)
-        univention.admin.filter.walk(filter_p, rewrite, arg=mapping,)
+        univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
         filter.expressions.append(filter_p)
 
-    for dn, attrs in lo.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response,):
-        res.append(object(co, lo, None, dn, attributes=attrs,))
+    for dn, attrs in lo.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
+        res.append(object(co, lo, None, dn, attributes=attrs))
     return res
 
 
-def identify(dn, attr, canonical=False,):
-    return b'univentionHost' in attr.get('objectClass', [],) and b'univentionClient' in attr.get('objectClass', [],) and b'posixAccount' not in attr.get('objectClass', [],)
+def identify(dn, attr, canonical=False):
+    return b'univentionHost' in attr.get('objectClass', []) and b'univentionClient' in attr.get('objectClass', []) and b'posixAccount' not in attr.get('objectClass', [])
