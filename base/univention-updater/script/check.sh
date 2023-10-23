@@ -206,6 +206,10 @@ declare -a obsolete_objectclasses=(
 	'(structuralObjectClass=univentionPortalEntry)'
 	'(structuralObjectClass=univentionPortalCategory)'
 	'(structuralObjectClass=univentionPortal)'
+	'(structuralObjectClass=univentionVirtualMachineCloudType)'
+	'(structuralObjectClass=univentionVirtualMachineCloudConnection)'
+	'(structuralObjectClass=univentionVirtualMachineProfile)'
+	'(structuralObjectClass=univentionVirtualMachine)'
 )
 
 update_check_legacy_objects () {
