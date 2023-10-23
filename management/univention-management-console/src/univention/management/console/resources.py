@@ -985,7 +985,7 @@ class SetLocale(Resource):
     requires_authentication = False
 
     @sanitize(locale=StringSanitizer(required=True))
-    def post(self):
+    async def post(self):
         self.set_header('X-UMC-Message', json.dumps('Setting a session locale is deprecated and going to be removed. Use Accept-Language header instead!'))
         locale = self.request.body_arguments['locale'].replace('-', '_')
         try:
@@ -1063,7 +1063,7 @@ class SetUserPreferences(UserPreferences):
     @sanitize(user=DictSanitizer({
         "preferences": DictSanitizer({}, required=True),
     }))
-    def post(self):
+    async def post(self):
         lo = self.current_user.get_user_ldap_connection()
         # eliminate double entries
         preferences = self._get_user_preferences(lo)

@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-management-console
+fix: 12.0.31-16
+desc: |
+ This update addresses the following issues:
+ * User preferences (such as favorite UMC modules) could not be set via old
+   UMC clients from UCS systems <= UCS 5.0-3. The functionality has been
+   restored.
+bug: [56753]
