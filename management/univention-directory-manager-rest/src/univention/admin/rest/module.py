@@ -2137,6 +2137,26 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
                 multi_error.add_error(exc, property_name)
 
     async def move(self, module, dn, position):
+        if module.childs:
+            await self._move_with_childs(module, dn, position)
+            return
+
+        dn = await self.pool_submit(module.move, dn, position)
+        uri = self.urljoin(quote_dn(dn))
+        self.add_header('Location', uri)
+        result = {
+            'id': '',
+            'errors': False,
+            'finished': True,
+            'uri': uri,
+        }
+        self.add_link(result, 'self', uri)
+        self.set_status(201)
+        self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
+        self.content_negotiation(result)
+
+    async def _move_with_childs(self, module, dn, position):
+        """Move objects which might have child objects like containers/cn"""
         status_id = str(uuid.uuid4())
         status = shared_memory.dict()
         status.update({
