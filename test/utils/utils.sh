@@ -863,12 +863,8 @@ assert_version () {
 		exit 1
 	fi
 	if [ "$requested_version" == "5.2-0" ]; then
-		a2dismod php7.4 || true
-		systemctl restart apache2.service
-		if [ "$(ucr get ldap/server/type)" = master ]; then
-		    #Bug 56367: Remove nagios objects from LDAP, the udm integration has been removed
-		    ldapdelete -D "cn=admin,$(ucr get ldap/base)" -y /etc/ldap.secret -r "cn=nagios,$(ucr get ldap/base)"
-		fi
+	    a2dismod php7.4 || true
+	    systemctl restart apache2.service
 	fi
 	return 0
 }
