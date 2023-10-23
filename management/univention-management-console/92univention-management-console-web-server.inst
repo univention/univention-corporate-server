@@ -77,19 +77,9 @@ if [ "$JS_LAST_EXECUTED_VERSION" -ge "5" -a "$JS_LAST_EXECUTED_VERSION" -lt "7" 
 	udm saml/serviceprovider remove "$@" --dn "SAMLServiceProviderIdentifier=https://$fqdn/univention-management-console/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base"
 fi
 
-udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
-	--set Identifier="https://$fqdn/univention/saml/metadata" \
-	--set AssertionConsumerService="https://$fqdn/univention/saml/" \
-	--set serviceProviderOrganizationName="Univention Management Console $fqdn" \
-	--set isActivated=TRUE \
-	--set simplesamlAttributes=TRUE \
-	--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
-	--set assertionLifetime="${umc_saml_assertion_lifetime:-300}" \
-	--append LDAPattributes='uid uid' || die
-
 /usr/share/univention-management-console/saml/update_metadata "$@" || die
 
-ucr set ucs/server/sso/fqdn?"ucs-sso.$domainname"
+ucr set ucs/server/sso/fqdn?"ucs-sso-ng.$domainname"
 eval "$(ucr shell ucs/server/sso/fqdn)"
 
 # make a apache restart for the next call:
@@ -97,7 +87,7 @@ systemctl restart apache2
 
 if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
 	  # Register UMC as a Keycloak client, but ignore failure
-	  univention-keycloak "$@" saml/sp create --metadata-url="https://$fqdn/univention/saml/metadata" --metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" --umc-uid-mapper || true
+	  univention-keycloak "$@" saml/sp create --metadata-url="https://$fqdn/univention/saml/metadata" --metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" --umc-uid-mapper || die
 fi
 
 
@@ -106,7 +96,7 @@ _cleanup_die () {
 }
 if ! is_ucr_false 'umc/web/sso/enabled'; then
 	rm /usr/share/univention-management-console/saml/idp/*.xml
-	ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
+	ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/realms/ucs/protocol/saml/descriptor" || _cleanup_die
 	# Execute UCR module to download metadata if umc/saml/idp-server has been set via LDAP layer (e.g. for keycloak)
 	python3 /etc/univention/templates/modules/setup_saml_sp.py
 	[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
