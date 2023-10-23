@@ -195,6 +195,149 @@ update_check_role_package_removed () {
 	return 1
 }
 
+# Bug #56134 Bug #56651 Bug #56367 Bug #52048
+# Admin must agree to remove these:
+declare -a legacy_ocs_structural=(
+	'(!(objectClass=*))'
+)
+declare -a legacy_ocs_auxiliary=(
+	'(!(objectClass=*))'
+)
+# These are auto-removed:
+declare -a obsolete_objectclasses=(
+	'(!(objectClass=*))'
+)
+
+update_check_legacy_objects () {
+	local var="update$VERSION/ignore_legacy_objects"
+	ignore_check "$var" && return 100
+	[ -f /var/univention-join/joined ] || return 0
+
+	declare -a found_structural=() found_auxiliary=()
+	local IFS=''
+
+	local filter="(|${legacy_ocs_structural[*]})"
+	univention-ldapsearch -LLL "$filter" 1.1 >"$tmp" || die "Failed to search LDAP"
+	IFS=$'\n' read -d '' -r -a found_structural <<<"$(grep '^dn:' "$tmp")"
+
+	local filter="${legacy_ocs_auxiliary[*]}"
+	univention-ldapsearch -LLL -E mv="($filter)" "(|$filter)" objectClass >"$tmp" || die "Failed to search LDAP"
+	IFS=$'\n' read -d '' -r -a found_auxiliary <<<"$(sed '/^./{H;d};x;s/\n/\t/g' "$tmp")"
+
+	# shellcheck disable=SC2128
+	[ -z "${found_structural:-}" ] && [ -z "${found_auxiliary:-}" ] && return 0
+
+	if [ -n "${found_structural:-}" ]
+	then
+		echo "	The following objects are no longer supported with UCS 5.2:"
+		local obj
+		for obj in "${found_structural[@]}"
+		do
+			printf '\t\t%s\n' "${obj}"
+		done
+		echo "	They must be removed before the update can be done."
+		echo
+	fi
+	if [ -n "${found_auxiliary:-}" ]
+	then
+		echo "	The following objects contain auxiliary data no longer supported with UCS 5.2:"
+		local obj
+		for obj in "${found_auxiliary[@]}"
+		do
+			printf '\t%s\n' "${obj}"
+		done
+		echo "	They must be cleaned up before the update can be done."
+		echo
+	fi
+	echo "	See <https://help.univention.com/t/22252> for details."
+	echo
+	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
+	return 1
+}
+delete_legacy_objects () {
+	local filter ldif oc
+	[ -r /etc/ldap.secret ] || die "Cannot get LDAP credentials from '/etc/ldap.secret'"
+
+	echo "> Removing structural objects"
+	for filter in "${legacy_ocs_structural[@]}"
+	do
+		echo ">> $filter"
+		univention-ldapsearch -LLL "$filter" 1.1 |
+			sed -ne 's/^dn: //p' |
+			ldapdelete -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret -c
+	done
+
+	echo "> Removing auxiliary data"
+	ldif="$(mktemp)"
+	for filter in "${legacy_ocs_auxiliary[@]}"
+	do
+		echo ">> $filter"
+		oc="${filter#(objectClass=}"  # the closing parenthesis is stripped below!
+		univention-ldapsearch -LLL -b 'cn=Subschema' -s base objectClasses -E mv="${filter/objectClass=/objectClasses=}" >"$ldif"
+		sed -rne 's/objectClasses: //;T;s/.* (MUST|MAY)//;s/ (MUST|MAY|[($)])//g;s/^ +| +$//g;s/ +/\n/g;s/\S+/replace: &\n-/g;a delete: objectClass\nobjectClass: '"${oc%)}" -e p -i "$ldif"
+		[ -s "$ldif" ] || continue
+		univention-ldapsearch -LLL "$filter" 1.1 |
+			sed -e "/^dn: /r $ldif" |
+			ldapmodify -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret -c
+	done
+	rm -f "$ldif"
+}
+
+# Some objects get deleted automatically in preup.sh
+# Objects are found by queries based on obsolete_objectclasses
+# references to these deleted objects are also deleted if the
+# reference is in an attribute named univentionPolicyReference or
+# univentionPolicyObject
+delete_obsolete_objects () {
+	[ "$server_role" != "domaincontroller_master" ] && return 0
+	[ -r /etc/ldap.secret ] || die "ERROR: Cannot get LDAP credentials from '/etc/ldap.secret'"
+	[ -d "${updateLogDir:?}" ] ||
+		install -m0700 -o root -d "$updateLogDir" ||
+		die "ERROR: Could not create $updateLogDir"
+	local filter ldif oc backupfile
+	backupfile="${updateLogDir}/removed_with_ucs5_$(date +%Y-%m-%d-%S).ldif"
+
+	echo "> Several LDAP objects are no longer supported with UCS 5.2 and are removed automatically."
+	echo "> An LDIF file of removed objects is available: ${backupfile}"
+	install -b -m 400 /dev/null "${backupfile}"
+	echo "> Removing objects with obsolete objectClasses"
+	for filter in "${obsolete_objectclasses[@]}"
+	do
+		echo ">> $filter"
+		# check if object is referenced anywhere in a policy
+		local object_dns
+		object_dns="$(univention-ldapsearch -LLL "$filter" | sed -ne 's/^dn: //p')"
+		[ -z "$object_dns" ] && continue
+		echo "Deleting object(s) with dn: $object_dns"
+		# Iterate over all found objects matching the ldap filter to find references
+		while IFS= read -r object_dn; do
+			# References to objects can come in two attributes
+			for policy_reference_type in univentionPolicyReference univentionPolicyObject; do
+				local policy_references dn="$object_dn"
+				dn="${dn//\\/\\5c}"
+				dn="${dn//\*/\\2a}"
+				dn="${dn//\(/\\28}"
+				dn="${dn//\)/\\29}"
+				policy_references="$(univention-ldapsearch -LLL "($policy_reference_type=$dn)" 1.1 | sed -ne 's/^dn: //p')"
+				[ -z "$policy_references" ] && continue
+				while read -r referencing_dn; do
+					echo "# Deleting reference to $object_dn from $referencing_dn" | tee -a "${backupfile}"
+					ldapmodify -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret <<__EOF__
+dn: $referencing_dn
+changetype: modify
+delete: $policy_reference_type
+$policy_reference_type: $object_dn
+__EOF__
+				done <<< "$policy_references"
+			done # for policy_reference_type
+		done <<< "$object_dns" # while read object_dn
+		univention-ldapsearch -LLL "$filter" "*" + |
+			tee -a "${backupfile}" |
+			sed -ne 's/^dn: //p' |
+			ldapdelete -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret -c || die 'ERROR: could not remove obsolete objects'
+	done
+}
+
 # check that no apache configuration files are manually adjusted; Bug #43520
 update_check_overwritten_umc_templates () {
 	local var="update$VERSION/ignore_apache_template_checks"
