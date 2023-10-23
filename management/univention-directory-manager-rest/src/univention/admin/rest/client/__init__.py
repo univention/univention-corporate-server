@@ -697,7 +697,7 @@ class Object(Client):
             location = response.response.headers['Location']
             if response.response.headers.get('Retry-After', '').isdigit():
                 time.sleep(min(30, max(0, int(response.response.headers['Retry-After']))))
-            response = self.client.make_request('GET', location, allow_redirects=False)
+            response = self.client.make_request(self._select_method(response), location, allow_redirects=False)
 
         if location and response.response.status_code == 200:
             # the response already contains a new representation
@@ -705,6 +705,11 @@ class Object(Client):
         elif reload:
             self._reload_from_response(response, reload)
         return response
+
+    def _select_method(self, response):
+        if response.status_code in (300, 303):
+            return 'GET'
+        return response.request.method
 
     def _copy_from_obj(self, obj):
         # type: (Object) -> None
