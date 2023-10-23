@@ -306,8 +306,12 @@ run_setup_join () {
 	ucr set apache2/startsite='univention/' # Bug #31682
 	deb-systemd-invoke try-reload-or-restart univention-management-console-server apache2
 	ucr unset --forced update/available
-
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
+
+	# Install keycloak
+	local admin_password="${1:-univention}" rv=0 nameserver1
+	printf '%s' "$admin_password" >/tmp/univention
+	univention-app install keycloak --username=Administrator --pwdfile=/tmp/univention --skip --noninteractive
 	return $rv
 }
 
