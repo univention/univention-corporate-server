@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #
-# Univention Management Console
-#  Univention Directory Manager Module
+# Univention Directory Manager
+#  REST API client
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -176,8 +176,8 @@ class Session:
         # type: (str, str, Dict, bool, **str) -> Any
         return self.make_request(method, uri, data, expect_json=expect_json, **headers).data  # type: ignore # <https://github.com/python/mypy/issues/10008>
 
-    def make_request(self, method, uri, data=None, expect_json=False, allow_redirects=True, **headers):
-        # type: (str, str, Dict, bool, bool, **str) -> Response
+    def make_request(self, method, uri, data=None, expect_json=False, allow_redirects=True, custom_redirect_handling=False, **headers):
+        # type: (str, str, Dict, bool, bool, bool, **str) -> Response
         if method in ('GET', 'HEAD'):
             params = data
             json = None
@@ -191,6 +191,8 @@ class Session:
                 response = self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers), allow_redirects=allow_redirects)
             except requests.exceptions.ConnectionError as exc:
                 raise ConnectionError(exc)
+            if custom_redirect_handling:
+                response = self._follow_redirection(response)
             data = self.eval_response(response, expect_json=expect_json)
             return Response(response, data, uri)
 
@@ -208,6 +210,28 @@ class Session:
                 time.sleep(retry_after)
 
         return doit()
+
+    def _follow_redirection(self, response):
+        # type: (Response) -> Response
+        location = response.headers.get('Location')
+        # python-requests doesn't follow redirects for 202
+        if location and response.status_code in (201, 202):
+            response = self.make_request('GET', location, allow_redirects=False).response
+
+        # prevent allow_redirects because it does not wait Retry-After time causing a break up after 30 fast redirections
+        while 300 <= response.status_code <= 399 and 'Location' in response.headers:
+            location = response.headers['Location']
+            if response.headers.get('Retry-After', '').isdigit():
+                time.sleep(min(30, max(0, int(response.headers['Retry-After']))))
+            response = self.make_request(self._select_method(response), location, allow_redirects=False).response
+
+        return response
+
+    def _select_method(self, response):
+        # type: (Response) -> str
+        if response.status_code in (300, 301, 303) and response.request.method != 'HEAD':
+            return 'GET'
+        return response.request.method
 
     def eval_response(self, response, expect_json=False):
         # type: (requests.Response, bool) -> Any
@@ -660,10 +684,10 @@ class Object(Client):
         }.items() if value}
         return self.client.request('DELETE', self.uri, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
 
-    def move(self, position):
+    def move(self, position, reload=True):
         # type: (str) -> None
         self.position = position
-        self.save()
+        self.save(reload=reload)
 
     def _modify(self, reload=True):
         # type: (bool) -> Response
@@ -691,41 +715,25 @@ class Object(Client):
 
     def _request(self, method, uri, data, headers, reload=True):
         # type: (str, str, dict, dict, bool) -> Response
-        response = self.client.make_request(method, uri, data=data, allow_redirects=False, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
-        response = self._follow_redirection(response, reload)  # move() causes multiple redirections!
+        response = self.client.make_request(method, uri, data=data, allow_redirects=False, custom_redirect_handling=True, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
+        self._reload_from_response(response, reload)
         return response
 
     def _reload_from_response(self, response, reload):
         # type: (Response, bool) -> None
-        if 200 <= response.response.status_code <= 299 and 'Location' in response.response.headers:
+        if reload and 200 <= response.response.status_code <= 299 and 'Location' in response.response.headers:
             uri = response.response.headers['Location']
             obj = ShallowObject(self.udm, None, uri)
-            if reload:
-                self._copy_from_obj(obj.open())
-        elif reload:
-            self.reload()
+            self._copy_from_obj(obj.open())
+            return
 
-    def _follow_redirection(self, response, reload=True):
-        # type: (Response, bool) -> Response
-        location = None
-        # python-requests doesn't follow redirects for 202
-        if response.response.status_code in (201, 202) and 'Location' in response.response.headers:
-            location = response.response.headers['Location']
-            response = self.client.make_request('GET', location, allow_redirects=False)
-
-        # prevent allow_redirects because it does not wait Retry-After time causing a break up after 30 fast redirections
-        while 300 <= response.response.status_code <= 399 and 'Location' in response.response.headers:
-            location = response.response.headers['Location']
-            if response.response.headers.get('Retry-After', '').isdigit():
-                time.sleep(min(30, max(0, int(response.response.headers['Retry-After']))))
-            response = self.client.make_request('GET', location, allow_redirects=False)
-
-        if location and response.response.status_code == 200:
+        if response.response.status_code == 200:
             # the response already contains a new representation
             self._copy_from_obj(Object.from_response(self.udm, response))
-        elif reload:
-            self._reload_from_response(response, reload)
-        return response
+            return
+
+        if reload:
+            self.reload()
 
     def _copy_from_obj(self, obj):
         # type: (Object) -> None

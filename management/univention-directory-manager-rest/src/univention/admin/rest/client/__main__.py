@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #
-# Univention Management Console
-#  Univention Directory Manager Module
+# Univention Directory Manager
+#  REST API CLI client
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
