@@ -125,6 +125,9 @@ prepare_domain_for_ucs52_preup_checks() {
 
 	univention-ldapsearch -LLL '(&(objectClass=univentionNagiosServiceClass)(!(univentionNagiosUseNRPE=1)))' 1.1 | sed -rne 's#^dn: ##p' | while read -r dn; do udm nagios/service remove --dn "$dn"; done
 	univention-ldapsearch -LLL 'objectClass=univentionNagiosTimeperiodClass' 1.1 | sed -rne 's#^dn: ##p' | while read -r dn; do udm nagios/timeperiod remove --dn "$dn" || ldapdelete -D "cn=admin,$(ucr get ldap/base)" -y /etc/ldap.secret "$dn"; done
+
+	univention-ldapsearch -LLL '(objectClass=univentionSAMLIdpConfig)' 1.1 | ldapsearch-decode64 | sed -rne 's#^dn: ##p' | while read -r dn; do udm saml/idpconfig remove --dn "$dn"; done
+	univention-ldapsearch -LLL '(objectClass=univentionSAMLServiceProvider)' 1.1 | ldapsearch-decode64 | sed -rne 's#^dn: ##p' | while read -r dn; do udm saml/serviceprovider remove --dn "$dn"; done
 }
 
 jenkins_updates () {
