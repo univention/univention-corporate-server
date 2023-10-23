@@ -1,3 +1,9 @@
+univention-directory-manager-rest (11.0.6) unstable; urgency=medium
+
+  * Bug #55019: enhance moving of objects without sub-objects
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:05 +0100
+
 univention-directory-manager-rest (11.0.5) unstable; urgency=medium
 
   * Bug #55057: change status code to 202 for move operations
