@@ -199,13 +199,27 @@ declare -a legacy_ocs_structural=(
 	'(structuralObjectClass=univentionNagiosTimeperiodClass)'
 )
 declare -a legacy_ocs_auxiliary=(
-	'(!(objectClass=*))'
+	'(objectClass=univentionVirtualMachineGroupOC)'  # EA
+	'(objectClass=univentionVirtualMachineHostOC)'  # EA
 )
 # These are auto-removed:
 declare -a obsolete_objectclasses=(
 	'(structuralObjectClass=univentionPortalEntry)'
 	'(structuralObjectClass=univentionPortalCategory)'
 	'(structuralObjectClass=univentionPortal)'
+	'(structuralObjectClass=univentionVirtualMachineCloudType)'
+	'(structuralObjectClass=univentionVirtualMachineCloudConnection)'
+	'(structuralObjectClass=univentionVirtualMachineProfile)'
+	'(structuralObjectClass=univentionVirtualMachine)'
+	'(&(objectClass=univentionUDMProperty)(cn=UVMMGroup))'  # EA
+	'(&(objectClass=univentionUDMProperty)(cn=ManageableBy))'  # EA
+	'(&(objectClass=univentionUDMModule)(cn=uvmm/profile))'  # UDM module
+	'(&(objectClass=univentionUDMModule)(cn=uvmm/info))'  # UDM module
+	'(&(objectClass=univentionUDMModule)(cn=uvmm/cloudtype))'  # UDM module
+	'(&(objectClass=univentionUDMModule)(cn=uvmm/cloudconnection))'  # UDM module
+	'(&(objectClass=univentionUDMSyntax)(cn=univention-virtual-machine-manager-schema))'  # UDM syntax
+	'(&(objectClass=univentionLDAPExtensionACL)(cn=66univention-ldap-server_acl-master-uvmm))'  # LDAP ACL's
+	'(&(objectClass=univentionLDAPExtensionSchema)(cn=univention-virtual-machine-manager))'  # LDAP schema
 )
 
 update_check_legacy_objects () {
