@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.16-4) unstable; urgency=medium
+
+  * Bug #53944: Support AD forest child domains
+
+ -- Arvid <requate@univention.de>  Mon, 23 Oct 2023 19:38:20 +0200
+
 univention-ad-connector (14.0.16-3) unstable; urgency=medium
 
   * Bug #56603: Adjust to fixed post-read-control in python-ldap 4.0

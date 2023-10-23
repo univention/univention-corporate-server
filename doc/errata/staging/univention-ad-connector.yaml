@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-ad-connector
+fix: 14.0.16-4
+desc: |
+ This update addresses the following issues:
+ * The AD-Connector failed to handle forest child domains.
+   This has been fixed.
+bug: [53944]
