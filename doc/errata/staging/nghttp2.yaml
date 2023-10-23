@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: nghttp2
+fix: 1.18.1-1+deb9u3
+desc: |
+ This update addresses the following issue:
+ 1.18.1-1+deb9u3 (Sun, 15 Oct 2023 14:23:43 +0200)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Backport fix for CVE-2023-44487, DoS due to Rapidly creating and cancelling
+   streams.
+bug: [56761]
+cve:
+- CVE-2023-44487
