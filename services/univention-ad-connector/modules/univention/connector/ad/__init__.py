@@ -542,6 +542,7 @@ class ad(univention.connector.ucs):
 
         self.open_ad()
         self.ad_sid = decode_sid(self.ad_search_ext_s(self.ad_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'])[0][1]['objectSid'][0])
+        self.ad_schema_nc = self.ad_search_ext_s('', ldap.SCOPE_BASE, None, ['schemaNamingContext'])[0][1]['schemaNamingContext'][0].decode('UTF-8')
 
         if self.lo_ad.binddn:
             try:
@@ -573,9 +574,8 @@ class ad(univention.connector.ucs):
             prop.con_default_dn = self.dn_mapped_to_base(prop.con_default_dn, self.lo_ad.base)
 
         # Lookup list of single value attributes from AD DC Schema
-        schema_base = "CN=Schema,CN=Configuration,%s" % self.ad_ldap_base
         try:
-            result = self.__search_ad(filter='(isSingleValued=TRUE)', base=schema_base, attrlist=['lDAPDisplayName'])
+            result = self.__search_ad(filter='(isSingleValued=TRUE)', base=self.ad_schema_nc, attrlist=['lDAPDisplayName'])
         except ldap.LDAPError as msg:
             error_msg = "Failed to lookup attribute Schema from AD: %s" % msg
             ud.debug(ud.LDAP, ud.ERROR, error_msg)
