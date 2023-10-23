@@ -56,7 +56,6 @@ class UsersUserObjectProperties(GenericObjectProperties):
         'sambaLogonHours': SambaLogonHoursPropertyEncoder,
         'sambaRID': StringIntPropertyEncoder,
         'secretary': dn_list_property_encoder_for('users/user'),
-        'serviceprovider': dn_list_property_encoder_for('saml/serviceprovider'),
         'uidNumber': StringIntPropertyEncoder,
         'userexpiry': DatePropertyEncoder,
     }

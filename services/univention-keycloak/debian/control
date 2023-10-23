@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper-compat (= 13),
+ univention-join-dev,
 Standards-Version: 4.3.0.3
 
 Package: univention-keycloak-client
