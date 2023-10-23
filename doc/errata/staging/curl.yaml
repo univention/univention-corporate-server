@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: curl
+fix: 7.52.1-5+deb9u20
+desc: |
+ This update addresses the following issue:
+ 7.52.1-5+deb9u20 (Wed, 11 Oct 2023 12:46:31 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * CVE-2023-38546: cookie injection
+bug: [56757]
+cve:
+- CVE-2023-38546
