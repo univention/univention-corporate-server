@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  UMCP 2.0 messages
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -35,9 +34,8 @@
 # <https://www.gnu.org/licenses/>.
 
 """
-UMCP was a simple RPC protocol using two message types (request and
-response message). The API of the Python objects representing the
-messages are based on the class :class:`.Message`.
+A backwards compatible layer to wrap HTTP request and response messages.
+The API of the Python objects representing the messages are based on the class :class:`.Message`.
 """
 from __future__ import absolute_import, print_function
 
@@ -69,18 +67,17 @@ __all__ = ('Request', 'Response')
 
 class Message(object):
     """
-    Represents a protocol message of UMCP. It is able to parse
-    request as well as response messages.
+    Represents a wrapper for a HTTP message.
 
     :param type: message type (RESPONSE or REQUEST)
-    :param str command: UMCP command
+    :param str command: type of request (UPLOAD or COMMAND)
     :param str mime_type: defines the MIME type of the message body
     :param data: binary data that should contain a message
-    :param arguments: arguments for the UMCP command
-    :param options: options passed to the command handler. This works for request messages with MIME type application/JSON only.
+    :param arguments: the URL path which is requested.
+    :param options: options passed to the command handler. This works for request messages with MIME type application/json only.
     """
 
-    RESPONSE, REQUEST = range(0, 2)
+    RESPONSE, REQUEST = range(2)
     __counter = 0
 
     def __init__(self, type=REQUEST, command=u'', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
@@ -160,7 +157,7 @@ class Message(object):
 
 
 class Request(Message):
-    """Represents an UMCP request message"""
+    """Wraps a HTTP request message in a backwards compatible Python API format"""
 
     _user_connections = set()  # prevent garbage collection
 

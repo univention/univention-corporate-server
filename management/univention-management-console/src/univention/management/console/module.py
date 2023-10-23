@@ -107,7 +107,7 @@ command definition has two attributes:
 
 name
     is the name of the command that is passed to the UMC module. Within
-    the UMCP message it is the first argument after the UMCP COMMAND.
+    the request this is the path segement of the URL after /univention/command/.
 
 function
     defines the method to be invoked within the Python module when the
@@ -136,7 +136,7 @@ KEYWORD_PATTERN = re.compile(r'\s*,\s*')
 
 
 class Command(JSON_Object):
-    """Represents a UMCP command handled by a module"""
+    """Represents a request URL path handled by a module"""
 
     SEPARATOR = '/'
 

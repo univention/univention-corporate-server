@@ -287,8 +287,8 @@ class ACLs(object):
 
         :param str command: the command to check access for
         :param str hostname: FQDN of the host
-        :param dict options: the command options given in the UMCP request
-        :param str flavor: the flavor given in the UMCP request
+        :param dict options: the command options given in the HTTP request
+        :param str flavor: the flavor given in the HTTP request
         :rtype: bool
         """
         if not hostname:

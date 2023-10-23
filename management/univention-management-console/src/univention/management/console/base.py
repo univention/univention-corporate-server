@@ -69,7 +69,7 @@ The following Python code example matches the definition in the previous section
             result = list(range(end))
             self.finished(request.id, result)
 
-Each command methods has one parameter that contains the UMCP request of
+Each command methods has one parameter that contains the HTTP request of
 type
 :class:`~univention.management.console.message.Request`. Such
 an object has the following properties:
