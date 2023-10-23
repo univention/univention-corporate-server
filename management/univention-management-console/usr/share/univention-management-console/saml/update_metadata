@@ -51,12 +51,6 @@ with open('/usr/share/univention-management-console/saml/sp/metadata.xml', 'wb')
     fd.write(metadata)
 
 entity_id = f'https://{ucr["hostname"]}.{ucr["domainname"]}/univention/saml/metadata'
-subprocess.check_call([
-    'univention-directory-manager', 'saml/serviceprovider', 'modify'] + sys.argv[1:] + [
-    '--dn', f'SAMLServiceProviderIdentifier={escape_dn_chars(entity_id)},cn=saml-serviceprovider,cn=univention,{ucr["ldap/base"]}',
-    '--set', 'assertionLifetime=%d' % ucr.get_int('umc/saml/assertion-lifetime', 300),
-    '--set', 'serviceProviderMetadata=%s' % (metadata.decode('UTF-8'),),
-])
 # ignore failure, keycloak might not yet be installed or this is the first time and the entry doesn't yet exists in keycloak (added later by the joinscript)
 subprocess.call([
     'univention-keycloak',
