@@ -34,13 +34,17 @@
 from __future__ import print_function
 
 from argparse import ArgumentParser, Namespace
+from shutil import copy
+from subprocess import run
 from sys import exit
 from time import sleep
+from types import SimpleNamespace
 from typing import Any, Dict
 
+import ldap
 from ldap.dn import dn2str, escape_dn_chars, str2dn
 
-from univention.config_registry import ucr_factory
+from univention.config_registry import handler_set, ucr_factory
 from univention.lib.umc import Client
 
 
@@ -53,6 +57,8 @@ def parse_args() -> Namespace:
     parser.add_argument('-A', '--domain_admin', help='domain admin username', metavar='DOMAIN_UID', default='administrator')
     parser.add_argument('-P', '--domain_password', default='Univention@99', help='domain admin password')
     parser.add_argument('-S', '--sync_mode', action="store_true", help='join in synchronization mode (instead of read by default)')
+    parser.add_argument('--prepare-new-instance', default=None, help='Instance name to create with prepare-new-instance')
+    parser.add_argument('--kerberos-realm', default=None, help='Kerberos realm name to use with prepare-new-instance')
 
     options = parser.parse_args()
 
@@ -61,6 +67,12 @@ def parse_args() -> Namespace:
 
 options = parse_args()
 client = Client(options.host, options.username, options.password, language='en-US')
+
+
+def get_ad_details(ip) -> SimpleNamespace:
+    lo = ldap.initialize("ldap://%s" % ip)
+    res = lo.search_s("", ldap.SCOPE_BASE, None, ["dnsHostName", "defaultNamingContext"])
+    return SimpleNamespace(**{k: v[0].decode("UTF-8") for (k, v) in res[0][1].items()})
 
 
 def join_sync_mode() -> None:
@@ -111,7 +123,7 @@ def join_sync_mode() -> None:
 
 
 def join_read_mode() -> None:
-    """Join in read mode via UMC requests"""
+    """Join in read mode (as admember) via UMC requests"""
     send_data = {
         'ad_server_address': options.domain_host,
         'password': options.domain_password,
@@ -121,7 +133,7 @@ def join_read_mode() -> None:
     result = client.umc_command("adconnector/admember/join", send_data).result
 
     if not result:
-        print('ERROR: Failed to join ad domain!')
+        print('ERROR: Failed to join ad domain as member!')
         exit(1)
 
     progress_id = result['id']
@@ -144,15 +156,38 @@ def join_read_mode() -> None:
     print('=== AD-JOIN FINISHED ===')
 
 
+def prepare_new_instance() -> None:
+    """Setup bi-directional sync mode via prepare-new-instance"""
+    print('=== AD-PREPARE-NEW-INSTANCE STARTED ===')
+    ad_details = get_ad_details(options.domain_host)
+    run(["/usr/share/univention-ad-connector/scripts/prepare-new-instance", "-a", "create", "-c", options.prepare_new_instance], check=True)
+    run(["univention-directory-listener-ctrl", "resync", "ad-connector"], check=True)
+    handler_set([
+        "%s/ad/ldap/base=%s" % (options.prepare_new_instance, ad_details.defaultNamingContext),
+        "%s/ad/ldap/binddn=cn=Administrator,cn=users,%s" % (options.prepare_new_instance, ad_details.defaultNamingContext),
+        "%s/ad/ldap/bindpw=/etc/univention/connector/ad/bindpw" % (options.prepare_new_instance,),
+        "%s/ad/ldap/host=%s" % (options.prepare_new_instance, ad_details.dnsHostName),
+        "hosts/static/%s=%s" % (options.domain_host, ad_details.dnsHostName),
+        "%s/ad/mapping/kerberosdomain=i%s" % (options.prepare_new_instance, options.kerberos_realm),
+        "%s/ad/ldap/ssl=false" % (options.prepare_new_instance,),
+    ])
+    copy("/etc/univention/connector/ad/bindpw", "/etc/univention/%s/ad/" % options.prepare_new_instance)
+    run(["systemctl", "start", "univention-ad-%s" % options.prepare_new_instance], check=True)
+    print('=== AD-PREPARE-NEW-INSTANCE FINISHED ===')
+
+
 def join_ad() -> None:
     """Function for joining an AD domain, mimicking a join from umc"""
     if options.sync_mode:
-        # join in sync mode:
         print('=== AD-JOIN SYNC MODE SELECTED ===')
         join_sync_mode()
+    elif options.prepare_new_instance:
+        # join in sync mode:
+        print('=== AD-PREPARE-NEW-INSTANCE SYNC MODE SELECTED ===')
+        prepare_new_instance()
     else:
         # join in read mode:
-        print('=== AD-JOIN READ MODE SELECTED ===')
+        print('=== AD-JOIN READ MODE SELECTED (admember) ===')
         join_read_mode()
 
 
