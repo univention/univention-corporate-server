@@ -1,3 +1,10 @@
+univention-samba4 (11.0.4) unstable; urgency=medium
+
+  * Bug #56765: Remove samba4-saml-kerberos integration - only used for
+    simpleSAMLphp
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 08 Mar 2024 00:18:39 +0100
+
 univention-samba4 (11.0.3) unstable; urgency=medium
 
   * Bug #56661: migrate from NTP to NTPSEC
