@@ -73,6 +73,11 @@ else
 	fqdn="$hostname.$domainname"
 fi
 
+if [ "$JS_LAST_EXECUTED_VERSION" -ge "5" -a "$JS_LAST_EXECUTED_VERSION" -lt "7" ]; then
+	udm saml/serviceprovider remove "$@" --dn "SAMLServiceProviderIdentifier=https://$fqdn/univention-management-console/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base"
+fi
+
+/usr/share/univention-management-console/saml/update_metadata "$@" || die
 
 ucr set ucs/server/sso/fqdn?"ucs-sso-ng.$domainname"
 eval "$(ucr shell ucs/server/sso/fqdn)"
@@ -82,7 +87,7 @@ systemctl restart apache2
 
 if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
 	  # Register UMC as a Keycloak client, but ignore failure
-	  univention-keycloak "$@" saml/sp create --metadata-url="https://$fqdn/univention/saml/metadata" --metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" --umc-uid-mapper || die
+	  univention-keycloak "$@" saml/sp create --metadata-url="https://$fqdn/univention/saml/metadata" --metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" --umc-uid-mapper || true
 fi
 
 
