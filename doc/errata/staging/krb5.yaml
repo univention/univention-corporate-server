@@ -6,9 +6,8 @@ src: krb5
 fix: 1.17-3+deb10u6
 desc: |
  This update addresses the following issue:
- 1.17-3+deb10u6 (Sun, 22 Oct 2023 21:17:30 +0300)
- * Non-maintainer upload by the LTS Security Team.
- * CVE-2023-36054: Freeing of uninitialized pointer in kadm_rpc_xdr.c
+ * CVE-2023-36054: Denial of service through freeing uninitialized pointer
+   in `kadm_rpc_xdr.c`.
 bug: [56755]
 cve:
 - CVE-2023-36054
