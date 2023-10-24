@@ -39,14 +39,4 @@ echo "$metadata" > "/usr/share/univention-management-console/saml/sp/metadata.xm
 
 eval "$(ucr shell hostname domainname umc/saml/sp-server ldap/base umc/saml/assertion-lifetime)"
 
-if [ -n "$umc_saml_sp_server" ]; then
-	fqdn="$umc_saml_sp_server"
-else
-	fqdn="$hostname.$domainname"
-fi
-
-udm saml/serviceprovider modify "$@" \
-	--dn "SAMLServiceProviderIdentifier=https://$fqdn/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base" \
-	--set assertionLifetime="${umc_saml_assertion_lifetime:-300}" \
-	--set serviceProviderMetadata="$metadata"
 exit $?
