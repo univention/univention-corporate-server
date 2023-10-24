@@ -1,7 +1,6 @@
 04univention-samba4.uinst	usr/lib/univention-uninstall/
 96univention-samba4.inst	usr/lib/univention-install/
 98univention-samba4-dns.inst	usr/lib/univention-install/
-98univention-samba4-saml-kerberos.inst	usr/lib/univention-install/
 debian/tmp/lib/security/*.so	lib/security/
 lib/*.sh	usr/share/univention-samba4/lib/
 s4search-decode	usr/sbin/
