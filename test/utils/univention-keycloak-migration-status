@@ -1,0 +1,156 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Univention Keycloak
+#
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# Copyright 2023 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+"""Check Migration Status to the Keycloak app"""
+
+import sys
+import time
+from argparse import ArgumentParser
+
+import ldif
+
+import univention.admin.uldap
+from univention.appcenter.actions import get_action
+from univention.appcenter.app_cache import Apps
+from univention.config_registry import ucr
+
+
+def keycloak_installed(opt) -> bool:
+    domain = get_action('domain')
+    apps_cache = Apps()
+    apps = apps_cache.find("keycloak")
+    return any(app['id'] == 'keycloak' and app['is_installed_anywhere'] for app in domain.to_dict([apps]))
+
+
+def create_ldif(objects, opt):
+    print(f'Backing up objects to {opt.backup_path}\n')
+    with open(opt.backup_path, 'w+') as f:
+        ldif_writer = ldif.LDIFWriter(f)
+        for dn, obj in objects:
+            ldif_writer.unparse(dn, obj)
+
+
+def delete_objects(sso_obj):
+    lo, _ = univention.admin.uldap.getAdminConnection()
+    for dn, obj in sso_obj:
+        try:
+            lo.delete(dn)
+            print(f'Deleted {dn}')
+        except univention.admin.uexceptions.base as e:
+            print(f'Failed to delete {dn} due: {e}', file=sys.stderr)
+
+
+def get_sso_client_objects():
+    lo, _ = univention.admin.uldap.getMachineConnection()
+    oidc_obj = lo.search(
+        filter='(univentionObjectType=oidc/rpservice)',
+        base=lo.base,
+    )
+    if oidc_obj:
+        print('==============================='
+              '\nWARNING: Found OIDC objects in LDAP:', file=sys.stderr)
+        for dn, obj in oidc_obj:
+            print(dn, file=sys.stderr)
+    saml_obj = lo.search(
+        filter='(univentionObjectType=saml/serviceprovider)',
+        base=lo.base,
+    )
+    if saml_obj:
+        print('==============================='
+              '\nWARNING: Found SAML objects in LDAP:', file=sys.stderr)
+        for dn, obj in saml_obj:
+            print(dn, file=sys.stderr)
+    if not saml_obj and not oidc_obj:
+        print('No leftover SAML/OIDC objects found in LDAP')
+    return oidc_obj + saml_obj
+
+
+def migration_complete(opt):
+    migrated = True
+    sso_obj = get_sso_client_objects()
+    kc_installed = keycloak_installed(opt)
+
+    if sso_obj:
+        print('\nERROR: Migration not complete: SimpleSAMLphp or OIDC objects found in LDAP', file=sys.stderr)
+        migrated = False
+        if opt.delete:
+            print('Do you really want to delete the objects? SSO with SimpleSAMLphp or Kopano Connect will no longer work. '
+                  'In case you are unsure please read the migration guide: '
+                  'https://docs.software-univention.de/keycloak-migration/index.html')
+            confirmed = False
+            if not opt.force:
+                confirmed = input('I want to remove all SSO objects: (y/N)\n').lower() == 'y'
+            if confirmed or opt.force:
+                create_ldif(sso_obj, opt)
+                delete_objects(sso_obj)
+                migrated = True
+    else:
+        print('\nOK: No SimpleSAMLphp or OIDC objects found in LDAP')
+
+    if not kc_installed:
+        print('\nERROR: Migration not complete: Keycloak is not yet installed in domain.', file=sys.stderr)
+        migrated = False
+    else:
+        print('\nOK: Keycloak is installed in your domain.')
+    if not migrated:
+        print('\nPlease read the Keycloak migration guide https://docs.software-univention.de/keycloak-migration/index.html'
+              '\nIf you have already migrated to Keycloak, you can reexecute this script with the --delete flag, to remove all leftover LDAP objects'
+              '\n\n\n********************************'
+              '\n* FAIL: Migration not complete *'
+              '\n********************************', file=sys.stderr)
+        sys.exit(1)
+    else:
+        print('\n\n**********************'
+              '\n* Migration complete *'
+              '\n**********************')
+        sys.exit(0)
+
+
+def parse_arguments(parser):
+    parser.add_argument('-d', '--delete', action='store_true', help='Delete all saml/serviceprovider, saml/idpconfig and oic/rpservice UDM objects. A backup file will be created')
+    parser.add_argument('-f', '--force', action='store_true', help='Force deletion of all SAML or OIDC related UDM objects')
+    parser.add_argument('--backup-path', default=f'/var/univention-backup/saml_oidc_{time.time()}.ldif', help='Path where the backup file will be created')
+    return parser.parse_args()
+
+
+if __name__ == '__main__':
+
+    parser = ArgumentParser(description=__doc__)
+    opt = parse_arguments(parser)
+    if opt.delete:
+        server_role = ucr.get('server/role')
+        if server_role != 'domaincontroller_master':
+            print(f'ERROR: Server role is {server_role}, this script can only delete the objects, if must be executed on the DC primary', file=sys.stderr)
+            sys.exit(1)
+    migration_complete(opt)
