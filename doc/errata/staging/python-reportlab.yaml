@@ -6,11 +6,8 @@ src: python-reportlab
 fix: 3.3.0-2+deb9u2
 desc: |
  This update addresses the following issues:
- 3.3.0-2+deb9u2 (Wed, 11 Oct 2023 20:30:15 +0100)
- * Non-maintainer upload by the ELTS Security Team.
- * Add ignore-missing-hyphen.mashed.patch to fix the build.
- * Backport upstream fix for CVE-2019-19450.
- * Backport upstream fix for CVE-2020-28463.
+ * CVE-2019-19450: code injection in paraparser.py allows code execution.
+ * CVE-2020-28463: Server-side Request Forgery (SSRF).
 bug: [56760]
 cve:
 - CVE-2019-19450
