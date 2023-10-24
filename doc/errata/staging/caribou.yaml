@@ -6,10 +6,8 @@ src: caribou
 fix: 0.4.21-1+deb9u1
 desc: |
  This update addresses the following issue:
- 0.4.21-1+deb9u1 (Thu, 03 Jun 2021 13:04:52 +0200)
- * Non-maintainer upload by the LTS Team.
- * Fix crash when using shift characters since the fix for CVE-2020-25712 in
-   xorg-server.
+ * CVE-2020-25712: Fix crash when using shift characters since the fix
+   in `xorg-server`.
 bug: [56758]
 cve:
 - CVE-2020-25712
