@@ -8,16 +8,21 @@ desc: |
  This update addresses the following issues:
  * CVE-2019-1010305 Opening a crafted chm file might result in a buffer
    overflow.
- * CVE-2018-18584 Fixing the size of the CAB block input buffer, which is too
-   small for the maximal Quantum block, prevents an out-of-bounds write.
- * CVE-2018-18585 Blank filenames (having length zero or their 1st or 2nd byte
-   is null) should be rejected.
- * CVE-2018-14681: Out-of-bounds write in `kwajd_read_headers` in `mspack/kwajd.c`.
- * CVE-2018-14682: Off-by-one error in the `TOLOWER()` macro for CHM decompression.
- * CVE-2018-14679: Off-by-one error in the CHM PMGI/PMGL chunk number validity checks.
- * CVE-2018-14680: Off-by-one error in the CHM chunk number validity checks.
- * CVE-2017-11423: Fix mis-handling of `sys->read() errors in `cabd_read_string()`
- * CVE-2017-6419: Reject negative output length in SpanInfo 
+ * CVE-2018-18584 Fixing the size of the CAB block input buffer, which is
+   too small for the maximal Quantum block, prevents an out-of-bounds write.
+ * CVE-2018-18585 Blank filenames (having length zero or their 1st or 2nd
+   byte is null) should be rejected.
+ * CVE-2018-14681: Out-of-bounds write in `kwajd_read_headers` in
+   `mspack/kwajd.c`.
+ * CVE-2018-14682: Off-by-one error in the `TOLOWER()` macro for CHM
+   decompression.
+ * CVE-2018-14679: Off-by-one error in the CHM PMGI/PMGL chunk number
+   validity checks.
+ * CVE-2018-14680: Off-by-one error in the CHM chunk number validity
+   checks.
+ * CVE-2017-11423: Fix mis-handling of `sys->read() errors in
+   `cabd_read_string()`
+ * CVE-2017-6419: Reject negative output length in `SpanInfo`.
 bug: [56759]
 cve:
 - CVE-2019-1010305
