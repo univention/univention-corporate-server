@@ -48,7 +48,7 @@ _undivert() {
 case "$1" in
 	configure)
 		# register JavaScript hook
-		univention-config-registry set umc/web/hooks/univention-demo-configuration=univention_demo
+		univention-config-registry set umc/web/hooks/univention-demo-configuration=univention_demo directory/manager/rest/html-view-enabled=true
 
 		# disable update checks and hints for available updates
 		ucr set update/check/cron/enabled=no
@@ -66,7 +66,7 @@ case "$1" in
 		# reload services
 		deb-systemd-invoke reload apache2.service
 		deb-systemd-invoke restart slapd.service
-		deb-systemd-invoke reload univention-management-console-server.service
+		deb-systemd-invoke reload univention-management-console-server.service univention-directory-manager-rest.service
 
 		# add test data only upon initial installation
 		if [ -z "$2" ]; then
