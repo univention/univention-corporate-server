@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-9
 src: nghttp2
 fix: 1.18.1-1+deb9u3
 desc: |
- This update addresses the following issue:.
+ This update addresses the following issue:
  * CVE-2023-44487: Multiple HTTP/2 enabled web servers are vulnerable to a
    DDoS attack (Rapid Reset Attack).
 bug: [56761]
