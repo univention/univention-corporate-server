@@ -14,3 +14,6 @@ desc: |
    and can be enabled via the UCR variable
    `directory/manager/rest/html-view-enabled`.
 bug: [56731, 56734, 56714]
+erratum: 856
+announced: 2023-10-25
+support: core
