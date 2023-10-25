@@ -11,3 +11,6 @@ desc: |
  * Missing properties when creating or modifying objects via the UDM REST API
    are now correctly marked in the error response.
 bug: [56731, 56734]
+erratum: 857
+announced: 2023-10-25
+support: core
