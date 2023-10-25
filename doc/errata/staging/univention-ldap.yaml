@@ -9,3 +9,7 @@ desc: |
  * The LDAP password is not leaked in the process list anymore during
  :program:`backup2master`.
 bug: [56333]
+cve:
+  - TEMP-2023-2
+ignore:
+  - cve.TEMP-2023-2

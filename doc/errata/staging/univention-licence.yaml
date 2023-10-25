@@ -9,3 +9,7 @@ desc: |
  * During importing a license via command line the password is not given in
    plaintext to :program:`ldapsearch` calls.
 bug: [56354]
+cve:
+  - TEMP-2023-2
+ignore:
+  - cve.TEMP-2023-2

@@ -9,3 +9,7 @@ desc: |
  * :program:`univention-directory-listener-verify` now allows to give the
    LDAP password as password file argument.
 bug: [56354]
+cve:
+  - TEMP-2023-2
+ignore:
+  - cve.TEMP-2023-2

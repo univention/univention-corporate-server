@@ -9,3 +9,7 @@ desc: |
  * The LDAP password is not leaked in the process list anymore during joining
    the domain.
 bug: [56332]
+cve:
+  - TEMP-2023-2
+ignore:
+  - cve.TEMP-2023-2
