@@ -13,3 +13,6 @@ desc: |
    `/var/www/univention/meta.json` so they are available for all
    components that needs them.
 bug: [56753,56703]
+erratum: 854
+announced: 2023-10-25
+support: core
