@@ -33,6 +33,7 @@
 #
 
 import io
+import os
 
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
@@ -41,7 +42,7 @@ from setuptools import setup as orig_setup
 
 def _get_version():
     changelog = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
-    return changelog.full_version
+    return os.environ.get('PYTHON_PACKAGE_VERSION') or changelog.full_version
 
 
 def _get_description(name):

@@ -34,6 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import io
+import os
 from email.utils import parseaddr
 
 from debian.changelog import Changelog
@@ -44,6 +45,7 @@ from setuptools import Extension, setup
 dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
 dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
 realname, email_address = parseaddr(dsc['Maintainer'])
+override_version = os.environ.get('PYTHON_PACKAGE_VERSION')
 
 setup(
     package_dir={'': 'python'},
@@ -58,7 +60,7 @@ setup(
     license='GNU Affero General Public License v3',
 
     name=dch.package,
-    version=dch.version.full_version,
+    version=override_version or dch.version.full_version,
     maintainer=realname,
     maintainer_email=email_address,
 )

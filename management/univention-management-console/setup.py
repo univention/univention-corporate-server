@@ -49,6 +49,7 @@ from setuptools.command.build_py import build_py
 dch = Changelog(open('debian/changelog'))
 dsc = Deb822(open('debian/control'))
 realname, email_address = parseaddr(dsc['Maintainer'])
+override_version = os.environ.get('PYTHON_PACKAGE_VERSION')
 
 
 class BuildI18N(Command):
@@ -111,7 +112,7 @@ setup(
     test_suite='',
 
     name=dch.package,
-    version=dch.version.full_version,
+    version=override_version or dch.version.full_version,
     maintainer=realname,
     maintainer_email=email_address,
     url='https://www.univention.de/',

@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
-
+import os
 from setuptools import setup
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+
+package_version = open('debian/changelog').readline().split()[1][1:-1]
+override_version = os.environ.get('PYTHON_PACKAGE_VERSION')
+
+
 setup(
     name='python-keycloak',
-    version='0.24.0',
+    version=override_version or package_version,
     url='https://github.com/marcospereirampj/python-keycloak',
     license='The MIT License',
     author='Marcos Pereira',
