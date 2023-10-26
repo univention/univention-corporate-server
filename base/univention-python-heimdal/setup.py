@@ -35,6 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import io
+import os
 from email.utils import parseaddr
 
 import pkgconfig
@@ -47,10 +48,11 @@ d = pkgconfig.parse('heimdal-krb5')
 dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
 dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
 realname, email_address = parseaddr(dsc['Maintainer'])
+override_version = os.environ.get('PYTHON_PACKAGE_VERSION')
 
 setup(
     name=dch.package,
-    version=dch.version.full_version,
+    version=override_version or dch.version.full_version,
     description='Heimdal Kerberos Python bindings',
     maintainer=realname,
     maintainer_email=email_address,

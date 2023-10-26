@@ -31,7 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import os
+
 from setuptools import setup
+
+
+package_version = open('debian/changelog').readline().split()[1][1:-1]
+override_version = os.environ.get('PYTHON_PACKAGE_VERSION')
 
 
 setup(
@@ -44,7 +50,7 @@ setup(
     license='GNU Affero General Public License v3',
 
     name='univention-debhelper',
-    version='1.0.0',
+    version=override_version or package_version,
     maintainer='Univention GmbH',
     maintainer_email='packages@univention.de',
 )

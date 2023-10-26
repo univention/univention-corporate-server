@@ -6,12 +6,14 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+import os
 import sys
 
 from setuptools import setup
 
 
-version = open("debian/changelog").readline().split()[1][1:-1]
+package_version = open("debian/changelog").readline().split()[1][1:-1]
+override_version = os.environ.get('PYTHON_PACKAGE_VERSION')
 
 packages = ['univention', 'univention.updater']
 if sys.version_info >= (3,):
@@ -20,5 +22,5 @@ if sys.version_info >= (3,):
 setup(
     packages=packages,
     package_dir={'': 'modules'},
-    version=version,
+    version=override_version or package_version,
 )

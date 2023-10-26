@@ -30,12 +30,16 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+import os
+
 from setuptools import setup
 
 
 VER = open('debian/changelog').readline().split()[1][1:-1].split('A~')[0]
+package_version = open('debian/changelog').readline().split()[1][1:-1]
+override_version = os.environ.get('PYTHON_PACKAGE_VERSION')
 
 setup(
     package_dir={'': '.'},
-    version=VER,
+    version=override_version or package_version,
 )
