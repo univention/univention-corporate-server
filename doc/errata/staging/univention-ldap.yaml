@@ -7,7 +7,7 @@ fix: 16.0.13-5
 desc: |
  This update addresses the following issues:
  * The LDAP password is not leaked in the process list anymore during
- :program:`backup2master`.
+   :program:`backup2master`.
 bug: [56333]
 cve:
   - TEMP-2023-2
