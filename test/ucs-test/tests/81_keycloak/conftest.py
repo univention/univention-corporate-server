@@ -178,8 +178,7 @@ def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         "url": f"https://{portal_fqdn}/univention/portal",
         "fqdn": portal_fqdn,
         "title": "Univention Portal",
-        "sso_login_tile": "Login (Single sign-on)",
-        "sso_login_tile_de": "Anmelden (Single Sign-on)",
+        "sso_login_tile": {"en-US": "Login (Single sign-on)", "de-DE": "Anmelden (Single Sign-on)"},
         "tile_name_class": "portal-tile__name",
         "category_title_class": "portal-category__title",
         "categories_id": "portalCategories",
@@ -190,8 +189,7 @@ def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         "password": "univention",
         "header_menu_id": "header-button-menu",
         "portal_sidenavigation_username_class": "portal-sidenavigation--username",
-        "logout_msg": "Logout",
-        "logout_msg_de": "Abmelden",
+        "logout_msg": {"en-US": "Logout", "de-DE": "Abmelden"},
         "logout_button_id": "loginButton",
     }
 
@@ -228,13 +226,18 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         "password_id": "password",
         "login_error_css_selector": "span[class='pf-c-alert__title kc-feedback-text']",
         "password_update_error_css_selector": "span[class='pf-c-alert__title kc-feedback-text']",
-        "wrong_password_msg": "Invalid username or password.",
-        "wrong_password_msg_de": "Ungültiger Benutzername oder Passwort.",
+        "wrong_password_msg": {"en-US": "Invalid username or password.", "de-DE": "Ungültiger Benutzername oder Passwort."},
+        "changing_pw_failed": {"en-US": "Changing password failed. The password was already used.", "de-DE": "Passwort ändern fehlgeschlagen. Das Passwort wurde bereits genutzt."},
+        "pw_no_match": {"en-US": "Passwords don't match.", "de-DE": "Passwörter sind nicht identisch."},
+        "pw_too_short": {"en-US": "Changing password failed. The password is too short.", "de-DE": "Passwort ändern fehlgeschlagen. Das Passwort ist zu kurz."},
+        "specify_pw": {"en-US": "Please specify password.", "de-DE": "Bitte geben Sie ein Passwort ein."},
+        "pw_already_used": {"en-US": "Changing password failed. Password was already used.", "de-DE": "Passwort ändern fehlgeschlagen. Das Passwort wurde bereits genutzt."},
+        "unexpected_error": {"en-US": "Unexpected error when handling authentication request to identity provider.", "de-DE": "Unerwarteter Fehler während der Bearbeitung der Anfrage an den Identity Provider."},
         "kc_passwd_update_form_id": "kc-passwd-update-form",
         "password_confirm_id": "password-confirm",
         "password_new_id": "password-new",
         "password_change_button_id": "kc-form-buttons",
-        "password_update_failed_msg": "Update password failed",
+        "password_update_failed_msg": {"en-US": "Update password failed", "de-DE": "Passwort ändern fehlgeschlagen"},
         "kc_page_title_id": "kc-page-title",
     }
     return SimpleNamespace(**config)
@@ -278,9 +281,7 @@ def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleN
         selenium.get(url)
         wait_for_id(selenium, portal_config.categories_id)
         assert selenium.title == portal_config.title
-        lang = selenium.execute_script("return window.navigator.userLanguage || window.navigator.language")
-        sso_login_tile = portal_config.sso_login_tile if lang == "en-US" else portal_config.sso_login_tile_de
-        get_portal_tile(selenium, sso_login_tile, portal_config).click()
+        get_portal_tile(selenium, portal_config.sso_login_tile, portal_config).click()
         # login
         keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
         # check password change

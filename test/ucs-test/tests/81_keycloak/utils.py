@@ -65,6 +65,8 @@ def wait_for_class(driver: WebDriver, element_class: str, timeout: int = 30) -> 
 
 
 def get_portal_tile(driver: WebDriver, text: str, portal_config: SimpleNamespace) -> WebElement:
+    lang = driver.execute_script("return window.navigator.userLanguage || window.navigator.language")
+    text = text[lang]
     for tile in driver.find_elements(By.CLASS_NAME, portal_config.tile_name_class):
         if tile.text == text:
             return tile
@@ -84,6 +86,8 @@ def keycloak_password_change(
     driver.find_element(By.ID, keycloak_config.password_confirm_id).send_keys(new_password_confirm)
     driver.find_element(By.ID, keycloak_config.password_change_button_id).click()
     if fails_with:
+        lang = driver.execute_script("return window.navigator.userLanguage || window.navigator.language")
+        fails_with = fails_with[lang]
         error = driver.find_element(By.CSS_SELECTOR, keycloak_config.password_update_error_css_selector)
         assert fails_with == error.text, f"{fails_with} != {error.text}"
         assert error.is_displayed()
@@ -140,7 +144,9 @@ def keycloak_login(
     driver.find_element(By.ID, keycloak_config.username_id).send_keys(username)
     driver.find_element(By.ID, keycloak_config.password_id).send_keys(password)
     driver.find_element(By.ID, keycloak_config.login_id).click()
+    lang = driver.execute_script("return window.navigator.userLanguage || window.navigator.language")
     if fails_with:
+        fails_with = fails_with[lang]
         error = driver.find_element(By.CSS_SELECTOR, keycloak_config.login_error_css_selector)
         assert fails_with == error.text, f"{fails_with} != {error.text}"
         assert error.is_displayed()
