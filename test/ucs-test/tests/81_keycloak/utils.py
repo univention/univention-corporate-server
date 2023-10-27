@@ -74,6 +74,11 @@ def get_portal_tile(driver: WebDriver, text: str, portal_config: SimpleNamespace
 
 
 def get_language(driver: WebDriver, german: bool = False) -> str:
+    if german:
+        # TODO since chromium 119 l10n stuff does no longer work, all
+        # keycloak site are german, no matter what locale settings
+        # check at some point if we can revert this workaround
+        return 'de-DE'
     return driver.execute_script('return window.navigator.userLanguage || window.navigator.language')
 
 

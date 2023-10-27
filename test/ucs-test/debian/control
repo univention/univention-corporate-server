@@ -699,5 +699,7 @@ Depends:
  ${misc:Depends},
 Recommends:
  ucs-test-framework,
+Provides:
+ ucs-test-module,
 Description: Test scripts for the keycloak app
  This package includes test-cases for the keycloak app.
