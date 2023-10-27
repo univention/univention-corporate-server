@@ -263,8 +263,6 @@ def selenium() -> webdriver.Chrome:
     # chrome_options.add_argument("--headless")
     # chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument('ignore-certificate-errors')
-    # seems not to work for keycloak
-    chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'de_DE'})
     driver = webdriver.Chrome(options=chrome_options)
     yield driver
     print(driver.page_source)
