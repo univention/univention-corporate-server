@@ -58,7 +58,7 @@ def test_legacy_authorization_saml(legacy_authorization_setup_saml, keycloak_con
 
     # verify logon not possible
     driver = portal_login_via_keycloak(legacy_authorization_setup_saml.user, "univention", verify_login=False)
-    assert "You do not have the needed privileges to access" in driver.page_source
+    assert any(txt in driver.page_source for txt in ["You do not have the needed privileges to access", "Zugriff verboten"])
 
     # add user to group
     udm = UDM.admin().version(2)
