@@ -129,7 +129,7 @@ UCS directory service (e.g. to synchronize with an AD forest). One OU
 (organizational unit) can be defined in LDAP for each AD domain, under which the
 objects of the respective domains are synchronized. Account names need to be unique,
 naming conflicts between usernames need to be resolved by the customer.
-The configuration of further connector instances is not covered by the UMC module.
+The configuration of additional connector instances is not covered by the UMC module.
 
 Several connector instances are started parallel to each other. Each connector
 instance is operated with a self-contained configuration base. The
@@ -165,8 +165,8 @@ The filename of the converted certificate then needs to be stored in |UCSUCR|:
      connector2/ad/ldap/certificate=/etc/univention/ad-connector2.pem
 
 If a UCS synchronization is performed towards Active Directory, the replication
-of the listener module must be restarted after a further connector instance is
-created. To this end, the following command must be run:
+of the listener module must be restarted after an additional connector instance
+is created. To this end, the following command must be run:
 
 .. code-block:: console
 
