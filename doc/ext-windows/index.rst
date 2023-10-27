@@ -127,8 +127,9 @@ Synchronization of several Active Directory domains with one UCS directory servi
 It is possible to synchronize several separate Active Directory domains with one
 UCS directory service (e.g. to synchronize with an AD forest). One OU
 (organizational unit) can be defined in LDAP for each AD domain, under which the
-objects of the respective domains are synchronized. The configuration of further
-connector instances is not covered by the UMC module.
+objects of the respective domains are synchronized. Account names need to be unique,
+naming conflicts between usernames need to be resolved by the customer.
+The configuration of further connector instances is not covered by the UMC module.
 
 Several connector instances are started parallel to each other. Each connector
 instance is operated with a self-contained configuration base. The
