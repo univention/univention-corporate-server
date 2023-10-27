@@ -1476,3 +1476,39 @@ msgid "to correct these settings and delete the obsolete variables."
 msgstr ""
 "um die Konfiguration zu korrigieren und die überflüssigen Variablen zu "
 "löschen."
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:77
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:82
+#, python-brace-format
+msgid "PostgreSQL version is {current}, should be {desired}."
+msgstr "PostgreSQL Version ist {current}, sollte {desired} sein."
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:81
+msgid "PostgreSQL version is up-to-date, but is not online."
+msgstr "PostgreSQL Version ist aktuell, aber nicht online."
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:67
+msgid "No PostgreSQL version found."
+msgstr "Keine PostgreSQL-Version gefunden."
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:55
+msgid "Updating from PostgreSQL 9.6 or 9.4 to PostgreSQL 11"
+msgstr "Aktualisierung von PostgreSQL 9.6 oder 9.4 auf PostgreSQL 11"
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:47
+msgid "Check of the PostgreSQL version"
+msgstr "Überprüfen der PostgreSQL-Version"
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:48
+#, python-brace-format
+msgid ""
+"Starting with UCS {ucs[0]}.{ucs[1]}, PostgreSQL should be version {postgresql_version}.\n"
+"This step has to be performed manually as described in"
+msgstr ""
+"Ab UCS {ucs[0]}.{ucs[1]} sollte PostgreSQL Version {postgresql_version} sein.\n"
+"Dieser Schritt muss manuell durchgeführt werden, wie in"
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:58
+msgid "The migration status can be checked by executing: pg_lsclusters -h."
+msgstr "Der Migrationsstatus kann mit `pg_lsclusters -h` überprüft werden."
+

@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.6-4) unstable; urgency=medium
+
+  * Bug #56773: Add new diagnostic plugin to check if PostgreSQL was migrated
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 27 Oct 2023 13:50:43 +0200
+
 univention-management-console-module-diagnostic (6.0.6-3) unstable; urgency=medium
 
   * Bug #56562: remove the "success" plugin before running a full diagnosis
