@@ -47,7 +47,7 @@ define([
 		idProperty: '',
 
 		// storePath: String
-		//		UMCP URL of the module where query, set, remove, put, and add
+		//		UMC URL of the module where query, set, remove, put, and add
 		//		methods can be found.
 		storePath: '',
 
@@ -103,7 +103,7 @@ define([
 				this._addTransactions(type, params);
 			}
 			else {
-				// send the UMCP command
+				// send the UMC command
 				return this.umcpCommand(this.storePath + '/' + type, params, handleErrors).
 					then(lang.hitch(this, function(data) {
 						// make sure that we get an non-empty array
@@ -116,7 +116,7 @@ define([
 						}
 
 						//tools.assert(res && res instanceof Array && res.length == params.length,
-						//	lang.replace('UMCP result from {0}/{1} did not yield an non-empty array!', [this.storePath, type]));
+						//	lang.replace('UMC result from {0}/{1} did not yield an non-empty array!', [this.storePath, type]));
 						return res;
 					}));
 			}
@@ -125,7 +125,7 @@ define([
 		get: function(id, handleErrors) {
 			//console.log('get: ' + json.stringify(arguments));
 			//	summary:
-			//		Retrieves an object by its identity. This will trigger an UMCP request
+			//		Retrieves an object by its identity. This will trigger an UMC request
 			//		calling the module method 'GET'.
 			//	id: Number
 			//		The identity to use to lookup the object
@@ -137,7 +137,7 @@ define([
 		put: function(object, options, handleErrors) {
 			//console.log('put: ' + json.stringify(arguments));
 			// summary:
-			//		Stores an object. This will trigger an UMCP request calling the module
+			//		Stores an object. This will trigger an UMC request calling the module
 			//		method 'SET'.
 			// object: Object
 			//		The object to store.
@@ -153,7 +153,7 @@ define([
 		add: function(object, options, handleErrors) {
 			//console.log('add: ' + json.stringify(arguments));
 			// summary:
-			//		Stores an object. This will trigger an UMCP request calling the module
+			//		Stores an object. This will trigger an UMC request calling the module
 			//		method 'SET'.
 			// object: Object
 			//		The object to store.
@@ -168,7 +168,7 @@ define([
 		remove: function( object, options, handleErrors ) {
 			//console.log('remove: ' + json.stringify(arguments));
 			// summary:
-			//		Deletes an object by its identity. This will trigger an UCMP request
+			//		Deletes an object by its identity. This will trigger a UMC request
 			//		calling the module method 'UNSET'
 			// object: Object
 			//		The object to store.
@@ -305,7 +305,7 @@ define([
 			// returns: dojo.store.api.Store.Transaction
 			//		This represents the new current transaction. `commit()` returns a
 			//		`dojo/Deferred` object for all transactions.
-			tools.assert(!this._doingTransaction, 'Another UMCP transaction is already being processed, cannot perform two transactions simultaneously.');
+			tools.assert(!this._doingTransaction, 'Another UMC transaction is already being processed, cannot perform two transactions simultaneously.');
 			this._doingTransaction = true;
 			return {
 				commit: lang.hitch(this, this._commitTransactions),
@@ -330,7 +330,7 @@ define([
 		//		Indicates the property to use as the identity property.
 		//		The values of this property need to be unique.
 		// storePath: String?
-		//		UMCP URL of the module where query, set, remove, put, and add
+		//		UMC URL of the module where query, set, remove, put, and add
 		//		methods can be found. By default this is the module ID.
 		// moduleFlavor: String?
 		//		Specifies the module flavor which may need to be communicated to

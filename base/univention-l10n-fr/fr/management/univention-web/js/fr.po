@@ -247,25 +247,6 @@ msgstr ""
 "Les informations concernant l'erreur seront envoyées au vendeur avec "
 "quelques données concernant le système d'exploitation."
 
-#: js/tools.js:796
-msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
-msgstr ""
-"Erreur du protocole interne UMC : impossible d'analyser le corps du message "
-"UMCP."
-
-#: js/tools.js:795
-msgid ""
-"Internal UMC protocol error: The UMCP message header could not be parsed."
-msgstr ""
-"Erreur du protocole interne UMC : impossible d'analyser l'entête du message "
-"UMCP."
-
-#: js/tools.js:798
-msgid "Internal module error: An error occurred during command processing."
-msgstr ""
-"Erreur interne du module : une erreur est survenue lors du traitement de la "
-"commande."
-
 #: js/tools.js:800
 msgid ""
 "Internal module error: The initialization of the module caused a fatal error."
@@ -276,26 +257,6 @@ msgstr ""
 #: js/tools.js:789
 msgid "Internal server error."
 msgstr "Erreur interne du serveur."
-
-#: js/tools.js:792
-msgid "Internal server error: Could not connect to the module process."
-msgstr ""
-"Erreur interne du serveur : impossible de se connecter au processus du "
-"module."
-
-#: js/tools.js:793
-msgid ""
-"Internal server error: The SSL server certificate is not trustworthy. Please "
-"check your SSL configurations."
-msgstr ""
-"Erreur interne du serveur : le certificat SSL du serveur n'est pas digne de "
-"confiance. Veuillez vérifier vos réglages SSL."
-
-#: js/tools.js:791
-msgid "Internal server error: The module process died unexpectedly."
-msgstr ""
-"Erreur interne du serveur : le processus du module s'est arrêté de façon "
-"inattendue."
 
 #: js/tools.js:790
 msgid "Internal server error: The service is temporarily not available."
@@ -492,10 +453,6 @@ msgstr ""
 msgid "Space"
 msgstr "Espace"
 
-#: js/tools.js:787
-msgid "Specified locale is not available."
-msgstr "Les données de localisation demandées ne sot pas disponibles."
-
 #: js/hooks/default_menu_entries.js:372
 msgid ""
 "Starting at <b>290.- Euro/year</b> you can purchase a UCS Enterprise "
@@ -598,22 +555,6 @@ msgstr ""
 "Nous utilisons des cookies pour vous fournir certaines fonctionnalités et "
 "pouvoir garantir un service sans restriction. En cliquant sur « Accepter », "
 "vous consentez à la collecte d’informations sur ce portail."
-
-#: js/tools.js:784
-msgid ""
-"Webfrontend error: The specified UMCP command arguments of the request are "
-"invalid."
-msgstr ""
-"Erreur de l'interface Web : les arguments de la commande UMCP de la requête "
-"sont invalides."
-
-#: js/tools.js:785
-msgid ""
-"Webfrontend error: The specified arguments for the UMCP module method are "
-"invalid or missing."
-msgstr ""
-"Erreur de l'interface Web : les arguments de la méthode du module UMCP "
-"manquent ou sont invalides."
 
 #: js/tools.js:783
 msgid "Webfrontend error: The specified request is unknown."

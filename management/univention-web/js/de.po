@@ -249,25 +249,6 @@ msgstr ""
 "Informationen zu diesem Fehler werden, zusammen mit Angaben über das "
 "Betriebssystem, an den Hersteller übermittelt."
 
-#: js/tools.js:805
-msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
-msgstr ""
-"Interner UMC-Protokoll-Fehler: Der UMCP-Message-Body konnte nicht geparst "
-"werden."
-
-#: js/tools.js:804
-msgid ""
-"Internal UMC protocol error: The UMCP message header could not be parsed."
-msgstr ""
-"Interner UMC-Protokoll-Fehler: Der UMCP-Message-Header konnte nicht geparst "
-"werden."
-
-#: js/tools.js:807
-msgid "Internal module error: An error occurred during command processing."
-msgstr ""
-"Interner Modul-Fehler: Ein Fehler trat während des Ausführens des Befehls "
-"auf."
-
 #: js/tools.js:809
 msgid ""
 "Internal module error: The initialization of the module caused a fatal error."
@@ -278,24 +259,6 @@ msgstr ""
 #: js/tools.js:798
 msgid "Internal server error."
 msgstr "Interner Server-Fehler."
-
-#: js/tools.js:801
-msgid "Internal server error: Could not connect to the module process."
-msgstr ""
-"Interner Server-Fehler: Verbindung zum Modulprozess konnte nicht aufgebaut "
-"werden."
-
-#: js/tools.js:802
-msgid ""
-"Internal server error: The SSL server certificate is not trustworthy. Please "
-"check your SSL configurations."
-msgstr ""
-"Interner Server-Fehler: Das SSL-Server-Zertifikat ist nicht "
-"vertrauenswürdig. Bitte überprüfen Sie ihre SSL-Konfiguration."
-
-#: js/tools.js:800
-msgid "Internal server error: The module process died unexpectedly."
-msgstr "Interner Server-Fehler: Der Modulprozess wurde unerwartet beendet."
 
 #: js/tools.js:799
 msgid "Internal server error: The service is temporarily not available."
@@ -503,10 +466,6 @@ msgstr ""
 msgid "Space"
 msgstr "Leertaste"
 
-#: js/tools.js:796
-msgid "Specified locale is not available."
-msgstr "Die angegebene Sprachdefinition ist nicht verfügbar."
-
 #: js/hooks/default_menu_entries.js:372
 msgid ""
 "Starting at <b>290.- Euro/year</b> you can purchase a UCS Enterprise "
@@ -609,22 +568,6 @@ msgstr ""
 "einen uneingeschränkten Service gewährleisten zu können. Mit einem Klick auf "
 "\"Akzeptieren\" willigen Sie in die Erhebung von Informationen auf diesem "
 "Portal ein."
-
-#: js/tools.js:793
-msgid ""
-"Webfrontend error: The specified UMCP command arguments of the request are "
-"invalid."
-msgstr ""
-"Webfrontend-Fehler: Die angegebenen UMCP-Befehl-Argumente der Anfrage sind "
-"nicht zulässig."
-
-#: js/tools.js:794
-msgid ""
-"Webfrontend error: The specified arguments for the UMCP module method are "
-"invalid or missing."
-msgstr ""
-"Webfrontend-Fehler: Die angegebenen Argumente für die UMCP-Modul-Methode "
-"sind nicht zulässig oder fehlen."
 
 #: js/tools.js:792
 msgid "Webfrontend error: The specified request is unknown."

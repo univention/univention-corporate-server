@@ -810,7 +810,7 @@ define([
 				});
 			}
 
-			// the navigation needs a slightly modified store that uses the UMCP query
+			// the navigation needs a slightly modified store that uses the UMC query
 			// function 'udm/nav/object/query'
 			var _store = this.moduleStore;
 			if ('navigation' == this.moduleFlavor) {
@@ -1536,7 +1536,7 @@ define([
 					});
 				}, this);
 
-				// send UMCP command to move the objects
+				// send UMC command to move the objects
 				this._progressBar.reset();
 				var moveOperation = this.umcpProgressCommand(this._progressBar, 'udm/move', params).then(
 					lang.hitch(this, function(result) {

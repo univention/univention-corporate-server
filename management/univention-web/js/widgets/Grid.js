@@ -176,7 +176,7 @@ define([
 
 	return declare("umc.widgets.Grid", [ContainerWidget, StandbyMixin, _RegisterOnShowMixin], {
 		// summary:
-		//		Encapsulates a complex grid with store, UMCP commands and action buttons;
+		//		Encapsulates a complex grid with store, UMC commands and action buttons;
 		//		offers easy access to select items etc.
 
 		// actions: Object[]
@@ -214,7 +214,7 @@ define([
 		query: null,
 
 		// moduleStore: store.UmcpModuleStore
-		//		Object store for module requests using UMCP commands.
+		//		Object store for module requests using UMC commands.
 		moduleStore: null,
 
 		// footerFormatter: Function?

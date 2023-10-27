@@ -225,7 +225,7 @@ class Instance(Base):
         """
         Returns a dictionary of configuration registry variables
         found by searching for the (wildcard) expression defined by the
-        UMCP request. Additionally a list of configuration registry
+        HTTP request. Additionally a list of configuration registry
         categories can be defined.
 
         The dictionary returned is compatible with the Dojo data store

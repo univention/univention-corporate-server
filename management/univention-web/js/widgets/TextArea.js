@@ -41,7 +41,7 @@ define([
 ], function(declare, lang, when, SimpleTextarea, tools, _FormWidgetMixin) {
 	return declare("umc.widgets.TextArea", [ SimpleTextarea, _FormWidgetMixin ], {
 		// dynamicValue: String|Function
-		//		Either an UMCP command to query a value from or a javascript function.
+		//		Either a UMC command to query a value from or a javascript function.
 		//		The javascript function may return a String or a dojo/Deferred object.
 		dynamicValue: null,
 
@@ -63,7 +63,7 @@ define([
 		//FIXME: the name should be different from _loadValues, e.g., _dependencyUpdate,
 		//       and the check for all met dependencies should be done in the Form
 		_loadValues: function(/*Object?*/ params) {
-			// mixin additional options for the UMCP command
+			// mixin additional options for the UMC command
 			if (this.dynamicOptions && typeof this.dynamicOptions == "object") {
 				lang.mixin(params, this.dynamicOptions);
 			}

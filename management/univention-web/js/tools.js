@@ -502,7 +502,7 @@ define([
 			/*Object?*/ longPollingOptions,
 			/*Object?*/ args) {
 
-			// build the URL for the UMCP command
+			// build the URL for the UMC command
 			if (!(/^(get\/|set(\/|$)|auth|logout(\/|$)|saml(\/|$))/i).test(command)) {
 				command = 'command/' + command;
 			}
@@ -528,7 +528,7 @@ define([
 
 		_request: function(args) {
 			// summary:
-			//		Encapsulates an AJAX call for a given UMCP command.
+			//		Encapsulates an AJAX call for a given UMC command.
 			// returns:
 			//		A deferred object.
 
@@ -805,21 +805,11 @@ define([
 			403: _( 'You are not authorized to perform this action.' ),
 
 			404: _( 'Webfrontend error: The specified request is unknown.' ),
-			406: _( 'Webfrontend error: The specified UMCP command arguments of the request are invalid.' ),
-			407: _( 'Webfrontend error: The specified arguments for the UMCP module method are invalid or missing.'),
 			422: _( 'Validation error' ),
-			414: _( 'Specified locale is not available.' ),
 
 			500: _( 'Internal server error.' ),
 			503: _( 'Internal server error: The service is temporarily not available.' ),
-			510: _( 'Internal server error: The module process died unexpectedly.' ),
-			511: _( 'Internal server error: Could not connect to the module process.' ),
-			512: _( 'Internal server error: The SSL server certificate is not trustworthy. Please check your SSL configurations.' ),
 
-			551: _( 'Internal UMC protocol error: The UMCP message header could not be parsed.' ),
-			554: _( 'Internal UMC protocol error: The UMCP message body could not be parsed.' ),
-
-			590: _( 'Internal module error: An error occurred during command processing.' ),
 			591: _( 'Could not process the request.' ),
 			592: _( 'Internal module error: The initialization of the module caused a fatal error.' )
 		},
@@ -1832,7 +1822,7 @@ define([
 		stringOrFunction: function(/*String|Function*/ input, /*Function?*/ umcpCommand) {
 			// summary:
 			//		Transforms a string starting with 'javascript:' to a javascript
-			//		function, otherwise to an UMCP command function (if umcpCommand)
+			//		function, otherwise to a UMC command function (if umcpCommand)
 			//		is specified, and leaves a function a function.
 			//		Anything else will be converted to a dummy function.
 			// example:
@@ -1881,7 +1871,7 @@ define([
 				}
 				if (umcpCommand) {
 					// we have a reference to an ucmpCommand, we can try to execute the string as an
-					// UMCP command... return function that is ready to query dynamic values via UMCP
+					// UMC command... return function that is ready to query dynamic values via UMC
 					return function(params) {
 						return umcpCommand(input, params).then(function(data) {
 							// only return the data array

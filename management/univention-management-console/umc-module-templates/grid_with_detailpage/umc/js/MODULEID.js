@@ -147,7 +147,7 @@ define([
 				actions: actions,
 				// defines which data fields are displayed in the grids columns
 				columns: columns,
-				// a generic UMCP module store object is automatically provided
+				// a generic UMC module store object is automatically provided
 				// as this.moduleStore (see also store.getModuleStore())
 				moduleStore: this.moduleStore,
 				// initial query
@@ -164,7 +164,7 @@ define([
 				name: 'color',
 				description: _('Defines the .'),
 				label: _('Category'),
-				// Values are dynamically loaded from the server via a UMCP request.
+				// Values are dynamically loaded from the server via a UMC request.
 				// Use the property dynamicOptions to pass additional values to the server.
 				// Use staticValues to pass an array directly (see umc.widgets._SelectMixin).
 				dynamicValues: 'MODULEID/colors'

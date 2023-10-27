@@ -101,7 +101,7 @@ define([
 
 		save: function(options) {
 			// summary:
-			//			  Gather all form values and send them to the server via UMCP.
+			//			  Gather all form values and send them to the server via UMC.
 			//			  For this, the field umcpSetCommand needs to be set.
 
 			tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');

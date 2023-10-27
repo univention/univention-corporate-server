@@ -234,12 +234,12 @@ msgid ""
 msgstr ""
 
 #: js/tools.js:805
-msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
+msgid "Internal UMC protocol error: The UMC message body could not be parsed."
 msgstr ""
 
 #: js/tools.js:804
 msgid ""
-"Internal UMC protocol error: The UMCP message header could not be parsed."
+"Internal UMC protocol error: The UMC message header could not be parsed."
 msgstr ""
 
 #: js/tools.js:807

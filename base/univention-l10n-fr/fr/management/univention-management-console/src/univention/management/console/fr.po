@@ -550,15 +550,6 @@ msgstr "Type MIME inconnu"
 msgid "Unknown status code"
 msgstr "Code d'état inconnu"
 
-#: src/univention/management/console/protocol/definitions.py:73
-msgid "Unparsable message body"
-msgstr "Corps de message impossible à analyser"
-
-#: src/univention/management/console/protocol/definitions.py:72
-#: src/univention/management/console/protocol/message.py:246
-msgid "Unparsable message header"
-msgstr "Entête de message impossible à analyser"
-
 #: src/univention/management/console/modules/sanitizers.py:694
 #, python-format
 msgid "Value has to be one of %(choices)r"
@@ -589,7 +580,3 @@ msgid "Value is too short, it has to be at least of length %(minimum)d"
 msgstr ""
 "La valeur est trop courte, elle doit au minimum avoir une taille de "
 "%(minimum)d"
-
-#: src/univention/management/console/protocol/message.py:285
-msgid "error parsing UMCP message body"
-msgstr "erreur lors de l'analyse du corps du message UMCP"

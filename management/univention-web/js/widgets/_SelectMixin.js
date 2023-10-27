@@ -52,7 +52,7 @@ define([
 		umcpCommand: null,
 
 		// dynamicValues: String|Function
-		//		Either an UMCP command to query data from or a javascript function.
+		//		Either a UMC command to query data from or a javascript function.
 		//		The javascript function may return an array or a Deferred object.
 		//		The format is in either case expected to have the same format as for
 		//		staticValues. Dynamic values may be mixed with staticValues.
@@ -60,7 +60,7 @@ define([
 
 		// dynamicOptions: Object?|Function?
 		//		Reference to a dictionary containing options that are passed over to
-		//		the UMCP command specified by `dynamicValues`. Can be a function that
+		//		the UMC command specified by `dynamicValues`. Can be a function that
 		//		is expected to return a dictionary, it is called with a dict of all
 		//		values of the widget's dependencies.
 		dynamicOptions: null,
@@ -439,7 +439,7 @@ define([
 				return;
 			}
 
-			// mixin additional options for the UMCP command
+			// mixin additional options for the UMC command
 			if (this.dynamicOptions) {
 				if (typeof this.dynamicOptions == "function") {
 					lang.mixin(params, this.dynamicOptions(params));

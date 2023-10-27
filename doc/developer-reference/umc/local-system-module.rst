@@ -55,7 +55,7 @@ UMC modules
 
 Syntax types
    can be used to verify the correctness of command attributes defined by the
-   UMCP client in the request message or return values provided by the UMC
+   UMC client in the request message or return values provided by the UMC
    modules.
 
 Categories
@@ -112,8 +112,8 @@ server only passes commands to a UMC module that are defined. A command
 definition has two attributes:
 
 ``name``
-   is the name of the command that is passed to the UMC module. Within the UMCP
-   message it is the first argument after the UMCP ``COMMAND``.
+   is the name of the command that is passed to the UMC module. Within the HTTP
+   request it is the URL path after ``/univention/command/``.
 
 ``function``
    defines the method to be invoked within the Python module when the command is
@@ -158,7 +158,7 @@ section:
 .. literalinclude:: ucr/umc/python/ucr/__init__.py
    :language: python
 
-Each command methods has one parameter that contains the UMCP request. Such an
+Each command methods has one parameter that contains the UMC request. Such an
 object has the following properties:
 
 ``id``

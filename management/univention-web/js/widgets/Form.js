@@ -96,7 +96,7 @@ define([
 		content: null,
 
 		// moduleStore: store.UmcpModuleStore
-		//		Object store for module requests using UMCP commands. If given, form data
+		//		Object store for module requests using UMC commands. If given, form data
 		//		can be loaded/saved by the form itself.
 		moduleStore: null,
 
@@ -457,7 +457,7 @@ define([
 
 		load: function(/*String*/ itemID) {
 			// summary:
-			//		Send off an UMCP query to the server for querying the data for the form.
+			//		Send off an UMC query to the server for querying the data for the form.
 			//		For this the field umcpGetCommand needs to be set.
 			// itemID: String
 			//		ID of the object that should be loaded.
@@ -498,7 +498,7 @@ define([
 
 		save: function() {
 			// summary:
-			//		Gather all form values and send them to the server via UMCP.
+			//		Gather all form values and send them to the server via UMC.
 			//		For this, the field umcpSetCommand needs to be set.
 
 			tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');

@@ -146,7 +146,7 @@ define([
 				this._readyDeferred = new Deferred();
 			}
 
-			// mixin additional options for the UMCP command
+			// mixin additional options for the UMC command
 			if (this.dynamicOptions && typeof this.dynamicOptions == "object") {
 				lang.mixin(params, this.dynamicOptions);
 			}
