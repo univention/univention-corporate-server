@@ -278,6 +278,11 @@ run_setup_join () {
 	ucr unset --forced update/available
 
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
+
+	# TODO find a better place for this
+	# currently neither the app nor UCS creates the SAML login portal entry, we need it for our tests
+	udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
+
 	return $rv
 }
 
