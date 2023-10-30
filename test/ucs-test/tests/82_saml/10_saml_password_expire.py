@@ -2,6 +2,8 @@
 ## desc: Check whether SSO is not possible with expired password flag on user account
 ## tags: [saml,skip_admember]
 ## join: true
+## packages:
+##   - univention-saml
 ## exposure: dangerous
 
 import pytest
