@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: xorg-server
+fix: 2:1.19.2-1+deb9u15
+desc: |
+ This update addresses the following issues:
+ 2:1.19.2-1+deb9u15 (Mon, 23 Oct 2023 19:03:02 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-5367 Xi/randr: incorrect handling of appending/prepending
+   properties
+ * CVE-2023-5380 mi: possible use after free when switching screens
+bug: [56784]
+cve:
+- CVE-2023-5367
+- CVE-2023-5380
