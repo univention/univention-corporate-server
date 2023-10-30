@@ -3,6 +3,8 @@
 ## tags: [saml]
 ## roles-not: [domaincontroller_master]
 ## join: true
+## packages:
+##   - univention-saml
 ## exposure: safe
 ## tags:
 ##  - skip_admember
