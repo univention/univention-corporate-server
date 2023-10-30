@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: dbus
+fix: 1.12.28-0+deb10u1
+desc: |
+ This update addresses the following issue:
+ 1.12.28-0+deb10u1 (Mon, 23 Oct 2023 10:29:25 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * New upstream stable release. Notable changes: - CVE-2023-34969: denial of
+   service if a monitor is active.
+bug: [56778]
+cve:
+- CVE-2023-34969
