@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: firefox-esr
+fix: 115.4.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ 115.4.0esr-1~deb10u1 (Thu, 26 Oct 2023 10:30:33 +0200)
+ * Backport to buster.
+ 115.4.0esr-1 (Wed, 25 Oct 2023 06:21:28 +0900)
+ * New upstream release.
+ * Fixes for mfsa2023-46, also known as: CVE-2023-5721, CVE-2023-5732,
+   CVE-2023-5724, CVE-2023-5725, CVE-2023-5728, CVE-2023-5730.
+bug: [56780]
+cve:
+- CVE-2023-5721
+- CVE-2023-5732
+- CVE-2023-5724
+- CVE-2023-5725
+- CVE-2023-5728
+- CVE-2023-5730
