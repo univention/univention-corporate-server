@@ -4,6 +4,8 @@
 ##  - saml
 ##  - univention
 ## join: true
+## packages:
+##   - univention-saml
 ## exposure: dangerous
 ## tags:
 ##  - skip_admember

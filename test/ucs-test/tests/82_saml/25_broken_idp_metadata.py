@@ -3,6 +3,8 @@
 ## tags: [saml]
 ## bugs: [39355]
 ## join: true
+## packages:
+##   - univention-saml
 ## exposure: dangerous
 
 import os
