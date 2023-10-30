@@ -1,0 +1,44 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libmspack
+fix: 0.5-1.A~4.4.9.202310301240
+desc: |
+ This update addresses the following issues:
+ 0.5-1+deb9u4 (Sun, 31 Oct 2021 19:58:39 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2019-1010305 Opening a crafted chm file might result in a buffer
+   overflow.
+ 0.5-1+deb9u3 (Fri, 26 Oct 2018 19:03:02 +0200)
+ * CVE-2018-18584 Fixing the size of the CAB block input buffer, which is too
+   small for the maximal Quantum block, prevents an out-of-bounds write.
+ * CVE-2018-18585 Blank filenames (having length zero or their 1st or 2nd byte
+   is null) should be rejected.
+ 0.5-1+deb9u2 (Thu, 02 Aug 2018 19:18:37 +0200)
+ * Non-maintainer upload.
+ * Add security related patches: - 0b0ef9344255 ("kwaj_read_headers(): fix
+   handling of non-terminated strings") CVE-2018-14681 (Closes: 904799). -
+   4fd9ccaa54e1 ("Fix off-by-one error in chmd TOLOWER() fallback")
+   CVE-2018-14682 (Closes: 904800). - 72e70a921f0f ("Fix off-by-one bounds
+   check on CHM PMGI/PMGL chunk numbers and reject empty filenames.")
+   CVE-2018-14679, CVE-2018-14680 (Closes: 904802, 904801).
+ 0.5-1+deb9u1 (Wed, 16 Aug 2017 21:42:50 +0200)
+ * Correct rejection of empty strings.
+ * Fix mis-handling of sys->read() errors in cabd_read_string()
+   (CVE-2017-11423).
+ * Reject negative output length in SpanInfo (CVE-2017-6419)
+ .
+ 0.9-1 (Tue, 26 Aug 2003 18:04:14 +0200)
+ * Initial Release.
+bug: [56783]
+cve:
+- CVE-2019-1010305
+- CVE-2018-18584
+- CVE-2018-18585
+- CVE-2018-14681
+- CVE-2018-14682
+- CVE-2018-14679
+- CVE-2018-14680
+- CVE-2017-11423
+- CVE-2017-6419
