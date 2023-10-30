@@ -2,6 +2,8 @@
 ## desc: Check whether it is possible to change expired password
 ## tags: [saml, skip_admember]
 ## join: true
+## packages:
+##   - univention-saml
 ## exposure: dangerous
 
 import time

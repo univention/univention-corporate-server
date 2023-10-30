@@ -4,6 +4,8 @@
 ## bugs: [45042]
 ## roles: [domaincontroller_master]
 ## join: true
+## packages:
+##   - univention-saml
 ## exposure: dangerous
 
 import subprocess
