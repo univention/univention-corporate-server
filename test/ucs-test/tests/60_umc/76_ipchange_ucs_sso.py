@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: Check if ip_change also changes the ucs-sso entry
 ## roles-not: [basesystem]
+## packages:
+##   - univention-saml
 ## exposure: dangerous
 
 import sys

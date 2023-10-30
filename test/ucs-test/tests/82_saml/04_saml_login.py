@@ -2,6 +2,8 @@
 ## desc: SSO Login at UMC as Service Provider
 ## tags: [saml]
 ## join: true
+## packages:
+##   - univention-saml
 ## exposure: safe
 ## tags:
 ##  - skip_admember
