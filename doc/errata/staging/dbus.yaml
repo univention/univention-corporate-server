@@ -6,11 +6,7 @@ src: dbus
 fix: 1.10.32-0+deb9u3
 desc: |
  This update addresses the following issue:
- 1.10.32-0+deb9u3 (Mon, 23 Oct 2023 15:29:00 +0200)
  * CVE-2023-34969: denial of service if a monitor is active.
- * Backport patches to respect $HOME when doing DBUS_COOKIE_SHA1
-   authentication.
- * Run the test suite.
 bug: [56782]
 cve:
 - CVE-2023-34969
