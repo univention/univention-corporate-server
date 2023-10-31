@@ -6,11 +6,9 @@ src: xorg-server
 fix: 2:1.20.4-1+deb10u10
 desc: |
  This update addresses the following issues:
- 2:1.20.4-1+deb10u10 (Mon, 23 Oct 2023 19:03:02 +0200)
- * Non-maintainer upload by the LTS Team.
- * CVE-2023-5367 Xi/randr: incorrect handling of appending/prepending
-   properties
- * CVE-2023-5380 mi: possible use after free when switching screens
+ * CVE-2023-5367: Out-of-bounds write in
+   `xichangedeviceproperty/rrchangeoutputproperty`.
+ * CVE-2023-5380: Use-after-free bug in destroywindow, when switching screens.
 bug: [56777]
 cve:
 - CVE-2023-5367
