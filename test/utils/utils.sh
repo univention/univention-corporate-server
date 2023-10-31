@@ -129,6 +129,7 @@ prepare_domain_for_ucs52_preup_checks () {
 
 	univention-ldapsearch -LLL '(objectClass=univentionSAMLIdpConfig)' 1.1 | ldapsearch-decode64 | sed -rne 's#^dn: ##p' | while read -r dn; do udm saml/idpconfig remove --dn "$dn"; done
 	univention-ldapsearch -LLL '(objectClass=univentionSAMLServiceProvider)' 1.1 | ldapsearch-decode64 | sed -rne 's#^dn: ##p' | while read -r dn; do udm saml/serviceprovider remove --dn "$dn"; done
+	./univention-keycloak-migration-status -f -d
 }
 
 jenkins_updates () {
@@ -295,22 +296,8 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 install_keycloak() {
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		# Install keycloak
-		local admin_password="${1:-univention}" rv=0 nameserver1
-		printf '%s' "$admin_password" >/tmp/univention
-		kc_server_sso_fqdn="ucs-sso-ng.$(ucr get domainname)"
-		univention-certificate new -name "$kc_server_sso_fqdn" -days "${ssl_default_days:-1825}" || die
-		PASSWORD=$(makepasswd --chars=20)
-		SECRETFILE="/etc/idp-ldap-user.secret"
-		udm users/ldap create --set username=sys-idp-user --set password="$PASSWORD" --set lastname='idp-user' --set name='idp-user' --position="cn=users,$(ucr get ldap/base)"
-		if [ $? = 0 ]; then
-			touch "$SECRETFILE"
-			chmod 640 "$SECRETFILE"
-			chown root:"DC Backup Hosts" "$SECRETFILE"
-			printf '%s' "$PASSWORD" > "$SECRETFILE"
-		fi
 		switch_to_test_app_center
 		. utils-keycloak.sh && install_upgrade_keycloak --set ucs/self/registration/check_email_verification="True"
-		./univention-keycloak-migration-status -f -d
 	fi
 
 	. utils-keycloak.sh && keycloak_saml_idp_setup
