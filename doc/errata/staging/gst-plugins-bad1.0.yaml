@@ -6,14 +6,10 @@ src: gst-plugins-bad1.0
 fix: 1.10.4-1+deb9u4
 desc: |
  This update addresses the following issues:
- 1.10.4-1+deb9u4 (Fri, 27 Oct 2023 22:55:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-40476 h265parser: Fix possible overflow using
-   max_sub_layers_minus1
- * CVE-2023-40475 mxfdemux: Check number of channels for AES3 audio
-   (CVE-2023-40475)
- * CVE-2023-40474 mxfdemux: Fix integer overflow causing out of bounds writes
-   when handling invalid uncompressed video
+ * CVE-2023-40476: Fix possible overflow using `max_sub_layers_minus1`
+ * CVE-2023-40475: Check number of channels for AES3 audio
+ * CVE-2023-40474: Fix integer overflow causing out of bounds writes when
+   handling invalid uncompressed video
 bug: [56786]
 cve:
 - CVE-2023-40476
