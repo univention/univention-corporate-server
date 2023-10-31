@@ -6,34 +6,9 @@ src: openjdk-8
 fix: 8u392-ga-1~deb9u1
 desc: |
  This update addresses the following issues:
- 8u392-ga-1~deb9u1 (Thu, 26 Oct 2023 10:55:48 +0200)
- * Backport to stretch.
- 8u392-ga-1 (Sat, 21 Oct 2023 21:26:54 +0200)
- [ Emmanuel Bourg ]
- * Provide versioned java-runtime, java-runtime-headless, java-sdk and
-   java-sdk-headless virtual packages
- [ Thorsten Glaser ]
- * Link with -Wl,--no-as-needed like openjdk-11 in case 8u ever loses the
-   mapfiles (cf. #1031521)
- * Depend on libasmtools-java on buster, bullseye as well
- * New upstream release
- * CVEs - CVE-2023-22067 - CVE-2023-22081
- * Security fixes - JDK-8286503, JDK-8312367: Enhance security classes -
-   JDK-8297856: Improve handling of Bidi characters - JDK-8303384: Improved
-   communication in CORBA - JDK-8305815, JDK-8307278: Update Libpng to 1.6.39
-   (not relevant, as we use the system libraries) - JDK-8309966: Enhanced TLS
-   connections
- * Other changes see
-   https://mail.openjdk.org/pipermail/jdk8u-dev/2023-October/017616.html
- * Use b07 for aarch32, patch it to b08/ga, aarch32-b08 doesn’t exist yet
- * Update pathnames used by the embedded library removal code (repacking)
- * Overhaul d/copyright using both upstream notices and diff review
- * Upload sponsored by QVEST ⮡ dıgıtal
- 8u382-ga-2 (Thu, 03 Aug 2023 02:55:51 +0200)
- * Update 8u382-ga-1 changelog entry
- * On releases that have it, switch to libjpeg-dev B-D so that certain
-   derivatives can reuse d/control
- * Use default gcc-13 on trixie/sid, mantic
+ * CVE-2023-22067: IOR deserialization issue in CORBA (8303384).
+ * CVE-2023-22081: certificate path validation issue during client
+   authentication (8309966).
 bug: [56785]
 cve:
 - CVE-2023-22067
