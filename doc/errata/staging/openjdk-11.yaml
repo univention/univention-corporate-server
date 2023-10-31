@@ -6,28 +6,8 @@ src: openjdk-11
 fix: 11.0.21+9-1~deb10u1
 desc: |
  This update addresses the following issue:
- 11.0.21+9-1~deb10u1 (Mon, 23 Oct 2023 08:32:45 +0200)
- * Non-maintainer upload by the LTS Team.
- * Backport to buster.
- 11.0.21+9-1 (Wed, 18 Oct 2023 09:28:04 +0200)
- * OpenJDK 11.0.21 release, build 9. - CVE-2023-22081. - Release notes:
-   https://www.oracle.com/java/technologies/javase/11-0-21-relnotes.html#R11_0_21
- [ Vladimir Petko ]
- * d/test: update problemlist.
- * d/p: drop exclude-broken-tests.patch.
- * d/p/reproducible-properties-timestamp.diff: use the privileged action to
-   read the system property (JDK-8272157, 914278).
- [ Matthias Klose ]
- * Build using GCC 13 on development versions.
- [ Pushkar Kulkarni ]
- * Handle limited ECC capabilities of NSS on older releases.
- 11.0.21~4ea-1 (Thu, 24 Aug 2023 12:53:49 +0200)
- * OpenJDK 11.0.21 release, build 4 (early access).
- * d/copyright: remove liblcms from excluded files.
- * Refresh patch for 11.0.21+2 ea.
- * d/t/jtreg-autopkgtest.{sh,in}: JDK-8232153 - set NSS_DEFAULT_DB_TYPE to let
-   sun/security/pkcs11/Secmod/AddTrustedCert.java pass.
- * Explicitly configure --without-jtreg with the nocheck profile
+ * CVE-2023-22081: certificate path validation issue during client
+   authentication (8309966).
 bug: [56776]
 cve:
 - CVE-2023-22081
