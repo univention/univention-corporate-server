@@ -153,7 +153,7 @@ def main():
                 lo, po = univention.admin.uldap.getAdminConnection(start_tls=0)
             else:
                 lo, po = univention.admin.uldap.getMachineConnection(start_tls=0)
-        except IOError:
+        except OSError:
             print(_("Error: user and/or password not specified"), file=sys.stderr)
             parser.print_help(sys.stderr)
             sys.exit(1)

@@ -228,10 +228,10 @@ class Translation(NullTranslation):
 
         try:
             self._translation = gettext.translation(self._domain, languages=(Translation.locale.language, ), localedir=self._localedir)
-        except IOError:
+        except OSError:
             try:
                 self._translation = gettext.translation(self._domain, languages=('%s_%s' % (Translation.locale.language, Translation.locale.territory), ), localedir=self._localedir)
-            except IOError:
+            except OSError:
                 self._translation = None
 
     def __new__(cls, *args, **kwargs):

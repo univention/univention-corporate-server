@@ -12,7 +12,7 @@ from os import chown, mkdir
 from os.path import join
 from pwd import getpwnam
 from shutil import rmtree
-from socket import create_connection, error as socket_error
+from socket import create_connection
 from subprocess import Popen
 from sys import exit
 from tempfile import mkdtemp
@@ -148,7 +148,7 @@ class Listener:
             result = sock.recv(100).decode('ASCII')
 
             sock.close()
-        except socket_error as ex:
+        except OSError as ex:
             print('E: error talking to UDN on %s: %s' % (hostname, ex))
             return
 

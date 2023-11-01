@@ -78,7 +78,7 @@ def _setup_logger():
             handler = logging.FileHandler(LOG_FILE)
             handler.setFormatter(formatter)
             base_logger.addHandler(handler)
-        except EnvironmentError:
+        except OSError:
             pass
         _setup_logger._setup = True
     return base_logger

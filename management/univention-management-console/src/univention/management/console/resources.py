@@ -839,7 +839,7 @@ class Meta(Resource):
         try:
             with open(self.META_JSON_PATH) as fd:
                 meta_data = json.load(fd)
-        except (EnvironmentError, ValueError) as exc:
+        except (OSError, ValueError) as exc:
             CORE.error('meta.json is not available: %s' % (exc,))
             meta_data = {}
 
@@ -872,7 +872,7 @@ class Info(Resource):
         try:
             with gzip.open('/usr/share/doc/univention-management-console-server/changelog.Debian.gz') as fd:
                 line = fd.readline().decode('utf-8', 'replace')
-        except IOError:
+        except OSError:
             return
         try:
             return self.CHANGELOG_VERSION.match(line).groups()[0]

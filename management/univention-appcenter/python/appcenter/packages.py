@@ -117,7 +117,7 @@ def package_lock():
     try:
         fd = open(LOCK_FILE, 'w')
         fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    except EnvironmentError:
+    except OSError:
         raise LockError('Could not acquire lock!')
     else:
         package_logger.debug('Holding LOCK')
@@ -127,7 +127,7 @@ def package_lock():
             package_logger.debug('Releasing LOCK')
             try:
                 os.unlink(LOCK_FILE)
-            except EnvironmentError:
+            except OSError:
                 pass
             fd.close()
 

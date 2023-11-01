@@ -329,7 +329,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 
                 # we got a new line -> send to info handler
                 self.progress_state.info(output.strip(), logger_name='process')
-            except (OSError, IOError):
+            except OSError:
                 # something unexpected happened -> break loop
                 break
 

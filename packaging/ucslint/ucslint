@@ -155,7 +155,7 @@ class DebianPackageCheck(object):
                     module, pattern, linenumber = result.groups()
                     override = (module, pattern, int(linenumber) if pattern and linenumber else None)
                     self.overrides.add(override)
-        except EnvironmentError as ex:
+        except OSError as ex:
             if ex.errno != ENOENT:
                 print('WARNING: load debian/ucslint.overrides: %s' % (ex,), file=sys.stderr)
 

@@ -110,24 +110,24 @@ def write_json(percentage):
 def compute():
     try:
         percentage = read_progress()
-    except EnvironmentError as exc:
+    except OSError as exc:
         print('Error while reading progress: %s' % exc)
     else:
         try:
             percentage = add_updater_context(percentage)
-        except EnvironmentError as exc:
+        except OSError as exc:
             print('Error while adding context: %s' % exc)
         else:
             try:
                 write_json(percentage)
-            except EnvironmentError as exc:
+            except OSError as exc:
                 print('Error while writing json: %s' % exc)
 
 
 def main():
     try:
         os.unlink('/var/www/univention/maintenance/updater.json')
-    except EnvironmentError:
+    except OSError:
         print('Failed to delete the status file /var/www/univention/maintenance/updater.json')
     duration = 2
     while True:

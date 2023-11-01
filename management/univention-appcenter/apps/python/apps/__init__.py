@@ -54,7 +54,7 @@ class Instance(umcm.Base):
         locale.setlocale(locale.LC_ALL, str(self.locale))
         try:
             log_to_logfile()
-        except IOError:
+        except OSError:
             pass
 
     @simple_response
