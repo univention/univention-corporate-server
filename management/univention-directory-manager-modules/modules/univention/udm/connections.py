@@ -61,7 +61,7 @@ class LDAP_connection(object):
     def _wrap_connection(cls, func, **kwargs):
         try:
             return func(**kwargs)
-        except IOError:
+        except OSError:
             raise ConnectionError('Could not read secret file').with_traceback(sys.exc_info()[2])
         except univention.admin.uexceptions.authFail:
             raise ConnectionError('Credentials invalid').with_traceback(sys.exc_info()[2])

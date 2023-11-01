@@ -66,7 +66,7 @@ class Cache(metaclass=Plugin):
         try:
             stat = os.stat(self._cache_file)
             return str(stat.st_mtime)
-        except (EnvironmentError):
+        except (OSError):
             return ""
 
     def _load(self):
@@ -74,7 +74,7 @@ class Cache(metaclass=Plugin):
         try:
             with open(self._cache_file) as fd:
                 self._cache = json.load(fd)
-        except (EnvironmentError, ValueError):
+        except (OSError, ValueError):
             get_logger("cache").exception(f"Error loading {self._cache_file}")
         else:
             self._loaded = True

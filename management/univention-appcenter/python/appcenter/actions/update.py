@@ -135,7 +135,7 @@ class Update(UniventionAppAction):
                         pass
                     else:
                         ret[fname] = etag.rstrip('\n')
-        except EnvironmentError:
+        except OSError:
             pass
         return ret
 
@@ -299,7 +299,7 @@ class Update(UniventionAppAction):
                 archive_content = zipped_file.read()
             with open(os.path.join(app_cache.get_cache_dir(), '.tmp.tar'), 'wb') as extracted_file:
                 extracted_file.write(archive_content)
-        except (zlib.error, EnvironmentError) as exc:
+        except (OSError, zlib.error) as exc:
             self.warn('Error while reading %s: %s' % (local_archive, exc))
             return False
         else:
@@ -329,5 +329,5 @@ class Update(UniventionAppAction):
         for fname in glob(os.path.join(cache_dir, '*')):
             try:
                 os.unlink(fname)
-            except EnvironmentError as exc:
+            except OSError as exc:
                 self.warn('Cannot delete %s: %s' % (fname, exc))

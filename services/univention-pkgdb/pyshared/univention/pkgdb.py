@@ -144,7 +144,7 @@ def log(message):
     try:
         with open("/var/log/univention/pkgdb.log", "a") as logfile:  # TODO: persistent handle?
             logfile.write(time.strftime('%G-%m-%d %H:%M:%S') + ' ' + message + '\n')
-    except EnvironmentError:
+    except OSError:
         # no log, no real problem
         pass
 

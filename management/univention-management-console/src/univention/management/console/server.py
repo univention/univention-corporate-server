@@ -191,12 +191,12 @@ class Server(object):
             return  # we are the child process
         try:
             children = list(shared_memory.children.items())
-        except EnvironmentError:
+        except OSError:
             children = []
         for _child, pid in children:
             try:
                 os.kill(pid, signal)
-            except EnvironmentError as exc:
+            except OSError as exc:
                 CORE.process('Failed sending signal %d to process %d: %s' % (signal, pid, exc))
 
     def run(self):
