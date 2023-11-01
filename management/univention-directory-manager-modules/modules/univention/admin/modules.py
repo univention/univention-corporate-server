@@ -38,7 +38,7 @@ import copy
 import importlib
 import locale
 import os
-from importlib import reload_module
+from importlib import reload as reload_module
 from typing import Any, Dict, List, Optional, Set, Union  # noqa: F401
 
 import ldap
