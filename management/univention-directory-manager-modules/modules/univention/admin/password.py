@@ -32,7 +32,6 @@
 
 """|UDM| password encryption methods."""
 
-from __future__ import absolute_import
 
 import hashlib
 import re

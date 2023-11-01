@@ -31,8 +31,6 @@
 
 """Configure UCS-domain and forward DNS servers."""
 
-from __future__ import absolute_import
-
 from argparse import SUPPRESS, ArgumentParser, Namespace
 from collections import OrderedDict
 from ipaddress import IPv4Address, IPv6Address, ip_address

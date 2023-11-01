@@ -32,7 +32,6 @@
 
 """|UDM| module for the user contact objects"""
 
-from __future__ import absolute_import
 
 import univention.admin
 import univention.admin.allocators
