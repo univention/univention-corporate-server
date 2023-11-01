@@ -432,7 +432,7 @@ class UPCFileTester:
         # the raw version is required to calculate the correct position.
         # tests will be done with unwrapped version.
         try:
-            self.raw = open(filename, 'r').read(self.maxsize)
+            self.raw = open(filename).read(self.maxsize)
         except UnicodeDecodeError:
             self.raw = ''
         lines = self.raw.replace('\\\n', '  ').replace('\\\r\n', '   ')
