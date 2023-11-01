@@ -39,8 +39,6 @@ import shlex
 import subprocess
 from logging import getLogger
 
-import six
-
 
 try:
     from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple  # noqa: F401
@@ -157,7 +155,7 @@ def pidof(name, docker='/var/run/docker.pid'):
     log = getLogger(__name__)
 
     children = {}  # type: Dict[int, List[int]]
-    if isinstance(docker, six.string_types):
+    if isinstance(docker, str):
         try:
             with open(docker) as stream:
                 docker = int(stream.read(), 10)

@@ -35,7 +35,6 @@
 
 """|UDM| library for changing user pasword"""
 
-import six
 from ldap.filter import filter_format
 
 import univention.admin.handlers.users.user
@@ -74,5 +73,5 @@ def change(username, password):
     object = objects[0]
 
     object.open()
-    object['password'] = six.text_type(password)
+    object['password'] = str(password)
     object.modify()

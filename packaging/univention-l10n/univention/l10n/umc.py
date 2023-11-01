@@ -68,7 +68,6 @@ import xml.etree.ElementTree as ET
 from email.utils import formatdate
 
 import polib
-import six
 from debian.deb822 import Deb822, Packages
 
 from .helper import Error, call, make_parent_dir
@@ -353,7 +352,7 @@ def create_po_file(po_file, package, files, language='python', template=False):
 
     if os.path.isfile(pot_file):
         os.unlink(pot_file)
-    if isinstance(files, six.string_types):
+    if isinstance(files, str):
         files = [files]
     call(
         'xgettext',
