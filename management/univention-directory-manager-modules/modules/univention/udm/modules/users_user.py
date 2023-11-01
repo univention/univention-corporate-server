@@ -32,7 +32,6 @@
 
 """Module and object specific for "users/user" UDM module."""
 
-from __future__ import absolute_import, unicode_literals
 
 from ..encoders import (
     Base64BinaryPropertyEncoder, DatePropertyEncoder, DisabledPropertyEncoder, HomePostalAddressPropertyEncoder,

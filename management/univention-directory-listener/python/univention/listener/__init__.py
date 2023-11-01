@@ -43,7 +43,6 @@ To create a listener module (LM) with this API, create a Python file in
 See :file:`/usr/share/doc/univention-directory-listener/examples/` for examples.
 """
 
-from __future__ import absolute_import
 
 from .api_adapter import ListenerModuleAdapter
 from .exceptions import ListenerModuleConfigurationError, ListenerModuleRuntimeError
