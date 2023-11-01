@@ -40,7 +40,6 @@ import traceback
 import zlib
 from urllib.parse import urlparse, urlunsplit
 
-import six
 from saml2 import BINDING_HTTP_ARTIFACT, BINDING_HTTP_POST, BINDING_HTTP_REDIRECT
 from saml2.client import Saml2Client
 from saml2.ident import code as encode_name_id, decode as decode_name_id
@@ -120,7 +119,7 @@ class SamlError(HTTPError):
             return self.missing_key(exc)
         if isinstance(exc, SignatureError):
             return self.signature_error(exc)
-        six.reraise(etype, exc, etraceback)
+        raise exc.with_traceback(etraceback)
 
     @error
     def unknown_principal(self, exc):

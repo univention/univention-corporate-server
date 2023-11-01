@@ -35,20 +35,13 @@
 # <https://www.gnu.org/licenses/>.
 
 from argparse import Action
-
-import six
+from tempfile import TemporaryDirectory
 
 from univention.appcenter.actions import UniventionAppAction, get_action
 from univention.appcenter.app_cache import AppCenterCache, Apps, default_server
 from univention.appcenter.log import get_logfile_logger
 from univention.appcenter.ucr import ucr_get
 from univention.lib.ucs import UCS_Version
-
-
-if six.PY2:
-    from backports.tempfile import TemporaryDirectory
-else:
-    from tempfile import TemporaryDirectory
 
 
 class CheckUcsVersion(Action):

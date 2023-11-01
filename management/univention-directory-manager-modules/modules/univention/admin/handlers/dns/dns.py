@@ -34,8 +34,6 @@
 
 from typing import TYPE_CHECKING
 
-import six
-
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -89,7 +87,7 @@ def rewrite(filter_s, **args):
     for key, value in args.items():
         mapping.register(key, value)
     univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-    return six.text_type(filter_p)
+    return str(filter_p)
 
 
 MAP_SEARCH = {

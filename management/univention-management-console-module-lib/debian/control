@@ -14,7 +14,6 @@ Architecture: all
 Provides:
  ${python3:Provides},
 Depends:
- python3-six,
  shell-univention-lib (>> 3.0.14-1),
  univention-management-console-server (>= 12.0.31-10),
  univention-updater,

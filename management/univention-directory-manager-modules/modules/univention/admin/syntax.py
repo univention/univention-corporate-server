@@ -55,7 +55,6 @@ from typing import TYPE_CHECKING, Any, Callable, Iterator, Pattern, Sequence, Ty
 import ldap
 import ldap.dn
 import PIL
-import six
 from dateutil.parser import parse as duparse
 from ldap.filter import escape_filter_chars, filter_format
 from ldap.schema import AttributeType, ObjectClass
@@ -500,7 +499,7 @@ class MultiSelect(ISyntax):
     def parse(self, value):
         # type: (Any) -> list[str]
         # required for UDM CLI
-        if isinstance(value, six.string_types):
+        if isinstance(value, str):
             value = list(map(lambda x: x, shlex.split(value)))
 
         if not self.empty_value and not value:
@@ -879,9 +878,9 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                                 return []
 
                             if ldap_attr is not None:
-                                return lo.search(filter=six.text_type(lookup_filter), attr=ldap_attr, **module_search_options)
+                                return lo.search(filter=str(lookup_filter), attr=ldap_attr, **module_search_options)
                             else:
-                                return lo.searchDn(filter=six.text_type(lookup_filter), **module_search_options)
+                                return lo.searchDn(filter=str(lookup_filter), **module_search_options)
                         return module.lookup(None, lo, filter_s, **module_search_options)
 
                     if ldap_attr:
@@ -2676,46 +2675,27 @@ class emailAddress(simple):
     Traceback (most recent call last):
     ...
     valueError:
-    >>> import six
-    >>> if six.PY3:
-    ...   emailAddress.parse('A@b@c@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
-    ... else:
-    ...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+    >>> emailAddress.parse('A@b@c@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     valueError:
-    >>> if six.PY3:
-    ...   emailAddress.parse('a"b(c)d,e:f;g<h>i[j\\k]l@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
-    ... else:
-    ...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+    >>> emailAddress.parse('a"b(c)d,e:f;g<h>i[j\\k]l@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     valueError:
-    >>> if six.PY3:
-    ...   emailAddress.parse('just"not"right@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
-    ... else:
-    ...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+    >>> emailAddress.parse('just"not"right@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     valueError:
-    >>> if six.PY3:
-    ...   emailAddress.parse('1234567890123456789012345678901234567890123456789012345678901234+x@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
-    ... else:
-    ...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+    >>> emailAddress.parse('1234567890123456789012345678901234567890123456789012345678901234+x@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     valueError:
-    >>> if six.PY3:
-    ...   emailAddress.parse('i_like_underscore@but_its_not_allowed_in_this_part.example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
-    ... else:
-    ...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+    >>> emailAddress.parse('i_like_underscore@but_its_not_allowed_in_this_part.example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     valueError:
-    >>> if six.PY3:
-    ...   emailAddress.parse('QA[icon]CHOCOLATE[icon]@test.com') # doctest: +IGNORE_EXCEPTION_DETAIL
-    ... else:
-    ...   raise univention.admin.uexceptions.valueError('py2 does not have validate_email') # doctest: +IGNORE_EXCEPTION_DETAIL
+    >>> emailAddress.parse('QA[icon]CHOCOLATE[icon]@test.com') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     valueError:
@@ -3132,7 +3112,7 @@ class dnsName(simple):
     def parse(cls, text):
         if not text:
             raise univention.admin.uexceptions.valueError(_("Missing value!"))
-        assert isinstance(text, six.string_types)
+        assert isinstance(text, str)
         labels = list(cls._split(text))
         rel, root = (labels[:-1], labels) if labels[-1] == "" else (labels, labels + [""])
 
@@ -3855,7 +3835,7 @@ class _ClassChoices(type):
         return cls._auto_choices()
 
 
-class _CachedLdap(six.with_metaclass(_ClassChoices, combobox)):
+class _CachedLdap(combobox, metaclass=_ClassChoices):
     """Meta-class to lazily fetch |LDAP| schema information on first access."""
 
     empty_value = True
@@ -5573,7 +5553,7 @@ class SambaLogonHours(MultiSelect):
     @classmethod
     def parse(self, value):
         # required for UDM CLI: in this case the keys MUST be of type int
-        if isinstance(value, six.string_types):
+        if isinstance(value, str):
             if len(value) == 42 and not value.strip('abcdef0123456789'):
                 from univention.admin.handlers.users.user import logonHoursUnmap
                 value = logonHoursUnmap([value.encode('ASCII')])

@@ -51,8 +51,13 @@ from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union  
 import dns.resolver
 import ldap
 import ldap.sasl
-import six
+import ldb
 from ldap.filter import filter_format
+from samba.dcerpc import nbt, security
+from samba.dcerpc.security import DOMAIN_RID_ADMINISTRATOR, DOMAIN_RID_ADMINS
+from samba.ndr import ndr_unpack
+from samba.net import Net
+from samba.param import LoadParm
 
 import univention.debug as ud
 import univention.lib.package_manager
@@ -60,18 +65,6 @@ import univention.uldap
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.interfaces import Interfaces
 from univention.lib.misc import custom_groupname
-
-
-if not six.PY2:
-    import ldb
-    from samba.dcerpc import nbt, security
-    from samba.dcerpc.security import DOMAIN_RID_ADMINISTRATOR, DOMAIN_RID_ADMINS
-    from samba.ndr import ndr_unpack
-    from samba.net import Net
-    from samba.param import LoadParm
-else:
-    DOMAIN_RID_ADMINS = 512
-    DOMAIN_RID_ADMINISTRATOR = 500
 
 
 # Ensure univention debug is initialized
@@ -242,31 +235,7 @@ def flush_nscd_hosts_cache():
 
 
 def decode_sid(value):
-    if six.PY3:
-        return ndr_unpack(security.dom_sid, value)
-    # SID in AD
-    #
-    #   | Byte 1         | Byte 2-7           | Byte 9-12                | Byte 13-16 |
-    #   ----------------------------------------------------------------------------------------------------------------
-    #   | Der erste Wert | Gibt die Laenge    | Hier sind jetzt          | siehe 9-12 |
-    #   | der SID, also  | des restlichen     | die eiegntlichen         |            |
-    #   | der Teil nach  | Strings an, da die | SID Daten.               |            |
-    #   | S-             | SID immer relativ  | In einem int Wert        |            |
-    #   |                | kurz ist, meistens | sind die Werte           |            |
-    #   |                | nur das 2. Byte    | Hexadezimal gespeichert. |            |
-    #
-    sid = 'S-'
-    sid += "%d" % ord(value[0])
-
-    sid_len = ord(value[1])
-
-    sid += "-%d" % ord(value[7])
-
-    for i in range(sid_len):
-        res = ord(value[8 + (i * 4)]) + (ord(value[9 + (i * 4)]) << 8) + (ord(value[10 + (i * 4)]) << 16) + (ord(value[11 + (i * 4)]) << 24)
-        sid += "-%u" % res
-
-    return sid
+    return ndr_unpack(security.dom_sid, value)
 
 
 def check_ad_account(ad_domain_info, username, password, ucr=None):
@@ -362,9 +331,8 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
     user_sid = decode_sid(res[0][1]["objectSid"][0])
     admin_sid = u"%s-%d" % (domain_sid, DOMAIN_RID_ADMINISTRATOR)
     admins_sid = "%s-%d" % (domain_sid, DOMAIN_RID_ADMINS)
-    if six.PY3:
-        admin_sid = security.dom_sid(admin_sid)
-        admins_sid = security.dom_sid(admins_sid)
+    admin_sid = security.dom_sid(admin_sid)
+    admins_sid = security.dom_sid(admins_sid)
 
     if user_sid == admin_sid:
         ud.debug(ud.MODULE, ud.PROCESS, "User is default AD Administrator")
@@ -782,61 +750,23 @@ SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES = {
 CLDAP_RES = namedtuple('CLDAP_RES', 'forest dns_domain domain_name pdc_dns_name pdc_name server_site client_site')
 
 
-def cldap_finddc(ip, use_samba_lib=six.PY3):
+def cldap_finddc(ip):
     # type: (str, bool) -> CLDAP_RES
-    if use_samba_lib:
-        lp = LoadParm()
-        lp.load('/dev/null')
-        net = Net(creds=None, lp=lp)
-        cldap_res = net.finddc(address=ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
-    else:
-        cmd = ['samba-tool', 'domain', 'info', ip]
-        p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-        out, _ = p1.communicate()
-        output = out.decode('UTF-8').rstrip()
-        if not output:
-            raise RuntimeError("No output from command: %s" % " ".join(cmd))
-        res = {}
-        for line in output.split('\n'):
-            try:
-                fieldname, value = line.split(':', 1)
-            except ValueError as exc:
-                raise RuntimeError("Parsing samba-tool output failed: %s (%s)\nfull output:\n%s" % (line, exc, output))
-            fieldname = fieldname.rstrip()
-            try:
-                res[SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES[fieldname]] = value.lstrip()
-            except KeyError:
-                pass  # Unknown field, output may have changed
-
-        for fieldname, key in list(SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES.items()):
-            if key not in res:
-                raise RuntimeError("Missing field in samba-tool output: %s\nfull output:\n%s" % (fieldname, output))
-        cldap_res = CLDAP_RES(**res)
+    lp = LoadParm()
+    lp.load('/dev/null')
+    net = Net(creds=None, lp=lp)
+    cldap_res = net.finddc(address=ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
     return cldap_res
 
 
-def get_defaultNamingContext(ad_server_ip, use_samba_lib=six.PY3):
+def get_defaultNamingContext(ad_server_ip):
     # type: (str, bool) -> str
-    if use_samba_lib:
-        try:
-            remote_ldb = ldb.Ldb()
-            remote_ldb.connect(url="ldap://%s" % ad_server_ip)
-            return str(remote_ldb.get_default_basedn())
-        except ldb.LdbError as exc:
-            raise RuntimeError(exc)
-    else:
-        cmd = ['ldapsearch', '-xLLL', '-h', ad_server_ip, '-s', 'base', '-b', '', 'defaultNamingContext']
-        try:
-            p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-            output, _ = p1.communicate()
-        except OSError as exc:
-            raise RuntimeError("Command failed: %s (%s)" % (" ".join(cmd), exc))
-        lines = output.rstrip().decode('UTF-8').split('\n')
-        if len(lines) < 2:
-            raise RuntimeError("No output from command: %s" % " ".join(cmd))
-        if not lines[1].startswith('defaultNamingContext: '):
-            raise RuntimeError("defaultNamingContext not found on %s" % (ad_server_ip,))
-        return lines[1][22:]
+    try:
+        remote_ldb = ldb.Ldb()
+        remote_ldb.connect(url="ldap://%s" % ad_server_ip)
+        return str(remote_ldb.get_default_basedn())
+    except ldb.LdbError as exc:
+        raise RuntimeError(exc)
 
 
 def lookup_adds_dc(ad_server="", ucr=None, check_dns=True):

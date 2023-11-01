@@ -20,7 +20,6 @@ Depends:
  lsb-release,
  lsof,
  psmisc,
- python3-six,
  rsyslog,
  univention-archive-key,
  univention-base-files (= ${source:Version}),

@@ -57,7 +57,6 @@ Architecture: all
 Depends:
  gnupg,
  python3-mysqldb,
- python3-six,
  python3-univention,
  python3-univention-admin-diary,
  python3-univention-config-registry,

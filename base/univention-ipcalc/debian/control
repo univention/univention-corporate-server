@@ -10,7 +10,6 @@ Build-Depends:
  python3-pytest,
  python3-pytest-cov,
  python3-setuptools,
- python3-six,
 
 Package: univention-ipcalc
 Architecture: all
@@ -28,7 +27,6 @@ Description: UCS - ipcalc tool for network
 Package: python3-univention-ipcalc
 Architecture: all
 Depends:
- python3-six,
  ${python3:Depends},
 Description: UCS - ipcalc tool for network
  This package contain the Python 3 files for the ipcalc tool.

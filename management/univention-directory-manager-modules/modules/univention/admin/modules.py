@@ -39,13 +39,12 @@ import copy
 import importlib
 import locale
 import os
+from importlib import reload as reload_module
 from logging import getLogger
 from typing import Any, Union, overload  # noqa: F401
 
 import ldap
-import six
 from ldap.filter import filter_format
-from six.moves import reload_module
 
 import univention.admin
 import univention.admin.handlers
@@ -190,7 +189,7 @@ def get(module):
     # FIXME: raise Exception instead of returning None
     if not module:
         return None  # type: ignore
-    if isinstance(module, six.string_types):
+    if isinstance(module, str):
         return modules.get(module)  # type: ignore
     return module  # type: ignore[return-value]
 
@@ -737,7 +736,7 @@ def superordinate_names(module_name):
     """Return name of superordinate module."""
     module = get(module_name)
     names = getattr(module, 'superordinate', [])
-    if isinstance(names, six.string_types):
+    if isinstance(names, str):
         names = [names]
     return names
 
@@ -829,7 +828,7 @@ def layout(module_name, object=None):
                     for row in line:
                         single = False
                         nrow = []
-                        if isinstance(row, six.string_types):
+                        if isinstance(row, str):
                             single = True
                             row = [row]
                         for field in row:

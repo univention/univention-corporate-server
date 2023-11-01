@@ -19,7 +19,6 @@ Build-Depends:
  python3-pytest-mock,
  python3-pytest-timeout,
  python3-setuptools,
- python3-six,
  python3-univention-debhelper,
 Standards-Version: 3.5.2
 
@@ -110,7 +109,6 @@ Architecture: all
 Depends:
  ifupdown,
  python3-lazy-object-proxy,
- python3-six,
  python3-univention-debhelper,
  ${misc:Depends},
  ${python3:Depends},

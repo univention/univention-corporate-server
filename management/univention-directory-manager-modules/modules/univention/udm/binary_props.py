@@ -37,10 +37,10 @@ from __future__ import absolute_import, unicode_literals
 import base64
 import bz2
 import codecs
+from io import BytesIO
 from typing import BinaryIO, NamedTuple, Optional, Union, cast  # noqa: F401
 
 import magic
-from six import BytesIO, string_types
 
 
 FileType = NamedTuple('FileType', [('mime_type', str), ('encoding', str), ('text', str)])
@@ -61,7 +61,7 @@ def get_file_type(filename_or_file):
         old_pos = f.tell()
         txt = f.read()
         f.seek(old_pos)
-    elif isinstance(filename_or_file, string_types):
+    elif isinstance(filename_or_file, str):
         with open(filename_or_file, 'rb') as fp:
             txt = fp.read()
     else:

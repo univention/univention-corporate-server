@@ -34,14 +34,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# import psutil # our psutil is outdated. re-enable when methods are supported
+import http.client
 import os.path
 import ssl
+import urllib.request
 from contextlib import contextmanager
 from hashlib import md5
 from urllib.parse import ParseResult, urlparse
-
-# import psutil # our psutil is outdated. re-enable when methods are supported
-from six.moves import http_client, urllib_request
 
 import univention.management.console as umc
 from univention.admin.handlers.computers import (
@@ -127,7 +127,7 @@ def create_url(server: str, prefix: str, username: str, password: str, port: str
     return ParseResult(scheme=scheme, netloc=netloc, path=path, params='', query='', fragment='').geturl()
 
 
-class HTTPSConnection(http_client.HTTPSConnection):
+class HTTPSConnection(http.client.HTTPSConnection):
     """Verified HTTP Connection, Bug #30620"""
 
     def __init__(self, *args, **kwargs):
@@ -139,7 +139,7 @@ class HTTPSConnection(http_client.HTTPSConnection):
         super(HTTPSConnection, self).__init__(*args, context=ssl_context, **kwargs)
 
 
-class HTTPSHandler(urllib_request.HTTPSHandler):
+class HTTPSHandler(urllib.request.HTTPSHandler):
 
     def https_open(self, req):
         return self.do_open(HTTPSConnection, req)
@@ -154,16 +154,16 @@ def install_opener(ucr):
     handler = []
     proxy_http = ucr.get('proxy/http')
     if proxy_http:
-        handler.append(urllib_request.ProxyHandler({'http': proxy_http, 'https': proxy_http}))
+        handler.append(urllib.request.ProxyHandler({'http': proxy_http, 'https': proxy_http}))
     handler.append(HTTPSHandler())
-    opener = urllib_request.build_opener(*handler)
-    urllib_request.install_opener(opener)
+    opener = urllib.request.build_opener(*handler)
+    urllib.request.install_opener(opener)
 
 
 def urlopen(request):
     # use this in __init__ and app_center
     # to have the proxy handler installed globally
-    return urllib_request.urlopen(request, timeout=60)
+    return urllib.request.urlopen(request, timeout=60)  # noqa: S310
 
 
 def get_current_ram_available():

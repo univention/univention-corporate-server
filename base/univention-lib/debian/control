@@ -27,7 +27,6 @@ Depends:
  python3-magic,
  python3-pil,
  python3-samba,
- python3-six,
  python3-univention,
  python3-univention-config-registry,
  ${misc:Depends},

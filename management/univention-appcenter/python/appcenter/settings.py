@@ -38,8 +38,6 @@
 import os
 import os.path
 
-from six import string_types
-
 from univention.appcenter.ini_parser import (
     IniSectionAttribute, IniSectionBooleanAttribute, IniSectionListAttribute, TypedIniSectionObject,
 )
@@ -90,7 +88,7 @@ class Setting(TypedIniSectionObject):
             value = ucr_get(self.name)
             if value is not None:
                 return self.sanitize_value(app, value)
-        if isinstance(self.initial_value, string_types):
+        if isinstance(self.initial_value, str):
             return ucr_run_filter(self.initial_value)
         return self.initial_value
 

@@ -38,8 +38,7 @@
 import os
 from argparse import REMAINDER
 from tempfile import gettempdir
-
-from six.moves.urllib_request import Request
+from urllib.request import Request
 
 from univention.appcenter.actions import StoreAppAction, UniventionAppAction, possible_network_error
 from univention.appcenter.exceptions import NetworkError
@@ -61,7 +60,7 @@ class DevTest(UniventionAppAction):
     def _download_file(self, server, app, fname):
         url = os.path.join(server or app.get_server(), 'univention-repository', app.get_ucs_version(), 'maintained', 'component', app.component_id, 'test')
         self.log('Downloading "%s"...' % url)
-        request = Request(url)
+        request = Request(url)  # noqa: S310
         response = urlopen(request)
         content = response.read()
         self.log('Writing to "%s"...' % fname)

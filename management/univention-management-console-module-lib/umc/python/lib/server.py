@@ -33,11 +33,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import locale
 import subprocess
 import time
-
-import six
 
 from univention.lib.i18n import Translation
 from univention.management.console.error import ServerError
@@ -51,21 +48,6 @@ _ = Translation('univention-management-console-module-lib').translate
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc'
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
-
-
-class MessageSanitizer(StringSanitizer):
-
-    def _sanitize(self, value, name, further_args):
-        value = super(MessageSanitizer, self)._sanitize(value, name, further_args)
-        if six.PY2 and isinstance(value, six.text_type):
-            # unicodestr -> bytestr (for use in command strings)
-            for encoding in (locale.getpreferredencoding(), 'UTF-8', 'ISO8859-1'):
-                try:
-                    value = value.encode(encoding)
-                    break
-                except UnicodeEncodeError:
-                    pass
-        return value
 
 
 class Server(object):
@@ -93,7 +75,7 @@ class Server(object):
     def ping(self):
         return {"success": True}
 
-    @sanitize(message=MessageSanitizer(default=''))
+    @sanitize(message=StringSanitizer(default=''))
     def reboot(self, request):
         message = _('The system will now be restarted')
         if request.options['message']:
@@ -104,7 +86,7 @@ class Server(object):
 
         self.finished(request.id, None, message)
 
-    @sanitize(message=MessageSanitizer(default=''))
+    @sanitize(message=StringSanitizer(default=''))
     def shutdown(self, request):
         message = _('The system will now be shut down')
         if request.options['message']:

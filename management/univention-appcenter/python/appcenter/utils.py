@@ -35,6 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import http.client
 import ipaddress
 import os
 import os.path
@@ -43,6 +44,7 @@ import shutil
 import socket
 import ssl
 import time
+import urllib.request
 from collections import OrderedDict
 from configparser import ParsingError, RawConfigParser
 from hashlib import md5, sha256
@@ -59,8 +61,6 @@ from urllib.parse import urlencode
 from uuid import uuid4
 
 from ldap.filter import filter_format
-from six import string_types
-from six.moves import http_client, urllib_request
 
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.ucr import ucr_get, ucr_keys
@@ -127,7 +127,7 @@ def docker_bridge_network_conflict():
 def app_is_running(app):
     # type: (Union[App, str]) -> Optional[bool]
     from univention.appcenter.app_cache import Apps
-    if isinstance(app, string_types):
+    if isinstance(app, str):
         app = Apps().find(app)
     if app:
         if not app.docker:
@@ -348,12 +348,12 @@ def verbose_http_error(exc):
         strerror = str(exc)
     if isinstance(exc, ssl.CertificateError):
         strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server() + ' (%s)' % (strerror,)
-    if isinstance(exc, http_client.BadStatusLine):
+    if isinstance(exc, http.client.BadStatusLine):
         strerror = _('There was a problem with the HTTP response of the server (BadStatusLine). Please try again later.')
     return strerror
 
 
-class HTTPSConnection(http_client.HTTPSConnection):
+class HTTPSConnection(http.client.HTTPSConnection):
     """Verified HTTP Connection, Bug #30620"""
 
     def __init__(self, *args, **kwargs):
@@ -365,7 +365,7 @@ class HTTPSConnection(http_client.HTTPSConnection):
         super(HTTPSConnection, self).__init__(*args, context=ssl_context, **kwargs)
 
 
-class HTTPSHandler(urllib_request.HTTPSHandler):
+class HTTPSHandler(urllib.request.HTTPSHandler):
 
     def https_open(self, req):
         return self.do_open(HTTPSConnection, req)
@@ -376,12 +376,12 @@ def urlopen(request):
         handler = []
         proxy_http = ucr_get('proxy/http')
         if proxy_http:
-            handler.append(urllib_request.ProxyHandler({'http': proxy_http, 'https': proxy_http}))
+            handler.append(urllib.request.ProxyHandler({'http': proxy_http, 'https': proxy_http}))
         handler.append(HTTPSHandler())
-        opener = urllib_request.build_opener(*handler)
-        urllib_request.install_opener(opener)
+        opener = urllib.request.build_opener(*handler)
+        urllib.request.install_opener(opener)
         urlopen._opener_installed = True
-    return urllib_request.urlopen(request, timeout=60)
+    return urllib.request.urlopen(request, timeout=60)  # noqa: S310
 
 
 urlopen._opener_installed = False  # type: ignore
@@ -390,7 +390,7 @@ urlopen._opener_installed = False  # type: ignore
 def get_md5(content):
     # type: (bytes) -> str
     m = md5()
-    if isinstance(content, string_types):
+    if isinstance(content, str):
         content = content.encode('utf-8')
     m.update(content)
     return m.hexdigest()
@@ -406,7 +406,7 @@ def get_md5_from_file(filename):
 def get_sha256(content):
     # type: (bytes) -> str
     m = sha256()
-    if isinstance(content, string_types):
+    if isinstance(content, str):
         content = content.encode('utf-8')
     m.update(content)
     return m.hexdigest()
@@ -548,7 +548,7 @@ def send_information(action, app=None, status=200, value=None):
     utils_logger.debug('tracking information: %s' % str(values))
     try:
         request_data = urlencode(values).encode('utf-8')
-        request = urllib_request.Request(url, request_data)
+        request = urllib.request.Request(url, request_data)  # noqa: S310
         urlopen(request)
     except Exception as exc:
         utils_logger.info('Error sending app infos to the App Center server: %s' % exc)

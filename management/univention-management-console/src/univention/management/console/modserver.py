@@ -45,7 +45,6 @@ import sys
 import tempfile
 import traceback
 
-import six
 import tornado.httputil
 import tornado.locale
 from tornado.httpserver import HTTPServer
@@ -139,14 +138,13 @@ class ModuleServer(object):
         signal.signal(signal.SIGHUP, self.signal_handler_reload)
         signal.signal(signal.SIGUSR1, self.signal_handler_reload)
 
-        if not six.PY2:
-            # TODO: remove in UCS 5.1:
-            # allow other threads which are not created by asyncio to start the asyncio loop
-            # this is important for UMC modules which call finish() in the thread instead of the main thread!
-            import asyncio
+        # TODO: remove in UCS 5.1:
+        # allow other threads which are not created by asyncio to start the asyncio loop
+        # this is important for UMC modules which call finish() in the thread instead of the main thread!
+        import asyncio
 
-            from tornado.platform.asyncio import AnyThreadEventLoopPolicy
-            asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
+        from tornado.platform.asyncio import AnyThreadEventLoopPolicy
+        asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
 
         server = HTTPServer(
             application,
@@ -360,10 +358,7 @@ class Handler(RequestHandler):
 
         msg.headers = dict(self.request.headers)
         msg.http_method = self.request.method
-        if six.PY2:
-            msg.cookies = {x.key.decode('ISO8859-1'): x.value.decode('ISO8859-1') for x in self.request.cookies.values()}
-        else:
-            msg.cookies = {x.key: x.value for x in self.request.cookies.values()}
+        msg.cookies = {x.key: x.value for x in self.request.cookies.values()}
         for name, value in list(msg.cookies.items()):
             if name == self.suffixed_cookie_name('UMCSessionId'):
                 msg.cookies['UMCSessionId'] = value
@@ -394,8 +389,6 @@ class Handler(RequestHandler):
             for key, val in response.headers.items():
                 self.set_header(key, val)
         for key, item in response.cookies.items():
-            if six.PY2 and not isinstance(key, bytes):
-                key = key.encode('utf-8')  # bug in python Cookie!
             if not isinstance(item, dict):
                 item = {'value': item}
             self.set_cookie(key, **item)

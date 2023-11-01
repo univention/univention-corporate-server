@@ -62,7 +62,6 @@ Conflicts:
  univention-system-setup-appliance,
 Depends:
  openbox,
- python3-six,
  python3-univention-appcenter,
  shell-univention-lib,
  univention-apache (>= 7.0.16-10),

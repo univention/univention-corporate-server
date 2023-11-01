@@ -46,16 +46,9 @@ from collections.abc import Mapping, MutableMapping
 from enum import IntEnum
 from stat import S_ISREG
 
-import six
-
 from univention.config_registry.handler import run_filter
 
 
-if six.PY2:
-    from io import open
-
-    def overload(f):  # type ignore
-        pass
 try:
     from types import TracebackType  # noqa: F401
     from typing import overload  # noqa: F811
@@ -245,7 +238,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
             reg.load()
 
         self.autoload = Load.MANUAL  # prevent recursion!
-        strict = six.PY2 and self.is_true('ucr/encoding/strict')
+        strict = False  # self.is_true('ucr/encoding/strict')
         self.autoload = autoload
 
         for reg in self._registry.values():
@@ -409,8 +402,6 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         except RuntimeError:  # maximum recursion depth exceeded
             value = b''
 
-        if six.PY2:
-            return value
         return value.decode("UTF-8")
 
     @overload
@@ -598,7 +589,7 @@ class _ConfigRegistry(dict):
                 if file_stat.st_mtime <= self.mtime and fn == self.file:
                     return
 
-                with open(fn, 'r', encoding='utf-8') as reg_file:
+                with open(fn, encoding='utf-8') as reg_file:
                     if reg_file.readline() == '' or reg_file.readline() == '':
                         continue
 
@@ -666,7 +657,7 @@ class _ConfigRegistry(dict):
             except EnvironmentError as ex:
                 if ex.errno == errno.EBUSY:
                     with open(filename, 'w+', encoding='utf-8') as fd:
-                        fd.write(open(temp_filename, 'r', encoding='utf-8').read())
+                        fd.write(open(temp_filename, encoding='utf-8').read())
                     os.unlink(temp_filename)
                 else:
                     # In this case the temp file created above in this

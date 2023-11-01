@@ -55,8 +55,6 @@ from http.client import HTTPException, HTTPSConnection
 from http.cookies import Morsel, SimpleCookie
 from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union, overload  # noqa: F401
 
-import six
-
 from univention.config_registry import ConfigRegistry
 
 
@@ -95,7 +93,7 @@ class ConnectionError(Exception):
         self.reason = reason
 
 
-class HTTPError(six.with_metaclass(_HTTPType, Exception)):
+class HTTPError(Exception, metaclass=_HTTPType):
     """
     Base class for |HTTP| errors.
     A specialized sub-class if automatically instantiated based on the |HTTP| return code.
@@ -158,7 +156,7 @@ class HTTPError(six.with_metaclass(_HTTPType, Exception)):
         # type: () -> str
         traceback = ''
         data = self.response.data
-        if self.status >= 500 and isinstance(self.response.data, dict) and isinstance(self.response.data.get('traceback'), six.string_types) and 'Traceback (most recent call last)' in self.response.data['traceback']:
+        if self.status >= 500 and isinstance(self.response.data, dict) and isinstance(self.response.data.get('traceback'), str) and 'Traceback (most recent call last)' in self.response.data['traceback']:
             data = data.copy()
             traceback = '\n%s' % (data.pop('traceback'),)
         return '%s on %s (%s): %s%s' % (self.status, self.hostname, self.request.path, data, traceback)

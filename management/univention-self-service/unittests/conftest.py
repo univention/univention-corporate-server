@@ -31,11 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-
 import sys
 
 import pytest
-from six import get_method_self
 
 
 @pytest.fixture()
@@ -48,7 +46,7 @@ def mocked_conn(mocker, lo, pos):
     mocker.patch.object(umc_ldap, '_getMachineConnection', return_value=[lo, pos])
     mocker.patch.object(umc_ldap, '_getAdminConnection', return_value=[lo, pos])
     yield
-    get_method_self(umc_ldap.machine_connection).__dict__['_LDAP__ldap_connections'].clear()
+    umc_ldap.machine_connection.__self__.__dict__['_LDAP__ldap_connections'].clear()
 
 
 @pytest.fixture()

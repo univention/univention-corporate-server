@@ -41,8 +41,6 @@ import re
 from configparser import DuplicateSectionError, NoOptionError, NoSectionError, ParsingError, RawConfigParser
 from copy import deepcopy
 
-from six import with_metaclass
-
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.utils import get_locale
@@ -161,7 +159,7 @@ class IniSectionListAttribute(IniSectionAttribute):
         return values
 
 
-class IniSectionObject(with_metaclass(UniventionMetaClass, object)):
+class IniSectionObject(metaclass=UniventionMetaClass):
     _main_attr_name = 'name'
 
     def __init__(self, **kwargs):
@@ -221,7 +219,7 @@ class TypedIniSectionObjectMetaClass(UniventionMetaClass):
         return new_cls
 
 
-class TypedIniSectionObject(with_metaclass(TypedIniSectionObjectMetaClass, IniSectionObject)):
+class TypedIniSectionObject(IniSectionObject, metaclass=TypedIniSectionObjectMetaClass):
     _type_attr = 'type'
 
     @classmethod

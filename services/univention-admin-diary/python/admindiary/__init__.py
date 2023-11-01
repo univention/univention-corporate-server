@@ -37,8 +37,6 @@ from datetime import datetime
 from socket import gethostname
 from typing import Dict, List  # noqa: F401
 
-import six
-
 from univention.config_registry import ConfigRegistry
 
 
@@ -117,14 +115,14 @@ class DiaryEntry(object):
 
     def assert_types(self):
         # type: () -> None
-        if not isinstance(self.username, six.string_types):
+        if not isinstance(self.username, str):
             raise TypeError('DiaryEntry() argument "username" has to be "string", but is: %s (%s)' % (type(self.username), self.username))
-        if not isinstance(self.hostname, six.string_types):
+        if not isinstance(self.hostname, str):
             raise TypeError('DiaryEntry().hostname has to be "string", but is: %s (%s)' % (type(self.hostname), self.hostname))
-        if not isinstance(self.args, dict) or not all(isinstance(key, six.string_types) and isinstance(value, six.string_types) for key, value in self.args.items()):
+        if not isinstance(self.args, dict) or not all(isinstance(key, str) and isinstance(value, str) for key, value in self.args.items()):
             raise TypeError('DiaryEntry() argument "args" has to be "dict of string/string", but is: %s (%s)' % (type(self.args), self.args))
         if self.message is not None:
-            if not isinstance(self.message, dict) or not all(isinstance(key, six.string_types) and isinstance(value, six.string_types) for key, value in self.message.items()):
+            if not isinstance(self.message, dict) or not all(isinstance(key, str) and isinstance(value, str) for key, value in self.message.items()):
                 raise TypeError('DiaryEntry() argument "message" has to be "dict of string/string", but is: %s (%s)' % (type(self.message), self.message))
             for locale, message in self.message.items():
                 try:
@@ -133,11 +131,11 @@ class DiaryEntry(object):
                     raise TypeError('DiaryEntry() argument "message" (%s, %r) has wrong format for given args (%r).', locale, message, self.args)
         if not isinstance(self.timestamp, datetime):
             raise TypeError('DiaryEntry().timestamp has to be "datetime"')
-        if not isinstance(self.tags, list) or not all(isinstance(tag, six.string_types) for tag in self.tags):
+        if not isinstance(self.tags, list) or not all(isinstance(tag, str) for tag in self.tags):
             raise TypeError('DiaryEntry() argument "tags" have to be "list of string", but is: %s (%s)' % (type(self.tags), self.tags))
-        if not isinstance(self.context_id, six.string_types):
+        if not isinstance(self.context_id, str):
             raise TypeError('DiaryEntry() argument "context_id" has to be "string", but is: %s (%s)' % (type(self.context_id), self.context_id))
-        if not isinstance(self.event_name, six.string_types):
+        if not isinstance(self.event_name, str):
             raise TypeError('DiaryEntry() argument "event" name has to be "string", but is: %s (%s)' % (type(self.event_name), self.event_name))
 
     def to_json(self):

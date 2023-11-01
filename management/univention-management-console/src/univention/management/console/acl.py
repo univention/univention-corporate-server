@@ -71,12 +71,10 @@ import itertools
 import json
 import operator
 import os
-import pickle  # noqa: S403
 import traceback
 from fnmatch import fnmatch
 
 import ldap
-import six
 from ldap.filter import filter_format
 
 import univention.admin.handlers.computers.domaincontroller_backup as dc_backup
@@ -224,7 +222,7 @@ class ACLs(object):
             if key not in opts:
                 continue
 
-            if isinstance(opts[key], six.string_types):
+            if isinstance(opts[key], str):
                 options = (opts[key], )
             else:
                 options = opts[key]
@@ -314,16 +312,9 @@ class ACLs(object):
         filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', ''))
 
         try:
-            try:
-                with open(filename) as fd:
-                    acls = json.load(fd)
-            except (ValueError, TypeError):
-                if six.PY3:
-                    raise
-                with open(filename) as fd:
-                    acls = pickle.load(fd)  # noqa: S301
-            else:
-                acls = [Rule(x) for x in acls]
+            with open(filename) as fd:
+                acls = json.load(fd)
+            acls = [Rule(x) for x in acls]
         except EnvironmentError as exc:
             ACL.process('Could not load ACLs of %r: %s' % (username, exc))
             return False

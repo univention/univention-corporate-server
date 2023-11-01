@@ -38,11 +38,8 @@ from __future__ import print_function
 
 import json
 import os
-import pickle  # noqa: S403
 import sys
 from argparse import ArgumentParser
-
-import six
 
 import univention.config_registry as ucr
 from univention.management.console.acl import Rule
@@ -72,13 +69,7 @@ if os.path.isfile(filename) and operation in ('show', 'allow', 'remove', 'upgrad
             acls = json.load(fd)
         print('loaded json file', filename)
     except Exception:
-        if six.PY2:
-            try:
-                with open(filename) as fd:
-                    acls = pickle.load(fd)  # noqa: S301
-                print('loaded pickle file', filename)
-            except Exception:
-                acls = []
+        pass
 
 # convert old format
 new_acls = []

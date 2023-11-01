@@ -3,8 +3,8 @@ import fcntl
 import socket
 import struct
 
-from six.moves.urllib_request import urlopen
-from six.moves.urllib_error import URLError
+from urllib.request import urlopen
+from urllib.error import URLError
 
 from univention.config_registry.interfaces import Interfaces
 
@@ -71,7 +71,7 @@ following web browsers are supported:
 def query_ec2(key):  # type: (str) -> Optional[str]
     url = 'http://169.254.169.254/latest/meta-data/' + key
     try:
-        result = urlopen(url, timeout=2)
+        result = urlopen(url, timeout=2)  # noqa: S310
         value = result.read().decode('UTF-8').strip()
         return value
     except (URLError, socket.error, socket.timeout):

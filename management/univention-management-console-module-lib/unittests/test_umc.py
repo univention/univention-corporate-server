@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import pytest
-import six
 
 from univention.management.console.error import ServerError
 from univention.unittests.umc import import_umc_module, umc_requests
@@ -41,12 +40,6 @@ umc_lib = import_umc_module('lib')
 
 
 class TestUMCModule(object):
-    def test_message_sanitizer(self):
-        sanitizer = umc_lib.server.MessageSanitizer(default='')
-        assert sanitizer.sanitize('message', {}) == ''
-        assert sanitizer.sanitize('message', {"message": "Echt gut"}) == "Echt gut"
-        if six.PY2:
-            assert sanitizer.sanitize('message', {"message": u"Ächt gut"}) == b"\xc3\x84cht gut"
 
     def test_restart_isNeeded(self, instance, umc_request):
         instance.restart_isNeeded(umc_request)

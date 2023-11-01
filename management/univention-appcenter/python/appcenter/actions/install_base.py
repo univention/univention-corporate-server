@@ -44,8 +44,6 @@ from getpass import getuser
 from glob import glob
 from tempfile import NamedTemporaryFile
 
-from six import string_types
-
 from univention.appcenter.actions import StoreAppAction, get_action
 from univention.appcenter.actions.register import Register
 from univention.appcenter.app import DATA_DIR, App
@@ -190,7 +188,7 @@ class InstallRemoveUpgrade(Register):
         if args.send_info:
             try:
                 # do not send more than 500 char of status_details
-                if isinstance(status_details, string_types):
+                if isinstance(status_details, str):
                     status_details = status_details[-5000:]
                 self._send_information(app, status, status_details)
             except NetworkError:

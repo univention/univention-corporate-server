@@ -41,8 +41,6 @@ import os.path
 import sys
 from argparse import ArgumentParser
 
-import six
-
 # don't import univention.management.console.modules here as the locale is not yet set!
 import univention.debug as ud
 from univention.lib.i18n import Locale, Translation
@@ -75,8 +73,7 @@ if __name__ == '__main__':
             if fd != null:
                 os.dup2(null, fd)
                 os.close(null)
-            if not six.PY2:
-                os.set_inheritable(fd, True)
+            os.set_inheritable(fd, True)
 
     # init logging
     import tornado.log

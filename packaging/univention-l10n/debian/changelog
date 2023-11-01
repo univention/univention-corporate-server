@@ -1,3 +1,9 @@
+univention-l10n (8.0.4) unstable; urgency=medium
+
+  * Bug #56604: replace six
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:16 +0100
+
 univention-l10n (8.0.3) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version

@@ -41,8 +41,6 @@ import os.path
 import pickle  # noqa: S403
 from typing import Dict, List
 
-import six
-
 import univention.config_registry
 import univention.debug as ud
 import univention.lib.s4
@@ -182,10 +180,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         listener.setuid(0)
         try:
             with open(FN_CACHE, 'rb') as fd:
-                if six.PY2:
-                    pickled_object = pickle.load(fd)
-                else:
-                    pickled_object = pickle.load(fd, encoding='bytes')
+                pickled_object = pickle.load(fd, encoding='bytes')
         except Exception as exc:
             ud.debug(ud.LISTENER, ud.ERROR, '%s: failed to open/read pickle file: %s' % (name, exc))
         try:

@@ -40,8 +40,6 @@ from typing import (  # noqa: F401
     TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union, cast,
 )
 
-from six import reraise, with_metaclass
-
 from univention.admin.uldap import access, position
 
 import listener
@@ -74,7 +72,7 @@ class HandlerMetaClass(type):
         return kls
 
 
-class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
+class ListenerModuleHandler(metaclass=HandlerMetaClass):
     """
     Listener module base class.
 
@@ -260,7 +258,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         :param traceback exc_traceback: traceback object
         """
         self.logger.exception('dn=%r command=%r\n    old=%r\n    new=%r', dn, command, old, new)
-        reraise(exc_type, exc_value, exc_traceback)
+        raise exc_value.with_traceback(exc_traceback)
 
     @property
     def lo(self):

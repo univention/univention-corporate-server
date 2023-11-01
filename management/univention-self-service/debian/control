@@ -77,7 +77,6 @@ Description: Password reset module for Univention Self Service.
 Package: univention-self-service-invitation
 Architecture: all
 Depends:
- python3-six,
  ${misc:Depends},
  ${python3:Depends},
 Description: Invitation module for Univention Self Service.

@@ -11,7 +11,6 @@ Package: univention-bind
 Architecture: all
 Depends:
  bind9 (>= 1:9.11.5.P4),
- python3-six,
  shell-univention-lib (>= 9.0.11-9),
  univention-base-files,
  univention-config (>= 7.0.25),
