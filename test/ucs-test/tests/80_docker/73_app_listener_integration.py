@@ -45,7 +45,7 @@ def group_exists(dn: str) -> bool:
 
 def get_attr(obj_type: str, dn: str, attr: str) -> Optional[Any]:
     db = dump_db()
-    for _obj_id, obj in db[obj_type].items():
+    for obj in db[obj_type].values():
         if dn.lower() == obj.get('dn').lower():
             return obj['obj'].get(attr)
     return None

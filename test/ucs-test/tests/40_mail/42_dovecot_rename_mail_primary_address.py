@@ -96,7 +96,7 @@ def main():
                         utils.fail('Test %d: old_dir = %r has not been removed! %r' % (i, old_dir, userbase[i]))
                     if imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=new_mpa, imap_folder='INBOX', use_ssl=True):
                         utils.fail('Test %d: msgid found unexpectedly' % (i,))
-                elif i == 2 or i == 3:
+                elif i in (2, 3):
                     if os.path.exists(old_dir):
                         utils.fail('Test %d: old_dir = %r has not been renamed! %r' % (i, old_dir, userbase[i]))
                     cnt = imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=new_mpa, imap_folder='INBOX', use_ssl=True)

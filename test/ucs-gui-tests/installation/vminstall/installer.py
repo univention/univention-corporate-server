@@ -198,7 +198,7 @@ class Installer(object):
             self.client.mouseClickOnText(self.locale_strings['setup_master'])
             self.client.mouseClickOnText(self.locale_strings['next'])
             self.client.waitForText(self.locale_strings['account_info'], timeout=30)
-        elif self.vm_config.role == "backup" or self.vm_config.role == "slave" or self.vm_config.role == "member":
+        elif self.vm_config.role in ('backup', 'slave', 'member'):
             self.client.mouseClickOnText(self.locale_strings['join_ucs'])
             self.client.mouseClickOnText(self.locale_strings['next'])
             self.client.waitForText(self.locale_strings['system_role'], timeout=30)
@@ -228,7 +228,7 @@ class Installer(object):
             self.client.mouseClickOnText(self.locale_strings['next'])
             self.client.waitForText(self.locale_strings['software_config'], timeout=30)
 
-        elif self.vm_config.role == "backup" or self.vm_config.role == "slave" or self.vm_config.role == "member":
+        elif self.vm_config.role in ('backup', 'slave', 'member'):
             self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
             self.client.mouseClickOnText(self.locale_strings['password_field'])
             self.client.enterText(self.vm_config.password)

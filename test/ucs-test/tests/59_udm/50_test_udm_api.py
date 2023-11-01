@@ -88,7 +88,7 @@ class TestUdmUsersBasic(TestCase):
     def test_create_user_error(self):
         user_mod = self.udm.get('users/user')
         obj = user_mod.new()
-        with self.assertRaises(CreateError):
+        with pytest.raises(CreateError):
             obj.save()
 
     def test_create_user(self):
@@ -130,7 +130,7 @@ class TestUdmUsersBasic(TestCase):
         old_position = obj.position
         obj.position = self.ucr_test['ldap/base']
         obj.save()
-        with self.assertRaises(NoObject):
+        with pytest.raises(NoObject):
             assert user_mod.get(dn)
         obj.position = old_position
         obj.save()
@@ -151,7 +151,7 @@ class TestUdmUsersBasic(TestCase):
             setattr(obj.props, k, v)
         assert obj.save()
         obj.props.username = 'Administrator'
-        with self.assertRaises(ModifyError):
+        with pytest.raises(ModifyError):
             obj.save()
 
     def test_modify_user(self):
@@ -252,17 +252,17 @@ class TestUdmUsersBasic(TestCase):
         for k, v in expected_properties.items():
             got = getattr(obj.props, k)
             assert got == v, f'Expected for {k!r}: {v!r} got: {got!r}'
-        with self.assertRaises(UnknownProperty):
+        with pytest.raises(UnknownProperty):
             obj.props.unknown = 'Unknown'
-        with self.assertRaises(AttributeError):
+        with pytest.raises(AttributeError):
             obj.props.unknown  # noqa: B018
 
     def test_remove_user(self):
         user_mod = self.udm.get('users/user')
         obj = user_mod.new()
-        with self.assertRaises(NotYetSavedError):
+        with pytest.raises(NotYetSavedError):
             obj.reload()
-        with self.assertRaises(NotYetSavedError):
+        with pytest.raises(NotYetSavedError):
             obj.delete()
 
         obj = user_mod.get(self.user_objects[0].dn)
@@ -273,9 +273,9 @@ class TestUdmUsersBasic(TestCase):
             obj.dn,
             should_exist=False,
         )
-        with self.assertRaises(DeletedError):
+        with pytest.raises(DeletedError):
             obj.save()
-        with self.assertRaises(DeletedError):
+        with pytest.raises(DeletedError):
             obj.reload()
         assert obj.delete() is None
 
@@ -414,13 +414,13 @@ class TestUdmLDAPConnection(TestCase):
         LDAP_connection._clear()
 
     def test_error_in_version(self):
-        with self.assertRaises(NoApiVersionSet):
+        with pytest.raises(NoApiVersionSet):
             UDM.admin().get('users/user')
-        with self.assertRaises(ApiVersionNotSupported):
+        with pytest.raises(ApiVersionNotSupported):
             UDM.admin().version('1')
-        with self.assertRaises(ApiVersionMustNotChange):
+        with pytest.raises(ApiVersionMustNotChange):
             UDM.admin().version(0).version(1)
-        with self.assertRaises(ApiVersionNotSupported):
+        with pytest.raises(ApiVersionNotSupported):
             UDM.admin().version(20).get('users/user')
 
     def test_admin(self):
@@ -430,7 +430,7 @@ class TestUdmLDAPConnection(TestCase):
     def test_admin_io_error(self):
         try:
             os.rename('/etc/ldap.secret', '/etc/ldap.secret.test')
-            with self.assertRaises(ConnectionError) as cm:
+            with pytest.raises(ConnectionError) as cm:
                 UDM.admin()
             assert str(cm.exception) == 'Could not read secret file'
         finally:
@@ -443,7 +443,7 @@ class TestUdmLDAPConnection(TestCase):
     def test_machine_down_error(self):
         assert call(['systemctl', 'stop', 'slapd']) == 0
         try:
-            with self.assertRaises(ConnectionError) as cm:
+            with pytest.raises(ConnectionError) as cm:
                 UDM.machine()
             assert str(cm.exception) == 'The LDAP Server is not running'
         finally:
@@ -453,7 +453,7 @@ class TestUdmLDAPConnection(TestCase):
         pw = open('/etc/machine.secret').read()
         try:
             open('/etc/machine.secret', 'w').write('garbage')
-            with self.assertRaises(ConnectionError) as cm:
+            with pytest.raises(ConnectionError) as cm:
                 UDM.machine()
             assert str(cm.exception) == 'Credentials invalid'
         finally:
@@ -481,11 +481,11 @@ class TestUdmLDAPConnection(TestCase):
     def test_credentials_error(self):
         username = uts.random_name()
         password = uts.random_name()
-        with self.assertRaises(ConnectionError) as cm:
+        with pytest.raises(ConnectionError) as cm:
             UDM.credentials(identity=username, password=password)
         assert str(cm.exception) == 'Cannot get DN for username'
 
-        with self.assertRaises(ConnectionError) as cm:
+        with pytest.raises(ConnectionError) as cm:
             UDM.credentials(identity='Administrator', password=password)
         assert str(cm.exception) == 'Credentials invalid'
 
@@ -512,10 +512,10 @@ class TestUdmDNSBasic(TestCase):
 
     def test_superordinate_and_duplicate(self):
         host_records = self.udm.get('dns/host_record')
-        with self.assertRaises(NoSuperordinate):
+        with pytest.raises(NoSuperordinate):
             host_records.new()
         forward_zones = self.udm.get('dns/forward_zone')
-        forward_zone = list(forward_zones.search())[0]
+        forward_zone = next(iter(forward_zones.search()))
         host_record1 = host_records.new(forward_zone)
         assert host_record1.position == forward_zone.dn
         host_record1.props.name = 'x1'
@@ -523,23 +523,23 @@ class TestUdmDNSBasic(TestCase):
         try:
             host_record1_dup = host_records.new(forward_zone)
             host_record1_dup.props.name = 'x1'
-            with self.assertRaises(CreateError):
+            with pytest.raises(CreateError):
                 host_record1_dup.save()
         finally:
             host_record1.delete()
 
     def test_superordinate_and_move(self):
         host_records = self.udm.get('dns/host_record')
-        with self.assertRaises(NoSuperordinate):
+        with pytest.raises(NoSuperordinate):
             host_records.new()
         forward_zones = self.udm.get('dns/forward_zone')
-        forward_zone = list(forward_zones.search())[0]
+        forward_zone = next(iter(forward_zones.search()))
         host_record2 = host_records.new(forward_zone.dn)
         host_record2.props.name = 'x2'
         host_record2.save()
         try:
             host_record2.position = self.ucr_test['ldap/base']
-            with self.assertRaises(MoveError):
+            with pytest.raises(MoveError):
                 host_record2.save()
         finally:
             host_record2.delete()
@@ -562,8 +562,8 @@ class TestUdmComputersBasic(TestCase):
         try:
             num_ptr_records = len(list(self.udm.get('dns/ptr_record').search()))
             ip = ubuntu.props.ip[0]
-            forward_zone = list(self.udm.get('dns/forward_zone').search())[0]
-            reverse_zone = list(self.udm.get('dns/reverse_zone').search())[0]
+            forward_zone = next(iter(self.udm.get('dns/forward_zone').search()))
+            reverse_zone = next(iter(self.udm.get('dns/reverse_zone').search()))
             ubuntu.props.dnsEntryZoneForward = [[forward_zone.dn, ip]]
             ubuntu.props.dnsEntryZoneReverse = [[reverse_zone.dn, ip]]
             ubuntu.save()
@@ -585,7 +585,7 @@ class TestUdmComputersBasic(TestCase):
             container.save()
             try:
                 container.position = ubuntu.position
-                with self.assertRaises(MoveError):
+                with pytest.raises(MoveError):
                     container.save()
             finally:
                 container.delete()

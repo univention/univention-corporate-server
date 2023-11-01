@@ -6,6 +6,7 @@
 ## packages: [python3-univention-directory-manager]
 ## bugs: [47316]
 
+import pytest
 from unittest import TestCase, main
 
 import univention.debug as ud
@@ -32,7 +33,7 @@ class TestUdmAutoOpen(TestCase):
         ucr_test.load()
 
         udm = UDM.admin().version(1)
-        with self.assertRaises(NoObject):
+        with pytest.raises(NoObject):
             udm.obj_by_dn('cn=fantasy,' + ucr_test['ldap/hostdn'])
 
     def test_without_object_type(self):
@@ -40,7 +41,7 @@ class TestUdmAutoOpen(TestCase):
         ucr_test.load()
 
         udm = UDM.admin().version(1)
-        with self.assertRaises(NoObject):
+        with pytest.raises(NoObject):
             udm.obj_by_dn('cn=backup,%s' % ucr_test['ldap/base'])
 
 

@@ -86,7 +86,7 @@ def test_master_realm_config(keycloak_config, ucr):
     assert "UNIVENTION_UPDATE_PASSWORD" not in required_actions
     # ucs ldap federation and mapper
     ldap_federation = keycloak_get_request(keycloak_config, "realms/master/components?type=org.keycloak.storage.UserStorageProvider")
-    ldap_federation = [lf for lf in ldap_federation if lf["name"] == "ldap-master-admin"][0]
+    ldap_federation = next(lf for lf in ldap_federation if lf["name"] == "ldap-master-admin")
     assert ldap_federation["providerId"] == "ldap"
     assert ldap_federation["config"]["enabled"] == ["true"]
     assert ldap_federation["config"]["editMode"] == ["READ_ONLY"]
@@ -114,7 +114,7 @@ def test_ucs_realm_config(keycloak_config, ucr):
     assert "UNIVENTION_UPDATE_PASSWORD" in required_actions
     # ucs ldap federation and mapper
     ldap_federation = keycloak_get_request(keycloak_config, "realms/ucs/components?type=org.keycloak.storage.UserStorageProvider")
-    ldap_federation = [lf for lf in ldap_federation if lf["name"] == "ldap-provider"][0]
+    ldap_federation = next(lf for lf in ldap_federation if lf["name"] == "ldap-provider")
     assert ldap_federation["providerId"] == "ldap"
     assert ldap_federation["config"]["enabled"] == ["true"]
     assert ldap_federation["config"]["editMode"] == ["READ_ONLY"]

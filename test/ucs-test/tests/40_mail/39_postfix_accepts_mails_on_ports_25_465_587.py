@@ -45,7 +45,7 @@ def main():
             587: {"port": 587, "tls": True, "ssl": False, "recipients": mail2, "sender": mail1, "msg": uts.random_name()},
         }
 
-        for _port, kwargs in smtp_args.items():
+        for kwargs in smtp_args.values():
             syslog.syslog(syslog.LOG_INFO, 'Sending to port {}.'.format(kwargs['port']))
             send_mail(**kwargs)
             check_delivery(kwargs['msg'], mail2, True)

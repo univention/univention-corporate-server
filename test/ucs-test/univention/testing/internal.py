@@ -297,7 +297,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
         parts = [
             (other_ver, self_ver)
             for self_ver, other_ver in zip(self.ver, other.ver)
-            if self_ver != INF and other_ver != INF
+            if INF not in (self_ver, other_ver)
         ]
         return self.rel(*zip(*parts))  # pylint: disable-msg=W0142
 

@@ -425,10 +425,10 @@ def legacy_authorization_setup_oidc(
         # create client and add custom direct grant flow
         run_command(["univention-keycloak", "oidc/rp", "create", client, "--client-secret", client_secret, "--app-url", "https://*", "--direct-access-grants"])
         client_id = keycloak_administrator_connection.get_client_id(client)
-        flow_id = [
+        flow_id = next(
             flow["id"] for flow in keycloak_administrator_connection.get_authentication_flows()
             if flow.get("alias") == "direct grant flow with legacy app authorization"
-        ][0]
+        )
         client_data = keycloak_administrator_connection.get_client(client_id)
         client_data["authenticationFlowBindingOverrides"]["direct grant"] = flow_id
         client_data["authenticationFlowBindingOverrides"]["direct_grant"] = flow_id
