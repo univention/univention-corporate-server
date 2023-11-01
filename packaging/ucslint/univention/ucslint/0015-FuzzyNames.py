@@ -59,8 +59,7 @@ def levenshtein(word: str, distance: int = 1, subst: str = '.') -> Iterator[str]
     m_del = (f'{word[0:i]}{word[1 + i:]}' for i in range(n))
     m_swp = (f'{word[0:i]}{word[j]}{word[i + 1:j]}{word[i]}{word[j + 1:]}' for j in range(n) for i in range(j))
     for modified in chain(m_sub, m_ins, m_del, m_swp):
-        for result in levenshtein(modified, distance - 1):
-            yield result
+        yield from levenshtein(modified, distance - 1)
 
 
 class Trie:
