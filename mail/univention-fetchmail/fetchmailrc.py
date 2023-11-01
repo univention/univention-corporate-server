@@ -78,7 +78,7 @@ def load_rc(ofile: str) -> List[str] | None:
     try:
         with open(ofile) as fd:
             rc = reduce(_split_file, fd, [])
-    except EnvironmentError as exc:
+    except OSError as exc:
         ud.debug(ud.LISTENER, ud.ERROR, 'Failed to open "%s": %s' % (ofile, exc))
     listener.unsetuid()
     return rc
@@ -90,7 +90,7 @@ def write_rc(flist: Iterable[str], wfile: str) -> None:
     try:
         with open(wfile, "w") as fd:
             fd.writelines(flist)
-    except EnvironmentError as exc:
+    except OSError as exc:
         ud.debug(ud.LISTENER, ud.ERROR, 'Failed to write to file "%s": %s' % (wfile, exc))
     listener.unsetuid()
 
