@@ -36,7 +36,7 @@ if __name__ == '__main__':
     res = []
 
     # read at least five times because ucs-sso is an alias for different IPs
-    for i in range(0, 5):
+    for i in range(5):
         print('%d: Query cert for %r' % (i, cert_url))
         response = urlopen(cert_url)  # noqa: S310
         cert = response.read().decode('ASCII')
@@ -45,7 +45,7 @@ if __name__ == '__main__':
         print(cert)
         res.append(cert)
 
-    for i in range(0, 4):
+    for i in range(4):
         if res[i] != res[i + 1]:
             fail('Certificate is different: %d and %d' % (i, i + 1))
 

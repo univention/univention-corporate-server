@@ -58,7 +58,7 @@ def nt_password_to_arcfour_hmac_md5(nt_password):
     # all arcfour-hmac-md5 keys begin this way
     key = b'0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
 
-    for i in range(0, 16):
+    for i in range(16):
         o = nt_password[2 * i:2 * i + 2]
         key += chr(int(o, 16)).encode('ISO8859-1')
     return key
@@ -159,7 +159,7 @@ def calculate_krb5keys(supplementalCredentialsblob):
 
     krb5_old_hex = None
 
-    for i in range(0, spl.sub.num_packages):
+    for i in range(spl.sub.num_packages):
         pkg = spl.sub.packages[i]
         if pkg.name != "Primary:Kerberos":
             continue
@@ -186,7 +186,7 @@ def calculate_krb5keys(supplementalCredentialsblob):
 
     krb5_new_hex = None
 
-    for i in range(0, spl.sub.num_packages):
+    for i in range(spl.sub.num_packages):
         pkg = spl.sub.packages[i]
         if pkg.name != "Primary:Kerberos-Newer-Keys":
             continue

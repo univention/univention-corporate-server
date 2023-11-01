@@ -216,7 +216,7 @@ def build_kerberos_request(target_realm: str, user_name: str) -> bytes:
     clientName = Principal(user_name, target_realm, 1)
 
     req_body = seq_set(as_req, 'req-body')
-    req_body['kdc-options'] = [0 for i in range(0, 32)]
+    req_body['kdc-options'] = [0 for i in range(32)]
     seq_set(req_body, 'sname', serverName.components_to_asn1)
     seq_set(req_body, 'cname', clientName.components_to_asn1)
 

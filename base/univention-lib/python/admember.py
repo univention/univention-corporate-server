@@ -269,7 +269,7 @@ def decode_sid(value):
 
     sid += "-%d" % ord(value[7])
 
-    for i in range(0, sid_len):
+    for i in range(sid_len):
         res = ord(value[8 + (i * 4)]) + (ord(value[9 + (i * 4)]) << 8) + (ord(value[10 + (i * 4)]) << 16) + (ord(value[11 + (i * 4)]) << 24)
         sid += "-%u" % res
 

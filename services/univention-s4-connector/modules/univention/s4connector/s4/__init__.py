@@ -433,7 +433,7 @@ def compare_sid_lists(sid_list1, sid_list2):
     if len_sid_list1 != len(sid_list2):
         return False
 
-    for i in range(0, len_sid_list1):
+    for i in range(len_sid_list1):
         sid1 = sid_list1[i]
         if not __is_sid_string(sid1):
             sid1 = decode_sid(sid1)

@@ -251,7 +251,7 @@ docker inspect:
             f_dir = os.path.dirname(f_name)
             # if the container start takes a little longer the f_dir may not exist yet
             # so wait max 60s
-            for _i in range(0, 12):
+            for _i in range(12):
                 if os.path.isdir(f_dir):
                     break
                 time.sleep(5)

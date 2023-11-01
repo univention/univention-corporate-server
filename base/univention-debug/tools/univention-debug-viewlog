@@ -98,7 +98,7 @@ def split(line, length):
         return [line]
     res = []
     ls = len(line) / length
-    for i in range(0, ls + 1):
+    for i in range(ls + 1):
         n = line[i * length:(i + 1) * length]
         if not n:
             break

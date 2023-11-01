@@ -222,7 +222,7 @@ try:
                 if hasattr(os, 'closerange'):
                     os.closerange(0, max_fd)
                 else:
-                    for fd in range(0, max_fd):
+                    for fd in range(max_fd):
                         try:
                             os.close(fd)
                         except OSError:

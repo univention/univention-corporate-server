@@ -5753,7 +5753,7 @@ class timeSpec(select):
     """Time format used by :program:`at`."""
 
     _times = [
-        (_time, _time) for hour in range(0, 24)
+        (_time, _time) for hour in range(24)
         for minute in range(0, 60, 15)
         for _time in ('%02d:%02d' % (hour, minute),)
     ]

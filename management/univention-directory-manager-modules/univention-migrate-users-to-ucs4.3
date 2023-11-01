@@ -338,7 +338,7 @@ class Migration(object):
         # all arcfour-hmac-md5 keys begin this way
         key = b'0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
 
-        for i in range(0, 16):
+        for i in range(16):
             o = nt_password[2 * i:2 * i + 2]
             char = chr(int(o, 16))
             if not isinstance(char, bytes):  # Python 3

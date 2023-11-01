@@ -751,7 +751,7 @@ def logonHoursMap(logontimes):
     # See <http://ma.ph-freiburg.de/tng/tng-technical/2003-04/msg00015.html> for details.
 
     newtimes = ""
-    for i in range(0, 21):
+    for i in range(21):
         bitlist = list(logontimes[(i * 8):(i * 8) + 8])
         bitlist.reverse()
         newtimes += "".join(bitlist)
@@ -759,7 +759,7 @@ def logonHoursMap(logontimes):
 
     # create a hexnumber from each 8-bit-segment
     ret = ""
-    for i in range(0, 21):
+    for i in range(21):
         val = 0
         exp = 7
         for j in range((i * 8), (i * 8) + 8):
@@ -787,7 +787,7 @@ def logonHoursUnmap(logontimes):
 
     # reverse order of the bits in each byte. See above for details
     newtime = ""
-    for i in range(0, 21):
+    for i in range(21):
         bitlist = list(ret[(i * 8):(i * 8) + 8])
         bitlist.reverse()
         newtime += "".join(bitlist)

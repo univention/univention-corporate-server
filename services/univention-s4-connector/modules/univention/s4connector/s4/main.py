@@ -92,7 +92,7 @@ def daemon(lock_file, options):
     except (AttributeError, ValueError):
         maxfd = 256  # default maximum
 
-    for fd in range(0, maxfd):
+    for fd in range(maxfd):
         if fd == lock_file.fileno():
             continue
         try:
