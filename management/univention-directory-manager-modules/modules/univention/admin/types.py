@@ -32,7 +32,6 @@
 
 """|UDM| type definitions."""
 
-from __future__ import absolute_import
 
 import datetime
 import inspect

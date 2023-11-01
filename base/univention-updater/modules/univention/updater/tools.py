@@ -31,9 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 """Univention Update tools."""
 
-from __future__ import absolute_import, print_function
-
-
 try:
     import univention.debug as ud
 except ImportError:

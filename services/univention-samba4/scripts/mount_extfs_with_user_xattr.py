@@ -50,7 +50,6 @@
 
 """Set user_xattr option on ext2/ext3/ext4 filesystems, remount if necessary"""
 
-from __future__ import print_function
 
 import subprocess
 

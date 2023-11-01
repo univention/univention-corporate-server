@@ -1,3 +1,9 @@
+univention-printserver (14.0.4) unstable; urgency=medium
+
+  * Bug #56604: remove __future__ imports (UP010)
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:20 +0100
+
 univention-printserver (14.0.3) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version

@@ -35,7 +35,6 @@
 #
 # API stability :pylint: disable-msg=W0613
 # Rewrite       :pylint: disable-msg=R0912,R0914,R0915
-from __future__ import print_function
 
 import os
 import re

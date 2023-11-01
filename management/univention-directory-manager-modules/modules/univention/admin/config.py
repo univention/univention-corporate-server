@@ -36,7 +36,6 @@
 .. deprecated:: UCS 4.4
 """
 
-from __future__ import absolute_import
 
 from types import ModuleType  # noqa: F401
 

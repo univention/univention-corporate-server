@@ -33,7 +33,6 @@
 
 """Add/remove NFS mount points from LDAP to/from /etc/fstab and mount them"""
 
-from __future__ import print_function
 
 import argparse
 import os

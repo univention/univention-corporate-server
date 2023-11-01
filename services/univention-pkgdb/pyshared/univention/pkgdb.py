@@ -35,7 +35,8 @@
 Univention Package Database
 Python module for the package database
 """
-from __future__ import annotations, print_function
+
+from __future__ import annotations
 
 import argparse
 import csv

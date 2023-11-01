@@ -41,7 +41,7 @@
 # 2. Primary is degraded to Replica
 #    use existing database
 
-from __future__ import absolute_import, annotations, print_function
+from __future__ import annotations
 
 import base64
 import os

@@ -32,8 +32,6 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from __future__ import print_function
-
 import os
 import re
 import subprocess
@@ -49,7 +47,6 @@ from univention.uldap import getMachineConnection
 
 
 listener_template = '''#!/usr/bin/python3
-from __future__ import absolute_import
 
 from univention.ldap_cache.listener_module import LdapCacheHandler
 

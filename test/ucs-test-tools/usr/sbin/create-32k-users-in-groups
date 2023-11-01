@@ -33,7 +33,7 @@
 
 """Create may users in groups."""
 
-from __future__ import annotations, print_function
+from __future__ import annotations
 
 import sys
 from argparse import ArgumentParser, Namespace

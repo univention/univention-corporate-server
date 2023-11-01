@@ -32,7 +32,6 @@
 
 """|UDM| module for the user himself"""
 
-from __future__ import absolute_import
 
 from ldap.filter import filter_format
 

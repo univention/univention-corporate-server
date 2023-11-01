@@ -36,7 +36,6 @@
 """Handle UCR network configuration."""
 
 # pylint: disable-msg=W0142,C0103,R0201,R0904
-from __future__ import absolute_import
 
 import re
 from functools import wraps

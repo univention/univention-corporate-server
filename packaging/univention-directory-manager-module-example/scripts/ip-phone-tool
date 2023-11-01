@@ -32,7 +32,6 @@
 # <https://www.gnu.org/licenses/>.
 
 """Univention IP-Phone Example UDM Client."""
-from __future__ import print_function
 
 import locale
 import sys

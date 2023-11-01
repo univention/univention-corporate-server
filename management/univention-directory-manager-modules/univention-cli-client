@@ -33,7 +33,6 @@
 
 """Univention Directory Manager command line client program"""
 
-from __future__ import print_function
 
 import array
 import json

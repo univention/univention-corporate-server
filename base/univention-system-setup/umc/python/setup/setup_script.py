@@ -36,7 +36,6 @@ Univention System Setup
  Python setup script base
 """
 
-from __future__ import print_function
 
 import locale
 import logging

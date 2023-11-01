@@ -9,7 +9,6 @@
 
 """Unit test for univention.updater.tools"""
 
-from __future__ import print_function
 
 from tempfile import NamedTemporaryFile
 

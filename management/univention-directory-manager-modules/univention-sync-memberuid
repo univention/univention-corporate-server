@@ -37,7 +37,6 @@ Update the UIDs in memberUid of all groups to match the uid of the objects
 referenced by uniqueMember.
 """
 
-from __future__ import print_function
 
 import sys
 from argparse import ArgumentParser

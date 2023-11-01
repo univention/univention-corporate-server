@@ -33,7 +33,6 @@
 
 """Apply LDAP UCR policy to local UCR."""
 
-from __future__ import print_function
 
 import argparse
 import os

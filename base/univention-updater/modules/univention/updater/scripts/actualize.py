@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 # TODO: use UCR variables for update, upgrade, install and remove commands
-from __future__ import print_function
 
 import os
 import re

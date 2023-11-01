@@ -32,7 +32,6 @@
 
 """|UDM| wrapper around :py:mod:`univention.uldap` that replaces exceptions."""
 
-from __future__ import absolute_import
 
 import time
 from logging import getLogger

@@ -32,7 +32,6 @@
 
 """Base classes for (simplified) UDM modules and objects."""
 
-from __future__ import absolute_import, unicode_literals
 
 import copy
 import pprint

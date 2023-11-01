@@ -45,7 +45,6 @@ The overwritten method :py:meth:`_verify_univention_object_type()` allows both
 `mail/\*` and `oxmail/\*` in `univentionObjectType`.
 """
 
-from __future__ import absolute_import, unicode_literals
 
 import copy
 

@@ -32,7 +32,6 @@
 
 """Install UCS release and errata updates."""
 
-from __future__ import print_function
 
 import logging
 import os

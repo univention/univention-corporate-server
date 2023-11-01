@@ -39,8 +39,6 @@ During the quiet period check the cache directory (is-state) against the
 configuration directory (should-state) and reload/restart as appropriate.
 """
 
-from __future__ import absolute_import, annotations
-
 import errno
 import grp
 import os

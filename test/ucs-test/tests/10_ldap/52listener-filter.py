@@ -6,7 +6,7 @@
 ##  - univention-directory-listener (>= 9.0.2-6)
 ## exposure: dangerous
 
-from __future__ import absolute_import, annotations
+from __future__ import annotations
 
 from os import chown, mkdir
 from os.path import join

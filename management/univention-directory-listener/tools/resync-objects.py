@@ -35,7 +35,6 @@
 
 """Resync objects from Primary to local LDAP database"""
 
-from __future__ import print_function
 
 import argparse
 

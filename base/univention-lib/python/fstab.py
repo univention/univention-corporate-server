@@ -37,7 +37,6 @@ Handle parsing and writing :file:`/etc/fstab`.
 See <http://linux.die.net/include/mntent.h>.
 """
 
-from __future__ import print_function
 
 import os
 import re

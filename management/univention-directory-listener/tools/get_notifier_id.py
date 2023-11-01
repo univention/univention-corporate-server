@@ -35,7 +35,6 @@
 
 """Read the notifier id from the Primary Directory Node"""
 
-from __future__ import print_function
 
 import argparse
 import socket

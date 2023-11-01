@@ -36,8 +36,6 @@
 # set activation state of kerberos account to same state as posix account
 # set password and account exiration date to the same value as shadowExpiry and shadowLastChange
 
-from __future__ import print_function
-
 import re
 import time
 

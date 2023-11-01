@@ -35,7 +35,6 @@
 * Backend library classes and methods
 * Wenn called as __main__ it acts as rsyslog plugin
 """
-from __future__ import print_function
 
 import json
 import sys

@@ -32,7 +32,6 @@
 
 """Generate `country_codes.json`"""
 
-from __future__ import print_function
 
 import json
 from argparse import ArgumentParser, FileType

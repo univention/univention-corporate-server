@@ -35,7 +35,6 @@
 # <https://www.gnu.org/licenses/>.
 """Helper function to create the SID mapping definition."""
 
-from __future__ import print_function
 
 import ldap
 from ldap.controls import LDAPControl

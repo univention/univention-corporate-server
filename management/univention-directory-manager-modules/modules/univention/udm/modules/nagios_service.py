@@ -32,7 +32,6 @@
 
 """Module and object specific for "nagios/service" UDM module."""
 
-from __future__ import absolute_import, unicode_literals
 
 from ..encoders import DisabledPropertyEncoder, dn_list_property_encoder_for
 from .generic import GenericModule, GenericObject, GenericObjectProperties

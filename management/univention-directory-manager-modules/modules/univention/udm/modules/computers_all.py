@@ -32,7 +32,6 @@
 
 r"""Module and object for all `computers/\*` UDM modules."""
 
-from __future__ import absolute_import, unicode_literals
 
 from typing import List  # noqa: F401
 

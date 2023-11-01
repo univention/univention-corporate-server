@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 """Univention Updater helper functions for managing a local repository."""
 
-from __future__ import absolute_import, print_function
 
 import gzip
 import os

@@ -32,7 +32,6 @@
 
 """Module and object specific for "policies/registry" UDM module."""
 
-from __future__ import absolute_import, unicode_literals
 
 from ..encoders import ListOfListOflTextToDictPropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties

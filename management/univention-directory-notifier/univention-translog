@@ -31,7 +31,6 @@
 
 """Univention Directory Notifier Transaction log admin commmand"""
 
-from __future__ import print_function
 
 from argparse import ArgumentParser, ArgumentTypeError
 from collections import namedtuple

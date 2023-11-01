@@ -34,8 +34,6 @@
 
 """List modified and not updated UCR templates."""
 
-from __future__ import print_function
-
 import os
 import sys
 from argparse import ArgumentParser, Namespace  # noqa: F401

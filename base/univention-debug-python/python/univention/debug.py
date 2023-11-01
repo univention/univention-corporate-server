@@ -42,7 +42,6 @@ example:
 >>> set_level(LISTENER, ERROR)
 """
 
-from __future__ import absolute_import
 
 import sys
 from functools import wraps

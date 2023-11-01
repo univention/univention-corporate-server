@@ -42,7 +42,6 @@ A UDM handler represents an abstraction of an LDAP object.
 .. seealso:: :mod:`univention.admin.uexceptions`
 """
 
-from __future__ import absolute_import
 
 import copy
 import inspect

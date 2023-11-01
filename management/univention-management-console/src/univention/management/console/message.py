@@ -37,7 +37,6 @@
 A backwards compatible layer to wrap HTTP request and response messages.
 The API of the Python objects representing the messages are based on the class :class:`.Message`.
 """
-from __future__ import absolute_import, print_function
 
 import mimetypes
 import sys
