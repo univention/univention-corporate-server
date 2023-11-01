@@ -955,7 +955,7 @@ class AD_Takeover(object):
         try:
             with open('/etc/machine.secret'):
                 pass
-        except IOError as e:
+        except OSError as e:
             raise TakeoverError(_("Could not read local machine password: %s") % str(e))
 
         # Join into the domain
@@ -1974,7 +1974,7 @@ def check_gpo_presence():
                                 # TODO: Improve error reporting
                         except configparser.Error as ex:
                             log.error(ex.args[0])
-            except IOError as ex:
+            except OSError as ex:
                 log.error(ex.args[0])
 
     return True

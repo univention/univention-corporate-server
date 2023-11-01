@@ -1992,7 +1992,7 @@ def load_localmapping(filename='/etc/univention/connector/s4/localmapping.py'):
         mapping = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mapping)
         mapping_hook = mapping.mapping_hook
-    except (IOError, AttributeError):
+    except (OSError, AttributeError):
         return s4_mapping
     else:
         return mapping_hook(s4_mapping)

@@ -205,12 +205,12 @@ def create_certificate(hostname: str, domainname: str) -> None:
     # Create symlink
     try:
         os.remove(link_path)
-    except EnvironmentError as ex:
+    except OSError as ex:
         if ex.errno != ENOENT:
             ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to remove %s: %s' % (link_path, ex))
     try:
         os.symlink(fqdn, link_path)
-    except EnvironmentError as ex:
+    except OSError as ex:
         ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to create %s: %s' % (link_path, ex))
 
 

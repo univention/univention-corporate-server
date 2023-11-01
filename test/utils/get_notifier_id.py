@@ -85,7 +85,7 @@ def main():
 
         if notifier_result:
             print("%s" % notifier_result.decode('UTF-8', 'replace').splitlines()[1])
-    except socket.error as ex:
+    except OSError as ex:
         print('Error: %s' % (ex,), file=sys.stderr)
         sys.exit(1)
 

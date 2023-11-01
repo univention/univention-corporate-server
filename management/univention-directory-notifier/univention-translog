@@ -133,7 +133,7 @@ class Index(object):
 
             stat = fstat(index.fileno())
             self.size = size = stat.st_size
-        except EnvironmentError as ex:
+        except OSError as ex:
             self.log.warning("Failed to open %s: %s", self.filename, ex)
             if ex.errno != ENOENT:
                 raise
@@ -224,7 +224,7 @@ class Index(object):
         self.log.info('Removing %s ...', self.filename)
         try:
             unlink(self.filename)
-        except EnvironmentError as ex:
+        except OSError as ex:
             self.log.debug('unlink %s: %s', self.filename, ex)
             if ex.errno != ENOENT:
                 raise
@@ -765,7 +765,7 @@ def rewrite(filename):
         if exists(new):
             try:
                 unlink(new)
-            except EnvironmentError as ex:
+            except OSError as ex:
                 log.debug('unlink %s: %s', new, ex)
                 if ex.errno != ENOENT:
                     raise
@@ -774,7 +774,7 @@ def rewrite(filename):
         log.debug('renaming %s %s', cur, bak)
         try:
             rename(cur, bak)
-        except EnvironmentError as ex:
+        except OSError as ex:
             log.debug('rename %s %s: %s', cur, bak, ex)
             if ex.errno != ENOENT:
                 raise
@@ -1178,7 +1178,7 @@ def check_last(opt, filename, last_tid):
         tid = int(line)
         if tid != last_tid:
             raise ValueError('should be %d, but is %d' % (last_tid, tid))
-    except (EnvironmentError, ValueError) as ex:
+    except (OSError, ValueError) as ex:
         log.error("%s: Invalid last id: %s", filename, ex)
         if opt.fix:
             with open(filename, 'w') as last:
