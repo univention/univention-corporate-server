@@ -38,7 +38,6 @@ import bz2
 import copy
 import datetime
 import inspect
-import io
 import ipaddress
 import os
 import re
@@ -104,7 +103,7 @@ def import_syntax_files():
 
             for fn in syntax_files:
                 try:
-                    with io.open(fn, 'rb') as fd:
+                    with open(fn, 'rb') as fd:
                         exec(fd.read(), sys.modules[__name__].__dict__)  # noqa: S102
                     log.debug('admin.syntax.import_syntax_files: importing %r', fn)
                 except Exception:
