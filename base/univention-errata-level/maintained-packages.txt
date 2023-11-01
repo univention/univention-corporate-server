@@ -3874,7 +3874,6 @@ python3-setproctitle
 python3-setuptools
 python3-simplejson
 python3-singledispatch
-python3-six
 python3-smbus
 python3-soupsieve
 python3-sphinx

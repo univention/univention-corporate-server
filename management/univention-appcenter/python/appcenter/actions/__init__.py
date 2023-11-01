@@ -35,17 +35,16 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import http.client
 import logging
 import os.path
 import ssl
 import sys
+import urllib.error
 from argparse import Action, ArgumentParser, Namespace
 from functools import wraps
 from glob import glob
 from typing import TYPE_CHECKING, Any, Iterator, Mapping, Optional, Sequence, Tuple  # noqa: F401
-
-from six import string_types, with_metaclass
-from six.moves import http_client, urllib_error
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.exceptions import Abort, NetworkError
@@ -65,7 +64,7 @@ def possible_network_error(func):
     def _func(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except (urllib_error.HTTPError, urllib_error.URLError, ssl.CertificateError, http_client.BadStatusLine) as exc:
+        except (urllib.error.HTTPError, urllib.error.URLError, ssl.CertificateError, http.client.BadStatusLine) as exc:
             raise NetworkError(verbose_http_error(exc))
     return _func
 
@@ -101,7 +100,7 @@ class UniventionAppActionMeta(type):
         return new_cls
 
 
-class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
+class UniventionAppAction(metaclass=UniventionAppActionMeta):
     parent_logger = get_base_logger().getChild('actions')
 
     def __init__(self):
@@ -246,7 +245,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
         # type: (Sequence[str], Optional[logging.Logger], Optional[Mapping[str, str]], Optional[str]) -> Any
         if logger is None:
             logger = self.logger
-        elif isinstance(logger, string_types):
+        elif isinstance(logger, str):
             logger = self.logger.getChild(logger)
         return call_process(args, logger, env, cwd)
 

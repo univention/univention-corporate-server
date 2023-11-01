@@ -41,8 +41,6 @@ from __future__ import absolute_import
 from types import ModuleType  # noqa: F401
 from typing import Optional, Union  # noqa: F401
 
-import six
-
 import univention.admin.modules
 import univention.admin.uldap
 
@@ -69,10 +67,6 @@ class config(object):
 
     def __setitem__(self, key, value):
         self.data[key] = value
-
-    if six.PY2:
-        def has_key(self, key):  # noqa: FURB118
-            return key in self
 
     def __contains__(self, key):
         return key in self.data

@@ -10,12 +10,12 @@
 from __future__ import print_function
 
 import subprocess
+import urllib.parse
+import urllib.response
 from io import BytesIO, StringIO, TextIOWrapper
 from os.path import abspath, dirname, join
 
 import pytest
-import six
-from six.moves import urllib_parse, urllib_response
 
 import univention.updater.tools as U  # noqa: E402
 from univention.config_registry import ConfigRegistry
@@ -72,7 +72,7 @@ def ucr(monkeypatch, tmpdir):
 
 @pytest.fixture()
 def http(mocker):
-    """Mock HTTP requests via py2:urllib2 / py3:urllib.requests"""
+    """Mock HTTP requests via py3:urllib.requests"""
     ressources = {}
 
     def extra(uris={}, netloc=""):
@@ -81,7 +81,7 @@ def http(mocker):
 
     def fopen(req, *args, **kwargs):
         url = req.get_full_url()
-        p = urllib_parse.urlparse(url)
+        p = urllib.parse.urlparse(url)
         try:
             try:
                 res = ressources[p.netloc][p.path]
@@ -91,15 +91,15 @@ def http(mocker):
             if isinstance(res, Exception):
                 raise res
             elif isinstance(res, bytes):
-                return urllib_response.addinfourl(BytesIO(res), {"content-length": len(res)}, url, 200)
+                return urllib.response.addinfourl(BytesIO(res), {"content-length": len(res)}, url, 200)
             else:
                 return res
         except LookupError:
-            raise U.urllib_error.HTTPError(url, 404, "Not Found", {}, None)
+            raise U.urllib.error.HTTPError(url, 404, "Not Found", {}, None)
 
-    director = mocker.patch("univention.updater.tools.urllib2.OpenerDirector", autospec=True)
+    director = mocker.patch("univention.updater.tools.urllib.request.OpenerDirector", autospec=True)
     director.open.side_effect = fopen
-    opener = mocker.patch("univention.updater.tools.urllib2.build_opener")
+    opener = mocker.patch("univention.updater.tools.urllib.request.build_opener")
     opener.return_value = director
     U.UCSHttpServer.reinit()
 
@@ -121,7 +121,7 @@ class MockPopen(object):
         if shell:
             MockPopen.mock_commands.append(cmd)
         else:
-            if isinstance(cmd, six.string_types):
+            if isinstance(cmd, str):
                 cmd = (cmd,)
             try:
                 with open(cmd[0]) as fd_script:

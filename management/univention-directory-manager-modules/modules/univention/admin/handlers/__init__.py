@@ -54,7 +54,6 @@ from logging import getLogger
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union  # noqa: F401
 
 import ldap
-import six
 from ldap.controls.readentry import PostReadControl
 from ldap.dn import dn2str, escape_dn_chars, explode_rdn, str2dn
 from ldap.filter import filter_format
@@ -296,7 +295,7 @@ class simpleLdap(object):
         :rtype: bool
         """
         # FIXME: key can even be nested
-        if not isinstance(key, six.string_types):
+        if not isinstance(key, str):
             return any(self.hasChanged(i) for i in key)
         if (not self.oldinfo.get(key, '') or self.oldinfo[key] == ['']) and (not self.info.get(key, '') or self.info[key] == ['']):
             return False
@@ -333,20 +332,6 @@ class simpleLdap(object):
         self._validate_superordinate(True)
 
         return True
-
-    if six.PY2:
-        def has_key(self, key):  # type: (str) -> bool
-            """
-            Checks if the property exists in this module and if it is enabled in the set UDM options.
-
-            :param str key: The name of a property.
-            :returns: True if the property exists and is enabled, False otherwise.
-            :rtype: bool
-
-            .. deprecated:: 4.4
-            Use :func:`univention.admin.handlers.simpleLdap.has_property` instead!
-            """
-            return self.has_property(key)
 
     def has_property(self, key):  # type: (str) -> bool
         """
@@ -409,9 +394,8 @@ class simpleLdap(object):
             self.__no_default.append(key)
 
         if self.descriptions[key].multivalue:
-
             # make sure value is list
-            if isinstance(value, six.string_types):
+            if isinstance(value, str):
                 value = [value]
             elif not isinstance(value, list):
                 raise univention.admin.uexceptions.valueInvalidSyntax(_('The property %s must be a list') % (self.descriptions[key].short_description,), property=key)
@@ -1300,7 +1284,7 @@ class simpleLdap(object):
                     obj.remove()
             except Exception:
                 log.exception("Post-create: remove() failed: %s")
-            six.reraise(exc[0], exc[1], exc[2])
+            raise exc[1].with_traceback(exc[2])
 
         self.call_udm_property_hook('hook_ldap_post_create', self)
 
@@ -1334,7 +1318,7 @@ class simpleLdap(object):
             if val and key.lower() == 'objectclass':
                 val_list = [val] if not isinstance(val, (tuple, list)) else val
                 val_unicode = [x.decode('UTF-8') if isinstance(x, bytes) else x for x in val_list]
-                ocs -= set(val_unicode)  # TODO: check six.string_types vs bytes everywhere for ocs calculations
+                ocs -= set(val_unicode)  # TODO: check str vs bytes everywhere for ocs calculations
         if ocs:
             al.append(('objectClass', [x.encode('UTF-8') for x in ocs]))
 
@@ -1799,7 +1783,7 @@ class simpleLdap(object):
         filter_s = cls.lookup_filter(filter_s, lo)
         if superordinate:
             filter_s = cls.lookup_filter_superordinate(filter_s, superordinate)
-        filter_str = six.text_type(filter_s or u'')
+        filter_str = str(filter_s or '')
         attr = cls._ldap_attributes()
         result = []
         for dn, attrs in lo.search(filter_str, base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
