@@ -96,8 +96,7 @@ class Plugins(object):
 
 
 def get_all_dynamic_classes():
-    for extension in Plugins("univention.portal.extensions"):
-        yield extension
+    yield from Plugins("univention.portal.extensions")
 
 
 def get_dynamic_classes(klass_name):
