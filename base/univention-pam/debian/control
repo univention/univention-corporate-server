@@ -19,7 +19,6 @@ Depends:
  nscd,
  pam-runasroot,
  python3-ldap,
- python3-six,
  python3-univention-lib,
  shell-univention-lib (>= 3.0.26-7.202.201312111504),
  univention-config (>= 9.0.5-2.443.201312091553),

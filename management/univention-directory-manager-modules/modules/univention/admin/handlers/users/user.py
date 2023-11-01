@@ -46,7 +46,6 @@ from typing import List  # noqa: F401
 
 import ldap
 import passlib.hash
-import six
 import tzlocal
 from ldap.filter import filter_format
 
@@ -78,9 +77,6 @@ except (ImportError, AttributeError):
     import pytz
     zoneinfo = None
     utc = pytz.utc
-
-if not six.PY2:
-    long = int
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
@@ -704,9 +700,9 @@ def check_prohibited_username(lo, username):
 
 
 def case_insensitive_in_list(dn, list):
-    assert isinstance(dn, six.text_type)
+    assert isinstance(dn, str)
     for element in list:
-        assert isinstance(element, six.text_type)
+        assert isinstance(element, str)
         if dn.lower() == element.lower():
             return True
     return False
@@ -717,7 +713,7 @@ def posixSecondsToLocaltimeDate(seconds):
 
 
 def posixDaysToDate(days):
-    return time.strftime("%Y-%m-%d", time.gmtime(long(days) * 3600 * 24))
+    return time.strftime("%Y-%m-%d", time.gmtime(int(days) * 3600 * 24))
 
 
 def sambaWorkstationsMap(workstations, encoding=()):
@@ -869,11 +865,11 @@ def unmapKrb5ValidEndToUserexpiry(oldattr):
 def unmapSambaKickoffTimeToUserexpiry(oldattr):
     if 'sambaKickoffTime' in oldattr:
         ud.debug(ud.ADMIN, ud.INFO, 'sambaKickoffTime is: %s' % oldattr['sambaKickoffTime'][0].decode('ASCII'))
-        return time.strftime("%Y-%m-%d", time.gmtime(long(oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
+        return time.strftime("%Y-%m-%d", time.gmtime(int(oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
 
 
 def _mapUserExpiryToShadowExpire(userexpiry):
-    return u"%d" % long(time.mktime(time.strptime(userexpiry, "%Y-%m-%d")) / 3600 / 24 + 1)
+    return u"%d" % int(time.mktime(time.strptime(userexpiry, "%Y-%m-%d")) / 3600 / 24 + 1)
 
 
 def _mapUserExpiryToKrb5ValidEnd(userexpiry):
@@ -881,7 +877,7 @@ def _mapUserExpiryToKrb5ValidEnd(userexpiry):
 
 
 def _mapUserExpiryToSambaKickoffTime(userexpiry):
-    return u"%d" % long(time.mktime(time.strptime(userexpiry, "%Y-%m-%d")))
+    return u"%d" % int(time.mktime(time.strptime(userexpiry, "%Y-%m-%d")))
 
 
 def unmapPasswordExpiry(oldattr):
@@ -1012,8 +1008,8 @@ def mapWindowsFiletime(old, encoding=()):  # type: (str) -> List[bytes]
         if old == "0":
             return [old.encode(*encoding)]
         unixtime = time.strptime(old, '%Y%m%d%H%M%SZ')
-        d = long(116444736000000000)  # difference between 1601 and 1970
-        windows_filetime = long(calendar.timegm(unixtime)) * 10000000 + d
+        d = 116444736000000000  # difference between 1601 and 1970
+        windows_filetime = int(calendar.timegm(unixtime)) * 10000000 + d
         return [str(int(windows_filetime)).encode('ASCII')]
     return []
 
@@ -1023,7 +1019,7 @@ def unmapWindowsFiletime(old, encoding=()):  # type: (List[bytes]) -> str
         password_time = int(old[0].decode(*encoding))
         if password_time == 0:
             return u'%d' % (password_time,)
-        d = long(116444736000000000)  # difference between 1601 and 1970
+        d = 116444736000000000  # difference between 1601 and 1970
         unixtime = (password_time - d) // 10000000
         try:
             return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(unixtime))
@@ -1273,7 +1269,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         locked_timestamp = self['lockedTime']
         if locked_timestamp and locked_timestamp != "0":
             try:
-                locked_unixtime = long(calendar.timegm(time.strptime(locked_timestamp, '%Y%m%d%H%M%SZ')))
+                locked_unixtime = int(calendar.timegm(time.strptime(locked_timestamp, '%Y%m%d%H%M%SZ')))
                 lockout_duration = int(self.lo.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1].get('sambaLockoutDuration', [0])[0])
             except (ValueError, KeyError, IndexError, AttributeError):
                 return
@@ -1675,7 +1671,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1'
         unset_pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0'
 
-        now = (long(time.time()) / 3600 / 24)
+        now = (int(time.time()) / 3600 / 24)
         shadowLastChange = str(int(now))
         shadowMax = str(pwhistoryPolicy.expiryInterval or u'')  # FIXME: is pwhistoryPolicy.expiryInterval a unicode or bytestring?
         if pwd_change_next_login:
@@ -1700,14 +1696,14 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
         # if pwdChangeNextLogin has been set, set sambaPwdLastSet to 0 (see UCS Bug #17890)
         # OLD behavior was: set sambaPwdLastSet to 1 (see UCS Bug #8292 and Samba Bug #4313)
-        sambaPwdLastSetValue = u'0' if pwd_change_next_login else str(long(time.time()))
+        sambaPwdLastSetValue = u'0' if pwd_change_next_login else str(int(time.time()))
         ud.debug(ud.ADMIN, ud.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
         sambaPwdLastSetValue = sambaPwdLastSetValue.encode('UTF-8')
         ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [b''])[0], sambaPwdLastSetValue))
 
         krb5PasswordEnd = u''
         if pwhistoryPolicy.expiryInterval or pwd_change_next_login:
-            expiry = long(time.time())
+            expiry = int(time.time())
             if not pwd_change_next_login:
                 expiry = expiry + (pwhistoryPolicy.expiryInterval * 3600 * 24)
             krb5PasswordEnd = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
@@ -1897,7 +1893,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                         ml.append(('objectClass', b'', b'automount'))
 
                     am_host = share['host']
-                    if not self['homeSharePath'] or not isinstance(self['homeSharePath'], six.string_types):
+                    if not self['homeSharePath'] or not isinstance(self['homeSharePath'], str):
                         raise univention.admin.uexceptions.missingInformation(_('%(homeSharePath)s must be given if %(homeShare)s is given.') % {'homeSharePath': _('Home share path'), 'homeShare': _('Home share')})
                     else:
                         am_path = os.path.abspath(os.path.join(share['path'], self['homeSharePath']))

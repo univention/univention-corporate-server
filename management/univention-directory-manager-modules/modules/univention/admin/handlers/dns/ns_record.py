@@ -32,8 +32,6 @@
 
 """|UDM| module for |DNS| Name Server records"""
 
-import six
-
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
@@ -159,7 +157,7 @@ def lookup_filter(filter_s=None, superordinate=None):
 def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
     filter = lookup_filter(filter_s, superordinate)
     res = []
-    for dn, attrs in lo.search(six.text_type(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
+    for dn, attrs in lo.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
         res.append(object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
     return res
 
