@@ -39,7 +39,6 @@ import pprint
 from collections import namedtuple
 
 from ldap.filter import filter_format
-from six import with_metaclass
 
 from .exceptions import MultipleObjects, NoObject
 from .plugins import Plugin
@@ -239,7 +238,7 @@ class ModuleMeta(Plugin):
         return new_cls
 
 
-class BaseModule(with_metaclass(ModuleMeta)):
+class BaseModule(metaclass=ModuleMeta):
     r"""
     Base class for UDM module classes. UDM modules are basically UDM object
     factories.

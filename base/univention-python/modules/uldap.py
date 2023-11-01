@@ -40,7 +40,6 @@ from functools import wraps
 import ldap
 import ldap.sasl
 import ldap.schema
-import six
 from ldapurl import LDAPUrl, isLDAPUrl
 
 import univention.debug
@@ -237,11 +236,7 @@ class access(object):
         self.host = host
         self.base = base
         self.binddn = binddn
-        if six.PY2 and isinstance(self.binddn, bytes):
-            self.binddn = self.binddn.decode('UTF-8')
         self.bindpw = bindpw
-        if six.PY2 and isinstance(self.bindpw, bytes):
-            self.bindpw = self.bindpw.decode('UTF-8')
         self.start_tls = start_tls
         self.ca_certfile = ca_certfile
         self.reconnect = reconnect
@@ -638,7 +633,7 @@ class access(object):
             key, val = i[0], i[-1]
             if not val:
                 continue
-            if isinstance(val, (bytes, six.text_type)):
+            if isinstance(val, (bytes, str)):
                 val = [val]
             vals = nal.setdefault(key, set())
             vals |= set(val)
@@ -678,7 +673,7 @@ class access(object):
         ml = []
         for key, oldvalue, newvalue in changes:
             if oldvalue and newvalue:
-                if oldvalue == newvalue or (not isinstance(oldvalue, (bytes, six.text_type)) and not isinstance(newvalue, (bytes, six.text_type)) and set(oldvalue) == set(newvalue)):
+                if oldvalue == newvalue or (not isinstance(oldvalue, (bytes, str)) and not isinstance(newvalue, (bytes, str)) and set(oldvalue) == set(newvalue)):
                     continue  # equal values
                 op = ldap.MOD_REPLACE
                 val = newvalue
@@ -723,7 +718,7 @@ class access(object):
         """
         rdn = ldap.dn.str2dn(dn)[0]
         dn_vals = {x[0].lower(): x[1] for x in rdn}
-        new_vals = {key.lower(): val if isinstance(val, (bytes, six.text_type)) else val[0] for op, key, val in ml if val and op not in (ldap.MOD_DELETE,)}
+        new_vals = {key.lower(): val if isinstance(val, (bytes, str)) else val[0] for op, key, val in ml if val and op not in (ldap.MOD_DELETE,)}
         new_rdn_ava = [(x, new_vals.get(x.lower(), dn_vals[x.lower()]), ldap.AVA_STRING) for x in [y[0] for y in rdn]]
         new_rdn_unicode = [(key, val.decode('UTF-8'), ava_type) if isinstance(val, bytes) else (key, val, ava_type) for key, val, ava_type in new_rdn_ava]
         new_rdn = ldap.dn.dn2str([new_rdn_unicode])
