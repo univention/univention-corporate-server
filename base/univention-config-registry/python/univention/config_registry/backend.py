@@ -237,7 +237,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
             reg.load()
 
         self.autoload = Load.MANUAL  # prevent recursion!
-        strict = False
+        strict = False  # self.is_true('ucr/encoding/strict')
         self.autoload = autoload
 
         for reg in self._registry.values():
