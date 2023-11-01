@@ -31,7 +31,6 @@
 
 """Univention IP Calculator for DNS records (IPv6 edition)."""
 
-from __future__ import print_function
 
 import ipaddress
 import sys

@@ -32,7 +32,6 @@
 
 """Update a local repository."""
 
-from __future__ import print_function
 
 import errno
 import os
