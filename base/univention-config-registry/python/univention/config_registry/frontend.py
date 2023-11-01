@@ -381,7 +381,7 @@ def handler_filter(args, opts={}):
     """Run filter on STDIN to STDOUT."""
     ucr = ConfigRegistry()
     ucr.load()
-    sys.stdout.buffer.stdout.write(run_filter(sys.stdin.read(), ucr, opts=opts))
+    sys.stdout.buffer.write(run_filter(sys.stdin.read(), ucr, opts=opts))
 
 
 def handler_search(args, opts={}):
