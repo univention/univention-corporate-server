@@ -42,7 +42,6 @@ additionally to the common `listener.log`.
 # ucs-school-4.2/ucs-school-lib/python/models/utils.py
 #
 
-from __future__ import absolute_import
 
 import grp
 import logging

@@ -36,7 +36,7 @@ Univention Management Console Module System-Setup
 Network interfaces
 """
 
-from __future__ import annotations, print_function
+from __future__ import annotations
 
 import ipaddress
 import re

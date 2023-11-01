@@ -33,7 +33,6 @@
 
 """Python function to register |UDM| extensions in |LDAP|."""
 
-from __future__ import absolute_import, print_function
 
 import base64
 import bz2
