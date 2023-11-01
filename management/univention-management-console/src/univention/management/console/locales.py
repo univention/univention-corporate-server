@@ -196,7 +196,7 @@ class I18N_Manager(dict):
                 LOCALE.info('Checking domain %s for translation' % domain)
                 if i18n.exists(message):
                     return i18n._(message)
-        except (StructError, IOError) as exc:
+        except (OSError, StructError) as exc:
             # StructError: empty .mo file
             # IOError raised by polib if the file is no .mo file
             LOCALE.error('Corrupted .mo file detected for translation domain %r: %s' % (domain, exc))

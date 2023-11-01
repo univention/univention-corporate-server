@@ -84,7 +84,7 @@ class MtimeBasedLazyFileReloader(Reloader):
     def _get_mtime(self):
         try:
             return os.stat(self._cache_file).st_mtime
-        except (EnvironmentError, AttributeError) as exc:
+        except (OSError, AttributeError) as exc:
             get_logger("cache").warning(f"Unable to get mtime for {exc}")
             return 0
 
@@ -113,7 +113,7 @@ class MtimeBasedLazyFileReloader(Reloader):
                 if fd:
                     try:
                         os.makedirs(os.path.dirname(self._cache_file))
-                    except EnvironmentError:
+                    except OSError:
                         pass
                     shutil.move(fd.name, self._cache_file)
                     self._mtime = self._get_mtime()

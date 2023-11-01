@@ -154,7 +154,7 @@ def _handler(ucr, changes):
                         value = '/univention%s' % value[30:]
                     with open('/var/www/%s' % value, 'rb') as fd:
                         entry['icon'] = b64encode(fd.read()).decode('ASCII')
-                except EnvironmentError:
+                except OSError:
                     pass
             elif key == 'label':
                 entry.setdefault('displayName', [])

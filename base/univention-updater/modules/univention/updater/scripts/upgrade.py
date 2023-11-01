@@ -101,11 +101,11 @@ def update_status(**kwargs: str) -> None:
         with open(fn, 'w+') as fd:
             for key, val in updater_status.items():
                 fd.write('%s=%s\n' % (key, val))
-    except EnvironmentError:
+    except OSError:
         dprint(silent, 'Warning: cannot update %s' % fn)
     try:
         os.rename(fn, FN_STATUS)
-    except EnvironmentError:
+    except OSError:
         dprint(silent, 'Warning: cannot update %s' % FN_STATUS)
 
 
@@ -397,7 +397,7 @@ def main() -> None:
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         logger.setLevel(logging.ERROR)
-    except EnvironmentError:
+    except OSError:
         print('Cannot open %s for writing' % LOGFN)
         sys.exit(1)
 

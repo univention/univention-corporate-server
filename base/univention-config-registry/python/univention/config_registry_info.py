@@ -274,7 +274,7 @@ class ConfigRegistryInfo(object):
                 cfg.write(fd)
 
                 return True
-        except EnvironmentError:
+        except OSError:
             return False
 
     def read_customized(self):

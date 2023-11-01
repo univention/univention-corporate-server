@@ -154,7 +154,7 @@ class LocalAppcenterAction(UniventionAppAction):
         if src == dst:
             try:
                 os.chmod(result_file, 0o644)
-            except EnvironmentError as exc:
+            except OSError as exc:
                 self.warn(exc)
                 return False
             else:
@@ -162,7 +162,7 @@ class LocalAppcenterAction(UniventionAppAction):
         try:
             shutil.copy2(src, dst)
             os.chmod(result_file, 0o644)
-        except EnvironmentError as exc:
+        except OSError as exc:
             self.warn(exc)
             return False
         else:
@@ -745,7 +745,7 @@ class DevSet(UniventionAppAction):
             self.log('Removing %s' % attr)
             try:
                 os.unlink(app.get_cache_file(attr))
-            except EnvironmentError:
+            except OSError:
                 pass
 
     def process(self, app, attribute, section, attr, value, parser):

@@ -543,7 +543,7 @@ def run_scripts(progressParser: ProgressParser, restartServer: bool = False, all
                 'LANG': lang,
             })
             MODULE.info("Running script '%s': pid=%d" % (icmd, p.pid))
-        except EnvironmentError as exc:
+        except OSError as exc:
             MODULE.error("Failed to run '%s': %s" % (icmd, exc))
             continue
         while p.poll() is None:
@@ -679,7 +679,7 @@ def run_scripts_in_path(path: str, logfile: IO[str], category_name: str = "") ->
             logfile.flush()
             try:
                 subprocess.call(os.path.join(path, filename), stdout=logfile, stderr=logfile)
-            except (OSError, IOError):
+            except OSError:
                 logfile.write('%s' % (traceback.format_exc(),))
             logfile.flush()
 
@@ -719,7 +719,7 @@ def detect_interfaces() -> List[Dict[str, str | None]]:
         try:
             # try to read mac address
             mac = open(os.path.join(pathname, 'address')).read().strip()
-        except (OSError, IOError):
+        except OSError:
             pass
         interfaces.append({'name': dirname, 'mac': mac})
 
@@ -964,12 +964,12 @@ def is_ssh_reachable(host: str) -> bool:
         # TODO: timeout?
         s.connect((host, 22))
         return True
-    except EnvironmentError:
+    except OSError:
         pass
     finally:
         try:
             s.close()
-        except EnvironmentError:
+        except OSError:
             pass
     return False
 

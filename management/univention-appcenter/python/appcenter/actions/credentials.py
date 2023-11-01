@@ -136,7 +136,7 @@ class CredentialsAction(UniventionAppAction):
     def _get_machine_connection(self):
         try:
             return get_machine_connection()
-        except IOError:
+        except OSError:
             raise ConnectionFailedSecretFile()
         except ldap.INVALID_CREDENTIALS:
             raise ConnectionFailedInvalidMachineCredentials()
@@ -148,7 +148,7 @@ class CredentialsAction(UniventionAppAction):
     def _get_admin_connection(self):
         try:
             return get_admin_connection()
-        except IOError:
+        except OSError:
             raise ConnectionFailedSecretFile()
         except ldap.INVALID_CREDENTIALS:
             raise ConnectionFailedInvalidAdminCredentials()

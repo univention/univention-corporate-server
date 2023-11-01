@@ -88,7 +88,7 @@ def _download_resource(app: App, resource: str, dest_path: str) -> None:
             print_status('Successfully downloaded %s' % resource_url)
         else:
             print_status('WARNING: Status: %s; Failed to download %s' % (req.status_code, resource_url))
-    except (IOError, requests.HTTPError, requests.ConnectionError, requests.Timeout):
+    except (OSError, requests.HTTPError, requests.ConnectionError, requests.Timeout):
         print_status('WARNING: Failed to download %s' % resource_url)
 
 

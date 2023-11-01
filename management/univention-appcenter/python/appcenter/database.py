@@ -113,7 +113,7 @@ class DatabaseConnector(object):
         try:
             with open(db_password_file) as f:
                 return f.read().rstrip('\n')
-        except EnvironmentError:
+        except OSError:
             return None
 
     def get_db_password_file(self):
@@ -179,7 +179,7 @@ class DatabaseConnector(object):
             with open(db_password_file, 'w') as f:
                 os.chmod(f.name, 0o600)
                 f.write(password)
-        except EnvironmentError as exc:
+        except OSError as exc:
             raise DatabaseCreationFailed(str(exc))
         else:
             database_logger.info('Password for %s database in %s' % (self.app.id, db_password_file))
@@ -188,7 +188,7 @@ class DatabaseConnector(object):
         try:
             with open(self.get_db_password_file()) as f:
                 return f.read().rstrip('\n')
-        except (EnvironmentError, TypeError):
+        except (OSError, TypeError):
             return None
 
     def db_exists(self):

@@ -268,7 +268,7 @@ def run(
                 fd = select.select([process.stdout], [], [])[0][0]
             except IndexError:
                 continue  # not ready / no further data
-            except select.error as exc:
+            except OSError as exc:
                 if exc.args[0] == errno.EINTR:
                     continue
                 raise
@@ -409,14 +409,14 @@ class Instance(Base):
     def _lock(self) -> None:
         try:
             open(LOCKFILE, 'a').close()
-        except (IOError, OSError) as ex:
+        except OSError as ex:
             MODULE.warn(f'_lock: {ex}')
 
     def _unlock(self) -> None:
         try:
             if self._running:
                 os.unlink(LOCKFILE)
-        except (IOError, OSError) as ex:
+        except OSError as ex:
             MODULE.warn(f'_unlock: {ex}')
 
     def __del__(self) -> None:
@@ -431,7 +431,7 @@ class Instance(Base):
             size = 2097152
             try:
                 fd.seek(max(os.stat(fd.name).st_size - size, 0))
-            except IOError:
+            except OSError:
                 pass
             return fd.read(size).decode('utf-8', 'replace')
 

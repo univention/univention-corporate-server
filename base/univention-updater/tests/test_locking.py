@@ -130,8 +130,8 @@ def test_error_non_file(lock):
 def test_concurrent(lock, mocker):
     fn = str(lock)
     mocker.patch("os.open").side_effect = [
-        EnvironmentError(EEXIST, fn),
-        EnvironmentError(ENOENT, fn),
+        OSError(EEXIST, fn),
+        OSError(ENOENT, fn),
         open(fn, O_CREAT | O_WRONLY, 0o644),
     ]
     with L.UpdaterLock(1):
