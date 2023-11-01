@@ -310,3 +310,6 @@ Variables: e2fsck/.*/.*
 Type: module
 Module: autostart.py
 Variables: .*/autostart$
+
+Type: file
+File: etc/selinux/config
