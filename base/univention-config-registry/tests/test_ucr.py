@@ -5,16 +5,12 @@
 
 """Unit test for univention.config_registry."""
 
-import sys
+from importlib import reload
 from time import sleep
 
 import pytest
 
 import univention.config_registry as UCR
-
-
-if sys.version_info >= (3,):
-    from importlib import reload
 
 
 def test_private(tmpucr):

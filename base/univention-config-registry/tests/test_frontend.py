@@ -5,16 +5,12 @@
 
 """Unit test for univention.config_registry.frontend."""
 
-import sys
+from importlib import reload
 from io import StringIO
 
 import pytest
 
 import univention.config_registry.frontend as ucrfe
-
-
-if sys.version_info >= (3,):
-    from importlib import reload
 
 
 @pytest.fixture()
@@ -345,10 +341,7 @@ class TestHandler(object):
         stdin.read.return_value = ""
         stdout = mocker.patch("sys.stdout")
         ucrfe.handler_filter([])
-        if sys.version_info >= (3,):
-            stdout.buffer.write.assert_called_once()
-        else:
-            stdout.write.assert_called_once()
+        stdout.buffer.write.assert_called_once()
 
     @pytest.mark.parametrize("arg,opts,output", [
         ("foo", {}, ["foo: LDAP\n"]),

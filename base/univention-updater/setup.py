@@ -6,16 +6,12 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import sys
-
 from setuptools import setup
 
 
 version = open("debian/changelog").readline().split()[1][1:-1].split('A~')[0]
 
-packages = ['univention', 'univention.updater']
-if sys.version_info >= (3,):
-    packages += ['univention.updater.scripts']
+packages = ['univention', 'univention.updater', 'univention.updater.scripts']
 
 setup(
     packages=packages,
