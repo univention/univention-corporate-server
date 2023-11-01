@@ -661,9 +661,9 @@ def add_transaction(opt, ld, rec):
     modlist = addModlist({
         "objectClass": [b"auditObject"],
         "reqStart": [opt.datetime.encode("utf-8")],
-        "reqType": [f"{rec.command}".encode("utf-8")],
-        "reqSession": [f"{rec.tid}".encode("utf-8")],
-        "reqDN": [f"{rec.dn}".encode("utf-8")],
+        "reqType": [f"{rec.command}".encode()],
+        "reqSession": [f"{rec.tid}".encode()],
+        "reqDN": [f"{rec.dn}".encode()],
     })
     try:
         log.debug("ldap_add(%s)", dn)

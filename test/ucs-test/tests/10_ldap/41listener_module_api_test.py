@@ -74,7 +74,7 @@ def main():
         lm_txt = fp.read()
 
     for k, v in text_replacements.items():
-        lm_txt = lm_txt.replace(f'@@{k}@@'.encode('UTF-8'), v.encode('UTF-8'))
+        lm_txt = lm_txt.replace(f'@@{k}@@'.encode(), v.encode('UTF-8'))
 
     with open(lm_file, 'wb') as fp:
         fp.write(lm_txt)
