@@ -51,7 +51,7 @@ def _auth(f: FuncT) -> FuncT:
                 self.send_header('WWW-Authenticate', f'Basic realm="{options.realm}", charset="UTF-8"')
                 self.send_header('Content-type', 'text/html; charset=UTF-8')
                 self.end_headers()
-                self.wfile.write(f'<html><body><h1>Error: Proxy authorization needed</h1>{exc}</body></html>'.encode('UTF-8'))
+                self.wfile.write(f'<html><body><h1>Error: Proxy authorization needed</h1>{exc}</body></html>'.encode())
                 return
 
         return f(self, *args, **kwargs)
