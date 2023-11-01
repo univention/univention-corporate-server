@@ -106,8 +106,7 @@ class LmdbCache(LdapCache):
     def __iter__(self):
         # type: () -> Iterator[Tuple[str, Any]]
         with self.reading() as reader:
-            for key, value in reader:
-                yield key, value
+            yield from reader
 
     def get(self, key):
         # type: (str) -> Any
