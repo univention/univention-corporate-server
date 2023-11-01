@@ -54,7 +54,7 @@ def make_parent_dir(path):
     dir_path = os.path.dirname(path)
     try:
         os.makedirs(dir_path)
-    except EnvironmentError:
+    except OSError:
         if not os.path.isdir(dir_path):
             raise
 

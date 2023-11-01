@@ -445,7 +445,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
             try:
                 with open(val) as fp:
                     bindpwd = fp.read().strip()
-            except IOError as exc:
+            except OSError as exc:
                 raise OperationFailed('E: could not read bindpwd from file (%s)' % (exc,))
         elif opt == '--dn':
             dn = val
@@ -493,7 +493,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
                 try:
                     with open(secret_filename) as secretFile:
                         bindpwd = secretFile.read().strip('\n')
-                except IOError:
+                except OSError:
                     raise OperationFailed('E: Permission denied, try --binddn and --bindpwd')
                 policyOptions.extend(['-D', binddn, '-y', secret_filename])
                 break

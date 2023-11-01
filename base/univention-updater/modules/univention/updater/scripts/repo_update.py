@@ -104,7 +104,7 @@ def update_net(options: Namespace) -> None:
     makedirs(destdir)
     try:
         os.symlink('.', os.path.join(destdir, 'univention-repository'))
-    except EnvironmentError as e:
+    except OSError as e:
         if e.errno != errno.EEXIST:
             raise
 
