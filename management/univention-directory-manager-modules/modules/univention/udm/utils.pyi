@@ -38,7 +38,7 @@ from typing import Any  # noqa: F401
 ConnectionConfig = namedtuple('ConnectionConfig', ['klass', 'method', 'args', 'kwargs'])
 
 
-is_interactive = bool()
+is_interactive = False
 
 
 class UDebug(object):
