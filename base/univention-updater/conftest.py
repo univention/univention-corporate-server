@@ -64,7 +64,7 @@ def ucr(monkeypatch, tmpdir):
 
 @pytest.fixture()
 def http(mocker):
-    """Mock HTTP requests via py2:urllib2 / py3:urllib.requests"""
+    """Mock HTTP requests via py3:urllib.requests"""
     ressources = {}
 
     def extra(uris={}, netloc=""):
@@ -89,9 +89,9 @@ def http(mocker):
         except LookupError:
             raise U.urllib_error.HTTPError(url, 404, "Not Found", {}, None)
 
-    director = mocker.patch("univention.updater.tools.urllib2.OpenerDirector", autospec=True)
+    director = mocker.patch("univention.updater.tools.urllib.request.OpenerDirector", autospec=True)
     director.open.side_effect = fopen
-    opener = mocker.patch("univention.updater.tools.urllib2.build_opener")
+    opener = mocker.patch("univention.updater.tools.urllib.request.build_opener")
     opener.return_value = director
     U.UCSHttpServer.reinit()
 
