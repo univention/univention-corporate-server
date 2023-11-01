@@ -46,7 +46,6 @@ import traceback
 from functools import reduce
 from json import load
 
-import six
 from ldap import NO_SUCH_OBJECT, LDAPError
 from ldap.dn import explode_dn
 from ldap.filter import filter_format
@@ -359,7 +358,7 @@ class UDM_Error(Exception):
 
     def reraise(self):
         if self.exc_info and self.exc_info != (None, None, None):
-            six.reraise(self.__class__, self, self.exc_info[2])
+            raise self.with_traceback(self.exc_info[2])
         raise self
 
 
@@ -667,9 +666,9 @@ class UDM_Module(object):
                     result = []
                 else:
                     if simple_attrs is not None:
-                        result = ldap_connection.search(filter=six.text_type(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs, serverctrls=serverctrls, response=response)
+                        result = ldap_connection.search(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs, serverctrls=serverctrls, response=response)
                     else:
-                        result = ldap_connection.searchDn(filter=six.text_type(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
+                        result = ldap_connection.searchDn(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
             else:
                 if self.module:
                     kwargs = {}
@@ -902,7 +901,7 @@ class UDM_Module(object):
                     _scanLayout(ielement)
             elif isinstance(_layout, dict) and 'layout' in _layout:
                 _scanLayout(_layout['layout'])
-            elif isinstance(_layout, six.string_types):
+            elif isinstance(_layout, str):
                 inLayout.add(_layout)
         _scanLayout(self.get_layout(ldap_dn))
 

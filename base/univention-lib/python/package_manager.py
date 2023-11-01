@@ -54,7 +54,6 @@ from typing import (  # noqa: F401
 import apt
 import apt.progress
 import apt_pkg
-import six
 from apt.cache import FetchFailedException, LockFailedException, ProblemResolver
 
 from univention.lib.i18n import Translation
@@ -1005,7 +1004,7 @@ class PackageManager(object):
         :param etraceback: Exception traceback.
         """
         message = '%s %s' % (_('Could not initialize package manager.'), '\n'.join(self._get_error_message(exc)))
-        six.reraise(etype, etype(message), etraceback)
+        raise etype(message).with_traceback(etraceback)
 
     def _get_error_message(self, exc):
         # type: (BaseException) -> List[str]

@@ -28,7 +28,6 @@ Package: univention-management-console-module-sysinfo
 Architecture: all
 Depends:
  python3-requests,
- python3-six,
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
  univention-system-info,

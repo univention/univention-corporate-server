@@ -46,8 +46,6 @@ classes.
 """
 import random
 
-import six
-
 from univention.lib.i18n import Translation
 from univention.management.console.error import BadRequest
 from univention.management.console.modules.decorators import simple_response
@@ -102,7 +100,7 @@ class Progress(object):
     def poll(self):
         if self.exc_info:
             self.finish()
-            six.reraise(*self.exc_info)
+            raise self.exc_info[1].with_traceback(self.exc_info[2])
         ret = {
             'title': self.title,
             'finished': self.finished,

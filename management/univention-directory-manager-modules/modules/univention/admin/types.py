@@ -40,7 +40,6 @@ import time
 from typing import Optional, Sequence, Type, Union  # noqa: F401
 
 import ldap.dn
-import six
 
 import univention.admin.uexceptions
 import univention.debug as ud
@@ -49,10 +48,6 @@ from univention.admin import localization
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
-
-if six.PY3:
-    unicode = str
-    long = int
 
 _Types = Union[Type[object], Sequence[Type[object]]]
 
@@ -313,7 +308,7 @@ class TriBooleanType(BooleanType):
 
 
 class IntegerType(TypeHint):
-    _python_types = (int, long)
+    _python_types = int
     _openapi_type = 'integer'
     # _openapi_format: int32, int64
 
@@ -332,7 +327,7 @@ class NumberType(TypeHint):
 
 
 class StringType(TypeHint):
-    _python_types = unicode  # type: _Types
+    _python_types = str  # type: _Types
     _encoding = 'UTF-8'
     _openapi_type = 'string'
 
@@ -385,7 +380,7 @@ class BinaryType(TypeHint):
     _encoding = 'ISO8859-1'
 
     # It is not possible to transmit binary data via JSON. in JSON everything needs to be UTF-8!
-    _json_type = unicode
+    _json_type = str
     _json_encoding = 'ISO8859-1'
 
     _openapi_type = 'string'
@@ -411,7 +406,7 @@ class DateType(StringType):
     """
 
     _python_types = datetime.date
-    _json_type = unicode
+    _json_type = str
     _openapi_format = 'date'
 
     def decode_value(self, value):
@@ -422,10 +417,10 @@ class DateType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value):  # type: (datetime.date) -> unicode
-        return unicode(value.isoformat())
+    def _to_json_type(self, value):  # type: (datetime.date) -> str
+        return str(value.isoformat())
 
-    def _from_json_type(self, value):  # type: (unicode) -> datetime.date
+    def _from_json_type(self, value):  # type: (str) -> datetime.date
         try:
             return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
         except ValueError:
@@ -443,7 +438,7 @@ class TimeType(StringType):
     """
 
     _python_types = datetime.time
-    _json_type = unicode
+    _json_type = str
     _openapi_format = 'time'
 
     def decode_value(self, value):
@@ -454,10 +449,10 @@ class TimeType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value):  # type: (datetime.time) -> unicode
-        return unicode(value.replace(microsecond=0).isoformat())
+    def _to_json_type(self, value):  # type: (datetime.time) -> str
+        return str(value.replace(microsecond=0).isoformat())
 
-    def _from_json_type(self, value):  # type: (unicode) -> datetime.time
+    def _from_json_type(self, value):  # type: (str) -> datetime.time
         try:
             return datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
         except ValueError:
@@ -478,7 +473,7 @@ class DateTimeType(StringType):
     """
 
     _python_types = datetime.datetime
-    _json_type = unicode
+    _json_type = str
     _openapi_format = 'date-time'
 
     def decode_value(self, value):
@@ -489,10 +484,10 @@ class DateTimeType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value):  # type: (datetime.datetime) -> unicode
+    def _to_json_type(self, value):  # type: (datetime.datetime) -> str
         return u' '.join((value.date().isoformat(), value.time().replace(microsecond=0).isoformat()))
 
-    def _from_json_type(self, value):  # type: (unicode) -> datetime.datetime
+    def _from_json_type(self, value):  # type: (str) -> datetime.datetime
         try:
             return datetime.datetime(*time.strptime(value, '%Y-%m-%dT%H:%M:%S')[:6])  # FIXME: parse Z at the end
         except ValueError:

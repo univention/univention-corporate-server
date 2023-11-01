@@ -31,18 +31,9 @@
 
 """Univention IP Calculator for DNS records (IPv6 edition)."""
 
+from ipaddress import IPv4Interface, IPv6Interface
 from typing import Union  # noqa: F401
 
-import six
-
-
-# use ip_interface for networks for py2 py3 compatability
-if six.PY3:
-    from ipaddress import IPv4Address, IPv4Interface, IPv6Address, IPv6Interface
-else:
-    from ipaddr import (  # noqa: F401
-        IPv4Address, IPv4Network as IPv4Interface, IPv6Address, IPv6Network as IPv6Interface,
-    )
 
 _Interface = Union[IPv4Interface, IPv6Interface]
 
