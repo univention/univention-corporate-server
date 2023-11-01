@@ -44,3 +44,4 @@ document.
    :numbered: 3
 
    system
+   bibliography
