@@ -32,7 +32,6 @@
 
 """|UDM| objects."""
 
-from __future__ import absolute_import
 
 from typing import Any, Dict, List, Optional, Tuple, Union  # noqa: F401
 

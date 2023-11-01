@@ -32,7 +32,6 @@
 
 """|UDM| module for the user objects"""
 
-from __future__ import absolute_import
 
 import builtins
 import calendar

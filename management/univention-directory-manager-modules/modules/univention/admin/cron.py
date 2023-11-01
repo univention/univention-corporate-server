@@ -32,7 +32,6 @@
 
 """|UDM| functions for creating crontab entries."""
 
-from __future__ import absolute_import
 
 from typing import Mapping, Sequence, Union  # noqa: F401
 

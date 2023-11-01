@@ -35,7 +35,6 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import
 
 import subprocess
 from typing import Dict, List, Optional  # noqa: F401
