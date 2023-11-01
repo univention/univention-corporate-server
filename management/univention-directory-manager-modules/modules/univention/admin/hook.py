@@ -32,7 +32,6 @@
 
 """|UDM| hook definitions for modifying |LDAP| calls when objects are created, modifier or deleted."""
 
-import io
 import os
 import sys
 import traceback
@@ -63,7 +62,7 @@ def import_hook_files():
             hooks_files = (os.path.join(hooks_d, f) for f in os.listdir(hooks_d) if f.endswith('.py'))
             for fn in hooks_files:
                 try:
-                    with io.open(fn, 'rb') as fd:
+                    with open(fn, 'rb') as fd:
                         exec(fd.read(), sys.modules[__name__].__dict__)  # noqa: S102
                     ud.debug(ud.ADMIN, ud.INFO, 'admin.hook.import_hook_files: importing %r' % (fn,))
                 except Exception:
