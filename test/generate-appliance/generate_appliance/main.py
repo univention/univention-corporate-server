@@ -7,7 +7,6 @@
 
 """create virtual appliances for various virtualization systems from a single disk image"""
 
-from __future__ import absolute_import, unicode_literals
 
 import re
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace
