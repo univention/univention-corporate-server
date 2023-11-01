@@ -33,7 +33,6 @@
 
 """Python library for AD Member Mode."""
 
-from __future__ import absolute_import, print_function
 
 import ipaddress
 import locale

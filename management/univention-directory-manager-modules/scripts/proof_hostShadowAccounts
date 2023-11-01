@@ -33,8 +33,6 @@
 
 """Added objectClass shaowAccount to computer objects."""
 
-from __future__ import print_function
-
 import ldap
 
 import univention.config_registry

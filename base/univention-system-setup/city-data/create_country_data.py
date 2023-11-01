@@ -32,7 +32,7 @@
 
 """Generate `country_data.json`"""
 
-from __future__ import annotations, print_function
+from __future__ import annotations
 
 import json
 from argparse import ArgumentParser, FileType

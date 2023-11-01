@@ -32,7 +32,6 @@
 
 """|UDM| module for the simple authentication account objects"""
 
-from __future__ import absolute_import
 
 import ldap
 

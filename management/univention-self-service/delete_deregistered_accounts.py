@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
 
 import argparse
 import datetime

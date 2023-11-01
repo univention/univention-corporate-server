@@ -33,8 +33,6 @@
 
 """Script for converting wrong class b network entries"""
 
-from __future__ import print_function
-
 import sys
 
 import ldap
