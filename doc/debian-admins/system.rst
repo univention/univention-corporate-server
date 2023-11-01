@@ -137,6 +137,8 @@ their environment and preventing them from doing their daily work.
 This short outline brings use to one rule. Applying it can safe you a lot of
 frustration, efforts, and headaches:
 
+.. _rule-1:
+
 .. admonition:: Rule #1
 
    Don't manually edit configuration files that are under control of |UCR| or
