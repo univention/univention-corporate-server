@@ -198,7 +198,7 @@ def test_reopen(parse, tmplog):
 
 
 def test_unicode(parse, tmplog):
-    ud.debug(ud.MAIN, ud.ERROR, u'\u2603' if sys.getdefaultencoding() != 'ascii' else u'\u2603'.encode('utf-8'))
+    ud.debug(ud.MAIN, ud.ERROR, u'\u2603' if sys.getdefaultencoding() != 'ascii' else u'\u2603'.encode())
     ud.exit()
 
     output = tmplog.read()
