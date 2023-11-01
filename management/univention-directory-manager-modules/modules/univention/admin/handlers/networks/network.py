@@ -272,9 +272,9 @@ class object(univention.admin.handlers.simpleLdap):
                             raise univention.admin.uexceptions.rangesOverlapping('%s-%s; %s-%s' % (i[0], i[1], j[0], j[1]))
                 if firstIP not in network or lastIP not in network:
                     raise univention.admin.uexceptions.rangeNotInNetwork('%s-%s' % (firstIP, lastIP))
-                if firstIP == network.network_address or lastIP == network.network_address:
+                if network.network_address in (firstIP, lastIP):
                     raise univention.admin.uexceptions.rangeInNetworkAddress('%s-%s' % (firstIP, lastIP))
-                if firstIP == network.broadcast_address or lastIP == network.broadcast_address:
+                if network.broadcast_address in (firstIP, lastIP):
                     raise univention.admin.uexceptions.rangeInBroadcastAddress('%s-%s' % (firstIP, lastIP))
                 ipRange.append(u' '.join(i).encode('ASCII'))
 

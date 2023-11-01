@@ -510,7 +510,7 @@ class access(object):
             res = self.lo.search_ext_s(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
                 self.__search(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit, response=response)
         else:
-            if scope == 'sub' or scope == 'domain':
+            if scope in ('sub', 'domain'):
                 ldap_scope = ldap.SCOPE_SUBTREE
             elif scope == 'one':
                 ldap_scope = ldap.SCOPE_ONELEVEL

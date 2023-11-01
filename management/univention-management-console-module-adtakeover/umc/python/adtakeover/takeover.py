@@ -569,12 +569,12 @@ class UCS_License_detection(object):
             m = max[i]
             n = num[i]
             objs[i]
-            if i == self.License.USERS or i == self.License.ACCOUNT:
+            if i in (self.License.USERS, self.License.ACCOUNT):
                 n -= self._license.sysAccountsFound
                 if n < 0:
                     n = 0
             li = self._license.names[v][i]
-            if m and (i == self.License.USERS or i == self.License.ACCOUNT):
+            if m and (i in (self.License.USERS, self.License.ACCOUNT)):
                 log.debug("determine_license for current UCS %s: %s of %s" % (li, n, m))
                 log.debug("  %s Systemaccounts are ignored." % self._license.sysAccountsFound)
                 result.append((li, n, m))

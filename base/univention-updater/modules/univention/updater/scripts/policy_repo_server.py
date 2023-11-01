@@ -84,7 +84,7 @@ def main() -> None:
         # on a repository server
         if not new_server:
             ucr_variables.append('repository/online/server?%s' % fqdn)
-        elif new_server != mirror_server and new_server != fqdn:
+        elif new_server not in (mirror_server, fqdn):
             ucr_variables.append('repository/mirror/server=%s' % new_server)
     else:
         # without a local repository

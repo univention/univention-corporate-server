@@ -115,7 +115,7 @@ def readcontinue(msg: str) -> bool:
     while True:
         try:
             choice = input(msg).lower().strip()
-            if choice == '' or choice == 'y' or choice == 'j':
+            if choice in ('', 'y', 'j'):
                 print('')
                 return True
             elif choice == 'n':

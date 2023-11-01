@@ -609,7 +609,7 @@ class Instance(umcm.Base, ProgressMixin):
         """Query to fill the grid. Structure is fixed here."""
         result = []
         for package in self.package_manager.packages(reopen=True):
-            if section == 'all' or package.section == section:
+            if section in ('all', package.section):
                 toshow = False
                 if pattern.pattern == '^.*$':
                     toshow = True

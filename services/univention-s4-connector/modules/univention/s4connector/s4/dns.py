@@ -493,7 +493,7 @@ def __unpack_aRecord(object):
     dnsRecords = object['attributes'].get('dnsRecord', [])
     for dnsRecord in dnsRecords:
         ndrRecord = ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
-        if ndrRecord.wType == dnsp.DNS_TYPE_A or ndrRecord.wType == dnsp.DNS_TYPE_AAAA:
+        if ndrRecord.wType in (dnsp.DNS_TYPE_A, dnsp.DNS_TYPE_AAAA):
             a.append(ndrRecord.data)
     return a
 
@@ -1528,7 +1528,7 @@ def ucs2con(s4connector, key, object):
     object['attributes']['zoneName'] = [zoneName.encode('UTF-8')]
     object['attributes']['relativeDomainName'] = [relativeDomainName.encode('UTF-8')]
 
-    if dns_type == 'forward_zone' or dns_type == 'reverse_zone':
+    if dns_type in ('forward_zone', 'reverse_zone'):
         if object['modtype'] in ['add', 'modify']:
             s4_zone_create_wrapper(s4connector, object)
         elif object['modtype'] in ['delete']:

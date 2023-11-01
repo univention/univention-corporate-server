@@ -137,8 +137,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
     fqdn = '%(hostname)s.%(domainname)s' % listener.configRegistry
     fqdn = fqdn.lower()
     # If univentionMailHomeServer is not set, all servers are responsible.
-    is_old_home_server = oldHomeServer == "" or oldHomeServer == fqdn
-    is_new_home_server = newHomeServer == "" or newHomeServer == fqdn
+    is_old_home_server = oldHomeServer in ('', fqdn)
+    is_new_home_server = newHomeServer in ('', fqdn)
 
     #
     # NEW email account

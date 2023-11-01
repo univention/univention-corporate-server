@@ -146,7 +146,7 @@ def check_license(lo, dn, list_dns, expired):
         num = [len(obj or '') for obj in objs]
         _license.checkObjectCounts(maximum, num)
         for i, m, n, odn in zip(range(len(types)), maximum, num, objs):
-            if i == License.USERS or i == License.ACCOUNT:
+            if i in (License.USERS, License.ACCOUNT):
                 n -= _license.sysAccountsFound
                 if n < 0:
                     n = 0
@@ -163,7 +163,7 @@ def check_license(lo, dn, list_dns, expired):
                 if list_dns and maximum != 'unlimited':
                     for dnout in odn:
                         out.extend(["  %s" % dnout])
-                if list_dns and (i == License.USERS or i == License.ACCOUNT):
+                if list_dns and (i in (License.USERS, License.ACCOUNT)):
                     out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
 
     def check_time():
