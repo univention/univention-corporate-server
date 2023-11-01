@@ -293,8 +293,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
         :returns: Iterator over all UCR variable names.
         """
         merge = self._merge()
-        for key in merge:
-            yield key
+        yield from merge
 
     def __len__(self):
         # type: () -> int
