@@ -30,9 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
-
-
 class UdmError(Exception):
     """Base class of Exceptions raised by (simplified) UDM modules."""
 

@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import, unicode_literals
 
 import datetime  # noqa: F401
 from typing import Any, Dict, List, Optional, Type, TypeVar  # noqa: F401
