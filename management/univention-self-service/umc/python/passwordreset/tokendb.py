@@ -116,7 +116,7 @@ token VARCHAR(255) NOT NULL);""")
         try:
             with open(DB_SECRETS_FILE) as pw_file:
                 password = pw_file.readline().strip()
-        except (OSError, IOError) as e:
+        except OSError as e:
             self.logger.error(f"db_open(): Could not read {DB_SECRETS_FILE}: {e}")
             raise
         try:

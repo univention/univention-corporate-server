@@ -144,7 +144,7 @@ class Proxy(BaseHTTPRequestHandler):
                         write.sendall(data)  # FIXME: may block
                     else:
                         rlist.remove(read)
-        except socket.error as exc:
+        except OSError as exc:
             self.log_error(f"CONNECT: {exc}")
         finally:
             client.close()

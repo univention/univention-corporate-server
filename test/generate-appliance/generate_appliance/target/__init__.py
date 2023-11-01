@@ -82,6 +82,6 @@ class TargetFile(Target, metaclass=ABCMeta):
             path = path.with_name("%s-%s" % (path.name, self.SUFFIX))
 
         if path.exists():
-            raise IOError('Output file %r exists' % (path,))
+            raise OSError('Output file %r exists' % (path,))
 
         return path

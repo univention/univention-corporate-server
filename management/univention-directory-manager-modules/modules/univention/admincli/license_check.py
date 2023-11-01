@@ -198,7 +198,7 @@ def main(argv):
     if bindpw is None:
         try:
             bindpw = default_pw()
-        except IOError:
+        except OSError:
             raise UsageError("Permission denied, try `--binddn' and `--bindpw'")
     try:
         lo = univention.admin.uldap.access(host=master, port=port, base=baseDN, binddn=binddn, bindpw=bindpw)
