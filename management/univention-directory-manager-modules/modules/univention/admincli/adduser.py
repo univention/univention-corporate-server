@@ -68,7 +68,7 @@ def nscd_invalidate(table):
         log.debug('NSCD: --invalidate %s', table)
         try:
             subprocess.check_call(['/usr/sbin/nscd', '--invalidate', table], close_fds=True)
-        except (EnvironmentError, subprocess.CalledProcessError):
+        except (OSError, subprocess.CalledProcessError):
             log.debug('NSCD: failed')
         else:
             log.debug('NSCD: ok')

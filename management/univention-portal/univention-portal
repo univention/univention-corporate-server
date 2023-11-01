@@ -55,7 +55,7 @@ def read_portals_json() -> Dict:
     try:
         with open(portals_json) as fd:
             return json.load(fd)
-    except EnvironmentError:
+    except OSError:
         return {}
 
 

@@ -519,7 +519,7 @@ def load_localmapping(ad_mapping, filename='/etc/univention/connector/ad/localma
         mapping = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mapping)
         mapping_hook = mapping.mapping_hook
-    except (IOError, AttributeError):
+    except (OSError, AttributeError):
         return ad_mapping
     else:
         return mapping_hook(ad_mapping)

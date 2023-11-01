@@ -107,7 +107,7 @@ class Service(uit.LocalizedDictionary):
         """Get status of the service."""
         try:
             return self.__change_state('status')[1]
-        except EnvironmentError:
+        except OSError:
             return u''
 
     def _change_state(self, action):
@@ -160,7 +160,7 @@ def pidof(name, docker='/var/run/docker.pid'):
             with open(docker) as stream:
                 docker = int(stream.read(), 10)
             log.info('Found docker.pid=%d', docker)
-        except (EnvironmentError, ValueError) as ex:
+        except (OSError, ValueError) as ex:
             log.info('No docker found: %s', ex)
 
     cmd = shlex.split(name)
@@ -174,7 +174,7 @@ def pidof(name, docker='/var/run/docker.pid'):
             with open(cmdline, 'rb') as fd:
                 commandline = fd.read().rstrip(b'\x00').decode('UTF-8', 'replace')
             link = os.readlink(os.path.join('/proc', proc, 'exe'))
-        except EnvironmentError:
+        except OSError:
             continue
         # kernel thread
         if not commandline:
@@ -188,7 +188,7 @@ def pidof(name, docker='/var/run/docker.pid'):
                     status = fd.readline()
                 ppid = int(status[status.rfind(b')') + 2:].split()[1], 10)
                 children.setdefault(ppid, []).append(pid)
-            except (EnvironmentError, ValueError) as ex:
+            except (OSError, ValueError) as ex:
                 log.error('Failed getting parent: %s: %r', ex, status)
 
         def _running(cmd, link, commandline):
@@ -262,7 +262,7 @@ class ServiceInfo(object):
                 cfg.write(fd)
 
                 return True
-        except EnvironmentError:
+        except OSError:
             return False
 
     def read_services(self, filename=None, package=None, override=False):

@@ -462,7 +462,7 @@ class Client(object):
         try:
             with open('/etc/machine.secret') as machine_file:
                 password = machine_file.readline().strip()
-        except EnvironmentError as exc:
+        except OSError as exc:
             raise ConnectionError('Could not read /etc/machine.secret', reason=exc)
         self.authenticate(username, password)
 
@@ -597,7 +597,7 @@ class Client(object):
             request.headers['X-XSRF-Protection'] = self.cookies['UMCSessionId']
         try:
             http_response = self.__request(request)
-        except (HTTPException, EnvironmentError, ssl.CertificateError) as exc:
+        except (OSError, HTTPException, ssl.CertificateError) as exc:
             raise ConnectionError('Could not send request.', reason=exc)
         self._handle_cookies(http_response)
         umc_response = Response._from_httplib_response(http_response)

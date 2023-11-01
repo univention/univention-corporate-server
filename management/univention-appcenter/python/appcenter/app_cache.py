@@ -236,7 +236,7 @@ class AppCache(_AppCache):
 
                 os.rename(tmp_file, cache_file)
                 cache_modified = self._cache_modified()
-            except (EnvironmentError, TypeError):
+            except (OSError, TypeError):
                 return False
             else:
                 self._cache_modified_mtime = cache_modified
@@ -258,7 +258,7 @@ class AppCache(_AppCache):
             with open(cache_file) as fd:
                 cache = load(fd)
             self._cache_modified_mtime = cache_modified
-        except (EnvironmentError, ValueError, TypeError):
+        except (OSError, ValueError, TypeError):
             cache_logger.debug('Cannot load cache: getting mtimes failed')
             return None
         else:
@@ -277,14 +277,14 @@ class AppCache(_AppCache):
     def _archive_modified(self):
         try:
             return os.stat(os.path.join(self.get_cache_dir(), '.all.tar')).st_mtime
-        except (EnvironmentError, AttributeError) as exc:
+        except (OSError, AttributeError) as exc:
             cache_logger.debug('Unable to get mtime for archive: %s' % exc)
             return None
 
     def _cache_modified(self):
         try:
             return os.stat(self.get_cache_file()).st_mtime
-        except (EnvironmentError, AttributeError) as exc:
+        except (OSError, AttributeError) as exc:
             cache_logger.debug('Unable to get mtime for cache: %s' % exc)
             return None
 
@@ -335,7 +335,7 @@ class AppCache(_AppCache):
         for cache_file in glob(os.path.join(cache_dir, '.*apps*.json')):
             try:
                 os.unlink(cache_file)
-            except EnvironmentError:
+            except OSError:
                 pass
 
     @contextmanager
@@ -427,7 +427,7 @@ class AppCenterCache(_AppCache):
                     if still_running and next_version:
                         cache_logger.debug('Using UCS %s. Apparently an updater is running' % next_version)
                         return next_version
-        except (EnvironmentError, ValueError) as exc:
+        except (OSError, ValueError) as exc:
             cache_logger.warning('Could not parse univention-updater.status: %s' % exc)
         return ucr_get('version/version')
 

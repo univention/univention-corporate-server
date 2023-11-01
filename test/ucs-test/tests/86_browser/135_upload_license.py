@@ -80,7 +80,7 @@ def modify_free_license_template(license_dn: str):
                 if line.startswith('dn: '):
                     line = f'dn: {license_dn}\n'
                 fd.write(line)
-    except (IOError, ValueError):
+    except (OSError, ValueError):
         logger.exception('Error while modifying FreeForPersonalUseTest')
         raise
 
@@ -93,6 +93,6 @@ def dump_current_license_to_file(license_file: IO[str], license_dn: str):
     logger.info("Saving original license to file: '%s'" % license_file.name)
     try:
         subprocess.run(['univention-ldapsearch', '-LLLb', license_dn], stdout=license_file, check=True)
-    except (IOError, ValueError, OSError, CalledProcessError):
+    except (ValueError, OSError, CalledProcessError):
         logger.exception('An error occurred backing up the old license')
         raise

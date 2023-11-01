@@ -419,7 +419,7 @@ class AppFileAttribute(AppAttribute):
             try:
                 with open(app.get_cache_file(filename)) as fd:
                     value = ''.join(fd.readlines()).strip()
-            except EnvironmentError:
+            except OSError:
                 pass
             else:
                 break

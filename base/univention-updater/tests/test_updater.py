@@ -384,7 +384,7 @@ class TestComponents(object):
         ucr({
             'repository/online/component/d': 'yes',
         })
-        mockopen[U.Component.FN_APTSOURCES] = IOError()
+        mockopen[U.Component.FN_APTSOURCES] = OSError()
         assert u.component('d').status() == U.Component.UNKNOWN
 
     def test_get_current_component_status_MISSING(self, ucr, u, mockopen):
