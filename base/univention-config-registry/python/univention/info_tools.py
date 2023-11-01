@@ -36,8 +36,6 @@
 import configparser
 import re
 
-import six
-
 
 try:
     from typing import Dict, Optional, TypeVar, Union, overload  # noqa: F401
@@ -205,16 +203,10 @@ class LocalizedDictionary(__LD):
 class UnicodeConfig(configparser.ConfigParser):
 
     def __init__(self):
-        if six.PY3:
-            configparser.ConfigParser.__init__(self, strict=False, interpolation=None)
-        else:
-            configparser.ConfigParser.__init__(self)
+        configparser.ConfigParser.__init__(self, strict=False, interpolation=None)
 
     def read(self, filename, encoding='UTF-8'):
-        kwargs = {}
-        if six.PY3:
-            kwargs['encoding'] = encoding
-        return configparser.ConfigParser.read(self, filename, **kwargs)
+        return configparser.ConfigParser.read(self, filename, encoding=encoding)
 
     def write(self, fp):
         """Write an .ini-format representation of the configuration state."""

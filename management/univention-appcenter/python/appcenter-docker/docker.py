@@ -35,6 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import http.client
 import os
 import os.path
 import shlex
@@ -42,6 +43,8 @@ import shutil
 import ssl
 import sys
 import time
+import urllib.error
+import urllib.request
 from base64 import b64encode
 from contextlib import contextmanager
 from ipaddress import IPv4Address, IPv4Network
@@ -50,7 +53,6 @@ from subprocess import CalledProcessError, call, check_output
 from tempfile import NamedTemporaryFile
 
 from ruamel import yaml
-from six.moves import http_client, urllib_error, urllib_request
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.exceptions import DockerCouldNotStartContainer, DockerImagePullFailed
@@ -120,15 +122,15 @@ def access(image):
     url = 'https://%s/v2/%s/manifests/%s' % (hub, image_name, image_tag)
     username = password = ucr_get('uuid/license')
     auth = b64encode(('%s:%s' % (username, password)).encode('utf-8')).decode('ascii')
-    request = urllib_request.Request(url, headers={'Authorization': 'Basic %s' % auth})
+    request = urllib.request.Request(url, headers={'Authorization': 'Basic %s' % auth})
     try:
         urlopen(request)
-    except urllib_error.HTTPError as exc:
+    except urllib.error.HTTPError as exc:
         if exc.getcode() == 401:
             return False
         else:
             return False  # TODO
-    except (urllib_error.URLError, ssl.CertificateError, http_client.BadStatusLine):
+    except (urllib.error.URLError, ssl.CertificateError, http.client.BadStatusLine):
         return False  # TODO
     else:
         return True

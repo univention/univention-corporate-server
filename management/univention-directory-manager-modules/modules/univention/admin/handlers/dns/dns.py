@@ -32,8 +32,6 @@
 
 """|UDM| module for all |DNS| objects"""
 
-import six
-
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.alias
@@ -89,7 +87,7 @@ def rewrite(filter_s, **args):
     for key, value in args.items():
         mapping.register(key, value)
     univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-    return six.text_type(filter_p)
+    return str(filter_p)
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

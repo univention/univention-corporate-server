@@ -37,8 +37,6 @@ import os
 from functools import wraps
 from pwd import getpwnam
 
-from six import string_types
-
 from univention.config_registry import ConfigRegistry
 
 
@@ -67,7 +65,7 @@ def setuid(uid):  # type: (Union[int, str]) -> None
     :type uid: int or str
     :return: None
     """
-    if isinstance(uid, string_types):
+    if isinstance(uid, str):
         uid = getpwnam(uid)[2]
     assert isinstance(uid, int)
     os.seteuid(uid)

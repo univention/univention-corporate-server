@@ -43,8 +43,7 @@ from glob import glob
 from gzip import open as gzip_open
 from typing import Dict, Iterable, Iterator, List, Mapping, Optional  # noqa: F401
 from urllib.error import HTTPError
-
-from six.moves.urllib_request import Request
+from urllib.request import Request
 
 from univention.appcenter.actions import UniventionAppAction, possible_network_error
 from univention.appcenter.app import LOCAL_ARCHIVE_DIR

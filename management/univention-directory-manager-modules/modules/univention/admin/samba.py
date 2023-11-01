@@ -34,8 +34,6 @@
 import string
 from collections import OrderedDict
 
-import six
-
 
 class acctFlags(object):
 
@@ -43,7 +41,7 @@ class acctFlags(object):
         if flags is not None:
             self.__flags = OrderedDict(flags)
             return
-        if not flagstring or not isinstance(flagstring, six.string_types) or len(flagstring) != 13:
+        if not flagstring or not isinstance(flagstring, str) or len(flagstring) != 13:
             if fallbackflags is not None:
                 self.__flags = OrderedDict(fallbackflags)
                 return

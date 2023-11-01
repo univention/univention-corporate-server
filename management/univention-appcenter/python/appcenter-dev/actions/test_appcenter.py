@@ -38,8 +38,7 @@
 import os
 from argparse import REMAINDER
 from tempfile import gettempdir
-
-from six.moves.urllib_request import Request
+from urllib.request import Request
 
 from univention.appcenter.actions import StoreAppAction, UniventionAppAction, possible_network_error
 from univention.appcenter.exceptions import NetworkError

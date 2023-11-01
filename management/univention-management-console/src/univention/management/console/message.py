@@ -45,7 +45,6 @@ import time
 
 import ldap
 import ldap.sasl
-import six
 
 import univention.admin.uexceptions as udm_errors
 from univention.management.console.error import PasswordRequired
@@ -208,13 +207,13 @@ class Request(Message):
                         lo.lo.bind_saml(self.password)
                     except ldap.OTHER:
                         CORE.error('SAML authentication failed.')
-                        six.reraise(etype, exc, etraceback)
+                        raise exc.with_traceback(etraceback)
                     CORE.error('Wrong authentication type. Resetting.')
                     self.auth_type = 'SAML'
         except ldap.INVALID_CREDENTIALS:
             etype, exc, etraceback = sys.exc_info()
             exc = etype('An error during LDAP authentication happened. Auth type: %s; SAML message length: %s; DN length: %s; Original Error: %s' % (self.auth_type, len(self.password or '') if len(self.password or '') > 25 else False, len(self.user_dn or ''), exc))
-            six.reraise(etype, exc, etraceback)
+            raise exc.with_traceback(etraceback)
 
 
 class Response(Message):
