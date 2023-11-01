@@ -34,7 +34,6 @@
 
 """Univention Configuration Registry backend for data storage."""
 
-from __future__ import print_function
 
 import errno
 import fcntl

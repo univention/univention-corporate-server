@@ -104,7 +104,6 @@ The LDAP connection to use must be supplies as an argument to the UDM module fac
         # If it is a username, a machine connection is used to retrieve the DN it belongs to.
 """
 
-from __future__ import absolute_import
 
 from .exceptions import (
     ApiVersionMustNotChange, ApiVersionNotSupported, ConnectionError, CreateError, DeletedError, DeleteError,

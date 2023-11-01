@@ -32,7 +32,6 @@
 
 """Classes for holding binary UDM  object properties."""
 
-from __future__ import absolute_import, unicode_literals
 
 import base64
 import bz2

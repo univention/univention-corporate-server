@@ -33,7 +33,6 @@
 
 """listener script for UDM extension modules."""
 
-from __future__ import absolute_import
 
 import bz2
 import os

@@ -104,7 +104,6 @@ The LDAP connection to use must be supplies as an argument to the UDM module fac
         # If it is a username, a machine connection is used to retrieve the DN it belongs to.
 """
 
-from __future__ import absolute_import, unicode_literals
 
 from fnmatch import fnmatch
 from operator import itemgetter
@@ -273,7 +272,7 @@ class UDM(object):
         """
         if self.connection.__module__ != 'univention.admin.uldap':
             raise NotImplementedError('obj_by_dn() can only be used with an LDAP connection.')
-        ldap_obj = self.connection.get(dn, attr=[str('univentionObjectType')])
+        ldap_obj = self.connection.get(dn, attr=['univentionObjectType'])
         if not ldap_obj:
             raise NoObject(dn=dn)
         uot = ldap_obj['univentionObjectType'][0].decode('utf-8')

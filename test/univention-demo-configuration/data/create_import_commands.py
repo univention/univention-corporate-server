@@ -32,7 +32,6 @@
 
 """Import example user data including profile images to UCS"""
 
-from __future__ import print_function
 
 import csv
 from os.path import dirname, join
