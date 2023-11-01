@@ -26,7 +26,6 @@ Depends:
  php-ldap,
  php-memcached,
  php-xml,
- python3-six,
  python3-univention-lib,
  shell-univention-lib,
  simplesamlphp (>= 1.11.0-1),

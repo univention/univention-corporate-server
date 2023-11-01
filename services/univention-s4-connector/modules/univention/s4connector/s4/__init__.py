@@ -45,14 +45,13 @@ import re
 import string
 import sys
 import time
+import urllib.parse
 
 import ldap
-import six
 from ldap.controls import LDAPControl, SimplePagedResultsControl
 from ldap.filter import escape_filter_chars
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
-from six.moves import urllib_parse
 
 import univention.debug2 as ud
 import univention.s4connector
@@ -468,7 +467,7 @@ class LDAPEscapeFormatter(string.Formatter):
 
     def convert_field(self, value, conversion):
         if conversion == 'e':
-            if isinstance(value, six.string_types):
+            if isinstance(value, str):
                 return escape_filter_chars(value)
             if isinstance(value, bytes):
                 raise TypeError('Filter must be string, not bytes: %r' % (value,))
@@ -665,7 +664,7 @@ class s4(univention.s4connector.ucs):
 
         protocol = self.configRegistry.get('%s/s4/ldap/protocol' % self.CONFIGBASENAME, 'ldap').lower()
         if protocol == 'ldapi':
-            socket = urllib_parse.quote(self.configRegistry.get('%s/s4/ldap/socket' % self.CONFIGBASENAME, ''), '')
+            socket = urllib.parse.quote(self.configRegistry.get('%s/s4/ldap/socket' % self.CONFIGBASENAME, ''), '')
             ldapuri = "%s://%s" % (protocol, socket)
         else:
             ldapuri = "%s://%s:%d" % (protocol, self.configRegistry['%s/s4/ldap/host' % self.CONFIGBASENAME], int(self.configRegistry['%s/s4/ldap/port' % self.CONFIGBASENAME]))
@@ -1668,7 +1667,7 @@ class s4(univention.s4connector.ucs):
         # This value represents the number of 100 nanosecond intervals since January 1, 1601 (UTC). A value of 0 or 0x7FFFFFFFFFFFFFFF (9223372036854775807) indicates that the account never expires.
         if not ucs_admin_object['userexpiry']:
             # ucs account not expired
-            if 'accountExpires' in ldap_object_ad and (int(ldap_object_ad['accountExpires'][0]) != int(9223372036854775807) or int(ldap_object_ad['accountExpires'][0]) == 0):
+            if 'accountExpires' in ldap_object_ad and (int(ldap_object_ad['accountExpires'][0]) != 9223372036854775807 or int(ldap_object_ad['accountExpires'][0]) == 0):
                 # ad account expired -> change
                 modlist.append((ldap.MOD_REPLACE, 'accountExpires', [b'9223372036854775807']))
         else:
@@ -1704,7 +1703,7 @@ class s4(univention.s4connector.ucs):
                 # user enabled in UCS -> change
                 ucs_admin_object['disabled'] = '1'
                 modified = 1
-        if 'accountExpires' in ldap_object_ad and (int(ldap_object_ad['accountExpires'][0]) == int(9223372036854775807) or int(ldap_object_ad['accountExpires'][0]) == 0):
+        if 'accountExpires' in ldap_object_ad and (int(ldap_object_ad['accountExpires'][0]) == 9223372036854775807 or int(ldap_object_ad['accountExpires'][0]) == 0):
             # ad account not expired
             if ucs_admin_object['userexpiry']:
                 # ucs account expired -> change

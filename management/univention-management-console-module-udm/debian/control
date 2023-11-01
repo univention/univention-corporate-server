@@ -14,7 +14,6 @@ Package: univention-management-console-module-udm
 Architecture: all
 Depends:
  python3-ldap,
- python3-six,
  python3-univention-config-registry,
  python3-univention-directory-manager (>= 15.0.13-27),
  univention-directory-manager-tools (>= 15),

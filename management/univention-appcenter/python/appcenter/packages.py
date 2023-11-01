@@ -44,8 +44,6 @@ from contextlib import contextmanager
 from logging import Handler, LogRecord  # noqa: F401
 from typing import Dict, Iterable, Iterator, List  # noqa: F401
 
-from six import string_types
-
 from univention.appcenter.log import LogCatcher, get_base_logger
 from univention.appcenter.utils import call_process
 from univention.lib.package_manager import LockError, PackageManager  # LockError is actually imported from other files!
@@ -62,7 +60,7 @@ class _PackageManagerLogHandler(Handler):
     def emit(self, record):
         # type: (LogRecord) -> None
         if record.name.startswith('packagemanager.dpkg'):
-            if isinstance(record.msg, string_types):
+            if isinstance(record.msg, str):
                 record.msg = record.msg.rstrip() + '\r'
             if record.name.startswith('packagemanager.dpkg.percentage'):
                 record.levelname = 'DEBUG'
