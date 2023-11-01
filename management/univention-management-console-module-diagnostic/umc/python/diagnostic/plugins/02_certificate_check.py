@@ -201,8 +201,7 @@ class CertificateVerifier(object):
                 yield CertificateInvalid(path, stdout)
 
     def verify_root(self) -> Iterator[CertificateWarning]:
-        for error in self.verify(self.root_cert_path):
-            yield error
+        yield from self.verify(self.root_cert_path)
 
     def verify(self, cert_path: str) -> Iterator[CertificateWarning]:
         for error in self._verify_timestamps(cert_path):

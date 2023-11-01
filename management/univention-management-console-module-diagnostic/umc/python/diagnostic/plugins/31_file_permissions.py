@@ -177,8 +177,7 @@ def file_and_permission_checks() -> Iterator[CheckError]:
         check_file_args.append(cf_type(saml_key, 'root', 'samlcgi', 0o640, must_exist=True))
 
     for kwarg in check_file_args:
-        for error in check_file(*kwarg):
-            yield error
+        yield from check_file(*kwarg)
 
 
 def run(_umc_instance: Instance) -> None:
