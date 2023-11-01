@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import, unicode_literals
 
 from collections import namedtuple
 from typing import Any, Dict, Iterable, Iterator, List, Optional, TypeVar, Union  # noqa: F401
