@@ -137,7 +137,7 @@ class AppAttributes(object):
         try:
             with open(cls.FNAME) as fd:
                 cache = load(fd)
-        except EnvironmentError:
+        except OSError:
             MODULE.warn('Error reading %s' % cls.FNAME)
             cache = {}
         except ValueError:

@@ -151,7 +151,7 @@ class Ldap(Phase, metaclass=ABCMeta):
         self.binddn = "cn=admin,%(ldap/base)s" % self.changeset.ucr
         try:
             self.bindpwd = open("/etc/ldap.secret").read()
-        except IOError:
+        except OSError:
             self.available = False
 
     def load_remote_credentials(self) -> None:

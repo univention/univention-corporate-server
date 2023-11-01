@@ -185,7 +185,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
             logging.getLogger('').addHandler(_handler_file)
             logging.getLogger('').removeHandler(null_handler)
             result = _handler_file.stream
-        except EnvironmentError as ex:
+        except OSError as ex:
             print('opening %s failed: %s' % (logfile, ex))
 
 #     if enable_syslog:

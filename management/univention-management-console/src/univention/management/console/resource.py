@@ -362,7 +362,7 @@ class Resource(RequestHandler):
             with open('/usr/share/univention-management-console-frontend/error.html') as fd:
                 content = fd.read().replace('%ERROR%', json.dumps(escape(content, True)))
             self.set_header('Content-Type', 'text/html; charset=UTF-8')
-        except (OSError, IOError):
+        except OSError:
             pass
         return content
 

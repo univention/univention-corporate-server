@@ -1148,7 +1148,7 @@ class Instance(Base):
             reset_username = dict(ucr)['ad/reset/username']
             with open(dict(ucr)['ad/reset/password']) as fd:
                 reset_password = fd.readline().strip()
-        except (EnvironmentError, KeyError):
+        except (OSError, KeyError):
             raise UMC_Error(_('The configuration of the password reset service is not complete. The UCR variables "ad/reset/username" and "ad/reset/password" need to be set properly. Please inform an administrator.'), status=500)
         process = Popen(['samba-tool', 'user', 'setpassword', '--username', reset_username, '--password', reset_password, '--filter', filter_format('samaccountname=%s', (username,)), '--newpassword', password, '-H', ldb_url], stdout=PIPE, stderr=STDOUT)
         stdouterr = process.communicate()[0].decode('utf-8', 'replace')

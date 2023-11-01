@@ -88,7 +88,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
             self.log("SendSMS: Format of sms secrets file ({}) is 'username:password'. Error: {}").format(self.password_file, ve)
             self.log(f"SendSMS: Format error in sms secrets file ({self.password_file}): {ve}")
             raise
-        except (OSError, IOError) as e:
+        except OSError as e:
             self.log(f"SendSMS: Error reading sms secrets file ({self.password_file}): {e}")
             raise
 

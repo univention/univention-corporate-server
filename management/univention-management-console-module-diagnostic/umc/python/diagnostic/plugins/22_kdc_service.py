@@ -237,7 +237,7 @@ def send_and_receive(kdc: str, port: int, protocol: str, as_req: bytes) -> bytes
     try:
         sock.connect((kdc, port))
         sock.sendall(packed)
-    except (socket.error, socket.timeout):
+    except (OSError, socket.timeout):
         sock.close()
         raise ServerUnreachable()
 
@@ -249,7 +249,7 @@ def send_and_receive(kdc: str, port: int, protocol: str, as_req: bytes) -> bytes
     while num_received < 128:
         try:
             (buf, addr) = sock.recvfrom(128)
-        except (socket.error, socket.timeout):
+        except (OSError, socket.timeout):
             buf = b''
         if not buf:
             break

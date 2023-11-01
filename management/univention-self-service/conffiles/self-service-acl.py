@@ -68,7 +68,7 @@ def handler(configRegistry, changes):
             try:
                 acl_file.write(ACL_TEMPLATE % params)
                 acl_file.flush()
-            except IOError as exc:
+            except OSError as exc:
                 print('Error writing updated LDAP ACL!\n %s' % exc)
                 return
         try:

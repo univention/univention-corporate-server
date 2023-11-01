@@ -145,7 +145,7 @@ def main() -> None:
         # create symbolic link univention-repository
         try:
             symlink('.', join(options.base, 'mirror', 'univention-repository'))
-        except EnvironmentError as ex:
+        except OSError as ex:
             if ex.errno != errno.EEXIST:
                 raise
 
