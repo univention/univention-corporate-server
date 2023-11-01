@@ -124,8 +124,9 @@ import copy
 import os
 import re
 import sys
-import xml.etree.cElementTree as ET
 import xml.parsers.expat
+
+import defusedxml.ElementTree as ET
 
 from .config import ucr
 from .log import RESOURCES
