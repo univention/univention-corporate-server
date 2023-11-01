@@ -4,20 +4,18 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import io
-
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
 from setuptools import setup as orig_setup
 
 
 def _get_version():
-    changelog = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
+    changelog = Changelog(open('debian/changelog', encoding='utf-8'))
     return changelog.full_version.split('A~')[0]
 
 
 def _get_description(name):
-    for package in Deb822.iter_paragraphs(io.open('debian/control', 'r', encoding='utf-8')):
+    for package in Deb822.iter_paragraphs(open('debian/control', encoding='utf-8')):
         if package.get('Package') == name:
             description = package['Description']
             return description.split('\n .\n')[0]

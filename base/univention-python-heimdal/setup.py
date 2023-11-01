@@ -34,7 +34,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import io
 from email.utils import parseaddr
 
 import pkgconfig
@@ -44,8 +43,8 @@ from setuptools import Extension, setup
 
 
 d = pkgconfig.parse('heimdal-krb5')
-dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
-dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
+dch = Changelog(open('debian/changelog', encoding='utf-8'))
+dsc = Deb822(open('debian/control', encoding='utf-8'))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(

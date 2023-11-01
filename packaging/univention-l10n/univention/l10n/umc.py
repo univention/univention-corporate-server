@@ -56,7 +56,6 @@ Example::
 
 
 import copy
-import io
 import json
 import os
 import re
@@ -255,7 +254,7 @@ def read_modules(package, core=False):
         return modules
 
     provides = []
-    with io.open(file_control, 'r', encoding='utf-8') as fd_control:
+    with open(file_control, encoding='utf-8') as fd_control:
         with warnings.catch_warnings():  # debian/deb822.py:982: UserWarning: cannot parse package relationship "${python3:Depends}", returning it raw
             for pkg in Packages.iter_paragraphs(fd_control):
                 if pkg.get('Package') == package:
