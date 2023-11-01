@@ -115,7 +115,6 @@ import traceback
 from urllib.parse import urlparse
 
 import ldap
-import six
 
 import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import I18N_Error, Locale, Translation
@@ -357,7 +356,7 @@ class Base(Translation):
             except Exception:
                 raise
             else:
-                six.reraise(etype, exc, etraceback)
+                raise exc.with_traceback(etraceback)
         except UMC_Error as exc:
             status = exc.status
             result = exc.result

@@ -35,12 +35,12 @@
 # <https://www.gnu.org/licenses/>.
 
 import binascii
+import urllib.request
+from urllib.request import ProxyHandler, build_opener
 
 import ldap
 import ldap.modlist
 import ldif
-from six.moves import urllib_request
-from six.moves.urllib_request import ProxyHandler, build_opener
 
 import univention.admin.uexceptions as udm_errors
 import univention.admin.uldap
@@ -179,7 +179,7 @@ def _check_license(ldap_connection):
 
 
 # TODO: this should probably go into univention-lib
-# and hide urllib_request completely
+# and hide urllib.request completely
 # i.e. it should be unnecessary to import them directly
 # in a module
 def install_opener(ucr):
@@ -187,13 +187,13 @@ def install_opener(ucr):
     if proxy_http:
         proxy = ProxyHandler({'http': proxy_http, 'https': proxy_http})
         opener = build_opener(proxy)
-        urllib_request.install_opener(opener)
+        urllib.request.install_opener(opener)
 
 
 def urlopen(request):
     # use this in __init__
     # to have the proxy handler installed globally
-    return urllib_request.urlopen(request)
+    return urllib.request.urlopen(request)  # noqa: S310
 
 
 def dump_license():

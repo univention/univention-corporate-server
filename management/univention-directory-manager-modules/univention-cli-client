@@ -43,8 +43,6 @@ import stat
 import sys
 import time
 
-import six
-
 from univention.config_registry import ConfigRegistry
 
 
@@ -172,7 +170,7 @@ def _create_socket(socket_path=default_socket_path):
 
 def _re_create_socket():
     try:
-        socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(six.iterbytes(os.urandom(12))))
+        socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(iter(os.urandom(12))))
         return _create_socket(socket_path)
     except EnvironmentError:
         print('E: Can`t connect to daemon. Giving up.', file=sys.stderr)

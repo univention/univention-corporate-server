@@ -16,7 +16,6 @@ Depends:
  libsasl2-modules-gssapi-heimdal,
  python3-cracklib,
  python3-ldap,
- python3-six,
  python3-univention,
  python3-univention-heimdal,
  python3-univention-lib,

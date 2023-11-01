@@ -32,20 +32,12 @@
 
 """|UDM| exceptions."""
 
-import six
-
 from univention.admin import localization
 from univention.admin._ucr import configRegistry
 
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
-
-
-def _str(string):
-    if six.PY2 and not isinstance(string, bytes):
-        string = string.encode('utf-8')
-    return str(string)
 
 
 def _strip(string):
@@ -67,7 +59,7 @@ class base(Exception):
         for msg in self.args:
             if msg is None:
                 continue
-            msg = _str(msg)
+            msg = str(msg)
             # avoid duplicate messages
             if all(_strip(msg) not in arg for arg in args + [self.message]):
                 args.append(msg)

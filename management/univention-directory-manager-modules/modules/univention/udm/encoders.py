@@ -40,7 +40,6 @@ import sys
 import time
 
 import lazy_object_proxy
-import six
 
 import univention.admin.modules
 from univention.admin.syntax import sambaGroupType
@@ -231,7 +230,7 @@ class SambaLogonHoursPropertyEncoder(BaseEncoder):
                 values = [v.split() for v in value]
                 return [cls._weekdays.index(w) * 24 + int(h.split('-', 1)[0]) for w, h in values]
             except (IndexError, ValueError):
-                six.reraise(valueInvalidSyntax, valueInvalidSyntax('One or more entries in sambaLogonHours have invalid syntax.'), sys.exc_info()[2])
+                raise valueInvalidSyntax('One or more entries in sambaLogonHours have invalid syntax.').with_traceback(sys.exc_info()[2])
         else:
             return value
 
@@ -244,7 +243,7 @@ class StringCaseInsensitiveResultLowerBooleanPropertyEncoder(BaseEncoder):
 
     @classmethod
     def decode(cls, value=''):
-        return isinstance(value, six.string_types) and value.lower() == cls.true_string
+        return isinstance(value, str) and value.lower() == cls.true_string
 
     @classmethod
     def encode(cls, value=None):
@@ -284,7 +283,7 @@ class StringIntPropertyEncoder(BaseEncoder):
             try:
                 return int(value)
             except ValueError:
-                six.reraise(valueInvalidSyntax, valueInvalidSyntax('Value of {!r} must be an int (is {!r}).'.format(self.property_name, value)), sys.exc_info()[2])
+                raise valueInvalidSyntax('Value of {!r} must be an int (is {!r}).'.format(self.property_name, value)).with_traceback(sys.exc_info()[2])
 
     @staticmethod
     def encode(value=None):

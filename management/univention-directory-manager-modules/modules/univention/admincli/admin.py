@@ -43,7 +43,6 @@ import sys
 from ipaddress import IPv4Address, IPv4Network
 
 import ldap
-import six
 
 import univention.admin.modules
 import univention.admin.objects
@@ -208,13 +207,13 @@ def module_usage(information, action='', stream=sys.stdout):
                 if isinstance(row, Group):
                     print('\t%s' % row.label, file=stream)
                     for row in row.layout:
-                        if isinstance(row, six.string_types):
+                        if isinstance(row, str):
                             _print_property(module, action, row, stream)
                             continue
                         for item in row:
                             _print_property(module, action, item, stream)
                 else:
-                    if isinstance(row, six.string_types):
+                    if isinstance(row, str):
                         _print_property(module, action, row, stream)
                         continue
                     for item in row:
@@ -295,7 +294,7 @@ def object_input(module, object, input, append=None, remove=None, stderr=None):
             if values is None:
                 current_values = []
             else:
-                vallist = [values] if isinstance(values, six.string_types) else values
+                vallist = [values] if isinstance(values, str) else values
                 vallist = [module.property_descriptions[key].syntax.parse_command_line(x) for x in vallist]
 
                 for val in vallist:

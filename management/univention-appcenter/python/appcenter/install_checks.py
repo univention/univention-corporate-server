@@ -39,8 +39,6 @@ import os
 import platform
 import re
 
-from six import with_metaclass
-
 from univention.appcenter.actions import get_action
 from univention.appcenter.app import LooseVersion
 from univention.appcenter.app_cache import Apps
@@ -63,7 +61,7 @@ class RequirementMetaClass(UniventionMetaClass):
         return new_cls
 
 
-class Requirement(with_metaclass(RequirementMetaClass)):
+class Requirement(metaclass=RequirementMetaClass):
     def __init__(self, apps, action):
         self.apps = apps
         self.action = action

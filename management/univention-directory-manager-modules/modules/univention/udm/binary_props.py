@@ -38,9 +38,9 @@ import base64
 import bz2
 import codecs
 from collections import namedtuple
+from io import BytesIO
 
 import magic
-from six import BytesIO, string_types
 
 
 FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])
@@ -61,7 +61,7 @@ def get_file_type(filename_or_file):
         old_pos = filename_or_file.tell()
         txt = filename_or_file.read()
         filename_or_file.seek(old_pos)
-    elif isinstance(filename_or_file, string_types):
+    elif isinstance(filename_or_file, str):
         with open(filename_or_file, 'rb') as fp:
             txt = fp.read()
     else:
