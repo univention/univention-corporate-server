@@ -20,7 +20,6 @@ Depends:
  dovecot-sieve (>= 2.2.13) | dovecot-ee-sieve (>=2.2.13),
  libpam-univentionmailcyrus,
  python3-ldap,
- python3-six,
  python3-univention,
  python3-univention-debug,
  python3-univention-directory-manager,

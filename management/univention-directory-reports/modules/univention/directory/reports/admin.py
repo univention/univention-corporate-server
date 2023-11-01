@@ -33,8 +33,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import six
-
 import univention.admin.mapping as ua_mapping
 import univention.admin.modules as ua_modules
 import univention.admin.objects as ua_objects
@@ -141,7 +139,7 @@ class AdminConnection(object):
     def get_object_real(self, module, dn):
         if dn in self._cached:
             return self._cached[dn]
-        if isinstance(module, six.string_types):
+        if isinstance(module, str):
             if module in self._modules:
                 module = self._modules[module]
             else:
