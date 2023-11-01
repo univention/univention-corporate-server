@@ -300,8 +300,7 @@ def handler_dump(args, opts={}):
     """
     ucr = ConfigRegistry()
     ucr.load()
-    for line in str(ucr).split('\n'):
-        yield line
+    yield from str(ucr).split('\n')
 
 
 def handler_update(args, opts={}):
