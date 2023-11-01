@@ -47,8 +47,7 @@ class Caches(object):
 
     def __iter__(self):
         # type: () -> Iterator[Tuple[str, Any]]
-        for name, cache in self._caches.items():
-            yield name, cache
+        yield from self._caches.items()
 
     def get_shards_for_query(self, query):
         # type: (str) -> List[Shard]
