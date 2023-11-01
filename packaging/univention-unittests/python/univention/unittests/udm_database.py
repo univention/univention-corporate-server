@@ -78,8 +78,7 @@ class Database(object):
                 self.add(obj)
 
     def __iter__(self):
-        for obj in self.objs.values():
-            yield obj
+        yield from self.objs.values()
 
     def __repr__(self):
         return 'Database({!r})'.format(self.objs)
