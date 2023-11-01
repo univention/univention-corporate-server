@@ -81,7 +81,7 @@ def ldap_attribute_join(old: List[str | List[str]]) -> List[Tuple[str, str]]:
             result_keys[attr[0]] += ", %s" % (attr[1],)
         elif len(attr) == 1:
             result_keys[attr[0]] = ''
-    return [(key, value) for key, value in result_keys.items()]
+    return list(result_keys.items())
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
