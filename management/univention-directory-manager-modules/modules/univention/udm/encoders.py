@@ -32,7 +32,6 @@
 
 """En/Decoders for object properties."""
 
-from __future__ import absolute_import, unicode_literals
 
 import datetime
 import sys
@@ -592,7 +591,7 @@ def dn_list_property_encoder_for(udm_module_name):
     :rtype: type(DnListPropertyEncoder)
     """
     if udm_module_name not in __dn_list_property_encoder_class_cache:
-        cls_name = str('DnListPropertyEncoder{}').format(_classify_name(udm_module_name))
+        cls_name = 'DnListPropertyEncoder{}'.format(_classify_name(udm_module_name))
         specific_encoder_cls = type(cls_name, (DnListPropertyEncoder,), {})
         specific_encoder_cls.udm_module_name = udm_module_name
         __dn_list_property_encoder_class_cache[udm_module_name] = specific_encoder_cls
@@ -611,7 +610,7 @@ def dn_property_encoder_for(udm_module_name):
     :rtype: type(DnPropertyEncoder)
     """
     if udm_module_name not in __dn_property_encoder_class_cache:
-        cls_name = str('DnPropertyEncoder{}').format(_classify_name(udm_module_name))
+        cls_name = 'DnPropertyEncoder{}'.format(_classify_name(udm_module_name))
         specific_encoder_cls = type(cls_name, (DnPropertyEncoder,), {})
         specific_encoder_cls.udm_module_name = udm_module_name
         __dn_property_encoder_class_cache[udm_module_name] = specific_encoder_cls
