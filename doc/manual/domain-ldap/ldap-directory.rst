@@ -85,6 +85,12 @@ changes in the LDAP directory service. As each data record contains the hash
 value of the previous data record, manipulations of the log file - such as
 deleted entries - can be uncovered.
 
+To install the :program:`univention-directory-logger` package, follow the
+instructions for installing software packages on UCS in
+:ref:`computers-installation-removal-of-individual-packages-in-the-univention-management-console`
+or
+:ref:`computers-installation-removal-of-individual-packages-in-the-command-line`.
+
 Individual areas of the directory service can be excluded from the logging.
 These branches can be configured using the |UCSUCR| variables
 :envvar:`ldap/logging/exclude1`, :envvar:`ldap/logging/excludeN`, etc. As standard, the
