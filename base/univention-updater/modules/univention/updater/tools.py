@@ -52,10 +52,15 @@ import socket
 import subprocess
 import sys
 import tempfile
+import urllib.error
+import urllib.request
 from http import client as httplib
+from tempfile import TemporaryDirectory
+from typing import (  # noqa: F401
+    Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Text, Tuple, Type, TypeVar, Union,
+)
 
-import six
-from six.moves import urllib_error, urllib_request as urllib2
+from typing_extensions import Literal  # noqa: F401
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.ucs import UCS_Version
@@ -68,22 +73,8 @@ from .errors import (
 from .repo_url import UcsRepoUrl
 
 
-try:
-    from typing import (  # noqa: F401
-        Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Text, Tuple, Type, TypeVar,
-        Union,
-    )
+_TS = TypeVar("_TS", bound="_UCSServer")  # noqa: PYI018
 
-    from typing_extensions import Literal  # noqa: F401
-    _TS = TypeVar("_TS", bound="_UCSServer")  # noqa: PYI018
-except ImportError:
-    pass
-
-if six.PY2:
-    from backports.tempfile import TemporaryDirectory
-    from new import instancemethod
-else:
-    from tempfile import TemporaryDirectory
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
@@ -492,11 +483,11 @@ class _UCSServer(object):  # noqa: PLW1641
 class UCSHttpServer(_UCSServer):
     """Access to UCS compatible remote update server."""
 
-    class HTTPHeadHandler(urllib2.BaseHandler):
+    class HTTPHeadHandler(urllib.request.BaseHandler):
         """Handle fallback from HEAD to GET if unimplemented."""
 
         def http_error_501(self, req, fp, code, msg, headers):  # httplib.NOT_IMPLEMENTED
-            # type: (urllib2.Request, Any, int, str, Dict) -> Any
+            # type: (urllib.request.Request, Any, int, str, Dict) -> Any
             m = req.get_method()
             if m == 'HEAD' == UCSHttpServer.http_method:
                 ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % req)
@@ -523,11 +514,11 @@ class UCSHttpServer(_UCSServer):
 
     http_method = 'HEAD'
     head_handler = HTTPHeadHandler()
-    password_manager = urllib2.HTTPPasswordMgrWithDefaultRealm()
-    auth_handler = urllib2.HTTPBasicAuthHandler(password_manager)
-    proxy_handler = urllib2.ProxyHandler()
+    password_manager = urllib.request.HTTPPasswordMgrWithDefaultRealm()
+    auth_handler = urllib.request.HTTPBasicAuthHandler(password_manager)
+    proxy_handler = urllib.request.ProxyHandler()
     # No need for ProxyBasicAuthHandler, since ProxyHandler parses netloc for @
-    opener = urllib2.build_opener(head_handler, auth_handler, proxy_handler)
+    opener = urllib.request.build_opener(head_handler, auth_handler, proxy_handler)
     failed_hosts = set()  # type: Set[str]
 
     @property
@@ -539,8 +530,8 @@ class UCSHttpServer(_UCSServer):
     def reinit(self):
         # type: () -> None
         """Reload proxy settings and reset failed hosts."""
-        self.proxy_handler = urllib2.ProxyHandler()
-        self.opener = urllib2.build_opener(self.head_handler, self.auth_handler, self.proxy_handler)
+        self.proxy_handler = urllib.request.ProxyHandler()
+        self.opener = urllib.request.build_opener(self.head_handler, self.auth_handler, self.proxy_handler)
         self.failed_hosts.clear()
 
     @classmethod
@@ -635,11 +626,11 @@ class UCSHttpServer(_UCSServer):
         uri = self.join(rel)
         if self.baseurl.username and self.baseurl.password:
             UCSHttpServer.password_manager.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
-        req = urllib2.Request(uri)
+        req = urllib.request.Request(uri)  # noqa: S310
 
         def get_host():
             # type: () -> str
-            return req.host if six.PY3 else req.get_host()  # type: ignore
+            return req.host
 
         if get_host() in self.failed_hosts:
             self.log.error('Already failed %s', get_host())
@@ -652,7 +643,7 @@ class UCSHttpServer(_UCSServer):
                     return UCSHttpServer.http_method
                 else:
                     return method
-            req.get_method = functools.partial(get_method, req) if six.PY3 else instancemethod(get_method, req, urllib2.Request)  # type: ignore
+            req.get_method = functools.partial(get_method, req)
 
         self.log.info('Requesting %s', req.get_full_url())
         ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()))
@@ -692,7 +683,7 @@ class UCSHttpServer(_UCSServer):
         # URL:110  | HTTP:404  URL:111  URL:110  GAI:-2  HTTP:407 | Port filtered
         # GAI:-2   | HTTP:502/4URL:111  URL:110  GAI:-2  HTTP:407 | Host name unknown
         # HTTP:401 | HTTP:401  URL:111  URL:110  GAI:-2  HTTP:407 | Authorization required
-        except urllib_error.HTTPError as res:
+        except urllib.error.HTTPError as res:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), res, exc_info=True)
             if res.code == httplib.UNAUTHORIZED:  # 401
                 raise ConfigurationError(uri, 'credentials not accepted')
@@ -702,9 +693,9 @@ class UCSHttpServer(_UCSServer):
                 self.failed_hosts.add(get_host())
                 raise ConfigurationError(uri, 'host is unresolvable')
             raise DownloadError(uri, res.code)
-        except urllib_error.URLError as e:
+        except urllib.error.URLError as e:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), e, exc_info=True)
-            if isinstance(e.reason, six.string_types):
+            if isinstance(e.reason, str):
                 reason = e.reason
             elif isinstance(e.reason, socket.timeout):
                 raise ConfigurationError(uri, 'timeout in network connection')
@@ -722,7 +713,7 @@ class UCSHttpServer(_UCSServer):
                     elif e.reason.args[0] == errno.ECONNREFUSED:  # 111
                         reason = 'port is closed'
 
-            selector = req.selector if six.PY3 else req.get_selector()  # type: ignore
+            selector = req.selector
             if selector.startswith('/'):  # direct
                 self.failed_hosts.add(get_host())
                 raise ConfigurationError(uri, reason)
@@ -808,7 +799,7 @@ class UCSLocalServer(_UCSServer):
         assert rel is not None
         uri = self.join(rel)
         ud.debug(ud.NETWORK, ud.ALL, "updater: %s" % (uri,))
-        # urllib2.urlopen() doesn't work for directories
+        # urllib.request.urlopen() doesn't work for directories
         assert uri.startswith('file://')
         path = uri[len('file://'):]
         if os.path.exists(path):

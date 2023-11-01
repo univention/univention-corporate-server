@@ -36,8 +36,6 @@
 import codecs
 import os
 
-import six
-
 from .tokens import AttributeToken, DateToken, PolicyToken, QueryToken, ResolveToken, TextToken
 
 
@@ -70,7 +68,7 @@ class Output(object):
             tokens = self._tokens
         for token in tokens:
             if isinstance(token, TextToken):
-                self._fd.write(six.text_type(token.data))
+                self._fd.write(str(token.data))
             elif isinstance(token, (ResolveToken, QueryToken)):
                 if len(token):
                     self.write(token)

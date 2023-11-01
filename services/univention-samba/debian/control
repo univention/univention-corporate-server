@@ -14,7 +14,6 @@ Pre-Depends:
  univention-config,
 Depends:
  expect,
- python3-six,
  python3-tdb,
  python3-univention-lib,
  rsync,
@@ -45,7 +44,6 @@ Description: UCS - Samba Member Server
 Package: univention-samba-local-config
 Architecture: all
 Depends:
- python3-six,
  samba (>= 3.0.20) | samba-ad-dc,
  ${misc:Depends},
 Breaks:

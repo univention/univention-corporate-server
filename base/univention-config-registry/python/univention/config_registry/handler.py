@@ -50,14 +50,10 @@ import sys
 from grp import getgrnam
 from pwd import getpwnam
 
-import six
-
 from univention.config_registry.misc import asciify, directory_files
 from univention.debhelper import parseRfc822  # pylint: disable-msg=W0403
 
 
-if six.PY2:
-    from io import open
 try:
     from typing import IO, Any, Dict, Iterable, List, Mapping, Optional, Set, Tuple, Union  # noqa: F401
     _OPT = Mapping[str, Any]
@@ -105,7 +101,7 @@ def run_filter(template, directory, srcfiles=set(), opts={}):
     """
     template = _replace_variables(template, directory, srcfiles)
 
-    tmpl = template.encode("UTF-8") if six.PY3 else template
+    tmpl = template.encode("UTF-8")
 
     if opts.get('disallow-execution', False):
         return tmpl
@@ -446,7 +442,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
                 for from_file in sorted(self.from_files, key=os.path.basename):
                     try:
-                        with open(from_file, 'r', encoding='utf-8') as from_fp:
+                        with open(from_file, encoding='utf-8') as from_fp:
                             to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=self.from_files, opts=filter_opts))
                     except EnvironmentError:
                         continue
@@ -456,7 +452,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
             except EnvironmentError as ex:
                 if ex.errno == errno.EBUSY:
                     with open(self.to_file, 'w+', encoding='utf-8') as fd:
-                        fd.write(open(tmp_to_file, 'r', encoding='utf-8').read())
+                        fd.write(open(tmp_to_file, encoding='utf-8').read())
                     os.unlink(tmp_to_file)
         except Exception:
             if os.path.exists(tmp_to_file):
@@ -533,7 +529,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
         try:
             filter_opts = {}  # type: Dict[str, Any]
 
-            with open(self.from_file, 'r', encoding='utf-8') as from_fp, open(tmp_to_file, 'wb') as to_fp:
+            with open(self.from_file, encoding='utf-8') as from_fp, open(tmp_to_file, 'wb') as to_fp:
                 self._set_perm(stat, tmp_to_file)
 
                 to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=[self.from_file], opts=filter_opts))
@@ -543,7 +539,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
             except EnvironmentError as ex:
                 if ex.errno == errno.EBUSY:
                     with open(self.to_file, 'w+', encoding='utf-8') as fd:
-                        fd.write(open(tmp_to_file, 'r', encoding='utf-8').read())
+                        fd.write(open(tmp_to_file, encoding='utf-8').read())
                     os.unlink(tmp_to_file)
         except Exception:
             if os.path.exists(tmp_to_file):
@@ -697,7 +693,7 @@ class ConfigHandlers:
         :param fname: Path to :rfc:`822` file.
         :returns: A list of dictionaries.
         """
-        with open(fname, 'r', encoding='utf-8') as fd:
+        with open(fname, encoding='utf-8') as fd:
             return parseRfc822(fd.read())
 
     def load(self):
@@ -803,7 +799,7 @@ class ConfigHandlers:
         from_path = os.path.join(FILE_DIR, name)
         handler = ConfigHandlerFile(from_path, name)
         if os.path.exists(from_path):
-            with open(from_path, 'r', encoding='utf-8') as fd:
+            with open(from_path, encoding='utf-8') as fd:
                 handler.variables = grep_variables(fd.read())
 
         self._parse_common_file_handler(handler, entry)
@@ -891,7 +887,7 @@ class ConfigHandlers:
         variables = set(entry.get('Variables', set()))
         name = os.path.join(FILE_DIR, subfile)
         try:
-            with open(name, 'r', encoding='utf-8') as temp_file:
+            with open(name, encoding='utf-8') as temp_file:
                 variables |= grep_variables(temp_file.read())
         except EnvironmentError:
             print("Failed to process Subfile %s" % (name,), file=sys.stderr)
@@ -944,7 +940,7 @@ class ConfigHandlers:
         wanted = {h.to_file: h for h in handlers if isinstance(h, ConfigHandlerDiverting) and h.need_divert()}
         to_remove = set()  # type: Set[str]
         # Scan for diversions done by UCR
-        with open('/var/lib/dpkg/diversions', 'r', encoding='utf-8') as div_file:
+        with open('/var/lib/dpkg/diversions', encoding='utf-8') as div_file:
             # from \n to \n package \n
             try:
                 while True:

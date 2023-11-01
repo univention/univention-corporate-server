@@ -39,7 +39,6 @@ import os
 import re
 
 from ldap.dn import escape_dn_chars
-from six import with_metaclass
 
 from univention.appcenter.app import CaseSensitiveConfigParser
 from univention.appcenter.log import get_base_logger
@@ -120,7 +119,7 @@ class SyntaxAttribute(Attribute):
         return ret
 
 
-class SchemaObject(with_metaclass(UniventionMetaClass, object)):
+class SchemaObject(metaclass=UniventionMetaClass):
     ldap_type = None
     ldap_type_oid_suffix = None
 

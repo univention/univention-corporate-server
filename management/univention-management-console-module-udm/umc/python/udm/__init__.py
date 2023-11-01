@@ -44,10 +44,9 @@ import tempfile
 import traceback
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
+from urllib.request import Request
 
-import six
 from ldap import INVALID_CREDENTIALS, LDAPError
-from six.moves.urllib_request import Request
 
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
@@ -271,7 +270,7 @@ class Instance(Base, ProgressMixin):
                     license_data[item] = {}
                     for lic_type in ('CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE'):
                         count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-                        if isinstance(count, six.string_types):
+                        if isinstance(count, str):
                             try:
                                 count = int(count)
                             except ValueError:
@@ -285,7 +284,7 @@ class Instance(Base, ProgressMixin):
                     license_data[item] = {}
                     for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS'):
                         count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-                        if isinstance(count, six.string_types):
+                        if isinstance(count, str):
                             try:
                                 count = int(count)
                             except ValueError:
@@ -1268,7 +1267,7 @@ class Instance(Base, ProgressMixin):
         data['licence'] = license
         data = urlencode(data).encode('ASCII')
         url = 'https://license.univention.de/keyid/conversion/submit'
-        request = Request(url, data=data, headers={'User-agent': 'UMC/AppCenter'})
+        request = Request(url, data=data, headers={'User-agent': 'UMC/AppCenter'})  # noqa: S310
         self._request_license(request)
         # creating a new ucr variable to prevent duplicated registration (Bug #35711)
         handler_set(['ucs/web/license/requested=true'])

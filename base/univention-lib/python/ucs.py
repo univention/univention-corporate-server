@@ -37,8 +37,6 @@ import re
 import sys
 from typing import List, Tuple, Union  # noqa: F401
 
-import six
-
 
 class UCS_Version(object):
     """Version object consisting of major-, minor-number and patch-level"""
@@ -66,7 +64,7 @@ class UCS_Version(object):
         """
         if isinstance(version, (tuple, list)):
             self.mmp = map(int, version)  # type: ignore
-        elif isinstance(version, six.string_types):
+        elif isinstance(version, str):
             self.set(version)
         elif isinstance(version, UCS_Version):
             self.mmp = version.mmp

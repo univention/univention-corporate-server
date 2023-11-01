@@ -59,7 +59,6 @@ from urllib.parse import urlparse, urlsplit, urlunsplit
 
 import ldap
 import pycurl
-import six
 import tornado
 import tornado.curl_httpclient
 import tornado.gen
@@ -1066,12 +1065,12 @@ class SetUserPreferences(UserPreferences):
         # validity / sanitizing
         new_preferences = []
         for key, value in preferences.items():
-            if not isinstance(key, six.string_types):
+            if not isinstance(key, str):
                 CORE.warn('user preferences keys needs to be strings: %r' % (key,))
                 continue
 
             # we can put strings directly into the dict
-            if isinstance(value, six.string_types):
+            if isinstance(value, str):
                 new_preferences.append((key, value))
             else:
                 new_preferences.append((key, json.dumps(value)))

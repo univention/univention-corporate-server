@@ -34,7 +34,6 @@
 import re
 from typing import Callable, Iterator, List, Match, Optional, Sequence, TypeVar, Union  # noqa: F401
 
-import six
 from ldap.filter import filter_format
 
 import univention.admin.uexceptions
@@ -99,7 +98,7 @@ class conjunction(object):
         """
         if not self.expressions:
             return ''
-        return '(%s%s)' % (self.type, ''.join(map(six.text_type, self.expressions)))
+        return '(%s%s)' % (self.type, ''.join(map(str, self.expressions)))
 
     def __unicode__(self):  # noqa: PLW3201
         # type: () -> str
@@ -269,7 +268,7 @@ def parse(filter_s, begin=0, end=-1):
     expression('1.3.6.1.4.1.1466.0', '\\04\\02\\48\\69', '=')
     """
     # filter is already parsed
-    if not isinstance(filter_s, six.string_types):
+    if not isinstance(filter_s, str):
         return filter_s
 
     if end == -1:
@@ -341,7 +340,7 @@ def replace_fqdn_filter(filter_s):
     >>> replace_fqdn_filter('(|(fqdn=host.domain.tld)(fqdn=other.domain.tld2))')
     '(|(&(cn=host)(associatedDomain=domain.tld))(&(cn=other)(associatedDomain=domain.tld2)))'
     """
-    if not isinstance(filter_s, six.string_types):
+    if not isinstance(filter_s, str):
         return filter_s
     return FQDN_REGEX.sub(_replace_fqdn_filter, filter_s)
 
