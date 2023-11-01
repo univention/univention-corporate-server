@@ -40,8 +40,8 @@ from .modules.generic import OriUdmHandlerTV  # noqa: F401
 
 
 class LDAP_connection(object):
-    _ucr = None  # type: univention.config_registry.ConfigRegistry
-    _connection_admin = None  # type: OriUdmHandlerTV
+    _ucr = None  # type: univention.config_registry.ConfigRegistry  # noqa: PYI026
+    _connection_admin = None  # type: OriUdmHandlerTV  # noqa: PYI026
     _connection_account = {}  # type: Dict[Tuple[Text, Text, Text, int, Text], OriUdmHandlerTV]
 
     @classmethod

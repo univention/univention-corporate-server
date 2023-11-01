@@ -225,7 +225,7 @@ class DnListPropertyEncoder(BaseEncoder):
 
     class DnsList(list):
         # a list with an additional member variable
-        objs = None  # type: DnListPropertyEncoder.MyProxy
+        objs = None  # type: DnListPropertyEncoder.MyProxy  # noqa: PYI026
 
         def __deepcopy__(self, memodict=None):
             ...
@@ -315,7 +315,7 @@ class DnPropertyEncoder(BaseEncoder):
 
     class DnStr(str):  # noqa: SLOT000
         # a string with an additional member variable
-        obj = None  # type: DnPropertyEncoder.MyProxy
+        obj = None  # type: DnPropertyEncoder.MyProxy  # noqa: PYI026
 
         def __deepcopy__(self, memodict=None):
             ...

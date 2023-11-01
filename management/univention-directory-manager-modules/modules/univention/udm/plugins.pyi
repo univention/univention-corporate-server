@@ -49,7 +49,7 @@ class Plugin(type):
 
 class Plugins(object):
 
-    _plugins = None  # type: OrderedDict
+    _plugins = None  # type: OrderedDict  # noqa: PYI026
     _imported = {}  # type: Dict[Text, bool]
 
     def __init__(self, python_path):  # type: (Text) -> None

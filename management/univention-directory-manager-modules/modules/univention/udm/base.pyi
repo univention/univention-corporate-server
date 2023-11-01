@@ -50,7 +50,7 @@ BaseObjectPropertiesTV = TypeVar('BaseObjectPropertiesTV', bound=BaseObjectPrope
 
 
 class BaseObjectProperties(object):
-    _udm_obj = None  # type: BaseObjectTV
+    _udm_obj = None  # type: BaseObjectTV  # noqa: PYI026
 
     def __init__(self, udm_obj):  # type: (BaseObjectTV) -> None
         ...
@@ -64,12 +64,12 @@ class BaseObjectProperties(object):
 
 class BaseObject(object):
     dn = ''
-    props = None  # type: BaseObjectPropertiesTV
+    props = None  # type: BaseObjectPropertiesTV  # noqa: PYI026
     options = []  # type: List[Text]
     policies = []  # type: List[Text]
     position = ''  # type: Text
-    superordinate = None  # type: Text
-    _udm_module = None  # type: BaseModuleTV
+    superordinate = None  # type: Text  # noqa: PYI026
+    _udm_module = None  # type: BaseModuleTV  # noqa: PYI026
 
     def __init__(self):  # type: () -> None
         ...

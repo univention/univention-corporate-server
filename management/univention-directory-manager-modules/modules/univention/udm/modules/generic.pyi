@@ -52,7 +52,7 @@ GenericModuleTV = TypeVar('GenericModuleTV', bound=univention.udm.modules.generi
 OriUdmHandlerTV = TypeVar('OriUdmHandlerTV', bound=univention.admin.handlers.simpleLdap)  # noqa: PYI001
 
 
-ucr = None  # type: univention.config_registry.ConfigRegistry
+ucr = None  # type: univention.config_registry.ConfigRegistry  # noqa: PYI026
 DEFAULT_CONTAINERS_DN = ''
 
 
@@ -115,7 +115,7 @@ class GenericModule(BaseModuleTV):
     _udm_module_meta_class = GenericModuleMetadata  # type: Type[GenericModuleMetadata]
     _udm_module_cache = {}  # type: Dict[Tuple[Text, Text, Text, Text], OriUdmHandlerTV]
     _default_containers = {}  # type: Dict[Text, Dict[Text, Any]]
-    _orig_udm_module = None  # type: OriUdmHandlerTV
+    _orig_udm_module = None  # type: OriUdmHandlerTV  # noqa: PYI026
 
     class Meta:
         supported_api_versions = ()  # type: Iterable[int]
