@@ -559,7 +559,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
         if opt == '--set':
             name, delim, value = val.partition('=')
 
-            for _mod, (properties, _options) in information.items():
+            for (properties, _options) in information.values():
                 if name in properties:
                     if not properties[name].cli_enabled:
                         continue
@@ -574,7 +574,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
                 print("WARNING: No attribute with name '%s' in this module, value not set." % name, file=stderr)
         elif opt == '--append':
             name, delim, value = val.partition('=')
-            for _mod, (properties, _options) in information.items():
+            for (properties, _options) in information.values():
                 if name in properties:
                     if not properties[name].cli_enabled:
                         continue
@@ -590,7 +590,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
         elif opt == '--remove':
             name, delim, value = val.partition('=')
             value = value or None
-            for _mod, (properties, _options) in information.items():
+            for (properties, _options) in information.values():
                 if name in properties:
                     if not properties[name].cli_enabled:
                         continue

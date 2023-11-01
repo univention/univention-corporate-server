@@ -81,7 +81,7 @@ class GenericObjectProperties(BaseObjectProperties):
 
     def __init__(self, udm_obj):
         super(GenericObjectProperties, self).__init__(udm_obj)
-        for _property_names, encoder_class in self._encoders.items():
+        for encoder_class in self._encoders.values():
             assert hasattr(encoder_class, 'decode')
             assert hasattr(encoder_class, 'encode')
 

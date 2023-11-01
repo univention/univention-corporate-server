@@ -183,7 +183,7 @@ class AppAttributes(object):
     @classmethod
     def attributes_for_module(cls, module):
         ret = []
-        for _option_name, option_def in cls.data_for_module(module).items():
+        for option_def in cls.data_for_module(module).values():
             ret.extend(option_def['attributes'])
         return ret
 

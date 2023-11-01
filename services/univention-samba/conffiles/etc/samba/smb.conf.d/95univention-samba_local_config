@@ -24,7 +24,7 @@ for key in configRegistry:
         include = True
     elif m_othershares and m_othershares.group(1) and v == "true":
         include = True
-    elif m_printmode and m_printmode.group(1) and (v == "all" or v == "none"):
+    elif m_printmode and m_printmode.group(1) and v in {"all", "none"}:
         include = True
     elif m_options and m_options.group(2) and v:
         include = True

@@ -590,7 +590,7 @@ class ad(univention.connector.ucs):
                 conn_attributes = getattr(mapping_property, attr_type)
                 if not conn_attributes:
                     continue
-                for _attr_key, attr in conn_attributes.items():
+                for attr in conn_attributes.values():
                     if not attr.con_other_attribute and attr.con_attribute in self.single_valued_ad_attributes:
                         attr.single_value = True
                     elif attr.con_attribute == 'description' and mapping_key in ('user', 'group', 'windowscomputer'):
@@ -603,7 +603,7 @@ class ad(univention.connector.ucs):
                 con_attributes = getattr(mapping_property, attr_type)
                 if not con_attributes:
                     continue
-                for _attr_key, attr in con_attributes.items():
+                for attr in con_attributes.values():
                     if attr.ldap_attribute == 'mailPrimaryAddress':
                         attr.con_depends = 'mail'
 

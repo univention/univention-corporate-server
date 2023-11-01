@@ -130,7 +130,7 @@ class Mountpoints(object):
             if share['mountpoint'] not in self.mountpoints_with_quota.keys():
                 self.mountpoints_with_quota[share['mountpoint']] = share
 
-        for mountpoint, _attrs in self.mountpoints_with_quota.items():
+        for mountpoint in self.mountpoints_with_quota.keys():
             shares_on_mount = self.get_shares_with_mountpoint(mountpoint)
             if not shares_on_mount:
                 self.mountpoints_with_quota[mountpoint]['reapplyQuota'] = False

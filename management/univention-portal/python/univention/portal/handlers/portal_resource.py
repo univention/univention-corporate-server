@@ -53,7 +53,7 @@ class PortalResource(tornado.web.RequestHandler):
     def find_portal(self):
         best_score = 0
         best_portal = None
-        for _name, portal in self.portals.items():
+        for portal in self.portals.values():
             score = portal.score(self.request)
             if score > best_score:
                 best_score = score

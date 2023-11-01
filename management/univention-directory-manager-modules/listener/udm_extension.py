@@ -525,7 +525,7 @@ def remove_umcmessagecatalogs(attrs: Dict[str, List[bytes]]) -> None:
     umcmessagecatalogs = _umcmessagecatalog_ldap_attributes(attrs)
     if not umcmessagecatalogs:
         return
-    for ldap_filename, _mo_data_binary in umcmessagecatalogs.items():
+    for ldap_filename in umcmessagecatalogs.keys():
         filename = _parse_filename_from_ldap_attr(ldap_filename)
         if not os.path.exists(filename):
             ud.debug(ud.LISTENER, ud.INFO, '%s: Warning: %s does not exist.' % (name, filename))

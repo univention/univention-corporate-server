@@ -9,7 +9,7 @@ if configRegistry.is_true('cups/access/limit', True):
     # cups/policy/default/limit/1/Order="Deny,Allow"
     # cups/policy/default/limit/1/Require="user @OWNER @SYSTEM"
 
-    for key, _value in configRegistry.items():
+    for key in configRegistry.keys():
         if not key.startswith('cups/policy'):
             continue
         keys = key.split('/')

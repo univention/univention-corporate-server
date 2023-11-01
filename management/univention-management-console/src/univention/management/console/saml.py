@@ -490,7 +490,7 @@ class SamlLogout(SamlACS):
             user.saml = None
             data = {}
 
-        for _entity_id, logout_info in data.items():
+        for logout_info in data.values():
             if not isinstance(logout_info, tuple):
                 continue  # result from logout, should be OK
 
