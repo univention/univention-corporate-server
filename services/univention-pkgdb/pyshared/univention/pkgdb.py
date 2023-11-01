@@ -177,7 +177,7 @@ def get_dbservername(domainname):
     DNS.DiscoverNameServers()
     dbsrvname = None
     try:
-        dbsrvname = [x['data'] for x in DNS.DnsRequest('_pkgdb._tcp.' + domainname, qtype='srv').req().answers][0][3]
+        dbsrvname = [x['data'] for x in DNS.DnsRequest('_pkgdb._tcp.' + domainname, qtype='srv').req().answers][0][3]  # noqa: RUF015
     except Exception:
         log('Cannot find service-record of _pkgdb._tcp.')
         print('Cannot find service-record of _pkgdb._tcp.')

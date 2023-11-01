@@ -40,9 +40,9 @@ def run_test_file(fname):
 def pip_modules(modules):
     if os.environ.get('UCS_TEST_NO_PIP') == 'TRUE':
         yield
-    if subprocess.run(['which', 'pip3'], stdout=subprocess.DEVNULL).returncode != 0:
+    if subprocess.run(['which', 'pip3'], stdout=subprocess.DEVNULL).returncode != 0:  # noqa: PLW1510
         raise RuntimeError('pip3 is required. Install python3-pip')
-    installed = subprocess.run(['pip3', 'list', '--format=columns'], stdout=subprocess.PIPE)
+    installed = subprocess.run(['pip3', 'list', '--format=columns'], stdout=subprocess.PIPE)  # noqa: PLW1510
     logger.info(modules)
     for line in installed.stdout.splitlines()[2:]:
         mod, ver = line.decode('utf-8').strip().split()

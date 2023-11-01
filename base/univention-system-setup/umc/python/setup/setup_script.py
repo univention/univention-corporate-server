@@ -159,7 +159,7 @@ class TransactionalUcr(object):
     def __enter__(self) -> "TransactionalUcr":
         return self
 
-    def __exit__(self, exc_type: Type[BaseException], exc_value: BaseException, traceback: TracebackType) -> None:
+    def __exit__(self, exc_type: Type[BaseException], exc_value: BaseException, traceback: TracebackType) -> None:  # noqa: PYI036
         if exc_type is None:
             self.commit()
 

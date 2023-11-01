@@ -48,7 +48,7 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.setup.util import detect_interfaces
 
 
-_TD = TypeVar("_TD", bound="Device", covariant=True)
+_TD = TypeVar("_TD", bound="Device", covariant=True)  # noqa: PLC0105
 
 ucr = ConfigRegistry()
 ucr.load()

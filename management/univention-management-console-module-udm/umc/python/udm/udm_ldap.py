@@ -986,7 +986,7 @@ class UDM_Module(object):
                 # E.g. users/user mailHomeServer; see Bug #33329, Bug #42903
 
                 try:
-                    item['default'] = [x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name), ldap_connection=ldap_connection, ldap_position=ldap_position) if x['id']][0]
+                    item['default'] = [x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name), ldap_connection=ldap_connection, ldap_position=ldap_position) if x['id']][0]  # noqa: RUF015
                 except IndexError:
                     pass
 

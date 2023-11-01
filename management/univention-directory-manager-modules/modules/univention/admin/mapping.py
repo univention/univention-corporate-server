@@ -48,7 +48,7 @@ _ = translation.translate
 
 try:
     from typing import List, Text, Tuple, TypeVar, Union  # noqa: F401
-    _E = TypeVar('_E')
+    _E = TypeVar('_E')  # noqa: PYI018
 except ImportError:
     pass
 

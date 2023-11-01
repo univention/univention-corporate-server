@@ -534,7 +534,7 @@ class object(univention.admin.handlers.simpleLdap):
                 for uniqueMember in uniqueMembers:
                     dn = ldap.dn.str2dn(uniqueMember)[0]
                     try:
-                        result.append([x[1] for x in dn if x[0].lower() == 'uid'][0])
+                        result.append([x[1] for x in dn if x[0].lower() == 'uid'][0])  # noqa: RUF015
                     except IndexError:
                         # UID is not stored in DN --> fetch UID by DN
                         uid_list = self.lo.getAttr(uniqueMember, 'uid')
@@ -756,7 +756,7 @@ class object(univention.admin.handlers.simpleLdap):
         set_memberOf = {x.lower() for x in self.info.get('memberOf', [])}
         set_intersection = set_nestedGroup & set_memberOf
         if set_intersection:
-            childdn = list(set_intersection)[0]
+            childdn = list(set_intersection)[0]  # noqa: RUF015
             # get cn for first detected object
             childobj = univention.admin.objects.get(grp_module, self.co, self.lo, position='', dn=childdn)
             childcn = childobj.info.get('name', 'UNKNOWN')

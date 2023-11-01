@@ -46,7 +46,7 @@ try:
     from types import TracebackType  # noqa: F401
     from typing import Any, Callable, List, Optional, Type, TypeVar, Union  # noqa: F401
 
-    _F = TypeVar("_F", bound=Callable[..., Any])
+    _F = TypeVar("_F", bound=Callable[..., Any])  # noqa: PYI018
 except ImportError:
     pass
 

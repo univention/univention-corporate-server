@@ -73,10 +73,10 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         if new_sp != old_sp:
             if len(new_sp) > len(old_sp):
                 for sp in list(set(new_sp) - set(old_sp)):
-                    sp_to_add.append(sp)
+                    sp_to_add.append(sp)  # noqa: PERF402
             else:
                 for sp in list(set(old_sp) - set(new_sp)):
-                    sp_to_rm.append(sp)
+                    sp_to_rm.append(sp)  # noqa: PERF402
 
         for sp in sp_to_add:
             group = data.setdefault(sp.decode('UTF-8'), [])

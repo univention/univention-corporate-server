@@ -89,7 +89,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         # looking for Python files
         for fn in uub.FilteredDirWalkGenerator(path, reHashBang=RE_HASHBANG, readSize=100):
-            check_files.append(fn)
+            check_files.append(fn)  # noqa: PERF402
 
         # check files for copyright
         for fn in check_files:

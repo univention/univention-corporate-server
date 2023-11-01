@@ -366,7 +366,7 @@ class SamlACS(SAMLResource):
         if self.get_query_argument(self.idp_query_param, None) in idps:
             return self.get_query_argument(self.idp_query_param)
         if len(idps) == 1:
-            return list(idps.keys())[0]
+            return list(idps.keys())[0]  # noqa: RUF015
         if not idps:
             raise SamlError(self._).no_identity_provider()
         raise SamlError(self._).multiple_identity_provider(list(idps.keys()), self.idp_query_param)

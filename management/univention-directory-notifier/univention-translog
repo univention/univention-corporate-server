@@ -586,7 +586,7 @@ def dump_index(opt):
         log.debug('Dumping index from [%d, %d] ...', begin, end)
         for tid in range(begin, end + 1):
             rec = index[tid]
-            print('%8d[%c]: %d' % (tid, 'x' if rec.valid else ' ', rec.offset))
+            print('%8d[%c]: %d' % (tid, 'x' if rec.valid else ' ', rec.offset))  # noqa: PLE1307
 
 
 def reindex(opt):

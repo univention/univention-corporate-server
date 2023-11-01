@@ -69,8 +69,8 @@ try:
     )
 
     from typing_extension import Literal  # noqa: F401
-    _T = TypeVar('_T', bound='ReadOnlyConfigRegistry')
-    _VT = TypeVar('_VT')
+    _T = TypeVar('_T', bound='ReadOnlyConfigRegistry')  # noqa: PYI018
+    _VT = TypeVar('_VT')  # noqa: PYI018
 except ImportError:  # pragma: no cover
     pass
 

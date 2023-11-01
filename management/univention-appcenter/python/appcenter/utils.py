@@ -78,8 +78,8 @@ from univention.lib.i18n import Translation
 if TYPE_CHECKING:
     from univention.appcenter.app import App  # noqa: F401
 
-_ConfigParser = TypeVar("_ConfigParser", bound=RawConfigParser)
-_T = TypeVar("_T")
+_ConfigParser = TypeVar("_ConfigParser", bound=RawConfigParser)  # noqa: PYI018
+_T = TypeVar("_T")  # noqa: PYI018
 
 # "global" translation for univention-appcenter
 # also provides translation for univention-appcenter-docker etc

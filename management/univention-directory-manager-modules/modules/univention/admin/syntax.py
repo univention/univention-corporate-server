@@ -4732,7 +4732,7 @@ class IStates(select):
     @classmethod
     def get_object_property_filter(cls, object_property, object_property_value, allow_asterisks=True):
         try:
-            state_of_object_property_value = [state for state, (ldap_value, _) in cls.values if ldap_value == object_property_value][0]
+            state_of_object_property_value = [state for state, (ldap_value, _) in cls.values if ldap_value == object_property_value][0]  # noqa: RUF015
             if state_of_object_property_value not in (None, True, False):
                 return ''
         except IndexError:

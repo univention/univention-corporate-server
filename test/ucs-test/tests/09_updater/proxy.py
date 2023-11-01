@@ -90,7 +90,7 @@ class Proxy(BaseHTTPRequestHandler):
 
         path = urlunsplit(u)
         try:
-            req = Request(url=path, headers=self.headers)  # type: ignore
+            req = Request(url=path, headers=self.headers)  # type: ignore  # noqa: S310
             if options.verbose:
                 for k, v in self.headers.items():
                     self.log_message(f"> {k}: {v}")

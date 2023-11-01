@@ -76,7 +76,7 @@ from univention.management.console.modules.sanitizers import (
 
 _ = Translation('univention.management.console').translate
 
-_T = TypeVar("_T")
+_T = TypeVar("_T")  # noqa: PYI018
 
 
 def sanitize(*args, **kwargs):

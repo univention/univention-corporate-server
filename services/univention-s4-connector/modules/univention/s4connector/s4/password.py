@@ -273,7 +273,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
             s4_num_old_keys = old_krb['ctr4'].num_old_keys
             s4_old_keys = []
             for key in old_krb['ctr4'].old_keys:
-                s4_old_keys.append(key)
+                s4_old_keys.append(key)  # noqa: PERF402
 
             # keys -> old_keys
             if len(old_krb['ctr4'].keys) > ctr4.num_keys:

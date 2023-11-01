@@ -336,7 +336,6 @@ class Test_DNSResolve:
         # bugs: [32626]
         # packages: univention-s4-connector
         partentzone = '%(domainname)s' % ucr
-        partentzone = partentzone
         forward_zone = "zoneName=%(domainname)s,cn=dns,%(ldap/base)s" % ucr
 
         zonename = uts.random_name()

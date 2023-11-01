@@ -74,7 +74,7 @@ try:
     )
 
     from typing_extensions import Literal  # noqa: F401
-    _TS = TypeVar("_TS", bound="_UCSServer")
+    _TS = TypeVar("_TS", bound="_UCSServer")  # noqa: PYI018
 except ImportError:
     pass
 

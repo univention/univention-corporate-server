@@ -89,7 +89,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
     else:
         for fstype in ('ext2', 'ext3', 'ext4'):
             for fstab_partition in fs.get(fstype, ignore_root=False):
-                target_partitions.append(fstab_partition)
+                target_partitions.append(fstab_partition)  # noqa: PERF402
 
     for fstab_partition in target_partitions:
         if _do_modify_extfs_option(fstab_partition, options, activate):

@@ -182,7 +182,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
             samaccountname = object['attributes']['sAMAccountName'][0].decode('UTF-8')
         if dn_attr:
             try:
-                dn_attr_vals = [value for key, value in object['attributes'].items() if dn_attr.lower() == key.lower()][0]
+                dn_attr_vals = [value for key, value in object['attributes'].items() if dn_attr.lower() == key.lower()][0]  # noqa: RUF015
             except IndexError:
                 pass
             else:
@@ -2207,13 +2207,13 @@ class ad(univention.connector.ucs):
                                 # its value as long as that value is not removed. If removed the primary
                                 # attribute is assigned a random value from the UCS attribute.
                                 try:
-                                    current_ad_values = set([v for k, v in ad_object.items() if ad_attribute.lower() == k.lower()][0])
+                                    current_ad_values = set([v for k, v in ad_object.items() if ad_attribute.lower() == k.lower()][0])  # noqa: RUF015
                                 except IndexError:
                                     current_ad_values = set()
                                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD values: %s" % current_ad_values)
 
                                 try:
-                                    current_ad_other_values = set([v for k, v in ad_object.items() if ad_other_attribute.lower() == k.lower()][0])
+                                    current_ad_other_values = set([v for k, v in ad_object.items() if ad_other_attribute.lower() == k.lower()][0])  # noqa: RUF015
                                 except IndexError:
                                     current_ad_other_values = set()
                                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current AD other values: %s" % current_ad_other_values)
@@ -2237,7 +2237,7 @@ class ad(univention.connector.ucs):
                                     modlist.append((ldap.MOD_REPLACE, ad_other_attribute, list(new_ad_other_values)))
                             else:
                                 try:
-                                    current_ad_values = set([v for k, v in ad_object.items() if ad_attribute.lower() == k.lower()][0])
+                                    current_ad_values = set([v for k, v in ad_object.items() if ad_attribute.lower() == k.lower()][0])  # noqa: RUF015
                                 except IndexError:
                                     current_ad_values = set()
 

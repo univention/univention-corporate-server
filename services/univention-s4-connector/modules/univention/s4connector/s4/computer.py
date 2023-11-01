@@ -95,7 +95,7 @@ def windowscomputer_sync_s4_to_ucs_check_rename(s4connector, key, sync_object):
         return
 
     try:
-        sAMAccountName_vals = [_v for _k, _v in attrs.items() if _k.lower() == 'samaccountname'][0]
+        sAMAccountName_vals = [_v for _k, _v in attrs.items() if _k.lower() == 'samaccountname'][0]  # noqa: RUF015
     except IndexError:
         raise ValueError("%s has no sAMAccountName" % (sync_object['dn'],))
     else:

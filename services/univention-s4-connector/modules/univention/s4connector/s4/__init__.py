@@ -209,7 +209,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
             samaccountname = object['attributes']['sAMAccountName'][0].decode('UTF-8')
         if dn_attr:
             try:
-                dn_attr_vals = [value for key, value in object['attributes'].items() if dn_attr.lower() == key.lower()][0]
+                dn_attr_vals = [value for key, value in object['attributes'].items() if dn_attr.lower() == key.lower()][0]  # noqa: RUF015
             except IndexError:
                 pass
             else:
@@ -2192,13 +2192,13 @@ class s4(univention.s4connector.ucs):
                                     # its value as long as that value is not removed. If removed the primary
                                     # attribute is assigned a random value from the UCS attribute.
                                     try:
-                                        current_s4_values = set([v for k, v in ad_object.items() if s4_attribute.lower() == k.lower()][0])
+                                        current_s4_values = set([v for k, v in ad_object.items() if s4_attribute.lower() == k.lower()][0])  # noqa: RUF015
                                     except IndexError:
                                         current_s4_values = set()
                                     ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 
                                     try:
-                                        current_s4_other_values = set([v for k, v in ad_object.items() if s4_other_attribute.lower() == k.lower()][0])
+                                        current_s4_other_values = set([v for k, v in ad_object.items() if s4_other_attribute.lower() == k.lower()][0])  # noqa: RUF015
                                     except IndexError:
                                         current_s4_other_values = set()
                                     ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 other values: %s" % current_s4_other_values)
@@ -2222,7 +2222,7 @@ class s4(univention.s4connector.ucs):
                                         modlist.append((ldap.MOD_REPLACE, s4_other_attribute, list(new_s4_other_values)))
                                 else:
                                     try:
-                                        current_s4_values = set([v for k, v in ad_object.items() if s4_attribute.lower() == k.lower()][0])
+                                        current_s4_values = set([v for k, v in ad_object.items() if s4_attribute.lower() == k.lower()][0])  # noqa: RUF015
                                     except IndexError:
                                         current_s4_values = set()
 

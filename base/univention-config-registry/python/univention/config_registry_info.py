@@ -269,7 +269,6 @@ class ConfigRegistryInfo(object):
                     for key in var.keys():
                         items = var.normalize(key)
                         for item, value in items.items():
-                            value = value
                             cfg.set(name, item, value)
 
                 cfg.write(fd)

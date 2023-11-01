@@ -321,7 +321,7 @@ def get_extended_attributes(app):
             if attribute_name is True or not attribute_name:
                 attribute_name = '%sActivated' % (app.id,)
             try:
-                attribute = [attr for attr in attributes if attr.name == attribute_name][0]
+                attribute = [attr for attr in attributes if attr.name == attribute_name][0]  # noqa: RUF015
             except IndexError:
                 attribute_logger.debug('Adding %s to list of attributes' % attribute_name)
                 attribute = ExtendedAttribute(
@@ -358,7 +358,7 @@ def get_extended_attributes(app):
             object_class.set_standard_oid(app, object_class_suffix)
             object_class_suffix += 1
             object_classes.insert(0, object_class)
-        object_class = [obj for obj in object_classes if obj.name == attribute.belongs_to][0]
+        object_class = [obj for obj in object_classes if obj.name == attribute.belongs_to][0]  # noqa: RUF015
         if attribute.name not in re.split(r'\s*,\s*', object_class.must):
             object_class.may = '%s, %s' % (object_class.may, attribute.name)
         for option in extended_options:

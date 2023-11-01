@@ -231,7 +231,7 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
         }
         self.create_authentication_flow_subflow(payload=json.dumps(_payload), flow_alias=flow_alias)
         executions = self.get_authentication_flow_executions(flow_alias=flow_alias)
-        flow = [x for x in executions if x.get("displayName") == payload["displayName"]][0]
+        flow = [x for x in executions if x.get("displayName") == payload["displayName"]][0]  # noqa: RUF015
         payload["id"] = flow["id"]
         del payload["type"]
         try:
@@ -244,7 +244,7 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
         _payload = {"provider": payload.get("providerId")}
         self.create_authentication_flow_execution(payload=json.dumps(_payload), flow_alias=flow_alias)
         executions = self.get_authentication_flow_executions(flow_alias=flow_alias)
-        execution = [x for x in executions if x.get("providerId") == payload.get("providerId")][0]
+        execution = [x for x in executions if x.get("providerId") == payload.get("providerId")][0]  # noqa: RUF015
         payload["id"] = execution["id"]
         try:
             self.update_authentication_flow_executions(payload=json.dumps(payload), flow_alias=flow_alias)
@@ -728,7 +728,7 @@ def modify_client_scope_mapper(opt):
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
     scopes = kc_admin.get_client_scopes()
-    id_role_list = [scope["id"] for scope in scopes if scope["name"] == "role_list"][0]
+    id_role_list = [scope["id"] for scope in scopes if scope["name"] == "role_list"][0]  # noqa: RUF015
 
     scope_id = id_role_list
     data_raw = kc_admin.raw_get(
@@ -736,8 +736,8 @@ def modify_client_scope_mapper(opt):
     )
     mappers = data_raw.json()
 
-    mapper_test = [mapper for mapper in mappers if mapper["name"] == "role list"][0]
-    id_mapper_role_list = [mapper["id"] for mapper in mappers if mapper["name"] == "role list"][0]
+    mapper_test = [mapper for mapper in mappers if mapper["name"] == "role list"][0]  # noqa: RUF015
+    id_mapper_role_list = [mapper["id"] for mapper in mappers if mapper["name"] == "role list"][0]  # noqa: RUF015
 
     mapper_test["config"]["single"] = True
 
@@ -1899,13 +1899,13 @@ def assign_group_realm_role_by_group_name(kc_admin, realm, group_name, role):
         print("Warning: Groupname does not exist, realm role can not be linked")
         return
     try:
-        group_id = [g["id"] for g in groups if g["name"] == group_name][0]
+        group_id = [g["id"] for g in groups if g["name"] == group_name][0]  # noqa: RUF015
     except IndexError:
         group_id = None  # why is group ID allowed to be none?
 
     # get role id
     try:
-        realm_role_id = [r["id"] for r in kc_admin.get_realm_roles() if r["name"] == role][0]
+        realm_role_id = [r["id"] for r in kc_admin.get_realm_roles() if r["name"] == role][0]  # noqa: RUF015
     except IndexError:
         print(f"WARNING: role {role} does not exist")
         return
@@ -2138,7 +2138,7 @@ def create_adhoc_flow(opt):
     kc_admin.create_authentication_flow_execution(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad hoc federation flow')
 
     execution_list = kc_admin.get_authentication_flow_executions("Univention-Authenticator ad hoc federation flow")
-    ua_execution = [flow for flow in execution_list if flow["displayName"] == "Univention Authenticator"][0]
+    ua_execution = [flow for flow in execution_list if flow["displayName"] == "Univention Authenticator"][0]  # noqa: RUF015
     payload_exec_flow = {
         "id": ua_execution["id"],
         "requirement": "REQUIRED",

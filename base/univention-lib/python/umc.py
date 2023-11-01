@@ -61,7 +61,7 @@ from univention.config_registry import ConfigRegistry
 
 
 Morsel._reserved['samesite'] = 'SameSite'
-_T = TypeVar("_T")
+_T = TypeVar("_T")  # noqa: PYI018
 
 ucr = ConfigRegistry()
 ucr.load()

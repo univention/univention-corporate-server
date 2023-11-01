@@ -178,7 +178,7 @@ class Instance(Base):
         """
         args = ['/usr/bin/cancel', '-U', '%s$' % ucr.get('hostname')]
         for job in jobs:
-            args.append(job)
+            args.append(job)  # noqa: PERF402
         args.append(printer)
         (stdout, stderr, status) = self._shell_command(args)
         if status:

@@ -429,7 +429,7 @@ class CnameListPropertyEncoder(DnListPropertyEncoder):
 
     def _list_of_dns_to_list_of_udm_objects(self, value):
         udm_module = self.udm.get(self.udm_module_name)
-        return [list(udm_module.search('relativeDomainName={}'.format(cname)))[0] for cname in value]
+        return [list(udm_module.search('relativeDomainName={}'.format(cname)))[0] for cname in value]  # noqa: RUF015
 
 
 class DnsEntryZoneAliasListPropertyEncoder(DnListPropertyEncoder):

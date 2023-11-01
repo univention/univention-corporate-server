@@ -88,7 +88,7 @@ def findall_urls_from_readme(app):
     all_urls = {}
     for readme_file in README_FILES:
         for f in glob.glob('%s*' % app.get_cache_file(readme_file)):
-            files_to_check.append(f)
+            files_to_check.append(f)  # noqa: PERF402
     for filename in files_to_check:
         print("\nChecking file:", filename)
         parser = MyHTMLParser()

@@ -288,7 +288,7 @@ class MustHaveNoConflictsApps(SingleRequirement, HardRequirement):
         # check port conflicts
         ports = []
         for i in app.ports_exclusive:
-            ports.append(i)
+            ports.append(i)  # noqa: PERF402
         for i in app.ports_redirection:
             ports.append(i.split(':', 1)[0])
         for app_id, _container_port, host_port in app_ports():

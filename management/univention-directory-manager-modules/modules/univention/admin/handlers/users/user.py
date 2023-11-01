@@ -779,7 +779,7 @@ def logonHoursUnmap(logontimes):
     """Converts hex-string to an array of bits set."""
     times = logontimes[0][:42]
     while len(times) < 42:
-        times = times
+        times = times  # noqa: PLW0127
     ret = ""
     for i in range(0, 42, 2):
         val = int(times[i:i + 2], 16)
@@ -1255,7 +1255,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         if 'automountInformation' not in self.oldattr:
             return
         try:
-            flags, unc = re.split(b' +', self.oldattr['automountInformation'][0], 1)
+            flags, unc = re.split(b' +', self.oldattr['automountInformation'][0], 1)  # noqa: B034
             host, path = unc.split(b':', 1)
         except ValueError:
             return
@@ -1873,7 +1873,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             return ml
 
         try:
-            new = [x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress' and x[2]][0]
+            new = [x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress' and x[2]][0]  # noqa: RUF015
         except IndexError:  # mailForwardAddress was not changed, nevertheless we might need to change it
             new = self.mapping.mapValue('mailForwardAddress', self['mailForwardAddress']) or []  # FIXME: mapValue returns b'' instead of [b'']
 

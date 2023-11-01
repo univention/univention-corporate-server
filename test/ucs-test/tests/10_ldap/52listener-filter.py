@@ -42,7 +42,7 @@ class Environment:
         ent = getpwnam(USERID)
         self.uid = ent.pw_uid
 
-    def __enter__(self) -> Environment:
+    def __enter__(self) -> Environment:  # noqa: PYI034
         self.tmpdir = mkdtemp(prefix='ucs-test', dir=TMPDIR)
         print('I: tmpdir=%r' % (self.tmpdir,))
         chown(self.tmpdir, self.uid, -1)
@@ -88,7 +88,7 @@ class Listener:
             '-y', '/etc/machine.secret',
         ]
 
-    def __enter__(self) -> Listener:
+    def __enter__(self) -> Listener:  # noqa: PYI034
         self.init_listener()
         self.run_listener()
         return self
@@ -114,7 +114,7 @@ class Listener:
         print('I: %d = %r' % (self.proc.pid, cmd))
         return self
 
-    def __exit__(self, exc_type: Type[Exception] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: Type[Exception] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:  # noqa: PYI036
         if not exc_type:
             self.wait_transactions()
         self.kill_listener()
@@ -212,7 +212,7 @@ def unexpected_transactions(env: Environment, ucr: Dict[str, str]) -> bool:
             elif line == repr((dn, True, False, 'm')):
                 print('I: Found modify: %s' % (line,))
                 found_modify = True
-            elif eval(line)[0].endswith(dn):  # noqa: PGH001
+            elif eval(line)[0].endswith(dn):  # noqa: PGH001, S307
                 found_other = True
                 print('E: Found other: %s' % (line,))
 

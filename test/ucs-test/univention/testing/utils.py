@@ -63,7 +63,7 @@ SLAPD_INIT_SCRIPT = '/etc/init.d/slapd'
 UCR = ConfigRegistry()
 
 
-_T = TypeVar("_T")
+_T = TypeVar("_T")  # noqa: PYI018
 
 
 class LDAPError(Exception):

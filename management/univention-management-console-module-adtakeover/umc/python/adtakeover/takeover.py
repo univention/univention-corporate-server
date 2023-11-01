@@ -2470,7 +2470,7 @@ def takeover_hasInstantiatedNCs(ucr, samdb, ad_server_name, sitename):
         # and note the msDS-hasMasterNCs values for fsmo takeover
         if "msDS-hasMasterNCs" in obj:
             for partition_dn_utf8 in obj["msDS-hasMasterNCs"]:
-                partitions.append(partition_dn_utf8)
+                partitions.append(partition_dn_utf8)  # noqa: PERF402
     return partitions
 
 

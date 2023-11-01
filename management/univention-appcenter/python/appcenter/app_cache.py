@@ -595,12 +595,12 @@ class Apps(_AppCache):
         try:
             ucs_version, app_id = app_id.split('/', 1)
         except ValueError:
-            ucs_version, app_id = None, app_id
+            ucs_version, app_id = None, app_id  # noqa: PLW0127
         if ucs_version:
             try:
                 ucs_version, server = ucs_version.split('@', 1)
             except ValueError:
-                ucs_version, server = ucs_version, None
+                ucs_version, server = ucs_version, None  # noqa: PLW0127
         else:
             server = None
         ucs_version = ucs_version or None

@@ -41,7 +41,7 @@ from six.moves import configparser
 
 try:
     from typing import Dict, Optional, TypeVar, Union, overload  # noqa: F401
-    _VT = TypeVar('_VT')
+    _VT = TypeVar('_VT')  # noqa: PYI018
 except ImportError:
     def overload(f):
         pass
