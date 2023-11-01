@@ -42,8 +42,6 @@ import re
 import sys
 import time
 
-import six
-
 import univention.config_registry_info as cri
 from univention.config_registry.backend import SCOPE, ConfigRegistry, exception_occured
 from univention.config_registry.filters import filter_keys_only, filter_shell, filter_sort
@@ -52,8 +50,6 @@ from univention.config_registry.misc import escape_value, validate_key
 from univention.config_registry.validation import Type
 
 
-if six.PY2:
-    from io import open
 try:
     from typing import IO, Any, Callable, Dict, Iterator, List, NoReturn, Optional, Tuple  # noqa: F401
 except ImportError:  # pragma: no cover
@@ -387,8 +383,7 @@ def handler_filter(args, opts={}):
     """Run filter on STDIN to STDOUT."""
     ucr = ConfigRegistry()
     ucr.load()
-    stdout = sys.stdout if six.PY2 else sys.stdout.buffer  # type: IO[bytes] # type: ignore
-    stdout.write(run_filter(sys.stdin.read(), ucr, opts=opts))
+    sys.stdout.buffer.stdout.write(run_filter(sys.stdin.read(), ucr, opts=opts))
 
 
 def handler_search(args, opts={}):

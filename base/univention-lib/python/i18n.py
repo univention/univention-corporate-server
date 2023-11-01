@@ -39,8 +39,6 @@ import weakref
 from locale import LC_MESSAGES, Error, getlocale
 from typing import List, Optional  # noqa: F401
 
-import six
-
 
 class I18N_Error(Exception):
     """Error in Internationalization."""
@@ -89,7 +87,7 @@ class Locale(object):
         :raises TypeError: if `locale` is not a string.
         :raises I18N_Error: if `locale` does not match the format.
         """
-        if not isinstance(locale, six.string_types):
+        if not isinstance(locale, str):
             raise TypeError('locale must be of type string')
         self.__reset()
         regex = Locale.REGEX.match(locale)
@@ -195,8 +193,6 @@ class NullTranslation(object):
         if self._translation is None:
             return message
 
-        if six.PY2:
-            return self._translation.ugettext(message)
         return self._translation.gettext(message)
 
     _ = translate

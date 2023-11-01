@@ -54,7 +54,7 @@ Description: UCS - system upgrading tool
 Package: python3-univention-updater
 Architecture: all
 Depends:
- python3-six,
+ python3-typing-extensions,
  python3-univention-admin-diary,
  python3-univention-config-registry,
  ${misc:Depends},

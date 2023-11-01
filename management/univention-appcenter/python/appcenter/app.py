@@ -43,11 +43,9 @@ import re
 from configparser import NoOptionError, NoSectionError, RawConfigParser
 from copy import copy
 from distutils.version import LooseVersion
+from itertools import zip_longest
 from urllib.parse import urlsplit
 from weakref import ref
-
-import six
-from six import PY3, string_types, with_metaclass
 
 from univention.appcenter.ini_parser import read_ini_file
 from univention.appcenter.log import get_base_logger
@@ -70,24 +68,21 @@ CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 app_logger = get_base_logger().getChild('apps')
 
 
-if six.PY3:
-    # LooseVersion changed the internal order function that may now raise
-    # TypeError on LooseVersion("1.0.1") < LooseVersion("1.0-1")
-    from itertools import zip_longest
-
-    class LooseVersion(LooseVersion):
-        def _cmp(self, other):
-            for i, j in zip_longest(self.version, other.version, fillvalue=''):
-                if not isinstance(i, type(j)):
-                    i = str(i)
-                    j = str(j)
-                if i == j:
-                    continue
-                elif i < j:
-                    return -1
-                else:  # i > j
-                    return 1
-            return 0
+# LooseVersion changed the internal order function that may now raise
+# TypeError on LooseVersion("1.0.1") < LooseVersion("1.0-1")
+class LooseVersion(LooseVersion):
+    def _cmp(self, other):
+        for i, j in zip_longest(self.version, other.version, fillvalue=''):
+            if not isinstance(i, type(j)):
+                i = str(i)
+                j = str(j)
+            if i == j:
+                continue
+            elif i < j:
+                return -1
+            else:  # i > j
+                return 1
+        return 0
 
 
 class CaseSensitiveConfigParser(RawConfigParser):
@@ -158,7 +153,7 @@ class AppAttribute(UniventionMetaInfo):
     def test_type(self, value, instance_type):
         if value is not None:
             if instance_type is None:
-                instance_type = string_types
+                instance_type = str
             if not isinstance(value, instance_type):
                 raise ValueError('Wrong type')
 
@@ -166,7 +161,7 @@ class AppAttribute(UniventionMetaInfo):
         try:
             if self.required:
                 self.test_required(value)
-            self.test_type(value, string_types)
+            self.test_type(value, str)
             if self.choices:
                 self.test_choices(value)
             if self.regex:
@@ -237,10 +232,7 @@ class AppBooleanAttribute(AppAttribute):
         if value in [True, False]:
             return value
         if value is not None:
-            if PY3:
-                value = RawConfigParser.BOOLEAN_STATES.get(str(value).lower())
-            else:
-                value = RawConfigParser._boolean_states.get(str(value).lower())
+            value = RawConfigParser.BOOLEAN_STATES.get(str(value).lower())
             if value is None:
                 raise ValueError('Invalid value')
         return value
@@ -261,7 +253,7 @@ class AppListAttribute(AppAttribute):
     def parse(self, value):
         if value == '':
             value = None
-        if isinstance(value, string_types):
+        if isinstance(value, str):
             value = re.split(r'\s*,\s*', value)
         if value is None:
             value = []
@@ -389,7 +381,7 @@ class AppAttributeOrFalseOrNone(AppBooleanAttribute):
 
     def test_type(self, value, instance_type):
         if value is not False and value is not None:
-            super(AppBooleanAttribute, self).test_type(value, string_types)
+            super(AppBooleanAttribute, self).test_type(value, str)
 
 
 class AppAttributeOrTrueOrNone(AppBooleanAttribute):
@@ -402,7 +394,7 @@ class AppAttributeOrTrueOrNone(AppBooleanAttribute):
 
     def test_type(self, value, instance_type):
         if value is not True and value is not None:
-            super(AppBooleanAttribute, self).test_type(value, string_types)
+            super(AppBooleanAttribute, self).test_type(value, str)
 
 
 class AppFileAttribute(AppAttribute):
@@ -483,7 +475,7 @@ class AppMetaClass(UniventionMetaClass):
         return new_cls
 
 
-class App(with_metaclass(AppMetaClass, object)):
+class App(metaclass=AppMetaClass):
     """
     This is the main App class. It represents *one version* of the App in
     the Univention App Center. It is mainly a container for a parsed ini

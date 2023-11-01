@@ -81,7 +81,6 @@ ignore = [
  "RUF012",  # mutable-class-default
  "FLY002",  #
  "UP004", "UP008", "UP009", "UP010", "UP025", "UP029",  # be Python 2 compatible
- "YTT202",  # six-py3-referenced
  "RUF005",  # unpack-instead-of-concatenating-to-collection-literal
  "TCH",  # type checking
  "S324",  # hashlib-insecure-hash-function
@@ -92,7 +91,6 @@ ignore = [
  "UP006",  # use-pep585-annotation
  "UP003",  # type-of-primitive
  "UP012",  # unnecessary-encode-utf8
- #"UP016",  # remove-six-compat
  "UP018",  # native-literals
  "UP019",  # typing-text-str-alias
  "UP020",  # open-alias
