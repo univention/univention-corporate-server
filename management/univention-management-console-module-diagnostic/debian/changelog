@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (7.0.7) unstable; urgency=medium
+
+  * Bug #56604: UP028
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:22 +0100
+
 univention-management-console-module-diagnostic (7.0.6) unstable; urgency=medium
 
   * Bug #56662: require memberof to be enabled

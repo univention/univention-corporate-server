@@ -763,8 +763,7 @@ class PackageManager(object):
         """
         if reopen:
             self.reopen_cache()
-        for pkg in self.cache:
-            yield pkg
+        yield from self.cache
 
     def mark_auto(self, auto, *pkgs):
         # type: (bool, PkgNameOrApt) -> None

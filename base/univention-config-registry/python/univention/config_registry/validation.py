@@ -84,9 +84,7 @@ class BaseValidator(object):
             if clazz.NAME:
                 yield clazz
 
-            # FIXME: Python 3.5: yield from clazz._recurse_subclasses()
-            for sub in clazz._recurse_subclasses():
-                yield sub
+            yield from clazz._recurse_subclasses()
 
 
 class String(BaseValidator):
