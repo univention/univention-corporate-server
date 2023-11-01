@@ -68,7 +68,7 @@ def main():
 
     try:
         log_to_logfile()
-    except IOError:
+    except OSError:
         pass
     log_to_stream()
     _reverse_umc_module_logger()

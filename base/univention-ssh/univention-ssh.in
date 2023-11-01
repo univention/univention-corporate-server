@@ -267,7 +267,7 @@ except KeyError:
     print('Unknown command %s' % (cmd,), file=sys.stderr)
 except IndexError:
     display_help(sys.stderr)
-except IOError:
+except OSError:
     print('Failed to read password from %s' % (pw_filename,), file=sys.stderr)
 
 sys.exit(2)

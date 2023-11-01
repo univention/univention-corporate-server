@@ -71,7 +71,7 @@ def get_lock(name, nonblocking=False):
             fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
         else:
             fcntl.lockf(fd, fcntl.LOCK_EX)
-    except IOError as e:
+    except OSError as e:
         if e.errno == 11:
             return None
         raise

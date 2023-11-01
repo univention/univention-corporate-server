@@ -219,7 +219,7 @@ def lock(filename):
     try:
         lock_file = open(filename, "a+")
         fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-    except IOError:
+    except OSError:
         print('Error: Another AD connector process is already running.', file=sys.stderr)
         sys.exit(1)
     with lock_file as lock_file:

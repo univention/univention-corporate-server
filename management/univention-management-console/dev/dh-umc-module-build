@@ -88,7 +88,7 @@ def do_package(package, core):
                         continue
                     try:
                         os.makedirs(os.path.dirname(png_path))
-                    except EnvironmentError:
+                    except OSError:
                         pass
                     print('I: Creating missing image %s' % (png_path,))
                     dh_ucs.doIt('convert', '-background', 'none', os.path.join(path, filename), '-resize', '%dx%d' % (size, size), '-define', 'png:exclude-chunk=date,time', png_path)

@@ -298,7 +298,7 @@ class ConfigHandlerDiverting(ConfigHandler):
                 old_stat = os.stat(self.to_file)
                 os.chmod(to_file, old_stat.st_mode)
                 os.chown(to_file, old_stat.st_uid, old_stat.st_gid)
-            except EnvironmentError:
+            except OSError:
                 pass
 
         if self.user or self.group or self.mode:
@@ -352,7 +352,7 @@ class ConfigHandlerDiverting(ConfigHandler):
         """
         try:
             os.unlink(self.to_file)
-        except EnvironmentError:
+        except OSError:
             pass
         deb = '%s.debian' % self.to_file
         self._call_silent('dpkg-divert', '--quiet', '--rename', '--local', '--divert', deb, '--remove', self.to_file)
@@ -443,12 +443,12 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
                     try:
                         with open(from_file, encoding='utf-8') as from_fp:
                             to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=self.from_files, opts=filter_opts))
-                    except EnvironmentError:
+                    except OSError:
                         continue
 
             try:
                 os.rename(tmp_to_file, self.to_file)
-            except EnvironmentError as ex:
+            except OSError as ex:
                 if ex.errno == errno.EBUSY:
                     with open(self.to_file, 'w+', encoding='utf-8') as fd:
                         fd.write(open(tmp_to_file, encoding='utf-8').read())
@@ -520,7 +520,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
         try:
             stat = os.stat(self.from_file)
-        except EnvironmentError:
+        except OSError:
             print("The referenced template file does not exist", file=sys.stderr)
             return
 
@@ -535,7 +535,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
             try:
                 os.rename(tmp_to_file, self.to_file)
-            except EnvironmentError as ex:
+            except OSError as ex:
                 if ex.errno == errno.EBUSY:
                     with open(self.to_file, 'w+', encoding='utf-8') as fd:
                         fd.write(open(tmp_to_file, encoding='utf-8').read())
@@ -888,7 +888,7 @@ class ConfigHandlers:
         try:
             with open(name, encoding='utf-8') as temp_file:
                 variables |= grep_variables(temp_file.read())
-        except EnvironmentError:
+        except OSError:
             print("Failed to process Subfile %s" % (name,), file=sys.stderr)
             return None
         qentry = (name, variables)
@@ -976,7 +976,7 @@ class ConfigHandlers:
                 pickler.dump(self._handlers)
                 pickler.dump(self._subfiles)
                 pickler.dump(self._multifiles)
-        except IOError as ex:
+        except OSError as ex:
             if ex.errno != errno.EACCES:
                 raise
 
@@ -1065,7 +1065,7 @@ class ConfigHandlers:
         try:
             # remove cache file to force rebuild of cache
             os.unlink(ConfigHandlers.CACHE_FILE)
-        except EnvironmentError:
+        except OSError:
             pass
         return obsolete_handlers
 

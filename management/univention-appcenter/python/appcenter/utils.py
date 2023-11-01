@@ -102,7 +102,7 @@ def read_ini_file(filename, parser_class=RawConfigParser):
             parser.read_file(f)
     except TypeError:
         pass
-    except EnvironmentError:
+    except OSError:
         pass
     except ParsingError as exc:
         utils_logger.warning('Could not parse %s' % filename)

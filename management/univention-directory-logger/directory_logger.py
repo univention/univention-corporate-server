@@ -138,7 +138,7 @@ def process_dellog(dn: str) -> Tuple[str, str, str, str]:
                 if pathname.endswith(".fail"):
                     continue
                 (dellog_stamp, dellog_id, dellog_dn, modifier, action) = _parse_dellog_file(pathname)
-            except EnvironmentError:
+            except OSError:
                 ud.debug(ud.LISTENER, ud.ERROR, 'EnvironmentError: Renaming %s to %s.fail' % (filename, filename))
                 os.rename(pathname, '%s.fail' % pathname)
                 continue

@@ -119,7 +119,7 @@ class UpdaterLock(object):
                 assert bytes_written == len(my_pid)
                 os.close(lock_fd)
                 return 0
-            except EnvironmentError as ex:
+            except OSError as ex:
                 if ex.errno != EEXIST:
                     raise
 
@@ -129,7 +129,7 @@ class UpdaterLock(object):
                     lock_pid_b = os.read(lock_fd, 11)  # sizeof(s32) + len('\n')
                 finally:
                     os.close(lock_fd)
-            except EnvironmentError as ex:
+            except OSError as ex:
                 if ex.errno != ENOENT:
                     raise
             else:
@@ -156,7 +156,7 @@ class UpdaterLock(object):
 
                 try:
                     os.kill(lock_pid, 0)
-                except EnvironmentError as ex:
+                except OSError as ex:
                     if ex.errno == ESRCH:
                         print('Stale PID %d in lockfile %s, removing.' % (lock_pid, FN_LOCK_UP), file=sys.stderr)
                         os.remove(FN_LOCK_UP)
@@ -182,7 +182,7 @@ class UpdaterLock(object):
         try:
             os.remove(FN_LOCK_UP)
             return True
-        except EnvironmentError as error:
+        except OSError as error:
             if error.errno == ENOENT:
                 return False
             else:

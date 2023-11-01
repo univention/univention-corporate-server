@@ -123,7 +123,7 @@ def replog(ucr, var, old_value, value=None):
 
             with open(REPLOG_FILE, "a+", encoding='utf-8') as logfile:
                 logfile.write(log)
-        except EnvironmentError as ex:
+        except OSError as ex:
             print("E: exception occurred while writing to replication log: %s" % (ex,), file=sys.stderr)
             exception_occured()
 
@@ -869,7 +869,7 @@ def main(args):
             for line in results:
                 print(line)
 
-    except (EnvironmentError, TypeError):
+    except (OSError, TypeError):
         if OPT_ACTIONS['debug'][1]:
             raise
         exception_occured()

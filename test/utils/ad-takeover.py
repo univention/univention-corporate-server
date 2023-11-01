@@ -62,7 +62,7 @@ def domainhost_unreachable(client: Client) -> bool:
     try:
         s.connect((client, 53))
         return False
-    except socket.error:
+    except OSError:
         return True
 
 

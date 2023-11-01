@@ -98,7 +98,7 @@ class LDAP(object):
         def connection():
             try:
                 return _getMachineConnection(**kwargs)
-            except IOError as exc:
+            except OSError as exc:
                 if exc.errno == ENOENT:
                     return  # /etc/machine.secret does not exists
                 raise
@@ -110,7 +110,7 @@ class LDAP(object):
         def connection():
             try:
                 return _getAdminConnection(**kwargs)
-            except IOError as exc:
+            except OSError as exc:
                 if exc.errno == ENOENT:
                     return  # /etc/ldap.secret does not exists
                 raise

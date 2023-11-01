@@ -138,7 +138,7 @@ class Instance(Base, ProgressMixin):
                 process = psutil.Process(pid)
                 process.kill()
                 return True
-        except IOError as exc:
+        except OSError as exc:
             MODULE.warn('cannot open browser PID file: %s' % (exc,))
         except ValueError as exc:
             MODULE.error('browser PID is not a number: %s' % (exc,))
@@ -556,7 +556,7 @@ class Instance(Base, ProgressMixin):
         """Return a list of all available time zones."""
         try:
             fd = open('/usr/share/univention-system-setup/locale/timezone')
-        except EnvironmentError:
+        except OSError:
             MODULE.error('Cannot find locale data for timezones in /usr/share/univention-system-setup/locale')
             self.finished(request.id, None)
             return

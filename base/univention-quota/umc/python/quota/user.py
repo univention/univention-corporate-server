@@ -139,7 +139,7 @@ class Commands(object):
         try:
             fs = fstab.File('/etc/fstab')
             mt = fstab.File('/etc/mtab')
-        except IOError as error:
+        except OSError as error:
             MODULE.error('Could not open %s' % error.filename)
             raise UMC_Error(_('Could not open %s') % error.filename, 500)
 

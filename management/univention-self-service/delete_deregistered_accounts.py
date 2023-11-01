@@ -62,7 +62,7 @@ def get_writable_udm(binddn=None, bindpwdfile=None):
         try:
             with open(bindpwdfile) as f:
                 bindpwd = f.read().strip()
-        except IOError as err:
+        except OSError as err:
             error('Could not open "bindpwdfile" "%s": %s' % (bindpwdfile, err))
         ucr = ConfigRegistry()
         ucr.load()

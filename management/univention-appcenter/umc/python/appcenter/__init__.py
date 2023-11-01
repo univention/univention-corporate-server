@@ -172,7 +172,7 @@ class Instance(umcm.Base, ProgressMixin):
 
         try:
             log_to_logfile()
-        except IOError:
+        except OSError:
             pass
 
         # connect univention.appcenter.log to the progress-method
@@ -383,7 +383,7 @@ class Instance(umcm.Base, ProgressMixin):
             try:
                 with open(query_cache_file) as fd:
                     return json.load(fd)
-            except (EnvironmentError, ValueError) as exc:
+            except (OSError, ValueError) as exc:
                 MODULE.error('Error returning cached query: %s' % exc)
                 return []
         self.update_applications()
@@ -431,7 +431,7 @@ class Instance(umcm.Base, ProgressMixin):
             cache_file = cache.get_cache_file('.suggestions.json')
             with open(cache_file) as fd:
                 json = load(fd)
-        except (EnvironmentError, ValueError):
+        except (OSError, ValueError):
             raise umcm.UMC_Error(_('Could not load suggestions.'))
         else:
             try:

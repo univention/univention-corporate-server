@@ -675,7 +675,7 @@ class Instance(Base, ProgressMixin):
         try:
             with open(filename, 'rb') as fd:
                 self.finished(request.id, fd.read(), mimetype='text/csv' if report.endswith('.csv') else 'application/pdf')
-        except EnvironmentError:
+        except OSError:
             raise UMC_Error(_('The report does not exists. Please create a new one.'), status=404)
 
     def values(self, request):
@@ -1282,7 +1282,7 @@ class Instance(Base, ProgressMixin):
     def _request_license(self, request):
         try:
             urlopen(request)
-        except (HTTPError, URLError, IOError) as exc:
+        except (OSError, HTTPError, URLError) as exc:
             strerror = ''
             if hasattr(exc, 'read'):  # try to parse an html error
                 body = exc.read().decode('UTF-8', 'replace')

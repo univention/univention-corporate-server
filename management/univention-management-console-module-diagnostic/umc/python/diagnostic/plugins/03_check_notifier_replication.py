@@ -65,7 +65,7 @@ def get_id(master: str, cmd: str = 'GET_ID') -> str:
 def run(_umc_instance: Instance) -> None:
     try:
         notifier_id = get_id(configRegistry.get('ldap/master'))
-    except socket.error:
+    except OSError:
         MODULE.error('Error retrieving notifier ID from the UDN.')
         raise Warning(_('Error retrieving notifier ID from the UDN.'))
     else:

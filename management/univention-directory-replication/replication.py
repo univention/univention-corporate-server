@@ -382,7 +382,7 @@ def _remove_file(pathname: str) -> None:
     ud.debug(ud.LISTENER, ud.ALL, 'replication: removing %s' % (pathname,))
     try:
         os.remove(pathname)
-    except EnvironmentError as ex:
+    except OSError as ex:
         if ex.errno != ENOENT:
             ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove %s: %s' % (pathname, ex))
 
@@ -408,7 +408,7 @@ def _read_dn_from_file(filename: str) -> str | None:
     try:
         with open(filename) as fd:
             old_dn = fd.read()
-    except EnvironmentError as ex:
+    except OSError as ex:
         ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (filename, ex))
 
     return old_dn
@@ -590,7 +590,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[b
                     os.symlink(modrdn_cache, CURRENT_MODRDN)
                     # that's it for now for command 'r' ==> modrdn will follow in the next step
                     return
-                except EnvironmentError as ex:
+                except OSError as ex:
                     # d'oh! output some message and continue doing a delete+add instead
                     ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, ex))
 

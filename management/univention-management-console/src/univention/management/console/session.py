@@ -389,7 +389,7 @@ class Processes(object):
             CORE.info('Starting new module process %s' % (module_name,))
             try:
                 mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=accepted_language, no_daemonize_module_processes=no_daemonize_module_processes)
-            except EnvironmentError as exc:
+            except OSError as exc:
                 _ = self.session._
                 message = _('Could not open the module. %s Please try again later.') % {
                     errno.ENOMEM: _('There is not enough memory available on the server.'),

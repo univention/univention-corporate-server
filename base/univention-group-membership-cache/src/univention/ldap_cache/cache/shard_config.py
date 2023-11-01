@@ -48,7 +48,7 @@ def shards_from_config():
     try:
         with open(CONFIG_FILE) as fd:
             config = json.load(fd)
-    except (EnvironmentError, ValueError) as exc:
+    except (OSError, ValueError) as exc:
         log('Could not load CONFIG_FILE: %s', exc)
     else:
         for data in config:
@@ -72,7 +72,7 @@ def _writing_config():
     try:
         with open(CONFIG_FILE) as fd:
             shards = json.load(fd)
-    except EnvironmentError:
+    except OSError:
         shards = []
     yield shards
     with open(CONFIG_FILE, 'w') as fd:

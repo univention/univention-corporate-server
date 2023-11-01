@@ -133,7 +133,7 @@ class Watched_File(object):
                 try:
                     with open(self._file, 'rb') as fd:
                         hash_ = md5(fd.read()).hexdigest()
-                except EnvironmentError:
+                except OSError:
                     pass
                 else:
                     if hash_ != self._last_md5:
@@ -209,7 +209,7 @@ class Instance(Base):
             ret['last_update_failed'] = info.get('status') == 'FAILED'
             if ret['last_update_failed']:
                 ret['last_update_version'] = info.get('next_version')
-        except (ValueError, EnvironmentError) as exc:
+        except (OSError, ValueError) as exc:
             MODULE.error(str(exc))
 
         return ret
@@ -445,7 +445,7 @@ class Instance(Base):
         if count < 0:
             try:
                 return stat(fname).st_ctime
-            except EnvironmentError:
+            except OSError:
                 return 0
 
         # don't read complete file if we have an 'ignore' count
@@ -471,7 +471,7 @@ class Instance(Base):
                         lines.append(line.rstrip().decode('utf-8', 'replace'))
                         if (count > 0) and (len(lines) > count):
                             lines.pop(0)
-        except EnvironmentError:
+        except OSError:
             pass
         return lines
 
@@ -488,7 +488,7 @@ class Instance(Base):
                     fields = line.strip().split('=')
                     if len(fields) == 2:
                         result['_%s_' % fields[0]] = fields[1]
-        except EnvironmentError:
+        except OSError:
             pass
 
         result['running'] = self.__which_job_is_running() != ''
@@ -520,7 +520,7 @@ class Instance(Base):
         try:
             with open(logfile, 'rb') as fd:
                 self._logfile_start_line = sum(1 for line in fd)
-        except EnvironmentError:
+        except OSError:
             pass
 
         command = spec['command']

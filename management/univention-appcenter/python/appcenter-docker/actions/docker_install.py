@@ -62,7 +62,7 @@ class Install(Install, DockerActionMixin):
                 try:
                     with open(app.secret_on_host) as fd:
                         password = fd.read()
-                except EnvironmentError:
+                except OSError:
                     raise ReinitializeError('Reinitialize failed: Could not read machine secret file.')
             self.percentage = 30
             self._start_docker_image(app, hostdn, password, args)

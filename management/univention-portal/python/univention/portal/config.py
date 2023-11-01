@@ -47,7 +47,7 @@ def load():
         for fname in sorted(glob(_CONF)):
             with open(fname) as fd:
                 _DB.update(json.load(fd))
-    except EnvironmentError:
+    except OSError:
         pass
     else:
         load.never_loaded = False

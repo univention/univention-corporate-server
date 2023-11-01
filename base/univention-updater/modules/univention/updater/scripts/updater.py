@@ -150,7 +150,7 @@ def update_status(**kwargs):  # type: (**str) -> None
             for key, val in updater_status.items():
                 fd.write('%s=%s\n' % (key, val))
         os.rename(fn, FN_STATUS)
-    except EnvironmentError as ex:
+    except OSError as ex:
         dprint('Warning: cannot update status: %s' % (ex,))
 
 
@@ -173,7 +173,7 @@ def get_status():
                 except ValueError:
                     continue
                 status[key] = value
-    except EnvironmentError:
+    except OSError:
         pass
     return status
 
@@ -184,7 +184,7 @@ def remove_temporary_sources_list():
     for fn in (TMPSOURCE, TMPSOURCE2):
         try:
             os.remove(fn)
-        except EnvironmentError as ex:
+        except OSError as ex:
             if ex.errno != ENOENT:
                 raise
 
@@ -248,7 +248,7 @@ def update_ucr_updatestatus():
     # type: () -> None
     try:
         call(('/usr/share/univention-updater/univention-updater-check',), stdout=DEVNULL, stderr=DEVNULL)
-    except EnvironmentError:
+    except OSError:
         dprint('Warning: calling univention-updater-check failed.')
 
 

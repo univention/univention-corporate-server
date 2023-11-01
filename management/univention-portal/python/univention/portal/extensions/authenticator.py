@@ -150,7 +150,7 @@ class UMCAuthenticator(Authenticator):
             username = data["result"]["username"]
         except HTTPError as exc:
             get_logger("user").error("request failed: %s" % exc)
-        except EnvironmentError as exc:
+        except OSError as exc:
             get_logger("user").error("connection failed: %s" % exc)
         except ValueError:
             get_logger("user").error("malformed answer!")

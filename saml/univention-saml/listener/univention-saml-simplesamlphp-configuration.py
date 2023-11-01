@@ -95,7 +95,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
                 ud.debug(ud.LISTENER, ud.INFO, 'Deleting old SAML SP Configuration file %s' % old_filename)
                 try:
                     os.unlink(old_filename)
-                except IOError as exc:
+                except OSError as exc:
                     ud.debug(ud.LISTENER, ud.ERROR, 'Deleting failed: %s' % (exc,))
 
         if new and new.get('SAMLServiceProviderIdentifier') and new.get('isServiceProviderActivated')[0] == b"TRUE":
@@ -218,5 +218,5 @@ def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str
             with open(filename) as fd:
                 ud.debug(ud.LISTENER, ud.ERROR, 'repr(%r)' % (fd.read(),))
             os.unlink(filename)
-        except IOError:
+        except OSError:
             pass

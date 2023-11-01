@@ -288,7 +288,7 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
         else:
             try:
                 lo, _ = udm_uldap.getAdminConnection()
-            except EnvironmentError:
+            except OSError:
                 lo, _ = udm_uldap.getMachineConnection()
         try:
             lo.modify(self.object_dn, [(self.active_flag_attribute, [b'foo'], [b'FALSE'])])
@@ -658,7 +658,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                         ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
                         try:
                             shutil.move(old_filename, backup_filename)
-                        except IOError:
+                        except OSError:
                             ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, removing it.' % (name, old_filename))
                             os.unlink(old_filename)  # no choice
                             backup_filename = None
@@ -676,7 +676,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                     ud.debug(ud.LISTENER, ud.INFO, '%s: Writing new extension file %s.' % (name, new_filename))
                     with open(new_filename, 'wb') as f:
                         f.write(new_object_data)
-                except IOError:
+                except OSError:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing file %s.' % (name, new_filename))
                     set_handler_message(name, dn, 'Error writing file {}.'.format(new_filename))
                     return
@@ -704,7 +704,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                         try:
                             shutil.move(backup_filename, old_filename)
                             os.close(backup_fd)
-                        except IOError:
+                        except OSError:
                             ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old file %s.' % (name, old_filename))
                     # Commit and exit
                     ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
@@ -731,7 +731,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                     ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
                     try:
                         shutil.move(old_filename, backup_filename)
-                    except IOError:
+                    except OSError:
                         ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, leaving it untouched.' % (name, old_filename))
                         set_handler_message(name, dn, 'Error renaming old file {}, leaving it untouched.'.format(old_filename))
                         os.close(backup_fd)
@@ -760,7 +760,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                                 target_file.write(b"### %s: Leftover of removed settings/ldapschema\n" % (str(datetime.datetime.now()).encode('ASCII'), ) + file_data)
                             os.unlink(backup_filename)
                             os.close(backup_fd)
-                        except IOError:
+                        except OSError:
                             ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting removal of %s.' % (name, old_filename))
                         # Commit and exit
                         ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
@@ -881,7 +881,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                         ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
                         try:
                             shutil.move(old_filename, backup_filename)
-                        except IOError:
+                        except OSError:
                             ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, removing it.' % (name, old_filename))
                             os.unlink(old_filename)
                             backup_filename = None
@@ -894,7 +894,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                         ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old backlink file %s to %s.' % (name, old_backlink_filename, backup_backlink_filename))
                         try:
                             shutil.move(old_backlink_filename, backup_backlink_filename)
-                        except IOError:
+                        except OSError:
                             ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old backlink file %s, removing it.' % (name, old_backlink_filename))
                             os.unlink(old_backlink_filename)
                             backup_backlink_filename = None
@@ -907,7 +907,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                         ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old UCR info file %s to %s.' % (name, old_ucrinfo_filename, backup_ucrinfo_filename))
                         try:
                             shutil.move(old_ucrinfo_filename, backup_ucrinfo_filename)
-                        except IOError:
+                        except OSError:
                             ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old UCR info file %s, removing it.' % (name, old_ucrinfo_filename))
                             os.unlink(old_ucrinfo_filename)
                             backup_ucrinfo_filename = None
@@ -925,7 +925,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                     ud.debug(ud.LISTENER, ud.INFO, '%s: Writing new extension file %s.' % (name, new_filename))
                     with open(new_filename, 'wb') as f:
                         f.write(new_object_data)
-                except IOError:
+                except OSError:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing file %s.' % (name, new_filename))
                     set_handler_message(name, dn, 'Error writing file {}.'.format(new_filename))
                     return
@@ -936,7 +936,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                     ud.debug(ud.LISTENER, ud.INFO, '%s: Writing backlink file %s.' % (name, new_backlink_filename))
                     with open(new_backlink_filename, 'w') as f:
                         f.write("%s\n" % dn)
-                except IOError:
+                except OSError:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing backlink file %s.' % (name, new_backlink_filename))
                     set_handler_message(name, dn, 'Error writing backlink file {}.'.format(new_backlink_filename))
                     return
@@ -947,7 +947,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                     ud.debug(ud.LISTENER, ud.INFO, '%s: Writing UCR info file %s.' % (name, new_ucrinfo_filename))
                     with open(new_ucrinfo_filename, 'w') as f:
                         f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_basename)
-                except IOError:
+                except OSError:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing UCR info file %s.' % (name, new_ucrinfo_filename))
                     set_handler_message(name, dn, 'Error writing UCR info file {}.'.format(new_ucrinfo_filename))
                     return
@@ -977,7 +977,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                         try:
                             shutil.move(backup_filename, old_filename)
                             os.close(backup_fd)
-                        except IOError:
+                        except OSError:
                             ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old file %s.' % (name, old_filename))
                     # plus backlink file
                     if backup_backlink_filename:
@@ -985,7 +985,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                         try:
                             shutil.move(backup_backlink_filename, old_backlink_filename)
                             os.close(backup_backlink_fd)
-                        except IOError:
+                        except OSError:
                             ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old backlink file %s.' % (name, old_backlink_filename))
                     # and the old UCR registration
                     if backup_ucrinfo_filename:
@@ -993,7 +993,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                         try:
                             shutil.move(backup_ucrinfo_filename, old_ucrinfo_filename)
                             os.close(backup_ucrinfo_fd)
-                        except IOError:
+                        except OSError:
                             ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old UCR info file %s.' % (name, old_ucrinfo_filename))
                     # Commit and exit
                     ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])

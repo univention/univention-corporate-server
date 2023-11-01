@@ -315,7 +315,7 @@ def remove_temp() -> None:
                 print('Warning: Deleting `%s` from incomplete update.' % filename)
                 os.remove(filename)
             del dirs[:]
-    except EnvironmentError:
+    except OSError:
         print('Failed, aborting.')
         sys.exit(2)
 

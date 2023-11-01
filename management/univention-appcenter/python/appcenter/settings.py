@@ -203,7 +203,7 @@ class FileSetting(Setting):
         try:
             with open(filename) as fd:
                 return fd.read()
-        except EnvironmentError:
+        except OSError:
             return None
 
     def _touch_file(self, filename):
@@ -222,7 +222,7 @@ class FileSetting(Setting):
                 settings_logger.debug('Deleting %s' % filename)
                 if os.path.exists(filename):
                     os.unlink(filename)
-        except EnvironmentError as exc:
+        except OSError as exc:
             settings_logger.error('Could not set content: %s' % exc)
 
     def get_value(self, app, phase='Settings'):

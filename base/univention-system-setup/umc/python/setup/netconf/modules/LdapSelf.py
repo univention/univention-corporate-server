@@ -128,6 +128,6 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
                 with open(filename) as address_file:
                     mac = address_file.read().strip()
                     macs.add(mac)
-            except IOError as ex:
+            except OSError as ex:
                 self.logger.warning("Could not read '%s': %s", filename, ex)
         computer["mac"] = list(macs)

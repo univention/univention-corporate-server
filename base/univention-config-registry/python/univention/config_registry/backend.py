@@ -603,7 +603,7 @@ class _ConfigRegistry(dict):
                         new[key] = value.strip()
 
                 break
-            except EnvironmentError:
+            except OSError:
                 pass
         else:
             return
@@ -622,7 +622,7 @@ class _ConfigRegistry(dict):
         try:
             reg_file = os.open(self.file, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
             os.close(reg_file)
-        except EnvironmentError as ex:
+        except OSError as ex:
             if ex.errno == errno.EEXIST and not os.path.isdir(self.file):
                 return
             msg = "E: could not create file '%s': %s" % (self.file, ex)
@@ -643,7 +643,7 @@ class _ConfigRegistry(dict):
                 file_stat = os.stat(filename)
                 if not S_ISREG(file_stat.st_mode):
                     return
-            except EnvironmentError:
+            except OSError:
                 file_stat = os.stat_result((0o0644, -1, -1, -1, 0, 0, -1, -1, -1, -1))
 
             # open temporary file for writing
@@ -652,7 +652,7 @@ class _ConfigRegistry(dict):
                 os.chmod(temp_filename, file_stat.st_mode)
                 os.chown(temp_filename, file_stat.st_uid, file_stat.st_gid)
                 os.rename(temp_filename, filename)
-            except EnvironmentError as ex:
+            except OSError as ex:
                 if ex.errno == errno.EBUSY:
                     with open(filename, 'w+', encoding='utf-8') as fd:
                         fd.write(open(temp_filename, encoding='utf-8').read())
@@ -663,7 +663,7 @@ class _ConfigRegistry(dict):
                     # operation. Dump the current state to a backup file
                     temp_filename = '%s.concurrent_%s' % (filename, time.time())
                     self._save_to(temp_filename)
-        except EnvironmentError as ex:
+        except OSError as ex:
             # suppress certain errors
             if ex.errno != errno.EACCES:
                 raise

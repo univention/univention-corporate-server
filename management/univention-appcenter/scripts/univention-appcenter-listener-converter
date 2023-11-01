@@ -104,7 +104,7 @@ def run_trigger(app):
         for fname in filenames:
             try:
                 os.unlink(fname)
-            except EnvironmentError:
+            except OSError:
                 pass
 
 

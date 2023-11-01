@@ -157,7 +157,7 @@ class Document(object):
             for file_ in [latex_file] + ['%s.%s' % (basefile, suffix) for suffix in ('aux', 'log')]:
                 try:
                     os.unlink(file_)
-                except EnvironmentError:
+                except OSError:
                     pass
 
     def create_rml_pdf(self, rml_file):
@@ -166,6 +166,6 @@ class Document(object):
             outputfile = trml2pdf.parseString(fd.read(), output)
         try:
             os.unlink(rml_file)
-        except EnvironmentError:
+        except OSError:
             pass
         return outputfile

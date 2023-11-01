@@ -1137,7 +1137,7 @@ class Component(object):
 
         try:
             comp_file = open(self.FN_APTSOURCES)
-        except IOError:
+        except OSError:
             return self.UNKNOWN
         rePath = re.compile('(un)?maintained/component/ ?%s/' % self.name)
         reDenied = re.compile('credentials not accepted: %s$' % self.name)
@@ -1624,7 +1624,7 @@ class UniventionUpdater(object):
                     is_component = hasattr(struct, 'part') and struct.part.endswith('/component')
                     memo = comp if is_component else main
                     memo[phase].append((name, str(struct.patch)))
-                except EnvironmentError as ex:
+                except OSError as ex:
                     ud.debug(ud.NETWORK, ud.ERROR, "Error saving %s to %s: %s" % (uri, name, ex))
 
             # call component/preup.sh pre $args

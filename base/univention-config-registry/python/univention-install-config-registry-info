@@ -118,7 +118,7 @@ The category descriptions debian/*.univention-config-registry-categories got to
         for package in binary_packages():
             install_categories(info, package)
             install_variables(info, package)
-    except IOError as ex:
+    except OSError as ex:
         print(ex, file=sys.stderr)
         sys.exit(1)
 
