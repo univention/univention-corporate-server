@@ -333,8 +333,7 @@ class Interfaces(object):
     def all_interfaces(self):
         # type: () -> Iterator[Tuple[str, _Iface]]
         """Yield IPv4 interfaces."""
-        for name_settings in sorted(self._all_interfaces.items(), key=lambda name_iface: self._cmp_order(name_iface[1])):
-            yield name_settings
+        yield from sorted(self._all_interfaces.items(), key=lambda name_iface: self._cmp_order(name_iface[1]))
 
     @property
     def ipv4_interfaces(self):
