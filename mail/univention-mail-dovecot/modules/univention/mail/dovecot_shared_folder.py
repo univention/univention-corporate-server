@@ -149,7 +149,7 @@ class DovecotGlobalAclFile(object):
     def _write(self):  # type: () -> None
         fileno, filename = tempfile.mkstemp(prefix='.global-acls')
         for acl in self._acls:
-            os.write(fileno, f'{acl}\n'.encode('UTF-8'))
+            os.write(fileno, f'{acl}\n'.encode())
         self._fix_permissions(fileno=fileno)
         os.close(fileno)
         try:
