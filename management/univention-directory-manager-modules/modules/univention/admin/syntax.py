@@ -1422,7 +1422,7 @@ class jpegPhoto(Upload):
                     image.save(text, format='jpeg')
                     raw = text.getvalue()
                     text = base64.b64encode(raw)
-                except (KeyError, IOError, IndexError):
+                except (OSError, KeyError, IndexError):
                     ud.debug(ud.ADMIN, ud.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
                     raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
             if raw[:2] != b'\xff\xd8' and raw[6:10] not in (b'JFIF', b'Exif'):

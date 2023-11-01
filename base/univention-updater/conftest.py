@@ -118,7 +118,7 @@ class MockPopen(object):
             try:
                 with open(cmd[0]) as fd_script:
                     content = fd_script.read(1024)
-            except (EnvironmentError, UnicodeDecodeError) as ex:
+            except (OSError, UnicodeDecodeError) as ex:
                 content = ex
             MockPopen.mock_commands.append(tuple(cmd) + (content,))
 

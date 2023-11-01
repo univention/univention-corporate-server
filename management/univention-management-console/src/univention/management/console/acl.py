@@ -314,7 +314,7 @@ class ACLs(object):
             with open(filename) as fd:
                 acls = json.load(fd)
             acls = [Rule(x) for x in acls]
-        except EnvironmentError as exc:
+        except OSError as exc:
             ACL.process('Could not load ACLs of %r: %s' % (username, exc))
             return False
 
@@ -334,7 +334,7 @@ class ACLs(object):
             file = os.open(filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0o600)
             os.write(file, json.dumps(self.acls, ensure_ascii=True).encode('ASCII'))
             os.close(file)
-        except EnvironmentError as exc:
+        except OSError as exc:
             ACL.error('Could not write ACL file: %s' % (exc,))
             return False
 
