@@ -718,5 +718,5 @@ class MultiDocker(Docker):
             yml_file = self.app.get_compose_file('docker-compose.yml')
             yml_bak_file = '%s.bak' % yml_file
             shutil.copy2(yml_file, yml_bak_file)
-        except EnvironmentError as exc:
+        except OSError as exc:
             _logger.warning('Could not backup docker-compose.yml: %s' % exc)

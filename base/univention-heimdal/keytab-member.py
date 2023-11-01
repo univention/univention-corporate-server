@@ -73,7 +73,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
                 ktab = '/var/lib/univention-heimdal/%s' % (cn,)
                 try:
                     os.unlink(ktab)
-                except EnvironmentError:
+                except OSError:
                     pass
             if new:
                 cn = new['cn'][0].decode('UTF-8')
@@ -85,7 +85,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
                     userID = pwd.getpwnam('%s$' % cn)[2]
                     os.chown(ktab, userID, 0)
                     os.chmod(ktab, 0o660)
-                except (KeyError, EnvironmentError):
+                except (OSError, KeyError):
                     pass
         finally:
             listener.unsetuid()

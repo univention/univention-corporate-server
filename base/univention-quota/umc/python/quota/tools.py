@@ -125,7 +125,7 @@ def usrquota_is_active(fstab_entry, mt=None):
     if not mt:
         try:
             mt = fstab.File('/etc/mtab')
-        except IOError as error:
+        except OSError as error:
             raise QuotaActivationError(_('Could not open %s') % error.filename)
 
     mtab_entry = mt.find(spec=fstab_entry.spec)
@@ -160,7 +160,7 @@ def activate_quota(partition, activate):
     result = []
     try:
         fs = fstab.File()
-    except IOError as error:
+    except OSError as error:
         raise UMC_Error(_('Could not open %s') % error.filename, 500)
 
     failed = []

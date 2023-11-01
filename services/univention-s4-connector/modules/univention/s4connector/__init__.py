@@ -687,7 +687,7 @@ class ucs(object):
                     dn = dn.decode('utf-8')
                 if isinstance(old_dn, bytes):
                     old_dn = old_dn.decode('utf-8')
-        except IOError:
+        except OSError:
             return True  # file not found so there's nothing to sync
         except (pickle.UnpicklingError, EOFError) as exc:
             message = 'file empty' if isinstance(exc, EOFError) else exc
@@ -1005,7 +1005,7 @@ class ucs(object):
                             dn = dn.decode('utf-8')
                         if isinstance(old_dn, bytes):
                             old_dn = old_dn.decode('utf-8')
-                except IOError:
+                except OSError:
                     continue  # file not found so there's nothing to sync
                 except (pickle.UnpicklingError, EOFError) as exc:
                     message = 'file empty' if isinstance(exc, EOFError) else exc
