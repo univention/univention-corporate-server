@@ -408,8 +408,7 @@ class TestConfigHandlers:
 
         h2 = ucrh.ConfigHandlers()
         h2.load()
-        if sys.version_info >= (3,):
-            pytest.xfail("BUG")
+        pytest.xfail("BUG")
         assert h2._handlers == handlers._handlers
         assert h2._subfiles == handlers._subfiles
         assert h2._multifiles == handlers._multifiles
