@@ -39,7 +39,6 @@ import os
 from ipaddress import AddressValueError, IPv4Address, IPv4Network
 
 import MySQLdb as mysql
-import six
 
 from univention.appcenter.log import LogCatcher, get_base_logger
 from univention.appcenter.packages import (
@@ -335,8 +334,8 @@ class MySQL(DatabaseConnector):
 
     def escape(self, value):
         print(repr(value))
-        print(repr(six.text_type(value)))
-        return self.get_root_connection().escape(six.text_type(value))
+        print(repr(str(value)))
+        return self.get_root_connection().escape(str(value))
 
     def create_db_and_user(self, password):
         self.execute('CREATE DATABASE IF NOT EXISTS `%s`' % self.get_db_name())

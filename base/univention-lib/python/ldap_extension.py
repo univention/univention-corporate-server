@@ -53,7 +53,6 @@ from optparse import Option, OptionGroup, OptionParser, OptionValueError, Values
 from typing import TYPE_CHECKING, Dict, List, Optional, Tuple  # noqa: F401
 
 import apt
-import six
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 
@@ -179,7 +178,7 @@ def get_handler_message(name, binddn, bindpw):
     return msg
 
 
-class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
+class UniventionLDAPExtension(metaclass=ABCMeta):
 
     @abstractproperty
     def udm_module_name(self):
@@ -566,7 +565,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
                         set_handler_message(handler_name, object_dn, 'Error accessing UDM: {}'.format(e))
 
 
-class UniventionLDAPExtensionWithListenerHandler(six.with_metaclass(ABCMeta, UniventionLDAPExtension)):
+class UniventionLDAPExtensionWithListenerHandler(UniventionLDAPExtension, metaclass=ABCMeta):
 
     def __init__(self, ucr):
         # type: (ConfigRegistry) -> None
@@ -1072,7 +1071,7 @@ class UniventionDataExtension(UniventionLDAPExtension):
         return True
 
 
-class UniventionUDMExtension(six.with_metaclass(ABCMeta, UniventionLDAPExtension)):
+class UniventionUDMExtension(UniventionLDAPExtension, metaclass=ABCMeta):
 
     target_subdir = ''
 
