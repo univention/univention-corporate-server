@@ -83,7 +83,6 @@ def main():
                         # ignore ldap.UNAVAILABLE, slapd is started but database backend not yet available
                         # python3-ldap reconnect does not handle this situation
                         print('ignore UNAVAILABLE')
-                        pass
                     except univention.admin.uexceptions.ldapError as exc:
                         if 'Server is unavailable'.lower() not in str(exc).lower():
                             raise

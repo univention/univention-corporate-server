@@ -62,7 +62,6 @@ def check_primarys4_access(username, primary_ip, ucr, ldif, password="univention
     except subprocess.CalledProcessError as e:
         assert b'LDAP_INVALID_CREDENTIALS' not in e.stderr
         assert b'LDAP_INSUFFICIENT_ACCESS_RIGHTS' in e.stderr
-        pass
     else:
         raise AssertionError("Non Administrator user1 was able to modify Samba4 LDAP data")
 

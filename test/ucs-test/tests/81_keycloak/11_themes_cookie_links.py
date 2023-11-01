@@ -40,7 +40,6 @@ def login_links(lang: str, link_count: int) -> Tuple[str, int]:
             run_command(["univention-keycloak", "login-links", "set", lang, str(i), f"href{i}", f"desc{i}"])
         yield lang, link_count
     finally:
-        pass
         for i in range(1, link_count + 1):
             try:
                 run_command(["univention-keycloak", "login-links", "delete", lang, str(i)])

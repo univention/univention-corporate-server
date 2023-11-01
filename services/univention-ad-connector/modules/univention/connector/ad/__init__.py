@@ -1964,14 +1964,12 @@ class ad(univention.connector.ucs):
                 del self.group_member_mapping_cache_con[con_dn.lower()]
             except KeyError:
                 ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: %s was not present in AD group member mapping cache" % con_dn)
-                pass
         if ucs_dn:
             try:
                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Removing %s from UCS group member mapping cache" % ucs_dn)
                 del self.group_member_mapping_cache_ucs[ucs_dn.lower()]
             except KeyError:
                 ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: %s was not present in UCS group member mapping cache" % ucs_dn)
-                pass
 
     def _update_group_member_cache(self, remove_con_dn=None, remove_ucs_dn=None, add_con_dn=None, add_ucs_dn=None):
         for group in self.group_members_cache_con:

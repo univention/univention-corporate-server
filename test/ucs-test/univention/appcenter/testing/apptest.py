@@ -33,7 +33,6 @@ def run_test_file(fname):
             if test_func:
                 sys.exit(pytest.main([tmpfile.name + '::' + test_func, '-p', __name__, '-x', '--log-cli-level=INFO', '--pdb']))
             else:
-                pass
                 sys.exit(pytest.main([tmpfile.name, '-p', __name__]))
 
 
