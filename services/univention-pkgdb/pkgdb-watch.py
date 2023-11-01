@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import, annotations
+from __future__ import annotations
 
 from typing import Any, Dict, List
 

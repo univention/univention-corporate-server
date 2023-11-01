@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-from __future__ import print_function
 
 import json
 from itertools import groupby

@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import annotations, print_function
+from __future__ import annotations
 
 import argparse
 import sys

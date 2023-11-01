@@ -35,7 +35,6 @@ A generic UDM module and object implementation.
 Will work for all kinds of UDM modules.
 """
 
-from __future__ import absolute_import, unicode_literals
 
 import copy
 import functools
