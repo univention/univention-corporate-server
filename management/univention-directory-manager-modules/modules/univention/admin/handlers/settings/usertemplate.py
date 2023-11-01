@@ -392,7 +392,7 @@ class object(univention.admin.handlers.simpleLdap):
             for x in ml:
                 if x[0].lower() != 'objectClass'.lower():
                     yield x
-                elif isinstance(x[-1], (bytes, str, type(u''))):
+                elif isinstance(x[-1], (bytes, str)):
                     if x[-1] not in BLACKLISTED_OBJECT_CLASSES:
                         yield x
                     elif len(x) == 3:
