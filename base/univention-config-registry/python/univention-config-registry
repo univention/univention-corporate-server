@@ -33,43 +33,18 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from __future__ import print_function
 
-import locale
 import os
 import sys
-
-import six
 
 import univention.config_registry as ub
 
 
-def convertToUtf8(arguments):
-    """
-    Try to decode as UTF-8, then try to decode with locale encoding. If decoded successfully encode with UTF-8.
-
-    :param arguments: List of command line arguments.
-    :returns: List of command line arguments.
-    """
-    if six.PY3:
-        return arguments  # Python 3, we already have "unicode" objects
-    localeencoding = locale.getpreferredencoding()
-    new_arguments = []
-    for argument in arguments:
-        try:
-            argument = argument.decode('UTF-8').encode('UTF-8')
-        except UnicodeError:
-            try:
-                argument = argument.decode(localeencoding).encode('UTF-8')
-            except UnicodeError:
-                pass
-        new_arguments.append(argument)
-    return new_arguments
-
-
 if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_config_registry'):
     try:
-        sys.exit(ub.main(convertToUtf8(sys.argv[1:])))
+        sys.exit(ub.main(sys.argv[1:]))
     except ub.StrictModeException as e:
         print('Error: UCR is running in strict mode and thus cannot accept the given input:')
         print(e)

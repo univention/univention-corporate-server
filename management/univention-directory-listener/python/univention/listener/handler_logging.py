@@ -54,8 +54,6 @@ from collections.abc import Mapping
 from logging.handlers import WatchedFileHandler
 from typing import IO, Any, Dict, Optional, Type  # noqa: F401
 
-from six import PY2, string_types, text_type
-
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
 
@@ -127,8 +125,6 @@ class ModuleHandler(logging.Handler):
     def emit(self, record):
         # type: (logging.LogRecord) -> None
         msg = self.format(record)
-        if PY2 and isinstance(msg, text_type):
-            msg = msg.encode('utf-8')
         msg = '{}: {}'.format(record.name.rsplit('.')[-1], msg)
         udebug_level = self.LOGGING_TO_UDEBUG[record.levelname]
         ud.debug(self._udebug_facility, udebug_level, msg)
@@ -277,8 +273,8 @@ def get_listener_logger(name, filename, level=None, handler_kwargs=None, formatt
     :return: a Python logging object
     :rtype: logging.Logger
     """
-    assert isinstance(filename, string_types)
-    assert isinstance(name, string_types)
+    assert isinstance(filename, str)
+    assert isinstance(name, str)
     if not name:
         name = 'noname'
     name = name.replace('.', '_')  # don't mess up logger hierarchy

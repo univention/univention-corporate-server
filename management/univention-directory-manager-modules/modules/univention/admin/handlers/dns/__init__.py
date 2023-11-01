@@ -32,9 +32,6 @@
 
 """|UDM| module for |DNS| records"""
 
-import six
-
-
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
 ARPA_IP4 = '.in-addr.arpa'
@@ -107,4 +104,4 @@ def stripDot(old, encoding=()):
         return [stripDot(_, encoding) for _ in old]
     if old is None:
         return old
-    return old[:-1].encode(*encoding) if isinstance(old, (bytes, six.text_type)) and old.endswith('.') else old.encode(*encoding)
+    return old[:-1].encode(*encoding) if isinstance(old, (bytes, str)) and old.endswith('.') else old.encode(*encoding)

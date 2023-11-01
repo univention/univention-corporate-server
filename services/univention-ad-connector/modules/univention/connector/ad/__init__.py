@@ -50,7 +50,6 @@ from tempfile import NamedTemporaryFile
 
 import ldap
 import samba.dcerpc.samr
-import six
 from ldap.controls import LDAPControl, SimplePagedResultsControl
 from ldap.filter import escape_filter_chars
 from samba import drs_utils
@@ -356,7 +355,7 @@ class LDAPEscapeFormatter(string.Formatter):
 
     def convert_field(self, value, conversion):
         if conversion == 'e':
-            if isinstance(value, six.string_types):
+            if isinstance(value, str):
                 return escape_filter_chars(value)
             if isinstance(value, bytes):
                 raise TypeError('Filter must be string, not bytes: %r' % (value,))
@@ -1704,7 +1703,7 @@ class ad(univention.connector.ucs):
         # This value represents the number of 100 nanosecond intervals since January 1, 1601 (UTC). A value of 0 or 0x7FFFFFFFFFFFFFFF (9223372036854775807) indicates that the account never expires.
         if not ucs_admin_object['userexpiry']:
             # ucs account not expired
-            if 'accountExpires' in ldap_object_ad and (int(ldap_object_ad['accountExpires'][0]) != int(9223372036854775807) or int(ldap_object_ad['accountExpires'][0]) == 0):
+            if 'accountExpires' in ldap_object_ad and (int(ldap_object_ad['accountExpires'][0]) != 9223372036854775807 or int(ldap_object_ad['accountExpires'][0]) == 0):
                 # ad account expired -> change
                 modlist.append((ldap.MOD_REPLACE, 'accountExpires', [b'9223372036854775807']))
         else:
@@ -1741,7 +1740,7 @@ class ad(univention.connector.ucs):
                 # user enabled in UCS -> change
                 ucs_admin_object['disabled'] = '1'
                 modified = 1
-        if 'accountExpires' in ldap_object_ad and (int(ldap_object_ad['accountExpires'][0]) == int(9223372036854775807) or int(ldap_object_ad['accountExpires'][0]) == 0):
+        if 'accountExpires' in ldap_object_ad and (int(ldap_object_ad['accountExpires'][0]) == 9223372036854775807 or int(ldap_object_ad['accountExpires'][0]) == 0):
             # ad account not expired
             if ucs_admin_object['userexpiry']:
                 # ucs account expired -> change

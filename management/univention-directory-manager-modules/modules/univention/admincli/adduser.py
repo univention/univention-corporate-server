@@ -37,7 +37,6 @@ import getopt
 import os
 import subprocess
 
-import six
 from ldap.filter import filter_format
 
 import univention.admin.config
@@ -56,7 +55,7 @@ def status(msg):
     # vampire produces a lot of output, and we'd like to print a moderate
     # log, we prepend UNIVENTION to our output. That way we can identify
     # distinguish them from all of Samba's log messages
-    out = 'UNIVENTION %s' % (msg.encode('utf-8') if six.PY2 else msg,)
+    out = 'UNIVENTION %s' % (msg,)
     return out
 
 
@@ -83,14 +82,6 @@ def get_user_object(user, position, lo):
             except Exception:  # noqa: S112
                 continue
     return 'ERROR: account not found, nothing modified'
-
-
-def _decode(args):
-    for arg in args:
-        try:
-            yield arg.decode('utf-8')
-        except UnicodeDecodeError:
-            yield arg.decode('latin-1')
 
 
 def doit(arglist):
@@ -133,9 +124,6 @@ def doit(arglist):
             out.append('authentication error: %s' % (exc,))
             out.append('authentication error: %s' % (exc2,))
             return out
-
-    if six.PY2:
-        args = list(_decode(args))
 
     univention.admin.modules.update()
 
@@ -215,7 +203,7 @@ def doit(arglist):
         groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(name=%s)', [group]), required=True, unique=True)[0]
         groupobject.open()
         userobject = get_user_object(user, position, lo)
-        if isinstance(userobject, six.string_types):
+        if isinstance(userobject, str):
             out.append(userobject)
             return out
 
@@ -233,7 +221,7 @@ def doit(arglist):
         groupobject.open()
 
         userobject = get_user_object(user, position, lo)
-        if isinstance(userobject, six.string_types):
+        if isinstance(userobject, str):
             out.append(userobject)
             return out
 
@@ -271,7 +259,7 @@ def doit(arglist):
         groupobject.open()
 
         userobject = get_user_object(user, position, lo)
-        if isinstance(userobject, six.string_types):
+        if isinstance(userobject, str):
             out.append(userobject)
             return out
 
