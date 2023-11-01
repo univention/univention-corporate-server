@@ -32,7 +32,6 @@
 
 """Module and object specific for "container/dc" UDM module."""
 
-from __future__ import absolute_import, unicode_literals
 
 from ..encoders import DnsEntryZoneForwardListSinglePropertyEncoder, DnsEntryZoneReverseListSinglePropertyEncoder
 from .generic import GenericModule, GenericObject, GenericObjectProperties

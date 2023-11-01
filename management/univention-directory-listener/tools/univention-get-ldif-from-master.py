@@ -35,7 +35,6 @@
 
 """Read LDAP from the Primary Directory Node and create LDIF file (and update local schema)"""
 
-from __future__ import print_function
 
 import argparse
 import gzip

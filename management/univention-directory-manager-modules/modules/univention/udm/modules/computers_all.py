@@ -32,7 +32,6 @@
 
 r"""Module and object for all `computers/\*` UDM modules."""
 
-from __future__ import absolute_import, unicode_literals
 
 from ..encoders import (
     CnameListPropertyEncoder, DnsEntryZoneAliasListPropertyEncoder, DnsEntryZoneForwardListMultiplePropertyEncoder,
