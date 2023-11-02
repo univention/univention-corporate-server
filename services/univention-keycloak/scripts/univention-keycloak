@@ -38,6 +38,7 @@ from __future__ import annotations
 
 import json
 import sys
+import xml.etree.ElementTree
 from argparse import SUPPRESS, ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
 from base64 import b64decode
 from collections import namedtuple
@@ -410,7 +411,11 @@ def extract_endpoints_xml(metadata_url, metadata_file, no_ssl_verify):
     else:
         with open(metadata_file) as fd:
             xml_content = fd.read().strip()
-    saml_descriptor_xml = ElementTree.fromstring(xml_content)
+    try:
+        saml_descriptor_xml = ElementTree.fromstring(xml_content)
+    except xml.etree.ElementTree.ParseError as exc:
+        print("ERROR: Could not parse XML: %s Content:\n%s" % (exc, xml_content), file=sys.stderr)
+        sys.exit(1)
     logout_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService').attrib["Location"]
     acs_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService').attrib["Location"]
 
