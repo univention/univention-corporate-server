@@ -7,7 +7,7 @@ Univention Corporate Server for Debian and Ubuntu Administrators
 ################################################################
 
 Welcome to the manual *Univention Corporate Server for Debian and Ubuntu
-Administrators*. This document is intended for system administrators, system
+Administrators*. This document aims for system administrators, system
 engineers, or DevOps engineers with knowledge of the administration of Debian
 GNU/Linux or Ubuntu systems who want to get started with |UCS|.
 
@@ -17,8 +17,9 @@ in detail how to do various tasks *the UCS way*. Instead, it points out the
 differences and points to the appropriate resources in the product
 documentation.
 
-After reading this document, you should have a general understanding of the
-differences between Debian GNU/Linux or Ubuntu and |UCS|.
+Reading this document, you earn a general understanding of the differences
+between Debian GNU/Linux or Ubuntu and |UCS|. A :ref:`list of principles
+<principle-summary>` summarizes the key points of the document.
 
 This document assumes that you are familiar with the following topics:
 
