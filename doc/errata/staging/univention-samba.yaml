@@ -10,6 +10,4 @@ desc: |
    the domain.
 bug: [56332]
 cve:
-  - TEMP-2023-2
-ignore:
-  - cve.TEMP-2023-2
+  - CVE-2023-38994
