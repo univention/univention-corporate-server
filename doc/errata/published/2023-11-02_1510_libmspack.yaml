@@ -6,23 +6,22 @@ src: libmspack
 fix: 0.5-1.A~4.4.9.202310301240
 desc: |
  This update addresses the following issues:
+ * CVE-2017-6419: Reject negative output length in `SpanInfo`.
+ * CVE-2017-11423: Stack-based buffer over-read in function
+   `cabd_read_string`.
+ * CVE-2018-14679: Off-by-one error in the CHM PMGI/PMGL chunk number validity
+   checks.
+ * CVE-2018-14680: Off-by-one error in the CHM chunk number validity checks.
+ * CVE-2018-14681: Out-of-bounds write in kwajd_read_headers in
+   mspack/kwajd.c.
+ * CVE-2018-14682: Off-by-one error in the TOLOWER() macro for CHM
+   decompression.
+ * CVE-2018-18584: Fixing the size of the CAB block input buffer, which is too
+   small for the maximal Quantum block, prevents an out-of-bounds write.
+ * CVE-2018-18585: Blank filenames (having length zero or their 1st or 2nd
+   byte is NUL) should be rejected.
  * CVE-2019-1010305: Opening a crafted chm file might result in a buffer
    overflow.
- * CVE-2018-18584: Fixing the size of the CAB block input buffer, which is
-   too small for the maximal Quantum block, prevents an out-of-bounds write.
- * CVE-2018-18585: Blank filenames (having length zero or their 1st or 2nd
-   byte is null) should be rejected.
- * CVE-2017-11423: Stack-based buffer over-read in cabd_read_string function.
- * CVE-2017-6419: Reject negative output length in `SpanInfo`.
-
- * CVE-2018-14681:out-of-bounds write in kwajd_read_headers in
-   mspack/kwajd.c.
- * CVE-2018-14682: off-by-one error in the TOLOWER() macro for CHM
-   decompression.
- * CVE-2018-14679: off-by-one error in the CHM PMGI/PMGL chunk number
-   validity checks.
- * CVE-2018-14680: off-by-one error in the CHM chunk number validity
-   checks.
 bug: [56783]
 cve:
 - CVE-2019-1010305
