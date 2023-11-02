@@ -6,7 +6,7 @@ src: python-reportlab
 fix: 3.3.0-2+deb9u2
 desc: |
  This update addresses the following issues:
- * CVE-2019-19450: code injection in paraparser.py allows code execution.
+ * CVE-2019-19450: Code injection in `paraparser.py` allows code execution.
  * CVE-2020-28463: Server-side Request Forgery (SSRF).
 bug: [56760]
 cve:
