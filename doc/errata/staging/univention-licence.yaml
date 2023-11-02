@@ -5,9 +5,9 @@ scope: ucs_5.0-0-errata5.0-5
 src: univention-licence
 fix: 11.0.0-2
 desc: |
- This update addresses the following issues:
- * During importing a license via command line the password is not given in
-   plaintext to :program:`ldapsearch` calls.
+ This update addresses the following issue:
+ * CVE-2023-38994: During importing a license via command line the password is
+   not given in plain-text to `ldapsearch` calls.
 bug: [56354]
 cve:
-  - CVE-2023-38994
+- CVE-2023-38994

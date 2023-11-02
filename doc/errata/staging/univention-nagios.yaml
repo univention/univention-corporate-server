@@ -5,9 +5,9 @@ scope: ucs_5.0-0-errata5.0-5
 src: univention-nagios
 fix: 13.0.5-2
 desc: |
- This update addresses the following issues:
- * The LDAP password is not leaked in the process list anymore when calling
-   the :program:`check_univention_joinstatus` Nagios plugin.
+ This update addresses the following issue:
+ * CVE-2023-38994: The LDAP password is not leaked in the process list anymore
+   when calling the `check_univention_joinstatus` Nagios plugin.
 bug: [56354]
 cve:
-  - CVE-2023-38994
+- CVE-2023-38994

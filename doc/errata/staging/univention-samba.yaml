@@ -5,9 +5,9 @@ scope: ucs_5.0-0-errata5.0-5
 src: univention-samba
 fix: 14.0.9-2
 desc: |
- This update addresses the following issues:
- * The LDAP password is not leaked in the process list anymore during joining
-   the domain.
+ This update addresses the following issue:
+ * CVE-2023-38994: The LDAP password is not leaked in the process list anymore
+   during joining the domain.
 bug: [56332]
 cve:
-  - CVE-2023-38994
+- CVE-2023-38994

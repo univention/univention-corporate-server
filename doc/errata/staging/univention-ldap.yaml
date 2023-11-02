@@ -5,9 +5,9 @@ scope: ucs_5.0-0-errata5.0-5
 src: univention-ldap
 fix: 16.0.13-5
 desc: |
- This update addresses the following issues:
- * The LDAP password is not leaked in the process list anymore during
-   :program:`backup2master`.
+ This update addresses the following issue:
+ * CVE-2023-38994: The LDAP password is not leaked in the process list anymore
+   during `backup2master`.
 bug: [56333]
 cve:
-  - CVE-2023-38994
+- CVE-2023-38994
