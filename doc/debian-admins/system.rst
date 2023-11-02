@@ -53,8 +53,8 @@ calls this capability *Univention Configuration Registry (UCR)*.
 
 * Logging of changes to UCR variables.
 
-You can recognize configuration files under controlled by UCR by the presence of
-a header at the beginning of the file, as shown in :numref:`ucr-header`. The
+You can recognize configuration files controlled by UCR by the presence of a
+header at the beginning of the file, as shown in :numref:`ucr-header`. The
 header lists the template files used to generate the configuration file:
 
 .. code-block::
