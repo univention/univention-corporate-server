@@ -1,14 +1,36 @@
 @%@UCRWARNING=# @%@
 
-# Here in Debian, this file is sourced by:
-#   - /etc/init.d/docker (sysvinit)
-#   - /etc/init/docker (upstart)
-#   - systemd's docker.service
+# Docker Upstart and SysVinit configuration file
 
-# Use of this file for configuring your Docker daemon is discouraged.
+# Customize location of Docker binary (especially for development testing).
+#DOCKER="/usr/local/bin/docker"
 
-# The recommended alternative is "/etc/docker/daemon.json", as described in:
-#   https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file
+# Use DOCKER_OPTS to modify the daemon startup options.
+# DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
+# DOCKER_OPTS="-H tcp://172.17.42.1:4243 -H unix:///var/run/docker.sock"
+@!@
+docker_opts = ''
+for var in configRegistry:
+    if var.startswith('docker/daemon/default/map'):
+        opt = var.split('/')[-1]
+        for i in configRegistry[var].split(','):
+            docker_opts += '--%s=%s ' % (opt, i)
+    elif var.startswith('docker/daemon/default/opts'):
+        opt = var.split('/')[-1]
+        docker_opts += '--%s=%s ' % (opt, configRegistry[var])
+    elif var.startswith('docker/daemon/default/parameter') and configRegistry.is_true(var):
+        opt = var.split('/')[-1]
+        docker_opts += '--%s ' % (opt)
+print('DOCKER_OPTS="%s"' % docker_opts)
+@!@
 
-# If that does not suit your needs, try a systemd drop-in file, as described in:
-#   https://docs.docker.com/config/daemon/systemd/
+# If you need Docker to use an HTTP proxy, it can also be specified here.
+@!@
+pr = configRegistry.get("proxy/http")
+if pr:
+    print('export http_proxy="%s"' % pr)
+else:
+    print('#export http_proxy="http://127.0.0.1:3128/" set UCR variable proxy/http to change this')
+@!@
+# This is also a handy place to tweak where Docker's temporary files go.
+#export TMPDIR="/mnt/bigdrive/docker-tmp"
