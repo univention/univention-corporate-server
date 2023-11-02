@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libart-lgpl
+fix: 2.3.21-2.25.201403250523
+desc: |
+ The package has been moved to maintained as a new dependency for
+ `python-reportlab`.
+bug: [56760]
+maintained: true
