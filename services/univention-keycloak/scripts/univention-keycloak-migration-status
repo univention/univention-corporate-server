@@ -151,7 +151,7 @@ def migration_complete(opt):
 
 
 def parse_arguments(parser):
-    parser.add_argument('-d', '--delete', action='store_true', help='Delete all saml/serviceprovider, saml/idpconfig and oic/rpservice UDM objects. A backup file will be created')
+    parser.add_argument('-d', '--delete', action='store_true', help='Delete all saml/serviceprovider, and oic/rpservice UDM objects. A backup file will be created')
     parser.add_argument('-f', '--force', action='store_true', help='Force deletion of all SAML or OIDC related UDM objects')
     parser.add_argument('--backup-path', default=f'/var/univention-backup/saml_oidc_{time.time()}.ldif', help='Path where the backup file will be created')
     return parser.parse_args()
