@@ -35,27 +35,16 @@
 
 #DEBHELPER#
 
-eval "$(univention-config-registry shell)"
-
-# TODO: dpkg --compare-version …
-if [ -n "$docker_daemon_default_opts_max_file" ]; then
-	univention-config-registry set 'docker/daemon/default/opts/log-opts max-file'?"$docker_daemon_default_opts_max_file"
-	univention-config-registry unset 'docker/daemon/default/opts/max-file'
-fi
-
-if [ -n "$docker_daemon_default_opts_max_size" ]; then
-	univention-config-registry set 'docker/daemon/default/opts/log-opts max-size'?"$docker_daemon_default_opts_max_size"
-	univention-config-registry unset 'docker/daemon/default/opts/max-size'
-fi
-
 # existed in ucs < 4.4-2: docker/daemon/default/opts/storage-driver?"overlay"
 univention-config-registry set \
 	docker/autostart?"yes" \
 	docker/daemon/default/opts/bip?"172.17.42.1/16" \
 	docker/daemon/default/parameter/live-restore?"yes" \
 	docker/daemon/default/opts/log-driver?'json-file' \
-	docker/daemon/default/opts/log-opts max-file?'4' \
-	docker/daemon/default/opts/log-opts max-size?'10m'
+	docker/daemon/default/opts/max-file?'4' \
+	docker/daemon/default/opts/max-size?'10m'
+
+eval "$(univention-config-registry shell)"
 
 . /usr/share/univention-lib/all.sh
 
