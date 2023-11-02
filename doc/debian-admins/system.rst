@@ -113,8 +113,8 @@ files.
 
 .. _system-result-manual-edit:
 
-Consequences of manual configuration file editing
-=================================================
+Consequences of manually editing configuration files
+====================================================
 
 Editing configuration files manually, as you practice it for other Linux
 distributions, may bring you closer to your goal. At first glance, you have a
