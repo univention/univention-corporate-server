@@ -569,7 +569,10 @@ def create_oidc_client(opt):
 
     # build urls
     server_url = f"https://{opt.host_fqdn}"
-    valid_redirect_urls = [opt.app_url, server_url] + opt.redirect_uri if opt.redirect_uri else [opt.app_url, server_url]
+    valid_redirect_urls = [opt.app_url + '/*', server_url + '/*'] + opt.redirect_uri if opt.redirect_uri else [opt.app_url + '/*', server_url + '/*']
+
+    # Ensure frontchannel logout is only enabled when no backchannel logout is configured.
+    frontchannel_logout = bool(opt.frontchannel_logout_url and not opt.backchannel_logout_url)
 
     # authentication flow
     authentication_flow_binding_overrides = {}
@@ -602,19 +605,21 @@ def create_oidc_client(opt):
         "directAccessGrantsEnabled": opt.direct_access_grants,
         "serviceAccountsEnabled": opt.service_accounts_enabled,
         "publicClient": False,
-        "frontchannelLogout": not opt.no_frontchannel_logout,
+        "frontchannelLogout": frontchannel_logout,
         "protocol": "openid-connect",
         "attributes": {
             "access.token.lifespan": opt.access_token_lifespan,
             "saml.multivalued.roles": "false",
             "saml.force.post.binding": "false",
+            "frontchannel.logout.url": opt.frontchannel_logout_url,
             "frontchannel.logout.session.required": "false",
             "oauth2.device.authorization.grant.enabled": "false",
-            "backchannel.logout.revoke.offline.tokens": "false",
             "saml.server.signature.keyinfo.ext": "false",
             "use.refresh.tokens": "true",
             "oidc.ciba.grant.enabled": "false",
-            "backchannel.logout.session.required": "false",
+            "backchannel.logout.url": opt.backchannel_logout_url,
+            "backchannel.logout.session.required": "true" if opt.backchannel_logout_url else "false",
+            "backchannel.logout.revoke.offline.tokens": "true" if opt.backchannel_logout_url else "false",
             "client_credentials.use_refresh_token": "false",
             "saml.client.signature": "false",
             "require.pushed.authorization.requests": "false",
@@ -796,7 +801,8 @@ def get_client_secret(opt):
     print("Obtaining secret for client ...")
 
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    # What is the benefit of providing `opt.realm` on instanciation of kc_admin and then setting it hard to "ucs" in the line afterwards?
+    #kc_admin.realm_name = "ucs"
 
     print(kc_admin.get_client_secrets(kc_admin.get_client_id(opt.client_name)))
 
@@ -893,6 +899,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_saml_parser.add_argument("--single-logout-service-url-post", default=None)
     create_saml_parser.add_argument("--idp-initiated-sso-url-name", default=None)
     create_saml_parser.add_argument("--name-id-format", default="transient")
+    # Isn't that the same option as the "no-frontchannel-logout" in the OIDC client, wouldn't it be great to have also the same name or does that cause collisions with the CLI argument processor?
     create_saml_parser.add_argument("--frontchannel-logout-off", default=False, action="store_true", help="Switch off frontchannelLogout")
     create_saml_parser.add_argument("--description", help="Description of the client")
     create_saml_parser.add_argument("--policy-url", help="URL that the client provides to the end-user to read about the how the profile data will be used")
@@ -976,7 +983,12 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--allow-implicit-flow", action='store_true', help="enables support of 'Implicit Flow' for this client.")
     create_oidc_parser.add_argument("--access-token-lifespan", help="Max time before an access token is expired.")
     create_oidc_parser.add_argument("--service-accounts-enabled", action='store_true')
-    create_oidc_parser.add_argument("--no-frontchannel-logout", action='store_false', default=True)
+    # I don't see a "frontchannel-logout" URL option for the oidc_client so how should the Frontchannel logout work anyway?
+    #create_oidc_parser.add_argument("--no-frontchannel-logout", action='store_false', default=True)
+    create_oidc_parser.add_argument("--frontchannel-logout-url", default=None, help="The OIDC client's URL to trigger for frontchannel logout, if backchannel logout is also defined we only configure backchannel logout.")  # action='append',
+    # But we also want to support backchannel logout, so it's activated automatically by providing a URL
+    create_oidc_parser.add_argument("--backchannel-logout-url", default=None, help="The OIDC client's URL to trigger its backchannel logout.")  # action='append',
+
     create_oidc_parser.add_argument("--auth-browser-flow", help="Override realm authentication flow bindings for 'Browser Flow'.", default=None)
     create_oidc_parser.add_argument("--add-audience-mapper", action='store_true', default=False, help="Add a audience mapper to add audience to access token.")
     create_oidc_parser.set_defaults(func=create_oidc_client)
@@ -1013,6 +1025,12 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     init_parser.add_argument("--locales", required=no_ucr_available, default=ucr.get("locale"))
     init_parser.add_argument("--default-locale", required=no_ucr_available, default=ucr.get("locale/default"))
     init_parser.add_argument("--check-init-done", help="only check if init has been already executed", default=False, action="store_true")
+    # Was statically "True" before:
+    init_parser.add_argument("--no-starttls", action='store_false', default=True, help="Disables the usage of StartTLS in the communication with the LDAP server, unencrypted traffic will be used.")
+    # Was statically "True" before:
+    init_parser.add_argument("--no-kerberos", action='store_false', default=True, help="Disables the Kerberos support on the LDAP user federation.")
+    # opt.assertion_consumer_url_post = None
+    init_parser.add_argument("--assertion-consumer-url-post", help=f"set the valid redirect URL for the UCS SAML service provider, most likely https://{domainname}/univention/saml/")
     init_parser.set_defaults(func=init_keycloak_ucs)
 
     kerberos_config = subparsers.add_parser("kerberos-config", help="LDAP federation Kerberos configuration")
@@ -1628,7 +1646,8 @@ def create_adhoc_idp(opt):
     print("Creating ad hoc federation identity provider...")
     # realm config
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    # What is the benefit of providing `opt.realm` on instanciation of kc_admin and then setting it hard to "ucs" in the line afterwards?
+    #kc_admin.realm_name = "ucs"
 
     metadata_info = extract_metadata(opt.metadata_url, opt.no_ssl_verify)
 
@@ -1778,7 +1797,8 @@ def enable_2fa(opt):
 
     # realm config
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    # What is the benefit of providing `opt.realm` on instanciation of kc_admin and then setting it hard to "ucs" in the line afterwards?
+    #kc_admin.realm_name = "ucs"
     realm_2fa_role = "2FA role"
     ldap_2fa_group = opt.group_2fa  # FIXME: Check group to use for 2FA
 
@@ -1789,7 +1809,7 @@ def enable_2fa(opt):
     mapper_id = add_or_replace_ldap_group_mapper(opt, kc_admin, provider, "univention-groups", ldap_2fa_group)
 
     # Synchronize LDAP groups to Keycloak
-    kc_admin.raw_post(f'/admin/realms/ucs/user-storage/{provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak', data={})
+    kc_admin.raw_post(f'/admin/realms/{quote(opt.realm, safe="")}/user-storage/{quote(provider_id, safe="")}/mappers/{quote(mapper_id, safe="")}/sync?direction=fedToKeycloak', data={})
 
     create_realm_role(kc_admin, opt.realm, realm_2fa_role)
     create_realm_group(kc_admin, opt.realm, ldap_2fa_group)  # FIXME: This could be removed if we only use UDM groups
@@ -2124,7 +2144,8 @@ def create_adhoc_flow(opt):
 
     # realm config
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    # What is the benefit of providing `opt.realm` on instanciation of kc_admin and then setting it hard to "ucs" in the line afterwards?
+    #kc_admin.realm_name = "ucs"
 
     payload_authflow = {
         "newName": "Univention-Authenticator ad hoc federation flow",
@@ -2241,7 +2262,6 @@ def init_keycloak_ucs(opt):
     opt.metadata_file = None
     opt.umc_uid_mapper = True
     opt.single_logout_service_url_post = None
-    opt.assertion_consumer_url_post = None
     opt.frontchannel_logout_off = None
     opt.name_id_format = None
     opt.idp_initiated_sso_url_name = None
@@ -2260,7 +2280,7 @@ def init_keycloak_ucs(opt):
         "config": {
             "pagination": ["true"],
             "fullSyncPeriod": ["-1"],
-            "startTls": ["true"],
+            "startTls": ["true" if opt.no_starttls else "false"],
             "connectionPooling": ["true"],
             "usersDn": [opt.ldap_base],
             "cachePolicy": ["MAX_LIFESPAN"],
@@ -2274,7 +2294,7 @@ def init_keycloak_ucs(opt):
             "usernameLDAPAttribute": ["uid"],
             "vendor": ["other"],
             "uuidLDAPAttribute": ["entryUUID"],
-            "allowKerberosAuthentication": ["true"],
+            "allowKerberosAuthentication": ["true" if opt.no_kerberos else "false"],
             "kerberosRealm": [opt.kerberos_realm],
             "serverPrincipal": [f"HTTP/{opt.keycloak_fqdn}@{opt.kerberos_realm}"],
             "keyTab": [KERBEROS_KEYTAB_PATH],
