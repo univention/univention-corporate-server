@@ -659,7 +659,7 @@ class Test_ComputerRolesExceptMacos:
         # verify that properties have been adopted correctly during creation
         verify_ldap_object(computer, {'univentionNetworkLink': [network]})
 
-        assert aRecord in [f'10.20.30.{str(oktett)}' for oktett in range(2, 255)], "IP address of computer not in range of it's network"
+        assert aRecord in [f'10.20.30.{oktett!s}' for oktett in range(2, 255)], "IP address of computer not in range of it's network"
 
         verify_ldap_object(
             f'relativeDomainName={computerProperties["name"]},{forwardZone}',

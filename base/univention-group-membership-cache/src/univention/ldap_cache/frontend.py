@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 from typing import Any, Dict, List, Optional, Set, Tuple  # noqa: F401
 
 from univention.ldap_cache.cache import Cache, get_cache  # noqa: F401
@@ -50,14 +51,14 @@ def _extract_id_from_dn(dn: str) -> str:
     return dn.split(",", 1)[0].split("=", 1)[1]
 
 
-def groups_for_user(user_dn: str, consider_nested_groups: bool=True, cache: "Optional[Dict[str, Set[str]]]"=None) -> "List[str]":
+def groups_for_user(user_dn: str, consider_nested_groups: bool=True, cache: Dict[str, Set[str]] | None=None) -> List[str]:
     user_dn = user_dn.lower()
     if cache is None:
         _cache = get_cache()
         subcache = _cache.get_sub_cache('uniqueMembers').load()
         cache = {key: {val.lower() for val in values} for key, values in subcache.items()}
     search_for_dns = [user_dn]
-    found: "Set[str]" = set()
+    found: Set[str] = set()
     while search_for_dns:
         search_for = search_for_dns.pop().lower()
         for member, dns in cache.items():
@@ -69,12 +70,12 @@ def groups_for_user(user_dn: str, consider_nested_groups: bool=True, cache: "Opt
     return sorted(found)
 
 
-def users_in_group(group_dn: str, consider_nested_groups: bool=True, readers: "Tuple[Optional[Any], Optional[Any]]"=(None, None), group_cache: "Dict[str, List[str]]"={}) -> "List[str]":
+def users_in_group(group_dn: str, consider_nested_groups: bool=True, readers: Tuple[Any | None, Any | None]=(None, None), group_cache: Dict[str, List[str]]={}) -> List[str]:
     group_dn = group_dn.lower()
     cache = get_cache()
     member_uid_cache, unique_member_cache = (cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers'])
     with member_uid_cache.reading(readers[0]) as member_uid_reader, unique_member_cache.reading(readers[1]) as unique_member_reader:
-        ret: "Set[str]" = set()
+        ret: Set[str] = set()
         members = unique_member_cache.get(group_dn, unique_member_reader)
         if not members:
             return []
@@ -97,7 +98,7 @@ def users_in_group(group_dn: str, consider_nested_groups: bool=True, readers: "T
         return sorted(ret)
 
 
-def users_groups() -> "Dict[str, List[str]]":
+def users_groups() -> Dict[str, List[str]]:
     """
     Find all user-group relationship, including implicit ones:
     if Group1 have Group2 as a subgroup, all users from Group2
@@ -106,13 +107,13 @@ def users_groups() -> "Dict[str, List[str]]":
     cache = get_cache()
     member_uid_cache, unique_member_cache = (cache.get_sub_cache(name) for name in ['memberUids', 'uniqueMembers'])
 
-    group_users: "Dict[str, List[str]]" = {}
-    _group_cache: "Dict[str, List[str]]" = {}
+    group_users: Dict[str, List[str]] = {}
+    _group_cache: Dict[str, List[str]] = {}
     with member_uid_cache.reading() as member_uid_reader, unique_member_cache.reading() as unique_member_reader:
         for group in unique_member_cache.keys():
             group_users[group] = users_in_group(group, readers=(member_uid_reader, unique_member_reader), group_cache=_group_cache)
 
-    res: "Dict[str, Set[str]]" = {}
+    res: Dict[str, Set[str]] = {}
     for group, members in group_users.items():
         for member in members:
             groups = res.setdefault(member, set())

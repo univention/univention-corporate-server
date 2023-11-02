@@ -33,6 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """Univention Configuration Registry module."""
+from __future__ import annotations
 
 from lazy_object_proxy import Proxy
 
@@ -51,11 +52,11 @@ from univention.config_registry.misc import (  # noqa: F401
 from univention.debhelper import parseRfc822  # noqa: F401
 
 
-ucr: "_RCR" = Proxy(lambda: _RCR().load(autoload=Load.ONCE))
-ucr_live: "_RCR" = Proxy(lambda: _RCR().load(autoload=Load.ALWAYS))
+ucr: _RCR = Proxy(lambda: _RCR().load(autoload=Load.ONCE))
+ucr_live: _RCR = Proxy(lambda: _RCR().load(autoload=Load.ALWAYS))
 
 
-def ucr_factory() -> "ConfigRegistry":
+def ucr_factory() -> ConfigRegistry:
     """
     Factory method to return private loaded UCR instance.
 

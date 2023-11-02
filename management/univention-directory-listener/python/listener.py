@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import os
 from functools import wraps
 from pwd import getpwnam
@@ -54,7 +55,7 @@ configRegistry = ConfigRegistry()
 configRegistry.load()
 
 
-def setuid(uid: "Union[int, str]") -> None:
+def setuid(uid: int | str) -> None:
     """
     Set the current process’s effective user id.
     Use :py:func:`unsetuid()` to return to the listeners UID.
@@ -92,7 +93,7 @@ def unsetuid() -> None:
     os.seteuid(__listener_uid)
 
 
-def run(exe: str, argv: "List[Union[str, str]]", uid: int=-1, wait: bool=True) -> int:
+def run(exe: str, argv: List[str], uid: int=-1, wait: bool=True) -> int:
     """
     Execute a the program `exe` with arguments `argv` and effective user id
     `uid`.
@@ -138,13 +139,13 @@ class SetUID(object):
         if self.uid >= 0:
             setuid(self.uid)
 
-    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[BaseException]", traceback: "Optional[TracebackType]") -> None:
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if self.uid >= 0:
             unsetuid()
 
-    def __call__(self, f: "_F") -> "Callable[[_F], _F]":
+    def __call__(self, f: _F) -> Callable[[_F], _F]:
         @wraps(f)
-        def wrapper(*args: "Any", **kwargs: "Any") -> "Any":
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             with self:
                 return f(*args, **kwargs)
 

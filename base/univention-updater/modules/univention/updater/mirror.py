@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 """Mirror Univention repository server."""
 
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 import errno
 import json
@@ -71,7 +71,7 @@ def makedirs(dirname: str, mode: int=0o755) -> None:
             raise
 
 
-def filter_releases_json(releases: "Any", start: "UCS_Version", end: "UCS_Version") -> None:
+def filter_releases_json(releases: Any, start: UCS_Version, end: UCS_Version) -> None:
     """
     Filter releases that are not mirrored from the upstream repository
     Filtering is done inplace!
@@ -127,7 +127,7 @@ class UniventionMirror(UniventionUpdater):
         self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()
         self.script_verify = self.configRegistry.is_true('repository/mirror/verify', True)
 
-    def release_update_available(self, ucs_version: "Optional[str]"=None, errorsto: "Literal['stderr', 'exception', 'none']"='stderr') -> "Optional[UCS_Version]":
+    def release_update_available(self, ucs_version: str | None=None, errorsto: Literal['stderr', 'exception', 'none']='stderr') -> UCS_Version | None:
         """
         Check if an update is available for the `ucs_version`.
 

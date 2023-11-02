@@ -34,6 +34,7 @@ from collections import OrderedDict  # noqa: F401
 from typing import Any, Dict, Iterable, TypeVar  # noqa: F401
 
 import univention
+import typing_extensions
 
 
 PluginTV = TypeVar('PluginTV', bound=univention.udm.plugins.Plugin)  # noqa: PYI001
@@ -49,7 +50,7 @@ class Plugin(type):
 
 class Plugins(object):
 
-    _plugins = None  # type: OrderedDict
+    _plugins: typing_extensions.TypeAlias = None  # type: OrderedDict
     _imported = {}  # type: Dict[str, bool]
 
     def __init__(self, python_path):  # type: (str) -> None

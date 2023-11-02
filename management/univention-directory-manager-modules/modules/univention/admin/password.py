@@ -32,7 +32,7 @@
 
 """|UDM| password encryption methods."""
 
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 import hashlib
 import re
@@ -49,7 +49,7 @@ from univention.admin._ucr import configRegistry
 RE_PASSWORD_SCHEME = re.compile(r'^{(\w+)}(!?)(.*)', re.I)
 
 
-def crypt(password: str, method_id: "Optional[str]"=None, salt: "Optional[str]"=None) -> str:
+def crypt(password: str, method_id: str | None=None, salt: str | None=None) -> str:
     """
     Return crypt hash.
 
@@ -70,7 +70,7 @@ def crypt(password: str, method_id: "Optional[str]"=None, salt: "Optional[str]"=
             'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5',
             '6', '7', '8', '9']
         urandom = open("/dev/urandom", "rb")
-        for _i in range(0, 16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
+        for _i in range(16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
             o = ord(urandom.read(1))
             while not o < 256 // len(valid) * len(valid):  # make sure not to skew the distribution when using modulo
                 o = ord(urandom.read(1))
@@ -107,7 +107,7 @@ def bcrypt_hash(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), salt).decode('ASCII')
 
 
-def ntlm(password: str) -> "Tuple[str, str]":
+def ntlm(password: str) -> Tuple[str, str]:
     """
     Return tuple with NT and LanMan hash.
 
@@ -124,7 +124,7 @@ def ntlm(password: str) -> "Tuple[str, str]":
     return (nt, lm)
 
 
-def krb5_asn1(principal: str, password: str, krb5_context: "Optional[heimdal.context]"=None) -> "List[bytes]":
+def krb5_asn1(principal: str, password: str, krb5_context: heimdal.context | None=None) -> List[bytes]:
     """
     Generate Kerberos password hashes.
 

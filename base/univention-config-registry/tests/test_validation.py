@@ -238,7 +238,6 @@ def test_portnumber(port, expected):
         ('enable', True),
         ('ENABLED', True),
         ('enabled', True),
-        ('ENABLE', True),
         ('ON', True),
         ('on', True),
         ('No', True),

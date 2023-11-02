@@ -33,14 +33,14 @@
 
 """Univention Common Python Library for file locking"""
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import fcntl
 import os
 from typing import IO, Optional  # noqa: F401
 
 
-def get_lock(name: str, nonblocking: bool=False) -> "Optional[IO[str]]":
+def get_lock(name: str, nonblocking: bool=False) -> IO[str] | None:
     """
     Get a exclusive lock.
 
@@ -80,7 +80,7 @@ def get_lock(name: str, nonblocking: bool=False) -> "Optional[IO[str]]":
     return fd
 
 
-def release_lock(fd: "IO[str]") -> None:
+def release_lock(fd: IO[str]) -> None:
     """
     Releases the previously gained lock.
 

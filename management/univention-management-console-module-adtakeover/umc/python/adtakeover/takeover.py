@@ -34,6 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import codecs
 import configparser
 import ipaddress
@@ -243,7 +244,7 @@ class LicenseInsufficient(TakeoverError):
     default_error_message = _('Insufficient License.')
 
 
-def count_domain_objects_on_server(hostname_or_ip: str, username: str, password: str, progress: "Progress") -> dict:
+def count_domain_objects_on_server(hostname_or_ip: str, username: str, password: str, progress: Progress) -> dict:
     '''
     Connects to the hostname_or_ip with username/password credentials.
 

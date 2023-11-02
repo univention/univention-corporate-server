@@ -182,7 +182,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
             samaccountname = object['attributes']['sAMAccountName'][0].decode('UTF-8')
         if dn_attr:
             try:
-                dn_attr_vals = [value for key, value in object['attributes'].items() if dn_attr.lower() == key.lower()][0]
+                dn_attr_vals = next(value for key, value in object['attributes'].items() if dn_attr.lower() == key.lower())
             except IndexError:
                 pass
             else:
@@ -590,7 +590,7 @@ class ad(univention.connector.ucs):
                 conn_attributes = getattr(mapping_property, attr_type)
                 if not conn_attributes:
                     continue
-                for _attr_key, attr in conn_attributes.items():
+                for attr in conn_attributes.values():
                     if not attr.con_other_attribute and attr.con_attribute in self.single_valued_ad_attributes:
                         attr.single_value = True
                     elif attr.con_attribute == 'description' and mapping_key in ('user', 'group', 'windowscomputer'):
@@ -603,7 +603,7 @@ class ad(univention.connector.ucs):
                 con_attributes = getattr(mapping_property, attr_type)
                 if not con_attributes:
                     continue
-                for _attr_key, attr in con_attributes.items():
+                for attr in con_attributes.values():
                     if attr.ldap_attribute == 'mailPrimaryAddress':
                         attr.con_depends = 'mail'
 
@@ -1964,14 +1964,12 @@ class ad(univention.connector.ucs):
                 del self.group_member_mapping_cache_con[con_dn.lower()]
             except KeyError:
                 ud.debug(ud.LDAP, ud.ALL, f"sync_from_ucs: {con_dn} was not present in AD group member mapping cache")
-                pass
         if ucs_dn:
             try:
                 ud.debug(ud.LDAP, ud.INFO, f"sync_from_ucs: Removing {ucs_dn} from UCS group member mapping cache")
                 del self.group_member_mapping_cache_ucs[ucs_dn.lower()]
             except KeyError:
                 ud.debug(ud.LDAP, ud.ALL, f"sync_from_ucs: {ucs_dn} was not present in UCS group member mapping cache")
-                pass
 
     def _update_group_member_cache(self, remove_con_dn=None, remove_ucs_dn=None, add_con_dn=None, add_ucs_dn=None):
         for group in self.group_members_cache_con:
@@ -2209,13 +2207,13 @@ class ad(univention.connector.ucs):
                                 # its value as long as that value is not removed. If removed the primary
                                 # attribute is assigned a random value from the UCS attribute.
                                 try:
-                                    current_ad_values = set([v for k, v in ad_object.items() if ad_attribute.lower() == k.lower()][0])
+                                    current_ad_values = set(next(v for k, v in ad_object.items() if ad_attribute.lower() == k.lower()))
                                 except IndexError:
                                     current_ad_values = set()
                                 ud.debug(ud.LDAP, ud.INFO, f"sync_from_ucs: The current AD values: {current_ad_values}")
 
                                 try:
-                                    current_ad_other_values = set([v for k, v in ad_object.items() if ad_other_attribute.lower() == k.lower()][0])
+                                    current_ad_other_values = set(next(v for k, v in ad_object.items() if ad_other_attribute.lower() == k.lower()))
                                 except IndexError:
                                     current_ad_other_values = set()
                                 ud.debug(ud.LDAP, ud.INFO, f"sync_from_ucs: The current AD other values: {current_ad_other_values}")
@@ -2239,7 +2237,7 @@ class ad(univention.connector.ucs):
                                     modlist.append((ldap.MOD_REPLACE, ad_other_attribute, list(new_ad_other_values)))
                             else:
                                 try:
-                                    current_ad_values = set([v for k, v in ad_object.items() if ad_attribute.lower() == k.lower()][0])
+                                    current_ad_values = set(next(v for k, v in ad_object.items() if ad_attribute.lower() == k.lower()))
                                 except IndexError:
                                     current_ad_values = set()
 

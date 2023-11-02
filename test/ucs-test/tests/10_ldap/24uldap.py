@@ -139,7 +139,7 @@ class TestMachineConnection(TestCase):
                 with FakeUcr({'server/role': role, 'ldap/server/addition': ' '.join(alt_servers)}):
                     ucr_fake = ConfigRegistry()
                     ucr_fake.load()
-                    for _ in range(0, 10):
+                    for _ in range(10):
                         access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0, random_server=True)
                         assert isinstance(access, uldap.access)
                         assert access.host in [ucr_fake.get('ldap/server/name')]  # on DC systems, the local system is used first
@@ -151,7 +151,7 @@ class TestMachineConnection(TestCase):
                     ucr_fake.load()
                     used_servers = []
                     n = 10
-                    for _ in range(0, n):
+                    for _ in range(n):
                         access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0, random_server=True)
                         assert isinstance(access, uldap.access)
                         assert access.host in alt_servers  # only servers of ldap/server/addition should be returned, if ldap/server/name is not available
@@ -168,7 +168,7 @@ class TestMachineConnection(TestCase):
                 used_servers = []
                 n = 10
                 min_servers = 3
-                for _ in range(0, n):
+                for _ in range(n):
                     access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0, random_server=True)
                     assert isinstance(access, uldap.access)
                     assert access.host in possible_servers
@@ -190,7 +190,7 @@ class TestMachineConnection(TestCase):
             possible_servers = [ucr_fake.get('ldap/server/name')] + alt_servers
             used_servers = []
             n = 10
-            for _ in range(0, n):
+            for _ in range(n):
                 access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0)
                 assert isinstance(access, uldap.access)
                 assert access.host in possible_servers

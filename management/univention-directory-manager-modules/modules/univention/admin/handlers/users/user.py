@@ -32,7 +32,7 @@
 
 """|UDM| module for the user objects"""
 
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 import builtins
 import calendar
@@ -751,7 +751,7 @@ def logonHoursMap(logontimes):
     # See <http://ma.ph-freiburg.de/tng/tng-technical/2003-04/msg00015.html> for details.
 
     newtimes = ""
-    for i in range(0, 21):
+    for i in range(21):
         bitlist = list(logontimes[(i * 8):(i * 8) + 8])
         bitlist.reverse()
         newtimes += "".join(bitlist)
@@ -759,7 +759,7 @@ def logonHoursMap(logontimes):
 
     # create a hexnumber from each 8-bit-segment
     ret = ""
-    for i in range(0, 21):
+    for i in range(21):
         val = 0
         exp = 7
         for j in range((i * 8), (i * 8) + 8):
@@ -787,7 +787,7 @@ def logonHoursUnmap(logontimes):
 
     # reverse order of the bits in each byte. See above for details
     newtime = ""
-    for i in range(0, 21):
+    for i in range(21):
         bitlist = list(ret[(i * 8):(i * 8) + 8])
         bitlist.reverse()
         newtime += "".join(bitlist)
@@ -1034,7 +1034,7 @@ def unmapWindowsFiletime(old, encoding=()):  # type: (List[bytes]) -> str
     return u''
 
 
-def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple: "List[str]") -> "datetime.datetime":
+def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple: List[str]) -> datetime.datetime:
     d, t, tz = local_datetimetimezone_tuple
     # dttz_str = module.property_descriptions[key].syntax.tostring(local_datetimetimezone_tuple)
     native_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")
@@ -1854,7 +1854,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             return ml
 
         try:
-            new = [x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress' and x[2]][0]
+            new = next(x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress' and x[2])
         except IndexError:  # mailForwardAddress was not changed, nevertheless we might need to change it
             new = self.mapping.mapValue('mailForwardAddress', self['mailForwardAddress']) or []  # FIXME: mapValue returns b'' instead of [b'']
 

@@ -33,6 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import annotations
 import datetime
 import json
 import logging
@@ -91,7 +92,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         translator.set_language(self.language)
         logging.basicConfig(level=logging.INFO)
 
-    def __enter__(self) -> "UMCSeleniumTest":
+    def __enter__(self) -> UMCSeleniumTest:
         self.restart_umc()
         self._ucr.__enter__()
         if self.selenium_grid:
@@ -130,7 +131,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         self.set_viewport_size(1200, 800)
         return self
 
-    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[BaseException]", traceback: "Optional[TracebackType]") -> None:
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         try:
             if exc_type:
                 logger.error(f'Exception: {exc_type} {exc_value}')
@@ -189,7 +190,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         except selenium_exceptions.TimeoutException:
             pass
 
-    def crop_screenshot_to_element(self, image_filename: str, xpath: str) -> "Image":
+    def crop_screenshot_to_element(self, image_filename: str, xpath: str) -> Image:
         elem = self.driver.find_element(By.XPATH, xpath)
         location = elem.location
         size = elem.size
@@ -228,7 +229,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         # Wait for the animation to run.
         time.sleep(1)
 
-    def do_login(self, username: "Optional[str]"=None, password: "Optional[str]"=None, without_navigation: bool=False, language: "Optional[str]"=None, check_successful_login: bool=True) -> None:
+    def do_login(self, username: str | None=None, password: str | None=None, without_navigation: bool=False, language: str | None=None, check_successful_login: bool=True) -> None:
         if username is None:
             username = self.umcLoginUsername
         if password is None:

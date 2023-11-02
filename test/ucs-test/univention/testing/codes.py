@@ -1,4 +1,5 @@
 """Public interface for test resultes."""
+from __future__ import annotations
 
 from typing import Dict, Optional  # noqa: F401
 
@@ -41,7 +42,7 @@ class TestCodes:
     MESSAGE = {}
     MAX_MESSAGE_LEN = 0
     COLOR = {}
-    EOFS: "Dict[Optional[int], str]" = {  # Error Okay Failure Skip
+    EOFS: Dict[int | None, str] = {  # Error Okay Failure Skip
         RESULT_OKAY: 'O',
         RESULT_FAIL: 'F',
         RESULT_SKIP: 'S',

@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import os
 from typing import Iterator, Tuple
 
@@ -98,7 +99,7 @@ class DRSUAPI(object):
             for neighbour in info.array:
                 yield (replica_info_direction, neighbour)
 
-    def replication_problems(self) -> Iterator["ReplicationProblem"]:
+    def replication_problems(self) -> Iterator[ReplicationProblem]:
         for replica_info, neighbour in self.neighbours():
             (ecode, estring) = neighbour.result_last_attempt
             if ecode != 0:

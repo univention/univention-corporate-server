@@ -29,6 +29,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """Univention Setup: network configuration abstract base classes"""
+from __future__ import annotations
 
 import logging
 import subprocess
@@ -45,21 +46,21 @@ class ChangeSet(object):
         self.ucr = ucr
         self.profile = profile
         self.options = options
-        self.ucr_changes: Dict[str, Optional[str]] = {}
+        self.ucr_changes: Dict[str, str | None] = {}
         self.old_interfaces = Interfaces(ucr)
         self.logger = logging.getLogger("uss.network.change")
 
         self.update_config(self.only_network_config(profile))
 
     @staticmethod
-    def only_network_config(profile: Dict[str, str]) -> Dict[str, Optional[str]]:
-        config: Dict[str, Optional[str]] = {}
+    def only_network_config(profile: Dict[str, str]) -> Dict[str, str | None]:
+        config: Dict[str, str | None] = {}
         for key, value in profile.items():
             if key.startswith("interfaces/"):
                 config[key] = value or None
         return config
 
-    def update_config(self, changes: Dict[str, Optional[str]]) -> None:
+    def update_config(self, changes: Dict[str, str | None]) -> None:
         self.ucr_changes.update(changes)
         new_ucr = dict(self.ucr.items())  # Bug #33101
         new_ucr.update(changes)
@@ -148,7 +149,7 @@ class Phase:
         return name
 
     @classmethod
-    def _check_valid(cls, other: Type["Phase"]) -> None:
+    def _check_valid(cls, other: Type[Phase]) -> None:
         try:
             if not issubclass(other, cls):
                 raise SkipPhase('Invalid super-class')

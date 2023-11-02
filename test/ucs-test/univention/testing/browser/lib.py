@@ -90,7 +90,7 @@ class Waits:
 
     def wait_for_progress_bar(self, n: int = 1, timeout: int = 1 * MIN):
         """Waits for `n` progress bars to disappear"""
-        for _ in range(0, n):
+        for _ in range(n):
             progress_bar = self.page.get_by_role("progressbar")
             expect(progress_bar).to_be_hidden(timeout=timeout)
 

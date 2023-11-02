@@ -35,6 +35,7 @@
 Univention common Python Library for
 package management (info/install/progress...)
 """
+from __future__ import annotations
 
 import logging  # noqa: F401
 import os
@@ -90,20 +91,20 @@ class ProgressState(object):
     :param logging.Logger parent_logger: The Logger of the parent.
     """
 
-    def __init__(self, parent_logger: "logging.Logger") -> None:
+    def __init__(self, parent_logger: logging.Logger) -> None:
         self._logger = parent_logger.getChild('dpkg')
         self.hard_reset()
 
     def reset(self) -> None:
         """Reset minimal progress state."""
         self._info = None
-        self._percentage: "Optional[float]" = None
+        self._percentage: float | None = None
 
     def hard_reset(self) -> None:
         """Reset full progress state."""
         self.reset()
         self._start_steps = 0
-        self._errors: "List[str]" = []
+        self._errors: List[str] = []
         self._max_steps = 0
         self._finished = False
 
@@ -111,7 +112,7 @@ class ProgressState(object):
         """Mark installation as finished."""
         self._finished = True
 
-    def get_logger(self, logger_name: "Optional[str]"=None) -> "logging.Logger":
+    def get_logger(self, logger_name: str | None=None) -> logging.Logger:
         """
         Return (sub-)logger.
 
@@ -123,7 +124,7 @@ class ProgressState(object):
             return self._logger
         return self._logger.getChild(logger_name)
 
-    def info(self, info: "Any", logger_name: "Optional[str]"=None) -> None:
+    def info(self, info: Any, logger_name: str | None=None) -> None:
         """
         Log info message.
 
@@ -144,7 +145,7 @@ class ProgressState(object):
         if percentage is not None:
             self.get_logger(logger_name).info(percentage)
 
-    def error(self, error: "Any", logger_name: "Optional[str]"=None) -> None:
+    def error(self, error: Any, logger_name: str | None=None) -> None:
         """
         Log error message.
 
@@ -172,7 +173,7 @@ class ProgressState(object):
         """
         return self._start_steps + (self._percentage or 0.0)
 
-    def poll(self) -> "Dict[str, Any]":
+    def poll(self) -> Dict[str, Any]:
         """
         Return the aggregated state.
         The state is reset afterwards using :py:meth:`reset`.
@@ -180,7 +181,7 @@ class ProgressState(object):
         :returns: A dictionary containing the last info and error message, number of steps and finished state.
         :rtype: dict
         """
-        result: "Dict[str, Any]" = {
+        result: Dict[str, Any] = {
             'info': self._info,
             'steps': self._steps,
             'errors': self._errors,
@@ -199,7 +200,7 @@ class FetchProgress(apt.progress.base.AcquireProgress):
     :param ProgressState outfile: An instance to receive the progress information.
     """
 
-    def __init__(self, progress_state: "ProgressState") -> None:
+    def __init__(self, progress_state: ProgressState) -> None:
         super(FetchProgress, self).__init__()
         self.progress_state = progress_state
 
@@ -207,29 +208,29 @@ class FetchProgress(apt.progress.base.AcquireProgress):
         self.progress_state.info(msg % args, logger_name="fetch")
 
     @staticmethod
-    def _b2h(item: "apt_pkg.AcquireItemDesc") -> str:
+    def _b2h(item: apt_pkg.AcquireItemDesc) -> str:
         if not item.owner.filesize:
             return ""
         return " [%sB]" % (apt_pkg.size_to_str(item.owner.filesize),)
 
-    def fail(self, item: "apt_pkg.AcquireItemDesc") -> None:
+    def fail(self, item: apt_pkg.AcquireItemDesc) -> None:
         """Invoked when an item could not be fetched."""
         if item.owner.status == item.owner.STAT_DONE:
             self._info("Ign %s", item.description)
         else:
             self._info("Err %s  %s", item.description, item.owner.error_text)
 
-    def fetch(self, item: "apt_pkg.AcquireItemDesc") -> None:
+    def fetch(self, item: apt_pkg.AcquireItemDesc) -> None:
         """Invoked when some of the item's data is fetched."""
         if item.owner.complete:
             return
         self._info("Get: %s %s%s", 0, item.description, self._b2h(item))
 
-    def ims_hit(self, item: "apt_pkg.AcquireItemDesc") -> None:
+    def ims_hit(self, item: apt_pkg.AcquireItemDesc) -> None:
         """Invoked when an item is confirmed to be up-to-date."""
         self._info("Hit %s%s", item.description, self._b2h(item))
 
-    def pulse(self, owner: "apt_pkg.Acquire") -> bool:
+    def pulse(self, owner: apt_pkg.Acquire) -> bool:
         """Periodically invoked while the Acquire process is underway."""
         self.progress_state.percentage(
             100 * (self.current_bytes + self.current_items) // (self.total_bytes + self.total_items),
@@ -252,7 +253,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
     Writes messages (and percentage) from |APT| status file descriptor
     """
 
-    def __init__(self, progress_state: "ProgressState") -> None:
+    def __init__(self, progress_state: ProgressState) -> None:
         super(DpkgProgress, self).__init__()
         self.progress_state = progress_state
 
@@ -292,7 +293,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 
         return p
 
-    def check_pipe(self, pipe_read: "IO[bytes]") -> None:
+    def check_pipe(self, pipe_read: IO[bytes]) -> None:
         """
         Internal function for reading the pipe and updating the progress status.
 
@@ -364,13 +365,13 @@ class _PackageManagerLoggerHandler(Handler):
     :parmm error_handler: A optional function which accepts error messages as the single argument.
     """
 
-    def __init__(self, info_handler: "Optional[Callable[..., None]]", step_handler: "Optional[Callable[..., None]]", error_handler: "Optional[Callable[..., None]]") -> None:
+    def __init__(self, info_handler: Callable[..., None] | None, step_handler: Callable[..., None] | None, error_handler: Callable[..., None] | None) -> None:
         super(_PackageManagerLoggerHandler, self).__init__()
         self.info_handler = info_handler
         self.step_handler = step_handler
         self.error_handler = error_handler
 
-    def emit(self, record: "logging.LogRecord") -> None:
+    def emit(self, record: logging.LogRecord) -> None:
         """
         Translate event to calls of |APT| handlers.
         :param logging.LogRecord event: An event.
@@ -396,7 +397,7 @@ class PackageManager(object):
     :param always_noninteractive: Run :command:`dpkg` in non-interactive mode to prevent any user input.
     """
 
-    def __init__(self, lock: bool=True, info_handler: "Optional[Callable[..., None]]"=None, step_handler: "Optional[Callable[..., None]]"=None, error_handler: "Optional[Callable[..., None]]"=None, always_noninteractive: bool=True) -> None:
+    def __init__(self, lock: bool=True, info_handler: Callable[..., None] | None=None, step_handler: Callable[..., None] | None=None, error_handler: Callable[..., None] | None=None, always_noninteractive: bool=True) -> None:
         self.lock_fd = None  # type: Optional[IO[Text]]
         self.apt_lock_fd: int = -1
         # parent logger, public. should be extended by adding a handler
@@ -406,22 +407,22 @@ class PackageManager(object):
             handler = _PackageManagerLoggerHandler(info_handler, step_handler, error_handler)
             self.logger.addHandler(handler)
 
-        self._cache: "Optional[apt.cache.Cache]" = None
+        self._cache: apt.cache.Cache | None = None
         self._open_cache()
         self.progress_state = ProgressState(self.logger)
         self.fetch_progress = FetchProgress(self.progress_state)
         self.dpkg_progress = DpkgProgress(self.progress_state)
-        self._always_install: "List[apt.package.Package]" = []
+        self._always_install: List[apt.package.Package] = []
         self.always_noninteractive = always_noninteractive
         if lock:
             self.lock()
 
     @property
-    def cache(self) -> "apt.cache.Cache":
+    def cache(self) -> apt.cache.Cache:
         assert self._cache is not None
         return self._cache
 
-    def always_install(self, pkgs: "Iterable[apt.package.Package]"=(), just_mark: bool=False) -> None:
+    def always_install(self, pkgs: Iterable[apt.package.Package]=(), just_mark: bool=False) -> None:
         """
         Set packages that should be installed and never
         uninstalled. If you overwrite old `always_install`,
@@ -494,7 +495,7 @@ class PackageManager(object):
         return self.lock_fd is not None and self.apt_lock_fd >= 0
 
     @contextmanager
-    def locked(self, reset_status: bool=False, set_finished: bool=False) -> "Iterator[None]":
+    def locked(self, reset_status: bool=False, set_finished: bool=False) -> Iterator[None]:
         """
         Perform locking and cleanup actions before and after working with package state.
 
@@ -514,7 +515,7 @@ class PackageManager(object):
                 self.set_finished()
             self.unlock()
 
-    def _shell_command(self, command: "Union[str, Sequence[str]]", handle_streams: bool=True) -> "Tuple[bytes, bytes]":
+    def _shell_command(self, command: str | Sequence[str], handle_streams: bool=True) -> Tuple[bytes, bytes]:
         """
         Execute command processing and returning its output.
 
@@ -533,7 +534,7 @@ class PackageManager(object):
         return out, err
 
     @contextmanager
-    def no_umc_restart(self, exclude_apache: bool=False) -> "Iterator[None]":
+    def no_umc_restart(self, exclude_apache: bool=False) -> Iterator[None]:
         """
         Run package manager with restart of |UMC| (and Apache) disabled.
 
@@ -549,7 +550,7 @@ class PackageManager(object):
     def __del__(self) -> None:
         self.unlock()
 
-    def _set_apt_pkg_config(self, options: "Iterable[Tuple[str, Optional[str]]]") -> "List[Tuple[str, Optional[str]]]":
+    def _set_apt_pkg_config(self, options: Iterable[Tuple[str, str | None]]) -> List[Tuple[str, str | None]]:
         """
         Set |APT| options.
 
@@ -582,7 +583,7 @@ class PackageManager(object):
         """Signal all steps done."""
         self.progress_state.set_finished()
 
-    def poll(self, timeout: "Any") -> "Dict[str, Any]":
+    def poll(self, timeout: Any) -> Dict[str, Any]:
         """
         Poll for progress.
 
@@ -597,7 +598,7 @@ class PackageManager(object):
         self.progress_state.hard_reset()
 
     @contextmanager
-    def brutal_noninteractive(self) -> "Iterator[None]":
+    def brutal_noninteractive(self) -> Iterator[None]:
         """Configure package manager to never ask for user input and to overwrite changed files"""
         with self.noninteractive():
             options = [
@@ -614,7 +615,7 @@ class PackageManager(object):
                 self._set_apt_pkg_config(revert_options)
 
     @contextmanager
-    def noninteractive(self) -> "Iterator[None]":
+    def noninteractive(self) -> Iterator[None]:
         """Configure package manager to never ask for user input."""
         old_debian_frontend = os.environ.get('DEBIAN_FRONTEND')
         os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
@@ -659,7 +660,7 @@ class PackageManager(object):
             self.reopen_cache()
             return True
 
-    def get_packages(self, pkg_names: "Iterable[PkgNameOrApt]") -> "List[apt.package.Package]":
+    def get_packages(self, pkg_names: Iterable[PkgNameOrApt]) -> List[apt.package.Package]:
         """
         Get many Package-objects at once
         (only those that exist, write error for others)
@@ -670,7 +671,7 @@ class PackageManager(object):
         packages = (self.get_package(pkg_name) for pkg_name in pkg_names)
         return [pkg for pkg in packages if pkg]
 
-    def get_package(self, pkg_name: "PkgNameOrApt", raise_key_error: bool=False) -> "Optional[apt.package.Package]":
+    def get_package(self, pkg_name: PkgNameOrApt, raise_key_error: bool=False) -> apt.package.Package | None:
         """
         Get Package-object for package name.
 
@@ -690,7 +691,7 @@ class PackageManager(object):
                 self.progress_state.error(f'{pkg_name}: {_("No such package")}')
                 return None
 
-    def is_installed(self, pkg_name: "PkgNameOrApt", reopen: bool=False) -> "Optional[bool]":
+    def is_installed(self, pkg_name: PkgNameOrApt, reopen: bool=False) -> bool | None:
         """
         Returns whether a package is installed.
 
@@ -709,7 +710,7 @@ class PackageManager(object):
             # return package.is_installed
             return package._pkg.current_state == apt_pkg.CURSTATE_INSTALLED  # type: ignore
 
-    def packages(self, reopen: bool=False) -> "Iterator[apt.package.Package]":
+    def packages(self, reopen: bool=False) -> Iterator[apt.package.Package]:
         """
         Yields all packages in cache.
 
@@ -720,7 +721,7 @@ class PackageManager(object):
         for pkg in self.cache:
             yield pkg
 
-    def mark_auto(self, auto: bool, *pkgs: "PkgNameOrApt") -> None:
+    def mark_auto(self, auto: bool, *pkgs: PkgNameOrApt) -> None:
         """
         Immediately sets packages to automatically installed (or not).
 
@@ -733,7 +734,7 @@ class PackageManager(object):
             pkg.mark_auto(auto)
         self.commit()
 
-    def mark(self, install: "List[apt.package.Package]", remove: "List[apt.package.Package]", dry_run: bool=False) -> "Tuple[List[str], List[str], List[str]]":
+    def mark(self, install: List[apt.package.Package], remove: List[apt.package.Package], dry_run: bool=False) -> Tuple[List[str], List[str], List[str]]:
         """
         Mark packages as automatically installed (or not).
 
@@ -834,7 +835,7 @@ class PackageManager(object):
             self.reopen_cache()
         return sorted(to_be_installed), sorted(to_be_removed), sorted(broken)
 
-    def commit(self, install: "Iterable[PkgNameOrApt]"=(), remove: "Iterable[PkgNameOrApt]"=(), upgrade: bool=False, dist_upgrade: bool=False, msg_if_failed: str='') -> bool:
+    def commit(self, install: Iterable[PkgNameOrApt]=(), remove: Iterable[PkgNameOrApt]=(), upgrade: bool=False, dist_upgrade: bool=False, msg_if_failed: str='') -> bool:
         """
         Really commit changes (mark_install or mark_delete)
         or pass Package-objects that shall be committed.
@@ -861,7 +862,7 @@ class PackageManager(object):
         # only if commit does something. if it is just called
         # to really commit changes made manually, don't dry_run
         # as it reopens the cache
-        broken: "List[str]" = []
+        broken: List[str] = []
         if install_pkgs or remove_pkgs:
             _to_be_installed, _to_be_removed, broken = self.mark(install_pkgs, remove_pkgs, dry_run=True)
 
@@ -942,7 +943,7 @@ class PackageManager(object):
             # still failing, let it raise
             self._handle_system_error(*sys.exc_info())
 
-    def _handle_system_error(self, etype: "Type[BaseException]", exc: BaseException, etraceback: "TracebackType") -> None:
+    def _handle_system_error(self, etype: Type[BaseException], exc: BaseException, etraceback: TracebackType) -> None:
         """
         Log exception from opening |APT| cache.
 
@@ -953,7 +954,7 @@ class PackageManager(object):
         message = '%s %s' % (_('Could not initialize package manager.'), '\n'.join(self._get_error_message(exc)))
         six.reraise(etype, etype(message), etraceback)
 
-    def _get_error_message(self, exc: BaseException) -> "List[str]":
+    def _get_error_message(self, exc: BaseException) -> List[str]:
         """
         Parse exception message and return standardized messages for user consumption.
 
@@ -963,7 +964,7 @@ class PackageManager(object):
         All strings which must pass this function are in: <https://forge.univention.org/bugzilla/attachment.cgi?id=6898>
         """
         messages = re.sub(r'\s([WE]:)', r'\n\1', str(exc)).splitlines()
-        further: "Set[str]" = set()
+        further: Set[str] = set()
 
         apt_update = False
         hold_package = False
@@ -1062,7 +1063,7 @@ class PackageManager(object):
         """
         return self.commit(dist_upgrade=True)
 
-    def install(self, *pkg_names: "PkgNameOrApt") -> bool:
+    def install(self, *pkg_names: PkgNameOrApt) -> bool:
         """
         Instantly installs packages when found.
         Works like `apt-get install` and `apt-get upgrade`.
@@ -1072,7 +1073,7 @@ class PackageManager(object):
         """
         return self.commit(install=pkg_names)
 
-    def uninstall(self, *pkg_names: "PkgNameOrApt") -> bool:
+    def uninstall(self, *pkg_names: PkgNameOrApt) -> bool:
         """
         Instantly deletes packages when found.
 

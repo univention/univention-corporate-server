@@ -30,6 +30,6 @@ def get_plugins(log):
                 plugins[plugin_class.send_method()] = plugin_class(log)
             else:
                 log(f"get_plugins(): Plugin class '{plugin_class.__name__}' for sending method '{plugin_class.send_method()}' is disabled.")
-    for _name, plugin in plugins.items():
+    for plugin in plugins.values():
         log(f"get_plugins(): plugin class '{plugin.__class__.__name__}' for sending method '{plugin.send_method()}': udm_property: '{plugin.udm_property}' token_length: '{plugin.token_length}'")
     return plugins

@@ -71,7 +71,7 @@ def main():
         except samltest.SamlError as exc:
             expected_error = "<h2>Metadata not found</h2>"
             if expected_error not in str(exc):
-                utils.fail(f"Login failed, but for the wrong reason?:\n{str(exc)}")
+                utils.fail(f"Login failed, but for the wrong reason?:\n{exc!s}")
         else:
             utils.fail("Serviceprovider deactivation failed")
 

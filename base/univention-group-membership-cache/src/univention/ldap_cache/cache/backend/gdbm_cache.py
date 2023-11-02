@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import json
 import os
 from contextlib import contextmanager
@@ -46,7 +47,7 @@ MAX_FAIL_COUNT = 5
 
 
 class GdbmCaches(Caches):
-    def _add_sub_cache(self, name: str, single_value: bool, reverse: bool) -> "GdbmCache":
+    def _add_sub_cache(self, name: str, single_value: bool, reverse: bool) -> GdbmCache:
         db_file = os.path.join(self._directory, f'{name}.db')
         debug('Using GDBM %s', name)
         cache = GdbmCache(name, single_value, reverse)
@@ -56,7 +57,7 @@ class GdbmCaches(Caches):
 
 
 class GdbmCache(LdapCache):
-    def __init__(self, *args: "Any", **kwargs: "Any") -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.fail_count = 0
         super(GdbmCache, self).__init__(*args, **kwargs)
         log('%s - Recreating!', self.name)
@@ -67,7 +68,7 @@ class GdbmCache(LdapCache):
         os.chmod(self.db_file, 0o640)
 
     @contextmanager
-    def writing(self, writer: "Optional[Any]"=None) -> "Iterator[Any]":
+    def writing(self, writer: Any | None=None) -> Iterator[Any]:
         if writer is not None:
             yield writer
         else:
@@ -81,7 +82,7 @@ class GdbmCache(LdapCache):
 
     reading = writing
 
-    def save(self, key: str, values: "List[str]") -> None:
+    def save(self, key: str, values: List[str]) -> None:
         with self.writing() as writer:
             if self.reverse:
                 for value in values:
@@ -120,7 +121,7 @@ class GdbmCache(LdapCache):
                 self.fail_count = 0
         self._fix_permissions()
 
-    def delete(self, key: str, values: "List[str]", writer: "Any"=None) -> None:
+    def delete(self, key: str, values: List[str], writer: Any=None) -> None:
         debug('%s - Delete %s', self.name, key)
         with self.writing(writer) as writer:
             if self.reverse:
@@ -137,19 +138,19 @@ class GdbmCache(LdapCache):
                 except KeyError:
                     pass
 
-    def keys(self) -> "Iterator[str]":
+    def keys(self) -> Iterator[str]:
         with self.reading() as reader:
             key = _s(reader.firstkey())
             while key is not None:
                 yield key
                 key = _s(reader.nextkey(key))
 
-    def __iter__(self) -> "Iterator[Tuple[str, Any]]":
+    def __iter__(self) -> Iterator[Tuple[str, Any]]:
         with self.reading() as reader:
             for key in self.keys():
                 yield key, self.get(key, reader)
 
-    def get(self, key: str, reader: "Any"=None) -> "Any":
+    def get(self, key: str, reader: Any=None) -> Any:
         with self.reading(reader) as reader:
             try:
                 value = reader[key]
@@ -162,7 +163,7 @@ class GdbmCache(LdapCache):
             elif value:
                 return _s(json.loads(value))
 
-    def load(self) -> "Dict[str, Any]":
+    def load(self) -> Dict[str, Any]:
         debug('%s - Loading', self.name)
         return dict(list(self))
 

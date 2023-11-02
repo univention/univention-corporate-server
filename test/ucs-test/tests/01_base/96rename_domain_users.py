@@ -114,7 +114,6 @@ def test_rename_domain_users():
             except Exception:
                 # clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
                 time.sleep(10)
-                pass
             if not package_installed('univention-samba4'):
                 time.sleep(20)
             print('\n##################################################################')

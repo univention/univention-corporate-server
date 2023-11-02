@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 """Univention Updater helper functions for managing a local repository."""
 
-from __future__ import absolute_import, print_function
+from __future__ import annotations, absolute_import, print_function
 
 import gzip
 import os
@@ -62,7 +62,7 @@ class TeeFile(object):
     with the print statement
     """
 
-    def __init__(self, fds: "List[IO[str]]"=[]) -> None:
+    def __init__(self, fds: List[IO[str]]=[]) -> None:
         """
         Register multiple file descriptors, to which the data is written.
 
@@ -125,7 +125,7 @@ def copy_package_files(source_dir: str, dest_dir: str) -> None:
             print(f"Copying '{src}' failed: {ex}", file=sys.stderr)
 
 
-def gen_indexes(base: str, version: "UCS_Version") -> None:
+def gen_indexes(base: str, version: UCS_Version) -> None:
     """
     Re-generate Debian :file:`Packages` files from file:`dists/` file.
 
@@ -188,7 +188,7 @@ def get_repo_basedir(packages_dir: str) -> str:
     sys.exit(1)
 
 
-def assert_local_repository(out: "IO[str]"=sys.stderr) -> None:
+def assert_local_repository(out: IO[str]=sys.stderr) -> None:
     """
     Exit with error if the local repository is not enabled.
 

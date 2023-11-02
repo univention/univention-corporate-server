@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import os
 import sys
@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 from univention.config_registry import ConfigRegistry  # noqa: F401
 
 
-def get_idps(ucr: "ConfigRegistry", log_fd: "typing.Optional[typing.TextIO]"=sys.stderr) -> None:
+def get_idps(ucr: ConfigRegistry, log_fd: typing.TextIO | None=sys.stderr) -> None:
 
     def __get_supplement(key):
         return key.replace(idp_supplement_keybase, '')
@@ -59,7 +59,7 @@ def get_idps(ucr: "ConfigRegistry", log_fd: "typing.Optional[typing.TextIO]"=sys
     return entityIDs
 
 
-def _decode(x: "typing.Union[bytes, str]") -> str:
+def _decode(x: bytes | str) -> str:
     return x.decode('ASCII') if isinstance(x, bytes) else x
 
 
@@ -71,7 +71,7 @@ def php_string(string: str) -> str:
     return "'%s'" % (escape_php_string(_decode(string)),)
 
 
-def php_array(list_: "typing.List[str]") -> str:
+def php_array(list_: typing.List[str]) -> str:
     if not list_:
         return 'array()'
     return "array('%s')" % "', '".join(escape_php_string(_decode(x).strip()) for x in list_)

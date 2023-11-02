@@ -58,7 +58,7 @@ def main():
                 print('observer: sending mail')
                 send_mail(recipients=mailPrimaryAddress)
                 # wait for child
-                for i in range(0, timeout):
+                for i in range(timeout):
                     pid, status = os.waitpid(newpid, os.WNOHANG)
                     print('observer: checking status -> pid:%d status:%d' % (pid, os.WEXITSTATUS(status)))
                     if pid:

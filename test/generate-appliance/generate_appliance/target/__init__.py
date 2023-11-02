@@ -4,6 +4,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
+from __future__ import annotations
 from abc import ABCMeta
 from argparse import Namespace
 from pathlib import Path
@@ -77,7 +78,7 @@ class TargetFile(Target, metaclass=ABCMeta):
     SUFFIX = ""
 
     def archive_name(self) -> Path:
-        path: "Path" = self.options.filename
+        path: Path = self.options.filename
         if not self.options.no_target_specific_filename:
             path = path.with_name(f"{path.name}-{self.SUFFIX}")
 

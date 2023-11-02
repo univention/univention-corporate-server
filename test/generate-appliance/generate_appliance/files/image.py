@@ -4,6 +4,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
+from __future__ import annotations
 import sys
 from abc import ABCMeta
 from json import loads
@@ -21,7 +22,7 @@ log = getLogger(__name__)
 
 class Image(BaseImage, metaclass=ABCMeta):
     FMT = ""
-    OPTIONS: "Dict[str, str]" = {}
+    OPTIONS: Dict[str, str] = {}
 
     def __init__(self, raw: Raw, **kwargs) -> None:
         assert isinstance(raw, Raw)

@@ -181,7 +181,7 @@ class AppAttributes(object):
     @classmethod
     def attributes_for_module(cls, module):
         ret = []
-        for _option_name, option_def in cls.data_for_module(module).items():
+        for option_def in cls.data_for_module(module).values():
             ret.extend(option_def['attributes'])
         return ret
 
@@ -563,7 +563,7 @@ class UDM_Module(object):
 
             obj.create()
         except udm_errors.base as e:
-            MODULE.warn(f'Failed to create LDAP object: {e.__class__.__name__}: {str(e)}')
+            MODULE.warn(f'Failed to create LDAP object: {e.__class__.__name__}: {e!s}')
             UDM_Error(e, obj.dn).reraise()
 
         return obj.dn
@@ -582,7 +582,7 @@ class UDM_Module(object):
             obj.move(dest)
             return dest
         except udm_errors.base as e:
-            MODULE.warn(f'Failed to move LDAP object {ldap_dn}: {e.__class__.__name__}: {str(e)}')
+            MODULE.warn(f'Failed to move LDAP object {ldap_dn}: {e.__class__.__name__}: {e!s}')
             UDM_Error(e).reraise()
 
     def remove(self, ldap_dn, cleanup=False, recursive=False):
@@ -597,7 +597,7 @@ class UDM_Module(object):
             if cleanup:
                 udm_objects.performCleanup(obj)
         except udm_errors.base as e:
-            MODULE.warn(f'Failed to remove LDAP object {ldap_dn}: {e.__class__.__name__}: {str(e)}')
+            MODULE.warn(f'Failed to remove LDAP object {ldap_dn}: {e.__class__.__name__}: {e!s}')
             UDM_Error(e).reraise()
 
     def modify(self, ldap_object):
@@ -631,7 +631,7 @@ class UDM_Module(object):
                         except ValueError:
                             pass
                 obj.options = options
-                MODULE.info(f'Setting new options to {str(obj.options)}')
+                MODULE.info(f'Setting new options to {obj.options!s}')
                 del ldap_object['$options$']
             MODULE.info(f'Modifying LDAP object {obj.dn}')
             if '$policies$' in ldap_object:
@@ -642,7 +642,7 @@ class UDM_Module(object):
 
             obj.modify()
         except udm_errors.base as e:
-            MODULE.warn(f'Failed to modify LDAP object {obj.dn}: {e.__class__.__name__}: {str(e)}')
+            MODULE.warn(f'Failed to modify LDAP object {obj.dn}: {e.__class__.__name__}: {e!s}')
             UDM_Error(e).reraise()
 
     def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None, allow_asterisks=True):
@@ -812,7 +812,7 @@ class UDM_Module(object):
             mod = UDM_Module(child, ldap_connection=ldap_connection, ldap_position=ldap_position)
             if not mod.module:
                 continue
-            MODULE.info(f'Found module {str(mod)}')
+            MODULE.info(f'Found module {mod!s}')
             modules.append({
                 'id': child,
                 'label': mod.title,
@@ -984,7 +984,7 @@ class UDM_Module(object):
                 # E.g. users/user mailHomeServer; see Bug #33329, Bug #42903
 
                 try:
-                    item['default'] = [x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name), ldap_connection=ldap_connection, ldap_position=ldap_position) if x['id']][0]
+                    item['default'] = next(x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name), ldap_connection=ldap_connection, ldap_position=ldap_position) if x['id'])
                 except IndexError:
                     pass
 

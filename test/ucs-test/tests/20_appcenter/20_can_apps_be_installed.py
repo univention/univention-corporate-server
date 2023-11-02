@@ -42,7 +42,7 @@ with UCSTestConfigRegistry():
 
     def _apt_get_simulate(app):
         retcode = 0
-        for _i in range(0, 3):
+        for _i in range(3):
             if not app.without_repository:
                 print(f'Register app {app.id}')
                 # de register app, otherwise a second register (in case of an error) would not do nothing

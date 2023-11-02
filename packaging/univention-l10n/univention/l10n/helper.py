@@ -30,6 +30,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+from __future__ import annotations
 import os
 import subprocess
 
@@ -58,7 +59,7 @@ def make_parent_dir(path: str) -> None:
             raise
 
 
-def call(*argv: str, **kwargs: "Any") -> int:
+def call(*argv: str, **kwargs: Any) -> int:
     """
     Execute argv and wait.
 

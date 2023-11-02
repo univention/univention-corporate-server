@@ -121,7 +121,6 @@ with UCSTestConfigRegistry() as ucr_test:
                 umc_client.authenticate(user_name, new_password)
             except Exception:
                 time.sleep(5)
-                pass
             else:
                 new_password_worked = True
 

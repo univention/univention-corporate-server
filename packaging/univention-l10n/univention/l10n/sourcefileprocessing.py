@@ -34,7 +34,7 @@ Univention specific JSON-based format) from multiple source files by file type.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 import os
 
@@ -56,7 +56,7 @@ class UnsupportedSourceType(Exception):
 
 class SourceFileSet(object):
 
-    def __init__(self, src_pkg_path: str, binary_pkg_name: str, files: "Iterable[str]") -> None:
+    def __init__(self, src_pkg_path: str, binary_pkg_name: str, files: Iterable[str]) -> None:
         self.files = files
         self.src_pkg_path = src_pkg_path
         self.binary_pkg_name = binary_pkg_name
@@ -116,7 +116,7 @@ class SourceFilesHTML(SourceFileSet):
     def _create_po_template(self, pot_path: str) -> None:
         po_template = polib.POFile()
         html_parser = etree.HTMLParser()
-        js_paths: "List[str]" = []
+        js_paths: List[str] = []
         for html_path in self.files:
             with open(html_path, 'rb') as html_file:
                 tree = etree.parse(html_file, html_parser)  # noqa: S320
@@ -154,7 +154,7 @@ class SourceFileSetCreator(object):
         'application/javascript': SourceFilesJavaScript}
 
     @classmethod
-    def from_mimetype(cls, src_pkg_path: str, binary_pkg_name: str, mimetype: str, files: "Iterable[str]") -> "SourceFileSet":
+    def from_mimetype(cls, src_pkg_path: str, binary_pkg_name: str, mimetype: str, files: Iterable[str]) -> SourceFileSet:
         try:
             obj = cls.process_by_type[mimetype](src_pkg_path, binary_pkg_name, files)
         except KeyError:
@@ -163,5 +163,5 @@ class SourceFileSetCreator(object):
             return obj
 
 
-def from_mimetype(src_pkg_path: str, binary_pkg_name: str, mimetype: str, files: "Iterable[str]") -> "SourceFileSet":
+def from_mimetype(src_pkg_path: str, binary_pkg_name: str, mimetype: str, files: Iterable[str]) -> SourceFileSet:
     return SourceFileSetCreator.from_mimetype(src_pkg_path, binary_pkg_name, mimetype, files)

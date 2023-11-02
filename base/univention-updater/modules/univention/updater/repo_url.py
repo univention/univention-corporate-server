@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 """Univention Updater: UCR Repository Server URL"""
+from __future__ import annotations
 
 from copy import copy
 
@@ -50,7 +51,7 @@ class UcsRepoUrl(object):
 
     DEFAULT = 'https://updates.software-univention.de/'
 
-    def __init__(self, ucr: "ConfigRegistry", prefix: str, default: "Union[None, str, UcsRepoUrl]"=None) -> None:
+    def __init__(self, ucr: ConfigRegistry, prefix: str, default: None | (str | UcsRepoUrl)=None) -> None:
         """
         >>> UcsRepoUrl({'_/server': 'hostname'}, '_').path
         ''
@@ -67,7 +68,7 @@ class UcsRepoUrl(object):
         >>> UcsRepoUrl({}, '').private() == UcsRepoUrl.DEFAULT
         True
         """
-        def ucrv(key: str, default: "_T"=None) -> "_T":
+        def ucrv(key: str, default: _T=None) -> _T:
             return ucr.get(f'{prefix}/{key}', default)
 
         server = ucrv('server', '')
@@ -177,7 +178,7 @@ class UcsRepoUrl(object):
         """
         return isinstance(other, UcsRepoUrl) and self.private() == other.private()
 
-    def __add__(self, rel: str) -> "UcsRepoUrl":
+    def __add__(self, rel: str) -> UcsRepoUrl:
         """
         Append relative path component.
 

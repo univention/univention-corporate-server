@@ -1,4 +1,5 @@
 """Internal functions for test finding and setup."""
+from __future__ import annotations
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -84,14 +85,14 @@ def strip_indent(text: str) -> str:
     return '\n'.join(line[indent:] for line in lines)
 
 
-def get_sections() -> "Dict[str, str]":
+def get_sections() -> Dict[str, str]:
     """Return dictionary section-name -> section-directory."""
     section_dirs = os.listdir(TEST_BASE)
     sections = {dirname[3:]: TEST_BASE + os.path.sep + dirname for dirname in section_dirs if RE_SECTION.match(dirname)}
     return sections
 
 
-def get_tests(sections: "Iterable[str]") -> "Dict[str, List[str]]":
+def get_tests(sections: Iterable[str]) -> Dict[str, List[str]]:
     """Return dictionary of section -> [filenames]."""
     result = {}
     logger = logging.getLogger('test.find')
@@ -191,7 +192,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
     RE_VERSION = re.compile(r"^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
 
     @classmethod
-    def _parse(cls, ver: str, default_op: str='=') -> "Tuple[Callable[[Any, Any], Any], Tuple[int, int, int, int]]":
+    def _parse(cls, ver: str, default_op: str='=') -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, int, int]]:
         """
         Parse UCS-version range and return two-tuple (operator, version)
         >>> UCSVersion._parse('11.22')  # doctest: +ELLIPSIS
@@ -221,7 +222,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
         if not match:
             raise ValueError(f'Version does not match: "{ver}"')
         rel = match.group(1) or default_op
-        parts: "Tuple[int, int, int, int]" = tuple(int(_) if _ else INF for _ in match.groups()[1:])  # type: ignore
+        parts: Tuple[int, int, int, int] = tuple(int(_) if _ else INF for _ in match.groups()[1:])  # type: ignore
         if rel in ('<', '<<'):
             return (operator.lt, parts)
         if rel in ('<=',):
@@ -234,7 +235,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
             return (operator.gt, parts)
         raise ValueError(f'Unknown version match: "{ver}"')
 
-    def __init__(self, ver: "Union[str, Tuple[int, int, int, int]]") -> None:
+    def __init__(self, ver: str | Tuple[int, int, int, int]) -> None:
         if isinstance(ver, str):
             self.rel, self.ver = self._parse(ver)
         elif isinstance(ver, tuple):
@@ -264,25 +265,25 @@ class UCSVersion:  # pylint: disable-msg=R0903
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}({self.__str__()!r})'
 
-    def __lt__(self, other: "Any") -> object:
+    def __lt__(self, other: Any) -> object:
         return self.ver < other.ver if isinstance(other, UCSVersion) else NotImplemented
 
-    def __le__(self, other: "Any") -> object:
+    def __le__(self, other: Any) -> object:
         return self.ver <= other.ver if isinstance(other, UCSVersion) else NotImplemented
 
-    def __eq__(self, other: "Any") -> bool:
+    def __eq__(self, other: object) -> bool:
         return self.ver == other.ver if isinstance(other, UCSVersion) else False
 
-    def __ne__(self, other: "Any") -> bool:
+    def __ne__(self, other: object) -> bool:
         return self.ver != other.ver if isinstance(other, UCSVersion) else False
 
-    def __ge__(self, other: "Any") -> object:
+    def __ge__(self, other: Any) -> object:
         return self.ver >= other.ver if isinstance(other, UCSVersion) else NotImplemented
 
-    def __gt__(self, other: "Any") -> object:
+    def __gt__(self, other: Any) -> object:
         return self.ver > other.ver if isinstance(other, UCSVersion) else NotImplemented
 
-    def match(self, other: "UCSVersion") -> bool:
+    def match(self, other: UCSVersion) -> bool:
         """
         Check if other matches the criterion.
         >>> UCSVersion('>1.2-3').match(UCSVersion('1.2-4'))

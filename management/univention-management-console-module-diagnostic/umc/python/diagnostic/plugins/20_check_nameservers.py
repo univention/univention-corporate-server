@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import itertools as it
 import socket
 from typing import Any, Dict, Iterator, Tuple
@@ -63,11 +64,11 @@ class RecordNotFound(Exception):
 
 
 class ZoneError(Exception):
-    def __init__(self, nameserver: "NameServer") -> None:
+    def __init__(self, nameserver: NameServer) -> None:
         self.nameserver = nameserver
 
     @property
-    def zone(self) -> "Zone":
+    def zone(self) -> Zone:
         return self.nameserver.zone
 
 

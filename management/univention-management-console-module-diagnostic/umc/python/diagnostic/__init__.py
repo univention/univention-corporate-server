@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, seGe
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import os.path
 import traceback
 from collections import OrderedDict
@@ -85,7 +86,7 @@ class Instance(Base, ProgressMixin):
     PLUGIN_DIR = os.path.dirname(plugins.__file__)
 
     def init(self) -> None:
-        self.modules: Dict[str, "Plugin"] = {}
+        self.modules: Dict[str, Plugin] = {}
         self.load()
 
     @sanitize(
@@ -131,10 +132,10 @@ class Instance(Base, ProgressMixin):
                 raise
         self.modules = OrderedDict(sorted(self.modules.items(), key=lambda t: t[0]))
 
-    def get(self, plugin: str) -> "Plugin":
+    def get(self, plugin: str) -> Plugin:
         return self.modules[plugin]
 
-    def __iter__(self) -> Iterator["Plugin"]:
+    def __iter__(self) -> Iterator[Plugin]:
         return iter(self.modules.values())
 
 
@@ -254,7 +255,7 @@ class Plugin(object):
         return getattr(self.module, 'links', [])
 
     @property
-    def actions(self) -> Dict[str, Callable[[Instance], Optional[Dict[str, Any]]]]:
+    def actions(self) -> Dict[str, Callable[[Instance], Dict[str, Any] | None]]:
         return getattr(self.module, 'actions', {})
 
     def __init__(self, plugin: str) -> None:
@@ -294,7 +295,7 @@ class Plugin(object):
         result.setdefault('buttons', []).insert(0, {'label': _('Test again')})
         return result
 
-    def match(self, pattern: Pattern[str]) -> Optional[Match]:
+    def match(self, pattern: Pattern[str]) -> Match | None:
         return pattern.match(self.title) or pattern.match(self.description)
 
     def __str__(self) -> str:

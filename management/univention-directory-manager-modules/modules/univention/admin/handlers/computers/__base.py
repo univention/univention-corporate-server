@@ -31,6 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """|UDM| module for generic computer objects"""
+from __future__ import annotations
 
 import functools
 import time
@@ -303,7 +304,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
         return None
 
     @classmethod
-    def unmapped_lookup_filter(cls) -> "univention.admin.filter.conjunction":
+    def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
         filter_p = super(ComputerObject, cls).unmapped_lookup_filter()
         if cls.SERVER_ROLE and cls.SERVER_ROLE != 'member':
             filter_p.expressions.append(univention.admin.filter.expression('univentionServerRole', cls.SERVER_ROLE, escape=True))

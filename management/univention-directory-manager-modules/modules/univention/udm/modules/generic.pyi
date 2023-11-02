@@ -38,6 +38,7 @@ import univention.config_registry
 
 from ..base import BaseModuleMetadataTV, BaseModuleTV, BaseObjectProperties, BaseObjectTV, ModuleMeta
 from ..encoders import BaseEncoder, DnPropertyEncoder  # noqa: F401
+import typing_extensions
 
 
 GenericObjectPropertiesTV = TypeVar(  # noqa: PYI001
@@ -52,7 +53,7 @@ GenericModuleTV = TypeVar('GenericModuleTV', bound=univention.udm.modules.generi
 OriUdmHandlerTV = TypeVar('OriUdmHandlerTV', bound=univention.admin.handlers.simpleLdap)  # noqa: PYI001
 
 
-ucr = None  # type: univention.config_registry.ConfigRegistry
+ucr: typing_extensions.TypeAlias = None  # type: univention.config_registry.ConfigRegistry
 DEFAULT_CONTAINERS_DN = ''
 
 
@@ -115,7 +116,7 @@ class GenericModule(BaseModuleTV):
     _udm_module_meta_class = GenericModuleMetadata  # type: Type[GenericModuleMetadata]
     _udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], OriUdmHandlerTV]
     _default_containers = {}  # type: Dict[str, Dict[str, Any]]
-    _orig_udm_module = None  # type: OriUdmHandlerTV
+    _orig_udm_module: typing_extensions.TypeAlias = None  # type: OriUdmHandlerTV
 
     class Meta:
         supported_api_versions = ()  # type: Iterable[int]

@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import os
 import re
@@ -54,7 +54,7 @@ __all__ = [
 ]
 
 
-def replace_dict(line: str, dictionary: "Dict[str, str]") -> str:
+def replace_dict(line: str, dictionary: Dict[str, str]) -> str:
     """
     Map any character from line to its value from dictionary.
 
@@ -120,7 +120,7 @@ VALID_CHARS = (  # type: ignore # pylint: disable-msg=W0612
     string.ascii_letters + string.digits + '_')
 
 
-def validate_key(key: str, out: "IO"=sys.stderr) -> bool:
+def validate_key(key: str, out: IO=sys.stderr) -> bool:
     """
     Check if key consists of only shell valid characters.
 
@@ -150,7 +150,7 @@ def validate_key(key: str, out: "IO"=sys.stderr) -> bool:
 INVALID_KEY_CHARS = re.compile('[][\r\n!"#$%&\'()+,;<=>?\\\\`{}§]')
 
 
-def directory_files(directory: str) -> "List[str]":
+def directory_files(directory: str) -> List[str]:
     """
     Return a list of all files below the given directory.
 

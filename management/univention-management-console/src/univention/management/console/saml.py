@@ -366,7 +366,7 @@ class SamlACS(SAMLResource):
         if self.get_query_argument(self.idp_query_param, None) in idps:
             return self.get_query_argument(self.idp_query_param)
         if len(idps) == 1:
-            return list(idps.keys())[0]
+            return next(iter(idps.keys()))
         if not idps:
             raise SamlError(self._).no_identity_provider()
         raise SamlError(self._).multiple_identity_provider(list(idps.keys()), self.idp_query_param)
@@ -490,7 +490,7 @@ class SamlLogout(SamlACS):
             user.saml = None
             data = {}
 
-        for _entity_id, logout_info in data.items():
+        for logout_info in data.values():
             if not isinstance(logout_info, tuple):
                 continue  # result from logout, should be OK
 

@@ -33,6 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import annotations
 import logging
 from typing import Any, Callable, Iterable, List  # noqa: F401
 
@@ -56,7 +57,7 @@ class ChecksAndWaits:
             self.get_all_visible_elements, f'waited {timeout} seconds for text {text!r}',
         )
 
-    def wait_for_any_text_in_list(self, texts: "Iterable[str]", timeout: int=60) -> None:
+    def wait_for_any_text_in_list(self, texts: Iterable[str], timeout: int=60) -> None:
         logger.info("Waiting until any of those texts is visible: %r", texts)
         xpaths = [f'//*[contains(text(), "{text}")]' for text in texts]
         WebDriverWait(xpaths, timeout).until(
@@ -69,7 +70,7 @@ class ChecksAndWaits:
             self.elements_invisible, f'waited {timeout} seconds for text {text!r} to disappear',
         )
 
-    def wait_for_button(self, button_text: str, **kwargs: "Any") -> None:
+    def wait_for_button(self, button_text: str, **kwargs: Any) -> None:
         logger.info("Waiting for the button %r", button_text)
         self.click_element(
             expand_path('//*[@containsClass="dijitButtonText"][text() = "%s"]')
@@ -123,16 +124,16 @@ class ChecksAndWaits:
             timeout=timeout,
         )
 
-    def wait_until(self, check_function: "Callable[..., Any]", timeout: int=60) -> None:
+    def wait_until(self, check_function: Callable[..., Any], timeout: int=60) -> None:
         WebDriverWait(self.driver, timeout).until(
             check_function, f'wait_until({check_function!r}, timeout={timeout!r})',
         )
 
-    def get_gallery_items(self) -> "List[str]":
+    def get_gallery_items(self) -> List[str]:
         items = self.get_all_visible_elements(['//div[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")]'])
         return [item.text for item in items]
 
-    def get_all_visible_elements(self, xpaths: "Iterable[str]") -> "List[Any]":
+    def get_all_visible_elements(self, xpaths: Iterable[str]) -> List[Any]:
         try:
             return [
                 elem
@@ -144,7 +145,7 @@ class ChecksAndWaits:
             pass
         return []
 
-    def elements_invisible(self, xpath: "Iterable[str]") -> bool:
+    def elements_invisible(self, xpath: Iterable[str]) -> bool:
         elems = self.driver.find_elements(By.XPATH, xpath)
         try:
             return all(not elem.is_displayed() for elem in elems)
@@ -152,7 +153,7 @@ class ChecksAndWaits:
             pass
         return False
 
-    def elements_visible(self, xpath: "Iterable[str]") -> bool:
+    def elements_visible(self, xpath: Iterable[str]) -> bool:
         elems = self.driver.find_elements(By.XPATH, xpath)
         try:
             return any(elem.is_displayed() for elem in elems)
@@ -160,7 +161,7 @@ class ChecksAndWaits:
             pass
         return False
 
-    def wait_for_element_by_css_selector(self, css_selector: str, message: str='', timeout: int=60) -> "Any":
+    def wait_for_element_by_css_selector(self, css_selector: str, message: str='', timeout: int=60) -> Any:
         return WebDriverWait(self.driver, timeout).until(
             expected_conditions.presence_of_element_located((By.CSS_SELECTOR, css_selector)),
             message,

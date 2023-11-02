@@ -1,4 +1,5 @@
 """Format UCS Test results as JUnit report."""
+from __future__ import annotations
 
 
 import errno
@@ -23,13 +24,13 @@ class Junit(TestFormatInterface):
     <http://windyroad.org/dl/Open%20Source/JUnit.xsd>
     """
 
-    def __init__(self, stream: "IO[str]"=sys.stdout) -> None:
+    def __init__(self, stream: IO[str]=sys.stdout) -> None:
         super().__init__(stream)
         self.outdir = "test-reports"
         self.now = datetime.today()
         self.raw = Raw(stream)
 
-    def begin_test(self, case: "TestCase", prefix: str='') -> None:
+    def begin_test(self, case: TestCase, prefix: str='') -> None:
         """Called before each test."""
         super().begin_test(case, prefix)
         self.now = datetime.today().replace(microsecond=0)
@@ -41,7 +42,7 @@ class Junit(TestFormatInterface):
         print('')  # clear \r
         self.stream.flush()
 
-    def end_test(self, result: "TestResult") -> None:
+    def end_test(self, result: TestResult) -> None:
         """Called after each test."""
         self.raw.end_test(result, end='')
         failures = errors = skipped = disabled = 0
@@ -174,14 +175,14 @@ class Junit(TestFormatInterface):
             xml.endDocument()
         super().end_test(result)
 
-    def utf8(self, data: "Any") -> str:
+    def utf8(self, data: Any) -> str:
         if isinstance(data, str):
             data = data.encode('utf-8', 'replace').decode('utf-8')
         elif isinstance(data, bytes):
             data = data.decode('utf-8', 'replace').encode('utf-8')
         return data
 
-    def format(self, result: "TestResult") -> None:
+    def format(self, result: TestResult) -> None:
         """
         >>> from univention.testing.data import TestEnvironment
         >>> te = TestEnvironment()

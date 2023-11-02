@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import datetime
 import sys
@@ -53,7 +53,7 @@ class LicenseNotFound(LicenseCheckError):
     """The license cannot be found in LDAP"""
 
 
-def is_CSP_license(lo: "Optional[univention.uldap.acceess]"=None) -> bool:
+def is_CSP_license(lo: univention.uldap.acceess | None=None) -> bool:
     """
     Function to detect if installed license is a cloud service provider license (CSP).
 

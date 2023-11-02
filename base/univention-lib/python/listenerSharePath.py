@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """Univention Helper functions for creating or renaming share directories"""
+from __future__ import annotations
 
 import fnmatch
 import os
@@ -67,7 +68,7 @@ DIR_BLACKLIST.append("/run")
 DIR_BLACKLIST.append("/srv")
 
 
-def dirIsMountPoint(path: str) -> "Optional[str]":
+def dirIsMountPoint(path: str) -> str | None:
     """
     Check if `path` is a mount point.
 
@@ -92,7 +93,7 @@ def dirIsMountPoint(path: str) -> "Optional[str]":
     return None
 
 
-def checkDirFileSystem(path: str, cr: "ConfigRegistry") -> "Optional[str]":
+def checkDirFileSystem(path: str, cr: ConfigRegistry) -> str | None:
     """
     Check if the given path is of a known file system type.
 
@@ -116,7 +117,7 @@ def checkDirFileSystem(path: str, cr: "ConfigRegistry") -> "Optional[str]":
     return f"filesystem {myFs} for {path} is not on a known filesystem"
 
 
-def createOrRename(old: "Dict[str, List[bytes]]", new: "Dict[str, List[bytes]]", cr: "ConfigRegistry") -> "Optional[str]":
+def createOrRename(old: Dict[str, List[bytes]], new: Dict[str, List[bytes]], cr: ConfigRegistry) -> str | None:
     """
     Create or rename a share.
 
@@ -269,7 +270,7 @@ def createOrRename(old: "Dict[str, List[bytes]]", new: "Dict[str, List[bytes]]",
     return None
 
 
-def is_blacklisted(path: str, ucr: "ConfigRegistry") -> bool:
+def is_blacklisted(path: str, ucr: ConfigRegistry) -> bool:
     """
 
     >>> is_blacklisted('/home/', {})

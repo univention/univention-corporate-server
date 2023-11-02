@@ -30,14 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import annotations, absolute_import, unicode_literals
 
 from typing import List  # noqa: F401
 
 import univention.admin.modules
 
 
-def get_all_udm_module_names() -> "List[str]":
+def get_all_udm_module_names() -> List[str]:
     """
     Get the names of all installed UDM modules.
 

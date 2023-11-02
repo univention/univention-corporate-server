@@ -6,6 +6,7 @@
 ## roles: [domaincontroller_master]
 ## tags: [skip_admember]
 
+from __future__ import annotations
 import contextlib
 from typing import Dict, List  # noqa: F401
 
@@ -37,7 +38,7 @@ REASON_MINIMUM_AGE = 'Changing password failed. The minimum password age is not 
 REASON_TOO_SIMILAR = 'Changing password failed. The password is too similar to the old one.'
 
 # TODO: add a lot more unimplemented tests!
-reasons: "Dict[str, List[str]]" = {
+reasons: Dict[str, List[str]] = {
     REASON_TOO_SHORT: ['Test', 'ana', 'a1z'],
     REASON_TOO_SIMPLE: ['123456789'],
     REASON_PALINDROME: [],  # none work: ['Tattarrattat', 'Rotavator', 'Malayalam', 'Deleveled', 'Racecar', 'Detartrated'],

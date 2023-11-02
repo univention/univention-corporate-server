@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import codecs
 import logging
 import os
@@ -52,7 +53,7 @@ SAMBA_ACCOUNT_FLAG_LOCKED = 'L'
 DISALLOWED_SAMBA_ACCOUNT_FLAGS = frozenset((SAMBA_ACCOUNT_FLAG_DISABLED, SAMBA_ACCOUNT_FLAG_LOCKED))
 
 
-def convert_network_access_attr(attributes: "Dict[str, List[bytes]]") -> bool:
+def convert_network_access_attr(attributes: Dict[str, List[bytes]]) -> bool:
     return b'1' in attributes.get('univentionNetworkAccess', [])
 
 
@@ -61,7 +62,7 @@ def convert_ucs_debuglevel(ucs_debuglevel: int) -> int:
     return logging_debuglevel
 
 
-def get_ldapConnection() -> "univention.uldap.access":
+def get_ldapConnection() -> univention.uldap.access:
     try:
         # try ldap/server/name, then each of ldap/server/addition
         return univention.uldap.getMachineConnection(ldap_master=False, reconnect=False, secret_file='/etc/freeradius.secret')
@@ -94,7 +95,7 @@ class UserDeactivatedError(NetworkAccessError):
 
 class NetworkAccess(object):
 
-    def __init__(self, username: str, stationId: str, loglevel: "Optional[int]"=None, logfile: "Optional[str]"=None) -> None:
+    def __init__(self, username: str, stationId: str, loglevel: int | None=None, logfile: str | None=None) -> None:
         self.username = parse_username(username)
         self.mac_address = decode_stationId(stationId)
         self.ldapConnection = get_ldapConnection()
@@ -106,7 +107,7 @@ class NetworkAccess(object):
         self.logger.debug('Given username: %r', username)
         self.logger.debug('Given stationId: %r', stationId)
 
-    def _setup_logger(self, loglevel: "Optional[int]", logfile: "Optional[str]") -> None:
+    def _setup_logger(self, loglevel: int | None, logfile: str | None) -> None:
         if loglevel is not None:
             ucs_debuglevel = loglevel
         else:
@@ -118,7 +119,7 @@ class NetworkAccess(object):
         self.logger = logging.getLogger('radius-ntlm')
         self.logger.setLevel(debuglevel)
         if logfile is not None:
-            log_handler: "logging.Handler" = logging.FileHandler(logfile)
+            log_handler: logging.Handler = logging.FileHandler(logfile)
             log_formatter = logging.Formatter(f'%(asctime)s - %(name)s - %(levelname)10s: [pid={os.getpid()}; user={self.username}; mac={self.mac_address}] %(message)s')
         else:
             log_handler = logging.StreamHandler()
@@ -127,28 +128,28 @@ class NetworkAccess(object):
         self.logger.addHandler(log_handler)
         # self.logger.info("Loglevel set to: %s", ucs_debuglevel)
 
-    def build_access_dict(self, ldap_result: "List[Tuple[str, Dict[str, List[bytes]]]]") -> "Dict[str, bool]":
+    def build_access_dict(self, ldap_result: List[Tuple[str, Dict[str, List[bytes]]]]) -> Dict[str, bool]:
         access_dict = {
             dn: convert_network_access_attr(attributes)
             for (dn, attributes) in ldap_result
         }
         return access_dict
 
-    def get_user_network_access(self, uid: str) -> "Dict[str, bool]":
+    def get_user_network_access(self, uid: str) -> Dict[str, bool]:
         users = self.ldapConnection.search(filter=filter_format('(uid=%s)', (uid, )), attr=['univentionNetworkAccess'])
         if not users:
             users = self.ldapConnection.search(filter=filter_format('(mailPrimaryAddress=%s)', (uid, )), attr=['univentionNetworkAccess'])
         return self.build_access_dict(users)
 
-    def get_station_network_access(self, mac_address: str) -> "Dict[str, bool]":
+    def get_station_network_access(self, mac_address: str) -> Dict[str, bool]:
         stations = self.ldapConnection.search(filter=filter_format('(macAddress=%s)', (mac_address, )), attr=['univentionNetworkAccess'])
         return self.build_access_dict(stations)
 
-    def get_groups_network_access(self, dn: str) -> "Dict[str, bool]":
+    def get_groups_network_access(self, dn: str) -> Dict[str, bool]:
         groups = self.ldapConnection.search(filter=filter_format('(uniqueMember=%s)', (dn, )), attr=['univentionNetworkAccess'])
         return self.build_access_dict(groups)
 
-    def evaluate_ldap_network_access(self, access: "Dict[str, bool]", level: str='') -> bool:
+    def evaluate_ldap_network_access(self, access: Dict[str, bool], level: str='') -> bool:
         short_circuit = not self.logger.isEnabledFor(logging.DEBUG)
         policy = any(access.values())
         if short_circuit and policy:

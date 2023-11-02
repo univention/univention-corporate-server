@@ -34,6 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import os
 import shlex
 import subprocess
@@ -61,14 +62,14 @@ class Service(uit.LocalizedDictionary):
     OPTIONAL = frozenset(('start_type', 'systemd', 'icon', 'name', 'init_script'))
     KNOWN = REQUIRED | OPTIONAL
 
-    def __init__(self, *args: "Any", **kwargs: "Any") -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         uit.LocalizedDictionary.__init__(self, *args, **kwargs)
         self.running = False
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}({dict.__repr__(self)})'
 
-    def check(self) -> "List[str]":
+    def check(self) -> List[str]:
         """Check service entry for validity, returning list of incomplete entries."""
         incomplete = [key for key in self.REQUIRED if not self.get(key, None)]
         unknown = [key for key in self.keys() if key.lower() not in self.KNOWN]
@@ -108,7 +109,7 @@ class Service(uit.LocalizedDictionary):
             raise ServiceError(self.status() or output)
         return True
 
-    def __change_state(self, action: str) -> "Tuple[int, str]":
+    def __change_state(self, action: str) -> Tuple[int, str]:
         if self.get('init_script'):
             # samba currently must not be started via systemd
             return self._exec((f'/etc/init.d/{self["init_script"]}', action))
@@ -122,13 +123,13 @@ class Service(uit.LocalizedDictionary):
             service_name = service_name.rsplit('.', 1)[0]
         return service_name
 
-    def _exec(self, args: "Sequence[str]") -> "Tuple[int, str]":
+    def _exec(self, args: Sequence[str]) -> Tuple[int, str]:
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
         output = process.communicate()[0]
         return process.returncode, output.decode('utf-8', 'replace').strip()
 
 
-def pidof(name: str, docker: str='/var/run/docker.pid') -> "List[int]":
+def pidof(name: str, docker: str='/var/run/docker.pid') -> List[int]:
     """
     Return list of process IDs matching name.
 
@@ -138,10 +139,10 @@ def pidof(name: str, docker: str='/var/run/docker.pid') -> "List[int]":
     >>> import os,sys;os.getpid() in list(pidof(os.path.realpath(sys.executable))) + list(pidof(sys.executable)) + list(pidof(sys.argv[0]))
     True
     """
-    result: "Set[int]" = set()
+    result: Set[int] = set()
     log = getLogger(__name__)
 
-    children: "Dict[int, List[int]]" = {}
+    children: Dict[int, List[int]] = {}
     if isinstance(docker, six.string_types):
         try:
             with open(docker) as stream:
@@ -216,13 +217,13 @@ class ServiceInfo(object):
         for serv in self.services.values():
             serv._update_status()
 
-    def check_services(self) -> "Dict[str, List[str]]":
+    def check_services(self) -> Dict[str, List[str]]:
         """
         Check service descriptions for completeness.
 
         :returns: dictionary of incomplete service descriptions.
         """
-        incomplete: "Dict[str, List[str]]" = {}
+        incomplete: Dict[str, List[str]] = {}
         for name, srv in self.services.items():
             miss = srv.check()
             if miss:
@@ -248,7 +249,7 @@ class ServiceInfo(object):
         except EnvironmentError:
             return False
 
-    def read_services(self, filename: "Optional[str]"=None, package: "Optional[str]"=None, override: bool=False) -> None:
+    def read_services(self, filename: str | None=None, package: str | None=None, override: bool=False) -> None:
         """
         Read start/stop levels of services.
 
@@ -298,7 +299,7 @@ class ServiceInfo(object):
         custom = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED)
         self.read_services(custom, override=True)
 
-    def get_services(self) -> "Iterable[str]":
+    def get_services(self) -> Iterable[str]:
         """
         Return a list fo service names.
 
@@ -306,7 +307,7 @@ class ServiceInfo(object):
         """
         return self.services.keys()
 
-    def get_service(self, name: str) -> "Optional[Service]":
+    def get_service(self, name: str) -> Service | None:
         """
         Return the service object associated with the given name.
 
@@ -315,7 +316,7 @@ class ServiceInfo(object):
         """
         return self.services.get(name, None)
 
-    def add_service(self, name: str, service: "Service") -> None:
+    def add_service(self, name: str, service: Service) -> None:
         """
         Add a new service object or overrides an old entry.
 

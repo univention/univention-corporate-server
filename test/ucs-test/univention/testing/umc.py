@@ -33,6 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import annotations
 import pprint
 import sys
 from html.parser import HTMLParser
@@ -50,7 +51,7 @@ class Client(_Client):
     print_request_data = True
 
     @classmethod
-    def get_test_connection(cls, hostname: "Optional[str]"=None, *args: "Any", **kwargs: "Any") -> "Client":
+    def get_test_connection(cls, hostname: str | None=None, *args: Any, **kwargs: Any) -> Client:
         ucr = ConfigRegistry()
         ucr.load()
         username = ucr.get('tests/domainadmin/account')
@@ -58,7 +59,7 @@ class Client(_Client):
         password = ucr.get('tests/domainadmin/pwd')
         return cls(hostname, username, password, *args, **kwargs)
 
-    def umc_command(self, *args: "Any", **kwargs: "Any") -> "Client":
+    def umc_command(self, *args: Any, **kwargs: Any) -> Client:
         self.print_request_data = kwargs.pop('print_request_data', True)
         self.print_response = kwargs.pop('print_response', True)
         try:
@@ -67,7 +68,7 @@ class Client(_Client):
             self.print_request_data = True
             self.print_response = True
 
-    def request(self, method: str, path: str, data: "Any"=None, headers: "Any"=None) -> "Any":
+    def request(self, method: str, path: str, data: Any=None, headers: Any=None) -> Any:
         print('')
         print('*** UMC request: "%s %s" %s' % (method, path, '(%s)' % (data.get('flavor'),) if isinstance(data, dict) else ''))
         if self.print_request_data:
@@ -91,21 +92,21 @@ class SamlLoginError(Exception):
 
 
 class GetHtmlTagValue(HTMLParser):
-    def __init__(self, tag: str, condition: "Tuple[str, str]", value_name: str) -> None:
+    def __init__(self, tag: str, condition: Tuple[str, str], value_name: str) -> None:
         self.tag = tag
         self.condition = condition
         self.value_name = value_name
-        self.value: "Optional[str]" = None
+        self.value: str | None = None
         super().__init__()
 
-    def handle_starttag(self, tag: str, attrs: "Iterable[Tuple[str, Optional[str]]]") -> None:
+    def handle_starttag(self, tag: str, attrs: Iterable[Tuple[str, str | None]]) -> None:
         if tag == self.tag and self.condition in attrs:
             for attr in attrs:
                 if attr[0] == self.value_name:
                     self.value = attr[1]
 
 
-def get_html_tag_value(page: str, tag: str, condition: "Tuple[str, str]", value_name: str) -> str:
+def get_html_tag_value(page: str, tag: str, condition: Tuple[str, str], value_name: str) -> str:
     htmlParser = GetHtmlTagValue(tag, condition, value_name)
     htmlParser.feed(page)
     htmlParser.close()
@@ -115,10 +116,10 @@ def get_html_tag_value(page: str, tag: str, condition: "Tuple[str, str]", value_
 
 class ClientSaml(Client):
 
-    def authenticate(self, *args: "Any") -> None:
+    def authenticate(self, *args: Any) -> None:
         self.authenticate_saml(*args)
 
-    def authenticate_saml(self, *args: "Any") -> None:
+    def authenticate_saml(self, *args: Any) -> None:
         self.__samlSession = requests.Session()
 
         saml_login_url = f"https://{self.hostname}/univention/saml/"
@@ -131,7 +132,7 @@ class ClientSaml(Client):
         self._send_saml_response_to_sp(saml_idp_login_ans)
         self.cookies.update(self.__samlSession.cookies.items())
 
-    def _login_at_idp_with_credentials(self, saml_login_page: "Any") -> "Any":
+    def _login_at_idp_with_credentials(self, saml_login_page: Any) -> Any:
         """Send login form to IdP"""
         auth_state = get_html_tag_value(saml_login_page.text, 'input', ('name', 'AuthState'), 'value')
         data = {'username': self.username, 'password': self.password, 'AuthState': auth_state}
@@ -142,7 +143,7 @@ class ClientSaml(Client):
             raise SamlLoginError(f'Login failed?:\n{saml_idp_login_ans.text}')
         return saml_idp_login_ans
 
-    def _send_saml_response_to_sp(self, saml_idp_login_ans: "Any") -> None:
+    def _send_saml_response_to_sp(self, saml_idp_login_ans: Any) -> None:
         sp_login_url = get_html_tag_value(saml_idp_login_ans.text, 'form', ('method', 'post'), 'action')
         saml_msg = get_html_tag_value(saml_idp_login_ans.text, 'input', ('name', 'SAMLResponse'), 'value')
         relay_state = get_html_tag_value(saml_idp_login_ans.text, 'input', ('name', 'RelayState'), 'value')

@@ -35,6 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from __future__ import annotations
 import logging
 import os.path
 import ssl
@@ -136,7 +137,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
     def log_exception(cls, exc, logger=None):
         cls._log(logger, logging.ERROR, exc, exc_info=1)
 
-    def setup_parser(self, parser: "ArgumentParser") -> None:
+    def setup_parser(self, parser: ArgumentParser) -> None:
         pass
 
     @property
@@ -148,7 +149,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
         self._progress_percentage = percentage
         self.progress.debug(str(percentage))
 
-    def _build_namespace(self, _namespace: "Optional[Namespace]"=None, **kwargs: "Any") -> "Namespace":
+    def _build_namespace(self, _namespace: Namespace | None=None, **kwargs: Any) -> Namespace:
         parser = ArgumentParser()
         self.setup_parser(parser)
         namespace = Namespace()
@@ -166,19 +167,19 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
         return namespace
 
     @classmethod
-    def call_safe(cls, **kwargs: "Any") -> "Any":
+    def call_safe(cls, **kwargs: Any) -> Any:
         try:
             return cls.call(**kwargs)
         except Abort:
             return None
 
     @classmethod
-    def call(cls, **kwargs: "Any") -> "Any":
+    def call(cls, **kwargs: Any) -> Any:
         obj = cls()
         namespace = obj._build_namespace(**kwargs)
         return obj.call_with_namespace(namespace)
 
-    def call_with_namespace(self, namespace: "Namespace") -> "Any":
+    def call_with_namespace(self, namespace: Namespace) -> Any:
         self.debug(f'Calling {self.get_action_name()}')
         self.percentage = 0
         try:
@@ -196,7 +197,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
             self.percentage = 100
             return result
 
-    def _get_joinscript_path(self, app: "App", unjoin: bool=False) -> str:
+    def _get_joinscript_path(self, app: App, unjoin: bool=False) -> str:
         number = 50
         suffix = ''
         ext = 'inst'
@@ -213,7 +214,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
             os.chmod(fname, 0o744)
         return self._call_script(fname, *args, **kwargs)
 
-    def _call_script(self, _script: str, *args: "Any", **kwargs: "Any") -> "Optional[bool]":
+    def _call_script(self, _script: str, *args: Any, **kwargs: Any) -> bool | None:
         if not os.path.exists(_script):
             self.debug(f'{_script} does not exist')
             return None
@@ -231,7 +232,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
 
         return process.returncode == 0
 
-    def _subprocess(self, args: "Sequence[str]", logger: "Optional[logging.Logger]"=None, env: "Optional[Mapping[str, str]]"=None, cwd: "Optional[str]"=None) -> "Any":
+    def _subprocess(self, args: Sequence[str], logger: logging.Logger | None=None, env: Mapping[str, str] | None=None, cwd: str | None=None) -> Any:
         if logger is None:
             logger = self.logger
         elif isinstance(logger, string_types):
@@ -244,12 +245,12 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
         send_information(action, app, status, value)
 
 
-def get_action(action_name: str) -> "Optional[UniventionAppAction]":
+def get_action(action_name: str) -> UniventionAppAction | None:
     _import()
     return _ACTIONS.get(action_name)
 
 
-def all_actions() -> "Iterator[Tuple[str, UniventionAppAction]]":
+def all_actions() -> Iterator[Tuple[str, UniventionAppAction]]:
     _import()
     for action_name in sorted(_ACTIONS):
         yield action_name, _ACTIONS[action_name]

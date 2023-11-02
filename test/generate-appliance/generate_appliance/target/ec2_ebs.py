@@ -4,6 +4,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
+from __future__ import annotations
 import datetime
 import sys
 from logging import getLogger
@@ -63,7 +64,7 @@ class EC2_EBS(Target):
         if self.public:
             self.make_public(ec2, ami)
 
-    def upload_file(self, s3: "S3Client", vmdk: Vmdk, bucket: str) -> str:
+    def upload_file(self, s3: S3Client, vmdk: Vmdk, bucket: str) -> str:
         image_name = self.machine_name + ".vmdk"
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/upload_file.html>
         s3.upload_file(
@@ -88,7 +89,7 @@ class EC2_EBS(Target):
         )
         return vmdk_get
 
-    def import_snapshot(self, ec2: "EC2Client", vmdk_get: str) -> str:
+    def import_snapshot(self, ec2: EC2Client, vmdk_get: str) -> str:
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/import_snapshot.html>
         response = ec2.import_snapshot(
             Description=self.machine_name,
@@ -109,7 +110,7 @@ class EC2_EBS(Target):
         return import_task_id
 
     @staticmethod
-    def wait_for_snapshot(ec2: "EC2Client", import_task_id: str) -> str:
+    def wait_for_snapshot(ec2: EC2Client, import_task_id: str) -> str:
         try:
             # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/get_waiter.html>
             # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/waiter/SnapshotImported.html>
@@ -142,7 +143,7 @@ class EC2_EBS(Target):
 
         raise ValueError("Import failed")
 
-    def register_image(self, ec2: "EC2Client", snapshot_id: str, size: int) -> str:
+    def register_image(self, ec2: EC2Client, snapshot_id: str, size: int) -> str:
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/register_image.html>
         response = ec2.register_image(
             Architecture="x86_64",
@@ -169,7 +170,7 @@ class EC2_EBS(Target):
         ami = response["ImageId"]
         return ami
 
-    def add_tag(self, ec2: "EC2Client", ami: str) -> None:
+    def add_tag(self, ec2: EC2Client, ami: str) -> None:
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/create_tags.html>
         ec2.create_tags(
             Resources=[
@@ -184,7 +185,7 @@ class EC2_EBS(Target):
         )
 
     @staticmethod
-    def make_public(ec2: "EC2Client", ami: str) -> None:
+    def make_public(ec2: EC2Client, ami: str) -> None:
         # <https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/modify_image_attribute.html>
         response = ec2.modify_image_attribute(
             ImageId=ami,

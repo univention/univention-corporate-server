@@ -39,7 +39,7 @@ UMCP was a simple RPC protocol using two message types (request and
 response message). The API of the Python objects representing the
 messages are based on the class :class:`.Message`.
 """
-from __future__ import absolute_import, print_function
+from __future__ import annotations, absolute_import, print_function
 
 import mimetypes
 import sys
@@ -80,13 +80,13 @@ class Message(object):
     :param options: options passed to the command handler. This works for request messages with MIME type application/JSON only.
     """
 
-    RESPONSE, REQUEST = range(0, 2)
+    RESPONSE, REQUEST = range(2)
     __counter = 0
 
-    def __init__(self, type: "RequestType"=REQUEST, command: str=u'', mime_type: str=MIMETYPE_JSON, data: bytes=None, arguments: "List[str]"=None, options: "Dict[str, Any]"=None) -> None:
+    def __init__(self, type: RequestType=REQUEST, command: str=u'', mime_type: str=MIMETYPE_JSON, data: bytes | None=None, arguments: List[str] | None=None, options: Dict[str, Any] | None=None) -> None:
         self.id = None  # type: Optional[str]
         if mime_type == MIMETYPE_JSON:
-            self.body: "UmcpBody" = {}
+            self.body: UmcpBody = {}
         else:
             self.body = b''
         self.command = command
@@ -160,7 +160,7 @@ class Request(Message):
 
     _user_connections = set()  # prevent garbage collection
 
-    def __init__(self, command: str, arguments: "Any"=None, options: "Any"=None, mime_type: str=MIMETYPE_JSON) -> None:
+    def __init__(self, command: str, arguments: Any=None, options: Any=None, mime_type: str=MIMETYPE_JSON) -> None:
         Message.__init__(self, Message.REQUEST, command, arguments=arguments, options=options, mime_type=mime_type)
         self._create_id()
         self.username = None
@@ -221,7 +221,7 @@ class Response(Message):
     frontend to the console daemon
     """
 
-    def __init__(self, request: "Request"=None, data: "Any"=None, mime_type: str=MIMETYPE_JSON) -> None:
+    def __init__(self, request: Request=None, data: Any=None, mime_type: str=MIMETYPE_JSON) -> None:
         Message.__init__(self, Message.RESPONSE, mime_type=mime_type)
         if request:
             self.id = request.id
@@ -234,7 +234,7 @@ class Response(Message):
 
     recreate_id = None
 
-    def set_body(self, filename: str, mimetype: "Optional[str]"=None) -> None:
+    def set_body(self, filename: str, mimetype: str | None=None) -> None:
         """
         Set body of response by guessing the mime type of the given
         file if not specified and adding the content of the file to the body. The mime

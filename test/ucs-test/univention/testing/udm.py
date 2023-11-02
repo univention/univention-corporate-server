@@ -45,6 +45,7 @@ UDM object types are currently supported.
 WARNING2:
 The API is currently under heavy development and may/will change before next UCS release!
 """
+from __future__ import annotations
 
 
 import base64
@@ -148,7 +149,7 @@ class UCSTestUDM:
         'computers/ipmanagedclient')
 
     # map identifying UDM module or rdn-attribute to samba4 rdn attribute
-    def ad_object_identifying_filter(self, modulename: str, dn: str) -> "Optional[Dict[str, str]]":
+    def ad_object_identifying_filter(self, modulename: str, dn: str) -> Dict[str, str] | None:
         udm_mainmodule, udm_submodule = modulename.split('/', 1)
         objname = ldap.dn.str2dn(dn)[0][0][1]
 
@@ -212,13 +213,13 @@ class UCSTestUDM:
     __ucr = None
 
     @property
-    def _lo(self) -> "univention.admin.uldap.access":
+    def _lo(self) -> univention.admin.uldap.access:
         if self.__lo is None:
             self.__lo = utils.get_ldap_connection()
         return self.__lo
 
     @property
-    def _ucr(self) -> "univention.testing.ucr.UCSTestConfigRegistry":
+    def _ucr(self) -> univention.testing.ucr.UCSTestConfigRegistry:
         if self.__ucr is None:
             self.__ucr = univention.testing.ucr.UCSTestConfigRegistry()
             self.__ucr.load()
@@ -249,7 +250,7 @@ class UCSTestUDM:
             self._env['LANG'] = f'{language.replace("-", "_")}.UTF-8'
 
     @classmethod
-    def _build_udm_cmdline(cls, modulename: str, action: str, kwargs: "Dict[str, Any]") -> "List[str]":
+    def _build_udm_cmdline(cls, modulename: str, action: str, kwargs: Dict[str, Any]) -> List[str]:
         """
         Pass modulename, action (create, modify, delete) and a bunch of keyword arguments
         to _build_udm_cmdline to build a command for UDM CLI.
@@ -330,7 +331,7 @@ class UCSTestUDM:
 
         return cmd
 
-    def create_object(self, modulename: str, wait_for_replication: bool=True, check_for_drs_replication: bool=False, wait_for: bool=False, **kwargs: "Any") -> str:
+    def create_object(self, modulename: str, wait_for_replication: bool=True, check_for_drs_replication: bool=False, wait_for: bool=False, **kwargs: Any) -> str:
         r"""
         Creates a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
         only and have to exactly match UDM property names (case-sensitive!).
@@ -364,7 +365,7 @@ class UCSTestUDM:
         self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
         return dn
 
-    def create_with_defaults(self, modulename: str, **kwargs: "Any") -> "Tuple[str, dict]":
+    def create_with_defaults(self, modulename: str, **kwargs: Any) -> Tuple[str, dict]:
         """Create any object with as maximum as possible prefilled random default values"""
         module = univention.admin.modules.get_module(modulename)
         # TODO: cache objects
@@ -786,7 +787,7 @@ class UCSTestUDM:
 
         return self.create_object(modulename, **kwargs), kwargs
 
-    def modify_object(self, modulename: str, wait_for_replication: bool=True, check_for_drs_replication: bool=False, wait_for: bool=False, **kwargs: "Any") -> str:
+    def modify_object(self, modulename: str, wait_for_replication: bool=True, check_for_drs_replication: bool=False, wait_for: bool=False, **kwargs: Any) -> str:
         """
         Modifies a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
         only and have to exactly match UDM property names (case-sensitive!).
@@ -826,7 +827,7 @@ class UCSTestUDM:
         self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
         return dn
 
-    def move_object(self, modulename: str, wait_for_replication: bool=True, check_for_drs_replication: bool=False, wait_for: bool=False, **kwargs: "Any") -> str:
+    def move_object(self, modulename: str, wait_for_replication: bool=True, check_for_drs_replication: bool=False, wait_for: bool=False, **kwargs: Any) -> str:
         if not modulename:
             raise UCSTestUDM_MissingModulename()
         dn = kwargs.get('dn')
@@ -855,7 +856,7 @@ class UCSTestUDM:
         self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
         return new_dn
 
-    def remove_object(self, modulename: str, wait_for_replication: bool=True, wait_for: bool=False, **kwargs: "Any") -> None:
+    def remove_object(self, modulename: str, wait_for_replication: bool=True, wait_for: bool=False, **kwargs: Any) -> None:
         if not modulename:
             raise UCSTestUDM_MissingModulename()
         dn = kwargs.get('dn')
@@ -904,7 +905,7 @@ class UCSTestUDM:
 
         return utils.wait_for(conditions, verbose=False)
 
-    def create_user(self, wait_for_replication: bool=True, check_for_drs_replication: bool=True, wait_for: bool=True, **kwargs: "Any") -> "Tuple[str, str]":  # :pylint: disable-msg=W0613
+    def create_user(self, wait_for_replication: bool=True, check_for_drs_replication: bool=True, wait_for: bool=True, **kwargs: Any) -> Tuple[str, str]:  # :pylint: disable-msg=W0613
         """
         Creates a user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
         have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -926,7 +927,7 @@ class UCSTestUDM:
 
         return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, wait_for=wait_for, **attr), attr['username'])
 
-    def create_ldap_user(self, wait_for_replication: bool=True, check_for_drs_replication: bool=False, **kwargs: "Any") -> "Tuple[str, str]":  # :pylint: disable-msg=W0613
+    def create_ldap_user(self, wait_for_replication: bool=True, check_for_drs_replication: bool=False, **kwargs: Any) -> Tuple[str, str]:  # :pylint: disable-msg=W0613
         # check_for_drs_replication=False -> ldap users are not replicated to s4
         attr = self._set_module_default_attr(kwargs, (
             ('position', f'cn=users,{self.LDAP_BASE}'),
@@ -945,7 +946,7 @@ class UCSTestUDM:
         }
         self.remove_object('users/user', wait_for_replication, **kwargs)
 
-    def create_group(self, wait_for_replication: bool=True, check_for_drs_replication: bool=True, **kwargs: "Any") -> "Tuple[str, str]":  # :pylint: disable-msg=W0613
+    def create_group(self, wait_for_replication: bool=True, check_for_drs_replication: bool=True, **kwargs: Any) -> Tuple[str, str]:  # :pylint: disable-msg=W0613
         """
         Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
         have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -982,7 +983,7 @@ class UCSTestUDM:
         if ad_ldap_search_args:
             wait_for_drs_replication(should_exist=False, verbose=verbose, timeout=20, **ad_ldap_search_args)
 
-    def list_objects(self, modulename: str, **kwargs: "Any") -> "List[Tuple[str, Dict[str, Any]]]":
+    def list_objects(self, modulename: str, **kwargs: Any) -> List[Tuple[str, Dict[str, Any]]]:
         cmd = self._build_udm_cmdline(modulename, 'list', kwargs)
         print(f'Listing {modulename} objects {_prettify_cmd(cmd)}')
         returncode, stdout, stderr = self._execute_udm(cmd)
@@ -990,9 +991,9 @@ class UCSTestUDM:
         if returncode:
             raise UCSTestUDM_ListUDMObjectFailed(returncode, stdout, stderr)
 
-        objects: "List[Tuple[str, Dict[str, Any]]]" = []
+        objects: List[Tuple[str, Dict[str, Any]]] = []
         dn = None
-        attrs: "Dict[str, Any]" = {}
+        attrs: Dict[str, Any] = {}
         pattr = None
         pvalue = None
         pdn = None
@@ -1140,7 +1141,7 @@ class UDM(UCSTestUDM):
         subprocess.call(['systemctl', 'reload', 'univention-directory-manager-rest.service'])
 
 
-def verify_udm_object(module: "Any", dn: str, expected_properties: "Optional[Mapping[str, Union[bytes, str, Tuple[str, ...], List[str]]]]") -> None:
+def verify_udm_object(module: Any, dn: str, expected_properties: Mapping[str, bytes | (str | (Tuple[str, ...] | List[str]))] | None) -> None:
     """
     Verify an object exists with the given `dn` in the given UDM `module` with
     some properties. Setting `expected_properties` to `None` requires the
@@ -1188,14 +1189,14 @@ def verify_udm_object(module: "Any", dn: str, expected_properties: "Optional[Map
     assert not difference, '\n'.join(f'{key}: {udm_value} != expected {value}' for key, (udm_value, value) in difference.items())
 
 
-def _prettify_cmd(cmd: "Iterable[str]") -> str:
+def _prettify_cmd(cmd: Iterable[str]) -> str:
     cmd = ' '.join(shlex.quote(x) for x in cmd)
     if set(cmd) & {'\x00', '\n'}:
         cmd = repr(cmd)
     return cmd
 
 
-def _to_unicode(string: "Union[bytes, str]") -> str:
+def _to_unicode(string: bytes | str) -> str:
     if isinstance(string, bytes):
         return string.decode('utf-8')
     return string

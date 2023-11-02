@@ -54,6 +54,7 @@ Note that the functions defined herein do not cover every corner case during
 UMC module development. You are not bound to use them if you need more
 flexibility.
 """
+from __future__ import annotations
 
 import functools
 import inspect
@@ -227,17 +228,17 @@ class SimpleThread(object):
 
     running_threads = 0
 
-    def __init__(self, name: str, function: "Callable[..., _T]", callback: "Callable[[SimpleThread, Union[BaseException, None, _T]], None]") -> None:
+    def __init__(self, name: str, function: Callable[..., _T], callback: Callable[[SimpleThread, BaseException | (None | _T)], None]) -> None:
         self._name = name
         self._function = function
         self._callback = callback
-        self._result: "Union[BaseException, _T, None]" = None
-        self._trace: "Optional[List[str]]" = None
-        self._exc_info: "Optional[Tuple[Optional[Type[BaseException]], Optional[BaseException], None]]" = None
+        self._result: BaseException | (_T | None) = None
+        self._trace: List[str] | None = None
+        self._exc_info: Tuple[Type[BaseException] | None, BaseException | None, None] | None = None
         self._finished = False
         self._lock = Lock()
 
-    def run(self, *args: "Optional[Tuple]", **kwargs: "Optional[Dict]") -> None:
+    def run(self, *args: Tuple | None, **kwargs: Dict | None) -> None:
         """Starts the thread"""
         with self._lock:
             SimpleThread.running_threads += 1
@@ -246,16 +247,16 @@ class SimpleThread(object):
         future = io_loop.run_in_executor(None, self._run, *args, **kwargs)
         io_loop.add_future(future, lambda f: self.announce())
 
-    def _run(self, *args: "Optional[Tuple]", **kwargs: "Optional[Dict]") -> None:
+    def _run(self, *args: Tuple | None, **kwargs: Dict | None) -> None:
         """
         Encapsulates the given thread function to handle the return
         value in a thread-safe way and to catch exceptions raised from
         within it.
         """
         try:
-            result: "Union[BaseException, _T]" = self._function(*args, **kwargs)
-            trace: "Optional[List[str]]" = None
-            exc_info: "Optional[Tuple[Optional[Type[BaseException]], Optional[BaseException], None]]" = None
+            result: BaseException | _T = self._function(*args, **kwargs)
+            trace: List[str] | None = None
+            exc_info: Tuple[Type[BaseException] | None, BaseException | None, None] | None = None
         except BaseException as exc:
             try:
                 etype, value, tb = sys.exc_info()
@@ -274,7 +275,7 @@ class SimpleThread(object):
             self.unlock()
 
     @property
-    def result(self) -> "Union[BaseException, _T, None]":
+    def result(self) -> BaseException | (_T | None):
         """
         Contains the result of the thread function or the exception
         that occurred during thread processing
@@ -282,7 +283,7 @@ class SimpleThread(object):
         return self._result
 
     @property
-    def trace(self) -> "Optional[List[str]]":
+    def trace(self) -> List[str] | None:
         """
         Contains a formatted traceback of the occurred exception during
         thread processing. If no exception has been raised the value is None
@@ -290,7 +291,7 @@ class SimpleThread(object):
         return self._trace
 
     @property
-    def exc_info(self) -> "Optional[Tuple[Optional[Type[BaseException]], Optional[BaseException], None]]":
+    def exc_info(self) -> Tuple[Type[BaseException] | None, BaseException | None, None] | None:
         """
         Contains information about the exception that has occurred
         during the execution of the thread. The value is the some as

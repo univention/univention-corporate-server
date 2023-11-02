@@ -33,6 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import annotations
 from time import sleep
 from typing import Any  # noqa: F401
 
@@ -49,7 +50,7 @@ _ = translator.translate
 
 class AppCenter:
 
-    def __init__(self, selenium: "Any") -> None:
+    def __init__(self, selenium: Any) -> None:
         self.selenium = selenium
 
     def install_app(self, app_name: str) -> None:

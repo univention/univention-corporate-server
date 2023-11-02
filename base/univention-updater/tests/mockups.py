@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import json
 from itertools import groupby
@@ -20,7 +20,7 @@ DATA = b'x' * 100  # univention.updater.tools.MIN_GZIP
 RJSON = '/ucs-releases.json'
 
 
-def gen_releases(releases: "Iterable[Tuple[int, int, int]]"=[], major: int=MAJOR, minor: int=MINOR, patches: "Iterable[int]"=range(0, PATCH + 1)) -> bytes:
+def gen_releases(releases: Iterable[Tuple[int, int, int]]=[], major: int=MAJOR, minor: int=MINOR, patches: Iterable[int]=range(PATCH + 1)) -> bytes:
     """
     Generate a `ucs-releases.json` string from a list of given releases.
 

@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """Internationalization (i18n) utilities."""
+from __future__ import annotations
 
 import gettext
 import re
@@ -67,7 +68,7 @@ class Locale(object):
         r'(?:@(?P<modifier>.+))?'
         r'$')
 
-    def __init__(self, locale: "Optional[str]"=None) -> None:
+    def __init__(self, locale: str | None=None) -> None:
         self.__reset()
         if locale is not None:
             self.parse(locale)
@@ -123,12 +124,12 @@ class NullTranslation(object):
     :param str localedir: The name of the directory containing the translation files.
     """
 
-    def __init__(self, namespace: str, locale_spec: "Optional[str]"=None, localedir: "Optional[str]"=None) -> None:
+    def __init__(self, namespace: str, locale_spec: str | None=None, localedir: str | None=None) -> None:
         self._set_domain(namespace)
-        self._translation: "Optional[gettext.NullTranslations]" = None
-        self._localedir: "Optional[str]" = localedir
-        self._localespec: "Optional[Locale]" = None
-        self._locale: "Optional[str]" = locale_spec
+        self._translation: gettext.NullTranslations | None = None
+        self._localedir: str | None = localedir
+        self._localespec: Locale | None = None
+        self._locale: str | None = locale_spec
         if not self._locale:
             self.set_language()
 
@@ -152,7 +153,7 @@ class NullTranslation(object):
         :param str language: The language code.
         """
 
-    def _get_locale(self) -> "Optional[Locale]":
+    def _get_locale(self) -> Locale | None:
         """
         Return currently selected locale.
 
@@ -161,7 +162,7 @@ class NullTranslation(object):
         """
         return self._localespec
 
-    def _set_locale(self, locale_spec: "Optional[str]"=None) -> None:
+    def _set_locale(self, locale_spec: str | None=None) -> None:
         """
         Select new locale.
 
@@ -194,8 +195,8 @@ class NullTranslation(object):
 class Translation(NullTranslation):
     """Translation."""
 
-    _instances: "List[weakref.ReferenceType[Translation]]" = []
-    locale: "Locale" = Locale()  # type: ignore
+    _instances: List[weakref.ReferenceType[Translation]] = []
+    locale: Locale = Locale()  # type: ignore
 
     def set_language(self, language: str="") -> None:
         """

@@ -37,7 +37,7 @@ Handle parsing and writing :file:`/etc/fstab`.
 See <http://linux.die.net/include/mntent.h>.
 """
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import os
 import re
@@ -72,7 +72,7 @@ class File(list):
                     raise InvalidEntry('The following is not a valid fstab entry: %r' % (_line,))  # TODO
                 self.append(line)
 
-    def find(self, **kargs: str) -> "Optional[Entry]":
+    def find(self, **kargs: str) -> Entry | None:
         """
         Search and return the entry matching the criteria.
 
@@ -90,7 +90,7 @@ class File(list):
                 return entry
         return None
 
-    def get(self, filesystem: "Container[str]"=[], ignore_root: bool=True) -> "List[Entry]":
+    def get(self, filesystem: Container[str]=[], ignore_root: bool=True) -> List[Entry]:
         """
         Return list of entries matching a list of file system types.
 
@@ -110,13 +110,13 @@ class File(list):
                 result.append(entry)
         return result
 
-    def save(self, filename: "Optional[str]"=None) -> None:
+    def save(self, filename: str | None=None) -> None:
         """Save entries to file."""
         with open(filename or self.__file, 'w') as fd:
             for line in self:
                 fd.write(f'{line}\n')
 
-    def __parse(self, line: str) -> "Union[Entry, str]":
+    def __parse(self, line: str) -> Entry | str:
         """
         Parse file system table line.
 
@@ -164,10 +164,10 @@ class Entry(object):
     _quote_dict = {c: fr'\{oct(ord(c))}' for c in ' \t\n\r\\'}
     _quote_re = re.compile(r'\\0([0-7]+)')
 
-    def __init__(self, spec: str, mount_point: str, fs_type: str, options: "Union[str, list]"='', dump: "Optional[str]"=None, passno: "Optional[str]"=None, comment: "Optional[str]"=None) -> None:
+    def __init__(self, spec: str, mount_point: str, fs_type: str, options: str | list='', dump: str | None=None, passno: str | None=None, comment: str | None=None) -> None:
         self.spec = self.unquote(spec.strip())
         if self.spec.startswith('UUID='):
-            self.uuid: "Optional[str]" = self.spec[5:]
+            self.uuid: str | None = self.spec[5:]
             uuid_dev = os.path.join('/dev/disk/by-uuid', self.uuid)
             if os.path.exists(uuid_dev):
                 self.spec = os.path.realpath(uuid_dev)
@@ -238,7 +238,7 @@ class Entry(object):
         """
         return cls._quote_re.sub(lambda m: chr(int(m.group(1), 8)), s)
 
-    def hasopt(self, opt: str) -> "List[str]":
+    def hasopt(self, opt: str) -> List[str]:
         """
         Search for an option matching OPT.
 

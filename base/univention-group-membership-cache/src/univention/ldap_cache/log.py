@@ -31,15 +31,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import logging
 from typing import Any  # noqa: F401
 
 
-def log(*msgs: "Any") -> None:
+def log(*msgs: Any) -> None:
     logger = logging.getLogger('univention.ldap_cache')
     logger.info(*msgs)
 
 
-def debug(*msgs: "Any") -> None:
+def debug(*msgs: Any) -> None:
     logger = logging.getLogger('univention.ldap_cache')
     logger.debug(*msgs)

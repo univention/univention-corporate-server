@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 """Univention Configuration Registry output filters."""
+from __future__ import annotations
 #  main configuration registry classes
 #
 # Like what you see? Join us!
@@ -44,7 +45,7 @@ except ImportError:  # pragma: no cover
 __all__ = ['filter_shell', 'filter_keys_only', 'filter_sort']
 
 
-def filter_shell(args: "Any", text: "Iterable[str]") -> "Iterable[str]":  # pylint: disable-msg=W0613
+def filter_shell(args: Any, text: Iterable[str]) -> Iterable[str]:  # pylint: disable-msg=W0613
     """
     Filter output for shell: escape keys.
 
@@ -63,7 +64,7 @@ def filter_shell(args: "Any", text: "Iterable[str]") -> "Iterable[str]":  # pyli
     return out
 
 
-def filter_keys_only(args: "Any", text: "Iterable[str]") -> "Iterable[str]":  # pylint: disable-msg=W0613
+def filter_keys_only(args: Any, text: Iterable[str]) -> Iterable[str]:  # pylint: disable-msg=W0613
     """
     Filter output: strip values.
 
@@ -77,7 +78,7 @@ def filter_keys_only(args: "Any", text: "Iterable[str]") -> "Iterable[str]":  # 
     return out
 
 
-def filter_sort(args: "Any", text: "Iterable[str]") -> "Iterable[str]":  # pylint: disable-msg=W0613
+def filter_sort(args: Any, text: Iterable[str]) -> Iterable[str]:  # pylint: disable-msg=W0613
     """
     Filter output: sort by key.
 

@@ -34,6 +34,7 @@
 Univention Corporate Server localization tool to extract, update, and compile
 GNU gettext Portable Objects (PO files) to Message Objects (MO files).
 """
+from __future__ import annotations
 
 import argparse
 import os
@@ -93,7 +94,7 @@ def parse_args(cmd: str) -> None:
     args.func(args)
 
 
-def build(args: "argparse.Namespace") -> None:
+def build(args: argparse.Namespace) -> None:
     """
     Generate GNU gettext Portable Objects (PO files) from debian/\\*.univention-l10n files
 
@@ -135,7 +136,7 @@ def build(args: "argparse.Namespace") -> None:
         tlh.update_package_translation_files(module, cwd, args.pot)
 
 
-def install(args: "argparse.Namespace") -> None:
+def install(args: argparse.Namespace) -> None:
     """
     Generate and install GNU gettext Message Objects (MO files) from debian/\\*.univention-l10n files.
 

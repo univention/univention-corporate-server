@@ -33,6 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import annotations
 import time
 from typing import Any, Dict, Mapping, Optional  # noqa: F401
 
@@ -54,13 +55,13 @@ class UDMBase:
 
     name = None
 
-    def __init__(self, selenium: "Any") -> None:
+    def __init__(self, selenium: Any) -> None:
         self.selenium = selenium
 
-    def _get_search_value(self, objectname: "Any") -> str:
+    def _get_search_value(self, objectname: Any) -> str:
         return objectname
 
-    def _get_grid_value(self, objectname: "Any") -> str:
+    def _get_grid_value(self, objectname: Any) -> str:
         return objectname
 
     def exists(self, objectname: str) -> bool:
@@ -129,7 +130,7 @@ class UDMBase:
         print('*** waiting for main grid load')
         self.selenium.wait_until_standby_animation_appears_and_disappears()
 
-    def open_add_dialog(self, container: "Optional[str]"=None, template: "Optional[str]"=None) -> None:
+    def open_add_dialog(self, container: str | None=None, template: str | None=None) -> None:
         print('*** open the add dialog')
         self.selenium.click_button(_('Add'))
         self.selenium.wait_until_all_standby_animations_disappeared()
@@ -169,7 +170,7 @@ class UDMBase:
             self.selenium.click_button(_('Next'))
             self.selenium.wait_until_all_standby_animations_disappeared()
 
-    def open_advanced_add_dialog(self, **kwargs: "Any") -> None:
+    def open_advanced_add_dialog(self, **kwargs: Any) -> None:
         self.open_add_dialog(**kwargs)
         self.selenium.click_button(_('Advanced'))
 
@@ -177,12 +178,12 @@ class UDMBase:
 class Portals(UDMBase):
     name = _('Portal settings')
 
-    def __init__(self, selenium: "Any") -> None:
+    def __init__(self, selenium: Any) -> None:
         super().__init__(selenium)
         self.ucr = ucr_test.UCSTestConfigRegistry()
         self.ucr.load()
 
-    def add(self, portalname: "Optional[str]"=None, hostname: "Optional[str]"=None) -> str:
+    def add(self, portalname: str | None=None, hostname: str | None=None) -> str:
         if portalname is None:
             portalname = uts.random_string()
 
@@ -210,7 +211,7 @@ class Portals(UDMBase):
 class Computers(UDMBase):
     name = _('Computers')
 
-    def add(self, computername: "Optional[str]"=None) -> str:
+    def add(self, computername: str | None=None) -> str:
         if computername is None:
             computername = uts.random_string()
 
@@ -227,7 +228,7 @@ class Computers(UDMBase):
 class Groups(UDMBase):
     name = _("Groups")
 
-    def add(self, groupname: "Optional[str]"=None) -> str:
+    def add(self, groupname: str | None=None) -> str:
         if groupname is None:
             groupname = uts.random_string()
 
@@ -243,7 +244,7 @@ class Groups(UDMBase):
 class Policies(UDMBase):
     name = _('Policies')
 
-    def add(self, policyname: "Optional[str]"=None) -> str:
+    def add(self, policyname: str | None=None) -> str:
         if policyname is None:
             policyname = uts.random_string()
 
@@ -264,7 +265,7 @@ class Policies(UDMBase):
 class Users(UDMBase):
     name = _("Users")
 
-    def __init__(self, selenium: "Any") -> None:
+    def __init__(self, selenium: Any) -> None:
         super().__init__(selenium)
         self.ucr = ucr_test.UCSTestConfigRegistry()
         self.ucr.load()
@@ -285,12 +286,12 @@ class Users(UDMBase):
 
     def add(
             self,
-            template: "Optional[str]"=None,
+            template: str | None=None,
             firstname: str='',
-            lastname: "Optional[str]"=None,
-            username: "Optional[str]"=None,
+            lastname: str | None=None,
+            username: str | None=None,
             password: str='univention',
-    ) -> "Dict[str, str]":
+    ) -> Dict[str, str]:
         if username is None:
             username = uts.random_string()
         if lastname is None:
@@ -339,8 +340,8 @@ class Users(UDMBase):
         # TODO: check for error
         return username
 
-    def _get_search_value(self, user: "Mapping[str, str]") -> str:
+    def _get_search_value(self, user: Mapping[str, str]) -> str:
         return user['username']
 
-    def _get_grid_value(self, user: "Mapping[str, str]") -> str:
+    def _get_grid_value(self, user: Mapping[str, str]) -> str:
         return user['lastname'] if self.ucr.get('ad/member') else user['username']

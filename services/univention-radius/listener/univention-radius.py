@@ -35,7 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 import subprocess
 from typing import Dict, List, Optional  # noqa: F401
@@ -50,12 +50,12 @@ class AppListener(ListenerModuleHandler):
         description = 'Listener module for univention-radius'
         ldap_filter = '(objectClass=univentionHost)'
 
-    def create(self, dn: str, new: "Dict[str, List[bytes]]") -> None:
+    def create(self, dn: str, new: Dict[str, List[bytes]]) -> None:
         if b'univentionRadiusClient' in new.get('objectClass', []):
             self.run_update = True
             self.logger.info('config update triggered')
 
-    def modify(self, dn: str, old: "Dict[str, List[bytes]]", new: "Dict[str, List[bytes]]", old_dn: "Optional[str]") -> None:
+    def modify(self, dn: str, old: Dict[str, List[bytes]], new: Dict[str, List[bytes]], old_dn: str | None) -> None:
         # only update the file, if relevant
         if old_dn:
             self.run_update = True
@@ -70,7 +70,7 @@ class AppListener(ListenerModuleHandler):
             self.run_update = True
             self.logger.info('config update triggered')
 
-    def remove(self, dn: str, old: "Dict[str, List[bytes]]") -> None:
+    def remove(self, dn: str, old: Dict[str, List[bytes]]) -> None:
         if b'univentionRadiusClient' in old.get('objectClass', []):
             self.run_update = True
             self.logger.info('config update triggered')

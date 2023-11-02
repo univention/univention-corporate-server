@@ -4,6 +4,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
+from __future__ import annotations
 import uuid
 from argparse import Namespace
 from logging import getLogger
@@ -149,7 +150,7 @@ class VMware(TargetFile):
         machine_uuid = uuid.uuid4()
         image_uuid = uuid.uuid4()
         vmdk = Vmdk(image)
-        files: "List[Tuple[str, Union[File, bytes]]]" = [
+        files: List[Tuple[str, File | bytes]] = [
             (f'{options.product}/', b""),
             (f'{options.product}/{options.product}.vmdk', vmdk),
             (f'{options.product}/{options.product}.vmxf', create_vmxf(machine_uuid, options.product)),

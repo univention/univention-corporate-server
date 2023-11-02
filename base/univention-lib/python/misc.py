@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """Univention Common Python Library"""
+from __future__ import annotations
 
 import subprocess
 from typing import Optional  # noqa: F401
@@ -59,7 +60,7 @@ def createMachinePassword() -> str:
     return stdout.strip()
 
 
-def getLDAPURIs(ucr: "Optional[ConfigRegistry]"=None) -> str:
+def getLDAPURIs(ucr: ConfigRegistry | None=None) -> str:
     """
     Returns a space separated list of all configured |LDAP| servers, according to |UCR| variables
     `ldap/server/name` and `ldap/server/addition`.
@@ -89,7 +90,7 @@ def getLDAPURIs(ucr: "Optional[ConfigRegistry]"=None) -> str:
     return uri_string
 
 
-def getLDAPServersCommaList(ucr: "Optional[ConfigRegistry]"=None) -> str:
+def getLDAPServersCommaList(ucr: ConfigRegistry | None=None) -> str:
     """
     Returns a comma-separated string with all configured |LDAP| servers,
     `ldap/server/name` and `ldap/server/addition`.
@@ -117,7 +118,7 @@ def getLDAPServersCommaList(ucr: "Optional[ConfigRegistry]"=None) -> str:
     return ldap_servers
 
 
-def custom_username(name: str, ucr: "Optional[ConfigRegistry]"=None) -> str:
+def custom_username(name: str, ucr: ConfigRegistry | None=None) -> str:
     """
     Returns the customized user name configured via |UCR| `users/default/*`.
 
@@ -137,7 +138,7 @@ def custom_username(name: str, ucr: "Optional[ConfigRegistry]"=None) -> str:
     return ucr.get("users/default/" + name.lower().replace(" ", ""), name)
 
 
-def custom_groupname(name: str, ucr: "Optional[ConfigRegistry]"=None) -> str:
+def custom_groupname(name: str, ucr: ConfigRegistry | None=None) -> str:
     """
     Returns the customized group name configured via |UCR| `groups/default/*`.
 

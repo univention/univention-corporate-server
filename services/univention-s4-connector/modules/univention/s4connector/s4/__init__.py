@@ -209,7 +209,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
             samaccountname = object['attributes']['sAMAccountName'][0].decode('UTF-8')
         if dn_attr:
             try:
-                dn_attr_vals = [value for key, value in object['attributes'].items() if dn_attr.lower() == key.lower()][0]
+                dn_attr_vals = next(value for key, value in object['attributes'].items() if dn_attr.lower() == key.lower())
             except IndexError:
                 pass
             else:
@@ -433,7 +433,7 @@ def compare_sid_lists(sid_list1, sid_list2):
     if len_sid_list1 != len(sid_list2):
         return False
 
-    for i in range(0, len_sid_list1):
+    for i in range(len_sid_list1):
         sid1 = sid_list1[i]
         if not __is_sid_string(sid1):
             sid1 = decode_sid(sid1)
@@ -1918,14 +1918,12 @@ class s4(univention.s4connector.ucs):
                 del self.group_member_mapping_cache_con[con_dn.lower()]
             except KeyError:
                 ud.debug(ud.LDAP, ud.ALL, f"sync_from_ucs: {con_dn} was not present in S4 group member mapping cache")
-                pass
         if ucs_dn:
             try:
                 ud.debug(ud.LDAP, ud.INFO, f"sync_from_ucs: Removing {ucs_dn} from UCS group member mapping cache")
                 del self.group_member_mapping_cache_ucs[ucs_dn.lower()]
             except KeyError:
                 ud.debug(ud.LDAP, ud.ALL, f"sync_from_ucs: {ucs_dn} was not present in UCS group member mapping cache")
-                pass
 
     def _update_group_member_cache(self, remove_con_dn=None, remove_ucs_dn=None, add_con_dn=None, add_ucs_dn=None):
         for group in self.group_members_cache_con:
@@ -2194,13 +2192,13 @@ class s4(univention.s4connector.ucs):
                                     # its value as long as that value is not removed. If removed the primary
                                     # attribute is assigned a random value from the UCS attribute.
                                     try:
-                                        current_s4_values = set([v for k, v in ad_object.items() if s4_attribute.lower() == k.lower()][0])
+                                        current_s4_values = set(next(v for k, v in ad_object.items() if s4_attribute.lower() == k.lower()))
                                     except IndexError:
                                         current_s4_values = set()
                                     ud.debug(ud.LDAP, ud.INFO, f"sync_from_ucs: The current S4 values: {current_s4_values}")
 
                                     try:
-                                        current_s4_other_values = set([v for k, v in ad_object.items() if s4_other_attribute.lower() == k.lower()][0])
+                                        current_s4_other_values = set(next(v for k, v in ad_object.items() if s4_other_attribute.lower() == k.lower()))
                                     except IndexError:
                                         current_s4_other_values = set()
                                     ud.debug(ud.LDAP, ud.INFO, f"sync_from_ucs: The current S4 other values: {current_s4_other_values}")
@@ -2224,7 +2222,7 @@ class s4(univention.s4connector.ucs):
                                         modlist.append((ldap.MOD_REPLACE, s4_other_attribute, list(new_s4_other_values)))
                                 else:
                                     try:
-                                        current_s4_values = set([v for k, v in ad_object.items() if s4_attribute.lower() == k.lower()][0])
+                                        current_s4_values = set(next(v for k, v in ad_object.items() if s4_attribute.lower() == k.lower()))
                                     except IndexError:
                                         current_s4_values = set()
 

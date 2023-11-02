@@ -42,6 +42,7 @@ file.
 
 .. warning:: The API is currently under development and may change before next UCS release!
 """
+from __future__ import annotations
 
 
 import copy
@@ -58,10 +59,10 @@ class UCSTestConfigRegistry(ConfigRegistry):
     several changes to UCR variables have been done.
     """
 
-    def __init__(self, *args: "Any", **kwargs: "Any") -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         """initialise object"""
         ConfigRegistry.__init__(self, *args, **kwargs)
-        self.__original_registry: "Optional[Dict[int, Dict[str, str]]]" = None
+        self.__original_registry: Dict[int, Dict[str, str]] | None = None
 
     def ucr_update(self, *args):
         return univention.config_registry.frontend.ucr_update(*args)
@@ -108,11 +109,11 @@ class UCSTestConfigRegistry(ConfigRegistry):
         # load new/original values
         self.load()
 
-    def __enter__(self) -> "UCSTestConfigRegistry":
+    def __enter__(self) -> UCSTestConfigRegistry:
         self.load()
         return self
 
-    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[BaseException]", traceback: "Optional[TracebackType]") -> None:
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         self.revert_to_original_registry()
 
 

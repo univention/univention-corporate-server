@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 from random import choice, randint
 from typing import Iterator, Optional, Tuple  # noqa: F401
 
@@ -111,7 +112,7 @@ def random_mac() -> str:
     )
 
 
-def random_ip(ip_iter: "Iterator[int]"=iter(range(11, 121))) -> str:
+def random_ip(ip_iter: Iterator[int]=iter(range(11, 121))) -> str:
     """Returns 110 different ip addresses in the range 11.x.x.x-120.x.x.x"""
     return '%d.%d.%d.%d' % (
         next(ip_iter),
@@ -121,7 +122,7 @@ def random_ip(ip_iter: "Iterator[int]"=iter(range(11, 121))) -> str:
     )
 
 
-def random_subnet(ip_iter: "Iterator[int]"=iter(range(11, 121))) -> str:
+def random_subnet(ip_iter: Iterator[int]=iter(range(11, 121))) -> str:
     """Returns 110 different ip addresses in the range 11.x.x.x-120.x.x.x"""
     return '%d.%d.%d' % (
         next(ip_iter),
@@ -152,7 +153,7 @@ def random_date() -> str:
     return '20%02d-%02d-%02d' % (randint(0, 99), randint(1, 12), randint(1, 27))
 
 
-def random_time(range_hour: "Tuple[int, int]"=(0, 23)) -> str:
+def random_time(range_hour: Tuple[int, int]=(0, 23)) -> str:
     return '%02d:%02d:%02d' % (randint(*range_hour), randint(0, 60), randint(0, 60))
 
 

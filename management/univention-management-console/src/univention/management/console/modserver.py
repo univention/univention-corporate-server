@@ -35,6 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """This module provides a class for an UMC module server"""
+from __future__ import annotations
 
 import base64
 import json
@@ -225,7 +226,7 @@ class ModuleServer(object):
         io_loop.add_callback_from_signal(shutdown)
         self._timed_out()
 
-    def _timed_out(self) -> "NoReturn":
+    def _timed_out(self) -> NoReturn:
         MODULE.process('Committing suicide')
         if self.__handler:
             self.__handler.destroy()

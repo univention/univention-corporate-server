@@ -109,7 +109,7 @@ def test_saml_client_user_attribute_mapper(keycloak_administrator_connection):
         "--all",
         "--json",
     ]))
-    mapper = [x for x in mappers if x["name"] == name][0]
+    mapper = next(x for x in mappers if x["name"] == name)
     assert mapper["protocol"] == "saml"
     assert mapper["protocolMapper"] == "saml-user-attribute-mapper"
     assert mapper["config"]["user.attribute"] == "xyz"

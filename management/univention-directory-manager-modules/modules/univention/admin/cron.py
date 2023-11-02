@@ -32,12 +32,12 @@
 
 """|UDM| functions for creating crontab entries."""
 
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 from typing import Mapping, Sequence, Union  # noqa: F401
 
 
-def month_map(month: str) -> "Union[str, int, None]":
+def month_map(month: str) -> str | (int | None):
     """
     Map English month name to 1-based numeric month-in-year.
 
@@ -58,7 +58,7 @@ def month_map(month: str) -> "Union[str, int, None]":
     return None  # FIXME
 
 
-def weekday_map(weekday: str) -> "Union[str, int, None]":
+def weekday_map(weekday: str) -> str | (int | None):
     """
     Map English day-of-week name to numeric value 1-7.
 
@@ -78,7 +78,7 @@ def weekday_map(weekday: str) -> "Union[str, int, None]":
     return None  # FIXME
 
 
-def month_reverse_map(month: "Union[str, int]") -> "Union[str, None]":
+def month_reverse_map(month: str | int) -> str | None:
     """
     Map 1-based numeric month-in-year to English month name.
 
@@ -98,7 +98,7 @@ def month_reverse_map(month: "Union[str, int]") -> "Union[str, None]":
     return None  # FIXME
 
 
-def weekday_reverse_map(weekday: "Union[str, int]") -> "Union[str, None]":
+def weekday_reverse_map(weekday: str | int) -> str | None:
     """
     Map numeric day-of-week value 1-7 to English name.
 
@@ -118,7 +118,7 @@ def weekday_reverse_map(weekday: "Union[str, int]") -> "Union[str, None]":
     return None  # FIXME
 
 
-def cron_create(cronlist: "Mapping[str, Sequence[Union[str, int]]]") -> str:
+def cron_create(cronlist: Mapping[str, Sequence[str | int]]) -> str:
     """
     Create a crontab time string.
 

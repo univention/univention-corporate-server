@@ -294,7 +294,7 @@ class Changes(object):
 
             self._changes[name] = value
         except Exception as e:
-            MODULE.warn(f"set_registry_var('{name}', '{value}') ERROR {str(e)}")
+            MODULE.warn(f"set_registry_var('{name}', '{value}') ERROR {e!s}")
 
     def commit(self):
         ucr_update(self.ucr, self._changes)
@@ -402,7 +402,7 @@ class ComponentManager(object):
                     super_ucr.set_registry_var(named_component_base, val)
         except Exception as e:
             result['status'] = PUT_PROCESSING_ERROR
-            result['message'] = f"Parameter error: {str(e)}"
+            result['message'] = f"Parameter error: {e!s}"
 
         # Saving the registry and invoking all commit handlers is deferred until
         # the end of the loop over all request elements.
@@ -424,7 +424,7 @@ class ComponentManager(object):
 
         except Exception as e:
             result['status'] = PUT_PROCESSING_ERROR
-            result['message'] = f"Parameter error: {str(e)}"
+            result['message'] = f"Parameter error: {e!s}"
 
         return result
 

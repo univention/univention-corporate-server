@@ -41,7 +41,7 @@ def search_thread():
 def main():
     thread_count = 100
     my_thread = [None] * thread_count
-    for i in range(0, thread_count):
+    for i in range(thread_count):
         my_thread[i] = threading.Thread(target=search_thread)
     for t in my_thread:
         t.start()

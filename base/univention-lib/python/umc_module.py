@@ -35,6 +35,7 @@
 Univention common Python library with
 helper functions for MIME type handling.
 """
+from __future__ import annotations
 
 import bz2
 import io
@@ -80,7 +81,7 @@ def get_mime_description(data: bytes) -> str:
     return MIME_DESCRIPTION.from_buffer(data)
 
 
-def compression_mime_type_of_buffer(data: bytes) -> "Tuple[str, Callable[[Any], bytes]]":
+def compression_mime_type_of_buffer(data: bytes) -> Tuple[str, Callable[[Any], bytes]]:
     """
     Guess |MIME| type of compressed data.
 
@@ -97,7 +98,7 @@ def compression_mime_type_of_buffer(data: bytes) -> "Tuple[str, Callable[[Any], 
         raise univention.admin.uexceptions.valueError(f"Not a supported compression format: {mime_type}")
 
 
-def uncompress_buffer(data: bytes) -> "Tuple[Optional[str], bytes]":
+def uncompress_buffer(data: bytes) -> Tuple[str | None, bytes]:
     """
     Return uncompressed data and its |MIME| type.
 
@@ -113,7 +114,7 @@ def uncompress_buffer(data: bytes) -> "Tuple[Optional[str], bytes]":
         return (None, data)
 
 
-def uncompress_file(filename: str) -> "Tuple[Optional[str], bytes]":
+def uncompress_file(filename: str) -> Tuple[str | None, bytes]:
     """
     Return uncompressed file content and its |MIME| type.
 
@@ -142,7 +143,7 @@ def image_mime_type_of_buffer(data: bytes) -> str:
         raise univention.admin.uexceptions.valueError(f"Not a supported image format: {mime_type}")
 
 
-def imagedimensions_of_buffer(data: bytes) -> "Tuple[int, int]":
+def imagedimensions_of_buffer(data: bytes) -> Tuple[int, int]:
     """
     Return image dimension of image.
 
@@ -155,7 +156,7 @@ def imagedimensions_of_buffer(data: bytes) -> "Tuple[int, int]":
     return im.size
 
 
-def imagecategory_of_buffer(data: bytes) -> "Optional[Tuple[str, Optional[str], str]]":
+def imagecategory_of_buffer(data: bytes) -> Tuple[str, str | None, str] | None:
     """
     Return |MIME| types and size information for image.
 
@@ -172,7 +173,7 @@ def imagecategory_of_buffer(data: bytes) -> "Optional[Tuple[str, Optional[str], 
     return None
 
 
-def default_filename_suffix_for_mime_type(mime_type: str, compression_mime_type: str) -> "Optional[str]":
+def default_filename_suffix_for_mime_type(mime_type: str, compression_mime_type: str) -> str | None:
     """
     Return default file name suffix for image.
 

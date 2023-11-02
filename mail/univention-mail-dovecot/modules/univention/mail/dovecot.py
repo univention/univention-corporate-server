@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import grp
 import os
 import os.path
@@ -222,7 +223,7 @@ class DovecotListener(object):
             self.log_e(f"Failed to get mail home for user '{username}'.\n{traceback.format_exc()}")
             raise
 
-    def get_masteruser_credentials(self) -> "Tuple[str, str]":
+    def get_masteruser_credentials(self) -> Tuple[str, str]:
         try:
             self.listener.setuid(0)
             return re.findall(r"(\S+):{PLAIN}(\S+)::::::", open("/etc/dovecot/master-users").read())[0]
@@ -232,7 +233,7 @@ class DovecotListener(object):
         finally:
             self.listener.unsetuid()
 
-    def get_dovecot_user(self) -> "Tuple[str, str]":
+    def get_dovecot_user(self) -> Tuple[str, str]:
         if not hasattr(self, "dovecot_user") or not hasattr(self, "dovecot_group"):
             try:
                 uid = self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_uid"])

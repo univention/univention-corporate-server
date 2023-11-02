@@ -34,7 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 import traceback
 from typing import Any, Dict, Optional, Union  # noqa: F401
@@ -53,14 +53,14 @@ from univention.management.console.pam import (
 
 class AuthenticationResult(object):
 
-    def __init__(self, result: "Union[BaseException, Dict[str, str]]", locale: "Optional[str]") -> None:
+    def __init__(self, result: BaseException | Dict[str, str], locale: str | None) -> None:
         self.credentials = None
         self.status = 200
         self.authenticated = not isinstance(result, BaseException)
         if self.authenticated:
             self.credentials = result
         self.message = None
-        self.result: "Optional[Dict[str, Any]]" = None
+        self.result: Dict[str, Any] | None = None
         self.password_expired = False
         if isinstance(result, AuthenticationError):
             self.status = 401

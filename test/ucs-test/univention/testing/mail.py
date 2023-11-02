@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import annotations
 import os
 import pwd
 import subprocess
@@ -55,13 +56,13 @@ class MailSinkGuard:
     def __init__(self) -> None:
         self.mail_sinks = set()  # type: Set[MailSink]
 
-    def add(self, sink: "MailSink") -> None:
+    def add(self, sink: MailSink) -> None:
         self.mail_sinks.add(sink)
 
-    def __enter__(self) -> "MailSinkGuard":
+    def __enter__(self) -> MailSinkGuard:
         return self
 
-    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[Exception]", etraceback: "Optional[TracebackType]") -> None:
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: Exception | None, etraceback: TracebackType | None) -> None:
         for mail_sink in self.mail_sinks:
             mail_sink.stop()
 
@@ -86,19 +87,19 @@ class MailSink:
     >>>     <do some stuff>
     """
 
-    def __init__(self, address: str, port: int, filename: "Optional[str]"=None, target_dir: "Optional[str]"=None, fqdn: "Optional[str]"=None) -> None:
+    def __init__(self, address: str, port: int, filename: str | None=None, target_dir: str | None=None, fqdn: str | None=None) -> None:
         self.address = address
         self.port = port
         self.filename = filename
         self.target_dir = target_dir
-        self.process: "Optional[subprocess.Popen]" = None
+        self.process: subprocess.Popen | None = None
         self.fqdn = fqdn
 
-    def __enter__(self) -> "MailSink":
+    def __enter__(self) -> MailSink:
         self.start()
         return self
 
-    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[Exception]", etraceback: "Optional[TracebackType]") -> None:
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: Exception | None, etraceback: TracebackType | None) -> None:
         self.stop()
 
     def start(self) -> None:

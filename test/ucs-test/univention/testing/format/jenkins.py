@@ -1,4 +1,5 @@
 """Format UCS Test results as Jenkins report."""
+from __future__ import annotations
 
 
 import sys
@@ -18,10 +19,10 @@ class Jenkins(TestFormatInterface):
     <https://wiki.jenkins-ci.org/display/JENKINS/Monitoring+external+jobs>
     """
 
-    def __init__(self, stream: "IO[str]"=sys.stdout) -> None:
+    def __init__(self, stream: IO[str]=sys.stdout) -> None:
         super().__init__(stream)
 
-    def end_test(self, result: "TestResult") -> None:
+    def end_test(self, result: TestResult) -> None:
         """Called after each test."""
         print('<run>', file=self.stream)
         try:
@@ -37,7 +38,7 @@ class Jenkins(TestFormatInterface):
         print('</run>', file=self.stream)
         super().end_test(result)
 
-    def format(self, result: "TestResult") -> None:
+    def format(self, result: TestResult) -> None:
         """
         >>> from univention.testing.data import TestCase, TestEnvironment
         >>> te = TestEnvironment()

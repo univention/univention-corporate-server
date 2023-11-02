@@ -33,7 +33,7 @@
 
 """Univention LDIF tool"""
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import re
 import sys
@@ -51,7 +51,7 @@ __all__ = [
 RE_B64 = re.compile(r'^([a-zA-Z0-9-]+):: (.*)')
 
 
-def ldif_decode(src: "IO[str]"=sys.stdin, dst: "IO[bytes]"=sys.stdout.buffer) -> None:
+def ldif_decode(src: IO[str]=sys.stdin, dst: IO[bytes]=sys.stdout.buffer) -> None:
     """Decode bas64 in LDIF."""
     try:
         for line in src:
@@ -60,7 +60,7 @@ def ldif_decode(src: "IO[str]"=sys.stdin, dst: "IO[bytes]"=sys.stdout.buffer) ->
         pass
 
 
-def decode(stream: "Iterable[str]") -> "Iterator[bytes]":
+def decode(stream: Iterable[str]) -> Iterator[bytes]:
     for line in stream:
         yield decode64(line)
 
@@ -75,7 +75,7 @@ def decode64(line: str) -> bytes:
         return line.encode("utf-8")
 
 
-def ldif_unwrap(src: "IO[str]"=sys.stdin, dst: "IO[bytes]"=sys.stdout.buffer) -> None:
+def ldif_unwrap(src: IO[str]=sys.stdin, dst: IO[bytes]=sys.stdout.buffer) -> None:
     """Unwrap LDIF."""
     try:
         for line in unwrap(src):
@@ -84,7 +84,7 @@ def ldif_unwrap(src: "IO[str]"=sys.stdin, dst: "IO[bytes]"=sys.stdout.buffer) ->
         pass
 
 
-def unwrap(stream: "Iterable[str]") -> "Iterator[str]":
+def unwrap(stream: Iterable[str]) -> Iterator[str]:
     prev = ""
     for line in stream:
         if line[:1] in (' ', '\t'):
@@ -98,7 +98,7 @@ def unwrap(stream: "Iterable[str]") -> "Iterator[str]":
         yield prev
 
 
-def ldif_normalize(src: "IO[str]"=sys.stdin, dst: "IO[bytes]"=sys.stdout.buffer) -> None:
+def ldif_normalize(src: IO[str]=sys.stdin, dst: IO[bytes]=sys.stdout.buffer) -> None:
     """Unwrap and base64 decode LDIF."""
     try:
         for line in unwrap(src):

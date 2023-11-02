@@ -725,7 +725,7 @@ class object(univention.admin.handlers.simpleLdap):
                         num = len(searchResult)
                         searchResult = searchResult[:9]
                         numstring = _(" and %s more") % str(num - 10)
-                    for i in range(0, len(searchResult) - 2):
+                    for i in range(len(searchResult) - 2):
                         temp = searchResult[i].split(",")
                         temp = temp[0]  # uid=...
                         uid = temp[4:]

@@ -287,7 +287,7 @@ class Test_UDMExtension:
 
         module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8').splitlines()
 
-        for i in range(0, len(module_help_text)):
+        for i in range(len(module_help_text)):
             if module_help_text[i] == f'  {properties["tabName"]}:':
                 assert properties['CLIName'] in module_help_text[i + 1], 'Could not find attribute CLI name under tab'
                 try:

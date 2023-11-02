@@ -38,6 +38,7 @@ from typing import Any, Dict, Iterable, Iterator, List, Optional, TypeVar, Union
 from six import with_metaclass
 
 from .plugins import Plugin
+import typing_extensions
 
 
 LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'))
@@ -50,7 +51,7 @@ BaseObjectPropertiesTV = TypeVar('BaseObjectPropertiesTV', bound=BaseObjectPrope
 
 
 class BaseObjectProperties(object):
-    _udm_obj = None  # type: BaseObjectTV
+    _udm_obj: typing_extensions.TypeAlias = None  # type: BaseObjectTV
 
     def __init__(self, udm_obj):  # type: (BaseObjectTV) -> None
         ...
@@ -64,12 +65,12 @@ class BaseObjectProperties(object):
 
 class BaseObject(object):
     dn = ''
-    props = None  # type: BaseObjectPropertiesTV
+    props: typing_extensions.TypeAlias = None  # type: BaseObjectPropertiesTV
     options = []  # type: List[str]
     policies = []  # type: List[str]
     position = ''  # type: str
-    superordinate = None  # type: str
-    _udm_module = None  # type: BaseModuleTV
+    superordinate: typing_extensions.TypeAlias = None  # type: str
+    _udm_module: typing_extensions.TypeAlias = None  # type: BaseModuleTV
 
     def __init__(self):  # type: () -> None
         ...

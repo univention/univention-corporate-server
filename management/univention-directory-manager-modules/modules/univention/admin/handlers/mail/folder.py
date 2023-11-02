@@ -223,7 +223,7 @@ class object(univention.admin.handlers.simpleLdap):
         rewrite_acl = False
         new_acls_tmp = []
         for attr in ['sharedFolderUserACL', 'sharedFolderGroupACL']:
-            ud.debug(ud.ADMIN, ud.INFO, f'ACLs: {str(self[attr])}')
+            ud.debug(ud.ADMIN, ud.INFO, f'ACLs: {self[attr]!s}')
             if self.hasChanged(attr):
                 rewrite_acl = True
                 # re-use regular expressions from syntax definitions

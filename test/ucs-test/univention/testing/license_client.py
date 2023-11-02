@@ -31,6 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """A tool to obtain licenses for the UCS test environments."""
+from __future__ import annotations
 import cgi
 import logging
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
@@ -49,15 +50,15 @@ class CredentialsMissing(Exception):
 
 class ShopParser(HTMLParser):
 
-    def __init__(self, log: "logging.Logger") -> None:
+    def __init__(self, log: logging.Logger) -> None:
         HTMLParser.__init__(self)  # old style class
         self.log = log
-        self.link_to_license: "Optional[str]" = None
+        self.link_to_license: str | None = None
 
     def error(self, message):
         self.log.error("Failed parsing HTML: %s", message)
 
-    def handle_starttag(self, tag: str, attrs: "Iterable[Tuple[str, Optional[str]]]") -> None:
+    def handle_starttag(self, tag: str, attrs: Iterable[Tuple[str, str | None]]) -> None:
         """
         Method is called every time a new start tag is found in the
         html feed. When the link tag with 'orders/' attribute is
@@ -79,7 +80,7 @@ class ShopParser(HTMLParser):
 
 class TestLicenseClient:
 
-    def __init__(self, parser: "Optional[ArgumentParser]"=None) -> None:
+    def __init__(self, parser: ArgumentParser | None=None) -> None:
         """Class constructor for the test license client and HTMLParser"""
         self.log = logging.getLogger("License_Client")
         self.setup_logging()
@@ -88,14 +89,14 @@ class TestLicenseClient:
         self.license_server_url = 'license.univention.de'
         self.license_filename = 'ValidTest.license'
 
-        self.connection: "Optional[HTTPSConnection]" = None
+        self.connection: HTTPSConnection | None = None
         self.server_username = 'ucs-test'
         self.server_password = ''
         self.secret_file = '/etc/license.secret'
         self.cookie = ''
         self.license_shop = 'testing'
 
-        self.license_params: "Dict[str, Any]" = {
+        self.license_params: Dict[str, Any] = {
             "kundeUnternehmen": "Univention",
             "kundeEmail": "umc-test@univention.de",
             "BaseDN": "",
@@ -189,7 +190,7 @@ class TestLicenseClient:
         # reading the response to avoid 'ResponseNotReady' exception later:
         response.read()
 
-    def make_post_request(self, url: str, body: str, headers: "Dict[str, str]") -> "HTTPResponse":
+    def make_post_request(self, url: str, body: str, headers: Dict[str, str]) -> HTTPResponse:
         """
         Makes a POST request with the given 'url', 'body', 'headers' and
         returns the response
@@ -203,7 +204,7 @@ class TestLicenseClient:
             self.log.exception("An HTTP Exception occurred while making '%s' POST request: '%s'", url, exc)
             exit(1)
 
-    def make_get_request(self, url: str, headers: "Dict[str, str]") -> "HTTPResponse":
+    def make_get_request(self, url: str, headers: Dict[str, str]) -> HTTPResponse:
         """
         Makes a GET request with the given 'url', 'headers' and
         returns the response
@@ -246,7 +247,7 @@ class TestLicenseClient:
         assert response.status == 202
         return self.get_body(response)
 
-    def get_body(self, response: "HTTPResponse") -> str:
+    def get_body(self, response: HTTPResponse) -> str:
         self.log.debug("The response status is '%s', reason is '%s', headers are '%s'", response.status, response.reason, response.getheaders())
         content_type = response.getheader('Content-Type')
         mimetype, options = cgi.parse_header(content_type)
@@ -282,7 +283,7 @@ class TestLicenseClient:
             self.log.exception("The 'EndDate' for the license has a wrong format, supported format is 'dd.mm.yyyy': %r", exc)
             exit(1)
 
-    def update_with_parsed_args(self, args: "Dict[str, Any]") -> None:
+    def update_with_parsed_args(self, args: Dict[str, Any]) -> None:
         """
         Updates the loglevel and license filename settings if given
         among the parsed arguments. Merges parsed data with default

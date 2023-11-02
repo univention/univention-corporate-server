@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import json
 from contextlib import contextmanager
 from typing import Any, Iterator, List, Type  # noqa: F401
@@ -42,7 +43,7 @@ from univention.ldap_cache.log import log
 CONFIG_FILE = '/usr/share/univention-group-membership-cache/shards.json'
 
 
-def shards_from_config() -> "List[Type[Shard]]":
+def shards_from_config() -> List[Type[Shard]]:
     ret = []  # type: List[Type[Shard]]
     try:
         with open(CONFIG_FILE) as fd:
@@ -66,7 +67,7 @@ def shards_from_config() -> "List[Type[Shard]]":
 
 
 @contextmanager
-def _writing_config() -> "Iterator[Any]":
+def _writing_config() -> Iterator[Any]:
     try:
         with open(CONFIG_FILE) as fd:
             shards = json.load(fd)

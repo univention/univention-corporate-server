@@ -186,7 +186,7 @@ class I18N_Manager(dict):
         :param str message: text to translation
         :param str domain: translation domain
         """
-        LOCALE.debug(f'Searching for {str(self.locale)} translation of "{message}')
+        LOCALE.debug(f'Searching for {self.locale!s} translation of "{message}')
         try:
             if domain is not None:
                 if domain not in self:

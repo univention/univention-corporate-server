@@ -4,6 +4,7 @@
 This module collects utilities for installing and building message catalogs
 while applying Univention specific options.
 """
+from __future__ import annotations
 import os
 
 #
@@ -114,7 +115,7 @@ def merge_po(template: str, translation: str) -> None:
         template)
 
 
-def join_existing(language: str, output_file: str, input_files: "Union[str, List[str]]", cwd: str=os.getcwd()) -> None:
+def join_existing(language: str, output_file: str, input_files: str | List[str], cwd: str=os.getcwd()) -> None:
     """
     Extract strings from source code and merge into existing translation file.
 

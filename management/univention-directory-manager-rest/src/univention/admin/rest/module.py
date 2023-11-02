@@ -4009,7 +4009,7 @@ class PolicyResultBase(Resource):
 
         policy_obj.policy_result(faked_policy_reference)
         infos = copy.copy(policy_obj.polinfo_more)
-        for key, _value in infos.items():
+        for key in infos.keys():
             if key in policy_obj.polinfo:
                 if isinstance(infos[key], (tuple, list)):
                     continue

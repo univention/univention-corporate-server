@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import itertools as it
 import subprocess
 from typing import Any, Dict, Iterator, List, Set, Tuple, Type, TypeVar
@@ -111,11 +112,11 @@ class MailFolder(object):
     def common_name(self) -> str:
         return f'{self.name}@{self.mail_domain}'
 
-    def acl(self) -> "ACL":
+    def acl(self) -> ACL:
         return ACL.from_udm(self._user_acl, self._group_acl)
 
     @classmethod
-    def from_udm(cls) -> Iterator["MailFolder"]:
+    def from_udm(cls) -> Iterator[MailFolder]:
         univention.admin.modules.update()
         (ldap_connection, position) = univention.admin.uldap.getMachineConnection()
         module = udm_modules.get('mail/folder')
@@ -132,7 +133,7 @@ class ACL(object):
         self.group_acl = group_acl
 
     @classmethod
-    def from_udm(cls, user_acl: List[Tuple[str, str]], group_acl: List[Tuple[str, str]]) -> "ACL":
+    def from_udm(cls, user_acl: List[Tuple[str, str]], group_acl: List[Tuple[str, str]]) -> ACL:
         """
         Transform the udm acls from [[id, right], [id, right], ..] to a dict
         from identifier to right, where right is the highest right in the acl.
@@ -151,7 +152,7 @@ class ACL(object):
 
         return cls(dict(simplify(user_acl)), dict(simplify(group_acl)))
 
-    def difference(self, other: "ACL") -> Iterator[ACLDifferenceError]:
+    def difference(self, other: ACL) -> Iterator[ACLDifferenceError]:
         user_diff = self._diff(UserACLError, self.user_acl, other.user_acl)
         group_diff = self._diff(GroupACLError, self.group_acl, other.group_acl)
         return it.chain(user_diff, group_diff)

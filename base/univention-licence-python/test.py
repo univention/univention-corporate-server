@@ -34,6 +34,7 @@ import os
 import unittest
 
 import univention.license as ul
+import pytest
 
 
 class TestBasic(unittest.TestCase):
@@ -43,7 +44,7 @@ class TestBasic(unittest.TestCase):
 
     def test_getValues(self):
         """Return value from globally selected licence."""
-        with self.assertRaises(KeyError):
+        with pytest.raises(KeyError):
             ul.getValue('doesNotExists')
 
 

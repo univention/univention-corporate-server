@@ -119,7 +119,7 @@ def test_no_leftovers_after_delete_in_ucs():
         name = random_name()
         try:
             # create users
-            for i in range(0, create_users):
+            for i in range(create_users):
                 username = f"{name}{i}"
                 user_objects.create_user(username)
             # wait for the connector to pick up these changes
@@ -170,7 +170,7 @@ def test_do_not_delete_objects_with_different_id():
         create_users = 10
         try:
             # create users
-            for i in range(0, create_users):
+            for i in range(create_users):
                 username = f"{name}{i}"
                 user_objects.create_user(username)
             # wait for the connector to pick up these changes
@@ -178,7 +178,7 @@ def test_do_not_delete_objects_with_different_id():
             time.sleep(10)
             # new delete everything and (re) create, without wait
             user_objects.delete_users()
-            for i in range(0, create_users):
+            for i in range(create_users):
                 username = f"{name}{i}"
                 user_objects.create_user(username)
             # wait for the connector to pick up these changes

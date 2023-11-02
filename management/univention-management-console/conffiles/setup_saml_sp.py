@@ -117,7 +117,7 @@ def valid_metadata(saml_idp):
 def download_idp_metadata(metadata):
     idp = str(urlparse(metadata).netloc)
     filename = f'/usr/share/univention-management-console/saml/idp/{idp}.xml'
-    for i in range(0, 60):
+    for i in range(60):
         print(f'Try to download idp metadata ({(i + 1)}/60)')
         rc = call([
             '/usr/bin/curl',

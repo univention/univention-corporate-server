@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """|UCS| release version."""
+from __future__ import annotations
 
 import re
 import sys
@@ -49,7 +50,7 @@ class UCS_Version(object):
     _regexp = re.compile(r'(?P<major>[0-9]+)\.(?P<minor>[0-9]+)-(?P<patch>[0-9]+)')
     _format = re.compile(r'%([%afimp])')
 
-    def __init__(self, version: "Union[Tuple[int, int, int], List[int], str, UCS_Version]") -> None:
+    def __init__(self, version: Tuple[int, int, int] | (List[int] | (str | UCS_Version))) -> None:
         """
         :param version: must a :py:class:`str` matching the pattern `X.Y-Z` or a triple with major, minor and patchlevel.
         :type version: list(int) or tuple(int) or str or UCS_Version
@@ -73,20 +74,20 @@ class UCS_Version(object):
             raise TypeError("not a tuple, list or string")
 
     @property
-    def mm(self) -> "Tuple[int, int]":
+    def mm(self) -> Tuple[int, int]:
         """2-tuple (major, minor) version"""
         return (self.major, self.minor)
 
     @property
-    def mmp(self) -> "Tuple[int, int, int]":
+    def mmp(self) -> Tuple[int, int, int]:
         """3-tuple (major, minor, patch-level) version"""
         return (self.major, self.minor, self.patchlevel)
 
     @mmp.setter
-    def mmp(self, mmp: "Union[List[int], Tuple[int, int, int]]") -> None:
+    def mmp(self, mmp: List[int] | Tuple[int, int, int]) -> None:
         (self.major, self.minor, self.patchlevel) = mmp
 
-    def __lt__(self, other: "UCS_Version") -> bool:
+    def __lt__(self, other: UCS_Version) -> bool:
         """
         Compare to UCS versions.
 
@@ -101,7 +102,7 @@ class UCS_Version(object):
         """
         return self.mmp < other.mmp if isinstance(other, UCS_Version) else NotImplemented
 
-    def __le__(self, other: "UCS_Version") -> bool:
+    def __le__(self, other: UCS_Version) -> bool:
         """
         >>> UCS_Version((1, 2, 3)) <= UCS_Version((1, 2, 3))
         True
@@ -128,7 +129,7 @@ class UCS_Version(object):
         """
         return not isinstance(other, UCS_Version) or self.mmp != other.mmp
 
-    def __ge__(self, other: "UCS_Version") -> bool:
+    def __ge__(self, other: UCS_Version) -> bool:
         """
         >>> UCS_Version((1, 2, 3)) >= UCS_Version((1, 2, 3))
         True
@@ -137,7 +138,7 @@ class UCS_Version(object):
         """
         return self.mmp >= other.mmp if isinstance(other, UCS_Version) else NotImplemented
 
-    def __gt__(self, other: "UCS_Version") -> bool:
+    def __gt__(self, other: UCS_Version) -> bool:
         """
         >>> UCS_Version((1, 2, 3)) > UCS_Version((1, 2, 3))
         False

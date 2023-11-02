@@ -5,6 +5,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
+from __future__ import annotations
 import uuid
 from argparse import Namespace
 from logging import getLogger
@@ -192,7 +193,7 @@ class OVA_Virtualbox(TargetFile):
             image_name, vmdk, image_uuid,
             options,
         )
-        files: "List[Tuple[str, Union[File, bytes]]]" = [
+        files: List[Tuple[str, File | bytes]] = [
             (descriptor_name, descriptor),
             (image_name, vmdk),
         ]

@@ -252,7 +252,7 @@ def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: di
     for client in groups.values():
         client_id = clients[client]
         session.create_client_role(client_id, {"name": auth_role_name}, skip_exists=True)
-        role = [x for x in session.get_client_roles(client_id) if x["name"] == auth_role_name][0]
+        role = next(x for x in session.get_client_roles(client_id) if x["name"] == auth_role_name)
         roles[client_id] = role["id"]
 
     # add group role mapping

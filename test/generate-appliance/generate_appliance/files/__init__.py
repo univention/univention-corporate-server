@@ -4,6 +4,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
+from __future__ import annotations
 from abc import ABCMeta
 from functools import wraps
 from hashlib import sha256
@@ -26,7 +27,7 @@ class Lazy(metaclass=ABCMeta):
     SUFFIX = ""
 
     def __init__(self) -> None:
-        self._path: "Optional[Path]" = None
+        self._path: Path | None = None
 
     @staticmethod
     def lazy(fun: F) -> F:

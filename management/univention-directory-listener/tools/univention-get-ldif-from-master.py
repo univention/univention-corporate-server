@@ -35,7 +35,7 @@
 
 """Read LDAP from the Primary Directory Node and create LDIF file (and update local schema)"""
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import argparse
 import gzip
@@ -63,7 +63,7 @@ OIDS = set(replication.BUILTIN_OIDS) | set('1.3.6.1.4.1.4203.666.11.1.4.2.12.1')
 
 
 # from replication.py
-def _update_schema(fp: "IO[str]", attr: str) -> None:
+def _update_schema(fp: IO[str], attr: str) -> None:
     subschema = ldap.schema.SubSchema(attr)
     for oid in replication.subschema_sort(subschema, ldap.schema.AttributeType):
         if oid in OIDS:
@@ -78,7 +78,7 @@ def _update_schema(fp: "IO[str]", attr: str) -> None:
         fp.write(f'objectclass {obj}\n')
 
 
-def update_schema(lo: "uldap.access") -> None:
+def update_schema(lo: uldap.access) -> None:
     """update the ldap schema file"""
     logging.info('Fetching Schema ...')
     res = lo.search(base="cn=Subschema", scope=ldap.SCOPE_BASE, filter='(objectclass=*)', attr=['+', '*'])
@@ -93,7 +93,7 @@ def update_schema(lo: "uldap.access") -> None:
     os.rename(tmp, SCHEMA)
 
 
-def create_ldif_from_master(lo: "uldap.access", ldif_file: str, base: str, page_size: int) -> None:
+def create_ldif_from_master(lo: uldap.access, ldif_file: str, base: str, page_size: int) -> None:
     """create ldif file from everything from lo"""
     logging.info('Fetching LDIF ...')
     output = sys.stdout if ldif_file == "-" else io.StringIO()

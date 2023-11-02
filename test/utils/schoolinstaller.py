@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import sys
 import time
@@ -58,7 +58,7 @@ from univention.lib.umc import Client, ConnectionError, HTTPError
 # used to setup school in UCS 4 (update tests, ...)
 
 
-def parse_args() -> "Namespace":
+def parse_args() -> Namespace:
     parser = ArgumentParser()
     parser.add_argument(
         '-H', '--host',
@@ -175,7 +175,7 @@ if result and not result.get('success', True):  # backwards compatibility
     sys.exit(1)
 
 print('=== INSTALLATION STARTED ===')
-status: "Dict[str, Any]" = {'finished': False}
+status: Dict[str, Any] = {'finished': False}
 failcount = 0
 last_message = None
 while not status['finished']:

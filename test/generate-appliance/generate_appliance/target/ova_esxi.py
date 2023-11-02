@@ -4,6 +4,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 
+from __future__ import annotations
 from argparse import Namespace
 from logging import getLogger
 from typing import List, Tuple, Union, cast  # noqa: F401
@@ -352,7 +353,7 @@ class OVA_ESXi(TargetFile):
 
         vmdk = Vmdk(image, adapter_type="lsilogic", hwversion="7", subformat="streamOptimized")
         descriptor = create_ovf_descriptor_esxi(image_name, vmdk, options)
-        files: "List[Tuple[str, Union[File, bytes]]]" = [
+        files: List[Tuple[str, File | bytes]] = [
             (descriptor_name, descriptor),
             (image_name, vmdk),
         ]

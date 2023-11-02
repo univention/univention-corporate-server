@@ -31,7 +31,7 @@
 
 """Univention IP Calculator for DNS records (IPv6 edition)."""
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import ipaddress
 import sys
@@ -41,7 +41,7 @@ from typing import List, Optional  # noqa: F401
 from univention import ipcalc
 
 
-def parse_options(args: "Optional[List[str]]"=None) -> "Namespace":
+def parse_options(args: List[str] | None=None) -> Namespace:
     """Parse command line options."""
     epilog = 'Calculate network values from network address for DNS records.'
     parser = ArgumentParser(epilog=epilog)
@@ -75,7 +75,7 @@ def parse_options(args: "Optional[List[str]]"=None) -> "Namespace":
     return opt
 
 
-def main(args: "Optional[List[str]]"=None) -> None:
+def main(args: List[str] | None=None) -> None:
     """Calculate IP address parameters-"""
     options = parse_options(args)
 

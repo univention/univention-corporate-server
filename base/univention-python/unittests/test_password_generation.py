@@ -365,7 +365,7 @@ class TestRandomPasswordGenerator(object):
     def test_all_digits_exclude_zero_and_one(self):
         cfg = {'digits': 3, 'lower': 0, 'other': 0, 'upper': 0, 'forbidden': '01', 'min_length': 12}
 
-        for _ in range(0, self.iter_count):
+        for _ in range(self.iter_count):
             pwd = univention_password.generate_password(**cfg)
 
             assert match_password_complexity(cfg, pwd)
@@ -381,7 +381,7 @@ class TestRandomPasswordGenerator(object):
     def test_all_lowercase_exclude_a_and_b(self):
         cfg = {'digits': 0, 'lower': 3, 'other': 0, 'upper': 0, 'forbidden': 'ab', 'min_length': 12}
 
-        for _ in range(0, self.iter_count):
+        for _ in range(self.iter_count):
             pwd = univention_password.generate_password(**cfg)
 
             assert match_password_complexity(cfg, pwd)
@@ -397,7 +397,7 @@ class TestRandomPasswordGenerator(object):
     def test_all_specials_exclude_pound_and_braces(self):
         cfg = {'digits': 0, 'lower': 0, 'other': 3, 'upper': 0, 'forbidden': '#()', 'min_length': 12}
 
-        for _ in range(0, self.iter_count):
+        for _ in range(self.iter_count):
             pwd = univention_password.generate_password(**cfg)
 
             assert match_password_complexity(cfg, pwd)
@@ -414,7 +414,7 @@ class TestRandomPasswordGenerator(object):
     def test_all_uppercase_exclude_cap_a_and_cap_b(self):
         cfg = {'digits': 0, 'lower': 0, 'other': 0, 'upper': 3, 'forbidden': 'AB', 'min_length': 12}
 
-        for _ in range(0, self.iter_count):
+        for _ in range(self.iter_count):
             pwd = univention_password.generate_password(**cfg)
 
             assert match_password_complexity(cfg, pwd)
@@ -424,7 +424,7 @@ class TestRandomPasswordGenerator(object):
     def test_radius_password_generate(self):
         cfg = univention_password.password_config('radius')
 
-        for _ in range(0, self.iter_count):
+        for _ in range(self.iter_count):
             pwd = univention_password.generate_password(**cfg)
 
             assert password_stats(cfg, pwd)['other'] == 0

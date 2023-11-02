@@ -42,6 +42,7 @@ from univention.admin.syntax import sambaGroupType
 
 from .binary_props import Base64BinaryProperty, Base64Bzip2BinaryProperty  # noqa: F401
 from .udm import UDM  # noqa: F401
+import typing_extensions
 
 
 BaseEncoderTV = TypeVar('BaseEncoderTV', bound=univention.udm.encoders.BaseEncoder)  # noqa: PYI001
@@ -225,7 +226,7 @@ class DnListPropertyEncoder(BaseEncoder):
 
     class DnsList(list):
         # a list with an additional member variable
-        objs = None  # type: DnListPropertyEncoder.MyProxy
+        objs: typing_extensions.TypeAlias = None  # type: DnListPropertyEncoder.MyProxy
 
         def __deepcopy__(self, memodict=None):
             ...
@@ -315,7 +316,7 @@ class DnPropertyEncoder(BaseEncoder):
 
     class DnStr(str):  # noqa: SLOT000
         # a string with an additional member variable
-        obj = None  # type: DnPropertyEncoder.MyProxy
+        obj: typing_extensions.TypeAlias = None  # type: DnPropertyEncoder.MyProxy
 
         def __deepcopy__(self, memodict=None):
             ...

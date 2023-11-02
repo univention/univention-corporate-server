@@ -37,11 +37,12 @@ from typing import Any, Callable, Dict, Optional, Tuple  # noqa: F401
 import univention.config_registry  # noqa: F401
 
 from .modules.generic import OriUdmHandlerTV  # noqa: F401
+import typing_extensions
 
 
 class LDAP_connection(object):
-    _ucr = None  # type: univention.config_registry.ConfigRegistry
-    _connection_admin = None  # type: OriUdmHandlerTV
+    _ucr: typing_extensions.TypeAlias = None  # type: univention.config_registry.ConfigRegistry
+    _connection_admin: typing_extensions.TypeAlias = None  # type: OriUdmHandlerTV
     _connection_account = {}  # type: Dict[Tuple[str, str, str, int, str], OriUdmHandlerTV]
 
     @classmethod

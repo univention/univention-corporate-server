@@ -36,6 +36,7 @@ from tempfile import NamedTemporaryFile
 
 import heimdal
 import unittest
+import pytest
 
 
 PY2 = sys.version_info[:2] < (3, 0)
@@ -227,11 +228,11 @@ class TestPrincipal(unittest.TestCase):
         self.principal = heimdal.principal(context, USER)
 
     def test_type(self):
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             heimdal.principal(None, USER)
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             heimdal.principal("", USER)
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             heimdal.principal(object(), USER)
 
     def test_principal(self):
@@ -273,13 +274,13 @@ class TestKeytab(unittest.TestCase):
     def test_keytab_missing(self):
         with NamedTemporaryFile() as tmpfile:
             keytab = heimdal.keytab(self.context, tmpfile.name)
-        with self.assertRaises(IOError):
+        with pytest.raises(IOError):
             keytab.list()
 
     def test_keytab_empty(self):
         with NamedTemporaryFile() as tmpfile:
             keytab = heimdal.keytab(self.context, tmpfile.name)
-            with self.assertRaises(heimdal.Krb5Error):
+            with pytest.raises(heimdal.Krb5Error):
                 keytab.list()
 
     def test_keytab_add(self):
@@ -298,7 +299,7 @@ class TestKeytab(unittest.TestCase):
     def test_keytab_remove_missing(self):
         with NamedTemporaryFile() as tmpfile:
             keytab = heimdal.keytab(self.context, tmpfile.name)
-            with self.assertRaises(heimdal.Krb5Error) as ex:
+            with pytest.raises(heimdal.Krb5Error) as ex:
                 keytab.remove(USER, KVNO, ENCSTR)
 
             assert ex.exception.code == -1765328203  # #define KRB5_KT_NOTFOUND
@@ -343,11 +344,11 @@ class TestEnctype(unittest.TestCase):
         self.enctype = heimdal.enctype(context, ENCSTR)
 
     def test_type(self):
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             heimdal.enctype(None, ENCSTR)
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             heimdal.enctype("", ENCSTR)
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             heimdal.enctype(object(), ENCSTR)
 
     def test_enctype(self):
@@ -393,7 +394,7 @@ class TestCcache(unittest.TestCase):
         self.ccache = heimdal.ccache(self.context)
 
     def test_list(self):
-        with self.assertRaises(IOError):
+        with pytest.raises(IOError):
             self.ccache.list()
 
     def test_init(self):
@@ -405,7 +406,7 @@ class TestCcache(unittest.TestCase):
     def test_use_after_destroy(self):
         self.ccache.initialize(self.principal)
         self.ccache.destroy()
-        with self.assertRaises(IOError):
+        with pytest.raises(IOError):
             self.ccache.list()
 
     @unittest.skip('WIP')
@@ -453,7 +454,7 @@ class TestASN1(unittest.TestCase):
     def test_asn1_encode_key_invalid_salt(self):
         context = heimdal.context()
         keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE)
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             heimdal.asn1_encode_key(keyblock, 0, KVNO)
 
 
@@ -461,12 +462,12 @@ class TestException(unittest.TestCase):
     KRB5KDC_ERR_NONE = -1765328384
 
     def test_KRB5KDC_ERR_NONE(self):
-        with self.assertRaises(heimdal.KRB5KDC_ERR_NONE) as cm:
+        with pytest.raises(heimdal.KRB5KDC_ERR_NONE) as cm:
             raise heimdal.KRB5KDC_ERR_NONE()
         assert cm.exception.code == self.KRB5KDC_ERR_NONE
 
     def test_exception(self):
-        with self.assertRaises(heimdal.Krb5Error) as cm:
+        with pytest.raises(heimdal.Krb5Error) as cm:
             heimdal.asn1_decode_key("")
         assert cm.exception.code is None
 

@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import grp
 import imaplib
 import os
@@ -104,12 +105,12 @@ class DovecotFolderAclEntry(object):
 class DovecotGlobalAclFile(object):
     dovemail_gid = grp.getgrnam('dovemail').gr_gid
 
-    def __init__(self, listener: "Any") -> None:
+    def __init__(self, listener: Any) -> None:
         self.listener = listener
-        self._acls: "List[DovecotFolderAclEntry]" = []
+        self._acls: List[DovecotFolderAclEntry] = []
         self._fix_permissions()
 
-    def add_acls(self, acl_list: "List[DovecotFolderAclEntry]") -> None:
+    def add_acls(self, acl_list: List[DovecotFolderAclEntry]) -> None:
         self._read()
         for acl in acl_list:
             if acl not in self._acls:
@@ -121,7 +122,7 @@ class DovecotGlobalAclFile(object):
         self._acls = [acl for acl in self._acls if acl.folder_name != folder_name]
         self._write()
 
-    def _fix_permissions(self, path: str=global_acl_path, fileno: "Optional[int]"=None) -> None:
+    def _fix_permissions(self, path: str=global_acl_path, fileno: int | None=None) -> None:
         def set_perms(fileno: int) -> None:
             os.fchown(fileno, 0, self.dovemail_gid)
             os.fchmod(fileno, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
@@ -167,7 +168,7 @@ class DovecotSharedFolderListener(DovecotListener):
         self.acl_key = "univentionMailACL"
         self.global_acls = DovecotGlobalAclFile(self.listener)
 
-    def add_shared_folder(self, new: "Dict[str, List[bytes]]") -> None:
+    def add_shared_folder(self, new: Dict[str, List[bytes]]) -> None:
         if "mailPrimaryAddress" in new:
             # use a shared folder
             new_mailbox = new["mailPrimaryAddress"][0].decode('ASCII')
@@ -205,7 +206,7 @@ class DovecotSharedFolderListener(DovecotListener):
                 return
             self.log_p(f"Created public mailbox '{new_mailbox}'.")
 
-    def del_shared_folder(self, old: "Dict[str, List[bytes]]") -> None:
+    def del_shared_folder(self, old: Dict[str, List[bytes]]) -> None:
         if "mailPrimaryAddress" in old:
             # shared folder
             old_mailbox = old["mailPrimaryAddress"][0].decode('ASCII')
@@ -241,7 +242,7 @@ class DovecotSharedFolderListener(DovecotListener):
         else:
             self.log_p(f"Deleting of mailboxes disabled (mailbox '{old_mailbox}').")
 
-    def mod_shared_folder(self, old: "Dict[str, List[bytes]]", new: "Dict[str, List[bytes]]") -> None:
+    def mod_shared_folder(self, old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> None:
         if "mailPrimaryAddress" in new:
             # use a shared folder
             new_mailbox = new["mailPrimaryAddress"][0].decode('ASCII')
@@ -401,7 +402,7 @@ class DovecotSharedFolderListener(DovecotListener):
         finally:
             self.listener.unsetuid()
 
-    def doveadm_set_mailbox_acls(self, mailbox: str, acls: "List[str]") -> None:
+    def doveadm_set_mailbox_acls(self, mailbox: str, acls: List[str]) -> None:
         for acl in acls:
             identifier, right = self._split_udm_imap_acl_doveadm(acl)
             if right == "none":
@@ -415,7 +416,7 @@ class DovecotSharedFolderListener(DovecotListener):
                 self.log_e(f"Failed to set ACL using doveadm using command '{cmd}'.")
                 raise
 
-    def imap_set_mailbox_acls(self, mb_owner: str, mailbox: str, acls: "List[str]") -> None:
+    def imap_set_mailbox_acls(self, mb_owner: str, mailbox: str, acls: List[str]) -> None:
         master_name, master_pw = self.get_masteruser_credentials()
         imap = None
         try:
@@ -436,7 +437,7 @@ class DovecotSharedFolderListener(DovecotListener):
             if imap:
                 imap.logout()
 
-    def update_public_mailbox_configuration(self, delete_only: "Optional[str]"=None) -> None:
+    def update_public_mailbox_configuration(self, delete_only: str | None=None) -> None:
         """
         Cache public folders and their quota into a UCRV.
 
@@ -460,7 +461,7 @@ class DovecotSharedFolderListener(DovecotListener):
             finally:
                 self.listener.unsetuid()
         else:
-            public_folders: "List[Any]" = []
+            public_folders: List[Any] = []
             for module in self.modules:
                 try:
                     public_folders.extend(self.get_udm_infos(module, "(!(mailPrimaryAddress=*))"))
@@ -488,14 +489,14 @@ class DovecotSharedFolderListener(DovecotListener):
             self.listener.unsetuid()
         self.log_p("Updated shared mailbox configuration.")
 
-    def unsubscribe_from_mailbox(self, users: "List[str]", mailbox: str) -> None:
+    def unsubscribe_from_mailbox(self, users: List[str], mailbox: str) -> None:
         for user in users:
             try:
                 self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "mailbox", "unsubscribe", "-u", user, mailbox])
             except Exception:
                 self.log_e(f"Failed to unsubscribe user '{user}' from mailbox '{mailbox}'.")
 
-    def get_udm_infos(self, udm_module: "Any", udm_filter: str) -> "List[Any]":
+    def get_udm_infos(self, udm_module: Any, udm_filter: str) -> List[Any]:
         try:
             self.listener.setuid(0)
             univention.admin.modules.update()
@@ -508,7 +509,7 @@ class DovecotSharedFolderListener(DovecotListener):
         finally:
             self.listener.unsetuid()
 
-    def _diff_acls(self, old: "Dict[str, List[bytes]]", new: "Dict[str, List[bytes]]") -> "List[str]":
+    def _diff_acls(self, old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> List[str]:
         acl_diff = {}
         # find new ACLs
         for acl in new.get(self.acl_key, []):
@@ -525,7 +526,7 @@ class DovecotSharedFolderListener(DovecotListener):
         return [" ".join(x) for x in acl_diff.items()]
 
     @staticmethod
-    def _split_udm_imap_acl_doveadm(udm_imap_acl: str) -> "Tuple[str, str]":
+    def _split_udm_imap_acl_doveadm(udm_imap_acl: str) -> Tuple[str, str]:
         right = udm_imap_acl.split()[-1]
         identifier = " ".join(udm_imap_acl.split()[:-1])
         if "@" in identifier or identifier == "dovecotadmin":
@@ -537,7 +538,7 @@ class DovecotSharedFolderListener(DovecotListener):
         return identifier, right
 
     @staticmethod
-    def _split_udm_imap_acl_imap(udm_imap_acl: str) -> "Tuple[str, str]":
+    def _split_udm_imap_acl_imap(udm_imap_acl: str) -> Tuple[str, str]:
         identifier, right = udm_imap_acl.rsplit(None, 1)
         if "@" in identifier or identifier in ["anyone", "authenticated", "dovecotadmin"]:
             pass
@@ -546,7 +547,7 @@ class DovecotSharedFolderListener(DovecotListener):
             identifier = f'${identifier}'
         return identifier, right
 
-    def add_global_acls(self, new: "Dict[str, List[bytes]]") -> None:
+    def add_global_acls(self, new: Dict[str, List[bytes]]) -> None:
         new_mailbox = f'shared/{new["mailPrimaryAddress"][0].decode("ASCII")}'
         acls = new.get(self.acl_key, [])
         folder_acls = []
@@ -556,6 +557,6 @@ class DovecotSharedFolderListener(DovecotListener):
             folder_acls.append(DovecotFolderAclEntry(new_mailbox, identifier, dovecot_acls[right][0]))
         self.global_acls.add_acls(folder_acls)
 
-    def remove_global_acls(self, old: "Dict[str, List[bytes]]") -> None:
+    def remove_global_acls(self, old: Dict[str, List[bytes]]) -> None:
         old_mailbox = f'shared/{old["mailPrimaryAddress"][0].decode("ASCII")}'
         self.global_acls.remove_acls(old_mailbox)

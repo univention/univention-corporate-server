@@ -85,7 +85,7 @@ def main():
                 #
                 quota04 = 2
                 percent = 50
-                token_body = f"my_message {str(time.time())}"
+                token_body = f"my_message {time.time()!s}"
                 univention.config_registry.handler_set(["mail/dovecot/quota/warning/text/%d=%s" % (percent, token_body)])
                 subprocess.call(["/usr/bin/doveadm", "reload"])
                 udm.modify_object(modulename='users/user', dn=userdn, mailUserQuota=str(quota04))

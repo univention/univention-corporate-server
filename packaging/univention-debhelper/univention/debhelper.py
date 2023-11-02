@@ -32,7 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import os
 import subprocess
@@ -59,7 +59,7 @@ def doIt(*argv: str) -> int:
     return subprocess.check_call(argv)
 
 
-def binary_packages() -> "List[str]":
+def binary_packages() -> List[str]:
     """
     Get list of binary packages from debian/control file.
 
@@ -77,7 +77,7 @@ def binary_packages() -> "List[str]":
     return packages
 
 
-def parseRfc822(f: str) -> "List[Dict[str, List[str]]]":
+def parseRfc822(f: str) -> List[Dict[str, List[str]]]:
     r"""
     Parses string `f` as a :rfc:`822` conforming file and returns list of sections, each a dict mapping keys to lists of values.
     Splits file into multiple sections separated by blank line.
@@ -98,8 +98,8 @@ def parseRfc822(f: str) -> "List[Dict[str, List[str]]]":
     >>> parseRfc822('\n\n')
     []
     """
-    res: "List[Dict[str, List[str]]]" = []
-    ent: "Dict[str, List[str]]" = {}
+    res: List[Dict[str, List[str]]] = []
+    ent: Dict[str, List[str]] = {}
     for line in f.splitlines():
         if line:
             try:
@@ -118,7 +118,7 @@ def parseRfc822(f: str) -> "List[Dict[str, List[str]]]":
     return res
 
 
-def parser_dh_sequence(parser: "ArgumentParser", argv: "Optional[Sequence[str]]"=None) -> "Namespace":
+def parser_dh_sequence(parser: ArgumentParser, argv: Sequence[str] | None=None) -> Namespace:
     """
     Add common argument for Debian helper sequence.
 

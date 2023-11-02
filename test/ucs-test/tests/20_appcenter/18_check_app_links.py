@@ -154,7 +154,7 @@ def check_files():
             try:
                 r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers)  # noqa: S501
             except Exception as exc:
-                print(f"Response code indicates a problem. {str(exc)}")
+                print(f"Response code indicates a problem. {exc!s}")
                 bad_links.append(f'Link: {link} App: {app} File: {links[app][link]}')
                 continue
             print(r.status_code)

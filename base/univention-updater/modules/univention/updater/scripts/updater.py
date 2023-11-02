@@ -32,7 +32,7 @@
 
 """Tool for updating local system"""
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import os
 import re
@@ -84,11 +84,11 @@ TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
 TMPSOURCE2 = '/etc/apt/sources.list.d/00_ucs_update_in_progress.list'
 
 LOGNAME = '/var/log/univention/updater.log'
-fd_log: "IO[str]" = sys.stderr
+fd_log: IO[str] = sys.stderr
 stdout_orig = sys.stdout
 nostdout = False
 
-updater_status: "Dict[str, str]" = {}
+updater_status: Dict[str, str] = {}
 
 RE_APT = re.compile(
     r"""
@@ -108,7 +108,7 @@ class UpdateError(Exception):
     :param errorsource: One of 'SETTINGS', 'PREPARATION', 'PREUP', 'UPDATE', 'POSTUP'
     """
 
-    def __init__(self, msg: str, errorsource: "_ESRC") -> None:
+    def __init__(self, msg: str, errorsource: _ESRC) -> None:
         Exception.__init__(self, msg)
         self.errorsource = errorsource
 
@@ -153,7 +153,7 @@ def update_status(**kwargs: str) -> None:
         dprint(f'Warning: cannot update status: {ex}')
 
 
-def get_status() -> "Dict[str, str]":
+def get_status() -> Dict[str, str]:
     """
     Read Updater status from file.
 
@@ -162,7 +162,7 @@ def get_status() -> "Dict[str, str]":
     .. seealso::
         :py:func:`update_status`
     """
-    status: "Dict[str, str]" = {}
+    status: Dict[str, str] = {}
     try:
         with open(FN_STATUS) as fd:
             for line in fd:
@@ -186,7 +186,7 @@ def remove_temporary_sources_list() -> None:
                 raise
 
 
-def add_temporary_sources_list(temporary_sources_list: "Iterable[str]") -> None:
+def add_temporary_sources_list(temporary_sources_list: Iterable[str]) -> None:
     """Add line to a temporary sources.list."""
     remove_temporary_sources_list()
     with open(TMPSOURCE, 'w') as fp:
@@ -194,7 +194,7 @@ def add_temporary_sources_list(temporary_sources_list: "Iterable[str]") -> None:
             print(entry, file=fp)
 
 
-def update_available(opt: "Namespace", ucr: "ConfigRegistry") -> "Tuple[UniventionUpdater, Optional[UCS_Version]]":
+def update_available(opt: Namespace, ucr: ConfigRegistry) -> Tuple[UniventionUpdater, UCS_Version | None]:
     """
     Checks if there is an update available.
     Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified.
@@ -209,7 +209,7 @@ def update_available(opt: "Namespace", ucr: "ConfigRegistry") -> "Tuple[Univenti
         raise ValueError(opt.mode)
 
 
-def update_local(opt: "Namespace", ucr: "ConfigRegistry") -> "Tuple[UniventionUpdater, Optional[UCS_Version]]":
+def update_local(opt: Namespace, ucr: ConfigRegistry) -> Tuple[UniventionUpdater, UCS_Version | None]:
     dprint('Checking local repository')
     updater = LocalUpdater()
     try:
@@ -224,7 +224,7 @@ def update_local(opt: "Namespace", ucr: "ConfigRegistry") -> "Tuple[UniventionUp
     return updater, nextversion
 
 
-def update_net(opt: "Namespace", ucr: "ConfigRegistry") -> "Tuple[UniventionUpdater, Optional[UCS_Version]]":
+def update_net(opt: Namespace, ucr: ConfigRegistry) -> Tuple[UniventionUpdater, UCS_Version | None]:
     dprint('Checking network repository')
     try:
         updater = UniventionUpdater()
@@ -244,7 +244,7 @@ def update_ucr_updatestatus() -> None:
         dprint('Warning: calling univention-updater-check failed.')
 
 
-def call_local(opt: "Namespace") -> "NoReturn":
+def call_local(opt: Namespace) -> NoReturn:
     """Call updater in "local" mode."""
     cmd = [
         arg for args in (
@@ -261,7 +261,7 @@ def call_local(opt: "Namespace") -> "NoReturn":
     sys.exit(1)
 
 
-def parse_args(args: "Optional[Sequence[str]]"=None) -> "Namespace":
+def parse_args(args: Sequence[str] | None=None) -> Namespace:
     """Parse command line arguments."""
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--reboot", action="store_true", help=SUPPRESS)  # Deprecated
@@ -284,7 +284,7 @@ def parse_args(args: "Optional[Sequence[str]]"=None) -> "Namespace":
     return parser.parse_args(args)
 
 
-def setup_logging(opt: "Namespace", ucr: "ConfigRegistry") -> "IO[str]":
+def setup_logging(opt: Namespace, ucr: ConfigRegistry) -> IO[str]:
     ud.init(LOGNAME, 0, 0)
     try:
         loglevel = int(ucr.get('update/debug/level', opt.verbose))
@@ -299,7 +299,7 @@ def setup_logging(opt: "Namespace", ucr: "ConfigRegistry") -> "IO[str]":
     return open(LOGNAME, 'a+')
 
 
-def check(opt: "Namespace", ucr: "ConfigRegistry") -> bool:
+def check(opt: Namespace, ucr: ConfigRegistry) -> bool:
     """Return pending update status."""
     try:
         _updater, nextversion = update_available(opt, ucr)
@@ -317,7 +317,7 @@ def check(opt: "Namespace", ucr: "ConfigRegistry") -> bool:
     return False
 
 
-def find(opt: "Namespace", ucr: "ConfigRegistry") -> "Optional[Tuple[UniventionUpdater, UCS_Version]]":
+def find(opt: Namespace, ucr: ConfigRegistry) -> Tuple[UniventionUpdater, UCS_Version] | None:
     lastversion = '%(version/version)s-%(version/patchlevel)s' % ucr
     log(f'**** Starting univention-updater {lastversion} with parameter={sys.argv}')
 
@@ -344,7 +344,7 @@ def find(opt: "Namespace", ucr: "ConfigRegistry") -> "Optional[Tuple[UniventionU
     return (updater, nextversion)
 
 
-def run(opt: "Namespace", ucr: "ConfigRegistry", updater: "UniventionUpdater", nextversion: "UCS_Version") -> None:
+def run(opt: Namespace, ucr: ConfigRegistry, updater: UniventionUpdater, nextversion: UCS_Version) -> None:
 
     if opt.noninteractive:
         opt.ignore_releasenotes = True
@@ -477,7 +477,7 @@ def main() -> None:
                 (phase, order, component, script) = ex.args
                 if phase == 'preup':
                     phase = 'pre-update'
-                    errorsource: "_ESRC" = 'PREUP'
+                    errorsource: _ESRC = 'PREUP'
                 elif phase == 'postup':
                     phase = 'post-update'
                     errorsource = 'POSTUP'

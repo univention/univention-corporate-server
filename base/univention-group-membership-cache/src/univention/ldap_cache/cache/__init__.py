@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 from typing import Optional  # noqa: F401
 
 # choose a backend
@@ -45,7 +46,7 @@ from univention.ldap_cache.log import debug
 
 
 # Singleton pattern
-def get_cache() -> "Caches":
+def get_cache() -> Caches:
     global _cache
     if _cache is None:
         debug('Creating the Caches instance')
@@ -56,4 +57,4 @@ def get_cache() -> "Caches":
     return _cache
 
 
-_cache: "Optional[Caches]" = None
+_cache: Caches | None = None

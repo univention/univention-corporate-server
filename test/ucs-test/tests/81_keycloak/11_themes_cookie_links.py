@@ -40,7 +40,6 @@ def login_links(lang: str, link_count: int) -> Tuple[str, int]:
             run_command(["univention-keycloak", "login-links", "set", lang, str(i), f"href{i}", f"desc{i}"])
         yield lang, link_count
     finally:
-        pass
         for i in range(1, link_count + 1):
             try:
                 run_command(["univention-keycloak", "login-links", "delete", lang, str(i)])
@@ -223,14 +222,14 @@ def test_login_page_all_elements_are_tabbable(portal_login_via_keycloak, keycloa
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
-@pytest.mark.parametrize("lang, link_count", [(lang, count) for lang, count in product(["en"], [0, LINK_COUNT + 1])])
+@pytest.mark.parametrize("lang, link_count", list(product(["en"], [0, LINK_COUNT + 1])))
 def test_invalid_link_count(lang: str, link_count: int):
     with pytest.raises(CalledProcessError):
         run_command(["univention-keycloak", "login-links", "set", lang, str(link_count), "href", "desc"])
 
 
 @pytest.mark.skipif(not os.path.isfile("/etc/keycloak.secret"), reason="fails without keycloak locally installed")
-@pytest.mark.parametrize("lang, link_count", [(lang, count) for lang, count in product(["en"], [1, 5, 12])])
+@pytest.mark.parametrize("lang, link_count", list(product(["en"], [1, 5, 12])))
 def test_login_links(lang, link_count, login_links, portal_login_via_keycloak, admin_account):
     driver = portal_login_via_keycloak(admin_account.username, admin_account.bindpw, no_login=True)
     login_links_parent = wait_for_id(driver, "umcLoginLinks")

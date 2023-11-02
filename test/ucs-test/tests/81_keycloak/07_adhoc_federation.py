@@ -242,7 +242,7 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
     payload_exec_flow = {"provider": "univention-authenticator"}
     keycloak_admin_connection.create_authentication_flow_execution(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad-hoc federation flow')
     execution_list = keycloak_admin_connection.get_authentication_flow_executions("Univention-Authenticator ad-hoc federation flow")
-    ua_execution = list(filter(lambda flow: flow["displayName"] == 'Univention Authenticator', execution_list))[0]
+    ua_execution = next(iter(filter(lambda flow: flow["displayName"] == 'Univention Authenticator', execution_list)))
     payload_exec_flow = {
         "id": ua_execution["id"],
         "requirement": "REQUIRED",
@@ -283,7 +283,7 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
     except KeycloakGetError as exc:
         if exc.response_code != 409:
             raise (exc)
-    new_idp = list(filter(lambda idp: idp["alias"] == "saml", keycloak_admin_connection.get_idps()))[0]
+    new_idp = next(iter(filter(lambda idp: idp["alias"] == "saml", keycloak_admin_connection.get_idps())))
 
     # mappers
     idp_mapper_payload = {
@@ -447,9 +447,9 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigR
         keycloak_admin_connection.delete_realm(realm_name="dummy")
         # function not present in our version, workaround
         keycloak_admin_connection.realm_name = "ucs"
-        flow_id = [
+        flow_id = next(
             x for x in keycloak_admin_connection.get_authentication_flows()
             if x["alias"] == "Univention-Authenticator ad-hoc federation flow"
-        ][0]["id"]
+        )["id"]
         params_path = {"realm-name": keycloak_admin_connection.realm_name, "id": flow_id}
         keycloak_admin_connection.raw_delete("admin/realms/{realm-name}/authentication/flows/{id}".format(**params_path))

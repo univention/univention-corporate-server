@@ -32,6 +32,7 @@
 
 Checks validity of type definitions and type compatibility of values to be set.
 """
+from __future__ import annotations
 
 import ipaddress
 import json
@@ -48,7 +49,7 @@ class BaseValidator(object):
 
     NAME = ""
 
-    def __init__(self, attrs: "Dict[str, str]") -> None:
+    def __init__(self, attrs: Dict[str, str]) -> None:
         pass
 
     def is_valid(self, value: str) -> bool:
@@ -75,7 +76,7 @@ class BaseValidator(object):
         return self.NAME
 
     @classmethod
-    def _recurse_subclasses(cls) -> "Iterator[_Type[BaseValidator]]":
+    def _recurse_subclasses(cls) -> Iterator[_Type[BaseValidator]]:
         for clazz in cls.__subclasses__():
             if clazz.NAME:
                 yield clazz
@@ -93,17 +94,17 @@ class String(BaseValidator):
     """
 
     NAME = "str"
-    REGEX: "Optional[Pattern]" = None
+    REGEX: Pattern | None = None
 
-    def __init__(self, attrs: "Dict[str, str]") -> None:
+    def __init__(self, attrs: Dict[str, str]) -> None:
         self.regex = attrs.get('regex', self.REGEX)  # type: ignore
 
     @property
-    def regex(self) -> "Optional[str]":
+    def regex(self) -> str | None:
         return self._rxc.pattern if self._rxc else None
 
     @regex.setter
-    def regex(self, regex: "Union[None, str, Pattern]") -> None:
+    def regex(self, regex: None | (str | Pattern)) -> None:
         rxc = None
         if regex is not None:
             try:
@@ -180,21 +181,21 @@ class Integer(BaseValidator):
 
     NAME = "int"
 
-    MIN: "Optional[int]" = None
-    MAX: "Optional[int]" = None
+    MIN: int | None = None
+    MAX: int | None = None
 
-    def __init__(self, attrs: "Dict[str, str]") -> None:
+    def __init__(self, attrs: Dict[str, str]) -> None:
         self._min = None  # type: Optional[int]
-        self._max: "Optional[int]" = None
+        self._max: int | None = None
         self.min = cast(Optional[int], attrs.get('min', self.MIN))
         self.max = cast(Optional[int], attrs.get('max', self.MAX))
 
     @property
-    def min(self) -> "Optional[int]":
+    def min(self) -> int | None:
         return self._min
 
     @min.setter
-    def min(self, value: "Optional[str]") -> None:
+    def min(self, value: str | None) -> None:
         if value is None:
             self._min = None
             return
@@ -206,11 +207,11 @@ class Integer(BaseValidator):
         self._min = val
 
     @property
-    def max(self) -> "Optional[int]":
+    def max(self) -> int | None:
         return self._max
 
     @max.setter
-    def max(self, value: "Optional[str]") -> None:
+    def max(self, value: str | None) -> None:
         if value is None:
             self._max = None
             return
@@ -289,7 +290,7 @@ class List(BaseValidator):
     NAME = "list"
     DEFAULT_SEPARATOR = ','
 
-    def __init__(self, attrs: "Dict[str, str]") -> None:
+    def __init__(self, attrs: Dict[str, str]) -> None:
         self.element_type = attrs.get('elementtype', "str")
         regex = attrs.get('separator', self.DEFAULT_SEPARATOR)
         try:
@@ -334,7 +335,7 @@ class Cron(BaseValidator):
         return True
 
     @staticmethod
-    def _check(text: str, low: int, high: int, extra: "Container[str]"={}) -> None:
+    def _check(text: str, low: int, high: int, extra: Container[str]={}) -> None:
         if text.lower() in extra:
             return
 
@@ -385,14 +386,14 @@ class Type(object):
                             # value is not compatible with type definition
     """
 
-    TYPE_CLASSES: "Dict[Optional[str], _Type[BaseValidator]]" = {
+    TYPE_CLASSES: Dict[str | None, _Type[BaseValidator]] = {
         clazz.NAME: clazz
         for clazz in BaseValidator._recurse_subclasses()
     }
 
-    def __init__(self, vinfo: "cri.Variable") -> None:
+    def __init__(self, vinfo: cri.Variable) -> None:
         self.vinfo = vinfo
-        self.vtype: "Optional[str]" = self.vinfo.get('type')
+        self.vtype: str | None = self.vinfo.get('type')
         typ = self.TYPE_CLASSES.get(self.vtype, String)
         self.checker = typ(self.vinfo)
 

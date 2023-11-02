@@ -131,7 +131,7 @@ class AdminConnection(object):
                 possible_real_DNs |= possible_real_DN_set  # collect every distinct possible value
             possible_real_DNs = tuple(possible_real_DNs)
             if not len(possible_real_DNs) == 1:
-                raise ValueError(f'ambiguous DNs, cannot unescape {repr(dn)} (possibilities: {repr(possible_real_DNs)})')
+                raise ValueError(f'ambiguous DNs, cannot unescape {dn!r} (possibilities: {possible_real_DNs!r})')
             dn = possible_real_DNs[0]
         try:
             return self.get_object_real(module, dn)

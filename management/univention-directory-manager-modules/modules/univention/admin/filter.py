@@ -30,6 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """|UDM| functions to parse, modify and create |LDAP| style search filters"""
+from __future__ import annotations
 
 import re
 from typing import Callable, Iterator, List, Match, Optional, Sequence, TypeVar, Union  # noqa: F401
@@ -48,7 +49,7 @@ class conjunction(object):
 
     OPS = frozenset({'&', '|', '!'})
 
-    def __init__(self, type: str, expressions: "List[Union[conjunction, expression]]") -> None:
+    def __init__(self, type: str, expressions: List[conjunction | expression]) -> None:
         """
         Create LDAP filter conjunction or disjunction.
 
@@ -60,13 +61,13 @@ class conjunction(object):
         self.expressions = expressions
 
     @classmethod
-    def _parse(cls, text: str) -> "conjunction":
+    def _parse(cls, text: str) -> conjunction:
         op = text[0]
         expressions = [parse(s) for s in cls._split(text[1:])]
         return conjunction(op, expressions)
 
     @staticmethod
-    def _split(text: str) -> "Iterator[str]":
+    def _split(text: str) -> Iterator[str]:
         depth = 0
         begin = -1
         for i, c in enumerate(text):
@@ -111,7 +112,7 @@ class conjunction(object):
         """
         return '%s(%r, %r)' % (self.__class__.__name__, self.type, self.expressions)
 
-    def append_unmapped_filter_string(self, filter_s: str, rewrite_function: "Callable[[expression, Optional[T]], None]", mapping: "T") -> None:
+    def append_unmapped_filter_string(self, filter_s: str, rewrite_function: Callable[[expression, T | None], None], mapping: T) -> None:
         if filter_s:
             filter_p = parse(filter_s)
             walk(filter_p, rewrite_function, arg=mapping)
@@ -144,7 +145,7 @@ class expression(object):
         self._escape = escape
 
     @classmethod
-    def _parse(cls, text: str) -> "expression":
+    def _parse(cls, text: str) -> expression:
         var, op, val = cls.RE_OP.split(text, 1)
         return expression(var, val, operator=op)
 
@@ -174,12 +175,12 @@ class expression(object):
         else:
             return self.escape('(%%s%s%%s)' % (self.operator,), (self.variable, self.value))
 
-    def escape(self, string: str, args: "Sequence[str]") -> str:
+    def escape(self, string: str, args: Sequence[str]) -> str:
         if self._escape:
             return filter_format(string, args)
         return string % args
 
-    def transform_to_conjunction(self, con: "conjunction") -> None:
+    def transform_to_conjunction(self, con: conjunction) -> None:
         if not isinstance(con, conjunction):
             raise TypeError('must be conjunction, got %s(%r)' % (type(con).__name__, con))
         self.__dict__.clear()
@@ -205,7 +206,7 @@ class expression(object):
         return '%s(%r, %r, %r)' % (self.__class__.__name__, self.variable, self.value, self.operator)
 
 
-def parse(filter_s: "Union[conjunction, expression, str]", begin: int=0, end: int=-1) -> "Union[conjunction, expression]":
+def parse(filter_s: conjunction | (expression | str), begin: int=0, end: int=-1) -> conjunction | expression:
     r"""
     Parse LDAP filter string.
 
@@ -274,7 +275,7 @@ def parse(filter_s: "Union[conjunction, expression, str]", begin: int=0, end: in
         raise univention.admin.uexceptions.valueInvalidSyntax(part)
 
 
-def walk(filter_p: "Union[conjunction, expression]", expression_walk_function: "Optional[Callable[[expression, Optional[T]], None]]"=None, conjunction_walk_function: "Optional[Callable[[conjunction, Optional[T]], None]]"=None, arg: "Optional[T]"=None) -> None:
+def walk(filter_p: conjunction | expression, expression_walk_function: Callable[[expression, T | None], None] | None=None, conjunction_walk_function: Callable[[conjunction, T | None], None] | None=None, arg: T | None=None) -> None:
     """
     Walk LDAP filter expression tree.
 
@@ -329,7 +330,7 @@ def replace_fqdn_filter(filter_s: str) -> str:
     return FQDN_REGEX.sub(_replace_fqdn_filter, filter_s)
 
 
-def _replace_fqdn_filter(match: "Match[str]") -> str:
+def _replace_fqdn_filter(match: Match[str]) -> str:
     value, = match.groups()
     try:
         host, domain = value.split('.', 1)

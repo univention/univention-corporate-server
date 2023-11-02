@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import logging
 import os
 import uuid
@@ -48,7 +49,7 @@ get_logger = partial(get_logger, 'client')
 F = TypeVar('F', bound=Callable[..., Any])
 
 
-def exceptionlogging(f: "F") -> "F":
+def exceptionlogging(f: F) -> F:
     @wraps(f)
     def wrapper(*args, **kwds):
         try:
@@ -80,19 +81,19 @@ emitter = RsyslogEmitter()
 
 
 @exceptionlogging
-def add_comment(message: str, context_id: str, username: "Optional[str]"=None) -> "Optional[int]":
+def add_comment(message: str, context_id: str, username: str | None=None) -> int | None:
     event = DiaryEvent('COMMENT', {'en': message})
     return write_event(event, username=username, context_id=context_id)
 
 
 @exceptionlogging
-def write_event(event: "DiaryEvent", args: "Dict[str, str]"=None, username: "Optional[str]"=None, context_id: "Optional[str]"=None) -> "Optional[int]":
+def write_event(event: DiaryEvent, args: Dict[str, str] | None=None, username: str | None=None, context_id: str | None=None) -> int | None:
     args = args or {}
     return write(event.message, args, username, event.tags, context_id, event.name)
 
 
 @exceptionlogging
-def write(message: str, args: "Dict[str, str]"=None, username: "Optional[str]"=None, tags: "Optional[List[str]]"=None, context_id: "Optional[str]"=None, event_name: "Optional[str]"=None) -> "Optional[int]":
+def write(message: str, args: Dict[str, str] | None=None, username: str | None=None, tags: List[str] | None=None, context_id: str | None=None, event_name: str | None=None) -> int | None:
     if username is None:
         username = getuser()
     if args is None:
@@ -108,7 +109,7 @@ def write(message: str, args: "Dict[str, str]"=None, username: "Optional[str]"=N
 
 
 @exceptionlogging
-def write_entry(entry: "DiaryEntry") -> "Optional[int]":
+def write_entry(entry: DiaryEntry) -> int | None:
     entry.assert_types()
     blocked_events = get_events_to_reject()
     if entry.event_name in blocked_events:

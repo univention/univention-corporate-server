@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import os
 import shutil
 import subprocess
@@ -58,8 +59,8 @@ class DebianPackage:
         self._package_version = version
         self._create_debian_base_dir()
 
-        self.__join_file: "Optional[str]" = None
-        self.__unjoin_file: "Optional[str]" = None
+        self.__join_file: str | None = None
+        self.__unjoin_file: str | None = None
 
     def _create_debian_base_dir(self) -> None:
         self._package_tempdir = tempfile.mkdtemp()

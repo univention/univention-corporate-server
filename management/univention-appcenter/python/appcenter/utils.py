@@ -35,6 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from __future__ import annotations
 import ipaddress
 import os
 import os.path
@@ -84,12 +85,12 @@ utils_logger = get_base_logger().getChild('utils')
 
 
 @overload
-def read_ini_file(filename: str) -> "RawConfigParser":
+def read_ini_file(filename: str) -> RawConfigParser:
     pass
 
 
 @overload
-def read_ini_file(filename: str, parser_class: "Type[_ConfigParser]") -> "_ConfigParser":
+def read_ini_file(filename: str, parser_class: Type[_ConfigParser]) -> _ConfigParser:
     pass
 
 
@@ -121,7 +122,7 @@ def docker_bridge_network_conflict() -> bool:
     return False
 
 
-def app_is_running(app: "Union[App, str]") -> "Optional[bool]":
+def app_is_running(app: App | str) -> bool | None:
     from univention.appcenter.app_cache import Apps
     if isinstance(app, string_types):
         app = Apps().find(app)
@@ -145,7 +146,7 @@ def docker_is_running() -> bool:
     return call_process(['invoke-rc.d', 'docker', 'status']).returncode == 0
 
 
-def app_ports() -> "List[Tuple[str, int, int]]":
+def app_ports() -> List[Tuple[str, int, int]]:
     """
     Returns a list for ports of an App:
     [(app_id, container_port, host_port), ...]
@@ -161,7 +162,7 @@ def app_ports() -> "List[Tuple[str, int, int]]":
     return sorted(ret)
 
 
-def app_ports_with_protocol() -> "List[Tuple[str, int, int, str]]":
+def app_ports_with_protocol() -> List[Tuple[str, int, int, str]]:
     """
     Returns a list for ports of an App:
     [(app_id, container_port, host_port, protocol), ...]
@@ -178,7 +179,7 @@ class NoMorePorts(Exception):
     pass
 
 
-def currently_free_port_in_range(lower_bound: int, upper_bound: int, blacklist: "Container[int]") -> int:
+def currently_free_port_in_range(lower_bound: int, upper_bound: int, blacklist: Container[int]) -> int:
     for port in range(lower_bound, upper_bound):
         if port in blacklist:
             continue
@@ -228,7 +229,7 @@ def rmdir(directory: str) -> None:
         shutil.rmtree(directory)
 
 
-def call_process2(cmd: "Sequence[str]", logger: "Optional[Logger]"=None, env: "Optional[Mapping[str, str]]"=None, cwd: "Optional[str]"=None) -> "Tuple[int, str]":
+def call_process2(cmd: Sequence[str], logger: Logger | None=None, env: Mapping[str, str] | None=None, cwd: str | None=None) -> Tuple[int, str]:
     if logger is None:
         logger = utils_logger
     # make sure we log strings only
@@ -256,7 +257,7 @@ def call_process2(cmd: "Sequence[str]", logger: "Optional[Logger]"=None, env: "O
     return ret, out
 
 
-def call_process(args: "Sequence[str]", logger: "Optional[Logger]"=None, env: "Optional[Mapping[str, str]]"=None, cwd: "Optional[str]"=None) -> "Any":
+def call_process(args: Sequence[str], logger: Logger | None=None, env: Mapping[str, str] | None=None, cwd: str | None=None) -> Any:
     process = Popen(args, stdout=PIPE, stderr=PIPE, close_fds=True, env=env, cwd=cwd)
     if logger is not None:
         if cwd:
@@ -288,7 +289,7 @@ def call_process(args: "Sequence[str]", logger: "Optional[Logger]"=None, env: "O
     return process
 
 
-def call_process_as(user: str, args: "Sequence[str]", logger: "Optional[Logger]"=None, env: "Optional[Mapping[str, str]]"=None) -> "Any":
+def call_process_as(user: str, args: Sequence[str], logger: Logger | None=None, env: Mapping[str, str] | None=None) -> Any:
     args = list2cmdline(args)
     args = ['/bin/su', '-', user, '-c', args]
     return call_process(args, logger, env)
@@ -376,7 +377,7 @@ def get_md5(content: bytes) -> str:
     return m.hexdigest()
 
 
-def get_md5_from_file(filename: str) -> "Optional[str]":
+def get_md5_from_file(filename: str) -> str | None:
     if os.path.exists(filename):
         with open(filename, 'rb') as f:
             return get_md5(f.read())
@@ -390,7 +391,7 @@ def get_sha256(content: bytes) -> str:
     return m.hexdigest()
 
 
-def get_sha256_from_file(filename: str) -> "Optional[str]":
+def get_sha256_from_file(filename: str) -> str | None:
     if os.path.exists(filename):
         with open(filename, 'rb') as f:
             return get_sha256(f.read())
@@ -428,7 +429,7 @@ def get_free_disk_space() -> float:
     return 0.0
 
 
-def flatten(list_of_lists: "Iterable[Any]") -> "List[Any]":
+def flatten(list_of_lists: Iterable[Any]) -> List[Any]:
     # return [item for sublist in list_of_lists for item in sublist]
     # => does not work well for strings in list
     ret = []
@@ -440,12 +441,12 @@ def flatten(list_of_lists: "Iterable[Any]") -> "List[Any]":
     return ret
 
 
-def unique(sequence: "Iterable[_T]") -> "List[_T]":
+def unique(sequence: Iterable[_T]) -> List[_T]:
     # uniquifies any list; preserves ordering
     return list(OrderedDict.fromkeys(sequence))
 
 
-def get_locale() -> "Optional[str]":
+def get_locale() -> str | None:
     # returns currently set locale: de_AT.UTF-8 -> de
     # may return None if not set (i.e. 'C')
     locale = getlocale()[0]
@@ -454,7 +455,7 @@ def get_locale() -> "Optional[str]":
     return locale
 
 
-def gpg_verify(filename: str, signature: "Optional[str]"=None) -> "Tuple[int, str]":
+def gpg_verify(filename: str, signature: str | None=None) -> Tuple[int, str]:
     if signature is None:
         signature = filename + '.gpg'
     cmd = (
@@ -483,7 +484,7 @@ def container_mode() -> bool:
     return bool(ucr_get('docker/container/uuid'))
 
 
-def send_information(action: str, app: "Optional[App]"=None, status: int=200, value: str=None) -> None:
+def send_information(action: str, app: App | None=None, status: int=200, value: str | None=None) -> None:
     app_id = app and app.id
     utils_logger.debug('send_information: action=%s app=%s value=%s status=%s' % (action, app_id, value, status))
 
@@ -491,7 +492,7 @@ def send_information(action: str, app: "Optional[App]"=None, status: int=200, va
     url = '%s/postinst' % server
 
     uuid = '00000000-0000-0000-0000-000000000000'
-    system_uuid: "Optional[str]" = '00000000-0000-0000-0000-000000000000'
+    system_uuid: str | None = '00000000-0000-0000-0000-000000000000'
     if not app or app.notify_vendor:
         uuid = ucr_get('uuid/license', uuid)
         system_uuid = ucr_get('uuid/system', system_uuid)
@@ -521,7 +522,7 @@ def send_information(action: str, app: "Optional[App]"=None, status: int=200, va
         utils_logger.info('Error sending app infos to the App Center server: %s' % exc)
 
 
-def find_hosts_for_master_packages() -> "List[Tuple[str, bool]]":
+def find_hosts_for_master_packages() -> List[Tuple[str, bool]]:
     from univention.appcenter.udm import get_machine_connection, search_objects
     lo, pos = get_machine_connection()
     hosts = []
@@ -539,13 +540,13 @@ def find_hosts_for_master_packages() -> "List[Tuple[str, bool]]":
     return hosts
 
 
-def resolve_dependencies(apps: "List[App]", action: str) -> "List[App]":
+def resolve_dependencies(apps: List[App], action: str) -> List[App]:
     from univention.appcenter.app_cache import Apps
     from univention.appcenter.udm import get_machine_connection
     lo, pos = get_machine_connection()
     utils_logger.info('Resolving dependencies for %s' % ', '.join(app.id for app in apps))
     apps_with_their_dependencies = []
-    depends: "Dict[int, List[int]]" = {}
+    depends: Dict[int, List[int]] = {}
     checked = []
     apps = apps[:]
     if action == 'remove':

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import os
 import re
@@ -56,12 +56,12 @@ CATEGORY = [
 
 
 @pytest.fixture()
-def parse() -> "Iterator[Callable[[str], Iterator[Tuple[str, Dict[str, str]]]]]":
+def parse() -> Iterator[Callable[[str], Iterator[Tuple[str, Dict[str, str]]]]]:
     """Setup parser."""
     now = datetime.now()
     start = now.replace(microsecond=now.microsecond - now.microsecond % 1000)
 
-    def f(text: str) -> "Iterator[Tuple[str, Dict[str, str]]]":
+    def f(text: str) -> Iterator[Tuple[str, Dict[str, str]]]:
         """
         Parse line into componets.
 

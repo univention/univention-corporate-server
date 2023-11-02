@@ -36,6 +36,7 @@
 #
 
 
+from __future__ import annotations
 import os
 import os.path
 import sys
@@ -61,31 +62,31 @@ CACHE_DIR = '/var/cache/univention-appcenter'
 cache_logger = get_base_logger().getChild('cache')
 
 
-def _cmp_mtimes(mtime1: "Optional[float]", mtime2: "Optional[float]") -> int:
+def _cmp_mtimes(mtime1: float | None, mtime2: float | None) -> int:
     mtime1 = float(f'{mtime1:.3f}') if mtime1 is not None else 0.0
     mtime2 = float(f'{mtime2:.3f}') if mtime2 is not None else 0.0
     return 0 if mtime1 == mtime2 else (-1 if mtime1 < mtime2 else 1)
 
 
 class _AppCache(object):
-    def get_every_single_app(self) -> "Iterable[App]":
+    def get_every_single_app(self) -> Iterable[App]:
         raise NotImplementedError()
 
-    def get_all_apps_with_id(self, app_id: str) -> "List[App]":
+    def get_all_apps_with_id(self, app_id: str) -> List[App]:
         ret = []
         for app in self.get_every_single_app():
             if app.id == app_id:
                 ret.append(app)
         return ret
 
-    def get_all_locally_installed_apps(self) -> "List[App]":
+    def get_all_locally_installed_apps(self) -> List[App]:
         ret = []
         for app in self.get_every_single_app():
             if app.is_installed():
                 ret.append(app)
         return ret
 
-    def find(self, app_id: str, app_version: "Optional[str]"=None, latest: bool=False) -> "Optional[App]":
+    def find(self, app_id: str, app_version: str | None=None, latest: bool=False) -> App | None:
         apps = self.get_all_apps_with_id(app_id)
         if app_version:
             for app in apps:
@@ -127,7 +128,7 @@ class _AppCache(object):
         if not_permitted_app:
             return not_permitted_app
 
-    def get_all_apps(self) -> "List[App]":
+    def get_all_apps(self) -> List[App]:
         apps = {}  # type: Dict[str, Tuple[App, bool]]
         for app in self.get_every_single_app():
             if app.id in apps:
@@ -141,7 +142,7 @@ class _AppCache(object):
                 apps[app.id] = (app, app.is_installed())
         return sorted(app for (app, is_installed) in apps.values())
 
-    def find_by_component_id(self, component_id: str) -> "Optional[App]":
+    def find_by_component_id(self, component_id: str) -> App | None:
         for app in self.get_every_single_app():
             if app.component_id == component_id:
                 return app
@@ -436,7 +437,7 @@ class AppCenterCache(_AppCache):
     def get_server_netloc(self) -> str:
         return urlsplit(self.get_server()).netloc
 
-    def get_ucs_versions(self) -> "List[str]":
+    def get_ucs_versions(self) -> List[str]:
         return ['5.2', '5.1', '5.0', '4.4']
         if self._ucs_versions is None:
             cache_file = self.get_cache_file('.ucs.ini')
@@ -475,7 +476,7 @@ class AppCenterCache(_AppCache):
         cache_dir = self.get_cache_file(ucs_version)
         return self.get_app_cache_class().build(ucs_version=ucs_version, server=self.get_server(), locale=self.get_locale(), cache_dir=cache_dir)
 
-    def get_license_description(self, license_name: str) -> "Optional[str]":
+    def get_license_description(self, license_name: str) -> str | None:
         if self._license_type_cache is None:
             cache_file = self.get_cache_file('.license_types.ini')
             self._license_type_cache = LicenseType.all_from_file(cache_file)
@@ -503,7 +504,7 @@ class AppCenterCache(_AppCache):
             self._app_categories_cache = categories
         return self._app_categories_cache
 
-    def get_every_single_app(self) -> "List[App]":
+    def get_every_single_app(self) -> List[App]:
         ret = []
         for app_cache in self.get_app_caches():
             ret.extend(app_cache.get_every_single_app())
@@ -536,7 +537,7 @@ class Apps(_AppCache):
             self._locale = default_locale()
         return self._locale
 
-    def get_appcenter_caches(self) -> "List[AppCenterCache]":
+    def get_appcenter_caches(self) -> List[AppCenterCache]:
         server = default_server()
         cache = self._build_appcenter_cache(server, None)
         return [cache]

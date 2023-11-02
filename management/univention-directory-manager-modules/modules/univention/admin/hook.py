@@ -31,6 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 """|UDM| hook definitions for modifying |LDAP| calls when objects are created, modifier or deleted."""
+from __future__ import annotations
 
 import io
 import os
@@ -80,7 +81,7 @@ class simpleHook(object):
     # methods, use obj.lo and obj.position.
     #
 
-    def hook_open(self, obj: "univention.admin.handlers.simpleLdap") -> None:
+    def hook_open(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
         This method is called by the default open handler just before the current state of all properties is saved.
 
@@ -88,7 +89,7 @@ class simpleHook(object):
         """
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _open called')
 
-    def hook_ldap_pre_create(self, obj: "univention.admin.handlers.simpleLdap") -> None:
+    def hook_ldap_pre_create(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
         This method is called before an |UDM| object is created.
         It is called after the module validated all properties but before the add-list is created.
@@ -97,7 +98,7 @@ class simpleHook(object):
         """
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_create called')
 
-    def hook_ldap_addlist(self, obj: "univention.admin.handlers.simpleLdap", al: "AddList"=[]) -> "AddList":
+    def hook_ldap_addlist(self, obj: univention.admin.handlers.simpleLdap, al: AddList=[]) -> AddList:
         """
         This method is called before an |UDM| object is created.
 
@@ -110,7 +111,7 @@ class simpleHook(object):
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_addlist called')
         return al
 
-    def hook_ldap_post_create(self, obj: "univention.admin.handlers.simpleLdap") -> None:
+    def hook_ldap_post_create(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
         This method is called after the object was created in |LDAP|.
 
@@ -118,7 +119,7 @@ class simpleHook(object):
         """
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_create called')
 
-    def hook_ldap_pre_modify(self, obj: "univention.admin.handlers.simpleLdap") -> None:
+    def hook_ldap_pre_modify(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
         This method is called before an |UDM| object is modified.
         It is called after the module validated all properties but before the modification-list is created.
@@ -127,7 +128,7 @@ class simpleHook(object):
         """
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_modify called')
 
-    def hook_ldap_modlist(self, obj: "univention.admin.handlers.simpleLdap", ml: "ModList"=[]) -> "ModList":
+    def hook_ldap_modlist(self, obj: univention.admin.handlers.simpleLdap, ml: ModList=[]) -> ModList:
         """
         This method is called before an |UDM| object is created or modified.
 
@@ -138,7 +139,7 @@ class simpleHook(object):
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_modlist called')
         return ml
 
-    def hook_ldap_post_modify(self, obj: "univention.admin.handlers.simpleLdap") -> None:
+    def hook_ldap_post_modify(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
         This method is called after the object was modified in |LDAP|.
 
@@ -146,7 +147,7 @@ class simpleHook(object):
         """
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_modify called')
 
-    def hook_ldap_pre_remove(self, obj: "univention.admin.handlers.simpleLdap") -> None:
+    def hook_ldap_pre_remove(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
         This method is called before an |UDM| object is removed.
 
@@ -154,7 +155,7 @@ class simpleHook(object):
         """
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_remove called')
 
-    def hook_ldap_post_remove(self, obj: "univention.admin.handlers.simpleLdap") -> None:
+    def hook_ldap_post_remove(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
         This method is called after the object was removed from |LDAP|.
 
@@ -184,7 +185,7 @@ class AttributeHook(simpleHook):
 
     version = 1  # don't subclass if you don't set version to 2!
 
-    def hook_open(self, obj: "univention.admin.handlers.simpleLdap") -> None:
+    def hook_open(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
         Open |UDM| object by loading value from |LDAP|.
 
@@ -199,7 +200,7 @@ class AttributeHook(simpleHook):
         ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Setting UDM value from %r to %r' % (old_value, new_value))
         obj[self.udm_attribute_name] = new_value
 
-    def hook_ldap_addlist(self, obj: "univention.admin.handlers.simpleLdap", al: "AddList") -> "AddList":
+    def hook_ldap_addlist(self, obj: univention.admin.handlers.simpleLdap, al: AddList) -> AddList:
         """
         Extend |LDAP| add list.
 
@@ -209,7 +210,7 @@ class AttributeHook(simpleHook):
         """
         return self.hook_ldap_modlist(obj, al)
 
-    def hook_ldap_modlist(self, obj: "univention.admin.handlers.simpleLdap", ml: "ModList") -> "ModList":
+    def hook_ldap_modlist(self, obj: univention.admin.handlers.simpleLdap, ml: ModList) -> ModList:
         """
         Extend |LDAP| modification list.
 
@@ -244,7 +245,7 @@ class AttributeHook(simpleHook):
             new_ml.append((self.ldap_attribute_name, old_value, new_value))
         return new_ml
 
-    def map_attribute_value_to_ldap(self, value: "Any") -> "List[bytes]":
+    def map_attribute_value_to_ldap(self, value: Any) -> List[bytes]:
         """
         Return value as it shall be saved in |LDAP|.
 
@@ -253,7 +254,7 @@ class AttributeHook(simpleHook):
         """
         return value
 
-    def map_attribute_value_to_udm(self, value: "List[bytes]") -> "Any":
+    def map_attribute_value_to_udm(self, value: List[bytes]) -> Any:
         """
         Return value as it shall be used in |UDM| objects.
 

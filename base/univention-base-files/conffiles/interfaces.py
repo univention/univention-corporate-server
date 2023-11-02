@@ -55,7 +55,7 @@ def _common(ucr, changes, command):
         if PRIMARY in changes:
             interfaces |= {_ for _ in changes[PRIMARY] if _}
         # Collect changed interfaces
-        for key, _old_new in changes.items():
+        for key in changes.keys():
             if key in SKIP:
                 continue
             match = RE_IFACE.match(key)

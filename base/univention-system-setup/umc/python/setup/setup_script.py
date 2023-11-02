@@ -36,7 +36,7 @@ Univention System Setup
  Python setup script base
 """
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import locale
 import logging
@@ -116,7 +116,7 @@ class TransactionalUcr(object):
     def __init__(self) -> None:
         self.ucr = ConfigRegistry()
         self.ucr.load()
-        self.changes: Dict[str, Optional[str]] = {}
+        self.changes: Dict[str, str | None] = {}
 
     def set(self, key: str, value: str) -> None:
         """
@@ -144,7 +144,7 @@ class TransactionalUcr(object):
             # reset (in case it is called multiple) times in a script
             self.changes.clear()
 
-    def get(self, key: str, search_in_changes=True) -> Optional[str]:
+    def get(self, key: str, search_in_changes=True) -> str | None:
         """
         Retrieve the value of key from ucr.
         If search_in_changes, it first looks in (not yet committed) values.
@@ -156,7 +156,7 @@ class TransactionalUcr(object):
                 pass
         return self.ucr.get(key)
 
-    def __enter__(self) -> "TransactionalUcr":
+    def __enter__(self) -> TransactionalUcr:
         return self
 
     def __exit__(self, exc_type: Type[BaseException], exc_value: BaseException, traceback: TracebackType) -> None:
@@ -234,7 +234,7 @@ class SetupScript(object):
             self.up(*args, **kwargs)
         except Exception as exc:
             # save caught exception. raise later (in run())
-            self._broken: Optional[Exception] = exc
+            self._broken: Exception | None = exc
         else:
             self._broken = None
 
@@ -293,7 +293,7 @@ class SetupScript(object):
         """
         self.inform_progress_parser('steps', steps)
 
-    def step(self, step: Optional[int] = None) -> None:
+    def step(self, step: int | None = None) -> None:
         """
         Inform parser that the next __STEP__: in this script
         was done. You can provide an exact number or None
@@ -348,7 +348,7 @@ class SetupScript(object):
                 success = False
         return success is not False
 
-    def inner_run(self) -> Optional[bool]:
+    def inner_run(self) -> bool | None:
         """
         Main function, called by run().
         Override this method in your SetupScriptClass.
@@ -420,7 +420,7 @@ class AptScript(SetupScript):
         with self.noninteractive():
             return self.package_manager.update()
 
-    def get_package(self, pkg_name: str) -> Optional[apt.package.Package]:
+    def get_package(self, pkg_name: str) -> apt.package.Package | None:
         return self.package_manager.get_package(pkg_name)
 
     def finish_task(self, *log_msgs: object) -> None:
@@ -456,7 +456,7 @@ class AptScript(SetupScript):
         with self.noninteractive():
             return self.package_manager.uninstall(*pkg_names)
 
-    def get_package_for_role(self, role_name: str) -> Optional[apt.package.Package]:
+    def get_package_for_role(self, role_name: str) -> apt.package.Package | None:
         """
         Searches for the meta-package that belongs
         to the given role_name

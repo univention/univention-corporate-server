@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 import sys
 from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Sequence, Tuple  # noqa: F401
@@ -51,13 +51,13 @@ class ListenerModuleAdapter(object):
             globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
     """
 
-    def __init__(self, module_configuration: "ListenerModuleConfiguration", *args: "Any", **kwargs: "Any") -> None:
+    def __init__(self, module_configuration: ListenerModuleConfiguration, *args: Any, **kwargs: Any) -> None:
         """:param ListenerModuleConfiguration module_configuration: configuration object"""
         self.config = module_configuration
-        self._ldap_cred: "Dict[str, str]" = {}
-        self._module_handler_obj: "Optional[ListenerModuleHandler]" = None
-        self._saved_old: "Mapping[str, Sequence[bytes]]" = {}
-        self._saved_old_dn: "Optional[str]" = None
+        self._ldap_cred: Dict[str, str] = {}
+        self._module_handler_obj: ListenerModuleHandler | None = None
+        self._saved_old: Mapping[str, Sequence[bytes]] = {}
+        self._saved_old_dn: str | None = None
         self._rename = False
         self._renamed = False
         self._run_checks()
@@ -65,7 +65,7 @@ class ListenerModuleAdapter(object):
     def _run_checks(self) -> None:
         pass
 
-    def get_globals(self) -> "Dict[str, Any]":
+    def get_globals(self) -> Dict[str, Any]:
         """
         Returns the variables to be written to the module namespace, that
         make up the legacy listener module interface.
@@ -122,13 +122,13 @@ class ListenerModuleAdapter(object):
             self._ldap_cred.clear()
 
     @property
-    def _module_handler(self) -> "ListenerModuleHandler":
+    def _module_handler(self) -> ListenerModuleHandler:
         """Make sure to not create more than one instance of a listener module."""
         if not self._module_handler_obj:
             self._module_handler_obj = self.config.get_listener_module_instance()
         return self._module_handler_obj
 
-    def _handler(self, dn: str, new: "Mapping[str, Sequence[bytes]]", old: "Mapping[str, Sequence[bytes]]", command: str) -> None:
+    def _handler(self, dn: str, new: Mapping[str, Sequence[bytes]], old: Mapping[str, Sequence[bytes]], command: str) -> None:
         """
         Function called by listener when a LDAP object matching the filter is
         created/modified/moved/deleted.

@@ -35,6 +35,7 @@
 Univention App Center
  Package functions
 """
+from __future__ import annotations
 
 import fcntl
 import os
@@ -59,7 +60,7 @@ LOCK_FILE = '/var/run/univention-appcenter.lock'
 
 class _PackageManagerLogHandler(Handler):
 
-    def emit(self, record: "LogRecord") -> None:
+    def emit(self, record: LogRecord) -> None:
         if record.name.startswith('packagemanager.dpkg'):
             if isinstance(record.msg, string_types):
                 record.msg = record.msg.rstrip() + '\r'
@@ -68,7 +69,7 @@ class _PackageManagerLogHandler(Handler):
                 record.levelno = 10
 
 
-def get_package_manager() -> "PackageManager":
+def get_package_manager() -> PackageManager:
     if get_package_manager._package_manager is None:  # type: ignore
         package_manager = PackageManager(lock=False)
         package_manager.set_finished()  # currently not working. accepting new tasks
@@ -87,7 +88,7 @@ def reload_package_manager() -> None:
         get_package_manager().reopen_cache()
 
 
-def packages_are_installed(pkgs: "Iterable[str]", strict: bool=True) -> bool:
+def packages_are_installed(pkgs: Iterable[str], strict: bool=True) -> bool:
     package_manager = get_package_manager()
     if strict:
         return all(package_manager.is_installed(pkg) for pkg in pkgs)
@@ -110,7 +111,7 @@ def packages_are_installed(pkgs: "Iterable[str]", strict: bool=True) -> bool:
 
 
 @contextmanager
-def package_lock() -> "Iterator[None]":
+def package_lock() -> Iterator[None]:
     try:
         fd = open(LOCK_FILE, 'w')
         fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -155,12 +156,12 @@ def wait_for_dpkg_lock(timeout: int=120) -> bool:
     return False
 
 
-def _apt_args(dry_run: bool=False) -> "List[str]":
+def _apt_args(dry_run: bool=False) -> List[str]:
     apt_args = ['-o', 'DPkg::Options::=--force-confold', '-o', 'DPkg::Options::=--force-overwrite', '-o', 'DPkg::Options::=--force-overwrite-dir', '--trivial-only=no', '--assume-yes', '--auto-remove']
     return apt_args
 
 
-def _apt_get(action: str, pkgs: "List[str]") -> int:
+def _apt_get(action: str, pkgs: List[str]) -> int:
     env = os.environ.copy()
     env['DEBIAN_FRONTEND'] = 'noninteractive'
     apt_args = _apt_args()
@@ -169,7 +170,7 @@ def _apt_get(action: str, pkgs: "List[str]") -> int:
     return ret
 
 
-def _apt_get_dry_run(action: str, pkgs: "List[str]") -> "Dict[str, List[str]]":
+def _apt_get_dry_run(action: str, pkgs: List[str]) -> Dict[str, List[str]]:
     apt_args = _apt_args()
     logger = LogCatcher(package_logger)
     success = call_process(['/usr/bin/apt-get'] + apt_args + [action, '-s'] + pkgs, logger=logger).returncode == 0
@@ -195,23 +196,23 @@ def _apt_get_dry_run(action: str, pkgs: "List[str]") -> "Dict[str, List[str]]":
     return dict(zip(['install', 'remove', 'broken'], [install, remove, broken]))
 
 
-def install_packages_dry_run(pkgs: "List[str]") -> "Dict[str, List[str]]":
+def install_packages_dry_run(pkgs: List[str]) -> Dict[str, List[str]]:
     return _apt_get_dry_run('install', pkgs)
 
 
-def dist_upgrade_dry_run() -> "Dict[str, List[str]]":
+def dist_upgrade_dry_run() -> Dict[str, List[str]]:
     return _apt_get_dry_run('dist-upgrade', [])
 
 
-def install_packages(pkgs: "List[str]") -> int:
+def install_packages(pkgs: List[str]) -> int:
     return _apt_get('install', pkgs)
 
 
-def remove_packages_dry_run(pkgs: "List[str]") -> "Dict[str, List[str]]":
+def remove_packages_dry_run(pkgs: List[str]) -> Dict[str, List[str]]:
     return _apt_get_dry_run('remove', pkgs)
 
 
-def remove_packages(pkgs: "List[str]") -> int:
+def remove_packages(pkgs: List[str]) -> int:
     return _apt_get('remove', pkgs)
 
 
@@ -224,6 +225,6 @@ def update_packages() -> None:
     reload_package_manager()
 
 
-def mark_packages_as_manually_installed(pkgs: "List[str]") -> None:
+def mark_packages_as_manually_installed(pkgs: List[str]) -> None:
     call_process(['/usr/bin/apt-mark', 'manual'] + pkgs, logger=package_logger)
     reload_package_manager()

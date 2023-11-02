@@ -32,13 +32,14 @@
 # <https://www.gnu.org/licenses/>.
 
 """Univention common Python library for :command:`logrotate` configuration files."""
+from __future__ import annotations
 
 from typing import Dict  # noqa: F401
 
 from univention.config_registry import ConfigRegistry  # noqa: F401
 
 
-def _getBoolDefault(varGlobal: str, varLocal: str, settings: "Dict[str, str]", configRegistry: "ConfigRegistry") -> None:
+def _getBoolDefault(varGlobal: str, varLocal: str, settings: Dict[str, str], configRegistry: ConfigRegistry) -> None:
     """
     Get default value of type boolean.
 
@@ -56,7 +57,7 @@ def _getBoolDefault(varGlobal: str, varLocal: str, settings: "Dict[str, str]", c
         settings[configName] = configName
 
 
-def getLogrotateConfig(name: str, configRegistry: "ConfigRegistry") -> "Dict[str, str]":
+def getLogrotateConfig(name: str, configRegistry: ConfigRegistry) -> Dict[str, str]:
     """
     Build aggregated configuration for log file rotation.
 

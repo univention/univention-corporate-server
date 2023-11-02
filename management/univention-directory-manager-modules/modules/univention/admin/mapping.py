@@ -32,7 +32,7 @@
 
 """Functions to map between |UDM| properties and |LDAP| attributes."""
 
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 import base64
 import inspect
@@ -109,7 +109,7 @@ def StringToLower(string: str) -> str:
     return string.lower()
 
 
-def ListUniq(list: "List[_E]") -> "List[_E]":
+def ListUniq(list: List[_E]) -> List[_E]:
     """
     Return list of unique items.
 
@@ -119,7 +119,7 @@ def ListUniq(list: "List[_E]") -> "List[_E]":
     >>> ListUniq(['1', '1', '2'])
     ['1', '2']
     """
-    result: "List[_E]" = []
+    result: List[_E] = []
     if list:
         for element in list:
             if element not in result:
@@ -147,7 +147,7 @@ def ListToString(value, encoding=()):
         return u''
 
 
-def ListToIntToString(list_: "List[str]") -> str:
+def ListToIntToString(list_: List[str]) -> str:
     """
     Return first element from list if it is an integer.
 
@@ -169,7 +169,7 @@ def ListToIntToString(list_: "List[str]") -> str:
     return ''
 
 
-def ListToLowerString(list: "List[str]") -> str:
+def ListToLowerString(list: List[str]) -> str:
     """
     Return first element from list lower-cased.
 
@@ -184,7 +184,7 @@ def ListToLowerString(list: "List[str]") -> str:
     return StringToLower(ListToString(list))
 
 
-def ListToLowerList(list: "List[str]") -> "List[str]":
+def ListToLowerList(list: List[str]) -> List[str]:
     """
     Return the list with all elements converted to lower-case.
 
@@ -197,7 +197,7 @@ def ListToLowerList(list: "List[str]") -> "List[str]":
     return [StringToLower(string) for string in list]
 
 
-def ListToLowerListUniq(list: "List[str]") -> "List[str]":
+def ListToLowerListUniq(list: List[str]) -> List[str]:
     """
     Return the list with all elements converted to lower-case and duplicates removed.
 
@@ -249,7 +249,7 @@ def _stringToInt(value: str) -> int:
         return 0
 
 
-def unmapUNIX_TimeInterval(value: "Union[List[str], Tuple[str], str]") -> "List[str]":
+def unmapUNIX_TimeInterval(value: List[str] | (Tuple[str] | str)) -> List[str]:
     """
     Map number of seconds to a human understandable time interval.
 
@@ -283,7 +283,7 @@ def unmapUNIX_TimeInterval(value: "Union[List[str], Tuple[str], str]") -> "List[
     return [unicode(value), unit]
 
 
-def mapUNIX_TimeInterval(value: "Union[List[str], Tuple[str], str]") -> str:
+def mapUNIX_TimeInterval(value: List[str] | (Tuple[str] | str)) -> str:
     """
     Unmap a human understandable time interval back to number of seconds.
 
@@ -341,7 +341,7 @@ def unmapBase64(value):
     return ""
 
 
-def mapBase64(value: "Union[List[str], str]") -> "Union[List[bytes], bytes]":
+def mapBase64(value: List[str] | str) -> List[bytes] | bytes:
     # @overload (List[str]) -> List[bytes]
     # @overload (str) -> bytes
     """

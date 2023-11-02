@@ -1,4 +1,5 @@
 """Code coverage measurement for ucs-test"""
+from __future__ import annotations
 
 
 import os
@@ -25,7 +26,7 @@ class Coverage:
 
     coverage = None
 
-    def __init__(self, options: "Namespace") -> None:
+    def __init__(self, options: Namespace) -> None:
         self.coverage_config = options.coverage_config
         self.branch_coverage = options.branch_coverage
         self.coverage = options.coverage
@@ -136,7 +137,7 @@ directory = {directory}
             os.remove(self.coverage_config)
 
     @classmethod
-    def get_argument_group(cls, parser: "ArgumentParser") -> "_ArgumentGroup":
+    def get_argument_group(cls, parser: ArgumentParser) -> _ArgumentGroup:
         """The option group for ucs-test-framework"""
         coverage_group = parser.add_argument_group('Code coverage measurement options')
         coverage_group.add_argument("--with-coverage", dest="coverage", action='store_true')
@@ -150,7 +151,7 @@ directory = {directory}
         return coverage_group
 
     @classmethod
-    def is_candidate(cls, argv: "List[str]") -> bool:
+    def is_candidate(cls, argv: List[str]) -> bool:
         if os.getuid():
             return False
         exe = os.path.basename(argv[0])
@@ -191,7 +192,7 @@ directory = {directory}
         # https://github.com/nedbat/coveragepy/issues/310  # Coverage fails with os.fork and os._exit
         osfork = os.fork
 
-        def fork(*args: "Any", **kwargs: "Any") -> int:
+        def fork(*args: Any, **kwargs: Any) -> int:
             pid = osfork(*args, **kwargs)
             if pid == 0:
                 cls.debug_message('FORK CHILD')
@@ -211,7 +212,7 @@ directory = {directory}
 
         # There are test cases which e.g. kill the univention-cli-server.
         # The atexit-handler of coverage will not be called for SIGTERM, so we need to stop coverage manually
-        def sigterm(sig: int, frame: "Any") -> None:
+        def sigterm(sig: int, frame: Any) -> None:
             cls.debug_message('signal handler', sig, argv)
             cls.stop_measurement()
             signal.signal(signal.SIGTERM, previous)
@@ -243,10 +244,10 @@ directory = {directory}
 class StopCoverageDecorator:
     inDecorator = False
 
-    def __init__(self, method: "Callable[..., Any]") -> None:
+    def __init__(self, method: Callable[..., Any]) -> None:
         self.method = method
 
-    def __call__(self, *args: "Any", **kw: "Any") -> None:
+    def __call__(self, *args: Any, **kw: Any) -> None:
         if not StopCoverageDecorator.inDecorator:
             StopCoverageDecorator.inDecorator = True
             Coverage.debug_message('StopCoverageDecorator', self.method.__name__, open(f'/proc/{os.getpid()}/cmdline').read().split('\x00'))

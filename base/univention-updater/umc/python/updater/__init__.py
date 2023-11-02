@@ -34,6 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import importlib.util
 import os
 from datetime import datetime
@@ -192,7 +193,7 @@ class Instance(Base):
 
     def _last_update(self) -> Dict[str, Any]:
         status_file = '/var/lib/univention-updater/univention-updater.status'
-        ret: "Dict[str, Any]" = {'last_update_failed': False, 'last_update_version': None}
+        ret: Dict[str, Any] = {'last_update_failed': False, 'last_update_version': None}
         try:
             fstat = stat(status_file)
             mtime = datetime.fromtimestamp(fstat.st_mtime)
@@ -201,7 +202,7 @@ class Instance(Base):
                 return ret
 
             with open(status_file) as fd:
-                info: "Dict[str, str]" = dict(
+                info: Dict[str, str] = dict(
                     line.strip().split('=', 1)  # type: ignore
                     for line in fd
                 )
@@ -332,13 +333,13 @@ class Instance(Base):
             return any((new, upgrade, removed))
         except Exception as ex:
             typ = str(type(ex)).strip('<>')
-            msg = f'[while {what}] [{typ}] {str(ex)}'
+            msg = f'[while {what}] [{typ}] {ex!s}'
             MODULE.error(msg)
         return False
 
     def status(self, request) -> None:  # TODO: remove unneeded things
         """One call for all single-value variables."""
-        result: "Dict[str, Any]" = {}
+        result: Dict[str, Any] = {}
         ucr.load()
 
         try:
@@ -419,7 +420,7 @@ class Instance(Base):
         count=IntegerSanitizer(default=0),
     )
     @simple_response
-    def updater_log_file(self, job: str, count: int) -> Union[None, float, List[str]]:
+    def updater_log_file(self, job: str, count: int) -> None | (float | List[str]):
         """
         returns the content of the log file associated with
         the job.
@@ -481,7 +482,7 @@ class Instance(Base):
     @simple_response
     def updater_job_status(self, job: str) -> Dict[str, Any]:  # TODO: remove this completely
         """Returns the status of the current/last update even if the job is not running anymore."""
-        result: "Dict[str, Any]" = {}
+        result: Dict[str, Any] = {}
         try:
             with open(INSTALLERS[job]['statusfile']) as fd:
                 for line in fd:
@@ -620,8 +621,8 @@ class HookManager:
         :param module_dir: path to directory that contains Python modules with hook functions
         :param raise_exceptions: if `False`, all exceptions while loading Python modules will be dropped and all exceptions while calling hooks will be caught and returned in result list
         """
-        self.__loaded_modules: "Dict[str, ModuleType]" = {}
-        self.__registered_hooks: "Dict[str, List[Callable[..., Any]]]" = {}
+        self.__loaded_modules: Dict[str, ModuleType] = {}
+        self.__registered_hooks: Dict[str, List[Callable[..., Any]]] = {}
         self.__module_dir = module_dir
         self.__raise_exceptions = raise_exceptions
         self.__load_hooks()

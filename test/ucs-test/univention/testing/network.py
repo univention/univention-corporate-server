@@ -40,6 +40,7 @@ The networking helper will install special iptables rules that may completely
 break routing from/to the test system. Especially if the test script does
 not clean up in error cases!
 """
+from __future__ import annotations
 
 
 import copy
@@ -129,15 +130,15 @@ class NetworkRedirector:
         else:
             raise UCSTestNetworkCannotDetermineExternalAddress
         self.used_by_with_statement = False
-        self.cleanup_rules: "List[Union[Tuple[Literal['loop'], str, str], Tuple[Literal['redirection'], str, int, int, str]]]" = []
+        self.cleanup_rules: List[Tuple[Literal['loop'], str, str] | Tuple[Literal['redirection'], str, int, int, str]] = []
         # [ ('loop', 'addr1', 'addr2'), ('redirection', 'remoteaddr', remoteport, localport), ... ]
 
-    def __enter__(self) -> "NetworkRedirector":
+    def __enter__(self) -> NetworkRedirector:
         print('*** Entering with-statement of NetworkRedirector()')
         self.used_by_with_statement = True
         return self
 
-    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[Exception]", traceback: "Optional[TracebackType]") -> None:
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: Exception | None, traceback: TracebackType | None) -> None:
         print('*** Leaving with-statement of NetworkRedirector()')
         self.revert_network_settings()
 
@@ -149,7 +150,7 @@ class NetworkRedirector:
             elif entry[0] == 'redirection':
                 self.remove_redirection(entry[1], entry[2], entry[3], entry[4], ignore_errors=True)
 
-    def run_commands(self, cmdlist: "List[List[str]]", argdict: "Mapping[str, object]", ignore_errors: bool=False) -> None:
+    def run_commands(self, cmdlist: List[List[str]], argdict: Mapping[str, object], ignore_errors: bool=False) -> None:
         """
         Start all commands in cmdlist and replace formatstrings with arguments in argdict.
 
@@ -214,7 +215,7 @@ class NetworkRedirector:
         if not self.used_by_with_statement:
             raise UCSTestNetworkNoWithStatement
 
-        entry: "Tuple[Literal['redirection'], str, int, int, str]" = ('redirection', remote_addr, remote_port, local_port, family)
+        entry: Tuple[Literal['redirection'], str, int, int, str] = ('redirection', remote_addr, remote_port, local_port, family)
         if entry not in self.cleanup_rules:
             self.cleanup_rules.append(entry)
             args = {

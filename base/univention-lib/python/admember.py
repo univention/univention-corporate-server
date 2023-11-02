@@ -33,7 +33,7 @@
 
 """Python library for AD Member Mode."""
 
-from __future__ import absolute_import, print_function
+from __future__ import annotations, absolute_import, print_function
 
 import ipaddress
 import locale
@@ -160,7 +160,7 @@ class failedToGetUcrVariable(Exception):
     """failed to get ucr variable"""
 
 
-def is_localhost_in_admember_mode(ucr: "Optional[ConfigRegistry]"=None) -> bool:
+def is_localhost_in_admember_mode(ucr: ConfigRegistry | None=None) -> bool:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()
@@ -168,7 +168,7 @@ def is_localhost_in_admember_mode(ucr: "Optional[ConfigRegistry]"=None) -> bool:
     return ucr.is_true('ad/member', False)
 
 
-def is_localhost_in_adconnector_mode(ucr: "Optional[ConfigRegistry]"=None) -> bool:
+def is_localhost_in_adconnector_mode(ucr: ConfigRegistry | None=None) -> bool:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()
@@ -178,7 +178,7 @@ def is_localhost_in_adconnector_mode(ucr: "Optional[ConfigRegistry]"=None) -> bo
     return False
 
 
-def is_domain_in_admember_mode(ucr: "Optional[ConfigRegistry]"=None) -> bool:
+def is_domain_in_admember_mode(ucr: ConfigRegistry | None=None) -> bool:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()
@@ -188,7 +188,7 @@ def is_domain_in_admember_mode(ucr: "Optional[ConfigRegistry]"=None) -> bool:
     return bool(res)
 
 
-def _get_kerberos_ticket(principal: str, password: str, ucr: "Optional[ConfigRegistry]"=None) -> None:
+def _get_kerberos_ticket(principal: str, password: str, ucr: ConfigRegistry | None=None) -> None:
     ud.debug(ud.MODULE, ud.INFO, "running _get_kerberos_ticket")
     if not ucr:
         ucr = ConfigRegistry()
@@ -256,14 +256,14 @@ def decode_sid(value):
 
     sid += "-%d" % ord(value[7])
 
-    for i in range(0, sid_len):
+    for i in range(sid_len):
         res = ord(value[8 + (i * 4)]) + (ord(value[9 + (i * 4)]) << 8) + (ord(value[10 + (i * 4)]) << 16) + (ord(value[11 + (i * 4)]) << 24)
         sid += "-%u" % res
 
     return sid
 
 
-def check_ad_account(ad_domain_info: "Dict[str, str]", username: str, password: str, ucr: "Optional[ConfigRegistry]"=None) -> bool:
+def check_ad_account(ad_domain_info: Dict[str, str], username: str, password: str, ucr: ConfigRegistry | None=None) -> bool:
     """
     returns True if account is Administrator in AD
     returns False if account is just a member of Domain Admins
@@ -387,7 +387,7 @@ def check_ad_account(ad_domain_info: "Dict[str, str]", username: str, password: 
     raise notDomainAdminInAD()
 
 
-def _sid_of_ucs_sambadomain(lo: "Optional[univention.uldap.access]"=None, ucr: "Optional[ConfigRegistry]"=None) -> str:
+def _sid_of_ucs_sambadomain(lo: univention.uldap.access | None=None, ucr: ConfigRegistry | None=None) -> str:
     if not lo:
         lo = univention.uldap.getMachineConnection()
 
@@ -408,7 +408,7 @@ def _sid_of_ucs_sambadomain(lo: "Optional[univention.uldap.access]"=None, ucr: "
     return ucs_domain_sid.decode('ASCII')
 
 
-def _dn_of_udm_domain_admins(lo: "Optional[univention.uldap.access]"=None, ucr: "Optional[ConfigRegistry]"=None) -> str:
+def _dn_of_udm_domain_admins(lo: univention.uldap.access | None=None, ucr: ConfigRegistry | None=None) -> str:
     if not lo:
         lo = univention.uldap.getMachineConnection()
 
@@ -426,7 +426,7 @@ def _dn_of_udm_domain_admins(lo: "Optional[univention.uldap.access]"=None, ucr: 
     return res[0]
 
 
-def _create_domain_admin_account_in_udm(username: str, password: str, lo: "Optional[univention.uldap.access]"=None, ucr: "Optional[ConfigRegistry]"=None) -> bool:
+def _create_domain_admin_account_in_udm(username: str, password: str, lo: univention.uldap.access | None=None, ucr: ConfigRegistry | None=None) -> bool:
     if not lo:
         lo = univention.uldap.getMachineConnection()
 
@@ -449,7 +449,7 @@ def _create_domain_admin_account_in_udm(username: str, password: str, lo: "Optio
     return True
 
 
-def _ucs_sid_is_well_known_administrator(user_sid: str, lo: "Optional[univention.uldap.access]"=None, ucr: "Optional[ConfigRegistry]"=None) -> bool:
+def _ucs_sid_is_well_known_administrator(user_sid: str, lo: univention.uldap.access | None=None, ucr: ConfigRegistry | None=None) -> bool:
     if not lo:
         lo = univention.uldap.getMachineConnection()
 
@@ -464,7 +464,7 @@ def _ucs_sid_is_well_known_administrator(user_sid: str, lo: "Optional[univention
     return False
 
 
-def _add_udm_account_to_domain_admins(user_dn: str, lo: "Optional[univention.uldap.access]"=None, ucr: "Optional[ConfigRegistry]"=None) -> bool:
+def _add_udm_account_to_domain_admins(user_dn: str, lo: univention.uldap.access | None=None, ucr: ConfigRegistry | None=None) -> bool:
     if not lo:
         lo = univention.uldap.getMachineConnection()
 
@@ -496,7 +496,7 @@ def _set_udm_account_password(user_dn: str, password: str) -> bool:
     return True
 
 
-def prepare_administrator(username: str, password: str, ucr: "Optional[ConfigRegistry]"=None) -> None:
+def prepare_administrator(username: str, password: str, ucr: ConfigRegistry | None=None) -> None:
     ud.debug(ud.MODULE, ud.PROCESS, "Prepare administrator account")
 
     if not ucr:
@@ -550,7 +550,7 @@ def prepare_administrator(username: str, password: str, ucr: "Optional[ConfigReg
         raise failedToSetAdministratorPassword()
 
 
-def _mapped_ad_dn(ad_dn: str, ad_ldap_base: str, ucr: "Optional[ConfigRegistry]"=None) -> "Optional[str]":
+def _mapped_ad_dn(ad_dn: str, ad_ldap_base: str, ucr: ConfigRegistry | None=None) -> str | None:
     """
     >>> _mapped_ad_dn('uid=Administrator + CN=admin,OU=users,CN=univention,Foo=univention,bar=base', 'foo=univention,bar = base', {'ldap/base': 'dc=base'})
     'uid=Administrator+cn=admin,ou=users,cn=univention,dc=base'
@@ -573,7 +573,7 @@ def _mapped_ad_dn(ad_dn: str, ad_ldap_base: str, ucr: "Optional[ConfigRegistry]"
     return ldap.dn.dn2str(dn + ldap.dn.str2dn(ucr.get("ldap/base")))
 
 
-def synchronize_account_position(ad_domain_info: "Dict[str, str]", username: str, password: str, ucr: "Optional[ConfigRegistry]"=None) -> bool:
+def synchronize_account_position(ad_domain_info: Dict[str, str], username: str, password: str, ucr: ConfigRegistry | None=None) -> bool:
     ud.debug(ud.MODULE, ud.PROCESS, "running synchronize_account_position")
 
     if not ucr:
@@ -710,7 +710,7 @@ def error_handler(msg: object) -> None:
     ud.debug(ud.MODULE, ud.ERROR, msg)
 
 
-def remove_install_univention_samba(info_handler: "Callable[..., None]"=info_handler, step_handler: "Callable[..., None]"=None, error_handler: "Callable[..., None]"=error_handler, install: bool=True, uninstall: bool=True) -> bool:  # TODO: replace with univention-remove?
+def remove_install_univention_samba(info_handler: Callable[..., None]=info_handler, step_handler: Callable[..., None] | None=None, error_handler: Callable[..., None]=error_handler, install: bool=True, uninstall: bool=True) -> bool:  # TODO: replace with univention-remove?
     pm = univention.lib.package_manager.PackageManager(
         info_handler=info_handler,
         step_handler=step_handler,
@@ -754,7 +754,7 @@ SAMBA_TOOL_FIELDNAMES_TO_CLDAP_RES = {
 CLDAP_RES = namedtuple('CLDAP_RES', 'forest dns_domain domain_name pdc_dns_name pdc_name server_site client_site')
 
 
-def cldap_finddc(ip: str, use_samba_lib: bool=six.PY3) -> "CLDAP_RES":
+def cldap_finddc(ip: str, use_samba_lib: bool=six.PY3) -> CLDAP_RES:
     if use_samba_lib:
         lp = LoadParm()
         lp.load('/dev/null')
@@ -809,7 +809,7 @@ def get_defaultNamingContext(ad_server_ip: str, use_samba_lib: bool=six.PY3) -> 
         return lines[1][22:]
 
 
-def lookup_adds_dc(ad_server: str="", ucr: "Optional[ConfigRegistry]"=None, check_dns: bool=True) -> "Dict[str, str]":
+def lookup_adds_dc(ad_server: str="", ucr: ConfigRegistry | None=None, check_dns: bool=True) -> Dict[str, str]:
     """CLDAP lookup"""
     ud.debug(ud.MODULE, ud.PROCESS, "Lookup ADDS DC")
 
@@ -907,7 +907,7 @@ def lookup_adds_dc(ad_server: str="", ucr: "Optional[ConfigRegistry]"=None, chec
     return ad_domain_info
 
 
-def set_timeserver(timeserver: str, ucr: "Optional[ConfigRegistry]"=None) -> None:
+def set_timeserver(timeserver: str, ucr: ConfigRegistry | None=None) -> None:
     ud.debug(ud.MODULE, ud.PROCESS, "Setting timeserver to %s" % timeserver)
     univention.config_registry.handler_set([u'timeserver=%s' % (timeserver,)])
     restart_service("ntp")
@@ -996,7 +996,7 @@ def time_sync(ad_ip: str, tolerance: int=180, critical_difference: int=360) -> b
     return True
 
 
-def check_server_role(ucr: "Optional[ConfigRegistry]"=None) -> None:
+def check_server_role(ucr: ConfigRegistry | None=None) -> None:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()
@@ -1004,7 +1004,7 @@ def check_server_role(ucr: "Optional[ConfigRegistry]"=None) -> None:
         raise invalidUCSServerRole("The function become_ad_member can only be run on an UCS Primary Directory Node")
 
 
-def check_domain(ad_domain_info: "Dict[str, str]", ucr: "Optional[ConfigRegistry]"=None) -> None:
+def check_domain(ad_domain_info: Dict[str, str], ucr: ConfigRegistry | None=None) -> None:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()
@@ -1012,7 +1012,7 @@ def check_domain(ad_domain_info: "Dict[str, str]", ucr: "Optional[ConfigRegistry
         raise domainnameMismatch("The domain of the AD Server does not match the local domain: %s" % (ad_domain_info["Domain"],))
 
 
-def set_nameserver(server_ips: "Iterable[str]", ucr: "Optional[ConfigRegistry]"=None) -> "Tuple[List[str], List[str]]":
+def set_nameserver(server_ips: Iterable[str], ucr: ConfigRegistry | None=None) -> Tuple[List[str], List[str]]:
     previous_ucr_set = []
     previous_ucr_unset = []
     if not ucr:
@@ -1037,7 +1037,7 @@ def set_nameserver(server_ips: "Iterable[str]", ucr: "Optional[ConfigRegistry]"=
     return (previous_ucr_set, previous_ucr_unset)
 
 
-def rename_well_known_sid_objects(username: str, password: str, ucr: "Optional[ConfigRegistry]"=None) -> None:
+def rename_well_known_sid_objects(username: str, password: str, ucr: ConfigRegistry | None=None) -> None:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()
@@ -1096,7 +1096,7 @@ def rename_well_known_sid_objects(username: str, password: str, ucr: "Optional[C
         time.sleep(15)
 
 
-def make_deleted_objects_readable_for_this_machine(username: str, password: str, ucr: "Optional[ConfigRegistry]"=None) -> None:
+def make_deleted_objects_readable_for_this_machine(username: str, password: str, ucr: ConfigRegistry | None=None) -> None:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()
@@ -1119,7 +1119,7 @@ def make_deleted_objects_readable_for_this_machine(username: str, password: str,
         raise connectionFailed(msg)
 
 
-def prepare_dns_reverse_settings(ad_domain_info: "Dict[str, str]", ucr: "Optional[ConfigRegistry]"=None) -> "Tuple[List[str], List[str]]":
+def prepare_dns_reverse_settings(ad_domain_info: Dict[str, str], ucr: ConfigRegistry | None=None) -> Tuple[List[str], List[str]]:
     # For python-ldap / GSSAPI / AD we need working reverse DNS lookups
     # Otherwise one ends up with:
     #
@@ -1170,7 +1170,7 @@ def prepare_dns_reverse_settings(ad_domain_info: "Dict[str, str]", ucr: "Optiona
     return (previous_ucr_set, previous_ucr_unset)
 
 
-def prepare_kerberos_ucr_settings(realm: "Optional[str]"=None, ucr: "Optional[ConfigRegistry]"=None) -> "Tuple[List[str], List[str]]":
+def prepare_kerberos_ucr_settings(realm: str | None=None, ucr: ConfigRegistry | None=None) -> Tuple[List[str], List[str]]:
     ud.debug(ud.MODULE, ud.PROCESS, "Prepare Kerberos UCR settings")
 
     if not ucr:
@@ -1214,7 +1214,7 @@ def prepare_kerberos_ucr_settings(realm: "Optional[str]"=None, ucr: "Optional[Co
     return (previous_ucr_set, previous_ucr_unset)
 
 
-def set_ucr(ucr_set: "List[str]", ucr_unset: "List[str]") -> None:
+def set_ucr(ucr_set: List[str], ucr_unset: List[str]) -> None:
     univention.config_registry.handler_set(ucr_set)
     univention.config_registry.handler_unset(ucr_unset)
 
@@ -1262,7 +1262,7 @@ def revert_ucr_settings() -> None:
     univention.config_registry.handler_set(ucr_set)
 
 
-def prepare_connector_settings(username: str, password: str, ad_domain_info: "Dict[str, str]", ucr: "Optional[ConfigRegistry]"=None) -> None:
+def prepare_connector_settings(username: str, password: str, ad_domain_info: Dict[str, str], ucr: ConfigRegistry | None=None) -> None:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()
@@ -1283,7 +1283,7 @@ def prepare_connector_settings(username: str, password: str, ad_domain_info: "Di
     univention.config_registry.handler_set(ucr_set)
 
 
-def revert_connector_settings(ucr: "Optional[ConfigRegistry]"=None) -> None:
+def revert_connector_settings(ucr: ConfigRegistry | None=None) -> None:
     ud.debug(ud.MODULE, ud.PROCESS, "Revert connector settings")
 
     # TODO something else?
@@ -1312,7 +1312,7 @@ def disable_local_heimdal() -> None:
     univention.config_registry.handler_set([u'kerberos/autostart=false'])
 
 
-def run_samba_join_script(username: str, password: str, ucr: "Optional[ConfigRegistry]"=None) -> None:
+def run_samba_join_script(username: str, password: str, ucr: ConfigRegistry | None=None) -> None:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()
@@ -1342,7 +1342,7 @@ def run_samba_join_script(username: str, password: str, ucr: "Optional[ConfigReg
         raise sambaJoinScriptFailed()
 
 
-def add_host_record_in_ad(uid: "Optional[str]"=None, binddn: "Optional[str]"=None, bindpw: "Optional[str]"=None, bindpwdfile: "Optional[str]"=None, fqdn: "Optional[str]"=None, ip: "Optional[str]"=None, sso: bool=False) -> bool:
+def add_host_record_in_ad(uid: str | None=None, binddn: str | None=None, bindpw: str | None=None, bindpwdfile: str | None=None, fqdn: str | None=None, ip: str | None=None, sso: bool=False) -> bool:
     pwdfile = None
     create_pwdfile = False
     ucr = ConfigRegistry()
@@ -1428,7 +1428,7 @@ def add_host_record_in_ad(uid: "Optional[str]"=None, binddn: "Optional[str]"=Non
     return True
 
 
-def get_domaincontroller_srv_record(domain: str, nameserver: "Optional[str]"=None) -> "Union[None, bool, str]":
+def get_domaincontroller_srv_record(domain: str, nameserver: str | None=None) -> None | (bool | str):
     if not domain:
         return False
 
@@ -1455,7 +1455,7 @@ def get_domaincontroller_srv_record(domain: str, nameserver: "Optional[str]"=Non
     return None
 
 
-def add_domaincontroller_srv_record_in_ad(ad_ip: str, username: str, password: str, ucr: "Optional[ConfigRegistry]"=None) -> bool:
+def add_domaincontroller_srv_record_in_ad(ad_ip: str, username: str, password: str, ucr: ConfigRegistry | None=None) -> bool:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()
@@ -1531,7 +1531,7 @@ def get_ucr_variable_from_ucs(host: str, server: str, var: str) -> str:
     return stdout.decode('UTF-8', 'replace').strip()
 
 
-def set_nameserver_from_ucs_master(ucr: "Optional[ConfigRegistry]"=None) -> None:
+def set_nameserver_from_ucs_master(ucr: ConfigRegistry | None=None) -> None:
     if not ucr:
         ucr = ConfigRegistry()
         ucr.load()

@@ -4,6 +4,7 @@
 This program compares LDAP host entries with a local comparative ldif file.
 All differences will be displayed at the console.
 """
+from __future__ import annotations
 
 import base64
 import errno
@@ -71,12 +72,12 @@ class Ldif:
         'structuralObjectClass',
     }
 
-    def __init__(self, src: "Iterable[bytes]", exclude: "Set[str]"=OPERATIONAL) -> None:
+    def __init__(self, src: Iterable[bytes], exclude: Set[str]=OPERATIONAL) -> None:
         self.src = src
         self.exclude = exclude
         self.lno = 0
 
-    def next_line(self) -> "Iterator[str]":
+    def next_line(self) -> Iterator[str]:
         """Return line iterator."""
         lines = []
         for lno, chunk in enumerate(self.src, start=1):
@@ -91,7 +92,7 @@ class Ldif:
 
         yield ''.join(lines)
 
-    def split(self, line: str) -> "Tuple[str, str]":
+    def split(self, line: str) -> Tuple[str, str]:
         r"""
         Split attribute and value.
         Options are stripped.
@@ -127,9 +128,9 @@ class Ldif:
             value = ""
         return (key, value)
 
-    def __iter__(self) -> "Iterator[Entry]":
+    def __iter__(self) -> Iterator[Entry]:
         """Return line iterator."""
-        obj: "Entry" = {}
+        obj: Entry = {}
         for line in self.next_line():
             if line.startswith('#'):
                 continue
@@ -154,10 +155,10 @@ class Ldif:
 
 class LdifSource:
     @classmethod
-    def create(cls, arg: str, options: "Values") -> "LdifFile":
+    def create(cls, arg: str, options: Values) -> LdifFile:
         raise NotImplementedError()
 
-    def start_reading(self) -> "Ldif":
+    def start_reading(self) -> Ldif:
         """Start reading the LDIF data."""
         raise NotImplementedError()
 
@@ -166,14 +167,14 @@ class LdifFile:
     """LDIF source from local file."""
 
     @classmethod
-    def create(cls, arg: str, options: "Values") -> "LdifFile":
+    def create(cls, arg: str, options: Values) -> LdifFile:
         return cls(arg)
 
     def __init__(self, filename: str) -> None:
         super().__init__()
         self.filename = filename
 
-    def start_reading(self) -> "Ldif":
+    def start_reading(self) -> Ldif:
         """Start reading the LDIF data."""
         try:
             return Ldif(open(self.filename, 'rb'))
@@ -185,14 +186,14 @@ class LdifSlapcat:
     """LDIF source from local LDAP."""
 
     @classmethod
-    def create(cls, arg: "Any", options: "Values") -> "LdifSlapcat":
+    def create(cls, arg: Any, options: Values) -> LdifSlapcat:
         return cls()
 
     def __init__(self) -> None:
         super().__init__()
         self.command = ['slapcat', '-f', '/etc/ldap/slapd.conf', '-d0']
 
-    def start_reading(self) -> "Ldif":
+    def start_reading(self) -> Ldif:
         """Start reading the LDIF data."""
         try:
             proc = subprocess.Popen(self.command, stdout=subprocess.PIPE)
@@ -202,7 +203,7 @@ class LdifSlapcat:
         except OSError as ex:
             raise SlapError("Error executing", self.command, ex)
 
-    def wait_for_data(self, proc: "subprocess.Popen") -> None:
+    def wait_for_data(self, proc: subprocess.Popen) -> None:
         """
         Wait for the remote process to send data.
 
@@ -214,8 +215,8 @@ class LdifSlapcat:
         """
         while True:
             rlist = [proc.stdout]
-            wlist: "List[int]" = []
-            xlist: "List[int]" = []
+            wlist: List[int] = []
+            xlist: List[int] = []
             try:
                 rlist, wlist, xlist = select.select(rlist, wlist, xlist)
                 break
@@ -234,7 +235,7 @@ class LdifSsh(LdifSlapcat):
     """LDIF source from remote LDAP."""
 
     @classmethod
-    def create(cls, hostname: str, options: "Values") -> "LdifSsh":
+    def create(cls, hostname: str, options: Values) -> LdifSsh:
         return cls(hostname, options.ssh)
 
     def __init__(self, hostname: str, ssh: str='ssh') -> None:
@@ -242,14 +243,14 @@ class LdifSsh(LdifSlapcat):
         self.command = [ssh, hostname] + self.command
 
 
-def __test(_option: "Values", _opt_str: str, _value: None, _parser: "OptionParser") -> "NoReturn":
+def __test(_option: Values, _opt_str: str, _value: None, _parser: OptionParser) -> NoReturn:
     """Run internal test suite."""
     import doctest
     res = doctest.testmod()
     sys.exit(int(bool(res[0])))
 
 
-def stream2object(ldif: "Ldif") -> "Dict[str, Entry]":
+def stream2object(ldif: Ldif) -> Dict[str, Entry]:
     """
     Convert LDIF stream to dictionary of objects.
 
@@ -259,7 +260,7 @@ def stream2object(ldif: "Ldif") -> "Dict[str, Entry]":
     >>> stream2object([{'dn': ['dc=test']}])
     {'dc=test': {}}
     """
-    objects: "Dict[str, Entry]" = {}
+    objects: Dict[str, Entry] = {}
     for obj in ldif:
         try:
             dname, = obj.pop('dn')
@@ -271,7 +272,7 @@ def stream2object(ldif: "Ldif") -> "Dict[str, Entry]":
     return objects
 
 
-def sort_dn(dname: str) -> "Tuple[Tuple[str, ...], ...]":
+def sort_dn(dname: str) -> Tuple[Tuple[str, ...], ...]:
     """
     Sort by reversed dn.
 
@@ -288,7 +289,7 @@ def sort_dn(dname: str) -> "Tuple[Tuple[str, ...], ...]":
     return tuple(reversed([tuple(sorted(_.split('+'))) for _ in dname.split(',')]))
 
 
-def compare_ldif(lldif: "Ldif", rldif: "Ldif", options: "Values") -> int:
+def compare_ldif(lldif: Ldif, rldif: Ldif, options: Values) -> int:
     """
     Compare two LDIF files.
 
@@ -336,7 +337,7 @@ def compare_ldif(lldif: "Ldif", rldif: "Ldif", options: "Values") -> int:
     return ret
 
 
-def compare_keys(ldata: "Entry", rdata: "Entry") -> "Iterator[Tuple[Literal[-1, 0, 1], str, str]]":
+def compare_keys(ldata: Entry, rdata: Entry) -> Iterator[Tuple[Literal[-1, 0, 1], str, str]]:
     """
     Compare and return attributes of two LDAP objects.
 
@@ -378,7 +379,7 @@ def compare_keys(ldata: "Entry", rdata: "Entry") -> "Iterator[Tuple[Literal[-1, 
             lkey = rkey = ""
 
 
-def compare_values(attr: str, lvalues: "List[str]", rvalues: "List[str]") -> "Iterator[Tuple[Literal[-1, 0, 1], str, str]]":
+def compare_values(attr: str, lvalues: List[str], rvalues: List[str]) -> Iterator[Tuple[Literal[-1, 0, 1], str, str]]:
     """
     Compare and return values of two multi-valued LDAP attributes.
 
@@ -414,7 +415,7 @@ def compare_values(attr: str, lvalues: "List[str]", rvalues: "List[str]") -> "It
             lval = rval = ""
 
 
-def parse_args() -> "Tuple[LdifSource, LdifSource, Values]":
+def parse_args() -> Tuple[LdifSource, LdifSource, Values]:
     """Parse command line arguments."""
     parser = OptionParser(usage=USAGE, description=DESCRIPTION)
     parser.disable_interspersed_args()
@@ -494,7 +495,7 @@ def main() -> None:
     run_compare(ldif1, ldif2, options)
 
 
-def run_compare(ldif1: "Ldif", ldif2: "Ldif", options: "Values") -> "NoReturn":
+def run_compare(ldif1: Ldif, ldif2: Ldif, options: Values) -> NoReturn:
     """
     UNIX correct error handling.
     Termination by signal is propagaed as signal.

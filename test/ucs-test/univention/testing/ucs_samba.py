@@ -1,3 +1,4 @@
+from __future__ import annotations
 import contextlib
 import re
 import socket
@@ -25,7 +26,7 @@ class WaitForS4ConnectorTimeout(Exception):
 
 
 @contextlib.contextmanager
-def password_policy(complexity: bool=False, minimum_password_age: int=0, maximum_password_age: int=3) -> "Iterator[None]":
+def password_policy(complexity: bool=False, minimum_password_age: int=0, maximum_password_age: int=3) -> Iterator[None]:
     if not package_installed('univention-samba4'):
         print('skipping samba password policy adjustment')
         yield
@@ -40,7 +41,7 @@ def password_policy(complexity: bool=False, minimum_password_age: int=0, maximum
         subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--max-pwd-age', max_pwd_age, '--complexity', pwd_complexity])
 
 
-def wait_for_drs_replication(ldap_filter: str, attrs: "Union[List[str], None, str]"=None, base: "Optional[str]"=None, scope: int=ldb.SCOPE_SUBTREE, lp: "Optional[LoadParm]"=None, timeout: int=360, delta_t: int=1, verbose: bool=True, should_exist: bool=True, controls: "Optional[List[str]]"=None) -> None:
+def wait_for_drs_replication(ldap_filter: str, attrs: List[str] | (None | str)=None, base: str | None=None, scope: int=ldb.SCOPE_SUBTREE, lp: LoadParm | None=None, timeout: int=360, delta_t: int=1, verbose: bool=True, should_exist: bool=True, controls: List[str] | None=None) -> None:
     if not package_installed('univention-samba4'):
         if package_installed('univention-samba'):
             time.sleep(15)
@@ -136,7 +137,7 @@ def get_available_s4connector_dc() -> str:
         return ""
 
 
-def force_drs_replication(source_dc: "Optional[str]"=None, destination_dc: "Optional[str]"=None, partition_dn: "Optional[str]"=None, direction: str="in") -> int:
+def force_drs_replication(source_dc: str | None=None, destination_dc: str | None=None, partition_dn: str | None=None, direction: str="in") -> int:
     if not package_installed('univention-samba4'):
         print('force_drs_replication(): skip, univention-samba4 not installed.')
         return 0
@@ -232,7 +233,7 @@ def wait_for_s4connector(timeout: int=360, delta_t: int=1, s4cooldown_t: int=5) 
     raise WaitForS4ConnectorTimeout()
 
 
-def append_dot(verify_list: "List[str]") -> "List[str]":
+def append_dot(verify_list: List[str]) -> List[str]:
     """The S4-Connector appends dots to various dns records. Helper function to adjust a list."""
     if not package_installed('univention-s4-connector'):
         return verify_list

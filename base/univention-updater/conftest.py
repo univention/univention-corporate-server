@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # pylint: disable-msg=C0301,R0903,R0913
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import subprocess
 from io import BytesIO, StringIO, TextIOWrapper
@@ -102,7 +102,7 @@ def http(mocker):
 class MockPopen(object):
     """Mockup for :py:class:`subprocess.Popen`."""
 
-    mock_commands: "List[Sequence[str]]" = []
+    mock_commands: List[Sequence[str]] = []
     mock_stdout = b''
     mock_stderr = b''
 
@@ -166,12 +166,12 @@ def mockpopen(monkeypatch):
 class MockFileManager(object):
     """Mockup for :py:func:`open()`"""
 
-    def __init__(self, tmpdir: "Any") -> None:
+    def __init__(self, tmpdir: Any) -> None:
         self.files = {}  # type: Dict[str, Union[StringIO, BytesIO, Exception]]
         self._open = builtins.open
         self._tmpdir = tmpdir
 
-    def open(self, name: str, mode: str='r', buffering: int=-1, **options: "Any") -> "IO":
+    def open(self, name: str, mode: str='r', buffering: int=-1, **options: Any) -> IO:
         name = abspath(name)
         buf = self.files.get(name)
 
@@ -202,7 +202,7 @@ class MockFileManager(object):
 
         return TextIOWrapper(buf, "utf-8") if isinstance(buf, BytesIO) and not binary else buf
 
-    def _new(self, name: str, data: "Union[bytes, str]"=b"") -> "Union[StringIO, BytesIO]":
+    def _new(self, name: str, data: bytes | str=b"") -> StringIO | BytesIO:
         buf = BytesIO(data) if isinstance(data, bytes) else StringIO(data)  # type: Union[StringIO, BytesIO]
         buf.name = name
         buf.close = lambda: None

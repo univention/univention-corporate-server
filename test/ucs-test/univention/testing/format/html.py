@@ -1,4 +1,5 @@
 """Format UCS Test results as HTML."""
+from __future__ import annotations
 
 
 import sys
@@ -18,10 +19,10 @@ URI_OTRS = 'https://gorm.knut.univention.de/otrs/index.pl?Action=AgentTicketSear
 class HTML(TestFormatInterface):
     """Create simple HTML report."""
 
-    def __init__(self, stream: "IO[str]"=sys.stdout) -> None:
+    def __init__(self, stream: IO[str]=sys.stdout) -> None:
         super().__init__(stream)
 
-    def begin_run(self, environment: "TestEnvironment", count: int=1) -> None:
+    def begin_run(self, environment: TestEnvironment, count: int=1) -> None:
         """Called before first test."""
         super().begin_run(environment, count)
         print('<html>', file=self.stream)
@@ -36,7 +37,7 @@ class HTML(TestFormatInterface):
         print(f'<h2>Section {escape_xml(section)}</h2>', file=self.stream)
         print('<table>', file=self.stream)
 
-    def end_test(self, result: "TestResult") -> None:
+    def end_test(self, result: TestResult) -> None:
         """Called after each test."""
         title = escape_xml(result.case.uid)
         if result.case.description:
@@ -70,7 +71,7 @@ class HTML(TestFormatInterface):
         print('</html>', file=self.stream)
         super().end_run()
 
-    def format(self, result: "TestResult") -> None:
+    def format(self, result: TestResult) -> None:
         """
         Format single test.
 

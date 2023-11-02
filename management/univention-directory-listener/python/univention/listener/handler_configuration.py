@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 import inspect
 import string
@@ -68,14 +68,14 @@ class ListenerModuleConfiguration(object):
     name = ''                     # (**) name of the listener module
     description = ''              # (*) description of the listener module
     ldap_filter = ''              # (*) LDAP filter, if matched will trigger the listener module
-    listener_module_class: "Type[ListenerModuleHandler]" = None  # (**) class that implements the module
-    attributes: "List[str]" = []               # only trigger module, if any of the listed attributes has changed
+    listener_module_class: Type[ListenerModuleHandler] = None  # (**) class that implements the module
+    attributes: List[str] = []               # only trigger module, if any of the listed attributes has changed
     # (*) required
     # (**) will be set automatically by the handlers metaclass
 
-    _mandatory_attributes: "Tuple[str, ...]" = ('description', 'ldap_filter', 'listener_module_class')
+    _mandatory_attributes: Tuple[str, ...] = ('description', 'ldap_filter', 'listener_module_class')
 
-    def __init__(self, *args: "Any", **kwargs: "Any") -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         _keys = self.get_configuration_keys()
         for k, _v in list(kwargs.items()):
             if k in _keys:
@@ -100,7 +100,7 @@ class ListenerModuleConfiguration(object):
             raise ListenerModuleConfigurationError('Attribute "listener_module_class" must be a class.')
 
     @classmethod
-    def get_configuration_keys(cls) -> "List[str]":
+    def get_configuration_keys(cls) -> List[str]:
         """
         List of known configuration keys. Subclasses can expand this to support
         additional attributes.
@@ -137,7 +137,7 @@ class ListenerModuleConfiguration(object):
         """
         return self.ldap_filter
 
-    def get_attributes(self) -> "List[str]":
+    def get_attributes(self) -> List[str]:
         """
         :return: attributes of matching LDAP objects the module will be notified about if changed
         :rtype: list(str)
@@ -153,7 +153,7 @@ class ListenerModuleConfiguration(object):
         priority = getattr(self, "priority", 50.0)
         return float(priority)
 
-    def get_listener_module_instance(self, *args: "Any", **kwargs: "Any") -> "ListenerModuleHandler":
+    def get_listener_module_instance(self, *args: Any, **kwargs: Any) -> ListenerModuleHandler:
         """
         Get an instance of the listener module.
 
@@ -165,7 +165,7 @@ class ListenerModuleConfiguration(object):
         cls = self.get_listener_module_class()
         return cls(*args, **kwargs)
 
-    def get_listener_module_class(self) -> "Type[ListenerModuleHandler]":
+    def get_listener_module_class(self) -> Type[ListenerModuleHandler]:
         """
         Get the class to instantiate for a listener module.
 

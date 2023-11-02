@@ -32,6 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 import json
 import logging
 import time
@@ -51,18 +52,18 @@ logger = logging.getLogger(__name__)
 
 class Interactions:
 
-    def click_text(self, text: str, **kwargs: "Any") -> None:
+    def click_text(self, text: str, **kwargs: Any) -> None:
         logger.info("Clicking the text %r", text)
         self.click_element(f'//*[contains(text(), "{text}")]', **kwargs)
 
-    def click_checkbox_of_grid_entry(self, name: str, **kwargs: "Any") -> None:
+    def click_checkbox_of_grid_entry(self, name: str, **kwargs: Any) -> None:
         logger.info("Clicking the checkbox of the grid entry  %r", name)
         self.click_element(
             f'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "{name}")]/../..//input[@type="checkbox"]/..',
             **kwargs,
         )
 
-    def click_checkbox_of_dojox_grid_entry(self, name: str, **kwargs: "Any") -> None:
+    def click_checkbox_of_dojox_grid_entry(self, name: str, **kwargs: Any) -> None:
         logger.info("Clicking the checkbox of the dojox grid entry  %r", name)
         self.click_element(
             expand_path('//*[@containsClass="dojoxGridCell"][@role="gridcell"][contains(text(), "%s")]/preceding-sibling::*[1]')
@@ -70,21 +71,21 @@ class Interactions:
             **kwargs,
         )
 
-    def click_grid_entry(self, name: str, **kwargs: "Any") -> None:
+    def click_grid_entry(self, name: str, **kwargs: Any) -> None:
         logger.info("Clicking the grid entry %r", name)
         self.click_element(
             f'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "{name}")]',
             **kwargs,
         )
 
-    def click_tree_entry(self, name: str, **kwargs: "Any") -> None:
+    def click_tree_entry(self, name: str, **kwargs: Any) -> None:
         logger.info("Clicking the tree entry %r", name)
         self.click_element(
             f'//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-column-label ")][contains(text(), "{name}")]',
             **kwargs,
         )
 
-    def click_button(self, button_text: str, xpath_prefix: str='', **kwargs: "Any") -> None:
+    def click_button(self, button_text: str, xpath_prefix: str='', **kwargs: Any) -> None:
         logger.info("Clicking the button %r", button_text)
         xpath = f'//*[@containsClass="dijitButtonText"][text() = "{button_text}"]'
         xpath = expand_path(xpath_prefix + xpath)
@@ -107,7 +108,7 @@ class Interactions:
         logger.info("Clicking the search button")
         self.click_element('//form//div[contains(concat(" ", normalize-space(@class), " "), " umcSearchIcon ")]')
 
-    def click_tile(self, tilename: str, **kwargs: "Any") -> None:
+    def click_tile(self, tilename: str, **kwargs: Any) -> None:
         logger.info("Clicking the tile %r", tilename)
         try:
             self.click_element(
@@ -120,14 +121,14 @@ class Interactions:
                 **kwargs,
             )
 
-    def click_tile_menu_icon(self, tilename: str, **kwargs: "Any") -> None:
+    def click_tile_menu_icon(self, tilename: str, **kwargs: Any) -> None:
         logger.info("Clicking the menu icon of tile %r", tilename)
         self.click_element(
             f'//*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")][text() = "{tilename}"]/../*[contains(concat(" ", normalize-space(@class), " "), " umcGalleryContextIcon ")]',
             **kwargs,
         )
 
-    def click_tab(self, tabname: str, **kwargs: "Any") -> None:
+    def click_tab(self, tabname: str, **kwargs: Any) -> None:
         logger.info("Clicking the tab %r", tabname)
         self.click_element(
             f'//*[contains(concat(" ", normalize-space(@class), " "), " tabLabel ")][text() = "{tabname}"]',
@@ -247,7 +248,7 @@ class Interactions:
             )
         return elems[0]
 
-    def get_all_enabled_elements(self, xpath: str) -> "List[Any]":
+    def get_all_enabled_elements(self, xpath: str) -> List[Any]:
         elems = self.driver.find_elements(By.XPATH, xpath)
         try:
             return [
@@ -276,7 +277,7 @@ class Interactions:
         time.sleep(1)  # wait_for_text('Uploading...') is too inconsistent
         self.wait_until_element_visible(xpath_prefix + uploader_button_xpath)
 
-    def drag_and_drop(self, source: "Union[Any, str]", target: "Union[Any, str]", find_by: str='xpath') -> None:
+    def drag_and_drop(self, source: Any | str, target: Any | str, find_by: str='xpath') -> None:
         """Wrapper for selenium.webdriver.common.action_chains.drag_and_drop"""
         by = {'xpath': By.XPATH, 'id': By.ID}[find_by]
         if isinstance(source, str):
@@ -285,7 +286,7 @@ class Interactions:
             target = self.driver.find_element(by, target)
         ActionChains(self.driver).drag_and_drop(source, target).perform()
 
-    def drag_and_drop_by_offset(self, source: "Union[Any, str]", xoffset: int, yoffset: int, find_by: str='xpath') -> None:
+    def drag_and_drop_by_offset(self, source: Any | str, xoffset: int, yoffset: int, find_by: str='xpath') -> None:
         """Wrapper for selenium.webdriver.common.action_chains.drag_and_drop_by_offset"""
         by = {'xpath': By.XPATH, 'id': By.ID}[find_by]
         if isinstance(source, str):

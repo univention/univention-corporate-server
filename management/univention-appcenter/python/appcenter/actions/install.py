@@ -231,7 +231,6 @@ class Install(InstallRemoveUpgrade):
         if args.install_master_packages_remotely:
             # TODO: should test remotely
             self.log('Not testing package changes of remote packages!')
-            pass
         if args.dry_run or ret['broken']:
             if was_installed:
                 if self._register_component(original_app):

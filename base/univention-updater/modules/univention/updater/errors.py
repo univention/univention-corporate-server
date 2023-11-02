@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 """Univention Updater exceptions."""
+from __future__ import annotations
+
 try:
     from typing import Set  # noqa: F401
 except ImportError:
@@ -56,7 +58,7 @@ class RequiredComponentError(UpdaterException):
     :type components: set(str)
     """
 
-    def __init__(self, version: str, components: "Set[str]") -> None:
+    def __init__(self, version: str, components: Set[str]) -> None:
         self.version = version
         self.components = components
 

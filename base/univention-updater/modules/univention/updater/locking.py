@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 """Univention Updater locking"""
 
-from __future__ import absolute_import, print_function
+from __future__ import annotations, absolute_import, print_function
 
 import os
 import sys
@@ -80,7 +80,7 @@ class UpdaterLock(object):
         self.timeout = timeout
         self.lock = 0
 
-    def __enter__(self) -> "UpdaterLock":
+    def __enter__(self) -> UpdaterLock:
         try:
             self.lock = self.updater_lock_acquire()
             return self
@@ -88,7 +88,7 @@ class UpdaterLock(object):
             print(ex, file=sys.stderr)
             sys.exit(5)
 
-    def __exit__(self, exc_type: "Optional[Type[BaseException]]", exc_value: "Optional[BaseException]", traceback: "Optional[TracebackType]") -> None:
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if not self.updater_lock_release():
             print('WARNING: updater-lock already released!', file=sys.stderr)
 

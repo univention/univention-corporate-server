@@ -31,7 +31,7 @@ def dump_db():
 def obj_exists(obj_type, dn):
     found = False
     db = dump_db()
-    for _obj_id, obj in db[obj_type].items():
+    for obj in db[obj_type].values():
         if dn.lower() == obj.get('dn').lower():
             found = True
     return found
@@ -47,7 +47,7 @@ def group_exists(dn):
 
 def get_attr(obj_type, dn, attr):
     db = dump_db()
-    for _obj_id, obj in db[obj_type].items():
+    for obj in db[obj_type].values():
         if dn.lower() == obj.get('dn').lower():
             return obj['obj'].get(attr)
 

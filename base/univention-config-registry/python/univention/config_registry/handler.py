@@ -38,7 +38,7 @@
 
 """Univention Configuration Registry handlers."""
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import errno
 import os
@@ -92,7 +92,7 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
 assert asciify(WARNING_TEXT) == WARNING_TEXT, "Only ASCII allowed in WARNING_TEXT"
 
 
-def run_filter(template: str, directory: "_UCR", srcfiles: "Iterable[str]"=set(), opts: "_OPT"={}) -> bytes:
+def run_filter(template: str, directory: _UCR, srcfiles: Iterable[str]=set(), opts: _OPT={}) -> bytes:
     """
     Process a template file: substitute variables.
 
@@ -114,7 +114,7 @@ def run_filter(template: str, directory: "_UCR", srcfiles: "Iterable[str]"=set()
     return tmpl
 
 
-def _replace_variables(template: str, directory: "_UCR", srcfiles: "Iterable[str]") -> str:
+def _replace_variables(template: str, directory: _UCR, srcfiles: Iterable[str]) -> str:
     while True:
         i = VARIABLE_TOKEN.finditer(template)
         try:
@@ -174,7 +174,7 @@ baseConfig = configRegistry
     return template
 
 
-def run_script(script: str, arg: str, changes: "_CHANGES") -> None:
+def run_script(script: str, arg: str, changes: _CHANGES) -> None:
     """
     Execute script with command line arguments using a shell and pass changes
     on STDIN.
@@ -196,7 +196,7 @@ def run_script(script: str, arg: str, changes: "_CHANGES") -> None:
     proc.communicate(u''.join(diff).encode('UTF-8'))
 
 
-def run_module(modpath: str, fn: str, ucr: "_UCR", changes: "_CHANGES") -> None:
+def run_module(modpath: str, fn: str, ucr: _UCR, changes: _CHANGES) -> None:
     """
     Load the Python module that MUST be located in :py:const:`MODULE_DIR` or any
     subdirectory.
@@ -218,7 +218,7 @@ def run_module(modpath: str, fn: str, ucr: "_UCR", changes: "_CHANGES") -> None:
     del sys.path[0]
 
 
-def warning_string(prefix: str='# ', srcfiles: "Iterable[str]"=set()) -> str:
+def warning_string(prefix: str='# ', srcfiles: Iterable[str]=set()) -> str:
     """
     Generate UCR warning text.
 
@@ -242,9 +242,9 @@ def warning_string(prefix: str='# ', srcfiles: "Iterable[str]"=set()) -> str:
 class ConfigHandler(object):
     """Base class of all config handlers."""
 
-    variables: "Set[str]" = set()
+    variables: Set[str] = set()
 
-    def __call__(self, args: "_ARG") -> None:
+    def __call__(self, args: _ARG) -> None:
         raise NotImplementedError()
 
 
@@ -258,11 +258,11 @@ class ConfigHandlerDiverting(ConfigHandler):
     def __init__(self, to_file: str) -> None:
         super(ConfigHandlerDiverting, self).__init__()
         self.to_file = os.path.join('/', to_file)
-        self.user: "Optional[int]" = None
-        self.group: "Optional[int]" = None
-        self.mode: "Optional[int]" = None
-        self.preinst: "Optional[str]" = None
-        self.postinst: "Optional[str]" = None
+        self.user: int | None = None
+        self.group: int | None = None
+        self.mode: int | None = None
+        self.preinst: str | None = None
+        self.postinst: str | None = None
 
     def __hash__(self):
         """Return unique hash."""
@@ -280,7 +280,7 @@ class ConfigHandlerDiverting(ConfigHandler):
             return self.to_file != other.to_file
         return NotImplemented
 
-    def _set_perm(self, stat: "Optional[os.stat_result]", to_file: "Optional[str]"=None) -> None:
+    def _set_perm(self, stat: os.stat_result | None, to_file: str | None=None) -> None:
         """
         Set file permissions.
 
@@ -366,8 +366,8 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
     def __init__(self, dummy_from_file: str, to_file: str) -> None:
         super(ConfigHandlerMultifile, self).__init__(to_file)
-        self.variables: "Set[str]" = set()
-        self.from_files: "Set[str]" = set()
+        self.variables: Set[str] = set()
+        self.from_files: Set[str] = set()
         self.dummy_from_file = dummy_from_file
         self.def_count = 1
 
@@ -377,7 +377,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
         # may raise AttributeError, which forces UCR to rebuild the cache
         self.def_count  # :pylint: disable-msg=W0104  # noqa: B018
 
-    def add_subfiles(self, subfiles: "List[Tuple[str, Set[str]]]") -> None:
+    def add_subfiles(self, subfiles: List[Tuple[str, Set[str]]]) -> None:
         """
         Add subfiles to multifile.
 
@@ -397,7 +397,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
         if not self.need_divert():
             self.uninstall_divert()
 
-    def __call__(self, args: "_ARG") -> None:
+    def __call__(self, args: _ARG) -> None:
         """Generate multfile from subfile templates."""
         ucr, changed = args
         print(f'Multifile: {self.to_file}')
@@ -413,7 +413,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
             os.makedirs(to_dir, 0o755)
 
         if os.path.isfile(self.dummy_from_file):
-            stat: "Optional[os.stat_result]" = os.stat(self.dummy_from_file)
+            stat: os.stat_result | None = os.stat(self.dummy_from_file)
         elif os.path.isfile(self.to_file):
             stat = os.stat(self.to_file)
         else:
@@ -421,7 +421,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
         tmp_to_file = self._temp_file_name()
         try:
-            filter_opts: "Dict[str, Any]" = {}
+            filter_opts: Dict[str, Any] = {}
 
             with open(tmp_to_file, 'wb') as to_fp:
                 self._set_perm(stat, tmp_to_file)
@@ -487,7 +487,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
         super(ConfigHandlerFile, self).__init__(to_file)
         self.from_file = from_file
 
-    def __call__(self, args: "_ARG") -> None:
+    def __call__(self, args: _ARG) -> None:
         """Generate file from template."""
         ucr, changed = args
 
@@ -508,7 +508,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
         tmp_to_file = self._temp_file_name()
         try:
-            filter_opts: "Dict[str, Any]" = {}
+            filter_opts: Dict[str, Any] = {}
 
             with open(self.from_file, 'r', encoding='utf-8') as from_fp, open(tmp_to_file, 'wb') as to_fp:
                 self._set_perm(stat, tmp_to_file)
@@ -566,7 +566,7 @@ class ConfigHandlerScript(ConfigHandler):
             return self.script != other.script
         return NotImplemented
 
-    def __call__(self, args: "_ARG") -> None:
+    def __call__(self, args: _ARG) -> None:
         """Call external programm after change."""
         _ucr, changed = args
         print(f'Script: {self.script}')
@@ -601,14 +601,14 @@ class ConfigHandlerModule(ConfigHandler):
             return self.module != other.module
         return NotImplemented
 
-    def __call__(self, args: "_ARG") -> None:
+    def __call__(self, args: _ARG) -> None:
         """Call Python module after change."""
         ucr, changed = args
         print(f'Module: {self.module}')
         run_module(self.module, 'handler', ucr, changed)
 
 
-def grep_variables(text: str) -> "Set[str]":
+def grep_variables(text: str) -> Set[str]:
     """
     Search UCR template text for used variables.
 
@@ -632,15 +632,15 @@ class ConfigHandlers:
     VERSION_NOTICE = f'{VERSION_TEXT} {VERSION}\n'
     VERSION_RE = re.compile(f'^{VERSION_TEXT} (?P<version>[0-9]+)$')
 
-    _handlers: "Dict[str, Set[ConfigHandler]]" = {}    # variable -> set(handlers)
-    _multifiles: "Dict[str, ConfigHandlerMultifile]" = {}  # multifile -> handler
-    _subfiles: "Dict[str, List[Tuple[str, Set[str]]]]" = {}    # multifile -> [(subfile, variables)] // pending
+    _handlers: Dict[str, Set[ConfigHandler]] = {}    # variable -> set(handlers)
+    _multifiles: Dict[str, ConfigHandlerMultifile] = {}  # multifile -> handler
+    _subfiles: Dict[str, List[Tuple[str, Set[str]]]] = {}    # multifile -> [(subfile, variables)] // pending
 
     def __init__(self) -> None:
         pass
 
     @staticmethod
-    def _get_cache_version(cache_file: "IO") -> int:
+    def _get_cache_version(cache_file: IO) -> int:
         """
         Read cached `.info` data.
 
@@ -658,7 +658,7 @@ class ConfigHandlers:
         return version
 
     @classmethod
-    def _parse_rfc822_file(cls, fname: str) -> "List[Dict[str, List[str]]]":
+    def _parse_rfc822_file(cls, fname: str) -> List[Dict[str, List[str]]]:
         """
         Parse :rfc:`822` file.
 
@@ -689,7 +689,7 @@ class ConfigHandlers:
         except (Exception, pickle.UnpicklingError):
             self.update()
 
-    def get_handler(self, entry: "_INFO") -> "Optional[ConfigHandler]":
+    def get_handler(self, entry: _INFO) -> ConfigHandler | None:
         """
         Parse entry and return Handler instance.
 
@@ -704,7 +704,7 @@ class ConfigHandlers:
         else:
             return handler(entry)
 
-    def _parse_common_file_handler(self, handler: "ConfigHandlerDiverting", entry: "_INFO") -> None:
+    def _parse_common_file_handler(self, handler: ConfigHandlerDiverting, entry: _INFO) -> None:
         """
         Parse common file and multifile entries.
 
@@ -753,7 +753,7 @@ class ConfigHandlers:
             except ValueError:
                 print(f'W: failed to convert mode {mode}', file=sys.stderr)
 
-    def _get_handler_file(self, entry: "_INFO") -> "Optional[ConfigHandlerFile]":
+    def _get_handler_file(self, entry: _INFO) -> ConfigHandlerFile | None:
         """
         Parse file entry and return Handler instance.
 
@@ -774,7 +774,7 @@ class ConfigHandlers:
 
         return handler
 
-    def _get_handler_script(self, entry: "_INFO") -> "Optional[ConfigHandlerScript]":
+    def _get_handler_script(self, entry: _INFO) -> ConfigHandlerScript | None:
         """
         Parse script entry and return Handler instance.
 
@@ -790,7 +790,7 @@ class ConfigHandlers:
         handler.variables = set(variables)
         return handler
 
-    def _get_handler_module(self, entry: "_INFO") -> "Optional[ConfigHandlerModule]":
+    def _get_handler_module(self, entry: _INFO) -> ConfigHandlerModule | None:
         """
         Parse module entry and return Handler instance.
 
@@ -806,7 +806,7 @@ class ConfigHandlers:
         handler.variables = set(variables)
         return handler
 
-    def _get_handler_multifile(self, entry: "_INFO") -> "Optional[ConfigHandlerMultifile]":
+    def _get_handler_multifile(self, entry: _INFO) -> ConfigHandlerMultifile | None:
         """
         Parse multifile entry and return Handler instance.
 
@@ -836,7 +836,7 @@ class ConfigHandlers:
 
         return handler
 
-    def _get_handler_subfile(self, entry: "Dict[str, List[str]]") -> "Optional[ConfigHandlerMultifile]":
+    def _get_handler_subfile(self, entry: Dict[str, List[str]]) -> ConfigHandlerMultifile | None:
         """
         Parse subfile entry and return Handler instance.
 
@@ -867,7 +867,7 @@ class ConfigHandlers:
             return None
         return handler
 
-    def update(self) -> "Set[ConfigHandler]":
+    def update(self) -> Set[ConfigHandler]:
         """
         Parse all `.info` files to build list of handlers.
 
@@ -877,7 +877,7 @@ class ConfigHandlers:
         self._multifiles.clear()
         self._subfiles.clear()
 
-        handlers: "Set[ConfigHandler]" = set()
+        handlers: Set[ConfigHandler] = set()
         for info in directory_files(INFO_DIR):
             if not info.endswith('.info'):
                 continue
@@ -893,14 +893,14 @@ class ConfigHandlers:
         self._save_cache()
         return handlers
 
-    def update_divert(self, handlers: "Iterable[ConfigHandler]") -> None:
+    def update_divert(self, handlers: Iterable[ConfigHandler]) -> None:
         """
         Synchronize diversions with handlers.
 
         :param handlers: List of handlers.
         """
         wanted = {h.to_file: h for h in handlers if isinstance(h, ConfigHandlerDiverting) and h.need_divert()}
-        to_remove: "Set[str]" = set()
+        to_remove: Set[str] = set()
         # Scan for diversions done by UCR
         with open('/var/lib/dpkg/diversions', 'r', encoding='utf-8') as div_file:
             # from \n to \n package \n
@@ -942,7 +942,7 @@ class ConfigHandlers:
             if ex.errno != errno.EACCES:
                 raise
 
-    def register(self, package: str, ucr: "_UCR") -> "Set[ConfigHandler]":
+    def register(self, package: str, ucr: _UCR) -> Set[ConfigHandler]:
         """
         Register new info file for package.
 
@@ -950,7 +950,7 @@ class ConfigHandlers:
         :param ucr: UCR instance.
         :returns: Set of (new) handlers.
         """
-        handlers: "Set[ConfigHandler]" = set()
+        handlers: Set[ConfigHandler] = set()
         fname = os.path.join(INFO_DIR, f'{package}.info')
         for section in self._parse_rfc822_file(fname):
             handler = self.get_handler(section)
@@ -961,7 +961,7 @@ class ConfigHandlers:
             if isinstance(handler, ConfigHandlerDiverting):
                 handler.install_divert()
 
-            values: "Dict[str, Tuple[None, Optional[str]]]" = {}
+            values: Dict[str, Tuple[None, str | None]] = {}
             for variable in handler.variables:
                 v2h = self._handlers.setdefault(variable, set())
                 v2h.add(handler)
@@ -978,7 +978,7 @@ class ConfigHandlers:
         self._save_cache()
         return handlers
 
-    def unregister(self, package: str, ucr: "_UCR") -> "Set[ConfigHandler]":
+    def unregister(self, package: str, ucr: _UCR) -> Set[ConfigHandler]:
         """
         Un-register info file for package.
 
@@ -986,8 +986,8 @@ class ConfigHandlers:
         :param ucr: UCR instance.
         :returns: Set of (then obsolete) handlers.
         """
-        obsolete_handlers: "Set[ConfigHandler]" = set()
-        mf_handlers: "Set[ConfigHandler]" = set()  # Remaining Multifile handlers
+        obsolete_handlers: Set[ConfigHandler] = set()
+        mf_handlers: Set[ConfigHandler] = set()  # Remaining Multifile handlers
         fname = os.path.join(INFO_DIR, f'{package}.info')
         for section in self._parse_rfc822_file(fname):
             try:
@@ -1029,7 +1029,7 @@ class ConfigHandlers:
             pass
         return obsolete_handlers
 
-    def __call__(self, variables: "Iterable[str]", arg: "_ARG") -> None:
+    def __call__(self, variables: Iterable[str], arg: _ARG) -> None:
         """
         Call handlers registered for changes in variables.
 
@@ -1038,7 +1038,7 @@ class ConfigHandlers:
         """
         if not variables:
             return
-        pending_handlers: "Set[ConfigHandler]" = set()
+        pending_handlers: Set[ConfigHandler] = set()
 
         for reg_var, handlers in self._handlers.items():
             try:
@@ -1054,7 +1054,7 @@ class ConfigHandlers:
         for handler in pending_handlers:
             handler(arg)
 
-    def commit(self, ucr: "_UCR", filelist: "Iterable[str]"=[]) -> None:
+    def commit(self, ucr: _UCR, filelist: Iterable[str]=[]) -> None:
         """
         Call handlers to (re-)generate files.
 
@@ -1101,14 +1101,14 @@ class ConfigHandlers:
         for handler in pending_handlers:
             self.call_handler(ucr, handler)
 
-    def call_handler(self, ucr: "_UCR", handler: "ConfigHandler") -> None:
+    def call_handler(self, ucr: _UCR, handler: ConfigHandler) -> None:
         """
         Call handler passing current configuration variables.
 
         :param ucr: UCR instance.
         :param handler: The handler to call.
         """
-        values: "Dict[str, Tuple[Optional[str], Optional[str]]]" = {}
+        values: Dict[str, Tuple[str | None, str | None]] = {}
         for variable in handler.variables:
             if variable in self._handlers.keys():
                 if ".*" in variable:

@@ -1,3 +1,4 @@
+from __future__ import annotations
 import subprocess
 from typing import Union  # noqa: F401
 
@@ -42,7 +43,7 @@ def normalize_dn(dn: str) -> str:
     return ldap.dn.dn2str(ldap.dn.str2dn(dn))
 
 
-def to_unicode(string: "Union[bytes, str]") -> str:
+def to_unicode(string: bytes | str) -> str:
     if isinstance(string, bytes):
         return string.decode('utf-8')
     return string

@@ -30,6 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import annotations
 import subprocess
 import sys
 from typing import Iterable, Mapping, Optional, Sequence, Union  # noqa: F401
@@ -73,7 +74,7 @@ def get_extension_filename(extension_type: str, extension_name: str) -> str:
     return f'{extension_name}.py'
 
 
-def call_cmd(cmd: "Sequence[str]", fail_on_error: bool=True) -> int:
+def call_cmd(cmd: Sequence[str], fail_on_error: bool=True) -> int:
     """Calls the given cmd (list of strings)."""
     print('CMD: %r' % cmd)
     sys.stdout.flush()
@@ -103,7 +104,7 @@ def call_unjoin_script(name: str, fail_on_error: bool=True) -> int:
     return call_cmd([f'/usr/lib/univention-uninstall/{name}', '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
 
 
-def get_syntax_buffer(name: "Optional[str]"=None, identifier: "Optional[str]"=None) -> str:
+def get_syntax_buffer(name: str | None=None, identifier: str | None=None) -> str:
     """
     Returns a UDM syntax with given name (e.g. 'MySimpleHook'). If name is omitted,
     a randomly generated name is used.
@@ -119,7 +120,7 @@ class %(syntax_name)s(simple):
 ''' % {'syntax_name': name, 'syntax_identifier': identifier}
 
 
-def get_hook_buffer(name: "Optional[str]"=None, identifier: "Optional[str]"=None) -> str:
+def get_hook_buffer(name: str | None=None, identifier: str | None=None) -> str:
     """
     Returns a UDM hook with given name (e.g. 'MySimpleHook'). If name is omitted,
     a randomly generated name is used.
@@ -140,7 +141,7 @@ class %(hook_name)s(simpleHook):
 ''' % {'hook_name': name, 'hook_identifier': identifier}
 
 
-def get_module_buffer(name: "Optional[str]"=None, identifier: "Optional[str]"=None) -> str:
+def get_module_buffer(name: str | None=None, identifier: str | None=None) -> str:
     """
     Returns a UDM module with given name (e.g. 'testing/mytest'). If name is omitted,
     a randomly generated name is used ('ucstest/%(randomstring)s').
@@ -201,7 +202,7 @@ identify = object.identify
 ''' % {'module_udmname': name, 'module_identifier': identifier}
 
 
-def get_extension_buffer(extension_type: str, name: "Optional[str]"=None, identifier: "Optional[str]"=None) -> str:
+def get_extension_buffer(extension_type: str, name: str | None=None, identifier: str | None=None) -> str:
     """
     Get UDM extension of specified type with specified name.
     In case the name is omitted, a random name will be used.
@@ -214,7 +215,7 @@ def get_extension_buffer(extension_type: str, name: "Optional[str]"=None, identi
     }[extension_type](name, identifier)
 
 
-def get_postinst_script_buffer(extension_type: str, filename: str, app_id: "Optional[str]"=None, version_start: "Optional[str]"=None, version_end: "Optional[str]"=None, options: "Mapping[str, Union[str, Iterable[str]]]"=None) -> str:
+def get_postinst_script_buffer(extension_type: str, filename: str, app_id: str | None=None, version_start: str | None=None, version_end: str | None=None, options: Mapping[str, str | Iterable[str]] | None=None) -> str:
     """
     Returns a postinst script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
     Optionally UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.
@@ -265,7 +266,7 @@ exit 0
 ''' % {'extension_name': extension_name, 'extension_type': extension_type}
 
 
-def get_join_script_buffer(extension_type: str, filename: str, app_id: "Optional[str]"=None, joinscript_version: int=1, version_start: "Optional[str]"=None, version_end: "Optional[str]"=None, options: "Mapping[str, Union[str, Iterable[str]]]"=None) -> str:
+def get_join_script_buffer(extension_type: str, filename: str, app_id: str | None=None, joinscript_version: int=1, version_start: str | None=None, version_end: str | None=None, options: Mapping[str, str | Iterable[str]] | None=None) -> str:
     """
     Returns a join script that registers the given file as UDM extension with extension type ('hook', 'syntax' or 'module').
     Optionally a joinscript version, UNIVENTION_APP_ID, UCS version start and UCS version end may be specified.

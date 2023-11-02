@@ -116,7 +116,7 @@ def complex_syntax():
                 name=f'UCStest-syntax-extension-{extension_name}',
                 mayChange='1',
                 multivalue='0',
-                ldapMapping=f'univentionFreeAttribute{str(i + 10)}',
+                ldapMapping=f'univentionFreeAttribute{i + 10!s}',
                 notEditable='0',
                 tabPosition='1',
             )

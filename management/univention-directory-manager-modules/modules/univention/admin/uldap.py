@@ -32,7 +32,7 @@
 
 """|UDM| wrapper around :py:mod:`univention.uldap` that replaces exceptions."""
 
-from __future__ import absolute_import
+from __future__ import annotations, absolute_import
 
 import time
 from typing import Any, Callable, Dict, List, Optional, Tuple  # noqa: F401
@@ -120,7 +120,7 @@ class DN(object):
         return set(map(str, values))
 
 
-def getBaseDN(host: str='localhost', port: "Optional[int]"=None, uri: "Optional[str]"=None) -> str:
+def getBaseDN(host: str='localhost', port: int | None=None, uri: str | None=None) -> str:
     """
     Return the naming context of the LDAP server.
 
@@ -145,7 +145,7 @@ def getBaseDN(host: str='localhost', port: "Optional[int]"=None, uri: "Optional[
     return result[0][1]['namingContexts'][0].decode('utf-8')
 
 
-def getAdminConnection(start_tls: int=2, decode_ignorelist: "List[str]"=None) -> "Tuple[univention.admin.uldap.access, univention.admin.uldap.position]":
+def getAdminConnection(start_tls: int=2, decode_ignorelist: List[str] | None=None) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]:
     """
     Open a LDAP connection using the admin credentials.
 
@@ -158,7 +158,7 @@ def getAdminConnection(start_tls: int=2, decode_ignorelist: "List[str]"=None) ->
     return access(lo=lo), pos
 
 
-def getMachineConnection(start_tls: int=2, decode_ignorelist: "List[str]"=None, ldap_master: bool=True) -> "Tuple[univention.admin.uldap.access, univention.admin.uldap.position]":
+def getMachineConnection(start_tls: int=2, decode_ignorelist: List[str] | None=None, ldap_master: bool=True) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]:
     """
     Open a LDAP connection using the machine credentials.
 
@@ -196,7 +196,7 @@ def _err2str(err: Exception) -> str:
 class domain(object):
     """A |UDM| domain name."""
 
-    def __init__(self, lo: "univention.admin.uldap.access", position: "univention.admin.uldap.position") -> None:
+    def __init__(self, lo: univention.admin.uldap.access, position: univention.admin.uldap.position) -> None:
         """
         :param univention.admin.uldap.access lo: A LDAP connection object.
         :param univention.admin.uldap.position position: A UDM position specifying the LDAP base container.
@@ -205,7 +205,7 @@ class domain(object):
         self.position = position
         self.domain = self.lo.get(self.position.getDomain(), attr=['sambaDomain', 'sambaSID', 'krb5RealmName'])
 
-    def getKerberosRealm(self) -> "Optional[str]":
+    def getKerberosRealm(self) -> str | None:
         """
         Return the name of the Kerberos realms.
 
@@ -365,7 +365,7 @@ class access(object):
     """A |UDM| class to access a |LDAP| server."""
 
     @property
-    def binddn(self) -> "Optional[str]":
+    def binddn(self) -> str | None:
         """
         Return the distinguished name of the account.
 
@@ -541,7 +541,7 @@ class access(object):
         if self.require_license:
             univention.admin.license.select('admin')
 
-    def get_schema(self) -> "ldap.schema.subentry.SubSchema":
+    def get_schema(self) -> ldap.schema.subentry.SubSchema:
         """
         Retrieve |LDAP| schema information from |LDAP| server.
 
@@ -562,7 +562,7 @@ class access(object):
         """
         return univention.uldap.access.compare_dn(a, b)
 
-    def get(self, dn: str, attr: "List[str]"=[], required: bool=False, exceptions: bool=False) -> "Dict[str, List[bytes]]":
+    def get(self, dn: str, attr: List[str]=[], required: bool=False, exceptions: bool=False) -> Dict[str, List[bytes]]:
         """
         Return multiple attributes of a single LDAP object.
 
@@ -576,7 +576,7 @@ class access(object):
         """
         return self.lo.get(dn, attr, required)
 
-    def getAttr(self, dn: str, attr: str, required: bool=False, exceptions: bool=False) -> "List[bytes]":
+    def getAttr(self, dn: str, attr: str, required: bool=False, exceptions: bool=False) -> List[bytes]:
         """
         Return a single attribute of a single LDAP object.
 
@@ -590,7 +590,7 @@ class access(object):
         """
         return self.lo.getAttr(dn, attr, required)
 
-    def search(self, filter: str=u'(objectClass=*)', base: str=u'', scope: str=u'sub', attr: "List[str]"=[], unique: bool=False, required: bool=False, timeout: int=-1, sizelimit: int=0, serverctrls: "Optional[List[ldap.controls.LDAPControl]]"=None, response: "Optional[Dict[str, ldap.controls.LDAPControl]]"=None) -> "List[Tuple[str, Dict[str, List[bytes]]]]":
+    def search(self, filter: str=u'(objectClass=*)', base: str=u'', scope: str=u'sub', attr: List[str]=[], unique: bool=False, required: bool=False, timeout: int=-1, sizelimit: int=0, serverctrls: List[ldap.controls.LDAPControl] | None=None, response: Dict[str, ldap.controls.LDAPControl] | None=None) -> List[Tuple[str, Dict[str, List[bytes]]]]:
         """
         Perform LDAP search and return values.
 
@@ -633,7 +633,7 @@ class access(object):
         except ldap.LDAPError as msg:
             raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-    def searchDn(self, filter: str=u'(objectClass=*)', base: str=u'', scope: str=u'sub', unique: bool=False, required: bool=False, timeout: int=-1, sizelimit: int=0, serverctrls: "Optional[List[ldap.controls.LDAPControl]]"=None, response: "Optional[Dict[str, ldap.controls.LDAPControl]]"=None) -> "List[str]":
+    def searchDn(self, filter: str=u'(objectClass=*)', base: str=u'', scope: str=u'sub', unique: bool=False, required: bool=False, timeout: int=-1, sizelimit: int=0, serverctrls: List[ldap.controls.LDAPControl] | None=None, response: Dict[str, ldap.controls.LDAPControl] | None=None) -> List[str]:
         """
         Perform LDAP search and return distinguished names only.
 
@@ -674,7 +674,7 @@ class access(object):
         except ldap.LDAPError as msg:
             raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-    def getPolicies(self, dn: str, policies: "Optional[List[str]]"=None, attrs: "Optional[Dict[str, List[Any]]]"=None, result: "Any"=None, fixedattrs: "Any"=None) -> "Dict[str, Dict[str, Any]]":
+    def getPolicies(self, dn: str, policies: List[str] | None=None, attrs: Dict[str, List[Any]] | None=None, result: Any=None, fixedattrs: Any=None) -> Dict[str, Dict[str, Any]]:
         """
         Return |UCS| policies for |LDAP| entry.
 
@@ -688,7 +688,7 @@ class access(object):
         ud.debug(ud.ADMIN, ud.INFO, f'getPolicies modules dn {dn} result')
         return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
 
-    def add(self, dn: str, al: "List[Tuple[str, Any]]", exceptions: bool=False, serverctrls: "Optional[List[ldap.controls.LDAPControl]]"=None, response: "Optional[Dict]"=None) -> None:
+    def add(self, dn: str, al: List[Tuple[str, Any]], exceptions: bool=False, serverctrls: List[ldap.controls.LDAPControl] | None=None, response: Dict | None=None) -> None:
         """
         Add LDAP entry at distinguished name and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values).
 
@@ -725,7 +725,7 @@ class access(object):
             ud.debug(ud.LDAP, ud.ALL, f'add dn={dn} err={msg}')
             raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-    def modify(self, dn: str, changes: "List[Tuple[str, Any, Any]]", exceptions: bool=False, ignore_license: int=False, serverctrls: "Optional[List[ldap.controls.LDAPControl]]"=None, response: "Optional[Dict]"=None, rename_callback: "Optional[Callable]"=None) -> str:
+    def modify(self, dn: str, changes: List[Tuple[str, Any, Any]], exceptions: bool=False, ignore_license: int=False, serverctrls: List[ldap.controls.LDAPControl] | None=None, response: Dict | None=None, rename_callback: Callable | None=None) -> str:
         """
         Modify LDAP entry DN with attributes in changes=(attribute-name, old-values, new-values).
 
@@ -760,7 +760,7 @@ class access(object):
             ud.debug(ud.LDAP, ud.ALL, f'mod dn={dn} err={msg}')
             raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-    def rename(self, dn: str, newdn: str, move_childs: int=0, ignore_license: bool=False, serverctrls: "Optional[List[ldap.controls.LDAPControl]]"=None, response: "Optional[Dict]"=None) -> None:
+    def rename(self, dn: str, newdn: str, move_childs: int=0, ignore_license: bool=False, serverctrls: List[ldap.controls.LDAPControl] | None=None, response: Dict | None=None) -> None:
         """
         Rename a LDAP object.
 
@@ -825,7 +825,7 @@ class access(object):
             ud.debug(ud.LDAP, ud.ALL, f'del dn={dn} err={msg}')
             raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-    def parentDn(self, dn: str) -> "Optional[str]":
+    def parentDn(self, dn: str) -> str | None:
         """
         Return the parent container of a distinguished name.
 
@@ -835,7 +835,7 @@ class access(object):
         """
         return self.lo.parentDn(dn)
 
-    def explodeDn(self, dn: str, notypes: bool=False) -> "List[str]":
+    def explodeDn(self, dn: str, notypes: bool=False) -> List[str]:
         """
         Break up a DN into its component parts.
 

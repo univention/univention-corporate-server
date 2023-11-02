@@ -632,7 +632,7 @@ Virtualization=Virtualisierung''')
             for app in self.apps:
                 app.uninstall()
         except Exception as ex:
-            print(f'removing app {app} in __exit__ failed with: {str(ex)}')
+            print(f'removing app {app} in __exit__ failed with: {ex!s}')
         finally:
             self.cleanup()
 

@@ -1,4 +1,5 @@
 """Format UCS Test results as simple text report."""
+from __future__ import annotations
 
 
 import curses
@@ -24,7 +25,7 @@ class _Term:  # pylint: disable-msg=R0903
     # vt100.sgr0 contains a delay in the form of '$<2>'
     __RE_DELAY = re.compile(br'\$<\d+>[/*]?')
 
-    def __init__(self, term_stream: "IO[str]"=sys.stdout) -> None:
+    def __init__(self, term_stream: IO[str]=sys.stdout) -> None:
         self.COLS = 80  # pylint: disable-msg=C0103
         self.LINES = 25  # pylint: disable-msg=C0103
         self.NORMAL = b''  # pylint: disable-msg=C0103
@@ -51,14 +52,14 @@ class Text(TestFormatInterface):
 
     __term = WeakValueDictionary()
 
-    def __init__(self, stream: "IO[str]"=sys.stdout) -> None:
+    def __init__(self, stream: IO[str]=sys.stdout) -> None:
         super().__init__(stream)
         try:
             self.term = Text.__term[self.stream]
         except KeyError:
             self.term = Text.__term[self.stream] = _Term(self.stream)
 
-    def begin_run(self, environment: "TestEnvironment", count: int=1) -> None:
+    def begin_run(self, environment: TestEnvironment, count: int=1) -> None:
         """Called before first test."""
         super().begin_run(environment, count)
         now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
@@ -79,7 +80,7 @@ class Text(TestFormatInterface):
             line = header.center(self.term.COLS, '=')
             print(line, file=self.stream)
 
-    def begin_test(self, case: "TestCase", prefix: str='') -> None:
+    def begin_test(self, case: TestCase, prefix: str='') -> None:
         """Called before each test."""
         super().begin_test(case, prefix)
         title = case.description or case.uid
@@ -95,7 +96,7 @@ class Text(TestFormatInterface):
         print(f'{title}{ruler}', end=' ', file=self.stream)
         self.stream.flush()
 
-    def end_test(self, result: "TestResult", end: str='\n') -> None:
+    def end_test(self, result: TestResult, end: str='\n') -> None:
         """Called after each test."""
         reason = result.reason
         msg = TestCodes.MESSAGE.get(reason, reason)
@@ -112,7 +113,7 @@ class Text(TestFormatInterface):
             print(file=self.stream)
         super().end_section()
 
-    def format(self, result: "TestResult") -> None:
+    def format(self, result: TestResult) -> None:
         """
         >>> te = TestEnvironment()
         >>> tc = TestCase('python/data.py')
@@ -133,7 +134,7 @@ class Text(TestFormatInterface):
 class Raw(Text):
     """Create simple text report with raw file names."""
 
-    def begin_test(self, case: "TestCase", prefix: str='') -> None:
+    def begin_test(self, case: TestCase, prefix: str='') -> None:
         """Called before each test."""
         super(Text, self).begin_test(case, prefix)
         title = prefix + case.uid
