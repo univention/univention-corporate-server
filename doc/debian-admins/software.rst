@@ -104,7 +104,7 @@ UCS:
    the latest stable software version.
 
 #. :command:`univention-install` ensures to apply configuration settings for
-   examples from :ref:`UCR variables <system>` or join scripts.
+   examples from :ref:`UCR variables <system>` or :ref:`join scripts <domain>`.
 
    For example, when installing :program:`Postfix` with :command:`apt`, the
    package's standard wizard asks for the type of the mail system, such as
@@ -112,8 +112,6 @@ UCS:
    only*. :command:`univention-install` doesn't run the wizard. Instead, it
    applies the relevant system configuration settings so that the mail server
    works after the installation and is ready for your adjustments, if required.
-
-   .. TODO : Add reference to join script chapter.
 
 #. The installation of meta packages ensures that the package manager uses
    UCS mechanisms during the installation, such as the correct configuration of
