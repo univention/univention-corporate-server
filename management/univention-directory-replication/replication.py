@@ -281,7 +281,7 @@ def subschema_sort(subschema: ldap.schema.subentry.SubSchema, ldap_type: ldap.sc
 
 
 def update_schema(attr: Dict[str, List[bytes]]) -> None:
-    def _insert_linebereak(obj: str) -> str:
+    def _insert_linebreak(obj: str) -> str:
         # Bug 46743: Ensure lines are not longer than 2000 characters or slapd fails to start
         max_length = 2000
         obj_lines = []
@@ -305,13 +305,13 @@ def update_schema(attr: Dict[str, List[bytes]]) -> None:
     for oid in subschema_sort(subschema, ldap.schema.AttributeType):
         if oid in BUILTIN_OIDS:
             continue
-        obj = _insert_linebereak(str(subschema.get_obj(ldap.schema.AttributeType, oid)))
+        obj = _insert_linebreak(str(subschema.get_obj(ldap.schema.AttributeType, oid)))
         print('attributetype %s' % (obj,), file=fp)
 
     for oid in subschema_sort(subschema, ldap.schema.ObjectClass):
         if oid in BUILTIN_OIDS:
             continue
-        obj = _insert_linebereak(str(subschema.get_obj(ldap.schema.ObjectClass, oid)))
+        obj = _insert_linebreak(str(subschema.get_obj(ldap.schema.ObjectClass, oid)))
         print('objectclass %s' % (obj,), file=fp)
 
     fp.close()
