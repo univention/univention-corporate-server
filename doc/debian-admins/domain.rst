@@ -38,9 +38,9 @@ Join UCS systems
 To join a |UCS| system to an existing UCS domain, use the possibilities outlined
 in :ref:`uv-manual:linux-domain-join`.
 
-.. _rule-5:
+.. _principle-5:
 
-.. admonition:: Rule #5
+.. admonition:: Principle #5
 
    Don't run :command:`univention-join` on a *Primary Directory Node*. It just
    skips.
@@ -60,9 +60,9 @@ scripts run after the installation. If administrators install the same
 component using the package manager, the join scripts don't run and the
 administrator must run them manually afterwards.
 
-.. _rule-6:
+.. _principle-6:
 
-.. admonition:: Rule #6
+.. admonition:: Principle #6
 
    Install UCS components through the App Center.
 
@@ -81,9 +81,9 @@ Consequences of unfinished join scripts
 Services won't work properly, or administrators can't manage them, if the join
 scripts didn't run during the package installation or upgrade.
 
-.. _rule-7:
+.. _principle-7:
 
-.. admonition:: Rule #7
+.. admonition:: Principle #7
 
    Verify status and version of the join scripts in the following situations:
 
@@ -99,9 +99,9 @@ To run pending join scripts, use the command
 :ref:`uv-manual:domain-ldap-joinscripts-execlater`. However, be careful with the
 ``--force`` option and the |UCS| server role on which you run the command.
 
-.. _rule-8:
+.. _principle-8:
 
-.. admonition:: Rule #8
+.. admonition:: Principle #8
 
    Never run :command:`univention-run-joinscripts --force` on a *Primary
    Directory Node*.

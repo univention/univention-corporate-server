@@ -134,12 +134,12 @@ default behavior of a service up to key services not running anymore at all. For
 example, the LDAP server refuses to start and prevents users from sign-in to
 their environment and preventing them from doing their daily work.
 
-This short outline brings use to one rule. Applying it can safe you a lot of
+This short outline brings use to one principle. Applying it can safe you a lot of
 frustration, efforts, and headaches:
 
-.. _rule-1:
+.. _principle-1:
 
-.. admonition:: Rule #1
+.. admonition:: Principle #1
 
    Don't manually edit configuration files that are under control of |UCR| or
    directory listener modules.
