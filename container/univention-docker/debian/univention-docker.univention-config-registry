@@ -1,8 +1,5 @@
 Type: file
 File: etc/default/docker
-Variables: proxy/http
-Variables: docker/daemon/default/opts/.*
-Variables: docker/daemon/default/parameter/.*
 
 Type: file
 File: etc/docker/daemon.json
@@ -20,3 +17,8 @@ Variables: proxy/http
 Variables: proxy/https
 Variables: proxy/no_proxy
 Postinst: docker-daemon-restart.py
+
+Type: file
+File: etc/systemd/system/docker.service.d/docker-opts.conf
+Variables: docker/daemon/default/opts/.*
+Variables: docker/daemon/default/parameter/.*

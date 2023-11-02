@@ -34,6 +34,7 @@ translation_table = {
 }
 
 def translate(opt, value):
+    return  # disable!
     opt = translation_table.get(opt, opt)
     if opt in {'default-ipc-mode', 'metrics-addr', 'network-control-plane-mtu', 'rootless', 'validate', 'version'}:
         return  # invalid / no mapping
