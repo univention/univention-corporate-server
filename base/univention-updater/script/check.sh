@@ -202,7 +202,8 @@ declare -a legacy_ocs_structural=(
 	'(structuralObjectClass=univentionOIDCService)'
 )
 declare -a legacy_ocs_auxiliary=(
-	'(!(objectClass=*))'
+	'(objectClass=univentionVirtualMachineGroupOC)'  # EA
+	'(objectClass=univentionVirtualMachineHostOC)'  # EA
 )
 # These are auto-removed:
 declare -a obsolete_objectclasses=(
@@ -213,6 +214,15 @@ declare -a obsolete_objectclasses=(
 	'(structuralObjectClass=univentionVirtualMachineCloudConnection)'
 	'(structuralObjectClass=univentionVirtualMachineProfile)'
 	'(structuralObjectClass=univentionVirtualMachine)'
+	'(&(objectClass=univentionUDMProperty)(cn=UVMMGroup))'  # EA
+	'(&(objectClass=univentionUDMProperty)(cn=ManageableBy))'  # EA
+	'(&(objectClass=univentionUDMModule)(cn=uvmm/profile))'  # UDM module
+	'(&(objectClass=univentionUDMModule)(cn=uvmm/info))'  # UDM module
+	'(&(objectClass=univentionUDMModule)(cn=uvmm/cloudtype))'  # UDM module
+	'(&(objectClass=univentionUDMModule)(cn=uvmm/cloudconnection))'  # UDM module
+	'(&(objectClass=univentionUDMSyntax)(cn=univention-virtual-machine-manager-schema))'  # UDM syntax
+	'(&(objectClass=univentionLDAPExtensionACL)(cn=66univention-ldap-server_acl-master-uvmm))'  # LDAP ACL's
+	'(&(objectClass=univentionLDAPExtensionSchema)(cn=univention-virtual-machine-manager))'  # LDAP schema
 )
 
 update_check_legacy_objects () {
@@ -227,9 +237,9 @@ update_check_legacy_objects () {
 	univention-ldapsearch -LLL "$filter" 1.1 >"$tmp" || die "Failed to search LDAP"
 	IFS=$'\n' read -d '' -r -a found_structural <<<"$(grep '^dn:' "$tmp")"
 
-	#local filter="${legacy_ocs_auxiliary[*]}"
-	#univention-ldapsearch -LLL -E mv="($filter)" "(|$filter)" objectClass >"$tmp" || die "Failed to search LDAP"
-	#IFS=$'\n' read -d '' -r -a found_auxiliary <<<"$(sed '/^./{H;d};x;s/\n/\t/g' "$tmp")"
+	local filter="${legacy_ocs_auxiliary[*]}"
+	univention-ldapsearch -LLL -E mv="($filter)" "(|$filter)" objectClass >"$tmp" || die "Failed to search LDAP"
+	IFS=$'\n' read -d '' -r -a found_auxiliary <<<"$(sed '/^./{H;d};x;s/\n/\t/g' "$tmp")"
 
 	# shellcheck disable=SC2128
 	[ -z "${found_structural:-}" ] && [ -z "${found_auxiliary:-}" ] && return 0
