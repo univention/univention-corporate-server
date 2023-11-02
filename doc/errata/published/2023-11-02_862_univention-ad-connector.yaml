@@ -9,3 +9,6 @@ desc: |
  * The AD-Connector failed to handle forest child domains.
    This has been fixed.
 bug: [53944]
+erratum: 862
+announced: 2023-11-02
+support: core
