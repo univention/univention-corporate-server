@@ -85,7 +85,7 @@ print('Make SAML user a system user')
 lo.modify(dn, [('univentionObjectFlag', None, [b'functional', b'hidden'])])
 EOF
     fi
-else
+elif [ "$server_role" = "domaincontroller_backup" ]; then
 	touch "$SECRETFILE"
 	chown root:"DC Backup Hosts" "$SECRETFILE" || die
 	chmod 640 "$SECRETFILE" || die
