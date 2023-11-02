@@ -37,9 +37,9 @@ Server`. The product capability relies on these products. Replacing the existing
 packages with the personal favorite breaks UCS. For example, using
 :program:`nginx` instead of the UCS default :program:`Apache HTTP Server`.
 
-.. _rule-2:
+.. _principle-2:
 
-.. admonition:: Rule #2
+.. admonition:: Principle #2
 
    Use the standard software packages that |UCS| installs to provide core product
    capabilities.
@@ -95,9 +95,9 @@ familiar with these tools.
 :command:`univention-app`
    to install, update, or remove apps in the App Center on UCS.
 
-.. _rule-3:
+.. _principle-3:
 
-.. admonition:: Rule #3
+.. admonition:: Principle #3
 
    Use the :command:`univention-*` tools to perform actions for installing,
    updating and removing software packages and apps on UCS.
@@ -112,7 +112,7 @@ UCS:
    the latest stable software version.
 
 #. :command:`univention-install` ensures to apply configuration settings for
-   examples from :ref:`UCR variables <system>` or join scripts.
+   examples from :ref:`UCR variables <system>` or :ref:`join scripts <domain>`.
 
    For example, when installing :program:`Postfix` with :command:`apt`, the
    package's standard wizard asks for the type of the mail system, such as
@@ -121,8 +121,6 @@ UCS:
    applies the relevant system configuration settings so that the mail server
    works after the installation and is ready for your customization, if
    required.
-
-   .. TODO : Add reference to join script chapter.
 
 #. The installation of meta packages ensures that the package manager uses
    UCS mechanisms during the installation, such as the correct configuration of
@@ -198,9 +196,9 @@ With regard to additional Python packages, don't install packages through
 environment instead. See :py:mod:`venv - Creation of virtual environments
 <python:venv>`
 
-.. _rule-4:
+.. _principle-4:
 
-.. admonition:: Rule #4
+.. admonition:: Principle #4
 
    Before installing software packages from third-party sources:
 
