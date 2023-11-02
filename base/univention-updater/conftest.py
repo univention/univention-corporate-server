@@ -87,7 +87,7 @@ def http(mocker):
             else:
                 return res
         except LookupError:
-            raise U.urllib_error.HTTPError(url, 404, "Not Found", {}, None)
+            raise U.urllib.error.HTTPError(url, 404, "Not Found", {}, None)
 
     director = mocker.patch("univention.updater.tools.urllib.request.OpenerDirector", autospec=True)
     director.open.side_effect = fopen
