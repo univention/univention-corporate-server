@@ -1,6 +1,8 @@
 @!@
+password_encryption = configRegistry.get('postgres15/pg_hba/password-encryption', 'scram-sha-256')
+password_encryption = 'scram-sha-256' if password_encryption not in ('scram-sha-256', 'md5') else password_encryption
 bip = configRegistry.get('docker/daemon/default/opts/bip', '172.17.42.1/16')
-print('host    all         all         %s          md5' % bip)
+print('host    all         all         %s          %s' % (bip, password_encryption))
 cip = configRegistry.get('appcenter/docker/compose/network', '172.16.1.1/16')
-print('host    all         all         %s          md5' % cip)
+print('host    all         all         %s          %s' % (cip, password_encryption))
 @!@
