@@ -12,6 +12,7 @@ Type: subfile
 Multifile: etc/postgresql/15/main/pg_hba.conf
 Subfile: etc/postgresql/15/main/pg_hba.conf.d/99-pg_hba.conf
 Variables: postgres15/pg_hba/config/.*
+Variables: postgres15/pg_hba/password_encryption
 
 Type: multifile
 Multifile: etc/postgresql/15/main/pg_ident.conf
@@ -25,3 +26,4 @@ File: etc/postgresql/15/main/postgresql.conf
 Variables: postgres15/maxconnections
 Variables: postgres15/listenaddress
 Variables: locale/default
+Variables: postgres15/password_encryption

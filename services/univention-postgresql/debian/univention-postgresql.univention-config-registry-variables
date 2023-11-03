@@ -19,3 +19,17 @@ Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/postg
 Description[en]=Specifies additional configuration options for /etc/postgresql/15/main/pg_hba.conf. See `https://www.postgresql.org/docs/15/auth-pg-hba-conf.html` for details. The variable follows the scheme postgres9/pg_hba/config/ORDER=ENTRY. Example: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
 Type=str
 Categories=System
+
+[postgres15/password_encryption]
+Description[en]=This variable configures the type of password encryption. Possible values are 'md5' and 'scram-sha-256'. The default value is 'scram-sha-256'. For an upgrade from UCS 5.0-x to UCS 5.2-x the value 'md5' due to compatibility reasons, and it is recommended to change the value to 'scram-sha-256' after the upgrade following the instructions in the following manual: https://help.univention.com/t/updating-from-postgresql-11-to-postgresql-15/22162
+Description[de]=Diese Variable konfiguriert den Typ der Passwortverschlüsselung. Mögliche Werte sind 'md5' und 'scram-sha-256'. Der Standardwert ist 'scram-sha-256'. Für ein Upgrade von UCS 5.0-x auf UCS 5.2-x wird der Wert 'md5' aus Kompatibilitätsgründen übernommen, und es wird empfohlen, den Wert nach dem Upgrade gemäß der Anleitung im folgenden Handbuch auf 'scram-sha-256' zu ändern: https://help.univention.com/t/updating-from-postgresql-11-to-postgresql-15/22162
+Type=str
+Categories=System
+Default=scram-sha-256
+
+[postgres15/pg_hba/password_encryption]
+Description[en]=This variable configures the type of password encryption for the pg_hba.conf. Possible values are 'md5' and 'scram-sha-256'. The default value is 'scram-sha-256'. For an upgrade from UCS 5.0-x to UCS 5.2-x the value 'md5' due to compatibility reasons, and it is recommended to change the value to 'scram-sha-256' after the upgrade following the instructions in the following manual: https://help.univention.com/t/updating-from-postgresql-11-to-postgresql-15/22162
+Description[de]=Diese Variable konfiguriert den Typ der Passwortverschlüsselung für die pg_hba.conf. Mögliche Werte sind 'md5' und 'scram-sha-256'. Der Standardwert ist 'scram-sha-256'. Für ein Upgrade von UCS 5.0-x auf UCS 5.2-x wird der Wert 'md5' aus Kompatibilitätsgründen übernommen, und es wird empfohlen, den Wert nach dem Upgrade gemäß der Anleitung im folgenden Handbuch auf 'scram-sha-256' zu ändern: https://help.univention.com/t/updating-from-postgresql-11-to-postgresql-15/22162
+Type=str
+Categories=System
+Default=scram-sha-256
