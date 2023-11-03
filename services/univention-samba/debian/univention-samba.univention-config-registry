@@ -191,9 +191,6 @@ Mode: 755
 File: etc/init.d/samba
 
 Type: file
-File: etc/default/samba
-
-Type: file
 File: etc/logrotate.d/samba
 Variables: logrotate/.*
 
