@@ -16,6 +16,9 @@ for var in configRegistry:
         opt = var.split('/')[-1]
         for i in configRegistry[var].split(','):
             docker_opts += '--%s=%s ' % (opt, i)
+    elif var == 'docker/daemon/default/opts/registry-mirrors':
+        for mirror in [mirror.strip() for mirror in configRegistry[var].split(',')]:
+            docker_opts += '--registry-mirror=%s ' % (mirror,)
     elif var.startswith('docker/daemon/default/opts'):
         opt = var.split('/')[-1]
         if opt in ('max-file', 'max-size'):
