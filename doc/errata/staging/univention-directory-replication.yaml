@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-directory-replication
+fix: 13.0.7-4
+desc: |
+ This update addresses the following issues:
+ * The script `univention-directory-replication` created a
+   temporary passwordfile with a newline in it, which therefore
+   contained an invalid password. This resulted in slapd not being
+   able to import a failed.ldif file on startup.
+   This has been fixed.
+bug: [56801]

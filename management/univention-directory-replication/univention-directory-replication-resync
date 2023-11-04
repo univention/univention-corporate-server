@@ -113,7 +113,7 @@ faileddns="$(mktemp)"
 secret_file="$(mktemp)"
 cleanup_secret_file() { rm -f "$secret_file" >>"$LOG" 2>&1; trap - EXIT; }
 trap cleanup_secret_file EXIT
-cut -d\" -f2 /etc/ldap/rootpw.conf > "$secret_file"
+echo -n "$(cut -d\" -f2 /etc/ldap/rootpw.conf)" > "$secret_file"
 if ldapmodify -x -y "$secret_file" -D "cn=update,${ldap_base}" -c -S "${faileddns}" -f "$1" >>"$LOG" 2>&1
 then
 	cleanup_secret_file
