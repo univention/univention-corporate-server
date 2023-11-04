@@ -40,12 +40,14 @@ VERSION="1"
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
+domainname="$(ucr get domainname)"
+ucr set keycloak_server_sso_fqdn?"ucs-sso-ng.${domainname,,}"
+
 eval "$(ucr shell)"
 
 SECRETFILE="/etc/idp-ldap-user.secret"
 HOSTPWD="/etc/machine.secret"
 HOSTACCOUNT="$hostname\$"
-
 if [ "$server_role" = "domaincontroller_master" ]; then
 	# Only set password if sys-idp-user does not exist
 	username=$(ucs_getAttrOfDN uid uid=sys-idp-user,cn=users,"$ldap_base" "$@" 2>/dev/null)
@@ -96,8 +98,7 @@ fi
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	if [ -z "${keycloak_server_sso_certificate_generation}" ] || is_ucr_true keycloak/server/sso/certificate/generation; then
-		kc_server_sso_fqdn="${keycloak_server_sso_fqdn:-ucs-sso-ng.$domainname}"
-		univention-certificate new -name "$kc_server_sso_fqdn" -days "${ssl_default_days:-1825}" || die
+		univention-certificate new -name "$keycloak_server_sso_fqdn" -days "${ssl_default_days:-1825}" || die
 		ucr set keycloak/server/sso/certificate/generation='false'
 	fi
 fi
