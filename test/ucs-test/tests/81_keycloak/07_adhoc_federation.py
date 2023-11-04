@@ -1,8 +1,8 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Test keycloak ad hoc federation
-## tags: [keycloak]
-## roles: [domaincontroller_master, domaincontroller_backup]
-## exposure: dangerous
+# desc: Test keycloak ad hoc federation
+# tags: [keycloak]
+# roles: [domaincontroller_master, domaincontroller_backup]
+# exposure: dangerous
 
 import base64
 import json
@@ -232,17 +232,22 @@ def get_idp_payload(keycloak_fqdn: str, certificate: str) -> dict:
 
 def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, keycloak_fqdn: str, realm: str) -> None:
     # auth flow
-    payload_authflow = {"newName": "Univention-Authenticator ad-hoc federation flow"}
+    payload_authflow = {
+        "newName": "Univention-Authenticator ad-hoc federation flow"}
     try:
-        keycloak_admin_connection.copy_authentication_flow(payload=json.dumps(payload_authflow), flow_alias='first broker login')
+        keycloak_admin_connection.copy_authentication_flow(
+            payload=json.dumps(payload_authflow), flow_alias='first broker login')
     except KeycloakGetError as exc:
         if exc.response_code != 409:
             raise (exc)
     # execution
     payload_exec_flow = {"provider": "univention-authenticator"}
-    keycloak_admin_connection.create_authentication_flow_execution(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad-hoc federation flow')
-    execution_list = keycloak_admin_connection.get_authentication_flow_executions("Univention-Authenticator ad-hoc federation flow")
-    ua_execution = next(filter(lambda flow: flow["displayName"] == 'Univention Authenticator', execution_list))
+    keycloak_admin_connection.create_authentication_flow_execution(payload=json.dumps(
+        payload_exec_flow), flow_alias='Univention-Authenticator ad-hoc federation flow')
+    execution_list = keycloak_admin_connection.get_authentication_flow_executions(
+        "Univention-Authenticator ad-hoc federation flow")
+    ua_execution = next(filter(
+        lambda flow: flow["displayName"] == 'Univention Authenticator', execution_list))
     payload_exec_flow = {
         "id": ua_execution["id"],
         "requirement": "REQUIRED",
@@ -257,7 +262,8 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
         "index": 2,
     }
     try:
-        keycloak_admin_connection.update_authentication_flow_executions(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad-hoc federation flow')
+        keycloak_admin_connection.update_authentication_flow_executions(payload=json.dumps(
+            payload_exec_flow), flow_alias='Univention-Authenticator ad-hoc federation flow')
     except KeycloakError as e:
         if e.response_code != 202:  # FIXME: function expected 204 response it gets 202
             raise e
@@ -272,9 +278,11 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
         },
         "alias": "localhost config",
     }
-    keycloak_admin_connection.raw_post("admin/realms/{}/authentication/executions/{}/config".format(realm, ua_execution["id"]), json.dumps(config_ua))
+    keycloak_admin_connection.raw_post(
+        "admin/realms/{}/authentication/executions/{}/config".format(realm, ua_execution["id"]), json.dumps(config_ua))
     # create idp
-    run_command(["univention-keycloak", "saml/idp/cert", "get", "--output", "/root/sign.cert"])
+    run_command(["univention-keycloak", "saml/idp/cert",
+                "get", "--output", "/root/sign.cert"])
     with open("/root/sign.cert") as fd:
         certificate = fd.read()
     payload_idp = get_idp_payload(keycloak_fqdn, certificate)
@@ -283,7 +291,8 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
     except KeycloakGetError as exc:
         if exc.response_code != 409:
             raise (exc)
-    new_idp = next(filter(lambda idp: idp["alias"] == "saml", keycloak_admin_connection.get_idps()))
+    new_idp = next(filter(
+        lambda idp: idp["alias"] == "saml", keycloak_admin_connection.get_idps()))
 
     # mappers
     idp_mapper_payload = {
@@ -298,7 +307,8 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
             "attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
         },
     }
-    keycloak_admin_connection.add_mapper_to_idp(idp_alias="saml", payload=idp_mapper_payload)
+    keycloak_admin_connection.add_mapper_to_idp(
+        idp_alias="saml", payload=idp_mapper_payload)
 
     idp_mapper_payload = {
         "config": {
@@ -311,7 +321,8 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
         "identityProviderMapper": "saml-username-idp-mapper",
         "name": "uid_importer",
     }
-    keycloak_admin_connection.add_mapper_to_idp(idp_alias="saml", payload=idp_mapper_payload)
+    keycloak_admin_connection.add_mapper_to_idp(
+        idp_alias="saml", payload=idp_mapper_payload)
 
     idp_mapper_payload = {
         "id": new_idp["internalId"],
@@ -325,7 +336,8 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
             "attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
         },
     }
-    keycloak_admin_connection.add_mapper_to_idp(idp_alias="saml", payload=idp_mapper_payload)
+    keycloak_admin_connection.add_mapper_to_idp(
+        idp_alias="saml", payload=idp_mapper_payload)
 
     idp_mapper_payload = {
         "id": new_idp["internalId"],
@@ -339,7 +351,8 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
             "attribute.name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
         },
     }
-    keycloak_admin_connection.add_mapper_to_idp(idp_alias="saml", payload=idp_mapper_payload)
+    keycloak_admin_connection.add_mapper_to_idp(
+        idp_alias="saml", payload=idp_mapper_payload)
 
     idp_mapper_payload = {
         "id": new_idp["internalId"],
@@ -353,7 +366,8 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
             "attribute.name": "objectGUID",
         },
     }
-    keycloak_admin_connection.add_mapper_to_idp(idp_alias="saml", payload=idp_mapper_payload)
+    keycloak_admin_connection.add_mapper_to_idp(
+        idp_alias="saml", payload=idp_mapper_payload)
 
     idp_mapper_customer = {
         "identityProviderAlias": "saml",
@@ -366,20 +380,23 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
         "name": "univentionSourceIAM_importer",
         "identityProviderMapper": "hardcoded-attribute-idp-mapper",
     }
-    keycloak_admin_connection.add_mapper_to_idp(idp_alias="saml", payload=idp_mapper_customer)
+    keycloak_admin_connection.add_mapper_to_idp(
+        idp_alias="saml", payload=idp_mapper_customer)
 
 
 def _test_sso_login(selenium: WebDriver, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace) -> None:
     selenium.get(portal_config.url)
     wait_for_id(selenium, portal_config.categories_id)
     assert selenium.title == portal_config.title
-    get_portal_tile(selenium, portal_config.sso_login_tile, portal_config).click()
+    get_portal_tile(selenium, portal_config.sso_login_tile,
+                    portal_config).click()
     wait_for_id(selenium, "social-saml").click()
     keycloak_login(selenium, keycloak_config, "test_user1", "univention")
     wait_for_id(selenium, portal_config.header_menu_id).click()
     wait_for_id(selenium, "loginButton").click()
     wait_for_id(selenium, portal_config.categories_id)
-    assert get_portal_tile(selenium, portal_config.sso_login_tile, portal_config)
+    assert get_portal_tile(
+        selenium, portal_config.sso_login_tile, portal_config)
 
 
 def get_udm_user_obj(username: str) -> Optional[UsersUserObject]:
@@ -398,7 +415,8 @@ def _test_federated_user(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRe
     assert udm_user.props.lastname == 'Example'
     assert udm_user.props.firstname == 'Test'
     assert udm_user.props.description == 'Shadow copy of user'
-    kc_user_id = keycloak_admin_connection.get_user_id(username="external-saml-test_user1")
+    kc_user_id = keycloak_admin_connection.get_user_id(
+        username="external-saml-test_user1")
     kc_user = keycloak_admin_connection.get_user(user_id=kc_user_id)
     assert kc_user["username"] == "external-saml-test_user1"
     assert kc_user["email"] == "test_user1@univention.de"
@@ -417,15 +435,19 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigR
         locales_format = [locale[:locale.index("_")] for locale in locales_ucr]
         default_locale_ucr = ucr.get("locale/default")
         default_locale = default_locale_ucr[:default_locale_ucr.index("_")]
-        realm_payload = get_realm_payload(realm, locales_format, default_locale, keycloak_config.url)
-        keycloak_admin_connection.create_realm(payload=realm_payload, skip_exists=True)
+        realm_payload = get_realm_payload(
+            realm, locales_format, default_locale, keycloak_config.url)
+        keycloak_admin_connection.create_realm(
+            payload=realm_payload, skip_exists=True)
         # create client in dummy realm
         keycloak_admin_connection.realm_name = "dummy"
         client_id_location = f"/realms/{realm}"
-        valid_redirect_urls = [keycloak_config.url.rstrip("/") + "/realms/ucs/broker/saml/endpoint"]
+        valid_redirect_urls = [keycloak_config.url.rstrip(
+            "/").lower() + "/realms/ucs/broker/saml/endpoint"]
         client_id = keycloak_config.url.rstrip("/") + client_id_location
         client_payload = get_client_payload(client_id, valid_redirect_urls)
-        keycloak_admin_connection.create_client(payload=client_payload, skip_exists=True)
+        keycloak_admin_connection.create_client(
+            payload=client_payload, skip_exists=True)
         # create dummy users
         keycloak_admin_connection.create_user(get_user_payload("test_user1"))
         keycloak_admin_connection.create_user(get_user_payload("test_user2"))
@@ -440,7 +462,8 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigR
         udm_user = get_udm_user_obj("external-saml-test_user1")
         if udm_user:
             udm_user.delete()
-        kc_user_id = keycloak_admin_connection.get_user_id(username="external-saml-test_user1")
+        kc_user_id = keycloak_admin_connection.get_user_id(
+            username="external-saml-test_user1")
         if kc_user_id:
             keycloak_admin_connection.delete_user(kc_user_id)
         keycloak_admin_connection.delete_idp("saml")
@@ -451,5 +474,7 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigR
             x for x in keycloak_admin_connection.get_authentication_flows()
             if x["alias"] == "Univention-Authenticator ad-hoc federation flow"
         )["id"]
-        params_path = {"realm-name": keycloak_admin_connection.realm_name, "id": flow_id}
-        keycloak_admin_connection.raw_delete("admin/realms/{realm-name}/authentication/flows/{id}".format(**params_path))
+        params_path = {
+            "realm-name": keycloak_admin_connection.realm_name, "id": flow_id}
+        keycloak_admin_connection.raw_delete(
+            "admin/realms/{realm-name}/authentication/flows/{id}".format(**params_path))
