@@ -41,7 +41,7 @@ VERSION="1"
 joinscript_init
 
 domainname="$(ucr get domainname)"
-ucr set keycloak_server_sso_fqdn?"ucs-sso-ng.${domainname,,}"
+ucr set keycloak/server/sso/fqdn?"ucs-sso-ng.${domainname,,}"
 
 eval "$(ucr shell)"
 
