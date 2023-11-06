@@ -52,10 +52,6 @@ SKIPLIST = {
     '/usr/lib/openoffice/basis-link/share/registry/schema/org/openoffice/Office/Common.xcs',
     '/etc/docker/daemon.json',
     '/usr/lib/univention-portal/config/config.json',
-    '/etc/simplesamlphp/univentiontheme/dictionaries/errors.definition.json',
-    '/etc/simplesamlphp/univentiontheme/dictionaries/errors.translation.json',
-    '/etc/simplesamlphp/univentiontheme/dictionaries/login.definition.json',
-    '/etc/simplesamlphp/univentiontheme/dictionaries/login.translation.json',
     # Bugs: remove the following lines as soon as the bug is fixed:
     '/etc/nagios-plugins/config/univention-samba.cfg',  # Bug #50112
     '/etc/nagios-plugins/config/univention-s4-connector.cfg',  # Bug #50112

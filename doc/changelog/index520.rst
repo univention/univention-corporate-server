@@ -17,6 +17,16 @@ Changelog for Univention Corporate Server (UCS) |release|
 
 Prerequisite for updating is at least UCS 5.0-6.
 
+Migration of default IDP service before updating to UCS 5.2
+-----------------------------------------------------------
+
+Starting with |UCS| 5.2 the :program:`Keycloak` app replaces
+:program:`SimpleSAMLphp` and the :program:`Kopano Konnect` app as the default
+identity providers in |UCS|. Before the update to UCS 5.2 an manual migration
+of the default identity providers is necessary. A detailed description of how
+to migrate can be found in https://docs.software-univention.de/keycloak-migration/index.html.
+
+
 Migration of OpenLDAP database backend from BDB to MDB
 ------------------------------------------------------
 
