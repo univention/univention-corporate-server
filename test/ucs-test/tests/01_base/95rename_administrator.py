@@ -46,7 +46,7 @@ def search_templates(old_admin_name, new_admin_name, server_role):
         '/etc/ldap/slapd.conf',
     ]
     ignore = [
-        '/etc/simplesamlphp/config.php', '/etc/freeradius/3.0/mods-available/ldap',
+        '/etc/freeradius/3.0/mods-available/ldap',
         '/etc/bind/named.conf.samba4', '/var/www/univention/meta.json',
         '/etc/issue', '/etc/welcome.msg', '/etc/samba/base.conf', '/etc/cups/cups-files.conf',
         '/var/lib/univention-appcenter/apps/keycloak/conf/UCS/login/messages/messages_de.properties',
