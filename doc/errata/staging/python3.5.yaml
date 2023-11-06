@@ -6,27 +6,22 @@ src: python3.5
 fix: 3.5.3-1+deb9u8
 desc: |
  This update addresses the following issues:
-
- Debian update 3.5.3-1+deb9u8
- 3.5.3-1+deb9u8 (Wed, 01 Nov 2023 18:03:23 +0000)
- * Non-maintainer upload by the ELTS Security Team.
  * Fix a regression in CVE-2021-3177: ISO C90 forbids mixed declarations and
-   code [-Werror=declaration-after-statement]
- * Fix CVE-2022-48560: A use-after-free exists in Python via heappushpop in
-   heapq.
- * Backport GH-4455 needed for fixing CVE-2022-4856[4-5].
- * Fix CVE-2022-48564: DoS attack via CPU and RAM exhaustion when processing
+   code.
+ * CVE-2022-48560: A use-after-free exists in Python via `heappushpop` in
+   `heapq`.
+ * CVE-2022-48564: Potential DoS in `read_ints` in `plistlib.py`.
+ * CVE-2022-48564: DoS attack via CPU and RAM exhaustion when processing
    malformed Apple Property List files in binary format.
- * Fix CVE-2022-48565: An XML External Entity (XXE) issue was discovered in
-   Python. The plistlib module no longer accepts entity declarations in XML
-   plist files to avoid XML vulnerabilities.
- * CVE-2022-48566: An issue was discovered in compare_digest in Lib/hmac.py in
-   Python. Constant-time-defeating optimisations were possible in the
-   accumulator variable in hmac.compare_digest, that would facilitate a side
+ * CVE-2022-48565: Avoid XML External Entity (XXE) issues by rejecting entity
+   declarations in XML plist files in `plistlib`.
+ * CVE-2022-48566: An issue was discovered in `compare_digest` in
+   `Lib`/hmac.py. Constant-time-defeating optimisations were possible in the
+   accumulator variable in `hmac.compare_digest`, that would facilitate a side
    channel type attack.
  * CVE-2023-40217: Fix a race condition in TLS handling. If a TLS server-side
    socket is created, receives data into the socket buffer, and then is closed
-   quickly, there is a brief window where the SSLSocket instance will detect
+   quickly, there is a brief window where the `SSLSocket` instance will detect
    the socket as "not connected" and won't initiate a handshake, but buffered
    data will still be readable from the socket buffer. This data will not be
    authenticated if the server-side TLS peer is expecting client certificate
@@ -34,11 +29,7 @@ desc: |
    is limited in size to the amount that will fit in the buffer. The TLS
    connection cannot directly be used for data exfiltration because the
    vulnerable code path requires that the connection be closed on
-   initialization of the SSLSocket
- * Fix testsuite: - depends on netbase - refresh certificate - backport
-   bpo-38275: skip ssl test if not supported by libssl - backport bpo-34399:
-   DH keys are now 3072bits - avoid test that fail due to eatmydata - avoid
-   test that fail due to hardenning libexpat
+   initialization of the `SSLSocket`.
 bug: [56802]
 cve:
 - CVE-2021-3177
