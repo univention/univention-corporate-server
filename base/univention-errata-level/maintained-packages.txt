@@ -3550,7 +3550,6 @@ php-imap
 php-interbase
 php-intl
 php-json
-php-krb5
 php-ldap
 php-mbstring
 php-memcache
