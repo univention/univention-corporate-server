@@ -12,3 +12,6 @@ desc: |
    able to import a failed.ldif file on startup.
    This fixes as regression from erratum 870.
 bug: [56801]
+erratum: 872
+announced: 2023-11-06
+support: core
