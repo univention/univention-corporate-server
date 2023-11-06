@@ -1,3 +1,9 @@
+univention-saml (8.0.2) unstable; urgency=medium
+
+  * Bug #56765: Remove univention-saml
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 08 Mar 2024 00:18:41 +0100
+
 univention-saml (8.0.10) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility

@@ -1,3 +1,9 @@
+univention-server (16.0.6) unstable; urgency=medium
+
+  * Bug #56765: Remove univention-saml
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 08 Mar 2024 00:18:41 +0100
+
 univention-server (16.0.5) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility

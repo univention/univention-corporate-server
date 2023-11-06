@@ -1,4 +1,0 @@
-listener/univention-saml-servers.py	usr/lib/univention-directory-listener/system/
-modules/univention/admin/handlers/saml/*.py	usr/share/univention-saml/handlers/saml/
-modules/univention/admin/syntax.d/*.py	usr/share/univention-saml/syntax.d/
-schema/univention-saml.schema	usr/share/univention-saml/schema/
