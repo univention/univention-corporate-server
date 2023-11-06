@@ -15,6 +15,10 @@ Depends:
  python3-ldap,
  ${misc:Depends},
  ${shlib:Depends},
+Breaks:
+ univention-saml,
+Replaces:
+ univention-saml,
 Description: UCS keycloak
  This package installs the univention-keycloak-client scripts
  .

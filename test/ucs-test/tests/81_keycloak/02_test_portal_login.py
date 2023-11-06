@@ -4,9 +4,11 @@
 # roles: [domaincontroller_master, domaincontroller_backup]
 # exposure: dangerous
 
+import time
+
 import pytest
 from selenium.webdriver.common.by import By
-from utils import keycloak_get_request, keycloak_sessions_by_user, wait_for_id
+from utils import keycloak_get_request, keycloak_password_change, keycloak_sessions_by_user, wait_for_id
 
 from univention.lib.umc import Unauthorized
 from univention.testing.umc import Client
@@ -99,18 +101,16 @@ def test_password_change_empty_passwords_fails(portal_login_via_keycloak, keyclo
 
 def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_config, portal_config, udm):
     username = udm.create_user(
-        password="Univention.3", pwdChangeNextLogin=1)[1]
-    portal_login_via_keycloak(
+        password="univention", pwdChangeNextLogin=1)[1]
+    driver = portal_login_via_keycloak(
         username,
-        "Univention.3",
-        new_password="Univention.3",
+        "univention",
+        new_password="univention",
         fails_with=keycloak_config.changing_pw_failed,
     )
-    portal_login_via_keycloak(
-        username,
-        "Univention.3",
-        new_password="Univention.99",
-    )
+    keycloak_password_change(driver, keycloak_config,
+                             "univention", "Univention.99", "Univention.99")
+    time.sleep(2)
     assert Client(username=username, password="Univention.99")
 
 
