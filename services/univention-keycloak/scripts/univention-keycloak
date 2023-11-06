@@ -128,7 +128,11 @@ class KeycloakDomainConfig:
 
     def get_domain_config_version(self) -> str:
         data = self.get()
-        return data.get("domain_config_version", "0")
+        return data.get("domain_config_version")
+
+    def get_domain_config_init(self) -> str:
+        data = self.get()
+        return data.get("domain_config_init")
 
     def set(self, val):
         obj = self.get_obj()
@@ -362,10 +366,15 @@ class ExtService(object):
         return raise_error_from_response(data_raw, KeycloakGetError)
 
 
-def check_and_create_component(kc_client, name, prov_id, payload_):
+def check_and_create_component(kc_client, name, prov_id, payload_, force=False):
     ldap_component_filter = {'name': name, 'providerId': prov_id}
     ldap_component_list = kc_client.get_components(ldap_component_filter)
     if not ldap_component_list:
+        kc_client.create_component(payload=payload_)
+        ldap_component_list = kc_client.get_components(ldap_component_filter)
+    elif force:
+        ldap_component = ldap_component_list.pop()
+        kc_client.delete_component(ldap_component.get("id"))
         kc_client.create_component(payload=payload_)
         ldap_component_list = kc_client.get_components(ldap_component_filter)
 
@@ -1013,6 +1022,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     init_parser.add_argument("--locales", required=no_ucr_available, default=ucr.get("locale"))
     init_parser.add_argument("--default-locale", required=no_ucr_available, default=ucr.get("locale/default"))
     init_parser.add_argument("--check-init-done", help="only check if init has been already executed", default=False, action="store_true")
+    init_parser.add_argument("--force", help="force rerun of the keycloak initialization", default=False, action="store_true")
     init_parser.set_defaults(func=init_keycloak_ucs)
 
     kerberos_config = subparsers.add_parser("kerberos-config", help="LDAP federation Kerberos configuration")
@@ -1581,7 +1591,7 @@ def upgrade_config(opt: Namespace) -> None:
         ]
         upgrades.sort(key=LooseVersion)
         kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
-        domain_config_version = kdc.get_domain_config_version()
+        domain_config_version = kdc.get_domain_config_version() or "0"
         # check what needs to be done
         upgrade_steps = [
             version for version in upgrades
@@ -2198,7 +2208,15 @@ def init_keycloak_ucs(opt):
         realm for realm in kc_admin.get_realms()
         if realm.get("realm", "") == opt.realm
     ]
-    if realm:
+
+    init_complete = True
+    if IS_UCS:
+        # read current keycloak version as domain config version
+        # check if a previous initialization in the domain worked
+        kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
+        init_complete = kdc.get_domain_config_init()
+
+    if realm and not opt.force and init_complete:
         print("no, already executed")
         sys.exit(0)
     else:
@@ -2234,6 +2252,9 @@ def init_keycloak_ucs(opt):
     # create ucs realm
     realm_payload["id"] = opt.realm
     realm_payload["realm"] = opt.realm
+
+    if opt.force:
+        kc_admin.update_realm(realm_payload["realm"], payload=realm_payload)
     kc_admin.create_realm(payload=realm_payload, skip_exists=True)
 
     # create portal saml client
@@ -2296,7 +2317,7 @@ def init_keycloak_ucs(opt):
     }
 
     # find existing ldap provider or just create if none exists
-    ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload)
+    ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload, force=opt.force)
     print(f"LDAP User Federation Added: {ucs_ldap_url}")
 
     # User federation mapper (LDAP)
@@ -2423,14 +2444,14 @@ def init_keycloak_ucs(opt):
     }
 
     # find existing uid->uid mapper or create if none exits
-    check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)
+    check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper, force=opt.force)
 
     # Modify default mappers to correct ones
     modify_component(kc_admin, firstname_ldap_mapper)
     modify_component(kc_admin, mail_ldap_mapper)
     modify_component(kc_admin, lastname_ldap_mapper)
-    check_and_create_component(kc_admin, displayname_ldap_mapper["name"], displayname_ldap_mapper["providerId"], displayname_ldap_mapper)
-    check_and_create_component(kc_admin, entryuuid_ldap_mapper["name"], entryuuid_ldap_mapper["providerId"], entryuuid_ldap_mapper)
+    check_and_create_component(kc_admin, displayname_ldap_mapper["name"], displayname_ldap_mapper["providerId"], displayname_ldap_mapper, force=opt.force)
+    check_and_create_component(kc_admin, entryuuid_ldap_mapper["name"], entryuuid_ldap_mapper["providerId"], entryuuid_ldap_mapper, force=opt.force)
 
     # Setting admin level to all Domain Admins
     # Change realm to master
@@ -2442,7 +2463,7 @@ def init_keycloak_ucs(opt):
     ldap_federation_payload["config"]["customUserSearchFilter"] = [f"(memberOf=cn=Domain Admins,cn=groups,{opt.ldap_base})"]
 
     # find existing ldap provider or just create if none exists
-    ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload)
+    ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload, force=opt.force)
     print(f"LDAP Domain Admins Federation Added: {ucs_ldap_url}")
     print("Filter: {}".format(ldap_federation_payload["config"]["customUserSearchFilter"]))
 
@@ -2452,7 +2473,7 @@ def init_keycloak_ucs(opt):
     payload_ldap_mapper["config"] = {"role": ["admin"]}
 
     # find existing mapper or create if none exits
-    check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper)
+    check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper, force=opt.force)
     firstname_ldap_mapper["parentId"] = ldap_component_id
     mail_ldap_mapper["parentId"] = ldap_component_id
     lastname_ldap_mapper["parentId"] = ldap_component_id

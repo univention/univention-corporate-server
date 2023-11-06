@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-33) unstable; urgency=medium
+
+  * Bug #56791: check if previous initialization finished correctly
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 06 Nov 2023 14:47:08 +0100
+
 univention-keycloak (1.0.9-32) unstable; urgency=medium
 
   * Bug #56747: Add migration status check script

@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-keycloak
+fix: 1.0.9-33
+desc: |
+ This update addresses the following issues:
+ * `univention-keycloak` should be able to be executed again in case of a
+   failure during first initialization. Added a `--force` flag to force the
+   run of the initialization.
+bug: [56791]
