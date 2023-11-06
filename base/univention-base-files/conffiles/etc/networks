@@ -3,4 +3,8 @@
 default		0.0.0.0
 loopback	127.0.0.0
 link-local	169.254.0.0
-
+@!@
+main_interface_net = configRegistry.get("interfaces/%s/network" % configRegistry.get("interfaces/primary"))
+if main_interface_net:
+    print("local-net\t%s" % main_interface_net)
+@!@
