@@ -3,4 +3,9 @@
 default		0.0.0.0
 loopback	127.0.0.0
 link-local	169.254.0.0
-
+@!@
+main_network_ucrv = "interfaces/%s/network" % configRegistry.get("interfaces/primary")
+main_interface_net = configRegistry.get(main_network_ucrv)
+if main_interface_net:
+    print("local-net\t%s" % main_interface_net)
+@!@
