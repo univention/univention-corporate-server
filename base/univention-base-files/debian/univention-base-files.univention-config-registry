@@ -104,6 +104,8 @@ Mode: 0755
 
 Type: file
 File: etc/networks
+Variables: interfaces/.*/network
+Variables: interfaces/primary
 
 Type: file
 File: etc/hostname
