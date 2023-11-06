@@ -28,7 +28,6 @@ defoptions += ' rootdelay=%s' % rootdelay
 
 defoptions += ' %s' % configRegistry.get('grub/bootsplash', 'splash')
 defoptions += ' apparmor=0'  # Disable apparmor, the debian profiles do not work out of the box with ucs.
-defoptions += ' selinux=0'  # Disable selinux
 print('GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions)
 @!@
 
