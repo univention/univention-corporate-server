@@ -1,6 +1,5 @@
 @%@UCRWARNING=# @%@
 @!@
-
 debug_level = configRegistry.get('notifier/debug/level', None)
 cache_size = configRegistry.get('notifier/cache/size', None)
 lock_count = configRegistry.get('notifier/lock/count', None)
