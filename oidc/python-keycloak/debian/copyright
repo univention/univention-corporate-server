@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Univention GmbH
-Upstream-Contact: <packages@univention.de>
-Source: https://updates.software-univention.de/
+Upstream-Name: python-keycloak
+Upstream-Contact: Marcos Pereira <marcospereira.mpj@gmail.com>
+Source: https://github.com/marcospereirampj/python-keycloak
 
 Files: *
 Copyright: 2017 Marcos Pereira <marcospereira.mpj@gmail.com>
