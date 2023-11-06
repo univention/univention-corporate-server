@@ -70,7 +70,6 @@ univention-container-role-common
 openssh-server
 python3-univention-license
 univention-nagios-client
-univention-saml
 univention-sudo
 univention-portal
 univention-server-overview

@@ -1,7 +1,0 @@
-listener/univention-saml-groups.py	usr/lib/univention-directory-listener/system/
-listener/univention-saml-idp-config.py	usr/lib/univention-directory-listener/system/
-listener/univention-saml-simplesamlphp-configuration.py	usr/lib/univention-directory-listener/system/
-modules/univention/saml	usr/lib/python3/dist-packages/univention/
-scripts/php-cgi	var/www/saml/
-simplesamlphp/*	usr/share/simplesamlphp/
-umc/saml-serviceprovider.xml	usr/share/univention-management-console/modules/

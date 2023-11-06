@@ -16,7 +16,6 @@ Recommends:
  openssh-server,
  univention-monitoring-client,
  univention-nagios-client,
- univention-saml,
  univention-server-overview,
 Depends:
  nscd,
@@ -49,7 +48,6 @@ Recommends:
  univention-bind,
  univention-monitoring-client,
  univention-nagios-client,
- univention-saml,
  univention-server-overview,
 Pre-Depends:
  univention-config (>= 7.0.25),
