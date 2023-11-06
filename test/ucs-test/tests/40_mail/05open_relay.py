@@ -103,7 +103,7 @@ def main(ucr) -> None:
     sender_ip = get_ext_ip()
 
     header0 = "The classic open-relay test:"
-    header1 = "The classic open-relay test with the \"\" (Sendmail 8.8 and others MTAs, much used by the spammers):"
+    header1 = 'The classic open-relay test with the "" (Sendmail 8.8 and others MTAs, much used by the spammers):'
     header2 = "The non-RFC821 compliant test (MS Exchange and SLmail betas):"
     header3 = "No sender-domain vulnerability (Post.Office, Intermail and Sendmail 8.8 misconfigurated):"
     header4 = "A heavily exploited vulnerability (Lotus Notes/Domino, Novell Groupwise, badly secured Sendmails and others):"

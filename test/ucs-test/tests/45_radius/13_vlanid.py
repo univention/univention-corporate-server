@@ -34,7 +34,7 @@ def default_vlan_id(vlan_id, restart_freeradius):
 
 
 def find_vlanid(message):
-    vlan_regex = "Tunnel-Private-Group-Id:0 = \"(.*?)\""
+    vlan_regex = 'Tunnel-Private-Group-Id:0 = "(.*?)"'
     search = re.search(vlan_regex, message)
     if search:
         return search.group(1).strip()

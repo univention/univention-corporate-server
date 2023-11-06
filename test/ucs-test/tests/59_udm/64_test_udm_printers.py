@@ -337,8 +337,8 @@ def rename_share_and_check(udm, printer, expected_value):
 
     filename = '/etc/samba/printers.conf.d/%s' % printer_samba_name
     samba_force_printername = _testparm_is_true(filename, printer_samba_name, 'force printername')
-    assert samba_force_printername == expected_value, "samba option \"force printername\" changed after UDM share modification"
-    print("Ok, samba option \"force printername\" still set to %s" % (expected_value,))
+    assert samba_force_printername == expected_value, 'samba option "force printername" changed after UDM share modification'
+    print('Ok, samba option "force printername" still set to %s' % (expected_value,))
 
 
 @pytest.mark.skipif(not printserver_installed, reason='Missing software: univention-printserver')
@@ -386,8 +386,8 @@ def test_force_printername(ucr, udm, ucr_value):
 
     old_filename = '/etc/samba/printers.conf.d/%s' % printer_name
     samba_force_printername = _testparm_is_true(old_filename, printer_name, 'force printername')
-    assert samba_force_printername == expected_value, "samba option \"force printername\" not set to %s" % (expected_value,)
-    print("Ok, samba option \"force printername\" set to %s" % (expected_value,))
+    assert samba_force_printername == expected_value, 'samba option "force printername" not set to %s' % (expected_value,)
+    print('Ok, samba option "force printername" set to %s' % (expected_value,))
 
     # Check behavior during UDM modification
     rename_share_and_check(udm, printer, expected_value)

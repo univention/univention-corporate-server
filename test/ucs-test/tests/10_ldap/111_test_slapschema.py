@@ -49,7 +49,7 @@ def clean_environment():
         stdout=subprocess.DEVNULL,
         stdin=None).communicate()
     Popen(
-        "udm test/ip_phone remove --dn \"cn=test111,$(ucr get ldap/base)\"",
+        'udm test/ip_phone remove --dn "cn=test111,$(ucr get ldap/base)"',
         shell=True,
         stdin=None).communicate()
     Popen(

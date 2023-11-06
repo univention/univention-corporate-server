@@ -13,7 +13,7 @@ from univention.testing import utils
 MINIMUM_CONFIG = [
     "CONFIG_MODULE_SIG=y",
     "CONFIG_MODULE_SIG_SHA512=y",
-    "CONFIG_MODULE_SIG_HASH=\"sha512\"",
+    'CONFIG_MODULE_SIG_HASH="sha512"',
     "CONFIG_MODULE_SIG_ALL=y",
     "# CONFIG_MODULE_SIG_FORCE is not set",
 ]
