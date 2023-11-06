@@ -10,7 +10,7 @@ desc: |
    temporary password file with a newline in it, which therefore
    contained an invalid password. This resulted in slapd not being
    able to import a failed.ldif file on startup.
-   This fixes as regression from erratum 870.
+   This fixes a regression from erratum 870.
 bug: [56801]
 erratum: 872
 announced: 2023-11-06
