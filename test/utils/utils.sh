@@ -294,7 +294,6 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 
 
 install_keycloak() {
-	domainname="$(ucr get domainname)"
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		# Install keycloak
 		switch_to_test_app_center
@@ -302,14 +301,11 @@ install_keycloak() {
 	fi
 
 	. utils-keycloak.sh && keycloak_saml_idp_setup
+	domainname="$(ucr get domainname)"
         ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
 }
 
 run_setup_join () {
-	if [ "$(ucr get version/version)" = "5.0" ]; then
-		domainname="$(ucr get domainname)"
-		ucr set keycloak/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
-	fi
 	if [ "$(ucr get version/version)" = "5.2" ]; then
 	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/all/' >>/etc/apt/sources.list
 	    echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0/$(ARCH)/' >>/etc/apt/sources.list
