@@ -160,7 +160,7 @@ class Value:
 
     def deprecated_master_packages(self):
         if self.value:
-            if self.appid not in 'kopano-core agorumcore-pro asterisk4ucs bareos fetchmail openvpn4ucs oxseforucs plucs simplesamlphp sugarcrm zarafa self-service'.split():
+            if self.appid not in 'kopano-core agorumcore-pro asterisk4ucs bareos fetchmail openvpn4ucs oxseforucs plucs sugarcrm zarafa self-service'.split():
                 raise Error('Should not have DefaultPackagesMaster!!')
 
     def is_category(self):
