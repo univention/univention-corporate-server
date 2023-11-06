@@ -232,7 +232,7 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         "login_error_css_selector": "span[class='pf-c-alert__title kc-feedback-text']",
         "password_update_error_css_selector": "span[class='pf-c-alert__title kc-feedback-text']",
         "wrong_password_msg": {"en-US": "Invalid username or password.", "de-DE": "Ungültiger Benutzername oder Passwort."},
-        "changing_pw_failed": {"en-US": "Changing password failed. The password was already used.", "de-DE": "Passwort ändern fehlgeschlagen. Das Passwort wurde bereits genutzt."},
+        "changing_pw_failed": {"en-US": "Changing password failed", "de-DE": "Passwort ändern fehlgeschlagen."},
         "pw_no_match": {"en-US": "Passwords don't match.", "de-DE": "Passwörter sind nicht identisch."},
         "pw_too_short": {"en-US": "Changing password failed. The password is too short.", "de-DE": "Passwort ändern fehlgeschlagen. Das Passwort ist zu kurz."},
         "specify_pw": {"en-US": "Please specify password.", "de-DE": "Bitte geben Sie ein Passwort ein."},

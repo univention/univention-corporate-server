@@ -1,7 +1,0 @@
-@%@UCRWARNING=# @%@
-
-FILES="/etc/stunnel/*.conf"
-OPTIONS=""
-
-# Change to one to enable ppp restart scripts
-PPP_RESTART=0
