@@ -48,6 +48,7 @@ ignore = [
  "SLF001",  # allow private member access
  "Q000",  # allow single quotes
  "Q001",  # allow single quote multiline strings
+ "Q003",  # <https://docs.astral.sh/ruff/rules/avoidable-escaped-quote/>
  "RET502",  # allow implicit return None
  "RET503",  # allow missing explicit return None
  "B905",  # allow zip() without an explicit strict= parameter
@@ -146,6 +147,8 @@ ignore = [
  "SIM112",  #
  "PERF203",  # try-except-in-loop
  "PERF401",  # manual-list-comprehension
+ "COM812",  # WAF uses it <https://docs.astral.sh/ruff/rules/missing-trailing-comma/>
+ "ISC001", # WAF uses it <https://docs.astral.sh/ruff/rules/single-line-implicit-string-concatenation/>
 
  "PT027",  # pytest-unittest-raises-assertion  # some still use unittest
 
@@ -181,6 +184,9 @@ builtins-ignorelist = ["copyright", "license", "object", "exit", "quit", "credit
 
 [tool.ruff.mccabe]
 max-complexity = 134
+
+[tool.ruff.format]
+quote-style = "single"  # https://github.com/astral-sh/ruff/issues/7525
 
 [tool.ruff.flake8-quotes]
 docstring-quotes = "double"
