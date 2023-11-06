@@ -143,7 +143,6 @@ ignore = [
  "FA100",  #
  "PLC1901",  #
  "FIX004",
- "PLC0208",  # phahn is fan of it
  "SIM112",  #
  "PERF203",  # try-except-in-loop
  "PERF401",  # manual-list-comprehension

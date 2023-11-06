@@ -20,14 +20,14 @@ py2_only = pytest.mark.skipif(six.PY3, reason="Python 2 only")
 
 TRUE_VALID = sorted({
     c
-    for v in {"Yes", "True", "1", "Enable", "Enabled", "On"}
-    for c in {v, v.upper(), v.lower()}
+    for v in ("Yes", "True", "1", "Enable", "Enabled", "On")
+    for c in (v, v.upper(), v.lower())
 })
 TRUE_INVALID = ('yes ', ' yes', '', "yes2", "On2", "Univention")
 FALSE_VALID = sorted({
     c
-    for v in {'No', 'False', '0', 'Disable', 'Disabled', 'Off'}
-    for c in {v, v.upper(), v.lower()}
+    for v in ('No', 'False', '0', 'Disable', 'Disabled', 'Off')
+    for c in (v, v.upper(), v.lower())
 })
 FALSE_INVALID = ('no ', ' no', '', "no2", "Off2", "Univention")
 

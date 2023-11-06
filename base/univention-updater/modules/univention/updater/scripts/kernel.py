@@ -56,7 +56,7 @@ def parse_args(argv: Optional[List[str]] = None) -> Namespace:
 def prune(opt: Namespace) -> None:
     cache = Cache()
 
-    cur = {PREFIX + uname()[2] + suffix for suffix in {"", "-signed"}}
+    cur = {PREFIX + uname()[2] + suffix for suffix in ("", "-signed")}
     top = {
         "univention-kernel-image",
         PREFIX + "amd64",

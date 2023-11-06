@@ -163,10 +163,10 @@ directory = {directory}
         exe = os.path.basename(argv[0])
         if exe not in {'python', 'python2', 'python2.7', 'python3', 'python3.5', 'python3.7'}:
             return False
-        if not any(s in arg for arg in argv for s in {'univention', 'udm', 'ucs', 'ucr'}):
+        if not any(s in arg for arg in argv for s in ('univention', 'udm', 'ucs', 'ucr')):
             cls.debug_message('skip non-ucs process', argv)
             return False
-        if any(s in arg for arg in argv[2:] for s in {'listener', 'notifier'}):
+        if any(s in arg for arg in argv[2:] for s in ('listener', 'notifier')):
             # we don't need to cover the listener currently. some tests failed, maybe because of measuring the listener?
             cls.debug_message('skip UDL/UDN', argv)
             return False
