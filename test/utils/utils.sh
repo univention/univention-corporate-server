@@ -301,7 +301,8 @@ install_keycloak() {
 	fi
 
 	. utils-keycloak.sh && keycloak_saml_idp_setup
-        ucr set ucs/server/sso/fqdn="ucs-sso-ng.$(ucr get domainname)"
+	domainname="$(ucr get domainname)"
+        ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
 }
 
 run_setup_join () {
