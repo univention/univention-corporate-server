@@ -6,7 +6,7 @@ exclude: "^packaging/ucslint/testframework/\
          "
 repos:
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucr
-    rev: '0.0.9'
+    rev: '0.0.10'
     hooks:
       - id: ucr-flake8
         additional_dependencies: ["flake8==5.0.4"]
@@ -16,6 +16,12 @@ repos:
         additional_dependencies: ["autopep8<=2.0.2"]
         stages: [ manual ]
       - id: ucr-ruff-fix
+        additional_dependencies: ["ruff==0.1.3"]
+        stages: [ manual ]
+      - id: ucr-ruff-format-check
+        additional_dependencies: ["ruff==0.1.3"]
+        stages: [ manual ]
+      - id: ucr-ruff-format
         additional_dependencies: ["ruff==0.1.3"]
         stages: [ manual ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -105,6 +111,21 @@ repos:
         alias: "ruff-statistics"
         stages: [ manual ]
         args: ["--statistics"]
+        exclude: "^oidc/python-keycloak/\
+                  |^services/univention-ldb-modules/buildtools/\
+                  |^packaging/ucslint/testframework/\
+                 "
+      - id: ruff-format
+        alias: "ruff-format"
+        stages: [ manual ]
+        exclude: "^oidc/python-keycloak/\
+                  |^services/univention-ldb-modules/buildtools/\
+                  |^packaging/ucslint/testframework/\
+                 "
+      - id: ruff-format
+        alias: "ruff-format-check"
+        stages: [ manual ]
+        args: ["--check"]
         exclude: "^oidc/python-keycloak/\
                   |^services/univention-ldb-modules/buildtools/\
                   |^packaging/ucslint/testframework/\
