@@ -129,6 +129,8 @@ UCS directory service (e.g. to synchronize with an AD forest). One OU
 (organizational unit) can be defined in LDAP for each AD domain, under which the
 objects of the respective domains are synchronized. Account names need to be unique,
 naming conflicts between usernames need to be resolved by the customer.
+An instance of the Univention AD Connector synchronizes objects from a specific domain.
+In forests, objects from other domains, e.g. referenced in groups, are out of scope.
 The configuration of additional connector instances is not covered by the UMC module.
 
 Several connector instances are started parallel to each other. Each connector

@@ -827,6 +827,9 @@ class ad(univention.connector.ucs):
             return ad_object
         except ldap.SERVER_DOWN:
             raise
+        except ldap.REFERRAL as exc:
+            info = exc.args[0].get('info')
+            ud.debug(ud.LDAP, ud.WARN, "get_object: received referal %s while attempting to read %s" % (info[info.find('ldap'):], dn))
         except Exception:  # FIXME: which exception is to be caught?
             self._debug_traceback(ud.ERROR, 'Could not get object')  # TODO: remove except block?
 
@@ -1537,6 +1540,8 @@ class ad(univention.connector.ucs):
                         raise
                     except Exception:  # FIXME: which exception is to be caught?
                         self._debug_traceback(ud.PROCESS, "group_members_sync_to_ucs: failed to get UCS dn for AD group member %s, assume object doesn't exist" % member_dn)
+                else:
+                    ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: skipping member: %s, received no object" % (member_dn,))
 
         # build an internal cache
         cache = {}
