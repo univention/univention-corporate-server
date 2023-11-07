@@ -21,7 +21,7 @@ kvm_label_suffix=''
 exact_match='false'
 ucsschool_release='scope'
 shutdown='false'
-openstack_image_name='UCS 5.0-5'
+openstack_image_name='UCS 5.0-5+1'
 source_iso="/var/univention/buildsystem2/isotests/ucs_${release}-latest-amd64.iso"
 
 # some internal stuff
