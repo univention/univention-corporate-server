@@ -19,31 +19,57 @@ General
 * All security updates issued for UCS 5.0-4 are included:
 
   * :program:`amd64-microcode` (:uv:cve:`2019-9836`, :uv:cve:`2023-20593`) (:uv:bug:`56386`)
+
   * :program:`avahi` (:uv:cve:`2021-3468`) (:uv:bug:`56199`)
+
   * :program:`bind9` (:uv:cve:`2023-2828`) (:uv:bug:`56345`)
+
   * :program:`c-ares` (:uv:cve:`2023-31130`, :uv:cve:`2023-32067`) (:uv:bug:`56236`)
+
   * :program:`clamav` (:uv:cve:`2023-20197`) (:uv:bug:`56496`)
+
   * :program:`cups` (:uv:cve:`2023-34241`) (:uv:bug:`56244`)
+
   * :program:`firefox-esr` (:uv:cve:`2023-37201`, :uv:cve:`2023-37202`, :uv:cve:`2023-37207`, :uv:cve:`2023-37208`, :uv:cve:`2023-37211`, :uv:cve:`2023-4045`, :uv:cve:`2023-4046`, :uv:cve:`2023-4047`, :uv:cve:`2023-4048`, :uv:cve:`2023-4049`, :uv:cve:`2023-4050`, :uv:cve:`2023-4055`, :uv:cve:`2023-4056`, :uv:cve:`2023-4573`, :uv:cve:`2023-4574`, :uv:cve:`2023-4575`, :uv:cve:`2023-4581`, :uv:cve:`2023-4584`) (:uv:bug:`56299`, :uv:bug:`56432`, :uv:bug:`56513`)
+
   * :program:`ghostscript` (:uv:cve:`2023-38559`) (:uv:bug:`56414`)
+
   * :program:`intel-microcode` (:uv:cve:`2022-40982`, :uv:cve:`2022-41804`, :uv:cve:`2023-23908`) (:uv:bug:`56462`)
+
   * :program:`libfastjson` (:uv:cve:`2020-12762`) (:uv:bug:`56179`)
+
   * :program:`libssh2` (:uv:cve:`2019-13115`, :uv:cve:`2019-17498`, :uv:cve:`2020-22218`) (:uv:bug:`56563`)
+
   * :program:`libx11` (:uv:cve:`2023-3138`) (:uv:bug:`56245`)
+
   * :program:`libxpm` (:uv:cve:`2022-44617`, :uv:cve:`2022-46285`, :uv:cve:`2022-4883`) (:uv:bug:`56178`)
+
   * :program:`linux` (:uv:cve:`2022-40982`, :uv:cve:`2023-1380`, :uv:cve:`2023-2002`, :uv:cve:`2023-2007`, :uv:cve:`2023-20593`, :uv:cve:`2023-2269`, :uv:cve:`2023-3090`, :uv:cve:`2023-31084`, :uv:cve:`2023-3111`, :uv:cve:`2023-3141`, :uv:cve:`2023-32233`, :uv:cve:`2023-3268`, :uv:cve:`2023-3338`, :uv:cve:`2023-34256`, :uv:cve:`2023-35788`, :uv:cve:`2023-35823`, :uv:cve:`2023-35824`) (:uv:bug:`56376`, :uv:bug:`56430`)
+
   * :program:`linux-latest` (:uv:cve:`2023-1380`, :uv:cve:`2023-2002`, :uv:cve:`2023-2007`, :uv:cve:`2023-20593`, :uv:cve:`2023-2269`, :uv:cve:`2023-3090`, :uv:cve:`2023-31084`, :uv:cve:`2023-3111`, :uv:cve:`2023-3141`, :uv:cve:`2023-32233`, :uv:cve:`2023-3268`, :uv:cve:`2023-3338`, :uv:cve:`2023-34256`, :uv:cve:`2023-35788`, :uv:cve:`2023-35823`, :uv:cve:`2023-35824`) (:uv:bug:`56376`)
+
   * :program:`linux-signed-amd64` (:uv:cve:`2022-40982`, :uv:cve:`2023-1380`, :uv:cve:`2023-2002`, :uv:cve:`2023-2007`, :uv:cve:`2023-20593`, :uv:cve:`2023-2269`, :uv:cve:`2023-3090`, :uv:cve:`2023-31084`, :uv:cve:`2023-3111`, :uv:cve:`2023-3141`, :uv:cve:`2023-32233`, :uv:cve:`2023-3268`, :uv:cve:`2023-3338`, :uv:cve:`2023-34256`, :uv:cve:`2023-35788`, :uv:cve:`2023-35823`, :uv:cve:`2023-35824`) (:uv:bug:`56376`, :uv:bug:`56430`)
+
   * :program:`lua5.3` (:uv:cve:`2019-6706`, :uv:cve:`2020-24370`) (:uv:bug:`56200`)
+
   * :program:`memcached` (:uv:cve:`2022-48571`) (:uv:bug:`56560`)
+
   * :program:`openssh` (:uv:cve:`2023-38408`) (:uv:bug:`56463`)
+
   * :program:`php7.3` (:uv:cve:`2023-3247`, :uv:cve:`CVE-2023-3823`, :uv:cve:`CVE-2023-3824`) (:uv:bug:`56180`, :uv:bug:`56549`)
+
   * :program:`poppler` (:uv:cve:`2020-36023`, :uv:cve:`2020-36024`) (:uv:bug:`56431`)
+
   * :program:`python3.7` (:uv:cve:`2015-20107`, :uv:cve:`2020-10735`, :uv:cve:`2021-3426`, :uv:cve:`2021-3733`, :uv:cve:`2021-3737`, :uv:cve:`2021-4189`, :uv:cve:`2022-45061`) (:uv:bug:`56243`)
+
   * :program:`samba` (:uv:cve:`2022-2127`, :uv:cve:`2023-3347`, :uv:cve:`2023-34966`, :uv:cve:`2023-34967`, :uv:cve:`2023-34968`) (:uv:bug:`56297`, :uv:bug:`56320`)
+
   * :program:`systemd` (:uv:cve:`2022-3821`) (:uv:bug:`56237`)
+
   * :program:`tiff` (:uv:cve:`2023-25433`, :uv:cve:`2023-26965`, :uv:cve:`2023-26966`, :uv:cve:`2023-2908`, :uv:cve:`2023-3316`, :uv:cve:`2023-3618`, :uv:cve:`2023-38288`, :uv:cve:`2023-38289`) (:uv:bug:`56388`)
+
   * :program:`qpdf` (:uv:cve:`2018-18020`, :uv:cve:`2021-25786`, :uv:cve:`2021-36978`) (:uv:bug:`56507`)
+
   * :program:`yajl` (:uv:cve:`2017-16516`, :uv:cve:`2022-24795`, :uv:cve:`2023-33460`) (:uv:bug:`56242`, :uv:bug:`56325`)
 
 .. _debian:
@@ -119,6 +145,11 @@ General
   :program:`xmltooling`
   :program:`zabbix`
 
+.. _changelog-domain-openldap:
+
+OpenLDAP
+========
+
 .. _changelog-domain-openldap-replication:
 
 Listener/Notifier domain replication
@@ -127,13 +158,19 @@ Listener/Notifier domain replication
 * The rotation for the |UCSUDL| module log file is now done by :program:`logrotate` and
   it can be configured via |UCSUCR| (:uv:bug:`55610`).
 
+.. _changelog-umc:
+
+*****************************
+Univention Management Console
+*****************************
+
 .. _changelog-umc-web:
 
 Univention Management Console web interface
 ===========================================
 
 * When computer objects were assigned with a network the DHCP and DNS settings
-  weren't saved if a custom IP was specified  (:uv:bug:`55459`).
+  weren't saved if a custom IP was specified (:uv:bug:`55459`).
 
 * Accessing objects which contain UTF-8 characters in their LDAP DN was
   impossible and has been fixed (:uv:bug:`56189`).
@@ -261,7 +298,7 @@ Univention App Center
   to differentiate folder names for different domains (:uv:bug:`50632`).
 
 * The class ``AttributeHook`` was not idempotent and caused errors when multiple
-  ``open()`` calls have been done. This is for example the case in the UCS@school
+  ``open()`` calls have been done. This is for example the case in the UCS\@school
   importer (:uv:bug:`56036`).
 
 .. _changelog-umc-setup:
@@ -341,8 +378,9 @@ Development of modules for |UCSUMC|
 
 .. _changelog-lib:
 
+*************************
 Univention base libraries
-=========================
+*************************
 
 * In case an LDAP ACL or schema extension got installed by a joinscript by
   running the function ``ucs_registerLDAPExtension`` and it was not activated for some reason
@@ -354,6 +392,12 @@ Univention base libraries
 * A regression in :uv:erratum:`5.0x683` has been corrected, which caused the Debian
   package manager APT to print many errors while reporting progress to UMC
   (:uv:bug:`56162`).
+
+.. _changelog-service:
+
+***************
+System services
+***************
 
 .. _changelog-service-saml:
 
@@ -370,7 +414,7 @@ SAML
   server used for password changes during the SSO login. The default (the local
   server) is not changed with this update (:uv:bug:`55203`).
 
-* It is now possible to set option Keycloak clients authentication flow using the ``client-auth-flow``.
+* It is now possible to set option Keycloak clients authentication flow using ``client-auth-flow``.
   Passing an empty string will reset the flow to
   the default browser flow (:uv:bug:`56317`).
 
@@ -409,7 +453,7 @@ Mail services
   now stored as JSON to simplify the parsing of the complex attribute and avoid
   errors when non-alphanumeric characters appear. The fix is applied after
   force-re-executing the joinscript :file:`92univention-fetchmail-schema.inst`. If
-  :program:`fetchmail`: is installed on a non-primary server, the primary and non-primary
+  program:`fetchmail` is installed on a non-primary server, the primary and non-primary
   servers need to be updated to the same errata level before force-re-executing
   the joinscript to minimize possible unknown side effects (:uv:bug:`56008`).
 
@@ -478,6 +522,12 @@ PAM / Local group cache
   PAM modules are run in the context of Samba/AD, the authentication and
   Kerberos handling has already been done, so there is no point using
   :program:`pam_krb5` functions in this case anyway (:uv:bug:`56383`).
+
+.. _changelog-win:
+
+********************
+Services for Windows
+********************
 
 .. _changelog-win-samba:
 
