@@ -6,8 +6,8 @@ src: univention-ldap
 fix: 16.0.13-6
 desc: |
  This update addresses the following issues:
- * CVE-2023-46855: Disable access to the password hash attributes
+ * TEMP-2023-4: Disable access to the password hash attributes
    of the krbtgt service account for managed nodes (memberserver).
 bug: [56767]
 cve:
- - CVE-2023-46855
+ - TEMP-2023-4
