@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-directory-manager-rest
+fix: 10.0.7-3
+desc: |
+ This update addresses the following issues:
+ * After log rotating logfiles of the UDM REST API, the service is reloaded
+   so that it logs into the new files.
+bug: [54338]
