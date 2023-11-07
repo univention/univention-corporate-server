@@ -299,9 +299,10 @@ install_keycloak() {
 		switch_to_test_app_center
 		. utils-keycloak.sh && install_upgrade_keycloak --set ucs/self/registration/check_email_verification="True"
 	fi
-
-	. utils-keycloak.sh && keycloak_saml_idp_setup
-	domainname="$(ucr get domainname)"
+	if [ "$(ucr get server/role)" != "memberserver" ]; then
+		. utils-keycloak.sh && keycloak_saml_idp_setup
+	fi
+        domainname="$(ucr get domainname)"
         ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
 }
 
