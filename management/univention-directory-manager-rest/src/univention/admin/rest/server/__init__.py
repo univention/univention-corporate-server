@@ -281,9 +281,16 @@ class Gateway(tornado.web.RequestHandler):
 
     @classmethod
     def signal_handler_reload(cls, sig, frame):
+        ud.debug(ud.MAIN, ud.ALL, 'Reloading service.')
         if cls.child_id is None:
             for process in cls.PROCESSES.values():
                 cls.safe_kill(process.pid, sig)
+        tornado_logger = logging.getLogger("tornado")
+        for handler in tornado_logger.handlers:
+            if isinstance(handler, logging.StreamHandler):
+                stream = handler.stream
+                handler.close()
+                handler.stream = stream
 
     @classmethod
     def signal_handler_stop(cls, sig, frame):

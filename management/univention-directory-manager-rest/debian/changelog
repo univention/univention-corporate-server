@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.7-3) unstable; urgency=medium
+
+  * Bug #54338: reload UDM REST API logfiles after logrotation
+
+ -- Florian Best <best@univention.de>  Tue, 02 Jan 2024 10:35:48 +0100
+
 univention-directory-manager-rest (10.0.7-2) unstable; urgency=medium
 
   * Bug #56714: fix HAL-JSON formatter

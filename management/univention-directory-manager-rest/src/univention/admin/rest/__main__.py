@@ -188,11 +188,18 @@ class Server:
         io_loop.add_callback_from_signal(shutdown)
 
     def signal_handler_reload(self, signal, frame):
+        CORE.debug('Reloading service.')
         if self.child_id is None:
             for pid in shared_memory.children.values():
                 self.safe_kill(pid, signal)
         ucr.load()
         log_reopen()
+        tornado_logger = logging.getLogger("tornado")
+        for handler in tornado_logger.handlers:
+            if isinstance(handler, logging.StreamHandler):
+                stream = handler.stream
+                handler.close()
+                handler.stream = stream
 
     def safe_kill(self, pid, signo):
         try:

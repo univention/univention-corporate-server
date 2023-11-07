@@ -5,14 +5,13 @@ After=network.target
 [Service]
 Type=simple
 # ugly hack until StandardOutput or StandardError to file:YOUR_ABSPATH_FILENAME is supported
-ExecStart=/bin/bash -ce "exec /usr/bin/python3 -m univention.admin.rest.server >> /var/log/univention/directory-manager-rest.log 2>&1"
-#ExecStart=/usr/bin/python3 -m univention.admin.rest.server
+ExecStart=/usr/bin/python3 -m univention.admin.rest.server
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 User=root
 Group=root
-#StandardOutput=/var/log/univention/directory-manager-rest.log
-#StandardError=/var/log/univention/directory-manager-rest.log
+StandardOutput=append:/var/log/univention/directory-manager-rest.log
+StandardError=append:/var/log/univention/directory-manager-rest.log
 
 [Install]
 WantedBy=multi-user.target
