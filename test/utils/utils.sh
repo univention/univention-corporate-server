@@ -302,8 +302,8 @@ install_keycloak() {
 	if [ "$(ucr get server/role)" != "memberserver" ]; then
 		. utils-keycloak.sh && keycloak_saml_idp_setup
 	fi
-        domainname="$(ucr get domainname)"
-        ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
+	domainname="$(ucr get domainname)"
+	ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
 }
 
 run_setup_join () {
