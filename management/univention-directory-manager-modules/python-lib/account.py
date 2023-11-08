@@ -37,14 +37,23 @@
 
 import argparse
 
-import univention.admin.handlers.users.user
-import univention.admin.modules
-import univention.admin.objects
-import univention.admin.uldap
-import univention.debug as ud1
 
+try:
+    import univention.admin.handlers.users.user
+    import univention.admin.modules
+    import univention.admin.objects
+    import univention.admin.uldap
+    import univention.debug as ud1
 
-univention.admin.modules.update()
+    univention.admin.modules.update()
+except ImportError:
+    # During upgrade from 5.1 to 5.2 openldap have 3.9 dependency but
+    # system interpreter and LDAP libraries are already at 3.11 - making
+    # calls to univention module(s) fail when called from our
+    # 70_ppolicy_udm_lock
+    import sys
+    if sys.version_info != (3, 9):
+        raise
 
 
 # Ensure univention debug is initialized
