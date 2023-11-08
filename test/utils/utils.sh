@@ -129,6 +129,7 @@ prepare_domain_for_ucs52_preup_checks() {
 
 	univention-ldapsearch -LLL '(objectClass=univentionSAMLIdpConfig)' 1.1 | ldapsearch-decode64 | sed -rne 's#^dn: ##p' | while read -r dn; do udm saml/idpconfig remove --dn "$dn"; done
 	univention-ldapsearch -LLL '(objectClass=univentionSAMLServiceProvider)' 1.1 | ldapsearch-decode64 | sed -rne 's#^dn: ##p' | while read -r dn; do udm saml/serviceprovider remove --dn "$dn"; done
+
 }
 
 jenkins_updates () {
@@ -267,6 +268,21 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 	ucr commit "$G"
 }
 
+keycloak_migration() {
+	# migration to keycloak before 5.2 update
+	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
+		# Install keycloak
+		switch_to_test_app_center
+		# shellcheck source=/dev/null
+		. utils-keycloak.sh && install_upgrade_keycloak --set ucs/self/registration/check_email_verification="True"
+		univention-keycloak-migration-status -f -d
+	fi
+	# shellcheck source=/dev/null
+	. utils-keycloak.sh && keycloak_saml_idp_setup
+	domainname="$(ucr get domainname)"
+	ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
+}
+
 run_setup_join () {
 	local rv=0
 	patch_setup_join # temp. remove me
@@ -276,7 +292,6 @@ run_setup_join () {
 	ucr set apache2/startsite='univention/' # Bug #31682
 	deb-systemd-invoke try-reload-or-restart univention-management-console-server apache2
 	ucr unset --forced update/available
-
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
 
 	# TODO find a better place for this
@@ -286,6 +301,7 @@ run_setup_join () {
 	return $rv
 }
 
+
 run_setup_join_on_non_master () {
 	local admin_password="${1:-univention}" nameserver1
 	nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
@@ -294,10 +310,6 @@ run_setup_join_on_non_master () {
 	fi
 	printf '%s' "$admin_password" >/tmp/univention
 	run_setup_join --dcaccount Administrator --password_file /tmp/univention
-	# set ucs/server/sso/fqdn after setup for upgrade tests
-	domainname="$(ucr get domainname)"
-	ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
-
 }
 
 wait_for_reboot () {
