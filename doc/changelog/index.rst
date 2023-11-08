@@ -453,7 +453,7 @@ Mail services
   now stored as JSON to simplify the parsing of the complex attribute and avoid
   errors when non-alphanumeric characters appear. The fix is applied after
   force-re-executing the joinscript :file:`92univention-fetchmail-schema.inst`. If
-  program:`fetchmail` is installed on a non-primary server, the primary and non-primary
+  :program:`fetchmail` is installed on a non-primary server, the primary and non-primary
   servers need to be updated to the same errata level before force-re-executing
   the joinscript to minimize possible unknown side effects (:uv:bug:`56008`).
 
