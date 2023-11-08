@@ -1,1 +1,1 @@
-rm_conffile /etc/univention/templates/etc/default/samba 14.100.0-1~
+rm_conffile /etc/univention/templates/etc/default/samba 16.0.0-1~
