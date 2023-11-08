@@ -1,0 +1,85 @@
+#!/bin/sh
+#
+# Univention Setup
+#  install keycloak app
+#
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# Copyright 2023 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+eval "$(ucr shell server/role hostname ldap/base)"
+
+case "${server_role:-}" in
+domaincontroller_master)
+	:
+        ;;
+*)
+	exit 0
+        ;;
+esac
+
+
+# Activate the online repository
+/usr/sbin/ucr set repository/online=yes
+
+# create temp. user account for then join
+# univention-appcenter needs a users/user object
+# TODO maybe we can change to univention-appcenter to accept machine accounts
+password="$(makepasswd --chars 20)"
+password_file="$(mktemp)"
+username="keycloak-install-${hostname:?}"
+echo -n "$password" > "$password_file"
+udm users/user create \
+	--set username="$username" \
+	--set lastname="$username" \
+	--set password="$password" \
+	--set objectFlag=hidden
+
+# TODO remove, switch to test appcenter for 5.2 development
+univention-install -y univention-appcenter-dev
+univention-app dev-use-test-appcenter
+
+# install keycloak
+univention-app update || true
+# TODO which parameters
+# --autoinstalled ??
+# --do-not-send-info ??
+univention-app install keycloak \
+	--skip-checks \
+	--do-not-send-info \
+	--noninteractive \
+	--username "$username" \
+	--pwdfile "$password_file" || true
+
+udm users/user remove --dn "uid=$username,${ldap_base:?}"
+rm -f "$password_file"
+
+# TODO add a join post hook to install keycloak on backups?
+
+exit 0

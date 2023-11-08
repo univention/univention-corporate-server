@@ -28,6 +28,7 @@ Depends:
  gettext-base,
  python3-univention-lib,
  shell-univention-lib (>= 3.0.1-1),
+ univention-appcenter-dev,
  univention-config (>= 8.0-2),
  univention-grub,
  univention-welcome-screen,
