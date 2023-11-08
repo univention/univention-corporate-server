@@ -126,7 +126,7 @@ print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
 print('   by * +0 break')
 
 # don't allow member nodes access to password attributes of krbtgt
-print('access to filter="(|(uid=krbtgt)(uid=krbtgt/%s))" attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,pwhistory,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword,krb5ExtendedAttributes' % (kerberos_realm))
+print('access to filter="(|(uid=krbtgt)(uid=krbtgt/%s))" attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,pwhistory,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword,krb5ExtendedAttributes' % (kerberos_realm,))
 print('   by set="user/objectClass & [univentionMemberServer]" none')
 print('   by * +0 break')
 
