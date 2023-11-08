@@ -2,6 +2,7 @@
 from univention.lib.misc import custom_groupname
 
 ldap_base = configRegistry['ldap/base']
+kerberos_realm = configRegistry['kerberos/realm']
 usr = 'write' if configRegistry.get('ldap/server/type') == "master" else 'read'
 
 groups_default_domainadmins = custom_groupname('Domain Admins')
@@ -125,9 +126,9 @@ print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
 print('   by * +0 break')
 
 # don't allow member nodes access to password attributes of krbtgt
-print('access to filter="(uid=krbtgt)" attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,pwhistory,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword')
+print('access to filter="(|(uid=krbtgt)(uid=krbtgt/%s))" attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,pwhistory,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword,krb5ExtendedAttributes' % (kerberos_realm))
 print('   by set="user/objectClass & [univentionMemberServer]" none')
-print('by * +0 break')
+print('   by * +0 break')
 
 print('access to attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword,sambaBadPasswordTime')
 if configRegistry['ldap/server/type'] == "slave":
