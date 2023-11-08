@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.24-23) unstable; urgency=medium
+
+  * Bug #56704: do not fail the system upgrade due LDAP import failure
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Thu, 08 Nov 2023 08:32:43 +0100
+
 univention-directory-manager-modules (15.0.24-22) unstable; urgency=medium
 
   * Bug #56354: do not leak password in process list in

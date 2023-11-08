@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-directory-manager-modules
+fix: 15.0.24-23
+desc: |
+ This update addresses the following issue:
+ * When upgrading the system to 5.2 there is an error when `ppolicy`
+   imports `univention` module(s). It is caused by Python interpreter
+   version (3.9) - but system's interpreter is already at higher version
+   (3.11) so `PyImport_ImportModule` was failing.
+bug: [56704]
