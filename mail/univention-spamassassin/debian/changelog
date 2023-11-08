@@ -1,14 +1,14 @@
-univention-spamassassin (11.100.0-1) unstable; urgency=medium
+univention-spamassassin (13.0.0-1) unstable; urgency=medium
 
-  * UCS 5.2-0
+  * UCS 5.2-0 version bump
 
- -- Florian Best <best@univention.de>  Fri, 22 Sep 2023 10:12:50 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:47:10 +0100
 
-univention-spamassassin (11.99.0-1) unstable; urgency=medium
+univention-spamassassin (12.0.0-1) unstable; urgency=medium
 
-  * UCS 5.1-0
+  * UCS 5.1-0 version bump
 
- -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:54 +0100
 
 univention-spamassassin (11.0.1-3) unstable; urgency=medium
 

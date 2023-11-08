@@ -1,14 +1,14 @@
-univention-package-template-python (8.100.0-1) unstable; urgency=medium
+univention-package-template-python (10.0.0-1) unstable; urgency=medium
 
-  * UCS 5.2-0
+  * UCS 5.2-0 version bump
 
- -- Florian Best <best@univention.de>  Fri, 22 Sep 2023 10:12:41 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:47:00 +0100
 
-univention-package-template-python (8.99.0-1) unstable; urgency=medium
+univention-package-template-python (9.0.0-1) unstable; urgency=medium
 
-  * UCS 5.1-0
+  * UCS 5.1-0 version bump
 
- -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:44 +0100
 
 univention-package-template-python (8.0.1-1) unstable; urgency=medium
 

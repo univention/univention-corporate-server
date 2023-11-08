@@ -1,14 +1,14 @@
-univention-directory-manager-rest (10.100.0-1) unstable; urgency=medium
+univention-directory-manager-rest (12.0.0-1) unstable; urgency=medium
 
-  * UCS 5.2-0
+  * UCS 5.2-0 version bump
 
- -- Florian Best <best@univention.de>  Fri, 22 Sep 2023 10:12:43 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:47:01 +0100
 
-univention-directory-manager-rest (10.99.0-1) unstable; urgency=medium
+univention-directory-manager-rest (11.0.0-1) unstable; urgency=medium
 
-  * UCS 5.1-0
+  * UCS 5.1-0 version bump
 
- -- Florian Best <best@univention.de>  Tue, 29 Aug 2023 21:43:46 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:45 +0100
 
 univention-directory-manager-rest (10.0.6-15) unstable; urgency=medium
 

@@ -1,14 +1,14 @@
-univention-nagios-ad-connector (9.100.0-1) unstable; urgency=medium
+univention-nagios-ad-connector (11.0.0-1) unstable; urgency=medium
 
-  * UCS 5.2-0
+  * UCS 5.2-0 version bump
 
- -- Florian Best <best@univention.de>  Fri, 22 Sep 2023 10:12:40 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:46:58 +0100
 
-univention-nagios-ad-connector (9.99.0-1) unstable; urgency=medium
+univention-nagios-ad-connector (10.0.0-1) unstable; urgency=medium
 
-  * UCS 5.1-0
+  * UCS 5.1-0 version bump
 
- -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:42 +0100
 
 univention-nagios-ad-connector (9.0.1-1) unstable; urgency=medium
 

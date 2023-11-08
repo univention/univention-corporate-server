@@ -1,14 +1,14 @@
-univention-admin-diary (2.100.0-1) unstable; urgency=medium
+univention-admin-diary (4.0.0-1) unstable; urgency=medium
 
-  * UCS 5.2-0
+  * UCS 5.2-0 version bump
 
- -- Florian Best <best@univention.de>  Fri, 22 Sep 2023 10:12:47 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:47:07 +0100
 
-univention-admin-diary (2.99.0-1) unstable; urgency=medium
+univention-admin-diary (3.0.0-1) unstable; urgency=medium
 
-  * UCS 5.1-0
+  * UCS 5.1-0 version bump
 
- -- Florian Best <best@univention.de>  Tue, 29 Aug 2023 21:43:50 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:50 +0100
 
 univention-admin-diary (2.0.7-2) unstable; urgency=medium
 

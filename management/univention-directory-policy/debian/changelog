@@ -1,14 +1,14 @@
-univention-directory-policy (11.100.0-1) unstable; urgency=medium
+univention-directory-policy (13.0.0-1) unstable; urgency=medium
 
-  * UCS 5.2-0
+  * UCS 5.2-0 version bump
 
- -- Florian Best <best@univention.de>  Fri, 22 Sep 2023 10:12:45 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:47:04 +0100
 
-univention-directory-policy (11.99.0-1) unstable; urgency=medium
+univention-directory-policy (12.0.0-1) unstable; urgency=medium
 
-  * UCS 5.1-0
+  * UCS 5.1-0 version bump
 
- -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:48 +0100
 
 univention-directory-policy (11.0.1-1) unstable; urgency=medium
 

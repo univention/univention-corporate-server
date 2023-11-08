@@ -1,14 +1,14 @@
-ucslint (9.100.0-1) unstable; urgency=medium
+ucslint (11.0.0-1) unstable; urgency=medium
 
-  * UCS 5.2-0
+  * UCS 5.2-0 version bump
 
- -- Florian Best <best@univention.de>  Fri, 22 Sep 2023 10:12:41 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:46:59 +0100
 
-ucslint (9.99.0-1) unstable; urgency=medium
+ucslint (10.0.0-1) unstable; urgency=medium
 
-  * UCS 5.1-0
+  * UCS 5.1-0 version bump
 
- -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:43 +0100
 
 ucslint (9.0.3-2) unstable; urgency=medium
 

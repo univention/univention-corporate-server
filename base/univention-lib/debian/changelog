@@ -1,14 +1,14 @@
-univention-lib (9.100.0-1) unstable; urgency=medium
+univention-lib (11.0.0-1) unstable; urgency=medium
 
-  * UCS 5.2-0
+  * UCS 5.2-0 version bump
 
- -- Florian Best <best@univention.de>  Fri, 22 Sep 2023 10:12:54 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:47:14 +0100
 
-univention-lib (9.99.0-1) unstable; urgency=medium
+univention-lib (10.0.0-1) unstable; urgency=medium
 
-  * UCS 5.1-0
+  * UCS 5.1-0 version bump
 
- -- Florian Best <best@univention.de>  Tue, 29 Aug 2023 21:43:57 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:58 +0100
 
 univention-lib (9.0.16-5) unstable; urgency=medium
 

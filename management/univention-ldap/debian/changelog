@@ -1,14 +1,14 @@
-univention-ldap (16.100.0-1) unstable; urgency=medium
+univention-ldap (18.0.0-1) unstable; urgency=medium
 
-  * UCS 5.2-0
+  * UCS 5.2-0 version bump
 
- -- Florian Best <best@univention.de>  Fri, 22 Sep 2023 10:12:42 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:47:01 +0100
 
-univention-ldap (16.99.0-1) unstable; urgency=medium
+univention-ldap (17.0.0-1) unstable; urgency=medium
 
-  * UCS 5.1-0
+  * UCS 5.1-0 version bump
 
- -- Florian Best <best@univention.de>  Mon, 19 Jun 2023 17:53:37 +0200
+ -- Florian Best <best@univention.de>  Wed, 08 Nov 2023 12:38:45 +0100
 
 univention-ldap (16.0.13-5) unstable; urgency=medium
 
