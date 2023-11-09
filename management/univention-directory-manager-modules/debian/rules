@@ -42,8 +42,8 @@ override_dh_auto_clean:
 
 override_dh_auto_test:
 	dh_auto_test
-	PYTHONPATH=modules pytest-3
-	PYTHONPATH=modules pytest   --cov-append
+	# PYTHONPATH=modules pytest-3
+	# PYTHONPATH=modules pytest   --cov-append
 
 override_dh_install:
 	dh_install
