@@ -9,3 +9,6 @@ desc: |
  `python-reportlab`.
 bug: [56760]
 maintained: true
+erratum: 1514
+announced: 2023-11-09
+support: lts
