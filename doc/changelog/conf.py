@@ -118,6 +118,10 @@ if "spelling" in sys.argv:
     suppress_warnings.append("bibtex")
 
 root_doc = "index520"
+with open("temp.rst", "w") as fd:
+    for fn in os.listdir("staged"):
+        if fn.endswith(".rst"):
+            fd.write(f".. include:: staged/{fn}\n")
 
 rst_epilog = """
 .. include:: /../substitutions.txt
