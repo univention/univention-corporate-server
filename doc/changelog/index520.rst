@@ -8,6 +8,9 @@
 Changelog for Univention Corporate Server (UCS) |release|
 #########################################################
 
+.. Temporary hack until they are merged
+.. include:: temp.rst
+
 .. _changelog-general:
 
 *******
