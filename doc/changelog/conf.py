@@ -117,7 +117,7 @@ if "spelling" in sys.argv:
     extensions.remove("sphinx_sitemap")
     suppress_warnings.append("bibtex")
 
-root_doc = "index"
+root_doc = "index520"
 
 rst_epilog = """
 .. include:: /../substitutions.txt

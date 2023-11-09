@@ -25,9 +25,9 @@ from datetime import date
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
-release = "5.0-6"
+release = "5.2-0"
 
-version = "5.0"
+version = "5.2"
 
 project = f'UCS {release} Release Notes'
 copyright = f'2023-{date.today().year}, Univention GmbH'
@@ -120,7 +120,7 @@ if "spelling" in sys.argv:
     extensions.remove("sphinx_sitemap")
     suppress_warnings.append("bibtex")
 
-root_doc = "index"
+root_doc = "index52"
 
 html_sidebars = {
     "**": ["navbar-logo.html", "icon-links.html", "sections/sidebar-links.html"],
