@@ -52,7 +52,7 @@ s4host_fqdn=$(determine_neighbour_s4host) ||
 gponame=$(random_chars 8 "${_upperletters}${_lowerletters}${_ciphers}")	## samba RC6 seems to dislike UTF-8 in GPO names
 
 ## general sanity check: wait for the samba-share.py Listener to synchronize /etc/samba/shares.conf and /etc/samba/shares.conf.d (Bug #29399)
-retry 15 samba-tool domain info 127.0.0.1 >/dev/null 2>&1 ||
+retry_delay=2 retry 15 samba-tool domain info 127.0.0.1 >/dev/null 2>&1 ||
 	echo "samba-tool Failure (Bug #29399)" >&2
 
 sysvol_path="/var/lib/samba/sysvol"
@@ -113,6 +113,6 @@ mode=$(stat -c "%a" "$gpo_path")
 echo "## check whether the GPO is listed in samba-tool"
 check_gpo () { output=$(samba-tool gpo show "$gpo_cn" 2>&1) && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output"; }
 retry 10 check_gpo ||
-	fail_fast 1 "GPO is not listed in samba-tool"
+	fail_fast 1 "GPO is not listed in samba-tool: ${output:-}"
 
 exit "$RETVAL"
