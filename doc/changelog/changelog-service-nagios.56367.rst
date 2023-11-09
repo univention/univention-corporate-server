@@ -1,1 +1,0 @@
-The nagios server functionality has been removed from UDM. Therefore the UDM module ``nagios/timeperiod`` has been removed. The UDM module ``nagios/service`` has been reduced to the minimal required NRPE properties.
