@@ -117,7 +117,7 @@ if "spelling" in sys.argv:
     extensions.remove("sphinx_sitemap")
     suppress_warnings.append("bibtex")
 
-root_doc = "index"
+root_doc = "index520"
 
 rst_epilog = """
 .. include:: /../substitutions.txt
@@ -146,7 +146,7 @@ univention_use_doc_base = True
 
 # See README.md in this repository
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_changelog#configuration-settings
-univention_changelog_previous_release = "5.0-4"
+univention_changelog_previous_release = "5.0-6"
 univention_changelog_builder = "ucs"
 
 # See Univention Sphinx Extension for its options.
