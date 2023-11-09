@@ -10,3 +10,6 @@ desc: |
    Connector Provider to Keycloak has been added to the `univention-keycloak`
    package.
 bug: [56747]
+erratum: 874
+announced: 2023-11-09
+support: core
