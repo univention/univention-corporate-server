@@ -1,1 +1,0 @@
-The patches to :program:`monitoring-plugins` have been adapted to the new upstream version. The patch adding the option ``-y`` to read the LDAP credentials from a file has been dropped. The patch fixing a spelling mistake has been dropped as it has been fixed upstream.
