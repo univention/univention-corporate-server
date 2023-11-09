@@ -9,3 +9,6 @@ desc: |
  * The config file `/etc/selinux/config` has been added to
    disable SELinux. SELinux is not supported by UCS.
 bug: [56005]
+erratum: 873
+announced: 2023-11-09
+support: core
