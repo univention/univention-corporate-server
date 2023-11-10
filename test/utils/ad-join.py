@@ -168,7 +168,7 @@ def prepare_new_instance() -> None:
         "%s/ad/ldap/bindpw=/etc/univention/connector/ad/bindpw" % (options.prepare_new_instance,),
         "%s/ad/ldap/host=%s" % (options.prepare_new_instance, ad_details.dnsHostName),
         "hosts/static/%s=%s" % (options.domain_host, ad_details.dnsHostName),
-        "%s/ad/mapping/kerberosdomain=i%s" % (options.prepare_new_instance, options.kerberos_realm),
+        "%s/ad/mapping/kerberosdomain=%s" % (options.prepare_new_instance, options.kerberos_realm),
         "%s/ad/ldap/ssl=false" % (options.prepare_new_instance,),
     ])
     copy("/etc/univention/connector/ad/bindpw", "/etc/univention/%s/ad/" % options.prepare_new_instance)
