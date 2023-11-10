@@ -63,8 +63,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 import sys
 import univention.admin.uldap
 import univention.admin.uexceptions
-import univention.admin.modules  # must be importet :(
-import univention.admin.objects  # must be importet :(
+import univention.admin.modules  # must be imported :(
+import univention.admin.objects  # must be imported :(
 import univention.admin.handlers.users.user
 univention.admin.modules.update()
 lo, po = univention.admin.uldap.getAdminConnection()
