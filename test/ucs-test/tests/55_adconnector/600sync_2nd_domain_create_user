@@ -1,0 +1,66 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "Create an AD-User in a secondary AD and let both connectors do their job in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+## tags:
+##  - skip_admember
+##  - 2nd_ad_connector
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/udm.sh
+. "$TESTLIBPATH/udm.sh" || exit 137
+# shellcheck source=../../lib/random.sh
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+eval "$(ucr shell connector/listener/additionalbasenames)"
+[ -n "$connector/listener/additionalbasenames" ] || exit 137
+
+configbase2="connector2"  # That's what scenarios/ad-connector/autotest-241-adsync-w2k19-english-two-forest-children.cfg uses
+grep -Eq "\<$configbase2\>" <<<"$(ucr get connector/listener/additionalbasenames)" || \
+	fail_fast 110 "configbase '$configbase2' not found in UCR connector/listener/additionalbasenames: '$(ucr get connector/listener/additionalbasenames)'"
+
+declare -A SYNCMODE
+
+for configbase in "$configbase2" connector; do
+	SYNCMODE["$configbase"]="$(ad_get_sync_mode "$configbase")"
+	ad_set_sync_mode "sync" "$configbase"
+done
+
+UDM_users_user_username="$(random_chars)"
+OU1="$(random_chars)1"
+AD_OU1_DN2="OU=$OU1,$(ad_get_base "$configbase2")"
+ad_createou "$OU1" "" "" "$configbase2" || fail_test 110
+ad_createuser "$UDM_users_user_username" "" "$AD_OU1_DN2" "$configbase2" || fail_test 110
+
+ad_wait_for_synchronization "$configbase2"; fail_bool 0 110
+UDM_container_ou_name="$OU1"
+udm_exists "container/ou"; fail_bool 0 110
+udm_exists "users/user" "" "" "ou=$OU1,$ldap_base"; fail_bool 0 110
+AD_USER_DN2="CN=$UDM_users_user_username,$AD_OU1_DN2"
+ad_exists "$AD_USER_DN2" "$configbase2"; fail_bool 0 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+AD_OU1_DN1="OU=$OU1,$(ad_get_base)"
+ad_exists "$AD_OU1_DN1"; fail_bool 0 110
+AD_USER_DN1="CN=$UDM_users_user_username,$AD_OU1_DN1"
+ad_exists "$AD_USER_DN1"; fail_bool 0 110
+udm_exists "users/user" "" "" "ou=$OU1,$ldap_base"; fail_bool 0 110
+ad_exists "$AD_USER_DN2" "$configbase2"; fail_bool 0 110
+
+for configbase in "$configbase2" connector; do
+	output=$(univention-adconnector-list-rejected -c "$configbase")
+	grep -qE "(UCS DN: |AD DN: )" <<<"$output" && \
+		fail_test 110 "reject on configbase '$configbase': $output"
+done
+
+for configbase in "$configbase2" connector; do
+	ad_set_sync_mode "${SYNCMODE["$configbase"]}" "$configbase"
+done
+
+exit "$RETVAL"
