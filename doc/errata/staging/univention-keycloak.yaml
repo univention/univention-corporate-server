@@ -6,7 +6,7 @@ src: univention-keycloak
 fix: 1.0.9-33
 desc: |
  This update addresses the following issues:
- * `univention-keycloak` should be able to be executed again in case of a
-   failure during first initialization. Added a `--force` flag to force the
-   run of the initialization.
+ * `univention-keycloak init` is now able to be executed again in case of a
+   failure during first initialization. The `--force` flag has been added
+   to force the rerun of the initialization.
 bug: [56791]
