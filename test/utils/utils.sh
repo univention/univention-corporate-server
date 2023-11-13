@@ -870,10 +870,6 @@ assert_version () {
 	version="$version_version-$version_patchlevel"
 	echo "Requested version $requested_version"
 	echo "Current version $version"
-	if [ "$requested_version" == "5.2-0" ]; then
-	    a2dismod php7.4 || true
-	    systemctl restart apache2.service
-	fi
 	[ "$requested_version" = "$version" ] &&
 		return 0
 	create_DONT_START_UCS_TEST "FAILED: assert_version $requested_version == $version"
