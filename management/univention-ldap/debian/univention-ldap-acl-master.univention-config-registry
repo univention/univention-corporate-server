@@ -9,6 +9,7 @@ Variables: ldap/replog
 Variables: ldap/acl/.*
 Variables: users/default/.*
 Variables: groups/default/.*
+Variables: kerberos/realm
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -43,3 +44,4 @@ Variables: ldap/server/type
 Variables: ldap/master
 Variables: ldap/replog
 Variables: ldap/acl/.*
+Variables: kerberos/realm

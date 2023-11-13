@@ -1,3 +1,10 @@
+univention-ldap (15.0.3-11) unstable; urgency=medium
+
+  * Bug #56819: disable access to password hashes of uid=krbtgt
+    for managed nodes
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Nov 2023 10:32:29 +0100
+
 univention-ldap (15.0.3-10) unstable; urgency=medium
 
   * Bug #48626: Make configurable that ldap ignores temporary objects.

@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-ldap
+fix: 15.0.3-11
+desc: |
+ This update addresses the following issues:
+ * TEMP-2023-4: Disable access to the password hash attributes
+   of the krbtgt service account for managed nodes (memberserver).
+bug: [56819]
+cve:
+ - TEMP-2023-4
