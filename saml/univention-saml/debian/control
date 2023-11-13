@@ -1,0 +1,32 @@
+Source: univention-saml
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper-compat (=13),
+ univention-join-dev,
+Standards-Version: 3.8.4
+
+Package: univention-saml
+Architecture: all
+Depends:
+ ${misc:Depends},
+Breaks:
+ univention-saml-schema (<< 3.0.16-1),
+Description: Transitional dummy package
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated Single Sign-On technology for corporate usage.
+ For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-saml-schema
+Architecture: all
+Depends:
+ ${misc:Depends},
+Description: Transitional dummy package
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
