@@ -37,7 +37,7 @@ CERTPATH="/etc/univention/ssl/ucsCA/certs"
 # shellcheck disable=SC2034
 INDEXATTRPATH="/etc/univention/ssl/ucsCA/index.txt.attr"
 
-test -d "$CERTPATH" || /bin/mkdir -p "$CERTPATH"
+install -d -m 0755 "$CERTPATH"
 
 # add random id to default SSL common name (Bug #22846)
 random_id="$(tr -d -c '[:alnum:]' < /dev/urandom | head -c8)"
@@ -67,7 +67,7 @@ eval "$(univention-config-registry shell)"
 create_logfile_if_missing /var/log/univention/ssl-sync.log "root:adm" 640
 case "${server_role:-}" in
 domaincontroller_master|basesystem|'')
-	if [ ! -s $CERTPATH/00.pem ] && [ ! -e "/etc/univention/ssl/${hostname:-}.${domainname:-}" ]; then
+	if [ ! -s "$CERTPATH/00.pem" ] && [ ! -e "/etc/univention/ssl/${hostname:-}.${domainname:-}" ]; then
 
 		# try to set the clock before generating the root CA, otherwise it is possible that the certificate is not valid at the end of the installation
 		# Bug #13549
@@ -90,11 +90,9 @@ esac
 if [ "$1" = "configure" ]
 then
 	SSL='/usr/local/share/ca-certificates/ucsCA.crt'
-	if [ ! -e "$SSL" ]
-	then
-		ln -snf "/etc/univention/ssl/ucsCA/CAcert.pem" "$SSL" || return $?
-		update-ca-certificates --fresh || return $?
-	fi
+	[ ! -e "$SSL" ] &&
+		ln -snf "/etc/univention/ssl/ucsCA/CAcert.pem" "$SSL" &&
+		update-ca-certificates --fresh
 
 	systemctl try-restart univention-directory-listener
 fi
