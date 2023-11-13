@@ -14,6 +14,7 @@ Standards-Version: 3.5.5
 Package: univention-ssl
 Architecture: all
 Depends:
+ ca-certificates,
  openssl,
  python3-m2crypto,
  python3-univention-lib,

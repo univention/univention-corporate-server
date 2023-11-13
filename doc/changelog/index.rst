@@ -540,6 +540,15 @@ Mail services
 * Narrowed down the conditions under which the |UCSUDL| module gets called
   (:uv:bug:`56586`).
 
+.. _changelog-service-ssl:
+
+SSL
+===
+
+* The missing dependency on the package :program:`ca-certificate` has been added as
+  the common root Certificate Authority certificates are required to access
+  public services like the Univention download server (:uv:bug:`51203`).
+
 .. _changelog-service-dhcp:
 
 DHCP server
