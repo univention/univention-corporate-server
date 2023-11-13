@@ -5,7 +5,8 @@ scope: ucs_5.0-0-errata5.0-3
 src: linux
 fix: 4.19.282-1
 desc: |
- This update addresses the following issues:
+ This updates the Linux kernel to version 4.19.282, which addresses (among
+ others) the following security issues:
  * An out-of-bounds vulnerability in i2c-ismt driver (CVE-2022-2873)
  * Use-after-free in `gru_set_context_option` leading to kernel panic
    (CVE-2022-3424)
