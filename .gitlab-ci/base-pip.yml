@@ -40,5 +40,5 @@
       fi
     - head debian/changelog
     - python3 $packaging_entrypoint_filename sdist bdist_wheel
-    - $URL=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi
+    - URL=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi
     - twine upload --verbose --skip-existing --repository-url $URL  -u gitlab-ci-token -p ${CI_JOB_TOKEN} dist/*.whl
