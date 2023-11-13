@@ -5,7 +5,8 @@ scope: ucs_5.0-0-errata5.0-4
 src: linux-signed-amd64
 fix: 4.19.289+1
 desc: |
- This update addresses the following issues:
+ This updates the Linux kernel to version 4.19.289, which addresses (among
+ others) the following security issues:
  * CVE-2023-1380: A slab-out-of-bound read problem was found in
    `brcmf_get_assoc_ies` in
    `drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c` in the Linux
