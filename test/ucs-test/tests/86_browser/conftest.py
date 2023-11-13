@@ -49,6 +49,7 @@ def browser_type_launch_args(browser_type_launch_args):
     return {
         **browser_type_launch_args,
         "executable_path": "/usr/bin/chromium",
+        "args": ["--remote-debugging-port=3157"],
     }
 
 
