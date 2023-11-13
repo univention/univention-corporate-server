@@ -35,9 +35,10 @@
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
-mkdir -p /usr/share/univention-install/
+install -d -m 0755 /usr/share/univention-install/
 
 if [ -e /etc/hostname ]; then
 	hostname=$(cat /etc/hostname)
@@ -45,22 +46,26 @@ fi
 
 domainname=$(/bin/dnsdomainname)
 
-if [ -n "$hostname" -a -n "$domainname" ]; then
+if [ -n "${hostname}${domainname}" ]
+then
 	# generate ssl certificate
-	if ! test -e "/etc/univention/ssl/$hostname/cert.pem"; then
+	if [ ! -e "/etc/univention/ssl/$hostname/cert.pem" ]
+	then
 		. /usr/share/univention-ssl/make-certificates.sh
 		gencert "$hostname.$domainname" "$hostname.$domainname"
 		ln -snf "$hostname.$domainname" "/etc/univention/ssl/$hostname"
 	fi
 fi
 
-if ! test -e /etc/ldap.secret; then
+if [ ! -e /etc/ldap.secret ]
+then
 	touch /etc/ldap.secret
 	chmod 600 /etc/ldap.secret
 	create_machine_password > /etc/ldap.secret
 fi
 
-if ! test -e /etc/ldap-backup.secret; then
+if [ ! -e /etc/ldap-backup.secret ]
+then
 	touch /etc/ldap-backup.secret
 	chmod 600 /etc/ldap-backup.secret
 	create_machine_password > /etc/ldap-backup.secret

@@ -36,7 +36,7 @@
 eval "$(univention-config-registry shell)"
 
 xargs -d '\n' univention-config-registry set <<__UCR__
-ldap/server/name=$hostname.$domainname
+ldap/server/name=${hostname:-}.${domainname:-}
 ldap/server/port?7389
 ldap/server/type=master
 server/password/interval?21

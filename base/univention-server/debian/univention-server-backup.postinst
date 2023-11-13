@@ -41,7 +41,7 @@ server/role=domaincontroller_backup
 server/password/cron?0 1 * * *
 __UCR__
 
-mkdir -p /var/lib/samba/netlogon/scripts/
+install -d -m 755 /var/lib/samba/netlogon/scripts/
 
 # Bug #47581: fix broken OX schemata registration
 /usr/share/univention-server-backup/reregister_ox_ldap_schema.sh
