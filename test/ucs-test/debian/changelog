@@ -1,3 +1,9 @@
+ucs-test (10.0.19-25) unstable; urgency=medium
+
+  * Bug #56054: Add fixture to skip tests if proper locale isn't configured
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 14 Nov 2023 11:06:32 +0100
+
 ucs-test (10.0.19-24) unstable; urgency=medium
 
   * Bug #31771: fix test case

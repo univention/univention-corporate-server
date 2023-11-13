@@ -18,6 +18,7 @@ from typing import Set
 
 import psutil
 import pytest
+from conftest import german_english_not_available
 from playwright.sync_api import BrowserContext, expect
 
 from univention.lib.i18n import Translation
@@ -30,6 +31,7 @@ translator = Translation("ucs-test-browser")
 _ = translator.translate
 
 
+@german_english_not_available
 def test_switch_language(umc_browser_test: UMCBrowserTest):
     original_language = umc_browser_test.lang
     target_language = UCSLanguage.DE_DE if umc_browser_test.lang == UCSLanguage.EN_US else UCSLanguage.EN_US

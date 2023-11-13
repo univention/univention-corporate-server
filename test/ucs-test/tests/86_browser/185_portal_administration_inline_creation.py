@@ -10,6 +10,7 @@
 import time
 
 import pytest
+from conftest import german_english_not_available
 from playwright.sync_api import Page, expect
 
 from univention.testing.browser.lib import UMCBrowserTest
@@ -96,6 +97,7 @@ def wait_for_dialog_to_disappear(page: Page):
     expect(page.get_by_role("dialog")).to_be_hidden()
 
 
+@german_english_not_available
 def test_inline_creation(umc_browser_test: UMCBrowserTest):
     udm = UDM.admin().version(2)
     edit_mode = UCSPortalEditMode(umc_browser_test)
