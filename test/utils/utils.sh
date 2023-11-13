@@ -323,7 +323,6 @@ run_setup_join () {
 	deb-systemd-invoke try-reload-or-restart univention-management-console-server apache2
 	ucr unset --forced update/available
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
-	install_keycloak
 	return $rv
 }
 
