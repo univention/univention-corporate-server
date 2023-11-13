@@ -114,8 +114,12 @@ mk_config () {
 	touch "$outfile"
 	chmod 0600 "$outfile"
 
-	_escape () {
-		sed 's/["$]/\\\0/g'
+	_attr () {
+		local prop="${1:?property}" value="${2?value}"
+		[ -n "$value" ] || return 0
+		value="${value//\"/\\\"}"
+		value="${value//\$/\\\$}"
+		printf "%s\t= %s\n" "$prop" "$value"
 	}
 
 	cat >"$outfile" <<EOF
@@ -193,13 +197,13 @@ req_extensions = v3_req
 
 [ req_distinguished_name ]
 
-C	= $(ucr get ssl/country | _escape)
-ST	= $(ucr get ssl/state | _escape)
-L	= $(ucr get ssl/locality | _escape)
-O	= $(ucr get ssl/organization | _escape)
-OU	= $(ucr get ssl/organizationalunit | _escape)
-CN	= $(echo -en "$name" | _escape)
-emailAddress	= $(ucr get ssl/email | _escape)
+$(_attr C "$(ucr get ssl/country)")
+$(_attr ST "$(ucr get ssl/state)")
+$(_attr L "$(ucr get ssl/locality)")
+$(_attr O "$(ucr get ssl/organization)")
+$(_attr OU "$(ucr get ssl/organizationalunit)")
+$(_attr CN "$name")
+$(_attr emailAddress "$(ucr get ssl/email)")
 
 [ req_attributes ]
 
