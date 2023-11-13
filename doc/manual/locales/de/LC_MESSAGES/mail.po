@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-15 12:24+0200\n"
-"PO-Revision-Date: 2023-09-15 12:27+0200\n"
+"POT-Creation-Date: 2023-11-17 14:42+0100\n"
+"PO-Revision-Date: 2023-11-17 14:53+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.13.0\n"
 
 #: ../../mail/configuration-client.rst:8
 msgid "Configuration of mail clients for the mail server"
@@ -55,76 +55,115 @@ msgstr "Konfiguration eines Relay-Hosts für den Mailversand"
 
 #: ../../mail/configuration-server.rst:15
 msgid ""
-"By default Postfix creates a direct SMTP connection to the mail server "
-"responsible for the domain when an email is sent to a non-local address. "
-"This server is determined by querying the MX record in the DNS."
+"By default, :program:`Postfix` creates a direct SMTP connection to the "
+"mail server responsible for the domain when it sends an email to a non-"
+"local address. :program:`Postfix` determines this server by querying the "
+"MX record in the DNS."
 msgstr ""
-"In der Grundeinstellung baut Postfix beim Versenden einer E-Mail an eine "
-"nicht-lokale Adresse eine direkte SMTP-Verbindung an den für diese Domain"
-" zuständigen Mailserver auf. Dieser Server wird durch eine Abfrage des "
-"MX-Records im DNS ermittelt."
+"Standardmäßig stellt :program:`Postfix` eine direkte SMTP-Verbindung zu "
+"dem für die Domain zuständigen Mailserver her, wenn es eine E-Mail an "
+"eine nicht lokale Adresse sendet. :program:`Postfix` ermittelt diesen "
+"Server durch Abfrage des MX-Eintrags im DNS."
 
 #: ../../mail/configuration-server.rst:19
 msgid ""
-"Alternatively, a mail relay server can also be used, i.e., a server which"
-" receives the mails and takes over their further sending. This type of "
-"mail relay server can be provided by a superordinate corporate "
-"headquarters or the internet provider, for example. To set a relay host, "
-"it must be entered as a fully qualified domain name (FQDN) in the "
-"|UCSUCRV| :envvar:`mail/relayhost`."
+"Alternatively, :program:`Postfix` can use a mail relay server. This is a "
+"server that receives emails and handles their transport. Administrators "
+"can have this type of mail relay server, such as one provided by the "
+"company's headquarter or by the internet provider. To set up a relay "
+"host, specify it as a fully qualified domain name (FQDN) in the |UCSUCRV|"
+" :envvar:`mail/relayhost`."
 msgstr ""
-"Alternativ kann auch ein Mail-Relay-Server zu Einsatz kommen, also ein "
-"Server der die Mails entgegen nimmt und den weiteren Versand abwickelt.  "
-"Ein solcher Mail-Relay-Server kann beispielsweise von einer "
-"übergeordneten Konzernzentrale oder vom Internet-Provider bereitgestellt "
-"werden. Ein Relay-Server muss als vollqualifizierter Domänenname (FQDN) "
-"in die |UCSUCRV| :envvar:`mail/relayhost` eingetragen werden."
+"Alternativ dazu kann :program:`Postfix` einen Mail-Relay Server verwenden. "
+"Dabei handelt es sich um einen Server, der E-Mails empfängt und deren Transport "
+"übernimmt. Administratoren können diese Art von Mail-Relay Servern verwenden, "
+"z. B. solche, die von der Firmenzentrale oder dem Internet-Provider "
+"bereitgestellt werden. Um einen Relayhost einzurichten, geben Sie ihn als "
+"vollständig qualifizierten Domänennamen (FQDN) in der |UCSUCRV| "
+":envvar:`mail/relayhost` an."
 
 #: ../../mail/configuration-server.rst:25
 msgid ""
-"If authentication is necessary on the relay host for sending, the "
-"|UCSUCRV| :envvar:`mail/relayauth` must be set to ``yes`` and the "
-":file:`/etc/postfix/smtp_auth` file edited. The relay host, username and "
-"password must be saved in this file in one line: :samp:`{FQDN-Relayhost} "
-"{username}:{password}`"
+"If authentication is necessary on the relay host for sending, set the "
+"|UCSUCRV| :envvar:`mail/relayauth` to ``yes`` and edit the "
+":file:`/etc/postfix/smtp_auth` file. Provide the relay host, username, "
+"and password in this file in one line in the format: :samp:`{FQDN-"
+"Relayhost} {username}:{password}`"
 msgstr ""
-"Ist für den Versand die Authentifizierung gegenüber dem Relay-Host "
-"notwendig, muss die |UCSUCRV| :envvar:`mail/relayauth` auf ``yes`` "
-"gesetzt und die Datei :file:`/etc/postfix/smtp_auth` bearbeitet werden. "
-"In dieser Datei muss der Relay-Host, der Benutzername und das Passwort in"
-" einer Zeile hinterlegt werden: :samp:`{FQDN-Relayhost} "
-"{username}:{password}`"
+"Wenn für das Senden eine Authentifizierung auf dem Relayhost erforderlich"
+" ist, setzen Sie die |UCSUCRV| :envvar:`mail/relayauth` auf ``yes`` und "
+"bearbeiten Sie die Datei :file:`/etc/postfix/smtp_auth`. Geben Sie in "
+"dieser Datei den Relayhost, den Benutzernamen und das Passwort in einer "
+"Zeile in folgendem Format ein: :samp:`{FQDN-Relayhost} "
+"{Benutzername}:{Passwort}`"
+
+#: ../../mail/configuration-server.rst:30
+msgid ""
+"To adopt the changes in :program:`Postfix`, complete the following "
+"commands:"
+msgstr ""
+"Um die Änderungen in :program:`Postfix` zu übernehmen, führen Sie die "
+"folgenden Befehle aus:"
 
 #: ../../mail/configuration-server.rst:32
-msgid "To adopt the changes in Postfix, complete the step with the command:"
-msgstr ""
-"Um die Änderungen in Postfix zu übernehmen, schließen Sie folgende "
-"Schritte ab:"
+msgid "Update the authentication mapping:"
+msgstr "Aktualisieren Sie die Authentifizierungszuordnung:"
 
 #: ../../mail/configuration-server.rst:34
 msgid "$ postmap /etc/postfix/smtp_auth"
 msgstr "$ postmap /etc/postfix/smtp_auth"
 
-#: ../../mail/configuration-server.rst:41
+#: ../../mail/configuration-server.rst:38
 msgid ""
-"To ensure an encrypted connection while using a relay host, the Postfix "
-"option ``smtp_tls_security_level=encrypt`` has to be set. |UCSUCS| will "
-"set this option automatically, if :envvar:`mail/relayhost` is set and "
-":envvar:`mail/relayauth` is set to ``yes`` and "
-":envvar:`mail/postfix/tls/client/level` is not set to ``none``."
+"If you changed :envvar:`mail/relayauth`, you must update the TLS policy "
+"mapping file:"
 msgstr ""
-"Um eine verschlüsselte Verbindung bei der Verwendung eines Relay-Hosts "
-"sicherzustellen, muss die Postfix-Option "
-"``smtp_tls_security_level=encrypt`` gesetzt sein. |UCSUCS| setzt diese "
-"Option automatisch, wenn :envvar:`mail/relayhost` gesetzt und "
-":envvar:`mail/relayauth` auf ``yes`` gesetzt ist und "
-":envvar:`mail/postfix/tls/client/level` nicht auf ``none`` stehen."
+"Wenn Sie :envvar:`mail/relayauth` geändert haben, müssen Sie die Datei "
+"für die TLS-Richtlinien aktualisieren:"
 
-#: ../../mail/configuration-server.rst:50
+#: ../../mail/configuration-server.rst:40
+msgid "$ postmap /etc/postfix/tls_policy"
+msgstr "$ postmap /etc/postfix/tls_policy"
+
+#: ../../mail/configuration-server.rst:44
+msgid ""
+"If you changed :envvar:`mail/relayhost`, you must tell the mail server to"
+" reload the configuration:"
+msgstr ""
+"Wenn Sie :envvar:`mail/relayhost` geändert haben, müssen Sie dem "
+"Mailserver sagen, dass er die Konfiguration neu laden soll:"
+
+#: ../../mail/configuration-server.rst:47
+msgid "$ service postfix reload"
+msgstr "$ service postfix reload"
+
+#: ../../mail/configuration-server.rst:53
+msgid ""
+"To ensure an encrypted connection while using a relay host, you must set "
+"the :program:`Postfix` configuration option ``smtp_tls_security_level`` "
+"to ``encrypt``."
+msgstr ""
+"Um eine verschlüsselte Verbindung bei Verwendung eines Relay-Hosts zu "
+"gewährleisten, müssen Sie die :program:`Postfix`-Konfigurationsoption "
+"``smtp_tls_security_level`` auf ``encrypt`` setzen."
+
+#: ../../mail/configuration-server.rst:57
+msgid ""
+"|UCSUCS| sets this option automatically, if the |UCSUCRV|\\ s "
+":envvar:`mail/relayhost` and :envvar:`mail/relayauth` have the value "
+"``yes`` and if :envvar:`mail/postfix/tls/client/level` doesn't have the "
+"value ``none``."
+msgstr ""
+"|UCSUCS| setzt diese Option automatisch, wenn die |UCSUCRV|\\ n "
+":envvar:`mail/relayhost` und :envvar:`mail/relayauth` den Wert ``yes`` "
+"haben und wenn :envvar:`mail/postfix/tls/client/level` nicht den Wert "
+"``none`` hat."
+
+#: ../../mail/configuration-server.rst:65
 msgid "Configuration of the maximum mail size"
 msgstr "Konfiguration der maximalen E-Mailgröße"
 
-#: ../../mail/configuration-server.rst:52
+#: ../../mail/configuration-server.rst:67
 msgid ""
 "The |UCSUCRV| :envvar:`mail/messagesizelimit` can be used to set the "
 "maximum size in bytes for incoming and outgoing emails. Postfix must be "
@@ -141,13 +180,13 @@ msgstr ""
 " Emailanhänge durch die *base64*-Kodierung um ca. ein Drittel vergrössert"
 " werden."
 
-#: ../../mail/configuration-server.rst:61
+#: ../../mail/configuration-server.rst:76
 msgid "Configuration of a blind carbon copy for mail archiving solutions"
 msgstr ""
 "Konfiguration einer Blindkopie zur Anbindung von E-Mail-"
 "Archivierungslösungen"
 
-#: ../../mail/configuration-server.rst:63
+#: ../../mail/configuration-server.rst:78
 msgid ""
 "If the |UCSUCRV| :envvar:`mail/archivefolder` is set to an email address,"
 " Postfix sends a blind carbon copy of all incoming and outgoing emails to"
@@ -164,15 +203,15 @@ msgstr ""
 "sein, oder von einem externen Dienst bereitgestellt werden.  "
 "Standardmäßig ist die Variable nicht gesetzt."
 
-#: ../../mail/configuration-server.rst:70
+#: ../../mail/configuration-server.rst:85
 msgid "Postfix must then be restarted."
 msgstr "Anschließend muss Postfix neu gestartet werden."
 
-#: ../../mail/configuration-server.rst:75
+#: ../../mail/configuration-server.rst:90
 msgid "Configuration of soft bounces"
 msgstr "Konfiguration von Softbounces"
 
-#: ../../mail/configuration-server.rst:77
+#: ../../mail/configuration-server.rst:92
 msgid ""
 "In a number of error situations (e.g., for non-existent users) the result"
 " may be a mail bounce, i.e., the email cannot be delivered and is "
@@ -189,11 +228,11 @@ msgstr ""
 "Diese Einstellung ist insbesondere für Konfigurationsarbeiten am "
 "Mailserver sehr nützlich."
 
-#: ../../mail/configuration-server.rst:86
+#: ../../mail/configuration-server.rst:101
 msgid "Configuration of SMTP ports"
 msgstr "Konfiguration der SMTP Ports"
 
-#: ../../mail/configuration-server.rst:88
+#: ../../mail/configuration-server.rst:103
 msgid ""
 "On a |UCSUCS| mail server Postfix is configured to listen for connections"
 " on three ports:"
@@ -201,11 +240,11 @@ msgstr ""
 "Auf einem |UCSUCS| Mailserver ist Postfix so konfiguriert, dass es auf "
 "Verbindungen an drei Ports lauscht:"
 
-#: ../../mail/configuration-server.rst:96
+#: ../../mail/configuration-server.rst:111
 msgid "Port 25 - SMTP"
 msgstr "Port 25 - SMTP"
 
-#: ../../mail/configuration-server.rst:92
+#: ../../mail/configuration-server.rst:107
 msgid ""
 "Port 25 (``SMTP``) should be used by other mail servers only. By default "
 "authentication is disabled. If submission of emails from users is wanted "
@@ -220,11 +259,11 @@ msgstr ""
 ":envvar:`mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable` auf "
 "``yes`` gesetzt werden."
 
-#: ../../mail/configuration-server.rst:101
+#: ../../mail/configuration-server.rst:116
 msgid "Port 465 - SMTPS"
 msgstr "Port 465 - SMTPS"
 
-#: ../../mail/configuration-server.rst:99
+#: ../../mail/configuration-server.rst:114
 msgid ""
 "Port 465 (``SMTPS``) allows authentication and email submission through a"
 " SSL encrypted connection. ``SMTPS`` has been declared deprecated in "
@@ -235,11 +274,11 @@ msgstr ""
 "verschlüsselte Verbindung. ``SMTPS`` wurde zugunsten von Port 587 als "
 "veraltet erklärt, wird jedoch für Altsysteme aktiviert gelassen."
 
-#: ../../mail/configuration-server.rst:105
+#: ../../mail/configuration-server.rst:120
 msgid "Port 587 - Submission"
 msgstr "Port 587 - Submission"
 
-#: ../../mail/configuration-server.rst:104
+#: ../../mail/configuration-server.rst:119
 msgid ""
 "Port 587 (``Submission``) allows authentication and email submission "
 "through a TLS encrypted connection. The use of ``STARTTLS`` is enforced."
@@ -248,7 +287,7 @@ msgstr ""
 "Mailserver und das Einliefern von E-Mails über eine TLS-verschlüsselte "
 "Verbindung. Die Verwendung von STARTTLS wird erzwungen."
 
-#: ../../mail/configuration-server.rst:107
+#: ../../mail/configuration-server.rst:122
 msgid ""
 "The submission port should be preferred by email clients. The use of the "
 "ports ``25`` and ``465`` for email submission is deprecated."
@@ -257,11 +296,11 @@ msgstr ""
 "werden. Die Verwendung der Ports 25 und 465 zur Einlieferung von E-Mails "
 "ist überholt."
 
-#: ../../mail/configuration-server.rst:113
+#: ../../mail/configuration-server.rst:128
 msgid "Configuration of additional checks"
 msgstr "Konfiguration zusätzlicher Prüfungen"
 
-#: ../../mail/configuration-server.rst:115
+#: ../../mail/configuration-server.rst:130
 msgid ""
 "When using a mail server that is directly accessible from the internet, "
 "there is always a risk that spam sender, spam bots or broken mail servers"
@@ -273,7 +312,7 @@ msgstr ""
 "defekte Mailserver kontinuierlich versuchen, auf dem UCS-System "
 "ungewollte Mails (z.B. Spam) abzuliefern."
 
-#: ../../mail/configuration-server.rst:119
+#: ../../mail/configuration-server.rst:134
 msgid ""
 "To reduce the load of the mail server for such cases, Postfix brings its "
 "own service with the name :program:`postscreen`, which is put in front of"
@@ -292,7 +331,7 @@ msgstr ""
 " und somit die eingehende Mail abgelehnt, bevor sie im "
 "Verantwortungsbereich des UCS Mailservers angekommen ist."
 
-#: ../../mail/configuration-server.rst:127
+#: ../../mail/configuration-server.rst:142
 msgid ""
 "By default, :program:`postscreen` is not active. By setting the |UCSUCRV|"
 " :envvar:`mail/postfix/postscreen/enabled` to the value ``yes``, "
@@ -302,7 +341,7 @@ msgstr ""
 "das Setzen der |UCSUCRV| :envvar:`mail/postfix/postscreen/enabled` auf "
 "den Wert ``yes`` kann :program:`postscreen` aktiviert werden."
 
-#: ../../mail/configuration-server.rst:131
+#: ../../mail/configuration-server.rst:146
 msgid ""
 "Various UCR variables with the prefix :envvar:`mail/postfix/postscreen/` "
 "can be used to configure :program:`postscreen`. A list of all relevant "
@@ -314,11 +353,11 @@ msgstr ""
 "vorgenommen werden. Eine Liste der UCR-Variablen nebst Beschreibungen "
 "können z.B. auf der Kommandozeile über folgenden Befehl abgerufen werden:"
 
-#: ../../mail/configuration-server.rst:135
+#: ../../mail/configuration-server.rst:150
 msgid "$ ucr search --verbose mail/postfix/postscreen/"
 msgstr "$ ucr search --verbose mail/postfix/postscreen/"
 
-#: ../../mail/configuration-server.rst:141
+#: ../../mail/configuration-server.rst:156
 msgid ""
 "After each change of a UCR variable for :program:`postscreen` the "
 "configuration of Postfix and :program:`postscreen` should be reloaded. "
@@ -330,11 +369,11 @@ msgstr ""
 "werden, was über den Befehl :command:`systemctl reload postfix` ausgelöst"
 " werden kann."
 
-#: ../../mail/configuration-server.rst:148
+#: ../../mail/configuration-server.rst:163
 msgid "Custom Postfix configuration"
 msgstr "Eigene Anpassung der Postfix Konfiguration"
 
-#: ../../mail/configuration-server.rst:150
+#: ../../mail/configuration-server.rst:165
 msgid ""
 "It is possible to modify the Postfix configuration, that resides within "
 "the file :file:`/etc/postfix/main.cf`, beyond the variables that can be "
@@ -345,7 +384,7 @@ msgstr ""
 "definiert. Eine Erweiterung der Konfiguration, die über die vorhandenen "
 "|UCSUCR|-Variablen hinaus geht, ist ebenso möglich."
 
-#: ../../mail/configuration-server.rst:154
+#: ../../mail/configuration-server.rst:169
 msgid ""
 "If the file :file:`/etc/postfix/main.cf.local` exists, its content will "
 "be appended to the file :file:`main.cf`. To transfer changes of "
@@ -357,21 +396,21 @@ msgstr ""
 ":file:`main.cf.local` nach :file:`main.cf` übernommen werden, muss der "
 "folgende Befehl ausgeführt werden:"
 
-#: ../../mail/configuration-server.rst:159
+#: ../../mail/configuration-server.rst:174
 msgid "$ ucr commit /etc/postfix/main.cf"
 msgstr "$ ucr commit /etc/postfix/main.cf"
 
-#: ../../mail/configuration-server.rst:164
+#: ../../mail/configuration-server.rst:179
 msgid "For the Postfix service to accept the changes, it must be reloaded:"
 msgstr ""
 "Zum Übernehmen der Änderungen durch den Postfix Dienst muss dieser neu "
 "geladen werden:"
 
-#: ../../mail/configuration-server.rst:166
+#: ../../mail/configuration-server.rst:181
 msgid "$ systemctl reload postfix"
 msgstr "$ systemctl reload postfix"
 
-#: ../../mail/configuration-server.rst:171
+#: ../../mail/configuration-server.rst:186
 msgid ""
 "If a Postfix variable that has previously been set in :file:`main.cf` is "
 "set again in :file:`main.cf.local`, Postfix will issue a warning to the "
@@ -381,7 +420,7 @@ msgstr ""
 "die zuvor auch in :file:`main.cf` gesetzt wurde, so schreibt Postfix eine"
 " Warnung in die Logdatei :file:`/var/log/mail.log`."
 
-#: ../../mail/configuration-server.rst:177
+#: ../../mail/configuration-server.rst:192
 msgid ""
 "If Postfix' behavior is not as expected, first remove configuration "
 "settings made by :file:`main.cf.local`. Rename the file or comment out "
@@ -395,11 +434,11 @@ msgstr ""
 "beiden oben genannten Kommandos ausgeführt werden. Die Konfiguration "
 "entspricht dann wieder der Standardkonfiguration von UCS."
 
-#: ../../mail/configuration-server.rst:185
+#: ../../mail/configuration-server.rst:200
 msgid "Configuring the alias expansion limit"
 msgstr "Konfiguration des Alias Expansion Limits"
 
-#: ../../mail/configuration-server.rst:187
+#: ../../mail/configuration-server.rst:202
 msgid ""
 "When sending a mail to a group including other nested groups, the mail "
 "may not be accepted/delivered. This is caused by Postfix trying to expand"
@@ -413,7 +452,7 @@ msgstr ""
 "erweitern. Diese Anzahl wird standardmäßig auf 1000 Nutzer begrenzt und "
 "kann daher zu gering sein."
 
-#: ../../mail/configuration-server.rst:192
+#: ../../mail/configuration-server.rst:207
 msgid ""
 "To adjust the number to (for instance) 5000 users, the following line can"
 " be added or edited in :file:`/etc/postfix/main.cf.local`:"
@@ -422,19 +461,19 @@ msgstr ""
 "Zeile in :file:`/etc/postfix/main.cf.local` hinzugefügt oder angepasst "
 "werden:"
 
-#: ../../mail/configuration-server.rst:195
+#: ../../mail/configuration-server.rst:210
 msgid "virtual_alias_expansion_limit = 5000"
 msgstr "virtual_alias_expansion_limit = 5000"
 
-#: ../../mail/configuration-server.rst:199
+#: ../../mail/configuration-server.rst:214
 msgid "Afterwards Postfix needs to be restarted:"
 msgstr "Danach muss Postfix neugestartet werden:"
 
-#: ../../mail/configuration-server.rst:201
+#: ../../mail/configuration-server.rst:216
 msgid "$ systemctl restart postfix"
 msgstr "$ systemctl restart postfix"
 
-#: ../../mail/configuration-server.rst:208
+#: ../../mail/configuration-server.rst:223
 msgid ""
 "Handling of mailboxes during email changes and the deletion of user "
 "accounts"
@@ -442,7 +481,7 @@ msgstr ""
 "Handhabung der Postfächer bei Änderung der E-Mail-Adresse und Löschung "
 "von Benutzerkonten"
 
-#: ../../mail/configuration-server.rst:210
+#: ../../mail/configuration-server.rst:225
 msgid ""
 "A user's mailbox is linked to the primary email address and not to the "
 "username. The |UCSUCRV| :envvar:`mail/dovecot/mailbox/rename` can be used"
@@ -453,7 +492,7 @@ msgstr ""
 ":envvar:`mail/dovecot/mailbox/rename` kann das Verhalten bei der Änderung"
 " der primären E-Mail-Adresse konfiguriert werden:"
 
-#: ../../mail/configuration-server.rst:214
+#: ../../mail/configuration-server.rst:229
 msgid ""
 "If the variable is set to ``yes``, the name of the user's IMAP mailbox is"
 " changed. This is the standard setting since UCS 3.0."
@@ -461,7 +500,7 @@ msgstr ""
 "Ist die Variable auf ``yes`` gesetzt, wird das IMAP-Postfach des "
 "Benutzers umbenannt. Dies ist seit UCS 3.0 die Standardeinstellung."
 
-#: ../../mail/configuration-server.rst:217
+#: ../../mail/configuration-server.rst:232
 msgid ""
 "If the setting is ``no``, it will not be possible to read previous emails"
 " any more once the user's primary email address is changed! If another "
@@ -474,7 +513,7 @@ msgstr ""
 " zugewiesen, bekommt dieser Zugriff auf die alte IMAP-Struktur dieses "
 "Postfachs."
 
-#: ../../mail/configuration-server.rst:222
+#: ../../mail/configuration-server.rst:237
 msgid ""
 "The |UCSUCRV| :envvar:`mail/dovecot/mailbox/delete` can be used to "
 "configure, whether the IMAP mailbox is also deleted. The value ``yes`` "
@@ -486,19 +525,19 @@ msgstr ""
 "``yes`` aktiviert die Löschung des betroffenen IMAP-Postfachs bei "
 "folgenden Aktionen:"
 
-#: ../../mail/configuration-server.rst:227
+#: ../../mail/configuration-server.rst:242
 msgid "deletion of the user account"
 msgstr "dem Löschen des Benutzerkontos"
 
-#: ../../mail/configuration-server.rst:229
+#: ../../mail/configuration-server.rst:244
 msgid "removal of the primary email address from the user account"
 msgstr "dem Entfernen der primären Mailadresse von einem Benutzerkonto"
 
-#: ../../mail/configuration-server.rst:231
+#: ../../mail/configuration-server.rst:246
 msgid "changing the user's mail home server to a different system"
 msgstr "dem Ändern des Mail Home Servers auf ein anderes System"
 
-#: ../../mail/configuration-server.rst:233
+#: ../../mail/configuration-server.rst:248
 msgid ""
 "With default settings (``no``) the mailboxes are kept if one of the "
 "actions above is performed."
@@ -506,7 +545,7 @@ msgstr ""
 "In der Grundeinstellung (``no``) bleiben die Postfächer bei diesen "
 "Aktionen erhalten, wenn eine der obigen Aktionen durchgeführt wird."
 
-#: ../../mail/configuration-server.rst:236
+#: ../../mail/configuration-server.rst:251
 msgid ""
 "The combination of the two variables creates four possible outcomes when "
 "the email address is changed:"
@@ -514,24 +553,24 @@ msgstr ""
 "Aus der Kombination der beiden Variablen ergeben sich folgende vier "
 "Fälle, wenn E-Mail-Adressen geändert werden:"
 
-#: ../../mail/configuration-server.rst:239
+#: ../../mail/configuration-server.rst:254
 msgid "Renaming of email addresses"
 msgstr "Umbenennung von E-Mail-Adressen"
 
-#: ../../mail/configuration-server.rst:243
+#: ../../mail/configuration-server.rst:258
 msgid "mail/dovecot/mailbox/…"
 msgstr "mail/dovecot/mailbox/…"
 
-#: ../../mail/configuration-server.rst:244
+#: ../../mail/configuration-server.rst:259
 msgid "Meaning"
 msgstr "Bedeutung"
 
-#: ../../mail/configuration-server.rst:246
+#: ../../mail/configuration-server.rst:261
 msgid "``rename=yes`` and ``delete=no`` (default)"
 msgstr "``rename=yes`` und ``delete=no`` (Standard)"
 
-#: ../../mail/configuration-server.rst:247
-#: ../../mail/configuration-server.rst:251
+#: ../../mail/configuration-server.rst:262
+#: ../../mail/configuration-server.rst:266
 msgid ""
 "The existing mailbox will be renamed. Emails will be preserved and will "
 "be accessible at the new address."
@@ -539,15 +578,15 @@ msgstr ""
 "Die bestehende Mailbox wird umbenannt. E-Mails bleiben erhalten und sind "
 "unter dem neuen Namen erreichbar."
 
-#: ../../mail/configuration-server.rst:250
+#: ../../mail/configuration-server.rst:265
 msgid "``rename=yes`` and ``delete=yes``"
 msgstr "``rename=yes`` und ``delete=yes``"
 
-#: ../../mail/configuration-server.rst:254
+#: ../../mail/configuration-server.rst:269
 msgid "``rename=no`` and ``delete=no``"
 msgstr "``rename=no`` und ``delete=no``"
 
-#: ../../mail/configuration-server.rst:255
+#: ../../mail/configuration-server.rst:270
 msgid ""
 "A new, empty mailbox will be created. The old one will be preserved on "
 "disk with the old name and will thus not be accessible to users."
@@ -556,11 +595,11 @@ msgstr ""
 "Namen auf der Festplatte erhalten und ist damit vorerst für Benutzer "
 "nicht zu erreichen."
 
-#: ../../mail/configuration-server.rst:258
+#: ../../mail/configuration-server.rst:273
 msgid "``rename=no`` and ``delete=yes``"
 msgstr "``rename=no`` und ``delete=yes``"
 
-#: ../../mail/configuration-server.rst:259
+#: ../../mail/configuration-server.rst:274
 msgid ""
 "A new, empty mailbox will be created. The old one will be deleted from "
 "the hard disk."
@@ -568,11 +607,11 @@ msgstr ""
 "Eine neue, leere Mailbox wird erzeugt. Die alte Mailbox wird inklusive "
 "aller enthaltenen Mails von der Festplatte gelöscht."
 
-#: ../../mail/configuration-server.rst:265
+#: ../../mail/configuration-server.rst:280
 msgid "Distribution of an installation on several mail servers"
 msgstr "Verteilung einer Installation auf mehrere Mailserver"
 
-#: ../../mail/configuration-server.rst:267
+#: ../../mail/configuration-server.rst:282
 msgid ""
 "The UCS mail system offers the possibility of distributing users across "
 "several mail servers. To this end, each user is assigned a so-called mail"
@@ -586,7 +625,7 @@ msgstr ""
 "werden. Beim Zustellen einer E-Mail wird der zuständige Home Server "
 "automatisch aus dem LDAP-Verzeichnis ermittelt."
 
-#: ../../mail/configuration-server.rst:272
+#: ../../mail/configuration-server.rst:287
 msgid ""
 "It must be observed that global IMAP folders (see :ref:`mail-management-"
 "shared-folder`) are assigned to a mail home server."
@@ -594,7 +633,7 @@ msgstr ""
 "Es ist zu beachten, dass globale IMAP-Ordner (siehe :ref:`mail-"
 "management-shared-folder`) einem Mail Home Server zugeordnet sind."
 
-#: ../../mail/configuration-server.rst:275
+#: ../../mail/configuration-server.rst:290
 msgid ""
 "If the mail home server changes for a user, the user's mail data is *not*"
 " moved to the server automatically."
@@ -602,11 +641,11 @@ msgstr ""
 "Beim Ändern des Mail Home Servers eines Benutzers werden dessen E-Mails "
 "*nicht* automatisch auf den neuen Server verschoben."
 
-#: ../../mail/configuration-server.rst:281
+#: ../../mail/configuration-server.rst:296
 msgid "Mail storage on NFS"
 msgstr "Mailserver-Speicher auf NFS"
 
-#: ../../mail/configuration-server.rst:283
+#: ../../mail/configuration-server.rst:298
 msgid ""
 "Dovecot supports storing emails and index files on cluster file systems "
 "and on NFS. Some settings are necessary to prevent data loss in certain "
@@ -616,7 +655,7 @@ msgstr ""
 "Cluster-Dateisystemen und NFS. Einige Einstellungen sind jedoch nötig, um"
 " Datenverluste in bestimmten Situationen zu vermeiden."
 
-#: ../../mail/configuration-server.rst:286
+#: ../../mail/configuration-server.rst:301
 msgid ""
 "The following settings assume that mailboxes are not accessed "
 "simultaneously by multiple servers. This is the case if for each user "
@@ -626,19 +665,19 @@ msgstr ""
 "gleichzeitig von mehreren Servern aus zugegriffen wird. Das ist der Fall,"
 " wenn jedem Benutzer ein Mail Home Server zugeordnet ist."
 
-#: ../../mail/configuration-server.rst:290
+#: ../../mail/configuration-server.rst:305
 msgid ":envvar:`mail/dovecot/process/mmap_disable`\\ ``=yes``"
 msgstr ":envvar:`mail/dovecot/process/mmap_disable`\\ ``=yes``"
 
-#: ../../mail/configuration-server.rst:292
+#: ../../mail/configuration-server.rst:307
 msgid ":envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=yes``"
 msgstr ":envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=yes``"
 
-#: ../../mail/configuration-server.rst:294
+#: ../../mail/configuration-server.rst:309
 msgid ":envvar:`mail/dovecot/process/mail_fsync`\\ ``=always``"
 msgstr ":envvar:`mail/dovecot/process/mail_fsync`\\ ``=always``"
 
-#: ../../mail/configuration-server.rst:296
+#: ../../mail/configuration-server.rst:311
 msgid ""
 "To achieve higher performance, index files can be kept on the local "
 "servers disk, instead of storing them together with the messages on NFS. "
@@ -652,7 +691,7 @@ msgstr ""
 "zu finden. Setzen Sie dafür die |UCSUCRV| "
 ":envvar:`mail/dovecot/location/separate_index`\\ ``=yes``."
 
-#: ../../mail/configuration-server.rst:301
+#: ../../mail/configuration-server.rst:316
 msgid ""
 "With the above settings the mail server should work without problems on "
 "NFS. There are however a lot of different client and server systems in "
@@ -664,7 +703,7 @@ msgstr ""
 "sind jedoch so vielfältig, dass hier noch ein paar Hinweise folgen, wie "
 "bei Schwierigkeiten weiter vorgegangen werden kann:"
 
-#: ../../mail/configuration-server.rst:305
+#: ../../mail/configuration-server.rst:320
 msgid ""
 "If NFSv2 is in use (not the case if the NFS server is a |UCSUCS|), please"
 " set :envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=no``."
@@ -673,7 +712,7 @@ msgstr ""
 "|UCSUCS| ist), setzen Sie bitte "
 ":envvar:`mail/dovecot/process/dotlock_use_excl`\\ ``=no``."
 
-#: ../../mail/configuration-server.rst:308
+#: ../../mail/configuration-server.rst:323
 msgid ""
 "If *lockd* is not in use (not the case on |UCSUCS| systems) or if even "
 "with *lockd* in use locking error are encountered, set "
@@ -686,7 +725,7 @@ msgstr ""
 "verringert die Performance, aber behebt die meisten Locking-bezogenen "
 "Probleme."
 
-#: ../../mail/configuration-server.rst:313
+#: ../../mail/configuration-server.rst:328
 msgid ""
 "Dovecot flushes NFS caches when needed if you set "
 ":envvar:`mail/dovecot/process/mail_nfs_storage`\\ ``=yes``, but "
@@ -701,7 +740,7 @@ msgstr ""
 "von Index-Dateien: :envvar:`mail/dovecot/process/mail_nfs_index`\\ "
 "``=yes``."
 
-#: ../../mail/configuration-server.rst:322
+#: ../../mail/configuration-server.rst:337
 msgid ""
 "`Mail Location Settings <dovecot-mail-location-settings_>`_ in the "
 "Dovecot documentation"
@@ -709,11 +748,11 @@ msgstr ""
 "`Mail Location Settings <dovecot-mail-location-settings_>`_ in der "
 "Dovecot Dokumentation"
 
-#: ../../mail/configuration-server.rst:322
+#: ../../mail/configuration-server.rst:337
 msgid "for more information about mailbox locations."
 msgstr "für weitere Informationen über Mailbox Orte."
 
-#: ../../mail/configuration-server.rst:325
+#: ../../mail/configuration-server.rst:340
 msgid ""
 "`Shared mailboxes <dovecot-shared-mailboxes_>`_ in the Dovecot "
 "documentation"
@@ -721,23 +760,23 @@ msgstr ""
 "`Shared mailboxes <dovecot-shared-mailboxes_>`_ in der Dovecot "
 "Dokumentation"
 
-#: ../../mail/configuration-server.rst:325
+#: ../../mail/configuration-server.rst:340
 msgid "for more information about mailbox sharing."
 msgstr "für weitere Informationen über das Teilen von Mailboxen."
 
-#: ../../mail/configuration-server.rst:327
+#: ../../mail/configuration-server.rst:342
 msgid "`NFS <dovecot-nfs_>`_ in the Dovecot documentation"
 msgstr "`NFS <dovecot-nfs_>`_ in der Dovecot Dokumentation"
 
-#: ../../mail/configuration-server.rst:328
+#: ../../mail/configuration-server.rst:343
 msgid "for more information about using Dovecot with NFS."
 msgstr "für weitere Informationen über die Verwendung von Dovecot mit NFS."
 
-#: ../../mail/configuration-server.rst:333
+#: ../../mail/configuration-server.rst:348
 msgid "Connection limits"
 msgstr "Beschränkung der Verbindungsanzahl"
 
-#: ../../mail/configuration-server.rst:335
+#: ../../mail/configuration-server.rst:350
 msgid ""
 "In a default |UCSUCS| configuration Dovecot allows ``400`` concurrent "
 "IMAP and POP3 connections each. That is enough to serve at least 100 "
@@ -748,7 +787,7 @@ msgstr ""
 "sicher aus, um 100 gleichzeitig eingeloggte IMAP-Benutzer zu bedienen, "
 "unter Umständen deutlich mehr."
 
-#: ../../mail/configuration-server.rst:339
+#: ../../mail/configuration-server.rst:354
 msgid ""
 "How many IMAP connections are opened by a user depends on the clients "
 "they use:"
@@ -756,17 +795,17 @@ msgstr ""
 "Wie viele IMAP-Verbindungen Benutzer gleichzeitig geöffnet haben, hängt "
 "von den eingesetzten Clients ab:"
 
-#: ../../mail/configuration-server.rst:341
+#: ../../mail/configuration-server.rst:356
 msgid "Web mail opens just a few short lived connections."
 msgstr "Webmail öffnet nur einzelne, kurzlebige Verbindungen."
 
-#: ../../mail/configuration-server.rst:343
+#: ../../mail/configuration-server.rst:358
 msgid "Desktop clients keep multiple connections open over a long period of time."
 msgstr ""
 "Desktop E-Mail-Programme halten über lange Zeit mehrere Verbindungen "
 "offen."
 
-#: ../../mail/configuration-server.rst:345
+#: ../../mail/configuration-server.rst:360
 msgid ""
 "Mobile clients keep just a few connections open over a long period of "
 "time. But they tend to never close them, unnecessarily wasting resources."
@@ -775,7 +814,7 @@ msgstr ""
 "beenden diese oft nicht von sich aus, so dass sie unnötig lang Ressourcen"
 " belegen."
 
-#: ../../mail/configuration-server.rst:348
+#: ../../mail/configuration-server.rst:363
 msgid ""
 "The limits exist mainly to resist denial of service attacks that open a "
 "lot of connections and create lots of processes."
@@ -784,25 +823,25 @@ msgstr ""
 "durch sehr viele geöffnete Prozesse und Netzwerkverbindungen zu "
 "widerstehen."
 
-#: ../../mail/configuration-server.rst:351
+#: ../../mail/configuration-server.rst:366
 msgid "To list the open connections, run:"
 msgstr ""
 "Um die in diesem Augenblick offenen Verbindungen zu sehen, kann folgender"
 " Befehl ausgeführt werden:"
 
-#: ../../mail/configuration-server.rst:353
+#: ../../mail/configuration-server.rst:368
 msgid "$ doveadm who"
 msgstr "$ doveadm who"
 
-#: ../../mail/configuration-server.rst:357
+#: ../../mail/configuration-server.rst:372
 msgid "To display the total amount of open connections, run:"
 msgstr "Um die Gesamtanzahl auszugeben:"
 
-#: ../../mail/configuration-server.rst:359
+#: ../../mail/configuration-server.rst:374
 msgid "$ doveadm who -1 | wc -l"
 msgstr "$ doveadm who -1 | wc -l"
 
-#: ../../mail/configuration-server.rst:363
+#: ../../mail/configuration-server.rst:378
 msgid ""
 "The |UCSUCRV|\\ s :envvar:`mail/dovecot/limits`\\ ``/*`` can be set to "
 "modify the limits. The process of adapting those variables is only semi "
@@ -813,10 +852,11 @@ msgstr ""
 "Um die Beschränkungen zu verändern, können die |UCSUCRV|\\ n "
 ":envvar:`mail/dovecot/limits`\\ ``/*`` angepasst werden. Der Vorgang ist "
 "auf Grund des komplexen Zusammenspiels dieser Variablen nur halb "
-"automatisch. Die Bedeutung aller Variablen kann in `Dovecot Dokumentation: Service"
-" configuration <dovecot-services_>`_ nachgelesen werden."
+"automatisch. Die Bedeutung aller Variablen kann in `Dovecot "
+"Dokumentation: Service configuration <dovecot-services_>`_ nachgelesen "
+"werden."
 
-#: ../../mail/configuration-server.rst:368
+#: ../../mail/configuration-server.rst:383
 msgid ""
 "Dovecot uses separate processes for login and to access emails. The "
 "limits for these can be configured separately. The maximum number of "
@@ -841,7 +881,7 @@ msgstr ""
 "betreut. Da standardmäßig nur 400 Prozesse erlaubt sind, können auch "
 "nicht mehr Verbindungen geöffnet werden."
 
-#: ../../mail/configuration-server.rst:379
+#: ../../mail/configuration-server.rst:394
 msgid ""
 "To allow 3000 clients to connect to their emails, another |UCSUCRV| has "
 "to be set:"
@@ -849,7 +889,7 @@ msgstr ""
 "Um 3000 Verbindungen von Benutzern zu ihren E-Mails zu erlauben, muss "
 "daher eine weitere |UCSUCRV| gesetzt werden:"
 
-#: ../../mail/configuration-server.rst:382
+#: ../../mail/configuration-server.rst:397
 msgid ""
 "$ ucr set mail/dovecot/limits/default_client_limit=3000\n"
 "$ ucr set mail/dovecot/limits/default_process_limit=3000\n"
@@ -859,11 +899,11 @@ msgstr ""
 "$ ucr set mail/dovecot/limits/default_process_limit=3000\n"
 "$ doveadm reload"
 
-#: ../../mail/configuration-server.rst:389
+#: ../../mail/configuration-server.rst:404
 msgid "Reading :file:`/var/log/dovecot.info` reveals a warning:"
 msgstr "Ein Blick in :file:`/var/log/dovecot.info` offenbart nun eine Warnung:"
 
-#: ../../mail/configuration-server.rst:393
+#: ../../mail/configuration-server.rst:408
 msgid ""
 "config: Warning: service auth { client_limit=2000 } is lower than "
 "required under max. load (15000)\n"
@@ -875,7 +915,7 @@ msgstr ""
 "config: Warning: service anvil { client_limit=1603 } is lower than "
 "required under max. load (12003)"
 
-#: ../../mail/configuration-server.rst:396
+#: ../../mail/configuration-server.rst:411
 msgid ""
 "The services ``auth`` (responsible for login and SSL connections) and "
 "``anvil`` (responsible for statistics collection) are set to their "
@@ -889,7 +929,7 @@ msgstr ""
 "aber die Anzahl der Prozesse für Login und SSL ist nun zu niedrig um sie "
 "alle zu bedienen. Dies wird dazu führen, dass Logins fehlschlagen."
 
-#: ../../mail/configuration-server.rst:402
+#: ../../mail/configuration-server.rst:417
 msgid ""
 "The values are so high, because ``default_client_limit`` and "
 "``default_process_limit`` do not only lift limits for IMAP and POP3, but "
@@ -908,13 +948,13 @@ msgstr ""
 "gleichzeitiger Verbindungen zu den Diensten ``auth`` und ``anvil`` "
 "erhöht."
 
-#: ../../mail/configuration-server.rst:409
+#: ../../mail/configuration-server.rst:424
 msgid "The values have to be adapted, using the numbers from the log file:"
 msgstr ""
 "Die Werte für die Dienste müssen nun der Fehlermeldung entsprechend "
 "angepasst werden:"
 
-#: ../../mail/configuration-server.rst:411
+#: ../../mail/configuration-server.rst:426
 msgid ""
 "$ ucr set mail/dovecot/limits/auth/client_limit=15000\n"
 "$ ucr set mail/dovecot/limits/anvil/client_limit=12003\n"
@@ -924,13 +964,13 @@ msgstr ""
 "$ ucr set mail/dovecot/limits/anvil/client_limit=12003\n"
 "$ doveadm reload"
 
-#: ../../mail/configuration-server.rst:417
+#: ../../mail/configuration-server.rst:432
 msgid "Another warning appears in :file:`/var/log/dovecot.info`:"
 msgstr ""
 "Ein Blick in :file:`/var/log/dovecot.info` offenbart nun noch eine letzte"
 " Warnung:"
 
-#: ../../mail/configuration-server.rst:422
+#: ../../mail/configuration-server.rst:437
 msgid ""
 "master: Warning: fd limit (ulimit -n) is lower than required under max. "
 "load (2000 < 15000),…\n"
@@ -940,7 +980,7 @@ msgstr ""
 "load (2000 < 15000),…\n"
 " because of service auth { client_limit }"
 
-#: ../../mail/configuration-server.rst:425
+#: ../../mail/configuration-server.rst:440
 msgid ""
 "The Linux kernel controlled setting ``ulimit`` setting (limit on the "
 "number of files/connections a process is allowed to open) is changed only"
@@ -950,11 +990,11 @@ msgstr ""
 "gleichzeitig geöffneter Dateien/Verbindungen pro Prozess) wird nur bei "
 "einem Neustart des Dovecot-Dienstes verändert, daher:"
 
-#: ../../mail/configuration-server.rst:429
+#: ../../mail/configuration-server.rst:444
 msgid "$ systemctl restart dovecot"
 msgstr "$ systemctl restart dovecot"
 
-#: ../../mail/configuration-server.rst:433
+#: ../../mail/configuration-server.rst:448
 msgid ""
 "No more warnings are written to the log file and both IMAP and POP3 "
 "servers now accept 3000 client connections each."
@@ -962,7 +1002,7 @@ msgstr ""
 "Nun erscheint keine Fehlermeldung mehr, und IMAP- und POP3-Server "
 "akzeptieren nun beide je 3000 Verbindungen."
 
-#: ../../mail/configuration-server.rst:436
+#: ../../mail/configuration-server.rst:451
 msgid ""
 "|UCSUCS| configures Dovecot to run in \"High-security mode\" by default. "
 "For installations with 10.000s of users, Dovecot offers the \"High-"
