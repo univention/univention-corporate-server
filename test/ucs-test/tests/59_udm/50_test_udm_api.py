@@ -432,7 +432,7 @@ class TestUdmLDAPConnection(TestCase):
             os.rename('/etc/ldap.secret', '/etc/ldap.secret.test')
             with pytest.raises(ConnectionError) as cm:
                 UDM.admin()
-            assert str(cm.exception) == 'Could not read secret file'
+            assert str(cm.value) == 'Could not read secret file'
         finally:
             os.rename('/etc/ldap.secret.test', '/etc/ldap.secret')
 
@@ -445,7 +445,7 @@ class TestUdmLDAPConnection(TestCase):
         try:
             with pytest.raises(ConnectionError) as cm:
                 UDM.machine()
-            assert str(cm.exception) == 'The LDAP Server is not running'
+            assert str(cm.value) == 'The LDAP Server is not running'
         finally:
             assert call(['systemctl', 'start', 'slapd']) == 0
 
@@ -455,7 +455,7 @@ class TestUdmLDAPConnection(TestCase):
             open('/etc/machine.secret', 'w').write('garbage')
             with pytest.raises(ConnectionError) as cm:
                 UDM.machine()
-            assert str(cm.exception) == 'Credentials invalid'
+            assert str(cm.value) == 'Credentials invalid'
         finally:
             open('/etc/machine.secret', 'w').write(pw)
 
@@ -483,11 +483,11 @@ class TestUdmLDAPConnection(TestCase):
         password = uts.random_name()
         with pytest.raises(ConnectionError) as cm:
             UDM.credentials(identity=username, password=password)
-        assert str(cm.exception) == 'Cannot get DN for username'
+        assert str(cm.value) == 'Cannot get DN for username'
 
         with pytest.raises(ConnectionError) as cm:
             UDM.credentials(identity='Administrator', password=password)
-        assert str(cm.exception) == 'Credentials invalid'
+        assert str(cm.value) == 'Credentials invalid'
 
 
 class TestUdmModuleCaching(TestCase):
