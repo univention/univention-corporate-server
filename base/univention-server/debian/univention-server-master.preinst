@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Server Role "Primary Directory Node"
 #  preinst script for the debian package

@@ -1,8 +1,9 @@
-univention-server (15.0.8-1) UNRELEASED; urgency=medium
+univention-server (15.0.8-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #56046: Use `bash` to execure Primary preinst for SSL generation
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:24 +0100
+ -- Philipp Hahn <hahn@univention.de>  Sat, 09 Dec 2023 15:08:31 +0100
 
 univention-server (15.0.7-3) unstable; urgency=medium
 

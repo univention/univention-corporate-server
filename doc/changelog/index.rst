@@ -279,6 +279,9 @@ General
 
   :program:`py-lmdb` (:uv:bug:`53387`)
 
+* Execute the pre-installation script for server role |UCSPRIMARYDN| with :program:`bash`.
+  This is needed to create the SSL/TLS certificate (:uv:bug:`56046`).
+
 .. _changelog-basis-ucr:
 
 Univention Configuration Registry
