@@ -24,6 +24,10 @@ stages:
     - mkdir -p "$CI_PROJECT_DIR"/out/"$DOC_NAME"/"$DOC_TARGET_VERSION"/"$language"
     - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" html
     - rsync -av --delete "$DOCS_DIR"/_build/"$language"/html/ "$CI_PROJECT_DIR"/out/"$DOC_NAME"/"$DOC_TARGET_VERSION"/"$language"
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/$DOCS_DIR/_build/$language/html
+      - $CI_PROJECT_DIR/out
 
 .sphinx-pdf:
   extends:
@@ -33,6 +37,10 @@ stages:
     - mkdir -p "$CI_PROJECT_DIR"/out/"$DOC_NAME"/"$DOC_TARGET_VERSION"/"$language"
     - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" latexpdf
     - rsync -av "$DOCS_DIR"/_build/"$language"/latex/"$DOC_NAME".pdf "$CI_PROJECT_DIR"/out/"$DOC_NAME"/"$DOC_TARGET_VERSION"/"$language"/"$DOC_NAME".pdf
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/$DOCS_DIR/_build/$language/latex
+      - $CI_PROJECT_DIR/out
 
 .sphinx-linkcheck:
   extends:
@@ -40,6 +48,9 @@ stages:
     - .sphinx-linkcheck-template
   script:
     - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" linkcheck
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/$DOCS_DIR/_build/$language/linkcheck
 
 .sphinx-spelling:
   extends:
@@ -47,6 +58,9 @@ stages:
     - .sphinx-spelling-template
   script:
     - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" spelling
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/$DOCS_DIR/_build/$language/spelling
 
 .sphinx-warnings:
   extends: .sphinx-warnings-template
