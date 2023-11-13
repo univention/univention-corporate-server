@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: python-urllib3
+fix: 1.24.1-1+deb10u2
+desc: |
+ This update addresses the following issues:
+ 1.24.1-1+deb10u2 (Wed, 08 Nov 2023 11:02:05 +0000)
+ [ Sean Whitton ]
+ * Non-maintainer upload by the LTS Security Team.
+ * CVE-2023-43803: Request body isn't stripped during cross-origin redirects.
+ [ Guilhem Moulin ]
+ * Use system 'six' in test/with_dummyserver/test_https.py too.
+ * Retroactively fix CVE-2018-25091.
+bug: [56822]
+cve:
+- CVE-2023-43803
+- CVE-2018-25091
