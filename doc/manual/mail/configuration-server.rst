@@ -12,37 +12,52 @@ Configuration of the mail server
 Configuration of a relay host for sending the emails
 ----------------------------------------------------
 
-By default Postfix creates a direct SMTP connection to the mail server
-responsible for the domain when an email is sent to a non-local address. This
-server is determined by querying the MX record in the DNS.
+By default, :program:`Postfix` creates a direct SMTP connection to the mail
+server responsible for the domain when it sends an email to a non-local address.
+:program:`Postfix` determines this server by querying the MX record in the DNS.
 
-Alternatively, a mail relay server can also be used, i.e., a server which
-receives the mails and takes over their further sending. This type of mail relay
-server can be provided by a superordinate corporate headquarters or the internet
-provider, for example. To set a relay host, it must be entered as a fully
+Alternatively, :program:`Postfix` can use a mail relay server. This is a server
+that receives emails and handles their transport. Administrators can have this
+type of mail relay server, such as one provided by the company's headquarter or
+by the internet provider. To set up a relay host, specify it as a fully
 qualified domain name (FQDN) in the |UCSUCRV| :envvar:`mail/relayhost`.
 
-If authentication is necessary on the relay host for sending, the |UCSUCRV|
-:envvar:`mail/relayauth` must be set to ``yes`` and the
-:file:`/etc/postfix/smtp_auth` file edited. The relay host, username and
-password must be saved in this file in one line: :samp:`{FQDN-Relayhost}
-{username}:{password}`
+If authentication is necessary on the relay host for sending, set the |UCSUCRV|
+:envvar:`mail/relayauth` to ``yes`` and edit the :file:`/etc/postfix/smtp_auth`
+file. Provide the relay host, username, and password in this file in one line in
+the format: :samp:`{FQDN-Relayhost} {username}:{password}`
 
+To adopt the changes in :program:`Postfix`, complete the following commands:
 
-To adopt the changes in Postfix, complete the step with the command:
+#. Update the authentication mapping:
 
-.. code-block:: console
+   .. code-block:: console
 
-   $ postmap /etc/postfix/smtp_auth
+      $ postmap /etc/postfix/smtp_auth
 
+#. If you changed :envvar:`mail/relayauth`, you must update the TLS policy mapping file:
+
+   .. code-block:: console
+
+      $ postmap /etc/postfix/tls_policy
+
+#. If you changed :envvar:`mail/relayhost`, you must tell the mail server
+   to reload the configuration:
+
+   .. code-block:: console
+
+      $ service postfix reload
 
 .. note::
 
-   To ensure an encrypted connection while using a relay host, the Postfix
-   option ``smtp_tls_security_level=encrypt`` has to be set. |UCSUCS| will set
-   this option automatically, if :envvar:`mail/relayhost` is set and
-   :envvar:`mail/relayauth` is set to ``yes`` and
-   :envvar:`mail/postfix/tls/client/level` is not set to ``none``.
+   To ensure an encrypted connection while using a relay host, you must set the
+   :program:`Postfix` configuration option ``smtp_tls_security_level`` to
+   ``encrypt``.
+
+   |UCSUCS| sets this option automatically, if the |UCSUCRV|\ s
+   :envvar:`mail/relayhost` and :envvar:`mail/relayauth` have the value ``yes``
+   and if :envvar:`mail/postfix/tls/client/level` doesn't have the value
+   ``none``.
 
 .. _mail-serverconfig-mailsize:
 
