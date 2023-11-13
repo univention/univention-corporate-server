@@ -368,7 +368,7 @@ list_cert_names_all () {
 
 get_cert_name_from_id () {
 	if [ -n "$1" ]; then
-		list_cert_names_all | awk -v id="$1" '$1 == id {print $2}'
+		list_cert_names_all | awk -v id="$1" '("" $1) == ("" id) {print $2}'
 	fi
 }
 
@@ -383,7 +383,7 @@ is_valid () {
 	local id="${1:?Missing argument: number}"
 	tac "${SSLBASE}/${CA}/index.txt" | awk -F '\t' -v id="$id" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
 	BEGIN { ret=1; }
-	$4 == id {
+	("" $4) == ("" id) {
 		ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
 		exit;
 	}

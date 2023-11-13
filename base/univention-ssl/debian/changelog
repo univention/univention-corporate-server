@@ -2,6 +2,7 @@ univention-ssl (14.0.5-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
   * Bug #51203: Add missing dependency on ca-certificates
+  * Bug #54834: Fix awk string comparison
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 09 Dec 2023 15:06:47 +0100
 
