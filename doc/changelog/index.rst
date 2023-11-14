@@ -416,7 +416,8 @@ Modules for system settings / setup wizard
 * The process to renew all SSL/TLS certificates has been improved.
   For each host the symbolic link pointing to the fully-qualified host name is now created as a relative link.
   Error cases are better detected and handled.
-  All changed SSL/TLS profile settings are now propagated into a new CA certificate (:uv:bug:`34106`).
+  All changed SSL/TLS profile settings are now propagated into a new CA certificate.
+  The policy enforced by OpenSSL on the certificate settings is now also checked and enforced in the UMC module :guilabel:`Certificate settings` (:uv:bug:`34106`).
 
 .. _changelog-umc-join:
 
