@@ -1,0 +1,15 @@
+rm_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-saml.conf 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/apache2/sso-vhost.conf.d/csp.conf 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/default/stunnel4 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/ldap/slapd.conf.d/11univention-saml-schema 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/memcached_univention_saml.conf 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/simplesamlphp/00authsources.php 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/simplesamlphp/01authsources-negotiate.php 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/simplesamlphp/config.php 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/simplesamlphp/metadata/00_saml20-idp-hosted.php 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/simplesamlphp/metadata/00header.php 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/simplesamlphp/univentiontheme/dictionaries/errors.definition.json 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/simplesamlphp/univentiontheme/dictionaries/errors.translation.json 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/simplesamlphp/univentiontheme/dictionaries/login.definition.json 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/simplesamlphp/univentiontheme/dictionaries/login.translation.json 9.0.0-1
+rm_conffile /etc/univention/templates/files/etc/stunnel/univention_saml.conf 9.0.0-1
