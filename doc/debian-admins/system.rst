@@ -141,17 +141,17 @@ regenerate configuration files and therefore overwriting custom changes.
 Restarting the service, or rebooting the system, activates the changes in the
 configuration files.
 
-Sometimes the reasons for problems are hard to find. Any run of UCR can affect
-the configuration, overwrites manual changes, and can cause additional effort
-for analysis and repair.
+Sometimes the causes of problems are hard to find. Each run of UCR can affect
+the configuration, overwrite manual changes, and require additional analysis and
+repair.
 
-The negative consequences range from small effects such as the return to the
-default behavior of a service up to key services not running anymore at all. For
-example, the LDAP server refuses to start and prevents users from sign-in to
-their environment and preventing them from doing their daily work.
+The negative consequences range from small effects, such as a service reverting
+to its default behavior, to key services not running at all. For example, the
+LDAP server refuses to start, preventing users from signing in their environment
+and preventing them from doing their daily work.
 
-This short outline leads us to one principle. Applying it can save you a lot of
-frustration, efforts, and headaches.
+This brief overview introduces the first principle. Applying it can save you a
+lot of frustration, effort, and headaches.
 
 .. _principle-1:
 

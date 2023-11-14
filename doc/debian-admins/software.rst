@@ -111,16 +111,16 @@ UCS:
    before installing software. This ensures that the package manager installs
    the latest stable software version.
 
-#. :command:`univention-install` ensures to apply configuration settings for
-   examples from :ref:`UCR variables <system>` or :ref:`join scripts <domain>`.
+#. :command:`univention-install` ensures the transfer of configuration settings,
+   for example from :ref:`UCR variables <system>` or :ref:`join scripts
+   <domain>`.
 
    For example, when installing :program:`Postfix` with :command:`apt`, the
-   package's standard wizard asks for the type of the mail system, such as
+   standard wizard of the package asks for the type of the mail system, such as
    *Internet Site*, *Internet with smarthost*, *Satellite system*, or *Local
    only*. :command:`univention-install` doesn't run the wizard. Instead, it
    applies the relevant system configuration settings so that the mail server
-   works after the installation and is ready for your customization, if
-   required.
+   works after the installation and is ready for your adjustments, if required.
 
 #. The installation of meta packages ensures that the package manager uses
    UCS mechanisms during the installation, such as the correct configuration of
@@ -156,14 +156,14 @@ Beyond software packages
 ========================
 
 In addition to the well-known software packages, Univention also distributes
-software as apps through Univention App Center. Apps consist of the software and
-its integration into |UCS| and the domain or apps provide a standalone connector
-between UCS and the software. For example, to install apps such as UCS
-components, for example :program:`Active Directory-compatible Domain
-Controller`, or third-party software such as :program:`Nextcloud` or
-:program:`ownCloud`, you must use the App Center, either the corresponding UMC
-module or the :command:`univention-app` command. Most apps use Docker images and
-offer a ready-to-use integration with UCS.
+software as apps through *Univention App Center*. Apps provide a connector
+between |UCS| and the software. The app can be standalone or accompanied by the
+software itself. For example, to install apps such as UCS components, for
+example :program:`Active Directory-compatible Domain Controller`, or third-party
+software such as :program:`Nextcloud` or :program:`ownCloud`, you must use the
+App Center, either the corresponding UMC module or the :command:`univention-app`
+command. Most apps use Docker images and offer a ready-to-use integration with
+UCS.
 
 .. seealso::
 
@@ -194,18 +194,21 @@ only cover software packages from the Univention software repository.
 With regard to additional Python packages, don't install packages through
 :command:`pip` into your system-wide Python environment, but into a virtual
 environment instead. See :py:mod:`venv - Creation of virtual environments
-<python:venv>`
+<python:venv>`. Installing or updating Python packages with :command:`pip` in
+the system-wide Python environment of UCS, can overwrite existing files and can
+cause problems that are difficult to diagnose.
 
 .. _principle-4:
 
 .. admonition:: Principle #4
 
-   Before installing software packages from third-party sources:
+   Before installing third-party software packages:
 
    #. Always verify the App Center and the standard Univention software
-      repositories, if the software is already available there.
+      repositories to see if the software is already available there.
 
    #. Make sure that the packages don't overwrite existing packages.
 
-#. Prefer Docker images over Debian packages.
-   #. Use :command:`pip` only in virtual Python environments.
+   #. Prefer Docker images to Debian packages.
+
+   #. Use :command:`pip` in virtual Python environments only.
