@@ -1348,7 +1348,6 @@ fix_certificates53013 () { # <ip>
 	univention-certificate new -name "${ucs_server_sso_fqdn}"
 	install -o root -g samlcgi -m 0644 "/etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem" "${saml_idp_certificate_certificate:?}"
 	install -o root -g samlcgi -m 0640 "/etc/univention/ssl/${ucs_server_sso_fqdn}/private.key" "${saml_idp_certificate_privatekey:?}"
-	/usr/sbin/univention-directory-listener-ctrl resync univention-saml-simplesamlphp-configuration
 	/usr/share/univention-management-console/saml/update_metadata
 	# TODO: /usr/share/univention-management-console/saml/idp/*.xml -> https:/${ucs/server/sso/fqdn}/simplesamlphp/saml2/idp/certificate
 	# TODO: What else?
@@ -1503,7 +1502,7 @@ change_template_hostname () {
 
 	rm -f /tmp/join_pwd
 
-	univention-directory-listener-ctrl resync univention-saml-servers univention-saml-simplesamlphp-configuration umc-service-providers || rv=1
+	univention-directory-listener-ctrl resync univention-saml-servers umc-service-providers || rv=1
 
 	return $rv
 }
