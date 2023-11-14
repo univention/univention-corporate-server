@@ -6,38 +6,27 @@ src: postgresql-11
 fix: 11.22-0+deb10u1
 desc: |
  This update addresses the following issues:
- 11.21-0+deb10u2 (Mon, 02 Oct 2023 16:15:27 +0200)
- * Fix changelog of last upload, the original version mistakenly repeated the
-   information from 11.20.
- 11.22-0+deb10u1 (Tue, 07 Nov 2023 14:50:52 +0100)
- * New upstream version. * This is expected to be the last PostgreSQL release
-   in the 11.X series. Users are encouraged to update to a newer release
-   branch soon. * Fix handling of unknown-type arguments in DISTINCT "any"
-   aggregate functions (Tom Lane) This error led to a text-type value being
-   interpreted as an unknown-type value (that is, a zero-terminated string) at
-   runtime. This could result in disclosure of server memory following the
-   text value. The PostgreSQL Project thanks Jingzhou Fu for reporting this
-   problem. (CVE-2023-5868) * Detect integer overflow while computing new
-   array dimensions (Tom Lane) When assigning new elements to array subscripts
-   that are outside the current array bounds, an undetected integer overflow
-   could occur in edge cases. Memory stomps that are potentially exploitable
-   for arbitrary code execution are possible, and so is disclosure of server
-   memory. The PostgreSQL Project thanks Pedro Gallegos for reporting this
-   problem. (CVE-2023-5869) * Prevent the pg_signal_backend role from
-   signalling background workers and autovacuum processes (Noah Misch, Jelte
-   Fennema-Nio) The documentation says that pg_signal_backend cannot issue
-   signals to superuser-owned processes. It was able to signal these
-   background processes, though, because they advertise a role OID of zero.
-   Treat that as indicating superuser ownership. The security implications of
-   cancelling one of these process types are fairly small so far as the core
-   code goes (we'll just start another one), but extensions might add
-   background workers that are more vulnerable. Also ensure that the
-   is_superuser parameter is set correctly in such processes. No specific
+ * Fix handling of unknown-type arguments in `DISTINCT` "any" aggregate
+   functions. This error led to a text-type value being interpreted as an
+   unknown-type value (that is, a zero-terminated string) at runtime. This
+   could result in disclosure of server memory following the text value.
+   (CVE-2023-5868)
+ * Detect integer overflow while computing new array dimensions: When
+   assigning new elements to array subscripts that are outside the current
+   array bounds, an undetected integer overflow could occur in edge cases.
+   Memory stomps that are potentially exploitable for arbitrary code execution
+   are possible, and so is disclosure of server memory. (CVE-2023-5869)
+ * Prevent the `pg_signal_backend` role from signalling background workers and
+   autovacuum processes: The documentation says that `pg_signal_backend`
+   cannot issue signals to superuser-owned processes. It was able to signal
+   these background processes, though, because they advertise a role OID of
+   zero. Treat that as indicating superuser ownership. The security
+   implications of cancelling one of these process types are fairly small so
+   far as the core code goes (we'll just start another one), but extensions
+   might add background workers that are more vulnerable. Also ensure that the
+   parameter `is_superuser` is set correctly in such processes. No specific
    security consequences are known for that oversight, but it might be
-   significant for some extensions. The PostgreSQL Project thanks Hemanth
-   Sandrana and Mahendrakar Srinivasarao for reporting this problem.
-   (CVE-2023-5870)
- * Rebase debian/patches/libpgport-pkglibdir.
+   significant for some extensions. (CVE-2023-5870)
 bug: [56821]
 cve:
 - CVE-2023-5868
