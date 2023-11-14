@@ -11,7 +11,7 @@ Software management
 This section describes the differences of |UCS| with respect to software
 management. In this section, the term *software management* refers to the
 lifecycle of software on a computer system, such as installing software on a
-computers system, updating, and removing existing software.
+computer system, updating, and removing existing software.
 
 As an enterprise Linux distribution, UCS has :ref:`defined maintenance cycles
 <uv-navigation:maintenance-ucs-rules>` for its version levels and uses terms
@@ -52,7 +52,7 @@ packages with the personal favorite breaks UCS. For example, using
 Software repositories and packages
 ==================================
 
-As a Linux distribution based on Debian GNU/Linux, |UCS| also uses software
+As a Linux distribution based on Debian GNU/Linux, |UCS| uses software
 packages in the deb file format and the corresponding package repositories.
 Univention provides and maintains software packages in package repositories. The
 packages have two different maintenance statuses: *maintained* and
@@ -192,7 +192,7 @@ software repository that relies on the default PHP version in UCS. Product tests
 only cover software packages from the Univention software repository.
 
 With regard to additional Python packages, don't install packages through
-:command:`pip` into your system-wide Python environment, but into the virtual
+:command:`pip` into your system-wide Python environment, but into a virtual
 environment instead. See :py:mod:`venv - Creation of virtual environments
 <python:venv>`
 
@@ -207,4 +207,5 @@ environment instead. See :py:mod:`venv - Creation of virtual environments
 
    #. Make sure that the packages don't overwrite existing packages.
 
+#. Prefer Docker images over Debian packages.
    #. Use :command:`pip` only in virtual Python environments.

@@ -16,14 +16,14 @@ files.
 Administrators typically configure Linux operating systems using text-based
 configuration files. Debian GNU/Linux and Ubuntu are no exception to this
 principle. The advantage of a text-based configuration format is that it
-requires no need for extra tools or knowledge other than a text editor and a
+requires no extra tools or knowledge other than a text editor and a
 documentation of the configuration syntax. Text-based configuration is also
 useful for configuration management and infrastructure as code software such as
 :program:`Ansible`, :program:`Puppet`, or :program:`Terraform` that allow
 administrators to configure multiple systems.
 
 |UCS|, being a derivative of Debian GNU/Linux and thus a Linux operating system,
-is no exception to this principle, as well. The services on a UCS system use
+is no exception to this principle. The services on a UCS system use
 their familiar text-based configuration files. As an administrator with Linux
 know-how, it's natural to manually edit the configuration with a text editor and
 adapt the settings of a service to the needs of their environment.
@@ -65,6 +65,10 @@ mechanism to recreate all affected configuration files.
 * Apply logic to values and write the result in the configuration file.
 
 * Logging of changes to UCR variables.
+
+* Applying settings to configuration files of upgraded software.
+
+UCR does not restart a service. Operators must do that manually.
 
 You can recognize configuration files controlled by UCR by the presence of a
 header at the beginning of the file, as shown in :numref:`ucr-header`. The
@@ -134,7 +138,7 @@ good feeling, because the configuration works as expected. The feeling can turn
 into frustration when the carefully handmade configuration vanished. Software
 package updates and installation of additional software trigger |UCR| to
 regenerate configuration files and therefore overwriting custom changes.
-Restarting the service, or rebooting the system, activate the changes in the
+Restarting the service, or rebooting the system, activates the changes in the
 configuration files.
 
 Sometimes the reasons for problems are hard to find. Any run of UCR can affect
@@ -146,7 +150,7 @@ default behavior of a service up to key services not running anymore at all. For
 example, the LDAP server refuses to start and prevents users from sign-in to
 their environment and preventing them from doing their daily work.
 
-This short outline brings use to one principle. Applying it can safe you a lot of
+This short outline leads us to one principle. Applying it can save you a lot of
 frustration, efforts, and headaches.
 
 .. _principle-1:
@@ -182,7 +186,7 @@ the following possibilities:
    configuration directories.
 
    The local configuration possibilities strongly depend on the service you have
-   in mind and what their configuration options offer at all.
+   in mind and what configuration options it offers.
 
    Examples:
 
