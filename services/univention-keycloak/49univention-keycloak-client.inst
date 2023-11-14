@@ -93,7 +93,6 @@ elif [ "$server_role" = "domaincontroller_backup" ]; then
 	chmod 640 "$SECRETFILE" || die
 	univention-scp $HOSTPWD "$HOSTACCOUNT@$ldap_master:$SECRETFILE $SECRETFILE" || die
 	echo "Successfully downloaded the sys-idp-user credential file"
-	ucr commit /etc/simplesamlphp/authsources.php
 fi
 
 if [ "$server_role" = "domaincontroller_master" ]; then
