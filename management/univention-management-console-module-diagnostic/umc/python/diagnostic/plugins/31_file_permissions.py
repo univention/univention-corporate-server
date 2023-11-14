@@ -134,7 +134,7 @@ def file_and_permission_checks() -> Iterator[CheckError]:
         cf_type('/etc/univention/ssl/openssl.cnf', 'root', 'DC Backup Hosts', 0o660, must_exist=is_primary),
         cf_type('/etc/univention/ssl/password', 'root', 'DC Backup Hosts', 0o660, must_exist=is_primary),
         cf_type('/etc/univention/ssl/ucsCA', 'root', 'DC Backup Hosts' if is_dc else 'root', 0o775 if is_dc else 0o755, must_exist=True),
-        cf_type(f'/etc/univention/ssl/ucs-sso.{domain}', 'root', 'DC Backup Hosts', 0o750, must_exist=is_primary),
+        cf_type(f'/etc/univention/ssl/ucs-sso-ng.{domain}', 'root', 'DC Backup Hosts', 0o750, must_exist=is_primary),
         cf_type(f'/etc/univention/ssl/{host}.{domain}', f'{host}$' if is_primary else 'root', 'DC Backup Hosts' if is_dc else 'root', 0o750, must_exist=True),
         cf_type('/var/lib/univention-self-service-passwordreset-umc/memcached.socket', 'self-service-umc', 'nogroup', 0o600, False),
         cf_type('/var/cache/univention-ad-connector', 'root', 'root', 0o755, False),
