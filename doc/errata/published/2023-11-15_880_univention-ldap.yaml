@@ -9,3 +9,6 @@ desc: |
  * The unused LDAP attributes from nagios server have been marked as optional
    to ease the upgrade to UCS 5.2.
 bug: [56820]
+erratum: 880
+announced: 2023-11-15
+support: core
