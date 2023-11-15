@@ -66,7 +66,7 @@ struct _Handler {
 	char *description;
 	struct filter **filters;
 	char **attributes;
-	char *modrdn;
+	int modrdn;
 	bool handle_every_delete;
 	PyObject *handler;
 	PyObject *initialize;

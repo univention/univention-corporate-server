@@ -162,6 +162,30 @@ error0:
 }
 
 
+/* Retrieve int from Python module. */
+int module_get_int(PyObject *module, char *name) {
+	PyObject *var;
+	char *str = NULL;
+	int val = -1;
+
+	if ((var = PyObject_GetAttrString(module, name)) == NULL)
+		goto error0;
+	if(PyUnicode_Check(var)) {
+		PyArg_Parse(var, "s", &str);
+		val = atoi(str);
+	} else if(PyLong_Check(var)) {
+		val = PyObject_IsTrue(var);
+	} else {
+		PyErr_Format(PyExc_TypeError, "%s be of type string or integer", name);
+		goto error1;
+	}
+error1:
+	Py_XDECREF(var);
+error0:
+	return val;
+}
+
+
 /* Retrieve list of strings from Python module. */
 static char **module_get_string_list(PyObject *module, char *name) {
 	PyObject *list;
@@ -236,8 +260,8 @@ static int handler_import(char *filename) {
 	}
 
 	if (PyObject_HasAttrString(handler->module, "modrdn")) { /* optional */
-		handler->modrdn = module_get_string(handler->module, "modrdn");
-		if (handler->modrdn == NULL) {
+		handler->modrdn = module_get_int(handler->module, "modrdn");
+		if (handler->modrdn == -1) {
 			error_msg = "module_get_string(\"modrdn\")";
 			goto error;
 		}
@@ -341,7 +365,6 @@ error:
 	}
 	free(handler->filters);
 	free(handler->description);
-	free(handler->modrdn);
 	free(handler->name);
 	free(handler);
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "import of filename=%s failed in %s", filename, error_msg ? error_msg : "???");
