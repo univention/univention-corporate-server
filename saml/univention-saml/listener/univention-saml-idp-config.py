@@ -55,7 +55,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     idp_config_objectdn = ucr.get('saml/idp/configobject', 'id=default-saml-idp,cn=univention,%s' % ucr.get('ldap/base'))
     listener.setuid(0)
     try:
-        if idp_config_objectdn == new['entryDN'][0].decode('UTF-8'):
+        if idp_config_objectdn == new.get('entryDN', [b''])[0].decode('UTF-8'):
             for key in LDAP_UCR_MAPPING.keys():
                 if key in new:
                     ucr_value = ""
@@ -65,6 +65,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
                     handler_set(['%s=%s' % (LDAP_UCR_MAPPING[key], ucr_value)])
                 else:
                     handler_unset(['%s' % LDAP_UCR_MAPPING[key]])
+        elif not new:
+            pass
         else:
             ud.debug(ud.LISTENER, ud.WARN, 'An IdP config object was modified, but it is not the object the listener is configured for (%s). Ignoring changes. DN of modified object: %r' % (idp_config_objectdn, new['entryDN'][0].decode('UTF-8')))
     finally:
