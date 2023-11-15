@@ -49,7 +49,7 @@ done
 
 # cleanup
 udm dns/forward_zone delete --dn "zoneName=$zonename,cn=dns,$ldap_base"
-reverse_dn="$(udm dns/reverse_zone list --filter subnet=$reversezone | sed -ne 's|DN: ||p')"
+reverse_dn="$(udm dns/reverse_zone list --filter subnet=$reversezone | DN1)"
 test -n "$reverse_dn" || fail_test 110
 udm dns/reverse_zone delete --dn "$reverse_dn"
 

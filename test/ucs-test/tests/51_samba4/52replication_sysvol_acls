@@ -75,7 +75,7 @@ start_gpo_ntacl=$(samba-tool ntacl get --as-sddl "$gpo_path")
 
 
 test_account=join-backup
-test_account_sid=$(univention-s4search samaccountname="$test_account" objectSid | ldapsearch-wrapper | sed -n 's/^objectSid: //p')
+test_account_sid=$(univention-s4search samaccountname="$test_account" objectSid | VAL objectSid)
 
 ## This sleep 1 seems necessary to avoid occasional test failures where rsync
 ## is not considering the local modification time to be more recent than the
@@ -100,8 +100,8 @@ grep -q "$test_ntace" <<<"$custom_gpo_ntacl" ||
 
 ### Updating the DS ACLs is a bit useless here, but this is how we could do it:
 # test_output=$(univention-s4search "(&(objectClass=groupPolicyContainer)(cn=$gpo_cn))" nTSecurityDescriptor | ldapsearch-wrapper)
-# gpo_dn=$(sed -n "s/^dn: //p" <<"$test_output")
-# gpo_sd=$(sed -n "s/^nTSecurityDescriptor: //p" <<"$test_output")
+# gpo_dn=$(VAL dn <<"$test_output")
+# gpo_sd=$(VAL nTSecurityDescriptor <<"$test_output")
 # new_gpo_sd="${gpo_sd}(A;CI;RPLCRC;;;$test_account_sid)(OA;CI;CR;edacfd8f-ffb3-11d1-b41d-00a0c968f939;;$test_account_sid)"
 # ldbmodify -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(cn=$gpo_cn))" <<%EOF
 # dn: $gpo_dn

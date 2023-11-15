@@ -32,7 +32,7 @@ eval "$(ucr shell)"
 
 user1=$(user_randomname)
 user_create "$user1"
-user1_uidnumber=$(univention-ldapsearch uid=$user1  | sed -ne 's|^uidNumber: ||p')
+user1_uidnumber=$(univention-ldapsearch uid=$user1 | VAL1 uidNumber)
 
 sharename="$(random_chars)"
 sharepath1="/mnt/$(random_chars)"

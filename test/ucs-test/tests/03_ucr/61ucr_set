@@ -27,7 +27,7 @@ ucr unset nameserver3 foo bar >/dev/null 2>&1
 ##### Test nameserver3 #####
 debug Create nameserver3
 ucr set nameserver3=192.168.0.3 >"$out"
-Assert "$(sed -ne 's/^File: //p' "$out")" "/etc/resolv.conf"
+Assert "$(VAL File <"$out")" "/etc/resolv.conf"
 Assert "$(awk  'NR==1 {print $1}' "$out")" "Create"
 Assert "$(grep -Ev '^(File|Module|Script):|^Create' "$out")" ""
 

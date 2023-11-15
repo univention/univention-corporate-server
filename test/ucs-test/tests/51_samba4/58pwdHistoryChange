@@ -37,15 +37,15 @@ if ! user_create "$username"; then
 fi
 
 # get samba domain DN and save the original password history:
-samba_domain=$(udm settings/sambadomain list  | sed -n 's/^DN: sambaDomainName=//p')
-orig_password_history=$(udm settings/sambadomain list  | sed -n 's/^  passwordHistory: //p')
+samba_domain=$(udm settings/sambadomain list | DN1)
+orig_password_history=$(udm settings/sambadomain list | VAL1 '  passwordHistory')
 
 echo -e "\nSamba Domain DN:" $samba_domain
 echo "The current domain passwordHistory:" $orig_password_history
 
 
 echo -e "\nConfiguring password history via UDM:"
-udm settings/sambadomain modify --dn sambaDomainName=$samba_domain --set passwordHistory=$TEST_PWD_HISTORY
+udm settings/sambadomain modify --dn "$samba_domain" --set passwordHistory="$TEST_PWD_HISTORY"
 wait_for_replication_and_postrun
 
 # check modification worked via samba-tool:
@@ -72,7 +72,7 @@ fi
 
 
 echo -e "\nCleanup:"
-udm settings/sambadomain modify --dn sambaDomainName=$samba_domain --set passwordHistory=$orig_password_history
+udm settings/sambadomain modify --dn "$samba_domain" --set "passwordHistory=$orig_password_history"
 wait_for_replication_and_postrun
 user_remove "$username"
 

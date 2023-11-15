@@ -20,7 +20,7 @@
 
 eval "$(ucr shell)"
 
-licenseVersion="$(univention-ldapsearch '(&(cn=admin)(objectClass=univentionLicense))' -LLL univentionLicenseVersion | sed -ne 's|univentionLicenseVersion: ||p')"
+licenseVersion="$(univention-ldapsearch '(&(cn=admin)(objectClass=univentionLicense))' -LLL univentionLicenseVersion | VAL1 univentionLicenseVersion)"
 
 if [ "$licenseVersion" != 2 ]; then
 	exit 137
@@ -28,27 +28,27 @@ fi
 
 getManagedClient ()
 {
-	univention-license-check  | sed -ne 's|^Managed Clients: *||p' | sed  -e 's| .*||'
+	univention-license-check  | VAL 'Managed Clients' | cut -d' ' -f1
 }
 getUsers ()
 {
-	univention-license-check  | sed -ne 's|^Users: *||p' | sed  -e 's| .*||'
+	univention-license-check  | VAL 'Users' | cut -d' ' -f1
 }
 getServers ()
 {
-	univention-license-check  | sed -ne 's|^Servers: *||p' | sed  -e 's| .*||'
+	univention-license-check  | VAL 'Servers' | cut -d' ' -f1
 }
 getUCC ()
 {
-	univention-license-check  | sed -ne 's|^Corporate Clients: *||p' | sed  -e 's| .*||'
+	univention-license-check  | VAL 'Corporate Clients' | cut -d' ' -f1
 }
 getDVSUsers ()
 {
-	univention-license-check  | sed -ne 's|^DVS Users: *||p' | sed  -e 's| .*||'
+	univention-license-check  | VAL 'DVS Users' | cut -d' ' -f1
 }
 getDVSClients ()
 {
-	univention-license-check  | sed -ne 's|^DVS Clients: *||p' | sed  -e 's| .*||'
+	univention-license-check  | VAL 'DVS Clients' | cut -d' ' -f1
 }
 
 createObject ()

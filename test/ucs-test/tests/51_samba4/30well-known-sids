@@ -18,7 +18,7 @@
 # List of well known sids:
 #  http://support.microsoft.com/kb/243330/en-us
 
-domainSid="$(univention-s4search -s base objectSid | sed -ne 's|^objectSid: ||p')"
+domainSid="$(univention-s4search -s base objectSid | VAL1 objectSid)"
 
 test -z "$domainSid" && fail_test 110 "domainSid not found"
 
@@ -27,7 +27,7 @@ test -z "$domainSid" && fail_test 110 "domainSid not found"
 test_group_sid_openldap () {
 	group="$1"
 	expected_sid="$2"
-	sid_ldap=$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$group))" sambaSID | sed -ne 's|^sambaSID: ||p')
+	sid_ldap=$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$group))" sambaSID | VAL1 sambaSID)
 	if [ "$sid_ldap" != "$expected_sid" ]; then
 		echo "Expected sid for $group: $expected_sid; found in LDAP: $sid_ldap"
 		fail_test 110
@@ -36,7 +36,7 @@ test_group_sid_openldap () {
 test_group_sid_s4 () {
 	group="$1"
 	expected_sid="$2"
-	sid_ad=$(univention-s4search "(&(objectClass=group)(cn=$group))" objectSid | sed -ne 's|^objectSid: ||p')
+	sid_ad=$(univention-s4search "(&(objectClass=group)(cn=$group))" objectSid | VAL1 objectSid)
 	if [ "$sid_ad" != "$expected_sid" ]; then
 		echo "Expected sid for $group: $expected_sid; found in S4: $sid_ad"
 		fail_test 110
@@ -51,8 +51,8 @@ test_group_sid () {
 test_user_sid () {
 	user="$1"
 	expected_sid="$2"
-	sid_ad=$(univention-s4search "(&(objectClass=user)(cn=$user))" objectSid | sed -ne 's|^objectSid: ||p')
-	sid_ldap=$(univention-ldapsearch "(uid=$user)" sambaSID | sed -ne 's|^sambaSID: ||p')
+	sid_ad=$(univention-s4search "(&(objectClass=user)(cn=$user))" objectSid | VAL1 objectSid)
+	sid_ldap=$(univention-ldapsearch "(uid=$user)" sambaSID | VAL1 sambaSID)
 	if [ "$sid_ad" != "$expected_sid" ]; then
 		echo "Expected sid for $user: $expected_sid; found in S4: $sid_ad"
 		fail_test 110
@@ -92,4 +92,4 @@ if getent group "Replicator" >/dev/null; then
 	test_group_sid "$(custom_groupname "Replicator")" S-1-5-32-552
 fi
 
-exit $RETVAL
+exit "$RETVAL"

@@ -34,7 +34,7 @@ ad_set_attribute "$AD_DN" "description" "$UDM_groups_group_description" || fail_
 
 ad_wait_for_synchronization; fail_bool 0 110
 
-UDM_groups_group_gidNumber=$(univention-ldapsearch "(&(cn=$UDM_groups_group_name)(objectClass=univentionGroup))" gidNumber | sed -n 's/^gidNumber: //p')
+UDM_groups_group_gidNumber=$(univention-ldapsearch "(&(cn=$UDM_groups_group_name)(objectClass=univentionGroup))" gidNumber | VAL gidNumber)
 
 ad_verify_attribute "$AD_DN" "description" "$UDM_groups_group_description"; fail_bool 0 110
 ad_verify_attribute "$AD_DN" "gidNumber" "$UDM_groups_group_gidNumber"; fail_bool 0 110

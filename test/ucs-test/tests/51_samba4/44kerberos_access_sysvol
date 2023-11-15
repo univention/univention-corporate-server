@@ -9,6 +9,8 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
 # shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
 # shellcheck source=../../lib/shares.sh
@@ -53,9 +55,9 @@ done
 
 ## Wait until the real domain sambaSID has been synchronized back from Samba/AD to OpenLDAP
 output=$(univention-ldapsearch "uid=$username" sambaSID uidnumber)
-uidNumber=$(sed -n 's/^uidNumber: //p' <<<"$output")
+uidNumber=$(VAL uidNumber <<<"$output")
 tmpSID="S-1-4-$uidNumber"
-sambaSID=$(sed -n 's/^sambaSID: //p' <<<"$output")
+sambaSID=$(VAL sambaSID <<<"$output")
 i=0
 while [ "$sambaSID" = "$tmpSID" ]; do
 	if [ "$i" = 10 ]; then
@@ -67,7 +69,7 @@ while [ "$sambaSID" = "$tmpSID" ]; do
 	let i=$i+1
 	## and check again
 	output=$(univention-ldapsearch "uid=$username" sambaSID)
-	sambaSID=$(sed -n 's/^sambaSID: //p' <<<"$output")
+	sambaSID=$(VAL sambaSID <<<"$output")
 done
 
 ## Flushing the cache is only necessary if we do a wbinfo/smbclient before the real domain sambaSID has been written to idmap.ldb

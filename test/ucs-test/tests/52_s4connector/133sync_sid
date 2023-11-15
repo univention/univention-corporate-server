@@ -41,13 +41,13 @@ AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
 ad_exists "$AD_DN"; fail_bool 0 110
 LDAP_DN="cn=$UDM_groups_group_name,cn=groups,$ldap_base"
 
-domain_sid="$(univention-s4search -s base objectSid | sed -ne 's|^objectSid: ||p')"
+domain_sid="$(univention-s4search -s base objectSid | VAL objectSid)"
 
 is_sid_equal ()
 {
-	s4_sid=$(univention-s4search -b "$AD_DN" -s base objectSid | sed -ne 's|^objectSid: ||p')
+	s4_sid=$(univention-s4search -b "$AD_DN" -s base objectSid | VAL objectSid)
 	echo $s4_sid
-	ldap_sid=$(univention-ldapsearch -b "$LDAP_DN" -s base sambaSID | sed -ne 's|^sambaSID: ||p')
+	ldap_sid=$(univention-ldapsearch -b "$LDAP_DN" -s base sambaSID | VAL sambaSID)
 	echo $ldap_sid
 	[ "$s4_sid" = "$ldap_sid" ]
 	return $?

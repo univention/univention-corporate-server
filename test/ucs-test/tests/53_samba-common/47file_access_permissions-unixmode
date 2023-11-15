@@ -67,7 +67,7 @@ grep -q "NT_STATUS_ACCESS_DENIED" <<<"$output" ||
 	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
 
 echo "## change folder unix directorymode"
-SHARE_DN="$(udm-test shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
+SHARE_DN="$(udm-test shares/share list --filter sambaName="$sharename" | DN1)"
 udm-test shares/share modify \
 	--binddn "$tests_domainadmin_account" \
 	--bindpwd "$tests_domainadmin_pwd" \

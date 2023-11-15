@@ -1,4 +1,8 @@
 # shellcheck shell=bash
+
+# shellcheck source=base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+
 DRS_REPLICATION_TIMEOUT=360
 
 wait_for_LDAP_replication_of_domain_sambaSid () {
@@ -7,7 +11,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 	t0=$(date +%s)
 	t=t0
 	test -x /usr/sbin/univention-s4search || return 0
-	sambaSID=$(univention-ldapsearch -LLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
+	sambaSID=$(univention-ldapsearch -LLL uid="$username" sambaSID | VAL1 sambaSID)
 	if [ -z "${sambaSID%S-1-4*}" ]; then
 		echo -n "Waiting for S4-Connector and LDAP replication of domain sambaSID for user $username (current: $sambaSID)."
 		while [ -z "${sambaSID%S-1-4*}" ]; do
@@ -16,13 +20,13 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 			fi
 			sleep 1
 			echo -n "."
-			sambaSID=$(univention-ldapsearch -LLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
+			sambaSID=$(univention-ldapsearch -LLL uid="$username" sambaSID | VAL1 sambaSID)
 			t=$(date +%s)
 		done
 		echo
 	fi
 	if [ -e "/var/lib/samba/private/secrets.ldb" ]; then
-		sambaSID=$(univention-s4search --controls=domain_scope:1  samaccountname="$username" objectSid | sed -n 's/^objectSid: //p')
+		sambaSID=$(univention-s4search --controls=domain_scope:1  samaccountname="$username" objectSid | VAL objectSid)
 		if [ -z "$sambaSID" ]; then
 			echo -n "Waiting for DRS replication of domain sambaSID for user $username."
 		fi
@@ -32,7 +36,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 			fi
 			sleep 1
 			echo -n "."
-			sambaSID=$(univention-s4search --controls=domain_scope:1  samaccountname="$username" objectSid | sed -n 's/^objectSid: //p')
+			sambaSID=$(univention-s4search --controls=domain_scope:1  samaccountname="$username" objectSid | VAL1 objectSid)
 			t=$(date +%s)
 		done
 	fi
@@ -57,7 +61,7 @@ wait_for_drs_replication () {
 	t=t0
 	output=$(ldbsearch -H /var/lib/samba/private/sam.ldb "${opts[@]}" "$ldap_filter" "$attr") ||
 		fail_fast 1 "ldbsearch failed: $output"
-	value=$(sed -n "s/^$attr: //p" <<<"$output")
+	value=$(VAL "$attr" <<<"$output")
 
 	i=0
 	if [ -z "$value" ]; then
@@ -70,7 +74,7 @@ wait_for_drs_replication () {
 			echo -n "."
 			output=$(ldbsearch -H /var/lib/samba/private/sam.ldb "${opts[@]}" "$ldap_filter" "$attr") ||
 				fail_fast 1 "ldbsearch failed: $output"
-			value=$(sed -n "s/^$attr: //p" <<<"$output")
+			value=$(VAL "$attr" <<<"$output")
 			t=$(date +%s)
 		done
 		echo
@@ -89,9 +93,9 @@ force_drs_replication () {
 
 	source_dc="${1:-}"
 	if [ -z "$source_dc" ]; then
-		s4_connector_hosts=$(univention-ldapsearch -b "cn=computers,${ldap_base:?}" univentionService="S4 Connector" uid | sed -nr 's/^uid: (.*)\$$/\1/p')
+		s4_connector_hosts=$(univention-ldapsearch -b "cn=computers,${ldap_base:?}" univentionService="S4 Connector" uid | VAL uid)
 		if [ "$(wc -w <<<"$s4_connector_hosts")" -eq 1 ]; then
-			source_dc="$s4_connector_hosts"
+			source_dc="${s4_connector_hosts%$}"
 		else
 			echo "WARNING: Automatic S4 Connector host detection failed"
 		fi
@@ -117,10 +121,10 @@ wait_for_samba4_idmap_listener() {
 	ldap_filter="${1:?ldap_filter}"
 
 	# wait for samba4-idmap listener, otherwise samba generates a temporary ID from it's idmap pool
-	sid=$(univention-s4search "$ldap_filter" objectSid | sed -n 's/^objectSid: //p')
+	sid=$(univention-s4search "$ldap_filter" objectSid | VAL objectSid)
 	i=0
 	timeout=30
-	while [ -z "$(ldbsearch -H /var/lib/samba/private/idmap.ldb  "objectSid=$sid" xidNumber | sed -n 's/^xidNumber: //p')" ]; do
+	while [ -z "$(ldbsearch -H /var/lib/samba/private/idmap.ldb  "objectSid=$sid" xidNumber | VAL xidNumber)" ]; do
 		if [ "$((++i))" -gt "$timeout" ]; then
 			fail_fast 1 "samba4-idmap listener didn't assign an xidNumber within $timeout seconds"
 		fi

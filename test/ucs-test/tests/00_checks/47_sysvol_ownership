@@ -12,7 +12,7 @@
 
 administrator=${users_default_administrator:-Administrator}
 
-administrator_uid=$(univention-ldapsearch uid="$administrator" uidNumber | sed -ne 's|^uidNumber: ||p')
+administrator_uid=$(univention-ldapsearch uid="$administrator" uidNumber | VAL1 uidNumber)
 
 sysvol_domain_dir=$(find /var/lib/samba/sysvol -mindepth 1 -maxdepth 1 -iname "$domainname")
 

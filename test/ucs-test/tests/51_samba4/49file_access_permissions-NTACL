@@ -9,6 +9,8 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
 # shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
 # shellcheck source=../../lib/shares.sh
@@ -36,7 +38,7 @@ wait_for_replication_and_postrun;
 ' INT TERM EXIT
 
 check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
-ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$tests_domainadmin_account" uid | grep uid | sed -ne 's/^uid: //p')"
+ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$tests_domainadmin_account" uid | VAL uid)"
 
 if ! user_create "$username"; then
 	fail_fast 1 "User could not be created"
@@ -90,7 +92,7 @@ if ! echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"; then
 fi
 
 ## get objectSID
-sid="$(ldbsearch -H ldap://localhost -U"$username%$first_password" cn=$username | sed -n 's/^objectSid: //p')"
+sid="$(ldbsearch -H ldap://localhost -U"$username%$first_password" "cn=$username" | VAL objectSid)"
 if [ -z "$sid" ]; then
 	fail_fast 1 "Could not retrieve objectSid of samba user account '$username'"
 fi

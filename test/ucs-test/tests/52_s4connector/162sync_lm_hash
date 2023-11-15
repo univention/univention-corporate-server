@@ -39,7 +39,7 @@ HOST="$(ucr get connector/s4/ldap/host)"
 
 smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 100
 
-lm_hash1=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | sed -n 's/^dBCSPwd:: //p')
+lm_hash1=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | VAL dBCSPwd)
 
 section "Change password"
 
@@ -52,7 +52,7 @@ section "Trying authentication second time"
 
 smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 100
 
-lm_hash2=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | sed -n 's/^dBCSPwd:: //p')
+lm_hash2=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | VAL dBCSPwd)
 
 if [ "$lm_hash1" = "$lm_hash2" ]; then
 	fail_fast "LM Hash change not synchronized to Samba/AD"
@@ -60,7 +60,7 @@ fi
 
 section "Remove LM Hash"
 
-user_dn=$(univention-ldapsearch uid="${UDM_users_user_username}" 1.1 | sed -n 's/^dn: //p')
+user_dn=$(univention-ldapsearch uid="${UDM_users_user_username}" 1.1 | dn1)
 
 eval "$(ucr shell tests/domainadmin/account tests/domainadmin/pwdfile)"
 
@@ -72,7 +72,7 @@ delete: sambaLMPassword
 
 ad_wait_for_synchronization; fail_bool 0 110
 
-lm_hash3=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | sed -n 's/^dBCSPwd:: //p')
+lm_hash3=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | VAL dBCSPwd)
 
 if [ -n "$lm_hash3" ]; then
 	fail_fast "LM Hash (dBCSPwd) not deleted in Samba/AD"

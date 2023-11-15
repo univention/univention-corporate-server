@@ -35,8 +35,8 @@ ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes; systemctl restart slapd; undo
 
 default_ppolicy_ldif=$(univention-ldapsearch -LLL -b "cn=default,cn=ppolicy,cn=univention,$ldap_base")
 
-old_pwdFailureCountInterval=$(echo "$default_ppolicy_ldif" | sed -n 's/^pwdFailureCountInterval: //p')
-old_pwdMaxFailure=$(echo "$default_ppolicy_ldif" | sed -n 's/^pwdMaxFailure: //p')
+old_pwdFailureCountInterval=$(echo "$default_ppolicy_ldif" | VAL pwdFailureCountInterval)
+old_pwdMaxFailure=$(echo "$default_ppolicy_ldif" | VAL pwdMaxFailure)
 new_pwdFailureCountInterval=15
 new_pwdMaxFailure=5
 
@@ -77,7 +77,7 @@ for ((i=1; i<new_pwdMaxFailure; i++)); do
 	ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1
 done
 
-# $(univention-ldapsearch -LLL uid=$test_username pwdFailureTime | sed -n 's/^pwdFailureTime: //p' | wc -l)
+# $(univention-ldapsearch -LLL uid=$test_username pwdFailureTime | VAL pwdFailureTime | wc -l)
 sleep 1
 
 section "Test 2: Wait for automatic reset of pwdFailureTime"
@@ -98,7 +98,7 @@ sleep "$new_pwdFailureCountInterval"
 if ! ldapsearch -xLLL -D "$test_userdn" -w univention "uid=$test_username" 1.1 >/dev/null; then
 	fail_fast 1 "Authentication failure prior to lock"
 fi
-test_output=$(univention-ldapsearch -LLL -b "$test_userdn" -s base + | sed -n 's/^pwdFailureTime: //p')
+test_output=$(univention-ldapsearch -LLL -b "$test_userdn" -s base + | VAL pwdFailureTime)
 if [ -n "$test_output" ]; then
 	n=$(wc -l <<<"$test_output")
 	echo "WARNING: $test_userdn still has $n pwdFailureTime entries, should be 0" >&2

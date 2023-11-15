@@ -18,7 +18,7 @@
 
 #check if ucs-version supports extended mapping of s4-attributes
 ext_mapping=false;
-current_version="$(dpkg -s univention-s4-connector | sed -n -e 's/^Version: //p')"
+current_version="$(dpkg-query -W -f '${Version}' univention-s4-connector)"
 if dpkg --compare-versions "$current_version" "gt" "13.0.2-44A~4.4.0.201909190933"; then
 	ext_mapping=true;
 	echo "Testing extended mapping attributes";

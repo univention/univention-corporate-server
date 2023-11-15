@@ -45,7 +45,7 @@ group_create () { #Creates a group named like supplied in the first argument of 
 
 group_dn (){ #echos the DN of a Group. E.g. group_dn $GROUPNAME
 	local GROUPNAME="${1:?groupname}"
-	udm-test groups/group list --filter cn="$GROUPNAME" | sed -ne 's/^DN: //p'
+	udm-test groups/group list --filter cn="$GROUPNAME" | DN1
 }
 
 group_remove () { # Remove a Group. E.g. group_remove $GROUPNAME

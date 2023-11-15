@@ -29,7 +29,7 @@ check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentia
 admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
 
 determine_neighbour_s4host() {
-	mapfile -t s4hosts < <(univention-ldapsearch -LLL "(univentionService=Samba 4)" cn | sed -ne 's/^cn: //p')
+	mapfile -t s4hosts < <(univention-ldapsearch -LLL "(univentionService=Samba 4)" cn | VAL cn)
 	for candidate in "${s4hosts[@]}"
 	do
 		[ "$candidate" = "$hostname" ] &&

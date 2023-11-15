@@ -40,8 +40,8 @@ udm-test groups/group create --position cn=groups,$ldap_base \
 		--set name=$groupname2
 
 # read DN from LDAP to get the exact case
-grp1_dn=$(univention-ldapsearch cn=$groupname1 dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|dn: ||p')
-grp2_dn=$(univention-ldapsearch cn=$groupname2 dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|dn: ||p')
+grp1_dn=$(univention-ldapsearch "cn=$groupname1" 1.1 | dn1)
+grp2_dn=$(univention-ldapsearch "cn=$groupname2" 1.1 | dn1)
 
 # Use ldapmodify, see Bug #33656
 ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -H "ldap://$ldap_master:$ldap_master_port" <<EOF

@@ -22,12 +22,12 @@ connector_running_on_this_host || exit 137
 
 get_ucs_age ()
 {
-	univention-ldapsearch sambaDomainName=$windows_domain | sed -ne 's|sambaMaxPwdAge: ||p'
+	univention-ldapsearch "sambaDomainName=${windows_domain:-}" | VAL sambaMaxPwdAge
 }
 
 get_s4_age ()
 {
-	univention-s4search -s base maxPwdAge | sed -ne 's|^maxPwdAge: ||p'
+	univention-s4search -s base maxPwdAge | VAL maxPwdAge
 }
 
 check_s4_age ()
@@ -42,7 +42,7 @@ check_s4_age ()
 
 set_ucs_age ()
 {
-	dn="$(univention-ldapsearch sambaDomainName=$windows_domain -LLL dn |ldapsearch-wrapper| sed -ne 's|dn: ||p')"
+	dn="$(univention-ldapsearch "sambaDomainName=$windows_domain" -LLL 1.1 | dn1)"
 	echo "dn: $dn
 changetype: modify
 replace: sambaMaxPwdAge

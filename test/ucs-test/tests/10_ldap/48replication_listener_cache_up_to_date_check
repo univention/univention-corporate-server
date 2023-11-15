@@ -29,7 +29,7 @@ get_description ()
 {
 	containername="$1"
 
-	univention-ldapsearch -b "cn=$containername,cn=groups,$ldap_base" -LLL description  | sed -ne 's|^description: ||p'
+	univention-ldapsearch -s base -b "cn=$containername,cn=groups,$ldap_base" -LLL description | VAL1 description
 }
 
 set_description ()

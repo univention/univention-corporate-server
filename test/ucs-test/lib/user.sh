@@ -104,9 +104,9 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 	fi
 }
 
-user_dn () { #echos the DN of User named $NAME
+user_dn () { # echo the DN of user named $NAME
 	local USERNAME="${1:-$NAME}"
-	udm-test users/user list --filter uid="$USERNAME" | sed -ne 's/^DN: //p'
+	udm-test users/user list --filter uid="$USERNAME" | DN1
 }
 
 user_remove () { # Remove User named like the first argument, supplied to the function.

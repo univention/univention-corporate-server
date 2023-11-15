@@ -36,7 +36,7 @@ udm-test users/user create --position "cn=users,$ldap_base" \
 	--option=kerberos --option=posix --option=samba ||
 	fail_fast 1 "User could not be created"
 
-USER_DN="$(udm-test users/user list --filter "uid=$username" | sed -ne 's/^DN: //p')"
+USER_DN="$(udm-test users/user list --filter "uid=$username" | DN1)"
 
 wait_for_replication_and_postrun
 

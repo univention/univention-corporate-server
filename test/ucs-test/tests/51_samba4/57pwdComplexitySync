@@ -20,7 +20,7 @@ eval "$(ucr shell)"
 
 RETVAL=100
 
-orig_password_complexity=$(samba-tool domain passwordsettings show  | sed -ne 's|Password complexity: ||p')
+orig_password_complexity=$(samba-tool domain passwordsettings show | VAL 'Password complexity')
 
 section "pwdComplexity S4 -> UCS"
 
@@ -38,12 +38,12 @@ section "pwdComplexity UCS -> S4"
 
 udm settings/sambadomain modify --dn "sambaDomainName=$windows_domain,cn=samba,$ldap_base" --set domainPasswordComplex=1
 wait_for_replication_and_postrun
-s4_complexity=$(samba-tool domain passwordsettings show  | sed -ne 's|Password complexity: ||p')
+s4_complexity=$(samba-tool domain passwordsettings show | VAL 'Password complexity')
 test "$s4_complexity" = 'on' || fail_test 110
 
 udm settings/sambadomain modify --dn "sambaDomainName=$windows_domain,cn=samba,$ldap_base" --set domainPasswordComplex=0
 wait_for_replication_and_postrun
-s4_complexity=$(samba-tool domain passwordsettings show  | sed -ne 's|Password complexity: ||p')
+s4_complexity=$(samba-tool domain passwordsettings show | VAL 'Password complexity')
 test "$s4_complexity" = 'off' || fail_test 110
 
 section "cleanup"

@@ -40,7 +40,7 @@ osc1_2 () {
 		-tls1_2 \
 		-no_ign_eof -brief \
 		</dev/null 2>&1)
-	echo "$out" | sed -ne 's/^Ciphersuite: //p;T;q'
+	echo "$out" | VAL1 Ciphersuite
 }
 
 s1order=$(openssl ciphers -tls1_2 -s "$ciphers")
@@ -89,7 +89,7 @@ osc1_3 () {
 		-ciphersuites "$1" \
 		-no_ign_eof -brief \
 		</dev/null 2>&1)
-	echo "$out" | sed -ne 's/^Ciphersuite: //p;T;q'
+	echo "$out" | VAL1 Ciphersuite
 }
 
 s1order=$(openssl ciphers -tls1_3 -s "$ciphers")

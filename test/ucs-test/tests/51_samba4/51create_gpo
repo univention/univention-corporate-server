@@ -10,6 +10,8 @@
 ## - domaincontroller_slave
 ## tags: [basic]
 
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
 # shellcheck source=../../lib/shares.sh
 . "$TESTLIBPATH/shares.sh" || exit 137
 # shellcheck source=../../lib/random.sh
@@ -19,9 +21,9 @@ gponame="$(random_chars 8 "${_upperletters}${_lowerletters}${_ciphers}")"	## sam
 echo gponame "$gponame"
 
 check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
-ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$tests_domainadmin_account" uid | grep uid | sed -ne 's/^uid: //p')"
+ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$tests_domainadmin_account" uid | VAL uid)"
 
-s4_domainname=$(samba-tool domain info 127.0.0.1 | sed -n 's/^Domain *: //p') ## Samba's idea of spelling
+s4_domainname=$(samba-tool domain info 127.0.0.1 | VAL 'Domain[^:]*') ## Samba's idea of spelling
 
 ## general sanity check: wait for the samba-share.py Listener to synchronize /etc/samba/shares.conf and /etc/samba/shares.conf.d (Bug #29399)
 i=0
@@ -51,7 +53,7 @@ i=0
 
 while true
 do
-	displayName="$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(cn=$gpo_cn))" displayName | sed -ne 's/^displayName: //p')"
+	displayName="$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(cn=$gpo_cn))" displayName | VAL displayName)"
 	if [ -n "$displayName" ]; then
 		break
 	fi

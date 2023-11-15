@@ -21,7 +21,7 @@ member_of_available () {
 			echo "memberOf missing on $dn"
 			return 1
 		fi
-	done < <(univention-ldapsearch -LLL objectClass=univentionGroup uniqueMember | grep '^uniqueMember: uid='  | sort -u | sed -ne 's/uniqueMember: //p')
+	done < <(univention-ldapsearch -LLL objectClass=univentionGroup uniqueMember | VAL uniqueMember | grep ^uid= | sort -u)
 	return 0
 }
 

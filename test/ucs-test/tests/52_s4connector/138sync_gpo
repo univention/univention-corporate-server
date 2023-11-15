@@ -33,7 +33,7 @@ samba-tool gpo create "$gpo_display_name" \
 		-k no \
 		-H ldap://"$hostname.$domainname" \
 		-U "$admin_account%$tests_domainadmin_pwd" || fail_bool 0 110
-UDM_container_msgpo_name="$(univention-s4search "(&(displayName=$gpo_display_name)(objectClass=groupPolicyContainer))" cn | sed -ne 's|^cn: ||p')"
+UDM_container_msgpo_name="$(univention-s4search "(&(displayName=$gpo_display_name)(objectClass=groupPolicyContainer))" cn | VAL cn)"
 if [ -z "$UDM_container_msgpo_name" ]; then
 	fail_fast 110 "New GPO not found in local Samba Directory service"
 fi

@@ -79,7 +79,7 @@ fi
 
 wait_for_replication_and_postrun
 
-test_output=$(ldapsearch -LLL -D "$userdn" -y "$tests_domainadmin_pwdfile" -s base dn | sed -n 's/^dn: //p')
+test_output=$(ldapsearch -LLL -D "$userdn" -y "$tests_domainadmin_pwdfile" -s base 1.1 | dn1)
 if [ -n "$test_output" ]; then
 	fail_test 110 "E: user can still do LDAP search but should be disabled in UDM"
 	univention-directory-manager users/user list --filter "uid=$NAME"
@@ -120,7 +120,7 @@ if [ "$ssh_hostname" != "$hostname" ]; then
 	exit $RETVAL
 fi
 
-test_output=$(ldapsearch -LLL -D "$userdn" -y "$tests_domainadmin_pwdfile" -s base dn | sed -n 's/^dn: //p')
+test_output=$(ldapsearch -LLL -D "$userdn" -y "$tests_domainadmin_pwdfile" -s base 1.1 | dn1)
 if [ -z "$test_output" ]; then
 	fail_test 110 "E: The cannot do LDAP search, but the account should be re-enabled and un-locked again"
 	univention-directory-manager users/user list --filter "uid=$NAME"

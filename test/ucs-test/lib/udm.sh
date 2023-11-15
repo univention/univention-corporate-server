@@ -340,8 +340,7 @@ udm_get_ldap_attribute () {
 	local branch
 	branch="$(udm_get_ldap_identifier_qualifier "$module")=$objectname,${ldaplocation:-$(udm_get_ldap_prefix "$module")$ldap_base}"
 
-	log_and_eval_execute "ldapsearch -xLLL -D 'cn=admin,$ldap_base' -y /etc/ldap.secret -b '$branch' '$attributename' |
-		sed -ne 's/^${attributename}\: \?//p'"
+	log_and_eval_execute "ldapsearch -xLLL -D 'cn=admin,$ldap_base' -y /etc/ldap.secret -b '$branch' '$attributename' | VAL '$attributename'"
 }
 
 udm_has_object_class () {

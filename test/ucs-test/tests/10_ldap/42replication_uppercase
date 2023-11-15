@@ -44,7 +44,7 @@ verify_description ()
 {
 	dn="$1"
 	expected_description="$2"
-	description="$(univention-ldapsearch -b $dn description | sed -ne 's|description: ||p')"
+	description="$(univention-ldapsearch -s base -b "$dn" description | VAL1 description)"
 	if [ "$description" != "$expected_description" ]; then
 		univention-ldapsearch "cn=$group"
 		fail_test 1 "The attribute description has not been replicated"

@@ -262,6 +262,28 @@ retry () {  # <count> <args...> # retry_delay=1
 	return 1
 }
 
+VAL () { # Usage: ... | VAL uid
+	sed -rne "/^$1:/{s/^$1: //;s/^$1:: ([A-Za-z0-9+/]+=*)\$/echo \1|base64 -d/e;p}"
+}
+VAL1 () { # Usage: ... | VAL uid
+	sed -rne "/^$1:/{s/^$1: //;s/^$1:: ([A-Za-z0-9+/]+=*)\$/echo \1|base64 -d/e;p;q}"
+}
+dn () {  # Usage: ldapsearch ... 1.1 | dn
+	VAL dn
+}
+dn1 () {  # Usage: ldapsearch ... 1.1 | dn1
+	VAL dn
+}
+DN () {  # Usage: udm "$mod" list ... | DN
+	VAL DN
+}
+DN1 () {  # Usage: udm "$mod" list ... | DN1
+	VAL1 DN
+}
+UDM1 () {  # Usage: udm "$mod" create ... | UDM1
+	sed -ne 's/^Object created: //p;T;q'
+}
+
 # vim:set filetype=sh ts=4:
 # Local Variables:
 # mode: sh

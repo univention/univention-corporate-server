@@ -51,7 +51,7 @@ name: ${CN}
 EOF
 test $? -eq 0 || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
-ucs_dn="$(univention-ldapsearch "cn=${CN}" dn| sed -n 's/dn: //p')"
+ucs_dn="$(univention-ldapsearch "cn=${CN}" 1.1 | dn1)"
 
 section "move computer object via UDM, $ucs_dn -> $ldap_base"
 

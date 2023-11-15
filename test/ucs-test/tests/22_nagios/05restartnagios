@@ -9,6 +9,9 @@
 ##  - univention-nagios-client
 ## exposure: careful
 
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+
 ###################
 ###  Information  #
 ###################
@@ -24,13 +27,13 @@ if [ "$(pgrep -c nagios)" -eq 0 ]; then
 	service nagios start
 	sleep 3
 fi
-nagios_pid="$(nagiostats | grep -i "Nagios PID:" | sed -ne 's/Nagios PID: *//p')"
+nagios_pid="$(nagiostats | VAL1 'Nagios PID')"
 
 # restart Nagios
 echo "Restarting Nagios"
 service nagios restart
 sleep 3
-new_nagios_pid="$(nagiostats | grep -i "Nagios PID:" | sed -ne 's/Nagios PID: *//p')"
+new_nagios_pid="$(nagiostats | VAL1 'Nagios PID')"
 
 # make sure old pid is no longer running
 test -d /proc/$nagios_pid && exit 111

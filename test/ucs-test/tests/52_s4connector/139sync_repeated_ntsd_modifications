@@ -43,7 +43,7 @@ samba-tool gpo create "$gpo_display_name" \
 		-k no \
 		-H ldap://"$hostname.$domainname" \
 		-U "$admin_account%$tests_domainadmin_pwd" || fail_bool 0 110
-UDM_container_msgpo_name="$(univention-s4search "(&(displayName=$gpo_display_name)(objectClass=groupPolicyContainer))" cn | sed -ne 's|^cn: ||p')"
+UDM_container_msgpo_name="$(univention-s4search "(&(displayName=$gpo_display_name)(objectClass=groupPolicyContainer))" cn | VAL cn)"
 if [ -z "$UDM_container_msgpo_name" ]; then
 	fail_fast 110 "New GPO not found in local Samba Directory service"
 fi
@@ -53,8 +53,8 @@ udm_exists "container/msgpo" "" "" "cn=Policies,cn=System,$ldap_base"; fail_bool
 # modify the nTSecurityDescriptor repeatedly with different delays
 ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
 
-dn=$(sed -n 's/^dn: //p' <<<"$ldif")
-ntsd_orig=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+dn=$(dn <<<"$ldif")
+ntsd_orig=$(VAL nTSecurityDescriptor <<<"$ldif")
 ntsd_mod1=$(sed -n 's/)S:AI(/)(A;CI;RPLCLORC;;;DU)S:AI(/p' <<<"$ntsd_orig")
 ntsd_mod2=$(sed -n 's/)S:AI(/)(A;CI;RPLCLORC;;;PA)S:AI(/p' <<<"$ntsd_mod1")
 
@@ -87,7 +87,7 @@ for run in $(seq $MAX_RUNS); do
 	%EOF
 
 	# ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
-	# ntsd1=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+	# ntsd1=$(VAL nTSecurityDescriptor <<<"$ldif")
 
 	delay=${DELAY[$(($RANDOM % $MOD))]}
 	echo "Wait $delay"
@@ -102,7 +102,7 @@ for run in $(seq $MAX_RUNS); do
 	%EOF
 
 	ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
-	ntsd2=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+	ntsd2=$(VAL nTSecurityDescriptor <<<"$ldif")
 	if [ "$ntsd2" != "$ntsd_mod2" ]; then
 		echo "found   : $ntsd2"
 		echo "expected: $ntsd_mod2"
@@ -124,7 +124,7 @@ for run in $(seq $MAX_RUNS); do
 
 	sleep $(($connector_s4_poll_sleep * 2))
 	ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
-	ntsd3=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+	ntsd3=$(VAL nTSecurityDescriptor <<<"$ldif")
 
 	if [ "$ntsd3" != "$ntsd_orig" ]; then
 		fail_fast 110 "NTSD sync inconsistent"

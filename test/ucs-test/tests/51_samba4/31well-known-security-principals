@@ -17,10 +17,10 @@
 
 eval "$(ucr shell)"
 
-univention-s4search -b "CN=Configuration,$ldap_base" objectclass=foreignSecurityPrincipal cn | sed -ne 's|cn: ||p' | while read cn; do
-	sid="$(univention-s4search -b "CN=Configuration,$ldap_base" "(&(objectclass=foreignSecurityPrincipal)(cn=$cn))" objectSid | sed -ne 's|objectSid: ||p')"
+univention-s4search -b "CN=Configuration,$ldap_base" objectclass=foreignSecurityPrincipal cn | VAL cn | while read cn; do
+	sid="$(univention-s4search -b "CN=Configuration,$ldap_base" "(&(objectclass=foreignSecurityPrincipal)(cn=$cn))" objectSid | VAL objectSid)"
 
-	ucs_dn="$(univention-ldapsearch "(&(cn=$cn)(sambaSID=$sid))" dn | sed -ne 's|dn: ||p')"
+	ucs_dn="$(univention-ldapsearch "(&(cn=$cn)(sambaSID=$sid))" 1.1 | dn)"
 
 	if [ -n "$ucs_dn" ]; then
 		echo "Found $ucs_dn with SID $sid"

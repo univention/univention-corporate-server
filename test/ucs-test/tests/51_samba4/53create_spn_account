@@ -23,7 +23,7 @@ MAX_COUNT=40
 
 prefix="$(random_chars 4)"
 
-old_password_complexity=$(samba-tool domain passwordsettings show  | sed -ne 's|Password complexity: ||p')
+old_password_complexity=$(samba-tool domain passwordsettings show | VAL 'Password complexity')
 if [ "$old_password_complexity" != "on" ]; then
 	samba-tool domain passwordsettings set --complexity=on
 	reset_password_complexity=1
