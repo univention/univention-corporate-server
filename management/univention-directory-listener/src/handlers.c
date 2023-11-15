@@ -262,7 +262,7 @@ static int handler_import(char *filename) {
 	if (PyObject_HasAttrString(handler->module, "modrdn")) { /* optional */
 		handler->modrdn = module_get_int(handler->module, "modrdn");
 		if (handler->modrdn == -1) {
-			error_msg = "module_get_string(\"modrdn\")";
+			error_msg = "module_get_int(\"modrdn\")";
 			goto error;
 		}
 	}
