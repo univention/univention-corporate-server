@@ -11,3 +11,6 @@ desc: |
 bug: [56819]
 cve:
  - TEMP-2023-4
+erratum: 1516
+announced: 2023-11-15
+support: lts
