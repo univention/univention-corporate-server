@@ -1330,7 +1330,7 @@ msgid ""
 "%(minimum)d MB of free RAM are required but only %(current)d MB are "
 "available."
 msgstr ""
-"%(minimum)d MB freier Arbeitsspeicher sind erfolderlich, es sind aber nur "
+"%(minimum)d MB freier Arbeitsspeicher sind erforderlich, es sind aber nur "
 "%(current)d MB verfügbar."
 
 #: umc/js/appcenter/requirements.js:349

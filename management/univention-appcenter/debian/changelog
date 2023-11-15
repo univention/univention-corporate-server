@@ -1,3 +1,9 @@
+univention-appcenter (9.0.9-2) unstable; urgency=medium
+
+  * Bug #56827: Fix typo for RAM warning
+
+ -- Oliver Friedrich <friedrich@univention.de>  Wed, 15 Nov 2023 14:40:48 +0100
+
 univention-appcenter (9.0.9-1) unstable; urgency=medium
 
   * Bug #56421: Add logging for broken JSON files of the listener converter
