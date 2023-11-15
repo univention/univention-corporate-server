@@ -132,8 +132,8 @@ UDM in UMC
 
 UDM HTTP REST API
    Provides the HTTP REST API interface to |UDM| as a separate service. |UDM|
-   offers HTTP through the UDM HTTP REST API to use |UDM| through a remote
-   interface.
+   offers HTTP access through the UDM HTTP REST API to use |UDM| through a
+   remote interface.
 
    .. TODO Add when rest api is ready: For more information about the architecture, refer to :ref:`services-rest-api`.
 
