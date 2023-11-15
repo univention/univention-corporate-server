@@ -41,35 +41,21 @@ wait_for_drs_replication "(sAMAccountName=$username)"
 
 ## Authentication with kinit
 echo "----Authentication with kinit"
-i=0
-while ! output="$(echo "$password" | kinit --password-file=STDIN "$username" 2>&1)"
-do
-	let i=$i+1
-	if [ "$i" = 10 ]; then
-		fail_test 1 "kinit $username failed"
-		break
-	fi
-	sleep 3
-done
+try_auth_kinit () {
+	echo "$password" | kinit --password-file=STDIN "$username" 2>&1
+}
+retry_delay=3 retry 10 try_auth_kinit ||
+	fail_test 1 "kinit $username failed"
 
 ## Wait until the real domain sambaSID has been synchronized back from Samba/AD to OpenLDAP
-output=$(univention-ldapsearch "uid=$username" sambaSID uidnumber)
-uidNumber=$(VAL uidNumber <<<"$output")
+uidNumber=$(univention-ldapsearch "uid=$username" sambaSID uidNumber | VAL uidNumber)
 tmpSID="S-1-4-$uidNumber"
-sambaSID=$(VAL sambaSID <<<"$output")
-i=0
-while [ "$sambaSID" = "$tmpSID" ]; do
-	if [ "$i" = 10 ]; then
+wait_sambaSID () {
+	sambaSID=$(univention-ldapsearch "uid=$username" sambaSID | VAL sambaSID)
+	[ "$sambaSID" != "$tmpSID" ]
+}
+retry 10 wait_sambaSID ||
 		echo "ERROR: Waiting for SID replication from Samba still fails after 10 attempts"
-		break
-	fi
-	echo "Waiting for SID replication from Samba, currently the sambaSID in OpenLDAP is still $tmpSID"
-	sleep 1
-	let i=$i+1
-	## and check again
-	output=$(univention-ldapsearch "uid=$username" sambaSID)
-	sambaSID=$(VAL sambaSID <<<"$output")
-done
 
 ## Flushing the cache is only necessary if we do a wbinfo/smbclient before the real domain sambaSID has been written to idmap.ldb
 ## Let's check:
@@ -93,11 +79,10 @@ net cache del "IDMAP/SID2XID/$sambaSID" >/dev/null
 
 ## Access sysvol using smbclient
 echo "----Access sysvol using smbclient"
-i=0
-while ! output="$(smbclient "//$(hostname -f)/sysvol" -k -c "ls $domainname/Policies" 2>&1)"
-do
-	let i=$i+1
-	if [ "$i" = 10 ]; then
+try_ls () {
+	output="$(smbclient "//$(hostname -f)/sysvol" -k -c "ls $domainname/Policies" 2>&1)"
+}
+retry 10 try_ls || {
 		echo "$output"
 		echo "================================================================"
 		echo "Could not access Policies on sysvol with Kerberos authentication:"
@@ -108,9 +93,6 @@ do
 		net cache list | grep "IDMAP/UID2SID/$uidNumber"
 		echo "============================================"
 		fail_test 1 "Could not access Policies on sysvol with Kerberos authentication"
-		break
-	fi
-	sleep 1
-done
+}
 
 exit "$RETVAL"

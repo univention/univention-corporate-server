@@ -1,3 +1,9 @@
+ucs-test (10.0.20-11) unstable; urgency=low
+
+  * Refactor code
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Dec 2023 11:12:37 +0100
+
 ucs-test (10.0.20-10) unstable; urgency=medium
 
   * Bug #56060: implement new radius test for mac auth support.

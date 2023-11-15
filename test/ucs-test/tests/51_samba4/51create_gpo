@@ -27,15 +27,8 @@ s4_domainname=$(samba-tool domain info 127.0.0.1 | VAL 'Domain[^:]*') ## Samba's
 
 ## general sanity check: wait for the samba-share.py Listener to synchronize /etc/samba/shares.conf and /etc/samba/shares.conf.d (Bug #29399)
 i=0
-while ! samba-tool domain info 127.0.0.1 > /dev/null 2>&1
-do
-	let i="$i"+1
-	if [ "$i" = 15 ]; then
+retry_delay=2 retry 15 samba-tool domain info 127.0.0.1 >/dev/null 2>&1 ||
 		echo "samba-tool Failure (Bug #29399)" >&2
-		break
-	fi
-	sleep 2
-done
 
 ## create the GPO
 echo "----create the GPO in Samba/AD with samba-tool"
@@ -51,45 +44,24 @@ fi
 echo "----search sam.ldb for GPO"
 i=0
 
-while true
-do
+wait_for_displayName () {
 	displayName="$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(cn=$gpo_cn))" displayName | VAL displayName)"
-	if [ -n "$displayName" ]; then
-		break
-	fi
-
-	let i="$i"+1
-	if [ "$i" = 20 ]; then
+	[ -n "$displayName" ]
+}
+retry 20 wait_for_displayName ||
 		fail_fast 1 "Could not find displayName of GPO in sam.ldb"
-	fi
-	sleep 1
-done
 
 ##check whether the directory for the GPO has been created
 echo "----check whether the directory for the GPO has been created"
-i=0
-while ! [ -d "/var/lib/samba/sysvol/$s4_domainname/Policies/$gpo_cn" ]
-do
-	let i="$i"+1
-	if [ "$i" = 20 ]; then
+retry 20 [ -d "/var/lib/samba/sysvol/$s4_domainname/Policies/$gpo_cn" ] ||
 		fail_fast 1 "Directory for GPO has not been created"
-	fi
-	sleep 1
-done
 
 ##check whether the GPO is listed in samba-tool
 echo "----check whether the GPO is listed in samba-tool"
-i=0
-while ! ( output=$(samba-tool gpo show "$gpo_cn" 2>&1) && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output" > /dev/null )
-do
-	let i="$i"+1
-	if [ "$i" = 10 ]; then
-		if [ -n "$output" ]; then
-			echo "$output"
-		fi
-		fail_fast 1 "GPO is not listed in samba-tool"
-	fi
-	sleep 1
-done
+wait_for_gpo () {
+	output=$(samba-tool gpo show "$gpo_cn" 2>&1) && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output"
+}
+retry 10 wait_for_gpo ||
+		fail_fast 1 "GPO is not listed in samba-tool: $output"
 
 exit "$RETVAL"

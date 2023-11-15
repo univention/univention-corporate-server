@@ -55,17 +55,12 @@ wait_for_replication
 wait_for_drs_replication "(sAMAccountName=$username)"
 
 ## wait for samba share export
-i=0
+wait_for_share () {
+	output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
+}
 sleep_seconds=3
-while ! output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
-do
-	let i="$i"+1
-	if [ "$i" = 10 ]; then
-		print "$output"
-		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $sleep_seconds)) seconds"
-	fi
-	sleep "$sleep_seconds"
-done
+retry_delay="$sleep_seconds" retry 10 wait_for_share ||
+	fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * sleep_seconds)) seconds: $output"
 
 ##--Tests
 
