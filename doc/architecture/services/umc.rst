@@ -247,7 +247,6 @@ fact, the web server offering the *Reverse proxy* consists of more parts.
 .. _services-umc-backend-model:
 
 .. figure:: /images/UMC-backend.*
-   :width: 650 px
 
    Parts of the *UMC backend*
 
