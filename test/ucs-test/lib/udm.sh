@@ -133,8 +133,7 @@ udm_get_module_variable_prefix () {
 }
 
 udm_get_identifier_value () {
-	local module="$1"
-	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
+	local module="$1" variableprefix="${2:-$(udm_get_module_variable_prefix "$1")}"
 
 	local idattr
 	idattr=$(udm_get_identifier_attribute "$module")
@@ -171,8 +170,7 @@ udm_get_required_attribute_list () {
 }
 
 udm_reset_params () {
-	local module="$1"
-	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
+	local module="$1" variableprefix="${2:-$(udm_get_module_variable_prefix "$1")}"
 
 	for attr in $(udm_get_attribute_list "$module"); do
 		eval '$variableprefix${attr//-/_}='
@@ -184,12 +182,17 @@ log_and_eval_execute () {
 	eval "$@"
 }
 
+_udm_args () {
+	module="$1"
+	variableprefix="${2:-$(udm_get_module_variable_prefix "$1")}"
+	superordinate="$3"
+	ldaplocation="${4:-$3}"
+	objectname="${5:-$(udm_get_identifier_value "$module" "$variableprefix")}"
+}
+
 udm_exists () {
-	local module="$1"
-	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
-	local superordinate="$3"
-	local ldaplocation="${4:-$superordinate}"
-	local objectname="${5:-$(udm_get_identifier_value "$module" "$variableprefix")}"
+	local module variableprefix superordinate ldaplocation objectname
+	_udm_args "$@"
 
 	local dn
 	dn="$(udm_get_ldap_identifier_qualifier "$module")=$objectname,${ldaplocation:-$(udm_get_ldap_prefix "$module")$ldap_base}"
@@ -206,15 +209,12 @@ udm_exists () {
 }
 
 udm_create () {
-	local module="$1"
+	local module variableprefix superordinate ldaplocation objectname
+	_udm_args "$@"
 	shift
-	local variableprefix="${1:-$(udm_get_module_variable_prefix "$module")}"
 	shift
-	local superordinate="$1"
 	shift
-	local ldaplocation="${1:-$superordinate}"
 	shift
-	local objectname="${1:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 	shift
 
 	# shellcheck disable=SC2016
@@ -241,15 +241,12 @@ udm_create () {
 }
 
 udm_modify () {
-	local module="$1"
+	local module variableprefix superordinate ldaplocation objectname
+	_udm_args "$@"
 	shift
-	local variableprefix="${1:-$(udm_get_module_variable_prefix "$module")}"
 	shift
-	local superordinate="$1"
 	shift
-	local ldaplocation="${1:-$superordinate}"
 	shift
-	local objectname="${1:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 	shift
 
 	# shellcheck disable=SC2016
@@ -267,15 +264,12 @@ udm_modify () {
 }
 
 udm_remove () {
-	local module="$1"
+	local module variableprefix superordinate ldaplocation objectname
+	_udm_args "$@"
 	shift
-	local variableprefix="${1:-$(udm_get_module_variable_prefix "$module")}"
 	shift
-	local superordinate="$1"
 	shift
-	local ldaplocation="${1:-$superordinate}"
 	shift
-	local objectname="${1:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 	shift
 
 	# shellcheck disable=SC2016
@@ -293,29 +287,18 @@ udm_remove () {
 }
 
 udm_ldap_remove () {
-	local module="$1"
-	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
-	local superordinate="$3"
-	local ldaplocation="${4:-$superordinate}"
-	local objectname="${5:-$(udm_get_identifier_value "$module" "$variableprefix")}"
-
+	local module variableprefix superordinate ldaplocation objectname
+	_udm_args "$@"
 	ldap_delete "$(udm_get_ldap_identifier_qualifier "$module")=$objectname,${ldaplocation:-$(udm_get_ldap_prefix "$module")$ldap_base}"
 }
 
 udm_purge () {
-	local module="$1"
-	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
-	local superordinate="$3"
-	local ldaplocation="${4:-$superordinate}"
-	local objectname="${5:-$(udm_get_identifier_value "$module" "$variableprefix")}"
-
-	if ! udm_remove "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" --remove_referring ||
-		udm_exists "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if ! udm_remove "$@" --remove_referring ||
+		udm_exists "$@"
 	then
 		warning "Cleanup via udm failed"
-		if ! udm_ldap_remove "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"; then
+		udm_ldap_remove "$@" ||
 			warning "Cleanup via ldapdelete failed as well"
-		fi
 	fi
 }
 
@@ -330,12 +313,9 @@ udm_get_plain_module_attributes () {
 }
 
 udm_get_ldap_attribute () {
-	local attributename="$1"
-	local module="$2"
-	local variableprefix="${3:-$(udm_get_module_variable_prefix "$module")}"
-	local superordinate="$4"
-	local ldaplocation="${5:-$superordinate}"
-	local objectname="${6:-$(udm_get_identifier_value "$module" "$variableprefix")}"
+	local attributename="$1" module variableprefix superordinate ldaplocation objectname
+	shift
+	_udm_args "$@"
 
 	local branch
 	branch="$(udm_get_ldap_identifier_qualifier "$module")=$objectname,${ldaplocation:-$(udm_get_ldap_prefix "$module")$ldap_base}"
@@ -345,14 +325,10 @@ udm_get_ldap_attribute () {
 
 udm_has_object_class () {
 	local objectclass="$1"
-	local module="$2"
-	local variableprefix="${3:-$(udm_get_module_variable_prefix "$module")}"
-	local superordinate="$4"
-	local ldaplocation="$5"
-	local objectname="${6:-$(udm_get_identifier_value "$module" "$variableprefix")}"
+	shift
 
 	local objectclasses
-	objectclasses="$(udm_get_ldap_attribute objectClass "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
+	objectclasses="$(udm_get_ldap_attribute objectClass "$@")"
 
 	local IFS="
 "
@@ -368,29 +344,21 @@ udm_has_object_class () {
 }
 
 udm_verify_ldap_attribute () {
-	local attribute="$1"
-	local expected_value="$2"
-	local module="$3"
-	local variableprefix="$4"
-	local superordinate="$5"
-	local ldaplocation="$6"
-	local objectname="$7"
+	local attribute="$1" expected_value="$2"
+	shift 2
 
 	local value
-	value="$(udm_get_ldap_attribute "$attribute" "$module" "$variableprefix"  "$superordinate" "$ldaplocation" "$objectname")"
+	value="$(udm_get_ldap_attribute "$attribute" "$@")"
 	verify_value "$attribute" "$value" "$expected_value"
 }
 
 udm_verify_ldap_attributes () {
-	local module="$1"
+	local module variableprefix superordinate ldaplocation objectname
+	_udm_args "$@"
 	shift
-	local variableprefix="${1:-$(udm_get_module_variable_prefix "$module")}"
 	shift
-	local superordinate="$1"
 	shift
-	local ldaplocation="$1"
 	shift
-	local objectname="$1"
 	shift
 
 	local attr=
@@ -401,22 +369,17 @@ udm_verify_ldap_attributes () {
 			attr="$elem"
 		else
 			switch=attr
-			if ! udm_verify_ldap_attribute "$attr" "$elem" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
-			then
+			udm_verify_ldap_attribute "$attr" "$elem" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" ||
 				return 1
-			fi
 		fi
 	done
 	return 0
 }
 
 udm_get_udm_attribute () {
-	local attribute="$1"
-	local module="$2"
-	local variableprefix="${3:-$(udm_get_module_variable_prefix "$module")}"
-	local superordinate="$4"
-	local ldaplocation="$5"
-	local objectname="${6:-$(udm_get_identifier_value "$module" "$variableprefix")}"
+	local attribute="$1" module variableprefix superordinate ldaplocation objectname
+	shift
+	_udm_args "$@"
 
 	local cmd="udm-test '$module' list"
 	if [ -n "$superordinate" ]; then
@@ -428,105 +391,73 @@ udm_get_udm_attribute () {
 }
 
 udm_verify_udm_attribute () {
-	local attribute="$1"
-	local expected_value="$2"
-	local module="$3"
-	local variableprefix="$4"
-	local superordinate="$5"
-	local ldaplocation="$6"
-	local objectname="$7"
+	local attribute="$1" expected_value="$2"
+	shift 2
 
 	local value
-	value="$(udm_get_udm_attribute "$attribute" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
+	value="$(udm_get_udm_attribute "$attribute" "$@")"
 
 	verify_value "$attribute" "$value" "$expected_value"
 }
 
 udm_verify_multi_value_udm_attribute_contains_ignore_case () {
-	local attribute="$1"
-	local expected_value="$2"
-	local module="$3"
-	local variableprefix="$4"
-	local superordinate="$5"
-	local ldaplocation="$6"
-	local objectname="$7"
+	local attribute="$1" expected_value="$2"
+	shift 2
 
 	local value
-	value="$(udm_get_udm_attribute "$attribute" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
+	value="$(udm_get_udm_attribute "$attribute" "$@")"
 
 	verify_value_contains_line_ignore_case "$attribute" "$value" "$expected_value"
 }
 
 udm_verify_multi_value_udm_attribute_contains () {
-	local attribute="$1"
-	local expected_value="$2"
-	local module="$3"
-	local variableprefix="$4"
-	local superordinate="$5"
-	local ldaplocation="$6"
-	local objectname="$7"
+	local attribute="$1" expected_value="$2"
+	shift 2
 
 	local value
-	value="$(udm_get_udm_attribute "$attribute" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname")"
+	value="$(udm_get_udm_attribute "$attribute" "$@")"
 
 	verify_value_contains_line "$attribute" "$value" "$expected_value"
 }
 
 udm_verify_udm_attributes () {
-	local module="$1"
-	local variableprefix="${2:-$(udm_get_module_variable_prefix "$module")}"
-	local superordinate="$3"
-	local ldaplocation="$4"
-	local objectname="$5"
+	local module variableprefix superordinate ldaplocation objectname
+	_udm_args "$@"
 
-	local var=
+	local attr var=
 	for attr in $(udm_get_attribute_list "$module"); do
 		eval "var=\$$variableprefix${attr//-/_}"
 		if [ -n "$var" ]; then
-			if ! udm_verify_udm_attribute "$attr" "$var" "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
-			then
+			udm_verify_udm_attribute "$attr" "$var" "$@" ||
 				return 1
-			fi
 		fi
 	done
 	return 0
 }
 
 udm_check_required_singlevalue_attribute () {
-	local attribute="$1"
-	local value1="$2"
-	local value2="$3"
-	local module="$4"
-	local variableprefix="$5"
-	local superordinate="$6"
-	local ldaplocation="$7"
-	local objectname="$8"
+	local attribute="$1" value1="$2" value2="$3"
+	shift 3
 
 	local expected_value="$value1"
-	if ! udm_modify "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-			--set \""$attribute=$value1"\" ||
-		! udm_verify_udm_attribute "$attribute" "$expected_value" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if ! udm_modify "$@" --set \""$attribute=$value1"\" ||
+		! udm_verify_udm_attribute "$attribute" "$expected_value" "$@"
 	then
 		info "Singlevalue attribute '$attribute': Setting initial value failed"
 		return 1
 	fi
 
 	expected_value="$value1"
-	if udm_modify "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-			--append \""$attribute=$value2"\" ||
-		! udm_verify_udm_attribute "$attribute" "$expected_value" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if udm_modify "$@" --append \""$attribute=$value2"\" ||
+		! udm_verify_udm_attribute "$attribute" "$expected_value" "$@"
 	then
 		info "Singlevalue attribute '$attribute': Appending second value succeeded"
 		return 1
 	fi
 
 	expected_value="$value2"
-	if ! udm_modify "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-			--set \""$attribute=$value2"\" ||
-		! udm_verify_udm_attribute "$attribute" "$expected_value" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if ! udm_modify "$@" --set \""$attribute=$value2"\" ||
+		! udm_verify_udm_attribute "$attribute" "$expected_value" "$@"
 	then
 		info "Singlevalue attribute '$attribute': Overwriting previous value failed"
 		return 1
@@ -536,26 +467,15 @@ udm_check_required_singlevalue_attribute () {
 }
 
 udm_check_singlevalue_attribute () {
-	local attribute="$1"
-	local value1="$2"
-	local value2="$3"
-	local module="$4"
-	local variableprefix="$5"
-	local superordinate="$6"
-	local ldaplocation="$7"
-	local objectname="$8"
+	local attribute="$1" value1="$2" value2="$3"
+	shift 3
 
-	if ! udm_check_required_singlevalue_attribute "$attribute" "$value1" "$value2" \
-		"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
-	then
+	udm_check_required_singlevalue_attribute "$attribute" "$value1" "$value2" "$@" ||
 		return 1
-	fi
 
 	expected_value="None"
-	if ! udm_modify "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-			--remove \""$attribute=$value2"\" ||
-		! udm_verify_udm_attribute "$attribute" "$expected_value" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if ! udm_modify "$@" --remove \""$attribute=$value2"\" ||
+		! udm_verify_udm_attribute "$attribute" "$expected_value" "$@"
 	then
 		info "Singlevalue attribute '$attribute': Removing value failed"
 		return 1
@@ -565,21 +485,12 @@ udm_check_singlevalue_attribute () {
 }
 
 udm_check_multivalue_attribute () {
-	local attribute="$1"
-	local value1="$2"
-	local value2="$3"
-	local value3="$4"
-	local module="$5"
-	local variableprefix="$6"
-	local superordinate="$7"
-	local ldaplocation="$8"
-	local objectname="$9"
+	local attribute="$1" value1="$2" value2="$3" value3="$4"
+	shift 4
 
 	local expected_value="$value1"
-	if ! udm_modify "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-			--set \""$attribute=$value1"\" ||
-		! udm_verify_udm_attribute "$attribute" "$expected_value" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if ! udm_modify "$@" --set \""$attribute=$value1"\" ||
+		! udm_verify_udm_attribute "$attribute" "$expected_value" "$@"
 	then
 		info "Multivalue attribute '$attribute': Setting initial value failed"
 		return 1
@@ -588,10 +499,10 @@ udm_check_multivalue_attribute () {
 	local expected_value="$value1
 $value2
 $value3"
-	if ! udm_modify "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
+	if ! udm_modify "$@" \
 			--append \""$attribute=$value2"\" --append \""$attribute=$value3"\" ||
 		! udm_verify_udm_attribute "$attribute" "$expected_value" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+			"$@"
 	then
 		info "Multivalue attribute '$attribute': Appending two values failed"
 		return 1
@@ -599,20 +510,16 @@ $value3"
 
 	expected_value="$value1
 $value3"
-	if ! udm_modify "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-			--remove \""$attribute"\"=\""$value2"\" ||
-		! udm_verify_udm_attribute "$attribute" "$expected_value" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if ! udm_modify "$@" --remove \""$attribute"\"=\""$value2"\" ||
+		! udm_verify_udm_attribute "$attribute" "$expected_value" "$@"
 	then
 		info "Multivalue attribute \"$attribute\": Removing middle value failed"
 		return 1
 	fi
 
 	expected_value="$value1"
-	if ! udm_modify "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-			--remove \""$attribute"\"=\""$value3"\" ||
-		! udm_verify_udm_attribute "$attribute" "$expected_value" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if ! udm_modify "$@" --remove \""$attribute"\"=\""$value3"\" ||
+		! udm_verify_udm_attribute "$attribute" "$expected_value" "$@"
 	then
 		info "Multivalue attribute \"$attribute\": Removing last value failed"
 		return 1
@@ -623,27 +530,14 @@ $value3"
 
 udm_check_flag_attribute () {
 	local attribute="$1"
-	local module="$2"
-	local variableprefix="$3"
-	local superordinate="$4"
-	local ldaplocation="$5"
-	local objectname="$6"
-
-	udm_check_required_singlevalue_attribute "$attribute" "0" "1" \
-		"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	shift
+	udm_check_required_singlevalue_attribute "$attribute" "0" "1" "$@"
 }
 
 udm_check_syntax_for_attribute () {
-	local attribute="$1"
-	local valid1="$2"
-	local valid2="$3"
-	local invalid="$4"
-	local module="$5"
-	local variableprefix="$6"
-	local superordinate="$7"
-	local ldaplocation="$8"
-	local objectname="$9"
-	local customcliname="${10}"
+	local attribute="$1" valid1="$2" valid2="$3" invalid="$4" customcliname="${10}"
+	shift 4
+	set -- "$1" "$2" "$3" "$4" "$5"
 
 	if [ -n "$customcliname" ]; then
 		local set="--customattribute"
@@ -652,43 +546,36 @@ udm_check_syntax_for_attribute () {
 		local set="--set"
 	fi
 
-	if ! udm_create "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-			"$set" \""$customcliname"\"="$valid1" ||
-		! udm_exists "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" ||
-		! udm_verify_udm_attribute "$attribute" "$valid1" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if ! udm_create "$@" "$set" \""$customcliname"\"="$valid1" ||
+		! udm_exists "$@" ||
+		! udm_verify_udm_attribute "$attribute" "$valid1" "$@"
 	then
-		udm_purge "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+		udm_purge "$@"
 		warning "Syntax check for attribute \"$attribute\": Creation with correct syntax failed."
 		return 1
 	fi
 
-	if ! udm_modify "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-			"$set" \""$customcliname"\"="$valid2" ||
-		! udm_verify_udm_attribute "$attribute" "$valid2" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if ! udm_modify "$@" "$set" \""$customcliname"\"="$valid2" ||
+		! udm_verify_udm_attribute "$attribute" "$valid2" "$@"
 	then
-		udm_purge "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+		udm_purge "$@"
 		warning "Syntax check for attribute \"$attribute\": Modification with correct syntax failed."
 		return 1
 	fi
 
-	if udm_modify "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-			"$set" \""$customcliname"\"="$invalid" ||
-		! udm_verify_udm_attribute "$attribute" "$valid2" \
-			"$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	if udm_modify "$@" "$set" \""$customcliname"\"="$invalid" ||
+		! udm_verify_udm_attribute "$attribute" "$valid2" "$@"
 	then
-		udm_purge "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+		udm_purge "$@"
 		warning "Syntax check for attribute \"$attribute\": Modification with incorrect syntax succeeded."
 		return 1
 	fi
 
-	udm_purge "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+	udm_purge "$@"
 
-	if udm_create "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname" \
-		"$set" \""$customcliname"\"="$invalid"
+	if udm_create "$@" "$set" \""$customcliname"\"="$invalid"
 	then
-		udm_purge "$module" "$variableprefix" "$superordinate" "$ldaplocation" "$objectname"
+		udm_purge "$@"
 		warning "Syntax check for attribute \"$attribute\": Creation with incorrect syntax succeeded."
 		return 1
 	fi

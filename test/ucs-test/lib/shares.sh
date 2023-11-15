@@ -13,7 +13,7 @@ SHARE_NFS_WRITEABLE=1
 SHARE_SAMBA_WRITEABLE=1
 
 share_create () {
-	local sharename="${1:?share name}" sharepath="${2:?share path}"
+	local sharename="${1?:share name}" sharepath="${2?:share path}" rc=0
 	shift 2
 	if udm_out="$(udm-test shares/share create \
 		--position "$SHARE_POSITION" \

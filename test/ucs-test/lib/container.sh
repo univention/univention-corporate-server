@@ -7,7 +7,7 @@
 container="cn"
 
 container_create () {
-	local NAME="${1?:missing parameter: container name}" DESCRIPTION="${2:-cn named $1}" POSITION="${3:-$ldap_base}"
+	local NAME="${1?:container name}" DESCRIPTION="${2:-cn named $1}" POSITION="${3:-$ldap_base}" rc=0
 	info "create new $container named $NAME"
 	shift
 	shift
