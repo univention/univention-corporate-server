@@ -139,17 +139,32 @@ static PyObject *module_get_object(PyObject *module, char *name) {
 }
 
 
+/* Retrieve bool(name) from Python module.  */
+static bool module_get_bool(PyObject *module, char *name) {
+	PyObject *attr;
+	int result;
+	attr = module_get_object(module, name);
+	result = PyObject_IsTrue(attr);
+	Py_XDECREF(attr);
+	return result == 1;
+}
+
+
 /* Retrieve string from Python module. */
 static char *module_get_string(PyObject *module, char *name) {
 	PyObject *var;
 	char *str1, *str2 = NULL;
 
 	if ((var = PyObject_GetAttrString(module, name)) == NULL)
-		goto error0;
-	PyArg_Parse(var, "s", &str1);
+		goto error1;
+	if (!PyUnicode_Check(var))
+	    goto error0;
+	if (PyArg_Parse(var, "s", &str1) != 1)
+	    goto error0;
 	str2 = strdup(str1);
-	Py_XDECREF(var);
 error0:
+	Py_XDECREF(var);
+error1:
 	return str2;
 }
 
@@ -228,11 +243,7 @@ static int handler_import(char *filename) {
 	}
 
 	if (PyObject_HasAttrString(handler->module, "modrdn")) { /* optional */
-		handler->modrdn = module_get_string(handler->module, "modrdn");
-		if (handler->modrdn == NULL) {
-			error_msg = "module_get_string(\"modrdn\")";
-			goto error;
-		}
+		handler->modrdn = module_get_bool(handler->module, "modrdn");
 	}
 	PyErr_Clear();  // Silent error when attribute is not set
 
@@ -333,7 +344,6 @@ error:
 	}
 	free(handler->filters);
 	free(handler->description);
-	free(handler->modrdn);
 	free(handler->name);
 	free(handler);
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "import of filename=%s failed in %s", filename, error_msg ? error_msg : "???");
