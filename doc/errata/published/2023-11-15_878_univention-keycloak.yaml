@@ -10,3 +10,6 @@ desc: |
    failure during first initialization. The `--force` flag has been added
    to force the rerun of the initialization.
 bug: [56791]
+erratum: 878
+announced: 2023-11-15
+support: core
