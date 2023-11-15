@@ -254,14 +254,8 @@ def selenium() -> webdriver.Chrome:
     chrome_options = webdriver.ChromeOptions()
     # chrome complains about being executed as root
     chrome_options.add_argument("--no-sandbox")
-    # do not use these two options, selenium will get stuck with
-    # >      raise exception_class(message, screen, stacktrace)
-    # E       selenium.common.exceptions.SessionNotCreatedException: Message: session not created
-    # E       from timeout: Timed out receiving message from renderer: 600.000
-    # E         (Session info: headless chrome=90.0.4430.212)
-    # on UCS
-    # chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("ignore-certificate-errors")
     # seems not to work for keycloak
     chrome_options.add_experimental_option(
