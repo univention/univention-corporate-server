@@ -12,17 +12,18 @@ container_create () {
 	shift
 	shift
 	shift
-	if udm-test "container/$container" create \
+	if udm_out="$(udm-test "container/$container" create \
 		--set name="$NAME" \
 		--set description="$DESCRIPTION" \
 		--position "$POSITION" \
-		"$@" >&2
+		"$@" 2>&1)"
 	then
-		echo "$container=$NAME,$POSITION"
-		return 0
+		UDM1 <<<"$udm_out"
 	else
-		return 1
+		rc=$?
+		echo "$udm_out" >&2
 	fi
+	return "$rc"
 }
 
 container_exists () {

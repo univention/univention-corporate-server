@@ -14,10 +14,17 @@ computer_create () { # Creates a computer. E.g. computer_create "$COMPUTERNAME"
 	local COMPUTERNAME="${1?:missing parameter: computer name}" role="${2:-windows}"
 	shift
 	shift
-	log_and_execute udm-test "computers/$role" create \
+	if udm_out=$(udm-test "computers/$role" create \
 		--position "cn=computers,$ldap_base" \
 		--set name="$COMPUTERNAME" \
-		"$@"
+		"$@" 2>&1)
+	then
+		UDM1 <<<"$udm_out"
+	else
+		rc=$?
+		echo "$udm_out" >&2
+	fi
+	return "$rc"
 }
 
 computer_dn () { #echos the DN of a Computer. E.g. computer_dn $GROUPNAME

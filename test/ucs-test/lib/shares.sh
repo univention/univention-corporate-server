@@ -15,7 +15,7 @@ SHARE_SAMBA_WRITEABLE=1
 share_create () {
 	local sharename="${1:?share name}" sharepath="${2:?share path}"
 	shift 2
-	udm-test shares/share create \
+	if udm_out="$(udm-test shares/share create \
 		--position "$SHARE_POSITION" \
 		--set name="$sharename" \
 		--set path="$sharepath" \
@@ -25,7 +25,14 @@ share_create () {
 		--set directorymode="$SHARE_UNIX_DIRECTORYMODE" \
 		--set writeable="$SHARE_NFS_WRITEABLE" \
 		--set sambaWriteable="$SHARE_SAMBA_WRITEABLE" \
-		"$@"
+		"$@" 2>&1)"
+	then
+		UDM1 <<<"$udm_out"
+	else
+		rc=$?
+		echo "$udm_out" >&2
+	fi
+	return "$rc"
 }
 
 share_exists () {

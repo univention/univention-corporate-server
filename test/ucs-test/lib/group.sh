@@ -18,29 +18,35 @@ group_create () { #Creates a group named like supplied in the first argument of 
 	if [ -n "${1:-}" ]
 	then
 		local GROUPNAME="$1"
-	else
-		if [ -z "${GROUPNAME:-}" ]
-		then
-			GROUPNAME=$(random_mailaddress)
-		fi
+	elif [ -z "${GROUPNAME:-}" ]
+	then
+		GROUPNAME="$(random_mailaddress)"
 	fi
 	shift
 
-	if [ -z "${MAILADDR:-}" ]
-	then
-		local MAILADDR
-		MAILADDR=$(random_mailaddress)
-	fi
+	local mailaddr="${MAILADDR:-$(random_mailaddress)}" rc=0
+	unset MAILADDR
 
-	info "create group $GROUPNAME with Mailaddress $MAILADDR"
-	udm-test groups/group create \
+	info "create group $GROUPNAME with Mailaddress $mailaddr"
+	if udm_out="$(udm-test groups/group create \
 		--position="cn=groups,$ldap_base" \
 		--set name="$GROUPNAME" \
-		--set mailAddress="$MAILADDR@$domainname" \
-		"$@"
-	local rc=$?
-	MAILADDR=
-	return $rc
+		--set mailAddress="$mailaddr@$domainname" \
+		"$@" 2>&1)"
+	then
+		UDM1 <<<"$udm_out"
+	else
+		rc=$?
+		echo "$udm_out" >&2
+		if grep -Fq "Traceback (most recent call last):" <<<"$udm_out"
+		then
+			rc=110
+		elif grep -Fq "E: Object exists" <<<"$udm_out"
+		then
+			rc=111
+		fi
+	fi
+	return "$rc"
 }
 
 group_dn (){ #echos the DN of a Group. E.g. group_dn $GROUPNAME

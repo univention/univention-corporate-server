@@ -18,12 +18,19 @@ create_mail_domain () { #Creates a mail/domain name like the first argument, sup
 	# creating a mail/domain name could be like:
 	# MAILDOMAINNAME=$(maildomain_name_randomname)
 	# create_mail_domain "$MAILDOMAINNAME"
-	local domain="${1:?mail domain, e.g. \$(maildomain_name_randomname)}"
+	local domain="${1:?mail domain, e.g. \$(maildomain_name_randomname)}" rc=0
 	shift
-	udm-test mail/domain create \
+	if udm_out="$(udm-test mail/domain create \
 		--position="cn=domain,cn=mail,$ldap_base" \
 		--set name="$domain" \
-		"$@"
+		"$@" 2>&1)"
+	then
+		UDM1 <<<"$udm_out"
+	else
+		rc=$?
+		echo "$udm_out" >&2
+	fi
+	return "$rc"
 }
 
 delete_mail_domain () { # Deletes a mail/domain name like the first argument, supplied to the function.
