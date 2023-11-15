@@ -1,10 +1,11 @@
 [
 	{
 		"input_files": [
-			"modules/univention/admin/handlers/saml/.*\\.py"
+			"modules/univention/admin/handlers/saml/.*\\.py",
+			"modules/univention/admin/syntax.d/.*\\.py"
 		],
 		"po_subdir": "modules/univention/admin/handlers/saml",
 		"target_type": "mo",
-		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-saml-serviceprovider.mo"
+		"destination": "usr/share/univention-saml/{lang}.mo"
 	}
 ]

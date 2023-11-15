@@ -101,7 +101,7 @@ property_descriptions = {
     'LDAPattributes': univention.admin.property(
         short_description=_(u'List of ldap attributes to transmit'),
         long_description=_(u'A list of ldap attributes that are transmitted to the service provider'),
-        syntax=univention.admin.syntax.attributeMapping,
+        syntax=getattr(univention.admin.syntax, 'attributeMapping', univention.admin.syntax.string),
         multivalue=True,
     ),
     'serviceproviderdescription': univention.admin.property(

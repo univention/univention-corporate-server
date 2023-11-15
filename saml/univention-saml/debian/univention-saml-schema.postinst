@@ -30,6 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# required before the joinscript is called!
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 7.0.8-10; then
+	cp /usr/share/univention-saml/de.mo /usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-saml-serviceprovider.mo
+	cp /usr/share/univention-saml/syntax.d/*.py /usr/lib/python2.7/dist-packages/univention/admin/syntax.d/
+	cp /usr/share/univention-saml/syntax.d/*.py /usr/lib/python3/dist-packages/univention/admin/syntax.d/
+	install -d -m 0755 -o root -g root /usr/lib/python2.7/dist-packages/univention/admin/handlers/saml/
+	install -d -m 0755 -o root -g root /usr/lib/python3/dist-packages/univention/admin/handlers/saml/
+	touch /usr/lib/python2.7/dist-packages/univention/saml/__init__.py
+	touch /usr/lib/python3/dist-packages/univention/saml/__init__.py
+	cp /usr/share/univention-saml/handlers/saml/* /usr/lib/python2.7/dist-packages/univention/admin/handlers/saml/
+	cp /usr/share/univention-saml/handlers/saml/* /usr/lib/python3/dist-packages/univention/admin/handlers/saml/
+fi
+
 #DEBHELPER#
 
 # shellcheck source=/dev/null
