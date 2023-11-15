@@ -251,15 +251,9 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
 def selenium() -> webdriver.Chrome:
     """Browser based testing for using Selenium."""
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--no-sandbox')  # chrome complains about being executed as root
-    # do not use these two options, selenium will get stuck with
-    # >      raise exception_class(message, screen, stacktrace)
-    # E       selenium.common.exceptions.SessionNotCreatedException: Message: session not created
-    # E       from timeout: Timed out receiving message from renderer: 600.000
-    # E         (Session info: headless chrome=90.0.4430.212)
-    # on UCS
-    # chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--disable-dev-shm-usage")
+    # chrome complains about being executed as root
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--headless')
     chrome_options.add_argument('ignore-certificate-errors')
     driver = webdriver.Chrome(options=chrome_options)
     yield driver
