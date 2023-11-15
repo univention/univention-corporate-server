@@ -1,7 +1,19 @@
 @!@
 import json
-tmpl = configRegistry.get("docker/daemon/default/json", "{}")
-conf = json.loads(tmpl)
+conf = {
+    "log-opts": {
+        "max-file": configRegistry["docker/daemon/default/opts/max-file"],
+        "max-size": configRegistry["docker/daemon/default/opts/max-size"],
+    },
+    "bip": configRegistry["docker/daemon/default/opts/bip"],
+    "log-driver": configRegistry["docker/daemon/default/opts/log-driver"],
+    "live-restore": configRegistry.is_true("docker/daemon/default/parameter/live-restore"),
+}
+registry_mirrors = configRegistry.get('docker/daemon/default/opts/registry-mirrors')
+if registry_mirrors:
+    conf.update({"registry-mirrors": [mirror.strip() for mirror in registry_mirrors.split(',')]})
+
+conf.update(json.loads(configRegistry.get("docker/daemon/default/json", "{}")))
 text = json.dumps(conf, indent=4, sort_keys=True)
 print(text)
 @!@
