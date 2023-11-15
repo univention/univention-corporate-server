@@ -20,6 +20,7 @@ It's for administrators and solution architects.
 
    ucr
    udm
+   udm-rest-api
    umc
    portal
    app-center

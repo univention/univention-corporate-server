@@ -33,6 +33,7 @@
 .. _dojo-toolkit: https://dojotoolkit.org/
 .. _lets-encrypt: https://letsencrypt.org
 .. _mdn-csp: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+.. _open-api-what-is-it: https://www.openapis.org/what-is-openapi
 .. _tornado: https://www.tornadoweb.org/en/stable/
 .. _typescript: https://www.typescriptlang.org/
 .. _ucs-demo-portal-json: https://demo.univention.de/univention/portal/portal.json
