@@ -29,7 +29,8 @@ def main() -> None:
     summary: Dict[str, int] = defaultdict(int)
     for event in eventlist:
         match = RE_ID.match(event)
-        assert match
+        if not match:
+            continue
         group = match.group()
 
         if args.group:
