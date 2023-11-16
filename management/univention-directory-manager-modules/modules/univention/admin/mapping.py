@@ -35,6 +35,7 @@
 
 import base64
 import inspect
+from typing import List, Tuple, TypeVar, Union  # noqa: F401
 
 import univention.admin.uexceptions
 import univention.debug as ud
@@ -46,15 +47,10 @@ translation = localization.translation('univention/admin')
 _ = translation.translate
 
 try:
-    from typing import List, Tuple, TypeVar, Union  # noqa: F401
-    _E = TypeVar('_E')
-except ImportError:
-    pass
-
-try:
     unicode  # noqa: B018
 except NameError:
     unicode = str
+_E = TypeVar('_E')  # noqa: PYI018
 
 
 def MapToBytes(udm_value, encoding=()):
