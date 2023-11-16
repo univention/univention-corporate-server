@@ -26,36 +26,8 @@ Source code:
 
 .. code:: python
 
-   # -*- coding: utf-8 -*-
-   #
-   # Copyright 2017-2023 Univention GmbH
-   #
-   # https://www.univention.de/
-   #
-   # All rights reserved.
-   #
-   # The source code of this program is made available
-   # under the terms of the GNU Affero General Public License version 3
-   # (GNU AGPL V3) as published by the Free Software Foundation.
-   #
-   # Binary versions of this program provided by Univention to you as
-   # well as other copyrighted, protected or trademarked materials like
-   # Logos, graphics, fonts, specific documentations and configurations,
-   # cryptographic keys etc. are subject to a license agreement between
-   # you and Univention.
-   #
-   # In the case you use this program under the terms of the GNU AGPL V3,
-   # the program is provided in the hope that it will be useful,
-   # but WITHOUT ANY WARRANTY; without even the implied warranty of
-   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-   # GNU Affero General Public License for more details.
-   #
-   # You should have received a copy of the GNU Affero General Public
-   # License with the Debian GNU/Linux or Univention distribution in file
-   # /usr/share/common-licenses/AGPL-3; if not, see
-   # <https://www.gnu.org/licenses/>.
-
-   from __future__ import absolute_import
+   # SPDX-FileCopyrightText: 2017-2023 Univention GmbH
+   # SPDX-License-Identifier: AGPL-3.0-only
 
    from typing import Dict, Optional, List
 
@@ -252,8 +224,6 @@ Source code:
    Example for a listener module, which logs changes to users.
    """
 
-   from __future__ import print_function
-
    import errno
    import os
    from collections import namedtuple
@@ -399,21 +369,21 @@ For packaging the following files are required:
    The module should be installed into the directory
    :file:`/usr/lib/univention-directory-listener/system/`.
 
-   .. code-block:: console
+   .. code-block::
 
-      $ printusers.py usr/lib/univention-directory-listener/system/
+      printusers.py usr/lib/univention-directory-listener/system/
 
 :file:`debian/printusers.postinst`
    The |UCSUDL| must be restarted after package installation and removal:
 
    .. code-block:: bash
 
-      #! /bin/sh
+      #!/bin/sh
       set -e
 
       case "$1" in
       configure)
-          systemctl restart univention-directory-listener
+          deb-systemd-invoke restart univention-directory-listener
           ;;
       abort-upgrade|abort-remove|abort-deconfigure)
           ;;
@@ -431,12 +401,12 @@ For packaging the following files are required:
 
    .. code-block:: bash
 
-      #! /bin/sh
+      #!/bin/sh
       set -e
 
       case "$1" in
       remove)
-          systemctl restart univention-directory-listener
+          deb-systemd-invoke restart univention-directory-listener
           ;;
       purge|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
           ;;
@@ -462,8 +432,6 @@ file.
 Source code: :uv:src:`doc/developer-reference/listener/obj.py`
 
 .. code:: python
-
-   from __future__ import absolute_import, print_function
 
    import os
    from pwd import getpwnam

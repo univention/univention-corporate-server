@@ -1,10 +1,7 @@
 # SPDX-FileCopyrightText: 2021-2023 Univention GmbH
-#
 # SPDX-License-Identifier: AGPL-3.0-only
 
 """Example for a listener module, which logs changes to users."""
-
-from __future__ import annotations, print_function
 
 import errno
 import os

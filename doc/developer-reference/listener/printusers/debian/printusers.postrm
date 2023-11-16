@@ -1,9 +1,11 @@
-#! /bin/sh
+#!/bin/sh
+# SPDX-FileCopyrightText: 2021-2023 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 set -e
 
 case "$1" in
 remove)
-	systemctl restart univention-directory-listener
+	deb-systemd-invoke restart univention-directory-listener
 	;;
 purge|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 	;;
