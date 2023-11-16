@@ -46,9 +46,7 @@ class TestUniventionUpdater:
         """Test setup from UCR repository/online."""
         ucr({
             'repository/online': 'no',
-            'repository/online/server': 'example.net',
-            'repository/online/port': '1234',
-            'repository/online/prefix': 'prefix',
+            'repository/online/server': 'https://example.net:1234/prefix/',
             'repository/online/sources': 'yes',
             'repository/online/httpmethod': 'POST',
             'repository/online/verify': 'yes',
@@ -468,8 +466,7 @@ class TestComponents:
     def test__get_component_baseurl_custom(self, ucr, u):
         """Test getting custom component configuration."""
         ucr({
-            'repository/online/component/a/server': 'a.example.net',
-            'repository/online/component/a/port': '4711',
+            'repository/online/component/a/server': 'https://a.example.net:4711/',
         })
         a_baseurl = u.component('a').baseurl()
         assert a_baseurl.hostname == 'a.example.net'
@@ -479,8 +476,7 @@ class TestComponents:
         """Test getting local component configuration."""
         ucr({
             'local/repository': 'yes',
-            'repository/online/server': 'a.example.net',
-            'repository/online/port': '4711',
+            'repository/online/server': 'https://a.example.net:4711/',
             'repository/online/component/a': 'yes',
         })
         u.ucr_reinit()
@@ -494,8 +490,7 @@ class TestComponents:
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
             'repository/online/component/a/localmirror': 'no',
-            'repository/online/component/a/server': 'a.example.net',
-            'repository/online/component/a/port': '4711',
+            'repository/online/component/a/server': 'https://a.example.net:4711/',
         })
         u.ucr_reinit()
         a_baseurl = u.component('a').baseurl()
@@ -507,8 +502,7 @@ class TestComponents:
         ucr({
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
-            'repository/online/component/a/server': 'a.example.net',
-            'repository/online/component/a/port': '4711',
+            'repository/online/component/a/server': 'https://a.example.net:4711/',
         })
         u.ucr_reinit()
         a_baseurl = u.component('a').baseurl(for_mirror_list=True)
@@ -533,8 +527,7 @@ class TestComponents:
     def test__get_component_server_custom(self, ucr, u):
         """Test getting custom component configuration."""
         ucr({
-            'repository/online/component/a/server': 'a.example.net',
-            'repository/online/component/a/port': '4711',
+            'repository/online/component/a/server': 'https://a.example.net:4711/',
         })
         a_server = u.component('a').server()
         assert a_server.baseurl.hostname == 'a.example.net'
@@ -559,8 +552,7 @@ class TestComponents:
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
             'repository/online/component/a/localmirror': 'no',
-            'repository/online/component/a/server': 'a.example.net',
-            'repository/online/component/a/port': '4711',
+            'repository/online/component/a/server': 'https://a.example.net:4711/',
         })
         u.ucr_reinit()
         a_server = u.component('a').server()
@@ -572,23 +564,12 @@ class TestComponents:
         ucr({
             'local/repository': 'yes',
             'repository/online/component/a': 'yes',
-            'repository/online/component/a/server': 'a.example.net',
-            'repository/online/component/a/port': '4711',
+            'repository/online/component/a/server': 'https://a.example.net:4711/',
         })
         u.ucr_reinit()
         a_server = u.component('a').server(for_mirror_list=True)
         assert a_server.baseurl.hostname == 'a.example.net'
         assert a_server.baseurl.port == 4711
-
-    def test__get_component_server_none(selfi, ucr, u):
-        """Test getting custom component configuration."""
-        ucr({
-            'repository/online/component/a/server': 'a.example.net',
-            'repository/online/component/a/prefix': 'none',
-        })
-        a_server = u.component('a').server()
-        assert a_server.baseurl.hostname == 'a.example.net'
-        assert a_server.baseurl.path == ''
 
     def test__get_component_version_short(self, ucr, u, http):
         """Test getting component versions in range from MAJOR.MINOR."""

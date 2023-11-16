@@ -4,12 +4,6 @@ Description[en]=The repository server from which software packages are retrieved
 Type=url_http
 Categories=service-software-management
 
-[repository/online/prefix]
-Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Mit dieser Variable kann so ein Pfad konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
-Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. Some repositories use several update subdirectories. This variable allows to configure such a prefix path. If the variable is unset, no prefix is used.
-Type=str
-Categories=service-software-management
-
 [local/repository]
 Description[de]=Wenn diese Option aktiviert ist, wird ein lokales Repository verwendet. Ist die Variable nicht gesetzt, wird kein lokales Repository eingesetzt.
 Description[en]=If this option is activated, a local repository is used. If the variable is unset, no local repository is used.
@@ -81,13 +75,6 @@ Type=bool
 Categories=service-software-management
 Default=no
 
-[repository/online/port]
-Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Diese Variable konfiguriert den TCP-Port, unter dem das Online-Repository erreichbar ist.
-Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. This variable configures the TCP port under which the online repository is reachable.
-Type=portnumber
-Categories=service-software-management
-Default=80
-
 [repository/online/sources]
 Description[de]=Die apt-Installationsquellen werden basierend auf den Einstellungen repository/online/* generiert. Ist diese Option aktiviert, wird neben den Programmpakete auch der Quellcode über apt bereitgestellt ('apt-get source QUELLPAKETNAME').
 Description[en]=The apt installation sources are generated based on the repository/online/* settings. If this option is activated, the source code is provided through apt in addition to the program packages ('apt-get source SOURCEPACKAGENAME').
@@ -122,12 +109,6 @@ Description[en]=The description of a repository component.
 Type=str
 Categories=service-software-management
 
-[repository/online/component/.*/unmaintained]
-Description[de]=DEPRECATED! Diese Variable nicht mehr verwenden. Für Repository-Komponenten wird zwischen 'maintained' und 'unmaintained' unterschieden. Komponenten, die über das Univention App Center integriert werden, verwenden in der Regel nur 'maintained'. Ist diese Option aktiviert, werden Pakete der Komponente aus 'unmaintained' bereitgestellt.
-Description[en]=DEPRECATED! Please do not use any longer. Repository components differentiate between 'maintained' and 'unmaintained'. Components which are included through the Univention App Center usually only use 'maintained'. If this option is activated, packages of the component from 'unmaintained' are included.
-Type=bool
-Categories=service-software-management
-
 [repository/online/component/.*/version]
 Description[de]=Komponenten können versioniert werden. Dies stellt sicher, dass nur zu einer UCS-Version kompatible Komponenten installiert werden. Ist die Variable leer oder nicht gesetzt, werden automatisch alle Versionen derselben Major-Version eingebunden. Ist z.B. aktuell UCS 3.2 installiert, so werden die Repositories für die Komponente in den Versionen 3.0, 3.1 und 3.2 eingebunden, sofern diese existieren. Steht die Variable auf 'current', werden ebenfalls alle Versionen der selben Major-Version eingebunden. Zusätzlich wird aber ein Release-Update des UCS-Systems solange verhindert, bis auch die so markierte Komponente für die neue Version verfügbar ist; Patchlevel- oder Errata-Updates sind davon nicht betroffen.
 Description[en]=Components can be versioned. This ensures that only components are installed that are compatible with a UCS version. If the variable is empty or unset, all versions of the same major number will be used. If for example UCS 3.2 is installed, all repositories of the component with version numbers 3.0, 3.1 and 3.2 will be used if available. If the variable is set to 'current' all versions of the same major version will be included. Additionally it will block all minor and major upgrades of the installed UCS system until the respective component is also available for the new release. Patch level and errata updates are not affected.
@@ -142,35 +123,11 @@ Description[en]=The repository server from which packages of the component are r
 Type=url_http
 Categories=service-software-management
 
-[repository/online/component/.*/port]
-Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Diese Variable konfiguriert den TCP-Port, unter dem der Server der Repository-Komponente erreichbar ist. Ist die Variable nicht gesetzt, wird '80' verwendet.
-Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. This variable configures the TCP port under which the server of the repository component is reachable. If the variable is unset, '80' is used.
-Type=portnumber
-Categories=service-software-management
-
-[repository/online/component/.*/prefix]
-Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Mit dieser Variable kann so ein Pfad für die Komponente konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
-Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. Some repositories use several update subdirectories. This variable allows to configure such a path for the component. If the variable is unset, no prefix is used.
-Type=str
-Categories=service-software-management
-
 [repository/online/component/.*/layout]
 Description[de]=Das Layout der Paketstruktur der Komponente. Standard ist "arch", alternative ist "flat".
 Description[en]=The layout of the package repository of the component. Default is "arch", alternative is "flat".
 Type=str
 Regex=^(arch|flat)?$
-Categories=service-software-management
-
-[repository/online/component/.*/username]
-Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Einige Repository-Komponenten verlangen eine Authentifizierung für den Zugriff auf das Repository. Mit dieser Variable kann der Benutzername konfiguriert werden. Siehe auch 'repository/online/component/.*/password'.
-Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. Some repository components require authentication for accessing the repository. The username can be configured with this variable. See also 'repository/online/component/.*/password'.
-Type=str
-Categories=service-software-management
-
-[repository/online/component/.*/password]
-Description[de]=DEPRECATED! Bitte benutzen sie stattdessen einen vollständigen URL String "http(s)://<username>:<password>@<server>:<port>/<path>" in der server Variablen. Einige Repository-Komponenten verlangen eine Authentifizierung für den Zugriff auf das Repository. Mit dieser Variable kann das Passwort konfiguriert werden. Siehe auch 'repository/online/component/.*/username'.
-Description[en]=DEPRECATED! Please specify a fully qualified URL string "http(s)://<username>:<password>@<server>:<port>/<path>" in the server variable instead. Some repository components require authentication for accessing the repository. The password can be configured with this variable. See also 'repository/online/component/.*/username'.
-Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/localmirror]

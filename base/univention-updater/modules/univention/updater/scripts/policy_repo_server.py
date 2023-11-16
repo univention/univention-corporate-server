@@ -82,13 +82,13 @@ def main() -> None:
     if ucr.is_true('local/repository'):
         # on a repository server
         if not new_server:
-            ucr_variables.append('repository/online/server?%s' % fqdn)
+            ucr_variables.append('repository/online/server?https://%s/' % fqdn)
         elif new_server not in (mirror_server, fqdn):
-            ucr_variables.append('repository/mirror/server=%s' % new_server)
+            ucr_variables.append('repository/mirror/server=https://%s/' % new_server)
     else:
         # without a local repository
         if new_server and new_server != online_server:
-            ucr_variables.append('repository/online/server=%s' % new_server)
+            ucr_variables.append('repository/online/server=https://%s/' % new_server)
 
     if ucr_variables:
         handler_set(ucr_variables)
