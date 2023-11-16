@@ -13,5 +13,6 @@ deliver additional information for the content.
 
 .. toctree::
 
+   third-party
    architecture-notation
    /bibliography

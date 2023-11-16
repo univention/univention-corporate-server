@@ -25,7 +25,6 @@
 .. _bootstrap: https://getbootstrap.com/
 .. _c4-model: https://c4model.com/
 .. _c4-model-diagramming: https://c4model.com/#Modelling
-.. _cherry-py: https://cherrypy.dev/
 .. _debian-faq-pkg-basics: https://www.debian.org/doc/manuals/debian-faq/pkg-basics.en.html
 .. _debian-ref-package-mngmt: https://www.debian.org/doc/manuals/debian-reference/ch02.en.html
 .. _docker-compose: https://docs.docker.com/compose/

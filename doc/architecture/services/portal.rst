@@ -61,25 +61,16 @@ HTTP request handler
    single: technology; vue.js
    single: technology; single page application
    pair: vue.js; ucs portal
-
-Single-page application
-   *Vue.js* with *TypeScript* is the technology behind the web frontend of the
-   portal. It serves the single-page application of the portal to the user.
-   `Vue.js <vuejs_>`_ is a versatile JavaScript framework for building web user
-   interfaces. The decision came to *Vue.js*, because it's flexible, painless,
-   and not owned by a company. The implementation began with *Vue.js* 3, because
-   it has full *TypeScript* support and many improvements compared to *Vue.js*
-   2.
-
-.. index::
    single: technology; typescript
    pair: typescript; ucs portal
 
-TypeScript
-   `TypeScript <typescript_>`_ is the programming language of choice for the
-   frontend, because it helps to achieve a unified codebase through typing and
-   linting features. Furthermore, *TypeScript* avoids common JavaScript mistakes
-   and helps software developers to write cleaner code.
+Single-page application
+   :term:`Vue.js` with :term:`TypeScript` is the technology behind the web frontend of the
+   portal. It serves the single-page application of the portal to the user.
+   The decision came to *Vue.js*, because it's flexible, painless,
+   and not owned by a company. The implementation began with *Vue.js* 3, because
+   it has full *TypeScript* support and many improvements compared to *Vue.js*
+   2.
 
 .. _services-ucs-portal-front-end:
 

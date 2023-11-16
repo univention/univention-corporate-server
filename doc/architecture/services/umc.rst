@@ -254,7 +254,7 @@ fact, the web server offering the *Reverse proxy* consists of more parts.
    single: technology; apache http server
 
 Static HTTP server
-   First is the web server realized by :program:`Apache HTTP server`. The web
+   First is the web server realized by :term:`Apache HTTP server`. The web
    server provides the *Static HTTP server* that delivers the static files for
    the *UMC web frontend*. And the *Static HTTP server* responds with important
    HTTP headers for caching rules of the static files and security related
@@ -265,9 +265,9 @@ Static HTTP server
    single: apache; http server
 
 Reverse proxy
-   Second is the reverse proxy capability from the :program:`Apache HTTP server`
-   with the reverse proxy module :program:`mod_proxy`. The *Reverse proxy* also
-   responds with important HTTP headers similar to the *Static HTTP server*.
+   Second is the reverse proxy capability from the :term:`Apache HTTP server`
+   with the :term:`Apache module mod_proxy`. The *Reverse proxy* also responds
+   with important HTTP headers similar to the *Static HTTP server*.
 
    The *Reverse proxy* redirects the following URI paths to the *UMC web
    server*:
@@ -286,7 +286,7 @@ Reverse proxy
 
 UMC server
    Further down the chain is the *UMC server* realized by
-   :program:`Tornado`, that only allows connections from the *Reverse proxy*.
+   :term:`Tornado`, that only allows connections from the *Reverse proxy*.
    For example, it provides session management for signed in users.
 
    The *UMC server* accepts requests with ``HTTP``. For example, the *UMC client*
@@ -302,14 +302,6 @@ UMC module processes
    UMC modules extend UCS with capability. For the description, refer to
    :ref:`services-umc-modules`.
 
-.. seealso::
-
-   `Apache HTTP server project <apache-httpd_>`_
-      for the website of the Apache HTTP server project
-
-   `Tornado <tornado_>`_
-      for the website of the *Tornado* project
-
 .. _services-umc-web-front-end:
 
 UMC web frontend
@@ -323,8 +315,8 @@ UMC web frontend
 
 The *UMC web frontend* is responsible for the presentation layer of |UMC| and
 runs in the user's web browser. It uses the modular JavaScript framework
-:program:`Dojo Toolkit` to create dynamic widgets. And it uses the
-:program:`Bootstrap` CSS framework for responsive designed web pages.
+:term:`Dojo Toolkit` to create dynamic widgets. And it uses the
+:term:`Bootstrap` CSS framework for responsive designed web pages.
 
 :numref:`services-umc-web-front-end-model` provides a detailed view on the model
 of the *UMC web frontend*.
@@ -352,12 +344,12 @@ user interface:
    pair: univention-management-console-frontend; umc
 
 :program:`univention-web-js`
-   Contains the ready-to-use JavaScript files built with :program:`Dojo
+   Contains the ready-to-use JavaScript files built with :term:`Dojo
    Toolkit`.
 
 :program:`univention-web-styles`
    Contains the ready-to-use CSS files for the web design including the
-   graphical theme built with :program:`Bootstrap`.
+   graphical theme built with :term:`Bootstrap`.
 
 :program:`univention-management-console-frontend`
    Contains the HTML files for the *UMC web frontend*. More packages like
@@ -365,14 +357,6 @@ user interface:
    :program:`univention-management-console-login`,
    :program:`univention-system-setup`, :program:`univention-portal` and others
    also contain HTML files for the *UCS management system*.
-
-.. seealso::
-
-   `Dojo Toolkit <dojo-toolkit_>`_
-      Modular JavaScript framework
-
-   `Bootstrap <bootstrap_>`_
-      Powerful, extensible, and feature-packed front end toolkit
 
 .. _services-umc-modules:
 
