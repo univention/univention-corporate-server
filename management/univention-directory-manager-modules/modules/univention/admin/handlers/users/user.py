@@ -46,6 +46,7 @@ from typing import List  # noqa: F401
 import ldap
 import passlib.hash
 import tzlocal
+import zoneinfo
 from ldap.filter import filter_format
 
 import univention.admin
@@ -69,13 +70,7 @@ from univention.admin.layout import Group, Tab
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 
 
-try:  # Python > 3.9
-    import zoneinfo
-    utc = zoneinfo.ZoneInfo('UTC')
-except (ImportError, AttributeError):
-    import pytz
-    zoneinfo = None
-    utc = pytz.utc
+utc = zoneinfo.ZoneInfo('UTC')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
@@ -1033,9 +1028,7 @@ def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple):  #
     d, t, tz = local_datetimetimezone_tuple
     # dttz_str = module.property_descriptions[key].syntax.tostring(local_datetimetimezone_tuple)
     native_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")
-    if zoneinfo:
-        return native_dt.replace(tzinfo=zoneinfo.ZoneInfo(tz))
-    return pytz.timezone(tz).localize(native_dt)
+    return native_dt.replace(tzinfo=zoneinfo.ZoneInfo(tz))
 
 
 def mapDateTimeTimezoneTupleToUTCDateTimeString(local_datetimetimezone_tuple, encoding=()):  # type: (List[str]) -> List[bytes]
