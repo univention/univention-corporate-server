@@ -51,6 +51,6 @@ There must be at least one blank before `ucslint`. It can be followed by a `:`, 
 You can run `ucslint` over multiple packages and generate a statistic:
 
 	find -maxdepth 3 -name doc -prune -o -name debian -printf '%h\0' |
-		xargs -0 ./packaging/ucslint/ucslint -x 20 -i 0007-5,0007-6 |
+		xargs -0 ./packaging/ucslint/ucslint -i 0007-5,0007-6 |
 		./packaging/ucslint/ucslint-sort-output.py -g -s |
 		tee ucslint.txt
