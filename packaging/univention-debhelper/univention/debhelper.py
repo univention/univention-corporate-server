@@ -36,12 +36,7 @@
 import os
 import subprocess
 from argparse import ArgumentParser, Namespace  # noqa: F401
-
-
-try:
-    from typing import Dict, List, Optional, Sequence  # noqa: F401
-except ImportError:
-    pass
+from typing import Dict, List, Optional, Sequence  # noqa: F401
 
 
 def doIt(*argv):
