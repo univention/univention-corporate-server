@@ -59,6 +59,7 @@ import zoneinfo
 from ldap.filter import escape_filter_chars, filter_format
 from ldap.schema import AttributeType, ObjectClass
 from ldap.schema.subentry import SubSchema  # noqa: F401
+from email_validator import SPECIAL_USE_DOMAIN_NAMES, EmailNotValidError, validate_email
 
 import univention.admin.modules
 import univention.admin.types
@@ -73,11 +74,7 @@ from univention.uldap import getMachineConnection
 if TYPE_CHECKING:
     from univention.admin.uldap import access  # noqa: F401
 
-try:
-    from email_validator import SPECIAL_USE_DOMAIN_NAMES, EmailNotValidError, validate_email
-    SPECIAL_USE_DOMAIN_NAMES[:] = []
-except ImportError:  # Python 2.7
-    validate_email = EmailNotValidError = None
+SPECIAL_USE_DOMAIN_NAMES[:] = []
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
