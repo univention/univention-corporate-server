@@ -62,14 +62,15 @@ class LicenseServer:
         Protocol = 'HTTP/1.1'
         server_address = (self.host, self.port)
 
+        ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        ssl_context.load_cert_chain(
+            certfile=f'{self.cert_basedir}cert.pem',
+            keyfile=f'{self.cert_basedir}private.key'
+        )
+
         HTTPHandlerClass.protocol_version = Protocol
         httpd = ServerClass(server_address, HTTPHandlerClass)
-        httpd.socket = ssl.wrap_socket(
-            httpd.socket,
-            keyfile=f'{self.cert_basedir}private.key',
-            certfile=f'{self.cert_basedir}cert.pem',
-            server_side=True,
-        )
+        httpd.socket = ssl_context.wrap_socket(httpd.socket, server_side=True)
 
         sa = httpd.socket.getsockname()
         print(f'Serving HTTP on "{sa[0]}:{sa[1]}"')

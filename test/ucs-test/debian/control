@@ -193,6 +193,7 @@ Recommends:
 Depends:
  python,
  python3-netifaces,
+ python3-openssl,
  python3-pexpect,
  swaks,
  ucs-test-libs (= ${source:Version}),
@@ -672,6 +673,7 @@ Package: ucs-test-crypto
 Architecture: all
 Depends:
  openssl,
+ python3-openssl,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Recommends:
