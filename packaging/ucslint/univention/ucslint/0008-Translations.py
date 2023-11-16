@@ -31,6 +31,7 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 from typing import Iterable
 
 import univention.ucslint.base as uub
@@ -65,7 +66,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0008-7': (uub.RESULT_WARN, 'found well-known LDAP object but no custom_*name()'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
         self.check_py(python_files(path))
@@ -75,12 +76,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES | uub.FilteredDirWalkGenerator.DOCUMENTATION_SUFFIXES,
         ))
 
-    def check_py(self, py_files: Iterable[str]) -> None:
+    def check_py(self, py_files: Iterable[Path]) -> None:
         """Check Python files."""
         for fn in py_files:
             try:
-                with open(fn) as fd:
-                    content = fd.read()
+                content = fn.read_text()
             except OSError:
                 self.addmsg('0008-2', 'failed to open and read file', fn)
                 continue
@@ -89,12 +89,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             for row, col, match in uub.line_regexp(content, RE_TRANSLATION):
                 self.addmsg('0008-1', f'substitutes before translation: {match[1]}', fn, row, col)
 
-    def check_po(self, po_files: Iterable[str]) -> None:
+    def check_po(self, po_files: Iterable[Path]) -> None:
         """Check Portable Object files."""
         for fn in po_files:
             try:
-                with open(fn) as fd:
-                    content = fd.read()
+                content = fn.read_text()
             except OSError:
                 self.addmsg('0008-2', 'failed to open and read file', fn)
                 continue
@@ -113,7 +112,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 for row, col, _match in uub.line_regexp(content, regex):
                     self.addmsg(errid, errtxt, fn, row, col)
 
-    def check_names(self, files: Iterable[str]) -> None:
+    def check_names(self, files: Iterable[Path]) -> None:
         tester = uub.UPCFileTester()
         tester.addTest(
             re.compile(

@@ -39,12 +39,11 @@ from __future__ import annotations
 
 import re
 import sys
-from argparse import ArgumentParser, ArgumentTypeError, FileType, Namespace
+from argparse import ArgumentParser, FileType, Namespace
 from errno import ENOENT
 from fnmatch import fnmatch
 from importlib.util import module_from_spec, spec_from_file_location
-from os import listdir
-from os.path import abspath, dirname, exists, expanduser, isdir, join, normpath, relpath
+from pathlib import Path
 from types import ModuleType
 from typing import IO, Container, Dict
 
@@ -81,36 +80,36 @@ def load_plugins(opt: Namespace) -> Plugins:
     """
     plugins: Plugins = {}
 
-    plugindirs = [abspath(path) for path in (opt.plugindir or [expanduser('~/.ucslint'), dirname(uub.__file__)])]
+    plugindirs = [path.resolve() for path in (opt.plugindir or [Path('~/.ucslint').expanduser(), Path(uub.__file__).parent])]
     enabled = [clean_modid(x) for mod in opt.enabled_modules for x in mod.split(',')]
     disabled = [clean_modid(x) for mod in opt.disabled_modules for x in mod.split(',')]
 
     for plugindir in plugindirs:
-        if not exists(plugindir):
+        if not plugindir.is_dir():
             if opt.debug:
                 print(f'WARNING: plugindir {plugindir} does not exist', file=sys.stderr)
         else:
-            for f in listdir(plugindir):
-                if f.endswith('.py') and f[0:4].isdigit():
-                    # self.modules == None ==> load all modules
-                    # otherwise load only listed modules
-                    if (not enabled or f[0:4] in enabled) and f[0:4] not in disabled:
-                        modname = f[0:-3]
-                        try:
-                            fn = normpath(join(plugindir, f))
-                            spec = spec_from_file_location(f[:-3], fn)
-                            assert spec is not None
-                            module = module_from_spec(spec)
-                            assert spec.loader
-                            spec.loader.exec_module(module)  # type: ignore
-                            plugins[modname] = module
-                        except Exception as exc:
-                            print(f'ERROR: Loading module {f} failed: {exc}', file=sys.stderr)
-                            if opt.debug:
-                                raise
-                    else:
+            for fn in plugindir.glob("[0-9][0-9][0-9][0-9]*.py"):
+                code = fn.stem[0:4]
+                if code in disabled:
+                    if opt.debug:
+                        print(f'Module {fn.stem} is disabled', file=sys.stderr)
+                elif enabled and code not in enabled:
+                    if opt.debug:
+                        print(f'Module {fn.stem} is not enabled', file=sys.stderr)
+                else:
+                    modname = fn.stem
+                    try:
+                        spec = spec_from_file_location(fn.stem[:-3], fn)
+                        assert spec is not None
+                        module = module_from_spec(spec)
+                        assert spec.loader
+                        spec.loader.exec_module(module)  # type: ignore
+                        plugins[modname] = module
+                    except Exception as exc:
+                        print(f'ERROR: Loading module {fn} failed: {exc}', file=sys.stderr)
                         if opt.debug:
-                            print(f'Module {f} is not enabled', file=sys.stderr)
+                            raise
 
     return plugins
 
@@ -124,7 +123,7 @@ class DebianPackageCheck:
     :param debuglevel: Vebosity level.
     """
 
-    def __init__(self, path: str, plugins: Plugins, debuglevel: int = 0):
+    def __init__(self, path: Path, plugins: Plugins, debuglevel: int = 0):
         self.path = path
         self.pluginlist = plugins
         self.debuglevel = debuglevel
@@ -148,9 +147,9 @@ class DebianPackageCheck:
     def loadOverrides(self) -> None:
         """Parse :file:`debian/ucslint.overrides` file."""
         self.overrides = set()
-        fn = normpath(join(self.path, 'debian', 'ucslint.overrides'))
+        fn = self.path / 'debian' / 'ucslint.overrides'
         try:
-            with open(fn) as overrides:
+            with fn.open() as overrides:
                 for row, line in enumerate(overrides, start=1):
                     line = line.strip()
                     if not line:
@@ -176,11 +175,11 @@ class DebianPackageCheck:
         :param msg: Message to check.
         :returns: `True` when the check should be ignored, `False` otherwise.
         """
-        filepath = normpath(relpath(msg.filename, self.path)) if msg.filename else ''
+        filepath = msg.filename.relative_to(self.path) if msg.filename else Path("")
         for (modulename, pattern, linenumber) in self.overrides:
             if modulename != msg.getId():
                 continue
-            if pattern and not fnmatch(filepath, pattern):
+            if pattern and not fnmatch(filepath.as_posix(), pattern):
                 continue
             if linenumber is not None and linenumber != msg.row:
                 continue
@@ -349,6 +348,7 @@ def parse_args() -> Namespace:
         '-p',
         action='append',
         default=[],
+        type=Path,
         help='override plugin directory with <plugindir>',
         metavar='DIRECTORY',
     )
@@ -378,6 +378,7 @@ def parse_args() -> Namespace:
         'pkgpath',
         nargs='*',
         type=debian_dir,
+        default=[Path(".")],
         help='Source package directory',
     )
     args = parser.parse_args()
@@ -385,37 +386,25 @@ def parse_args() -> Namespace:
     if args.junit_xml and not uub.JUNIT:
         parser.error("Missing Python support for JUNIT_XML")
 
-    try:
-        if not args.pkgpath:
-            args.pkgpath = [debian_dir('.')]
-    except ArgumentTypeError as ex:
-        parser.error(str(ex))
-
     return args
 
 
-def debian_dir(pkgpath: str) -> str:
+def debian_dir(pkgpath: str) -> Path:
     """
     Check if given path is base for a Debian package.
 
     :param pkgpath: base path.
     :returns: same path.
-    :raises ArgumentTypeError: when it is no Debian package.
     """
-    if not exists(pkgpath):
-        msg = f"directory {pkgpath!r} does not exist!"
-        raise ArgumentTypeError(msg)
+    p = Path(pkgpath)
+    if not p.is_dir():
+        raise ValueError(f"{pkgpath!r} is no directory!")
 
-    if not isdir(pkgpath):
-        msg = f"{pkgpath!r} is no directory!"
-        raise ArgumentTypeError(msg)
+    debdir = p / 'debian'
+    if not debdir.is_dir():
+        raise ValueError(f"{debdir!r} does not exist or is not a directory!")
 
-    debdir = join(pkgpath, 'debian')
-    if not isdir(debdir):
-        msg = f"{debdir!r} does not exist or is not a directory!"
-        raise ArgumentTypeError(msg)
-
-    return pkgpath
+    return p
 
 
 def main() -> None:
@@ -430,7 +419,7 @@ def main() -> None:
     display_only_IDs = [clean_id(x) for dsp in options.display_only_IDs for x in dsp.split(',')]
 
     fail = False
-    for pkgpath in options.pkgpath or ['.']:
+    for pkgpath in options.pkgpath:
         chk = DebianPackageCheck(pkgpath, plugins, debuglevel=options.debug)
         try:
             chk.check()

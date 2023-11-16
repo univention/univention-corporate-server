@@ -38,8 +38,7 @@ import sys
 from configparser import (
     DuplicateOptionError, DuplicateSectionError, MissingSectionHeaderError, ParsingError, RawConfigParser,
 )
-from os import listdir
-from os.path import exists, join, normpath, relpath
+from pathlib import Path
 from typing import Any, Dict, Iterator, List
 
 import univention.ucslint.base as uub
@@ -67,7 +66,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_PYTHON = re.compile(r'@!@')
     RE_VAR = re.compile(r'@%@')
     RE_VALID_UCR = re.compile(r'^(?:[-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz]|%[sd])+$')
-    RE_UCR_HEADER_FILE = re.compile(r'#[\t ]+(/etc/univention/templates/files(/[^ \n\t\r]*?))[ \n\t\r]')
+    RE_UCR_HEADER_FILE = re.compile(r'#[\t ]+(/etc/univention/templates/files/([^ \n\t\r]*?))[ \n\t\r]')
     RE_UICR = re.compile(r'[\n\t ]univention-install-(baseconfig|config-registry)[\n\t ]|\tdh\b.*--with\b.*\bucr\b')
 
     def getMsgIds(self) -> uub.MsgIds:
@@ -174,12 +173,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_FUNC_CUSTOM_USER = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_username \b', re.MULTILINE | re.VERBOSE)
     RE_FUNC_CUSTOM_GROUP = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_groupname \b', re.MULTILINE | re.VERBOSE)
 
-    def check_conffiles(self, path: str) -> dict[str, Any]:
+    def check_conffiles(self, path: Path) -> dict[Path, Any]:
         """Analyze UCR templates below :file:`conffiles/`."""
-        conffiles: dict[str, dict[str, Any]] = {}
+        conffiles: dict[Path, dict[str, Any]] = {}
 
-        confdir = normpath(join(path, 'conffiles'))
+        confdir = path / 'conffiles'
         for fn in uub.FilteredDirWalkGenerator(confdir, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
+            fname = fn.relative_to(confdir).as_posix()
             checks: dict[str, Any] = {
                 'headerfound': False,
                 'variables': [],  # List[str] # Python code
@@ -194,13 +194,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             }
             conffiles[fn] = checks
 
-            match = self.RE_PYTHON_FNAME.match(relpath(fn, confdir))
+            match = self.RE_PYTHON_FNAME.match(fname)
             if match:
                 checks['pythonic'] = True
 
             try:
-                with open(fn) as fd:
-                    content = fd.read()
+                content = fn.read_text()
             except OSError:
                 self.addmsg('0004-27', 'cannot open/read file', fn)
                 continue
@@ -264,19 +263,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 #
                 match = self.RE_UCR_HEADER_FILE.search(content)
                 if match:
-                    fname = fn[fn.find('/conffiles/') + 10:]
                     if match[2] != fname:
-                        self.addmsg('0004-1', f'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files{fname}\n      - path in header    = {match[1]}', fn)
+                        self.addmsg('0004-1', f'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files/{fname}\n      - path in header    = {match[1]}', fn)
 
         self.debug(f'found conffiles: {conffiles.keys()}')
 
         return conffiles
 
-    def read_ucr(self, fn: str) -> Iterator[UcrInfo]:
+    def read_ucr(self, fn: Path) -> Iterator[UcrInfo]:
         self.debug(f'Reading {fn}')
         try:
             entry: UcrInfo = {}
-            with open(fn) as stream:
+            with fn.open() as stream:
                 for row, line in enumerate(stream, start=1):
                     line = line.strip()
                     if not line and entry:
@@ -301,7 +299,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         except OSError:
             self.addmsg('0004-27', 'cannot open/read file', fn)
 
-    def read_ini(self, fn: str) -> RawConfigParser:
+    def read_ini(self, fn: Path) -> RawConfigParser:
         self.debug(f'Reading {fn}')
 
         cfg = RawConfigParser(interpolation=None)
@@ -327,7 +325,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         return cfg
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
         conffiles = self.check_conffiles(path)
@@ -342,16 +340,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         all_postinst: set[str] = set()  # { FN... }
         all_module: set[str] = set()  # { FN... }
         all_script: set[str] = set()  # { FN... }
-        all_definitions: dict[str, set[str]] = {}  # { SHORT-FN ==> { FULL-FN... } }
-        all_descriptions: set[str] = set()  # { FN... }
+        all_definitions: dict[str, set[Path]] = {}  # { SHORT-FN ==> { FULL-FN... } }
+        all_descriptions: set[str] = set()  # { VAR... }
         all_variables: set[str] = set()  # { VAR... }
         objlist: dict[str, list[UcrInfo]] = {}  # { CONF-FN ==> [ OBJ... ] }
 
         # read debian/rules
-        fn_rules = normpath(join(path, 'debian', 'rules'))
+        fn_rules = path / 'debian' / 'rules'
         try:
-            with open(fn_rules) as fd:
-                rules_content = fd.read()
+            rules_content = fn_rules.read_text()
         except OSError:
             self.addmsg('0004-2', 'file is missing', fn_rules)
             rules_content = ''
@@ -360,251 +357,247 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0004-25', 'file contains old univention-install-baseconfig call', fn_rules)
 
         # find debian/*.u-c-r and check for univention-config-registry-install in debian/rules
-        for f in listdir(normpath(join(path, 'debian'))):
-            fn = normpath(join(path, 'debian', f))
-            if fn.endswith('.univention-config-registry-categories'):
+        for fn in path.glob("debian/*"):
+            if fn.suffix == '.univention-config-registry-categories':
                 self.read_ini(fn)
-            elif fn.endswith('.univention-config-registry-mapping'):
+            elif fn.suffix == '.univention-config-registry-mapping':
                 pass
-            elif fn.endswith('.univention-config-registry-variables'):
+            elif fn.suffix == '.univention-config-registry-variables':
                 cfg = self.read_ini(fn)
                 all_descriptions |= set(cfg.sections())
-            elif fn.endswith('.univention-service'):
+            elif fn.suffix == '.univention-service':
                 self.read_ini(fn)
-            elif fn.endswith('.univention-config-registry'):
-                tmpfn = normpath(join(path, 'debian', f'{f.rsplit(".", 1)[0]}.univention-config-registry-variables'))
-                self.debug(f'testing {tmpfn}')
-                if not exists(tmpfn):
-                    self.addmsg('0004-24', f'{f} exists but corresponding {tmpfn} is missing', tmpfn)
+            elif fn.suffix == '.univention-config-registry':
+                ucrvfn = fn.with_suffix(".univention-config-registry-variables")
+                self.debug(f'testing {ucrvfn}')
+                if not ucrvfn.exists():
+                    self.addmsg('0004-24', f'{fn.name} exists but corresponding {ucrvfn} is missing', ucrvfn)
 
                 if not self.RE_UICR.search(rules_content):
-                    self.addmsg('0004-23', f'{f} exists but debian/rules contains no univention-install-config-registry', fn_rules)
+                    self.addmsg('0004-23', f'{fn.name} exists but debian/rules contains no univention-install-config-registry', fn_rules)
                     break
 
-        for f in listdir(normpath(join(path, 'debian'))):
-            if f.endswith('.univention-config-registry'):
-                fn = normpath(join(path, 'debian', f))
+        for fn in path.glob("debian/*.univention-config-registry"):
+            # OBJ = { 'Type': [ STRING, ... ],
+            #         'Subfile': [ STRING, ... ] ,
+            #         'Multifile': [ STRING, ... ],
+            #         'Variables': [ STRING, ... ]
+            # or instead of "Subfile" and "Multifile" one of the following:
+            #         'File': [ STRING, ... ] ,
+            #         'Module': [ STRING, ... ] ,
+            #         'Script': [ STRING, ... ] ,
+            #       }
+            multifiles: dict[str, UcrInfo] = {}  # { MULTIFILENAME ==> OBJ }
+            subfiles: dict[str, list[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ, OBJ, ... ] }
+            files: list[UcrInfo] = []  # [ OBJ, OBJ, ... ]
+            unique: set[str | tuple[str, str]] = set()
 
-                # OBJ = { 'Type': [ STRING, ... ],
-                #         'Subfile': [ STRING, ... ] ,
-                #         'Multifile': [ STRING, ... ],
-                #         'Variables': [ STRING, ... ]
-                # or instead of "Subfile" and "Multifile" one of the following:
-                #         'File': [ STRING, ... ] ,
-                #         'Module': [ STRING, ... ] ,
-                #         'Script': [ STRING, ... ] ,
-                #       }
-                multifiles: dict[str, UcrInfo] = {}  # { MULTIFILENAME ==> OBJ }
-                subfiles: dict[str, list[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ, OBJ, ... ] }
-                files: list[UcrInfo] = []  # [ OBJ, OBJ, ... ]
-                unique: set[str | tuple[str, str]] = set()
+            for entry in self.read_ucr(fn):
+                self.debug(f'Entry: {entry}')
 
-                for entry in self.read_ucr(fn):
-                    self.debug(f'Entry: {entry}')
-
-                    try:
-                        typ = entry['Type'][0]
-                    except LookupError:
-                        self.addmsg('0004-3', 'file contains entry without "Type:"', fn)
-                    else:
-                        if typ == 'multifile':
-                            mfile = entry.get('Multifile', [])
-                            if not mfile:
-                                self.addmsg('0004-4', 'file contains multifile entry without "Multifile:" line', fn)
-                            elif len(mfile) != 1:
-                                self.addmsg('0004-4', f'file contains multifile entry with {len(mfile)} "Multifile:" line', fn)
-                            else:
-                                multifiles[mfile[0]] = entry
-                            for conffn in mfile:
-                                if conffn in unique:
-                                    self.addmsg('0004-60', f'Duplicate entry: Multifile {conffn}', fn)
-                                else:
-                                    unique.add(conffn)
-
-                            user = entry.get('User', [])
-                            if len(user) > 1:
-                                self.addmsg('0004-44', 'UCR .info-file contains entry of "Type: file" with multiple "User: " line', fn)
-                            elif len(user) == 1 and user[0].isdigit():  # must be an symbolic name
-                                self.addmsg('0004-43', 'UCR .info-file contains entry of "Type: file" with invalid "User: " line', fn)
-
-                            group = entry.get('Group', [])
-                            if len(group) > 1:
-                                self.addmsg('0004-46', 'UCR .info-file contains entry of "Type: file" with multiple "Group: " line', fn)
-                            elif len(group) == 1 and group[0].isdigit():  # must be an symbolic name
-                                self.addmsg('0004-45', 'UCR .info-file contains entry of "Type: file" with invalid "Group: " line', fn)
-
-                            mode = entry.get('Mode', [])
-                            if len(mode) > 1:
-                                self.addmsg('0004-48', 'UCR .info-file contains entry of "Type: file" with multiple "Mode: " line', fn)
-                            elif len(mode) == 1:
-                                try:
-                                    if not 0 <= int(mode[0], 8) <= 0o7777:
-                                        self.addmsg('0004-47', 'UCR .info-file contains entry of "Type: file" with invalid "Mode: " line', fn)
-                                except (TypeError, ValueError):
-                                    self.addmsg('0004-47', 'UCR .info-file contains entry of "Type: file" with invalid "Mode: " line', fn)
-
-                            pre = entry.get('Preinst', [])
-                            if len(pre) > 1:
-                                self.addmsg('0004-58', f'file contains multifile entry with {len(pre)} "Preinst:" lines', fn)
-                            all_preinst |= set(pre)
-
-                            post = entry.get('Postinst', [])
-                            if len(post) > 1:
-                                self.addmsg('0004-59', f'file contains multifile entry with {len(post)} "Postinst:" lines', fn)
-                            all_postinst |= set(post)
-
-                            for key in set(entry) - {'Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst'}:
-                                self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
-
-                        elif typ == 'subfile':
-                            sfile = entry.get('Subfile', [])
-                            if not sfile:
-                                self.addmsg('0004-5', 'file contains subfile entry without "Subfile:" line', fn)
-                                continue
-                            if len(sfile) != 1:
-                                self.addmsg('0004-7', f'file contains subfile entry with {len(sfile)} "Subfile:" lines', fn)
-                            for conffn in sfile:
-                                objlist.setdefault(conffn, []).append(entry)
-                                all_definitions.setdefault(conffn, set()).add(fn)
-
-                            mfile = entry.get('Multifile', [])
-                            if not mfile:
-                                self.addmsg('0004-6', 'file contains subfile entry without "Multifile:" line', fn)
-                            elif len(mfile) != 1:
-                                self.addmsg('0004-8', f'file contains subfile entry with {len(mfile)} "Multifile:" lines', fn)
-                            for _ in mfile:
-                                subfiles.setdefault(_, []).append(entry)
-                                all_definitions.setdefault(_, set()).add(fn)
-
-                            for conffn in sfile:
-                                for _ in mfile:
-                                    key2 = (_, conffn)
-                                    if key2 in unique:
-                                        self.addmsg('0004-60', f'Duplicate entry: Multifile {_}, Subfile {conffn}', fn)
-                                    else:
-                                        unique.add(key2)
-
-                            pre = entry.get('Preinst', [])
-                            if pre:
-                                self.addmsg('0004-19', f'file contains subfile entry with {len(pre)} "Preinst:" lines', fn)
-                            all_preinst |= set(pre)
-
-                            post = entry.get('Postinst', [])
-                            if post:
-                                self.addmsg('0004-20', f'file contains subfile entry with {len(post)} "Postinst:" lines', fn)
-                            all_postinst |= set(post)
-
-                            for key in set(entry) - {'Type', 'Subfile', 'Multifile', 'Variables'}:
-                                self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
-
-                        elif typ == 'file':
-                            sfile = entry.get('File', [])
-                            if len(sfile) != 1:
-                                self.addmsg('0004-33', f'file contains file entry with {len(sfile)} "File:" lines', fn)
-                            for conffn in sfile:
-                                objlist.setdefault(conffn, []).append(entry)
-                                all_definitions.setdefault(conffn, set()).add(fn)
-                                if conffn in unique:
-                                    self.addmsg('0004-60', f'Duplicate entry: File {conffn}', fn)
-                                else:
-                                    unique.add(conffn)
-                            files.append(entry)
-
-                            user = entry.get('User', [])
-                            if len(user) > 1:
-                                self.addmsg('0004-50', 'UCR .info-file contains entry of "Type: multifile" with multiple "User: " line', fn)
-                            elif len(user) == 1 and user[0].isdigit():  # must be an symbolic name
-                                self.addmsg('0004-49', 'UCR .info-file contains entry of "Type: multifile" with invalid "User: " line', fn)
-
-                            group = entry.get('Group', [])
-                            if len(group) > 1:
-                                self.addmsg('0004-52', 'UCR .info-file contains entry of "Type: multifile" with multiple "Group: " line', fn)
-                            elif len(group) == 1 and group[0].isdigit():  # must be an symbolic name
-                                self.addmsg('0004-51', 'UCR .info-file contains entry of "Type: multifile" with invalid "Group: " line', fn)
-
-                            mode = entry.get('Mode', [])
-                            if len(mode) > 1:
-                                self.addmsg('0004-54', 'UCR .info-file contains entry of "Type: multifile" with multiple "Mode: " line', fn)
-                            elif len(mode) == 1:
-                                try:
-                                    if not 0 <= int(mode[0], 8) <= 0o7777:
-                                        self.addmsg('0004-53', 'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line', fn)
-                                except (TypeError, ValueError):
-                                    self.addmsg('0004-53', 'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line', fn)
-
-                            pre = entry.get('Preinst', [])
-                            if len(pre) > 1:
-                                self.addmsg('0004-21', f'file contains file entry with {len(pre)} "Preinst:" lines', fn)
-                            all_preinst |= set(pre)
-
-                            post = entry.get('Postinst', [])
-                            if len(post) > 1:
-                                self.addmsg('0004-22', f'file contains file entry with {len(post)} "Postinst:" lines', fn)
-                            all_postinst |= set(post)
-
-                            for key in set(entry) - {'Type', 'File', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst'}:
-                                self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
-
-                        elif typ == 'module':
-                            module = entry.get('Module', [])
-                            if len(module) != 1:
-                                self.addmsg('0004-38', f'UCR .info-file contains entry of "Type: module" with {len(module)} "Module:" lines', fn)
-                            for conffn in module:
-                                objlist.setdefault(conffn, []).append(entry)
-                                if conffn in unique:
-                                    self.addmsg('0004-60', f'Duplicate entry: Module {conffn}', fn)
-                                else:
-                                    unique.add(conffn)
-                            all_module |= set(module)
-
-                            for key in set(entry) - {'Type', 'Module', 'Variables'}:
-                                self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
-
-                        elif typ == 'script':
-                            script = entry.get('Script', [])
-                            if len(script) != 1:
-                                self.addmsg('0004-39', f'UCR .info-file contains entry of "Type: script" with {len(script)} "Script:" lines', fn)
-                            for conffn in script:
-                                objlist.setdefault(conffn, []).append(entry)
-                                if conffn in unique:
-                                    self.addmsg('0004-60', f'Duplicate entry: Script {conffn}', fn)
-                                else:
-                                    unique.add(conffn)
-                            all_script |= set(script)
-
-                            for key in set(entry) - {'Type', 'Script', 'Variables'}:
-                                self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
-
+                try:
+                    typ = entry['Type'][0]
+                except LookupError:
+                    self.addmsg('0004-3', 'file contains entry without "Type:"', fn)
+                else:
+                    if typ == 'multifile':
+                        mfile = entry.get('Multifile', [])
+                        if not mfile:
+                            self.addmsg('0004-4', 'file contains multifile entry without "Multifile:" line', fn)
+                        elif len(mfile) != 1:
+                            self.addmsg('0004-4', f'file contains multifile entry with {len(mfile)} "Multifile:" line', fn)
                         else:
-                            self.addmsg('0004-9', f'file contains entry with invalid "Type: {typ}"', fn)
+                            multifiles[mfile[0]] = entry
+                        for conffn in mfile:
+                            if conffn in unique:
+                                self.addmsg('0004-60', f'Duplicate entry: Multifile {conffn}', fn)
+                            else:
+                                unique.add(conffn)
+
+                        user = entry.get('User', [])
+                        if len(user) > 1:
+                            self.addmsg('0004-44', 'UCR .info-file contains entry of "Type: file" with multiple "User: " line', fn)
+                        elif len(user) == 1 and user[0].isdigit():  # must be an symbolic name
+                            self.addmsg('0004-43', 'UCR .info-file contains entry of "Type: file" with invalid "User: " line', fn)
+
+                        group = entry.get('Group', [])
+                        if len(group) > 1:
+                            self.addmsg('0004-46', 'UCR .info-file contains entry of "Type: file" with multiple "Group: " line', fn)
+                        elif len(group) == 1 and group[0].isdigit():  # must be an symbolic name
+                            self.addmsg('0004-45', 'UCR .info-file contains entry of "Type: file" with invalid "Group: " line', fn)
+
+                        mode = entry.get('Mode', [])
+                        if len(mode) > 1:
+                            self.addmsg('0004-48', 'UCR .info-file contains entry of "Type: file" with multiple "Mode: " line', fn)
+                        elif len(mode) == 1:
+                            try:
+                                if not 0 <= int(mode[0], 8) <= 0o7777:
+                                    self.addmsg('0004-47', 'UCR .info-file contains entry of "Type: file" with invalid "Mode: " line', fn)
+                            except (TypeError, ValueError):
+                                self.addmsg('0004-47', 'UCR .info-file contains entry of "Type: file" with invalid "Mode: " line', fn)
+
+                        pre = entry.get('Preinst', [])
+                        if len(pre) > 1:
+                            self.addmsg('0004-58', f'file contains multifile entry with {len(pre)} "Preinst:" lines', fn)
+                        all_preinst |= set(pre)
+
+                        post = entry.get('Postinst', [])
+                        if len(post) > 1:
+                            self.addmsg('0004-59', f'file contains multifile entry with {len(post)} "Postinst:" lines', fn)
+                        all_postinst |= set(post)
+
+                        for key in set(entry) - {'Type', 'Multifile', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst'}:
+                            self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
+
+                    elif typ == 'subfile':
+                        sfile = entry.get('Subfile', [])
+                        if not sfile:
+                            self.addmsg('0004-5', 'file contains subfile entry without "Subfile:" line', fn)
                             continue
+                        if len(sfile) != 1:
+                            self.addmsg('0004-7', f'file contains subfile entry with {len(sfile)} "Subfile:" lines', fn)
+                        for conffn in sfile:
+                            objlist.setdefault(conffn, []).append(entry)
+                            all_definitions.setdefault(conffn, set()).add(fn)
 
-                        variables = entry.get('Variables', [])
-                        for var in variables:
-                            if '*' in var and '.*' not in var:
-                                self.addmsg('0004-55', f'UCR .info-file may contain globbing pattern instead of regular expression: "{var}"', fn)
-                                break
+                        mfile = entry.get('Multifile', [])
+                        if not mfile:
+                            self.addmsg('0004-6', 'file contains subfile entry without "Multifile:" line', fn)
+                        elif len(mfile) != 1:
+                            self.addmsg('0004-8', f'file contains subfile entry with {len(mfile)} "Multifile:" lines', fn)
+                        for _ in mfile:
+                            subfiles.setdefault(_, []).append(entry)
+                            all_definitions.setdefault(_, set()).add(fn)
 
-                self.debug(f'Multifiles: {multifiles}')
-                self.debug(f'Subfiles: {subfiles}')
-                self.debug(f'Files: {files}')
-                for multifile, subfileentries in subfiles.items():
-                    if multifile not in multifiles:
-                        self.addmsg('0004-10', f'file contains subfile entry without corresponding multifile entry.\n      - subfile = {subfileentries[0]["Subfile"][0]}\n      - multifile = {multifile}', fn)
+                        for conffn in sfile:
+                            for _ in mfile:
+                                key2 = (_, conffn)
+                                if key2 in unique:
+                                    self.addmsg('0004-60', f'Duplicate entry: Multifile {_}, Subfile {conffn}', fn)
+                                else:
+                                    unique.add(key2)
 
-                # merge into global list
-                for mfn, item in multifiles.items():
-                    all_multifiles.setdefault(mfn, []).append(item)
-                for sfn, items in subfiles.items():
-                    all_subfiles.setdefault(sfn, []).extend(items)
-                all_files.extend(files)
+                        pre = entry.get('Preinst', [])
+                        if pre:
+                            self.addmsg('0004-19', f'file contains subfile entry with {len(pre)} "Preinst:" lines', fn)
+                        all_preinst |= set(pre)
+
+                        post = entry.get('Postinst', [])
+                        if post:
+                            self.addmsg('0004-20', f'file contains subfile entry with {len(post)} "Postinst:" lines', fn)
+                        all_postinst |= set(post)
+
+                        for key in set(entry) - {'Type', 'Subfile', 'Multifile', 'Variables'}:
+                            self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
+
+                    elif typ == 'file':
+                        sfile = entry.get('File', [])
+                        if len(sfile) != 1:
+                            self.addmsg('0004-33', f'file contains file entry with {len(sfile)} "File:" lines', fn)
+                        for conffn in sfile:
+                            objlist.setdefault(conffn, []).append(entry)
+                            all_definitions.setdefault(conffn, set()).add(fn)
+                            if conffn in unique:
+                                self.addmsg('0004-60', f'Duplicate entry: File {conffn}', fn)
+                            else:
+                                unique.add(conffn)
+                        files.append(entry)
+
+                        user = entry.get('User', [])
+                        if len(user) > 1:
+                            self.addmsg('0004-50', 'UCR .info-file contains entry of "Type: multifile" with multiple "User: " line', fn)
+                        elif len(user) == 1 and user[0].isdigit():  # must be an symbolic name
+                            self.addmsg('0004-49', 'UCR .info-file contains entry of "Type: multifile" with invalid "User: " line', fn)
+
+                        group = entry.get('Group', [])
+                        if len(group) > 1:
+                            self.addmsg('0004-52', 'UCR .info-file contains entry of "Type: multifile" with multiple "Group: " line', fn)
+                        elif len(group) == 1 and group[0].isdigit():  # must be an symbolic name
+                            self.addmsg('0004-51', 'UCR .info-file contains entry of "Type: multifile" with invalid "Group: " line', fn)
+
+                        mode = entry.get('Mode', [])
+                        if len(mode) > 1:
+                            self.addmsg('0004-54', 'UCR .info-file contains entry of "Type: multifile" with multiple "Mode: " line', fn)
+                        elif len(mode) == 1:
+                            try:
+                                if not 0 <= int(mode[0], 8) <= 0o7777:
+                                    self.addmsg('0004-53', 'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line', fn)
+                            except (TypeError, ValueError):
+                                self.addmsg('0004-53', 'UCR .info-file contains entry of "Type: multifile" with invalid "Mode: " line', fn)
+
+                        pre = entry.get('Preinst', [])
+                        if len(pre) > 1:
+                            self.addmsg('0004-21', f'file contains file entry with {len(pre)} "Preinst:" lines', fn)
+                        all_preinst |= set(pre)
+
+                        post = entry.get('Postinst', [])
+                        if len(post) > 1:
+                            self.addmsg('0004-22', f'file contains file entry with {len(post)} "Postinst:" lines', fn)
+                        all_postinst |= set(post)
+
+                        for key in set(entry) - {'Type', 'File', 'Variables', 'User', 'Group', 'Mode', 'Preinst', 'Postinst'}:
+                            self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
+
+                    elif typ == 'module':
+                        module = entry.get('Module', [])
+                        if len(module) != 1:
+                            self.addmsg('0004-38', f'UCR .info-file contains entry of "Type: module" with {len(module)} "Module:" lines', fn)
+                        for conffn in module:
+                            objlist.setdefault(conffn, []).append(entry)
+                            if conffn in unique:
+                                self.addmsg('0004-60', f'Duplicate entry: Module {conffn}', fn)
+                            else:
+                                unique.add(conffn)
+                        all_module |= set(module)
+
+                        for key in set(entry) - {'Type', 'Module', 'Variables'}:
+                            self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
+
+                    elif typ == 'script':
+                        script = entry.get('Script', [])
+                        if len(script) != 1:
+                            self.addmsg('0004-39', f'UCR .info-file contains entry of "Type: script" with {len(script)} "Script:" lines', fn)
+                        for conffn in script:
+                            objlist.setdefault(conffn, []).append(entry)
+                            if conffn in unique:
+                                self.addmsg('0004-60', f'Duplicate entry: Script {conffn}', fn)
+                            else:
+                                unique.add(conffn)
+                        all_script |= set(script)
+
+                        for key in set(entry) - {'Type', 'Script', 'Variables'}:
+                            self.addmsg('0004-42', f'UCR .info-file contains entry with unexpected key "{key}"', fn)
+
+                    else:
+                        self.addmsg('0004-9', f'file contains entry with invalid "Type: {typ}"', fn)
+                        continue
+
+                    variables = entry.get('Variables', [])
+                    for var in variables:
+                        if '*' in var and '.*' not in var:
+                            self.addmsg('0004-55', f'UCR .info-file may contain globbing pattern instead of regular expression: "{var}"', fn)
+                            break
+
+            self.debug(f'Multifiles: {multifiles}')
+            self.debug(f'Subfiles: {subfiles}')
+            self.debug(f'Files: {files}')
+            for multifile, subfileentries in subfiles.items():
+                if multifile not in multifiles:
+                    self.addmsg('0004-10', f'file contains subfile entry without corresponding multifile entry.\n      - subfile = {subfileentries[0]["Subfile"][0]}\n      - multifile = {multifile}', fn)
+
+            # merge into global list
+            for mfn, item in multifiles.items():
+                all_multifiles.setdefault(mfn, []).append(item)
+            for sfn, items in subfiles.items():
+                all_subfiles.setdefault(sfn, []).extend(items)
+            all_files.extend(files)
 
         #
         # check if all variables are registered
         #
-        short2conffn: dict[str, str] = {}  # relative name -> full path
+        short2conffn: dict[str, Path] = {}  # relative name -> full path
 
-        def find_conf(fn: str) -> str:
+        def find_conf(fn: str) -> Path:
             """
             Find file in conffiles/ directory.
 
@@ -613,16 +606,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             try:
                 return short2conffn[fn]
             except KeyError:
-                if fn.startswith('conffiles/'):
-                    return short2conffn[fn[len('conffiles/'):]]
-                if fn.startswith('etc/'):
-                    return short2conffn[fn[len('etc/'):]]
+                prefix, _, suffix = fn.partition("/")
+                if prefix in {"conffiles", "etc"}:
+                    return short2conffn[suffix]
                 raise
 
-        for conffn, checks in conffiles.items():
+        for fn, checks in conffiles.items():
             conffnfound = False
-            shortconffn = conffn[conffn.find('/conffiles/') + 11:]
-            short2conffn[shortconffn] = conffn
+            shortconffn = fn.relative_to(path / 'conffiles').as_posix()
+            short2conffn[shortconffn] = fn
 
             try:
                 try:
@@ -681,16 +673,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         # "Multifile" entry exists ==> obj is a subfile
                         self.debug(f'cfn = {shortconffn!r}')
                         self.debug(f'knownvars(mf+sf) = {knownvars!r}')
-                        self.addmsg('0004-29', f'template file contains variables that are not registered in multifile or subfile entry:{ucrvs}', conffn)
+                        self.addmsg('0004-29', f'template file contains variables that are not registered in multifile or subfile entry:{ucrvs}', fn)
                     else:
                         # no subfile ==> File, Module, Script
-                        self.addmsg('0004-12', f'template file contains variables that are not registered in file entry:{ucrvs}', conffn)
+                        self.addmsg('0004-12', f'template file contains variables that are not registered in file entry:{ucrvs}', fn)
 
                 if checks['custom_user'] and not any('users/default/' in v for v in knownvars):
-                    self.addmsg('0004-62', 'UCR template file using `custom_username()` must register for UCRV "users/default/.*"', conffn)
+                    self.addmsg('0004-62', 'UCR template file using `custom_username()` must register for UCRV "users/default/.*"', fn)
 
                 if checks['custom_group'] and not any('groups/default/' in v for v in knownvars):
-                    self.addmsg('0004-63', 'UCR template file using `custom_groupname()` must register for UCRV "groups/default/.*"', conffn)
+                    self.addmsg('0004-63', 'UCR template file using `custom_groupname()` must register for UCRV "groups/default/.*"', fn)
 
                 for var in checks['placeholder']:
                     # check for invalid UCR placeholder variable names
@@ -701,19 +693,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
                 if invalidUCRVarNames:
                     ucrvs = "".join(f"\n      - {ucrv}" for ucrv in sorted(invalidUCRVarNames))
-                    self.addmsg('0004-13', f'template contains invalid UCR variable names:{ucrvs}', conffn)
+                    self.addmsg('0004-13', f'template contains invalid UCR variable names:{ucrvs}', fn)
 
                 # Last test: add all Subfile variables
                 if mfn and mfn in all_multifiles:
                     for sf in all_subfiles[mfn]:
                         knownvars.update(sf.get('Variables', []))
                 if not knownvars:
-                    self.addmsg('0004-56', 'No UCR variables used', conffn)
+                    self.addmsg('0004-56', 'No UCR variables used', fn)
 
-            conffnfound |= conffn.rsplit('/')[-1] in (all_preinst | all_postinst | all_module | all_script)
+            conffnfound |= fn.name in (all_preinst | all_postinst | all_module | all_script)
 
             if not conffnfound:
-                self.addmsg('0004-14', 'template file is not registered in *.univention-config-registry', conffn)
+                self.addmsg('0004-14', 'template file is not registered in *.univention-config-registry', fn)
 
         #
         # check if headers are present
@@ -721,43 +713,43 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # Part1: simple templates
         for obj in all_files:
             try:
-                fn = obj['File'][0]
+                tmplfn = obj['File'][0]
             except LookupError:
                 print(f'FIXME: no File entry in obj: {obj}', file=sys.stderr)
             else:
                 try:
-                    conffn = find_conf(fn)
+                    fn = find_conf(tmplfn)
                 except LookupError:
-                    for _ in all_definitions[fn]:
-                        self.addmsg('0004-15', f'UCR template file "{fn}" is registered but not found in conffiles/ (1)', _)
+                    for _ in all_definitions[tmplfn]:
+                        self.addmsg('0004-15', f'UCR template file "{tmplfn}" is registered but not found in conffiles/ (1)', _)
                 else:
-                    if not any(conffiles[conffn][typ] for typ in ('headerfound', 'ucrwarning')):
-                        self.addmsg('0004-16', 'UCR header is missing', conffn)
-                self.test_marker(normpath(join(path, 'conffiles', fn)))
+                    if not any(conffiles[fn][typ] for typ in ('headerfound', 'ucrwarning')):
+                        self.addmsg('0004-16', 'UCR header is missing', fn)
+                self.test_marker(path / 'conffiles' / tmplfn)
 
         # Part2: subfile templates
         for mfn, items in all_subfiles.items():
             found = False
             for obj in items:
                 try:
-                    fn = obj['Subfile'][0]
+                    subfn = obj['Subfile'][0]
                 except LookupError:
                     print(f'FIXME: no Subfile entry in obj: {obj}', file=sys.stderr)
                 else:
                     try:
-                        conffn = find_conf(fn)
+                        fn = find_conf(subfn)
                     except LookupError:
-                        for _ in all_definitions[fn]:
-                            self.addmsg('0004-17', f'UCR template file "{fn}" is registered but not found in conffiles/ (2)', _)
+                        for _ in all_definitions[subfn]:
+                            self.addmsg('0004-17', f'UCR template file "{subfn}" is registered but not found in conffiles/ (2)', _)
                     else:
-                        found |= any(conffiles[conffn][typ] for typ in ('headerfound', 'ucrwarning'))
+                        found |= any(conffiles[fn][typ] for typ in ('headerfound', 'ucrwarning'))
             if not found:
                 for _ in all_definitions[mfn]:
                     self.addmsg('0004-18', f'UCR header is maybe missing in multifile "{mfn}"', _)
 
         # Test modules / scripts
         for f in all_preinst | all_postinst | all_module | all_script:
-            fn = normpath(join(path, 'conffiles', f))
+            fn = path / 'conffiles' / f
             try:
                 checks = conffiles[fn]
             except KeyError:
@@ -777,12 +769,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for var in all_variables - all_descriptions:
             self.addmsg('0004-57', f'No description found for UCR variable "{var}"')
 
-    def test_marker(self, fn: str) -> None:
+    def test_marker(self, fn: Path) -> None:
         """Bug #24728: count of markers must be even."""
         count_python = 0
         count_var = 0
         try:
-            with open(fn) as fd:
+            with fn.open() as fd:
                 for line in fd:
                     for _ in self.RE_PYTHON.finditer(line):
                         count_python += 1

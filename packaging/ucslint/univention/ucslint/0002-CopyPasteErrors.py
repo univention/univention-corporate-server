@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import re
 from itertools import chain
-from os.path import join, normpath
+from pathlib import Path
 
 import univention.ucslint.base as uub
 
@@ -50,7 +50,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0002-3': (uub.RESULT_ERROR, 'found domainname used in QA'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
         tester = uub.UPCFileTester()
@@ -58,8 +58,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         tester.addTest(re.compile(r'univention\.(?:local|qa|test)'), '0002-3', 'contains invalid domainname', cntmax=0)
 
         for fn in chain(
-                uub.FilteredDirWalkGenerator(normpath(join(path, 'conffiles'))),
-                uub.FilteredDirWalkGenerator(normpath(join(path, 'debian'))),
+                uub.FilteredDirWalkGenerator(path / 'conffiles'),
+                uub.FilteredDirWalkGenerator(path / 'debian'),
         ):
             try:
                 tester.open(fn)

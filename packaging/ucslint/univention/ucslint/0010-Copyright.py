@@ -32,8 +32,7 @@ from __future__ import annotations
 
 import re
 import time
-from os import listdir
-from os.path import join, normpath
+from pathlib import Path
 
 import univention.ucslint.base as uub
 
@@ -66,36 +65,30 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0010-6': (uub.RESULT_WARN, 'debian/copyright is not machine-readable DEP-5'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
-        check_files: list[str] = []
+        check_files: list[Path] = [
+            fn
+            for fn in path.glob("debian/*")
+            if fn.name in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES or fn.suffix in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES
+        ]
+        check_files += uub.FilteredDirWalkGenerator(path, reHashBang=RE_HASHBANG, readSize=100)
 
-        # check if copyright file is missing
-        fn = normpath(join(path, 'debian', 'copyright'))
+        fn = path / 'debian' / 'copyright'
         try:
-            with open(fn) as stream:
+            with fn.open() as stream:
                 line = stream.readline().rstrip()
                 if line != DEP5:
                     self.addmsg('0010-6', 'not machine-readable DEP-5', fn)
+            check_files.append(fn)
         except OSError:
             self.addmsg('0010-5', 'file is missing', fn)
-
-        # looking for files below debian/
-        for f in listdir(normpath(join(path, 'debian'))):
-            fn = normpath(join(path, 'debian', f))
-            if f.endswith(('.preinst', '.postinst', '.prerm', '.postrm')) or f in ['preinst', 'postinst', 'prerm', 'postrm', 'copyright']:
-                check_files.append(fn)
-
-        # looking for Python files
-        for fn in uub.FilteredDirWalkGenerator(path, reHashBang=RE_HASHBANG, readSize=100):
-            check_files.append(fn)  # noqa: PERF402
 
         # check files for copyright
         for fn in check_files:
             try:
-                with open(fn) as fd:
-                    content = fd.read()
+                content = fn.read_text()
             except (OSError, UnicodeDecodeError):
                 self.addmsg('0010-1', 'failed to open and read file', fn)
                 continue

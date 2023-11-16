@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import re
 import subprocess
+from pathlib import Path
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_HASHBANG_SHELL
@@ -64,13 +65,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0013-4': (uub.RESULT_WARN, 'unquoted local variable'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
         for fn in uub.FilteredDirWalkGenerator(
-                path,
-                ignore_suffixes=['.po'],
-                reHashBang=RE_HASHBANG_SHELL,
+            path,
+            ignore_suffixes=['.po'],
+            reHashBang=RE_HASHBANG_SHELL,
         ):
             self.debug(f'Testing file {fn}')
             try:
@@ -79,7 +80,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             except (OSError, UnicodeDecodeError):
                 self.addmsg('0013-1', 'failed to open file', fn)
 
-    def check_bashism(self, fn: str) -> None:
+    def check_bashism(self, fn: Path) -> None:
         p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p.communicate()
         # 2 = file is no shell script or file is already bash script
@@ -103,8 +104,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
                 self.addmsg('0013-2', f'possible bashism ({msg}):\n{code}', fn, row)
 
-    def check_unquoted_local(self, fn: str) -> None:
-        with open(fn) as fd:
+    def check_unquoted_local(self, fn: Path) -> None:
+        with fn.open() as fd:
             for row, line in enumerate(fd, start=1):
                 line = line.strip()
                 match = RE_LOCAL.search(line)

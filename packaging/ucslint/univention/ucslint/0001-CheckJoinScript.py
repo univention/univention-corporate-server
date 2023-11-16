@@ -32,8 +32,7 @@ from __future__ import annotations
 
 import re
 from enum import IntFlag
-from os import listdir
-from os.path import basename, join, normpath
+from pathlib import Path
 
 import univention.ucslint.base as uub
 
@@ -79,10 +78,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_DH_JOIN = re.compile(r'(?P<old>\bunivention-install-joinscript\b)|\bdh\b.*--with\b.*\bunivention-join\b')
     RE_JOIN_API = re.compile(r'^## joinscript api: (?!bindpwdfile|nocredentials)(.*)')
 
-    def check_join_script(self, filename: str) -> None:
+    def check_join_script(self, filename: Path) -> None:
         """Check a single join script."""
         try:
-            with open(filename) as fd:
+            with filename.open() as fd:
                 content = fd.read()
         except OSError:
             self.addmsg('0001-9', 'failed to open and read file', filename)
@@ -90,7 +89,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         self.debug(f'checking {filename}')
 
-        is_uninstall = filename.endswith('.uinst')
+        is_uninstall = filename.suffix == '.uinst'
         lines = content.splitlines()
         cnt = {
             'version': 0,
@@ -163,25 +162,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 if not cnt['joinscript_save_current_version']:
                     self.addmsg('0001-15', 'join script does not use joinscript_save_current_version', filename)
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
-        fnlist_joinscripts: dict[str, JSS] = {}
-
-        #
-        # search join scripts
-        #
-        for f in listdir(path):
-            if not f[0:2].isdigit():
-                continue
-            fn = normpath(join(path, f))
-            if f.endswith('.inst'):
-                fnlist_joinscripts[fn] = JSS.CALLED
-            elif f.endswith('.uinst'):
-                fnlist_joinscripts[fn] = JSS.CALLED | JSS.COPIED
-            else:
-                continue
-            self.debug(f'found {fn}')
+        fnlist_joinscripts = {fn: JSS.CALLED for fn in path.glob("[0-9][0-9]*.inst")}
+        fnlist_joinscripts.update({fn: JSS.CALLED | JSS.COPIED for fn in path.glob("[0-9][0-9]*.uinst")})
 
         #
         # check if join scripts use versioning
@@ -192,25 +177,24 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # check if join scripts are present in debian/rules || debian/*.install
         #
-        found: dict[str, int] = {}
-        debianpath = normpath(join(path, 'debian'))
+        found: dict[Path, int] = {}
+        debianpath = path / 'debian'
         # get all .install files
         fnlist = list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install']))
         # append debian/rules
-        fn_rules = normpath(join(path, 'debian', 'rules'))
+        fn_rules = path / 'debian' / 'rules'
         fnlist.append(fn_rules)
 
         # Look for dh-umc-modules-install
         try:
-            fn_control = normpath(join(path, 'debian', 'control'))
+            fn_control = path / 'debian' / 'control'
             ctrl: uub.ParserDebianControl | None = uub.ParserDebianControl(fn_control)
         except uub.UCSLintException:
             self.debug('Errors in debian/control. Skipping here')
             ctrl = None
 
         try:
-            with open(fn_rules) as fd:
-                c_rules = fd.read()
+            c_rules = fn_rules.read_text()
         except OSError:
             self.addmsg('0001-9', 'failed to open and read file', fn_rules)
         else:
@@ -224,7 +208,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     for binary_package in ctrl.binary_sections:
                         package = binary_package['Package']
                         for js in fnlist_joinscripts:
-                            if basename(js)[2:].split(".", 1)[0] == package:
+                            if js.stem[2:] == package:
                                 self.debug(f'univention-install-joinscript will take care of {js}')
                                 fnlist_joinscripts[js] = JSS.UNREF
                                 found[js] = found.get(js, 0) + 1
@@ -235,28 +219,23 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if self.RE_DH_UMC.search(c_rules):
                 self.debug('Detected use of dh-umc-module-install')
                 for fn in uub.FilteredDirWalkGenerator(debianpath, suffixes=['.umc-modules']):
-                    package = basename(fn)[:-len('.umc-modules')]
-                    inst = f'{package}.inst'
-                    uinst = f'{package}.uinst'
                     for js in fnlist_joinscripts:
-                        if js.endswith((inst, uinst)):
+                        if js.stem[2:] == fn.stem:
                             self.debug(f'{js} installed by dh-umc-module-install')
                             found[js] = found.get(js, 0) + 1
                             fnlist_joinscripts[js] = JSS.UNREF
 
         for fn in fnlist:
             try:
-                with open(fn) as fd:
-                    content = fd.read()
+                content = fn.read_text()
             except OSError:
                 self.addmsg('0001-9', 'failed to open and read file', fn)
                 continue
 
             for js in fnlist_joinscripts:
-                name = basename(js)
-                self.debug(f'looking for {name} in {fn}')
-                if name in content:
-                    self.debug(f'found {name} in {fn}')
+                self.debug(f'looking for {js.name} in {fn}')
+                if js.name in content:
+                    self.debug(f'found {js.name} in {fn}')
                     found[js] = found.get(js, 0) + 1
 
         for js in fnlist_joinscripts:
@@ -266,24 +245,22 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # check if join scripts are present in debian/*{pre,post}{inst,rm}
         #
-        for f in listdir(normpath(join(path, 'debian'))):
-            if '.debhelper.' in f:
+        for fn in path.glob("debian/*"):
+            if '.debhelper.' in fn.name:
                 continue
 
-            if f.endswith('.postinst') or f == 'postinst':
+            if fn.suffix == '.postinst' or fn.name == 'postinst':
                 bit = JSS.CALLED
-            elif f.endswith('.prerm') or f == 'prerm':
+            elif fn.suffix == '.prerm' or fn.name == 'prerm':
                 bit = JSS.COPIED
-            elif f.endswith('.postrm') or f == 'postrm':
+            elif fn.suffix == '.postrm' or fn.name == 'postrm':
                 bit = JSS.CALLED
             else:
                 continue
 
-            fn = normpath(join(path, 'debian', f))
             self.debug(f'loading {fn}')
             try:
-                with open(fn) as fd:
-                    content = fd.read()
+                content = fn.read_text()
             except OSError:
                 self.addmsg('0001-9', 'failed to open and read file', fn)
                 continue
@@ -293,23 +270,22 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.debug(f'found "set -e" in {fn}')
 
             for js in fnlist_joinscripts:
-                name = basename(js)
-                self.debug(f'looking for {name} in {fn}')
-                if name in content:
+                self.debug(f'looking for {js.name} in {fn}')
+                if js.name in content:
                     fnlist_joinscripts[js] &= ~bit
-                    self.debug(f'found {name} in {fn}')
+                    self.debug(f'found {js.name} in {fn}')
 
                     if set_e:
                         for row, line in enumerate(content.splitlines(), start=1):
-                            if name in line:
+                            if js.name in line:
                                 match = self.RE_LINE_ENDS_WITH_TRUE.search(line)
                                 if not match:
-                                    self.addmsg('0001-8', f'the join script {name} is not called with "|| true" but "set -e" is set', fn, row, line=line)
+                                    self.addmsg('0001-8', f'the join script {js.name} is not called with "|| true" but "set -e" is set', fn, row, line=line)
 
         for js, missing in fnlist_joinscripts.items():
-            if missing & JSS.CALLED and js.endswith('.inst'):
+            if missing & JSS.CALLED and js.suffix == '.inst':
                 self.addmsg('0001-7', 'Join script is not mentioned in debian/*.postinst', js)
-            if missing & JSS.CALLED and js.endswith('.uinst'):
+            if missing & JSS.CALLED and js.suffix == '.uinst':
                 self.addmsg('0001-17', 'Unjoin script seems not to be called in any postrm file', js)
-            if missing & JSS.COPIED and js.endswith('.uinst'):
+            if missing & JSS.COPIED and js.suffix == '.uinst':
                 self.addmsg('0001-18', 'Unjoin script seems not to be copied in any prerm file', js)

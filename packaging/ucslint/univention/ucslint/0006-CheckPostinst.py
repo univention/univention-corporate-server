@@ -30,8 +30,7 @@
 
 from __future__ import annotations
 
-from os import listdir
-from os.path import join, normpath
+from pathlib import Path
 from typing import Any
 
 import univention.ucslint.base as uub
@@ -51,17 +50,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0006-8': (uub.RESULT_WARN, 'script uses broken remove_ucr_info_file'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
-        fnlist_scripts: dict[str, dict[str, Any]] = {}
+        fnlist_scripts: dict[Path, dict[str, Any]] = {}
 
         #
         # search debian scripts
         #
-        for f in listdir(normpath(join(path, 'debian'))):
-            fn = normpath(join(path, 'debian', f))
-            if f.rsplit('.', 1)[-1] in ['preinst', 'postinst', 'prerm', 'postrm']:
+        for fn in path.glob("debian/*"):
+            if fn.name in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES or fn.suffix in uub.FilteredDirWalkGenerator.MAINT_SCRIPT_SUFFIXES:
                 fnlist_scripts[fn] = {
                     'debhelper': False,
                     'udm_calls': 0,
@@ -79,8 +77,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         for fn, checks in fnlist_scripts.items():
             try:
-                with open(fn) as fd:
-                    content = fd.read()
+                content = fn.read_text()
             except OSError:
                 content = ''
 

@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import re
 from itertools import chain
+from pathlib import Path
 from typing import Any, Iterator
 
 import univention.ucslint.base as uub
@@ -173,12 +174,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         /var/lib/univentions-client-boot/
     """.split()))
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
         for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
             try:
-                with open(fn) as fd:
+                with fn.open() as fd:
                     for row, line in enumerate(fd, start=1):
                         origline = line
                         if self.RE_WHITELINE.match(line):

@@ -29,6 +29,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+from pathlib import Path
 from typing import Iterator, Optional, Pattern
 
 from univention.ucslint.base import FilteredDirWalkGenerator
@@ -104,7 +105,7 @@ class Python36(Base):
     MATCHED_UNICODE = rf"(?:\b[FfUu])?{(LITERALS % {'esc': ESCAPE_UNIICODE})}"  # [f] since 3.6
 
 
-def python_files(path: str) -> Iterator[str]:
+def python_files(path: Path) -> Iterator[Path]:
     SUFFIXES = ('.py',)
 
     yield from FilteredDirWalkGenerator(path, suffixes=SUFFIXES, reHashBang=RE_HASHBANG)

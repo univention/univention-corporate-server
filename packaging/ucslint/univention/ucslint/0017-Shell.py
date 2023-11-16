@@ -33,6 +33,7 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_HASHBANG_SHELL
@@ -94,7 +95,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0017-10': (uub.RESULT_STYLE, "Useless use of `echo $(...)` for single argument"),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
         #

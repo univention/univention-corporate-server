@@ -34,7 +34,7 @@ from __future__ import annotations
 
 import re
 from os import walk
-from os.path import basename, exists, isdir, join, normpath
+from pathlib import Path
 from typing import Callable, Dict, Iterable, Iterator, Match, Pattern, Tuple
 
 
@@ -141,16 +141,16 @@ class UPCMessage:
     :param col: Associated column number.
     """
 
-    def __init__(self, id_: str, msg: str, filename: str | None = None, row: int | None = None, col: int | None = None) -> None:
+    def __init__(self, id_: str, msg: str, filename: Path | None = None, row: int | None = None, col: int | None = None) -> None:
         self.id = id_
         self.msg = msg
-        self.filename = normpath(filename) if filename else ""
+        self.filename = filename
         self.row = row
         self.col = col
 
     def __str__(self) -> str:
         if self.filename:
-            s = self.filename
+            s = self.filename.as_posix()
             if self.row is not None:
                 s += f':{self.row}'
                 if self.col is not None:
@@ -168,7 +168,7 @@ class UPCMessage:
 
         :returns: test case.
         """
-        tc = TestCase(self.id, stdout=self.msg, file=self.filename, line=self.row)
+        tc = TestCase(self.id, stdout=self.msg, file=self.filename, line=self.row)  # FIXME
         return tc
 
 
@@ -180,7 +180,7 @@ class UniventionPackageCheckBase:
         self.msg: list[UPCMessage] = []
         self.debuglevel: int = 0
 
-    def addmsg(self, msgid: str, msg: str, filename: str | None = None, row: int | None = None, col: int | None = None, line: str = '') -> None:
+    def addmsg(self, msgid: str, msg: str, filename: Path | None = None, row: int | None = None, col: int | None = None, line: str = '') -> None:
         """
         Add :py:class:`UPCMessage` message.
 
@@ -217,14 +217,14 @@ class UniventionPackageCheckBase:
         if self.debuglevel > 0:
             print(f'{self.name}: {msg}')
 
-    def postinit(self, path: str) -> None:
+    def postinit(self, path: Path) -> None:
         """
         Checks to be run before real check or to create precalculated data for several runs. Only called once!
 
         :param path: Directory or file to check.
         """
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         """
         The real check.
 
@@ -243,11 +243,12 @@ class UniventionPackageCheckBase:
 class UniventionPackageCheckDebian(UniventionPackageCheckBase):
     """Check for :file:`debian/` directory."""
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         """the real check."""
         super().check(path)
-        if not isdir(normpath(join(path, 'debian'))):
-            raise UCSLintException(f"directory '{path}' does not exist!")
+        debdir = path / "debian"
+        if not debdir.is_dir():
+            raise UCSLintException(f"directory '{debdir}' does not exist!")
 
 
 class UCSLintException(Exception):
@@ -265,7 +266,7 @@ class DebianControlParsingError(UCSLintException):
 class FailedToReadFile(UCSLintException):
     """File reading exception."""
 
-    def __init__(self, fn: str) -> None:
+    def __init__(self, fn: Path) -> None:
         super().__init__()
         self.fn = fn
 
@@ -346,11 +347,11 @@ class ParserDebianControl:
     RE_COMMENT = re.compile(r'^#.*$\n?', re.MULTILINE)
     RE_SECTION = re.compile(r'\n{2,}', re.MULTILINE)
 
-    def __init__(self, filename: str) -> None:
+    def __init__(self, filename: Path) -> None:
         self.filename = filename
 
         try:
-            content = open(self.filename).read()
+            content = self.filename.read_text()
         except OSError:
             raise FailedToReadFile(self.filename)
 
@@ -414,12 +415,12 @@ class UPCFileTester:
         :param maxsize: maximum number of bytes read from specified file
         """
         self.maxsize = maxsize
-        self.filename: str | None = None
+        self.filename: Path | None = None
         self.raw: str = ''
         self.lines: list[str] = []
         self.tests: list[RegExTest] = []
 
-    def open(self, filename: str) -> None:
+    def open(self, filename: Path) -> None:
         """
         Opens the specified file and reads up to `maxsize` bytes into memory.
 
@@ -430,7 +431,8 @@ class UPCFileTester:
         # the raw version is required to calculate the correct position.
         # tests will be done with unwrapped version.
         try:
-            self.raw = open(filename).read(self.maxsize)
+            with filename.open() as fd:
+                self.raw = fd.read(self.maxsize)
         except UnicodeDecodeError:
             self.raw = ''
         lines = self.raw.replace('\\\n', '  ').replace('\\\r\n', '   ')
@@ -594,19 +596,23 @@ class FilteredDirWalkGenerator:
         'ChangeLog',
         'README',
     }
+    MAINT_SCRIPT_SUFFIXES = {
+        "preinst",
+        "postinst",
+        "prerm",
+        "postrm",
+    }
 
     def __init__(
             self,
-            path: str,
+            path: Path,
             ignore_dirs: Iterable[str] | None = None,
             prefixes: Iterable[str] | None = None,
             suffixes: Iterable[str] | None = None,
             ignore_suffixes: Iterable[str] | None = None,
             ignore_files: Iterable[str] | None = None,
-            ignore_debian_subdirs: bool = True,
             reHashBang: Pattern[str] | None = None,
             readSize: int = 2048,
-            dangling_symlinks: bool = False,
     ) -> None:
         """
         FilteredDirWalkGenerator is a generator that walks down all directories and returns all matching filenames.
@@ -618,7 +624,6 @@ class FilteredDirWalkGenerator:
         :param suffixes: a list of suffixes files have to end with (e.g. `['.py', '.sh', '.patch']`)
         :param ignore_suffixes: a list of additional files, that end with one of defined suffixes, will be ignored (e.g. `['~', '.bak']`)
         :param ignore_files: list of additional files that will be ignored (e.g. `['.gitignore', 'config.sub']`).
-        :param ignore_debian_subdirs: boolean that defines if :file:`.../debian/*` directories are ignored or not.
         :param reHashBang: if defined, additionally text files are returned whose first characters match specified regular expression.
         :param readSize: number of bytes that will be read for e.g. reHashBang
 
@@ -629,62 +634,48 @@ class FilteredDirWalkGenerator:
         """
         self.path = path
         self.ignore_dirs = set(ignore_dirs or ()) | self.IGNORE_DIRS
-        self.prefixes = prefixes
-        self.suffixes = suffixes
-        self.ignore_suffixes = set(ignore_suffixes or ()) | self.IGNORE_SUFFIXES
+        self.prefixes = tuple(prefixes or ("",))
+        self.suffixes = tuple(suffixes or ())
+        self.ignore_suffixes = tuple(set(ignore_suffixes or ()) | self.IGNORE_SUFFIXES)
         self.ignore_files = set(ignore_files or ()) | self.IGNORE_FILES
-        self.ignore_debian_subdirs = ignore_debian_subdirs
         self.reHashBang = reHashBang
         self.readSize = readSize
-        self.dangling_symlinks = dangling_symlinks
 
-    def __iter__(self) -> Iterator[str]:
-        for dirpath, dirnames, filenames in walk(self.path):
-            # remove undesired directories
-            if self.ignore_dirs:
-                for item in self.ignore_dirs:
-                    if item in dirnames:
-                        dirnames.remove(item)
+    def __iter__(self) -> Iterator[Path]:
+        for dirpath_, dirnames, filenames in walk(self.path):
+            dirpath = Path(dirpath_)
+            dirnames[:] = [] if dirpath.name == "debian" else set(dirnames) - self.ignore_dirs
 
-            # ignore all subdirectories in debian directory if requested
-            if self.ignore_debian_subdirs and basename(dirpath) == 'debian':
-                del dirnames[:]
-
-            # iterate over filenames
             for filename in filenames:
-                fn = normpath(join(dirpath, filename))
+                fn = dirpath / filename
 
-                # skip danling symlinks by default
-                if not exists(fn) and not self.dangling_symlinks:
+                if not fn.exists():
+                    continue
+                if filename in self.ignore_files:
+                    continue
+                if filename.endswith(self.ignore_suffixes):
+                    continue
+                if not filename.startswith(self.prefixes):
                     continue
 
-                # check if filename is on ignore list
-                if self.ignore_files and filename in self.ignore_files:
-                    continue
-
-                # check if filename ends with ignoresuffix
-                if self.ignore_suffixes and any(fn.endswith(suffix) for suffix in self.ignore_suffixes):
-                    continue
-
-                # check if filename starts with required prefix
-                if self.prefixes and not any(filename.startswith(prefix) for prefix in self.prefixes):
-                    continue
-
-                # check if filename ends with required suffix
-                if self.suffixes and any(filename.endswith(suffix) for suffix in self.suffixes):
+                if self.suffixes and filename.endswith(self.suffixes):
                     pass
                 elif self.reHashBang:
-                    try:
-                        content = open(fn).read(self.readSize)
-                    except (OSError, UnicodeDecodeError):
-                        continue
-                    if not self.reHashBang.search(content):
+                    if not self._check_hash_bang(fn):
                         continue
                 elif self.suffixes:
                     continue
 
-                # return complete filename
                 yield fn
+
+    def _check_hash_bang(self, fn: Path) -> bool:
+        assert self.reHashBang is not None
+        try:
+            with fn.open() as fd:
+                content = fd.read(self.readSize)
+        except (OSError, UnicodeDecodeError):
+            return False
+        return bool(self.reHashBang.search(content))
 
 
 if __name__ == '__main__':

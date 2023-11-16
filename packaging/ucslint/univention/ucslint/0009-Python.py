@@ -31,6 +31,7 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 import univention.ucslint.base as uub
 from univention.ucslint.python import RE_LENIENT, Python36 as PythonVer, python_files
@@ -54,7 +55,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
     RE_STRING = PythonVer.matcher()
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
         tester = uub.UPCFileTester()

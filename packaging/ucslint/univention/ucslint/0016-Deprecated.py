@@ -32,7 +32,7 @@
 from __future__ import annotations
 
 import re
-from os.path import join, normpath
+from pathlib import Path
 
 import univention.ucslint.base as uub
 
@@ -51,7 +51,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0016-6': (uub.RESULT_ERROR, 'Use of deprecated "debian/*.univention-baseconfig"'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         """the real check"""
         super().check(path)
 
@@ -76,5 +76,5 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             msglist = tester.runTests()
             self.msg.extend(msglist)
 
-        for fn in uub.FilteredDirWalkGenerator(normpath(join(path, 'debian')), suffixes=('.univention-baseconfig',)):
+        for fn in uub.FilteredDirWalkGenerator(path / 'debian', suffixes=('.univention-baseconfig',)):
             self.addmsg('0016-6', 'Use of deprecated "debian/*.univention-baseconfig"', fn)

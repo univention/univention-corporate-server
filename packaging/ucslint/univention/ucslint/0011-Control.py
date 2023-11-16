@@ -31,8 +31,7 @@
 from __future__ import annotations
 
 import re
-from os import listdir
-from os.path import isfile, join, normpath
+from pathlib import Path
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_DEBIAN_CHANGELOG
@@ -70,18 +69,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0011-20': (uub.RESULT_WARN, 'debian/compat and debian/control disagree on the version for debhelper'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
-        fn_changelog = normpath(join(path, 'debian', 'changelog'))
+        fn_changelog = path / 'debian' / 'changelog'
         try:
-            with open(fn_changelog) as fd:
+            with fn_changelog.open() as fd:
                 content_changelog = fd.read(1024)
         except OSError:
             self.addmsg('0011-1', 'failed to open and read file', fn_changelog)
             return
 
-        fn_control = normpath(join(path, 'debian', 'control'))
+        fn_control = path / 'debian' / 'control'
         try:
             parser = uub.ParserDebianControl(fn_control)
         except uub.FailedToReadFile:
@@ -92,10 +91,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             return
 
         compat_version = 0
-        fn_compat = normpath(join(path, 'debian', 'compat'))
+        fn_compat = path / 'debian' / 'compat'
         try:
-            with open(fn_compat) as fd:
-                compat_version = int(fd.read())
+            compat_version = int(fn_compat.read_text())
         except OSError:
             # self.addmsg('0011-1', 'failed to open and read file', fn_compat)
             pass
@@ -283,16 +281,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         'upstart',  # dh_installinit
     }
 
-    def check_debhelper(self, path: str, parser: uub.ParserDebianControl) -> None:
+    def check_debhelper(self, path: Path, parser: uub.ParserDebianControl) -> None:
         """Check for debhelper package files."""
         if len(parser.binary_sections) == 1:
             # If there is only one binary package, accept the non-prefixed files ... for now
             return
 
         pkgs = [pkg['Package'] for pkg in parser.binary_sections]
-
-        debianpath = normpath(join(path, 'debian'))
-        files = listdir(debianpath)
 
         regexp = re.compile(
             r'^(?:{})[.](?:{}|.+[.](?:{}))$'.format(
@@ -301,24 +296,20 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 '|'.join(re.escape(suffix) for suffix in self.NAMED_DH_FILES),
             ))
 
-        for rel_name in files:
-            fn = normpath(join(debianpath, rel_name))
-
-            if rel_name in self.EXCEPTION_FILES:
+        suffixes = tuple(self.KNOWN_DH_FILES | self.NAMED_DH_FILES)
+        for fn in path.glob("debian/*"):
+            if fn.name in self.EXCEPTION_FILES:
                 continue
 
-            if not isfile(fn):
+            if not fn.is_file():
                 continue
 
-            if regexp.match(rel_name):
+            if regexp.match(fn.name):
                 continue
 
-            for suffix in self.KNOWN_DH_FILES | self.NAMED_DH_FILES:
-                if rel_name == suffix:
-                    self.addmsg('0011-15', f'non-prefixed debhelper file of package "{pkgs[0]}"', fn)
-                    break
-                if rel_name.endswith(f'.{suffix}'):
-                    self.addmsg('0011-14', 'no matching package in debian/control', fn)
-                    break
+            if fn.name in suffixes:
+                self.addmsg('0011-15', f'non-prefixed debhelper file of package "{pkgs[0]}"', fn)
+            elif fn.suffix.lstrip(".") in suffixes:
+                self.addmsg('0011-14', 'no matching package in debian/control', fn)
             else:
                 self.addmsg('0011-16', 'unknown debhelper file', fn)

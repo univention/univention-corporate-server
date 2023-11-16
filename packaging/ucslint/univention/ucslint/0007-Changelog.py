@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import re
 from email.utils import mktime_tz, parsedate_tz
-from os.path import join, normpath
+from pathlib import Path
 
 from debian.changelog import Changelog, ChangelogParseError
 
@@ -61,12 +61,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0007-6': (uub.RESULT_WARN, 'old debian/changelog entries are not strict-monotonically increasing by version'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         super().check(path)
 
-        fn = normpath(join(path, 'debian', 'changelog'))
+        fn = path / 'debian' / 'changelog'
         try:
-            with open(fn) as stream:
+            with fn.open() as stream:
                 changelog = Changelog(stream, strict=True)
         except OSError as ex:
             self.addmsg('0007-1', f'failed to open and read file: {ex}', fn)

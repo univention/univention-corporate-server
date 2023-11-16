@@ -35,12 +35,10 @@
 from __future__ import annotations
 
 import re
-from glob import glob
 from itertools import cycle
-from os import walk
-from os.path import basename, dirname, isdir, join, normpath, relpath, splitext
+from pathlib import Path
 from shlex import split
-from typing import Callable, Iterable, Iterator, Set
+from typing import Iterable, Iterator, Set
 
 from debian.changelog import Changelog, ChangelogParseError  # Version
 
@@ -69,14 +67,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0018-5': (uub.RESULT_INFO, 'Maintainer script contains old upgrade code'),
         }
 
-    def check(self, path: str) -> None:
+    def check(self, path: Path) -> None:
         self.check_scripts(path)
         self.check_dirs(path)
 
-    def get_debian_version(self, path: str) -> Version:
+    def get_debian_version(self, path: Path) -> Version:
         try:
-            fn_changelog = normpath(join(path, 'debian', 'changelog'))
-            with open(fn_changelog) as fd:
+            fn_changelog = path / 'debian' / 'changelog'
+            with fn_changelog.open() as fd:
                 changelog = Changelog(fd)
         except (OSError, ChangelogParseError) as ex:
             self.debug(f'Failed open {fn_changelog!r}: {ex}')
@@ -84,8 +82,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         else:
             return Version(changelog.version.full_version)
 
-    def check_scripts(self, path: str) -> None:
-        debianpath = normpath(join(path, 'debian'))
+    def check_scripts(self, path: Path) -> None:
+        debianpath = path / 'debian'
         version = self.get_debian_version(path)
         for script_path in uub.FilteredDirWalkGenerator(debianpath, suffixes=self.SCRIPTS):
             package, suffix = self.split_pkg(script_path)
@@ -97,8 +95,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.debug(f'other_script={" ".join(sorted(other_scripts))}')
             self.debug(f'other_actions={" ".join(sorted(other_actions))}')
 
-            with open(script_path) as script_file:
-                content = script_file.read()
+            content = script_path.read_text()
 
             for row, line in enumerate(content.splitlines(), start=1):
                 if not line.startswith('#'):
@@ -214,21 +211,21 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         return result
 
-    def check_dirs(self, path: str) -> None:
-        dirs: dict[str, set[str]] = {}
-        debianpath = normpath(join(path, 'debian'))
+    def check_dirs(self, path: Path) -> None:
+        dirs: dict[str, Dirs] = {}
+        debianpath = path / 'debian'
 
         for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['install']):
             package, suffix = self.split_pkg(fp)
             pkg = dirs.setdefault(package, Dirs(package))
             # ~/doc/2018-04-11-ApiDoc/pymerge
             for row, line in self.lines(fp):
-                dst = ''
-                for src, dst in self.process_install(line):
+                dst = Path()
+                for src, dst in self.process_install(path, line):
                     self.debug(f'{fp}:{row} Installs {src} to {dst}')
                     pkg.add(dst)
 
-                if self.RE_PYTHONPATHS.match(dst):
+                if self.RE_PYTHONPATHS.match(dst.as_posix()):
                     self.addmsg(
                         '0018-4',
                         'Use debian/*.pyinstall to install Python modules',
@@ -238,7 +235,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             package, suffix = self.split_pkg(fp)
             pkg = dirs.setdefault(package, Dirs(package))
             for row, line in self.lines(fp):
-                for src, dst in self.process_pyinstall(line):
+                for src, dst in self.process_pyinstall(path, line):
                     self.debug(f'{fp}:{row} Installs {src} to {dst}')
                     pkg.add(dst)
 
@@ -246,13 +243,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             package, suffix = self.split_pkg(fp)
             pkg = dirs.setdefault(package, Dirs(package))
             for row, line in self.lines(fp):
-                line = line.strip('/')
-                if line in pkg:
+                path = Path(line.strip('/'))
+                if path in pkg:
                     self.addmsg('0018-2', f'Unneeded directory {line!r}', fp, row)
 
     @staticmethod
-    def lines(name: str) -> Iterator[tuple[int, str]]:
-        with open(name) as stream:
+    def lines(path: Path) -> Iterator[tuple[int, str]]:
+        with path.open() as stream:
             for row, line in enumerate(stream, start=1):
                 line = line.strip()
                 if not line:
@@ -262,69 +259,60 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 yield (row, line)
 
     @staticmethod
-    def split_pkg(name: str) -> tuple[str, str]:
-        filename = basename(name)
-        if '.' in filename:
-            package, suffix = splitext(filename)
-            suffix = suffix.lstrip('.')
-        else:
-            package = ''
-            suffix = filename
-
+    def split_pkg(path: Path) -> tuple[str, str]:
+        package, _, suffix = path.name.rpartition(".")
         return (package, suffix)
 
     @staticmethod
-    def process_install(line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[tuple[str, str]]:
+    def process_install(path: Path, line: str, *, _glob: Iterable[Path] = ()) -> Iterator[tuple[Path, Path]]:
         """
         Parse :file:`debian/*.install` lines.
 
-        >>> list(UniventionPackageCheck.process_install("usr"))
-        [('usr', 'usr')]
-        >>> list(UniventionPackageCheck.process_install("usr    prefix/"))
-        [('usr', 'prefix/usr')]
-        >>> fake_glob = lambda pat: ['src/__init__.py']
-        >>> list(UniventionPackageCheck.process_install("src/*.py", glob=fake_glob))
-        [('src/__init__.py', 'src/__init__.py')]
-        >>> list(UniventionPackageCheck.process_install("src/*.py    prefix/", glob=fake_glob))
-        [('src/__init__.py', 'prefix/__init__.py')]
+        >>> list(UniventionPackageCheck.process_install(Path(), "usr"))
+        [(PosixPath('usr'), PosixPath('usr'))]
+        >>> list(UniventionPackageCheck.process_install(Path(), "usr    prefix/"))
+        [(PosixPath('usr'), PosixPath('prefix/usr'))]
+        >>> list(UniventionPackageCheck.process_install(Path(), "src/*.py", _glob=[Path('src/__init__.py')]))
+        [(PosixPath('src/__init__.py'), PosixPath('src/__init__.py'))]
+        >>> list(UniventionPackageCheck.process_install(Path(), "src/*.py    prefix/", _glob=[Path('src/__init__.py')]))
+        [(PosixPath('src/__init__.py'), PosixPath('prefix/__init__.py'))]
         """
         args = [_.strip('/') for _ in line.split()]
-        dst = args.pop() if len(args) >= 2 else dirname(args[0])
+        dst = Path(args.pop()) if len(args) >= 2 else Path(args[0]).parent
 
         for src in args:
-            for fn in glob(src) if ('*' in src or '?' in src or '[' in src) else [src]:
-                if isdir(fn):
-                    for root, _dirs, files in walk(fn):
-                        for name in files:
-                            src_path = normpath(join(root, name))
-                            dst_path = normpath(join(dst, relpath(src_path, dirname(fn))))
-                            yield (src_path, dst_path)
+            for fn in (_glob or path.glob(src)) if ('*' in src or '?' in src or '[' in src) else [path / src]:
+                if fn.is_dir():
+                    for src_path in fn.glob("**/*"):
+                        yield (src_path, dst / src_path.relative_to(fn))
                 else:
-                    yield (fn, normpath(join(dst, basename(fn))))
+                    yield (fn, dst / fn.name)
 
     @classmethod
-    def process_pyinstall(cls, line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[tuple[str, str]]:
+    def process_pyinstall(cls, path: Path, line: str, *, _glob: Iterable[Path] = ()) -> Iterator[tuple[Path, Path]]:
         """
         Parse :file:`debian/*.pyinstall` lines.
 
-        >>> list(UniventionPackageCheck.process_pyinstall("foo.py"))
-        [('foo.py', 'foo.py')]
-        >>> list(UniventionPackageCheck.process_pyinstall("foo/bar.py 2.6-"))
-        [('foo/bar.py', 'foo/bar.py')]
-        >>> list(UniventionPackageCheck.process_pyinstall("foo/bar.py spam"))
-        [('foo/bar.py', 'spam/bar.py')]
-        >>> list(UniventionPackageCheck.process_pyinstall("foo/bar.py spam.egg 2.5"))
-        [('foo/bar.py', 'spam/egg/bar.py')]
+        >>> list(UniventionPackageCheck.process_pyinstall(Path(), "foo.py"))
+        [(PosixPath('foo.py'), PosixPath('foo.py'))]
+        >>> list(UniventionPackageCheck.process_pyinstall(Path(), "*.py", _glob=[Path('foo.py')]))
+        [(PosixPath('foo.py'), PosixPath('foo.py'))]
+        >>> list(UniventionPackageCheck.process_pyinstall(Path(), "foo/bar.py 2.6-"))
+        [(PosixPath('foo/bar.py'), PosixPath('foo/bar.py'))]
+        >>> list(UniventionPackageCheck.process_pyinstall(Path(), "foo/bar.py spam"))
+        [(PosixPath('foo/bar.py'), PosixPath('spam/bar.py'))]
+        >>> list(UniventionPackageCheck.process_pyinstall(Path(), "foo/bar.py spam.egg 2.5"))
+        [(PosixPath('foo/bar.py'), PosixPath('spam/egg/bar.py'))]
         """
         args = line.split()
         src = args.pop(0)
         if args and cls.RE_VERSION_RANGE.match(args[-1]):
             args.pop(-1)
-        dst = args.pop(0).replace('.', '/') if args and cls.RE_NAMESPACE.match(args[0]) else dirname(src)
+        dst = path / args.pop(0).replace('.', '/') if args and cls.RE_NAMESPACE.match(args[0]) else Path(src).parent
         assert not args, args
 
-        for fn in glob(src) if ('*' in src or '?' in src or '[' in src) else [src]:
-            yield (fn, normpath(join(dst, basename(fn))))
+        for fn in (_glob or path.glob(src)) if ('*' in src or '?' in src or '[' in src) else [path / src]:
+            yield (fn, dst / fn.name)
 
     RE_TEST = re.compile(
         r'''
@@ -386,40 +374,37 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_ARG2 = re.compile(r'^("?)\$(?:2|\{2[#%:?+=/-[^}]*\})(\1)$')
 
 
-class Dirs(Set[str]):
+class Dirs(Set[Path]):
     """Set of directories."""
 
     DIRS = frozenset({
-        'bin',
-        'etc',
-        'etc/cron.d',
-        'etc/cron.hourly',
-        'etc/cron.daily',
-        'etc/cron.weekly',
-        'etc/cron.monthly',
-        'etc/default',
-        'etc/init.d',
-        'lib',
-        'lib/security',
-        'sbin',
-        'usr',
-        'usr/bin',
-        'usr/lib',
-        'usr/sbin',
-        'var',
-        'var/lib',
-        'var/log',
-        'var/www',
+        Path('bin'),
+        Path('etc'),
+        Path('etc/cron.d'),
+        Path('etc/cron.hourly'),
+        Path('etc/cron.daily'),
+        Path('etc/cron.weekly'),
+        Path('etc/cron.monthly'),
+        Path('etc/default'),
+        Path('etc/init.d'),
+        Path('lib'),
+        Path('lib/security'),
+        Path('sbin'),
+        Path('usr'),
+        Path('usr/bin'),
+        Path('usr/lib'),
+        Path('usr/sbin'),
+        Path('var'),
+        Path('var/lib'),
+        Path('var/log'),
+        Path('var/www'),
     })
 
     def __init__(self, package: str) -> None:
-        set.__init__(self, {f'usr/share/doc/{package}'} | self.DIRS)
+        set.__init__(self, {Path(f'usr/share/doc/{package}')} | self.DIRS)
 
-    def add(self, dst: str) -> None:
-        path = dirname(normpath(dst.strip('/')))
-        while path > '/':
-            set.add(self, path)
-            path = dirname(path)
+    def add(self, dst: Path) -> None:
+        self |= set(dst.parents)
 
 
 class Version:
