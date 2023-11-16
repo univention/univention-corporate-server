@@ -40,7 +40,7 @@ import locale
 import os
 from importlib import reload as reload_module
 from logging import getLogger
-from typing import Any, Union, overload  # noqa: F401
+from typing import Any, Protocol, Union, overload  # noqa: F401
 
 import ldap
 from ldap.filter import filter_format
@@ -55,54 +55,50 @@ from univention.admin._ucr import configRegistry
 from univention.admin.layout import Group, ILayoutElement, Tab
 
 
-try:
-    from typing_extensions import Protocol
+class UdmModule(Protocol):
+    module = ''  # type: str
+    childs = False  # type: bool
+    childmodules = []  # type: list[str]
+    operations = []  # type: list[str]
+    short_description = ''  # type: str
+    object_name = ''  # type: str
+    object_name_plural = ''  # type: str
+    long_description = ''  # type: str
+    options = {}  # type: dict[str, univention.admin.option]
+    property_descriptions = {}  # type: dict[str, univention.admin.property]
+    default_property_descriptions = {}  # type: dict[str, univention.admin.property]
+    policy_apply_to = []  # type: list[str]
+    policy_position_dn_prefix = ''  # type: str
+    policy_oc = ''  # type: str
+    docleanup = False  # type: bool
+    layout = []  # type: list[Tab]
+    mapping = None  # type: univention.admin.mapping.mapping
+    initialized = False  # type: bool
+    extended_attribute_tabnames = []  # type: list[str]
+    extended_udm_attributes = []  # type: list[univention.admin.extended_attribute]
 
-    class UdmModule(Protocol):
-        module = ''  # type: str
-        childs = False  # type: bool
-        childmodules = []  # type: list[str]
-        operations = []  # type: list[str]
-        short_description = ''  # type: str
-        object_name = ''  # type: str
-        object_name_plural = ''  # type: str
-        long_description = ''  # type: str
-        options = {}  # type: dict[str, univention.admin.option]
-        property_descriptions = {}  # type: dict[str, univention.admin.property]
-        default_property_descriptions = {}  # type: dict[str, univention.admin.property]
-        policy_apply_to = []  # type: list[str]
-        policy_position_dn_prefix = ''  # type: str
-        policy_oc = ''  # type: str
-        docleanup = False  # type: bool
-        layout = []  # type: list[Tab]
-        mapping = None  # type: univention.admin.mapping.mapping
-        initialized = False  # type: bool
-        extended_attribute_tabnames = []  # type: list[str]
-        extended_udm_attributes = []  # type: list[univention.admin.extended_attribute]
-
-        class object:
-            def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
-                # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, str, univention.admin.handlers.simpleLdap | None, univention.admin.handlers._Attributes | None) -> None
-                pass
-
-        @staticmethod
-        def identify(dn, attr):
-            # type: (str, dict[str, list[Any]]) -> bool
+    class object:
+        def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
+            # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, str, univention.admin.handlers.simpleLdap | None, univention.admin.handlers._Attributes | None) -> None
             pass
 
-        @staticmethod
-        def lookup(co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0):
-            # type: (None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> list[Any]
-            pass
+    @staticmethod
+    def identify(dn, attr):
+        # type: (str, dict[str, list[Any]]) -> bool
+        pass
 
-        @staticmethod
-        def lookup_filter(filter_s=None, lo=None):
-            # type: (str | None, univention.admin.uldap.access | None) -> univention.admin.filter.conjunction
-            pass
+    @staticmethod
+    def lookup(co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0):
+        # type: (None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> list[Any]
+        pass
 
-    UdmName = Union[UdmModule, str]
-except ImportError:
-    pass
+    @staticmethod
+    def lookup_filter(filter_s=None, lo=None):
+        # type: (str | None, univention.admin.uldap.access | None) -> univention.admin.filter.conjunction
+        pass
+
+
+UdmName = Union[UdmModule, str]
 
 log = getLogger('ADMIN')
 
