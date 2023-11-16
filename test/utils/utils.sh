@@ -972,6 +972,19 @@ install_apps_via_cmdline () {
 	return $rv
 }
 
+update_apps_via_cmdline () {
+	univention-app update || return $?
+	local username=${1:?missing username} password=${2:?missing password} rv=0 app password_file
+	shift 2 || return $?
+	password_file="$(mktemp)"
+	echo "$password" > "$password_file"
+	for app in "$@"; do
+		univention-app upgrade --noninteractive --username "$username" --pwdfile "$password_file" "$app" || rv=$?
+	done
+	rm -f "$password_file"
+	return $rv
+}
+
 update_apps_via_umc () {
 	local username=${1:?missing username} password=${2:?missing password} main_app=${3:?missing main_app} rv=0 app
 	shift 3 || return $?
