@@ -254,6 +254,18 @@ create_school_users_classes () {
 		--school "$ou2" \
 		--append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},${lb}" \
 		--append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},${lb}"
+	python -m ucsschool.lib.models create Workgroup \
+		--name "${ou1}-wg1" \
+		--school "$ou1" \
+		--append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
+		--append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},${lb}" \
+		--append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" \
+		--append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},${lb}"
+	python -m ucsschool.lib.models create Workgroup \
+		--name "${ou2}-wg1" \
+		--school "$ou2" \
+		--append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},${lb}" \
+		--append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},${lb}"
 
 	# wait for id connector "replication"
 	# TODO find a better way
