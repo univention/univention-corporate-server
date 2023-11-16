@@ -89,27 +89,7 @@ if [ ! -d /var/lib/cups/certs ]; then
 fi
 
 if [ "$1" = "configure" ]; then
-
-	if [ -n "$2" ]; then
-		### The following block of code may be removed after ucs3.1-1
-		if dpkg --compare-versions "$2" le-nl "6.0.17-1.582.201212101237"; then
-
-			if [ "$cups_server" = "$hostname.$domainname" ]; then
-				## only set this when value does not differ from the previous default value
-				univention-config-registry set cups/server="localhost"
-
-				if [ -x "/etc/init.d/samba-ad-dc" ]; then
-					/etc/init.d/samba-ad-dc restart
-				elif [ -x "/etc/init.d/samba" ]; then
-					/etc/init.d/samba crestart
-				fi
-			fi
-
-		fi
-	fi
-
 	systemctl try-restart univention-directory-listener
-
 fi
 
 if [ ! -e "/etc/cups/printers.conf" ]; then
