@@ -30,10 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-try:
-    from typing import Collection, Optional  # noqa: F401
-except ImportError:
-    pass  # Python 2.7 🤮
+from typing import Collection, Optional  # noqa: F401
 
 
 class UdmError(Exception):

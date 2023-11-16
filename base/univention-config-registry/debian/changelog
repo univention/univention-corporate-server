@@ -1,3 +1,9 @@
+univention-config-registry (16.0.6) unstable; urgency=medium
+
+  * Bug #55915: remove `try` from `import typing`
+
+ -- Maximilian Janßen <janssen@univention.de>  Thu, 07 Mar 2024 23:54:25 +0100
+
 univention-config-registry (16.0.5) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility

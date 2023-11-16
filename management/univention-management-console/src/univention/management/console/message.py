@@ -41,6 +41,7 @@ The API of the Python objects representing the messages are based on the class :
 import mimetypes
 import sys
 import time
+from typing import Any, Dict, List, Optional, Union  # noqa: F401
 
 import ldap
 import ldap.sasl
@@ -51,12 +52,8 @@ from univention.management.console.ldap import get_user_connection
 from univention.management.console.log import CORE, PARSER, PROTOCOL
 
 
-try:
-    from typing import Any, Dict, List, Optional, Union  # noqa: F401
-    RequestType = int
-    UmcpBody = Union[dict, str, bytes]
-except ImportError:
-    pass
+RequestType = int
+UmcpBody = Union[dict, str, bytes]
 
 MIMETYPE_JSON = 'application/json'
 
