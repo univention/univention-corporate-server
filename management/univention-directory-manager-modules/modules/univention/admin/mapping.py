@@ -51,17 +51,12 @@ _ = translation.translate
 _E = TypeVar('_E')  # noqa: PYI018
 _Encoding = Tuple[str, ...]
 
-try:
-    unicode  # type: ignore[used-before-def] # noqa: B018
-except NameError:
-    unicode = str
-
 
 def MapToBytes(udm_value, encoding=()):
     # type: (list[str] | tuple[str, ...] | str, _Encoding) -> list[bytes] | bytes
     if isinstance(udm_value, (list, tuple)):
         return [MapToBytes(udm_val, encoding=encoding) for udm_val in udm_value]
-    return unicode(udm_value).encode(*encoding)
+    return str(udm_value).encode(*encoding)
 
 
 def UnmapToUnicode(ldap_value, encoding=()):
@@ -292,7 +287,7 @@ def unmapUNIX_TimeInterval(seconds):
             if value % 24 == 0:
                 value //= 24
                 unit = u'days'
-    return [unicode(value), unit]
+    return [str(value), unit]
 
 
 def mapUNIX_TimeInterval(value):
@@ -324,7 +319,7 @@ def mapUNIX_TimeInterval(value):
         val *= 60 * 60
     elif unit == u'minutes':
         val *= 60
-    return unicode(val).encode('ASCII')
+    return str(val).encode('ASCII')
 
 
 def unmapBase64(value):
