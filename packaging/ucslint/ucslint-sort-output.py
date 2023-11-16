@@ -17,7 +17,7 @@ RE_ID = re.compile(r'^([UWEIS]:\d{4}-[BEFNW]?\d+)(?=: )')
 def main() -> None:
     """Sort ucslint output for stable comparison."""
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument('content', type=FileType("r"), default='-', nargs='?', help="input")
+    parser.add_argument('content', nargs='?', default='-', type=FileType('r'), help='input')
     parser.add_argument('--group', '-g', action='store_true', help='Group consecutive entries')
     parser.add_argument('--summary', '-s', action='store_true', help='Print summary')
     args = parser.parse_args()

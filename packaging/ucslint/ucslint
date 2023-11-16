@@ -283,59 +283,91 @@ def parse_args() -> Namespace:
     """
     parser = ArgumentParser()
     parser.add_argument(
-        '-d', '--debug', metavar='LEVEL',
-        type=int, default=0,
+        '--debug',
+        '-d',
+        default=0,
+        type=int,
         help='if set, debugging is activated and set to the specified level',
+        metavar='LEVEL',
     )
     parser.add_argument(
-        '-m', '--modules', metavar='MODULES',
-        dest='enabled_modules', action='append', default=[],
+        '--modules',
+        '-m',
+        action='append',
+        default=[],
         help='list of modules to be loaded (e.g. -m 0009,27)',
+        dest='enabled_modules',
     )
     parser.add_argument(
-        '-x', '--exclude-modules', metavar='MODULES',
-        dest='disabled_modules', action='append', default=[],
+        '--exclude-modules',
+        '-x',
+        action='append',
+        default=[],
         help='list of modules to be disabled (e.g. -x 9,027)',
+        metavar='MODULES',
+        dest='disabled_modules',
     )
     parser.add_argument(
-        '-o', '--display-only', metavar='MODULES',
-        dest='display_only_IDs', action='append', default=[],
+        '--display-only',
+        '-o',
+        action='append',
+        default=[],
         help='list of IDs to be displayed (e.g. -o 9-1,0027-12)',
+        metavar='MODULES',
+        dest='display_only_IDs',
     )
     parser.add_argument(
-        '-i', '--ignore', metavar='MODULES',
-        dest='ignore_IDs', action='append', default=[],
+        '--ignore',
+        '-i',
+        action='append',
+        default=[],
         help='list of IDs to be ignored (e.g. -i 0003-4,19-27)',
+        metavar='MODULES',
+        dest='ignore_IDs',
     )
     parser.add_argument(
-        '--skip-univention', '-U',
-        action='append_const', dest='ignore_IDs', const='0007-2,0010-2,0010-3,0010-4,0011-3,0011-4,0011-5,0011-13',
+        '--skip-univention',
+        '-U',
+        action='append_const',
+        const='0007-2,0010-2,0010-3,0010-4,0011-3,0011-4,0011-5,0011-13',
         help='Ignore Univention specific tests',
+        dest='ignore_IDs',
     )
     parser.add_argument(
-        '-p', '--plugindir', metavar='DIRECTORY', action='append',
+        '--plugindir',
+        '-p',
+        action='append',
         default=[],
         help='override plugin directory with <plugindir>',
+        metavar='DIRECTORY',
     )
     parser.add_argument(
-        '-c', '--display-categories', metavar='CATEGORIES',
-        dest='display_only_categories', default='',
+        '--display-categories',
+        '-c',
+        default='',
         help='categories to be displayed (e.g. -c EWIS)',
+        metavar='CATEGORIES',
+        dest='display_only_categories',
     )
     parser.add_argument(
-        '-e', '--exitcode-categories', metavar='CATEGORIES',
+        '--exitcode-categories',
+        '-e',
         default='E',
         help='categories that cause an exitcode != 0 (e.g. -e EWIS)',
+        metavar='CATEGORIES',
     )
     parser.add_argument(
-        '--junit-xml', '-j', metavar='FILE',
-        type=FileType("w"),
+        '--junit-xml',
+        '-j',
+        type=FileType('w'),
         help='generate JUnit-XML output',
+        metavar='FILE',
     )
     parser.add_argument(
         'pkgpath',
-        nargs='*', type=debian_dir,
-        help="Source package directory",
+        nargs='*',
+        type=debian_dir,
+        help='Source package directory',
     )
     args = parser.parse_args()
 
