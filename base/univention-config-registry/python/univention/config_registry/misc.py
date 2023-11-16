@@ -39,12 +39,8 @@ import re
 import string  # pylint: disable-msg=W0402
 import sys
 from shlex import quote as escape_value
+from typing import IO, Dict, List  # noqa: F401
 
-
-try:
-    from typing import IO, Dict, List  # noqa: F401
-except ImportError:  # pragma: no cover
-    pass
 
 __all__ = [
     'replace_dict', 'replace_umlaut', 'directory_files',
