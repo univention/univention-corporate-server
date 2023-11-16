@@ -121,7 +121,7 @@ rotate_logfiles () {
 		logrotate -f /etc/logrotate.conf
 }
 
-prepare_domain_for_ucs50_preup_checks() {
+prepare_domain_for_ucs52_preup_checks() {
 	return
 }
 
