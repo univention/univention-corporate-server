@@ -38,7 +38,7 @@ import json
 import os.path
 import shutil
 import tempfile
-from imghdr import what
+from filetype import guess
 from pathlib import Path
 from urllib.parse import quote
 
@@ -315,7 +315,8 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             name = name.replace(
                 "/", "-",
             )  # name must not contain / and must be a path which can be accessed via the web!
-            extension = what(None, image) or "svg"
+            extension = getattr(guess(image), "extension", "svg")
+
             path = assets_root / "icons" / dirname / f"{name}.{extension}"
             path.write_bytes(image)
         except (OSError, TypeError):
