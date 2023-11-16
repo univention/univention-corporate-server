@@ -1,0 +1,2 @@
+rm_conffile /etc/ldap/slapd.conf.d/11univention-saml-schema 8.0.0-1
+rm_conffile /etc/univention/templates/files/etc/ldap/slapd.conf.d/11univention-saml-schema 8.0.0-1
