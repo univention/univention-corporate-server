@@ -39,7 +39,6 @@ categories to be displayed (e.g. \fB\-c\fP EWIS)
 \fB\-e\fP \fIEXITCODE_CATEGORIES\fP, \fB\-\-exitcode\-categories\fP=\fIEXITCODE_CATEGORIES\fP
 categories that cause an exitcode != 0 (e.g. \fB\-e\fP EWIS)
 
-
 .SH FILES
 .TP
 .I ./debian/
@@ -56,6 +55,14 @@ Directory containing default plugins starting UCS-4.4.
 .TP
 .I $HOME/.ucslint/
 Directory containing custom plugins.
+
+.SH EXIT CODES
+.IP 0
+On success when all checks succeeded.
+.IP 1
+On internal errors or unsupported arguments.
+.IP 2
+If any check failed.
 
 .SH SEE ALSO
 .BR lintian (1),
