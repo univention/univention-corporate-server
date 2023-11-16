@@ -30,8 +30,9 @@
 
 from __future__ import annotations
 
-import os
 import re
+from os import listdir
+from os.path import isfile, join, normpath
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_DEBIAN_CHANGELOG
@@ -72,7 +73,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: str) -> None:
         super().check(path)
 
-        fn_changelog = os.path.join(path, 'debian', 'changelog')
+        fn_changelog = normpath(join(path, 'debian', 'changelog'))
         try:
             with open(fn_changelog) as fd:
                 content_changelog = fd.read(1024)
@@ -80,7 +81,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0011-1', 'failed to open and read file', fn_changelog)
             return
 
-        fn_control = os.path.join(path, 'debian', 'control')
+        fn_control = normpath(join(path, 'debian', 'control'))
         try:
             parser = uub.ParserDebianControl(fn_control)
         except uub.FailedToReadFile:
@@ -91,7 +92,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             return
 
         compat_version = 0
-        fn_compat = os.path.join(path, 'debian', 'compat')
+        fn_compat = normpath(join(path, 'debian', 'compat'))
         try:
             with open(fn_compat) as fd:
                 compat_version = int(fd.read())
@@ -290,8 +291,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         pkgs = [pkg['Package'] for pkg in parser.binary_sections]
 
-        debianpath = os.path.join(path, 'debian')
-        files = os.listdir(debianpath)
+        debianpath = normpath(join(path, 'debian'))
+        files = listdir(debianpath)
 
         regexp = re.compile(
             r'^(?:{})[.](?:{}|.+[.](?:{}))$'.format(
@@ -301,12 +302,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             ))
 
         for rel_name in files:
-            fn = os.path.join(debianpath, rel_name)
+            fn = normpath(join(debianpath, rel_name))
 
             if rel_name in self.EXCEPTION_FILES:
                 continue
 
-            if not os.path.isfile(fn):
+            if not isfile(fn):
                 continue
 
             if regexp.match(rel_name):

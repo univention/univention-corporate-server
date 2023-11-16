@@ -1,8 +1,9 @@
-ucslint (9.0.4-1) UNRELEASED; urgency=medium
+ucslint (9.0.4-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #55668: Fix path normalization
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:38 +0100
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:36:18 +0100
 
 ucslint (9.0.3-3) unstable; urgency=low
 

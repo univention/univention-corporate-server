@@ -461,6 +461,12 @@ Software deployment
   upgrade because it is an intermediate version between UCS 5.0 and UCS 5.2 to
   which an upgrade will not be possible (:uv:bug:`56517`).
 
+* The internal tool :program:`ucslint` is now independent from the current working directory.
+  It has been fully converted to Python 3.7 code, which changes the API for its plugins.
+  Performance has also been improved and several small bugs have been fixed.
+  This found several new issues in other packages, which previously had not been detected.
+  Some of them have also been fixed (:uv:bug:`55668`).
+
 .. _changelog-service:
 
 ***************

@@ -33,12 +33,13 @@
 from __future__ import annotations
 
 import contextlib
-import os
 import re
 import sys
 from configparser import (
     DuplicateOptionError, DuplicateSectionError, MissingSectionHeaderError, ParsingError, RawConfigParser,
 )
+from os import listdir
+from os.path import exists, join, normpath, relpath
 from typing import Any, Dict, Iterator, List, Set, Tuple
 
 import univention.ucslint.base as uub
@@ -177,7 +178,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         """Analyze UCR templates below :file:`conffiles/`."""
         conffiles: Dict[str, Dict[str, Any]] = {}
 
-        confdir = os.path.join(path, 'conffiles')
+        confdir = normpath(join(path, 'conffiles'))
         for fn in uub.FilteredDirWalkGenerator(confdir, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
             checks: Dict[str, Any] = {
                 'headerfound': False,
@@ -193,7 +194,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             }
             conffiles[fn] = checks
 
-            match = self.RE_PYTHON_FNAME.match(os.path.relpath(fn, confdir))
+            match = self.RE_PYTHON_FNAME.match(relpath(fn, confdir))
             if match:
                 checks['pythonic'] = True
 
@@ -347,7 +348,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         objlist: Dict[str, List[UcrInfo]] = {}  # { CONF-FN ==> [ OBJ... ] }
 
         # read debian/rules
-        fn_rules = os.path.join(path, 'debian', 'rules')
+        fn_rules = normpath(join(path, 'debian', 'rules'))
         try:
             with open(fn_rules) as fd:
                 rules_content = fd.read()
@@ -359,8 +360,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0004-25', 'file contains old univention-install-baseconfig call', fn_rules)
 
         # find debian/*.u-c-r and check for univention-config-registry-install in debian/rules
-        for f in os.listdir(os.path.join(path, 'debian')):
-            fn = os.path.join(path, 'debian', f)
+        for f in listdir(normpath(join(path, 'debian'))):
+            fn = normpath(join(path, 'debian', f))
             if fn.endswith('.univention-config-registry-categories'):
                 self.read_ini(fn)
             elif fn.endswith('.univention-config-registry-mapping'):
@@ -371,18 +372,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             elif fn.endswith('.univention-service'):
                 self.read_ini(fn)
             elif fn.endswith(('.univention-config-registry', '.univention-baseconfig')):
-                tmpfn = os.path.join(path, 'debian', '%s.univention-config-registry-variables' % f.rsplit('.', 1)[0])
+                tmpfn = normpath(join(path, 'debian', '%s.univention-config-registry-variables' % f.rsplit('.', 1)[0]))
                 self.debug('testing %s' % tmpfn)
-                if not os.path.exists(tmpfn):
+                if not exists(tmpfn):
                     self.addmsg('0004-24', f'{f} exists but corresponding {tmpfn} is missing', tmpfn)
 
                 if not self.RE_UICR.search(rules_content):
                     self.addmsg('0004-23', '%s exists but debian/rules contains no univention-install-config-registry' % f, fn_rules)
                     break
 
-        for f in os.listdir(os.path.join(path, 'debian')):
+        for f in listdir(normpath(join(path, 'debian'))):
             if f.endswith('.univention-config-registry') or f.endswith('.univention-baseconfig'):
-                fn = os.path.join(path, 'debian', f)
+                fn = normpath(join(path, 'debian', f))
 
                 # OBJ = { 'Type': [ STRING, ... ],
                 #         'Subfile': [ STRING, ... ] ,
@@ -734,7 +735,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 else:
                     if not any(conffiles[conffn][typ] for typ in ('headerfound', 'ucrwarning')):
                         self.addmsg('0004-16', 'UCR header is missing', conffn)
-                self.test_marker(os.path.join(path, 'conffiles', fn))
+                self.test_marker(normpath(join(path, 'conffiles', fn)))
 
         # Part2: subfile templates
         for mfn, items in all_subfiles.items():
@@ -758,7 +759,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         # Test modules / scripts
         for f in all_preinst | all_postinst | all_module | all_script:
-            fn = os.path.join(path, 'conffiles', f)
+            fn = normpath(join(path, 'conffiles', f))
             try:
                 checks = conffiles[fn]
             except KeyError:

@@ -75,7 +75,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def get_debian_version(self, path: str) -> Version:
         try:
-            fn_changelog = join(path, 'debian', 'changelog')
+            fn_changelog = normpath(join(path, 'debian', 'changelog'))
             with open(fn_changelog) as fd:
                 changelog = Changelog(fd)
         except (OSError, ChangelogParseError) as ex:
@@ -85,7 +85,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             return Version(changelog.version.full_version)
 
     def check_scripts(self, path: str) -> None:
-        debianpath = join(path, 'debian')
+        debianpath = normpath(join(path, 'debian'))
         version = self.get_debian_version(path)
         for script_path in uub.FilteredDirWalkGenerator(debianpath, suffixes=self.SCRIPTS):
             package, suffix = self.split_pkg(script_path)
@@ -216,7 +216,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check_dirs(self, path: str) -> None:
         dirs: Dict[str, Set[str]] = {}
-        debianpath = join(path, 'debian')
+        debianpath = normpath(join(path, 'debian'))
 
         for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['install']):
             package, suffix = self.split_pkg(fp)
@@ -296,11 +296,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 if isdir(fn):
                     for root, _dirs, files in walk(fn):
                         for name in files:
-                            src_path = join(root, name)
-                            dst_path = join(dst, relpath(src_path, dirname(fn)))
+                            src_path = normpath(join(root, name))
+                            dst_path = normpath(join(dst, relpath(src_path, dirname(fn))))
                             yield (src_path, dst_path)
                 else:
-                    yield (fn, join(dst, basename(fn)))
+                    yield (fn, normpath(join(dst, basename(fn))))
 
     @classmethod
     def process_pyinstall(cls, line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[Tuple[str, str]]:
@@ -324,7 +324,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         assert not args, args
 
         for fn in glob(src) if ('*' in src or '?' in src or '[' in src) else [src]:
-            yield (fn, join(dst, basename(fn)))
+            yield (fn, normpath(join(dst, basename(fn))))
 
     RE_TEST = re.compile(
         r'''

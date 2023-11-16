@@ -30,9 +30,10 @@
 
 from __future__ import annotations
 
-import os
 import re
 import time
+from os import listdir
+from os.path import join, normpath
 from typing import List
 
 import univention.ucslint.base as uub
@@ -72,7 +73,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         check_files: List[str] = []
 
         # check if copyright file is missing
-        fn = os.path.join(path, 'debian', 'copyright')
+        fn = normpath(join(path, 'debian', 'copyright'))
         try:
             with open(fn) as stream:
                 line = stream.readline().rstrip()
@@ -82,8 +83,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0010-5', 'file is missing', fn)
 
         # looking for files below debian/
-        for f in os.listdir(os.path.join(path, 'debian')):
-            fn = os.path.join(path, 'debian', f)
+        for f in listdir(normpath(join(path, 'debian'))):
+            fn = normpath(join(path, 'debian', f))
             if f.endswith(('.preinst', '.postinst', '.prerm', '.postrm')) or f in ['preinst', 'postinst', 'prerm', 'postrm', 'copyright']:
                 check_files.append(fn)
 

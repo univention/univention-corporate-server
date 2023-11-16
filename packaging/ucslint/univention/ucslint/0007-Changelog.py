@@ -30,9 +30,9 @@
 
 from __future__ import annotations
 
-import os
 import re
 from email.utils import mktime_tz, parsedate_tz
+from os.path import join, normpath
 
 from debian.changelog import Changelog, ChangelogParseError
 
@@ -64,7 +64,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: str) -> None:
         super().check(path)
 
-        fn = os.path.join(path, 'debian', 'changelog')
+        fn = normpath(join(path, 'debian', 'changelog'))
         try:
             with open(fn) as stream:
                 changelog = Changelog(stream, strict=True)

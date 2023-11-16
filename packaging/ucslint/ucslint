@@ -38,13 +38,13 @@ Check UCS packages for policy compliance.
 
 from __future__ import annotations
 
-import os
 import re
 import sys
 from argparse import ArgumentParser, ArgumentTypeError, FileType, Namespace
 from errno import ENOENT
 from fnmatch import fnmatch
 from importlib.util import module_from_spec, spec_from_file_location
+from os import listdir
 from os.path import abspath, dirname, exists, expanduser, isdir, join, normpath, relpath
 from types import ModuleType
 from typing import IO, Container, Dict, List, Sequence, Set, Tuple
@@ -96,18 +96,18 @@ class DebianPackageCheck(object):
     def loadplugins(self) -> None:
         """Load modules from plugin directory."""
         for plugindir in self.plugindirs:
-            if not os.path.exists(plugindir):
+            if not exists(plugindir):
                 if self.debuglevel:
                     print('WARNING: plugindir %s does not exist' % plugindir, file=sys.stderr)
             else:
-                for f in os.listdir(plugindir):
+                for f in listdir(plugindir):
                     if f.endswith('.py') and f[0:4].isdigit():
                         # self.modules == None ==> load all modules
                         # otherwise load only listed modules
                         if (not self.enabled_modules or f[0:4] in self.enabled_modules) and f[0:4] not in self.disabled_modules:
                             modname = f[0:-3]
                             try:
-                                fn = os.path.join(plugindir, f)
+                                fn = normpath(join(plugindir, f))
                                 spec = spec_from_file_location(f[:-3], fn)
                                 assert spec is not None
                                 module = module_from_spec(spec)
@@ -138,7 +138,7 @@ class DebianPackageCheck(object):
     def loadOverrides(self) -> None:
         """Parse :file:`debian/ucslint.overrides` file."""
         self.overrides = set()
-        fn = os.path.join(self.path, 'debian', 'ucslint.overrides')
+        fn = normpath(join(self.path, 'debian', 'ucslint.overrides'))
         try:
             with open(fn) as overrides:
                 for row, line in enumerate(overrides, start=1):

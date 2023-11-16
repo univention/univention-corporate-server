@@ -30,7 +30,8 @@
 
 from __future__ import annotations
 
-import os
+from os import listdir
+from os.path import join, normpath
 from typing import Any, Dict
 
 import univention.ucslint.base as uub
@@ -58,8 +59,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # search debian scripts
         #
-        for f in os.listdir(os.path.join(path, 'debian')):
-            fn = os.path.join(path, 'debian', f)
+        for f in listdir(normpath(join(path, 'debian'))):
+            fn = normpath(join(path, 'debian', f))
             if f.rsplit('.', 1)[-1] in ['preinst', 'postinst', 'prerm', 'postrm']:
                 fnlist_scripts[fn] = {
                     'debhelper': False,

@@ -30,9 +30,10 @@
 
 from __future__ import annotations
 
-import os
 import re
 from enum import IntFlag
+from os import listdir
+from os.path import basename, join, normpath
 from typing import Dict
 
 import univention.ucslint.base as uub
@@ -171,10 +172,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # search join scripts
         #
-        for f in os.listdir(path):
+        for f in listdir(path):
             if not f[0:2].isdigit():
                 continue
-            fn = os.path.join(path, f)
+            fn = normpath(join(path, f))
             if f.endswith('.inst'):
                 fnlist_joinscripts[fn] = JSS.CALLED
             elif f.endswith('.uinst'):
@@ -193,16 +194,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # check if join scripts are present in debian/rules || debian/*.install
         #
         found: Dict[str, int] = {}
-        debianpath = os.path.join(path, 'debian')
+        debianpath = normpath(join(path, 'debian'))
         # get all .install files
         fnlist = list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install']))
         # append debian/rules
-        fn_rules = os.path.join(path, 'debian', 'rules')
+        fn_rules = normpath(join(path, 'debian', 'rules'))
         fnlist.append(fn_rules)
 
         # Look for dh-umc-modules-install
         try:
-            fn_control = os.path.join(path, 'debian', 'control')
+            fn_control = normpath(join(path, 'debian', 'control'))
             ctrl: uub.ParserDebianControl | None = uub.ParserDebianControl(fn_control)
         except uub.UCSLintException:
             self.debug('Errors in debian/control. Skipping here')
@@ -224,7 +225,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     for binary_package in ctrl.binary_sections:
                         package = binary_package['Package']
                         for js in fnlist_joinscripts:
-                            if re.match(r'^\./\d\d%s\.u?inst$' % re.escape(package), js):
+                            if basename(js)[2:].split(".", 1)[0] == package:
                                 self.debug('univention-install-joinscript will take care of %s' % js)
                                 fnlist_joinscripts[js] = JSS.UNREF
                                 found[js] = found.get(js, 0) + 1
@@ -235,7 +236,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if self.RE_DH_UMC.search(c_rules):
                 self.debug('Detected use of dh-umc-module-install')
                 for fn in uub.FilteredDirWalkGenerator(debianpath, suffixes=['.umc-modules']):
-                    package = os.path.basename(fn)[:-len('.umc-modules')]
+                    package = basename(fn)[:-len('.umc-modules')]
                     inst = f'{package}.inst'
                     uinst = f'{package}.uinst'
                     for js in fnlist_joinscripts:
@@ -253,7 +254,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 continue
 
             for js in fnlist_joinscripts:
-                name = os.path.basename(js)
+                name = basename(js)
                 self.debug(f'looking for {name} in {fn}')
                 if name in content:
                     self.debug(f'found {name} in {fn}')
@@ -266,7 +267,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # check if join scripts are present in debian/*{pre,post}{inst,rm}
         #
-        for f in os.listdir(os.path.join(path, 'debian')):
+        for f in listdir(normpath(join(path, 'debian'))):
             if '.debhelper.' in f:
                 continue
 
@@ -279,7 +280,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             else:
                 continue
 
-            fn = os.path.join(path, 'debian', f)
+            fn = normpath(join(path, 'debian', f))
             self.debug('loading %s' % (fn))
             try:
                 with open(fn) as fd:
@@ -293,7 +294,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.debug('found "set -e" in %s' % fn)
 
             for js in fnlist_joinscripts:
-                name = os.path.basename(js)
+                name = basename(js)
                 self.debug(f'looking for {name} in {fn}')
                 if name in content:
                     fnlist_joinscripts[js] &= ~bit

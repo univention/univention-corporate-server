@@ -14,4 +14,4 @@ I:0004-56: conffiles/ucr.html: No UCR variables used
 I:0004-56: conffiles/ucr.php: No UCR variables used
 I:0004-56: conffiles/ucr.sh: No UCR variables used
 I:0004-56: conffiles/ucr.xml: No UCR variables used
-S:0004-24: debian/test0004-34.univention-config-registry-variables: test0004-34.univention-config-registry exists but corresponding ./debian/test0004-34.univention-config-registry-variables is missing
+S:0004-24: debian/test0004-34.univention-config-registry-variables: test0004-34.univention-config-registry exists but corresponding debian/test0004-34.univention-config-registry-variables is missing

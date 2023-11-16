@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import re
 from itertools import chain
-from os.path import join
+from os.path import join, normpath
 
 import univention.ucslint.base as uub
 
@@ -58,8 +58,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         tester.addTest(re.compile(r'univention\.(?:local|qa|test)'), '0002-3', 'contains invalid domainname', cntmax=0)
 
         for fn in chain(
-                uub.FilteredDirWalkGenerator(join(path, 'conffiles')),
-                uub.FilteredDirWalkGenerator(join(path, 'debian')),
+                uub.FilteredDirWalkGenerator(normpath(join(path, 'conffiles'))),
+                uub.FilteredDirWalkGenerator(normpath(join(path, 'debian'))),
         ):
             try:
                 tester.open(fn)

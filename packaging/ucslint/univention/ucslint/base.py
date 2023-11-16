@@ -32,8 +32,9 @@
 
 from __future__ import annotations
 
-import os
 import re
+from os import walk
+from os.path import basename, exists, isdir, join, normpath
 from typing import Callable, Dict, Iterable, Iterator, List, Match, Pattern, Set, Tuple
 
 
@@ -143,16 +144,13 @@ class UPCMessage:
     def __init__(self, id_: str, msg: str, filename: str | None = None, row: int | None = None, col: int | None = None) -> None:
         self.id = id_
         self.msg = msg
-        self.filename = filename
+        self.filename = normpath(filename) if filename else ""
         self.row = row
         self.col = col
 
-        if self.filename is not None and self.filename.startswith('./'):
-            self.filename = self.filename[2:]
-
     def __str__(self) -> str:
         if self.filename:
-            s = '%s' % self.filename
+            s = self.filename
             if self.row is not None:
                 s += ':%s' % self.row
                 if self.col is not None:
@@ -248,7 +246,7 @@ class UniventionPackageCheckDebian(UniventionPackageCheckBase):
     def check(self, path: str) -> None:
         """the real check."""
         super().check(path)
-        if not os.path.isdir(os.path.join(path, 'debian')):
+        if not isdir(normpath(join(path, 'debian'))):
             raise UCSLintException(f"directory '{path}' does not exist!")
 
 
@@ -641,7 +639,7 @@ class FilteredDirWalkGenerator:
         self.dangling_symlinks = dangling_symlinks
 
     def __iter__(self) -> Iterator[str]:
-        for dirpath, dirnames, filenames in os.walk(self.path):
+        for dirpath, dirnames, filenames in walk(self.path):
             # remove undesired directories
             if self.ignore_dirs:
                 for item in self.ignore_dirs:
@@ -649,15 +647,15 @@ class FilteredDirWalkGenerator:
                         dirnames.remove(item)
 
             # ignore all subdirectories in debian directory if requested
-            if self.ignore_debian_subdirs and os.path.basename(dirpath) == 'debian':
+            if self.ignore_debian_subdirs and basename(dirpath) == 'debian':
                 del dirnames[:]
 
             # iterate over filenames
             for filename in filenames:
-                fn = os.path.join(dirpath, filename)
+                fn = normpath(join(dirpath, filename))
 
                 # skip danling symlinks by default
-                if not os.path.exists(fn) and not self.dangling_symlinks:
+                if not exists(fn) and not self.dangling_symlinks:
                     continue
 
                 # check if filename is on ignore list
