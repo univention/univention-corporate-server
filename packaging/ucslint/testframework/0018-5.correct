@@ -1,1 +1,3 @@
 I:0018-5: debian/ucslint.postinst:3:23: Maintainer script contains old upgrade code for 1 << 3.0.0-1
+I:0018-5: debian/ucslint.postinst:6:25: Maintainer script contains old upgrade code for 1.1 << 3.0.0-1
+I:0018-5: debian/ucslint.postinst:9:25: Maintainer script contains old upgrade code for 1.2 << 3.0.0-1

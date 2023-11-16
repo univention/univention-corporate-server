@@ -130,11 +130,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     for arg in (ver_a, ver_b):
                         if self.RE_ARG2.match(arg):
                             continue
-                        if not RE_DEBIAN_PACKAGE_VERSION.match(arg):
+                        unquoted = arg[1:-1] if arg[0] == arg[-1] in {"'", '"'} else arg
+                        if not RE_DEBIAN_PACKAGE_VERSION.match(unquoted):
                             self.debug("%s:%d: Unknown argument %r" % (script_path, row, arg))
                             continue
 
-                        ver = Version(arg)
+                        ver = Version(unquoted)
                         self.debug(f"{ver} << {version}?")
                         if ver.numeric and version.numeric and ver.numeric[0] < version.numeric[0] - 1:
                             self.addmsg(
