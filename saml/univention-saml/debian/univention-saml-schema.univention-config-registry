@@ -1,8 +1,3 @@
-Type: subfile
-Multifile: etc/ldap/slapd.conf
-Subfile: etc/ldap/slapd.conf.d/11univention-saml-schema
-Variables: ldap/server/type
-
 Type: multifile
 Multifile: etc/simplesamlphp/metadata/saml20-sp-remote.php
 
