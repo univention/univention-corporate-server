@@ -32,12 +32,16 @@ from __future__ import annotations
 
 import os
 import re
+from enum import IntFlag
 from typing import Dict
 
 import univention.ucslint.base as uub
 
 
-CALLED, COPIED = (1 << bit for bit in range(2))
+class JSS(IntFlag):
+    UNREF = 0
+    CALLED = 1
+    COPIED = 2
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -162,7 +166,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: str) -> None:
         super().check(path)
 
-        fnlist_joinscripts = {}
+        fnlist_joinscripts: Dict[str, JSS] = {}
 
         #
         # search join scripts
@@ -172,9 +176,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 continue
             fn = os.path.join(path, f)
             if f.endswith('.inst'):
-                fnlist_joinscripts[fn] = CALLED
+                fnlist_joinscripts[fn] = JSS.CALLED
             elif f.endswith('.uinst'):
-                fnlist_joinscripts[fn] = CALLED | COPIED
+                fnlist_joinscripts[fn] = JSS.CALLED | JSS.COPIED
             else:
                 continue
             self.debug('found %s' % fn)
@@ -222,7 +226,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         for js in fnlist_joinscripts:
                             if re.match(r'^\./\d\d%s\.u?inst$' % re.escape(package), js):
                                 self.debug('univention-install-joinscript will take care of %s' % js)
-                                fnlist_joinscripts[js] = 0
+                                fnlist_joinscripts[js] = JSS.UNREF
                                 found[js] = found.get(js, 0) + 1
 
                     if 'univention-join-dev' not in ctrl.source_section.dep and not is_old:
@@ -238,7 +242,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         if js.endswith((inst, uinst)):
                             self.debug(f'{js} installed by dh-umc-module-install')
                             found[js] = found.get(js, 0) + 1
-                            fnlist_joinscripts[js] = 0
+                            fnlist_joinscripts[js] = JSS.UNREF
 
         for fn in fnlist:
             try:
@@ -267,11 +271,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 continue
 
             if f.endswith('.postinst') or f == 'postinst':
-                bit = CALLED
+                bit = JSS.CALLED
             elif f.endswith('.prerm') or f == 'prerm':
-                bit = COPIED
+                bit = JSS.COPIED
             elif f.endswith('.postrm') or f == 'postrm':
-                bit = CALLED
+                bit = JSS.CALLED
             else:
                 continue
 
@@ -303,9 +307,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                                     self.addmsg('0001-8', f'the join script {name} is not called with "|| true" but "set -e" is set', fn, row, line=line)
 
         for js, missing in fnlist_joinscripts.items():
-            if missing & CALLED and js.endswith('.inst'):
+            if missing & JSS.CALLED and js.endswith('.inst'):
                 self.addmsg('0001-7', 'Join script is not mentioned in debian/*.postinst', js)
-            if missing & CALLED and js.endswith('.uinst'):
+            if missing & JSS.CALLED and js.endswith('.uinst'):
                 self.addmsg('0001-17', 'Unjoin script seems not to be called in any postrm file', js)
-            if missing & COPIED and js.endswith('.uinst'):
+            if missing & JSS.COPIED and js.endswith('.uinst'):
                 self.addmsg('0001-18', 'Unjoin script seems not to be copied in any prerm file', js)
