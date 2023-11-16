@@ -99,7 +99,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             except (OSError, UnicodeDecodeError):
                 self.addmsg('0010-1', 'failed to open and read file', fn)
                 continue
-            self.debug('testing %s' % fn)
+            self.debug(f'testing {fn}')
 
             if RE_SKIP.search(content):
                 continue
@@ -135,7 +135,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         for line in self.AGPL:
             if line not in content:
-                self.debug('Missing copyright string: %s' % line)
+                self.debug(f'Missing copyright string: {line}')
                 return False
 
         return True

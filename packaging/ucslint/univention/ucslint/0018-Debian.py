@@ -92,10 +92,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             other_scripts = self.SCRIPTS - {suffix}
             other_actions = {action for actions in self.ACTIONS.values() for action in actions} - self.ACTIONS[suffix]
-            self.debug('script=%s' % suffix)
-            self.debug('actions=%s' % ' '.join(sorted(self.ACTIONS[suffix])))
-            self.debug('other_script=%s' % ' '.join(sorted(other_scripts)))
-            self.debug('other_actions=%s' % ' '.join(sorted(other_actions)))
+            self.debug(f'script={suffix}')
+            self.debug(f'actions={" ".join(sorted(self.ACTIONS[suffix]))}')
+            self.debug(f'other_script={" ".join(sorted(other_scripts))}')
+            self.debug(f'other_actions={" ".join(sorted(other_actions))}')
 
             with open(script_path) as script_file:
                 content = script_file.read()
@@ -117,12 +117,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     try:
                         actions = self.parse_test(split(match.group('cond'))) & other_actions
                     except ValueError as ex:
-                        self.debug('Failed %s:%d: %s in %s' % (script_path, row, ex, line))
+                        self.debug(f'Failed {script_path}:{row}: {ex} in {line}')
                         continue
                     if actions:
                         self.addmsg(
                             '0018-3',
-                            'Invalid actions "{}" in Debian maintainer script'.format(','.join(actions)),
+                            f'Invalid actions "{",".join(actions)}" in Debian maintainer script',
                             script_path, row, line=line)
 
                 for match in self.RE_COMPARE_VERSIONS.finditer(line):
@@ -132,7 +132,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             continue
                         unquoted = arg[1:-1] if arg[0] == arg[-1] in {"'", '"'} else arg
                         if not RE_DEBIAN_PACKAGE_VERSION.match(unquoted):
-                            self.debug("%s:%d: Unknown argument %r" % (script_path, row, arg))
+                            self.debug(f'{script_path}:{row}: Unknown argument {arg!r}')
                             continue
 
                         ver = Version(unquoted)
@@ -151,7 +151,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     if actions:
                         self.addmsg(
                             '0018-3',
-                            'Invalid actions "{}" in Debian maintainer script'.format(','.join(actions)),
+                            f'Invalid actions "{",".join(actions)}" in Debian maintainer script',
                             script_path, row, col, line=line)
 
     @classmethod
@@ -225,7 +225,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             for row, line in self.lines(fp):
                 dst = ''
                 for src, dst in self.process_install(line):
-                    self.debug('%s:%d Installs %s to %s' % (fp, row, src, dst))
+                    self.debug(f'{fp}:{row} Installs {src} to {dst}')
                     pkg.add(dst)
 
                 if self.RE_PYTHONPATHS.match(dst):
@@ -239,7 +239,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             pkg = dirs.setdefault(package, Dirs(package))
             for row, line in self.lines(fp):
                 for src, dst in self.process_pyinstall(line):
-                    self.debug('%s:%d Installs %s to %s' % (fp, row, src, dst))
+                    self.debug(f'{fp}:{row} Installs {src} to {dst}')
                     pkg.add(dst)
 
         for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['dirs']):
@@ -413,7 +413,7 @@ class Dirs(Set[str]):
     })
 
     def __init__(self, package: str) -> None:
-        set.__init__(self, {'usr/share/doc/' + package} | self.DIRS)
+        set.__init__(self, {f'usr/share/doc/{package}'} | self.DIRS)
 
     def add(self, dst: str) -> None:
         path = dirname(normpath(dst.strip('/')))

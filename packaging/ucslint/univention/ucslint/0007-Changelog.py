@@ -69,7 +69,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             with open(fn) as stream:
                 changelog = Changelog(stream, strict=True)
         except OSError as ex:
-            self.addmsg('0007-1', 'failed to open and read file: %s' % ex, fn)
+            self.addmsg('0007-1', f'failed to open and read file: {ex}', fn)
             return
         except ChangelogParseError as ex:
             self.addmsg('0007-1', str(ex), fn)

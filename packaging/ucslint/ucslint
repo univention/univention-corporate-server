@@ -97,7 +97,7 @@ class DebianPackageCheck:
         for plugindir in self.plugindirs:
             if not exists(plugindir):
                 if self.debuglevel:
-                    print('WARNING: plugindir %s does not exist' % plugindir, file=sys.stderr)
+                    print(f'WARNING: plugindir {plugindir} does not exist', file=sys.stderr)
             else:
                 for f in listdir(plugindir):
                     if f.endswith('.py') and f[0:4].isdigit():
@@ -119,7 +119,7 @@ class DebianPackageCheck:
                                     raise
                         else:
                             if self.debuglevel:
-                                print('Module %s is not enabled' % f, file=sys.stderr)
+                                print(f'Module {f} is not enabled', file=sys.stderr)
 
     def check(self) -> None:
         """Run plugin on files in path."""
@@ -148,7 +148,7 @@ class DebianPackageCheck:
                         continue
                     result = RE_OVERRIDE.match(line)
                     if not result:
-                        print('IGNORED: debian/ucslint.overrides:%d: %s' % (row, line), file=sys.stderr)
+                        print(f'IGNORED: debian/ucslint.overrides:{row}: {line}', file=sys.stderr)
                         continue
 
                     module, pattern, linenumber = result.groups()
@@ -240,7 +240,7 @@ def clean_id(idstr: str) -> str:
     '0001-2'
     """
     if '-' not in idstr:
-        raise ValueError('no valid id (%s) - missing dash' % idstr)
+        raise ValueError(f'no valid id ({idstr}) - missing dash')
     modid, msgid = idstr.strip().split('-', 1)
     return f'{clean_modid(modid)}-{clean_msgid(msgid)}'
 
@@ -256,8 +256,8 @@ def clean_modid(modid: str) -> str:
     '0001'
     """
     if not modid.isdigit():
-        raise ValueError('modid contains invalid characters: %s' % modid)
-    return '%04d' % (int(modid))
+        raise ValueError(f'modid contains invalid characters: {modid}')
+    return f'{int(modid):04d}'
 
 
 def clean_msgid(msgid: str) -> str:
@@ -271,8 +271,8 @@ def clean_msgid(msgid: str) -> str:
     '1'
     """
     if not msgid.isdigit():
-        raise ValueError('msgid contains invalid characters: %s' % msgid)
-    return '%d' % int(msgid)
+        raise ValueError(f'msgid contains invalid characters: {msgid}')
+    return f'{int(msgid):d}'
 
 
 def parse_args() -> Namespace:

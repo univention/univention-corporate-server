@@ -35,7 +35,7 @@ from univention.ucslint.base import FilteredDirWalkGenerator
 
 
 def _or(*disjunct: str, name: Optional[str] = None) -> str:
-    return r"(?{}{})".format(":" if name is None else "P<{}>".format(name), "|".join(disjunct))
+    return r'(?{}{})'.format(':' if name is None else f'P<{name}>', '|'.join(disjunct))
 
 
 RE_HASHBANG = re.compile(r"^#!.*[ /]python[0-9.]*\b")
@@ -49,7 +49,7 @@ LITERALS = _or(
     r"'(?:[^'\\\n]|%(esc)s)*?'",
     r'"(?:[^"\\\n]|%(esc)s)*?"',
 )
-MATCHED_LENIENT = r"(?:\b[BbFfRrUu]{{1,2}})?{}".format(LITERALS % {"esc": ESCAPE_LENIENT})
+MATCHED_LENIENT = rf"(?:\b[BbFfRrUu]{{1,2}})?{(LITERALS % {'esc': ESCAPE_LENIENT})}"
 COMMENT = _or(r"#[^\n]*$", name="cmt")
 RE_LENIENT = re.compile(_or(COMMENT, _or(MATCHED_LENIENT, name="str")), re.MULTILINE)
 
@@ -60,10 +60,8 @@ class Base:
         _or("[Rr]", "[BbFfUu][Rr]", "[Rr][BbFf]"),  # (ur|ru) only in 2, (rb) since 3.3
         LITERALS % {"esc": ESCAPE_RAW},
     )
-    MATCHED_BYTES = r"\b[Bb]{}".format(LITERALS % {"esc": ESCAPE_BYTES})
-    MATCHED_UNICODE = r"(?:\b[FfUu])?{}".format(  # [u] not in 3.0-3.2, [f] since 3.6
-        LITERALS % {"esc": ESCAPE_UNIICODE},
-    )
+    MATCHED_BYTES = rf"\b[Bb]{(LITERALS % {'esc': ESCAPE_BYTES})}"
+    MATCHED_UNICODE = rf"(?:\b[FfUu])?{(LITERALS % {'esc': ESCAPE_UNIICODE})}"  # [u] not in 3.0-3.2, [f] since 3.6
 
     @classmethod
     def matcher(cls) -> Pattern[str]:
@@ -94,7 +92,7 @@ class Python33(Base):
         _or("[Rr]", "[Bb][Rr]", "[Rr][Bb]"),  # 2, (rb) since 3.3
         LITERALS % {"esc": ESCAPE_RAW},
     )
-    MATCHED_UNICODE = r"(?:\b[Uu])?{}".format(LITERALS % {"esc": ESCAPE_UNIICODE})
+    MATCHED_UNICODE = rf"(?:\b[Uu])?{(LITERALS % {'esc': ESCAPE_UNIICODE})}"
 
 
 class Python36(Base):
@@ -103,9 +101,7 @@ class Python36(Base):
         _or("[Rr]", "[BbFf][Rr]", "[Rr][BbFf]"),  # (f) since 3.6
         LITERALS % {"esc": ESCAPE_RAW},
     )
-    MATCHED_UNICODE = r"(?:\b[FfUu])?{}".format(  # [f] since 3.6
-        LITERALS % {"esc": ESCAPE_UNIICODE},
-    )
+    MATCHED_UNICODE = rf"(?:\b[FfUu])?{(LITERALS % {'esc': ESCAPE_UNIICODE})}"  # [f] since 3.6
 
 
 def python_files(path: str) -> Iterator[str]:

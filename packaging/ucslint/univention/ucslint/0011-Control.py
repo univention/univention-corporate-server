@@ -151,9 +151,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             elif not vint:
                 pass
             elif compat_version > vint:
-                self.addmsg('0011-20', 'debian/compat=%d > debian/control=%d disagree on the version for debhelper' % (compat_version, vint), fn_control)
+                self.addmsg('0011-20', f'debian/compat={compat_version} > debian/control={vint} disagree on the version for debhelper', fn_control)
             elif compat_version < vint:
-                self.addmsg('0011-20', 'debian/compat=%d < debian/control=%d disagree on the version for debhelper' % (compat_version, vint), fn_compat)
+                self.addmsg('0011-20', f'debian/compat={compat_version} < debian/control={vint} disagree on the version for debhelper', fn_compat)
             else:
                 pass
 

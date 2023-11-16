@@ -45,7 +45,7 @@ def main() -> None:
     if summary:
         print()
         for group, count in sorted(summary.items(), key=itemgetter(1), reverse=True):
-            print('%-12s %d' % (group, count))
+            print(f'{group:<12s} {count:d}')
 
 
 def parse_content(content: IO[str]) -> list[str]:

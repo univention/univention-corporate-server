@@ -72,7 +72,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 ignore_suffixes=['.po'],
                 reHashBang=RE_HASHBANG_SHELL,
         ):
-            self.debug('Testing file %s' % fn)
+            self.debug(f'Testing file {fn}')
             try:
                 self.check_bashism(fn)
                 self.check_unquoted_local(fn)
@@ -93,7 +93,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
                 match = RE_BASHISM.search(item)
                 if not match:
-                    self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n', '\\n').replace('\r', '\\r'), fn)
+                    escaped = item.replace('\n', '\\n').replace('\r', '\\r')
+                    self.addmsg('0013-3', f'cannot parse checkbashism output:\n"{escaped}"', fn)
                     continue
 
                 row = int(match.group(1))

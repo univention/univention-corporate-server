@@ -76,7 +76,7 @@ RESULT_INT2STR: dict[int, str] = {
 MsgIds = Dict[str, Tuple[int, str]]
 
 RE_MSGID = re.compile(r'\d{4}-[BEFNW]?\d+')
-RE_IGNORE = re.compile(r'\s+ ucslint :? \s* (?: ({msgid} (?: [, ]+ {msgid})*) \s* )? $'.format(msgid=RE_MSGID.pattern), re.VERBOSE)
+RE_IGNORE = re.compile(rf'\s+ ucslint :? \s* (?: ({RE_MSGID.pattern} (?: [, ]+ {RE_MSGID.pattern})*) \s* )? $', re.VERBOSE)
 
 
 def noqa(line: str) -> Callable[[str], bool]:
@@ -152,9 +152,9 @@ class UPCMessage:
         if self.filename:
             s = self.filename
             if self.row is not None:
-                s += ':%s' % self.row
+                s += f':{self.row}'
                 if self.col is not None:
-                    s += ':%s' % self.col
+                    s += f':{self.col}'
             return f'{self.id}: {s}: {self.msg}'
         return f'{self.id}: {self.msg}'
 
@@ -400,7 +400,7 @@ class UPCFileTester:
         x.open('/etc/fstab')
         msglist = x.runTests()
         for msg in msglist:
-            print('%s ==> %s ==> %s' % (msg.id, msg.filename, msg.msg))
+            print(f'{msg.id} ==> {msg.filename} ==> {msg.msg}')
 
         5432-1: /etc/fstab:4:29: Habe ein extfs gefunden.
         5432-1: /etc/fstab:7:19: Habe ein extfs gefunden.

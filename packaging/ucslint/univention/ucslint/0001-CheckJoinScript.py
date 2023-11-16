@@ -88,7 +88,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0001-9', 'failed to open and read file', filename)
             return
 
-        self.debug('checking %s' % filename)
+        self.debug(f'checking {filename}')
 
         is_uninstall = filename.endswith('.uinst')
         lines = content.splitlines()
@@ -106,7 +106,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             # check joinscript api
             match = self.RE_JOIN_API.match(line)
             if match:
-                self.addmsg('0001-24', 'Invalid joinscript api %r' % match.group(1), filename, row, line=line)
+                self.addmsg('0001-24', f'Invalid joinscript api {match.group(1)!r}', filename, row, line=line)
 
             if not line or line.startswith('#'):
                 continue
@@ -181,7 +181,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 fnlist_joinscripts[fn] = JSS.CALLED | JSS.COPIED
             else:
                 continue
-            self.debug('found %s' % fn)
+            self.debug(f'found {fn}')
 
         #
         # check if join scripts use versioning
@@ -225,7 +225,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         package = binary_package['Package']
                         for js in fnlist_joinscripts:
                             if basename(js)[2:].split(".", 1)[0] == package:
-                                self.debug('univention-install-joinscript will take care of %s' % js)
+                                self.debug(f'univention-install-joinscript will take care of {js}')
                                 fnlist_joinscripts[js] = JSS.UNREF
                                 found[js] = found.get(js, 0) + 1
 
@@ -280,7 +280,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 continue
 
             fn = normpath(join(path, 'debian', f))
-            self.debug('loading %s' % (fn))
+            self.debug(f'loading {fn}')
             try:
                 with open(fn) as fd:
                     content = fd.read()
@@ -290,7 +290,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             set_e = self.RE_LINE_CONTAINS_SET_E.search(content)
             if set_e:
-                self.debug('found "set -e" in %s' % fn)
+                self.debug(f'found "set -e" in {fn}')
 
             for js in fnlist_joinscripts:
                 name = basename(js)

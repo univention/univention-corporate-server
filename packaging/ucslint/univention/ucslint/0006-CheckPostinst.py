@@ -72,7 +72,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     'uses-remove_ucr_template': False,
                     'uses-remove_ucr_info_file': False,
                 }
-                self.debug('found %s' % fn)
+                self.debug(f'found {fn}')
 
         #
         # check scripts
@@ -101,7 +101,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 line = line.strip()
                 if not line or line.startswith('#'):
                     continue
-                self.debug('line: %s' % line)
+                self.debug(f'line: {line}')
                 for cmd in ['univention-directory-manager ', '/usr/sbin/univention-directory-manager ', 'univention-admin ', '/usr/sbin/univention-admin ']:
                     if line.startswith(cmd):
                         checks['udm_calls'] += 1
@@ -132,10 +132,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if checks['set-e-body']:
                 self.addmsg('0006-5', 'script contains "set -e"', fn)
 
-            if checks['udm_calls'] > 0:
-                self.addmsg('0006-2', 'script contains %(udm_calls)d calls of univention-directory-manager or univention-admin - use a join script' % checks, fn)
-            if checks['udm_in_line'] > 0:
-                self.addmsg('0006-3', 'script may contain %(udm_in_line)d calls of univention-directory-manager or univention-admin - please check and use a join script' % checks, fn)
+            if checks['udm_calls']:
+                self.addmsg('0006-2', f'script contains {checks["udm_calls"]} calls of univention-directory-manager or univention-admin - use a join script', fn)
+            if checks['udm_in_line']:
+                self.addmsg('0006-3', f'script may contain {checks["udm_in_line"]} calls of univention-directory-manager or univention-admin - please check and use a join script', fn)
 
             if not checks['endswith-exit-0']:
                 self.addmsg('0006-6', 'script contains no "exit 0" at end of file', fn)
