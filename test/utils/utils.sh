@@ -1132,7 +1132,6 @@ postgres94_update () {
 }
 
 prepare_domain_for_ucs50_postup () {
-	assert_version "4.4-9"
 	postgres_update '9.6' '11'
 }
 
