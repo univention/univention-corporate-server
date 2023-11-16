@@ -35,6 +35,7 @@
 
 import re
 import traceback
+from typing import Any, Dict, Iterator, List, Optional, Pattern, Sequence, Tuple, Union  # noqa: F401
 
 from PAM import (
     PAM_ACCT_EXPIRED, PAM_AUTH_ERR, PAM_AUTHTOK_ERR, PAM_AUTHTOK_RECOVER_ERR, PAM_CONV, PAM_ERROR_MSG,
@@ -45,12 +46,6 @@ from PAM import (
 from univention.lib.i18n import I18N_Error, Translation
 from univention.management.console.config import ucr
 from univention.management.console.log import AUTH
-
-
-try:
-    from typing import Any, Dict, Iterator, List, Optional, Pattern, Sequence, Tuple, Union  # noqa: F401
-except ImportError:
-    pass
 
 
 _ = Translation('univention.management.console').translate
