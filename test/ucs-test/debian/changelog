@@ -1,3 +1,9 @@
+ucs-test (12.0.251) unstable; urgency=medium
+
+  * Bug #56830: fix UCR syntax of repository/online/server
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2024 14:04:15 +0100
+
 ucs-test (12.0.250) unstable; urgency=medium
 
   * Issue univention/ucs#2742: new test in 60_umc.25_authorization.py

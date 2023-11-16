@@ -1,3 +1,9 @@
+univention-updater (17.0.35) unstable; urgency=medium
+
+  * Bug #56830: fix UCR syntax of repository/online/server
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2024 14:04:30 +0100
+
 univention-updater (17.0.34-3) unstable; urgency=medium
 
   * Bug #58016: update preup/postup updater scripts
