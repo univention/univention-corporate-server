@@ -39,6 +39,7 @@ import inspect
 import univention.admin.uexceptions
 import univention.debug as ud
 from univention.admin import localization
+from typing import List, Tuple, TypeVar, Union  # noqa: F401
 
 
 translation = localization.translation('univention/admin')
@@ -46,15 +47,10 @@ translation = localization.translation('univention/admin')
 _ = translation.translate
 
 try:
-    from typing import List, Tuple, TypeVar, Union  # noqa: F401
-    _E = TypeVar('_E')
-except ImportError:
-    pass
-
-try:
     unicode  # noqa: B018
 except NameError:
     unicode = str
+_E = TypeVar('_E')
 
 
 def MapToBytes(udm_value, encoding=()):
