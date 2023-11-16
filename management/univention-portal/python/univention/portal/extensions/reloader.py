@@ -38,9 +38,10 @@ import json
 import os.path
 import shutil
 import tempfile
-from imghdr import what
 from pathlib import Path
 from urllib.parse import quote
+
+from filetype import guess
 
 from univention.portal import Plugin, config
 from univention.portal.log import get_logger
@@ -315,7 +316,8 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
             name = name.replace(
                 "/", "-",
             )  # name must not contain / and must be a path which can be accessed via the web!
-            extension = what(None, image) or "svg"
+            extension = getattr(guess(image), "extension", "svg")
+
             path = assets_root / "icons" / dirname / f"{name}.{extension}"
             path.write_bytes(image)
         except (OSError, TypeError):
