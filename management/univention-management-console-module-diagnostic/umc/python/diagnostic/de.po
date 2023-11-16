@@ -167,6 +167,9 @@ msgstr "Password für das Rechnerkonto testen"
 msgid "Check nameserver entries on DNS zones"
 msgstr "Überprüfe die Nameserver Einträge der DNS Zonen"
 
+msgid "Check of the PostgreSQL version"
+msgstr "Überprüfen der PostgreSQL-Version"
+
 msgid "Check of the protocol version of the Univention Directory Notifier"
 msgstr "Überprüfung der Protokollversion des Univention Directory Notifier"
 
@@ -660,6 +663,16 @@ msgstr "Einige Festplatten sind beinahe voll:"
 
 #, python-brace-format
 msgid ""
+"Starting with UCS {ucs[0]}.{ucs[1]}, PostgreSQL should be version "
+"{postgresql_version}.\n"
+"This step has to be performed manually as described in"
+msgstr ""
+"Ab UCS {ucs[0]}.{ucs[1]} sollte PostgreSQL Version {postgresql_version} "
+"sein.\n"
+"Dieser Schritt muss manuell durchgeführt werden, wie in"
+
+#, python-brace-format
+msgid ""
 "Starting with UCS {ucs[0]}.{ucs[1]}-{ucs[2]} erratum {ucs[3]}, the minimum "
 "protocol version should be set to {udn}."
 msgstr ""
@@ -1021,6 +1034,9 @@ msgstr "Protokollversion anpassen"
 
 msgid "Updated versions will be named FILENAME.dpkg-*."
 msgstr "Aktualisierte Versionen werden DATEINAME.dpkg-* genannt."
+
+msgid "Updating from PostgreSQL 11 to PostgreSQL 15"
+msgstr "Aktualisierung von PostgreSQL 11 auf PostgreSQL 15"
 
 msgid "Updating from PostgreSQL 9.6 or 9.4 to PostgreSQL 11"
 msgstr "Aktualisierung von PostgreSQL 9.6 oder 9.4 auf PostgreSQL 11"
