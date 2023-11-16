@@ -36,7 +36,7 @@ import re
 from glob import glob
 from os import listdir
 from os.path import curdir, exists, join, normpath, splitext
-from typing import Iterable, Iterator, Set
+from typing import Iterable, Iterator
 
 from apt import Cache
 from apt.package import Version
@@ -84,7 +84,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         except Exception as ex:
             self.debug(f'failed to load APT cache: {ex}')
 
-    def _scan_script(self, fn: str) -> Set[str]:
+    def _scan_script(self, fn: str) -> set[str]:
         """Find calls to 'univention-install-', 'ucr' and use of 'init-autostart.lib' in file 'fn'."""
         need = set()
         self.debug(f'Reading {fn}')
@@ -101,7 +101,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         return need
 
-    def check_source(self, source_section: uub.DebianControlSource) -> Set[str]:
+    def check_source(self, source_section: uub.DebianControlSource) -> set[str]:
         """Check source package for dependencies."""
         src_deps = source_section.dep_all
 
@@ -119,7 +119,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         return src_deps
 
-    def check_package(self, section: uub.DebianControlBinary) -> Set[str]:
+    def check_package(self, section: uub.DebianControlBinary) -> set[str]:
         """Check binary package for dependencies."""
         pkg = section['Package']
         self.debug(f'Package: {pkg}')

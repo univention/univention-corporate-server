@@ -34,7 +34,6 @@ import re
 import time
 from os import listdir
 from os.path import join, normpath
-from typing import List
 
 import univention.ucslint.base as uub
 
@@ -70,7 +69,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: str) -> None:
         super().check(path)
 
-        check_files: List[str] = []
+        check_files: list[str] = []
 
         # check if copyright file is missing
         fn = normpath(join(path, 'debian', 'copyright'))

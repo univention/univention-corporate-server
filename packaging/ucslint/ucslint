@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -47,7 +46,7 @@ from importlib.util import module_from_spec, spec_from_file_location
 from os import listdir
 from os.path import abspath, dirname, exists, expanduser, isdir, join, normpath, relpath
 from types import ModuleType
-from typing import IO, Container, Dict, List, Sequence, Set, Tuple
+from typing import IO, Container, Sequence
 
 import univention.ucslint.base as uub
 
@@ -70,7 +69,7 @@ RE_OVERRIDE = re.compile(
     $''', re.VERBOSE)
 
 
-class DebianPackageCheck(object):
+class DebianPackageCheck:
     """
     Check Debian package for policy compliance.
 
@@ -84,13 +83,13 @@ class DebianPackageCheck(object):
     def __init__(self, path: str, plugindirs: Sequence[str], enabled_modules: Container[str] | None = None, disabled_modules: Container[str] | None = None, debuglevel: int = 0):
         self.path = path
         self.plugindirs = plugindirs
-        self.pluginlist: Dict[str, ModuleType] = {}
-        self.msglist: List[uub.UPCMessage] = []
+        self.pluginlist: dict[str, ModuleType] = {}
+        self.msglist: list[uub.UPCMessage] = []
         self.enabled_modules: Container[str] = enabled_modules or ()
         self.disabled_modules: Container[str] = disabled_modules or ()
         self.debuglevel = debuglevel
-        self.msgidlist: Dict[str, Tuple[int, str]] = {}
-        self.overrides: Set[Tuple[str, str | None, int | None]] = set()
+        self.msgidlist: dict[str, tuple[int, str]] = {}
+        self.overrides: set[tuple[str, str | None, int | None]] = set()
         self.loadplugins()
 
     def loadplugins(self) -> None:
@@ -115,7 +114,7 @@ class DebianPackageCheck(object):
                                 spec.loader.exec_module(module)  # type: ignore
                                 self.pluginlist[modname] = module
                             except Exception as exc:
-                                print('ERROR: Loading module %s failed: %s' % (f, exc), file=sys.stderr)
+                                print(f'ERROR: Loading module {f} failed: {exc}', file=sys.stderr)
                                 if self.debuglevel:
                                     raise
                         else:
@@ -155,9 +154,9 @@ class DebianPackageCheck(object):
                     module, pattern, linenumber = result.groups()
                     override = (module, pattern, int(linenumber) if pattern and linenumber else None)
                     self.overrides.add(override)
-        except EnvironmentError as ex:
+        except OSError as ex:
             if ex.errno != ENOENT:
-                print('WARNING: load debian/ucslint.overrides: %s' % (ex,), file=sys.stderr)
+                print(f'WARNING: load debian/ucslint.overrides: {ex}', file=sys.stderr)
 
     def in_overrides(self, msg: uub.UPCMessage) -> bool:
         """
@@ -177,7 +176,7 @@ class DebianPackageCheck(object):
             return True
         return False
 
-    def printResult(self, ignore_IDs: Container[str], display_only_IDs: Container[str], display_only_categories: str, exitcode_categories: str, junit: IO[str] | None = None) -> Tuple[int, int]:
+    def printResult(self, ignore_IDs: Container[str], display_only_IDs: Container[str], display_only_categories: str, exitcode_categories: str, junit: IO[str] | None = None) -> tuple[int, int]:
         """
         Print result of checks.
 
@@ -192,7 +191,7 @@ class DebianPackageCheck(object):
         exitcode_cnt = 0
 
         self.loadOverrides()
-        test_cases: List[uub.TestCase] = []
+        test_cases: list[uub.TestCase] = []
 
         for msg in self.msglist:
             tc = msg.junit()
@@ -217,7 +216,7 @@ class DebianPackageCheck(object):
                 category = 'FIXME'
 
             if category in display_only_categories or display_only_categories == '':
-                print('%s:%s' % (category, msg))
+                print(f'{category}:{msg}')
                 incident_cnt += 1
 
             if category in exitcode_categories or exitcode_categories == '':
@@ -243,7 +242,7 @@ def clean_id(idstr: str) -> str:
     if '-' not in idstr:
         raise ValueError('no valid id (%s) - missing dash' % idstr)
     modid, msgid = idstr.strip().split('-', 1)
-    return '%s-%s' % (clean_modid(modid), clean_msgid(msgid))
+    return f'{clean_modid(modid)}-{clean_msgid(msgid)}'
 
 
 def clean_modid(modid: str) -> str:
@@ -361,16 +360,16 @@ def debian_dir(pkgpath: str) -> str:
     :raises ArgumentTypeError: when it is no Debian package.
     """
     if not exists(pkgpath):
-        msg = "directory %r does not exist!" % (pkgpath,)
+        msg = f"directory {pkgpath!r} does not exist!"
         raise ArgumentTypeError(msg)
 
     if not isdir(pkgpath):
-        msg = "%r is no directory!" % (pkgpath,)
+        msg = f"{pkgpath!r} is no directory!"
         raise ArgumentTypeError(msg)
 
     debdir = join(pkgpath, 'debian')
     if not isdir(debdir):
-        msg = "%r does not exist or is not a directory!" % (debdir,)
+        msg = f"{debdir!r} does not exist or is not a directory!"
         raise ArgumentTypeError(msg)
 
     return pkgpath
@@ -380,7 +379,7 @@ def main() -> None:
     """Run checks."""
     options = parse_args()
     if options.debug:
-        print('Using univention.ucslint.base from %s' % (uub.__file__,))
+        print(f'Using univention.ucslint.base from {uub.__file__}')
 
     plugindirs = [abspath(path) for path in (options.plugindir or [expanduser('~/.ucslint'), dirname(uub.__file__)])]
     ignore_IDs = [clean_id(x) for ign in options.ignore_IDs for x in ign.split(',')]

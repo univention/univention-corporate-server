@@ -35,7 +35,7 @@ from __future__ import annotations
 import re
 from os import walk
 from os.path import basename, exists, isdir, join, normpath
-from typing import Callable, Dict, Iterable, Iterator, List, Match, Pattern, Set, Tuple
+from typing import Callable, Dict, Iterable, Iterator, Match, Pattern, Tuple
 
 
 try:
@@ -64,7 +64,7 @@ RESULT_ERROR = 2
 RESULT_INFO = 3
 RESULT_STYLE = 4
 
-RESULT_INT2STR: Dict[int, str] = {
+RESULT_INT2STR: dict[int, str] = {
     RESULT_UNKNOWN: 'U',
     RESULT_OK: 'OK',
     RESULT_WARN: 'W',
@@ -106,7 +106,7 @@ def noqa(line: str) -> Callable[[str], bool]:
     return lambda issue: issue in issues
 
 
-def line_regexp(text: str, regexp: Pattern[str]) -> Iterator[Tuple[int, int, Match[str]]]:
+def line_regexp(text: str, regexp: Pattern[str]) -> Iterator[tuple[int, int, Match[str]]]:
     """
     Find all matches and return row and colum number.
 
@@ -177,7 +177,7 @@ class UniventionPackageCheckBase:
 
     def __init__(self) -> None:
         self.name: str = self.__class__.__module__
-        self.msg: List[UPCMessage] = []
+        self.msg: list[UPCMessage] = []
         self.debuglevel: int = 0
 
     def addmsg(self, msgid: str, msg: str, filename: str | None = None, row: int | None = None, col: int | None = None, line: str = '') -> None:
@@ -231,7 +231,7 @@ class UniventionPackageCheckBase:
         :param path: Directory or file to check.
         """
 
-    def result(self) -> List[UPCMessage]:
+    def result(self) -> list[UPCMessage]:
         """
         Return result as list of messages.
 
@@ -303,7 +303,7 @@ class DebianControlEntry(Dict[str, str]):
                 if pkg:
                     yield pkg
 
-    def _pkgs(self, key: str) -> Set[str]:
+    def _pkgs(self, key: str) -> set[str]:
         """Return package list."""
         return set(self._split_field(self.get(key, "")))
 
@@ -416,8 +416,8 @@ class UPCFileTester:
         self.maxsize = maxsize
         self.filename: str | None = None
         self.raw: str = ''
-        self.lines: List[str] = []
-        self.tests: List[RegExTest] = []
+        self.lines: list[str] = []
+        self.tests: list[RegExTest] = []
 
     def open(self, filename: str) -> None:
         """
@@ -436,7 +436,7 @@ class UPCFileTester:
         lines = self.raw.replace('\\\n', '  ').replace('\\\r\n', '   ')
         self.lines = lines.splitlines()
 
-    def _getpos(self, linenumber: int, pos_in_line: int) -> Tuple[int, int]:
+    def _getpos(self, linenumber: int, pos_in_line: int) -> tuple[int, int]:
         """
         Converts 'unwrapped' position values (line and position in line) into
         position values corresponding to the raw file.
@@ -469,7 +469,7 @@ class UPCFileTester:
             raise ValueError('cntmin or cntmax has to be set')
         self.tests.append(RegExTest(regex, msgid, msg, cntmin, cntmax))
 
-    def runTests(self) -> List[UPCMessage]:
+    def runTests(self) -> list[UPCMessage]:
         """
         Runs all given tests on loaded file.
 

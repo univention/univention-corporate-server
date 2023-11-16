@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import re
 from itertools import chain
-from typing import Any, Dict, Iterator, List
+from typing import Any, Iterator
 
 import univention.ucslint.base as uub
 
@@ -59,8 +59,7 @@ def levenshtein(word: str, distance: int = 1, subst: str = '.') -> Iterator[str]
     m_del = (f'{word[0:i]}{word[1 + i:]}' for i in range(n))
     m_swp = (f'{word[0:i]}{word[j]}{word[i + 1:j]}{word[i]}{word[j + 1:]}' for j in range(n) for i in range(j))
     for modified in chain(m_sub, m_ins, m_del, m_swp):
-        for result in levenshtein(modified, distance - 1):
-            yield result
+        yield from levenshtein(modified, distance - 1)
 
 
 class Trie:
@@ -72,7 +71,7 @@ class Trie:
     """
 
     def __init__(self, *args: str) -> None:
-        self.data: Dict[str, Any] = {}
+        self.data: dict[str, Any] = {}
         for word in args:
             self.add(word)
 
@@ -88,7 +87,7 @@ class Trie:
 
         ref[''] = None
 
-    def _pattern(self, pData: (Dict[str, Any])) -> str:
+    def _pattern(self, pData: (dict[str, Any])) -> str:
         """
         Recursively convert Trie structuture to regular expression.
 
@@ -99,8 +98,8 @@ class Trie:
         if '' in data and len(data) == 1:
             return ''
 
-        alt: List[str] = []
-        cc: List[str] = []
+        alt: list[str] = []
+        cc: list[str] = []
         q = False
         for char, subtree in sorted(data.items()):
             if char == '':

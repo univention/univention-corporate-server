@@ -32,7 +32,7 @@ from __future__ import annotations
 
 from os import listdir
 from os.path import join, normpath
-from typing import Any, Dict
+from typing import Any
 
 import univention.ucslint.base as uub
 
@@ -54,7 +54,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: str) -> None:
         super().check(path)
 
-        fnlist_scripts: Dict[str, Dict[str, Any]] = {}
+        fnlist_scripts: dict[str, dict[str, Any]] = {}
 
         #
         # search debian scripts

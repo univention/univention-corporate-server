@@ -40,7 +40,7 @@ from itertools import cycle
 from os import walk
 from os.path import basename, dirname, isdir, join, normpath, relpath, splitext
 from shlex import split
-from typing import Callable, Dict, Iterable, Iterator, List, Set, Tuple
+from typing import Callable, Iterable, Iterator, Set
 
 from debian.changelog import Changelog, ChangelogParseError  # Version
 
@@ -155,7 +155,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             script_path, row, col, line=line)
 
     @classmethod
-    def parse_test(cls, tokens: List[str]) -> Set[str]:
+    def parse_test(cls, tokens: list[str]) -> set[str]:
         """
         Parse test string and return action names
 
@@ -215,7 +215,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         return result
 
     def check_dirs(self, path: str) -> None:
-        dirs: Dict[str, Set[str]] = {}
+        dirs: dict[str, set[str]] = {}
         debianpath = normpath(join(path, 'debian'))
 
         for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['install']):
@@ -251,7 +251,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     self.addmsg('0018-2', f'Unneeded directory {line!r}', fp, row)
 
     @staticmethod
-    def lines(name: str) -> Iterator[Tuple[int, str]]:
+    def lines(name: str) -> Iterator[tuple[int, str]]:
         with open(name) as stream:
             for row, line in enumerate(stream, start=1):
                 line = line.strip()
@@ -262,7 +262,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 yield (row, line)
 
     @staticmethod
-    def split_pkg(name: str) -> Tuple[str, str]:
+    def split_pkg(name: str) -> tuple[str, str]:
         filename = basename(name)
         if '.' in filename:
             package, suffix = splitext(filename)
@@ -274,7 +274,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         return (package, suffix)
 
     @staticmethod
-    def process_install(line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[Tuple[str, str]]:
+    def process_install(line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[tuple[str, str]]:
         """
         Parse :file:`debian/*.install` lines.
 
@@ -303,7 +303,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     yield (fn, normpath(join(dst, basename(fn))))
 
     @classmethod
-    def process_pyinstall(cls, line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[Tuple[str, str]]:
+    def process_pyinstall(cls, line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[tuple[str, str]]:
         """
         Parse :file:`debian/*.pyinstall` lines.
 

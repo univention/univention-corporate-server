@@ -35,7 +35,7 @@ from univention.ucslint.base import FilteredDirWalkGenerator
 
 
 def _or(*disjunct: str, name: Optional[str] = None) -> str:
-    return r"(?%s%s)" % (":" if name is None else "P<%s>" % (name,), "|".join(disjunct))
+    return r"(?{}{})".format(":" if name is None else "P<{}>".format(name), "|".join(disjunct))
 
 
 RE_HASHBANG = re.compile(r"^#!.*[ /]python[0-9.]*\b")
@@ -49,19 +49,19 @@ LITERALS = _or(
     r"'(?:[^'\\\n]|%(esc)s)*?'",
     r'"(?:[^"\\\n]|%(esc)s)*?"',
 )
-MATCHED_LENIENT = r"(?:\b[BbFfRrUu]{1,2})?%s" % (LITERALS % {"esc": ESCAPE_LENIENT},)
+MATCHED_LENIENT = r"(?:\b[BbFfRrUu]{{1,2}})?{}".format(LITERALS % {"esc": ESCAPE_LENIENT})
 COMMENT = _or(r"#[^\n]*$", name="cmt")
 RE_LENIENT = re.compile(_or(COMMENT, _or(MATCHED_LENIENT, name="str")), re.MULTILINE)
 
 
 class Base:
     VER = (0, 0)
-    MATCHED_RAW = r"\b%s%s" % (
+    MATCHED_RAW = r"\b{}{}".format(
         _or("[Rr]", "[BbFfUu][Rr]", "[Rr][BbFf]"),  # (ur|ru) only in 2, (rb) since 3.3
         LITERALS % {"esc": ESCAPE_RAW},
     )
-    MATCHED_BYTES = r"\b[Bb]%s" % (LITERALS % {"esc": ESCAPE_BYTES},)
-    MATCHED_UNICODE = r"(?:\b[FfUu])?%s" % (  # [u] not in 3.0-3.2, [f] since 3.6
+    MATCHED_BYTES = r"\b[Bb]{}".format(LITERALS % {"esc": ESCAPE_BYTES})
+    MATCHED_UNICODE = r"(?:\b[FfUu])?{}".format(  # [u] not in 3.0-3.2, [f] since 3.6
         LITERALS % {"esc": ESCAPE_UNIICODE},
     )
 
@@ -76,7 +76,7 @@ class Base:
 
 class Python27(Base):
     VER = (2, 7)
-    MATCHED_RAW = r"\b%s%s" % (
+    MATCHED_RAW = r"\b{}{}".format(
         _or("[Rr]", "[BbUu][Rr]", "[Rr][Uu]"),  # (ur|ru) only in 2, (rb) since 3.3
         LITERALS % {"esc": ESCAPE_RAW},
     )
@@ -84,26 +84,26 @@ class Python27(Base):
 
 class Python30(Base):
     VER = (3, 0)
-    MATCHED_RAW = r"\b%s%s" % (_or("[Rr]", "[Bb][Rr]"), LITERALS % {"esc": ESCAPE_RAW})
+    MATCHED_RAW = r"\b{}{}".format(_or("[Rr]", "[Bb][Rr]"), LITERALS % {"esc": ESCAPE_RAW})
     MATCHED_UNICODE = LITERALS % {"esc": ESCAPE_UNIICODE}  # [u] not in 3.0-3.2
 
 
 class Python33(Base):
     VER = (3, 3)
-    MATCHED_RAW = r"\b%s%s" % (
+    MATCHED_RAW = r"\b{}{}".format(
         _or("[Rr]", "[Bb][Rr]", "[Rr][Bb]"),  # 2, (rb) since 3.3
         LITERALS % {"esc": ESCAPE_RAW},
     )
-    MATCHED_UNICODE = r"(?:\b[Uu])?%s" % (LITERALS % {"esc": ESCAPE_UNIICODE},)
+    MATCHED_UNICODE = r"(?:\b[Uu])?{}".format(LITERALS % {"esc": ESCAPE_UNIICODE})
 
 
 class Python36(Base):
     VER = (3, 6)
-    MATCHED_RAW = r"\b%s%s" % (
+    MATCHED_RAW = r"\b{}{}".format(
         _or("[Rr]", "[BbFf][Rr]", "[Rr][BbFf]"),  # (f) since 3.6
         LITERALS % {"esc": ESCAPE_RAW},
     )
-    MATCHED_UNICODE = r"(?:\b[FfUu])?%s" % (  # [f] since 3.6
+    MATCHED_UNICODE = r"(?:\b[FfUu])?{}".format(  # [f] since 3.6
         LITERALS % {"esc": ESCAPE_UNIICODE},
     )
 

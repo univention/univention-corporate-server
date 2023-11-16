@@ -34,7 +34,6 @@ import re
 from enum import IntFlag
 from os import listdir
 from os.path import basename, join, normpath
-from typing import Dict
 
 import univention.ucslint.base as uub
 
@@ -167,7 +166,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check(self, path: str) -> None:
         super().check(path)
 
-        fnlist_joinscripts: Dict[str, JSS] = {}
+        fnlist_joinscripts: dict[str, JSS] = {}
 
         #
         # search join scripts
@@ -193,7 +192,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # check if join scripts are present in debian/rules || debian/*.install
         #
-        found: Dict[str, int] = {}
+        found: dict[str, int] = {}
         debianpath = normpath(join(path, 'debian'))
         # get all .install files
         fnlist = list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install']))

@@ -40,7 +40,7 @@ from configparser import (
 )
 from os import listdir
 from os.path import exists, join, normpath, relpath
-from typing import Any, Dict, Iterator, List, Set, Tuple
+from typing import Any, Dict, Iterator, List
 
 import univention.ucslint.base as uub
 
@@ -174,13 +174,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_FUNC_CUSTOM_USER = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_username \b', re.MULTILINE | re.VERBOSE)
     RE_FUNC_CUSTOM_GROUP = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_groupname \b', re.MULTILINE | re.VERBOSE)
 
-    def check_conffiles(self, path: str) -> Dict[str, Any]:
+    def check_conffiles(self, path: str) -> dict[str, Any]:
         """Analyze UCR templates below :file:`conffiles/`."""
-        conffiles: Dict[str, Dict[str, Any]] = {}
+        conffiles: dict[str, dict[str, Any]] = {}
 
         confdir = normpath(join(path, 'conffiles'))
         for fn in uub.FilteredDirWalkGenerator(confdir, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
-            checks: Dict[str, Any] = {
+            checks: dict[str, Any] = {
                 'headerfound': False,
                 'variables': [],  # List[str] # Python code
                 'placeholder': [],  # List[str] # @%@
@@ -335,17 +335,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # check UCR templates
         #
-        all_multifiles: Dict[str, List[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ... ] }
-        all_subfiles: Dict[str, List[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ... ] }
-        all_files: List[UcrInfo] = []  # [ OBJ... ]
-        all_preinst: Set[str] = set()  # { FN... }
-        all_postinst: Set[str] = set()  # { FN... }
-        all_module: Set[str] = set()  # { FN... }
-        all_script: Set[str] = set()  # { FN... }
-        all_definitions: Dict[str, Set[str]] = {}  # { SHORT-FN ==> { FULL-FN... } }
-        all_descriptions: Set[str] = set()  # { FN... }
-        all_variables: Set[str] = set()  # { VAR... }
-        objlist: Dict[str, List[UcrInfo]] = {}  # { CONF-FN ==> [ OBJ... ] }
+        all_multifiles: dict[str, list[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ... ] }
+        all_subfiles: dict[str, list[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ... ] }
+        all_files: list[UcrInfo] = []  # [ OBJ... ]
+        all_preinst: set[str] = set()  # { FN... }
+        all_postinst: set[str] = set()  # { FN... }
+        all_module: set[str] = set()  # { FN... }
+        all_script: set[str] = set()  # { FN... }
+        all_definitions: dict[str, set[str]] = {}  # { SHORT-FN ==> { FULL-FN... } }
+        all_descriptions: set[str] = set()  # { FN... }
+        all_variables: set[str] = set()  # { VAR... }
+        objlist: dict[str, list[UcrInfo]] = {}  # { CONF-FN ==> [ OBJ... ] }
 
         # read debian/rules
         fn_rules = normpath(join(path, 'debian', 'rules'))
@@ -394,10 +394,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 #         'Module': [ STRING, ... ] ,
                 #         'Script': [ STRING, ... ] ,
                 #       }
-                multifiles: Dict[str, UcrInfo] = {}  # { MULTIFILENAME ==> OBJ }
-                subfiles: Dict[str, List[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ, OBJ, ... ] }
-                files: List[UcrInfo] = []  # [ OBJ, OBJ, ... ]
-                unique: Set[str | Tuple[str, str]] = set()
+                multifiles: dict[str, UcrInfo] = {}  # { MULTIFILENAME ==> OBJ }
+                subfiles: dict[str, list[UcrInfo]] = {}  # { MULTIFILENAME ==> [ OBJ, OBJ, ... ] }
+                files: list[UcrInfo] = []  # [ OBJ, OBJ, ... ]
+                unique: set[str | tuple[str, str]] = set()
 
                 for entry in self.read_ucr(fn):
                     self.debug('Entry: %s' % entry)
@@ -602,7 +602,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         #
         # check if all variables are registered
         #
-        short2conffn: Dict[str, str] = {}  # relative name -> full path
+        short2conffn: dict[str, str] = {}  # relative name -> full path
 
         def find_conf(fn: str) -> str:
             """
@@ -636,8 +636,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.debug(f'"{conffn}" not found in {objlist.keys()!r}')
             else:
                 conffnfound = True
-                notregistered: List[str] = []
-                invalidUCRVarNames: Set[str] = set()
+                notregistered: list[str] = []
+                invalidUCRVarNames: set[str] = set()
 
                 mfn = obj.get('Multifile', [''])[0]
                 if mfn and mfn in all_multifiles:
