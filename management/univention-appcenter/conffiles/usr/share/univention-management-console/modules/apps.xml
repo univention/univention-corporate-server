@@ -19,10 +19,8 @@ print('''
 			<description></description>
 		</flavor>
 ''')  # noqa: E101
-try:
-    from html import escape
-except ImportError:
-    from cgi import escape
+from html import escape
+
 apps = Apps().get_all_locally_installed_apps()
 
 for app in apps:

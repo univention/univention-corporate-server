@@ -33,6 +33,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from html import escape
+
 import univention.admin.mapping as ua_mapping
 import univention.admin.modules as ua_modules
 import univention.admin.objects as ua_objects
@@ -42,11 +44,6 @@ import univention.debug as ud
 from univention.config_registry import ConfigRegistry
 from univention.directory.reports.filter import filter_get
 
-
-try:
-    from html import escape
-except ImportError:
-    from cgi import escape
 
 __all__ = ['cache_object', 'connect', 'connected', 'get_object', 'identify', 'set_format']
 
