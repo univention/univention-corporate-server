@@ -31,25 +31,16 @@
 # <https://www.gnu.org/licenses/>.
 """Univention Updater helper functions for managing a local repository."""
 
-
 import gzip
 import os
 import shutil
 import subprocess
 import sys
+from typing import IO, List
 
-
-try:
-    from typing import IO, List, Optional, Tuple  # noqa: F401
-except ImportError:
-    pass
-
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.lib.ucs import UCS_Version  # noqa: F401
 
-
-configRegistry = ConfigRegistry()
-configRegistry.load()
 
 # constants
 ARCHITECTURES = {'amd64', 'all'}
@@ -61,8 +52,7 @@ class TeeFile(object):
     with the print statement
     """
 
-    def __init__(self, fds=[]):
-        # type: (List[IO[str]]) -> None
+    def __init__(self, fds: List[IO[str]] = []) -> None:
         """
         Register multiple file descriptors, to which the data is written.
 
@@ -71,8 +61,7 @@ class TeeFile(object):
         """
         self._fds = fds or [sys.stdout]
 
-    def write(self, data):
-        # type: (str) -> None
+    def write(self, data: str) -> None:
         """
         Write string to all registered files.
 
@@ -83,8 +72,7 @@ class TeeFile(object):
             fd.flush()
 
 
-def gzip_file(filename):
-    # type: (str) -> int
+def gzip_file(filename: str) -> int:
     """
     Compress file.
 
@@ -95,8 +83,7 @@ def gzip_file(filename):
     return subprocess.call(('gzip', '--keep', '--force', '--no-name', '-9', filename))
 
 
-def copy_package_files(source_dir, dest_dir):
-    # type: (str, str) -> None
+def copy_package_files(source_dir: str, dest_dir: str) -> None:
     """
     Copy all Debian binary package files and signed updater scripts from `source_dir` to `dest_dir`.
 
@@ -128,7 +115,7 @@ def copy_package_files(source_dir, dest_dir):
             print("Copying '%s' failed: %s" % (src, ex), file=sys.stderr)
 
 
-def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
+def gen_indexes(base: str, version: UCS_Version) -> None:
     """
     Re-generate Debian :file:`Packages` files from file:`dists/` file.
 
@@ -171,8 +158,7 @@ def gen_indexes(base, version):  # type: (str, UCS_Version) -> None
     print('done')
 
 
-def get_repo_basedir(packages_dir):
-    # type: (str) -> str
+def get_repo_basedir(packages_dir: str) -> str:
     """
     Check if a file path is a UCS package repository.
 
@@ -192,13 +178,12 @@ def get_repo_basedir(packages_dir):
     sys.exit(1)
 
 
-def assert_local_repository(out=sys.stderr):
-    # type: (IO[str]) -> None
+def assert_local_repository(out: IO[str] = sys.stderr) -> None:
     """
     Exit with error if the local repository is not enabled.
 
     :param file out: Override error output. Defaults to :py:obj:`sys.stderr`.
     """
-    if not configRegistry.is_true('local/repository', False):
+    if not ucr.is_true('local/repository', False):
         print('Error: The local repository is not activated. Use "univention-repository-create" to create it or set the Univention Configuration Registry variable "local/repository" to "yes" to re-enable it.', file=out)
         sys.exit(1)

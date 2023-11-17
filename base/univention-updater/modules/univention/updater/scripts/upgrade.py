@@ -32,6 +32,7 @@
 
 """Install UCS release and errata updates."""
 
+from __future__ import annotations
 
 import logging
 import os
@@ -41,7 +42,7 @@ import sys
 import time
 import traceback
 from argparse import ArgumentParser, FileType, Namespace
-from typing import Iterable, List, NoReturn, Optional, Tuple
+from typing import Iterable, List, NoReturn, Tuple
 
 from univention.admindiary.client import write_event
 from univention.admindiary.events import UPDATE_FINISHED_FAILURE, UPDATE_FINISHED_SUCCESS, UPDATE_STARTED
@@ -132,7 +133,7 @@ def _package_list(new_packages: Iterable[Tuple[str, ...]]) -> str:
     return ",".join(p[0] for p in new_packages)
 
 
-def performUpdate(options: Namespace, checkForUpdates: bool = False, silent: bool = False) -> Optional[bool]:
+def performUpdate(options: Namespace, checkForUpdates: bool = False, silent: bool = False) -> bool | None:
     for func in (do_package_updates, do_app_updates, do_release_update):
         if func(options, checkForUpdates, silent):
             if checkForUpdates:
@@ -235,7 +236,7 @@ def do_package_updates(options: Namespace, checkForUpdates: bool, silent: bool) 
     return True
 
 
-def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> Optional[bool]:
+def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> bool | None:
     dprint(silent, 'Checking for app updates: ', newline=False)
     if not options.app_updates:
         dprint(silent, 'skipped')
@@ -320,7 +321,7 @@ def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> O
     return not success  # pending updates
 
 
-def parse_args(argv: Optional[List[str]] = None) -> Namespace:
+def parse_args(argv: List[str] | None = None) -> Namespace:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument(
         "--updateto",
