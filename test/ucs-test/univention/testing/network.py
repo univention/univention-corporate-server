@@ -47,9 +47,7 @@ import copy
 import re
 import subprocess
 from types import TracebackType
-from typing import List, Mapping, Tuple, Type
-
-from typing_extensions import Literal
+from typing import List, Literal, Mapping, Tuple, Type
 
 import univention.config_registry
 
