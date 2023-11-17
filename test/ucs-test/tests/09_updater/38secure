@@ -55,7 +55,7 @@ have dselect && _dselect () { "$1" dselect update; }
 	tests pos
 
 	echo "=== sec=no  key=no ==="
-	apt-key del "${GPGPUB}"
+	rm -f /etc/apt/trusted.gpg.d/ucs-test.gpg
 	rm "${DIR%/main/binary-*}/Release.gpg"
 	rm "${DIR%/main/binary-*}/InRelease"
 	tests pos

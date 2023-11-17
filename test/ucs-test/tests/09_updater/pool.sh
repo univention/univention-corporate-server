@@ -139,7 +139,6 @@ echo "BASEDIR=\"${BASEDIR}\"" >&3
 chmod 755 "${BASEDIR}"
 # Make a backup
 cp /etc/univention/base*.conf "${BASEDIR}/"
-cp /etc/apt/trusted.gpg "${BASEDIR}/trusted.gpg"
 
 # Wrap univention-config-registry to later undo any changes
 declare -a _reset=(version/version version/patchlevel version/erratalevel)
@@ -192,7 +191,7 @@ cleanup () { # Undo all changes
 	# shellcheck disable=SC2128
 	[ -n "${reset}" ] && univention-config-registry set "${reset[@]}" >&3 2>&3
 	cp "${BASEDIR}"/base*.conf /etc/univention/
-	cp "${BASEDIR}/trusted.gpg" /etc/apt/trusted.gpg
+	rm -f /etc/apt/trusted.gpg.d/ucs-test.gpg
 	rm -f /etc/apt/sources.list.d/00_ucs_update_in_progress.list
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 	find /var/lib/apt/lists/ -type f -not -name lock -delete
@@ -706,9 +705,9 @@ mkgpg () { # Create GPG-key for secure APT
 		--status-fd 3 \
 		--quick-generate-key 'ucs-test@univention.de' rsa default never 3>"${GPGSTATUS}"
 	GPGID=$(sed -ne 's/^\[GNUPG:\] KEY_CREATED P //p' "${GPGSTATUS}")
-	GPGPUB="${GPG_DIR}/test.pub"
-	chroot "${GPG_DIR}" "${GPG_BIN}" --armor --export "$GPGID" >"$GPGPUB"
-	apt-key add "${GPGPUB}"
+	GPGPUB="${GPG_DIR}/test.gpg"
+	chroot "${GPG_DIR}" "${GPG_BIN}" --export "$GPGID" >"$GPGPUB"
+	install -m 644 "$GPGPUB" /etc/apt/trusted.gpg.d/ucs-test.gpg
 	mkgpg () { true; }
 	return 0
 }
