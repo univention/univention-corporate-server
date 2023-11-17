@@ -37,10 +37,10 @@ config_mirror repository/mirror=no
 	wait_for_updater_lock
 	univention-repository-update net
 	echo "MARKER END for 09_updater/70mirror" >> /var/log/univention/repository.log
+	# shellcheck disable=SC2119
 	checkmirror
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}
 # vim:set ft=sh:

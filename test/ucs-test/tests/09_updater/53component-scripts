@@ -114,9 +114,8 @@ config_repo "${comp}=yes" "${comp}/parts=maintained"
 	test 0 = "$(ucr get version/patchlevel)"
 	checkdeb "${pkgname}" 1 2 3
 	checkdeb "${pkgname}c" 1 2 3
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" "${pkgname}c" >&3 2>&3
 
 exit ${RETVAL}

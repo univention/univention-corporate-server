@@ -72,9 +72,8 @@ do
 	echo "Checking ${c}	${u}	${p}"
 	test -n "${u}" && run_test "u${u}u" "password"
 	test -n "${p}" && run_test "user" "p${p}p"
-	if [[ $RETVAL -gt 100 ]]; then
-		exit $RETVAL
-	fi
+	[ "$RETVAL" -gt 100 ] &&
+		exit "$RETVAL"
 done
 
 exit ${RETVAL:=100} # Test bestanden (Keine Fehler)

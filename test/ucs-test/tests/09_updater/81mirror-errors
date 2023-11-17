@@ -80,17 +80,16 @@ run_tests () { # execute all updater programs
 
 (
 	set -e
-	ucr set repository/mirror/server=DUMMY
+	ucr set repository/mirror/server=http://DUMMY/
 	run_tests "Configuration error: host is unresolvable"
-	ucr set repository/mirror/server=localhost
 
-	ucr set repository/mirror/port=9
+	ucr set repository/mirror/server=http://localhost:9/
 	run_tests "Configuration error: port is closed"
-	ucr set repository/mirror/port=80
 
-	ucr set repository/mirror/prefix=DUMMY
+	ucr set repository/mirror/server=http://localhost/DUMMY
 	run_tests "Configuration error: non-existing prefix"
-	ucr set repository/mirror/prefix="${repoprefix}"
+
+	ucr set repository/mirror/server="http://localhost/${repoprefix#/}"
 
 	ucr set "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=DUMMY" "${comp}/password=DUMMY" "${comp}/version=current"
 	run_tests "Configuration error: credentials not accepted"
@@ -126,9 +125,8 @@ run_tests () { # execute all updater programs
 	ucr unset proxy/http
 
 	iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3 || true
 invoke-rc.d univention-firewall start
 

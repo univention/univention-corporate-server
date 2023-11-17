@@ -61,9 +61,7 @@ DEBS+=("${DIR#${REPODIR}}${DEB#${BASEDIR}}")
 
 config_mirror "/${srcprefix}" \
 	repository/online=yes \
-	repository/online/server=localhost \
-	repository/online/port=80 \
-	repository/online/prefix="${repoprefix}" \
+	repository/online/server="http://localhost:80/${repoprefix#/}" \
 	online/repository/clean=yes \
 	repository/mirror/version/end="${major}.${minor}-0"
 if ! "${FIXED_18225}"
@@ -127,9 +125,8 @@ CLEAN="${BASEDIR}/mirror/var/clean.sh"
 		checkdeb "${pkgname}l" 2 4
 		checkdeb "${pkgname}y" 2 4
 	fi
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 if "${CHECK_INSTALL}"
 then
 	dpkg -P --force-all "${pkgname}"{l,y} >&3 2>&3

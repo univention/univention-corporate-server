@@ -77,9 +77,8 @@ trap 'cleanup2' EXIT
 	have aptitude && aptitude --no-gui update
 
 	:
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}
 # vim: set ft=sh :

@@ -97,17 +97,16 @@ run_tests () { # execute all updater programs
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 
-	ucr set repository/online/server=DUMMY
+	ucr set repository/online/server=http://DUMMY/
 	run_tests "Configuration error: host is unresolvable"
-	ucr set repository/online/server=localhost
 
-	ucr set repository/online/port=9
+	ucr set repository/online/server=http://localhost:9/
 	run_tests "Configuration error: port is closed"
-	ucr set repository/online/port=80
 
-	ucr set repository/online/prefix=DUMMY
+	ucr set repository/online/server=http://localhost/DUMMY
 	run_tests "Configuration error: non-existing prefix"
-	ucr set repository/online/prefix="${repoprefix}"
+
+	ucr set repository/online/server="http://localhost/${repoprefix#/}"
 
 	msg="Configuration error: credentials not accepted"
 	ucr set "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=DUMMY" "${comp}/password=DUMMY" "${comp}/version=current"
@@ -153,21 +152,20 @@ run_tests () { # execute all updater programs
 	# must be last since update succeeds!
 	msg="Configuration error: credentials not accepted"
 	ucr set "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=DUMMY" "${comp}/password=DUMMY"
-	! grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
+	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list && exit 1
 	/usr/share/univention-updater/univention-updater net 2>&1
 	grep -F "status=DONE" /var/lib/univention-updater/univention-updater.status
 	ucr search --brief ^update/available
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
 	univention-upgrade 2>&1
-	! grep -F "status=DONE" /var/lib/univention-updater/univention-upgrade.status
+	grep -F "status=DONE" /var/lib/univention-updater/univention-upgrade.status && exit 1
 	ucr search --brief ^update/available
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
 	ucr unset "${comp}" "${comp}/parts" "${comp}/username" "${comp}/password"
 
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	3"
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3 || true
 invoke-rc.d univention-firewall start

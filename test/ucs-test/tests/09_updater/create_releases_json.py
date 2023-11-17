@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Generates a valid ucs-releases.json."""
 
 from __future__ import annotations
 
@@ -37,12 +38,11 @@ def gen_releases(path: str, releases: List[Tuple[int, int, int]]) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description='Generates a valid ucs-releases.json.',
-    )
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('repodir', help='path to repository, where ucs-releases.json is created/updated.')
     parser.add_argument('versions', nargs='*', help='a UCS version to be added to the ucs-releases.json. If omitted, the  automatic UCS version detection is activated!')
     args = parser.parse_args()
+
     releases = []
     if args.versions:
         for version in args.versions:

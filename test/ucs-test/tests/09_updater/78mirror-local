@@ -107,9 +107,7 @@ minor+=-1
 comp="repository/online/component/${compname}"
 config_mirror "/${srcprefix}" \
 	repository/online=yes \
-	repository/online/server=localhost \
-	repository/online/port=80 \
-	repository/online/prefix="${repoprefix}" \
+	repository/online/server="http://localhost:80/${repoprefix#/}" \
 	"${comp}=yes" \
 	"${comp}/version=current"
 if ! "${FIXED_18225}"
@@ -152,9 +150,8 @@ fi
 	checkdeb "${pkgname}eb" 1 2
 	checkdeb "${pkgname}ca" 1 2
 	checkdeb "${pkgname}cb" 1 2
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}"{,c}{l,y} >&3 2>&3
 
 exit ${RETVAL}

@@ -111,9 +111,8 @@ config_mirror \
 	univention-repository-update net
 	echo "Checking mirror..."
 	checkmirror "${DOKAY[@]}"
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}
 # vim:set ft=sh:

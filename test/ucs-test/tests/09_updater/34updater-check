@@ -93,9 +93,8 @@ BUG31733 () { # expected-value cmd...
 		# call univention-actualise and make sure update/available has been updated
 		echo "### Updating packages (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		BUG31733 no /usr/share/univention-updater/univention-actualise
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 
 exit ${RETVAL}

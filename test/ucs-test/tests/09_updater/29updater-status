@@ -86,8 +86,8 @@ __SH__
 	test 0 = "$(ucr get version/patchlevel)"
 	test -n "$(ucr get update/available)"  # make sure update/available has been updated
 	ucr set update/available=""  # unset update/available
-)
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 
 exit ${RETVAL}

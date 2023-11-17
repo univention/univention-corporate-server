@@ -32,9 +32,8 @@ config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/prefix=${repoprefi
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	checkdeb "${pkgname}" 1
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 
 exit ${RETVAL}

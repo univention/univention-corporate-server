@@ -63,9 +63,8 @@ have dselect && _dselect () { "$1" dselect update; }
 	echo "=== sec=yes  key=no ==="
 	ucr set update/secure_apt=yes
 	tests neg
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}
 # vim: set ft=sh :

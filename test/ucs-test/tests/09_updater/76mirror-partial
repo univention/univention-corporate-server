@@ -166,9 +166,8 @@ config_mirror \
 	wait_for_updater_lock
 	univention-repository-update net
 	checkmirror "${CDIR[@]}" "${ADIR[@]}" -- "${BDIR[@]}"
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}
 # vim:set ft=sh:

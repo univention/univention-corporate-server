@@ -302,9 +302,7 @@ config_repo () { # Configure use of repository from local apache: [[server]:port
 		local/repository=no \
 		repository/mirror=no \
 		repository/online=yes \
-		repository/online/server="${server}" \
-		repository/online/port="${port}" \
-		repository/online/prefix="${prefix}" \
+		repository/online/server="http://${server}${port:+:$port}/${prefix#/}" \
 		repository/online/sources=no \
 		repository/online/unmaintained=no \
 		"${extra[@]}" >&3 2>&3
@@ -335,9 +333,7 @@ config_mirror () { # Configure mirror to use repository from local apache: [[ser
 		repository/online=no \
 		repository/mirror=yes \
 		repository/mirror/basepath="${mirror}" \
-		repository/mirror/server="${server}" \
-		repository/mirror/port="${port}" \
-		repository/mirror/prefix="${prefix}" \
+		repository/mirror/server="http://${server}${port:+:$port}/${prefix#/}" \
 		"${extra[@]}" >&3 2>&3
 	_config_common
 }

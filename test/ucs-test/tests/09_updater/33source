@@ -34,9 +34,8 @@ config_repo repository/online/sources=yes
 	apt-get -qq update
 	mkdir "${BASEDIR}/src"
 	cd "${BASEDIR}/src" && apt-get -qq source "${pkgname}"
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}
 # vim:set ft=sh:

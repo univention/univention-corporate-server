@@ -60,9 +60,8 @@ UP_LOG="${BASEDIR}/up.log"
 	univention-upgrade </dev/null >"$UP_LOG" 2>&1 || :
 	grep " is blocked because the components .*\\<$compname1\\>.* are marked as required" "$UP_LOG"
 	grep " is blocked because the components .*\\<$compname2\\>.* are marked as required" "$UP_LOG"
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 
 exit ${RETVAL}

@@ -20,6 +20,7 @@ mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel:?}") maintain
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
+# shellcheck disable=SC2119
 config_proxy
 config_repo proxy/http="http://localhost:${proxy_port:?}"
 
@@ -31,9 +32,8 @@ config_repo proxy/http="http://localhost:${proxy_port:?}"
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	checkdeb "${pkgname}" 1
-)
-# shellcheck disable=SC2181
-[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+) &&
+	RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 
 exit ${RETVAL}
