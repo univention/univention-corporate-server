@@ -6,18 +6,15 @@ import shutil
 import socket
 import subprocess
 import time
-import xml.etree.ElementTree
-from html.parser import HTMLParser
+from html import unescape
 
-import defusedxml.ElementTree as ET
 import requests
+from bs4 import BeautifulSoup
+from lxml import etree
 from requests_kerberos import OPTIONAL, HTTPKerberosAuth
 
 import univention.config_registry as configRegistry
 from univention.testing import utils
-
-
-html = HTMLParser()
 
 
 class SamlError(Exception):
@@ -28,7 +25,8 @@ def errors():
     return {
         'The password has expired and must be renewed.': SamlPasswordExpired,
         'Account expired.': SamlAccountExpired,
-        'Incorrect username or password.': SamlAuthenticationFailed,
+        'Invalid username or password.': SamlAuthenticationFailed,  # keycloak
+        'Incorrect username or password.': SamlAuthenticationFailed,  # simplesamlphp
         'Account not verified.': SamlAccountNotVerified,
         'Changing password failed.': SamlPasswordChangeFailed,
         'The password has been changed successfully.': SamlPasswordChangeSuccess,
@@ -46,7 +44,8 @@ class SamlLoginError(SamlError):
         super().__init__(message)
 
     def __new__(cls, saml):
-        message = saml.xpath('div[@id="umcLoginNotices"]')
+        # SSP: umcLoginNotices; Keycloak: kc-form/kc-passwd-update-form
+        message = saml.xpath('div[@id="umcLoginNotices"]') if not saml.keycloak else saml.xpath('*[@id="kc-form"]/div[1]/div/span', saml.xpath('form[@id="kc-passwd-update-form"]/div[@class="form-group"]/p'))
         if message is not None:
             message = message.text.strip()
         return Exception.__new__(errors().get(message, cls), saml, message)
@@ -140,6 +139,10 @@ class SamlTest:
         self.parsed_page = None
         self.position = 'Init...'
 
+        url = 'https://%s/univention/saml/' % self.target_sp_hostname
+        res = self.session.request('POST', url)
+        self.keycloak = '/simplesamlphp' not in res.url
+
     def _check_status_code(self, status_code):
         # check for an expected status_code as a different would indicate an error
         # in the current login step.
@@ -171,21 +174,26 @@ class SamlTest:
             print(f'>> {resp.request.method} {resp.url} -> {resp.status_code}')
         if expected_format == 'html':
             try:
-                self.parsed_page = ET.fromstring(bytes(self.page.content))
-            except xml.etree.ElementTree.ParseError as exc:
+                self.parsed_page = etree.HTML(bytes(self.page.content).decode("UTF-8", "replace"))
+            except etree.ParseError as exc:
                 print('WARN: could not parse XML/HTML: %s' % (exc,))
-                self.parsed_page = xml.etree.ElementTree.Element('html')
+                self.parsed_page = etree.HTML('<html></html>')
         elif expected_format == 'json':
             self.parsed_page = json.loads(bytes(self.page.content))
         self._check_status_code(status_code)
 
     def _login_at_idp_with_credentials(self):
         """Send form with login data"""
-        auth_state = self._extract_auth_state()
         self.position = "posting login form"
         print("Post SAML login form to: %s" % self.page.url)
-        data = {'username': self.username, 'password': self.password, 'AuthState': auth_state}
-        self._request('POST', self.page.url, 200, data=data)
+        data = {'username': self.username, 'password': self.password}
+        if not self.keycloak:  # SSP
+            auth_state = self._extract_auth_state()
+            data['AuthState'] = auth_state
+            login_link = self.page.url
+        else:
+            login_link = self._kerberos_login_link()
+        self._request('POST', login_link, 200, data=data)
 
     def xpath(self, xpath, default=None):
         elem = self.parsed_page.find('.//{http://www.w3.org/1999/xhtml}%s' % (xpath,))
@@ -228,7 +236,7 @@ class SamlTest:
             try:
                 print('WARNING: invalid HTML!!!!')
                 auth_state = re.search(b'name="AuthState" value="([^"]+)"', bytes(self.page.content)).group(1)
-                auth_state = html.unescape(auth_state)
+                auth_state = unescape(auth_state)
             except AttributeError:
                 pass
         if not auth_state:
@@ -302,6 +310,39 @@ class SamlTest:
         relay_state = self._extract_relay_state()
         self._send_saml_response_to_sp(url, saml_msg, relay_state)
 
+    def _kerberos_login_link(self) -> str:
+        url = "https://%s/univention/saml/" % self.target_sp_hostname
+        res = self.session.get(url, allow_redirects=True)
+        # keycloak wants saml_url by default, we have to handle this
+        # here manually by making another request to keycloak
+        if res.status_code == 401:
+            res = self._follow_kerberos_redirect(res.content)
+
+        self.page = res
+        content = res.content
+        if not content:
+            raise SamlError('No content present')
+
+        try:
+            soup = BeautifulSoup(content, features='lxml')
+            login_link = soup.find('form', {'id': 'kc-form-login'})
+            if not login_link:
+                raise SamlError('No login link found')
+            else:
+                return unescape(login_link.get('action'))
+        except AttributeError as e:
+            raise SamlError(str(e))
+
+    def _follow_kerberos_redirect(self, resp_content: bytes) -> requests.Response:
+        resp_content = resp_content.decode('utf-8')
+        soup = BeautifulSoup(resp_content, 'html.parser')
+        title = soup.find('title')
+        if title and 'Kerberos' in title.text:
+            action = soup.find('body').findChild('form').attrs.get('action')
+            return self.session.post(action, allow_redirects=True)
+        else:
+            raise SamlError(f'No Kerberos redirect information found in: {resp_content}')
+
     def login_with_new_session_at_IdP(self):
         """
         Use Identity Provider to log in to a Service Provider.
@@ -319,10 +360,17 @@ class SamlTest:
                 self._request('GET', url, 200)
             except SamlError:
                 # The kerberos backend adds a manual redirect
-                if not self.page or self.page.status_code != 401:
-                    raise
-                login_link = re.search('<a href="([^"]+)">', bytes(self.page.text)).group(1)
-                self._request('GET', login_link, 200)
+                if not self.keycloak:
+                    if not self.page or self.page.status_code != 401:
+                        raise
+                    login_link = re.search('<a href="([^"]+)">', bytes(self.page.text)).group(1)
+                    self._request('GET', login_link, 200)
+                else:
+                    soup = BeautifulSoup(self.page.content, 'html.parser')
+                    title = soup.find('title')
+                    if not (self.page.status_code == 401 and title and 'Kerberos' in title.text):
+                        raise
+
             self._login_at_idp_with_credentials()
 
         url = self._extract_sp_url()
@@ -338,17 +386,41 @@ class SamlTest:
         self.position = "trying to logout"
         self._request('GET', url, 200)
 
-    def change_expired_password(self, new_password):
-        auth_state = self._extract_auth_state()
-        self.position = "posting change password form"
-        print("Post SAML change password form to: %s" % self.page.url)
-        data = {'username': self.username, 'password': self.password, 'AuthState': auth_state, 'new_password': new_password, 'new_password_retype': new_password}
-        self._request('POST', self.page.url, 200, data=data)
-        self.password = new_password
+        if not self.keycloak:
+            return
 
         url = self._extract_sp_url()
+        saml_msg = self.xpath('input[@name="SAMLResponse"]', {}).get('value')
+        relay_state = self._extract_relay_state()
+        self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
+
+    def change_expired_password(self, new_password):
+        self.position = "posting change password form"
+        print("Post SAML change password form to: %s" % self.page.url)
+
+        if not self.keycloak:
+            auth_state = self._extract_auth_state()
+            data = {'username': self.username, 'password': self.password, 'AuthState': auth_state, 'new_password': new_password, 'new_password_retype': new_password}
+            self._request('POST', self.page.url, 200, data=data)
+            self.password = new_password
+            url = self._extract_sp_url()
+
+            def doit():
+                return self._extract_saml_msg()
+        else:
+            data = {'username': self.username, 'password': self.password, 'password-new': new_password, 'password-confirm': new_password}
+            url = self._extract_sp_url()
+            self._request('POST', url, 200, data=data)
+
+            def doit():
+                saml_msg = self._extract_saml_msg()
+                relay_state = self._extract_relay_state()
+                self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
+                self.password = new_password
+                return saml_msg
+
         try:
-            saml_msg = self._extract_saml_msg()
+            saml_msg = doit()
         except SamlPasswordChangeSuccess:  # Samba 4 installed, S4 connector too slow to change the password
             utils.wait_for_replication()
             utils.wait_for_s4connector_replication()

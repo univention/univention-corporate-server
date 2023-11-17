@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python3
-## desc: Check that umc and slapd do not stop if the sso cert is renewd.
+## desc: Check that umc and slapd do not stop if the sso cert is renewed.
 ## tags: [saml]
 ## bugs: [45042]
 ## roles: [domaincontroller_master]
@@ -57,10 +57,10 @@ def main():
     renew_sso_cert()
     reload_idp_metadata()
     account = utils.UCSTestDomainAdminCredentials()
-    SamlSession = samltest.SamlTest(account.username, account.bindpw)
+    saml_session = samltest.SamlTest(account.username, account.bindpw)
     try:
         # Previously umc had a segfault here
-        SamlSession.login_with_new_session_at_IdP()
+        saml_session.login_with_new_session_at_IdP()
     except samltest.SamlError as exc:
         expected_error = '\\n'.join([
             "The SAML authentication failed. This might be a temporary problem. Please login again.",
@@ -73,18 +73,18 @@ def main():
     reload_idp_metadata()
     try:
         # Previously slapd had a segfault here
-        SamlSession.test_slapd()
+        saml_session.test_slapd()
     except samltest.SamlError as exc:
         expected_error = "Wrong status code: 401, expected: 200"
         if expected_error not in str(exc):
             utils.fail(str(exc))
     restart_umc_server()
     restart_slapd()
-    SamlSession.login_with_existing_session_at_IdP()
-    SamlSession.test_slapd()
-    SamlSession.logout_at_IdP()
-    SamlSession.test_logout_at_IdP()
-    SamlSession.test_logout()
+    saml_session.login_with_existing_session_at_IdP()
+    saml_session.test_slapd()
+    saml_session.logout_at_IdP()
+    saml_session.test_logout_at_IdP()
+    saml_session.test_logout()
 
 
 if __name__ == '__main__':

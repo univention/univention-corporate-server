@@ -574,6 +574,7 @@ Description: Test scripts to test the Docker integration
 Package: ucs-test-saml
 Architecture: all
 Depends:
+ python3-bs4,
  python3-pytest,
  python3-requests,
  python3-requests-kerberos,

@@ -1,9 +1,8 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Check if every DC Master and DC Backup is registered in ucs-sso
 ## tags: [saml]
+## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: safe
-## packages:
-##   - univention-saml
 
 import dns.ipv6
 import dns.resolver

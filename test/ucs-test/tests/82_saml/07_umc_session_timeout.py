@@ -9,22 +9,19 @@
 import subprocess
 import time
 
-import univention.testing.ucr as ucr_test
 from univention.config_registry import handler_set
 from univention.testing import utils
 
 import samltest
 
 
-def __test_func():
+def test_umc_session_timeout(ucr, saml_session):
     session_timeout = 10
-    with ucr_test.UCSTestConfigRegistry():
+    try:
         handler_set([f'umc/saml/assertion-lifetime={session_timeout}', 'umc/saml/grace_time=1'])
         subprocess.check_call(['systemctl', 'restart', 'slapd.service'])
         subprocess.check_call(['/usr/share/univention-management-console/saml/update_metadata'])
         utils.wait_for_listener_replication()
-        account = utils.UCSTestDomainAdminCredentials()
-        saml_session = samltest.SamlTest(account.username, account.bindpw)
         try:
             saml_session.login_with_new_session_at_IdP()
             saml_session.test_logged_in_status()
@@ -51,11 +48,6 @@ def __test_func():
             saml_session.test_logout()
         except samltest.SamlError as exc:
             utils.fail(str(exc))
-
-
-def test_umc_session_timeout():
-    try:
-        __test_func()
     finally:
         subprocess.check_call(['systemctl', 'restart', 'slapd.service'])
         subprocess.check_call(['/usr/share/univention-management-console/saml/update_metadata'])
