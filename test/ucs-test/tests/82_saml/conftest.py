@@ -6,10 +6,10 @@ import samltest
 
 
 @pytest.fixture()
-def kerberos_ticket(ucr) -> None:
+def kerberos_ticket(ucr, account) -> None:
     ucr.handler_set(['kerberos/defaults/rdns=false', 'saml/idp/authsource=univention-negotiate'])
     subprocess.call(['kdestroy'])
-    subprocess.check_call(['kinit', '--password-file=/etc/machine.secret', ucr['hostname'] + '$'])  # get kerberos ticket
+    subprocess.check_call(['kinit', '--password-file=%s' % (account.pwdfile,), account.username])  # get kerberos ticket
 
     yield
 

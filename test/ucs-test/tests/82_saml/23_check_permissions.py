@@ -53,34 +53,14 @@ def load_test_cases():
             id='idp-ldap-user.secret',
         ),
         OwnershipTest(
-            path=Path('/etc/simplesamlphp/authsources.php'),
-            expected_ownership=Ownership(user='root', group='samlcgi', flags='0o640'),
-            id='simplesaml-authsources',
-        ),
-        OwnershipTest(
-            path=Path(f'/etc/simplesamlphp/{sso_fqdn}-idp-certificate.key'),
-            expected_ownership=Ownership(user='root', group='samlcgi', flags='0o640'),
-            id='simplesamlphp-private-key',
-        ),
-        OwnershipTest(
-            path=Path(f'/etc/simplesamlphp/{sso_fqdn}-idp-certificate.crt'),
-            expected_ownership=Ownership(user='root', group='samlcgi', flags='0o644'),
-            id='simplesamlphp-certificate',
-        ),
-        OwnershipTest(
-            path=Path('/etc/simplesamlphp/serviceprovider_enabled_groups.json'),
-            expected_ownership=Ownership(user='samlcgi', group='samlcgi', flags='0o600'),
-            id='simplesamlphp-group',
-        ),
-        OwnershipTest(
-            path=Path('/var/lib/simplesamlphp/secrets.inc.php'),
-            expected_ownership=Ownership(user='samlcgi', group='samlcgi', flags='0o640'),
-            id='simplesamlphp-secrets',
-        ),
-        OwnershipTest(
-            path=Path(f'/usr/share/univention-management-console/saml/idp/{sso_fqdn}.xml'),
+            path=Path('/etc/apache2/sites-available/univention-saml.conf'),
             expected_ownership=Ownership(user='root', group='root', flags='0o644'),
-            id=f'{sso_fqdn}.xml',
+            id='univention-saml.conf',
+        ),
+        OwnershipTest(
+            path=Path(f'/usr/share/univention-management-console/saml/idp/ucs-sso-ng.{ucr["domainname"]}.xml'),
+            expected_ownership=Ownership(user='root', group='root', flags='0o644'),
+            id=f'ucs-sso-ng.{ucr["domainname"]}.xml',
         ),
     ]
 

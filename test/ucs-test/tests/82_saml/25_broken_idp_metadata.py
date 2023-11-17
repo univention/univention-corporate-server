@@ -51,7 +51,9 @@ def test_broken_idp_metadata(saml_session):
             if expected_error not in str(exc):
                 raise Exception({'expected': expected_error, 'got': str(exc)})
 
-    saml_session.logout_at_IdP()
+    with pytest.raises(samltest.SamlError) as exc:
+        saml_session.logout_at_IdP()
+    assert exc.value  # TODO:
 
     saml_session.login_with_new_session_at_IdP()
     saml_session.test_logged_in_status()

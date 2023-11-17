@@ -20,6 +20,7 @@ def test_sso_with_supplement_entity_id(ucr, saml_session):
         with samltest.GuaranteedIdP('127.0.0.1'):
             umc_saml_idpserver = ucr.get('umc/saml/idp-server')
             ucr.handler_set([f'saml/idp/entityID/supplement/{supplement}=true'])
+
             subprocess.check_call(['systemctl', 'restart', 'apache2.service'])
             saml_root = 'https://{}/simplesamlphp/{}/'.format(ucr.get('ucs/server/sso/fqdn'), supplement)
             supplement_entityID = f'{saml_root}saml2/idp/metadata.php'

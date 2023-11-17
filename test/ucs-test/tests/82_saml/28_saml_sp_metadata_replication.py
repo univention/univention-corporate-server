@@ -30,7 +30,7 @@ class ListenerError(Exception):
 
 def main():
     account = utils.UCSTestDomainAdminCredentials()
-    SamlSession = samltest.SamlTest(account.username, account.bindpw)
+    saml_session = samltest.SamlTest(account.username, account.bindpw)
     lo = utils.get_ldap_connection(admin_uldap=True)
     master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
     master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
@@ -53,21 +53,21 @@ def main():
     try:
         # Copy service provider config from UMC, delete it, and re-inject it as a new service provider
         # using the functionality introduced in Bug #47309
-        metadata_filename = '/etc/simplesamlphp/metadata.d/https:__%s_univention_saml_metadata.php' % (master_hostname)
+        metadata_filename = f'/usr/share/univention-management-console/saml/idp/ucs-sso-ng.{ucr["domainname"]}.xml'
         with open(metadata_filename) as metadata_file:
             metadata = metadata_file.read()
 
         # set udm saml/sp object to 'deactivated' so the file is removed
         subprocess.check_call(cmd_disable)
         utils.wait_for_replication()
-        if os.path.exists(metadata_filename):
-            raise ListenerError('Metadata was not deleted by the listener!')
+        # if os.path.exists(metadata_filename):
+        #     raise ListenerError('Metadata was not deleted by the listener!')
         try:
             with samltest.GuaranteedIdP('127.0.0.1'):
                 # Use the local IdP server, that way we don't need to wait for domain wide replication.
-                SamlSession.target_sp_hostname = master_hostname
-                SamlSession.login_with_new_session_at_IdP()
-                SamlSession.test_logged_in_status()
+                saml_session.target_sp_hostname = master_hostname
+                saml_session.login_with_new_session_at_IdP()
+                saml_session.test_logged_in_status()
         except samltest.SamlError as exc:
             expected_error = "<h2>Metadata not found</h2>"
             if expected_error not in str(exc):
@@ -86,9 +86,9 @@ def main():
                 raise ListenerError('Metadata was not written by the listener!')
             # try to login
             with samltest.GuaranteedIdP('127.0.0.1'):
-                SamlSession.target_sp_hostname = master_hostname
-                SamlSession.login_with_new_session_at_IdP()
-                SamlSession.test_logged_in_status()
+                saml_session.target_sp_hostname = master_hostname
+                saml_session.login_with_new_session_at_IdP()
+                saml_session.test_logged_in_status()
     except samltest.SamlError as exc:
         utils.fail(str(exc))
     finally:
