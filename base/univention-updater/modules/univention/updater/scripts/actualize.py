@@ -32,14 +32,16 @@
 
 # TODO: use UCR variables for update, upgrade, install and remove commands
 
+from __future__ import annotations
+
 import os
 import re
 import shlex
 import subprocess
 import sys
 import time
-from argparse import ArgumentParser, Namespace  # noqa: F401
-from typing import Any, Container, List, NoReturn, Optional, Sequence  # noqa: F401
+from argparse import ArgumentParser, Namespace
+from typing import Any, List, Literal, NoReturn, Sequence
 
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.lib.policy_result import PolicyResultFailed, policy_result
@@ -50,11 +52,7 @@ from univention.updater.commands import (
 from univention.updater.locking import UpdaterLock, apt_lock
 
 
-try:
-    from typing_extensions import Literal  # noqa: F401
-    _JOB = Literal["add", "remove"]
-except ImportError:
-    _JOB = str  # type: ignore
+_JOB = Literal["add", "remove"]
 
 
 LOGNAME = '/var/log/univention/actualise.log'
@@ -73,7 +71,7 @@ class Tee(object):
     with the print statement
     """
 
-    def __init__(self, files: Sequence[str] = [], stdout: bool = True, filter: Optional[str] = None) -> None:
+    def __init__(self, files: Sequence[str] = [], stdout: bool = True, filter: str | None = None) -> None:
         self.stdout = stdout
         self.files = files
         self.filter = filter
