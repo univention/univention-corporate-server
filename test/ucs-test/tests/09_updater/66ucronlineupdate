@@ -17,8 +17,6 @@
 
 ping -c 1 "${_repository_online_server:?}" || exit 120 # Transient error in DNS resolution
 
-rc=100
-
 arch=$(dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
 ucr set \
 	repository/online=yes \
@@ -43,6 +41,6 @@ do
 		fail_test 110 "$component is missing in $sources"
 done
 
-echo "=== RESULT: $rc ==="
-exit $rc
+echo "=== RESULT: $RETVAL ==="
+exit "$RETVAL"
 # vim:set ft=sh:
