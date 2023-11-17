@@ -1,9 +1,3 @@
-ucslint (9.0.3-4) unstable; urgency=low
-
-  * Bug #55708: Fix updater component test
-
- -- Philipp Hahn <hahn@univention.de>  Fri, 17 Nov 2023 16:58:12 +0100
-
 ucslint (9.0.3-3) unstable; urgency=low
 
   * Bug #51611: Fix detection of old Debian maintainer script chunks
