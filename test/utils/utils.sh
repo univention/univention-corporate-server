@@ -142,6 +142,8 @@ jenkins_updates () {
 	[ -n "${RELEASE_UPDATE:-}" ] && release_update="$RELEASE_UPDATE"
 	[ -n "${ERRATA_UPDATE:-}" ] && errata_update="$ERRATA_UPDATE"
 
+	ucr set repository/online/verify=false
+
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 	echo "release_update=$release_update"
@@ -779,6 +781,12 @@ run_tests () {
 		echo "ucs-test disabled by env UCS_TEST_RUN=$UCS_TEST_RUN"
 		return 0
 	fi
+
+	# TODO: remove this is just to make testing easier in the development phase
+	echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0/all/" >/etc/apt/sources.list.d/99ucs-test.list
+	echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0/\$(ARCH)/" >>/etc/apt/sources.list.d/99ucs-test.list
+	univention-upgrade --disable-app-updates --noninteractive --ignoreterm --ignoressh
+	rm -f /etc/apt/sources.list.d/99ucs-test.list
 
 	# shellcheck disable=SC2086
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest $GENERATE_COVERAGE_REPORT "$@"
