@@ -20,19 +20,18 @@ ucr.load()
 
 
 def renew_sso_cert():
-    sso_fqdn = ucr['ucs/server/sso/fqdn']
+    sso_fqdn = ucr['keycloak/server/sso/fqdn']
     subprocess.check_call(['univention-certificate', 'new', '-name', sso_fqdn, '-days', '100'])
     subprocess.check_call([
         "cp",
         f"/etc/univention/ssl/{sso_fqdn}/cert.pem",
-        f"/etc/simplesamlphp/{sso_fqdn}-idp-certificate.crt",
+        f"/etc/univention/ssl/{sso_fqdn}-idp-certificate.crt",
     ])
     subprocess.check_call([
         "cp",
         f"/etc/univention/ssl/{sso_fqdn}/private.key",
-        f"/etc/simplesamlphp/{sso_fqdn}-idp-certificate.key",
+        f"/etc/univention/ssl/{sso_fqdn}-idp-certificate.key",
     ])
-    subprocess.check_call(["deb-systemd-invoke", "restart", "univention-saml"])
 
 
 def reload_idp_metadata():

@@ -4,6 +4,8 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
+## apps:
+##  - keycloak
 ## bugs: [38947]
 ## exposure: safe
 
@@ -47,6 +49,8 @@ class OwnershipTest:
 
 def load_test_cases():
     sso_fqdn = ucr["ucs/server/sso/fqdn"]
+    # TODO: where to get the sso_fqdn from, ucs/server/sso/fqdn or keycloak/server/sso/fqdn
+    sso_fqdn = f'ucs-sso-ng.{ucr["domainname"]}'
 
     return [
         OwnershipTest(
@@ -56,27 +60,9 @@ def load_test_cases():
             must_exist=True,
         ),
         OwnershipTest(
-            path=Path('/etc/simplesamlphp/authsources.php'),
-            expected_ownership=Ownership(user='root', group='samlcgi', flags='0o640'),
-            id='simplesaml-authsources',
-            must_exist=True,
-        ),
-        OwnershipTest(
-            path=Path(f'/etc/simplesamlphp/{sso_fqdn}-idp-certificate.key'),
-            expected_ownership=Ownership(user='root', group='samlcgi', flags='0o640'),
-            id='simplesamlphp-private-key',
-            must_exist=True,
-        ),
-        OwnershipTest(
-            path=Path(f'/etc/simplesamlphp/{sso_fqdn}-idp-certificate.crt'),
-            expected_ownership=Ownership(user='root', group='samlcgi', flags='0o644'),
-            id='simplesamlphp-certificate',
-            must_exist=True,
-        ),
-        OwnershipTest(
-            path=Path('/var/lib/simplesamlphp/secrets.inc.php'),
-            expected_ownership=Ownership(user='samlcgi', group='samlcgi', flags='0o640'),
-            id='simplesamlphp-secrets',
+            path=Path('/etc/apache2/sites-enabled/univention-keycloak.conf'),
+            expected_ownership=Ownership(user='root', group='root', flags='0o644'),
+            id='univention-keycloak.conf',
             must_exist=True,
         ),
         OwnershipTest(
@@ -84,12 +70,6 @@ def load_test_cases():
             expected_ownership=Ownership(user='root', group='root', flags='0o644'),
             id=f'{sso_fqdn}.xml',
             must_exist=True,
-        ),
-        OwnershipTest(
-            path=Path('/etc/simplesamlphp/serviceprovider_enabled_groups.json'),
-            expected_ownership=Ownership(user='samlcgi', group='samlcgi', flags='0o600'),
-            id='simplesamlphp-group',
-            must_exist=False,
         ),
     ]
 

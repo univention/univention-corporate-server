@@ -24,13 +24,11 @@ class SamlError(Exception):
 def errors():
     return {
         'The password has expired and must be renewed.': SamlPasswordExpired,
-        'Account expired.': SamlAccountExpired,  # simplesamlphp
-        'The account has expired.': SamlAccountExpired,  # keycloak
-        'Invalid username or password.': SamlAuthenticationFailed,  # keycloak
-        'Incorrect username or password.': SamlAuthenticationFailed,  # simplesamlphp
+        'The account has expired.': SamlAccountExpired,
+        'Invalid username or password.': SamlAuthenticationFailed,
         'Account not verified.': SamlAccountNotVerified,
-        'Changing password failed.': SamlPasswordChangeFailed,  # simplesamlphp
-        'Changing password failed. The password was already used.': SamlPasswordChangeFailed,  # keycloak
+        'Changing password failed. The password was already used.': SamlPasswordChangeFailed,
+        'Changing password failed. The password is too simple.': SamlPasswordChangeFailed,
         'The password has been changed successfully.': SamlPasswordChangeSuccess,
     }
 
@@ -46,11 +44,10 @@ class SamlLoginError(SamlError):
         super().__init__(message)
 
     def __new__(cls, saml, password_change=False):
-        # SSP: umcLoginNotices; Keycloak: kc-form/kc-passwd-update-form
-        if saml.keycloak and password_change:
+        if password_change:
             message = saml.xpath('*[@id="kc-content-wrapper"]/div/span')
         else:
-            message = saml.xpath('div[@id="umcLoginNotices"]') if not saml.keycloak else saml.xpath('*[@id="kc-form"]/div[1]/div/span', saml.xpath('form[@id="kc-passwd-update-form"]/div[@class="form-group"]/p'))
+            message = saml.xpath('*[@id="kc-form"]/div[1]/div/span', saml.xpath('form[@id="kc-passwd-update-form"]/div[@class="form-group"]/p'))
         if message is not None:
             message = message.text.strip()
         return Exception.__new__(errors().get(message, cls), saml, message)
@@ -144,10 +141,6 @@ class SamlTest:
         self.parsed_page = None
         self.position = 'Init...'
 
-        url = 'https://%s/univention/saml/' % self.target_sp_hostname
-        res = self.session.request('POST', url)
-        self.keycloak = '/simplesamlphp' not in res.url
-
     def _check_status_code(self, status_code):
         # check for an expected status_code as a different would indicate an error
         # in the current login step.
@@ -192,12 +185,7 @@ class SamlTest:
         self.position = "posting login form"
         print("Post SAML login form to: %s" % self.page.url)
         data = {'username': self.username, 'password': self.password}
-        if not self.keycloak:  # SSP
-            auth_state = self._extract_auth_state()
-            data['AuthState'] = auth_state
-            login_link = self.page.url
-        else:
-            login_link = self._kerberos_login_link()
+        login_link = self._kerberos_login_link()
         self._request('POST', login_link, 200, data=data)
 
     def xpath(self, xpath, default=None):
@@ -365,16 +353,10 @@ class SamlTest:
                 self._request('GET', url, 200)
             except SamlError:
                 # The kerberos backend adds a manual redirect
-                if not self.keycloak:
-                    if not self.page or self.page.status_code != 401:
-                        raise
-                    login_link = re.search('<a href="([^"]+)">', bytes(self.page.text)).group(1)
-                    self._request('GET', login_link, 200)
-                else:
-                    soup = BeautifulSoup(self.page.content, 'html.parser')
-                    title = soup.find('title')
-                    if not (self.page.status_code == 401 and title and 'Kerberos' in title.text):
-                        raise
+                soup = BeautifulSoup(self.page.content, 'html.parser')
+                title = soup.find('title')
+                if not (self.page.status_code == 401 and title and 'Kerberos' in title.text):
+                    raise
 
             self._login_at_idp_with_credentials()
 
@@ -391,9 +373,6 @@ class SamlTest:
         self.position = "trying to logout"
         self._request('GET', url, 200)
 
-        if not self.keycloak:
-            return
-
         url = self._extract_sp_url()
         saml_msg = self.xpath('input[@name="SAMLResponse"]', {}).get('value')
         relay_state = self._extract_relay_state()
@@ -403,14 +382,9 @@ class SamlTest:
         self.position = "posting change password form"
         print("Post SAML change password form to: %s" % self.page.url)
 
-        if not self.keycloak:
-            auth_state = self._extract_auth_state()
-            data = {'username': self.username, 'password': self.password, 'AuthState': auth_state, 'new_password': new_password, 'new_password_retype': new_password}
-            self._request('POST', self.page.url, 200, data=data)
-        else:
-            data = {'username': self.username, 'password': self.password, 'password-new': new_password, 'password-confirm': new_password}
-            url = self._extract_sp_url()
-            self._request('POST', url, 200, data=data)
+        data = {'username': self.username, 'password': self.password, 'password-new': new_password, 'password-confirm': new_password}
+        url = self._extract_sp_url()
+        self._request('POST', url, 200, data=data)
 
         self.password = new_password
         url = self._extract_sp_url()
