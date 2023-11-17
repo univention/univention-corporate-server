@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Download certificate
 ## tags: [saml]
 ## roles: [domaincontroller_master, domaincontroller_backup]
@@ -8,7 +8,6 @@
 import re
 from urllib.request import urlopen
 
-from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail
 
 
@@ -24,10 +23,7 @@ def extract_base64_certificate_from_metadata(metadata):
     return base64_cert
 
 
-if __name__ == '__main__':
-    ucr = ConfigRegistry()
-    ucr.load()
-
+def test_download_certificate(ucr):
     metadata_url = ucr['saml/idp/entityID']
     if metadata_url is None:
         fail('The ucr key saml/idp/entityID is not set')

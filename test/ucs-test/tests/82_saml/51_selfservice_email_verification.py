@@ -48,9 +48,9 @@ def check_login(activated_email=False):
             RegisteredThroughSelfService='TRUE',
             PasswordRecoveryEmailVerified='TRUE' if activated_email else 'FALSE',
         )[1]
-        SamlSession = samltest.SamlTest(testcase_user_name, 'univention')
-        SamlSession.login_with_new_session_at_IdP()
-        SamlSession.test_logged_in_status()
-        SamlSession.logout_at_IdP()
-        SamlSession.test_logout_at_IdP()
-        SamlSession.test_logout()
+        saml_session = samltest.SamlTest(testcase_user_name, 'univention')
+        saml_session.login_with_new_session_at_IdP()
+        saml_session.test_logged_in_status()
+        saml_session.logout_at_IdP()
+        saml_session.test_logout_at_IdP()
+        saml_session.test_logout()

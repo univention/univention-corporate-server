@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Test handling of non matching cert and private key with umc as SP
 ## tags: [saml]
 ## bugs: [47700]
@@ -15,7 +15,7 @@ from univention.testing import utils
 import samltest
 
 
-def main():
+def test_umc_wrong_cert():
     with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'rb') as ca_file:
         cert = ca_file.read()
     with samltest.SPCertificate(cert, update_metadata=False):
@@ -30,13 +30,8 @@ def umc_cert_fail():
         #  Importing the exception would fail as well
         print(type(exc).__name__)
         if type(exc).__name__ == "CertDoesNotMatchPrivateKeyError":
-            print("OK: UMC thows error for mismatch in cert and private key")
+            print("OK: UMC throws an error for mismatch in cert and private key")
         else:
             raise
     else:
         utils.fail("UMC accepted mismatching cert")
-
-
-if __name__ == '__main__':
-    main()
-    print("####Success: Cert is checked during umc metadata creation####")

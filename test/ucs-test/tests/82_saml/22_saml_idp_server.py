@@ -1,18 +1,12 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Check for ucs/server/saml-idp-server/* variable
 ## tags: [saml]
 ## exposure: safe
-## packages:
-##   - univention-saml
 
-from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail, get_ldap_connection
 
 
-if __name__ == '__main__':
-    ucr = ConfigRegistry()
-    ucr.load()
-
+def test_saml_idp_server(ucr):
     lo = get_ldap_connection()
     for res in lo.search('univentionService=univention-saml', attr=['cn', 'associatedDomain']):
         print(res[1])

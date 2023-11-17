@@ -1,19 +1,13 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Check for umc/saml/trusted/sp/* variable
 ## tags: [saml]
 ## exposure: safe
 ## bugs: [39552]
-## packages:
-##   - univention-saml
 
-from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail, get_ldap_connection
 
 
-if __name__ == '__main__':
-    ucr = ConfigRegistry()
-    ucr.load()
-
+def test_saml_umc_sp_server(ucr):
     lo = get_ldap_connection()
     for res in lo.search('univentionService=Univention Management Console', attr=['cn', 'associatedDomain']):
         print(res[1])

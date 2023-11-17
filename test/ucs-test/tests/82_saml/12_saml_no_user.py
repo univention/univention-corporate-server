@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Check whether SSO is not possible with non existing user account
 ## tags:
 ##  - saml
@@ -13,13 +13,8 @@ import pytest
 import samltest
 
 
-def main():
-    SamlSession = samltest.SamlTest('NonExistent3.14', 'univention')
+def test_saml_no_user():
+    saml_session = samltest.SamlTest('NonExistent3.14', 'univention')
 
     with pytest.raises(samltest.SamlAuthenticationFailed):
-        SamlSession.login_with_new_session_at_IdP()
-
-
-if __name__ == '__main__':
-    main()
-    print("Success: It is not possible to login with non existing account")
+        saml_session.login_with_new_session_at_IdP()

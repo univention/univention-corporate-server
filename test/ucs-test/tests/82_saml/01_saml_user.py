@@ -1,24 +1,27 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Test if SAML user was created successfully
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
-## packages:
-##  - univention-saml
 ## exposure: safe
 ## tags:
 ##  - skip_admember
 
-from univention.config_registry import ConfigRegistry
+import pytest
+
 from univention.testing import utils
+from univention.testing.utils import LDAPObjectNotFound, LDAPObjectUnexpectedValue, LDAPObjectValueMissing
 
 
-if __name__ == '__main__':
-    ucr = ConfigRegistry()
-    ucr.load()
+def test_saml_user(ucr):
     attrs = {
         'uid': ['sys-idp-user'],
         'objectClass': ['top', 'person', 'univentionPWHistory', 'simpleSecurityObject', 'uidObject', 'univentionObject'],
         'univentionObjectType': ['users/ldap'],
     }
-    utils.verify_ldap_object('uid=sys-idp-user,cn=users,%s' % (ucr['ldap/base'],), attrs)
+    try:
+        utils.verify_ldap_object('uid=sys-idp-user,cn=users,%s' % (ucr['ldap/base'],), attrs)
+    except LDAPObjectNotFound:
+        pytest.fail('No SAML user found')
+    except (LDAPObjectValueMissing, LDAPObjectUnexpectedValue):
+        pytest.fail('SAML user found, but some of the required attributes are wrong')

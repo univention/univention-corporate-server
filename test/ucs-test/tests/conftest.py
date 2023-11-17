@@ -131,3 +131,8 @@ def random_username() -> Callable[..., str]:
 def wait_for_replication() -> Callable[..., None]:
     """Function to wait for replication to finish."""
     return utils.wait_for_replication
+
+
+@pytest.fixture(scope='session')
+def account() -> utils.UCSTestDomainAdminCredentials:
+    return utils.UCSTestDomainAdminCredentials()

@@ -1,3 +1,9 @@
+ucs-test (10.0.19-26) unstable; urgency=medium
+
+  * Bug #56765: migrate SAML tests to pytest
+
+ -- Florian Best <best@univention.de>  Fri, 17 Nov 2023 14:26:18 +0100
+
 ucs-test (10.0.19-25) unstable; urgency=medium
 
   * Bug #56054: Add fixture to skip tests if proper locale isn't configured

@@ -1,18 +1,14 @@
-#!/usr/share/ucs-test/runner python3
-## desc: Download metadata.php
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
+## desc: Download metadata
 ## tags: [saml]
 ## exposure: safe
 
 from urllib.request import urlopen
 
-from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail
 
 
-if __name__ == '__main__':
-    ucr = ConfigRegistry()
-    ucr.load()
-
+def test_download_metadata(ucr):
     metadata_url = ucr['umc/saml/idp-server']
     if metadata_url is None:
         fail('The ucr key umc/saml/idp-server is not set')

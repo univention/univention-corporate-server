@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Check if every DC Master and DC Backup is registered in ucs-sso
 ## tags: [saml]
 ## exposure: safe
@@ -8,11 +8,10 @@
 import dns.ipv6
 import dns.resolver
 
-import univention.testing.ucr as ucr_test
 from univention.testing.utils import fail, get_ldap_connection
 
 
-def _check_record_type(record_type):
+def _check_record_type(record_type, ucr):
     print(f'Checking record type: {record_type}')
     dns_entries = set()
     try:
@@ -39,13 +38,10 @@ def _check_record_type(record_type):
     return len(dns_entries)
 
 
-if __name__ == '__main__':
-    ucr = ucr_test.UCSTestConfigRegistry()
-    ucr.load()
-
+def test_ucs_sso_records(ucr):
     number_of_records = 0
     for record_type in ('A', 'AAAA'):
-        number_of_records += _check_record_type(record_type)
+        number_of_records += _check_record_type(record_type, ucr)
 
     if number_of_records == 0:
         fail('No dns record for ucs-sso')

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Check whether idP is synchronized between DC Master and DC Backup.
 ## tags:
 ##  - saml
@@ -11,20 +11,15 @@ import socket
 import time
 
 import univention.admin.modules as udm_modules
-import univention.config_registry as configRegistry
 from univention.testing import utils
 
 import samltest
 
 
-ucr = configRegistry.ConfigRegistry()
-ucr.load()
 udm_modules.update()
 
 
-def main():
-    account = utils.UCSTestDomainAdminCredentials()
-    SamlSession = samltest.SamlTest(account.username, account.bindpw)
+def test_idp_on_backup(saml_session):
     lo = utils.get_ldap_connection(admin_uldap=True)
     master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
     master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
@@ -33,16 +28,12 @@ def main():
 
     try:
         with samltest.GuaranteedIdP(master_ip):
-            SamlSession.login_with_new_session_at_IdP()
-            SamlSession.test_logged_in_status()
+            saml_session.login_with_new_session_at_IdP()
+            saml_session.test_logged_in_status()
             time.sleep(1)
-        SamlSession.target_sp_hostname = master_hostname
+        saml_session.target_sp_hostname = master_hostname
         with samltest.GuaranteedIdP(backup_ip):
-            SamlSession.login_with_existing_session_at_IdP()
-            SamlSession.test_logged_in_status()
+            saml_session.login_with_existing_session_at_IdP()
+            saml_session.test_logged_in_status()
     except samltest.SamlError as exc:
         utils.fail(str(exc))
-
-
-if __name__ == '__main__':
-    main()
