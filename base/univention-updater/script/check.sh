@@ -461,7 +461,6 @@ update_check_minimum_ucs_version_of_all_systems_in_domain () {  # Bug #51621
 
 	MIN_VERSION="$MIN_VERSION" /usr/bin/python3 -c '
 # -*- coding: utf-8 -*-
-from __future__ import print_function
 from packaging.version import Version
 from os import environ
 from univention.uldap import getMachineConnection

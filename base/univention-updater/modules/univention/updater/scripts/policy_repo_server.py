@@ -33,6 +33,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 import sys
 from typing import Dict, List, Tuple
 
@@ -75,7 +76,7 @@ def main() -> None:
     fqdn = '%(hostname)s.%(domainname)s' % ucr
     self_update = '%(version/version)s-%(version/patchlevel)s' % ucr
 
-    ucr_variables = []  # type: List[str]
+    ucr_variables: List[str] = []
 
     new_server, policy_update = query_policy(hostdn)
     policy_update or self_update  # FIXME: not used - should be pass to `univention-repository-update --updateto=`  # noqa: B018

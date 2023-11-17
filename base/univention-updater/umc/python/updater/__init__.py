@@ -42,8 +42,8 @@ from os import getpid, stat
 from shlex import quote
 from time import time
 from traceback import format_exc
-from types import ModuleType  # noqa: F401
-from typing import Any, Callable, Dict, Iterable, List, Tuple, Union  # noqa: F401
+from types import ModuleType
+from typing import Any, Callable, Dict, Iterable, List, Tuple, Union
 
 import psutil
 from apt import Cache
@@ -192,7 +192,7 @@ class Instance(Base):
 
     def _last_update(self) -> Dict[str, Any]:
         status_file = '/var/lib/univention-updater/univention-updater.status'
-        ret = {'last_update_failed': False, 'last_update_version': None}  # type: Dict[str, Any]
+        ret: Dict[str, Any] = {'last_update_failed': False, 'last_update_version': None}
         try:
             fstat = stat(status_file)
             mtime = datetime.fromtimestamp(fstat.st_mtime)
@@ -201,10 +201,10 @@ class Instance(Base):
                 return ret
 
             with open(status_file) as fd:
-                info = dict(
+                info: Dict[str, str] = dict(
                     line.strip().split('=', 1)  # type: ignore
                     for line in fd
-                )  # type: Dict[str, str]
+                )
 
             ret['last_update_failed'] = info.get('status') == 'FAILED'
             if ret['last_update_failed']:
@@ -271,7 +271,7 @@ class Instance(Base):
         hooks=ListSanitizer(StringSanitizer(minimum=1), required=True),
     )
     @threaded
-    def call_hooks(self, request) -> None:
+    def call_hooks(self, request) -> Any:
         """Calls the specified hooks and returns data given back by each hook"""
         result = {}
         hookmanager = HookManager(HOOK_DIRECTORY)  # , raise_exceptions=False
@@ -301,10 +301,13 @@ class Instance(Base):
         apt.upgrade(dist_upgrade=True)
         for pkg in apt.get_changes():
             if pkg.marked_install:
+                assert pkg.candidate is not None
                 install.append((pkg.name, pkg.candidate.version))
             if pkg.marked_upgrade:
+                assert pkg.candidate is not None
                 update.append((pkg.name, pkg.candidate.version))
             if pkg.marked_delete:
+                assert pkg.installed is not None
                 remove.append((pkg.name, pkg.installed.version))
 
         return {
@@ -338,7 +341,7 @@ class Instance(Base):
 
     def status(self, request) -> None:  # TODO: remove unneeded things
         """One call for all single-value variables."""
-        result = {}  # type: Dict[str, Any]
+        result: Dict[str, Any] = {}
         ucr.load()
 
         try:
@@ -481,7 +484,7 @@ class Instance(Base):
     @simple_response
     def updater_job_status(self, job: str) -> Dict[str, Any]:  # TODO: remove this completely
         """Returns the status of the current/last update even if the job is not running anymore."""
-        result = {}  # type: Dict[str, Any]
+        result: Dict[str, Any] = {}
         try:
             with open(INSTALLERS[job]['statusfile']) as fd:
                 for line in fd:
@@ -620,8 +623,8 @@ class HookManager:
         :param module_dir: path to directory that contains Python modules with hook functions
         :param raise_exceptions: if `False`, all exceptions while loading Python modules will be dropped and all exceptions while calling hooks will be caught and returned in result list
         """
-        self.__loaded_modules = {}  # type: Dict[str, ModuleType]
-        self.__registered_hooks = {}  # type: Dict[str, List[Callable[..., Any]]]
+        self.__loaded_modules: Dict[str, ModuleType] = {}
+        self.__registered_hooks: Dict[str, List[Callable[..., Any]]] = {}
         self.__module_dir = module_dir
         self.__raise_exceptions = raise_exceptions
         self.__load_hooks()

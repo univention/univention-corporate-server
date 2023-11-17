@@ -31,27 +31,23 @@
 # <https://www.gnu.org/licenses/>.
 """Univention Updater locking"""
 
+from __future__ import annotations
 
 import os
 import sys
 from contextlib import contextmanager
-from time import sleep
-
-
-try:
-    from time import monotonic  # type: ignore
-except ImportError:
-    from monotonic import monotonic  # type: ignore
-
 from errno import EEXIST, ENOENT, ESRCH
+from time import monotonic, sleep
+from types import TracebackType
+from typing import Type
+
+from .errors import UpdaterException
 
 
 try:
-    from types import TracebackType  # noqa: F401
-    from typing import Optional, Type  # noqa: F401
+    from typing import Self  # type: ignore[attr-defined]
 except ImportError:
-    pass
-from .errors import UpdaterException
+    Self = "UpdaterLock"
 
 
 FN_LOCK_UP = '/var/lock/univention-updater'
@@ -68,8 +64,7 @@ class LockingError(UpdaterException):
     univention.updater.locking.LockingError: Another updater process 1 is currently running according to ...: Invalid PID
     """
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return "Another updater process %s is currently running according to %s: %s" % (
             self.args[0],
             FN_LOCK_UP,
@@ -80,13 +75,11 @@ class LockingError(UpdaterException):
 class UpdaterLock(object):
     """Context wrapper for updater-lock :file:`/var/lock/univention-updater`."""
 
-    def __init__(self, timeout=0):
-        # type: (int) -> None
+    def __init__(self, timeout: int = 0) -> None:
         self.timeout = timeout
         self.lock = 0
 
-    def __enter__(self):
-        # type: () -> UpdaterLock
+    def __enter__(self) -> Self:
         try:
             self.lock = self.updater_lock_acquire()
             return self
@@ -94,13 +87,11 @@ class UpdaterLock(object):
             print(ex, file=sys.stderr)
             sys.exit(5)
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if not self.updater_lock_release():
             print('WARNING: updater-lock already released!', file=sys.stderr)
 
-    def updater_lock_acquire(self):
-        # type: () -> int
+    def updater_lock_acquire(self) -> int:
         """
         Acquire the updater-lock.
 
@@ -168,8 +159,7 @@ class UpdaterLock(object):
             else:
                 sleep(1)
 
-    def updater_lock_release(self):
-        # type: () -> bool
+    def updater_lock_release(self) -> bool:
         """
         Release the updater-lock.
 

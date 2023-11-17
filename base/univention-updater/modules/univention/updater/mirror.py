@@ -31,12 +31,14 @@
 # <https://www.gnu.org/licenses/>.
 """Mirror Univention repository server."""
 
+from __future__ import annotations
 
 import errno
 import json
 import logging
 import os
 import subprocess
+from typing import Any, Literal
 
 from univention.lib.ucs import UCS_Version
 
@@ -48,16 +50,9 @@ try:
     import univention.debug as ud
 except ImportError:
     import univention.debug2 as ud  # type: ignore
-try:
-    from typing import Any, Iterator, List, Optional, Tuple  # noqa: F401
-
-    from typing_extensions import Literal  # noqa: F401
-except ImportError:
-    pass
 
 
-def makedirs(dirname, mode=0o755):
-    # type: (str, int) -> None
+def makedirs(dirname: str, mode: int = 0o755) -> None:
     """
     Recursively create directory hierarchy will all parent directories.
 
@@ -71,8 +66,7 @@ def makedirs(dirname, mode=0o755):
             raise
 
 
-def filter_releases_json(releases, start, end):
-    # type: (Any, UCS_Version, UCS_Version) -> None
+def filter_releases_json(releases: Any, start: UCS_Version, end: UCS_Version) -> None:
     """
     Filter releases that are not mirrored from the upstream repository
     Filtering is done inplace!
@@ -102,8 +96,7 @@ def filter_releases_json(releases, start, end):
 
 class UniventionMirror(UniventionUpdater):
 
-    def __init__(self, check_access=True):
-        # type: (bool) -> None
+    def __init__(self, check_access: bool = True) -> None:
         """
         Create new mirror with settings from UCR.
 
@@ -120,8 +113,7 @@ class UniventionMirror(UniventionUpdater):
         version_start = self.configRegistry.get('repository/mirror/version/start') or (self.current_version.major, 0, 0)
         self.version_start = UCS_Version(version_start)
 
-    def config_repository(self):
-        # type: () -> None
+    def config_repository(self) -> None:
         """Retrieve configuration to access repository. Overrides :py:class:`univention.updater.UniventionUpdater`."""
         self.online_repository = self.configRegistry.is_true('repository/mirror', True)
         self.repourl = UcsRepoUrl(self.configRegistry, 'repository/mirror')
@@ -130,8 +122,7 @@ class UniventionMirror(UniventionUpdater):
         self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()
         self.script_verify = self.configRegistry.is_true('repository/mirror/verify', True)
 
-    def release_update_available(self, ucs_version=None, errorsto='stderr'):
-        # type: (Optional[str], Literal["stderr", "exception", "none"]) -> Optional[UCS_Version]
+    def release_update_available(self, ucs_version: str | None = None, errorsto: Literal["stderr", "exception", "none"] = 'stderr') -> UCS_Version | None:
         """
         Check if an update is available for the `ucs_version`.
 
@@ -144,8 +135,7 @@ class UniventionMirror(UniventionUpdater):
             ucs_version = self.current_version
         return self.get_next_version(UCS_Version(ucs_version), [], errorsto)
 
-    def mirror_repositories(self):
-        # type: () -> int
+    def mirror_repositories(self) -> int:
         """Uses :command:`apt-mirror` to copy a repository."""
         # check if the repository directory structure exists, otherwise create it
         makedirs(self.repository_path)
@@ -164,8 +154,7 @@ class UniventionMirror(UniventionUpdater):
         with open('/var/log/univention/repository.log', 'a') as log:
             return subprocess.call(('/usr/bin/apt-mirror',), stdout=log, stderr=log)
 
-    def mirror_update_scripts(self):
-        # type: () -> None
+    def mirror_update_scripts(self) -> None:
         """Mirrors the :file:`preup.sh` and :file:`postup.sh` scripts."""
         scripts = self.get_sh_files(self.version_start, self.version_end, mirror=True)
         for server, struct, phase, path, script in scripts:
