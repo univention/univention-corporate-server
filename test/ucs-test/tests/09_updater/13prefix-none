@@ -13,6 +13,13 @@
 RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
+# "prefix=" only works with the old syntax "server=$FQHN", but not with URLs.
+# This test requires UCRV type-checking to be disabled to allow the old syntax.
+# shellcheck source=/dev/null
+. /usr/share/univention-lib/ucr.sh
+is_ucr_false ucr/check/type ||
+	exit 133  # SKIP starting with UCS 5.1
+
 setup_apache "${repoprefix}"
 
 # shellcheck disable=SC2046
@@ -20,7 +27,7 @@ mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel:?}") maintain
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
-config_repo /
+config_repo repository/online/server="${server:-localhost}" repository/online/port="${port:-80}" repository/online/prefix=
 
 (
 	set -e
