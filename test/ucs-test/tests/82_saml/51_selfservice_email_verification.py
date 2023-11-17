@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: SSO Login at UMC as Service Provider
 ## tags: [saml]
 ## join: true
@@ -19,26 +19,26 @@ import samltest
 
 def test_check_disabled_email_unverified():
     with ucr_test.UCSTestConfigRegistry():
-        handler_set(['saml/idp/selfservice/check_email_verification=False'])
+        handler_set(['ucs/self/registration/check_email_verification=False'])
         check_login(activated_email=False)
 
 
 def test_check_disabled_email_verified():
     with ucr_test.UCSTestConfigRegistry():
-        handler_set(['saml/idp/selfservice/check_email_verification=False'])
+        handler_set(['ucs/self/registration/check_email_verification=False'])
         check_login(activated_email=True)
 
 
 def test_check_enabled_email_unverified():
     with ucr_test.UCSTestConfigRegistry():
-        handler_set(['saml/idp/selfservice/check_email_verification=True'])
+        handler_set(['ucs/self/registration/check_email_verification=True'])
         with pytest.raises(samltest.SamlAccountNotVerified):
             check_login(activated_email=False)
 
 
 def test_check_enabled_email_verified():
     with ucr_test.UCSTestConfigRegistry():
-        handler_set(['saml/idp/selfservice/check_email_verification=True'])
+        handler_set(['ucs/self/registration/check_email_verification=True'])
         check_login(activated_email=True)
 
 
