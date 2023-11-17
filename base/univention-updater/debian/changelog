@@ -1,3 +1,9 @@
+univention-updater (16.0.16) unstable; urgency=medium
+
+  * Bug #57114: use testing online repository
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:58 +0100
+
 univention-updater (16.0.15) unstable; urgency=medium
 
   * Issue #1682: openLDAP bdb->mdb migration
