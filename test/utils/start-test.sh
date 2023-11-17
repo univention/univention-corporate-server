@@ -6,7 +6,7 @@
 # defaults for release
 release='5.2-0'
 old_release='5.0-6'
-kvm_template_version='5.2-0+e0'
+kvm_template_version='5.2-0+2024'
 # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 7
 current_ami=ami-09fefd41ed2cea5a4
 # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 7
@@ -30,6 +30,11 @@ image="${DIMAGE:-gitregistry.knut.univention.de/univention/dist/ucs-ec2-tools}"
 debug="${DEBUG:=false}"
 docker="${DOCKER:=true}"
 docker_env_file="$(mktemp)"
+
+
+if [ "${UCS_VERSION:=$release}" = "$release" ]; then
+    kvm_operating_system='Others'
+fi
 
 have () {
 	command -v "$1" >/dev/null 2>&1
