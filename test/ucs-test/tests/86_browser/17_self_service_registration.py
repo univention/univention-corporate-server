@@ -183,7 +183,7 @@ def test_udm_attributes(self_service: SelfService, ucr):
     ucr.handler_set(["umc/self-service/account-registration/udm_attributes=description,title"])
     ucr.handler_set(["umc/self-service/account-registration/udm_attributes/required=title"])
 
-    self_service.navigate_create_account()
+    self_service.page.reload()
     expected_visible = [
         self_service.page.get_by_role("textbox", name=_("Email")),
         self_service.page.get_by_role("textbox", name=_("Password"), exact=True),
@@ -221,7 +221,7 @@ def test_user_creation(self_service: SelfService, mails, get_registration_info, 
     )
 
 
-def test_account_verfiyaccount_page_errors(self_service: SelfService, udm):
+def test_account_verifyaccount_page_errors(self_service: SelfService, udm):
     self_service.navigate("verifyaccount")
     self_service.fill_create_account(
         {
@@ -233,7 +233,7 @@ def test_account_verfiyaccount_page_errors(self_service: SelfService, udm):
 
     expect(self_service.page.get_by_text(_("The account could not be verified. Please verify your input")))
 
-    self_service.navigate("verifyaccount")
+    self_service.page.reload()
     self_service.fill_create_account(
         {
             "username": UserCreationAttribute(_("Username"), "not_existing"),
@@ -244,7 +244,8 @@ def test_account_verfiyaccount_page_errors(self_service: SelfService, udm):
     expect(self_service.page.get_by_text(_("The verification token could not be sent. Please verify your input.")))
 
     dn, username = udm.create_user({"PasswordRecoveryEmail": None})
-    self_service.navigate("verifyaccount")
+
+    self_service.page.reload()
     self_service.fill_create_account(
         {
             "username": UserCreationAttribute(_("Username"), username),
