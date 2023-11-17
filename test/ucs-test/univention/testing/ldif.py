@@ -23,9 +23,7 @@ import sys
 import time
 import unicodedata
 from optparse import SUPPRESS_HELP, OptionGroup, OptionParser, Values
-from typing import Any, Dict, Iterable, Iterator, List, NoReturn, Set, Tuple
-
-from typing_extensions import Literal
+from typing import Any, Dict, Iterable, Iterator, List, Literal, NoReturn, Set, Tuple
 
 
 Entry = Dict[str, List[str]]

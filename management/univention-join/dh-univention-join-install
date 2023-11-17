@@ -37,16 +37,9 @@ from argparse import ArgumentParser
 from os import listdir
 from os.path import join
 from shlex import quote
+from typing import IO, Literal  # noqa: F401
 
 from univention.debhelper import binary_packages, doIt, parser_dh_sequence
-
-
-try:
-    from typing import IO  # noqa: F401
-
-    from typing_extensions import Literal  # noqa: F401
-except ImportError:
-    pass
 
 
 VER = "12.0.0-7"

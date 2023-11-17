@@ -1,3 +1,9 @@
+univention-join (13.0.7) unstable; urgency=medium
+
+  * Bug #56604: Drop python3-typing-extensions
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 23:54:28 +0100
+
 univention-join (13.0.6) unstable; urgency=medium
 
   * Bug #56662: require memberof to be enabled

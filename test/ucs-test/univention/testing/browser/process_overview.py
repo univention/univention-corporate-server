@@ -35,9 +35,9 @@
 import re
 import subprocess
 import time
+from typing import Literal
 
 from playwright.sync_api import Page, expect
-from typing_extensions import Literal
 
 from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UMCBrowserTest
