@@ -3,12 +3,7 @@
 import json
 from itertools import groupby
 from operator import itemgetter
-
-
-try:
-    from typing import Dict, Iterable, List, Tuple  # noqa: F401
-except ImportError:
-    pass
+from typing import Iterable, Tuple
 
 
 # from ../conftest.py
@@ -19,7 +14,7 @@ DATA = b'x' * 100  # univention.updater.tools.MIN_GZIP
 RJSON = '/ucs-releases.json'
 
 
-def gen_releases(releases=[], major=MAJOR, minor=MINOR, patches=range(PATCH + 1)):  # type: (Iterable[Tuple[int, int, int]], int, int, Iterable[int]) -> bytes
+def gen_releases(releases: Iterable[Tuple[int, int, int]] = [], major: int = MAJOR, minor: int = MINOR, patches: Iterable[int] = range(PATCH + 1)) -> bytes:
     """
     Generate a `ucs-releases.json` string from a list of given releases.
 
