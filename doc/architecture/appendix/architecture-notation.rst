@@ -66,7 +66,7 @@ ArchiMate
 
 ArchiMate is a notation and modeling standard for enterprise architecture
 maintained by *The OpenGroup*. This document uses the `ArchiMate® specification
-3.1 <archimate-3-1-spec_>`_.
+3.2 <archimate-3-2-spec_>`_.
 
 .. _architecture-notation-archimate-why:
 
@@ -142,8 +142,12 @@ specification about the following:
 
 .. seealso::
 
-   `ArchiMate® specification 3.1 <archimate-3-1-spec_>`_
-      for the complete :cite:t:`archimate-3-1`
+   `ArchiMate® specification 3.2 <archimate-3-2-spec_>`_
+      for the complete :cite:t:`archimate-3-2`
+
+   `Free ArchiMate 3.2 Overview PDFs in multiple languages <archimate-mastering-overviews_>`_
+      for overview PDF files about ArchiMate 3.2 in different languages, such as
+      English and German.
 
    `Mastering ArchiMate Edition 3.1 <archimate-mastering_>`_
       for a free PDF excerpt of the book from :cite:t:`mastering-archimate`
