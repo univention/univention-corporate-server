@@ -11,7 +11,6 @@
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 port=81
@@ -25,16 +24,10 @@ mkpkg "${DIR}" "${DIR_POOL}"
 
 config_repo :${port}
 
-(
 	set -e
 	checkapt "http://localhost:${port}/${repoprefix}/" "${DIR}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	checkdeb "${pkgname}" 1
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-dpkg -P --force-all "${pkgname}" >&3 2>&3
-
-exit ${RETVAL}
 # vim:set ft=sh:

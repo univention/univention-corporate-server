@@ -14,7 +14,6 @@
 ##  - apt-mirror
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 FIXED_18225=false
 
@@ -42,7 +41,7 @@ mkpkg "${DIRS[1]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
 
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"
 # 2:5.0/maintained/component/test00000/all
@@ -71,7 +70,7 @@ mkpkg "${DIRS[5]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 2 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[5]}" "${DIR_POOL}"
 
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"
 # 6:5.1/maintained/component/test00000/all
@@ -100,7 +99,7 @@ mkpkg "${DIRS[9]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 3 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[9]}" "${DIR_POOL}"
 
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 minor+=-1
 
@@ -117,7 +116,6 @@ then
 	ln -s . "${BASEDIR}/mirror/mirror/${srcprefix}"
 fi
 
-(
 	set -e
 	checkapt --mirror "http://localhost\\(:80\\)\\?/${srcprefix}/" "${BDIR[@]}"
 	grep -v '^#\|^[[:space:]]*$' /etc/apt/sources.list.d/*.list && false
@@ -150,9 +148,4 @@ fi
 	checkdeb "${pkgname}eb" 1 2
 	checkdeb "${pkgname}ca" 1 2
 	checkdeb "${pkgname}cb" 1 2
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-dpkg -P --force-all "${pkgname}"{,c}{l,y} >&3 2>&3
-
-exit ${RETVAL}
 # vim:set ft=sh:

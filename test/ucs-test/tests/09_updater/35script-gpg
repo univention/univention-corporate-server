@@ -13,7 +13,6 @@
 ##  3.2-0: fixed
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
@@ -39,7 +38,6 @@ __SH__
 
 config_repo version/patchlevel=0 version/erratalevel=0 repository/online/verify=yes
 
-(
 	set -e
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
 	apt-get -qq update
@@ -48,27 +46,27 @@ config_repo version/patchlevel=0 version/erratalevel=0 repository/online/verify=
 
 	info "missing signature for postup"
 	mv "${DIR}/postup.sh.gpg" "${DIR}/postup.sh.GPG"
-	/usr/share/univention-updater/univention-updater net && fail_fast 1 "Should not update"
+	/usr/share/univention-updater/univention-updater net && fail "Should not update"
 	grep -xf "${SH_LOG}" "${BASEDIR}/install.log" && fail "should not exec"
 	mv "${DIR}/postup.sh.GPG" "${DIR}/postup.sh.gpg"
 
 	info "missing signature for pretup"
 	mv "${DIR}/preup.sh.gpg" "${DIR}/preup.sh.GPG"
-	/usr/share/univention-updater/univention-updater net && fail_fast 1 "should not update"
+	/usr/share/univention-updater/univention-updater net && fail "should not update"
 	grep -xf "${SH_LOG}" "${BASEDIR}/install.log" && fail "should not exec"
 	mv "${DIR}/preup.sh.GPG" "${DIR}/preup.sh.gpg"
 
 	info "wrong signature for postup"
 	mv "${DIR}/postup.sh" "${DIR}/postup.SH"
 	echo '#!/bin/sh' >"${DIR}/postup.sh"
-	/usr/share/univention-updater/univention-updater net && fail_fast 1 "should not update"
+	/usr/share/univention-updater/univention-updater net && fail "should not update"
 	grep -xf "${SH_LOG}" "${BASEDIR}/install.log" && fail "should not exec"
 	mv "${DIR}/postup.SH" "${DIR}/postup.sh"
 
 	info "wrong signature for preup"
 	mv "${DIR}/preup.sh" "${DIR}/preup.SH"
 	echo '#!/bin/sh' >"${DIR}/preup.sh"
-	/usr/share/univention-updater/univention-updater net && fail_fast 1 "should not update"
+	/usr/share/univention-updater/univention-updater net && fail "should not update"
 	grep -xf "${SH_LOG}" "${BASEDIR}/install.log" && fail "should not exec"
 	mv "${DIR}/preup.SH" "${DIR}/preup.sh"
 
@@ -80,9 +78,4 @@ config_repo version/patchlevel=0 version/erratalevel=0 repository/online/verify=
 	test "${_version_version}" = "$(ucr get version/version)"
 	test 1 = "$(ucr get version/patchlevel)"
 	checkdeb "${pkgname}" 1 2
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-dpkg -P --force-all "${pkgname}" >&3 2>&3
-
-exit ${RETVAL}
 # vim:set ft=sh:

@@ -32,6 +32,6 @@ do
 	new="$(UNIVENTION_BASECONF="$tmp_base_conf" ucr get "$var")"
 	verify_value "$var" "$new" "$cur" || result=$?
 done
-exit $result
 
+exit $result
 # vim:set ft=sh:

@@ -8,7 +8,6 @@
 ##  - apt-mirror
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 port=81
@@ -26,19 +25,14 @@ mkdeb "${pkgname}ea" 1 all "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 config_mirror :${port}
 
-(
 	set -e
 	checkapt --mirror "http://localhost:${port}/${repoprefix}/" "${DIRS[@]}"
 	wait_for_updater_lock
 	univention-repository-update net
 	# shellcheck disable=SC2119
 	checkmirror
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-
-exit ${RETVAL}
 # vim:set ft=sh:

@@ -10,7 +10,6 @@
 ## exposure: dangerous
 ## bugs: [31773]
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 setup_apache "${repoprefix}"
@@ -39,7 +38,6 @@ BUG31733 () { # expected-value cmd...
 	[ "$expected" = "$value" ]
 }
 
-(
 	# break upon error
 	set -e
 
@@ -93,9 +91,4 @@ BUG31733 () { # expected-value cmd...
 		# call univention-actualise and make sure update/available has been updated
 		echo "### Updating packages (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		BUG31733 no /usr/share/univention-updater/univention-actualise
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-dpkg -P --force-all "${pkgname}" >&3 2>&3
-
-exit ${RETVAL}
 # vim:set ft=sh:

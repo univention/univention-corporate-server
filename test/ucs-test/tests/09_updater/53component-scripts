@@ -14,7 +14,6 @@
 ##  2.4-2: fixed
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 SH_LOG="${BASEDIR}/sh.log"
@@ -28,7 +27,7 @@ mkpdir "${major}.${minor}-${_version_patchlevel}" maintained "${ARCH}"  # 0 1
 # 1:dists/errata500/main/binary-amd64/
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}" all  # 2 3
 # 2:5.0/maintained/component/test00000/amd64/
@@ -47,7 +46,7 @@ mkpdir "${major}.${minor}-${_version_patchlevel}" maintained "${ARCH}"  # 4 5
 rdir="${DIR%/main/binary-*}"
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}" all  # 6 7
 # 6:5.1/maintained/component/test00000/amd64/
@@ -74,7 +73,7 @@ mkpdir "${major}.0-0" maintained "${ARCH}"  # 8 9
 rdir="${DIR%/main/binary-*}"
 mkdeb "${pkgname}" 3 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 mkpdir "${major}.0--component/${compname}" maintained "${ARCH}" all  # 10 11
 # 10:6.0/maintained/component/test00000/amd64/
@@ -98,7 +97,6 @@ python3 create_releases_json.py "${REPODIR}" "$version1" "$version2" "$version3"
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained"
 
-(
 	set -e
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}"
 	apt-get -qq update
@@ -114,9 +112,4 @@ config_repo "${comp}=yes" "${comp}/parts=maintained"
 	test 0 = "$(ucr get version/patchlevel)"
 	checkdeb "${pkgname}" 1 2 3
 	checkdeb "${pkgname}c" 1 2 3
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-dpkg -P --force-all "${pkgname}" "${pkgname}c" >&3 2>&3
-
-exit ${RETVAL}
 # vim:set ft=sh:

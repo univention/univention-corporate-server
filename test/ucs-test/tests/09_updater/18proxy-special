@@ -51,9 +51,8 @@ run_test () {
 			dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 			checkdeb "${pkgname}" 1
 		fi
-	)
-	# shellcheck disable=SC2181
-	[ $? -ne 0 ] && RETVAL=121 # Bug vorhanden, wie vermutet
+	) ||
+		RETVAL=121 # Bug vorhanden, wie vermutet
 	if "${CHECK_INSTALL}"
 	then
 		dpkg -P --force-all "${pkgname}" >&3 2>&3
@@ -76,5 +75,5 @@ do
 		exit "$RETVAL"
 done
 
-exit ${RETVAL:=100} # Test bestanden (Keine Fehler)
+exit "${RETVAL:=100}" # Test bestanden (Keine Fehler)
 # vim:set ft=sh:

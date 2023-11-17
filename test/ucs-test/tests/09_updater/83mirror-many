@@ -14,8 +14,8 @@
 ##  5.0-0: fixed
 ## exposure: dangerous
 
-RETVAL=121 # Bug vorhanden, wie vermutet
 . pool.sh || exit 137
+ERRVAL=121 # Bug vorhanden, wie vermutet
 
 setup_apache "${repoprefix}"
 
@@ -25,7 +25,7 @@ mkpdir "1.0-0" maintained "${ARCH}"
 # 1:dists/errata500/main/binary-amd64/
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[0]}" "${DIR_POOL}"
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 declare -a DOKAY=()
 
 echo -n "Creating patchlevel..."
@@ -50,7 +50,7 @@ do
 	# 17:dists/errata508/main/binary-amd64/
 	# 18:dists/ucs509/main/binary-amd64/
 	# 19:dists/errata509/main/binary-amd64/
-	mksh "${DIR%/main/binary-*}" preup postup
+	mksh "${DIR}" preup postup
 	DOKAY+=("${DIRS[-2]}" "${DIRS[-1]}")
 done
 echo -n " minor..."
@@ -77,7 +77,7 @@ do
 	# 37:dists/errata518/main/binary-amd64/
 	# 38:dists/ucs519/main/binary-amd64/
 	# 39:dists/errata519/main/binary-amd64/
-	mksh "${DIR%/main/binary-*}" preup postup
+	mksh "${DIR}" preup postup
 	DOKAY+=("${DIRS[-2]}" "${DIRS[-1]}")
 done
 echo -n " major..."
@@ -92,7 +92,7 @@ do
 	# 45:dists/errata800/main/binary-amd64/
 	# 46:dists/ucs900/main/binary-amd64/
 	# 47:dists/errata900/main/binary-amd64/
-	mksh "${DIR%/main/binary-*}" preup postup
+	mksh "${DIR}" preup postup
 	DOKAY+=("${DIRS[-2]}" "${DIRS[-1]}")
 done
 echo " done."
@@ -102,7 +102,7 @@ config_mirror \
 	repository/mirror/version/end="9.9-9" \
 	repository/online/unmaintained=no \
 	repository/mirorr=yes
-(
+
 	set -e
 	echo "Checking /etc/apt/mirror.list for ${#DOKAY[@]} required entries..."
 	checkapt --mirror "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DOKAY[@]}"
@@ -111,8 +111,4 @@ config_mirror \
 	univention-repository-update net
 	echo "Checking mirror..."
 	checkmirror "${DOKAY[@]}"
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-
-exit ${RETVAL}
 # vim:set ft=sh:

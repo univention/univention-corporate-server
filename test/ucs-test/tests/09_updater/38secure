@@ -7,7 +7,6 @@
 ##  - python3-apt
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 setup_apache "${repoprefix}"
@@ -42,7 +41,6 @@ have aptitude && _aptitude () {
 }
 have dselect && _dselect () { "$1" dselect update; }
 
-(
 	set -e
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
 
@@ -63,8 +61,4 @@ have dselect && _dselect () { "$1" dselect update; }
 	echo "=== sec=yes  key=no ==="
 	ucr set update/secure_apt=yes
 	tests neg
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-
-exit ${RETVAL}
 # vim: set ft=sh :

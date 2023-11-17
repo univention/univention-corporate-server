@@ -8,7 +8,6 @@
 ##  - apt-mirror
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 setup_apache "${repoprefix}"
@@ -28,15 +27,10 @@ mksh "${DIR%/main/binary-*}" preup postup
 
 config_mirror /
 
-(
 	set -e
 	checkapt --mirror "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[@]}"
 	wait_for_updater_lock
 	univention-repository-update net
 	# shellcheck disable=SC2119
 	checkmirror
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-
-exit ${RETVAL}
 # vim:set ft=sh:

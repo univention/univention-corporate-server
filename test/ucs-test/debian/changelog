@@ -1,3 +1,9 @@
+ucs-test (10.0.19-28) unstable; urgency=low
+
+  * Bug #55708: Fix updater test
+
+ -- Philipp Hahn <hahn@univention.de>  Sun, 19 Nov 2023 19:22:10 +0100
+
 ucs-test (10.0.19-27) unstable; urgency=low
 
   * Bug #55708: Fix updater component test

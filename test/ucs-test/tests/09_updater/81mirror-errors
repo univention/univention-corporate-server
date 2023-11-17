@@ -15,7 +15,6 @@
 ##  2.4-2: fixed
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 FIXED_12571=false # ucr set proxy/* -> ucr commit /etc/apt/*
 
@@ -71,6 +70,11 @@ config_mirror version/patchlevel=0 version/erratalevel=0
 config_proxy -a -u "${username}" -w "${password}"
 invoke-rc.d univention-firewall stop
 
+cleanup_extra () {
+	iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3 || true
+	invoke-rc.d univention-firewall start
+}
+
 run_tests () { # execute all updater programs
 	local msg="$1"
 	grep -F "$msg" /etc/apt/mirror.list
@@ -78,7 +82,6 @@ run_tests () { # execute all updater programs
 	univention-repository-update net 2>&1 | grep -F "$msg"
 }
 
-(
 	set -e
 	ucr set repository/mirror/server=http://DUMMY/
 	run_tests "Configuration error: host is unresolvable"
@@ -123,12 +126,4 @@ run_tests () { # execute all updater programs
 	"${FIXED_12571}" || ucr commit /etc/apt/mirror.list >&3
 	run_tests "onfiguration error: "
 	ucr unset proxy/http
-
-	iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3 || true
-invoke-rc.d univention-firewall start
-
-exit ${RETVAL}
 # vim:set ft=sh:

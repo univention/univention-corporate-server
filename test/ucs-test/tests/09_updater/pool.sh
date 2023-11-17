@@ -47,6 +47,8 @@
 # - $GPPPUB: File path to public test GPG key
 # - $COMPRESS: Array of compression algorithms
 # - $result: Array for return values of `dirs_except`
+# - $ERRVAL: exit value to use on errors
+# - $RETVAL: exit value collected so far
 #
 # Hints
 # - By default tests cleanup after themselves, which complicates debugging failures. Use
@@ -121,7 +123,7 @@ bug43914 () {
 #bug43914 "${0##*/}"
 # if UT_VERBOSE is set, output messages to STDERR, otherwise /dev/null
 case "${UT_VERBOSE-}" in
-	/?*|./?*) exec 3>&2 4>>"${UT_VERBOSE}" ;;
+	/?*|./?*) truncate -s 0 "${UT_VERBOSE}" ; exec 3>&2 4>>"${UT_VERBOSE}" ;;
 	"") exec 3>/dev/null 4>/dev/null ;;
 	?*) exec 3>&2 4>&2 ;;
 esac
@@ -160,10 +162,18 @@ ucr () { # (get|set|unset) name[=value]...
 	esac
 }
 
+RETVAL=
+ERRVAL=110
+cleanup_extra () { :; }
 cleanup () { # Undo all changes
 	local rv="$?"
 	set +e
 	trap - EXIT
+
+	cleanup_extra
+
+	dpkg-query -W -f '${Package}\n' "${pkgname}*" 2>/dev/null |
+		xargs -r dpkg -P --force-all >&3 2>&3
 
 	kill_proxy
 
@@ -199,16 +209,15 @@ cleanup () { # Undo all changes
 	[ -x /etc/init.d/cron ] && [ -f "${BASEDIR}/reenable_cron" ] && invoke-rc.d cron start >&3 2>&3 3>&-
 
 	rm -rf "${BASEDIR}"
-	echo "=== RESULT: ${RETVAL} ==="
-	return "$rv"
+	echo "=== RESULT: ${RETVAL:=${rv}} ==="
+	exit "$RETVAL"  # `return` would be ignored
 }
 trap cleanup EXIT
 failure () { # Report failed command
-	set +e +x
+	local rv="$?" lnr="$1"
 	trap - ERR
-	[ ${BASH_SUBSHELL} -eq 0 ] && return 0 # do not exit the controlling shell
 
-	echo "**************** Test failed above this line ****************" >&2
+	echo "**************** Test failed above this line:${lnr} rv=${rv} ****************" >&2
 	echo "ERROR ${0}:${BASH_LINENO[*]}" >&2
 	echo "ERROR ${BASH_COMMAND}" >&2
 	dump_repo
@@ -223,11 +232,21 @@ failure () { # Report failed command
 #
 
 __GREP__
-	sleep "${UT_DELAY:-0}"
-	exit "${RETVAL:-140}" # internal error
+	if [ -p "${UT_DELAY:-}" ]
+	then
+		local DUMMY
+		read -r DUMMY <"$UT_DELAY"
+	else
+		sleep "${UT_DELAY:-0}"
+	fi
+	return "${RETVAL:=${ERRVAL}}"  # `return` instead of `exit` to trigger `cleanup` next
 }
 trap 'failure ${LINENO}' ERR
 set -E # functions inherit ERR
+fail () {
+	echo "$*" >&2
+	return ${ERRVAL:-110}
+}
 
 apache_mod_groupfile_enabled=1
 setup_apache () { # Setup apache for repository: [--port ${port}] [${prefix}]
@@ -713,7 +732,7 @@ mkgpg () { # Create GPG-key for secure APT
 }
 
 mksh () { # Create shell scripts $@ in $1: $dir ( [--return $ret] <preup|postup> )...
-	local dir="${1}" ret='$?'
+	local dir="${1%/main/binary-*}" ret='$?'
 	shift
 	while [ $# -ge 1 ]
 	do

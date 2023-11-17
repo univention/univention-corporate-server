@@ -12,7 +12,6 @@
 
 CHECK_INSTALL=false
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 FIXED_18225=false
 FIXED_39582=false
@@ -74,7 +73,6 @@ fi
 REPO="pool/main"
 CLEAN="${BASEDIR}/mirror/var/clean.sh"
 
-(
 	set -e
 	checkapt --mirror "http://localhost\\(:80\\)\\?/${srcprefix}/" "${BDIR[@]}"
 	grep -q "^clean http://localhost\\(:80\\)\\?/${srcprefix}/" /etc/apt/mirror.list
@@ -125,12 +123,4 @@ CLEAN="${BASEDIR}/mirror/var/clean.sh"
 		checkdeb "${pkgname}l" 2 4
 		checkdeb "${pkgname}y" 2 4
 	fi
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-if "${CHECK_INSTALL}"
-then
-	dpkg -P --force-all "${pkgname}"{l,y} >&3 2>&3
-fi
-
-exit ${RETVAL}
 # vim:set ft=sh:

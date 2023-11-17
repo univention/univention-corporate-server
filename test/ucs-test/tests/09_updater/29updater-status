@@ -7,7 +7,6 @@
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 CHECK_REGEX="${BASEDIR}/sh.log"
@@ -49,7 +48,6 @@ mksh "${DIR}" preup postup
 
 config_repo version/patchlevel=0 version/erratalevel=0
 
-(
 	set -e
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
@@ -86,9 +84,4 @@ __SH__
 	test 0 = "$(ucr get version/patchlevel)"
 	test -n "$(ucr get update/available)"  # make sure update/available has been updated
 	ucr set update/available=""  # unset update/available
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-dpkg -P --force-all "${pkgname}" >&3 2>&3
-
-exit ${RETVAL}
 # vim:set ft=sh:

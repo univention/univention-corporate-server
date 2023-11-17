@@ -14,7 +14,6 @@
 ##  2.4-2: found
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 compname="test${RANDOM}"
@@ -45,7 +44,7 @@ patchlevel=0 mkpdir "${_version_version}--component/${compname}" maintained all 
 mkdeb "${pkgname}c" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
-python3 create_releases_json.py "${REPODIR}" "${_version_version}-${_version_patchlevel}" "${_version_version}-1"
+python3 create_releases_json.py "${REPODIR}" "${_version_version}-0" "${_version_version}-1"
 
 cat <<-EOF >"${DIR}/../.htaccess"
 AuthType Basic
@@ -64,7 +63,6 @@ config_repo \
 	"${comp}/username=${username}" \
 	"${comp}/password=DUMMY"
 
-(
 	set -e
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}"
 	apt-get -qq update
@@ -78,9 +76,4 @@ config_repo \
 	test "${_version_version}" = "$(ucr get version/version)"
 	test 1 = "$(ucr get version/patchlevel)"
 	checkdeb "${pkgname}" 1 2
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-dpkg -P --force-all "${pkgname}" >&3 2>&3
-
-exit ${RETVAL}
 # vim:set ft=sh:

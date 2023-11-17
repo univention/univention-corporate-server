@@ -11,7 +11,6 @@
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 setup_apache "${repoprefix}"
@@ -27,15 +26,10 @@ mksrc "${SDIR}" "${DIR_POOL}"
 
 config_repo repository/online/sources=yes
 
-(
 	set -e
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[@]}"
 	checkapt --source "http://localhost\\(:80\\)\\?/${repoprefix}/" "${SDIR}"
 	apt-get -qq update
 	mkdir "${BASEDIR}/src"
 	cd "${BASEDIR}/src" && apt-get -qq source "${pkgname}"
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-
-exit ${RETVAL}
 # vim:set ft=sh:

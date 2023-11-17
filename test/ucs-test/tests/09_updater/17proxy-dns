@@ -10,8 +10,9 @@
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
 
-RETVAL=121 # Bug vorhanden, wie vermutet
 . pool.sh || exit 137
+ERRVAL=121 # Bug vorhanden, wie vermutet
+
 FIXED_12571=false
 
 hostname="host${RANDOM}"
@@ -26,7 +27,6 @@ mkpkg "${DIR}" "${DIR_POOL}"
 config_proxy -t "${hostname}"
 config_repo "${hostname}" proxy/http="http://localhost:${proxy_port:?}"
 
-(
 	set -e
 	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
 	checkapt "http://${hostname}\\(:80\\)\\?/${repoprefix}/" "${DIR}"
@@ -34,9 +34,4 @@ config_repo "${hostname}" proxy/http="http://localhost:${proxy_port:?}"
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	checkdeb "${pkgname}" 1
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-dpkg -P --force-all "${pkgname}" >&3 2>&3
-
-exit ${RETVAL}
 # vim:set ft=sh:

@@ -11,7 +11,6 @@
 ##  - apt-mirror
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 declare -a BDIR CDIR ADIR # before current after
@@ -31,7 +30,7 @@ mkpkg "${DIRS[1]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}-1" maintained "${ARCH}"
 # 2:dists/ucs501/main/binary-amd64/
@@ -46,7 +45,7 @@ mkpkg "${DIRS[3]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 3 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[3]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 minor+=1
 
@@ -63,7 +62,7 @@ mkpkg "${DIRS[5]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 4 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[5]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 # START
 
@@ -80,7 +79,7 @@ mkpkg "${DIRS[7]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 6 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[7]}" "${DIR_POOL}"
 CDIR+=("${DIR}")
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}-2" maintained "${ARCH}"
 # 8:dists/ucs512/main/binary-amd64/
@@ -95,7 +94,7 @@ mkpkg "${DIRS[9]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 7 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[9]}" "${DIR_POOL}"
 CDIR+=("${DIR}")
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 # END
 
@@ -112,7 +111,7 @@ mkpkg "${DIRS[11]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 8 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[11]}" "${DIR_POOL}"
 ADIR+=("${DIR}")
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 minor+=1
 
@@ -129,7 +128,7 @@ mkpkg "${DIRS[13]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 9 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[13]}" "${DIR_POOL}"
 ADIR+=("${DIR}")
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}-1" maintained "${ARCH}"
 # 14:dists/ucs521/main/binary-amd64/
@@ -144,7 +143,7 @@ mkpkg "${DIRS[15]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 11 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[15]}" "${DIR_POOL}"
 ADIR+=("${DIR}")
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 minor+=-1
 
@@ -157,7 +156,6 @@ config_mirror \
 	repository/mirror/version/start="${major}.${minor}-1" \
 	repository/mirror/version/end="${major}.${minor}-2"
 
-(
 	set -e
 	checkapt --mirror "http://localhost\\(:80\\)\\?/${repoprefix}/" "${CDIR[@]}"
 	wait_for_updater_lock
@@ -166,8 +164,4 @@ config_mirror \
 	wait_for_updater_lock
 	univention-repository-update net
 	checkmirror "${CDIR[@]}" "${ADIR[@]}" -- "${BDIR[@]}"
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-
-exit ${RETVAL}
 # vim:set ft=sh:

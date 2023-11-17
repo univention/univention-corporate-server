@@ -12,7 +12,6 @@
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 compname="test${RANDOM}"
@@ -60,7 +59,6 @@ minor+=-1
 major+=-1
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=current"
 
-(
 	set -e
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}"
 	apt-get -qq update
@@ -73,9 +71,4 @@ config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=current"
 	test 0 = "$(ucr get version/patchlevel)"
 	test -n "$(ucr get update/available)"  # make sure update/available has been updated
 	checkdeb "${pkgname}" 1 2
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-dpkg -P --force-all "${pkgname}" >&3 2>&3
-
-exit ${RETVAL}
 # vim:set ft=sh:

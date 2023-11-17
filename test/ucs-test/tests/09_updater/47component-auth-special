@@ -72,7 +72,7 @@ run_test () {
 			dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 			checkdeb "${pkgname}" 1
 		fi
-	) &&
+	) ||
 		RETVAL=121 # Bug vorhanden, wie vermutet
 	if "${CHECK_INSTALL}"
 	then
@@ -99,6 +99,4 @@ do
 	test -n "${u}" && run_test "u${u}u" "password"
 	test -n "${p}" && run_test "user" "p${p}p"
 done
-
-exit ${RETVAL:=100} # Test bestanden (Keine Fehler)
 # vim:set ft=sh:

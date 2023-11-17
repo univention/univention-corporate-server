@@ -10,7 +10,6 @@
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 # "prefix=" only works with the old syntax "server=$FQHN", but not with URLs.
@@ -29,16 +28,10 @@ mkpkg "${DIR}" "${DIR_POOL}"
 
 config_repo repository/online/server="${server:-localhost}" repository/online/port="${port:-80}" repository/online/prefix=
 
-(
 	set -e
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIR}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	checkdeb "${pkgname}" 1
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-dpkg -P --force-all "${pkgname}" >&3 2>&3
-
-exit ${RETVAL}
 # vim:set ft=sh:

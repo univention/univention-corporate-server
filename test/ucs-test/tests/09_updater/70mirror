@@ -8,7 +8,6 @@
 ##  - apt-mirror
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 setup_apache "${repoprefix}"
@@ -24,11 +23,10 @@ mkdeb "${pkgname}ea" 1 all "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
-mksh "${DIR%/main/binary-*}" preup postup
+mksh "${DIR}" preup postup
 
 config_mirror repository/mirror=no
 
-(
 	set -e
 	grep -v '^#\|^[[:space:]]*$\|^set ' /etc/apt/mirror.list && false
 	ucr set repository/mirror=yes
@@ -39,8 +37,4 @@ config_mirror repository/mirror=no
 	echo "MARKER END for 09_updater/70mirror" >> /var/log/univention/repository.log
 	# shellcheck disable=SC2119
 	checkmirror
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-
-exit ${RETVAL}
 # vim:set ft=sh:

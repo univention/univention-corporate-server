@@ -7,7 +7,6 @@
 ##  - python3-apt
 ## exposure: dangerous
 
-RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 grep -q 'APT::Authentication::TrustCDROM "true";' '/etc/apt/apt.conf.d/00trustcdrom'
@@ -53,16 +52,11 @@ apt-ftparchive \
 	release "$dvd/dists/ucs430" >"$dvd/Release"
 mv "$dvd/Release" "$dvd/dists/ucs430/Release"
 
-cleanup2 () {
-	set +e
-	trap - EXIT
+cleanup_extra () {
 	sed -i -e '/ "Bug45950";$/d' /var/lib/apt/cdroms.list
 	sed -i -e '/deb cdrom:\[Bug45950\]\/ ucs430 main/d' /etc/apt/sources.list
-	cleanup "$@"
 }
-trap 'cleanup2' EXIT
 
-(
 	set -e
 	ucr set local/repository=no repository/mirror=no repository/online=no update/secure_apt=no
 	LANG=C apt-cdrom add --no-auto-detect --no-mount --cdrom "$dvd" </dev/null
@@ -77,8 +71,4 @@ trap 'cleanup2' EXIT
 	have aptitude && aptitude --no-gui update
 
 	:
-) &&
-	RETVAL=100 # Test bestanden (Keine Fehler)
-
-exit ${RETVAL}
 # vim: set ft=sh :
