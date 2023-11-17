@@ -12,6 +12,7 @@ import sys
 import time
 
 import pytest
+from selenium.common.exceptions import ElementClickInterceptedException
 from test_self_service import self_service_user
 
 from univention.testing.strings import random_username
@@ -38,31 +39,91 @@ def wait_for_loading(chrome):
             break
 
 
+def wait_for_element(chrome, css_selector, timeout=10):
+    for _ in range(timeout * 10):
+        element = chrome.find_first(css_selector)
+        if element:
+            return element
+        time.sleep(0.1)
+    raise Exception(f"Element {css_selector} not found")
+
+
+def wait_for_input(chrome, input_name, timeout=10):
+    return wait_for_element(chrome, f'[name={input_name}]', timeout)
+
+
 def goto_selfservice(chrome, user=None):
     if user:
         chrome.get("/univention/login/?location=/univention/selfservice/")
-        time.sleep(2)
+        wait_for_input(chrome, 'username')
         chrome.enter_input('username', user.username)
         chrome.enter_input('password', user.password)
         chrome.enter_return()
-        time.sleep(10)
     else:
         chrome.get('/univention/selfservice/')
-        time.sleep(2)
+
+
+def click(chrome, css_selector):
+    for _ in range(9):
+        try:
+            wait_for_element(chrome, css_selector).click()
+            return
+        except ElementClickInterceptedException:
+            time.sleep(0.1)
+    chrome.find_first(css_selector).click()
 
 
 def change_lang(chrome, lang, user=None):
     goto_selfservice(chrome, user)
-    chrome.find_first('button#header-button-menu').click()
-    time.sleep(0.5)
-    chrome.find_first("div.portal-sidenavigation__menu-item").click()
-    time.sleep(0.5)
-    element = chrome.find_first(f"div#menu-item-language-{lang}")
+    wait_for_element(chrome, 'button#header-button-menu').click()
+    wait_for_element(chrome, "div.portal-sidenavigation__menu-item").click()
+    element = wait_for_element(chrome, f"div#menu-item-language-{lang}")
     try:
         element.click()
-        time.sleep(0.5)
-    except Exception:
+    except ElementClickInterceptedException:
         pass
+
+
+def process_labels(lables_to_check, labels):
+    lables_to_check_d = {}
+    for label in lables_to_check:
+        label_name = label.get_attribute('for').split('--')[0]
+        value = label.text.splitlines()
+        if label_name not in labels or len(value) == 0:
+            continue
+        if label_name != "":
+            lables_to_check_d[label_name] = value[0]
+        else:
+            lables_to_check_d.setdefault(label_name, []).append(value[0])
+    return lables_to_check_d
+
+
+def get_labels(chrome, labels):
+    for _ in range(10):
+        lables_to_check = chrome.find_all('label')
+        lables_to_check = process_labels(lables_to_check, labels)
+        print(lables_to_check)
+        if len(lables_to_check) >= len(labels):
+            break
+        time.sleep(0.1)
+    return lables_to_check
+
+
+@pytest.fixture(autouse=True)
+def activate_self_service(ucr_module):
+    ucr_module.handler_set(
+        [
+            "umc/self-service/account-registration/backend/enabled=true",
+            "umc/self-service/account-registration/frontend/enabled=true",
+            "umc/self-service/account-verification/backend/enabled=true",
+            "umc/self-service/account-verification/frontend/enabled=true",
+            "umc/self-service/passwordchange/frontend/enabled=true",
+            "umc/self-service/passwordreset/backend/enabled=true",
+            "umc/self-service/profiledata/enabled=true",
+            "umc/self-service/protect-account/backend/enabled=true",
+            "umc/self-service/service-specific-passwords/backend/enabled=true",
+        ],
+    )
 
 
 @pytest.mark.parametrize('lang, hash, labels', [
@@ -81,38 +142,15 @@ def change_lang(chrome, lang, user=None):
     ('en-US', 'servicespecificpasswords', {'username': 'Username', 'password': 'Password'}),
     ('de-DE', 'servicespecificpasswords', {'username': 'Benutzername', 'password': 'Passwort'}),
 ])
-def test_frontend_translations(chrome, ucr, lang, hash, labels):
-    ucr.set({
-        'umc/self-service/protect-account/backend/enabled': 'true',
-        'umc/self-service/passwordreset/backend/enabled': 'true',
-        'umc/self-service/passwordchange/frontend/enabled': 'true',
-        'umc/self-service/profiledata/enabled': 'true',
-        'umc/self-service/account-registration/backend/enabled': 'true',
-        'umc/self-service/account-registration/frontend/enabled': 'true',
-        'umc/self-service/account-verification/backend/enabled': 'true',
-        'umc/self-service/account-verification/frontend/enabled': 'true',
-        'umc/self-service/service-specific-passwords/backend/enabled': 'true',
-    })
-
+def test_frontend_translations(chrome, lang, hash, labels):
+    chrome.driver.implicitly_wait(10)
     change_lang(chrome, lang)
     chrome.driver.execute_script("localStorage.clear();")
     chrome.get(f'/univention/selfservice/#/selfservice/{hash}')
-    time.sleep(0.5)
     chrome.driver.refresh()
-    time.sleep(2)
-    lables_to_check = chrome.find_all('label')
-    lables_to_check_d = {}
-    for label in lables_to_check:
-        label_name = label.get_attribute('for').split('--')[0]
-        value = label.text.splitlines()
-        if label_name not in labels or len(value) == 0:
-            continue
-        if label_name != "":
-            lables_to_check_d[label_name] = value[0]
-        else:
-            lables_to_check_d.setdefault(label_name, []).append(value[0])
+    wait_for_element(chrome, 'label')
 
-    lables_to_check = lables_to_check_d
+    lables_to_check = get_labels(chrome, labels)
     for label_name, expected_value in labels.items():
         assert label_name in lables_to_check, f'Label {label_name} is not in {list(lables_to_check.keys())}'
         if isinstance(expected_value, list):
@@ -136,40 +174,18 @@ def test_frontend_translations(chrome, ucr, lang, hash, labels):
     ('en-US', 'servicespecificpasswords', {'username': 'Username', 'password': 'Password'}),
     ('de-DE', 'servicespecificpasswords', {'username': 'Benutzername', 'password': 'Passwort'}),
 ])
-def test_frontend_login_translations(chrome, ucr, lang, hash, labels):
-    ucr.set({
-        'umc/self-service/protect-account/backend/enabled': 'true',
-        'umc/self-service/passwordreset/backend/enabled': 'true',
-        'umc/self-service/passwordchange/frontend/enabled': 'true',
-        'umc/self-service/profiledata/enabled': 'true',
-        'umc/self-service/account-registration/backend/enabled': 'true',
-        'umc/self-service/account-registration/frontend/enabled': 'true',
-        'umc/self-service/account-verification/backend/enabled': 'true',
-        'umc/self-service/account-verification/frontend/enabled': 'true',
-        'umc/self-service/service-specific-passwords/backend/enabled': 'true',
-    })
+def test_frontend_login_translations(chrome, lang, hash, labels):
+    chrome.driver.implicitly_wait(10)
     reset_mail_address = f'{random_username()}@{random_username()}'
     with self_service_user(mailPrimaryAddress=reset_mail_address, language="en-US") as user:
         change_lang(chrome, lang, user=user)
         chrome.driver.execute_script("localStorage.clear();")
         chrome.get(f'/univention/selfservice/#/selfservice/{hash}')
-        time.sleep(0.5)
         chrome.driver.refresh()
-        time.sleep(2)
-        lables_to_check = chrome.find_all('label')
+        wait_for_element(chrome, 'label')
 
-        lables_to_check_d = {}
-        for label in lables_to_check:
-            label_name = label.get_attribute('for').split('--')[0]
-            value = label.text.splitlines()
-            if label_name not in labels or len(value) == 0:
-                continue
-            if label_name != "":
-                lables_to_check_d[label_name] = value[0]
-            else:
-                lables_to_check_d.setdefault(label_name, []).append(value[0])
+        lables_to_check = get_labels(chrome, labels)
 
-        lables_to_check = lables_to_check_d
         for label_name, expected_value in labels.items():
             assert label_name in lables_to_check, f'Label {label_name} is not in {list(lables_to_check.keys())}'
             if isinstance(expected_value, list):

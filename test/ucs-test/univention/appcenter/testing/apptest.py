@@ -17,6 +17,8 @@ from urllib.parse import urlparse
 import requests
 from selenium.webdriver.common.by import By
 
+from univention.testing import ucr as _ucr
+
 
 logger = logging.getLogger(__name__)
 PROVIDER_PORTAL_JSON = 'https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-catalog.json'
@@ -443,6 +445,12 @@ else:
         yield ucr_module
         if ucr_module._old:
             ucr_module.set(ucr_module._old, revert_afterwards=False)
+
+    @pytest.fixture(scope="module")
+    def ucr_module():
+        """Per `module` auto-reverting UCR instance."""
+        with _ucr.UCSTestConfigRegistry() as ucr:
+            yield ucr
 
     @pytest.fixture(scope='session')
     def appcenter(umc, fqdn):
