@@ -14,6 +14,7 @@ old_ami=ami-09fefd41ed2cea5a4
 
 # defaults
 kvm_template='generic-unsafe'
+kvm_operating_system='UCS'
 kvm_build_server='tross.knut.univention.de'
 kvm_memory='4096M'
 kvm_cpus='1'
@@ -195,6 +196,7 @@ export UCS_VERSION="${UCS_VERSION:=$release}"
 export OLD_VERSION="${OLD_VERSION:=$old_release}"
 export KVM_TEMPLATE="${KVM_TEMPLATE:=$kvm_template}"
 export KVM_UCSVERSION="${KVM_UCSVERSION:=$kvm_template_version}"
+export KVM_OPERATING_SYSTEM="${KVM_OPERATING_SYSTEM:=$kvm_operating_system}"
 export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$old_release}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=$kvm_build_server}"
 export KVM_MEMORY="${KVM_MEMORY:=$kvm_memory}"
