@@ -106,7 +106,7 @@ container, this script can be called accordingly, e.g.
 
 .. code:: sh
 
-   #/bin/sh
+   #!/bin/sh
    exec /usr/sbin/app-connector
 
 .. _provision-push-mechanism:
