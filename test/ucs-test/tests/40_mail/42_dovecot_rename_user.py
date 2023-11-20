@@ -26,6 +26,8 @@ timeout = 10
 def main():
     with udm_test.UCSTestUDM() as udm:
         with ucr_test.UCSTestConfigRegistry() as ucr:
+            ucr.handler_set(['mail/dovecot/auth/cache_size=0'])
+            subprocess.call(['systemctl', 'restart', 'dovecot'])
             userbase = []
             fqdn = '%(hostname)s.%(domainname)s' % ucr
             #
