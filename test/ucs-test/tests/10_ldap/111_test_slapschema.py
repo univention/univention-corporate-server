@@ -10,7 +10,7 @@
 import importlib.machinery
 import subprocess
 import types
-from subprocess import Popen
+from subprocess import check_call
 
 import pytest
 
@@ -27,15 +27,17 @@ def setup_environment():
     # Check if test user exist
     # Create test user if not exist
     print("Setting up the test environment ...")
-    Popen(
+    check_call(
         'univention-install -y univention-directory-manager-module-example',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None).communicate()
-    Popen(
+        stdin=None
+    )
+    check_call(
         'udm test/ip_phone create --set name=test111 --set ip=1.2.3.4 --set priuser=test@slapschema',
         shell=True,
-        stdin=None).communicate()
+        stdin=None
+    )
 
 
 def clean_environment():
@@ -43,29 +45,33 @@ def clean_environment():
     # Remove the test user
     # Uninstall the example package
     print("Cleaning the test environment ...")
-    Popen(
+    check_call(
         'univention-install -y univention-directory-manager-module-example',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None).communicate()
-    Popen(
+        stdin=None
+    )
+    check_call(
         'udm test/ip_phone remove --dn "cn=test111,$(ucr get ldap/base)"',
         shell=True,
-        stdin=None).communicate()
-    Popen(
+        stdin=None
+    )
+    check_call(
         'apt-get -y remove univention-directory-manager-module-example',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None).communicate()
+        stdin=None
+    )
 
 
 def remove_schema():
     # Remove the schema
-    Popen(
+    check_call(
         'apt-get -y remove univention-directory-manager-module-example-schema',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None).communicate()
+        stdin=None
+    )
     print("Removed schema")
 
 
