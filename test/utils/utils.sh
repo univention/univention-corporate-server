@@ -144,6 +144,8 @@ jenkins_updates () {
 	[ -n "${RELEASE_UPDATE:-}" ] && release_update="$RELEASE_UPDATE"
 	[ -n "${ERRATA_UPDATE:-}" ] && errata_update="$ERRATA_UPDATE"
 
+	ucr set repository/online/verify=false
+
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 	echo "release_update=$release_update"
