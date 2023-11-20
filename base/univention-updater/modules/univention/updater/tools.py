@@ -54,7 +54,7 @@ import urllib.request
 from http import client as httplib
 from tempfile import TemporaryDirectory
 from typing import (  # noqa: F401
-    Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Text, Tuple, Type, TypeVar, Union,
+    Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, TypeVar, Union,
 )
 
 from typing_extensions import Literal  # noqa: F401
@@ -1438,7 +1438,7 @@ class UniventionUpdater(object):
         return components
 
     def component_update_get_packages(self):
-        # type: () -> Tuple[List[Tuple[Text, Text]], List[Tuple[Text, Text, Text]], List[Tuple[Text, Text]]]
+        # type: () -> Tuple[List[Tuple[str, str]], List[Tuple[str, str, str]], List[Tuple[str, str]]]
         """
         Return tuple with list of (new, upgradeable, removed) packages.
 
@@ -1473,9 +1473,9 @@ class UniventionUpdater(object):
         if proc.returncode == 100:
             raise UnmetDependencyError(stderr)
 
-        new_packages = []  # type: List[Tuple[Text, Text]]
-        upgraded_packages = []  # type: List[Tuple[Text, Text, Text]]
-        removed_packages = []  # type: List[Tuple[Text, Text]]
+        new_packages = []  # type: List[Tuple[str, str]]
+        upgraded_packages = []  # type: List[Tuple[str, str, str]]
+        removed_packages = []  # type: List[Tuple[str, str]]
         for line in stdout.splitlines():
             line_split = line.split(' ')
             if line.startswith('Inst '):
