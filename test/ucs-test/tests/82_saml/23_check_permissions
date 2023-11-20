@@ -15,11 +15,11 @@
 
 check_perm -e /etc/idp-ldap-user.secret 0640 root "DC Backup Hosts" || RETVAL=110
 
-for file in /etc/simplesamlphp/authsources.php /etc/simplesamlphp/ucs-sso.$(ucr get domainname)-idp-certificate.key; do
+for file in /etc/simplesamlphp/authsources.php /etc/simplesamlphp/$(ucr get 'ucs/server/sso/fqdn')-idp-certificate.key; do
 	check_perm -e "$file" 0640 root samlcgi || RETVAL=110
 done
 
-check_perm -e /etc/simplesamlphp/ucs-sso.$(ucr get domainname)-idp-certificate.crt 0644 root samlcgi || RETVAL=110
+check_perm -e /etc/simplesamlphp/$(ucr get 'ucs/server/sso/fqdn')-idp-certificate.crt 0644 root samlcgi || RETVAL=110
 check_perm -e /etc/simplesamlphp/serviceprovider_enabled_groups.json 0600 samlcgi samlcgi || RETVAL=110
 
 check_perm -e /var/lib/simplesamlphp/secrets.inc.php 0640 samlcgi samlcgi || RETVAL=110

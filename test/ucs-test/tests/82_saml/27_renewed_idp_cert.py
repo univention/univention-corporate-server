@@ -20,17 +20,17 @@ ucr.load()
 
 
 def renew_sso_cert():
-    domainname = ucr.get('domainname')
-    subprocess.check_call(['univention-certificate', 'new', '-name', "ucs-sso." + domainname, '-days', '100'])
+    sso_fqdn = ucr['ucs/server/sso/fqdn']
+    subprocess.check_call(['univention-certificate', 'new', '-name', sso_fqdn, '-days', '100'])
     subprocess.check_call([
         "cp",
-        f"/etc/univention/ssl/ucs-sso.{domainname}/cert.pem",
-        f"/etc/simplesamlphp/ucs-sso.{domainname}-idp-certificate.crt",
+        f"/etc/univention/ssl/{sso_fqdn}/cert.pem",
+        f"/etc/simplesamlphp/{sso_fqdn}-idp-certificate.crt",
     ])
     subprocess.check_call([
         "cp",
-        f"/etc/univention/ssl/ucs-sso.{domainname}/private.key",
-        f"/etc/simplesamlphp/ucs-sso.{domainname}-idp-certificate.key",
+        f"/etc/univention/ssl/{sso_fqdn}/private.key",
+        f"/etc/simplesamlphp/{sso_fqdn}-idp-certificate.key",
     ])
     subprocess.check_call(["deb-systemd-invoke", "restart", "univention-saml"])
 

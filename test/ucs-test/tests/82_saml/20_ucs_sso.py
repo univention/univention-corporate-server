@@ -15,7 +15,7 @@ def _check_record_type(record_type, ucr):
     print(f'Checking record type: {record_type}')
     dns_entries = set()
     try:
-        for addr in dns.resolver.query('ucs-sso.%s' % ucr.get('domainname'), record_type):
+        for addr in dns.resolver.query(ucr['ucs/server/sso/fqdn'], record_type):
             dns_entries.add(addr.address)
     except dns.resolver.NoAnswer:
         pass
