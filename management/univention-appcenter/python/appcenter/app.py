@@ -35,6 +35,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from __future__ import annotations
+
 import inspect
 import os
 import os.path
@@ -42,7 +44,6 @@ import platform
 import re
 from configparser import NoOptionError, NoSectionError, RawConfigParser
 from copy import copy
-from distutils.version import LooseVersion
 from itertools import zip_longest
 from urllib.parse import urlsplit
 from weakref import ref
@@ -68,21 +69,140 @@ CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 app_logger = get_base_logger().getChild('apps')
 
 
-# LooseVersion changed the internal order function that may now raise
-# TypeError on LooseVersion("1.0.1") < LooseVersion("1.0-1")
-class LooseVersion(LooseVersion):
-    def _cmp(self, other):
-        for i, j in zip_longest(self.version, other.version, fillvalue=''):
-            if not isinstance(i, type(j)):
+class LooseVersion:
+    """
+    Represents a loose version number for comparison purposes.
+    LooseVersion is a class that allows comparison of version numbers in a
+    loose manner. It breaks down version strings into components, considering
+    all alphanumeric parts, and provides methods for comparison.
+    The comparison is based on the order of components and is case-sensitive.
+
+    Examples:
+    >>> LooseVersion("1.1") < LooseVersion("1.2")
+    True
+    >>> LooseVersion("1.1") > LooseVersion("1.2")
+    False
+    >>> LooseVersion("1.1") <= LooseVersion("1.2")
+    True
+    >>> LooseVersion("1.1") >= LooseVersion("1.2")
+    False
+    >>> LooseVersion("1.1") == LooseVersion("1.2")
+    False
+    >>> LooseVersion("1.1a") < LooseVersion("1.1b")
+    True
+    >>> LooseVersion("1.1A") < LooseVersion("1.1B")
+    True
+    >>> LooseVersion("1.1A") < LooseVersion("1.1a")
+    True
+    >>> LooseVersion("1.1a") < LooseVersion("1.1b")
+    True
+    >>> LooseVersion("1.1a") < LooseVersion("1.2")
+    True
+    >>> LooseVersion("5.2 v3") < LooseVersion("5.2 v10")
+    True
+    >>> LooseVersion("1.0.1") == LooseVersion("1.0-1")
+    True
+    >>> LooseVersion("1.0.0") != LooseVersion("1.0-1")
+    True
+    >>> LooseVersion("1.0.1") == "1.0-1"
+    True
+    >>> LooseVersion("1.0-10") >= "1.0-9"
+    True
+    >>> LooseVersion("1.0-10") < "1.0-90"
+    True
+    >>> "1.0.2" <= LooseVersion("1.0.2")
+    True
+    """
+
+    RE_COMPONENT_SEPARATOR = re.compile(r'(\d+ | [a-z]+ | [A-Z]+)', re.VERBOSE)
+
+    def __init__(self, version: LooseVersion | str):
+        self._version = str(version)
+        self._components = []
+        self._parse()
+
+    def __str__(self) -> str:
+        return self._version
+
+    def __repr__(self) -> str:
+        return f"LooseVersion('{self}')"
+
+    def __eq__(self, other: LooseVersion | str) -> bool:
+        return self._compare(LooseVersion(other)) == 0 if isinstance(other, (LooseVersion, str)) else NotImplemented
+
+    def __lt__(self, other: LooseVersion | str) -> bool:
+        return self._compare(LooseVersion(other)) < 0 if isinstance(other, (LooseVersion, str)) else NotImplemented
+
+    def __le__(self, other: LooseVersion | str) -> bool:
+        return self._compare(LooseVersion(other)) <= 0 if isinstance(other, (LooseVersion, str)) else NotImplemented
+
+    def __gt__(self, other: LooseVersion | str) -> bool:
+        return self._compare(LooseVersion(other)) > 0 if isinstance(other, (LooseVersion, str)) else NotImplemented
+
+    def __ge__(self, other: LooseVersion | str) -> bool:
+        return self._compare(LooseVersion(other)) >= 0 if isinstance(other, (LooseVersion, str)) else NotImplemented
+
+    def _parse(self) -> None:
+        """
+        Parse the version string and populate the self._components list.
+
+        >>> v = LooseVersion('1.23 v40-2')
+        >>> v._components
+        [1, 23, 'v', 40, 2]
+        """
+        self._components = [self._try_int(obj) for obj in self.RE_COMPONENT_SEPARATOR.split(self._version) if obj.isalnum()]
+
+    def _compare(self, other: LooseVersion) -> int:
+        """
+        Compare two LooseVersion objects and return -1 if self < other,
+        0 if self == other, and 1 if self > other.
+
+        >>> v1 = LooseVersion('1.5.1')
+        >>> v2 = LooseVersion('1.5.2b2')
+        >>> v1._compare(v2)
+        -1
+        >>> examples = [
+        ...     ('5.0-6+e897', '5.0-6+e12', 1),
+        ...     ('5.2 v3', '5.2 v10', -1),
+        ...     ('5.2 v10.123', '5.2 v10', 1),
+        ...     ('20.1a-44', '20.1-44', 1),
+        ...     ('5.v v3', '5.2 v10', 1),
+        ...     ('5v3', '5v1', 1),
+        ...     ('3.2.pl0', '3.1.1.6', 1),
+        ...     ('2g6', '11g', -1),
+        ...     ('0.960923', '2.2beta29', -1),
+        ...     ('1.13++', '5.5.kw', -1),
+        ...     ('3.4j', '1996.07.12', -1),
+        ...     ('8.02-0', '8.02.0', 0),
+        ...     ('161', '3.10a', 1),
+        ...     ('1.5.1', '1.5.2b2', -1),
+        ...     ('5.2 v10#$12/3', '5.2 v10.12.33', -1),
+        ...     ('5.2-1', '5.2', 1),
+        ... ]
+        >>> all(LooseVersion(v1)._compare(LooseVersion(v2)) == result for v1, v2, result in examples)
+        True
+        """
+        for i, j in zip_longest(self._components, other._components):
+            if not isinstance(i, type(j)) and i is not None and j is not None:
                 i = str(i)
                 j = str(j)
             if i == j:
                 continue
+            elif i is None:
+                return -1
+            elif j is None:
+                return 1
             elif i < j:
                 return -1
-            else:  # i > j
+            elif i > j:
                 return 1
         return 0
+
+    def _try_int(self, string: str) -> int | str:
+        try:
+            return int(string)
+        except ValueError:
+            return string
 
 
 class CaseSensitiveConfigParser(RawConfigParser):
