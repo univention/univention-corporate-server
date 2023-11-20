@@ -210,11 +210,9 @@ Multi-Language support
 RESTful architecture
 --------------------
 
-The *UDM HTTP REST API* adheres to the *RESTful* architecture as defined by Roy
-T. Fielding in `Architectural Styles and the Design of Network-based Software
-Architectures
-<https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm>`_. The
-term *REST* stands for Representation State Transfer and includes six
+The *UDM HTTP REST API* adheres to the *RESTful* architecture as defined in
+:cite:t:`fielding-rest`. The term *REST* stands for **Re**\ presentation **S**\
+:spelling:ignore:`tate` **T**\ :spelling:ignore:`ransfer` and includes six
 architectural and four interface constraints that make a service *RESTful*.
 
 .. seealso::
