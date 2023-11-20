@@ -189,10 +189,10 @@ class AppCenter:
     def close_info_dialog_if_visisble(self):
         # type: () -> None
         try:
-            self.selenium.wait_for_text(_('Do not show this message again'), timeout=15)
+            self.selenium.wait_for_text(_('Do not show this message again'), timeout=5)
             self.selenium.click_button(_('Continue'))
         except TimeoutException:
-            print('"Do not show this message again" not detected in 15 seconds')
+            pass
         self.selenium.wait_until_all_standby_animations_disappeared()
 
 
