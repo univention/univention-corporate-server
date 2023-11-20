@@ -8,6 +8,7 @@
 ##  - univention-directory-manager-tools
 
 import os
+import subprocess
 import sys
 import time
 
@@ -30,6 +31,8 @@ def main():
         sys.exit(137)
 
     with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
+        ucr.handler_set(['mail/dovecot/auth/cache_size=0'])
+        subprocess.call(['systemctl', 'restart', 'dovecot'])
         fqdn = '%(hostname)s.%(domainname)s' % ucr
         user_addr1 = random_email()
         user_dn1, user_name1 = udm.create_user(
