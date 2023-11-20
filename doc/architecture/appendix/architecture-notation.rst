@@ -280,6 +280,43 @@ ArchiMate concepts as shown in
    `ArchiMate motivation elements <archimate-motivation-elements_>`_
       for the specification of the motivation elements
 
+.. _notation-archimate-strategy-layer:
+
+Strategy elements
+-----------------
+
+.. index::
+   single: archimate; strategy elements
+
+The strategy elements are typically used to model the strategic direction and
+choices of an enterprise, as far as it concerns the impact on its architecture.
+They express how the enterprise wants to create value for its stakeholders, the
+capabilities it needs, the resources needed to support these capabilities, as
+well as how it plans to configure and use these capabilities and resources to
+achieve its aims.
+
+The strategy elements belong to the `ArchiMate full framework
+<archimate-full_>`_. From the strategy elements the document uses the ArchiMate
+concepts as shown in
+:numref:`notation-archimate-strategy-layer-used-concepts`.
+
+.. _notation-archimate-strategy-layer-used-concepts:
+
+.. figure:: /images/ArchiMate-strategy-layer.*
+   :width: 200 px
+
+   ArchiMate strategy elements used in this document
+
+.. admonition:: Meanings in one sentence
+
+   `Summary of Strategy Elements <archimate-strategy-elements-summary_>`_
+      for a table with a summary of strategy elements
+
+.. seealso::
+
+   `ArchiMate strategy elements <archimate-strategy-elements_>`_
+      for the specification of the strategy elements
+
 .. _notation-archimate-relationships:
 
 Relationships

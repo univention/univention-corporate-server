@@ -21,6 +21,8 @@
 .. _archimate-relations: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Relationships-and-Relationship-Connectors.html
 .. _archimate-relations-derivations: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Relationships-and-Relationship-Connectors.html#sec-Derivation-of-Relationships
 .. _archimate-relations-summary: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Relationships-and-Relationship-Connectors.html#sec-Summary-of-Relationships
+.. _archimate-strategy-elements: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Strategy-Layer.html
+.. _archimate-strategy-elements-summary: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Strategy-Layer.html#sec-Summary-of-Strategy-Elements
 .. _archimate-technology-layer: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Technology-Layer.html
 .. _archimate-technology-layer-summary: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Technology-Layer.html#sec-Summary-of-Technology-Layer-Elements
 .. _archimate-why: https://www.archimatetool.com/blog/2018/09/25/why-archimate/
