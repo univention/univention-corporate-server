@@ -124,10 +124,14 @@ class Phase:
         >>> Phase(None) > Phase(None)
         False
         """
-        return (self.priority, str(self)) < (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+        if isinstance(other, Phase):
+            return (self.priority, str(self)) < (other.priority, str(other))
+        raise TypeError(type(self).__name__)
 
     def __le__(self, other: object) -> object:
-        return (self.priority, str(self)) <= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+        if isinstance(other, Phase):
+            return (self.priority, str(self)) <= (other.priority, str(other))
+        raise TypeError(type(self).__name__)
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, Phase) and (self.priority, str(self)) == (other.priority, str(other))
@@ -136,10 +140,14 @@ class Phase:
         return not self.__eq__(other)
 
     def __ge__(self, other: object) -> object:
-        return (self.priority, str(self)) >= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+        if isinstance(other, Phase):
+            return (self.priority, str(self)) >= (other.priority, str(other))
+        raise TypeError(type(self).__name__)
 
     def __gt__(self, other: object) -> object:
-        return (self.priority, str(self)) > (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+        if isinstance(other, Phase):
+            return (self.priority, str(self)) > (other.priority, str(other))
+        raise TypeError(type(self).__name__)
 
     def __str__(self) -> str:
         name = self.__class__.__name__

@@ -70,7 +70,7 @@ from .errors import (
 from .repo_url import UcsRepoUrl
 
 
-_TS = TypeVar("_TS", bound="_UCSServer")
+_TS = TypeVar("_TS", bound="_UCSServer")  # noqa: PYI018
 
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
@@ -623,7 +623,7 @@ class UCSHttpServer(_UCSServer):
         uri = self.join(rel)
         if self.baseurl.username and self.baseurl.password:
             UCSHttpServer.password_manager.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
-        req = urllib.request.Request(uri)
+        req = urllib.request.Request(uri)  # noqa: S310
 
         def get_host():
             # type: () -> str
@@ -827,10 +827,14 @@ class Component(object):
         self.name = name
 
     def __lt__(self, other):
-        return self.name < other.name if isinstance(other, Component) else NotImplemented
+        if isinstance(other, Component):
+            return self.name < other.name
+        raise TypeError(type(self).__name__)
 
     def __le__(self, other):
-        return self.name <= other.name if isinstance(other, Component) else NotImplemented
+        if isinstance(other, Component):
+            return self.name <= other.name
+        raise TypeError(type(self).__name__)
 
     def __eq__(self, other):
         return isinstance(other, Component) and self.name == other.name
@@ -839,10 +843,14 @@ class Component(object):
         return not isinstance(other, Component) or self.name != other.name
 
     def __ge__(self, other):
-        return self.name >= other.name if isinstance(other, Component) else NotImplemented
+        if isinstance(other, Component):
+            return self.name >= other.name
+        raise TypeError(type(self).__name__)
 
     def __gt__(self, other):
-        return self.name > other.name if isinstance(other, Component) else NotImplemented
+        if isinstance(other, Component):
+            return self.name > other.name
+        raise TypeError(type(self).__name__)
 
     def __hash__(self):
         return hash(self.name)

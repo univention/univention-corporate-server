@@ -265,10 +265,14 @@ class UCSVersion:  # pylint: disable-msg=R0903
         return f'{self.__class__.__name__}({self.__str__()!r})'
 
     def __lt__(self, other):  # type: (Any) -> object
-        return self.ver < other.ver if isinstance(other, UCSVersion) else NotImplemented
+        if isinstance(other, UCSVersion):
+            return self.ver < other.ver
+        raise TypeError()
 
     def __le__(self, other):  # type: (Any) -> object
-        return self.ver <= other.ver if isinstance(other, UCSVersion) else NotImplemented
+        if isinstance(other, UCSVersion):
+            return self.ver <= other.ver
+        raise TypeError()
 
     def __eq__(self, other):  # type: (Any) -> bool
         return self.ver == other.ver if isinstance(other, UCSVersion) else False
@@ -277,10 +281,14 @@ class UCSVersion:  # pylint: disable-msg=R0903
         return self.ver != other.ver if isinstance(other, UCSVersion) else False
 
     def __ge__(self, other):  # type: (Any) -> object
-        return self.ver >= other.ver if isinstance(other, UCSVersion) else NotImplemented
+        if isinstance(other, UCSVersion):
+            return self.ver >= other.ver
+        raise TypeError()
 
     def __gt__(self, other):  # type: (Any) -> object
-        return self.ver > other.ver if isinstance(other, UCSVersion) else NotImplemented
+        if isinstance(other, UCSVersion):
+            return self.ver > other.ver
+        raise TypeError()
 
     def match(self, other):  # type: (UCSVersion) -> bool
         """

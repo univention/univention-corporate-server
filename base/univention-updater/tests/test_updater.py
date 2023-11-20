@@ -669,12 +669,16 @@ class TestComponents(object):
         assert b >= b  # noqa: PLR0124
         assert b >= a
         assert b > a
-        assert a.__lt__(None) is NotImplemented
-        assert a.__le__(None) is NotImplemented
+        with pytest.raises(TypeError):
+            a.__lt__(None)
+        with pytest.raises(TypeError):
+            a.__le__(None)
+        with pytest.raises(TypeError):
+            a.__ge__(None)
+        with pytest.raises(TypeError):
+            a.__gt__(None)
         assert a.__eq__(None) is False
         assert a.__ne__(None) is True
-        assert a.__ge__(None) is NotImplemented
-        assert a.__gt__(None) is NotImplemented
 
     def test_hash(u):
         a, b, bb = (U.Component(u, c) for c in "abb")

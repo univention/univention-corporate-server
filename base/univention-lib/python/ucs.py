@@ -102,7 +102,9 @@ class UCS_Version(object):
         >>> UCS_Version((1, 2, 3)) < UCS_Version((1, 2, 3))
         False
         """
-        return self.mmp < other.mmp if isinstance(other, UCS_Version) else NotImplemented
+        if isinstance(other, UCS_Version):
+            return self.mmp < other.mmp
+        raise TypeError(type(self).__name__)
 
     def __le__(self, other):
         # type: (UCS_Version) -> bool
@@ -112,7 +114,9 @@ class UCS_Version(object):
         >>> UCS_Version((1, 2, 3)) <= UCS_Version((1, 0, 0))
         False
         """
-        return self.mmp <= other.mmp if isinstance(other, UCS_Version) else NotImplemented
+        if isinstance(other, UCS_Version):
+            return self.mmp <= other.mmp
+        raise TypeError(type(self).__name__)
 
     def __eq__(self, other):
         # type: (object) -> bool
@@ -142,7 +146,9 @@ class UCS_Version(object):
         >>> UCS_Version((1, 0, 0)) >= UCS_Version((1, 2, 3))
         False
         """
-        return self.mmp >= other.mmp if isinstance(other, UCS_Version) else NotImplemented
+        if isinstance(other, UCS_Version):
+            return self.mmp >= other.mmp
+        raise TypeError(type(self).__name__)
 
     def __gt__(self, other):
         # type: (UCS_Version) -> bool
@@ -152,7 +158,9 @@ class UCS_Version(object):
         >>> UCS_Version((1, 2, 3)) > UCS_Version((1, 0, 0))
         True
         """
-        return self.mmp > other.mmp if isinstance(other, UCS_Version) else NotImplemented
+        if isinstance(other, UCS_Version):
+            return self.mmp > other.mmp
+        raise TypeError(type(self).__name__)
 
     def set(self, version):
         # type: (str) -> None

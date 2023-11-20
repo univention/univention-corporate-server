@@ -82,13 +82,17 @@ def test_cmp(ucs, v):
     assert v != ucs.UCS_Version('1.0-0')
 
 
-def test_cmp_type(ucs, v):
-    return v.__lt__(None) is NotImplemented
-    return v.__le__(None) is NotImplemented
-    return v.__eq__(None) is False
-    return v.__ne__(None) is True
-    return v.__ge__(None) is NotImplemented
-    return v.__gt__(None) is NotImplemented
+def test_cmp_type(v):
+    with pytest.raises(TypeError):
+        v.__lt__(None)
+    with pytest.raises(TypeError):
+        v.__le__(None)
+    with pytest.raises(TypeError):
+        v.__ge__(None)
+    with pytest.raises(TypeError):
+        v.__gt__(None)
+    assert v.__eq__(None) is False
+    assert v.__ne__(None) is True
 
 
 @pytest.mark.parametrize("txt", ["5.0.0", "5-0-0", "4.0", "newest version", [4, 4, 5, 0]])
