@@ -158,6 +158,9 @@ deactivate_old_package_sources () {
 }
 deactivate_old_package_sources
 
+# univention/ucs#1945 - disable php7.4
+a2dismod php7.4 || true
+
 # Pre-upgrade
 preups=""
 ${update_commands_update:-false} >&3 2>&3
