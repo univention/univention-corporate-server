@@ -161,6 +161,16 @@ deactivate_old_package_sources
 # univention/ucs#1945 - disable php7.4
 a2dismod php7.4 || true
 
+deactivate_old_package_sources () {
+	# disable UCS 5.1 package sources to avoid mixing package versions during update
+	local sources_lists
+	sources_lists=("/etc/apt/sources.list.d/15_ucs-online-version.list" "/etc/apt/sources.list.d/20_ucs-online-component.list")
+	for sources_list in "${sources_lists[@]}"; do
+		mv "$sources_list" "${sources_list}.upgrade520-backup"
+	done
+}
+deactivate_old_package_sources
+
 # Pre-upgrade
 preups=""
 ${update_commands_update:-false} >&3 2>&3
