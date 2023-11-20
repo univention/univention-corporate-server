@@ -95,8 +95,8 @@ usage () {
 	echo "  ucs-*-create"
 	echo "    <>${BOLD}EXACT_MATCH${NORM}          - if true, add -e (only look for exact matches in template names) (default: $exact_match)"
 	echo "    <>${BOLD}SHUTDOWN${NORM}             - if true, add -s (shutdown VMs after run) (default: $shutdown)"
-	echo "    <>${BOLD}HALT${NORM}                 - if true, add -t (Remove VMs after run) (default: true for jenkins, otherwise false)"
-	echo "    <>${BOLD}TERMINATE_ON_SUCCESS${NORM} - if true, add --terminate-on-success (Remove VMs after run only if setup has been successful)"
+	echo "    <>${BOLD}TERMINATE${NORM}            - if true, add -t (Remove VMs after run) (default: false)"
+	echo "    <>${BOLD}TERMINATE_ON_SUCCESS${NORM} - if true, add --terminate-on-success (Remove VMs after run only if setup has been successful, true for jenkins, otherwise false)"
 	echo "                           (default: true for jenkins, otherwise false)"
 	echo "    <>${BOLD}REPLACE${NORM}              - if true, add --replace (if set, overwrite previous VMs with same name)"
 	echo "                           (default: true for jenkins, otherwise false)"
@@ -219,15 +219,15 @@ fi
 if [ -n "${JENKINS_HOME:-}" ]
 then
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
-	export HALT="${HALT:=true}"
+	export TERMINATE="${TERMINATE:=false}"
 	export KVM_USER="build"
 	# in Jenkins do not terminate VMs if setup is broken,
 	# so we can investigate the situation and use replace
-	# to overwrite old VMs
+	# to overwrite old VMs, also the option there is called HALT
 	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=$HALT}"
 	export REPLACE="${REPLACE:=true}"
 else
-	export HALT="${HALT:=false}"
+	export TERMINATE="${TERMINATE:=false}"
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=false}"
 	export KVM_USER="${KVM_USER:=$USER}"
 	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
@@ -335,7 +335,7 @@ fi
 cmd+=("$exe" -c "$CFG")
 # TODO, add debug mode as switch by env variable or possibly there will be verbose modes instead
 # [ "$exe" = "ucs-openstack-create" ] && cmd+=(--debug)
-"$HALT" && cmd+=("-t")
+"$TERMINATE" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
 "$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
 "$EXACT_MATCH" && cmd+=("-e")
