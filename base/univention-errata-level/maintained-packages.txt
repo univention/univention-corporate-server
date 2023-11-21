@@ -126,7 +126,7 @@ brltty-x11
 brotli
 bsd-mailx
 bsdcpio
-bsdmainutils
+bsdextrautils
 bsdtar
 bsdutils
 bterm-unifont
@@ -2939,6 +2939,7 @@ mokutil
 monitoring-plugins
 monitoring-plugins-basic
 monitoring-plugins-common
+monitoring-plugins-contrib
 monitoring-plugins-standard
 mosquitto
 mosquitto-clients
@@ -2957,7 +2958,6 @@ myspell-de-de
 mysql-common
 nagios-nrpe-plugin
 nagios-nrpe-server
-nagios-plugins-contrib
 nano
 nano-tiny
 nbd-client
@@ -3937,7 +3937,6 @@ univention-errata-level
 univention-fetchmail
 univention-fetchmail-schema
 univention-firewall
-univention-foomatic-ppds
 univention-group-membership-cache
 univention-grub
 univention-heimdal-common
