@@ -1,3 +1,10 @@
+ucs-test (10.0.19-30) unstable; urgency=medium
+
+  * Bug #56054: Search for PID exactly in ProcessOverview module and add
+    fixture for creating the sleep process
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 21 Nov 2023 11:25:55 +0100
+
 ucs-test (10.0.19-29) unstable; urgency=low
 
   * Bug #55708: Fix updater test

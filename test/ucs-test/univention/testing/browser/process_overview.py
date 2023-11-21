@@ -107,7 +107,7 @@ class ProcessOverview:
         """
         process_pid = str(process.pid)
         self.search("PID", process_pid)
-        self.page.get_by_role("gridcell", name=str(process_pid)).click()
+        self.page.get_by_role("gridcell", name=str(process_pid), exact=True).click()
 
         button = self.page.get_by_role("button", name=f"{_('Force termination') if force else _('Terminate')}")
         button.click()

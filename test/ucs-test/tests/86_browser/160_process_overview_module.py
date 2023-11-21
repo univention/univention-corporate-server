@@ -11,6 +11,7 @@
 ## exposure: dangerous
 
 import subprocess
+from typing import Generator
 
 import pytest
 
@@ -37,13 +38,20 @@ def test_process_overview_module(umc_browser_test: UMCBrowserTest):
     assert all(cell.inner_text() == "root" for cell in cells)
 
 
+@pytest.fixture()
+def sleep_process() -> Generator[subprocess.Popen, None, None]:
+    p = subprocess.Popen(["sleep", "900"])
+    yield p
+    if p.poll() is None:
+        p.kill()
+
+
 @pytest.mark.parametrize("force", [False, True])
-def test_kill_process(force: bool, umc_browser_test: UMCBrowserTest):
+def test_kill_process(force: bool, umc_browser_test: UMCBrowserTest, sleep_process: subprocess.Popen):
     process_overview = ProcessOverview(umc_browser_test)
     process_overview.navigate()
 
-    p = subprocess.Popen(["sleep", "5000"])
-    process_overview.ensure_process(p, "PID")
-    process_overview.ensure_process(p, "Command")
-    process_overview.kill_process(p, force)
-    assert p.wait() == -9 if force else -15
+    process_overview.ensure_process(sleep_process, "PID")
+    process_overview.ensure_process(sleep_process, "Command")
+    process_overview.kill_process(sleep_process, force)
+    assert sleep_process.wait() == -9 if force else -15
