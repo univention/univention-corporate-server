@@ -117,7 +117,7 @@ class CouldNotConnect(Exception):
 class _ModuleConnection(object):
 
     def __init__(self):
-        self._client = tornado.httpclient.AsyncHTTPClient()
+        self._client = tornado.httpclient.AsyncHTTPClient(force_instance=True)
 
     async def connect(self, connect_retries=0):
         pass
