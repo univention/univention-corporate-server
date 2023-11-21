@@ -76,7 +76,7 @@ Package: univention-monitoring-raid
 Architecture: any
 Depends:
  mdadm,
- nagios-plugins-contrib,
+ monitoring-plugins-contrib,
  univention-directory-manager-tools,
  ${misc:Depends},
 Description: raid plugin
