@@ -73,8 +73,8 @@ usage () {
 	echo "  ucs-*-create"
 	echo "    EXACT_MATCH          - if true, add -e (only look for exact matches in template names) option to ucs-kvm-create (default: $exact_match)"
 	echo "    SHUTDOWN             - if true, add -s (shutdown VMs after run) option to ucs-*-create (default: $shutdown)"
-	echo "    HALT                 - if true, add -t (Terminate VMs after run) option to ucs-*-create (default: true for jenkins, otherwise false)"
-	echo "    TERMINATE_ON_SUCCESS - if true, add --terminate-on-success ( Terminate VMs after run only if setup has been successful)"
+	echo "    TERMINATE            - if true, add -t (Remove VMs after run) (default: false)"
+	echo "    TERMINATE_ON_SUCCESS - if true, add --terminate-on-success (Remove VMs after run only if setup has been successful, true for jenkins, otherwise false)"
 	echo "                           to ucs-*-create (default: true for jenkins, otherwise false)"
 	echo "    REPLACE              - if true, add --replace (if set, tries to terminate an instance similar to the to be created one)"
 	echo "                           to ucs-*-create (default: true for jenkins, otherwise false)"
@@ -237,7 +237,7 @@ export NETINSTALL_IP2=$((NETINSTALL_IP1 +1))
 if [ -n "${JENKINS_HOME:-}" ]
 then
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
-	export HALT="${HALT:=true}"
+	export TERMINATE="${TERMINATE:=false}"
 	export KVM_USER="build"
 	# in Jenkins do not terminate VMs if setup is broken,
 	# so we can investigate the situation and use replace
@@ -245,10 +245,10 @@ then
 	export TERMINATE_ON_SUCCESS="${HALT:=true}"
 	export REPLACE="${REPLACE:=true}"
 else
-	export HALT="${HALT:=false}"
+	export TERMINATE="${TERMINATE:=false}"
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=false}"
 	export KVM_USER="${KVM_USER:=$USER}"
-	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
+	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=$HALT}"
 	export REPLACE="${REPLACE:=false}"
 fi
 
@@ -338,7 +338,7 @@ fi
 "$debug" && "$docker" && cmd+=("bash" '-s' '--')
 
 cmd+=("$exe" -c "$CFG")
-"$HALT" && cmd+=("-t")
+"$TERMINATE" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
 "$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
 "$EXACT_MATCH" && cmd+=("-e")
