@@ -10,3 +10,6 @@ desc: |
    first file in the directory and there is already a local schema file with
    the same name which was not registered via LDAP.
 bug: [56857]
+erratum: 882
+announced: 2023-11-21
+support: core
