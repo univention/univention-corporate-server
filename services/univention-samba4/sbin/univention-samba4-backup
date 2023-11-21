@@ -95,7 +95,11 @@ if [ ! -d $WHERE ]; then
 fi
 install -o root -g root -m 700 -d "$WHERE"
 
+BACKUPTMPDIR="${TMPDIR:-${TEMP:-${TMP:-/tmp}}}/univention-samba4-backup"
+install -o root -g root -m 700 -d "BACKUPTMPDIR"
+
 umask 0026 # samba-tool updates private/sam.ldb.d/metadata.tdb
-samba-tool domain backup offline --targetdir="$WHERE" || die "ERROR: samba-tool domain backup failed"
+TMPDIR="$BACKUPTMPDIR" samba-tool domain backup offline --targetdir="$WHERE" || { rm -rf "$BACKUPTMPDIR"; die "ERROR: samba-tool domain backup failed"; }
+
 chmod 600 "$WHERE"/samba-backup-*.bz2
 clean_old_backups 'samba/samba-backup-.*.bz2' "$DAYS"
