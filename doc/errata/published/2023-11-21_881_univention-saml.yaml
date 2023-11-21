@@ -10,3 +10,6 @@ desc: |
    therefore replicated to all servers in the domain to ease the upgrade to
    UCS 5.2.
 bug: [56824]
+erratum: 881
+announced: 2023-11-21
+support: core
