@@ -34,7 +34,7 @@ def ucr_filter_files(registered_files):
 
         checklist.append(f)
 
-    output = ""
+    output = "\n"
     if checklist:
         for fn in checklist:
             with open('/etc/univention/templates/files/etc/ldap/slapd.conf.d/%s' % (fn,)) as f:
