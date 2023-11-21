@@ -27,7 +27,7 @@ Description: UCS - bootsplash
 Package: univention-welcome-screen
 Architecture: all
 Depends:
- bsdmainutils,
+ bsdextrautils,
  gettext-base,
  netpbm,
  univention-bootsplash (= ${binary:Version}),
