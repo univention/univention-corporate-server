@@ -2935,7 +2935,6 @@ mesa-opencl-icd
 mesa-va-drivers
 mesa-vdpau-drivers
 mesa-vulkan-drivers
-mime-support
 mokutil
 monitoring-plugins
 monitoring-plugins-basic
