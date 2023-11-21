@@ -11,7 +11,7 @@ Package: univention-nagios-raid
 Architecture: all
 Depends:
  mdadm,
- nagios-plugins-contrib,
+ monitoring-plugins-contrib,
  univention-directory-manager-tools (>> 7.0.147),
  univention-monitoring-raid,
  univention-nagios-client,

@@ -110,7 +110,6 @@
 /services/univention-apache/ @fbest
 /services/univention-bind/ @jbroders
 /services/univention-dhcp/ @phahn
-/services/univention-foomatic-ppds/ @fbotner
 /services/univention-ldb-modules/ @arequate @fbest @jbremer
 # /services/univention-mariadb/
 /services/univention-net-installer/ @phahn
