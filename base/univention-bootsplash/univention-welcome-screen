@@ -35,7 +35,9 @@
 
 eval "$(ucr shell)"
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 
 
@@ -52,35 +54,32 @@ remove_welcome_screen () {
 }
 
 check_capabilities () {
-	quit=false
-	event="$(grep -E 'Handlers|EV=' /proc/bus/input/devices | grep -B1 'EV=120013' | grep -Eo 'event[0-9]+')"
-	keyboards=""
-	for e in $event; do
-		if [ -e "/dev/input/$e" ]; then
-			keyboards+="/dev/input/$e "
-		fi
+	local dev quit=''
+	keyboards=()
+	for dev in /dev/input/event*
+	do
+		[ -c "$dev" ] &&
+			udevadm info --query=property --name "$dev" | grep -Fqx ID_INPUT_KEYBOARD=1 &&
+			keyboards+=("$dev")
 	done
-	test -z "$keyboards" && quit=true && msg="no keyboard found, exiting"
-	test -e /etc/X11/default-display-manager && quit=true && msg="a display-manager is installed/configured, exiting"
-	if ! grep -q -w splash /proc/cmdline; then
-		quit=true
-		msg="bootsplash deactivated, exiting"
-	fi
-	if is_ucr_false welcome-screen/autostart; then
-		quit=true
-		msg="welcome screen disabled, exiting"
-	fi
-	if [ "ucs" != "$bootsplash_theme" -a "ucs-light" != "$bootsplash_theme" -a "ucs-appliance-dark" != "$bootsplash_theme" -a "ucs-appliance-light" != "$bootsplash_theme" ]; then
-		quit=true
-		msg="theme does not support welcome screen, exiting"
-	fi
-	if is_ucr_true system/setup/boot/start; then
-		quit=true
-		msg="system/setup/boot/start is activated, exiting"
-	fi
+	[ -n "${keyboards[*]}" ] ||
+		quit="no keyboard found, exiting"
+	[ -e /etc/X11/default-display-manager ] &&
+		quit="a display-manager is installed/configured, exiting"
+	grep -q -w splash /proc/cmdline ||
+		quit="bootsplash deactivated, exiting"
+	is_ucr_false welcome-screen/autostart &&
+		quit="welcome screen disabled, exiting"
 
-	if $quit; then
-		echo $msg
+	case "${bootsplash_theme:-}" in
+	ucs|ucs-light|ucs-appliance-dark|ucs-appliance-light) ;;
+	*) quit="theme does not support welcome screen, exiting" ;;
+	esac
+	is_ucr_true system/setup/boot/start &&
+		quit="system/setup/boot/start is activated, exiting"
+
+	if [ -n "$quit" ]; then
+		echo "$quit"
 		exit 0
 	fi
 }
@@ -94,18 +93,18 @@ start_plymouthd () {
 
 	# wait three minutes for plymouth startup
 	for _ in $(seq 320); do
-		plymouth --has-active-vt && break
+		plymouth --has-active-vt &&
+			return 0
 		sleep 0.5
 	done
 
-	if ! plymouth --has-active-vt; then
-		echo "plymouth could not paint on active vt? Do nothing and exit."
-		plymouth quit
-		exit 1
-	fi
+	echo "plymouth could not paint on active vt? Do nothing and exit."
+	plymouth quit
+	exit 1
 }
 
 show_welcome_screen () {
+	local lang header console message1 message2 message3 address addresses
 	start_plymouthd
 	echo "going to plymouth welcome screen mode..."
 	lang="${locale_default%%:*}"
@@ -114,7 +113,7 @@ show_welcome_screen () {
 	fi
 	export TEXTDOMAINDIR=/usr/share/plymouth/themes/ucs/
 	export TEXTDOMAIN="univention-welcome-screen"
-	if [ "$bootsplash_theme" != "ucs" -a -n "$umc_web_appliance_name" ]; then
+	if [ "${bootsplash_theme:-}" != "ucs" ] && [ -n "${umc_web_appliance_name:-}" ]; then
 		header="$umc_web_appliance_name Appliance"
 	else
 		header="Univention Corporate Server"
@@ -143,7 +142,7 @@ show_welcome_screen () {
 
 wait_for_key_press () {
 	trap remove_welcome_screen EXIT
-	hexdump -n 96 $keyboards >/dev/null
+	hexdump -n 96 "${keyboards[@]}" >/dev/null
 	echo "key pressed, good bye"
 	exit 0
 }
