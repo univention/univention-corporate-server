@@ -12,3 +12,6 @@ desc: |
    traceback. The AD-Connector now skips referrals to objects and logs
    an informative message instead.
 bug: [56792]
+erratum: 884
+announced: 2023-11-21
+support: core
