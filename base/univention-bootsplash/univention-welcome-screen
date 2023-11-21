@@ -143,7 +143,7 @@ show_welcome_screen () {
 
 wait_for_key_press () {
 	trap remove_welcome_screen EXIT
-	hexdump -n 96 $keyboards >/dev/null
+	dd bs=96 if="$keyboards" of=/dev/null count=1
 	echo "key pressed, good bye"
 	exit 0
 }
