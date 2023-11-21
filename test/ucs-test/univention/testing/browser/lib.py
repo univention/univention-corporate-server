@@ -78,23 +78,6 @@ class UCSLanguage(Enum):
         return ""
 
 
-class Waits:
-    def __init__(self, page) -> None:
-        self.page: Page = page
-
-    def wait_for_text_to_be_visible(self, text: str, timeout: int = 1 * MIN):
-        """Waits for the specified text to be visible on screen"""
-        all_locators = self.page.get_by_text(text).all()
-        for locator in all_locators:
-            expect(locator).to_be_visible(timeout=timeout)
-
-    def wait_for_progress_bar(self, n: int = 1, timeout: int = 1 * MIN):
-        """Waits for `n` progress bars to disappear"""
-        for _ in range(n):
-            progress_bar = self.page.get_by_role("progressbar")
-            expect(progress_bar).to_be_hidden(timeout=timeout)
-
-
 class Interactions:
     def __init__(self, tester: UMCBrowserTest) -> None:
         self.tester: UMCBrowserTest = tester
@@ -207,7 +190,7 @@ class Interactions:
         self.page.get_by_role("option", name=option).click()
 
 
-class UMCBrowserTest(Waits, Interactions):
+class UMCBrowserTest(Interactions):
     """
     This is the base class for all Playwright browser tests. It defines common operations and methods
     that are useful to all other library modules.
@@ -224,7 +207,6 @@ class UMCBrowserTest(Waits, Interactions):
     def __init__(self, page: Page, lang: UCSLanguage = UCSLanguage.EN_US):
         self.page: Page = page
         self.set_language(lang)
-        Waits.__init__(self, page)
         Interactions.__init__(self, self)
 
     def set_language(self, lang: UCSLanguage):
