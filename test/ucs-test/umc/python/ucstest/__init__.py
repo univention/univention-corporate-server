@@ -35,7 +35,9 @@
 
 import subprocess
 import sys
+import time
 
+from univention.config_registry import ucr
 from univention.management.console.error import UMC_Error
 from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import simple_response
@@ -72,7 +74,15 @@ def unjoinscript():
     pass
 
 
+if ucr.get_int('ucstest/sleep-during-import', 0) > 0:
+    time.sleep(ucr.get_int('ucstest/sleep-during-import'))
+
+
 class Instance(Base):
+
+    def init(self):
+        if ucr.get_int('ucstest/sleep-during-init', 0) > 0:
+            time.sleep(ucr.get_int('ucstest/sleep-during-init'))
 
     @simple_response
     def respond(self):
@@ -94,6 +104,11 @@ class Instance(Base):
     @simple_response
     def umc_error_traceback(self):
         raise UMC_Error("This is an UMC Error")
+
+    @simple_response
+    def sleep(self, seconds=1):
+        time.sleep(seconds)
+        return True
 
     def traceback_as_thread_result(self, request):
         # UVMM uses this to pass-through traceback from internal umc calls to the frontend

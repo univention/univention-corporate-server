@@ -1,3 +1,9 @@
+ucs-test (10.0.19-32) unstable; urgency=medium
+
+  * Bug #56828: add test for maximum connection and timeout
+
+ -- Florian Best <best@univention.de>  Tue, 21 Nov 2023 20:28:35 +0100
+
 ucs-test (10.0.19-31) unstable; urgency=medium
 
   * Bug #55915: replace deprecated `ssl.match_hostname()`

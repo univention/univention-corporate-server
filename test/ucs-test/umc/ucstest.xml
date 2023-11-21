@@ -11,5 +11,6 @@
 		<command name="ucstest/umc_error_traceback" function="umc_error_traceback" />
 		<command name="ucstest/traceback_as_thread_result" function="traceback_as_thread_result" />
 		<command name="ucstest/umc_error_as_thread_result" function="umc_error_as_thread_result" />
+		<command name="ucstest/sleep" function="sleep" />
 	</module>
 </umc>
