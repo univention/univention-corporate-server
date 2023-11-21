@@ -21,8 +21,17 @@ from performanceutils import (
 import univention.testing.strings as uts
 
 
-if __name__ == '__main__':
+class Data:
+    CSV_IMPORT_FILE = '/tmp/import10000.csv'
+    ous = 20
+    teachers = 800
+    staff = 500
+    staffteachers = 200
+    students = 8500
+    classes = 400
 
+
+if __name__ == '__main__':
     MAX_SECONDS_OU_CREATION = 30 * 60
     MAX_SECONDS_IMPORT = 4 * 3600
     MAX_SECONDS_SAMBA_IMPORT = 4 * 3600 + CONNECTOR_WAIT_TIME
@@ -32,17 +41,16 @@ if __name__ == '__main__':
     MAX_SECONDS_USER_AUTH = 20
     MAX_SECONDS_PASSWORD_RESET = 335 + CONNECTOR_WAIT_TIME
 
-    test_user_kwargs = {
-        "CSV_IMPORT_FILE": '/tmp/import10000.csv',
-        "ous": 20,
-        "teachers": 800,
-        "staff": 500,
-        "staffteachers": 200,
-        "students": 8500,
-        "classes": 400,
-    }
-    school_names = [f'School{num:0>2}{uts.random_name(5)}' for num in range(test_user_kwargs['ous'])]
-    cmd_args = '-v --teachers {teachers} --staff {staff} --staffteachers {staffteachers} --students {students} --classes {classes} --csvfile {CSV_IMPORT_FILE} {school_names}'.format(school_names=' '.join(school_names), **test_user_kwargs)
+    school_names = [f'Shol{num:0>2}{uts.random_name(5)}' for num in range(Data.ous)]
+    cmd_args = [
+        '-v',
+        '--teachers', str(Data.teachers),
+        '--staff', str(Data.staff),
+        '--staffteachers', str(Data.staffteachers),
+        '--students', str(Data.students),
+        '--classes', str(Data.classes),
+        '--csvfile', Data.CSV_IMPORT_FILE,
+    ] + school_names
 
     returnCode = 100
 
@@ -67,12 +75,12 @@ if __name__ == '__main__':
     if not execute_timing('samba4 auth', MAX_SECONDS_USER_AUTH, s4_user_auth, 'Administrator', 'univention'):
         returnCode = 1
 
-    user_dns = get_user_dn_list_new(test_user_kwargs['CSV_IMPORT_FILE'])
+    user_dns = get_user_dn_list_new(Data.CSV_IMPORT_FILE)
 
     if not execute_timing('user password reset', MAX_SECONDS_PASSWORD_RESET, reset_passwords, user_dns):
         returnCode = 1
 
-    if not count_users(needed=test_user_kwargs['teachers'] + test_user_kwargs['staff'] + test_user_kwargs['staffteachers'] + test_user_kwargs['students']):
+    if not count_users(needed=Data.teachers + Data.staff + Data.staffteachers + Data.students):
         returnCode = 1
 
     if not execute_timing('remove OUs', MAX_SECONDS_OU_CREATION, remove_ous, school_names):
@@ -80,4 +88,4 @@ if __name__ == '__main__':
 
     sys.exit(returnCode)
 
-# vim: set filetype=py
+# vim: set filetype=python

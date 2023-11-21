@@ -8,6 +8,8 @@
 ##   - ucs-school-import
 ##   - univention-s4-connector
 ##   - univention-samba4
+## versions:
+##  5.0-0: skip
 
 import sys
 
@@ -60,4 +62,4 @@ if __name__ == '__main__':
 
     sys.exit(returnCode)
 
-# vim: set filetype=py
+# vim: set filetype=python

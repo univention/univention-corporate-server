@@ -1,70 +1,93 @@
 #!/usr/bin/python3
 
+from __future__ import annotations
+
 import json
 import os.path
 import re
 import sqlite3
 import subprocess
 import time
+from itertools import islice
+from typing import Callable
+
+from ldap.filter import filter_format
+
+
+try:
+    from typing_extensions import ParamSpec  # Python 3.10+
+    P = ParamSpec("P")
+except ImportError:
+    pass
 
 import univention.testing.udm as udm_test
 import univention.uldap
 from ucsschool.importer.mass_import import user_import
+from univention.config_registry import ucr
 
 
 CONNECTOR_WAIT_INTERVAL = 12
 CONNECTOR_WAIT_SLEEP = 5
 CONNECTOR_WAIT_TIME = CONNECTOR_WAIT_SLEEP * CONNECTOR_WAIT_INTERVAL
 
-lo = None
+lo: univention.uldap.access | None = None
 
 
-def import_users(file):
-    subprocess.call('/usr/share/ucs-school-import/scripts/ucs-school-import %s' % file, shell=True)
+def import_users(file: str) -> int:
+    subprocess.check_call(['/usr/share/ucs-school-import/scripts/ucs-school-import', file])
     return 0
 
 
-def import_users_new(args):
+def import_users_new(args: list[str]) -> int:
     print(f'*** import_users_new({args!r})')
-    subprocess.call(f'/usr/share/ucs-school-import/scripts/ucs-school-testuser-import {args}', shell=True)
+    subprocess.check_call(['/usr/share/ucs-school-import/scripts/ucs-school-testuser-import'] + args)
     return 0
 
 
-def create_ous(names_of_ous):
-    res = 0
+def create_ous(names_of_ous: list[str]) -> int:
     for school_name in names_of_ous:
-        res += subprocess.call(f'/usr/share/ucs-school-import/scripts/create_ou {school_name}', shell=True)
-    return res
+        subprocess.check_call(['/usr/share/ucs-school-import/scripts/create_ou', school_name])
+    return 0
 
 
-def remove_ous(names_of_ous):
-    res = 0
+def remove_ous(names_of_ous: list[str]) -> int:
     for school_name in names_of_ous:
-        res += subprocess.call(f'udm container/ou remove --dn={school_name}', shell=True)
-    return res
+        subprocess.check_call(['udm', 'container/ou', 'remove', f'--dn={school_name}'])
+    return 0
 
 
-def _start_time():
+def _start_time() -> float:
     return time.time()
 
 
-def _stop_time(startTime):
+def _stop_time(startTime: float) -> float:
     return time.time() - startTime
 
 
-def _ldap_replication_complete():
+def _ldap_replication_complete() -> bool:
     return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication') == 0
 
 
-def wait_for_s4connector():
+def _get_usn() -> str:
+    ldbsearch = subprocess.Popen(["ldbsearch", "-H", "/var/lib/samba/private/sam.ldb", "-s", "base", "-b", "", "highestCommittedUSN"], stdout=subprocess.PIPE)
+    assert ldbsearch.stdout is not None
+    for chunk in ldbsearch.stdout:
+        line = chunk.decode('UTF-8', 'replace').strip()
+        key, _, value = line.partition(": ")
+        if key == "highestCommittedUSN":
+            return value
+    return ""
+
+
+def wait_for_s4connector() -> int:
     conn = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
     c = conn.cursor()
 
-    static_count = 0
+    previous_lastUSN = lastUSN = highestCommittedUSN = previous_highestCommittedUSN = ""
 
-    highestCommittedUSN = -1
-    lastUSN = -1
+    static_count = 0
     while static_count < CONNECTOR_WAIT_INTERVAL:
+        print(f'Try {static_count}/{CONNECTOR_WAIT_INTERVAL} [plUSN={previous_lastUSN} lUSN={lastUSN} hcUSN={highestCommittedUSN} phcUSN={previous_highestCommittedUSN}]')
         time.sleep(CONNECTOR_WAIT_SLEEP)
 
         if not _ldap_replication_complete():
@@ -72,95 +95,77 @@ def wait_for_s4connector():
 
         previous_highestCommittedUSN = highestCommittedUSN
 
-        highestCommittedUSN = -1
-        ldbsearch = subprocess.Popen("ldbsearch -H /var/lib/samba/private/sam.ldb -s base -b '' highestCommittedUSN", shell=True, stdout=subprocess.PIPE)
-        ldbresult = ldbsearch.communicate()
-        for line in ldbresult[0].decode('UTF-8', 'replace').split('\n'):
-            line = line.strip()
-            if line.startswith('highestCommittedUSN: '):
-                highestCommittedUSN = line.replace('highestCommittedUSN: ', '')
-                break
-
+        highestCommittedUSN = _get_usn()
         print(highestCommittedUSN)
 
         previous_lastUSN = lastUSN
         try:
-            c.execute('select value from S4 where key=="lastUSN"')
-        except sqlite3.OperationalError as e:
+            c.execute('SELECT value FROM S4 WHERE key="lastUSN"')
+        except sqlite3.OperationalError as exc:
             static_count = 0
-            print('Reset counter: sqlite3.OperationalError: %s' % e)
-            print('Counter: %d' % static_count)
+            print(f'Reset counter: sqlite3.OperationalError: {exc}')
             continue
 
         conn.commit()
         lastUSN = c.fetchone()[0]
 
-        if not (lastUSN == highestCommittedUSN and lastUSN == previous_lastUSN and highestCommittedUSN == previous_highestCommittedUSN):
-            static_count = 0
-            print('Reset counter')
+        if previous_lastUSN == lastUSN == highestCommittedUSN == previous_highestCommittedUSN:
+            static_count += 1
         else:
-            static_count = static_count + 1
-        print('Counter: %d' % static_count)
+            static_count = 0
 
     conn.close()
     return 0
 
 
-def test_umc_admin_auth():
-    result = subprocess.call('umc-command -U Administrator -P univention ucr/get -l -o "apache2/autostart"', shell=True)
-    return result
+def test_umc_admin_auth() -> int:
+    return subprocess.call(['umc-command', '-U', 'Administrator', '-P', 'univention', 'ucr/get', '-l', '-o', "apache2/autostart"])
 
 
-def test_umc_admin_auth_udm_load():
-    result = subprocess.call('umc-command -U Administrator -P univention udm/get -f users/user -l -o "uid=Administrator,cn=users,$(ucr get ldap/base)"', shell=True)
-    return result
+def test_umc_admin_auth_udm_load() -> int:
+    return subprocess.call(['umc-command', '-U', 'Administrator', '-P', 'univention', 'udm/get', '-f', 'users/user', '-l', '-o', f"uid=Administrator,cn=users,{ucr['ldap/base']}"])
 
 
-def s4_user_auth(username, password):
-    result = subprocess.call(f'smbclient -U {username} //localhost/sysvol -c ls {password}', shell=True)
-    return result
+def s4_user_auth(username: str, password: str) -> int:
+    return subprocess.call(['smbclient', '-U', f"{username}%{password}", '//localhost/sysvol', '-c', 'ls'])
 
 
-def reset_passwords(user_dns):
+def reset_passwords(user_dns: list[str]) -> int:
     for dn in user_dns:
-        subprocess.call('udm users/user modify --dn "%s" --set password="Univention.991"' % dn, shell=True)
+        subprocess.call(['udm', 'users/user', 'modify', '--dn', dn, '--set', "password=Univention.991"])
     wait_for_s4connector()
     return 0
 
 
-def get_user_dn(username):
+def get_user_dn(username: str) -> str:
     global lo
     if not lo:
         lo = univention.uldap.getMachineConnection()
-    dn = lo.searchDn('(&(uid=%s)(objectClass=sambaSamAccount))' % username)
+    dn = lo.searchDn(filter_format('(&(uid=%s)(objectClass=sambaSamAccount))', [username]))
     return dn[0]
 
 
-def get_user_dn_list(CSV_IMPORT_FILE):
-    user_dns = []
-
-    for line in open(CSV_IMPORT_FILE).readlines():
-        if len(user_dns) >= 40:
-            break
-        username = line.split('\t')[1]
-        user_dns.append(get_user_dn(username))
-
-    return user_dns
+def get_user_dn_list(CSV_IMPORT_FILE: str, count: int = 40) -> list[str]:
+    return [
+        get_user_dn(line.split('\t')[1])
+        for line in islice(open(CSV_IMPORT_FILE), count)
+    ]
 
 
-def get_user_dn_list_new(CSV_IMPORT_FILE):
+def get_user_dn_list_new(CSV_IMPORT_FILE: str, count: int = 40) -> list[str]:
     # must import ucsschool.importer.utils.shell *after* creating ~/.import_shell_config
-    with open('/usr/share/ucs-school-import/configs/ucs-school-testuser-import.json', 'rb') as fp:
+    with open('/usr/share/ucs-school-import/configs/ucs-school-testuser-import.json') as fp:
         config = json.load(fp)
     config['input']['filename'] = CSV_IMPORT_FILE
-    with open(os.path.expanduser('~/.import_shell_config'), 'wb') as fp:
+    with open(os.path.expanduser('~/.import_shell_config'), 'w') as fp:
         json.dump(config, fp)
+
     # this will setup a complete import system configuration
     from ucsschool.importer.utils.shell import logger  # noqa: F401
     up = user_import.UserImport()
     imported_users = up.read_input()
     user_dns = []
-    for user in imported_users:
+    for user in islice(imported_users, count):
         user.make_username()
         username = user.name[:-1] if re.match('.*\\d$', user.name) else user.name
         try:
@@ -168,64 +173,60 @@ def get_user_dn_list_new(CSV_IMPORT_FILE):
         except IndexError:
             # username calculated differently when importing and now, can happen, ignore
             pass
-        if len(user_dns) >= 40:
-            break
     return user_dns
 
 
-def create_test_user():
+def create_test_user() -> int:
     udm = udm_test.UCSTestUDM()
     username = udm.create_user(wait_for_replication=False)[1]
     wait_for_s4connector()
     return s4_user_auth(username, 'univention')
 
 
-def execute_timing(description, allowedTime, callback, *args):
-    print('Starting %s' % description)
+def execute_timing(description: str, allowedTime: float, callback: Callable[P, int], *args: P.args) -> bool:  # type: ignore[valid-type] # Python 3.10+
+    print('Starting', description)
 
     startTime = _start_time()
-    result = callback(*args)
-    duration = _stop_time(startTime)
-
-    print('INFO: %s took %ld seconds (allowed time: %ld seconds)' % (description, duration, allowedTime))
+    try:
+        result = callback(*args)
+    finally:
+        duration = _stop_time(startTime)
+        print(f'INFO: {description} took {duration:.0f} seconds (allowed time: {allowedTime:.0f} seconds)')
 
     if result != 0:
-        print('Error: callback returned: %d' % result)
+        print(f'Error: callback returned: {result}')
         return False
 
     if duration > allowedTime:
-        print('ERROR: %s took too long' % description)
+        print(f'ERROR: {description} took too long: {duration:.0f} > {allowedTime:.0f}')
         return False
 
     return True
 
 
-def count_ldap_users():
+def count_ldap_users() -> int:
     global lo
     if not lo:
         lo = univention.uldap.getMachineConnection()
-    res = lo.search('(&(uid=*)(!(uid=*$))(objectClass=sambaSamAccount))', attr=['dn'])
-    print('INFO: Found %d OpenLDAP users' % len(res))
 
-    return len(res)
-
-
-def count_samba4_users():
-    count = 0
-
-    ldbsearch = subprocess.Popen("ldbsearch -H /var/lib/samba/private/sam.ldb objectClass=user dn", shell=True, stdout=subprocess.PIPE)
-    ldbresult = ldbsearch.communicate()
-    for line in ldbresult[0].decode('UTF-8', 'replace').split('\n'):
-        line = line.strip()
-        if line.startswith('dn: '):
-            count += 1
-
-    print('INFO: Found %d Samba4 users' % count)
-
+    count = len(lo.search('(&(uid=*)(!(uid=*$))(objectClass=sambaSamAccount))', attr=['dn']))
+    print(f'INFO: Found {count} OpenLDAP users')
     return count
 
 
-def count_users(needed):
+def count_samba4_users() -> int:
+    ldbsearch = subprocess.Popen(["ldbsearch", "-H", "/var/lib/samba/private/sam.ldb", "objectClass=user", "dn"], stdout=subprocess.PIPE)
+    assert ldbsearch.stdout is not None
+    count = sum(
+        1
+        for line in ldbsearch.stdout
+        if line.decode('UTF-8', 'replace').strip().startswith("dn: ")
+    )
+    print(f'INFO: Found {count} Samba4 users')
+    return count
+
+
+def count_users(needed: int) -> bool:
     users = count_ldap_users()
     if users < needed:
         print('ERROR: Not all users were found in OpenLDAP')
