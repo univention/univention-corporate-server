@@ -35,15 +35,18 @@
 # <https://www.gnu.org/licenses/>.
 
 import datetime
+import os
 import traceback
 
 import psycopg2
 import psycopg2.extras
 
 
-DB_USER = "selfservice"
-DB_NAME = "selfservice"
-DB_SECRETS_FILE = "/etc/self-service-db.secret"
+DB_HOST = os.getenv("SELF_SERVICE_DB_HOST", "localhost")
+DB_PORT = os.getenv("SELF_SERVICE_DB_PORT", "5432")
+DB_USER = os.getenv("SELF_SERVICE_DB_USER", "selfservice")
+DB_NAME = os.getenv("SELF_SERVICE_DB_NAME", "selfservice")
+DB_SECRETS_FILE = os.getenv("SELF_SERVICE_DB_SECRET_FILE", "/etc/self-service-db.secret")
 
 
 class MultipleTokensInDB(Exception):
@@ -120,8 +123,8 @@ token VARCHAR(255) NOT NULL);""")
             self.logger.error(f"db_open(): Could not read {DB_SECRETS_FILE}: {e}")
             raise
         try:
-            conn = psycopg2.connect("dbname={db_name} user={db_user} host='localhost' password='{db_pw}'".format(
-                db_name=DB_NAME, db_user=DB_USER, db_pw=password))
+            conn = psycopg2.connect("dbname={db_name} user={db_user} host='{db_host}' port={db_port} password='{db_pw}'".format(
+                db_name=DB_NAME, db_user=DB_USER, db_pw=password, db_host=DB_HOST, db_port=DB_PORT))
             self.logger.info("db_open(): Connected to database '{}' on server with version {} using protocol version {}.".format(
                 DB_NAME, conn.server_version, conn.protocol_version))
             return conn

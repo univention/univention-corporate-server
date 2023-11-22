@@ -49,6 +49,7 @@
 #
 
 import email.charset
+import os
 import os.path
 import smtplib
 from email.mime.nonmultipart import MIMENonMultipart
@@ -69,6 +70,24 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
     def __init__(self, *args, **kwargs):
         super(SendEmail, self).__init__(*args, **kwargs)
         self.server = self.ucr.get("umc/self-service/passwordreset/email/server", "localhost")
+        self.port = self.ucr.get_int("umc/self-service/passwordreset/email/server/port", 0)
+        self.user = self.ucr.get("umc/self-service/passwordreset/email/server/user")
+        self.ehlo = self.ucr.get("umc/self-service/passwordreset/email/server/ehlo")
+        self.starttls = self.ucr.is_true("umc/self-service/passwordreset/email/server/starttls")
+
+        if self.user:
+            secret_file = os.getenv("SMTP_SECRET_FILE")
+            try:
+                with open(secret_file, 'r') as fd:
+                    self.password = fd.readline().strip()
+            except IOError:
+                self.log("SMTP_SECRET_FILE (%s) could not be read." % secret_file)
+                raise
+
+        if (self.user or self.starttls) and not self.ehlo:
+            hostname = self.ucr.get('hostname')
+            domainname = self.ucr.get('domainname')
+            self.ehlo = f"{hostname}.{domainname}"
 
     @staticmethod
     def send_method():
@@ -109,6 +128,8 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
         fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
         frontend_server = self.ucr.get("umc/self-service/passwordreset/email/webserver_address", fqdn)
         links = {
+            'fqdn': fqdn,
+            'domainname': self.ucr["domainname"],
             'link': f"https://{frontend_server}/univention/selfservice/#/selfservice/newpassword/",
             'tokenlink': "https://{fqdn}/univention/selfservice/#/selfservice/newpassword/?token={token}&username={username}".format(fqdn=frontend_server, username=quote(self.data["username"]), token=quote(self.data["token"])),
         }
@@ -128,7 +149,13 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
         msg["To"] = self.data["address"]
         msg.set_payload(txt, charset=cs)
 
-        smtp = smtplib.SMTP(self.server)
+        smtp = smtplib.SMTP(self.server, self.port)
+        if self.starttls:
+            smtp.ehlo(self.ehlo)
+            smtp.starttls()
+        if self.user:
+            smtp.ehlo(self.ehlo)
+            smtp.login(self.user, self.password)
         smtp.sendmail(msg["From"], self.data["address"], msg.as_string())
         smtp.quit()
         self.log("Sent mail with token to address {}.".format(self.data["address"]))

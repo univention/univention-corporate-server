@@ -36,6 +36,7 @@
 
 import datetime
 import email.charset
+import os
 import os.path
 import random
 import smtplib
@@ -72,7 +73,9 @@ from .tokendb import MultipleTokensInDB, TokenDB
 
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
-MEMCACHED_SOCKET = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
+MEMCACHED_SOCKET = os.getenv("SELF_SERVICE_MEMCACHED_SERVER", "/var/lib/univention-self-service-passwordreset-umc/memcached.socket")
+MEMCACHED_USERNAME = os.getenv("SELF_SERVICE_MEMCACHED_USER")
+MEMCACHED_SECRET_FILE = os.getenv("SELF_SERVICE_MEMCACHED_SECRET_FILE")
 MEMCACHED_MAX_KEY = 250
 
 SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
@@ -258,7 +261,16 @@ class Instance(Base):
             atexit.register(self.db.close_db)
             if not self.db.table_exists():
                 self.db.create_table()
-            self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True)
+            if MEMCACHED_SECRET_FILE:
+                try:
+                    with open(MEMCACHED_SECRET_FILE) as pw_file:
+                        password = pw_file.readline().strip()
+                except (OSError, IOError) as e:
+                    self.logger.error(f"Instance.init(): Could not read {MEMCACHED_SECRET_FILE}: {e}")
+                    raise
+            else:
+                password = None
+            self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, username=MEMCACHED_USERNAME, password=password)
 
         self.send_plugins = get_sending_plugins(MODULE.process)
         self.password_reset_plugins = {k: v for k, v in self.send_plugins.items() if v.message_application() == 'password_reset'}
