@@ -35,7 +35,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION="11"
+VERSION="12"
 
 
 tmpfile=$(mktemp /tmp/91univention-saml.inst.debug.XXXXXXX)
@@ -103,14 +103,14 @@ eval "$(ucr shell)"
 RESUME_DEBUG
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart "4.4-9" --ucsversionend "5.99-0" \
+	--ucsversionstart "5.0-0" --ucsversionend "5.99-0" \
 	--schema /usr/share/univention-saml/schema/univention-saml.schema \
 	--udm_syntax /usr/share/univention-saml/syntax.d/samlserviceprovider.py \
 	--udm_module /usr/share/univention-saml/handlers/saml/serviceprovider.py \
 	--messagecatalog /usr/share/univention-saml/de.mo || die
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart "4.4-9" --ucsversionend "5.99-0" \
+	--ucsversionstart "5.0-0" --ucsversionend "5.99-0" \
 	--udm_module /usr/share/univention-saml/handlers/saml/idpconfig.py || die
 
 spn_account_name="ucs-sso"

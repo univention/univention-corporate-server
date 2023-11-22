@@ -1,3 +1,9 @@
+univention-saml (7.0.8-12) unstable; urgency=medium
+
+  * Bug #56864: only register Python3-only UDM modules only in UCS 5.0
+
+ -- Florian Best <best@univention.de>  Wed, 22 Nov 2023 16:59:29 +0100
+
 univention-saml (7.0.8-11) unstable; urgency=medium
 
   * Bug #56857: add workaround so that schema registation cannot fail
