@@ -1,0 +1,22 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: open-vm-tools
+fix: 2:10.1.5-5055683-4+deb9u6
+desc: |
+ This update addresses the following issues:
+ 2:10.1.5-5055683-4+deb9u6 (Sun, 12 Nov 2023 16:20:28 +0000)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2023-34059: This fixes a file descriptor hijack vulnerability in
+   the vmware-user-suid-wrapper command. A malicious actor with non-root
+   privileges might have been able to hijack the block file descriptor.
+ * Fix CVE-2023-34058: This fixes a SAML Token Signature Bypass vulnerability.
+   A malicious actor that has been granted Guest Operation Privileges in a
+   target virtual machine might have been able to elevate their privileges if
+   that target virtual machine has been assigned a more privileged Guest
+   Alias.
+bug: [56860]
+cve:
+- CVE-2023-34059
+- CVE-2023-34058
