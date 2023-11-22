@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libde265
+fix: 1.0.11-0+deb9u4
+desc: |
+ This update addresses the following issues:
+ 1.0.11-0+deb9u4 (Sun, 19 Nov 2023 18:03:02 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-27102 fix segmentation violation in the function
+   decoder_context::process_slice_segment_header
+ * CVE-2023-27103 fix heap buffer overflow in the function
+   derive_collocated_motion_vectors
+ * CVE-2023-47471 fix buffer overflow in the slice_segment_header function
+bug: [56862]
+cve:
+- CVE-2023-27102
+- CVE-2023-27103
+- CVE-2023-47471
