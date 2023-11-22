@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ceph
+fix: 10.2.11-2+deb9u2
+desc: |
+ This update addresses the following issue:
+ 10.2.11-2+deb9u2 (Tue, 14 Nov 2023 20:32:25 +0000)
+ * Non-maintainer upload by the LTS team.
+ * CVE-2023-43040: A flaw was found in Ceph RGW. An unprivileged user can
+   write to any bucket(s) accessible by a given key if a POST's form-data
+   contains a key called 'bucket' with a value matching the name of the bucket
+   used to sign the request. The result of this is that a user could actually
+   upload to any bucket accessible by the specified access key as long as the
+   bucket in the POST policy matches the bucket in said POST form part.
+bug: [56863]
+cve:
+- CVE-2023-43040
