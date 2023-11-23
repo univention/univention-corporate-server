@@ -46,7 +46,7 @@ from importlib.util import module_from_spec, spec_from_file_location
 from os import listdir
 from os.path import abspath, dirname, exists, expanduser, isdir, join, normpath, relpath
 from types import ModuleType
-from typing import IO, Container, Sequence
+from typing import IO, Container, Dict
 
 import univention.ucslint.base as uub
 
@@ -69,57 +69,68 @@ RE_OVERRIDE = re.compile(
     $''', re.VERBOSE)
 
 
+Plugins = Dict[str, ModuleType]
+
+
+def load_plugins(opt: Namespace) -> Plugins:
+    """
+    Load policy checker plugins.
+
+    :param opt: Command line arguments.
+    :returns: Mapping of plugin ID to loaded module.
+    """
+    plugins: Plugins = {}
+
+    plugindirs = [abspath(path) for path in (opt.plugindir or [expanduser('~/.ucslint'), dirname(uub.__file__)])]
+    enabled = [clean_modid(x) for mod in opt.enabled_modules for x in mod.split(',')]
+    disabled = [clean_modid(x) for mod in opt.disabled_modules for x in mod.split(',')]
+
+    for plugindir in plugindirs:
+        if not exists(plugindir):
+            if opt.debug:
+                print(f'WARNING: plugindir {plugindir} does not exist', file=sys.stderr)
+        else:
+            for f in listdir(plugindir):
+                if f.endswith('.py') and f[0:4].isdigit():
+                    # self.modules == None ==> load all modules
+                    # otherwise load only listed modules
+                    if (not enabled or f[0:4] in enabled) and f[0:4] not in disabled:
+                        modname = f[0:-3]
+                        try:
+                            fn = normpath(join(plugindir, f))
+                            spec = spec_from_file_location(f[:-3], fn)
+                            assert spec is not None
+                            module = module_from_spec(spec)
+                            assert spec.loader
+                            spec.loader.exec_module(module)  # type: ignore
+                            plugins[modname] = module
+                        except Exception as exc:
+                            print(f'ERROR: Loading module {f} failed: {exc}', file=sys.stderr)
+                            if opt.debug:
+                                raise
+                    else:
+                        if opt.debug:
+                            print(f'Module {f} is not enabled', file=sys.stderr)
+
+    return plugins
+
+
 class DebianPackageCheck:
     """
     Check Debian package for policy compliance.
 
     :param path: Base directory of Debian package to check.
-    :param plugindirs: List of directories containing plugins to load.
-    :param enabled_modules: List of enabled modules.
-    :param disabled_modules: List of disabled modules.
+    :param plugins: Mapping of loaded plugins.
     :param debuglevel: Vebosity level.
     """
 
-    def __init__(self, path: str, plugindirs: Sequence[str], enabled_modules: Container[str] | None = None, disabled_modules: Container[str] | None = None, debuglevel: int = 0):
+    def __init__(self, path: str, plugins: Plugins, debuglevel: int = 0):
         self.path = path
-        self.plugindirs = plugindirs
-        self.pluginlist: dict[str, ModuleType] = {}
-        self.msglist: list[uub.UPCMessage] = []
-        self.enabled_modules: Container[str] = enabled_modules or ()
-        self.disabled_modules: Container[str] = disabled_modules or ()
+        self.pluginlist = plugins
         self.debuglevel = debuglevel
+        self.msglist: list[uub.UPCMessage] = []
         self.msgidlist: dict[str, tuple[int, str]] = {}
         self.overrides: set[tuple[str, str | None, int | None]] = set()
-        self.loadplugins()
-
-    def loadplugins(self) -> None:
-        """Load modules from plugin directory."""
-        for plugindir in self.plugindirs:
-            if not exists(plugindir):
-                if self.debuglevel:
-                    print(f'WARNING: plugindir {plugindir} does not exist', file=sys.stderr)
-            else:
-                for f in listdir(plugindir):
-                    if f.endswith('.py') and f[0:4].isdigit():
-                        # self.modules == None ==> load all modules
-                        # otherwise load only listed modules
-                        if (not self.enabled_modules or f[0:4] in self.enabled_modules) and f[0:4] not in self.disabled_modules:
-                            modname = f[0:-3]
-                            try:
-                                fn = normpath(join(plugindir, f))
-                                spec = spec_from_file_location(f[:-3], fn)
-                                assert spec is not None
-                                module = module_from_spec(spec)
-                                assert spec.loader
-                                spec.loader.exec_module(module)  # type: ignore
-                                self.pluginlist[modname] = module
-                            except Exception as exc:
-                                print(f'ERROR: Loading module {f} failed: {exc}', file=sys.stderr)
-                                if self.debuglevel:
-                                    raise
-                        else:
-                            if self.debuglevel:
-                                print(f'Module {f} is not enabled', file=sys.stderr)
 
     def check(self) -> None:
         """Run plugin on files in path."""
@@ -413,15 +424,14 @@ def main() -> None:
     if options.debug:
         print(f'Using univention.ucslint.base from {uub.__file__}')
 
-    plugindirs = [abspath(path) for path in (options.plugindir or [expanduser('~/.ucslint'), dirname(uub.__file__)])]
+    plugins = load_plugins(options)
+
     ignore_IDs = [clean_id(x) for ign in options.ignore_IDs for x in ign.split(',')]
     display_only_IDs = [clean_id(x) for dsp in options.display_only_IDs for x in dsp.split(',')]
-    enabled_modules = [clean_modid(x) for mod in options.enabled_modules for x in mod.split(',')]
-    disabled_modules = [clean_modid(x) for mod in options.disabled_modules for x in mod.split(',')]
 
     fail = False
     for pkgpath in options.pkgpath or ['.']:
-        chk = DebianPackageCheck(pkgpath, plugindirs, enabled_modules=enabled_modules, disabled_modules=disabled_modules, debuglevel=options.debug)
+        chk = DebianPackageCheck(pkgpath, plugins, debuglevel=options.debug)
         try:
             chk.check()
         except uub.UCSLintException as ex:
