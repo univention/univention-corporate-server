@@ -6,21 +6,17 @@ src: postgresql-9.6
 fix: 9.6.24-0+deb9u5
 desc: |
  This update addresses the following issues:
-
- Debian update 9.6.24-0+deb9u5
- 9.6.24-0+deb9u5 (Tue, 14 Nov 2023 19:18:16 +0100)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-5868: Certain aggregate function calls receiving
-   "unknown"-type arguments could disclose bytes of server memory from the end
-   of the "unknown"-type value to the next zero byte. One typically gets an
+ * CVE-2023-5868: Certain aggregate function calls receiving "unknown"-type
+   arguments could disclose bytes of server memory from the end of the
+   "unknown"-type value to the next zero byte. One typically gets an
    "unknown"-type value via a string literal having no type designation.
- * Fix CVE-2023-5869: While modifying certain SQL array values, missing
-   overflow checks let authenticated database users write arbitrary bytes to a
-   memory area that facilitates arbitrary code execution. Missing overflow
-   checks also let authenticated database users read a wide area of server
-   memory. The CVE-2021-32027 fix covered some attacks of this description,
-   but it missed others.
- * Fix CVE-2023-5870: Documentation says the pg_signal_backend role cannot
+ * CVE-2023-5869: While modifying certain SQL array values, missing overflow
+   checks let authenticated database users write arbitrary bytes to a memory
+   area that facilitates arbitrary code execution. Missing overflow checks
+   also let authenticated database users read a wide area of server memory.
+   The CVE-2021-32027 fix covered some attacks of this description, but it
+   missed others.
+ * CVE-2023-5870: Documentation says the role `pg_signal_backend` cannot
    signal "a backend owned by a superuser". On the contrary, it can signal
    background workers, including the logical replication launcher. It can
    signal autovacuum workers and the autovacuum launcher. Signaling autovacuum
@@ -29,16 +25,15 @@ desc: |
    less-resilient background worker. For example, a non-core background worker
    that does not auto-restart would experience a denial of service with
    respect to that particular background worker.
- * Fix CVE-2023-39417: In the EXTENSION SCRIPT, a SQL Injection vulnerability
-   was found in PostgreSQL if it uses @extowner@, @extschema@, or
-   @extschema:...@ inside a quoting construct (dollar quoting, '', or ""). If
-   an administrator has installed files of a vulnerable, trusted, non-bundled
-   extension, an attacker with database-level CREATE privilege can execute
-   arbitrary code as the bootstrap superuser.
+ * CVE-2023-39417: In the `EXTENSION SCRIPT`, a SQL injection vulnerability
+   was found in PostgreSQL if it uses `@extowner@`, `@extschema@`, or
+   `@extschema:...@` inside a quoting construct (dollar quoting, '', or "").
+   If an administrator has installed files of a vulnerable, trusted,
+   non-bundled extension, an attacker with database-level privilege `CREATE`
+   can execute arbitrary code as the bootstrap superuser.
 bug: [56861]
 cve:
 - CVE-2023-5868
 - CVE-2023-5869
-- CVE-2021-32027
 - CVE-2023-5870
 - CVE-2023-39417
