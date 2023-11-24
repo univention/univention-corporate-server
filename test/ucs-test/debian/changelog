@@ -1,8 +1,9 @@
-ucs-test (10.0.20-1) UNRELEASED; urgency=medium
+ucs-test (10.0.20-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #55668: Fix shellcheck issues
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:20 +0100
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Dec 2023 11:27:39 +0100
 
 ucs-test (10.0.19-42) unstable; urgency=medium
 

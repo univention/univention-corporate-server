@@ -1,8 +1,9 @@
-univention-ldap (16.0.14-1) UNRELEASED; urgency=medium
+univention-ldap (16.0.14-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #55668: Fix shellcheck issues
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:31 +0100
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Dec 2023 11:26:32 +0100
 
 univention-ldap (16.0.13-8) unstable; urgency=medium
 

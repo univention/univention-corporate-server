@@ -33,11 +33,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 
 log() {
 	local msg="${2//$'\r'/}"
-	builtin echo $(date +"%F %T") "$1" "${msg//$'\n'/}" 1>&2
+	builtin echo "$(date +"%F %T") $1 ${msg//$'\n'/}" 1>&2
 }
 
 stderr_log_error() {
@@ -63,7 +64,7 @@ LC_ALL=C
 
 # hash over the list of files/directories with ACLs set
 all_files_and_dirs_have_acls () {
-	local dir="$1/$domainname/Policies"
+	local dir="$1/${domainname:?}/Policies"
 	shift
 	local host="$1"
 
@@ -96,10 +97,7 @@ check_if_need_sync() {
 		"$src"/ "$dst" 2>/dev/null \
 		| tail --lines=+2 | head --lines=-3)"
 
-	if [ -z "$need_sync" ]; then
-		return 1
-	fi
-	return 0
+	[ -n "$need_sync" ]
 }
 
 close_remote_locking_pipe() {
@@ -119,6 +117,7 @@ create_remote_locking_pipe() {
 	local pipe_dir="$1"
 
 	## setup pipes for communication with remote locker process
+	# shellcheck disable=SC2064
 	trap "close_remote_locking_pipe '$pipe_dir'" EXIT
 	for pipename in "pipe0" "pipe1"; do
 		if ! mkfifo "$pipe_dir/$pipename"; then
@@ -146,7 +145,7 @@ get_remote_lock() {
 		"(flock --timeout=$timeout -s 8 || exit 1; echo LOCKED; read WAIT;) 8>\"$SYSVOL_LOCKFILE\"" \
 		< <(cat "$pipe_dir/pipe0") 2>&1 > "$pipe_dir/pipe1" | grep -v 'Could not chdir to home directory' 1>&2 &
 
-	read REPLY < "$pipe_dir/pipe1"
+	read -r REPLY < "$pipe_dir/pipe1"
 	if [ "$REPLY" != "LOCKED" ]; then
 		stderr_log_error "[$log_prefix] Could not acquire remote read lock after $timeout seconds."
 		close_remote_locking_pipe "$pipe_dir"
@@ -222,7 +221,7 @@ trigger_upstream_sync() {
 	stderr_log_debug "[$log_prefix] placing triggerfile."
 	out="$(univention-ssh --no-split /etc/machine.secret "$remote_login" \
 		-o ServerAliveInterval=15 \
-		"mkdir -p \"${SYSVOL_SYNC_TRIGGERDIR}\"; touch \"${SYSVOL_SYNC_TRIGGERDIR}/${hostname}\"" 2>&1)"
+		"mkdir -p \"${SYSVOL_SYNC_TRIGGERDIR}\"; touch \"${SYSVOL_SYNC_TRIGGERDIR}/${hostname:?}\"" 2>&1)"
 
 	rsync_exitcode=$?
 	if [ $rsync_exitcode -ne 0 ]; then
@@ -258,13 +257,13 @@ sync_from_active_downstream_DCs() {
 			)
 
 		remote_login="$hostname\$@$s4dc"
-		check_if_need_sync "$remote_login" "$importdir" "${rsync_options[@]}"
-		if [ $? -eq 0 ]; then
+		if check_if_need_sync "$remote_login" "$importdir" "${rsync_options[@]}"
+		then
 			## pull from parent s4dc
 			stderr_log_debug "[$log_prefix] rsync pull from downstream DC"
 
-			copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
-			if [ $? -ne 0 ]; then
+			if ! copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
+			then
 				stderr_log_error "[$log_prefix] Skipping sync to local sysvol!"
 				continue
 			fi
@@ -285,15 +284,15 @@ sync_from_active_downstream_DCs() {
 fix_gpt_ini () {
 	# find policy dirs with multiple gpt.ini's
 	local poldir="$SYSVOL_PATH/$domainname/Policies/"
-	while read dir; do
+	while read -r dir; do
 		# sort gpt.ini's by time of last status change
 		mapfile -t gpts < <(stat -c "%Z %n" "$dir"/[Gg][Pp][Tt].[Ii][Nn][Ii] 2>/dev/null | sort -n -r)
 		if [ "${#gpts[@]}" -gt 1 ]; then
 			# multiple gpt.ini's found, delete first element of list (newest gpt.ini) and remove the rest
 			gpts=("${gpts[@]:1}")
 			for gpt in "${gpts[@]}"; do
-				local file=${gpt#* }
-				test -f $file && rm $file
+				local file="${gpt#* }"
+				rm -f "$file"
 			done
 		fi
 	done < <(find "$poldir" -maxdepth 1 -type d -name '{*}')
@@ -310,8 +309,8 @@ sync_from_upstream_DC() {
 		remote_login="$hostname\$@$s4dc"
 
 		## trigger the next pull by the parent s4dc
-		trigger_upstream_sync "$remote_login"
-		if [ $? -ne 0 ]; then
+		if ! trigger_upstream_sync "$remote_login"
+		then
 			stderr_log_error "[$log_prefix] Placing a trigger file failed."
 			continue
 		fi
@@ -325,13 +324,13 @@ sync_from_upstream_DC() {
 
 		rsync_options=("${default_rsync_options[@]}" --delete)
 
-		check_if_need_sync "$remote_login" "$importdir" "${rsync_options[@]}"
-		if [ $? -eq 0 ]; then
+		if check_if_need_sync "$remote_login" "$importdir" "${rsync_options[@]}"
+		then
 			## pull from parent s4dc
 			stderr_log_debug "[$log_prefix] rsync pull from upstream DC"
 
-			copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
-			if [ $? -ne 0 ]; then
+			if ! copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
+			then
 				stderr_log_error "[$log_prefix] Skipping sync to local sysvol!"
 				continue
 			fi

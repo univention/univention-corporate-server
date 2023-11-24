@@ -35,32 +35,28 @@
 
 LOGFILE="/var/log/univention/backup2master.log"
 
-opt_force=0
+opt_force=false
 opt_wait=30
-opt_dry_run=0
-opt_old_master=
-opt_reference=
-opt_verbose=0
+opt_verbose=false
 
-Usage() {
-  local message=$1
-  printf "Usage:\n  %s: [-f] [-h] [-v] [-w 0]\n\n" $( basename $0 )
+Usage () {
+  local message="${1:-}"
+  printf "Usage:\n  %s: [-f] [-h] [-v] [-w 0]\n\n $(basename "$0")"
   printf "Example:\n"
-  printf "  %s -h\n\n" $( basename $0 )
+  printf "  %s -h\n\n" "$(basename "$0")"
   printf "  This script converts a UCS Backup Directory Node into a UCS Primary Directory Node.\n"
   printf "  When using it, you need root privileges.\n"
   printf "  If you invoke it without any options, it allows cancelling before it proceeds.\n"
   printf "  Choose among the options as needed. Default values are listed in parentheses.\n"
   printf "\n"
   printf "Options:\n"
-  printf "  -f             force execution of script, even if checks fail ($opt_force).\n"
+  printf "  -f             force execution of script, even if checks fail (%s).\n" "$opt_force"
   printf "  -h             do not convert UCS Backup Node, but print this helpful text\n"
-  printf "  -v             enable verbose log output ($opt_verbose).\n"
-  printf "  -w seconds     set time to wait before starting conversion ($opt_wait).\n"
+  printf "  -v             enable verbose log output (%s).\n" "$opt_verbose"
+  printf "  -w seconds     set time to wait before starting conversion (%s).\n" "$opt_wait"
   printf "\n"
-  if ! test -z "$message" ; then
-    printf "\n"
-    printf "$message\n"
+  if [ -n "$message" ]; then
+    printf "\n%s\n" "$message"
   fi
 }
 
@@ -76,38 +72,30 @@ Usage() {
 # This is necessary because such changes can occur in SRV records
 # and we want the settings of the SRV record (port prio) preserved.
 resolve_reference() {
-  local module=$1
-  local attribute=$2
-  local old_ldap_master=$3
-  local ldap_master=$4
-  local udm_options=$5
-  if [ "$#" -ne 5 ] ; then
-    echo "resolve_reference received $# parameters and not 5 as expected"
-    exit
-  fi
+  local module="${1:?module}" attribute="${2:?attribute}" old_ldap_master="${3:?old-ldap-master}" ldap_master="${4:?ldap-master}" udm_options="${5?udm-options}"
 
   # Search for the DNs of all UDM entries of this module containing the attribute.
   # Save DNs in a temporary file (line by line) and assign fd 5 to the file.
   # This is necessary because fd 0 is already used by user-interaction.
   domains=$(mktemp)
-  udm $module list $udm_options |\
-    awk -vold=$old_ldap_master -vattr=$attribute \
+  udm "$module" list $udm_options |
+    awk -vold="$old_ldap_master" -vattr="$attribute" \
       '/^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
        $1 ~ attr && $0 ~ old { print DN }
-      ' | uniq > $domains
+      ' | uniq > "$domains"
   # Open temporary file containing DNs and assign fd 5 to it.
-  exec 5<> $domains
+  exec 5<> "$domains"
   # Remember that LDAP DNs may contain blank characters.
   # So the DN may possibly span several fields.
   # Beware when quoting DN.
-  while read -u 5 DN; do
-	while [ 1 ]; do
-      old_value=$( udm $module list $udm_options | \
-        awk -vold=$old_ldap_master -vdn="$DN" -vattr=$attribute \
+  while read -r -u 5 DN; do
+	while :; do
+      old_value=$(udm "$module" list $udm_options |
+        awk -vold="$old_ldap_master" -vdn="$DN" -vattr="$attribute" \
           '/^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
            dn==DN && $1 ~ attr && $0 ~ old { $1=""; sub(/^[ ]+/, ""); print $0 ; exit }
           ' )
-      if [ -z "$old_value" -o "$last_answer" = n ]; then
+      if [ -z "$old_value" ] || [ "$last_answer" = n ]; then
 		last_answer=""
       	break
       fi
@@ -124,8 +112,8 @@ resolve_reference() {
       # check if the path already exists on the new host.
       if [ "$module" = "shares/share" ] ; then
         echo "[Y|n|remove]? "
-        udm $module list |\
-          awk -vdn="$DN" -vtarget=$new_value '
+        udm "$module" list |
+          awk -vdn="$DN" -vtarget="$new_value" '
             /^DN:/ { $1=""; sub(/^[ ]+/, "") ; DN=$0 ; next };
             $1 == "host:" { host = $2 }
             $1 == "path:" { path = $2 }
@@ -141,21 +129,21 @@ resolve_reference() {
         echo -n "[Y|n]? "
       fi
       while true; do
-        read answer
+        read -r answer
 		# Set default to y
 		if [ -z "$answer" ]; then
 			answer=y
 		fi
-        case $answer in
+        case "$answer" in
           [yY] )
             echo "Ok, changing $attribute in $DN"
-            if [ "$module" = "shares/share" -o "$attribute" = "mailHomeServer" ] ; then
+            if [ "$module" = "shares/share" ] || [ "$attribute" = "mailHomeServer" ] ; then
               # some attributes are single values, like hosts or mailHomeSevers
-              udm $module modify --dn "$DN" --set $attribute="$new_value"
+              udm "$module" modify --dn "$DN" --set "$attribute=$new_value"
             else
               # other modules can have the same attribute several times
-              udm $module modify --dn "$DN" --append $attribute="$new_value"
-              udm $module modify --dn "$DN" --remove $attribute="$old_value"
+              udm "$module" modify --dn "$DN" --append "$attribute=$new_value"
+              udm "$module" modify --dn "$DN" --remove "$attribute=$old_value"
             fi
             break ;;
           [nN] )
@@ -164,8 +152,8 @@ resolve_reference() {
             break ;;
           remove )
             if [ "$module" = "shares/share" ] ; then
-              echo "Ok, removing $n";
-              udm $module remove --dn "$DN"
+              echo "Ok, removing $DN"
+              udm "$module" remove --dn "$DN"
               break
             else
               echo "removal is offered only with udm module shares/share"
@@ -208,7 +196,7 @@ consider_termination() {
 
   while true ; do
     echo ""
-    read -p "Do you want to continue with converting this server into a Primary Directory Node [Y|n]? " answer 2>&1
+    read -r -p "Do you want to continue with converting this server into a Primary Directory Node [Y|n]? " answer 2>&1
     case $answer in
       [yY] )
         echo "Ok, continue" | tee -a "$LOGFILE"
@@ -223,8 +211,10 @@ consider_termination() {
 }
 
 # log call
-echo "$(LC_ALL=C date): started $(basename $0)" >>"$LOGFILE"
-echo "$(LC_ALL=C date): with options $*" >>"$LOGFILE"
+{
+  echo "$(LC_ALL=C date): started $(basename "$0")"
+  echo "$(LC_ALL=C date): with options $*"
+} >>"$LOGFILE"
 
 # save errors in log file
 exec 2>>"$LOGFILE"
@@ -232,15 +222,15 @@ exec 2>>"$LOGFILE"
 while getopts dfhvw: name
 do
   case "$name" in
-    f)  opt_force=1                 ;;
+    f)  opt_force=true              ;;
     h)  Usage ; exit                ;;
-    v)  opt_verbose=1               ;;
+    v)  opt_verbose=true            ;;
     w)  opt_wait="${OPTARG}"        ;;
   esac
 done
-shift $(($OPTIND - 1))
-if [ $# -ne 0 ] ; then
-  Usage;
+if ! shift $((OPTIND - 1))
+then
+  Usage
   printf "You passed obscure arguments: \"%s\"\n" "$*"
   exit 2
 fi
@@ -248,17 +238,15 @@ fi
 # Check if the script univention-config-registry can be executed.
 if ! univention-config-registry -v >>"$LOGFILE"; then
   printf "ERROR: This is not a proper UCS host (cannot find command univention-config-registry). Use -f to proceed anyway\n" | tee -a "$LOGFILE"
-  if [ $opt_force -eq 0 ] ; then
+  "$opt_force" ||
     exit 1
-  fi
 fi
 
 # Check if the current user has root permissions.
-if [ $( id -u ) -ne 0 ]; then
-  printf "ERROR: You are user $( id -u ) and not root, so you are not allowed to do this. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
-  if [ $opt_force -eq 0 ] ; then
+if [ "$(id -u)" -ne 0 ]; then
+  printf "ERROR: You are user %s and not root, so you are not allowed to do this. Use -f to proceed anyway\n" "$(id -u)" | tee -a "$LOGFILE"
+  "$opt_force" ||
     exit 1
-  fi
 fi
 
 # Read all Univention variables into shell variables.
@@ -269,25 +257,22 @@ if [ "$server_role" != "domaincontroller_backup" ]; then
   printf "ERROR: univention-backup2master can only be started on a Backup Directory Node. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
   # Does it make sense to allow enforcement on a Primary ?
   # Yes, immediately after conversion, we use this script to report remainders.
-  if [ $opt_force -eq 0 ] ; then
+  "$opt_force" ||
     exit 1
-  fi
 fi
 
 # check if system is joined
 if [ ! -e /var/univention-join/joined ]; then
   printf "ERROR: The system is not joined to an UCS domain. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
-  if [ $opt_force -eq 0 ] ; then
+  "$opt_force" ||
     exit 1
-  fi
 fi
 
 # check Primary DNS
-if ! host $ldap_master >>"$LOGFILE"; then
+if ! host "$ldap_master" >>"$LOGFILE"; then
   printf "ERROR: LDAP Primary DNS name is not resolvable. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
-  if [ $opt_force -eq 0 ] ; then
+  "$opt_force" ||
     exit 1
-  fi
 fi
 
 # try to download univention-server-master
@@ -295,17 +280,15 @@ apt-get update >>"$LOGFILE"
 apt-get -y -d install univention-server-master >>"$LOGFILE"
 if [ -z "$(ls /var/cache/apt/archives/univention-server-master_*.deb)" ]; then
   printf "ERROR: Could not download package univention-server-master. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
-  if [ $opt_force -eq 0 ] ; then
+  "$opt_force" ||
     exit 1
-  fi
 fi
 
 # Try to connect to Primary Directory Node, check if connection is possible
-if nc -z $ldap_master $ldap_master_port >>"$LOGFILE"; then
-  printf "ERROR: The LDAP Primary Directory Node host ($ldap_master:$ldap_master_port) is still running. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
-  if [ $opt_force -eq 0 ] ; then
+if nc -z "$ldap_master" "$ldap_master_port" >>"$LOGFILE"; then
+  printf "ERROR: The LDAP Primary Directory Node host (%s) is still running. Use -f to proceed anyway\n" "$ldap_master:$ldap_master_port" | tee -a "$LOGFILE"
+  "$opt_force" ||
     exit 1
-  fi
 fi
 
 # turn on verbose logging
@@ -317,7 +300,7 @@ echo "univention-backup2master allows the Backup Directory Node to take over the
 echo
 echo "This tool will wait here for $opt_wait seconds..."
 echo "Press CTRL-c to abort or press ENTER to continue"
-read -t $opt_wait somevar
+read -r -t "$opt_wait" REPLY
 
 # From now on this script should not be terminated before proper completion.
 trap "consider_termination" TERM EXIT QUIT INT HUP
@@ -336,7 +319,7 @@ systemctl stop univention-directory-listener
 old_ldap_master="$ldap_master"
 # set config registy variables
 univention-config-registry set \
-	ldap/master="$hostname.$domainname" \
+	ldap/master="${hostname:?}.${domainname:?}" \
 	ldap/server/type=master \
 	server/role=domaincontroller_master \
 	kerberos/adminserver="$hostname.$domainname" \
@@ -361,13 +344,13 @@ systemctl start univention-directory-listener
 /usr/share/univention-directory-manager-tools/univention-dnsedit --ignore-exists "$domainname" remove srv kerberos-adm tcp 0 100 88 "$old_ldap_master."
 
 # Remove the S4 Connector service entry from the old Primary Directory Node
-master_dn="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret '(&(univentionServerRole=master)(univentionService=Samba 4)(univentionService=S4 Connector))' dn | sed -ne 's|dn: ||p')"
+master_dn="$(ldapsearch -x -ZZ -D "${ldap_hostdn:?}" -y /etc/machine.secret '(&(univentionServerRole=master)(univentionService=Samba 4)(univentionService=S4 Connector))' dn | sed -ne 's|dn: ||p')"
 if [ -n "$master_dn" ]; then
 	univention-directory-manager computers/domaincontroller_master modify --dn "$master_dn" --remove service="S4 Connector"
 	if [ "$(dpkg-query -W -f='${Status}\n' univention-s4-connector 2>/dev/null)" = "install ok installed" ]; then
 		# reconfigure S4 connector
 		ucr unset connector/s4/autostart
-		cat /var/univention-join/status | grep -v "^univention-s4-connector " > /var/univention-join/status.temp
+		grep -v "^univention-s4-connector " /var/univention-join/status > /var/univention-join/status.temp
 		mv /var/univention-join/status.temp /var/univention-join/status
 	else
 		echo
@@ -382,32 +365,29 @@ fi
 # objectClass univentionObject if necessary.
 found_univentionObject=$( ldapsearch -x -ZZ -D "$ldap_hostdn" -b "$ldap_hostdn" -y /etc/machine.secret -LLL | awk '$1=="objectClass:" && $2=="univentionObject"' )
 if [ -z "$found_univentionObject" ]; then
-  temp_file=$(mktemp)
-  echo "dn: ${ldap_hostdn}"                                      >> "$temp_file"
-  echo "changetype: modify"                                      >> "$temp_file"
-  echo "add: objectClass"                                        >> "$temp_file"
-  echo "objectClass: univentionObject"                           >> "$temp_file"
-  echo "-"                                                       >> "$temp_file"
-  echo "add: univentionObjectType"                               >> "$temp_file"
-  echo "univentionObjectType: computers/domaincontroller_master" >> "$temp_file"
-
-  ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$temp_file"
-  rm $temp_file
+  {
+    echo "dn: ${ldap_hostdn}"
+    echo "changetype: modify"
+    echo "add: objectClass"
+    echo "objectClass: univentionObject"
+    echo "-"
+    echo "add: univentionObjectType"
+    echo "univentionObjectType: computers/domaincontroller_master"
+  } |
+  ldapmodify -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret
 fi
 
 # set ServerRole to master
-temp_file=$(mktemp)
-echo "dn: ${ldap_hostdn}" >>"$temp_file"
-echo "changetype: modify" >>"$temp_file"
-echo "replace: univentionServerRole" >>"$temp_file"
-echo "univentionServerRole: master" >>"$temp_file"
-echo "-" >>"$temp_file"
-echo "replace: univentionObjectType" >>"$temp_file"
-echo "univentionObjectType: computers/domaincontroller_master" >>"$temp_file"
-
-ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$temp_file"
-
-rm "$temp_file"
+{
+  echo "dn: ${ldap_hostdn}"
+  echo "changetype: modify"
+  echo "replace: univentionServerRole"
+  echo "univentionServerRole: master"
+  echo "-"
+  echo "replace: univentionObjectType"
+  echo "univentionObjectType: computers/domaincontroller_master"
+} |
+ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret
 
 srv_dn=$(univention-directory-manager dns/srv_record list --superordinate zoneName="$domainname,cn=dns,$ldap_base" --filter relativeDomainName="_domaincontroller_master._tcp" | sed -ne 's|DN: ||p')
 univention-directory-manager dns/srv_record modify --superordinate zoneName="$domainname,cn=dns,$ldap_base" --dn "$srv_dn" --set location="0 0 0 $hostname.$domainname."
@@ -440,7 +420,7 @@ samdb_remove_dc_account(){
 		fi
 
 		if [ -z "$machine_dn" ] || [ -z "$server_dn" ]; then	## search again directly for objectClass=server
-			server_ldif=$(univention-s4search -b "CN=Configuration,$samba4_ldap_base" --controls domain_scope:0 \
+			server_ldif=$(univention-s4search -b "CN=Configuration,${samba4_ldap_base:?}" --controls domain_scope:0 \
 						"(&(objectClass=server)(name=$machine_name))" | ldapsearch-wrapper)
 			server_dn=$(echo "$server_ldif" | sed -n 's/^dn: //p')
 		fi
@@ -504,14 +484,14 @@ resolve_reference dns/reverse_zone nameserver "$old_ldap_master." "$hostname.$do
 univention-run-join-scripts 2>&1 | tee -a "$LOGFILE"
 
 # Resolve any LDAP references to the old Primary
-resolve_reference shares/share   host     $old_ldap_master_hostname $hostname ""
-resolve_reference dns/srv_record location $old_ldap_master_hostname $hostname "--superordinate zoneName=$domainname,cn=dns,$ldap_base"
+resolve_reference shares/share   host     "$old_ldap_master_hostname" "$hostname" ""
+resolve_reference dns/srv_record location "$old_ldap_master_hostname" "$hostname" "--superordinate zoneName=$domainname,cn=dns,$ldap_base"
 
 # Is the new Primary Directory Node a IMAP server?
 res="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL "(&(cn=$hostname)(objectClass=univentionDomainController)(univentionService=IMAP))")"
 # Do we have any users who use the old Primary Directory Node as IMAP server?
 res_users="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL "(univentionMailHomeServer=$old_ldap_master)")"
-if [ -n "$res" -a -n "$res_users" ]; then
+if [ -n "$res" ] && [ -n "$res_users" ]; then
 	resolve_reference users/user     mailHomeServer  "$old_ldap_master_hostname"    "$hostname"      ""
 elif [ -n "$res_users" ]; then
 	echo
@@ -520,7 +500,7 @@ elif [ -n "$res_users" ]; then
 fi
 
 # Remove the reference to old Primary from krb5PrincipalName for LDAP access
-ldapdelete -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret "krb5PrincipalName=ldap/${old_ldap_master}@${kerberos_realm},cn=kerberos,${ldap_base}"
+ldapdelete -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret "krb5PrincipalName=ldap/${old_ldap_master}@${kerberos_realm:?},cn=kerberos,${ldap_base}"
 
 # Install the package of the Primary at the same time when removing the package of the Backup Node.
 # This way no dependent packages get removed.
@@ -536,4 +516,3 @@ test -x /etc/init.d/bind9 && /etc/init.d/bind9 force-reload
 STILL_RUNNING=
 
 exit 0
-

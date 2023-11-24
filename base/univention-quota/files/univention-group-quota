@@ -85,12 +85,9 @@ filesystem2mountpoint () { # DEVICE
 }
 
 setQuotaForUserOnFilesystem () { # USER FILESYSTEM BSL BHL
-	local USER="$1"
-	local FILESYSTEM="$2"
-	local BSL="$3"
-	local BHL="$4"
-	local ISL=$(quota -wulv "$USER"|tr -s '\t' ' '|grep "^ *$FILESYSTEM "|cut -d' ' -f6)
-	local IHL=$(quota -wulv "$USER"|tr -s '\t' ' '|grep "^ *$FILESYSTEM "|cut -d' ' -f7)
+	local USER="$1" FILESYSTEM="$2" BSL="$3" BHL="$4" ISL IHL
+	ISL="$(quota -wulv "$USER"|tr -s '\t' ' '|grep "^ *$FILESYSTEM "|cut -d' ' -f6)"
+	IHL="$(quota -wulv "$USER"|tr -s '\t' ' '|grep "^ *$FILESYSTEM "|cut -d' ' -f7)"
 	verbose "Setting quota $BSL/$BHL ($ISL/$IHL) for $USER on $FILESYSTEM"
 	setquota --always-resolve -u "$USER" "$BSL" "$BHL" "$ISL" "$IHL" "$FILESYSTEM"
 }
