@@ -9,7 +9,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  ucslint
 Standards-Version: 3.7.2
 
-Package: 0001-6-7
+Package: pkg
 Architecture: all
 Depends: ${misc:Depends},
  univention-management-console-server,
