@@ -37,7 +37,7 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 	# USERNAME=$(user_randomname)
 	# user_create "$USERNAME"
 
-	local USERNAME=${1:-$NAME}
+	local USERNAME="${1:-$NAME}"
 	if [ -z "$USERNAME" ]
 	then
 		echo "No username has been supplied."
@@ -105,12 +105,12 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 }
 
 user_dn () { #echos the DN of User named $NAME
-	local USERNAME=${1:-$NAME}
+	local USERNAME="${1:-$NAME}"
 	udm-test users/user list --filter uid="$USERNAME" | sed -ne 's/^DN: //p'
 }
 
 user_remove () { # Remove User named like the first argument, supplied to the function.
-	local USERNAME=${1?:missing parameter: name}
+	local USERNAME="${1:?name}"
 
 	info "remove user $USERNAME"
 
@@ -134,7 +134,7 @@ user_remove () { # Remove User named like the first argument, supplied to the fu
 }
 
 user_exists () { #returns 0, if user exits or 1 if he doesn't. Example: userexits $NAME
-	local USERNAME=${1?:missing parameter: name}
+	local USERNAME="${1:?name}"
 	info "checking whether the user $USERNAME is really removed"
 
 	if udm-test users/user list --filter uid="$USERNAME" | grep "^DN:"
@@ -148,7 +148,7 @@ user_exists () { #returns 0, if user exits or 1 if he doesn't. Example: userexit
 }
 
 user_change_pw_next_login () { # Set the Flag for changing the Password on the next login for the user.  #Example: user_change_pw_next_login $NAME
-	local USERNAME=${1?:missing parameter: user name}
+	local USERNAME="${1:?user name}"
 	info "user $USERNAME must change password on next login"
 
 	udm-test users/user modify \
@@ -157,7 +157,7 @@ user_change_pw_next_login () { # Set the Flag for changing the Password on the n
 }
 
 user_check_pw_expiry () { # Checks if there is an expiry-date for the password of a user returns 0 if user has one, otherwise 1 Usage: user_check_pw_expiry $NAME
-	local USERNAME=${1?:missing parameter: name}
+	local USERNAME="${1:?name}"
 	info "check the password expriry of user $USERNAME"
 
 	udm-test users/user list --filter "username=$USERNAME" |
@@ -165,8 +165,7 @@ user_check_pw_expiry () { # Checks if there is an expiry-date for the password o
 }
 
 user_rename () { # Rename a user # Example: renameuser $NAMEOLD $NAMENEW
-	local USERNAMEOLD=${1?:missing parameter: old name}
-	local USERNAMENEW=${2?:missing parameter: new name}
+	local USERNAMEOLD="${1:?old name}" USERNAMENEW="${2:?new name}"
 
 	info  "rename user $USERNAMEOLD to $USERNAMENEW"
 	udm-test users/user modify \
@@ -175,10 +174,7 @@ user_rename () { # Rename a user # Example: renameuser $NAMEOLD $NAMENEW
 }
 
 user_set_attr () {
-	local name=${1?:missing parameter: name}
-	local attr=${2?:missing parameter: udmAttribute}
-	local ldap=${3?:missing parameter: ldapAttribute}
-	local value=${4?:missing parameter: value}
+	local name="${1:?name}" attr="${2:?udmAttribute}" ldap="${3:?ldapAttribute}" value="${4?value}"
 
 	local dn
 	dn=$(user_dn "$name")

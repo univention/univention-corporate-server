@@ -36,7 +36,7 @@ section () { #This is intended to make life easier for readers of test-logs with
 
 check_perm () { # Check file permissions
 	# shellcheck disable=SC2034
-	local check=${1?type} filename=${2?filename} perm=${3?permission} owner=${4?owner} group=${5?group}
+	local check="${1?type}" filename="${2?filename}" perm="${3?permission}" owner="${4?owner}" group="${5?group}"
 	eval '[ -${check#-} "$filename" ]' || return 0
 	if [ $((perm)) -ne $((0$(stat -c "%a" "$filename"))) ] ||
 		[ "$owner" != "$(stat -c "%U" "$filename")" ] ||
@@ -72,9 +72,7 @@ conflictsoftware () { # check if conflicting package $1 is installed
 }
 
 verify_value () {
-	local name=$1
-	local actual_value=$2
-	local expected_value=$3
+	local name="$1" actual_value="$2" expected_value="$3"
 
 	if [ "$actual_value" = "$expected_value" ]
 	then
@@ -85,9 +83,7 @@ verify_value () {
 	fi
 }
 verify_value_ignore_case () {
-	local name=$1
-	local actual_value=$2
-	local expected_value=$3
+	local name="$1" actual_value="$2" expected_value="$3"
 
 	if [ "${actual_value^^}" = "${expected_value^^}" ]
 	then
@@ -98,9 +94,7 @@ verify_value_ignore_case () {
 	fi
 }
 verify_value_contains_line_ignore_case () {
-	local name=$1
-	local actual_value=$2
-	local expected_value=$3
+	local name="$1" actual_value="$2" expected_value="$3"
 
 	if echo -n "$actual_value" | grep -F -i -q --line-regexp -Fis "$expected_value"
 	then
@@ -111,9 +105,7 @@ verify_value_contains_line_ignore_case () {
 	fi
 }
 verify_value_contains_line () {
-	local name=$1
-	local actual_value=$2
-	local expected_value=$3
+	local name="$1" actual_value="$2" expected_value="$3"
 
 	if echo -n "$actual_value" | grep -F -q  --line-regexp "$expected_value"
 	then
@@ -203,9 +195,7 @@ ucs_version_string_to_integer () {
 	local IFS=.-
 	# shellcheck disable=SC2086
 	set -- $1  # IFS
-	local major=${1:-0}
-	local minor=${2:-0}
-	local patchlevel=${3:-0}
+	local major="${1:-0}" minor="${2:-0}" patchlevel="${3:-0}"
 	printf "%d%03d%03d\n" "$major" "$minor" "$patchlevel"
 }
 current_ucs_version_in_range () {

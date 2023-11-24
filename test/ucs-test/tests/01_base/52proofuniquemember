@@ -48,7 +48,7 @@ ldap_delete_attribute "cn=$group,cn=groups,$ldap_base" "uniqueMember" || fail_te
 
 info "Let's see if proof_uniqueMembers finds it:"
 
-if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |\
+if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |
 	grep -F "Adding uniqueMember and memberUid entry for 'uid=$username"
 then
 	fail_test 110 "It seems that proof_uniqueMembers didn't find the attribute inconsistency we just created"
@@ -61,7 +61,7 @@ ldap_delete "uid=$username,cn=users,$ldap_base" || fail_test 110
 
 info "Let's see if proof_uniqueMembers finds it:"
 
-if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |\
+if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |
 	grep -F "Removing member DN 'uid=$username"
 then
 	fail_test 110 "It seems that proof_uniqueMembers didn't find the object inconsistency we just created"

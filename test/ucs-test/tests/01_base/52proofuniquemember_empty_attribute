@@ -40,7 +40,7 @@ ldap_set_attribute "cn=$group,cn=groups,$ldap_base" "uniqueMember" "" || fail_te
 
 info "Let's see if proof_uniqueMembers finds that the 'uniqueMember' attribute is empty now:"
 
-if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |\
+if ! /usr/share/univention-directory-manager-tools/proof_uniqueMembers |
 	grep -F "Adding uniqueMember and memberUid entry for 'uid=$username"
 then
 	fail_test 110 "It seems that proof_uniqueMembers didn't find the empty 'uniqueMember' attribute"
@@ -51,5 +51,5 @@ udm users/user remove --dn="uid=$username,cn=users,$ldap_base" || fail_test 110
 info "Removing test group:"
 udm groups/group remove --dn="cn=$group,cn=groups,$ldap_base" || fail_test 110
 
-exit $RETVAL
+exit "$RETVAL"
 # vim: set ft=sh :
