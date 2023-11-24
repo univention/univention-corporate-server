@@ -151,7 +151,7 @@ class Get(UniventionAppAction):
     def get_values(self, app, keys, warn=True):
         config_parser = CaseSensitiveConfigParser()
         with open(app.get_ini_file()) as f:
-            config_parser.readfp(f)
+            config_parser.read_file(f)
         for section, key in keys:
             search_section = section or 'Application'
             found = False
