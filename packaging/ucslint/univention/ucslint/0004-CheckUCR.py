@@ -371,7 +371,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 all_descriptions |= set(cfg.sections())
             elif fn.endswith('.univention-service'):
                 self.read_ini(fn)
-            elif fn.endswith(('.univention-config-registry', '.univention-baseconfig')):
+            elif fn.endswith('.univention-config-registry'):
                 tmpfn = normpath(join(path, 'debian', f'{f.rsplit(".", 1)[0]}.univention-config-registry-variables'))
                 self.debug(f'testing {tmpfn}')
                 if not exists(tmpfn):
@@ -382,7 +382,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     break
 
         for f in listdir(normpath(join(path, 'debian'))):
-            if f.endswith('.univention-config-registry') or f.endswith('.univention-baseconfig'):
+            if f.endswith('.univention-config-registry'):
                 fn = normpath(join(path, 'debian', f))
 
                 # OBJ = { 'Type': [ STRING, ... ],
