@@ -1,3 +1,9 @@
+ucs-test (10.0.19-33) unstable; urgency=medium
+
+  * Bug #56866: check univention-samba4-backup with symlink in samba dir
+
+ -- Felix Botner <botner@univention.de>  Fri, 24 Nov 2023 12:54:02 +0100
+
 ucs-test (10.0.19-32) unstable; urgency=medium
 
   * Bug #56828: add test for maximum connection and timeout

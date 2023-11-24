@@ -9,12 +9,27 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
-# shellcheck source=../../lib/base.sh
+# shellcheck source=/dev/null
 . "$TESTLIBPATH/base.sh" || exit 137
 
 backup_dir="/var/univention-backup/samba"
+domainname="$(ucr get domainname)"
+samba_dir="/var/lib/samba/sysvol/$domainname"
+
+cleanup () {
+	test -L "$samba_dir/scripts/fstab" && rm -f "$samba_dir/scripts/fstab"
+}
+trap cleanup INT TERM EXIT
+
+# backup
 number_of_backup_files_before="$(find "$backup_dir"/samba-backup-*.tar.bz2 | wc -l)"
 univention-samba4-backup || fail_test "univention-samba4-backup failed"
 number_of_backup_files_after="$(find "$backup_dir"/samba-backup-*.tar.bz2 | wc -l)"
 test "$number_of_backup_files_after" -gt "$number_of_backup_files_before" ||  fail_test "no backup archive found after running univention-samba4-backup"
+
+# check backup if symlink exists
+ln -s /etc/fstab "$samba_dir/scripts/"
+univention-samba4-backup || fail_test "univention-samba4-backup failed with symlink in $samba_dir"
+
+
 exit "$RETVAL"
