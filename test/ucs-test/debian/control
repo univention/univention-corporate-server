@@ -389,19 +389,6 @@ Provides:
 Description: Test scripts for univention-ad-connector.
  This package includes the test-cases for univention-ad-connector.
 
-Package: ucs-test-import-performance
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Test scripts to test the import performance
- This package includes the test-cases for importing two large
- schools one with 30.000 users and one with 65.000 users.
-
 Package: ucs-test-ldap-cache
 Architecture: all
 Recommends:
