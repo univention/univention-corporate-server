@@ -1,5 +1,3 @@
-# Python 3
-0009-3
 # Copyright
 0010-2
 0008-1: testframework/*
@@ -8,7 +6,9 @@
 0008-4: testframework/*
 0008-5: testframework/*
 0008-6: testframework/*
+0008-7: testframework/*
 0009-2: testframework/*
+0009-3: testframework/*
 0009-4: testframework/*
 0009-8: testframework/*
 0009-9: testframework/*
@@ -37,3 +37,6 @@
 0017-5: testframework/*
 0017-6: testframework/*
 0017-7: testframework/*
+0017-8: testframework/*
+0017-9: testframework/*
+0017-10: testframework/*
