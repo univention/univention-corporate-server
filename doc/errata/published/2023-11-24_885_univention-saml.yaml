@@ -6,7 +6,7 @@ src: univention-saml
 fix: 7.0.8-12
 desc: |
  This update addresses the following issues:
- * The last erratum broke mixed environments with UCS 4.4. Therefore the UDM
+ * Erratum 881 broke mixed environments with UCS 4.4. Therefore the UDM
    modules are now only registered for UCS 5 based systems.
 bug: [56864]
 erratum: 885
