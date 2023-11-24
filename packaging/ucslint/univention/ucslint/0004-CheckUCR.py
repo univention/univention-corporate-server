@@ -226,7 +226,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             warning_pos = 0
             for match in self.RE_UCR_PLACEHOLDER_VAR1.finditer(content):
-                var = match.group(1)
+                var = match[1]
                 if var.startswith(('BCWARNING=', 'UCRWARNING=', 'UCRWARNING_ASCII=')):
                     checks['ucrwarning'] = True
                     warning_pos = warning_pos or match.start() + 1
@@ -237,7 +237,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             match = self.RE_IDENTIFIER.search(content, 0)
             if warning_pos and match:
-                identifier = match.group()
+                identifier = match[0]
                 pos = match.start()
                 self.debug(f'Identifier "{identifier}" found at {pos}')
                 if warning_pos < pos:
@@ -252,7 +252,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             for regEx in self.RE_UCR_VARLIST:
                 for match in regEx.finditer(content):
-                    var = match.group(1)
+                    var = match[1]
                     if var not in checks['variables']:
                         checks['variables'].append(var)
             if checks['variables']:
@@ -265,8 +265,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 match = self.RE_UCR_HEADER_FILE.search(content)
                 if match:
                     fname = fn[fn.find('/conffiles/') + 10:]
-                    if match.group(2) != fname:
-                        self.addmsg('0004-1', f'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files{fname}\n      - path in header    = {match.group(1)}', fn)
+                    if match[2] != fname:
+                        self.addmsg('0004-1', f'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files{fname}\n      - path in header    = {match[1]}', fn)
 
         self.debug(f'found conffiles: {conffiles.keys()}')
 

@@ -30,7 +30,7 @@ def main() -> None:
         match = RE_ID.match(event)
         if not match:
             continue
-        group = match.group()
+        group = match[0]
 
         if args.group:
             if last and last != group:

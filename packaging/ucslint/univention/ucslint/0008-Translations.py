@@ -87,7 +87,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             self.debug(f'testing {fn}')
             for row, col, match in uub.line_regexp(content, RE_TRANSLATION):
-                self.addmsg('0008-1', f'substitutes before translation: {match.group(1)}', fn, row, col)
+                self.addmsg('0008-1', f'substitutes before translation: {match[1]}', fn, row, col)
 
     def check_po(self, po_files: Iterable[str]) -> None:
         """Check Portable Object files."""
@@ -102,8 +102,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             match = RE_CHARSET.search(content)
             if not match:
                 self.addmsg('0008-5', 'cannot find charset definition', fn)
-            elif match.group(1).lower() not in 'utf-8':
-                self.addmsg('0008-6', f'invalid charset ({(match.group(1))}) defined', fn)
+            elif match[1].lower() not in 'utf-8':
+                self.addmsg('0008-6', f'invalid charset ({(match[1])}) defined', fn)
 
             self.debug(f'testing {fn}')
             for regex, errid, errtxt in [

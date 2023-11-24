@@ -113,7 +113,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if not match:
                 self.addmsg('0010-4', 'cannot find copyright line containing year', fn)
             else:
-                years = match.group(1)
+                years = match[1]
                 current_year = str(time.localtime()[0])
                 if current_year not in years:
                     self.debug(f'Current year={current_year}  years="{years}"')

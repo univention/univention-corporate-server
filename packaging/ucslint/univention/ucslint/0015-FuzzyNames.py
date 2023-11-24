@@ -184,7 +184,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         if self.RE_WHITELINE.match(line):
                             continue
                         for match in RE_UNIVENTION.finditer(line):
-                            found = match.group(0)
+                            found = match[0]
                             if self.RE_WHITEWORD.match(found):
                                 continue
                             self.debug(f'{fn}:{row}: found="{found}"  origline="{origline}"')

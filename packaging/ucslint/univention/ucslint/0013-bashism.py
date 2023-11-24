@@ -97,9 +97,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     self.addmsg('0013-3', f'cannot parse checkbashism output:\n"{escaped}"', fn)
                     continue
 
-                row = int(match.group(1))
-                msg = match.group(2)
-                code = match.group(3)
+                row = int(match[1])
+                msg = match[2]
+                code = match[3]
 
                 self.addmsg('0013-2', f'possible bashism ({msg}):\n{code}', fn, row)
 

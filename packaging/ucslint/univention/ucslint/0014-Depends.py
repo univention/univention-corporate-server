@@ -164,7 +164,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     for line in fd:
                         m = self.RE_INIT.match(line)
                         if m:
-                            fn = normpath(join(self.path, 'conffiles', m.group(1)))
+                            fn = normpath(join(self.path, 'conffiles', m[1]))
                             init_files.add(fn)
         except OSError:
             self.addmsg('0014-0', 'failed to open and read file', fn)

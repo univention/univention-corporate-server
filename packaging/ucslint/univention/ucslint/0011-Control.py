@@ -105,7 +105,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # compare package name
         match = RE_DEBIAN_CHANGELOG.match(content_changelog)
         if match:
-            srcpkgname = match.group(1)
+            srcpkgname = match[1]
         else:
             srcpkgname = ''
             self.addmsg('0011-9', 'cannot determine source package name', fn_changelog)
@@ -128,7 +128,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', fn_control)
 
         build_depends = {
-            m.group(1): m.groupdict() for m in (
+            m[1]: m.groupdict() for m in (
                 RE_DEP.match(dep) for dep in (
                     alt.strip()
                     for dep in parser.source_section.get('Build-Depends', '').split(',')

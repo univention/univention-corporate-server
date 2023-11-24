@@ -106,7 +106,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             # check joinscript api
             match = self.RE_JOIN_API.match(line)
             if match:
-                self.addmsg('0001-24', f'Invalid joinscript api {match.group(1)!r}', filename, row, line=line)
+                self.addmsg('0001-24', f'Invalid joinscript api {match[1]!r}', filename, row, line=line)
 
             if not line or line.startswith('#'):
                 continue
@@ -216,8 +216,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         else:
             match = self.RE_DH_JOIN.search(c_rules)
             if match:
-                self.debug(f'Detected use of {match.group(0)}')
-                is_old = bool(match.group(1))
+                self.debug(f'Detected use of {match[0]}')
+                is_old = bool(match[1])
                 if is_old:
                     self.addmsg('0001-23', 'Consider switchting to "univention-join" debhelper sequence', fn_rules)
                 if ctrl:

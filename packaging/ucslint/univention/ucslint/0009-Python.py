@@ -99,7 +99,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     self.addmsg('0009-9', 'hashbang contains more than one option', fn, 1)
 
             for row, col, m in uub.line_regexp(tester.raw, RE_LENIENT):
-                txt = m.group("str")
+                txt = m["str"]
                 if not txt:
                     continue
                 if self.RE_STRING.match(txt):

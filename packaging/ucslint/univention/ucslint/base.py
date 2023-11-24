@@ -98,7 +98,7 @@ def noqa(line: str) -> Callable[[str], bool]:
     if not match:
         return lambda issue: False
 
-    ignore = match.group(1)
+    ignore = match[1]
     if not ignore:
         return lambda issue: True
 

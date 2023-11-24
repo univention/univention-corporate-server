@@ -115,7 +115,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     continue
                 for match in self.RE_TEST.finditer(line):
                     try:
-                        actions = self.parse_test(split(match.group('cond'))) & other_actions
+                        actions = self.parse_test(split(match['cond'])) & other_actions
                     except ValueError as ex:
                         self.debug(f'Failed {script_path}:{row}: {ex} in {line}')
                         continue
@@ -144,7 +144,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                                 script_path, row, match.start(0), line)
 
             for row, col, match in uub.line_regexp(content, self.RE_CASE):
-                for cases in match.group('cases').split(';;'):
+                for cases in match['cases'].split(';;'):
                     cases = cases.lstrip('\t\n\r (')
                     cases = cases.split(')', 1)[0]
                     actions = {action for case in cases.split('|') for action in split(case)} & other_actions
