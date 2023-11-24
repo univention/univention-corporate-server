@@ -49,12 +49,12 @@ tmperr="$tmpdir/err"
 BINPATH="$PWD/ucslint"
 
 match () {
-    local arg dirname="$1"
+    local arg name="$1"
     shift
     [ $# -eq 0 ] && return 0
     for arg in "${@#testframework/}"
     do
-        [ "${dirname#$arg}" = "$dirname" ] || return 0
+        [ "$arg" = "$name" ] && return 0
     done
     return 1
 }
@@ -62,12 +62,12 @@ match () {
 for dir in testframework/*
 do
     [ -d "$dir" ] || continue
-    DIRNAME=$(basename "$dir")
-    match "$DIRNAME" "$@" || continue
+    NAME=$(basename "$dir")
+    match "$NAME" "${@%/}" || continue
 
         [ -z "$quiet" ] && echo -n "Testing $dir "
 
-        MODULE="${DIRNAME:0:4}"
+        MODULE="${NAME:0:4}"
 
         ( cd "./$dir" && "$BINPATH" -m "$MODULE" >"$tmpresult" 2>"$tmperr" )
         ret=$?
