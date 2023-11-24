@@ -152,6 +152,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     RE_WHITEWORD = re.compile(r'|'.join(r"""
         [0-9][0-9]univention
+        Xunivention
         punivention
         fBunivention
         invention

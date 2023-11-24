@@ -30,7 +30,7 @@ univention-bind (14.0.3-1) unstable; urgency=medium
 
 univention-bind (14.0.2-1) unstable; urgency=medium
 
-  * Bug #54273: Include debug script in server_password_change.d/unievntion-bind subscript
+  * Bug #54273: Include debug script in server_password_change.d/univention-bind subscript
 
  -- Juan Carlos García García <garcia-garcia.extern@univention.de>  Tue, 05 Jul 2022 12:25:08 +0200
 
