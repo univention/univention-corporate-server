@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: samba
+fix: 4.18.3-1A~5.0.0.202311241237
+desc: |
+ This update addresses the following issues:
+ * A symbolic link in the samba directory will no
+   break the samba backup tool.
+bug: [56866]
