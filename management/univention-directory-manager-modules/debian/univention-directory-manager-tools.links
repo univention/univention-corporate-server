@@ -1,6 +1,5 @@
 usr/share/univention-directory-manager-tools usr/share/univention-admin-tools
 usr/share/univention-directory-manager-tools/univention-cli-client usr/sbin/udm
-usr/share/univention-directory-manager-tools/univention-cli-client usr/sbin/univention-admin
 usr/share/univention-directory-manager-tools/univention-cli-client usr/sbin/univention-directory-manager
 usr/share/univention-directory-manager-tools/univention-cli-client usr/sbin/univention-license-check
 usr/share/univention-directory-manager-tools/univention-cli-client usr/share/univention-directory-manager-tools/univention-addgroup

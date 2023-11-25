@@ -1,8 +1,9 @@
-univention-directory-manager-modules (15.0.25-1) UNRELEASED; urgency=medium
+univention-directory-manager-modules (15.0.25-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #53802: Remove `univention-admin` deprecated since UCS 3.0
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:29 +0100
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:39:16 +0100
 
 univention-directory-manager-modules (15.0.24-23) unstable; urgency=medium
 

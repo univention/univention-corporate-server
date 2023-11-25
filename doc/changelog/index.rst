@@ -405,6 +405,9 @@ Univention App Center
 * The case sensitivity of the attribute ``memberUid`` is now respected when
   removing members from a group (:uv:bug:`54183`).
 
+* The command :program:`univention-admin` has been removed.
+  It was deprecated since UCS 3.0 (:uv:bug:`53802`).
+
 .. _changelog-umc-join:
 
 Domain join module

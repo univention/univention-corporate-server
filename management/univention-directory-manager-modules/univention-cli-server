@@ -232,7 +232,7 @@ def doit(sarglist, conn, stdout=None, stderr=None):
     output = []
     cmdfile = os.path.basename(arglist[0])
     try:
-        if cmdfile in ('univention-admin', 'univention-directory-manager', 'udm'):
+        if cmdfile in ('univention-directory-manager', 'udm'):
             ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-directory-manager' % (os.getppid(), os.getpid()))
             ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
             univention.admincli.admin.main(arglist, stdout, stderr)

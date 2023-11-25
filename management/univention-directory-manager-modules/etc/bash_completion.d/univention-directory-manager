@@ -51,4 +51,3 @@ _uniudm () {
 }
 complete -F _uniudm udm
 complete -F _uniudm univention-directory-manager
-complete -F _uniudm univention-admin
