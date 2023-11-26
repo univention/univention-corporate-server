@@ -17,6 +17,7 @@ from univention.management.console.modules.ucstest import joinscript, unjoinscri
 @pytest.fixture(autouse=True)
 def ucs_test_module_joined():
     joinscript()
+    subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
     yield
     unjoinscript()
 

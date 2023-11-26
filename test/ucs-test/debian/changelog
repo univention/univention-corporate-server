@@ -1,3 +1,9 @@
+ucs-test (10.0.19-34) unstable; urgency=medium
+
+  * Bug #56828: try to fix test case, new UMC ACLs weren't detected
+
+ -- Florian Best <best@univention.de>  Sun, 26 Nov 2023 14:52:09 +0100
+
 ucs-test (10.0.19-33) unstable; urgency=medium
 
   * Bug #56866: check univention-samba4-backup with symlink in samba dir
