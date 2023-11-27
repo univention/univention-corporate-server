@@ -14,6 +14,7 @@
 
 backup_dir="/var/univention-backup/samba"
 domainname="$(ucr get domainname)"
+domainname="${domainname,,}"
 samba_dir="/var/lib/samba/sysvol/$domainname"
 
 cleanup () {
@@ -28,7 +29,7 @@ number_of_backup_files_after="$(find "$backup_dir"/samba-backup-*.tar.bz2 | wc -
 test "$number_of_backup_files_after" -gt "$number_of_backup_files_before" ||  fail_test "no backup archive found after running univention-samba4-backup"
 
 # check backup if symlink exists
-ln -s /etc/fstab "$samba_dir/scripts/"
+ln -s /etc/fstab "$samba_dir/scripts/" || fail_test "could not create link"
 univention-samba4-backup || fail_test "univention-samba4-backup failed with symlink in $samba_dir"
 
 
