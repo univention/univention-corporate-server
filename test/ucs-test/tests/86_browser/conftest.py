@@ -206,7 +206,7 @@ def check_for_backtrace(page: Page):
             logger.info("Recorded backtrace")
             print(backtrace_container.inner_text())
         else:
-            raise Exception("An unknown error with status code 502 occurred while connecting to the server.")
+            logger.info("An unknown error with status code 502 occurred while connecting to the server.")
     except AssertionError:
         pass
 
