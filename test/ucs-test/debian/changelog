@@ -1,3 +1,10 @@
+ucs-test (10.0.19-40) unstable; urgency=medium
+
+  * Bug #56054: Various playwright fixes and improvements. Removing dead code,
+  cleaning up formatting, updating timeouts and changing logging.
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 04 Dec 2023 17:41:58 +0100
+
 ucs-test (10.0.19-39) unstable; urgency=medium
 
   * Bug #56765: add basis for keycloak support
