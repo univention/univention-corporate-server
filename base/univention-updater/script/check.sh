@@ -165,6 +165,19 @@ update_check_ldap_connection () {
 	return 1
 }
 
+update_check_keycloak_migration () {
+	local var="update$VERSION/ignore_keycloak_migration" msg
+	ignore_check "$var" && return 100
+	msg="$(univention-keycloak-migration-status 2>&1)" && return 0
+	msg="${msg//$'\n'/$'\n'$'\t'}"
+	msg+="\n\n\tPlease read the release notes"
+	msg+="\n\t\tTODO Link to release notes"
+	msg+="\n\tand the Keycloak Migration guide."
+	msg+="\n\t\thttps://docs.software-univention.de/keycloak-migration/index.html"
+	echo -e "$msg"
+	return 1
+}
+
 update_check_role_package_removed () {
 	local role_package
 	case "$server_role" in
@@ -195,11 +208,14 @@ update_check_role_package_removed () {
 
 # Bug #56134 Bug #56651 Bug #56367 Bug #52048 Bug #56765
 # Admin must agree to remove these:
+# Issue univention/ucs#1885
+#  we removed univentionSAMLServiceProvider, univentionSAMLIdpConfig and
+#  univentionOIDCService, we remove these objects in check_keycloak_migration
+#  but as we support mixed environments (5.0/5.2) we have to support these
+#  objects in 5.2 too (not create in 5.2)
+#  we can remove them completely with the next version (6.0)
 declare -a legacy_ocs_structural=(
 	'(structuralObjectClass=univentionNagiosTimeperiodClass)'
-	'(structuralObjectClass=univentionSAMLServiceProvider)'
-	'(structuralObjectClass=univentionSAMLIdpConfig)'
-	'(structuralObjectClass=univentionOIDCService)'
 )
 declare -a legacy_ocs_auxiliary=(
 	'(objectClass=univentionVirtualMachineGroupOC)'  # EA
