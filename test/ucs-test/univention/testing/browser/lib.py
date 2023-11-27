@@ -226,14 +226,15 @@ class UMCBrowserTest(Interactions):
         ]
 
         role = ucr.get("server/role")
+
         # if we are not on the master we also need to set the language cookie for the master
-        cookies.append(
-            {
+        if role != "domaincontroller_master":
+            cookies.append({
                 "name": "UMCLang",
                 "value": lang,
                 "url": f"https://{ucr.get('ldap/master')}/univention",
-            },
-        ) if role != "domaincontroller_master" else None
+            })
+
         self.page.context.add_cookies(cookies)
 
     @property
@@ -250,7 +251,6 @@ class UMCBrowserTest(Interactions):
         return ucr["domainname"]
 
     def check_for_no_module_available_popup(self):
-        # expect(self.page.get_by_role("dialog")).to_be_visible()
         popup = self.page.get_by_role("dialog").get_by_text("There is no module available for the authenticated user")
         expect(popup).to_be_visible(timeout=30 * SEC)
 
@@ -315,7 +315,6 @@ class UMCBrowserTest(Interactions):
             else:
                 with self.page.expect_response(join_script_query):
                     login_button.click()
-
         elif check_for_no_module_available_popup:
             login_button.click()
             logger.info("Checking for the 'No module for user available popup'")
@@ -324,6 +323,7 @@ class UMCBrowserTest(Interactions):
             logger.info("Logging in without waiting for requests to finish")
             login_button.click()
 
+        # TODO: wait_until networkidle is discouraged by Playwright, replace at some point
         self.page.wait_for_url(re.compile(r".*univention/(management|portal).*"), wait_until="networkidle")
         logging.info("Login Done")
 

@@ -52,7 +52,6 @@ def test_open_fd_after_login(umc_browser_test: UMCBrowserTest, udm, try_wrong_pw
 
 
 def count_fhs(state: Union[str, None] = None) -> Tuple[str, int]:
-    # umc_pid = int(subprocess.run(["pidof", "-x", "univention-management-console-server"], check=True, stdout=subprocess.PIPE).stdout)
     state_str = f"state {state}" if state is not None else ""
     ret = subprocess.run(
         f"ss -tp {state_str} dport 7389 | grep pid=$(pidof -x univention-management-console-server)",
@@ -60,6 +59,6 @@ def count_fhs(state: Union[str, None] = None) -> Tuple[str, int]:
         check=True,
         stdout=subprocess.PIPE,
     ).stdout.decode("utf-8")
-    # ret = subprocess.run(f"lsof -p {umc_pid} | grep 7389 | wc -l", shell=True, check=True, stdout=subprocess.PIPE).stdout.decode("")
+
     sockets_in_close_wait = ret.count("\n")
     return ret, sockets_in_close_wait

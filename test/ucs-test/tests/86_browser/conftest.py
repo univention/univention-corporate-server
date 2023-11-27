@@ -9,7 +9,7 @@ import pytest
 from playwright.sync_api import BrowserContext, BrowserType, Page, expect
 
 from univention.config_registry import handler_set, handler_unset, ucr
-from univention.testing import ucr as _ucr, udm as _udm
+from univention.testing import udm as _udm
 from univention.testing.browser import logger
 from univention.testing.browser.generic_udm_module import UserModule
 from univention.testing.browser.lib import SEC, UMCBrowserTest
@@ -58,13 +58,6 @@ def udm_module_scope() -> Iterator[_udm.UCSTestUDM]:
     """Auto-reverting UDM wrapper."""
     with _udm.UCSTestUDM() as udm:
         yield udm
-
-
-@pytest.fixture(scope="module")
-def ucr_module_scope() -> Iterator[_ucr.UCSTestConfigRegistry]:
-    """Per `module` auto-reverting UCR instance."""
-    with _ucr.UCSTestConfigRegistry() as ucr:
-        yield ucr
 
 
 @pytest.fixture()
@@ -140,7 +133,6 @@ def umc_browser_test(
 ) -> Generator[UMCBrowserTest, None, None]:
     page = setup_browser_context(context)
     tester = UMCBrowserTest(page)
-    # time.sleep(1)
 
     yield tester
 

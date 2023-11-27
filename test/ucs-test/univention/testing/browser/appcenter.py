@@ -106,7 +106,6 @@ class AppCenter:
         logger.info("App installation done")
 
     def handle_installation_dialog(self):
-        # self.page.get_by_role("button", name=_("Continue"), exact=True).click()
         start_installation = self.page.get_by_role("button", name=_("Start installation"))
         continue_button = self.page.get_by_role("button", name=_("Continue"))
         expect(start_installation.or_(continue_button)).to_be_visible()
