@@ -47,21 +47,21 @@ def add_category(edit_mode: UCSPortalEditMode, udm):
 
 
 def add_entry(edit_mode: UCSPortalEditMode, udm, category: str):
-    interal_name = "internal-name-for-entry"
+    internal_name = "internal-name-for-entry"
     entry_display_name = "Entry Name"
     description = "Entry Description"
     keyword = "Keyword"
     link = "https://example.com"
 
     edit_mode.navigate()
-    edit_mode.add_entry(interal_name, entry_display_name, description, keyword, link, category)
+    edit_mode.add_entry(internal_name, entry_display_name, description, keyword, link, category)
     wait_for_dialog_to_disappear(edit_mode.page)
 
-    entry = search_for_udm_object("portals/entry", interal_name, udm)
+    entry = search_for_udm_object("portals/entry", internal_name, udm)
     created_modules.append(entry)
 
     assert entry is not None
-    assert entry.props.name == interal_name
+    assert entry.props.name == internal_name
     assert entry.props.description == {"de_DE": f"{description} DE", "en_US": f"{description} US"}
     assert entry.props.displayName == {"en_US": f"{entry_display_name} US", "de_DE": f"{entry_display_name} DE"}
     assert entry.props.keywords == {"de_DE": f"{keyword} DE", "en_US": f"{keyword} US"}

@@ -80,11 +80,11 @@ class PackageManagement:
         self.page: Page = tester.page
         self.module_name = _("Package Management")
         self.grid_load_url = re.compile(".*univention/command/appcenter/packages/query.*")
-        self.inital_grid_load_url = re.compile(".*univention/command/appcenter/packages/sections.*")
+        self.initial_grid_load_url = re.compile(".*univention/command/appcenter/packages/sections.*")
 
     def navigate(self, username="Administrator", password="univention"):
         self.tester.login(username, password)
-        self.tester.open_module(self.module_name, self.inital_grid_load_url)
+        self.tester.open_module(self.module_name, self.initial_grid_load_url)
 
     def find_small_package(self) -> str:
         """

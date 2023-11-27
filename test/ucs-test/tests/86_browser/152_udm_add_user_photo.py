@@ -34,8 +34,8 @@ def test_add_user_photo(umc_browser_test: UMCBrowserTest, udm):
     user_module.navigate()
     detail_view = user_module.open_details(user.username)
 
-    inital = detail_view.upload_picture("/tmp/inital.png")
-    inital_src_attribute = inital.get_attribute("src")
+    initial = detail_view.upload_picture("/tmp/inital.png")
+    initial_src_attribute = initial.get_attribute("src")
 
     # if we don't sleep here the second image will be took before the first image is displayed on the user details page
     # this will lead to the assertion failing since the image is the same
@@ -44,7 +44,7 @@ def test_add_user_photo(umc_browser_test: UMCBrowserTest, udm):
     changed = detail_view.upload_picture("/tmp/changed.png")
     changed_src_attribute = changed.get_attribute("src")
 
-    assert inital_src_attribute != changed_src_attribute, "The src attribute didn't change after uploading a new image"
+    assert initial_src_attribute != changed_src_attribute, "The src attribute didn't change after uploading a new image"
 
     detail_view.remove_picture()
     detail_view.save()
