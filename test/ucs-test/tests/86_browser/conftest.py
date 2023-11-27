@@ -95,11 +95,11 @@ def kill_module_processes():
 
 
 def setup_browser_context(context, start_tracing=True):
-    context.set_default_timeout(60 * 1000 * 2)
+    context.set_default_timeout(30 * 1000)
+    expect.set_options(timeout=30 * 1000)
     if start_tracing:
         context.tracing.start(screenshots=True, snapshots=True, sources=True)
     page = context.new_page()
-    expect.set_options(timeout=15_000)
     return page
 
 

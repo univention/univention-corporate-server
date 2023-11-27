@@ -12,7 +12,7 @@
 
 from univention.testing.browser import logger
 from univention.testing.browser.appcenter import AppCenter
-from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.lib import MIN, UMCBrowserTest
 from univention.testing.browser.suggestion import AppCenterCacheTest
 
 
@@ -33,7 +33,7 @@ def test_app_suggestions_missing_key(umc_browser_test: UMCBrowserTest, app_cente
 
 def check(app_center: AppCenter, expected_message: str):
     logger.info("checking for message")
-    with app_center.page.expect_console_message(predicate=lambda msg: expected_message in msg.text):
+    with app_center.page.expect_console_message(predicate=lambda msg: expected_message in msg.text, timeout=2 * MIN):
         app_center.navigate()
 
 
