@@ -3,7 +3,7 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: libde265
-fix: 1.0.11-0+deb9u4
+fix: 1.0.11-0+deb9u5
 desc: |
  This update addresses the following issues:
  * CVE-2023-27102: Fix segmentation violation in the function
@@ -11,8 +11,12 @@ desc: |
  * CVE-2023-27103: Fix heap buffer overflow in the function
    `derive_collocated_motion_vectors`.
  * CVE-2023-47471: Fix buffer overflow in the function `slice_segment_header`.
+ 1.0.11-0+deb9u5 (Sat, 25 Nov 2023 22:03:02 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-43887 fix buffer over-read in pic_parameter_set::dump
 bug: [56862]
 cve:
 - CVE-2023-27102
 - CVE-2023-27103
 - CVE-2023-47471
+- CVE-2023-43887
