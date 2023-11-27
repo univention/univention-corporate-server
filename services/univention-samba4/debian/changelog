@@ -1,3 +1,9 @@
+univention-samba4 (9.0.14-5) unstable; urgency=medium
+
+  * Bug #56794: Depend on samba-ad-dc instead of samba-dsdb-modules
+
+ -- Arvid <requate@univention.de>  Mon, 27 Nov 2023 13:41:30 +0100
+
 univention-samba4 (9.0.14-4) unstable; urgency=medium
 
   * Bug #56354: do not leak password in process list during package

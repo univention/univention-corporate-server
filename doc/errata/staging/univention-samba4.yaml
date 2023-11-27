@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-samba4
+fix: 9.0.14-5
+desc: |
+ This update addresses the following issues:
+ * Under certain conditions, installation of `univention-samba4`
+   aborted because of a missing package dependency on a specific
+   version of `samba-dsdb-modules`, when an older version of that
+   package was already installed.
+   This is addressed by making `univention-samba4` depend on the
+   metapackage `samba-ad-dc` instead, and letting that manage
+   a versioned dependency on `samba-dsdb-modules`. This simplifies
+   the package depenencies.
+bug: [56794]
