@@ -1,0 +1,24 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: firefox-esr
+fix: 115.5.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ 115.5.0esr-1~deb10u1 (Thu, 23 Nov 2023 09:36:07 +0000)
+ * The Cambridge mini Debconf release.
+ * Backport to buster.
+ 115.5.0esr-1 (Wed, 22 Nov 2023 05:32:16 +0900)
+ * New upstream release.
+ * Fixes for mfsa2023-50, also known as: CVE-2023-6204, CVE-2023-6205,
+   CVE-2023-6206, CVE-2023-6207, CVE-2023-6208, CVE-2023-6209, CVE-2023-6212.
+bug: [56876]
+cve:
+- CVE-2023-6204
+- CVE-2023-6205
+- CVE-2023-6206
+- CVE-2023-6207
+- CVE-2023-6208
+- CVE-2023-6209
+- CVE-2023-6212
