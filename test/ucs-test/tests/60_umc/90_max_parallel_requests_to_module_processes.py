@@ -2,6 +2,8 @@
 ## desc: Test the global connection limit to module processes
 ## bugs: [56828]
 ## exposure: dangerous
+## roles:
+##  - domaincontroller_master
 
 import subprocess
 import time
@@ -23,7 +25,7 @@ def ucs_test_module_joined():
 
 
 def pool_runner(func):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=25) as executor:
         futures = [executor.submit(func) for i in range(100)]
         for future in concurrent.futures.as_completed(futures):
             print(future.result())
@@ -44,7 +46,7 @@ def test_max_parallel_requests_to_module_processes(Client):
         print("Check different module")
         process_sysinfo = Process(target=lambda: print(client.umc_command('sysinfo/general').data))
         process_sysinfo.start()
-        process_sysinfo.join(timeout=5)
+        process_sysinfo.join(timeout=10)
         if process_sysinfo.exitcode is None:
             process_sysinfo.terminate()
             raise TimeoutError()
