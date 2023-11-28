@@ -345,40 +345,59 @@ export default defineComponent({
         });
         return;
       }
-      this.save(sanitizeFrontendValues(alteredValues, this.attributeWidgets));
-    },
-    save(values) {
+
       this.$store.dispatch('activateLoadingState');
-      umcCommand('passwordreset/validate_user_attributes', {
-        attributes: values,
-        ...this.credentials,
+
+      const sanitizedValues = sanitizeFrontendValues(alteredValues, this.attributeWidgets);
+      this.validateIfNecessary(sanitizedValues).then(() => {
+        this.save(sanitizedValues);
       })
-        .then((result) => {
-          setBackendInvalidMessage(this.attributeWidgets, result);
-          if (!allValid(this.attributeWidgets)) {
-            this.attributesForm.focusFirstInvalid();
-            return undefined;
-          }
-          return umcCommand('passwordreset/set_user_attributes', {
-            attributes: values,
-            ...this.credentials,
-          }).then(() => {
-            this.$store.dispatch('notifications/addSuccessNotification', {
-              title: _('Profile changes'),
-              description: _('Successfully saved changes'),
-            });
-            this.$router.push({ name: 'portal' });
-          });
-        })
-        .catch((error) => {
-          this.errorDialog.showError(error.message)
-            .then(() => {
-              (this.$refs.saveButton as HTMLButtonElement).focus();
-            });
-        })
         .finally(() => {
           this.$store.dispatch('deactivateLoadingState');
         });
+    },
+    save(values) {
+      umcCommand('passwordreset/set_user_attributes', {
+        attributes: values,
+        ...this.credentials,
+      }).then(() => {
+        this.$store.dispatch('notifications/addSuccessNotification', {
+          title: _('Profile changes'),
+          description: _('Successfully saved changes'),
+        });
+        this.$router.push({ name: 'portal' });
+      });
+    },
+    validateIfNecessary(values) {
+      return new Promise((resolve, reject) => {
+        if (Object.prototype.hasOwnProperty.call(values, 'jpegPhoto') && values.jpegPhoto === '') {
+          if (Object.keys(values).length === 1) {
+            resolve();
+            return;
+          }
+
+          delete values.jpegPhoto;
+        }
+
+        umcCommand('passwordreset/validate_user_attributes', {
+          attributes: values,
+          ...this.credentials,
+        }).then((result) => {
+          setBackendInvalidMessage(this.attributeWidgets, result);
+          if (!allValid(this.attributeWidgets)) {
+            this.attributesForm.focusFirstInvalid();
+            reject();
+            return;
+          }
+          resolve();
+        })
+          .catch((error) => {
+            this.errorDialog.showError(error.message).then(() => {
+              (this.$refs.saveButton as HTMLButtonElement).focus();
+            });
+            reject();
+          });
+      });
     },
     updateOrigFormValues() {
       this.origFormValues = JSON.parse(JSON.stringify(this.attributeValues));

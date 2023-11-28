@@ -125,10 +125,16 @@ export function sanitizeFrontendValues(values: Record<string, unknown>, widgets:
   widgets.forEach((widget) => {
     const value = sanitized[widget.name];
     if (widget.type === 'ImageUploader') {
-      if (typeof value === 'string' && value.startsWith('data:')) {
-        const data = value.split(',')[1];
-        if (data) {
-          sanitized[widget.name] = data;
+      if (typeof value === 'string') {
+        if (value.startsWith('data:')) {
+          const data = value.split(',')[1];
+          if (data) {
+            sanitized[widget.name] = data;
+          } else {
+            delete sanitized[widget.name];
+          }
+        } else if (value === '') {
+          sanitized[widget.name] = '';
         } else {
           delete sanitized[widget.name];
         }
