@@ -6,13 +6,16 @@ src: firefox-esr
 fix: 115.5.0esr-1~deb10u1
 desc: |
  This update addresses the following issues:
- 115.5.0esr-1~deb10u1 (Thu, 23 Nov 2023 09:36:07 +0000)
- * The Cambridge mini Debconf release.
- * Backport to buster.
- 115.5.0esr-1 (Wed, 22 Nov 2023 05:32:16 +0900)
- * New upstream release.
- * Fixes for mfsa2023-50, also known as: CVE-2023-6204, CVE-2023-6205,
-   CVE-2023-6206, CVE-2023-6207, CVE-2023-6208, CVE-2023-6209, CVE-2023-6212.
+ * CVE-2023-6204: Out-of-bound memory access in WebGL2 `blitFramebuffer`.
+ * CVE-2023-6205: Use-after-free in `MessagePort::Entangled`.
+ * CVE-2023-6206: Clickjacking permission prompts using the fullscreen
+   transition.
+ * CVE-2023-6207: Use-after-free in `ReadableByteStreamQueueEntry::Buffer`.
+ * CVE-2023-6208: Using Selection API would copy contents into X11 primary
+   selection.
+ * CVE-2023-6209: Incorrect parsing of relative URLs starting with "///".
+ * CVE-2023-6212: Memory safety bugs fixed.
+note: https://www.mozilla.org/en-US/security/advisories/mfsa2023-50/
 bug: [56876]
 cve:
 - CVE-2023-6204
