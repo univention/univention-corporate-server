@@ -6,13 +6,11 @@ src: gnutls28
 fix: 3.6.7-4+deb10u11
 desc: |
  This update addresses the following issue:
- 3.6.7-4+deb10u11 (Wed, 22 Nov 2023 13:46:40 +0100)
- * Non-maintainer upload by the LTS team.
- * Fix CVE-2023-5981: A vulnerability was found in GnuTLS, a secure
+ * CVE-2023-5981: Fix a vulnerability was found in GnuTLS, a secure
    communications library, which may facilitate a timing attack to compromise
-   a cryptographic system. The response times to malformed ciphertexts in
-   RSA-PSK ClientKeyExchange differ from response times of ciphertexts with
-   correct PKCS#1 v1.5 padding. Only TLS ciphertext processing is affected.
+   a cryptographic system. The response times to malformed cipher-texts in
+   RSA-PSK ClientKeyExchange differ from response times of cipher-texts with
+   correct PKCS#1 v1.5 padding. Only TLS cipher-text processing is affected.
 bug: [56877]
 cve:
 - CVE-2023-5981
