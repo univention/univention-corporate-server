@@ -165,6 +165,77 @@ update_check_ldap_connection () {
 	return 1
 }
 
+
+update_check_openldap_bdb () {
+	case "$server_role" in
+	domaincontroller_master|domaincontroller_backup|domaincontroller_slave) : ;;
+	*) return 0 ;;
+	esac
+	if [ "bdb" = "$ldap_database_type" ]; then
+		echo "	OpenLDAP uses Berkeley DB as backend. This is no longer supported"
+		echo "	in UCS 5.2. The OpenLDAP database has to be migrated to the MDB"
+		echo "	database backend."
+		echo
+		echo "	Please read the release notes"
+		echo "		<https://docs.software-univention.de/release-notes-5.2-0-en.html>"
+		echo "	and the help article"
+		echo "		<https://help.univention.com/t/22322>"
+		echo "	on how to migrate OpenLDAP to MDB."
+		return 1
+	fi
+	return 0
+}
+
+_migrate_openldap_bdb_failed () {
+	local msg="$1"
+	local revert="${2:-false}"
+	echo "$(date) The migration failed with: $msg"
+	if $revert; then
+		if [ -e /var/lib/univention-ldap/ldap.BACKUP/uid.bdb ]; then
+			echo "$(date) Reverting to BDB database"
+			service slapd stop
+			mv /var/lib/univention-ldap/ldap.BACKUP/* /var/lib/univention-ldap/ldap/
+			ucr set ldap/database/type=bdb
+			service slapd start
+		fi
+	fi
+	echo "$(date) Consult the Univention Support or <https://help.univention.com/t/22322> for help!"
+	exit 1
+}
+
+migrate_openldap_bdb () {
+	local database_size available_size mdb_max_size
+	update_check_openldap_bdb >/dev/null && echo "$(date) already migrated to mdb, nothing to do" && return 0
+	echo "$(date) starting BDB to MDB migration"
+	database_size="$(du -s /var/lib/univention-ldap/ldap | awk '{print $1}')"
+	available_size="$(LC_ALL=C df --output="avail" /var/lib/univention-ldap | tail -n 1)"
+	mdb_max_size="${ldap_database_mdb_maxsize:-4295000000}"
+	# only if available disk space is 10 times the size of the database
+	test "$available_size" -ge "$((database_size*10))" || \
+		_migrate_openldap_bdb_failed "not enough disk space for migration"
+	# only if mdb maxsize is 3 times bigger then current size of the database
+	test "$mdb_max_size" -ge "$((database_size*3))" || \
+		_migrate_openldap_bdb_failed "max size for mdb database does not fit, raise max size by setting UCRV ldap/database/mdb/maxsize"
+	univention-ldapsearch -LLL "uid=$(hostname)\$" >/dev/null || \
+		_migrate_openldap_bdb_failed "slapd is not running"
+	service slapd stop || \
+		_migrate_openldap_bdb_failed "error stopping slapd"
+	slapcat -l /var/lib/univention-ldap/database.ldif || \
+		_migrate_openldap_bdb_failed "error during slapcat"
+	mkdir -p /var/lib/univention-ldap/ldap.BACKUP || \
+		_migrate_openldap_bdb_failed "error creating backup dir"
+	mv /var/lib/univention-ldap/ldap/* /var/lib/univention-ldap/ldap.BACKUP/ || \
+		_migrate_openldap_bdb_failed "error moving old database to backup dir"
+	ucr set ldap/database/type=mdb
+	slapadd -l /var/lib/univention-ldap/database.ldif || \
+		_migrate_openldap_bdb_failed "error importing database" true
+	service slapd start || \
+		_migrate_openldap_bdb_failed "error starting slapd" true
+	univention-ldapsearch -LLL "uid=$(hostname)\$" >/dev/null || \
+		_migrate_openldap_bdb_failed "error during LDAP lookup" true
+	echo "$(date) migration to MDB done"
+}
+
 update_check_keycloak_migration () {
 	local var="update$VERSION/ignore_keycloak_migration" msg
 	ignore_check "$var" && return 100
@@ -517,9 +588,14 @@ if blocking_computers or blocking_objects:
 update_check_user_country_mapping () {
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=56528
 	is_ucr_false directory/manager/web/modules/users/user/map-country-to-st && return 0
-	echo 'ERROR: Users in LDAP need to be migrated so their "country" property is stored in the correct LDAP attribute "c" instead of in the state ("st").'
-	echo "UCS 5.0 supported both configurations. With UCS 5.1 only the correct mapping is supported. A migration is necessary before upgrading."
-	echo 'The migration can be performed using the command "/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-c" or using the UMC module "System diagnostic".'
+	echo '	Users in LDAP need to be migrated so their "country" property is stored'
+	echo '	in the correct LDAP attribute "c" instead of in the state ("st").'
+	echo '	UCS 5.0 supported both configurations. With UCS 5.1 only the correct mapping'
+	echo '	is supported. A migration is necessary before upgrading.'
+	echo ""
+	echo '	The migration can be performed using the command'
+	echo '		/usr/share/univention-directory-manager-tools/udm-remap-country-from-st-to-c'
+	echo '	or using the UMC module "System diagnostic".'
 	return 1
 }
 
