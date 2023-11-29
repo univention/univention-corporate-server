@@ -1,24 +1,11 @@
 ### cn=translog backend
-@!@
-import sys
-IS_64BITS = sys.maxsize > 2**32
-B32 = """\
-database	bdb
-suffix	"cn=translog"
-directory	"/var/lib/univention-ldap/translog"
-cachesize	%(ldap/cachesize)s
-idlcachesize	%(ldap/idlcachesize)s
-"""
-B64 = """\
 database	mdb
-suffix	"cn=translog"
+suffix		"cn=translog"
 directory	"/var/lib/univention-ldap/translog"
-maxsize	%(ldap/database/mdb/maxsize)s
+maxsize		@%@ldap/database/mdb/maxsize@%@
 envflags	nosync
 checkpoint	0 1
-"""
-print((B64 if IS_64BITS else B32) % configRegistry)
-@!@
+
 limits dn.children=cn=peercred,cn=external,cn=auth time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
 limits group/univentionGroup/uniqueMember="cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@" time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
 limits group/univentionGroup/uniqueMember="cn=DC Slave Hosts,cn=groups,@%@ldap/base@%@" time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited

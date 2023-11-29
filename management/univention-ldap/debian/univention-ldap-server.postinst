@@ -119,19 +119,13 @@ ucr set \
 	ldap/debug/level?none \
 	ldap/acl/user/password/change?no \
 	ldap/acl/slavepdc?yes \
-	ldap/acl/nestedgroups?yes \
-	ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"
+	ldap/acl/nestedgroups?yes
 
 eval "$(univention-config-registry shell)"
 
 stop_slapd
 /usr/share/univention-ldap/ldap_setup_index --add-defaults
 start_slapd
-
-for cfg in /var/lib/univention-ldap/ldap/DB_CONFIG /var/lib/univention-ldap/translog/DB_CONFIG
-do
-	[ -f "$cfg" ] || univention-config-registry commit "$cfg"
-done
 
 upgrade_license () {
 	case "$server_role" in
