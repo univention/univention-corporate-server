@@ -1,6 +1,12 @@
+univention-dvd (5.0.2-2) unstable; urgency=low
+
+  * Bug #56839: UCS 5.0-6 ISO
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 29 Nov 2023 09:45:00 +0100
+
 univention-dvd (5.0.2-1) unstable; urgency=low
 
-  * Bug #56444: UCS-5.0-4 DVD
+  * Bug #56444: UCS-5.0-5 DVD
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 16 Aug 2023 12:52:45 +0200
 
