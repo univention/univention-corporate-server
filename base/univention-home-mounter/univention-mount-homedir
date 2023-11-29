@@ -73,7 +73,7 @@ def get_homeattr(username):
     debug("connecting to ldap server...")
     try:
         connection = univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
-    except (EnvironmentError, ldap.LDAPError):
+    except (OSError, ldap.LDAPError):
         debug(traceback.format_exc())
         return
     debug("searching automount info...")

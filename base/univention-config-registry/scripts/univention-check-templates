@@ -123,7 +123,7 @@ def check_md5(verbose=False):
             else:
                 modified.add(filepath)
         return modified
-    except IOError as ex:
+    except OSError as ex:
         print(ex, file=sys.stderr)
         sys.exit(2)
 
@@ -156,7 +156,7 @@ def md5sum(filepath):
                 if not buf:
                     break
                 digest.update(buf)
-    except IOError:
+    except OSError:
         return None
 
     return digest.hexdigest()

@@ -67,7 +67,7 @@ class RoleScript(AptScript):
                 try:
                     print('Error creating hardlink to %s: %s' % (filename, e))
                     shutil.copy(filename, '/var/cache/apt/archives/')
-                except (OSError, IOError, shutil.Error) as e:
+                except (OSError, shutil.Error) as e:
                     print('Error copying %s: %s' % (filename, e))
         self.reopen_cache()
 

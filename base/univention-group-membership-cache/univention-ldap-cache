@@ -167,7 +167,7 @@ def create_listener_modules(args):
         listener_name = os.path.basename(fname)[:-3]
         try:
             os.unlink(os.path.join('/var/lib/univention-directory-listener/handlers/', listener_name))
-        except EnvironmentError:
+        except OSError:
             pass
 
 

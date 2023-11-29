@@ -205,7 +205,7 @@ The mapping files debian/*.univention-config-registry-mapping go to /etc/univent
     try:
         for package in binary_packages():
             do_package(package)
-    except (LookupError, IOError) as ex:
+    except (OSError, LookupError) as ex:
         print(ex, file=sys.stderr)
         sys.exit(1)
 
