@@ -64,11 +64,9 @@ univention-server-master
 univention-server-backup
 univention-server-slave
 univention-server-member
-univention-basesystem
 univention-container-role-common
 /* Recommends */
 openssh-server
-openssh-blacklist
 python-univention-license
 univention-nagios-client
 univention-saml

@@ -13,6 +13,3 @@ espeakup
 alsa-utils
 /* See rationale in #630805 */
 apt-offline
-
-/* #231583: Make life easier for Australian ISP users */
-bpalogin
