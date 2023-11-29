@@ -18,3 +18,6 @@ desc: |
    This addresses issues when instaling directly from the iso
    that will be released for UCS 5.0-6.
 bug: [56794, 56866, 56870]
+erratum: 891
+announced: 2023-11-29
+support: core
