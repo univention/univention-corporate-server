@@ -4,7 +4,7 @@ install_guardian_management_api_from_branch () {
   local app_settings="${*:2}"
   echo -n univention > /tmp/univention
   if [ -n "$management_api_docker_image" ]; then
-	  python3 /root/utils/guardian/appcenter-change-compose-image.py -a guardian-management-api -i $management_api_docker_image
+	  python3 /root/guardian/appcenter-change-compose-image.py -a guardian-management-api -i $management_api_docker_image
   fi
   cmd="univention-app install guardian-management-api --noninteractive --username Administrator --pwdfile /tmp/univention"
   if [ -n "$app_settings" ]; then
@@ -24,7 +24,7 @@ install_guardian_authorization_api_from_branch () {
   local app_settings="${*:3}"
   echo -n univention > /tmp/univention
   if [ -n "$authorization_api_docker_image" -a -n "$opa_docker_image" ]; then
-	  python3 /root/utils/guardian/appcenter-change-compose-image.py -a guardian-authorization-api -i $authorization_api_docker_image -o opa $opa_docker_image
+	  python3 /root/guardian/appcenter-change-compose-image.py -a guardian-authorization-api -i $authorization_api_docker_image -o opa $opa_docker_image
   fi
   cmd="univention-app install guardian-authorization-api --noninteractive --username Administrator --pwdfile /tmp/univention"
   if [ -n "$app_settings" ]; then
