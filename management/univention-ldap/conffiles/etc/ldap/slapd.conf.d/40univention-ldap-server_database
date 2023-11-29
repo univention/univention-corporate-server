@@ -54,9 +54,7 @@ print("threads\t\t%(ldap/threads)s" % configRegistry)
 print("tool-threads\t%(ldap/tool-threads)s" % configRegistry)
 print('')
 
-if configRegistry['ldap/database/type'] == "bdb":
-    print('checkpoint %(ldap/database/bdb/checkpoint)s' % configRegistry)
-elif configRegistry['ldap/database/type'] == "mdb":
+if configRegistry['ldap/database/type'] == "mdb":
     if configRegistry.get('ldap/database/mdb/checkpoint'):
         print('checkpoint %(ldap/database/mdb/checkpoint)s' % configRegistry)
     if configRegistry.get('ldap/database/mdb/envflags'):

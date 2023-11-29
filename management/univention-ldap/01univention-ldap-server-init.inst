@@ -64,10 +64,6 @@ then
 	if [ -e "/etc/ldap/slapd.d/cn=config.ldif" ]; then
 		mv "/etc/ldap/slapd.d/cn=config.ldif" "/etc/ldap/slapd.d/cn=config.ldif.DISABLED"
 	fi
-
-	if [ "mdb" != "$ldap_database_type" ]; then
-		univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
-	fi
 fi
 if [ -z "$files" ] && [ "$server_role" = "domaincontroller_master" ]
 then
