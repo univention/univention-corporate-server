@@ -48,7 +48,7 @@ from logging import DEBUG, Handler, getLogger
 from time import sleep
 from types import TracebackType  # noqa: F401
 from typing import (  # noqa: F401
-    IO, Any, Callable, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Text, Tuple, Type, Union,
+    IO, Any, Callable, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union,
 )
 
 import apt
@@ -423,7 +423,7 @@ class PackageManager(object):
 
     def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, always_noninteractive=True):
         # type: (bool, Optional[Callable[..., None]], Optional[Callable[..., None]], Optional[Callable[..., None]], bool) -> None
-        self.lock_fd = None  # type: Optional[IO[Text]]
+        self.lock_fd = None  # type: Optional[IO[str]]
         self.apt_lock_fd = -1  # type: int
         # parent logger, public. should be extended by adding a handler
         self.logger = getLogger('packagemanager')

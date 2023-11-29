@@ -42,7 +42,7 @@ from enum import IntEnum
 from itertools import chain
 from types import TracebackType  # noqa: F401
 from typing import (  # noqa: F401
-    IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, TypeVar,
+    IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Tuple, Type, TypeVar,
 )
 
 import ldap
@@ -118,7 +118,7 @@ class UCSTestDomainAdminCredentials:
         else:
             self.bindpw = ucr.get('tests/domainadmin/pwd', 'univention')
         if self.binddn:
-            self.username = uldap.explodeDn(self.binddn, 1)[0]  # type: Optional[Text]
+            self.username = uldap.explodeDn(self.binddn, 1)[0]  # type: Optional[str]
         else:
             self.username = None
 
