@@ -116,32 +116,16 @@ file :file:`/var/log/syslog`. For example:
    $ systemctl restart slapd
    $ grep 'not indexed' /var/log/syslog
 
-.. _slapd-bdb:
+.. _slapd-mdb:
 
 Configuration of the database backend
 =====================================
 
 The memory mapped database (MDB) has been used for new installations
-since UCS 4.0. If BDB is still in use, a migration to MDB should be
-performed for *amd64* systems. The database backend can be controlled via
-the UCR variable :envvar:`ldap/database/type`. A migration can
-be performed as follows:
-
-.. code-block:: console
-
-   $ systemctl stop slapd
-   $ slapcat -f /etc/ldap/slapd.conf -l ldif
-   $ mkdir /var/lib/univention-ldap/ldap.BACKUP
-   $ mv /var/lib/univention-ldap/ldap/* /var/lib/univention-ldap/ldap.BACKUP
-   $ ucr set ldap/database/type=mdb
-   $ slapadd -f /etc/ldap/slapd.conf -l ldif
-   $ systemctl start slapd
-
-By default the memory mapped database needs more I/O operations than the
-BDB backend. With the |UCSUCRV|
-:envvar:`ldap/database/mdb/envflags` this behavior can be
-configured. The following flags can be set (multiple values are
-separated by spaces):
+since UCS 4.0. The following flags have impact on the performance of
+the MDB database and can be set with the |UCSUCRV|
+:envvar:`ldap/database/mdb/envflags` (multiple values are separated
+by spaces):
 
 ``nosync``
    Specify that on-disk database contents should not be immediately
