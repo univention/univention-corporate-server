@@ -37,10 +37,7 @@ main () {
     local db action="${1?-Missing action}"
     shift
 
-    case "$(dpkg --print-architecture)" in
-    i386) db="$TRANSLOG/id2entry.bdb" ;;
-    amd64|*) db="$TRANSLOG/data.mdb" ;;
-    esac
+    db="$TRANSLOG/data.mdb"
 
     case "$action" in
     init)
@@ -86,7 +83,6 @@ setup_db () {
         [ -n "$(slapcat -f /etc/ldap/slapd.conf -b cn=translog -H 'ldap:///cn=translog??base')" ] &&
         return 0
     install -o openldap -g openldap -d "$TRANSLOG"
-    ucr commit "$TRANSLOG/DB_CONFIG"
     slapadd -f /etc/ldap/slapd.conf -b cn=translog -l /usr/share/univention-ldap/translog.ldif
     chown -R -h openldap: "$TRANSLOG"
 }

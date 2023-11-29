@@ -7,16 +7,6 @@ Variables: ldap/database/type
 Variables: ldap/schema/export
 Variables: ldap/maxopenfiles
 
-Type: file
-File: var/lib/univention-ldap/ldap/DB_CONFIG
-Variables: ldap/database/bdb/.*
-Variables: ldap/database/type
-
-Type: file
-File: var/lib/univention-ldap/translog/DB_CONFIG
-Variables: ldap/database/bdb/.*
-Variables: ldap/database/type
-
 Type: multifile
 Multifile: etc/ldap/slapd.conf
 Variables: ldap/server/type
@@ -24,7 +14,6 @@ Variables: ldap/master
 Variables: ldap/master/port
 Variables: ldap/base
 Variables: ldap/database/type
-Variables: ldap/database/bdb/checkpoint
 Variables: ldap/index/eq
 Variables: ldap/index/pres
 Variables: ldap/index/sub
@@ -95,7 +84,6 @@ Variables: ldap/master
 Variables: ldap/master/port
 Variables: ldap/base
 Variables: ldap/database/type
-Variables: ldap/database/bdb/checkpoint
 Variables: ldap/index/eq
 Variables: ldap/index/pres
 Variables: ldap/index/sub
