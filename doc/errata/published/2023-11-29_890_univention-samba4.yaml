@@ -15,3 +15,6 @@ desc: |
    a versioned dependency on `samba-dsdb-modules`. This simplifies
    the package depenencies.
 bug: [56794]
+erratum: 890
+announced: 2023-11-29
+support: core
