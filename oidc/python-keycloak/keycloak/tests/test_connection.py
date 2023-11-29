@@ -51,7 +51,7 @@ class TestConnection(unittest.TestCase):
         @urlmatch(path="/known_path", method="post")
         def response_post_success(url, request):
             headers = {'content-type': 'application/json'}
-            content = 'response'.encode("utf-8")
+            content = b'response'
             return response(201, content, headers, None, 5, request)
 
         with HTTMock(response_post_success):
@@ -64,7 +64,7 @@ class TestConnection(unittest.TestCase):
         @urlmatch(netloc="localhost", path="/known_path", method="put")
         def response_put_success(url, request):
             headers = {'content-type': 'application/json'}
-            content = 'response'.encode("utf-8")
+            content = b'response'
             return response(200, content, headers, None, 5, request)
 
         with HTTMock(response_put_success):
@@ -77,7 +77,7 @@ class TestConnection(unittest.TestCase):
         @urlmatch(netloc="localhost", path="/known_path", method="get")
         def response_get_fail(url, request):
             headers = {'content-type': 'application/json'}
-            content = "404 page not found".encode("utf-8")
+            content = b"404 page not found"
             return response(404, content, headers, None, 5, request)
 
         with HTTMock(response_get_fail):
