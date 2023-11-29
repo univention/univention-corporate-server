@@ -39,7 +39,6 @@ Use -v to also get a list of computer objects, which have multiple
 DNSZones and so cannot be associated to one asscoiatedDomain entry.
 """
 
-from __future__ import print_function
 
 import sys
 from argparse import ArgumentParser

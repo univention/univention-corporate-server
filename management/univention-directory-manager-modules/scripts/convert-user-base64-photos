@@ -32,7 +32,6 @@
 
 """Replace base64 encoded jpegPhoto LDAP attributes for users accounts with their binary encoded version."""
 
-from __future__ import print_function
 
 import argparse
 import base64

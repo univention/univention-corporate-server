@@ -33,7 +33,6 @@
 
 """Check for unused dhcp records"""
 
-from __future__ import print_function
 
 import ldap
 from ldap.filter import filter_format

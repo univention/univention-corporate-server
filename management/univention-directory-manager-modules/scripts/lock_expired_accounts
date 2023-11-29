@@ -39,7 +39,6 @@ been locked yet. For all found user accounts the posix login will be
 disabled.
 """
 
-from __future__ import print_function
 
 import argparse
 import sys
