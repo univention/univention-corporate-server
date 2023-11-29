@@ -9,3 +9,6 @@ desc: |
  * The maximum number of parallel HTTP connections from the UMC-Server to
    UMC module processes has been raised from 10 to unlimited.
 bug: [56828]
+erratum: 889
+announced: 2023-11-29
+support: core
