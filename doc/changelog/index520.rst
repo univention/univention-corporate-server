@@ -11,6 +11,49 @@ Changelog for Univention Corporate Server (UCS) |release|
 .. Temporary hack until they are merged
 .. include:: temp.rst
 
+**************************
+* Notes about the update *
+**************************
+
+Prerequisite for updating is at least UCS TODO
+
+Migration of OpenLDAP database backend from BDB to MDB
+------------------------------------------------------
+
+|UCS| 5.2 will no longer support the :program:`Berkeley DB` database back-end
+for :program:`OpenLDAP`. All system with :program:`Berkeley DB` as database
+back-end have to be migrated before the update to UCS 5.2. Please see
+https://help.univention.com/t/22322 for how to perform this migration.
+
+*************************
+* Preparation of update *
+*************************
+
+* Univention provides a script that checks for problems which would prevent the
+  successful update of the system. Prior to the update, this script can be
+  downloaded and executed on the UCS system.
+
+  .. code-block:: bash
+     :caption: Run update check script
+     :name: run-update-check-script
+
+     # download
+     curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-0{.gpg,}
+
+     # verify and run script
+     apt-key verify pre-update-checks-5.2-0{.gpg,} && bash pre-update-checks-5.2-0
+     ...
+     Starting pre-update checks ...
+
+     Checking app_appliance ...                        OK
+     Checking block_update_of_NT_DC ...                OK
+     Checking cyrus_integration ...                    OK
+     Checking disk_space ...                           OK
+     Checking hold_packages ...                        OK
+     Checking ldap_connection ...                      OK
+     Checking ldap_schema ...                          OK
+     ...
+
 .. _changelog-general:
 
 *******

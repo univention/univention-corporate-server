@@ -77,44 +77,10 @@ Type=str
 Categories=service-ldap
 
 [ldap/database/type]
-Description[de]=Diese Variable konfiguriert das Datenbank-Backend des LDAP-Servers. Der Standardwert ist "mdb", was empfohlen wird. Die Backends "bdb" und "hdb" sind veraltet. Diese Variable sollte nur in Ausnahmefällen geändert werden.
-Description[en]=This variable configures the database backend of the LDAP server. Defaults to 'mdb', which is recommended. Older 'bdb' and 'hdb' have been deprecated. This variable should only be modified in exceptional cases.
+Description[de]=Diese Variable konfiguriert das Datenbank-Backend des LDAP-Servers. Der Standardwert ist "mdb", was empfohlen wird. Diese Variable sollte nur in Ausnahmefällen geändert werden.
+Description[en]=This variable configures the database backend of the LDAP server. Defaults to 'mdb', which is recommended. This variable should only be modified in exceptional cases.
 Default=mdb
 Type=str
-Categories=service-ldap
-
-[ldap/database/bdb/checkpoint]
-Description[de]=Diese Variable konfiguriert die Häufigkeit mit der die Daten aus dem 'Transaction Log' in die Datenbank geschrieben werden. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
-Description[en]=This variable configures the frequency for checkpointing the database transaction log upon updating the database. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
-Default=1024 30
-Type=str
-Categories=service-ldap
-
-[ldap/database/bdb/set_cachesize]
-Description[de]=Diese Variable konfiguriert die Größe des Caches (standardmäßig 90 MB). Der Cache muss generell groß genug sein um alle Indizes aufnehmen zu können. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
-Description[en]=This variable defines the cache size (default 90 MB). As a general rule, the cache should be large enough to contain all indices. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
-Type=str
-Categories=service-ldap
-
-[ldap/database/bdb/set_lg_bsize]
-Description[de]=Diese Variable konfiguriert die maximale Größe der BDB-Transaction-Logdateien. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
-Description[en]=This variable defines the maximum size of the BDB transaction logs. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
-Type=pint
-Categories=service-ldap
-
-[ldap/database/bdb/set_lg_max]
-Description[de]=Diese Variable konfiguriert das maximale Alter der BDB-Transaction-Logdateien. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
-Description[en]=This variable defines the maximum age of the BDB transaction logs. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
-Type=pint
-Categories=service-ldap
-
-[ldap/database/bdb/db_config_options]
-Description[de]=Mit dieser Variable kann eine Liste von zusätzlichen BDB-Optionen konfiguriert werden. Mehrere Einträge müssen durch Komma getrennt werden. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter <http://www.openldap.org/faq/data/cache/1072.html> beschrieben.
-Description[en]=This variable allows the configuration of a list of additional BDB options. Multiple entries are separated by commas. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at <http://www.openldap.org/faq/data/cache/1072.html>.
-Default=set_flags
-Type=list
-Separator=,
-Elementtype=str
 Categories=service-ldap
 
 [ldap/index/approx]
