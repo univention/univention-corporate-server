@@ -44,70 +44,6 @@ exit_if_start_is_running ()
 	fi
 }
 
-bdbrecover ()
-{
-	local back_bdb_version
-	local DBRECOVER
-	local DBSTAT
-	local dbstat_output
-	local dbstat_rc
-	local bdb_version
-	local stale_locks
-	local logger_tag
-	local line
-
-	log_action_begin_msg "Check database: "
-	# determine libdb version that back-bdb.so was linked against
-	back_bdb_version="$(/usr/bin/ldd /usr/lib/ldap/back_bdb.so | sed -n 's|.*/usr/lib/.*/libdb-\([0-9.]*\).so.*|\1|p')"
-	DBRECOVER="/usr/bin/db${back_bdb_version}_recover"
-	DBSTAT="/usr/bin/db${back_bdb_version}_stat"
-	if [ -e "${DBRECOVER}" ]; then
-		# check if the db_stat version works on the database environment
-		dbstat_output=$("${DBSTAT}" -h /var/lib/univention-ldap/ldap -Ne 2>&1)
-		dbstat_rc=$?
-		if [ "$dbstat_rc" = 0 ]; then
-			bdb_version=$(echo "$dbstat_output" | sed -rn 's/^([^\s]+)\s+Environment version$/\1/p')
-			if [ -n "$bdb_version" ]; then
-				# check for stale locks or stale futexes
-				stale_locks=$("${DBSTAT}" -h /var/lib/univention-ldap/ldap -Nc 2>&1 | sed -rn 's/([0-9]*)\t*Number of current locks/\1/p')
-				if [ "$stale_locks" != 0 ]; then
-					exit_if_start_is_running
-					log_action_msg "WARNING"
-					log_action_msg "WARNING: There are $stale_locks stale locks in LDAP backend Berkeley DB (version $bdb_version)"
-					log_action_msg "WARNING: If slapd does not respond, manual LDAP dump/restore may be necessary"
-					log_action_begin_msg "Continuing BDB database check: "
-				fi
-				logger_tag="slapd db${back_bdb_version}_recover"
-				dbrecover_output=$("${DBRECOVER}" -h /var/lib/univention-ldap/ldap -e 2>&1)
-				if [ "$?" != 0 ]; then
-					exit_if_start_is_running
-				else
-					echo "$dbrecover_output" | while read line; do logger -t "$logger_tag" "$line"; done
-				fi
-				log_action_end_msg 0
-			else
-				log_action_msg "/var/lib/univention-ldap/ldap BDB Version does not seem to match the one back-bdb uses"
-				log_action_msg "Skipping ${DBRECOVER} to avoid damage"
-
-				logger_tag="slapd db${back_bdb_version}_stat"
-				logger -t "$logger_tag" "BDB file version detection failed:"
-				echo "$dbstat_output" | while read line; do logger -t "$logger_tag" "$line"; done
-			fi
-		else
-			log_action_msg "Could not determine BDB version of /var/lib/univention-ldap/ldap"
-			exit_if_start_is_running
-			log_action_msg "Skipping ${DBRECOVER} to avoid damage"
-
-			logger_tag="slapd db${back_bdb_version}_stat"
-			logger -t "$logger_tag" "command failed ($dbstat_rc):"
-			echo "$dbstat_output" | while read line; do logger -t "$logger_tag" "$line"; done
-		fi
-	else
-		log_action_msg "back-bdb was linked against ${back_bdb_version}, but db${back_bdb_version}-util package does not seem to be installed"
-		log_action_msg "Skipping ${DBRECOVER}"
-	fi
-}
-
 check_subschema ()
 {
 	tmpfile=`mktemp`
@@ -191,12 +127,6 @@ case "$1" in
 		exit 0
 	fi
 	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
-@!@
-if configRegistry['ldap/database/type'] == 'bdb':
-    print('\t# check backend database')
-    print('\tbdbrecover')
-@!@
-
 	log_action_begin_msg "Starting ldap server(s): slapd "
 
 @!@
