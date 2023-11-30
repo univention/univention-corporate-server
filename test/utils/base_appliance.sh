@@ -60,33 +60,6 @@ install_activation_packages () {  # <require_activation>
 	fi
 }
 
-download_packages () {
-	local package install_cmd
-	install -m 0755 -d /var/cache/univention-system-setup/packages/
-	(
-		cd /var/cache/univention-system-setup/packages/
-		touch Packages
-		[ -e /etc/apt/sources.list.d/05univention-system-setup.list ] ||
-			echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
-
-		install_cmd="$(univention-config-registry get update/commands/install)"
-		for package in "$@"
-		do
-			# shellcheck disable=SC2046
-			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" |
-			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages \
-				$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p') ||
-
-				die "Failed to download required packages for ${package}"
-			apt-ftparchive packages . >Packages ||
-				die "Failed to create ftparchive directory"
-			apt-get -q update
-		done
-	)
-
-	return 0
-}
-
 app_get_ini () {  # <app_id>
 	exec python3 -c "import sys
 from univention.appcenter.app_cache import Apps
