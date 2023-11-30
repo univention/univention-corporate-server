@@ -322,7 +322,9 @@ then
 			cmd+=(-v "$p:/etc/openstack/clouds.yml:ro")
 			break
 		done
-
+		if [ "$OS_CLOUD" != "" ]; then
+			cmd+=(-v "OS_CLOUD:$OS_CLOUD")
+		fi
 	fi
 	# interactive mode for debug
 	$debug && cmd+=("-it")
