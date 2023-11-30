@@ -41,16 +41,7 @@ from argparse import ArgumentParser
 import ldif
 
 import univention.admin.uldap
-from univention.appcenter.actions import get_action
-from univention.appcenter.app_cache import Apps
 from univention.config_registry import ucr
-
-
-def keycloak_installed(opt) -> bool:
-    domain = get_action('domain')
-    apps_cache = Apps()
-    apps = apps_cache.find("keycloak")
-    return any(app['id'] == 'keycloak' and app['is_installed_anywhere'] for app in domain.to_dict([apps]))
 
 
 def create_ldif(objects, opt):
@@ -77,77 +68,59 @@ def get_sso_client_objects():
         filter='(univentionObjectType=oidc/rpservice)',
         base=lo.base,
     )
-    if oidc_obj:
-        print(
-            '==============================='
-            '\nWARNING: Found OIDC objects in LDAP:',
-            file=sys.stderr,
-        )
-        for dn, obj in oidc_obj:
-            print(dn, file=sys.stderr)
     saml_obj = lo.search(
         filter='(univentionObjectType=saml/serviceprovider)',
         base=lo.base,
     )
-    if saml_obj:
-        print(
-            '==============================='
-            '\nWARNING: Found SAML objects in LDAP:',
-            file=sys.stderr,
-        )
-        for dn, obj in saml_obj:
-            print(dn, file=sys.stderr)
-    if not saml_obj and not oidc_obj:
-        print('No leftover SAML/OIDC objects found in LDAP')
     return oidc_obj + saml_obj
 
 
 def migration_complete(opt):
-    migrated = True
     sso_obj = get_sso_client_objects()
-    kc_installed = keycloak_installed(opt)
-    guide_url = 'https://docs.software-univention.de/keycloak-migration/index.html'
-
+    guide_url = "<https://docs.software-univention.de/keycloak-migration/index.html>"
+    migrated = False
     if sso_obj:
-        print('\nERROR: Migration not complete: SimpleSAMLphp or OIDC objects found in LDAP', file=sys.stderr)
-        migrated = False
+        print(
+            "\nStarting with UCS 5.2 the Keycloak app replaces SimpleSAMLphp"
+            "\nand the Kopano Konnect app as the default identity provider in UCS."
+            "\nBefore the update to 5.2 can start, this domain has to be migrated"
+            "\nto Keycloak."
+            "\n\nThis migration has not happend yet!"
+            "\n\nThe following old SimpleSAMLphp/Kopano Konnect objects have been found:\n",
+            file=sys.stderr
+        )
+        for dn, obj in sso_obj:
+            print(f"\t* {dn}", file=sys.stderr)
+        print(
+            "\nPlease read the UCS 5.2 release notes"
+            "\n\t<https://docs.software-univention.de/release-notes-5.2-0-en.html>"
+            "\nand the Keycloak migration guide:"
+            f"\n\t{guide_url}"
+            "\nfor how to migrate your domain to Keycloak.",
+            file=sys.stderr
+        )
         if opt.delete:
             print(
-                'Do you really want to delete the objects? SSO with SimpleSAMLphp or Kopano Connect will no longer work. '
-                f'In case you are unsure please read the migration guide: {guide_url}',
+                "\n\nDo you really want to delete the objects?"
+                "\nSSO with SimpleSAMLphp or Kopano Connect will no longer work!"
+                f"\nIn case you are unsure please read the migration guide: {guide_url}",
             )
             confirmed = False
             if not opt.force:
-                confirmed = input('I want to remove all SSO objects: (y/N)\n').lower() == 'y'
+                confirmed = input('\nI want to remove all SSO objects: (y/N)').lower() == 'y'
             if confirmed or opt.force:
                 create_ldif(sso_obj, opt)
                 delete_objects(sso_obj)
                 migrated = True
     else:
-        print('\nOK: No SimpleSAMLphp or OIDC objects found in LDAP')
+        migrated = True
 
-    if not kc_installed:
-        print('\nERROR: Migration not complete: Keycloak is not yet installed in domain.', file=sys.stderr)
-        migrated = False
-    else:
-        print('\nOK: Keycloak is installed in your domain.')
-    if not migrated:
-        print(
-            f'\nPlease read the Keycloak migration guide {guide_url}'
-            '\nIf you have already migrated to Keycloak, you can reexecute this script with the --delete flag, to remove all leftover LDAP objects'
-            '\n\n\n********************************'
-            '\n* FAIL: Migration not complete *'
-            '\n********************************',
-            file=sys.stderr,
-        )
-        sys.exit(1)
-    else:
-        print(
-            '\n\n**********************'
-            '\n* Migration complete *'
-            '\n**********************',
-        )
+    if migrated:
+        print('\nMigration to Keycloak complete.')
         sys.exit(0)
+    else:
+        print('\nMigration to Keycloak incomplete, update to UCS 5.2 not possible', file=sys.stderr)
+        sys.exit(1)
 
 
 def parse_arguments(parser):
