@@ -241,10 +241,6 @@ update_check_keycloak_migration () {
 	ignore_check "$var" && return 100
 	msg="$(univention-keycloak-migration-status 2>&1)" && return 0
 	msg="${msg//$'\n'/$'\n'$'\t'}"
-	msg+="\n\n\tPlease read the release notes"
-	msg+="\n\t\t<https://docs.software-univention.de/release-notes-5.2-0-en.html>"
-	msg+="\n\tand the Keycloak Migration guide."
-	msg+="\n\t\t<https://docs.software-univention.de/keycloak-migration/index.html>"
 	echo -e "$msg"
 	return 1
 }
