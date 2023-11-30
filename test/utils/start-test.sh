@@ -323,7 +323,7 @@ then
 			break
 		done
 		if [ "$OS_CLOUD" != "" ]; then
-			cmd+=(-v "OS_CLOUD:$OS_CLOUD")
+			cmd+=(-e "OS_CLOUD=$OS_CLOUD")
 		fi
 	fi
 	# interactive mode for debug
