@@ -554,6 +554,7 @@ __EOF__
 }
 
 download_system_setup_packages () {  # [app_id]
+	# This duplicates much of ../../base/univention-system-setup/usr/share/univention-system-setup/download-packages
 	local app="${1:-}"
 
 	# autoremove packages before updating package cache
@@ -615,9 +616,7 @@ download_system_setup_packages () {  # [app_id]
 
 		apt-ftparchive packages . >Packages ||
 			die "Failed to create ftparchive directory"
-		xz -k Packages
-		gzip -k Packages
-		chmod a+r Packages Packages.xz Packages.gz
+		chmod 644 Packages
 	)
 }
 
