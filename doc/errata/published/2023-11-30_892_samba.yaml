@@ -11,3 +11,6 @@ desc: |
    to be installed. This package modified `/etc/nsswitch.conf`
    adding `winbind` to it. This update reverts that change.
 bug: [56885]
+erratum: 892
+announced: 2023-11-30
+support: core
