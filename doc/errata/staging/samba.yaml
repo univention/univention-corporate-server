@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: samba
+fix: 2:4.18.3-1A~5.0.0.202311301306
+desc: |
+ This update addresses the following issues:
+ * The modified dependency of `univention-samba3 on `samba-ad-dc`
+   which Errata update `#890` introduced, caused `libnss-winbind`
+   to be installed. This package modified `/etc/nsswitch.conf`
+   adding `winbind` to it. This update reverts that change.
+bug: [56885]
