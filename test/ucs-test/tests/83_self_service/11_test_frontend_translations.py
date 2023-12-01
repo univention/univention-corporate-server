@@ -144,20 +144,22 @@ def activate_self_service(ucr_module):
 ])
 def test_frontend_translations(chrome, lang, hash, labels):
     chrome.driver.implicitly_wait(10)
-    change_lang(chrome, lang)
-    chrome.driver.execute_script("localStorage.clear();")
-    chrome.get(f'/univention/selfservice/#/selfservice/{hash}')
-    chrome.driver.refresh()
-    wait_for_element(chrome, 'label')
+    filename = f"test_frontend_translations_{lang}_{hash}"
+    with chrome.capture(filename):
+        change_lang(chrome, lang)
+        chrome.driver.execute_script("localStorage.clear();")
+        chrome.get(f'/univention/selfservice/#/selfservice/{hash}')
+        chrome.driver.refresh()
+        wait_for_element(chrome, 'label')
 
-    lables_to_check = get_labels(chrome, labels)
-    for label_name, expected_value in labels.items():
-        assert label_name in lables_to_check, f'Label {label_name} is not in {list(lables_to_check.keys())}'
-        if isinstance(expected_value, list):
-            for value in expected_value:
-                assert value in lables_to_check[label_name], f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {value}'
-        else:
-            assert lables_to_check[label_name] == expected_value, f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {expected_value}'
+        lables_to_check = get_labels(chrome, labels)
+        for label_name, expected_value in labels.items():
+            assert label_name in lables_to_check, f'Label {label_name} is not in {list(lables_to_check.keys())}'
+            if isinstance(expected_value, list):
+                for value in expected_value:
+                    assert value in lables_to_check[label_name], f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {value}'
+            else:
+                assert lables_to_check[label_name] == expected_value, f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {expected_value}'
 
 
 @pytest.mark.parametrize('lang, hash, labels', [
@@ -178,21 +180,23 @@ def test_frontend_login_translations(chrome, lang, hash, labels):
     chrome.driver.implicitly_wait(10)
     reset_mail_address = f'{random_username()}@{random_username()}'
     with self_service_user(mailPrimaryAddress=reset_mail_address, language="en-US") as user:
-        change_lang(chrome, lang, user=user)
-        chrome.driver.execute_script("localStorage.clear();")
-        chrome.get(f'/univention/selfservice/#/selfservice/{hash}')
-        chrome.driver.refresh()
-        wait_for_element(chrome, 'label')
+        filename = f"test_frontend_login_translations_{lang}_{hash}"
+        with chrome.capture(filename):
+            change_lang(chrome, lang, user=user)
+            chrome.driver.execute_script("localStorage.clear();")
+            chrome.get(f'/univention/selfservice/#/selfservice/{hash}')
+            chrome.driver.refresh()
+            wait_for_element(chrome, 'label')
 
-        lables_to_check = get_labels(chrome, labels)
+            lables_to_check = get_labels(chrome, labels)
 
-        for label_name, expected_value in labels.items():
-            assert label_name in lables_to_check, f'Label {label_name} is not in {list(lables_to_check.keys())}'
-            if isinstance(expected_value, list):
-                for value in expected_value:
-                    assert value in lables_to_check[label_name], f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {value}'
-            else:
-                assert lables_to_check[label_name] == expected_value, f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {expected_value}'
+            for label_name, expected_value in labels.items():
+                assert label_name in lables_to_check, f'Label {label_name} is not in {list(lables_to_check.keys())}'
+                if isinstance(expected_value, list):
+                    for value in expected_value:
+                        assert value in lables_to_check[label_name], f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {value}'
+                else:
+                    assert lables_to_check[label_name] == expected_value, f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {expected_value}'
 
 
 if __name__ == '__main__':
