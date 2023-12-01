@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.6-5) unstable; urgency=medium
+
+  * Bug #56773: Fix PostgreSQL diagnostic module now it's show like a warning.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 01 Dec 2023 12:24:30 +0100
+
 univention-management-console-module-diagnostic (6.0.6-4) unstable; urgency=medium
 
   * Bug #56773: Add new diagnostic plugin to check if PostgreSQL was migrated

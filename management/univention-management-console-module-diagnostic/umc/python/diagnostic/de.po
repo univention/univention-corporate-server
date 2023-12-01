@@ -1496,16 +1496,16 @@ msgid "Updating from PostgreSQL 9.6 or 9.4 to PostgreSQL 11"
 msgstr "Aktualisierung von PostgreSQL 9.6 oder 9.4 auf PostgreSQL 11"
 
 #: umc/python/diagnostic/plugins/67_postgresql_version.py:47
-msgid "Check of the PostgreSQL version"
-msgstr "Überprüfen der PostgreSQL-Version"
+msgid "Check currently installed PostgreSQL version"
+msgstr "Überprüfe aktuell installierte PostgreSQL Version"
 
 #: umc/python/diagnostic/plugins/67_postgresql_version.py:48
 #, python-brace-format
 msgid ""
-"Starting with UCS {ucs[0]}.{ucs[1]}, PostgreSQL should be version {postgresql_version}.\n"
+"As of UCS {ucs[0]}.{ucs[1]}, PostgreSQL {postgresql_version[0]} should be used.\n"
 "This step has to be performed manually as described in"
 msgstr ""
-"Ab UCS {ucs[0]}.{ucs[1]} sollte PostgreSQL Version {postgresql_version} sein.\n"
+"Ab UCS {ucs[0]}.{ucs[1]} sollte PostgreSQL Version {postgresql_version[0]} sein.\n"
 "Dieser Schritt muss manuell durchgeführt werden, wie in"
 
 #: umc/python/diagnostic/plugins/67_postgresql_version.py:58

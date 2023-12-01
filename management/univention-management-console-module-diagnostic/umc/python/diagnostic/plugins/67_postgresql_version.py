@@ -43,8 +43,8 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 UCS = (5, 0)
 POSTGRESQL_VERSION = (11,)
 MIGRATION_URL = "https://help.univention.com/t/updating-from-postgresql-9-6-or-9-4-to-postgresql-11/17531"
-title = _('Check of the PostgreSQL version')
-description = _('''Starting with UCS {ucs[0]}.{ucs[1]}, PostgreSQL should be version {postgresql_version}.
+title = _('Check currently installed PostgreSQL version')
+description = _('''As of UCS {ucs[0]}.{ucs[1]}, PostgreSQL {postgresql_version[0]} should be used.
 This step has to be performed manually as described in''').format(
     ucs=UCS, postgresql_version=POSTGRESQL_VERSION,
 )
@@ -56,14 +56,13 @@ links = [
         "label": _("Updating from PostgreSQL 9.6 or 9.4 to PostgreSQL 11"),
     },
 ]
-run_descr = ['The migration status can be checked by executing: pg_lsclusters -h.']
+run_descr = [_('The migration status can be checked by executing: pg_lsclusters -h.')]
 
 
-class PostgresWarning(Warning):
-
-    def __init__(self, msg):
-        super().__init__("\n".join([msg, description]), links=links)
-        MODULE.error(str(self))
+def warning(msg):
+    text = "\n".join([msg, description])
+    MODULE.error(text)
+    return Warning(text, links=links)
 
 
 def version_tuple_to_str(version):
@@ -81,14 +80,14 @@ def run(_umc_instance: Instance) -> None:
         )
     ]
     if not versions:
-        raise PostgresWarning(_("No PostgreSQL version found."))
+        raise warning(_("No PostgreSQL version found."))
 
     psql_version = max(versions)
     if psql_version[0] != POSTGRESQL_VERSION:
-        raise PostgresWarning(_("PostgreSQL version is {current}, should be {desired}.").format(current=version_tuple_to_str(psql_version[0]), desired=version_tuple_to_str(POSTGRESQL_VERSION)))
+        raise warning(_("PostgreSQL version is {current}, should be {desired}.").format(current=version_tuple_to_str(psql_version[0]), desired=version_tuple_to_str(POSTGRESQL_VERSION)))
 
     if not psql_version[1]:
-        raise PostgresWarning(_("PostgreSQL version is up-to-date, but is not online."))
+        raise warning(_("PostgreSQL version is up-to-date, but is not online."))
 
 
 if __name__ == '__main__':
