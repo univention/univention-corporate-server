@@ -771,7 +771,7 @@ run_tests () {
 	fi
 
 	echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0/all/" >>/etc/apt/sources.list
-	echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0/$(ARCH)/" >>/etc/apt/sources.list
+	echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0/\$(ARCH)/" >>/etc/apt/sources.list
 	univention-upgrade --disable-app-updates --noninteractive --ignoreterm --ignoressh
 
 	# shellcheck disable=SC2086
