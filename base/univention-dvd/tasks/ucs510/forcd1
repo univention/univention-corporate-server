@@ -10,9 +10,6 @@ libterm-readline-gnu-perl
 /* See rationale in #630805 */
 apt-offline
 
-/* #231583: Make life easier for Australian ISP users */
-bpalogin
-
 /* pppconfig helps various people too */
 pppconfig
 
