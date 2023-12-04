@@ -1,8 +1,6 @@
-# $Id: configure.ac,v 1.18 2017/08/13 14:32:42 manu Exp $
-
 AC_PREREQ([2.63])
 AC_INIT([crudeoauth], [0.0-1], [packages@univention.de])
-AC_CONFIG_SRCDIR([oauth.c])
+AC_CONFIG_SRCDIR([oauthbearer.c])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 

@@ -134,23 +134,23 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(sasllibdir)" \
 	"$(DESTDIR)$(securitylibdir)" "$(DESTDIR)$(man5dir)"
 LTLIBRARIES = $(sasllib_LTLIBRARIES) $(securitylib_LTLIBRARIES)
-liboauth_la_LIBADD =
-am_liboauth_la_OBJECTS = liboauth_la-cy2_oauth.lo liboauth_la-oauth.lo \
-	liboauth_la-plugin_common.lo
-liboauth_la_OBJECTS = $(am_liboauth_la_OBJECTS)
+liboauthbearer_la_LIBADD =
+am_liboauthbearer_la_OBJECTS = liboauthbearer_la-sasl_oauthbearer.lo liboauthbearer_la-oauthbearer.lo \
+	liboauthbearer_la-plugin_common.lo
+liboauthbearer_la_OBJECTS = $(am_liboauthbearer_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 =
-liboauth_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(liboauth_la_CFLAGS) \
-	$(CFLAGS) $(liboauth_la_LDFLAGS) $(LDFLAGS) -o $@
-pam_oauth_la_LIBADD =
-am_pam_oauth_la_OBJECTS = pam_oauth_la-pam_oauth.lo pam_oauth_la-oauth.lo
-pam_oauth_la_OBJECTS = $(am_pam_oauth_la_OBJECTS)
-pam_oauth_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(pam_oauth_la_CFLAGS) \
-	$(CFLAGS) $(pam_oauth_la_LDFLAGS) $(LDFLAGS) -o $@
+liboauthbearer_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(liboauthbearer_la_CFLAGS) \
+	$(CFLAGS) $(liboauthbearer_la_LDFLAGS) $(LDFLAGS) -o $@
+pam_oauthbearer_la_LIBADD =
+am_pam_oauthbearer_la_OBJECTS = pam_oauthbearer_la-pam_oauthbearer.lo pam_oauthbearer_la-oauthbearer.lo
+pam_oauthbearer_la_OBJECTS = $(am_pam_oauthbearer_la_OBJECTS)
+pam_oauthbearer_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(pam_oauthbearer_la_CFLAGS) \
+	$(CFLAGS) $(pam_oauthbearer_la_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -166,11 +166,11 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/liboauth_la-cy2_oauth.Plo \
-	./$(DEPDIR)/liboauth_la-oauth.Plo \
-	./$(DEPDIR)/liboauth_la-plugin_common.Plo \
-	./$(DEPDIR)/pam_oauth_la-oauth.Plo \
-	./$(DEPDIR)/pam_oauth_la-pam_oauth.Plo
+am__depfiles_remade = ./$(DEPDIR)/liboauthbearer_la-sasl_oauthbearer.Plo \
+	./$(DEPDIR)/liboauthbearer_la-oauthbearer.Plo \
+	./$(DEPDIR)/liboauthbearer_la-plugin_common.Plo \
+	./$(DEPDIR)/pam_oauthbearer_la-oauthbearer.Plo \
+	./$(DEPDIR)/pam_oauthbearer_la-pam_oauthbearer.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -190,8 +190,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 =
-SOURCES = $(liboauth_la_SOURCES) $(pam_oauth_la_SOURCES)
-DIST_SOURCES = $(liboauth_la_SOURCES) $(pam_oauth_la_SOURCES)
+SOURCES = $(liboauthbearer_la_SOURCES) $(pam_oauthbearer_la_SOURCES)
+DIST_SOURCES = $(liboauthbearer_la_SOURCES) $(pam_oauthbearer_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -367,15 +367,15 @@ top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
 sasllibdir = @cyrus_sasl2_prefix@/lib/sasl2
 securitylibdir = $(libdir)/security
-sasllib_LTLIBRARIES = liboauth.la
-liboauth_la_SOURCES = cy2_oauth.c oauth.c plugin_common.c plugin_common.h oauth.h
-liboauth_la_LDFLAGS = -lsasl2 -lrhonabwy -module -no-undefined -version-info 2:0:2 -export-symbols-regex '^sasl_'
-liboauth_la_CFLAGS = -I/usr/include/sasl
-securitylib_LTLIBRARIES = pam_oauth.la
-pam_oauth_la_SOURCES = pam_oauth.c oauth.c oauth.h
-pam_oauth_la_CFLAGS = -DNO_STATIC_MODULES
-pam_oauth_la_LDFLAGS = -lsasl2 -module -no-undefined -avoid-version -shared -export-symbols-regex '^_?pam_'
-man_MANS = pam_oauth.5 cy2_oauth.5
+sasllib_LTLIBRARIES = liboauthbearer.la
+liboauthbearer_la_SOURCES = sasl_oauthbearer.c oauthbearer.c plugin_common.c plugin_common.h oauthbearer.h
+liboauthbearer_la_LDFLAGS = -lsasl2 -lrhonabwy -module -no-undefined -version-info 2:0:2 -export-symbols-regex '^sasl_'
+liboauthbearer_la_CFLAGS = -I/usr/include/sasl
+securitylib_LTLIBRARIES = pam_oauthbearer.la
+pam_oauthbearer_la_SOURCES = pam_oauthbearer.c oauthbearer.c oauthbearer.h
+pam_oauthbearer_la_CFLAGS = -DNO_STATIC_MODULES
+pam_oauthbearer_la_LDFLAGS = -lsasl2 -module -no-undefined -avoid-version -shared -export-symbols-regex '^_?pam_'
+man_MANS = pam_oauthbearer.5 sasl_oauthbearer.5
 EXTRA_DIST = $(man_MANS)
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -501,11 +501,11 @@ clean-securitylibLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
-liboauth.la: $(liboauth_la_OBJECTS) $(liboauth_la_DEPENDENCIES) $(EXTRA_liboauth_la_DEPENDENCIES)
-	$(AM_V_CCLD)$(liboauth_la_LINK) -rpath $(sasllibdir) $(liboauth_la_OBJECTS) $(liboauth_la_LIBADD) $(LIBS)
+liboauthbearer.la: $(liboauthbearer_la_OBJECTS) $(liboauthbearer_la_DEPENDENCIES) $(EXTRA_liboauthbearer_la_DEPENDENCIES)
+	$(AM_V_CCLD)$(liboauthbearer_la_LINK) -rpath $(sasllibdir) $(liboauthbearer_la_OBJECTS) $(liboauthbearer_la_LIBADD) $(LIBS)
 
-pam_oauth.la: $(pam_oauth_la_OBJECTS) $(pam_oauth_la_DEPENDENCIES) $(EXTRA_pam_oauth_la_DEPENDENCIES)
-	$(AM_V_CCLD)$(pam_oauth_la_LINK) -rpath $(securitylibdir) $(pam_oauth_la_OBJECTS) $(pam_oauth_la_LIBADD) $(LIBS)
+pam_oauthbearer.la: $(pam_oauthbearer_la_OBJECTS) $(pam_oauthbearer_la_DEPENDENCIES) $(EXTRA_pam_oauthbearer_la_DEPENDENCIES)
+	$(AM_V_CCLD)$(pam_oauthbearer_la_LINK) -rpath $(securitylibdir) $(pam_oauthbearer_la_OBJECTS) $(pam_oauthbearer_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -513,11 +513,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liboauth_la-cy2_oauth.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liboauth_la-oauth.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liboauth_la-plugin_common.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pam_oauth_la-oauth.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pam_oauth_la-pam_oauth.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liboauthbearer_la-sasl_oauthbearer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liboauthbearer_la-oauthbearer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liboauthbearer_la-plugin_common.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pam_oauthbearer_la-oauthbearer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pam_oauthbearer_la-pam_oauthbearer.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -546,40 +546,40 @@ am--depfiles: $(am__depfiles_remade)
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
-liboauth_la-cy2_oauth.lo: cy2_oauth.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauth_la_CFLAGS) $(CFLAGS) -MT liboauth_la-cy2_oauth.lo -MD -MP -MF $(DEPDIR)/liboauth_la-cy2_oauth.Tpo -c -o liboauth_la-cy2_oauth.lo `test -f 'cy2_oauth.c' || echo '$(srcdir)/'`cy2_oauth.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liboauth_la-cy2_oauth.Tpo $(DEPDIR)/liboauth_la-cy2_oauth.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cy2_oauth.c' object='liboauth_la-cy2_oauth.lo' libtool=yes @AMDEPBACKSLASH@
+liboauthbearer_la-sasl_oauthbearer.lo: sasl_oauthbearer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauthbearer_la_CFLAGS) $(CFLAGS) -MT liboauthbearer_la-sasl_oauthbearer.lo -MD -MP -MF $(DEPDIR)/liboauthbearer_la-sasl_oauthbearer.Tpo -c -o liboauthbearer_la-sasl_oauthbearer.lo `test -f 'sasl_oauthbearer.c' || echo '$(srcdir)/'`sasl_oauthbearer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liboauthbearer_la-sasl_oauthbearer.Tpo $(DEPDIR)/liboauthbearer_la-sasl_oauthbearer.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='sasl_oauthbearer.c' object='liboauthbearer_la-sasl_oauthbearer.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauth_la_CFLAGS) $(CFLAGS) -c -o liboauth_la-cy2_oauth.lo `test -f 'cy2_oauth.c' || echo '$(srcdir)/'`cy2_oauth.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauthbearer_la_CFLAGS) $(CFLAGS) -c -o liboauthbearer_la-sasl_oauthbearer.lo `test -f 'sasl_oauthbearer.c' || echo '$(srcdir)/'`sasl_oauthbearer.c
 
-liboauth_la-oauth.lo: oauth.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauth_la_CFLAGS) $(CFLAGS) -MT liboauth_la-oauth.lo -MD -MP -MF $(DEPDIR)/liboauth_la-oauth.Tpo -c -o liboauth_la-oauth.lo `test -f 'oauth.c' || echo '$(srcdir)/'`oauth.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liboauth_la-oauth.Tpo $(DEPDIR)/liboauth_la-oauth.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth.c' object='liboauth_la-oauth.lo' libtool=yes @AMDEPBACKSLASH@
+liboauthbearer_la-oauthbearer.lo: oauthbearer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauthbearer_la_CFLAGS) $(CFLAGS) -MT liboauthbearer_la-oauthbearer.lo -MD -MP -MF $(DEPDIR)/liboauthbearer_la-oauthbearer.Tpo -c -o liboauthbearer_la-oauthbearer.lo `test -f 'oauthbearer.c' || echo '$(srcdir)/'`oauthbearer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liboauthbearer_la-oauthbearer.Tpo $(DEPDIR)/liboauthbearer_la-oauthbearer.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauthbearer.c' object='liboauthbearer_la-oauthbearer.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauth_la_CFLAGS) $(CFLAGS) -c -o liboauth_la-oauth.lo `test -f 'oauth.c' || echo '$(srcdir)/'`oauth.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauthbearer_la_CFLAGS) $(CFLAGS) -c -o liboauthbearer_la-oauthbearer.lo `test -f 'oauthbearer.c' || echo '$(srcdir)/'`oauthbearer.c
 
-liboauth_la-plugin_common.lo: plugin_common.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauth_la_CFLAGS) $(CFLAGS) -MT liboauth_la-plugin_common.lo -MD -MP -MF $(DEPDIR)/liboauth_la-plugin_common.Tpo -c -o liboauth_la-plugin_common.lo `test -f 'plugin_common.c' || echo '$(srcdir)/'`plugin_common.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liboauth_la-plugin_common.Tpo $(DEPDIR)/liboauth_la-plugin_common.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='plugin_common.c' object='liboauth_la-plugin_common.lo' libtool=yes @AMDEPBACKSLASH@
+liboauthbearer_la-plugin_common.lo: plugin_common.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauthbearer_la_CFLAGS) $(CFLAGS) -MT liboauthbearer_la-plugin_common.lo -MD -MP -MF $(DEPDIR)/liboauthbearer_la-plugin_common.Tpo -c -o liboauthbearer_la-plugin_common.lo `test -f 'plugin_common.c' || echo '$(srcdir)/'`plugin_common.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/liboauthbearer_la-plugin_common.Tpo $(DEPDIR)/liboauthbearer_la-plugin_common.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='plugin_common.c' object='liboauthbearer_la-plugin_common.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauth_la_CFLAGS) $(CFLAGS) -c -o liboauth_la-plugin_common.lo `test -f 'plugin_common.c' || echo '$(srcdir)/'`plugin_common.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(liboauthbearer_la_CFLAGS) $(CFLAGS) -c -o liboauthbearer_la-plugin_common.lo `test -f 'plugin_common.c' || echo '$(srcdir)/'`plugin_common.c
 
-pam_oauth_la-pam_oauth.lo: pam_oauth.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pam_oauth_la_CFLAGS) $(CFLAGS) -MT pam_oauth_la-pam_oauth.lo -MD -MP -MF $(DEPDIR)/pam_oauth_la-pam_oauth.Tpo -c -o pam_oauth_la-pam_oauth.lo `test -f 'pam_oauth.c' || echo '$(srcdir)/'`pam_oauth.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pam_oauth_la-pam_oauth.Tpo $(DEPDIR)/pam_oauth_la-pam_oauth.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pam_oauth.c' object='pam_oauth_la-pam_oauth.lo' libtool=yes @AMDEPBACKSLASH@
+pam_oauthbearer_la-pam_oauthbearer.lo: pam_oauthbearer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pam_oauthbearer_la_CFLAGS) $(CFLAGS) -MT pam_oauthbearer_la-pam_oauthbearer.lo -MD -MP -MF $(DEPDIR)/pam_oauthbearer_la-pam_oauthbearer.Tpo -c -o pam_oauthbearer_la-pam_oauthbearer.lo `test -f 'pam_oauthbearer.c' || echo '$(srcdir)/'`pam_oauthbearer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pam_oauthbearer_la-pam_oauthbearer.Tpo $(DEPDIR)/pam_oauthbearer_la-pam_oauthbearer.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pam_oauthbearer.c' object='pam_oauthbearer_la-pam_oauthbearer.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pam_oauth_la_CFLAGS) $(CFLAGS) -c -o pam_oauth_la-pam_oauth.lo `test -f 'pam_oauth.c' || echo '$(srcdir)/'`pam_oauth.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pam_oauthbearer_la_CFLAGS) $(CFLAGS) -c -o pam_oauthbearer_la-pam_oauthbearer.lo `test -f 'pam_oauthbearer.c' || echo '$(srcdir)/'`pam_oauthbearer.c
 
-pam_oauth_la-oauth.lo: oauth.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pam_oauth_la_CFLAGS) $(CFLAGS) -MT pam_oauth_la-oauth.lo -MD -MP -MF $(DEPDIR)/pam_oauth_la-oauth.Tpo -c -o pam_oauth_la-oauth.lo `test -f 'oauth.c' || echo '$(srcdir)/'`oauth.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pam_oauth_la-oauth.Tpo $(DEPDIR)/pam_oauth_la-oauth.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauth.c' object='pam_oauth_la-oauth.lo' libtool=yes @AMDEPBACKSLASH@
+pam_oauthbearer_la-oauthbearer.lo: oauthbearer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pam_oauthbearer_la_CFLAGS) $(CFLAGS) -MT pam_oauthbearer_la-oauthbearer.lo -MD -MP -MF $(DEPDIR)/pam_oauthbearer_la-oauthbearer.Tpo -c -o pam_oauthbearer_la-oauthbearer.lo `test -f 'oauthbearer.c' || echo '$(srcdir)/'`oauthbearer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pam_oauthbearer_la-oauthbearer.Tpo $(DEPDIR)/pam_oauthbearer_la-oauthbearer.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='oauthbearer.c' object='pam_oauthbearer_la-oauthbearer.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pam_oauth_la_CFLAGS) $(CFLAGS) -c -o pam_oauth_la-oauth.lo `test -f 'oauth.c' || echo '$(srcdir)/'`oauth.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pam_oauthbearer_la_CFLAGS) $(CFLAGS) -c -o pam_oauthbearer_la-oauthbearer.lo `test -f 'oauthbearer.c' || echo '$(srcdir)/'`oauthbearer.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -902,11 +902,11 @@ clean-am: clean-generic clean-libtool clean-sasllibLTLIBRARIES \
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-		-rm -f ./$(DEPDIR)/liboauth_la-cy2_oauth.Plo
-	-rm -f ./$(DEPDIR)/liboauth_la-oauth.Plo
-	-rm -f ./$(DEPDIR)/liboauth_la-plugin_common.Plo
-	-rm -f ./$(DEPDIR)/pam_oauth_la-oauth.Plo
-	-rm -f ./$(DEPDIR)/pam_oauth_la-pam_oauth.Plo
+		-rm -f ./$(DEPDIR)/liboauthbearer_la-sasl_oauthbearer.Plo
+	-rm -f ./$(DEPDIR)/liboauthbearer_la-oauthbearer.Plo
+	-rm -f ./$(DEPDIR)/liboauthbearer_la-plugin_common.Plo
+	-rm -f ./$(DEPDIR)/pam_oauthbearer_la-oauthbearer.Plo
+	-rm -f ./$(DEPDIR)/pam_oauthbearer_la-pam_oauthbearer.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-hdr distclean-libtool distclean-tags
@@ -955,11 +955,11 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-		-rm -f ./$(DEPDIR)/liboauth_la-cy2_oauth.Plo
-	-rm -f ./$(DEPDIR)/liboauth_la-oauth.Plo
-	-rm -f ./$(DEPDIR)/liboauth_la-plugin_common.Plo
-	-rm -f ./$(DEPDIR)/pam_oauth_la-oauth.Plo
-	-rm -f ./$(DEPDIR)/pam_oauth_la-pam_oauth.Plo
+		-rm -f ./$(DEPDIR)/liboauthbearer_la-sasl_oauthbearer.Plo
+	-rm -f ./$(DEPDIR)/liboauthbearer_la-oauthbearer.Plo
+	-rm -f ./$(DEPDIR)/liboauthbearer_la-plugin_common.Plo
+	-rm -f ./$(DEPDIR)/pam_oauthbearer_la-oauthbearer.Plo
+	-rm -f ./$(DEPDIR)/pam_oauthbearer_la-pam_oauthbearer.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

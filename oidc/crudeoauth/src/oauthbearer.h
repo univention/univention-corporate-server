@@ -1,6 +1,6 @@
-/* $Id: oauth.h,v 1.7 2017/05/24 22:47:15 manu Exp $ */
 /*
- * Copyright (c) 2009,2011 Emmanuel Dreyfus
+ * Copyright (c) 2022-2024 Univention GmbH
+ * Copyright (c) 2009-2015 Emmanuel Dreyfus
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,7 @@ enum OAuthError {
 	OK,
 	INVALID_ISSUER,
 	INVALID_AUDIENCE,
+	MISSING_SCOPE,
 	INVALID_AUTHORIZED_PARTY,
 	CLAIM_EXPIRED,
 	MISSING_UID_CLAIM,
@@ -43,27 +44,29 @@ enum OAuthError {
 	CONFIG_ERROR
 };
 
-struct oauth_trusted_list {
+struct oauth_list {
 	const char *name;
-	SLIST_ENTRY(oauth_trusted_list) next;
+	SLIST_ENTRY(oauth_list) next;
 };
 
-static const int JWKS_BUFFSIZE = 4096;
+static const int JWKS_BUFFSIZE = 4096 * 2;
 
 typedef struct {
 	const char *uid_attr;
 	time_t grace;
-	int flags;
-	SLIST_HEAD(oauth_trusted_aud_list_head, oauth_trusted_list) trusted_aud;
-	SLIST_HEAD(oauth_trusted_azp_list_head, oauth_trusted_list) trusted_azp;
+	SLIST_HEAD(oauth_trusted_aud_list_head, oauth_list) trusted_aud;
+	SLIST_HEAD(oauth_trusted_azp_list_head, oauth_list) trusted_azp;
+	SLIST_HEAD(oauth_required_scope_list_head, oauth_list) required_scope;
 	const char *trusted_iss;
 	char *trusted_jwks_str;
 } oauth_glob_context_t;
-/* oauth_glob_context_t flags */
 
 typedef struct {
 	oauth_glob_context_t *glob_context;
-	char *userid;
+	char *authcid;
+
+	char *serverout_buf;
+	unsigned serverout_buf_size;
 } oauth_serv_context_t;
 
 void oauth_log(const void *, int, const char *, ...);
@@ -71,5 +74,5 @@ void oauth_error(const void *, int, const char *, ...);
 int oauth_strdup(const void *, const char *, char **, int *);
 int oauth_retcode(enum OAuthError);
 
-enum OAuthError oauth_check_jwt(oauth_serv_context_t *, const void *, const char **, char *, int);
+enum OAuthError oauth_check_jwt(oauth_serv_context_t *, const void *, const char **, char *);
 const char* oauth_enum_error_string(enum OAuthError);

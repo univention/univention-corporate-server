@@ -2,7 +2,7 @@
  * Like what you see? Join us!
  * https://www.univention.com/about-us/careers/vacancies/
  *
- * Copyright 2022-2023 Univention GmbH
+ * Copyright 2022-2024 Univention GmbH
  *
  * https://www.univention.de/
  *
@@ -48,7 +48,7 @@
 
 #include <sasl/saslutil.h> /* XXX for sasl_decode64 */
 
-#include "oauth.h"
+#include "oauthbearer.h"
 
 #include <rhonabwy.h>
 
@@ -69,7 +69,7 @@ DEFINE_AUTOPTR_FUNC(jwt_t, r_jwt_free);
 
 
 #ifdef HACK
-/* Helper functions copied from pam_oauth.c for compiling oauth.c with -DHACK */
+/* Helper functions copied from pam_oauthbearer.c for compiling oauthbearer.c with -DHACK */
 void oauth_log(
 	const void *utils,
 	int pri,
@@ -128,6 +128,8 @@ const char* oauth_enum_error_string(enum OAuthError code) {
 			return "The issuer is not given or invalid.";
 		case INVALID_AUDIENCE:
 			return "The audience is not given or invalid.";
+		case MISSING_SCOPE:
+			return "A required scope is not given.";
 		case INVALID_AUTHORIZED_PARTY:
 			return "The authorized party is not given or invalid.";
 		case CLAIM_EXPIRED:
@@ -158,7 +160,7 @@ enum OAuthError oauth_check_token_audience(
 	jwt_t *jwt
 ) {
 	enum OAuthError ret = OK;
-	struct oauth_trusted_list *rp;
+	struct oauth_list *rp;
 
 	SLIST_FOREACH(rp, &ctx->glob_context->trusted_aud, next) {
 		if (r_jwt_validate_claims(jwt, R_JWT_CLAIM_AUD, rp->name, R_JWT_CLAIM_NOP) == RHN_OK)
@@ -170,13 +172,13 @@ enum OAuthError oauth_check_token_audience(
 	return ret;
 }
 
-enum OAuthError oauth_check_token_authorized_party(
+enum OAuthError oidc_check_token_authorized_party(
 	oauth_serv_context_t *ctx,
 	const void *utils,
 	jwt_t *jwt
 ) {
 	enum OAuthError ret = OK;
-	struct oauth_trusted_list *rp;
+	struct oauth_list *rp;
 
 	if (r_jwt_validate_claims(jwt, R_JWT_CLAIM_STR, "azp", NULL, R_JWT_CLAIM_NOP) != RHN_OK)
 		return OK;
@@ -198,13 +200,32 @@ enum OAuthError oauth_check_token_validity_dates(
 	time_t now = time(NULL);
 	time_t grace = ctx->glob_context->grace;
 
-	if (r_jwt_validate_claims(jwt, /*R_JWT_CLAIM_NBF, (int)now - grace,*/ R_JWT_CLAIM_IAT, (int)now/* - grace*/, R_JWT_CLAIM_EXP, (int)now/* + grace*/, R_JWT_CLAIM_NOP) == RHN_OK)
-		return OK;
+	if (r_jwt_validate_claims(jwt, R_JWT_CLAIM_NBF, R_JWT_CLAIM_PRESENT, R_JWT_CLAIM_NOP) == RHN_OK && r_jwt_validate_claims(jwt, R_JWT_CLAIM_NBF, (int)now + grace, R_JWT_CLAIM_NOP) != RHN_OK)
+	    goto err;
+	if (r_jwt_validate_claims(jwt, R_JWT_CLAIM_IAT, R_JWT_CLAIM_PRESENT, R_JWT_CLAIM_NOP) == RHN_OK && r_jwt_validate_claims(jwt, R_JWT_CLAIM_IAT, (int)now + grace, R_JWT_CLAIM_NOP) != RHN_OK)
+	    goto err;
+	if (r_jwt_validate_claims(jwt, R_JWT_CLAIM_EXP, R_JWT_CLAIM_PRESENT, R_JWT_CLAIM_NOP) == RHN_OK && r_jwt_validate_claims(jwt, R_JWT_CLAIM_EXP, (int)now - grace, R_JWT_CLAIM_NOP) != RHN_OK)
+	    goto err;
 
+	return OK;
+err:
 	oauth_error(utils, 0, "claim expired or not yet valid: now=%d exp=%d nbf=%d iat=%d", (int)now, r_jwt_get_claim_int_value(jwt, "exp"), r_jwt_get_claim_int_value(jwt, "nbf"), r_jwt_get_claim_int_value(jwt, "iat"));
 	return CLAIM_EXPIRED;
 }
 
+enum OAuthError oauth_check_required_scopes(
+	oauth_serv_context_t *ctx,
+	const void *utils,
+	jwt_t *jwt
+) {
+	struct oauth_list *scope;
+
+	SLIST_FOREACH(scope, &ctx->glob_context->required_scope, next) {
+		if (r_jwt_validate_claims(jwt, R_JWT_CLAIM_STR, "scope", scope->name, R_JWT_CLAIM_NOP) != RHN_OK)
+			return MISSING_SCOPE;
+	}
+	return OK;
+}
 
 enum OAuthError oauth_check_token_uid(
 	oauth_serv_context_t *ctx,
@@ -213,7 +234,7 @@ enum OAuthError oauth_check_token_uid(
 ) {
 	const char *preferred_username = r_jwt_get_claim_str_value(jwt, ctx->glob_context->uid_attr);
 	if ((preferred_username != NULL) && (*preferred_username != '\0')) {
-		if (oauth_strdup(utils, preferred_username, &ctx->userid, NULL) != 0) {
+		if (oauth_strdup(utils, preferred_username, &ctx->authcid, NULL) != 0) {
 			return CONFIG_ERROR;
 		}
 		return OK;
@@ -259,7 +280,6 @@ jwk_t * oauth_get_jwk(
 		goto out;
 	}
 
-	// if (r_jwks_import_from_str(jwks, jwks_str) != RHN_OK) {  // rhonabwy-0.9.13 style
 	if (r_jwks_import_from_json_str(jwks, ctx->glob_context->trusted_jwks_str) != RHN_OK) {
 		oauth_error(utils, 0, "Error r_jwks_import_from_str");
 		goto out;
@@ -292,9 +312,8 @@ out:
 enum OAuthError oauth_check_jwt(
 	oauth_serv_context_t *ctx,
 	const void *utils,
-	const char **userid,
-	char *msg,
-	int flags
+	const char **oauth_user,
+	char *msg
 ) {
 	unsigned int msg_len;
 	enum OAuthError error = PARSE_ERROR;
@@ -339,19 +358,21 @@ enum OAuthError oauth_check_jwt(
 		return error;
 	if ((error = oauth_check_token_audience(ctx, utils, jwt)) != OK)
 		return error;
-	if ((error = oauth_check_token_authorized_party(ctx, utils, jwt)) != OK)
+	if ((error = oidc_check_token_authorized_party(ctx, utils, jwt)) != OK)
 		return error;
 	if ((error = oauth_check_token_validity_dates(ctx, utils, jwt)) != OK)
+		return error;
+	if ((error = oauth_check_required_scopes(ctx, utils, jwt)) != OK)
 		return error;
 	if ((error = oauth_check_token_uid(ctx, utils, jwt)) != OK)
 		return error;
 
-	*userid = ctx->userid;
+	*oauth_user = ctx->authcid;
 	return error;
 }
 
 #ifdef HACK
-/* To compile with gcc oauth.c -lrhonabwy -lsasl2 -lorcania -lyder -ljansson -DHACK */
+/* To compile with gcc oauthbearer.c -lrhonabwy -lsasl2 -lorcania -lyder -ljansson -DHACK */
 
 // curl https://ucs-sso-ng.$(hostname -d)/realms/master/protocol/openid-connect/certs | python -c 'import json, sys; print(json.dumps(json.load(sys.stdin)["keys"][0]))'
 // static const char jwk_str[] = ...;
@@ -365,8 +386,9 @@ static const char test_token_str[] =
 ;
 
 #include <yder.h>
-static struct oauth_trusted_list trusted_aud;
-static struct oauth_trusted_list trusted_azp;
+static struct oauth_list trusted_aud;
+static struct oauth_list trusted_azp;
+static struct oauth_list required_scope;
 static oauth_glob_context_t server_glob_context;
 
 int main() {
@@ -381,22 +403,25 @@ int main() {
 	SLIST_INIT(&gctx->trusted_aud);
 	SLIST_INSERT_HEAD(&gctx->trusted_aud, &trusted_aud, next);
 
-	trusted_azp.name = "https://master3.school.dev/univention/oauth/";
+	trusted_azp.name = "https://master3.school.dev/univention/oidc/";
 	SLIST_INIT(&gctx->trusted_azp);
 	SLIST_INSERT_HEAD(&gctx->trusted_azp, &trusted_azp, next);
+
+	required_scope.name = "openid";
+	SLIST_INIT(&gctx->required_scope);
+	SLIST_INSERT_HEAD(&gctx->required_scope, &required_scope, next);
 
 	oauth_serv_context_t ctx;
 	ctx.glob_context = gctx;
 
 	const void *utils = NULL;
-	const char *userid[256];
-	int flags = 0;
+	const char *oauth_user[256];
 
 	y_init_logs("Rhonabwy", Y_LOG_MODE_CONSOLE, Y_LOG_LEVEL_DEBUG, NULL, "Starting Rhonabwy JWS tests");
 
-	rc = oauth_check_jwt(&ctx, utils, userid, test_token_str, flags);
+	rc = oauth_check_jwt(&ctx, utils, oauth_user, test_token_str);
 	if (rc != OK) {
-		printf("Got user: %s\n", ctx.userid);
+		printf("Got user: %s\n", ctx.authcid);
 	} else {
 		fprintf(stderr, "oauth_check_jwt failed (%d), see syslog for details\n", rc);
 	}

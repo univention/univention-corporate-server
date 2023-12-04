@@ -1,7 +1,6 @@
-/* $Id: pam_oauth.c,v 1.14 2017/08/13 14:29:00 manu Exp $ */
-
 /*
- * Copyright (c) 2009 Emmanuel Dreyfus
+ * Copyright (c) 2022-2024 Univention GmbH
+ * Copyright (c) 2009-2015 Emmanuel Dreyfus
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +44,7 @@
 #include <security/pam_modules.h>
 #include <security/pam_appl.h>
 
-#include "oauth.h"
+#include "oauthbearer.h"
 
 #ifndef PAM_EXTERN
 #define PAM_EXTERN
@@ -127,7 +126,7 @@ static void gctx_cleanup(
 	oauth_glob_context_t *gctx = (oauth_glob_context_t *)data;
 
 	if (gctx != NULL) {
-		struct oauth_trusted_list *item;
+		struct oauth_list *item;
 
 		if (gctx->uid_attr != NULL) {
 			free((void *)gctx->uid_attr);
@@ -141,6 +140,11 @@ static void gctx_cleanup(
 
 		while ((item = SLIST_FIRST(&gctx->trusted_azp)) != NULL) {
 			SLIST_REMOVE_HEAD(&gctx->trusted_azp, next);
+			free(item);
+		}
+
+		while ((item = SLIST_FIRST(&gctx->required_scope)) != NULL) {
+			SLIST_REMOVE_HEAD(&gctx->required_scope, next);
 			free(item);
 		}
 
@@ -168,7 +172,6 @@ static oauth_glob_context_t * pam_global_context_init(
 	const void *data;
 	oauth_glob_context_t *gctx;
 	int i;
-	const char *cacert = NULL;
 	const char *uid_attr = "preferred_username";
 
 
@@ -187,7 +190,8 @@ static oauth_glob_context_t * pam_global_context_init(
 
 	SLIST_INIT(&gctx->trusted_aud);
 	SLIST_INIT(&gctx->trusted_azp);
-	gctx->grace = (time_t)600;
+	SLIST_INIT(&gctx->required_scope);
+	gctx->grace = (time_t)3;
 
 	/*
 	 * Get options
@@ -210,7 +214,7 @@ static oauth_glob_context_t * pam_global_context_init(
 		}
 
 		if ((data = SETARG(av[i], "trusted_aud")) != NULL) {
-			struct oauth_trusted_list *item;
+			struct oauth_list *item;
 
 			if ((item = malloc(sizeof(*item))) == NULL) {
 				error = PAM_SYSTEM_ERR;
@@ -230,7 +234,7 @@ static oauth_glob_context_t * pam_global_context_init(
 		}
 
 		if ((data = SETARG(av[i], "trusted_azp")) != NULL) {
-			struct oauth_trusted_list *item;
+			struct oauth_list *item;
 
 			if ((item = malloc(sizeof(*item))) == NULL) {
 				error = PAM_SYSTEM_ERR;
@@ -239,6 +243,26 @@ static oauth_glob_context_t * pam_global_context_init(
 			}
 
 			SLIST_INSERT_HEAD(&gctx->trusted_azp, item, next);
+
+			if ((item->name = strdup(data)) == NULL) {
+				error = PAM_SYSTEM_ERR;
+				syslog(LOG_ERR, "strdup() failed: %s", strerror(errno));
+				goto cleanup;
+			}
+
+			continue;
+		}
+
+		if ((data = SETARG(av[i], "required_scope")) != NULL) {
+			struct oauth_list *item;
+
+			if ((item = malloc(sizeof(*item))) == NULL) {
+				error = PAM_SYSTEM_ERR;
+				syslog(LOG_ERR, "malloc() failed: %s", strerror(errno));
+				goto cleanup;
+			}
+
+			SLIST_INSERT_HEAD(&gctx->required_scope, item, next);
 
 			if ((item->name = strdup(data)) == NULL) {
 				error = PAM_SYSTEM_ERR;
@@ -267,7 +291,7 @@ static oauth_glob_context_t * pam_global_context_init(
 		}
 
 		if ((data = SETARG(av[i], "jwks")) != NULL) {
-			if (num_of_jwks > 0) { // TODO: support multiple issuers
+			if (num_of_jwks > 0) { // TODO: support multiple jwks
 				error = PAM_SYSTEM_ERR;
 				syslog(LOG_ERR, "multiple jwks given");
 				goto cleanup;
@@ -297,15 +321,6 @@ static oauth_glob_context_t * pam_global_context_init(
 
 			num_of_jwks++;
 			syslog(LOG_DEBUG, "Loaded JWKS from \"%s\"", data);
-			continue;
-		}
-
-		if ((cacert = SETARG(av[i], "cacert")) != NULL) {
-			if (access(cacert, R_OK) != 0) {
-				error = PAM_OPEN_ERR;
-				syslog(LOG_ERR, "Unable to read CA bundle \"%s\"", cacert);
-				goto cleanup;
-			}
 			continue;
 		}
 	}
@@ -419,7 +434,7 @@ PAM_EXTERN int pam_sm_authenticate(
 		conv = convptr;
 
 		msg.msg_style = PAM_PROMPT_ECHO_OFF;
-		msg.msg = "JWT: ";
+		msg.msg = "Access Token: ";
 		msgp = &msg;
 		resp = NULL;
 		if ((error = conv->conv(1, (const struct pam_message **)&msgp, &resp, conv->appdata_ptr)) != PAM_SUCCESS) {
@@ -448,7 +463,7 @@ PAM_EXTERN int pam_sm_authenticate(
 	if (ctx.glob_context == NULL)
 		return PAM_SYSTEM_ERR;
 
-	error = oauth_retcode(oauth_check_jwt(&ctx, NULL, &oauth_user, (char *)jwt_msg, MAYBE_COMPRESS));
+	error = oauth_retcode(oauth_check_jwt(&ctx, NULL, &oauth_user, (char *)jwt_msg));
 
 	if ((error != 0) || (oauth_user == NULL)) {
 		error = PAM_AUTH_ERR;
@@ -470,8 +485,8 @@ PAM_EXTERN int pam_sm_authenticate(
 
 	error = PAM_SUCCESS;
 out:
-	if (ctx.userid != NULL)
-		free(ctx.userid);
+	if (ctx.authcid != NULL)
+		free(ctx.authcid);
 
 	return error;
 }
@@ -525,8 +540,8 @@ PAM_EXTERN int pam_sm_chauthtok(
 }
 
 #ifdef PAM_STATIC
-struct pam_module _pam_oauth_modstruct = {
-	"pam_oauth",
+struct pam_module _pam_oauthbearer_modstruct = {
+	"pam_oauthbearer",
 	pam_sm_authenticate,
 	pam_sm_setcred,
 	pam_sm_acct_mgmt,
