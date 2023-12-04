@@ -109,9 +109,10 @@ stop_uss_and_restore_profile () {
 		systemctl reset-failed "$SRV"
 	fi
 
-	local PROFILE='/var/cache/univention-system-setup/profile'
-	[ -f "$PROFILE.bak" ] &&
-		mv "$PROFILE.bak" "$PROFILE"
+	local USS_PROFILE='/var/cache/univention-system-setup/profile'
+	[ -f "${USS_PROFILE}.bak" ] &&
+		[ ! -e "${USS_PROFILE}" ] &&
+		mv "${USS_PROFILE}.bak" "${USS_PROFILE}"
 	:
 }
 

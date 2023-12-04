@@ -200,9 +200,9 @@ destroy_veyon_aws_instances () {
 
 replace_nameserver_ip_in_profile () {
 	local ip=${1:?missing ip}
-	local profile="/var/cache/univention-system-setup/profile"
+	local USS_PROFILE='/var/cache/univention-system-setup/profile'
 	if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-		sed -i 's/nameserver=.*/nameserver='"$ip"'/' "$profile"
+		sed -i 's/nameserver=.*/nameserver='"$ip"'/' "$USS_PROFILE"
 	fi
 }
 
