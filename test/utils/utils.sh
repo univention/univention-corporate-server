@@ -1257,7 +1257,7 @@ sa_bug53751 () {
 		sa-update -vv &&
 		su -c 'sa-compile' - "$user" &&
 		systemctl try-restart spamassassin.service amavis.service
-	[ -d "$base" ] &&
+	[ -d "$BASE" ] &&
 		find "$BASE" -not -user "$user" -exec chown -v "$user:" {} +
 	:
 }
