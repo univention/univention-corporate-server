@@ -44,7 +44,8 @@ class OwnershipTest:
 
 
 def load_test_cases():
-    sso_fqdn = ucr["ucs/server/sso/fqdn"]
+    # TODO: where to get the sso_fqdn from, ucs/server/sso/fqdn or keycloak/server/sso/fqdn
+    sso_fqdn = ucr['ucs/server/sso/fqdn']
 
     return [
         OwnershipTest(
@@ -53,14 +54,14 @@ def load_test_cases():
             id='idp-ldap-user.secret',
         ),
         OwnershipTest(
-            path=Path('/etc/apache2/sites-available/univention-saml.conf'),
+            path=Path('/etc/apache2/sites-enabled/univention-keycloak.conf'),
             expected_ownership=Ownership(user='root', group='root', flags='0o644'),
-            id='univention-saml.conf',
+            id='univention-keycloak.conf',
         ),
         OwnershipTest(
-            path=Path(f'/usr/share/univention-management-console/saml/idp/ucs-sso-ng.{ucr["domainname"]}.xml'),
+            path=Path(f'/usr/share/univention-management-console/saml/idp/{sso_fqdn}.xml'),
             expected_ownership=Ownership(user='root', group='root', flags='0o644'),
-            id=f'ucs-sso-ng.{ucr["domainname"]}.xml',
+            id=f'{sso_fqdn}.xml',
         ),
     ]
 
