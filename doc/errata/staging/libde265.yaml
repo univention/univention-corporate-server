@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [4, 5]
+scope: ucs_5.0-0-errata5.0-5
+src: libde265
+fix: 1.0.11-0+deb10u5
+desc: |
+ This update addresses the following issues:
+ 1.0.11-0+deb10u5 (Thu, 30 Nov 2023 17:31:53 +0100)
+ * Non-maintainer upload by the LTS Security Team.
+ * Fix: CVE-2023-27102, CVE-2023-27103, CVE-2023-43887 and CVE-2023-47471.
+bug: [56892]
+cve:
+- CVE-2023-27102
+- CVE-2023-27103
+- CVE-2023-43887
+- CVE-2023-47471
