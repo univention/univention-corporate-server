@@ -6,10 +6,8 @@ src: opendkim
 fix: 2.11.0~alpha-10+deb9u2
 desc: |
  This update addresses the following issue:
- 2.11.0~alpha-10+deb9u2 (Fri, 01 Dec 2023 18:42:02 +0100)
- * Non-maintainer upload by the ELTS Security Team.
- * Add patch to delete Authentication-Results headers in reverse, addresses
-   CVE-2022-48521
+ * CVE-2022-48521: Add patch to delete headers "Authentication-Results" in
+   reverse addresses.
 bug: [56894]
 cve:
 - CVE-2022-48521
