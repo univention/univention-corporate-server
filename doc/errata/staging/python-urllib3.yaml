@@ -6,9 +6,12 @@ src: python-urllib3
 fix: 1.19.1-1+deb9u2
 desc: |
  This update addresses the following issues:
- 1.19.1-1+deb9u2 (Mon, 27 Nov 2023 12:03:07 +0000)
- * Non-maintainer upload by the LTS Security Team.
- * Backport upstream fixes for CVE-2018-25091, CVE-2023-43804, CVE-2023-45803.
+ * CVE-2018-25091: Remove the authorization HTTP header when following a
+   cross-origin redirect.
+ * CVE-2023-43804: Cookie request header isn't stripped during cross-origin
+   redirects.
+ * CVE-2023-45803: Request body not stripped after redirect from 303 status
+   changes request method to GET.
 bug: [56896]
 cve:
 - CVE-2018-25091
