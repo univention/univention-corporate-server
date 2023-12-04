@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-profile_file="/var/cache/univention-system-setup/profile"
+USS_PROFILE='/var/cache/univention-system-setup/profile'
 check_ldap_access=0
 
 export TEXTDOMAIN="univention-system-setup-scripts"
@@ -111,17 +111,17 @@ progress_next_step () {
 }
 
 is_variable_set () {  # DEPRECATED: has inverted logic
-	[ -e "$profile_file" ] ||
+	[ -e "$USS_PROFILE" ] ||
 		return 0
 	[ -n "$1" ] ||
 		return 0
-	value="$(grep -E "^$1=" "$profile_file")"
+	value="$(grep -E "^$1=" "$USS_PROFILE")"
 	[ -z "$value" ]
 }
 get_profile_var () {
-	[ -e "$profile_file" ] &&
+	[ -e "$USS_PROFILE" ] &&
 	[ -n "$1" ] &&
-	! sed -rne "/^ *#/d;s|^$1=||;T;s|([\"'])(.*)\1 *\$|\2|;p;q 1" "$profile_file"
+	! sed -rne "/^ *#/d;s|^$1=||;T;s|([\"'])(.*)\1 *\$|\2|;p;q 1" "$USS_PROFILE"
 }
 is_profile_var_true () {
 	case "$(get_profile_var "$1" | tr '[:upper:]' '[:lower:]')" in
