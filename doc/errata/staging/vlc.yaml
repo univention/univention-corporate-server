@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: vlc
+fix: 3.0.20-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ 3.0.20-0+deb9u1 (Thu, 30 Nov 2023 23:49:13 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * New upstream release. - CVE-2023-47359: Heap buffer overflow in the MMSH
+   module. - CVE-2023-47360: Integer underflow in the MMSH module.
+ * Remove sndio module, the version in stretch is no longer detected.
+bug: [56895]
+cve:
+- CVE-2023-47359
+- CVE-2023-47360
