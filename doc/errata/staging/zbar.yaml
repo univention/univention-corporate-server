@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: zbar
+fix: 0.10+doc-10.1+deb9u1
+desc: |
+ This update addresses the following issue:
+
+ Debian update 0.10+doc-10.1+deb9u1
+ 0.10+doc-10.1+deb9u1 (Thu, 30 Nov 2023 11:19:08 +0000)
+ * Non-maintainer upload by the ELTS team.
+ * Fix two security bug: - Fix CVE-2023-40889: A heap-based buffer o verflow
+   existed in the qr_reader_match_centers function. Specially crafted QR codes
+   may lead to information disclosure and/or arbitrary code execution. To
+   trigger this vulnerability, an attacker can digitally input the malicious
+   QR code, or prepare it to be physically scanned by the vulnerable scanner.
+bug: [56897]
+cve:
+- CVE-2023-40889
