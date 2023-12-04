@@ -6,9 +6,16 @@ src: libde265
 fix: 1.0.11-0+deb10u5
 desc: |
  This update addresses the following issues:
- 1.0.11-0+deb10u5 (Thu, 30 Nov 2023 17:31:53 +0100)
- * Non-maintainer upload by the LTS Security Team.
- * Fix: CVE-2023-27102, CVE-2023-27103, CVE-2023-43887 and CVE-2023-47471.
+ * CVE-2023-27102: Segmentation violation via the function
+   `decoder_context::process_slice_segment_header` at `decctx.cc`.
+ * CVE-2023-27103: Heap buffer overflow via the function
+   `derive_collocated_motion_vectors` at `motion.cc`.
+ * CVE-2023-43887: Multiple buffer overflows via the parameters
+   `num_tile_columns` and `num_tile_row` in the function
+   `pic_parameter_set::dump`.
+ * CVE-2023-47471: Buffer overflow vulnerability in `strukturag` allows a
+   local attacker to cause a denial of service via the function
+   `slice_segment_header` in the `slice.cc` component.
 bug: [56892]
 cve:
 - CVE-2023-27102
