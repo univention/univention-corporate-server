@@ -40,7 +40,6 @@ from_init () {
 
 	echo "Started in '$mode' mode"
 	echo
-	USS_PROFILE="/var/cache/univention-system-setup/profile"
 
 	# set random password for system setup user
 	USSPASSWD="$(tr -c -d '[:alnum:]' < /dev/urandom | head -c 30)"
@@ -77,11 +76,6 @@ from_init () {
 			system/setup/boot/pages/blacklist='locale welcome network'
 
 		deb-systemd-invoke restart univention-management-console-server apache2
-	fi
-
-	# move old profile
-	if [ -f "$USS_PROFILE" ]; then
-		mv "$USS_PROFILE" "$USS_PROFILE.bak"
 	fi
 
 	if "$use_xserver"
