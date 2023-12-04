@@ -49,4 +49,9 @@ udm saml/serviceprovider modify "$@" \
 	--dn "SAMLServiceProviderIdentifier=https://$fqdn/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base" \
 	--set assertionLifetime="${umc_saml_assertion_lifetime:-300}" \
 	--set serviceProviderMetadata="$metadata"
+
+# TODO: add all the other things which UMC defines in the XML metadata
+payload=$(python3 -c 'from univention.config_registry import ucr; json.dumps({"attributes": {"saml.assertion.lifespan": ucr.get("umc/saml/assertion/lifetime", 300)}})')
+univention-keycloak saml/sp update "https://{fqdn}/univention/saml/metadata" "$payload"
+
 exit $?
