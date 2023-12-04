@@ -6,10 +6,8 @@ src: gst-plugins-bad1.0
 fix: 1.10.4-1+deb9u5
 desc: |
  This update addresses the following issue:
- 1.10.4-1+deb9u5 (Wed, 29 Nov 2023 22:55:02 +0100)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-44446 mxfdemux: Store GstMXFDemuxEssenceTrack in their own fixed
-   allocation
+ * CVE-2023-44446: `mxfdemux`: Store `GstMXFDemuxEssenceTrack` in their own
+   fixed allocation.
 bug: [56898]
 cve:
 - CVE-2023-44446
