@@ -6,15 +6,10 @@ src: ncurses
 fix: 6.1+20181013-2+deb10u5
 desc: |
  This update addresses the following issues:
- 6.1+20181013-2+deb10u5 (Sun, 03 Dec 2023 16:31:37 +0100)
- * Non-maintainer upload by the LTS Security Team.
- * Fix CVE-2021-39537: Heap-based buffer overflow in _nc_captoinfo().
- * Mitigate CVE-2023-29491: Configure with `--disable-root-environ` (changed
-   to match the behavior of the `--disable-setuid-environ` flag introduced in
-   the 20230423 patchlevel) in order to disallow loading of custom terminfo
-   entries in setuid/setgid programs.
- * d/libtinfo5.symbols, d/libtinfo6.symbols: Add new exported symbol
-   _nc_env_access (exposed by the new configure flag).
+ * CVE-2021-39537: Heap-based buffer overflow in `_nc_captoinfo()`.
+ * CVE-2023-29491: Configure with `--disable-root-environ` in order to
+   disallow loading of custom terminal information entries in SETUID/SETGID
+   programs.
 bug: [56893]
 cve:
 - CVE-2021-39537
