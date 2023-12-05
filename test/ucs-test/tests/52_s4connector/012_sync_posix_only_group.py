@@ -11,16 +11,15 @@ import pytest
 from univention.testing.connector_common import (
     NormalGroup, create_udm_group, delete_udm_group, map_udm_group_to_con, verify_udm_object,
 )
-from univention.testing.udm import UCSTestUDM
 
 import s4connector
 from s4connector import connector_running_on_this_host, connector_setup
 
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
-def test_udm_group_option_unchanged_by_s4c():
+def test_udm_group_option_unchanged_by_s4c(udm):
     """check that the UDM group option "posix" is not changed by the S4-Connecfor."""
-    with connector_setup("sync") as s4, UCSTestUDM() as udm:
+    with connector_setup("sync") as s4:
         udm_group = NormalGroup()
         udm_group.group['options'] = ['posix']
         (udm_group_dn, s4_group_dn) = create_udm_group(udm, s4, udm_group, s4connector.wait_for_sync)
