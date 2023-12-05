@@ -1,3 +1,9 @@
+ucs-test (10.0.19-42) unstable; urgency=medium
+
+  * Bug #56772: Check that S4-Connector doesn't modify UDM group options
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Dec 2023 16:33:55 +0100
+
 ucs-test (10.0.19-41) unstable; urgency=medium
 
   * Bug #56772: Check that S4-Connector doesn't modify UDM group options

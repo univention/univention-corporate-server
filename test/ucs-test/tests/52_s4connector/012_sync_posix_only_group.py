@@ -18,7 +18,7 @@ from s4connector import connector_running_on_this_host, connector_setup
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_udm_group_option_unchanged_by_s4c(udm):
-    """check that the UDM group option "posix" is not changed by the S4-Connecfor."""
+    """check that the UDM group option "posix" is not changed by the S4-Connector."""
     with connector_setup("sync") as s4:
         udm_group = NormalGroup()
         udm_group.group['options'] = ['posix']
