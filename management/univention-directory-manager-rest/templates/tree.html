@@ -1,0 +1,35 @@
+{% extends 'template.html' %}
+
+{% block head %}{% endblock %}
+{% block header %}{% endblock %}
+{% block nav %}{% endblock %}
+{% block main %}
+
+<div class="tree" role="tree">
+	<table>
+		{% for item in data.get('_embedded', {}).get('udm:tree', []) %}
+		<tr id="tree-item-{{ item['html_id'] }}" class="tree-item" role="treeitem">
+			<td>
+				{% if item['has-childs'] %}
+				<a hx-trigger="click once{% if item['root'] %},load,revealed once{% endif %}" hx-boost="true" hx-push-url="false" hx-select=".tree > table" hx-target="#tree-item-{{ item['html_id'] }}" hx-swap="afterend" href="{{ item['_links']['item'][0]['href'] }}" title="{{ item['_links']['item'][0]['title'] }}">
+				{% endif %}
+				<div class="tree-icon" style="--level: {{ level }};">
+						{% if item['has-childs'] %}
+						<svg style="font-size: inherit; width: 1em; height: 1em; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+							<use xlink:href="/univention/js/dijit/themes/umc/images/feather-sprite.svg#chevron-right"></use>
+						</svg>
+						{% endif %}
+					<!-- TODO: standby animation -->
+					</div>
+					<span style='background-color: rgba(0, 0, 0, 0); background-position: 0% 0%; background-repeat: no-repeat; background-attachment: scroll; background-size: auto; background-origin: padding-box; background-clip: border-box; width: 16px; height: 16px; background-image: url("/univention/js/dijit/themes/umc/icons/16x16/{{ item['icon'] }}.png") !important; display: inline-block; margin-right: 5px; position: relative; bottom: 1px;'></span>
+					{{ item['label'] }}
+				{% if item['has-childs'] %}
+				</a>
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+
+{% endblock %}

@@ -174,7 +174,7 @@ class Gateway(tornado.web.RequestHandler):
         ud.set_level(ud.MAIN, args.debug)
 
         tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
-        tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console-module-udm')
+        tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-directory-manager-rest')
 
         os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
 

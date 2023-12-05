@@ -45,6 +45,7 @@ from functools import partial
 
 import atexit
 import tornado.ioloop
+import tornado.locale
 import tornado.log
 from setproctitle import getproctitle, setproctitle
 from tornado.httpserver import HTTPServer
@@ -79,6 +80,7 @@ class Server:
         locale.setlocale(locale.LC_MESSAGES, language)
         os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
         Translation.set_all_languages(language)
+        tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-directory-manager-rest')
 
         # The UMC-Server and module processes are clearing environment variables
         os.environ.clear()

@@ -1,0 +1,12 @@
+{% extends 'template.html' %}
+
+{% block head %}{% endblock %}
+{% block header %}{% endblock %}
+{% block nav %}
+<div hx-trigger="load" hx-select="#main > div" hx-get="{{ data.get('_links', {}).get('udm:tree')[0]['href'] }}">
+    <img class="htmx-indicator spinner" src="/univention/udm/img/spinning-circles.svg" />
+</div>
+{% endblock %}
+{% block main %}
+{% endblock %}
+

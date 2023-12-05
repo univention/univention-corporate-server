@@ -1,8 +1,9 @@
-univention-directory-manager-rest (10.0.7-1) UNRELEASED; urgency=medium
+univention-directory-manager-rest (10.0.7-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #56714: use Jinja and HTMX for the unsupported unofficial web UI
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:32 +0100
+ -- Florian Best <best@univention.de>  Sun, 10 Dec 2023 04:52:21 +0100
 
 univention-directory-manager-rest (10.0.6-15) unstable; urgency=medium
 

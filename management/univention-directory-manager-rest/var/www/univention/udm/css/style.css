@@ -1,5 +1,4 @@
 @import url("/univention/js/dijit/themes/umc/bootstrap.css");
-@import url("/univention/theme.css");
 :root {
 	/* cursors */
 	--cursor-disabled: not-allowed;
@@ -33,6 +32,28 @@
 
 	/* input fields */
 	--inputfield-size: 2.75rem;
+}
+/** reset browser defaults that are not covered by bootstrap.css
+and overwrite unwanted bootstrap defaults
+**/
+*,
+p,
+label,
+h1, h2, h3, h4, h5, h6,
+input {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font: inherit;
+	color: inherit;
+}
+input[type="checkbox"],
+input[type="radio"] {
+	cursor: pointer;
+}
+button[disabled],
+html input[disabled] {
+	cursor: var(--cursor-disabled);
 }
 
 html {
@@ -82,29 +103,42 @@ header h2 {
 }
 main {
 	margin: 8px;
+	padding-top: 2em;
 }
-body > nav {
-	width: 400px;
+body > .container {
+	padding-top: 2em;
+}
+body > .container > nav {
 	word-break: break-all;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: calc(2 * var(--layout-spacing-unit));
+	background-color: var(--bgc-content-container);
+	border-radius: var(--border-radius-container);
 }
-body > nav, body > main {
+body > .container > nav:last-child {
+	margin-bottom: calc(2 * var(--layout-spacing-unit));
+}
+body > .container > nav, body > main {
 	float: left;
 	position: relative;
 	top: 48px;
 }
-h1 {
-	margin: 0;
+body > .container > nav > ul > li{
+	list-style: none;
 }
 header > nav > svg {
-    height: var(--font-size-2);
-    width: var(--font-size-2);
-    margin-right: var(--layout-spacing-unit);
-    fill: currentColor;
-    color: inherit;
+	height: var(--font-size-2);
+	width: var(--font-size-2);
+	margin-right: var(--layout-spacing-unit);
+	fill: currentColor;
+	color: inherit;
 }
 
 input[type=image][name=jpegPhoto-preview] {
 	max-width: 250px;
+	max-height: 250px;
+	min-height: 250px;
 }
 
 details {
@@ -135,12 +169,13 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	padding: 0 0.5rem;
 }
 
 input, select {
-/*	display: flex;￼
+	display: flex;
 	flex-direction: row-reverse;
-	align-items: center; */
+	align-items: center;
 	--color: var(--font-color-contrast-high);
 	--border-color: transparent;
 	--local-icon-color: var(--color);
@@ -155,8 +190,24 @@ input, select {
 	transition: background-color, color, border;
 	transition-duration: 250ms;
 	outline: none;
-
 	margin: 0 0.5em;
+}
+
+input:hover,
+input:focus,
+select:hover,
+select:focus {
+	border-color: var(--font-color-contrast-low);
+}
+
+select,
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="date"],
+input[type="password"] {
+	/* FIXME: otherwise more and less than 100 is used */
+	width: 100%;
 }
 
 fieldset {
@@ -164,6 +215,27 @@ fieldset {
 	border: 2px solid var(--bgc-content-body);
 	background-color: var(--bgc-content-container);
 	border-radius: var(--border-radius-container);
+}
+
+div.row {
+	margin: 0 -0.5rem 0 -0.5rem;
+	width: 100%; /* really? */
+}
+
+div.row .label-wrapper {
+	display: inline-block;
+	padding: 0 0.5rem 1rem 0.5rem;
+}
+div.row .label-wrapper label {
+	display: inline-flex;
+	vertical-align: bottom;
+	margin-bottom: var(--layout-spacing-unit-small);
+}
+div.row .label-wrapper input,
+div.row .label-wrapper select {
+	/*height: 100%;*/
+	text-overflow: ellipsis;
+	padding: 0 calc(3 * var(--layout-spacing-unit-small)) !important;
 }
 
 label {
@@ -175,18 +247,74 @@ label {
 	color: var(--local-color);
 	transition: color 250ms;
 }
+.udmSize-OneThird {
+	width: 16.6666666666666%;
+}
+.udmSize-Half {
+	width: 12%;
+}
+.udmSize-TwoThirds {
+	width: 33.33333333333333%;
+}
+.udmSize-One {
+	width: 50%;
+}
+.udmSize-FourThirds {
+	width: 66.6666666666666%;
+}
+.udmSize-OneAndAHalf {
+	width: 75%;
+}
+.udmSize-FiveThirds {
+	width: 83.3333333333333%;
+}
+.udmSize-Two {
+	width: 100%;
+}
 
-table.grid {
+.grid {
 	background-color: var(--bgc-content-container);
 	border-radius: var(--border-radius-container);
 	overflow: hidden;
 	width: 100%;
 }
-table.grid tr {
+.grid-header {
+	display: flex;
+	padding: var(--layout-spacing-unit);
+	flex: 0 1 auto;
+	overflow: hidden;
+	min-height: var(--button-size);
+}
+.grid-header button {
+	margin: 0 0.5rem;
+}
+.grid-header span {
+	flex: 0 1000 auto;
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	font-size: var(--font-size-5);
+	color: var(--font-color-contrast-middle);
+	padding: var(--layout-spacing-unit);
+	overflow: hidden;
+	min-width: 4rem;
+}
+.grid table {
+	width: 100%;
+}
+.grid tr {
 	font-size: var(--font-size-4);
 	line-height: 1;
 	transition: background-color 250ms;
 	border-top: 1px solid var(--bgc-content-body);
+}
+.grid tr th.check,
+.grid tr td.check {
+	width: 2em;
+}
+img.grid-icon {
+	width: 16px;
+	height: 16px;
 }
 
 details {
@@ -199,6 +327,8 @@ summary {
 	line-height: var(--font-lineheight-normal);
 	font-weight: 600%;
 	user-select: none;
+
+	padding: var(--layout-spacing-unit);
 }
 legend {
 	border-radius: 0;
@@ -208,7 +338,18 @@ legend {
 	line-height: var(--font-lineheight-normal);
 	font-weight: 600%;
 	user-select: none;
+
+	padding: calc(2 * var(--layout-spacing-unit));
 }
+
+legend:hover,
+summary:hover,
+legend:focus,
+summary:focus {
+	background-color: var(--bgc-titlepane-hover);
+	border-radius: var(--border-radius-container);
+}
+
 pre {
 	background-color: var(--bgc-content-container);
 	border-radius: var(--border-radius-container);
@@ -235,19 +376,62 @@ div[style*="display: flex"] > form {
 }
 
 form#add section,
+form#edit-form section,
 form#edit section {
 	display: none;
 }
 form#add section:target,
+form#edit-form section:target,
 form#edit section:target {
 	display: block;
 }
 a[rel="udm:tab-switch"] {
 	cursor: pointer;
 	padding: 10px;
-	background-color: var(--bgc-content-container);
+	/*background-color: var(--bgc-content-container);*/
+	background-color: var(--bgc-content-body);
 	border: 1px solid var(--border-color);
 	border-radius: 5px;
 	margin: 2px;
 	display: flex;
+}
+
+.tree {
+/*	background-color: var(--bgc-tree-row-selected);*/
+}
+.tree-item {
+	line-height: 1;
+	font-size: var(--font-size-4);
+	box-sizing: content-box;
+	/*transition: background-color 0.2s;*/
+}
+.tree .tree-icon {
+	height: 1em;
+	width: 1em;
+	padding: 0 var(--layout-spacing-unit);
+	position: relative;
+	box-sizing: content-box;
+	float: left;
+	display: flex;
+	margin-left: calc(var(--level) * 1.2em);
+	cursor: pointer;
+}
+
+.featherIcon {
+	font-size: inherit;
+	width: 1em;
+	height: 1em;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	fill: none;
+	transition: color 250ms;
+}
+
+.bread-crumb {
+	color: var(--font-color-contrast-middle);
+}
+.bread-crumb-separator {
+	margin: 0 var(--layout-spacing-unit-small);
 }

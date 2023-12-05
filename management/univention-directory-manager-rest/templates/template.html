@@ -1,0 +1,58 @@
+{% if not ajax %}
+<!DOCTYPE html>
+<html hx-headers='{"Accept-Language": "{{ language }}"}' lang="{{ language }}" hx-ext="response-targets">
+	{% if not hx_request %}
+	<head>
+		<title>{{ title }}</title>
+		<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+		<link rel="stylesheet" type="text/css" href="/univention/theme.css" title="Default Theme" />
+		<link rel="alternate stylesheet" type="text/css" href="/univention/themes/light.css" title="Light Theme" />
+		<link rel="alternate stylesheet" type="text/css" href="/univention/themes/dark.css" title="Dark Theme" />
+		<link href="/univention/udm/css/style.css" rel="stylesheet" />
+		<script src="/univention/udm/js/htmx.min.js"></script>
+		<script src="/univention/udm/js/json-enc.js"></script>
+		<script src="/univention/udm/js/response-targets.js"></script>
+		{{ head_links | safe }}
+		{% block head %}{% endblock %}
+	</head>
+	{% endif %}
+	<body dir="ltr" hx-target-error="#errors">
+		<header>
+			<nav hx-boost="true">
+				<!--<h2 id="logo">-->
+				<!--<a href="/" rel="home">-->
+				<svg>
+					<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/univention/js/dijit/themes/umc/images/univention_u.svg#id"></use>
+				</svg>
+				<!--</a>-->
+				<!--</h2>-->
+				{% for link_attrs in bread_crumbs %}
+				<a hx-boost="true" hx-push-url="true" {% for key, value in link_attrs.items() %}{{ key }}="{{ value }}" {% endfor %}>
+					<svg class="featherIcon bread-crumb bread-crumb-separator" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="/univention/js/dijit/themes/umc/images/feather-sprite.svg#chevron-right"></use></svg>
+					<span class="bread-crumb">{{ link_attrs.get('title') or link_attrs['href'] }}</span>
+				</a>
+				{% endfor %}
+
+				{% block header %}{% endblock %}
+			</nav>
+		</header>
+		<div class="container">
+			{% if (not ajax or target == "nav") and display_nav %}
+			<nav id="nav" hx-boost="true" class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+				{{ nav | safe }}
+				{% block nav %}{% endblock %}
+			</nav>
+			{% endif %}
+{% endif %}
+			{% if not ajax or target == "main" or True %}
+			<main id="main" class="{% if display_nav %}col-xs-12 col-sm-12 col-md-8 col-lg-8{% else %}col-xs-12 col-sm-12 col-md-12 col-lg-12{% endif %}">
+				<div id="errors"></div>
+				{{ main | safe }}
+				{% block main %}{% endblock %}
+			</main>
+			{% endif %}
+{% if not ajax %}
+		</div>
+	</body>
+</html>
+{% endif %}

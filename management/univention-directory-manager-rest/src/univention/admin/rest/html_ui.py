@@ -34,15 +34,14 @@
 # <https://www.gnu.org/licenses/>.
 
 import json
+import re
 import xml.etree.ElementTree as ET
 
 import defusedxml.minidom
 from genshi import XML
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from univention.lib.i18n import Translation
-
-
-#from genshi.output import HTMLSerializer
 
 
 _ = Translation('univention-directory-manager-rest').translate
@@ -50,39 +49,27 @@ _ = Translation('univention-directory-manager-rest').translate
 
 class HTML:
 
-    def content_negotiation_html(self, response):
+    @property
+    def head_template(self):
+        return self.get_template
+
+    def template_vars(self):
+        return {}
+
+    def content_negotiation_html(self, response, data):
         self.set_header('Content-Type', 'text/html; charset=UTF-8')
-        ajax = self.request.headers.get('X-Requested-With', '').lower() == 'xmlhttprequest'
+        target = self.request.headers.get('HX-Target')
+        hx_request = self.request.headers.get('HX-Request') == 'true'
+        ajax = (hx_request or self.request.headers.get('X-Requested-With', '').lower() == 'xmlhttprequest') and target
+        head = ET.Element("head")
+        title = 'FIXME: fallback title'  # FIXME: set title
 
-        root = ET.Element("html")
-        head = ET.SubElement(root, "head")
-        titleelement = ET.SubElement(head, "title")
-        titleelement.text = 'FIXME: fallback title'  # FIXME: set title
-        ET.SubElement(head, 'meta', content='text/html; charset=utf-8', **{'http-equiv': 'content-type'})
-        # if not ajax:
-        #    ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('../js/config.js'))
-        #    ET.SubElement(head, 'script', type='text/javascript', src=self.abspath('js/udm.js'))
-        #    ET.SubElement(head, 'script', type='text/javascript', async='', src=self.abspath('../js/dojo/dojo.js'))
-
-        body = ET.SubElement(root, "body", dir='ltr')
-        header = ET.SubElement(body, 'header')
-        topnav = ET.SubElement(header, 'nav')
-        logo = ET.SubElement(topnav, 'svg')
-        ET.SubElement(logo, 'use', **{'xlink:href': "/univention/js/dijit/themes/umc/images/univention_u.svg#id", 'xmlns:xlink': "http://www.w3.org/1999/xlink"})
-        h1 = ET.SubElement(topnav, 'h2', id='logo')
-        home = ET.SubElement(h1, 'a', rel='home', href=self.abspath('/'))
-        home.text = ' '
-        nav = ET.SubElement(body, 'nav')
+        nav = ET.Element('nav')
         links = ET.SubElement(nav, 'ul')
-        main = ET.SubElement(body, 'main')
+        main = ET.Element('main')
+
         _links = {}
-        navigation_relations = self.bread_crumps_navigation()
-        #for link in self._headers.get_list('Link'):
-        #    link, foo, _params = link.partition(';')
-        #    link = link.strip().lstrip('<').rstrip('>')
-        #    params = {}
-        #    if _params.strip():
-        #        params = {x.strip(): y.strip().strip('"').replace('\\"', '"').replace('\\\\', '\\') for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';'))}
+        navigation_relations = self.bread_crumbs_navigation()
         hal_links = [
             dict(_hlink.copy(), rel=rel)
             for rel, _hlinks in self.get_links(data).items()
@@ -93,69 +80,92 @@ class HTML:
             if params.pop('templated', None):
                 continue
             link = params.pop('href')
-            ET.SubElement(head, "link", href=link, **params)
+            if params.get('rel') not in ('udm:tab-switch'):
+                ET.SubElement(head, "link", href=link, **params)
             _links[params.get('rel')] = dict(params, href=link)
             if params.get('rel') == 'self':
-                titleelement.text = params.get('title') or link or 'FIXME:notitle'
+                title = params.get('title') or link or 'FIXME:notitle'
             if params.get('rel') in ('stylesheet', 'icon', 'self', 'up', 'udm:object/remove', 'udm:object/edit', 'udm:report'):
+                continue
+            if not self.debug_mode_enabled and params.get('rel') in ('udm:report', 'udm:tree', 'udm:layout', 'udm:properties', 'describedby'):
                 continue
             if params.get('rel') in navigation_relations:
                 continue
             if params.get('rel') in ('udm:user-photo',):
-                ET.SubElement(nav, 'img', src=link, style='max-width: 200px')
+                ET.SubElement(nav, 'img', src=link, style='max-height: 250px; max-width: 100%; padding: 1em;')
                 continue
-            elif params.get('rel') in ('create-form', 'edit-form'):
-                ET.SubElement(ET.SubElement(nav, 'form'), 'button', formaction=link, **params).text = params.get('title', link)
+            elif params.get('rel') in ('create-form', 'edit-form'):  # TODO: move into main grid header
+                ET.SubElement(ET.SubElement(main, 'form', **{'hx-boost': 'true'}), 'button', formaction=link, **params).text = params.get('title', link)
                 continue
-            # if params.get('rel') in ('udm:tree',):
-            #    self.set_header('X-Frame-Options', 'SAMEORIGIN')
-            #    body.insert(1, ET.Element('iframe', src=link, name='tree'))
-            #    continue
             li = ET.SubElement(links, "li")
+            params.setdefault('hx-boost', 'true')
+            params.setdefault('hx-push-url', 'true')
             ET.SubElement(li, "a", href=link, **params).text = params.get('title', link) or link
-
-        for name in navigation_relations:
-            params = _links.get(name)
-            if params:
-                ET.SubElement(topnav, 'a', **params).text = '›› %s' % (params.get('title') or params['href'],)
 
         if isinstance(response, (list, tuple)):
             main.extend(response)
         elif response is not None:
             main.append(response)
 
-        if not ajax:
-            stream = ET.tostring(root, encoding='utf-8', method='xml')
-            stream = defusedxml.minidom.parseString(stream)
-            stream = stream.toprettyxml()
-            stream = XML(stream)
-            self.write(stream.render('xhtml'))
-            # FIXME: transforms the <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/univention/js/dijit/themes/umc/images/univention_u.svg#id"></use> to <use></use>
-            # self.write(''.join(HTMLSerializer('html5')(stream)))
-        else:
-            self.write('<!DOCTYPE html>\n')
-            tree = ET.ElementTree(main if ajax else root)
-            tree.write(self)
+        def get_inner_html(node):
+            return '\n'.join(ET.tostring(child, encoding='unicode', method='xml') for child in node)
+
+        tpldata = {
+            'language': self.locale.code,
+            'response': response,
+            'data': data,
+            'title': title,
+            'ajax': ajax,
+            'hx_request': hx_request,
+            'target': target,
+            'head_links': get_inner_html(head),
+            'nav': get_inner_html(nav),
+            'main': get_inner_html(main),
+            'display_nav': True,
+            'bread_crumbs': [_links.get(name) for name in navigation_relations if _links.get(name)],
+        }
+        tpldata.update(self.template_vars())
+        tpl = getattr(self, f'{self.request.method.lower()}_template', 'template.html')
+        stream = self.render_template(tpl, tpldata)
+        stream = defusedxml.minidom.parseString(stream).toprettyxml()
+        stream = XML(stream).render('xhtml')
+        self.write(stream)
 
     def get_html(self, response: dict):
         root = []
-        self.add_link(response, 'stylesheet', self.abspath('css/style.css'))
-
         # TODO: nav-layout?!
 
         # main layout
-        forms = self.get_resources(response, 'udm:form')
         main_layout = self.get_resource(response, 'udm:layout', name='main-layout')
         if main_layout:
-            main = ET.Element('div')  # TODO: get rid of the div
-            root.append(main)
+            main = ET.Element('div')
             self.get_html_layout(main, response, main_layout['layout'], [])
-        else:
-            # leftover forms
+            root.extend(main.getchildren())
+        else:  # leftover forms
+            buttons = self.get_resources(response, 'udm:button')
+            for _button in buttons:
+                root.insert(0, self.get_html_button(_button, response))
+            forms = self.get_resources(response, 'udm:form')
             for _form in forms:
                 root.insert(0, self.get_html_form(_form, response))
-                root[0].append(ET.Element('hr'))
+                # root[0].append(ET.Element('hr'))
 
+        root.extend(self.get_error_html(response))
+
+        # print any leftover elements
+        if self.debug_mode_enabled:
+            r = response.copy()
+            r.pop('_links', None)
+            r.pop('_embedded', None)
+            if r:
+                pre = ET.Element("pre")
+                pre.text = json.dumps(r, indent=4)
+                root.append(pre)
+
+        return root
+
+    def get_error_html(self, response: dict):
+        root = []
         # errors
         if isinstance(response.get('error'), dict) and response['error'].get('code', 0) >= 400:
             error_response = response['error']
@@ -178,26 +188,16 @@ class HTML:
             ET.SubElement(warning, 'p', style='white-space: pre').text = 'You are being redirected to:'
             ET.SubElement(warning, 'a', href=href).text = href
 
-        # print any leftover elements
-        r = response.copy()
-        r.pop('_links', None)
-        r.pop('_embedded', None)
-        if r:
-            pre = ET.Element("pre")
-            pre.text = json.dumps(r, indent=4)
-            root.append(pre)
-
         return root
 
     def get_html_layout(self, root, response, layout, properties):
         for sec in layout:
-            from univention.admin.rest.module import Layout
-            section = ET.SubElement(root, 'section', id=Layout.get_section_id(sec['label']))
-            ET.SubElement(section, 'h1').text = sec['label']
+            section = ET.SubElement(root, 'section', id=self.sanitize_html_id(sec['label']))
             if sec.get('help'):
                 ET.SubElement(section, 'span').text = sec['help']
             fieldset = ET.SubElement(section, 'fieldset')
-            ET.SubElement(fieldset, 'legend').text = sec['description']
+            ET.SubElement(fieldset, 'legend').text = sec['label']
+            ET.SubElement(fieldset, 'h1').text = sec['description']
             if sec['layout']:
                 self.render_layout(sec['layout'], fieldset, properties, response)
         return root
@@ -210,27 +210,35 @@ class HTML:
                     if form:
                         fieldset.append(self.get_html_form(form, response))
                 continue
+            elif isinstance(elem, dict) and isinstance(elem.get('$button-ref'), list):
+                for _button in elem['$button-ref']:
+                    button = self.get_resource(response, 'udm:button', name=_button)
+                    if button:
+                        fieldset.append(self.get_html_button(button, response))
+                continue
             elif isinstance(elem, dict):
                 if not elem.get('label') and not elem.get('description'):
                     ET.SubElement(fieldset, 'br')
                     sub_fieldset = ET.SubElement(fieldset, 'div', style='display: flex')
                 else:
-                    sub_fieldset = ET.SubElement(fieldset, 'details', open='open')
+                    opened = {'open': 'open'} if elem.get('opened', True) else {}
+                    sub_fieldset = ET.SubElement(fieldset, 'details', **opened)
                     ET.SubElement(sub_fieldset, 'summary').text = elem['label']
                     if elem['description']:
                         ET.SubElement(sub_fieldset, 'h2').text = elem['description']
                 self.render_layout(elem['layout'], sub_fieldset, properties, response)
                 continue
             elements = [elem] if isinstance(elem, str) else elem
+            row = ET.SubElement(fieldset, 'div', **{'class': 'row'})
             for elem in elements:
                 for field in properties:
                     if field['name'] in (elem, 'properties.%s' % elem):
-                        self.render_form_field(fieldset, field)
-            if elements:
-                ET.SubElement(fieldset, 'br')
+                        self.render_form_field(row, field)
 
     def get_html_form(self, _form, response):
-        form = ET.Element('form', **{p: _form[p] for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _form.get(p)})
+        formattrs = {p: _form[p] for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate', 'hx-confirm', 'hx-ext') if _form.get(p)}
+        formattrs.setdefault('hx-boost', 'true')
+        form = ET.Element('form', **formattrs)
         if _form.get('layout'):
             layout = self.get_resource(response, 'udm:layout', name=_form['layout'])
             self.get_html_layout(form, response, layout['layout'], _form.get('fields'))
@@ -242,17 +250,20 @@ class HTML:
 
         return form
 
-    def render_form_field(self, form, field):
+    def render_form_field(self, parent_element, field):
         datalist = None
         name = field['name']
 
         if field.get('type') == 'submit' and field.get('add_noscript_warning'):
-            ET.SubElement(ET.SubElement(form, 'noscript'), 'p').text = _('This form requires JavaScript enabled!')
+            ET.SubElement(ET.SubElement(parent_element, 'noscript'), 'p').text = _('This form requires JavaScript enabled!')
 
         label = None
         if name:
             label = ET.Element('label', **{'for': name})
             label.text = field.get('label', name)
+
+        cls = 'udmSize-%s' % (field.get('data-size', 'One'),)
+        wrapper = ET.Element('div', **{'class': 'label-wrapper %s' % cls})
 
         multivalue = field.get('data-multivalue') == '1'
         values = field['value'] or [''] if multivalue else [field['value']]
@@ -262,16 +273,37 @@ class HTML:
             elemattrs.setdefault('placeholder', name)
             if field.get('type') == 'checkbox' and field.get('checked'):
                 elemattrs['checked'] = 'checked'
+            if field.get('data-dynamic'):
+                field['element'] = 'select'
+                elemattrs.update({
+                    'hx-push-url': 'false',
+                    #'hx-trigger': 'revealed',  # faster but more traffic
+                    'hx-trigger': 'intersect once',
+                    #'hx-select': 'select > option',  # bug: no re-rendering in browser, wrong value is displayed
+                    #'hx-swap': 'innerHTML',
+                    'hx-select': 'select',  # bug: no attributes like required are taken
+                    'hx-swap': 'outerHTML',
+                    #'hx-get': self._append_query(field['data-dynamic'], f'selected={quote(value)}'),
+                    'hx-get': field['data-dynamic'],
+                    'hx-vals': json.dumps({'selected': value, 'required': field.get('required', ''), 'name': field.get('name', '')})  # caution: allowing freely added values like name=javascript: is a security risk
+                })
+
             element = ET.Element(field.get('element', 'input'), name=name, value=str(value), **elemattrs)
 
             if field['element'] == 'select':
-                for option in field.get('options', []):
-                    kwargs = {}
-                    if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
-                        kwargs['selected'] = 'selected'
-                    ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
+                if field.get('data-dynamic'):
+                    ET.SubElement(wrapper, 'img', **{'class': 'htmx-indicator spinner', 'src': '/univention/udm/img/spinning-circles.svg'})
+                    ET.SubElement(element, 'option', selected='selected', value=value).text = value  # fallback during loading
+                else:
+                    for option in field.get('options', []):
+                        kwargs = {}
+                        if field['value'] == option['value'] or (isinstance(field['value'], list) and option['value'] in field['value']):
+                            kwargs['selected'] = 'selected'
+                        ET.SubElement(element, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
             elif field.get('element') == 'a':
                 element.text = field['label']
+                label = None
+            elif field.get('type') == 'hidden':
                 label = None
             elif field.get('list') and field.get('datalist'):
                 datalist = ET.Element('datalist', id=field['list'])
@@ -281,19 +313,31 @@ class HTML:
                         kwargs['selected'] = 'selected'
                     ET.SubElement(datalist, 'option', value=option['value'], **kwargs).text = option.get('label', option['value'])
             if label is not None:
-                form.append(label)
+                wrapper.append(label)
                 label = None
             if datalist is not None:
-                form.append(datalist)
-            form.append(element)
+                wrapper.append(datalist)
+
+            wrapper.append(element)
             if multivalue:
                 btn = ET.Element('button')
                 btn.text = '-'
-                form.append(btn)
+                wrapper.append(btn)
         if multivalue:
             btn = ET.Element('button')
             btn.text = '+'
-            form.append(btn)
+            wrapper.append(btn)
+
+        parent_element.append(wrapper)
+
+    def get_html_button(self, _button, response):
+        #buttonattrs = {p: _button[p] for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _button.get(p)}
+        label = _button.pop('label', '')
+        buttonattrs = _button
+        buttonattrs.setdefault('hx-boost', 'true')
+        button = ET.Element('button', **buttonattrs)
+        button.text = label
+        return button
 
     def add_form(self, obj, action, method, **kwargs):
         form = {
@@ -317,8 +361,17 @@ class HTML:
         field.update(kwargs)
         form.setdefault('fields', []).append(field)
         if field['type'] == 'submit':
-            field['add_noscript_warning'] = form.get('method') not in ('GET', 'POST', None)
+            field['add_noscript_warning'] = form.get('method', '').upper() not in ('GET', 'POST', '')
         return field
+
+    def add_button(self, obj, action, method, **kwargs):
+        button = {'hx-%s' % method.lower(): action, 'formaction': action, 'hx-boost': 'true'}
+        button.update(kwargs)
+        #title = kwargs.pop('title', '')
+        #form = self.add_form(obj, action, method, **kwargs)
+        #self.add_form_element(form, '', title, type='submit')
+
+        self.add_resource(obj, 'udm:button', button)
 
     def add_layout(self, obj, layout, name=None, href=None):
         layout = {'layout': layout}
@@ -328,5 +381,17 @@ class HTML:
         if href:
             self.add_link(obj, 'udm:layout', href=href, name=name)
 
-    def bread_crumps_navigation(self):
+    @classmethod
+    def sanitize_html_id(cls, label):
+        label = re.sub(r'[^a-z0-9_:-]', '_', label.lower())
+        return re.sub(r'^[^a-z]+', 'id_', label)
+
+    def bread_crumbs_navigation(self):
         return ('udm:object-modules', 'udm:object-module', 'type', 'up', 'self')
+
+    def render_template(self, template_path, data):
+        env = Environment(loader=FileSystemLoader('/usr/share/univention-directory-manager-rest/templates/'), autoescape=True, undefined=StrictUndefined)
+        template = env.get_template(template_path)
+        env.filters['translate'] = self.locale.translate
+        env.globals['self'] = self
+        return template.render(**data)

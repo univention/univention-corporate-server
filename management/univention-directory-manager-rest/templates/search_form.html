@@ -1,0 +1,26 @@
+{% set display_nav = data.get('_links', {}).get('udm:tree') %}
+{% extends 'template.html' %}
+
+{% block head %}
+<script>
+<!--
+function getAllSelectedDNs() {
+    const form = document.getElementById('search');
+    const checkboxes = form.querySelectorAll('input[type="checkbox"][name="dn"]:checked');
+
+    return Array.from(checkboxes).map((checkbox) => checkbox.value);
+}
+-->
+</script>
+{% endblock %}
+{% block header %}{% endblock %}
+{% block nav %}
+{% if data.get('_links', {}).get('udm:tree') %}
+<div hx-trigger="load" hx-select="#main > div" hx-get="{{ data.get('_links', {}).get('udm:tree')[0]['href'] }}">
+    <img class="htmx-indicator spinner" src="/univention/udm/img/spinning-circles.svg" />
+</div>
+{% endif %}
+
+{% endblock %}
+{% block main %}
+{% endblock %}

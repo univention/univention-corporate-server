@@ -171,11 +171,10 @@ This enables scalability of the interaction between components, genericicity of 
     However, it's important to note that this constraint is optional, as it comes with the trade-off of potentially limiting availability to clients capable of executing the embedded code.
     Typically, this constraint is considered in domains where it is known that clients possess the necessary capabilities to support these extensions.
 
-    **Compliance**: The *UDM REST API* conforms to this by not yet using the optional constraint yet. In the future the web user interface may use the HTMX javascript library to extend HTML functionality for e.g. JSON forms or HTTP PUT/DELETE requests. The JSON-API part of the *UDM REST API* should never require this.
+    **Compliance**: The *UDM REST API* uses this optional constraint. The unsupported web user interface makes use of the HTMX javascript library to extend HTML functionality. The JSON-API part of the *UDM REST API* will never require this optional constraint.
 
-    As of the current implementation, the *UDM REST API* does not actively employ the *Code on Demand* constraint.
-    However, the constraint is useful for future plans to provide an additional web user interface beside the JSON interface.
-    It's worth exploring the utilization of the HTMX JavaScript library, which could allow for the extension of HTML functionality, enabling features like interactive JSON forms or support for HTTP PUT/DELETE requests.
+    As of the current implementation, the *UDM REST API* employs the *Code on Demand* constraint for an additional prototype web user interface (beside the JSON interface).
+    It's worth exploring the utilization of the HTMX JavaScript library, which allows for the extension of HTML functionality, enabling features like interactive JSON forms or support for HTTP PUT/DELETE requests.
     Adopting this approach would eliminate the need to create a complex and resource-intensive Vue.js single-page application frontend, which would effectively reimplement the entire server and widget logic.
     Importantly, it's worth noting that this extension is contemplated as an optional enhancement and should not become a requirement for utilizing the JSON-API part of the *UDM REST API*.
 

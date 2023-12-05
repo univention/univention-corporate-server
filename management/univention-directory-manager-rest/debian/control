@@ -43,6 +43,7 @@ Architecture: all
 Depends:
  python3-defusedxml,
  python3-genshi,
+ python3-jinja2,
  python3-mimeparse,
  python3-pycurl,
  python3-setproctitle,

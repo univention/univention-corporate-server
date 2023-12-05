@@ -70,11 +70,12 @@ class HAL:
     def add_resource(self, obj, relation, ressource):
         obj.setdefault('_embedded', {}).setdefault(relation, []).append(ressource)
 
-    def get_resource(self, obj, relation, name=None):
+    def get_resource(self, obj, relation, **query):
         for resource in obj.get('_embedded', {}).get(relation, []):
-            if not name:
+            if not query:
                 return resource
-            if resource.get('_links', {}).get('self', [{}])[0].get('name') == name:
+            data = resource.get('_links', {}).get('self', [{}])[0]
+            if all(data.get(key) == val for key, val in query.items()):
                 return resource
 
     def get_resources(self, obj, relation):

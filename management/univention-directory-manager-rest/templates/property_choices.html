@@ -1,0 +1,12 @@
+{% extends 'template.html' %}
+
+{% block head %}{% endblock %}
+{% block header %}{% endblock %}
+{% block nav %}{% endblock %}
+{% block main %}
+<select name="{{ name }}"{% if required %} required="required"{% endif %}>
+	{% for item in data['choices'] %}
+	<option value="{{ item[0] }}" {% if item[0] == selected %}selected="selected"{% endif %}>{{ item[1] }}</option>
+	{% endfor %}
+</select>
+{% endblock %}

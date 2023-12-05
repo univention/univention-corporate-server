@@ -99,15 +99,13 @@ from univention.management.console.modules.udm.tools import (
 )
 from univention.management.console.modules.udm.udm_ldap import (
     NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error, UDM_Module, container_modules, get_module,
-    ldap_dn2path,
+    ldap_dn2path, list_objects,
 )
 from univention.password import generate_password, password_config
 
 
-# FIXME: prevent in the javascript UMC module that navigation container query is called with container=='None'
 # FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
 # TODO: 0f77c317e03844e8a16c484dde69abbcd2d2c7e3 is not integrated
-# TODO: replace etree with genshi, etc.
 # TODO: loading the policies probably unnecessarily slows down things
 
 _ = Translation('univention-directory-manager-rest').translate
@@ -116,6 +114,7 @@ MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 
 
 class ResourceBase(SanitizerBase, HAL, HTML):
+    """Abstract base class for all HTTP resources"""
 
     pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
@@ -125,6 +124,10 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         return (yield future)
 
     requires_authentication = True
+
+    @property
+    def debug_mode_enabled(self):
+        return ucr.is_true('directory/manager/rest/debug-mode-enabled')
 
     def force_authorization(self):
         self.set_header('WWW-Authenticate', 'Basic realm="Univention Directory Manager"')
@@ -305,9 +308,9 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         lang = self.request.content_negotiation_lang
         formatter = getattr(self, f'{self.request.method.lower()}_{lang}', getattr(self, f'get_{lang}'))
         codec = getattr(self, f'content_negotiation_{lang}')
-        self.finish(codec(formatter(response)))
+        self.finish(codec(formatter(response), response))
 
-    def content_negotiation_json(self, response):
+    def content_negotiation_json(self, response, data):
         self.set_header('Content-Type', 'application/json')
         try:
             return json.dumps(response, cls=JsonEncoder)
@@ -318,6 +321,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
     def get_json(self, response):
         self.add_link(response, 'curies', self.abspath('relation/') + '{rel}', name='udm', templated=True)
         response.get('_embedded', {}).pop('udm:form', None)  # no public API, just to render html
+        response.get('_embedded', {}).pop('udm:button', None)  # no public API, just to render html
         response.get('_embedded', {}).pop('udm:layout', None)  # save traffic, just to render html
         response.get('_embedded', {}).pop('udm:properties', None)  # save traffic, just to render html
         return response
@@ -347,7 +351,12 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         super().log_exception(typ, value, tb)
 
     def write_error(self, status_code, exc_info=None, **kwargs):
+        method = {'head': 'get'}.get(self.request.method.lower(), self.request.method.lower())
+        setattr(self, f'{method}_template', 'error.html')
+        setattr(self, f'{method}_html', self.get_error_html)
         self.set_header('X-Request-Id', self.request.x_request_id)
+        self.set_header('HX-Reselect', 'div.error')
+        self.set_header('HX-Reswap', 'innerHTML')
         if not exc_info:  # or isinstance(exc_info[1], HTTPError):
             return super().write_error(status_code, exc_info=exc_info, **kwargs)
 
@@ -455,6 +464,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
 
 class Resource(ResourceBase, RequestHandler):
+    """Base class for all HTTP resources"""
 
     def options(self, *args, **kwargs):
         """Display API descriptions."""
@@ -478,6 +488,7 @@ class Resource(ResourceBase, RequestHandler):
 
 
 class Nothing(Resource):
+    """404 error page"""
 
     def prepare(self, *args, **kwargs):
         super().prepare(*args, **kwargs)
@@ -485,6 +496,7 @@ class Nothing(Resource):
 
 
 class Favicon(ResourceBase, tornado.web.StaticFileHandler):
+    """Get a 16*16px PNG representation of a UDM module"""
 
     @classmethod
     def get_absolute_path(cls, root, object_type=''):
@@ -497,11 +509,11 @@ class Favicon(ResourceBase, tornado.web.StaticFileHandler):
 
 
 class Relations(RelationsBase, Resource):
-    pass
+    """List all used Link relations"""
 
 
 class OpenAPI(OpenAPIBase, Resource):
-    pass
+    """JSON-Endpoint to get the openapi.json schema definition"""
 
 
 class Modules(Resource):
@@ -551,12 +563,106 @@ class Modules(Resource):
         self.add_caching(public=True)
         self.content_negotiation(result)
 
-    def bread_crumps_navigation(self):
+    def bread_crumbs_navigation(self):
         return ['self']
 
 
+class Directory(Resource):
+    """LDAP directory tree"""
+
+    get_template = 'directory.html'
+
+    @sanitize
+    async def get(
+        self,
+        container: Optional[str] = Query(DNSanitizer(required=False, allow_none=True)),
+        object_type: Optional[str] = Query(StringSanitizer(required=False, allow_none=True)),
+    ):
+        result = {}
+        self.add_link(result, 'self', self.urljoin(''), title=_('LDAP directory'))
+        self.add_link(result, 'udm:tree', self.urljoin('tree'))
+        self.add_link(result, 'icon', self.abspath('container/dc/favicon.ico'))
+        search_layout_base = [{
+            'label': _('Search'), 'description': '', 'layout': [['type', '']],
+        }]
+        self.add_layout(result, search_layout_base, 'search')
+        form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', name='search', layout='search')
+        self.add_form_element(form, 'type', '', label=_('Type'), **{'data-dynamic': self.urljoin('children-types')})
+        self.add_form_element(form, '', _('Search'), type='submit', **{'data-size': 'OneThird'})
+
+        # TODO: move into another class?
+        # TODO: if a type is selected use that search
+
+        if container:
+            for module, obj in list_objects(container, object_type=object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position):
+                if obj is None:
+                    continue
+                if object_type != 'containers' and module.childs:
+                    continue
+                if object_type == 'containers' and not module.childs:
+                    continue
+                #entry = {
+                #    'dn': obj.dn,
+                #    'objectType': module.name,
+                #    'labelObjectType': module.subtitle,
+                #    'name': udm_objects.description(obj),
+                #    'path': ldap_dn2path(obj.dn, include_rdn=False),
+                #    #'$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])],
+                #    #'$childs$': module.childs,
+                #    #'$operations$': module.operations,
+                #}
+                entry = Object.get_representation(module, obj, [], self.ldap_connection)
+                entry['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
+                self.add_link(entry, 'self', entry['uri'], name=entry['dn'], title=entry['id'], dont_set_http_header=True)
+                self.add_resource(result, 'udm:object', entry)
+
+        self.add_caching(public=True, must_revalidate=True)
+        self.content_negotiation(result)
+
+    def get_html(self, response):
+        r = response.copy()
+        root = super().get_html(r)
+
+        grid = ET.Element('div', **{'class': 'grid'})
+        ET.SubElement(grid, 'div', **{'class': 'grid-header'})
+        root.append(grid)
+        table = ET.SubElement(grid, 'table')
+        table_header = ET.SubElement(table, 'tr')
+        th1 = ET.SubElement(table_header, 'th', **{'class': 'check'})  # TODO: all-checkbox
+        ET.SubElement(table_header, 'th').text = _('Name')  # TODO: sort-direction switch
+        ET.SubElement(table_header, 'th').text = _('Type')
+        ET.SubElement(table_header, 'th').text = _('Path')
+
+        ET.SubElement(th1, 'input', type='checkbox', name='dn')
+
+        for thing in self.get_resources(response, 'udm:object'):
+            row = ET.SubElement(table, 'tr')
+            x = thing.copy()
+
+            td1 = ET.SubElement(row, 'td', **{'class': 'check'})
+            td2 = ET.SubElement(row, 'td')
+            td4 = ET.SubElement(row, 'td')
+            td3 = ET.SubElement(row, 'td')
+
+            ET.SubElement(td1, 'input', type='checkbox', name='dn', value=x['dn'])
+
+            ET.SubElement(td2, 'img', src=self.urljoin('..', thing['objectType'], 'favicon.ico'), **{'class': 'grid-icon'})
+            a = ET.SubElement(td2, "a", href=x.pop('uri'), rel="udm:object item")
+            a.text = x['id']
+
+            td3.text = ldap_dn2path(thing['position'])
+
+            td4.text = UDM_Module(thing['objectType'], ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).subtitle
+
+            if self.debug_mode_enabled:
+                pre = ET.SubElement(row, "pre", dn=x['dn'], style='display: none')
+                pre.text = json.dumps(x, indent=4)
+
+        return root
+
+
 class ObjectTypes(Resource):
-    """get the object types of a specific flavor"""
+    """Get the object types of a specific flavor"""
 
     @sanitize
     async def get(
@@ -619,13 +725,22 @@ class ObjectTypes(Resource):
 class SubObjectTypes(Resource):
     """A list of possible sub-object-types which can be created underneath of the specified container or superordinate."""
 
+    get_template = 'children_types.html'
+
+    def template_vars(self):
+        data = super().template_vars()
+        data['selected'] = self.get_query_argument('selected', '')
+        data['required'] = self.get_query_argument('required', '')
+        data['name'] = self.get_query_argument('name', '')
+        return data
+
     def get(self, object_type=None, position=None):
         """
         Returns the list of object types matching the given flavor or container.
 
         requests.options = {}
-                'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
-                'container' -- if available only types suitable for the given container are returned (only for the navigation)
+            'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
+            'container' -- if available only types suitable for the given container are returned (only for the navigation)
         """
         if not position:
             # no container is specified, return all existing object types
@@ -653,30 +768,28 @@ class SubObjectTypes(Resource):
         return self.module_definition(allowed_modules)
 
     def module_definition(self, modules):
-        result = {'entries': []}
-        for name in modules:
-            _module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
-            result['entries'].append({
-                'id': _module.name,
-                'label': _module.title,
-                # 'object_name': _module.object_name,
-                # 'object_name_plural': _module.object_name_plural,
-                # 'help_link': _module.help_link,
-                # 'help_text': _module.help_text,
-                # 'columns': _module.columns,
-                # 'has_tree': _module.has_tree,
-            })
-            self.add_link(result, 'udm:object-types', self.abspath(_module.name) + '/', name=_module.name, title=_module.title)
+        mods = [UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position) for name in modules]
+        result = {'entries': [{'id': '', 'label': _('All types')}, {'id': 'containers', 'label': _('All containers')}] + sorted([{'id': mod.name, 'label': mod.title} for mod in mods], key=lambda x: x['label'].lower())}
+        # TODO: just add embedded resource?
+        # 'object_name': mod.object_name,
+        # 'object_name_plural': mod.object_name_plural,
+        # 'help_link': mod.help_link,
+        # 'help_text': mod.help_text,
+        # 'columns': mod.columns,
+        # 'has_tree': mod.has_tree,
+        #self.add_link(result, 'udm:object-types', self.abspath(mod.name) + '/', name=mod.name, title=mod.title)
+        self.add_link(result, 'self', self.urljoin(''), title=_('Types'))
         self.add_caching(public=True, must_revalidate=True)
         self.content_negotiation(result)
 
 
 class LdapBase(Resource):
+    """Redirect to the ldap base object"""
 
     def get(self):
         result = {}
         url = self.abspath('container/dc', quote_dn(ucr['ldap/base']))
-        self.add_link(result, 'self', url)
+        self.add_link(result, 'self', url, title=_('LDAP base'))
         self.set_header('Location', url)
         self.set_status(301)
         self.add_caching(public=True, must_revalidate=True)
@@ -701,7 +814,7 @@ class ObjectLink(Resource):
 
         result = {}
         url = self.abspath(module.name, quote_dn(dn))
-        self.add_link(result, 'self', url)
+        self.add_link(result, 'self', url, title=_('Get UDM object by DN or UUID'))
         self.set_header('Location', url)
         self.set_status(301)
         self.add_caching(public=True, must_revalidate=True)
@@ -709,6 +822,7 @@ class ObjectLink(Resource):
 
 
 class ObjectByUiid(ObjectLink):
+    """Redirect to the object specified by its LDAP Entry-UUID"""
 
     def get(self, uuid):
         try:
@@ -719,30 +833,40 @@ class ObjectByUiid(ObjectLink):
 
 
 class ContainerQueryBase(Resource):
+    """Base class for queries to container structures, needed to build a tree representation"""
+
+    get_template = 'tree.html'
+
+    def template_vars(self):
+        data = super().template_vars()
+        data['level'] = int(self.get_query_argument('level', 0))
+        return data
 
     async def _container_query(self, object_type, container, modules, scope):
         """Get a list of containers or child objects of the specified container."""
         if not container:
             container = ucr['ldap/base']
             defaults = {}
-            if object_type != 'navigation':
-                defaults['$operations$'] = ['search']  # disallow edit
+            #if object_type != 'directory':
+            #    defaults['$operations$'] = ['search']  # disallow edit
             if object_type in ('dns/dns', 'dhcp/dhcp'):
                 defaults.update({
                     'label': UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).title,
                     'icon': 'udm-%s' % (object_type.replace('/', '-'),),
                 })
-            self.add_link({}, 'next', self.urljoin('?container=%s' % (quote(container))))
+            self.add_link({}, 'next', self.urljoin('?container=%s&level=1' % (quote(container))))
             return [dict({
                 'id': container,
+                'html_id': self.sanitize_html_id(container),
                 'label': ldap_dn2path(container),
                 'icon': 'udm-container-dc',
                 'path': ldap_dn2path(container),
                 'objectType': 'container/dc',
                 #'$operations$': UDM_Module('container/dc', ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).operations,
-                '$flags$': [],
-                '$childs$': True,
-                '$isSuperordinate$': False,
+                #'$flags$': [],
+                'has-childs': True,
+                #'$isSuperordinate$': False,
+                'root': True,
             }, **defaults)]
 
         result = []
@@ -756,29 +880,32 @@ class ContainerQueryBase(Resource):
                     module = UDM_Module(item.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
                     result.append({
                         'id': item.dn,
+                        'html_id': self.sanitize_html_id(item.dn),
                         'label': module.obj_description(item),
                         'icon': 'udm-%s' % (module.name.replace('/', '-')),
                         'path': ldap_dn2path(item.dn),
                         'objectType': module.name,
                         #'$operations$': module.operations,
-                        '$flags$': [x.decode('UTF-8') for x in item.oldattr.get('univentionObjectFlag', [])],
-                        '$childs$': module.childs,
-                        '$isSuperordinate$': udm_modules.isSuperordinate(module.module),
+                        #'$flags$': [x.decode('UTF-8') for x in item.oldattr.get('univentionObjectFlag', [])],
+                        'has-childs': module.childs,
+                        'root': False,
+                        #'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
                     })
             except UDM_Error as exc:
                 raise HTTPError(400, None, str(exc))
 
-        return result
+        return sorted(result, key=lambda x: x['label'].lower())
 
 
 class Tree(ContainerQueryBase):
-    """GET udm/(dns/dns|dhcp/dhcp|)/tree/ (the tree content of navigation/DNS/DHCP)"""
+    """Get a LDAP directory tree representation of a UDM module supporting tree-views (e.g. directory/DNS/DHCP) (GET udm/(dns/dns|dhcp/dhcp|directory)/tree/)"""
 
     @sanitize
     async def get(
         self,
         object_type,
         container: str = Query(DNSanitizer(default=None)),
+        level: str = Query(IntegerSanitizer(default=0)),
     ):
         # TODO: add appropriate 404 errors
         ldap_base = ucr['ldap/base']
@@ -788,7 +915,7 @@ class Tree(ContainerQueryBase):
         if not container:
             # get the tree root == the ldap base
             scope = 'base'
-        elif object_type != 'navigation' and container and ldap_base.lower() == container.lower():
+        elif object_type not in ('navigation', 'directory') and container and ldap_base.lower() == container.lower():
             # this is the tree root of DNS / DHCP, show all zones / services
             scope = 'sub'
             modules = [object_type]
@@ -796,7 +923,7 @@ class Tree(ContainerQueryBase):
         result = {}
         containers = await self._container_query(object_type, container, modules, scope)
         for _container in containers:
-            self.add_link(_container, 'item', href=self.urljoin('./tree?container=%s' % (quote(_container['id']),)), title=_container['label'])  # should be "self" and with no header added
+            self.add_link(_container, 'item', href=self.urljoin('./tree?container=%s&level=%s' % (quote(_container['id']), quote(str(level + 1)))), title=_container['label'])  # should be "self" and with no header added
             #self.add_link(result, 'item', href=self.urljoin('./tree?container=%s' % (quote(_container['id']),)), title=_container['label'], path=_container['path'])
             self.add_resource(result, 'udm:tree', _container)
 
@@ -806,7 +933,7 @@ class Tree(ContainerQueryBase):
             if parent_dn:
                 self.add_link(result, 'up', self.urljoin('tree?container=%s' % (quote(parent_dn),)), title='Parent container')
 
-        if object_type != 'navigation':
+        if object_type not in ('navigation', 'directory'):
             module = self.get_module(object_type)
             self.add_link(result, 'icon', self.urljoin('../../favicon.ico'), type='image/x-icon')
             self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
@@ -821,6 +948,7 @@ class Tree(ContainerQueryBase):
 
 
 class MoveDestinations(ContainerQueryBase):
+    """Get the locations where a specified UDM module can be moved to"""
 
     @sanitize
     async def get(
@@ -838,26 +966,26 @@ class MoveDestinations(ContainerQueryBase):
         containers = await self._container_query(object_type or 'navigation', container, modules, scope)
         self.add_caching(public=False, must_revalidate=True)
         for _container in containers:
-            self.add_link(_container, 'item', href=self.urljoin('./?container=%s' % (quote(_container['id']),)), title=_container['label'])
+            self.add_link(_container, 'item', href=self.urljoin('?container=%s' % (quote(_container['id']),)), title=_container['label'])
             self.add_resource(result, 'udm:tree', _container)
 
         self.add_link(result, 'self', self.urljoin(''), title='Move destinations')
         if container:
             parent_dn = self.ldap_connection.parentDn(container)
             if parent_dn:
-                self.add_link(result, 'up', self.urljoin('./?container=%s' % (quote(parent_dn),)), title='Parent container')
+                self.add_link(result, 'up', self.urljoin('?container=%s' % (quote(parent_dn),)), title='Parent container')
 
-        if object_type and object_type != 'navigation':
+        if object_type and object_type != 'directory':
             module = self.get_module(object_type)
-            self.add_link(result, 'icon', self.urljoin('../favicon.ico'), type='image/x-icon')
-            self.add_link(result, 'udm:object-modules', self.urljoin('../../../'), title=_('All modules'))
-            self.add_link(result, 'udm:object-module', self.urljoin('../../'), title=self.get_parent_object_type(module).object_name_plural)
-            self.add_link(result, 'type', self.urljoin('../'), title=module.object_name)
+            self.add_link(result, 'icon', self.urljoin('favicon.ico'), type='image/x-icon')
+            self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
+            self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
+            self.add_link(result, 'type', self.urljoin('./'), title=module.object_name)
         self.content_negotiation(result)
 
 
 class Properties(Resource):
-    """GET udm/users/user/properties (get properties of users/user object type)"""
+    """Get the properties of a UDM module or UDM object (GET udm/users/user/properties)"""
 
     @sanitize
     async def get(
@@ -927,6 +1055,7 @@ class Properties(Resource):
 
 
 class Layout(Resource):
+    """Get the layout representation of a UDM module"""
 
     def get(self, object_type, dn=None):
         result = {}
@@ -995,20 +1124,16 @@ class Layout(Resource):
             if x.get('label', '').lower().startswith('referen'):
                 return x
 
-    @classmethod
-    def get_section_id(cls, label):
-        label = re.sub(r'[^a-z0-9_:-]', '_', label.lower())
-        return re.sub(r'^[^a-z]+', 'id_', label)
-
 
 class ReportingBase:
+    """Base class for UDM object report operations"""
 
     def initialize(self):
         self.reports_cfg = udr.Config()
 
 
 class Report(ReportingBase, Resource):
-    """GET udm/users/user/report/$report_type?dn=...&dn=... (create a report of users)"""
+    """Create a object report e.g. in CSV of PDF format (GET udm/users/user/report/$report_type?dn=...&dn=...)"""
 
     # i18n: translation for univention-directory-reports
     _('PDF Document')
@@ -1047,17 +1172,13 @@ class Report(ReportingBase, Resource):
 
 
 class NextFreeIpAddress(Resource):
-    """GET udm/networks/network/$DN/next-free-ip-address (get the next free IP in this network)"""
+    """Get the next free IP of the specified network (GET udm/networks/network/$DN/next-free-ip-address)"""
 
     def get(self, object_type, dn):  # TODO: threaded?! (might have caused something in the past in system setup?!)
         """
         Returns the next IP configuration based on the given network object
 
-        requests.options = {}
-                'networkDN' -- the LDAP DN of the network object
-                'increaseCounter' -- if given and set to True, network object counter for IP addresses is increased
-
-        return: {}
+        'increaseCounter' -- if given and set to True, network object counter for IP addresses is increased
         """
         dn = unquote_dn(dn)
         obj = self.get_object(object_type, dn)
@@ -1083,6 +1204,7 @@ class NextFreeIpAddress(Resource):
 
 
 class FormBase:
+    """Base class for form elements"""
 
     def add_property_form_elements(self, module, form, properties, values):
         password_properties = module.password_properties
@@ -1095,7 +1217,7 @@ class FormBase:
             value = values[key]
             if value is None:
                 value = ''
-            kwargs = {'type': 'input'}
+            kwargs = {'type': 'text'}
             if key == 'jpegPhoto':
                 kwargs['type'] = 'file'
                 kwargs['accept'] = 'image/jpg image/jpeg image/png'
@@ -1121,6 +1243,9 @@ class FormBase:
                     kwargs['checked'] = 'checked'
             elif prop['syntax'] == 'integer':
                 kwargs['type'] = 'number'
+            if prop.get('dynamicValues'):
+                kwargs['data-dynamic'] = self.urljoin('properties/%s/choices' % (quote(key),))
+            kwargs['data-size'] = prop['size']
             kwargs['data-identifies'] = '1' if prop['identifies'] else '0'
             kwargs['data-searchable'] = '1' if prop['searchable'] else '0'
             kwargs['data-multivalue'] = '1' if prop['multivalue'] or prop['type'] == 'umc/modules/udm/MultiObjectSelect' else '0'
@@ -1158,6 +1283,9 @@ class FormBase:
 
 
 class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resource):
+    """Search for objects"""
+
+    get_template = 'search_form.html'
 
     @sanitize
     async def get(
@@ -1170,7 +1298,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
             description="A LDAP filter which may contain `UDM` property names instead of `LDAP` attribute names.",
             examples={
                 "any-object": {
-                        "value": "(objectClass=*)",
+                    "value": "(objectClass=*)",
                 },
                 "admin-user": {
                     "value": "(|(username=Administrator)(username=Admin*))",
@@ -1183,7 +1311,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
             style="deepObject",
             examples={
                 'nothing': {
-                        'value': None,
+                    'value': None,
                 },
                 'property': {
                     'value': {'': '*'},
@@ -1203,7 +1331,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
             description="The properties which should be returned, if not given all properties are returned.",
             examples={
                 'no restrictions': {'value': None},
-                        'only small subset': {'value': ['username', 'firstname', 'lastname']},
+                'only small subset': {'value': ['username', 'firstname', 'lastname']},
             },
         ),
         superordinate: Optional[str] = Query(
@@ -1260,7 +1388,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
             position = position or superordinate.dn
 
         objects = []
-        if search:
+        if search:  # TODO: check if searching is allowed
             try:
                 objects, last_page = await self.search(module, position, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse)
             except ObjectDoesNotExist as exc:
@@ -1293,60 +1421,44 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
                 self.add_link(result, 'last', self.urljoin('', page=str(last_page)), title=_('Last page'))
 
         if search:
-            grid_layout = [
-                # 'add', 'modify', 'delete', 'move', 'copy'
-                'create-form', 'multi-edit', 'move',
-            ]
-
             for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
-                grid_layout.append(report_type)
-                form = self.add_form(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm:report', name=report_type, id='report%d' % (i,))
-                self.add_form_element(form, '', _('Create %s report') % _(report_type), type='submit')
                 self.add_link(result, 'udm:report', self.urljoin('report', quote(report_type)) + '{?dn}', name=report_type, title=_('Create %s report') % _(report_type), method='POST', templated=True)
+                self.add_button(result, self.urljoin('report', quote(report_type)), 'POST', rel='udm:report', name=report_type, id='report%d' % (i,), label=_('Create %s report') % _(report_type), **{'hx-boost': 'false', 'hx-vals': 'js:{dn: getAllSelectedDNs()}', 'hx-disable': 'true'})
 
-            form = self.add_form(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', id='multi-edit', rel='edit-form')
-            self.add_form_element(form, '', _('Modify %s (multi edit)') % (module.object_name_plural,), type='submit')
-
-            form = self.add_form(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm:object/move')
-            self.add_form_element(form, 'position', '')
-            self.add_form_element(form, '', _('Move %s') % (module.object_name_plural,), type='submit')
-
-            main_layout = [
-                {'description': f'{module.object_name_plural} ({module.description})', 'label': module.object_name_plural, 'layout': [
-                    {'$form-ref': ['search']},
-                    {'layout': [{'$form-ref': grid_layout}]},
-                ]},
-            ]
-            self.add_layout(result, main_layout, 'main-layout')
+            self.add_button(result, self.urljoin('multi-edit'), 'POST', name='multi-edit', id='multi-edit', rel='edit-form', label=_('Modify (multi edit)'), title=_('Modify %s (multi edit)') % (module.object_name_plural,))
+            self.add_button(result, self.urljoin('remove'), 'POST', name='remove', id='remove', rel='udm:object/remove', label=_('Delete'), title=_('Delete %s') % (module.object_name_plural,))
+            self.add_button(result, self.urljoin('move'), 'POST', name='move', id='move', rel='udm:object/move', label=_('Move to'), title=_('Move %s') % (module.object_name_plural,))
         else:
             for i, report_type in enumerate(sorted(self.reports_cfg.get_report_names(object_type)), 1):
                 self.add_link(result, 'udm:report', self.urljoin('report', quote(report_type)) + '{?dn}', name=report_type, title=_('Create %s report') % _(report_type), method='POST', templated=True)
 
-        search_layout_base = [{'description': _('Search for %s') % (module.object_name_plural,), 'label': _('Search'), 'layout': []}]
-        search_layout = search_layout_base[0]['layout']
+        search_layout = []
+        search_layout_base = [
+            {'label': _('Search for %s') % (module.object_name_plural,), 'description': f'{module.object_name_plural} ({module.description})', 'layout': [
+                ['property', 'query*', ''],
+                {'layout': search_layout, 'description': '', 'label': _('Advanced options'), 'opened': False},
+            ]},
+        ]
         self.add_layout(result, search_layout_base, 'search')
         form = self.add_form(result, self.urljoin(''), 'GET', rel='search', id='search', name='search', layout='search')
-        self.add_form_element(form, 'position', position or '', label=_('Search in'))
+        self.add_form_element(form, 'position', position or '', label=_('Search in'), **{'data-dynamic': self.urljoin('default-containers')})
         search_layout.append(['position', 'hidden'])
         if superordinate_names(module):
             self.add_form_element(form, 'superordinate', superordinate.dn if superordinate else '', label=_('Superordinate'))
             search_layout.append(['superordinate'])
         searchable_properties = [{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')]
-        self.add_form_element(form, 'property', property_ or '', element='select', options=searchable_properties, label=_('Property'))
-        self.add_form_element(form, 'query*', query.get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'))
+        self.add_form_element(form, 'property', property_ or '', element='select', options=searchable_properties, label=_('Property'), **{'data-size': 'One'})
+        self.add_form_element(form, 'query*', query.get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'), **{'data-size': 'TwoThird'})
         self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}], label=_('Search scope'))
         self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'))
-        search_layout.append(['property', 'query*'])
         #self.add_form_element(form, 'fields', list(fields))
         if module.supports_pagination:
-            self.add_form_element(form, 'limit', str(items_per_page or '0'), type='number', label=_('Limit'))
-            self.add_form_element(form, 'page', str(page or '1'), type='number', label=_('Selected page'))
-            self.add_form_element(form, 'by', by or '', element='select', options=searchable_properties, label=_('Sort by'))
-            self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}], label=_('Direction'))
-            search_layout.append(['page', 'limit'])
-            search_layout.append(['by', 'dir'])
-        search_layout.append('')
-        self.add_form_element(form, '', _('Search'), type='submit')
+            self.add_form_element(form, 'limit', str(items_per_page or '0'), type='number', label=_('Limit'), **{'data-size': 'OneThird'})
+            self.add_form_element(form, 'page', str(page or '1'), type='number', label=_('Selected page'), **{'data-size': 'OneThird'})
+            self.add_form_element(form, 'by', by or '', element='select', options=searchable_properties, label=_('Sort by'), **{'data-size': 'OneThird'})
+            self.add_form_element(form, 'dir', direction if direction in ('ASC', 'DESC') else 'ASC', element='select', options=[{'value': 'ASC', 'label': _('Ascending')}, {'value': 'DESC', 'label': _('Descending')}], label=_('Direction'), **{'data-size': 'OneThird'})
+            search_layout.append(['page', 'limit', 'by', 'dir'])
+        self.add_form_element(form, '', _('Search'), type='submit', **{'data-size': 'OneThird'})
 
         if search:
             result['results'] = len(self.get_resources(result, 'udm:object'))
@@ -1393,55 +1505,62 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         return (objects, last_page)
 
     def get_html(self, response):
-        if self.request.method in ('GET', 'HEAD'):
-            r = response.copy()
-            r.pop('entries', None)
-            num_of_entries = r.pop('results', 0)
-            root = super().get_html(r)
-        else:
-            root = super().get_html(response)
+        if self.request.method not in ('GET', 'HEAD'):
+            return super().get_html(response)
 
-        if self.request.method in ('GET', 'HEAD'):
-            has_four_rows = self.request.decoded_query_arguments.get('property')
-            table = ET.Element('table', **{'class': 'grid'})
-            table_header = ET.SubElement(table, 'tr')
-            th1 = ET.SubElement(table_header, 'th')  # TODO: all-checkbox
-            ET.SubElement(table_header, 'th').text = 'Name'  # TODO: sort-direction switch
+        r = response.copy()
+        r.pop('entries', None)
+        num_of_entries = r.pop('results', 0)
+        root = super().get_html(r)
+
+        grid = ET.Element('div', **{'class': 'grid'})
+        childs = [child for child in root if child.attrib.get('id') != 'search']
+        root = next(child for child in root if child.attrib.get('id') == 'search')
+        grid_header = ET.SubElement(grid, 'div', **{'class': 'grid-header'})
+        grid_header.extend(childs)
+        root.append(grid)
+
+        has_four_rows = self.request.decoded_query_arguments.get('property')
+        if not isinstance(has_four_rows, str):
+            has_four_rows = None
+        table = ET.SubElement(grid, 'table')
+        table_header = ET.SubElement(table, 'tr')
+        th1 = ET.SubElement(table_header, 'th', **{'class': 'check'})  # TODO: all-checkbox
+        ET.SubElement(table_header, 'th').text = 'Name'  # TODO: sort-direction switch
+        if has_four_rows:
+            th4 = ET.SubElement(table_header, 'th')
+            th4.text = has_four_rows
+        ET.SubElement(table_header, 'th').text = 'Path'
+
+        ET.SubElement(grid_header, 'span').text = f'{{num}} users of {num_of_entries} selected.'
+
+        # There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
+        ET.SubElement(th1, 'input', type='checkbox', name='dn', form=' '.join([report['id'] for report in self.get_resources(response, 'udm:form') if report['rel'] == 'udm:report'][-1:]))
+
+        for thing in self.get_resources(response, 'udm:object'):
+            row = ET.SubElement(table, 'tr')
+            x = thing.copy()
+
+            td1 = ET.SubElement(row, 'td', **{'class': 'check'})
+            td2 = ET.SubElement(row, 'td')
             if has_four_rows:
-                ET.SubElement(table_header, 'th').text = has_four_rows  # TODO: display name
-            ET.SubElement(table_header, 'th').text = 'Path'
-            root.append(table)
-
-            try:
-                num_of_objects = ET.SubElement(root[0].findall('.//div/form/..')[-1], 'span')
-                num_of_objects.text = f'$x users of {num_of_entries} selected.'
-            except IndexError:
-                pass
+                td4 = ET.SubElement(row, 'td')
+                th4.text = UDM_Module(thing['objectType'], ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).get_property(has_four_rows).short_description
+            td3 = ET.SubElement(row, 'td')
 
             # There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
-            ET.SubElement(th1, 'input', type='checkbox', name='dn', form=' '.join([report['id'] for report in self.get_resources(response, 'udm:form') if report['rel'] == 'udm:report'][-1:]))
+            ET.SubElement(td1, 'input', type='checkbox', name='dn', value=x['dn'])  # form=' '.join([report['id'] for report in self.get_resources(response, 'udm:form') if report['rel'] == 'udm:report'][-1:]))
 
-            for thing in self.get_resources(response, 'udm:object'):
-                row = ET.SubElement(table, 'tr')
-                x = thing.copy()
+            ET.SubElement(td2, 'img', src=self.urljoin('favicon.ico'), **{'class': 'grid-icon'})
+            a = ET.SubElement(td2, "a", href=x.pop('uri') + '/edit', rel="udm:object item")
+            a.text = x['id']
 
-                td1 = ET.SubElement(row, 'td')
-                td2 = ET.SubElement(row, 'td')
-                if has_four_rows:
-                    td4 = ET.SubElement(row, 'td')
-                td3 = ET.SubElement(row, 'td')
+            td3.text = ldap_dn2path(thing['position'] or '')
 
-                # There is a bug in chrome, so we cannot have form='report1 report2'. so, only 1 report is possible :-/
-                ET.SubElement(td1, 'input', type='checkbox', name='dn', value=x['dn'], form=' '.join([report['id'] for report in self.get_resources(response, 'udm:form') if report['rel'] == 'udm:report'][-1:]))
+            if has_four_rows:
+                td4.text = thing['properties'].get(has_four_rows)  # TODO: syntax.to_string()
 
-                a = ET.SubElement(td2, "a", href=x.pop('uri'), rel="udm:object item")
-                a.text = x['id']
-
-                td3.text = ldap_dn2path(thing['position'])
-
-                if has_four_rows:
-                    td4.text = thing['properties'].get(has_four_rows)  # TODO: syntax.to_string()
-
+            if self.debug_mode_enabled:
                 pre = ET.SubElement(row, "pre", dn=x['dn'], style='display: none')
                 pre.text = json.dumps(x, indent=4)
         return root
@@ -1520,6 +1639,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
 
 
 class ObjectsMove(Resource):
+    """Move multiple objects at the same time"""
 
     @sanitize
     async def post(
@@ -1568,6 +1688,7 @@ class ObjectsMove(Resource):
 
 
 class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
+    """Get, modify, create, remove, rename or move an UDM object"""
 
     async def get(self, object_type, dn):
         """
@@ -1643,7 +1764,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
         methods = ['GET', 'OPTIONS']
         if module.childs:
-            self.add_link(props, 'udm:children-types', self.urljoin(quote_dn(dn), 'children-types/'), name=module.name, title=_('Sub object types of %s') % (module.object_name,))
+            self.add_link(props, 'udm:children-types', self.urljoin(quote_dn(dn), 'children-types'), name=module.name, title=_('Sub object types of %s') % (module.object_name,))
 
         can_modify = set(module.operations) & {'edit', 'move', 'subtree_move'}
         can_remove = 'remove' in module.operations
@@ -1652,6 +1773,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
                 methods.extend(['PUT', 'PATCH'])
             if can_remove:
                 methods.append('DELETE')
+                self.add_button(props, action='', method='DELETE', title=_('Remove this %s') % (module.object_name,), **{'hx-confirm': _("Are you sure you want to delete this %s?") % (module.object_name,)})
             self.add_link(props, 'edit-form', self.urljoin(quote_dn(dn), 'edit'), title=_('Modify, move or remove this %s') % (module.object_name,))
 
         self.set_header('Allow', ', '.join(methods))
@@ -1702,7 +1824,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         props['id'] = module.obj_description(obj)
         if not props['id']:
             props['id'] = '+'.join(explode_rdn(obj.dn, True))
-        #props['path'] = ldap_dn2path(obj.dn, include_rdn=False)
+        # props['path'] = ldap_dn2path(obj.dn, include_rdn=False)
         props['position'] = ldap_connection.parentDn(obj.dn) if obj.dn else obj.position.getDn()
         props['properties'] = values
         props['options'] = {opt['id']: opt['value'] for opt in module.get_options(udm_object=obj)}
@@ -2062,6 +2184,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
 
 class UserPhoto(ConditionalResource, Resource):
+    """Get a (cacheable) user profile picture in JPEG format"""
 
     async def get(self, object_type, dn):
         dn = unquote_dn(dn)
@@ -2226,6 +2349,7 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
 
 
 class ObjectCopy(ObjectAdd):
+    """Copy an object"""
 
     @sanitize
     async def get(
@@ -2276,16 +2400,18 @@ class ObjectEdit(FormBase, Resource):
 
         if 'remove' in module.operations:
             # TODO: add list of referring objects
-            form = self.add_form(result, id='remove', action=self.urljoin('.').rstrip('/'), method='DELETE', layout='remove')
-            remove_layout = [{'label': _('Remove'), 'description': _("Remove the object"), 'layout': ['cleanup', 'recursive', '']}]
+            form = self.add_form(result, id='remove', name='remove', action=self.urljoin('.').rstrip('/'), method='DELETE', layout='remove', **{'hx-confirm': _('Please confirm the removal of the selected %s') % (module.object_name,)})
+            remove_layout = [{'label': _('Remove'), 'description': _("Remove the object"), 'layout': [['cleanup', 'recursive'], '']}]
             self.add_layout(result, remove_layout, 'remove')
             self.add_form_element(form, 'cleanup', '1', type='checkbox', checked=True, label=_('Perform a cleanup'), title=_('e.g. temporary objects, locks, etc.'))
             self.add_form_element(form, 'recursive', '1', type='checkbox', checked=True, label=_('Remove referring objects'), title=_('e.g. DNS or DHCP references of a computer'))
             self.add_form_element(form, '', _('Remove'), type='submit')
 
         if set(module.operations) & {'move', 'subtree_move'}:
-            form = self.add_form(result, id='move', action=self.urljoin('.').rstrip('/'), method='PUT')
-            self.add_form_element(form, 'position', self.ldap_connection.parentDn(obj.dn))  # TODO: replace with <select>
+            form = self.add_form(result, id='move', name='move', action=self.urljoin('.').rstrip('/'), method='PUT', layout='move', **{'hx-confirm': _('Please confirm the move of the selected %s') % (module.object_name,)})
+            move_layout = [{'label': _('Move'), 'description': _("Move the object"), 'layout': ['position', '']}]
+            self.add_layout(result, move_layout, 'move')
+            self.add_form_element(form, 'position', self.ldap_connection.parentDn(obj.dn))  # TODO: replace with <select> or udm:tree
             self.add_form_element(form, '', _('Move'), type='submit')
 
         if 'edit' in module.operations:
@@ -2300,7 +2426,13 @@ class ObjectEdit(FormBase, Resource):
 
             assert obj._open
             layout = Layout.get_layout(module, dn if object_type != 'users/self' else None)
-            layout[0]['layout'].extend(['dn', 'jpegPhoto-preview', ''])
+            layout[0]['layout'].extend([
+                ['', 'dn', 'position'],
+                ['jpegPhoto-preview'],
+                #[{'$form-ref': ['remove', 'move']}]
+            ])
+            #layout.insert(1, {'layout': [{'$form-ref': ['remove', 'move']}], 'advanced': False, 'description': _('information'), 'label': _('information'), 'is_app_tab': False})
+
             properties = Properties.get_properties(module, dn)
             self.add_resource(result, 'udm:properties', {'properties': properties})
             self.add_link(result, 'udm:properties', href=self.urljoin('properties'), title=_('Properties for %s') % (module.object_name,))
@@ -2320,10 +2452,12 @@ class ObjectEdit(FormBase, Resource):
                 form = self.add_form(result, action=self.urljoin('properties/jpegPhoto.jpg'), method='POST', enctype='multipart/form-data')
                 self.add_form_element(form, 'jpegPhoto', '', type='file', accept='image/jpg image/jpeg image/png')
                 self.add_form_element(form, '', _('Upload user photo'), type='submit')
+                self.add_link(result, 'udm:user-photo', self.urljoin('properties/jpegPhoto.jpg'), type='image/jpeg', title=_('User photo'))
 
-            form = self.add_form(result, id='edit', action=self.urljoin('.').rstrip('/'), method='PUT', enctype=enctype, layout='edit-form')
+            form = self.add_form(result, id='edit-form', name='edit-form', action=self.urljoin('.').rstrip('/'), method='PUT', enctype=enctype, layout='edit-form', **{'hx-ext': 'json-enc'})
             self.add_layout(result, layout, 'edit-form')
-            self.add_form_element(form, 'dn', obj.dn, readonly='readonly', disabled='disabled')
+            self.add_form_element(form, 'dn', obj.dn, readonly='readonly', disabled='disabled', label=_('LDAP Distinguished Name (DN)'))
+            self.add_form_element(form, 'position', self.ldap_connection.parentDn(obj.dn), type='hidden', required='required')
 
             values = {}
             for key, prop in properties.items():
@@ -2355,7 +2489,7 @@ class ObjectEdit(FormBase, Resource):
                     self.add_form_element(form, 'references', '', href=self.abspath(reference['objectType'], quote_dn(reference['id'])), label=reference['label'], element='a')
                 references['layout'].append('references')
 
-            self.add_form_element(form, '', _('Modify %s') % (module.object_name,), type='submit')
+            self.add_form_element(form, '', _('Modify %s') % (module.object_name,), type='submit', readonly='readonly')
 
         self.add_caching(public=False, must_revalidate=True)
         self.content_negotiation(result)
@@ -2364,18 +2498,66 @@ class ObjectEdit(FormBase, Resource):
         root = super().get_html(response)
         if self.request.method in ('GET', 'HEAD'):
             for form in root:
-                if form.get('id') == 'edit':
+                if form.get('id') == 'edit-form':
                     for elem in form.findall('.//section'):
-                        self.add_link(response, 'udm:tab-switch', href=f'#{elem.get("id")}', title=elem.find('./h1').text, dont_set_http_header=True)
+                        self.add_link(response, 'udm:tab-switch', href=f'#{elem.get("id")}', title=elem.find('./fieldset/legend').text, dont_set_http_header=True)
         return root
 
 
 class ObjectMultiEdit(ObjectEdit):
-    pass
+    """Modify multiple objects at the same time"""
+
+
+class DefaultContainers(Resource):
+    """
+    Get list of default containers.
+    GET udm/users/user/default-containers
+    """
+
+    get_template = 'default_containers.html'
+
+    def template_vars(self):
+        data = super().template_vars()
+        data['selected'] = self.get_query_argument('selected', '')
+        data['required'] = self.get_query_argument('required', '')
+        data['name'] = self.get_query_argument('name', '')
+        return data
+
+    #@sanitize
+    async def get(
+        self,
+        object_type,
+        #include_empty: bool = Query(BoolSanitizer(required=False)),
+    ):
+        result = {}
+        module = self.get_module(object_type)
+
+        self.add_link(result, 'self', self.urljoin(''), title=_('Default containers for %s') % (module.object_name,))
+        self.add_link(result, 'icon', self.urljoin('./favicon.ico'), type='image/x-icon')
+        self.add_link(result, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
+        self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
+        # self.add_link(result, 'type', self.urljoin('.'), title=module.object_name)
+        self.add_link(result, 'up', self.urljoin('.'), title=module.object_name)
+        result['default-containers'] = [('', _('All containers'))] + sorted(((x, ldap_dn2path(x)) for x in module.get_default_containers()), key=lambda x: x[1].lower())
+
+        self.add_caching(public=True, must_revalidate=True)
+        self.content_negotiation(result)
 
 
 class PropertyChoices(Resource):
-    """GET udm/users/user/$DN/properties/$name/choices (get possible values/choices for that property)"""
+    """
+    Get possible values/choices for the specified property.
+    GET udm/users/user/$DN/properties/$name/choices
+    """
+
+    get_template = 'property_choices.html'
+
+    def template_vars(self):
+        data = super().template_vars()
+        data['selected'] = self.get_query_argument('selected', '')
+        data['required'] = self.get_query_argument('required', '')
+        data['name'] = self.get_query_argument('name', '')
+        return data
 
     @sanitize
     async def get(
@@ -2424,7 +2606,7 @@ class PropertyChoices(Resource):
 
 
 class PolicyResultBase(Resource):
-    """get the possible policies of the policy-type for user objects located at the container"""
+    """Get the possible policies of the policy-type for user objects located at the container"""
 
     @run_on_executor(executor='pool')
     def _get(self, object_type, policy_type, dn, is_container=False):
@@ -2493,7 +2675,7 @@ class PolicyResultBase(Resource):
 
 class PolicyResult(PolicyResultBase):
     """
-    get the possible policies of the policy-type for user objects located at the containter
+    Get the possible policies of the policy-type for user objects located at the container.
     GET udm/users/user/$userdn/policies/$policy_type/?policy=$dn (for a existing object)
     """
 
@@ -2513,7 +2695,7 @@ class PolicyResult(PolicyResultBase):
 
 class PolicyResultContainer(PolicyResultBase):
     """
-    get the possible policies of the policy-type for user objects located at the containter
+    Get the possible policies of the policy-type for user objects located at the container.
     GET udm/users/user/policies/$policy_type/?policy=$dn&position=$dn (for a container, where a object should be created in)
     """
 
@@ -2567,6 +2749,7 @@ class Operations(Resource):
 
 
 class LicenseRequest(Resource):
+    """Request a new license from the Univention license server"""
 
     @sanitize
     async def get(
@@ -2605,6 +2788,7 @@ class LicenseRequest(Resource):
 
 
 class LicenseCheck(Resource):
+    """Check if the license has exceeded or is still valid"""
 
     def get(self):
         message = _('The license is valid.')
@@ -2617,6 +2801,7 @@ class LicenseCheck(Resource):
 
 
 class License(Resource):
+    """Get information about the license"""
 
     def get(self):
         license_data = {}
@@ -2685,6 +2870,7 @@ class License(Resource):
 
 
 class LicenseImport(Resource):
+    """Import a new license"""
 
     @sanitize
     async def get(
@@ -2725,6 +2911,7 @@ univentionObjectType: settings/license
 
 
 class ServiceSpecificPassword(Resource):
+    """Let a new autogenerated service specific password be created"""
 
     @sanitize
     async def post(
@@ -2753,6 +2940,7 @@ class ServiceSpecificPassword(Resource):
 
 
 class Application(tornado.web.Application):
+    """The main tornado application"""
 
     def __init__(self, **kwargs):
         #module_type = '([a-z]+)'
@@ -2776,10 +2964,11 @@ class Application(tornado.web.Application):
             ("/udm/ldap/base/", LdapBase),
             (f"/udm/object/{dn}", ObjectLink),
             ("/udm/object/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", ObjectByUiid),
+            ("/udm/directory/", Directory),
             (f"/udm/{module_type}/", ObjectTypes),
-            ("/udm/(navigation)/tree", Tree),
-            (f"/udm/(?:{object_type}|navigation)/move-destinations/", MoveDestinations),
-            ("/udm/navigation/children-types/", SubObjectTypes),
+            ("/udm/(directory)/tree", Tree),
+            (f"/udm/(?:{object_type}|directory)/move-destinations", MoveDestinations),
+            ("/udm/directory/children-types", SubObjectTypes),
             (f"/udm/{object_type}/", Objects),
             (f"/udm/{object_type}/openapi.json", OpenAPI),
             (f"/udm/{object_type}/add", ObjectAdd),
@@ -2788,12 +2977,13 @@ class Application(tornado.web.Application):
             (f"/udm/{object_type}/multi-edit", ObjectMultiEdit),
             (f"/udm/{object_type}/tree", Tree),
             (f"/udm/{object_type}/properties", Properties),
+            (f"/udm/{object_type}/default-containers", DefaultContainers),
             (f"/udm/{object_type}/()properties/{property_}/choices", PropertyChoices),
             (f"/udm/{object_type}/layout", Layout),
             (f"/udm/{object_type}/favicon.ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
             (f"/udm/{object_type}/{dn}", Object),
             (f"/udm/{object_type}/{dn}/edit", ObjectEdit),
-            (f"/udm/{object_type}/{dn}/children-types/", SubObjectTypes),
+            (f"/udm/{object_type}/{dn}/children-types", SubObjectTypes),
             (f"/udm/{object_type}/report/([^/]+)", Report),
             (f"/udm/{object_type}/{dn}/{policies_object_type}/", PolicyResult),
             (f"/udm/{object_type}/{policies_object_type}/", PolicyResultContainer),
