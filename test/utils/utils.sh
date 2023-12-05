@@ -1150,15 +1150,19 @@ postgres_update () {
 	systemctl stop postgresql.service
 	rm -rf "/etc/postgresql/$new"
 	apt-get install -y --reinstall "postgresql-$new"
+	ucr set postgres11/autostart='yes'
+	systemctl unmask postgresql@11-main.service
 	pg_dropcluster "$new" main --stop
 	systemctl start postgresql.service
 	[ -e "/var/lib/postgresql/$new/main" ] && mv "/var/lib/postgresql/$new/main" "/var/lib/postgresql/$new/main.old"
 	pg_upgradecluster "$old" main
+	DEBIAN_FRONTEND='noninteractive' univention-install --yes "univention-postgresql-$new"
 	ucr commit "/etc/postgresql/$new/main/"*
 	chown -R postgres:postgres "/var/lib/postgresql/$new"
+	[ ! -e /etc/postgresql/11/main/conf.d/ ] && mkdir /etc/postgresql/11/main/conf.d/ && chown postgres:postgres /etc/postgresql/11/main/conf.d/
+	systemctl unmask postgresql.service
 	systemctl restart postgresql.service
 	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod +x "/usr/sbin/univention-pkgdb-scan"
-	DEBIAN_FRONTEND='noninteractive' univention-install --yes "univention-postgresql-$new"
 	pg_dropcluster "$old" main --stop
 	DEBIAN_FRONTEND='noninteractive' apt-get purge --yes "postgresql-$old"
 	systemctl restart postgresql.service
