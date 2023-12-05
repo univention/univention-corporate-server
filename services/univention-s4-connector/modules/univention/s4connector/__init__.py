@@ -326,7 +326,7 @@ class attribute(object):
     :ptype sync_mode: str
     """
 
-    def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync', con_attribute_encoding='UTF-8'):
+    def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync', con_attribute_encoding='UTF-8', auto_enable_udm_option=False):
         self.ucs_attribute = ucs_attribute
         self.ldap_attribute = ldap_attribute
         self.con_attribute = con_attribute
@@ -346,6 +346,7 @@ class attribute(object):
         self.reverse_attribute_check = reverse_attribute_check
         self.sync_mode = sync_mode
         self.single_value = single_value
+        self.auto_enable_udm_option = auto_enable_udm_option
 
     def __repr__(self):
         mapping_lines = ["univention.s4connector.attribute("]
@@ -1082,7 +1083,7 @@ class ucs(object):
                         # (this is not guaranteed by LDAP).
                         # See the MODIFY-case in `sync_from_ucs()` for more.
                         ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object %s to value: %r" % (ucs_key, value))
-                        if not ucs_object.has_property(ucs_key) and ucs_key in ucs_object:
+                        if not ucs_object.has_property(ucs_key) and ucs_key in ucs_object and attributes.auto_enable_udm_option:
                             ucs_object.options.extend(ucs_object.descriptions[ucs_key].options)
                         if isinstance(value, list):
                             ucs_object[ucs_key] = list(collections.OrderedDict.fromkeys(value))

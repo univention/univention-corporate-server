@@ -440,6 +440,7 @@ s4_mapping = {
                 ldap_attribute='userCertificate;binary',
                 con_attribute='userCertificate',
                 single_value=True,
+                auto_enable_udm_option=True,
             ),
             # Do not sync secretary, because we currently have no way to verify the existence of the DN which would cause rejects
             # 'secretary': univention.s4connector.attribute(
