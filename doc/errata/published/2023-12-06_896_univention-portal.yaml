@@ -9,3 +9,6 @@ desc: |
  * The deletion of a user's profile picture via self-service has been
    repaired.
 bug: [56349]
+erratum: 896
+announced: 2023-12-06
+support: core
