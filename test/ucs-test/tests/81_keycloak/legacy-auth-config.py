@@ -46,13 +46,13 @@ from univention.config_registry import ucr
 
 
 def main() -> None:
-    keycloak_url = run_command(["univention-keycloak", "get-keycloak-base-url"]).strip()
+    keycloak_url = run_command(['univention-keycloak', 'get-keycloak-base-url']).strip()
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("action", help="action", choices=["create", "remove"])
-    parser.add_argument("--group-clients", help="group client mapping", action="append", metavar="GROUPNAME CLIENT_ID", nargs=2, required=True)
-    parser.add_argument("--keycloak-url", help="keycloak url", default=keycloak_url)
-    parser.add_argument("--keycloak-admin", help="keycloak admin", default="admin")
-    parser.add_argument("--keycloak-password-file", help="keycloak password file", default="/etc/keycloak.secret", metavar="FILE", type=FileType("r", encoding="UTF-8"))
+    parser.add_argument('action', help='action', choices=['create', 'remove'])
+    parser.add_argument('--group-clients', help='group client mapping', action='append', metavar='GROUPNAME CLIENT_ID', nargs=2, required=True)
+    parser.add_argument('--keycloak-url', help='keycloak url', default=keycloak_url)
+    parser.add_argument('--keycloak-admin', help='keycloak admin', default='admin')
+    parser.add_argument('--keycloak-password-file', help='keycloak password file', default='/etc/keycloak.secret', metavar='FILE', type=FileType('r', encoding='UTF-8'))
     opt = parser.parse_args()
     opt.group_clients = {x[0]: x[1] for x in opt.group_clients}
     opt.keycloak_secret = opt.keycloak_password_file.read().strip()
@@ -60,17 +60,17 @@ def main() -> None:
         server_url=opt.keycloak_url,
         username=opt.keycloak_admin,
         password=opt.keycloak_secret,
-        realm_name="ucs",
-        user_realm_name="master",
+        realm_name='ucs',
+        user_realm_name='master',
         verify=True,
     )
-    if opt.action == "create":
-        legacy_auth_config_create(session, ucr["ldap/base"], opt.group_clients)
-    elif opt.action == "remove":
+    if opt.action == 'create':
+        legacy_auth_config_create(session, ucr['ldap/base'], opt.group_clients)
+    elif opt.action == 'remove':
         legacy_auth_config_remove(session, opt.group_clients)
     else:
         raise NotImplementedError()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

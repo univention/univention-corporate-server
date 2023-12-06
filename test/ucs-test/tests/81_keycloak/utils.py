@@ -44,7 +44,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 def host_is_alive(host: str) -> bool:
-    command = ["ping", "-c", "2", host]
+    command = ['ping', '-c', '2', host]
     return subprocess.call(command) == 0
 
 
@@ -86,7 +86,7 @@ def keycloak_password_change(
     driver.find_element(By.ID, keycloak_config.password_change_button_id).click()
     if fails_with:
         error = driver.find_element(By.CSS_SELECTOR, keycloak_config.password_update_error_css_selector)
-        assert fails_with == error.text, f"{fails_with} != {error.text}"
+        assert fails_with == error.text, f'{fails_with} != {error.text}'
         assert error.is_displayed()
 
 
@@ -94,13 +94,13 @@ def keycloak_auth_header(config: SimpleNamespace) -> dict:
     response = requests.post(config.master_token_url, data=config.login_data)
     assert response.status_code == 200, response.text
     return {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {response.json()['access_token']}",
+        'Content-Type': 'application/json',
+        'Authorization': f"Bearer {response.json()['access_token']}",
     }
 
 
 def keycloak_get_request(config: SimpleNamespace, path: str, params: dict | None = None) -> dict:
-    response = requests.get(f"{config.admin_url}/{path}", headers=keycloak_auth_header(config), params=params)
+    response = requests.get(f'{config.admin_url}/{path}', headers=keycloak_auth_header(config), params=params)
     assert response.status_code == 200, response.text
     return response.json()
 
@@ -112,14 +112,14 @@ def keycloak_sessions(config: SimpleNamespace) -> dict:
 
 
 def keycloak_sessions_by_user(config: SimpleNamespace, username: str) -> dict:
-    params = {"search": username}
+    params = {'search': username}
     response = requests.get(config.users_url, params=params, headers=keycloak_auth_header(config))
     assert response.status_code == 200, response.text
     user_object = {}
     for user in response.json():
-        if user["attributes"]["uid"][0] == username:
+        if user['attributes']['uid'][0] == username:
             user_object = user
-    assert user_object, f"user {username} not found in keycloak"
+    assert user_object, f'user {username} not found in keycloak'
     response = requests.get(f"{config.users_url}/{user_object['id']}/sessions", headers=keycloak_auth_header(config))
     assert response.status_code == 200, response.text
     return response.json()
@@ -143,7 +143,7 @@ def keycloak_login(
     driver.find_element(By.ID, keycloak_config.login_id).click()
     if fails_with:
         error = driver.find_element(By.CSS_SELECTOR, keycloak_config.login_error_css_selector)
-        assert fails_with == error.text, f"{fails_with} != {error.text}"
+        assert fails_with == error.text, f'{fails_with} != {error.text}'
         assert error.is_displayed()
 
 
@@ -158,26 +158,26 @@ def legacy_auth_config_remove(session: KeycloakAdmin, groups: dict) -> None:
         "testclientaccess": "testclient",
     }
     """
-    auth_role_name = "univentionClientAccess"
-    ldap_provider_name = "ldap-provider"
-    group_mapper_name = "group-mapper"
+    auth_role_name = 'univentionClientAccess'
+    ldap_provider_name = 'ldap-provider'
+    group_mapper_name = 'group-mapper'
 
     # remove role from clients
     for client in session.get_clients():
-        for role in session.get_client_roles(client["id"]):
-            if role["name"] == auth_role_name:
-                session.delete_client_role(client["id"], role["name"])
+        for role in session.get_client_roles(client['id']):
+            if role['name'] == auth_role_name:
+                session.delete_client_role(client['id'], role['name'])
 
     # remove groups
     for group in session.get_groups():
-        if group["name"] in groups.keys():
-            session.delete_group(group["id"])
+        if group['name'] in groups.keys():
+            session.delete_group(group['id'])
 
     # remove group-mapper
-    ldap_provider_id = session.get_components(query={"name": ldap_provider_name, "type": "org.keycloak.storage.UserStorageProvider"})[0]["id"]
-    mapper = session.get_components(query={"parent": ldap_provider_id, "name": group_mapper_name, "type": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper"})
+    ldap_provider_id = session.get_components(query={'name': ldap_provider_name, 'type': 'org.keycloak.storage.UserStorageProvider'})[0]['id']
+    mapper = session.get_components(query={'parent': ldap_provider_id, 'name': group_mapper_name, 'type': 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper'})
     if mapper:
-        session.delete_component(mapper[0]["id"])
+        session.delete_component(mapper[0]['id'])
 
 
 def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: dict) -> None:
@@ -187,44 +187,44 @@ def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: di
         "testclientaccess": "testclient",
     }
     """
-    auth_role_name = "univentionClientAccess"
-    ldap_provider_name = "ldap-provider"
-    group_mapper_name = "group-mapper"
+    auth_role_name = 'univentionClientAccess'
+    ldap_provider_name = 'ldap-provider'
+    group_mapper_name = 'group-mapper'
 
     # get/check clients
-    clients = {x["clientId"]: x["id"] for x in session.get_clients()}
+    clients = {x['clientId']: x['id'] for x in session.get_clients()}
     for client in groups.values():
         if client not in clients:
-            raise Exception(f"client {client} not found")
+            raise Exception(f'client {client} not found')
 
     # create group mapper
-    ldap_provider_id = session.get_components(query={"name": ldap_provider_name, "type": "org.keycloak.storage.UserStorageProvider"})[0]["id"]
-    mapper = session.get_components(query={"parent": ldap_provider_id, "name": group_mapper_name, "type": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper"})
+    ldap_provider_id = session.get_components(query={'name': ldap_provider_name, 'type': 'org.keycloak.storage.UserStorageProvider'})[0]['id']
+    mapper = session.get_components(query={'parent': ldap_provider_id, 'name': group_mapper_name, 'type': 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper'})
     if mapper:
-        raise Exception(f"group mapper {group_mapper_name} already exists")
+        raise Exception(f'group mapper {group_mapper_name} already exists')
     else:
         group_names = list(groups.keys())
-        ldap_filter = f"(cn={group_names[0]})" if len(group_names) == 1 else f"(|(cn={')(cn='.join(group_names)}))"
+        ldap_filter = f'(cn={group_names[0]})' if len(group_names) == 1 else f"(|(cn={')(cn='.join(group_names)}))"
         payload = {
-            "name": group_mapper_name,
-            "providerId": "group-ldap-mapper",
-            "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-            "parentId": ldap_provider_id,
-            "config": {
-                "membership.attribute.type": ["UID"],
-                "group.name.ldap.attribute": ["cn"],
-                "preserve.group.inheritance": ["false"],
-                "membership.user.ldap.attribute": ["uid"],
-                "groups.dn": [ldap_base],
-                "mode": ["READ_ONLY"],
-                "user.roles.retrieve.strategy": ["LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"],
-                "groups.ldap.filter": [ldap_filter],
-                "membership.ldap.attribute": ["memberUid"],
-                "ignore.missing.groups": ["true"],
-                "memberof.ldap.attribute": ["memberOf"],
-                "group.object.classes": ["univentionGroup"],
-                "groups.path": ["/"],
-                "drop.non.existing.groups.during.sync": ["true"],
+            'name': group_mapper_name,
+            'providerId': 'group-ldap-mapper',
+            'providerType': 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper',
+            'parentId': ldap_provider_id,
+            'config': {
+                'membership.attribute.type': ['UID'],
+                'group.name.ldap.attribute': ['cn'],
+                'preserve.group.inheritance': ['false'],
+                'membership.user.ldap.attribute': ['uid'],
+                'groups.dn': [ldap_base],
+                'mode': ['READ_ONLY'],
+                'user.roles.retrieve.strategy': ['LOAD_GROUPS_BY_MEMBER_ATTRIBUTE'],
+                'groups.ldap.filter': [ldap_filter],
+                'membership.ldap.attribute': ['memberUid'],
+                'ignore.missing.groups': ['true'],
+                'memberof.ldap.attribute': ['memberOf'],
+                'group.object.classes': ['univentionGroup'],
+                'groups.path': ['/'],
+                'drop.non.existing.groups.during.sync': ['true'],
             },
         }
         session.create_component(payload)
@@ -232,40 +232,40 @@ def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: di
     # update groups
     mapper_id = session.get_components(
         query={
-            "parent": ldap_provider_id,
-            "name": group_mapper_name,
-            "type": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+            'parent': ldap_provider_id,
+            'name': group_mapper_name,
+            'type': 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper',
         },
-    )[0]["id"]
+    )[0]['id']
     # python-keycloak uses urljoin to join the base url and the path for raw requests
     # but urljoin eats up the path portions of the first argument and we lose the keycloak path
     #   urljoin("https://srv/auth1", "/auth2") -> 'https://srv/auth2'
     # so we have to carry the keycloak path over and add it to raw requests ourself
-    url = f"/admin/realms/ucs/user-storage/{ldap_provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak"
+    url = f'/admin/realms/ucs/user-storage/{ldap_provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak'
     if session.path:
-        url = f"{session.path}/{url}"
+        url = f'{session.path}/{url}'
     res = session.raw_post(url, data={})
     if res.status_code != 200:
-        raise Exception(f"raw POST to {url} failed: {res}")
+        raise Exception(f'raw POST to {url} failed: {res}')
 
     # add client role to each client
     roles = {}
     for client in groups.values():
         client_id = clients[client]
-        session.create_client_role(client_id, {"name": auth_role_name}, skip_exists=True)
-        role = next(x for x in session.get_client_roles(client_id) if x["name"] == auth_role_name)
-        roles[client_id] = role["id"]
+        session.create_client_role(client_id, {'name': auth_role_name}, skip_exists=True)
+        role = next(x for x in session.get_client_roles(client_id) if x['name'] == auth_role_name)
+        roles[client_id] = role['id']
 
     # add group role mapping
-    keycloak_groups = {x["name"]: x["id"] for x in session.get_groups()}
+    keycloak_groups = {x['name']: x['id'] for x in session.get_groups()}
     for group in groups.keys():
         if group not in keycloak_groups:
-            raise Exception(f"group {group} not found in keycloak")
+            raise Exception(f'group {group} not found in keycloak')
         group_id = keycloak_groups[group]
         client_id = clients[groups[group]]
         role_id = roles[client_id]
         payload = {
-            "id": role_id,
-            "name": auth_role_name,
+            'id': role_id,
+            'name': auth_role_name,
         }
         session.assign_group_client_roles(group_id, client_id, payload)
