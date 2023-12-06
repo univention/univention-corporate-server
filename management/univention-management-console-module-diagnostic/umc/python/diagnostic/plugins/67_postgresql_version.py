@@ -32,6 +32,7 @@
 
 import subprocess
 from shutil import which
+from typing import Tuple
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning
@@ -59,13 +60,13 @@ links = [
 run_descr = [_('The migration status can be checked by executing: pg_lsclusters -h.')]
 
 
-def warning(msg):
+def warning(msg: str) -> Warning:
     text = "\n".join([msg, description])
     MODULE.error(text)
     return Warning(text, links=links)
 
 
-def version_tuple_to_str(version):
+def version_tuple_to_str(version: Tuple[int, ...]) -> str:
     return ".".join(str(v) for v in version)
 
 
@@ -74,7 +75,7 @@ def run(_umc_instance: Instance) -> None:
         return
     output = subprocess.check_output(["pg_lsclusters", "-h"]).decode("utf-8")
     versions = [
-        (tuple(int(v) for v in ver.split(".")), status == "online")
+        tuple(int(v) for v in ver.split("."))
         for ver, _cluster, _port, status, _owner, _data_dir, _log_file in (
             line.split(" ", 6) for line in output.splitlines()
         )
@@ -83,11 +84,8 @@ def run(_umc_instance: Instance) -> None:
         raise warning(_("No PostgreSQL version found."))
 
     psql_version = max(versions)
-    if psql_version[0] != POSTGRESQL_VERSION:
-        raise warning(_("PostgreSQL version is {current}, should be {desired}.").format(current=version_tuple_to_str(psql_version[0]), desired=version_tuple_to_str(POSTGRESQL_VERSION)))
-
-    if not psql_version[1]:
-        raise warning(_("PostgreSQL version is up-to-date, but is not online."))
+    if psql_version != POSTGRESQL_VERSION:
+        raise warning(_("PostgreSQL version is {current}, should be {desired}.").format(current=version_tuple_to_str(psql_version), desired=version_tuple_to_str(POSTGRESQL_VERSION)))
 
 
 if __name__ == '__main__':
