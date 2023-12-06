@@ -11,9 +11,9 @@ desc: |
    version of `samba-dsdb-modules`, when an older version of that
    package was already installed.
    This is addressed by making `univention-samba4` depend on the
-   metapackage `samba-ad-dc` instead, and letting that manage
+   meta-package `samba-ad-dc` instead, and letting that manage
    a versioned dependency on `samba-dsdb-modules`. This simplifies
-   the package depenencies.
+   the package dependencies.
 bug: [56794]
 erratum: 890
 announced: 2023-11-29
