@@ -167,7 +167,7 @@ These jenkins jobs
 * checks out this ucs branch and starts the scenario
 * adds the gitlab branch repo and from that on just the usual setup and test runs
 
-See https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-5/view/Branch%20test%20(WIP)/ for what we have so far.
+See https://jenkins2022.knut.univention.de/job/UCS-5.0/job/UCS-5.0-6/view/Branch%20test%20(WIP)/ for what we have so far.
 
 New jobs can be added in the jenkins seed file in the univention/dist/jenkins repository.
 
