@@ -25,6 +25,8 @@ install_guardian_authorization_api_from_branch () {
   echo -n univention > /tmp/univention
   if [ -n "$authorization_api_docker_image" -a -n "$opa_docker_image" ]; then
 	  python3 /root/guardian/appcenter-change-compose-image.py -a guardian-authorization-api -i $authorization_api_docker_image -o opa $opa_docker_image
+  elif [ -n "$authorization_api_docker_image" ]; then
+	  python3 /root/guardian/appcenter-change-compose-image.py -a guardian-authorization-api -i $authorization_api_docker_image
   fi
   cmd="univention-app install guardian-authorization-api --noninteractive --username Administrator --pwdfile /tmp/univention"
   if [ -n "$app_settings" ]; then
