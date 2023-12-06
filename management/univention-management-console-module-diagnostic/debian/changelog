@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.6-6) unstable; urgency=low
+
+  * Bug #56773: PostgreSQL diagnostic: do not check for running server
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Dec 2023 10:34:21 +0100
+
 univention-management-console-module-diagnostic (6.0.6-5) unstable; urgency=medium
 
   * Bug #56773: Fix PostgreSQL diagnostic module now it's show like a warning.
