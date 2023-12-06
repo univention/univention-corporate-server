@@ -1192,6 +1192,15 @@ deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs
 EOF
 }
 
+add_guardian_dev_repo () {
+	local majorminor
+	majorminor="$(ucr get version/version)"
+	cat << EOF > /etc/apt/sources.list.d/guardian-dev-repo.list
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-guardian/all/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-guardian/\$(ARCH)/
+EOF
+}
+
 # deprecated (use add_extra_branch_repo)
 add_branch_repository () {
 	local extra_list="/root/apt-get-branch-repo.list"
