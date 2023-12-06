@@ -9,3 +9,6 @@ desc: |
  * Include new diagnostic module to check if PostgreSQL is migrated
    to version 11.
 bug: [56773]
+erratum: 895
+announced: 2023-12-06
+support: core
