@@ -6,7 +6,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2023-09-12
+Publication date of UCS |release|: 2023-12-12
 
 .. _relnotes-highlights:
 
@@ -14,17 +14,19 @@ Publication date of UCS |release|: 2023-09-12
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-5, the fifth point release for |UCSUCS| (UCS) 5.0 is
+With |UCSUCS| 5.0-6, the sixth point release for |UCSUCS| (UCS) 5.0 is
 available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* |UCSUMC| has received several internal changes to improve its robustness and performance.
+* The |UCSUMC| diagnostics module has seen several improvements.
 
-* Update to Samba version 4.18.6.
+* |UCSUCS| has seen many internal changed to prepare the update to |UCSUCS| 5.2.
 
-* UCS 5.0-5 includes various security updates, for example for
-  :program:`BIND9`, :program:`OpenSSH`, :program:`Linux`, :program:`ClamAV`
+* The backup mechanism for Samba related files has been improved.
+
+* UCS 5.0-6 includes various security updates, for example for
+  :program:`PostgreSQL`, :program:`OpenJDK-11`, :program:`GRUB2`
   and :program:`Python3.7`.
 
 .. _relnotes-update:
@@ -179,10 +181,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-5{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-6{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.0-5{.gpg,} && bash pre-update-checks-5.0-5
+   $ apt-key verify pre-update-checks-5.0-6{.gpg,} && bash pre-update-checks-5.0-6
 
    ...
 
@@ -265,7 +267,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-4 in `Changelog for Univention Corporate Server (UCS) 5.0-5 <../../../changelog/5.0-5/en/index.html>`_.
+You find the changes since UCS 5.0-5 in `Changelog for Univention Corporate Server (UCS) 5.0-6 <../../../changelog/5.0-6/en/index.html>`_.
 
 
 .. _biblio:
