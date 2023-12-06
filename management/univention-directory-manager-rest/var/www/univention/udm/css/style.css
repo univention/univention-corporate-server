@@ -247,26 +247,27 @@ label {
 	color: var(--local-color);
 	transition: color 250ms;
 }
+/* FIXME: all sizes are little bit reduced otherwise it doesn't fit into one line */
 .udmSize-OneThird {
-	width: 16.6666666666666%;
+	width: 15%;
 }
 .udmSize-Half {
-	width: 12%;
+	width: 11%;
 }
 .udmSize-TwoThirds {
-	width: 33.33333333333333%;
+	width: 31%;
 }
 .udmSize-One {
-	width: 50%;
+	width: 48%;
 }
 .udmSize-FourThirds {
-	width: 66.6666666666666%;
+	width: 64%;
 }
 .udmSize-OneAndAHalf {
-	width: 75%;
+	width: 73%;
 }
 .udmSize-FiveThirds {
-	width: 83.3333333333333%;
+	width: 82%;
 }
 .udmSize-Two {
 	width: 100%;
