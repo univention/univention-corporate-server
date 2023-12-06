@@ -22,7 +22,7 @@ from datetime import date
 # -- Project information -----------------------------------------------------
 
 version = "5.0"
-release = "5.0-5"
+release = "5.0-6"
 project = f"UCS {version} for Debian and Ubuntu Administrators"
 copyright = f'{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'

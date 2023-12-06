@@ -32,7 +32,7 @@ author = ''
 version = '5.0'
 # The full version, including alpha/beta/rc tags
 # Used for source reference in :uv:src: role
-release = '5.0-5'
+release = '5.0-6'
 
 html_show_copyright = True
 language = 'en'
