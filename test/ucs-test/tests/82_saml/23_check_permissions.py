@@ -4,8 +4,6 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
-## apps:
-##  - keycloak
 ## bugs: [38947]
 ## exposure: safe
 
