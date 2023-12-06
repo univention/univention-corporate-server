@@ -13,3 +13,6 @@ desc: |
    `userCertificate`, allowing changes of UDM object options just in that
    special case.
 bug: [56772]
+erratum: 897
+announced: 2023-12-06
+support: core
