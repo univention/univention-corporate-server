@@ -79,3 +79,8 @@ class HAL:
 
     def get_resources(self, obj, relation):
         return obj.get('_embedded', {}).get(relation, [])
+
+    def get_links(self, obj, relation=None):
+        if relation is None:
+            return obj.get('_links', {})
+        return obj.get('_links', {}).get(relation, [])

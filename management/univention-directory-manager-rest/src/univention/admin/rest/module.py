@@ -2366,7 +2366,7 @@ class ObjectEdit(FormBase, Resource):
             for form in root:
                 if form.get('id') == 'edit':
                     for elem in form.findall('.//section'):
-                        self.add_link(response, 'udm:tab-switch', href=f'#{elem.get("id")}', title=elem.find('./h1').text)
+                        self.add_link(response, 'udm:tab-switch', href=f'#{elem.get("id")}', title=elem.find('./h1').text, dont_set_http_header=True)
         return root
 
 

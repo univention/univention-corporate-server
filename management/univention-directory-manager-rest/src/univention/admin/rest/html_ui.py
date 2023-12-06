@@ -77,12 +77,22 @@ class HTML:
         main = ET.SubElement(body, 'main')
         _links = {}
         navigation_relations = self.bread_crumps_navigation()
-        for link in self._headers.get_list('Link'):
-            link, foo, _params = link.partition(';')
-            link = link.strip().lstrip('<').rstrip('>')
-            params = {}
-            if _params.strip():
-                params = {x.strip(): y.strip().strip('"').replace('\\"', '"').replace('\\\\', '\\') for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';'))}
+        #for link in self._headers.get_list('Link'):
+        #    link, foo, _params = link.partition(';')
+        #    link = link.strip().lstrip('<').rstrip('>')
+        #    params = {}
+        #    if _params.strip():
+        #        params = {x.strip(): y.strip().strip('"').replace('\\"', '"').replace('\\\\', '\\') for x, y in ((param.split('=', 1) + [''])[:2] for param in _params.split(';'))}
+        hal_links = [
+            dict(_hlink.copy(), rel=rel)
+            for rel, _hlinks in self.get_links(data).items()
+            for _hlink in _hlinks
+            if 'href' in _hlink
+        ]
+        for params in hal_links:
+            if params.pop('templated', None):
+                continue
+            link = params.pop('href')
             ET.SubElement(head, "link", href=link, **params)
             _links[params.get('rel')] = dict(params, href=link)
             if params.get('rel') == 'self':
