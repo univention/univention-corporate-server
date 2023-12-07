@@ -1,0 +1,12 @@
+[Unit]
+Description=Univention Network Installer Daemon
+After=network.target slapd.service
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/default/univention-net-installer-daemon
+ExecStart=/usr/sbin/univention-net-installer-daemon $DAEMON_OPTS
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

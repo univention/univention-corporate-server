@@ -1,4 +1,4 @@
+# No #DEBHELPER#
+0006-1:debian/di-univention-net-installer.postinst
 # The exit code is important
 0006-6:debian/di-univention-net-installer.postinst
-# checkbashims is wrong
-0013-2:debian/univention-net-installer.postinst

@@ -35,26 +35,27 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=1
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
 eval "$(univention-config-registry shell)"
 
 # create ucs-repository share
-univention-directory-manager container/cn create "$@" --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname || die
-univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --option nfs --set name=ucs-repository --set path=/var/lib/univention-repository --set host=$hostname.$domainname || die
+univention-directory-manager container/cn create "$@" --position "cn=shares,${ldap_base:?}" --ignore_exists --set name="${hostname:?}.${domainname:?}" || die
+univention-directory-manager shares/share create "$@" --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --option nfs --set name=ucs-repository --set path=/var/lib/univention-repository --set host="$hostname.$domainname" || die
 
 # set boot file on default dhcp/boot policy
-old=$(univention-directory-manager policies/dhcp_boot list "$@" --filter cn=default-settings | awk '/^boot_filename: / {print $2}')
-if [ -z "$old" -o "$old" = "None" ]; then
+case "$(univention-directory-manager policies/dhcp_boot list "$@" --filter cn=default-settings | awk '/^boot_filename: / {print $2}')" in
+''|None)
 	univention-directory-manager policies/dhcp_boot modify "$@" --ignore_exists \
 	--dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$ldap_base" \
 	--set boot_filename=pxelinux.0 || die
-fi
+esac
 
 joinscript_save_current_version
-
 
 exit 0

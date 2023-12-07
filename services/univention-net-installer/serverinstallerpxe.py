@@ -38,6 +38,7 @@ from __future__ import absolute_import, annotations
 import os
 from textwrap import dedent
 from typing import Dict, List
+from urllib.parse import urlparse
 
 from six.moves.urllib_parse import urljoin
 
@@ -98,6 +99,13 @@ def gen_pxe(new: Dict[str, List[bytes]]) -> str | None:
         ]
 
         # <https://wiki.debianforum.de/Debian-Installation_%C3%BCber_PXE,_TFTP_und_Preseed>
+        server = listener.configRegistry.get("repository/online/server", FQDN)
+        if "://" in server:
+            url = urlparse(server)
+            scheme, hostname, path = url.scheme, url.hostname, url.path
+        else:
+            scheme, hostname, path = "http", server, "/"
+
         args += [
             # Kernel
             'quiet' if listener.configRegistry.is_true('pxe/installer/quiet', False) else '',
@@ -105,7 +113,9 @@ def gen_pxe(new: Dict[str, List[bytes]]) -> str | None:
             # Debian installer
             'auto-install/enable=true',
             'preseed/url=%s' % (url,),
-            'mirror/http/hostname=%s' % (listener.configRegistry.get("repository/online/server", FQDN),),
+            'mirror/protocol=%s' % (scheme,),
+            'mirror/http/hostname=%s' % (hostname,),
+            'mirror/http/directory=%s' % (path,),
             # 'DEBCONF_DEBUG=5',
         ]
     args.append(new.get('univentionServerInstallationOption', EMPTY)[0].decode('UTF-8'))

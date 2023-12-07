@@ -31,9 +31,12 @@
 # <https://www.gnu.org/licenses/>.
 [ -n "$(debconf-get preseed/url)" ] || exit 0
 
+scheme="$(debconf-get mirror/protocol)"
+hostname="$(debconf-get mirror/http/hostname)"
+directory="$(debconf-get mirror/http/directory)"
 (
 	echo update/secure_apt=no
 	echo repository/online=yes
-	echo repository/online/server=$(debconf-get mirror/http/hostname)
+	echo repository/online/server="${scheme:-http}://${hostname}/${directory#/}"
 	debconf-dumpdb -p '^ucr/' configdb | sed -rne '/ \(null\)$/d;s,^ucr/(\S+) \S+ (.+),\1=\2,p'
 ) | chroot /target xargs -d '\n' ucr set

@@ -512,6 +512,14 @@ Mail services
 * Narrowed down the conditions under which the |UCSUDL| module gets called
   (:uv:bug:`56586`).
 
+.. _changelog-service-dhcp:
+
+DHCP server
+===========
+
+* The network installer has been converted from a SysV init script into a :program:`systemd` unit.
+  URLs configured for |UCSUCRV| :envvar:`repository/online/server` are now handled correctly.
+
 .. _changelog-service-pam:
 
 PAM / Local group cache

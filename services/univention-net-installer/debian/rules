@@ -34,4 +34,4 @@
 # <https://www.gnu.org/licenses/>.
 
 %:
-	dh $@ --with ucr
+	dh $@ --with systemd,ucr

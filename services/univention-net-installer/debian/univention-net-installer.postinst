@@ -39,10 +39,6 @@ main () {
 	if [ "$1" = "configure" ]
 	then
 		configure_pxe
-		if dpkg --compare-versions "$2" lt-nl 8  # Bug #35537: Only on upgrade to UCS-4.0
-		then
-			update_filenames
-		fi
 		configure_http "$2"
 		install_template
 		call_joinscript 81univention-net-installer.inst
@@ -57,36 +53,22 @@ configure_pxe () {
 		pxe/installer/loglevel?"0"
 }
 
-update_filenames () {
-	if [ "$(univention-config-registry get pxe/installer/kernel)" = "linux-server" ]; then
-		univention-config-registry unset pxe/installer/kernel
-	fi
-	if [ "$(univention-config-registry get pxe/installer/initrd)" = "linux.bin" ]; then
-		univention-config-registry unset pxe/installer/initrd
-	fi
-}
-
 configure_http () {
 	command -v apachectl >/dev/null 2>&1 || return 0
-	if dpkg --compare-versions "$1" lt-nl 10.0.0-5  # Bug #44213: Only on upgrade to errata-4.2-0
-	then
-		a2dissite univention-net-installer
-	fi
 	a2ensite univention-net-installer.conf
 	apachectl graceful
 }
 
 install_template () {
-	if [ ! -e /var/lib/univention-client-boot/preseed/TEMPLATE ]
-	then
+	[ -e /var/lib/univention-client-boot/preseed/TEMPLATE ] ||
 		ln -s /usr/share/doc/univention-net-installer/examples/TEMPLATE /var/lib/univention-client-boot/preseed/
-	fi
 }
 
 restart_listener () {
 	systemctl try-restart univention-directory-listener
 }
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 main "$@"
 exit 0

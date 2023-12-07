@@ -34,8 +34,8 @@ Depends:
  univention-config,
  ${misc:Depends},
 Description: UCS - automatic profile server installation
- This package contains a net installer daemon which removes the reinstallation
- flag in the ldap directory.
+ This package contains a network installer daemon which removes the
+ reinstallation flag in the LDAP directory.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

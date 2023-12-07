@@ -36,13 +36,13 @@
 
 from __future__ import print_function
 
-import multiprocessing
 import os
 import signal
 import socket
 import sys
 import threading
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
+from multiprocessing import Queue
 
 import ldap.filter
 
@@ -50,12 +50,12 @@ import univention.debug as ud
 import univention.uldap
 
 
-def createDaemon(options):
+def createDaemon(options: Namespace) -> None:
     """daemonize via double fork, close all file handles, open /dev/null for stdin/out/err"""
     try:
         pid = os.fork()
     except OSError as e:
-        print('Daemon Mode Error: %s' % (e.strerror, ))
+        print('Daemon Mode Error: %s' % (e.strerror,), file=sys.stderr)
         sys.exit(1)
 
     if pid:
@@ -66,7 +66,7 @@ def createDaemon(options):
     try:
         pid = os.fork()
     except OSError as e:
-        print('Daemon Mode Error: %s' % (e.strerror, ))
+        print('Daemon Mode Error: %s' % (e.strerror,), file=sys.stderr)
         sys.exit(1)
     if pid:
         with open(options.pidfile, 'w+') as fd:
@@ -86,7 +86,7 @@ def createDaemon(options):
     os.open("/dev/null", os.O_RDWR)
 
 
-def getLDAPConnection():
+def getLDAPConnection() -> univention.uldap.access:
     # TODO: check for an alternative binddn
     if os.path.exists('/etc/ldap.secret'):
         lo = univention.uldap.getAdminConnection()
@@ -95,26 +95,27 @@ def getLDAPConnection():
     return lo
 
 
-def processor(options, data_queue):
+def processor(options: Namespace, data_queue: Queue) -> None:
     ud.init('/var/log/univention/net-installer-daemon.log', ud.FLUSH, ud.NO_FUNCTION)
-    ud.set_level(ud.LDAP, options.debug_level)
+    ud.set_level(ud.LDAP, options.debug)
     lo = getLDAPConnection()
 
-    def process(data):
-        search_filter = ldap.filter.filter_format('(&(objectClass=univentionHost)(cn=%s)(univentionServerReinstall=1))', (data, ))
-        result = lo.search(filter=search_filter)
+    def process(data: str) -> None:
+        search_filter = ldap.filter.filter_format('(&(objectClass=univentionHost)(cn=%s)(univentionServerReinstall=1))', (data,))
+        result = lo.searchDn(filter=search_filter)
         if not result:
-            ud.debug(ud.LDAP, ud.ERROR, 'The computer object %r was not found. Please remove the reinstall flag manually.' % (data, ))
+            ud.debug(ud.LDAP, ud.ERROR, 'The computer object %r was not found. Please remove the reinstall flag manually.' % (data,))
         else:
-            for (dn, _) in result:
+            for dn in result:
                 lo.modify(dn, [('univentionServerReinstall', b'1', b'0')])
                 ud.debug(ud.LDAP, ud.PROCESS, 'The computer object %r (%r) was successfully modified. ' % (data, dn))
+
     while True:
         data = data_queue.get()
         process(data.decode('UTF-8'))
 
 
-def listener(options, data_queue):
+def listener(options: Namespace, data_queue: Queue) -> None:
     size = 1024  # max hostname length
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -123,7 +124,7 @@ def listener(options, data_queue):
     while True:
         (client, _) = s.accept()
 
-        def reader(client):
+        def reader(client: socket.socket) -> None:
             client.settimeout(10)
             try:
                 data = client.recv(size)
@@ -134,30 +135,43 @@ def listener(options, data_queue):
             if data:
                 data = data.strip()
                 data_queue.put(data)
+
         threading.Thread(target=reader, args=(client,)).start()
 
 
-def main():
+def parse_args() -> Namespace:
     parser = ArgumentParser()
     parser.add_argument(
         '-p', '--port',
-        default="49173", type=int, help='Port for the daemon [%default]')
+        default="49173",
+        type=int,
+        help='Port for the daemon [%(default)s]',
+    )
     parser.add_argument(
         '-P', '--pidfile',
-        default="/var/run/univention-net-installer-daemon.pid",
-        help='Path to the pid-file [%default]')
+        default="/run/univention-net-installer-daemon.pid",
+        help='Path to the pid-file [%(default)s]',
+    )
     parser.add_argument(
         '-D', '--daemon',
-        action='store_true', dest='daemonize', default=False,
-        help='Fork into background')
+        action='store_true',
+        help='Fork into background',
+    )
     parser.add_argument(
         '-d', '--debug',
-        dest='debug_level', default="1", type=int,
-        help='Debug level (0 to 4)')
+        default=1,
+        type=int,
+        help='Debug level (0 to 4)',
+    )
     options = parser.parse_args()
-    if options.daemonize:
+    return options
+
+
+def main() -> None:
+    options = parse_args()
+    if options.daemon:
         createDaemon(options)
-    data_queue = multiprocessing.Queue()
+    data_queue: Queue = Queue()
     subthread = threading.Thread(target=processor, args=(options, data_queue))
     subthread.daemon = True
     subthread.start()

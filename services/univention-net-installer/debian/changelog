@@ -1,6 +1,8 @@
-univention-net-installer (13.0.7-1) UNRELEASED; urgency=medium
+univention-net-installer (13.0.7-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #55044: Fix repository/online/server: URL handling
+  * Bug #55044: Convert SysV init script to SystemD unit
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:33 +0100
 
