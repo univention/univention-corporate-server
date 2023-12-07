@@ -1,3 +1,9 @@
+ucs-test (10.0.20-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:20 +0100
+
 ucs-test (10.0.19-42) unstable; urgency=medium
 
   * Bug #56772: Check that S4-Connector doesn't modify UDM group options

@@ -1,3 +1,9 @@
+univention-nagios (13.0.6-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:37 +0100
+
 univention-nagios (13.0.5-2) unstable; urgency=medium
 
   * Bug #56354: do not leak password in process list during

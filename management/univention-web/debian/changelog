@@ -1,3 +1,9 @@
+univention-web (4.0.6-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:29 +0100
+
 univention-web (4.0.5-2) unstable; urgency=medium
 
   * Bug #56562: retry aborted progress requests up to 5 times before showing

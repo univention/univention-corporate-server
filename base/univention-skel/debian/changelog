@@ -1,3 +1,9 @@
+univention-skel (12.0.2-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:27 +0100
+
 univention-skel (12.0.1-1) unstable; urgency=low
 
   * Bug #43211: Deprecate univention-skel

@@ -1,3 +1,9 @@
+univention-ssl (14.0.5-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:22 +0100
+
 univention-ssl (14.0.4-2) unstable; urgency=medium
 
   * Bug #42330: Remove old maintainer script package update code

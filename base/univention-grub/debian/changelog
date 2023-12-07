@@ -1,3 +1,9 @@
+univention-grub (13.0.3-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:25 +0100
+
 univention-grub (13.0.2-2) unstable; urgency=medium
 
   * Bug #55632: Migration Python 2 leftovers and improved Python 3 compatibility

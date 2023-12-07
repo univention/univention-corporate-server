@@ -1,3 +1,9 @@
+univention-quota (14.0.6-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:26 +0100
+
 univention-quota (14.0.5-3) unstable; urgency=medium
 
   * Bug #56575: fix aborted user query requests

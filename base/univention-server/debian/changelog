@@ -1,3 +1,9 @@
+univention-server (15.0.8-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:24 +0100
+
 univention-server (15.0.7-3) unstable; urgency=medium
 
   * Bug #55940: move server_password_change script univention-admember

@@ -1,3 +1,9 @@
+univention-directory-replication (13.0.8-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:28 +0100
+
 univention-directory-replication (13.0.7-4) unstable; urgency=medium
 
   * Bug #56801: Newline in temporary password file inhibits import of failed.ldif

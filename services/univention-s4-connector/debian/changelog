@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.16-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:36 +0100
+
 univention-s4-connector (14.0.15-6) unstable; urgency=medium
 
   * Bug #56772: New mapping key auto_enable_udm_option

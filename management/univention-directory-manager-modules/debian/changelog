@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:29 +0100
+
 univention-directory-manager-modules (15.0.24-23) unstable; urgency=medium
 
   * Bug #56820; mark required properties for unused nagios-server as

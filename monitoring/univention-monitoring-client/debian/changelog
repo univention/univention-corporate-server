@@ -1,3 +1,9 @@
+univention-monitoring-client (1.0.3-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:37 +0100
+
 univention-monitoring-client (1.0.2-6) unstable; urgency=medium
 
   * Bug #56350: fix writing of metrics and labels in

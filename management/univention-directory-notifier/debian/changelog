@@ -1,3 +1,9 @@
+univention-directory-notifier (14.0.7-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:30 +0100
+
 univention-directory-notifier (14.0.6-5) unstable; urgency=medium
 
   * Bug #55957: Fix start-stop-daemon option handling

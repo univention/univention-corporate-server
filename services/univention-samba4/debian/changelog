@@ -1,3 +1,9 @@
+univention-samba4 (9.0.15-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:34 +0100
+
 univention-samba4 (9.0.14-5) unstable; urgency=medium
 
   * Bug #56794: Depend on samba-ad-dc instead of samba-dsdb-modules

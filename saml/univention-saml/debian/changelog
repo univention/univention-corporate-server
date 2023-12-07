@@ -1,3 +1,9 @@
+univention-saml (7.0.9-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:27 +0100
+
 univention-saml (7.0.8-12) unstable; urgency=medium
 
   * Bug #56864: only register Python3-only UDM modules only in UCS 5.0

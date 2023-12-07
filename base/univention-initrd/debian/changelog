@@ -1,3 +1,9 @@
+univention-initrd (12.0.1-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:20 +0100
+
 univention-initrd (12.0.0-4) unstable; urgency=low
 
   * Bug #52993: recreate initramfs after removing init script

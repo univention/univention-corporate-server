@@ -1,3 +1,9 @@
+univention-directory-logger (11.0.5-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:32 +0100
+
 univention-directory-logger (11.0.4-1) unstable; urgency=medium
 
   * Bug #31771: migrate tabs to spaces

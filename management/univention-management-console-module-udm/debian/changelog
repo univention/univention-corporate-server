@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.9-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:33 +0100
+
 univention-management-console-module-udm (10.0.8-6) unstable; urgency=medium
 
   * Bug #56338: If the name of an LDAP OU starts with zeros, these are

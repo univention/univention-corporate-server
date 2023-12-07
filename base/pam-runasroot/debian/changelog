@@ -1,3 +1,9 @@
+pam-runasroot (11.0.1-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:24 +0100
+
 pam-runasroot (11.0.0-2) unstable; urgency=medium
 
   * Bug #56579: Don't use setenv function to modify environment

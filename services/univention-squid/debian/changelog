@@ -1,3 +1,9 @@
+univention-squid (13.0.8-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:33 +0100
+
 univention-squid (13.0.7-3) unstable; urgency=medium
 
   * Bug #55632: improved the Python 3.11 compatiblity

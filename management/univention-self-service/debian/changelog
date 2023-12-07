@@ -1,3 +1,9 @@
+univention-self-service (5.0.8-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:31 +0100
+
 univention-self-service (5.0.7-3) unstable; urgency=medium
 
   * Bug #56201: replace python-notifier and adjust to new UMC module API

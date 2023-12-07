@@ -1,3 +1,9 @@
+univention-appcenter (9.0.10-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:30 +0100
+
 univention-appcenter (9.0.9-2) unstable; urgency=medium
 
   * Bug #56827: Fix typo for RAM warning

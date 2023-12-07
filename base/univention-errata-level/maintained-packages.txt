@@ -445,6 +445,7 @@ firefox-esr-l10n-fa
 firefox-esr-l10n-ff
 firefox-esr-l10n-fi
 firefox-esr-l10n-fr
+firefox-esr-l10n-fur
 firefox-esr-l10n-fy-nl
 firefox-esr-l10n-ga-ie
 firefox-esr-l10n-gd
@@ -487,6 +488,7 @@ firefox-esr-l10n-pt-pt
 firefox-esr-l10n-rm
 firefox-esr-l10n-ro
 firefox-esr-l10n-ru
+firefox-esr-l10n-sc
 firefox-esr-l10n-sco
 firefox-esr-l10n-si
 firefox-esr-l10n-sk
@@ -498,6 +500,7 @@ firefox-esr-l10n-sv-se
 firefox-esr-l10n-szl
 firefox-esr-l10n-ta
 firefox-esr-l10n-te
+firefox-esr-l10n-tg
 firefox-esr-l10n-th
 firefox-esr-l10n-tl
 firefox-esr-l10n-tr
@@ -976,6 +979,7 @@ iceweasel-l10n-fa
 iceweasel-l10n-ff
 iceweasel-l10n-fi
 iceweasel-l10n-fr
+iceweasel-l10n-fur
 iceweasel-l10n-fy-nl
 iceweasel-l10n-ga-ie
 iceweasel-l10n-gd
@@ -1018,6 +1022,7 @@ iceweasel-l10n-pt-pt
 iceweasel-l10n-rm
 iceweasel-l10n-ro
 iceweasel-l10n-ru
+iceweasel-l10n-sc
 iceweasel-l10n-sco
 iceweasel-l10n-si
 iceweasel-l10n-sk
@@ -1029,6 +1034,7 @@ iceweasel-l10n-sv-se
 iceweasel-l10n-szl
 iceweasel-l10n-ta
 iceweasel-l10n-te
+iceweasel-l10n-tg
 iceweasel-l10n-th
 iceweasel-l10n-tl
 iceweasel-l10n-tr
@@ -2808,6 +2814,13 @@ linux-headers-4.19.0-24-cloud-amd64
 linux-headers-4.19.0-24-common
 linux-headers-4.19.0-24-common-rt
 linux-headers-4.19.0-24-rt-amd64
+linux-headers-4.19.0-25-all
+linux-headers-4.19.0-25-all-amd64
+linux-headers-4.19.0-25-amd64
+linux-headers-4.19.0-25-cloud-amd64
+linux-headers-4.19.0-25-common
+linux-headers-4.19.0-25-common-rt
+linux-headers-4.19.0-25-rt-amd64
 linux-headers-amd64
 linux-headers-cloud-amd64
 linux-headers-rt-amd64
@@ -2841,6 +2854,12 @@ linux-image-4.19.0-24-cloud-amd64
 linux-image-4.19.0-24-cloud-amd64-unsigned
 linux-image-4.19.0-24-rt-amd64
 linux-image-4.19.0-24-rt-amd64-unsigned
+linux-image-4.19.0-25-amd64
+linux-image-4.19.0-25-amd64-unsigned
+linux-image-4.19.0-25-cloud-amd64
+linux-image-4.19.0-25-cloud-amd64-unsigned
+linux-image-4.19.0-25-rt-amd64
+linux-image-4.19.0-25-rt-amd64-unsigned
 linux-image-amd64
 linux-image-amd64-signed-template
 linux-image-cloud-amd64
@@ -2856,6 +2875,7 @@ linux-support-4.19.0-18
 linux-support-4.19.0-20
 linux-support-4.19.0-23
 linux-support-4.19.0-24
+linux-support-4.19.0-25
 lld-7
 lldb-7
 llvm-7
@@ -3341,6 +3361,7 @@ python-dateutil
 python-debconf
 python-debian
 python-debianbts
+python-decorator
 python-defusedxml
 python-dev
 python-distro-info
@@ -3457,6 +3478,7 @@ python-ply
 python-ply-doc
 python-polib
 python-polib-doc
+python-prometheus-client
 python-protobuf
 python-psutil
 python-psutil-doc
@@ -3595,6 +3617,7 @@ python3-dateutil
 python3-debconf
 python3-debian
 python3-debianbts
+python3-decorator
 python3-defusedxml
 python3-dev
 python3-distro-info
@@ -3639,6 +3662,7 @@ python3-libapparmor
 python3-liblinear
 python3-libproxy
 python3-libxml2
+python3-lmdb
 python3-lockfile
 python3-louis
 python3-lxml
@@ -3672,6 +3696,7 @@ python3-pil.imagetk
 python3-pkg-resources
 python3-ply
 python3-polib
+python3-prometheus-client
 python3-protobuf
 python3-psutil
 python3-psycopg2

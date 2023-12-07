@@ -1,3 +1,9 @@
+univention-ldap (16.0.14-1) UNRELEASED; urgency=medium
+
+  * Bug #56832: UCS 5.0-6 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:31 +0100
+
 univention-ldap (16.0.13-8) unstable; urgency=medium
 
   * Bug #56857: fix registration of schema files in case the schema file is the
