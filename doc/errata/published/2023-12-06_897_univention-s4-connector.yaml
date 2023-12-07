@@ -6,7 +6,7 @@ src: univention-s4-connector
 fix: 14.0.15-6
 desc: |
  This update addresses the following issues:
- * Starting with UCS 5.0 the S4-Connector converted Posix-only groups
+ * Starting with UCS 5.0 the S4-Connector converted POSIX-only groups
    to Samba groups. This was a regression compared to the behavior
    in UCS 4.4. Now the mapping offers a new key `auto_enable_udm_option`
    that is disabled by default and is only activated for the UDM property

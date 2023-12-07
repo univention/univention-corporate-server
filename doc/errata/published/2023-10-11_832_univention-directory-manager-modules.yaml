@@ -6,7 +6,7 @@ src: univention-directory-manager-modules
 fix: 15.0.24-19
 desc: |
  This update addresses the following issues:
- * The Python 3.11 compatibiliy for timezone handling has been repaired.
+ * The Python 3.11 compatibility for timezone handling has been repaired.
  * The case sensitivity of the attribute `memberUid` is now respected when
    removing members from a group.
 bug: [56514, 54183]
