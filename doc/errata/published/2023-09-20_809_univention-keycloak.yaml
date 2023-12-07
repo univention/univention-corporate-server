@@ -7,7 +7,7 @@ fix: 1.0.9-31
 desc: |
  This update addresses the following issues:
  * The commands `messages` and `login-links` have been added to
-   manage keycloak message bundles and login links for the login
+   manage Keycloak message bundles and login links for the login
    page.
 bug: [56478]
 erratum: 809
