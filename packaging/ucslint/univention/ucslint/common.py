@@ -68,7 +68,7 @@ RE_DEBIAN_CHANGELOG = re.compile(
     ({wc}{nc}*)  # Package name
     [ ]
     \( ([^ ()]+) \)  # Package version
-    ( (?: \s+ {nc}+ )+ )  # Target distribution
+    ( (?: \s+ (?:UNRELEASED|{nc}+) )+ )  # Target distribution
     ;
     (.*?)  # key=value options
     \s*$'''.format(wc=WORD_CHARS, nc=NAME_CHARS), re.MULTILINE | re.VERBOSE)
