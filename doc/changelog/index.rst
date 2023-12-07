@@ -204,13 +204,82 @@ General
 * The following packages have been moved to the maintained repository of UCS:
 
   :program:`py-lmdb` (:uv:bug:`53387`)
-.. _changelog-basis-ucr-template:
 
 .. _debian:
 
 * The following updated packages from Debian 10.13 are included:
-  :program:`FIXME`
 
+  :program:`activemq`
+  :program:`amanda`
+  :program:`asmtools`
+  :program:`audiofile`
+  :program:`axis`
+  :program:`batik`
+  :program:`cargo-mozilla`
+  :program:`ceph`
+  :program:`cryptojs`
+  :program:`distro-info`
+  :program:`distro-info-data`
+  :program:`e2guardian`
+  :program:`exempi`
+  :program:`freeimage`
+  :program:`freerdp2`
+  :program:`frr`
+  :program:`gerbv`
+  :program:`gimp`
+  :program:`gimp-dds`
+  :program:`gnome-boxes`
+  :program:`gsl`
+  :program:`h2o`
+  :program:`horizon`
+  :program:`inetutils`
+  :program:`jetty9`
+  :program:`jtreg6`
+  :program:`libapache-mod-jk`
+  :program:`libclamunrar`
+  :program:`libcue`
+  :program:`libvpx`
+  :program:`libyang`
+  :program:`lldpd`
+  :program:`lwip`
+  :program:`minizip`
+  :program:`mutt`
+  :program:`netty`
+  :program:`node-babel`
+  :program:`node-browserify-sign`
+  :program:`node-cookiejar`
+  :program:`node-json5`
+  :program:`opendkim`
+  :program:`org-mode`
+  :program:`orthanc`
+  :program:`phppgadmin`
+  :program:`pmix`
+  :program:`postgresql-multicorn`
+  :program:`prometheus-alertmanager`
+  :program:`python-requestbuilder`
+  :program:`qemu`
+  :program:`redis`
+  :program:`reportbug`
+  :program:`request-tracker4`
+  :program:`roundcube`
+  :program:`ruby-loofah`
+  :program:`ruby-rails-html-sanitizer`
+  :program:`ruby-rmagick`
+  :program:`ruby-sanitize`
+  :program:`rust-cbindgen`
+  :program:`rustc-mozilla`
+  :program:`strongswan`
+  :program:`tang`
+  :program:`testng7`
+  :program:`thunderbird`
+  :program:`tomcat9`
+  :program:`trapperkeeper-webserver-jetty9-clojure`
+  :program:`vinagre`
+  :program:`vlc`
+  :program:`zbar`
+  :program:`zookeeper`
+
+.. _changelog-basis-ucr-template:
 
 Changes to templates and modules
 --------------------------------
