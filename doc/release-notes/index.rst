@@ -21,7 +21,7 @@ the most important changes:
 
 * The |UCSUMC| diagnostics module has seen several improvements.
 
-* |UCSUCS| has seen many internal changed to prepare the update to |UCSUCS| 5.2.
+* |UCSUCS| has seen many internal changes to prepare the update to |UCSUCS| 5.2.
 
 * The backup mechanism for Samba related files has been improved.
 

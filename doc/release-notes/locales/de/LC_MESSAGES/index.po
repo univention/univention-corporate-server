@@ -49,7 +49,7 @@ msgstr "Das |UCSUMC| Diagnose-Modul wurde an mehreren Stellen verbessert."
 
 #: ../../index.rst:24
 msgid ""
-"|UCSUCS| has seen many internal changed to prepare the update to |UCSUCS| "
+"|UCSUCS| has seen many internal changes to prepare the update to |UCSUCS| "
 "5.2."
 msgstr "|UCSUCS| wurde an mehreren Stellen auf das Update auf |UCSUCS| 5.2 vorbereitet."
 
