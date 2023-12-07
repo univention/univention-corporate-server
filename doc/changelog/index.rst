@@ -199,12 +199,6 @@ General
     (:uv:bug:`56777`)
 
 
-.. _maintained:
-
-* The following packages have been moved to the maintained repository of UCS:
-
-  :program:`py-lmdb` (:uv:bug:`53387`)
-
 .. _debian:
 
 * The following updated packages from Debian 10.13 are included:
@@ -279,27 +273,49 @@ General
   :program:`zbar`
   :program:`zookeeper`
 
+.. _maintained:
+
+* The following packages have been moved to the maintained repository of UCS:
+
+  :program:`py-lmdb` (:uv:bug:`53387`)
+
+.. _changelog-basis-ucr:
+
+Univention Configuration Registry
+=================================
+
 .. _changelog-basis-ucr-template:
 
 Changes to templates and modules
 --------------------------------
 
-* The config file :file:`/etc/selinux/config` has been added to disable SELinux.
+* The configuration file :file:`/etc/selinux/config` has been added to disable SELinux.
   SELinux is not supported by UCS (:uv:bug:`56005`).
+
+.. _changelog-domain-openldap:
+
+OpenLDAP
+========
 
 .. _changelog-domain-openldap-replication:
 
 Listener/Notifier domain replication
 ------------------------------------
 
-* Some new attributes that will be provided by OpenLDAPs ppolicy from version
+* Some new attributes that will be provided by OpenLDAPs :program:`ppolicy` from version
   2.5 on, were removed from the schema replication exclusion list, to allow
   interoperability with the new OpenLDAP version (:uv:bug:`56729`).
 
 * The script :command:`univention-directory-replication` created a temporary password
   file with a newline in it, which therefore contained an invalid password.
-  This resulted in slapd not being able to import a failed.ldif file on
-  startup. This fixes a regression from erratum 870 (:uv:bug:`56801`).
+  This resulted in :program:`slapd` not being able to import a file :file:`failed.ldif` on
+  startup. This fixes a regression from :uv:erratum:`5.0x870` (:uv:bug:`56801`).
+
+.. _changelog-umc:
+
+*****************************
+Univention Management Console
+*****************************
 
 .. _changelog-umc-web:
 
@@ -316,7 +332,7 @@ Univention Management Console web interface
   can be enabled via the |UCSUCRV| :envvar:`directory/manager/rest/html-view-
   enabled` (:uv:bug:`56714`).
 
-* Duplicate settings for the keycloak app have been removed from the theme
+* Duplicate settings for the Keycloak app have been removed from the theme
   styles (:uv:bug:`56548`).
 
 * The error handling for progress bars has been improved so that Apache
@@ -328,14 +344,10 @@ Univention Management Console web interface
 Univention Portal
 =================
 
-* The deletion of a user's profile picture via self-service has been repaired
+* The deletion of a user's profile picture via :program:`Self Service` has been repaired
   (:uv:bug:`56349`).
 
-* The labels of the self-service forms were always displayed in English when
-  they were accessed directly via URL without navigating through the portal.
-  They are now translated correctly (:uv:bug:`56660`).
-
-* The labels of the self-service forms were always displayed in English when
+* The labels of the :program:`Self Service` forms were always displayed in English when
   they were accessed directly via URL without navigating through the portal.
   They are now translated correctly (:uv:bug:`56660`).
 
@@ -349,15 +361,15 @@ Univention Management Console server
 
 * The detection of active requests has been corrected so that module processes
   cannot be exited anymore if there are still open requests. This was broken
-  since :uv:bug:`56198` erratum 721 (:uv:bug:`56575`).
+  since :uv:bug:`56198` :uv:erratum:`5.0x721` (:uv:bug:`56575`).
 
 * The configured maximum request body size is now respected (:uv:bug:`56510`).
 
 * The maximum number of parallel HTTP connections from the UMC-Server to UMC
   module processes has been raised from 10 to unlimited (:uv:bug:`56828`).
 
-* User preferences (such as favorite UMC modules) could not be set via old UMC
-  clients from UCS systems <= UCS 5.0-3. The functionality has been restored
+* User preferences (such as favorite |UCSUMC| modules) could not be set via old UMC
+  clients from UCS systems before UCS 5.0-3. The functionality has been restored
   (:uv:bug:`56753`).
 
 * Explicit defaults for cookie settings were added to
@@ -384,10 +396,10 @@ Univention App Center
 * Missing properties when creating or modifying objects via the UDM REST API
   are now correctly marked in the error response (:uv:bug:`56734`).
 
-* The unused UDM properties from nagios server have been marked as optional to
+* The unused UDM properties from Nagios server have been marked as optional to
   ease the upgrade to UCS 5.2 (:uv:bug:`56820`).
 
-* The Python 3.11 compatibiliy for timezone handling has been repaired
+* The Python 3.11 compatibility for timezone handling has been repaired
   (:uv:bug:`56514`).
 
 * The case sensitivity of the attribute ``memberUid`` is now respected when
@@ -398,8 +410,8 @@ Univention App Center
 Domain join module
 ==================
 
-* The joinscripts are now executed with umask 022 instead of the restrictive
-  umask 077 from the UMC-Server (:uv:bug:`53431`).
+* The join-scripts are now executed with ``umask 022`` instead of the restrictive
+  ``umask 077`` from the UMC Server (:uv:bug:`53431`).
 
 .. _changelog-umc-diagnostic:
 
@@ -409,13 +421,13 @@ System diagnostic module
 * Include new diagnostic module to check if PostgreSQL is migrated to version
   11 (:uv:bug:`56773`).
 
-* The "Success" text is no longer displayed when a check failed after all
+* The text :guilabel:`Success` is no longer displayed when a check failed after all
   checks have previously passed (:uv:bug:`56624`).
 
 .. _changelog-umc-quota:
 
-Filesystem quota module
-=======================
+File system quota module
+========================
 
 * Querying users for a partition runs into a timeout after 10 minutes when
   there are many users (:uv:bug:`56575`).
@@ -430,13 +442,13 @@ Univention base libraries
   file in the directory and there is already a local schema file with the same
   name which was not registered via LDAP (:uv:bug:`56857`).
 
-* The unused LDAP attributes from nagios server have been marked as optional to
+* The unused LDAP attributes from Nagios server have been marked as optional to
   ease the upgrade to UCS 5.2 (:uv:bug:`56820`).
 
-* Erratum 785 introduced a new mechanism in `ucs_registerLDAPExtension` to re-
+* :uv:erratum:`5.0x785` introduced a new mechanism in :command:`ucs_registerLDAPExtension` to re-
   trigger the activation of an LDAP ACL or schema extension by doing a trivial
   (i.e. no-op) LDAP modification. This failed on the Primary node due to
-  missing credentials. `ucs_registerLDAPExtension` has been fixed to use the
+  missing credentials. :command:`ucs_registerLDAPExtension` has been fixed to use the
   LDAP admin connection in this case (:uv:bug:`56698`).
 
 .. _changelog-deployment:
@@ -445,57 +457,59 @@ Univention base libraries
 Software deployment
 *******************
 
-* The software update module will not show `UCS 5.1-0` as available version for
+* The software update module will not show :guilabel:`UCS 5.1-0` as available version for
   upgrade because it is an intermediate version between UCS 5.0 and UCS 5.2 to
   which an upgrade will not be possible (:uv:bug:`56517`).
+
+.. _changelog-service:
+
+***************
+System services
+***************
 
 .. _changelog-service-saml:
 
 SAML
 ====
 
-* `univention-keycloak init` is now able to be executed again in case of a
-  failure during first initialization. The `--force` flag has been added to
+* :command:`univention-keycloak init` is now able to be executed again in case of a
+  failure during first initialization. The option ``--force`` has been added to
   force the rerun of the initialization (:uv:bug:`56791`).
 
 * A script which checks the migration status from SimpleSAMLPHP / OpenID
-  Connector Provider to Keycloak has been added to the `univention-keycloak`
-  package (:uv:bug:`56747`).
+  Connector Provider to Keycloak has been added to the package :program:`univention-keycloak`
+  (:uv:bug:`56747`).
 
-* The commands `messages` and `login-links` have been added to manage keycloak
+* The commands :command:`messages` and :command:`login-links` have been added to manage Keycloak
   message bundles and login links for the login page (:uv:bug:`56478`).
 
-* The Python 2.7 compatibility for the UCR template
-  "/etc/simplesamlphp/00authsources.php" has been restored (:uv:bug:`56588`).
+* The Python 2.7 compatibility for the |UCSUCR| template file
+  :file:`/etc/simplesamlphp/00authsources.php` has been restored (:uv:bug:`56588`) and was ported back to UCS 5.0-4 (:uv:bug:`56647`).
 
 * A workaround has been added which prevents a potential LDAP schema
   registration failure (:uv:bug:`56857`).
 
-* Erratum 881 broke mixed environments with UCS 4.4. Therefore the UDM modules
+* :uv:erratum:`5.0x881` broke mixed environments with UCS 4.4. Therefore the UDM modules
   are now only registered for UCS 5 based systems (:uv:bug:`56864`).
 
 * The LDAP schema and UDM modules are now registered in the LDAP and therefore
   replicated to all servers in the domain to ease the upgrade to UCS 5.2
   (:uv:bug:`56824`).
 
-* The Python 2.7 compatibility for the UCR template
-  `/etc/simplesamlphp/00authsources.php` has been restored in erratum 812, but
-  needs to be backported to UCS 5.0-4 (:uv:bug:`56647`).
-
 .. _changelog-service-mail:
 
 Mail services
 =============
 
-* The detection whether a user is a fetchmail user (by checking if they have a
-  mailPrimaryAddress) during modifications of users has been repaired.
-  Therefore when the mailPrimaryAddress is changed or removed the correct
-  changes are synchronized to fetchmail (:uv:bug:`56482`).
+* The detection whether a user is a :program:`Fetchmail` user (by checking if they have an attribute
+  ``mailPrimaryAddress``) during modifications of users has been repaired.
+  Therefore when the ``mailPrimaryAddress`` is changed or removed the correct
+  changes are synchronized to :program:`Fetchmail` (:uv:bug:`56482`).
 
-* Deleting fetchmail configurations of a user now correctly removes entries
-  from the fetchmailrc file in case they are the last ones (:uv:bug:`56426`).
+* Deleting :program:`Fetchmail` configurations of a user now correctly removes entries
+  from the file :file:`fetchmailrc` in case they are the last ones (:uv:bug:`56426`).
 
-* Narrowed down the conditions under which the listener module gets called
+* Narrowed down the conditions under which the |UCSUDL| module gets called
   (:uv:bug:`56586`).
 
 .. _changelog-service-pam:
@@ -503,79 +517,73 @@ Mail services
 PAM / Local group cache
 =======================
 
-* Future compatibility with `sudo` 1.9.4 has been added, where additional
-  environment variables need to be passed explicitly to subprocesses
+* Future compatibility with :program:`sudo` version 1.9.4 has been added, where additional
+  environment variables need to be passed explicitly to sub-processes
   (:uv:bug:`56579`).
+
+.. _changelog-win:
+
+********************
+Services for Windows
+********************
 
 .. _changelog-win-samba:
 
 Samba
 =====
 
-* `univention-samba4-backup` now uses the `samba-tool` backup command to create
-  a backup of the samba database and the syslog directory (:uv:bug:`56434`).
+* :command:`univention-samba4-backup` now uses the :command:`samba-tool` backup command to create
+  a backup of the Samba database and the directory :file:`syslog` (:uv:bug:`56434`).
 
-* The UCR variables `samba/database/backend/store` and
-  `samba/database/backend/store/size` have been added to configure the samba
-  database backend (tdb, mdb) before the initial setup, join or re-join
+* The |UCSUCRV|\ s :envvar:`samba/database/backend/store` and
+  :envvar:`samba/database/backend/store/size` have been added to configure the Samba
+  database backend (``tdb`` or ``mdb``) before the initial setup, join or re-join
   (:uv:bug:`56401`).
 
-* `python3-lmdb` has been added as recommended package (:uv:bug:`53387`).
+* The Samba package now recommends the package :program:`python3-lmdb` (:uv:bug:`53387`).
 
-* Under certain conditions, installation of `univention-samba4` aborted because
-  of a missing package dependency on a specific version of `samba-dsdb-
-  modules`, when an older version of that package was already installed. This
-  is addressed by making `univention-samba4` depend on the metapackage `samba-
-  ad-dc` instead, and letting that manage a versioned dependency on `samba-
-  dsdb-modules`. This simplifies the package depenencies (:uv:bug:`56794`).
+* Under certain conditions, installation of the package :program:`univention-samba4` aborted because of a missing package dependency on a specific version of :program:`samba-dsdb-modules`, when an older version of that package was already installed.
+  This is addressed by making the package :program:`univention-samba4` depend on the meta-package :program:`samba-ad-dc` instead, and letting that manage a versioned dependency on :program:`samba-dsdb-modules`.
+  This simplifies the package dependencies (:uv:bug:`56794`).
 
-* The package `samba-ad-dc` now depends on a specific version of `samba-dsdb-
-  modules`, to upgrade the initially installed version to the one required
-  during installation. This addresses issues when an iso was used for
-  installation that did not already include the latest samba provided by an
-  errata update (:uv:bug:`56794`).
+* The package :program:`samba-ad-dc` now depends on a specific version of :program:`samba-dsdb-modules` to upgrade the initially installed version to the one required during installation.
+  This addresses issues when an ISO was used for installation that did not already include the latest Samba provided by errata updates (:uv:bug:`56794`).
 
-* Symbolic links in the sysvol directory will no longer break the samba backup
-  tool (:uv:bug:`56866`).
+* The package :program:`samba-ad-dc` now depends on a specific version of :program:`samba-ad-provision`, instead of only recommending it.
+  This addresses issues when installing directly from the UCS 5.0-6 ISO image (:uv:bug:`56870`).
 
-* The package `samba-ad-dc` now depends on a specific version of `samba-ad-
-  provision`, instead of only recommending it. This addresses issues when
-  instaling directly from the iso that will be released for UCS 5.0-6
-  (:uv:bug:`56870`).
+* The modified dependency of :program:`univention-samba4` on :program:`samba-ad-dc` introduced by :uv:erratum:`5.0x890` caused :program:`libnss-winbind` to be installed.
+  This package modified file:`/etc/nsswitch.conf` adding ``winbind`` to it. This has been reverted (:uv:bug:`56885`).
 
-* The modified dependency of `univention-samba4` on `samba-ad-dc` introduced by
-  erratum #890 caused `libnss-winbind` to be installed. This package modified
-  `/etc/nsswitch.conf` adding `winbind` to it. This update reverts that change
-  (:uv:bug:`56885`).
+* Symbolic links in the directory :file:`sysvol` will no longer break the Samba backup tool (:uv:bug:`56866`).
 
 .. _changelog-win-s4c:
 
 Univention S4 Connector
 =======================
 
-* Starting with UCS 5.0 the S4-Connector converted Posix-only groups to Samba
+* Starting with UCS 5.0 the |UCSS4c| converted POSIX-only groups to Samba
   groups. This was a regression compared to the behavior in UCS 4.4. Now the
-  mapping offers a new key `auto_enable_udm_option` that is disabled by default
-  and is only activated for the UDM property `userCertificate`, allowing
+  mapping offers a new key ``auto_enable_udm_option`` that is disabled by default
+  and is only activated for the UDM property ``userCertificate``, allowing
   changes of UDM object options just in that special case (:uv:bug:`56772`).
 
-* Future compatibility for python3-ldap >= 4 has been added (:uv:bug:`56603`).
+* Future compatibility for :program:`python3-ldap` >= 4 has been added (:uv:bug:`56603`).
 
-* Future compatibility for python3-samba has been added (:uv:bug:`56537`).
+* Future compatibility for :program:`python3-samba` has been added (:uv:bug:`56537`).
 
 .. _changelog-win-adc:
 
 Univention Active Directory Connection
 ======================================
 
-* During synchonization from an MS AD forest child domain, the connector may
+* During synchronization from an MS AD forest child domain, the |UCSADC| may
   receive DNs that refer to objects outside the scope of the child domain. In
   that case it receives an LDAP referral which caused a python traceback. The
-  AD-Connector now skips referrals to objects and logs an informative message
+  |UCSADC| now skips referrals to objects and logs an informative message
   instead (:uv:bug:`56792`).
 
-* The AD-Connector failed to handle forest child domains. This has been fixed
-  (:uv:bug:`53944`).
+* The |UCSADC| failed to handle forest child domains (:uv:bug:`53944`).
 
-* Future compatibility for python3-ldap >= 4 has been added (:uv:bug:`56603`).
+* Future compatibility for :program:`python3-ldap` >= 4 has been added (:uv:bug:`56603`).
 
