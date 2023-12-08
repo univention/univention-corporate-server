@@ -625,7 +625,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     except LookupError:
                         obj = objlist['etc/' + shortconffn][0]
             except LookupError:
-                self.debug(f'"{conffn}" not found in {objlist.keys()!r}')
+                self.debug(f'"{shortconffn}" not found in {objlist.keys()!r}')
             else:
                 conffnfound = True
                 notregistered: list[str] = []
