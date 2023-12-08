@@ -456,6 +456,10 @@ Univention base libraries
   missing credentials. :command:`ucs_registerLDAPExtension` has been fixed to use the
   LDAP admin connection in this case (:uv:bug:`56698`).
 
+* The program :program:`univention-backup2master` has been improved and handles more corner-cases correctly.
+  Entries of other hosts are now skipped, whose name only contains the name of the old Primary as a sub-string.
+  Handling of shares, mail, host, and service records has been reworked (:uv:bug:`46062`).
+
 .. _changelog-deployment:
 
 *******************

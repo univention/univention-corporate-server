@@ -1,3 +1,9 @@
+univention-ldap (16.0.14-2) unstable; urgency=low
+
+  * Bug #46062: Fix univention-backup2master
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Dec 2023 00:04:57 +0100
+
 univention-ldap (16.0.14-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
