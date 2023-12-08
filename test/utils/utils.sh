@@ -468,13 +468,13 @@ wait_for_repo_server () {
 
 install_ucs_test () {
 	wait_for_repo_server || return 1
-	install_with_unmaintained ucs-test
+	install_with_unmaintained ucs-test "$@"
 }
 
 install_ucs_test_from_errata_test () {
 	wait_for_repo_server || return 1
 	/root/activate-errata-test-scope.sh || return 1
-	install_ucs_test
+	install_ucs_test "$@"
 }
 
 install_ucs_test_checks_from_errata_test () {
@@ -865,17 +865,17 @@ set_administrator_dn_for_ucs_test () {
 }
 
 set_administrator_password_for_ucs_test () {
-	local password="${1?password}"
-	ucr set tests/domainadmin/pwd="$password" tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile"
-	mkdir -p /var/lib/ucs-test/
-	printf '%s' "$password" >/var/lib/ucs-test/pwdfile
+	local password="${1?password}" FN='/var/lib/ucs-test/pwdfile'
+	install -m 0755 -o root -g root -d "${FN%/*}"
+	printf '%s' "$password" >"$FN"
+	ucr set tests/domainadmin/pwd="$password" tests/domainadmin/pwdfile?"$FN"
 }
 
 set_root_password_for_ucs_test () {
-	local password="${1?password}"
-	ucr set tests/root/pwd="$password" tests/root/pwdfile?"/var/lib/ucs-test/root-pwdfile"
-	mkdir -p /var/lib/ucs-test/
-	printf '%s' "$password" >/var/lib/ucs-test/root-pwdfile
+	local password="${1?password}" FN='/var/lib/ucs-test/root-pwdfile'
+	install -m 0755 -o root -g root -d "${FN%/*}"
+	printf '%s' "$password" >"$FN"
+	ucr set tests/root/pwd="$password" tests/root/pwdfile?"$FN"
 }
 
 set_windows_localadmin_password_for_ucs_test () {
