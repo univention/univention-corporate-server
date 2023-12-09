@@ -1,3 +1,9 @@
+ucslint (9.0.4-2) unstable; urgency=medium
+
+  * Bug #55668: add basis to execute ucslint with pre-commit
+
+ -- Florian Best <best@univention.de>  Sat, 09 Dec 2023 10:28:52 +0100
+
 ucslint (9.0.4-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
