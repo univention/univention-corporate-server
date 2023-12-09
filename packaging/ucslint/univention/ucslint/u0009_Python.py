@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -31,6 +33,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from pathlib import Path
 from typing import Iterable
 
@@ -110,3 +113,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     continue
 
                 self.addmsg('0009-10', f'invalid Python string literal: {txt}', fn, row, col)
+
+
+def main():
+    import univention.ucslint.main as uum
+    sys.exit(uum.run(UniventionPackageCheck))
+
+
+if __name__ == '__main__':
+    main()

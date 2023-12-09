@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -803,3 +805,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0004-31', 'odd number of @!@ markers', fn)
         if count_var % 2:
             self.addmsg('0004-32', 'odd number of @%@ markers', fn)
+
+
+def main():
+    import univention.ucslint.main as uum
+    sys.exit(uum.run(UniventionPackageCheck))
+
+
+if __name__ == '__main__':
+    main()

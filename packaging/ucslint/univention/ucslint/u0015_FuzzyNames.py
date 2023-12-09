@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -31,6 +33,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from itertools import chain
 from pathlib import Path
 from typing import Any, Iterable, Iterator
@@ -196,3 +199,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             except UnicodeDecodeError:
                 # Silently skip binary files
                 pass
+
+
+def main():
+    import univention.ucslint.main as uum
+    sys.exit(uum.run(UniventionPackageCheck))
+
+
+if __name__ == '__main__':
+    main()

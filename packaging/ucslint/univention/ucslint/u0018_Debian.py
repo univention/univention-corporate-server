@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -33,6 +35,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from itertools import cycle
 from pathlib import Path
 from shlex import split
@@ -452,3 +455,12 @@ class Version:
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}({self.__str__()!r})'
+
+
+def main():
+    import univention.ucslint.main as uum
+    sys.exit(uum.run(UniventionPackageCheck))
+
+
+if __name__ == '__main__':
+    main()

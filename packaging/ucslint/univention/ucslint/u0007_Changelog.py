@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -31,6 +33,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from email.utils import mktime_tz, parsedate_tz
 from pathlib import Path
 from typing import Iterable
@@ -104,3 +107,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         self.addmsg('0007-6', f'old not strict-monotonically increasing by version: {last.version} <= {block.version}', fn)
 
             last = block
+
+
+def main():
+    import univention.ucslint.main as uum
+    sys.exit(uum.run(UniventionPackageCheck))
+
+
+if __name__ == '__main__':
+    main()

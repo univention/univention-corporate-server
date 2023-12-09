@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -32,6 +34,7 @@ from __future__ import annotations
 
 import re
 import subprocess
+import sys
 from pathlib import Path
 from typing import Iterable
 
@@ -117,3 +120,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     continue
 
                 self.addmsg('0013-4', f'unquoted local variable: {line}', fn, row)
+
+
+def main():
+    import univention.ucslint.main as uum
+    sys.exit(uum.run(UniventionPackageCheck))
+
+
+if __name__ == '__main__':
+    main()

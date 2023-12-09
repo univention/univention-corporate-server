@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -32,6 +34,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from pathlib import Path
 from typing import Iterable
 
@@ -86,3 +89,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for fn in paths:
             if fn.suffix == '.univention-baseconfig':
                 self.addmsg('0016-6', 'Use of deprecated "debian/*.univention-baseconfig"', fn)
+
+
+def main():
+    import univention.ucslint.main as uum
+    sys.exit(uum.run(UniventionPackageCheck))
+
+
+if __name__ == '__main__':
+    main()

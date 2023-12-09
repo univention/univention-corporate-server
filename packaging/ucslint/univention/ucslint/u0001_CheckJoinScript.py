@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -31,6 +33,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from enum import IntFlag
 from itertools import chain
 from pathlib import Path
@@ -298,3 +301,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.addmsg('0001-17', 'Unjoin script seems not to be called in any postrm file', js)
             if missing & JSS.COPIED and js.suffix == '.uinst':
                 self.addmsg('0001-18', 'Unjoin script seems not to be copied in any prerm file', js)
+
+
+def main():
+    import univention.ucslint.main as uum
+    sys.exit(uum.run(UniventionPackageCheck))
+
+
+if __name__ == '__main__':
+    main()
