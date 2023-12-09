@@ -1,0 +1,6 @@
+#!/usr/bin/python3
+
+from univention.ucslint.main import main
+
+
+main()

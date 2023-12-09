@@ -49,7 +49,7 @@ tmpresult="$tmpdir/result"
 tmpdiff="$tmpdir/diff"
 tmperr="$tmpdir/err"
 
-BINPATH="$PWD/univention/ucslint/main.py"
+BINPATH="$PWD/ucslint"
 
 match () {
     local arg name="$1"
