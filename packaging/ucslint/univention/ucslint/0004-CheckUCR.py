@@ -360,7 +360,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         try:
             rules_content = fn_rules.read_text()
         except OSError:
-            self.addmsg('0004-2', 'file is missing', fn_rules)
+            if self.path != Path('/'):
+                self.addmsg('0004-2', 'file is missing', fn_rules)
             rules_content = ''
 
         if 'univention-install-baseconfig' in rules_content:
@@ -735,7 +736,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 else:
                     if not any(conffiles[fn][typ] for typ in ('headerfound', 'ucrwarning')):
                         self.addmsg('0004-16', 'UCR header is missing', fn)
-                self.test_marker(self.path / 'conffiles' / tmplfn)
+                if self.path != Path('/'):
+                    self.test_marker(self.path / 'conffiles' / tmplfn)
 
         # Part2: subfile templates
         for mfn, items in all_subfiles.items():

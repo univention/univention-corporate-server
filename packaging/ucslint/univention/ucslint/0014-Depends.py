@@ -184,6 +184,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         self.check_files([])
 
     def check_files(self, paths: Iterable[Path]) -> None:
+        if self.path == Path('/'):
+            return
         fn_control = self.path / 'debian' / 'control'
         self.debug(f'Reading {fn_control}')
         try:

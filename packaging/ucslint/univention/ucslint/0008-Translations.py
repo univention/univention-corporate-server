@@ -77,12 +77,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         ))
 
     def check_files(self, paths: Iterable[Path]) -> None:
-        self.check_py(python_files(self.path))
+        # TODO: split into 3 modules
+        if self.path != Path('/'):
+            self.check_py(python_files(self.path))
         self.check_po([po_file for po_file in paths if po_file.suffix == '.po'])
-        self.check_names(uub.FilteredDirWalkGenerator(
-            self.path,
-            ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES | uub.FilteredDirWalkGenerator.DOCUMENTATION_SUFFIXES,
-        ))
+        if self.path != Path('/'):
+            self.check_names(uub.FilteredDirWalkGenerator(
+                self.path,
+                ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES | uub.FilteredDirWalkGenerator.DOCUMENTATION_SUFFIXES,
+            ))
 
     def check_py(self, py_files: Iterable[Path]) -> None:
         """Check Python files."""

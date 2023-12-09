@@ -75,6 +75,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         self.check_files([])
 
     def check_files(self, paths: Iterable[Path]) -> None:
+        if self.path == Path('/'):
+            return
         fn_changelog = self.path / 'debian' / 'changelog'
         try:
             with fn_changelog.open() as fd:

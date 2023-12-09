@@ -89,7 +89,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     self.addmsg('0010-6', 'not machine-readable DEP-5', fn)
             check_files.append(fn)
         except OSError:
-            self.addmsg('0010-5', 'file is missing', fn)
+            if self.path != Path('/'):
+                self.addmsg('0010-5', 'file is missing', fn)
 
         for fn in paths:
             # looking for files below debian/
