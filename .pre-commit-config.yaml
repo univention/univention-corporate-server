@@ -124,18 +124,18 @@ repos:
                  "
       - id: ucslint-0011-control
         exclude: "^doc/developer-reference/.*$"
-      # - id: ucslint-0013-bashism  # too slow
-      #   exclude: "^base/univention-lib/shell/base.sh$\
-      #             |services/univention-samba4/lib/base.sh$\
-      #             |test/product-tests/component/openid-connect.sh$\
-      #             |test/scenarios/veyon/utils-veyon.sh$\
-      #             |test/ucs-test/lib/ldap.sh$\
-      #             |test/ucs-test/lib/samba.sh$\
-      #             |test/ucs-test/tests/09_updater/pool.sh$\
-      #             |test/ucs-test/tests/52_s4connector/s4connector.sh$\
-      #             |test/utils/base_appliance.sh$\
-      #             |test/utils/ram/utils-ram.sh$\
-      #            "
+      - id: ucslint-0013-bashism  # too slow
+        exclude: "^base/univention-lib/shell/base.sh$\
+                  |services/univention-samba4/lib/base.sh$\
+                  |test/product-tests/component/openid-connect.sh$\
+                  |test/scenarios/veyon/utils-veyon.sh$\
+                  |test/ucs-test/lib/ldap.sh$\
+                  |test/ucs-test/lib/samba.sh$\
+                  |test/ucs-test/tests/09_updater/pool.sh$\
+                  |test/ucs-test/tests/52_s4connector/s4connector.sh$\
+                  |test/utils/base_appliance.sh$\
+                  |test/utils/ram/utils-ram.sh$\
+                 "
       - id: ucslint-0014-depends  # requires to be run on the same Debian version
       - id: ucslint-0015-fuzzy-names
       - id: ucslint-0016-deprecated
