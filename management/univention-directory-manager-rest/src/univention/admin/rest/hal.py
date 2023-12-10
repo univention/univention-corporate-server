@@ -36,8 +36,8 @@
 
 class HAL:
 
-    def content_negotiation_hal_json(self, response):
-        data = self.content_negotiation_json(response)
+    def content_negotiation_hal_json(self, response, data):
+        data = self.content_negotiation_json(response, data)
         self.set_header('Content-Type', 'application/hal+json')
         return data
 
