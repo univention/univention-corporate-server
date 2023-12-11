@@ -136,3 +136,5 @@ Subsequently, the LDAP directory on the new |UCSPRIMARYDN| and the |UCSUCR|
 values on all UCS systems of the domain should be checked for any remaining
 references to the hostname or the IP address of the old |UCSPRIMARYDN|. Those
 references need to be adjusted to the new |UCSPRIMARYDN|, too.
+
+For additional details, see :uv:help:`How To: backup2master <19514>`.

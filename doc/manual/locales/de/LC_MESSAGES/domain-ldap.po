@@ -442,6 +442,10 @@ msgstr ""
 "auf den Namen und die IP-Adresse des alten |UCSPRIMARYDN| überprüft und "
 "diese angepasst werden."
 
+#: ../../domain-ldap/backup2master.rst:140
+msgid "For additional details, see :uv:help:`How To: backup2master <19514>`."
+msgstr "Für weitere Hinweise, siehe :uv:help:`How To: backup2master <19514>`."
+
 #: ../../domain-ldap/domain-join.rst:8
 msgid "Joining domains"
 msgstr "Domänenbeitritt"
