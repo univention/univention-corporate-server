@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-03-13 16:06+0100\n"
+"POT-Creation-Date: 2023-12-11 13:12+0000\n"
 "PO-Revision-Date: 2023-03-13 15:12+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -28,7 +28,7 @@ msgstr "%d Objekte sollten \"%s\" sein"
 msgid "%d of the configured nameservers are not responding to DNS queries."
 msgstr "%d der konfigurierten Nameserver anworten nicht auf DNS-Anfragen."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:117
+#: umc/python/diagnostic/plugins/30_disk_usage.py:128
 #, python-format
 msgid "- Disk for mountpoint %(mp)s is %(pc)s%% full."
 msgstr "- Festplatte für Moint Point %(mp)s ist %(pc)s%% voll."
@@ -83,14 +83,25 @@ msgstr "Alle SIDs existieren und die Namen sind konsistent."
 msgid "All SSL certificates valid."
 msgstr "Alle SSL Zertifikate sind gültig."
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:50
 #: umc/python/diagnostic/plugins/54_sources_list_check.py:45
+#: umc/python/diagnostic/plugins/31_file_permissions.py:50
 msgid "All files ok."
 msgstr "Alle Dateien in Ordnung."
 
 #: umc/python/diagnostic/plugins/52_mail_acl_sync.py:50
 msgid "All shared folder ACLs are in sync with UDM."
 msgstr "Alle ACL Einträge der globalen IMAP Ordner stimmen mit UDM überein."
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:48
+#, python-brace-format
+msgid ""
+"As of UCS {ucs[0]}.{ucs[1]}, PostgreSQL {postgresql_version[0]} should be "
+"used.\n"
+"This step has to be performed manually as described in"
+msgstr ""
+"Ab UCS {ucs[0]}.{ucs[1]} sollte PostgreSQL Version {postgresql_version[0]} "
+"sein.\n"
+"Dieser Schritt muss manuell durchgeführt werden, wie in"
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:63
 msgid ""
@@ -151,6 +162,10 @@ msgstr "Überprüfe den Samba Replikations Status"
 #: umc/python/diagnostic/plugins/64_check_ucr_types.py:50
 msgid "Check UCR variable values for correctness"
 msgstr "Überprüfe Werte der UCR Variablen auf Korrektheit"
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:47
+msgid "Check currently installed PostgreSQL version"
+msgstr "Überprüfe aktuell installierte PostgreSQL Version"
 
 #: umc/python/diagnostic/plugins/54_sources_list_check.py:44
 msgid "Check errors in sources.list files"
@@ -241,7 +256,8 @@ msgstr ""
 msgid "Cleanup of deprecated variables is executed !"
 msgstr "Die Korrektur der veralteten Variablen wird ausgeführt !"
 
-#: umc/python/diagnostic/plugins/59_ldap_server_name.py:84
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:84
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:81
 msgid "Deactivate test"
 msgstr "Test deaktivieren"
 
@@ -297,6 +313,10 @@ msgid "File {path!r} has owner {actual!r} while {expected!r} was expected."
 msgstr ""
 "Datei {path!r} hat den Besitzer {actual!r}, während {expected!r} erwartet "
 "war."
+
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:80
+msgid "Fix Primary LDAP server configuration"
+msgstr "Korrigier primären LDAP-Server Konfiguration"
 
 #: umc/python/diagnostic/plugins/00_check_server_password.py:144
 msgid "Fix machine password"
@@ -503,12 +523,16 @@ msgstr "Mehrere ACL Einträge für {id!r} in UDM."
 msgid "Nameserver(s) are not responsive"
 msgstr "Nameserver sind nicht ansprechbar"
 
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:84
+msgid "No PostgreSQL version found."
+msgstr "Keine PostgreSQL-Version gefunden."
+
 #: umc/python/diagnostic/plugins/43_connectors4_rejects.py:44
 msgid "No S4 Connector rejects were found."
 msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:56
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:40
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:56
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
 
@@ -604,8 +628,8 @@ msgstr ""
 "({estring})."
 
 #: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:58
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:54
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:54
 #, python-brace-format
 msgid "Output of `{cmd}`:"
 msgstr "Ausgabe von `{cmd}`:"
@@ -671,6 +695,15 @@ msgstr "Siehe {sdb} für Problemhilfe bei DNS Problemen."
 #, python-brace-format
 msgid "Please see {sdb} on how to renew certificates."
 msgstr "Siehe {sdb} für Informationen zum Erneuern von Zertifikaten."
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:88
+#, python-brace-format
+msgid "PostgreSQL version is {current}, should be {desired}."
+msgstr "PostgreSQL Version ist {current}, sollte {desired} sein."
+
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:43
+msgid "Primary LDAP server check"
+msgstr "Überprüfung des primären LDAP-Servers"
 
 #: umc/python/diagnostic/plugins/12_proxy.py:46
 msgid "Proxy server failure"
@@ -805,7 +838,7 @@ msgstr "Einige UCR-Variablen haben momentan ungültige Werte."
 msgid "Some UCR variables for the repository configuration are deprecated."
 msgstr "Einige UCR Variablen für die Repository Konfiguration sind veraltet."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:126
+#: umc/python/diagnostic/plugins/30_disk_usage.py:137
 msgid "Some disks are nearly full:"
 msgstr "Einige Festplatten sind beinahe voll:"
 
@@ -952,6 +985,10 @@ msgstr "Die Migration ist fehlgeschlagen:"
 msgid "The migration failed: %s"
 msgstr "Die Migration schlug fehl: %s"
 
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:60
+msgid "The migration status can be checked by executing: pg_lsclusters -h."
+msgstr "Der Migrationsstatus kann mit `pg_lsclusters -h` überprüft werden."
+
 #: umc/python/diagnostic/plugins/11_nameserver.py:74
 #, python-format
 msgid "The nameserver %(nameserver)s (UCR variable %(var)r) is not responsive:"
@@ -971,7 +1008,16 @@ msgstr ""
 "Der bevorzugte Weg ist mittlerweise, sie im LDAP zu registrieren; das ist in "
 "Situationen wie backup2master weniger fehleranfällig."
 
-#: umc/python/diagnostic/plugins/59_ldap_server_name.py:86
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:90
+#, python-format
+msgid ""
+"The primary LDAP Server of this System (UCR ldap/master) is not set to the "
+"Primary Directory Node of this UCS domain (%s)."
+msgstr ""
+"Der primäre LDAP-Server dieses Systems (UCR ldap/master) ist nicht auf den "
+"Primary Directory Node der UCS Umgebung konfiguriert (%s)."
+
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:83
 #, python-format, python-brace-format
 msgid ""
 "The primary LDAP Server of this System (UCR ldap/server/name) is set to the "
@@ -1235,6 +1281,10 @@ msgstr "Protokollversion anpassen"
 msgid "Updated versions will be named FILENAME.dpkg-*."
 msgstr "Aktualisierte Versionen werden DATEINAME.dpkg-* genannt."
 
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:57
+msgid "Updating from PostgreSQL 9.6 or 9.4 to PostgreSQL 11"
+msgstr "Aktualisierung von PostgreSQL 9.6 oder 9.4 auf PostgreSQL 11"
+
 #: umc/python/diagnostic/plugins/64_check_ucr_types.py:55
 #, python-brace-format
 msgid "Use the module {ucr} to correct their values."
@@ -1309,7 +1359,7 @@ msgid "You can run `samba-tool dbcheck --fix` to fix the issue."
 msgstr ""
 "Sie können `samba-tool dbcheck --fix` ausführen um die Probleme zu beheben."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:133
+#: umc/python/diagnostic/plugins/30_disk_usage.py:144
 msgid "You have configured some high log levels."
 msgstr "Sie haben erhöhten Detailgrad für Logmeldungen eingestellt."
 
@@ -1321,16 +1371,16 @@ msgstr ""
 "Um den Paketstatus zu korrigieren, loggen Sie sich am System per ssh als "
 "root ein und führen Sie das Kommando \"dpkg --configure -a\" aus."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:110
+#: umc/python/diagnostic/plugins/30_disk_usage.py:121
 msgid "You may want to move /var/log to another disk or storage."
 msgstr ""
 "Sie können /var/log auf eine andere Festplatte oder Speicher verschieben."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:112
+#: umc/python/diagnostic/plugins/30_disk_usage.py:123
 msgid "You may want to move the local repository to another server."
 msgstr "Sie können lokale Repositorys auf einen anderen Server auslagern."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:133
+#: umc/python/diagnostic/plugins/30_disk_usage.py:144
 #, python-brace-format
 msgid "You may want to reset them via {ucr}."
 msgstr "Sie können sie per {ucr} zurück setzen."
@@ -1340,7 +1390,7 @@ msgstr "Sie können sie per {ucr} zurück setzen."
 msgid "You may want to stop Heimdal KDC and restart Samba via {services}"
 msgstr "Sie können Heimdal KDC per {services} stoppen und Samba neu starten."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:108
+#: umc/python/diagnostic/plugins/30_disk_usage.py:119
 msgid "You may want to uninstall software via {appcenter:appcenter}."
 msgstr "Sie können per {appcenter:appcenter} Software entfernen."
 
@@ -1477,38 +1527,5 @@ msgstr ""
 "um die Konfiguration zu korrigieren und die überflüssigen Variablen zu "
 "löschen."
 
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:77
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:82
-#, python-brace-format
-msgid "PostgreSQL version is {current}, should be {desired}."
-msgstr "PostgreSQL Version ist {current}, sollte {desired} sein."
-
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:81
-msgid "PostgreSQL version is up-to-date, but is not online."
-msgstr "PostgreSQL Version ist aktuell, aber nicht online."
-
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:67
-msgid "No PostgreSQL version found."
-msgstr "Keine PostgreSQL-Version gefunden."
-
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:55
-msgid "Updating from PostgreSQL 9.6 or 9.4 to PostgreSQL 11"
-msgstr "Aktualisierung von PostgreSQL 9.6 oder 9.4 auf PostgreSQL 11"
-
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:47
-msgid "Check currently installed PostgreSQL version"
-msgstr "Überprüfe aktuell installierte PostgreSQL Version"
-
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:48
-#, python-brace-format
-msgid ""
-"As of UCS {ucs[0]}.{ucs[1]}, PostgreSQL {postgresql_version[0]} should be used.\n"
-"This step has to be performed manually as described in"
-msgstr ""
-"Ab UCS {ucs[0]}.{ucs[1]} sollte PostgreSQL Version {postgresql_version[0]} sein.\n"
-"Dieser Schritt muss manuell durchgeführt werden, wie in"
-
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:58
-msgid "The migration status can be checked by executing: pg_lsclusters -h."
-msgstr "Der Migrationsstatus kann mit `pg_lsclusters -h` überprüft werden."
-
+#~ msgid "PostgreSQL version is up-to-date, but is not online."
+#~ msgstr "PostgreSQL Version ist aktuell, aber nicht online."

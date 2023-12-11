@@ -1,8 +1,9 @@
-univention-management-console-module-diagnostic (6.0.7-1) UNRELEASED; urgency=medium
+univention-management-console-module-diagnostic (6.0.7-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #48548: Check UCRV ldap/master
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:32 +0100
+ -- Philipp Hahn <hahn@univention.de>  Mon, 11 Dec 2023 14:21:54 +0100
 
 univention-management-console-module-diagnostic (6.0.6-6) unstable; urgency=low
 

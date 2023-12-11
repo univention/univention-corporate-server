@@ -427,6 +427,8 @@ System diagnostic module
 * The text :guilabel:`Success` is no longer displayed when a check failed after all
   checks have previously passed (:uv:bug:`56624`).
 
+* Include new diagnostic module to check the correct setting of |UCSCRV| :envvar:`ldap/master` (:uv:bug:`48548`).
+
 .. _changelog-umc-quota:
 
 File system quota module
