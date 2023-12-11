@@ -3,7 +3,7 @@ release: "5.0"
 version: [5, 6]
 scope: ucs_5.0-0-errata5.0-6
 src: univention-keycloak
-fix: 1.0.10-2
+fix: 1.0.10-3
 desc: |
  This update addresses the following issues:
  * The package `univention-keycloak` ships the command line
@@ -13,4 +13,7 @@ desc: |
    keycloak app before the update has been dropped. The update
    to UCS 5.2 will be possible without the installation of the
    keycloak app.
-bug: [56888]
+ * Commands to manage proxy realms (supplemental logical IDP's
+   in keycloak that authenticate users on the default IDP) have
+   been added to `univention-keycloak`.
+bug: [56888, 56884]

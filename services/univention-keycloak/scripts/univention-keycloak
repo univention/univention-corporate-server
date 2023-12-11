@@ -43,6 +43,7 @@ from base64 import b64decode
 from collections import namedtuple
 from enum import Enum
 from os.path import exists
+from ssl import DER_cert_to_PEM_cert
 from subprocess import PIPE, Popen
 from typing import Dict
 from urllib.parse import quote, urljoin
@@ -416,6 +417,318 @@ def extract_endpoints_xml(metadata_url, metadata_file, no_ssl_verify):
 
     endpoints = {"logout": logout_endpoint, "acs": acs_endpoint}
     return endpoints
+
+
+def get_realms(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    realms = session.get_realms()
+    if not opt.all:
+        realms = [x["realm"] for x in realms]
+    _print_json(opt.json, realms)
+
+
+def _get_proxy_realm(session: UniventionKeycloakAdmin) -> list:
+    """proxy realms are realms with exactly one IDP called ucs-oidc"""
+    realms = [
+        x for x in session.get_realms()
+        if x.get("identityProviders")
+        if len(x["identityProviders"]) == 1
+        if x["identityProviders"][0].get("alias") == "ucs-oidc"
+    ]
+    return realms
+
+
+def get_proxy_realm(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    realms = _get_proxy_realm(session)
+    if not opt.all:
+        realms = [{"id": x["realm"]} for x in realms]
+    if opt.certificate:
+        for realm in realms:
+            url = f"{session.server_url}/realms/{realm['id']}/protocol/saml/descriptor"
+            descriptor = requests.get(url)
+            xml = ElementTree.fromstring(descriptor.content)
+            cert = xml.find('.//{http://www.w3.org/2000/09/xmldsig#}X509Certificate').text
+            realm["certificate"] = cert
+    _print_json(opt.json, realms)
+
+
+def _create_proxy_realm_oidc_client(session: UniventionKeycloakAdmin) -> str:
+    name = "proxy-realm-client"
+    payload = {
+        "clientId": name,
+        "name": "",
+        "description": "",
+        "rootUrl": "",
+        "adminUrl": "",
+        "baseUrl": "",
+        "enabled": True,
+        "alwaysDisplayInConsole": False,
+        "clientAuthenticatorType": "client-secret",
+        "redirectUris": [
+            "https://*"
+        ],
+        "webOrigins": [
+            ""
+        ],
+        "notBefore": 0,
+        "bearerOnly": False,
+        "consentRequired": False,
+        "standardFlowEnabled": True,
+        "implicitFlowEnabled": False,
+        "directAccessGrantsEnabled": False,
+        "serviceAccountsEnabled": False,
+        "publicClient": False,
+        "frontchannelLogout": True,
+        "protocol": "openid-connect",
+        "fullScopeAllowed": True,
+        "protocolMappers": [
+            {
+                "name": "uid",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-usermodel-attribute-mapper",
+                "consentRequired": False,
+                "config": {
+                    "userinfo.token.claim": "true",
+                    "user.attribute": "uid",
+                    "id.token.claim": "true",
+                    "access.token.claim": "true",
+                    "claim.name": "uid",
+                    "jsonType.label": "String"
+                }
+            },
+            {
+                "name": "entryUUID",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-usermodel-attribute-mapper",
+                "consentRequired": False,
+                "config": {
+                    "userinfo.token.claim": "true",
+                    "user.attribute": "entryUUID",
+                    "id.token.claim": "true",
+                    "access.token.claim": "true",
+                    "claim.name": "entryUUID",
+                    "jsonType.label": "String"
+                }
+            }
+        ]
+    }
+    session.create_client(payload=payload, skip_exists=True)
+    secret = next(x["secret"] for x in session.get_clients() if x.get("clientId") == name)
+    return secret
+
+
+def _create_proxy_realm(session: UniventionKeycloakAdmin, name: str, secret: str) -> str:
+    default_realm = f"{session.server_url}realms/{session.realm_name}"
+    payload = {
+        "id": name,
+        "realm": name,
+        "enabled": True,
+        "internationalizationEnabled": True,
+        "adminTheme": "keycloak",
+        "accountTheme": "keycloak",
+        "emailTheme": "keycloak",
+        "loginTheme": "UCS",
+        "browserSecurityHeaders": {
+            "contentSecurityPolicyReportOnly": "",
+            "xContentTypeOptions": "nosniff",
+            "xRobotsTag": "none",
+            "xFrameOptions": "",  # we want to overwrite default value, which is: SAMEORIGIN
+            "xXSSProtection": "1; mode=block",
+            "strictTransportSecurity": "max-age=31536000; includeSubDomains",
+        },
+        "identityProviders": [
+            {
+                "alias": "ucs-oidc",
+                "displayName": "",
+                "providerId": "oidc",
+                "enabled": True,
+                "updateProfileFirstLoginMode": "on",
+                "trustEmail": False,
+                "storeToken": False,
+                "addReadTokenRoleOnCreate": False,
+                "authenticateByDefault": False,
+                "linkOnly": False,
+                "config": {
+                    "userInfoUrl": f"{default_realm}/protocol/openid-connect/userinfo",
+                    "validateSignature": "true",
+                    "tokenUrl": f"{default_realm}/protocol/openid-connect/token",
+                    "clientId": "proxy-realm-client",
+                    "jwksUrl": f"{default_realm}/protocol/openid-connect/certs",
+                    "issuer": f"{default_realm}",
+                    "useJwksUrl": "true",
+                    "pkceEnabled": "false",
+                    "authorizationUrl": f"{default_realm}/protocol/openid-connect/auth",
+                    "clientAuthMethod": "client_secret_post",
+                    "logoutUrl": f"{default_realm}/protocol/openid-connect/logout",
+                    "clientSecret": secret,
+                    "syncMode": "FORCE",
+                }
+            }
+        ],
+        "identityProviderMappers": [
+            {
+                "name": "uid",
+                "identityProviderAlias": "ucs-oidc",
+                "identityProviderMapper": "oidc-user-attribute-idp-mapper",
+                "config": {
+                    "syncMode": "FORCE",
+                    "claim": "uid",
+                    "user.attribute": "uid"
+                }
+            },
+            {
+                "name": "entryUUID",
+                "identityProviderAlias": "ucs-oidc",
+                "identityProviderMapper": "oidc-user-attribute-idp-mapper",
+                "config": {
+                    "syncMode": "FORCE",
+                    "claim": "entryUUID",
+                    "user.attribute": "entryUUID"
+                }
+            }
+        ],
+    }
+    session.create_realm(payload=payload, skip_exists=True)
+
+
+def _create_proxy_realm_azure_client(session: UniventionKeycloakAdmin) -> None:
+    payload = {
+        "clientId": "urn:federation:MicrosoftOnline",
+        "surrogateAuthRequired": False,
+        "enabled": True,
+        "alwaysDisplayInConsole": False,
+        "redirectUris": [
+            "https://login.microsoftonline.com/login.srf"
+        ],
+        "webOrigins": [],
+        "notBefore": 0,
+        "bearerOnly": False,
+        "consentRequired": False,
+        "standardFlowEnabled": True,
+        "implicitFlowEnabled": False,
+        "directAccessGrantsEnabled": False,
+        "serviceAccountsEnabled": False,
+        "publicClient": True,
+        "frontchannelLogout": True,
+        "protocol": "saml",
+        "attributes": {
+            "use.refresh.tokens": "true",
+            "oidc.ciba.grant.enabled": "false",
+            "backchannel.logout.session.required": "true",
+            "client_credentials.use_refresh_token": "false",
+            "saml.signature.algorithm": "RSA_SHA256",
+            "saml.client.signature": "false",
+            "require.pushed.authorization.requests": "false",
+            "saml.allow.ecp.flow": "false",
+            "id.token.as.detached.signature": "false",
+            "saml.assertion.signature": "true",
+            "saml_single_logout_service_url_post": "https://login.microsoftonline.com/login.srf",
+            "saml.encrypt": "false",
+            "saml_assertion_consumer_url_post": "https://login.microsoftonline.com/login.srf",
+            "saml.server.signature": "true",
+            "saml_idp_initiated_sso_url_name": "MicrosoftOnline",
+            "saml.artifact.binding": "false",
+            "saml_single_logout_service_url_redirect": "https://login.microsoftonline.com/login.srf",
+            "saml_force_name_id_format": "false",
+            "saml_name_id_format": "persistent",
+        },
+        "fullScopeAllowed": True,
+        "protocolMappers": [
+            {
+                "name": "entryUUID",
+                "protocol": "saml",
+                "protocolMapper": "univention-saml-user-attribute-nameid-mapper-base64",
+                "consentRequired": False,
+                "config": {
+                    "user.attribute": "entryUUID",
+                    "mapper.nameid.format": "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
+                }
+            },
+            {
+                "name": "userid_mapper",
+                "protocol": "saml",
+                "protocolMapper": "saml-user-attribute-mapper",
+                "consentRequired": False,
+                "config": {
+                    "attribute.nameformat": "Basic",
+                    "user.attribute": "uid",
+                    "friendly.name": "uid",
+                    "attribute.name": "uid"
+                }
+            }
+        ],
+    }
+    session.create_client(payload=payload, skip_exists=True)
+
+
+def __create_proxy_realm_update_flows(session: UniventionKeycloakAdmin) -> None:
+    # set default IDP in browser flow
+    redirector_execution_id = next(
+        x["id"] for x in session.get_authentication_flow_executions("browser")
+        if x["displayName"] == "Identity Provider Redirector"
+    )
+    payload = {"alias": "ucs-oidc", "config": {"defaultProvider": "ucs-oidc"}}
+    url = f"admin/realms/{session.realm_name}/authentication/executions/{redirector_execution_id}/config"
+    resp = session.raw_post(url, json.dumps(payload))
+    raise_error_from_response(resp, KeycloakGetError)
+    # disable profile review for first broker login
+    review_profile_id = next(
+        x["id"] for x in session.get_authentication_flow_executions("first broker login")
+        if x["displayName"] == "Review Profile"
+    )
+    payload = {"alias": "review profile config", "config": {"update.profile.on.first.login": "off"}}
+    url = f"admin/realms/{session.realm_name}/authentication/executions/{review_profile_id}/config"
+    resp = session.raw_post(url, json.dumps(payload))
+    raise_error_from_response(resp, KeycloakGetError)
+
+
+def create_proxy_realm(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+
+    if session.realm_name == opt.name:
+        print(f"ERROR: can not create a proxy realm with the same name \"{opt.name}\" as the default realm", file=sys.stderr)
+        sys.exit(1)
+
+    # verify oidc client in default realm
+    client_secret = _create_proxy_realm_oidc_client(session)
+
+    # create realm
+    _create_proxy_realm(session, opt.name, client_secret)
+
+    # switch to realm
+    session.realm_name = opt.name
+
+    # update auth flows
+    __create_proxy_realm_update_flows(session)
+
+    # create azure client
+    _create_proxy_realm_azure_client(session)
+
+
+def update_proxy_realm(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    if session.realm_name == opt.name:
+        print(f"ERROR: can not update proxy realm with the same name \"{opt.name}\" as the default realm", file=sys.stderr)
+        sys.exit(1)
+    realms = _get_proxy_realm(session)
+    if opt.name not in [x["realm"] for x in realms]:
+        print(f"ERROR: \"{opt.name}\" not a proxy realm")
+        sys.exit(1)
+    payload = json.loads(opt.changes)
+    session.update_realm(opt.name, payload)
+
+
+def delete_proxy_realm(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    if session.realm_name == opt.name:
+        print(f"ERROR: can not update proxy realm with the same name \"{opt.name}\" as the default realm", file=sys.stderr)
+        sys.exit(1)
+    realms = _get_proxy_realm(session)
+    if opt.name not in [x["realm"] for x in realms]:
+        print(f"ERROR: \"{opt.name}\" not a proxy realm")
+        sys.exit(1)
+    session.delete_realm(opt.name)
 
 
 def get_oidc_clients(opt: Namespace) -> None:
@@ -796,24 +1109,21 @@ def download_cert_oidc(opt):
 
 
 def download_cert_saml(opt):
-    print("Downloading KEYCLOAK SAML CERT.....")
+    realm = opt.realm_id if opt.realm_id else opt.realm
     if opt.saml_url:
         saml_descriptor_url = opt.saml_url
     else:
-        saml_descriptor_url = f"{opt.keycloak_url}realms/ucs/protocol/saml/descriptor"
-
+        saml_descriptor_url = f"{opt.keycloak_url}realms/{realm}/protocol/saml/descriptor"
     saml_descriptor = requests.get(saml_descriptor_url)
     saml_descriptor_xml = ElementTree.fromstring(saml_descriptor.content)
-
-    cert = saml_descriptor_xml.find('.//{http://www.w3.org/2000/09/xmldsig#}X509Certificate').text + "\n"
-
+    cert = saml_descriptor_xml.find('.//{http://www.w3.org/2000/09/xmldsig#}X509Certificate').text
     if opt.as_pem:
-        cert_der = b64decode(cert)
-        p = Popen(['openssl', 'x509', '-inform', 'DER', '-out', opt.output, '-outform', 'PEM'], stdin=PIPE)
-        p.communicate(input=cert_der)
-    else:
+        cert = DER_cert_to_PEM_cert(b64decode(cert))
+    if opt.output:
         with open(opt.output, 'w') as fd:
             fd.write(cert)
+    else:
+        print(cert)
 
 
 def get_client_secret(opt):
@@ -901,6 +1211,61 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser.add_argument("--keycloak-url", required=no_ucr_available, default=keycloak_url)
     parser.add_argument("--no-ssl-verify", action='store_false')
     subparsers = parser.add_subparsers(title="subcommands", description="valid subcommands", required=True, dest="command")
+
+    # realms
+    parser_realms = subparsers.add_parser("realms", help="manage realms")
+    operation_subparsers = parser_realms.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    get_realms_parser = operation_subparsers.add_parser("get", help="get realms")
+    get_realms_parser.add_argument("--json", help="Print json output", default=False, action="store_true")
+    get_realms_parser.add_argument("--all", help="Get all realm attributes, not just the name", default=False, action="store_true")
+    get_realms_parser.set_defaults(func=get_realms)
+
+    # proxy realms
+    #
+    # for us "proxy realms" are special realms without user federation but an "external"
+    # IDP. External IDP in this case means the same keycloak, just the default ucs realm.
+    # We need this to provide different logical IDP's for the SAML configuration of
+    # azure domains (they don't allow to have multiple domains use the same Issue/IDP)
+    #
+    # Default azure domain -> SAML -> Default keycloak realms (ucs)
+    # Second azure domain -> SAML -> keycloak proxy realm -> OIDC -> keycloak ucs realm
+    # ...
+    #
+    # creating a proxy realms includes
+    # * verify/create an oidc client in the default, ucs realm
+    #   * name "realm-aliases-client"
+    #   * with attribute mapper for uid and entryUUID
+    # * creating a new realm with
+    #   * OIDC IDP "ucs-oidc"
+    #     * with Attribute Importer mapper for uid and entryUUID
+    #     * setup up againts the "realm-aliases-client" of the ucs realm
+    #     * sync FORCE
+    #   * browser authentication flow Identity Provider Redirector is configured to use "ucs-oidc" IDP as default
+    #   * first broker login is TODO
+    # * creating a SAML client for azure
+    #   * urn:federation:MicrosoftOnline
+    #   * Name ID format persistent
+    #   * NameID Mapper (base64) for entryUUID
+    #   * AttributeStatement Mapper for uid
+    # realms
+    parser_proxy_realm = subparsers.add_parser("proxy-realms", help="manage proxy-realms")
+    operation_subparsers = parser_proxy_realm.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    get_proxy_realm_parser = operation_subparsers.add_parser("get", help="get proxy realms")
+    get_proxy_realm_parser.add_argument("--json", help="Print json output", default=False, action="store_true")
+    get_proxy_realm_parser.add_argument("--all", help="Get all realm attributes, not just the name", default=False, action="store_true")
+    get_proxy_realm_parser.add_argument("--certificate", help="Get realm certificate", default=False, action="store_true")
+    get_proxy_realm_parser.set_defaults(func=get_proxy_realm)
+    create_proxy_realm_parser = operation_subparsers.add_parser("create", help="create proxy realms")
+    create_proxy_realm_parser.add_argument("--json", help="Print json output", default=False, action="store_true")
+    create_proxy_realm_parser.add_argument("name", help="Name of the proxy realms")
+    create_proxy_realm_parser.set_defaults(func=create_proxy_realm)
+    update_proxy_realm_parser = operation_subparsers.add_parser("update", help="update proxy realm config")
+    update_proxy_realm_parser.add_argument("name", help="the ID of the proxy realm")
+    update_proxy_realm_parser.add_argument("changes", help="json representation of the client attributes to change")
+    update_proxy_realm_parser.set_defaults(func=update_proxy_realm)
+    delete_proxy_realm_parser = operation_subparsers.add_parser("delete", help="delete proxy realm config")
+    delete_proxy_realm_parser.add_argument("name", help="the ID of the proxy realm")
+    delete_proxy_realm_parser.set_defaults(func=delete_proxy_realm)
 
     # saml client
     parser_saml = subparsers.add_parser("saml/sp", help="configure a SAML SP")
@@ -1030,7 +1395,9 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     get_cert_saml_parser = operation_subparsers.add_parser("get", help="download the SAML IdP signing certificate")
     get_cert_saml_parser.add_argument("--as-pem", action='store_true')
     get_cert_saml_parser.add_argument("--saml-url", default="")
-    get_cert_saml_parser.add_argument("--output", required=True)
+    get_cert_saml_parser.add_argument("--output", help="output file for certificate")
+    get_cert_saml_parser.add_argument("--realm-id", help="get certificate for this realm ID")
+
     get_cert_saml_parser.set_defaults(func=download_cert_saml)
 
     parser_oidc_op_cert = subparsers.add_parser("oidc/op/cert", help="OIDC provider certificate")
