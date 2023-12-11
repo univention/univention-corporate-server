@@ -4,357 +4,323 @@
 ## roles: [domaincontroller_master]
 ## tags: [producttest]
 ## exposure: safe
+## versions:
+##  5.0-0: skip
 
+"""
+Checks that all the packages in the specified remote repositiories for an
+older UCS release have lower version number than for the current UCS ver.
+UCS versions are either picked automatically (two most recent, by default)
+or can be specified as two command-line arguments.
+
+Broken for UCS 5.0:
+- pool/ dists/ layout is used
+- no `unmaintained`
+- no architecture `i386`
+"""
+
+from __future__ import annotations
+
+import re
+from argparse import ArgumentParser, Namespace
+from contextlib import closing
+from dataclasses import dataclass
 from gzip import open as gzip_open
-from optparse import OptionParser
-from os import makedirs, path
-from re import IGNORECASE, compile as re_compile
-from shutil import Error as shutil_Error, rmtree
-from tempfile import mkdtemp
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from time import sleep
-from urllib import urlopen, urlretrieve
+from typing import Dict, Iterable, List, Set, Tuple
 from urllib.error import ContentTooShortError
+from urllib.request import urlopen, urlretrieve
 
-from apt_pkg import init as apt_init, version_compare
+from debian.debian_support import Version
 from lxml.html import fromstring
-from packaging.version import Version
 
 from univention.testing import utils
 
 
-cleanup_folders = []  # list of the folders to be removed after the test
+RE_MAJOR_MINOR = re.compile(r'^([1-9][0-9]*.[0-9]+)/?$')
+RE_MAJOR_MINOR_PATCH = re.compile(r'([1-9[0-9]*\.[0-9]+-[0-9]+)(?:-errata)?/?$')
+ARCHS = frozenset({"amd64", "i386", "all"})
+MAINT = ("maintained", "unmaintained")
+PUBLIC = "https://updates.software-univention.de/"
+TESTING = "https://updates-test.software-univention.de/"
+
 total_errors = 0
 
-MAJOR_VERSION_RE = re_compile(r'(\d+\.{0,1})+$')  # to match 3.2
-MINOR_VERSION_RE = re_compile(r'(\d+\.{0,1}-{0,1})+$')  # to match 3.2-4
-ERRATA_VERSION_RE = re_compile(r'(.*-errata)+$', IGNORECASE)  # to match 3.2-4-errata
 
-
+@dataclass
 class PackageEntry:
+    package: str
+    version: Version
+    filename: str
+    sourcepkg: str
+    ucs_version: str
 
-    def __init__(self, package=None, version=None, filename=None, sourcepkg=None, ucs_version=None):
-        self.package = package
-        self.version = version
-        self.filename = filename
-        self.sourcepkg = sourcepkg
-        self.ucs_version = ucs_version
-
-    def _get_value(self, line):
-        return line.split(': ', 1)[1]
-
-    def scan(self, entry, ucs_version):
-        if ucs_version:
-            self.ucs_version = ucs_version
-
+    @classmethod
+    def parse(cls, entry: str, ucs_version: str) -> PackageEntry:
+        package = version = filename = sourcepkg = ""
         for line in entry.splitlines():
-            if line.startswith('Package: '):
-                self.package = self._get_value(line)
-            elif line.startswith('Version: '):
-                self.version = self._get_value(line)
-            elif line.startswith('Filename: '):
-                self.filename = self._get_value(line)
-            elif line.startswith('Source: '):
-                self.sourcepkg = self._get_value(line)
+            k, _, v = line.partition(": ")
+            if k == "Package":
+                package = v
+            elif k == "Version":
+                version = v
+            elif k == "Filename":
+                filename = v
+            elif k == "Source":
+                sourcepkg = v
 
-    def is_ok(self):
+        return cls(package, Version(version), filename, sourcepkg or package, ucs_version)
+
+    def is_ok(self) -> bool:
         return bool(self.package) and bool(self.version)
 
 
-def perform_cleanup():
-    """Removes all the folders/files located in the 'cleanup_folders' list."""
-    print("\nPerforming cleanup after the test:")
-
-    for folder in cleanup_folders:
-        print("Removing folder:", folder)
-        try:
-            rmtree(folder, False)
-
-        except (shutil_Error, OSError) as exc:
-            print("\nAn %r Error occurred while trying to remove a '%s'. "
-                  "Probably folder/files were not removed."
-                  % (exc, folder))
-
-
-def download_packages_file(url, version, arch, temp_directory):
+def download_packages_file(url: str, version: str, arch: str, temp_directory: Path) -> Path | None:
     """
     Downloads a 'Packages.gz' as the given url into the
     'temp_directory/version/arch/' folder.
     """
-    file_name = temp_directory + '/' + version + '/'  # only part of the path that has version
-    file_path = file_name + arch + '/Packages.gz'  # a complete path to the 'Packages.gz' file
+    file_path = temp_directory / version / arch / 'Packages.gz'
 
-    url += version + '/' + arch + '/Packages.gz'
-    print("\nDownloading:", url)
+    url += f"{version}/{arch}/Packages.gz"
+    print(f"Downloading {url}:")
 
-    try:
-        makedirs(file_name + arch)
-    except OSError as exc:
-        utils.fail("An Error occurred while creating the directory structure "
-                   "at '%s' for the Packages.gz file: %r" % (file_path, exc))
-
+    file_path.parent.mkdir(parents=True, exist_ok=True)
     try:
         urlretrieve(url, file_path)  # noqa: S310
     except ContentTooShortError as exc:
-        print("An %r Error occurred, probably the connection was lost. "
-              "Performing a new attempt in 10 seconds." % exc)
+        print(f"Error {exc!r} occurred, probably the connection was lost. Performing a new attempt in 10 seconds.")
         sleep(10)
         urlretrieve(url, file_path)  # noqa: S310
     except OSError as exc:
-        print("An %r Error occurred, probably the connection cannot be "
-              "established or the url is incorrect. "
-              "Skipping the url '%s'." % (exc, url))
-        return
+        print(f"Error {exc!r} occurred, probably the connection cannot be established or the url is incorrect. Skipping the url '{url}'.")
+        return None
 
-    if path.exists(file_path):
-        return file_name
+    return file_path
 
 
-def load_packages_file(filename, target_dict, ucs_version):
+def load_packages_file(filename: Path, target_dict: Dict[str, PackageEntry], ucs_version: str) -> None:
     """
     Reads the given 'filename' Packages.gz file.
     Creates a entry object for each found package and fills the target_dict.
     """
-    if not path.exists(filename):
-        print("Error: file %s does not exist" % filename)
-        return
-
     try:
-        # first try to open it as a .gzip
-        packages_file = gzip_open(filename, 'r')
+        with closing(gzip_open(filename.as_posix(), 'r')) as fd:
+            content = fd.read().decode()
     except OSError:
-        # otherwise open it as a usual file
-        packages_file = open(filename)
-
-    try:
-        content = packages_file.read()
-        if not content:
-            utils.fail("The '%s' file is either empty or cannot be read."
-                       % filename)
-
-        packages_file.close()
-    except (ValueError, OSError) as exc:
-        utils.fail("An %r Error occurred while trying to read and close the "
-                   "file '%s'" % (exc, filename))
+        content = filename.read_text()
 
     for entry in content.split('\n\n'):
-        # scan each entry in the 'filename'
-        item = PackageEntry()
-        item.scan(entry, ucs_version)
-
-        if item.is_ok():
-            if item.package in target_dict:
-                if version_compare(target_dict[item.package].version, item.version) < 0:
-                    target_dict[item.package] = item
-            else:
-                target_dict[item.package] = item
+        if not entry:
+            continue
+        pkg = PackageEntry.parse(entry, ucs_version)
+        if not pkg.is_ok():
+            continue
+        prev = target_dict.setdefault(pkg.package, pkg)
+        if prev and prev.version < pkg.version:
+            target_dict[pkg.package] = pkg
 
 
-def load_version(url):
+def load_version(url: str, architectures: Iterable[str] = ARCHS) -> Dict[str, PackageEntry]:
     """
     Selects all minor and errata versions for the given 'url'.
     Downloads respective 'Packages.gz' for each version and
     returns a dict filled with PackageEntries.
     """
-    target = {}
-
-    temp = mkdtemp()  # a temp folder to store 'Packages.gz' for each version
-    cleanup_folders.append(temp)  # to remove a folder after
+    target: Dict[str, PackageEntry] = {}
 
     for version in select_minor_levels(url):
-        for arch in ('all', 'i386', 'amd64'):
-            file_name = download_packages_file(url, version, arch, temp)
+        for arch in architectures:
+            with TemporaryDirectory() as temp:
+                file_name = download_packages_file(url, version, arch, Path(temp))
+                if file_name:
+                    print(f"Loading packages file: {file_name}")
+                    load_packages_file(file_name, target, f'ucs_{version}')
 
-            if file_name:
-                # only load the packages file when it was downloaded
-                print("Loading packages file:", file_name + arch + '/Packages.gz')
-                load_packages_file(path.join(file_name, arch, 'Packages.gz'),
-                                   target,
-                                   'ucs_' + version)
     return target
 
 
-def compare(old, new):
+def compare(old_pkgs: Dict[str, PackageEntry], new_pkgs: Dict[str, PackageEntry]) -> None:
     """
-    Compares 'old' and 'new' versions via apt.
+    Compares 'old_pkgs' and 'new_pkgs' versions via apt.
     Prints all the errors detected.
     """
     errors = 0
-    package_list = sorted(new.keys())
-    src_package_list = set()
+    src_package_list: Set[str] = set()
 
-    for package in package_list:
-        if package in old and version_compare(old[package].version, new[package].version) > 0:
-            if errors == 0:
-                print('\n---------------------------------------------------------')
-                print('  The following packages use a smaller package version:')
-                print('---------------------------------------------------------\n')
+    for package, new in sorted(new_pkgs.items()):
+        old = old_pkgs.get(package)
+        if not old:
+            continue
+        elif old.version <= new.version:
+            continue
 
-            print(" Package: %s" % package)
-            print(f"   {old[package].ucs_version}: {old[package].version}")
-            print(f"   {new[package].ucs_version}: {new[package].version}")
+        if errors == 0:
+            print('---------------------------------------------------------')
+            print('  The following packages use a smaller package version:')
+            print('---------------------------------------------------------')
 
-            src_package = new[package].sourcepkg
-            if not src_package:
-                src_package = package
+        print(f" Package: {package} from source package: {new.sourcepkg}")
+        print(f"   {old.ucs_version}: {old.version}")
+        print(f"   {new.ucs_version}: {new.version}")
 
-            src_package_list.add(src_package)
-
-            print("  Source package: %s" % src_package)
-            errors += 1
+        src_package_list.add(new.sourcepkg)
+        errors += 1
 
     if errors:
-        print("\nAffected source packages:")
+        print("Affected source packages:")
         for package in sorted(src_package_list):
             print("  %s" % package)
 
-        print("\nNumber of affected binary packages: %d" % errors)
-        print("Number of affected source packages: %d" % len(src_package_list))
+        print(f"Number of affected binary packages: {errors}")
+        print(f"Number of affected source packages: {len(src_package_list)}")
 
         global total_errors
         total_errors += errors
 
 
-def read_url(url):
+def read_url(url: str):
     """Returns the 'url' in an easy to parse format for finding links."""
-    try:
-        connection = urlopen(url)  # noqa: S310
-        result = fromstring(connection.read())
-    except OSError as exc:
-        utils.fail("An %r Error occurred while trying to retrieve '%s' url"
-                   % (exc, url))
-    connection.close()
-    return result
+    with urlopen(url) as connection:  # noqa: S310
+        return fromstring(connection.read())
 
 
-def select_errata_levels(repo_component_url):
+def select_errata_levels(repo_component_url: str) -> List[str]:
     """Returns list of .*-errata levels found in the given 'repo_component_url'."""
-    check_erratalevels = []
-
-    for link in read_url(repo_component_url).xpath('//a/@href'):
-        if link.endswith('/'):
-            link = link[:-1]  # remove the '/' from a link
-        if ERRATA_VERSION_RE.match(link):
-            check_erratalevels.append('component/' + link)
-
-    return check_erratalevels
+    return [
+        f'component/{link.rstrip("/")}'
+        for link in read_url(repo_component_url).xpath('//a/@href')
+        if RE_MAJOR_MINOR_PATCH.match(link.rstrip("/"))
+    ]
 
 
-def select_minor_levels(repo_major_url):
+def select_minor_levels(repo_major_url: str) -> List[str]:
     """
     Returns the list of minor versions with patch and errata levels as found
     for the given 'repo_major_url'.
     """
-    check_patchlevels = []
+    check_patchlevels: List[str] = []
 
     for link in read_url(repo_major_url).xpath('//a/@href'):
-        if link.endswith('/'):
-            link = link[:-1]  # remove the '/' from a link
-        if MINOR_VERSION_RE.match(link):
+        link = link.rstrip("/")
+        if RE_MAJOR_MINOR_PATCH.match(link):
             check_patchlevels.append(link)
-        if 'component' in link:
-            # add component/errata levels:
-            component_link = repo_major_url + link + '/'
-            check_patchlevels += select_errata_levels(component_link)
+        if link == 'component':
+            check_patchlevels += select_errata_levels(f"{repo_major_url}component/")
 
-    if len(check_patchlevels) < 1:
-        utils.fail("Could not find at least one patch level number in "
-                   "the given repository at '%s'" % repo_major_url)
+    if not check_patchlevels:
+        utils.fail(f"Could not find at least one patch level number in the given repository at {repo_major_url}s")
 
-    print("\nThe following patch levels will be checked:", check_patchlevels)
+    print(f"The following patch levels will be checked: {check_patchlevels}")
     return check_patchlevels
 
 
-def select_major_versions_for_test(repo_url):
+def select_major_versions_for_test(repo_url: str) -> Tuple[Version, Version]:
     """
     Looks into specified 'repo_url' and picks up the two most recent
     major versions (for example 3.2 and 4.0).
     """
-    check_versions = []
+    versions: List[Version] = [
+        Version(link.rstrip("/"))
+        for link in read_url(repo_url).xpath('//a/@href')
+        if RE_MAJOR_MINOR.match(link.rstrip("/"))
+    ]
 
-    for link in read_url(repo_url).xpath('//a/@href'):
-        if link.endswith('/'):
-            link = link[:-1]  # remove the '/' from a link
-        if MAJOR_VERSION_RE.match(link):
-            check_versions.append(link)
-
-    if len(check_versions) < 2:
-        utils.fail("Could not find at least two version numbers in "
-                   "the given repository at '%s'" % repo_url)
-
-    check_versions.sort()  # a list with increasing version numbers
-
-    # return list with only two last versions (i.e. two highest numbers)
-    return check_versions[-2:]
+    versions.sort()
+    return (versions[-2], versions[-1])
 
 
-def parse_arguments():
+def parse_arguments() -> Namespace:
     """
     Returns the parsed arguments when test is run interactively via
     'python3 testname ...'
     First an older version should be specified.
     """
-    usage = """%progname <old UCS version> <new UCS version>
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--architecture", "-a",
+        action="append",
+        default=[],
+        help="Check only these architectures",
+    )
+    parser.add_argument(
+        "--maintained-only", "-m",
+        action="store_true",
+        help="Only check maintained packages",
+    )
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        "--public", "-p",
+        action="store_const",
+        const=[PUBLIC],
+        help="Use public mirror",
+        dest="mirror",
+    )
+    group.add_argument(
+        "--testing", "-t",
+        action="store_const",
+        const=[TESTING],
+        help="Use testing mirror",
+        dest="mirror",
+    )
+    group.add_argument(
+        "--repository", "-r",
+        action="append",
+        default=[],
+        help="Use given mirror",
+        dest="mirror",
+    )
+    parser.add_argument(
+        "old_release",
+        type=_release,
+        nargs="?",
+    )
+    parser.add_argument(
+        "new_release",
+        type=_release,
+        nargs="?",
+    )
+    args = parser.parse_args()
 
-    Loads all Packages files up to last major version for both given
-    (major) versions and compares the available package versions."""
+    if args.old_release and args.new_release:
+        if args.old_release >= args.new_release:
+            parser.error(f"The given new release '{args.new_release}' cannot be smaller than the older release '{args.old_release}'")
+    else:
+        print("The UCS releases for the test will be determined automatically:")
 
-    parser = OptionParser(usage=usage)
-    options, args = parser.parse_args()
+    args.architectures = {arch for archs in args.architecture for arch in archs.split(",")} if args.architecture else ARCHS
 
-    if len(args) == 2:
-        try:
-            old_version = Version(args[0])
-            new_version = Version(args[1])
-            if new_version < old_version:
-                utils.fail("The given new '%s' version cannot be smaller "
-                           "than the older '%s' version"
-                           % (new_version, old_version))
-        except ValueError as exc:
-            utils.fail("An %r Error occurred when trying to process parsed "
-                       "version numbers" % exc)
-        return args
+    return args
 
-    print("\nThe UCS versions for the test will be determined automatically:")
+
+def _release(arg: str) -> Version:
+    m = RE_MAJOR_MINOR.match(arg)
+    if m:
+        return Version(arg)
+    raise ValueError(arg)
+
+
+def main() -> None:
+    args = parse_arguments()
+
+    try:
+        for repo_url in args.mirror or (PUBLIC, TESTING):
+            old, new = (args.old_release, args.new_release) if args.new_release else select_major_versions_for_test(repo_url)
+            print(f"Comparing packages for UCS versions {old} and {new} in repository at '{repo_url}':")
+
+            for repo_type in MAINT[:1 if args.maintained_only else -1]:
+                print(f"Checking {repo_type} packages:")
+                previous_version = f"{repo_url}{old}/{repo_type}/"
+                current_version = f"{repo_url}{new}/{repo_type}/"
+                compare(load_version(previous_version), load_version(current_version, args.architectures))
+    finally:
+        if total_errors:  # an overall statistics
+            utils.fail(f"There were {total_errors} errors detected in total. Please check the complete test output.")
+
+        print("No errors were detected.")
 
 
 if __name__ == '__main__':
-    """
-    Checks that all the packages in the specified remote repositiories for an
-    older UCS release have lower version number than for the current UCS ver.
-    UCS versions are either picked automatically (two most recent, by default)
-    or can be specified as a command-line arguments.
-    """
-    check_versions = parse_arguments()
-    apt_init()  # init the apt
-
-    repositories_to_check = (
-        'https://updates-test.software-univention.de/',
-        'https://updates.software-univention.de/',
-    )
-
-    try:
-        for repo_url in repositories_to_check:
-            if not check_versions:
-                # if no version arguments were given, determine most recent:
-                check_versions = select_major_versions_for_test(repo_url)
-
-            print("\nComparing packages for UCS versions %s and %s "
-                  "in repository at '%s':"
-                  % (check_versions[0], check_versions[1], repo_url))
-
-            # comparing first maintained and than unmaintained sections:
-            for repo_type in ('maintained/', 'unmaintained/'):
-                print("\nChecking %s packages:" % repo_type[:-1])
-                previous_version = repo_url + check_versions[0] + '/' + repo_type
-                current_version = repo_url + check_versions[1] + '/' + repo_type
-
-                # comparing determined versions:
-                compare(load_version(previous_version),
-                        load_version(current_version))
-    finally:
-        perform_cleanup()
-        if total_errors:  # an overall statistics
-            utils.fail("There were %d errors detected in total. Please check"
-                       " the complete test output." % total_errors)
-
-        print("\nNo errors were detected.\n")
+    main()
