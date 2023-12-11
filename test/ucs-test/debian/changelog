@@ -1,3 +1,10 @@
+ucs-test (10.0.20-2) unstable; urgency=medium
+
+  * Issues #184: account disabled/expired tests
+    univention/components/keycloak-app#184
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 Dec 2023 09:50:43 +0100
+
 ucs-test (10.0.20-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump

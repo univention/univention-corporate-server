@@ -236,6 +236,8 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         "password_change_button_id": "kc-form-buttons",
         "password_update_failed_msg": "Update password failed",
         "kc_page_title_id": "kc-page-title",
+        "account_expired_msg": "The account has expired.",
+        "account_disabled_msg": "The account is disabled.",
     }
     return SimpleNamespace(**config)
 

@@ -4,6 +4,8 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 
+from datetime import datetime, timedelta
+
 import pytest
 from selenium.webdriver.common.by import By
 from utils import keycloak_get_request, keycloak_password_change, keycloak_sessions_by_user, wait_for_id
@@ -158,3 +160,36 @@ def test_login_not_possible_with_deleted_user(keycloak_config, portal_login_via_
     # check that user is no longer available in keycloak
     users = keycloak_get_request(keycloak_config, "realms/ucs/users", params={"search": username})
     assert len(users) == 0
+
+
+def test_account_expired(portal_login_via_keycloak, keycloak_config, portal_config, udm):
+    yesterday = datetime.now() - timedelta(days=1)
+    username = udm.create_user(userexpiry=yesterday.isoformat()[:10])[1]
+    portal_login_via_keycloak(
+        username,
+        "univentionA",
+        fails_with=keycloak_config.wrong_password_msg
+    )
+    portal_login_via_keycloak(
+        username,
+        "univention",
+        fails_with=keycloak_config.account_expired_msg
+    )
+
+
+def test_account_disabled(portal_login_via_keycloak, keycloak_config, portal_config, udm):
+    dn, username = udm.create_user()
+    ldap = get_ldap_connection(primary=True)
+    changes = [("shadowExpire", [""], [b"1"])]
+    ldap.modify(dn, changes)
+    wait_for_listener_replication()
+    portal_login_via_keycloak(
+        username,
+        "univentionA",
+        fails_with=keycloak_config.wrong_password_msg
+    )
+    portal_login_via_keycloak(
+        username,
+        "univention",
+        fails_with=keycloak_config.account_disabled_msg
+    )
