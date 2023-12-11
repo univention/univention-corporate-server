@@ -55,13 +55,15 @@ list can be created with the following command:
 
 .. code-block::
 
-   $ dpkg --get-selections \* >> dpkg.selection
+   $ dpkg --get-selections \* > dpkg.selection
 
 
-This file should be compared with the same output on the |UCSBACKUPDN|.  Missing
-packages should then be installed on the |UCSBACKUPDN|. Especially those
+Compare this file with the same output on the |UCSBACKUPDN|.
+The package list in the files should only differ in the packages
+:program:`univention-server-master` and :program:`univention-server-backup`.
+You must then install missing packages on the |UCSBACKUPDN|. Especially those
 packages that install a LDAP schema are absolutely necessary. The following
-command executed on the |UCSPRIMARYDN| will list all affected packages:
+command executed on the |UCSPRIMARYDN| lists all packages with a LDAP schema:
 
 .. code-block::
 
