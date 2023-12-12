@@ -1,8 +1,9 @@
-univention-dvd (5.0.3-1) UNRELEASED; urgency=medium
+univention-dvd (5.0.3-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #54263: Install recommended packages by default
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:25 +0100
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Dec 2023 12:21:18 +0100
 
 univention-dvd (5.0.2-2) unstable; urgency=low
 
