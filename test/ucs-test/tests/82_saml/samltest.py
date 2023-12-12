@@ -29,14 +29,15 @@ def errors():
         'Invalid username or password.': SamlAuthenticationFailed,  # keycloak
         'Incorrect username or password.': SamlAuthenticationFailed,  # simplesamlphp
         'Account not verified.': SamlAccountNotVerified,
-        'Changing password failed.': SamlPasswordChangeFailed,
+        'Changing password failed.': SamlPasswordChangeFailed,  # simplesamlphp
+        'Changing password failed. The password was already used.': SamlPasswordChangeFailed,  # keycloak
         'The password has been changed successfully.': SamlPasswordChangeSuccess,
     }
 
 
 class SamlLoginError(SamlError):
 
-    def __init__(self, page, message=''):
+    def __init__(self, page, message='', password_change=False):
         self.page = page.page
         if not message and type(self) is SamlLoginError:
             message = "Unknown error in SAML response.\nSAML response:\n%s" % (self.page.content.decode('UTF-8', 'replace'),)
@@ -44,9 +45,12 @@ class SamlLoginError(SamlError):
             message = {y: x for x, y in errors().items()}.get(type(self))
         super().__init__(message)
 
-    def __new__(cls, saml):
+    def __new__(cls, saml, password_change=False):
         # SSP: umcLoginNotices; Keycloak: kc-form/kc-passwd-update-form
-        message = saml.xpath('div[@id="umcLoginNotices"]') if not saml.keycloak else saml.xpath('*[@id="kc-form"]/div[1]/div/span', saml.xpath('form[@id="kc-passwd-update-form"]/div[@class="form-group"]/p'))
+        if saml.keycloak and password_change:
+            message = saml.xpath('*[@id="kc-content-wrapper"]/div/span')
+        else:
+            message = saml.xpath('div[@id="umcLoginNotices"]') if not saml.keycloak else saml.xpath('*[@id="kc-form"]/div[1]/div/span', saml.xpath('form[@id="kc-passwd-update-form"]/div[@class="form-group"]/p'))
         if message is not None:
             message = message.text.strip()
         return Exception.__new__(errors().get(message, cls), saml, message)
@@ -213,11 +217,11 @@ class SamlTest:
         print("The relay state is:\n%s" % relay_state)
         return relay_state
 
-    def _extract_saml_msg(self):
+    def _extract_saml_msg(self, password_change=False):
         print("Extract SAML message from SAML response")
         saml_message = self.xpath('input[@name="SAMLResponse"]', {}).get('value')
         if saml_message is None:
-            raise SamlLoginError(self)
+            raise SamlLoginError(self, password_change=password_change)
         print("The SAML message is:\n%s" % saml_message)
         return saml_message
 
@@ -403,25 +407,16 @@ class SamlTest:
             auth_state = self._extract_auth_state()
             data = {'username': self.username, 'password': self.password, 'AuthState': auth_state, 'new_password': new_password, 'new_password_retype': new_password}
             self._request('POST', self.page.url, 200, data=data)
-            self.password = new_password
-            url = self._extract_sp_url()
-
-            def doit():
-                return self._extract_saml_msg()
         else:
             data = {'username': self.username, 'password': self.password, 'password-new': new_password, 'password-confirm': new_password}
             url = self._extract_sp_url()
             self._request('POST', url, 200, data=data)
 
-            def doit():
-                saml_msg = self._extract_saml_msg()
-                relay_state = self._extract_relay_state()
-                self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
-                self.password = new_password
-                return saml_msg
+        self.password = new_password
+        url = self._extract_sp_url()
 
         try:
-            saml_msg = doit()
+            saml_msg = self._extract_saml_msg(password_change=True)
         except SamlPasswordChangeSuccess:  # Samba 4 installed, S4 connector too slow to change the password
             utils.wait_for_replication()
             utils.wait_for_s4connector_replication()
