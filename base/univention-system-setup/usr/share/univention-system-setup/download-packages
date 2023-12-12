@@ -40,33 +40,30 @@ die () {
 }
 
 declare -a BASE=(
-	# server role packages
-	univention-server-master # TODO
-	univention-server-backup # TODO
+	# server role packages - must be on ../univention-dvd/tasks/
+	univention-server-master
+	univention-server-backup
 	univention-server-slave
 	univention-server-member
-	# AD member mode
-	univention-ad-connector
-	univention-samba
-	# common dependencies
-	univention-welcome-screen
-	firefox-esr-l10n-de
 )
 declare -a COMPONENTS=(
-	univention-management-console-module-adtakeover
-	univention-printserver # TODO
+	firefox-esr-l10n-de
+	univention-ad-connector
 	univention-dhcp
 	univention-fetchmail
-	univention-radius
 	univention-mail-server
+	univention-management-console-module-adtakeover
+	univention-pkgdb
+	univention-printserver
 	# FIXME univention-nagios-server
-	univention-pkgdb # TODO
-	univention-samba4
+	univention-radius
 	univention-s4-connector
-	univention-squid
+	univention-samba
+	univention-samba4
 	univention-self-service
+	univention-self-service-master
 	univention-self-service-passwordreset-umc
-	univention-self-service-master # TODO
+	univention-squid
 )
 declare -a PACKAGES=("${BASE[@]}" "${COMPONENTS[@]}")
 CACHE='/var/cache/univention-system-setup/packages'

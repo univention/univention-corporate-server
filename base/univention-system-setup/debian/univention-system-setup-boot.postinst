@@ -61,7 +61,7 @@ if [ "$1" = "configure" ]; then
 
 	# setup local package repository
 	if [ ! -s /var/cache/univention-system-setup/profile ] && [ ! -e /var/cache/univention-system-setup/packages/Packages ]; then
-		/usr/share/univention-system-setup/download-packages
+		/usr/share/univention-system-setup/download-packages -b
 	fi
 fi
 
