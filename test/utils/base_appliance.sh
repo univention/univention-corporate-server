@@ -751,15 +751,9 @@ __EOF__
 
 	clear_dhcp_hostname
 
-	# Set official update server, activate online repository until system setup script 90_postjoin/20upgrade
-	ucr set repository/online=true \
-		repository/online/server='https://updates.software-univention.de'
-	# ucr set repository/online/server=univention-repository.knut.univention.de
-
+	ucr set repository/online=true
 	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
 	rm -rf /root/shared-utils/
-
-	# Cleanup apt archive
 	apt-get clean
 	apt-get -q update
 
@@ -1006,6 +1000,7 @@ appliance_reset_servers () {  # <reset>
 	[ "$reset" = true ] ||
 		return 0
 	ucr set repository/online/server="https://updates.software-univention.de/"
+	apt-get -qq update || :
 	ucr unset appcenter/index/verify
 
 	ucr --keys-only search --brief --value '^appcenter-test.software-univention.de$' | while read -r key
