@@ -199,8 +199,8 @@ check_dns () {
 check_ucr () {
 	local key value
 	case "${repository_online:-}" in
-	false|no|disable|disabled|0) ;;
-	*) error "online should be disabled" ucr set repository/online='false' ;;
+	true|yes|enable|enabled|1) ;;
+	*) error "online should be enabled" ucr set repository/online='true' ;;
 	esac
 	case "${repository_online_unmaintained:-}" in
 	false|no|disable|disabled|0|'') ;;
