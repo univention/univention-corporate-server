@@ -134,9 +134,9 @@ with open('/etc/machine.secret') as credfile:
 		request:			+= 'radiusRequestAttribute'
 		reply:				+= 'radiusReplyAttribute'
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+if auth_type:
     print('control:LM-Password\t\t:=\tsambaLMPassword')
     print('control:NT-Password\t\t:=\tsambaNTPassword')
 else:
@@ -182,10 +182,13 @@ else:
 		#
 #		filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
-filter = 'mschap:User-Name' if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES' else 'Stripped-User-Name'
-print('\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter)
+filter = 'mschap:User-Name' if auth_type else 'Stripped-User-Name'
+if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
+    print('\t\tfilter = "(|(uid=%%{%s:-%%{User-Name}})(macAddress=%%{%s:-%%{User-Name}}))"' % (filter, filter))
+else:
+    print('\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter)
 @!@
 
 		#  SASL parameters to use for user binds
@@ -275,7 +278,12 @@ print('\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter)
 		#  Filter to find group objects a user is a member of.
 		#  That is, group objects with attributes that
 		#  identify members (the inverse of membership_attribute).
-#		membership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"
+@!@
+if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
+    print('\t\tmembership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"')
+else:
+    print('#\t\tmembership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"')
+@!@
 
 		#  The attribute in user objects which contain the names
 		#  or DNs of groups a user is a member of.

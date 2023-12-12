@@ -74,6 +74,13 @@ Description[en]=Activates MPPE encryption. See also: `strongencryption` and `req
 Type=bool
 Categories=service-radius
 
+[freeradius/conf/allow-mac-address-authentication]
+Description[de]=Aktiviert die Authentifizierung über die MAC-Adresse des Clients.
+Description[en]=Activates the authentication via the MAC address of the client.
+Type=bool
+Categories=service-radius
+Default=false
+
 [freeradius/conf/auth-type/mschap/requireencryption]
 Description[de]=Erzwingt eine Verschlüsselung, aber nur wenn `mppe` ebenfalls aktiviert ist.
 Description[en]=Enforces an encrypted connection, but only if `mppe` is also enabled.

@@ -68,9 +68,9 @@ authorize {
 	#  The chap module will set 'Auth-Type := CHAP' if we are
 	#  handling a CHAP request and Auth-Type has not already been set
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+if auth_type:
     print('\t\tchap')
 else:
     print('#\tchap')
@@ -83,9 +83,9 @@ else:
 	#  to the request, which will cause the server to then use
 	#  the mschap module for authentication.
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+if auth_type:
     print('\t\tmschap')
 else:
     print('#\tmschap')
@@ -234,9 +234,9 @@ authenticate {
 	#  MUST supply a CLEAR TEXT password.  Encrypted passwords
 	#  won't work.
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+if auth_type:
     print('\tAuth-Type CHAP {')
     print('\t\tchap')
     print('\t}')
@@ -249,9 +249,9 @@ else:
 	#
 	#  MSCHAP authentication.
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+if auth_type:
     print('\tAuth-Type MS-CHAP {')
     print('\t\tmschap')
     print('\t}')

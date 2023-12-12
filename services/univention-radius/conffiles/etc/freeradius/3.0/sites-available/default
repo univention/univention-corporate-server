@@ -310,9 +310,9 @@ authorize {
 	#  The chap module will set 'Auth-Type := CHAP' if we are
 	#  handling a CHAP request and Auth-Type has not already been set
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+if auth_type:
     print('\t\tchap')
 else:
     print('#\tchap')
@@ -325,9 +325,9 @@ else:
 	#  to the request, which will cause the server to then use
 	#  the mschap module for authentication.
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+if auth_type:
     print('\tmschap')
 else:
     print('#\tmschap')
@@ -492,9 +492,9 @@ authenticate {
 	#  MUST supply a CLEAR TEXT password.  Encrypted passwords
 	#  won't work.
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+if auth_type:
     print('\tAuth-Type CHAP {')
     print('\t\tchap')
     print('\t}')
@@ -507,9 +507,9 @@ else:
 	#
 	#  MSCHAP authentication.
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+if auth_type:
     print('\tAuth-Type MS-CHAP {')
     print('\t\tmschap')
     print('\t}')
@@ -790,18 +790,69 @@ print('\tif ("%%{tolower:%%{request:User-Name}}" =~ /^host\\/(.*)\\.%s/) {' % co
             User-Name := "%{1}$"    # The uid attribute in the ldap object is filled with the host name and a trailing dollar sign.
         }
     }
-    # Check if the user or machine exists and do post-auth actions
-    # else do nothing in post-auth
-    # This way we also make sure that we do not change the VLAN ID again if the non-EAP-auth (MAC address auth) succeeded before (see above)
-    if ("%{ldap:ldap:///@%@ldap/base@%@?uid?sub?(uid=%{User-Name})}") {
+@!@
+if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
+    ldap_base = configRegistry['ldap/base']
+    default_vlanid = configRegistry.get('freeradius/vlan-id', '')
+    text = '''
+    if ("%{ldap:ldap:///''' + ldap_base + '''?uid?sub?(macAddress=%{User-Name})}") {
         # For known users as well for known machines we take the vlan-id from the group the user/machine is member of.
         # In case there are assignments for several groups the first vlan-id is automatically taken.
-        if ("%{ldap:ldap:///@%@ldap/base@%@?univentionVlanId?sub?(&(memberUid=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*))}") {
+        update request {
+            User-Name := "%{ldap:ldap:///''' + ldap_base + '''?uid?sub?(macAddress=%{User-Name})}"    # The uid attribute in the ldap object is filled with the host name and a trailing dollar sign.
+        }
+        if ("%{ldap:ldap:///''' + ldap_base + '''?univentionVlanId?sub?(&(macAddress=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*))}") {
             update reply {
                 Reply-Message := "DEBUG: Assigning VLAN-ID from user / computer object"
                 Tunnel-Type := VLAN
                 Tunnel-Medium-Type := IEEE-802
-                Tunnel-Private-Group-Id := "%{ldap:ldap:///@%@ldap/base@%@?univentionVlanId?sub?(&(memberUid=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*))}"
+                Tunnel-Private-Group-Id := "%{ldap:ldap:///''' + ldap_base + '''?univentionVlanId?sub?(&(|(memberUid=%{User-Name})(macAddress=%{User-Name}))(univentionObjectType=groups/group)(univentionVlanId=*))}"
+            }
+        }
+        # If we can't find a matching VLAN ID for the user or machine client in LDAP, we return the default VLAN ID, if configured.
+        # If no default vlan-id is configured in ucr we do not return any vlan information
+        elsif ("''' + default_vlanid + '''") {
+            update reply {
+                Reply-Message := "DEBUG: Not found, assigning default VLAN-ID"
+                Tunnel-Type := VLAN
+                Tunnel-Medium-Type := IEEE-802
+                Tunnel-Private-Group-Id := "''' + default_vlanid + '''"
+            }
+        }
+    }'''
+    print(text)
+@!@
+    # Check if the user or machine exists and do post-auth actions
+    # else do nothing in post-auth
+    # This way we also make sure that we do not change the VLAN ID again if the non-EAP-auth (MAC address auth) succeeded before (see above)
+@!@
+ldap_base = configRegistry['ldap/base']
+if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
+    print('    if ("%{ldap:ldap:///' + ldap_base + '?uid?sub?(|(uid=%{User-Name})(macAddress=%{User-Name}))}") {')
+else:
+    print('    if ("%{ldap:ldap:///' + ldap_base + '?uid?sub?(uid=%{User-Name})}") {')
+@!@
+        # For known users as well for known machines we take the vlan-id from the group the user/machine is member of.
+        # In case there are assignments for several groups the first vlan-id is automatically taken.
+@!@
+ldap_base = configRegistry['ldap/base']
+if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
+    print('        if ("%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(|(memberUid=%{User-Name})(macAddress=%{User-Name}))(univentionObjectType=groups/group)(univentionVlanId=*))}") {')
+else:
+    print('        if ("%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(memberUid=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*))}") {')
+@!@
+            update reply {
+                Reply-Message := "DEBUG: Assigning VLAN-ID from user / computer object"
+                Tunnel-Type := VLAN
+                Tunnel-Medium-Type := IEEE-802
+@!@
+ldap_base = configRegistry['ldap/base']
+if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
+    print('                Tunnel-Private-Group-Id := "%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(|(memberUid=%{User-Name})(memberUid=%{1}))(univentionObjectType=groups/group)(univentionVlanId=*))}"')
+else:
+    print('                Tunnel-Private-Group-Id := "%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(memberUid=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*))}"')
+@!@
+
             }
         }
         # If we can't find a matching VLAN ID for the user or machine client in LDAP, we return the default VLAN ID, if configured.

@@ -27,9 +27,9 @@ eap {
 	#
 #	default_eap_type = md5
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 eap_type = 'md5'
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+if auth_type:
     eap_type = 'peap'
 print('\t\tdefault_eap_type = %s' % eap_type)
 @!@
@@ -600,8 +600,8 @@ print('\t\ttls_max_version = %s' % configRegistry.get('freeradius/conf/tls-max-v
 	#  Surprisingly, it works quite well.
 	#
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
+if auth_type:
     print('\t\t#ttls {')
 elif configRegistry.is_false('freeradius/conf/auth-type/ttls', False):
     print('\t\t#ttls {')
@@ -697,8 +697,8 @@ else:
 		#
 	#	require_client_cert = yes
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
+if auth_type:
     print('\t\t#}')
 elif configRegistry.is_false('freeradius/conf/auth-type/ttls', False):
     print('\t\t#}')
@@ -751,8 +751,8 @@ else:
 	#  recommend using EAP-MS-CHAPv2.
 	#
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
+if auth_type:
     print('\t\tpeap {')
 else:
     print('\t\t# peap {')
@@ -776,8 +776,8 @@ else:
 		#  Windows clients.
 		#
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
+if auth_type:
     print('\t\t\tdefault_eap_type = mschapv2')
 else:
     print('\t\t\t# default_eap_type = mschapv2')
@@ -843,8 +843,8 @@ else:
 		#
 	#	require_client_cert = yes
 @!@
-auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
-if auth_type and auth_type.upper() == 'TRUE' or auth_type.upper() == 'YES':
+auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
+if auth_type:
     print('\t\t}')
 else:
     print('\t\t# }')

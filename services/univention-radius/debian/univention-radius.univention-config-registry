@@ -52,6 +52,7 @@ Variables: ldap/base
 Variables: freeradius/conf/starttls
 Variables: freeradius/conf/auth-type/mschap
 Variables: freeradius/conf/auth-type/mschap/.*
+Variables: freeradius/conf/allow-mac-address-authentication
 
 Type: file
 File: etc/freeradius/3.0/mods-available/mschap
@@ -68,12 +69,15 @@ File: etc/freeradius/3.0/sites-available/default
 User: root
 Group: freerad
 Mode: 640
+Variables: ldap/base
 Variables: freeradius/conf/auth-type/mschap
 Variables: freeradius/conf/auth-type/mschap/.*
 Variables: freeradius/conf/realm
 Variables: freeradius/conf/users
 Variables: freeradius/conf/port
 Variables: freeradius/conf/accountingport
+Variables: freeradius/conf/allow-mac-address-authentication
+Variables: freeradius/vlan-id
 Variables: domainname
 
 Type: file
