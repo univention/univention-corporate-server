@@ -691,16 +691,14 @@ setup_appliance () {  # [app_id]
 	ucr set locale/default="en_US.UTF-8:UTF-8" locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8"
 	locale-gen
 
-	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
 	install_haveged
-
 	uninstall_packages
-
 	univention-install -y --assume-yes --reinstall univention-system-setup-boot
 
 	# shrink appliance image size
 	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
 	rm -rf /var/cache/univention-system-setup/packages
+	download_system_setup_packages "$@"
 
 	# Cleanup apt archive
 	apt-get -q update
@@ -751,9 +749,14 @@ __EOF__
 
 	clear_dhcp_hostname
 
-	ucr set repository/online=true
-	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
+	# Set official update server, deactivate online repository until system setup script 90_postjoin/20upgrade
+	ucr set repository/online=false \
+		repository/online/server='https://updates.software-univention.de'
+	# ucr set repository/online/server=univention-repository.knut.univention.de
+
 	rm -rf /root/shared-utils/
+
+	# Cleanup apt archive
 	apt-get clean
 	apt-get -q update
 
@@ -1000,7 +1003,6 @@ appliance_reset_servers () {  # <reset>
 	[ "$reset" = true ] ||
 		return 0
 	ucr set repository/online/server="https://updates.software-univention.de/"
-	apt-get -qq update || :
 	ucr unset appcenter/index/verify
 
 	ucr --keys-only search --brief --value '^appcenter-test.software-univention.de$' | while read -r key
