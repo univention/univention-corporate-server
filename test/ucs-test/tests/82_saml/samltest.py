@@ -24,7 +24,8 @@ class SamlError(Exception):
 def errors():
     return {
         'The password has expired and must be renewed.': SamlPasswordExpired,
-        'Account expired.': SamlAccountExpired,
+        'Account expired.': SamlAccountExpired,  # simplesamlphp
+        'The account has expired.': SamlAccountExpired,  # keycloak
         'Invalid username or password.': SamlAuthenticationFailed,  # keycloak
         'Incorrect username or password.': SamlAuthenticationFailed,  # simplesamlphp
         'Account not verified.': SamlAccountNotVerified,
