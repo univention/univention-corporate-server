@@ -44,14 +44,10 @@ def cleanup():
 
 def test_broken_idp_metadata(saml_session):
     with move_idp_metadata():
-        try:
+        with pytest.raises(samltest.SamlError) as exc:
             saml_session.login_with_new_session_at_IdP()
-        except samltest.SamlError as exc:
-            expected_error = "There is a configuration error in the service provider: No identity provider are set up for use."
-            if expected_error not in str(exc):
-                raise Exception({'expected': expected_error, 'got': str(exc)})
-
-    saml_session.logout_at_IdP()
+        expected_error = "There is a configuration error in the service provider: No identity provider are set up for use."
+        assert expected_error in str(exc.value)
 
     saml_session.login_with_new_session_at_IdP()
     saml_session.test_logged_in_status()
