@@ -105,26 +105,28 @@ def keycloak_app_version() -> str:
 
 @pytest.fixture()
 def change_app_setting():
-    apps_cache = Apps()
-    app = apps_cache.find('keycloak', latest=True)
-    configure = get_action('configure')
-    settings = configure.list_config(app)
-    revert_changes = {}
+    data = {'app': None, 'configure': None, 'changes': {}}
 
     def _func(app_id: str, changes: dict, revert: bool = True) -> None:
+        apps_cache = Apps()
+        app = apps_cache.find(app_id, latest=True)
+        data['app'] = app
+        configure = get_action('configure')
+        data['configure'] = configure
+        settings = configure.list_config(app)
         known_settings = {x.get('name'): x.get('value') for x in settings}
         for change in changes:
             if change in known_settings:
                 if revert:
-                    revert_changes[change] = known_settings[change]
+                    data['changes'][change] = known_settings[change]
             else:
                 raise Exception(f'Unknown setting: {change}')
         configure.call(app=app, set_vars=changes)
 
     yield _func
 
-    if revert_changes:
-        configure.call(app=app, set_vars=revert_changes)
+    if data['changes']:
+        data['configure'].call(app=data['app'], set_vars=data['changes'])
 
 
 @pytest.fixture()
