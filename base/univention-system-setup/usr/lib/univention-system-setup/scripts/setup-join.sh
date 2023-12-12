@@ -97,7 +97,7 @@ run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
 # Do not change apache certificate when installing via debian installer
 eval "$(univention-config-registry shell)"
 if [ "${system_setup_boot_installer:-}" != "true" ]; then
-	ssl="$(mktemp -p /var/cache/univention-system-setup)"
+	ssl="$(mktemp -d -p /var/cache/univention-system-setup)"
 	install -m 0644 "/etc/univention/ssl/$hostname.$domainname/cert.pem" "$ssl/cert.pem"
 	install -m 0600 "/etc/univention/ssl/$hostname.$domainname/private.key" "$ssl/private.key"
 	install -m 0644 "/etc/univention/ssl/ucsCA/CAcert.pem" "$ssl/CAcert.pem"
