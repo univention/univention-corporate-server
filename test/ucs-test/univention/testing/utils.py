@@ -42,7 +42,7 @@ from enum import IntEnum
 from itertools import chain
 from types import TracebackType  # noqa: F401
 from typing import (  # noqa: F401
-    IO, Any, Callable, Dict, Iterable, List, NoReturn, Optional, Sequence, Text, Tuple, Type, TypeVar,
+    IO, Any, Callable, Dict, Iterable, List, Mapping, NoReturn, Optional, Sequence, Text, Tuple, Type, TypeVar, Union,
 )
 
 import ldap
@@ -182,7 +182,7 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
 
 def verify_ldap_object(
         baseDn,  # type: str
-        expected_attr=None,  # type: Optional[Dict[str, str]]
+        expected_attr=None,  # type: Optional[Mapping[str, Sequence[Union[bytes, str]]]]
         strict=True,  # type: bool
         should_exist=True,  # type: bool
         retry_count=20,  # type: int
@@ -229,8 +229,14 @@ def verify_ldap_object(
         delay)
 
 
-def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True, primary=False, not_expected_attr=None):
-    # type: (str, Optional[Dict[str, str]], bool, bool, bool, Optional[Dict[str, str]]) -> None
+def __verify_ldap_object(
+        baseDn,  # type: str
+        expected_attr=None,  # type: Optional[Mapping[str, Sequence[Union[bytes, str]]]]
+        strict=True,  # type: bool
+        should_exist=True,  # type: bool
+        primary=False,  # type: bool
+        not_expected_attr=None,  # type: Optional[Dict[str, str]]
+):  # type: (...) -> None
     if expected_attr is None:
         expected_attr = {}
     if not_expected_attr is None:

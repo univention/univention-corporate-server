@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: memberOf replication tests
 ## tags:
 ##  - replication
@@ -25,18 +25,18 @@ and tests with with_listener=False to trigger the racing condition (see bug #465
 for details) and with with_listener=True to make sure, that the usual scenario is
 not affected.
 
-Due to the inability of the S4 connector to handle, to handle group changes in diff mode
+Due to the inability of the S4 connector to handle group changes in diff mode
 and the ucs-test framework to wait on all systems until all sync steps are done, the
 test will be skipped for now on all system with samba4 installed but deactivated s4-connector.
 Otherwise the test would be flaky.
 """
 from __future__ import annotations
 
-import sys
 from typing import List
 
-import univention.testing.ucr as ucr_test
-import univention.testing.udm as udm_test
+import pytest
+
+from univention.config_registry import ucr
 from univention.lib.misc import custom_groupname
 from univention.testing import utils
 from univention.testing.strings import random_name
@@ -44,7 +44,7 @@ from univention.testing.utils import start_listener, stop_listener, wait_for_rep
 
 
 RETRY_COUNT = 20
-DELAY = 10
+DELAY = 6
 
 
 class AutoStartStopListener:
@@ -68,17 +68,19 @@ class AutoStartStopListener:
     def __exit__(self, exc_type, exc_value, traceback):
         if not self.dry_run:
             start_listener()
+            wait_for_replication()
 
 
+@pytest.mark.skipif(
+    utils.package_installed('univention-samba4') and ucr.is_false('connector/s4/autostart', False),
+    reason='univention-samba4 is installed but no running S4 connector on this machine ',
+)
 class TestCases:
-    def __init__(self, udm: udm_test.UCSTestUDM, ucr: ucr_test.UCSTestConfigRegistry) -> None:
-        self.udm = udm
-        self.ucr = ucr
-        self.base_user = 'cn=users,%s' % (ucr.get('ldap/base'),)
-        self.base_group = 'cn=groups,%s' % (ucr.get('ldap/base'),)
-        self.dn_domain_users = 'cn=%s,%s' % (custom_groupname('Domain Users', ucr), self.base_group)
+    base_user = 'cn=users,%(ldap/base)s' % ucr
+    base_group = 'cn=groups,%(ldap/base)s' % ucr
+    dn_domain_users = 'cn=%s,%s' % (custom_groupname('Domain Users', ucr), base_group)
 
-    def print_attributes(self, dn_list: List[str], msg: str | None = None) -> None:
+    def print_attributes(self, udm, dn_list: List[str], msg: str | None = None) -> None:
         """
         Prints the DN and the values of the attributes memberOf and uniqueMember for all given
         DNs in dn_list. If msg is specified, a small header line is printed.
@@ -89,13 +91,14 @@ class TestCases:
             print('*** %s ***' % (msg,))
         for dn in dn_list:
             print(dn)
-            attrs = self.udm._lo.get(dn, attr=ATTR_LIST)
+            attrs = udm._lo.get(dn, attr=ATTR_LIST)
             for key in ATTR_LIST:
                 for val in attrs.get(key, []):
                     print('  %s: %s' % (key, val.decode('UTF-8')))
             print()
 
-    def test_user_then_group(self, with_listener: bool) -> None:
+    @pytest.mark.parametrize("with_listener", [True, False])
+    def test_user_then_group(self, with_listener: bool, udm) -> None:
         """
         1) create user1
         2) create user2
@@ -108,13 +111,14 @@ class TestCases:
             dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
-        wait_for_replication()
-        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+
+        self.print_attributes(udm, [dn_user1, dn_user2], 'RESULT')
         utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_user_group_mixed(self, with_listener: bool) -> None:
+    @pytest.mark.parametrize("with_listener", [True, False])
+    def test_user_group_mixed(self, with_listener: bool, udm) -> None:
         """
         1) create user1
         2) add user1 to group
@@ -127,13 +131,14 @@ class TestCases:
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener)
             dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
-        wait_for_replication()
-        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+
+        self.print_attributes(udm, [dn_user1, dn_user2], 'RESULT')
         utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_move_user(self, with_listener: bool) -> None:
+    @pytest.mark.parametrize("with_listener", [True, False])
+    def test_move_user(self, with_listener: bool, udm) -> None:
         """
         1) create container
         2) create grp1
@@ -149,13 +154,14 @@ class TestCases:
             dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
             new_dn_user1 = udm.move_object('users/user', dn=dn_user1, position=dn_cn, wait_for_replication=with_listener)
-        wait_for_replication()
-        self.print_attributes([new_dn_user1, dn_user2], 'RESULT')
+
+        self.print_attributes(udm, [new_dn_user1, dn_user2], 'RESULT')
         utils.verify_ldap_object(dn_grp1, {'uniqueMember': [new_dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(new_dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_move_group(self, with_listener: bool) -> None:
+    @pytest.mark.parametrize("with_listener", [True, False])
+    def test_move_group(self, with_listener: bool, udm) -> None:
         """
         1) create container
         2) create grp1
@@ -171,13 +177,14 @@ class TestCases:
             dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
             new_dn_grp1 = udm.move_object('groups/group', dn=dn_grp1, position=dn_cn, wait_for_replication=with_listener)
-        wait_for_replication()
-        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+
+        self.print_attributes(udm, [dn_user1, dn_user2], 'RESULT')
         utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_rename_group(self, with_listener: bool) -> None:
+    @pytest.mark.parametrize("with_listener", [True, False])
+    def test_rename_group(self, with_listener: bool, udm) -> None:
         """
         1) create grp1
         2) create user1
@@ -191,13 +198,14 @@ class TestCases:
             dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
             new_dn_grp1 = udm.modify_object('groups/group', dn=dn_grp1, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
-        wait_for_replication()
-        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+
+        self.print_attributes(udm, [dn_user1, dn_user2], 'RESULT')
         utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_remove_group(self, with_listener: bool) -> None:
+    @pytest.mark.parametrize("with_listener", [True, False])
+    def test_remove_group(self, with_listener: bool, udm) -> None:
         """
         1) create grp1
         2) create user1
@@ -211,18 +219,19 @@ class TestCases:
             dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
             dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener, wait_for=with_listener)
-        wait_for_replication()
+
         with AutoStartStopListener(with_listener):
             dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
             udm.remove_object('groups/group', dn=dn_grp1, wait_for_replication=with_listener)
-        wait_for_replication()
+
         udm.wait_for('groups/group', dn_grp1, wait_for_s4connector=with_listener)
-        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+        self.print_attributes(udm, [dn_user1, dn_user2], 'RESULT')
         utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user2, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
 
-    def test_remove_user_from_group(self, with_listener: bool) -> None:
+    @pytest.mark.parametrize("with_listener", [True, False])
+    def test_remove_user_from_group(self, with_listener: bool, udm) -> None:
         """
         1) create grp1
         2) create user1
@@ -236,43 +245,15 @@ class TestCases:
             dn_grp1 = udm.create_object('groups/group', position=self.base_group, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
             dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener, wait_for=with_listener)
-        wait_for_replication()
+
         with AutoStartStopListener(with_listener):
             dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, remove={'users': [dn_user1]}, wait_for_replication=with_listener, wait_for=with_listener)
-        wait_for_replication()
-        self.print_attributes([dn_user1, dn_user2], 'RESULT')
+
+        self.print_attributes(udm, [dn_user1, dn_user2], 'RESULT')
         utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
-
-    def run(self):
-        for func in (
-                self.test_user_then_group,
-                self.test_user_group_mixed,
-                self.test_move_user,
-                self.test_move_group,
-                self.test_rename_group,
-                self.test_remove_group,
-                self.test_remove_user_from_group,
-        ):
-            for with_listener in [True, False]:
-                print()
-                print('*' * (len(func.__name__) + 14))
-                print('*** %s(%r)' % (func.__name__, with_listener))
-                print('*' * (len(func.__name__) + 14))
-                func(with_listener)
-
-
-if __name__ == '__main__':
-    with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
-        if utils.package_installed('univention-samba4') and ucr.is_false('connector/s4/autostart', False):
-            # skip test which would be flaky otherwise
-            print('WARNING: univention-samba4 is installed but no running S4 connector on this machine --> skipping test')
-            sys.exit(138)
-
-        testcases = TestCases(udm, ucr)
-        testcases.run()
 
 # vim: set ft=python :
