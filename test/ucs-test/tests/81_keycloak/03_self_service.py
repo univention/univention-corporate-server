@@ -4,13 +4,14 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 ## packages: [univention-self-service]
+## apps: [keycloak]
 
 from selenium.webdriver.common.by import By
 from utils import get_language, wait_for_class, wait_for_id
 
 
-def test_login_denied_if_not_verified(keycloak_settings, portal_login_via_keycloak, unverified_user, portal_config, keycloak_config):
-    assert keycloak_settings['ucs/self/registration/check_email_verification'] is True
+def test_login_denied_if_not_verified(keycloak_settings, portal_login_via_keycloak, unverified_user, portal_config, keycloak_config, change_app_setting):
+    change_app_setting('keycloak', {'ucs/self/registration/check_email_verification': True})
     driver = portal_login_via_keycloak(unverified_user.username, unverified_user.password, verify_login=False)
     error = wait_for_class(driver, 'ucs-p')[0]
     error_msg = error.get_attribute('innerHTML')
@@ -26,11 +27,11 @@ def test_login_denied_if_not_verified(keycloak_settings, portal_login_via_keyclo
     wait_for_id(driver, portal_config.header_menu_id)
 
 
-def test_verified_msg(change_app_setting, unverified_user, portal_login_via_keycloak, keycloak_settings):
-    assert keycloak_settings['ucs/self/registration/check_email_verification'] is True
+def test_verified_msg(change_app_setting, unverified_user, portal_login_via_keycloak):
     settings = {
         'keycloak/login/messages/en/accountNotVerifiedMsg': 'en yada yada yada',
         'keycloak/login/messages/de/accountNotVerifiedMsg': 'de yada yada yada',
+        'ucs/self/registration/check_email_verification': True,
     }
     change_app_setting('keycloak', settings)
     driver = portal_login_via_keycloak(unverified_user.username, unverified_user.password, verify_login=False)
