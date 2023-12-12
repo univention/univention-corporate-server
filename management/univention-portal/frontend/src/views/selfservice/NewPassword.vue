@@ -180,6 +180,12 @@ export default defineComponent({
           case 'token':
             widget.label = _('Token');
             break;
+          case 'newPassword':
+            widget.label = _('New password');
+            break;
+          case 'newPassword2':
+            widget.label = _('New password (retype)');
+            break;
           default:
             break;
         }

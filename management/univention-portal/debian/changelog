@@ -1,5 +1,6 @@
-univention-portal (4.0.15-1) UNRELEASED; urgency=medium
+univention-portal (4.0.15-1) unstable; urgency=medium
 
+  * Bug #56853: Fix label translation for self-service fields.
   * Bug #56832: UCS 5.0-6 version bump
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:28 +0100
