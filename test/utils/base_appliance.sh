@@ -554,7 +554,6 @@ __EOF__
 }
 
 download_system_setup_packages () {  # [app_id]
-	# This duplicates much of ../../base/univention-system-setup/usr/share/univention-system-setup/download-packages
 	local app="${1:-}"
 
 	# autoremove packages before updating package cache
@@ -564,60 +563,12 @@ download_system_setup_packages () {  # [app_id]
 	apt-get -y autoremove
 
 	echo "download_system_setup_packages for $app"
-
-	install -m 0755 -d /var/cache/univention-system-setup/packages/
-	(
-		cd /var/cache/univention-system-setup/packages/
-		touch Packages
-		[ -e /etc/apt/sources.list.d/05univention-system-setup.list ] ||
-			echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
-
-		install_cmd="$(univention-config-registry get update/commands/install)"
-		# server role packages
-		declare -a packages=(
-			univention-server-master
-			univention-server-backup
-			univention-server-slave
-			univention-server-member
-			# ad member mode
-			univention-ad-connector
-			univention-samba
-			# welcome-screen + dependencies for all roles
-			univention-welcome-screen
-			linux-headers-amd64
-			firefox-esr-l10n-de
-		)
-		app_appliance_is_software_blacklisted "$app" ||
-			packages+=(
-				univention-management-console-module-adtakeover
-				univention-printserver
-				univention-dhcp
-				univention-fetchmail
-				univention-radius
-				univention-mail-server
-				univention-pkgdb
-				univention-samba4
-				univention-s4-connector
-				univention-squid
-				univention-self-service
-				univention-self-service-passwordreset-umc
-				univention-self-service-master
-			)
-
-		apt-get -q update || true
-		for package in "${packages[@]}"
-		do
-			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}"
-			# shellcheck disable=SC2046
-			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages \
-				$(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 "${package}" | sed -ne 's|^Inst \([^ ]*\) .*|\1|p') ||
-			die "Failed to download required packages for ${package}"
-		done
-
-		apt-ftparchive packages . >Packages ||
-			die "Failed to create ftparchive directory"
-		chmod 644 Packages
-	)
+	if app_appliance_is_software_blacklisted "$app"
+	then
+		/usr/share/univention-system-setup/download-packages
+	else
+		/usr/share/univention-system-setup/download-packages -b
+	fi
 }
 
 appliance_preinstall_common_role () {
@@ -737,7 +688,8 @@ setup_appliance () {  # [app_id]
 	ucr set grub/gfxmode=800x600@16
 
 	# generate all UMC languages
-	ucr set locale/default="en_US.UTF-8:UTF-8" locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8"; locale-gen
+	ucr set locale/default="en_US.UTF-8:UTF-8" locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8"
+	locale-gen
 
 	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
 	install_haveged
@@ -748,9 +700,7 @@ setup_appliance () {  # [app_id]
 
 	# shrink appliance image size
 	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
-	rm -rf /var/cache/univention-system-setup/packages/
-
-	download_system_setup_packages "$@"
+	rm -rf /var/cache/univention-system-setup/packages
 
 	# Cleanup apt archive
 	apt-get -q update
@@ -801,14 +751,12 @@ __EOF__
 
 	clear_dhcp_hostname
 
-	# Set official update server, deactivate online repository until system setup script 90_postjoin/20upgrade
-	ucr set repository/online=false \
+	# Set official update server, activate online repository until system setup script 90_postjoin/20upgrade
+	ucr set repository/online=true \
 		repository/online/server='https://updates.software-univention.de'
 	# ucr set repository/online/server=univention-repository.knut.univention.de
 
-	[ -e /etc/apt/sources.list.d/05univention-system-setup.list ] ||
-		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
-
+	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
 	rm -rf /root/shared-utils/
 
 	# Cleanup apt archive

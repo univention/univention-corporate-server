@@ -262,7 +262,7 @@ check_kernel () {  # Bug #37144
 	done <"$tmp"
 }
 
-check_system_setup () {
+NO_check_system_setup () {
 	local CACHE='/var/cache/univention-system-setup/packages'
 	find "$CACHE" -name \*.deb -printf '%f\n' >"$tmp" || :
 	[ -s "$tmp" ] ||

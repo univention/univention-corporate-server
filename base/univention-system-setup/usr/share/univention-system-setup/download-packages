@@ -39,18 +39,20 @@ die () {
 	exit "$rc"
 }
 
-if [ -n "$1" ]; then
-	echo "Usage $0"
-	exit 2
-fi
-
-declare -a PACKAGES=(
+declare -a BASE=(
+	# server role packages
 	univention-server-master # TODO
 	univention-server-backup # TODO
 	univention-server-slave
 	univention-server-member
+	# AD member mode
 	univention-ad-connector
 	univention-samba
+	# common dependencies
+	univention-welcome-screen
+	firefox-esr-l10n-de
+)
+declare -a COMPONENTS=(
 	univention-management-console-module-adtakeover
 	univention-printserver # TODO
 	univention-dhcp
@@ -66,8 +68,26 @@ declare -a PACKAGES=(
 	univention-self-service-passwordreset-umc
 	univention-self-service-master # TODO
 )
+declare -a PACKAGES=("${BASE[@]}" "${COMPONENTS[@]}")
 CACHE='/var/cache/univention-system-setup/packages'
 APT='/etc/apt/sources.list.d/05univention-system-setup.list'
+
+while getopts bh option
+do
+	case "$option" in
+		b)
+			PACKAGES=("${BASE[@]}")
+			;;
+		h)
+			echo "Usage: ${0##*/} [-b]"
+			exit 0
+			;;
+		*)
+			echo "Usage: ${0##*/} [-b]"
+			exit 2
+			;;
+	esac
+done
 
 umask 0022
 install -m 0755 -o _apt -d "$CACHE"
