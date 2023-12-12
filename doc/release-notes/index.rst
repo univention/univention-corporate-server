@@ -14,7 +14,7 @@ Publication date of UCS |release|: 2023-12-12
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-6, the sixth point release for |UCSUCS| (UCS) 5.0 is
+With |UCSUCS| 5.0-6, the sixth patchlevel release for |UCSUCS| (UCS) 5.0 is
 available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
