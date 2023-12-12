@@ -7,6 +7,10 @@
 univention-system-setup
 univention-system-setup-boot
 firefox-esr-l10n-de
+xinit
+xorg
+xserver-xorg-input-all
+xserver-xorg-video-all
 
 /* Kernel Packages */
 firmware-linux
