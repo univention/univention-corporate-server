@@ -418,15 +418,30 @@ def extract_endpoints_xml(metadata_url, metadata_file, no_ssl_verify):
     return endpoints
 
 
-def get_SAML_client(opt: Namespace) -> None:
+def get_oidc_clients(opt: Namespace) -> None:
+    get_clients(opt, protocol="openid-connect")
+
+
+def get_saml_clients(opt: Namespace) -> None:
+    get_clients(opt, protocol="saml")
+
+
+def get_clients(opt: Namespace, protocol: str | None = "openid-connect") -> None:
     session = UniventionKeycloakAdmin(opt)
-    clients = [client for client in session.get_clients() if client["protocol"] == "saml"]
+    clients = [client for client in session.get_clients() if client["protocol"] == protocol]
     if not opt.all:
         clients = [x["clientId"] for x in clients]
     if opt.json:
         print(json.dumps(clients, indent=4))
     else:
         print(clients)
+
+
+def update_client(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    clientid = session.get_client_id(opt.clientid)
+    payload = json.loads(opt.changes)
+    session.update_client(clientid, payload)
 
 
 def create_SAML_client(opt):
@@ -907,12 +922,17 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_saml_parser.add_argument("--policy-url", help="URL that the client provides to the end-user to read about the how the profile data will be used")
     create_saml_parser.add_argument("--not-enabled", default=False, action="store_true", help="Disable client")
     create_saml_parser.add_argument("--valid-redirect-uris", nargs='+', default=[], help="Provide list of valid redirect URIs")
-
     create_saml_parser.set_defaults(func=create_SAML_client)
-    get_saml_parser = operation_subparsers.add_parser("get", help="get SAML SP from Keycloak")
+
+    get_saml_parser = operation_subparsers.add_parser("get", help="get SAML SPs from Keycloak")
     get_saml_parser.add_argument("--json", help="Print json output", default=False, action="store_true")
     get_saml_parser.add_argument("--all", help="Get all client attributes, not just the clientId", default=False, action="store_true")
-    get_saml_parser.set_defaults(func=get_SAML_client)
+    get_saml_parser.set_defaults(func=get_saml_clients)
+
+    update_saml_parser = operation_subparsers.add_parser("update", help="update SAML SP config")
+    update_saml_parser.add_argument("clientid", help="the client ID of the SAML SP in keycloak")
+    update_saml_parser.add_argument("changes", help="json representation of the client attributes to change")
+    update_saml_parser.set_defaults(func=update_client)
 
     # saml user attribute mapper
     parser_saml_user_attribute_mapper = subparsers.add_parser("saml-client-user-attribute-mapper", help="Create/get/delete saml-client-user-attribute-mapper for saml clients")
@@ -994,6 +1014,17 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_saml_parser.add_argument("--client-name", required=True)
     create_saml_parser.set_defaults(func=get_client_secret)
 
+    get_oidc_parser = operation_subparsers.add_parser("get", help="get OIDC clients from Keycloak")
+    get_oidc_parser.add_argument("--json", help="Print json output", default=False, action="store_true")
+    get_oidc_parser.add_argument("--all", help="Get all client attributes, not just the clientId", default=False, action="store_true")
+    get_oidc_parser.set_defaults(func=get_oidc_clients)
+
+    update_oidc_parser = operation_subparsers.add_parser("update", help="update OIDC RP config")
+    update_oidc_parser.add_argument("clientid", help="the client ID of the OIDC RP in keycloak")
+    update_oidc_parser.add_argument("changes", help="json representation of the client attributes to change")
+    update_oidc_parser.set_defaults(func=update_client)
+
+    # saml cert
     parser_saml_idp_cert = subparsers.add_parser("saml/idp/cert", help="SAML IdP certificate")
     operation_subparsers = parser_saml_idp_cert.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
     get_cert_saml_parser = operation_subparsers.add_parser("get", help="download the SAML IdP signing certificate")

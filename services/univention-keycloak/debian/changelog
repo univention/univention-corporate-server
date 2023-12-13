@@ -1,3 +1,10 @@
+univention-keycloak (1.0.10-2) unstable; urgency=medium
+
+  * Bug #56888: updated keycloak migration status message
+    keycloak is no longer required for the update
+
+ -- Felix Botner <botner@univention.de>  Mon, 11 Dec 2023 17:44:15 +0100
+
 univention-keycloak (1.0.10-1) UNRELEASED; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump

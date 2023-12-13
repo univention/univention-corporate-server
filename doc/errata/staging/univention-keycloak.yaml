@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [5, 6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-keycloak
+fix: 1.0.10-2
+desc: |
+ This update addresses the following issues:
+ * The package `univention-keycloak` ships the command line
+   script `univention-keycloak-migration-status` which is used
+   before the update to UCS 5.2 to check whether the migration
+   to keycloak is complete. The requirement to install the
+   keycloak app before the update has been dropped. The update
+   to UCS 5.2 will be possible without the installation of the
+   keycloak app.
+bug: [56888]
