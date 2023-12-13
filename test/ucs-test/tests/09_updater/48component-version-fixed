@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 ## desc: |
 ##  Update localhost component with fixed version
-##  1. setup local repository for maintained component with specific version
+##  1. setup local repository for component with specific version
 ##  2. check if the package is installable
 ## roles-not: [basesystem]
 ## tags: [basic]
@@ -16,18 +16,18 @@ compname="test${RANDOM}"
 
 setup_apache "${repoprefix}"
 
-mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"  # 0 1 2 3
+mkpdir "${major}.${minor}--component/${compname}" all "${ARCH}"  # 0 1 2 3
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 version="${major}.${minor}"
 
 minor+=1
-mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"  # 4 5 6 7
+mkpdir "${major}.${minor}--component/${compname}" all "${ARCH}"  # 4 5 6 7
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
 comp="repository/online/component/${compname}"
-config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=${version}"
+config_repo "${comp}=yes" "${comp}/version=${version}"
 
 	set -e
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"

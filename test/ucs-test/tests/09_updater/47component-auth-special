@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 ## desc: |
 ##  Update localhost component with non-ascii authentication
-##  1. setup local repository for maintained component with authentication using special characters
+##  1. setup local repository for component with authentication using special characters
 ##  2. check if the Packages file is accessale
 ##  3. optionally check if the package is installable
 ## bugs: [17691]
@@ -21,7 +21,7 @@ compname="test${RANDOM}"
 
 setup_apache "${repoprefix}"
 
-mkpdir "${_version_version}--component/${compname}" maintained all "${ARCH}"  # 0 1 2 3
+mkpdir "${_version_version}--component/${compname}" all "${ARCH}"  # 0 1 2 3
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
@@ -34,7 +34,7 @@ Require valid-user
 EOF
 
 comp="repository/online/component/${compname}"
-config_repo "${comp}=yes" "${comp}/parts=maintained"
+config_repo "${comp}=yes"
 
 quote () { # escape text to basic regular expression
 	python3 -c 'import sys

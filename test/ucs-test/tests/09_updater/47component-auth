@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 ## desc: |
 ##  Update localhost component with authentication
-##  1. setup local repository for maintained component with authentication
+##  1. setup local repository for component with authentication
 ##  2. check if the package is installable
 ## roles-not: [basesystem]
 ## tags: [basic]
@@ -19,7 +19,7 @@ password="pass${RANDOM}"
 setup_apache "${repoprefix}"
 htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}"
 
-mkpdir "${_version_version}--component/${compname}" maintained all "${ARCH}"  # 0 1 2 3
+mkpdir "${_version_version}--component/${compname}" all "${ARCH}"  # 0 1 2 3
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
@@ -32,7 +32,7 @@ Require user ${username}
 EOF
 
 comp="repository/online/component/${compname}"
-config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=${username}" "${comp}/password=${password}"
+config_repo "${comp}=yes" "${comp}/username=${username}" "${comp}/password=${password}"
 
 	set -e
 	checkapt "http://${username}:${password}@localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
