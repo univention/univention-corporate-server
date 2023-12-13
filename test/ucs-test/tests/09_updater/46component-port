@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 ## desc: |
 ##  Update localhost component from port 81
-##  1. setup local repository for maintained component from custom port
+##  1. setup local repository for component from custom port
 ##  2. check if the package is installable
 ## roles-not: [basesystem]
 ## tags: [basic]
@@ -19,13 +19,13 @@ setup_apache --port "${port}" "${repoprefix}"
 
 # NOTE: ${comp}/version must specified because no release exists for autodetection
 
-mkpdir "${_version_version}--component/${compname}" maintained all "${ARCH}"  # 0 1 2 3
+mkpdir "${_version_version}--component/${compname}" all "${ARCH}"  # 0 1 2 3
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
 comp="repository/online/component/${compname}"
 config_repo \
-	:${port} "${comp}=yes" "${comp}/parts=maintained" "${comp}/port=${port}" "${comp}/version=${_version_version}"
+	:${port} "${comp}=yes" "${comp}/port=${port}" "${comp}/version=${_version_version}"
 
 	set -e
 	checkapt "http://localhost:${port}/${repoprefix}/" "${DIRS[@]}"
