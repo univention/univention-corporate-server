@@ -6,9 +6,9 @@
 # defaults for release
 release='5.0-6'
 old_release='4.4-9'
-kvm_template_version='5.0-5+e798'
-# AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 6
-current_ami=ami-0e72981c452ee9b85
+kvm_template_version='5.0-6+e897'
+# AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 7
+current_ami=ami-09fefd41ed2cea5a4
 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 11
 old_ami=ami-02ad9aab36aadf18a
 
@@ -21,7 +21,7 @@ kvm_label_suffix=''
 exact_match='false'
 ucsschool_release='scope'
 shutdown='false'
-openstack_image_name='UCS 5.0-5+6'
+openstack_image_name='UCS 5.0-6'
 source_iso="/var/univention/buildsystem2/isotests/ucs_${release}-latest-amd64.iso"
 
 # some internal stuff
