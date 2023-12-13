@@ -37,19 +37,19 @@ from univention.management.console.config import ucr
 from univention.management.console.ldap import get_connection, reset_cache  # noqa: F401
 
 
-def get_user_ldap_write_connection(binddn, bindpw):
-    return get_ldap_connection('user-write', binddn, bindpw)
+def get_user_ldap_write_connection(auth_type, binddn, bindpw):
+    return get_ldap_connection('user-write', auth_type, binddn, bindpw)
 
 
-def get_user_ldap_read_connection(binddn, bindpw):
-    return get_ldap_connection('user-read', binddn, bindpw)
+def get_user_ldap_read_connection(auth_type, binddn, bindpw):
+    return get_ldap_connection('user-read', auth_type, binddn, bindpw)
 
 
 def get_machine_ldap_connection(type_):
     binddn = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/binddn', ucr['ldap/hostdn'])
     with open(ucr.get(f'directory/manager/rest/ldap-connection/{type_}/password-file', '/etc/machine.secret')) as fd:
         password = fd.read().strip()
-    return get_ldap_connection(type_, binddn, password)
+    return get_ldap_connection(type_, None, binddn, password)
 
 
 def get_machine_ldap_write_connection():
@@ -60,8 +60,10 @@ def get_machine_ldap_read_connection():
     return get_machine_ldap_connection('machine-read')
 
 
-def get_ldap_connection(type_, binddn, bindpw):
+def get_ldap_connection(type_, auth_type, binddn, bindpw):
     default_uri = "ldap://%s:%d" % (ucr.get('ldap/master'), ucr.get_int('ldap/master/port', '7389'))
     uri = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/uri', default_uri)
     start_tls = ucr.get_int('directory/manager/rest/ldap-connection/user-read/start-tls', 2)
+    if auth_type == 'Bearer':
+        return get_connection(bind=lambda lo: lo.bind_oauthbearer(binddn, bindpw), binddn=None, bindpw=None, host=None, port=None, base=ucr['ldap/base'], start_tls=start_tls, uri=uri)
     return get_connection(bind=None, binddn=binddn, bindpw=bindpw, host=None, port=None, base=ucr['ldap/base'], start_tls=start_tls, uri=uri)

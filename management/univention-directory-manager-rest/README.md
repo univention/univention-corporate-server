@@ -41,7 +41,7 @@ This enables scalability of the interaction between components, genericicity of 
 
     **Why statelessness matters**: Stateless communication simplifies the server's implementation and enables the scalability of services. Multiple server instances or processes can efficiently handle client requests without relying on shared session state, which can be a bottleneck in high-demand scenarios.
 
-    **Compliance**: The *UDM REST API* accomplishes this by not storing any state across requests and utilyzing HTTP basic authentication for user authentication. Additionally, authentication via OIDC/Bearer will be provided in the future, which is compliant to the statelessness constraint.
+    **Compliance**: The *UDM REST API* accomplishes this by not storing any state across requests and utilyzing HTTP basic authentication for user authentication. Additionally, authentication via OAuth 2/Bearer is provided, which is compliant to the statelessness constraint.
 
     **Compliance violations**: The statelessness constraint is currently violated during operations that involve moving LDAP objects or renaming containers. Progress information for such operations is stored in shared memory, but only in the processes for the same locale. Further requests can poll the progress state. These operations are performed in separate threads rather than separate processes.
     The LDAP connections are bound to the basic authentication credentials, and open LDAP connections are cached between requests to optimize performance.
@@ -268,10 +268,10 @@ The replication might also lag behind so that data is not accurate.
 The only writeable LDAP server is the LDAP server on the Primary Directory Node.
 
 ### Authentication
-The *UDM REST API* can only be accessed via HTTP Basic authentication.
-For the authentication the username and password have to be provided. A special username is `cn=admin`, which is the LDAP root dn.
-Authentication via DN or mail address is not possible.
-In the future HTTP Bearer authentication should be implemented to support authentication via a JWT including a ID and/or Access Token.
+The *UDM REST API* can be accessed via HTTP Basic authentication and HTTP Bearer authentication.
+For Basic authentication the username and password have to be provided. A special username is `cn=admin`, which is the LDAP root DN.
+Authentication via LDAP-DN or mail address is not possible.
+For Bearer authentication an OAuth 2 Access Token has to be provided as JWT.
 
 ### Authorization
 The authorization at the *UDM REST API* is done via group membership. By default Domain Admins, DC Backup Hosts and DC Slave Hosts are allowed to access it.
@@ -284,6 +284,13 @@ The *UDM REST API* can be scaled horizontally by starting it with multiprocessin
 A value of `0` uses the number of CPU cores as number of subprocesses.
 Mutliprocessing requires sharing of memory necessary.
 We are sharing memory via `multiprocessing.managers.SyncManager()` with information about the child process IDs, authentication cache, a queue for move operation progress information, and LDAP cookies for paginated search operations.
+
+## OAuth 2 support
+The OpenLDAP server supports SASL authentication via `OAUTHBEARER` (using `crudeoauth`).
+Therefore the UDM REST API is a registered OAuth 2 client acting as Resource Server.
+HTTP user agents can provide a Access Token in form of a JWT via HTTP Bearer authentication.
+The access token is restricted by the `aud` claim to specific LDAP servers (e.g. `ldaps://domain.name` or `ldaps://hostname.domain.name`), which is checked by `crudeoauth`.
+Additionally the access token may be restricted to a OIDC authorized party by providing the UDM REST API client ID in the `azp` claim.
 
 ## OpenAPI interface
 The *UDM REST API* provides an OpenAPI schema definition, which allows to autogenerate RPC clients.

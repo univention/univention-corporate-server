@@ -5,3 +5,7 @@ Variables: directory/manager/rest/server/port
 Type: file
 File: etc/logrotate.d/univention-directory-manager-rest
 Variables: logrotate/.*
+
+Type: module
+Module: setup_udm_rest_oauth_rp.py
+Variables: directory/manager/rest/oauth/issuer

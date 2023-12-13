@@ -77,6 +77,7 @@ from univention.admin.rest.http_conditional import ConditionalResource, last_mod
 from univention.admin.rest.ldap_connection import (
     get_machine_ldap_read_connection, get_user_ldap_read_connection, get_user_ldap_write_connection, reset_cache,
 )
+from univention.admin.rest.oauth import OAuthException, OAuthResource
 from univention.admin.rest.openapi import OpenAPIBase, RelationsBase, _OpenAPIBase
 from univention.admin.rest.sanitizer import (
     Body, BooleanSanitizer, BoolSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer,
@@ -113,7 +114,7 @@ _ = Translation('univention-directory-manager-rest').translate
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 
 
-class ResourceBase(SanitizerBase, HAL, HTML):
+class ResourceBase(SanitizerBase, HAL, HTML, OAuthResource):
     """Abstract base class for all HTTP resources"""
 
     pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
@@ -129,10 +130,15 @@ class ResourceBase(SanitizerBase, HAL, HTML):
     def debug_mode_enabled(self):
         return ucr.is_true('directory/manager/rest/debug-mode-enabled')
 
-    def force_authorization(self):
-        self.set_header('WWW-Authenticate', 'Basic realm="Univention Directory Manager"')
+    def force_authorization(self, auth_type=None, error_information=None):
+        self.add_header('WWW-Authenticate', 'Basic realm="Univention Directory Manager"')
+        if auth_type == 'Bearer':
+            if error_information:
+                self.set_header('WWW-Authenticate', 'Bearer realm="Univention Directory Manager" scope="openid" error="invalid_token" error_description="%s"' % (error_information.encode('unicode_escape').decode('ISO8859-1').replace('"', '').replace('\\', '\\\\'),))
+            else:
+                self.add_header('WWW-Authenticate', 'Bearer realm="Univention Directory Manager"')
         self.set_status(401)
-        self.finish()
+        self.finish()  # TODO: add response body
 
     def set_default_headers(self):
         self.set_header('Server', 'Univention/1.0')  # TODO:
@@ -143,10 +149,11 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         self.set_header('X-Request-Id', self.request.x_request_id)
         self.request.content_negotiation_lang = 'html'
         self.request.path_decoded = unquote(self.request.path)
+        self.oauth_prepare()
         self.request.decoded_query_arguments = self.request.query_arguments.copy()
         authorization = self.request.headers.get('Authorization')
         if not authorization and self.requires_authentication:
-            return self.force_authorization()
+            return self.force_authorization(None)
 
         try:
             if authorization:
@@ -160,46 +167,55 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
     def parse_authorization(self, authorization):
         if authorization in shared_memory.authenticated:  # cache for the userdn, which eliminates a search / request
-            username, userdn, password = shared_memory.authenticated[authorization]
+            auth_type, username, userdn, password = shared_memory.authenticated[authorization]
             already_authenticated = True
         else:
             already_authenticated = False
             username = userdn = password = None
+            auth_type = None
             if authorization.lower().startswith('basic '):
                 try:
                     username, password = base64.b64decode(authorization.split(' ', 1)[1].encode('ISO8859-1')).decode('ISO8859-1').split(':', 1)
                 except (ValueError, IndexError, binascii.Error):
                     pass
-            if not username or not password:
-                raise HTTPError(400, 'The basic auth credentials are malformed.')
+                if not username or not password:
+                    raise HTTPError(400, 'The basic auth credentials are malformed.')
+            elif authorization.lower().startswith('bearer '):
+                auth_type = 'Bearer'
+                try:
+                    username, password = self.bearer_authorization(authorization.split(' ', 1)[1])
+                except OAuthException as exc:
+                    self.force_authorization(auth_type, str(exc))
+                    return
 
             userdn = self._auth_get_userdn(username)
             if not userdn:
-                return self.force_authorization()
+                return self.force_authorization(auth_type)
 
         try:
-            self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(userdn, password)
+            self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(auth_type, userdn, password)
             if already_authenticated and not self.ldap_connection.whoami():  # the ldap connection is not bound anymore
                 reset_cache(self.ldap_connection)
-                self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(userdn, password)
+                self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(auth_type, userdn, password)
 
             self.request.user_dn = userdn
             self.request.username = username
-        except (ldap.LDAPError, udm_errors.base):
-            return self.force_authorization()
+        except (ldap.LDAPError, udm_errors.base) as exc:
+            MODULE.debug('Authentication failed: %s' % (exc,))
+            return self.force_authorization(auth_type)  # TODO: parse ldap.OTHER / etc for SASL error details?
         except Exception:
             MODULE.error('Unknown error during authentication: %s' % (traceback.format_exc(), ))
-            return self.force_authorization()
+            return self.force_authorization(auth_type)
 
         if not already_authenticated:
             self._auth_check_allowed_groups()
 
-        shared_memory.authenticated[authorization] = (username, userdn, password)
+        shared_memory.authenticated[authorization] = (auth_type, username, userdn, password)
 
     @property
     def ldap_write_connection(self):
-        username, userdn, password = shared_memory.authenticated[self.request.headers.get('Authorization')]
-        return get_user_ldap_write_connection(userdn, password)[0]
+        auth_type, username, userdn, password = shared_memory.authenticated[self.request.headers.get('Authorization')]
+        return get_user_ldap_write_connection(auth_type, userdn, password)[0]
 
     def _auth_check_allowed_groups(self):
         if self.request.username in ('cn=admin',):
@@ -2942,7 +2958,7 @@ class ServiceSpecificPassword(Resource):
 class Application(tornado.web.Application):
     """The main tornado application"""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **settings):
         #module_type = '([a-z]+)'
         module_type = '(%s)' % '|'.join(re.escape(mod) for mod in Modules.mapping)
         object_type = '([A-Za-z0-9_-]+/[A-Za-z0-9_-]+)'
@@ -2952,6 +2968,14 @@ class Application(tornado.web.Application):
         # Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
         # Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes
         property_ = '([^/]+)'
+        settings['oauth'] = {
+            'issuer': ucr.get('directory/manager/rest/oauth/issuer', ''),
+            'client_id': ucr.get('directory/manager/rest/oauth/client-id', ''),
+            'op_file': ucr.get('directory/manager/rest/oauth/op-file', ''),
+            'jwks_file': ucr.get('directory/manager/rest/oauth/jwks-file', ''),
+            'client_secret_file': ucr.get('directory/manager/rest/oauth/client-secret-file', ''),
+        }
+
         super().__init__([
             ("/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
             ("/udm/(?:index.html)?", Modules),
@@ -2995,7 +3019,7 @@ class Application(tornado.web.Application):
             (f"/udm/(users/user)/{dn}/service-specific-password", ServiceSpecificPassword),
             ("/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
             # TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
-        ], default_handler_class=Nothing, **kwargs)
+        ], default_handler_class=Nothing, **settings)
 
     def multi_regex(self, chars):
         # Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548, therefore we must match =, %3d, %3D
