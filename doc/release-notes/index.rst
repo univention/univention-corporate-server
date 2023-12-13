@@ -263,6 +263,12 @@ Users running older browsers may experience display or performance issues.
 
 .. _relnotes-changelog:
 
+*********
+Changelog
+*********
+
+You find the changes since UCS 5.0-5 in
+:external+uv-changelog-5.0-6:doc:`index`.
 
 .. _biblio:
 
