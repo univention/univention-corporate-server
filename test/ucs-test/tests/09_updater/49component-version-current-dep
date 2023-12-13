@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 ## desc: |
 ##  Update localhost component with current version blocked
-##  1. setup local repository for maintained component with current version
+##  1. setup local repository for component with current version
 ##  2. check if the component is installable
 ##  3. one release update is available with component
 ##  4. additional release updates are unavailable because of missing component
@@ -19,10 +19,10 @@ compname="test${RANDOM}"
 setup_apache "${repoprefix}"
 
 version1="${major}.${minor}-${_version_patchlevel}"
-mkpdir "${major}.${minor}-${_version_patchlevel}" maintained "${ARCH}"  # 0 1
+mkpdir "${major}.${minor}-${_version_patchlevel}" "${ARCH}"  # 0 1
 mkpkg "${DIR}" "${DIR_POOL}"
 
-mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"  # 2 3
+mkpdir "${major}.${minor}--component/${compname}" all "${ARCH}"  # 2 3
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
@@ -30,25 +30,25 @@ declare -a BDIR=("${DIRS[@]}")
 
 minor+=1
 version2="${major}.${minor}-0"
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 4 5
+mkpdir "${major}.${minor}-0" "${ARCH}"  # 4 5
 mkpkg "${DIR}" "${DIR_POOL}"
 
-mkpdir "${major}.${minor}--component/${compname}" maintained all "${ARCH}"  # 6 7
+mkpdir "${major}.${minor}--component/${compname}" all "${ARCH}"  # 6 7
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 dirs_except "${BDIR[@]}" && declare -a CDIR=("${result[@]}")
 
 minor+=1
 version3="${major}.${minor}-0"
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # 8 9
+mkpdir "${major}.${minor}-0" "${ARCH}"  # 8 9
 mkpkg "${DIR}" "${DIR_POOL}"
 
 major+=1
 version4="${major}.0-0"
-mkpdir "${major}.0-0" maintained "${ARCH}"  # 10 11
+mkpdir "${major}.0-0" "${ARCH}"  # 10 11
 mkpkg "${DIR}" "${DIR_POOL}"
 
-mkpdir "${major}.0--component/${compname}" maintained all "${ARCH}"  # 12 13
+mkpdir "${major}.0--component/${compname}" all "${ARCH}"  # 12 13
 mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
@@ -57,7 +57,7 @@ python3 create_releases_json.py "${REPODIR}" "$version1" "$version2" "$version3"
 comp="repository/online/component/${compname}"
 minor+=-1
 major+=-1
-config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=current"
+config_repo "${comp}=yes" "${comp}/version=current"
 
 	set -e
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}"
