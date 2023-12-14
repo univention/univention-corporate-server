@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-pkgdb
+fix: 13.0.5-1
+desc: |
+ This update addresses the following issues:
+ * The dependency on `py3dns` has been replaced by `dnspython` to support
+   EDNS, which is required for virtual machines on AWS-EC2 and OpenStack.
+bug: [56911]

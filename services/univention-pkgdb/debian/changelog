@@ -1,8 +1,9 @@
-univention-pkgdb (13.0.5-1) UNRELEASED; urgency=medium
+univention-pkgdb (13.0.5-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #56911: Replace `py3dns` with `dnspython`
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:35 +0100
+ -- Philipp Hahn <hahn@univention.de>  Thu, 14 Dec 2023 11:21:50 +0100
 
 univention-pkgdb (13.0.4-2) unstable; urgency=medium
 

@@ -51,7 +51,7 @@ Package: python3-univention-pkgdb
 Architecture: all
 Depends:
  python3-apt,
- python3-dns,
+ python3-dnspython,
  python3-pygresql,
  univention-config,
  ${misc:Depends},

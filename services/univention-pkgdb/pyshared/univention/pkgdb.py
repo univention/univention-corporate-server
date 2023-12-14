@@ -35,7 +35,7 @@
 Univention Package Database
 Python module for the package database
 """
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import argparse
 import csv
@@ -45,7 +45,8 @@ import sys
 import time
 
 import apt_pkg
-import DNS
+import dns.exception
+import dns.resolver
 import pgdb
 
 import univention.config_registry
@@ -171,17 +172,19 @@ def sql_check_privileges(cursor):
     return 1
 
 
-def get_dbservername(domainname):
+def get_dbservername(domainname: str) -> str | None:
     """Datenbankserver ermitteln"""
-    log('get dbservername for ' + domainname)
-    DNS.DiscoverNameServers()
-    dbsrvname = None
+    name = f"_pkgdb._tcp.{domainname}."
+    log(f'get dbservername for {name!r}')
+    resolver = dns.resolver.Resolver()
     try:
-        dbsrvname = [x['data'] for x in DNS.DnsRequest('_pkgdb._tcp.' + domainname, qtype='srv').req().answers][0][3]  # noqa: RUF015
-    except Exception:
-        log('Cannot find service-record of _pkgdb._tcp.')
-        print('Cannot find service-record of _pkgdb._tcp.')
-    return dbsrvname
+        answer = resolver.query(name, "SRV")
+        for item in answer.response.answer[0].items:
+            return item.target.to_text()
+    except dns.exception.DNSException:
+        log(f'Cannot find {name!r}')
+        print(f'Cannot find {name}')
+    return None
 
 
 def sql_test_superuser(cursor):
