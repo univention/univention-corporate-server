@@ -42,7 +42,13 @@ from os import environ
 from subprocess import CalledProcessError, check_call, check_output
 from typing import Dict, List, Optional, Union
 
-from DNS import DnsRequest, SocketError, TimeoutError
+import dns.exception
+import dns.flags
+import dns.message
+import dns.query
+import dns.rcode
+import dns.rdatatype
+import dns.rrset
 
 from univention.config_registry import ucr, ucr_factory
 from univention.config_registry.frontend import ucr_update
@@ -55,6 +61,7 @@ DictAddr2Str = Dict[IPAddress, Optional[str]]
 UCR_VARS_FWD = [f'dns/forwarder{i}' for i in range(1, 4)]
 UCR_VARS_DNS = [f'nameserver{i}' for i in range(1, 4)]
 LOCAL = '127.0.0.1'  # or ::1 for IPv6
+TIMEOUT = 10.0
 
 
 options = Namespace()
@@ -115,7 +122,7 @@ def parse_args() -> Namespace:
         help='Enable dry-run mode')
     parser.add_argument(
         '--ipv6', '-6',
-        action='store_const', const=('A', 'AAAA'), default=('A',), dest='rrtyp',
+        action='store_const', const=(dns.rdatatype.A, dns.rdatatype.AAAA), default=(dns.rdatatype.A), dest='rrtyp',  # type: ignore[attr-defined]
         help='Also add IPv6 addresses')
     self_group = parser.add_mutually_exclusive_group()
     self_group.add_argument(
@@ -281,7 +288,7 @@ def validate_servers(nameservers: DictAddr2Str, forwarders: DictAddr2Str, domain
                 need_fixing = True
                 del nameservers[server]
                 forwarders[server] = None
-        except (SocketError, TimeoutError) as exc:
+        except dns.exception.Timeout as exc:
             log.warning('Connection check to %s (%s) failed, maybe down?!', server, exc.args[0])
             log.info('Leaving it configured as nameserver anyway')
 
@@ -363,17 +370,25 @@ def add_nameservers(nameservers: DictAddr2Str, domain: str) -> None:
         return
 
     log.debug('Querying %s for additional NS records in %s', LOCAL, domain)
-    r = DnsRequest(domain, qtype='NS', server=[LOCAL], aa=1, rd=0).req()
-    log.debug('header=%r', r.header)
 
-    if r.header['status'] == 'NOERROR' and r.header['aa']:
-        names = {rr['data'] for rr in r.answers}
+    req = dns.message.make_query(domain, "NS")
+    req.flags |= dns.flags.AA  # type: ignore[attr-defined]
+    try:
+        res = dns.query.udp(req, LOCAL, timeout=TIMEOUT, ignore_trailing=True)
+    except dns.exception.Timeout:
+        log.error('DNS lookup of NS records in %s against %s failed', domain, LOCAL)
+        return
+
+    log.debug('header=%r', res)
+
+    if res.rcode() == dns.rcode.NOERROR and res.flags & dns.flags.AA:  # type: ignore[attr-defined]
+        names = {item.target for rr in res.answer for item in rr.items}
         log.debug('servers=%r', names)
-        for rr in r.additional:
-            log.debug('rr=%r', rr)
-            name = rr['name']
-            if rr['typename'] in options.rrtyp and name in names:
-                ip = get_ip(rr)
+        for rr in res.additional:
+            log.debug('rr=%s', rr)
+            name = rr.name
+            if rr.rdtype in options.rrtyp and name in names:
+                ip = ip_address(rr.items[0])
                 if is_self(ip):
                     log.info('Skipping local interface address %s found for NS record %s', ip, name)
                     continue
@@ -397,14 +412,21 @@ def add_master(nameservers: DictAddr2Str, master: str) -> None:
         return
 
     log.debug('Querying %s for address of Primary Directory Node %s', LOCAL, master)
-    r = DnsRequest(master, qtype='ANY', server=[LOCAL], aa=1, rd=0).req()
-    log.debug('header=%r', r.header)
+    req = dns.message.make_query(master, "ANY")
+    req.flags |= dns.flags.AA  # type: ignore[attr-defined]
+    try:
+        res = dns.query.udp(req, LOCAL, timeout=TIMEOUT, ignore_trailing=True)
+    except dns.exception.Timeout:
+        log.error('DNS lookup of %r against %r failed', master, LOCAL)
+        return
 
-    if r.header['status'] == 'NOERROR' and r.header['aa']:
-        for rr in r.answers:
-            log.debug('rr=%r', rr)
-            if rr['typename'] in options.rrtyp:
-                ip = get_ip(rr)
+    log.debug('header=%r', res)
+
+    if res.rcode() == dns.rcode.NOERROR and res.flags & dns.flags.AA:  # type: ignore[attr-defined]
+        for rr in res.answer:
+            log.debug('rr=%s', rr)
+            if rr.rdtype in options.rrtyp:
+                ip = ip_address(rr.items[0])
                 if is_self(ip):
                     log.info('Skipping local interface address %s found for ldap/master %s', ip, master)
                     continue
@@ -480,7 +502,7 @@ def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictA
     check_call(('rndc', 'reconfig'))
 
 
-def query_master_srv_record(domain: str, server: IPAddress) -> bool | str:
+def query_master_srv_record(domain: str, server: IPAddress) -> bool | dns.flags.Flag:
     """
     Lookup Primary DC entry in DNS zone.
 
@@ -493,37 +515,13 @@ def query_master_srv_record(domain: str, server: IPAddress) -> bool | str:
     rec = f"_domaincontroller_master._tcp.{domain.rstrip('.')}."
     log.debug('Querying %s for SRV %s', server, rec)
 
-    req = DnsRequest(rec, qtype='SRV', server=['%s' % (server,)], aa=1, rd=0)
-    res = req.req()
-    log.debug('header=%r', res.header)
+    req = dns.message.make_query(rec, "SRV")
+    req.flags |= dns.flags.AA  # type: ignore[attr-defined]
+    res = dns.query.udp(req, str(server), timeout=TIMEOUT, ignore_trailing=True)
 
-    return res.header['status'] == 'NOERROR' and res.header['aa']  # type: ignore
+    log.debug('header=%r', res)
 
-
-def get_ip(rr: Dict[str, str]) -> IPAddress:
-    r"""
-    Resolve DNS Resource Record to IP address.
-
-    :param rr: DNS RR.
-    :returns: resolved IP address.
-    :raises TypeError: if the RR is neither an `A` nor `AAAA` record.
-
-    >>> get_ip({'typename': 'A', 'data': '127.0.0.1'})
-    IPv4Address('127.0.0.1')
-    >>> get_ip({'typename': 'AAAA', 'data': '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01'})
-    IPv6Address('::1')
-    """
-    typ, data = rr['typename'], rr['data']
-    if typ == 'A':
-        return ip_address(data)  # type: ignore
-    elif typ == 'AAAA':
-        # Work-around bug in python-pydns, which does not unpack IPv6 addresses
-        assert len(data) == 16
-        if not isinstance(data, bytes):
-            data = bytes(data, 'charmap')  # type: ignore
-        return ip_address(data)  # type: ignore
-    else:
-        raise TypeError(typ)
+    return res.rcode() == dns.rcode.NOERROR and res.flags & dns.flags.AA  # type: ignore[attr-defined]
 
 
 def is_self(addr: str | IPv4Address | IPv6Address) -> bool:
