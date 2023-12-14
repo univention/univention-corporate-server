@@ -130,7 +130,10 @@ def parse_args() -> Namespace:
         help='Force adding self as name-server')
     parser.add_argument(
         '--own-ip',
-        help='Specify own IP address')
+        type=ip_address,
+        help='Specify own IP address',
+        metavar="IP",
+    )
     parser.add_argument(
         '--add-master', '-m',
         action='store_true',
@@ -158,9 +161,12 @@ def parse_args() -> Namespace:
     parser.add_argument(
         '--dnsserver',
         action="append",
-        dest="dnsservers",
+        type=ip_address,
         default=[],
-        help='Specify nameserver delivered e.g. via DHCP. May be specified multiple times.')
+        help='Specify nameserver delivered e.g. via DHCP. May be specified multiple times.',
+        metavar="IP",
+        dest="dnsservers",
+    )
 
     options = parser.parse_args()
 
@@ -189,9 +195,8 @@ def get_nameservers_cli(nameservers: DictAddr2Str) -> bool:
 
     need_fixing = False
     for ns in options.dnsservers:
-        dns = ip_address(u'%s' % (ns,))
-        log.info('Added server %s via CLI argument', dns)
-        nameservers[dns] = None
+        log.info('Added server %s via CLI argument', ns)
+        nameservers[ns] = None
         need_fixing = True
 
     return need_fixing
@@ -216,7 +221,7 @@ def get_forwarders(forwarders: DictAddr2Str, ucr: Dict[str, str]) -> bool:
         fwd_str = ucr.get(var, '').strip()
         if not fwd_str:
             continue
-        fwd = ip_address(u'%s' % (fwd_str,))
+        fwd = ip_address(fwd_str)
         if is_self(fwd):
             log.error("Dropping local address %s from UCRV %s", fwd, var)
             need_fixing = True
@@ -246,7 +251,7 @@ def get_nameservers_ucr(nameservers: DictAddr2Str, ucr: Dict[str, str]) -> bool:
         ns = ucr.get(var, '').strip()
         if not ns:
             continue
-        dns = ip_address(u'%s' % (ns,))
+        dns = ip_address(ns)
         log.info('Found server %s from UCRV %s', dns, var)
         nameservers[dns] = None
 
@@ -512,7 +517,7 @@ def get_ip(rr: Dict[str, str]) -> IPAddress:
     """
     typ, data = rr['typename'], rr['data']
     if typ == 'A':
-        return ip_address(u'%s' % (data,))  # type: ignore
+        return ip_address(data)  # type: ignore
     elif typ == 'AAAA':
         # Work-around bug in python-pydns, which does not unpack IPv6 addresses
         assert len(data) == 16
