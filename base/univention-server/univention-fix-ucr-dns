@@ -271,7 +271,7 @@ def validate_servers(nameservers: DictAddr2Str, forwarders: DictAddr2Str, domain
     need_fixing = False
     for server in list(nameservers):
         try:
-            if query_master_src_record(domain, server):
+            if query_master_srv_record(domain, server):
                 log.info('Validated UCS domain server: %s', server)
             else:
                 log.warning('UCS Primary Directory Node SRV record is unknown at %s, converting into forwarder', server)
@@ -335,7 +335,7 @@ def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str], own_ip: Optional[st
         log.info('Default IP address configured in UCR: %s', myself)
 
     domain = ucr['domainname']
-    if not options.force_self and not query_master_src_record(domain, myself):
+    if not options.force_self and not query_master_srv_record(domain, myself):
         log.warning('Failed to query local server %s for %s', myself, domain)
         if nameservers:
             return
@@ -477,7 +477,7 @@ def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictA
     check_call(('rndc', 'reconfig'))
 
 
-def query_master_src_record(domain: str, server: IPAddress) -> Union[bool, str]:
+def query_master_srv_record(domain: str, server: IPAddress) -> Union[bool, str]:
     """
     Lookup Primary DC entry in DNS zone.
 
