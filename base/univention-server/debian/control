@@ -139,7 +139,7 @@ Depends:
  linux-image-amd64 [amd64],
  ntp | ntp-server,
  ntpdate,
- python-dns,
+ python-dnspython,
  python-ipaddress,
  rdate,
  univention-directory-listener,

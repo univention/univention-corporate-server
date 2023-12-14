@@ -169,7 +169,7 @@ def parse_args() -> Namespace:
 
 def setup_logging() -> None:
     """Setup logging output."""
-    FORMAT = '%(asctime)-15s %(levelname)-7s %(name)-17s %(message)s'
+    FORMAT = '%(levelname)-8s %(funcName)-20s %(message)s'
     LEVELS = [ERROR, WARNING, INFO, DEBUG]
     try:
         level = LEVELS[options.verbose]
