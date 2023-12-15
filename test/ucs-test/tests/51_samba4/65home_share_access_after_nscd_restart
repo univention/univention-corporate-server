@@ -1,0 +1,55 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash disable=SC2015
+## desc: "Samba home share access after nscd restart"
+## exposure: careful
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## tags: [basic,apptest]
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/user.sh
+. "$TESTLIBPATH/user.sh" || exit 137
+# shellcheck source=../../lib/random.sh
+. "$TESTLIBPATH/random.sh" || exit 137
+# shellcheck source=../../lib/samba.sh
+. "$TESTLIBPATH/samba.sh" || exit 137
+
+#----create User
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+username="$(user_randomname)"
+password=univention
+
+## restart nscd to simulate the reboot situation that made Bug #56885 appear
+systemctl restart nscd
+# /etc/init.d/samba restart
+
+user_create "$username" ||
+	fail_fast 1 "User could not be created"
+
+wait_for_replication
+# force_drs_replication
+wait_for_drs_replication "(sAMAccountName=$username)"
+
+echo "----Testing smb access"
+output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$username" -c "exit" >/dev/null 2>&1)"
+if [ "$?" != 0 ]; then
+	echo "$output"
+	echo "output of 'id $username':"
+	id "$username"
+	fail_test 1 "Could not connect to the user home share."
+fi
+
+echo "output of 'id $username':"
+id "$username"
+
+exit "$RETVAL"

@@ -1,3 +1,10 @@
+ucs-test (10.0.20-3) unstable; urgency=medium
+
+  * Bug #56885: Add test to check new users can access their homeshare
+    after a "reboot" (simulated by nscd+samba restart)
+
+ -- Arvid <requate@univention.de>  Fri, 15 Dec 2023 11:45:03 +0100
+
 ucs-test (10.0.20-2) unstable; urgency=medium
 
   * Issues #184: account disabled/expired tests
