@@ -1,3 +1,10 @@
+ucs-test (10.0.20-4) unstable; urgency=medium
+
+  * Bug #56765: 82_saml/23_check_permissions.py: make file existence
+    optional
+
+ -- Florian Best <best@univention.de>  Fri, 15 Dec 2023 13:03:33 +0100
+
 ucs-test (10.0.20-3) unstable; urgency=medium
 
   * Bug #56885: Add test to check new users can access their homeshare
