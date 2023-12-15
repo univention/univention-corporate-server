@@ -36,6 +36,8 @@ systemctl restart nscd
 user_create "$username" ||
 	fail_fast 1 "User could not be created"
 
+trap 'user_remove "$username"' INT TERM EXIT
+
 wait_for_replication
 # force_drs_replication
 wait_for_drs_replication "(sAMAccountName=$username)"
