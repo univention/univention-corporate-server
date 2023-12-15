@@ -67,7 +67,7 @@ def wait_for_processes_to_finish(processes: Iterable[subprocess.Popen]) -> None:
 
 def log_warnings_about_unreachable_repository_servers(servers_with_curl_processes: Iterable[Tuple[str, subprocess.Popen]]) -> None:
     """
-    Load a message for all failed processes.
+    Log a message for all failed processes.
 
     :param processes: List of 2-tuples (URL, process)
     """
