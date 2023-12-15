@@ -553,7 +553,7 @@ SSL
   public services like the Univention download server (:uv:bug:`51203`).
 
 * Certificate identifiers are now compared as strings.
-  Previously certain identifiers like ``2e2`` had been handles as
+  Previously certain identifiers like ``2e2`` had been handled as
   floating-point numbers in scientific notations by :program:`awk`
   (:uv:bug:`54834`).
 
