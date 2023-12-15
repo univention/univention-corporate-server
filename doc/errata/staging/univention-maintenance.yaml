@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-maintenance
+fix: 12.0.3-2
+desc: |
+ This update addresses the following issues:
+ * `univention-system-stats` collects system information
+   periodically. One of the commands it uses is `top`.
+   The parameter `c` has been added to show the complete
+   command line in the output.
+bug: [50567]

@@ -1,3 +1,10 @@
+univention-maintenance (12.0.3-2) unstable; urgency=medium
+
+  * Bug #50567: add "-c" option for top
+
+ -- Felix Botner <botner@univention.de>  Fri, 15 Dec 2023 10:43:51 +0100
+
+
 univention-maintenance (12.0.3-1) UNRELEASED; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump

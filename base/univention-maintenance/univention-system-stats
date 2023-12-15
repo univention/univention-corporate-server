@@ -38,7 +38,7 @@ log="/var/log/univention/system-stats.log"
 declare -a cmds=(
 	"$(command -v df) -lhT"
 	"$(command -v ps) auxf"
-	"$(command -v top) -b -n2"
+	"$(command -v top) -b -n2 -c"
 	"$(command -v free)"
 	"$(command -v uptime)"
 	"$(command -v sensors)"
