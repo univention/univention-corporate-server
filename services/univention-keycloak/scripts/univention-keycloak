@@ -956,7 +956,7 @@ def create_oidc_client(opt):
             "use.refresh.tokens": "true",
             "oidc.ciba.grant.enabled": "false",
             "backchannel.logout.session.required": "false",
-            "client_credentials.use_refresh_token": "false",
+            "client_credentials.use_refresh_token": str(opt.use_client_credentials_refresh_token).lower(),
             "saml.client.signature": "false",
             "require.pushed.authorization.requests": "false",
             "saml.allow.ecp.flow": "false",
@@ -1400,6 +1400,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--app-url", required=True)
     create_oidc_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
     create_oidc_parser.add_argument("--redirect-uri", action='append', help="Valid redirect URIs.")
+    create_oidc_parser.add_argument("--use-client-credentials-refresh-tokens", help='', default=False, action="store_true")
     create_oidc_parser.add_argument("--direct-access-grants", help='enable "Direct access grants" flow (default: False)', default=False, action="store_true")
     create_oidc_parser.add_argument("--allow-implicit-flow", action='store_true', help="enables support of 'Implicit Flow' for this client.")
     create_oidc_parser.add_argument("--access-token-lifespan", help="Max time before an access token is expired.")
