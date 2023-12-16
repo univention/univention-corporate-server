@@ -1,4 +1,3 @@
-"""Internal functions for test finding and setup."""
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -29,13 +28,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Internal functions for test finding and setup."""
+
+from __future__ import annotations
 
 import logging
 import operator
 import os
 import re
 import sys
-from typing import Any, Callable, Dict, Iterable, List, Tuple, Union  # noqa: F401
+from typing import Any, Callable, Dict, Iterable, List, Tuple
 
 
 __all__ = [
@@ -52,13 +54,13 @@ S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 INF = sys.maxsize
 
 
-def setup_environment():  # type: () -> None
+def setup_environment() -> None:
     """Setup runtime environment."""
     os.environ['TESTLIBPATH'] = '/usr/share/ucs-test/lib'
     os.environ['PYTHONUNBUFFERED'] = '1'
 
 
-def setup_debug(level):  # type: (int) -> None
+def setup_debug(level: int) -> None:
     """Setup Python logging."""
     level = _TAB.get(level, logging.DEBUG)
     FORMAT = '%(asctime)-15s ' + logging.BASIC_FORMAT
@@ -73,7 +75,7 @@ _TAB = {  # pylint: disable-msg=W0612
 }
 
 
-def strip_indent(text):  # type: (str) -> str
+def strip_indent(text: str) -> str:
     """Strip common indent."""
     lines = text.splitlines()
     while lines and not lines[0].strip():
@@ -84,14 +86,14 @@ def strip_indent(text):  # type: (str) -> str
     return '\n'.join(line[indent:] for line in lines)
 
 
-def get_sections():  # type: () -> Dict[str, str]
+def get_sections() -> Dict[str, str]:
     """Return dictionary section-name -> section-directory."""
     section_dirs = os.listdir(TEST_BASE)
     sections = {dirname[3:]: TEST_BASE + os.path.sep + dirname for dirname in section_dirs if RE_SECTION.match(dirname)}
     return sections
 
 
-def get_tests(sections):  # type: (Iterable[str]) -> Dict[str, List[str]]
+def get_tests(sections: Iterable[str]) -> Dict[str, List[str]]:
     """Return dictionary of section -> [filenames]."""
     result = {}
     logger = logging.getLogger('test.find')
@@ -191,7 +193,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
     RE_VERSION = re.compile(r"^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
 
     @classmethod
-    def _parse(cls, ver, default_op='='):  # type: (str, str) -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, int, int]]
+    def _parse(cls, ver: str, default_op: str = '=') -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, int, int]]:
         """
         Parse UCS-version range and return two-tuple (operator, version)
         >>> UCSVersion._parse('11.22')  # doctest: +ELLIPSIS
@@ -221,7 +223,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
         if not match:
             raise ValueError(f'Version does not match: "{ver}"')
         rel = match.group(1) or default_op
-        parts = tuple(int(_) if _ else INF for _ in match.groups()[1:])  # type: Tuple[int, int, int, int] # type: ignore
+        parts: Tuple[int, int, int, int] = tuple(int(_) if _ else INF for _ in match.groups()[1:])  # type: ignore
         if rel in ('<', '<<'):
             return (operator.lt, parts)
         if rel in ('<=',):
@@ -234,7 +236,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
             return (operator.gt, parts)
         raise ValueError(f'Unknown version match: "{ver}"')
 
-    def __init__(self, ver):  # type: (Union[str, Tuple[int, int, int, int]]) -> None
+    def __init__(self, ver: str | Tuple[int, int, int, int]) -> None:
         if isinstance(ver, str):
             self.rel, self.ver = self._parse(ver)
         elif isinstance(ver, tuple):
@@ -244,7 +246,7 @@ class UCSVersion:  # pylint: disable-msg=R0903
         else:
             raise TypeError(ver)
 
-    def __str__(self):  # type: () -> str
+    def __str__(self) -> str:
         rel = {
             operator.lt: '<',
             operator.le: '<=',
@@ -261,28 +263,28 @@ class UCSVersion:  # pylint: disable-msg=R0903
                 skipped = 0
         return f'{rel}{ver}'
 
-    def __repr__(self):  # type: () -> str
+    def __repr__(self) -> str:
         return f'{self.__class__.__name__}({self.__str__()!r})'
 
-    def __lt__(self, other):  # type: (Any) -> object
+    def __lt__(self, other: object) -> object:
         return self.ver < other.ver if isinstance(other, UCSVersion) else NotImplemented
 
-    def __le__(self, other):  # type: (Any) -> object
+    def __le__(self, other: object) -> object:
         return self.ver <= other.ver if isinstance(other, UCSVersion) else NotImplemented
 
-    def __eq__(self, other):  # type: (Any) -> bool
+    def __eq__(self, other: object) -> bool:
         return self.ver == other.ver if isinstance(other, UCSVersion) else False
 
-    def __ne__(self, other):  # type: (Any) -> bool
+    def __ne__(self, other: object) -> bool:
         return self.ver != other.ver if isinstance(other, UCSVersion) else False
 
-    def __ge__(self, other):  # type: (Any) -> object
+    def __ge__(self, other: object) -> object:
         return self.ver >= other.ver if isinstance(other, UCSVersion) else NotImplemented
 
-    def __gt__(self, other):  # type: (Any) -> object
+    def __gt__(self, other: object) -> object:
         return self.ver > other.ver if isinstance(other, UCSVersion) else NotImplemented
 
-    def match(self, other):  # type: (UCSVersion) -> bool
+    def match(self, other: UCSVersion) -> bool:
         """
         Check if other matches the criterion.
         >>> UCSVersion('>1.2-3').match(UCSVersion('1.2-4'))

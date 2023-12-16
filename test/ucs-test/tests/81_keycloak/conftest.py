@@ -28,9 +28,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import os
 from types import SimpleNamespace
-from typing import Optional
+from typing import Iterator
 
 import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
@@ -68,7 +70,7 @@ def admin_account() -> UCSTestDomainAdminCredentials:
 
 
 @pytest.fixture()
-def keycloak_secret() -> Optional[str]:
+def keycloak_secret() -> str | None:
     secret_file = "/etc/keycloak.secret"
     password = None
     if os.path.isfile(secret_file):
@@ -165,7 +167,7 @@ class UnverfiedUser(object):
 
 
 @pytest.fixture()
-def unverified_user() -> dict:
+def unverified_user() -> Iterator[UnverfiedUser]:
     with UCSTestUDM() as udm:
         user = UnverfiedUser(udm)
         yield user
@@ -270,11 +272,11 @@ def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleN
     def _func(
         username: str,
         password: str,
-        fails_with: Optional[str] = None,
-        new_password: Optional[str] = None,
-        new_password_confirm: Optional[str] = None,
-        verify_login: Optional[bool] = True,
-        url: Optional[str] = portal_config.url,
+        fails_with: str | None = None,
+        new_password: str | None = None,
+        new_password_confirm: str | None = None,
+        verify_login: bool | None = True,
+        url: str | None = portal_config.url,
         no_login: bool = False,
     ) -> webdriver.Chrome:
         selenium.get(url)
@@ -305,8 +307,8 @@ def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamesp
     def _func(
         username: str,
         password: str,
-        fails_with: Optional[str] = None,
-        url: Optional[str] = keycloak_config.url,
+        fails_with: str | None = None,
+        url: str | None = keycloak_config.url,
         no_login: bool = False,
     ) -> webdriver.Chrome:
         selenium.get(url)
@@ -379,7 +381,7 @@ def legacy_authorization_setup_saml(
     keycloak_administrator_connection: KeycloakAdmin,
     admin_account: UCSTestDomainAdminCredentials,
     portal_config: SimpleNamespace,
-) -> SimpleNamespace:
+) -> Iterator[SimpleNamespace]:
 
     group_dn, group_name = udm.create_group()
     user_dn, user_name = udm.create_user(password="univention")
@@ -413,7 +415,7 @@ def legacy_authorization_setup_oidc(
     ucr: ConfigRegistry,
     keycloak_administrator_connection: KeycloakAdmin,
     admin_account: UCSTestDomainAdminCredentials,
-) -> SimpleNamespace:
+) -> Iterator[SimpleNamespace]:
 
     group_dn, group_name = udm.create_group()
     user_dn, user_name = udm.create_user(password="univention")

@@ -3,10 +3,10 @@
 
 import sys
 from codecs import encode
-from typing import IO  # noqa: F401
+from typing import IO
 from xml.sax.saxutils import escape as escape_xml
 
-from univention.testing.data import TestFormatInterface, TestResult  # noqa: F401
+from univention.testing.data import TestFormatInterface, TestResult
 
 
 __all__ = ['Jenkins']
@@ -18,10 +18,10 @@ class Jenkins(TestFormatInterface):
     <https://wiki.jenkins-ci.org/display/JENKINS/Monitoring+external+jobs>
     """
 
-    def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
+    def __init__(self, stream: IO[str] = sys.stdout) -> None:
         super().__init__(stream)
 
-    def end_test(self, result):  # type: (TestResult) -> None
+    def end_test(self, result: TestResult) -> None:
         """Called after each test."""
         print('<run>', file=self.stream)
         try:
@@ -37,7 +37,7 @@ class Jenkins(TestFormatInterface):
         print('</run>', file=self.stream)
         super().end_test(result)
 
-    def format(self, result):  # type: (TestResult) -> None
+    def format(self, result: TestResult) -> None:
         """
         >>> from univention.testing.data import TestCase, TestEnvironment
         >>> te = TestEnvironment()

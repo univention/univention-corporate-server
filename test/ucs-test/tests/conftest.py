@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import subprocess
 import time
-from typing import Callable, Iterator, Type  # noqa: F401
+from typing import Callable, Iterator, Type
 
 import pytest
 

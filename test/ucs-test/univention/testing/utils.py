@@ -30,6 +30,7 @@
 
 """Common functions used by tests."""
 
+from __future__ import annotations
 
 import functools
 import os
@@ -40,10 +41,8 @@ import time
 import traceback
 from enum import IntEnum
 from itertools import chain
-from types import TracebackType  # noqa: F401
-from typing import (  # noqa: F401
-    IO, Any, Callable, Dict, Iterable, List, Mapping, NoReturn, Optional, Sequence, Text, Tuple, Type, TypeVar, Union,
-)
+from types import TracebackType
+from typing import IO, Any, Callable, Dict, Iterable, List, Mapping, NoReturn, Sequence, Text, Tuple, Type, TypeVar
 
 import ldap
 
@@ -105,8 +104,7 @@ class UCSTestDomainAdminCredentials:
     ''
     """
 
-    def __init__(self, ucr=None):
-        # type: (Optional[ConfigRegistry]) -> None
+    def __init__(self, ucr: ConfigRegistry | None = None) -> None:
         if ucr is None:
             ucr = UCR
             ucr.load()
@@ -118,13 +116,12 @@ class UCSTestDomainAdminCredentials:
         else:
             self.bindpw = ucr.get('tests/domainadmin/pwd', 'univention')
         if self.binddn:
-            self.username = uldap.explodeDn(self.binddn, 1)[0]  # type: Optional[Text]
+            self.username: Text | None = uldap.explodeDn(self.binddn, 1)[0]
         else:
             self.username = None
 
 
-def get_ldap_connection(admin_uldap=False, primary=False):
-    # type: (bool, bool) -> access
+def get_ldap_connection(admin_uldap: bool = False, primary: bool = False) -> access:
     ucr = UCR
     ucr.load()
 
@@ -152,8 +149,7 @@ def get_ldap_connection(admin_uldap=False, primary=False):
     raise ldap.SERVER_DOWN()
 
 
-def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
-    # type: (Callable[..., _T], Tuple[Type[Exception], ...], int, float) -> _T
+def retry_on_error(func: Callable[..., _T], exceptions: Tuple[Type[Exception], ...] = (Exception,), retry_count: int = 20, delay: float = 10) -> _T:
     """
     This function calls the given function `func`.
     If one of the specified `exceptions` is caught, `func` is called again until
@@ -177,21 +173,22 @@ def retry_on_error(func, exceptions=(Exception,), retry_count=20, delay=10):
             else:
                 print('Exception occurred: %s (%s). This was the last retry (retry %d/%d).\n' % (exc_info[0], exc_info[1], i, retry_count))
     else:  # noqa: PLW0120
+        assert exc_info[1] is not None
         raise exc_info[1].with_traceback(exc_info[2])
 
 
 def verify_ldap_object(
-        baseDn,  # type: str
-        expected_attr=None,  # type: Optional[Mapping[str, Sequence[Union[bytes, str]]]]
-        strict=True,  # type: bool
-        should_exist=True,  # type: bool
-        retry_count=20,  # type: int
-        delay=10,  # type: float
-        primary=False,  # type: bool
-        pre_check=None,  # type: Optional[Callable[..., None]]
-        pre_check_kwargs=None,  # type: Optional[Dict[str, Any]]
-        not_expected_attr=None,  # type: Optional[Dict[str, str]]
-):  # type: (...) -> None
+        baseDn: str,
+        expected_attr: Mapping[str, Sequence[bytes | str]] | None = None,
+        strict: bool = True,
+        should_exist: bool = True,
+        retry_count: int = 20,
+        delay: float = 10,
+        primary: bool = False,
+        pre_check: Callable[..., None] | None = None,
+        pre_check_kwargs: Dict[str, Any] | None = None,
+        not_expected_attr: Dict[str, str] | None = None,
+) -> None:
     """
     Verify [non]existence and attributes of LDAP object.
 
@@ -230,13 +227,13 @@ def verify_ldap_object(
 
 
 def __verify_ldap_object(
-        baseDn,  # type: str
-        expected_attr=None,  # type: Optional[Mapping[str, Sequence[Union[bytes, str]]]]
-        strict=True,  # type: bool
-        should_exist=True,  # type: bool
-        primary=False,  # type: bool
-        not_expected_attr=None,  # type: Optional[Dict[str, str]]
-):  # type: (...) -> None
+        baseDn: str,
+        expected_attr: Mapping[str, Sequence[bytes | str]] | None = None,
+        strict: bool = True,
+        should_exist: bool = True,
+        primary: bool = False,
+        not_expected_attr: Dict[str, str] | None = None,
+) -> None:
     if expected_attr is None:
         expected_attr = {}
     if not_expected_attr is None:
@@ -298,8 +295,7 @@ def __verify_ldap_object(
         raise LDAPObjectUnexpectedValue(msg)
 
 
-def s4connector_present():
-    # type: () -> bool
+def s4connector_present() -> bool:
     ucr = ConfigRegistry()
     ucr.load()
 
@@ -317,56 +313,46 @@ def s4connector_present():
     return False
 
 
-def stop_s4connector():
-    # type: () -> None
+def stop_s4connector() -> None:
     if package_installed('univention-s4-connector'):
         subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'stop'))
 
 
-def start_s4connector():
-    # type: () -> None
+def start_s4connector() -> None:
     if package_installed('univention-s4-connector'):
         subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'start'))
 
 
-def restart_s4connector():
-    # type: () -> None
+def restart_s4connector() -> None:
     stop_s4connector()
     start_s4connector()
 
 
-def stop_slapd():
-    # type: () -> None
+def stop_slapd() -> None:
     subprocess.call((SLAPD_INIT_SCRIPT, 'stop'))
 
 
-def start_slapd():
-    # type: () -> None
+def start_slapd() -> None:
     subprocess.call((SLAPD_INIT_SCRIPT, 'start'))
 
 
-def restart_slapd():
-    # type: () -> None
+def restart_slapd() -> None:
     subprocess.call((SLAPD_INIT_SCRIPT, 'restart'))
 
 
-def stop_listener():
-    # type: () -> None
+def stop_listener() -> None:
     subprocess.call(('systemctl', 'stop', 'univention-directory-listener'))
 
 
-def start_listener():
-    # type: () -> None
+def start_listener() -> None:
     subprocess.call(('systemctl', 'start', 'univention-directory-listener'))
 
 
-def restart_listener():
-    # type: () -> None
+def restart_listener() -> None:
     subprocess.call(('systemctl', 'restart', 'univention-directory-listener'))
 
 
-def restart_firewall():
-    # type: () -> None
+def restart_firewall() -> None:
     subprocess.call((FIREWALL_INIT_SCRIPT, 'restart'))
 
 
@@ -380,12 +366,10 @@ class AutomaticListenerRestart:
                 univention.config_registry.handler_set(['foo/bar=ding/dong'])
     """
 
-    def __enter__(self):
-        # type: () -> AutomaticListenerRestart
+    def __enter__(self) -> AutomaticListenerRestart:  # FIXME Py3.9: Self
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         restart_listener()
 
 
@@ -411,8 +395,7 @@ class AutoCallCommand:
             pass
     """
 
-    def __init__(self, enter_cmd=None, exit_cmd=None, stdout=None, stderr=None):
-        # type: (Optional[Sequence[str]], Optional[Sequence[str]], Optional[IO[str]], Optional[IO[str]]) -> None
+    def __init__(self, enter_cmd: Sequence[str] | None = None, exit_cmd: Sequence[str] | None = None, stdout: IO[str] | None = None, stderr: IO[str] | None = None) -> None:
         self.enter_cmd = None
         if type(enter_cmd) in (list, tuple):
             self.enter_cmd = enter_cmd
@@ -422,14 +405,12 @@ class AutoCallCommand:
         self.pipe_stdout = stdout
         self.pipe_stderr = stderr
 
-    def __enter__(self):
-        # type: () -> AutoCallCommand
+    def __enter__(self) -> AutoCallCommand:  # FIXME Py3.9: Self
         if self.enter_cmd:
             subprocess.call(self.enter_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr)
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if self.exit_cmd:
             subprocess.call(self.exit_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr)
 
@@ -452,23 +433,20 @@ class FollowLogfile:
                 pass
     """
 
-    def __init__(self, logfiles, always=False):
-        # type: (Iterable[str], bool) -> None
+    def __init__(self, logfiles: Iterable[str], always: bool = False) -> None:
         """
         :param logfiles: list of absolute filenames to read from
         :param always: bool, if True: print logfile change also if no error occurred (default=False)
         """
         assert isinstance(always, bool)
         self.always = always
-        self.logfile_pos = dict.fromkeys(logfiles, 0)  # type: Dict[str, int]
+        self.logfile_pos: Dict[str, int] = dict.fromkeys(logfiles, 0)
 
-    def __enter__(self):
-        # type: () -> FollowLogfile
+    def __enter__(self) -> FollowLogfile:  # FIXME Py3.9: Self
         self.logfile_pos.update((logfile, os.path.getsize(logfile)) for logfile in self.logfile_pos)
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if self.always or exc_type:
             for logfile, pos in self.logfile_pos.items():
                 with open(logfile) as log:
@@ -486,11 +464,10 @@ class ReplicationType(IntEnum):
     DRS = 5
 
 
-def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun=False, ldap_filter=None, verbose=True):
-    # type: (bool, Optional[str], bool) -> None
+def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun: bool = False, ldap_filter: str | None = None, verbose: bool = True) -> None:
     """Wait for all kind of replications"""
     # the order matters!
-    conditions = [(ReplicationType.LISTENER, 'postrun' if replication_postrun else True)]  # type: List[Tuple[ReplicationType, Any]]
+    conditions: List[Tuple[ReplicationType, Any]] = [(ReplicationType.LISTENER, 'postrun' if replication_postrun else True)]
     ucr = UCR
     ucr.load()
     if ucr.get('samba4/ldap/base'):
@@ -500,8 +477,7 @@ def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun
     wait_for(conditions, verbose=True)
 
 
-def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun=False, ldap_filter=None, verbose=True):
-    # type: (bool, Optional[str], bool) -> None
+def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun: bool = False, ldap_filter: str | None = None, verbose: bool = True) -> None:
     """Wait for all kind of replications"""
     conditions = []
     # the order matters!
@@ -518,8 +494,7 @@ def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun=
     wait_for(conditions, verbose=True)
 
 
-def wait_for(conditions=None, verbose=True):
-    # type: (Optional[List[Tuple[ReplicationType, Any]]], bool) -> None
+def wait_for(conditions: List[Tuple[ReplicationType, Any]] | None = None, verbose: bool = True) -> None:
     """Wait for all kind of replications"""
     for replicationtype, detail in conditions or []:
         if replicationtype == ReplicationType.LISTENER:
@@ -543,14 +518,12 @@ def wait_for(conditions=None, verbose=True):
             wait_for_drs_replication(verbose=verbose, **detail)
 
 
-def wait_for_drs_replication(*args, **kwargs):
-    # type: (*Any, **Any) -> None
+def wait_for_drs_replication(*args: Any, **kwargs: Any) -> None:
     from univention.testing.ucs_samba import wait_for_drs_replication
     return wait_for_drs_replication(*args, **kwargs)
 
 
-def wait_for_listener_replication(verbose=True):
-    # type: (bool) -> None
+def wait_for_listener_replication(verbose: bool = True) -> None:
     sys.stdout.flush()
     time.sleep(1)  # Give the notifier some time to increase its transaction id
     if verbose:
@@ -572,15 +545,13 @@ def wait_for_listener_replication(verbose=True):
     raise LDAPReplicationFailed()
 
 
-def get_lid():
-    # type: () -> int
+def get_lid() -> int:
     """get_lid() returns the last processed notifier ID of univention-directory-listener."""
     with open("/var/lib/univention-directory-listener/notifier_id") as notifier_id:
         return int(notifier_id.readline())
 
 
-def wait_for_listener_replication_and_postrun(verbose=True):
-    # type: (bool) -> None
+def wait_for_listener_replication_and_postrun(verbose: bool = True) -> None:
     # Postrun function in listener modules are called after 15 seconds without any events
     wait_for_listener_replication(verbose=verbose)
     if verbose:
@@ -606,8 +577,7 @@ def wait_for_listener_replication_and_postrun(verbose=True):
     raise LDAPReplicationFailed
 
 
-def wait_for_s4connector_replication(verbose=True):
-    # type: (bool) -> None
+def wait_for_s4connector_replication(verbose: bool = True) -> None:
     if verbose:
         print('Waiting for connector replication')
     import univention.testing.ucs_samba
@@ -628,15 +598,13 @@ wait_for_replication_and_postrun = wait_for_listener_replication_and_postrun
 wait_for_connector_replication = wait_for_s4connector_replication
 
 
-def package_installed(package):
-    # type: (str) -> bool
+def package_installed(package: str) -> bool:
     sys.stdout.flush()
     with open('/dev/null', 'w') as null:
         return (subprocess.call("dpkg-query -W -f '${Status}' %s | grep -q ^install" % package, stderr=null, shell=True) == 0)
 
 
-def fail(log_message=None, returncode=1):
-    # type: (Optional[str], int) -> NoReturn
+def fail(log_message: str | None = None, returncode: int = 1) -> NoReturn:
     print('### FAIL ###')
     if log_message:
         print('%s\n###      ###' % log_message)
@@ -645,15 +613,13 @@ def fail(log_message=None, returncode=1):
     sys.exit(returncode)
 
 
-def uppercase_in_ldap_base():
-    # type: () -> bool
+def uppercase_in_ldap_base() -> bool:
     ucr = ConfigRegistry()
     ucr.load()
     return not ucr.get('ldap/base').islower()
 
 
-def is_udp_port_open(port, ip=None):
-    # type: (int, Optional[str]) -> bool
+def is_udp_port_open(port: int, ip: str | None = None) -> bool:
     if ip is None:
         ip = '127.0.0.1'
     try:
@@ -668,8 +634,7 @@ def is_udp_port_open(port, ip=None):
     return False
 
 
-def is_port_open(port, hosts=None, timeout=60):
-    # type: (int, Optional[Iterable[str]], float) -> bool
+def is_port_open(port: int, hosts: Iterable[str] | None = None, timeout: float = 60) -> bool:
     """
     check if port is open, if host == None check
     hostname and 127.0.0.1

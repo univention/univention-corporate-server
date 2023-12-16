@@ -1,18 +1,20 @@
 #!/usr/bin/python3 -u
-#
+
 """UCS Testrunner - run UCS test in sane environment."""
-#
+
+from __future__ import annotations
+
 import os
 import sys
-from argparse import REMAINDER, ArgumentParser, FileType, Namespace  # noqa: F401
-from typing import Optional, Sequence  # noqa: F401
+from argparse import REMAINDER, ArgumentParser, FileType, Namespace
+from typing import Sequence
 
 import univention.testing.format
 from univention.testing.data import TestCase, TestEnvironment, TestResult
 from univention.testing.internal import setup_debug, setup_environment
 
 
-def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
+def parse_args(args: Sequence[str] | None = None) -> Namespace:
     """
     Parse command line arguments.
 
@@ -53,7 +55,7 @@ def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
     return options
 
 
-def main():  # type: () -> int
+def main() -> int:
     """Run single UCS test."""
     options = parse_args()
 

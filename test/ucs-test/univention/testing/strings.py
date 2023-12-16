@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from random import choice, randint
-from typing import Iterator, Optional, Text, Tuple  # noqa: F401
+from typing import Iterator, Text, Tuple
 
 
 STR_NUMERIC = '0123456789'
@@ -45,8 +45,7 @@ STR_UMLAUT = 'äöüßâêôûŵẑŝĝĵŷĉ'
 STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 
 
-def random_string(length=10, alpha=True, numeric=True, charset="", encoding='utf-8'):
-    # type: (int, bool, bool, Text, str) -> str
+def random_string(length: int = 10, alpha: bool = True, numeric: bool = True, charset: Text = "", encoding: str = 'utf-8') -> str:
     """
     Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
     Default is an alphanumeric string of 10 characters length. A custom character set
@@ -66,8 +65,7 @@ def random_string(length=10, alpha=True, numeric=True, charset="", encoding='utf
     return result
 
 
-def random_name(length=10):
-    # type: (int) -> str
+def random_name(length: int = 10) -> str:
     """create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)"""
     return ''.join((
         random_string(length=1, alpha=True, numeric=False),
@@ -76,8 +74,7 @@ def random_name(length=10):
     ))
 
 
-def random_name_special_characters(length=10):
-    # type: (int) -> str
+def random_name_special_characters(length: int = 10) -> str:
     """create random name (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)"""
     return ''.join((
         random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
@@ -91,18 +88,15 @@ random_username = random_name
 random_groupname = random_name
 
 
-def random_int(bottom_end=0, top_end=9):
-    # type: (int, int) -> str
+def random_int(bottom_end: int = 0, top_end: int = 9) -> str:
     return str(randint(bottom_end, top_end))
 
 
-def random_version(elements=3):
-    # type: (int) -> str
+def random_version(elements: int = 3) -> str:
     return '.'.join(random_int(0, 9) for _ in range(elements))
 
 
-def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_patchlevel=0, max_patchlevel=99):
-    # type: (int, int, int, int, int, int) -> str
+def random_ucs_version(min_major: int = 1, max_major: int = 9, min_minor: int = 0, max_minor: int = 99, min_patchlevel: int = 0, max_patchlevel: int = 99) -> str:
     return '%s.%s-%s' % (
         randint(min_major, max_major),
         randint(min_minor, max_minor),
@@ -110,16 +104,14 @@ def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_
     )
 
 
-def random_mac():
-    # type: () -> str
+def random_mac() -> str:
     return ':'.join(
         f"{randint(0, 0x7f if i < 4 else 0xff):02x}"
         for i in range(6)
     )
 
 
-def random_ip(ip_iter=iter(range(11, 121))):
-    # type: (Iterator[int]) -> str
+def random_ip(ip_iter: Iterator[int] = iter(range(11, 121))) -> str:
     """Returns 110 different ip addresses in the range 11.x.x.x-120.x.x.x"""
     return '%d.%d.%d.%d' % (
         next(ip_iter),
@@ -129,8 +121,7 @@ def random_ip(ip_iter=iter(range(11, 121))):
     )
 
 
-def random_subnet(ip_iter=iter(range(11, 121))):
-    # type: (Iterator[int]) -> str
+def random_subnet(ip_iter: Iterator[int] = iter(range(11, 121))) -> str:
     """Returns 110 different ip addresses in the range 11.x.x.x-120.x.x.x"""
     return '%d.%d.%d' % (
         next(ip_iter),
@@ -139,34 +130,31 @@ def random_subnet(ip_iter=iter(range(11, 121))):
     )
 
 
-def random_ipv6_subnet():
-    # type: () -> str
+def random_ipv6_subnet() -> str:
     """Returns random six blocks of an ipv6 address"""
     m = 16**4
     return ":".join("%04x" % randint(0, m) for i in range(6))
 
 
-def random_domain_name(length=10):
-    # type: (int) -> str
+def random_domain_name(length: int = 10) -> str:
     return '%s.%s' % (
         random_string(length=length // 2, alpha=True, numeric=False),
         random_string(length=length - length // 2, alpha=True, numeric=False),
     )
 
 
-def random_dns_record():
-    # type: () -> str
+def random_dns_record() -> str:
     # Bug #49679: the S4-Connector always appends a dot to nSRecord and ptrRecords without dot
     return f'{random_string()}.'
 
 
-def random_date():  # type: () -> str
+def random_date() -> str:
     return '20%02d-%02d-%02d' % (randint(0, 99), randint(1, 12), randint(1, 27))
 
 
-def random_time(range_hour=(0, 23)):  # type: (Tuple[int, int]) -> str
+def random_time(range_hour: Tuple[int, int] = (0, 23)) -> str:
     return '%02d:%02d:%02d' % (randint(*range_hour), randint(0, 60), randint(0, 60))
 
 
-def random_email():  # type: () -> str
+def random_email() -> str:
     return f'{random_name()}@{random_domain_name()}'

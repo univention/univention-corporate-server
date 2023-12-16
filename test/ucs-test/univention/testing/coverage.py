@@ -6,8 +6,8 @@ import shutil
 import signal
 import subprocess
 import time
-from argparse import ArgumentParser, Namespace, _ArgumentGroup  # noqa: F401
-from typing import Any, Callable, List  # noqa: F401
+from argparse import ArgumentParser, Namespace, _ArgumentGroup
+from typing import Any, Callable, List
 
 import atexit
 
@@ -25,8 +25,7 @@ class Coverage:
 
     coverage = None
 
-    def __init__(self, options):
-        # type: (Namespace) -> None
+    def __init__(self, options: Namespace) -> None:
         self.coverage_config = options.coverage_config
         self.branch_coverage = options.branch_coverage
         self.coverage = options.coverage
@@ -65,8 +64,7 @@ class Coverage:
             with open(self.COVERAGE_DEBUG_PATH, 'w'):
                 self.COVERAGE_DEBUG = True
 
-    def start(self):
-        # type: () -> None
+    def start(self) -> None:
         """Start measuring of coverage. Only called by ucs-test-framework once. Sets up the configuration."""
         if not self.coverage:
             return
@@ -74,8 +72,7 @@ class Coverage:
         os.environ['COVERAGE_PROCESS_START'] = self.coverage_config
         self.restart_python_services()
 
-    def write_config_file(self):
-        # type: () -> None
+    def write_config_file(self) -> None:
         """Write a Python .pth file which is invoked before any Python process"""
         with open(self.COVERAGE_PTH, 'w') as fd:
             fd.write(self.COVERAGE_PTH_CONTENT)
@@ -102,8 +99,7 @@ directory = {directory}
                 directory=self.output_directory,
             ))
 
-    def restart_python_services(self):
-        # type: () -> None
+    def restart_python_services(self) -> None:
         """Restart currently running Python services, so that they start/stop measuring code"""
         for service in self.services:
             try:
@@ -115,8 +111,7 @@ directory = {directory}
         except OSError:
             pass
 
-    def stop(self):
-        # type: () -> None
+    def stop(self) -> None:
         """Stop coverage measuring. Only called by ucs-test-framework once. Stores the results."""
         if not self.coverage:
             return
@@ -141,8 +136,7 @@ directory = {directory}
             os.remove(self.coverage_config)
 
     @classmethod
-    def get_argument_group(cls, parser):
-        # type: (ArgumentParser) -> _ArgumentGroup
+    def get_argument_group(cls, parser: ArgumentParser) -> _ArgumentGroup:
         """The option group for ucs-test-framework"""
         coverage_group = parser.add_argument_group('Code coverage measurement options')
         coverage_group.add_argument("--with-coverage", dest="coverage", action='store_true')
@@ -156,8 +150,7 @@ directory = {directory}
         return coverage_group
 
     @classmethod
-    def is_candidate(cls, argv):
-        # type: (List[str]) -> bool
+    def is_candidate(cls, argv: List[str]) -> bool:
         if os.getuid():
             return False
         exe = os.path.basename(argv[0])
@@ -173,8 +166,7 @@ directory = {directory}
         return True
 
     @classmethod  # noqa: C901
-    def startup(cls):
-        # type: () -> None
+    def startup(cls) -> None:
         """Startup function which is invoked by every(!) Python process during coverage measurement. If the process is relevant we start measuring coverage."""
         argv = open('/proc/%s/cmdline' % os.getpid()).read().split('\x00')
         if not cls.is_candidate(argv):
@@ -199,8 +191,7 @@ directory = {directory}
         # https://github.com/nedbat/coveragepy/issues/310  # Coverage fails with os.fork and os._exit
         osfork = os.fork
 
-        def fork(*args, **kwargs):
-            # type: (*Any, **Any) -> int
+        def fork(*args: Any, **kwargs: Any) -> int:
             pid = osfork(*args, **kwargs)
             if pid == 0:
                 cls.debug_message('FORK CHILD')
@@ -220,8 +211,7 @@ directory = {directory}
 
         # There are test cases which e.g. kill the univention-cli-server.
         # The atexit-handler of coverage will not be called for SIGTERM, so we need to stop coverage manually
-        def sigterm(sig, frame):
-            # type: (int, Any) -> None
+        def sigterm(sig: int, frame: Any) -> None:
             cls.debug_message('signal handler', sig, argv)
             cls.stop_measurement()
             signal.signal(signal.SIGTERM, previous)
@@ -229,8 +219,7 @@ directory = {directory}
         previous = signal.signal(signal.SIGTERM, sigterm)
 
     @classmethod
-    def stop_measurement(cls, start=False):
-        # type: (bool) -> None
+    def stop_measurement(cls, start: bool = False) -> None:
         cover = cls.coverage
         cls.debug_message('STOP MEASURE', bool(cover))
         if not cover:
@@ -241,8 +230,7 @@ directory = {directory}
             cover.start()
 
     @classmethod
-    def debug_message(cls, *messages):
-        # type: (object) -> None
+    def debug_message(cls, *messages: object) -> None:
         if not cls.COVERAGE_DEBUG:
             return
         try:
@@ -255,12 +243,10 @@ directory = {directory}
 class StopCoverageDecorator:
     inDecorator = False
 
-    def __init__(self, method):
-        # type: (Callable[..., Any]) -> None
+    def __init__(self, method: Callable[..., Any]) -> None:
         self.method = method
 
-    def __call__(self, *args, **kw):
-        # type: (*Any, **Any) -> None
+    def __call__(self, *args: Any, **kw: Any) -> None:
         if not StopCoverageDecorator.inDecorator:
             StopCoverageDecorator.inDecorator = True
             Coverage.debug_message('StopCoverageDecorator', self.method.__name__, open('/proc/%s/cmdline' % os.getpid()).read().split('\x00'))
@@ -270,6 +256,5 @@ class StopCoverageDecorator:
         finally:
             StopCoverageDecorator.inDecorator = False
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return f'<StopCoverageDecorator {self.method!r}>'

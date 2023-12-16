@@ -31,15 +31,18 @@
 # <https://www.gnu.org/licenses/>.
 
 """A tool to obtain licenses for the UCS test environments."""
+
+from __future__ import annotations
+
 import cgi
 import logging
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from datetime import datetime
 from html.parser import HTMLParser
-from http.client import HTTPException, HTTPResponse, HTTPSConnection  # noqa: F401
+from http.client import HTTPException, HTTPResponse, HTTPSConnection
 from os import path
 from sys import exit
-from typing import Any, Dict, Iterable, Optional, Tuple  # noqa: F401
+from typing import Any, Dict, Iterable, Tuple
 from urllib.parse import urlencode
 
 
@@ -49,17 +52,15 @@ class CredentialsMissing(Exception):
 
 class ShopParser(HTMLParser):
 
-    def __init__(self, log):
-        # type: (logging.Logger) -> None
+    def __init__(self, log: logging.Logger) -> None:
         HTMLParser.__init__(self)  # old style class
         self.log = log
-        self.link_to_license = None  # type: Optional[str]
+        self.link_to_license: str | None = None
 
     def error(self, message):
         self.log.error("Failed parsing HTML: %s", message)
 
-    def handle_starttag(self, tag, attrs):
-        # type: (str, Iterable[Tuple[str, Optional[str]]]) -> None
+    def handle_starttag(self, tag: str, attrs: Iterable[Tuple[str, str | None]]) -> None:
         """
         Method is called every time a new start tag is found in the
         html feed. When the link tag with 'orders/' attribute is
@@ -81,8 +82,7 @@ class ShopParser(HTMLParser):
 
 class TestLicenseClient:
 
-    def __init__(self, parser=None):
-        # type: (Optional[ArgumentParser]) -> None
+    def __init__(self, parser: ArgumentParser | None = None) -> None:
         """Class constructor for the test license client and HTMLParser"""
         self.log = logging.getLogger("License_Client")
         self.setup_logging()
@@ -91,14 +91,14 @@ class TestLicenseClient:
         self.license_server_url = 'license.univention.de'
         self.license_filename = 'ValidTest.license'
 
-        self.connection = None  # type: Optional[HTTPSConnection]
+        self.connection: HTTPSConnection | None = None
         self.server_username = 'ucs-test'
         self.server_password = ''
         self.secret_file = '/etc/license.secret'
         self.cookie = ''
         self.license_shop = 'testing'
 
-        self.license_params = {
+        self.license_params: Dict[str, Any] = {
             "kundeUnternehmen": "Univention",
             "kundeEmail": "umc-test@univention.de",
             "BaseDN": "",
@@ -112,10 +112,9 @@ class TestLicenseClient:
             "VirtualDesktopUsers": 0,
             "VirtualDesktopClients": 0,
             "Type": "UCS",
-        }  # type: Dict[str, Any]
+        }
 
-    def setup_logging(self):
-        # type: () -> None
+    def setup_logging(self) -> None:
         """Creates and configures the logger with an INFO level"""
         self.log.setLevel(logging.INFO)
         ch = logging.StreamHandler()
@@ -123,8 +122,7 @@ class TestLicenseClient:
         ch.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
         self.log.addHandler(ch)
 
-    def create_connection(self):
-        # type: () -> None
+    def create_connection(self) -> None:
         """
         Creates a HTTPS connection instance on a default port (443)
         to the 'self.license_server_url'
@@ -132,8 +130,7 @@ class TestLicenseClient:
         self.log.debug("In 'create_connection'")
         self.connection = HTTPSConnection(self.license_server_url, timeout=60)
 
-    def close_connection(self):
-        # type: () -> None
+    def close_connection(self) -> None:
         """
         Closes the license server connection if the connection instance
         was created
@@ -147,8 +144,7 @@ class TestLicenseClient:
             finally:
                 self.connection = None
 
-    def get_server_password(self, secret_file='/etc/license.secret'):
-        # type: (str) -> None
+    def get_server_password(self, secret_file: str = '/etc/license.secret') -> None:
         """
         Opens and reads the 'secret_file'. Saves the result to a
         'self.server_password'
@@ -167,8 +163,7 @@ class TestLicenseClient:
             self.log.critical("The password to access the license service cannot be empty")
             exit(1)
 
-    def get_cookie(self):
-        # type: () -> None
+    def get_cookie(self) -> None:
         """
         Makes a POST request with 'self.server_username' and
         'self.server_password' into login forms and saves the
@@ -197,8 +192,7 @@ class TestLicenseClient:
         # reading the response to avoid 'ResponseNotReady' exception later:
         response.read()
 
-    def make_post_request(self, url, body, headers):
-        # type: (str, str, Dict[str, str]) -> HTTPResponse
+    def make_post_request(self, url: str, body: str, headers: Dict[str, str]) -> HTTPResponse:
         """
         Makes a POST request with the given 'url', 'body', 'headers' and
         returns the response
@@ -212,8 +206,7 @@ class TestLicenseClient:
             self.log.exception("An HTTP Exception occurred while making '%s' POST request: '%s'", url, exc)
             exit(1)
 
-    def make_get_request(self, url, headers):
-        # type: (str, Dict[str, str]) -> HTTPResponse
+    def make_get_request(self, url: str, headers: Dict[str, str]) -> HTTPResponse:
         """
         Makes a GET request with the given 'url', 'headers' and
         returns the response
@@ -227,8 +220,7 @@ class TestLicenseClient:
             self.log.exception("An HTTP Exception occurred while making '%s' GET request: '%s'", url, exc)
             exit(1)
 
-    def get_the_license(self, body):
-        # type: (str) -> None
+    def get_the_license(self, body: str) -> None:
         """
         Processes the given 'body' with HTMLParser to find the link
         to a created license file and downloads the license after.
@@ -241,8 +233,7 @@ class TestLicenseClient:
             exit(1)
         self.download_license_file(parser.link_to_license)
 
-    def order_a_license(self):
-        # type: () -> str
+    def order_a_license(self) -> str:
         """
         Makes a POST request with encoded 'self.license_params' as a body to
         order a new license. Returns the response body.
@@ -258,16 +249,14 @@ class TestLicenseClient:
         assert response.status == 202
         return self.get_body(response)
 
-    def get_body(self, response):
-        # type: (HTTPResponse) -> str
+    def get_body(self, response: HTTPResponse) -> str:
         self.log.debug("The response status is '%s', reason is '%s', headers are '%s'", response.status, response.reason, response.getheaders())
         content_type = response.getheader('Content-Type')
         mimetype, options = cgi.parse_header(content_type)
         encoding = options.get("charset", "ascii")
         return response.read().decode(encoding, "replace")
 
-    def download_license_file(self, link_to_license):
-        # type: (str) -> None
+    def download_license_file(self, link_to_license: str) -> None:
         """
         Downloads the license located at `filename` and saves it
         to the file 'self.license_filename'
@@ -287,8 +276,7 @@ class TestLicenseClient:
             self.log.exception("An error happened while writing the downloaded license to a file '%s': '%s'", self.license_filename, exc)
             exit(1)
 
-    def check_date_format(self):
-        # type: () -> None
+    def check_date_format(self) -> None:
         """Checks if the 'EndDate' format is correct."""
         try:
             if self.license_params['EndDate'] != 'unlimited':
@@ -297,8 +285,7 @@ class TestLicenseClient:
             self.log.exception("The 'EndDate' for the license has a wrong format, supported format is 'dd.mm.yyyy': %r", exc)
             exit(1)
 
-    def update_with_parsed_args(self, args):
-        # type: (Dict[str, Any]) -> None
+    def update_with_parsed_args(self, args: Dict[str, Any]) -> None:
         """
         Updates the loglevel and license filename settings if given
         among the parsed arguments. Merges parsed data with default
@@ -324,8 +311,7 @@ class TestLicenseClient:
         self.license_params.update((key, val) for key, val in args.items() if val is not None)
         self.log.info("Requested license parameters are: '%s'", self.license_params)
 
-    def process_cmd_arguments(self):
-        # type: () -> None
+    def process_cmd_arguments(self) -> None:
         """
         Populates self.parser class with positional and optional arguments and
         processes the user input, checks the date format and than merges it
@@ -350,8 +336,7 @@ class TestLicenseClient:
         self.log.debug("Parsed arguments are: '%s'", args)
         self.update_with_parsed_args(args)
 
-    def main(self, base_dn="", end_date="", server_url="", license_file=""):
-        # type: (str, str, str, str) -> None
+    def main(self, base_dn: str = "", end_date: str = "", server_url: str = "", license_file: str = "") -> None:
         """
         A method to order and download a test license from the license server.
         'base_dn' and 'end_date' should be provided if argument parser is

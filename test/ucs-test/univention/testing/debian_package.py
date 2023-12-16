@@ -30,12 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import os
 import shutil
 import subprocess
 import sys
 import tempfile
-from typing import Optional  # noqa: F401
 
 
 class BuildRuntimeError(RuntimeError):
@@ -53,17 +54,15 @@ class UninstallRuntimeError(RuntimeError):
 class DebianPackage:
     """Class to build simple debian packages"""
 
-    def __init__(self, name='testdeb', version='1.0'):
-        # type: (str, str) -> None
+    def __init__(self, name: str = 'testdeb', version: str = '1.0') -> None:
         self._package_name = name
         self._package_version = version
         self._create_debian_base_dir()
 
-        self.__join_file = None  # type: Optional[str]
-        self.__unjoin_file = None  # type: Optional[str]
+        self.__join_file: str | None = None
+        self.__unjoin_file: str | None = None
 
-    def _create_debian_base_dir(self):
-        # type: () -> None
+    def _create_debian_base_dir(self) -> None:
         self._package_tempdir = tempfile.mkdtemp()
 
         self._package_path = os.path.join(self._package_tempdir, self._package_name)
@@ -76,16 +75,13 @@ class DebianPackage:
         self._create_rules()
         self._create_install()
 
-    def get_package_name(self):
-        # type: () -> str
+    def get_package_name(self) -> str:
         return self._package_name
 
-    def get_temp_dir(self):
-        # type: () -> str
+    def get_temp_dir(self) -> str:
         return self._package_tempdir
 
-    def get_binary_name(self):
-        # type: () -> str
+    def get_binary_name(self) -> str:
         deb_file = f'{self._package_name}_{self._package_version}_all.deb'
         deb_package = os.path.join(self._package_tempdir, deb_file)
         return deb_package
@@ -95,14 +91,12 @@ class DebianPackage:
         with open(path, write_mode) as f:
             f.write(file_buffer)
 
-    def create_join_script_from_buffer(self, joinscript_name, joinscript_buffer):
-        # type: (str, str) -> None
+    def create_join_script_from_buffer(self, joinscript_name: str, joinscript_buffer: str) -> None:
         self.__join_file = os.path.join(self._package_path, joinscript_name)
         self.__create_file_from_buffer(self.__join_file, joinscript_buffer)
         os.chmod(self.__join_file, 0o755)
 
-    def create_unjoin_script_from_buffer(self, unjoinscript_name, unjoinscript_buffer):
-        # type: (str, str) -> None
+    def create_unjoin_script_from_buffer(self, unjoinscript_name: str, unjoinscript_buffer: str) -> None:
         self.__unjoin_file = os.path.join(self._package_path, unjoinscript_name)
         self.__create_file_from_buffer(self.__unjoin_file, unjoinscript_buffer)
         os.chmod(self.__unjoin_file, 0o755)
@@ -115,13 +109,11 @@ class DebianPackage:
             os.makedirs(dirpath)
         self.__create_file_from_buffer(share_file, schema_buffer, write_mode)
 
-    def create_debian_file_from_buffer(self, debian_filename, debian_buffer):
-        # type: (str, str) -> None
+    def create_debian_file_from_buffer(self, debian_filename: str, debian_buffer: str) -> None:
         deb_file = os.path.join(self._package_debian_path, debian_filename)
         self.__create_file_from_buffer(deb_file, debian_buffer)
 
-    def build(self):
-        # type: () -> None
+    def build(self) -> None:
         install = []
         if os.path.exists(os.path.join(self._package_path, 'usr/share')):
             install.append('usr/share/* usr/share')
@@ -135,28 +127,24 @@ class DebianPackage:
         if subprocess.call(['dpkg-buildpackage', '-rfakeroot', '-b', '-us', '-uc'], cwd=self._package_path):
             raise BuildRuntimeError()
 
-    def install(self):
-        # type: () -> None
+    def install(self) -> None:
         deb_package = self.get_binary_name()
 
         sys.stdout.flush()
         if subprocess.call(['dpkg', '-i', deb_package]):
             raise InstallRuntimeError()
 
-    def uninstall(self, purge=False):
-        # type: (bool) -> None
+    def uninstall(self, purge: bool = False) -> None:
         sys.stdout.flush()
         if subprocess.call(['dpkg', '-r', self._package_name]):
             raise UninstallRuntimeError()
         if purge and subprocess.call(['dpkg', '--purge', self._package_name]):
             raise UninstallRuntimeError()
 
-    def remove(self):
-        # type: () -> None
+    def remove(self) -> None:
         shutil.rmtree(self._package_tempdir)
 
-    def _create_changelog(self):
-        # type: () -> None
+    def _create_changelog(self) -> None:
         changelog = '''%(package_name)s (%(package_version)s) unstable; urgency=low
 
   * Test package
@@ -166,8 +154,7 @@ class DebianPackage:
 
         self.create_debian_file_from_buffer('changelog', changelog)
 
-    def _create_control(self):
-        # type: () -> None
+    def _create_control(self) -> None:
         control = '''source: %(package_name)s
 Section: univention
 Priority: optional
@@ -187,8 +174,7 @@ Description: UCS - Test package
 
         self.create_debian_file_from_buffer('control', control)
 
-    def _create_rules(self):
-        # type: () -> None
+    def _create_rules(self) -> None:
         rules = '''#!/usr/bin/make -f
 %:
 \tdh $@
@@ -196,8 +182,7 @@ override_dh_strip_nondeterminism: ; # Bug #46002
 '''
         self.create_debian_file_from_buffer('rules', rules)
 
-    def _create_install(self):
-        # type: () -> None
+    def _create_install(self) -> None:
         install = '''
 usr/share/* usr/share/
 install/* usr/lib/univention-install/

@@ -11,10 +11,12 @@
 ## join: true
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import re
 import subprocess
 import time
-from typing import Tuple, Union
+from typing import Tuple
 
 import pytest
 
@@ -51,7 +53,7 @@ def test_open_fd_after_login(umc_browser_test: UMCBrowserTest, udm, try_wrong_pw
     assert ret < 3, f"More than 2 sockets in CLOSE_WAIT after UMC login:\n{open_sockets}"
 
 
-def count_fhs(state: Union[str, None] = None) -> Tuple[str, int]:
+def count_fhs(state: str | None = None) -> Tuple[str, int]:
     state_str = f"state {state}" if state is not None else ""
     ret = subprocess.run(
         f"ss -tp {state_str} dport 7389 | grep pid=$(pidof -x univention-management-console-server)",

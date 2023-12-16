@@ -1,12 +1,14 @@
 #!/usr/bin/python3 -u
 """UCS Testrunner - run UCS test in sane environment."""
 
+from __future__ import annotations
+
 import argparse
 import logging
 import operator
 import sys
 from time import time
-from typing import Iterable, List, Mapping, Optional, Tuple
+from typing import Iterable, List, Mapping, Tuple
 
 import univention.testing.format
 from univention.testing.coverage import Coverage
@@ -91,8 +93,8 @@ class TestSet:
     def __init__(self, tests: Mapping[str, Iterable[str]]) -> None:
         self.tests = tests
         self.max_count = sum(1 for tests in tests.values() for test in tests)
-        self.test_environment: Optional[TestEnvironment] = None
-        self.format: Optional[TestFormatInterface] = None
+        self.test_environment: TestEnvironment | None = None
+        self.format: TestFormatInterface | None = None
         self.prefix = ''
 
     def set_environment(self, test_environment: TestEnvironment) -> None:
@@ -112,7 +114,7 @@ class TestSet:
         else:
             self.prefix = ''
 
-    def run_tests(self, filter_condition: bool = False, dry_run: bool = False, stop_on_failure: bool = False) -> Optional[int]:
+    def run_tests(self, filter_condition: bool = False, dry_run: bool = False, stop_on_failure: bool = False) -> int | None:
         """Run selected tests."""
         assert self.format
         assert self.test_environment
@@ -162,7 +164,7 @@ class TestSet:
         return 0
 
 
-def main() -> Optional[int]:
+def main() -> int | None:
     """Run UCS test suite."""
     all_sections = get_sections()
 

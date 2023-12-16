@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import contextlib
 import re
 import socket
 import sqlite3
 import subprocess
 import time
-from typing import Any, Dict, Iterator, List, Optional, Union  # noqa: F401
+from typing import Any, Dict, Iterator, List
 
 import ldap
 import ldb
@@ -25,8 +27,7 @@ class WaitForS4ConnectorTimeout(Exception):
 
 
 @contextlib.contextmanager
-def password_policy(complexity=False, minimum_password_age=0, maximum_password_age=3):
-    # type: (bool, int, int) -> Iterator[None]
+def password_policy(complexity: bool = False, minimum_password_age: int = 0, maximum_password_age: int = 3) -> Iterator[None]:
     if not package_installed('univention-samba4'):
         print('skipping samba password policy adjustment')
         yield
@@ -41,8 +42,7 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
         subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--max-pwd-age', max_pwd_age, '--complexity', pwd_complexity])
 
 
-def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True, controls=None):
-    # type: (str, Union[List[str], None, str], Optional[str], int, Optional[LoadParm], int, int, bool, bool, Optional[List[str]]) -> None
+def wait_for_drs_replication(ldap_filter: str, attrs: List[str] | str | None = None, base: str | None = None, scope: int = ldb.SCOPE_SUBTREE, lp: LoadParm | None = None, timeout: int = 360, delta_t: int = 1, verbose: bool = True, should_exist: bool = True, controls: List[str] | None = None) -> None:
     if not package_installed('univention-samba4'):
         if package_installed('univention-samba'):
             time.sleep(15)
@@ -101,8 +101,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
     raise DRSReplicationFailed("DRS replication for filter: %r failed due to timeout after %d sec." % (ldap_filter, t - t0))
 
 
-def get_available_s4connector_dc():
-    # type: () -> str
+def get_available_s4connector_dc() -> str:
     cmd = ("/usr/bin/univention-ldapsearch", "-LLL", "(univentionService=S4 Connector)", "uid")
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, _stderr = p.communicate()
@@ -139,8 +138,7 @@ def get_available_s4connector_dc():
         return ""
 
 
-def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in"):
-    # type: (Optional[str], Optional[str], Optional[str], str) -> int
+def force_drs_replication(source_dc: str | None = None, destination_dc: str | None = None, partition_dn: str | None = None, direction: str = "in") -> int:
     if not package_installed('univention-samba4'):
         print('force_drs_replication(): skip, univention-samba4 not installed.')
         return 0
@@ -163,16 +161,14 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
     return subprocess.call(cmd)
 
 
-def _ldap_replication_complete(verbose=True):
-    # type: (bool) -> bool
-    kwargs = {}  # type: Dict[str, Any]
+def _ldap_replication_complete(verbose: bool = True) -> bool:
+    kwargs: Dict[str, Any] = {}
     if not verbose:
         kwargs = {'stdout': open('/dev/null', 'w'), 'stderr': subprocess.STDOUT}
     return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication', **kwargs) == 0
 
 
-def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
-    # type: (int, int, int) -> int
+def wait_for_s4connector(timeout: int = 360, delta_t: int = 1, s4cooldown_t: int = 5) -> int:
     ucr = config_registry.ConfigRegistry()
     ucr.load()
 
@@ -238,8 +234,7 @@ def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
     raise WaitForS4ConnectorTimeout()
 
 
-def append_dot(verify_list):
-    # type: (List[str]) -> List[str]
+def append_dot(verify_list: List[str]) -> List[str]:
     """The S4-Connector appends dots to various dns records. Helper function to adjust a list."""
     if not package_installed('univention-s4-connector'):
         return verify_list

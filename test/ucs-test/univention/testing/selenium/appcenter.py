@@ -32,9 +32,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-
 from time import sleep
-from typing import Any  # noqa: F401
+from typing import Any
 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
@@ -49,12 +48,10 @@ _ = translator.translate
 
 class AppCenter:
 
-    def __init__(self, selenium):
-        # type: (Any) -> None
+    def __init__(self, selenium: Any) -> None:
         self.selenium = selenium
 
-    def install_app(self, app_name):
-        # type: (str) -> None
+    def install_app(self, app_name: str) -> None:
         # TODO: Make sure the license is activated!
         self.open_app(app_name)
 
@@ -103,8 +100,7 @@ class AppCenter:
             pass
         self.selenium.wait_until_all_standby_animations_disappeared()
 
-    def uninstall_app(self, app_name):
-        # type: (str) -> None
+    def uninstall_app(self, app_name: str) -> None:
         self.open_app(app_name)
         self.selenium.click_buttons([_('Manage installations'), _('Manage installation')], timeout=10)
         try:
@@ -119,8 +115,7 @@ class AppCenter:
         self.selenium.wait_for_text(_('Install'))
         self.selenium.wait_until_all_standby_animations_disappeared()
 
-    def upgrade_app(self, app):
-        # type: (str) -> None
+    def upgrade_app(self, app: str) -> None:
         self.open_app(app)
 
         self.selenium.click_text(_('(this computer)'))
@@ -139,8 +134,7 @@ class AppCenter:
         self.selenium.wait_until_progress_bar_finishes(timeout=900)
         self.selenium.wait_for_text(_('More information'), timeout=900)
 
-    def search_for_apps(self, text, category=""):
-        # type: (str, str) -> None
+    def search_for_apps(self, text: str, category: str = "") -> None:
         self.open()
 
         category = category or _('All')
@@ -155,8 +149,7 @@ class AppCenter:
 
         return self.selenium.get_gallery_items()
 
-    def select_search_category(self, category):
-        # type: (str) -> None
+    def select_search_category(self, category: str) -> None:
         self.selenium.show_notifications(False)
         self.selenium.click_element(
             '//div[contains(concat(" ", normalize-space(@class), " "), " dropDownMenu ")]//input[contains(concat(" ", normalize-space(@class), " "), " dijitArrowButtonInner ")]',
@@ -167,27 +160,23 @@ class AppCenter:
         )
         sleep(2)
 
-    def click_app_tile(self, app_name):
-        # type: (str) -> None
+    def click_app_tile(self, app_name: str) -> None:
         self.selenium.click_element(expand_path(f'//*[@containsClass="umcTile__name"][text() = "{app_name}"]'))
 
-    def open(self, do_reload=True):
-        # type: (bool) -> None
+    def open(self, do_reload: bool = True) -> None:
         # TODO: check if appcenter is already opened with the overview site
         self.selenium.open_module(_('App Center'), do_reload=do_reload, wait_for_standby=False)
         self.close_info_dialog_if_visisble()
         self.selenium.wait_until_standby_animation_appears_and_disappears()
 
-    def open_app(self, app_name):
-        # type: (str) -> None
+    def open_app(self, app_name: str) -> None:
         # TODO: check if appcenter is already opened with the app page
         self.open()
         self.click_app_tile(app_name)
         self.selenium.wait_for_text(_('More information'))
         self.selenium.wait_until_all_standby_animations_disappeared()
 
-    def close_info_dialog_if_visisble(self):
-        # type: () -> None
+    def close_info_dialog_if_visisble(self) -> None:
         try:
             self.selenium.wait_for_text(_('Do not show this message again'), timeout=5)
             self.selenium.click_button(_('Continue'))

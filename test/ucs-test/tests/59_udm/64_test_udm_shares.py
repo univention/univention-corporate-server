@@ -11,10 +11,10 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-
 import random
 import subprocess
 import time
+from typing import Mapping
 
 import ldap.dn
 import pytest
@@ -23,7 +23,7 @@ import univention.testing.strings as uts
 from univention.testing import utils
 
 
-def random_fqdn(ucr):  # type: (dict) -> str
+def random_fqdn(ucr: Mapping[str, str]) -> str:
     return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
 
 

@@ -18,6 +18,7 @@ import shlex
 import subprocess
 import sys
 import time
+from typing import Mapping
 
 import ldap.dn
 import pytest
@@ -36,7 +37,7 @@ samba_common_bin_installed = utils.package_installed('samba-common-bin')
 PRINTER_PROTOCOLS = ['usb://', 'ipp://', 'socket://', 'parallel://', 'http://']
 
 
-def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) -> str
+def random_fqdn(ucr: Mapping[str, str]) -> str:
     return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
 
 

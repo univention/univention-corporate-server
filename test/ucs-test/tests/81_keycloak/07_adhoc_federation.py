@@ -4,12 +4,13 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import base64
 import json
 import os
 import uuid
 from types import SimpleNamespace
-from typing import Optional
 
 import pytest
 from keycloak import KeycloakAdmin
@@ -382,7 +383,7 @@ def _test_sso_login(selenium: WebDriver, portal_config: SimpleNamespace, keycloa
     assert get_portal_tile(selenium, portal_config.sso_login_tile_de, portal_config)
 
 
-def get_udm_user_obj(username: str) -> Optional[UsersUserObject]:
+def get_udm_user_obj(username: str) -> UsersUserObject | None:
     udm_users = UDM.admin().version(2).get("users/user")
     user = list(udm_users.search(f"uid={username}"))
     if len(user) == 1:

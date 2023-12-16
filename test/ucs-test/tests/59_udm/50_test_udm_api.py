@@ -11,7 +11,7 @@ import os
 from collections import defaultdict, namedtuple
 from copy import deepcopy
 from subprocess import call
-from typing import List, Tuple  # noqa: F401
+from typing import List, Tuple
 
 import pytest
 from unittest import TestCase, main
@@ -659,7 +659,7 @@ class TestEncoders(TestCase):
 
 
 @pytest.fixture()
-def simple_udm(ucr):  # type: () -> UDM
+def simple_udm(ucr) -> UDM:
     account = utils.UCSTestDomainAdminCredentials()
     return UDM.credentials(
         account.binddn,
@@ -672,9 +672,9 @@ def simple_udm(ucr):  # type: () -> UDM
 
 @pytest.fixture()
 def schedule_delete_udm_obj(simple_udm):
-    objs = []  # type: List[Tuple[str, str]]
+    objs: List[Tuple[str, str]] = []
 
-    def _func(dn, udm_mod):  # type: (str, str) -> None
+    def _func(dn: str, udm_mod: str) -> None:
         objs.append((dn, udm_mod))
 
     yield _func

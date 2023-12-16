@@ -8,11 +8,13 @@
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 
+from __future__ import annotations
+
 import subprocess
 import sys
 from datetime import datetime, timedelta
 from time import sleep
-from typing import Iterator, List, Sequence, Tuple, Union  # noqa: F401
+from typing import Iterator, List, Sequence, Tuple
 
 from univention.config_registry import ucr
 from univention.testing import utils
@@ -67,7 +69,7 @@ def try_to_authenticate(password: str) -> Tuple[str, str]:
         dump_account()
 
 
-def set_lockout_settings(lock_duration: Union[int, str], lock_threshold: Union[int, str]) -> None:
+def set_lockout_settings(lock_duration: int | str, lock_threshold: int | str) -> None:
     """Set the lockout settings to given values."""
     print(f"# Setting account lockout settings: duration={lock_duration}m; threshold={lock_threshold}")
 
@@ -189,7 +191,7 @@ def main() -> None:
         create_delete_test_user(True)
 
         set_lockout_settings(LOCKOUT_DURATION, LOCKOUT_THRESHOLD)
-        hist = []  # type: List[str]
+        hist: List[str] = []
         hist += dump_pwpolicy()
 
         print("# Twiddling thumbs for 30s")  # Why?

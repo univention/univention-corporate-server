@@ -5,12 +5,14 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import annotations
+
 import glob
 import json
 import os
 import subprocess
 import time
-from typing import Any, Optional
+from typing import Any
 
 import univention.testing.udm as udm_test
 
@@ -43,7 +45,7 @@ def group_exists(dn: str) -> bool:
     return obj_exists('groups/group', dn)
 
 
-def get_attr(obj_type: str, dn: str, attr: str) -> Optional[Any]:
+def get_attr(obj_type: str, dn: str, attr: str) -> Any | None:
     db = dump_db()
     for obj in db[obj_type].values():
         if dn.lower() == obj.get('dn').lower():
@@ -104,7 +106,7 @@ def test_listener() -> None:
         assert not glob.glob(os.path.join(LISTENER_DIR, '*.json'))
 
 
-def get_pid_for_name(name: str) -> Optional[str]:
+def get_pid_for_name(name: str) -> str | None:
     o = subprocess.check_output(['ps', 'aux'], text=True)
     for line in o.split('\n'):
         if name in line:

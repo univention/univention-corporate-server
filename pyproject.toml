@@ -65,6 +65,7 @@ ignore = [
  "PLR0912",  # too-many-branches
  "PLW2901",  # redefined-loop-name
  "PYI014",  # argument-simple-defaults
+ "PYI034",  # non-self-return-type
  "PYI052",  # unannotated-assignment-in-stub
  "FIX001",  #
  "FIX002",  #

@@ -48,7 +48,7 @@ import locale
 import ssl
 from http.client import HTTPException, HTTPSConnection
 from http.cookies import SimpleCookie
-from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
+from typing import Any, Dict, List, Tuple, Type, TypeVar, overload
 
 from univention.config_registry import ConfigRegistry
 
@@ -270,7 +270,7 @@ class Request:
         self.data = data
         self.headers = headers or {}
 
-    def get_body(self) -> bytes | None:
+    def get_body(self) -> bytes | str | None:
         """
         Return the request data.
 
@@ -321,7 +321,15 @@ class Response:
         self._response = _response
         self.data = self.decode_body()
 
-    def get_header(self, name: str, default: _T | None = None) -> _T:
+    @overload
+    def get_header(self, name: str) -> str | None:
+        ...
+
+    @overload
+    def get_header(self, name: str, default: _T) -> str | _T:
+        ...
+
+    def get_header(self, name: str, default: _T | None = None) -> str | _T | None:
         """
         Return original |HTTP| response header.
 
@@ -552,11 +560,11 @@ class Client:
         if 'UMCSessionId' in self.cookies:
             request.headers['X-XSRF-Protection'] = self.cookies['UMCSessionId']
         try:
-            response = self.__request(request)
+            http_response = self.__request(request)
         except (HTTPException, OSError, ssl.CertificateError) as exc:
             raise ConnectionError('Could not send request.', reason=exc)
-        self._handle_cookies(response)
-        response = Response._from_httplib_response(response)
+        self._handle_cookies(http_response)
+        response = Response._from_httplib_response(http_response)
         if self._raise_errors and response.status > 299:
             raise HTTPError(request, response, self.hostname)
         return response
@@ -568,7 +576,7 @@ class Client:
         :param http.client.HTTPResponse response: The |HTTP| response.
         """
         # FIXME: this cookie handling doesn't respect path, domain and expiry
-        cookies: SimpleCookie[Any] = SimpleCookie()
+        cookies: SimpleCookie = SimpleCookie()
         cookies.load(response.getheader('set-cookie', ''))
         self.cookies.update({cookie.key: cookie.value for cookie in cookies.values()})
 

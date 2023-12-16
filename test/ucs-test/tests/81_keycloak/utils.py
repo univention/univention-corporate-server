@@ -28,10 +28,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import subprocess
 import time
 from types import SimpleNamespace
-from typing import Optional
 
 import requests
 from keycloak import KeycloakAdmin
@@ -76,7 +77,7 @@ def keycloak_password_change(
     password: str,
     new_password: str,
     new_password_confirm: str,
-    fails_with: Optional[str] = None,
+    fails_with: str | None = None,
 ) -> None:
     wait_for_id(driver, keycloak_config.kc_passwd_update_form_id)
     driver.find_element(By.ID, keycloak_config.password_id).send_keys(password)
@@ -98,7 +99,7 @@ def keycloak_auth_header(config: SimpleNamespace) -> dict:
     }
 
 
-def keycloak_get_request(config: SimpleNamespace, path: str, params: Optional[dict] = None) -> dict:
+def keycloak_get_request(config: SimpleNamespace, path: str, params: dict | None = None) -> dict:
     response = requests.get(f"{config.admin_url}/{path}", headers=keycloak_auth_header(config), params=params)
     assert response.status_code == 200, response.text
     return response.json()
@@ -129,7 +130,7 @@ def keycloak_login(
     keycloak_config: SimpleNamespace,
     username: str,
     password: str,
-    fails_with: Optional[str] = None,
+    fails_with: str | None = None,
     no_login: bool = False,
 ) -> None:
     wait_for_id(driver, keycloak_config.username_id)

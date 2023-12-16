@@ -11,10 +11,12 @@
 ## join: true
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import email
 import time
 from dataclasses import dataclass
-from typing import Dict, Union
+from typing import Dict
 from urllib.parse import parse_qs, urlparse
 
 import pytest
@@ -129,7 +131,7 @@ class SelfService:
         self.navigate("createaccount")
         expect(self.page.get_by_role("heading", name=_("Create an account"))).to_be_visible()
 
-    def fill_create_account(self, attributes: Dict[str, UserCreationAttribute], button: Union[str, None] = "Create an account"):
+    def fill_create_account(self, attributes: Dict[str, UserCreationAttribute], button: str | None = "Create an account"):
         for k, v in attributes.items():
             if k == "password":
                 self.page.get_by_role("textbox", name=_("Password"), exact=True).fill(v.value)

@@ -32,8 +32,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Union
 
 from playwright.sync_api import Locator, Page, expect
 
@@ -57,41 +58,41 @@ class AddObjectDialog:
     :param locator: The locator of the dialog
     """
 
-    def __init__(self, tester: UMCBrowserTest, locator: Locator):
+    def __init__(self, tester: UMCBrowserTest, locator: Locator) -> None:
         self.tester = tester
         self.locator: Locator = locator
         self.page: Page = tester.page
 
-    def fill_field(self, label: str, value: str, exact: bool = False, **kwargs):
+    def fill_field(self, label: str, value: str, exact: bool = False, **kwargs) -> None:
         self.locator.get_by_role("textbox", name=label, exact=exact, **kwargs).fill(value)
 
-    def finish(self, label: str):
+    def finish(self, label: str) -> None:
         self.locator.get_by_role("button", name=label).click()
         self.locator.get_by_role("button", name=_("Cancel")).last.click()
         expect(self.locator).to_be_hidden()
 
-    def next(self, label: str = _("Next")):
+    def next(self, label: str = _("Next")) -> None:
         self.locator.get_by_role("button", name=label).click()
 
 
 class DetailsView:
-    def __init__(self, tester: UMCBrowserTest):
+    def __init__(self, tester: UMCBrowserTest) -> None:
         self.tester = tester
         self.page = tester.page
 
-    def fill_field(self, label: str, value: str):
+    def fill_field(self, label: str, value: str) -> None:
         self.page.get_by_label(label).fill(value)
 
-    def check_checkbox(self, label: str):
+    def check_checkbox(self, label: str) -> None:
         self.page.get_by_role("checkbox", name=label).check()
 
-    def save(self, label: str = _("Save")):
+    def save(self, label: str = _("Save")) -> None:
         self.page.get_by_role("button", name=label).click()
 
-    def open_tab(self, name: str):
+    def open_tab(self, name: str) -> None:
         self.page.get_by_role("tab", name=name).click()
 
-    def click_button(self, name: str):
+    def click_button(self, name: str) -> None:
         self.page.get_by_role("button", name=name).click()
 
     def upload_picture(self, img_path: str) -> Locator:
@@ -113,7 +114,7 @@ class DetailsView:
 
         return image_locator
 
-    def remove_picture(self):
+    def remove_picture(self) -> None:
         # for some reason this locator resolves to two buttons
         remove_button = self.page.get_by_role("button", name="Remove").first
         expect(remove_button).to_be_visible()
@@ -130,12 +131,12 @@ class GenericUDMModule(object):
     :param module_name: The module name to be opened by navigate
     """
 
-    def __init__(self, tester: UMCBrowserTest, module_name: str):
+    def __init__(self, tester: UMCBrowserTest, module_name: str) -> None:
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
         self.module_name: str = module_name
 
-    def navigate(self, username="Administrator", password="univention"):
+    def navigate(self, username="Administrator", password="univention") -> None:
         self.tester.login(username, password)
         self.tester.open_module(self.module_name)
 
@@ -160,13 +161,16 @@ class GenericUDMModule(object):
         self.page.get_by_role("gridcell").get_by_text(name).click()
         return DetailsView(self.tester)
 
-    def delete(self, name: str):
+    def delete(self, name: str | CreatedItem) -> None:
         """Checks the checkbox of the row containing `name` and then press the delete button"""
+        if isinstance(name, CreatedItem):
+            name = name.identifying_name
+
         self.tester.check_checkbox_in_grid_by_name(name)
         self.page.get_by_role("button", name=_("Delete")).click()
         self.page.get_by_role("dialog").get_by_role("button", name=_("Delete")).click()
 
-    def modify_text_field(self, name: Union[str, CreatedItem], label: str = _("Description"), value: str = "description"):
+    def modify_text_field(self, name: str | CreatedItem, label: str = _("Description"), value: str = "description") -> None:
         """
         Shortcut method to open the details of an object, fill a field with a value and save
 
@@ -183,7 +187,7 @@ class GenericUDMModule(object):
 
 
 class PortalModule(GenericUDMModule):
-    def __init__(self, tester: UMCBrowserTest):
+    def __init__(self, tester: UMCBrowserTest) -> None:
         super().__init__(tester, _("Portal"))
 
     def add(
@@ -195,11 +199,12 @@ class PortalModule(GenericUDMModule):
         add_object = self.add_object_dialog()
         add_object.tester.fill_combobox("Type", "Portal: Portal")
         add_object.next()
-        add_object = DetailsView(self.tester)
-        add_object.fill_field(_("Internal name"), name)
-        add_object.tester.fill_combobox("Language code", lang_code)
-        add_object.fill_field(_("Display Name"), display_name)
-        add_object.save(_("Create Portal"))
+
+        dv = DetailsView(self.tester)
+        dv.fill_field(_("Internal name"), name)
+        dv.tester.fill_combobox("Language code", lang_code)
+        dv.fill_field(_("Display Name"), display_name)
+        dv.save(_("Create Portal"))
 
         return CreatedItem(name)
 
@@ -208,7 +213,7 @@ class UserModule(GenericUDMModule):
     def __init__(self, tester: UMCBrowserTest) -> None:
         super().__init__(tester, _("Users"))
 
-    def handle_comboboxes(self, add_object: AddObjectDialog, template: Union[str, None]):
+    def handle_comboboxes(self, add_object: AddObjectDialog, template: str | None) -> None:
         combobox_filled = False
 
         # in some cases there might be a dialog with a combobox pop-up where none is expected
@@ -246,7 +251,7 @@ class UserModule(GenericUDMModule):
         first_name: str = "first_name",
         last_name: str = "last_name",
         password: str = "univention",
-        template: Union[str, None] = None,
+        template: str | None = None,
     ) -> CreatedItem:
         """
         Add a new user with the given information
@@ -266,7 +271,7 @@ class UserModule(GenericUDMModule):
 
         return CreatedItem(name)
 
-    def copy_user(self, original_name: str, name: str, last_name: str = "last_name", password: str = "univention"):
+    def copy_user(self, original_name: str, name: str, last_name: str = "last_name", password: str = "univention") -> None:
         self.tester.check_checkbox_in_grid_by_name(original_name)
 
         self.page.get_by_role("button", name=_("more")).click()
@@ -281,12 +286,9 @@ class UserModule(GenericUDMModule):
         detail_view.fill_field(f"{_('Password (retype)')} *", password)
         detail_view.save(_("Create User"))
 
-    def delete(self, created_item: CreatedItem):
-        super().delete(created_item.identifying_name)
-
 
 class GroupModule(GenericUDMModule):
-    def __init__(self, tester: UMCBrowserTest):
+    def __init__(self, tester: UMCBrowserTest) -> None:
         super().__init__(tester, _("Groups"))
 
     def create_object(self, group_name: str = "group_name") -> CreatedItem:
@@ -301,12 +303,9 @@ class GroupModule(GenericUDMModule):
         expect(self.page.get_by_role("gridcell").filter(has_text=group_name).first, "expect created group to be visible in grid").to_be_visible()
         return CreatedItem(group_name)
 
-    def delete(self, created_item: CreatedItem):
-        return super().delete(created_item.identifying_name)
-
 
 class PoliciesModule(GenericUDMModule):
-    def __init__(self, tester: UMCBrowserTest):
+    def __init__(self, tester: UMCBrowserTest) -> None:
         super().__init__(tester, _("Policies"))
 
     def create_object(self, policy_name: str = "policy_name") -> CreatedItem:
@@ -317,21 +316,19 @@ class PoliciesModule(GenericUDMModule):
         """
         add_dialog = self.add_object_dialog()
         add_dialog.next()
-        add_dialog = DetailsView(self.tester)
-        add_dialog.fill_field(f"{_('Name')} *", policy_name)
-        add_dialog.save(_("Create Policy"))
+
+        dv = DetailsView(self.tester)
+        dv.fill_field(f"{_('Name')} *", policy_name)
+        dv.save(_("Create Policy"))
         expect(self.page.get_by_role("gridcell").filter(has_text=policy_name).first, "expect created group to be visible in grid").to_be_visible()
         return CreatedItem(policy_name)
 
-    def modify_text_field(self, created_item: CreatedItem, label: str = _("Update to this UCS version"), value: str = "4.0"):
-        super().modify_text_field(created_item.identifying_name, label, value)
-
-    def delete(self, created_item: CreatedItem):
-        super().delete(created_item.identifying_name)
+    def modify_text_field(self, created_item: str | CreatedItem, label: str = _("Update to this UCS version"), value: str = "4.0") -> None:
+        super().modify_text_field(created_item, label, value)
 
 
 class ComputerModule(GenericUDMModule):
-    def __init__(self, tester: UMCBrowserTest):
+    def __init__(self, tester: UMCBrowserTest) -> None:
         super().__init__(tester, _("Computers"))
 
     def create_object(self, computer_name: str = "computer_name_8") -> CreatedItem:
@@ -345,6 +342,3 @@ class ComputerModule(GenericUDMModule):
         add_dialog.fill_field(f"{_('Windows workstation/server name')} *", computer_name)
         add_dialog.finish(_("Create Computer"))
         return CreatedItem(computer_name)
-
-    def delete(self, created_item: CreatedItem):
-        return super().delete(created_item.identifying_name)

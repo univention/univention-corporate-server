@@ -43,10 +43,11 @@ file.
 .. warning:: The API is currently under development and may change before next UCS release!
 """
 
+from __future__ import annotations
 
 import copy
-from types import TracebackType  # noqa: F401
-from typing import Any, Dict, Optional, Type  # noqa: F401
+from types import TracebackType
+from typing import Any, Dict, Type
 
 import univention.config_registry
 from univention.config_registry import ConfigRegistry
@@ -58,11 +59,10 @@ class UCSTestConfigRegistry(ConfigRegistry):
     several changes to UCR variables have been done.
     """
 
-    def __init__(self, *args, **kwargs):
-        # type: (*Any, **Any) -> None
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         """initialise object"""
         ConfigRegistry.__init__(self, *args, **kwargs)
-        self.__original_registry = None  # type: Optional[Dict[int, Dict[str, str]]]
+        self.__original_registry: Dict[int, Dict[str, str]] | None = None
 
     def ucr_update(self, *args):
         return univention.config_registry.frontend.ucr_update(*args)
@@ -73,8 +73,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
     def handler_unset(self, *args):
         return univention.config_registry.handler_unset(*args)
 
-    def load(self):
-        # type: () -> None
+    def load(self) -> None:
         """call load() of superclass and save original registry values"""
         ConfigRegistry.load(self)
         if self.__original_registry is None:
@@ -83,8 +82,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
                 for (regtype, reg) in self._walk()
             }
 
-    def revert_to_original_registry(self):
-        # type: () -> None
+    def revert_to_original_registry(self) -> None:
         """revert UCR values back to original state"""
         # load current values again to perform correct comparison
         self.load()
@@ -111,13 +109,11 @@ class UCSTestConfigRegistry(ConfigRegistry):
         # load new/original values
         self.load()
 
-    def __enter__(self):
-        # type: () -> UCSTestConfigRegistry
+    def __enter__(self) -> UCSTestConfigRegistry:  # FIXME Py3.9: Self
         self.load()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         self.revert_to_original_registry()
 
 

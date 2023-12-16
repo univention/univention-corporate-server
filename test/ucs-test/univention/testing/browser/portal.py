@@ -32,7 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Union
+from __future__ import annotations
 
 from playwright.sync_api import Locator, Page, expect
 
@@ -137,7 +137,7 @@ class UCSPortalEditMode:
         self,
         text: str,
         data_test_suffix: str = "",
-        locator: Union[Locator, None] = None,
+        locator: Locator | None = None,
     ):
         """
         Fill a localization dialog
