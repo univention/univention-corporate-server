@@ -645,6 +645,7 @@ class TestCase:
                 self.logger.debug("Child died, collecting remaining output")
                 shutdown = True
                 next_kill = current + 1.0
+                os.close(rfd)
                 rlist.remove(rfd)
                 del channels[rfd]
 
@@ -686,6 +687,11 @@ class TestCase:
                     next_read = current + 0.1
 
         self.logger.debug("Done")
+        for fd in (rfd, wfd):
+            try:
+                os.close(fd)
+            except OSError:
+                pass
 
         TestCase._attach(result, 'stdout', combined)
 
