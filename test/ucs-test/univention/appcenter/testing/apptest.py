@@ -523,7 +523,7 @@ else:
     @pytest.fixture(scope='session')
     def udm(hostname, config, admin_username, admin_password):
         """A UDM instance (REST client)"""
-        rest_lib = os.environ.get('UCS_TEST_REST_CLIENT_LIB', 'univention.testing._udm_rest')
+        rest_lib = os.environ.get('UCS_TEST_REST_CLIENT_LIB', 'univention.admin.rest.client')
         try:
             rest_lib = importlib.import_module(rest_lib)
         except ImportError:

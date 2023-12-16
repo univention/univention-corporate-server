@@ -418,6 +418,7 @@ Depends:
  python3-pytest,
  python3-requests,
  python3-univention-config-registry,
+ python3-univention-directory-manager-rest-client,
  ucs-test-libs (= ${source:Version}),
  univention-appcenter-dev,
  xvfb,
