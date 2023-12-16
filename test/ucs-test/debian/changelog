@@ -1,3 +1,9 @@
+ucs-test (10.0.20-5) unstable; urgency=low
+
+  * Fix timeout handling.
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 16 Dec 2023 16:20:08 +0100
+
 ucs-test (10.0.20-4) unstable; urgency=medium
 
   * Bug #56765: 82_saml/23_check_permissions.py: make file existence

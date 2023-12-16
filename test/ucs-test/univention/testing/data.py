@@ -501,7 +501,6 @@ class TestCase:
         self.bugs = set()  # type: Set[str]
         self.otrs = set()  # type: Set[str]
         self.timeout = None  # type: Optional[int]
-        self.signaled = None  # type: Optional[int]
         self.is_pytest = False  # type: bool
         self.external_junit = None  # type: Optional[str]
 
@@ -608,39 +607,47 @@ class TestCase:
     def _run_tee(self, proc, result, stdout=sys.stdout, stderr=sys.stderr):
         # type: (Popen, TestResult, IO[str], IO[str]) -> None
         """Run test collecting and passing through stdout, stderr:"""
-        assert proc.stdout
-        assert proc.stderr
+        assert proc.stdout is not None
+        assert proc.stderr is not None
+        rfd, wfd = os.pipe2(os.O_NONBLOCK | os.O_CLOEXEC)
         channels = {
             proc.stdout.fileno(): (proc.stdout, [], 'stdout', stdout, '[]', bytearray()),
             proc.stderr.fileno(): (proc.stderr, [], 'stderr', stderr, '()', bytearray()),
+            rfd: (None, [], "child", None, "{}", None),  # type: ignore
         }  # type: Dict[int, Tuple[IO[str], List, str, IO[str], str, bytearray]]
         combined = []
+
+        def sigchld(signum, _frame):  # type: (int, Any) -> None
+            self.logger.debug('Received SIG %d', signum)
+            try:
+                os.close(wfd)
+            except OSError:
+                pass
+
+        signal.signal(signal.SIGCHLD, sigchld)
         next_kill = next_read = 0.0
         shutdown = False
         kill_sequence = self._terminate_proc(proc)
         while channels:
             current = monotonic()
-            if self.signaled == signal.SIGALRM:
-                if next_kill <= current:
-                    try:
-                        next_kill = current + next(kill_sequence)
-                    except StopIteration:
-                        shutdown = True
-                        next_kill = current + 1.0
-            elif self.signaled == signal.SIGCHLD:
-                shutdown = True
-                next_kill = current + 1.0
+            if next_kill <= current:
+                shutdown, next_kill = next(kill_sequence)
+                next_kill += current
 
             delays = [max(0.0, t - current) for t in (next_kill, next_read) if t > 0.0]
-            try:
-                rlist, _wlist, _elist = select.select(list(channels), [], [], min(delays) if delays else None)
-            except OSError as ex:
-                if ex.args[0] == errno.EINTR:
-                    TestCase.logger.debug('select() interrupted by SIG%d rc=%r', self.signaled, proc.poll())
-                    continue
-                raise
+            self.logger.debug("Delay=%r", delays)
+            rlist, _wlist, _elist = select.select(list(channels), [], [], min(delays) if delays else None)
+            self.logger.debug("rlist=%r", rlist)
 
             next_read = 0.0
+
+            if rfd in rlist:
+                self.logger.debug("Child died, collecting remaining output")
+                shutdown = True
+                next_kill = current + 1.0
+                rlist.remove(rfd)
+                del channels[rfd]
+
             for fd in rlist or list(channels):
                 stream, log, name, out, paren, buf = channels[fd]
 
@@ -670,6 +677,7 @@ class TestCase:
                     combined.append(entry)
 
                 if eof:
+                    self.logger.debug('Closing FD %d %s', fd, name)
                     stream.close()
                     del channels[fd]
                     TestCase._attach(result, name, log)
@@ -677,27 +685,30 @@ class TestCase:
                 if buf and data:
                     next_read = current + 0.1
 
+        self.logger.debug("Done")
+
         TestCase._attach(result, 'stdout', combined)
 
-    @staticmethod
-    def _terminate_proc(proc):
+    def _terminate_proc(self, proc):  # type: (Popen) -> Iterator[Tuple[bool, float]]
+        yield False, self.timeout or float("inf")
         try:
             for i in range(8):  # 2^8 * 100ms = 25.5s
-                TestCase.logger.info('Sending %d. SIGTERM to %d', i + 1, proc.pid)
-                rc = os.killpg(proc.pid, signal.SIGTERM)
-                TestCase.logger.debug('rc=%s', rc)
+                self.logger.info('Sending %d. SIGTERM to %d', i + 1, proc.pid)
+                os.killpg(proc.pid, signal.SIGTERM)
                 rc = proc.poll()
-                TestCase.logger.debug('rc=%s', rc)
+                self.logger.debug('rc=%s', rc)
                 if rc is not None:
-                    return
-                yield (1 << i) / 10.0
-            TestCase.logger.info('Sending SIGKILL to %d', proc.pid)
+                    break
+                yield False, (1 << i) / 10.0
+            self.logger.info('Sending SIGKILL to %d', proc.pid)
             os.killpg(proc.pid, signal.SIGKILL)
         except OSError as ex:
             if ex.errno != errno.ESRCH:
-                TestCase.logger.warning(
+                self.logger.warning(
                     'Failed to kill process %d: %s', proc.pid, ex,
                     exc_info=True)
+        while True:
+            yield True, 1.0
 
     @staticmethod
     def _attach(result, part, content):
@@ -754,7 +765,6 @@ class TestCase:
             result.result = TestCodes.RESULT_SKIP
             result.reason = TestCodes.REASON_ABORT
         old_sig_int = signal.signal(signal.SIGINT, handle_int)
-        old_sig_alrm = signal.getsignal(signal.SIGALRM)
 
         def prepare_child():  # type: () -> None
             """Setup child process."""
@@ -782,11 +792,6 @@ class TestCase:
                         )
                     to_stdout = to_stderr = result.environment.log
 
-                signal.signal(signal.SIGCHLD, self.handle_shutdown)
-                if self.timeout:
-                    old_sig_alrm = signal.signal(signal.SIGALRM, self.handle_shutdown)
-                    signal.alarm(self.timeout)
-
                 self._run_tee(proc, result, to_stdout, to_stderr)
 
                 result.result = proc.wait()
@@ -794,8 +799,6 @@ class TestCase:
                 TestCase.logger.error('Failed to execute %r using %s in %s', cmd, self.exe, dirname)
                 raise
         finally:
-            signal.alarm(0)
-            signal.signal(signal.SIGALRM, old_sig_alrm)
             signal.signal(signal.SIGINT, old_sig_int)
             if result.reason == TestCodes.REASON_ABORT:
                 raise KeyboardInterrupt()  # pylint: disable-msg=W1010
@@ -815,10 +818,6 @@ class TestCase:
         TestCase.logger.info('Test %r using %s in %s returned %s in %s ms', cmd, self.exe, dirname, result.result, result.duration)
 
         self._translate_result(result)
-
-    def handle_shutdown(self, signal, _frame):  # type: (int, Any) -> None
-        TestCase.logger.debug('Received SIG%d', signal)
-        self.signaled = signal
 
 
 class TestResult:
