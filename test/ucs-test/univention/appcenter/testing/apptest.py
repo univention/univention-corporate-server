@@ -5,6 +5,7 @@ import logging
 import os
 import os.path
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -42,7 +43,7 @@ def run_test_file(fname):
 def pip_modules(modules):
     if os.environ.get('UCS_TEST_NO_PIP') == 'TRUE':
         yield
-    if subprocess.run(['which', 'pip3'], stdout=subprocess.DEVNULL).returncode != 0:  # noqa: PLW1510
+    if not shutil.which('pip3'):
         raise RuntimeError('pip3 is required. Install python3-pip')
     installed = subprocess.run(['pip3', 'list', '--format=columns'], stdout=subprocess.PIPE)  # noqa: PLW1510
     logger.info(modules)
@@ -67,8 +68,8 @@ def pip_modules(modules):
 
 @contextmanager
 def xserver():
-    if os.environ.get('DISPLAY'):
-        display = os.environ['DISPLAY'].split(':')[1]
+    _host, _, display = os.environ.get('DISPLAY', "").partition(":")
+    if display:
         yield display
     else:
         from xvfbwrapper import Xvfb
@@ -82,7 +83,7 @@ def ffmpg_start(capture_video, display):
 
 
 def ffmpg_stop(pid):
-    subprocess.Popen(['kill', str(pid)])
+    os.kill(pid, signal.SIGTERM)
 
 
 def is_local():
@@ -100,7 +101,6 @@ class Session:
             self.add_ucs_root_ca_to_chrome_cert_store()
 
     def add_ucs_root_ca_to_chrome_cert_store(self):
-        # add ucs root ca to chromiums cert store
         # certutil -L -d sql:.pki/nssdb/
         # certutil -A -n "UCS root CA" -t "TCu,Cu,Tu" -i /etc/univention/ssl/ucsCA/CAcert.pem -d sql:.pki/nssd
         cert_store = os.path.join(os.environ['HOME'], '.pki', 'nssdb')
@@ -336,9 +336,7 @@ else:
         given. But if UCR is not avaiable, returns an empty dict...
         """
         try:
-            from univention.config_registry import ConfigRegistry
-            ucr = ConfigRegistry()
-            ucr.load()
+            from univention.config_registry import ucr
             return dict(ucr)
         except ImportError:
             return {}
@@ -381,7 +379,6 @@ else:
     @pytest.fixture(scope='session')
     def admin_password(config):
         """Password of the Admin account"""
-        ret = os.environ.get('UCS_TEST_ADMIN_USERNAME')
         ret = os.environ.get('UCS_TEST_ADMIN_PASSWORD')
         if not ret:
             ret = config.get('tests/domainadmin/pwd', 'univention')
@@ -389,15 +386,15 @@ else:
 
     @pytest.fixture(scope='session')
     def umc(hostname, admin_username, admin_password):
-        umc_lib = os.environ.get('UCS_TEST_UMC_CLIENT_LIB', 'univention.testing._umc')
+        lib_name = os.environ.get('UCS_TEST_UMC_CLIENT_LIB', 'univention.testing._umc')
         try:
-            umc_lib = importlib.import_module(umc_lib)
+            umc_lib = importlib.import_module(lib_name)
         except ImportError:
             logger.critical(f'Could not import {umc_lib}. Maybe set $UCS_TEST_UMC_CLIENT_LIB')
             raise
         Client = umc_lib.Client
-        scheme, hostname = hostname.split('//')
-        if scheme == 'http:':
+        scheme, _, hostname = hostname.split("://")
+        if scheme == 'http':
             Client.ConnectionType = HTTPConnection
         client = Client(hostname=hostname, username=admin_username, password=admin_password, useragent='UCS/ucs-test')
         return client
@@ -523,9 +520,9 @@ else:
     @pytest.fixture(scope='session')
     def udm(hostname, config, admin_username, admin_password):
         """A UDM instance (REST client)"""
-        rest_lib = os.environ.get('UCS_TEST_REST_CLIENT_LIB', 'univention.admin.rest.client')
+        lib_name = os.environ.get('UCS_TEST_REST_CLIENT_LIB', 'univention.admin.rest.client')
         try:
-            rest_lib = importlib.import_module(rest_lib)
+            rest_lib = importlib.import_module(lib_name)
         except ImportError:
             logger.critical(f'Could not import {rest_lib}. Maybe set $UCS_TEST_REST_CLIENT_LIB')
             raise
@@ -585,6 +582,7 @@ else:
             user = users[username]
             user.reload()
             return user
+
         try:
             yield _users
         finally:
