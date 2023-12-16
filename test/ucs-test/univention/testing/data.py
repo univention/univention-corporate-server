@@ -14,7 +14,7 @@ from datetime import datetime
 from functools import reduce
 from operator import and_, or_
 from subprocess import PIPE, Popen, call
-from time import time
+from time import monotonic
 from typing import IO, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, TypeVar  # noqa: F401
 
 import apt
@@ -619,7 +619,7 @@ class TestCase:
         shutdown = False
         kill_sequence = self._terminate_proc(proc)
         while channels:
-            current = time()
+            current = monotonic()
             if self.signaled == signal.SIGALRM:
                 if next_kill <= current:
                     try:
