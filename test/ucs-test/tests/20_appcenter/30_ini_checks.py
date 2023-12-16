@@ -7,6 +7,7 @@
 import subprocess
 import sys
 from configparser import NoOptionError, NoSectionError
+from typing import Dict
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ini_parser import read_ini_file
@@ -14,13 +15,13 @@ from univention.appcenter.ini_parser import read_ini_file
 
 returncode = 100
 
-codes = {}
+codes: Dict[str, str] = {}
 for app in Apps(locale='en').get_every_single_app():
-    if app.id.endswith('-test'):
+    if app.id.startswith(("test-", "test_")) or app.id.endswith(("-test", "_test")):
         print('Ignoring test App %s' % app)
         continue
-    else:
-        print('Checking %r' % app)
+
+    print('Checking %r' % app)
     # codes
     code = app.code
     if code:
