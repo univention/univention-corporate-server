@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Update script for SAML2.0 service provider metadata of UMC
@@ -33,20 +33,37 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-metadata=$(python3 -c "from saml2.metadata import create_metadata_string; import sys; sys.stdout.buffer.write(create_metadata_string('/usr/share/univention-management-console/saml/sp.py', None, valid=None, cert=None, keyfile=None, mid=None, name=None, sign=False))") || exit 1
-[ -z "$metadata" ] && exit 2
-echo "$metadata" > "/usr/share/univention-management-console/saml/sp/metadata.xml"
+import json
+import subprocess
+import sys
 
-eval "$(ucr shell hostname domainname umc/saml/sp-server ldap/base umc/saml/assertion-lifetime)"
+from saml2.metadata import create_metadata_string
 
-if [ -n "$umc_saml_sp_server" ]; then
-	fqdn="$umc_saml_sp_server"
-else
-	fqdn="$hostname.$domainname"
-fi
+from univention.config_registry import ucr
 
-udm saml/serviceprovider modify "$@" \
-	--dn "SAMLServiceProviderIdentifier=https://$fqdn/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base" \
-	--set assertionLifetime="${umc_saml_assertion_lifetime:-300}" \
-	--set serviceProviderMetadata="$metadata"
-exit $?
+
+metadata = create_metadata_string('/usr/share/univention-management-console/saml/sp.py', None, valid=None, cert=None, keyfile=None, mid=None, name=None, sign=False)
+if not metadata:
+    sys.exit(2)
+
+# write file for below and for the joinscript
+with open('/usr/share/univention-management-console/saml/sp/metadata.xml', 'wb') as fd:
+    fd.write(metadata)
+
+entity_id = f'https://{ucr["hostname"]}.{ucr["domainname"]}/univention/saml/metadata'
+subprocess.check_call([
+    'univention-directory-manager', 'saml/serviceprovider', 'modify'] + sys.argv[1:] + [
+    '--dn', f'SAMLServiceProviderIdentifier={escape_dn_chars(entity_id)},cn=saml-serviceprovider,cn=univention,{ucr["ldap/base"]}',
+    '--set', 'assertionLifetime=%d' % ucr.get_int('umc/saml/assertion-lifetime', 300),
+    '--set', 'serviceProviderMetadata=%s' % (metadata.decode('UTF-8'),),
+])
+# ignore failure, keycloak might not yet be installed or this is the first time and the entry doesn't yet exists in keycloak (added later by the joinscript)
+subprocess.call([
+    'univention-keycloak',
+    'saml/sp',
+    'update',
+    '--metadata-file',
+    '/usr/share/univention-management-console/saml/sp/metadata.xml',
+    entity_id,
+    json.dumps({'attributes': {'saml.assertion.lifespan': ucr.get_int('umc/saml/assertion-lifetime', 300)}}),
+])
