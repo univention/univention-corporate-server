@@ -398,7 +398,7 @@ else:
             logger.critical(f'Could not import {umc_lib}. Maybe set $UCS_TEST_UMC_CLIENT_LIB')
             raise
         Client = umc_lib.Client
-        scheme, _, hostname = hostname.split("://")
+        scheme, _, hostname = hostname.partition("://")
         if scheme == 'http':
             Client.ConnectionType = HTTPConnection
         client = Client(hostname=hostname, username=admin_username, password=admin_password, useragent='UCS/ucs-test')
