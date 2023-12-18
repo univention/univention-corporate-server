@@ -97,7 +97,7 @@ systemctl restart apache2
 
 if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
 	  # Register UMC as a Keycloak client, but ignore failure
-	  univention-keycloak "$@" saml/sp create --metadata-url="https://$fqdn/univention/saml/metadata" --metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" --umc-uid-mapper || true
+	  univention-keycloak "$@" saml/sp create --metadata-url="https://$fqdn/univention/saml/metadata" --metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" || true
 fi
 
 
