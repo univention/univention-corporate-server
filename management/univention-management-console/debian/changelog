@@ -1,3 +1,9 @@
+univention-management-console (13.0.2) unstable; urgency=medium
+
+  * Bug #57001: update UMC SAML metadata in Keycloak on changes
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:53:18 +0100
+
 univention-management-console (13.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.1-0 version bump
