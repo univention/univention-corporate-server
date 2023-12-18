@@ -8,6 +8,8 @@ conf = {
     "bip": configRegistry["docker/daemon/default/opts/bip"],
     "log-driver": configRegistry["docker/daemon/default/opts/log-driver"],
     "live-restore": configRegistry.is_true("docker/daemon/default/parameter/live-restore"),
+    "iptables": False,
+    "ip6tables": False,
 }
 registry_mirrors = configRegistry.get('docker/daemon/default/opts/registry-mirrors')
 if registry_mirrors:
