@@ -407,7 +407,8 @@ def get_realm_id(kc_client, name):
     return realm_info[0]["id"]
 
 
-def extract_endpoints_xml(metadata_url, metadata_file, no_ssl_verify):
+def update_saml_metadata_from_xml(metadata_url, payload, metadata_file, no_ssl_verify):
+    # TODO: just upload the XML to keycloak instead of parsing it here
     if not metadata_file:
         xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
     else:
@@ -418,11 +419,71 @@ def extract_endpoints_xml(metadata_url, metadata_file, no_ssl_verify):
     except xml.etree.ElementTree.ParseError as exc:
         print("ERROR: Could not parse XML: %s Content:\n%s" % (exc, xml_content), file=sys.stderr)
         sys.exit(1)
-    logout_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService').attrib["Location"]
-    acs_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService').attrib["Location"]
 
-    endpoints = {"logout": logout_endpoint, "acs": acs_endpoint}
-    return endpoints
+    attribs = payload.setdefault('attributes', {})
+    valid_redirect_urls = payload.setdefault("redirectUris", [])
+    logout_post = [x.attrib["Location"] for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService') if x.attrib.get('Binding') == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']
+    if logout_post:
+        attribs["saml_single_logout_service_url_post"] = logout_post[0]  # keycloak can only handle one url
+        valid_redirect_urls.extend(logout_post)
+    logout_redirect = [x.attrib["Location"] for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService') if x.attrib.get('Binding') == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
+    if logout_redirect:
+        attribs["saml_single_logout_service_url_redirect"] = logout_redirect[0]  # keycloak can only handle one url
+        valid_redirect_urls.extend(logout_redirect)
+    attribs["post.logout.redirect.uris"] = '+'
+
+    acs_endpoints = [x.attrib for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService') if x.attrib.get('Binding') == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']
+    if acs_endpoints:
+        attribs["saml_assertion_consumer_url_post"] = sorted(acs_endpoints, key=lambda x: int(x.get('index', '-1')))[0]['Location']
+        valid_redirect_urls.extend(x['Location'] for x in acs_endpoints)
+    acs_endpoints = [x.attrib for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService') if x.attrib.get('Binding') == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
+    if acs_endpoints:
+        attribs["saml_assertion_consumer_url_redirect"] = sorted(acs_endpoints, key=lambda x: int(x.get('index', '-1')))[0]['Location']
+        valid_redirect_urls.extend(x['Location'] for x in acs_endpoints)
+
+    name_id_formats = {
+        'urn:oasis:names:tc:SAML:2.0:nameid-format:transient': 'transient',
+        'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent': 'persistent',
+        'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress': 'email',
+        'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified': 'username',
+    }
+    name_id_format = [name_id_formats[x.text] for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}NameIDFormat')]
+    if name_id_format:
+        attribs["saml_name_id_format"] = name_id_format[0]  # keycloak can only handle one NameID Format
+        attribs["saml_force_name_id_format"] = "true"
+
+    name = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}ServiceName')
+    if name is not None and name.text:
+        payload['name'] = name.text
+
+    description = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}ServiceDescription')
+    if description is not None and description.text:
+        payload['description'] = description.text
+
+    name_formats = {
+        'urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified': 'Unspecified',
+        'urn:oasis:names:tc:SAML:2.0:attrname-format:uri': 'URI Reference',
+        'urn:oasis:names:tc:SAML:2.0:attrname-format:basic': 'Basic',
+        # 'urn:oasis:names:tc:SAML:2.0:attrname-format:emailAddress': '',  # doesn't exist in keycloak
+    }
+    protocol_mappers = []
+    for ldap_attribute in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}RequestedAttribute'):
+        if ldap_attribute.attrib.get('isRequired') != 'true' and 'FriendlyName' not in ldap_attribute.attrib:
+            continue
+        friendly_name = ldap_attribute.attrib['FriendlyName']
+        protocol_mappers.append({
+            "name": f"{friendly_name}_mapper",
+            "protocol": "saml",
+            "protocolMapper": "saml-user-attribute-mapper",
+            "consentRequired": False,
+            "config": {
+                "attribute.name": ldap_attribute.attrib['Name'],
+                "attribute.nameformat": name_formats[ldap_attribute.attrib['NameFormat']],
+                "friendly.name": friendly_name,
+                "user.attribute": friendly_name,
+            },
+        })
+    payload["protocolMappers"] = protocol_mappers
 
 
 def get_realms(opt: Namespace) -> None:
@@ -760,6 +821,8 @@ def update_client(opt: Namespace) -> None:
     session = UniventionKeycloakAdmin(opt)
     clientid = session.get_client_id(opt.clientid)
     payload = json.loads(opt.changes)
+    if opt.metadata_file:
+        update_saml_metadata_from_xml(clientid, payload, opt.metadata_file, opt.no_ssl_verify)
     session.update_client(clientid, payload)
 
 
@@ -767,18 +830,10 @@ def create_SAML_client(opt):
     print("CREATING KEYCLOAK SAML CLIENT.....")
     if opt.metadata_url:
         client_id = opt.metadata_url
-        endpoints = extract_endpoints_xml(client_id, opt.metadata_file, opt.no_ssl_verify)
     elif opt.client_id:
         client_id = opt.client_id
-        endpoints = {}
     else:
         raise NotImplementedError()
-
-    # build urls
-    single_logout_service_url_post = opt.single_logout_service_url_post or endpoints.get("logout")
-    single_logout_service_url_redirect = opt.single_logout_service_url_post or endpoints.get("logout")
-    assertion_consumer_url_post = opt.assertion_consumer_url_post or endpoints.get("acs")
-    valid_redirect_urls = [assertion_consumer_url_post]
 
     umc_uid_mapper = [{
         "name": "userid_mapper",
@@ -798,7 +853,7 @@ def create_SAML_client(opt):
         "enabled": not opt.not_enabled,
         "alwaysDisplayInConsole": False,
         "clientAuthenticatorType": "client-secret",
-        "redirectUris": opt.valid_redirect_uris or valid_redirect_urls,
+        "redirectUris": opt.valid_redirect_uris or [opt.assertion_consumer_url_post],
         "webOrigins": [],
         "description": opt.description,
         "notBefore": 0,
@@ -827,13 +882,13 @@ def create_SAML_client(opt):
             "require.pushed.authorization.requests": "false",
             "id.token.as.detached.signature": "false",
             "saml.assertion.signature": "true",
-            "saml_single_logout_service_url_post": single_logout_service_url_post,
+            "saml_single_logout_service_url_post": opt.single_logout_service_url_post,
             "saml.encrypt": "false",
-            "saml_assertion_consumer_url_post": assertion_consumer_url_post,
+            "saml_assertion_consumer_url_post": opt.assertion_consumer_url_post,
             "saml.server.signature": "true",
             "exclude.session.state.from.auth.response": "false",
             "saml.artifact.binding": "false",
-            "saml_single_logout_service_url_redirect": single_logout_service_url_redirect,
+            "saml_single_logout_service_url_redirect": opt.single_logout_service_url_post,  # FIXME: redirect != post
             "saml_force_name_id_format": "false",
             "tls.client.certificate.bound.access.tokens": "false",
             "acr.loa.map": "{}",
@@ -898,6 +953,8 @@ def create_SAML_client(opt):
     if opt.command == "saml/sp" and opt.client_signature_required:
         client_payload_saml["attributes"]["saml.client.signature"] = "true"
 
+    if opt.metadata_url:
+        update_saml_metadata_from_xml(client_id, client_payload_saml, opt.metadata_file, opt.no_ssl_verify)
     # log into default realm in case UCS realm doesn't exist yet
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
@@ -1303,6 +1360,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     update_saml_parser = operation_subparsers.add_parser("update", help="update SAML SP config")
     update_saml_parser.add_argument("clientid", help="the client ID of the SAML SP in keycloak")
     update_saml_parser.add_argument("changes", help="json representation of the client attributes to change")
+    update_saml_parser.add_argument("--metadata-file")
     update_saml_parser.set_defaults(func=update_client)
 
     # saml user attribute mapper
@@ -1393,7 +1451,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     update_oidc_parser = operation_subparsers.add_parser("update", help="update OIDC RP config")
     update_oidc_parser.add_argument("clientid", help="the client ID of the OIDC RP in keycloak")
     update_oidc_parser.add_argument("changes", help="json representation of the client attributes to change")
-    update_oidc_parser.set_defaults(func=update_client)
+    update_oidc_parser.set_defaults(func=update_client, metadata_file=None)
 
     # saml cert
     parser_saml_idp_cert = subparsers.add_parser("saml/idp/cert", help="SAML IdP certificate")
@@ -2664,7 +2722,7 @@ def init_keycloak_ucs(opt):
     # create portal saml client
     opt.metadata_url = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
     opt.metadata_file = None
-    opt.umc_uid_mapper = True
+    opt.umc_uid_mapper = True  # TODO: get rid of this, replace with reading it from the XML metadata
     opt.single_logout_service_url_post = None
     opt.assertion_consumer_url_post = None
     opt.frontchannel_logout_off = None
