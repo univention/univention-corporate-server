@@ -144,6 +144,8 @@ class NetworkAccess(object):
         users = self.ldapConnection.search(filter=filter_format('(uid=%s)', (uid, )), attr=['univentionNetworkAccess'])
         if not users:
             users = self.ldapConnection.search(filter=filter_format('(mailPrimaryAddress=%s)', (uid, )), attr=['univentionNetworkAccess'])
+        if not users:
+            users = self.ldapConnection.search(filter=filter_format('(macAddress=%s)', (uid,)), attr=['univentionNetworkAccess'])
         return self.build_access_dict(users)
 
     def get_station_network_access(self, mac_address):
@@ -225,7 +227,7 @@ class NetworkAccess(object):
         if '@' in self.username:
             result = self.ldapConnection.search(filter=filter_format('(mailPrimaryAddress=%s)', (self.username, )), attr=[pwd_attr, 'sambaAcctFlags'])
         else:
-            result = self.ldapConnection.search(filter=filter_format('(uid=%s)', (self.username, )), attr=[pwd_attr, 'sambaAcctFlags'])
+            result = self.ldapConnection.search(filter=filter_format('(|(uid=%s)(macAddress=%s))', (self.username, self.username)), attr=[pwd_attr, 'sambaAcctFlags'])
         try:
             nt_password_hash = codecs.decode(result[0][1][pwd_attr][0], 'hex')
         except (IndexError, KeyError, TypeError):
