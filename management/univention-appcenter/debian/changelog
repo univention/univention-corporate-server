@@ -1,3 +1,9 @@
+univention-appcenter (10.0.10) unstable; urgency=medium
+
+  * Bug #56124: set --ucsversionstart flag to 5.0-7
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 07 Mar 2024 23:54:54 +0100
+
 univention-appcenter (10.0.9) unstable; urgency=medium
 
   * Bug #55915: re-implement LooseVersion
