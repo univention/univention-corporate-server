@@ -698,12 +698,7 @@ udm_check_syntax_for_attribute () {
 }
 
 udm_kill_univention_cli_server () {
-	local pids pid
-	pids="$(pgrep -f "univention-cli-server")"
-	for pid in $pids; do
-		info "Killing univention-cli-server with pid $pid"
-		kill "$pid"
-	done
+	pkill --echo --full univention-cli-server
 }
 
 _UDM_HOOK_FOLDER="/usr/lib/python3/site-packages/univention/admin/hooks.d"
