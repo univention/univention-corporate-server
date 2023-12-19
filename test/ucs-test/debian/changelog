@@ -1,3 +1,9 @@
+ucs-test (10.0.20-8) unstable; urgency=low
+
+  * Fix inifity timeout handling
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Dec 2023 07:38:07 +0100
+
 ucs-test (10.0.20-7) unstable; urgency=low
 
   * More type annotations.

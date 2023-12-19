@@ -634,7 +634,7 @@ class TestCase:
                 shutdown, next_kill = next(kill_sequence)
                 next_kill += current
 
-            delays = [max(0.0, t - current) for t in (next_kill, next_read) if t > 0.0]
+            delays = [max(0.0, t - current) for t in (next_kill, next_read) if 0.0 < t < float("inf")]
             self.logger.debug("Delay=%r", delays)
             rlist, _wlist, _elist = select.select(list(channels), [], [], min(delays) if delays else None)
             self.logger.debug("rlist=%r", rlist)
