@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
-## desc: Check LDAP-replication performance
+## desc: Check UDL module performance including "replication" on Backup/Replica
 ## bugs: [31721]
 ## tags:
 ##  - basic
@@ -16,7 +16,7 @@
 ##  - ldap-utils
 ## exposure: dangerous
 
-declare -i ccount=50 gcount=50 ucount=50 max=180  # s
+declare -i CONTAINERS=50 USERS_AND_GROUP=50 MAX=180  # s
 
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
@@ -26,6 +26,7 @@ declare -i ccount=50 gcount=50 ucount=50 max=180  # s
 . "$TESTLIBPATH/user.sh" || exit 137
 # shellcheck source=../../lib/group.sh
 . "$TESTLIBPATH/group.sh" || exit 137
+CONTROLMODE=false
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 # shellcheck source=../../lib/maildomain.sh
@@ -33,13 +34,14 @@ declare -i ccount=50 gcount=50 ucount=50 max=180  # s
 # shellcheck source=../../lib/undo.sh
 . "$TESTLIBPATH/undo.sh" || exit 137
 
+
 set -o errexit #"script bail out when it detects an error (a non-zero exit code).
 set -o nounset #If expansion is attempted on an unset variable or parameter --> prints error
 
 # Increase the timeout if dovecot is installed. In this case the user
 # creation takes more time (Bug #39102)
 checkpkg univention-mail-dovecot &&
-	max+=180  # s
+	MAX+=180  # s
 
 info "Stopping replication..."
 wait_for_replication ||
@@ -48,64 +50,47 @@ systemctl stop univention-directory-listener
 undo wait_for_replication # wait at end
 undo systemctl start univention-directory-listener
 
+setup () {
+	local DEBUGLEVEL=1 base i
+	declare -r unique="${0##*/}_${$}_${RANDOM}"
+	section "Creating environment '$unique' for $CONTAINERS containers and $USERS_AND_GROUP users/groups"
 
-declare -r unique="${0##*/}_${$}_${RANDOM}"
-section "Creating environment '$unique' for $ccount containers, $gcount groups, $ucount users"
+	create_mail_domain "$domainname" &&
+		undo delete_mail_domain "$domainname"
 
-create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
+	base=$(container_create "$unique")
+	undo container_remove "$base"
 
-containers=()
-for ((c=0; c<ccount; c++))
-do
-	containername=$(random_mailaddress)
-	# shellcheck disable=SC2015
-	container_dn=$(container_create "$containername" "$unique" "$ldap_base") &&
-		undo container_remove "$container_dn" ||
-		fail_fast 1 "Failed to create container $containername"
-	containers+=("$containername")
-done
+	for ((i=0; i<CONTAINERS; i++))
+	do
+		container_create "$(random_mailaddress)" "$unique" "$base" >/dev/null
+	done
 
-groups=()
-for ((g=0; g<gcount; g++))
-do
-	groupname="$(group_randomname)"
-	# shellcheck disable=SC2015
-	group_create "$groupname" --set description="$unique" &&
-		undo group_remove "$groupname" ||
-		fail_fast 1 "Failed to create group $groupname"
-	groups+=("$groupname")
-done
-
-users=()
-for ((u=0; u<ucount; u++))
-do
-	username="$(user_randomname)"
-	groupdn="cn=${groups[u % ${#groups[@]}]},cn=groups,$ldap_base"
-	# shellcheck disable=SC2015
-	user_create "$username" --set description="$unique" \
-		--append groups="$groupdn" &&
-		undo user_remove "$username" ||
-		fail_fast 1 "Failed to create user $username"
-	users+=("$username")
-done
-
+	for ((i=0; i<USERS_AND_GROUP; i++))
+	do
+		groupdn=$(group_create "$(group_randomname)" --position "$base" --set description="$unique")
+		user_create "$(user_randomname)" --position "$base" --set description="$unique" --append groups="$groupdn" >/dev/null
+	done
+}
+setup
 
 section "Restarting replication..."
 
 starttime=$(date +%s)
-info "Start: $(printf "%'d" "$starttime") s"
+debug "Start: $(printf "%'d" "$starttime") s"
 
 systemctl start univention-directory-listener
 wait_for_replication ||
 	fail_test 1 "Replication timed out"
 
 stopptime=$(date +%s)
-info "Stop: $(printf "%'d" "$stopptime") s"
+debug "Stop: $(printf "%'d" "$stopptime") s"
 
 delta=$((stopptime - starttime))
 info "Delta: $(printf "%'d" $delta) s"
+echo "${0##*/};$delta" >"${0##*/}.csv"
 
-[ "$delta" -ge "$max" ] &&
-	fail_test 1 "Replication took $(printf "%'d" "$delta") > $(printf "%'d" "$max") s"
+[ "$delta" -ge "$MAX" ] &&
+	fail_test 1 "Replication took $(printf "%'d" "$delta") > $(printf "%'d" "$MAX") s"
 
 exit "$RETVAL"
