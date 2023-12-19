@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Include CNames as SANs in certificates
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
@@ -13,28 +13,24 @@ from univention.testing import strings, utils
 
 def test_san():
     with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
-        domainname = ucr.get('domainname')
-
         membername = strings.random_string()
         udm.create_object(
             'computers/memberserver',
-            position='cn=memberserver,cn=computers,%s' % ucr.get('ldap/base'),
+            position='cn=memberserver,cn=computers,%(ldap/base)s' % ucr,
             set={
                 'name': membername,
                 'password': 'univention',
-                'network': 'cn=default,cn=networks,%s' % ucr.get('ldap/base'),
-                'dnsEntryZoneAlias': '{0} zoneName={0},cn=dns,{1} www'.format(
-                            domainname,
-                            ucr.get('ldap/base'),
-                ),
+                'network': 'cn=default,cn=networks,%(ldap/base)s' % ucr,
+                'dnsEntryZoneAlias': '%(domainname)s zoneName=%(domainname)s,cn=dns,%(ldap/base)s www' % ucr,
             },
         )
 
         x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % membername)
         san = x509.get_ext('subjectAltName').get_value()
 
-        if 'www.' + domainname not in san:
-            utils.fail('SANs in cert not correct in default network')
+        expected = "www.%(domainname)s" % ucr
+        if expected not in san:
+            utils.fail('Missing SAN %r in certificate of default network: %r' % (expected, san))
 
 
 def test_san_different_network():
@@ -43,7 +39,7 @@ def test_san_different_network():
 
         forwardzonedn = udm.create_object(
             'dns/forward_zone',
-            position='cn=dns,%s' % ucr.get('ldap/base'),
+            position='cn=dns,%(ldap/base)s' % ucr,
             set={
                 'nameserver': ucr.get('hostname'),
                 'zone': zonename,
@@ -53,11 +49,11 @@ def test_san_different_network():
         membername = strings.random_string()
         udm.create_object(
             'computers/memberserver',
-            position='cn=memberserver,cn=computers,%s' % ucr.get('ldap/base'),
+            position='cn=memberserver,cn=computers,%(ldap/base)s' % ucr,
             set={
                 'name': membername,
                 'password': 'univention',
-                'network': 'cn=default,cn=networks,%s' % ucr.get('ldap/base'),
+                'network': 'cn=default,cn=networks,%(ldap/base)s' % ucr,
                 'dnsEntryZoneAlias': '%s %s www' % (ucr.get('domainname'), forwardzonedn),
             },
         )
@@ -65,14 +61,6 @@ def test_san_different_network():
         x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % membername)
         san = x509.get_ext('subjectAltName').get_value()
 
-        if 'www.' + zonename not in san:
-            utils.fail('SANs in cert not correct in non-default network')
-
-
-def main():
-    test_san()
-    test_san_different_network()
-
-
-if __name__ == '__main__':
-    main()
+        expected = "www.%s" % (zonename,)
+        if expected not in san:
+            utils.fail('Missing SAN %r in certificate of non-default network: %r' % (expected, san))
