@@ -53,41 +53,41 @@ if ! nc -z "$ldap_master" "${ldap_master_port:-7389}"; then
 fi
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 4.4-1 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--schema /usr/lib/univention-portal/schema/univention-portal.schema \
 	--acl /usr/lib/univention-portal/acl/62univention-portal.acl \
 	--udm_syntax /usr/lib/univention-portal/syntax/univention-portal.py || die
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 5.0-0 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--udm_module /usr/lib/univention-portal/udm/portal.py \
 	--messagecatalog /usr/lib/univention-portal/udm/de.mo \
 	--umcregistration /usr/lib/univention-portal/umc/univention-portal.xml || die
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 5.0-0 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--udm_module /usr/lib/univention-portal/udm/category.py || die
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 5.0-0 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--udm_module /usr/lib/univention-portal/udm/entry.py || die
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 5.0-0 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--udm_module /usr/lib/univention-portal/udm/folder.py || die
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 5.0-0 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--udm_module /usr/lib/univention-portal/udm/announcement.py || die
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 5.0-0 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--udm_module /usr/lib/univention-portal/udm/all.py || die
 
