@@ -101,7 +101,7 @@ Then execute the following command to create an LDAP object for the LDAP ACLs:
      --set filename=62my-portal-acl \
      --set data="$(bzip2 -c /opt/62my-portal-acl.acl | base64)" \
      --set package="62my-portal-acl" \
-     --set ucsversionstart=4.4-0 \
+     --set ucsversionstart=5.0-6 \
      --set ucsversionend=5.99-0 \
      --set packageversion=1
 
