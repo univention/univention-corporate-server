@@ -73,8 +73,7 @@ repos:
     rev: '5.0.4'
     hooks:
     - id: flake8
-      exclude: "^oidc/python-keycloak/\
-                |^services/univention-ldb-modules/buildtools/\
+      exclude: "^services/univention-ldb-modules/buildtools/\
                 |^services/univention-ldb-modules/third_party/\
                 |^packaging/ucslint/testframework/\
                "
@@ -93,8 +92,7 @@ repos:
     rev: 'v0.1.4'
     hooks:
       - id: ruff
-        exclude: "^oidc/python-keycloak/\
-                  |^services/univention-ldb-modules/buildtools/\
+        exclude: "^services/univention-ldb-modules/buildtools/\
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
@@ -102,8 +100,7 @@ repos:
         alias: "ruff-fix"
         stages: [ manual ]
         args: ["--fix", "--unsafe-fixes"]
-        exclude: "^oidc/python-keycloak/\
-                  |^services/univention-ldb-modules/buildtools/\
+        exclude: "^services/univention-ldb-modules/buildtools/\
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
@@ -111,23 +108,20 @@ repos:
         alias: "ruff-statistics"
         stages: [ manual ]
         args: ["--statistics"]
-        exclude: "^oidc/python-keycloak/\
-                  |^services/univention-ldb-modules/buildtools/\
+        exclude: "^services/univention-ldb-modules/buildtools/\
                   |^packaging/ucslint/testframework/\
                  "
       - id: ruff-format
         alias: "ruff-format"
         stages: [ manual ]
-        exclude: "^oidc/python-keycloak/\
-                  |^services/univention-ldb-modules/buildtools/\
+        exclude: "^services/univention-ldb-modules/buildtools/\
                   |^packaging/ucslint/testframework/\
                  "
       - id: ruff-format
         alias: "ruff-format-check"
         stages: [ manual ]
         args: ["--check"]
-        exclude: "^oidc/python-keycloak/\
-                  |^services/univention-ldb-modules/buildtools/\
+        exclude: "^services/univention-ldb-modules/buildtools/\
                   |^packaging/ucslint/testframework/\
                  "
   - repo: https://github.com/pycqa/isort
@@ -135,8 +129,7 @@ repos:
     hooks:
       - id: isort
         entry: isort -c
-        exclude: "^oidc/python-keycloak/\
-                  |^services/univention-ldb-modules/buildtools/\
+        exclude: "^services/univention-ldb-modules/buildtools/\
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
@@ -144,8 +137,7 @@ repos:
         alias: "isort-fix"
         stages: [ manual ]
         entry: isort
-        exclude: "^oidc/python-keycloak/\
-                  |^services/univention-ldb-modules/buildtools/\
+        exclude: "^services/univention-ldb-modules/buildtools/\
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
@@ -154,8 +146,7 @@ repos:
     hooks:
     -   id: autopep8
         args: ["-d"]
-        exclude: "^oidc/python-keycloak/\
-                  |^services/univention-ldb-modules/buildtools/\
+        exclude: "^services/univention-ldb-modules/buildtools/\
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                   "
@@ -163,8 +154,7 @@ repos:
         alias: "autopep8-fix"
         stages: [ manual ]
         args: ["-i"]
-        exclude: "^oidc/python-keycloak/\
-                  |^services/univention-ldb-modules/buildtools/\
+        exclude: "^services/univention-ldb-modules/buildtools/\
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                   "
