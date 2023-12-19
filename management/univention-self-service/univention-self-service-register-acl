@@ -53,7 +53,7 @@ if [ "$ACTION" = "register" ]; then
 	ucs_registerLDAPExtension \
 	--packagename univention-self-service \
 	--packageversion "$ACL_VERSION" \
-	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+	--ucsversionstart "5.0-6" --ucsversionend "5.99-0" \
 	--acl "$ACL_FILENAME" 2>&1
 else
 	ACL_BASENAME="$(basename $ACL_FILENAME)"

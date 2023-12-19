@@ -51,23 +51,23 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 	--set description="Monitoring objects" || die "monitoring container"
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 4.4-1 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--schema /usr/lib/univention-monitoring-client/schema/univention-monitoring.schema \
 	--acl /usr/lib/univention-monitoring-client/schema/62univention-monitoring.acl || die "LDAP Schema/ACL"
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 5.0-0 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--udm_syntax /usr/lib/univention-monitoring-client/udm/syntax/monitoring.py || die "UDM Syntax"
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 5.0-0 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--udm_hook /usr/lib/univention-monitoring-client/udm/hooks/monitoring.py || die "UDM hooks"
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart 5.0-0 \
+	--ucsversionstart 5.0-6 \
 	--ucsversionend 5.99-0 \
 	--udm_module /usr/lib/univention-monitoring-client/udm/alert.py \
 	--messagecatalog /usr/lib/univention-monitoring-client/udm/de.mo \

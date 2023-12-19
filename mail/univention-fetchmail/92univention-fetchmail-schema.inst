@@ -46,15 +46,15 @@ eval "$(univention-config-registry shell)"
 
 
 ucs_registerLDAPExtension "$@" \
-    --ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+    --ucsversionstart "5.0-6" --ucsversionend "5.99-0" \
     --schema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema \
     --acl /usr/share/univention-fetchmail-schema/58univention-fetchmail-schema.acl || die
 
-ucs_registerLDAPExtension "$@" --ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+ucs_registerLDAPExtension "$@" --ucsversionstart "5.0-6" --ucsversionend "5.99-0" \
     --udm_syntax /usr/share/univention-fetchmail/syntax.d/fetchmail.py \
     --udm_syntax_messagecatalog  /usr/share/univention-fetchmail/de.mo || die
 
-ucs_registerLDAPExtension "$@" --ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+ucs_registerLDAPExtension "$@" --ucsversionstart "5.0-6" --ucsversionend "5.99-0" \
     --udm_hook /usr/share/univention-fetchmail/hooks.d/fetchmail.py || die
 
 univention-directory-manager container/cn create "$@" --ignore_exists \

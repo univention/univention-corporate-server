@@ -50,7 +50,7 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=univention,$ldap_base" || die
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+	--ucsversionstart "5.0-6" --ucsversionend "5.99-0" \
 	--schema /usr/share/univention-appcenter/univention-app.schema \
 	--acl /usr/share/univention-appcenter/66univention-appcenter_app.acl \
 	--udm_module /usr/share/univention-appcenter/app.py \

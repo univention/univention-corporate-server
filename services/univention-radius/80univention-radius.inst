@@ -54,7 +54,7 @@ openssl dhparam -out /etc/freeradius/ssl/dh 1024
 chmod 444 /etc/freeradius/ssl/dh
 
 ucs_registerLDAPExtension "$@" \
-	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+	--ucsversionstart "5.0-6" --ucsversionend "5.99-0" \
 	--schema /usr/share/univention-radius/networkaccess.schema \
 	--acl /usr/share/univention-radius/59univention-radius.acl \
 	--acl /usr/share/univention-radius/66univention-radius.acl || exit "$?"
