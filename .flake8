@@ -1,6 +1,5 @@
 [flake8]
 exclude =
-	oidc/python-keycloak/,
 	services/univention-ldb-modules/buildtools/,
 max-complexity = 139
 ignore =

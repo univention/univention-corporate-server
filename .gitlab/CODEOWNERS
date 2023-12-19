@@ -92,7 +92,7 @@
 # /monitoring/univention-nagios-servicechecks/
 # /monitoring/univention-nagios-smart/
 
-/oidc/ @arequate
+/oidc/ @arequate @fbest @jbremer
 
 # /packaging/
 /packaging/ucslint/ @phahn @fbest @sschwardt
