@@ -35,7 +35,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=3
+VERSION=4
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
