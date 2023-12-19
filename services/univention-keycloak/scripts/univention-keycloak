@@ -50,8 +50,9 @@ from urllib.parse import quote, urljoin
 
 import requests
 from defusedxml import ElementTree
-from keycloak import URL_ADMIN_COMPONENTS, URL_ADMIN_REALM, KeycloakAdmin
+from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError, raise_error_from_response
+from keycloak.urls_patterns import URL_ADMIN_COMPONENTS, URL_ADMIN_REALM
 from ldap.dn import explode_rdn
 
 
