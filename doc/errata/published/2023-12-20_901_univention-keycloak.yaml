@@ -17,3 +17,6 @@ desc: |
    in keycloak that authenticate users on the default IDP) have
    been added to `univention-keycloak`.
 bug: [56888, 56884]
+erratum: 901
+announced: 2023-12-20
+support: core
