@@ -6,16 +6,10 @@ src: xorg-server
 fix: 2:1.19.2-1+deb9u17
 desc: |
  This update addresses the following issues:
- 2:1.19.2-1+deb9u16 (Mon, 11 Dec 2023 19:03:02 +0100)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-6377 Xi: allocate enough XkbActions for our buttons
- * CVE-2023-6478 xorg-server: Out-of-bounds memory read in
-   RRChangeOutputProperty and RRChangeProviderProperty
- 2:1.19.2-1+deb9u17 (Sun, 17 Dec 2023 13:03:02 +0100)
- * CVE-2023-6377 Sync "Xi: allocate enough XkbActions for our buttons" The
-   original upstream patch applied for CVE-2023-6377 was incomplete and still
-   allows OOM access. This update syncs the patch with the upstream applied
-   patch.
+ * CVE-2023-6377: Out-of-bounds memory reads/writes in xkb
+   button actions.
+ * CVE-2023-6478: Out-of-bounds memory read in
+   RRChangeOutputProperty and RRChangeProviderProperty.
 bug: [56924]
 cve:
 - CVE-2023-6377
