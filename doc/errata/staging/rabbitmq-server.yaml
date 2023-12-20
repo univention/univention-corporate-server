@@ -6,9 +6,7 @@ src: rabbitmq-server
 fix: 3.6.6+really3.8.9-0+deb9u2
 desc: |
  This update addresses the following issue:
- 3.6.6+really3.8.9-0+deb9u2 (Sat, 09 Dec 2023 12:19:30 +0100)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-46118: RabbitMQ is a multi-protocol messaging and streaming
+ * CVE-2023-46118: RabbitMQ is a multi-protocol messaging and streaming
    broker. The HTTP API did not enforce an HTTP request body limit, making it
    vulnerable for denial of service (DoS) attacks with very large messages by
    an authenticated user with sufficient credentials.
