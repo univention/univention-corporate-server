@@ -13,3 +13,6 @@ desc: |
 bug: [56922]
 cve:
 - CVE-2023-46118
+erratum: 1528
+announced: 2023-12-20
+support: lts
