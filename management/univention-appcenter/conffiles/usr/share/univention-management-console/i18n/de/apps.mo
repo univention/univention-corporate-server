@@ -36,8 +36,8 @@ for app in apps:
     for attr in ('name', 'description'):
         app_en = app.get_app_cache_obj().copy(locale='en').find_by_component_id(app.component_id)
         app_de = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
-        msgid = getattr(app_en, attr)
-        msgstr = getattr(app_de, attr)
+        msgid = getattr(app_en, attr, None)
+        msgstr = getattr(app_de, attr, None)
         if not msgid:
             continue
         entry = POEntry(
