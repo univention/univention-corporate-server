@@ -10,3 +10,6 @@ desc: |
    the commands it uses is `top`. The parameter `c` has been added to show the
    complete process command line in the output of `top`.
 bug: [50567]
+erratum: 902
+announced: 2023-12-20
+support: core
