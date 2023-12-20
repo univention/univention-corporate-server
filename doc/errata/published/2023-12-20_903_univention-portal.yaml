@@ -10,3 +10,6 @@ desc: |
    displayed in English when they were accessed directly via URL without
    navigating through the portal.
 bug: [56853]
+erratum: 903
+announced: 2023-12-20
+support: core
