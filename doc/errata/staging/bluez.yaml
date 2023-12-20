@@ -6,8 +6,6 @@ src: bluez
 fix: 5.50-1.2~deb10u4
 desc: |
  This update addresses the following issue:
- 5.50-1.2~deb10u4 (Thu, 14 Dec 2023 14:28:50 +0000)
- * Non-maintainer upload by the Debian LTS Team.
  * CVE-2023-45866: Fix an issue where Bluetooth Human Interface Devices (HID)
    hosts in BlueZ may have permitted an unauthenticated peripheral to initiate
    and establish encrypted connections and accept keyboard reports,
