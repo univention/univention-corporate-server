@@ -31,11 +31,12 @@ ucr set \
 	auth/faillog/lock_global=no
 
 tdir=$(mktemp -d)
-trap "rm -rf '$tdir' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
+trap 'rm -rf "$tdir" ; user_remove "$NAME" ; ucr_restore ; invoke-rc.d ssh restart' EXIT
 
 posix_login () {
 	local name pass lstchg min max warn inact expire flag
-	IFS=: read name pass lstchg min max warn inact expire flag < <(getent shadow "$NAME")
+	# shellcheck disable=SC2034
+	IFS=: read -r name pass lstchg min max warn inact expire flag < <(getent shadow "$NAME")
 	[ -z "$expire" ] || [ "$expire" -gt 1 ]
 }
 posix_login () {
@@ -80,7 +81,7 @@ finally:
 }
 
 smb_login () {
-	smbclient -g -L "$hostname" -U "${NAME}%$(<$1)" | grep "^Disk|$NAME|"
+	smbclient -g -L "${hostname:?}" -U "${NAME}%$(<"$1")" | grep "^Disk|$NAME|"
 }
 
 krb_login () {
@@ -88,10 +89,11 @@ krb_login () {
 }
 
 user_create "$NAME" \
-	--set password="$(<$tests_domainadmin_pwdfile)" \
+	--set password="$(<"$tests_domainadmin_pwdfile")" \
 	--set primaryGroup="$(get_domain_admins_dn)"
 
-while read udm windows kerberos posix comment
+# shellcheck disable=SC2034
+while read -r udm windows kerberos posix comment
 do
 	[[ "$udm" = "#"* ]] && continue
 	[ -z "${udm//[	 ]/}" ] && continue
@@ -132,5 +134,5 @@ done <<EOF
 1	1	1	1
 EOF
 
-exit $RETVAL
+exit "$RETVAL"
 # vim: set ft=sh :

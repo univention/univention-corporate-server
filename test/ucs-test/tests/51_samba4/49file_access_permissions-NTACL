@@ -40,24 +40,18 @@ wait_for_replication_and_postrun;
 check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
 ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$tests_domainadmin_account" uid | VAL uid)"
 
-if ! user_create "$username"; then
+user_create "$username" ||
 	fail_fast 1 "User could not be created"
-fi
 
 
 ##----create Share
 SHARE_POSITION="cn=shares,$ldap_base"
-SHARE_DIRECTORYMODE=0777
+SHARE_UNIX_DIRECTORYMODE=0777
 SHARE_HOST="$hostname.$domainname"
-if ! share_create "$sharename" "/$sharename"; then
+share_create "$sharename" "/$sharename" ||
 	fail_fast 1 "could not create share"
-fi
 sleep 10	## wait a bit for listener module postrun
-
-
-
 wait_for_replication
-# force_drs_replication
 wait_for_drs_replication "(sAMAccountName=$username)"
 
 ## wait for samba share export
@@ -77,44 +71,30 @@ done
 
 echo "----create a folder as Administrator, so that the testuser has no rights to write in it"
 output="$(smbclient -U "$ADMINISTRATOR_NAME%$tests_domainadmin_pwd" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
-if [ -n "$output" ] && echo "$output" | grep -q "^NT_STATUS_"; then
-	echo "$output"
-	fail_fast 1 "Failed to make a folder as Administrator even though it should work."
-fi
+echo "$output" | grep -q "^NT_STATUS_" &&
+	fail_fast 1 "Failed to make a folder as Administrator even though it should work: $output"
 
 echo "----attempt to create a folder without permission"
 output=$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder2" 2>&1)
-if ! echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"; then
-	if [ -n "$output" ]; then
-		echo "$output"
-	fi
-	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED"
-fi
+echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED" ||
+	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED: $output"
 
 ## get objectSID
 sid="$(ldbsearch -H ldap://localhost -U"$username%$first_password" "cn=$username" | VAL objectSid)"
-if [ -z "$sid" ]; then
+[ -n "$sid" ] ||
 	fail_fast 1 "Could not retrieve objectSid of samba user account '$username'"
-fi
 
 ## get and set NTACL
 echo "----get NTACL"
 NTACL_old="$(samba-tool ntacl get "/$sharename/folder" --as-sddl 2>/dev/null)"
-if ! echo "$NTACL_old" | grep -q "^O:"; then
+echo "$NTACL_old" | grep -q "^O:" ||
 	fail_test 1 "Could not retrieve NTACL"
-fi
 echo "----set NTACL"
-if ! samba-tool ntacl set "$NTACL_old""(A;;CC;;;$sid)" "/$sharename/folder"; then
+samba-tool ntacl set "$NTACL_old""(A;;CC;;;$sid)" "/$sharename/folder" ||
 	fail_test 1 "Failed to set NTACL"
-fi
 
 echo "----attempt to create a folder with permission"
-if ! output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder3")"
-then
-	if [ -n "$output" ]; then
-		echo "$output"
-	fi
-	fail_test 1 "Failed to make a folder even though it should work."
-fi
+output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder3")" ||
+	fail_test 1 "Failed to make a folder even though it should work: $output"
 
-exit $RETVAL
+exit "$RETVAL"

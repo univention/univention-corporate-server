@@ -16,17 +16,18 @@
 
 . /usr/share/univention-lib/ucr.sh
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
+[ -n "${connector_s4_ldap_host:-}" ] || exit 137
 connector_running_on_this_host || exit 137
 
+# shellcheck disable=SC2034
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
 eval "$(ucr shell)"
-if [ -n "$connector_s4_mapping_sid_to_ucs" -a -n "$connector_s4_mapping_sid_to_s4" ]; then
-	trap "ucr set connector/s4/mapping/sid_to_ucs=$connector_s4_mapping_sid_to_ucs connector/s4/mapping/sid_to_s4=$connector_s4_mapping_sid_to_s4; invoke-rc.d univention-s4-connector restart" INT TERM EXIT
+if [ -n "${connector_s4_mapping_sid_to_ucs:-}" ] && [ -n "${connector_s4_mapping_sid_to_s4:-}" ]; then
+	trap 'ucr set connector/s4/mapping/sid_to_ucs="${connector_s4_mapping_sid_to_ucs:-}" connector/s4/mapping/sid_to_s4="${connector_s4_mapping_sid_to_s4:-}"; invoke-rc.d univention-s4-connector restart' INT TERM EXIT
 else
-	trap "ucr unset connector/s4/mapping/sid_to_ucs connector/s4/mapping/sid_to_s4; invoke-rc.d univention-s4-connector restart" INT TERM EXIT
+	trap 'ucr unset connector/s4/mapping/sid_to_ucs connector/s4/mapping/sid_to_s4; invoke-rc.d univention-s4-connector restart' INT TERM EXIT
 fi
 
 rid=$(random_chars 6 123456789)
@@ -46,17 +47,16 @@ domain_sid="$(univention-s4search -s base objectSid | VAL objectSid)"
 is_sid_equal ()
 {
 	s4_sid=$(univention-s4search -b "$AD_DN" -s base objectSid | VAL objectSid)
-	echo $s4_sid
+	echo "$s4_sid"
 	ldap_sid=$(univention-ldapsearch -b "$LDAP_DN" -s base sambaSID | VAL sambaSID)
-	echo $ldap_sid
+	echo "$ldap_sid"
 	[ "$s4_sid" = "$ldap_sid" ]
-	return $?
 }
 
 set_new_rid_in_ldap ()
 {
 	next_rid
-	udm_modify "groups/group" "" "" "" "" --set sambaRID=$rid || fail_test 110
+	udm_modify "groups/group" "" "" "" "" --set "sambaRID=$rid" || fail_test 110
 	ad_wait_for_synchronization; fail_bool 0 110
 }
 

@@ -21,9 +21,8 @@
 # shellcheck source=../../lib/undo.sh
 . "$TESTLIBPATH/undo.sh" || exit 137
 
-if [ "$ldap_database_type" != 'mdb' ]; then
+[ "${ldap_database_type:-}" = 'mdb' ] ||
 	fail_fast 138 "Ppolicy with UDM lockout only works with mdb backend"
-fi
 
 restart_slapd_if_it_hangs() {
 	echo -n "Check if slapd is still responsive: " >&2
@@ -52,9 +51,8 @@ restart_slapd_if_it_hangs() {
 		fail=1
 		systemctl start slapd
 	fi
-	if [ "$fail" -eq 1 ]; then
+	[ "$fail" -eq 0 ] ||
 		fail_fast 1 "$msg"
-	fi
 	echo "OK" >&2
 }
 

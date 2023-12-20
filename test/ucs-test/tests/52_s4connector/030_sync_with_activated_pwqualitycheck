@@ -15,7 +15,7 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
+[ -n "${connector_s4_ldap_host:-}" ] || exit 137
 connector_running_on_this_host || exit 137
 
 eval "$(ucr shell)"
@@ -26,8 +26,8 @@ policy_dn="cn=default-settings,cn=pwhistory,cn=users,cn=policies,$ldap_base"
 old_value="$(udm-test policies/pwhistory list --filter cn=default-settings | sed -ne 's|.*pwQualityCheck: ||p')"
 udm-test policies/pwhistory modify --dn "$policy_dn" --set pwQualityCheck=TRUE
 
-trap 'test "$old_value" = None && \
-	udm-test policies/pwhistory modify --dn "$policy_dn" --set pwQualityCheck="" || \
+trap 'test "$old_value" = None &&
+	udm-test policies/pwhistory modify --dn "$policy_dn" --set pwQualityCheck="" ||
 	udm-test policies/pwhistory modify --dn "$policy_dn" --set pwQualityCheck="$old_value"' INT TERM EXIT
 
 # Create users
@@ -51,4 +51,4 @@ done
 
 ad_wait_for_synchronization; fail_bool 0 110
 
-exit $RETVAL
+exit "$RETVAL"

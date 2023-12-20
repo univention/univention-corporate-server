@@ -36,8 +36,8 @@ sleep 3
 new_nagios_pid="$(nagiostats | VAL1 'Nagios PID')"
 
 # make sure old pid is no longer running
-test -d /proc/$nagios_pid && exit 111
-test ! -d /proc/$new_nagios_pid && exit 111
+[ -d "/proc/$nagios_pid" ] && exit 111
+[ ! -d "/proc/$new_nagios_pid" ] && exit 111
 
 exit 101
 # vim:set filetype=sh ts=4:

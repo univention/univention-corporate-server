@@ -17,7 +17,8 @@
 
 eval "$(ucr shell)"
 
-univention-s4search -b "CN=Configuration,$ldap_base" objectclass=foreignSecurityPrincipal cn | VAL cn | while read cn; do
+univention-s4search -b "CN=Configuration,$ldap_base" objectclass=foreignSecurityPrincipal cn | VAL cn | while read -r cn
+do
 	sid="$(univention-s4search -b "CN=Configuration,$ldap_base" "(&(objectclass=foreignSecurityPrincipal)(cn=$cn))" objectSid | VAL objectSid)"
 
 	ucs_dn="$(univention-ldapsearch "(&(cn=$cn)(sambaSID=$sid))" 1.1 | dn)"

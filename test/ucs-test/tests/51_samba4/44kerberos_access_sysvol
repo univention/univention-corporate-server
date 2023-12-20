@@ -31,9 +31,8 @@ POSIX="true"
 username="$(user_randomname)"
 password=univention
 trap 'user_remove "$username"' INT TERM EXIT
-if ! user_create "$username"; then
+user_create "$username" ||
 	fail_fast 1 "User could not be created"
-fi
 
 
 wait_for_replication
@@ -114,4 +113,4 @@ do
 	sleep 1
 done
 
-exit $RETVAL
+exit "$RETVAL"

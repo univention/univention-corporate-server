@@ -157,7 +157,7 @@ user_rename () { # Rename a user # Example: renameuser $NAMEOLD $NAMENEW
 }
 
 user_set_attr () {
-	local name="${1:?name}" attr="${2:?udmAttribute}" ldap="${3:?ldapAttribute}" value="${4?value}"
+	local name="${1:?name}" attr="${2:?udmAttribute}" ldap="${3?ldapAttribute}" value="${4?value}"
 
 	local dn
 	dn=$(user_dn "$name")

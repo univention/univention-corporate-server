@@ -43,7 +43,7 @@ __HERE__
 
 /etc/init.d/samba reload
 
-smbclient -U $ADMINISTRATOR_NAME%$tests_domainadmin_pwd //$hostname/"$sharename" -c ls || fail_test 1
+smbclient -U "$ADMINISTRATOR_NAME%$tests_domainadmin_pwd" "//${hostname:?}/$sharename" -c ls || fail_test 1
 
 ucr commit /etc/samba/smb.conf
 

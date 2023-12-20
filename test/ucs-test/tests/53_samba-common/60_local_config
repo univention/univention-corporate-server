@@ -21,13 +21,11 @@ eval "$(ucr shell)"
 
 value="$(random_string)"
 
-ucr set samba/global/options/"netbios aliases"="$value"
+ucr set "samba/global/options/netbios aliases=$value"
 trap 'ucr unset samba/global/options/"netbios aliases"' INT TERM EXIT
 
 result="$(echo ""  | testparm -vv 2>&1 | sed -ne 's|[ \t]*netbios aliases = ||p')"
-if [ "$result" != "$value" ]; then
-	echo "netbios aliases is set to $result; expected $value"
-	fail_test 1
-fi
+[ "$result" = "$value" ] ||
+	fail_test 1 "netbios aliases is set to $result; expected $value"
 
-exit $RETVAL
+exit "$RETVAL"

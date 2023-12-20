@@ -16,9 +16,8 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
+[ -n "${connector_s4_ldap_host:-}" ] || exit 137
 connector_running_on_this_host || exit 137
 
 SYNCMODE="$(ad_get_sync_mode)"
@@ -33,18 +32,16 @@ invoke-rc.d univention-s4-connector start
 groupname1="a$(random_chars)ö1"
 groupname2="a$(random_chars)ä2"
 
-udm-test groups/group create --position cn=groups,$ldap_base  \
-		--set name=$groupname1
+udm-test groups/group create --position "cn=groups,$ldap_base" --set name="$groupname1"
 
-udm-test groups/group create --position cn=groups,$ldap_base \
-		--set name=$groupname2
+udm-test groups/group create --position "cn=groups,$ldap_base" --set name="$groupname2"
 
 # read DN from LDAP to get the exact case
 grp1_dn=$(univention-ldapsearch "cn=$groupname1" 1.1 | dn1)
 grp2_dn=$(univention-ldapsearch "cn=$groupname2" 1.1 | dn1)
 
 # Use ldapmodify, see Bug #33656
-ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -H "ldap://$ldap_master:$ldap_master_port" <<EOF
+ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret -H "ldap://${ldap_master:?}:${ldap_master_port:?}" <<EOF
 dn: $grp1_dn
 changetype: modify
 add: uniqueMember
@@ -55,13 +52,13 @@ ad_wait_for_synchronization; fail_bool 0 110
 
 AD_GROUP_DN1="CN=$groupname1,CN=Groups,$(ad_get_base)"
 AD_GROUP_DN2="CN=$groupname2,CN=Groups,$(ad_get_base)"
-univention-s4search cn=$groupname1
-univention-s4search cn=$groupname2
+univention-s4search "cn=$groupname1"
+univention-s4search "cn=$groupname2"
 
 ad_verify_multi_value_attribute_contains "$AD_GROUP_DN1" "member" "$AD_GROUP_DN2"; fail_bool 0 110
 
-udm-test groups/group remove --dn cn=$groupname1,cn=groups,$ldap_base
-udm-test groups/group remove --dn cn=$groupname2,cn=groups,$ldap_base
+udm-test groups/group remove --dn "cn=$groupname1,cn=groups,$ldap_base"
+udm-test groups/group remove --dn "cn=$groupname2,cn=groups,$ldap_base"
 
 ad_wait_for_synchronization; fail_bool 0 110
 

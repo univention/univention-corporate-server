@@ -25,20 +25,16 @@
 # shellcheck source=../../lib/samba.sh
 . "$TESTLIBPATH/samba.sh" || exit 137
 
-get_description ()
-{
-	containername="$1"
-
+get_description () {
+	local containername="$1"
 	univention-ldapsearch -s base -b "cn=$containername,cn=groups,$ldap_base" -LLL description | VAL1 description
 }
 
-set_description ()
-{
-	containername="$1"
-	description="$2"
+set_description () {
+	local containername="$1" description="$2"
 
-	update_pwd="$(cat /etc/ldap/rootpw.conf  | sed -e 's|^rootpw "||;s|"$||')"
-	ldapmodify -x -H "ldap://$hostname.$domainname:$ldap_server_port" -D "cn=update,$ldap_base" -w "$update_pwd" <<EOF
+	update_pwd="$(sed -e 's|^rootpw "||;s|"$||' /etc/ldap/rootpw.conf)"
+	ldapmodify -x -H "ldap://$hostname.$domainname:${ldap_server_port:?}" -D "cn=update,$ldap_base" -w "$update_pwd" <<EOF
 dn: cn=$containername,cn=groups,$ldap_base
 changetype: modify
 replace: description
@@ -48,17 +44,14 @@ EOF
 	wait_for_replication
 }
 
-call_replicate_one ()
-{
-	containername="$1"
-	univention-ssh "$(ucr get tests/root/pwdfile)" root@$(ucr get ldap/master) /usr/sbin/univention-replicate-one --dn "cn=$containername,cn=groups,$ldap_base"
+call_replicate_one () {
+	local containername="$1"
+	univention-ssh "$(ucr get tests/root/pwdfile)" "root@$(ucr get ldap/master)" /usr/sbin/univention-replicate-one --dn "cn=$containername,cn=groups,$ldap_base"
 	wait_for_replication
 }
 
-check_description ()
-{
-	containername="$1"
-	expected_value="$2"
+check_description () {
+	local containername="$1" expected_value="$2"
 
 	description="$(get_description "$containername")"
 	if [ "$description" != "$expected_value" ]; then
@@ -85,4 +78,4 @@ check_description "$containername" "test1"
 container_remove "cn=$containername,cn=groups,$ldap_base"
 wait_for_replication
 
-exit $RETVAL
+exit "$RETVAL"

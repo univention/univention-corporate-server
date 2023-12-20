@@ -20,8 +20,9 @@
 
 RETVAL=100
 
-test -n "$connector_s4_ldap_host" || exit 137
+[ -n "${connector_s4_ldap_host:-}" ] || exit 137
 connector_running_on_this_host || exit 137
+# shellcheck disable=SC2034
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
@@ -36,8 +37,8 @@ cleanup () {
 
 section "create computer object CN=$CN in samba"
 
-ldbadd -H /var/lib/samba/private/sam.ldb <<EOF
-dn: CN=${CN},CN=Computers,${connector_s4_ldap_base}
+ldbadd -H /var/lib/samba/private/sam.ldb <<EOF ||
+dn: CN=${CN},CN=Computers,${connector_s4_ldap_base:?}
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -45,11 +46,11 @@ objectClass: user
 objectClass: computer
 userAccountControl: 4096
 sAMAccountName: ${CN}$
-userPrincipalName: host/${CN}.${domainname}@${kerberos_realm}
+userPrincipalName: host/${CN}.${domainname}@${kerberos_realm:?}
 cn: ${CN}
 name: ${CN}
 EOF
-test $? -eq 0 || fail_test 110
+	fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 ucs_dn="$(univention-ldapsearch "cn=${CN}" 1.1 | dn1)"
 

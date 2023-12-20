@@ -28,19 +28,15 @@ test_group_sid_openldap () {
 	group="$1"
 	expected_sid="$2"
 	sid_ldap=$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$group))" sambaSID | VAL1 sambaSID)
-	if [ "$sid_ldap" != "$expected_sid" ]; then
-		echo "Expected sid for $group: $expected_sid; found in LDAP: $sid_ldap"
-		fail_test 110
-	fi
+	[ "$sid_ldap" = "$expected_sid" ] ||
+		fail_test 110 "Expected sid for $group: $expected_sid; found in LDAP: $sid_ldap"
 }
 test_group_sid_s4 () {
 	group="$1"
 	expected_sid="$2"
 	sid_ad=$(univention-s4search "(&(objectClass=group)(cn=$group))" objectSid | VAL1 objectSid)
-	if [ "$sid_ad" != "$expected_sid" ]; then
-		echo "Expected sid for $group: $expected_sid; found in S4: $sid_ad"
-		fail_test 110
-	fi
+	[ "$sid_ad" = "$expected_sid" ] ||
+		fail_test 110 "Expected sid for $group: $expected_sid; found in S4: $sid_ad"
 }
 
 test_group_sid () {
@@ -53,14 +49,10 @@ test_user_sid () {
 	expected_sid="$2"
 	sid_ad=$(univention-s4search "(&(objectClass=user)(cn=$user))" objectSid | VAL1 objectSid)
 	sid_ldap=$(univention-ldapsearch "(uid=$user)" sambaSID | VAL1 sambaSID)
-	if [ "$sid_ad" != "$expected_sid" ]; then
-		echo "Expected sid for $user: $expected_sid; found in S4: $sid_ad"
-		fail_test 110
-	fi
-	if [ "$sid_ldap" != "$expected_sid" ]; then
-		echo "Expected sid for $user: $expected_sid; found in LDAP: $sid_ldap"
-		fail_test 110
-	fi
+	[ "$sid_ad" = "$expected_sid" ] ||
+		fail_test 110 "Expected sid for $user: $expected_sid; found in S4: $sid_ad"
+	[ "$sid_ldap" = "$expected_sid" ] ||
+		fail_test 110 "Expected sid for $user: $expected_sid; found in LDAP: $sid_ldap"
 }
 
 test_user_sid "$(custom_username "Administrator")" "$domainSid-500"

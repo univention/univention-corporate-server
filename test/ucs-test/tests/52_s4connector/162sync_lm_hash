@@ -13,17 +13,20 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
+
+[ -n "${connector_s4_ldap_host:-}" ] || exit 137
 connector_running_on_this_host || exit 137
 
 ucr set password/samba/lmhash=yes
 udm_kill_univention_cli_server
 
 UDM_users_user_username="$(random_chars)"
+# shellcheck disable=SC2034
 UDM_users_user_lastname="$(random_chars)"
 # If the password doesn't adhere the configured Windows-Password-Guidelines
 # weird things might happen when the user is synced to AD.
 UDM_users_user_password="U$(random_chars)123"
+# shellcheck disable=SC2034
 UDM_users_user_firstname="$(random_chars)"
 
 SYNCMODE="$(ad_get_sync_mode)"
@@ -73,10 +76,8 @@ delete: sambaLMPassword
 ad_wait_for_synchronization; fail_bool 0 110
 
 lm_hash3=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | VAL dBCSPwd)
-
-if [ -n "$lm_hash3" ]; then
+[ -z "$lm_hash3" ] ||
 	fail_fast "LM Hash (dBCSPwd) not deleted in Samba/AD"
-fi
 
 
 udm_remove "users/user" || fail_test 110

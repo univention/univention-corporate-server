@@ -24,7 +24,7 @@ IP="1.10.20.30"
 NETMASK="$(get_default_netmask)"
 
 # add forward zone
-/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists "$zonename" add zone "root@$domainname." 1 28800 7200 604800 10800 "$hostname.$domainname." || fail_test 110
+/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists "$zonename" add zone "root@${domainname:?}." 1 28800 7200 604800 10800 "${hostname:?}.$domainname." || fail_test 110
 
 # add A record
 for ((i=0;i<2;i++)); do
@@ -49,7 +49,7 @@ done
 
 # cleanup
 udm dns/forward_zone delete --dn "zoneName=$zonename,cn=dns,$ldap_base"
-reverse_dn="$(udm dns/reverse_zone list --filter subnet=$reversezone | DN1)"
+reverse_dn="$(udm dns/reverse_zone list --filter "subnet=$reversezone" | DN1)"
 test -n "$reverse_dn" || fail_test 110
 udm dns/reverse_zone delete --dn "$reverse_dn"
 

@@ -30,25 +30,24 @@ if [ "$old_password_complexity" != "on" ]; then
 fi
 echo "$old_password_complexity"
 
-for((i=0;i<$MAX_COUNT;i++)); do
-        /usr/share/univention-samba4/scripts/create_spn_account.sh \
-                --samaccountname "$prefix-$hostname-$i" \
-                --serviceprincipalname "$prefix-$i/$hostname.$domainname" \
-                --bindpwdfile "$tests_domainadmin_pwdfile" \
-                --binddn "$tests_domainadmin_account" \
-                --privatekeytab dns.keytab || fail_test 110
+for ((i=0;i<MAX_COUNT;i++)); do
+	/usr/share/univention-samba4/scripts/create_spn_account.sh \
+		--samaccountname "$prefix-${hostname:-}-$i" \
+		--serviceprincipalname "$prefix-$i/$hostname.$domainname" \
+		--bindpwdfile "$tests_domainadmin_pwdfile" \
+		--binddn "$tests_domainadmin_account" \
+		--privatekeytab dns.keytab || fail_test 110
 done
 
 wait_for_replication_and_postrun
 
-for((i=0;i<$MAX_COUNT;i++)); do
-        samba-tool user delete "$prefix-$hostname-$i" || fail_test 110
+for ((i=0;i<MAX_COUNT;i++)); do
+	samba-tool user delete "$prefix-$hostname-$i" || fail_test 110
 done
 
 wait_for_replication_and_postrun
 
-if [ -n "$reset_password_complexity" ]; then
-	samba-tool domain passwordsettings set --complexity=$old_password_complexity
-fi
+[ -n "$reset_password_complexity" ] &&
+	samba-tool domain passwordsettings set --complexity="$old_password_complexity"
 
 exit $RETVAL

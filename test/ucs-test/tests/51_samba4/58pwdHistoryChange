@@ -32,16 +32,15 @@ POSIX="true"
 username="$(user_randomname)"
 password=univention
 
-if ! user_create "$username"; then
-    fail_fast 1 "User could not be created"
-fi
+user_create "$username" ||
+	fail_fast 1 "User could not be created"
 
 # get samba domain DN and save the original password history:
 samba_domain=$(udm settings/sambadomain list | DN1)
 orig_password_history=$(udm settings/sambadomain list | VAL1 '  passwordHistory')
 
-echo -e "\nSamba Domain DN:" $samba_domain
-echo "The current domain passwordHistory:" $orig_password_history
+echo -e "\nSamba Domain DN: $samba_domain"
+echo "The current domain passwordHistory: $orig_password_history"
 
 
 echo -e "\nConfiguring password history via UDM:"
@@ -50,25 +49,17 @@ wait_for_replication_and_postrun
 
 # check modification worked via samba-tool:
 samba_tool_history=$(samba-tool domain passwordsettings show | grep 'Password history length: '| awk -F ': ' '{print $2}')
-test "$samba_tool_history" = "$TEST_PWD_HISTORY" || fail_test 110
+[ "$samba_tool_history" = "$TEST_PWD_HISTORY" ] || fail_test 110
 
 
 echo -e "\nCheck that test user can be found via pdbedit:"
 samba_user=$(LANG=C pdbedit -L "$username" | grep "Username not found")
-
-if [ -n "$samba_user" ]; then
-    echo "$samba_user"
-    echo "    E: The created test user '$username' was not found via pdbedit after the password history was set!"
-    fail_test 110
-fi
+[ -z "$samba_user" ] ||
+	fail_test 110 "The created test user '$username' was not found via pdbedit after the password history was set: $samba_user"
 
 echo -e "\nCheck that user can access sysvol via smbclient:"
-output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls" 2>&1)"
-if [ "$?" != 0 ]; then
-    echo "$output"
-    echo "    E: Could not access sysvol as the user '$username' after the password history was set!"
-    fail_test 110
-fi
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls" 2>&1)" ||
+	fail_test 110 "E: Could not access sysvol as the user '$username' after the password history was set: $output"
 
 
 echo -e "\nCleanup:"
@@ -76,4 +67,4 @@ udm settings/sambadomain modify --dn "$samba_domain" --set "passwordHistory=$ori
 wait_for_replication_and_postrun
 user_remove "$username"
 
-exit $RETVAL
+exit "$RETVAL"

@@ -17,7 +17,7 @@
 
 . "s4connector.sh" || exit 137
 
-test -n "$connector_s4_ldap_host" || exit 137
+[ -n "${connector_s4_ldap_host:-}" ] || exit 137
 connector_running_on_this_host || exit 137
 
 get_ucs_age ()
@@ -34,10 +34,8 @@ check_s4_age ()
 {
 	s4_age=$(get_s4_age)
 	expected_age=$1
-	if [ "$s4_age" != "$expected_age" ]; then
-		echo "maxPwdAge is $s4_age, expected: $expected_age"
-		fail_test 110
-	fi
+	[ "$s4_age" = "$expected_age" ] ||
+		fail_test 110 "maxPwdAge is $s4_age, expected: $expected_age"
 }
 
 set_ucs_age ()
@@ -47,7 +45,7 @@ set_ucs_age ()
 changetype: modify
 replace: sambaMaxPwdAge
 sambaMaxPwdAge: $1
-" | ldapmodify -x -D cn=admin,$ldap_base -y /etc/ldap.secret
+" | ldapmodify -x -D "cn=admin,$ldap_base" -y /etc/ldap.secret
 }
 
 OLD_VALUE=$(get_ucs_age)
@@ -68,7 +66,7 @@ set_ucs_age 0
 ad_wait_for_synchronization; fail_bool 0 110
 check_s4_age 0
 
-set_ucs_age $OLD_VALUE
+set_ucs_age "$OLD_VALUE"
 ad_wait_for_synchronization; fail_bool 0 110
 
 exit "$RETVAL"

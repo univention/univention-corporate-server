@@ -21,61 +21,45 @@
 eval "$(ucr shell)"
 
 licenseVersion="$(univention-ldapsearch '(&(cn=admin)(objectClass=univentionLicense))' -LLL univentionLicenseVersion | VAL1 univentionLicenseVersion)"
-
-if [ "$licenseVersion" != 2 ]; then
+[ "$licenseVersion" = 2 ] ||
 	exit 137
-fi
 
-getManagedClient ()
-{
+getManagedClient () {
 	univention-license-check  | VAL 'Managed Clients' | cut -d' ' -f1
 }
-getUsers ()
-{
+getUsers () {
 	univention-license-check  | VAL 'Users' | cut -d' ' -f1
 }
-getServers ()
-{
+getServers () {
 	univention-license-check  | VAL 'Servers' | cut -d' ' -f1
 }
-getUCC ()
-{
+getUCC () {
 	univention-license-check  | VAL 'Corporate Clients' | cut -d' ' -f1
 }
-getDVSUsers ()
-{
+getDVSUsers () {
 	univention-license-check  | VAL 'DVS Users' | cut -d' ' -f1
 }
-getDVSClients ()
-{
+getDVSClients () {
 	univention-license-check  | VAL 'DVS Clients' | cut -d' ' -f1
 }
 
-createObject ()
-{
-	module="$1"
-	name="$2"
-
+createObject () {
+	local module="${1:?module}" name="${2:?name}"
 	echo "Create UDM object of type $module"
-
-	udm-test "$module" create --set name="$name" --position "cn=computers,$ldap_base" $param || fail_test 110 "Failed to create $module: name: $name with param: $param"
+	udm-test "$module" create --set name="$name" --position "cn=computers,$ldap_base" || fail_test 110 "Failed to create $module: name: $name"
 }
-removeObject ()
-{
-	module="$1"
-	name="$2"
+removeObject () {
+	local module="${1:?module}" name="${2:?name}"
 	udm-test "$module" remove --dn "cn=$name,cn=computers,$ldap_base" || fail_test 110 "Failed to remove $module: cn=$name,cn=computers,$ldap_base"
 }
 
 # Ignore connector side effects
-test -x /etc/init.d/univention-s4-connector && /etc/init.d/univention-s4-connector stop
+[ -x /etc/init.d/univention-s4-connector ] && /etc/init.d/univention-s4-connector stop
 
 
 # These objects should be counted as managed clients
-for m in "computers/linux" "computers/macos" \
-			"computers/ubuntu" "computers/windows" \
-			"computers/windows_domaincontroller"; do
-
+for m in "computers/linux" "computers/macos" "computers/ubuntu" "computers/windows" "computers/windows_domaincontroller"
+do
 	echo "** Testing module $m"
 
 	name="$(random_chars)"
@@ -122,8 +106,9 @@ for m in "computers/linux" "computers/macos" \
 done
 
 ### # These objects shouldn't be counted
-for m in "computers/ipmanagedclient"; do
-
+# shellcheck disable=SC2043
+for m in "computers/ipmanagedclient"
+do
 	echo "** Testing module $m"
 
 	name="$(random_chars)"
@@ -169,12 +154,11 @@ for m in "computers/ipmanagedclient"; do
 	wait_for_replication
 done
 
-ucr set --force ldap/master="$ldap_master"
+ucr set --force ldap/master="${ldap_master:?}"
 
 ### These objects should be counted as servers
-for m in "computers/memberserver" "computers/domaincontroller_slave" \
-			"computers/domaincontroller_backup" "computers/domaincontroller_master"; do
-
+for m in "computers/memberserver" "computers/domaincontroller_slave" "computers/domaincontroller_backup" "computers/domaincontroller_master"
+do
 	echo "** Testing module $m"
 
 	name="$(random_chars)"
@@ -221,7 +205,7 @@ for m in "computers/memberserver" "computers/domaincontroller_slave" \
 done
 
 # Ignore connector side effects
-test -x /etc/init.d/univention-s4-connector && /etc/init.d/univention-s4-connector start
+[ -x /etc/init.d/univention-s4-connector ] && /etc/init.d/univention-s4-connector start
 
 ucr unset --force ldap/master
 ucr set ldap/master="$ldap_master"

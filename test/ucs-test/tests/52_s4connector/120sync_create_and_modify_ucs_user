@@ -40,13 +40,13 @@ fi
 
 # unset ignorelist for user attributes
 ignore_list_original="$(ucr get connector/s4/mapping/user/attributes/ignorelist)"
-echo $ignore_list_original
+echo "$ignore_list_original"
 ucr unset "connector/s4/mapping/user/attributes/ignorelist"
-echo "$(ucr get connector/s4/mapping/user/attributes/ignorelist)"
+ucr get connector/s4/mapping/user/attributes/ignorelist
 
 ad_connector_restart
 
-test -n "$connector_s4_ldap_host" || exit 137
+[ -n "${connector_s4_ldap_host:-}" ] || exit 137
 connector_running_on_this_host || exit 137
 
 # create test user
@@ -54,9 +54,11 @@ UDM_users_user_username="$(random_chars)"
 UDM_users_user_lastname="$(random_chars)"
 # If the password doesn't adhere the configured Windows-Password-Guidelines
 # weird things might happen when the user is synced to AD.
+# shellcheck disable=SC2034
 UDM_users_user_password="U$(random_chars)123"
 UDM_users_user_firstname="$(random_chars)"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+# shellcheck disable=SC2034
 UCS_DN="uid=$UDM_users_user_username,cn=users,$(ucr get ldap/base)"
 
 SYNCMODE="$(ad_get_sync_mode)"
@@ -86,14 +88,14 @@ UDM_users_user_scriptpath="$(random_chars)"
 UDM_users_user_sambauserworkstations="$(random_chars)"
 UDM_users_user_homedrive="$(random_chars)"
 UDM_users_user_sambahome="$(random_chars)"
-UDM_users_user_phone1="$(random_chars 8 $_ciphers)"
-UDM_users_user_phone2="$(random_chars 9 $_ciphers)"
-UDM_users_user_phone3="$(random_chars 3 $_ciphers)"
-UDM_users_user_hometelephonenumber="$(random_chars 5 $_chipers)"
-UDM_users_user_mobiletelephonenumber="$(random_chars 25 $_chipers)"
-UDM_users_user_pager1="$(random_chars 5 $_ciphers)"
-UDM_users_user_pager2="$(random_chars 7 $_ciphers)"
-UDM_users_user_pager3="$(random_chars 4 $_ciphers)"
+UDM_users_user_phone1="$(random_chars 8 "$_ciphers")"
+UDM_users_user_phone2="$(random_chars 9 "$_ciphers")"
+UDM_users_user_phone3="$(random_chars 3 "$_ciphers")"
+UDM_users_user_hometelephonenumber="$(random_chars 5 "$_ciphers")"
+UDM_users_user_mobiletelephonenumber="$(random_chars 25 "$_ciphers")"
+UDM_users_user_pager1="$(random_chars 5 "$_ciphers")"
+UDM_users_user_pager2="$(random_chars 7 "$_ciphers")"
+UDM_users_user_pager3="$(random_chars 4 "$_ciphers")"
 
 if $ext_mapping; then
 	UDM_users_user_jpegPhoto="/9j/4AAQSkZJRgABAQEBLAEsAAD/4Se4"
@@ -103,8 +105,8 @@ if $ext_mapping; then
 	UDM_users_user_unixhome="/$(random_chars)/"
 	UDM_users_user_unixhome2="/$(random_chars)/"
 	UDM_users_user_title="$(random_chars)"
-	UDM_users_user_gidNumber="$(udm-test 'users/user' list --filter uid=$UDM_users_user_username | egrep '^ *gidNumber: ' | sed 's/^ *gidNumber: //')"
-	UDM_users_user_uidNumber="$(udm-test 'users/user' list --filter uid=$UDM_users_user_username | egrep '^ *uidNumber: ' | sed 's/^ *uidNumber: //')"
+	UDM_users_user_gidNumber="$(udm-test 'users/user' list --filter "uid=$UDM_users_user_username" | sed -n 's/^ *gidNumber: //p')"
+	UDM_users_user_uidNumber="$(udm-test 'users/user' list --filter "uid=$UDM_users_user_username" | sed -n 's/^ *uidNumber: //p')"
 	UDM_users_user_departmentNumber1="$(random_chars)"
 	UDM_users_user_departmentNumber2="$(random_chars)"
 	UDM_users_user_roomNumber1="$(random_chars)"

@@ -92,4 +92,4 @@ do
 	sleep 1
 done
 
-exit $RETVAL
+exit "$RETVAL"

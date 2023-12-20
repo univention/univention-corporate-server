@@ -11,12 +11,10 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 
 os="$(univention-ldapsearch -b "$ldap_hostdn" -s base -LLL univentionOperatingSystem | VAL univentionOperatingSystem)"
-if [ "$os" != "Univention Corporate Server" ]; then
+[ "$os" = "Univention Corporate Server" ] ||
 	fail_test 110 "univentionOperatingSystem is set to $os"
-fi
 ovs="$(univention-ldapsearch -b "$ldap_hostdn" -s base -LLL univentionOperatingSystemVersion | VAL univentionOperatingSystemVersion)"
-if [ "$ovs" != "$version_version-$version_patchlevel" ]; then
+[ "$ovs" = "$version_version-$version_patchlevel" ] ||
 	fail_test 110 "univentionOperatingSystemVersion is set to $ovs"
-fi
 
 exit "$RETVAL"

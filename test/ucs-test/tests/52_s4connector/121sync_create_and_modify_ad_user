@@ -33,7 +33,7 @@ ucr unset "connector/s4/mapping/user/attributes/ignorelist"
 ad_connector_restart || exit 137
 
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
+[ -n "${connector_s4_ldap_host:-}" ] || exit 137
 connector_running_on_this_host || exit 137
 
 UDM_users_user_username="$(random_chars)"
@@ -108,8 +108,7 @@ if $ext_mapping; then
 	ad_wait_for_synchronization; fail_bool 0 110
 fi
 
-if [ "$connector_s4_windows_version" != "win2000" \
-	-o "$connector_s4_mapping_user_win2000_description" != "false" ]
+if [ "${connector_s4_windows_version:-}" != "win2000" ] || [ "${connector_s4_mapping_user_win2000_description:-}" != "false" ]
 then
 	udm_verify_udm_attribute "description" "$UDM_users_user_description" "users/user"; fail_bool 0 121 "See #18501"
 fi

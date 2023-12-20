@@ -18,9 +18,10 @@
 . /usr/share/univention-lib/ldap.sh
 
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
+[ -n "${connector_s4_ldap_host:-}" ] || exit 137
 connector_running_on_this_host || exit 137
 
+# shellcheck disable=SC2034
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
@@ -41,12 +42,11 @@ service univention-s4-connector restart
 # create GPO
 samba-tool gpo create "$gpo_display_name" \
 		-k no \
-		-H ldap://"$hostname.$domainname" \
+		-H ldap://"${hostname:?}.$domainname" \
 		-U "$admin_account%$tests_domainadmin_pwd" || fail_bool 0 110
 UDM_container_msgpo_name="$(univention-s4search "(&(displayName=$gpo_display_name)(objectClass=groupPolicyContainer))" cn | VAL cn)"
-if [ -z "$UDM_container_msgpo_name" ]; then
+[ -n "$UDM_container_msgpo_name" ] ||
 	fail_fast 110 "New GPO not found in local Samba Directory service"
-fi
 ad_wait_for_synchronization; fail_bool 0 110
 udm_exists "container/msgpo" "" "" "cn=Policies,cn=System,$ldap_base"; fail_bool 0 110
 
@@ -68,6 +68,7 @@ cleanup2() {
 
 trap cleanup2 EXIT
 
+# shellcheck disable=SC2207
 DELAY=( $(python3 -c "for i in range(23, 3, -2): print(round(0.1 * i, 1))") )
 MOD="${#DELAY[@]}"
 RANDOM="$SECONDS"
@@ -89,9 +90,9 @@ for run in $(seq $MAX_RUNS); do
 	# ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
 	# ntsd1=$(VAL nTSecurityDescriptor <<<"$ldif")
 
-	delay=${DELAY[$(($RANDOM % $MOD))]}
+	delay=${DELAY[$((RANDOM % MOD))]}
 	echo "Wait $delay"
-	sleep $delay
+	sleep "$delay"
 
 	echo "Change NTSD again"
 	ldbmodify -H /var/lib/samba/private/sam.ldb >/dev/null 2>&1 <<-%EOF
@@ -109,9 +110,9 @@ for run in $(seq $MAX_RUNS); do
 		fail_fast 110 "NTSD sync inconsistent"
 	fi
 
-	delay=${DELAY[$(($RANDOM % $MOD))]}
+	delay=${DELAY[$((RANDOM % MOD))]}
 	echo "Wait $delay"
-	sleep $delay
+	sleep "$delay"
 
 
 	echo "Change NTSD back"
@@ -122,13 +123,13 @@ for run in $(seq $MAX_RUNS); do
 	nTSecurityDescriptor: $ntsd_orig
 	%EOF
 
-	sleep $(($connector_s4_poll_sleep * 2))
+	# shellcheck disable=SC2154
+	sleep $((connector_s4_poll_sleep * 2))
 	ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
 	ntsd3=$(VAL nTSecurityDescriptor <<<"$ldif")
 
-	if [ "$ntsd3" != "$ntsd_orig" ]; then
+	[ "$ntsd3" = "$ntsd_orig" ] ||
 		fail_fast 110 "NTSD sync inconsistent"
-	fi
 done
 
 # delete GPO
