@@ -6,58 +6,8 @@ src: intel-microcode
 fix: 3.20231114.1~deb9u1
 desc: |
  This update addresses the following issue:
- 3.20231114.1~deb9u1 (Sun, 17 Dec 2023 14:05:04 +0100)
- * Non-maintainer upload by the LTS Security Team.
- * No-change upload of the buster version, rebuilt for stretch (ELTS), fixing
-   CVE-2023-23583 See changelog entry from November 16th 2023 or DSA-5563-1
-   for details about the security vulnerability.
- 3.20231114.1~deb10u1 (Sat, 16 Dec 2023 16:57:23 +0100)
- * No-change upload of the bullseye version, rebuilt for buster (LTS), fixing
-   CVE-2023-23583 See changelog entry from November 16th 2023 or DSA-5563-1
-   for details about the security vulnerability.
- 3.20231114.1~deb11u1 (Sat, 18 Nov 2023 16:47:51 -0300)
- * Backport to Debian Bullseye
- * debian/control: revert non-free-firmware change
- 3.20231114.1 (Thu, 16 Nov 2023 08:09:43 -0300)
- * New upstream microcode datafile 20231114 Mitigations for "reptar",
-   INTEL-SA-00950 (CVE-2023-23583) Sequence of processor instructions leads to
-   unexpected behavior for some Intel(R) Processors, may allow an
-   authenticated user to potentially enable escalation of privilege and/or
-   information disclosure and/or denial of service via local access. Note:
-   "reptar" on 4th gen Xeon Scalable (sig 0x806f8 pfm 0x87), 12th gen Core
-   mobile (sig 0x906a4 pfm 0x80), 13th gen Core desktop (sig 0xb0671 pfm 0x01)
-   were already mitigated by a previous microcode update.
- * Fixes for unspecified functional issues
- * Updated microcodes: sig 0x000606a6, pf_mask 0x87, 2023-09-01, rev
-   0xd0003b9, size 299008 sig 0x000606c1, pf_mask 0x10, 2023-09-08, rev
-   0x1000268, size 290816 sig 0x000706e5, pf_mask 0x80, 2023-09-03, rev
-   0x00c2, size 113664 sig 0x000806c1, pf_mask 0x80, 2023-09-07, rev 0x00b4,
-   size 111616 sig 0x000806c2, pf_mask 0xc2, 2023-09-07, rev 0x0034, size
-   98304 sig 0x000806d1, pf_mask 0xc2, 2023-09-07, rev 0x004e, size 104448 sig
-   0x000806f8, pf_mask 0x87, 2023-06-16, rev 0x2b0004d0, size 572416 sig
-   0x000806f8, pf_mask 0x87, 2023-06-16, rev 0x2b0004d0 sig 0x000806f7,
-   pf_mask 0x87, 2023-06-16, rev 0x2b0004d0 sig 0x000806f6, pf_mask 0x87,
-   2023-06-16, rev 0x2b0004d0 sig 0x000806f5, pf_mask 0x87, 2023-06-16, rev
-   0x2b0004d0 sig 0x000806f4, pf_mask 0x87, 2023-06-16, rev 0x2b0004d0 sig
-   0x000806f8, pf_mask 0x10, 2023-06-26, rev 0x2c000290, size 605184 sig
-   0x000806f8, pf_mask 0x10, 2023-06-26, rev 0x2c000290 sig 0x000806f6,
-   pf_mask 0x10, 2023-06-26, rev 0x2c000290 sig 0x000806f5, pf_mask 0x10,
-   2023-06-26, rev 0x2c000290 sig 0x000806f4, pf_mask 0x10, 2023-06-26, rev
-   0x2c000290 sig 0x00090672, pf_mask 0x07, 2023-06-07, rev 0x0032, size
-   222208 sig 0x00090672, pf_mask 0x07, 2023-06-07, rev 0x0032 sig 0x00090675,
-   pf_mask 0x07, 2023-06-07, rev 0x0032 sig 0x000b06f2, pf_mask 0x07,
-   2023-06-07, rev 0x0032 sig 0x000b06f5, pf_mask 0x07, 2023-06-07, rev 0x0032
-   sig 0x000906a3, pf_mask 0x80, 2023-06-07, rev 0x0430, size 220160 sig
-   0x000906a3, pf_mask 0x80, 2023-06-07, rev 0x0430 sig 0x000906a4, pf_mask
-   0x80, 2023-06-07, rev 0x0430 sig 0x000906a4, pf_mask 0x40, 2023-05-05, rev
-   0x0005, size 117760 sig 0x000a0671, pf_mask 0x02, 2023-09-03, rev 0x005d,
-   size 104448 sig 0x000b0671, pf_mask 0x32, 2023-08-29, rev 0x011d, size
-   210944 sig 0x000b06a2, pf_mask 0xe0, 2023-08-30, rev 0x411c, size 216064
-   sig 0x000b06a2, pf_mask 0xe0, 2023-08-30, rev 0x411c sig 0x000b06a3,
-   pf_mask 0xe0, 2023-08-30, rev 0x411c sig 0x000b06e0, pf_mask 0x11,
-   2023-06-26, rev 0x0012, size 136192
- * Updated 2023-08-08 changelog entry with reptar information
- * source: update symlinks to reflect id of the latest release, 20231114
+ * CVE-2023-23583: Execution of MOVSB instructions with
+   redundant REX prefix leads to unintended system behavior.
 bug: [56919]
 cve:
 - CVE-2023-23583
