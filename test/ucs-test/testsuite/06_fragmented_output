@@ -1,0 +1,10 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: generate fragmented output
+## exposure: safe
+## timeout: 3
+echo -n foo
+sleep .01
+echo -n bar
+sleep 1
+echo -n baz

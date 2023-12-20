@@ -1,0 +1,7 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: forked child keeps pipes, but test exists in time
+## exposure: safe
+## timeout: 1
+sleep 3 &
+exec &>/dev/ull 2>/dev/null

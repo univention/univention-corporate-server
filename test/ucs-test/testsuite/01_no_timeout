@@ -1,0 +1,6 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: test succeeds in time
+## exposure: safe
+## timeout: 3
+sleep 1

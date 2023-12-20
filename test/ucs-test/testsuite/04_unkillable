@@ -1,0 +1,12 @@
+#!/usr/share/ucs-test/runner python3
+# shellcheck shell=bash
+## desc: kill long running test
+## versions:
+##  4.0-0: found
+## exposure: safe
+## timeout: 1
+import signal
+import time
+
+signal.signal(signal.SIGTERM, signal.SIG_IGN)
+time.sleep(30)

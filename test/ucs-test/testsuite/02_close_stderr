@@ -1,0 +1,7 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: test closed stdout before successful exit
+## exposure: safe
+## timeout: 3
+exec >/dev/null
+echo foo 2>&1

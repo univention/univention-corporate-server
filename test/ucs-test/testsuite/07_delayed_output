@@ -1,0 +1,7 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: generate delayed output
+## exposure: safe
+## timeout: 3
+( sleep 1; echo late ) &
+exit 0

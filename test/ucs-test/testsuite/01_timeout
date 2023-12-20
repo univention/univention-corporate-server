@@ -1,0 +1,8 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: kill long running test
+## versions:
+##  4.0-0: found
+## exposure: safe
+## timeout: 1
+sleep 3

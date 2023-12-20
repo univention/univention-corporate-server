@@ -613,7 +613,7 @@ class TestCase:
         channels: Dict[int, Tuple[IO[str], List, str, IO[str], str, bytearray]] = {
             proc.stdout.fileno(): (proc.stdout, [], 'stdout', stdout, '[]', bytearray()),
             proc.stderr.fileno(): (proc.stderr, [], 'stderr', stderr, '()', bytearray()),
-            rfd: (None, [], "child", None, "{}", None),  # type: ignore
+            rfd: (open(rfd), [], "child", stderr, "{}", bytearray()),
         }
         combined = []
 
@@ -639,33 +639,29 @@ class TestCase:
             rlist, _wlist, _elist = select.select(list(channels), [], [], min(delays) if delays else None)
             self.logger.debug("rlist=%r", rlist)
 
-            next_read = 0.0
-
             if rfd in rlist:
                 self.logger.debug("Child died, collecting remaining output")
                 shutdown = True
-                next_kill = current + 1.0
-                os.close(rfd)
-                rlist.remove(rfd)
-                del channels[rfd]
+                next_kill = current + 3.0
 
+            next_read = 0.0
             for fd in rlist or list(channels):
                 stream, log, name, out, paren, buf = channels[fd]
 
                 if fd in rlist:
                     data = os.read(fd, 1024)
-                    out.buffer.write(data)  # type: ignore
+                    out.buffer.write(data)  # type: ignore[attr-defined]
                     buf += data
                     eof = data == b''
-                else:
+                else:  # select() timed out, process remaining output
                     data = b''
                     eof = shutdown
 
                 while buf:
-                    if eof:
+                    if eof:  # all remaining on shutdown
                         line = buf
                         buf = bytearray()
-                    else:
+                    else:  # otherwise only complete lines
                         match = TestCase.RE_NL.search(buf)
                         if not match:
                             break
@@ -683,7 +679,7 @@ class TestCase:
                     del channels[fd]
                     TestCase._attach(result, name, log)
 
-                if buf and data:
+                if buf and data:  # re-do uncomplete line
                     next_read = current + 0.1
 
         self.logger.debug("Done")
@@ -722,7 +718,8 @@ class TestCase:
         text = b''.join(content)
         dirty = text.decode(sys.getfilesystemencoding(), 'replace')
         clean = RE_ILLEGAL_XML.sub('\uFFFD', dirty)
-        result.attach(part, 'text/plain', clean)
+        if clean:
+            result.attach(part, 'text/plain', clean)
 
     def _translate_result(self, result: TestResult) -> None:
         """Translate exit code into result."""

@@ -1,0 +1,7 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: test closed pipes before successful exit
+## exposure: safe
+## timeout: 3
+exec &>/dev/ull
+sleep 1
