@@ -16,7 +16,7 @@ from functools import reduce
 from operator import and_, or_
 from subprocess import PIPE, Popen, call
 from time import monotonic
-from typing import IO, Any, Dict, Iterable, Iterator, List, Sequence, Set, Tuple, TypeVar
+from typing import IO, Any, Dict, Iterable, Iterator, List, Sequence, Set, Tuple, TypeVar, cast
 
 import apt
 import yaml
@@ -534,7 +534,7 @@ class TestCase:
             self.exe = CheckExecutable(lang)
             self.args = args[2:]
 
-            reader = _TestReader(tc_file)
+            reader = cast(IO[bytes], _TestReader(tc_file))
             try:
                 header = yaml.safe_load(reader) or {}
             except yaml.scanner.ScannerError as ex:
@@ -583,6 +583,7 @@ class TestCase:
         if self.timeout is None:
             self.timeout = environment.timeout
         conditions = []
+        assert self.exe is not None
         conditions += list(self.exe.check(environment))
         conditions += list(self.versions.check(environment))
         conditions += list(self.tags.check(environment))
@@ -746,6 +747,7 @@ class TestCase:
         """Run the test case and fill in result."""
         base = os.path.basename(self.filename)
         dirname = os.path.dirname(self.filename)
+        assert self.exe is not None
         cmd = [self.exe.filename] + self.exe.executable_args + [base] + self.args
 
         if self.is_pytest:

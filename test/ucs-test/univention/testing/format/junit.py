@@ -8,6 +8,7 @@ import sys
 from datetime import datetime
 from typing import IO, Any
 from xml.sax.saxutils import XMLGenerator
+from xml.sax.xmlreader import AttributesImpl
 
 from univention.testing.data import TestCase, TestFormatInterface, TestResult
 from univention.testing.format.text import Raw
@@ -76,7 +77,7 @@ class Junit(TestFormatInterface):
         with open(filename, 'w') as f_report:
             xml = XMLGenerator(f_report, encoding='utf-8')
             xml.startDocument()
-            xml.startElement('testsuite', {
+            xml.startElement('testsuite', AttributesImpl({
                 'name': classname,
                 'tests': '%d' % (1,),
                 'failures': '%d' % (failures,),
@@ -86,44 +87,44 @@ class Junit(TestFormatInterface):
                 'skipped': '%d' % (skipped,),
                 'timestamp': self.now.isoformat(),
                 'hostname': os.uname()[1],
-            })
+            }))
 
-            xml.startElement('properties', {})
-            xml.startElement('property', {
+            xml.startElement('properties', AttributesImpl({}))
+            xml.startElement('property', AttributesImpl({
                 'name': 'hostname',
                 'value': result.environment.hostname,
-            })
+            }))
             xml.endElement('property')
-            xml.startElement('property', {
+            xml.startElement('property', AttributesImpl({
                 'name': 'architecture',
                 'value': result.environment.architecture,
-            })
+            }))
             xml.endElement('property')
-            xml.startElement('property', {
+            xml.startElement('property', AttributesImpl({
                 'name': 'role',
                 'value': result.environment.role,
-            })
+            }))
             xml.endElement('property')
-            xml.startElement('property', {
+            xml.startElement('property', AttributesImpl({
                 'name': 'version',
                 'value': f'{result.environment.ucs_version}',
-            })
+            }))
             xml.endElement('property')
             if result.case.description:
-                xml.startElement('property', {
+                xml.startElement('property', AttributesImpl({
                     'name': 'description',
                     'value': result.case.description or result.case.uid,
-                })
+                }))
                 xml.endElement('property')
             xml.endElement('properties')
 
-            xml.startElement('testcase', {
+            xml.startElement('testcase', AttributesImpl({
                 'name': result.environment.hostname,
                 # 'assertions': '%d' % (0,),
                 'time': f'{result.duration / 1000.0:0.3f}',
                 'classname': classname,
                 # 'status': '???',
-            })
+            }))
 
             if skipped:
                 try:
@@ -132,21 +133,21 @@ class Junit(TestFormatInterface):
                     msg = ''
                 else:
                     msg = '\n'.join([f'{c}' for c in content])
-                xml.startElement('skipped', {
+                xml.startElement('skipped', AttributesImpl({
                     'message': msg,
-                })
+                }))
                 xml.endElement('skipped')
             elif errors:
-                xml.startElement('error', {
+                xml.startElement('error', AttributesImpl({
                     'type': 'TestError',
                     'message': f'{result.result}',
-                })
+                }))
                 xml.endElement('error')
             elif failures:
-                xml.startElement('failure', {
+                xml.startElement('failure', AttributesImpl({
                     'type': 'TestFailure',
                     'message': f'{result.reason!s} ({result.case.description or result.case.uid})',
-                })
+                }))
                 xml.endElement('failure')
 
             try:
@@ -154,7 +155,7 @@ class Junit(TestFormatInterface):
             except KeyError:
                 pass
             else:
-                xml.startElement('system-out', {})
+                xml.startElement('system-out', AttributesImpl({}))
                 xml.characters(self.utf8(content))
                 xml.endElement('system-out')
 
@@ -163,7 +164,7 @@ class Junit(TestFormatInterface):
             except KeyError:
                 pass
             else:
-                xml.startElement('system-err', {})
+                xml.startElement('system-err', AttributesImpl({}))
                 xml.characters(self.utf8(content))
                 xml.endElement('system-err')
 
