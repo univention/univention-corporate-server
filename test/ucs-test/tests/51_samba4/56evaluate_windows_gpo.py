@@ -17,7 +17,7 @@ from sys import exit
 import univention.winexe
 from univention.config_registry import ConfigRegistry
 from univention.testing import utils
-from univention.testing.codes import TestCodes
+from univention.testing.codes import Reason
 from univention.testing.strings import random_username
 from univention.testing.ucs_samba import force_drs_replication
 from univention.testing.udm import UCSTestUDM
@@ -351,7 +351,7 @@ def udm_get_windows_computer():
     sed_stdout, stderr = run_cmd(("sed", "-n", "s/^DN: //p"), stdin=PIPE, std_in=stdout)
     if not sed_stdout:
         print("SKIP: failed to find any Windows Host DN via UDM. Perhaps host not joined as a memberserver or does not exist in this setup.")
-        exit(TestCodes.REASON_INSTALL)
+        exit(Reason.INSTALL)
 
     return {'hostdn': sed_stdout, 'hostname': sed_stdout.split(',')[0][3:]}
 
@@ -421,7 +421,7 @@ if __name__ == '__main__':
 
     if not all((domain_admin_dn, domain_admin_password, domainname, hostname, ldap_base)):
         print("\nFailed to obtain settings for the test from UCR. Skipping the test.")
-        exit(TestCodes.REASON_INSTALL)
+        exit(Reason.INSTALL)
 
     domain_admin = domain_admin_dn.split(',')[0][len('uid='):]
     samba_credentials = ("--username=" + domain_admin, "--password=" + domain_admin_password)

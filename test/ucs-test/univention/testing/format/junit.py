@@ -9,7 +9,6 @@ from datetime import datetime
 from typing import IO, Any
 from xml.sax.saxutils import XMLGenerator
 
-from univention.testing.codes import TestCodes
 from univention.testing.data import TestCase, TestFormatInterface, TestResult
 from univention.testing.format.text import Raw
 
@@ -45,13 +44,13 @@ class Junit(TestFormatInterface):
         """Called after each test."""
         self.raw.end_test(result, end='')
         failures = errors = skipped = disabled = 0
-        if result.eofs == 'O':
+        if result.reason.eofs == 'O':
             pass
-        elif result.eofs == 'S':
+        elif result.reason.eofs == 'S':
             skipped = 1
-        elif result.eofs == 'F':
+        elif result.reason.eofs == 'F':
             failures = 1
-        elif result.eofs == 'E':
+        elif result.reason.eofs == 'E':
             errors = 1
         else:
             errors = 1
@@ -144,10 +143,9 @@ class Junit(TestFormatInterface):
                 })
                 xml.endElement('error')
             elif failures:
-                msg = TestCodes.MESSAGE.get(result.reason, '')
                 xml.startElement('failure', {
                     'type': 'TestFailure',
-                    'message': f'{msg} ({result.case.description or result.case.uid})',
+                    'message': f'{result.reason!s} ({result.case.description or result.case.uid})',
                 })
                 xml.endElement('failure')
 

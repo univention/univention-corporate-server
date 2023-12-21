@@ -9,7 +9,7 @@ from typing import IO
 from weakref import WeakValueDictionary
 
 import univention.config_registry
-from univention.testing.codes import TestCodes
+from univention.testing.codes import MAX_MESSAGE_LEN
 from univention.testing.data import TestCase, TestEnvironment, TestFormatInterface, TestResult
 
 
@@ -84,7 +84,7 @@ class Text(TestFormatInterface):
         title = case.description or case.uid
         title = prefix + title.splitlines()[0]
 
-        cols = self.term.COLS - TestCodes.MAX_MESSAGE_LEN - 1
+        cols = self.term.COLS - MAX_MESSAGE_LEN - 1
         if cols < 1:
             cols = self.term.COLS
         while len(title) > cols:
@@ -97,12 +97,8 @@ class Text(TestFormatInterface):
     def end_test(self, result: TestResult, end: str = '\n') -> None:
         """Called after each test."""
         reason = result.reason
-        msg = TestCodes.MESSAGE.get(reason, reason)
-
-        colorname = TestCodes.COLOR.get(result.reason, 'BLACK')
-        color = getattr(self.term, colorname.upper(), b'')
-
-        print('%s%s%s' % (color.decode('ASCII'), msg, self.term.NORMAL.decode('ASCII')), end=end, file=self.stream)
+        color = getattr(self.term, reason.color.upper(), b'')
+        print('%s%s%s' % (color.decode('ASCII'), str(reason), self.term.NORMAL.decode('ASCII')), end=end, file=self.stream)
         super().end_test(result)
 
     def end_section(self) -> None:
@@ -137,7 +133,7 @@ class Raw(Text):
         super(Text, self).begin_test(case, prefix)
         title = prefix + case.uid
 
-        cols = self.term.COLS - TestCodes.MAX_MESSAGE_LEN - 2
+        cols = self.term.COLS - MAX_MESSAGE_LEN - 2
         if cols < 1:
             cols = self.term.COLS
         while len(title) > cols:

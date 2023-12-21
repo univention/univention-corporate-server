@@ -22,7 +22,7 @@ import apt
 import yaml
 
 from univention.config_registry import ConfigRegistry
-from univention.testing.codes import TestCodes
+from univention.testing.codes import Reason
 from univention.testing.errors import TestError
 from univention.testing.internal import UCSVersion
 from univention.testing.pytest import PytestRunner
@@ -191,7 +191,7 @@ class Verdict:
 
     logger = logging.getLogger('test.cond')
 
-    def __init__(self, level: int, message: str, reason: Any | None = None) -> None:
+    def __init__(self, level: int, message: str, reason: Reason | None = None) -> None:
         self.level = level
         self.message = message
         self.reason = reason
@@ -225,7 +225,7 @@ class CheckExecutable(Check):
     def __init__(self, filename: str) -> None:
         super().__init__()
         self.filename = filename
-        self.executable_args = []
+        self.executable_args: List[str] = []
 
     def check(self, _environment: TestEnvironment) -> Iterator[Verdict]:
         """Check environment for required executable."""
@@ -235,14 +235,14 @@ class CheckExecutable(Check):
             elif self.filename.endswith('sh'):
                 self.filename = '/bin/' + self.filename
             else:
-                yield Verdict(Verdict.ERROR, f'Unknown executable: {self.filename}', TestCodes.REASON_INSTALL)
+                yield Verdict(Verdict.ERROR, f'Unknown executable: {self.filename}', Reason.INSTALL)
                 return
         if self.filename.startswith('/usr/bin/python3'):
             self.executable_args.append('-u')
         if os.path.isfile(self.filename):
             yield Verdict(Verdict.INFO, f'Executable: {self.filename}')
         else:
-            yield Verdict(Verdict.ERROR, f'Missing executable: {self.filename}', TestCodes.REASON_INSTALL)
+            yield Verdict(Verdict.ERROR, f'Missing executable: {self.filename}', Reason.INSTALL)
 
     def __str__(self) -> str:
         return self.filename
@@ -272,7 +272,7 @@ class CheckVersion(Check):
             if ucs_version <= environment.ucs_version:
                 self.state = state
         if self.state == 'skip':
-            yield Verdict(Verdict.ERROR, f'Skipped for version {environment.ucs_version}', TestCodes.REASON_VERSION_MISMATCH)
+            yield Verdict(Verdict.ERROR, f'Skipped for version {environment.ucs_version}', Reason.VERSION_MISMATCH)
 
 
 class CheckTags(Check):
@@ -289,13 +289,13 @@ class CheckTags(Check):
             return
         prohibited = self.tags & environment.tags_prohibited
         if prohibited:
-            yield Verdict(Verdict.ERROR, 'De-selected by tag: %s' % (' '.join(prohibited),), TestCodes.REASON_ROLE_MISMATCH)
+            yield Verdict(Verdict.ERROR, 'De-selected by tag: %s' % (' '.join(prohibited),), Reason.ROLE_MISMATCH)
         elif environment.tags_required:
             required = self.tags & environment.tags_required
             if required:
                 yield Verdict(Verdict.INFO, 'Selected by tag: %s' % (' '.join(required),))
             else:
-                yield Verdict(Verdict.ERROR, 'De-selected by tag: %s' % (' '.join(environment.tags_required),), TestCodes.REASON_ROLE_MISMATCH)
+                yield Verdict(Verdict.ERROR, 'De-selected by tag: %s' % (' '.join(environment.tags_required),), Reason.ROLE_MISMATCH)
 
     def pytest_args(self, environment: TestEnvironment) -> List[str]:
         args = []
@@ -324,10 +324,10 @@ class CheckApps(Check):
         """Check environment for required / prohibited apps."""
         for app in self.apps_required:
             if app not in environment.local_apps:
-                yield Verdict(Verdict.ERROR, 'Required app missing: %s' % app, TestCodes.REASON_APP_MISMATCH)
+                yield Verdict(Verdict.ERROR, 'Required app missing: %s' % app, Reason.APP_MISMATCH)
         for app in self.apps_prohibited:
             if app in environment.local_apps:
-                yield Verdict(Verdict.ERROR, 'Prohibited app installed: %s' % app, TestCodes.REASON_APP_MISMATCH)
+                yield Verdict(Verdict.ERROR, 'Prohibited app installed: %s' % app, Reason.APP_MISMATCH)
 
 
 class CheckRoles(Check):
@@ -362,7 +362,7 @@ class CheckRoles(Check):
             yield Verdict(Verdict.WARNING, 'Unknown roles: %s' % (' '.join(unknown_roles),))
 
         if environment.role not in roles:
-            yield Verdict(Verdict.ERROR, 'Wrong role: %s not in (%s)' % (environment.role, ','.join(roles)), TestCodes.REASON_ROLE_MISMATCH)
+            yield Verdict(Verdict.ERROR, 'Wrong role: %s not in (%s)' % (environment.role, ','.join(roles)), Reason.ROLE_MISMATCH)
 
 
 class CheckJoin(Check):
@@ -377,9 +377,9 @@ class CheckJoin(Check):
         if self.joined is None:
             yield Verdict(Verdict.INFO, 'No required join status')
         elif self.joined and not environment.joined:
-            yield Verdict(Verdict.ERROR, 'Test requires system to be joined', TestCodes.REASON_JOIN)
+            yield Verdict(Verdict.ERROR, 'Test requires system to be joined', Reason.JOIN)
         elif not self.joined and environment.joined:
-            yield Verdict(Verdict.ERROR, 'Test requires system to be not joined', TestCodes.REASON_JOINED)
+            yield Verdict(Verdict.ERROR, 'Test requires system to be not joined', Reason.JOINED)
         else:
             yield Verdict(Verdict.INFO, f'Joined: {environment.joined}')
 
@@ -400,10 +400,10 @@ class CheckComponents(Check):
                 if active:
                     yield Verdict(Verdict.INFO, f'Required component {component} active')
                 else:
-                    yield Verdict(Verdict.ERROR, f'Required component {component} missing', TestCodes.REASON_INSTALL)
+                    yield Verdict(Verdict.ERROR, f'Required component {component} missing', Reason.INSTALL)
             else:  # not required
                 if active:
-                    yield Verdict(Verdict.ERROR, f'Prohibited component {component} active', TestCodes.REASON_INSTALLED)
+                    yield Verdict(Verdict.ERROR, f'Prohibited component {component} active', Reason.INSTALLED)
                 else:
                     yield Verdict(Verdict.INFO, f'Prohibited component {component} not active')
 
@@ -424,14 +424,14 @@ class CheckPackages(Check):
                 try:
                     pkg = environment.apt[name]
                 except KeyError:
-                    yield Verdict(Verdict.ERROR, f'Package {name} not found', TestCodes.REASON_INSTALL)
+                    yield Verdict(Verdict.ERROR, f'Package {name} not found', Reason.INSTALL)
                     continue
                 ver = pkg.installed
                 if ver is None:
-                    yield Verdict(Verdict.ERROR, f'Package {name} not installed', TestCodes.REASON_INSTALL)
+                    yield Verdict(Verdict.ERROR, f'Package {name} not installed', Reason.INSTALL)
                     continue
                 if dep_version and not apt.apt_pkg.check_dep(ver.version, dep_op, dep_version):
-                    yield Verdict(Verdict.ERROR, f'Package {name} version mismatch', TestCodes.REASON_INSTALL)
+                    yield Verdict(Verdict.ERROR, f'Package {name} version mismatch', Reason.INSTALL)
                     continue
                 yield Verdict(Verdict.INFO, f'Package {name} installed')
                 break
@@ -455,7 +455,7 @@ class CheckPackages(Check):
             except KeyError:
                 continue
             if p.installed:
-                yield Verdict(Verdict.ERROR, f'Package {pkg} is installed, but should not be', TestCodes.REASON_INSTALLED)
+                yield Verdict(Verdict.ERROR, f'Package {pkg} is installed, but should not be', Reason.INSTALLED)
                 break
 
 
@@ -474,7 +474,7 @@ class CheckExposure(Check):
             yield Verdict(Verdict.WARNING, f'Unknown exposure: {self.exposure}')
             return
         if CheckExposure.STATES.index(self.exposure) > CheckExposure.STATES.index(environment.exposure):
-            yield Verdict(Verdict.ERROR, f'Too dangerous: {self.exposure} > {environment.exposure}', TestCodes.REASON_DANGER)
+            yield Verdict(Verdict.ERROR, f'Too dangerous: {self.exposure} > {environment.exposure}', Reason.DANGER)
         else:
             yield Verdict(Verdict.INFO, f'Safe enough: {self.exposure} <= {environment.exposure}')
 
@@ -577,7 +577,7 @@ class TestCase:
 
         self.is_pytest = PytestRunner.is_pytest(self)
 
-    def check(self, environment: TestEnvironment) -> List[Check]:
+    def check(self, environment: TestEnvironment) -> List[Verdict]:
         """Check if the test case should run."""
         TestCase.logger.info(f'Checking test {self.filename}')
         if self.timeout is None:
@@ -721,26 +721,26 @@ class TestCase:
         if clean:
             result.attach(part, 'text/plain', clean)
 
-    def _translate_result(self, result: TestResult) -> None:
+    def _translate_result(self, result: TestResult) -> Reason:
         """Translate exit code into result."""
-        if result.result == TestCodes.RESULT_OKAY:
-            result.reason = {
-                'fixed': TestCodes.REASON_FIXED_EXPECTED,
-                'found': TestCodes.REASON_FIXED_UNEXPECTED,
-                'run': TestCodes.REASON_OKAY,
-            }.get(self.versions.state, result.result)
-        elif result.result == TestCodes.RESULT_SKIP:
-            result.reason = TestCodes.REASON_SKIP
-        else:
-            if result.result in TestCodes.MESSAGE:
-                result.reason = result.result
-            else:
-                result.reason = {
-                    'fixed': TestCodes.REASON_FAIL_UNEXPECTED,
-                    'found': TestCodes.REASON_FAIL_EXPECTED,
-                    'run': TestCodes.REASON_FAIL,
-                }.get(self.versions.state, result.result)
-        result.eofs = TestCodes.EOFS.get(result.reason, 'E')
+        if result.result == int(Reason.SKIP):
+            return Reason.SKIP
+
+        if result.result == 0:
+            return {
+                'fixed': Reason.FIXED_EXPECTED,
+                'found': Reason.FIXED_UNEXPECTED,
+                'run': Reason.OKAY,
+            }.get(self.versions.state, Reason.OKAY)
+
+        try:
+            return Reason.lookup(result.result)
+        except Exception:
+            return {
+                'fixed': Reason.FAIL_UNEXPECTED,
+                'found': Reason.FAIL_EXPECTED,
+                'run': Reason.FAIL,
+            }.get(self.versions.state, Reason.FAIL)
 
     def run(self, result: TestResult) -> None:
         """Run the test case and fill in result."""
@@ -765,8 +765,7 @@ class TestCase:
         # Protect wrapper from Ctrl-C as long as test case is running
         def handle_int(_signal: int, _frame: Any) -> None:
             """Handle Ctrl-C signal."""
-            result.result = TestCodes.RESULT_SKIP
-            result.reason = TestCodes.REASON_ABORT
+            result.reason = Reason.ABORT
         old_sig_int = signal.signal(signal.SIGINT, handle_int)
 
         def prepare_child() -> None:
@@ -777,6 +776,7 @@ class TestCase:
         try:
             TestCase.logger.debug('Running %r using %s in %s', cmd, self.exe, dirname)
             try:
+                assert self.exe is not None
                 if result.environment.interactive:
                     proc = Popen(
                         cmd, executable=self.exe.filename,
@@ -803,7 +803,7 @@ class TestCase:
                 raise
         finally:
             signal.signal(signal.SIGINT, old_sig_int)
-            if result.reason == TestCodes.REASON_ABORT:
+            if result.reason == Reason.ABORT:
                 raise KeyboardInterrupt()  # pylint: disable-msg=W1010
 
         time_end = datetime.now()
@@ -820,75 +820,53 @@ class TestCase:
         result.duration = time_delta.total_seconds() * 1000
         TestCase.logger.info('Test %r using %s in %s returned %s in %s ms', cmd, self.exe, dirname, result.result, result.duration)
 
-        self._translate_result(result)
+        result.reason = self._translate_result(result)
 
 
 class TestResult:
     """Test result from running a test case."""
 
-    def __init__(self, case, environment=None):
+    def __init__(self, case: TestCase, environment: TestEnvironment) -> None:
         self.case = case
         self.environment = environment
         self.result = -1
-        self.reason = None
-        self.duration = 0
-        self.artifacts = {}
-        self.condition = None
-        self.eofs = None
+        self.reason = Reason.UNKNOWN
+        self.duration = 0.0
+        self.artifacts: Dict[str, Tuple[str, Any]] = {}
+        self.condition: bool | None = None
         self.is_pytest = False
 
-    def dump(self, stream=sys.stdout):
+    def dump(self, stream: IO[str] = sys.stdout) -> None:
         """Dump test result data."""
         print('Case: %s' % (self.case.uid,), file=stream)
         print('Environment: %s' % (self.environment.hostname,), file=stream)
-        print('Result: %d %s' % (self.result, self.eofs), file=stream)
-        print('Reason: %s (%s)' % (self.reason, TestCodes.MESSAGE.get(self.reason, '')), file=stream)
+        print('Result: %d' % (self.result,), file=stream)
+        print('Reason: %s (%d) %s' % (self.reason, int(self.reason), self.reason.eofs), file=stream)
         print('Duration: %d' % (self.duration or 0,), file=stream)
         for (key, (mime, content)) in self.artifacts.items():
             print('Artifact[%s]: %s %r' % (key, mime, content))
 
-    def attach(self, key, mime, content):
+    def attach(self, key: str, mime: str, content: Any) -> None:
         """Attach artifact 'content' of mime-type 'mime'."""
         self.artifacts[key] = (mime, content)
 
-    def success(self, reason=TestCodes.REASON_OKAY):
-        """Mark result as successful."""
-        self.result = TestCodes.RESULT_OKAY
-        self.reason = reason
-        self.eofs = 'O'
-
-    def fail(self, reason=TestCodes.REASON_FAIL):
-        """Mark result as failed."""
-        self.result = TestCodes.RESULT_FAIL
-        self.reason = reason
-        self.eofs = 'F'
-
-    def skip(self, reason=TestCodes.REASON_INTERNAL):
-        """Mark result as skipped."""
-        self.result = TestCodes.RESULT_SKIP
-        self.reason = self.reason or reason
-        self.eofs = 'S'
-
-    def check(self):
+    def check(self) -> bool:
         """Test conditions to run test."""
         conditions = self.case.check(self.environment)
         self.attach('check', 'python', conditions)
         self.condition = reduce(and_, (bool(_) for _ in conditions), True)
-        reasons = [c.reason for c in conditions if c.reason is not None]
-        if reasons:
-            self.reason = reasons[0]
-        else:
-            self.reason = None
+        reasons = [c.reason for c in conditions if c.reason is not None] + [Reason.UNKNOWN]
+        self.reason = reasons[0]
         return self.condition
 
-    def run(self):
+    def run(self) -> TestResult:
         """Return test."""
         if self.condition is None:
             self.check()
         if self.condition:
             self.case.run(self)
         else:
-            self.skip()
+            self.result = int(Reason.SKIP)
         return self
 
 
@@ -940,7 +918,7 @@ def __run_test(filename: str) -> None:
     """Run local test."""
     test_env = TestEnvironment()
     # test_env.dump()
-    test_case = TestCase().load(filename)
+    test_case = TestCase(filename).load()
     # try:
     #     test_case.check(te)
     # except TestConditionError, ex:

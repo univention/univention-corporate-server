@@ -7,7 +7,7 @@ from univention.config_registry import ConfigRegistry
 from univention.lib.misc import custom_groupname
 from univention.lib.umc import ConnectionError, HTTPError
 from univention.testing import utils
-from univention.testing.codes import TestCodes
+from univention.testing.codes import Reason
 from univention.testing.umc import Client
 
 
@@ -108,9 +108,9 @@ class UMCBase:
         assert request_result
         assert request_result[0].get('success')
 
-    def return_code_result_skip(self):
+    def return_code_result_skip(self) -> None:
         """Method to stop the test with the code 77, RESULT_SKIP"""
-        sys.exit(TestCodes.RESULT_SKIP)
+        sys.exit(int(Reason.SKIP))
 
 
 class JoinModule(UMCBase):

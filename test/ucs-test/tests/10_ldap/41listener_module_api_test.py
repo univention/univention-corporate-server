@@ -22,7 +22,7 @@ import univention.testing.udm as udm_test
 from univention.config_registry import handler_set
 from univention.listener.handler_logging import get_logger
 from univention.testing import utils
-from univention.testing.codes import TestCodes
+from univention.testing.codes import Reason
 from univention.testing.decorators import SetTimeout
 from univention.testing.ucs_samba import wait_for_drs_replication, wait_for_s4connector
 
@@ -206,7 +206,7 @@ def main():
 if __name__ == '__main__':
     # see Bug #49723, fails on samba master, so skip for now
     if utils.package_installed('univention-samba4'):
-        sys.exit(TestCodes.RESULT_SKIP)
+        sys.exit(int(Reason.SKIP))
     try:
         main()
     finally:

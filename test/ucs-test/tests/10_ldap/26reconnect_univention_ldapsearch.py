@@ -17,7 +17,6 @@ from time import sleep
 import psutil
 
 from univention.config_registry import ConfigRegistry, handler_set
-from univention.testing.codes import TestCodes
 from univention.testing.utils import fail
 
 
@@ -73,7 +72,7 @@ def perform_univention_ldapsearch(fail_on_success=False):
         Proc.start()
         Proc.join(60)  # timeout = 60 seconds
 
-        if Proc.exitcode != TestCodes.RESULT_OKAY:
+        if Proc.exitcode:
             fail("The univention-ldapsearch did not return correct code. "
                  "Please check the complete output.")
 

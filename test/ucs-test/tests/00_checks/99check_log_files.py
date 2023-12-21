@@ -9,14 +9,14 @@
 
 import gzip
 import re
+import sys
 from os import path
-from sys import exit
 
 from check_log_files_definitions import Errors, Tracebacks, Warnings
 
 from univention.management.console.modules.setup.setup_script import Profile
 from univention.testing import utils
-from univention.testing.codes import TestCodes
+from univention.testing.codes import Reason
 
 
 class CheckLogFiles:
@@ -33,7 +33,7 @@ class CheckLogFiles:
         self.max_trace_lines = 40  # max length of a trace in lines
         self.last_trace_msg = ''
 
-        self.return_code = TestCodes.RESULT_OKAY  # returned if no errors found
+        self.return_code = Reason.OKAY  # returned if no errors found
 
     def extract_traceback_message(self):
         """
@@ -211,7 +211,7 @@ class CheckLogFiles:
 
             if errors:
                 # Errors detected, test should fail
-                self.return_code = TestCodes.RESULT_FAIL
+                self.return_code = Reason.FAIL
                 print("\nErrors found in '%s':\n" % filename)
                 for line in errors:
                     print(" E: %s" % line)
@@ -236,4 +236,4 @@ if __name__ == '__main__':
     LogChecker = CheckLogFiles()
     LogChecker.main(log_files)
 
-    exit(LogChecker.return_code)
+    sys.exit(int(LogChecker.return_code))

@@ -18,7 +18,7 @@ from typing import Iterator, List, Sequence, Tuple
 
 from univention.config_registry import ucr
 from univention.testing import utils
-from univention.testing.codes import TestCodes
+from univention.testing.codes import Reason
 from univention.testing.strings import random_username
 
 
@@ -185,7 +185,7 @@ def dump_pwpolicy() -> Iterator[str]:
 def main() -> None:
     if not all((admin_username, admin_password, hostname)):
         print("SKIP: Missing Administrator credentials or a hostname from UCR.")
-        sys.exit(TestCodes.REASON_INSTALL)
+        sys.exit(int(Reason.INSTALL))
 
     try:
         create_delete_test_user(True)

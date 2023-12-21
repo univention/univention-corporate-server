@@ -72,7 +72,7 @@ def main() -> int:
     test_case = TestCase(options.test.name).load()
     test_result = TestResult(test_case, test_env).run()
     format.format(test_result)
-    return 0 if test_result.eofs in 'OS' else 1
+    return 0 if test_result.reason.eofs in {'O', 'S'} else 1
 
 
 if __name__ == '__main__':

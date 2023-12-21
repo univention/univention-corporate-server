@@ -3,7 +3,6 @@
 import sys
 from typing import IO
 
-from univention.testing.codes import TestCodes
 from univention.testing.data import TestEnvironment, TestFormatInterface, TestResult
 
 
@@ -26,10 +25,10 @@ class TAP(TestFormatInterface):
 
     def end_test(self, result: TestResult) -> None:
         """Called after each test."""
-        if result.result == TestCodes.RESULT_OKAY:
+        if result.reason.eofs == "O":
             prefix = 'ok'
             suffix = ''
-        elif result.result == TestCodes.RESULT_SKIP:
+        elif result.reason.eofs == "S":
             prefix = 'not ok'
             suffix = ' # skip'
         else:

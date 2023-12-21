@@ -7,14 +7,14 @@
 ##   - univention-management-console-module-appcenter
 ## exposure: careful
 
-from sys import exit
+import sys
 from time import sleep
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ucr import ucr_get
 from univention.appcenter.udm import ApplicationLDAPObject, get_machine_connection
 from univention.testing import utils
-from univention.testing.codes import TestCodes
+from univention.testing.codes import Reason
 
 
 APP_ID = 'univention-demo-data'
@@ -27,7 +27,7 @@ def get_app_dn(App):
     return app_dn
 
 
-def check_app_version_ldap_registraton(new_version):
+def check_app_version_ldap_registraton(new_version: str) -> None:
     """
     Tries to create an LDAP object for App with 'APP_ID' and 'new_version'
     and verifies it after.
@@ -39,7 +39,7 @@ def check_app_version_ldap_registraton(new_version):
     if not App:
         print("\nThe App with id '%s' could not be found, skipping the test."
               % APP_ID)
-        exit(TestCodes.RESULT_SKIP)
+        sys.exit(int(Reason.SKIP))
 
     App.version = new_version
 

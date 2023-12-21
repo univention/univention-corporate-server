@@ -11,15 +11,14 @@ import sys
 import dns.resolver
 
 import univention.lib.admember
+from univention.config_registry import ucr
 from univention.config_registry.interfaces import Interfaces
-from univention.testing.codes import TestCodes
+from univention.testing.codes import Reason
 
 
 if not univention.lib.admember.is_localhost_in_admember_mode():
-    sys.exit(TestCodes.RESULT_SKIP)
+    sys.exit(int(Reason.SKIP))
 
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
 ad_domain_info = univention.lib.admember.lookup_adds_dc()
 ad_ip = ad_domain_info['DC IP']
 my_ip = Interfaces().get_default_ip_address().ip
@@ -30,10 +29,5 @@ resolver = dns.resolver.Resolver()
 resolver.nameservers = [ad_ip]
 resolver.lifetime = 10
 response = resolver.query(fqdn, 'A')
-ret_val = TestCodes.RESULT_FAIL
-found = False
-for data in response:
-    if str(data) == str(my_ip):
-        ret_val = TestCodes.RESULT_OKAY
-
-sys.exit(ret_val)
+ret_val = Reason.OKAY if any(str(data) == str(my_ip) for data in response) else Reason.FAIL
+sys.exit(int(ret_val))

@@ -5,7 +5,6 @@ import sys
 from typing import IO
 from xml.sax.saxutils import escape as escape_xml
 
-from univention.testing.codes import TestCodes
 from univention.testing.data import TestEnvironment, TestFormatInterface, TestResult
 
 
@@ -45,18 +44,16 @@ class HTML(TestFormatInterface):
         if result.case.bugs or result.case.otrs:
             links = []
             links += [
-                '<a href="%s">Bug #%d</a>' %
+                '<a href="%s">Bug #%s</a>' %
                 (escape_xml(URI_BUG % bug), bug)
                 for bug in result.case.bugs]
             links += [
-                '<a href="%s">OTRS #%d</a>' %
+                '<a href="%s">OTRS #%s</a>' %
                 (escape_xml(URI_OTRS % tick), tick)
                 for tick in result.case.otrs]
             title = '%s (%s)' % (title, ', '.join(links))
-        msg = TestCodes.MESSAGE.get(result.reason, TestCodes.REASON_INTERNAL)
-        colorname = TestCodes.COLOR.get(result.reason, 'BLACK')
         msg = '<span style="color:%s;">%s</span>' % \
-            (colorname.lower(), escape_xml(msg))
+            (result.reason.color.lower(), escape_xml(str(result.reason)))
         print(f'<tr><td>{title}</td><td>{msg}</td></tr>', file=self.stream)
         super().end_test(result)
 

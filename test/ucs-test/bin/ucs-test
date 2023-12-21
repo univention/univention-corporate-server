@@ -11,6 +11,7 @@ from time import time
 from typing import Iterable, List, Mapping, Tuple
 
 import univention.testing.format
+from univention.testing.codes import Reason
 from univention.testing.coverage import Coverage
 from univention.testing.data import TestCase, TestEnvironment, TestFormatInterface, TestResult
 from univention.testing.errors import TestError
@@ -149,11 +150,11 @@ class TestSet:
 
                         try:
                             if failed_message:
-                                test_result.fail()
+                                test_result.reason = Reason.FAIL
                                 test_result.attach('stdout', 'text/plain', failed_message)
                             elif not dry_run:
                                 test_result.run()
-                                if stop_on_failure and test_result.eofs in 'EF':
+                                if stop_on_failure and test_result.reason.eofs in 'EF':
                                     return 1
                         finally:
                             self.format.end_test(test_result)
