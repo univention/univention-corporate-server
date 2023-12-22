@@ -8,7 +8,7 @@ from urllib.parse import quote
 import pytest
 from playwright.sync_api import BrowserContext, BrowserType, Page, expect
 
-from univention.config_registry import handler_set, handler_unset, ucr
+from univention.config_registry import handler_set, handler_unset
 from univention.testing import udm as _udm
 from univention.testing.browser import logger
 from univention.testing.browser.generic_udm_module import UserModule
@@ -216,9 +216,3 @@ def app_center_cache():
     app_center_cache = AppCenterCacheTest()
     yield app_center_cache
     app_center_cache.restore()
-
-
-german_english_not_available = pytest.mark.skipif(
-    {locale.split(".")[0] for locale in ucr.get("locale", "").split()} < {"de_DE", "en_US"},
-    reason="German and english locale needs to be configured"
-)

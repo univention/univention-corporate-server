@@ -18,6 +18,7 @@ from univention.admin.rest.client import (
 )
 from univention.config_registry import ucr
 from univention.lib.misc import custom_groupname
+from univention.testing.conftest import locale_available
 from univention.testing.udm import UDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import UCSTestDomainAdminCredentials
 
@@ -230,6 +231,7 @@ def test_special_characters_in_dn(name, udm_client, udm_rest):
     assert obj
 
 
+@locale_available()
 @pytest.mark.parametrize('language,error_message', [
     ('en-US', 'The property gecos has an invalid value: Field must only contain ASCII characters!'),
     ('de-DE', 'Die Eigenschaft gecos hat einen ungültigen Wert: Der Wert darf nur ASCII Buchstaben enthalten!'),

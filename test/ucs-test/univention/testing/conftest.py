@@ -34,10 +34,15 @@
 
 """conftest plugin for pytest runner in ucs-test"""
 
+from typing import Callable, TypeVar
 
 import pytest
 from _pytest.config import Config
 from _pytest.config.argparsing import Parser
+
+
+_RT = TypeVar("_RT")
+_F = Callable[..., _RT]  # Py3.10+: Callable[ParamSpec, _RT]
 
 
 def pytest_addoption(parser: Parser) -> None:
@@ -148,3 +153,14 @@ def check_exposure(item: pytest.Item) -> None:
         exposure = item.config.getoption("--ucs-test-default-exposure", "safe")
     if CheckExposure.STATES.index(exposure) > CheckExposure.STATES.index(required_exposure):
         pytest.skip(f'Too dangerous: {exposure} > {required_exposure}')
+
+
+def locale_available(*locales: str) -> Callable[[_F], _F]:  # Py3.10+: ParamSpec
+    from univention.config_registry import ucr
+    available = {locale.split(".")[0] for locale in ucr.get("locale", "").split()}
+    required = set(locales) or {"de_DE", "en_US"}
+
+    return pytest.mark.skipif(
+        available < required,
+        reason="Required locales are not available",
+    )

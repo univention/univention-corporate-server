@@ -10,6 +10,7 @@
 ##  - skip_admember
 ## join: true
 ## exposure: dangerous
+
 from __future__ import annotations
 
 import re
@@ -18,20 +19,20 @@ from typing import Set
 
 import psutil
 import pytest
-from conftest import german_english_not_available
 from playwright.sync_api import BrowserContext, expect
 
 from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UCSLanguage, UMCBrowserTest
 from univention.testing.browser.process_overview import ProcessOverview
 from univention.testing.browser.sidemenu import SideMenu
+from univention.testing.conftest import locale_available
 
 
 translator = Translation("ucs-test-browser")
 _ = translator.translate
 
 
-@german_english_not_available
+@locale_available()
 def test_switch_language(umc_browser_test: UMCBrowserTest):
     original_language = umc_browser_test.lang
     target_language = UCSLanguage.DE_DE if umc_browser_test.lang == UCSLanguage.EN_US else UCSLanguage.EN_US
