@@ -70,7 +70,7 @@ class TestEnvironment:
         self._load_ucr()
         self._load_join()
         self._load_apt()
-        self._load_apps()
+        self._local_apps: List[str] | None = None
 
         if interactive:
             self.tags_required: Set[str] | None = None
@@ -81,16 +81,19 @@ class TestEnvironment:
 
         self.log = open(logfile or os.path.devnull, 'a')
 
-    def _load_apps(self) -> None:
-        """Load locally installed apps."""
+    @property
+    def local_apps(self) -> List[str]:
+        """Lazy load locally installed apps."""
         logging.getLogger('univention.appcenter').setLevel(TestEnvironment.logger.getEffectiveLevel())
-        # shitty, but we have no app cache in pbuilder and apps_cache can't handle that
-        try:
-            from univention.appcenter.app_cache import Apps
-            apps_cache = Apps()
-            self.local_apps = [app.id for app in apps_cache.get_all_locally_installed_apps()]
-        except (ImportError, TypeError, PermissionError):
-            self.local_apps = []
+        if self._local_apps is None:
+            # shitty, but we have no app cache in pbuilder and apps_cache can't handle that
+            try:
+                from univention.appcenter.app_cache import Apps
+                apps_cache = Apps()
+                self._local_apps = [app.id for app in apps_cache.get_all_locally_installed_apps()]
+            except (ImportError, TypeError, PermissionError):
+                self._local_apps = []
+        return self._local_apps
 
     def _load_host(self) -> None:
         """Load host system information."""
