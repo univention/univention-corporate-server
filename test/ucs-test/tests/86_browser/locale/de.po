@@ -227,8 +227,8 @@ msgid "Last name"
 msgstr "Nachname"
 
 #: tests/86_browser/11_umc_pam-login_unclosed_fh_test.py:40
-msgid "Login"
-msgstr ""
+msgid "Login Same tab"
+msgstr "Anmelden Gleicher Tab"
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:44
 #: tests/86_browser/131_miscellaneous_module_availability.py:87
@@ -417,11 +417,6 @@ msgstr ""
 
 #: tests/86_browser/111_product_test_execute_join_script.py:84
 msgid "Run join scripts"
-msgstr ""
-
-#: tests/86_browser/131_miscellaneous_module_availability.py:48
-#: tests/86_browser/131_miscellaneous_module_availability.py:91
-msgid "SAML identity provider"
 msgstr ""
 
 #: tests/86_browser/14_password_self-service.py:100
@@ -638,21 +633,3 @@ msgstr "Passwort wurde bereits genutzt"
 #: tests/86_browser/111_product_test_execute_join_script.py:91
 msgid "restart of the UMC server"
 msgstr ""
-
-#~ msgid "Change the password of"
-#~ msgstr "Passwort ändern für"
-
-#~ msgid "Search query"
-#~ msgstr "Suche Benutzer..."
-
-#~ msgid "Switch language"
-#~ msgstr "Sprache ändern"
-
-#~ msgid "Univention Blog"
-#~ msgstr "Univention Blog"
-
-#~ msgid "Your session has expired, please login again."
-#~ msgstr "Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an."
-
-#~ msgid "no module available"
-#~ msgstr "kein Modul verfügbar"
