@@ -236,25 +236,25 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
             "alias": payload["displayName"],
             "type": payload["type"],
         }
-        self.create_authentication_flow_subflow(payload=json.dumps(_payload), flow_alias=flow_alias)
+        self.create_authentication_flow_subflow(payload=_payload, flow_alias=flow_alias)
         executions = self.get_authentication_flow_executions(flow_alias=flow_alias)
         flow = [x for x in executions if x.get("displayName") == payload["displayName"]][0]  # noqa: RUF015
         payload["id"] = flow["id"]
         del payload["type"]
         try:
-            self.update_authentication_flow_executions(payload=json.dumps(payload), flow_alias=flow_alias)
+            self.update_authentication_flow_executions(payload=payload, flow_alias=flow_alias)
         except KeycloakGetError as exc:
             if exc.response_code != 202:
                 raise
 
     def create_and_update_authentication_flow_execution(self, payload: dict, flow_alias: str) -> None:
         _payload = {"provider": payload.get("providerId")}
-        self.create_authentication_flow_execution(payload=json.dumps(_payload), flow_alias=flow_alias)
+        self.create_authentication_flow_execution(payload=_payload, flow_alias=flow_alias)
         executions = self.get_authentication_flow_executions(flow_alias=flow_alias)
         execution = [x for x in executions if x.get("providerId") == payload.get("providerId")][0]  # noqa: RUF015
         payload["id"] = execution["id"]
         try:
-            self.update_authentication_flow_executions(payload=json.dumps(payload), flow_alias=flow_alias)
+            self.update_authentication_flow_executions(payload=payload, flow_alias=flow_alias)
         except KeycloakGetError as exc:
             if exc.response_code != 202:
                 raise
@@ -1798,7 +1798,7 @@ def create_legacy_authentication_flow(opt: Namespace) -> None:
         "topLevel": True,
         "description": "browser based authentication with Univention App Authenticator authorization",
     }
-    session.create_authentication_flow(payload=json.dumps(payload))
+    session.create_authentication_flow(payload=payload)
 
     # add subflow for "normal steps"
     sub_flow_name = f"Normal Login ({opt.flow} legacy app authorization)"
@@ -2290,7 +2290,7 @@ def extract_metadata(metadata_url, no_ssl_verify):
     xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
     saml_descriptor_xml = ElementTree.fromstring(xml_content)
     signing_cert = saml_descriptor_xml.find('.//{http://www.w3.org/2000/09/xmldsig#}X509Certificate').text
-    encryption_cert = saml_descriptor_xml.findall(".//{http://www.w3.org/2000/09/xmldsig#}X509Certificate")[1].text
+    encryption_cert = saml_descriptor_xml.findall(".//{http://www.w3.org/2000/09/xmldsig#}X509Certificate")[-1].text
     sso_url = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService').attrib["Location"]
 
     metadata_info = {"encryption": encryption_cert, "signing": signing_cert, "sso_logout_url": sso_url}
@@ -2549,12 +2549,12 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
             print("Deleted: ", flow["alias"])
 
     # copy default browser flow
-    kc_admin.copy_authentication_flow(payload=json.dumps({"newName": flow_name}), flow_alias="browser")
+    kc_admin.copy_authentication_flow(payload={"newName": flow_name}, flow_alias="browser")
 
     # create role condition
     master_subflow = f"{flow_name} Browser - Conditional OTP"
     payload = {"provider": "conditional-user-role", "requirement": "REQUIRED"}
-    kc_admin.create_authentication_flow_execution(payload=json.dumps(payload), flow_alias=master_subflow)
+    kc_admin.create_authentication_flow_execution(payload=payload, flow_alias=master_subflow)
 
     # determine user role execution id
     condition_user_role_id = None
@@ -2575,7 +2575,7 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
         "requirement": "REQUIRED",
     }
     try:
-        kc_admin.update_authentication_flow_executions(payload=json.dumps(payload_update_required_state), flow_alias=flow_name)
+        kc_admin.update_authentication_flow_executions(payload=payload_update_required_state, flow_alias=flow_name)
     except KeycloakGetError as exc:
         if exc.response_code != 202:
             raise
@@ -2603,7 +2603,7 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
 
     # FIXME: keycloak API bug, responds with 202
     try:
-        kc_admin.update_authentication_flow_executions(json.dumps(payload_condition_user), flow_name)
+        kc_admin.update_authentication_flow_executions(payload_condition_user, flow_name)
     except KeycloakGetError as exc:
         if exc.response_code != 202:
             raise exc
@@ -2655,12 +2655,12 @@ def create_adhoc_flow(opt):
         "newName": "Univention-Authenticator ad hoc federation flow",
     }
 
-    kc_admin.copy_authentication_flow(payload=json.dumps(payload_authflow), flow_alias='first broker login')
+    kc_admin.copy_authentication_flow(payload=payload_authflow, flow_alias='first broker login')
 
     payload_exec_flow = {
         'provider': "univention-authenticator",
     }
-    kc_admin.create_authentication_flow_execution(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad hoc federation flow')
+    kc_admin.create_authentication_flow_execution(payload=payload_exec_flow, flow_alias='Univention-Authenticator ad hoc federation flow')
 
     execution_list = kc_admin.get_authentication_flow_executions("Univention-Authenticator ad hoc federation flow")
     ua_execution = [flow for flow in execution_list if flow["displayName"] == "Univention Authenticator"][0]  # noqa: RUF015
@@ -2678,7 +2678,7 @@ def create_adhoc_flow(opt):
         "index": 2,
     }
     try:
-        kc_admin.update_authentication_flow_executions(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad hoc federation flow')
+        kc_admin.update_authentication_flow_executions(payload=payload_exec_flow, flow_alias='Univention-Authenticator ad hoc federation flow')
     except KeycloakError as exc:
         print(exc)
         if exc.response_code != 202:  # FIXME: function expected 204 response it gets 202
@@ -2688,8 +2688,8 @@ def create_adhoc_flow(opt):
     config_ua = {
         "config": {
             "udm_endpoint": f"https://{opt.host_fqdn}/univention/udm",
-            "udm_user": opt.UDM_user,
-            "udm_password": opt.UDM_pwd,
+            "udm_user": opt.udm_user,
+            "udm_password": opt.udm_pwd,
         },
         "alias": "localhost config",
     }
