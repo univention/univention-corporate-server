@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucs-test 1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-08-02 14:12+0200\n"
+"POT-Creation-Date: 2023-12-22 12:35+0100\n"
 "PO-Revision-Date: 2020-09-05 16:31+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -16,11 +16,11 @@ msgstr ""
 msgid "A reboot of the server is recommended"
 msgstr ""
 
-#: tests/86_browser/10_product_test_password_change.py:276
+#: tests/86_browser/10_product_test_password_change.py:271
 msgid "Account"
 msgstr "Konto"
 
-#: tests/86_browser/17_self_service_registration.py:321
+#: tests/86_browser/17_self_service_registration.py:324
 msgid "Account creation successful"
 msgstr "Kontoerstellung erfolgreich"
 
@@ -36,18 +36,18 @@ msgstr "Zu Favoriten hinzufügen"
 msgid "Administration"
 msgstr "Verwaltung"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:57
-#: tests/86_browser/131_miscellaneous_module_availability.py:99
-#: tests/86_browser/131_miscellaneous_module_availability.py:127
-#: tests/86_browser/131_miscellaneous_module_availability.py:155
+#: tests/86_browser/131_miscellaneous_module_availability.py:56
+#: tests/86_browser/131_miscellaneous_module_availability.py:97
+#: tests/86_browser/131_miscellaneous_module_availability.py:125
+#: tests/86_browser/131_miscellaneous_module_availability.py:153
 msgid "App Center"
 msgstr ""
 
-#: tests/86_browser/12_product_test_ucr.py:72
+#: tests/86_browser/12_product_test_ucr.py:70
 msgid "Base Settings"
 msgstr ""
 
-#: tests/86_browser/10_product_test_password_change.py:230
+#: tests/86_browser/10_product_test_password_change.py:225
 #: tests/86_browser/151_udm_users.py:70
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
@@ -57,7 +57,7 @@ msgstr "Grundeinstellungen"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: tests/86_browser/12_product_test_ucr.py:72
+#: tests/86_browser/12_product_test_ucr.py:70
 msgid "Category"
 msgstr "Kategorie"
 
@@ -65,17 +65,17 @@ msgstr "Kategorie"
 msgid "Central portal web page for the UCS domain"
 msgstr "Zentrale Portal-Webseite für die UCS-Domäne"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:49
-#: tests/86_browser/131_miscellaneous_module_availability.py:65
+#: tests/86_browser/131_miscellaneous_module_availability.py:48
+#: tests/86_browser/131_miscellaneous_module_availability.py:64
 msgid "Certificate settings"
 msgstr "Zertifikats-Einstellungen"
 
-#: tests/86_browser/134_side_menu.py:28
+#: tests/86_browser/10_product_test_password_change.py:167
 #: tests/86_browser/14_password_self-service.py:88
 #: tests/86_browser/14_password_self-service.py:105
 #: tests/86_browser/14_password_self-service.py:115
 #: tests/86_browser/14_password_self-service.py:130
-#: tests/86_browser/10_product_test_password_change.py:162
+#: tests/86_browser/134_side_menu.py:28
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -83,12 +83,12 @@ msgstr "Passwort ändern"
 msgid "Change your (expired) password."
 msgstr ""
 
-#: tests/86_browser/135_upload_license.py:67
+#: tests/86_browser/135_upload_license.py:71
 msgid "Close"
 msgstr "Schließen"
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:37
-#: tests/86_browser/131_miscellaneous_module_availability.py:80
+#: tests/86_browser/131_miscellaneous_module_availability.py:79
 msgid "Computers"
 msgstr "Rechner"
 
@@ -96,9 +96,9 @@ msgstr "Rechner"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: tests/86_browser/17_self_service_registration.py:130
-#: tests/86_browser/17_self_service_registration.py:152
-#: tests/86_browser/17_self_service_registration.py:162
+#: tests/86_browser/17_self_service_registration.py:132
+#: tests/86_browser/17_self_service_registration.py:154
+#: tests/86_browser/17_self_service_registration.py:164
 msgid "Create an account"
 msgstr "Konto erstellen"
 
@@ -107,17 +107,17 @@ msgid "Create new policy"
 msgstr "Neue Richtlinie erstellen"
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:40
-#: tests/86_browser/131_miscellaneous_module_availability.py:83
+#: tests/86_browser/131_miscellaneous_module_availability.py:82
 msgid "DHCP"
 msgstr ""
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:41
-#: tests/86_browser/131_miscellaneous_module_availability.py:84
+#: tests/86_browser/131_miscellaneous_module_availability.py:83
 msgid "DNS"
 msgstr ""
 
-#: tests/86_browser/17_self_service_registration.py:189
 #: tests/86_browser/151_udm_users.py:73
+#: tests/86_browser/17_self_service_registration.py:191
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -128,13 +128,13 @@ msgstr ""
 #: tests/86_browser/110_product_test_do_rejoin.py:43
 #: tests/86_browser/111_product_test_execute_join_script.py:68
 #: tests/86_browser/131_miscellaneous_module_availability.py:42
-#: tests/86_browser/131_miscellaneous_module_availability.py:64
-#: tests/86_browser/131_miscellaneous_module_availability.py:85
-#: tests/86_browser/131_miscellaneous_module_availability.py:106
-#: tests/86_browser/131_miscellaneous_module_availability.py:119
-#: tests/86_browser/131_miscellaneous_module_availability.py:134
-#: tests/86_browser/131_miscellaneous_module_availability.py:147
-#: tests/86_browser/131_miscellaneous_module_availability.py:162
+#: tests/86_browser/131_miscellaneous_module_availability.py:63
+#: tests/86_browser/131_miscellaneous_module_availability.py:84
+#: tests/86_browser/131_miscellaneous_module_availability.py:104
+#: tests/86_browser/131_miscellaneous_module_availability.py:117
+#: tests/86_browser/131_miscellaneous_module_availability.py:132
+#: tests/86_browser/131_miscellaneous_module_availability.py:145
+#: tests/86_browser/131_miscellaneous_module_availability.py:160
 msgid "Domain join"
 msgstr "Domänenbeitritt"
 
@@ -142,18 +142,18 @@ msgstr "Domänenbeitritt"
 msgid "Edit Portal"
 msgstr "Portal bearbeiten"
 
-#: tests/86_browser/17_self_service_registration.py:74
-#: tests/86_browser/17_self_service_registration.py:171
-#: tests/86_browser/17_self_service_registration.py:186
-#: tests/86_browser/17_self_service_registration.py:306
+#: tests/86_browser/17_self_service_registration.py:76
+#: tests/86_browser/17_self_service_registration.py:173
+#: tests/86_browser/17_self_service_registration.py:188
+#: tests/86_browser/17_self_service_registration.py:309
 msgid "Email"
 msgstr "E-Mail"
 
-#: tests/86_browser/17_self_service_registration.py:307
+#: tests/86_browser/17_self_service_registration.py:310
 msgid "Email (retype)"
 msgstr "E-Mail (Wiederholung)"
 
-#: tests/86_browser/10_product_test_password_change.py:181
+#: tests/86_browser/10_product_test_password_change.py:176
 msgid "Error changing password"
 msgstr "Fehler bei Passwortänderung"
 
@@ -161,26 +161,27 @@ msgstr "Fehler bei Passwortänderung"
 msgid "Execute"
 msgstr ""
 
-#: tests/86_browser/15_favorite_modules.py:85
+#: tests/86_browser/10_product_test_password_change.py:247
 #: tests/86_browser/10_product_test_password_change.py:252
-#: tests/86_browser/10_product_test_password_change.py:257
-#: tests/86_browser/130_miscellaneous.py:44
-#: tests/86_browser/130_miscellaneous.py:51
+#: tests/86_browser/130_miscellaneous.py:46
+#: tests/86_browser/130_miscellaneous.py:53
+#: tests/86_browser/132_miscellaneous_open_all_modules.py:45
+#: tests/86_browser/15_favorite_modules.py:85
 msgid "Favorites"
 msgstr "Favoriten"
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:34
-#: tests/86_browser/131_miscellaneous_module_availability.py:63
-#: tests/86_browser/131_miscellaneous_module_availability.py:77
-#: tests/86_browser/131_miscellaneous_module_availability.py:105
-#: tests/86_browser/131_miscellaneous_module_availability.py:118
-#: tests/86_browser/131_miscellaneous_module_availability.py:133
-#: tests/86_browser/131_miscellaneous_module_availability.py:146
-#: tests/86_browser/131_miscellaneous_module_availability.py:161
+#: tests/86_browser/131_miscellaneous_module_availability.py:62
+#: tests/86_browser/131_miscellaneous_module_availability.py:76
+#: tests/86_browser/131_miscellaneous_module_availability.py:103
+#: tests/86_browser/131_miscellaneous_module_availability.py:116
+#: tests/86_browser/131_miscellaneous_module_availability.py:131
+#: tests/86_browser/131_miscellaneous_module_availability.py:144
+#: tests/86_browser/131_miscellaneous_module_availability.py:159
 msgid "Filesystem quotas"
 msgstr "Dateisystem Quota"
 
-#: tests/86_browser/17_self_service_registration.py:174
+#: tests/86_browser/17_self_service_registration.py:176
 msgid "First name"
 msgstr "Vorname"
 
@@ -188,51 +189,50 @@ msgstr "Vorname"
 msgid "Forgot your password"
 msgstr ""
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:35
-#: tests/86_browser/131_miscellaneous_module_availability.py:78
 #: tests/86_browser/151_udm_users.py:93
+#: tests/86_browser/131_miscellaneous_module_availability.py:35
+#: tests/86_browser/131_miscellaneous_module_availability.py:77
 msgid "Groups"
 msgstr "Gruppen"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:50
-#: tests/86_browser/131_miscellaneous_module_availability.py:66
-#: tests/86_browser/131_miscellaneous_module_availability.py:92
-#: tests/86_browser/131_miscellaneous_module_availability.py:107
-#: tests/86_browser/131_miscellaneous_module_availability.py:120
-#: tests/86_browser/131_miscellaneous_module_availability.py:135
-#: tests/86_browser/131_miscellaneous_module_availability.py:148
-#: tests/86_browser/131_miscellaneous_module_availability.py:163
+#: tests/86_browser/131_miscellaneous_module_availability.py:49
+#: tests/86_browser/131_miscellaneous_module_availability.py:65
+#: tests/86_browser/131_miscellaneous_module_availability.py:90
+#: tests/86_browser/131_miscellaneous_module_availability.py:105
+#: tests/86_browser/131_miscellaneous_module_availability.py:118
+#: tests/86_browser/131_miscellaneous_module_availability.py:133
+#: tests/86_browser/131_miscellaneous_module_availability.py:146
+#: tests/86_browser/131_miscellaneous_module_availability.py:161
 msgid "Hardware information"
 msgstr "Hardwareinformationen"
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:43
-#: tests/86_browser/131_miscellaneous_module_availability.py:86
+#: tests/86_browser/131_miscellaneous_module_availability.py:85
 msgid "LDAP directory"
 msgstr "LDAP-Verzeichnis"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:51
-#: tests/86_browser/131_miscellaneous_module_availability.py:67
-#: tests/86_browser/131_miscellaneous_module_availability.py:93
-#: tests/86_browser/131_miscellaneous_module_availability.py:108
-#: tests/86_browser/131_miscellaneous_module_availability.py:121
-#: tests/86_browser/131_miscellaneous_module_availability.py:136
-#: tests/86_browser/131_miscellaneous_module_availability.py:149
-#: tests/86_browser/131_miscellaneous_module_availability.py:164
+#: tests/86_browser/131_miscellaneous_module_availability.py:50
+#: tests/86_browser/131_miscellaneous_module_availability.py:66
+#: tests/86_browser/131_miscellaneous_module_availability.py:91
+#: tests/86_browser/131_miscellaneous_module_availability.py:106
+#: tests/86_browser/131_miscellaneous_module_availability.py:119
+#: tests/86_browser/131_miscellaneous_module_availability.py:134
+#: tests/86_browser/131_miscellaneous_module_availability.py:147
+#: tests/86_browser/131_miscellaneous_module_availability.py:162
 msgid "Language settings"
 msgstr "Spracheinstellungen"
 
-#: tests/86_browser/17_self_service_registration.py:72
-#: tests/86_browser/17_self_service_registration.py:175
+#: tests/86_browser/17_self_service_registration.py:74
+#: tests/86_browser/17_self_service_registration.py:177
 msgid "Last name"
 msgstr "Nachname"
 
-#: tests/86_browser/11_umc_pam-login_unclosed_fh_test.py:39
-#: tests/86_browser/10_product_test_password_change.py:174
-msgid "Login"
-msgstr ""
+#: tests/86_browser/11_umc_pam-login_unclosed_fh_test.py:40
+msgid "Login Same tab"
+msgstr "Anmelden Gleicher Tab"
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:44
-#: tests/86_browser/131_miscellaneous_module_availability.py:87
+#: tests/86_browser/131_miscellaneous_module_availability.py:86
 msgid "Mail"
 msgstr ""
 
@@ -253,23 +253,23 @@ msgid "Move to..."
 msgstr "Verschieben nach..."
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:38
-#: tests/86_browser/131_miscellaneous_module_availability.py:81
+#: tests/86_browser/131_miscellaneous_module_availability.py:80
 msgid "Nagios"
 msgstr ""
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:52
-#: tests/86_browser/131_miscellaneous_module_availability.py:68
-#: tests/86_browser/131_miscellaneous_module_availability.py:94
-#: tests/86_browser/131_miscellaneous_module_availability.py:109
-#: tests/86_browser/131_miscellaneous_module_availability.py:122
-#: tests/86_browser/131_miscellaneous_module_availability.py:137
-#: tests/86_browser/131_miscellaneous_module_availability.py:150
-#: tests/86_browser/131_miscellaneous_module_availability.py:165
+#: tests/86_browser/131_miscellaneous_module_availability.py:51
+#: tests/86_browser/131_miscellaneous_module_availability.py:67
+#: tests/86_browser/131_miscellaneous_module_availability.py:92
+#: tests/86_browser/131_miscellaneous_module_availability.py:107
+#: tests/86_browser/131_miscellaneous_module_availability.py:120
+#: tests/86_browser/131_miscellaneous_module_availability.py:135
+#: tests/86_browser/131_miscellaneous_module_availability.py:148
+#: tests/86_browser/131_miscellaneous_module_availability.py:163
 msgid "Network settings"
 msgstr "Netzwerk-Einstellungen"
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:45
-#: tests/86_browser/131_miscellaneous_module_availability.py:88
+#: tests/86_browser/131_miscellaneous_module_availability.py:87
 msgid "Networks"
 msgstr "Netzwerke"
 
@@ -277,22 +277,22 @@ msgstr "Netzwerke"
 msgid "Never"
 msgstr "Nie"
 
-#: tests/86_browser/10_product_test_password_change.py:246
+#: tests/86_browser/10_product_test_password_change.py:241
 msgid "New Password (retype)"
 msgstr "Neues Passwort (Wiederholung)"
 
-#: tests/86_browser/10_product_test_password_change.py:243
+#: tests/86_browser/10_product_test_password_change.py:238
 msgid "New password"
 msgstr "Neues Passwort"
 
 #: tests/86_browser/14_password_self-service.py:94
 #: tests/86_browser/14_password_self-service.py:134
 #: tests/86_browser/14_password_self-service.py:136
-#: tests/86_browser/17_self_service_registration.py:301
+#: tests/86_browser/17_self_service_registration.py:304
 msgid "Next"
 msgstr "Weiter"
 
-#: tests/86_browser/10_product_test_password_change.py:180
+#: tests/86_browser/10_product_test_password_change.py:175
 msgid "Notification"
 msgstr "Benachrichtigung"
 
@@ -303,28 +303,28 @@ msgstr "Benachrichtigung"
 msgid "OK"
 msgstr "OK"
 
-#: tests/86_browser/10_product_test_password_change.py:155
+#: tests/86_browser/10_product_test_password_change.py:161
 msgid "Ok"
 msgstr "Ok"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:58
-#: tests/86_browser/131_miscellaneous_module_availability.py:100
-#: tests/86_browser/131_miscellaneous_module_availability.py:128
-#: tests/86_browser/131_miscellaneous_module_availability.py:156
+#: tests/86_browser/131_miscellaneous_module_availability.py:57
+#: tests/86_browser/131_miscellaneous_module_availability.py:98
+#: tests/86_browser/131_miscellaneous_module_availability.py:126
+#: tests/86_browser/131_miscellaneous_module_availability.py:154
 msgid "Package Management"
 msgstr "Paket-Verwaltung"
 
-#: tests/86_browser/17_self_service_registration.py:73
-#: tests/86_browser/17_self_service_registration.py:135
-#: tests/86_browser/17_self_service_registration.py:172
-#: tests/86_browser/17_self_service_registration.py:187
-#: tests/86_browser/17_self_service_registration.py:300
+#: tests/86_browser/17_self_service_registration.py:75
+#: tests/86_browser/17_self_service_registration.py:137
+#: tests/86_browser/17_self_service_registration.py:174
+#: tests/86_browser/17_self_service_registration.py:189
+#: tests/86_browser/17_self_service_registration.py:303
 msgid "Password"
 msgstr "Passwort"
 
-#: tests/86_browser/17_self_service_registration.py:136
-#: tests/86_browser/17_self_service_registration.py:173
-#: tests/86_browser/17_self_service_registration.py:188
+#: tests/86_browser/17_self_service_registration.py:138
+#: tests/86_browser/17_self_service_registration.py:175
+#: tests/86_browser/17_self_service_registration.py:190
 msgid "Password (retype)"
 msgstr "Passwort (Wiederholung)"
 
@@ -344,15 +344,15 @@ msgstr ""
 msgid "Please enter credentials"
 msgstr ""
 
-#: tests/86_browser/17_self_service_registration.py:267
+#: tests/86_browser/17_self_service_registration.py:270
 msgid "Please follow the instructions in the email to verify your account"
 msgstr ""
 "Bitte folgen Sie den Anweisungen in der E-Mail, um Ihr Konto zu verifizieren"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:46
-#: tests/86_browser/131_miscellaneous_module_availability.py:89
 #: tests/86_browser/18_overview_false.py:31
 #: tests/86_browser/18_overview_false.py:48
+#: tests/86_browser/131_miscellaneous_module_availability.py:46
+#: tests/86_browser/131_miscellaneous_module_availability.py:88
 msgid "Policies"
 msgstr "Richtlinien"
 
@@ -361,19 +361,19 @@ msgid "Policy: Desktop"
 msgstr "Richtlinie: Desktop"
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:39
-#: tests/86_browser/131_miscellaneous_module_availability.py:82
+#: tests/86_browser/131_miscellaneous_module_availability.py:81
 msgid "Printers"
 msgstr "Drucker"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:53
-#: tests/86_browser/131_miscellaneous_module_availability.py:69
-#: tests/86_browser/131_miscellaneous_module_availability.py:95
-#: tests/86_browser/131_miscellaneous_module_availability.py:110
-#: tests/86_browser/131_miscellaneous_module_availability.py:123
-#: tests/86_browser/131_miscellaneous_module_availability.py:138
-#: tests/86_browser/131_miscellaneous_module_availability.py:151
-#: tests/86_browser/131_miscellaneous_module_availability.py:166
-#: tests/86_browser/130_miscellaneous.py:117
+#: tests/86_browser/130_miscellaneous.py:119
+#: tests/86_browser/131_miscellaneous_module_availability.py:52
+#: tests/86_browser/131_miscellaneous_module_availability.py:68
+#: tests/86_browser/131_miscellaneous_module_availability.py:93
+#: tests/86_browser/131_miscellaneous_module_availability.py:108
+#: tests/86_browser/131_miscellaneous_module_availability.py:121
+#: tests/86_browser/131_miscellaneous_module_availability.py:136
+#: tests/86_browser/131_miscellaneous_module_availability.py:149
+#: tests/86_browser/131_miscellaneous_module_availability.py:164
 msgid "Process overview"
 msgstr "Prozessübersicht"
 
@@ -397,15 +397,15 @@ msgstr ""
 msgid "Remove from favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:59
-#: tests/86_browser/131_miscellaneous_module_availability.py:101
-#: tests/86_browser/131_miscellaneous_module_availability.py:129
-#: tests/86_browser/131_miscellaneous_module_availability.py:157
+#: tests/86_browser/131_miscellaneous_module_availability.py:58
+#: tests/86_browser/131_miscellaneous_module_availability.py:99
+#: tests/86_browser/131_miscellaneous_module_availability.py:127
+#: tests/86_browser/131_miscellaneous_module_availability.py:155
 msgid "Repository Settings"
 msgstr "Repository-Einstellungen"
 
-#: tests/86_browser/17_self_service_registration.py:239
-#: tests/86_browser/17_self_service_registration.py:265
+#: tests/86_browser/17_self_service_registration.py:241
+#: tests/86_browser/17_self_service_registration.py:268
 msgid "Request new token"
 msgstr "Neuen Token anfordern"
 
@@ -422,11 +422,6 @@ msgstr ""
 msgid "Run join scripts"
 msgstr ""
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:48
-#: tests/86_browser/131_miscellaneous_module_availability.py:91
-msgid "SAML identity provider"
-msgstr ""
-
 #: tests/86_browser/14_password_self-service.py:100
 msgid "Save"
 msgstr "Speichern"
@@ -436,18 +431,18 @@ msgid "Server overview"
 msgstr "Serverübersicht"
 
 #: tests/86_browser/131_miscellaneous_module_availability.py:47
-#: tests/86_browser/131_miscellaneous_module_availability.py:90
+#: tests/86_browser/131_miscellaneous_module_availability.py:89
 msgid "Shares"
 msgstr "Freigaben"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:60
-#: tests/86_browser/131_miscellaneous_module_availability.py:72
-#: tests/86_browser/131_miscellaneous_module_availability.py:102
-#: tests/86_browser/131_miscellaneous_module_availability.py:113
-#: tests/86_browser/131_miscellaneous_module_availability.py:130
-#: tests/86_browser/131_miscellaneous_module_availability.py:141
-#: tests/86_browser/131_miscellaneous_module_availability.py:158
-#: tests/86_browser/131_miscellaneous_module_availability.py:169
+#: tests/86_browser/131_miscellaneous_module_availability.py:59
+#: tests/86_browser/131_miscellaneous_module_availability.py:71
+#: tests/86_browser/131_miscellaneous_module_availability.py:100
+#: tests/86_browser/131_miscellaneous_module_availability.py:111
+#: tests/86_browser/131_miscellaneous_module_availability.py:128
+#: tests/86_browser/131_miscellaneous_module_availability.py:139
+#: tests/86_browser/131_miscellaneous_module_availability.py:156
+#: tests/86_browser/131_miscellaneous_module_availability.py:167
 msgid "Software update"
 msgstr "Software-Aktualisierung"
 
@@ -473,8 +468,8 @@ msgstr "Niemals starten"
 msgid "Stop"
 msgstr "Stoppen"
 
-#: tests/86_browser/17_self_service_registration.py:309
 #: tests/86_browser/17_self_service_registration.py:312
+#: tests/86_browser/17_self_service_registration.py:315
 msgid "Submit"
 msgstr ""
 
@@ -482,22 +477,22 @@ msgstr ""
 msgid "System and domain settings"
 msgstr "System- und Domäneneinstellungen"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:56
-#: tests/86_browser/131_miscellaneous_module_availability.py:98
-#: tests/86_browser/131_miscellaneous_module_availability.py:126
-#: tests/86_browser/131_miscellaneous_module_availability.py:154
+#: tests/86_browser/131_miscellaneous_module_availability.py:55
+#: tests/86_browser/131_miscellaneous_module_availability.py:96
+#: tests/86_browser/131_miscellaneous_module_availability.py:124
+#: tests/86_browser/131_miscellaneous_module_availability.py:152
 msgid "System diagnostic"
 msgstr "Systemdiagnose"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:54
-#: tests/86_browser/131_miscellaneous_module_availability.py:70
-#: tests/86_browser/131_miscellaneous_module_availability.py:96
-#: tests/86_browser/131_miscellaneous_module_availability.py:111
-#: tests/86_browser/131_miscellaneous_module_availability.py:124
-#: tests/86_browser/131_miscellaneous_module_availability.py:139
-#: tests/86_browser/131_miscellaneous_module_availability.py:152
-#: tests/86_browser/131_miscellaneous_module_availability.py:167
 #: tests/86_browser/170_system_services_module.py:50
+#: tests/86_browser/131_miscellaneous_module_availability.py:53
+#: tests/86_browser/131_miscellaneous_module_availability.py:69
+#: tests/86_browser/131_miscellaneous_module_availability.py:94
+#: tests/86_browser/131_miscellaneous_module_availability.py:109
+#: tests/86_browser/131_miscellaneous_module_availability.py:122
+#: tests/86_browser/131_miscellaneous_module_availability.py:137
+#: tests/86_browser/131_miscellaneous_module_availability.py:150
+#: tests/86_browser/131_miscellaneous_module_availability.py:165
 msgid "System services"
 msgstr "Systemdienste"
 
@@ -505,12 +500,12 @@ msgstr "Systemdienste"
 msgid "System settings"
 msgstr "Systemeinstellungen"
 
-#: tests/86_browser/17_self_service_registration.py:232
+#: tests/86_browser/17_self_service_registration.py:234
 msgid "The account could not be verified. Please verify your input"
 msgstr ""
 "Das Konto konnte nicht verifiziert werden. Bitte überprüfen Sie Ihre Eingabe"
 
-#: tests/86_browser/17_self_service_registration.py:165
+#: tests/86_browser/17_self_service_registration.py:167
 msgid ""
 "The account registration was disabled via the Univention Configuration "
 "Registry."
@@ -518,15 +513,15 @@ msgstr ""
 "Die Kontoregistrierung wurde durch die Univention Configuration Registry "
 "deaktiviert"
 
-#: tests/86_browser/10_product_test_password_change.py:51
+#: tests/86_browser/10_product_test_password_change.py:52
 msgid "The password has been changed successfully."
 msgstr "Das Passwort wurde erfolgreich geändert."
 
-#: tests/86_browser/10_product_test_password_change.py:240
+#: tests/86_browser/10_product_test_password_change.py:235
 msgid "The password has expired and must be renewed."
 msgstr "password has expired and must be renewed"
 
-#: tests/86_browser/17_self_service_registration.py:254
+#: tests/86_browser/17_self_service_registration.py:257
 msgid ""
 "The token you supplied is either expired or invalid. Please request a new "
 "one."
@@ -534,7 +529,7 @@ msgstr ""
 "Der Token (Sicherheitsschlüssel) den Sie angegeben haben ist entweder "
 "abgelaufen oder ungültig. Bitte fordern Sie einen neuen an."
 
-#: tests/86_browser/17_self_service_registration.py:242
+#: tests/86_browser/17_self_service_registration.py:244
 msgid "The verification token could not be sent. Please verify your input."
 msgstr ""
 "Ein Verifizierungs-Token konnte nicht gesendet werden. Bitte überprüfen Sie "
@@ -544,24 +539,24 @@ msgstr ""
 msgid "This page shows the status of"
 msgstr ""
 
-#: tests/86_browser/17_self_service_registration.py:190
+#: tests/86_browser/17_self_service_registration.py:192
 msgid "Title"
 msgstr "Anrede"
 
-#: tests/86_browser/17_self_service_registration.py:227
-#: tests/86_browser/17_self_service_registration.py:249
+#: tests/86_browser/17_self_service_registration.py:229
+#: tests/86_browser/17_self_service_registration.py:252
 msgid "Token"
 msgstr ""
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:55
-#: tests/86_browser/131_miscellaneous_module_availability.py:71
-#: tests/86_browser/131_miscellaneous_module_availability.py:97
-#: tests/86_browser/131_miscellaneous_module_availability.py:112
-#: tests/86_browser/131_miscellaneous_module_availability.py:125
-#: tests/86_browser/131_miscellaneous_module_availability.py:140
-#: tests/86_browser/131_miscellaneous_module_availability.py:153
-#: tests/86_browser/131_miscellaneous_module_availability.py:168
-#: tests/86_browser/130_miscellaneous.py:116
+#: tests/86_browser/130_miscellaneous.py:118
+#: tests/86_browser/131_miscellaneous_module_availability.py:54
+#: tests/86_browser/131_miscellaneous_module_availability.py:70
+#: tests/86_browser/131_miscellaneous_module_availability.py:95
+#: tests/86_browser/131_miscellaneous_module_availability.py:110
+#: tests/86_browser/131_miscellaneous_module_availability.py:123
+#: tests/86_browser/131_miscellaneous_module_availability.py:138
+#: tests/86_browser/131_miscellaneous_module_availability.py:151
+#: tests/86_browser/131_miscellaneous_module_availability.py:166
 msgid "Univention Configuration Registry"
 msgstr ""
 
@@ -583,62 +578,58 @@ msgstr "Univention Management Console zur Ver­wal­tung des lokalen Systems"
 msgid "Univention Portal"
 msgstr "Univention Portal"
 
-#: tests/86_browser/10_product_test_password_change.py:277
+#: tests/86_browser/10_product_test_password_change.py:272
 msgid "User has to change password on next login"
 msgstr "Benutzer muss das Passwort bei der nächsten Anmeldung ändern"
 
-#: tests/86_browser/17_self_service_registration.py:71
-#: tests/86_browser/17_self_service_registration.py:176
+#: tests/86_browser/17_self_service_registration.py:73
+#: tests/86_browser/17_self_service_registration.py:178
 msgid "User name"
 msgstr "Benutzername"
 
-#: tests/86_browser/17_self_service_registration.py:226
-#: tests/86_browser/17_self_service_registration.py:237
-#: tests/86_browser/17_self_service_registration.py:248
-#: tests/86_browser/17_self_service_registration.py:263
-#: tests/86_browser/17_self_service_registration.py:298
+#: tests/86_browser/17_self_service_registration.py:228
+#: tests/86_browser/17_self_service_registration.py:239
+#: tests/86_browser/17_self_service_registration.py:251
+#: tests/86_browser/17_self_service_registration.py:266
+#: tests/86_browser/17_self_service_registration.py:301
 msgid "Username"
 msgstr "Benutzername"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:36
-#: tests/86_browser/131_miscellaneous_module_availability.py:79
 #: tests/86_browser/15_favorite_modules.py:75
 #: tests/86_browser/18_overview_false.py:32
+#: tests/86_browser/131_miscellaneous_module_availability.py:36
+#: tests/86_browser/131_miscellaneous_module_availability.py:78
 msgid "Users"
 msgstr "Benutzer"
 
-#: tests/86_browser/17_self_service_registration.py:229
-#: tests/86_browser/17_self_service_registration.py:251
-#: tests/86_browser/17_self_service_registration.py:341
+#: tests/86_browser/17_self_service_registration.py:231
+#: tests/86_browser/17_self_service_registration.py:254
+#: tests/86_browser/17_self_service_registration.py:344
 msgid "Verify Account"
 msgstr "Konto verifizieren"
 
-#: tests/86_browser/17_self_service_registration.py:271
-#: tests/86_browser/17_self_service_registration.py:330
-#: tests/86_browser/17_self_service_registration.py:344
+#: tests/86_browser/17_self_service_registration.py:274
+#: tests/86_browser/17_self_service_registration.py:333
+#: tests/86_browser/17_self_service_registration.py:347
 msgid "Your account has been successfully verified"
 msgstr "Ihr Konto wurde erfolgreich verifiziert"
 
-#: tests/86_browser/17_self_service_registration.py:303
+#: tests/86_browser/17_self_service_registration.py:306
 msgid ""
 "Your account recovery options have been updated.. Your account has to be "
 "verified again"
 msgstr "Ihre Konto-Wiederherstellungsoptionen wurden aktualisiert."
-
-#: tests/86_browser/10_product_test_password_change.py:167
-msgid "Your session has expired, please login again."
-msgstr "Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an."
 
 #: tests/86_browser/170_system_services_module.py:58
 #: tests/86_browser/170_system_services_module.py:108
 msgid "more"
 msgstr "mehr"
 
-#: tests/86_browser/10_product_test_password_change.py:53
+#: tests/86_browser/10_product_test_password_change.py:54
 msgid "password is too short"
 msgstr "Passwort ist zu kurz"
 
-#: tests/86_browser/10_product_test_password_change.py:55
+#: tests/86_browser/10_product_test_password_change.py:56
 msgid "password was already used"
 msgstr "Passwort wurde bereits genutzt"
 
@@ -657,6 +648,9 @@ msgstr ""
 
 #~ msgid "Univention Blog"
 #~ msgstr "Univention Blog"
+
+#~ msgid "Your session has expired, please login again."
+#~ msgstr "Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an."
 
 #~ msgid "no module available"
 #~ msgstr "kein Modul verfügbar"
