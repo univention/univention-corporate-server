@@ -592,6 +592,7 @@ else:
             yield _users
         finally:
             for user in users.values():
+                user.etag = user.last_modified = None
                 user.delete()
 
     @pytest.fixture()
