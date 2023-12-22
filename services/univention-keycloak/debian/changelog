@@ -1,3 +1,9 @@
+univention-keycloak (3.0.3) unstable; urgency=medium
+
+  * Bug #56928: adjust to API changes
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Mar 2024 00:18:44 +0100
+
 univention-keycloak (3.0.2) unstable; urgency=medium
 
   * Bug #56765: Switch new UMC default to Keycloak
