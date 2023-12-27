@@ -10,13 +10,14 @@ desc: |
    overflow.
  * CVE-2018-18584: Fixing the size of the CAB block input buffer, which is too
    small for the maximal Quantum block, prevents an out-of-bounds write.
- * CVE-2018-18585: Blank filenames (having length zero or their 1st or 2nd byte
-   is null) should be rejected.
+ * CVE-2018-18585: Blank filenames (having length zero or their 1st or 2nd
+   byte is null) should be rejected.
  * CVE-2018-14681: fix handling of non-terminated strings.
  * CVE-2018-14682: Fix off-by-one error in chmd TOLOWER() fallback.
  * CVE-2018-14679, CVE-2018-14680: Fix off-by-one bounds
    check on CHM PMGI/PMGL chunk numbers and reject empty filenames.
- * CVE-2017-11423: Fix mis-handling of `sys->read()` errors in `cabd_read_string()`.
+ * CVE-2017-11423: Fix mis-handling of `sys->read()` errors in
+   `cabd_read_string()`.
  * CVE-2017-6419: Reject negative output length in `SpanInfo ()`.
 bug: [56942]
 cve:
