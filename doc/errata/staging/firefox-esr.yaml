@@ -1,0 +1,30 @@
+product: ucs
+release: "5.0"
+version: [5, 6]
+scope: ucs_5.0-0-errata5.0-6
+src: firefox-esr
+fix: 115.6.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ 115.6.0esr-1~deb10u1 (Fri, 22 Dec 2023 12:29:36 +0100)
+ * Backport to buster.
+ 115.6.0esr-1 (Wed, 20 Dec 2023 08:49:25 +0900)
+ * New upstream release.
+ * Fixes for mfsa2023-54, also known as: CVE-2023-6856, CVE-2023-6865,
+   CVE-2023-6857, CVE-2023-6858, CVE-2023-6859, CVE-2023-6860, CVE-2023-6867,
+   CVE-2023-6861, CVE-2023-6862, CVE-2023-6863, CVE-2023-6864.
+ * intl/locale/rust/oxilangtag-ffi/src/lib.rs: Allow to build with rustc <
+   1.65.
+bug: [56939]
+cve:
+- CVE-2023-6856
+- CVE-2023-6865
+- CVE-2023-6857
+- CVE-2023-6858
+- CVE-2023-6859
+- CVE-2023-6860
+- CVE-2023-6867
+- CVE-2023-6861
+- CVE-2023-6862
+- CVE-2023-6863
+- CVE-2023-6864
