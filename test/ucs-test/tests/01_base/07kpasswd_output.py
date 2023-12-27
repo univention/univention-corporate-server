@@ -19,6 +19,7 @@
 ##  - univention-heimdal-kdc
 ## exposure: dangerous
 
+import os
 import random
 import subprocess
 import sys
@@ -52,6 +53,7 @@ def get_unique_username():
 
 def create_ssh_session(username, password):
     known_hosts_file = tempfile.NamedTemporaryFile()
+    os.environ["TERM"] = "xterm-mono"
     shell = pexpect.spawn('ssh', ['-o', 'UserKnownHostsFile="%s"' % known_hosts_file.name, '%s@localhost' % username], timeout=10)  # logfile=sys.stdout)
     status = shell.expect([pexpect.TIMEOUT, '[Pp]assword: ', 'Are you sure you want to continue connecting'])
     del known_hosts_file
