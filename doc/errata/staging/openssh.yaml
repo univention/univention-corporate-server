@@ -1,0 +1,40 @@
+product: ucs
+release: "5.0"
+version: [5, 6]
+scope: ucs_5.0-0-errata5.0-6
+src: openssh
+fix: 1:7.9p1-10+deb10u4
+desc: |
+ This update addresses the following issues:
+ 1:7.9p1-10+deb10u4 (Sun, 24 Dec 2023 15:39:13 -0500)
+ * Non-maintainer upload by the LTS Team.
+ * Rename debian/.gitlab-ci.yml to debian/salsa-ci.yml and use
+   lts-team/pipeline recipe for buster in it.
+ * [CVE-2023-48795] ssh(1), sshd(8): implement protocol extensions to thwart
+   the so-called "Terrapin attack" discovered by Fabian Bäumer, Marcus
+   Brinkmann and Jörg Schwenk. This attack allows a MITM to effect a limited
+   break of the integrity of the early encrypted SSH transport protocol by
+   sending extra messages prior to the commencement of encryption, and
+   deleting an equal number of consecutive messages immediately after
+   encryption starts. A peer SSH client/server would not be able to detect
+   that messages were deleted.
+ * [CVE-2023-51385] ssh(1): if an invalid user or hostname that contained
+   shell metacharacters was passed to ssh(1), and a ProxyCommand, LocalCommand
+   directive or "match exec" predicate referenced the user or hostname via %u,
+   %h or similar expansion token, then an attacker who could supply arbitrary
+   user/hostnames to ssh(1) could potentially perform command injection
+   depending on what quoting was present in the user-supplied ssh_config(5)
+   directive. ssh(1) now bans most shell metacharacters from user and
+   hostnames supplied via the command-line.
+ * [CVE-2021-41617]: sshd(8) from OpenSSH 6.2 through 8.7 failed to correctly
+   initialise supplemental groups when executing an AuthorizedKeysCommand or
+   AuthorizedPrincipalsCommand, where a AuthorizedKeysCommandUser or
+   AuthorizedPrincipalsCommandUser directive has been set to run the command
+   as a different user. Instead these commands would inherit the groups that
+   sshd(8) was started with
+ .
+bug: [56940]
+cve:
+- CVE-2023-48795
+- CVE-2023-51385
+- CVE-2021-41617
