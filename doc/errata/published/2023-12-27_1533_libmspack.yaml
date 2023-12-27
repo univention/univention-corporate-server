@@ -30,3 +30,6 @@ cve:
 - CVE-2018-14680
 - CVE-2017-11423
 - CVE-2017-6419
+erratum: 1533
+announced: 2023-12-27
+support: lts
