@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [5, 6]
+scope: ucs_5.0-0-errata5.0-6
+src: curl
+fix: 7.64.0-4+deb10u8
+desc: |
+ This update addresses the following issues:
+ 7.64.0-4+deb10u8 (Sun, 17 Dec 2023 23:18:25 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2023-28322: POST-after-PUT confusion.
+ * CVE-2023-46218: Cookie mixed case PSL bypass.
+ [ Boyuan Yang ]
+ * Reduce verbose "Expire in" ... messages.
+ [ Samuel Henrique ]
+ * Set CURL_PATCHSTAMP to package's version, so it shows up in "--version"
+   output.
+ * Add debian/salsa-ci.yml
+bug: [56941]
+cve:
+- CVE-2023-28322
+- CVE-2023-46218
