@@ -52,7 +52,7 @@ def get_unique_username():
 
 def create_ssh_session(username, password):
     known_hosts_file = tempfile.NamedTemporaryFile()
-    shell = pexpect.spawn('ssh', ['-o', 'UserKnownHostsFile="%s"' % known_hosts_file.name, '%s@localhost' % username], timeout=10)  # logfile=sys.stdout)
+    shell = pexpect.spawn('ssh', ['-o', 'UserKnownHostsFile="%s"' % known_hosts_file.name, '%s@localhost' % username], timeout=10, env={'TERM': 'xterm-mono'})  # logfile=sys.stdout)
     status = shell.expect([pexpect.TIMEOUT, '[Pp]assword: ', 'Are you sure you want to continue connecting'])
     del known_hosts_file
     if status == 2:  # accept public key
