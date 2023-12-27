@@ -452,6 +452,27 @@ install_with_unmaintained () {
 	return $rv
 }
 
+install_docker_app_from_branch () {
+  local app_name="$1"
+  local custom_docker_image="$2"
+  local app_settings="${*:3}"
+  printf '%s' univention > /tmp/univention
+  if [ -n "$custom_docker_image" ]; then
+    univention-install --yes univention-appcenter-dev
+    univention-app dev-set "$app_name" "DockerImage=$custom_docker_image"
+  fi
+  cmd="univention-app install $app_name --noninteractive --username Administrator --pwdfile /tmp/univention"
+  if [ -n "$app_settings" ]; then
+    exec $cmd --set $app_settings
+  else
+    exec $cmd
+  fi
+  container_name="appcenter/apps/$app_name/container"
+  container=$(ucr get "$container_name")
+  commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$container")
+	echo "Docker image built from commit: $commit"
+}
+
 wait_for_repo_server () {
 	local i repository_online_server
 	eval "$(ucr shell 'repository/online/server')"

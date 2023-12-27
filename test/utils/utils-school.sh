@@ -32,6 +32,8 @@
 
 set -x
 
+. utils.sh
+
 install_bb_api () {
   # do not rename function: used as install_[ENV:TEST_API]_api in autotest-241-ucsschool-HTTP-API.cfg
   ucr set bb/http_api/users/django_debug=yes bb/http_api/users/wsgi_server_capture_output=yes bb/http_api/users/wsgi_server_loglevel=debug bb/http_api/users/enable_session_authentication=yes tests/ucsschool/http-api/bb=yes
@@ -43,37 +45,16 @@ install_bb_api () {
   ps aux | grep api-bb
 }
 
-install_app_from_branch () {
-  local app_name="$1"
-  local custom_docker_image="$2"
-  local app_settings="${*:3}"
-  printf '%s' univention > /tmp/univention
-  if [ -n "$custom_docker_image" ]; then
-    univention-install --yes univention-appcenter-dev
-    univention-app dev-set "$app_name" "DockerImage=$custom_docker_image"
-  fi
-  cmd="univention-app install $app_name --noninteractive --username Administrator --pwdfile /tmp/univention"
-  if [ -n "$app_settings" ]; then
-    exec $cmd --set $app_settings
-  else
-    exec $cmd
-  fi
-  container_name="appcenter/apps/$app_name/container"
-  container=$(ucr get "$container_name")
-  commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$container")
-	echo "Docker image built from commit: $commit"
-}
-
 install_kelvin_api () {
-  install_app_from_branch ucsschool-kelvin-rest-api "$UCS_ENV_KELVIN_IMAGE" ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG
+  install_docker_app_from_branch ucsschool-kelvin-rest-api "$UCS_ENV_KELVIN_IMAGE" ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG
 }
 
 install_ucsschool_id_connector () {
-  install_app_from_branch ucsschool-id-connector "$UCS_ENV_ID_CONNECTOR_IMAGE" ucsschool-id-connector/log_level=DEBUG
+  install_docker_app_from_branch ucsschool-id-connector "$UCS_ENV_ID_CONNECTOR_IMAGE" ucsschool-id-connector/log_level=DEBUG
 }
 
 install_ucsschool_apis () {
-  install_app_from_branch ucsschool-apis "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0
+  install_docker_app_from_branch ucsschool-apis "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0
 }
 
 install_mv_idm_gw_sender_ext_attrs () {
