@@ -6,10 +6,8 @@ src: ncurses
 fix: 6.0+20161126-1+deb9u5
 desc: |
  This update addresses the following issue:
- 6.0+20161126-1+deb9u5 (Sun, 17 Dec 2023 13:32:01 +0200)
- * Non-maintainer upload by the ELTS Team.
- * Mitigate CVE-2023-29491: Disallow loading of custom terminfo entries in
-   setuid/setgid programs.
+ * CVE-2023-29491: Disallow loading of custom terminfo entries in
+   `setuid`/`setgid` programs.
 bug: [56943]
 cve:
 - CVE-2023-29491
