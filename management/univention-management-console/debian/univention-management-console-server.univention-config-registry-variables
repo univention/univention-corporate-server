@@ -159,3 +159,10 @@ Description[de]=Definiert den lokalisierten Text für die Cookie-Banner Texte. P
 Description[en]=Defines the localized text for the cookie banner texts. Placeholders are "text" and "title" (e.g.: umc/cookie-banner/text/en).
 Type=str
 Categories=management-umc
+
+[ldap/server/sasl/mech_list]
+Description[de]=Definiert die SASL-Mechanismen, die der lokale LDAP-Server anbieten soll. Diese Variable sollte nicht angepasst werden ohne gute Gründe und vorhergehende Tests.
+Description[en]=Defines the SASL mechanisms that the local LDAP server shall offer. This variable should not be adjusted without compelling reasons and prior checks.
+Type=str
+Default=EXTERNAL gssapi DIGEST-MD5 CRAM-MD5 LOGIN SAML PLAIN
+Categories=service-ldap

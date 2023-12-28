@@ -54,6 +54,7 @@ Type: file
 File: etc/ldap/sasl2/slapd.conf
 Variables: umc/saml/grace_time
 Variables: umc/saml/trusted/sp/.*
+Variables: ldap/server/sasl/mech_list
 
 Type: file
 File: var/www/univention/meta.json
