@@ -6,7 +6,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2019-2023 Univention GmbH
+# Copyright 2019-2024 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -415,7 +415,7 @@ def argparse_module_help(client, parser, known_args, subparsers):
 def main():
     client = CLIClient()
     locale.setlocale(locale.LC_ALL, os.environ.get('LANG', 'C'))
-    description = '%(prog)s command line interface for managing UCS\ncopyright (c) 2001-2023 Univention GmbH, Germany\n\nUsage:\n %(prog)s module action [options]\n %(prog)s [--help] [--version]\n'
+    description = '%(prog)s command line interface for managing UCS\ncopyright (c) 2001-2024 Univention GmbH, Germany\n\nUsage:\n %(prog)s module action [options]\n %(prog)s [--help] [--version]\n'
     parser = argparse.ArgumentParser(
         prog='univention-directory-manager',
         # usage=argparse.SUPPRESS,

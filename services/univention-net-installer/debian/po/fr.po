@@ -1,7 +1,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright (C) 2015-2023 Univention GmbH
+# Copyright (C) 2015-2024 Univention GmbH
 #
 # Philipp Hahn <hahn@univention.de>, 2015.
 # Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.

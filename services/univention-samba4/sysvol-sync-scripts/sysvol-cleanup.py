@@ -3,7 +3,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2013-2023 Univention GmbH
+# Copyright 2013-2024 Univention GmbH
 #
 # sysvol-cleanup.py searches for all GPOs defined in LDAP but not available
 # in the local filesystem. With parameter --move the GPOs can be moved

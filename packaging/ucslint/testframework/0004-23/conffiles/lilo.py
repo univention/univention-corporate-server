@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-# Copyright (C) 2004-2023 Univention GmbH
+# Copyright (C) 2004-2024 Univention GmbH
 
 import os
 import time

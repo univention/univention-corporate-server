@@ -12,7 +12,7 @@ configuration directory (should-state) and reload/restart as appropriate.
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2001-2023 Univention GmbH
+# Copyright 2001-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -6,7 +6,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2004-2023 Univention GmbH
+# Copyright 2004-2024 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -587,7 +587,7 @@ def handler_help(args, opts={}, out=sys.stdout):
     """
     print(u'''
 univention-config-registry: base configuration for UCS
-copyright (c) 2001-2023 Univention GmbH, Germany
+copyright (c) 2001-2024 Univention GmbH, Germany
 
 Syntax:
   univention-config-registry [options] <action> [options] [parameters]

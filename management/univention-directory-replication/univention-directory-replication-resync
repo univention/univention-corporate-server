@@ -6,7 +6,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2001-2023 Univention GmbH
+# Copyright 2001-2024 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -47,7 +47,7 @@ die () {
 display_header () {
 	echo ""
 	echo "univention-directory-replication-resync: Resync local LDAP using a failed.ldif"
-	echo "copyright (c) 2001-2023 Univention GmbH, Germany"
+	echo "copyright (c) 2001-2024 Univention GmbH, Germany"
 	echo "usage: $0 <failed.ldif>"
 	echo ""
 	exit ${1:-0}

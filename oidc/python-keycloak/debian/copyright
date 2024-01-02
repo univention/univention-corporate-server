@@ -24,7 +24,7 @@ License: The MIT License (MIT)
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Files: debian/* patches/*
-Copyright: 2022-2023 Univention GmbH
+Copyright: 2022-2024 Univention GmbH
 License: AGPL-3.0-only
  The source code of the software contained in this package
  as well as the source package itself are made available

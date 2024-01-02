@@ -27,7 +27,7 @@ Example::
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2011-2023 Univention GmbH
+# Copyright 2011-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

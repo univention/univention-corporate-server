@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2023 Univention GmbH
+// SPDX-FileCopyrightText: 2022-2024 Univention GmbH
 // SPDX-License-Identifier: AGPL-3.0-only
 #include <stdio.h>
 int main(void) {

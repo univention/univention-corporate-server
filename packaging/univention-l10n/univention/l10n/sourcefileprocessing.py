@@ -8,7 +8,7 @@ Univention specific JSON-based format) from multiple source files by file type.
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2013-2023 Univention GmbH
+# Copyright 2013-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

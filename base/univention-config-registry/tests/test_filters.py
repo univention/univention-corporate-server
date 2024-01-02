@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # vim:set fileencoding=utf-8:
-# SPDX-FileCopyrightText: 2014-2023 Univention GmbH
+# SPDX-FileCopyrightText: 2014-2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 """Unit test for univention.config_registry.filters."""
