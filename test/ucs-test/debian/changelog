@@ -1,3 +1,9 @@
+ucs-test (10.0.20-13) unstable; urgency=medium
+
+  * Bug #56054: Move playwright fixtures into seperate Python package so they can be used by other sections than 86_browser
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 02 Jan 2024 14:23:07 +0100
+
 ucs-test (10.0.20-12) unstable; urgency=low
 
   * Playwright: Disable GPU when running Chromium
