@@ -4,7 +4,7 @@
 # Univention App Center
 #  univention-app module showing information about the App Center
 #
-# Copyright 2015-2022 Univention GmbH
+# Copyright 2015-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

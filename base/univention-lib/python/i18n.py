@@ -3,7 +3,7 @@
 """
 Internationalization (i18n) utilities.
 """
-# Copyright 2006-2022 Univention GmbH
+# Copyright 2006-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

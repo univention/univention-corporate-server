@@ -3,7 +3,7 @@
 # Univention S4 Connector
 #  UDM module for msPrint-ConnectionPolicy
 #
-# Copyright 2012-2022 Univention GmbH
+# Copyright 2012-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

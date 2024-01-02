@@ -3,7 +3,7 @@
 """
 Functions for handling Python errors.
 """
-# Copyright 2012-2022 Univention GmbH
+# Copyright 2012-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

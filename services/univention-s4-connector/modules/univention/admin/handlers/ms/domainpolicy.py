@@ -3,7 +3,7 @@
 # Univention S4 Connector
 #  UDM module for Domain Policies
 #
-# Copyright 2019-2022 Univention GmbH
+# Copyright 2019-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

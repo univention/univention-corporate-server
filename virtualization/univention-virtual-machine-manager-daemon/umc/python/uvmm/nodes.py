@@ -3,7 +3,7 @@
 # Univention Management Console
 #  UVMM node commands
 #
-# Copyright 2010-2022 Univention GmbH
+# Copyright 2010-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

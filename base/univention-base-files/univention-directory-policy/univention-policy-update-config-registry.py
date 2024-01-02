@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Copyright 2007-2022 Univention GmbH
+# Copyright 2007-2024 Univention GmbH
 """Get UCR settings from LDAP policy."""
 #
 # https://www.univention.de/

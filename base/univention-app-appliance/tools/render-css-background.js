@@ -2,7 +2,7 @@
 // Univention App Appliance
 //   Tool for rendering a CSS background value into an image file
 //
-// Copyright 2016-2022 Univention GmbH
+// Copyright 2016-2024 Univention GmbH
 //
 // https://www.univention.de/
 //

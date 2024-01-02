@@ -3,7 +3,7 @@
 #
 # Python VNC automate
 #
-# Copyright 2016-2022 Univention GmbH
+# Copyright 2016-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

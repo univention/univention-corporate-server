@@ -4,7 +4,7 @@
 # UCS Virtual Machine Manager Daemon
 #  tests for the extension to urlparse for node URIs
 #
-# Copyright 2011-2022 Univention GmbH
+# Copyright 2011-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -2,7 +2,7 @@
  * Python Heimdal
  *	Bindings for the realm object of heimdal
  *
- * Copyright 2003-2022 Univention GmbH
+ * Copyright 2003-2024 Univention GmbH
  *
  * https://www.univention.de/
  *

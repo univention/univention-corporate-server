@@ -4,7 +4,7 @@
 # Univention Management Console
 #  quota module: show quota information for a user
 #
-# Copyright 2006-2022 Univention GmbH
+# Copyright 2006-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

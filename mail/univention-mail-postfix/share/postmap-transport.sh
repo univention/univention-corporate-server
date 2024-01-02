@@ -3,7 +3,7 @@
 # Univention Mail Postfix
 #  call postmap on transport map and reload postfix
 #
-# Copyright 2004-2022 Univention GmbH
+# Copyright 2004-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

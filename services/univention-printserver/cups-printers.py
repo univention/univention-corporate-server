@@ -3,7 +3,7 @@
 # Univention Print Server
 #  listener module: management of CUPS printers
 #
-# Copyright 2004-2022 Univention GmbH
+# Copyright 2004-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -3,7 +3,7 @@
 # Univention Quota
 #  read default quota-settings and write into quota-table
 #
-# Copyright 2004-2022 Univention GmbH
+# Copyright 2004-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

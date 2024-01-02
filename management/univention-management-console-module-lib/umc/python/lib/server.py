@@ -3,7 +3,7 @@
 # Univention Management Console
 #  Module lib containing low-lewel commands to control the UMC server
 #
-# Copyright 2012-2022 Univention GmbH
+# Copyright 2012-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

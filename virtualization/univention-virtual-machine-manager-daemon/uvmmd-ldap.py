@@ -4,7 +4,7 @@
 # UCS Virtual Machine Manager Daemon
 #  listener module for guests
 #
-# Copyright 2010-2022 Univention GmbH
+# Copyright 2010-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

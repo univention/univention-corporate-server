@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  Remove rejected S4 object
 #
-# Copyright 2014-2022 Univention GmbH
+# Copyright 2014-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

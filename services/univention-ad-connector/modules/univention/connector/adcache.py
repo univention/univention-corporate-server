@@ -4,7 +4,7 @@
 # Univention AD Connector
 #  ad cache
 #
-# Copyright 2014-2022 Univention GmbH
+# Copyright 2014-2024 Univention GmbH
 #
 # http://www.univention.de/
 #

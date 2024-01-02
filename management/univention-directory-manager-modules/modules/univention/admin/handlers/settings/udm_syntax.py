@@ -3,7 +3,7 @@
 # Univention Directory Manager Syntax Extensions
 #  directory manager module for UDM syntax extensions
 #
-# Copyright 2013-2022 Univention GmbH
+# Copyright 2013-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

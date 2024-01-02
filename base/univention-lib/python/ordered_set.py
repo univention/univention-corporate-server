@@ -4,7 +4,7 @@
 # Univention Common Python Library
 #  OrderedSet
 #
-# Copyright 2017-2022 Univention GmbH
+# Copyright 2017-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

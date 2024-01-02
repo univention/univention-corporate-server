@@ -13,7 +13,7 @@ connections to remote |UMC| servers
 >>> response.status
 303
 """
-# Copyright 2017-2022 Univention GmbH
+# Copyright 2017-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

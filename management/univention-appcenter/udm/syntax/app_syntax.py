@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  direcory manager syntax for Apps
 #
-# Copyright 2019-2022 Univention GmbH
+# Copyright 2019-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

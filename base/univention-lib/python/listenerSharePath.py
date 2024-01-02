@@ -3,7 +3,7 @@
 """
 Univention Helper functions for creating or renaming share directories
 """
-# Copyright 2011-2022 Univention GmbH
+# Copyright 2011-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

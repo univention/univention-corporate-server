@@ -3,7 +3,7 @@
 """Univention Configuration Registry module."""
 #  main configuration registry classes
 #
-# Copyright 2004-2022 Univention GmbH
+# Copyright 2004-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -4,7 +4,7 @@
 # Python Heimdal
 #  setup description for the python distutils
 #
-# Copyright 2003-2022 Univention GmbH
+# Copyright 2003-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

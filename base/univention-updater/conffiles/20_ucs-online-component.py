@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2022 Univention GmbH
+# Copyright (C) 2011-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -3,7 +3,7 @@
 # Univention Configuration Registry
 #  config registry module  to trigger udev on changes in /etc/default/keyboard
 #
-# Copyright 2009-2022 Univention GmbH
+# Copyright 2009-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

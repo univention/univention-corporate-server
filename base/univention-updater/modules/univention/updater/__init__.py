@@ -3,7 +3,7 @@
 """
 Python tools for Updater and repository maintenance.
 """
-# Copyright 2009-2022 Univention GmbH
+# Copyright 2009-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

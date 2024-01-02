@@ -1,6 +1,6 @@
 #!/usr/bin/python2.7
 #
-# Copyright 2013-2022 Univention GmbH
+# Copyright 2013-2024 Univention GmbH
 #
 # sysvol-cleanup.py searches for all GPOs defined in LDAP but not available
 # in the local filesystem. With parameter --move the GPOs can be moved

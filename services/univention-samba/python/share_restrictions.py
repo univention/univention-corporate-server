@@ -4,7 +4,7 @@
 # Univention Samba
 #  this script creates samba configurations from ucr values
 #
-# Copyright 2004-2022 Univention GmbH
+# Copyright 2004-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

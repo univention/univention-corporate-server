@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # SPDX-License-Identifier: AGPL-3.0
-# Copyright (C) 2004-2022 Univention GmbH
+# Copyright (C) 2004-2024 Univention GmbH
 
 from listener import *
 

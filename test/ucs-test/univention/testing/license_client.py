@@ -6,7 +6,7 @@
 A tool to obtain licenses for the UCS test environments.
 """
 #
-# Copyright 2014-2022 Univention GmbH
+# Copyright 2014-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

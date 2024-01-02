@@ -4,7 +4,7 @@
 # Univention System Setup
 # appliance hook script called at the end of appliance wizard setup
 #
-# Copyright 2016-2022 Univention GmbH
+# Copyright 2016-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

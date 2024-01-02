@@ -4,7 +4,7 @@
 # Univention App Center
 #  Application class
 #
-# Copyright 2015-2022 Univention GmbH
+# Copyright 2015-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

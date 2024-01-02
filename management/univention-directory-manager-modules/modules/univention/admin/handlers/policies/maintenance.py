@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin policy for the client maintenance
 #
-# Copyright 2004-2022 Univention GmbH
+# Copyright 2004-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

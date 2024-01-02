@@ -2,7 +2,7 @@
  * Univention Directory Listener
  *  header information for cache_lowlevel.c
  *
- * Copyright 2004-2022 Univention GmbH
+ * Copyright 2004-2024 Univention GmbH
  *
  * https://www.univention.de/
  *

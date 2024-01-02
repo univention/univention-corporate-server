@@ -12,7 +12,7 @@ not clean up in error cases!
 """
 from __future__ import print_function
 #
-# Copyright 2014-2022 Univention GmbH
+# Copyright 2014-2024 Univention GmbH
 #
 # https://www.univention.de/
 #

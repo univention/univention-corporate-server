@@ -4,7 +4,7 @@
 # Univention Management Console
 #  Base class for UMC 2.0 modules
 #
-# Copyright 2006-2022 Univention GmbH
+# Copyright 2006-2024 Univention GmbH
 #
 # https://www.univention.de/
 #
