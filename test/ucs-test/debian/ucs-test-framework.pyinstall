@@ -2,3 +2,4 @@ univention/testing/*.py univention.testing
 univention/testing/format/*.py univention.testing.format
 univention/testing/selenium/*.py univention.testing.selenium
 univention/testing/browser/*.py univention.testing.browser
+univention/testing/pytest_univention_playwright/*.py univention.testing.pytest_univention_playwright

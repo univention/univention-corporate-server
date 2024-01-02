@@ -9,12 +9,14 @@
 ## join: true
 ## exposure: dangerous
 
+from pathlib import Path
+
 import pytest
-from conftest import check_for_backtrace, save_trace
 from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError, expect
 
 from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.pytest_univention_playwright import check_for_backtrace, save_trace
 from univention.testing.umc import Client
 
 
@@ -52,7 +54,7 @@ def test_open_all_modules(logged_in_umc_browser_test: UMCBrowserTest, module_nam
         logged_in_umc_browser_test.open_and_close_module(module_name)
     except (AssertionError, PlaywrightTimeoutError):
         try:
-            save_trace(page, page.context, module_name, ucr, tracing_stop_chunk=True)
+            save_trace(page, page.context, module_name, Path("browser").resolve(), ucr, tracing_stop_chunk=True)
             check_for_backtrace(page)
         finally:
             logged_in_umc_browser_test.restart_umc()

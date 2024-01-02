@@ -1,3 +1,9 @@
+ucs-test (10.0.20-13) unstable; urgency=medium
+
+  * Bug #56054: Remove conftest.py and move contents into seperate python package
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 02 Jan 2024 14:23:07 +0100
+
 ucs-test (10.0.20-12) unstable; urgency=low
 
   * Playwright: Disable GPU when running Chromium

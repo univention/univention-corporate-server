@@ -1,9 +1,38 @@
-import os
+# -*- coding: utf-8 -*-
+#
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# Copyright 2023-2024 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
 import subprocess
-import time
 from pathlib import Path
 from typing import Dict, Generator, Iterator
-from urllib.parse import quote
 
 import pytest
 from playwright.sync_api import BrowserContext, BrowserType, Page, expect
@@ -12,10 +41,12 @@ from univention.config_registry import handler_set, handler_unset
 from univention.testing import udm as _udm
 from univention.testing.browser import logger
 from univention.testing.browser.generic_udm_module import UserModule
-from univention.testing.browser.lib import SEC, UMCBrowserTest
+from univention.testing.browser.lib import UMCBrowserTest
 from univention.testing.browser.sidemenu import SideMenuLicense, SideMenuUser
 from univention.testing.browser.suggestion import AppCenterCacheTest
 from univention.testing.browser.univentionconfigurationregistry import UniventionConfigurationRegistry
+
+from . import check_for_backtrace, save_trace
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -37,7 +68,7 @@ def pytest_runtest_makereport(item, call):
 
 
 @pytest.fixture(scope="session")
-def browser_context_args(browser_context_args):
+def ucs_browser_context_args(browser_context_args):
     return {
         **browser_context_args,
         "ignore_https_errors": True,
@@ -45,12 +76,11 @@ def browser_context_args(browser_context_args):
 
 
 @pytest.fixture(scope="session")
-def browser_type_launch_args(browser_type_launch_args):
+def ucs_browser_type_launch_args(browser_type_launch_args):
     return {
         **browser_type_launch_args,
         "executable_path": "/usr/bin/chromium",
         "args": [
-            "--remote-debugging-port=3157",
             "--disable-gpu",
         ],
     }
@@ -109,11 +139,11 @@ def setup_browser_context(context, start_tracing=True):
 @pytest.fixture(scope="module")
 def context_module_scope(
     browser_type: BrowserType,
-    browser_type_launch_args: Dict,
-    browser_context_args: Dict,
+    ucs_browser_type_launch_args: Dict,
+    ucs_browser_context_args: Dict,
 ):
-    browser = browser_type.launch(**browser_type_launch_args)
-    return browser.new_context(**browser_context_args)
+    browser = browser_type.launch(**ucs_browser_type_launch_args)
+    return browser.new_context(**ucs_browser_context_args)
 
 
 @pytest.fixture(scope="module")
@@ -129,11 +159,15 @@ def umc_browser_test_module(
 
 @pytest.fixture()
 def umc_browser_test(
-    context: BrowserContext,
+    browser_type: BrowserType,
+    ucs_browser_type_launch_args: Dict,
+    ucs_browser_context_args: Dict,
     request: pytest.FixtureRequest,
     kill_module_processes,
     ucr,
 ) -> Generator[UMCBrowserTest, None, None]:
+    browser = browser_type.launch(**ucs_browser_type_launch_args)
+    context = browser.new_context(**ucs_browser_context_args)
     page = setup_browser_context(context)
     tester = UMCBrowserTest(page)
 
@@ -143,7 +177,10 @@ def umc_browser_test(
 
 
 def teardown_umc_browser_test(
-    request: pytest.FixtureRequest, ucr, page: Page, context: BrowserContext,
+    request: pytest.FixtureRequest,
+    ucr,
+    page: Page,
+    context: BrowserContext,
 ):
     try:
         report = request.node.stash[phase_report_key]
@@ -155,63 +192,12 @@ def teardown_umc_browser_test(
 
     try:
         if "call" in report and report["call"].failed:
-            save_trace(page, context, request.node.name, ucr)
+            save_trace(page, context, request.node.name, Path("browser").resolve(), ucr)
             check_for_backtrace(page)
         else:
             context.tracing.stop()
     finally:
         page.close()
-
-
-def save_trace(
-    page: Page,
-    context: BrowserContext,
-    node_name: str,
-    ucr,
-    tracing_stop_chunk: bool = False,
-):
-    ts = time.time_ns()
-
-    base_path = Path("browser").resolve()
-    screenshot_filename = base_path / f"{ts}-{node_name}.jpeg"
-    trace_filename = base_path / f"{ts}-{node_name}_trace.zip"
-
-    page.screenshot(path=screenshot_filename)
-
-    if tracing_stop_chunk:
-        context.tracing.stop_chunk(path=trace_filename)
-    else:
-        context.tracing.stop(path=trace_filename)
-
-    if os.environ.get("JENKINS_WS"):
-        if "master" not in ucr.get("server/role"):
-            subfolder = f"{ucr.get('hostname')}/"
-        else:
-            subfolder = ""
-
-        browser_trace_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(trace_filename.name)}"
-        browser_screenshot_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(screenshot_filename.name)}"
-        logger.info("Browser trace URL: %s" % browser_trace_url)
-        logger.info("Browser screenshot URL: %s" % browser_screenshot_url)
-
-
-def check_for_backtrace(page: Page):
-    show_backtrace_button = page.get_by_role("button", name="Show server error message")
-    notification_502_error = page.get_by_text("An unknown error with status code 502 occurred").first
-    try:
-        expect(show_backtrace_button.or_(notification_502_error)).to_be_visible(timeout=5 * SEC)
-        if show_backtrace_button.is_visible():
-            show_backtrace_button.click()
-            backtrace_container = page.get_by_role(
-                "region",
-                name="Hide server error message",
-            )
-            logger.info("Recorded backtrace")
-            print(backtrace_container.inner_text())
-        else:
-            logger.info("An unknown error with status code 502 occurred while connecting to the server.")
-    except AssertionError:
-        pass
 
 
 @pytest.fixture()
