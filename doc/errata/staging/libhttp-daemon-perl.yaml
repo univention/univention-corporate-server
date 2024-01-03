@@ -6,9 +6,7 @@ src: libhttp-daemon-perl
 fix: 6.01-1.A~4.4.9.202401021236
 desc: |
  This update addresses the following issue:
- 6.01-1+deb9u1 (Tue, 26 Jul 2022 20:08:59 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2022-31081 improved Content-Length: handling in HTTP-header
+ * CVE-2022-31081: improved 'Content-Length:' handling in HTTP-header
 bug: [56949]
 cve:
 - CVE-2022-31081
