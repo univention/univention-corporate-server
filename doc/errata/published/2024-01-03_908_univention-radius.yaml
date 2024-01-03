@@ -11,3 +11,6 @@ desc: |
    VLAN-assignment for computer objects. By default, this feature is
    disabled.
 bug: [56060]
+erratum: 908
+announced: 2024-01-03
+support: core
