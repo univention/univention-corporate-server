@@ -4,7 +4,6 @@ After=network.target
 
 [Service]
 Type=simple
-# ugly hack until StandardOutput or StandardError to file:YOUR_ABSPATH_FILENAME is supported
 ExecStart=/usr/bin/python3 -m univention.admin.rest.server
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure

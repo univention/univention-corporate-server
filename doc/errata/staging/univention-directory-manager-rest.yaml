@@ -6,6 +6,6 @@ src: univention-directory-manager-rest
 fix: 10.0.7-3
 desc: |
  This update addresses the following issues:
- * After log rotating logfiles of UDM REST API the service is reloaded so
-   that it logs into the new files.
+ * After log rotating logfiles of the UDM REST API the service is reloaded 
+   so that it logs into the new files.
 bug: [54338]
