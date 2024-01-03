@@ -374,7 +374,7 @@ else:
 		# Disable tls v3 since it is not yet supported
 		# https://github.com/FreeRADIUS/freeradius-server/issues/2385
 @!@
-print('\t\ttls_max_version = %s' % configRegistry.get('freeradius/conf/tls-max-version', '1.2'))
+print('\t\ttls_max_version = %s' % configRegistry.get('freeradius/conf/tls-max-version', '1.3'))
 @!@
 
 		#
