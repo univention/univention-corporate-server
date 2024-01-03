@@ -1,8 +1,12 @@
-univention-lib (9.0.17-1) UNRELEASED; urgency=medium
+univention-lib (9.0.17-1) unstable; urgency=medium
 
+  [ Philipp Hahn ]
   * Bug #56832: UCS 5.0-6 version bump
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:22 +0100
+  [ Florian Best ]
+  * Bug #56420: fix memory leak for not existing Translation instances
+
+ -- Florian Best <best@univention.de>  Wed, 03 Jan 2024 14:54:31 +0100
 
 univention-lib (9.0.16-5) unstable; urgency=medium
 

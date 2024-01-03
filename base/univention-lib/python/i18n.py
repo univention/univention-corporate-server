@@ -241,6 +241,7 @@ class Translation(NullTranslation):
     def __new__(cls, *args, **kwargs):
         self = object.__new__(cls)
         cls._instances.append(weakref.ref(self))
+        cls._instances = [ref for ref in cls._instances if ref() is not None]
         return self
 
     @classmethod
