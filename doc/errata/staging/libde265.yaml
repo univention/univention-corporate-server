@@ -6,13 +6,11 @@ src: libde265
 fix: 1.0.11-0+deb10u6
 desc: |
  This update addresses the following issues:
- 1.0.11-0+deb10u6 (Fri, 29 Dec 2023 23:03:02 +0100)
- * Non-maintainer upload by the LTS Team.
- * CVE-2023-49465 heap-buffer-overflow in
-   derive_spatial_luma_vector_prediction()
- * CVE-2023-49467 heap-buffer-overflow in
-   derive_combined_bipredictive_merging_candidates()
- * CVE-2023-49468 global buffer overflow in read_coding_unit()
+ * CVE-2023-49465: heap-buffer-overflow in
+   'derive_spatial_luma_vector_prediction()'
+ * CVE-2023-49467: heap-buffer-overflow in
+   'derive_combined_bipredictive_merging_candidates()'
+ * CVE-2023-49468: Global buffer overflow in 'read_coding_unit()'
 bug: [56948]
 cve:
 - CVE-2023-49465
