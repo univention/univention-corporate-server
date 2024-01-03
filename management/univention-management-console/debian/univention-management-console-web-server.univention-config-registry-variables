@@ -99,13 +99,6 @@ Description[en]=Defines the accepted time difference (in seconds) of the SAML as
 Type=uint
 Categories=management-umc,saml
 
-[umc/saml/in-memory-identity-cache]
-Description[de]=Eine In-Memory-Datenbank für den SAML-Identitäts-Cache wird verwendet anstelle eines dateisystembasierten Caches. Wenn Multiprocessing über "umc/http/processes" aktiviert ist, muss dies auf False gesetzt werden.
-Description[en]=Use a in-memory database for the SAML identity cache instead of a filesystem based cache. When multiprocessing is enabled via "umc/http/processes" this must be set to False.
-Type=bool
-Default=true
-Categories=management-umc,saml
-
 [umc/logout/location]
 Description[de]=Definiert den Pfad der Weiterleitung nach einem erfolgreichen Abmelden von UMC.
 Description[en]=Defines the redirection path after a successful logout from UMC.
@@ -148,7 +141,7 @@ Categories=management-umc
 [umc/http/processes]
 Description[de]=Definiert die Anzahl paralleler UMC-Web-Server Prozesse.
 Description[en]=Defines the number of parallel UMC-Web-Servers processes.
-Type=pint
+Type=uint
 Categories=management-umc
 Default=1
 

@@ -51,7 +51,6 @@ from six.moves.urllib_parse import urlparse, urlunsplit
 from tornado.web import HTTPError
 
 from univention.lib.i18n import NullTranslation
-from univention.management.console.config import ucr
 from univention.management.console.error import UMC_Error
 from univention.management.console.log import CORE
 from univention.management.console.resource import Resource
@@ -174,7 +173,6 @@ class SAMLResource(Resource):
     requires_authentication = False
 
     SP = None
-    identity_cache = '/var/cache/univention-management-console/saml-%d.bdb' if ucr.is_false('umc/saml/in-memory-identity-cache') else None
     configfile = '/usr/share/univention-management-console/saml/sp.py'
     idp_query_param = "IdpQuery"
     bindings = [BINDING_HTTP_REDIRECT, BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT]
@@ -211,9 +209,8 @@ class SamlACS(SAMLResource):
     def reload(cls):
         CORE.info('Reloading SAML service provider configuration')
         sys.modules.pop(os.path.splitext(os.path.basename(cls.configfile))[0], None)
-        identity_cache = cls.identity_cache % (PORT,) if cls.identity_cache else None
         try:
-            cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=identity_cache, state_cache=shared_memory.saml_state_cache)
+            cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=None, state_cache=shared_memory.saml_state_cache)
             return True
         except Exception:
             CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))

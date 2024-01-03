@@ -1,3 +1,9 @@
+univention-management-console (12.0.32-4) unstable; urgency=medium
+
+  * Bug #54880: Remove the on disk SAML identity cache file
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jan 2024 08:46:31 +0100
+
 univention-management-console (12.0.32-3) unstable; urgency=medium
 
   * Bug #56868: New UCR variable ldap/server/sasl/mech_list
