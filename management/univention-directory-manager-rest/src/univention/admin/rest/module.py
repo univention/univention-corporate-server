@@ -655,7 +655,7 @@ class Directory(Resource):
             td4.text = UDM_Module(thing['objectType'], ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).subtitle
 
             if self.debug_mode_enabled:
-                pre = ET.SubElement(row, "pre", dn=x['dn'], style='display: none')
+                pre = ET.SubElement(row, "script", dn=x['dn'], type='application/json')
                 pre.text = json.dumps(x, indent=4)
 
         return root
@@ -1561,7 +1561,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
                 td4.text = thing['properties'].get(has_four_rows)  # TODO: syntax.to_string()
 
             if self.debug_mode_enabled:
-                pre = ET.SubElement(row, "pre", dn=x['dn'], style='display: none')
+                pre = ET.SubElement(row, "script", dn=x['dn'], type='application/json')
                 pre.text = json.dumps(x, indent=4)
         return root
 
@@ -1633,7 +1633,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
 
     def options_html(self, response):
         #root = self.get_html(response)
-        root = ET.Element('pre')
+        root = ET.Element('script', type='application/json')
         root.text = json.dumps(response, indent=4)
         return root
 

@@ -158,7 +158,7 @@ class HTML:
             r.pop('_links', None)
             r.pop('_embedded', None)
             if r:
-                pre = ET.Element("pre")
+                pre = ET.Element("script", type='application/json')
                 pre.text = json.dumps(r, indent=4)
                 root.append(pre)
 
