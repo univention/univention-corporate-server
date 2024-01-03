@@ -257,6 +257,12 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    For more information, see :ref:`ip-config-radius-configuration-mab`.
 
 
+.. envvar:: freeradius/conf/tls-max-version
+
+   Configures the maximum TLS version the server will attempt to use.
+   Some operating systems might not support the latest version, see :ref:`ip-config-radius-disable-tls-1-3`.
+
+
 .. envvar:: freeradius/vlan-id
 
    Configures the fallback value for VLAN ID for users that aren't member of a

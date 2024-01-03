@@ -1151,6 +1151,9 @@ msgstr ""
 "Konfiguriert die von UCS verwalteten Mail-Domänen. Für weitere "
 "Informationen, siehe :ref:`mail-management-domains`. "
 
+msgid "Configures the maximum TLS version the server will attempt to use. Some operating systems might not support the latest version, see :ref:`ip-config-radius-disable-tls-1-3`."
+msgstr "Konfiguriert die maximale TLS Version, die der Server anbieten wird. Bei manchen Betriebssystemen kann es zu Problemen kommen, wenn die neuste Version genutzt wird, siehe :ref:`ip-config-radius-disable-tls-1-3`."
+
 #: ../../appendix/variables.rst:785
 msgid ""
 "Configures the maximum size of an email in bytes for incoming and "
