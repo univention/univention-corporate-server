@@ -1,3 +1,9 @@
+univention-radius (9.0.4) unstable; urgency=medium
+
+  * Bug #55763: Reenable Radius TLS v1.3 by default
+
+ -- Maximilian Janßen <janssen@univention.de>  Fri, 08 Mar 2024 00:18:46 +0100
+
 univention-radius (9.0.3) unstable; urgency=medium
 
   * Bug #56927: increase all modified joinscripts by 10
