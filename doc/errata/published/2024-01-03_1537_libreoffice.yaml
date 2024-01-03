@@ -53,3 +53,6 @@ cve:
 - CVE-2020-12802
 - CVE-2020-12801
 - CVE-2020-12803
+erratum: 1537
+announced: 2024-01-03
+support: lts
