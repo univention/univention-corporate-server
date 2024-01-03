@@ -6,15 +6,13 @@ src: libreoffice
 fix: 1:6.1.5-3~deb9u2
 desc: |
  This update addresses the following issues:
- 1:6.1.5-3~deb9u2 (Thu, 28 Dec 2023 09:25:58 +0000)
- * Upload by ELTS security team.
- * Fix CVE-2023-6185: An Improper Input Validation vulnerability was found in
+ * CVE-2023-6185: An Improper Input Validation vulnerability was found in
    GStreamer integration of The Document Foundation LibreOffice allows an
    attacker to execute arbitrary GStreamer plugins. In affected versions the
    filename of the embedded video is not sufficiently escaped when passed to
    GStreamer enabling an attacker to run arbitrary gstreamer plugins depending
    on what plugins are installed on the target system.
- * Fix CVE-2023-6186: LibreOffice supports hyperlinks. In addition to the
+ * CVE-2023-6186: LibreOffice supports hyperlinks. In addition to the
    typical common protocols such as http/https hyperlinks can also have target
    URLs that can launch built-in macros or dispatch built-in internal
    commands. In affected version of LibreOffice there are scenarios where
@@ -23,13 +21,13 @@ desc: |
    permissions for the document are now consulted if these non-typical
    hyperlinks can be executed. The possibility to use these variants of
    hyperlink targets for floating frames has been removed.
- * Fix CVE-2020-12802: LibreOffice has a 'stealth mode' in which only
+ * CVE-2020-12802: LibreOffice has a 'stealth mode' in which only
    documents from locations deemed 'trusted' are allowed to retrieve remote
    resources. This mode is not the default mode, but can be enabled by users
    who want to disable LibreOffice's ability to include remote resources
    within a document. A flaw existed where remote graphic links loaded from
    docx documents were omitted from this protection.
- * Fix CVE-2020-12801: If LibreOffice has an encrypted document open and
+ * CVE-2020-12801: If LibreOffice has an encrypted document open and
    crashes, that document is auto-saved encrypted. On restart, LibreOffice
    offers to restore the document and prompts for the password to decrypt it.
    If the recovery is successful, and if the file format of the recovered
@@ -37,7 +35,7 @@ desc: |
    versions of LibreOffice default that subsequent saves of the document are
    unencrypted. This may lead to a user accidentally saving a MSOffice file
    format document unencrypted while believing it to be encrypted.
- * Fix CVE-2020-12803: ODF documents can contain forms to be filled out by the
+ * CVE-2020-12803: ODF documents can contain forms to be filled out by the
    user. Similar to HTML forms, the contained form data can be submitted to a
    URI, for example, to an external web server. To create submittable forms,
    ODF implements the XForms W3C standard, which allows data to be submitted
