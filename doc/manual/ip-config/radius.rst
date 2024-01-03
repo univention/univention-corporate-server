@@ -182,6 +182,20 @@ VLAN ID will be returned if the user is not a member of a group with a VLAN ID. 
 response will not contain any VLAN ID in case the user is not a member of a group with
 VLAN ID and no default VLAN ID is defined.
 
+.. _ip-config-radius-disable-tls-1-3:
+
+Disable TLS 1.3
+~~~~~~~~~~~~~~~
+
+Radius uses Transport Layer Security (TLS) to encrypt web traffic.
+The current version of all major operating systems supports TLS 1.3.
+Some operating systems, such as Microsoft Windows 10, have issues with the Radius implementation used.
+For detailed information, see :uv:bug:`55247`.
+
+If you still use those, you might have to to disable TLS v1.3.
+To limit TLS to version 1.2,
+change the |UCSUCRV| :envvar:`freeradius/conf/tls-max-version` to the value ``1.2``.
+
 .. _ip-config-radius-debugging:
 
 Debugging
