@@ -220,19 +220,6 @@ In the headquarters 150 users work with terminal services based on Citrix
 XenApp. The XenApp terminal server runs on a Windows member server, which joined
 the local Samba/AD domain.
 
-.. _insurance-backup:
-
-Backup
-======
-
-:program:`SEP sesam backup server` from the App Center is used for file backup,
-which can be installed with a few clicks. It offers a distributed backup concept
-with different backup agents, which backup both complete systems and data.
-Special backup agents are available for the backup of databases. All data is
-copied from the standard servers in the headquarters and from there saved on
-tape media. The installation can be performed with a few clicks in the App
-Center.
-
 .. _insurance-crm:
 
 Integration of SuiteCRM
