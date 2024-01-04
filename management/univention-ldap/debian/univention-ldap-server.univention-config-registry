@@ -18,6 +18,9 @@ Variables: ldap/database/bdb/.*
 Variables: ldap/database/type
 
 Type: multifile
+User: root
+Group: root
+Mode: 640
 Multifile: etc/ldap/slapd.conf
 Variables: ldap/server/type
 Variables: ldap/master
@@ -43,6 +46,14 @@ Variables: ldap/ppolicy/enabled
 Variables: ldap/ppolicy/default
 Variables: ldap/shadowbind
 Variables: ldap/shadowbind/ignorefilter
+Variables: ldap/database/internal/envflags
+Variables: ldap/database/internal/checkpoint
+Variables: ldap/database/internal/syncprov
+Variables: ldap/database/internal/syncprov/checkpoint
+Variables: ldap/database/internal/syncprov/sessionlog
+Variables: ldap/database/internal/syncrepl
+Variables: ldap/database/internal/syncrepl/retry
+Variables: ldap/syncprov
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -81,6 +92,7 @@ Variables: ldap/overlay/lastbind
 Variables: ldap/pw-bcrypt
 Variables: ldap/refint
 Variables: server/role
+Variables: ldap/syncprov
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -138,3 +150,20 @@ Variables: slapd/backup/cron
 Variables: slapd/backup/owner
 Variables: slapd/backup/group
 Variables: slapd/backup/permissions
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/95internal
+Variables: ldap/database/internal/envflags
+Variables: ldap/database/internal/checkpoint
+Variables: ldap/database/internal/syncprov
+Variables: ldap/database/internal/syncprov/checkpoint
+Variables: ldap/database/internal/syncprov/sessionlog
+Variables: ldap/database/internal/syncprov/acl/groups/write
+Variables: ldap/database/internal/syncprov/acl/groups/read
+Variables: ldap/database/internal/syncrepl
+Variables: ldap/database/internal/syncrepl/retry
+Variables: ldap/database/internal/syncrepl/acl/groups/read
+Variables: ldap/hostdn
+Variables: ldap/base
+Variables: server/role

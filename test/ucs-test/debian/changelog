@@ -1,3 +1,9 @@
+ucs-test (10.0.20-31) unstable; urgency=medium
+
+  * Bug #56999: test for blocklist and cn=udm_archive
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Feb 2024 12:50:28 +0100
+
 ucs-test (10.0.20-30) unstable; urgency=medium
 
   * Bug #56970: ignore errors during decoding of logfiles as UTF-8

@@ -31,26 +31,22 @@
 # <https://www.gnu.org/licenses/>.
 set -e -u
 
-TRANSLOG='/var/lib/univention-ldap/translog'
+ARCHIVE='/var/lib/univention-ldap/internal'
+DB="$ARCHIVE/data.mdb"
 
 main () {
-    local db action="${1?-Missing action}"
+    local action="${1?-Missing action}"
     shift
-
-    case "$(dpkg --print-architecture)" in
-    i386) db="$TRANSLOG/id2entry.bdb" ;;
-    amd64|*) db="$TRANSLOG/data.mdb" ;;
-    esac
 
     case "$action" in
     init)
         wrap setup_db ${1:+"$@"}
         ;;
     check)
-        [ -f "$db" ]
+        [ -f "$DB" ]
         ;;
     db)
-        echo "$db"
+        echo "$DB"
         ;;
     help|--help|-h)
         usage 0
@@ -77,22 +73,21 @@ setup_db () {
     do
         case "$1" in
         --force)
-            rm -rf "$TRANSLOG"
+            rm -rf "$ARCHIVE"
             ;;
         esac
         shift
     done
-    [ -s "$db" ] &&
-        [ -n "$(slapcat -f /etc/ldap/slapd.conf -b cn=translog -H 'ldap:///cn=translog??base')" ] &&
+    [ -s "$DB" ] &&
+        [ -n "$(slapcat -f /etc/ldap/slapd.conf -b cn=internal -H 'ldap:///cn=internal??base')" ] &&
         return 0
-    install -o openldap -g openldap -d "$TRANSLOG"
-    ucr commit "$TRANSLOG/DB_CONFIG"
-    slapadd -f /etc/ldap/slapd.conf -b cn=translog -l /usr/share/univention-ldap/translog.ldif
-    chown -R -h openldap: "$TRANSLOG"
+    install -o openldap -g openldap -d "$ARCHIVE"
+    slapadd -f /etc/ldap/slapd.conf -b cn=internal -l /usr/share/univention-ldap/internal.ldif
+    chown -R -h openldap: "$ARCHIVE"
 }
 
 check_db () {
-    [ -s "$db" ]
+    [ -s "$DB" ]
 }
 
 wrap () {
@@ -108,8 +103,8 @@ cleanup () {
     then
         set +e +u
         ps axf
-        grep -i -n -e 'translog' -e '^[^#]' /etc/ldap/slapd.conf
-        ls -l /var/lib/univention-ldap/translog/ /var/univention-join/
+        grep -i -n -e 'internal' -e '^[^#]' /etc/ldap/slapd.conf
+        ls -l /var/lib/univention-ldap/internal/ /var/univention-join/
         cat /var/univention-join/status
     fi >>"$tmp"
     cat "$tmp" >>/var/log/univention/join.log

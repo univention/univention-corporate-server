@@ -1,0 +1,46 @@
+attributetype ( 1.3.6.1.4.1.10176.1442.1.5 NAME 'blockedUntil'
+    SINGLE-VALUE
+    EQUALITY generalizedTimeMatch
+    ORDERING generalizedTimeOrderingMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 )
+
+attributetype ( 1.3.6.1.4.1.10176.1442.1.2 NAME 'originUniventionObjectIdentifier'
+    EQUALITY uuidMatch
+    ORDERING UUIDOrderingMatch
+    SYNTAX 1.3.6.1.1.16.1 SINGLE-VALUE )
+
+objectClass ( 1.3.6.1.4.1.10176.1442.1.1 NAME 'univentionBlockingEntry'
+    DESC 'Entry in the UDM property blocklist'
+    SUP top STRUCTURAL
+    MUST (
+         cn $
+         originUniventionObjectIdentifier $
+         blockedUntil
+         )
+    MAY ( description )
+    )
+
+attributetype ( 1.3.6.1.4.1.10176.1442.2.2 NAME 'univentionBlocklistRetentionTime'
+    SUBSTR caseIgnoreSubstringsMatch
+    DESC 'Retention time for blocklists'
+    EQUALITY caseIgnoreIA5Match
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1442.2.3 NAME 'univentionBlockingProperties'
+        SUBSTR caseIgnoreSubstringsMatch
+        DESC 'Blocking attributes for blocklist'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectClass ( 1.3.6.1.4.1.10176.1442.2.1 NAME 'univentionBlocklist'
+    DESC 'Blocklist object'
+    SUP top STRUCTURAL
+    MUST (
+         cn $
+         univentionBlockingProperties
+         )
+    MAY (
+        description $
+        univentionBlocklistRetentionTime
+        )
+    )
