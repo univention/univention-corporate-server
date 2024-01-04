@@ -1,3 +1,9 @@
+univention-ldap (16.0.14-5) unstable; urgency=medium
+
+  * Bug #57038: Add schema and internal database for univention blocklist entries
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 29 Jan 2024 10:00:19 +0100
+
 univention-ldap (16.0.14-4) unstable; urgency=medium
 
   * Bug #49006: document UCR variables

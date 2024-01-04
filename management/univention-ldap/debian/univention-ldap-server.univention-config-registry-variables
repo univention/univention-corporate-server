@@ -391,4 +391,78 @@ Categories=service-ldap
 Description[de]=Definiert die Konfiguration des SASL-Mechanismus OAUTHBEARER. Experimentell: Diese Funktion wird derzeit nicht unterstützt.
 Description[en]=Defines the configuration of the SASL mechanism OAUTHBEARER. Experimental: This feature is currently not supported.
 Type=str
+
+[ldap/syncprov]
+Description[de]=Aktiviert/Deaktiviert das LDAP Modul syncprov.
+Description[en]=To enable/disable the LDAP module syncprov.
+Type=bool
+Default=true
+Categories=service-ldap
+
+[ldap/database/internal/envflags]
+Description[de]=Konfiguriert die envflags Einstellung für die internal MDB Datenbank.
+Description[en]=Envflags settings for internal mdb database.
+Type=str
+Default=nosync
+Categories=service-ldap
+
+[ldap/database/internal/checkpoint]
+Description[de]=Konfiguriert die checkpoint Einstellung für die internal MDB Datenbank.
+Description[en]=checkpoint settings for internal mdb database.
+Type=str
+Default=0 1
+Categories=service-ldap
+
+[ldap/database/internal/syncprov]
+Description[de]=Definiert, ob die Syncrepl Provider Einstellungen für die internal MDB Datenbank aktiviert werden sollen.
+Description[en]=Defines, whether to activate the syncrepl provider settings for internal mdb database.
+Type=bool
+Categories=service-ldap
+
+[ldap/database/internal/syncprov/checkpoint]
+Description[de]=Konfiguriert die syncprov-checkpoint Einstellung für die internal MDB Datenbank.
+Description[en]=syncprov-checkpoint settings for internal mdb database.
+Type=str
+Default=1000 1
+Categories=service-ldap
+
+[ldap/database/internal/syncprov/sessionlog]
+Description[de]=Konfiguriert die syncprov-sessionlog Einstellung für die internal MDB Datenbank.
+Description[en]=syncprov-sessionlog settings for internal mdb database.
+Type=str
+Default=1000
+Categories=service-ldap
+
+[ldap/database/internal/syncrepl]
+Description[de]=Definiert, ob die Syncrepl Consumer Einstellungen für die internal MDB Datenbank aktiviert werden sollen.
+Description[en]=Defines, whether to activate the syncrepl sonsumer settings for internal mdb database.
+Type=bool
+Categories=service-ldap
+
+[ldap/database/internal/syncrepl/retry]
+Description[de]=Konfiguriert die syncrepl-retry Einstellung für die internal MDB Datenbank.
+Description[en]=syncprov-retry settings for internal mdb database.
+Type=str
+Default=10 20 300 +
+Categories=service-ldap
+
+[ldap/database/internal/syncprov/acl/groups/write]
+Description[de]=Liste von DN's von Gruppen, die Schreibzugriff auf die internal Datenbank haben.
+Description[en]=List of group dn's that have write access to the internal database.
+Type=list
+Separator=|
+Categories=service-ldap
+
+[ldap/database/internal/syncprov/acl/groups/read]
+Description[de]=Liste von DN's von Gruppen, die Lesezugriff auf die internal Datenbank haben.
+Description[en]=List of group dn's that have read access to the internal database.
+Type=list
+Separator=|
+Categories=service-ldap
+
+[ldap/database/internal/syncrepl/acl/groups/read]
+Description[de]=Liste von DN's von Gruppen, die Lesezugriff auf die internal Datenbank haben.
+Description[en]=List of group dn's that have read access to the internal database.
+Type=list
+Separator=|
 Categories=service-ldap

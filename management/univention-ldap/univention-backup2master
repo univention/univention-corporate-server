@@ -281,7 +281,9 @@ univention-config-registry set \
 	kerberos/kpasswdserver="$hostname.$domainname" \
 	windows/wins-support=yes \
 	ldap/translogfile=/var/lib/univention-ldap/listener/listener \
-	ldap/translog-ignore-temporary=yes
+	ldap/translog-ignore-temporary=yes \
+	ldap/database/internal/syncprov=true \
+	ldap/database/internal/syncrepl=false
 
 if [ -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
 	install -o root -g root -m 644 /etc/univention/ssl/ucsCA/CAcert.pem /var/www/ucs-root-ca.crt
