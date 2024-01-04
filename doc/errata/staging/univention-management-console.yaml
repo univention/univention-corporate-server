@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-management-console
+fix: 12.0.32-3
+desc: |
+ This update addresses the following issues:
+ * The UCR variable `ldap/server/sasl/mech_list` has been added to allow
+   restricting the list of SASL mechanisms that the local LDAP server
+   offers. By default GSS-SPNEGO and NTLM get disabled with the update,
+   because they don't work properly with slapd in UCS.
+bug: [56868]
