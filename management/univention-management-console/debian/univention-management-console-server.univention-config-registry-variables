@@ -19,13 +19,6 @@ Type=uint
 Categories=management-umc
 Default=64
 
-[umc/server/processes]
-Description[de]=Definiert die Anzahl an UMC-Server Prozessen, die parallel gestartet werden.
-Description[en]=Defined the number of UMC-Server processes, which are started in parallel.
-Type=uint
-Categories=management-umc
-Default=1
-
 [umc/module/debug/level]
 Description[de]=Der Detailgrad der Logmeldungen in /var/log/univention/management-console-module-*. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert).
 Description[en]=The verbosity of log messages in /var/log/univention/management-console-module-*. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well).

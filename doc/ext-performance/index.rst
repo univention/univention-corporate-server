@@ -345,14 +345,13 @@ Vertical performance scaling
 ============================
 
 A single |UCSUMC| instance does not use multiple CPU cores by design, therefore
-it can be beneficial to start multiple instances. Set the following |UCSUCRV|\ s
-:envvar:`umc/server/processes` and :envvar:`umc/http/processes` and restart the
+it can be beneficial to start multiple instances. Set the following |UCSUCRV|
+:envvar:`umc/http/processes` and restart the
 |UCSUMC|:
 
 .. code-block:: console
 
    $ systemctl restart apache2 \
-     univention-management-console-web-server \
      univention-management-console-server
 
 The number of instances to configure depends on the workload and the server
@@ -360,14 +359,13 @@ system. As a general rule of thumb these should not be higher than the machines
 CPU cores. Good throughput values had resulted in tests with the following
 combinations:
 
-* 6 CPU cores: ``umc/http/processes=3`` and
-  ``umc/server/processes=3``
+* Automatically detect available CPU cores: ``umc/http/processes=0``
 
-* 16 CPU cores: ``umc/http/processes=15`` and
-  ``umc/server/processes=15``
+* 6 CPU cores: ``umc/http/processes=3``
 
-* 32 CPU cores: ``umc/http/processes=25`` and
-  ``umc/server/processes=25``
+* 16 CPU cores: ``umc/http/processes=15``
+
+* 32 CPU cores: ``umc/http/processes=25``
 
 Note that the number of Apache processes may also need to be increased for the
 customization to take effect.

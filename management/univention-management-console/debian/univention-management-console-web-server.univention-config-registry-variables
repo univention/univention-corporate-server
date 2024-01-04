@@ -139,8 +139,8 @@ Type=bool
 Categories=management-umc
 
 [umc/http/processes]
-Description[de]=Definiert die Anzahl paralleler UMC-Web-Server Prozesse.
-Description[en]=Defines the number of parallel UMC-Web-Servers processes.
+Description[de]=Definiert die Anzahl an UMC-Server Prozessen, die parallel gestartet werden.
+Description[en]=Defines the number of UMC-Server processes, which are started in parallel.
 Type=uint
 Categories=management-umc
 Default=1
