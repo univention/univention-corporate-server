@@ -1554,6 +1554,14 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         grid_header.extend(childs)
         root.append(grid)
 
+        for lname in ('first', 'prev', 'current', 'next', 'last'):
+            nav_link = self.get_links(response, lname)
+            if nav_link:
+                nav_link = nav_link[0]
+                #formatter = {'first': '%s …', 'prev': '%s «', 'current': '| %s |', 'next': '%s »', 'last': '… %s'}
+                formatter = {'first': '{} …', 'prev': '«', 'current': '| {} |', 'next': '»', 'last': '… {}'}
+                ET.SubElement(root, 'a', href=nav_link['href'], title=nav_link['title']).text = formatter[lname].format(nav_link['page'])
+
         has_four_rows = self.request.decoded_query_arguments.get('property')
         if not isinstance(has_four_rows, str):
             has_four_rows = None
