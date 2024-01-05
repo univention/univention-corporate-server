@@ -15,12 +15,11 @@ from __future__ import annotations
 
 import email
 import time
-from dataclasses import dataclass
 from typing import Dict
 from urllib.parse import parse_qs, urlparse
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
 from test_self_service import capture_mails
 
 import univention.testing.strings as uts
@@ -28,7 +27,7 @@ from univention.admin.uexceptions import noObject
 from univention.admin.uldap import getAdminConnection
 from univention.lib.i18n import Translation
 from univention.testing import utils
-from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.selfservice import SelfService, UserCreationAttribute
 
 
 _ = Translation("ucs-test-browser").translate
@@ -41,12 +40,6 @@ MAILS_TIMEOUT = 5
 def mails():
     with capture_mails(timeout=MAILS_TIMEOUT) as mails:
         yield mails
-
-
-@dataclass
-class UserCreationAttribute:
-    label: str
-    value: str
 
 
 @pytest.fixture(autouse=True)
@@ -117,35 +110,6 @@ def _get_mail(mails, idx=-1):
             "method": verify_params.get("method", [""])[0],
         },
     }
-
-
-class SelfService:
-    def __init__(self, tester: UMCBrowserTest):
-        self.tester: UMCBrowserTest = tester
-        self.page: Page = tester.page
-
-    def navigate(self, hash: str = ""):
-        self.page.goto(f"{self.tester.base_url}/univention/portal/#/selfservice/{hash}")
-
-    def navigate_create_account(self):
-        self.navigate("createaccount")
-        expect(self.page.get_by_role("heading", name=_("Create an account"))).to_be_visible()
-
-    def fill_create_account(self, attributes: Dict[str, UserCreationAttribute], button: str | None = "Create an account"):
-        for k, v in attributes.items():
-            if k == "password":
-                self.page.get_by_role("textbox", name=_("Password"), exact=True).fill(v.value)
-                self.page.get_by_role("textbox", name=_("Password (retype)"), exact=True).fill(v.value)
-            else:
-                self.page.get_by_role("textbox", name=v.label).fill(v.value)
-
-        if button is not None:
-            self.page.get_by_role("button", name=button).click()
-
-
-@pytest.fixture()
-def self_service(umc_browser_test: UMCBrowserTest) -> SelfService:
-    return SelfService(umc_browser_test)
 
 
 def test_registration_enabled(self_service: SelfService, ucr, get_registration_info):

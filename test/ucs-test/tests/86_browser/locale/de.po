@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucs-test 1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-08-02 14:12+0200\n"
+"POT-Creation-Date: 2024-01-09 15:15+0100\n"
 "PO-Revision-Date: 2020-09-05 16:31+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -16,11 +16,11 @@ msgstr ""
 msgid "A reboot of the server is recommended"
 msgstr ""
 
-#: tests/86_browser/10_product_test_password_change.py:276
+#: tests/86_browser/10_product_test_password_change.py:271
 msgid "Account"
 msgstr "Konto"
 
-#: tests/86_browser/17_self_service_registration.py:321
+#: tests/86_browser/17_self_service_registration.py:287
 msgid "Account creation successful"
 msgstr "Kontoerstellung erfolgreich"
 
@@ -43,21 +43,21 @@ msgstr "Verwaltung"
 msgid "App Center"
 msgstr ""
 
-#: tests/86_browser/12_product_test_ucr.py:72
+#: tests/86_browser/12_product_test_ucr.py:70
 msgid "Base Settings"
 msgstr ""
 
-#: tests/86_browser/10_product_test_password_change.py:230
+#: tests/86_browser/10_product_test_password_change.py:225
 #: tests/86_browser/151_udm_users.py:70
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: tests/86_browser/110_product_test_do_rejoin.py:53
 #: tests/86_browser/18_overview_false.py:56
+#: tests/86_browser/110_product_test_do_rejoin.py:53
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: tests/86_browser/12_product_test_ucr.py:72
+#: tests/86_browser/12_product_test_ucr.py:70
 msgid "Category"
 msgstr "Kategorie"
 
@@ -70,12 +70,12 @@ msgstr "Zentrale Portal-Webseite für die UCS-Domäne"
 msgid "Certificate settings"
 msgstr "Zertifikats-Einstellungen"
 
+#: tests/86_browser/10_product_test_password_change.py:167
 #: tests/86_browser/134_side_menu.py:28
 #: tests/86_browser/14_password_self-service.py:88
 #: tests/86_browser/14_password_self-service.py:105
 #: tests/86_browser/14_password_self-service.py:115
 #: tests/86_browser/14_password_self-service.py:130
-#: tests/86_browser/10_product_test_password_change.py:162
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -83,7 +83,7 @@ msgstr "Passwort ändern"
 msgid "Change your (expired) password."
 msgstr ""
 
-#: tests/86_browser/135_upload_license.py:67
+#: tests/86_browser/135_upload_license.py:71
 msgid "Close"
 msgstr "Schließen"
 
@@ -96,9 +96,8 @@ msgstr "Rechner"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: tests/86_browser/17_self_service_registration.py:130
-#: tests/86_browser/17_self_service_registration.py:152
-#: tests/86_browser/17_self_service_registration.py:162
+#: tests/86_browser/17_self_service_registration.py:118
+#: tests/86_browser/17_self_service_registration.py:128
 msgid "Create an account"
 msgstr "Konto erstellen"
 
@@ -116,8 +115,8 @@ msgstr ""
 msgid "DNS"
 msgstr ""
 
-#: tests/86_browser/17_self_service_registration.py:189
 #: tests/86_browser/151_udm_users.py:73
+#: tests/86_browser/17_self_service_registration.py:155
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -125,8 +124,6 @@ msgstr "Beschreibung"
 msgid "Domain Admins"
 msgstr ""
 
-#: tests/86_browser/110_product_test_do_rejoin.py:43
-#: tests/86_browser/111_product_test_execute_join_script.py:68
 #: tests/86_browser/131_miscellaneous_module_availability.py:42
 #: tests/86_browser/131_miscellaneous_module_availability.py:64
 #: tests/86_browser/131_miscellaneous_module_availability.py:85
@@ -135,6 +132,8 @@ msgstr ""
 #: tests/86_browser/131_miscellaneous_module_availability.py:134
 #: tests/86_browser/131_miscellaneous_module_availability.py:147
 #: tests/86_browser/131_miscellaneous_module_availability.py:162
+#: tests/86_browser/110_product_test_do_rejoin.py:43
+#: tests/86_browser/111_product_test_execute_join_script.py:68
 msgid "Domain join"
 msgstr "Domänenbeitritt"
 
@@ -142,18 +141,18 @@ msgstr "Domänenbeitritt"
 msgid "Edit Portal"
 msgstr "Portal bearbeiten"
 
-#: tests/86_browser/17_self_service_registration.py:74
-#: tests/86_browser/17_self_service_registration.py:171
-#: tests/86_browser/17_self_service_registration.py:186
-#: tests/86_browser/17_self_service_registration.py:306
+#: tests/86_browser/17_self_service_registration.py:69
+#: tests/86_browser/17_self_service_registration.py:137
+#: tests/86_browser/17_self_service_registration.py:152
+#: tests/86_browser/17_self_service_registration.py:272
 msgid "Email"
 msgstr "E-Mail"
 
-#: tests/86_browser/17_self_service_registration.py:307
+#: tests/86_browser/17_self_service_registration.py:273
 msgid "Email (retype)"
 msgstr "E-Mail (Wiederholung)"
 
-#: tests/86_browser/10_product_test_password_change.py:181
+#: tests/86_browser/10_product_test_password_change.py:176
 msgid "Error changing password"
 msgstr "Fehler bei Passwortänderung"
 
@@ -161,11 +160,12 @@ msgstr "Fehler bei Passwortänderung"
 msgid "Execute"
 msgstr ""
 
-#: tests/86_browser/15_favorite_modules.py:85
+#: tests/86_browser/10_product_test_password_change.py:247
 #: tests/86_browser/10_product_test_password_change.py:252
-#: tests/86_browser/10_product_test_password_change.py:257
-#: tests/86_browser/130_miscellaneous.py:44
-#: tests/86_browser/130_miscellaneous.py:51
+#: tests/86_browser/130_miscellaneous.py:47
+#: tests/86_browser/130_miscellaneous.py:54
+#: tests/86_browser/132_miscellaneous_open_all_modules.py:45
+#: tests/86_browser/15_favorite_modules.py:85
 msgid "Favorites"
 msgstr "Favoriten"
 
@@ -180,7 +180,7 @@ msgstr "Favoriten"
 msgid "Filesystem quotas"
 msgstr "Dateisystem Quota"
 
-#: tests/86_browser/17_self_service_registration.py:174
+#: tests/86_browser/17_self_service_registration.py:140
 msgid "First name"
 msgstr "Vorname"
 
@@ -188,9 +188,9 @@ msgstr "Vorname"
 msgid "Forgot your password"
 msgstr ""
 
+#: tests/86_browser/151_udm_users.py:93
 #: tests/86_browser/131_miscellaneous_module_availability.py:35
 #: tests/86_browser/131_miscellaneous_module_availability.py:78
-#: tests/86_browser/151_udm_users.py:93
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -221,13 +221,12 @@ msgstr "LDAP-Verzeichnis"
 msgid "Language settings"
 msgstr "Spracheinstellungen"
 
-#: tests/86_browser/17_self_service_registration.py:72
-#: tests/86_browser/17_self_service_registration.py:175
+#: tests/86_browser/17_self_service_registration.py:67
+#: tests/86_browser/17_self_service_registration.py:141
 msgid "Last name"
 msgstr "Nachname"
 
-#: tests/86_browser/11_umc_pam-login_unclosed_fh_test.py:39
-#: tests/86_browser/10_product_test_password_change.py:174
+#: tests/86_browser/11_umc_pam-login_unclosed_fh_test.py:40
 msgid "Login"
 msgstr ""
 
@@ -277,22 +276,22 @@ msgstr "Netzwerke"
 msgid "Never"
 msgstr "Nie"
 
-#: tests/86_browser/10_product_test_password_change.py:246
+#: tests/86_browser/10_product_test_password_change.py:241
 msgid "New Password (retype)"
 msgstr "Neues Passwort (Wiederholung)"
 
-#: tests/86_browser/10_product_test_password_change.py:243
+#: tests/86_browser/10_product_test_password_change.py:238
 msgid "New password"
 msgstr "Neues Passwort"
 
+#: tests/86_browser/17_self_service_registration.py:267
 #: tests/86_browser/14_password_self-service.py:94
 #: tests/86_browser/14_password_self-service.py:134
 #: tests/86_browser/14_password_self-service.py:136
-#: tests/86_browser/17_self_service_registration.py:301
 msgid "Next"
 msgstr "Weiter"
 
-#: tests/86_browser/10_product_test_password_change.py:180
+#: tests/86_browser/10_product_test_password_change.py:175
 msgid "Notification"
 msgstr "Benachrichtigung"
 
@@ -303,7 +302,7 @@ msgstr "Benachrichtigung"
 msgid "OK"
 msgstr "OK"
 
-#: tests/86_browser/10_product_test_password_change.py:155
+#: tests/86_browser/10_product_test_password_change.py:161
 msgid "Ok"
 msgstr "Ok"
 
@@ -314,17 +313,15 @@ msgstr "Ok"
 msgid "Package Management"
 msgstr "Paket-Verwaltung"
 
-#: tests/86_browser/17_self_service_registration.py:73
-#: tests/86_browser/17_self_service_registration.py:135
-#: tests/86_browser/17_self_service_registration.py:172
-#: tests/86_browser/17_self_service_registration.py:187
-#: tests/86_browser/17_self_service_registration.py:300
+#: tests/86_browser/17_self_service_registration.py:68
+#: tests/86_browser/17_self_service_registration.py:138
+#: tests/86_browser/17_self_service_registration.py:153
+#: tests/86_browser/17_self_service_registration.py:266
 msgid "Password"
 msgstr "Passwort"
 
-#: tests/86_browser/17_self_service_registration.py:136
-#: tests/86_browser/17_self_service_registration.py:173
-#: tests/86_browser/17_self_service_registration.py:188
+#: tests/86_browser/17_self_service_registration.py:139
+#: tests/86_browser/17_self_service_registration.py:154
 msgid "Password (retype)"
 msgstr "Passwort (Wiederholung)"
 
@@ -344,15 +341,15 @@ msgstr ""
 msgid "Please enter credentials"
 msgstr ""
 
-#: tests/86_browser/17_self_service_registration.py:267
+#: tests/86_browser/17_self_service_registration.py:233
 msgid "Please follow the instructions in the email to verify your account"
 msgstr ""
 "Bitte folgen Sie den Anweisungen in der E-Mail, um Ihr Konto zu verifizieren"
 
-#: tests/86_browser/131_miscellaneous_module_availability.py:46
-#: tests/86_browser/131_miscellaneous_module_availability.py:89
 #: tests/86_browser/18_overview_false.py:31
 #: tests/86_browser/18_overview_false.py:48
+#: tests/86_browser/131_miscellaneous_module_availability.py:46
+#: tests/86_browser/131_miscellaneous_module_availability.py:89
 msgid "Policies"
 msgstr "Richtlinien"
 
@@ -365,6 +362,7 @@ msgstr "Richtlinie: Desktop"
 msgid "Printers"
 msgstr "Drucker"
 
+#: tests/86_browser/130_miscellaneous.py:120
 #: tests/86_browser/131_miscellaneous_module_availability.py:53
 #: tests/86_browser/131_miscellaneous_module_availability.py:69
 #: tests/86_browser/131_miscellaneous_module_availability.py:95
@@ -373,7 +371,6 @@ msgstr "Drucker"
 #: tests/86_browser/131_miscellaneous_module_availability.py:138
 #: tests/86_browser/131_miscellaneous_module_availability.py:151
 #: tests/86_browser/131_miscellaneous_module_availability.py:166
-#: tests/86_browser/130_miscellaneous.py:117
 msgid "Process overview"
 msgstr "Prozessübersicht"
 
@@ -404,8 +401,8 @@ msgstr "Aus Favoriten entfernen"
 msgid "Repository Settings"
 msgstr "Repository-Einstellungen"
 
-#: tests/86_browser/17_self_service_registration.py:239
-#: tests/86_browser/17_self_service_registration.py:265
+#: tests/86_browser/17_self_service_registration.py:205
+#: tests/86_browser/17_self_service_registration.py:231
 msgid "Request new token"
 msgstr "Neuen Token anfordern"
 
@@ -473,8 +470,8 @@ msgstr "Niemals starten"
 msgid "Stop"
 msgstr "Stoppen"
 
-#: tests/86_browser/17_self_service_registration.py:309
-#: tests/86_browser/17_self_service_registration.py:312
+#: tests/86_browser/17_self_service_registration.py:275
+#: tests/86_browser/17_self_service_registration.py:278
 msgid "Submit"
 msgstr ""
 
@@ -505,12 +502,12 @@ msgstr "Systemdienste"
 msgid "System settings"
 msgstr "Systemeinstellungen"
 
-#: tests/86_browser/17_self_service_registration.py:232
+#: tests/86_browser/17_self_service_registration.py:198
 msgid "The account could not be verified. Please verify your input"
 msgstr ""
 "Das Konto konnte nicht verifiziert werden. Bitte überprüfen Sie Ihre Eingabe"
 
-#: tests/86_browser/17_self_service_registration.py:165
+#: tests/86_browser/17_self_service_registration.py:131
 msgid ""
 "The account registration was disabled via the Univention Configuration "
 "Registry."
@@ -518,15 +515,15 @@ msgstr ""
 "Die Kontoregistrierung wurde durch die Univention Configuration Registry "
 "deaktiviert"
 
-#: tests/86_browser/10_product_test_password_change.py:51
+#: tests/86_browser/10_product_test_password_change.py:52
 msgid "The password has been changed successfully."
 msgstr "Das Passwort wurde erfolgreich geändert."
 
-#: tests/86_browser/10_product_test_password_change.py:240
+#: tests/86_browser/10_product_test_password_change.py:235
 msgid "The password has expired and must be renewed."
 msgstr "password has expired and must be renewed"
 
-#: tests/86_browser/17_self_service_registration.py:254
+#: tests/86_browser/17_self_service_registration.py:220
 msgid ""
 "The token you supplied is either expired or invalid. Please request a new "
 "one."
@@ -534,7 +531,7 @@ msgstr ""
 "Der Token (Sicherheitsschlüssel) den Sie angegeben haben ist entweder "
 "abgelaufen oder ungültig. Bitte fordern Sie einen neuen an."
 
-#: tests/86_browser/17_self_service_registration.py:242
+#: tests/86_browser/17_self_service_registration.py:208
 msgid "The verification token could not be sent. Please verify your input."
 msgstr ""
 "Ein Verifizierungs-Token konnte nicht gesendet werden. Bitte überprüfen Sie "
@@ -544,15 +541,16 @@ msgstr ""
 msgid "This page shows the status of"
 msgstr ""
 
-#: tests/86_browser/17_self_service_registration.py:190
+#: tests/86_browser/17_self_service_registration.py:156
 msgid "Title"
 msgstr "Anrede"
 
-#: tests/86_browser/17_self_service_registration.py:227
-#: tests/86_browser/17_self_service_registration.py:249
+#: tests/86_browser/17_self_service_registration.py:193
+#: tests/86_browser/17_self_service_registration.py:215
 msgid "Token"
 msgstr ""
 
+#: tests/86_browser/130_miscellaneous.py:119
 #: tests/86_browser/131_miscellaneous_module_availability.py:55
 #: tests/86_browser/131_miscellaneous_module_availability.py:71
 #: tests/86_browser/131_miscellaneous_module_availability.py:97
@@ -561,7 +559,6 @@ msgstr ""
 #: tests/86_browser/131_miscellaneous_module_availability.py:140
 #: tests/86_browser/131_miscellaneous_module_availability.py:153
 #: tests/86_browser/131_miscellaneous_module_availability.py:168
-#: tests/86_browser/130_miscellaneous.py:116
 msgid "Univention Configuration Registry"
 msgstr ""
 
@@ -577,68 +574,64 @@ msgstr ""
 msgid "Univention Management Console for admin­is­tra­ting the local system"
 msgstr "Univention Management Console zur Ver­wal­tung des lokalen Systems"
 
+#: tests/86_browser/180_portal_entries.py:29
 #: tests/86_browser/14_password_self-service.py:101
 #: tests/86_browser/14_password_self-service.py:116
-#: tests/86_browser/180_portal_entries.py:29
 msgid "Univention Portal"
 msgstr "Univention Portal"
 
-#: tests/86_browser/10_product_test_password_change.py:277
+#: tests/86_browser/10_product_test_password_change.py:272
 msgid "User has to change password on next login"
 msgstr "Benutzer muss das Passwort bei der nächsten Anmeldung ändern"
 
-#: tests/86_browser/17_self_service_registration.py:71
-#: tests/86_browser/17_self_service_registration.py:176
+#: tests/86_browser/17_self_service_registration.py:66
+#: tests/86_browser/17_self_service_registration.py:142
 msgid "User name"
 msgstr "Benutzername"
 
-#: tests/86_browser/17_self_service_registration.py:226
-#: tests/86_browser/17_self_service_registration.py:237
-#: tests/86_browser/17_self_service_registration.py:248
-#: tests/86_browser/17_self_service_registration.py:263
-#: tests/86_browser/17_self_service_registration.py:298
+#: tests/86_browser/17_self_service_registration.py:192
+#: tests/86_browser/17_self_service_registration.py:203
+#: tests/86_browser/17_self_service_registration.py:214
+#: tests/86_browser/17_self_service_registration.py:229
+#: tests/86_browser/17_self_service_registration.py:264
 msgid "Username"
 msgstr "Benutzername"
 
+#: tests/86_browser/18_overview_false.py:32
 #: tests/86_browser/131_miscellaneous_module_availability.py:36
 #: tests/86_browser/131_miscellaneous_module_availability.py:79
 #: tests/86_browser/15_favorite_modules.py:75
-#: tests/86_browser/18_overview_false.py:32
 msgid "Users"
 msgstr "Benutzer"
 
-#: tests/86_browser/17_self_service_registration.py:229
-#: tests/86_browser/17_self_service_registration.py:251
-#: tests/86_browser/17_self_service_registration.py:341
+#: tests/86_browser/17_self_service_registration.py:195
+#: tests/86_browser/17_self_service_registration.py:217
+#: tests/86_browser/17_self_service_registration.py:307
 msgid "Verify Account"
 msgstr "Konto verifizieren"
 
-#: tests/86_browser/17_self_service_registration.py:271
-#: tests/86_browser/17_self_service_registration.py:330
-#: tests/86_browser/17_self_service_registration.py:344
+#: tests/86_browser/17_self_service_registration.py:237
+#: tests/86_browser/17_self_service_registration.py:296
+#: tests/86_browser/17_self_service_registration.py:310
 msgid "Your account has been successfully verified"
 msgstr "Ihr Konto wurde erfolgreich verifiziert"
 
-#: tests/86_browser/17_self_service_registration.py:303
+#: tests/86_browser/17_self_service_registration.py:269
 msgid ""
 "Your account recovery options have been updated.. Your account has to be "
 "verified again"
 msgstr "Ihre Konto-Wiederherstellungsoptionen wurden aktualisiert."
-
-#: tests/86_browser/10_product_test_password_change.py:167
-msgid "Your session has expired, please login again."
-msgstr "Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an."
 
 #: tests/86_browser/170_system_services_module.py:58
 #: tests/86_browser/170_system_services_module.py:108
 msgid "more"
 msgstr "mehr"
 
-#: tests/86_browser/10_product_test_password_change.py:53
+#: tests/86_browser/10_product_test_password_change.py:54
 msgid "password is too short"
 msgstr "Passwort ist zu kurz"
 
-#: tests/86_browser/10_product_test_password_change.py:55
+#: tests/86_browser/10_product_test_password_change.py:56
 msgid "password was already used"
 msgstr "Passwort wurde bereits genutzt"
 
@@ -657,6 +650,9 @@ msgstr ""
 
 #~ msgid "Univention Blog"
 #~ msgstr "Univention Blog"
+
+#~ msgid "Your session has expired, please login again."
+#~ msgstr "Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an."
 
 #~ msgid "no module available"
 #~ msgstr "kein Modul verfügbar"

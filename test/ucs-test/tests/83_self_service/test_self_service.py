@@ -47,18 +47,22 @@ class SelfServiceUser:
         return self._client.umc_command(uri, kwargs)
 
 
+def do_create_user(udm, email=None, **kwargs):
+    if 'mailPrimaryAddress' in kwargs:
+        udm.create_object('mail/domain', ignore_exists=True, wait_for_replication=True, check_for_drs_replication=False, name=kwargs['mailPrimaryAddress'].split('@', 1)[1])
+    if email:
+        kwargs['PasswordRecoveryEmail'] = email
+    password = kwargs.setdefault('password', uts.random_string())
+    language = kwargs.pop('language', None)
+    dn, username = udm.create_user(**kwargs)
+    utils.verify_ldap_object(dn)
+    return SelfServiceUser(username, password, language=language)
+
+
 @contextlib.contextmanager
 def self_service_user(email=None, **kwargs):
     with udm_test.UCSTestUDM() as udm:
-        if 'mailPrimaryAddress' in kwargs:
-            udm.create_object('mail/domain', ignore_exists=True, wait_for_replication=True, check_for_drs_replication=False, name=kwargs['mailPrimaryAddress'].split('@', 1)[1])
-        if email:
-            kwargs['PasswordRecoveryEmail'] = email
-        password = kwargs.setdefault('password', uts.random_string())
-        language = kwargs.pop('language', None)
-        dn, username = udm.create_user(**kwargs)
-        utils.verify_ldap_object(dn)
-        yield SelfServiceUser(username, password, language=language)
+        yield do_create_user(udm, email, **kwargs)
 
 
 # copy pasted to 86_selenium/test_self_service.py

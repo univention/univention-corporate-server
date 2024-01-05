@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 ## desc: Tests the Self Service Translations
 ## tags: [apptest]
 ## roles: [domaincontroller_master]
@@ -6,112 +6,23 @@
 ## packages:
 ##   - univention-self-service
 
-import importlib
-import os
-import sys
+import re
 import time
+from typing import Dict, Union
 
 import pytest
-from selenium.common.exceptions import ElementClickInterceptedException
-from test_self_service import self_service_user
+from playwright.sync_api import Locator, Page, expect
+from test_self_service import SelfServiceUser, do_create_user
 
+from univention.testing.browser import logger
+from univention.testing.browser.lib import UCSLanguage
+from univention.testing.browser.selfservice import SelfService
 from univention.testing.strings import random_username
 
 
-test_lib = os.environ.get('UCS_TEST_LIB', 'univention.testing.apptest')
-try:
-    test_lib = importlib.import_module(test_lib)
-except ImportError:
-    print(f'Could not import {test_lib}. Maybe set $UCS_TEST_LIB')
-    sys.exit(1)
-
-
-LINK_HASHES = ['profile', 'createaccount', 'verifyaccount', 'passwordchange', 'passwordforgotten', 'protectaccount', 'servicespecificpasswords']
-
-
-def wait_for_loading(chrome):
-    while True:
-        time.sleep(0.5)
-        element = chrome.find_first("div.standbyWrapper circle")
-        if element:
-            if element.is_displayed():
-                continue
-            break
-
-
-def wait_for_element(chrome, css_selector, timeout=10):
-    for _ in range(timeout * 10):
-        element = chrome.find_first(css_selector)
-        if element:
-            return element
-        time.sleep(0.1)
-    raise Exception(f"Element {css_selector} not found")
-
-
-def wait_for_input(chrome, input_name, timeout=10):
-    return wait_for_element(chrome, f'[name={input_name}]', timeout)
-
-
-def goto_selfservice(chrome, user=None):
-    if user:
-        chrome.get("/univention/login/?location=/univention/selfservice/")
-        wait_for_input(chrome, 'username')
-        chrome.enter_input('username', user.username)
-        chrome.enter_input('password', user.password)
-        chrome.enter_return()
-    else:
-        chrome.get('/univention/selfservice/')
-
-
-def click(chrome, css_selector):
-    for _ in range(9):
-        try:
-            wait_for_element(chrome, css_selector).click()
-            return
-        except ElementClickInterceptedException:
-            time.sleep(0.1)
-    chrome.find_first(css_selector).click()
-
-
-def change_lang(chrome, lang, user=None):
-    goto_selfservice(chrome, user)
-    wait_for_element(chrome, 'button#header-button-menu').click()
-    wait_for_element(chrome, "div.portal-sidenavigation__menu-item").click()
-    element = wait_for_element(chrome, f"div#menu-item-language-{lang}")
-    try:
-        element.click()
-    except ElementClickInterceptedException:
-        pass
-
-
-def process_labels(lables_to_check, labels):
-    lables_to_check_d = {}
-    for label in lables_to_check:
-        label_name = label.get_attribute('for').split('--')[0]
-        value = label.text.splitlines()
-        if label_name not in labels or len(value) == 0:
-            continue
-        if label_name != "":
-            lables_to_check_d[label_name] = value[0]
-        else:
-            lables_to_check_d.setdefault(label_name, []).append(value[0])
-    return lables_to_check_d
-
-
-def get_labels(chrome, labels):
-    for _ in range(10):
-        lables_to_check = chrome.find_all('label')
-        lables_to_check = process_labels(lables_to_check, labels)
-        print(lables_to_check)
-        if len(lables_to_check) >= len(labels):
-            break
-        time.sleep(0.1)
-    return lables_to_check
-
-
 @pytest.fixture(autouse=True)
-def activate_self_service(ucr_module):
-    ucr_module.handler_set(
+def activate_self_service(ucr_session):
+    ucr_session.handler_set(
         [
             "umc/self-service/account-registration/backend/enabled=true",
             "umc/self-service/account-registration/frontend/enabled=true",
@@ -126,78 +37,116 @@ def activate_self_service(ucr_module):
     )
 
 
-@pytest.mark.parametrize('lang, hash, labels', [
-    ('en-US', 'profile', {'username': 'Username', 'password': 'Password'}),
-    ('de-DE', 'profile', {'username': 'Benutzername', 'password': 'Passwort'}),
-    ('en-US', 'createaccount', {'PasswordRecoveryEmail': 'Email', 'password': 'Password (retype)', 'firstname': 'First name', 'lastname': 'Last name', 'username': 'User name'}),
-    ('de-DE', 'createaccount', {'PasswordRecoveryEmail': 'E-Mail', 'password': 'Passwort (Wiederholung)', 'firstname': 'Vorname', 'lastname': 'Nachname', 'username': 'Benutzername'}),
-    ('en-US', 'verifyaccount', {'username': 'Username', 'token': 'Token'}),
-    ('de-DE', 'verifyaccount', {'username': 'Benutzername', 'token': 'Token'}),
-    ('en-US', 'passwordchange', {'oldPassword': 'Old password', 'newPassword': 'New password', 'newPasswordRetype': 'New password (retype)'}),
-    ('de-DE', 'passwordchange', {'oldPassword': 'Altes Passwort', 'newPassword': 'Neues Passwort', 'newPasswordRetype': 'Neues Passwort (Wiederholung)'}),
-    ('en-US', 'passwordforgotten', {'username': 'Username'}),
-    ('de-DE', 'passwordforgotten', {'username': 'Benutzername'}),
-    ('en-US', 'protectaccount', {'username': 'Username', 'password': 'Password'}),
-    ('de-DE', 'protectaccount', {'username': 'Benutzername', 'password': 'Passwort'}),
-    ('en-US', 'servicespecificpasswords', {'username': 'Username', 'password': 'Password'}),
-    ('de-DE', 'servicespecificpasswords', {'username': 'Benutzername', 'password': 'Passwort'}),
-])
-def test_frontend_translations(chrome, lang, hash, labels):
-    chrome.driver.implicitly_wait(10)
-    filename = f"test_frontend_translations_{lang}_{hash}"
-    with chrome.capture(filename):
-        change_lang(chrome, lang)
-        chrome.driver.execute_script("localStorage.clear();")
-        chrome.get(f'/univention/selfservice/#/selfservice/{hash}')
-        chrome.driver.refresh()
-        wait_for_element(chrome, 'label')
-
-        lables_to_check = get_labels(chrome, labels)
-        for label_name, expected_value in labels.items():
-            assert label_name in lables_to_check, f'Label {label_name} is not in {list(lables_to_check.keys())}'
-            if isinstance(expected_value, list):
-                for value in expected_value:
-                    assert value in lables_to_check[label_name], f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {value}'
-            else:
-                assert lables_to_check[label_name] == expected_value, f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {expected_value}'
-
-
-@pytest.mark.parametrize('lang, hash, labels', [
-    ('en-US', 'profile', {"jpegPhoto": 'Your picture', "e-mail": 'E-mail address', "phone": 'Telephone number', "departmentNumber": 'Department number', "country": 'Country', "homeTelephoneNumber": 'Private telephone number', "mobileTelephoneNumber": 'Mobile phone number', "homePostalAddress": 'Private postal address', "": ['Street', 'Postal code', 'City']}),
-    ('de-DE', 'profile', {"jpegPhoto": 'Ihr Foto', "e-mail": 'E-Mail-Adresse', "phone": 'Telefonnummer', "departmentNumber": 'Abteilungsnummer', "country": 'Land', "homeTelephoneNumber": 'Telefonnummer Festnetz', "mobileTelephoneNumber": 'Telefonnummer Mobil', "homePostalAddress": 'Private Adresse', "": ['Straße', 'Postleitzahl', 'Stadt']}),
-    ('en-US', 'verifyaccount', {'username': 'Username', 'token': 'Token'}),
-    ('de-DE', 'verifyaccount', {'username': 'Benutzername', 'token': 'Token'}),
-    ('en-US', 'passwordchange', {'oldPassword': 'Old password', 'newPassword': 'New password', 'newPasswordRetype': 'New password (retype)'}),
-    ('de-DE', 'passwordchange', {'oldPassword': 'Altes Passwort', 'newPassword': 'Neues Passwort', 'newPasswordRetype': 'Neues Passwort (Wiederholung)'}),
-    ('en-US', 'passwordforgotten', {'username': 'Username'}),
-    ('de-DE', 'passwordforgotten', {'username': 'Benutzername'}),
-    ('en-US', 'protectaccount', {'username': 'Username', 'password': 'Password'}),
-    ('de-DE', 'protectaccount', {'username': 'Benutzername', 'password': 'Passwort'}),
-    ('en-US', 'servicespecificpasswords', {'username': 'Username', 'password': 'Password'}),
-    ('de-DE', 'servicespecificpasswords', {'username': 'Benutzername', 'password': 'Passwort'}),
-])
-def test_frontend_login_translations(chrome, lang, hash, labels):
-    chrome.driver.implicitly_wait(10)
+@pytest.fixture(scope='module')
+def self_service_user(udm_module_scope) -> SelfServiceUser:
     reset_mail_address = f'{random_username()}@{random_username()}'
-    with self_service_user(mailPrimaryAddress=reset_mail_address, language="en-US") as user:
-        filename = f"test_frontend_login_translations_{lang}_{hash}"
-        with chrome.capture(filename):
-            change_lang(chrome, lang, user=user)
-            chrome.driver.execute_script("localStorage.clear();")
-            chrome.get(f'/univention/selfservice/#/selfservice/{hash}')
-            chrome.driver.refresh()
-            wait_for_element(chrome, 'label')
-
-            lables_to_check = get_labels(chrome, labels)
-
-            for label_name, expected_value in labels.items():
-                assert label_name in lables_to_check, f'Label {label_name} is not in {list(lables_to_check.keys())}'
-                if isinstance(expected_value, list):
-                    for value in expected_value:
-                        assert value in lables_to_check[label_name], f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {value}'
-                else:
-                    assert lables_to_check[label_name] == expected_value, f'Label {label_name} has wrong value: {lables_to_check[label_name]} instead of {expected_value}'
+    return do_create_user(udm_module_scope, mailPrimaryAddress=reset_mail_address, language='en-US')
 
 
-if __name__ == '__main__':
-    test_lib.run_test_file(__file__)
+def find_label(page: Page, label_display_text: str) -> Union[Locator, None]:
+    label_display_locators = page.get_by_text(label_display_text).all()
+    return next((label_display_locator for label_display_locator in label_display_locators if label_display_locator.evaluate('(element) => element.tagName') == 'LABEL'), None)
+
+
+def check_labels(page: Page, labels: Dict[str, str]):
+    for label_display, label_tag in labels.items():
+        logger.info("checking for label with text %r and with attribute 'for=%r'", label_display, label_tag)
+        found_label = find_label(page, label_display)
+        assert found_label is not None, f'A label with the text {label_display} has not been found.'
+        expect(found_label).to_be_visible()
+        expect(found_label, f"Expected locator to have tag {label_tag}--\\d\\d, but found {found_label.get_attribute('for')}").to_have_attribute(
+            'for', re.compile(rf'{label_tag}--\d\d')
+        )
+
+
+@pytest.mark.parametrize(
+    'lang, hash, labels',
+    [
+        (UCSLanguage.EN_US, 'profile', {'Username': 'username', 'Password': 'password'}),
+        (UCSLanguage.DE_DE, 'profile', {'Benutzername': 'username', 'Passwort': 'password'}),
+        (
+            UCSLanguage.EN_US,
+            'createaccount',
+            {'Email': 'PasswordRecoveryEmail', 'Password (retype)': 'password--retype', 'First name': 'firstname', 'Last name': 'lastname', 'User name': 'username'},
+        ),
+        (
+            UCSLanguage.DE_DE,
+            'createaccount',
+            {'E-Mail': 'PasswordRecoveryEmail', 'Passwort (Wiederholung)': 'password--retype', 'Vorname': 'firstname', 'Nachname': 'lastname', 'Benutzername': 'username'},
+        ),
+        (UCSLanguage.EN_US, 'verifyaccount', {'Username': 'username', 'Token': 'token'}),
+        (UCSLanguage.DE_DE, 'verifyaccount', {'Benutzername': 'username', 'Token': 'token'}),
+        (UCSLanguage.EN_US, 'passwordchange', {'Old password': 'oldPassword', 'New password': 'newPassword', 'New password (retype)': 'newPasswordRetype'}),
+        (UCSLanguage.DE_DE, 'passwordchange', {'Altes Passwort': 'oldPassword', 'Neues Passwort': 'newPassword', 'Neues Passwort (Wiederholung)': 'newPasswordRetype'}),
+        (UCSLanguage.EN_US, 'passwordforgotten', {'Username': 'username'}),
+        (UCSLanguage.DE_DE, 'passwordforgotten', {'Benutzername': 'username'}),
+        (UCSLanguage.EN_US, 'protectaccount', {'Username': 'username', 'Password': 'password'}),
+        (UCSLanguage.DE_DE, 'protectaccount', {'Benutzername': 'username', 'Passwort': 'password'}),
+        (UCSLanguage.EN_US, 'servicespecificpasswords', {'Username': 'username', 'Password': 'password'}),
+        (UCSLanguage.DE_DE, 'servicespecificpasswords', {'Benutzername': 'username', 'Passwort': 'password'}),
+    ],
+)
+def test_frontend_translations(self_service: SelfService, lang: UCSLanguage, hash: str, labels: Dict[str, str]):
+    page: Page = self_service.tester.page
+    self_service.tester.set_language(lang)
+    self_service.navigate(hash)
+    time.sleep(1)
+
+    check_labels(page, labels)
+
+
+@pytest.mark.parametrize(
+    'lang, hash, labels',
+    [
+        (
+            UCSLanguage.EN_US,
+            'profile',
+            {
+                'Your picture Y': 'jpegPhoto',
+                'E-mail address E': 'e-mail',
+                'Telephone number': 'phone',
+                'Department number': 'departmentNumber',
+                'Country': 'country',
+                'Private telephone number': 'homeTelephoneNumber',
+                'Mobile phone number': 'mobileTelephoneNumber',
+                'Private postal address': 'homePostalAddress',
+                'Street': '',
+                'Postal code': '',
+                'City': '',
+            },
+        ),
+        (
+            UCSLanguage.DE_DE,
+            'profile',
+            {
+                'Ihr Foto I': 'jpegPhoto',
+                'E-Mail-Adresse E': 'e-mail',
+                'Telefonnummer': 'phone',
+                'Abteilungsnummer': 'departmentNumber',
+                'Land': 'country',
+                'Telefonnummer Festnetz': 'homeTelephoneNumber',
+                'Telefonnummer Mobil': 'mobileTelephoneNumber',
+                'Private Adresse': 'homePostalAddress',
+                'Straße': '',
+                'Postleitzahl': '',
+                'Stadt': '',
+            },
+        ),
+        (UCSLanguage.EN_US, 'verifyaccount', {'Username': 'username', 'Token': 'token'}),
+        (UCSLanguage.DE_DE, 'verifyaccount', {'Benutzername': 'username', 'Token': 'token'}),
+        (UCSLanguage.EN_US, 'passwordchange', {'Old password': 'oldPassword', 'New password': 'newPassword', 'New password (retype)': 'newPasswordRetype'}),
+        (UCSLanguage.DE_DE, 'passwordchange', {'Altes Passwort': 'oldPassword', 'Neues Passwort': 'newPassword', 'Neues Passwort (Wiederholung)': 'newPasswordRetype'}),
+        (UCSLanguage.EN_US, 'passwordforgotten', {'Username': 'username'}),
+        (UCSLanguage.DE_DE, 'passwordforgotten', {'Benutzername': 'username'}),
+        (UCSLanguage.EN_US, 'protectaccount', {'Username': 'username', 'Password': 'password'}),
+        (UCSLanguage.DE_DE, 'protectaccount', {'Benutzername': 'username', 'Passwort': 'password'}),
+        (UCSLanguage.EN_US, 'servicespecificpasswords', {'Username': 'username', 'Password': 'password'}),
+        (UCSLanguage.DE_DE, 'servicespecificpasswords', {'Benutzername': 'username', 'Passwort': 'password'}),
+    ],
+)
+def test_frontend_login_translations(self_service: SelfService, lang: UCSLanguage, hash: str, labels: Dict[str, str], self_service_user):
+    page: Page = self_service.tester.page
+    self_service.tester.set_language(lang)
+    self_service.navigate(hash, username=self_service_user.username, password=self_service_user.password)
+    time.sleep(3)
+    check_labels(page, labels)
