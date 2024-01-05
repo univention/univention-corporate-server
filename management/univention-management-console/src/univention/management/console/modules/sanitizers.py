@@ -158,7 +158,7 @@ class Sanitizer(object):
     For reasons of extensibility and for ease of subclassing, the
     parameters are \**kwargs. But only the following are meaningful:
 
-    :param str further_arguments: names of arguments that should be
+    :param list further_arguments: names of arguments that should be
             passed along with the actual argument in order to return something
             reasonable. Default: *None*
     :param bool required: if the argument is required. Default: *False*
