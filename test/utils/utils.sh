@@ -463,14 +463,14 @@ install_docker_app_from_branch () {
   fi
   cmd="univention-app install $app_name --noninteractive --username Administrator --pwdfile /tmp/univention"
   if [ -n "$app_settings" ]; then
-    exec $cmd --set $app_settings
+    $cmd --set $app_settings
   else
-    exec $cmd
+    $cmd
   fi
   container_name="appcenter/apps/$app_name/container"
-  container=$(ucr get "$container_name")
-  commit=$(docker inspect --format='{{.Config.Labels.commit}}' "$container")
-	echo "Docker image built from commit: $commit"
+  container="$(ucr get "$container_name")"
+  commit="$(docker inspect --format='{{.Config.Labels.commit}}' "$container")"
+  echo "Docker image built from commit: '$commit'"
 }
 
 wait_for_repo_server () {
