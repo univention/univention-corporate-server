@@ -42,6 +42,7 @@ from univention.testing import udm as _udm
 from univention.testing.browser import logger
 from univention.testing.browser.generic_udm_module import UserModule
 from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.selfservice import SelfService
 from univention.testing.browser.sidemenu import SideMenuLicense, SideMenuUser
 from univention.testing.browser.suggestion import AppCenterCacheTest
 from univention.testing.browser.univentionconfigurationregistry import UniventionConfigurationRegistry
@@ -111,6 +112,11 @@ def side_menu_license(umc_browser_test: UMCBrowserTest):
 @pytest.fixture()
 def side_menu_user(umc_browser_test: UMCBrowserTest):
     return SideMenuUser(umc_browser_test)
+
+
+@pytest.fixture()
+def self_service(umc_browser_test: UMCBrowserTest) -> SelfService:
+    return SelfService(umc_browser_test)
 
 
 @pytest.fixture(scope="module")

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucs-test 1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-08-02 15:02+0200\n"
+"POT-Creation-Date: 2024-01-09 15:15+0100\n"
 "PO-Revision-Date: 2020-09-05 16:32+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -12,76 +12,75 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: univention/testing/selenium/appcenter.py:126
+#: univention/testing/selenium/appcenter.py:121
 msgid "(this computer)"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:73
-#: univention/testing/selenium/appcenter.py:80
+#: univention/testing/selenium/appcenter.py:70
+#: univention/testing/selenium/appcenter.py:77
 msgid "Accept license"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:145
-#: univention/testing/browser/generic_udm_module.py:149
-#: univention/testing/browser/generic_udm_module.py:155
+#: univention/testing/selenium/udm.py:135
+#: univention/testing/browser/generic_udm_module.py:150
+#: univention/testing/browser/generic_udm_module.py:156
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: univention/testing/browser/generic_udm_module.py:217
+#: univention/testing/browser/generic_udm_module.py:222
 msgid "Add a new user"
 msgstr "Neuen Benutzer hinzufügen"
 
-#: univention/testing/browser/portal.py:100
+#: univention/testing/browser/portal.py:98
 msgid "Add category"
 msgstr "Kategorie hinzufügen"
 
-#: univention/testing/browser/portal.py:101
+#: univention/testing/browser/portal.py:99
 msgid "Add new category"
 msgstr "Neue Kategorie hinzufügen"
 
-#: univention/testing/browser/portal.py:111
-#: univention/testing/browser/portal.py:128
+#: univention/testing/browser/portal.py:109
+#: univention/testing/browser/portal.py:126
 msgid "Add new tile"
 msgstr "Neue Kachel hinzufügen"
 
-#: univention/testing/selenium/udm.py:186
+#: univention/testing/selenium/udm.py:175
 msgid "Advanced"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:146
+#: univention/testing/selenium/appcenter.py:140
 msgid "All"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:177
-#: univention/testing/browser/appcenter.py:48
+#: univention/testing/selenium/appcenter.py:168
+#: univention/testing/browser/appcenter.py:70
 msgid "App Center"
 msgstr ""
 
-#: univention/testing/browser/appcenter.py:54
-#: univention/testing/browser/appcenter.py:59
+#: univention/testing/browser/appcenter.py:79
 msgid "Available"
 msgstr "Verfügbar"
 
-#: univention/testing/selenium/udm.py:97
+#: univention/testing/selenium/udm.py:92
 msgid "Back"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:101
-#: univention/testing/browser/appcenter.py:71
+#: univention/testing/selenium/appcenter.py:98
+#: univention/testing/browser/appcenter.py:91
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: univention/testing/browser/generic_udm_module.py:218
+#: univention/testing/browser/generic_udm_module.py:223
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: univention/testing/selenium/udm.py:236
-#: univention/testing/selenium/udm.py:332
-#: univention/testing/browser/generic_udm_module.py:70
+#: univention/testing/selenium/udm.py:222
+#: univention/testing/selenium/udm.py:313
+#: univention/testing/browser/generic_udm_module.py:71
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: univention/testing/browser/portal.py:107
+#: univention/testing/browser/portal.py:105
 msgid "Category successfully added"
 msgstr "Kategorie erfolgreich hinzugefüg"
 
@@ -93,42 +92,42 @@ msgstr "Benutzereinstellungen"
 msgid "Close"
 msgstr "Schließen"
 
-#: univention/testing/selenium/udm.py:225
-#: univention/testing/browser/generic_udm_module.py:335
+#: univention/testing/selenium/udm.py:212
+#: univention/testing/browser/generic_udm_module.py:332
 msgid "Computers"
 msgstr "Rechner"
 
-#: univention/testing/browser/packagemanagement.py:131
+#: univention/testing/browser/packagemanagement.py:133
 #: univention/testing/browser/sidemenu.py:188
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: univention/testing/selenium/udm.py:163
-#: univention/testing/browser/generic_udm_module.py:222
-#: univention/testing/browser/generic_udm_module.py:225
+#: univention/testing/selenium/udm.py:153
+#: univention/testing/browser/generic_udm_module.py:227
+#: univention/testing/browser/generic_udm_module.py:230
 msgid "Container"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:69
-#: univention/testing/selenium/appcenter.py:193
-#: univention/testing/browser/appcenter.py:92
+#: univention/testing/selenium/appcenter.py:66
+#: univention/testing/selenium/appcenter.py:182
+#: univention/testing/browser/appcenter.py:110
 msgid "Continue"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:73
-#: univention/testing/selenium/appcenter.py:80
+#: univention/testing/selenium/appcenter.py:70
+#: univention/testing/selenium/appcenter.py:77
 msgid "Continue anyway"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:342
+#: univention/testing/selenium/udm.py:323
 msgid "Copy"
 msgstr ""
 
-#: univention/testing/browser/generic_udm_module.py:346
+#: univention/testing/browser/generic_udm_module.py:343
 msgid "Create Computer"
 msgstr "Rechner erzeugen"
 
-#: univention/testing/browser/generic_udm_module.py:300
+#: univention/testing/browser/generic_udm_module.py:302
 msgid "Create Group"
 msgstr "Gruppe erstellen"
 
@@ -136,82 +135,86 @@ msgstr "Gruppe erstellen"
 msgid "Create Policy"
 msgstr "Richtlinie erstellen"
 
-#: univention/testing/browser/generic_udm_module.py:202
+#: univention/testing/browser/generic_udm_module.py:207
 msgid "Create Portal"
 msgstr "Portal erstelle"
 
-#: univention/testing/browser/generic_udm_module.py:282
+#: univention/testing/browser/generic_udm_module.py:287
 msgid "Create User"
 msgstr "Benutzer erstelle"
 
-#: univention/testing/browser/portal.py:113
+#: univention/testing/browser/portal.py:111
 msgid "Create a new Entry"
 msgstr "Neuen Eintrag erstellen"
 
-#: univention/testing/browser/portal.py:130
+#: univention/testing/browser/portal.py:128
 msgid "Create a new folder"
 msgstr "Neuen Ordner erstellen"
 
-#: univention/testing/selenium/udm.py:234
+#: univention/testing/browser/selfservice.py:66
+msgid "Create an account"
+msgstr "Konto erstellen"
+
+#: univention/testing/selenium/udm.py:220
 msgid "Create computer"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:253
+#: univention/testing/selenium/udm.py:238
 msgid "Create group"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:269
+#: univention/testing/selenium/udm.py:253
 msgid "Create policy"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:218
+#: univention/testing/selenium/udm.py:205
 msgid "Create portal"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:330
-#: univention/testing/selenium/udm.py:357
+#: univention/testing/selenium/udm.py:311
+#: univention/testing/selenium/udm.py:338
 msgid "Create user"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:113
-#: univention/testing/selenium/udm.py:118
-#: univention/testing/browser/generic_udm_module.py:166
-#: univention/testing/browser/generic_udm_module.py:167
+#: univention/testing/selenium/udm.py:106
+#: univention/testing/selenium/udm.py:111
+#: univention/testing/browser/generic_udm_module.py:170
+#: univention/testing/browser/generic_udm_module.py:171
 msgid "Delete"
 msgstr "Lösche"
 
-#: univention/testing/browser/generic_udm_module.py:169
+#: univention/testing/browser/generic_udm_module.py:173
 msgid "Description"
 msgstr "Beschreibung"
 
-#: univention/testing/selenium/base.py:273
+#: univention/testing/selenium/base.py:261
 msgid "Devices"
 msgstr ""
 
-#: univention/testing/browser/generic_udm_module.py:201
+#: univention/testing/browser/generic_udm_module.py:206
 msgid "Display Name"
 msgstr "Anzeigename"
 
-#: univention/testing/selenium/appcenter.py:192
-#: univention/testing/browser/appcenter.py:62
+#: univention/testing/selenium/appcenter.py:181
+#: univention/testing/browser/appcenter.py:82
 msgid "Do not show this message again"
 msgstr "Diese Nachricht nicht wieder anzeige"
 
-#: univention/testing/selenium/base.py:274
+#: univention/testing/selenium/base.py:262
 msgid "Domain"
 msgstr ""
 
-#: univention/testing/browser/portal.py:124
+#: univention/testing/browser/portal.py:122
 msgid "Entry successfully added"
 msgstr "Eintrag erfolgreich hinzugefügt"
 
-#: univention/testing/selenium/udm.py:321
-#: univention/testing/browser/generic_udm_module.py:259
+#: univention/testing/selenium/udm.py:302
+#: univention/testing/browser/generic_udm_module.py:264
 msgid "First name"
 msgstr "Vorname"
 
-#: univention/testing/selenium/udm.py:243
-#: univention/testing/browser/generic_udm_module.py:290
+#: univention/testing/selenium/udm.py:229
+#: univention/testing/browser/generic_udm_module.py:292
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -227,50 +230,50 @@ msgstr "Importieren aus Textfeld"
 msgid "Import new license"
 msgstr "Neue Lizenz importieren"
 
-#: univention/testing/selenium/appcenter.py:65
+#: univention/testing/selenium/appcenter.py:62
 msgid "In order to proceed with the installation"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:61
-#: univention/testing/selenium/appcenter.py:119
-#: univention/testing/browser/packagemanagement.py:57
-#: univention/testing/browser/appcenter.py:80
+#: univention/testing/selenium/appcenter.py:58
+#: univention/testing/selenium/appcenter.py:115
+#: univention/testing/browser/appcenter.py:100
+#: univention/testing/browser/packagemanagement.py:60
 msgid "Install"
 msgstr "Installieren"
 
-#: univention/testing/selenium/appcenter.py:98
+#: univention/testing/selenium/appcenter.py:95
 msgid "Install Information"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:73
-#: univention/testing/selenium/appcenter.py:86
+#: univention/testing/selenium/appcenter.py:70
+#: univention/testing/selenium/appcenter.py:83
 msgid "Install anyway"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:73
-#: univention/testing/selenium/appcenter.py:86
+#: univention/testing/selenium/appcenter.py:70
+#: univention/testing/selenium/appcenter.py:83
 msgid "Install app"
 msgstr ""
 
-#: univention/testing/selenium/base.py:277
+#: univention/testing/selenium/base.py:265
 msgid "Installed Applications"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:96
+#: univention/testing/selenium/appcenter.py:93
 msgid "Installing"
 msgstr ""
 
-#: univention/testing/browser/generic_udm_module.py:199
+#: univention/testing/browser/generic_udm_module.py:204
 msgid "Internal name"
 msgstr "Interner Name"
 
-#: univention/testing/browser/portal.py:102
-#: univention/testing/browser/portal.py:114
-#: univention/testing/browser/portal.py:131
+#: univention/testing/browser/portal.py:100
+#: univention/testing/browser/portal.py:112
+#: univention/testing/browser/portal.py:129
 msgid "Internal name *"
 msgstr "Interner Name *"
 
-#: univention/testing/browser/generic_udm_module.py:260
+#: univention/testing/browser/generic_udm_module.py:265
 msgid "Last name"
 msgstr "Vorname"
 
@@ -278,8 +281,8 @@ msgstr "Vorname"
 msgid "License information"
 msgstr "Lizenzinformation"
 
-#: univention/testing/browser/lib.py:275
 #: univention/testing/browser/sidemenu.py:159
+#: univention/testing/browser/lib.py:296
 msgid "Login"
 msgstr "Anmelden"
 
@@ -289,49 +292,49 @@ msgstr "Anmelden"
 msgid "Logout"
 msgstr "Abmelden"
 
-#: univention/testing/selenium/appcenter.py:98
+#: univention/testing/selenium/appcenter.py:95
 msgid "Manage domain wide installations"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:98
-#: univention/testing/selenium/appcenter.py:109
-#: univention/testing/browser/appcenter.py:104
+#: univention/testing/selenium/appcenter.py:95
+#: univention/testing/selenium/appcenter.py:105
+#: univention/testing/browser/appcenter.py:122
 msgid "Manage installation"
 msgstr "Installation verwalten"
 
-#: univention/testing/selenium/appcenter.py:98
-#: univention/testing/selenium/appcenter.py:109
+#: univention/testing/selenium/appcenter.py:95
+#: univention/testing/selenium/appcenter.py:105
 msgid "Manage installations"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:251
+#: univention/testing/selenium/udm.py:236
 msgid "Members of this group"
 msgstr ""
 
-#: univention/testing/browser/appcenter.py:115
+#: univention/testing/browser/appcenter.py:133
 msgid "More"
 msgstr "Mehr"
 
-#: univention/testing/selenium/appcenter.py:140
-#: univention/testing/selenium/appcenter.py:186
+#: univention/testing/selenium/appcenter.py:135
+#: univention/testing/selenium/appcenter.py:176
 msgid "More information"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:73
-#: univention/testing/selenium/appcenter.py:80
-#: univention/testing/selenium/udm.py:153
-#: univention/testing/selenium/udm.py:180
-#: univention/testing/selenium/udm.py:326
-#: univention/testing/browser/generic_udm_module.py:73
+#: univention/testing/selenium/appcenter.py:70
+#: univention/testing/selenium/appcenter.py:77
+#: univention/testing/selenium/udm.py:143
+#: univention/testing/selenium/udm.py:170
+#: univention/testing/selenium/udm.py:307
+#: univention/testing/browser/generic_udm_module.py:74
 msgid "Next"
 msgstr "Weiter"
 
-#: univention/testing/browser/generic_udm_module.py:233
+#: univention/testing/browser/generic_udm_module.py:238
 msgid "None"
 msgstr "Keine"
 
-#: univention/testing/selenium/base.py:282
-#: univention/testing/browser/lib.py:242
+#: univention/testing/selenium/base.py:270
+#: univention/testing/browser/lib.py:259
 msgid "Ok"
 msgstr "Ok"
 
@@ -339,29 +342,34 @@ msgstr "Ok"
 msgid "Open edit sidebar"
 msgstr "Editierseite öffnen"
 
-#: univention/testing/browser/packagemanagement.py:78
+#: univention/testing/browser/packagemanagement.py:81
 msgid "Package Management"
 msgstr "Paket-Verwaltung"
 
-#: univention/testing/selenium/udm.py:327
-#: univention/testing/browser/lib.py:274
+#: univention/testing/selenium/udm.py:308
+#: univention/testing/browser/selfservice.py:71
+#: univention/testing/browser/lib.py:295
 msgid "Password"
 msgstr "Passwort"
 
-#: univention/testing/selenium/udm.py:114
+#: univention/testing/browser/selfservice.py:72
+msgid "Password (retype)"
+msgstr "Passwort (wiederholen)"
+
+#: univention/testing/selenium/udm.py:107
 msgid "Please confirm the removal"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:260
-#: univention/testing/browser/generic_udm_module.py:310
+#: univention/testing/selenium/udm.py:245
+#: univention/testing/browser/generic_udm_module.py:309
 msgid "Policies"
 msgstr "Richtlinien"
 
-#: univention/testing/browser/generic_udm_module.py:187
+#: univention/testing/browser/generic_udm_module.py:191
 msgid "Portal"
 msgstr "Portal"
 
-#: univention/testing/selenium/udm.py:190
+#: univention/testing/selenium/udm.py:179
 msgid "Portal settings"
 msgstr ""
 
@@ -373,45 +381,45 @@ msgstr "Prozessübersicht"
 msgid "Run system diagnosis"
 msgstr "System-Diagnose starten"
 
-#: univention/testing/selenium/appcenter.py:115
+#: univention/testing/selenium/appcenter.py:111
 msgid "Running tests"
 msgstr ""
 
-#: univention/testing/selenium/udm.py:103
-#: univention/testing/browser/generic_udm_module.py:88
-#: univention/testing/browser/portal.py:105
-#: univention/testing/browser/portal.py:122
-#: univention/testing/browser/portal.py:134
-#: univention/testing/browser/univentionconfigurationregistry.py:90
+#: univention/testing/selenium/udm.py:97
+#: univention/testing/browser/generic_udm_module.py:89
+#: univention/testing/browser/portal.py:103
+#: univention/testing/browser/portal.py:120
+#: univention/testing/browser/portal.py:132
+#: univention/testing/browser/univentionconfigurationregistry.py:93
 msgid "Save"
 msgstr "Speichern"
 
-#: univention/testing/selenium/base.py:325
+#: univention/testing/selenium/base.py:310
 msgid "Search query"
 msgstr ""
 
-#: univention/testing/selenium/base.py:194
-#: univention/testing/selenium/base.py:195
+#: univention/testing/selenium/base.py:188
+#: univention/testing/selenium/base.py:189
 msgid "Show server error message"
 msgstr "Fehlernachricht des Servers anzeigen"
 
-#: univention/testing/selenium/base.py:276
+#: univention/testing/selenium/base.py:264
 msgid "Software"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:73
-#: univention/testing/selenium/appcenter.py:86
-#: univention/testing/browser/appcenter.py:91
+#: univention/testing/selenium/appcenter.py:70
+#: univention/testing/selenium/appcenter.py:83
+#: univention/testing/browser/appcenter.py:109
 msgid "Start installation"
 msgstr "Installation beginnen"
 
-#: univention/testing/selenium/appcenter.py:116
-#: univention/testing/selenium/appcenter.py:117
-#: univention/testing/browser/appcenter.py:120
+#: univention/testing/selenium/appcenter.py:112
+#: univention/testing/selenium/appcenter.py:113
+#: univention/testing/browser/appcenter.py:138
 msgid "Start removal"
 msgstr "Deinstallation beginnen"
 
-#: univention/testing/selenium/base.py:275
+#: univention/testing/selenium/base.py:263
 msgid "System"
 msgstr ""
 
@@ -419,7 +427,7 @@ msgstr ""
 msgid "System diagnostic"
 msgstr "Systemdiagnose"
 
-#: univention/testing/browser/lib.py:278
+#: univention/testing/browser/lib.py:305
 msgid "The authentication has failed, please login again."
 msgstr "Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an."
 
@@ -427,15 +435,15 @@ msgstr "Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an."
 msgid "The license has been imported successfully."
 msgstr "Die Lizenz wurde erfolgreich importiert."
 
-#: univention/testing/selenium/udm.py:149
+#: univention/testing/selenium/udm.py:139
 msgid "This UCS system is part of an Active Directory domain"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:98
-#: univention/testing/selenium/appcenter.py:114
-#: univention/testing/browser/packagemanagement.py:59
-#: univention/testing/browser/appcenter.py:108
-#: univention/testing/browser/appcenter.py:116
+#: univention/testing/selenium/appcenter.py:95
+#: univention/testing/selenium/appcenter.py:110
+#: univention/testing/browser/appcenter.py:126
+#: univention/testing/browser/appcenter.py:134
+#: univention/testing/browser/packagemanagement.py:62
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
@@ -443,77 +451,77 @@ msgstr "Deinstallieren"
 msgid "Update to this UCS version"
 msgstr "Bis zu dieser UCS-Version aktualisieren"
 
-#: univention/testing/selenium/appcenter.py:127
-#: univention/testing/selenium/appcenter.py:134
-#: univention/testing/selenium/appcenter.py:138
+#: univention/testing/selenium/appcenter.py:122
+#: univention/testing/selenium/appcenter.py:129
+#: univention/testing/selenium/appcenter.py:133
 msgid "Upgrade"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:130
+#: univention/testing/selenium/appcenter.py:125
 msgid "Upgrade Information"
 msgstr ""
 
-#: univention/testing/selenium/appcenter.py:137
+#: univention/testing/selenium/appcenter.py:132
 #, python-format
 msgid "Upgrade of %s"
 msgstr ""
 
-#: univention/testing/browser/generic_udm_module.py:99
+#: univention/testing/browser/generic_udm_module.py:100
 msgid "Upload profile image"
 msgstr "Profilbild hochladen"
 
-#: univention/testing/browser/generic_udm_module.py:261
+#: univention/testing/browser/generic_udm_module.py:266
 msgid "User name"
 msgstr "Benutzername"
 
-#: univention/testing/selenium/udm.py:171
-#: univention/testing/browser/generic_udm_module.py:229
-#: univention/testing/browser/generic_udm_module.py:233
-#: univention/testing/browser/generic_udm_module.py:237
+#: univention/testing/selenium/udm.py:161
+#: univention/testing/browser/generic_udm_module.py:234
+#: univention/testing/browser/generic_udm_module.py:238
+#: univention/testing/browser/generic_udm_module.py:242
 msgid "User template"
 msgstr "Benutzer-Vorlage"
 
-#: univention/testing/browser/lib.py:273
+#: univention/testing/browser/lib.py:294
 msgid "Username"
 msgstr "Benutzername"
 
-#: univention/testing/selenium/udm.py:282
-#: univention/testing/selenium/base.py:272
-#: univention/testing/browser/generic_udm_module.py:209
+#: univention/testing/selenium/base.py:260
+#: univention/testing/selenium/udm.py:266
+#: univention/testing/browser/generic_udm_module.py:214
 msgid "Users"
 msgstr "Benutzer"
 
-#: univention/testing/browser/univentionconfigurationregistry.py:86
+#: univention/testing/browser/univentionconfigurationregistry.py:88
 msgid "Value"
 msgstr "Wert"
 
-#: univention/testing/browser/generic_udm_module.py:273
+#: univention/testing/browser/generic_udm_module.py:278
 msgid "copy"
 msgstr "Kopieren"
 
-#: univention/testing/selenium/udm.py:235
-#: univention/testing/selenium/udm.py:331
+#: univention/testing/selenium/udm.py:221
+#: univention/testing/selenium/udm.py:312
 msgid "has been created"
 msgstr ""
 
-#: univention/testing/browser/packagemanagement.py:65
+#: univention/testing/browser/packagemanagement.py:68
 msgid "installed"
 msgstr "installiert"
 
-#: univention/testing/selenium/udm.py:341
-#: univention/testing/browser/generic_udm_module.py:272
+#: univention/testing/selenium/udm.py:322
+#: univention/testing/browser/generic_udm_module.py:277
 msgid "more"
 msgstr "mehr"
 
-#: univention/testing/selenium/base.py:278
-#: univention/testing/selenium/base.py:281
+#: univention/testing/selenium/base.py:266
+#: univention/testing/selenium/base.py:269
 msgid "no module available"
 msgstr ""
 
-#: univention/testing/browser/packagemanagement.py:67
+#: univention/testing/browser/packagemanagement.py:70
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: univention/testing/browser/appcenter.py:114
+#: univention/testing/browser/appcenter.py:132
 msgid "this computer"
 msgstr "dieser Rechner"

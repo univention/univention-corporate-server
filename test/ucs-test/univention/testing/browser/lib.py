@@ -326,6 +326,7 @@ class UMCBrowserTest(Interactions):
         # TODO: wait_until networkidle is discouraged by Playwright, replace at some point
         self.page.wait_for_url(re.compile(r".*univention/(management|portal).*"), wait_until="networkidle")
         logging.info("Login Done")
+        self.page.wait_for_url(re.compile(r'.*univention/(management|portal|selfservice).*'), wait_until='networkidle')
 
     def end_umc_session(self):
         """Logs the current logged in user out by navigating to /univention/login"""
