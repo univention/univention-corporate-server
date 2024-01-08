@@ -301,3 +301,11 @@ A real supported client will follow in the Future™.
 
 * After creating, modifying or moving extended attributes or extended options the affected modules are not reloaded until the server restarts or special endpoints are requested, which do a expensive reload e.g. `/univention/udm/users/user/add`. Patch available at [Bug #50253](https://forge.univention.org/bugzilla/show_bug.cgi?id=50253).
 * The pagination is unsupported because the SSSLVL overlay module is not enabled in the LDAP server ([Bug #50240](https://forge.univention.org/bugzilla/show_bug.cgi?id=50240) and [Bug #54786](https://forge.univention.org/bugzilla/show_bug.cgi?id=54786)).
+
+## Debugging
+
+It is possible to start the server without it's gateway by stopping the systemd service and starting a language process with a TCP socket instead of a UNIX socket:
+
+```bash
+/usr/bin/python3 -m univention.admin.rest -l de_DE.UTF-8 -c 1 -d 4 -p 9979
+```
