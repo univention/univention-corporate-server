@@ -12,6 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: blocklist.py:141
+#, python-format
+msgid "The value %r is blocked for the UDM property %r."
+msgstr "Der Wert %r ist für die UDM Eigenschaft %r geblockt."
+
 #: modules/univention/admin/syntax.py:5734
 #, python-format
 msgid "\"%s\" is not a Univention Admin Module."

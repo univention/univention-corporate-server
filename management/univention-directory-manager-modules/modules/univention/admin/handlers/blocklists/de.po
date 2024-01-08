@@ -1,0 +1,118 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-11 21:41+0100\n"
+"PO-Revision-Date: 2021-05-11 12:01+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: German <packages@univention.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: all.py:50
+msgid "All blocklist objects"
+msgstr "Alle Blocklist Objekte"
+
+#: all.py:51 list.py:50 list.py:51
+msgid "Blocklist"
+msgstr "Blockliste"
+
+#: all.py:52 list.py:52
+msgid "Blocklists"
+msgstr "Blocklisten"
+
+#: all.py:53
+msgid "Manage the blocklists"
+msgstr "Verwaltung von Blocklisten"
+
+#: all.py:60 list.py:63
+msgid "Name"
+msgstr "Name"
+
+#: all.py:68 entry.py:88 list.py:85
+msgid "General"
+msgstr "Allgemein"
+
+#: all.py:68
+msgid "Basic settings"
+msgstr "Grundeinstellungen"
+
+#: entry.py:51 entry.py:53
+msgid "Univention blocklist entries"
+msgstr "Univention Blocklist-Einträge"
+
+#: entry.py:52
+msgid "Univention blocklist entry"
+msgstr "Univention Blocklist-Eintrag"
+
+#: entry.py:64
+msgid "Blocklist entry value"
+msgstr "Zu sperrender Wert"
+
+#: entry.py:73
+msgid "Blocked until"
+msgstr "Gesperrt bis"
+
+#: entry.py:79
+msgid "Origin ID"
+msgstr "Ursprungs-ID"
+
+#: entry.py:88
+msgid "Blocklist entry settings"
+msgstr "Einstellungen für Blocklisten-Eintrag"
+
+#: entry.py:89 list.py:86
+msgid "General settings"
+msgstr "Grundeinstellungen"
+
+#: list.py:53
+msgid "Blocklist for certain UDM properties"
+msgstr "Blockliste für UDM Eigenschaften"
+
+#: list.py:71
+msgid "Properties to block"
+msgstr "Zu blockende Eigenschaften"
+
+#: list.py:72
+msgid ""
+"Property values removed from a UDM object can be automatically blocked for "
+"future use. This is achieved by adding the properties to a blocklist. The "
+"properties must be specified according to the following schema: \"udm/module "
+"property\". An example configuration would be \"users/user "
+"mailPrimaryAddress\". If multiple properties are assigned to the same "
+"blocklist, the blocking value applies for multiple properties."
+msgstr ""
+"Von einem UDM-Objekt entfernte Eigenschaftswerte können automatisch für "
+"zukünftige Verwendung blockiert werden. Dies geschieht durch Hinzufügen "
+"der Eigenschaften zu einer Blockliste. Die Eigenschaften müssen nach "
+"folgendem Schema festgelegt werden: \"udm/module property\". Ein Beispiel "
+"für die Konfiguration wäre \"users/user mailPrimaryAddress\". Wenn mehrere "
+"Eigenschaften der gleiche Blockliste zugewiesen wurden, gilt die Blockierung "
+"eines Wertes für mehrere Eigenschaften."
+
+#: list.py:78
+msgid "Retention time for objects in this blocklist"
+msgstr "Aufbewahrungszeit für Einträge in dieser Blockliste"
+
+#: list.py:79
+msgid ""
+"Property values removed from a UDM object can be automatically blocked for "
+"future use. Each blocklist can be assigned a retention period. Once this "
+"retention period has elapsed, the blocking object is automatically deleted, "
+"and the property value can be reassigned. The retention period is set using "
+"the following schema \"1y6m3d\" (which equals one year, six months and three "
+"days)."
+msgstr ""
+"Von einem UDM-Objekt entfernte Eigenschaften können automatisch für "
+"zukünftige Verwendung blockiert werden. Jeder Blockliste kann eine "
+"Aufbewahrungszeit zugewiesen werden. Wenn diese "
+"Aufbewahrungszeit überschritten wurde, wird das blockierende Objekt "
+"automatisch gelöscht und der Eigenschaftswert kann wieder vergeben werden. "
+"Die Aufbewahrungszeit wird mithilfe des folgenden Schemas festgelegt \"1y6m3d\" "
+"(entspricht einem Jahr, sechs Monaten und 3 Tagen)."
+
+#: list.py:85
+msgid "Blocklist settings"
+msgstr "Einstellungen für Blockliste"
