@@ -559,7 +559,7 @@ resync_sddb () {
 }
 
 install_id_broker_sddb_builder () {
-  . utils-school.sh && install_app_from_branch id-broker-sddb-builder "$UCS_ENV_ID_BROKER_SDDB_BUILDER_IMAGE" kelvin_host="$(hostname -f)" db_url="redis://$(hostname -f):6379" kelvin_username=Administrator kelvin_password=univention converter_daemon_num_workers=24
+  . utils.sh && install_docker_app_from_branch id-broker-sddb-builder "$UCS_ENV_ID_BROKER_SDDB_BUILDER_IMAGE" kelvin_host="$(hostname -f)" db_url="redis://$(hostname -f):6379" kelvin_username=Administrator kelvin_password=univention converter_daemon_num_workers=24
 }
 
 load_sddb_jenkins () {
