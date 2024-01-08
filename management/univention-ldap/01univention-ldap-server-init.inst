@@ -97,8 +97,9 @@ then
 	univention-config-registry set windows/domain?"$sambadomain" \
 		kerberos/realm?"$realm"
 
-	test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
-	test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
+	command -v sss_cache >/dev/null && sss_cache -U
+	# command -v sss_cache >/dev/null && sss_cache -G
+	command -v nscd >/dev/null && nscd -i group
 fi
 /usr/share/univention-ldap/setup-translog init "$@"
 

@@ -19,8 +19,8 @@ auth     sufficient                         pam_unix.so
 minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5 = '''
 auth	sufficient			pam_krb5.so use_first_pass minimum_uid=%d''' % (minimum_uid,)
-pam_ldap = '''
-auth 	sufficient 			pam_ldap.so use_first_pass'''
+pam_sss = '''
+auth 	sufficient 			pam_sss.so use_first_pass'''
 pam_winbind = '''
 auth 	sufficient 			pam_winbind.so use_first_pass'''
 
@@ -29,7 +29,7 @@ methods = set(configRegistry['auth/methods'].split(' ')) & {'krb5', 'ldap', 'win
 if 'krb5' in methods:
     print(pam_krb5)
 if 'ldap' in methods:
-    print(pam_ldap)
+    print(pam_sss)
 if 'winbind' in methods:
     print(pam_winbind)
 @!@

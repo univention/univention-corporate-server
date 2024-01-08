@@ -14,9 +14,9 @@ if auth_umc_addons:
         print('auth     [success=1 new_authtok_reqd=1 default=ignore]                         pam_krb5.so use_first_pass defer_pwchange')
     else:
         print('auth     [success=1 new_authtok_reqd=1 default=ignore]                         pam_unix.so')
-    print('auth     [success=ok new_authtok_reqd=ok default=die]                         pam_ldap.so use_first_pass')
+    print('auth     [success=ok new_authtok_reqd=ok default=die]                         pam_sss.so use_first_pass')
 else:
     print('auth     sufficient                         pam_unix.so try_first_pass')
     if 'krb5' in methods:
         print('auth     sufficient                         pam_krb5.so use_first_pass defer_pwchange')
-    print('auth     sufficient                           pam_ldap.so use_first_pass')@!@
+    print('auth     sufficient                           pam_sss.so use_first_pass')@!@

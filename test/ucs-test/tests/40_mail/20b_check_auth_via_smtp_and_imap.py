@@ -96,6 +96,7 @@ class AuthTests:
 
     def restart_services(self):
         subprocess.call(['service', 'nscd', 'restart'])
+        subprocess.call(['sss_cache', '-E'])
         subprocess.call(['service', 'saslauthd', 'restart'])
         subprocess.call(['service', 'postfix', 'restart'])
         if self.ucr.is_true('mail/cyrus'):

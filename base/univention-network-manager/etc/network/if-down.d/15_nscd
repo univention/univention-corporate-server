@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Server
-#  network script: restarts nscd when network state changes
+#  network script: restarts nscd and sssd when network state changes
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -33,14 +33,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-[ -x /etc/init.d/nscd ] || exit 0
-[ -f /var/run/nscd/nscd.pid ] || exit 0
-
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-invoke-rc.d nscd restart
-nscd -i passwd
+if ! [ -d /run/systemd/system ]; then
+	[ -f /var/run/nscd/nscd.pid ] && [ -x /etc/init.d/nscd ] && invoke-rc.d nscd restart
+	[ -f /var/run/sssd.pid ] && [ -x /etc/init.d/sssd ] && invoke-rc.d sssd restart
+fi
+
+sss_cache -U
+# sss_cache -G
 nscd -i group
 
 exit 0
