@@ -51,20 +51,12 @@ fi
 
 eval "$(univention-config-registry shell)"
 
-# /etc/libnss-ldap.secret is required for rootbinddn in /etc/libnss-ldap.conf
-ln -sf /etc/machine.secret /etc/libnss-ldap.secret
-# /etc/pam_ldap.secret is required for rootbinddn in /etc/pam_ldap.conf
-ln -sf /etc/machine.secret /etc/pam_ldap.secret
-
 univention-config-registry set \
-	nscd/passwd/size?6007 \
 	nscd/group/size?56003 \
 	nscd/hosts/size?6007 \
 	nscd/group/maxdbsize?62914560 \
-	nscd/passwd/positive_time_to_live?600 \
 	nscd/group/positive_time_to_live?3600 \
 	nscd/hosts/positive_time_to_live?3600 \
-	nscd/passwd/negative_time_to_live?20 \
 	nscd/group/negative_time_to_live?60 \
 	nscd/hosts/negative_time_to_live?20 \
 	nscd/group/invalidate_cache_on_changes?"false" \
@@ -114,7 +106,17 @@ systemctl try-restart univention-directory-listener
 test -x /etc/init.d/cron && /etc/init.d/cron reload
 
 # Restart nscd
-test -x /etc/init.d/nscd && /etc/init.d/nscd restart
+deb-systemd-invoke restart nscd
+
+# SSSD alters /etc/nsswitch.conf during installation - revert changes
+ucr commit /etc/nsswitch.conf
+
+# Set SSSD ownership
+ucr commit /etc/sssd/sssd.conf
+chmod -R 0600 /etc/sssd
+
+# Restart sssd
+deb-systemd-invoke restart sssd
 
 # default limits
 univention-config-registry set \

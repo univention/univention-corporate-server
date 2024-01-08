@@ -5,11 +5,11 @@ main () {
 	gen_common
 
 	check account '[success=done new_authtok_reqd=done acct_expired=bad default=ignore]' pam_unix.so
-	check account 'required' pam_ldap.so
+	check account 'required' pam_sss.so
 
 	check auth 'requisite' pam_nologin.so
 	check auth 'sufficient' pam_unix.so
-	check auth '[success=done new_authtok_reqd=ok user_unknown=die service_err=die authinfo_unavail=die default=die]' pam_ldap.so 'use_first_pass'
+	check auth '[success=done new_authtok_reqd=ok user_unknown=die service_err=die authinfo_unavail=die default=die]' pam_sss.so 'use_first_pass'
 	check auth 'required' pam_env.so
 
 	check session 'required' pam_unix.so

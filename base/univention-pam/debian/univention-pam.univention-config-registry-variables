@@ -1,9 +1,3 @@
-[nscd/passwd/enabled]
-Description[de]=Aktiviert den NSCD-Cache für die Benutzerdaten. Ist die Variable nicht gesetzt, wird der Cache aktiviert.
-Description[en]=Enables the NSCD cache for the user data. If the variable is not set, the cache is activated.
-Type=bool
-Categories=system-base
-
 [nscd/group/enabled]
 Description[de]=Aktiviert den NSCD-Cache für die Gruppendaten. Ist die Variable nicht gesetzt, wird der Cache aktiviert.
 Description[en]=Enables the NSCD cache for the group data. If the variable is not set, the cache is activated.
@@ -22,12 +16,6 @@ Description[en]=The size of the NSCD cache for the host accounts. The value shou
 Type=pint
 Categories=system-base
 
-[nscd/passwd/size]
-Description[de]=Die Größe des NSCD-Caches für die Benutzerkonten. Der Wert sollte größer oder gleich der Anzahl aller Benutzer sein.
-Description[en]=The size of the NSCD cache for the user accounts. The value should be greater or equal as the number of all users.
-Type=pint
-Categories=system-base
-
 [nscd/group/size]
 Description[de]=Die Größe des NSCD-Caches für die Gruppenkonten. Der empfohlene Wert ist (Anzahl aller  Gruppen * 2 + Anzahl aller Gruppenmitglieder) * 2.
 Description[en]=The size of the NSCD cache for the group data. The recommended value is (number of all groups * 2 + number of all groupmembers) * 2.
@@ -37,12 +25,6 @@ Categories=system-base
 [nscd/hosts/maxdbsize]
 Description[de]=Die Datenbankgröße des NSCD-Rechnerkonten-Caches in Byte. Wird die Variable nscd/hosts/size auf einen hohen Wert gesetzt, muss diese Variable ggf. erhöht werden.
 Description[en]=The size in bytes of the database of the NSCD host account cache. If the variable nscd/hosts/size is set to a high value, this variable may need to be expanded.
-Type=pint
-Categories=system-base
-
-[nscd/passwd/maxdbsize]
-Description[de]=Die Datenbankgröße des NSCD-Benutzer-Caches in Byte. Wird die Variable nscd/passwd/size auf einen hohen Wert gesetzt, muss diese Variable ggf. erhöht werden.
-Description[en]=The size in bytes of the database of the NSCD user cache. If the variable nscd/passwd/size is set to a high value, this variable may need to be expanded.
 Type=pint
 Categories=system-base
 
@@ -108,8 +90,8 @@ Type=bool
 Categories=system-base
 
 [auth/methods]
-Description[de]=Diese Variable legt fest, welche Authentifizierungsmethoden neben pam_unix in der PAM-Konfiguration verwendet werden. Die Liste muss durch Leerzeichen getrennt werden. Mögliche Werte sind 'ldap' (pam_ldap) , 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so).
-Description[en]=This variable configures which authentication methods should be used in the PAM configuration besides pam_unix. The list must be space-separated. Possible values are 'ldap' (pam_ldap), 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so).
+Description[de]=Diese Variable legt fest, welche Authentifizierungsmethoden neben pam_unix in der PAM-Konfiguration verwendet werden. Die Liste muss durch Leerzeichen getrennt werden. Mögliche Werte sind 'ldap' (pam_sss.so) , 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so).
+Description[en]=This variable configures which authentication methods should be used in the PAM configuration besides pam_unix. The list must be space-separated. Possible values are 'ldap' (pam_sss.so), 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so).
 Type=list
 Separator=[ ]
 Elementtype=str
@@ -180,7 +162,7 @@ Categories=system-base
 
 [pam/session/systemd]
 Description[de]=Aktiviert die Verwendung des PAM Modules 'systemd'. Standardmäßig deaktiviert.
-Description[en]=Enables using the PAM mdoule 'systemd'. Disabled by default.
+Description[en]=Enables using the PAM module 'systemd'. Disabled by default.
 Type=bool
 Categories=system-base
 

@@ -12,9 +12,9 @@ auth += " pwfile=/etc/machine.secret"
 auth += " ldap_port=%s" % configRegistry.get("ldap/server/port", "7389")
 print(auth)
 @!@
-auth    sufficient    pam_ldap.so use_first_pass
+auth    sufficient    pam_sss.so use_first_pass
 auth    required      pam_krb5.so use_first_pass
 
 account  sufficient   pam_unix.so
-account  required     pam_ldap.so
+account  required     pam_sss.so
 

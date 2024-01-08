@@ -336,6 +336,7 @@ ucr commit \
 
 # Restart NSCD
 service restart nscd
+service restart sssd
 
 # Start atd as the appliance cleanup script is started as at job
 service start atd

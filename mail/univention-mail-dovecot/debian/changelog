@@ -1,3 +1,9 @@
+univention-mail-dovecot (8.0.3) unstable; urgency=medium
+
+  * Bug #56793: Replace libnss-ldapd with SSSd
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Fri, 08 Mar 2024 00:18:47 +0100
+
 univention-mail-dovecot (8.0.2) unstable; urgency=medium
 
   * Bug #46120: rebase univention-mail-dovecot UCR templates

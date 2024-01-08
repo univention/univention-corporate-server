@@ -835,10 +835,12 @@ msgstr ""
 
 #: ../../computers/basic-system-services.rst:426
 msgid ""
-"$ nscd -i passwd\n"
+"$ sss_cache -U\n"
+"$ nscd -i group\n"
 "$ nscd -i hosts"
 msgstr ""
-"$ nscd -i passwd\n"
+"$ sss_cache -U\n"
+"$ nscd -i group\n"
 "$ nscd -i hosts"
 
 #: ../../computers/basic-system-services.rst:432

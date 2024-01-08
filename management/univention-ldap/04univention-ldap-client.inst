@@ -42,6 +42,8 @@ joinscript_init
 univention-config-registry set nsswitch/ldap=yes
 
 test -x /etc/init.d/nscd && service nscd restart
+ucr commit /etc/sssd/sssd.conf
+service sssd restart
 
 eval "$(univention-config-registry shell server/role ldap/master)"
 

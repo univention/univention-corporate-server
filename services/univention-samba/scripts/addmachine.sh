@@ -57,8 +57,8 @@ while [ $c -lt  60 ]; do
 	test -n "$dn" && break
 done
 
-# Invalidate the nscd passwd cache
-nscd -i passwd
+# Invalidate the sssd passwd cache for that account
+sss_cache --user="${name/%$/}$"
 
 exit 0
 

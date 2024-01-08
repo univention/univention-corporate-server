@@ -1,3 +1,9 @@
+ucs-test (12.0.8) unstable; urgency=medium
+
+  * Bug #56793: Replace libnss-ldapd with SSSd
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Fri, 08 Mar 2024 00:18:47 +0100
+
 ucs-test (12.0.7) unstable; urgency=medium
 
   * Bug #56928: python-keycloak api changes
