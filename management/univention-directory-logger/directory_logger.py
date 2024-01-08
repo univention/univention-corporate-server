@@ -53,7 +53,7 @@ from listener import SetUID, configRegistry
 
 name = 'directory_logger'
 description = 'Log directory transactions'
-filter = '(objectClass=*)'  # log all objects by default
+filter = '(!(objectClass=lock))'  # log all objects by default, but skip temporary lock objects
 
 logname = '/var/log/univention/directory-logger.log'
 excludeKeyPattern = re.compile(r'ldap/logging/exclude\d+')

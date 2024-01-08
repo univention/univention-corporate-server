@@ -50,7 +50,7 @@ import listener
 
 
 description = 'S4 Connector replication'
-filter = '(objectClass=*)'
+filter = '(!(objectClass=lock))'
 modrdn = "1"
 
 # While initialize copy all group objects into a list:

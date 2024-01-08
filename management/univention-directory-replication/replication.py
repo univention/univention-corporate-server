@@ -65,7 +65,7 @@ import listener
 
 
 description = 'LDAP Replica Node replication'
-filter = '(objectClass=*)'  # default filter - may be overwritten later
+filter = '(!(objectClass=lock))'  # default filter - may be overwritten later
 modrdn = '1'
 priority = 0.0
 

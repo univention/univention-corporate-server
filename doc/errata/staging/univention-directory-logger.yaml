@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-directory-logger
+fix: 11.0.5-2
+desc: |
+ This update addresses the following issues:
+ * During normal replication objects with `objectClass=lock`
+   are not replicated. But during initial join they were.
+   By adjusting the filter in the listener module this is
+   is now avoided, speeding up initial replication.
+bug: [56954]
