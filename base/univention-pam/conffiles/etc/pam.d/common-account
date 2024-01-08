@@ -15,8 +15,8 @@ minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5 = '''
 account  [default=ignore success=1]       pam_succeed_if.so quiet service = samba
 account  <action>                         pam_krb5.so minimum_uid=%d''' % (minimum_uid,)
-pam_ldap = '''
-account  <action>                         pam_ldap.so'''
+pam_sss = '''
+account  <action>                         pam_sss.so'''
 pam_winbind = '''
 account  <action>                         pam_winbind.so'''
 
@@ -33,7 +33,7 @@ if 'krb5' in methods:
     print(pam_section(pam_krb5, index))
     index -= 1
 if 'ldap' in methods:
-    print(pam_section(pam_ldap, index))
+    print(pam_section(pam_sss, index))
     index -= 1
 if 'winbind' in methods:
     print(pam_section(pam_winbind, index))

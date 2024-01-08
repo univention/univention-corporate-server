@@ -180,7 +180,7 @@ Categories=system-base
 
 [pam/session/systemd]
 Description[de]=Aktiviert die Verwendung des PAM Modules 'systemd'. Standardmäßig deaktiviert.
-Description[en]=Enables using the PAM mdoule 'systemd'. Disabled by default.
+Description[en]=Enables using the PAM module 'systemd'. Disabled by default.
 Type=bool
 Categories=system-base
 
