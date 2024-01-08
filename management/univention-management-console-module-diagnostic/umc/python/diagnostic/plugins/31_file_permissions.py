@@ -126,9 +126,11 @@ def file_and_permission_checks() -> Iterator[CheckError]:
     check_file_args = [
         cf_type('/etc/ldap.secret', 'root', 'DC Backup Hosts', 0o640, must_exist=is_primary),
         cf_type('/etc/machine.secret', 'root', 'root', 0o600, must_exist=True),
-        cf_type('/etc/pam_ldap.secret', 'root', 'root', 0o600, must_exist=True),
+        cf_type('/etc/pam_ldap.secret', 'root', 'root', 0o600, must_exist=False),
+        cf_type('/etc/libnss-ldap.secret', 'root', 'root', 0o600, must_exist=False),
         cf_type('/etc/idp-ldap-user.secret', 'root', 'DC Backup Hosts', 0o640, must_exist=is_primary),
-        cf_type('/etc/nslcd.conf', 'messagebus', 'root', 0o440, must_exist=True),
+        cf_type('/etc/sssd/sssd.conf', 'root', 'root', 0o600, must_exist=True),
+        cf_type('/var/lib/sss', 'root', 'root', 0o755, must_exist=True),
         cf_type('/var/run/slapd/ldapi', 'root', 'root', 0o700, False),
         cf_type('/etc/univention/ssl', 'root', 'DC Backup Hosts' if is_dc else 'root', 0o755, must_exist=True),
         cf_type('/etc/univention/ssl/openssl.cnf', 'root', 'DC Backup Hosts', 0o660, must_exist=is_primary),

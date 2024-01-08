@@ -5,11 +5,11 @@ auth     [success=<succ> new_authtok_reqd=ok \\
          user_unknown=<unknown> \\
          service_err=<unavail> authinfo_unavail=<unavail> \\
          default=<unknown>]   pam_krb5.so use_first_pass minimum_uid=%d''' % (minimum_uid,)
-pam_ldap = '''
+pam_sss = '''
 auth     [success=<succ> new_authtok_reqd=ok \\
          user_unknown=<unknown> \\
          service_err=<unavail> authinfo_unavail=<unavail> \\
-         default=<unknown>]   pam_ldap.so use_first_pass'''
+         default=<unknown>]   pam_sss.so use_first_pass'''
 pam_winbind = '''
 auth     [success=<succ> new_authtok_reqd=ok \\
          user_unknown=<unknown> \\
@@ -45,7 +45,7 @@ if 'krb5' in methods:
     print(pam_section(pam_krb5, last))
 if 'ldap' in methods:
     last = 'winbind' not in methods
-    print(pam_section(pam_ldap, last))
+    print(pam_section(pam_sss, last))
 if 'winbind' in methods:
     print(pam_section(pam_winbind, True))
 @!@

@@ -31,6 +31,8 @@ password=univention
 
 ## restart nscd to simulate the reboot situation that made Bug #56885 appear
 systemctl restart nscd
+## For UCS 5.2 flush sssd user cache
+sss_cache -U
 # /etc/init.d/samba restart
 
 user_create "$username" ||

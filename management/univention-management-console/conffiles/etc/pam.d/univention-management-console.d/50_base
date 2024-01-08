@@ -21,7 +21,7 @@ auth     [success=1 new_authtok_reqd=1 \\\n\
          default=ignore]   pam_unix.so')
     print('\
 auth     [success=ok new_authtok_reqd=ok \\\n\
-         default=die]      pam_ldap.so use_first_pass')
+         default=die]      pam_sss.so use_first_pass')
 else:
     print('\
 auth     sufficient        pam_unix.so try_first_pass')
@@ -29,5 +29,5 @@ auth     sufficient        pam_unix.so try_first_pass')
         print('\
 auth     sufficient        pam_krb5.so use_first_pass defer_pwchange')
     print('\
-auth     sufficient        pam_ldap.so use_first_pass')
+auth     sufficient        pam_sss.so use_first_pass')
 @!@
