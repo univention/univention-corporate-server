@@ -108,8 +108,8 @@ Type=bool
 Categories=system-base
 
 [auth/methods]
-Description[de]=Diese Variable legt fest, welche Authentifizierungsmethoden neben pam_unix in der PAM-Konfiguration verwendet werden. Die Liste muss durch Leerzeichen getrennt werden. Mögliche Werte sind 'ldap' (pam_ldap) , 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so).
-Description[en]=This variable configures which authentication methods should be used in the PAM configuration besides pam_unix. The list must be space-separated. Possible values are 'ldap' (pam_ldap), 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so).
+Description[de]=Diese Variable legt fest, welche Authentifizierungsmethoden neben pam_unix in der PAM-Konfiguration verwendet werden. Die Liste muss durch Leerzeichen getrennt werden. Mögliche Werte sind 'ldap' (pam_sss.so) , 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so).
+Description[en]=This variable configures which authentication methods should be used in the PAM configuration besides pam_unix. The list must be space-separated. Possible values are 'ldap' (pam_sss.so), 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so).
 Type=list
 Separator=[ ]
 Elementtype=str
@@ -180,7 +180,7 @@ Categories=system-base
 
 [pam/session/systemd]
 Description[de]=Aktiviert die Verwendung des PAM Modules 'systemd'. Standardmäßig deaktiviert.
-Description[en]=Enables using the PAM mdoule 'systemd'. Disabled by default.
+Description[en]=Enables using the PAM module 'systemd'. Disabled by default.
 Type=bool
 Categories=system-base
 
