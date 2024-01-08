@@ -478,8 +478,6 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
 
-    baseDN = configRegistry['ldap/base']
-
     debug_level = int(configRegistry.get('directory/manager/cmd/debug/level', 0))
 
     if logfile:
@@ -489,7 +487,7 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
 
     if not binddn or not bindpwd:
         for _binddn, secret_filename in (
-                ('cn=admin,' + baseDN, '/etc/ldap.secret'),
+                ('cn=admin,' + configRegistry['ldap/base'], '/etc/ldap.secret'),
                 (configRegistry['ldap/hostdn'], '/etc/machine.secret'),
         ):
             if os.path.exists(secret_filename):
@@ -505,22 +503,6 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
         policyOptions.extend(['-D', binddn, '-w', bindpwd])  # FIXME: not so nice
 
     log.debug("using %s account", binddn)
-    try:
-        lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
-    except Exception as exc:
-        log.warning('authentication error: %s', exc)
-        raise OperationFailed('authentication error: %s' % (exc,))
-
-    if not position_dn and superordinate_dn:
-        position_dn = superordinate_dn
-    elif not position_dn:
-        position_dn = baseDN
-
-    try:
-        position = univention.admin.uldap.position(baseDN)
-        position.setDn(position_dn)
-    except univention.admin.uexceptions.noObject:
-        raise OperationFailed('E: Invalid position')
 
     module = univention.admin.modules.get(module_name)
     if not module:
@@ -528,6 +510,23 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
         print("", file=stderr)
         list_available_modules(stderr)
         raise OperationFailed()
+
+    try:
+        lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=module.object.ldap_base, binddn=binddn, start_tls=tls, bindpw=bindpwd)
+    except Exception as exc:
+        log.warning('authentication error: %s', exc)
+        raise OperationFailed('authentication error: %s' % (exc,))
+
+    if not position_dn and superordinate_dn:
+        position_dn = superordinate_dn
+    elif not position_dn:
+        position_dn = module.object.ldap_base
+
+    try:
+        position = univention.admin.uldap.position(module.object.ldap_base)
+        position.setDn(position_dn)
+    except univention.admin.uexceptions.noObject:
+        raise OperationFailed('E: Invalid position')
 
     # initialise modules
     if module_name == 'settings/usertemplate':
@@ -854,7 +853,6 @@ class CLI(object):
         try:
             for object in univention.admin.modules.lookup(module, None, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter):
                 print('DN: %s' % univention.admin.objects.dn(object), file=self.stdout)
-
                 if not univention.admin.modules.virtual(module_name):
                     object.open()
                     for key, value in sorted(object.items()):

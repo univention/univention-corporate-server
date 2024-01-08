@@ -232,9 +232,10 @@ def init(lo, position, module, template_object=None, force_reload=False):
                 if subsyn.name == 'LDAP_Search':
                     subsyn._load(lo)
 
-    # add new properties
-    update_extended_options(lo, module, position)
-    update_extended_attributes(lo, module, position)
+    # add new properties, only for modules in default ldap base
+    if lo.compare_dn(configRegistry['ldap/base'].lower(), module.object.ldap_base.lower()):
+        update_extended_options(lo, module, position)
+        update_extended_attributes(lo, module, position)
 
     # get defaults from template
     if template_object:
@@ -1138,7 +1139,7 @@ def defaultContainers(module):
     :param module: |UDM|
     :returns: a list of DNs.
     """
-    base = configRegistry['ldap/base']
+    base = module.object.ldap_base
     return ['%s,%s' % (rdn, base) for rdn in getattr(module, 'default_containers', [])]
 
 

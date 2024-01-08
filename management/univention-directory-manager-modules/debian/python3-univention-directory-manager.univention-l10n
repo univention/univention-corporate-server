@@ -118,5 +118,13 @@
 		"po_subdir": "modules/univention/admin/handlers/users",
 		"target_type": "mo",
 		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-users.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/blocklists/[^/]*\\.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/blocklists",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-blocklists.mo"
 	}
 ]

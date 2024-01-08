@@ -55,11 +55,11 @@ from typing import (  # noqa: F401
     TYPE_CHECKING, Any, Callable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union,
 )
 
-import dateutil
 import ldap
 import ldap.dn
 import PIL
 import six
+from dateutil.parser import parse as duparse
 from ldap.filter import escape_filter_chars, filter_format
 from ldap.schema import AttributeType, ObjectClass
 from ldap.schema.subentry import SubSchema  # noqa: F401
@@ -2894,7 +2894,7 @@ class iso8601Date(simple):
         value = cls.parse(value)
         if value:
             try:
-                return dateutil.parser.parse(value).date()  # FIXME: this gives AttributeError: module 'dateutil' has no attribute 'parser'
+                return duparse(value).date()
             except Exception:
                 pass
             if re.match(r"\d+-\d+$", value):
@@ -6925,6 +6925,19 @@ class DateTimeTimezone(complex):
     size = ('TwoThirds', 'TwoThirds', 'TwoThirds')
     all_required = False
     min_elements = 0
+
+
+class GeneralizedTimeUTC(simple):
+    """Generalized time but without microseconds and always in UTC"""
+
+    @classmethod
+    def parse(self, text):
+        try:
+            datetime.datetime.strptime(text, "%Y%m%d%H%M%SZ")
+            duparse(text)
+        except ValueError:
+            raise univention.admin.uexceptions.valueError(_('This timestamp needs be in UTC and follow the format YYYYMMDDHHmmssZ.'))
+        return text
 
 
 class ActivationDateTimeTimezone(DateTimeTimezone):
