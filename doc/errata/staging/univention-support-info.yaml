@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-support-info
+fix: 6.0.0-6
+desc: |
+ This update addresses the following issues:
+ * The directory `/var/log/univention/listener_modules/` and
+   `/var/log/apt/history.log` are now also fetched in a Univention Support
+   Information archive.
+bug: [56962]
