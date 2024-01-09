@@ -154,6 +154,11 @@ def _replace_asterisks_in_filter(filter_s, allow_asterisks=True):
     return filter_s
 
 
+def _check_legacy_username_format(text):
+    if configRegistry.is_false("directory/manager/user/enable-legacy-username-format") and text.strip().isdigit():
+        raise univention.admin.uexceptions.valueError(_("Usernames must not consist only of numbers!"))
+
+
 def is_syntax(syntax_obj, syntax_type):
     # type: (Any, Type) -> bool
     """
@@ -2060,6 +2065,11 @@ class uid(simple):
     # FIXME: (?!admin)
     error_message = _("Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!")
 
+    @classmethod
+    def parse(cls, text):
+        _check_legacy_username_format(text)
+        return super(uid, cls).parse(text)
+
 
 class uid_umlauts(simple):
     """
@@ -2097,6 +2107,9 @@ class uid_umlauts(simple):
             text = text.decode('UTF-8')
         if u" " in text:
             raise univention.admin.uexceptions.valueError(_("Spaces are not allowed in the username!"))
+
+        _check_legacy_username_format(text)
+
         if self._re.match(text) is not None:
             return text
         else:
@@ -2136,6 +2149,8 @@ class uid_umlauts_lower_except_first_letter(simple):
         if any(c.isupper() for c in text[1:]):
             raise univention.admin.uexceptions.valueError(_("Only the first letter of the username may be uppercase!"))
 
+        _check_legacy_username_format(text)
+
         if self._re.match(text) is not None:
             return text
         else:
@@ -2160,6 +2175,12 @@ class gid(simple):
         "A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes "
         "and dots are allowed.",
     )
+
+    @classmethod
+    def parse(cls, text):
+        if configRegistry.is_false("directory/manager/group/enable-legacy-cn-format") and text.strip().isdigit():
+            raise univention.admin.uexceptions.valueError(_("Group names must not consist only of numbers!"))
+        return super(gid, cls).parse(text)
 
 
 class sharePath(simple):

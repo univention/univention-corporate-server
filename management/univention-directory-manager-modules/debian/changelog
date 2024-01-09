@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.25-4) unstable; urgency=medium
+
+  * Bug #56232: add support for disallowing purely numeric group CNs and user
+    UIDs
+
+ -- Mika Westphal <westphal@univention.de>  Thu, 25 Jan 2024 10:07:49 +0100
+
 univention-directory-manager-modules (15.0.25-3) unstable; urgency=medium
 
   * Bug #49006: add bind_oauthbearer(authzid, access_token)
