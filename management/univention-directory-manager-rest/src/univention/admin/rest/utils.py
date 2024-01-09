@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import logging
 import re
 from urllib.parse import quote
 
@@ -41,9 +42,32 @@ from ldap.controls.readentry import PostReadControl
 from tornado.web import HTTPError
 
 import univention.admin.types as udm_types
+from univention.config_registry import ucr
 
 
 RE_UUID = re.compile('[^A-Fa-f0-9-]')
+
+
+def init_request_id_logging(request_id_context):
+    if not ucr.is_true('directory/manager/rest/debug/prefix-with-request-id'):
+        return
+
+    context_id_filter = ContextIdFilter(request_id_context)
+    for comp in ('MAIN', 'ADMIN', 'LDAP', 'MODULE', 'tornado.access', 'tornado.application', 'tornado.general'):
+        for handler in logging.getLogger(comp).handlers:
+            handler.addFilter(context_id_filter)
+
+
+class ContextIdFilter(logging.Filter):
+    def __init__(self, request_id_context):
+        self.request_id_context = request_id_context
+
+    def filter(self, record):
+        try:
+            record.prefix = '[%s] ' % (self.request_id_context.get())[:12]
+        except LookupError:
+            record.prefix = '[no requestID] '  # no context exists yet
+        return True
 
 
 def parse_content_type(content_type):

@@ -44,8 +44,8 @@ from univention.admin.rest.sanitizer import (
     Param, StringSanitizer,
 )
 from univention.admin.rest.utils import NotFound, superordinate_names
+from univention.config_registry import ucr
 from univention.lib.i18n import Translation
-from univention.management.console.config import ucr
 from univention.management.console.modules.udm.udm_ldap import UDM_Module
 
 

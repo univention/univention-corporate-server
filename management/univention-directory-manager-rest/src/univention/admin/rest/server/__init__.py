@@ -35,12 +35,14 @@
 
 
 import argparse
+import contextvars
 import json
 import logging
 import os
 import signal
 import subprocess
 import sys
+import uuid
 
 import atexit
 import pycurl
@@ -58,7 +60,8 @@ import univention.debug as ud
 import univention.lib.i18n
 import univention.logging
 from univention.admin.rest.shared_memory import shared_memory
-from univention.management.console.config import ucr
+from univention.admin.rest.utils import RE_UUID, init_request_id_logging
+from univention.config_registry import ucr
 
 
 try:
@@ -67,6 +70,8 @@ except ImportError:
     _exit_function = None
 
 proctitle = getproctitle()
+request_id_context = contextvars.ContextVar("request_id")
+logger = logging.getLogger('ADMIN')
 
 
 class Gateway(tornado.web.RequestHandler):
@@ -85,6 +90,11 @@ class Gateway(tornado.web.RequestHandler):
 
     def set_default_headers(self):
         self.set_header('Server', 'Univention/1.0')  # TODO:
+
+    def prepare(self):
+        request_id = self.request.headers.setdefault('X-Request-Id', str(uuid.uuid4()))
+        self.request.x_request_id = RE_UUID.sub('', request_id)[:36]
+        request_id_context.set(self.request.x_request_id)
 
     @tornado.gen.coroutine
     def get(self):
@@ -179,10 +189,12 @@ class Gateway(tornado.web.RequestHandler):
         os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
 
         channel = logging.StreamHandler()
-        channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
-        logger = logging.getLogger()
+        channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)8s      (%(process)9d) :%(end_color)s%(message)s', datefmt='%d.%m.%y %H:%M:%S'))
+        logger = logging.getLogger('')
         logger.setLevel(logging.INFO)
         logger.addHandler(channel)
+
+        init_request_id_logging(request_id_context)
 
         # bind sockets
         socks = []
@@ -211,7 +223,7 @@ class Gateway(tornado.web.RequestHandler):
             try:
                 child_id = tornado.process.fork_processes(args.processes, 0)
             except RuntimeError as exc:
-                logger.info(f'Stopped process {exc}')
+                logger.info('Stopped process %s', exc)
                 cls.signal_handler_stop(signal.SIGTERM, None)
             else:
                 cls.start_child(child_id)
@@ -222,7 +234,6 @@ class Gateway(tornado.web.RequestHandler):
     def start_child(cls, child_id):
         setproctitle(proctitle + f'   # gateway proxy {child_id}')
         cls.child_id = child_id
-        logger = logging.getLogger()
         logger.info('Started child %s', cls.child_id)
         shared_memory.children[cls.child_id] = os.getpid()
         cls.start_server(cls.socks)
@@ -294,7 +305,6 @@ class Gateway(tornado.web.RequestHandler):
 
     @classmethod
     def signal_handler_stop(cls, sig, frame):
-        logger = logging.getLogger()
         if cls.child_id is None:
             try:
                 children_pids = list(shared_memory.children.values())
@@ -323,6 +333,6 @@ class Gateway(tornado.web.RequestHandler):
         try:
             os.kill(pid, signo)
         except OSError as exc:
-            logging.getLogger().error(f'Could not kill({signo}) {pid}: {exc}')
+            logger.error('Could not kill(%s) %s: %s', signo, pid, exc)
         else:
             os.waitpid(pid, os.WNOHANG)

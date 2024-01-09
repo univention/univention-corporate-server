@@ -40,7 +40,6 @@ import logging
 import os
 import signal
 import time
-import traceback
 from functools import partial
 
 import atexit
@@ -52,11 +51,15 @@ from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_sockets, bind_unix_socket
 
 from univention.admin.rest.shared_memory import shared_memory
+from univention.admin.rest.utils import init_request_id_logging
+from univention.config_registry import ucr
 from univention.lib.i18n import Locale, Translation
 # IMPORTANT NOTICE: we must import as few modules as possible, so that univention.admin is not yet imported
 # because importing the UDM handlers would cause that the gettext translation gets applied before we set a locale
-from univention.management.console.config import ucr
-from univention.management.console.log import CORE, log_init, log_reopen
+from univention.management.console.log import log_init, log_reopen
+
+
+log = logging.getLogger('ADMIN')
 
 
 try:
@@ -121,23 +124,23 @@ class Server:
             try:
                 child_id = tornado.process.fork_processes(args.processes, 0)
             except RuntimeError as exc:  # tornados way to exit from multiprocessing on failures
-                CORE.info(f'Stopped process: {exc}')
+                log.debug('Stopped process: %s', exc)
                 self.signal_handler_stop(None, signal.SIGTERM, None)
             else:
                 self.start_child(child_id)
-                CORE.info('process ended')
+                log.debug('process ended')
         else:
             self.run_server(socks)
 
     def start_child(self, child_id):
         setproctitle(proctitle + f'   # child {child_id}')
         self.child_id = child_id
-        CORE.info(f'Started child {self.child_id}')
+        log.debug('Started child %s', self.child_id)
         shared_memory.children[self.child_id] = os.getpid()
         self.run_server(self.socks)
 
     def run_server(self, socks):
-        from univention.admin.rest.module import Application
+        from univention.admin.rest.module import Application, request_id_context
         application = Application(serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True))
 
         server = HTTPServer(application)
@@ -148,10 +151,12 @@ class Server:
         signal.signal(signal.SIGINT, partial(self.signal_handler_stop, server))
         signal.signal(signal.SIGHUP, self.signal_handler_reload)
 
+        init_request_id_logging(request_id_context)
+
         try:
             tornado.ioloop.IOLoop.current().start()
         except Exception:
-            CORE.error(traceback.format_exc())
+            log.exception('Could not start main loop')
             self.signal_handler_stop(server, signal.SIGTERM, None)
             raise
 
@@ -161,13 +166,13 @@ class Server:
                 children_pids = list(shared_memory.children.values())
             except Exception:  # multiprocessing failure
                 children_pids = []
-            CORE.info(f'stopping children: {children_pids!r}')
+            log.debug('stopping children: %r', children_pids)
             for pid in children_pids:
                 self.safe_kill(pid, sig)
 
             shared_memory.shutdown()
         else:
-            CORE.info('shutting down in one second')
+            log.debug('shutting down in one second')
 
         io_loop = tornado.ioloop.IOLoop.current()
         loop = getattr(io_loop, 'asyncio_loop', io_loop)  # Support Python2+3 Tornado version
@@ -188,7 +193,7 @@ class Server:
         io_loop.add_callback_from_signal(shutdown)
 
     def signal_handler_reload(self, signal, frame):
-        CORE.debug('Reloading service.')
+        log.debug('Reloading service.')
         if self.child_id is None:
             for pid in shared_memory.children.values():
                 self.safe_kill(pid, signal)
@@ -205,7 +210,7 @@ class Server:
         try:
             os.kill(pid, signo)
         except OSError as exc:
-            CORE.error(f'Could not kill({signo}) {pid}: {exc}')
+            log.error('Could not kill(%s) %s: %s', signo, pid, exc)
         else:
             os.waitpid(pid, os.WNOHANG)
 
