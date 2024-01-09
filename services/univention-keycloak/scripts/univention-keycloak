@@ -505,7 +505,7 @@ def create_SAML_client(opt):
             "acr.loa.map": "{}",
             "saml.authnstatement": "true",
             "display.on.consent.screen": "false",
-            "saml.assertion.lifespan": "300",
+            "saml.assertion.lifespan": opt.assertion_lifespan,
             "token.response.type.bearer.lower-case": "false",
             "saml.onetimeuse.condition": "false",
             "saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#",
@@ -899,6 +899,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_saml_parser.add_argument("--umc-uid-mapper", action="store_true")
     create_saml_parser.add_argument("--role-mapping-single-value", action="store_true")
     create_saml_parser.add_argument("--assertion-consumer-url-post", default=None)
+    create_saml_parser.add_argument("--assertion-lifespan", default=ucr.get('umc/saml/assertion-lifetime', 300))
     create_saml_parser.add_argument("--single-logout-service-url-post", default=None)
     create_saml_parser.add_argument("--idp-initiated-sso-url-name", default=None)
     create_saml_parser.add_argument("--name-id-format", default="transient")
@@ -2263,6 +2264,7 @@ def init_keycloak_ucs(opt):
     opt.umc_uid_mapper = True
     opt.single_logout_service_url_post = None
     opt.assertion_consumer_url_post = None
+    opt.assertion_lifespan = ucr.get('umc/saml/assertion-lifetime', 300)
     opt.frontchannel_logout_off = None
     opt.name_id_format = None
     opt.idp_initiated_sso_url_name = None

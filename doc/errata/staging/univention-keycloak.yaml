@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-keycloak
+fix: 1.0.9-34
+desc: |
+ This update addresses the following issue:
+ * When creating SAML SP it is possible to pass the assertion lifetime
+bug: [11111]

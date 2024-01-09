@@ -1,3 +1,9 @@
+univention-keycloak (1.0.9-34) unstable; urgency=medium
+
+  * Bug #11111: SAML assertion lifetime option implemented when creating SP
+
+ -- Nikola Radovanovic <radovanovic.extern@univention.de>  Tue, 09 Jan 2024 16:02:43 +0100
+
 univention-keycloak (1.0.9-33) unstable; urgency=medium
 
   * Bug #56791: check if previous initialization finished correctly
