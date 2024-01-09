@@ -1,4 +1,4 @@
-univention-debug-python (12.0.3-6) unstable; urgency=medium
+univention-debug-python (12.0.3-7) unstable; urgency=medium
 
   * Bug #57026: use `ud2` instead of root logger as parents of category
     loggers

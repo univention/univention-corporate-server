@@ -45,8 +45,8 @@ import univention.admin.syntax as udm_syntax
 import univention.admin.types as udm_types
 import univention.admin.uexceptions as udm_errors
 from univention.admin.rest.utils import parse_content_type
+from univention.config_registry import ucr
 from univention.lib.i18n import Translation
-from univention.management.console.config import ucr
 from univention.management.console.error import UnprocessableEntity
 from univention.management.console.modules.sanitizers import (  # noqa: F401
     BooleanSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer, IntegerSanitizer,

@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.management.console.config import ucr
+from univention.config_registry import ucr
 from univention.management.console.ldap import get_connection, reset_cache  # noqa: F401
 
 

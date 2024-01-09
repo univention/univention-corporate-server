@@ -35,10 +35,12 @@
 
 import base64
 import binascii
+import contextvars
 import copy
 import functools
 import io
 import json
+import logging
 import os
 import re
 import traceback
@@ -93,7 +95,6 @@ from univention.config_registry import handler_set
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.error import LDAP_ConnectionFailed, LDAP_ServerDown, UMC_Error, UnprocessableEntity
-from univention.management.console.log import MODULE
 from univention.management.console.modules.udm.tools import (
     LicenseError, LicenseImport as LicenseImporter, check_license, dump_license,
 )
@@ -111,6 +112,9 @@ from univention.password import generate_password, password_config
 _ = Translation('univention-directory-manager-rest').translate
 
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
+request_id_context = contextvars.ContextVar("request_id")
+
+log = logging.getLogger('MODULE')
 
 
 class ResourceBase(SanitizerBase, HAL, HTML):
@@ -145,6 +149,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
     def prepare(self):
         self.request.x_request_id = RE_UUID.sub('', self.request.headers.get('X-Request-Id', str(uuid.uuid4())))[:36]
+        request_id_context.set(self.request.x_request_id)
         self.set_header('X-Request-Id', self.request.x_request_id)
         self.request.content_negotiation_lang = 'html'
         self.request.path_decoded = unquote(self.request.path)
@@ -161,7 +166,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
             self.decode_request_arguments()
 
     def _request_summary(self):
-        return '%s: %s' % (self.request.x_request_id[:10], super()._request_summary())
+        return '[%s] %s' % (self.request.x_request_id[:12], super()._request_summary())
 
     def parse_authorization(self, authorization):
         if authorization in shared_memory.authenticated:  # cache for the userdn, which eliminates a search / request
@@ -198,10 +203,10 @@ class ResourceBase(SanitizerBase, HAL, HTML):
                 userdn = self.ldap_connection.whoami()
                 username = '+'.join(explode_rdn(userdn, True))
         except (ldap.LDAPError, udm_errors.base) as exc:
-            MODULE.debug('Authentication failed: %s' % (exc,))
+            log.debug('Authentication failed: %s', exc)
             return self.force_authorization(auth_type)  # TODO: parse ldap.OTHER / etc for SASL error details?
         except Exception:
-            MODULE.error('Unknown error during authentication: %s' % (traceback.format_exc(), ))
+            log.exception('Unknown error during authentication:')
             return self.force_authorization(auth_type)
         else:
             self.request.user_dn = userdn
@@ -331,7 +336,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         try:
             return json.dumps(response, cls=JsonEncoder)
         except TypeError:
-            MODULE.error(f'Cannot JSON serialize: {response!r}')
+            log.error('Cannot JSON serialize: %r', response)
             raise
 
     def get_json(self, response):
@@ -1291,9 +1296,9 @@ class FormBase:
         if superordinate:
             mod = get_module(module.name, superordinate, self.ldap_connection)
             if not mod:
-                MODULE.error(f'Superordinate module not found: {superordinate}')
+                log.error('Superordinate module not found: %s', superordinate)
                 raise SuperordinateDoesNotExist(superordinate)
-            MODULE.info('Found UDM module for superordinate')
+            log.debug('Found UDM module for superordinate')
             superordinate = mod.get(superordinate)
         return superordinate
 
@@ -2104,9 +2109,9 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
     def set_property(self, obj, property_name, value, result, multi_error, password_properties):
         if property_name in password_properties:
-            MODULE.info(f'Setting password property {property_name}')
+            log.debug('Setting password property %s', property_name)
         else:
-            MODULE.info(f'Setting property {property_name} to {value!r}')
+            log.debug('Setting property %s to %r', property_name, value)
 
         try:
             try:
@@ -2124,10 +2129,10 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
                     # "password" of users/user: because password is required but on modify() None is send, which must not alter the current password
                     # "unixhome" of users/user: is required, set to None in the request, the default value is set afterwards in create(). Bug #50053
                     if property_name in password_properties:
-                        MODULE.info(f'Ignore unsetting password property {property_name}')
+                        log.debug('Ignore unsetting password property %s', property_name)
                     else:
                         current_value = obj.info.pop(property_name, None)
-                        MODULE.info(f'Unsetting property {property_name} value {current_value!r}')
+                        log.debug('Unsetting property %s value %r', property_name, current_value)
                     return
                 raise
         except (udm_errors.valueInvalidSyntax, udm_errors.valueError, udm_errors.valueMayNotChange, udm_errors.valueRequired, udm_errors.noProperty) as exc:
@@ -2185,7 +2190,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         try:
             def remove():
                 try:
-                    MODULE.info('Removing LDAP object %s' % (dn,))
+                    log.info('Removing LDAP object %s', dn)
                     obj.remove(remove_childs=recursive)
                     if cleanup:
                         udm_objects.performCleanup(obj)

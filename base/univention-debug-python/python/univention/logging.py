@@ -66,7 +66,7 @@ _LEVEL_MAPPING = {
 _UD_LEVEL_MAPPING = {v: k for k, v in _LEVEL_MAPPING.items()}
 
 _LEVEL_TO_FORMAT_MAPPING = {
-    logging.NOTSET: "%(pid)s%(module)s.%(funcName)s:%(lineno)d: %(prefix)s%(message)s",
+    logging.NOTSET: "%(pid)s%(prefix)s%(module)s.%(funcName)s:%(lineno)d: %(message)s",
     logging.DEBUG: "%(pid)s%(prefix)s%(message)s",
     logging.INFO: "%(pid)s%(prefix)s%(message)s",
     logging.WARNING: "%(pid)s%(prefix)s%(message)s",

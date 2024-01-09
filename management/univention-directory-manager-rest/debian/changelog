@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.7-7) unstable; urgency=medium
+
+  * Bug #56970: prefix log lines with context id of request
+
+ -- Florian Best <best@univention.de>  Mon, 12 Feb 2024 21:10:18 +0100
+
 univention-directory-manager-rest (10.0.7-6) unstable; urgency=medium
 
   * Bug #49006: Add Bearer HTTP authentication scheme to reference client
