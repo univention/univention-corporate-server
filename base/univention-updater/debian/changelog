@@ -1,8 +1,13 @@
-univention-updater (15.0.13-1) UNRELEASED; urgency=medium
+univention-updater (15.0.13-1) unstable; urgency=medium
 
+  [ Philipp Hahn ]
   * Bug #56832: UCS 5.0-6 version bump
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:24 +0100
+  [ Mika Westphal ]
+  * Bug #56232: Add support for disallowing purely numeric group CN's and user
+    UID's
+
+ -- Mika Westphal <westphal@univention.de>  Mon, 08 Jan 2024 16:05:35 +0100
 
 univention-updater (15.0.12-1) unstable; urgency=medium
 

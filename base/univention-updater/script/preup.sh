@@ -159,6 +159,39 @@ for pkg in $preups; do
 	fi
 done
 
+# Bug #56232: Enable the support for numeric user ID's if it is required
+if [ "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions $1 eq "5.1"; then
+	echo "Checking for usernames and groups with legacy format. This can take a few minutes..."
+
+	echo "Checking usernames..."
+	if univention-ldapsearch -LLL "objectClass=person" uid | ldapsearch-decode64 | grep -qoP "(?<=uid: )[0-9]+$"; then
+		echo "Legacy username format required. Creating policy..."
+
+		udm policies/registry create \
+			--position "cn=config-registry,cn=policies,$ldap_base" \
+			--set name=enable-legacy-username-format \
+			--set registry="directory/manager/user/enable-legacy-username-format true"
+
+		udm container/dc modify \
+			--dn "$ldap_base" \
+			--policy-reference "cn=enable-legacy-username-format,cn=config-registry,cn=policies,$ldap_base"
+	fi
+
+	echo "Checking groups..."
+	if univention-ldapsearch -LLL "univentionObjectType=groups/group" cn | ldapsearch-decode64 | grep -qoP "(?<=cn: )[0-9]+$"; then
+		echo "Legacy group cn format required. Creating policy..."
+
+		udm policies/registry create \
+			--position "cn=config-registry,cn=policies,$ldap_base" \
+			--set name=enable-legacy-group-cn-format \
+			--set registry="directory/manager/group/enable-legacy-cn-format true"
+
+		udm container/dc modify \
+			--dn "$ldap_base" \
+			--policy-reference "cn=enable-legacy-group-cn-format,cn=config-registry,cn=policies,$ldap_base"
+	fi
+fi
+
 echo "** Starting: apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade" >&3 2>&3
 apt-get -s -o Debug::pkgProblemResolver=yes dist-upgrade >&3 2>&3
 
