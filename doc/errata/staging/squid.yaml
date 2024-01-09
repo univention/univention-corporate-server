@@ -1,0 +1,30 @@
+product: ucs
+release: "5.0"
+version: [5, 6]
+scope: ucs_5.0-0-errata5.0-6
+src: squid
+fix: 4.6-1+deb10u9A~5.0.6.202401091025
+desc: |
+ This update addresses the following issues:
+ 4.6-1+deb10u9 (Mon, 08 Jan 2024 23:02:12 +0100)
+ * Non-maintainer upload by the LTS team.
+ * Fix CVE-2023-50269, CVE-2023-49286, CVE-2023-49285, CVE-2023-46847,
+   CVE-2023-46846.
+ * Several security vulnerabilities have been discovered in Squid, a full
+   featured web proxy cache. Due to programming errors in Squid's HTTP request
+   parsing, remote attackers may be able to execute a denial of service attack
+   by sending large X-Forwarded-For header or trigger a stack buffer overflow
+   while performing HTTP Digest authentication. Other issues facilitate
+   request smuggling past a firewall or a denial of service against Squid's
+   Helper process management. In regard to CVE-2023-46728: Please note that
+   support for the Gopher protocol has simply been removed in future Squid
+   versions. There is no fix available. We recommend to reject all gopher URL
+   requests instead.
+bug: [56964]
+cve:
+- CVE-2023-50269
+- CVE-2023-49286
+- CVE-2023-49285
+- CVE-2023-46847
+- CVE-2023-46846
+- CVE-2023-46728
