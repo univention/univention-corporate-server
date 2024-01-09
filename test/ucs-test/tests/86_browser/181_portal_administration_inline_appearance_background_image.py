@@ -17,13 +17,13 @@ from univention.testing.browser.portal import UCSPortalEditMode
 
 
 def ensure_background(page: Page, exists: bool):
-    background = page.locator(".portal__background")
+    background = page.locator('.portal__background')
     if exists:
-        css = re.compile("url\\(.*\\)")
+        css = re.compile('url\\(.*\\)')
     else:
-        css = "none"
+        css = 'none'
 
-    expect(background).to_have_css("background-image", css)
+    expect(background).to_have_css('background-image', css)
 
 
 def test_portal_change_background_picture(umc_browser_test: UMCBrowserTest):

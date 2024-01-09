@@ -20,38 +20,38 @@ from univention.testing.browser.lib import UMCBrowserTest
 from univention.testing.browser.process_overview import ProcessOverview
 
 
-_ = Translation("ucs-test-browser").translate
+_ = Translation('ucs-test-browser').translate
 
 
 def test_process_overview_module(umc_browser_test: UMCBrowserTest):
     page = umc_browser_test.page
     process_overview = ProcessOverview(umc_browser_test)
     process_overview.navigate()
-    process_overview.search("All", "")
+    process_overview.search('All', '')
 
-    cells = page.get_by_role("gridcell").all()
+    cells = page.get_by_role('gridcell').all()
     assert all(len(cell.inner_html()) != 0 for cell in cells)
 
-    process_overview.search("User", "root")
+    process_overview.search('User', 'root')
 
-    cells = page.locator(".field-user[role=gridcell]").all()
-    assert all(cell.inner_text() == "root" for cell in cells)
+    cells = page.locator('.field-user[role=gridcell]').all()
+    assert all(cell.inner_text() == 'root' for cell in cells)
 
 
 @pytest.fixture()
 def sleep_process() -> Generator[subprocess.Popen, None, None]:
-    p = subprocess.Popen(["sleep", "900"])
+    p = subprocess.Popen(['sleep', '900'])
     yield p
     if p.poll() is None:
         p.kill()
 
 
-@pytest.mark.parametrize("force", [False, True])
+@pytest.mark.parametrize('force', [False, True])
 def test_kill_process(force: bool, umc_browser_test: UMCBrowserTest, sleep_process: subprocess.Popen):
     process_overview = ProcessOverview(umc_browser_test)
     process_overview.navigate()
 
-    process_overview.ensure_process(sleep_process, "PID")
-    process_overview.ensure_process(sleep_process, "Command")
+    process_overview.ensure_process(sleep_process, 'PID')
+    process_overview.ensure_process(sleep_process, 'Command')
     process_overview.kill_process(sleep_process, force)
     assert sleep_process.wait() == -9 if force else -15

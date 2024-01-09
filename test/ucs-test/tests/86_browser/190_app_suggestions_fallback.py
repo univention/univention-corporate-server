@@ -16,7 +16,7 @@ from univention.testing.browser.lib import MIN, UMCBrowserTest
 from univention.testing.browser.suggestion import AppCenterCacheTest
 
 
-expected_message = "Could not load appcenter/suggestions"
+expected_message = 'Could not load appcenter/suggestions'
 
 
 def test_app_suggestions_invalid_json(umc_browser_test: UMCBrowserTest, app_center_cache: AppCenterCacheTest):
@@ -32,7 +32,7 @@ def test_app_suggestions_missing_key(umc_browser_test: UMCBrowserTest, app_cente
 
 
 def check(app_center: AppCenter, expected_message: str):
-    logger.info("checking for message")
+    logger.info('checking for message')
     with app_center.page.expect_console_message(predicate=lambda msg: expected_message in msg.text, timeout=2 * MIN):
         app_center.navigate()
 
@@ -49,4 +49,4 @@ def write_missing_key(file: AppCenterCacheTest):
 
 
 def write_invalid_json(file: AppCenterCacheTest):
-    file.write("asd", truncate=True)
+    file.write('asd', truncate=True)

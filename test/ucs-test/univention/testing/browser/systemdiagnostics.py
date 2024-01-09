@@ -38,27 +38,27 @@ from univention.lib.i18n import Translation
 from univention.testing.browser.lib import MIN, UMCBrowserTest
 
 
-_ = Translation("ucs-test-framework").translate
+_ = Translation('ucs-test-framework').translate
 
 
 class SystemDiagnostic:
     def __init__(self, tester: UMCBrowserTest):
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
-        self.module_name = _("System diagnostic")
+        self.module_name = _('System diagnostic')
 
-    def navigate(self, username="Administrator", password="univention"):
+    def navigate(self, username='Administrator', password='univention'):
         self.tester.login(username, password)
         self.tester.open_module(self.module_name)
 
         self.wait_for_system_diagnostics_to_finish()
 
     def run_system_diagnostics(self):
-        self.page.get_by_role("button", name=_("Run system diagnosis")).click()
+        self.page.get_by_role('button', name=_('Run system diagnosis')).click()
         self.wait_for_system_diagnostics_to_finish()
 
     def wait_for_system_diagnostics_to_finish(self):
-        progress_bar = self.page.get_by_role("progressbar")
+        progress_bar = self.page.get_by_role('progressbar')
         try:
             expect(progress_bar).to_be_visible(timeout=1 * MIN)
             expect(progress_bar).to_be_hidden(timeout=5 * MIN)

@@ -39,7 +39,7 @@ from dataclasses import dataclass
 class User:
     username: str
     lastname: str
-    password: str = "univention"
+    password: str = 'univention'
     has_popup_after_login: bool = False
 
 
@@ -54,6 +54,6 @@ def create_test_user(udm, lo) -> User:
     user_object = lo.get(userdn)
 
     return User(
-        user_object["uid"][0].decode("utf-8"),
-        user_object["sn"][0].decode("utf-8"),
+        user_object['uid'][0].decode('utf-8'),
+        user_object['sn'][0].decode('utf-8'),
     )

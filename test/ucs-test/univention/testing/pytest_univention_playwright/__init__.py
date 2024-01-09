@@ -42,26 +42,20 @@ from univention.testing.browser.lib import SEC
 
 
 def check_for_backtrace(page: Page):
-    show_backtrace_button = page.get_by_role("button", name="Show server error message")
-    notification_502_error = page.get_by_text(
-        "An unknown error with status code 502 occurred"
-    ).first
+    show_backtrace_button = page.get_by_role('button', name='Show server error message')
+    notification_502_error = page.get_by_text('An unknown error with status code 502 occurred').first
     try:
-        expect(show_backtrace_button.or_(notification_502_error)).to_be_visible(
-            timeout=5 * SEC
-        )
+        expect(show_backtrace_button.or_(notification_502_error)).to_be_visible(timeout=5 * SEC)
         if show_backtrace_button.is_visible():
             show_backtrace_button.click()
             backtrace_container = page.get_by_role(
-                "region",
-                name="Hide server error message",
+                'region',
+                name='Hide server error message',
             )
-            logger.info("Recorded backtrace")
+            logger.info('Recorded backtrace')
             print(backtrace_container.inner_text())
         else:
-            logger.info(
-                "An unknown error with status code 502 occurred while connecting to the server."
-            )
+            logger.info('An unknown error with status code 502 occurred while connecting to the server.')
     except AssertionError:
         pass
 
@@ -76,8 +70,8 @@ def save_trace(
 ):
     ts = time.time_ns()
 
-    screenshot_filename = path / f"{ts}-{node_name}.jpeg"
-    trace_filename = path / f"{ts}-{node_name}_trace.zip"
+    screenshot_filename = path / f'{ts}-{node_name}.jpeg'
+    trace_filename = path / f'{ts}-{node_name}_trace.zip'
 
     page.screenshot(path=screenshot_filename)
 
@@ -86,13 +80,13 @@ def save_trace(
     else:
         context.tracing.stop(path=trace_filename)
 
-    if os.environ.get("JENKINS_WS"):
-        if "master" not in ucr.get("server/role"):
+    if os.environ.get('JENKINS_WS'):
+        if 'master' not in ucr.get('server/role'):
             subfolder = f"{ucr.get('hostname')}/"
         else:
-            subfolder = ""
+            subfolder = ''
 
         browser_trace_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(trace_filename.name)}"
         browser_screenshot_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(screenshot_filename.name)}"
-        logger.info("Browser trace URL: %s" % browser_trace_url)
-        logger.info("Browser screenshot URL: %s" % browser_screenshot_url)
+        logger.info('Browser trace URL: %s' % browser_trace_url)
+        logger.info('Browser screenshot URL: %s' % browser_screenshot_url)

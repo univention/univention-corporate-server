@@ -53,7 +53,7 @@ logger = logging.getLogger(__name__)
 SEC = 1000
 MIN = 60 * 1000
 
-translator = Translation("ucs-test-framework")
+translator = Translation('ucs-test-framework')
 _ = translator.translate
 
 
@@ -63,19 +63,19 @@ class UCSLanguage(Enum):
 
     def __str__(self) -> str:
         if self == UCSLanguage.EN_US:
-            return "en-US"
+            return 'en-US'
         elif self == UCSLanguage.DE_DE:
-            return "de-DE"
+            return 'de-DE'
 
-        return ""
+        return ''
 
     def get_name(self) -> str:
         if self == UCSLanguage.EN_US:
-            return "English"
+            return 'English'
         elif self == UCSLanguage.DE_DE:
-            return "Deutsch"
+            return 'Deutsch'
 
-        return ""
+        return ''
 
 
 class Interactions:
@@ -90,7 +90,7 @@ class Interactions:
         Note:
             Prefer to use `check_checkbox_in_grid_by_name` when possible
         """
-        checkbox = self.page.get_by_role("checkbox")
+        checkbox = self.page.get_by_role('checkbox')
         expect(checkbox).to_have_count(2)
         checkbox.last.check()
 
@@ -106,7 +106,7 @@ class Interactions:
         if nth is not None:
             row = row.nth(nth)
         expect(row).to_be_visible(timeout=10 * 1000)
-        checkbox = row.get_by_role("checkbox")
+        checkbox = row.get_by_role('checkbox')
         expect(checkbox).to_be_visible(timeout=10 * 1000)
         checkbox.click()
 
@@ -119,9 +119,9 @@ class Interactions:
         :param start_at: starts opening
         """
         for module in modules[start_at:limit]:
-            logger.info("Opening module %s" % module)
+            logger.info('Opening module %s' % module)
             self.open_and_close_module(module)
-            logger.info("Closed module %s" % module)
+            logger.info('Closed module %s' % module)
             time.sleep(1)
 
     def open_all_modules(self, limit: int | None = None, start_at: int | None = None):
@@ -132,22 +132,22 @@ class Interactions:
         :param start_at: starts opening
         """
         modules = self.get_available_modules()
-        logger.info("Found %d modules" % len(modules))
+        logger.info('Found %d modules' % len(modules))
         self.open_modules(modules, limit=limit, start_at=start_at)
 
     def open_and_close_module(self, module_name: str):
         self.open_module(_(module_name))
-        self.page.get_by_role("button", name=_("Close")).click()
+        self.page.get_by_role('button', name=_('Close')).click()
 
     def get_available_modules(self) -> List[str]:
-        self.page.locator(".umcModuleSearchToggleButton").click()
-        logger.info("Clicked the search button")
-        self.page.locator(".umcModuleSearch input.dijitInputInner").type("*")
+        self.page.locator('.umcModuleSearchToggleButton').click()
+        logger.info('Clicked the search button')
+        self.page.locator('.umcModuleSearch input.dijitInputInner').type('*')
 
-        modules = self.page.locator(".umcGalleryName").all()
-        result = [module.get_attribute("title") or module.inner_text() for module in modules]
+        modules = self.page.locator('.umcGalleryName').all()
+        result = [module.get_attribute('title') or module.inner_text() for module in modules]
 
-        self.page.locator(".umcModuleSearchToggleButton").click()
+        self.page.locator('.umcModuleSearchToggleButton').click()
         return result
 
     def open_module(self, module_name: str, expect_response: re.Pattern | str | None = None):
@@ -156,13 +156,13 @@ class Interactions:
 
         :param module_name: the name of the module to be opened
         """
-        self.page.locator(".umcModuleSearchToggleButton").click()
-        logger.info("Clicked the search button")
-        self.page.locator(".umcModuleSearch input.dijitInputInner").type(module_name)
+        self.page.locator('.umcModuleSearchToggleButton').click()
+        logger.info('Clicked the search button')
+        self.page.locator('.umcModuleSearch input.dijitInputInner').type(module_name)
         module_by_title_attrib_locator = self.page.locator(f".umcGalleryName[title='{module_name}']")
-        exact_module_name = re.compile(f"^{re.escape(module_name)}$")
-        logger.info("Trying to find button to open module %s" % module_name)
-        module_locator = self.page.locator(".umcGalleryName", has_text=exact_module_name)
+        exact_module_name = re.compile(f'^{re.escape(module_name)}$')
+        logger.info('Trying to find button to open module %s' % module_name)
+        module_locator = self.page.locator('.umcGalleryName', has_text=exact_module_name)
         expect(module_locator.or_(module_by_title_attrib_locator)).to_be_visible()
 
         if module_by_title_attrib_locator.is_visible():
@@ -175,8 +175,8 @@ class Interactions:
                 clickable_module_locator.click()
         else:
             clickable_module_locator.click()
-        logger.info("Clicked the module button")
-        if module_name == "App Center":
+        logger.info('Clicked the module button')
+        if module_name == 'App Center':
             from univention.testing.browser.appcenter import AppCenter, wait_for_final_query
 
             app_center = AppCenter(self.tester)
@@ -186,8 +186,8 @@ class Interactions:
     def fill_combobox(self, name: str, option: str):
         # combobox_filter = self.page.locator(f"input[name='{name}'][type='hidden']")
         combobox_filter = self.page.get_by_label(name)
-        self.page.get_by_role("combobox").filter(has=combobox_filter).locator(".ucsSimpleIconButton").click()
-        self.page.get_by_role("option", name=option).click()
+        self.page.get_by_role('combobox').filter(has=combobox_filter).locator('.ucsSimpleIconButton').click()
+        self.page.get_by_role('option', name=option).click()
 
 
 class UMCBrowserTest(Interactions):
@@ -210,30 +210,32 @@ class UMCBrowserTest(Interactions):
         Interactions.__init__(self, self)
 
     def set_language(self, lang: UCSLanguage):
-        logger.info("Setting language to %s" % lang)
+        logger.info('Setting language to %s' % lang)
         self.lang = lang
         self.__set_lang(str(lang))
-        translator.set_language(str(lang).replace("-", "_"))
+        translator.set_language(str(lang).replace('-', '_'))
 
     def __set_lang(self, lang: str):
         self.page.context.clear_cookies()
         cookies = [
             {
-                "name": "UMCLang",
-                "value": lang,
-                "url": f"{self.base_url}/univention",
+                'name': 'UMCLang',
+                'value': lang,
+                'url': f'{self.base_url}/univention',
             },
         ]
 
-        role = ucr.get("server/role")
+        role = ucr.get('server/role')
 
         # if we are not on the master we also need to set the language cookie for the master
-        if role != "domaincontroller_master":
-            cookies.append({
-                "name": "UMCLang",
-                "value": lang,
-                "url": f"https://{ucr.get('ldap/master')}/univention",
-            })
+        if role != 'domaincontroller_master':
+            cookies.append(
+                {
+                    'name': 'UMCLang',
+                    'value': lang,
+                    'url': f"https://{ucr.get('ldap/master')}/univention",
+                }
+            )
 
         self.page.context.add_cookies(cookies)
 
@@ -244,25 +246,25 @@ class UMCBrowserTest(Interactions):
 
     @property
     def ldap_base(self) -> str:
-        return ucr["ldap/base"]
+        return ucr['ldap/base']
 
     @property
     def domainname(self) -> str:
-        return ucr["domainname"]
+        return ucr['domainname']
 
     def check_for_no_module_available_popup(self):
-        popup = self.page.get_by_role("dialog").get_by_text("There is no module available for the authenticated user")
+        popup = self.page.get_by_role('dialog').get_by_text('There is no module available for the authenticated user')
         expect(popup).to_be_visible(timeout=30 * SEC)
 
-        button = self.page.get_by_role("button", name=_("Ok"))
+        button = self.page.get_by_role('button', name=_('Ok'))
         expect(button).to_be_visible()
         button.click()
 
     def login(
         self,
-        username: str = "Administrator",
-        password: str = "univention",
-        location: str = "/univention/management",
+        username: str = 'Administrator',
+        password: str = 'univention',
+        location: str = '/univention/management',
         check_for_no_module_available_popup: bool = False,
         login_should_fail: bool = False,
         do_navigation: bool = True,
@@ -286,30 +288,30 @@ class UMCBrowserTest(Interactions):
 
         if do_navigation:
             location = urllib.parse.quote(location)
-            query_parameter = f"?location={location}" if location else ""
-            page.goto(f"{self.base_url}/univention/login{query_parameter}")
+            query_parameter = f'?location={location}' if location else ''
+            page.goto(f'{self.base_url}/univention/login{query_parameter}')
 
-        page.get_by_label(_("Username"), exact=True).fill(username)
-        page.get_by_label(_("Password"), exact=True).fill(password)
-        login_button = page.get_by_role("button", name=_("Login"))
+        page.get_by_label(_('Username'), exact=True).fill(username)
+        page.get_by_label(_('Password'), exact=True).fill(password)
+        login_button = page.get_by_role('button', name=_('Login'))
 
         if expect_password_change_prompt:
-            logger.info("Expecting the password change prompt. Only clicking button")
+            logger.info('Expecting the password change prompt. Only clicking button')
             login_button.click()
             return
 
         if login_should_fail:
             login_button.click()
-            expect(page.get_by_text(_("The authentication has failed, please login again."))).to_be_visible(timeout=1 * MIN)
-            logger.info("Login failed as expected")
+            expect(page.get_by_text(_('The authentication has failed, please login again.'))).to_be_visible(timeout=1 * MIN)
+            logger.info('Login failed as expected')
             return
 
-        if "/univention/management" in location and not check_for_no_module_available_popup and not skip_xhr_check:
-            logger.info("Logging in, waiting for requests to finish")
-            join_script_query = re.compile(r"https?://.+/univention/command/join/scripts/query")
-            license_query = re.compile(r"https?://.+/univention/command/udm/license")
+        if '/univention/management' in location and not check_for_no_module_available_popup and not skip_xhr_check:
+            logger.info('Logging in, waiting for requests to finish')
+            join_script_query = re.compile(r'https?://.+/univention/command/join/scripts/query')
+            license_query = re.compile(r'https?://.+/univention/command/udm/license')
 
-            if ucr.get("server/role") == "domaincontroller_master":
+            if ucr.get('server/role') == 'domaincontroller_master':
                 with self.page.expect_response(join_script_query), self.page.expect_response(license_query):
                     login_button.click()
             else:
@@ -320,17 +322,16 @@ class UMCBrowserTest(Interactions):
             logger.info("Checking for the 'No module for user available popup'")
             self.check_for_no_module_available_popup()
         else:
-            logger.info("Logging in without waiting for requests to finish")
+            logger.info('Logging in without waiting for requests to finish')
             login_button.click()
 
         # TODO: wait_until networkidle is discouraged by Playwright, replace at some point
-        self.page.wait_for_url(re.compile(r".*univention/(management|portal).*"), wait_until="networkidle")
-        logging.info("Login Done")
         self.page.wait_for_url(re.compile(r'.*univention/(management|portal|selfservice).*'), wait_until='networkidle')
+        logging.info('Login Done')
 
     def end_umc_session(self):
         """Logs the current logged in user out by navigating to /univention/login"""
-        self.page.goto(f"{self.base_url}/univention/logout")
+        self.page.goto(f'{self.base_url}/univention/logout')
 
     def logout(self):
         """
@@ -345,9 +346,9 @@ class UMCBrowserTest(Interactions):
         side_menu.logout()
 
     def systemd_restart_service(self, service: str):
-        logger.info("restarting service %s" % service)
-        subprocess.run(["deb-systemd-invoke", "restart", service], check=True)
+        logger.info('restarting service %s' % service)
+        subprocess.run(['deb-systemd-invoke', 'restart', service], check=True)
 
     def restart_umc(self):
-        self.systemd_restart_service("univention-management-console-server")
+        self.systemd_restart_service('univention-management-console-server')
         time.sleep(3)

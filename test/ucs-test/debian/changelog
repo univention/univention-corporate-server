@@ -3,7 +3,7 @@ ucs-test (10.0.20-20) unstable; urgency=medium
   * Bug #56054: Migrate 11_test_frontend_translations.py from Selenium to
     Playwright
 
- -- Marius Meschter <marius.meschter@univention.de>  Wed, 23 Jan 2024 09:54:18 +0100
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 29 Jan 2024 08:43:12 +0100
 
 ucs-test (10.0.20-19) unstable; urgency=medium
 

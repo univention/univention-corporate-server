@@ -40,7 +40,7 @@ from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UMCBrowserTest
 
 
-_ = Translation("ucs-test-framework").translate
+_ = Translation('ucs-test-framework').translate
 
 
 class UCSPortalEditMode:
@@ -57,24 +57,24 @@ class UCSPortalEditMode:
 
     def open_edit_side_bar(self):
         """Open the side bar in the edit mode"""
-        self.page.get_by_role("button", name=_("Open edit sidebar")).click()
+        self.page.get_by_role('button', name=_('Open edit sidebar')).click()
 
-    def upload_background_picture(self, path=""):
+    def upload_background_picture(self, path=''):
         """
         Takes a screenshot of the current page and sets it as the background image.
         The side bar needs to be opened with `open_edit_side_bar` before calling this function
         """
         if not path:
-            path = "screenshot.png"
-            self.page.screenshot(path="screenshot.png")
+            path = 'screenshot.png'
+            self.page.screenshot(path='screenshot.png')
 
         with self.page.expect_file_chooser() as fc_info:
             self.page.locator('[data-test="imageUploadButton--Background"]').click()
         file_chooser = fc_info.value
-        file_chooser.set_files("screenshot.png")
+        file_chooser.set_files('screenshot.png')
 
         remove_button = self.page.locator('[data-test="imageRemoveButton--Background"]')
-        expect(remove_button, "expect the remove button to be enabled after uploading an image").to_be_enabled()
+        expect(remove_button, 'expect the remove button to be enabled after uploading an image').to_be_enabled()
 
         save_button = self.page.locator('[data-test="editModeSideNavigation--Save"]')
         save_button.click()
@@ -95,48 +95,48 @@ class UCSPortalEditMode:
 
     def add_category(self, internal_name: str, name: str):
         """Add a category to the UCS Portal"""
-        self.page.get_by_role("button", name=_("Add category")).click()
-        self.page.get_by_role("button", name=_("Add new category")).click()
-        self.page.get_by_label(_("Internal name *")).fill(internal_name)
+        self.page.get_by_role('button', name=_('Add category')).click()
+        self.page.get_by_role('button', name=_('Add new category')).click()
+        self.page.get_by_label(_('Internal name *')).fill(internal_name)
 
-        self.fill_localization_dialog(name, "Name")
-        self.page.get_by_role("button", name=_("Save")).click()
+        self.fill_localization_dialog(name, 'Name')
+        self.page.get_by_role('button', name=_('Save')).click()
 
-        expect(self.page.get_by_text(_("Category successfully added"))).to_be_visible()
+        expect(self.page.get_by_text(_('Category successfully added'))).to_be_visible()
 
     def add_entry(self, internal_name: str, name: str, description: str, keyword: str, link: str, category: str):
         """Add a entry to the UCS Portal. The entry will be created in the last category"""
-        self.page.locator(".portal-category", has_text=category).get_by_role("button", name=_("Add new tile")).click()
+        self.page.locator('.portal-category', has_text=category).get_by_role('button', name=_('Add new tile')).click()
 
-        self.page.get_by_role("button", name=_("Create a new Entry")).click()
-        self.page.get_by_label(_("Internal name *")).fill(internal_name)
+        self.page.get_by_role('button', name=_('Create a new Entry')).click()
+        self.page.get_by_label(_('Internal name *')).fill(internal_name)
 
-        self.fill_localization_dialog(name, "Name")
-        self.fill_localization_dialog(description, "Description")
-        self.fill_localization_dialog(keyword, "Keywords")
+        self.fill_localization_dialog(name, 'Name')
+        self.fill_localization_dialog(description, 'Description')
+        self.fill_localization_dialog(keyword, 'Keywords')
 
         self.page.locator('[data-test="localeInput--Links"]').fill(link)
 
-        self.page.get_by_role("button", name=_("Save")).click()
+        self.page.get_by_role('button', name=_('Save')).click()
 
-        expect(self.page.get_by_text(_("Entry successfully added"))).to_be_visible()
+        expect(self.page.get_by_text(_('Entry successfully added'))).to_be_visible()
 
     def add_folder(self, internal_name: str, name: str, category: str):
         """Add a folder to the UCS Portal. The folder will be created in the last category"""
-        self.page.locator(".portal-category", has_text=category).get_by_role("button", name=_("Add new tile")).click()
+        self.page.locator('.portal-category', has_text=category).get_by_role('button', name=_('Add new tile')).click()
 
-        self.page.get_by_role("button", name=_("Create a new folder")).click()
-        self.page.get_by_label(_("Internal name *")).fill(internal_name)
+        self.page.get_by_role('button', name=_('Create a new folder')).click()
+        self.page.get_by_label(_('Internal name *')).fill(internal_name)
 
-        self.fill_localization_dialog(name, "Name")
-        self.page.get_by_role("button", name=_("Save")).click()
+        self.fill_localization_dialog(name, 'Name')
+        self.page.get_by_role('button', name=_('Save')).click()
 
-        expect(self.page.get_by_text("Folder successfully added")).to_be_visible()
+        expect(self.page.get_by_text('Folder successfully added')).to_be_visible()
 
     def fill_localization_dialog(
         self,
         text: str,
-        data_test_suffix: str = "",
+        data_test_suffix: str = '',
         locator: Locator | None = None,
     ):
         """
@@ -154,9 +154,9 @@ class UCSPortalEditMode:
         else:
             self.page.locator(f'[data-test="iconButton--{data_test_suffix}"]').click()
 
-        self.page.get_by_role("textbox", name="en_US").fill(text + " US")
-        self.page.get_by_role("textbox", name="de_DE").fill(text + " DE")
-        self.page.get_by_role("dialog", name="Translation: ").get_by_role("button", name="Save").click()
+        self.page.get_by_role('textbox', name='en_US').fill(text + ' US')
+        self.page.get_by_role('textbox', name='de_DE').fill(text + ' DE')
+        self.page.get_by_role('dialog', name='Translation: ').get_by_role('button', name='Save').click()
 
 
 class UCSSideMenu:
@@ -165,7 +165,7 @@ class UCSSideMenu:
         self.page: Page = tester.page
 
     def navigate(self):
-        self.page.get_by_role("button", name="Menu").click()
+        self.page.get_by_role('button', name='Menu').click()
 
     def open_edit_mode(self) -> UCSPortalEditMode:
         self.page.locator('[data-test="openEditmodeButton"]').click()
@@ -177,8 +177,8 @@ class UCSPortal:
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
 
-    def navigate(self, username="Administrator", password="univention"):
-        self.tester.login(username, password, location="/univention/portal")
+    def navigate(self, username='Administrator', password='univention'):
+        self.tester.login(username, password, location='/univention/portal')
 
     def side_menu(self) -> UCSSideMenu:
         return UCSSideMenu(self.tester)

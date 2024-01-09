@@ -13,7 +13,6 @@ from univention.testing.umc import Client
 
 
 class SelfServiceUser:
-
     def __init__(self, username, password, language=None):
         self._client = Client(language=language)
         self.username = username
@@ -68,9 +67,7 @@ def self_service_user(email=None, **kwargs):
 # copy pasted to 86_selenium/test_self_service.py
 @contextlib.contextmanager
 def capture_mails(timeout=5):
-
     class Mail(SMTPServer):
-
         def __init__(self, *args, **kwargs):
             SMTPServer.__init__(self, *args, **kwargs)
             self.set_reuse_addr()
@@ -82,7 +79,6 @@ def capture_mails(timeout=5):
             self.data.append(data.decode('utf-8'))
 
     class MailServer:
-
         def __init__(self):
             print('Starting mail server')
             self.smtp = Mail(('localhost', 25), '')

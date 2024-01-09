@@ -50,11 +50,11 @@ from univention.testing.browser.univentionconfigurationregistry import Univentio
 from . import check_for_backtrace, save_trace
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope='session', autouse=True)
 def suppress_notifications():
-    handler_set(["umc/web/hooks/suppress_umc_notifications=suppress_umc_notifications"])
+    handler_set(['umc/web/hooks/suppress_umc_notifications=suppress_umc_notifications'])
     yield
-    handler_unset(["umc/web/hooks/suppress_umc_notifications"])
+    handler_unset(['umc/web/hooks/suppress_umc_notifications'])
 
 
 phase_report_key = pytest.StashKey[Dict[str, pytest.CollectReport]]()
@@ -68,26 +68,26 @@ def pytest_runtest_makereport(item, call):
     item.stash.setdefault(phase_report_key, {})[rep.when] = rep
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def ucs_browser_context_args(browser_context_args):
     return {
         **browser_context_args,
-        "ignore_https_errors": True,
+        'ignore_https_errors': True,
     }
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def ucs_browser_type_launch_args(browser_type_launch_args):
     return {
         **browser_type_launch_args,
-        "executable_path": "/usr/bin/chromium",
-        "args": [
-            "--disable-gpu",
+        'executable_path': '/usr/bin/chromium',
+        'args': [
+            '--disable-gpu',
         ],
     }
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def udm_module_scope() -> Iterator[_udm.UCSTestUDM]:
     """Auto-reverting UDM wrapper."""
     with _udm.UCSTestUDM() as udm:
@@ -119,17 +119,17 @@ def self_service(umc_browser_test: UMCBrowserTest) -> SelfService:
     return SelfService(umc_browser_test)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def kill_module_processes():
-    logger.info("killing module processes")
+    logger.info('killing module processes')
     try:
         subprocess.run(
-            ["pkill", "-f", "/usr/sbin/univention-management-console-module"],
+            ['pkill', '-f', '/usr/sbin/univention-management-console-module'],
             check=True,
         )
     except subprocess.CalledProcessError as e:
         if e.returncode != 1:
-            logger.exception("failed killing module processes")
+            logger.exception('failed killing module processes')
             raise
 
 
@@ -142,7 +142,7 @@ def setup_browser_context(context, start_tracing=True):
     return page
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def context_module_scope(
     browser_type: BrowserType,
     ucs_browser_type_launch_args: Dict,
@@ -152,7 +152,7 @@ def context_module_scope(
     return browser.new_context(**ucs_browser_context_args)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def umc_browser_test_module(
     context_module_scope: BrowserContext,
     kill_module_processes,
@@ -192,13 +192,13 @@ def teardown_umc_browser_test(
         report = request.node.stash[phase_report_key]
     except KeyError:
         logger.warning(
-            "phase_report_key has not been found in node stash. Skipping trace saving and backtrace checking.",
+            'phase_report_key has not been found in node stash. Skipping trace saving and backtrace checking.',
         )
         return
 
     try:
-        if "call" in report and report["call"].failed:
-            save_trace(page, context, request.node.name, Path("browser").resolve(), ucr)
+        if 'call' in report and report['call'].failed:
+            save_trace(page, context, request.node.name, Path('browser').resolve(), ucr)
             check_for_backtrace(page)
         else:
             context.tracing.stop()

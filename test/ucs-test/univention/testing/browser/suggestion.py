@@ -43,14 +43,14 @@ from univention.appcenter.app_cache import AppCenterCache, default_server
 class AppCenterCacheTest:
     def __init__(self) -> None:
         cache = AppCenterCache.build(server=default_server())
-        self.json_file: str = cache.get_cache_file(".suggestions.json")
-        self.json_file_bak: str = cache.get_cache_file(".suggestions.bak.json")
+        self.json_file: str = cache.get_cache_file('.suggestions.json')
+        self.json_file_bak: str = cache.get_cache_file('.suggestions.bak.json')
         self.json_fd: TextIO | None = None
         shutil.move(self.json_file, self.json_file_bak)
 
     def write(self, txt: str, truncate: bool = False) -> None:
         if self.json_fd is None:
-            self.json_fd = open(self.json_file, "w")
+            self.json_fd = open(self.json_file, 'w')
 
         if truncate:
             self.json_fd.truncate(0)

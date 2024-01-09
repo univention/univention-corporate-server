@@ -22,18 +22,18 @@ from univention.testing.browser import logger
 from univention.testing.browser.sidemenu import SideMenuLicense
 
 
-_ = Translation("ucs-test-browser").translate
+_ = Translation('ucs-test-browser').translate
 
 dir_name = Path(__file__).parent
-core_edition_license_path = Path(dir_name, "FreeForPersonalUseTest.license")
+core_edition_license_path = Path(dir_name, 'FreeForPersonalUseTest.license')
 
 
 @pytest.fixture()
 def license_file_path(side_menu_license: SideMenuLicense, ucr, ldap_base):
     ucr.save()
 
-    license_temp_file = tempfile.NamedTemporaryFile("w+")
-    license_dn = f"cn=admin,cn=license,cn=univention,{ldap_base}"
+    license_temp_file = tempfile.NamedTemporaryFile('w+')
+    license_dn = f'cn=admin,cn=license,cn=univention,{ldap_base}'
 
     modify_free_license_template(license_dn)
     dump_current_license_to_file(license_temp_file, license_dn)
@@ -46,10 +46,10 @@ def license_file_path(side_menu_license: SideMenuLicense, ucr, ldap_base):
     license_temp_file.close()
 
 
-@pytest.mark.skipif(not core_edition_license_path.is_file(), reason="FreeForPersonalUseTest.license file not found")
-@pytest.mark.parametrize("as_text", [True, False])
+@pytest.mark.skipif(not core_edition_license_path.is_file(), reason='FreeForPersonalUseTest.license file not found')
+@pytest.mark.parametrize('as_text', [True, False])
 def test_upload_license(side_menu_license: SideMenuLicense, license_file_path: Path, as_text: bool):
-    logger.info("Using %s as test license" % core_edition_license_path)
+    logger.info('Using %s as test license' % core_edition_license_path)
     side_menu_license.tester.restart_umc()
 
     side_menu_license.navigate()
@@ -64,24 +64,24 @@ def check_license_information(side_menu_license: SideMenuLicense, license_file_p
     page = side_menu_license.page
 
     with open(license_file_path) as license_file:
-        expected_license_type = next((line for line in license_file if line.startswith("univentionLicenseBaseDN: ")), None)
+        expected_license_type = next((line for line in license_file if line.startswith('univentionLicenseBaseDN: ')), None)
         assert expected_license_type is not None
-        expected_license_type = expected_license_type.split(":")[1].strip()
-        expect(page.get_by_text(expected_license_type), f"expected license type to be {expected_license_type}").to_be_visible()
-        page.get_by_role("button", name=_("Close")).click()
+        expected_license_type = expected_license_type.split(':')[1].strip()
+        expect(page.get_by_text(expected_license_type), f'expected license type to be {expected_license_type}').to_be_visible()
+        page.get_by_role('button', name=_('Close')).click()
 
 
 def modify_free_license_template(license_dn: str):
     try:
-        with core_edition_license_path.open("r+") as fd:
+        with core_edition_license_path.open('r+') as fd:
             lines = fd.readlines()
             fd.seek(0)
             for line in lines:
-                if line.startswith("dn: "):
-                    line = f"dn: {license_dn}\n"
+                if line.startswith('dn: '):
+                    line = f'dn: {license_dn}\n'
                 fd.write(line)
     except (IOError, ValueError):
-        logger.exception("Error while modifying FreeForPersonalUseTest")
+        logger.exception('Error while modifying FreeForPersonalUseTest')
         raise
 
 
@@ -92,7 +92,7 @@ def dump_current_license_to_file(license_file: IO[str], license_dn: str):
     """
     logger.info("Saving original license to file: '%s'" % license_file.name)
     try:
-        subprocess.run(["univention-ldapsearch", "-LLLb", license_dn], stdout=license_file, check=True)
+        subprocess.run(['univention-ldapsearch', '-LLLb', license_dn], stdout=license_file, check=True)
     except (IOError, ValueError, OSError, CalledProcessError):
-        logger.exception("An error occurred backing up the old license")
+        logger.exception('An error occurred backing up the old license')
         raise

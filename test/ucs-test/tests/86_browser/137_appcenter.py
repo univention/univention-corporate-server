@@ -12,7 +12,7 @@ from univention.testing.browser.appcenter import AppCenter
 from univention.testing.browser.lib import UMCBrowserTest
 
 
-APP_NAME = "Admin Diary Backend"
+APP_NAME = 'Admin Diary Backend'
 
 
 def test_appcenter_install_uninstall_admin_diary_backend(umc_browser_test: UMCBrowserTest):

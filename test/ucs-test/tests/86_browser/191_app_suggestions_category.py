@@ -34,6 +34,6 @@ def test_suggestion_category_is_shown(umc_browser_test: UMCBrowserTest, app_cent
     app_center = AppCenter(umc_browser_test)
     app_center.navigate()
 
-    expected_text = umc_browser_test.page.get_by_text("Suggestions based on installed apps")
+    expected_text = umc_browser_test.page.get_by_text('Suggestions based on installed apps')
     expect(expected_text).to_be_visible(timeout=10 * 1000)
     umc_browser_test.page.screenshot(path=__name__)
