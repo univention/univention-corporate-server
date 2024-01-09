@@ -58,6 +58,11 @@ setup () {
 	create_mail_domain "$domainname" &&
 		undo delete_mail_domain "$domainname"
 
+	# work-around for Bug #56986: recursive delete does not update uniqueMember / memberUid on primary group
+	pgroupdn=$(group_create "$(group_randomname)" --set description="$unique")
+	debug "Primary group $pgroupdn"
+	undo udm-test groups/group remove --dn "$pgroupdn"
+
 	base=$(container_create "$unique")
 	undo container_remove "$base"
 
@@ -69,7 +74,7 @@ setup () {
 	for ((i=0; i<USERS_AND_GROUP; i++))
 	do
 		groupdn=$(group_create "$(group_randomname)" --position "$base" --set description="$unique")
-		user_create "$(user_randomname)" --position "$base" --set description="$unique" --append groups="$groupdn" >/dev/null
+		user_create "$(user_randomname)" --position "$base" --set description="$unique" --set primaryGroup="$pgroupdn" --append groups="$groupdn" >/dev/null
 	done
 }
 setup

@@ -26,7 +26,7 @@ member_of_available () {
 }
 
 member_of_not_available () {
-	! univention-ldapsearch -ALLLL '(&(objectClass=posixAccount)(uid=*))' + | grep -i '^memberOf:'
+	! univention-ldapsearch -ALLL '(&(objectClass=posixAccount)(uid=*))' memberOf | grep -q '^memberOf:'
 }
 
 # activated by default, memberOf should be available
