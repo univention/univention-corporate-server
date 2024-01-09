@@ -33,6 +33,7 @@
 """|UDM| wrapper around :py:mod:`univention.license` that translates error codes to exceptions"""
 
 import collections
+from logging import getLogger
 
 from ldap.filter import filter_format
 
@@ -41,11 +42,12 @@ import univention.admin.license_data as licenses
 import univention.admin.localization
 import univention.admin.modules
 import univention.admin.uexceptions
-import univention.debug as ud
 import univention.license
 from univention.admin._ucr import configRegistry
 from univention.lib.misc import custom_username
 
+
+log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention/admin')
 _ = translation.translate
@@ -207,10 +209,10 @@ class License(object):
             self.__selected = True
 
     def isValidFor(self, module):
-        ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: check license for module %s, %r' % (module, self.types))
+        log.debug('LICENSE: check license for module %s, %r', module, self.types)
         if module in licenses.modules:
             mlics = licenses.modules[module]
-            ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: module license: %r' % (mlics,))
+            log.debug('LICENSE: module license: %r', mlics)
             # empty list -> valid
             return mlics.valid(self.types)
         # unknown modules are always valid (e.g. customer modules)
@@ -222,24 +224,24 @@ class License(object):
             if opts:
                 module = univention.admin.modules.modules[mod]
                 if module and hasattr(module, 'options'):
-                    ud.debug(ud.ADMIN, ud.INFO, 'modifyOptions: %r' % (opts,))
+                    log.debug('modifyOptions: %r', opts)
                     for opt, val in opts:
                         if callable(val):
                             val = val(self)
                         if isinstance(val, collections.Sequence):
                             module.options[opt].disabled, module.options[opt].default = val
-                        ud.debug(ud.ADMIN, ud.INFO, 'modifyOption: %s, %d, %d' % (opt, module.options[opt].disabled, module.options[opt].default))
+                        log.debug('modifyOption: %s, %d, %d', opt, module.options[opt].disabled, module.options[opt].default)
 
     def checkModules(self):
         deleted_mods = []
         for mod in univention.admin.modules.modules.keys():
             # remove module if valid license is missing
             if self.isValidFor(mod):
-                ud.debug(ud.ADMIN, ud.INFO, 'update: License is valid for module %s!!' % (mod,))
+                log.debug('update: License is valid for module %s!!', mod)
                 # check module options according to given license type
                 self.modifyOptions(mod)
             else:
-                ud.debug(ud.ADMIN, ud.INFO, 'update: License is NOT valid for module %s!!' % (mod,))
+                log.debug('update: License is NOT valid for module %s!!', mod)
                 del univention.admin.modules.modules[mod]
                 deleted_mods.append(mod)
 
@@ -370,10 +372,10 @@ class License(object):
                 if lic_account and self.__cmp_gt(int(real_account) - max(License.SYSACCOUNTS, self.sysAccountsFound), lic_account):
                     disable_add = 2
             if lic_desktop and real_desktop and self.__cmp_gt(real_desktop, lic_desktop):
-                ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: 3')
+                log.debug('LICENSE: 3')
                 disable_add = 3
             if lic_groupware and real_groupware and self.__cmp_gt(real_groupware, lic_groupware):
-                ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: 4')
+                log.debug('LICENSE: 4')
                 disable_add = 4
         elif self.version == '2':
             lic_users, lic_servers, lic_managedclients, lic_corporateclients, = lic
@@ -405,7 +407,7 @@ class License(object):
             self.sysAccountsFound = len(lo.searchDn(filter=str(filter)))
         except univention.admin.uexceptions.noObject:
             pass
-        ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention sysAccountsFound: %d' % (self.sysAccountsFound,))
+        log.debug('LICENSE: Univention sysAccountsFound: %d', self.sysAccountsFound)
 
     def __countObject(self, obj, lo):
         version = self.version
@@ -417,7 +419,7 @@ class License(object):
                 self.real[version][obj] = 0
             else:
                 self.real[version][obj] = len(result)
-            ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention %s real %d' % (self.names[version][obj], self.real[version][obj]))
+            log.debug('LICENSE: Univention %s real %d', self.names[version][obj], self.real[version][obj])
         else:
             self.real[version][obj] = 0
 
@@ -437,7 +439,7 @@ class License(object):
         try:
             value = univention.license.getValue(key)
             self.new_license = True
-            ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention %r allowed %r' % (name, value))
+            log.debug('LICENSE: Univention %r allowed %r', name, value)
         except (KeyError, Exception):
             if self.searchResult:
                 value = self.searchResult[0][1].get(key, [default])
@@ -446,10 +448,10 @@ class License(object):
                     value = value[0]
                 self.new_license = True
             else:
-                ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %r: %s' % (name, errormsg))
+                log.debug('LICENSE: %r: %s', name, errormsg)
                 value = default
 
-        ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %r = %r' % (name, value))
+        log.debug('LICENSE: %r = %r', name, value)
         return value
 
     def __readLicense(self):

@@ -32,12 +32,15 @@
 
 """|UDM| module for |UDM| properties"""
 
+from logging import getLogger
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.debug as ud
 from univention.admin.layout import Group, Tab
 
+
+log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
@@ -357,7 +360,7 @@ class object(univention.admin.handlers.simpleLdap):
                 if key.startswith('univentionUDMPropertyTranslation%s;entry-' % transKey)
             ]
 
-            ud.debug(ud.ADMIN, ud.INFO, 'extended_attribute: added translations for %s: %s' % (transKey, translations))
+            log.debug('extended_attribute: added translations for %s: %s', transKey, translations)
             self['translation%s' % transKey] = translations
 
         self.save()

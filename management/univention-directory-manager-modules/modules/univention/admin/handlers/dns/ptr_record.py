@@ -33,15 +33,17 @@
 """|UDM| module for |DNS| reverse pointer records (PTR)"""
 
 import ipaddress
+from logging import getLogger
 
 import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
-import univention.debug as ud
 from univention.admin.filter import conjunction, expression
 from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6
 from univention.admin.layout import Group, Tab
 
+
+log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
@@ -166,7 +168,7 @@ class object(univention.admin.handlers.simpleLdap):
         try:
             return calc_ip(self.info['address'], self.superordinate.info['subnet']).compressed
         except (LookupError, ValueError, AssertionError) as ex:
-            ud.debug(ud.ADMIN, ud.WARN, 'Failed to parse dn=%s: (%s)' % (self.dn, ex))
+            log.warning('Failed to parse dn=%s: (%s)', self.dn, ex)
             return super(object, self).description()
 
     def open(self):
@@ -175,7 +177,7 @@ class object(univention.admin.handlers.simpleLdap):
             self.info['ip'] = calc_ip(self.info['address'], self.superordinate.info['subnet']).compressed
             self.save()
         except (LookupError, ValueError, AssertionError) as ex:
-            ud.debug(ud.ADMIN, ud.WARN, 'Failed to parse dn=%s: (%s)' % (self.dn, ex))
+            log.warning('Failed to parse dn=%s: (%s)', self.dn, ex)
 
     def ready(self):
         old_ip = self.oldinfo.get('ip')
@@ -184,7 +186,7 @@ class object(univention.admin.handlers.simpleLdap):
             try:
                 self.info['address'] = calc_rev(new_ip, self.superordinate.info['subnet'])
             except (LookupError, ValueError, AssertionError) as ex:
-                ud.debug(ud.ADMIN, ud.WARN, 'Failed to handle address: dn=%s addr=%r (%s)' % (self.dn, new_ip, ex))
+                log.warning('Failed to handle address: dn=%s addr=%r (%s)', self.dn, new_ip, ex)
                 raise univention.admin.uexceptions.InvalidDNS_Information(_('Reverse zone and IP address are incompatible.'))
         super(object, self).ready()
 

@@ -50,6 +50,7 @@ import time
 import traceback
 import zlib
 from io import BytesIO
+from logging import getLogger
 from typing import (  # noqa: F401
     TYPE_CHECKING, Any, Callable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union,
 )
@@ -66,7 +67,6 @@ from ldap.schema.subentry import SubSchema  # noqa: F401
 import univention.admin.modules
 import univention.admin.types
 import univention.admin.uexceptions
-import univention.debug as ud
 from univention.admin import configRegistry, localization
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import get_mime_description, get_mime_type, image_mime_type_of_buffer
@@ -88,6 +88,8 @@ try:
 except ImportError:  # Python 2.7
     validate_email = EmailNotValidError = None
 
+log = getLogger('ADMIN')
+
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
@@ -107,10 +109,9 @@ def import_syntax_files():
                 try:
                     with io.open(fn, 'rb') as fd:
                         exec(fd.read(), sys.modules[__name__].__dict__)  # noqa: S102
-                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.import_syntax_files: importing %r' % (fn,))
+                    log.debug('admin.syntax.import_syntax_files: importing %r', fn)
                 except Exception:
-                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: loading %r failed' % (fn,))
-                    ud.debug(ud.ADMIN, ud.ERROR, 'admin.syntax.import_syntax_files: TRACEBACK:\n%s' % traceback.format_exc())
+                    log.exception('admin.syntax.import_syntax_files: loading %r failed', fn)
                 finally:
                     _ = gettext
 
@@ -261,10 +262,10 @@ class ISyntax(object):
     def get_widget_options(self, udm_property):
         widget_name = self.get_widget(udm_property)
         if widget_name is None:
-            ud.debug(ud.ADMIN, ud.PROCESS, 'Could not convert UDM syntax %s' % (self,))
+            log.info('Could not convert UDM syntax %s', self)
             return {}
 
-        ud.debug(ud.ADMIN, ud.INFO, 'Find choices for syntax %s' % (self.name,))
+        log.debug('Find choices for syntax %s', self.name)
         descr = {'type': widget_name}
         descr.update(self.get_widget_choices_options(udm_property))
 
@@ -292,9 +293,9 @@ class ISyntax(object):
             return [subtypes_dict(_) for _ in getattr(self, 'subsyntaxes', [])]
 
         subtypes = subsyntaxes(udm_property)
-        ud.debug(ud.ADMIN, ud.INFO, "Syntax %s has the following choices: %s" % (self.name, descr))
+        log.debug("Syntax %s has the following choices: %s", self.name, descr)
         if subtypes:
-            ud.debug(ud.ADMIN, ud.INFO, "Syntax %s has the following sub-types: %s" % (self.name, subtypes))
+            log.debug("Syntax %s has the following sub-types: %s", self.name, subtypes)
             descr['subtypes'] = subtypes
         if descr['type'] == 'LinkList':
             descr['multivalue'] = False
@@ -554,7 +555,7 @@ class complex(ISyntax):
 
         parsed = []
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
-            ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, texts=%s' % (i, syn, text))
+            log.debug('syntax.py: subsyntax[%s]=%s, texts=%s', i, syn, text)
             if text is None and i + 1 < minn:
                 raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument: %s > %s") % (self.name, desc))
             s = syn() if inspect.isclass(syn) else syn  # type: simple # type: ignore
@@ -809,7 +810,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
             else:
                 simple = True
             if not simple:
-                ud.debug(ud.ADMIN, ud.WARN, 'Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!' % (cls.name,))
+                log.warning('Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!', cls.name)
 
         def extract_key_label(syn, dn, info):
             key = label = None
@@ -974,11 +975,11 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
 
         def map_choice(obj):
             obj.open()
-            ud.debug(ud.ADMIN, ud.INFO, 'Loading choices from %s: %s' % (obj.dn, obj.info))
+            log.debug('Loading choices from %s: %s', obj.dn, obj.info)
             try:
                 values = obj.info[cls.attribute]
             except KeyError:
-                ud.debug(ud.ADMIN, ud.WARN, 'Object has no attribute %r' % (cls.attribute,))
+                log.warning('Object has no attribute %r', cls.attribute)
                 # this happens for example in PrinterDriverList
                 # if the ldap schema is not installed
                 # and thus no 'printmodel' attribute is known.
@@ -999,7 +1000,7 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
         if not module:
             return []
 
-        ud.debug(ud.ADMIN, ud.INFO, 'Found syntax %s with udm_module property' % (cls.name,))
+        log.debug('Found syntax %s with udm_module property', cls.name)
         if cls.udm_filter == 'dn':
             obj = module.object(None, lo, None, options.get('dependencies', {})[cls.depends])
             choices = map_choice(obj)
@@ -1433,7 +1434,7 @@ class jpegPhoto(Upload):
                     raw = text.getvalue()
                     text = base64.b64encode(raw)
                 except (KeyError, IOError, IndexError):
-                    ud.debug(ud.ADMIN, ud.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
+                    log.warning('Failed to convert PNG file into JPEG: %s', traceback.format_exc())
                     raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
             if raw[:2] != b'\xff\xd8' and raw[6:10] not in (b'JFIF', b'Exif'):
                 raise ValueError()
@@ -2827,10 +2828,10 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
                     ldapfilter = ldap.filter.filter_format('(&(objectClass=univentionMailDomainname)(cn=%s))', [domain])
                     result = lo.searchDn(filter=ldapfilter)
                     domainCache[domain] = bool(result)
-                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.%s: address=%r   domain=%r   result=%r' % (self.name, mailaddress, domain, result))
+                    log.debug('admin.syntax.%s: address=%r   domain=%r   result=%r', self.name, mailaddress, domain, result)
                 if not domainCache[domain]:
                     faillist.append(mailaddress)
-                    ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.%s: address=%r   domain=%r' % (self.name, mailaddress, domain))
+                    log.debug('admin.syntax.%s: address=%r   domain=%r', self.name, mailaddress, domain)
 
         if faillist:
             raise univention.admin.uexceptions.valueError(self.errMsgDomain % (', '.join(faillist),), property=property)
@@ -3613,7 +3614,7 @@ class ldapDn(simple):
         try:
             result = lo.searchDn(filter=cls.searchFilter)
         except univention.admin.uexceptions.base:
-            ud.debug(ud.ADMIN, ud.PROCESS, 'Failed to initialize syntax class %s' % (cls.name,))
+            log.info('Failed to initialize syntax class %s', cls.name)
             return []
 
         return cls.sort_choices([
@@ -3821,7 +3822,7 @@ class _CachedLdap(six.with_metaclass(_ClassChoices, combobox)):
                 finally:
                     conn.unbind()
             except ldap.LDAPError as ex:
-                ud.debug(ud.ADMIN, ud.WARN, 'syntax.py: Failed LDAP connection: %s' % (ex,))
+                log.warning('syntax.py: Failed LDAP connection: %s', ex)
 
         return cls._cached_choices
 
@@ -6049,7 +6050,7 @@ class LDAP_Search(select):
                     id = obj.oldattr[store][0].decode(*module.mapping.getEncoding(store))
                 else:
                     # no valid store object, ignore
-                    ud.debug(ud.ADMIN, ud.WARN, 'LDAP_Search syntax %r: %r is no valid property for object %r - ignoring entry.' % (cls.name, store, dn))
+                    log.warning('LDAP_Search syntax %r: %r is no valid property for object %r - ignoring entry.', cls.name, store, dn)
                     continue
 
             # find the value to display
@@ -6063,7 +6064,7 @@ class LDAP_Search(select):
                 elif obj.oldattr.get(display):
                     label = obj.oldattr[display][0].decode(*module.mapping.getEncoding(display))
                 else:
-                    ud.debug(ud.ADMIN, ud.WARN, 'LDAP_Search syntax %r: defines unknown attribute %r' % (cls.name, display))
+                    log.warning('LDAP_Search syntax %r: defines unknown attribute %r', cls.name, display)
                     label = 'Unknown attribute %r' % (display,)
 
             # TODO: remove this one day...
@@ -6432,7 +6433,7 @@ class PrinterURI(complex):
             raise univention.admin.uexceptions.valueInvalidSyntax(_("too many arguments"))
 
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
-            ud.debug(ud.ADMIN, ud.INFO, 'syntax.py: subsyntax[%s]=%s, text=%s' % (i, syn, text))
+            log.debug('syntax.py: subsyntax[%s]=%s, text=%s', i, syn, text)
             if text is None and (self.min_elements is None or (i + 1) < count):
                 raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax: %s > %s") % (self.name, desc))
             s = syn() if inspect.isclass(syn) else syn

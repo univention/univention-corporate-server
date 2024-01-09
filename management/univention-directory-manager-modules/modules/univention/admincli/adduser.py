@@ -36,6 +36,7 @@
 import getopt
 import os
 import subprocess
+from logging import getLogger
 
 import six
 from ldap.filter import filter_format
@@ -48,8 +49,10 @@ import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap
 import univention.config_registry
-import univention.debug as ud
 import univention.logging
+
+
+log = getLogger('ADMIN')
 
 
 def status(msg):
@@ -63,13 +66,13 @@ def status(msg):
 
 def nscd_invalidate(table):
     if table:
-        ud.debug(ud.ADMIN, ud.INFO, 'NSCD: --invalidate %s' % (table,))
+        log.debug('NSCD: --invalidate %s', table)
         try:
             subprocess.check_call(['/usr/sbin/nscd', '--invalidate', table], close_fds=True)
         except (EnvironmentError, subprocess.CalledProcessError):
-            ud.debug(ud.ADMIN, ud.INFO, 'NSCD: failed')
+            log.debug('NSCD: failed')
         else:
-            ud.debug(ud.ADMIN, ud.INFO, 'NSCD: ok')
+            log.debug('NSCD: ok')
 
 
 def get_user_object(user, position, lo):
@@ -126,11 +129,11 @@ def doit(arglist):
     try:
         lo, position = univention.admin.uldap.getAdminConnection()
     except Exception as exc:
-        ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
+        log.warning('authentication error: %s', exc)
         try:
             lo, position = univention.admin.uldap.getMachineConnection()
         except Exception as exc2:
-            ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc2,))
+            log.warning('authentication error: %s', exc2)
             out.append('authentication error: %s' % (exc,))
             out.append('authentication error: %s' % (exc2,))
             return out

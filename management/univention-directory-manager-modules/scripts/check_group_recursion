@@ -37,15 +37,16 @@ from __future__ import print_function
 
 import sys
 from argparse import ArgumentParser
+from logging import getLogger
 
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uexceptions
 import univention.config_registry
-import univention.debug as ud
 import univention.logging
 
 
+log = getLogger('ADMIN')
 lo = None
 position = None
 grp2childgrps = {}
@@ -109,7 +110,7 @@ def main():
 
     grpobjlist = univention.admin.modules.lookup(grp_module, None, lo, scope='sub', superordinate=None, base=basedn, filter=None)
     print('Number of groups: %d' % len(grpobjlist))
-    ud.debug(ud.ADMIN, ud.ERROR, 'Testing %d groups...' % len(grpobjlist))
+    log.error('Testing %d groups...', len(grpobjlist))
     for i, group in enumerate(grpobjlist):
         if options.verbose:
             print()
@@ -124,14 +125,14 @@ def main():
             txtring = ''
             for dn in e.recursionlist:
                 txtring += '--> %s\n' % dn
-            ud.debug(ud.ADMIN, ud.ERROR, 'Recursion detected: %s\n%s' % (group.dn, txtring))
+            log.error('Recursion detected: %s\n%s', group.dn, txtring)
             print()
             print('Recursion detected:')
             for dn in e.recursionlist:
                 print('--> %s' % dn)
             recursionCnt += 1
 
-    ud.debug(ud.ADMIN, ud.ERROR, 'Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt)
+    log.error('Tests have been finished. %d group(s) with circular recursion found.', recursionCnt)
     if options.verbose:
         print()
         print('Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt)

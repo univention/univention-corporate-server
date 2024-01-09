@@ -36,12 +36,13 @@
 '''python3 -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')"'''
 
 import argparse
+from logging import getLogger
 
 import univention.admin.handlers.users.user
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap
-import univention.debug as ud1
+import univention.debug as ud
 
 
 univention.admin.modules.update()
@@ -50,20 +51,20 @@ univention.admin.modules.update()
 # Ensure univention debug is initialized
 def initialize_debug():
     # Use a little hack to determine if univention.debug has been initialized
-    # get_level(..) returns always ud.ERROR if univention.debug is not initialized
-    oldLevel = ud1.get_level(ud1.ADMIN)
-    if oldLevel == ud1.PROCESS:
-        ud1.set_level(ud1.ADMIN, ud1.DEBUG)
-        is_ready = (ud1.get_level(ud1.ADMIN) == ud1.DEBUG)
+    # get_level(..) returns always ERROR if univention.debug is not initialized
+    oldLevel = ud.get_level(ud.ADMIN)
+    if oldLevel == ud.PROCESS:
+        ud.set_level(ud.ADMIN, ud.DEBUG)
+        is_ready = (ud.get_level(ud.ADMIN) == ud.DEBUG)
     else:
-        ud1.set_level(ud1.ADMIN, ud1.PROCESS)
-        is_ready = (ud1.get_level(ud1.ADMIN) == ud1.PROCESS)
+        ud.set_level(ud.ADMIN, ud.PROCESS)
+        is_ready = (ud.get_level(ud.ADMIN) == ud.PROCESS)
     if not is_ready:
-        ud1.init('/var/log/univention/directory-manager-cmd.log', ud1.FLUSH, 0)
-        ud1.set_level(ud1.LDAP, ud1.PROCESS)
-        ud1.set_level(ud1.ADMIN, ud1.PROCESS)
+        ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, 0)
+        ud.set_level(ud.LDAP, ud.PROCESS)
+        ud.set_level(ud.ADMIN, ud.PROCESS)
     else:
-        ud1.set_level(ud1.ADMIN, oldLevel)
+        ud.set_level(ud.ADMIN, oldLevel)
 
 
 def lock(userdn, lock_timestamp):
@@ -110,5 +111,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     initialize_debug()
-    ud1.debug(ud1.ADMIN, ud1.PROCESS, "univention.lib.account.lock was called for %s (%s)" % (args.dn, args.lock_time))
+    getLogger('ADMIN').info("univention.lib.account.lock was called for %s (%s)" % (args.dn, args.lock_time))
     lock(args.dn, args.lock_time)

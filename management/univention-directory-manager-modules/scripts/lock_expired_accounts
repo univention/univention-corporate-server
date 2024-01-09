@@ -44,15 +44,18 @@ from __future__ import print_function
 import argparse
 import sys
 import time
+from logging import DEBUG, getLogger
 
 from ldap.filter import filter_format
 
 import univention.admin.modules as udm_modules
 import univention.admin.uldap
 import univention.config_registry
-import univention.debug as ud
 import univention.logging
 import univention.uldap
+
+
+log = getLogger('MAIN')
 
 
 def main():
@@ -80,7 +83,7 @@ def main():
         sys.exit(1)
 
     print_msg('Initializing... (%s)' % (time.ctime()))
-    univention.logging.basicConfig(filename='/var/log/univention/lock_expired_accounts.log', univention_debug_level=ud.ALL)
+    univention.logging.basicConfig(filename='/var/log/univention/lock_expired_accounts.log', level=DEBUG)
     if options.last_week:
         print_msg('Checking only accounts that expired in the last 7 days')
 
@@ -111,7 +114,7 @@ def main():
         else:
             print_msg('uid=%s expired at %s ...' % (entry['username'], entry['userexpiry']), newline=False)
             entry.modify()
-            ud.debug(ud.MAIN, ud.PROCESS, 'uid=%s expired at %s ... modified (locked=%r)' % (entry['username'], entry['userexpiry'], entry['locked']))
+            log.debug('uid=%s expired at %s ... modified (locked=%r)', entry['username'], entry['userexpiry'], entry['locked'])
             print_msg('modified (locked=%r)' % (entry['locked'],))
 
 

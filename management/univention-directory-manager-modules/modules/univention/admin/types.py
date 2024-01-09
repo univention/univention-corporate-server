@@ -37,15 +37,17 @@ from __future__ import absolute_import
 import datetime
 import inspect
 import time
+from logging import getLogger
 from typing import Optional, Sequence, Type, Union  # noqa: F401
 
 import ldap.dn
 import six
 
 import univention.admin.uexceptions
-import univention.debug as ud
 from univention.admin import localization
 
+
+log = getLogger('ADMIN')
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -176,7 +178,7 @@ class TypeHint(object):
         try:
             return self.syntax.parse(value)
         except univention.admin.uexceptions.valueError as exc:
-            ud.debug(ud.ADMIN, ud.WARN, 'ignoring invalid property %s value=%r is invalid: %s' % (self.property_name, value, exc))
+            log.warning('ignoring invalid property %s value=%r is invalid: %s', self.property_name, value, exc)
             return value
 
     def encode_value(self, value):
@@ -198,7 +200,7 @@ class TypeHint(object):
         if not isinstance(value, types or self._python_types):
             must = '%s (%s)' % (self._openapi_type, self._openapi_format) if self._openapi_format else '%s' % (self._openapi_type,)
             actual = type(value).__name__
-            ud.debug(ud.ADMIN, ud.WARN, '%r: Value=%r %r' % (self.property_name, value, type(self).__name__))
+            log.warning('%r: Value=%r %r', self.property_name, value, type(self).__name__)
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Value must be of type %s not %s.') % (must, actual))
 
     def type_check_json(self, value):
@@ -265,7 +267,7 @@ class TypeHint(object):
         syntax = property.syntax() if inspect.isclass(property.syntax) else property.syntax
         type_class = syntax.type_class
         if not type_class:
-            ud.debug(ud.ADMIN, ud.WARN, 'Unknown type for property %r: %s' % (name, syntax.name))
+            log.warning('Unknown type for property %r: %s', name, syntax.name)
             type_class = cls
 
         if not property.multivalue:
@@ -302,7 +304,7 @@ class BooleanType(TypeHint):
                 return None
         except univention.admin.uexceptions.valueError:
             pass
-        ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a boolean: %r' % (self.property_name, self.syntax.name, value))
+        log.warning('%s: %s: not a boolean: %r', self.property_name, self.syntax.name, value)
         return value
 
 
@@ -321,7 +323,7 @@ class IntegerType(TypeHint):
         try:
             value = int(value)
         except ValueError:
-            ud.debug(ud.ADMIN, ud.WARN, '%s: %s: not a integer: %r' % (self.property_name, self.syntax.name, value))
+            log.warning('%s: %s: not a integer: %r', self.property_name, self.syntax.name, value)
         return value
 
 
@@ -429,7 +431,7 @@ class DateType(StringType):
         try:
             return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
         except ValueError:
-            ud.debug(ud.ADMIN, ud.INFO, 'Wrong date format: %r' % (value,))
+            log.debug('Wrong date format: %r', value)
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Date does not match format "%Y-%m-%d".'))
 
 
@@ -461,7 +463,7 @@ class TimeType(StringType):
         try:
             return datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
         except ValueError:
-            ud.debug(ud.ADMIN, ud.INFO, 'Wrong time format: %r' % (value,))
+            log.debug('Wrong time format: %r', value)
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Time does not match format "%H:%M:%S".'))
 
 
@@ -496,7 +498,7 @@ class DateTimeType(StringType):
         try:
             return datetime.datetime(*time.strptime(value, '%Y-%m-%dT%H:%M:%S')[:6])  # FIXME: parse Z at the end
         except ValueError:
-            ud.debug(ud.ADMIN, ud.INFO, 'Wrong datetime format: %r' % (value,))
+            log.debug('Wrong datetime format: %r', value)
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Datetime does not match format "%Y-%m-%dT%H:%M:%S".'))
 
 

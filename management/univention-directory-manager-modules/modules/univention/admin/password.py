@@ -36,15 +36,17 @@ from __future__ import absolute_import
 
 import hashlib
 import re
+from logging import getLogger
 from typing import List, Optional, Tuple  # noqa: F401
 
 import bcrypt
 import heimdal
 import passlib.hash
 
-import univention.debug as ud
 from univention.admin._ucr import configRegistry
 
+
+log = getLogger('ADMIN')
 
 RE_PASSWORD_SCHEME = re.compile(r'^{(\w+)}(!?)(.*)', re.I)
 
@@ -335,13 +337,13 @@ class PasswortHistoryPolicy(object):
             try:
                 self.pwhistoryLength = max(0, int(pwhistoryPolicy['length'] or 0))
             except ValueError:
-                ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (history length): %r' % (pwhistoryPolicy.dn,))
+                log.warning('Corrupt Password history policy (history length): %r', pwhistoryPolicy.dn)
             try:
                 self.pwhistoryPasswordLength = max(0, int(pwhistoryPolicy['pwLength'] or 0))
             except ValueError:
-                ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (password length): %r' % (pwhistoryPolicy.dn,))
+                log.warning('Corrupt Password history policy (password length): %r', pwhistoryPolicy.dn)
             self.pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
             try:
                 self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0))
             except ValueError:
-                ud.debug(ud.ADMIN, ud.WARN, 'Corrupt Password history policy (expiry interval): %r' % (pwhistoryPolicy.dn,))
+                log.warning('Corrupt Password history policy (expiry interval): %r', pwhistoryPolicy.dn)

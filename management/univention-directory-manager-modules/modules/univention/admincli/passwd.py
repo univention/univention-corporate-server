@@ -35,6 +35,7 @@
 
 import getopt
 import os
+from logging import DEBUG, getLogger
 
 from ldap.filter import filter_format
 
@@ -43,12 +44,14 @@ import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap
 import univention.config_registry
-import univention.debug as ud
 import univention.logging
 
 
+log = getLogger('ADMIN')
+
+
 def doit(arglist):
-    univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=ud.ALL)
+    univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', level=DEBUG)
     out = []
     opts, args = getopt.getopt(arglist[1:], '', ['binddn=', 'pwdfile=', 'user=', 'pwd='])
 
@@ -75,11 +78,11 @@ def doit(arglist):
     with open(pwdfile) as fd:
         bindpw = fd.read().rstrip()
 
-    ud.debug(ud.ADMIN, ud.WARN, 'binddn: %s; bindpwd: *************' % (binddn,))
+    log.warning('binddn: %s; bindpwd: *************', binddn)
     try:
         lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=bindpw, start_tls=2)
     except Exception as exc:
-        ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
+        log.warning('authentication error: %s', exc)
         out.append('authentication error: %s' % (exc,))
         return out
 
@@ -87,12 +90,12 @@ def doit(arglist):
         user = user.decode('utf-8')
 
     if configRegistry.get('samba/charset/unix', 'utf8') in ['utf8', 'latin']:
-        ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: known charset given: %s' % configRegistry.get('samba/charset/unix'))
+        log.debug('univention-passwd: known charset given: %s', configRegistry.get('samba/charset/unix'))
         if not isinstance(pwd, bytes):  # Python 3
             pwd = pwd.encode('UTF-8')
         pwd = pwd.decode(configRegistry.get('samba/charset/unix', 'utf8'))
     else:
-        ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: unknown charset given, try fallback')
+        log.debug('univention-passwd: unknown charset given, try fallback')
         if isinstance(pwd, bytes):  # Python 2
             pwd = pwd.decode('utf-8')
 
@@ -114,18 +117,18 @@ def doit(arglist):
 
         object['password'] = pwd
 
-        ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: passwd set, modify object')
+        log.debug('univention-passwd: passwd set, modify object')
         dn = object.modify()
 
         out.append('password changed')
-        ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: password changed')
+        log.debug('univention-passwd: password changed')
 
     except univention.admin.uexceptions.pwalreadyused:
         out.append('passwd error: password already used')
         return out
 
     except Exception as exc:
-        ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % (exc,))
+        log.warning('passwd error: %s', exc)
         out.append('passwd error: %s' % (exc,))
         return out
 
@@ -142,13 +145,13 @@ def doit(arglist):
             object.open()
             object['password'] = pwd
 
-            ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: passwd set, modify object')
+            log.debug('univention-passwd: passwd set, modify object')
             object['overridePWHistory'] = '1'
             object['overridePWLength'] = '1'
             dn = object.modify()
 
-            ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: password changed')
+            log.debug('univention-passwd: password changed')
     except Exception as exc:
-        ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % (exc,))
+        log.warning('passwd error: %s', exc)
 
     return out

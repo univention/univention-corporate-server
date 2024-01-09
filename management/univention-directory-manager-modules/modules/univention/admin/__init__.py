@@ -38,6 +38,7 @@ import copy
 import re
 import sys
 import time
+from logging import getLogger
 from typing import (  # noqa: F401
     TYPE_CHECKING, Any, Callable, Container, Iterable, List, Match, Optional, Tuple, Type, Union,
 )
@@ -47,9 +48,11 @@ import unidecode
 from ldap.filter import filter_format
 
 import univention.config_registry
-import univention.debug as ud
+import univention.logging  # noqa: F401
 from univention.admin._ucr import configRegistry
 
+
+log = getLogger('ADMIN')
 
 if TYPE_CHECKING:
     from univention.admin.layout import Tab  # noqa: F401
@@ -77,7 +80,7 @@ def ucr_overwrite_properties(module, lo):
         try:
             prop_name, attr = var[len(ucr_prefix):].split('/', 1)
             # ignore internal attributes
-            ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: found variable: %s' % var)
+            log.debug('ucr_overwrite_properties: found variable: %s', var)
             if attr.startswith('__'):
                 continue
             if attr == 'default':
@@ -87,7 +90,7 @@ def ucr_overwrite_properties(module, lo):
                 attr = 'base_default'
             if prop_name in module.property_descriptions:
                 prop = module.property_descriptions[prop_name]
-                ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: found property')
+                log.debug('ucr_overwrite_properties: found property')
                 if hasattr(prop, attr):
                     new_prop_val = configRegistry[var]
                     old_prop_val = getattr(prop, attr)
@@ -96,7 +99,7 @@ def ucr_overwrite_properties(module, lo):
                         #   will fail. best bet is str as type
                         old_prop_val = ''
                     prop_val_type = type(old_prop_val)
-                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: set property attribute %s to %s' % (attr, new_prop_val))
+                    log.debug('ucr_overwrite_properties: set property attribute %s to %s', attr, new_prop_val)
                     if attr in ('syntax', ):
                         if hasattr(univention.admin.syntax, new_prop_val):
                             syntax = getattr(univention.admin.syntax, new_prop_val)
@@ -113,9 +116,9 @@ def ucr_overwrite_properties(module, lo):
                         setattr(prop, attr, configRegistry.is_true(None, None, new_prop_val))
                     else:
                         setattr(prop, attr, prop_val_type(new_prop_val))
-                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: get property attribute: %s (type %s)' % (old_prop_val, prop_val_type))
-        except Exception as exc:
-            ud.debug(ud.ADMIN, ud.ERROR, 'ucr_overwrite_properties: failed to set property attribute: %s' % (exc,))
+                    log.debug('ucr_overwrite_properties: get property attribute: %s (type %s)', old_prop_val, prop_val_type)
+        except Exception:
+            log.exception('ucr_overwrite_properties: failed to set property attribute:')
             continue
 
 
@@ -423,7 +426,7 @@ def ucr_overwrite_layout(module, ucr_property, tab):
 def ucr_overwrite_module_layout(module):
     # type: (Any) -> None
     """Overwrite the tab layout through |UCR| variables."""
-    ud.debug(ud.ADMIN, ud.INFO, "layout overwrite")
+    log.debug("layout overwrite")
     # there are modules without a layout definition
     if not hasattr(module, 'layout'):
         return
@@ -438,11 +441,11 @@ def ucr_overwrite_module_layout(module):
         desc = re.sub(univention.config_registry.invalid_key_chars, '_', desc).replace('/', '_')
 
         tab_layout = configRegistry.get('directory/manager/web/modules/%s/layout/%s' % (module.module, desc))
-        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_layout='%s'" % tab_layout)
+        log.debug("layout overwrite: tab_layout='%s'", tab_layout)
         tab_name = configRegistry.get('directory/manager/web/modules/%s/layout/%s/name' % (module.module, desc))
-        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_name='%s'" % tab_name)
+        log.debug("layout overwrite: tab_name='%s'", tab_name)
         tab_descr = configRegistry.get('directory/manager/web/modules/%s/layout/%s/description' % (module.module, desc))
-        ud.debug(ud.ADMIN, ud.INFO, "layout overwrite: tab_descr='%s'" % tab_descr)
+        log.debug("layout overwrite: tab_descr='%s'", tab_descr)
 
         if tab_name:
             tab['name'] = tab_name
@@ -463,13 +466,13 @@ def ucr_overwrite_module_layout(module):
         #            if col in module.property_descriptions:
         #                line.append( col )
         #            else:
-        #                ud.debug( ud.ADMIN, ud.ERROR, "layout overwrite: unknown property: %s" % col )
+        #                log.error("layout overwrite: unknown property: %s", col )
         #        layout.append( line )
         #    tab[ 'layout' ] = { 'label' : _( 'General' ), 'layout' : layout }
 
         if not tab_layout or tab_layout.lower() != 'none':
             # disable specified properties via UCR
-            ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_module_layout: trying to hide properties on tab %s' % (desc))
+            log.debug('ucr_overwrite_module_layout: trying to hide properties on tab %s', desc)
             ucr_prefix = ucr_property_prefix % module.module
             for var in configRegistry.keys():
                 if not var.startswith(ucr_prefix):
@@ -480,7 +483,7 @@ def ucr_overwrite_module_layout(module):
                     continue
                 if attr in ('__hidden') and configRegistry.is_true(var):
                     removed, layout = tab.remove(prop)
-                    ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_module_layout: tried to hide property: %s (found=%s)' % (prop, removed))
+                    log.debug('ucr_overwrite_module_layout: tried to hide property: %s (found=%s)', prop, removed)
             new_layout.append(tab)
 
     module.layout = new_layout

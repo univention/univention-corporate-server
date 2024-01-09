@@ -42,6 +42,7 @@ import re
 import time
 import warnings
 from datetime import datetime
+from logging import getLogger
 from typing import List  # noqa: F401
 
 import ldap
@@ -63,7 +64,6 @@ import univention.admin.samba
 import univention.admin.syntax
 import univention.admin.uexceptions
 import univention.admin.uldap
-import univention.debug as ud
 import univention.password
 from univention.admin import configRegistry
 from univention.admin.certificate import PKIIntegration, pki_option, pki_properties, pki_tab, register_pki_mapping
@@ -81,6 +81,8 @@ except (ImportError, AttributeError):
 
 if not six.PY2:
     long = int
+
+log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
@@ -854,7 +856,7 @@ def unmapShadowExpireToUserexpiry(oldattr):
     # shadowExpire contains the absolute date to expire the account.
 
     if 'shadowExpire' in oldattr and len(oldattr['shadowExpire']) > 0:
-        ud.debug(ud.ADMIN, ud.INFO, 'userexpiry: %s' % posixDaysToDate(oldattr['shadowExpire'][0]))
+        log.debug('userexpiry: %s', posixDaysToDate(oldattr['shadowExpire'][0]))
         if oldattr['shadowExpire'][0] != b'1':
             return posixDaysToDate(oldattr['shadowExpire'][0])
 
@@ -862,13 +864,13 @@ def unmapShadowExpireToUserexpiry(oldattr):
 def unmapKrb5ValidEndToUserexpiry(oldattr):
     if 'krb5ValidEnd' in oldattr:
         krb5validend = oldattr['krb5ValidEnd'][0].decode('ASCII')
-        ud.debug(ud.ADMIN, ud.INFO, 'krb5validend is: %s' % krb5validend)
+        log.debug('krb5validend is: %s', krb5validend)
         return "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
 
 
 def unmapSambaKickoffTimeToUserexpiry(oldattr):
     if 'sambaKickoffTime' in oldattr:
-        ud.debug(ud.ADMIN, ud.INFO, 'sambaKickoffTime is: %s' % oldattr['sambaKickoffTime'][0].decode('ASCII'))
+        log.debug('sambaKickoffTime is: %s', oldattr['sambaKickoffTime'][0].decode('ASCII'))
         return time.strftime("%Y-%m-%d", time.gmtime(long(oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
 
 
@@ -891,7 +893,7 @@ def unmapPasswordExpiry(oldattr):
         try:
             shadow_last_change = int(oldattr['shadowLastChange'][0])
         except ValueError:
-            ud.debug(ud.ADMIN, ud.WARN, 'users/user: failed to calculate password expiration correctly, use only shadowMax instead')
+            log.warning('users/user: failed to calculate password expiration correctly, use only shadowMax instead')
         return posixDaysToDate(shadow_last_change + shadow_max)
 
 
@@ -1029,7 +1031,7 @@ def unmapWindowsFiletime(old, encoding=()):  # type: (List[bytes]) -> str
             return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(unixtime))
         except ValueError:
             # already unixtime, happens in environments with Samba3
-            ud.debug(ud.ADMIN, ud.INFO, 'Value of sambaBadPasswordTime is not set to a Windows Filetime (100 nanoseconds since January 1, 1601.)\nInstead its set to %s' % (password_time,))
+            log.debug('Value of sambaBadPasswordTime is not set to a Windows Filetime (100 nanoseconds since January 1, 1601.)\nInstead its set to %s', password_time)
             return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(password_time))
     return u''
 
@@ -1056,7 +1058,7 @@ def unmapUTCDateTimeToLocaltime(attribute_value, encoding=()):  # type: (List[by
         try:
             utc_datetime = datetime.strptime(generalizedtime, "%Y%m%d%H%M%SZ")
         except ValueError:
-            ud.debug(ud.ADMIN, ud.ERROR, 'Value of krb5ValidStart is not in generalizedTime format: %s' % (generalizedtime,))
+            log.error('Value of krb5ValidStart is not in generalizedTime format: %s', generalizedtime)
             raise
         local_datetimetimezone_tuple = datetime.strftime(utc_datetime, "%Y-%m-%d %H:%M UTC").split()
         return local_datetimetimezone_tuple
@@ -1197,7 +1199,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         if loadGroups:  # this is optional because it can take much time on larger installations, default is true
             self['groups'] = [x.decode('UTF-8') if six.PY2 else x for x in self.lo.searchDn(filter=filter_format(u'(&(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))]
         else:  # TODO: document where it is needed and used
-            ud.debug(ud.ADMIN, ud.INFO, 'user: open with loadGroups=false for user %s' % (self['username'],))
+            log.debug('user: open with loadGroups=false for user %s', self['username'])
         self.__groups_loaded = bool(loadGroups)
 
     def _unmap_gid_number(self):
@@ -1212,13 +1214,13 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             self['primaryGroup'] = primary_group
             return
 
-        ud.debug(ud.ADMIN, ud.ERROR, 'No primary group was found with gidNumber=%s for %s as %s' % (primaryGroupNumber, self.dn, self.lo.binddn))
+        log.error('No primary group was found with gidNumber=%s for %s as %s', primaryGroupNumber, self.dn, self.lo.binddn)
 
     def _set_default_group(self):
         if not self['primaryGroup']:
             for _dn, attrs in self.lo.search(filter='(objectClass=univentionDefault)', base=u'cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup']):
                 primary_group = attrs['univentionDefaultGroup'][0].decode('UTF-8')
-                ud.debug(ud.ADMIN, ud.INFO, 'user: setting primaryGroup to %s' % (primary_group,))
+                log.debug('user: setting primaryGroup to %s', primary_group)
                 if self.lo.get(primary_group):
                     self['primaryGroup'] = primary_group
 
@@ -1370,13 +1372,13 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
         # change memberUid if we have a new username
         if old_uid and old_uid != new_uid and self.exists():
-            ud.debug(ud.ADMIN, ud.INFO, 'users/user: rewrite memberuid after rename')
+            log.debug('users/user: rewrite memberuid after rename')
             for group in new_groups:
                 self.__rewrite_member_uid(group)
 
         group_mod = univention.admin.modules.get('groups/group')
 
-        ud.debug(ud.ADMIN, ud.INFO, 'users/user: check groups in old_groups')
+        log.debug('users/user: check groups in old_groups')
         for group in old_groups:
             if group and not case_insensitive_in_list(group, self.info.get('groups', [])) and group.lower() != self['primaryGroup'].lower():
                 grpobj = group_mod.object(None, self.lo, self.position, group)
@@ -1386,14 +1388,14 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                     # so if we changed it and if we use refint overlay, it already updated the uniqueMember of the group and we will not catch it with old_dn
                     grpobj.fast_member_remove([self.dn], [old_uid])
 
-        ud.debug(ud.ADMIN, ud.INFO, 'users/user: check groups in info[groups]')
+        log.debug('users/user: check groups in info[groups]')
         for group in self.info.get('groups', []):
             if group and not case_insensitive_in_list(group, old_groups):
                 grpobj = group_mod.object(None, self.lo, self.position, group)
                 grpobj.fast_member_add([self.dn], [new_uid])
 
         if configRegistry.is_true("directory/manager/user/primarygroup/update", True):
-            ud.debug(ud.ADMIN, ud.INFO, 'users/user: check primaryGroup')
+            log.debug('users/user: check primaryGroup')
             if not self.exists() and self.info.get('primaryGroup'):
                 grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
                 grpobj.fast_member_add([self.dn], [new_uid])
@@ -1412,7 +1414,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 if UIDs:
                     new_uids.append(UIDs[0])
                     if len(UIDs) > 1:
-                        ud.debug(ud.ADMIN, ud.WARN, 'users/user: A groupmember has multiple UIDs (%s %r)' % (memberDNstr, UIDs))
+                        log.warning('users/user: A groupmember has multiple UIDs (%s %r)', memberDNstr, UIDs)
         self.lo.modify(group, [('memberUid', uids, new_uids)])  # TODO: check if encoding is correct
 
     def __primary_group(self):
@@ -1424,7 +1426,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             group_mod = univention.admin.modules.get('groups/group')
             grpobj = group_mod.object(None, self.lo, self.position, self['primaryGroup'])
             grpobj.fast_member_add([self.dn], [new_uid])
-            ud.debug(ud.ADMIN, ud.INFO, 'users/user: adding to new primaryGroup %s (uid=%s)' % (self['primaryGroup'], new_uid))
+            log.debug('users/user: adding to new primaryGroup %s (uid=%s)', self['primaryGroup'], new_uid)
 
     def krb5_principal(self):
         domain = univention.admin.uldap.domain(self.lo, self.position)
@@ -1444,7 +1446,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def _ldap_pre_create(self):
         super(object, self)._ldap_pre_create()
-        ud.debug(ud.ADMIN, ud.INFO, 'users/user: dn was set to %s' % (self.dn,))
+        log.debug('users/user: dn was set to %s', self.dn)
 
         # request a new uidNumber or get lock for manually set uidNumber
         if self['uidNumber']:
@@ -1720,7 +1722,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         # if pwdChangeNextLogin has been set, set sambaPwdLastSet to 0 (see UCS Bug #17890)
         # OLD behavior was: set sambaPwdLastSet to 1 (see UCS Bug #8292 and Samba Bug #4313)
         sambaPwdLastSetValue = u'0' if pwd_change_next_login else str(long(time.time()))
-        ud.debug(ud.ADMIN, ud.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
+        log.debug('sambaPwdLastSetValue: %s', sambaPwdLastSetValue)
         sambaPwdLastSetValue = sambaPwdLastSetValue.encode('UTF-8')
         ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [b''])[0], sambaPwdLastSetValue))
 
@@ -1731,7 +1733,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 expiry = expiry + (pwhistoryPolicy.expiryInterval * 3600 * 24)
             krb5PasswordEnd = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
 
-        ud.debug(ud.ADMIN, ud.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
+        log.debug('krb5PasswordEnd: %s', krb5PasswordEnd)
         old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [b''])[0]
         krb5PasswordEnd = krb5PasswordEnd.encode('ASCII')
         if old_krb5PasswordEnd != krb5PasswordEnd:
@@ -1826,7 +1828,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             sambaKickoffTime = b''
             if self['userexpiry']:
                 sambaKickoffTime = _mapUserExpiryToSambaKickoffTime(self['userexpiry']).encode("ASCII")
-                ud.debug(ud.ADMIN, ud.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
+                log.debug('sambaKickoffTime: %s', sambaKickoffTime)
             old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', [b''])[0]
             if old_sambaKickoffTime != sambaKickoffTime:
                 ml.append(('sambaKickoffTime', self.oldattr.get('sambaKickoffTime', [b''])[0], sambaKickoffTime))
@@ -1837,7 +1839,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             krb5ValidEnd = u''
             if self['userexpiry']:
                 krb5ValidEnd = _mapUserExpiryToKrb5ValidEnd(self['userexpiry'])
-                ud.debug(ud.ADMIN, ud.INFO, 'krb5ValidEnd: %s' % krb5ValidEnd)
+                log.debug('krb5ValidEnd: %s', krb5ValidEnd)
             krb5ValidEnd = krb5ValidEnd.encode('ASCII')
             old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', [b''])[0]
             if old_krb5ValidEnd != krb5ValidEnd:

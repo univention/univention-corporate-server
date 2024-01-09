@@ -32,12 +32,13 @@
 
 """|UDM| module for the repository sync policies"""
 
+from logging import getLogger
+
 import univention.admin.cron
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.syntax
-import univention.debug as ud
 from univention.admin.layout import Group, Tab
 from univention.admin.policy import (
     emptyAttributesProperty, fixedAttributesProperty, ldapFilterProperty, policy_object_tab,
@@ -45,6 +46,7 @@ from univention.admin.policy import (
 )
 
 
+log = getLogger('ADMIN')
 translation = univention.admin.localization.translation('univention.admin.handlers.policies')
 _ = translation.translate
 
@@ -158,7 +160,7 @@ class object(univention.admin.handlers.simplePolicy):
 
     def parse_cron(self, cronstring):
         # don't use self[key] inside here - it will be recursive call(ed by) __getitem__
-        ud.debug(ud.ADMIN, ud.INFO, 'repositorysync cron: %s' % cronstring)
+        log.debug('repositorysync cron: %s', cronstring)
         cron = univention.admin.cron.cron_split(cronstring)
         keys = ['minute', 'hour', 'day', 'month', 'weekday']
         for key in keys:

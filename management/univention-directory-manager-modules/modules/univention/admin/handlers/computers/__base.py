@@ -34,6 +34,7 @@
 
 import functools
 import time
+from logging import getLogger
 
 from ldap.filter import filter_format
 
@@ -50,10 +51,11 @@ import univention.admin.password
 import univention.admin.samba
 import univention.admin.uexceptions
 import univention.admin.uldap
-import univention.debug as ud
 from univention.admin import nagios
 from univention.admin.certificate import PKIIntegration
 
+
+log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate
@@ -78,12 +80,12 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
         if self.exists():
             if 'posix' in self.options and not self.info.get('primaryGroup'):
                 primaryGroupNumber = self.oldattr.get('gidNumber', [b''])[0].decode('ASCII')
-                ud.debug(ud.ADMIN, ud.INFO, 'primary group number = %s' % (primaryGroupNumber))
+                log.debug('primary group number = %s', primaryGroupNumber)
                 if primaryGroupNumber:
                     primaryGroupResult = self.lo.searchDn(filter_format('(&(objectClass=posixGroup)(gidNumber=%s))', [primaryGroupNumber]))
                     if primaryGroupResult:
                         self['primaryGroup'] = primaryGroupResult[0]
-                        ud.debug(ud.ADMIN, ud.INFO, 'Set primary group = %s' % (self['primaryGroup']))
+                        log.debug('Set primary group = %s', self['primaryGroup'])
                     else:
                         self['primaryGroup'] = None
                         self.save()

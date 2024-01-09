@@ -34,17 +34,20 @@
 
 from __future__ import absolute_import
 
+from logging import getLogger
+
 import univention.admin
 import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
-import univention.debug as ud
 from univention.admin._ucr import configRegistry as ucr
 from univention.admin.handlers.users.user import mapHomePostalAddress, unmapHomePostalAddress
 from univention.admin.layout import Group, Tab
 
+
+log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
@@ -434,7 +437,7 @@ class object(univention.admin.handlers.simpleLdap):
             self._ldap_post_move(olddn)
         except BaseException:
             # move back
-            ud.debug(ud.ADMIN, ud.WARN, 'simpleLdap._move: self._ldap_post_move failed, move object back to %s' % olddn)
+            log.warning('simpleLdap._move: self._ldap_post_move failed, move object back to %s', olddn)
             self.lo.rename(self.dn, olddn)
             self.dn = olddn
             raise

@@ -41,6 +41,7 @@ import os
 import subprocess
 import sys
 from ipaddress import IPv4Address, IPv4Network
+from logging import getLogger
 
 import ldap
 import six
@@ -50,11 +51,12 @@ import univention.admin.objects
 import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.config_registry
-import univention.debug as ud
 import univention.logging
 from univention.admin.layout import Group
 from univention.admin.syntax import ldapFilter
 
+
+log = getLogger('ADMIN')
 
 univention.admin.modules.update()
 
@@ -369,7 +371,7 @@ def main(arglist, stdout=sys.stdout, stderr=sys.stderr):
         raise OperationFailed("E: The LDAP Server is currently not available.")
     except univention.admin.uexceptions.base as exc:
         msg = str(exc)
-        ud.debug(ud.ADMIN, ud.WARN, msg)
+        log.warning('%s', msg)
         raise OperationFailed(msg)
 
 
@@ -502,11 +504,11 @@ def _doit(arglist, stdout=sys.stdout, stderr=sys.stderr):
     else:
         policyOptions.extend(['-D', binddn, '-w', bindpwd])  # FIXME: not so nice
 
-    ud.debug(ud.ADMIN, ud.INFO, "using %s account" % binddn)
+    log.debug("using %s account", binddn)
     try:
         lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
     except Exception as exc:
-        ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
+        log.warning('authentication error: %s', exc)
         raise OperationFailed('authentication error: %s' % (exc,))
 
     if not position_dn and superordinate_dn:

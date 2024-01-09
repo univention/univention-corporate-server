@@ -39,6 +39,7 @@ import copy
 import importlib
 import locale
 import os
+from logging import getLogger
 from typing import Any, Dict, List, Optional, Set, Text, Union  # noqa: F401
 
 import ldap
@@ -51,7 +52,6 @@ import univention.admin.handlers
 import univention.admin.hook
 import univention.admin.syntax
 import univention.admin.uldap
-import univention.debug as ud
 from univention.admin import localization
 from univention.admin._ucr import configRegistry
 from univention.admin.layout import Group, ILayoutElement, Tab
@@ -100,6 +100,8 @@ try:
 except ImportError:
     pass
 
+log = getLogger('ADMIN')
+
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
@@ -135,12 +137,12 @@ def update():
             if not file.endswith('.py') or file.startswith('__'):
                 continue
             package = os.path.join(dir, file)[len(root) + 1:-len('.py')]
-            ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % (package,))
+            log.debug('admin.modules.update: importing "%s"', package)
             modulepackage = '.'.join(package.split(os.path.sep))
             m = importlib.import_module('univention.admin.handlers.%s' % (modulepackage,))  # type: Any
             m.initialized = False
             if not hasattr(m, 'module'):
-                ud.debug(ud.ADMIN, ud.ERROR, 'admin.modules.update: attribute "module" is missing in module %r' % (modulepackage,))
+                log.error('admin.modules.update: attribute "module" is missing in module %r', modulepackage)
                 continue
             _modules[m.module] = m
             if isContainer(m):
@@ -186,7 +188,7 @@ def get_module(module):
     :returns: the module or `None` if no module exists with the requested name.
     """
     if not modules:
-        ud.debug(ud.ADMIN, ud.WARN, 'univention.admin.modules.update() was not called')
+        log.warning('univention.admin.modules.update() was not called')
         update()
     return get(module)
 
@@ -214,7 +216,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
     # reset property descriptions to defaults if possible
     if hasattr(module, 'default_property_descriptions'):
         module.property_descriptions = copy.deepcopy(module.default_property_descriptions)
-        # ud.debug(ud.ADMIN, ud.INFO, 'modules_init: reset default descriptions')
+        # log.debug('modules_init: reset default descriptions')
 
     # overwrite property descriptions
     univention.admin.ucr_overwrite_properties(module, lo)
@@ -236,7 +238,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 
     # get defaults from template
     if template_object:
-        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got template object %s' % template_object.dn)
+        log.debug('modules_init: got template object %s', template_object.dn)
         template_object.open()
 
         # add template defaults
@@ -248,9 +250,9 @@ def init(lo, position, module, template_object=None, force_reload=False):
             elif key not in {"name", "description"}:  # these keys are part of the template itself
                 module.property_descriptions[key].base_default = copy.copy(tmpl)
                 module.property_descriptions[key].templates.append(template_object)
-        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: module.property_description after template: %s' % module.property_descriptions)
+        log.debug('modules_init: module.property_description after template: %s', module.property_descriptions)
     else:
-        ud.debug(ud.ADMIN, ud.INFO, 'modules_init: got no template')
+        log.debug('modules_init: got no template')
 
     # re-build layout if there any overwrites defined
     univention.admin.ucr_overwrite_module_layout(module)
@@ -266,7 +268,7 @@ def update_extended_options(lo, module, position):
     """Overwrite options defined via |LDAP|."""
     # get current language
     lang = locale.getlocale(locale.LC_MESSAGES)[0]
-    ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_options: LANG=%s' % lang)
+    log.debug('modules update_extended_options: LANG=%s', lang)
 
     module_filter = filter_format('(univentionUDMOptionModule=%s)', [name(module)])
     if name(module) == 'settings/usertemplate':
@@ -409,7 +411,7 @@ def update_extended_attributes(lo, module, position):
         try:
             mayChange = int(attrs.get('univentionUDMPropertyValueMayChange', [b'0'])[0])
         except ValueError:
-            ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange threw exception - assuming mayChange=0')
+            log.error('modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange threw exception - assuming mayChange=0')
             mayChange = 0
 
         # value is editable (only via hooks or direkt module.info[] access)
@@ -424,7 +426,7 @@ def update_extended_attributes(lo, module, position):
         try:
             doNotSearch = int(attrs.get('univentionUDMPropertyDoNotSearch', [b'0'])[0])
         except ValueError:
-            ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch threw exception - assuming doNotSearch=0')
+            log.error('modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch threw exception - assuming doNotSearch=0')
             doNotSearch = 0
 
         # check if CA is multivalue property
@@ -450,7 +452,7 @@ def update_extended_attributes(lo, module, position):
 
         # get current language
         lang = locale.getlocale(locale.LC_MESSAGES)[0]
-        ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: LANG = %s' % str(lang))
+        log.debug('modules update_extended_attributes: LANG = %s', str(lang))
 
         # get descriptions
         shortdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationShortDescription;entry-%s', 'univentionUDMPropertyShortDescription')
@@ -497,7 +499,7 @@ def update_extended_attributes(lo, module, position):
             except TypeError:
                 groupPosition = 0
 
-            ud.debug(ud.ADMIN, ud.INFO, 'update_extended_attributes: extended attribute (LDAP): %r' % (attrs,))
+            log.debug('update_extended_attributes: extended attribute (LDAP): %r', attrs)
 
             # only one is possible ==> overwriteTab wins
             if overwriteTab and overwriteProp:
@@ -506,7 +508,7 @@ def update_extended_attributes(lo, module, position):
             # add tab name to list if missing
             if tabname not in properties4tabs and not layoutDisabled:
                 properties4tabs[tabname] = []
-                ud.debug(ud.ADMIN, ud.INFO, 'modules update_extended_attributes: custom fields init for tab %s' % tabname)
+                log.debug('modules update_extended_attributes: custom fields init for tab %s', tabname)
 
             # remember tab for purging if required
             if overwriteTab and tabname not in overwriteTabList and not layoutDisabled:
@@ -521,7 +523,7 @@ def update_extended_attributes(lo, module, position):
                     if priority < 1:
                         priority = -1
                 except ValueError:
-                    ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int' % tabname)
+                    log.warning('modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int', tabname)
                     priority = -1
 
                 if priority == -1 and properties4tabs[tabname]:
@@ -666,15 +668,15 @@ def identify(dn, attr, module_name='', canonical=0, module_base=None):
             if module_base is not None and not name.startswith(module_base):
                 continue
             if not hasattr(module, 'identify'):
-                ud.debug(ud.ADMIN, ud.INFO, 'module %s does not provide identify' % module)
+                log.debug('module %s does not provide identify', module)
                 continue
 
             if (not module_name or module_name == module.module) and module.identify(dn, attr):
                 res.append(module)
     if not res:
-        ud.debug(ud.ADMIN, ud.INFO, 'object could not be identified')
+        log.debug('object could not be identified')
     for r in res:
-        ud.debug(ud.ADMIN, ud.INFO, 'identify: found module %s on %s' % (r.module, dn))
+        log.debug('identify: found module %s on %s', r.module, dn)
     return res
 
 
@@ -786,14 +788,14 @@ def layout(module_name, object=None):
     module = get(module_name)
     defining_layout = None
     if object:
-        ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout: got a defined object')
+        log.debug('modules.py layout: got a defined object')
 
     if object and hasattr(object, 'layout'):  # for dynamic modules like users/self
-        ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: layout is defined by the object')
+        log.debug('modules.py layout:: layout is defined by the object')
         defining_layout = object.layout
     elif hasattr(module, 'layout'):
         defining_layout = module.layout
-        ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: layout is defined by the module')
+        log.debug('modules.py layout:: layout is defined by the module')
 
     if defining_layout:
         if object and hasattr(object, 'options'):
@@ -825,10 +827,10 @@ def layout(module_name, object=None):
                     ntab = copy.deepcopy(tab)
                     ntab.layout = fields
                     layout.append(ntab)
-            ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: return layout decreased by given options')
+            log.debug('modules.py layout:: return layout decreased by given options')
             return layout
         else:
-            ud.debug(ud.ADMIN, ud.ALL, 'modules.py layout:: return defining_layout.')
+            log.debug('modules.py layout:: return defining_layout.')
             return defining_layout
 
     else:

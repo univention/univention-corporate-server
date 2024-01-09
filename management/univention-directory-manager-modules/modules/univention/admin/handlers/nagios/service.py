@@ -34,6 +34,7 @@
 """|UDM| module for nagios services"""
 
 import re
+from logging import getLogger
 from typing import List  # noqa: F401
 
 import ldap
@@ -44,10 +45,11 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.syntax
 import univention.admin.uexceptions
-import univention.debug as ud
 from univention.admin import configRegistry
 from univention.admin.layout import Group, Tab
 
+
+log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
 _ = translation.translate
@@ -261,7 +263,7 @@ class object(univention.admin.handlers.simpleLdap):
                 # find correct dNSZone entry
                 res = self.lo.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
                 if not res:
-                    ud.debug(ud.ADMIN, ud.INFO, 'service.py: open: could not find dNSZone of %s' % (host,))
+                    log.debug('service.py: open: could not find dNSZone of %s', host)
                 else:
                     # found dNSZone
                     filter = '(&(objectClass=univentionHost)'

@@ -39,12 +39,14 @@ from __future__ import print_function
 import sys
 import time
 from argparse import REMAINDER, ArgumentParser, RawTextHelpFormatter
+from logging import getLogger
 
-import univention.debug as ud
 import univention.logging
 
 
 univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=1)
+
+log = getLogger('ADMIN')
 
 import univention.admin.config  # noqa: E402
 import univention.admin.filter  # noqa: E402
@@ -141,7 +143,7 @@ def parse():
     elif not options.binddn and options.bindpwd:
         msg = 'authentication error: missing --binddn'
     if msg:
-        ud.debug(ud.ADMIN, ud.ERROR, msg)
+        log.error('%s', msg)
         parser.error(msg)
 
     return options, options.zone, options.command, options.typ, options.args
@@ -166,13 +168,12 @@ def bind():
                 lo, position = uldap.getAdminConnection(start_tls)
             return lo, position
         except univention.admin.uexceptions.authFail as ex:
-            msg = 'authentication error: %s' % (ex,)
-            ud.debug(ud.ADMIN, ud.WARN, msg)
-            sys.exit(msg)
+            log.warning('authentication error: %s', ex)
+            sys.exit('authentication error: %s' % (ex,))
         except (univention.admin.uexceptions.ldapError, uldap.ldap.LDAPError) as ex:
             msg = '%s: timeout while trying to contact LDAP server %s: %s' % \
                 (sys.argv[0], ucr['ldap/master'], ex)
-            ud.debug(ud.ADMIN, ud.WARN, msg)
+            log.warning('%s', msg)
             if time.time() < timeout:
                 print(msg, file=sys.stderr)
                 time.sleep(10)

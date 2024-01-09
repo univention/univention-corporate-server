@@ -32,15 +32,18 @@
 
 """|UDM| module for mail IMAP folders"""
 
+from logging import getLogger
+
 import ldap
 
 import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.debug as ud
 from univention.admin.layout import Group, Tab
 
+
+log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.mail')
 _ = translation.translate
@@ -223,7 +226,7 @@ class object(univention.admin.handlers.simpleLdap):
         rewrite_acl = False
         new_acls_tmp = []
         for attr in ['sharedFolderUserACL', 'sharedFolderGroupACL']:
-            ud.debug(ud.ADMIN, ud.INFO, 'ACLs: %s' % str(self[attr]))
+            log.debug('ACLs: %s', str(self[attr]))
             if self.hasChanged(attr):
                 rewrite_acl = True
                 # re-use regular expressions from syntax definitions

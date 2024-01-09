@@ -45,6 +45,7 @@ import sys
 import traceback
 from argparse import ArgumentParser
 from io import StringIO
+from logging import getLogger
 from select import select
 
 from six.moves import socketserver
@@ -58,6 +59,7 @@ import univention.logging
 from univention.config_registry import ConfigRegistry
 
 
+log = getLogger('ADMIN')
 logfile = ''
 loglevel = 1
 
@@ -76,7 +78,7 @@ class MyRequestHandler(socketserver.BaseRequestHandler):
     """Handle request on listening socket to open new connection."""
 
     def handle(self):
-        ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] new connection [%s]' % (os.getppid(), os.getpid()))
+        log.debug('daemon [%s] new connection [%s]', os.getppid(), os.getpid())
         sarglist = b''
         fds = []
         while True:
@@ -93,7 +95,7 @@ class MyRequestHandler(socketserver.BaseRequestHandler):
         except ValueError:
             stdout, stderr = None, None
         doit(sarglist, self.request, stdout, stderr)
-        ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] connection closed [%s]' % (os.getppid(), os.getpid()))
+        log.debug('daemon [%s] connection closed [%s]', os.getppid(), os.getpid())
 
 
 class ForkingServer(socketserver.ForkingMixIn, socketserver.UnixStreamServer):
@@ -127,7 +129,7 @@ def server_main(args):
             print('E: Server already running [Pid: %s]' % pid, file=sys.stderr)
             sys.exit(1)
 
-    ud.debug(ud.ADMIN, ud.INFO, 'server is running as process %d' % os.getpid())
+    log.debug('server is running as process %d', os.getpid())
 
     try:
         os.mkdir(socket_dir)
@@ -145,14 +147,14 @@ def server_main(args):
             timeout = 2147483647
     else:
         timeout = 300
-        ud.debug(ud.ADMIN, ud.WARN, 'daemon [%s] baseconfig key directory/manager/cmd/timeout not set, setting to default (%s seconds)' % (os.getpid(), timeout))
+        log.warning('daemon [%s] baseconfig key directory/manager/cmd/timeout not set, setting to default (%s seconds)', os.getpid(), timeout)
 
     try:
         sock = ForkingServer(socket_path, MyRequestHandler)
         os.chmod(socket_path, 0o600)
     except EnvironmentError:
         print('E: Failed creating socket (%s). Daemon stopped.' % socket_path, file=sys.stderr)
-        ud.debug(ud.ADMIN, ud.ERROR, 'daemon [%s] Failed creating socket (%s). Daemon stopped.' % (os.getpid(), socket_path))
+        log.error('daemon [%s] Failed creating socket (%s). Daemon stopped.', os.getpid(), socket_path)
         sys.exit(1)
 
     try:
@@ -169,7 +171,7 @@ def server_main(args):
                     handler.handle_request()
                     sock.service_actions()
                 if not rlist:
-                    ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] stopped after %s seconds idle' % (os.getpid(), timeout))
+                    log.debug('daemon [%s] stopped after %s seconds idle', os.getpid(), timeout)
                     sys.exit(0)
 
     finally:
@@ -235,28 +237,27 @@ def doit(sarglist, conn, stdout=None, stderr=None):
     cmdfile = os.path.basename(arglist[0])
     try:
         if cmdfile in ('univention-directory-manager', 'udm'):
-            ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-directory-manager' % (os.getppid(), os.getpid()))
-            ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
+            log.info('daemon [%s] [%s] Calling univention-directory-manager', os.getppid(), os.getpid())
+            log.debug('daemon [%s] [%s] arglist: %s', os.getppid(), os.getpid(), arglist)
             univention.admincli.admin.main(arglist, stdout, stderr)
         elif cmdfile == 'univention-passwd':
-            ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-passwd' % (os.getppid(), os.getpid()))
-            ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
+            log.info('daemon [%s] [%s] Calling univention-passwd', os.getppid(), os.getpid())
+            log.debug('daemon [%s] [%s] arglist: %s', os.getppid(), os.getpid(), arglist)
             output = univention.admincli.passwd.doit(arglist)
         elif cmdfile == 'univention-license-check':
-            ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-license-check' % (os.getppid(), os.getpid()))
-            ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
+            log.info('daemon [%s] [%s] Calling univention-license-check', os.getppid(), os.getpid())
+            log.debug('daemon [%s] [%s] arglist: %s', os.getppid(), os.getpid(), arglist)
             output = univention.admincli.license_check.doit(arglist)
         else:
-            ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-adduser' % (os.getppid(), os.getpid()))
-            ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
+            log.info('daemon [%s] [%s] Calling univention-adduser', os.getppid(), os.getpid())
+            log.debug('daemon [%s] [%s] arglist: %s', os.getppid(), os.getpid(), arglist)
             output = univention.admincli.adduser.doit(arglist)
     except univention.admincli.admin.OperationFailed as exc:
         print(str(exc), file=stderr)
         output.append("OPERATION FAILED")
     except Exception:
-        tb = traceback.format_exc()
-        ud.debug(ud.ADMIN, ud.ERROR, tb)
-        print(tb, file=stderr)
+        log.exception('Fatal error')
+        print(traceback.format_exc(), file=stderr)
         output.append("OPERATION FAILED")
     finally:
         stdout.flush()
@@ -269,7 +270,7 @@ def doit(sarglist, conn, stdout=None, stderr=None):
     send_message(output)
 
     if show_help and not secret:
-        ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] [%s] stopped, because User has no read/write permissions' % (os.getppid(), os.getpid()))
+        log.debug('daemon [%s] [%s] stopped, because User has no read/write permissions', os.getppid(), os.getpid())
         sys.exit(0)
 
 

@@ -33,7 +33,7 @@
 """|UDM| module for network objects"""
 
 import ipaddress
-import traceback
+from logging import getLogger
 
 import ldap
 from ldap.filter import filter_format
@@ -43,10 +43,10 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.modules
 import univention.admin.uexceptions
-import univention.debug as ud
 from univention.admin.layout import Group, Tab
 
 
+log = getLogger('ADMIN')
 translation = univention.admin.localization.translation('univention.admin.handlers.networks')
 _ = translation.translate
 
@@ -226,7 +226,7 @@ class object(univention.admin.handlers.simpleLdap):
             try:
                 self.lo.modify(computer.dn, [('univentionNetworkLink', self.dn.encode('UTF-8'), b'')])
             except (univention.admin.uexceptions.base, ldap.LDAPError):
-                ud.debug(ud.ADMIN, ud.ERROR, 'Failed to remove network %s from %s: %s' % (self.dn, computer.dn, traceback.format_exc()))
+                log.exception('Failed to remove network %s from %s:', self.dn, computer.dn)
 
     def _ldap_addlist(self):
         if not self['nextIp']:
@@ -278,7 +278,7 @@ class object(univention.admin.handlers.simpleLdap):
                     raise univention.admin.uexceptions.rangeInBroadcastAddress('%s-%s' % (firstIP, lastIP))
                 ipRange.append(u' '.join(i).encode('ASCII'))
 
-            ud.debug(ud.ADMIN, ud.INFO, 'old Range: %s' % self.oldinfo.get('ipRange'))
+            log.debug('old Range: %s', self.oldinfo.get('ipRange'))
             ml = [x for x in ml if x[0] != 'univentionIpRange']
             ml.append(('univentionIpRange', self.oldattr.get('univentionIpRange', [b'']), ipRange))
 

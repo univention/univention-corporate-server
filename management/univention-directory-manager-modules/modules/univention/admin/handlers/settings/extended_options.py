@@ -32,12 +32,15 @@
 
 """|UDM| module for extended options"""
 
+from logging import getLogger
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Group, Tab
-from univention.debug import ADMIN, INFO, debug
 
+
+log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
@@ -164,7 +167,7 @@ class object(univention.admin.handlers.simpleLdap):
                 if key.startswith('univentionUDMOptionTranslation%s;entry-' % transKey)
             ]
 
-            debug(ADMIN, INFO, 'extended_option: added translations for %s: %s' % (transKey, translations))
+            log.debug('extended_option: added translations for %s: %s', transKey, translations)
             self['translation%s' % transKey] = translations
 
         self.save()

@@ -41,11 +41,14 @@ from __future__ import print_function
 
 import sys
 from argparse import ArgumentParser
+from logging import getLogger
 
 import ldap
 
 import univention.config_registry
-import univention.debug as ud
+
+
+log = getLogger('ADMIN')
 
 
 class ConsistencyError(Exception):
@@ -94,7 +97,7 @@ def process_groups(lo, base_dn, test=False, cont=False):
     for grp_dn, grp_attrs in groups:
         old = set(grp_attrs.get('memberUid', ()))
 
-        ud.debug(ud.ADMIN, ud.PROCESS, 'Group: %s' % grp_dn)
+        log.info('Group: %s', grp_dn)
         new = set()
         member_dns = grp_attrs.get('uniqueMember', ())
         for uniqueMember in member_dns:
@@ -102,11 +105,11 @@ def process_groups(lo, base_dn, test=False, cont=False):
             try:
                 result = lo.search_s(uniqueMember, ldap.SCOPE_BASE, '(objectclass=*)')
             except ldap.NO_SUCH_OBJECT as ex:
-                ud.debug(ud.ADMIN, ud.WARN, 'searching %s failed: %s' % (uniqueMember, ex))
+                log.warning('searching %s failed: %s', uniqueMember, ex)
                 print('WARNING: DN %s not found' % uniqueMember, file=sys.stderr)
                 continue
             if not result:
-                ud.debug(ud.ADMIN, ud.WARN, 'empty result for uniqueMember %s' % uniqueMember)
+                log.warning('empty result for uniqueMember %s', uniqueMember)
                 print('WARNING: empty result for uniqueMember %s' % uniqueMember, file=sys.stderr)
                 continue
             _, uniqueMemberAttrs = result[0]
@@ -115,9 +118,9 @@ def process_groups(lo, base_dn, test=False, cont=False):
                 new.add(uniqueMemberUid[0])
 
         if old != new:
-            ud.debug(ud.ADMIN, ud.INFO, '  members: %s' % member_dns)
-            ud.debug(ud.ADMIN, ud.INFO, '  old memberUid: %s' % old)
-            ud.debug(ud.ADMIN, ud.INFO, '  new memberUid: %s' % new)
+            log.debug('  members: %s', member_dns)
+            log.debug('  old memberUid: %s', old)
+            log.debug('  new memberUid: %s', new)
             if test:
                 print('Group:', grp_dn)
                 continue
@@ -126,7 +129,7 @@ def process_groups(lo, base_dn, test=False, cont=False):
                 try:
                     lo.modify_s(grp_dn, [(ldap.MOD_ADD, 'memberUid', add)])
                 except ldap.LDAPError as ex:
-                    ud.debug(ud.ADMIN, ud.ERROR, 'adding memberUid entries failed: %s' % ex)
+                    log.error('adding memberUid entries failed: %s', ex)
                     if not cont:
                         raise ConsistencyError()
             remove = list(old - new)
@@ -134,7 +137,7 @@ def process_groups(lo, base_dn, test=False, cont=False):
                 try:
                     lo.modify_s(grp_dn, [(ldap.MOD_DELETE, 'memberUid', remove)])
                 except ldap.LDAPError as ex:
-                    ud.debug(ud.ADMIN, ud.ERROR, 'removing memberUid entries failed: %s' % ex)
+                    log.error('removing memberUid entries failed: %s', ex)
                     if not cont:
                         raise ConsistencyError()
 

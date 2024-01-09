@@ -34,12 +34,15 @@
 
 from __future__ import absolute_import
 
+from logging import getLogger
 from typing import Any, Dict, List, Optional, Tuple, Union  # noqa: F401
 
 import ldap
 
 import univention.admin.modules
-import univention.debug as ud
+
+
+log = getLogger('ADMIN')
 
 
 def module(object):
@@ -253,7 +256,7 @@ def getPolicyReference(object, policy_type):
         for m in univention.admin.modules.identify(policy_dn, object.lo.get(policy_dn)):
             if univention.admin.modules.name(m) == policy_type:
                 policyReference = policy_dn
-    ud.debug(ud.ADMIN, ud.INFO, 'getPolicyReference: returning: %s' % policyReference)
+    log.debug('getPolicyReference: returning: %s', policyReference)
     return policyReference
 
 
@@ -273,7 +276,7 @@ def removePolicyReference(object, policy_type):
             if univention.admin.modules.name(m) == policy_type:
                 remove = policy_dn
     if remove:
-        ud.debug(ud.ADMIN, ud.INFO, 'removePolicyReference: removing reference: %s' % remove)
+        log.debug('removePolicyReference: removing reference: %s', remove)
         object.policies.remove(remove)
 
 
@@ -289,12 +292,12 @@ def replacePolicyReference(object, policy_type, new_reference):
 
     module = univention.admin.modules.get(policy_type)
     if not univention.admin.modules.recognize(module, new_reference, object.lo.get(new_reference)):
-        ud.debug(ud.ADMIN, ud.INFO, 'replacePolicyReference: error.')
+        log.debug('replacePolicyReference: error.')
         return
 
     removePolicyReference(object, policy_type)
 
-    ud.debug(ud.ADMIN, ud.INFO, 'replacePolicyReference: appending reference: %s' % new_reference)
+    log.debug('replacePolicyReference: appending reference: %s', new_reference)
     object.policies.append(new_reference)
 
 

@@ -33,6 +33,7 @@
 """|UDM| module for printers"""
 
 import re
+from logging import getLogger
 
 from ldap.filter import filter_format
 
@@ -42,9 +43,10 @@ import univention.admin.localization
 import univention.admin.syntax
 import univention.admin.uexceptions
 import univention.admin.uldap
-import univention.debug as ud
 from univention.admin.layout import Group, Tab
 
+
+log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.shares')
 _ = translation.translate
@@ -222,7 +224,7 @@ class object(univention.admin.handlers.simpleLdap):
         univention.admin.handlers.simpleLdap.open(self)
         if self['model']:
             models = univention.admin.modules.get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']]))
-            ud.debug(ud.ADMIN, ud.INFO, "printermodel: %s" % str(models))
+            log.debug("printermodel: %s", models)
             if not models or len(models) > 1:
                 self['producer'] = []
             else:
