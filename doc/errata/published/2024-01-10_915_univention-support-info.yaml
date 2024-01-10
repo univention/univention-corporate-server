@@ -10,3 +10,6 @@ desc: |
    `/var/log/apt/history.log` are now also fetched in a Univention Support
    Information archive.
 bug: [56962]
+erratum: 915
+announced: 2024-01-10
+support: core
