@@ -58,13 +58,143 @@ run_descr = ['Checks SAML certificates']
 
 
 def run(_umc_instance: Instance, rerun: bool = False) -> None:
+    keycloak_fqdn = ucr.get('keycloak/server/sso/fqdn')
+    sso_fqdn = ucr.get('ucs/server/sso/fqdn')
+    umc_saml_idp = ucr.get('umc/saml/idp-server')
+    # keycloak
+    if keycloak_fqdn and 'realms/ucs/protocol/saml/descriptor' in umc_saml_idp:
+        run_keycloak(_umc_instance, keycloak_fqdn, rerun)
+    # simplesaml -> can be removed in 5.2
+    elif sso_fqdn:
+        run_simplesamlphp(_umc_instance, sso_fqdn, rerun)
+
+
+def run_keycloak(_umc_instance: Instance, sso_fqdn: str, rerun: bool = False) -> None:
     problems: List[str] = []
     buttons: List[Dict[str, str]] = []
     links: List[Dict[str, str]] = []
     umc_modules: List[Dict[str, str]] = []
 
     idp = False
-    for problem in test_identity_provider_certificate():
+    for problem in test_identity_provider_certificate_keycloak(sso_fqdn):
+        idp = True
+        kwargs = problem.kwargs
+        problems.append(kwargs["description"])
+        buttons += kwargs.get("buttons", [])
+        links += kwargs.get("links", [])
+        umc_modules += kwargs.get("umc_modules", [])
+
+    if idp and not rerun:
+        problems.append(_(
+            "Re-execute the join-script <tt>92univention-management-console-web-server</tt> via {join} "
+            "or execute <tt>univention-run-join-scripts --force --run-scripts 92univention-management-console-web-server</tt> on the command line as user <i>root</i>.",
+        ))
+        buttons.append({
+            "action": "fix_idp",
+            "label": _("Re-run join script"),
+        })
+        umc_modules.append({
+            "module": "join",
+            # /univention/command/join/run
+            # {"options":{"scripts":["92univention-management-console-web-server"],"force":true}}
+        })
+
+    if problems:
+        raise Critical(
+            description="\n".join(problems),
+            buttons=buttons,
+            links=links,
+            umc_modules=umc_modules,
+        )
+
+
+def test_identity_provider_certificate_keycloak(sso_fqdn: str) -> Iterator[Problem]:
+    """
+    Check that all IDP certificates from :file:`/usr/share/univention-management-console/saml/idp/*.xml`
+    are included in :url:`https:/$(ucr get ucs/server/sso/fqdn)/simplesamlphp/saml2/idp/certificate`.
+
+    Fix: ``univention-run-join-scripts --force --run-scripts 92univention-management-console-web-server``
+    """
+    MODULE.process("Checks sso certificate by comparing 'ucr get keycloak/server/sso/fqdn' with the Location field in %s" % (XML,))
+
+    backend = default_backend()
+    certificate = None
+
+    url = "https://%s/realms/ucs/protocol/saml/descriptor" % (sso_fqdn,)
+    links = {
+        "name": 'idp',
+        "href": url,
+        "label": url,
+    }
+
+    try:
+        res = requests.get(url, headers={'host': sso_fqdn}, verify=False)  # required for SNI since Python 2.7.9 / 3.4  # noqa: S501
+        data = res.content.decode("utf-8")
+    except requests.exceptions.ConnectionError as exc:
+        yield Critical(
+            description=_("Failed to load certificate {{idp}}: {exc}").format(exc=exc),
+            links=[links],
+        )
+
+    try:
+        metadata_dom = fromstring(data)
+        der_cert = metadata_dom.find(X509CERT).text
+        certificate = x509.load_der_x509_certificate(b64decode(der_cert), backend)
+        MODULE.process("Looking for certificate %s" % (certificate.subject,))
+    except (ValueError, AttributeError, TypeError) as exc:
+        yield Critical(
+            description=_("Failed to load certificate {{idp}}: {exc}").format(exc=exc),
+            links=[links],
+        )
+
+    # compare this with /usr/share/univention-management-console/saml/idp/*.xml
+    if certificate:
+        for idp in glob.glob(XML):
+            try:
+                tree = parse(idp)
+            except OSError as exc:
+                yield Critical(
+                    description=_("Failed to load certificate {cert!r}: {exc}").format(cert=idp, exc=exc),
+                )
+                continue
+
+            root = tree.getroot()
+            nodes = root.findall(X509CERT)
+            if not nodes:
+                yield Critical(
+                    description=_("Failed to find any certificate in {cert!r}").format(cert=idp),
+                )
+                continue
+
+            for node in nodes:  # FIXME: currently only KeyDescriptor/@use="signing" relevant
+                text = node.text
+                der = b64decode(text)
+                try:
+                    cert = x509.load_der_x509_certificate(der, backend)
+                    MODULE.process("Found certificate %s in %s" % (cert.subject, idp))
+                except ValueError as exc:
+                    yield Critical(
+                        description=_("Failed to load certificate {cert!r}: {exc}").format(cert=idp, exc=exc),
+                    )
+                    continue
+
+                if cert == certificate:
+                    break
+            else:
+                yield Critical(
+                    description=_("The SAML identity provider certificate {cert!r} is missing in {{idp}}.").format(cert=idp),
+                    links=[links],
+                )
+
+
+def run_simplesamlphp(_umc_instance: Instance, sso_fqdn: str, rerun: bool = False) -> None:
+    problems: List[str] = []
+    buttons: List[Dict[str, str]] = []
+    links: List[Dict[str, str]] = []
+    umc_modules: List[Dict[str, str]] = []
+
+    idp = False
+    for problem in test_identity_provider_certificate(sso_fqdn):
         idp = True
         kwargs = problem.kwargs
         problems.append(kwargs["description"])
@@ -128,17 +258,14 @@ def run(_umc_instance: Instance, rerun: bool = False) -> None:
         )
 
 
-def test_identity_provider_certificate() -> Iterator[Problem]:
+def test_identity_provider_certificate(sso_fqdn: str) -> Iterator[Problem]:
     """
     Check that all IDP certificates from :file:`/usr/share/univention-management-console/saml/idp/*.xml`
     are included in :url:`https:/$(ucr get ucs/server/sso/fqdn)/simplesamlphp/saml2/idp/certificate`.
 
     Fix: ``univention-run-join-scripts --force --run-scripts 92univention-management-console-web-server``
     """
-    sso_fqdn = ucr.get('ucs/server/sso/fqdn')
     MODULE.process("Checks ucs-sso by comparing 'ucr get ucs/server/sso/fqdn' with the Location field in %s" % (XML,))
-    if not sso_fqdn:
-        return
 
     backend = default_backend()
 

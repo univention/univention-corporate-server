@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-12-11 13:12+0000\n"
+"POT-Creation-Date: 2024-01-11 10:41+0100\n"
 "PO-Revision-Date: 2023-03-13 15:12+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -83,8 +83,8 @@ msgstr "Alle SIDs existieren und die Namen sind konsistent."
 msgid "All SSL certificates valid."
 msgstr "Alle SSL Zertifikate sind gültig."
 
-#: umc/python/diagnostic/plugins/54_sources_list_check.py:45
 #: umc/python/diagnostic/plugins/31_file_permissions.py:50
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:45
 msgid "All files ok."
 msgstr "Alle Dateien in Ordnung."
 
@@ -221,7 +221,7 @@ msgstr "Überprüfe die Nameserver Einträge der DNS Zonen"
 msgid "Check of the protocol version of the Univention Directory Notifier"
 msgstr "Überprüfung der Protokollversion des Univention Directory Notifier"
 
-#: umc/python/diagnostic/plugins/59_ldap_server_name.py:41
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:43
 msgid "Check primary LDAP server"
 msgstr "Überprüfung des primären LDAP-Servers"
 
@@ -256,8 +256,8 @@ msgstr ""
 msgid "Cleanup of deprecated variables is executed !"
 msgstr "Die Korrektur der veralteten Variablen wird ausgeführt !"
 
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:83
 #: umc/python/diagnostic/plugins/05_check_ldap_master.py:84
-#: umc/python/diagnostic/plugins/59_ldap_server_name.py:81
 msgid "Deactivate test"
 msgstr "Test deaktivieren"
 
@@ -277,25 +277,34 @@ msgstr "Es wurden Fehler durch `univention-check-templates` gefunden."
 msgid "Errors occurred while running `kinit` or `nsupdate`."
 msgstr "Fehler traten auf bei der Ausführung von `kinit` oder `nsupdate`."
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:189
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:165
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:316
 msgid "Failed to find any certificate in {cert!r}"
 msgstr "Konnte kein Zertifikat in {cert!r} finden"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:260
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:387
 #, python-brace-format
 msgid "Failed to find any certificate in {{{link}}}"
 msgstr "Konnte kein Zertifikat in {{{link}}} finden"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:181
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:201
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:236
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:245
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:157
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:177
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:308
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:328
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:363
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:372
 msgid "Failed to load certificate {cert!r}: {exc}"
 msgstr "Zertifikat {cert!r} konnte nicht geladen werden: {exc}"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:160
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:170
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:273
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:135
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:146
+#, python-brace-format
+msgid "Failed to load certificate {{idp}}: {exc}"
+msgstr "Zertifikat {{idp}} konnte nicht geladen werden: {exc}"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:287
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:297
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:400
 #, python-brace-format
 msgid "Failed to load certificate {{{link}}}: {exc}"
 msgstr "Zertifikat {{{link}}} konnte nicht geladen werden: {exc}"
@@ -410,7 +419,7 @@ msgid "If these settings are correct the problem relies in the gateway itself:"
 msgstr ""
 "Wenn diese Einstellungen richtig sind liegt das Problem im Gateway selbst:"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:101
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:231
 msgid ""
 "If you renewed your certificates please see {sdb-one} and {sdb-all} for more "
 "instructions. In that case the new certificate must be re-uploaded into LDAP."
@@ -628,8 +637,8 @@ msgstr ""
 "({estring})."
 
 #: umc/python/diagnostic/plugins/66_udm_country_remap_from_st_to_c.py:58
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
 #: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:54
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:53
 #, python-brace-format
 msgid "Output of `{cmd}`:"
 msgstr "Ausgabe von `{cmd}`:"
@@ -713,7 +722,8 @@ msgstr "Proxy-Server-Fehler"
 msgid "RFC 1123 - 2.1 Host Names and Numbers"
 msgstr "RFC 1123 - 2.1 Rechernamen und Nummern"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:77
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:89
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:207
 #, python-brace-format
 msgid ""
 "Re-execute the join-script <tt>92univention-management-console-web-server</"
@@ -726,11 +736,12 @@ msgstr ""
 "92univention-management-console-web-server</tt> auf der Befehlszeile as "
 "Benutzer <i>root</i> aus."
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:82
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:94
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:212
 msgid "Re-run join script"
 msgstr "Join-Skript erneut ausführen."
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:119
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:249
 msgid "Re-upload certificate"
 msgstr "Zertifikat erneut hochladen"
 
@@ -877,12 +888,16 @@ msgstr ""
 "Die LDAP-Schema-Validierung ist mit den folgenden Fehlern oder Warnungen "
 "fehlgeschlagen:\n"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:209
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:185
+msgid "The SAML identity provider certificate {cert!r} is missing in {{idp}}."
+msgstr "Das SAML Identity Providers Zertifikat {cert!r} fehlt in {{idp}}."
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:336
 msgid ""
 "The SAML identity provider certificate {cert!r} is missing in {{{link}}}."
 msgstr "Das SAML Identity Providers Zertifikat {cert!r} fehlt in {{{link}}}."
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:282
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:409
 msgid ""
 "The SAML identity provider certificate {{{link}}} does not match the local "
 "certificate {loc!r}."
@@ -1017,7 +1032,7 @@ msgstr ""
 "Der primäre LDAP-Server dieses Systems (UCR ldap/master) ist nicht auf den "
 "Primary Directory Node der UCS Umgebung konfiguriert (%s)."
 
-#: umc/python/diagnostic/plugins/59_ldap_server_name.py:83
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:85
 #, python-format, python-brace-format
 msgid ""
 "The primary LDAP Server of this System (UCR ldap/server/name) is set to the "
@@ -1234,7 +1249,7 @@ msgstr "Univention S4 Connector ist nicht installiert."
 msgid "Univention Support Database - Bind: zone transfer failed"
 msgstr "Univention Support Database - Bind: Zonentransfer fehlgeschlagen"
 
-#: umc/python/diagnostic/plugins/59_ldap_server_name.py:49
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:51
 msgid ""
 "Univention Support Database - Change the primary LDAP Server to redistribute "
 "the server load"
@@ -1258,12 +1273,12 @@ msgstr "Univention Support Database - Wie mit S4-Connector Konflikten umgehen"
 msgid "Univention Support Database - Manually trigger server password change"
 msgstr "Univention Support Database - Serverpasswortänderung manuell auslösen"
 
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:238
 #: umc/python/diagnostic/plugins/02_certificate_check.py:58
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:108
 msgid "Univention Support Database - Renewing the TLS/SSL certificates"
 msgstr "Univention Support Database - Erneuern der TLS/SSL-Zertifikate"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:113
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:243
 msgid ""
 "Univention Support Database - Renewing the complete TLS/SSL certificate chain"
 msgstr ""

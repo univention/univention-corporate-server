@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.7-4) unstable; urgency=medium
+
+  * Bug #55976: support keycloak in diagnostic check 04_saml_certificate_check
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Feb 2024 09:15:04 +0100
+
 univention-management-console-module-diagnostic (6.0.7-3) unstable; urgency=medium
 
   * Bug #57038: Add check for permissions of slapd.conf
