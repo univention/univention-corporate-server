@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.7-4) unstable; urgency=medium
+
+  * Bug #55324: use univention.logging
+
+ -- Florian Best <best@univention.de>  Wed, 10 Jan 2024 17:47:17 +0100
+
 univention-directory-manager-rest (10.0.7-3) unstable; urgency=medium
 
   * Bug #54338: reload UDM REST API logfiles after logrotation
