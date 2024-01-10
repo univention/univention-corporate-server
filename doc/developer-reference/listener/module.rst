@@ -13,7 +13,7 @@ variables and functions must be declared at the module level.
 .. code:: python
 
    description : str = "Module description"
-   filter : str = "(objectClass=*)"
+   filter : str = "(!(objectClass=lock))"
    attributes : List[str] = ["objectClass"]
    modrdn : str = "1"
 
