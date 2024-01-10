@@ -6,12 +6,8 @@ src: exim4
 fix: 4.92-8+deb10u9
 desc: |
  This update addresses the following issue:
- 4.92-8+deb10u9 (Thu, 04 Jan 2024 21:07:16 +0100)
- * Non-maintainer upload by the LTS team.
- * Fix CVE-2023-51766: It was discovered that Exim, a mail transport agent,
-   can be induced to accept a second message embedded as part of the body of a
-   first message in certain configurations where PIPELINING or CHUNKING on
-   incoming connections is offered.
+ * CVE-2023-51766: SMTP smuggling in certain `PIPELINING` and `CHUNKING`
+   configurations.
 bug: [56968]
 cve:
 - CVE-2023-51766
