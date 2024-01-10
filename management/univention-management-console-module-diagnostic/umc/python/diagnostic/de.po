@@ -1224,3 +1224,9 @@ msgid "to correct these settings and delete the obsolete variables."
 msgstr ""
 "um die Konfiguration zu korrigieren und die überflüssigen Variablen zu "
 "löschen."
+
+msgid "The SAML identity provider certificate {cert!r} is missing in {{idp}}."
+msgstr "Das SAML Identity Providers Zertifikat {cert!r} fehlt in {{idp}}."
+
+msgid "Failed to load certificate {{idp}}: {exc}"
+msgstr "Zertifikat {{idp}} konnte nicht geladen werden: {exc}"
