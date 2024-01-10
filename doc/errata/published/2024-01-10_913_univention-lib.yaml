@@ -9,3 +9,6 @@ desc: |
  * A memory leak in the UDM REST API has been fixed, which was caused by not
    discarding unused weak references in the `univention.lib.i18n.Translation`.
 bug: [56420]
+erratum: 913
+announced: 2024-01-10
+support: core
