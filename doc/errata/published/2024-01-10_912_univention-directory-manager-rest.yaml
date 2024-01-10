@@ -9,3 +9,6 @@ desc: |
  * After log rotating logfiles of the UDM REST API, the service is reloaded
    so that it logs into the new files.
 bug: [54338]
+erratum: 912
+announced: 2024-01-10
+support: core
