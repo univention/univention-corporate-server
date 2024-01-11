@@ -2771,6 +2771,7 @@ def init_keycloak_ucs(opt):
     ldap_federation_payload = {
         "name": DEFAULT_USER_STORAGE_PROVIDER_NAME,
         "providerId": DEFAULT_USER_STORAGE_PROVIDER_ID,
+        "providerType": "org.keycloak.storage.UserStorageProvider",
         "parentId": get_realm_id(kc_admin, opt.realm),
         "config": {
             "pagination": ["true"],
@@ -2809,8 +2810,6 @@ def init_keycloak_ucs(opt):
             "batchSizeForSync": ["1000"],
         },
     }
-
-    print(f"{ldap_federation_payload}")
 
     # find existing ldap provider or just create if none exists
     ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload, force=opt.force)
