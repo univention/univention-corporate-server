@@ -50,6 +50,7 @@ extensions = [
     "sphinx_copybutton",
     "sphinxcontrib.bibtex",
     "sphinx.ext.intersphinx",
+    "sphinx_inline_tabs",
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
