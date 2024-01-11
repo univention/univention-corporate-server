@@ -318,7 +318,10 @@ class LevelDependentFormatter(logging.Formatter):
         try:
             self._fmt = self._level_to_format_mapping[record.levelno]
         except KeyError:
-            self._fmt = self._level_to_format_mapping[_map_ud_to_level(_map_level_to_ud(record.levelno))]
+            try:
+                self._fmt = self._level_to_format_mapping[_map_ud_to_level(_map_level_to_ud(record.levelno))]
+            except KeyError:
+                self._fmt = self._level_to_format_mapping[logging.NOTSET]
         if self.log_pid:
             self._fmt = self._fmt.replace('%(message)s', '%(process)s: %(message)s')
         if self._style is not None:
