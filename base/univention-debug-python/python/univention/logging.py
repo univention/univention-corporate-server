@@ -226,8 +226,6 @@ def basicConfig(
     >>> logger = logging.getLogger('ADMIN').getChild(__name__)
     >>> logger.info('some info')
     """
-    kwargs.pop('stream', None)
-    kwargs.setdefault('handlers', [logging.NullHandler()])
     categories = univention_debug_categories or list(_UD_CATEGORIES.values())
 
     if isinstance(univention_debug_flush, bool):
@@ -251,13 +249,6 @@ def basicConfig(
             logger.univention_debug_handler.delay_init = delay_init
             logger.univention_debug_handler._init_args = (filename, univention_debug_flush, univention_debug_function)
 
-    klass = logging.getLoggerClass()
-    logging.setLoggerClass(Logger)
-    try:
-        logging.basicConfig(**kwargs)
-    finally:
-        logging.setLoggerClass(klass)
-
 
 class Logger(logging.Logger):
     """
@@ -268,6 +259,7 @@ class Logger(logging.Logger):
 
     def __init__(self, name, level=logging.NOTSET, log_pid=False, **kwargs):
         super(Logger, self).__init__(name, level=level)
+        self.propagate = False
         self.univention_debug_category = getattr(ud, kwargs.get('univention_debug_category', name))
         self.univention_debug_handler = handler = DebugHandler(self.univention_debug_category, **kwargs)
         self._formatter = LevelDependentFormatter(log_pid=log_pid)
