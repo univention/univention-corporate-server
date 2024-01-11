@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-10 15:35+0200\n"
-"PO-Revision-Date: 2023-10-10 15:37+0200\n"
+"POT-Creation-Date: 2024-01-15 13:17+0100\n"
+"PO-Revision-Date: 2024-01-15 13:19+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -2602,10 +2602,177 @@ msgstr ""
 "sein (entweder direkt oder über eine der Gruppen)."
 
 #: ../../ip-config/radius.rst:101
+msgid "MAC Authentication Bypass with computer objects"
+msgstr "MAC Authentication Bypass für Computerobjekte"
+
+#: ../../ip-config/radius.rst:103
+msgid ""
+"MAC Authentication Bypass (MAB) is a proprietary extension to 802.1X and "
+"addresses devices that don't support 802.1X authentication, such as "
+"network printers or wireless phones. MAB is an option that allows such "
+"devices to authenticate with the network using their MAC address as "
+"username and password."
+msgstr ""
+"MAC Authentication Bypass (MAB) ist eine proprietäre Erweiterung von "
+"802.1X und richtet sich an Geräte, die die 802.1X-Authentifizierung nicht"
+" unterstützen, wie z. B. Netzwerkdrucker oder drahtlose Telefone. MAB ist"
+" eine Option, die es solchen Geräten ermöglicht, sich mit ihrer MAC-"
+"Adresse als Benutzernamen und Passwort an einem Netzwerk zu "
+"authentifizieren."
+
+#: ../../ip-config/radius.rst:109
+msgid ""
+"This section describes how to use a device's MAC address for "
+"authentication and assign them a VLAN to the corresponding network "
+"infrastructure through MAB. To activate MAC Authentication Bypass, set "
+"the |UCSUCRV| :envvar:`freeradius/conf/allow-mac-address-authentication` "
+"to ``true``."
+msgstr ""
+"Dieser Abschnitt beschreibt, wie Sie die MAC-Adresse eines Geräts zur "
+"Authentifizierung verwenden und ihm über MAB ein VLAN der entsprechenden "
+"Netzwerkinfrastruktur zuweisen. Um MAC Authentication Bypass zu "
+"aktivieren, setzen Sie die |UCSUCRV| :envvar:`freeradius/conf/allow-mac-"
+"address-authentication` auf ``true``."
+
+#: ../../ip-config/radius.rst:116
+msgid ""
+"Activating :envvar:`freeradius/conf/allow-mac-address-authentication` "
+"ignores the |UCSUCRV| :envvar:`radius/mac/whitelisting` and the checkbox "
+"*Allow network access* at both on the computer object and in the group "
+"setting."
+msgstr ""
+"Die Aktivierung von :envvar:`freeradius/conf/allow-mac-address-authentication` "
+"ignoriert die |UCSUCRV| :envvar:`radius/mac/whitelisting` und das "
+"Kontrollkästchen *Netzwerkzugriff zulassen*, sowohl auf dem Computerobjekt als "
+"auch in der Gruppeneinstellung."
+
+#: ../../ip-config/radius.rst:123
+msgid ""
+"To assign the VLAN ID to a computer, you need to add it to the group of "
+"the computer object with the respective VLAN ID. In the UCS management "
+"system, follow these steps:"
+msgstr ""
+"Um einem Computer die VLAN-ID zuzuweisen, müssen Sie ihn zur Gruppe des "
+"Computerobjekts hinzufügen, dass die entsprechende VLAN ID hat. Gehen Sie"
+" im UCS-Managementsystem wie folgt vor: "
+
+#: ../../ip-config/radius.rst:127
+msgid "Open :menuselection:`Devices --> Computers`."
+msgstr "Öffnen Sie :menuselection:`Geräte --> Computer`."
+
+#: ../../ip-config/radius.rst:129
+msgid "Click the computer object to edit."
+msgstr "Klicken Sie das Computerobjekt, das Sie bearbeiten möchten."
+
+#: ../../ip-config/radius.rst:131
+msgid "Go to :menuselection:`Advanced settings --> Groups`."
+msgstr "Gehen Sie zu :menuselection:`Erweiterte Einstellungen --> Gruppen`."
+
+#: ../../ip-config/radius.rst:133
+msgid ""
+"To add a group with VLAN IDs, click :guilabel:`+ ADD`, select ``Virtual "
+"LAN ID`` from the *Object property* drop-down, and activate the "
+"appropriate group to add it."
+msgstr ""
+"Um eine Gruppe mit VLAN-IDs hinzuzufügen, klicken Sie auf "
+":guilabel:`ADD`, wählen Sie ``Virtual LAN ID`` aus der Dropdown-Liste "
+"*Objekteigenschaft* und aktivieren Sie die entsprechende Gruppe, um sie "
+"hinzuzufügen."
+
+#: ../../ip-config/radius.rst:137
+msgid ""
+"To save, click :guilabel:`ADD` in the *Add objects* dialog and "
+":guilabel:`SAVE` in the *Advanced settings*."
+msgstr ""
+"Um zu speichern, klicken Sie auf :guilabel:`HINZUFÜGEN` im *Objekte "
+"hinzufügen* Dialog und :guilabel:`SAVE` in *Erweiterte Einstellungen*."
+
+#: ../../ip-config/radius.rst:142
+msgid ""
+"To assign the VLAN ID to a user group, you need to add it to the user "
+"group settings. In the UCS management system, follow these steps:"
+msgstr ""
+"Um die VLAN-ID einer Benutzergruppe zuzuweisen, müssen Sie sie zu den "
+"Benutzergruppeneinstellungen hinzufügen. Führen Sie im UCS-"
+"Managementsystem die folgenden Schritte aus:"
+
+#: ../../ip-config/radius.rst:145
+msgid "Open :menuselection:`Users --> Groups`."
+msgstr "Öffnen Sie :menuselection:`Benutzer --> Gruppen`."
+
+#: ../../ip-config/radius.rst:147
+msgid "Click the user group object to edit or create a new user group."
+msgstr ""
+"Klicken Sie die Benutzergruppe zum Bearbeiten oder erstellen Sie eine "
+"neue Benutzergruppe."
+
+#: ../../ip-config/radius.rst:149
+msgid "Go to :menuselection:`RADIUS`."
+msgstr "Gehen Sie zu :menuselection:`RADIUS`."
+
+#: ../../ip-config/radius.rst:151
+msgid "Enter the VLAN ID as number into the field *Virtual LAN ID*."
+msgstr "Geben Sie die VLAN ID as Zahl in das Feld *Virtual LAN ID*."
+
+#: ../../ip-config/radius.rst:153
+msgid "To save, click :guilabel:`SAVE`."
+msgstr "Zum Speichern, klicken Sie :guilabel:`SPEICHERN`."
+
+#: ../../ip-config/radius.rst:155
+msgid ""
+"If a computer object has assigned several groups with VLAN IDs, UCS "
+"selects the VLAN ID with the lowest number and assigns it. To configure a"
+" default VLAN ID, set it as value to the |UCSUCRV| :envvar:`freeradius"
+"/vlan-id`."
+msgstr ""
+"Wenn einem Computerobjekt mehrere Gruppen mit VLAN-IDs zugeordnet sind, "
+"wählt UCS die VLAN-ID mit der niedrigsten Nummer aus und weist sie zu. Um"
+" eine Standard VLAN-ID zu konfigurieren, setzen Sie diese als Wert in die"
+" |UCSUCRV| :envvar:`freeradius/vlan-id`."
+
+#: ../../ip-config/radius.rst:160
+msgid ""
+"After you completed the configuration, the Radius server returns the "
+"assigned VLAN ID to requests with the given MAC address."
+msgstr ""
+"Nachdem Sie die Konfiguration abgeschlossen haben, gibt der Radius-Server"
+" die zugewiesene VLAN-ID an Anfragen mit der angegebenen MAC-Adresse "
+"zurück."
+
+#: ../../ip-config/radius.rst:165
+msgid ""
+"You must provide the MAC address in the correct format. UCS stores the "
+"MAC address in the LDAP directory as lowercase string with the colon "
+"(``:``) as separator, for example ``00:00:5e:00:53:00``."
+msgstr ""
+"Sie müssen die MAC-Adresse im korrekten Format angeben. UCS speichert die"
+" MAC-Adresse im LDAP-Verzeichnis als Zeichenkette in Kleinbuchstaben mit "
+"dem Doppelpunkt (``:``) als Trennzeichen, zum Beispiel "
+"``00:00:5e:00:53:00``."
+
+#: ../../ip-config/radius.rst:169
+msgid ""
+"If the network infrastructure provides a different format, you can often "
+"reconfigure the format. For example, for Cisco switches, you can use "
+"``mab request format attribute 1 groupsize 2 separator : lowercase`` as "
+"described in `Configurable MAB Username iand Password "
+"<https://www.cisco.com/c/en/us/td/docs/ios-"
+"xml/ios/sec_usr_aaa/configuration/15-e/sec-usr-aaa-15-e-book/sec-usr-"
+"config-mab-usrname-pwd.html>`_."
+msgstr ""
+"Wenn die Netzwerkinfrastruktur ein anderes Format vorsieht, können Sie "
+"das Format häufig neu konfigurieren. Für Cisco-Switches können Sie zum "
+"Beispiel ``mab request format attribute 1 groupize 2 separator : "
+"lowercase`` verwenden, wie in `Configurable MAB Username iand Password "
+"<https://www.cisco.com/c/en/us/td/docs/ios- "
+"xml/ios/sec_usr_aaa/configuration/15-e/sec-usr-aaa-15-e-book/sec-usr- "
+"config-mab-usrname-pwd.html>`_ beschrieben."
+
+#: ../../ip-config/radius.rst:180
 msgid "Access point administration"
 msgstr "Access Points verwalten"
 
-#: ../../ip-config/radius.rst:103
+#: ../../ip-config/radius.rst:182
 msgid ""
 "All access points must be known to the RADIUS server. An access point can"
 " either be configured in the file "
@@ -2622,13 +2789,13 @@ msgstr ""
 "werden (Zum Beispiel über den Befehl :command:`makepasswd`.). Der Name "
 "kann frei gewählt werden."
 
-#: ../../ip-config/radius.rst:109
+#: ../../ip-config/radius.rst:188
 msgid "Example entry for an access point:"
 msgstr ""
 "Beispiel für einen Eintrag eines Access Points in der "
 ":file:`clients.conf` Datei:"
 
-#: ../../ip-config/radius.rst:111
+#: ../../ip-config/radius.rst:190
 msgid ""
 "client AP01 {\n"
 "    secret = a9RPAeVG\n"
@@ -2640,7 +2807,7 @@ msgstr ""
 "    ipaddr = 192.0.2.101\n"
 "}"
 
-#: ../../ip-config/radius.rst:118
+#: ../../ip-config/radius.rst:197
 msgid ""
 "To configure an access point using the UMC module :guilabel:`Computers` "
 "create or select a computer object and activate the *RADIUS-"
@@ -2662,7 +2829,7 @@ msgstr ""
 "Eigenschaften *NAS-Type* und Virtueller Server müssen in der Regel nicht "
 "verändert werden."
 
-#: ../../ip-config/radius.rst:126
+#: ../../ip-config/radius.rst:205
 msgid ""
 "Access points that are configured via the UMC module "
 ":guilabel:`Computers` are available to all RADIUS servers in the domain. "
@@ -2680,19 +2847,19 @@ msgstr ""
 "dies verzögert (etwa 15 Sekunden). Neue *Access Points* haben erst nach "
 "diesem Neustart Zugriff auf den RADIUS-Server."
 
-#: ../../ip-config/radius.rst:139
+#: ../../ip-config/radius.rst:218
 msgid "RADIUS option"
 msgstr "Setzen der RADIUS-Option"
 
-#: ../../ip-config/radius.rst:146
+#: ../../ip-config/radius.rst:225
 msgid "RADIUS authenticator options"
 msgstr "*RADIUS-Authenticator* Optionen"
 
-#: ../../ip-config/radius.rst:151
+#: ../../ip-config/radius.rst:230
 msgid "Access point and client configuration"
 msgstr "RADIUS an einem Computerobjekt einstellen"
 
-#: ../../ip-config/radius.rst:153
+#: ../../ip-config/radius.rst:232
 msgid ""
 "The access points must then be configured to use 802.1x (\"WPA "
 "Enterprise\") authentication. And the *RADIUS server* address should be "
@@ -2707,7 +2874,7 @@ msgstr ""
 " des ``secret`` aus dem Eintrag in der :file:`clients.conf` für den "
 "Access Point gesetzt sein."
 
-#: ../../ip-config/radius.rst:158
+#: ../../ip-config/radius.rst:237
 msgid ""
 "Wireless clients have to be configured to use *WPA* with *PEAP* and "
 "*MSCHAPv2* for authentication."
@@ -2715,11 +2882,11 @@ msgstr ""
 "WLAN Clients müssen so konfiguriert sein, dass sie *WPA* mit *PEAP* und "
 "*MSCHAPv2* für die Authentisierung verwenden."
 
-#: ../../ip-config/radius.rst:164
+#: ../../ip-config/radius.rst:243
 msgid "VLAN IDs"
 msgstr "VLAN IDs"
 
-#: ../../ip-config/radius.rst:166
+#: ../../ip-config/radius.rst:245
 msgid ""
 "Virtual Local Area Networks (VLANs) can be used to separate the traffic "
 "of users at the network level. UCS can be configured to return a VLAN ID "
@@ -2734,7 +2901,7 @@ msgstr ""
 "<3580>` zurück gibt. Weitere Informationen finden Sie in :ref:`computers-"
 "network-complex-vlan`."
 
-#: ../../ip-config/radius.rst:171
+#: ../../ip-config/radius.rst:250
 msgid ""
 "The VLAN ID for a user can be configured by assigning the user to a group"
 " with a VLAN ID."
@@ -2742,11 +2909,11 @@ msgstr ""
 "Die VLAN-ID für einen Benutzer kann konfiguriert werden, indem der "
 "Benutzer einer Gruppe mit einer VLAN-ID zugewiesen wird."
 
-#: ../../ip-config/radius.rst:178
+#: ../../ip-config/radius.rst:257
 msgid "Assigning VLAN ID to a user group"
 msgstr "Zuweisung VLAN ID zu einer Benutzergruppe"
 
-#: ../../ip-config/radius.rst:180
+#: ../../ip-config/radius.rst:259
 msgid ""
 "A default VLAN ID can be configured in the |UCSUCRV| :envvar:`freeradius"
 "/vlan-id`. This default VLAN ID will be returned if the user is not a "
@@ -2760,11 +2927,11 @@ msgstr ""
 "Antwort wird keine VLAN-ID enthalten, wenn der Benutzer nicht Mitglied "
 "einer Gruppe mit VLAN-ID ist und keine Standard VLAN-ID definiert ist."
 
-#: ../../ip-config/radius.rst:188
+#: ../../ip-config/radius.rst:267
 msgid "Debugging"
 msgstr "Fehlersuche"
 
-#: ../../ip-config/radius.rst:190
+#: ../../ip-config/radius.rst:269
 msgid ""
 "The :program:`RADIUS` app has a log file under "
 ":file:`/var/log/univention/radius_ntlm_auth.log`. The log verbosity can "
@@ -2778,7 +2945,7 @@ msgstr ""
 ":envvar:`freeradius/auth/helper/ntlm/debug` steuern. Der :program"
 ":`FreeRADIUS-Server` loggt nach :file:`/var/log/freeradius/radius.log`."
 
-#: ../../ip-config/radius.rst:196
+#: ../../ip-config/radius.rst:275
 msgid ""
 "The tool :program:`univention-radius-check-access` can be used to "
 "evaluate the current access policy for a given user and/or station ID "
@@ -2791,7 +2958,7 @@ msgstr ""
 " dem Server ausgeführt werden, wo das Paket :program:`univention-radius` "
 "installiert ist:"
 
-#: ../../ip-config/radius.rst:201
+#: ../../ip-config/radius.rst:280
 msgid ""
 "root@primary211:~# univention-radius-check-access --username=stefan\n"
 "DENY 'uid=stefan,cn=users,dc=ucs,dc=example'\n"
@@ -2811,7 +2978,7 @@ msgstr ""
 "-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=example'\n"
 "Thus access is DENIED."
 
-#: ../../ip-config/radius.rst:212
+#: ../../ip-config/radius.rst:291
 msgid ""
 "root@primary211:~# univention-radius-check-access --username=janek\n"
 "DENY 'uid=janek,cn=users,dc=ucs,dc=example'\n"
@@ -2837,7 +3004,7 @@ msgstr ""
 "Thus access is ALLOWED.\n"
 "root@primary211:~#"
 
-#: ../../ip-config/radius.rst:226
+#: ../../ip-config/radius.rst:305
 msgid ""
 "It prints a detailed explanation and sets the exit code depending on the "
 "result of the access check (``0`` for *access granted*, ``1`` for *access"
