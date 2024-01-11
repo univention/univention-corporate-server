@@ -250,6 +250,12 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Configures the debug level or verbosity for logging messages of FreeRADIUS.
    For more information, see :ref:`ip-config-radius-debugging`.
 
+.. envvar:: freeradius/conf/allow-mac-address-authentication
+
+   Configures if Radius allows the MAC address as username and password for 802.1X authentication.
+   Default value is ``false``.
+   For more information, see :ref:`ip-config-radius-configuration-mab`.
+
 
 .. envvar:: freeradius/vlan-id
 

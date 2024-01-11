@@ -95,6 +95,85 @@ can be enabled by setting the |UCSUCRV| :envvar:`radius/mac/whitelisting` to
 the LDAP attribute ``macAddress`` and the resulting computer object must have
 network access granted (either directly or via one of its groups), too.
 
+.. _ip-config-radius-configuration-mab:
+
+MAC Authentication Bypass with computer objects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MAC Authentication Bypass (MAB) is a proprietary extension to 802.1X
+and addresses devices that don't support 802.1X authentication,
+such as network printers or wireless phones.
+MAB is an option that allows such devices to authenticate with the network
+using their MAC address as username and password.
+
+This section describes how to use a device's MAC address for authentication
+and assign them a VLAN to the corresponding network infrastructure through MAB.
+To activate MAC Authentication Bypass, set the |UCSUCRV|
+:envvar:`freeradius/conf/allow-mac-address-authentication` to ``true``.
+
+.. important::
+
+   Activating :envvar:`freeradius/conf/allow-mac-address-authentication`
+   ignores the |UCSUCRV| :envvar:`radius/mac/whitelisting`
+   and the checkbox *Allow network access*
+   at both on the computer object and in the group setting.
+
+.. tab:: Assign VLAN ID to computer
+
+   To assign the VLAN ID to a computer,
+   you need to add it to the group of the computer object with the respective VLAN ID.
+   In the UCS management system, follow these steps:
+
+   #. Open :menuselection:`Devices --> Computers`.
+
+   #. Click the computer object to edit.
+
+   #. Go to :menuselection:`Advanced settings --> Groups`.
+
+   #. To add a group with VLAN IDs, click :guilabel:`+ ADD`,
+      select ``Virtual LAN ID`` from the *Object property* drop-down,
+      and activate the appropriate group to add it.
+
+   #. To save, click :guilabel:`ADD` in the *Add objects* dialog
+      and :guilabel:`SAVE` in the *Advanced settings*.
+
+.. tab:: Assign VLAN ID to user group
+
+   To assign the VLAN ID to a user group, you need to add it to the user group settings.
+   In the UCS management system, follow these steps:
+
+   #. Open :menuselection:`Users --> Groups`.
+
+   #. Click the user group object to edit or create a new user group.
+
+   #. Go to :menuselection:`RADIUS`.
+
+   #. Enter the VLAN ID as number into the field *Virtual LAN ID*.
+
+   #. To save, click :guilabel:`SAVE`.
+
+If a computer object has assigned several groups with VLAN IDs,
+UCS selects the VLAN ID with the lowest number and assigns it.
+To configure a default VLAN ID, set it as value to the |UCSUCRV|
+:envvar:`freeradius/vlan-id`.
+
+After you completed the configuration,
+the Radius server returns the assigned VLAN ID to requests with the given MAC address.
+
+.. important::
+
+   You must provide the MAC address in the correct format. UCS stores the MAC
+   address in the LDAP directory as lowercase string with the colon (``:``) as
+   separator, for example ``00:00:5e:00:53:00``.
+
+   If the network infrastructure provides a different format,
+   you can often reconfigure the format.
+   For example, for Cisco switches, you can use ``mab request format attribute 1 groupsize 2 separator : lowercase``
+   as described in
+   `Configurable MAB Username iand Password
+   <https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_aaa/configuration/15-e/sec-usr-aaa-15-e-book/sec-usr-config-mab-usrname-pwd.html>`_.
+
+
 .. _ip-config-radius-configuration-access-points-registration:
 
 Access point administration
