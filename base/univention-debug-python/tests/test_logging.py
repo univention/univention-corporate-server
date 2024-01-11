@@ -83,7 +83,7 @@ def test_logging_basic_config(tmplog, parse):
     logger.setLevel(logging.DEBUG)
     logger.reopen()
     logger.debug('test_debug')
-    logger.setLevel(logging.NOTSET)
+    logger.setLevel(logging.NOTSET + 1)
     logger.log(1, 'test ultra debug')
 
     output = tmplog.read()
