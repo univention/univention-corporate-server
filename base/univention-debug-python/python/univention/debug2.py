@@ -118,12 +118,20 @@ _map_id_old2new = {
 }
 
 
-# 13.08.08 13:13:57.123  LISTENER    ( ERROR   ) : listener: 1
-# 13.08.08 13:13:57.123  LISTENER    ( WARN    ) : received signal 2
-# 13.08.08 13:14:02.123  DEBUG_INIT
+# 13.08.2008 13:13:57.123  LISTENER    ( ERROR   ) : listener: 1
+# 13.08.2008 13:13:57.123  LISTENER    ( WARN    ) : received signal 2
+# 13.08.2008 13:14:02.123  DEBUG_INIT
 _outfmt = '%(asctime)s.%(msecs)03d %(name)-11s (%(levelname)-7s): %(message)s'
 _outfmt_syslog = '%(name)-11s (%(levelname)-7s): %(message)s'
 _datefmt = '%d.%m.%Y %H:%M:%S'
+
+
+class _Formatter(logging.Formatter):
+    def format(self, record):
+        if record.name.startswith('ud2.'):
+            record.name = record.name.split('.', 1)[-1]
+        return super(_Formatter, self).format(record)
+
 
 _logfilename = None
 _handler_console = None
@@ -151,14 +159,15 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
     _logfilename = logfile
 
     # create root logger
+    null_handler = logging.NullHandler()
     logging.basicConfig(
         level=logging.DEBUG,
-        filename='/dev/null',  # disabled
+        handlers=[null_handler],  # disabled
         format=_outfmt,
         datefmt=_datefmt,
     )
 
-    formatter = logging.Formatter(_outfmt, _datefmt)
+    formatter = _Formatter(_outfmt, _datefmt)
     exit()
     if logfile in ('stderr', '/dev/stderr', 'stdout', '/dev/stdout'):
         # add stderr or stdout handler
@@ -166,6 +175,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
         _handler_console.setLevel(logging.DEBUG)
         _handler_console.setFormatter(formatter)
         logging.getLogger('').addHandler(_handler_console)
+        logging.getLogger('').removeHandler(null_handler)
         result = _handler_console.stream
     else:
         try:
@@ -174,6 +184,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
             _handler_file.setLevel(logging.DEBUG)
             _handler_file.setFormatter(formatter)
             logging.getLogger('').addHandler(_handler_file)
+            logging.getLogger('').removeHandler(null_handler)
             result = _handler_file.stream
         except EnvironmentError as ex:
             print('opening %s failed: %s' % (logfile, ex))
@@ -193,7 +204,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
     logging.addLevelName(15, 'ALL')
     logging.addLevelName(100, '------')
 
-    logging.getLogger('MAIN').log(100, 'DEBUG_INIT')
+    logging.getLogger('ud2').getChild('MAIN').log(100, 'DEBUG_INIT')
 
     _do_flush = force_flush
     _enable_function = enable_function
@@ -205,7 +216,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 def exit():
     """Close debug logfile."""
     global _handler_console, _handler_file
-    logging.getLogger('MAIN').log(100, 'DEBUG_EXIT')
+    logging.getLogger('ud2').getChild('MAIN').log(100, 'DEBUG_EXIT')
     if _handler_console:
         logging.getLogger('').removeHandler(_handler_console)
         _handler_console = None
@@ -217,7 +228,7 @@ def exit():
 
 def reopen():
     """Close and re-open the debug logfile."""
-    logging.getLogger('MAIN').log(100, 'DEBUG_REINIT')
+    logging.getLogger('ud2').getChild('MAIN').log(100, 'DEBUG_REINIT')
     init(_logfilename, _do_flush, _enable_function, _enable_syslog)
 
 
@@ -273,7 +284,7 @@ def debug(category, level, message, utf8=True):
     new_id = _map_id_old2new.get(category, 'MAIN')
     if level <= _logger_level[new_id]:
         new_level = _map_lvl_old2new[level]
-        logging.getLogger(new_id).log(new_level, message)
+        logging.getLogger('ud2').getChild(new_id).log(new_level, message)
         _flush()
 
 
@@ -298,13 +309,13 @@ class function(object):
         warn('univention.debug2.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning, stacklevel=2)
         self.fname = fname
         if _enable_function:
-            logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.fname)
+            logging.getLogger('ud2').getChild('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.fname)
             _flush()
 
     def __del__(self):
         """Log the end of function."""
         if _enable_function:
-            logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.fname)
+            logging.getLogger('ud2').getChild('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.fname)
             _flush()
 
 
@@ -346,7 +357,7 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
                     ),
             ) if with_args else '...'
 
-            logger = logging.getLogger('MAIN')
+            logger = logging.getLogger('ud2').getChild('MAIN')
             logger.log(100, 'UNIVENTION_DEBUG_BEGIN : %s(%s): ...', fname, _args)
             _flush()
             try:
