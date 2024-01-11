@@ -74,6 +74,7 @@ URL_ADMIN_REQUIRED_ACTIONS = URL_ADMIN_REALM + "/authentication/required-actions
 URL_ADMIN_REQUIRED_ACTION_REGISTER = URL_ADMIN_REALM + "/authentication/register-required-action"
 DEFAULT_EXTENTIONS = ["password", "ldapmapper", "self-service"]
 DEFAULT_USER_STORAGE_PROVIDER_NAME = "ldap-provider"
+DEFAULT_USER_STORAGE_PROVIDER_ID = "ldap"
 KERBEROS_KEYTAB_PATH = "/var/lib/univention-appcenter/apps/keycloak/conf/keycloak.keytab"
 LEGACY_APP_AUTHORIZATION_NAME = "flow with legacy app authorization"
 LOGIN_LINKS = 12
@@ -314,6 +315,9 @@ class ExtService(object):
         params = {"providerId": alias, "name": name}
         mapper = self._kc_admin.get_components(params)
         if not mapper:
+            # Shouldn't the providerId be "ldap" and not "ldap-provider"?
+            # If so, you should use DEFAULT_USER_STORAGE_PROVIDER_NAME, DEFAULT_USER_STORAGE_PROVIDER_ID
+            # instead and also output them in the `raise RuntimeError` part
             params = {"providerId": "ldap-provider", "name": "ldap-provider"}
             parent = self._realm_components(realm, params)
             if not parent:
@@ -849,6 +853,7 @@ def create_SAML_client(opt):
     }]
     client_payload_saml = {
         "clientId": client_id,
+        "name": opt.name,
         "surrogateAuthRequired": False,
         "enabled": not opt.not_enabled,
         "alwaysDisplayInConsole": False,
@@ -1193,7 +1198,8 @@ def get_client_secret(opt):
     print("Obtaining secret for client ...")
 
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    # What is the benefit of providing `opt.realm` in the line above when it's being hardcoded here, I've commented it out as I think it's a bug.
+    #kc_admin.realm_name = "ucs"
 
     print(kc_admin.get_client_secrets(kc_admin.get_client_id(opt.client_name)))
 
@@ -1339,6 +1345,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_saml_parser_subparser.add_argument("--metadata-url", help="download metadata xml from this url (to extract endpoints) and use as clientId (issuer)")
     create_saml_parser_subparser.add_argument("--client-id", help="clientId (issuer) for this SAML client)")
     create_saml_parser.add_argument("--metadata-file")
+    create_saml_parser.add_argument("--name", default=None, help="Display name in Keycloak UI")
     create_saml_parser.add_argument("--umc-uid-mapper", action="store_true")
     create_saml_parser.add_argument("--role-mapping-single-value", action="store_true")
     create_saml_parser.add_argument("--assertion-consumer-url-post", default=None)
@@ -1485,6 +1492,15 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     init_parser.add_argument("--default-locale", required=no_ucr_available, default=ucr.get("locale/default"))
     init_parser.add_argument("--check-init-done", help="only check if init has been already executed", default=False, action="store_true")
     init_parser.add_argument("--force", help="force rerun of the keycloak initialization", default=False, action="store_true")
+    # In the K8s deployment we have a hen-egg problem and must initialize Keycloak without the UMS being available
+    init_parser.add_argument("--no-saml-assertion-request", action='store_true', default=False, help="Disables the dynamic request for the UCS SAML assertion and generates the required URLs based on a predefined schema (https://<umc-saml-sp-server>/univention/saml/[metadata|slo/]). Helps if UCS is not available when setting up Keycloak.")
+    # Support to configure (was hardcoded using StartTLS before):
+    init_parser.add_argument("--no-starttls", action='store_true', default=False, help="Disables the usage of StartTLS in the communication with the LDAP server, unencrypted traffic will be used.")
+    # Support to configure (was hardcoded forcing Kerberos before):
+    init_parser.add_argument("--no-kerberos", action='store_true', default=False, help="Disables the Kerberos support on the LDAP user federation.")
+    # Support the option from the `create_saml_parser` here as well
+    init_parser.add_argument("--frontchannel-logout-off", default=False, action="store_true", help="Switch off frontchannelLogout")
+
     init_parser.set_defaults(func=init_keycloak_ucs)
 
     kerberos_config = subparsers.add_parser("kerberos-config", help="LDAP federation Kerberos configuration")
@@ -2100,7 +2116,8 @@ def create_adhoc_idp(opt):
     print("Creating ad hoc federation identity provider...")
     # realm config
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    # What is the benefit of providing `opt.realm` in the line above when it's being hardcoded here, I've commented it out as I think it's a bug.
+    #kc_admin.realm_name = "ucs"
 
     metadata_info = extract_metadata(opt.metadata_url, opt.no_ssl_verify)
 
@@ -2250,7 +2267,9 @@ def enable_2fa(opt):
 
     # realm config
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    # What is the benefit of providing `opt.realm` in the line above when it's being hardcoded here, I've commented it out as I think it's a bug.
+    #kc_admin.realm_name = "ucs"
+
     realm_2fa_role = "2FA role"
     ldap_2fa_group = opt.group_2fa  # FIXME: Check group to use for 2FA
 
@@ -2261,7 +2280,7 @@ def enable_2fa(opt):
     mapper_id = add_or_replace_ldap_group_mapper(opt, kc_admin, provider, "univention-groups", ldap_2fa_group)
 
     # Synchronize LDAP groups to Keycloak
-    kc_admin.raw_post(f'/admin/realms/ucs/user-storage/{provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak', data={})
+    kc_admin.raw_post(f'/admin/realms/{quote(opt.realm, safe="")}/user-storage/{quote(provider_id, safe="")}/mappers/{quote(mapper_id, safe="")}/sync?direction=fedToKeycloak', data={})
 
     create_realm_role(kc_admin, opt.realm, realm_2fa_role)
     create_realm_group(kc_admin, opt.realm, ldap_2fa_group)  # FIXME: This could be removed if we only use UDM groups
@@ -2596,7 +2615,8 @@ def create_adhoc_flow(opt):
 
     # realm config
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    # What is the benefit of providing `opt.realm` in the line above when it's being hardcoded here, I've commented it out as I think it's a bug.
+    #kc_admin.realm_name = "ucs"
 
     payload_authflow = {
         "newName": "Univention-Authenticator ad hoc federation flow",
@@ -2720,30 +2740,42 @@ def init_keycloak_ucs(opt):
     kc_admin.create_realm(payload=realm_payload, skip_exists=True)
 
     # create portal saml client
-    opt.metadata_url = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
-    opt.metadata_file = None
-    opt.umc_uid_mapper = True  # TODO: get rid of this, replace with reading it from the XML metadata
+    # We really want to have an identifying name for the SAML SP as
+    # all other components get names and can be identified by these.
+    # That should be mandatory anyway.
+    opt.name = "UMC"
+    opt.description = "Univention Management Console"
     opt.single_logout_service_url_post = None
     opt.assertion_consumer_url_post = None
-    opt.frontchannel_logout_off = None
+    opt.valid_redirect_uris = None
+    opt.metadata_url = None
+
+    if opt.no_saml_assertion_request:
+      opt.client_id = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
+      opt.single_logout_service_url_post = f"https://{opt.umc_saml_sp_server}/univention/saml/slo/"
+      opt.assertion_consumer_url_post = f"https://{opt.umc_saml_sp_server}/univention/saml/"
+      opt.valid_redirect_uris = [opt.assertion_consumer_url_post]
+    else:
+       opt.metadata_url = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
+    opt.metadata_file = None
+    opt.umc_uid_mapper = True  # TODO: get rid of this, replace with reading it from the XML metadata
+    # No longer required as this option is set on commandline with a default that enabled FLO
+    # opt.frontchannel_logout_off = True
     opt.name_id_format = None
     opt.idp_initiated_sso_url_name = None
-    opt.description = "Univention Management Console"
-    opt.valid_redirect_uris = None
     opt.not_enabled = False
     opt.policy_url = None
     create_SAML_client(opt)
 
     # user federation ldap provider payload
     ldap_federation_payload = {
-        "name": "ldap-provider",
-        "providerId": "ldap",
-        "providerType": "org.keycloak.storage.UserStorageProvider",
+        "name": DEFAULT_USER_STORAGE_PROVIDER_NAME,
+        "providerId": DEFAULT_USER_STORAGE_PROVIDER_ID,
         "parentId": get_realm_id(kc_admin, opt.realm),
         "config": {
             "pagination": ["true"],
             "fullSyncPeriod": ["-1"],
-            "startTls": ["true"],
+            "startTls": ["false" if opt.no_starttls else "true"],
             "connectionPooling": ["true"],
             "usersDn": [opt.ldap_base],
             "cachePolicy": ["MAX_LIFESPAN"],
@@ -2757,7 +2789,7 @@ def init_keycloak_ucs(opt):
             "usernameLDAPAttribute": ["uid"],
             "vendor": ["other"],
             "uuidLDAPAttribute": ["entryUUID"],
-            "allowKerberosAuthentication": ["true"],
+            "allowKerberosAuthentication": ["false" if opt.no_kerberos else "true"],
             "kerberosRealm": [opt.kerberos_realm],
             "serverPrincipal": [f"HTTP/{opt.keycloak_fqdn}@{opt.kerberos_realm}"],
             "keyTab": [KERBEROS_KEYTAB_PATH],
@@ -2777,6 +2809,8 @@ def init_keycloak_ucs(opt):
             "batchSizeForSync": ["1000"],
         },
     }
+
+    print(f"{ldap_federation_payload}")
 
     # find existing ldap provider or just create if none exists
     ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload, force=opt.force)
