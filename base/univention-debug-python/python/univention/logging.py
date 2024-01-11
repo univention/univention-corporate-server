@@ -65,12 +65,12 @@ _LEVEL_MAPPING = {
 _UD_LEVEL_MAPPING = {v: k for k, v in _LEVEL_MAPPING.items()}
 
 _LEVEL_TO_FORMAT_MAPPING = {
-    logging.NOTSET: "%(module)s.%(funcName)s:%(lineno)d: %(prefix)s%(message)s",
-    logging.DEBUG: "%(prefix)s%(message)s",
-    logging.INFO: "%(prefix)s%(message)s",
-    logging.WARNING: "%(prefix)s%(message)s",
-    logging.ERROR: "%(prefix)s%(message)s",
-    logging.CRITICAL: "%(prefix)s%(message)s",
+    logging.NOTSET: "%(pid)s%(module)s.%(funcName)s:%(lineno)d: %(prefix)s%(message)s",
+    logging.DEBUG: "%(pid)s%(prefix)s%(message)s",
+    logging.INFO: "%(pid)s%(prefix)s%(message)s",
+    logging.WARNING: "%(pid)s%(prefix)s%(message)s",
+    logging.ERROR: "%(pid)s%(prefix)s%(message)s",
+    logging.CRITICAL: "%(pid)s%(prefix)s%(message)s",
 }
 
 _UD_CATEGORIES = {
@@ -313,17 +313,22 @@ class LevelDependentFormatter(logging.Formatter):
         self._level_to_format_mapping[level] = fmt
 
     def format(self, record):
-        if not hasattr(record, 'prefix'):
-            record.prefix = ''
         try:
-            self._fmt = self._level_to_format_mapping[record.levelno]
+            fmt = self._level_to_format_mapping[record.levelno]
         except KeyError:
             try:
-                self._fmt = self._level_to_format_mapping[_map_ud_to_level(_map_level_to_ud(record.levelno))]
+                fmt = self._level_to_format_mapping[_map_ud_to_level(_map_level_to_ud(record.levelno))]
             except KeyError:
-                self._fmt = self._level_to_format_mapping[logging.NOTSET]
+                fmt = self._level_to_format_mapping[logging.NOTSET]
+
+        record.pid = ''
         if self.log_pid:
-            self._fmt = self._fmt.replace('%(message)s', '%(process)s: %(message)s')
+            record.pid = '%s: ' % (record.process,)
+
+        if not hasattr(record, 'prefix'):
+            record.prefix = ''
+
+        self._fmt = fmt
         if self._style is not None:
             self._style._fmt = self._fmt
         return super(LevelDependentFormatter, self).format(record)
