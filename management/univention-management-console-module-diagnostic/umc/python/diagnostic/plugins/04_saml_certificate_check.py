@@ -128,7 +128,7 @@ def test_identity_provider_certificate_keycloak(sso_fqdn: str) -> Iterator[Probl
     }
 
     try:
-        res = requests.get(url, headers={'host': sso_fqdn}, verify=False)  # required for SNI since Python 2.7.9 / 3.4  # noqa: S501
+        res = requests.get(url)
         data = res.content.decode("utf-8")
     except requests.exceptions.ConnectionError as exc:
         yield Critical(
