@@ -1,3 +1,9 @@
+ucs-test (10.0.20-42) unstable; urgency=medium
+
+  * Bug #57001: added 05_univention-keycloak.py::test_init_with_parameters
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Feb 2024 10:59:06 +0100
+
 ucs-test (10.0.20-41) unstable; urgency=medium
 
   * Bug #57046: create a test for the UMC Ldap Directory module

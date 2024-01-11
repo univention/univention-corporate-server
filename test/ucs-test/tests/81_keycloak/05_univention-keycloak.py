@@ -8,6 +8,7 @@ import json
 import os
 
 import pytest
+from keycloak.exceptions import KeycloakGetError
 from utils import run_command
 
 from univention.testing.strings import random_int, random_string
@@ -179,3 +180,24 @@ def test_login_links():
                         existing_links[number]['reference'],
                     ],
                 )
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_init_with_parameters(random_string, keycloak_admin_connection):
+    realm_name = random_string()
+    try:
+        cmd = ['univention-keycloak', '--realm', realm_name, 'init', '--no-kerberos', '--no-starttls', '--frontchannel-logout-off']
+        run_command(cmd)
+        cmd = ['univention-keycloak', 'realms', 'get', '--all', '--json']
+        realms = json.loads(run_command(cmd))
+        realm = next(x for x in realms if x['id'] == realm_name)
+        assert realm['realm'] == realm_name
+        keycloak_admin_connection.realm_name = realm_name
+        provider = keycloak_admin_connection.get_components(query={'type': 'org.keycloak.storage.UserStorageProvider', 'name': 'ldap-provider'})[0]
+        assert provider['config']['startTls'] == ['false']
+        assert provider['config']['allowKerberosAuthentication'] == ['false']
+    finally:
+        try:
+            keycloak_admin_connection.delete_realm(realm_name=realm_name)
+        except KeycloakGetError:
+            pass

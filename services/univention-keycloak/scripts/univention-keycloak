@@ -73,6 +73,7 @@ URL_ADMIN_REQUIRED_ACTIONS = URL_ADMIN_REALM + "/authentication/required-actions
 URL_ADMIN_REQUIRED_ACTION_REGISTER = URL_ADMIN_REALM + "/authentication/register-required-action"
 DEFAULT_EXTENTIONS = ["password", "ldapmapper", "self-service"]
 DEFAULT_USER_STORAGE_PROVIDER_NAME = "ldap-provider"
+DEFAULT_USER_STORAGE_PROVIDER_ID = "ldap"
 KERBEROS_KEYTAB_PATH = "/var/lib/univention-appcenter/apps/keycloak/conf/keycloak.keytab"
 LEGACY_APP_AUTHORIZATION_NAME = "flow with legacy app authorization"
 LOGIN_LINKS = 12
@@ -313,10 +314,10 @@ class ExtService(object):
         params = {"providerId": alias, "name": name}
         mapper = self._kc_admin.get_components(params)
         if not mapper:
-            params = {"providerId": "ldap-provider", "name": "ldap-provider"}
+            params = {"providerId": DEFAULT_USER_STORAGE_PROVIDER_ID, "name": DEFAULT_USER_STORAGE_PROVIDER_NAME}
             parent = self._realm_components(realm, params)
             if not parent:
-                raise RuntimeError("ldap-provider with name ldap is not found")
+                raise RuntimeError("Ldap provider with name " + DEFAULT_USER_STORAGE_PROVIDER_NAME + "is not found.")
 
             payload = {
                 "name": name,
@@ -406,18 +407,83 @@ def get_realm_id(kc_client, name):
     return realm_info[0]["id"]
 
 
-def extract_endpoints_xml(metadata_url, metadata_file, no_ssl_verify):
+def update_saml_metadata_from_xml(metadata_url, payload, metadata_file, no_ssl_verify):
+    # TODO: just upload the XML to keycloak instead of parsing it here
     if not metadata_file:
         xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
     else:
         with open(metadata_file) as fd:
             xml_content = fd.read().strip()
-    saml_descriptor_xml = ElementTree.fromstring(xml_content)
-    logout_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService').attrib["Location"]
-    acs_endpoint = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService').attrib["Location"]
+    try:
+        saml_descriptor_xml = ElementTree.fromstring(xml_content)
+    except ElementTree.ParseError as exc:
+        print("ERROR: Could not parse XML: %s Content:\n%s" % (exc, xml_content), file=sys.stderr)
+        sys.exit(1)
 
-    endpoints = {"logout": logout_endpoint, "acs": acs_endpoint}
-    return endpoints
+    attribs = payload.setdefault('attributes', {})
+    valid_redirect_urls = payload.setdefault("redirectUris", [])
+    logout_post = [x.attrib["Location"] for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService') if x.attrib.get('Binding') == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']
+    if logout_post:
+        attribs["saml_single_logout_service_url_post"] = logout_post[0]  # keycloak can only handle one url
+        valid_redirect_urls.extend(logout_post)
+    logout_redirect = [x.attrib["Location"] for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}SingleLogoutService') if x.attrib.get('Binding') == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
+    if logout_redirect:
+        attribs["saml_single_logout_service_url_redirect"] = logout_redirect[0]  # keycloak can only handle one url
+        valid_redirect_urls.extend(logout_redirect)
+    attribs["post.logout.redirect.uris"] = '+'
+
+    acs_endpoints = [x.attrib for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService') if x.attrib.get('Binding') == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']
+    if acs_endpoints:
+        attribs["saml_assertion_consumer_url_post"] = sorted(acs_endpoints, key=lambda x: int(x.get('index', '-1')))[0]['Location']
+        valid_redirect_urls.extend(x['Location'] for x in acs_endpoints)
+    acs_endpoints = [x.attrib for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}AssertionConsumerService') if x.attrib.get('Binding') == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
+    if acs_endpoints:
+        attribs["saml_assertion_consumer_url_redirect"] = sorted(acs_endpoints, key=lambda x: int(x.get('index', '-1')))[0]['Location']
+        valid_redirect_urls.extend(x['Location'] for x in acs_endpoints)
+
+    name_id_formats = {
+        'urn:oasis:names:tc:SAML:2.0:nameid-format:transient': 'transient',
+        'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent': 'persistent',
+        'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress': 'email',
+        'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified': 'username',
+    }
+    name_id_format = [name_id_formats[x.text] for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}NameIDFormat')]
+    if name_id_format:
+        attribs["saml_name_id_format"] = name_id_format[0]  # keycloak can only handle one NameID Format
+        attribs["saml_force_name_id_format"] = "true"
+
+    name = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}ServiceName')
+    if name is not None and name.text:
+        payload['name'] = name.text
+
+    description = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}ServiceDescription')
+    if description is not None and description.text:
+        payload['description'] = description.text
+
+    name_formats = {
+        'urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified': 'Unspecified',
+        'urn:oasis:names:tc:SAML:2.0:attrname-format:uri': 'URI Reference',
+        'urn:oasis:names:tc:SAML:2.0:attrname-format:basic': 'Basic',
+        # 'urn:oasis:names:tc:SAML:2.0:attrname-format:emailAddress': '',  # doesn't exist in keycloak
+    }
+    protocol_mappers = []
+    for ldap_attribute in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}RequestedAttribute'):
+        if ldap_attribute.attrib.get('isRequired') != 'true' and 'FriendlyName' not in ldap_attribute.attrib:
+            continue
+        friendly_name = ldap_attribute.attrib['FriendlyName']
+        protocol_mappers.append({
+            "name": f"{friendly_name}_mapper",
+            "protocol": "saml",
+            "protocolMapper": "saml-user-attribute-mapper",
+            "consentRequired": False,
+            "config": {
+                "attribute.name": ldap_attribute.attrib['Name'],
+                "attribute.nameformat": name_formats[ldap_attribute.attrib['NameFormat']],
+                "friendly.name": friendly_name,
+                "user.attribute": friendly_name,
+            },
+        })
+    payload["protocolMappers"] = protocol_mappers
 
 
 def get_realms(opt: Namespace) -> None:
@@ -754,6 +820,8 @@ def update_client(opt: Namespace) -> None:
     session = UniventionKeycloakAdmin(opt)
     clientid = session.get_client_id(opt.clientid)
     payload = json.loads(opt.changes)
+    if opt.metadata_file:
+        update_saml_metadata_from_xml(clientid, payload, opt.metadata_file, opt.no_ssl_verify)
     session.update_client(clientid, payload)
 
 
@@ -767,18 +835,10 @@ def create_SAML_client(opt):
     print("CREATING KEYCLOAK SAML CLIENT.....")
     if opt.metadata_url:
         client_id = opt.metadata_url
-        endpoints = extract_endpoints_xml(client_id, opt.metadata_file, opt.no_ssl_verify)
     elif opt.client_id:
         client_id = opt.client_id
-        endpoints = {}
     else:
         raise NotImplementedError()
-
-    # build urls
-    single_logout_service_url_post = opt.single_logout_service_url_post or endpoints.get("logout")
-    single_logout_service_url_redirect = opt.single_logout_service_url_post or endpoints.get("logout")
-    assertion_consumer_url_post = opt.assertion_consumer_url_post or endpoints.get("acs")
-    valid_redirect_urls = [assertion_consumer_url_post]
 
     umc_uid_mapper = [{
         "name": "userid_mapper",
@@ -794,11 +854,12 @@ def create_SAML_client(opt):
     }]
     client_payload_saml = {
         "clientId": client_id,
+        "name": opt.name,
         "surrogateAuthRequired": False,
         "enabled": not opt.not_enabled,
         "alwaysDisplayInConsole": False,
         "clientAuthenticatorType": "client-secret",
-        "redirectUris": opt.valid_redirect_uris or valid_redirect_urls,
+        "redirectUris": opt.valid_redirect_uris,
         "webOrigins": [],
         "description": opt.description,
         "notBefore": 0,
@@ -827,13 +888,13 @@ def create_SAML_client(opt):
             "require.pushed.authorization.requests": "false",
             "id.token.as.detached.signature": "false",
             "saml.assertion.signature": "true",
-            "saml_single_logout_service_url_post": single_logout_service_url_post,
+            "saml_single_logout_service_url_post": opt.single_logout_service_url_post if opt.single_logout_service_url_post is not None else "",
             "saml.encrypt": "false",
-            "saml_assertion_consumer_url_post": assertion_consumer_url_post,
+            "saml_assertion_consumer_url_post": opt.assertion_consumer_url_post if opt.assertion_consumer_url_post is not None else "",
             "saml.server.signature": "true",
             "exclude.session.state.from.auth.response": "false",
             "saml.artifact.binding": "false",
-            "saml_single_logout_service_url_redirect": single_logout_service_url_redirect,
+            "saml_single_logout_service_url_redirect": opt.single_logout_service_url_redirect if opt.single_logout_service_url_redirect is not None else "",
             "saml_force_name_id_format": "false",
             "tls.client.certificate.bound.access.tokens": "false",
             "acr.loa.map": "{}",
@@ -898,6 +959,8 @@ def create_SAML_client(opt):
     if opt.command == "saml/sp" and opt.client_signature_required:
         client_payload_saml["attributes"]["saml.client.signature"] = "true"
 
+    if opt.metadata_url:
+        update_saml_metadata_from_xml(client_id, client_payload_saml, opt.metadata_file, opt.no_ssl_verify)
     # log into default realm in case UCS realm doesn't exist yet
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
@@ -1174,9 +1237,7 @@ def download_cert_saml(opt):
 def get_client_secret(opt):
     print("Obtaining secret for client ...")
 
-    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
-
+    kc_admin = UniventionKeycloakAdmin(opt)
     secrets = kc_admin.get_client_secrets(kc_admin.get_client_id(opt.client_name))
     _print_json(opt.json, secrets)
 
@@ -1322,6 +1383,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_saml_parser_subparser.add_argument("--metadata-url", help="download metadata xml from this url (to extract endpoints) and use as clientId (issuer)")
     create_saml_parser_subparser.add_argument("--client-id", help="clientId (issuer) for this SAML client)")
     create_saml_parser.add_argument("--metadata-file")
+    create_saml_parser.add_argument("--name", default=None, help="Display name in Keycloak UI")
     create_saml_parser.add_argument("--umc-uid-mapper", action="store_true")
     create_saml_parser.add_argument("--role-mapping-single-value", action="store_true")
     create_saml_parser.add_argument("--assertion-consumer-url-post", default=None)
@@ -1344,6 +1406,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     update_saml_parser = operation_subparsers.add_parser("update", help="update SAML SP config")
     update_saml_parser.add_argument("clientid", help="the client ID of the SAML SP in keycloak")
     update_saml_parser.add_argument("changes", help="json representation of the client attributes to change")
+    update_saml_parser.add_argument("--metadata-file")
     update_saml_parser.set_defaults(func=update_client)
 
     # saml user attribute mapper
@@ -1451,7 +1514,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     update_oidc_parser = operation_subparsers.add_parser("update", help="update OIDC RP client")
     update_oidc_parser.add_argument("clientid", help="the client ID of the OIDC RP in keycloak")
     update_oidc_parser.add_argument("changes", help="json representation of the client attributes to change")
-    update_oidc_parser.set_defaults(func=update_client)
+    update_oidc_parser.set_defaults(func=update_client, metadata_file=None)
 
     remove_oidc_parser = operation_subparsers.add_parser("remove", help="remove OIDC RP client")
     remove_oidc_parser.add_argument("clientid", help="the client ID of the OIDC RP in keycloak")
@@ -1489,6 +1552,11 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     init_parser.add_argument("--default-locale", required=no_ucr_available, default=ucr.get("locale/default"))
     init_parser.add_argument("--check-init-done", help="only check if init has been already executed", default=False, action="store_true")
     init_parser.add_argument("--force", help="force rerun of the keycloak initialization", default=False, action="store_true")
+    init_parser.add_argument("--no-saml-assertion-request", action='store_true', default=False, help="Disables the dynamic request for the UCS SAML assertion and generates the required URLs based on a predefined schema (https://<umc-saml-sp-server>/univention/saml/[metadata|slo/]). Helps if UCS is not available when setting up Keycloak.")
+    init_parser.add_argument("--no-starttls", action='store_true', default=False, help="Disables the usage of StartTLS in the communication with the LDAP server, unencrypted traffic will be used.")
+    init_parser.add_argument("--no-kerberos", action='store_true', default=False, help="Disables the Kerberos support on the LDAP user federation.")
+    init_parser.add_argument("--frontchannel-logout-off", default=False, action="store_true", help="Switch off frontchannelLogout")
+
     init_parser.set_defaults(func=init_keycloak_ucs)
 
     kerberos_config = subparsers.add_parser("kerberos-config", help="LDAP federation Kerberos configuration")
@@ -2089,8 +2157,7 @@ def upgrade_config(opt: Namespace) -> None:
 def create_adhoc_idp(opt):
     print("Creating ad hoc federation identity provider...")
     # realm config
-    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    kc_admin = UniventionKeycloakAdmin(opt)
 
     metadata_info = extract_metadata(opt.metadata_url, opt.no_ssl_verify)
 
@@ -2239,19 +2306,19 @@ def enable_2fa(opt):
     print(f"Using KC_URL: {opt.keycloak_url}")
 
     # realm config
-    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    kc_admin = UniventionKeycloakAdmin(opt)
+
     realm_2fa_role = "2FA role"
     ldap_2fa_group = opt.group_2fa  # FIXME: Check group to use for 2FA
 
-    ldap_component_filter = {'name': 'ldap-provider', 'providerId': 'ldap'}
+    ldap_component_filter = {'name': DEFAULT_USER_STORAGE_PROVIDER_NAME, 'providerId': DEFAULT_USER_STORAGE_PROVIDER_ID}
     ldap_component_list = kc_admin.get_components(ldap_component_filter)
     provider = ldap_component_list.pop()
     provider_id = provider["id"]
     mapper_id = add_or_replace_ldap_group_mapper(opt, kc_admin, provider, "univention-groups", ldap_2fa_group)
 
     # Synchronize LDAP groups to Keycloak
-    kc_admin.raw_post(f'/admin/realms/ucs/user-storage/{provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak', data={})
+    kc_admin.raw_post(f'/admin/realms/{quote(opt.realm, safe="")}/user-storage/{quote(provider_id, safe="")}/mappers/{quote(mapper_id, safe="")}/sync?direction=fedToKeycloak', data={})
 
     create_realm_role(kc_admin, opt.realm, realm_2fa_role)
     create_realm_group(kc_admin, opt.realm, ldap_2fa_group)  # FIXME: This could be removed if we only use UDM groups
@@ -2585,8 +2652,7 @@ def create_adhoc_flow(opt):
     print(f"Using KC_URL: {opt.keycloak_url}")
 
     # realm config
-    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
-    kc_admin.realm_name = "ucs"
+    kc_admin = UniventionKeycloakAdmin(opt)
 
     payload_authflow = {
         "newName": "Univention-Authenticator ad hoc federation flow",
@@ -2710,30 +2776,39 @@ def init_keycloak_ucs(opt):
     kc_admin.create_realm(payload=realm_payload, skip_exists=True)
 
     # create portal saml client
-    opt.metadata_url = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
-    opt.metadata_file = None
-    opt.umc_uid_mapper = True
+    opt.name = "UMC"
+    opt.description = "Univention Management Console"
     opt.single_logout_service_url_post = None
+    opt.single_logout_service_url_redirect = None
     opt.assertion_consumer_url_post = None
-    opt.frontchannel_logout_off = None
+    opt.valid_redirect_uris = []
+    opt.metadata_url = None
+
+    if opt.no_saml_assertion_request:
+        opt.client_id = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
+        opt.single_logout_service_url_post = f"https://{opt.umc_saml_sp_server}/univention/saml/slo/"
+        opt.assertion_consumer_url_post = f"https://{opt.umc_saml_sp_server}/univention/saml/"
+        opt.valid_redirect_uris = [opt.assertion_consumer_url_post]
+    else:
+        opt.metadata_url = f"https://{opt.umc_saml_sp_server}/univention/saml/metadata"
+    opt.metadata_file = None
+    opt.umc_uid_mapper = True  # TODO: get rid of this, replace with reading it from the XML metadata
     opt.name_id_format = None
     opt.idp_initiated_sso_url_name = None
-    opt.description = "Univention Management Console"
-    opt.valid_redirect_uris = None
     opt.not_enabled = False
     opt.policy_url = None
     create_SAML_client(opt)
 
     # user federation ldap provider payload
     ldap_federation_payload = {
-        "name": "ldap-provider",
-        "providerId": "ldap",
+        "name": DEFAULT_USER_STORAGE_PROVIDER_NAME,
+        "providerId": DEFAULT_USER_STORAGE_PROVIDER_ID,
         "providerType": "org.keycloak.storage.UserStorageProvider",
         "parentId": get_realm_id(kc_admin, opt.realm),
         "config": {
             "pagination": ["true"],
             "fullSyncPeriod": ["-1"],
-            "startTls": ["true"],
+            "startTls": ["false" if opt.no_starttls else "true"],
             "connectionPooling": ["true"],
             "usersDn": [opt.ldap_base],
             "cachePolicy": ["MAX_LIFESPAN"],
@@ -2747,7 +2822,7 @@ def init_keycloak_ucs(opt):
             "usernameLDAPAttribute": ["uid"],
             "vendor": ["other"],
             "uuidLDAPAttribute": ["entryUUID"],
-            "allowKerberosAuthentication": ["true"],
+            "allowKerberosAuthentication": ["false" if opt.no_kerberos else "true"],
             "kerberosRealm": [opt.kerberos_realm],
             "serverPrincipal": [f"HTTP/{opt.keycloak_fqdn}@{opt.kerberos_realm}"],
             "keyTab": [KERBEROS_KEYTAB_PATH],

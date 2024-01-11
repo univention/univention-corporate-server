@@ -1,3 +1,9 @@
+univention-keycloak (1.0.10-5) unstable; urgency=medium
+
+  * Bug #57001: Add more options to `univention-keycloak init`
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Fri, 26 Jan 2024 14:53:54 +0100
+
 univention-keycloak (1.0.10-4) unstable; urgency=medium
 
   * Bug #49006: Add more required oidc/rp options
