@@ -7,5 +7,6 @@ I:0010-3: debian/postinst: copyright line seems to be outdated
 I:0010-3: debian/postrm: copyright line seems to be outdated
 I:0010-3: debian/postrm: copyright line seems to be outdated
 I:0010-3: debian/rules: copyright line seems to be outdated
+I:0010-3: spdx.py: copyright line seems to be outdated
 I:0010-3: univention-certificate-check-validity: copyright line seems to be outdated
 I:0010-3: univention-certificate: copyright line seems to be outdated
