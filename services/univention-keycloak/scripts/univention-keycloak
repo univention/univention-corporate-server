@@ -747,10 +747,7 @@ def get_clients(opt: Namespace, protocol: str | None = "openid-connect") -> None
         clients = [client for client in clients if client["clientId"] == opt.client_id]
     if not opt.all:
         clients = [x["clientId"] for x in clients]
-    if opt.json:
-        print(json.dumps(clients, indent=4))
-    else:
-        print(clients)
+    _print_json(opt.json, clients)
 
 
 def update_client(opt: Namespace) -> None:
@@ -1821,10 +1818,7 @@ def get_base_url(opt: Namespace) -> None:
     # the idea is to use this value for
     # "$BASE_URL/realms/ucs/protocol/saml" -> https://ucs-sso-ng.my.domain/realms/ucs/protocol/saml
     url = opt.keycloak_url.strip("/")
-    if opt.json:
-        print(json.dumps(url, indent=4))
-    else:
-        print(url)
+    _print_json(opt.json, url)
 
 
 def client_auth_flow(opt: Namespace) -> None:
@@ -1877,10 +1871,7 @@ def get_saml_nameid_mapper(opt: Namespace) -> None:
     mappers += session.get_mapper(opt.clientid, "univention-saml-user-attribute-nameid-mapper-base64")
     if not opt.all:
         mappers = [x["name"] for x in mappers]
-    if opt.json:
-        print(json.dumps(mappers, indent=4))
-    else:
-        print(mappers)
+    _print_json(opt.json, mappers)
 
 
 def delete_saml_user_attribute_mapper(opt: Namespace) -> None:
@@ -1910,10 +1901,7 @@ def get_saml_user_attribute_mapper(opt: Namespace) -> None:
     mappers = session.get_mapper(opt.clientid, "saml-user-attribute-mapper")
     if not opt.all:
         mappers = [x["name"] for x in mappers]
-    if opt.json:
-        print(json.dumps(mappers, indent=4))
-    else:
-        print(mappers)
+    _print_json(opt.json, mappers)
 
 
 def get_user_attribute_ldap_mapper(opt: Namespace) -> None:
@@ -1927,10 +1915,7 @@ def get_user_attribute_ldap_mapper(opt: Namespace) -> None:
         ]
     elif not opt.all:
         mappers = [x["name"] for x in mappers]
-    if opt.json:
-        print(json.dumps(mappers, indent=4))
-    else:
-        print(mappers)
+    _print_json(opt.json, mappers)
 
 
 def delete_user_attribute_ldap_mapper(opt: Namespace) -> None:
@@ -2037,8 +2022,7 @@ def domain_config(opt: Namespace) -> None:
         kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
         if opt.get:
             versions = kdc.get()
-            out = json.dumps(versions, indent=4) if opt.json else versions
-            print(out)
+            _print_json(opt.json, versions)
         if opt.set:
             kdc.set(opt.set)
         if opt.set_domain_config_version:
@@ -2070,8 +2054,7 @@ def upgrade_config(opt: Namespace) -> None:
             if LooseVersion(version) <= LooseVersion(kdc.current_version)
         ]
         if opt.get_upgrade_steps:
-            out = json.dumps(upgrade_steps, indent=4) if opt.json else upgrade_steps
-            print(out)
+            _print_json(opt.json, upgrade_steps)
             return
         # check if we are already up-to-date
         if not upgrade_steps:
