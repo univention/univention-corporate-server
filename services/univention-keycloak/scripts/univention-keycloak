@@ -944,6 +944,9 @@ def create_oidc_client(opt):
         "protocol": "openid-connect",
         "attributes": {
             "access.token.lifespan": opt.access_token_lifespan,
+            "frontchannel.logout.url": opt.frontchannel_logout_url,
+            "backchannel.logout.url": opt.backchannel_logout_url,
+            "post.logout.redirect.uris": opt.post_logout_redirect_uris,
             "saml.multivalued.roles": "false",
             "saml.force.post.binding": "false",
             "frontchannel.logout.session.required": "false",
@@ -1051,6 +1054,36 @@ def create_oidc_client(opt):
                     "included.client.audience": opt.client_id,
                     "id.token.claim": "true",
                     "access.token.claim": "true",
+                },
+            },
+        )
+
+    for i, audience in enumerate(opt.access_token_audience):
+        client_payload_oidc["protocolMappers"].append(
+            {
+                "name": f"access-audience-{i}",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-audience-mapper",
+                "consentRequired": False,
+                "config": {
+                    "included.client.audience": audience,
+                    "id.token.claim": "false",
+                    "access.token.claim": "true",
+                },
+            },
+        )
+
+    for i, audience in enumerate(opt.id_token_audience):
+        client_payload_oidc["protocolMappers"].append(
+            {
+                "name": f"id-audience-{i}",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-audience-mapper",
+                "consentRequired": False,
+                "config": {
+                    "included.client.audience": audience,
+                    "id.token.claim": "true",
+                    "access.token.claim": "false",
                 },
             },
         )
@@ -1374,6 +1407,11 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--no-frontchannel-logout", action='store_false', default=True)
     create_oidc_parser.add_argument("--auth-browser-flow", help="Override realm authentication flow bindings for 'Browser Flow'.", default=None)
     create_oidc_parser.add_argument("--add-audience-mapper", action='store_true', default=False, help="Add a audience mapper to add audience to access token.")
+    create_oidc_parser.add_argument("--access-token-audience", action="append", default=[], help="Add audiences to Access Tokens.")
+    create_oidc_parser.add_argument("--id-token-audience", action="append", default=[], help="Add audiences to ID Tokens.")
+    create_oidc_parser.add_argument("--frontchannel-logout-url", help="")
+    create_oidc_parser.add_argument("--backchannel-logout-url", help="")
+    create_oidc_parser.add_argument("--post-logout-redirect-uris", action="append", default=[], help="")
     create_oidc_parser.set_defaults(func=create_oidc_client)
 
     create_saml_parser = operation_subparsers.add_parser("secret", help="get client secret from Keycloak")
