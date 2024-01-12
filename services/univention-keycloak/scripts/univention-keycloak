@@ -745,10 +745,7 @@ def get_clients(opt: Namespace, protocol: str | None = "openid-connect") -> None
     clients = [client for client in session.get_clients() if client["protocol"] == protocol]
     if not opt.all:
         clients = [x["clientId"] for x in clients]
-    if opt.json:
-        print(json.dumps(clients, indent=4))
-    else:
-        print(clients)
+    _print_json(opt.json, clients)
 
 
 def update_client(opt: Namespace) -> None:
@@ -1166,7 +1163,8 @@ def get_client_secret(opt):
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
     kc_admin.realm_name = "ucs"
 
-    print(kc_admin.get_client_secrets(kc_admin.get_client_id(opt.client_name)))
+    secrets = kc_admin.get_client_secrets(kc_admin.get_client_id(opt.client_name))
+    _print_json(opt.json, secrets)
 
 
 def register_extensions(opt: Namespace):
@@ -1415,9 +1413,10 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--post-logout-redirect-uris", action="append", default=[], help="")
     create_oidc_parser.set_defaults(func=create_oidc_client)
 
-    create_saml_parser = operation_subparsers.add_parser("secret", help="get client secret from Keycloak")
-    create_saml_parser.add_argument("--client-name", required=True)
-    create_saml_parser.set_defaults(func=get_client_secret)
+    get_oidc_secrets_parser = operation_subparsers.add_parser("secret", help="get client secret from Keycloak")
+    get_oidc_secrets_parser.add_argument("--json", help="json output", default=False, action="store_true")
+    get_oidc_secrets_parser.add_argument("--client-name", required=True)
+    get_oidc_secrets_parser.set_defaults(func=get_client_secret)
 
     get_oidc_parser = operation_subparsers.add_parser("get", help="get OIDC clients from Keycloak")
     get_oidc_parser.add_argument("--json", help="Print json output", default=False, action="store_true")
@@ -1790,10 +1789,7 @@ def get_base_url(opt: Namespace) -> None:
     # the idea is to use this value for
     # "$BASE_URL/realms/ucs/protocol/saml" -> https://ucs-sso-ng.my.domain/realms/ucs/protocol/saml
     url = opt.keycloak_url.strip("/")
-    if opt.json:
-        print(json.dumps(url, indent=4))
-    else:
-        print(url)
+    _print_json(opt.json, url)
 
 
 def client_auth_flow(opt: Namespace) -> None:
@@ -1846,10 +1842,7 @@ def get_saml_nameid_mapper(opt: Namespace) -> None:
     mappers += session.get_mapper(opt.clientid, "univention-saml-user-attribute-nameid-mapper-base64")
     if not opt.all:
         mappers = [x["name"] for x in mappers]
-    if opt.json:
-        print(json.dumps(mappers, indent=4))
-    else:
-        print(mappers)
+    _print_json(opt.json, mappers)
 
 
 def delete_saml_user_attribute_mapper(opt: Namespace) -> None:
@@ -1879,10 +1872,7 @@ def get_saml_user_attribute_mapper(opt: Namespace) -> None:
     mappers = session.get_mapper(opt.clientid, "saml-user-attribute-mapper")
     if not opt.all:
         mappers = [x["name"] for x in mappers]
-    if opt.json:
-        print(json.dumps(mappers, indent=4))
-    else:
-        print(mappers)
+    _print_json(opt.json, mappers)
 
 
 def get_user_attribute_ldap_mapper(opt: Namespace) -> None:
@@ -1896,10 +1886,7 @@ def get_user_attribute_ldap_mapper(opt: Namespace) -> None:
         ]
     elif not opt.all:
         mappers = [x["name"] for x in mappers]
-    if opt.json:
-        print(json.dumps(mappers, indent=4))
-    else:
-        print(mappers)
+    _print_json(opt.json, mappers)
 
 
 def delete_user_attribute_ldap_mapper(opt: Namespace) -> None:
@@ -2006,8 +1993,7 @@ def domain_config(opt: Namespace) -> None:
         kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
         if opt.get:
             versions = kdc.get()
-            out = json.dumps(versions, indent=4) if opt.json else versions
-            print(out)
+            _print_json(opt.json, versions)
         if opt.set:
             kdc.set(opt.set)
         if opt.set_domain_config_version:
@@ -2039,8 +2025,7 @@ def upgrade_config(opt: Namespace) -> None:
             if LooseVersion(version) <= LooseVersion(kdc.current_version)
         ]
         if opt.get_upgrade_steps:
-            out = json.dumps(upgrade_steps, indent=4) if opt.json else upgrade_steps
-            print(out)
+            _print_json(opt.json, upgrade_steps)
             return
         # check if we are already up-to-date
         if not upgrade_steps:
