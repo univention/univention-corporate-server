@@ -1,3 +1,9 @@
+univention-join (14.0.3) unstable; urgency=medium
+
+  * Bug #56927: increase all modified joinscripts by 10
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2024 00:18:45 +0100
+
 univention-join (14.0.2) unstable; urgency=medium
 
   * Bug #56003: bind9 service was renamed to named

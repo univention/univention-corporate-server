@@ -1,3 +1,9 @@
+univention-portal (6.0.3) unstable; urgency=medium
+
+  * Bug #56927: increase all modified joinscripts by 10
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2024 00:18:46 +0100
+
 univention-portal (6.0.2) unstable; urgency=medium
 
   * Bug #56539: fix building portal frontend
