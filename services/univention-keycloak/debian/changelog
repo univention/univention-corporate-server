@@ -1,3 +1,9 @@
+univention-keycloak (1.0.10-4) unstable; urgency=medium
+
+  * Bug #49006: Add more required oidc/rp options
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jan 2024 16:01:41 +0100
+
 univention-keycloak (1.0.10-3) unstable; urgency=medium
 
   * Bug #56884: added proxy realm commands
