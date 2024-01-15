@@ -198,6 +198,20 @@ def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
 
 
 @pytest.fixture()
+def umc_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
+    umc_fqdn = ucr_proper['umc/oauth/rp/server'] if ucr_proper['umc/oauth/rp/server'] else f"{ucr_proper['hostname']}.{ucr_proper['domainname']}"
+    config = {
+        'url': f'https://{umc_fqdn}/univention/oauth/?target_link_uri=/univention/management/',
+        'fqdn': umc_fqdn,
+        'title': 'Univention Portal',
+        'username': 'admin',
+        'password': 'univention',
+    }
+
+    return SimpleNamespace(**config)
+
+
+@pytest.fixture()
 def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
     server = ucr_proper.get('keycloak/server/sso/fqdn', f"ucs-sso-ng.{ucr_proper['domainname']}")
     path = ucr_proper['keycloak/server/sso/path'] if ucr_proper['keycloak/server/sso/path'] else ''
@@ -305,6 +319,34 @@ def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleN
                 selenium.find_element(By.ID, 'umc_widgets_Button_1_label').click()
                 wait_for_id(selenium, portal_config.header_menu_id)
 
+        return selenium
+
+    return _func
+
+
+@pytest.fixture()
+def umc_login_via_keycloak(selenium: webdriver.Chrome, umc_config: SimpleNamespace, keycloak_config: SimpleNamespace):
+    def _func(
+        username: str,
+        password: str,
+        fails_with: str | None = None,
+        new_password: str | None = None,
+        new_password_confirm: str | None = None,
+        verify_login: bool | None = True,
+        url: str | None = umc_config.url,
+        no_login: bool = False,
+    ) -> webdriver.Chrome:
+        selenium.get(url)
+        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
+        # check password change
+        if new_password:
+            new_password_confirm = new_password_confirm if new_password_confirm else new_password
+            keycloak_password_change(selenium, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
+        if fails_with or no_login:
+            return selenium
+        # check that we are logged in
+        if verify_login:
+            wait_for_id(selenium, 'umcTopContainer')  # TODO: it doesn't verfiy logged in status
         return selenium
 
     return _func
