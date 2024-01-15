@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.16-3) unstable; urgency=medium
+
+  * Bug #56956: Improve prioritization for initial S4-Connector sync
+
+ -- Arvid <requate@univention.de>  Mon, 15 Jan 2024 14:17:05 +0100
+
 univention-s4-connector (14.0.16-2) unstable; urgency=medium
 
   * Bug #56954: Don't replicate objectClass=lock

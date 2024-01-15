@@ -256,8 +256,20 @@ if [ -z "$s4connector_dc" ] \
 	ucs_addServiceToLocalhost "${NAME}" "$@" || die
 
 	univention-config-registry set connector/s4/autostart=yes
-	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "objectClass=dnsZone" --first
+
+	readarray -t dcs < <(univention-ldapsearch -xLLL \
+		"(objectClass=univentionDomainController)" cn \
+		| sed -n 's/^cn: //p')
+	for dc in "${dcs[@]}"; do
+		/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "relativeDomainName=$dc" --first
+	done
+	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "univentionObjectType=dns/alias" --first
+	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "univentionObjectType=dns/txt_record" --first
+	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "univentionObjectType=dns/srv_record" --first
+	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "univentionObjectType=dns/reverse_zone" --first
+	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "univentionObjectType=dns/forward_zone" --first
 	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "univentionObjectType=container/cn" --first
+	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "univentionObjectType=container/msgpo" --first
 	/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "univentionObjectType=container/ou" --first
 
 	if is_ucr_true connector/s4/listener/disabled; then
