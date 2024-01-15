@@ -201,6 +201,20 @@ def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
 
 
 @pytest.fixture
+def umc_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
+    umc_fqdn = ucr_proper['umc/oauth/rp/server'] or f"{ucr_proper['hostname']}.{ucr_proper['domainname']}"
+    config = {
+        'url': f'https://{umc_fqdn}/univention/oauth/?target_link_uri=/univention/management/',
+        'fqdn': umc_fqdn,
+        'title': 'Univention Portal',
+        'username': 'admin',
+        'password': 'univention',
+    }
+
+    return SimpleNamespace(**config)
+
+
+@pytest.fixture
 def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
     url = run_command(['univention-keycloak', 'get-keycloak-base-url']).rstrip()
     server = urlparse(url).netloc
@@ -303,6 +317,35 @@ def portal_login_via_keycloak(tracing_page: Page, portal_config: SimpleNamespace
 @pytest.fixture
 def portal_login_via_keycloak_custom_page(portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
     return functools.partial(__portal_login_func, portal_config, keycloak_config)
+
+
+@pytest.fixture
+def umc_login_via_keycloak(page: Page, umc_config: SimpleNamespace, keycloak_config: SimpleNamespace):
+    def _func(
+        username: str,
+        password: str,
+        fails_with: str | None = None,
+        new_password: str | None = None,
+        new_password_confirm: str | None = None,
+        verify_login: bool | None = True,
+        url: str | None = umc_config.url,
+        no_login: bool = False,
+    ) -> Page:
+        page.get(url)
+        keycloak_login(page, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
+        # check password change
+        if new_password:
+            new_password_confirm = new_password_confirm or new_password
+            keycloak_password_change(page, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
+        if fails_with or no_login:
+            return page
+        # check that we are logged in
+        if verify_login:
+            header_menu = page.locator(f'#{portal_config.header_menu_id}')
+            expect(header_menu, 'header menu not visible').to_be_visible()  # TODO: it doesn't verfiy logged in status
+        return page
+
+    return _func
 
 
 @pytest.fixture
