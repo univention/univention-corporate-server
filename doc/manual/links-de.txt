@@ -18,7 +18,7 @@
 .. _kernel-bonding: https://www.kernel.org/doc/Documentation/networking/bonding.txt
 .. _lastbind-overlay: https://manpages.ubuntu.com/manpages/xenial/man5/slapo-lastbind.5.html
 .. _ldap-generalized-time: https://ldapwiki.com/wiki/GeneralizedTime
-.. _microsoft-domain-verify: https://learn.microsoft.com/de-de/azure/active-directory/fundamentals/add-custom-domain
+.. _microsoft-domain-verify: https://learn.microsoft.com/de-de/entra/fundamentals/add-custom-domain
 .. _microsoft-rsat-tools: https://www.microsoft.com/en-us/download/details.aspx?id=45520
 .. _microsoft-install-the-certification-authority: https://learn.microsoft.com/de-de/windows-server/networking/core-network-guide/cncg/server-certs/install-the-certification-authority
 .. _mozilla-css-custom-properties: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
