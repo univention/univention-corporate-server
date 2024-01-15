@@ -125,6 +125,7 @@ with open("temp.rst", "w") as fd:
 
 rst_epilog = """
 .. include:: /../substitutions.txt
+.. include:: /../abbreviations.txt
 """
 
 latex_engine = 'lualatex'
