@@ -530,3 +530,19 @@ Description[en]=Specifies whether the LDAP attribute mailForwardCopyToSelf shoul
 Type=bool
 Categories=service-mail
 Default=no
+
+[mail/postfix/smtpd/data_restrictions]
+Description[de]=Setzt optionale Zugriffsbeschränkungen für den Server im Kontext von STMP Daten Kommandos. Aus Sicherheitsgründen wird empfohlen die Standardeinstellung beizubehalten (siehe auch <https://www.postfix.org/smtp-smuggling.html>).
+Description[en]=Sets optional access restictions that the server applies in the context of SMTP data commands. For security reasons, it is recommended to keep the default setting (see also <https://www.postfix.org/smtp-smuggling.html>).
+Type=list
+Separator=,
+Elementtype=str
+Categories=service-mail
+
+[mail/postfix/smtpd/discard_ehlo_keywords]
+Description[de]=Setzt eine Liste von EHLO Schlüsselwörtern, die in der Antwort vom Server ignoriert werden (ohne Berücksichtigung der Groß- und Kleinschreibung). Aus Sicherheitsgründen wird empfohlen die Standardeinstellung beizubehalten (siehe auch <https://www.postfix.org/smtp-smuggling.html>).
+Description[en]=Sets a case insensitive list of EHLO keywords that the client will ignore in the EHLO responses from the server. For security reasons, it is recommended to keep the default setting (see also <https://www.postfix.org/smtp-smuggling.html>).
+Type=list
+Separator=,
+Elementtype=str
+Categories=service-mail

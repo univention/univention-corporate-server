@@ -28,6 +28,8 @@ Variables: mail/relayhost
 Variables: mail/relayauth
 Variables: mail/postfix/mynetworks_style
 Variables: mail/postfix/smtputf8_enable
+Variables: mail/postfix/smtpd/data_restrictions
+Variables: mail/postfix/smtpd/discard_ehlo_keywords
 
 Type: subfile
 Multifile: etc/postfix/main.cf

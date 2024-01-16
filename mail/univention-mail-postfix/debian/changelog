@@ -1,8 +1,9 @@
-univention-mail-postfix (14.0.7-1) UNRELEASED; urgency=medium
+univention-mail-postfix (14.0.7-1) unstable; urgency=medium
 
+  * Bug #56957: Applying workaround for CVE-2023-51764 (until update to postfix version with proper fix).
   * Bug #56832: UCS 5.0-6 version bump
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:39 +0100
+ -- Alexander Steffen <steffen@univention.de>  Fri, 12 Jan 2024 13:45:34 +0100
 
 univention-mail-postfix (14.0.6-2) unstable; urgency=medium
 
