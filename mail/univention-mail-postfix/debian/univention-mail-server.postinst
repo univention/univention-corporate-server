@@ -36,6 +36,13 @@ univention-config-registry set \
 	mail/postfix/transport/ldap/enabled=yes \
 	mail/postfix/inet/interfaces=all
 
+if dpkg --compare-versions "$2" lt 13.0.5-2
+then
+	univention-config-registry set \
+	mail/postfix/smtpd/data_restrictions?reject_unauth_pipelining \
+	mail/postfix/smtpd/discard_ehlo_keywords?"chunking, silent-discard"
+fi
+
 eval "$(univention-config-registry shell)"
 
 for file in transport virtual canonical access relocated; do

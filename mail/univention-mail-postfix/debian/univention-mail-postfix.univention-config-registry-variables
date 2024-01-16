@@ -502,3 +502,19 @@ Description[de]=Gibt an, ob bei der Abfrage virtual_alias_maps das LDAP Attribut
 Description[en]=Specifies whether the LDAP attribute mailForwardCopyToSelf should be included in the query virtual_alias_maps. If the value is not set, the query does not change (Please visit: <https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509>, see also directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf and mail/postfix/activate_unionmap_in_virtual_alias_maps) (Default: no)
 Type=bool
 Categories=service-mail
+
+[mail/postfix/smtpd/data_restrictions]
+Description[de]=Setzt optionale Zugriffsbeschränkungen für den Server im Kontext von STMP Daten Kommandos. Aus Sicherheitsgründen wird empfohlen die Standardeinstellung beizubehalten (siehe auch <https://www.postfix.org/smtp-smuggling.html>).
+Description[en]=Sets optional access restictions that the server applies in the context of SMTP data commands. For security reasons, it is recommended to keep the default setting (see also <https://www.postfix.org/smtp-smuggling.html>).
+Type=list
+Separator=,
+Elementtype=str
+Categories=service-mail
+
+[mail/postfix/smtpd/discard_ehlo_keywords]
+Description[de]=Setzt eine Liste von EHLO Schlüsselwörtern, die in der Antwort vom Server ignoriert werden (ohne Berücksichtigung der Groß- und Kleinschreibung). Aus Sicherheitsgründen wird empfohlen die Standardeinstellung beizubehalten (siehe auch <https://www.postfix.org/smtp-smuggling.html>).
+Description[en]=Sets a case insensitive list of EHLO keywords that the client will ignore in the EHLO responses from the server. For security reasons, it is recommended to keep the default setting (see also <https://www.postfix.org/smtp-smuggling.html>).
+Type=list
+Separator=,
+Elementtype=str
+Categories=service-mail

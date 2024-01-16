@@ -1,3 +1,9 @@
+univention-mail-postfix (13.0.5-2) unstable; urgency=medium
+
+  * Bug #56957: Applying workaround for CVE-2023-51764 (until update to postfix version with proper fix).
+
+ -- Alexander Steffen <steffen@univention.de>  Fri, 12 Jan 2024 11:12:58 +0100
+
 univention-mail-postfix (13.0.5-1) unstable; urgency=low
 
   * Bug #55385: handle auth using email address when not using dovecot sasl
