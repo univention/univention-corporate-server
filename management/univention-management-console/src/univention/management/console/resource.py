@@ -318,7 +318,7 @@ class Resource(RequestHandler):
         try:
             return self._write_error(status_code, exc_info=kwargs.pop('exc_info', None), **kwargs)
         except Exception:
-            CORE.error(traceback.format_exc())
+            CORE.exception('Error during error handling')
             raise
 
     def _write_error(self, status_code, exc_info=None, **kwargs):
@@ -355,7 +355,7 @@ class Resource(RequestHandler):
             index = message.find('Traceback') if 'Traceback' in message else message.find('File')
             message, stacktrace = message[:index].strip(), message[index:].strip()
         if stacktrace:
-            CORE.error('%s' % (stacktrace,))
+            CORE.error('%s', (stacktrace,))
         if ucr.is_false('umc/http/show_tracebacks', False):
             stacktrace = None
 

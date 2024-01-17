@@ -39,7 +39,6 @@ import os
 import resource
 import signal
 import sys
-import traceback
 from argparse import ArgumentParser
 
 import atexit
@@ -260,7 +259,7 @@ class Server(object):
         try:
             ioloop.start()
         except Exception:
-            CORE.error(traceback.format_exc())
+            CORE.exception('Error during server loop')
             ioloop.stop()
             pool.shutdown(False)
             raise

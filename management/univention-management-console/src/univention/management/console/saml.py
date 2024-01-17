@@ -213,7 +213,7 @@ class SamlACS(SAMLResource):
             cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=None, state_cache=shared_memory.saml_state_cache)
             return True
         except Exception:
-            CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
+            CORE.warn('Startup of SAML2.0 service provider failed:\n%s', traceback.format_exc())
         return False
 
     async def get(self):

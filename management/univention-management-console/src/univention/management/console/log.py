@@ -128,7 +128,7 @@ PROTOCOL = logging.getLogger('PROTOCOL')
 for _logger in (CORE, NETWORK, CRYPT, UDM, MODULE, AUTH, PARSER, LOCALE, ACL, RESOURCES, PROTOCOL):
     _logger.process = _logger.info
     _logger.info = _logger.debug
-    _logger.debug = functools.partial(lambda _logger, msg, *args, **kwargs: _logger.log(1, msg, *args, **kwargs), _logger)
+    _logger.debug = functools.partial(_logger.log, 1)
 
 fallbackLoggingHandler = logging.StreamHandler()
 fallbackLoggingHandler.setFormatter(logging.Formatter('%(asctime)s.%(msecs)03d ( %(levelname)-7s ) : %(message)s', '%d.%m.%y %H:%M:%S'))
