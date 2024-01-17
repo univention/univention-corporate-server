@@ -79,11 +79,9 @@ familiar with these tools.
 |UCS| provides the following command line tools as wrappers around
 :command:`apt-get`:
 
-:command:`univention-update`
-   to update the package cache on a UCS system.
-
 :command:`univention-install`
    to install software packages from a software repository on UCS.
+   This command also implicitly updates the package cache on a UCS system.
 
 :command:`univention-upgrade`
    to update installed software packages on a UCS system, for example errata
