@@ -33,7 +33,7 @@ from __future__ import annotations
 import os
 import time
 from types import SimpleNamespace
-from typing import Iterator
+from typing import Callable, Iterator
 
 import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
@@ -59,7 +59,7 @@ from univention.udm.modules.settings_data import SettingsDataObject
 # in fixtures, this can lean to problems if system settings
 # are reverted after the test, e.g. appcenter/apps/$id/container
 # after univention-app reinitialize
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def ucr_proper() -> ConfigRegistry:
     ucr = ConfigRegistry()
     return ucr.load()
@@ -148,7 +148,7 @@ class UnverfiedUser(object):
         self.password = password
         self.dn, self.username = udm.create_user(password=password)
         changes = [
-            ('objectClass', [''], self.ldap.get(self.dn).get('objectClass') + [b'univentionPasswordSelfService']),
+            ('objectClass', [b''], self.ldap.get(self.dn).get('objectClass') + [b'univentionPasswordSelfService']),
             ('univentionPasswordSelfServiceEmail', [''], [b'root@localhost']),
             ('univentionPasswordRecoveryEmailVerified', [''], [b'FALSE']),
             ('univentionRegisteredThroughSelfService', [''], [b'TRUE']),
@@ -159,7 +159,7 @@ class UnverfiedUser(object):
     def verify(self) -> None:
         # verify
         changes = [
-            ('univentionPasswordRecoveryEmailVerified', [''], [b'TRUE']),
+            ('univentionPasswordRecoveryEmailVerified', [b''], [b'TRUE']),
         ]
         self.ldap.modify(self.dn, changes)
         wait_for_listener_replication()
@@ -340,46 +340,51 @@ def domain_admins_dn(ucr_proper: ConfigRegistry) -> str:
 
 
 @pytest.fixture()
-def keycloak_administrator_connection(keycloak_config: SimpleNamespace, admin_account: UCSTestDomainAdminCredentials) -> KeycloakAdmin:
-    session = KeycloakAdmin(
-        server_url=keycloak_config.url,
-        username=admin_account.username,
-        password=admin_account.bindpw,
-        realm_name='ucs',
-        user_realm_name='master',
-        verify=True,
-    )
-    session.path = keycloak_config.path
-    return session
-
-
-@pytest.fixture()
-def keycloak_admin_connection(
-    keycloak_config: SimpleNamespace,
-    keycloak_admin: str,
-    keycloak_secret: str,
-) -> KeycloakAdmin:
-    if keycloak_secret:
+def keycloak_session(keycloak_config: SimpleNamespace) -> Callable[[str, str], KeycloakAdmin]:
+    def _session(username: str, password: str) -> KeycloakAdmin:
         session = KeycloakAdmin(
             server_url=keycloak_config.url,
-            username=keycloak_admin,
-            password=keycloak_secret,
+            username=username,
+            password=password,
             realm_name='ucs',
             user_realm_name='master',
             verify=True,
         )
         session.path = keycloak_config.path
         return session
+    return _session
 
 
 @pytest.fixture()
-def keycloak_openid_connection(keycloak_config: SimpleNamespace) -> KeycloakOpenID:
-    return KeycloakOpenID(
-        server_url=keycloak_config.url,
-        client_id='admin-cli',
-        realm_name='ucs',
-        client_secret_key='secret',
-    )
+def keycloak_administrator_connection(keycloak_session: Callable, admin_account: UCSTestDomainAdminCredentials) -> KeycloakAdmin:
+    return keycloak_session(admin_account.username, admin_account.bindpw)
+
+
+@pytest.fixture()
+def keycloak_admin_connection(
+    keycloak_session: Callable,
+    keycloak_admin: str,
+    keycloak_secret: str,
+) -> KeycloakAdmin:
+    if keycloak_secret:
+        return keycloak_session(keycloak_admin, keycloak_secret)
+
+
+@pytest.fixture()
+def keycloak_openid(keycloak_secret: str, keycloak_config: SimpleNamespace) -> KeycloakOpenID:
+    def _session(client_id: str, realm_name: str = 'ucs', client_secret_key: str | None = None) -> KeycloakAdmin:
+        return KeycloakOpenID(
+            server_url=keycloak_config.url,
+            client_id=client_id,
+            realm_name=realm_name,
+            client_secret_key=client_secret_key or keycloak_secret,
+        )
+    return _session
+
+
+@pytest.fixture()
+def keycloak_openid_connection(keycloak_openid: Callable) -> KeycloakOpenID:
+    return keycloak_openid('admin-cli')
 
 
 @pytest.fixture()
