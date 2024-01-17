@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2021-2024 Univention GmbH
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 
@@ -24,7 +24,7 @@ from datetime import date
 version = "5.0"
 release = "5.0-6"
 project = f"UCS {version} for Debian and Ubuntu Administrators"
-copyright = f'{date.today().year}, Univention GmbH'
+copyright = f'2023-{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'
 language = 'en'
 
