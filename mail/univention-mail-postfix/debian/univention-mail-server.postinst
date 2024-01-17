@@ -43,7 +43,7 @@ if dpkg --compare-versions "$2" lt 14.0.7-1
 then
 	univention-config-registry set \
 	mail/postfix/smtpd/data_restrictions?reject_unauth_pipelining \
- 	mail/postfix/smtpd/discard_ehlo_keywords?"chunking, silent-discard"
+	mail/postfix/smtpd/discard_ehlo_keywords?"chunking, silent-discard"
 fi
 
 eval "$(univention-config-registry shell)"
