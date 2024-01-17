@@ -114,10 +114,10 @@ if configRegistry.get('mail/postfix/smtpd/banner'):
 print('smtputf8_enable = %s' % configRegistry.get('mail/postfix/smtputf8_enable', 'no'))
 @!@
 
-# prevent STMP Smuggling CVE-2023 / Bug 56957
+# prevent STMP Smuggling CVE-2023-51764 / Bug 56957
 @!@
 if configRegistry.get('mail/postfix/smtpd/data_restrictions'):
-    print('smtpd_data_restrictions = %s' % configRegistry.get('mail/postfix/smtpd/data_restrictions'))
+    print('smtpd_data_restrictions = %s' % configRegistry['mail/postfix/smtpd/data_restrictions'])
 if configRegistry.get('mail/postfix/smtpd/discard_ehlo_keywords'):
-    print('smtpd_discard_ehlo_keywords= %s' % configRegistry.get('mail/postfix/smtpd/discard_ehlo_keywords'))
+    print('smtpd_discard_ehlo_keywords= %s' % configRegistry['mail/postfix/smtpd/discard_ehlo_keywords'])
 @!@
