@@ -1,0 +1,1 @@
+The default values of |UCSUCRV| :envvar:`directory/manager/user/enable-legacy-username-format` and |UCSUCRV| :envvar:`directory/manager/group/enable-legacy-cn-format` have been changed to ``false`` which configures UCS to disallow purely numerical user and group names.
