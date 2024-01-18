@@ -111,7 +111,8 @@ class OIDCResource(OAuth2Mixin, Resource):
             self.add_header('WWW-Authenticate', 'Bearer realm="Univention Management Console" scope="openid" error="invalid_token" error_description="%s"' % (exc,))
             raise
 
-        await self.get_user_information(bearer_token)
+        # FIXME: Access Denied from Keycloak: https://github.com/keycloak/keycloak/issues/16844
+        # await self.get_user_information(bearer_token)
 
         oidc = OIDCUser(None, bearer_token, None, claims)
         await self.pam_oidc_authentication(oidc)
