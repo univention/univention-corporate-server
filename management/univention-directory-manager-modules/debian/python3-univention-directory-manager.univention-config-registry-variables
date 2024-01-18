@@ -133,12 +133,14 @@ Default=no
 Description[de]=Ist diese Option aktiviert, wird das alte Format für Benutzernamen erlaubt, welches es ermöglicht einen Benutzernamen nur aus Zahlen bestehen zu lassen.
 Description[en]=If this option is activated, the old format for usernames is allowed, which allows a username to consist only of numbers.
 Type=bool
+Default=false
 Categories=management-udm
 
 [directory/manager/group/enable-legacy-cn-format]
 Description[de]=Ist diese Option aktiviert, wird das alte Format für Gruppennamen erlaubt, welches es ermöglicht einen Gruppennamen nur aus Zahlen bestehen zu lassen.
 Description[en]=If this option is activated, the old format for group names is allowed, which allows a group name to consist only of numbers.
 Type=bool
+Default=false
 Categories=management-udm
 
 [password/hashing/bcrypt]
