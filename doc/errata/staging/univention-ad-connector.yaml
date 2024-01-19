@@ -9,5 +9,5 @@ desc: |
  * During normal replication objects with `objectClass=lock`
    are not replicated. But during initial join they were.
    By adjusting the filter in the listener module this is
-   is now avoided, speeding up initial replication.
+   now avoided, speeding up initial replication.
 bug: [56954]
