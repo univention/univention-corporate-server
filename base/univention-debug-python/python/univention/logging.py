@@ -55,12 +55,13 @@ __all__ += logging.__all__
 
 
 _LEVEL_MAPPING = {
-    logging.NOTSET: ud.ALL,  # 4
+    logging.NOTSET: 100,
+    logging.DEBUG - 1: ud.ALL,  # 4
     logging.DEBUG: ud.INFO,  # 3
     logging.INFO: ud.PROCESS,  # 2
     logging.WARNING: ud.WARN,  # 1
     logging.ERROR: ud.ERROR,  # 0
-    logging.CRITICAL: ud.ERROR,
+    # logging.CRITICAL: ud.ERROR,
 }
 _UD_LEVEL_MAPPING = {v: k for k, v in _LEVEL_MAPPING.items()}
 
@@ -94,11 +95,23 @@ def _map_level_to_ud(level):  # type: (int) -> int
     4
     >>> _map_level_to_ud(logging.INFO - 1)
     1
+    >>> _map_level_to_ud(logging.DEBUG - 1)
+    10
+    >>> _map_level_to_ud(logging.DEBUG - 9)
+    90
     >>> _map_level_to_ud(9)
     4
     >>> _map_level_to_ud(99)
     90
     """
+    if level <= 0:
+        return 100
+    if level >= 100:
+        return 0
+    if level >= logging.ERROR:
+        return 0
+    if 0 < level < logging.DEBUG - 1:
+        return 100 - ((level - 1) * 10) - 1
     level = level if level in _LEVEL_MAPPING else (level // 10) * 10
     return _LEVEL_MAPPING.get(level, level)
 
@@ -124,8 +137,11 @@ def _map_ud_to_level(level):  # type: (int) -> int
     >>> _map_ud_to_level(99)
     1
     """
-    if level > 4:
-        return max((10, (100 - level))) // 10
+    if level >= 100:
+        return 0
+    if level > ud.ALL:
+        base = 100 if level <= 10 else 110
+        return (max((10, (base - level))) // 10)
     return _UD_LEVEL_MAPPING.get(level)
 
 
