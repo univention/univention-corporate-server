@@ -79,6 +79,7 @@ def test_logging_basic_config(tmplog, parse):
     logger.reopen()
     logger.debug('test_debug')
     logger.setLevel(logging.NOTSET + 1)
+    logger.log(9, 'test ultra debug')
     logger.log(1, 'test ultra debug')
 
     output = tmplog.read()
@@ -91,6 +92,7 @@ def test_logging_basic_config(tmplog, parse):
         ('LDAP', 'ERROR', '%d: test_critical' % pid),
         ('LDAP', 'INFO', 'test_debug'),
         ('LDAP', 'ALL', 'test_logging.test_logging_basic_config: test ultra debug'),
+        ('LDAP', '99', 'test_logging.test_logging_basic_config: test ultra debug'),
     ]
 
 
