@@ -6,6 +6,6 @@ src: univention-appcenter
 fix: 9.0.10-1
 desc: |
  This update addresses the following issues:
- * The replacement of the fallaback UMC logger has been adjusted to use
+ * The replacement of the fallback UMC logger has been adjusted to use
    `univention.logging`.
 bug: [55324]

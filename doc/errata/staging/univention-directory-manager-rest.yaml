@@ -6,6 +6,6 @@ src: univention-directory-manager-rest
 fix: 10.0.7-4
 desc: |
  This update addresses the following issues:
- * The replacement of the fallaback UMC logger has been adjusted to use
+ * The replacement of the fallback UMC logger has been adjusted to use
    `univention.logging`.
 bug: [55324]
