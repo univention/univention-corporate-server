@@ -604,8 +604,12 @@ int sasl_server_plug_init(
 	/*
 	 * Attribute to be used for authcid
 	 */
-	if (((utils->getopt(utils->getopt_context, "OAUTHBEARER", "oauthbearer_userid", &gctx->uid_attr, NULL)) != 0) || (gctx->uid_attr == NULL) || (*gctx->uid_attr == '\0'))
-		gctx->uid_attr = strdup("preferred_username");  // TODO: check return code
+	if (((utils->getopt(utils->getopt_context, "OAUTHBEARER", "oauthbearer_userid", &gctx->uid_attr, NULL)) != 0) || (gctx->uid_attr == NULL) || (*gctx->uid_attr == '\0')) {
+		if((gctx->uid_attr = strdup("preferred_username")) == NULL) {
+			utils->seterror(utils->conn, 0, "cannot allocate memory");
+			return SASL_NOMEM;
+		}
+	}
 
 	/*
 	 * Grace delay for clock skews
@@ -638,6 +642,11 @@ int sasl_server_plug_init(
 		item->name = trusted_aud;
 		SLIST_INSERT_HEAD(&gctx->trusted_aud, item, next);
 	} while (1 /*CONSTCOND*/);
+
+	if (SLIST_EMPTY(&gctx->trusted_aud)) {
+		utils->seterror(utils->conn, 0, "No trusted audiences configured");
+		return SASL_BADPARAM;
+	}
 
 	/*
 	 * Load the trusted authorized parties
@@ -707,6 +716,11 @@ int sasl_server_plug_init(
 		}
 	} while (1 /*CONSTCOND*/);
 
+	if (gctx->trusted_iss == NULL) {
+		utils->seterror(utils->conn, 0, "No trusted issuer configured");
+		return SASL_BADPARAM;
+	}
+
 	/*
 	 * Load the JWKS file
 	 */
@@ -751,7 +765,10 @@ int sasl_server_plug_init(
 		utils->log(NULL, SASL_LOG_NOTE, "Loaded JWKS from \"%s\"", jwks_filename);
 	} while (1 /*CONSTCOND*/);
 
-	// TODO: abort if no trusted issuer or no JWKS
+	if (gctx->trusted_jwks_str == NULL) {
+		utils->seterror(utils->conn, 0, "No JWKS configured");
+		return SASL_BADPARAM;
+	}
 
 	return SASL_OK;
 }
