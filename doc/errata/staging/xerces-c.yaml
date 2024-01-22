@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: xerces-c
+fix: 3.1.4+debian-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ 3.1.4+debian-2+deb9u3 (Fri, 19 Jan 2024 22:03:02 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-37536 Integer overflows in DFAContentModel class.
+bug: [56995]
+cve:
+- CVE-2023-37536
