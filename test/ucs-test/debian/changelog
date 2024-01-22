@@ -1,3 +1,9 @@
+ucs-test (10.1.20-16) unstable; urgency=medium
+
+  *
+
+ -- Florian Best <best@univention.de>  Mon, 22 Jan 2024 11:32:27 +0100
+
 ucs-test (10.0.20-16) unstable; urgency=medium
 
   * Bug #56765: Adjust keycloak tests to 5.2

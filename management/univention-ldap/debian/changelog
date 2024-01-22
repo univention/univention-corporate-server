@@ -1,3 +1,9 @@
+univention-ldap (16.1.14-3) unstable; urgency=medium
+
+  *
+
+ -- Florian Best <best@univention.de>  Mon, 22 Jan 2024 11:32:02 +0100
+
 univention-ldap (16.0.14-2) unstable; urgency=low
 
   * Bug #46062: Fix univention-backup2master

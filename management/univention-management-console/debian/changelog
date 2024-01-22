@@ -1,3 +1,9 @@
+univention-management-console (12.1.32-9) unstable; urgency=medium
+
+  *
+
+ -- Florian Best <best@univention.de>  Mon, 22 Jan 2024 11:32:07 +0100
+
 univention-management-console (12.0.32-8) unstable; urgency=medium
 
   * Bug #55324: version bump

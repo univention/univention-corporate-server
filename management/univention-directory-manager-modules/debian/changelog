@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.1.25-3) unstable; urgency=medium
+
+  *
+
+ -- Florian Best <best@univention.de>  Mon, 22 Jan 2024 11:31:52 +0100
+
 univention-directory-manager-modules (15.0.25-2) unstable; urgency=medium
 
   * Bug #55324: use univention.logging
