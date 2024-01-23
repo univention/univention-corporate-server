@@ -28,6 +28,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <rhonabwy.h>
+
 #define MAYBE_COMPRESS 1
 #define JWT_MINLEN 76 /* len(b64encode(b'{"access_token":"eyJhbGciOiJub25lIn0.eyJzdWIiOiJ7fX0.."}')) */
 
@@ -59,6 +61,7 @@ typedef struct {
 	SLIST_HEAD(oauth_required_scope_list_head, oauth_list) required_scope;
 	const char *trusted_iss;
 	char *trusted_jwks_str;
+	jwk_t *jwk;
 } oauth_glob_context_t;
 
 typedef struct {

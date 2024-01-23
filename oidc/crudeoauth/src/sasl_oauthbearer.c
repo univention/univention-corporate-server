@@ -533,6 +533,8 @@ static void oauth_server_mech_free(
 
 	free(gctx->uid_attr);
 
+	r_jwk_free(gctx->jwk);
+
 	while ((item = SLIST_FIRST(&gctx->trusted_aud)) != NULL) {
 		SLIST_REMOVE_HEAD(&gctx->trusted_aud, next);
 		free(item);
@@ -767,6 +769,12 @@ int sasl_server_plug_init(
 
 	if (gctx->trusted_jwks_str == NULL) {
 		utils->seterror(utils->conn, 0, "No JWKS configured");
+		return SASL_BADPARAM;
+	}
+
+	gctx->jwk = oauth_get_jwk(gctx, NULL);
+	if (!gctx->jwk) {
+		utils->seterror(utils->conn, 0, "Error oauth_get_jwk");
 		return SASL_BADPARAM;
 	}
 
