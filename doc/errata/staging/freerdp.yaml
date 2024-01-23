@@ -6,29 +6,23 @@ src: freerdp
 fix: 1.1.0~git20140921.1.440916e+dfsg1-13+deb9u6
 desc: |
  This update addresses the following issues:
-
- Debian update 1.1.0~git20140921.1.440916e+dfsg1-13+deb9u6
- 1.1.0~git20140921.1.440916e+dfsg1-13+deb9u6 (Tue, 16 Jan 2024 15:58:54 +0100)
- * Non-maintainer upload by the ELTS Security Team.
- * CVE 2020-11096: regression fix (missing patch).
- * CVE 2020-11089: regression fix (incomplete backport).
- * CVE-2020-11524: libfreerdp/codec/interleaved.c has an Out-of-bounds Write.
  * CVE-2022-39282: FreeRDP based clients on unix systems using `/parallel`
-   command line switch might read uninitialized data and send it to the server
-   the client is currently connected to.
- * CVE-2022-39318: missing input validation in `urbdrc` channel. A malicious
-   server can trick a FreeRDP based client to crash with division by zero.
- * CVE-2022-39319: missing input length validation in the `urbdrc` channel. A
-   malicious server can trick a FreeRDP based client to read out of bound data
-   and send it back to the server.
+   command line switch might read uninitialized data and send it to the
+   server the client is currently connected to.
+ * CVE-2022-39318: missing input validation in `urbdrc` channel. A
+   malicious server can trick a FreeRDP based client to crash with division
+   by zero.
+ * CVE-2022-39319: missing input length validation in the `urbdrc` channel.
+   A malicious server can trick a FreeRDP based client to read out of bound
+   data and send it back to the server.
  * CVE-2022-39347: missing path canonicalization and base path check for
    `drive` channel. A malicious server can trick a FreeRDP based client to
    read files outside the shared directory.
  * CVE-2022-41877: missing input length validation in `drive` channel. A
-   malicious server can trick a FreeRDP based client to read out of bound data
-   and send it back to the server.
- * CVE-2023-39353: missing offset validation leading to Out Of Bound Read. In
-   the `libfreerdp/codec/rfx.c` file there is no offset validation in
+   malicious server can trick a FreeRDP based client to read out of bound
+   data and send it back to the server.
+ * CVE-2023-39353: missing offset validation leading to Out Of Bound Read.
+   In the `libfreerdp/codec/rfx.c` file there is no offset validation in
    `tile->quantIdxY`, `tile->quantIdxCb`, and `tile->quantIdxCr`. As a result
    crafted input can lead to an out of bounds read access which in turn will
    cause a crash.
@@ -37,16 +31,18 @@ desc: |
    `context->Planes` without checking if it contains data of sufficient
    length. Should an attacker be able to leverage this vulnerability they may
    be able to cause a crash.
- * CVE-2023-39356: missing offset validation may lead to an Out Of Bound Read
-   in the function `gdi_multi_opaque_rect`. In particular there is no code to
-   validate if the value `multi_opaque_rect->numRectangles` is less than 45.
-   Looping through `multi_opaque_rect->`numRectangles without proper boundary
-   checks can lead to Out-of-Bounds Read errors which will likely lead to a
-   crash.
- * CVE-2023-40188: Out-Of-Bounds Read in the `nsc_rle_decode` function. This
-   Out-Of-Bounds Read occurs because processing is done on the `in` variable
-   without checking if it contains data of sufficient length. Insufficient
-   data for the `in` variable may cause errors or crashes.
+ * CVE-2023-39356: missing offset validation may lead to an Out Of Bound
+   Read in the function `gdi_multi_opaque_rect`. In particular there is no
+   code to validate if the value `multi_opaque_rect->numRectangles` is less
+   than 45. Looping through `multi_opaque_rect->`numRectangles without proper
+   boundary checks can lead to Out-of-Bounds Read errors which will likely
+   lead to a crash.
+ * CVE-2023-40188: Out-Of-Bounds Read in the `nsc_rle_decode` function.
+   This Out-Of-Bounds Read occurs because processing is done on the `in`
+   variable without checking if it contains data of sufficient length.
+   Insufficient data for the `in` variable may cause errors or crashes.
+ * CVE-2020-11524: `libfreerdp/codec/interleaved.c` in FreeRDP versions > 1.0
+   through 2.0.0-rc4 has an Out-of-bounds Write.
 bug: [56996]
 cve:
 - CVE-2020-11524
