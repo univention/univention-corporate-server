@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-3) unstable; urgency=medium
+
+  * Bug #49006: add bind_oauthbearer(authzid, access_token)
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jan 2024 16:04:57 +0100
+
 univention-directory-manager-modules (15.0.25-2) unstable; urgency=medium
 
   * Bug #55324: use univention.logging

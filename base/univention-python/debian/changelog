@@ -1,8 +1,12 @@
-univention-python (13.0.5-1) UNRELEASED; urgency=medium
+univention-python (13.0.5-1) unstable; urgency=medium
 
+  [ Philipp Hahn ]
   * Bug #56832: UCS 5.0-6 version bump
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:23 +0100
+  [ Florian Best ]
+  * Bug #49006: add bind_oauthbearer(authzid, access_token)
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jan 2024 16:04:16 +0100
 
 univention-python (13.0.4-1) unstable; urgency=medium
 

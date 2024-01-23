@@ -506,6 +506,21 @@ class access(object):
             raise univention.admin.uexceptions.authFail(_("Authentication failed"))
         self.__require_licence()
 
+    def bind_oauthbearer(self, authzid, bindpw):
+        # type: (Optional[str], str) -> None
+        """
+        Do LDAP bind using OAuth 2.0 Access Token.
+
+        :param str authzid: Authorization Identifier
+        :param str bindpw: The Access Token (as JWT)
+        """
+        try:
+            return self.lo.bind_oauthbearer(authzid, bindpw)
+        except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM) as exc:
+            ud.debug(ud.LDAP, ud.ALL, 'OAUTHBEARER authentication failed: %r' % (exc,))
+            raise univention.admin.uexceptions.authFail(_("Authentication failed"))
+        self.__require_licence()
+
     def __require_licence(self):
         # type: () -> None
         if self.require_license:
