@@ -133,11 +133,6 @@ static void gctx_cleanup(
 			gctx->uid_attr = NULL;
 		}
 
-		if (gctx->jwk != NULL) {
-			r_jwk_free(gctx->jwk);
-			gctx->jwk = NULL;
-		}
-
 		while ((item = SLIST_FIRST(&gctx->trusted_aud)) != NULL) {
 			SLIST_REMOVE_HEAD(&gctx->trusted_aud, next);
 			free(item);
@@ -339,13 +334,6 @@ static oauth_glob_context_t * pam_global_context_init(
 	if ((gctx->uid_attr = strdup(uid_attr)) == NULL) {
 		error = PAM_SYSTEM_ERR;
 		syslog(LOG_ERR, "strdup failed: %s", strerror(errno));
-		goto cleanup;
-	}
-
-	gctx->jwk = oauth_get_jwk(gctx, NULL);
-	if (!gctx->jwk) {
-		error = PAM_SYSTEM_ERR;
-		syslog(LOG_ERR, "Error in oauth_get_jwk");
 		goto cleanup;
 	}
 

@@ -247,11 +247,12 @@ enum OAuthError oauth_check_token_uid(
 enum OAuthError oauth_check_jwt_signature(
 	oauth_serv_context_t *ctx,
 	const void *utils,
-	jwt_t *jwt
+	jwt_t *jwt,
+	jwk_t *jwk
 ) {
 	AUTOPTR(char) claims = NULL;
 
-	if (r_jwt_verify_signature(jwt, ctx->glob_context->jwk, 0) != RHN_OK) {
+	if (r_jwt_verify_signature(jwt, jwk, 0) != RHN_OK) {
 		oauth_error(utils, 0, "Error r_jwt_verify_signature");
 		return INVALID_SIGNATURE;
 	}
@@ -263,18 +264,23 @@ enum OAuthError oauth_check_jwt_signature(
 
 
 jwk_t * oauth_get_jwk(
-	oauth_glob_context_t *gctx,
+	oauth_serv_context_t *ctx,
 	const void *utils
 ) {
+	int rc;
 	AUTOPTR(jwks_t) jwks = NULL;
 	jwk_t *jwk;
+	unsigned char *output;
+	size_t output_len = JWKS_BUFFSIZE;
+
+	output = malloc(output_len);
 
 	if (r_jwks_init(&jwks) != RHN_OK) {
 		oauth_error(utils, 0, "Error r_jwks_init");
 		goto out;
 	}
 
-	if (r_jwks_import_from_json_str(jwks, gctx->trusted_jwks_str) != RHN_OK) {
+	if (r_jwks_import_from_json_str(jwks, ctx->glob_context->trusted_jwks_str) != RHN_OK) {
 		oauth_error(utils, 0, "Error r_jwks_import_from_str");
 		goto out;
 	}
@@ -282,17 +288,9 @@ jwk_t * oauth_get_jwk(
 	jwk = r_jwks_get_at(jwks, 0);  // TODO: find the proper key type
 	if (!jwk) {
 		oauth_error(utils, 0, "Error r_jwks_get_at");
-		r_jwks_free(jwks);
 		goto out;
 	}
-	r_jwks_free(jwks);
 
-	/*
-	int rc;
-	unsigned char *output;
-	size_t output_len = JWKS_BUFFSIZE;
-
-	output = malloc(output_len);
 	rc = r_jwk_export_to_pem_der(jwk, R_FORMAT_PEM, output, &output_len, 0);
 	if (rc == RHN_ERROR_PARAM) {
 		output = realloc(output, output_len);
@@ -301,12 +299,9 @@ jwk_t * oauth_get_jwk(
 
 	if (rc != RHN_OK) {
 		oauth_error(utils, 0, "Error r_jwk_export_to_pem_der");
-		free(output);
 		goto out;
 	}
 	oauth_log(utils, LOG_DEBUG, "Exported key:\n%.*s\n", (int)output_len, output);
-	free(output);
-	*/
 	return jwk;
 
 out:
@@ -339,6 +334,13 @@ enum OAuthError oauth_check_jwt(
 		return PARSE_ERROR;
 	}
 
+	// TODO: maybe move to sasl_server_plug_init & pam_global_context_init ?
+	jwk = oauth_get_jwk(ctx, utils);
+	if (!jwk) {
+		oauth_error(utils, 0, "Error oauth_get_jwk");
+		return CONFIG_ERROR;
+	}
+
 	// parse the token
 	if (r_jwt_init(&jwt) != RHN_OK) {
 		oauth_error(utils, 0, "Error r_jwt_init");
@@ -350,7 +352,7 @@ enum OAuthError oauth_check_jwt(
 		return PARSE_ERROR;
 	}
 
-	if ((error = oauth_check_jwt_signature(ctx, utils, jwt)) != OK)
+	if ((error = oauth_check_jwt_signature(ctx, utils, jwt, jwk)) != OK)
 		return error;
 	if ((error = oauth_check_token_issuer(ctx, utils, jwt)) != OK)
 		return error;
