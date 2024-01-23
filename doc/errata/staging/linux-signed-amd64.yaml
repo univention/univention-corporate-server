@@ -68,7 +68,7 @@ desc: |
    to a class, as `tcf_unbind_filter()` is always called on the old instance
    in the success path, decreasing filter_cnt of the still referenced class
    and allowing it to be deleted, leading to a use-after-free.
- * CVE-2023-40283: An issue was discovered in l2cap_sock_release in
+ * CVE-2023-40283: An issue was discovered in `l2cap_sock_release` in
    `net/bluetooth/l2cap_sock.c` in the Linux kernel before 6.4.10. There is a
    use-after-free because the children of an sk are mishandled.
  * CVE-2023-39194: A flaw was found in the `XFRM` subsystem in the Linux
