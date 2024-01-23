@@ -15,6 +15,7 @@ Pre-Depends:
 Depends:
  bind9-host,
  db5.3-util,
+ libsasl2-modules-oauthbearer,
  makepasswd,
  python-univention-lib (>= 8.0.1-29),
  python3-univention-lib (>= 8.0.1-29),

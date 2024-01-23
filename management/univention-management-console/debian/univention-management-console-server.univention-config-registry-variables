@@ -157,5 +157,5 @@ Categories=management-umc
 Description[de]=Definiert die SASL-Mechanismen, die der lokale LDAP-Server anbieten soll. Diese Variable sollte nicht angepasst werden ohne gute Gründe und vorhergehende Tests.
 Description[en]=Defines the SASL mechanisms that the local LDAP server shall offer. This variable should not be adjusted without compelling reasons and prior checks.
 Type=str
-Default=EXTERNAL gssapi DIGEST-MD5 CRAM-MD5 LOGIN SAML PLAIN
+Default=EXTERNAL gssapi DIGEST-MD5 CRAM-MD5 LOGIN SAML OAUTHBEARER PLAIN
 Categories=service-ldap
