@@ -6,9 +6,9 @@ src: xerces-c
 fix: 3.1.4+debian-2+deb9u3
 desc: |
  This update addresses the following issue:
- 3.1.4+debian-2+deb9u3 (Fri, 19 Jan 2024 22:03:02 +0100)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-37536 Integer overflows in DFAContentModel class.
+ * CVE-2023-37536: An integer overflow in `xerces-c++ 3.2.3` in BigFix
+   Platform allows remote attackers to cause out-of-bound access via HTTP
+   request.
 bug: [56995]
 cve:
 - CVE-2023-37536
