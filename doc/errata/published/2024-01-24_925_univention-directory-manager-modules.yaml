@@ -9,3 +9,6 @@ desc: |
  * The new logging interface `univention.logging` is used to initialize
    `univention.debug`.
 bug: [55324]
+erratum: 925
+announced: 2024-01-24
+support: core
