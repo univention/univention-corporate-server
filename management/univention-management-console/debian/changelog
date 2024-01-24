@@ -1,4 +1,4 @@
-univention-management-console (12.0.32-9) unstable; urgency=medium
+univention-management-console (12.0.32-10) unstable; urgency=medium
 
   * Bug #49006: Implement OpenID Connect authentication for UMC
 
