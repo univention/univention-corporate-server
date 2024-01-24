@@ -148,7 +148,7 @@ def test_csp(keycloak_config, ucr):
         pytest.skip('no virtual host config, therefore no special cookie header settings')
     response = requests.post(keycloak_config.admin_url, headers={'Accept': 'text/html'})
     assert response.headers['Content-Security-Policy']
-    assert f"*.{ucr['domainname']}" in response.headers['Content-Security-Policy']
+    assert f"*.{ucr['domainname'].lower()}" in response.headers['Content-Security-Policy']
     if ucr['server/role'] != 'domaincontroller_master':
         pytest.skip('onyl on master, we have scenarios where keycloak/server/sso/fqdn points to a different server, but in this test we changed the local apache config.')
     try:
