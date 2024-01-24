@@ -270,7 +270,7 @@ define([
 					var saml = !passiveLogin.isCanceled();  // cancel means: not reachable (ping, TLS, hostname) or not enabled
 
 					var backChannelOIDC = new Deferred();
-					if (tools.isFalse(tools.status('umc/web/oidc/enabled') || 'yes')) {
+					if (tools.isFalse(tools.status('umc/web/oidc/enabled') || 'no')) {
 						backChannelOIDC.cancel();
 					} else {
 						backChannelOIDC.resolve();  // TODO: check if reachable
