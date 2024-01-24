@@ -18,7 +18,7 @@ from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from utils import run_command, wait_for_class, wait_for_id
+from utils import get_language, run_command, wait_for_class, wait_for_id
 
 
 LINK_COUNT = 12
@@ -102,10 +102,10 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
         [
             'umc/cookie-banner/cookie=TESTCOOKIE',
             'umc/cookie-banner/show=true',
-            'umc/cookie-banner/text/de=deutcher text',
-            'umc/cookie-banner/title/de=deutscher titel',
-            'umc/cookie-banner/text/en=english text',
-            'umc/cookie-banner/title/en=english title',
+            'umc/cookie-banner/text/de=de-DE text',
+            'umc/cookie-banner/title/de=de-DE title',
+            'umc/cookie-banner/text/en=en-US text',
+            'umc/cookie-banner/title/en=en-US title',
         ]
     )
     # check that the login does not work
@@ -113,17 +113,18 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
         keycloak_adm_login(admin_account.username, admin_account.bindpw)
     # check the popup
     driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-    assert wait_for_id(driver, 'cookie-text').text == 'english text'
-    assert wait_for_id(driver, 'cookie-title').text == 'english title'
+    lang = get_language(driver, german=True)
+    assert wait_for_id(driver, 'cookie-text').text == f'{lang} text'
+    assert wait_for_id(driver, 'cookie-title').text == f'{lang} title'
     button = wait_for_class(driver, 'cookie-banner-button')
     # accept the popup and check the cookie
-    assert button[0].text == 'ACCEPT'
+    assert button[0].text == 'ACCEPT' if lang == 'en-US' else 'AKZEPTIEREN'
     button[0].click()
     cookies = driver.get_cookies()
     for cookie in cookies:
         if cookie['name'] == 'TESTCOOKIE':
             assert cookie['value'] == 'do-not-change-me'
-            assert cookie['domain'] == keycloak_config.server
+            assert cookie['domain'] == keycloak_config.server.lower()
             break
     else:
         raise Exception(f'cookie TESTCOOKIE not found: {cookies}')
@@ -140,10 +141,10 @@ def test_cookie_banner_no_banner_with_cookie_domains(keycloak_adm_login, admin_a
         [
             'umc/cookie-banner/cookie=TESTCOOKIE',
             'umc/cookie-banner/show=true',
-            'umc/cookie-banner/text/de=deutcher text',
-            'umc/cookie-banner/title/de=deutscher titel',
-            'umc/cookie-banner/text/en=english text',
-            'umc/cookie-banner/title/en=english title',
+            'umc/cookie-banner/text/de=de-DE text',
+            'umc/cookie-banner/title/de=de-DE title',
+            'umc/cookie-banner/text/en=en-US text',
+            'umc/cookie-banner/title/en=en-US title',
             'umc/cookie-banner/domains=does.not.exists',
         ]
     )
@@ -159,11 +160,11 @@ def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr, keycloak_
         [
             'umc/cookie-banner/cookie=TESTCOOKIE',
             'umc/cookie-banner/show=true',
-            'umc/cookie-banner/text/de=deutcher text',
-            'umc/cookie-banner/title/de=deutscher titel',
-            'umc/cookie-banner/text/en=english text',
-            'umc/cookie-banner/title/en=english title',
-            f'umc/cookie-banner/domains=does.not.exist,{domain}',
+            'umc/cookie-banner/text/de=de-DE text',
+            'umc/cookie-banner/title/de=de-DE title',
+            'umc/cookie-banner/text/en=en-US text',
+            'umc/cookie-banner/title/en=en-US title',
+            f'umc/cookie-banner/domains=does.not.exist,{domain.lower()}',
         ]
     )
     driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
@@ -172,7 +173,7 @@ def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr, keycloak_
     cookies = driver.get_cookies()
     for cookie in cookies:
         if cookie['name'] == 'TESTCOOKIE':
-            assert cookie['domain'] == f'.{domain}'
+            assert cookie['domain'] == f'.{domain.lower()}'
             break
     else:
         raise Exception(f'cookie TESTCOOKIE not found: {cookies}')
@@ -186,14 +187,16 @@ def test_login_page_with_cookie_banner_no_element_is_tabbable(keycloak_adm_login
         [
             'umc/cookie-banner/cookie=TESTCOOKIE',
             'umc/cookie-banner/show=true',
-            'umc/cookie-banner/text/de=deutcher text',
-            'umc/cookie-banner/title/de=deutscher titel',
-            'umc/cookie-banner/text/en=english text',
-            'umc/cookie-banner/title/en=english title',
+            'umc/cookie-banner/text/de=de-DE text',
+            'umc/cookie-banner/title/de=de-DE title',
+            'umc/cookie-banner/text/en=en-US text',
+            'umc/cookie-banner/title/en=en-US title',
         ]
     )
     driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-    assert driver.switch_to.active_element.text == 'ACCEPT'
+    lang = get_language(driver, german=True)
+    button = wait_for_class(driver, 'cookie-banner-button')
+    assert button[0].text == 'ACCEPT' if lang == 'en-US' else 'ANNEHMEN'
     assert driver.switch_to.active_element.is_displayed
     # some browser fields
     ActionChains(driver).send_keys(Keys.TAB).perform()
@@ -201,7 +204,8 @@ def test_login_page_with_cookie_banner_no_element_is_tabbable(keycloak_adm_login
     ActionChains(driver).send_keys(Keys.TAB).perform()
     ActionChains(driver).send_keys(Keys.TAB).perform()
     # and back to the beginning
-    assert driver.switch_to.active_element.text == 'ACCEPT'
+    button = wait_for_class(driver, 'cookie-banner-button')
+    assert button[0].text == 'ACCEPT' if lang == 'en-US' else 'ANNEHMEN'
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
@@ -218,10 +222,11 @@ def test_login_page_all_elements_are_tabbable(portal_login_via_keycloak, keycloa
     # some browser fields
     ActionChains(driver).send_keys(Keys.TAB).perform()
     ActionChains(driver).send_keys(Keys.TAB).perform()
-    assert driver.switch_to.active_element.text == 'English'
+    lang = get_language(driver, german=True)
+    assert driver.switch_to.active_element.text == 'English' if lang == 'en-US' else 'Deutsch'
     assert driver.switch_to.active_element.is_displayed
     ActionChains(driver).send_keys(Keys.TAB).perform()
-    assert driver.switch_to.active_element.text == 'Deutsch'
+    assert driver.switch_to.active_element.text == 'Deutsch' if lang == 'en-US' else 'English'
     assert driver.switch_to.active_element.is_displayed
     # and back to the beginning
     ActionChains(driver).send_keys(Keys.TAB).perform()
@@ -241,7 +246,7 @@ def test_invalid_link_count(lang: str, link_count: int):
 def test_login_links(lang, link_count, login_links, portal_login_via_keycloak, admin_account):
     driver = portal_login_via_keycloak(admin_account.username, admin_account.bindpw, no_login=True)
     login_links_parent = wait_for_id(driver, 'umcLoginLinks')
-    links_found = login_links_parent.find_elements_by_tag_name('a')
+    links_found = login_links_parent.find_elements(By.TAG_NAME, 'a')
     assert link_count == len(links_found)
     for link in links_found:
         assert link.text.startswith('href')
