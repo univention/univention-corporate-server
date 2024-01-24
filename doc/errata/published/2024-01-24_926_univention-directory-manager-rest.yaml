@@ -9,3 +9,6 @@ desc: |
  * The replacement of the fallback UMC logger has been adjusted to use
    `univention.logging`.
 bug: [55324]
+erratum: 926
+announced: 2024-01-24
+support: core
