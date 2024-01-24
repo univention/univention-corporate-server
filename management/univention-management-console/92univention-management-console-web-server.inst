@@ -67,23 +67,6 @@ else
 
 fi
 
-# OIDC
-if [ -n "$umc_oidc_rp_server" ]; then
-	fqdn_oidc="$umc_oidc_rp_server"
-else
-	fqdn_oidc="$hostname.$domainname"
-fi
-
-_cleanup_oidc_die () {
-	ucr unset umc/oidc/issuer; exit 3
-}
-if ! is_ucr_false 'umc/web/sso/enabled'; then
-	kc_server_sso_fqdn="${keycloak_server_sso_fqdn:-ucs-sso-ng.$domainname}"
-	rm /usr/share/univention-management-console/oidc/*.jwks
-	ucr --debug set umc/oidc/issuer="https://${kc_server_sso_fqdn}${keycloak_server_sso_path:-/}realms/ucs" || _cleanup_oidc_die
-	[ "$(ls -A /usr/share/univention-management-console/oidc/*.jwks)" ] || _cleanup_oidc_die
-fi
-
 # SAML
 if [ -n "$umc_saml_sp_server" ]; then
 	fqdn="$umc_saml_sp_server"
@@ -130,6 +113,15 @@ if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
 		ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"?"$jwk"
 	done
 
+	_cleanup_oidc_die () {
+		ucr unset umc/oidc/issuer; exit 3
+	}
+	if is_ucr_true 'umc/web/oidc/enabled'; then
+		rm /usr/share/univention-management-console/oidc/*.jwks
+		ucr --debug set umc/oidc/issuer="https://${keycloak_server_sso_fqdn:-ucs-sso-ng.$domainname}${keycloak_server_sso_path:-/}realms/ucs" || _cleanup_oidc_die
+		[ "$(ls -A /usr/share/univention-management-console/oidc/*.jwks)" ] || _cleanup_oidc_die
+	fi
+
 	if [ ! -e /etc/umc-oidc.secret ]; then
 		touch /etc/umc-oidc.secret
 		chmod 0600 /etc/umc-oidc.secret
@@ -137,6 +129,12 @@ if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
 
 		ucr commit /usr/share/univention-management-console/oidc/oidc.json
 		univention-directory-listener-ctrl resync umc-service-providers
+	fi
+
+	if [ -n "$umc_oidc_rp_server" ]; then
+		fqdn_oidc="$umc_oidc_rp_server"
+	else
+		fqdn_oidc="$hostname.$domainname"
 	fi
 
 	univention-keycloak "$@" oidc/rp create \
