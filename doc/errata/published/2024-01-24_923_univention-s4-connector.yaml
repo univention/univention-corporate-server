@@ -11,3 +11,6 @@ desc: |
    By adjusting the filter in the listener module this is
    now avoided, speeding up initial replication.
 bug: [56954]
+erratum: 923
+announced: 2024-01-24
+support: core
