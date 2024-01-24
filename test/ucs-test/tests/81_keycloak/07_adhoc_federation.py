@@ -374,13 +374,13 @@ def _test_sso_login(selenium: WebDriver, portal_config: SimpleNamespace, keycloa
     selenium.get(portal_config.url)
     wait_for_id(selenium, portal_config.categories_id)
     assert selenium.title == portal_config.title
-    get_portal_tile(selenium, portal_config.sso_login_tile, portal_config).click()
+    get_portal_tile(selenium, portal_config.sso_login_tile_de, portal_config).click()
     wait_for_id(selenium, 'social-saml').click()
     keycloak_login(selenium, keycloak_config, 'test_user1', 'univention')
     wait_for_id(selenium, portal_config.header_menu_id).click()
     wait_for_id(selenium, 'loginButton').click()
     wait_for_id(selenium, portal_config.categories_id)
-    assert get_portal_tile(selenium, portal_config.sso_login_tile, portal_config)
+    assert get_portal_tile(selenium, portal_config.sso_login_tile_de, portal_config)
 
 
 def get_udm_user_obj(username: str) -> UsersUserObject | None:
@@ -422,7 +422,7 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigR
         # create client in dummy realm
         keycloak_admin_connection.realm_name = 'dummy'
         client_id_location = f'/realms/{realm}'
-        valid_redirect_urls = [keycloak_config.url.rstrip('/').lower() + '/realms/ucs/broker/saml/endpoint']
+        valid_redirect_urls = [keycloak_config.url.rstrip('/') + '/realms/ucs/broker/saml/endpoint']
         client_id = keycloak_config.url.rstrip('/') + client_id_location
         client_payload = get_client_payload(client_id, valid_redirect_urls)
         keycloak_admin_connection.create_client(payload=client_payload, skip_exists=True)
