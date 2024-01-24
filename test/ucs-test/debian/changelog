@@ -1,3 +1,9 @@
+ucs-test (10.0.20-17) unstable; urgency=medium
+
+  * Revert backport of changes for 5.2 that break all tests in 5.0-6. 5.2 is different
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 24 Jan 2024 15:36:40 +0100
+
 ucs-test (10.0.20-15) unstable; urgency=low
 
   * LDAP: Fux broken memberOf test
