@@ -15,6 +15,7 @@ Standards-Version: 3.5.2
 Package: univention-directory-manager-rest
 Architecture: all
 Depends:
+ python3-requests,
  python3-univention-directory-manager-rest (= ${binary:Version}),
  python3-univention-directory-manager-rest-client (= ${binary:Version}),
  systemd,
@@ -44,6 +45,7 @@ Depends:
  python3-defusedxml,
  python3-genshi,
  python3-jinja2,
+ python3-jwt,
  python3-mimeparse,
  python3-pycurl,
  python3-setproctitle,

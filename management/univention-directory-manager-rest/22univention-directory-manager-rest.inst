@@ -43,13 +43,42 @@ joinscript_init
 
 . /usr/share/univention-lib/all.sh
 
-eval "$(ucr shell ldap/base)"
+eval "$(ucr shell ldap/base hostname domainname keycloak/server/sso/fqdn keycloak/server/sso/path)"
 
 domain_admins_dn="$(umc_udm groups/group list --filter name="$(custom_groupname "Domain Admins")" | sed -ne 's/^DN: //p')"
 ucr set \
 	directory/manager/rest/authorized-groups/domain-admins?"$domain_admins_dn" \
 	directory/manager/rest/authorized-groups/dc-backup?"cn=DC Backup Hosts,cn=groups,$ldap_base" \
 	directory/manager/rest/authorized-groups/dc-slaves?"cn=DC Slave Hosts,cn=groups,$ldap_base" || die
+
+if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
+	if [ ! -e /etc/udm-rest-oauth.secret ]; then
+		touch /etc/udm-rest-oauth.secret
+		chmod 0600 /etc/udm-rest-oauth.secret
+		create_machine_password > /etc/udm-rest-oauth.secret
+	fi
+
+	fqdn_oauth="${hostname}.${domainname}"
+	univention-keycloak "$@" oidc/rp create \
+		--app-url "https://$fqdn_oauth/univention/udm/" \
+		--host-fqdn "$fqdn_oauth" \
+		--client-secret "$(cat /etc/udm-rest-oauth.secret)" \
+		--access-token-lifespan="${directory_manager_rest_oauth_access_token_lifespan:-300}" \
+		--description="Univention Directory Manager on $fqdn_oauth" \
+		--service-accounts-enabled \
+		--no-frontchannel-logout \
+		--direct-access-grants \
+		--access-token-audience="ldaps://$domainname/" \
+		--access-token-audience="ldaps://$hostname.$domainname/" \
+		"https://$fqdn_oauth/univention/udm/" || die
+		#--authorization-services-enabled \
+
+	kc_server_sso_fqdn="${keycloak_server_sso_fqdn:-ucs-sso-ng.$domainname}"
+	rm -f /usr/share/univention-directory-manager-rest/oauth/*.jwks
+	ucr --debug set directory/manager/rest/oauth/issuer="https://${kc_server_sso_fqdn}${keycloak_server_sso_path:-/}realms/ucs" || ucr unset directory/manager/rest/oauth/issuer
+	[ "$(ls -A /usr/share/univention-directory-manager-rest/oauth/*.jwks)" ] || die "Could not set up OAuth"
+
+fi
 
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 	service univention-directory-manager-rest restart

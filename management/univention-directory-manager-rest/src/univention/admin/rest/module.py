@@ -77,6 +77,7 @@ from univention.admin.rest.http_conditional import ConditionalResource, last_mod
 from univention.admin.rest.ldap_connection import (
     get_machine_ldap_read_connection, get_user_ldap_read_connection, get_user_ldap_write_connection, reset_cache,
 )
+from univention.admin.rest.oauth import OAuthException, OAuthResource
 from univention.admin.rest.openapi import OpenAPIBase, RelationsBase, _OpenAPIBase
 from univention.admin.rest.sanitizer import (
     Body, BooleanSanitizer, BoolSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer,
@@ -113,7 +114,7 @@ _ = Translation('univention-directory-manager-rest').translate
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 
 
-class ResourceBase(SanitizerBase, HAL, HTML):
+class ResourceBase(SanitizerBase, HAL, HTML, OAuthResource):
     """Abstract base class for all HTTP resources"""
 
     pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
@@ -148,6 +149,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         self.set_header('X-Request-Id', self.request.x_request_id)
         self.request.content_negotiation_lang = 'html'
         self.request.path_decoded = unquote(self.request.path)
+        self.oauth_prepare()
         self.request.decoded_query_arguments = self.request.query_arguments.copy()
         authorization = self.request.headers.get('Authorization')
         if not authorization and self.requires_authentication:
@@ -180,32 +182,32 @@ class ResourceBase(SanitizerBase, HAL, HTML):
                     raise HTTPError(400, 'The basic auth credentials are malformed.')
             elif authorization.lower().startswith('bearer '):
                 auth_type = 'Bearer'
-                username, password = None, authorization.split(' ', 1)[1]
+                try:
+                    username, password = self.bearer_authorization(authorization.split(' ', 1)[1])
+                except OAuthException as exc:
+                    self.force_authorization(auth_type, str(exc))
+                    return
             else:
                 return self.force_authorization()
 
-            if not auth_type:
-                userdn = self._auth_get_userdn(username)
-                if not userdn:
-                    return self.force_authorization(auth_type)
+            userdn = self._auth_get_userdn(username)
+            if not userdn:
+                return self.force_authorization(auth_type)
 
         try:
             self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(auth_type, userdn, password)
             if already_authenticated and not self.ldap_connection.whoami():  # the ldap connection is not bound anymore
                 reset_cache(self.ldap_connection)
                 self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(auth_type, userdn, password)
-            if auth_type == 'Bearer':
-                userdn = self.ldap_connection.whoami()
-                username = '+'.join(explode_rdn(userdn, True))
+
+            self.request.user_dn = userdn
+            self.request.username = username
         except (ldap.LDAPError, udm_errors.base) as exc:
             MODULE.debug('Authentication failed: %s' % (exc,))
             return self.force_authorization(auth_type)  # TODO: parse ldap.OTHER / etc for SASL error details?
         except Exception:
             MODULE.error('Unknown error during authentication: %s' % (traceback.format_exc(), ))
             return self.force_authorization(auth_type)
-        else:
-            self.request.user_dn = userdn
-            self.request.username = username
 
         if not already_authenticated:
             self._auth_check_allowed_groups()
@@ -2968,6 +2970,14 @@ class Application(tornado.web.Application):
         # Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
         # Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes
         property_ = '([^/]+)'
+        settings['oauth'] = {
+            'issuer': ucr.get('directory/manager/rest/oauth/issuer', ''),
+            'client_id': ucr.get('directory/manager/rest/oauth/client-id', ''),
+            'openid_configuration': ucr.get('directory/manager/rest/oauth/openid-configuration', ''),
+            'openid_certs': ucr.get('directory/manager/rest/oauth/openid-certs', ''),
+            'client_secret_file': ucr.get('directory/manager/rest/oauth/client-secret-file', ''),
+        }
+
         super().__init__([
             ("/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
             ("/udm/(?:index.html)?", Modules),
