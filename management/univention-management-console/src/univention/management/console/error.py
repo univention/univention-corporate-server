@@ -170,4 +170,5 @@ class LDAP_ConnectionFailed(LDAP_ServerDown):
 class OpenIDProvideUnavailable(ServiceUnavailable):
 
     def __init__(self, *args, **kwargs):
-        super(OpenIDProvideUnavailable, self).__init__(*args, **kwargs, reason='OpenID-Provider Unavailable')
+        kwargs['reason'] = 'OpenID-Provider Unavailable'
+        super(OpenIDProvideUnavailable, self).__init__(*args, **kwargs)
