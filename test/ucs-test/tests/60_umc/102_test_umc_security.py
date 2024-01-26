@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv --tb=native
 ## desc: Test security related HTTP headers are set
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
@@ -21,11 +21,13 @@ class TestSecurityHeaders:
         'login/blank.html',
         'login/login.html',
     ])
-    def test_login_site(self, path, Client):
+    def test_login_site(self, path, Client, ucr):
         client = Client()
         response = client.request('GET', path)
         assert response.get_header("X-Frame-Options") is None  # changed from: == "SAMEORIGIN"
-        assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval'  https://www.piwik.univention.de/ ; frame-ancestors 'self';"
+        sso = 'https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/ https://%(keycloak/server/sso/fqdn)s/ http://%(keycloak/server/sso/fqdn)s/' % defaultdict(lambda: '', ucr)
+        sso = sso.replace('http:///', '').replace('https:///', '').strip()
+        assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval' %s  https://www.piwik.univention.de/ ; frame-ancestors 'self';" % sso
 
         assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
         assert response.get_header("X-XSS-Protection") == "1; mode=block"
@@ -46,7 +48,11 @@ class TestSecurityHeaders:
         if path == '/languages.json':
             assert response.get_header("Content-Security-Policy") == "frame-ancestors 'none';"
         else:
-            expected = "frame-ancestors 'self' https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/;" % defaultdict(lambda: '', ucr)
+            sso = 'https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/ https://%(keycloak/server/sso/fqdn)s/ http://%(keycloak/server/sso/fqdn)s/' % defaultdict(lambda: '', ucr)
+            if 'portal' in path:
+                sso = 'https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/' % defaultdict(lambda: '', ucr)
+            sso = sso.replace('http:///', '').replace('https:///', '').strip()
+            expected = "frame-ancestors 'self' %s;" % sso
             assert expected in response.get_header("Content-Security-Policy")
 
     @pytest.mark.xfail(reason='Bug #52940')
