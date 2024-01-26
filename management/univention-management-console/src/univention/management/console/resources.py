@@ -964,7 +964,7 @@ class Set(Resource):
             if is_univention_lib and cls:
                 # for backwards compatibility with non redirecting clients we cannot redirect here :-(
                 p = cls(self.application, self.request)
-                p._ = self._
+                p.locale = self.locale
                 p.finish = self.finish
                 await p.post()
                 return
