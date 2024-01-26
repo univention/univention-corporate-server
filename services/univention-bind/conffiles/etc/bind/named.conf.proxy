@@ -12,14 +12,15 @@ options {
 	listen-on { any; };
 @!@
 dns_allow_query = configRegistry.get('dns/allow/query', '').strip(';')
-dns_allow_query_cache = configRegistry.get('dns/allow/query/cache', '').strip(';')
-dns_allow_transfer = configRegistry.get('dns/allow/transfer', '').strip(';')
-
 if dns_allow_query:
     print('\tallow-query { %s; };' % dns_allow_query)
+
+dns_allow_query_cache = configRegistry.get('dns/allow/query/cache', '').strip(';')
 if dns_allow_query_cache:
     print('\tallow-recursion { %s; };' % dns_allow_query_cache)
     print('\tallow-query-cache { %s; };' % dns_allow_query_cache)
+
+dns_allow_transfer = configRegistry.get('dns/allow/transfer', '').strip(';')
 if dns_allow_transfer:
     print('\tallow-transfer { %s; };' % dns_allow_transfer)
 
