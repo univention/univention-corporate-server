@@ -23,9 +23,7 @@ if dns_allow_query_cache:
 if dns_allow_transfer:
     print('\tallow-transfer { %s; };' % dns_allow_transfer)
 
-val = 'none'
-if configRegistry.is_true('dns/ipv6', True):
-    val = 'any'
+val = 'any' if configRegistry.is_true('dns/ipv6', True) else 'none'
 print('\tlisten-on-v6 { %s; };' % val)
 @!@};
 logging {
