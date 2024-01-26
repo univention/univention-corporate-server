@@ -70,17 +70,8 @@ include "/etc/bind/local-predlz.conf.samba4";
 
 @!@
 # flake8: noqa
-import platform
-import copy
-
-
-format_dict = copy.deepcopy(configRegistry)
-if '32bit' in platform.architecture()[0]:
-    format_dict['dns/dlz/module'] = '/usr/lib/i386-linux-gnu/samba/bind9/dlz_bind9_11.so'
-else:
-    format_dict['dns/dlz/module'] = '/usr/lib/x86_64-linux-gnu/samba/bind9/dlz_bind9_11.so'
 print('''dlz "samba4.zone" {
-	database "dlopen %(dns/dlz/module)s -d %(dns/dlz/debug/level)s {
+	database "dlopen /usr/lib/x86_64-linux-gnu/samba/bind9/dlz_bind9_11.so -d %(dns/dlz/debug/level)s {
 			/*
 			 * update-policy {
 			 * 		grant %(kerberos/realm)s ms-self * A AAAA;
@@ -100,7 +91,7 @@ print('''dlz "samba4.zone" {
 			check-names ignore;
 		};
 	";
-};''' % format_dict)  # noqa: E101
+};''' % configRegistry)  # noqa: E101
 @!@
 
 include "/etc/bind/local.conf.samba4";
