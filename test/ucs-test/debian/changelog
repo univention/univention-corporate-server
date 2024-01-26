@@ -1,3 +1,9 @@
+ucs-test (10.0.20-18) unstable; urgency=medium
+
+  * Bug #49006: ignore missing UCRWARNING in JSON file
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jan 2024 20:36:05 +0100
+
 ucs-test (10.0.20-17) unstable; urgency=medium
 
   * Revert backport of changes for 5.2 that break all tests in 5.0-6. 5.2 is different
