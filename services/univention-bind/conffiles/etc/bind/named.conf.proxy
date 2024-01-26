@@ -1,14 +1,14 @@
 @%@UCRWARNING=# @%@
 
 controls{
-        inet 127.0.0.1
+	inet 127.0.0.1
 @!@
 allowed_controllers = {configRegistry.get('dns/master/address', '127.0.0.1'), '127.0.0.1'}
 print('\t\tallow {{ {}; }};'.format('; '.join(sorted(allowed_controllers))))
 @!@
 };
 options {
-    directory "/var/cache/bind";
+	directory "/var/cache/bind";
 	listen-on { any; };
 @!@
 dns_allow_query = configRegistry.get('dns/allow/query', '').strip(';')
@@ -63,20 +63,20 @@ else:
     print('};')
 @!@
 zone "localhost" {
-    type master;
-    file "/etc/bind/db.local";
+	type master;
+	file "/etc/bind/db.local";
 };
 zone "127.in-addr.arpa" {
-    type master;
-    file "/etc/bind/db.127";
+	type master;
+	file "/etc/bind/db.127";
 };
 zone "0.in-addr.arpa" {
-    type master;
-    file "/etc/bind/db.0";
+	type master;
+	file "/etc/bind/db.0";
 };
 zone "255.in-addr.arpa" {
-    type master;
-    file "/etc/bind/db.255";
+	type master;
+	file "/etc/bind/db.255";
 };
 
 include "/etc/bind/univention.conf.proxy";

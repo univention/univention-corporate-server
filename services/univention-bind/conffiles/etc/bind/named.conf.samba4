@@ -1,11 +1,11 @@
 @%@UCRWARNING=# @%@
 
 controls{
-        inet 127.0.0.1
-        allow { @%@dns/master/address@%@; };
+	inet 127.0.0.1
+	allow { @%@dns/master/address@%@; };
 };
 options {
-        tkey-gssapi-keytab "/var/lib/samba/private/dns.keytab";
+	tkey-gssapi-keytab "/var/lib/samba/private/dns.keytab";
 	listen-on { any; };
 @!@
 dns_allow_query = configRegistry.get('dns/allow/query')
@@ -104,4 +104,3 @@ print('''dlz "samba4.zone" {
 @!@
 
 include "/etc/bind/local.conf.samba4";
-
