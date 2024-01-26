@@ -153,45 +153,38 @@ Description[en]=Defines the localized text for the cookie banner texts. Placehol
 Type=str
 Categories=management-umc
 
-[umc/oidc/default]
-Description[de]=Aktivierte OIDC-Konfiguration
-Description[en]=Activated OIDC configuration
+[umc/oidc/default-op]
+Description[de]=Definiert den standard OpenID Provider UCR identifier.
+Description[en]=Defines the standard OpenID Provider UCR identifier.
 Type=str
 Categories=management-umc,oidc
 
-[umc/oidc/issuer]
-Description[de]=Definiert den OpenID-Connect-Provider-Issuer.
-Description[en]=Defines the OpenID-Connect provider issuer.
-Type=str
-Categories=management-umc,oidc
-
-[umc/oidc/.*/server]
-Description[de]=OIDC Server
-Description[en]=OIDC Server
-Type=str
-Categories=management-umc,oidc
-
-[umc/oidc/.*/client-realm]
-Description[de]=OIDC Client Realm
-Description[en]=OIDC Client Realm
+[umc/oidc/.*/issuer]
+Description[de]=Definiert den OpenID Provider Issuer dieses Relying Party Eintrags.
+Description[en]=Defines the OpenID provider issuer of this relying party entry.
 Type=str
 Categories=management-umc,oidc
 
 [umc/oidc/.*/client-id]
-Description[de]=OIDC Client ID
-Description[en]=OIDC Client ID
+Description[de]=Definiert die Client ID dieses Relying Party Eintrags.
+Description[en]=Defines the Client ID of this relying party entry.
 Type=str
 Categories=management-umc,oidc
 
 [umc/oidc/.*/client-secret-file]
-Description[de]=Dateiname des OIDC Client Secret
-Description[en]=Filename for OIDC Client Secret
+Description[de]=Definiert den Dateipfad zum Client-Secret dieses Relying Party Eintrags.
+Description[en]=Defines the file path to the client secret of this relying party entry.
 Type=str
 Categories=management-umc,oidc
 
-[ldap/server/sasl/mech_list]
-Description[de]=Definiert die SASL-Mechanismen, die der lokale LDAP-Server anbieten soll. Diese Variable sollte nicht angepasst werden ohne gute Gründe und vorhergehende Tests.
-Description[en]=Defines the SASL mechanisms that the local LDAP server shall offer. This variable should not be adjusted without compelling reasons and prior checks.
+[umc/oidc/.*/openid-configuration]
+Description[de]=Definiert den Dateipfad zur OpenID Provider openid-configuration Definition dieses Relying Party Eintrags.
+Description[en]=Defines the file path to the OpenID Provider openid-configuration definition of this relying party entry.
 Type=str
-Default=EXTERNAL gssapi DIGEST-MD5 CRAM-MD5 LOGIN SAML OAUTHBEARER PLAIN
-Categories=service-ldap
+Categories=management-umc,oidc
+
+[umc/oidc/.*/openid-certs]
+Description[de]=Definiert den Dateipfad zu den OpenID Provider Zertifikaten im JWKS-Format dieses Relying Party Eintrags.
+Description[en]=Defines the file path to the OpenID Provider certificates in JWKS format of this relying party entry.
+Type=str
+Categories=management-umc,oidc

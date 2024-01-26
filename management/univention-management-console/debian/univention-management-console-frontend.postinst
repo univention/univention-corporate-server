@@ -44,7 +44,6 @@ umc_frontend_new_hash
 univention-config-registry set "umc/web/feedback/mail?feedback@univention.de" \
 	"umc/web/feedback/description?[UMC-Feedback] Traceback" \
 	"umc/web/favorites/default?welcome,udm:users/user,udm:groups/group,udm:computers/computer,appcenter:appcenter,updater" \
-	"umc/web/sso/newwindow?true" \
 	"umc/web/sso/enabled?true"
 
 exit 0

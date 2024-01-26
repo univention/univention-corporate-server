@@ -30,14 +30,15 @@ Description[en]=In the title panel of the UMC a selection list is shown. It can 
 Type=uint
 Categories=management-umc
 
-[umc/web/sso/newwindow]
-Description[de]=Ist diese Option aktiviert, wird bei Navigation über die Signle-Sign-On-Funktion ein neues Fenster geöffnet. Anderenfalls wird das aktuelle Browserfenster ersetzt.
-Description[en]=If this option is activated, a new window will be opened on single sign-on, otherwise the current window will be replaced.
-Type=bool
-Categories=management-umc
-
 [umc/web/sso/enabled]
-Description[de]=Ist diese Option aktiviert, wird der Login an UMC per Signle-Sign-On versucht bevor der reguläre Login benutzt wird.
+Description[de]=Ist diese Option aktiviert, wird der Login an UMC per Single Sign-On versucht bevor der reguläre Login benutzt wird.
 Description[en]=If this option is activated, the login via single sign-on is tried before the regular login is used.
 Type=bool
 Categories=management-umc
+
+[umc/web/oidc/enabled]
+Description[de]=Ist diese Option aktiviert, wird der Login an UMC per OpenID Connect Single Sign-On versucht bevor der reguläre Login benutzt wird.
+Description[en]=If this option is activated, the login via OpenID Connect single sign-on is tried before the regular login is used.
+Type=bool
+Default=false
+Categories=management-umc,oidc

@@ -91,7 +91,6 @@ Variables: umc/self-service/account-deregistration/enabled
 Variables: umc/self-service/.*/title/.*
 Variables: portal/show-outdated-browser-warning
 Variables: users/default/Administrator
-Variables: umc/single-sign-on/.*
 
 Type: file
 File: usr/share/univention-management-console/oidc/oidc.json

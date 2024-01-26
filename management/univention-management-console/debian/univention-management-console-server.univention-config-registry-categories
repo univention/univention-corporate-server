@@ -3,3 +3,7 @@ name[de]=Univention Management Console
 name[en]=Univention Management Console
 icon=dummy.gif
 
+[oidc]
+name[de]=OpenID Connect / OAuth 2.0
+name[en]=OpenID Connect / OAuth 2.0
+icon=dummy.gif

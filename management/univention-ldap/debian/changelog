@@ -1,3 +1,9 @@
+univention-ldap (16.0.14-4) unstable; urgency=medium
+
+  * Bug #49006: document UCR variables
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jan 2024 21:12:04 +0100
+
 univention-ldap (16.0.14-3) unstable; urgency=medium
 
   * Bug #49006: integrate libsasl2-modules-oauthbearer into LDAP server

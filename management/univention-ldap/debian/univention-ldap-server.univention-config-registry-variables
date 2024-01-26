@@ -379,3 +379,16 @@ Description[de]=Aktiviert/Deaktiviert das Passwort-Modul bcrypt, standardmäßig
 Description[en]=To enable/disable the bcrypt passwd scheme module. Disabled by default.
 Type=bool
 Categories=service-ldap
+
+[ldap/server/sasl/mech_list]
+Description[de]=Definiert die SASL-Mechanismen, die der lokale LDAP-Server anbieten soll. Diese Variable sollte nicht angepasst werden ohne gute Gründe und vorhergehende Tests.
+Description[en]=Defines the SASL mechanisms that the local LDAP server shall offer. This variable should not be adjusted without compelling reasons and prior checks.
+Type=str
+Default=EXTERNAL gssapi DIGEST-MD5 CRAM-MD5 LOGIN SAML OAUTHBEARER PLAIN
+Categories=service-ldap
+
+[ldap/server/sasl/oauthbearer/(trusted-audience|trusted-issuer|required-scopes|trusted-jwks|trusted-authorized-party|grace-time)/.*]
+Description[de]=Definiert die Konfiguration des SASL-Mechanismus OAUTHBEARER.
+Description[en]=Defines the configuration of the SASL mechanism OAUTHBEARER.
+Type=str
+Categories=service-ldap
