@@ -96,12 +96,13 @@ eval "$(ucr shell ucs/server/sso/fqdn)"
 # make a apache restart for the next call:
 systemctl restart apache2
 
-if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
-	# Register UMC as a Keycloak client, but ignore failure
-	univention-keycloak "$@" saml/sp create \
-		--metadata-url="https://$fqdn/univention/saml/metadata" \
-		--metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" \
-		--umc-uid-mapper || true
+_setup_oidc () {
+	_cleanup_oidc_die () {
+		ucr unset umc/oidc/issuer; exit 3
+	}
+	rm /usr/share/univention-management-console/oidc/*.jwks
+	ucr --debug set umc/oidc/issuer="https://${keycloak_server_sso_fqdn:-ucs-sso-ng.$domainname}${keycloak_server_sso_path:-/}realms/ucs" || _cleanup_oidc_die
+	[ "$(ls -A /usr/share/univention-management-console/oidc/*.jwks)" ] || _cleanup_oidc_die
 
 	ucr set \
 		"ldap/server/sasl/oauthbearer/trusted-audience/$domainname?ldaps://$domainname/" \
@@ -110,17 +111,8 @@ if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
 		#ldap/server/sasl/oauthbearer/required-scopes/
 
 	for jwk in /usr/share/univention-management-console/oidc/*.jwks; do
-		ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"?"$jwk"
+		[ -e "$jwk" ] && ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"?"$jwk"
 	done
-
-	_cleanup_oidc_die () {
-		ucr unset umc/oidc/issuer; exit 3
-	}
-	if is_ucr_true 'umc/web/oidc/enabled'; then
-		rm /usr/share/univention-management-console/oidc/*.jwks
-		ucr --debug set umc/oidc/issuer="https://${keycloak_server_sso_fqdn:-ucs-sso-ng.$domainname}${keycloak_server_sso_path:-/}realms/ucs" || _cleanup_oidc_die
-		[ "$(ls -A /usr/share/univention-management-console/oidc/*.jwks)" ] || _cleanup_oidc_die
-	fi
 
 	if [ ! -e /etc/umc-oidc.secret ]; then
 		touch /etc/umc-oidc.secret
@@ -165,8 +157,17 @@ if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
 		--consent="Allow access to UDM-REST API and OpenLDAP?" \
 		--web-origins="+" \
 		"https://$fqdn_oidc/univention/oidc/" || die
-fi
+}
 
+if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
+	# Register UMC as a Keycloak client, but ignore failure
+	univention-keycloak "$@" saml/sp create \
+		--metadata-url="https://$fqdn/univention/saml/metadata" \
+		--metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" \
+		--umc-uid-mapper || true
+
+	is_ucr_true 'umc/web/oidc/enabled' && _setup_oidc "$@"
+fi
 
 _cleanup_die () {
 	ucr unset umc/saml/idp-server; exit 3
