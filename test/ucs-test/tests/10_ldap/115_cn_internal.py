@@ -13,7 +13,7 @@ from univention.admin.uldap import access, getAdminConnection, getMachineConnect
 from univention.testing.ucr import UCSTestConfigRegistry
 
 
-BASE = 'cn=udm_archive'
+BASE = 'cn=internal'
 
 
 def role():
@@ -39,7 +39,7 @@ def test_syncprov_additional_group_acls_write(udm, ucr, random_string):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
-    ucr.handler_set([f'ldap/database/udm_archive/syncprov/acl/groups/write=cn=justfortesting|{group_dn}'])
+    ucr.handler_set([f'ldap/database/internal/syncprov/acl/groups/write=cn=justfortesting|{group_dn}'])
     restart_slapd()
     lo = access(base=BASE, binddn=user_dn, bindpw=password)
     cn = random_string()
@@ -51,7 +51,7 @@ def test_syncprov_additional_group_acls_read(udm, ucr, random_string):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
-    ucr.handler_set([f'ldap/database/udm_archive/syncprov/acl/groups/read=cn=justfortesting|{group_dn}'])
+    ucr.handler_set([f'ldap/database/internal/syncprov/acl/groups/read=cn=justfortesting|{group_dn}'])
     restart_slapd()
     lo = access(base=BASE, binddn=user_dn, bindpw=password)
     cn = random_string()
@@ -101,14 +101,14 @@ def test_normal_user_can_not_read(udm, ucr):
 
 @pytest.mark.skipif(role() not in ['domaincontroller_master'], reason="check primary config")
 def test_primary_config(ucr):
-    assert ucr.is_true('ldap/database/udm_archive/syncprov')
-    assert not ucr.is_true('ldap/database/udm_archive/syncrepl')
+    assert ucr.is_true('ldap/database/internal/syncprov')
+    assert not ucr.is_true('ldap/database/internal/syncrepl')
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_backup'], reason="check backup config")
 def test_backup_config(ucr):
-    assert ucr.is_true('ldap/database/udm_archive/syncrepl')
-    assert not ucr.is_true('ldap/database/udm_archive/syncprov')
+    assert ucr.is_true('ldap/database/internal/syncrepl')
+    assert not ucr.is_true('ldap/database/internal/syncprov')
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_backup'], reason="syncrepl only on backup")
@@ -192,7 +192,7 @@ def test_syncrepl_additional_group_acls_read(udm, ucr, random_string):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
-    ucr.handler_set([f'ldap/database/udm_archive/syncrepl/acl/groups/read=cn=justfortesting|{group_dn}'])
+    ucr.handler_set([f'ldap/database/internal/syncrepl/acl/groups/read=cn=justfortesting|{group_dn}'])
     restart_slapd()
     lo = access(base=BASE, binddn=user_dn, bindpw=password)
     cn = random_string()
