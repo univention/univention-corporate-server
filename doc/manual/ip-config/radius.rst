@@ -100,11 +100,11 @@ network access granted (either directly or via one of its groups), too.
 MAC Authentication Bypass with computer objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MAC Authentication Bypass (MAB) is a proprietary extension to 802.1X
-and addresses devices that don't support 802.1X authentication,
+MAC Authentication Bypass (MAB) is a proprietary fallback mode to 802.1X
+for devices that don't support 802.1X authentication,
 such as network printers or wireless phones.
 MAB is an option that allows such devices to authenticate with the network
-using their MAC address as username and password.
+using their MAC address as their username.
 
 This section describes how to use a device's MAC address for authentication
 and assign them a VLAN to the corresponding network infrastructure through MAB.
@@ -113,10 +113,17 @@ To activate MAC Authentication Bypass, set the |UCSUCRV|
 
 .. important::
 
-   Activating :envvar:`freeradius/conf/allow-mac-address-authentication`
-   ignores the |UCSUCRV| :envvar:`radius/mac/whitelisting`
-   and the checkbox *Allow network access*
-   at both on the computer object and in the group setting.
+   Devices that authenticate using MAB ignore network access settings:
+
+   * |UCSUCRV| :envvar:`radius/mac/whitelisting`
+
+   * The checkbox *Allow network access* at the computer object and in the group setting
+
+.. warning::
+
+   Attackers can spoof MAC addresses.
+   Consider any port as compromised where your switch allows to use MAB.
+   Make sure you have put appropriate measures in place to still keep your network secure.
 
 .. tab:: Assign VLAN ID to computer
 
@@ -166,11 +173,18 @@ the Radius server returns the assigned VLAN ID to requests with the given MAC ad
    address in the LDAP directory as lowercase string with the colon (``:``) as
    separator, for example ``00:00:5e:00:53:00``.
 
+   All devices that use MAB, need to have the same password set,
+   because :ref:`service specific passwords <ip-config-radius-configuration-service-specific-password>` don't work,
+   and the switch must know the password.
+   You can only configure one device password in the switch.
+   You can make up your own password for the devices using MAB,
+   for example ``mab request format attribute 2 password1``.
+
    If the network infrastructure provides a different format,
    you can often reconfigure the format.
    For example, for Cisco switches, you can use ``mab request format attribute 1 groupsize 2 separator : lowercase``
    as described in
-   `Configurable MAB Username iand Password
+   `Configurable MAB Username and Password
    <https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_aaa/configuration/15-e/sec-usr-aaa-15-e-book/sec-usr-config-mab-usrname-pwd.html>`_.
 
 
