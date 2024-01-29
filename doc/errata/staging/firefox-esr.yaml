@@ -1,0 +1,26 @@
+product: ucs
+release: "5.0"
+version: [5, 6]
+scope: ucs_5.0-0-errata5.0-6
+src: firefox-esr
+fix: 115.7.0esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ 115.7.0esr-1~deb10u1 (Thu, 25 Jan 2024 12:18:58 +0100)
+ * Backport to buster.
+ 115.7.0esr-1 (Wed, 24 Jan 2024 05:44:58 +0900)
+ * New upstream release.
+ * Fixes for mfsa2024-02, also known as: CVE-2024-0741, CVE-2024-0742,
+   CVE-2024-0746, CVE-2024-0747, CVE-2024-0749, CVE-2024-0750, CVE-2024-0751,
+   CVE-2024-0753, CVE-2024-0755.
+bug: [57008]
+cve:
+- CVE-2024-0741
+- CVE-2024-0742
+- CVE-2024-0746
+- CVE-2024-0747
+- CVE-2024-0749
+- CVE-2024-0750
+- CVE-2024-0751
+- CVE-2024-0753
+- CVE-2024-0755
