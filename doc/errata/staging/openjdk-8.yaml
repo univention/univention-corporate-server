@@ -1,0 +1,41 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openjdk-8
+fix: 8u402-ga-1~deb9u1
+desc: |+
+ This update addresses the following issues:
+ 8u402-ga-1~deb9u1 (Mon, 22 Jan 2024 16:09:13 +0100)
+ * Backport to stretch.
+ 8u402-ga-1 (Fri, 19 Jan 2024 00:30:27 +0100)
+ [ Leslie Zhai ]
+ * Add openjdk-8 zero support for loong64
+ [ Thorsten Glaser ]
+ * Merge 8u392-ga-1+sparc64
+ * Drop alpha-float-const.diff, seems no longer needed
+ * Use config.{guess,sub} from autotools-dev for the JDK as well as
+   icedtea-sound; autoreconf the latter; use sh explicitly
+ * Enable pulse for alpha and loong64
+ * New upstream release
+ * CVEs - CVE-2024-20918 - CVE-2024-20919 - CVE-2024-20921 - CVE-2024-20926 -
+   CVE-2024-20945 - CVE-2024-20952
+ * Security fixes - JDK-8308204: Enhanced certificate processing -
+   JDK-8314284: Enhance Nashorn performance - JDK-8314295: Enhance
+   verification of verifier - JDK-8314307: Improve loop handling -
+   JDK-8314468: Improve Compiler loops - JDK-8316976: Improve signature
+   handling - JDK-8317547: Enhance TLS connection support
+ * Other changes see
+   https://mail.openjdk.org/pipermail/jdk8u-dev/2024-January/017883.html
+ * Upload sponsored by QVEST ⮡ dıgıtal
+ 8u392-ga-1+sparc64 (Thu, 23 Nov 2023 11:01:30 +0100)
+ * Disable Hotspot on sparc64 as it is currently broken
+
+bug: [57003]
+cve:
+- CVE-2024-20918
+- CVE-2024-20919
+- CVE-2024-20921
+- CVE-2024-20926
+- CVE-2024-20945
+- CVE-2024-20952
