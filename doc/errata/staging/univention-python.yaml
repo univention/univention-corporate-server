@@ -6,6 +6,5 @@ src: univention-python
 fix: 13.0.5-1
 desc: |
  This update addresses the following issues:
- * The `uldap` library has now support for binding with the `OAUTHBEARER`
-   SASL mechanism.
+ * The `uldap` library now supports the SASL binding mechanism `OAUTHBEARER`.
 bug: [49006]

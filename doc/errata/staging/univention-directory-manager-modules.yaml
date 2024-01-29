@@ -6,8 +6,7 @@ src: univention-directory-manager-modules
 fix: 15.0.25-4
 desc: |
  This update addresses the following issues:
- * The `uldap` library has now support for binding with the `OAUTHBEARER`
-   SASL mechanism.
+ * The `uldap` library now supports the SASL binding mechanism `OAUTHBEARER`.
  * On UCS 5.2 systems purely numeric user and group names are no longer
    allowed by default. The UCR variables
    `directory/manager/user/enable-legacy-username-format` and
