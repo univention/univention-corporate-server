@@ -6,16 +6,14 @@ src: asterisk
 fix: 1:13.14.1~dfsg-2+deb9u9
 desc: |
  This update addresses the following issues:
- 1:13.14.1~dfsg-2+deb9u9 (Tue, 23 Jan 2024 11:18:12 +0100)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-37457: The 'update' functionality of the PJSIP_HEADER dialplan
-   function can exceed the available buffer space for storing the new value of
-   a header. By doing so this can overwrite memory or cause a crash. This is
-   not externally exploitable, unless dialplan is explicitly written to update
-   a header based on data from an outside source. If the 'update'
-   functionality is not used the vulnerability does not occur.
- * Fix CVE-2023-49294: It is possible to read any arbitrary file even when the
-   `live_dangerously` option is not enabled.
+ * CVE-2023-37457: The `update` functionality of the `PJSIP_HEADER`
+   dialplan function can exceed the available buffer space for storing the
+   new value of a header. By doing so this can overwrite memory or cause a
+   crash. This is not externally exploitable, unless dialplan is explicitly
+   written to update a header based on data from an outside source. If the
+   `update` functionality is not used the vulnerability does not occur.
+ * CVE-2023-49294: It is possible to read any arbitrary file even when
+   the `live_dangerously` option is not enabled.
 bug: [57004]
 cve:
 - CVE-2023-37457
