@@ -561,6 +561,8 @@ static void oauth_server_mech_free(
 		free(item);
 	}
 
+	r_global_close();
+
 	/*
 	 * Do not free (oauth_glob_context_t *)glob_context, it is static!
 	 */
@@ -592,6 +594,8 @@ int sasl_server_plug_init(
 	int *plugcount
 ) {
 	oauth_glob_context_t *gctx;
+	int r;
+	const char *val;
 	const char *grace;
 	char propname[1024];
 	int propnum = 0;
@@ -606,25 +610,33 @@ int sasl_server_plug_init(
 	*pluglist = &oauth_server_plugin;
 	*plugcount = 1;
 
-	/* TODO: init jwt library? */
-
 	gctx = (oauth_glob_context_t *)oauth_server_plugin.glob_context;
 	memset(gctx, 0, sizeof(*gctx));
+
+	if (r_global_init() != RHN_OK) {
+		utils->log(NULL, SASL_LOG_ERR, "OAUTHBEARER r_global_init failed");
+		return SASL_FAIL;
+	}
 
 	/*
 	 * Attribute to be used for authcid
 	 */
-	if (((utils->getopt(utils->getopt_context, "OAUTHBEARER", "oauthbearer_userid", &gctx->uid_attr, NULL)) != 0) || (gctx->uid_attr == NULL) || (*gctx->uid_attr == '\0')) {
+	r = utils->getopt(utils->getopt_context, "OAUTHBEARER", "oauthbearer_userid", &val, NULL);
+	if ((r != 0) || (val == NULL) || (*val == '\0')) {
 		if((gctx->uid_attr = strdup("preferred_username")) == NULL) {
 			utils->log(NULL, SASL_LOG_ERR, "cannot allocate memory");
 			return SASL_NOMEM;
 		}
+	} else if((gctx->uid_attr = strdup(val)) == NULL) {
+		utils->log(NULL, SASL_LOG_ERR, "cannot allocate memory");
+		return SASL_NOMEM;
 	}
 
 	/*
 	 * Grace delay for clock skews
 	 */
-	if (((utils->getopt(utils->getopt_context, "OAUTHBEARER", "oauthbearer_grace", &grace, NULL)) != 0) || (grace == NULL) || (*grace == '\0'))
+	r = utils->getopt(utils->getopt_context, "OAUTHBEARER", "oauthbearer_grace", &grace, NULL);
+	if ((r != 0) || (grace == NULL) || (*grace == '\0'))
 		gctx->grace = (time_t)3;
 	else
 		gctx->grace = atoi(grace);
@@ -649,7 +661,7 @@ int sasl_server_plug_init(
 			return SASL_NOMEM;
 		}
 
-		item->name = trusted_aud;
+		item->name = trusted_aud;  // just points to the getopt string
 		SLIST_INSERT_HEAD(&gctx->trusted_aud, item, next);
 	} while (1 /*CONSTCOND*/);
 
@@ -678,7 +690,7 @@ int sasl_server_plug_init(
 			return SASL_NOMEM;
 		}
 
-		item->name = trusted_azp;
+		item->name = trusted_azp;  // just points to the getopt string
 		SLIST_INSERT_HEAD(&gctx->trusted_azp, item, next);
 	} while (1 /*CONSTCOND*/);
 
@@ -702,7 +714,7 @@ int sasl_server_plug_init(
 			return SASL_NOMEM;
 		}
 
-		item->name = required_scope;
+		item->name = required_scope;  // just points to the getopt string
 		SLIST_INSERT_HEAD(&gctx->required_scope, item, next);
 	} while (1 /*CONSTCOND*/);
 
@@ -751,7 +763,7 @@ int sasl_server_plug_init(
 			continue;
 
 		if (access(jwks_filename, R_OK) != 0) {
-			utils->log(NULL, SASL_LOG_ERR, "Unable to read Issuer JWKS file \"%s\"", jwks_filename);
+			utils->log(NULL, SASL_LOG_ERR, "Unable to read Issuer JWKS file \"%s\" (%s)", jwks_filename, strerror(errno));
 			continue;
 		}
 
@@ -761,8 +773,13 @@ int sasl_server_plug_init(
 		}
 
 		jwks_fp = fopen(jwks_filename, "r");
+		if (jwks_fp == NULL) {
+			utils->log(NULL, SASL_LOG_ERR, "Failed to open JWKS file \"%s\" (%s)", jwks_filename, strerror(errno));
+			return SASL_CONFIGERR;
+		}
 		if (NULL == fgets(gctx->trusted_jwks_str, JWKS_BUFFSIZE, jwks_fp)) {
 			fclose(jwks_fp);
+			utils->log(NULL, SASL_LOG_ERR, "Failed to load JWKS from \"%s\"", jwks_filename);
 			return SASL_CONFIGERR;
 		}
 		fclose(jwks_fp);

@@ -1,5 +1,11 @@
+crudeoauth (1.0.0-2) unstable; urgency=medium
+
+  * Bug #49006: Initialize rhonabwy library and improve error logging
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Jan 2024 15:25:21 +0100
+
 crudeoauth (1.0.0-1) unstable; urgency=medium
 
   * Bug #49006: implement OAUTHBEARER SASL mechanism (RFC 7628) based on rhonabwy
 
- -- Arvid <requate@univention.de>  Wed, 16 Mar 2022 14:28:02 +0100
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Mar 2022 14:28:02 +0100
