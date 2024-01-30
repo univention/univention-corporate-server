@@ -1989,7 +1989,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
             container = self.ldap_write_connection.parentDn(dn)
             # TODO: validate that properties are equal to rdn
 
-        ldap_position = univention.admin.uldap.position(self.ldap_position.getBase())
+        ldap_position = univention.admin.uldap.position(module.ldap_base)
         if container:
             ldap_position.setDn(container)
         elif superordinate:
@@ -2968,7 +2968,8 @@ class Application(tornado.web.Application):
         module_type = '(%s)' % '|'.join(re.escape(mod) for mod in Modules.mapping)
         object_type = '([A-Za-z0-9_-]+/[A-Za-z0-9_-]+)'
         policies_object_type = '(policies/[A-Za-z0-9_-]+)'
-        dn = '((?:[^/]+%s.+%s)?%s)' % (self.multi_regex('='), self.multi_regex(','), self.multi_regex(ucr['ldap/base']))
+        dn = '((?:[^/]+%s.+%s)?(?:%s|%s))' % (self.multi_regex('='), self.multi_regex(','), self.multi_regex(ucr['ldap/base']), self.multi_regex('cn=internal'))
+
         # FIXME: with that dn regex, it is not possible to have urls like (/udm/$dn/foo/$dn/) because ldap-base at the end matches the last dn
         # Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
         # Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes

@@ -278,11 +278,15 @@ class DNSanitizer(DNSanitizer):
 
     base = ldap.dn.str2dn(ucr['ldap/base'].lower())
     baselen = len(base)
+    base_internal = ldap.dn.str2dn('cn=internal'.lower())
+    base_internal_len = len(base_internal)
 
     def _sanitize(self, value, name, further_arguments):
         value = super()._sanitize(value, name, further_arguments)
-        if value and ldap.dn.str2dn(value.lower())[-self.baselen:] != self.base:
-            self.raise_validation_error(_('The ldap base is invalid. Use %(details)s.'), details=ldap.dn.dn2str(self.base))
+        if value:
+            if ldap.dn.str2dn(value.lower())[-self.baselen:] != self.base and \
+               ldap.dn.str2dn(value.lower())[-self.base_internal_len:] != self.base_internal:
+                self.raise_validation_error(_('The ldap base is invalid. Use %(details)s.'), details=ldap.dn.dn2str(self.base))
         return value
 
 
