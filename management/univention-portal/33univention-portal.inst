@@ -336,6 +336,62 @@ if [ "$role" = "domaincontroller_master" ]; then
 			--set showUmc=TRUE || die
 	fi
 fi
+if [ ! -e /etc/portal-cookie.secret ]; then
+	touch /etc/portal-cookie.secret
+	chmod 0600 /etc/portal-cookie.secret
+	create_machine_password > /etc/portal-cookie.secret
+fi
+if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
+	if [ ! -e /etc/portal-oidc.secret ]; then
+		touch /etc/portal-oidc.secret
+		chmod 0600 /etc/portal-oidc.secret
+		create_machine_password > /etc/portal-oidc.secret
+	fi
+
+	eval "$(ucr shell hostname domainname portal/oidc/rp/server)"
+	if [ -n "$portal_oidc_rp_server" ]; then
+		fqdn_oidc="$portal_oidc_rp_server"
+	else
+		fqdn_oidc="$hostname.$domainname"
+	fi
+
+	univention-keycloak "$@" oidc/rp create \
+		--app-url "https://$fqdn_oidc/univention/portal/" \
+		--host-fqdn "$fqdn_oidc" \
+		--client-secret "$(cat /etc/portal-oidc.secret)" \
+		--name="Portal on $fqdn_oidc" \
+		--description="Univention Portal on $fqdn_oidc" \
+		--direct-access-grants \
+		--access-token-lifespan="${portal_oidc_access_token_lifespan:-300}" \
+		--access-token-audience="ldaps://$domainname/" \
+		--id-token-audience="https://$fqdn_oidc/univention/oidc/" \
+		--redirect-uri="https://$fqdn_oidc/univention/portal/*" \
+		--redirect-uri="http://$fqdn_oidc/univention/portal/*" \
+		--redirect-uri="https://$(get_default_ip_address)/univention/portal/*" \
+		--redirect-uri="http://$(get_default_ip_address)/univention/portal/*" \
+		--post-logout-redirect-uris="http://$fqdn_oidc/univention/portal/*" \
+		--post-logout-redirect-uris="https://$fqdn_oidc/univention/portal/*" \
+		--post-logout-redirect-uris="http://$(get_default_ip_address)/univention/portal/*" \
+		--post-logout-redirect-uris="https://$(get_default_ip_address)/univention/portal/*" \
+		--frontchannel-logout-url="https://$fqdn_oidc/univention/portal/frontchannel-logout" \
+		--logo-url="https://$fqdn_oidc/favicon.ico" \
+		--default-scopes="openid" \
+		--consent="Allow access to UDM-REST API and OpenLDAP?" \
+		--web-origins="+" \
+		"https://$fqdn_oidc/univention/portal/" || die
+		# --pkce-code-challenge-method="S256" \
+
+	issuer="https://${keycloak_server_sso_fqdn:-ucs-sso-ng.$domainname}${keycloak_server_sso_path:-/}realms/ucs"
+	wget -O /usr/lib/univention-portal/oidc/issuer.json "$issuer/.well-known/openid-configuration" || die
+	wget -O /usr/lib/univention-portal/oidc/issuer.jwks "$issuer/protocol/openid-connect/certs" || die  # FIXME: hardcoded url
+	ucr set \
+		"portal/oidc/openid-configuration?/usr/lib/univention-portal/oidc/issuer.json" \
+		"portal/oidc/openid-certs?/usr/lib/univention-portal/oidc/issuer.jwks" \
+		"portal/oidc/client-secret-file?/etc/portal-oidc.secret" \
+		"portal/oidc/client-id?https://$fqdn_oidc/univention/portal/" \
+		"portal/oidc/issuer?$issuer"
+
+fi
 
 default_portal="cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base"
 

@@ -30,8 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import contextlib
+import json
+
 import tornado.web
 
+from univention.portal import config
 from univention.portal.factory import make_portal
 from univention.portal.handlers import LoginHandler, LogoutHandler, NavigationHandler, PortalEntriesHandler
 from univention.portal.log import get_logger
@@ -43,9 +47,25 @@ def make_app(portal_definitions):
         get_logger("server").info("Building portal {}".format(name))
         portals[name] = make_portal(portal_definition)
 
+    cookie_secret = None
+    oidc = config.fetch('oidc', {})
+    if oidc:
+        with contextlib.suppress(IOError), open(config.fetch('cookie_secret_file')) as fd:
+            cookie_secret = fd.read()
+        with open(oidc['openid_configuration']) as fd:
+            oidc["op"] = json.loads(fd.read())
+        with open(oidc['openid_certs']) as fd:
+            oidc["jwks"] = json.loads(fd.read())
+        with open(oidc['client_secret_file']) as fd:
+            oidc['client_secret'] = fd.read().strip()
+
+    settings = {
+        'cookie_secret': cookie_secret,
+        'oidc': oidc,
+    }
     routes = build_routes(portals)
 
-    return tornado.web.Application(routes)
+    return tornado.web.Application(routes, **settings)
 
 
 def build_routes(portals):

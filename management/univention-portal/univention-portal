@@ -153,7 +153,7 @@ def _add_default(name: str, json_content: Dict):
         "class": "Portal",
         "kwargs": {
             "authenticator": {
-                "class": "UMCAuthenticator",
+                "class": "OIDCAuthenticator",
                 "kwargs": {
                     "group_cache": {
                         "class": "GroupFileCache",
@@ -182,7 +182,6 @@ def _add_default(name: str, json_content: Dict):
                         },
                         "type": "class",
                     },
-                    "umc_session_url": {"key": "umc_session_url", "type": "config"},
                     "auth_mode": {"key": "auth_mode", "type": "config"},
                 },
                 "type": "class",

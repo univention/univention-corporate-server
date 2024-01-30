@@ -44,6 +44,7 @@ Description: Univention Portal - Central portal web page for a UCS domain
 Package: python3-univention-portal
 Architecture: all
 Depends:
+ python3-jwt,
  python3-ldap,
  python3-requests,
  python3-tornado,

@@ -41,6 +41,7 @@ from urllib.parse import urljoin
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
 
 from univention.portal import Plugin, config
+from univention.portal.extensions.oidc import OIDCLogin, OIDCLogout
 from univention.portal.log import get_logger
 from univention.portal.user import User
 
@@ -194,3 +195,52 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
 
         groups = self.group_cache.get().get(username, [])
         return User(username, display_name, groups, headers=dict(request.request.headers))
+
+
+class OIDCAuthenticator(Authenticator):
+    """Authenticate via OpenID Connect"""
+
+    def __init__(self, auth_mode, group_cache):
+        self.auth_mode = auth_mode
+        self.group_cache = group_cache
+
+    def get_auth_mode(self, request):
+        # return "oidc"
+        return self.auth_mode
+
+    def refresh(self, reason=None):
+        return self.group_cache.refresh(reason=reason)
+
+    def get_ressource(self, cls, request):
+        resource = cls(request.application, request.request, portals=None)
+        resource.path_args = request.path_args
+        resource.redirect = request.redirect
+        return resource
+
+    async def login_request(self, request):
+        login = self.get_ressource(OIDCLogin, request)
+        await login.prepare()
+        await login.post()
+
+    async def login_user(self, request):
+        login = self.get_ressource(OIDCLogin, request)
+        await login.prepare()
+        await login.get()
+
+    async def logout_user(self, request):
+        logout = self.get_ressource(OIDCLogout, request)
+        await logout.prepare()
+        await logout.get()
+
+    async def get_user(self, request):
+        login = self.get_ressource(OIDCLogin, request)
+        await login.prepare()
+        claims = login.current_user
+        headers = {
+            'Authorization': 'Bearer %s' % (login.access_token,),
+            'Accept-Language': request.request.headers.get('Accept-Language', 'en-US'),
+            'Accept': 'application/json',
+        }
+        username = claims['uid']
+        groups = self.group_cache.get().get(username, [])
+        return User(username=username, display_name=username, groups=groups, headers=headers)

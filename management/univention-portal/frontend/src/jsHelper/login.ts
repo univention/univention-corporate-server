@@ -34,6 +34,10 @@ import { User } from '@/store/modules/user/user.models';
 function login(user: User): void {
   if (user.authMode === 'saml') {
     window.location.href = `/univention/saml/?location=${window.location.pathname}`;
+  } else if (user.authMode === 'oidc') {
+    window.location.href = `/univention/portal/?location=${window.location.pathname}`;
+  } else if (user.authMode === 'oidc-umc') {
+    window.location.href = `/univention/oidc/?location=${window.location.pathname}`;
   } else {
     window.location.href = `/univention/login/?location=${window.location.pathname}`;
   }
