@@ -6,11 +6,9 @@ src: squid
 fix: 4.6-1+deb10u10A~5.0.6.202401290803
 desc: |
  This update addresses the following issue:
- 4.6-1+deb10u10 (Mon, 22 Jan 2024 17:24:08 +0100)
- * Non-maintainer upload by the LTS team.
- * CVE-2023-46846: It was discovered that the fix for CVE-2023-46846 was
-   incomplete. In some cases Squid, a full featured web proxy cache, returned
-   empty responses for URLs when Transfer-Encoding: chunked was in use.
+ * CVE-2023-46846: SQUID is vulnerable to HTTP request smuggling, caused by
+   chunked decoder lenience, allows a remote attacker to perform
+   Request/Response smuggling past firewall and frontend security systems.
 bug: [57009]
 cve:
 - CVE-2023-46846
