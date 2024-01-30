@@ -6,14 +6,11 @@ src: jinja2
 fix: 2.10-2+deb10u1
 desc: |
  This update addresses the following issue:
- 2.10-2+deb10u1 (Mon, 22 Jan 2024 12:57:18 -0800)
- * Non-maintainer upload by the Debian LTS team.
- * CVE-2024-22195: Fix an issue where it was possible to inject arbitrary HTML
-   attributes into the rendered HTML via the "xmlattr" filter, potentially
-   leading to a Cross-Site Scripting (XSS) attack. It may also have been
-   possible to bypass attribute validation checks if they were
+ * CVE-2024-22195: Fix an issue where it was possible to inject arbitrary
+   HTML attributes into the rendered HTML via the `xmlattr` filter,
+   potentially leading to a Cross-Site Scripting (`XSS`) attack. It may also
+   have been possible to bypass attribute validation checks if they were
    blacklist-based.
- * Actually run the testsuite, on both Python 2.x and Python 3.x.
 bug: [57007]
 cve:
 - CVE-2024-22195
