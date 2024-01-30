@@ -24,15 +24,15 @@ from univention.testing.strings import random_username
 def activate_self_service(ucr_session):
     ucr_session.handler_set(
         [
-            "umc/self-service/account-registration/backend/enabled=true",
-            "umc/self-service/account-registration/frontend/enabled=true",
-            "umc/self-service/account-verification/backend/enabled=true",
-            "umc/self-service/account-verification/frontend/enabled=true",
-            "umc/self-service/passwordchange/frontend/enabled=true",
-            "umc/self-service/passwordreset/backend/enabled=true",
-            "umc/self-service/profiledata/enabled=true",
-            "umc/self-service/protect-account/backend/enabled=true",
-            "umc/self-service/service-specific-passwords/backend/enabled=true",
+            'umc/self-service/account-registration/backend/enabled=true',
+            'umc/self-service/account-registration/frontend/enabled=true',
+            'umc/self-service/account-verification/backend/enabled=true',
+            'umc/self-service/account-verification/frontend/enabled=true',
+            'umc/self-service/passwordchange/frontend/enabled=true',
+            'umc/self-service/passwordreset/backend/enabled=true',
+            'umc/self-service/profiledata/enabled=true',
+            'umc/self-service/protect-account/backend/enabled=true',
+            'umc/self-service/service-specific-passwords/backend/enabled=true',
         ],
     )
 
@@ -48,15 +48,22 @@ def find_label(page: Page, label_display_text: str) -> Union[Locator, None]:
     return next((label_display_locator for label_display_locator in label_display_locators if label_display_locator.evaluate('(element) => element.tagName') == 'LABEL'), None)
 
 
-def check_labels(page: Page, labels: Dict[str, str]):
+def check_labels(page: Page, labels: Dict[str, str], retries=3):
     for label_display, label_tag in labels.items():
-        logger.info("checking for label with text %r and with attribute 'for=%r'", label_display, label_tag)
-        found_label = find_label(page, label_display)
-        assert found_label is not None, f'A label with the text {label_display} has not been found.'
-        expect(found_label).to_be_visible()
-        expect(found_label, f"Expected locator to have tag {label_tag}--\\d\\d, but found {found_label.get_attribute('for')}").to_have_attribute(
-            'for', re.compile(rf'{label_tag}--\d\d')
-        )
+        for i in range(retries):
+            logger.info("checking for label with text %r and with attribute 'for=%r' (%d/%d)", label_display, label_tag, i + 1, retries)
+            found_label = find_label(page, label_display)
+            try:
+                assert found_label is not None, f'A label with the text {label_display} has not been found.'
+                expect(found_label).to_be_visible()
+                expect(found_label, f"Expected locator to have tag {label_tag}--\\d\\d, but found {found_label.get_attribute('for')}").to_have_attribute(
+                    'for', re.compile(rf'{label_tag}--\d\d')
+                )
+                return
+            except AssertionError:
+                if i + 1 == retries:
+                    raise
+                time.sleep(2)
 
 
 @pytest.mark.parametrize(

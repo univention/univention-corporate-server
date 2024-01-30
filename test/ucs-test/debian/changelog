@@ -1,3 +1,10 @@
+ucs-test (10.0.20-22) unstable; urgency=medium
+
+  * Bug #56054: Retry label detection multiple times for slow loading elements
+    in 11_test_frontend_translations.py
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 30 Jan 2024 16:20:17 +0100
+
 ucs-test (10.0.20-21) unstable; urgency=medium
 
   * Bug #56054: Collect `browser` subfolder from all test subsection in
