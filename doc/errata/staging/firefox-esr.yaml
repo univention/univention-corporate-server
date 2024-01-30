@@ -6,9 +6,6 @@ src: firefox-esr
 fix: 115.7.0esr-1~deb10u1
 desc: |
  This update addresses the following issues:
- * Fixes for mfsa2024-02, also known as: CVE-2024-0741, CVE-2024-0742,
-   CVE-2024-0746, CVE-2024-0747, CVE-2024-0749, CVE-2024-0750, CVE-2024-0751,
-   CVE-2024-0753, CVE-2024-0755.
  * CVE-2024-0741: An out of bounds write in `ANGLE` could have allowed an
    attacker to corrupt memory leading to a potentially exploitable crash.
  * CVE-2024-0742: It was possible for certain browser prompts and dialogs
