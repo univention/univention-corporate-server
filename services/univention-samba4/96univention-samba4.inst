@@ -649,6 +649,12 @@ create_pseudo_groups()
 	_create_group_with_special_sid "IUSR" "S-1-5-17" "cn=Builtin" "$@"
 	_create_group_with_special_sid "Self" "S-1-5-10" "cn=Builtin" "$@"
 	_create_group_with_special_sid "Console Logon" "S-1-2-1" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Authentication authority asserted identity" "S-1-18-1" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Service asserted identity" "S-1-18-2" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Fresh Public Key identity" "S-1-18-3" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Key trust" "S-1-18-4" "cn=Builtin" "$@"
+	_create_group_with_special_sid "MFA key property" "S-1-18-5" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Attested key property" "S-1-18-6" "cn=Builtin" "$@"
 
 }
 
@@ -704,6 +710,44 @@ exit_on_slave_if_no_s4_connector_on_master_or_backup()
 	fi
 }
 
+create_foreignSecurityPrincipal_S-1-18() {
+	# Bug #56886 Add S-1-18-*
+	res=$(ldbsearch -H /var/lib/samba/private/sam.ldb --cross-ncs objectSid=S-1-18-1 1.1 | sed -n 's/^dn: //p')
+	if [ -z "$res" ]; then
+		ldbadd -H /var/lib/samba/private/sam.ldb --controls=provision:0 <<%EOF
+dn: CN=Authentication Authority Asserted Identity,CN=WellKnown Security Principals,CN=Configuration,$samba4_ldap_base
+objectClass: foreignSecurityPrincipal
+showInAdvancedViewOnly: TRUE
+objectSid: S-1-18-1
+
+dn: CN=Service Asserted Identity,CN=WellKnown Security Principals,CN=Configuration,$samba4_ldap_base
+objectClass: foreignSecurityPrincipal
+showInAdvancedViewOnly: TRUE
+objectSid: S-1-18-2
+
+dn: CN=Fresh public key identity,CN=WellKnown Security Principals,CN=Configuration,$samba4_ldap_base
+objectClass: foreignSecurityPrincipal
+showInAdvancedViewOnly: TRUE
+objectSid: S-1-18-3
+
+dn: CN=Key Trust,CN=WellKnown Security Principals,CN=Configuration,$samba4_ldap_base
+objectClass: foreignSecurityPrincipal
+showInAdvancedViewOnly: TRUE
+objectSid: S-1-18-4
+
+dn: CN=MFA Key Property,CN=WellKnown Security Principals,CN=Configuration,$samba4_ldap_base
+objectClass: foreignSecurityPrincipal
+showInAdvancedViewOnly: TRUE
+objectSid: S-1-18-5
+
+dn: CN=Attested Key Property,CN=WellKnown Security Principals,CN=Configuration,$samba4_ldap_base
+objectClass: foreignSecurityPrincipal
+showInAdvancedViewOnly: TRUE
+objectSid: S-1-18-6
+%EOF
+	fi
+}
+
 ### --- END helper functions ---
 
 # lp.load('/dev'null') might have exported SMB_CONF_PATH, explicitly unset it here
@@ -750,6 +794,8 @@ create_pseudo_groups "$@"
 if [ $JS_LAST_EXECUTED_VERSION -gt 0 ] && [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
 	update_pseudo_groups "$@"
 fi
+
+create_foreignSecurityPrincipal_S-1-18
 
 if [ -r '/var/lib/samba/private/.adtakeover' ]; then
 	adtakeover_state=$(</var/lib/samba/private/.adtakeover)

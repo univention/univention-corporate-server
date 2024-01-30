@@ -99,6 +99,12 @@ __SPECIAL_ACCOUNT_SIDS = {
     "SChannel Authentication": b"S-1-5-64-14",
     "Digest Authentication": b"S-1-5-64-21",
     "Other Organization": b"S-1-5-1000",
+    "Authentication authority asserted identity": b"S-1-18-1",
+    "Service asserted identity": b"S-1-18-2",
+    "Fresh Public Key identity": b"S-1-18-3",
+    "Key trust": b"S-1-18-4",
+    "MFA key property": b"S-1-18-5",
+    "Attested key property": b"S-1-18-6",
 }
 
 __SPECIAL_SIDS = set(__SPECIAL_ACCOUNT_SIDS.values())

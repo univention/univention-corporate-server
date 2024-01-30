@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.16-4) unstable; urgency=medium
+
+  * Bug #56886: Add identities S-1-18-*
+
+ -- Arvid <requate@univention.de>  Tue, 30 Jan 2024 10:09:17 +0100
+
 univention-s4-connector (14.0.16-3) unstable; urgency=medium
 
   * Bug #56956: Improve prioritization for initial S4-Connector sync

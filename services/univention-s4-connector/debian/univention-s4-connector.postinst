@@ -57,7 +57,7 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/s4/mapping/gpo?true \
 							   connector/s4/mapping/user/ignorelist?"root,ucs-s4sync" \
 							   connector/s4/mapping/group/grouptype?true \
-							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Enterprise Domain Controllers,Remote Interactive Logon,SChannel Authentication,Digest Authentication,Terminal Server User,NTLM Authentication,Other Organization,This Organization,Anonymous Logon,Network Service,Creator Group,Creator Owner,Local Service,Owner Rights,Interactive,Restricted,Network,Service,Dialup,System,Batch,Proxy,IUSR,Self,Console Logon" \
+							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Enterprise Domain Controllers,Remote Interactive Logon,SChannel Authentication,Digest Authentication,Terminal Server User,NTLM Authentication,Other Organization,This Organization,Anonymous Logon,Network Service,Creator Group,Creator Owner,Local Service,Owner Rights,Interactive,Restricted,Network,Service,Dialup,System,Batch,Proxy,IUSR,Self,Console Logon,Authentication authority asserted identity,Service asserted identity,Fresh Public Key identity,Key trust,MFA key property,Attested key property" \
 							   connector/s4/mapping/group/table/Printer-Admins?"Print Operators" \
 							   connector/s4/mapping/container/ignorelist?"mail,kerberos,MicrosoftDNS" \
 							   connector/s4/mapping/dns/ignorelist?"_ldap._tcp.Default-First-Site-Name._site"
@@ -103,6 +103,14 @@ for key, value in new_entries.items():
     cursor.execute('insert into "S4 rejected" (key, value) VALUES (?, ?)', (key, value))
 db.commit()
 EOF
+		/etc/init.d/univention-s4-connector start
+		skip_final_restart=true
+	 fi
+
+	# Bug #56886
+	if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl 14.0.16-4; then
+		systemctl stop univention-s4-connector
+		ucr set connector/s4/mapping/group/ignorelist="$connector_s4_mapping_group_ignorelist,Authentication authority asserted identity,Service asserted identity,Fresh Public Key identity,Key trust,MFA key property,Attested key property"
 		/etc/init.d/univention-s4-connector start
 		skip_final_restart=true
 	 fi
