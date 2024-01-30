@@ -6,13 +6,32 @@ src: firefox-esr
 fix: 115.7.0esr-1~deb10u1
 desc: |
  This update addresses the following issues:
- 115.7.0esr-1~deb10u1 (Thu, 25 Jan 2024 12:18:58 +0100)
- * Backport to buster.
- 115.7.0esr-1 (Wed, 24 Jan 2024 05:44:58 +0900)
- * New upstream release.
  * Fixes for mfsa2024-02, also known as: CVE-2024-0741, CVE-2024-0742,
    CVE-2024-0746, CVE-2024-0747, CVE-2024-0749, CVE-2024-0750, CVE-2024-0751,
    CVE-2024-0753, CVE-2024-0755.
+ * CVE-2024-0741: An out of bounds write in `ANGLE` could have allowed an
+   attacker to corrupt memory leading to a potentially exploitable crash.
+ * CVE-2024-0742: It was possible for certain browser prompts and dialogs
+   to be activated or dismissed unintentionally by the user due to an
+   incorrect timestamp used to prevent input after page load.
+ * CVE-2024-0746: A Linux user opening the print preview dialog could have
+   caused the browser to crash.
+ * CVE-2024-0747: When a parent page loaded a child in an iframe with
+   `unsafe-inline`, the parent Content Security Policy could have overridden
+   the child Content Security Policy.
+ * CVE-2024-0749: A phishing site could have repurposed an `about:` dialog
+   to show phishing content with an incorrect origin in the address bar.
+ * CVE-2024-0750: A bug in popup notifications delay calculation could have
+   made it possible for an attacker to trick a user into granting
+   permissions.
+ * CVE-2024-0751: A malicious devtools extension could have been used to
+   escalate privileges.
+ * CVE-2024-0753: In specific HSTS configurations an attacker could have
+   bypassed HSTS on a subdomain.
+ * CVE-2024-0755: Memory safety bugs present in Firefox 121, Firefox ESR
+   115.6, and Thunderbird 115.6. Some of these bugs showed evidence of memory
+   corruption and we presume that with enough effort some of these could have
+   been exploited to run arbitrary code.
 bug: [57008]
 cve:
 - CVE-2024-0741
