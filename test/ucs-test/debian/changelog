@@ -1,3 +1,11 @@
+ucs-test (10.0.20-21) unstable; urgency=medium
+
+  * Bug #56054: Collect `browser` subfolder from all test subsection in
+    /usr/share/ucs-test since more than just 86_browser is now using
+    playwright
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 30 Jan 2024 09:15:26 +0100
+
 ucs-test (10.0.20-20) unstable; urgency=medium
 
   * Bug #56054: Migrate 11_test_frontend_translations.py from Selenium to

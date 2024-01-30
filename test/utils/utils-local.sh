@@ -67,7 +67,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'docker_logs*'=
 		'*.html'=
 		'/usr/share/ucs-test/*/selenium'
-		'/usr/share/ucs-test/86_browser/browser'
+		'/usr/share/ucs-test/*/browser'
 		'/var/log/apache2/error.log'='apache2-error.log'
 		'/var/log/apache2/access.log'='apache2-access.log'
 		'/var/log/auth.log*'=
