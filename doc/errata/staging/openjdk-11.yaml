@@ -6,28 +6,14 @@ src: openjdk-11
 fix: 11.0.22+7-1~deb10u1
 desc: |
  This update addresses the following issues:
- 11.0.22+7-1~deb10u1 (Mon, 22 Jan 2024 14:16:55 +0100)
- * Non-maintainer upload by the LTS Team.
- * Backport to buster.
- 11.0.22+7-1 (Wed, 17 Jan 2024 16:28:29 +0100)
- * OpenJDK 11.0.22 release, build 7. - CVEs: + CVE-2024-20918 + CVE-2024-20919
-   + CVE-2024-20921 + CVE-2024-20945 + CVE-2024-20952 - Security fixes: +
-   JDK-8308204: Enhanced certificate processing. + JDK-8314295: Enhance
-   verification of verifier. + JDK-8314307: Improve loop handling. +
-   JDK-8314468: Improve Compiler loops. + JDK-8316976: Improve signature
-   handling. + JDK-8317547: Enhance TLS connection support. + JDK-8314284:
-   Enhance Nashorn performance (CVE-2024-20926).
- [ Vladimir Petko ]
- * Generate d/watch to cope with early access and release builds.
- * d/rules: Trim trailing whitespaces from debian/control.
- [ Pushkar Kulkarni ]
- * Minor improvements to the copyright-generator.
- 11.0.22~6ea-1 (Tue, 26 Dec 2023 13:23:50 +0100)
- * OpenJDK 11.0.22+6 build (early access).
- * debian/copyright: Update copyrights and notices, using a generator script.
- * d/copyright: Fix lintian warning.
- [ Matthias Klose ]
- * d/copyright: Fix source location.
+ * JDK-8308204: Enhanced certificate processing.
+ * JDK-8314284, CVE-2024-20926: Enhance Nashorn performance.
+ * JDK-8314295, CVE-2024-20919: Enhance Nashorn performance verification of
+   verifier.
+ * JDK-8314307, CVE-2024-20921: Improve loop handling.
+ * JDK-8314468, CVE-2024-20918: Improve Compiler loops.
+ * JDK-8316976, CVE-2024-20945: Improve signature handling.
+ * JDK-8317547, CVE-2024-20952: Enhance TLS connection support.
 bug: [57010]
 cve:
 - CVE-2024-20918
