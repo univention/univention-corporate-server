@@ -21,6 +21,20 @@ config = {
     "default_domain_dn": configRegistry.get("portal/default-dn"),
     "editable": configRegistry.get("server/role") == "domaincontroller_master",
     "umc_base_url": "http://127.0.0.1/univention/",
+    "cookie_secret_file": "/etc/portal-cookie.secret",
+    "oidc": {
+        "openid_configuration": configRegistry.get('portal/oidc/openid-configuration'),
+        "openid_certs": configRegistry.get('portal/oidc/openid-certs'),
+        "client_secret_file": configRegistry.get('portal/oidc/client-secret-file'),
+        "client_id": configRegistry.get('portal/oidc/client-id'),
+        "issuer": configRegistry.get('portal/oidc/issuer'),
+        "extra_parameters": configRegistry.get('portal/oidc/exta-parameters', ''),
+        "access-token-cookie-name": configRegistry.get('portal/oidc/access-token-cookie-name', "portal-access-token"),
+        "id-token-cookie-name": configRegistry.get('portal/oidc/id-token-cookie-name', "portal-id-token"),
+        "state-cookie-name": configRegistry.get('portal/oidc/state-cookie-name', "portal-state"),
+    },
 }
+if not config['oidc']['client_id']:
+    config['oidc'] = None
 print(json.dumps(config, sort_keys=True, indent=2))
 @!@

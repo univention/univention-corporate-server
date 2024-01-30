@@ -38,3 +38,4 @@ Variables: hostname
 Variables: domainname
 Variables: umc/web/sso/enabled
 Variables: server/role
+Variables: portal/oidc/.*

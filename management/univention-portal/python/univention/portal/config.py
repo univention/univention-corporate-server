@@ -39,6 +39,7 @@ from glob import glob
 
 _CONF = "/usr/lib/univention-portal/config/*.json"
 _DB = {}
+_sentinel = object()
 
 
 def load():
@@ -56,7 +57,12 @@ def load():
 load.never_loaded = True
 
 
-def fetch(key):
+def fetch(key, default=_sentinel):
     if load.never_loaded:
         load()
-    return _DB[key]
+    try:
+        return _DB[key]
+    except KeyError:
+        if default is _sentinel:
+            raise
+        return default
