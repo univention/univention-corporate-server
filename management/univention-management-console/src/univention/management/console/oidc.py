@@ -70,7 +70,7 @@ class OIDCUser(object):
 
     @property
     def session_end_time(self):
-        exp = jwt.decode(self.refresh_token, verify=False)['exp'] if self.refresh_token else claims['exp']
+        exp = jwt.decode(self.refresh_token, verify=False)['exp'] if self.refresh_token else self.claims['exp']
         return int(monotonic() + (exp - time.time()))
 
     @property
