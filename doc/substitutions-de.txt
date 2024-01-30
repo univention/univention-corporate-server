@@ -10,7 +10,7 @@
 .. |UCSPRIMARYDN| replace:: Primary Directory Node
 .. |UCSREPLICADN| replace:: Replica Directory Node
 .. |UCSS4C| replace:: Univention S4 Connector
-.. |UCSUCRVs| replace:: Univention Configuration Registry Variables
+.. |UCSUCRVs| replace:: Univention Configuration Registry Variablen
 .. |UCSUCRV| replace:: Univention Configuration Registry Variable
 .. |UCSUCR| replace:: Univention Configuration Registry
 .. |UCSUCS| replace:: Univention Corporate Server
