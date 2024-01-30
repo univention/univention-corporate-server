@@ -12,8 +12,8 @@ desc: |
    crash. This is not externally exploitable, unless dialplan is explicitly
    written to update a header based on data from an outside source. If the
    `update` functionality is not used the vulnerability does not occur.
- * CVE-2023-49294: It is possible to read any arbitrary file even when
-   the `live_dangerously` option is not enabled.
+ * CVE-2023-49294: It is possible to read any arbitrary file even when the
+   `live_dangerously` option is not enabled.
 bug: [57004]
 cve:
 - CVE-2023-37457
