@@ -54,12 +54,25 @@ class CLIClient:
 
     def init(self, parser, args):
         self.parser = parser
-        username = args.binddn
-        try:
-            username = ldap.dn.str2dn(username)[0][0][1]
-        except (ldap.DECODING_ERROR, IndexError):
-            pass
-        self.udm = UDM('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, username, args.bindpwd, user_agent='univention.cli/%(version/version)s-%(version/patchlevel)s-errata%(version/erratalevel)s' % ucr, language=args.language)
+        if args.bearertoken:
+            username = None
+            password = None
+        else:
+            username = args.binddn
+            try:
+                username = ldap.dn.str2dn(username)[0][0][1]
+            except (ldap.DECODING_ERROR, IndexError):
+                pass
+            password = args.bindpwd
+
+        self.udm = UDM(
+            'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr,
+            username,
+            password,
+            bearer_token=args.bearertoken,
+            user_agent='univention.cli/%(version/version)s-%(version/patchlevel)s-errata%(version/erratalevel)s' % ucr,
+            language=args.language
+        )
 
     def get_modules(self):
         return self.udm.modules()
@@ -430,6 +443,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
     parser.add_argument('--binddn', help='bind DN', default='Administrator', type=Unicode)
     parser.add_argument('--bindpwd', help='bind password', default='univention', type=Unicode)
     parser.add_argument('--bindpwdfile', help='file containing bind password', type=Unicode)
+    parser.add_argument('--bearertoken', help='bearer token (Access Token) as JWT', type=Unicode)
     parser.add_argument('--logfile', help='path and name of the logfile to be used', type=Unicode)
     parser.add_argument('--language', default=(locale.getlocale(locale.LC_MESSAGES)[0] or 'en_US').replace('_', '-'), help=argparse.SUPPRESS)
     parser.add_argument('--tls', choices=['0', '1', '2'], default='2', help='0 (no); 1 (try); 2 (must)')

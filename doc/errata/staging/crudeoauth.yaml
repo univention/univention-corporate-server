@@ -3,7 +3,7 @@ release: "5.0"
 version: [6]
 scope: ucs_5.0-0-errata5.0-6
 src: crudeoauth
-fix: 1.0.0-1
+fix: 1.0.0-2
 desc: |
  This update addresses the following issues:
  * A PAM and a SASL module for `OAUTHBEARER` (RFC 7628) has been introduced.

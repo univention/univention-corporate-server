@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.7-6) unstable; urgency=medium
+
+  * Bug #49006: Add Bearer HTTP authentication scheme to reference client
+
+ -- Florian Best <best@univention.de>  Tue, 30 Jan 2024 18:20:13 +0100
+
 univention-directory-manager-rest (10.0.7-5) unstable; urgency=medium
 
   * Bug #49006: Add OAuth 2.0 authorization for UDM REST API

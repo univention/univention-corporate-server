@@ -146,7 +146,10 @@ class Session:
     def create_session(self):
         # type: () -> requests.Session
         sess = requests.session()
-        sess.auth = (self.credentials.username, self.credentials.password)
+        if self.credentials.bearer_token:
+            sess.headers['Authorization'] = 'Bearer %s' % (self.credentials.bearer_token,)
+        else:
+            sess.auth = (self.credentials.username, self.credentials.password)
         if not self.enable_caching:
             return sess
         try:
@@ -289,11 +292,17 @@ class UDM(Client):
         # type: (str, str, str) -> UDM
         return cls(uri, username, password)
 
+    @classmethod
+    def bearer(cls, uri, bearer_token):
+        # type: (str, str, str) -> UDM
+        return cls(uri, None, None, bearer_token=bearer_token)
+
     def __init__(self, uri, username, password, *args, **kwargs):
         # type: (str, str, str, *Any, **Any) -> None
         self.uri = uri
         self.username = username
         self.password = password
+        self.bearer_token = kwargs.pop('bearer_token', None)
         self._api_version = None  # type: Optional[str]
         self.entry = None  # type: Any # Optional[Dict]
         super().__init__(Session(self, *args, **kwargs))
