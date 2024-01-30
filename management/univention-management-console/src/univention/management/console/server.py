@@ -240,8 +240,17 @@ class Server(object):
 
         with open('/usr/share/univention-management-console/oidc/oidc.json') as fd:
             config = json.load(fd)
+            oidc = config.get('oidc', {})
+            for setting in oidc.values():
+                with open(setting['openid_configuration']) as fd:
+                    setting["op"] = json.loads(fd.read())
+                with open(setting['openid_certs']) as fd:
+                    setting["jwks"] = json.loads(fd.read())
+                with open(setting['client_secret_file']) as fd:
+                    setting['client_secret'] = fd.read().strip()
+
             settings = {
-                'oidc': config.get('oidc'),
+                'oidc': oidc,
                 'default_authorization_server': config.get('default_authorization_server'),
             }
         application = Application(

@@ -102,13 +102,8 @@ class OIDCResource(OAuth2Mixin, Resource):
 
         self.client_id = settings['client_id']
         self.issuer = settings['issuer']
-        with open(settings['openid_configuration']) as fd:  # noqa: ASYNC101
-            settings["op"] = json.loads(fd.read())
-        with open(settings['openid_certs']) as fd:  # noqa: ASYNC101
-            settings["jwks"] = json.loads(fd.read())
-            self.JWKS = settings["jwks"]
-        with open(settings['client_secret_file']) as fd:  # noqa: ASYNC101
-            self.client_secret = fd.read().strip()
+        self.JWKS = settings["jwks"]
+        self.client_secret = settings['client_secret']
         self._OAUTH_AUTHORIZE_URL = settings["op"]["authorization_endpoint"]
         self._OAUTH_ACCESS_TOKEN_URL = settings["op"]["token_endpoint"]
         self._OAUTH_END_SESSION_URL = settings["op"]["end_session_endpoint"]
