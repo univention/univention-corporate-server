@@ -8,7 +8,8 @@ desc: |
  This update addresses the following issues:
  * JDK-8308204: Enhanced certificate processing.
  * JDK-8314284, CVE-2024-20926: Enhance Nashorn performance.
- * JDK-8314295, CVE-2024-20919: Enhance Nashorn performance verification of verifier.
+ * JDK-8314295, CVE-2024-20919: Enhance Nashorn performance verification of
+   verifier.
  * JDK-8314307, CVE-2024-20921: Improve loop handling.
  * JDK-8314468, CVE-2024-20918: Improve Compiler loops.
  * JDK-8316976, CVE-2024-20945: Improve signature handling.
