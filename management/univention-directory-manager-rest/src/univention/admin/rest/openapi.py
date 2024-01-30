@@ -1034,6 +1034,7 @@ class _OpenAPIBase:
             },
             'security': [{
                 "basic": [],
+                # "bearer": [],  # FIXME: /univention/components/python-udm-rest-api-client#25
             }],
             'tags': openapi_tags,
             'components': {
@@ -1044,6 +1045,10 @@ class _OpenAPIBase:
                         'scheme': 'basic',
                         'type': 'http',
                     },
+                    # 'bearer': {  # FIXME: /univention/components/python-udm-rest-api-client#25
+                    #     'scheme': 'bearer',
+                    #     'type': 'http',
+                    # },
                 },
                 'parameters': openapi_parameters,  # Reusable path, query, header and cookie parameters
                 'responses': openapi_responses,
