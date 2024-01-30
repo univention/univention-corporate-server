@@ -31,5 +31,6 @@
 .. _univention-kb-admin-diary-separate-frontend-backend: https://help.univention.com/t/admin-diary-how-to-seperate-frontend-and-backend/11331
 .. _univention-kb: https://help.univention.com/c/knowledge-base/supported/48
 .. _w-classless-inter-domain-routing: https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing
+.. _w-iso-639-1: https://de.wikipedia.org/wiki/ISO_639#ISO_639-1
 .. _w-radius: https://de.wikipedia.org/wiki/Remote_Authentication_Dial-In_User_Service
 .. _w-vesa-bios-extensions: https://de.wikipedia.org/wiki/VESA_BIOS_Extension

@@ -68,6 +68,7 @@ reporting function are explained (:ref:`central-reports`).
    introduction
    login
    portal
+   cookie-banner
    umc
    ldap-browser
    policies
