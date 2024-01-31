@@ -381,7 +381,7 @@ start_openvpn () {
 install_ansible () {
 	apt-get -q update
 	apt-get -y install python3-pip
-	pip3 install ansible
+	pip3 install 'ansible<=2.11.12'
 }
 
 # fix traeger host records for id broker kvm templates
