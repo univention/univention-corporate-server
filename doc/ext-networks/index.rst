@@ -14,6 +14,11 @@ Univention Corporate Server - Extended IP and network management documentation
 Advanced proxy configuration
 ****************************
 
+This section describes some scenarios for using the web proxy.
+
+For information about the installation of the proxy server,
+see :external+uv-manual:ref:`ip-config-installation`.
+
 .. _proxy-cascading:
 
 Cascading of proxies
@@ -42,38 +47,34 @@ separated by blank spaces.
 Operation as a transparent proxy
 ================================
 
-It is possible to configure Squid as a transparent proxy. This can help avoid
-configuring the proxy server in all application programs. When using a
-transparent proxy, all unencrypted web queries are automatically rerouted
-through the proxy server.
+It's possible to configure Squid as a transparent proxy.
+This can help to avoid the configuration of the proxy server in all application programs.
+When using a transparent proxy,
+all unencrypted web queries are automatically rerouted through the proxy server.
+
+.. important::
+
+   The transparent proxy only works for unencrypted web traffic through HTTP,
+   and not for HTTPS.
 
 .. note::
 
-   This only works for unencrypted web traffic, not for ``https``.
+   The transparent proxy requires that you turned off the LDAP authentication on the proxy server.
+   The turned off LDAP authentication is the default setting.
 
-.. note::
+To configure the transparent proxy, use the following steps:
 
-   LDAP authentication on the proxy server must not be enabled.
+#. Configure the proxy server as the default gateway on all clients.
 
-The following configuration steps need to be made:
+#. Enable the transparent proxy by setting :envvar:`squid/transparentproxy` to
+   ``true``.
 
-* The proxy server must be configured as the default gateway on all clients.
+#. Restart the proxy server and the firewall:
 
-* The proxy server must be configured to use IP forwarding.
+   .. code-block:: console
 
-  .. code-block:: console
+      $ systemctl restart univention-firewall.service squid.service
 
-     $ echo "net.ipv4.ip_forward = 1" >/etc/sysctl.d/ip_forward.conf
-     $ sysctl --system
-
-
-* The |UCSUCRV| :envvar:`squid/transparentproxy` must be set to ``yes`` on the
-  proxy server. After that Univention Firewall and Squid need to be restarted:
-
-  .. code-block:: console
-
-     $ systemctl restart univention-firewall squid
-
-  This enables packet filter rules which redirect all queries for the web ports
-  to the proxy server.
-
+The UCS system that runs the proxy server,
+redirects all incoming proxy traffic to the transparent proxy port
+of the proxy server.
