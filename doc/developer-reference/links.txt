@@ -12,7 +12,7 @@
 .. _gettext-po-files: https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html
 .. _gettext: https://www.gnu.org/software/gettext/
 .. _git: https://git-scm.com/downloads
-.. _ietf-hal: https://datatracker.ietf.org/doc/html/draft-kelly-json-hal-08
+.. _ietf-hal: https://datatracker.ietf.org/doc/html/draft-kelly-json-hal-11
 .. _netfilter: https://www.netfilter.org/
 .. _open-suse-build-service: https://build.opensuse.org/
 .. _openldap: https://www.openldap.org/

@@ -12,6 +12,12 @@ delete UDM objects through HTTP requests.
 
 The API is accessible from :samp:`https://{FQHN}/univention/udm/`.
 
+.. seealso::
+
+   For an architectural overview,
+   see :external+uv-architecture:ref:`services-udm-rest-api`
+   in :cite:t:`ucs-architecture`.
+
 .. _udm-rest-api-authentication:
 
 Authentication
@@ -20,6 +26,12 @@ Authentication
 To use the API you have to authenticate with a user account which is a member of
 an authorized group. The group authorization is managed through the |UCSUCRV|\ s
 :envvar:`directory/manager/rest/authorized-groups/<group-name>`.
+
+You can authenticate through the following ways:
+
+* With user credentials through :rfc:`HTTP basic authentication <7617>`
+
+* An OAuth 2.0 Access Token as JWT through :rfc:`HTTP Bearer authentication <6750>`
 
 The API comes predefined with the following UCR variables:
 
@@ -97,9 +109,86 @@ different HTTP methods you can achieve different results.
 For an in depth overview over which resources are available, which HTTP methods
 are allowed on them and which query parameters are available for a given HTTP
 method visit :samp:`https://{FQHN}/univention/udm/schema/` with a browser.
+To download the OpenAPI schema, use :samp:`https://{FQHN}/univention/udm/openapi.json`.
+The contract is that the client must always use the latest schema.
 
-By visiting :samp:`https://{FQHN}/univention/udm/` with a browser you can
-navigate and use the API interactively.
+You can navigate the OpenAPI schema interactively with a web browser.
+To enable it, use the following steps:
+
+#. You need to set the UCR variable
+   :envvar:`directory/manager/rest/html-view-enabled` to ``true``.
+
+#. If you need to insert JSON blobs of objects into the HTML source code,
+   enable it by setting
+   :envvar:`directory/manager/rest/debug-mode-enabled` to ``true``.
+
+#. Restart the UDM REST API with this command:
+
+   .. code-block:: console
+
+      $ systemctl restart univention-directory-manager-rest
+
+#. Finally, visit :samp:`https://{FQHN}/univention/udm/`.
+
+.. _udm-rest-api-clients:
+
+API clients
+-----------
+
+The following API clients implemented in Python exist for the UDM REST API:
+
+* :program:`python3-univention-directory-mananger-rest-client`:
+
+  Every UCS system has it installed by default.
+  You can use it the following way:
+
+  .. code-block:: python
+     :caption: Example for using Python UDM REST API client
+
+
+     from univention.admin.rest.client import UDM
+     from univention.config_registry import ucr
+     uri = 'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr
+     udm = UDM.http(uri, 'Administrator', 'univention')
+     module = udm.get('users/user')
+
+     # 1. create a user
+     obj = module.new()
+     obj.properties['username'] = 'foo'
+     obj.properties['password'] = 'univention'
+     obj.properties['lastname'] = 'foo'
+     obj.save()
+
+     # 2. search for users (first user)
+     obj = next(module.search('uid=*'))
+     if obj:
+         obj = obj.open()
+     print('Object {}'.format(obj))
+
+     # 3. get by dn
+     ldap_base = udm.get_ldap_base()
+     obj = module.get('uid=foo,cn=users,%s' % (ldap_base,))
+
+     # 4. get referenced objects e.g. groups
+     pg = obj.objects['primaryGroup'].open()
+     print(pg.dn, pg.properties)
+     print(obj.objects['groups'])
+
+     # 5. modify
+     obj.properties['description'] = 'foo'
+     obj.save()
+
+     # 6. move to the ldap base
+     obj.move(ldap_base)
+
+     # 7. remove
+     obj.delete()
+
+* Python UDM REST Client:
+
+  * `Package at PyPI <https://pypi.org/project/udm-rest-client/>`_
+  * :external+python-udm-rest-client:doc:`Documentation <index>`
+
 
 .. _udm-rest-api-usage-examples:
 
