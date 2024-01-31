@@ -9,3 +9,6 @@ desc: |
  * The `univention-keycloak` scripts has been extended to support more
    parameters for the `oidc/rp` creation.
 bug: [49006]
+erratum: 941
+announced: 2024-01-31
+support: core
