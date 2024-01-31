@@ -3,7 +3,7 @@ release: "5.0"
 version: [6]
 scope: ucs_5.0-0-errata5.0-6
 src: yder
-fix: 1.4.20-1
+fix: 1.4.20-1A~5.0.0.202401241551
 desc: |
  This update addresses the following issues:
  * The package has been introduced as dependency for `crudeoidc`.
