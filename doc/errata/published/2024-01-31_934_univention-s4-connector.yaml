@@ -12,3 +12,6 @@ desc: |
    operation of Samba/AD. This improves usability during initial
    joins and rejoins.
 bug: [56956]
+erratum: 934
+announced: 2024-01-31
+support: core
