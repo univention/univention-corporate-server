@@ -12,3 +12,6 @@ desc: |
 bug: [57009]
 cve:
 - CVE-2023-46846
+erratum: 933
+announced: 2024-01-31
+support: core
