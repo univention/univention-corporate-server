@@ -6,5 +6,6 @@ src: univention-ldap
 fix: 16.0.14-4
 desc: |
  This update addresses the following issues:
- * The LDAP server has been extended with the `OAUTHBEARER` SASL mechanism.
+ * The LDAP server has been extended with the `OAUTHBEARER` SASL mechanism,
+   which is disabled by default.
 bug: [49006]

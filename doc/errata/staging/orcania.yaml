@@ -6,6 +6,6 @@ src: orcania
 fix: 2.3.3-1A~5.0.0.202401241549
 desc: |
  This update addresses the following issues:
- * The package has been introduced as dependency for `crudeoidc`.
+ * The package has been introduced as dependency for `crudeoauth`.
 maintained: true
 bug: [49006]

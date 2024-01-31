@@ -6,6 +6,6 @@ src: ulfius
 fix: 2.7.14-1A~5.0.0.202401241552
 desc: |
  This update addresses the following issues:
- * The package has been introduced as dependency for `crudeoidc`.
+ * The package has been introduced as dependency for `crudeoauth`.
 maintained: true
 bug: [49006]
