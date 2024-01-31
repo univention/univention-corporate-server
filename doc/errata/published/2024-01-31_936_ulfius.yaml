@@ -9,3 +9,6 @@ desc: |
  * The package has been introduced as dependency for `crudeoauth`.
 maintained: true
 bug: [49006]
+erratum: 936
+announced: 2024-01-31
+support: core
