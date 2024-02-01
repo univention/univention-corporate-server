@@ -1,3 +1,9 @@
+ucs-test (10.0.20-23) unstable; urgency=medium
+
+  * Bug #57019: Make user-agent configurable to be used by app test
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Thu, 01 Feb 2024 09:37:42 +0100
+
 ucs-test (10.0.20-22) unstable; urgency=medium
 
   * Bug #56054: Retry label detection multiple times for slow loading elements

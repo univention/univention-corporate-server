@@ -85,6 +85,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         self._ucr.load()
         self.browser = self.BROWSERS[os.environ.get('UCSTEST_SELENIUM_BROWSER', 'firefox')]
         self.selenium_grid = os.environ.get('UCSTEST_SELENIUM') != 'local'
+        self.selenium_user_agent = os.environ.get('UCSTEST_SELENIUM_USER_AGENT', None)
         self.language = language
         self.base_url = 'https://%s/' % (host or '%(hostname)s.%(domainname)s' % self._ucr)
         self.screenshot_path = os.path.abspath('selenium/')
@@ -105,6 +106,8 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
             if self.browser == 'chrome':
                 chrome_options = webdriver.ChromeOptions()
                 chrome_options.add_argument('--no-sandbox')  # chrome complains about being executed as root
+                if self.selenium_user_agent:
+                    chrome_options.add_argument('--user-agent=%s' % self.selenium_user_agent)
                 chrome_options.add_argument('ignore-certificate-errors')
                 self.driver = webdriver.Chrome(options=chrome_options)
             else:
