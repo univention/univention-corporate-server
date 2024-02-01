@@ -47,8 +47,19 @@ univention-config-registry set directory/manager/web/modules/autosearch?1 \
 	directory/manager/web/modules/groups/group/checks/circular_dependency?"yes" \
 	umc/module/udm/users/self/disabled?true
 
+# shellcheck disable=SC2154
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "10.0.1.24" && [ "$server_role" = "domaincontroller_master" ]; then
 	umc_operation_create "udm-reports" "UDM - Reports" "" "udm/reports/query" "udm/reports/create" "udm/reports/get"
 fi
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "10.0.9-2" && [ "$server_role" = "domaincontroller_master" ]; then
+	if [ -e /var/univention-join/joined ] ; then
+		# shellcheck source=/dev/null
+		. /usr/share/univention-lib/umc.sh
+		umc_operation_create "udm-blocklists" "UDM - Blocklists" "blocklists/all" "udm/*:objectType=blocklists/*"
+	fi
+fi
+
+
 
 exit 0

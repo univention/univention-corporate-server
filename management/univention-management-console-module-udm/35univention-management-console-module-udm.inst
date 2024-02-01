@@ -98,6 +98,8 @@ umc_operation_create "udm-reports" "UDM - Reports" "" "udm/reports/query" "udm/r
 
 umc_operation_create "udm-usertemplates" "UDM - Apply User Templates" "settings/usertemplate" "udm/get"
 
+umc_operation_create "udm-blocklists" "UDM - Blocklists" "blocklists/all" "udm/*:objectType=blocklists/*"
+
 umc_policy_append "default-umc-all" "udm-all"
 
 if [ "$JS_LAST_EXECUTED_VERSION" = 3 ]; then
