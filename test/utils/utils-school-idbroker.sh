@@ -497,13 +497,18 @@ add_broker_ca_to_host_and_idconnector () {
 	univention-app shell ucsschool-id-connector update-ca-certificates
 }
 
-add_dns_for_provisioning_server () {
+add_dns_for_ID-Broker () {
 	local broker_domain="${1:?missing broker domain}"
-	local provisioning_ip="${2:?missing provisioning ip}"
+	local primary_ip="${2:?missing ID-Broker primary ip}"
+	local provisioning_ip="${3:?missing provisioning ip}"
 	udm dns/forward_zone create \
 		--set zone="$broker_domain" \
 		--set nameserver="$(hostname -f)." \
 		--position="cn=dns,$(ucr get ldap/base)" || return 1
+	udm dns/host_record create \
+		--set a="$primary_ip" \
+		--set name=idbroker-primary \
+		--position "zoneName=$broker_domain,cn=dns,$(ucr get ldap/base)" || return 1
 	udm dns/host_record create \
 		--set a="$provisioning_ip" \
 		--set name=provisioning1 \
