@@ -19,6 +19,7 @@ from time import monotonic
 from typing import IO, Any, Dict, Iterable, Iterator, List, Sequence, Set, Tuple, TypeVar, cast
 
 import apt
+import retrying
 import yaml
 
 from univention.config_registry import ConfigRegistry
@@ -82,6 +83,7 @@ class TestEnvironment:
         self.log = open(logfile or os.path.devnull, 'a')
 
     @property
+    @retrying.retry(wait_fixed=2000, stop_max_attempt_number=3)
     def local_apps(self) -> List[str]:
         """Lazy load locally installed apps."""
         logging.getLogger('univention.appcenter').setLevel(TestEnvironment.logger.getEffectiveLevel())

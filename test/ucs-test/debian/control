@@ -47,6 +47,7 @@ Depends:
  python3-coverage,
  python3-psutil,
  python3-pytest,
+ python3-retrying,
  python3-selenium,
  python3-typing-extensions,
  python3-univention,
