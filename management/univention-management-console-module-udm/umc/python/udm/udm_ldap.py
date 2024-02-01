@@ -404,14 +404,14 @@ class UDM_Module(object):
         if force_reload:
             AppAttributes._cache = None
 
-    def get_ldap_connection(self):
+    def get_ldap_connection(self, base=None):
         if get_bind_function():
             try:
                 self.ldap_connection, po = get_user_connection(bind=get_bind_function(), write=True)
             except (LDAPError, udm_errors.ldapError):
                 self.ldap_connection, po = get_user_connection(bind=get_bind_function(), write=True)
             self.ldap_position = udm.uldap.position(self.ldap_connection.base)
-        return self.ldap_connection, udm.uldap.position(self.ldap_connection.base)
+        return self.ldap_connection, udm.uldap.position(base if base else self.ldap_connection.base)
 
     def load(self, module=None, template_object=None, force_reload=False):
         """
@@ -514,7 +514,7 @@ class UDM_Module(object):
 
     def create(self, ldap_object, container=None, superordinate=None):
         """Creates a LDAP object"""
-        ldap_connection, ldap_position = self.get_ldap_connection()
+        ldap_connection, ldap_position = self.get_ldap_connection(base=self.module.object.ldap_base)
         if superordinate == 'None':
             superordinate = None
         if container:
@@ -766,6 +766,11 @@ class UDM_Module(object):
     def title(self):
         """Descriptive name of the UDM module"""
         return getattr(self.module, 'short_description', getattr(self.module, 'module', ''))
+
+    @property
+    def ldap_base(self):
+        """Default LDAP base of the UDM module"""
+        return getattr(self.module.object, 'ldap_base', '')
 
     @property
     def description(self):
@@ -1049,7 +1054,7 @@ class UDM_Module(object):
             return '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
 
         defaults = self.get_default_containers()
-        return defaults[0] if defaults else ldap_position.getBase()
+        return defaults[0] if defaults else self.module.object.ldap_base
 
     def get_default_containers(self):
         """List of LDAP DNs of default containers"""

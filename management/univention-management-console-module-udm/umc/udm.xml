@@ -44,6 +44,25 @@
 				<requiredCommand name="udm/query"/>
 			</requiredCommands>
 		</flavor>
+		<flavor priority="50" icon="blocklists" id="blocklists/all">
+			<name>Blocklists</name>
+			<description>Management of blocklists in the domain</description>
+			<keywords>blocklists</keywords>
+			<categories>
+				<category name="domain"/>
+			</categories>
+			<requiredCommands>
+				<requiredCommand name="udm/reports/query"/>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/nav/container/query"/>
+			</requiredCommands>
+		</flavor>
 		<flavor priority="50" icon="groups" id="groups/group">
 			<name>Groups</name>
 			<description>Management of user and computer groups in the domain</description>

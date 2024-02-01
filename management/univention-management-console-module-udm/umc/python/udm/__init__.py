@@ -592,6 +592,10 @@ class Instance(Base, ProgressMixin):
             else:
                 raise SuperordinateDoesNotExist(superordinate)
 
+        # overwrite base, blocklists are always in its module defined base
+        if module.name == 'blocklists/list':
+            request.options['container'] = module.ldap_base
+
         container = request.options.get('container')
         objectProperty = request.options['objectProperty']
         objectPropertyValue = request.options['objectPropertyValue']

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 25 Sep 2020 01:15:08 +0200\n"
+"POT-Creation-Date: Tue, 06 Feb 2024 16:24:30 +0100\n"
 "PO-Revision-Date: 2011-10-21 17:59+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -52,6 +52,9 @@ msgstr "LDAP-Verzeichnis"
 
 msgid "Mail"
 msgstr "E-Mail"
+
+msgid "Management of blocklists in the domain"
+msgstr "Verwaltung von Blocklisten in der Domäne"
 
 msgid "Management of computers in the domain"
 msgstr "Verwaltung von Rechnern in der Domäne"
@@ -118,6 +121,12 @@ msgstr "Benutzereinstellungen"
 
 msgid "Users"
 msgstr "Benutzer"
+
+msgid "blocklists"
+msgstr "Blocklisten"
+
+msgid "Blocklists"
+msgstr "Blocklisten"
 
 msgid "computers"
 msgstr "Rechner"
