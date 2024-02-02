@@ -1252,7 +1252,7 @@ msgid ""
 "because UCS is based on Debian."
 msgstr ""
 "Wird UCS als Gast in VMware installiert muss als *Gastbetriebssystem* die"
-" Option :menuselection:`Linux --> Debien` ausgewählt werden, weil UCS auf"
+" Option :menuselection:`Linux --> Debian` ausgewählt werden, weil UCS auf"
 " Debian basiert."
 
 #: ../../installation.rst:660
