@@ -21,6 +21,7 @@ from typing import IO, Any, Dict, Iterable, Iterator, List, Sequence, Set, Tuple
 import apt
 import retrying
 import yaml
+from apt_pkg import Error as Apt_Pkg_Error
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.codes import Reason
@@ -83,7 +84,7 @@ class TestEnvironment:
         self.log = open(logfile or os.path.devnull, 'a')
 
     @property
-    @retrying.retry(wait_fixed=2000, stop_max_attempt_number=3)
+    @retrying.retry(wait_fixed=3000, stop_max_attempt_number=3)
     def local_apps(self) -> List[str]:
         """Lazy load locally installed apps."""
         logging.getLogger('univention.appcenter').setLevel(TestEnvironment.logger.getEffectiveLevel())
@@ -93,8 +94,15 @@ class TestEnvironment:
                 from univention.appcenter.app_cache import Apps
                 apps_cache = Apps()
                 self._local_apps = [app.id for app in apps_cache.get_all_locally_installed_apps()]
-            except (ImportError, TypeError, PermissionError):
-                self._local_apps = []
+            except (ImportError, TypeError, PermissionError, Apt_Pkg_Error):
+                self._local_apps = [
+                    key.split('/')[2]
+                    for key, value in self.ucr.items()
+                    if key.startswith('appcenter/apps')
+                    if len(key.split('/')) > 3
+                    if key.split('/')[3] == 'status'
+                    if value == 'installed'
+                ]
         return self._local_apps
 
     def _load_host(self) -> None:
