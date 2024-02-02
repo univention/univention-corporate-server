@@ -20,5 +20,7 @@ if issuers:
     for rp in relying_parties:
         args.append('trusted_azp=%s' % (rp,))
     grace = configRegistry.get_int('ldap/server/sasl/oauthbearer/grace-time', 3)
-    print('auth sufficient pam_oauthbearer.so grace=%d userid=uid %s' % (grace, ' '.join(args)))
+    print('\
+auth     sufficient        pam_oauthbearer.so grace=%d userid=uid \\\n\
+                           %s' % (grace, ' \\\n'.ljust(30).join(args)))
 @!@

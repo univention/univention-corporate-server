@@ -1,3 +1,9 @@
+univention-pam (15.0.3) unstable; urgency=medium
+
+  * Bug #56793: Unify whitespace in pam config a bit
+
+ -- Arvid Requate <requate@univention.de>  Fri, 08 Mar 2024 00:18:46 +0100
+
 univention-pam (15.0.2) unstable; urgency=medium
 
   * Bug #46120: rebase UCR templates of univention-pam to Debian 12
