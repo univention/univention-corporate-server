@@ -1,6 +1,7 @@
-account  sufficient             pam_unix.so
 @!@
+print('account  sufficient        pam_unix.so')
 methods = configRegistry.get('auth/methods', '').split(' ')
 if 'krb5' in methods:
-    print('account  sufficient             pam_krb5.so force_pwchange')
-@!@account  required               pam_sss.so
+    print('account  sufficient        pam_krb5.so force_pwchange')
+print('account  required          pam_sss.so')
+@!@

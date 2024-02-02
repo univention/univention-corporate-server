@@ -1,1 +1,1 @@
-auth     required                           pam_env.so
+auth     required          pam_env.so

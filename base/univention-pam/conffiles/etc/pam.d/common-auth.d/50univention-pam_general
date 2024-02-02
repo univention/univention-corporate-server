@@ -1,20 +1,20 @@
 @!@
 minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5 = '''
-auth     [success=<succ> new_authtok_reqd=ok \
-         user_unknown=<unknown> \
-         service_err=<unavail> authinfo_unavail=<unavail> \
-         default=<unknown>]                         pam_krb5.so use_first_pass minimum_uid=%d''' % (minimum_uid,)
+auth     [success=<succ> new_authtok_reqd=ok \\
+         user_unknown=<unknown> \\
+         service_err=<unavail> authinfo_unavail=<unavail> \\
+         default=<unknown>]   pam_krb5.so use_first_pass minimum_uid=%d''' % (minimum_uid,)
 pam_sss = '''
-auth     [success=<succ> new_authtok_reqd=ok \
-         user_unknown=<unknown> \
-         service_err=<unavail> authinfo_unavail=<unavail> \
-         default=<unknown>]                         pam_sss.so use_first_pass'''
+auth     [success=<succ> new_authtok_reqd=ok \\
+         user_unknown=<unknown> \\
+         service_err=<unavail> authinfo_unavail=<unavail> \\
+         default=<unknown>]   pam_sss.so use_first_pass'''
 pam_winbind = '''
-auth     [success=<succ> new_authtok_reqd=ok \
-         user_unknown=<unknown> \
-         service_err=<unavail> authinfo_unavail=<unavail> \
-         default=<unknown>]                         pam_winbind.so use_first_pass'''
+auth     [success=<succ> new_authtok_reqd=ok \\
+         user_unknown=<unknown> \\
+         service_err=<unavail> authinfo_unavail=<unavail> \\
+         default=<unknown>]   pam_winbind.so use_first_pass'''
 
 
 def pam_section(template, last):
@@ -31,10 +31,10 @@ methods = [x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5',
 # if no other authentication mechanism but unix is active it is required
 if not methods:
     print('''# local unix authentication
-auth     required                         pam_unix.so''')
+auth     required          pam_unix.so''')
 else:
     print('''# local unix authentication
-auth     sufficient                           pam_unix.so''')
+auth     sufficient        pam_unix.so''')
 
 print('''
 # remote authentication; if a service
