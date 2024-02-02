@@ -217,8 +217,9 @@ COMMON_EXCEPTIONS = (
     E("FileNotFoundError: \\[Errno 2\\] No such file or directory: '/etc/machine.secret'", ['univention/lib/umc.py.*in authenticate_with_machine_account'], 53670),
     E(r"TypeError: modify\(\) got an unexpected keyword argument 'rename_callback'", ['_register_app'], 54578),
     E('sqlite3.OperationalError: no such table: S4 rejected', 'stdin', 54586),
-    # during UCS 5.0-0-errata updates
+    # during UCS 5.0-x-errata updates
     E(r"TypeError: __init__\(\) got an unexpected keyword argument 'cli_enabled'", ['_register_app'], 54584),
+    E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/usr/share/univention-management-console/oidc/oidc.json'", ['server.py'], 49006),
 
     # updater test cases:
     E('urllib.error.URLError: .*', ['updater/tools.py.*in access']),
