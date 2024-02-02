@@ -217,6 +217,7 @@ create_id_connector_school_authority_config () {
 					\"id_broker\": {
 						\"password\": \"$password\",
 						\"username\": \"$username\",
+						\"schools\": [\"DEMOSCHOOL\", \"ou1\", \"ou2\"],
 						\"version\": 1
 					}
 				}
