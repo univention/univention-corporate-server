@@ -198,6 +198,9 @@ create_id_connector_school_authority_config () {
 	local password="${5:?missing password}"
 	local token
 
+    univention-app restart ucsschool-id-connector
+    sleep 5
+
 	token="$(curl -s -X POST "https://$(hostname -f)/ucsschool-id-connector/api/token" \
 		-H 'accept: application/json' \
 		-H 'Content-Type:application/x-www-form-urlencoded' \
@@ -222,6 +225,8 @@ create_id_connector_school_authority_config () {
 					}
 				}
 		}"
+    univention-app restart ucsschool-id-connector
+    sleep 5
 }
 
 create_school_users_classes () {
