@@ -1,12 +1,14 @@
-auth     requisite                          pam_nologin.so
+auth     requisite         pam_nologin.so
 @!@
 if configRegistry.is_true('auth/faillog', False):
     if configRegistry.is_true('auth/faillog/lock_global', False):
-        print('auth	[success=1 user_unknown=1 default=bad]	pam_faillock.so preauth')
-        print('auth	required	pam_runasroot.so program=/usr/lib/univention-pam/lock-user')
-        print('auth     required	pam_faillock.so authfail')
+        print('\
+auth     [success=1 user_unknown=1 \\\n\
+         default=bad]      pam_faillock.so preauth')
+        print('auth     required          pam_runasroot.so program=/usr/lib/univention-pam/lock-user')
+        print('auth     required          pam_faillock.so authfail')
     else:
-        print('auth	required	pam_faillock.so preauth')
-        print('auth     required	pam_faillock.so authfail')
+        print('auth     required          pam_faillock.so preauth')
+        print('auth     required          pam_faillock.so authfail')
 @!@
 
