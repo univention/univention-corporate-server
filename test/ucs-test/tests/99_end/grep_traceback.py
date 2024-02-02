@@ -251,7 +251,7 @@ COMMON_EXCEPTIONS = (
     E(r'gaierror: \[Errno -5\] No address associated with hostname'),
     E('.*moduleCreationFailed: Target directory.*not below.*'),
     E("univention.udm.exceptions.NoObject: No object found at DN 'cn=internal-name-for-(folder|category|entry)", ['in refresh'], 53333),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
-    E("univention.admin.uexceptions.noObject: cn=internal-name-for-(folder|category|entry),cn=entry,cn=portals", None, 53333),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
+    E("univention.admin.uexceptions.noObject:.*cn=internal-name-for-(folder|category|entry),cn=entry,cn=portals", None, 53333),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
     E("ldap.NO_SUCH_OBJECT:.*'matched': 'cn=entry,cn=portals,cn=univention,"),  # 86_selenium/185_portal_administration_inline_creation  # Bug #53333
     E('univention.testing.utils.LDAPObjectNotFound: DN:', ['test_container_cn_rename_uppercase_rollback_with_special_characters'], 53776),
     E('dns.resolver.NoAnswer: The DNS response does not contain an answer to the question:', ['test__dns_reverse_zone_check_resolve', 'test_dns_reverse_zone_check_resolve'], 53775),

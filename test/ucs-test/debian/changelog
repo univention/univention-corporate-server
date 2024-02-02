@@ -1,3 +1,9 @@
+ucs-test (10.0.20-26) unstable; urgency=medium
+
+  * Bug #53333: ignore traceback
+
+ -- Florian Best <best@univention.de>  Fri, 02 Feb 2024 12:25:25 +0100
+
 ucs-test (10.0.20-25) unstable; urgency=medium
 
   * Bug #55747: retry apps (apps-not) check
