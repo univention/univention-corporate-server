@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-samba4
+fix: 9.0.15-2
+desc: |
+ This update addresses the following issues:
+ * When joining a system to a UCS domain with a large number of objects
+   in the LDAP directory, the script `create_spn_account.sh` restarted the
+   S4-Connector too often while waiting for the service principal name to
+   appear in the Samba/AD SAM directory, possibly causing additional delay.
+   This has been fixed.
+bug: [57027]
