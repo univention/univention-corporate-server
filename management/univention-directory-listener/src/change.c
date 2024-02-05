@@ -321,7 +321,7 @@ int change_update_schema(univention_ldap_parameters_t *lp) {
 
 	free(server_role);
 
-	if ((notifier_get_schema_id_s(NULL, &new_id)) != 0) {
+	if ((NOTIFIER_RETRY(notifier_get_schema_id_s(NULL, &new_id))) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get schema DN");
 		return LDAP_OTHER;
 	}

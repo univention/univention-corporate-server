@@ -162,7 +162,7 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 			/* timeout */
 			if ((rv = notifier_wait(NULL, timeout)) == 0) {
 				if (timeout == DELAY_ALIVE) {
-					if (notifier_alive_s(NULL) == 1) {
+					if (NOTIFIER_RETRY(notifier_alive_s(NULL)) == 1) {
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get alive answer");
 						return 1;
 					}
@@ -190,7 +190,7 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 		}
 
 		memset(&trans.cur, 0, sizeof(trans.cur));
-		if (notifier_get_dn_result(NULL, msgid, &trans.cur.notify) != 0) {
+		if (NOTIFIER_RETRY(notifier_get_dn_result(NULL, msgid, &trans.cur.notify)) != 0) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get dn result");
 			return 1;
 		}

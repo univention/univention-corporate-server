@@ -59,6 +59,7 @@
 
 #include "common.h"
 #include "network.h"
+#include "utils.h"
 
 #define NOTIFIER_PORT_PROTOCOL1 6668
 #define NOTIFIER_PORT_PROTOCOL2 6669
@@ -343,12 +344,20 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 		return 1;
 	}
 
-	client->server = strdup(server);
-	client->protocol = 0;
-	client->starttls = 0;
-	client->messages = NULL;
-	client->last_msgid = 0;
-	client->buf = NULL;
+	if (server != NULL) {
+		client->server = strdup(server);
+		client->protocol = 0;
+		client->starttls = 0;
+		client->messages = NULL;
+		client->last_msgid = 0;
+		client->buf = NULL;
+		client->fd = -1;
+	}
+
+	if (client->fd > -1) {
+		close(client->fd);
+		client->fd = -1;
+	}
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_UNSPEC; /* Allow IPv4 or IPv6 */
@@ -377,8 +386,10 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 	err = getaddrinfo(client->server, NULL, &hints, &result_addrinfo);
 	if (err != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "address resolution of %s failed with errorcode %d: %s", client->server, err, gai_strerror(err));
-		free(client->server);
-		client->server = NULL;
+		if (server != NULL) {
+			free(client->server);
+			client->server = NULL;
+		}
 		return 1;
 	}
 
@@ -456,8 +467,10 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 
 	if (client->fd == -1) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to any notifier");
-		free(client->server);
-		client->server = NULL;
+		if (server != NULL) {
+			free(client->server);
+			client->server = NULL;
+		}
 		return 2;
 	}
 
@@ -469,14 +482,18 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 
 	if (send_block(client, header, len) != len) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "couldn't send header");
-		free(client->server);
-		client->server = NULL;
+		if (server != NULL) {
+			free(client->server);
+			client->server = NULL;
+		}
 		return 1;
 	}
 	if (recv_block(client, &result, NOTIFIER_TIMEOUT) < 1) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "couldn't receive header");
-		free(client->server);
-		client->server = NULL;
+		if (server != NULL) {
+			free(client->server);
+			client->server = NULL;
+		}
 		return 1;
 	}
 
@@ -500,8 +517,10 @@ int notifier_client_new(NotifierClient *client, const char *server, int starttls
 
 	if (client->protocol < 2) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Protocol version %d is not supported", client->protocol);
-		free(client->server);
-		client->server = NULL;
+		if (server != NULL) {
+			free(client->server);
+			client->server = NULL;
+		}
 		return 1;
 	}
 
@@ -517,6 +536,10 @@ void notifier_client_destroy(NotifierClient *client) {
 	if (client->fd > -1)
 		close(client->fd);
 	client->fd = -1;
+	if (client->server) {
+		free(client->server);
+		client->server = NULL;
+	}
 }
 
 

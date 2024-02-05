@@ -1,4 +1,11 @@
-univention-directory-listener (14.0.9-1) UNRELEASED; urgency=medium
+univention-directory-listener (14.0.9-2) unstable; urgency=medium
+
+  * Bug #57024: retry in case notifier doesn't answer.
+    New UCR variable listener/notifier/retries with default 10.
+
+ -- Arvid <requate@univention.de>  Mon, 05 Feb 2024 14:28:31 +0100
+
+univention-directory-listener (14.0.9-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
 
