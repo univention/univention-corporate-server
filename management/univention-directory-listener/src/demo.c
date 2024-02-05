@@ -42,6 +42,7 @@
 
 #include "network.h"
 #include "common.h"
+#include "utils.h"
 
 int INIT_ONLY = 0;
 
@@ -83,10 +84,10 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (strcmp(argv[optind + 1], "get_id") == 0) {
-		notifier_get_id_s(NULL, &id);
+		NOTIFIER_RETRY(notifier_get_id_s(NULL, &id));
 		printf("%ld\n", id);
 	} else if (strcmp(argv[optind + 1], "get_schema_id") == 0) {
-		notifier_get_schema_id_s(NULL, &id);
+		NOTIFIER_RETRY(notifier_get_schema_id_s(NULL, &id));
 		printf("%ld\n", id);
 	} else if (strcmp(argv[optind + 1], "get_dn") == 0) {
 		int msgid;
@@ -105,7 +106,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		msgid = notifier_get_dn(NULL, getid);
-		notifier_get_dn_result(NULL, msgid, &entry);
+		NOTIFIER_RETRY(notifier_get_dn_result(NULL, msgid, &entry));
 
 		printf("%ld %s\n", entry.id, entry.dn);
 	} else {

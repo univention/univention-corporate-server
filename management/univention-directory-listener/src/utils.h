@@ -34,19 +34,39 @@ static inline int ldap_timeout_scans() {
 
 extern int ldap_retries;
 extern int get_ldap_retries();
-#define LDAP_RETRY(lp, cmd)                                                                       \
-	({                                                                                        \
-		int _rv, _retry = 0;                                                              \
-		if (ldap_retries < 0)                                                             \
-			ldap_retries = get_ldap_retries();                                        \
-		do {                                                                              \
-			_rv = (cmd);                                                              \
-			if (_rv != LDAP_SERVER_DOWN)                                              \
-				break;                                                            \
-			while (_retry < ldap_retries && univention_ldap_open(lp) != LDAP_SUCCESS) \
-				sleep(1 << (_retry++ % 6));                                       \
-		} while (_retry < ldap_retries);                                                  \
-		_rv;                                                                              \
+extern int notifier_retries;
+extern int get_notifier_retries();
+#define LDAP_RETRY(lp, cmd)                                                                         \
+	({                                                                                          \
+		int _rv, _retry = 0;                                                                \
+		if (ldap_retries < 0)                                                               \
+			ldap_retries = get_ldap_retries();                                          \
+		do {                                                                                \
+			_rv = (cmd);                                                                \
+			if (_rv != LDAP_SERVER_DOWN)                                                \
+				break;                                                              \
+			while (_retry < ldap_retries && univention_ldap_open(lp) != LDAP_SUCCESS)   \
+				sleep(1 << (_retry++ < 8 ? _retry : 8));                            \
+		} while (_retry < ldap_retries);                                                    \
+		_rv;                                                                                \
+	})
+
+#define NOTIFIER_RETRY(cmd)                                                                         \
+	({                                                                                          \
+		int _rv, _retry = 0;                                                                \
+		if (notifier_retries < 0)                                                           \
+			notifier_retries = get_notifier_retries();                                  \
+		do {                                                                                \
+			_rv = (cmd);                                                                \
+			if (_rv == 0)                                                               \
+				break;                                                              \
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "NOTIFIER_RETRY rv=%d", _rv);          \
+			while (_retry < notifier_retries && notifier_client_new(NULL, NULL, 0)) {                 \
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "NOTIFIER_RETRY #%d", _retry); \
+				sleep(1 << (_retry++ < 8 ? _retry : 8));                            \
+			}                                                                           \
+		} while (_retry < notifier_retries);                                                \
+		_rv;                                                                                \
 	})
 
 extern char *lower_utf8(const char *str);

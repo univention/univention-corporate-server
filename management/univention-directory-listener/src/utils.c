@@ -146,3 +146,11 @@ int get_ldap_retries() {
 	int retries = univention_config_get_int("listener/ldap/retries");
 	return retries < 0 ? DEFAULT_RETRIES : retries;
 }
+
+int notifier_retries = -1;
+
+int get_notifier_retries() {
+	const int DEFAULT_RETRIES = 10;
+	int retries = univention_config_get_int("listener/notifier/retries");
+	return retries < 0 ? DEFAULT_RETRIES : retries;
+}

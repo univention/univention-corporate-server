@@ -44,8 +44,8 @@ Categories=service-ln
 Default=7200
 
 [listener/ldap/retries]
-Description[de]=Anzahl der Versuche zum Verbindungsaufbau zum LDAP-Server im Fall von Fehlern.
-Description[en]=Number of retries to re-connect the LDAP server in case of errors.
+Description[de]=Anzahl der Versuche zum Verbindungsaufbau zum LDAP-Server im Fall von Fehlern. Zwischen den Versuchen wird ein exponentieller Backoff-Algorithmus verwendet, mit einer maximalen Verzögerung von 256 Sekunden zwischen den Versuchen. D.h. der Default von 5 Versuchen entspricht einem Gesamtzeitraum von gut einer Minute.
+Description[en]=Number of retries to re-connect the LDAP server in case of errors. Between the retry attempts an exponential backoff algorithm is used with a maximal delay of 256 seconds between retry attempts. I.e. the default of 10 retries results in a maximal total retry time of about one Minute.
 Type=uint
 Categories=service-ln
 Default=5
@@ -124,3 +124,10 @@ Description[en]=Defines the fallback permissions, file owner and group of the li
 Type=str
 Default=640 listener adm
 Categories=service-ln
+
+[listener/notifier/retries]
+Description[de]=Anzahl der Versuche zum Verbindungsaufbau zum Notifier-Dienst im Fehlerfall. Zwischen den Versuchen wird ein exponentieller Backoff-Algorithmus verwendet, mit einer maximalen Verzögerung von 256 Sekunden zwischen den Versuchen. D.h. der Default von 10 Versuchen entspricht einem Gesamtzeitraum von gut 17 Minuten.
+Description[en]=Number of retries to re-connect the Notivier service in case of errors. Between the retry attempts an exponential backoff algorithm is used with a maximal delay of 256 seconds between retry attempts. I.e. the default of 10 retries results in a maximal total retry time of about 17 Minutes.
+Type=uint
+Categories=service-ln
+Default=10

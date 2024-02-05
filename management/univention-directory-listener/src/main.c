@@ -58,6 +58,7 @@
 #include "network.h"
 #include "select_server.h"
 #include "transfile.h"
+#include "utils.h"
 
 int INIT_ONLY = 0;
 
@@ -573,7 +574,7 @@ int main(int argc, char *argv[]) {
 	if (lp->host != NULL)
 		handlers_set_data_all("ldapserver", lp->host);
 
-	if (notifier_get_id_s(NULL, &id) != 0) {
+	if (NOTIFIER_RETRY(notifier_get_id_s(NULL, &id)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to receive current ID");
 		return 1;
 	}
@@ -587,7 +588,7 @@ int main(int argc, char *argv[]) {
 	if (rv == MDB_NOTFOUND) {
 		cache_get_int("notifier_id", &cache_master_entry.id, -1);
 		if (cache_master_entry.id == -1) {
-			rv = notifier_get_id_s(NULL, &cache_master_entry.id);
+			rv = NOTIFIER_RETRY(notifier_get_id_s(NULL, &cache_master_entry.id));
 			if (rv != 0) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to receive current ID");
 				return 1;
