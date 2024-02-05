@@ -315,6 +315,9 @@ class Session:
         options.add_argument('--no-sandbox')  # chrome complains about being executed as root
         if os.environ.get('UCS_TEST_SELENIUM_IGNORE_CERTS'):
             options.add_argument('--ignore-certificate-errors')
+        selenium_user_agent = os.environ.get('UCSTEST_SELENIUM_USER_AGENT', None)
+        if selenium_user_agent:
+            options.add_argument(f'--user-agent={selenium_user_agent}')
         driver = webdriver.Chrome(options=options)
         return cls(display_num, base_url, screenshot_path, driver)
 

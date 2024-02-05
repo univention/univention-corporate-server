@@ -1,3 +1,9 @@
+ucs-test (10.0.20-28) unstable; urgency=medium
+
+  * Bug #57019: Make user-agent configurable to be used by app test
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 05 Feb 2024 09:41:04 +0100
+
 ucs-test (10.0.20-27) unstable; urgency=medium
 
   * Bug #55747: retry apps (apps-not) check
