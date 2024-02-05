@@ -137,6 +137,11 @@ create_spn_account () {
 			--set password="$password" || error "could not create user account $samAccountName"
 	fi
 
+	if [ "$resync" = "True" ]; then
+		/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "uid=dns-$hostname" --first
+		service univention-s4-connector restart
+	fi
+
 	## wait for S4 Connector and possibly DRS until the service_accountname is available
 	timeout=${create_spn_account_timeout:-10800}
 	for i in $(seq 1 10 $timeout); do
@@ -144,10 +149,6 @@ create_spn_account () {
 		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$samAccountName" dn | sed -n 's/^dn: \(.*\)/\1/p')
 		[ -n "$service_account_dn" ] && break
 		sleep 10
-		if [ "$resync" = "True" ]; then
-			/usr/share/univention-s4-connector/resync_object_from_ucs.py --filter "uid=dns-$hostname" --first
-			service univention-s4-connector restart
-		fi
 	done
 
 

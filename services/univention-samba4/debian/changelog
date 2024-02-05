@@ -1,3 +1,9 @@
+univention-samba4 (9.0.15-2) unstable; urgency=medium
+
+  * Bug #57027: Fix resync in create_spn_account.sh
+
+ -- Arvid <requate@univention.de>  Mon, 05 Feb 2024 16:53:54 +0100
+
 univention-samba4 (9.0.15-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
