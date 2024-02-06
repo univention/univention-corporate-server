@@ -6,17 +6,11 @@ src: postfix
 fix: 3.1.15-0+deb9u2
 desc: |
  This update addresses the following issue:
- 3.1.15-0+deb9u2 (Sun, 28 Jan 2024 09:38:45 +0000)
- [Bastien Roucariès]
- * Non-maintainer upload by the ELTS Security Team.
- * Allow backported kernel for building.
- * Fix my hostname handling with fqdn ending with . (dot)
- [Wietse Venema]
- * Fix CVE-2023-51764: Postfix allowed SMTP smuggling unless configured with
-   smtpd_data_restrictions=reject_unauth_pipelining and
-   smtpd_discard_ehlo_keywords=chunking. Remote attackers can use a published
-   exploitation technique to inject e-mail messages with a spoofed MAIL FROM
-   address, allowing bypass of an SPF protection mechanism.
+ * CVE-2023-51764: Postfix allowed `SMTP` smuggling unless configured with
+   `smtpd_data_restrictions=reject_unauth_pipelining` and
+   `smtpd_discard_ehlo_keywords=chunking`. Remote attackers can use a published
+   exploitation technique to inject e-mail messages with a spoofed `MAIL FROM`
+   address, allowing bypass of an `SPF` protection mechanism.
 bug: [57035]
 cve:
 - CVE-2023-51764
