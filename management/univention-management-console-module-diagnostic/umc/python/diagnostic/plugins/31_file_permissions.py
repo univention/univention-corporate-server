@@ -124,6 +124,7 @@ def file_and_permission_checks() -> Iterator[CheckError]:
     cf_type = namedtuple('cf_type', ('path', 'owner', 'group', 'mode', 'must_exist'))
 
     check_file_args = [
+        cf_type('/etc/ldap/slapd.conf', 'root', 'root', 0o640, must_exist=is_dc),
         cf_type('/etc/ldap.secret', 'root', 'DC Backup Hosts', 0o640, must_exist=is_primary),
         cf_type('/etc/machine.secret', 'root', 'root', 0o600, must_exist=True),
         cf_type('/etc/pam_ldap.secret', 'root', 'root', 0o600, must_exist=True),
