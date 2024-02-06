@@ -6,16 +6,11 @@ src: postfix
 fix: 3.4.23-0+deb10u2
 desc: |
  This update addresses the following issue:
- 3.4.23-0+deb10u2 (Sun, 28 Jan 2024 13:40:18 +0000)
- [Bastien Roucariès]
- * Non-maintainer upload by the LTS Security Team.
- * Allow to build with kernel from backport
- [Wietse Venema]
- * Fix CVE-2023-51764: Postfix allowed SMTP smuggling unless configured with
-   smtpd_data_restrictions=reject_unauth_pipelining and
-   smtpd_discard_ehlo_keywords=chunking. Remote attackers can use a published
-   exploitation technique to inject e-mail messages with a spoofed MAIL FROM
-   address, allowing bypass of an SPF protection mechanism.
+ * CVE-2023-51764: Postfix allowed `SMTP` smuggling unless configured with
+   `smtpd_data_restrictions=reject_unauth_pipelining` and
+   `smtpd_discard_ehlo_keywords=chunking`. Remote attackers can use a
+   published exploitation technique to inject e-mail messages with a spoofed
+   `MAIL FROM` address, allowing bypass of an `SPF` protection mechanism.
 bug: [57030]
 cve:
 - CVE-2023-51764
