@@ -15,8 +15,8 @@ desc: |
    numbers within the `SSH` Binary Packet Protocol (`BPP`) by these
    extensions. Specifically, it affects SSH's usage of `ChaCha20-Poly1305` and
    `CBC` with `Encrypt-then-MAC` algorithms.
- * CVE-2023-51385:  Ban most shell metacharacters from user and
-   hostnames supplied via the command-line
+ * CVE-2023-51385: Ban most shell metacharacters from user and hostnames
+   supplied via the command-line
  * CVE-2021-41617: Initialise correctly supplemental groups when executing an
    `AuthorizedKeysCommand` or `AuthorizedPrincipalsCommand`
 bug: [57036]
