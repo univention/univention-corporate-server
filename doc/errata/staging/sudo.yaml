@@ -7,8 +7,8 @@ fix: 1.8.27-1+deb10u6
 desc: |
  This update addresses the following issues:
  * CVE-2023-7090: A flaw was found in sudo in the handling of `ipa_hostname`,
-   where ipa_hostname from `/etc/sssd/sssd.conf` was not propagated in `sudo`.
-   Therefore, it leads to privilege mismanagement vulnerability in
+   where `ipa_hostname` from `/etc/sssd/sssd.conf` was not propagated in
+   `sudo`. Therefore, it leads to privilege mismanagement vulnerability in
    applications, where client hosts retain privileges even after retracting
    them.
  * CVE-2023-28486: `sudo` did not escape control characters in log messages.
