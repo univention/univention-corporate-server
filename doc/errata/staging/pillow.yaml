@@ -6,11 +6,9 @@ src: pillow
 fix: 5.4.1-2+deb10u4
 desc: |
  This update addresses the following issue:
- 5.4.1-2+deb10u4 (Mon, 29 Jan 2024 11:10:33 -0800)
- * Non-maintainer upload by the Debian LTS team.
  * CVE-2023-50447: Prevent a potential arbitrary code execution vulnerability
-   in the PIL.ImageMath.eval functionality.
- * Re-enable running Pillow's own testsuite in debian/rules.
+   in the `PIL.ImageMath.eval functionality`. vulnerability in the
+   `PIL.ImageMath.eval functionality`.
 bug: [57032]
 cve:
 - CVE-2023-50447
