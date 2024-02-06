@@ -1,0 +1,25 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openssh
+fix: 1:7.4p1-10+deb9u9
+desc: |
+ This update addresses the following issues:
+ 1:7.4p1-10+deb9u9 (Thu, 25 Jan 2024 06:24:19 -0300)
+ * Non-maintainer upload by the ELTS team.
+ * Add debian/salsa-ci.yml using lts-team/pipeline for stretch
+ * CVE-2023-48795: ssh(1), sshd(8): implement protocol extensions to thwart
+   the so-called "Terrapin attack" discovered by Fabian Bäumer, Marcus
+   Brinkmann and Jörg Schwenk.
+ * CVE-2023-51385: ssh(1): Ban most shell metacharacters from user and
+   hostnames supplied via the command-line
+ * Fix test cert not yet valid by using cert dates after the end of stretch
+   ELTS. Add debian/patches/test-fix-cer-not-yet-valid.patch
+ * CVE-2021-41617: Initialise correctly supplemental groups when executing an
+   AuthorizedKeysCommand or AuthorizedPrincipalsCommand
+bug: [57036]
+cve:
+- CVE-2023-48795
+- CVE-2023-51385
+- CVE-2021-41617
