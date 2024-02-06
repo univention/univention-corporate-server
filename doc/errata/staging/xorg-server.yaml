@@ -1,0 +1,30 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: xorg-server
+fix: 2:1.19.2-1+deb9u18
+desc: |
+ This update addresses the following issues:
+ 2:1.19.2-1+deb9u18 (Wed, 31 Jan 2024 20:18:45 +0100)
+ * Non-maintainer upload by the ELTS team.
+ * Xi: require a pointer and keyboard device for XIAttachToMaster
+ * dix: allocate enough space for logical button maps (CVE-2023-6816)
+ * dix: Allocate sufficient xEvents for our DeviceStateNotify (CVE-2024-0229)
+ * dix: fix DeviceStateNotify event calculation (CVE-2024-0229)
+ * Xi: when creating a new ButtonClass, set the number of buttons
+   (CVE-2024-0229)
+ * Xi: flush hierarchy events after adding/removing master devices
+   (CVE-2024-21885)
+ * Xi: do not keep linked list pointer during recursion (CVE-2024-21886)
+ * dix: when disabling a master, float disabled slaved devices too
+   (CVE-2024-21886)
+ * ephyr,xwayland: Use the proper private key for cursor
+ * glx: Call XACE hooks on the GLX buffer
+ * dix: Fix use after free in input device shutdown
+bug: [57034]
+cve:
+- CVE-2023-6816
+- CVE-2024-0229
+- CVE-2024-21885
+- CVE-2024-21886
