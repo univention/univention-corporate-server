@@ -8,9 +8,9 @@ desc: |
  This update addresses the following issue:
  * CVE-2023-51764: Postfix allowed `SMTP` smuggling unless configured with
    `smtpd_data_restrictions=reject_unauth_pipelining` and
-   `smtpd_discard_ehlo_keywords=chunking`. Remote attackers can use a published
-   exploitation technique to inject e-mail messages with a spoofed `MAIL FROM`
-   address, allowing bypass of an `SPF` protection mechanism.
+   `smtpd_discard_ehlo_keywords=chunking`. Remote attackers can use a
+   published exploitation technique to inject e-mail messages with a spoofed
+   `MAIL FROM` address, allowing bypass of an `SPF` protection mechanism.
 bug: [57035]
 cve:
 - CVE-2023-51764
