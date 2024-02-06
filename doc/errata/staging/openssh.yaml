@@ -6,18 +6,19 @@ src: openssh
 fix: 1:7.4p1-10+deb9u9
 desc: |
  This update addresses the following issues:
- 1:7.4p1-10+deb9u9 (Thu, 25 Jan 2024 06:24:19 -0300)
- * Non-maintainer upload by the ELTS team.
- * Add debian/salsa-ci.yml using lts-team/pipeline for stretch
- * CVE-2023-48795: ssh(1), sshd(8): implement protocol extensions to thwart
-   the so-called "Terrapin attack" discovered by Fabian Bäumer, Marcus
-   Brinkmann and Jörg Schwenk.
- * CVE-2023-51385: ssh(1): Ban most shell metacharacters from user and
+ * CVE-2023-48795: The `SSH` transport protocol, along with certain OpenSSH
+   extensions contains a vulnerability termed `Terrapin` attack. This flaw
+   allows remote attackers to bypass integrity checks, leading to the omission
+   of certain packets during extension negotiation. Consequently, a connection
+   may be established with downgraded or disabled security features. The
+   vulnerability arises due to mishandling of the handshake phase and sequence
+   numbers within the `SSH` Binary Packet Protocol (`BPP`) by these
+   extensions. Specifically, it affects SSH's usage of `ChaCha20-Poly1305` and
+   `CBC` with `Encrypt-then-MAC` algorithms.
+ * CVE-2023-51385:  Ban most shell metacharacters from user and
    hostnames supplied via the command-line
- * Fix test cert not yet valid by using cert dates after the end of stretch
-   ELTS. Add debian/patches/test-fix-cer-not-yet-valid.patch
  * CVE-2021-41617: Initialise correctly supplemental groups when executing an
-   AuthorizedKeysCommand or AuthorizedPrincipalsCommand
+   `AuthorizedKeysCommand` or `AuthorizedPrincipalsCommand`
 bug: [57036]
 cve:
 - CVE-2023-48795
