@@ -6,32 +6,32 @@ src: squid3
 fix: 3.5.23-5+deb9u10A~4.4.9.202402060801
 desc: |
  This update addresses the following issues:
- * CVE-2023-50269: Due to an Uncontrolled Recursion bug, Squid may be vulnerable to
-   a Denial of Service attack against HTTP Request parsing. This problem
-   allows a remote client to perform Denial of Service attack by sending a
-   large `X-Forwarded-For` header when the `follow_x_forwarded_for` feature is
-   configured.
+ * CVE-2023-50269: Due to an Uncontrolled Recursion bug, Squid may be
+   vulnerable to a Denial of Service attack against HTTP Request parsing. This
+   problem allows a remote client to perform Denial of Service attack by
+   sending a large `X-Forwarded-For` header when the `follow_x_forwarded_for`
+   feature is configured.
  * CVE-2023-49286: Squid is a caching proxy for the Web supporting `HTTP`,
-   `HTTPS`, `FTP`, and more. Due to an Incorrect Check of Function Return Value
-   bug Squid is vulnerable to a Denial of Service attack against its Helper
-   process management.
+   `HTTPS`, `FTP`, and more. Due to an Incorrect Check of Function Return
+   Value bug Squid is vulnerable to a Denial of Service attack against its
+   Helper process management.
  * CVE-2023-49285: Squid is a caching proxy for the Web supporting `HTTP`,
-   `HTTPS`, `FTP`, and more. Due to a Buffer Overread bug Squid is vulnerable to a
-   Denial of Service attack against Squid `HTTP Message processing`.
+   `HTTPS`, `FTP`, and more. Due to a Buffer Overread bug Squid is vulnerable
+   to a Denial of Service attack against Squid `HTTP Message processing`.
  * CVE-2023-46847: Squid is vulnerable to a Denial of Service, where a remote
    attacker can perform buffer overflow attack by writing up to 2 MB of
    arbitrary data to heap memory when Squid is configured to accept `HTTP
    Digest Authentication`.
  * CVE-2024-23638: Squid is a caching proxy for the Web. Due to an expired
-   pointer reference bug, Squid is vulnerable to a Denial
-   of Service attack against `Cache Manager` error responses. This problem
-   allows a trusted client to perform Denial of Service when generating error
-   pages for `Client Manager` reports.
+   pointer reference bug, Squid is vulnerable to a Denial of Service attack
+   against `Cache Manager` error responses. This problem allows a trusted
+   client to perform Denial of Service when generating error pages for `Client
+   Manager` reports.
  * CVE-2023-46728: Squid is a caching proxy for the Web supporting `HTTP`,
    `HTTPS`, `FTP`, and more. Due to a `NULL` pointer dereference bug Squid is
    vulnerable to a Denial of Service attack against Squid's Gopher gateway.
-   Responses triggering this bug are possible to be received from any
-   gopher server, even those without malicious intent.
+   Responses triggering this bug are possible to be received from any gopher
+   server, even those without malicious intent.
 bug: [57033]
 cve:
 - CVE-2023-50269
