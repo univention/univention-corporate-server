@@ -18,10 +18,9 @@ Configuration of the PAM is done via parameters of the library call in the PAM s
 The implementation has been tested with Keycloak 23.0.x.
 The PAM and SASL plugin check the `aud` claim as requested by
 [RFC 9068](https://datatracker.ietf.org/doc/html/rfc9068).
-Keycloak 23 currently doesn't automatically put `aud` into the token.
+Keycloak 23 currently doesn't automatically put `aud` into the access token.
 
-The PAM and SASL plugin can additionally check the `azp` claim if
-configured accordingly.
+The PAM and SASL plugin can additionally check the `azp` claim if configured accordingly.
 
 ## User notes
 
@@ -38,10 +37,10 @@ oauthbearer_userid: preferred_username
 oauthbearer_trusted_jwks0: /usr/share/oidc/file_containing_the_authorization_server_certificates_as.jwks
 oauthbearer_trusted_iss0: https://sso.example.org/realms/master
 oauthbearer_trusted_aud0: ldaps://example.org/
-oauthbearer_trusted_azp0: https:/client.example.org/oidc/
-oauthbearer_required_scope0: openid
+# oauthbearer_trusted_azp0: https:/client.example.org/oidc/
+# oauthbearer_required_scope0: openid
 ```
-The `azp` check (last line) is optional and may provide additional security.
+The `azp` and `scope` checks are optional and may provide additional security or be otherwise useful.
 
 The username is read from the access token and used as `authcid`.
 A optional `authzid` might be provided, and is used if the LDAP server allows it.
@@ -65,6 +64,8 @@ auth sufficient pam_oauthbearer.so grace=3 userid=preferred_username \
     trusted_aud=ldaps://example.org/ trusted_azp=https:/client.example.org/oidc/ \
     required_scope=openid
 ```
+
+Again, the `trusted_azp` and `required_scope` checks are optional and may provide additional security.
 
 ## Developer notes
 
