@@ -82,6 +82,13 @@ export default defineComponent({
       adminMode: false,
     });
 
+    if (this.metaData.title) {
+      document.title = this.metaData.title;
+    }
+    if (this.metaData.favicon) {
+      this.setFavicon(this.metaData.favicon);
+    }
+
     if (answer.portal && answer.portal.ensureLogin && !this.userState.username) {
       login(this.userState);
     }
@@ -91,6 +98,12 @@ export default defineComponent({
   methods: {
     hideCookieBanner(): void {
       this.cookieBannerDismissed = true;
+    },
+    setFavicon(href): void {
+      const icon = (document.querySelector('link[rel="shortcut icon"]') || document.querySelector('link[rel="icon"]')) as HTMLLinkElement | null;
+      if (icon) {
+        icon.href = href;
+      }
     },
   },
 });

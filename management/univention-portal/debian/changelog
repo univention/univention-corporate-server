@@ -1,3 +1,9 @@
+univention-portal (4.0.15-2) unstable; urgency=medium
+
+  * Bug #56917: make HTML title and favicon configurable
+
+ -- Florian Best <best@univention.de>  Wed, 07 Feb 2024 13:28:43 +0100
+
 univention-portal (4.0.15-1) unstable; urgency=medium
 
   * Bug #56853: Fix label translation for self-service fields.
