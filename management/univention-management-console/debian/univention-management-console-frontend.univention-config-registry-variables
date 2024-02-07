@@ -42,3 +42,15 @@ Description[en]=If this option is activated, the login via OpenID Connect single
 Type=bool
 Default=false
 Categories=management-umc,oidc
+
+[umc/web/title]
+Description[de]=Spezifiziert den HTML-Titel von UMC, Portal und Self-Service.
+Description[en]=Specifies the HTML title of UMC, Portal and self service.
+Type=str
+Categories=management-umc
+
+[umc/web/favicon]
+Description[de]=Spezifiziert das favicon von UMC, Portal und Self-Service.
+Description[en]=Specifies the favicon icon of UMC, Portal and self service.
+Type=str
+Categories=management-umc

@@ -216,6 +216,13 @@ define([
 			this._loginDialog.autoFill();
 			this._loginDialog.show();
 
+			if (tools.status('title')) {
+			    window.document.title = tools.status('title');
+			}
+			if (tools.status('favicon')) {
+			    (query('link[rel="shortcut icon"]')[0] || query('link[rel="icon"]')[0] || {}).href = tools.status('favicon');
+			}
+
 			// check if a page reload is required
 			tools.checkReloadRequired();
 
