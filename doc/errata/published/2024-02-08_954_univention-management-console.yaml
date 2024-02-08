@@ -9,3 +9,6 @@ desc: |
  * The HTML title and favicon of UMC is now configurable via the UCR variables
    `umc/web/title` and `umc/web/favicon`.
 bug: [56917]
+erratum: 954
+announced: 2024-02-08
+support: core
