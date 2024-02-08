@@ -4,6 +4,8 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 
+import json
+
 import pytest
 import requests
 from selenium.webdriver.common.by import By
@@ -70,14 +72,14 @@ def test_umc_bearer_auth_administrator(keycloak_openid, umc_user_top_module_acce
         'Accept': 'application/json',
     }
 
-    fqdn_oidc = f"{ucr_proper['hostname'] }.{ucr_proper['domainname']}"
-    resp = requests.post(f'https://{fqdn_oidc}/univention/command/udm/put', headers=headers, data={"options": [{"object": {"description": "test", "$dn$": umc_user_top_module_access[1]}, "options": None}], "flavor": "users/user"})
-    assert resp.status_code == 200
+    fqdn_oidc = f"{ucr_proper['hostname']}.{ucr_proper['domainname']}"
+    resp = requests.post(f'https://{fqdn_oidc}/univention/command/udm/put', headers=headers, data=json.dumps({"options": [{"object": {"description": "test", "$dn$": umc_user_top_module_access[1]}, "options": None}], "flavor": "users/user"}))
+    assert resp.status_code == 200, (resp.status_code, resp.content)
 
 
 def test_umc_bearer_auth_regular_user(keycloak_openid, umc_user_top_module_access, client_id_umc, client_secret_umc, ucr_proper):
     sess = keycloak_openid(client_id_umc, client_secret_key=client_secret_umc)
-    fqdn_oidc = f"{ucr_proper['hostname'] }.{ucr_proper['domainname']}"
+    fqdn_oidc = f"{ucr_proper['hostname']}.{ucr_proper['domainname']}"
     tokens = sess.token(umc_user_top_module_access[0], 'univention')
     headers = {
         'Authorization': f"Bearer {tokens['access_token']}",
@@ -88,6 +90,6 @@ def test_umc_bearer_auth_regular_user(keycloak_openid, umc_user_top_module_acces
     assert resp.status_code == 200
     mods = resp.json()
 
-    resp = requests.post(f'https://{fqdn_oidc}/univention/command/top/query', headers=headers, data={"options": {"category": "all", "pattern": ""}})
-    assert resp.status_code == 200
+    resp = requests.post(f'https://{fqdn_oidc}/univention/command/top/query', headers=headers, data=json.dumps({"options": {"category": "all", "pattern": ""}}))
+    assert resp.status_code == 200, (resp.status_code, resp.content)
     assert any(mod['id'] == 'top' for mod in mods['modules'])
