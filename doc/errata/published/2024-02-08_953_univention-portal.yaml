@@ -9,3 +9,6 @@ desc: |
  * The HTML title and favicon of the Portal is now configurable via the UCR
    variables `umc/web/title` and `umc/web/favicon`.
 bug: [56917]
+erratum: 953
+announced: 2024-02-08
+support: core
