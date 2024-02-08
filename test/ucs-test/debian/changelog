@@ -1,3 +1,9 @@
+ucs-test (10.0.20-29) unstable; urgency=medium
+
+  * Bug #55765: add new scenarios to custom settings for apps
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Thu, 08 Feb 2024 09:23:16 +0100
+
 ucs-test (10.0.20-28) unstable; urgency=medium
 
   * Bug #57019: Make user-agent configurable to be used by app test
