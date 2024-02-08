@@ -19,7 +19,7 @@ def umc_user_top_module_access(udm_session, ucr_proper):
         position=f"cn=policies,{ucr_proper['ldap/base']}",
     )
     udm_session.modify_object("users/user", dn=userdn, policy_reference=policy_dn)
-    return username
+    return username, userdn
 
 
 @pytest.fixture(scope='session')
@@ -29,7 +29,7 @@ def client_id_umc(ucr_proper):
 
 
 @pytest.fixture(scope='session')
-def client_id_udm(ucr_proper):
+def udm_rest_base_url(ucr_proper):
     return f"https://{ucr_proper['hostname']}.{ucr_proper['domainname']}/univention/udm/"
 
 
@@ -39,49 +39,46 @@ def client_secret_umc():
         return fd.read().strip()
 
 
-@pytest.fixture(scope='session')
-def client_secret_udm():
-    with open('/etc/udm-rest-oauth.secret') as fd:
-        return fd.read().strip()
-
-
 def test_login_regular_user(umc_login_via_keycloak, umc_user_top_module_access):
-    assert umc_login_via_keycloak(umc_user_top_module_access, 'univention')
+    assert umc_login_via_keycloak(umc_user_top_module_access[0], 'univention')
 
 
 def test_udm_module_usable(umc_login_via_keycloak, account):
     selenium = umc_login_via_keycloak(account.username, account.bindpw)
     assert selenium
     selenium.find_element(By.XPATH, "//div[@class='umcGalleryName' and text()='Benutzer']").click()
+    # TODO: open and modify a user
 
 
-def test_udm_rest_api_bearer_auth(keycloak_openid, client_id_udm, client_secret_udm, account):
-    sess = keycloak_openid(client_id_udm, client_secret_key=client_secret_udm)
+def test_udm_rest_api_bearer_auth(keycloak_openid, client_id_umc, client_secret_umc, udm_rest_base_url, account):
+    sess = keycloak_openid(client_id_umc, client_secret_key=client_secret_umc)
     tokens = sess.token(account.username, account.bindpw)
     headers = {
         'Authorization': f"Bearer {tokens['access_token']}",
         'Accept': 'application/json',
     }
-    resp = requests.get(f'{client_id_udm}users/user/{account.binddn}', headers=headers)
+    resp = requests.get(f'{udm_rest_base_url}users/user/{account.binddn}', headers=headers)
     assert resp.status_code == 200
     assert resp.json()['dn'] == account.binddn
 
 
-def test_udm_rest_api_bearer_auth_wrong_token(keycloak_openid, client_id_udm, client_id_umc, client_secret_umc, account):
+def test_umc_bearer_auth_administrator(keycloak_openid, umc_user_top_module_access, client_id_umc, client_secret_umc, ucr_proper, account):
     sess = keycloak_openid(client_id_umc, client_secret_key=client_secret_umc)
     tokens = sess.token(account.username, account.bindpw)
     headers = {
         'Authorization': f"Bearer {tokens['access_token']}",
         'Accept': 'application/json',
     }
-    resp = requests.get(f'{client_id_udm}users/user/{account.binddn}', headers=headers)
-    assert resp.status_code == 401
+
+    fqdn_oidc = f"{ucr_proper['hostname'] }.{ucr_proper['domainname']}"
+    resp = requests.post(f'https://{fqdn_oidc}/univention/command/udm/put', headers=headers, data={"options": [{"object": {"description": "test", "$dn$": umc_user_top_module_access[1]}, "options": None}], "flavor": "users/user"})
+    assert resp.status_code == 200
 
 
-def test_umc_bearer_auth(keycloak_openid, umc_user_top_module_access, client_id_umc, client_secret_umc, ucr_proper):
+def test_umc_bearer_auth_regular_user(keycloak_openid, umc_user_top_module_access, client_id_umc, client_secret_umc, ucr_proper):
     sess = keycloak_openid(client_id_umc, client_secret_key=client_secret_umc)
     fqdn_oidc = f"{ucr_proper['hostname'] }.{ucr_proper['domainname']}"
-    tokens = sess.token(umc_user_top_module_access, 'univention')
+    tokens = sess.token(umc_user_top_module_access[0], 'univention')
     headers = {
         'Authorization': f"Bearer {tokens['access_token']}",
         'Accept': 'application/json',
@@ -89,8 +86,8 @@ def test_umc_bearer_auth(keycloak_openid, umc_user_top_module_access, client_id_
     }
     resp = requests.get(f'https://{fqdn_oidc}/univention/get/modules', headers=headers)
     assert resp.status_code == 200
-    assert resp.json() == {
-        'modules': [],
-    }
-    resp = requests.post(f'https://{fqdn_oidc}/univention/command/top/query', headers=headers, data='{}')
-    assert resp.status_code == 422
+    mods = resp.json()
+
+    resp = requests.post(f'https://{fqdn_oidc}/univention/command/top/query', headers=headers, data={"options": {"category": "all", "pattern": ""}})
+    assert resp.status_code == 200
+    assert any(mod['id'] == 'top' for mod in mods['modules'])
