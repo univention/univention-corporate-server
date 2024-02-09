@@ -2,3 +2,8 @@ Type: file
 File: etc/cron.d/univention-delayed-account-activation
 Variables: directory/manager/user/accountactivation/cron
 Variables: server/role
+
+Type: file
+File: etc/cron.d/univention-blocklist-clean-expired-entries
+Variables: directory/manager/blocklist/cleanup/cron
+Variables: directory/manager/blocklist/enabled
