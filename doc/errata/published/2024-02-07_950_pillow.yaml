@@ -7,7 +7,7 @@ fix: 5.4.1-2+deb10u4
 desc: |
  This update addresses the following issue:
  * CVE-2023-50447: Prevent a potential arbitrary code execution vulnerability
-   in the `PIL.ImageMath.eval functionality`.
+   in the `PIL.ImageMath.eval` functionality.
 bug: [57032]
 cve:
 - CVE-2023-50447
