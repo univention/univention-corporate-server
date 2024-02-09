@@ -12,7 +12,6 @@ import ssl
 import subprocess
 from multiprocessing import Process
 from socket import gethostname
-
 from unittest import TestCase, main
 
 from univention.config_registry import handler_set, handler_unset

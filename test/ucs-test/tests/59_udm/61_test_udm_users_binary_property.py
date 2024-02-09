@@ -8,7 +8,6 @@
 
 import os
 from collections import namedtuple
-
 from unittest import TestCase, main
 
 import univention.debug as ud

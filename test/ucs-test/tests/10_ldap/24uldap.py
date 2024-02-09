@@ -13,9 +13,9 @@
 from os import environ
 from os.path import exists
 from tempfile import NamedTemporaryFile
+from unittest import TestCase, main, skip, skipUnless
 
 import ldap
-from unittest import TestCase, main, skip, skipUnless
 
 from univention import uldap
 from univention.config_registry import ConfigRegistry

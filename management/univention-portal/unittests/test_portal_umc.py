@@ -1,5 +1,6 @@
-import pytest
 from unittest import mock
+
+import pytest
 
 from univention.portal.extensions.portal import UMCPortal
 

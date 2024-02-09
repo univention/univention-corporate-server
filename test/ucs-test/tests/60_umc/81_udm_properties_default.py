@@ -6,9 +6,8 @@
 ## packages: [python3-univention-directory-manager]
 ## exposure: safe
 
-from argparse import Namespace as N
-
 import unittest
+from argparse import Namespace as N
 
 from univention.admin import property
 

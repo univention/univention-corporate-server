@@ -31,11 +31,11 @@
 # <https://www.gnu.org/licenses/>.
 
 import sys
+import unittest
 from base64 import b64decode
 from tempfile import NamedTemporaryFile
 
 import heimdal
-import unittest
 
 
 PY2 = sys.version_info[:2] < (3, 0)

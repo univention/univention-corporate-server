@@ -6,8 +6,9 @@
 ## packages: [python3-univention-directory-manager]
 ## bugs: [47316]
 
-import pytest
 from unittest import TestCase, main
+
+import pytest
 
 import univention.debug as ud
 import univention.logging

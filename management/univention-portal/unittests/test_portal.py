@@ -37,9 +37,9 @@ import asyncio
 import json
 import tempfile
 from datetime import datetime, timedelta
+from unittest import mock
 
 import pytest
-from unittest import mock
 
 from univention.portal import user
 from univention.portal.extensions.portal import Portal

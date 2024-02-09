@@ -12,7 +12,6 @@
 
 import os
 import sys
-
 import unittest
 
 import univention.testing.ucr as ucr_test

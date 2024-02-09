@@ -12,9 +12,9 @@ from collections import defaultdict, namedtuple
 from copy import deepcopy
 from subprocess import call
 from typing import List, Tuple
+from unittest import TestCase, main
 
 import pytest
-from unittest import TestCase, main
 
 import univention.admin.modules
 import univention.debug as ud
