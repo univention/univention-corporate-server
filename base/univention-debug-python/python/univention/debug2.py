@@ -158,14 +158,12 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
     result = None
     _logfilename = logfile
 
-    # create root logger
     null_handler = logging.NullHandler()
-    logging.basicConfig(
-        level=logging.DEBUG,
-        handlers=[null_handler],  # disabled
-        format=_outfmt,
-        datefmt=_datefmt,
-    )
+
+    ud2_base_logger = logging.getLogger('ud2')
+    ud2_base_logger.setLevel(logging.DEBUG)
+    ud2_base_logger.handlers = [null_handler]
+    ud2_base_logger.propagate = False
 
     formatter = _Formatter(_outfmt, _datefmt)
     exit()
@@ -174,8 +172,8 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
         _handler_console = logging.StreamHandler(sys.stdout if logfile in ('stdout', '/dev/stdout') else sys.stderr)
         _handler_console.setLevel(logging.DEBUG)
         _handler_console.setFormatter(formatter)
-        logging.getLogger('').addHandler(_handler_console)
-        logging.getLogger('').removeHandler(null_handler)
+        logging.getLogger('ud2').addHandler(_handler_console)
+        logging.getLogger('ud2').removeHandler(null_handler)
         result = _handler_console.stream
     else:
         try:
@@ -183,8 +181,8 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
             _handler_file = logging.FileHandler(logfile, 'a+')
             _handler_file.setLevel(logging.DEBUG)
             _handler_file.setFormatter(formatter)
-            logging.getLogger('').addHandler(_handler_file)
-            logging.getLogger('').removeHandler(null_handler)
+            logging.getLogger('ud2').addHandler(_handler_file)
+            logging.getLogger('ud2').removeHandler(null_handler)
             result = _handler_file.stream
         except EnvironmentError as ex:
             print('opening %s failed: %s' % (logfile, ex))

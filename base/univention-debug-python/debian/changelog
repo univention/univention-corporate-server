@@ -1,3 +1,10 @@
+univention-debug-python (12.0.3-6) unstable; urgency=medium
+
+  * Bug #57026: use `ud2` instead of root logger as parents of category
+    loggers
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 09 Feb 2024 10:51:06 +0100
+
 univention-debug-python (12.0.3-5) unstable; urgency=medium
 
   * Bug #55324: enhance log level mapping
