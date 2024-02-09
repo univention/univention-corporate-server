@@ -74,6 +74,16 @@ License with the Debian GNU/Linux or Univention distribution in file
       v-html="description"
     />
     <!-- eslint-enable vue/no-v-html -->
+    <div
+      v-if="link"
+    >
+      <a
+        :href="link.url"
+        :target="link.target"
+      >
+        {{ link.text }}
+      </a>
+    </div>
   </div>
 </template>
 
@@ -102,6 +112,11 @@ export default defineComponent({
       required: false,
       default: '',
     },
+    link: {
+      type: Object,
+      required: false,
+      default: null,
+    },
     importance: {
       type: String,
       required: true,
@@ -110,8 +125,12 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    expireAt: {
+      type: Date,
+      required: false,
+    },
     token: {
-      type: Number,
+      type: String,
       required: true,
     },
     visible: {
@@ -150,6 +169,7 @@ export default defineComponent({
   },
   mounted() {
     this.startDismissal();
+    this.startExpiry();
   },
   beforeUnmount() {
     this.stopDismissal();
@@ -177,8 +197,17 @@ export default defineComponent({
         this.$el.classList.remove('notification__dismissing');
       }
     },
+    startExpiry() {
+      if (this.expireAt) {
+        const now = new Date();
+        const expireMilliseconds = (this.expireAt.getTime() - now.getTime());
+        setTimeout(
+          () => this.removeNotification(),
+          expireMilliseconds,
+        );
+      }
+    },
     removeNotification() {
-      // this.$emit('notificationRemovedBefore');
       this.$store.dispatch('notifications/removeNotification', this.token);
       this.$emit('notificationRemoved');
     },

@@ -1,0 +1,28 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import ReadOnlyField from '@/components/forms/ReadOnlyField';
+
+<Meta title="Components/Forms/ReadOnlyField"
+  component={ReadOnlyField}
+/>
+
+# ReadOnlyField
+
+Sometimes we need a `ReadOnlyField`-component in our forms to show, that some kind of data is not editible (anymore).
+For example in the admin mode, if an admin user wants to edit a tile, he should know that it is not possible anymore to change the internal name.
+
+Before using the `ReadOnlyField` Component, we simply used `input` Elements with the `disabled` attribute.
+But since thy are not read by the Screenreader they are not accessible.
+Changing the attribute to `readonly` was no godd solution either because it could've caused some misunderstandings to the other users,
+since it looks like a usable input component.
+
+The ReadOnlyField takes two props:
+- label: which takes the desired input dataValue
+- tabindex: wich is needed to put this information in the tab sequence.
+
+
+<Story name='basic' height='400px'>
+  {{
+    components: { ReadOnlyField },
+    template: '<h1>Watch docs for more</h1><read-only-field label="dataValue" tabindex="0" />',
+  }}
+</Story>

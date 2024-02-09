@@ -1,0 +1,18 @@
+<Meta title="Components/Activity/TabindexElement"  />
+
+export const Template = (args) => <screen-reader-announcer />;
+
+# Understanding the TabindexElement Component
+
+The `TabindexElement` is a simple component wrapper that is used to handle the tabindex of a component.
+the correct handling of the `tabindex` attribute is nessessary to provide a nice flow for screenreader and keyboad users. Find more [about tabindex on MDN DOCs](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex)
+
+Most important stuff to know:
+- you can create a by-default-non-focusable element focusable by adding `tabindex="0"`
+- you can make an element unfocusable by adding `tabindex="-1"`
+- although it is possible to add a tabindex value greater than 1 it is considered bad practice since it can create a confusing tab order.
+
+The TabindexElement component takes following required props:
+- `id` a string that is used to add an unique `id` attribute to the element
+- `tag` a string that is used to tell the component what kind of HTML it should be (e.g. div, section)
+- `activeAt` it is an array which is needed to set the correct tabindex of the element. (More about activity)[LINK] // TODO

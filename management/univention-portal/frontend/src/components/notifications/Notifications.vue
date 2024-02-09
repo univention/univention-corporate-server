@@ -95,6 +95,7 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
+      userState: 'user/userState',
       allNotifications: 'notifications/allNotifications',
       visibleNotifications: 'notifications/visibleNotifications',
       numNotifications: 'notifications/numNotifications',

@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+ */
+
 module.exports = {
   root: true,
   env: {
@@ -26,6 +31,7 @@ module.exports = {
     'plugin:eslint-comments/recommended',
     '@vue/airbnb',
     '@vue/typescript/recommended',
+    'plugin:storybook/recommended',
   ],
   rules: {
     '@typescript-eslint/no-unused-vars': ['warn', { caughtErrors: 'none' }],
@@ -96,6 +102,12 @@ module.exports = {
         '**/tests/unit/**/*.spec.{j,t}s?(x)',
       ],
       env: { jest: true },
+      rules: {
+        // When using "describe" to group tests, then a blank line as a first
+        // element inside of the block is desired, so that test cases are
+        // visually separated still.
+        "padded-blocks": 'off',
+      },
     },
   ],
   settings: {

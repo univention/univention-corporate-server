@@ -1,0 +1,14 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+ */
+
+/*
+    This is the custom.css. We will not update it directly, it is yours.
+
+    Feel free to alter any style, but be aware that upgrades can break your
+    styling e.g. because CSS selectors no longer find your defined element.
+
+    The more reliable (yet less flexible) way of customizing are themes.
+    See you theme.css
+*/

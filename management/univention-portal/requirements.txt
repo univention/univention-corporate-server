@@ -1,0 +1,22 @@
+# These requirements have been pinned by using "pip freeze" in an empty virtual
+# environment.
+#
+# TODO: Our vision is to move over time to the usage of "poetry" and
+# benefit from it's lock file mechanism.
+#
+# Important! The versions in this file match the versions which are in use on a
+# UCS system. We do keep this at least until the App Center integration has been
+# implemented.
+
+certifi==2018.8.24
+chardet==3.0.4
+click==7.0
+idna==2.6
+pyasn1==0.4.2
+pyasn1-modules==0.2.1
+python-dateutil==2.7.3
+python-debian==0.1.35
+python-ldap==3.1.0
+requests==2.21.0
+tornado==5.1.1
+urllib3==1.24.1

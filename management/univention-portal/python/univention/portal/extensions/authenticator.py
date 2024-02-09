@@ -36,7 +36,6 @@ import base64
 import binascii
 import hashlib
 import json
-from urllib.parse import urljoin
 
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
 
@@ -102,8 +101,7 @@ class UMCAuthenticator(Authenticator):
 
     def __init__(self, auth_mode, umc_session_url, group_cache):
         self.auth_mode = auth_mode
-        umc_base_url = config.fetch("umc_base_url")
-        self.umc_session_url = urljoin(umc_base_url, 'get/session-info')
+        self.umc_session_url = umc_session_url
         self.group_cache = group_cache
 
     def get_auth_mode(self, request):
@@ -144,6 +142,7 @@ class UMCAuthenticator(Authenticator):
         try:
             headers['Cookie'] = '; '.join('='.join(c) for c in cookies.items())
             req = HTTPRequest(self.umc_session_url, method="GET", headers=headers)
+
             http_client = AsyncHTTPClient()
             response = await http_client.fetch(req)
             data = json.loads(response.body.decode('UTF-8'))
@@ -189,7 +188,7 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
 
         # compare hashed password to prevent time based side channel attack
         if hashlib.sha512(password.encode('utf-8')).hexdigest() != hashlib.sha512(config_secret.encode('utf-8')).hexdigest():
-            get_logger("user").warning("password mismatch: %s != %s", config_secret, password)
+            get_logger("user").warning("password mismatch with the configured authenticator secret")
             return user
 
         groups = self.group_cache.get().get(username, [])

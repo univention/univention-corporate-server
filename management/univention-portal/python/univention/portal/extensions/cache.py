@@ -101,7 +101,6 @@ class PortalFileCache(Cache):
     `get_portal`
     `get_categories`
     `get_menu_links`
-    `get_announcements`
     """
 
     def get_user_links(self):

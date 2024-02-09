@@ -1,0 +1,17 @@
+# The test stage gives developers an easy way to run unit and ui tests
+# `docker compose run --build test`
+# `docker compose run --build test yarn test:e2e:headless --browser chrome`
+FROM ${DOCKER_PROXY}cypress/browsers:node14.17.6-chrome100-ff98 as test
+
+WORKDIR /app
+COPY ./package.json .
+COPY ./yarn.lock .
+
+RUN \
+  npx browserslist@latest --update-db \
+  && yarn install --frozen-lockfile \
+  && yarn cache clean
+
+COPY . .
+
+CMD ["yarn", "test:unit"]

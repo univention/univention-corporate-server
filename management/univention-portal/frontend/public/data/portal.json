@@ -1,0 +1,478 @@
+{
+  "announcements": [
+    {
+      "allowedGroups": [],
+      "dn": "cn=test-announcement-a,cn=announcement,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "endTime": null,
+      "isSticky": "FALSE",
+      "message": null,
+      "name": "test-announcement-a",
+      "needsConfirmation": "FALSE",
+      "severity": null,
+      "startTime": null,
+      "title": {
+        "de_DE": "Announcement A Titel",
+        "en_GB": "Announcement A Title"
+      }
+    },
+    {
+      "allowedGroups": [],
+      "dn": "cn=test-announcement-b,cn=announcement,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "endTime": null,
+      "isSticky": "FALSE",
+      "message": null,
+      "name": "test-announcement-b",
+      "needsConfirmation": "FALSE",
+      "severity": "info",
+      "startTime": null,
+      "title": {
+        "de_DE": "Announcement B Titel",
+        "en_GB": "Announcement B Title"
+      }
+    },
+    {
+      "allowedGroups": [],
+      "dn": "cn=test-announcement-c,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "endTime": null,
+      "isSticky": "FALSE",
+      "message": null,
+      "name": "test-announcement-c",
+      "needsConfirmation": "FALSE",
+      "severity": "success",
+      "startTime": null,
+      "title": {
+        "de_DE": "Announcement C Titel",
+        "en_GB": "Announcement C Title"
+      }
+    },
+    {
+      "allowedGroups": [],
+      "dn": "cn=test-announcement-d,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "endTime": null,
+      "isSticky": "FALSE",
+      "message": null,
+      "name": "test-announcement-d",
+      "needsConfirmation": "FALSE",
+      "severity": "warn",
+      "startTime": null,
+      "title": {
+        "de_DE": "Announcement D Titel",
+        "en_GB": "Announcement D Title"
+      }
+    },
+    {
+      "allowedGroups": [],
+      "dn": "cn=test-announcement-e,cn=announcement,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "endTime": null,
+      "isSticky": "FALSE",
+      "message": null,
+      "name": "test-announcement-e",
+      "needsConfirmation": "FALSE",
+      "severity": "danger",
+      "startTime": null,
+      "title": {
+        "de_DE": "Announcement E Titel",
+        "en_GB": "Announcement E Title"
+      }
+    }
+  ],
+  "auth_mode": "ucs",
+  "cache_id": "abc:123",
+  "categories": [
+    {
+      "display_name": {
+        "de_DE": "Verwaltung",
+        "en_US": "Administration"
+      },
+      "dn": "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "entries": [
+        "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=owncloud-userdoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+      ]
+    },
+    {
+      "display_name": {
+        "de_DE": "Applikationen",
+        "en_US": "Applications"
+      },
+      "dn": "cn=domain-service,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "entries": [
+        "cn=folder,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "activated": true,
+      "allowedGroups": [
+        "cn=Domain Users,cn=groups,dc=intranet,dc=portal,dc=de"
+      ],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Ihr Passwort ändern",
+        "en_US": "Change your password"
+      },
+      "dn": "cn=self-service-password-change,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
+      "in_portal": true,
+      "keywords": {},
+      "linkTarget": "samewindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "#/selfservice/passwordchange"
+        }
+      ],
+      "name": {
+        "de_DE": "Passwort ändern",
+        "en_US": "Change password"
+      }
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Wurzelzertifikat",
+        "en_US": "Root certificate"
+      },
+      "dn": "cn=root-cert,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
+      "keywords": {},
+      "linkTarget": "samewindow",
+      "links": [
+        {
+          "locale": "de_DE",
+          "value": "/ucs-root-ca-de.crt"
+        },
+        {
+          "locale": "en_US",
+          "value": "/ucs-root-ca-en.crt"
+        }
+      ],
+      "name": {
+        "de_DE": "Wurzelzertifikat",
+        "en_US": "Root certificate"
+      }
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Zertifikat-Sperrliste",
+        "en_US": "Certificate revocation list"
+      },
+      "dn": "cn=certificate-revocation,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
+      "keywords": {},
+      "linkTarget": "samewindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "/ucsCA.crl"
+        }
+      ],
+      "name": {
+        "de_DE": "Zertifikat-Sperrliste",
+        "en_US": "Certificate revocation list"
+      }
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "ownCloud Administrations-Handbuch (in Englisch)"
+      },
+      "dn": "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": "./data/icons/owncloud-admindoc.svg",
+      "keywords": {},
+      "linkTarget": "useportaldefault",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "https://doc.owncloud.com/server/10.0/admin_manual/"
+        },
+        {
+          "locale": "de_DE",
+          "value": "https://doc.owncloud.com/server/10.0/admin_manual/"
+        }
+      ],
+      "name": {
+        "de_DE": "Admin Handbuch",
+        "en_US": "Admin Handbook"
+      },
+      "target": "docs"
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "ownCloud Benutzer-Handbuch (in Englisch)",
+        "en_US": "ownCloud User Manual"
+      },
+      "dn": "cn=owncloud-userdoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": "./data/icons/owncloud-userdoc.svg",
+      "keywords": {},
+      "linkTarget": "useportaldefault",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "https://doc.owncloud.com/server/10.0/user_manual/"
+        }
+      ],
+      "name": {
+        "de_DE": "Benutzer Handbuch",
+        "en_US": "User Manual"
+      },
+      "target": "docs"
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Univention Management Console zur Ver­wal­tung der UCS-Domäne und des lokalen Systems",
+        "en_US": "Univention Management Console for admin­is­tra­ting the UCS domain and the local system",
+        "fr_FR": "Console de gestion Univention pour admin­is­trer le domaine UCS et le système local"
+      },
+      "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": "./data/icons/umc-domain.svg",
+      "keywords": {},
+      "linkTarget": "newwindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "/univention/management/"
+        }
+      ],
+      "name": {
+        "de_DE": "System- und Domäneneinstellungen",
+        "en_US": "System and domain settings",
+        "fr_FR": "Réglages du système et du domaine"
+      }
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "News, Tipps und Best Practices",
+        "en_US": "News, tips and best practices",
+        "fr_FR": "Nouvelles, conseils et bonne pratique"
+      },
+      "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": "./data/icons/univentionblog.png",
+      "keywords": {
+        "de_DE": "bar",
+        "en_US": "foo"
+      },
+      "linkTarget": "newwindow",
+      "links": [
+        {
+          "locale": "de_DE",
+          "value": "https://www.univention.de/news/blog-de"
+        },
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.com/news/blog-en"
+        }
+      ],
+      "name": {
+        "de_DE": "Univention Blog",
+        "en_US": "Univention Blog",
+        "fr_FR": "Univention Blog"
+      }
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Feedback",
+        "en_US": "Feedback",
+        "fr_FR": "Impressions"
+      },
+      "dn": "cn=univentionfeedback,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
+      "keywords": {},
+      "linkTarget": "newwindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.de/produkt-feedback/?umc=portal"
+        },
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.com/feedback/?umc=portal"
+        }
+      ],
+      "name": {
+        "de_DE": "Feedback",
+        "en_US": "Feedback",
+        "fr_FR": "Impressions"
+      }
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Univention Forum \"Hilfe\"",
+        "en_US": "Univention Forum \"Help\""
+      },
+      "dn": "cn=univentionforum,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
+      "keywords": {},
+      "linkTarget": "newwindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "https://help.univention.com"
+        }
+      ],
+      "name": {
+        "de_DE": "Univention Forum \"Hilfe\"",
+        "en_US": "Univention Forum \"Help\""
+      }
+    },
+    {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Univention Webseite",
+        "en_US": "Univention Website",
+        "fr_FR": "Site Internet Univention"
+      },
+      "dn": "cn=univentionwebsite,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "icon_url": null,
+      "keywords": {},
+      "linkTarget": "newwindow",
+      "links": [
+        {
+          "locale": "de_DE",
+          "value": "https://www.univention.de"
+        },
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.com"
+        }
+      ],
+      "name": {
+        "de_DE": "Univention Webseite",
+        "en_US": "Univention Website",
+        "fr_FR": "Site Internet Univention"
+      }
+    }
+  ],
+  "filtered": true,
+  "folders": [
+    {
+      "dn": "cn=folder,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "entries": [
+        "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+      ],
+      "name": {
+        "de_DE": "Apps",
+        "en_US": "Apps"
+      }
+    },
+    {
+      "dn": "cn=certificates,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "entries": [
+        "cn=root-cert,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=certificate-revocation,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+      ],
+      "name": {
+        "de_DE": "Zertifikate",
+        "en_US": "Certificates"
+      }
+    },
+    {
+      "dn": "cn=help,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "entries": [
+        "cn=univentionforum,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionfeedback,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        "cn=univentionwebsite,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+      ],
+      "name": {
+        "de_DE": "Hilfe",
+        "en_US": "Help",
+        "fr_FR": "Aide"
+      }
+    }
+  ],
+  "may_edit_portal": true,
+  "menu_links": [
+    "cn=certificates,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "cn=folder,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "cn=help,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+  ],
+  "portal": {
+    "background": null,
+    "categories": [
+      "cn=domain-service,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+      "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+    ],
+    "content": [
+      [
+        "cn=domain-service,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        [
+          "cn=folder,cn=folder,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+        ]
+      ],
+      [
+        "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+        [
+          "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+          "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+          "cn=owncloud-userdoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+          "cn=owncloud-admindoc,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+        ]
+      ]
+    ],
+    "defaultLinkTarget": "embedded",
+    "dn": "cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de",
+    "ensureLogin": false,
+    "logo": "./data/icons/logo.svg",
+    "name": {
+      "de_DE": "Univention Portal DE",
+      "en_US": "Univention Portal EN",
+      "fr_FR": "Portail Univention FR"
+    },
+    "showUmc": true
+  },
+  "user_displayname": "Administrator",
+  "user_links": [
+    "cn=self-service-password-change,cn=entry,cn=portals,cn=univention,dc=intranet,dc=portal,dc=de"
+  ],
+  "username": "administrator"
+}

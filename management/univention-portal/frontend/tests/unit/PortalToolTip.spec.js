@@ -97,6 +97,7 @@ describe('PortalToolTip.vue', () => {
   test('check if data: calculatedPosition is set with position props', async () => {
     const expectedObject = {
       left: wrapper.vm.position.left,
+      right: 'unset',
       bottom: wrapper.vm.position.bottom,
       zone: 'REGULAR',
     };
@@ -110,7 +111,7 @@ describe('PortalToolTip.vue', () => {
 
   test('tooltipPosition', async () => {
     // tooltip position is calculated only for desktop
-    expect(wrapper.vm.tooltipPosition).toBe(`left:${wrapper.vm.calculatedPosition.left}px;`);
+    expect(wrapper.vm.tooltipPosition).toBe(`left:${wrapper.vm.calculatedPosition.left}px;right:unset;`);
   });
 
   test('arrowPosition is set for regular placement', async () => {

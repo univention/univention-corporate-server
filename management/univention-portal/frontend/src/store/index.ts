@@ -41,6 +41,7 @@ import metaData from './modules/metaData';
 import navigation from './modules/navigation';
 import modal from './modules/modal';
 import notifications from './modules/notifications';
+import oidc from './modules/oidc';
 import portalData from './modules/portalData';
 import search from './modules/search';
 import tabs from './modules/tabs';
@@ -53,6 +54,9 @@ const portalUrl = process.env.VUE_APP_PORTAL_URL || '';
 const languageJsonPath = process.env.VUE_APP_LANGUAGE_DATA || '/univention/languages.json';
 const portalJsonPath = process.env.VUE_APP_PORTAL_DATA || './portal.json';
 const portalMetaPath = process.env.VUE_APP_META_DATA || '/univention/meta.json';
+
+// Build time feature toggles
+const featureUseNotificationsApi = process.env.VUE_APP_FEATURE_USE_NOTIFICATIONS_API === 'true';
 
 export const key: InjectionKey<Store<RootState>> = Symbol('');
 
@@ -70,7 +74,7 @@ const getters = {
   getInitialLoadDone: (state) => state.initialLoadDone,
 };
 
-const actions = {
+export const actions = {
   activateLoadingState({ commit }) {
     commit('SET_LOADING_STATE', true);
   },
@@ -95,7 +99,7 @@ const actions = {
     }
     return axios.get(`${portalUrl}${portalJsonPath}`, { headers });
   },
-  loadPortal: ({ dispatch }, payload) => new Promise((resolve, reject) => {
+  loadPortal: ({ dispatch, rootGetters }, payload) => new Promise((resolve, reject) => {
     // Get portal data
     const portalRequest = dispatch('portalJsonRequest', payload)
       .catch((error) => error);
@@ -136,8 +140,13 @@ const actions = {
             authMode: portal.auth_mode,
           },
         });
+        if (portal.username) {
+          dispatch('userIsLoggedIn');
+        }
         dispatch('initialLoadDone');
         resolve(portal);
+        const currentLocale = rootGetters['locale/getLocale'] || 'en_US';
+        document.title = rootGetters['portalData/portalName']?.[currentLocale] ?? 'Univention Portal';
       }
     })
       .catch((error) => {
@@ -148,6 +157,23 @@ const actions = {
         reject(error);
       });
   }),
+  userIsLoggedIn: ({ dispatch, rootGetters }) => {
+    const keycloakUrl = process.env.VUE_APP_KEYCLOAK_URL;
+    if (keycloakUrl) {
+      if (rootGetters['user/userState'].authMode === 'saml') {
+        dispatch('oidc/tryLogin');
+      }
+    } else {
+      console.log('No Keycloak URL defined, not trying to login via OIDC.');
+    }
+
+    if (featureUseNotificationsApi) {
+      console.info('Feature use notifications api activated.');
+      dispatch('notifications/connectNotificationsApi');
+    } else {
+      console.info('Feature use notifications api disabled.');
+    }
+  },
 };
 
 export const store = createStore<RootState>({
@@ -165,6 +191,7 @@ export const store = createStore<RootState>({
     modal,
     navigation,
     notifications,
+    oidc,
     portalData,
     search,
     tabs,

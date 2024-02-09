@@ -33,7 +33,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     aria-hidden="true"
   >
-    <use :xlink:href="`feather-sprite.svg#${icon}`" />
+    <use :xlink:href="`media/feather-sprite.svg#${icon}`" />
   </svg>
 </template>
 

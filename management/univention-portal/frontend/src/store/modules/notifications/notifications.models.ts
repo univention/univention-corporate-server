@@ -30,10 +30,18 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+export interface NotificationLink {
+  url: URL
+  text: string
+  target: string
+}
+
 export interface Notification {
   title: string;
   description?: string;
   onClick: () => void | null;
+  link?: NotificationLink;
+  expireAt: Date | null,
 }
 
 export interface WeightedNotification extends Notification {
@@ -43,5 +51,6 @@ export interface WeightedNotification extends Notification {
 
 export interface FullNotification extends WeightedNotification {
   visible: boolean;
-  token: number;
+  token: string;
+  isBackendNotification?: boolean;
 }

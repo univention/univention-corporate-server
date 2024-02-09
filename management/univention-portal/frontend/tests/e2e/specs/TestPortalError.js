@@ -46,7 +46,8 @@ describe('Test Portal Error Components', () => {
 
     errorContainer.should('be.visible');
     errorContainer.should((container) => {
-      // make sure the first contains text "sorry"
+      // TODO: Work out the linter trouble below
+      // eslint-disable-next-line jest/valid-expect
       expect(container.first()).to.contain('Sorry');
     });
   });
@@ -61,7 +62,8 @@ describe('Test Portal Error Components', () => {
     const errorContainer = cy.get('.portal-error');
     errorContainer.should('be.visible');
     errorContainer.should((container) => {
-      // make sure the first contains text "sorry"
+      // TODO: Work out the linter trouble below
+      // eslint-disable-next-line jest/valid-expect
       expect(container.first()).to.contain('Page not found');
     });
   });

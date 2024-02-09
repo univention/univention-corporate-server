@@ -80,7 +80,7 @@ describe('LinkWidget.vue', () => {
     const removeButton = await wrapper.find('[data-test="link-widget-remove-button-0"]');
 
     // Since we have no text we we still want to know if the right icon exists.
-    expect(removeButton.find('[xlink:href="feather-sprite.svg#trash"]').exists()).toBeTruthy();
+    expect(removeButton.find('[xlink:href="media/feather-sprite.svg#trash"]').exists()).toBeTruthy();
 
     expect(removeButton.attributes('aria-label')).toBe('Link 1: Remove');
 
@@ -148,14 +148,17 @@ describe('LinkWidget.vue', () => {
 
   test('if input has correct attributes', () => {
     const allTextInputs = wrapper.findAll('input');
+    let expectedName;
+
     allTextInputs.forEach((input, index) => {
       expect(input.attributes('aria-label')).toBe(wrapper.vm.linkInput(index));
       expect(input.attributes('autocomplete')).toBe('off');
       if (index === 0) {
-        expect(input.attributes('name')).toBe(wrapper.vm.name);
+        expectedName = wrapper.vm.name;
       } else {
-        expect(input.attributes('name')).toBe(`${wrapper.vm.name}-${index}`);
+        expectedName = `${wrapper.vm.name}-${index}`;
       }
+      expect(input.attributes('name')).toBe(expectedName);
     });
   });
 

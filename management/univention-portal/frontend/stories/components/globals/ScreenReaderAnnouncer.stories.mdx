@@ -1,0 +1,15 @@
+<Meta title="Components/globals/ScreenreaderAnnouncer"  />
+
+export const Template = (args) => <screen-reader-announcer />;
+
+# Understanding the ScreenReaderAnnouncer Component
+
+The `ScreenReaderAnnouncer` is a component, that serves only one purpose: Inform the Screeneader user about changes, that should be announced almost immediatly.
+If the user is searching something, the `ScreenReaderAnnouncer` recieves the text trough the store, that means, if the developer wants to inform the user about changes or new information, the developer should also use the setter of the store.
+
+You can find out how the aria attributes `aria-live, aria-relevant` and `aria-atomic` work on this pages:
+
+- [aria-live](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions)
+- [aria-atomic](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-atomic)
+- [aria-relevant](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-relevant)
+- [using aria-live (with video examples)](https://bitsofco.de/using-aria-live/)

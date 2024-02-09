@@ -246,7 +246,8 @@ export default defineComponent({
     login(): void {
       login(this.userState);
     },
-    logout(): void {
+    async logout(): Promise<void> {
+      await this.$store.dispatch('oidc/tryLogout');
       logout();
     },
     closeNavigation(): void {

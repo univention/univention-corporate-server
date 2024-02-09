@@ -1,0 +1,39 @@
+{
+  "administrator": "Administrator",
+  "cookieBanner": {
+    "cookie": "univentionCookieSettingsAccepted",
+    "show": true,
+    "text": {},
+    "title": {}
+  },
+  "domainname": "intranet.soap.de",
+  "feedbackAddress": "feedback@univention.de",
+  "feedbackSubject": "[UMC-Feedback] Traceback",
+  "fqdn": "master130.intranet.soap.de",
+  "has_certificates": true,
+  "hostname": "master130",
+  "login_links": {
+    "forgot_your_password/enabled": "true",
+    "how_do_i_login/enabled": "true",
+    "login_without_sso/enabled": "true",
+    "login_without_sso/text": "Login without Single Sign On",
+    "login_without_sso/text/de": "Ohne Single Sign-On anmelden"
+  },
+  "login_texts": {},
+  "piwikDisabled": false,
+  "portal/show-outdated-browser-warning": false,
+  "serveraddress": "10.200.4.130",
+  "sessionTimeout": 28800,
+  "system/setup/showloginmessage": "false",
+  "umc/self-service/account-deregistration/enabled": "false",
+  "umc/self-service/account-registration/frontend/enabled": "false",
+  "umc/self-service/account-verification/frontend/enabled": "false",
+  "umc/self-service/allow-authenticated-use": "true",
+  "umc/self-service/passwordchange/frontend/enabled": true,
+  "umc/self-service/passwordreset/frontend/enabled": true,
+  "umc/self-service/profiledata/enabled": "true",
+  "umc/self-service/protect-account/frontend/enabled": true,
+  "umc/server/upload/max": "2048",
+  "umc/web/sso/enabled": "true",
+  "umc/web/startupdialog": "false"
+}

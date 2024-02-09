@@ -32,6 +32,8 @@
 
 import tornado.web
 
+from univention.portal.extensions.cache_http import PortalFileCacheHTTP
+from univention.portal.extensions.cache_object_storage import PortalFileCacheObjectStorage
 from univention.portal.handlers.portal_resource import PortalResource
 from univention.portal.log import get_logger
 
@@ -43,6 +45,9 @@ class PortalEntriesHandler(PortalResource):
             raise tornado.web.HTTPError(404)
 
         user = await portal.get_user(self)
+
+        if isinstance(portal.portal_cache, (PortalFileCacheHTTP, PortalFileCacheObjectStorage)):
+            portal.refresh()
 
         admin_mode = False
         if self.request.headers.get("X-Univention-Portal-Admin-Mode", "no") == "yes":
@@ -62,7 +67,11 @@ class PortalEntriesHandler(PortalResource):
         answer["folders"] = portal.get_folders(visible_content)
         answer["categories"] = portal.get_categories(visible_content)
         answer["portal"] = portal.get_meta(visible_content, answer["categories"])
-        if not user.is_anonymous() and not admin_mode and answer["portal"].get("showUmc"):
+        if (
+            not user.is_anonymous()
+            and not admin_mode
+            and answer["portal"].get("showUmc")
+        ):
             # this is not how the portal-server is supposed to be working
             # but we need it like that...
             umc_portal = portal._get_umc_portal()

@@ -1,0 +1,119 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+
+---
+
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: "Wait until ucs is started"
+      ansible.builtin.wait_for_connection:
+        connect_timeout: 5
+        delay: 0
+        sleep: 1
+        timeout: 600
+
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: "Copy package to new UCS machine"
+      ansible.builtin.copy:
+        src: "{{ lookup('env', 'CI_PROJECT_DIR') }}/{{ lookup('env', 'PACKAGE_NAME') }}"
+        dest: "/tmp/{{ lookup('env', 'PACKAGE_NAME') }}"
+      tags:
+        - upx_frontend
+        - upx_frontend_copy_package
+
+    - name: "Remove existing portal"
+      ansible.builtin.apt:
+        name: "phoenixportal"
+        purge: "yes"
+        state: "absent"
+      tags:
+        - upx_frontend
+        - upx_frontend_remove_portal_package
+
+    - name: "Install frontend package"
+      ansible.builtin.apt:
+        deb: "/tmp/{{ lookup('env', 'PACKAGE_NAME') }}"
+        force: "yes"
+      tags:
+        - upx_frontend
+        - upx_frontend_install_portal_package
+
+    - name: "Set theme to light as default"
+      shell: "ucr set ucs/web/theme=light"
+      tags:
+        - upx_frontend
+
+    - name: "Fix for 'dhcp lease gets lost'-issue"
+      ansible.builtin.lineinfile:
+        path: /etc/crontab
+        line: "*/5 *    * * *   root    /usr/sbin/dhclient >/dev/null 2>&1"
+      tags:
+        - upx_frontend
+
+    - name: "Copy demodata to new UCS machine"
+      ansible.builtin.copy:
+        src: "{{ lookup('env', 'CI_BUILDS_DIR') }}/demodata"
+        dest: "/tmp"
+      tags:
+        - upx_frontend
+        - upx_frontend_copy_demodata
+
+    - name: "Set execute permission on fill_portal.pl"
+      ansible.builtin.file:
+        path: "/tmp/demodata/fill_portal.pl"
+        mode: "0755"
+      tags:
+        - upx_frontend
+        - upx_frontend_set_execute_permission_fill_portal
+
+    - name: "Execute fill_portal.pl"
+      ansible.builtin.command:
+        cmd: "/tmp/demodata/fill_portal.pl"
+        chdir: "/tmp/demodata/"
+      tags:
+        - upx_frontend
+        - upx_frontend_execute_fill_portal
+
+    - name: "Execute Install Self-Service (FE + BE)"
+      ansible.builtin.command:
+        cmd: "univention-app install self-service --noninteractive"
+      tags:
+        - upx_frontend
+        - upx_frontend_execute_fill_portal
+
+    - name: "Set execute permission on demodata"
+      ansible.builtin.file:
+        path: "/tmp/demodata/demodata.sh"
+        mode: "0755"
+      tags:
+        - upx_frontend
+        - upx_frontend_set_execute_permission_demodata
+
+    - name: "Execute demodata.sh"
+      ansible.builtin.command:
+        cmd: "/tmp/demodata/demodata.sh"
+        chdir: "/tmp/demodata/"
+      tags:
+        - upx_frontend
+        - upx_frontend_execute_demo_data
+
+    - name: "Patch univention-portal.conf"
+      ansible.builtin.replace:
+        path: "/etc/apache2/sites-available/univention-portal.conf"
+        regexp: "style-src-elem 'self' 'sha256-kDRQ3dagwwb3nrm8xnMC0VgLt6lNN98.2oajznduaKI='"
+        replace: "style-src-elem 'unsafe-inline'"
+      tags:
+        - upx_frontend
+        - upx_frontend_install_portal_package
+
+    - name: "Restart Apache"
+      ansible.builtin.command:
+        cmd: "systemctl reload apache2"
+      tags:
+        - upx_frontend
+        - upx_frontend_install_portal_package
+

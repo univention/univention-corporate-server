@@ -1,0 +1,88 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+ */
+
+:root {
+/* used to accent some elements: checkbox/radiobox, checked toggle buttons/checked input fields */
+  --color-accent: #7ab51d;
+  --bgc-content-body: #333331;
+  --bgc-content-header: var(--bgc-content-container);
+  --bgc-content-container: #1e1e1d;
+  --bgc-inputfield-on-container: var(--bgc-content-body);
+  --bgc-inputfield-on-body: var(--bgc-content-container);
+  --bgc-checkbox-hover: rgba(255,255,255,0.06);
+  --bgc-checkbox-focus: rgba(255,255,255,0.12);
+  --bgc-loading-circle: var(--font-color-contrast-middle);
+  --bgc-user-menu-item-hover: rgba(255,255,255,0.1);
+  --bgc-user-menu-item-active: rgba(255,255,255,0.2);
+  --bgc-header-number-circle: #bdbdbb;
+  --bgc-tab-separator: #5f5f5c;
+  --bgc-popup: #5f5f5c;
+  --bgc-popup-item-hover: rgba(0,0,0,0.15);
+  --bgc-popup-item-active: rgba(0,0,0,0.3);
+  --bgc-popup-item-selected: rgba(0,0,0,0.3);
+  --bgc-grid-row-hover: rgba(255,255,255,0.04);
+  --bgc-grid-row-selected: var(--bgc-grid-row-hover);
+  --bgc-tree-row-hover: var(--bgc-grid-row-hover);
+  --bgc-tree-row-selected: rgba(255,255,255,0.15);
+  --bgc-apptile-default: #868681;
+  --bgc-appcenter-app-hover: rgba(255,255,255,0.08);
+  --bgc-appcenter-app-active: rgba(255,255,255,0.12);
+  --bgc-progressbar-empty: #bdbdbb;
+  --bgc-progressbar-progress: var(--bgc-success);
+  --bgc-titlepane-hover: rgba(255,255,255,0.04);
+  --bgc-underlay: rgba(51, 51, 49, 0.8);
+  --bgc-checkerboard: repeating-conic-gradient(var(--bgc-inputfield-on-container) 0% 25%, transparent 0% 50%) 50%/20px 20px;
+  --bgc-error: #b8233e;
+  --bgc-warning: #975607;
+  --bgc-success: #4a6d12;
+  --bgc-announcements-info: var(--color-accent);
+  --bgc-announcements-danger: var(--bgc-error);
+  --bgc-announcements-success: var(--bgc-success);
+  --bgc-announcements-warn: var(--bgc-warning);
+  --font-size-1: 1.5rem;
+  --font-size-2: 1.25rem;
+  --font-size-3: 1rem;
+  --font-size-4: 0.875rem;
+  --font-size-5: 0.75rem;
+  --font-size-html: 1rem;
+  --font-size-body: var(--font-size-4);
+  --font-lineheight-normal: 1.5;
+  --font-lineheight-compact: 1.25;
+  --font-lineheight-header: 1.3;
+  --font-weight-bold: 600;
+  --font-color-contrast-high: #fff;
+  --font-color-contrast-middle: #bdbdbb;
+  --font-color-contrast-low: #868681;
+  --font-color-error: #f0758c;
+  --font-color-warning: #ff8c00;
+  --font-color-success: #9cd147;
+  --button-primary-bgc: #5e881d;
+  --button-primary-bgc-hover: #567d1b;
+  --button-primary-bgc-active: rgba(79,114,24,1);
+  --button-primary-bgc-disabled: #5f5f5c;
+  --button-bgc: #5f5f5c;
+  --button-bgc-hover: #575755;
+  --button-bgc-active: rgba(80,80,77,1);
+  --button-bgc-disabled: #5f5f5c;
+  --button-text-bgc: transparent;
+  --button-text-bgc-hover: var(--button-bgc-hover);
+  --button-text-bgc-active: var(--button-bgc-active);
+  --button-text-bgc-disabled: transparent;
+  --button-icon-bgc: transparent;
+  --button-icon-bgc-hover: var(--button-bgc-hover);
+  --button-icon-bgc-active: var(--button-bgc-active);
+  --button-icon-bgc-disabled: transparent;
+  --button-icon-highlighted-bgc: var(--bgc-inputfield-on-body);
+  --button-icon-highlighted-bgc-hover: var(--button-bgc-hover);
+  --button-icon-highlighted-bgc-active: var(--button-bgc-active);
+  --button-icon-highlighted-bgc-disabled: transparent;
+  --color-focus: var(--font-color-contrast-high);
+  --popup-border: 1px solid #bdbdbb;
+  --box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
+  --serveroverview-tile-hover-bgc: #00acb6;
+  --serveroverview-tile-hover-color: #1e1e1d;
+
+	--select-arrow: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABnSURBVHgB7Y2xCcAwDAQ1QkbwCBnBI3hzj+BRPhZxJVCkEAVc6OC7544oSfYFQJsrzm/hv+fL54qbYQWWeKz/SQ75MdetgBB38mIFpJj/9AYt8Fn8EKghYiWAMLESiBOLQAsXJ8n/XIbF5kq3Q5vcAAAAAElFTkSuQmCC');
+}

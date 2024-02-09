@@ -50,7 +50,7 @@ const tileClickMixin = {
     pathToLogo: {
       type: String,
       required: false,
-      default: './questionMark.svg',
+      default: './media/questionmark.svg',
     },
     internalFunction: {
       type: Function,

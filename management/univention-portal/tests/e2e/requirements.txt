@@ -1,0 +1,4 @@
+playwright_pages_ucs_portal @ git+https://gitlab.souvap-univention.de/souvap/tests/playwright-pages-ucs-portal.git@main
+pytest-playwright==0.3.0
+requests==2.28.2
+url-normalize==1.4.3

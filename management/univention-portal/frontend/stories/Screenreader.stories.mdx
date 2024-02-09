@@ -1,0 +1,57 @@
+<Meta title="Introduction/Accessibility Overview/Screenreader" />
+
+# Screenreader
+
+## General Information
+
+There are tools out there that can help developing accessible products, but if yu are developing a new feature you should always test
+if the feature is screenreader accessible.
+
+Depending on your System you can download following Screenreader:
+
+- [NVDA on Windows (open source)](https://www.nvaccess.org/download/)
+- [Orca on Linux](https://help.gnome.org/users/orca/stable/index.html.en)
+- [Voice Over on iOS](https://support.apple.com/de-de/guide/voiceover/vo2682/mac)
+
+It is good to know that the most used Screenreader is JAWS. Since it is required to get a license for JAWS, we have tested it mostly on the open source version NVDA.
+Maybe we can use [Jaws inspect](https://www.tpgi.com/arc-platform/jaws-inspect/) in the future?
+
+
+**If you are using NVDA Screenreader for testing it is useful knowing following things:**
+
+- Screenreader users a much higher output speed. The normal rate of natural speech ranges between 4-8 syllables per second. Frequent screen reader users speed this up a lot, some even up to 22 syllables per second [source](https://techblog.topdesk.com/accessibility/how-screen-reader-users-read-the-web/#:~:text=The%20normal%20rate%20of%20natural,to%2022%20syllables%20per%20second!)
+- For untrained users the constant audio output might be overwhelming, and for that you can open the "Speech Viewer". To enable the "Speech Viewer", check the "Speech Viewer" menu item under Tools in the NVDA menu. Uncheck the menu item to disable it.
+- "Audio Ducking Mode": This option allows you to choose if NVDA should lower the volume of other applications while NVDA is speaking, or all the time while NVDA is running. You can find Settings in the Synthesizer dialog, which can be opened by activating the Change... button in the speech category of the NVDA settings dialog, allows you to select which Synthesizer NVDA should use to speak with.
+
+
+**For more Information aout the Screenreader you can checkout the [NVDA user guide](https://www.nvaccess.org/files/nvda/documentation/userGuide.html) online**
+
+## How a user navigates
+
+Usually developers and designers have to diffenciate between site wide navigation and page wide naviation.
+But the portal doesn't have the typical structure of a webpage, therefore it is ok, if we focus on page navigation
+The user checks the webpage by
+
+- checking all headings
+- checking all the links
+- looking at the landmarks
+- tabbing though the webpage
+
+**Navigation through headings**
+While NVDA is activated you can jump through headings by pressing the `H`-key. If you want to move backwards you can press `Shift`+ `H`.
+The Screenreader will read you the selected heading. You can also go to the next Heading of the desired Level by pressing the numbers `1` - `6`
+To get a full overview off all headings, press `insert` + `F7`.
+
+**Navigation through links**
+You can move to the next link by pressing `K`. To change direction press `Shift`+`K`.
+It is also possible to move to the *visited* links only by pressing `V` (`Shift`+`V` to move backwards).
+To move to the next *unvisited* links only press `U` (`Shift`+`U` to move backwards).
+To get a full overview off all links, press `insert` + `F7`.
+
+**Landmarks**
+Landmarks do also provide a way to get an overview of a webpage. A landmark is an important subsection of a page. The `landmark` role is an abstract
+superclass for the aria role values for sections of content that are important enough that users will likely want to be able to navigate directly
+to them.
+
+In the current state of the portal the landmarks are not well designed and need improvement.
+

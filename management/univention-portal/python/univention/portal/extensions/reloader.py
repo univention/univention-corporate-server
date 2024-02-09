@@ -33,17 +33,16 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import importlib
-import json
 import os.path
 import shutil
 import tempfile
-from imghdr import what
-from pathlib import Path
-from urllib.parse import quote
 
 from univention.portal import Plugin, config
+from univention.portal.extensions.reloader_content import GroupsContentFetcher, PortalContentFetcher
 from univention.portal.log import get_logger
+
+
+logger = get_logger("cache")
 
 
 class Reloader(metaclass=Plugin):
@@ -62,8 +61,8 @@ class Reloader(metaclass=Plugin):
     itself.
     """
 
-    def refresh(self, reason=None):  # pragma: no cover
-        pass
+    def refresh(self, reason, content=None):  # pragma: no cover
+        raise NotImplementedError()
 
 
 class MtimeBasedLazyFileReloader(Reloader):
@@ -78,8 +77,10 @@ class MtimeBasedLazyFileReloader(Reloader):
     """
 
     def __init__(self, cache_file):
+        logger.debug("init, %s, cache_file %s", self.__class__.__name__, cache_file)
         self._cache_file = cache_file
         self._mtime = self._get_mtime()
+        self._assets_root = config.fetch("assets_root")
 
     def _get_mtime(self):
         try:
@@ -95,33 +96,57 @@ class MtimeBasedLazyFileReloader(Reloader):
             return True
 
     def _check_reason(self, reason, content=None):
-        if reason is None:
-            return False
-        if reason == "force":
-            return True
+        return check_reason_base(reason)
 
     def refresh(self, reason=None, content=None):
-        if self._check_reason(reason, content=content):
-            get_logger("cache").info("refreshing cache")
-            fd = None
-            try:
-                fd = self._refresh()
-            except Exception:
-                get_logger("cache").exception("Error during refresh")
-                # hopefully, we can still work with an older cache?
-            else:
-                if fd:
-                    try:
-                        os.makedirs(os.path.dirname(self._cache_file))
-                    except EnvironmentError:
-                        pass
-                    shutil.move(fd.name, self._cache_file)
-                    self._mtime = self._get_mtime()
-                    return True
+        class_name = self.__class__.__name__
+        if not self._check_reason(reason, content=content):
+            logger.info("Not refreshing cache, %s, reason: %s", class_name, reason)
+            return self._file_was_updated()
+
+        logger.info("Refreshing cache, %s, reason: %s", class_name, reason)
+        try:
+            content, assets = self._refresh()
+        except Exception:
+            get_logger("cache").exception("Error during refresh")
+        else:
+            for path, asset_content in assets:
+                path = os.path.normpath(path)
+                full_path = os.path.join(self._assets_root, path)
+                self._write(full_path, asset_content)
+            return self._write(self._cache_file, content)
+
         return self._file_was_updated()
 
     def _refresh(self):  # pragma: no cover
         pass
+
+    def _write(self, path, content):
+        logger.debug("Writing file %s", path)
+
+        fd = None
+        try:
+            fd = self._write_to_tmp_file(content)
+        except Exception:
+            get_logger("cache").exception("Error during refresh")
+            # hopefully, we can still work with an older cache?
+        else:
+            if fd:
+                try:
+                    os.makedirs(os.path.dirname(path))
+                except EnvironmentError:
+                    pass
+                shutil.move(fd.name, path)
+                self._mtime = self._get_mtime()
+                return True
+
+    def _write_to_tmp_file(self, content):
+        mode = "w"
+        if isinstance(content, bytes):
+            mode = "wb"
+        with tempfile.NamedTemporaryFile(mode=mode, delete=False) as fd:
+            fd.write(content)
+            return fd
 
 
 class PortalReloaderUDM(MtimeBasedLazyFileReloader):
@@ -140,188 +165,12 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
         self._portal_dn = portal_dn
 
     def _check_reason(self, reason, content=None):
-        if super(PortalReloaderUDM, self)._check_reason(reason, content):
-            return True
-        if reason is None:
-            return False
-        reason_args = reason.split(":", 2)
-        if len(reason_args) < 2:
-            return False
-        if reason_args[0] != "ldap":
-            return False
-        return reason_args[1] in ["portal", "category", "entry", "folder", "announcement"]
+        return check_portal_reason(reason)
 
     def _refresh(self):
-        udm_lib = importlib.import_module("univention.udm")
-        try:
-            udm = udm_lib.UDM.machine(prefer_local_connection=True).version(2)
-            portal_data = udm.get("portals/portal").get(self._portal_dn)
-        except udm_lib.ConnectionError:
-            get_logger("cache").warning("Could not establish UDM connection. Is the LDAP server accessible?")
-            return None
-        except udm_lib.UnknownModuleType:
-            get_logger("cache").warning("UDM not up to date? Portal module not found.")
-            return None
-        except udm_lib.NoObject:
-            get_logger("cache").warning("Portal %s not found", self._portal_dn)
-            return None
-
-        portal = self._extract_portal(portal_data)
-        categories = self._extract_categories(udm, portal_data)
-        user_links = portal_data.props.userLinks
-        menu_links = portal_data.props.menuLinks
-        folders = self._extract_folders(udm, portal_data, list(categories.values()))
-        entries = self._extract_entries(udm, portal_data, list(categories.values()), list(folders.values()))
-        announcements = self._extract_announcements(udm, portal_data)
-
-        with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
-            json.dump(
-                {
-                    "portal": portal,
-                    "categories": categories,
-                    "folders": folders,
-                    "entries": entries,
-                    "user_links": user_links,
-                    "menu_links": menu_links,
-                    "announcements": announcements,
-                },
-                fd,
-                sort_keys=True,
-                indent=4,
-            )
-            return fd
-
-    @classmethod
-    def _extract_portal(cls, portal_data):
-        portal = {
-            "dn": portal_data.dn,
-            "showUmc": portal_data.props.showUmc,
-            "logo": portal_data.props.logo,
-            "background": portal_data.props.background,
-            "name": portal_data.props.displayName,
-            "defaultLinkTarget": portal_data.props.defaultLinkTarget,
-            "ensureLogin": portal_data.props.ensureLogin,
-            "categories": portal_data.props.categories,
-        }
-
-        portal_name = portal_data.props.name
-
-        if portal["logo"]:
-            portal["logo"] = cls._write_image(portal_data.props.logo.raw, portal_name, "logos")
-        if portal["background"]:
-            portal["background"] = cls._write_image(portal_data.props.background.raw, portal_name, "backgrounds")
-        return portal
-
-    @classmethod
-    def _extract_categories(cls, udm, portal):
-        categories = {}
-        for category in udm.get("portals/category").search():
-            categories[category.dn] = {
-                "dn": category.dn,
-                "in_portal": category.dn in portal.props.categories,
-                "display_name": category.props.displayName,
-                "entries": category.props.entries,
-            }
-        return categories
-
-    @classmethod
-    def _extract_folders(cls, udm, portal, categories):
-        folders = {}
-
-        for folder in udm.get("portals/folder").search():
-            in_portal = (
-                folder.dn in portal.props.menuLinks
-                or folder.dn in portal.props.userLinks
-                or any(folder.dn in category["entries"] for category in categories if category["in_portal"])
-            )
-            folders[folder.dn] = {
-                "dn": folder.dn,
-                "in_portal": in_portal,
-                "name": folder.props.displayName,
-                "entries": folder.props.entries,
-            }
-
-        return folders
-
-    @classmethod
-    def _extract_entries(cls, udm, portal, categories, folders):
-        entries = {}
-
-        for entry in udm.get("portals/entry").search():
-            if entry.dn in entries:
-                continue
-            in_portal = (
-                entry.dn in portal.props.menuLinks
-                or entry.dn in portal.props.userLinks
-                or any(entry.dn in category["entries"] for category in categories if category["in_portal"])
-                or any(entry.dn in folder["entries"] for folder in folders if folder["in_portal"])
-            )
-            icon_url = None
-            if entry.props.icon:
-                icon_url = cls._write_image(entry.props.icon.raw, entry.props.name, "entries")
-
-            entries[entry.dn] = {
-                "dn": entry.dn,
-                "in_portal": in_portal,
-                "name": entry.props.displayName,
-                "description": entry.props.description,
-                'keywords': entry.props.keywords,
-                "icon_url": icon_url,
-                "activated": entry.props.activated,
-                "anonymous": entry.props.anonymous,
-                "allowedGroups": entry.props.allowedGroups,
-                "links": entry.props.link,
-                "linkTarget": entry.props.linkTarget,
-                "target": entry.props.target,
-                "backgroundColor": entry.props.backgroundColor,
-            }
-
-        return entries
-
-    @classmethod
-    def _extract_announcements(cls, udm, portal):
-        udm_lib = importlib.import_module("univention.udm")
-        announcements = {}
-
-        try:
-            announcement_module = udm.get("portals/announcement")
-        except udm_lib.UnknownModuleType:
-            announcement_module = None
-        if not announcement_module:
-            get_logger("cache").warning("UDM not up to date? Announcement module not found.")
-            return announcements
-
-        for announcement in announcement_module.search():
-            announcements[announcement.dn] = {
-                "dn": announcement.dn,
-                "allowedGroups": announcement.props.allowedGroups,
-                "name": announcement.props.name,
-                "message": announcement.props.message,
-                "title": announcement.props.title,
-                "visibleFrom": str(announcement.props.visibleFrom),
-                "visibleUntil": str(announcement.props.visibleUntil),
-                "isSticky": announcement.props.isSticky,
-                "needsConfirmation": announcement.props.needsConfirmation,
-                "severity": announcement.props.severity,
-            }
-
-        return announcements
-
-    @classmethod
-    def _write_image(cls, image, name, dirname):
-        assets_root = Path(config.fetch("assets_root"))
-
-        try:
-            name = name.replace(
-                "/", "-",
-            )  # name must not contain / and must be a path which can be accessed via the web!
-            extension = what(None, image) or "svg"
-            path = assets_root / "icons" / dirname / f"{name}.{extension}"
-            path.write_bytes(image)
-        except (OSError, TypeError):
-            get_logger("img").exception("Error saving image for %s" % name)
-        else:
-            return f"./icons/{quote(dirname)}/{quote(name)}.{extension}"
+        content_fetcher = PortalContentFetcher(self._portal_dn, self._assets_root)
+        content = content_fetcher.fetch()
+        return (content, content_fetcher.assets)
 
 
 class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
@@ -347,20 +196,41 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
     """
 
     def __init__(self, ldap_uri, binddn, password_file, ldap_base, cache_file):
-        super(GroupsReloaderLDAP, self).__init__(cache_file)
+        super().__init__(cache_file)
 
     def _check_reason(self, reason, content=None):
-        if super(GroupsReloaderLDAP, self)._check_reason(reason, content):
-            return True
-        if reason is None:
-            return False
-        if reason.startswith("ldap:group"):
-            return True
+        return check_groups_reason(reason)
 
     def _refresh(self):
-        from univention.ldap_cache.frontend import users_groups
+        logger.debug("Refreshing groups cache")
+        return GroupsContentFetcher().fetch()
 
-        users = users_groups()
-        with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
-            json.dump(users, fd, sort_keys=True, indent=4)
-        return fd
+
+def check_reason_base(reason):
+    if reason is None:
+        return False
+    if reason == "force":
+        return True
+
+
+def check_groups_reason(reason):
+    if check_reason_base(reason):
+        return True
+    if reason is None:
+        return False
+    if reason.startswith("ldap:group"):
+        return True
+    return False
+
+
+def check_portal_reason(reason):
+    if check_reason_base(reason):
+        return True
+    if reason is None:
+        return False
+    reason_args = reason.split(":", 2)
+    if len(reason_args) < 2:
+        return False
+    if reason_args[0] != "ldap":
+        return False
+    return reason_args[1] in ["portal", "category", "entry", "folder", "announcement"]

@@ -1,0 +1,29 @@
+<Meta title="Introduction/Accessibility Overview/Keyboard Accessibility" />
+
+# Keyboard Accessibility
+
+It is important to provide a UI that is usable without restriction by missing mouse input. That means it should be possible for the user to use the portal by keyboard only.
+
+To achieve that, following objectives must be accomplished:
+
+## Tabindex handling
+
+> The tabindex global attribute indicates that its element can be focused, and where it participates in sequential keyboard navigation (usually with the Tab key, hence the name). [MDN Doc](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex)
+
+The HTML document has a default tab sequence depending on it's elements in the DOM. Sometimes this sequence is not enough or needs some changes via javascript. A opened modal for example, should be the only element that is focusable in a current webpage. The user does not want to tab outside the modal. It can be even more confusing for Screenreader users.
+We have the [Tabindex Component](?path=/story/components-a11y-tabindexelement--page) which help us handle the index of several elements in the portal.
+
+In addition to that, we also have the [`Region` Component](?path=/story/components-a11y-region--page), which we can use to define several sections of the portal to make it easier to handle the tabindex.
+
+## Focus styling
+
+By default the focusable elements have a `:focus { outline: none; }` which should never be removed without replacing it with another outline (by border). Note that to achieve an accessible focus style, you should be aware to keep a color contrast ratio of at least 3:1. [Understanding Success Criterion 1.4.11: Non-text Contrast](https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html)By default the focusable elements have a `:focus { outline: none; }` which should never be removed without replacing it with another outline (by border). Note that to achieve an accessible focus style, you should be aware to keep a color contrast ratio of at least 3:1. [Understanding Success Criterion 1.4.11: Non-text Contrast](https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html)
+
+## Alternative input methods
+
+Drag'n'Drop is an excellent example of a user interaction / input method that is exclusively developed for mouse users. It is very convenient because the user intuitively knows how to use the mouse input to sort things, move by dragging, or resize elements. As it is more convenient for the mouse user it is less convenient for the keyboard user. There has to be an alternative way to achieve the same result by keyboard input only.
+We use the drag'n'drop method in the admin mode. The admin user can use the mouse to change the order of the tiles in a category or move the tiles into another category. The same result can be achieved by using the arrow keys. This UX functionality is inspired by this blog article about [4 Major Patterns for Accessible Drag and Drop](https://medium.com/salesforce-ux/4-major-patterns-for-accessible-drag-and-drop-1d43f64ebf09) and it's interactive playground [d&d interaction patterns](https://salesforce-ux.github.io/dnd-a11y-patterns/#/?_k=szlg7v)
+
+## Screenreader Text
+
+Accessibility for Screenreeader is a [whole story itself](?path=/story/introduction-accessibility-overview-screenreader--page), but it is worth saying that good handling between keyboard accessibility and screenreader output can create a great user experience for screenreader users. So keep in mind while developing and think about the output of the screenreader during keyboard interactions.

@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+
+---
+
+#############################################################
+## Ansible configuration                                   ##
+#############################################################
+
+# Description: Ansbile root password after changing it from default value
+ansible_become_password: "{{ ansible_become_password_vault }}"

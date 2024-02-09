@@ -98,6 +98,7 @@ export interface PortalEntry {
   linkTarget: LinkTargetOrDefault,
   target: string | null,
   links: Link[],
+  // eslint-disable-next-line camelcase
   icon_url: string | null,
   name: LocalizedString,
 }
@@ -114,6 +115,7 @@ export interface PortalCategory {
   dn: string,
   entries: string[],
   virtual: boolean,
+  // eslint-disable-next-line camelcase
   display_name: LocalizedString,
 }
 

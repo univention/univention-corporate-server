@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+
+version: '3.0'
+
+services:
+  # A container which does provide only the environment needed for development.
+  #
+  # This is intended for use cases when you either want to be sure that nothing
+  # from your local machine interferes with your development or when you are on
+  # a non-Linux operating system and you want to run this in a well defined
+  # Linux environment to avoid issues from subtle differences.
+  dev:
+    profiles:
+      - dev
+    build:
+      context: .
+      target: local-dev-env
+    container_name: portal-frontend-dev-env
+    environment:
+      YARN_CACHE_FOLDER: /root/.cache/yarn
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+      - portal-frontend-dev-env-dotcache:/root/.cache
+      - portal-frontend-dev-env-node-modules:/app/node_modules
+
+  test:
+    profiles:
+      - test
+    build:
+      context: .
+      target: test
+      dockerfile: Dockerfile.test
+    container_name: portal-frontend-test
+
+volumes:
+  portal-frontend-dev-env-dotcache:
+  portal-frontend-dev-env-node-modules:

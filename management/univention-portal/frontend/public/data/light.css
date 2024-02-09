@@ -1,0 +1,88 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+ */
+
+:root {
+/* used to accent some elements: checkbox/radiobox, checked toggle buttons/checked input fields */
+  --color-accent: #659a0d;
+  --bgc-content-body: #fff;
+  --bgc-content-header: #efefee;
+  --bgc-content-container: #efefee;
+  --bgc-inputfield-on-container: #d7d7d6;
+  --bgc-inputfield-on-body: var(--bgc-content-container);
+  --bgc-checkbox-hover: rgba(0,0,0,0.06);
+  --bgc-checkbox-focus: rgba(0,0,0,0.12);
+  --bgc-loading-circle: var(--font-color-contrast-middle);
+  --bgc-user-menu-item-hover: rgba(0,0,0,0.1);
+  --bgc-user-menu-item-active: rgba(0,0,0,0.2);
+  --bgc-header-number-circle: #5f5f5c;
+  --bgc-tab-separator: #868681;
+  --bgc-popup: #bdbdbb;
+  --bgc-popup-item-hover: rgba(255,255,255,0.15);
+  --bgc-popup-item-active: rgba(255,255,255,0.3);
+  --bgc-popup-item-selected: rgba(255,255,255,0.3);
+  --bgc-grid-row-hover: rgba(0,0,0,0.04);
+  --bgc-grid-row-selected: var(--bgc-grid-row-hover);
+  --bgc-tree-row-hover: var(--bgc-grid-row-hover);
+  --bgc-tree-row-selected: rgba(0,0,0,0.2);
+  --bgc-apptile-default: #bdbdbb;
+  --bgc-appcenter-app-hover: rgba(0,0,0,0.08);
+  --bgc-appcenter-app-active: rgba(0,0,0,0.12);
+  --bgc-progressbar-empty: #bdbdbb;
+  --bgc-progressbar-progress: var(--bgc-success);
+  --bgc-titlepane-hover: rgba(0,0,0,0.04);
+  --bgc-underlay: rgba(134, 134, 129, 0.8);
+  --bgc-checkerboard: repeating-conic-gradient(var(--bgc-inputfield-on-container) 0% 25%, transparent 0% 50%) 50%/20px 20px;
+  --bgc-error: #ff8597;
+  --bgc-warning: #f5b568;
+  --bgc-success: #76b413;
+  --bgc-announcements-info: var(--color-accent);
+  --bgc-announcements-danger: var(--bgc-error);
+  --bgc-announcements-success: var(--bgc-success);
+  --bgc-announcements-warn: var(--bgc-warning);
+  --font-size-1: 1.5rem;
+  --font-size-2: 1.25rem;
+  --font-size-3: 1rem;
+  --font-size-4: 0.875rem;
+  --font-size-5: 0.75rem;
+  --font-size-html: 1rem;
+  --font-size-body: var(--font-size-4);
+  --font-lineheight-normal: 1.5;
+  --font-lineheight-compact: 1.25;
+  --font-lineheight-header: 1.3;
+  --font-weight-bold: 600;
+  --font-color-contrast-high: #1e1e1d;
+  --font-color-contrast-middle: #4e4e4b;
+  --font-color-contrast-low: #6c6c6c;
+  --font-color-error: #9f3323;
+  --font-color-warning: #976026;
+  --font-color-success: #547321;
+  --button-primary-bgc: #7ab51d;
+  --button-primary-bgc-hover: #85bb2f;
+  --button-primary-bgc-active: #92c246;
+  --button-primary-bgc-disabled: #bdbdbb;
+  --button-bgc: #bdbdbb;
+  --button-bgc-hover: rgba(200,200,198,1);
+  --button-bgc-active: #cececd;
+  --button-bgc-disabled: #bdbdbb;
+  --button-text-bgc: transparent;
+  --button-text-bgc-hover: var(--button-bgc-hover);
+  --button-text-bgc-active: var(--button-bgc-active);
+  --button-text-bgc-disabled: transparent;
+  --button-icon-bgc: transparent;
+  --button-icon-bgc-hover: var(--button-bgc-hover);
+  --button-icon-bgc-active: var(--button-bgc-active);
+  --button-icon-bgc-disabled: transparent;
+  --button-icon-highlighted-bgc: var(--bgc-inputfield-on-body);
+  --button-icon-highlighted-bgc-hover: var(--button-bgc-hover);
+  --button-icon-highlighted-bgc-active: var(--button-bgc-active);
+  --button-icon-highlighted-bgc-disabled: transparent;
+  --color-focus: var(--font-color-contrast-high);
+  --popup-border: 1px solid #bdbdbb;
+  --box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
+  --serveroverview-tile-hover-bgc: #00acb6;
+  --serveroverview-tile-hover-color: #1e1e1d;
+
+	--select-arrow: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABkSURBVHgB7Y3BCQAhDAS3BEtICVeCJdi5JVwpGsGHiGLECD4ysL9lBjCMpwk8En6p/kV4XuL9WAeo/sr/gwDHi4JAK47YYBXoxQ6bzALH4lnAa4lHgaQpHgVUxW0g4ILYMC6TAZ0BJA3bxN3RAAAAAElFTkSuQmCC');
+}

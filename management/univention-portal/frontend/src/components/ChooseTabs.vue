@@ -52,12 +52,12 @@ License with the Debian GNU/Linux or Univention distribution in file
             @keydown.enter.prevent="gotoTab(index)"
           >
             <div
-                class="choose-tab__logo-wrapper"
-                :style="tab.backgroundColor ? `background: ${tab.backgroundColor}` : ''"
+              class="choose-tab__logo-wrapper"
+              :style="tab.backgroundColor ? `background: ${tab.backgroundColor}` : ''"
             >
               <img
                 :src="tab.logo"
-                onerror="this.src='./questionMark.svg'"
+                onerror="this.src='./media/questionmark.svg'"
                 alt=""
                 class="choose-tab__img"
               >

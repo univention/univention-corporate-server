@@ -48,6 +48,7 @@ from univention.portal.factory import make_portal
 from univention.portal.log import get_logger, setup_logger
 
 
+logger = get_logger("cli")
 portals_json = "/usr/share/univention-portal/portals.json"
 
 
@@ -55,7 +56,8 @@ def read_portals_json() -> Dict:
     try:
         with open(portals_json) as fd:
             return json.load(fd)
-    except EnvironmentError:
+    except EnvironmentError as exc:
+        warn(f"Exception {exc} while trying to load {portals_json}")
         return {}
 
 
@@ -72,8 +74,9 @@ def write_portals_json(content: Dict):
 
 
 @click.group()
-def cli():
-    pass
+@click.option("--log-stream/--dont-log-stream", default=False)
+def cli(log_stream: bool):
+    setup_logger(stream=log_stream)
 
 
 @cli.command("add-default")
@@ -532,18 +535,19 @@ def rm_localhost(obj) -> Union[bool, None]:
 
 
 @cli.command()
-@click.argument("name", nargs=-1)
+@click.argument("names", nargs=-1)
 @click.option("--reason", default="force")
-def update(name: str, reason: str):
+def update(names: str, reason: str):
     json_content = read_portals_json()
-    if not name:
-        name = json_content.keys()
-    for _name in name:
-        info(f"Updating {_name}")
+    if not names:
+        names = json_content.keys()
+    logger.debug("Names to update: %s", names)
+    for _name in names:
+        logger.debug('Updating %s', _name)
         try:
             portal_def = json_content[_name]
         except KeyError:
-            warn(f"{name} does not exist in config file")
+            warn(f"{_name} does not exist in config file")
         else:
             portal_obj = make_portal(portal_def)
             start = datetime.datetime.now()
@@ -618,5 +622,4 @@ def success(msg: str):
 
 
 if __name__ == "__main__":
-    setup_logger(stream=False)
     cli()

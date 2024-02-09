@@ -76,8 +76,6 @@ async function updateLocale(locale: ShortLocale): Promise<unknown> {
     },
     () => {
       Object.keys(currentCatalog).forEach((key) => delete currentCatalog[key]);
-      // no locale found (404?)
-      // console.error('404: No translation file found.');
     },
   );
 }

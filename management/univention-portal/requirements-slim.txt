@@ -1,0 +1,13 @@
+# These are the direct requirements by the portal server. Compare the script
+# "univention-portal-server" and the setup.py in this directory.
+#
+# TODO: Our vision is to move over time to the usage of "poetry" and
+# benefit from it's lock file mechanism.
+
+python-ldap
+click
+requests
+tornado
+
+# setup.py implicit build time requirements
+python-debian

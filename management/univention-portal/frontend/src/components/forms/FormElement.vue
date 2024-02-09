@@ -64,11 +64,12 @@
       :for-attr-of-label="forAttrOfLabel"
       data-test="form-element-component"
       :invalid-message-id="invalidMessageId"
+      :disabled="widget.readonly"
       @update:model-value="$emit('update:modelValue', $event)"
     />
     <input-error-message
       :id="invalidMessageId"
-      :display-condition="invalidMessage !== ''"
+      :display-condition="invalidMessageCondition"
       :error-message="invalidMessage"
     />
     <!-- </div> -->
@@ -80,12 +81,14 @@ import { defineComponent, PropType } from 'vue';
 import FormLabel from '@/components/forms/FormLabel.vue';
 import InputErrorMessage from '@/components/forms/InputErrorMessage.vue';
 import { isValid, invalidMessage, WidgetDefinition } from '@/jsHelper/forms';
+import cloneDeep from 'lodash/cloneDeep';
 
 // TODO load components on demand (?)
 import ComboBox from '@/components/widgets/ComboBox.vue';
 import DateBox from '@/components/widgets/DateBox.vue';
 import MultiInput from '@/components/widgets/MultiInput.vue';
 import PasswordBox from '@/components/widgets/PasswordBox.vue';
+import NewPasswordBox from '@/components/widgets/NewPasswordBox.vue';
 import TextBox from '@/components/widgets/TextBox.vue';
 import TextArea from '@/components/widgets/TextArea.vue';
 import CheckBox from '@/components/widgets/CheckBox.vue';
@@ -96,6 +99,14 @@ import MultiSelect from '@/components/widgets/MultiSelect.vue';
 import LinkWidget from '@/components/widgets/LinkWidget.vue';
 import NumberSpinner from '@/components/widgets/NumberSpinner.vue';
 import TimeBox from '@/components/widgets/TimeBox.vue';
+import MultiChoice from '@/components/widgets/MultiChoice.vue';
+import MailBox from '@/components/widgets/MailBox.vue';
+import Tree from '@/components/widgets/Tree/Tree.vue';
+import ComplexInput from 'components/widgets/ComplexInput.vue';
+import SuggestionBox from '@/components/widgets/SuggestionBox.vue';
+import Accordions from 'components/widgets/Accordions/Accordions.vue';
+import Tabs from 'components/widgets/Tabs/Tabs.vue';
+import Grid from '@/components/widgets/Grid/Grid.vue';
 
 export default defineComponent({
   name: 'FormElement',
@@ -106,6 +117,7 @@ export default defineComponent({
     DateBox,
     MultiInput,
     PasswordBox,
+    NewPasswordBox,
     TextBox,
     CheckBox,
     RadioBox,
@@ -116,6 +128,14 @@ export default defineComponent({
     TextArea,
     NumberSpinner,
     TimeBox,
+    MultiChoice,
+    MailBox,
+    Tree,
+    ComplexInput,
+    SuggestionBox,
+    Accordions,
+    Tabs,
+    Grid,
   },
   props: {
     widget: {
@@ -134,7 +154,7 @@ export default defineComponent({
   },
   computed: {
     component(): any {
-      const component = JSON.parse(JSON.stringify(this.widget));
+      const component = cloneDeep(this.widget);
       delete component.type;
       delete component.label;
       delete component.ariaLabel;
@@ -145,7 +165,14 @@ export default defineComponent({
       return !isValid(this.widget);
     },
     invalidMessage(): string {
+      if (this.widget.type === 'NewPasswordBox') {
+        const invalidMessageObject = invalidMessage(this.widget);
+        return invalidMessageObject?.invalidMessageRetype;
+      }
       return invalidMessage(this.widget);
+    },
+    invalidMessageCondition(): boolean {
+      return this.invalidMessage !== '';
     },
     forAttrOfLabel(): string {
       return `${this.widget.name}--${this.$.uid}`;

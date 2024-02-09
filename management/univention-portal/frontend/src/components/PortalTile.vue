@@ -27,7 +27,10 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div class="portal-tile__root-element">
+  <div
+    ref="tile"
+    class="portal-tile__root-element"
+  >
     <tabindex-element
       :id="id"
       :tag="wrapperTag"
@@ -67,13 +70,16 @@
       >
         <!-- alt on Image needs to be empty (it does not provide more and usefull information) -->
         <img
-          :src="pathToLogo || './questionMark.svg'"
-          onerror="this.src='./questionMark.svg'"
+          :src="pathToLogo || './media/questionmark.svg'"
+          onerror="this.src='./media/questionmark.svg'"
           alt=""
           class="portal-tile__img"
         >
       </div>
-      <span class="portal-tile__name">
+      <span
+        ref="tileName"
+        class="portal-tile__name"
+      >
         {{ $localized(title) }}
       </span>
       <div
@@ -291,33 +297,37 @@ export default defineComponent({
       clearTimeout(this.tooltipID);
       this.mouseIsOverTile = true;
       if (!this.editMode && !this.minified) {
-        const portalTileNameRect = this.$el.querySelector('.portal-tile__name').getBoundingClientRect();
-        const portalTileRect = this.$el.getBoundingClientRect();
-        const linkTypeText = this.LINK_TYPE(this.linkTarget);
-        const tooltip = {
-          linkType: linkTypeText,
-          isMobile: this.isMobile,
-          title: this.$localized(this.title),
-          backgroundColor: this.backgroundColor,
-          description: this.$localized(this.description),
-          ariaId: this.createID(),
-          position: {
-            top: portalTileRect.top,
-            right: portalTileRect.right,
-            bottom: portalTileNameRect.bottom,
-            left: portalTileRect.left,
-            x: portalTileRect.x,
-            y: portalTileRect.y,
-          },
-        };
-        this.setToolTipTimeOut(tooltip);
+        this.setToolTipTimeOut();
       }
     },
-    setToolTipTimeOut(tooltip): void {
+    getTooltip() {
+      const portalTileNameRect = (this.$refs.tileName as HTMLElement).getBoundingClientRect();
+      const portalTileRect = this.$el.getBoundingClientRect();
+      const linkTypeText = this.LINK_TYPE(this.linkTarget);
+      return {
+        linkType: linkTypeText,
+        isMobile: this.isMobile,
+        title: this.$localized(this.title),
+        backgroundColor: this.backgroundColor,
+        description: this.$localized(this.description),
+        ariaId: this.createID(),
+        position: {
+          top: portalTileRect.top,
+          right: portalTileRect.right,
+          bottom: portalTileNameRect.bottom,
+          left: portalTileRect.left,
+          x: portalTileRect.x,
+          y: portalTileRect.y,
+          tileWidth: portalTileRect.width,
+          tileHeight: portalTileRect.height,
+          tile: portalTileRect,
+        },
+      };
+    },
+    setToolTipTimeOut(): void {
       const id = setTimeout(() => {
-        console.log('Already IN');
-        if (this.mouseIsOverTile === true) {
-          this.$store.dispatch('tooltip/setTooltip', { tooltip });
+        if (this.mouseIsOverTile) {
+          this.$store.dispatch('tooltip/setTooltip', { tooltip: this.getTooltip() });
         }
       }, 650);
       this.$store.dispatch('tooltip/setTooltipID', id);

@@ -60,7 +60,7 @@ import { umcCommand } from '@/jsHelper/umc';
 import _ from '@/jsHelper/translate';
 import Site from '@/views/selfservice/Site.vue';
 import MyForm from '@/components/forms/Form.vue';
-import { validateAll, isEmpty, WidgetDefinition } from '@/jsHelper/forms';
+import { validateAll, WidgetDefinition, validateNewPassword } from '@/jsHelper/forms';
 import ErrorDialog from '@/views/selfservice/ErrorDialog.vue';
 import activity from '@/jsHelper/activity';
 import { mapGetters } from 'vuex';
@@ -68,8 +68,7 @@ import { mapGetters } from 'vuex';
 interface FormData {
   username: string,
   token: string,
-  newPassword: string,
-  newPassword2: string,
+  setNewPassword: Record<string, string>,
 }
 
 interface Data {
@@ -110,30 +109,21 @@ export default defineComponent({
       invalidMessage: '',
       required: true,
     }, {
-      type: 'PasswordBox',
-      name: 'newPassword',
+      type: 'NewPasswordBox',
+      name: 'setNewPassword',
       label: _('New password'),
-      invalidMessage: '',
+      canShowPassword: true,
       required: true,
-    }, {
-      type: 'PasswordBox',
-      name: 'newPassword2',
-      label: _('New password (retype)'),
-      validators: [(widget, value) => (
-        isEmpty(widget, value) ? _('Please confirm your new password') : ''
-      ), (widget, value, widgets, values) => {
-        if (values.newPassword !== value) {
-          return _('The new passwords do not match');
-        }
-        return '';
-      }],
+      validators: [validateNewPassword],
     }];
     return {
       formValues: {
         username: this.queryParamUsername,
         token: this.queryParamToken,
-        newPassword: '',
-        newPassword2: '',
+        setNewPassword: {
+          newPassword: '',
+          retypePassword: '',
+        },
       },
       formWidgets,
     };
@@ -226,7 +216,7 @@ export default defineComponent({
       const params = {
         username: this.formValues.username,
         token: this.formValues.token,
-        password: this.formValues.newPassword,
+        password: this.formValues.setNewPassword.newPassword,
       };
       this.$store.dispatch('activateLoadingState');
       umcCommand('passwordreset/set_password', params)

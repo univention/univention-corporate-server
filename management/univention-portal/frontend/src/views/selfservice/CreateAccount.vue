@@ -61,7 +61,7 @@ import { umcCommandWithStandby } from '@/jsHelper/umc';
 import Site from '@/views/selfservice/Site.vue';
 import MyForm from '@/components/forms/Form.vue';
 import ErrorDialog from '@/views/selfservice/ErrorDialog.vue';
-import { allValid, initialValue, isEmpty, validateAll, WidgetDefinition } from '@/jsHelper/forms';
+import { allValid, initialValue, isEmpty, validateAll, validateNewPassword, WidgetDefinition } from '@/jsHelper/forms';
 import activity from '@/jsHelper/activity';
 import { mapGetters } from 'vuex';
 import { sanitizeBackendWidget, setBackendInvalidMessage, sanitizeFrontendValues } from '@/views/selfservice/helper';
@@ -116,19 +116,8 @@ export default defineComponent({
         const sanitized = result.widget_descriptions.map((widget) => sanitizeBackendWidget(widget));
         const passwordIdx = sanitized.findIndex((widget) => widget.type === 'PasswordInputBox');
         const passwordWidget = sanitized[passwordIdx];
-        passwordWidget.type = 'PasswordBox';
-        const retype = JSON.parse(JSON.stringify(passwordWidget));
-        retype.name = `${retype.name}--retype`;
-        retype.label = `${retype.label} ${_('(retype)')}`;
-        retype.validators = [(widget, value) => (
-          isEmpty(widget, value) ? _('Please confirm your new password') : ''
-        ), (widget, value, widgets, values) => {
-          if (values[passwordWidget.name] !== value) {
-            return _('The new passwords do not match');
-          }
-          return '';
-        }];
-        sanitized.splice(passwordIdx + 1, 0, retype);
+        passwordWidget.type = 'NewPasswordBox';
+        passwordWidget.required = true;
         const values = {};
         sanitized.forEach((widget) => {
           values[widget.name] = initialValue(widget, values[widget.name]);

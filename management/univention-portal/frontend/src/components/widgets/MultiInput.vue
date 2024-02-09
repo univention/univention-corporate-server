@@ -1,3 +1,8 @@
+<!--
+ SPDX-License-Identifier: AGPL-3.0-only
+ SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+-->
+
 <template>
   <div
     class="multi-input"
@@ -21,7 +26,7 @@
         class="multi-input__row__elem"
       >
         <form-element
-          :ref="`component-${valIdx}-${typeIdx}`"
+          :ref="(el) => addRef(el, `component-${valIdx}-${typeIdx}`)"
           :widget="getSubtypeWidget(type, valIdx, typeIdx)"
           :model-value="Array.isArray(val) ? val[typeIdx] : val"
           :data-test="`form-element-${getSubtypeWidget(type, valIdx, typeIdx).type}-${valIdx}`"
@@ -35,6 +40,7 @@
         :aria-label-prop="REMOVE_BUTTON_LABEL(valIdx)"
         :data-test="`multi-input-remove-entry-button-${valIdx}`"
         @click="removeEntry(valIdx)"
+        v-if="!readonly"
       />
       <input-error-message
         :display-condition="rowInvalidMessage(valIdx) !== ''"
@@ -48,13 +54,14 @@
       :aria-label-prop="addButtonLabel"
       data-test="multi-input-add-entry-button"
       @click="addEntry()"
+      v-if="!readonly"
     />
   </div>
 </template>
 
 <script lang="ts">
 // TODO handling of 'name' attribute
-import { defineComponent } from 'vue';
+import { defineComponent, defineAsyncComponent } from 'vue';
 import _ from '@/jsHelper/translate';
 
 import IconButton from '@/components/globals/IconButton.vue';
@@ -64,19 +71,14 @@ import ComboBox from '@/components/widgets/ComboBox.vue';
 import DateBox from '@/components/widgets/DateBox.vue';
 import PasswordBox from '@/components/widgets/PasswordBox.vue';
 import TextBox from '@/components/widgets/TextBox.vue';
-import FormElement from '@/components/forms/FormElementCopyNeededForMultiInput.vue';
+import FormElement from '@/components/forms/FormElement.vue';
 import { initialValue } from '@/jsHelper/forms';
 
 export default defineComponent({
   name: 'MultiInput',
   components: {
     InputErrorMessage,
-    // break circular dependency
-    // FormElement: defineAsyncComponent(() => import('@/components/forms/FormElement.vue')),
-    // TODO look for better solution
-    // When loading FormElement as asynccomponent then ref="" is not immediately set (which is needed for focus).
-    // For now we copy @/components/forms/FormElement.vue to @/components/forms/FormElement2.vue
-    FormElement,
+    FormElement: defineAsyncComponent(() => import('@/components/forms/FormElement.vue')),
     IconButton,
     ComboBox,
     DateBox,
@@ -105,20 +107,37 @@ export default defineComponent({
         };
       },
     },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
     tabindex: {
       type: Number,
       default: 0,
     },
   },
   emits: ['update:modelValue'],
+  data: () => ({
+    refs: {},
+  }),
   computed: {
     addButtonLabel(): string {
       return _('Add new %(label)s', {
         label: this.extraLabel,
       });
     },
+    firstWidget(): undefined | InstanceType<typeof FormElement> {
+      return this.refs['component-0-0'];
+    },
   },
   methods: {
+    addRef(el, name) {
+      if (el === null) {
+        delete this.refs[name];
+      } else {
+        this.refs[name] = el;
+      }
+    },
     onUpdate(valIdx, typeIdx, val): void {
       const newVal = JSON.parse(JSON.stringify(this.modelValue));
       if (this.subtypes.length === 1) {
@@ -136,7 +155,7 @@ export default defineComponent({
         label: this.extraLabel,
         idx: newVal.length,
       }));
-      this.focusLastInputField();
+      this.focusFirstWidgetOfLastRow();
     },
     newRow(): any {
       return initialValue({
@@ -184,13 +203,21 @@ export default defineComponent({
         tabindex: this.tabindex,
         ariaLabel: labelScreenReader,
         invalidMessage: message ?? '',
+        readonly: this.readonly || type.readonly,
       };
     },
     focus(): void {
-      const firstWidget = this.$refs['component-0-0'];
-      // TODO find first interactable?
-      if (firstWidget) {
-        (firstWidget as HTMLElement).focus();
+      if (this.firstWidget !== undefined) {
+        this.firstWidget.focus();
+      } else {
+        const unwatch = this.$watch('firstWidget', () => {
+          if (this.firstWidget !== undefined) {
+            this.firstWidget.focus();
+            unwatch();
+          }
+        }, {
+          flush: 'post',
+        });
       }
     },
     REMOVE_BUTTON_LABEL(idx): string {
@@ -199,25 +226,15 @@ export default defineComponent({
         idx: idx + 1,
       });
     },
-    focusLastInputField(): void {
+    focusFirstWidgetOfLastRow(): void {
       // MultiInput can have multiple widgets per row.
       // Focus first widget in last row.
 
       // @ts-ignore FIXME not sure how to fix this error
       this.$nextTick(() => {
-        const firstRowEntryRefs = Object.keys(this.$refs)
-          .filter((ref) => {
-            // Filter out widgets that are not the first of their row.
-            const column = ref.split('-')[2];
-            try {
-              return parseInt(column, 10) === 0;
-            } catch (e) {
-              return true;
-            }
-          })
-          .sort();
-        const lastItemRef = firstRowEntryRefs[firstRowEntryRefs.length - 1];
-        (this.$refs[lastItemRef] as HTMLElement).focus();
+        const lastRowNum = this.modelValue.length - 1;
+        const firstWidgetOfLastRow = this.refs[`component-${lastRowNum}-0`];
+        firstWidgetOfLastRow.focus();
       });
     },
   },

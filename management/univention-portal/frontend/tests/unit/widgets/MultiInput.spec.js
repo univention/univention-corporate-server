@@ -40,6 +40,7 @@ const multiInputProps = {
   invalidMessage: { all: '', values: [] },
   invalidMessageId: '',
   extraLabel: 'Label',
+  readonly: false,
 };
 
 const store = new Vuex.Store({
@@ -183,5 +184,26 @@ describe('MultiInput.vue', () => {
     await wrapper.vm.$nextTick();
 
     expect(getSubtypeWidgetSpy).toHaveBeenCalledWith(multiInputProps.subtypes[0], 0, 0);
+  });
+
+  test('if readonly disables inputs', async () => {
+    // initial state is editable; expect buttons
+    let addEntryButton = wrapper.find('[data-test="multi-input-add-entry-button"]');
+    let removeEntryButton = wrapper.find('[data-test="multi-input-remove-entry-button-0"]');
+    expect(addEntryButton.exists()).toBe(true);
+    expect(removeEntryButton.exists()).toBe(true);
+
+    // flag widget as read-only
+    wrapper.setProps({ readonly: true });
+    await wrapper.vm.$nextTick();
+
+    addEntryButton = wrapper.find('[data-test="multi-input-add-entry-button"]');
+    removeEntryButton = wrapper.find('[data-test="multi-input-remove-entry-button-0"]');
+    expect(addEntryButton.exists()).toBe(false);
+    expect(removeEntryButton.exists()).toBe(false);
+
+    wrapper.vm.subtypes.forEach((subtype) => {
+      expect(wrapper.vm.getSubtypeWidget(subtype, 0, 0).readonly).toBe(true);
+    });
   });
 });

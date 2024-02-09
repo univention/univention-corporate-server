@@ -168,7 +168,13 @@ class Portal(metaclass=Plugin):
 
     def get_entries(self, content):
         entries = self.portal_cache.get_entries()
-        return [entries[entry_dn] for entry_dn in content["entry_dns"]]
+        return [self._map_entry(entries[entry_dn]) for entry_dn in content["entry_dns"]]
+
+    def _map_entry(self, entry):
+        # TODO: Pending refactoring to use "icon_url" consistently
+        # See https://git.knut.univention.de/univention/components/univention-portal/-/issues/696
+        entry["icon_url"] = entry.pop("logo_name")
+        return entry
 
     def get_folders(self, content):
         folders = self.portal_cache.get_folders()
@@ -295,8 +301,10 @@ class UMCPortal(Portal):
         return False
 
     def _request_umc_get(self, get_path, headers):
-        umc_base_url = config.fetch("umc_base_url")
-        uri = urljoin(urljoin(umc_base_url, 'get/'), get_path)
+        umc_get_url = config.fetch("umc_get_url")
+        if not umc_get_url.endswith("/"):
+            umc_get_url = f"{umc_get_url}/"
+        uri = urljoin(umc_get_url, get_path)
         body = {"options": {}}
         try:
             response = requests.post(uri, json=body, headers=headers)
@@ -327,15 +335,18 @@ class UMCPortal(Portal):
     def get_entries(self, content):
         entries = []
         colors = {cat["id"]: cat["color"] for cat in content["umc_categories"] if cat["id"] != "_favorites_"}
+        umc_check_icons = config.fetch("umc_check_icons")
+        if not umc_check_icons:
+            get_logger("umc").debug("UMC icon check disabled")
 
         for module in content["umc_modules"]:
             if "apps" in module["categories"]:
                 continue
-            entries.append(self._module_to_entry(module, colors))
+            entries.append(self._module_to_entry(module, colors, umc_check_icons))
         return entries
 
-    def _module_to_entry(self, module, colors, locale='en_US'):
-        icon_url = self._module_icon_url(module)
+    def _module_to_entry(self, module, colors, umc_check_icons, locale='en_US'):
+        icon_url = self._module_icon_url(module, umc_check_icons)
         color = self._module_background_color(module, colors)
 
         entry = {
@@ -361,11 +372,18 @@ class UMCPortal(Portal):
         }
         return entry
 
-    def _module_icon_url(self, module):
+    def _module_icon_url(self, module, umc_check_icons):
+        path_prefix = "/univention/management/"
         sub_path = "js/dijit/themes/umc/icons/scalable/{}.svg".format(module["icon"])
-        filename = os.path.join('/usr/share/univention-management-console-frontend/', sub_path)
-        if os.path.exists(filename):
-            return urljoin("/univention/management/", sub_path)
+        umc_frontend_path = '/usr/share/univention-management-console-frontend/'
+        filename = os.path.join(umc_frontend_path, sub_path)
+
+        if umc_check_icons and not os.path.exists(filename):
+            icon_url = None
+        else:
+            icon_url = urljoin(path_prefix, sub_path)
+
+        return icon_url
 
     def _module_background_color(self, module, colors):
         color = None
@@ -445,9 +463,6 @@ class UMCPortal(Portal):
             "categories": category_dns,
             "content": content,
         }
-
-    def get_announcements(self, content):
-        return []
 
     def refresh(self, reason=None):
         pass

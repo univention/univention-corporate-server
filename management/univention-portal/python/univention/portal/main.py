@@ -30,22 +30,51 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import json
+
 import tornado.web
 
+from univention.portal import config
 from univention.portal.factory import make_portal
 from univention.portal.handlers import LoginHandler, LogoutHandler, NavigationHandler, PortalEntriesHandler
-from univention.portal.log import get_logger
+from univention.portal.log import get_logger, setup_logger
 
 
-def make_app(portal_definitions):
+logger = get_logger("server")
+
+
+def _load_portal_definitions(portal_definitions_file):
+    with open(portal_definitions_file) as fd:
+        return json.load(fd)
+
+
+def run_server():
+    setup_logger(logfile=None, stream=True)
+    portal_definitions = _load_portal_definitions(
+        "/usr/share/univention-portal/portals.json",
+    )
+    app = make_tornado_application(portal_definitions)
+    start_app(app)
+    tornado.ioloop.IOLoop.current().start()
+
+
+def make_tornado_application(portal_definitions):
     portals = {}
     for name, portal_definition in portal_definitions.items():
-        get_logger("server").info("Building portal {}".format(name))
+        logger.info("Building portal %s", name)
         portals[name] = make_portal(portal_definition)
-
     routes = build_routes(portals)
-
     return tornado.web.Application(routes)
+
+
+def start_app(app):
+    port = config.fetch("port")
+    # TODO: Drop the option to configure xheaders once the portal is only
+    # running as container, then it would always be expected to be "True".
+    enable_xheaders = config.fetch("enable_xheaders")
+    logger.info("Support for xheaders enabled: %s", enable_xheaders)
+    logger.info("Firing up portal server at port %s", port)
+    app.listen(port, xheaders=enable_xheaders)
 
 
 def build_routes(portals):

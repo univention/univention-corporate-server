@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+ */
+
 // https://stackoverflow.com/questions/13382516/getting-scroll-bar-width-using-javascript
 export default function getScrollbarWidth(): number {
   // Creating invisible container

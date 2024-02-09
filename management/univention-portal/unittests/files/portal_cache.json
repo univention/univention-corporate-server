@@ -44,12 +44,12 @@
         "fr_FR": "Vue d'ensemble de tous les serveurs UCS du domaine"
       },
       "dn": "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
-      "icon_url": "/univention/portal/icons/entries/server-overview.svg",
       "in_portal": true,
       "linkTarget": "useportaldefault",
       "links": [
         "/univention/server-overview/"
       ],
+      "logo_name": "/univention/portal/icons/entries/server-overview.svg",
       "name": {
         "de_DE": "Serverübersicht",
         "en_US": "Server overview",
@@ -66,12 +66,12 @@
         "fr_FR": "Console de gestion Univention pour admin­is­trer le domaine UCS et le système local"
       },
       "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
-      "icon_url": "/univention/portal/icons/entries/umc-domain.svg",
       "in_portal": true,
       "linkTarget": "useportaldefault",
       "links": [
         "/univention/management/"
       ],
+      "logo_name": "/univention/portal/icons/entries/umc-domain.svg",
       "name": {
         "de_DE": "System- und Domäneneinstellungen",
         "en_US": "System and domain settings",
@@ -91,12 +91,12 @@
         "fr_FR": "Nouvelles, conseils et bonne pratique"
       },
       "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
-      "icon_url": "/univention/portal/icons/entries/univentionblog.png",
       "in_portal": true,
       "linkTarget": "newwindow",
       "links": [
         "https://www.univention.com/news/blog-en/"
       ],
+      "logo_name": "/univention/portal/icons/entries/univentionblog.png",
       "name": {
         "de_DE": "Univention Blog",
         "en_US": "Univention Blog",

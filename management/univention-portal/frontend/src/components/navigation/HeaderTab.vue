@@ -47,7 +47,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       >
         <img
           :src="logo"
-          onerror="this.src='./questionMark.svg'"
+          onerror="this.src='./media/questionmark.svg'"
           alt=""
           class="header-tab__logo"
         >

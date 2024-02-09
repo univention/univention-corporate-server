@@ -5,7 +5,6 @@ src/tmp/
 .DS_Store
 *.sqlite3
 *.db
-media/
 
 # Distribution and packaging
 node_modules/
@@ -13,6 +12,7 @@ dist/
 lib/
 lib64/
 out/
+public/i18n/
 var/
 downloads/
 package-lock.json

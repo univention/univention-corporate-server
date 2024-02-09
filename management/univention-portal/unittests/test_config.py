@@ -39,7 +39,13 @@ import pytest
 def test_load_config_success(mocked_portal_config):
     # Set up
     mocked_portal_config._DB = {"old": "value"}
-    expected_config = {"port": 8090, "fqdn": "dataport.ucs", "url": "http://127.0.0.1:8090", "test": True}
+    expected_config = {
+        "assets_root": "/usr/share/univention-portal/icons",
+        "port": 8090,
+        "fqdn": "dataport.ucs",
+        "url": "http://127.0.0.1:8090",
+        "test": True,
+    }
     # Execute
     assert mocked_portal_config.load.never_loaded is True
     mocked_portal_config.load()

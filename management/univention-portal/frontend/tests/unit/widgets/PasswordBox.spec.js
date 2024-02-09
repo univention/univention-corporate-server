@@ -60,7 +60,7 @@ describe('PasswordBox Component', () => {
       attachTo: '#root',
     });
 
-    const passwordBox = await wrapper.find('[data-test="password-box"]');
+    const passwordBox = await wrapper.find('[data-testid="password-box"]');
 
     // Expect input value to be empty on mount.
     expect(passwordBox.element.value).toBe('');
@@ -97,7 +97,7 @@ describe('PasswordBox Component', () => {
         invalidMessageId: '',
       },
     });
-    const passwordBox = await wrapper.find('[data-test="password-box"]');
+    const passwordBox = await wrapper.find('[data-testid="password-box"]');
 
     expect(passwordBox.attributes('type')).toBe('password');
   });
@@ -117,7 +117,7 @@ describe('PasswordBox Component', () => {
       },
     });
 
-    const passwordBox = await wrapper.find('[data-test="password-box"]');
+    const passwordBox = await wrapper.find('[data-testid="password-box"]');
     const passwordBoxButton = await wrapper.find('[data-test="password-box-icon"]');
 
     expect(passwordBoxButton.attributes('aria-label')).toBe('Show password');

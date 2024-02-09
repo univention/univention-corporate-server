@@ -1,3 +1,8 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+ */
+
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const production = process.env.NODE_ENV === 'production';
@@ -6,6 +11,10 @@ const vueConfig = {
   filenameHashing: false,
   pwa: {
     name: 'Univention Portal',
+  },
+  devServer: {
+    // TODO: When upgrading Webpack, then use "allowedHosts" instead.
+    disableHostCheck: process.env.VUE_APP_DISABLE_HOST_CHECK === "true",
   },
   // configureWebpack: {
   //   optimization: {
@@ -37,6 +46,7 @@ const vueConfig = {
           },
         }
       }]);
+    config.devtool('source-map');
   },
   css: {
     sourceMap: true,

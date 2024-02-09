@@ -35,7 +35,6 @@
 
 import asyncio
 import json
-import tempfile
 from datetime import datetime, timedelta
 from unittest import mock
 
@@ -65,9 +64,9 @@ class StubReloader(MtimeBasedLazyFileReloader):
         self.refresh("force")
 
     def _refresh(self):  # pragma: no cover
-        with tempfile.NamedTemporaryFile(mode="w", delete=False) as fd:
-            json.dump(self.content, fd, sort_keys=True, indent=4)
-        return fd
+        content = json.dumps(self.content, sort_keys=True, indent=4)
+        assets = []
+        return (content, assets)
 
 
 @pytest.fixture()
@@ -96,7 +95,8 @@ def portal_file(get_file_path):
 
 
 @pytest.fixture()
-def reloader(portal_file):
+def reloader(portal_file, mock_portal_config):
+    mock_portal_config({"assets_root": "/stub_assets_root"})
     return StubReloader(portal_file=portal_file)
 
 
@@ -108,8 +108,7 @@ def portal_data(reloader):
 
 
 @pytest.fixture()
-def standard_portal(dynamic_class, mocker, portal_file, reloader):
-    # Portal = dynamic_class("Portal")
+def standard_portal(dynamic_class, portal_file, reloader):
     scorer = dynamic_class("Scorer")()
     portal_cache = dynamic_class("PortalFileCache")(portal_file, reloader)
     authenticator = dynamic_class("UMCAuthenticator")("ucs", "session_url", "group_cache")
@@ -133,13 +132,13 @@ def mocked_portal(dynamic_class, mocker):
 
 
 class TestPortal:
-    def test_user(self, mocked_portal, mocker):
+    def test_user(self, mocked_portal):
         request = "request"
         loop = asyncio.get_event_loop()
         loop.run_until_complete(mocked_portal.get_user(request))
         mocked_portal.authenticator.get_user.assert_called_once_with(request)
 
-    def test_login(self, mocked_portal, mocker):
+    def test_login(self, mocked_portal):
         request = "request"
         loop = asyncio.get_event_loop()
         loop.run_until_complete(mocked_portal.login_user(request))
@@ -293,24 +292,23 @@ class TestPortal:
         mocked_portal.scorer.score.assert_called_once()
         mocked_portal.scorer.score.assert_called_with(request)
 
-    @pytest.mark.parametrize("umc_base_url", [
-        "http://ucshost.test/univention",
-        "http://ucshost.test/univention/",
+    @pytest.mark.parametrize("umc_get_url", [
+        "http://ucshost.test/univention/get",
+        "http://ucshost.test/univention/get/",
     ])
     def test_umc_portal_request_umc_get_uses_configured_url(
-        self, umc_base_url, mocker, mock_portal_config,
+        self, umc_get_url, mocker, mock_portal_config,
     ):
         from univention.portal.extensions.portal import UMCPortal
 
         requests_post = mocker.patch('requests.post')
-        mock_portal_config({"umc_base_url": umc_base_url})
-        portal = UMCPortal(mock.Mock(), mock.Mock(), "stub-secret")
+        mock_portal_config({"umc_get_url": umc_get_url})
+        portal = UMCPortal(mock.Mock(), mock.Mock())
         portal._request_umc_get('stub_path', mock.Mock())
 
         requests_post.assert_called_with(
             "http://ucshost.test/univention/get/stub_path",
-            json=mock.ANY, headers=mock.ANY,
-        )
+            json=mock.ANY, headers=mock.ANY)
 
     def test_announcement(self, mocked_user, portal_data, standard_portal):
         input_announcement = {

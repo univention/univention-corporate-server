@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ SPDX-License-Identifier: AGPL-3.0-only
+ SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+-->
+
 <umc version="2.0">
   <module id="udm" version="1.0">
     <name></name>

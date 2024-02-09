@@ -36,7 +36,7 @@
     ]"
   >
     <div
-      class="image-upload__canvas"
+      :class="['image-upload__canvas', readonly ? '' : 'cursorHand']"
       :data-test="`imageUploadCanvas--${extraLabel}`"
       @dragenter.prevent=""
       @dragover.prevent=""
@@ -73,6 +73,7 @@
         class="image-upload__file-input"
         type="file"
         :data-test="`imageUploadFileInput--${extraLabel}`"
+        :disabled="readonly"
         :accept="accept"
         @change="onUpload"
       >
@@ -80,6 +81,7 @@
         ref="uploadButton"
         type="button"
         :tabindex="tabindex"
+        :disabled="readonly"
         :data-test="`imageUploadButton--${extraLabel}`"
         @click.prevent="triggerUpload"
       >
@@ -94,7 +96,7 @@
       <button
         type="button"
         :tabindex="tabindex"
-        :disabled="!modelValue"
+        :disabled="!modelValue || readonly"
         :data-test="`imageRemoveButton--${extraLabel}`"
         @click.prevent="remove"
       >
@@ -138,6 +140,10 @@ export default defineComponent({
     modelValue: {
       type: String,
       required: true,
+    },
+    readonly: {
+      type: Boolean,
+      default: false,
     },
     tabindex: {
       type: Number,
@@ -208,6 +214,9 @@ export default defineComponent({
   },
   methods: {
     triggerUpload() {
+      if (this.readonly) {
+        return;
+      }
       (this.$refs.fileInput as HTMLElement).click();
     },
     drop(evt: DragEvent) {
@@ -292,12 +301,14 @@ export default defineComponent({
 </script>
 
 <style lang="stylus">
+.cursorHand
+  cursor: pointer
+
 .image-upload
   &__canvas
     position: relative
     height: 10rem
     width: 10rem
-    cursor: pointer
     display: flex
     background: var(--bgc-checkerboard)
     img

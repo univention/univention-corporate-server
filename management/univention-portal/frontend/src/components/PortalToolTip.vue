@@ -37,6 +37,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     <div
       ref="toolTip"
       class="portal-tooltip"
+      :class="!isZoom200() && isMobile ? 'portal-tooltip--mobile' : ''"
       role="tooltip"
       data-test="portal-tooltip"
       :style="tooltipPosition"
@@ -50,7 +51,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           data-test="portal-tooltip-arrow"
           :style="arrowPosition"
         />
-        <div class="cheat" />
+        <div class="copy-help" />
         <div
           class="portal-tooltip__header"
         >
@@ -61,8 +62,8 @@ License with the Debian GNU/Linux or Univention distribution in file
               :style="backgroundColor ? `background: ${backgroundColor}` : ''"
             >
               <img
-                :src="icon || './questionMark.svg'"
-                onerror="this.src='./questionMark.svg'"
+                :src="icon || './media/questionmark.svg'"
+                onerror="this.src='./media/questionmark.svg'"
                 alt=""
                 class="portal-tooltip__logo"
               >
@@ -91,11 +92,11 @@ License with the Debian GNU/Linux or Univention distribution in file
         />
         <!-- eslint-enable vue/no-v-html -->
         <div class="portal-tooltip__link-type">
-          {{ linkTypeText }}
+          {{ linkType.label }}
           <portal-icon
             class="portal-tooltip__link-type-icon"
             :class="{'portal-tooltip__link-type-icon--same-tab': sameTab}"
-            :icon="linkTypeIcon"
+            :icon="linkType.icon"
           />
         </div>
       </div>
@@ -139,7 +140,7 @@ export default defineComponent({
     },
     icon: {
       type: String,
-      default: './questionMark.svg',
+      default: './media/questionmark.svg',
     },
     position: {
       type: Object as PropType<Record<string, number>>,
@@ -158,6 +159,7 @@ export default defineComponent({
     return {
       calculatedPosition: {
         left: this.position.left,
+        right: 'unset',
         bottom: this.position.bottom,
         zone: 'REGULAR',
       },
@@ -168,41 +170,34 @@ export default defineComponent({
       return _('Close Tooltip');
     },
     tooltipPosition(): string {
-      if (!this.isMobile) {
-        this.calculatePosition();
-        return `left:${this.calculatedPosition.left}px;`;
-      }
-      return '';
+      return !this.isMobile ? `left:${this.returnAsCSSRule(this.calculatedPosition.left)}right:${this.returnAsCSSRule(this.calculatedPosition.right)}` : '';
     },
     arrowPosition(): string {
-      if (this.calculatedPosition.zone === 'RIGHT') {
-        return 'top: -2rem; right: 0.5rem;';
+      let style;
+      switch (this.calculatedPosition.zone) {
+        case 'RIGHT':
+          style = 'top: -2rem; right: 0.5rem;';
+
+          break;
+        case 'BOTTOM':
+          style = 'bottom: -2rem; left: 0.2rem; transform: rotate(180deg);';
+          break;
+        case 'BOTTOM_RIGHT':
+          style = 'bottom: -2rem; right: 0.5rem; transform: rotate(180deg);';
+          break;
+        case 'REGULAR':
+          style = 'top: -2rem; left:  0.2rem;';
+          break;
+        default:
+          console.log('Unknown positioning case');
       }
-      if (this.calculatedPosition.zone === 'BOTTOM') {
-        return 'bottom: -2rem; left: 0.2rem; transform: rotate(180deg);';
-      }
-      if (this.calculatedPosition.zone === 'BOTTOM_RIGHT') {
-        return 'bottom: -2rem; right: 0.5rem; transform: rotate(180deg);';
-      }
-      return 'top: -2rem; left:  0.2rem;';
+      return style;
     },
     transitionClassEnter(): string {
-      if (this.calculatedPosition.zone === 'BOTTOM') {
-        return 'fade-enter-from-top';
-      }
-      return 'fade-enter-from';
+      return this.calculatedPosition.zone === 'BOTTOM' ? 'fade-enter-from-top' : 'fade-enter-from';
     },
     transitionClassLeave(): string {
-      if (this.calculatedPosition.zone === 'BOTTOM') {
-        return 'fade-leave-from-top';
-      }
-      return 'fade-leave-from';
-    },
-    linkTypeText(): string {
-      return this.linkType.label;
-    },
-    linkTypeIcon(): string {
-      return this.linkType.icon;
+      return this.calculatedPosition.zone === 'BOTTOM' ? 'fade-leave-from-top' : 'fade-leave-from';
     },
     sameTab(): boolean {
       return this.linkType.icon === 'sidebar';
@@ -210,6 +205,9 @@ export default defineComponent({
   },
   created(): void {
     window.addEventListener('scroll', this.handleScroll);
+    if (!this.isMobile) {
+      this.calculatePosition();
+    }
   },
   unmounted(): void {
     window.removeEventListener('scroll', this.handleScroll);
@@ -256,35 +254,47 @@ export default defineComponent({
       }
     },
     calculatePosition(): void {
-      const tile = document.querySelector<HTMLElement>('.portal-tile__root-element');
-      if (tile) {
-        const regularZone = {
-          x: (window.innerWidth - tile?.offsetWidth * 2),
-          y: (window.innerHeight - tile?.offsetHeight * 2),
+      const safeZoneMultiplikatorY = this.isZoom200() ? 1 : 2;
+      const safeZoneMultiplikatorX = this.isZoom200() ? 4 : 3;
+
+      const regularZone = {
+        x: (window.innerWidth - this.position.tileWidth * safeZoneMultiplikatorX),
+        y: (window.innerHeight - this.position.tileHeight * safeZoneMultiplikatorY),
+      };
+      if (this.position.x > regularZone.x && this.position.y <= regularZone.y) {
+        this.calculatedPosition = {
+          left: this.isZoom200() ? 'unset' : this.position.left - this.position.tileWidth * 2,
+          right: this.isZoom200() ? window.innerWidth - this.position.right : 'unset',
+          bottom: this.position.bottom,
+          zone: 'RIGHT',
         };
-        if (this.position.x > regularZone.x && this.position.y <= regularZone.y) {
-          this.calculatedPosition = {
-            left: this.position.left - tile?.offsetWidth * 2,
-            bottom: this.position.bottom,
-            zone: 'RIGHT',
-          };
-        } else if (this.position.x <= regularZone.x && this.position.y > regularZone.y) {
-          this.calculatedPosition = {
-            bottom: window.innerHeight - (this.position.y - 20),
-            left: this.position.left,
-            zone: 'BOTTOM',
-          };
-        } else if (this.position.x > regularZone.x && this.position.y > regularZone.y) {
-          this.calculatedPosition = {
-            left: this.position.left - tile?.offsetWidth * 2,
-            bottom: window.innerHeight - (this.position.y - 20),
-            zone: 'BOTTOM_RIGHT',
-          };
-        }
+      } else if (this.position.x <= regularZone.x && this.position.y > regularZone.y) {
+        this.calculatedPosition = {
+          bottom: window.innerHeight - (this.position.y - 20),
+          left: this.position.left,
+          zone: 'BOTTOM',
+        };
+      } else if (this.position.x > regularZone.x && this.position.y > regularZone.y) {
+        this.calculatedPosition = {
+          left: this.isZoom200() ? 'unset' : this.position.left - this.position.tileWidth * 2,
+          right: this.isZoom200() ? window.innerWidth - this.position.right : 'unset',
+          bottom: window.innerHeight - (this.position.y - 20),
+          zone: 'BOTTOM_RIGHT',
+        };
       }
     },
     handleScroll(): void {
       this.$store.dispatch('tooltip/unsetTooltip');
+    },
+    isZoom200(): boolean {
+      const browserZoomLevel = Math.round((window.devicePixelRatio * 100) / 2);
+      // BROWSER ZOOM DEFAULT: 100
+      // MOBILE ZOOM DEFAULT: 100 - 150
+      // BROWSER ZOOM WCAG2.1 AA: 200
+      return !!browserZoomLevel && browserZoomLevel >= 200;
+    },
+    returnAsCSSRule(value): string {
+      return typeof value === 'number' ? `${value}px;` : `${value};`;
     },
   },
 });
@@ -304,18 +314,19 @@ export default defineComponent({
   display: block
   border: 1px solid var(--font-color-contrast-high)
 
-  @media $mqSmartphone
-    bottom: unset;
-    top: calc(3 * var(--layout-spacing-unit))
-    min-width: 4rem
-    max-width: 84vw
-    width: 90%
-    left:0
-    right:0
-    margin-left:auto
-    margin-right:auto
-    font-size: var(--font-size-5)
-    pointer-events: auto
+  &--mobile
+    @media $mqSmartphone
+      bottom: unset;
+      left:0
+      right:0
+      margin-left:auto
+      margin-right:auto
+      font-size: var(--font-size-5)
+      pointer-events: auto
+      min-width: 4rem
+      max-width: 84vw
+      width: 90%
+      top: calc(3 * var(--layout-spacing-unit))
 
   &__header
     display: flex
@@ -381,7 +392,7 @@ export default defineComponent({
     width: 0.8rem
     &--same-tab
       transform: rotate(90deg)
-  .cheat
+  .copy-help
     width: calc(100%);
     height: calc(100% + 75%);
     position absolute

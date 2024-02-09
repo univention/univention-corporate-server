@@ -8,19 +8,27 @@ default_admin_groups = "cn=%s,cn=groups,%s" % (
 )
 admin_groups = configRegistry.get("portal/admin-groups", default_admin_groups).split(", ")
 admin_groups = [group.strip() for group in admin_groups]
+hostname = configRegistry.get("hostname")
+fqdn = "%s.%s" % (hostname, configRegistry.get("domainname"))
 config = {
-    "assets_root": "/usr/share/univention-portal",
     "port": configRegistry.get("portal/port"),
     "admin_groups": admin_groups,
-    "fqdn": "%(hostname)s.%(domainname)s" % configRegistry,
+    "fqdn": fqdn,
     "hostdn": configRegistry.get("ldap/hostdn"),
     "ldap_base": configRegistry.get("ldap/base"),
     "ldap_uri": "ldap://%s:%s" % (configRegistry.get("ldap/server/name"), configRegistry.get("ldap/server/port")),
     "auth_mode": configRegistry.get("portal/auth-mode"),
+    "ucs_internal_url": "http://localhost/univention/internal",
+    "umc_get_url": "http://localhost/univention/get",
     "umc_session_url": "http://localhost/univention/get/session-info",
+    "umc_check_icons": True,
     "default_domain_dn": configRegistry.get("portal/default-dn"),
     "editable": configRegistry.get("server/role") == "domaincontroller_master",
-    "umc_base_url": "http://127.0.0.1/univention/",
+    "udm_api_url": "https://%s/univention/udm" % fqdn,
+    "udm_api_username": hostname + "$",
+    "udm_api_password_file": "/etc/machine.secret",
+    "assets_root": "/usr/share/univention-portal",
+    "enable_xheaders": False,
 }
 print(json.dumps(config, sort_keys=True, indent=2))
 @!@

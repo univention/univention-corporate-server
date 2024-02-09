@@ -59,7 +59,7 @@ export default defineComponent({
   },
   props: {
     modelValue: {
-      // type: Object, TODO
+      type: null,
       required: true,
     },
     widgets: {
