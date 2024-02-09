@@ -16,5 +16,5 @@ Categories=management-udm
 Description[de]=Von einem UDM-Objekt entfernte Eigenschaftsswerte können automatisch für zukünftige Verwendung blockiert werden. Sobald die Blockierung eines Objektes abläuft, wird die Blockierung durch ein Skript aufgehoben. Diese Variable legt fest, wie häufig dieses Skript die Blockierungsdauer prüft und die abgelaufenden Blockierungen aufhebt. Der Wert muss das Zeitformat eines Crontab-Eintrags haben.
 Description[en]=Properties removed from a UDM object can be automatically blocked for future use. Once the blocking of an object expires, the blocking is lifted by a script. This variable determines how often this script checks the duration of blocking and lifts the expired blocks if the retention time elapsed. The value must be in the time format of a crontab entry.
 Type=cron
-Default=*/15 * * * *
+Default=0 8 * * *
 Categories=management-udm

@@ -1,0 +1,10 @@
+@%@UCRWARNING=# @%@
+
+@!@
+if configRegistry.get('directory/manager/blocklist/enabled', False):
+    script = "/usr/share/univention-directory-manager-tools/univention-blocklist-clean-expired-entries"
+    interval = configRegistry.get("directory/manager/blocklist/cleanup/cron", "0 8 * * *")
+
+    if interval:
+        print("%s       root    %s --remove-expired" % (interval, script))
+@!@
