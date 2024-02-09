@@ -84,9 +84,9 @@ property_descriptions = {
     'contact': univention.admin.property(
         short_description=_('Contact person'),
         long_description=_('The email address of the person responsible for this zone.'),
-        syntax=univention.admin.syntax.string,
+        syntax=univention.admin.syntax.emailAddressThatMayEndWithADot,
         required=True,
-        default=('root@%s.' % configRegistry.get('domainname', ''), []),
+        default=('root@%(domainname)s.' % configRegistry, []),
     ),
     'serial': univention.admin.property(
         short_description=_('Serial number'),
@@ -213,8 +213,8 @@ class object(univention.admin.handlers.simpleLdap):
 
         soa = self.oldattr.get('sOARecord', [b''])[0].split(b' ')
         if len(soa) > 6:
-            self['contact'] = unescapeSOAemail(soa[1].decode('UTF-8'))
-            self['serial'] = soa[2].decode('UTF-8')
+            self['contact'] = unescapeSOAemail(soa[1].decode('ASCII'))
+            self['serial'] = soa[2].decode('ASCII')
             self['refresh'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[3])
             self['retry'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[4])
             self['expire'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[5])
@@ -237,7 +237,7 @@ class object(univention.admin.handlers.simpleLdap):
             retry = univention.admin.mapping.mapUNIX_TimeInterval(self['retry'])
             expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
             ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
-            soa = b'%s %s %s %s %s %s %s' % (self['nameserver'][0].encode('UTF-8'), escapeSOAemail(self['contact']).encode('UTF-8'), self['serial'].encode('UTF-8'), refresh, retry, expire, ttl)
+            soa = b'%s %s %s %s %s %s %s' % (self['nameserver'][0].encode('ASCII'), escapeSOAemail(self['contact']).encode('ASCII'), self['serial'].encode('ASCII'), refresh, retry, expire, ttl)
             ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa))
         return ml
 

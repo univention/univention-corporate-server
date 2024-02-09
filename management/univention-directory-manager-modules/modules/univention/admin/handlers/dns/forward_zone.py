@@ -86,7 +86,7 @@ property_descriptions = {
         long_description=_('The email address of the person responsible for this zone.'),
         syntax=univention.admin.syntax.emailAddressThatMayEndWithADot,
         required=True,
-        default=('root@%s' % configRegistry.get('domainname'), []),
+        default=('root@%(domainname)s.' % configRegistry, []),
     ),
     'serial': univention.admin.property(
         short_description=_('Serial number'),
@@ -154,8 +154,8 @@ layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('General forward lookup zone settings'), layout=[
             'zone',
-            'nameserver',
             'zonettl',
+            'nameserver',
         ]),
     ]),
     Tab(_('Start of authority'), _('Primary name server information'), layout=[
@@ -194,8 +194,8 @@ def unmapMX(old, encoding=()):
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('zone', 'zoneName', stripDot, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('nameserver', 'nSRecord', encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+mapping.register('nameserver', 'nSRecord', encoding='ASCII')
 mapping.register('mx', 'mXRecord', mapMX, unmapMX, encoding='ASCII')
 mapping.register('txt', 'tXTRecord', encoding='ASCII')
 
@@ -219,6 +219,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def open(self):
         univention.admin.handlers.simpleLdap.open(self)
+
         soa = self.oldattr.get('sOARecord', [b''])[0].split(b' ')
         if len(soa) > 6:
             self['contact'] = unescapeSOAemail(soa[1].decode('ASCII'))
