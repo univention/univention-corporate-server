@@ -109,7 +109,7 @@ class NavigationHandler(PortalResource):
         self.write(navigation)
 
     def _get_entry(self, entry_data, entry_dn):
-        icon_url = entry_data["logo_name"] or None
+        icon_url = entry_data["icon_url"] or None
         # most icons are referenced as ./portal/foo.svg
         if icon_url and icon_url.startswith("."):
             icon_url = icon_url[1:]

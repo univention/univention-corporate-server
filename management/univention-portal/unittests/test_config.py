@@ -45,6 +45,7 @@ def test_load_config_success(mocked_portal_config):
         "fqdn": "dataport.ucs",
         "url": "http://127.0.0.1:8090",
         "test": True,
+        "use-udm-rest-api": True,
     }
     # Execute
     assert mocked_portal_config.load.never_loaded is True

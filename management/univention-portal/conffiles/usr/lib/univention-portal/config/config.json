@@ -29,6 +29,7 @@ config = {
     "udm_api_password_file": "/etc/machine.secret",
     "assets_root": "/usr/share/univention-portal",
     "enable_xheaders": False,
+    "use-udm-rest-api": False,
 }
 print(json.dumps(config, sort_keys=True, indent=2))
 @!@

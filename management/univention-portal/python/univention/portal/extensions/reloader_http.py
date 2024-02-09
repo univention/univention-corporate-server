@@ -37,6 +37,7 @@ from urllib.parse import urljoin, urlsplit
 
 import requests
 
+from univention.portal import config
 from univention.portal.extensions import reloader
 from univention.portal.log import get_logger
 from univention.portal.util import log_url_safe
@@ -123,7 +124,8 @@ class HttpPortalReloader(HttpReloader):
         self._portal_dn = portal_dn
 
     def _create_content_fetcher(self):
-        return reloader.PortalContentFetcher(self._portal_dn, self._assets_root)
+        cls = reloader.PortalContentFetcherUDMREST if config.fetch("use-udm-rest-api") else reloader.PortalContentFetcherUDM
+        return cls(self._portal_dn, self._assets_root)
 
     def _check_reason(self, reason=None):
         return reloader.check_portal_reason(reason)

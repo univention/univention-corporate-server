@@ -41,7 +41,7 @@ import pytest
 import stub_udm_client
 
 import univention.admin.rest.client as udm_client
-from univention.portal.extensions.reloader_content import GroupsContentFetcher, PortalContentFetcher
+from univention.portal.extensions.reloader_content import GroupsContentFetcher, PortalContentFetcherUDMREST
 
 
 stub_portal_dn = "cn=domain,cn=portal,cn=test"
@@ -53,15 +53,15 @@ stub_image_base64 = binascii.b2a_base64(stub_image)
 def portal_content_fetcher(mocker):
     put_mock = mocker.patch("requests.put")
     put_mock().status_code = 201
-    return PortalContentFetcher(stub_portal_dn, "/stub_root")
+    return PortalContentFetcherUDMREST(stub_portal_dn, "/stub_root")
 
 
 def test_portal_content_fetcher_propagates_connectionerror(mocker):
-    content_fetcher = PortalContentFetcher(stub_portal_dn, "/stub_root")
+    content_fetcher = PortalContentFetcherUDMREST(stub_portal_dn, "/stub_root")
     udm_return = mocker.Mock()
     udm_return.get.side_effect = udm_client.ConnectionError
     mocker.patch.object(
-        PortalContentFetcher, "_create_udm_client",
+        PortalContentFetcherUDMREST, "_create_udm_client",
         return_value=udm_return)
 
     with pytest.raises(udm_client.ConnectionError):
@@ -78,9 +78,9 @@ def test_portal_content_fetcher_returns_content(mocker):
     result_mock.status_code = 201
     mocker.patch("requests.put", return_value=result_mock)
     mocker.patch.object(
-        PortalContentFetcher, "_create_udm_client",
+        PortalContentFetcherUDMREST, "_create_udm_client",
         return_value=stub_udm_client.StubUDMClient())
-    content_fetcher = PortalContentFetcher(stub_portal_dn, "http://stub-host")
+    content_fetcher = PortalContentFetcherUDMREST(stub_portal_dn, "http://stub-host")
     content = content_fetcher.fetch()
     expected_content = """{
     "announcements": {
@@ -115,6 +115,7 @@ def test_portal_content_fetcher_returns_content(mocker):
             "backgroundColor": "stub_backgroundColor",
             "description": "stub_description",
             "dn": "cn=stub_category,dc=stub,dc=test",
+            "icon_url": "./icons/entries/stub_name.svg",
             "in_portal": false,
             "keywords": "stub_keywords",
             "linkTarget": "stub_linkTarget",
@@ -128,7 +129,6 @@ def test_portal_content_fetcher_returns_content(mocker):
                     "value": "t"
                 }
             ],
-            "logo_name": "./icons/entries/stub_name.svg",
             "name": "stub_displayName",
             "target": "stub_target"
         }

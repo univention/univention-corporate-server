@@ -61,7 +61,7 @@ def http_reloader():
 @pytest.fixture()
 def http_portal_reloader(mocker, mock_portal_config):
     """An instance of HttpPortalReloader."""
-    mock_portal_config({"assets_root": "http://stub-host/"})
+    mock_portal_config({"assets_root": "http://stub-host/", "use-udm-rest-api": True})
     instance = reloader_http.HttpPortalReloader(stub_url, stub_assets_root, stub_portal_dn)
     return instance
 
@@ -177,7 +177,7 @@ def test_http_reloader_creates_asset_urls(assets_root, http_reloader):
 
 def test_http_portal_reloader_uses_portal_content_fetcher(http_portal_reloader):
     content_fetcher = http_portal_reloader._create_content_fetcher()
-    assert isinstance(content_fetcher, reloader.PortalContentFetcher)
+    assert isinstance(content_fetcher, reloader.PortalContentFetcherUDMREST)
 
 
 def test_http_portal_reloader_checks_reason(http_portal_reloader, mocker):

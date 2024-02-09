@@ -168,13 +168,7 @@ class Portal(metaclass=Plugin):
 
     def get_entries(self, content):
         entries = self.portal_cache.get_entries()
-        return [self._map_entry(entries[entry_dn]) for entry_dn in content["entry_dns"]]
-
-    def _map_entry(self, entry):
-        # TODO: Pending refactoring to use "icon_url" consistently
-        # See https://git.knut.univention.de/univention/components/univention-portal/-/issues/696
-        entry["icon_url"] = entry.pop("logo_name")
-        return entry
+        return [entries[entry_dn] for entry_dn in content["entry_dns"]]
 
     def get_folders(self, content):
         folders = self.portal_cache.get_folders()

@@ -38,7 +38,8 @@ import shutil
 import tempfile
 
 from univention.portal import Plugin, config
-from univention.portal.extensions.reloader_content import GroupsContentFetcher, PortalContentFetcher
+from univention.portal.extensions.reloader_content import GroupsContentFetcher, PortalContentFetcherUDMREST
+from univention.portal.extensions.reloader_udm import PortalContentFetcherUDM
 from univention.portal.log import get_logger
 
 
@@ -168,7 +169,8 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
         return check_portal_reason(reason)
 
     def _refresh(self):
-        content_fetcher = PortalContentFetcher(self._portal_dn, self._assets_root)
+        cls = PortalContentFetcherUDMREST if config.fetch("use-udm-rest-api") else PortalContentFetcherUDM
+        content_fetcher = cls(self._portal_dn, self._assets_root)
         content = content_fetcher.fetch()
         return (content, content_fetcher.assets)
 
