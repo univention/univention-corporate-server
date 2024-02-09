@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2022-04-22 22:53+0200\n"
-"PO-Revision-Date: 2015-07-17 12:46+0200\n"
+"PO-Revision-Date: 2024-02-09 14:19+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
@@ -377,8 +377,11 @@ msgstr "Die FQDNs der Rechner, die genannte Zone bereitstellen."
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:125
 #: modules/univention/admin/handlers/dns/reverse_zone.py:125
-msgid "The FQDNs of the servers serving this zone."
-msgstr "Die FQDNs der Rechner, die diese Zone bereitstellen."
+msgid ""
+"The FQDNs of the servers serving this zone. A FQDN must end with a dot."
+msgstr ""
+"Die FQDNs der Rechner, die diese Zone bereitstellen. Der FQDN muss mit "
+"einem Punkt enden."
 
 #: modules/univention/admin/handlers/dns/forward_zone.py:83
 #: modules/univention/admin/handlers/dns/reverse_zone.py:83

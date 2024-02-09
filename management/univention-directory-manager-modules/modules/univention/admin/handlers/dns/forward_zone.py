@@ -125,7 +125,7 @@ property_descriptions = {
     ),
     'nameserver': univention.admin.property(
         short_description=_('Name server'),
-        long_description=_('The FQDNs of the servers serving this zone.'),
+        long_description=_('The FQDNs of the servers serving this zone. A FQDN must end with a dot.'),
         syntax=univention.admin.syntax.dnsHostname,
         multivalue=True,
         required=True,
