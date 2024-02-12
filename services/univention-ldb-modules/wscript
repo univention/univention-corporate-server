@@ -73,7 +73,7 @@ def build(bld):
     # for install with a different -DLDB_MODULESDIR=
     bld.SAMBA_SUBSYSTEM('LIBLDB_MAIN',
                         None,
-                        cflags=['-DLDB_MODULESDIR=\"%s\"' % modules_dir])
+                        cflags=['-DLDB_MODULESDIR="%s"' % modules_dir])
 
 
 def test(ctx):

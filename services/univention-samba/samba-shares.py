@@ -35,6 +35,8 @@
 
 from __future__ import absolute_import, annotations, print_function
 
+import functools
+import operator
 import os
 import re
 import subprocess
@@ -265,9 +267,9 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
             prev_aces = set()
             new_aces = set()
             if 'univentionShareSambaBaseDirAppendACL' in old:
-                prev_aces = set(sum([RE_ACE.findall(acl.decode('UTF-8')) for acl in old['univentionShareSambaBaseDirAppendACL']], []))
+                prev_aces = set(functools.reduce(operator.iadd, [RE_ACE.findall(acl.decode('UTF-8')) for acl in old['univentionShareSambaBaseDirAppendACL']], []))
             if 'univentionShareSambaBaseDirAppendACL' in new:
-                new_aces = set(sum([RE_ACE.findall(acl.decode('UTF-8')) for acl in new['univentionShareSambaBaseDirAppendACL']], []))
+                new_aces = set(functools.reduce(operator.iadd, [RE_ACE.findall(acl.decode('UTF-8')) for acl in new['univentionShareSambaBaseDirAppendACL']], []))
 
             if (new_aces and new_aces != prev_aces) or (prev_aces and not new_aces):
                 # if old != new -> delete everything from old!

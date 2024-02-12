@@ -175,7 +175,7 @@ def pattern_replace(pattern, object):
                 return ''
 
         # make sure the key value exists
-        if key in object and object[key]:
+        if key in object and object[key]:  # noqa: RUF019
             val = modify_text(object[key], strCommands)
             # try to apply the indexing instructions, indicated through '[...]'
             if ext:

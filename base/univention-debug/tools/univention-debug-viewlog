@@ -76,12 +76,10 @@ msg_pattern = re.compile(r'^([^ ]+) *\( ([^ ]+) +\) : (.+)$')
 
 def suspended(levels):
     suspend = 1
-    priority = 0
-    for pattern, type in functions:
+    for _priority, (pattern, type) in enumerate(functions):
         for level in levels:
             if type != 1 and re.match(pattern, level):
                 suspend = type
-        priority += 1
 
     return suspend < 1
 

@@ -1530,9 +1530,8 @@ class ucs(object):
                 def split(filter):
                     opened = []
                     closed = []
-                    pos = 0
                     level = 0
-                    for char in filter:
+                    for pos, char in enumerate(filter):
                         if char == '(':
                             if level == 0:
                                 opened.append(pos)
@@ -1543,7 +1542,6 @@ class ucs(object):
                             level -= 1
                         if level < 0:
                             raise ValueError("too many ')' in filter: %s" % filter)
-                        pos += 1
 
                     if len(opened) != len(closed):
                         raise ValueError("'(' and ')' don't match in filter: %s" % filter)

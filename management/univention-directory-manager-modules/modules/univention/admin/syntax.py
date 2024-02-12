@@ -6045,7 +6045,7 @@ class LDAP_Search(select):
                     id = dn
                 elif store in obj:
                     id = obj[store]
-                elif store in obj.oldattr and obj.oldattr[store]:
+                elif obj.oldattr.get(store):
                     id = obj.oldattr[store][0].decode(*module.mapping.getEncoding(store))
                 else:
                     # no valid store object, ignore
@@ -6060,7 +6060,7 @@ class LDAP_Search(select):
             else:
                 if display in obj:
                     label = obj[display]
-                elif display in obj.oldattr and obj.oldattr[display]:
+                elif obj.oldattr.get(display):
                     label = obj.oldattr[display][0].decode(*module.mapping.getEncoding(display))
                 else:
                     ud.debug(ud.ADMIN, ud.WARN, 'LDAP_Search syntax %r: defines unknown attribute %r' % (cls.name, display))

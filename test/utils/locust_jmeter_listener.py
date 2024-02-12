@@ -110,15 +110,15 @@ class JmeterListener:
         timestamp = datetime.fromtimestamp(time()).strftime(self.timestamp_format)
         response_message = "OK" if success == "true" else "KO"
         # check to see if the additional fields have been populated. If not, set to a default value
-        status_code = kw["status_code"] if "status_code" in kw else "0"
+        status_code = kw.get("status_code", "0")
         thread_name = self.testplan
-        data_type = kw["data_type"] if "data_type" in kw else "unknown"
-        bytes_sent = kw["bytes_sent"] if "bytes_sent" in kw else "0"
+        data_type = kw.get("data_type", "unknown")
+        bytes_sent = kw.get("bytes_sent", "0")
         group_threads = str(self.runner.user_count)
         all_threads = str(self.runner.user_count)
-        latency = kw["latency"] if "latency" in kw else "0"
-        idle_time = kw["idle_time"] if "idle_time" in kw else "0"
-        connect = kw["connect"] if "connect" in kw else "0"
+        latency = kw.get("latency", "0")
+        idle_time = kw.get("idle_time", "0")
+        connect = kw.get("connect", "0")
         row = [
             timestamp,
             str(round(response_time)),

@@ -60,7 +60,7 @@ group_objects = []
 connector_needs_restart = False
 
 dirs = [listener.configRegistry.get('connector/s4/listener/dir', '/var/lib/univention-connector/s4')]
-if 'connector/listener/additionalbasenames' in listener.configRegistry and listener.configRegistry['connector/listener/additionalbasenames']:
+if listener.configRegistry.get('connector/listener/additionalbasenames'):
     for configbasename in listener.configRegistry['connector/listener/additionalbasenames'].split(' '):
         if '%s/s4/listener/dir' % configbasename in listener.configRegistry and listener.configRegistry['%s/s4/listener/dir' % configbasename]:
             dirs.append(listener.configRegistry['%s/s4/listener/dir' % configbasename])

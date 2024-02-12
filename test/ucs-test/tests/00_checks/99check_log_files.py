@@ -41,14 +41,12 @@ class CheckLogFiles:
         Max length of traceback defined by 'self.max_trace_lines'.
         """
         trace_message = ''
-        trace_line = 0
         last_line = ''
 
-        for line in self.log_file:
+        for trace_line, line in enumerate(self.log_file, 1):
             line = line.decode('UTF-8', 'replace')
             trace_message += line
             self.line_counter += 1
-            trace_line += 1
 
             if trace_line >= self.max_trace_lines or 'Error: ' in line:
                 last_line = line.strip()

@@ -40,7 +40,7 @@ class PhaseSaveOldApplianceAddress(AddressChange):
             "type": "appliance-mode-temporary",
         }
         for key in ("address", "network", "netmask", "broadcast"):
-            tmp_iface[key] = iface.get(key, None)
+            tmp_iface[key] = iface.get(key)
         return tmp_iface
 
     @staticmethod

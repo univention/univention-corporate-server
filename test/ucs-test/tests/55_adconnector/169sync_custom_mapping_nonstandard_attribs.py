@@ -100,16 +100,7 @@ class TestADCustomMappings(unittest.TestCase):
         udm.create_object(  # noqa: PIE804
             "settings/extended_attribute",
             position="cn=custom attributes,cn=univention,%s" % self.ldap_base,
-            **{
-                "name": ldapMapping,
-                "ldapMapping": ldapMapping,  # mandatory
-                "CLIName": ldapMapping,  # mandatory
-                "objectClass": "univentionFreeAttributes",  # mandatory
-                "shortDescription": ("test value: %s" % defaultValue),
-                "valueRequired": "1",
-                "module": [module],
-                "default": defaultValue,
-            },
+            name=ldapMapping, ldapMapping=ldapMapping, CLIName=ldapMapping, objectClass="univentionFreeAttributes", shortDescription="test value: %s" % defaultValue, valueRequired="1", module=[module], default=defaultValue,
         )
 
     def test_ldap_to_ad_with_mapping(self):

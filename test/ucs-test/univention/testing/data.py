@@ -572,7 +572,7 @@ class TestCase:
             self.apps = CheckApps(
                 header.get('apps', []),
                 header.get('apps-not', []))
-            self.join = CheckJoin(header.get('join', None))
+            self.join = CheckJoin(header.get('join'))
             self.components = CheckComponents(header.get('components', {}))
             self.packages = CheckPackages(header.get('packages', []), header.get('packages-not', []))
             self.exposure = CheckExposure(header.get('exposure', 'dangerous'))
