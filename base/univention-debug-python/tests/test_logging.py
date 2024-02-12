@@ -165,8 +165,8 @@ def test_loglevel_mapping_ud(ud_level, log_level):
         (x, y)
         for z, y in [
             (range(logging.DEBUG + 1, logging.INFO), ud.INFO),
-            (range(logging.INFO + 1, logging.WARN), ud.PROCESS),
-            (range(logging.WARN + 1, logging.ERROR), ud.WARN),
+            (range(logging.INFO + 1, logging.WARNING), ud.PROCESS),
+            (range(logging.WARNING + 1, logging.ERROR), ud.WARN),
             ([100], ud.ERROR),
         ]
         for x in z

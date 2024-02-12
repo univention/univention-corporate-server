@@ -92,7 +92,7 @@ class NetworkSetup(SetupScript):
 
         self.options = parser.parse_args()
 
-    LEVEL = (logging.FATAL, logging.ERROR, logging.WARN, logging.INFO, logging.DEBUG)
+    LEVEL = (logging.FATAL, logging.ERROR, logging.WARNING, logging.INFO, logging.DEBUG)
 
     def setup_logging(self):
         try:

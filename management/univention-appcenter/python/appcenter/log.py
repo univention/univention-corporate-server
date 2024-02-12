@@ -101,7 +101,7 @@ class UMCHandler(logging.Handler):
                 MODULE.info(msg)
             elif record.levelno <= logging.INFO:
                 MODULE.process(msg)
-            elif record.levelno <= logging.WARN:
+            elif record.levelno <= logging.WARNING:
                 MODULE.warn(msg)
             else:
                 MODULE.error(msg)
@@ -208,7 +208,7 @@ def catch_stdout(logger=None):
     old_stdout = sys.stdout
     old_stderr = sys.stderr
     sys.stdout = StreamReader(logger, logging.INFO)
-    sys.stderr = StreamReader(logger, logging.WARN)
+    sys.stderr = StreamReader(logger, logging.WARNING)
     try:
         yield
     finally:
@@ -220,7 +220,7 @@ def log_to_stream():
     """
     Call this function to log to stdout/stderr
     stdout: logging.INFO
-    stderr: logging.WARN and upwards
+    stderr: logging.WARNING and upwards
     logging.DEBUG: suppressed
     only the message is logged, no further formatting
     stderr is logged in red (if its a tty)
@@ -235,7 +235,7 @@ def log_to_stream():
         if sys.stderr.isatty():
             formatter = logging.Formatter('\x1b[1;31m%(message)s\x1b[0m')  # red
             handler.setFormatter(formatter)
-        handler.addFilter(RangeFilter(min_level=logging.WARN))
+        handler.addFilter(RangeFilter(min_level=logging.WARNING))
         logger.addHandler(handler)
 
 

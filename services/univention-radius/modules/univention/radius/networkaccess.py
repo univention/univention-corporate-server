@@ -59,7 +59,7 @@ def convert_network_access_attr(attributes):
 
 def convert_ucs_debuglevel(ucs_debuglevel):
     # type: (int) -> int
-    logging_debuglevel = [logging.ERROR, logging.WARN, logging.INFO, logging.INFO, logging.DEBUG][max(0, min(4, ucs_debuglevel))]
+    logging_debuglevel = [logging.ERROR, logging.WARNING, logging.INFO, logging.INFO, logging.DEBUG][max(0, min(4, ucs_debuglevel))]
     return logging_debuglevel
 
 
