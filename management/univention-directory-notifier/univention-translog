@@ -827,7 +827,7 @@ class CheckGeneric(object):
         :param bool renum: The error can be fixed by re-numbering all transactions.
         :param bool syntax: The line contains syntax error needing manual fixing.
         """
-        self.log.error('%s:%d:%r: ' + string, self.filename, self.lnr, self.line, *args)
+        self.log.error('%s:%d:%r: ' + string, self.filename, self.lnr, self.line, *args)  # noqa: G003
         self.needs_fixing |= kwargs.get('fix', True)
         self.needs_sort |= kwargs.get('sort', False)
         self.needs_fill |= kwargs.get('fill', False)

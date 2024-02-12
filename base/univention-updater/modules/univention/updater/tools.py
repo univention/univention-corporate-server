@@ -1281,7 +1281,7 @@ class UniventionUpdater(object):
                 self.log.info('Using configured prefix %s', self.repourl.path)
                 self.releases = json.loads(data)
             except DownloadError as e:
-                self.log.error('Failed configured prefix %s', self.repourl.path, exc_info=True)
+                self.log.exception('Failed configured prefix %s', self.repourl.path)
                 uri, code = e.args
                 raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri))
         except ConfigurationError as e:

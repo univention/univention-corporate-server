@@ -130,7 +130,6 @@ ignore = [
  "SIM115",  # open-file-with-context-handler
  "SIM102",  # nested-if-statements
  "SIM105",  # use-contextlib-suppress
- "G",  # logging
  "TRY",  # tryceratops
  "PT004", "PT007", "PT011", "PT012", "PT017", "PT018",  # pytest
  "PGH003",  # blanket-type-ignore

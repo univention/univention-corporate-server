@@ -99,7 +99,7 @@ def get_logger(name):
         if isinstance(log_level, int):
             logger.setLevel(log_level)
         else:
-            logger.warning('Cannot use log level %s. Call ucr set admin/diary/logging/%s=DEBUG (for example)' % (log_level, name))
+            logger.warning('Cannot use log level %s. Call ucr set admin/diary/logging/%s=DEBUG (for example)', log_level, name)
     return logger
 
 

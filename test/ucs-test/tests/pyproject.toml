@@ -3,4 +3,4 @@ extend = "../../../pyproject.toml"
 [tool.ruff.lint]
 # ucs-test headers is ##-prefixed YAML
 # extend-ignore = ["E266"]
-extend-ignore = ["EXE003"]
+extend-ignore = ["EXE003", "G"]
