@@ -74,6 +74,18 @@ Use the following UCR variables to configure the cookie banner dialog.
 .. envvar:: umc/cookie-banner/domains
 
    Optional setting for the domains for which the cookie consent banner dialog is active.
+   The value is a comma-separated list of domain names,
+   for which UCS shows the cookie consent banner.
+   For an empty list, UCS shows the banner for all domain names.
+   The domain matches from the end of the string.
+
+   Examples:
+
+   * The value ``example.com`` matches ``portal.example.com`` and ``sso.example com``.
+     UCS shows the banner for both domain names.
+
+   * For the value ``portal.example.com`` UCS doesn't show the cookie consent
+     banner for ``sso.example.com``, but for ``portal.example.com``.
 
 .. envvar:: umc/cookie-banner/show
 
