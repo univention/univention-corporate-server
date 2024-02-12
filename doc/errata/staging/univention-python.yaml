@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-python
+fix: 13.0.5-2
+desc: |
+ This update addresses the following issues:
+ * The log messages of `uldap` are now logged via the Python `logging`
+   interface, which is configured to still log to the `univention.debug` log
+   stream.  This is a prerequisite for prefixing log lines with the request ID
+   in the UDM REST API.
+bug: [56970]

@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import logging
 import os
 import re
 import string
@@ -39,7 +40,6 @@ import cracklib
 from ldap.filter import filter_format
 
 import univention.config_registry as ucr
-import univention.debug as ud
 import univention.uldap
 
 
@@ -47,7 +47,7 @@ try:
     from samba import check_password_quality as samba_check_password_quality
 except ImportError:
     def samba_check_password_quality(*args, **kwargs):
-        ud.debug(ud.LDAP, ud.ERROR, 'samba_check_password_quality() is not available in Python 2. Not checking password quality.')
+        logging.getLogger('LDAP').error('samba_check_password_quality() is not available in Python 2. Not checking password quality.')
         return True  # not available, use Python 3
 
 

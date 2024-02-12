@@ -49,7 +49,7 @@ Depends:
  python-ldap,
  python-six,
  python-univention-config-registry (>= 15.0.7-16),
- python-univention-debug,
+ python-univention-debug (>= 12.0.3-5),
  python-univention-namespace,
  ${misc:Depends},
  ${python:Depends},
@@ -73,7 +73,7 @@ Depends:
  python3-samba,
  python3-six,
  python3-univention-config-registry (>= 15.0.7-16),
- python3-univention-debug,
+ python3-univention-debug (>= 12.0.3-5),
  ${misc:Depends},
  ${python3:Depends},
 Provides:
