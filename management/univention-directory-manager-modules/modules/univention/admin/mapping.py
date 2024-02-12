@@ -134,7 +134,7 @@ def ListUniq(list):
 
 
 def ListToString(value, encoding=()):
-    # type: (List[str]) -> str
+    # type: (List[bytes]) -> str
     """
     Return first element from list.
     This is right mapping for single-valued properties, as |LDAP| always returns lists of values.
@@ -154,7 +154,7 @@ def ListToString(value, encoding=()):
 
 
 def ListToIntToString(list_):
-    # type: (List[str]) -> str
+    # type: (List[bytes]) -> str
     """
     Return first element from list if it is an integer.
 
@@ -177,7 +177,7 @@ def ListToIntToString(list_):
 
 
 def ListToLowerString(list):
-    # type: (List[str]) -> str
+    # type: (List[bytes]) -> str
     """
     Return first element from list lower-cased.
 
@@ -225,7 +225,7 @@ def nothing(a):
 
 
 def IgnoreNone(value, encoding=()):
-    # type: (str) -> Union[None, str]
+    # type: (str) -> Union[None, bytes]
     """
     Return the value if it is not the string `None`.
 
@@ -242,7 +242,7 @@ def IgnoreNone(value, encoding=()):
 
 
 def _stringToInt(value):
-    # type: (str) -> int
+    # type: (Union[bytes, str]) -> int
     """
     Try to convert string into integer.
 
@@ -261,7 +261,7 @@ def _stringToInt(value):
 
 
 def unmapUNIX_TimeInterval(value):
-    # type: (Union[List[str], Tuple[str], str]) -> List[Text]
+    # type: (Union[List[bytes], Tuple[bytes], bytes]) -> List[Text]
     """
     Map number of seconds to a human understandable time interval.
 
@@ -296,7 +296,7 @@ def unmapUNIX_TimeInterval(value):
 
 
 def mapUNIX_TimeInterval(value):
-    # type: (Union[List[str], Tuple[str], str]) -> Text
+    # type: (Union[List[str], Tuple[str], str]) -> bytes
     """
     Unmap a human understandable time interval back to number of seconds.
 
@@ -388,7 +388,7 @@ def mapBase64(value):
 
 
 def BooleanListToString(list, encoding=()):
-    # type: (List[str]) -> str
+    # type: (List[bytes]) -> str
     """
     Convert |LDAP| boolean to |UDM|.
 
@@ -407,7 +407,7 @@ def BooleanListToString(list, encoding=()):
 
 
 def BooleanUnMap(value, encoding=()):
-    # type: (str) -> str
+    # type: (str) -> bytes
     """
     Convert |UDM| boolean to |LDAP|.
 
