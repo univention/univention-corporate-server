@@ -11,18 +11,18 @@ repos:
       - id: ucr-flake8
         additional_dependencies: ["flake8==5.0.4"]
       - id: ucr-ruff
-        additional_dependencies: ["ruff==0.1.4"]
+        additional_dependencies: ["ruff==0.2.1"]
       - id: ucr-autopep8
         additional_dependencies: ["autopep8<=2.0.2"]
         stages: [ manual ]
       - id: ucr-ruff-fix
-        additional_dependencies: ["ruff==0.1.4"]
+        additional_dependencies: ["ruff==0.2.1"]
         stages: [ manual ]
       - id: ucr-ruff-format-check
-        additional_dependencies: ["ruff==0.1.4"]
+        additional_dependencies: ["ruff==0.2.1"]
         stages: [ manual ]
       - id: ucr-ruff-format
-        additional_dependencies: ["ruff==0.1.4"]
+        additional_dependencies: ["ruff==0.2.1"]
         stages: [ manual ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
@@ -90,7 +90,7 @@ repos:
       - id: missing-executable-flag-for-python-file
       - id: missing-executable-flag-for-shell-file
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.1.4'
+    rev: 'v0.2.1'
     hooks:
       - id: ruff
         exclude: "^oidc/python-keycloak/\

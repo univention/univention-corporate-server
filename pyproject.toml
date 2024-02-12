@@ -14,9 +14,20 @@ skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-l
 skip_glob = "venv/*"
 
 [tool.ruff]
-# ruff 0.1.4
-external = ["W601", "F812", "E403", "E704"]
+# ruff 0.2.1
+target-version = "py37"
+
 line-length = 180
+extend-exclude = [
+    "services/univention-ldb-modules/buildtools/",
+    "services/univention-ldb-modules/third_party/",
+    "doc/developer-reference/",
+    "oidc/python-keycloak",
+    "packaging/ucslint/testframework/",
+]
+
+[tool.ruff.lint]
+external = ["W601", "F812", "E403", "E704"]
 ignore-init-module-imports = true
 
 select = ["ALL"]
@@ -167,42 +178,33 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 allowed-confusables = ["’", "`", "´"]
 
-target-version = "py37"
-
-extend-exclude = [
-    "services/univention-ldb-modules/buildtools/",
-    "services/univention-ldb-modules/third_party/",
-    "doc/developer-reference/",
-    "oidc/python-keycloak",
-    "packaging/ucslint/testframework/",
-]
 
 task-tags = ["TODO", "FIXME"]
 
-[tool.ruff.flake8-builtins]
+[tool.ruff.lint.flake8-builtins]
 builtins-ignorelist = ["copyright", "license", "object", "exit", "quit", "credits"]
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 134
 
 [tool.ruff.format]
 quote-style = "single"  # https://github.com/astral-sh/ruff/issues/7525
 
-[tool.ruff.flake8-quotes]
+[tool.ruff.lint.flake8-quotes]
 docstring-quotes = "double"
 multiline-quotes = "double"
 inline-quotes = "single"
 
-[tool.ruff.flake8-unused-arguments]
+[tool.ruff.lint.flake8-unused-arguments]
 ignore-variadic-names = true
 
-[tool.ruff.flake8-pytest-style]
+[tool.ruff.lint.flake8-pytest-style]
 parametrize-names-type = "csv"
 
-[tool.ruff.flake8-annotations]
+[tool.ruff.lint.flake8-annotations]
 ignore-fully-untyped = true
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 combine-as-imports = true
 #filter-files = true
 #force-grid-wrap = false
