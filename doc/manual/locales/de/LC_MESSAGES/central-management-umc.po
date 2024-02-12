@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-30 21:35+0100\n"
-"PO-Revision-Date: 2024-01-30 21:35+0100\n"
+"POT-Creation-Date: 2024-02-12 16:22+0100\n"
+"PO-Revision-Date: 2024-02-12 16:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -149,12 +149,38 @@ msgstr ""
 #: ../../central-management-umc/cookie-banner.rst:76
 msgid ""
 "Optional setting for the domains for which the cookie consent banner "
-"dialog is active."
+"dialog is active. The value is a comma-separated list of domain names, "
+"for which UCS shows the cookie consent banner. For an empty list, UCS "
+"shows the banner for all domain names. The domain matches from the end of"
+" the string."
 msgstr ""
-"Optionale Einstellung für die Domänen, für die das Cookie-Banner aktiv "
-"ist."
+"Optionale Einstellung für die Domänen, für die das "
+"Cookie-Banner aktiv ist. Der Wert ist eine durch Kommata "
+"getrennte Liste von Domänennamen, für die UCS das Cookie-Banner "
+"anzeigt. Bei einer leeren Liste zeigt UCS das Banner für alle Domänennamen an. "
+"Die Domäne wird vom Ende der Zeichenkette ausgewertet."
 
-#: ../../central-management-umc/cookie-banner.rst:80
+#: ../../central-management-umc/cookie-banner.rst:82
+msgid "Examples:"
+msgstr "Beispiele:"
+
+#: ../../central-management-umc/cookie-banner.rst:84
+msgid ""
+"The value ``example.com`` matches ``portal.example.com`` and "
+"``sso.example com``. UCS shows the banner for both domain names."
+msgstr ""
+"Der Wert ``example.com`` passt zu ``portal.example.com`` und ``sso.example "
+"com``. UCS zeigt das Banner für beide Domänennamen an."
+
+#: ../../central-management-umc/cookie-banner.rst:87
+msgid ""
+"For the value ``portal.example.com`` UCS doesn't show the cookie consent "
+"banner for ``sso.example.com``, but for ``portal.example.com``."
+msgstr ""
+"Für den Wert ``portal.example.com`` zeigt UCS das Cookie-Banner nicht für "
+"``sso.example.com``, sondern für ``portal.example.com`` an."
+
+#: ../../central-management-umc/cookie-banner.rst:92
 msgid ""
 "The variable controls, if the browser shows the cookie consent banner. "
 "The default value is ``false``. To show the cookie consent banner, set "
@@ -164,7 +190,7 @@ msgstr ""
 "Standardwert ist ``false``. Um das Cookie-Banner anzuzeigen, setzen Sie "
 "die Variable auf ``true``."
 
-#: ../../central-management-umc/cookie-banner.rst:86
+#: ../../central-management-umc/cookie-banner.rst:98
 msgid ""
 "Sets the title for the consent banner dialog. In the default setting, the"
 " value is empty and UCS provides a default title for English and German. "
@@ -178,7 +204,7 @@ msgstr ""
 "einem zweistelligen Sprachcode aus `ISO 639-1 <w-iso-639-1_>`_ für "
 ":samp:`{LANGUAGE}`, um die Titel für verschiedene Sprachen festzulegen."
 
-#: ../../central-management-umc/cookie-banner.rst:95
+#: ../../central-management-umc/cookie-banner.rst:107
 msgid ""
 "Sets the text for the cookie consent banner dialog. In the default "
 "setting, the value is empty and UCS provides a default text for English "
@@ -3664,3 +3690,13 @@ msgstr "Reiter Richtlinien"
 #: ../../central-management-umc/user-defined-ldap-structures.rst:68
 msgid "The *Policies* tab is described in :ref:`central-policies-assign`."
 msgstr "Diese Karteikarte wird in :ref:`central-policies-assign` beschrieben."
+
+#~ msgid ""
+#~ "Optional setting for the domains for "
+#~ "which the cookie consent banner dialog"
+#~ " is active."
+#~ msgstr ""
+#~ "Optionale Einstellung für die Domänen, "
+#~ "für die das Cookie-Banner aktiv "
+#~ "ist."
+
