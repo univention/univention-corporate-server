@@ -27,7 +27,10 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div class="portal">
+  <div
+    ref="portal"
+    class="portal tile-animation"
+  >
     <screen-reader-announcer />
     <portal-background />
     <portal-header />
@@ -166,6 +169,16 @@ export default defineComponent({
       return this.editMode ? 'application' : '';
     },
   },
+  mounted() {
+    const portal = this.$refs.portal as HTMLDivElement;
+    function removeAnimation(event: AnimationEvent) {
+      if (event.animationName === 'fadeIn') {
+        portal.classList.remove('tile-animation');
+        portal.removeEventListener('animationend', removeAnimation);
+      }
+    }
+    portal.addEventListener('animationend', removeAnimation);
+  },
   methods: {
     addCategory() {
       this.$store.dispatch('modal/setAndShowModal', {
@@ -229,4 +242,16 @@ export default defineComponent({
   bottom: 0
   left: 0
 
+@keyframes fadeIn
+  from
+    opacity: 0%
+    scale: 80%
+
+  to
+    opacity: 100%
+    scale: 100%
+
+.tile-animation .portal-tile__box
+  animation: fadeIn
+  animation-duration: 0.25s
 </style>

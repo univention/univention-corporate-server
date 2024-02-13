@@ -62,6 +62,7 @@
           'portal-tile__box',
           { 'portal-tile__box--draggable': editMode,
             'portal-tile__box--dragging': isBeingDragged,
+            'portal-tile__box--with-scaling-hover': !minified,
           }
         ]"
       >
@@ -274,6 +275,7 @@ export default defineComponent({
     if (this.hasFocus) {
       this.$el.children[0].focus(); // sets focus to first Element in opened Folder
     }
+
     if (this.$refs.mover) {
       // @ts-ignore
       this.handleDragFocus(this.$refs.mover.$el, this.lastDir);
@@ -315,7 +317,6 @@ export default defineComponent({
     },
     setToolTipTimeOut(tooltip): void {
       const id = setTimeout(() => {
-        console.log('Already IN');
         if (this.mouseIsOverTile === true) {
           this.$store.dispatch('tooltip/setTooltip', { tooltip });
         }
@@ -410,8 +411,16 @@ export default defineComponent({
     border: 0.2rem solid transparent
     box-sizing: border-box
 
-    ~/:focus &
+    ~/:focus-visible &
       border-color: var(--color-focus)
+
+    &--with-scaling-hover
+      scale: 1.0
+      transition: scale 0.2s ease
+
+      &:hover
+        scale: 1.1
+        transition: scale 0.2s ease
 
     &--dragged-line
       border: 3px solid pink
@@ -435,6 +444,7 @@ export default defineComponent({
     max-height: 80%
 
   &__name
+    font-weight: 700
     text-align: center
     word-wrap: break-word
     hyphens: auto
