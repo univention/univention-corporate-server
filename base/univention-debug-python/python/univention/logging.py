@@ -274,10 +274,12 @@ class Logger(logging.Logger):
     """
 
     def __init__(self, name, level=logging.NOTSET, log_pid=False, **kwargs):
-        super(Logger, self).__init__(name, level=level)
-        self.propagate = False
         self.univention_debug_category = getattr(ud, kwargs.get('univention_debug_category', name))
         self.univention_debug_handler = handler = DebugHandler(self.univention_debug_category, **kwargs)
+        if level == logging.NOTSET:
+            level = handler.getLevel()
+        super(Logger, self).__init__(name, level=level)
+        self.propagate = False
         self._formatter = LevelDependentFormatter(log_pid=log_pid)
         handler.setFormatter(self._formatter)
         handler.setLevel(self.level)
@@ -385,6 +387,12 @@ class DebugHandler(logging.Handler):
         super(DebugHandler, self).close()
         if self.do_exit:
             ud.exit()
+
+    def get_ud_level(self):
+        return ud.get_level(self._category)
+
+    def getLevel(self):
+        return _map_ud_to_level(self.get_ud_level())
 
     def setLevel(self, level):
         super(DebugHandler, self).setLevel(level)
