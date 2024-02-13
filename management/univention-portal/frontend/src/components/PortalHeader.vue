@@ -53,18 +53,15 @@ License with the Debian GNU/Linux or Univention distribution in file
       />
     </div>
 
-    <div
+    <button
       v-if="editMode"
       class="portal-header__edit-mode-label"
       :style="inEditModeAndSideNavopenPositioningAdjustment"
+      :aria-label="STOP_EDIT_PORTAL"
+      @click="stopEditMode"
     >
       {{ EDIT_MODE }}
-      <icon-button
-        :aria-label-prop="STOP_EDIT_PORTAL"
-        icon="x"
-        @click="stopEditMode"
-      />
-    </div>
+    </button>
     <div
       v-if="editMode"
       class="portal-header__right"
@@ -193,7 +190,7 @@ export default defineComponent({
       return this.numTabs > 0 && this.tabsOverflow;
     },
     EDIT_MODE(): string {
-      return _('Edit mode');
+      return _('Exit edit mode');
     },
     OPEN_EDIT_SIDEBAR(): string {
       return _('Open edit sidebar');
@@ -296,24 +293,29 @@ export default defineComponent({
     align-items: center;
 
   &__edit-mode-label
+    cursor: pointer
     white-space: nowrap
     position: absolute
-    top: var(--layout-height-header)
+    top: calc(var(--layout-height-header) + var(--layout-spacing-unit))
     display: flex
-    min-width: 150px
+    min-width: 120px
     right: calc(50% - 75px)
-    background-color: var(--bgc-content-header)
+    background-color: var(--button-bgc)
+    text-transform: initial
+    font-weight: 600
     align-items: center
     justify-content: center
     padding-left: calc(var(--button-size) / 2)
-    transition: top 0.1s ease-in;
+    transition: background-color 0.1s ease-in
+    border-radius: var(--button-border-radius)
 
-    @media only screen and (max-width: 884px) //special mediaquery, since opened sidenav can cause layout irritaions
-      top: calc(var(--layout-height-header) - 62%)
-      transition: top 0.1s ease-in;
+    //@media only screen and (max-width: 884px) //special mediaquery, since opened sidenav can cause layout irritaions
+    //  top: calc(var(--layout-height-header) - 62%)
+    //  transition: top 0.1s ease-in;
 
-    & button
-      margin-left: var(--layout-spacing-unit)
+    &:hover
+      background-color: var(--bgc-content-container)
+      transition: background-color 0.1s ease-in
 
 #header-button-copy
     display: none

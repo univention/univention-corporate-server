@@ -65,6 +65,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         appear
       >
         <flyout-wrapper
+          v-if="activeEditModeButton"
           :is-visible="activeEditModeButton"
           class="portal-sidebar__flyout"
         >
@@ -132,7 +133,7 @@ export default defineComponent({
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: transform 0.5s ease;
+  transition: transform 0.15s ease;
 }
 
 .slide-enter-from,
