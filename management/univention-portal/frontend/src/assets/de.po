@@ -331,8 +331,8 @@ msgid "Edit folder"
 msgstr "Ordner bearbeiten"
 
 #: src/tmp/ts/src/components/PortalHeader.vue:53
-msgid "Edit mode"
-msgstr "Editiermodus"
+msgid "Exit edit mode"
+msgstr "Editiermodus verlassen"
 
 #: src/tmp/ts/src/components/navigation/SideNavigation.vue:62
 msgid "Edit portal"

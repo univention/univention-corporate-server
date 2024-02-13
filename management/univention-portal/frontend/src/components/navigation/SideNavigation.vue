@@ -67,7 +67,7 @@
         v-else
         id="loginButton"
         ref="loginButton"
-        class="portal-sidenavigation__link"
+        class="portal-sidenavigation__link portal-sidenavigation__login"
         @click="login"
         @keydown.enter="login"
         @keydown.esc="closeNavigation"
@@ -77,7 +77,9 @@
         </span>
       </button>
     </div>
-
+    <div
+      class="divider"
+    />
     <div
       class="portal-sidenavigation__menu"
       role="toolbar"
@@ -157,7 +159,9 @@
         </template>
       </div>
     </div>
-
+    <div
+      class="divider"
+    />
     <button
       v-if="userState.mayEditPortal"
       ref="editModeButton"
@@ -318,41 +322,49 @@ $userRow = 6rem
   flex-direction: column
 
   &__link
-    padding: 1em 0 1em 20px
+    padding: 1em 0 1em 0
     cursor: pointer
-    height: auto
-    width: 100%
-    justify-content: left
+    height: 36px
+    position: relative
+    left: 5%
+    margin-top: var(--layout-spacing-unit)
+    margin-bottom: calc(2*var(--layout-spacing-unit))
+    width: fit-content
     font-size: var(--font-size-4)
     color: var(--font-color-contrast-high)
     font-weight: 600
     text-transform: uppercase
+    font-family: 'Open Sans'
     background-color: rgba(0,0,0,0)
     border: 0.2rem solid rgba(0,0,0,0)
-    &:focus
+    transition: unset
+
+    &:focus-visible
       border: 0.2rem solid var(--color-focus);
       outline: 0
+
   &__user-row
-    padding-left: var(--layout-spacing-unit)
     display: flex
     height: $userRow
     font-weight: var(--font-weight-bold)
+
   &__user-icon
     position: relative
     overflow: hidden;
-    border-radius: 100%
+    border-radius: var(--border-radius-apptile)
     margin: 1rem
-    border: 1px solid var(--font-color-contrast-high)
-    width: 4rem
+    border: 1px solid var(--portal-tab-background)
+    width: 3rem
     height: @width
-    margin: 1rem 1rem 1rem 0
+    margin: 24px 12px 24px 20px
     padding-left: 0 !important; // remove this line, when weird server caching is fixed
 
     svg
       fill: currentColor
-      height: 4rem
+      height: 3rem
       width: @height
       border-radius: var(--border-radius-circles)
+      color: var(--portal-tab-background)
       margin: 0
 
   &__user-text-content
@@ -378,15 +390,26 @@ $userRow = 6rem
     font-weight: normal
     width: min-content
 
-    &:focus
+    &:hover
       text-decoration: underline
-      outline: 0
 
-    &:focus span
+    &:focus-visible span
       text-decoration: none
 
+  &__login
+    width: 5rem
+    margin-top: calc(2*var(--layout-spacing-unit))
+    background-color: var(--button-primary-bgc)
+
+    &:hover
+      background-color: var(--button-primary-bgc-hover)
+
+    span
+        margin: 0.2rem
+
   &__login-header
-    border-bottom: 4px solid var(--bgc-content-body)
+    &:focus-visible
+      outline: 0
 
   &__menu
     flex: 1 1 auto
@@ -405,23 +428,29 @@ $userRow = 6rem
   &__menu-subItem
     margin-left: 0
     &--parent
-      text-transform: uppercase;
-      padding-left: 4rem;
+      text-transform: uppercase
+      padding-left: 4rem
+      margin-bottom: 1rem
+    &:hover
+      background-color: var(--bgc-user-menu-item-hover)
 
   &__edit-mode
-    border-radius: unset
-    border: 0.2rem solid var(--bgc-content-container)
-    border-top-color: var(--bgc-content-body)
+    background-color: var(--button-primary-bgc)
+    border-radius: var(--border-radius-interactable)
+    width: 6.5rem
 
     span
       margin: 0.2rem
 
-    &:focus span
+    &:focus-visible span
       margin: 0
+
+    &:hover
+      background-color: var(--button-primary-bgc-hover)
 
   &__fade-left-right,
   &__fade-right-left
-    animation-duration: .4s;
+    animation-duration: 250ms
 
   &__fade-right-left
     animation-name: fadeOutRight
@@ -451,4 +480,12 @@ $userRow = 6rem
     transform: translateX(0);
   }
 }
+
+.divider
+    background-color: var(--bgc-user-menu-item-hover)
+    width: 90%
+    height: 2px
+    position: relative
+    left: 5%
+    margin-bottom: 8px
 </style>

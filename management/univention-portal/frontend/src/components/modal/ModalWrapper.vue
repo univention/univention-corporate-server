@@ -31,19 +31,23 @@ License with the Debian GNU/Linux or Univention distribution in file
     :disabled="!teleportToBody"
     to="body"
   >
-    <div
-      v-bind="$attrs"
-      :id="setID"
-      :class="{
-        'modal-wrapper': !isActive,
-        'modal-wrapper--isVisible': isActive,
-        'modal-wrapper--isVisibleFullscreen': isActive && full,
-        'modal-wrapper--isSecondLayer': isSecondModalActive
-      }"
-      @click.self="$emit('backgroundClick', $event);"
-    >
-      <slot />
-    </div>
+    <transition name="modalWrapperFade">
+      <div
+        v-if="isActive"
+        v-bind="$attrs"
+        :id="setID"
+        ref="modalWrapper"
+        :class="{
+          'modal-wrapper': !isActive,
+          'modal-wrapper--isVisible': isActive,
+          'modal-wrapper--isVisibleFullscreen': isActive && full,
+          'modal-wrapper--isSecondLayer': isSecondModalActive
+        }"
+        @click.self="$emit('backgroundClick', $event);"
+      >
+        <slot />
+      </div>
+    </transition>
   </teleport>
 </template>
 
@@ -85,32 +89,29 @@ export default defineComponent({
 
 <style lang="stylus">
 .modal-wrapper
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -999
-    opacity: 0
-    transition: opacity 0.5s ease;
+    position: fixed
+    width: 100%
+    height: 100%
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    background-color: var(--bgc-underlay)
+    pointer-events: none
 
     &--isVisible
-      position: fixed;
-      width: 100%;
-      height: 100vh;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+      position: fixed
+      width: 100%
+      height: 100vh
+      top: 0
+      right: 0
+      bottom: 0
+      left: 0
       z-index: $zindex-2
-      background-color: var(--bgc-underlay);
+      background-color: var(--bgc-underlay)
       display: flex
       align-items: center
       justify-content: center
-      opacity: 1
-      transition: opacity 0.5s ease;
 
       &> *
         position: relative
@@ -125,4 +126,17 @@ export default defineComponent({
 
     &--isVisibleFullscreen
       z-index: $zindex-4
+
+.modalWrapperFade-enter-active,
+.modalWrapperFade-leave-active
+  transition: opacity 0.2s ease
+
+.modalWrapperFade-enter-from,
+.modalWrapperFade-leave-to
+  opacity: 0
+
+.modalWrapperFade-enter-from .flyout-wrapper,
+.modalWrapperFade-leave-to .flyout-wrapper
+  transform: translate3d(110%, 0, 0)
+
 </style>

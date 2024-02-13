@@ -55,14 +55,15 @@ export default defineComponent({
   max-width: 23rem
   position: fixed
   top:  calc(var(--portal-header-height) + var(--layout-spacing-unit))
-  bottom: env(safe-area-inset-bottom, 0)
+  bottom: var(--layout-spacing-unit)
   right: 0
   z-index: 100
   background-color: var(--bgc-content-container)
   transform: translate3d(110%, 0, 0)
-  transition: transform cubic-bezier(0, 0, 0.2, 1) 0.5s
+  transition: transform cubic-bezier(0, 0, 0.2, 1) 0.15s
+  border-radius: 0.25rem 0 0 0.25rem
 
   &--isVisible
     transform: translate3d(0, 0, 0) scale(1, 1)
-    transition: transform cubic-bezier(0, 0, 0.2, 1) 0.5s
+    transition: transform cubic-bezier(0, 0, 0.2, 1) 0.15s
 </style>

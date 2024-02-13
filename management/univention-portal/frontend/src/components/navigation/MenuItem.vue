@@ -31,7 +31,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     :id="id"
     :tag="link ? 'a' : 'div'"
     :active-at="activeAt"
-    class="menu-item"
+    class="menu-item portal-sidenavigation__menu-subItem"
     :class="{ 'menu-item__disabled': disabled }"
     :href="link ? link : null"
     :target="anchorTarget"
@@ -174,7 +174,7 @@ export default defineComponent({
   &:hover
     cursor: pointer;
 
-  &:focus
+  &:focus-visible
     outline: 0;
     border: 0.2rem solid var(--color-focus);
 
