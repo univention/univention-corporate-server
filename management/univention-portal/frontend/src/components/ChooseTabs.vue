@@ -209,7 +209,7 @@ export default defineComponent({
     display: flex
     align-items: center
     justify-content: center
-    margin: 0 var(--layout-spacing-unit-small) 0 0
+    margin: 0 var(--layout-spacing-unit) 0 0
 
   .icon-button
     margin-left: var(--layout-spacing-unit)

@@ -163,7 +163,10 @@ export default defineComponent({
     display: flex
     position: relative
     align-items: center
-    height: 100%
+    height: 40px
+    margin-right: 4px
+    background-color: var(--bgc-user-menu-item-hover)
+    border-radius: var(--border-radius-interactable)
 
     &:hover
       background-color: var(--portal-tab-background)
@@ -176,7 +179,7 @@ export default defineComponent({
     display: flex
     align-items: center
     justify-content: center
-    margin: 0 var(--layout-spacing-unit-small)
+    margin: 0 var(--layout-spacing-unit)
 
   &__logo
     width: 80%
@@ -206,10 +209,10 @@ export default defineComponent({
       left: 0
       right: 0
       border: 0.2rem solid rgba(0,0,0,0)
-      box-sizing: border-box;
+      box-sizing: border-box
       z-index: -1
 
-    &:focus:before
+    &:focus-visible:before
       border-color: var(--color-focus)
 
   &--active
@@ -223,7 +226,8 @@ export default defineComponent({
       left: 0
       right: 0
       border: 0.2rem solid rgba(0,0,0,0)
-      box-sizing: border-box;
+      box-sizing: border-box
+      border-radius: var(--border-radius-interactable)
       z-index: -1
       background-color: var(--portal-tab-background)
 </style>

@@ -107,7 +107,7 @@ export default defineComponent({
   padding: 0px 10px
   border: 0.2rem solid rgba(0,0,0,0)
 
-  &:focus
+  &:focus-visible
     border: 0.2rem solid var(--color-focus)
     outline: 0
 
