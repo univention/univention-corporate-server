@@ -73,19 +73,21 @@ def getfile(filename, mode):
 def _readline(fd):
     line = fd.readline()
     if isinstance(line, bytes):
-        return line.decode('UTF-8', 'replace')
+        try:
+            return line.decode('UTF-8')
+        except UnicodeDecodeError:
+            print(f'Warning: non-UTF-8 decodable log line in {fd.name}: {line!r}', file=sys.stderr)
+            return line.decode('UTF-8', 'replace')
     return line
 
 
 def main(files, ignore_exceptions=[], out=sys.stdout):
     tracebacks = {}
     for file_ in files:
-        with getfile(file_, 'rt') as (fd, filename):
+        with getfile(file_, 'rb') as (fd, filename):
             line = True
             while line:
                 line = _readline(fd)
-                if isinstance(line, bytes):
-                    line = line.decode('UTF-8', 'replace')
                 if line.endswith('Traceback (most recent call last):\n'):
                     # TODO: refactor: can probably be done easily by just fetching 2 lines until first line doesn't start with '.*File "' and strip the start
                     # please note that tracebacks may leave out the source code of lines in some certain situations
@@ -422,7 +424,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--ignore-exception', '-i', action='append', type=E, default=[E('^$')])
     parser.add_argument('-d', '--default-exceptions', action='store_true')
-    parser.add_argument('files', type=argparse.FileType('r'), nargs='+')
+    parser.add_argument('files', type=argparse.FileType('rb'), nargs='+')
     args = parser.parse_args()
     ignore_exceptions = COMMON_EXCEPTIONS if args.default_exceptions else args.ignore_exception
     sys.exit(int(not main(args.files, ignore_exceptions=ignore_exceptions)))
