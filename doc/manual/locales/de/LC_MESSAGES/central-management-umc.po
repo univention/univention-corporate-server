@@ -1884,7 +1884,7 @@ msgstr ""
 "Der *Richtlinien*-Konfigurationsdialog ist funktional identisch; "
 "allerdings werden bei der Zuweisung von Richtlinien an einem LDAP-"
 "Container alle Richtlinien-Typen angeboten, während bei der Zuweisung an "
-"einem LDAP-Objekt nur die für diesen Objekt-Type gültigen Richtlinien "
+"einem LDAP-Objekt nur die für diesen Objekt-Typ gültigen Richtlinien "
 "angeboten werden."
 
 #: ../../central-management-umc/policies.rst:97
