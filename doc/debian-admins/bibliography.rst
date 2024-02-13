@@ -4,7 +4,7 @@
 
 .. _biblio:
 
-.. only:: html
+.. only:: html or linkcheck or spelling
 
    Bibliography
    ============
