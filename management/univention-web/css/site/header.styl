@@ -126,6 +126,43 @@ $moduleTabOverhang = 12px
 		.ucsButton
 			margin: 0 spacing(1, true)
 
+.umc.umcHeaderTryHide
+	.umcHeader .umcModuleTab:nth-child(1):before
+		width: 2px
+
+	.umcHeader .umcModuleTab:nth-child(2):before
+		width: 1px
+
+	.umcHeader--umc
+		background-color: transparent
+		transition: top 250ms
+
+	.umcHeader--umc.umcHeader--hidden
+		top: -8em
+
+	.umcHeader .umcModuleTab
+		color: var(--font-color-contrast-middle) !important
+
+		*
+			vertical-align: bottom
+
+		&.dijitTabChecked,
+		&.dijitTabHover
+			text-decoration: underline
+		&.dijitTabChecked
+			color: var(--font-color-contrast-high) !important
+
+	#headerButtonsCloseOverlay
+		top: 0
+
+	.ucsNotificationsButton
+		z-index: 31
+		&.dijitFocused
+			--bgc: transparent
+
+		&.dijitToggleButtonChecked
+			--bgc: var(--button-icon-bgc-hover)
+
 
 /* special stylings depending on device class */
 

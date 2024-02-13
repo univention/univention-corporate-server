@@ -1,3 +1,9 @@
+univention-web (6.0.2) unstable; urgency=medium
+
+  * Bug #57083: change the style of the UMC header
+
+ -- Christian Castens <castens@univention.de>  Fri, 08 Mar 2024 00:18:49 +0100
+
 univention-web (6.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.2-0 version bump
