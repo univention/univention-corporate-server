@@ -4,9 +4,9 @@
   <head>
     <meta charset="UTF-8">
     <title>Univention Directory Manager JSON-HTTP interface</title>
-    <link rel="stylesheet" type="text/css" href="/univention/udm/swaggerui/swagger-ui.css" />
-    <link rel="icon" type="image/png" href="/univention/udm/swaggerui/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="/univention/udm/swaggerui/favicon-16x16.png" sizes="16x16" />
+    <link rel="stylesheet" type="text/css" href="../swaggerui/swagger-ui.css" />
+    <link rel="icon" type="image/png" href="../swaggerui/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../swaggerui/favicon-16x16.png" sizes="16x16" />
     <style>
       html
       {
@@ -33,13 +33,20 @@
   <body>
     <div id="swagger-ui"></div>
 
-    <script src="/univention/udm/swaggerui/swagger-ui-bundle.js" charset="UTF-8"> </script>
-    <script src="/univention/udm/swaggerui/swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
+    <script src="../swaggerui/swagger-ui-bundle.js" charset="UTF-8"> </script>
+    <script src="../swaggerui/swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
     <script>
+
+    const objectType = new URLSearchParams(window.location.search).get('module');
+    let openapi = "../openapi.json";
+    if (/^[A-Za-z0-9_-]+\/[A-Za-z0-9_-]+$/.test(objectType)) {
+        openapi = `../${encodeURIComponent(objectType.split('/')[0])}/${encodeURIComponent(objectType.split('/')[1])}/openapi.json`;
+    }
+
     window.onload = function() {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
-        url: "/univention/udm/openapi.json",
+        url: openapi,
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [

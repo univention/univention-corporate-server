@@ -3015,6 +3015,7 @@ class Application(tornado.web.Application):
             (f"/udm/(networks/network)/{dn}/next-free-ip-address", NextFreeIpAddress),
             (f"/udm/(users/user)/{dn}/service-specific-password", ServiceSpecificPassword),
             ("/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
+            (r"/udm/((?:css|js|img|schema|swaggerui)/.*)", tornado.web.StaticFileHandler, {"path": "/var/www/univention/udm", "default_filename": "index.html"}),
             # TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
         ], default_handler_class=Nothing, **settings)
 
