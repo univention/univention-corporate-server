@@ -180,14 +180,18 @@ export default defineComponent({
     border-radius: var(--border-radius-circles)
 
     &:hover,
-    &:focus
+    &:focus-visible
       border-radius: 100%
-    &:focus
+
+    &:focus-visible
       border: 0.2rem solid var(--color-focus)
       outline: none
 
     &:hover
       cursor: pointer
+
+      svg
+        color: var(--color-accent)
 
   &__detail
     position: absolute

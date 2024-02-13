@@ -158,7 +158,7 @@ export default defineComponent({
   position: fixed
   top: var(--portal-header-height)
   border: 0 solid var(--portal-tab-background)
-  border-top-width: var(--layout-height-header-separator)
+  border-top-width: 0.1rem
   right: 0
   bottom: 0
   left: 0
