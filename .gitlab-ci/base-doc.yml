@@ -47,7 +47,8 @@ stages:
     - .sphinx-doc
     - .sphinx-linkcheck-template
   script:
-    - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" linkcheck
+    - make -C "$DOCS_DIR" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" linkcheck
+  allow_failure: true
   artifacts:
     paths:
       - $CI_PROJECT_DIR/$DOCS_DIR/_build/$language/linkcheck
