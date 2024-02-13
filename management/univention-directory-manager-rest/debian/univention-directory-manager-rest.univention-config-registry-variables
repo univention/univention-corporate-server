@@ -11,7 +11,7 @@ Categories=service-udm
 Description[de]=Definiert, ob Logmeldungen die Anfrage-ID vorangestellt wird.
 Description[en]=Defines, whether log messages are prefixed with the request ID.
 Type=bool
-Default=false
+Default=true
 Categories=service-udm
 
 [directory/manager/rest/authorized-groups/.*]

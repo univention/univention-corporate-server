@@ -3,9 +3,8 @@ release: "5.0"
 version: [6]
 scope: ucs_5.0-0-errata5.0-6
 src: univention-directory-manager-rest
-fix: 10.0.7-7
+fix: 10.0.7-8
 desc: |
  This update addresses the following issues:
- * Log lines can now be configured to be prefixed with the request ID via the
-   UCR variable `directory/manager/rest/debug/prefix-with-request-id`.
+ * All UDM log lines are now prefixed with the request ID.
 bug: [56970]

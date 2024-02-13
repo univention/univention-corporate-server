@@ -49,7 +49,7 @@ RE_UUID = re.compile('[^A-Fa-f0-9-]')
 
 
 def init_request_id_logging(request_id_context):
-    if not ucr.is_true('directory/manager/rest/debug/prefix-with-request-id'):
+    if not ucr.is_true('directory/manager/rest/debug/prefix-with-request-id', True):
         return
 
     context_id_filter = ContextIdFilter(request_id_context)
