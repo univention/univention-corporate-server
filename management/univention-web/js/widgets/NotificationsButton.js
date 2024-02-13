@@ -288,6 +288,14 @@ define([
 			this.inherited(arguments);
 		},
 
+		hide: function() {
+			domClass.add(this.domNode, 'dijitDisplayNone');
+		},
+
+		show: function() {
+			domClass.remove(this.domNode, 'dijitDisplayNone');
+		},
+
 		addNotification: function(item) {
 			this.notificationsContainer.addNotification(lang.clone(item));
 			this.notificationsPreview.addNotification(item);

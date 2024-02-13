@@ -91,6 +91,7 @@ define([
 	var _initialHash = decodeURIComponent(dojoHash());
 	var _overviewVisible = true;
 	var _menuVisible = true;
+	var _headerTryHide = false;
 
 	// helper function for sorting, sort indices with priority < 0 to be at the end
 	var _cmpPriority = function(x, y) {
@@ -637,9 +638,33 @@ define([
 			if (_overviewVisible) {
 				this.setupSearchField();
 			}
-			this._headerRight.addChild(new NotificationsButton({}));
+			this.notificationsButton = new NotificationsButton({});
+			on(this.notificationsButton.notificationsContainer, 'countChanged', lang.hitch(this, function(count) {
+				tools.status('numOfNotifications', count);
+				this._updateHeader();
+			}))
+			this._headerRight.addChild(this.notificationsButton);
 			if (_menuVisible) {
 				this._headerRight.addChild(new MenuButton({}));
+			}
+		},
+
+		_updateHeader: function() {
+			if (!_headerTryHide) {
+				return;
+			}
+
+			if (tools.status().numOfNotifications > 0) {
+				this.set('class', 'umcHeader umcHeader--umc');
+				this.notificationsButton.show();
+			} else if (tools.status().numOfNotifications === 0) {
+				this.notificationsButton.hide();
+				this.notificationsButton.set('checked', false);
+				if (tools.status('numOfTabs') === 0) {
+					this.set('class', 'umcHeader umcHeader--umc umcHeader--hidden');
+				} else if (tools.status('numOfTabs') > 0) {
+					this.set('class', 'umcHeader umcHeader--umc');
+				}
 			}
 		},
 
@@ -896,16 +921,16 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			domClass.add(this.domNode, 'umcModuleTab');
+            if (!_headerTryHide) {
+                var backgroundNode = put('div.umcModuleTab__background');
+                domConstruct.place(backgroundNode, this.domNode, 'first');
+                var nodeLeft = domConstruct.toDom('<svg class="umcModuleTab__background__svg umcModuleTab__background__svg--left" viewBox="0 0 100 100"><path d="M0,100 L100,100 L100,0 Q 85 85 0 100 z" /></svg>');
+                domConstruct.place(nodeLeft, backgroundNode);
 
-			var backgroundNode = put('div.umcModuleTab__background');
-			domConstruct.place(backgroundNode, this.domNode, 'first');
-			var nodeLeft = domConstruct.toDom('<svg class="umcModuleTab__background__svg umcModuleTab__background__svg--left" viewBox="0 0 100 100"><path d="M0,100 L100,100 L100,0 Q 85 85 0 100 z" /></svg>');
-			domConstruct.place(nodeLeft, backgroundNode);
-
-			var nodeRight = domConstruct.toDom('<svg class="umcModuleTab__background__svg umcModuleTab__background__svg--right" viewBox="0 0 100 100"><path d="M0,0 Q 15 85 100 100  L 0,100 z" /></svg>');
-			domConstruct.place(nodeRight, backgroundNode);
-
-			var closeButtonNode = Button.simpleIconButtonNode('x', 'umcModuleTab__closeButton');
+                var nodeRight = domConstruct.toDom('<svg class="umcModuleTab__background__svg umcModuleTab__background__svg--right" viewBox="0 0 100 100"><path d="M0,0 Q 15 85 100 100  L 0,100 z" /></svg>');
+                domConstruct.place(nodeRight, backgroundNode);
+            }
+            var closeButtonNode = Button.simpleIconButtonNode('x', 'umcModuleTab__closeButton');
 			put(this.closeNode, '+', closeButtonNode);
 			put(this.closeNode, '!');
 			this.closeNode = closeButtonNode;
@@ -921,7 +946,7 @@ define([
 			//		* username, password: if both values are given, the UMC tries to directly
 			//		  with these credentials.
 			//		* overview (Boolean): Specifies whether or not the overview of available modules
-			//		                      and the search is displayed or not. (detault: true)
+			//		  and the search is displayed or not. (detault: true)
 			//		* menu (Boolean): Specifies whether or not the hamburger menu is displayed. (default: true)
 
 			// username will be overridden by final authenticated username
@@ -936,6 +961,13 @@ define([
 			if (props.menu !== undefined) {
 				_menuVisible = tools.isTrue(props.menu);
 			}
+
+			if (props.header === 'try-hide') {
+				if(!tools.isTrue(props.menu) && !tools.isTrue(props.overview)) {
+					_headerTryHide = true;
+				}
+			}
+
 
 			login.onInitialLogin(lang.hitch(this, '_authenticated'));
 		},
@@ -970,6 +1002,10 @@ define([
 				this.setupTouchDevices();
 			}
 
+            if (_headerTryHide) {
+                domClass.add(baseWin.body(), 'umcHeaderTryHide');
+            }
+
 			// set up fundamental layout parts...
 
 			this._topContainer = new ContainerWidget({
@@ -993,9 +1029,13 @@ define([
 			});
 
 			// the header
+			var umcHeaderClass = 'umcHeader umcHeader--umc';
+			if (_headerTryHide) {
+				umcHeaderClass = 'umcHeader umcHeader--umc umcHeader--hidden';
+			}
 			this._header = new UmcHeader({
 				id: 'umcHeader',
-				'class': 'umcHeader umcHeader--umc',
+				'class': umcHeaderClass,
 				_tabController: this._tabController,
 				_tabContainer: this._tabContainer,
 				switchToOverview: lang.hitch(this, 'switchToOverview')
@@ -1066,6 +1106,7 @@ define([
 			}));
 			aspect.before(this._tabContainer, 'removeChild', lang.hitch(this, function(module) {
 				this._updateNumOfTabs(-1);
+				this._header._updateHeader();
 				topic.publish('/umc/actions', module.moduleID, module.moduleFlavor, 'close');
 
 				if (module === this._tabContainer.get('selectedChildWidget')) {
@@ -1658,6 +1699,7 @@ define([
 					this._tabContainer.addChild(tab);
 					tab.startup();
 					this._updateNumOfTabs();
+					this._header._updateHeader();
 					this.__insertTabStyles(tab, module);
 					topic.publish('/umc/actions', module.id, module.flavor, 'open');
 					tools.checkReloadRequired();

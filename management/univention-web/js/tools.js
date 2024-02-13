@@ -123,6 +123,7 @@ define([
 			autoStartModule: null,
 			autoStartFlavor: null,
 			numOfTabs: 0,
+			numOfNotifications: 0,
 			cookieBanner: {
 				cookie: 'univentionCookieSettingsAccepted',
 				text: {},

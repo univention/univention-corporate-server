@@ -52,8 +52,8 @@ License with the Debian GNU/Linux or Univention distribution in file
             @keydown.enter.prevent="gotoTab(index)"
           >
             <div
-                class="choose-tab__logo-wrapper"
-                :style="tab.backgroundColor ? `background: ${tab.backgroundColor}` : ''"
+              class="choose-tab__logo-wrapper"
+              :style="tab.backgroundColor ? `background: ${tab.backgroundColor}` : ''"
             >
               <img
                 :src="tab.logo"
