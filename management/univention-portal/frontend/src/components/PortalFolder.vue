@@ -47,6 +47,7 @@
       :class="[{
         'portal-tile__box--accessible-zoom': inModal && updateZoomQuery(),
         'portal-tile__box--dragging': isBeingDragged,
+        'portal-tile__box--with-scaling-hover': !inModal,
       }]"
       :aria-label="ariaLabelFolder"
       @click="openFolder"
@@ -247,6 +248,7 @@ export default defineComponent({
     this.$nextTick(() => {
       window.addEventListener('resize', this.updateZoomQuery);
     });
+
     if (this.$refs.mover) {
       // @ts-ignore
       this.handleDragFocus(this.$refs.mover.$el, this.lastDir);
@@ -319,9 +321,9 @@ export default defineComponent({
   cursor: pointer
 
   &__name
+    font-weight: 700
     text-align: center
     width: 100%
-    text-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.3)
     word-wrap: break-word
     hyphens: auto
 
@@ -344,9 +346,9 @@ export default defineComponent({
         width: calc(5 * var(--app-tile-side-length))
         height: @width
         max-width: 100vw
-        margin-bottom: 0
+        margin-bottom: calc(2 * var(--layout-spacing-unit))
         max-height: 80vh
-        border-radius: 4rem
+        border-radius: 2rem
 
         @media $mqSmartphone
           max-width: 90vw
@@ -436,6 +438,7 @@ export default defineComponent({
   .portal-tile__box
     background-color: var(--bgc-content-container)
     padding: 0
+    overflow: hidden
 
     .portal-tile__box
       background-color: var(--bgc-apptile-default)

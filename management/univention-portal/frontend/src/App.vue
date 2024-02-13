@@ -96,5 +96,15 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style lang=stylus>
+*
+  ::-webkit-scrollbar
+    width: 0.25rem
+  ::-webkit-scrollbar-track
+    background: transparent
+  ::-webkit-scrollbar-thumb
+    background: var(--font-color-contrast-low)
+    border-radius: 2rem
+  ::-webkit-scrollbar-thumb:hover
+    background: var(--font-color-contrast-middle)
 </style>
