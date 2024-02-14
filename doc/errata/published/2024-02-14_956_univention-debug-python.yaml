@@ -10,3 +10,6 @@ desc: |
    when `univention.debug2` is used but `univention.logging`
    isn't imported.
 bug: [57026]
+erratum: 956
+announced: 2024-02-14
+support: core
