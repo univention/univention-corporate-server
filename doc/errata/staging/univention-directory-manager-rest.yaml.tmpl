@@ -6,6 +6,6 @@ src: univention-directory-manager-rest
 fix: 10.0.7-9
 desc: |
  This update addresses the following issues:
- * For containerized environments, the UDM REST API OpenAPI Schema user
-   interface is now exposed via the UDM REST API server as well.
-bug: [57058]
+ * UDM REST now supports a different LDAP base for each UDM
+   module. This is a requirement for the blocklist feature.
+bug: [57039]
