@@ -61,7 +61,8 @@ else:
     addresses = [fqdn]
     addresses.extend([y['address'] for x, y in i.all_interfaces if y and y.get('address')])
 
-bases = ['%s://%s/univention/saml' % (scheme, addr) for addr in addresses for scheme in ('https', 'http')]
+schemes = tuple(scheme.strip() for scheme in ucr.get('umc/saml/schemes', 'https, http').split(','))
+bases = ['%s://%s/univention/saml' % (scheme, addr) for addr in addresses for scheme in schemes]
 CONFIG = {
     "entityid": "https://%s/univention/saml/metadata" % (fqdn,),
     "name_form": NAME_FORMAT_URI,

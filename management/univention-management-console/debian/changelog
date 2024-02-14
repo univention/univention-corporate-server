@@ -1,3 +1,9 @@
+univention-management-console (12.0.32-20) unstable; urgency=medium
+
+  * Bug #57060: Allow the configuration of the scheme used for SAML requests
+
+ -- Maximilian Janßen <janssen@univention.de>  Wed, 14 Feb 2024 16:43:14 +0100
+
 univention-management-console (12.0.32-19) unstable; urgency=medium
 
   * Bug #56917: make HTML title and favicon configurable
