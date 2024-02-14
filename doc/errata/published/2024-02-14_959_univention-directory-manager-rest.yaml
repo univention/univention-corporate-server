@@ -10,3 +10,6 @@ desc: |
    disabled via the UCR variable
    `directory/manager/rest/debug/prefix-with-request-id`.
 bug: [56970]
+erratum: 959
+announced: 2024-02-14
+support: core
