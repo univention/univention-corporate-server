@@ -11,3 +11,6 @@ desc: |
    stream.  This is a prerequisite for prefixing log lines with the request ID
    in the UDM REST API.
 bug: [56970]
+erratum: 958
+announced: 2024-02-14
+support: core
