@@ -52,9 +52,9 @@ possible to limit certain entries for certain groups. This requires the LDAP
 attribute ``memberOf``. Nested group memberships (i.e., groups in groups) are
 evaluated.
 
-Further design adjustments can be made in the file
-:file:`/usr/share/univention-portal/css/custom.css`. This file will not be
-overwritten during an update.
+You can make further design adjustments in the file
+:file:`/usr/share/univention-portal/css/custom.css`.
+UCS doesn't overwrite this file during an update.
 
 .. _portal-schema:
 

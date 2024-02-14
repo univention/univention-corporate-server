@@ -61,30 +61,38 @@ the same name (without file extension). For example, setting
 Creating a custom theme/Adjusting the design of |UCSWEB|\ s
 -----------------------------------------------------------
 
-To create a custom theme it is advised not to edit
-:file:`/usr/share/univention-web/themes/dark.css` or
-:file:`/usr/share/univention-web/themes/light.css` since
-the changes may be overwritten when upgrading UCS. Instead copy one of
-these files to e.g.
-:file:`/usr/share/univention-web/themes/mytheme.css` and
-set the |UCSUCRV| :envvar:`ucs/web/theme` to
-``mytheme``.
+To customize a theme for |UCSWEB|\ s don't edit the files
+:file:`/usr/share/univention-web/themes/dark.css` and
+:file:`/usr/share/univention-web/themes/light.css`,
+because UCS upgrades can overwrite your changes.
+Instead, copy one of these files to, for example,
+:file:`/usr/share/univention-web/themes/mytheme.css`
+and set the |UCSUCRV| :envvar:`ucs/web/theme` to ``mytheme``.
 
-The files :file:`/usr/share/univention-web/themes/dark.css` and
-:file:`/usr/share/univention-web/themes/light.css` contain the same list of `CSS
-variables <mozilla-css-custom-properties_>`_. These variables are used in other
-CSS files and are the supported layer of configurability for |UCSWEB|\ s. The
-names and current use case for these variables will not change between UCS
-upgrades but new ones may be added.
+The files
+:file:`/usr/share/univention-web/themes/dark.css`
+and
+:file:`/usr/share/univention-web/themes/light.css`
+contain the same list of `CSS variables <mozilla-css-custom-properties_>`_.
+Other CSS files use these CSS variables.
+These CSS variables are the supported layer of configurability for |UCSWEB|\ s.
+The names and use cases for these variables don't change between UCS upgrades,
+but Univention may add additional names and use cases.
 
-Some |UCSWEB|\ s import their own local :file:`custom.css` file which can be
-used to further adjust the design of that page. These are
-:file:`/usr/share/univention-management-console-login/css/custom.css`
-(:ref:`domain-saml-sso-login`) and
-:file:`/usr/share/univention-portal/custom.css` (:ref:`central-portal`). The
-files are empty when installing UCS and are not modified when installing any UCS
-update. Be aware though that a given `CSS selector <mozilla-css-selectors_>`_
-may break when installing any UCS update.
+Some |UCSWEB|\ s import their own local :file:`custom.css` file
+which you can use to adjust the design of the following pages:
+
+* For :ref:`domain-saml-sso-login`: :file:`/usr/share/univention-management-console-login/css/custom.css`
+
+* For :ref:`central-portal`: :file:`/usr/share/univention-portal/css/custom.css`
+
+The files are empty during the installation of UCS.
+UCS updates don't change these files.
+
+.. important::
+
+   Be aware, however, that a given `CSS selector <mozilla-css-selectors_>`_
+   may break when installing a UCS update.
 
 .. _central-management-umc-feedback:
 
