@@ -15,7 +15,7 @@ from univention.testing import utils
 
 error_get_contact = 'Either username or password is incorrect or you are not allowed to use this service.'
 error_set_contact = 'Either username or password is incorrect or you are not allowed to use this service.'
-send_token_message = 'A message containing a token has been send to the user (if the user exists and is allowed to use this service).'
+send_token_message = 'A message containing a token has been sent to the user (if the user exists and is allowed to use this service).'
 error_set_password = 'The token you supplied is either expired or invalid. Please request a new one.'
 
 

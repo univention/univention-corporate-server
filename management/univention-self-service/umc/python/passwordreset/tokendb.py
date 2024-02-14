@@ -35,15 +35,19 @@
 # <https://www.gnu.org/licenses/>.
 
 import datetime
-import traceback
+import os
 
 import psycopg2
 import psycopg2.extras
 
+from univention.management.console.config import ucr
 
-DB_USER = "selfservice"
-DB_NAME = "selfservice"
-DB_SECRETS_FILE = "/etc/self-service-db.secret"
+
+DB_HOST = ucr.get("umc/self-service/postgresql/hostname", "localhost")
+DB_PORT = ucr.get_int("umc/self-service/postgresql/port", 5432)
+DB_USER = ucr.get("umc/self-service/postgresql/username", "selfservice")
+DB_NAME = ucr.get("umc/self-service/postgresql/database", "selfservice")
+DB_SECRETS_FILE = ucr.get("umc/self-service/postgresql/password-file", "/etc/self-service-db.secret")
 
 
 class MultipleTokensInDB(Exception):
@@ -113,20 +117,20 @@ token VARCHAR(255) NOT NULL);""")
         cur.close()
 
     def open_db(self):
+        password = os.getenv("SELF_SERVICE_DB_SECRET")
+        if not password:
+            try:
+                with open(DB_SECRETS_FILE) as pw_file:
+                    password = pw_file.readline().strip()
+            except OSError as e:
+                self.logger.error("db_open(): Could not read %s: %s", DB_SECRETS_FILE, e)
+                raise
         try:
-            with open(DB_SECRETS_FILE) as pw_file:
-                password = pw_file.readline().strip()
-        except (OSError, IOError) as e:
-            self.logger.error(f"db_open(): Could not read {DB_SECRETS_FILE}: {e}")
-            raise
-        try:
-            conn = psycopg2.connect("dbname={db_name} user={db_user} host='localhost' password='{db_pw}'".format(
-                db_name=DB_NAME, db_user=DB_USER, db_pw=password))
-            self.logger.info("db_open(): Connected to database '{}' on server with version {} using protocol version {}.".format(
-                DB_NAME, conn.server_version, conn.protocol_version))
+            conn = psycopg2.connect(database=DB_NAME, user=DB_USER, password=password, host=DB_HOST, port=DB_PORT)
+            self.logger.info("db_open(): Connected to database %r on server with version %r using protocol version %r.", DB_NAME, conn.server_version, conn.protocol_version)
             return conn
         except Exception:
-            self.logger.error(f"db_open(): Error connecting to database '{DB_NAME}': {traceback.format_exc()}")
+            self.logger.exception("db_open(): Error connecting to database %r:", DB_NAME)
             raise
 
     def close_db(self):

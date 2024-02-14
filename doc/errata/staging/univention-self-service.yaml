@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-self-service
+fix: 5.0.8-1
+desc: |
+ This update addresses the following issues:
+ * The connection settings for the memcached and PostgreSQL databases are now
+   configurable via UCR variables. This is a requirement to run the self
+   service in a containerized environment.
+bug: [57061]

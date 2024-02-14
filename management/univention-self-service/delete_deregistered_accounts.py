@@ -102,14 +102,14 @@ def main(args):
         seconds=args.timedelta_seconds,
     )
     deregistration_timestamp_threshold = datetime.datetime.strftime(now - dt, DEREGISTRATION_TIMESTAMP_FORMATTING)
-    logging.info(f'Deleting users with univentionDeregisteredThroughSelfService=TRUE whose univentionDeregistrationTimestamp is older than {dt}')
+    logging.info('Deleting users with univentionDeregisteredThroughSelfService=TRUE whose univentionDeregistrationTimestamp is older than %s', dt)
     users_found = False
     for user in get_users(deregistration_timestamp_threshold, args.binddn, args.bindpwdfile):
         users_found = True
         if args.dry_run:
-            logging.info(f'dry-run: Deleting {user}')
+            logging.info('dry-run: Deleting %s', user)
         else:
-            logging.info(f'Deleting {user}')
+            logging.info('Deleting %s', user)
             user.delete()
     if not users_found:
         logging.info('No users need to be deleted')

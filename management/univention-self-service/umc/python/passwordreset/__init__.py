@@ -72,7 +72,9 @@ from .tokendb import MultipleTokensInDB, TokenDB
 
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
-MEMCACHED_SOCKET = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
+MEMCACHED_SOCKET = ucr.get("umc/self-service/memcached/socket", "/var/lib/univention-self-service-passwordreset-umc/memcached.socket")
+MEMCACHED_USERNAME = ucr.get("umc/self-service/memcached/username")
+MEMCACHED_SECRET_FILE = ucr.get("umc/self-service/memcached/password-file")
 MEMCACHED_MAX_KEY = 250
 
 SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
@@ -227,7 +229,7 @@ class TokenSendMessage(UMC_Error):
     status = 200
 
     def __init__(self):
-        super().__init__(_("A message containing a token has been send to the user (if the user exists and is allowed to use this service)."))
+        super().__init__(_("A message containing a token has been sent to the user (if the user exists and is allowed to use this service)."))
 
 
 class Instance(Base):
@@ -258,7 +260,14 @@ class Instance(Base):
             atexit.register(self.db.close_db)
             if not self.db.table_exists():
                 self.db.create_table()
-            self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True)
+            password = os.getenv("SELF_SERVICE_MEMCACHED_SECRET")
+            if not password and MEMCACHED_SECRET_FILE:
+                try:
+                    with open(MEMCACHED_SECRET_FILE) as pw_file:
+                        password = pw_file.readline().strip()
+                except OSError:
+                    raise UMC_Error('The memcached password is not properly configured.', status=503)
+            self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, username=MEMCACHED_USERNAME, password=password)
 
         self.send_plugins = get_sending_plugins(MODULE.process)
         self.password_reset_plugins = {k: v for k, v in self.send_plugins.items() if v.message_application() == 'password_reset'}

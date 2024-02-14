@@ -1,8 +1,13 @@
-univention-self-service (5.0.8-1) UNRELEASED; urgency=medium
+univention-self-service (5.0.8-1) unstable; urgency=medium
 
+  [ Philipp Hahn ]
   * Bug #56832: UCS 5.0-6 version bump
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:31 +0100
+  [ Florian Best ]
+  * Bug #57061: make connection properties for postgresql and memcached
+    configurable
+
+ -- Florian Best <best@univention.de>  Wed, 14 Feb 2024 18:41:03 +0100
 
 univention-self-service (5.0.7-3) unstable; urgency=medium
 

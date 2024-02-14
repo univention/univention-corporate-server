@@ -17,7 +17,7 @@ msgstr "????"
 
 #: umc/python/passwordreset/__init__.py:229
 msgid ""
-"A message containing a token has been send to the user (if the user exists "
+"A message containing a token has been sent to the user (if the user exists "
 "and is allowed to use this service)."
 msgstr ""
 "Eine Nachricht mit einem Token wurde an den Nutzer gesendet (wenn der Nutzer existiert und diesen Dienst erlaubt hat)."

@@ -1,4 +1,0 @@
-[tool.ruff]
-extend = "../../pyproject.toml"
-[tool.ruff.lint]
-extend-ignore = ["G"]
