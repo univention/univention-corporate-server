@@ -144,6 +144,7 @@ linkcheck_allowed_redirects = {
     r"https://help\.univention\.com/t/\d+": r"https://help\.univention\.com/t/[\w-]+/\d+",
     r"https://admin\.google\.com/": r"https://accounts\.google\.com/v3/signin/identifier\?.+",
     r"https://www\.microsoft\.com/en-US/download/details\.aspx\?id=\d+": r"https://www\.microsoft\.com/en-us/download/details\.aspx\?id=[\w\d-]+",
+    r"https://www\.office\.com/": r"https://www\.office\.com/.*",
 }
 
 linkcheck_ignore = [
