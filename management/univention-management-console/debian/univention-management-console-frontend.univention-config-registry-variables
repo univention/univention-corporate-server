@@ -37,8 +37,8 @@ Type=bool
 Categories=management-umc
 
 [umc/web/oidc/enabled]
-Description[de]=Ist diese Option aktiviert, wird der Login an UMC per OpenID Connect Single Sign-On versucht bevor der reguläre Login benutzt wird.
-Description[en]=If this option is activated, the login via OpenID Connect single sign-on is tried before the regular login is used.
+Description[de]=Ist diese Option aktiviert, wird der Login an UMC per OpenID Connect Single Sign-On versucht bevor der reguläre Login benutzt wird. Experimentell: Diese Funktion wird derzeit nicht unterstützt.
+Description[en]=If this option is activated, the login via OpenID Connect single sign-on is tried before the regular login is used. Experimental: This feature is currently not supported.
 Type=bool
 Default=false
 Categories=management-umc,oidc

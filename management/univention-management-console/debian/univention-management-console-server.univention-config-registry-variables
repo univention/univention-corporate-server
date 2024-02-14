@@ -154,8 +154,8 @@ Type=str
 Categories=management-umc
 
 [umc/oidc/default-op]
-Description[de]=Definiert den standard OpenID Provider UCR identifier.
-Description[en]=Defines the standard OpenID Provider UCR identifier.
+Description[de]=Definiert den standard OpenID Provider UCR identifier. Experimentell: Diese Funktion wird derzeit nicht unterstützt.
+Description[en]=Defines the standard OpenID Provider UCR identifier. Experimental: This feature is currently not supported.
 Type=str
 Categories=management-umc,oidc
 
