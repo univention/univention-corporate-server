@@ -45,6 +45,13 @@ Description[en]=This variable stores the valid service provider. This value is g
 Type=str
 Categories=management-umc
 
+[umc/saml/schemes]
+Description[de]=Definiert die gültigen URI-Schemata (https, http), die in den SAML Service-Provider Metadaten als gültige URIs verwendet werden.
+Description[en]=Defines the active URI schemes (https, http), which are used in the SAML service provider metadata as valid URIs.
+Type=str
+Categories=management-umc
+Default=https, http
+
 [auth/umc/addon/.*]
 Description[de]=Diese Variable aktiviert in der PAM Konfiguration weitere Authentifizierungsmethoden.
 Description[en]=This variable activates additional auth methods in the PAM configuration.
