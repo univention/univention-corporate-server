@@ -59,6 +59,7 @@ from ldap.controls.readentry import PostReadControl
 from ldap.dn import dn2str, escape_dn_chars, explode_rdn, str2dn
 from ldap.filter import filter_format
 
+import univention.admin.allocators
 import univention.admin.blocklist
 import univention.admin.filter
 import univention.admin.localization

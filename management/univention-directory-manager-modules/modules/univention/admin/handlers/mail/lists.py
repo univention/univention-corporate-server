@@ -32,8 +32,6 @@
 
 """|UDM| module for mailinglists"""
 
-import univention.admin.allocators
-import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Group, Tab

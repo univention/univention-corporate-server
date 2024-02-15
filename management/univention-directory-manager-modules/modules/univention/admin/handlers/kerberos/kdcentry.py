@@ -37,8 +37,6 @@ import string
 
 import ldap
 
-import univention.admin.allocators
-import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.password

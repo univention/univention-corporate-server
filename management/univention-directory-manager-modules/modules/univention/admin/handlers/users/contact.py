@@ -37,7 +37,6 @@ from __future__ import absolute_import
 from logging import getLogger
 
 import univention.admin
-import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
