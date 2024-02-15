@@ -59,7 +59,7 @@ On every block list you need to define the following properties:
      - Description
 
    * - Name
-     - A free selectable name for the blocklist.
+     - A free selectable name for the block list.
 
    * - Retention time
      - Retention time for entries in this block list (expired block list
@@ -81,7 +81,7 @@ An example for creating a block list  on the command line would be:
      --append blockingProperties="users/user mailPrimaryAddress" \
      --append blockingProperties="groups/group mailAddress"
 
-Entries in this blocklist block values from being reused as values for the
+Entries in this block list block values from being reused as values for the
 user property ``mailPrimaryAddress`` and the group property ``mailAddress``.
 
 
@@ -118,7 +118,7 @@ Every block list entry has the following properties:
 
    * - Origin ID
      - The ID of the UDM object that lead to this block list entry. The value
-       of this blocklist entry can still be used on that UDM object.
+       of this block list entry can still be used on that UDM object.
 
 .. _udm-blocklists-expired-entries:
 
