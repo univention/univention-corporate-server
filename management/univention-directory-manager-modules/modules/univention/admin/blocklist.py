@@ -72,8 +72,7 @@ def get_blocklist_config(lo):
     config = {}
     for blist in univention.admin.handlers.blocklists.list.lookup(None, lo, 'entryUUID=*', base=BLOCKLIST_BASE, scope='one'):
         config[blist.dn] = blist.get('retentionTime', '30d')
-        for props in blist.get('blockingProperties', []):
-            mod, prop = props.split(None, 1)
+        for mod, prop in blist.get('blockingProperties', []):
             if not config.get(mod):
                 config[mod] = {}
             config[mod][prop] = blist.dn
