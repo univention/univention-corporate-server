@@ -34,14 +34,18 @@
 define([
 	"dojo/_base/declare",
 	"dojo/dom-class",
+	"dojo/dom-style",
+	"put-selector/put",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/tools",
 	"umc/i18n!"
-], function(declare, domClass, ContainerWidget, Text, tools, _) {
+], function(declare, domClass, domStyle, put, ContainerWidget, Text, tools, _) {
 	return declare('umc.widgets.ModuleHeader', [ContainerWidget], {
 		baseClass: 'umcModuleHeader',
 
+		icon: '',
+		iconBackgroundColor: '',
 		isModuleTabSelected: false,
 
 		_outerContainer: null, // ContainerWidget
@@ -79,6 +83,17 @@ define([
 			this._right = new ContainerWidget({
 				baseClass: 'umcModuleHeaderRight'
 			});
+			var titleWrapper = new ContainerWidget({
+				baseClass: 'umcModuleTitleWrapper'
+			});
+			var logoWrapper = new ContainerWidget({
+				baseClass: 'umcModuleLogoWrapper'
+			});
+			domStyle.set(logoWrapper.domNode, "background-color", this.iconBackgroundColor)
+			var logo = new ContainerWidget({
+				'class': tools.getIconClass(this.icon, 'scalable'),
+				baseClass: 'umcModuleLogo'
+			});
 			this._title = new Text({
 				content: this.get('title'),
 				baseClass: 'umcModuleTitle'
@@ -93,7 +108,10 @@ define([
 			this._outerContainer.addChild(container);
 			container.addChild(this._left);
 			container.addChild(this._right);
-			this._left.addChild(this._title);
+			this._left.addChild(titleWrapper);
+			titleWrapper.addChild(logoWrapper);
+			logoWrapper.addChild(logo);
+			titleWrapper.addChild(this._title);
 			this._left.addChild(this._subTitle);
 		}
 	});

@@ -921,16 +921,16 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			domClass.add(this.domNode, 'umcModuleTab');
-            if (!_headerTryHide) {
-                var backgroundNode = put('div.umcModuleTab__background');
-                domConstruct.place(backgroundNode, this.domNode, 'first');
-                var nodeLeft = domConstruct.toDom('<svg class="umcModuleTab__background__svg umcModuleTab__background__svg--left" viewBox="0 0 100 100"><path d="M0,100 L100,100 L100,0 Q 85 85 0 100 z" /></svg>');
-                domConstruct.place(nodeLeft, backgroundNode);
+			if (!_headerTryHide) {
+				var backgroundNode = put('div.umcModuleTab__background');
+				domConstruct.place(backgroundNode, this.domNode, 'first');
+				var nodeLeft = domConstruct.toDom('<svg class="umcModuleTab__background__svg umcModuleTab__background__svg--left" viewBox="0 0 100 100"><path d="M0,100 L100,100 L100,0 Q 85 85 0 100 z" /></svg>');
+				domConstruct.place(nodeLeft, backgroundNode);
 
-                var nodeRight = domConstruct.toDom('<svg class="umcModuleTab__background__svg umcModuleTab__background__svg--right" viewBox="0 0 100 100"><path d="M0,0 Q 15 85 100 100  L 0,100 z" /></svg>');
-                domConstruct.place(nodeRight, backgroundNode);
-            }
-            var closeButtonNode = Button.simpleIconButtonNode('x', 'umcModuleTab__closeButton');
+				var nodeRight = domConstruct.toDom('<svg class="umcModuleTab__background__svg umcModuleTab__background__svg--right" viewBox="0 0 100 100"><path d="M0,0 Q 15 85 100 100  L 0,100 z" /></svg>');
+				domConstruct.place(nodeRight, backgroundNode);
+			}
+			var closeButtonNode = Button.simpleIconButtonNode('x', 'umcModuleTab__closeButton');
 			put(this.closeNode, '+', closeButtonNode);
 			put(this.closeNode, '!');
 			this.closeNode = closeButtonNode;
@@ -1686,7 +1686,8 @@ define([
 
 					var params = lang.mixin({
 						title: module.name,
-						//iconClass: tools.getIconClass(module.icon),
+						icon: module.icon,
+						iconBackgroundColor: this.__getModuleColor(module),
 						closable: closable,
 						moduleFlavor: module.flavor,
 						moduleID: module.id,
