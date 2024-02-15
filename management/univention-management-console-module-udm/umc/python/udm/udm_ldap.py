@@ -771,7 +771,7 @@ class UDM_Module(object):
     @property
     def ldap_base(self):
         """Default LDAP base of the UDM module"""
-        return getattr(self.module.object, 'ldap_base', '')
+        return getattr(self.module.object, 'ldap_base', ucr.get('ldap/base'))
 
     @property
     def description(self):
@@ -1190,13 +1190,13 @@ def split_module_name(module_name):
     return (None, None)
 
 
-def ldap_dn2path(ldap_dn, include_rdn=True):
+def ldap_dn2path(ldap_dn, include_rdn=True, ldap_base=None):
     """
     Returns a path representation of an LDAP DN. If include_rdn is
     false just the container of the given object is returned in a path
     representation
     """
-    ldap_base = ucr.get('ldap/base')
+    ldap_base = ldap_base or ucr.get('ldap/base')
     if not ldap_base or not ldap_dn.lower().endswith(ldap_base.lower()):
         return ldap_dn
     rel_path = ldap_dn[:-(1 + len(ldap_base))]
