@@ -54,10 +54,11 @@ limits group/univentionGroup/uniqueMember="cn=DC Backup Hosts,cn=groups,%(ldap/b
     for group in configRegistry.get('ldap/database/internal/syncprov/acl/groups/write', '').split('|'):
         if group:
             acls.append('by group/univentionGroup/uniqueMember="%s" write' % group)
-    for group in configRegistry.get('ldap/database/internal/syncprov/acl/groups/read', '').split('|'):
+    read_groups = configRegistry.get('ldap/database/internal/syncprov/acl/groups/read', '')
+    for group in read_groups.split('|'):
         if group:
             acls.append('by group/univentionGroup/uniqueMember="%s" read' % group)
-    acls.append('by * none')
+    acls.append('by * %s' % ("none" if read_groups else "read"))
     print('# ACLs for cn=internal')
     print('access to *')
     for acl in acls:
@@ -89,10 +90,11 @@ syncrepl rid=1
     acls.append('by group/univentionGroup/uniqueMember="%s" write' % groups_default_domainadmins_dn)
     acls.append('by set="user/univentionObjectType & [computers/domaincontroller_master]" read')
     acls.append('by set="user/univentionObjectType & [computers/domaincontroller_backup]" read')
-    for group in configRegistry.get('ldap/database/internal/syncrepl/acl/groups/read', '').split('|'):
+    read_groups = configRegistry.get('ldap/database/internal/syncprov/acl/groups/read', '')
+    for group in read_groups.split('|'):
         if group:
             acls.append('by group/univentionGroup/uniqueMember="%s" read' % group)
-    acls.append('by * none')
+    acls.append('by * %s' % ("none" if read_groups else "read"))
     print('# ACLs for cn=internal')
     print('access to *')
     for acl in acls:
