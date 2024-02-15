@@ -93,10 +93,7 @@ def get_blockeduntil(dn, lo):
 
 
 def blocklist_enabled(udm_obj):
-    return udm_obj.module != 'blocklists/all' and \
-        udm_obj.module != 'blocklists/list' and \
-        udm_obj.module != 'blocklists/entry' and \
-        configRegistry.is_true('directory/manager/blocklist/enabled', False)
+    return not udm_obj.module.startswith('blocklists/') and configRegistry.is_true('directory/manager/blocklist/enabled', False)
 
 
 def get_blocklist_values_from_udm_property(udm_property_value, udm_property_name):
