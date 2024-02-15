@@ -66,6 +66,7 @@ Depends:
  python-unidecode,
  python-univention (>= 13.0.2-4),
  python-univention-admin-diary,
+ python-univention-debug (>= 12.0.3-5),
  python-univention-heimdal (>= 4.0.1-1),
  python-univention-lib (>= 8.0.0-6),
  python-univention-license,
