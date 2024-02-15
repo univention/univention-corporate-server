@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	if (notifier_client_new(NULL, argv[optind], 1) != 0) {
+	if (NOTIFIER_CLIENT_NEW_RETRY(notifier_client_new(NULL, argv[optind], 1)) != 0) {
 		fprintf(stderr, "Could not connect to notifier\n");
 		return 1;
 	}

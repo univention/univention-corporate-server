@@ -69,5 +69,32 @@ extern int get_notifier_retries();
 		_rv;                                                                                \
 	})
 
+#define NOTIFIER_CLIENT_NEW_RETRY(cmd)                                                              \
+	({                                                                                          \
+		int _rv, _delay, _retry = 0;                                                        \
+		if (notifier_retries < 0)                                                           \
+			notifier_retries = get_notifier_retries();                                  \
+		do {                                                                                \
+			_rv = (cmd);                                                                \
+			if (_rv == 0)                                                               \
+				break;                                                              \
+			if (_retry < notifier_retries)                                              \
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,                  \
+					"communication with notifier failed (%d), connecting again",\
+					_rv);                                                       \
+			else                                                                        \
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,                  \
+					"communication with notifier failed (%d)", _rv);            \
+			_delay = 1 << (_retry++ < 8 ? _retry : 8);                                  \
+			if (_retry < notifier_retries) {                                            \
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,                  \
+				"connection to notifier failed, retry #%d in %d second(s)",         \
+				_retry, _delay);                                                    \
+				sleep(_delay);                                                      \
+			}                                                                           \
+		} while (_retry < notifier_retries);                                                \
+		_rv;                                                                                \
+	})
+
 extern char *lower_utf8(const char *str);
 extern bool same_dn(const char *left, const char *right);

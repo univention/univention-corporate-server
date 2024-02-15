@@ -330,7 +330,7 @@ static int do_connection(univention_ldap_parameters_t *lp) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to LDAP server %s:%d", lp->uri ? lp->uri : lp->host ? lp->host : "NULL", lp->port);
 		goto fail;
 	}
-	if (notifier_client_new(NULL, lp->host, 1) != 0)
+	if (NOTIFIER_CLIENT_NEW_RETRY(notifier_client_new(NULL, lp->host, 1)) != 0)
 		goto fail;
 
 	/* check if we are connected to an OpenLDAP */
