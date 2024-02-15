@@ -1452,3 +1452,9 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Configures the default user name for the domain administrator. The value
    might be changed during an AD Takeover. For more information, see
    :ref:`windows-ad-takeover-migrate`.
+
+.. envvar:: umc/http/session/timeout
+
+   Configures the time out period in seconds for the browser session
+   after which the UCS management system requires a renewed sign in.
+   The default value is ``28800`` seconds, 8 hours.
