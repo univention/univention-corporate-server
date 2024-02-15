@@ -34,21 +34,15 @@
 """import all computer modules"""
 
 import importlib
+import os
 import os.path
 
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
 
-computers = []
-
-
-def __walk(root, dir, files):
-    for file_ in files:
-        if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('computer.py',):
-            computers.append(importlib.import_module('univention.admin.handlers.computers.%s' % (file_[: -3],)))
-
-
-path = os.path.abspath(os.path.dirname(__file__))
-for w_root, _w_dirs, w_files in os.walk(path):
-    __walk(w_root, w_root, w_files)
+computers = [
+    importlib.import_module('%s.%s' % (__name__, fn[:-3]))
+    for fn in os.listdir(os.path.dirname(__file__))
+    if fn.endswith(".py") and not fn.startswith("__") and fn not in ('computer.py',)
+]
