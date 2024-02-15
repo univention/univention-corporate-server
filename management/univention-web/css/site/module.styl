@@ -54,6 +54,18 @@
 	gap: spacing(1) 0
 	min-height: var(--button-size)
 
+.umcModuleLogoWrapper
+	border-radius: var(--border-radius-interactable)
+	margin-right: calc(1.5*var(--layout-spacing-unit))
+
+.umcModuleTitleWrapper
+	display: flex
+	align-items: center
+
+.umcModuleLogo
+	height: 2rem
+	width: @height
+
 .umcModuleHeader--withSubTitle .umcModuleHeaderWrapper
 	align-items: flex-start
 
@@ -82,7 +94,7 @@
 
 .umcModuleSubTitle
 	font-size: var(--font-size-5)
-	margin-top: spacing(1)
+	margin-top: calc(1.5*var(--layout-spacing-unit))
 
 .umc .umcModuleWrapper
 	margin: 0 auto

@@ -56,6 +56,8 @@ define([
 		// summary:
 		//		Basis class for module classes.
 
+		icon: '',
+		iconBackgroundColor: '',
 		_top: null,
 		_bottom: null,
 		__container: null,
@@ -133,6 +135,8 @@ define([
 
 			this._top = new ModuleHeader({
 				//buttons: render.buttons(this.headerButtons, this),
+				icon: this.icon,
+				iconBackgroundColor: this.iconBackgroundColor,
 				title: this.get('title')
 			});
 
