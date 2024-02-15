@@ -70,7 +70,7 @@ property_descriptions = {
     'blockingProperties': univention.admin.property(
         short_description=_('Properties to block'),
         long_description=_('Property values removed from a UDM object can be automatically blocked for future use. This is achieved by adding the properties to a blocklist. The properties must be specified according to the following schema: "udm/module property". An example configuration would be "users/user mailPrimaryAddress". If multiple properties are assigned to the same blocklist, the blocking value applies for multiple properties.'),
-        syntax=univention.admin.syntax.string,
+        syntax=univention.admin.syntax.UDM_PropertySelect,
         required=True,
         multivalue=True,
     ),
@@ -92,9 +92,17 @@ layout = [
 ]
 
 
+def mapBlockingProperty(vals, encoding=()):
+    return [u' '.join(val).encode(*encoding) for val in vals]
+
+
+def unmapBlockingProperty(vals, encoding=()):
+    return [val.decode(*encoding).split(u' ', 1) for val in vals]
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('blockingProperties', 'univentionBlockingProperties')
+mapping.register('blockingProperties', 'univentionBlockingProperties', mapBlockingProperty, unmapBlockingProperty)
 mapping.register('retentionTime', 'univentionBlocklistRetentionTime', None, univention.admin.mapping.ListToString)
 
 
