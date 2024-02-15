@@ -156,6 +156,10 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Defines the print server to be used by a UCS system. For more information,
    see :ref:`computers-configure-print-server`.
 
+.. envvar:: directory/manager/blocklist/enabled
+
+   Activates the management of blocklist entries in UDM. For more information,
+   see :ref:`udm-blocklists-activate`
 
 .. envvar:: directory/manager/templates/alphanum/whitelist
 

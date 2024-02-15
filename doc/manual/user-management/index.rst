@@ -81,3 +81,4 @@ outside the recommendation.
    user-lockout
    user-templates
    last-bind-overlay
+   udm-blocklists
