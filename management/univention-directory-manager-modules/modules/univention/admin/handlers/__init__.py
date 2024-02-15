@@ -2403,8 +2403,15 @@ class simpleComputer(simpleLdap):
 
         return dn
 
-    def __split_dhcp_line(self, entry):
+    @classmethod
+    def __split_dhcp_line(cls, entry):
         # type: (List[str]) -> Tuple[str, str, str]
+        """
+        >>> simpleComputer._simpleComputer__split_dhcp_line(["service", "0011.2233.4455"])
+        ('service', '', '00:11:22:33:44:55')
+        >>> simpleComputer._simpleComputer__split_dhcp_line(["service", "1.2.3.4", "00:11:22:33:44:55"])
+        ('service', '1.2.3.4', '00:11:22:33:44:55')
+        """
         service = entry[0]
         ip = ''
         try:
@@ -2412,16 +2419,23 @@ class simpleComputer(simpleLdap):
             #   0011.2233.4455 -> 00:11:22:33:44:55 -> is guaranteed to work together with our DHCP server
             #   __split_dhcp_line may be used outside of UDM which means that MAC_Address.parse may not be called.
             mac = univention.admin.syntax.MAC_Address.parse(entry[-1])
-            if self._is_ip(entry[-2]):
+            if cls._is_ip(entry[-2]):
                 ip = entry[-2]
         except univention.admin.uexceptions.valueError:
             mac = ''
         return (service, ip, mac)
 
-    def __split_dns_line(self, entry):
+    @classmethod
+    def __split_dns_line(cls, entry):
         # type: (List[str]) -> Tuple[str, Optional[str]]
+        """
+        >>> simpleComputer._simpleComputer__split_dns_line(["zoneName"])
+        ('zoneName', None)
+        >>> simpleComputer._simpleComputer__split_dns_line(["zoneName", "1.2.3.4"])
+        ('zoneName', '1.2.3.4')
+        """
         zone = entry[0]
-        ip = self._is_ip(entry[1]) and entry[1] or None if len(entry) > 1 else None
+        ip = entry[1] if len(entry) > 1 and cls._is_ip(entry[1]) else None
 
         log.debug('Split entry %s into zone %s and ip %s', entry, zone, ip)
         return (zone, ip)
