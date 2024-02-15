@@ -1457,4 +1457,19 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Configures the time out period in seconds for the browser session
    after which the UCS management system requires a renewed sign in.
-   The default value is ``28800`` seconds, 8 hours.
+   The default value is ``28800`` seconds for 8 hours.
+
+
+.. envvar:: umc/web/oidc/enabled
+
+   If activated with ``true``,
+   the UMC first tries a single sign-on login through OpenID Connect
+   before using the regular login.
+   For more information, refer to :ref:`central-management-umc-login`.
+
+.. envvar:: umc/web/sso/enabled
+
+   If activated with ``true``,
+   the UMC first tries a single sign-on login through SAML
+   before using the regular login.
+   For more information, refer to :ref:`central-management-umc-login`.
