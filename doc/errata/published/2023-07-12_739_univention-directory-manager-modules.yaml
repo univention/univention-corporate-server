@@ -11,7 +11,7 @@ desc: |
    corrected.
  * Values for the "complex" syntax class can now contain double quotes.
  * It is possible again to detect, search and modify users/ldap objects which
-   have univentionObjectFlag=functional.
+   have `univentionObjectFlag=functional`.
  * The displayed description of objects is now more accurate,
    for example for OX IMAP folder objects did not include
    the domain name which made it difficult to differentiate
