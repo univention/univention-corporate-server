@@ -6,7 +6,7 @@ src: univention-ad-connector
 fix: 13.0.0-50A~4.4.0.202008271111
 desc: |
  This update addresses the following issue:
- * Fix error handling regression of Bug #51518
+ * Fix error handling regression from erratum 636 of Bug #51518
 bug: [51915]
 erratum: 734
 announced: 2020-09-02
