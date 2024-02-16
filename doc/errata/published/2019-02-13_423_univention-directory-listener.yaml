@@ -10,5 +10,7 @@ desc: |
    not transmit Distinguished Names over an unencrypted and unauthenticated
    channel.
 bug: [48427]
+cve:
+  - CVE-2019-1010283
 erratum: 423
 announced: 2019-02-13
