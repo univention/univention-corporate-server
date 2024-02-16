@@ -6,7 +6,8 @@ src: univention-directory-manager-modules
 fix: 14.0.20-5A~4.4.0.202102231156
 desc: |
  This update addresses the following issue:
- * Changing the user password via UMC if bcrypt is activated is now possible.
+ * Changing the user password via UMC is now possible if `bcrypt` is
+   activated.
 bug: [52832]
 erratum: 901
 announced: 2021-02-24
