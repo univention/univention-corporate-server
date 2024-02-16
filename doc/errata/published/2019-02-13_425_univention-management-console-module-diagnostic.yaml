@@ -9,7 +9,10 @@ desc: |
  * Added CLI-Tool "univention-run-diagnostic-checks" which can be used to
    execute the diagnostic checks.
  * Fixed error in "Check well known SIDs" system diagnostic test.
- * Use new Univention Directory Notifier Protocol Version 3 for check.
+ * Use new Univention Directory Notifier Protocol Version 3 for check
+   (CVE-2019-1010283).
 bug: [47650, 48477, 48427]
 erratum: 425
 announced: 2019-02-13
+cve:
+- CVE-2019-1010283
