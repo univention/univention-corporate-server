@@ -52,18 +52,25 @@ limits group/univentionGroup/uniqueMember="cn=DC Backup Hosts,cn=groups,%(ldap/b
     acls.append('by set="user/univentionObjectType & [computers/domaincontroller_backup]" write')
     acls.append('by set="user/univentionObjectType & [computers/domaincontroller_slave]" write')
     acls.append('by set="user/univentionObjectType & [computers/memberserver]" write')
-    for group in configRegistry.get('ldap/database/internal/acl/blocklists/groups/write', '').split('|'):
-        if group:
-            acls.append('by group/univentionGroup/uniqueMember="%s" write' % group)
-    read_groups = configRegistry.get('ldap/database/internal/acl/blocklists/groups/read', '')
-    for group in read_groups.split('|'):
-        if group:
-            acls.append('by group/univentionGroup/uniqueMember="%s" read' % group)
-    acls.append('by * %s' % ("none" if read_groups else "read"))
+    acls.append('by * none break\n')
     print('# ACLs for cn=internal')
     print('access to *')
     for acl in acls:
         print('    %s' % acl)
+
+    print('\n# ACLs for cn=blocklists,cn=internal')
+    blocklist_acls = []
+    for group in configRegistry.get('ldap/database/internal/acl/blocklists/groups/write', '').split('|'):
+        if group:
+            blocklist_acls.append('by group/univentionGroup/uniqueMember="%s" write' % group)
+    read_groups = configRegistry.get('ldap/database/internal/acl/blocklists/groups/read', '')
+    for group in read_groups.split('|'):
+        if group:
+            blocklist_acls.append('by group/univentionGroup/uniqueMember="%s" read' % group)
+    print('access to dn.subtree=cn=blocklists,cn=internal')
+    for acl in blocklist_acls:
+        print('    %s' % acl)
+    print('    by * %s' % ("none" if read_groups else "read"))
 
 # backup
 if configRegistry['server/role'] == 'domaincontroller_backup':
@@ -91,13 +98,20 @@ syncrepl rid=1
     acls.append('by group/univentionGroup/uniqueMember="%s" write' % groups_default_domainadmins_dn)
     acls.append('by set="user/univentionObjectType & [computers/domaincontroller_master]" read')
     acls.append('by set="user/univentionObjectType & [computers/domaincontroller_backup]" read')
-    read_groups = configRegistry.get('ldap/database/internal/acl/blocklists/groups/read', '')
-    for group in read_groups.split('|'):
-        if group:
-            acls.append('by group/univentionGroup/uniqueMember="%s" read' % group)
-    acls.append('by * %s' % ("none" if read_groups else "read"))
+    acls.append('by * none break\n')
     print('# ACLs for cn=internal')
     print('access to *')
     for acl in acls:
         print('    %s' % acl)
+
+    print('# ACLs for cn=blocklists,cn=internal')
+    blocklist_acls = []
+    read_groups = configRegistry.get('ldap/database/internal/acl/blocklists/groups/read', '')
+    for group in read_groups.split('|'):
+        if group:
+            blocklist_acls.append('by group/univentionGroup/uniqueMember="%s" read' % group)
+    print('access to dn.subtree=cn=blocklists,cn=internal')
+    for acl in blocklist_acls:
+        print('    %s' % acl)
+    print('    by * %s' % ("none" if read_groups else "read"))
 @!@
