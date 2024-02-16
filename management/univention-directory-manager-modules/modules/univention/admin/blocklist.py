@@ -51,7 +51,7 @@ BLOCKLIST_BASE = 'cn=blocklists,cn=internal'
 
 
 def hash_blocklist_value(value):
-    return hashlib.sha256(value.lower().encode('UTF-8')).hexdigest()
+    return 'sha256:%s' % hashlib.sha256(value.lower().encode('UTF-8')).hexdigest()
 
 
 def parse_timedelta(timedelta_string):
