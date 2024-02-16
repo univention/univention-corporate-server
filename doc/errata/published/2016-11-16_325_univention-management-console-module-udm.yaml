@@ -7,7 +7,7 @@ fix: 6.0.11-33.670.201611141343
 desc: |
  This update addresses the following issue(s):
  * The dialog to move objects showed the wrong possible destination objects
-   since the last erratum. This has been corrected.
+   since erratum 321. This has been corrected.
 bug: [42924]
 announced: 2016-11-16
 erratum: 325
