@@ -5,7 +5,7 @@ scope: ucs_4.1-0-errata4.1-4
 src: squid3
 fix: 3.1.20-2.2.24.201701241545
 desc: |
- This update fixes a regression in squid3. The last errata update (346)
+ This update fixes a regression in squid3. The last erratum 346
  has been built without SSL support.
 bug: [43408]
 erratum: 380
