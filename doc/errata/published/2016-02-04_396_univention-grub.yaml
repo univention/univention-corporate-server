@@ -5,7 +5,7 @@ src: univention-grub
 fix: 8.0.4-4.129.201602010917
 version: [4]
 desc: |
- This update fix the following issue:
+ This update fixes the following issue:
  * Two new UCR variables 'grub/default' and 'grub/savedefault' are added,
    which allow the selection of the next kernel to boot.
 bug: [40509]
