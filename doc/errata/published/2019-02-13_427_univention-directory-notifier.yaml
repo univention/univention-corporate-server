@@ -10,7 +10,9 @@ desc: |
    multiple objects at once.
  * Implement new Univention Directory Notifier Protocol Version 3, which does
    not transmit Distinguished Names over an unencrypted and unauthenticated
-   channel.
+   channel (CVE-2019-1010283).
 bug: [41262, 48427]
+cve:
+  - CVE-2019-1010283
 erratum: 427
 announced: 2019-02-13
