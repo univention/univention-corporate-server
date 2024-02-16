@@ -8,5 +8,7 @@ desc: |
  This update addresses the following issue:
  * Copy cn=translog database for transaction log to Backup while joining.
 bug: [48427]
+cve:
+  - CVE-2019-1010283
 erratum: 428
 announced: 2019-02-13
