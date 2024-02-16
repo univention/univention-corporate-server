@@ -1,6 +1,8 @@
-univention-radius (7.0.7-1) UNRELEASED; urgency=medium
+univention-radius (7.0.7-1) unstable; urgency=medium
 
   * Bug #57118 UCS 5.0-7 version bump
+  * Bug #57069: Support different MAC formats for MAC authentication bypass
+
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:54 +0100
 

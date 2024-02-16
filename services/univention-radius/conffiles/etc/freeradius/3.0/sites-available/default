@@ -270,6 +270,13 @@ authorize {
 	#
 	filter_username
 
+@!@
+if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
+    print("\trewrite_calling_station_id")
+else:
+    print("#\trewrite_calling_station_id")
+@!@
+
 	#
 	#  Some broken equipment sends passwords with embedded zeros.
 	#  i.e. the debug output will show
@@ -382,6 +389,26 @@ print('%s' % configRegistry.get('freeradius/conf/realm', 'suffix'))
 	#  initial set of packets that go back and forth to set up
 	#  TTLS or PEAP.
 	#
+@!@
+if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
+    print("\tuser_name_is_mac")
+    ldap_base = configRegistry['ldap/base']
+    print('''
+    if (control:Auth-Type == "CSID" && EAP-Message ) {
+        if ("%{ldap:ldap:///''' + ldap_base + '''?uid?sub?(macAddress=%{Calling-Station-Id})}") {
+            update request {
+                Tmp-String-0 := "%{ldap:ldap:///''' + ldap_base + '''?uid?sub?(macAddress=%{Calling-Station-Id})}"    # The uid attribute in the ldap object is filled with the host name and a trailing dollar sign.
+            }
+            if ("%{ldap:ldap:///''' + ldap_base + '''?univentionNetworkAccess?sub?(|(&(|(memberUid=%{Tmp-String-0})(macAddress=%{Calling-Station-Id}))(univentionObjectType=groups/group)(univentionNetworkAccess=1))(&(uid=%{Tmp-String-0})(univentionNetworkAccess=1)))}") {
+                update control {
+                    Cleartext-Password := "%{User-Name}"
+                }
+            }
+        }
+    }''')
+else:
+    print("#\tuser_name_is_mac")
+@!@
 	eap {
 		ok = return
 	}
@@ -478,6 +505,27 @@ print('%s' % configRegistry.get('freeradius/conf/users', 'files'))
 #  the post-auth section is for.
 #
 authenticate {
+    @!@
+if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
+    ldap_base = configRegistry['ldap/base']
+    text = '''
+    Auth-Type CSID {
+        if ("%{ldap:ldap:///''' + ldap_base + '''?uid?sub?(macAddress=%{Calling-Station-Id})}") {
+            update request {
+                Tmp-String-0 := "%{ldap:ldap:///''' + ldap_base + '''?uid?sub?(macAddress=%{Calling-Station-Id})}"    # The uid attribute in the ldap object is filled with the host name and a trailing dollar sign.
+            }
+            if ("%{ldap:ldap:///''' + ldap_base + '''?univentionNetworkAccess?sub?(|(&(|(memberUid=%{Tmp-String-0})(macAddress=%{Calling-Station-Id}))(univentionObjectType=groups/group)(univentionNetworkAccess=1))(&(uid=%{Tmp-String-0})(univentionNetworkAccess=1)))}") {
+                ok
+            }
+            else {
+                reject
+            }
+        }
+    }
+    '''
+    print(text)
+@!@
+
 	#
 	#  PAP authentication, when a back-end database listed
 	#  in the 'authorize' section supplies a password.  The
@@ -551,7 +599,9 @@ else:
 
 	#
 	#  Allow EAP authentication.
-	eap
+	Auth-Type eap {
+	    eap
+	}
 
 	#
 	#  The older configurations sent a number of attributes in
@@ -576,6 +626,7 @@ else:
 #
 preacct {
 	preprocess
+
 
 	#
 	#  Merge Acct-[Input|Output]-Gigawords and Acct-[Input-Output]-Octets
@@ -795,18 +846,20 @@ if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
     ldap_base = configRegistry['ldap/base']
     default_vlanid = configRegistry.get('freeradius/vlan-id', '')
     text = '''
-    if ("%{ldap:ldap:///''' + ldap_base + '''?uid?sub?(macAddress=%{User-Name})}") {
+    if (control:Auth-Type == "CSID" || (Calling-Station-Id && EAP-Message && control:Cleartext-Password)) {
+        if ( Calling-Station-Id && "%{ldap:ldap:///''' + ldap_base + '''?uid?sub?(macAddress=%{Calling-Station-Id})}") {
+            update request {
+                User-Name := "%{ldap:ldap:///''' + ldap_base + '''?uid?sub?(macAddress=%{Calling-Station-Id})}"    # The uid attribute in the ldap object is filled with the host name and a trailing dollar sign.
+            }
+        }
         # For known users as well for known machines we take the vlan-id from the group the user/machine is member of.
         # In case there are assignments for several groups the first vlan-id is automatically taken.
-        update request {
-            User-Name := "%{ldap:ldap:///''' + ldap_base + '''?uid?sub?(macAddress=%{User-Name})}"    # The uid attribute in the ldap object is filled with the host name and a trailing dollar sign.
-        }
-        if ("%{ldap:ldap:///''' + ldap_base + '''?univentionVlanId?sub?(&(macAddress=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*))}") {
+        if ("%{ldap:ldap:///''' + ldap_base + '''?univentionVlanId?sub?(&(|(memberUid=%{User-Name})(macAddress=%{Calling-Station-Id}))(univentionObjectType=groups/group)(univentionVlanId=*)(univentionNetworkAccess=1))}") {
             update reply {
                 Reply-Message := "DEBUG: Assigning VLAN-ID from user / computer object"
                 Tunnel-Type := VLAN
                 Tunnel-Medium-Type := IEEE-802
-                Tunnel-Private-Group-Id := "%{ldap:ldap:///''' + ldap_base + '''?univentionVlanId?sub?(&(|(memberUid=%{User-Name})(macAddress=%{User-Name}))(univentionObjectType=groups/group)(univentionVlanId=*))}"
+                Tunnel-Private-Group-Id := "%{ldap:ldap:///''' + ldap_base + '''?univentionVlanId?sub?(&(|(memberUid=%{User-Name})(macAddress=%{Calling-Station-Id}))(univentionObjectType=groups/group)(univentionVlanId=*)(univentionNetworkAccess=1))}"
             }
         }
         # If we can't find a matching VLAN ID for the user or machine client in LDAP, we return the default VLAN ID, if configured.
@@ -819,7 +872,8 @@ if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
                 Tunnel-Private-Group-Id := "''' + default_vlanid + '''"
             }
         }
-    }'''
+    }
+'''
     print(text)
 @!@
     # Check if the user or machine exists and do post-auth actions
@@ -828,7 +882,7 @@ if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
 @!@
 ldap_base = configRegistry['ldap/base']
 if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
-    print('    if ("%{ldap:ldap:///' + ldap_base + '?uid?sub?(|(uid=%{User-Name})(macAddress=%{User-Name}))}") {')
+    print('    if ("%{ldap:ldap:///' + ldap_base + '?uid?sub?(|(uid=%{User-Name})(macAddress=%{Calling-Station-Id}))}") {')
 else:
     print('    if ("%{ldap:ldap:///' + ldap_base + '?uid?sub?(uid=%{User-Name})}") {')
 @!@
@@ -837,9 +891,9 @@ else:
 @!@
 ldap_base = configRegistry['ldap/base']
 if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
-    print('        if ("%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(|(memberUid=%{User-Name})(macAddress=%{User-Name}))(univentionObjectType=groups/group)(univentionVlanId=*))}") {')
+    print('        if ("%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(|(memberUid=%{User-Name})(macAddress=%{Calling-Station-Id}))(univentionObjectType=groups/group)(univentionVlanId=*)(univentionNetworkAccess=1))}") {')
 else:
-    print('        if ("%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(memberUid=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*))}") {')
+    print('        if ("%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(memberUid=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*)(univentionNetworkAccess=1))}") {')
 @!@
             update reply {
                 Reply-Message := "DEBUG: Assigning VLAN-ID from user / computer object"
@@ -848,9 +902,9 @@ else:
 @!@
 ldap_base = configRegistry['ldap/base']
 if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
-    print('                Tunnel-Private-Group-Id := "%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(|(memberUid=%{User-Name})(memberUid=%{1}))(univentionObjectType=groups/group)(univentionVlanId=*))}"')
+    print('                Tunnel-Private-Group-Id := "%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(|(memberUid=%{User-Name})(memberUid=%{1}))(univentionObjectType=groups/group)(univentionVlanId=*)(univentionNetworkAccess=1))}"')
 else:
-    print('                Tunnel-Private-Group-Id := "%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(memberUid=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*))}"')
+    print('                Tunnel-Private-Group-Id := "%{ldap:ldap:///' + ldap_base + '?univentionVlanId?sub?(&(memberUid=%{User-Name})(univentionObjectType=groups/group)(univentionVlanId=*)(univentionNetworkAccess=1))}"')
 @!@
 
             }

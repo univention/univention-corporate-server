@@ -94,3 +94,10 @@ Variables: freeradius/conf/inner-tunnel-port
 Type: file
 File: etc/logrotate.d/univention-radius
 Variables: logrotate/.*
+
+Type: file
+File: etc/freeradius/3.0/policy.d/canonicalization
+User: root
+Group: freerad
+Mode: 640
+Variables: freeradius/conf/mac-addr-regexp
