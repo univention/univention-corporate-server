@@ -510,6 +510,11 @@ gencert () {
 	local fqdn="${2:?Missing argument: common name}"
 	local days="${3:-$DEFAULT_DAYS}"
 
+	# get our sso fqdn -> $ucs_server_sso_fqdn
+	eval "$(ucr shell ucs/server/sso/fqdn)"
+	# get list of SAML servers
+	local samlsrv="$(ucr shell | grep ucs_server_saml_idp_server | sed -e 's/.*=//' | xargs)"
+
 	local hostname="${fqdn%%.*}" cn="$fqdn"
 	if [ ${#hostname} -gt 64 ]
 	then
@@ -532,6 +537,14 @@ gencert () {
 		# Add DNS alias names
 		local san
 		san="$(univention-ldapsearch -LLLo ldif-wrap=no "(cNAMERecord=${fqdn%.}.)" 1.1 | sed -rne 's/^dn: relativeDomainName=([^,]+),zoneName=([^,]+),.*/\1 \1.\2/p' | tr '\n' ' ')"
+		# Add SSO name if we create cert for one of the SAML servers 
+		for tst in $samlsrv
+		do
+			if [ "$tst" == "$fqdn" ]; then
+				san="$san ${ucs_server_sso_fqdn%%.*} $ucs_server_sso_fqdn"
+				break
+			fi
+		done
 		mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
 		# generate a key pair
 		openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
