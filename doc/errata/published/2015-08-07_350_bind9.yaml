@@ -18,7 +18,7 @@ desc: |
  * An error in handling TKEY queries could be used to trigger a
    REQUIRE assertion failure leading to denial of service against
    named (CVE-2015-5477).
-
+note: |
  For the full list of changes from bind9 9.8.0-P4 to 9.8.4-P1 see:
  * https://kb.isc.org/article/AA-00446/81/BIND-9.8.1-Release-Notes.html
  * https://kb.isc.org/article/AA-00645/81/BIND-9.8.2-Release-Notes.html
