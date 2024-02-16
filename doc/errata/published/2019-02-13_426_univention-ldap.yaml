@@ -9,8 +9,10 @@ desc: |
  * Enabled cn=config backend, accessible via LDAPI only.
  * During the update, a resync of the listener module ldap_extension is
    performed on domain controller backup and domain controller slave
-   systems to correct possible inconsistencies in LDAP ACLs (Bug #48530).
- * Add cn=translog database for transaction log.
+   systems to correct possible inconsistencies in LDAP ACLs.
+ * Add cn=translog database for transaction log (CVE-2019-1010283).
 bug: [43515, 48530, 48427]
+cve:
+  - CVE-2019-1010283
 erratum: 426
 announced: 2019-02-13
