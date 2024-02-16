@@ -1247,6 +1247,7 @@ Package: *
 Pin: release o=Univention,a=git,n=git
 Pin-Priority: 1001
 __PREF__
+		echo 'APT::Get::allow-downgrades "true";' > /etc/apt/apt.conf.d/99allow-downgrade
 		apt-get -qq update
 	fi
 }
