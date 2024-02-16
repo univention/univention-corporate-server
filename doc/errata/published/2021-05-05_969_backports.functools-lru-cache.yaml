@@ -6,7 +6,7 @@ src: backports.functools-lru-cache
 fix: 1.3-1
 desc: |
  This update addresses the following issue:
- * The package unidecode has been moved to maintained
+ * The package `backports.functools-lru-cache` has been moved to maintained
 bug: [52920]
 maintained: true
 ignore:
