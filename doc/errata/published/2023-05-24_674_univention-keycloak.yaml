@@ -3,13 +3,13 @@ release: "5.0"
 version: [3]
 scope: ucs_5.0-0-errata5.0-3
 src: univention-keycloak
-fix: 1.0.9-11
+fix: 1.0.9-10
 desc: |
  This update addresses the following issues:
- * `SimpleSAMLPHP` is configured as a service provider in `Keycloak`,
-   meaning it acts as a proxy and use `Keycloak` as a backend. This is
-   part of the migration from `SimpleSAMLPHP` to `Keycloak` in `UCS`.
-bug: [56074]
+ * The translation of the login page header has been moved from
+   the `univention-keycloak` script into the App itself for
+   better configurability.
+bug: [56066]
 erratum: 674
 announced: 2023-05-24
 support: core
