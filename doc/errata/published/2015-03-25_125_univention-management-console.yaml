@@ -6,7 +6,7 @@ fix: 7.1.63-15.856.201503241018
 version: [1]
 desc: |
   This update addresses the following issues:
-  * A racing condition during UMC session shutdown has been fixed, that
+  * A race condition during UMC session shutdown has been fixed, that
     could lead to a complete shutdown of the UMC server.
   * Removing and subsequently adding extended attributes could lead to a UMC
     server crash. The attribute handling in the server has been improved.
