@@ -11,8 +11,8 @@ desc: |-
     - resync_object_from_ucs.py
     - remove_ad_rejected.py
     - remove_ucs_rejected.py
-  * A regression of Bug 45779 affecting the AD connection wizard has been
-    fixed
+  * A regression from erratum 36 of Bug 45779 affecting the AD connection
+    wizard has been fixed
   * The connector's AD binary attributes list has been updated.
 bug: [47232, 47430, 47025]
 erratum: 168
