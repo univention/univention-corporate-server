@@ -5,7 +5,7 @@ scope: ucs_4.2-0-errata4.2-1
 src: univention-directory-manager-modules
 fix: 12.0.18-8A~4.2.0.201708011646
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * LDAP-Attributes which are required by their schema are now marked as
    required in UMC.
  * Some performance optimizations during modification of user and group
@@ -14,9 +14,9 @@ desc: |
    of the domain.
  * The error handling during creation of network objects with an invalid
    netmask has been improved.
- * A regression in univention.admin.objects.get() has been fixed which caused
-   that the Univention Corporate Client UMC configuration was not possible
-   anymore.
+ * A regression from erratum 115 in `univention.admin.objects.get()` has been
+   fixed which caused that the Univention Corporate Client UMC configuration
+   was not possible anymore.
 bug: [24601, 37081, 25058, 24828, 45116]
 erratum: 121
 announced: 2017-08-02
