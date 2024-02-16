@@ -7,7 +7,7 @@ fix: 10.0.6-14A~4.3.0.201809251323
 desc: |
  This update addresses the following issues:
  * The scrolling in the LDAP directory module has been improved.
- * Fix regression in traceback handling.
+ * Fix regression from erratum 215 in traceback handling.
 bug: [45598, 47857]
 erratum: 248
 announced: 2018-09-26
