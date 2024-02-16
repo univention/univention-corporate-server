@@ -5,8 +5,8 @@ src: univention-squid-kerberos
 fix: 3.0.2-8.18.201404171502
 version: [1]
 desc: |
-  Fixed a regression from the last version. The account for the
-  service principal is created via udm not via samba-tool.
+  Fixed a regression from erratum 90. The account for the
+  service principal is created via `udm` not via `samba-tool`.
 bug: [34575]
 erratum: 96
 announced: 2014-04-17
