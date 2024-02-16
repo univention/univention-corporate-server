@@ -2,6 +2,7 @@
 @!@
 import ldap
 import os
+import sys
 from univention.lib.misc import custom_groupname
 
 groups_default_domainadmins = custom_groupname('Domain Admins')
@@ -68,7 +69,7 @@ limits group/univentionGroup/uniqueMember="cn=DC Backup Hosts,cn=groups,%(ldap/b
 if configRegistry['server/role'] == 'domaincontroller_backup':
     print(DATABASE % configRegistry)
     if configRegistry.is_true('ldap/database/internal/syncrepl', False):
-        print("""
+        sys.stdout.write("""
 # syncrepl, rid has to be unique in slapd.conf!
 syncrepl rid=1
     provider="ldap://%(ldap/master)s:7389"
@@ -81,7 +82,7 @@ syncrepl rid=1
     bindmethod=simple
     starttls="critical"
     binddn="%(ldap/hostdn)s"
-    """ % configRegistry, end='')
+    """ % configRegistry)
         print('credentials="%s"\n' % machine_secret)
 
     # acl
