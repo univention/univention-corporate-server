@@ -14,7 +14,7 @@ desc: |
  * KEYS: Fix handling of stored error in a negatively instantiated user key
    (CVE-2015-8539)
  * ovl: fix permission checking for setattr (CVE-2015-8660)
- * fuse: break infinite loop in fuse_fill_write_pages( (CVE-2015-8785)
+ * fuse: break infinite loop in `fuse_fill_write_pages()` (CVE-2015-8785)
  * iw_cxgb3: Fix incorrectly returning error on success (CVE-2015-8812)
  * include/linux/poison.h: fix LIST_POISON{1,2} offset (CVE-2016-0821)
  * ecryptfs: forbid opening files without mmap handler (CVE-2016-1583)
