@@ -5,12 +5,12 @@ scope: ucs_4.3-0-errata4.3-2
 src: univention-management-console-module-udm
 fix: 8.0.5-29A~4.3.0.201812051007
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The scrolling in the UVMM module has been improved.
- * A regression in the users/self module regarding saving
+ * A regression from erratum 89 in the users/self module regarding saving
    unset properties with default values has been addressed.
- * The udm module flavors are requiring a minimal set of
-   allowed UMC commands now to be visible in the UMC.
+ * The udm module flavors are requiring a minimal set of allowed UMC commands
+   now to be visible in the UMC.
  * A widget has been moved to the common library.
 bug: [36624, 48047, 47880, 48106]
 erratum: 351
