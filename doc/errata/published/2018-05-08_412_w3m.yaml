@@ -29,6 +29,9 @@ desc: |
  * New patch 954_wtfparse1.patch to fix buffer overflow
 note: No CVE were assigned.
 bug: [46243]
-debian: https://security-tracker.debian.org/tracker/TEMP-0850432-8BD66F
+cve:
+ - TEMP-0850432-8BD66F
+ignore:
+  - cve.TEMP-0850432-8BD66F
 erratum: 412
 announced: 2018-05-08
