@@ -9,8 +9,8 @@ desc: |
  * When setting up an UCS appliance to join into an existing UCS domain,
    the installation could fail due to a failure to reconfigure the
    network interfaces.
- * A regression introduced while fixing Bug 42022 could cause an appliance
-   setup to fail due to missing software components.
+ * A regression introduced by erratum 214 while fixing Bug 42022 could cause an
+   appliance setup to fail due to missing software components.
 bug: [47767]
 erratum: 305
 announced: 2018-11-07
