@@ -22,7 +22,7 @@ print('\tidmap config * : backend\t= ldap')
 print('\tidmap config * : range\t\t= %s' % configRegistry.get('samba/idmap/range', '55000-64000'))
 print('\tidmap config * : ldap_url\t= ldap://%s' % ' ldap://'.join(ldapserver))
 print('\tidmap config * : ldap_user_dn\t= %s' % (admindn))
-## print('\tidmap config * : ldap_base_dn\t= cn=idmap,cn=univention,%s' % (ldap_base))
+# print('\tidmap config * : ldap_base_dn\t= cn=idmap,cn=univention,%s' % (ldap_base))
 
 # replacement for deprecated samba/winbind/trusted/domains/only=yes
 if configRegistry.get('windows/domain'):

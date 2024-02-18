@@ -1427,8 +1427,8 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 
     # GeCAD AV technology is acquired by Microsoft; RAV has been discontinued.
     # Check your RAV license terms before fiddling with the following two lines!
-    #		print("['GeCAD RAV AntiVirus 8', 'ravav',")
-    #		print("  '--all --archive --mail {}', [1], [2,3,4,5], qr/Infected: (.+)/ ],")
+    # print("['GeCAD RAV AntiVirus 8', 'ravav',")
+    # print("  '--all --archive --mail {}', [1], [2,3,4,5], qr/Infected: (.+)/ ],")
     # # NOTE: the command line switches changed with scan engine 8.5 !
     # # (btw, assigning stdin to /dev/null causes RAV to fail)
 

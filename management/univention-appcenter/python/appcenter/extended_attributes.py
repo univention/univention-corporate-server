@@ -222,9 +222,9 @@ class ExtendedAttribute(SchemaObject):
             self._syntax = '1.3.6.1.4.1.1466.115.121.1.15'
             self._equality = 'caseIgnoreMatch'
             self._substr = 'caseIgnoreSubstringsMatch'
-            #self._syntax = '1.3.6.1.4.1.1466.115.121.1.26'
-            #self._equality = 'caseIgnoreIA5Match'
-            #self._substr = None
+            # self._syntax = '1.3.6.1.4.1.1466.115.121.1.26'
+            # self._equality = 'caseIgnoreIA5Match'
+            # self._substr = None
             if not self.udm_syntax:
                 self.udm_syntax = 'string'
         else:

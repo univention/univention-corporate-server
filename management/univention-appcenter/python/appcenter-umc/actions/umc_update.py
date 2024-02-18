@@ -84,7 +84,7 @@ class Update(Update):
         dest_file = os.path.join(FRONTEND_ICONS_DIR, _dest_file)
         if os.path.exists(src_file):
             shutil.copy2(src_file, dest_file)
-            #self.debug('copying %s -> %s' % (src_file, dest_file))
+            # self.debug('copying %s -> %s' % (src_file, dest_file))
 
             # images are created with UMC umask: -rw-------
             # change the mode to UCS umask:      -rw-r--r--

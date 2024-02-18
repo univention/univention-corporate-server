@@ -162,7 +162,7 @@ def test_single_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     res = objfind(fetchmail, uid)
     assert len(res) == 3
 
-    #Remove only one configuration
+    # Remove only one configuration
     udm.modify_object('users/user', dn=user_dn, remove={
         'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1']
     })
@@ -173,7 +173,7 @@ def test_single_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     assert len(res) == 2
     assert any(map(lambda x: not check_entry(x, fqdn, remote_username + "1", password, user_addr, uid), res))
 
-    #Remove remaining configurations (Bug #56426)
+    # Remove remaining configurations (Bug #56426)
     udm.modify_object('users/user', dn=user_dn, remove={
         'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
                             f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1']
@@ -204,7 +204,7 @@ def test_multi_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     res = objfind(fetchmail, uid)
     assert len(res) == 3
 
-    #Remove only one configuration
+    # Remove only one configuration
     udm.modify_object('users/user', dn=user_dn, remove={
         'FetchMailMulti': [f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" "" "" "Envelope-To" 1 1']
     })
@@ -215,7 +215,7 @@ def test_multi_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     assert len(res) == 2
     assert any(map(lambda x: not check_entry(x, fqdn, remote_username + "1", password, user_addr, uid), res))
 
-    #Remove remaining configurations (Bug #56426)
+    # Remove remaining configurations (Bug #56426)
     udm.modify_object('users/user', dn=user_dn, remove={
         'FetchMailMulti': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" "" "" "Envelope-To" 1 1',
                            f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" "" "" "Envelope-To" 1 1']

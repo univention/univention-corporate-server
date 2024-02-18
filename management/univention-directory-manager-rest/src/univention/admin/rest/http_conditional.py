@@ -78,8 +78,8 @@ class ConditionalResource:
         etag.update(obj.module.encode('utf-8', 'replace'))
         etag.update(b''.join(obj.oldattr.get('entryCSN', [])))
         etag.update((obj.entry_uuid or '').encode('utf-8'))
-        #etag.update(json.dumps({k: [v.decode('ISO8859-1', 'replace') for v in val] for k, val in obj.oldattr.items()}, sort_keys=True).encode('utf-8'))
-        #etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
+        # etag.update(json.dumps({k: [v.decode('ISO8859-1', 'replace') for v in val] for k, val in obj.oldattr.items()}, sort_keys=True).encode('utf-8'))
+        # etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
         return '"%s"' % etag.hexdigest()
 
     def modified_from_timestamp(self, timestamp):

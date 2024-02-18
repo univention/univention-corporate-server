@@ -187,7 +187,7 @@ class QueryStringSanitizer(DictSanitizer):
                     value[key] = value[key][0]
                 elif isinstance(sanitizer, DictSanitizer):
                     value[key] = {k[len(key) + 1:-1]: v[0] for k, v in value.items() if k.startswith(key + '[') and k.endswith(']')}
-                    #value[key] = QueryStringSanitizer(sanitizer.sanitizers).sanitize(key, {key: value[key]})
+                    # value[key] = QueryStringSanitizer(sanitizer.sanitizers).sanitize(key, {key: value[key]})
 
         return super()._sanitize(value, name, further_arguments)
 

@@ -102,7 +102,7 @@ class Instance(Base):
                 hints.append(_('Make sure your firewall allows connections to %s.') % (db_url.host))
                 hints.append(_('Check the password in /etc/admin-diary.secret. Is it the same on %s and on %s?') % (ucr.get('hostname'), db_url.host))
                 hints.append(_('Is %s allowed to connect to the database service on %s?') % (ucr.get('hostname'), db_url.host))
-            #hints.append(_('Did the system set up the database? If not, run /usr/share/univention-admin-diary/create-database'))
+            # hints.append(_('Did the system set up the database? If not, run /usr/share/univention-admin-diary/create-database'))
             raise umcm.UMC_Error('\n'.join(hints), status=500)
         return super(Instance, self).error_handling(exc, etype, etraceback)
 

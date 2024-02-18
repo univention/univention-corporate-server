@@ -2286,7 +2286,7 @@ def create_or_replace_realm_role(kc_admin, realm, role):
     # create payload
     payload = REALM_ROLE_BASE
     payload["name"] = role
-    #payload["containerId"] = role
+    # payload["containerId"] = role
 
     url = f"admin/realms/{realm}/roles"
     data_raw = kc_admin.raw_post(url, data=json.dumps(payload))

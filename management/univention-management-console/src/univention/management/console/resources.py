@@ -39,7 +39,7 @@ Implements several helper classes to handle the state of a session
 and the communication with the module processes
 """
 
-#import asyncio.exceptions
+# import asyncio.exceptions
 import base64
 import errno
 import gzip
@@ -183,7 +183,7 @@ class _ModuleConnection(object):
         except concurrent.futures.CancelledError as exc:
             CORE.warn('Aborted module process request: %s' % (exc,))
             raise CouldNotConnect(exc)
-        #except asyncio.exceptions.CancelledError as exc:
+        # except asyncio.exceptions.CancelledError as exc:
         #    CORE.warn('Aborted module process request: %s' % (exc,))
         #    raise CouldNotConnect(exc)
 
@@ -745,7 +745,7 @@ class Command(Resource):
             response = await self.future
         except concurrent.futures.CancelledError:
             raise BadGateway('%s: %s: canceled' % (self._('Connection to module process failed'), module_name))
-        #except asyncio.exceptions.CancelledError:
+        # except asyncio.exceptions.CancelledError:
         #    raise BadGateway('%s: %s: canceled' % (self._('Connection to module process failed'), module_name))
         except CouldNotConnect as exc:
             # (happens during starting the service and subprocesses when the UNIX sockets aren't available yet)
@@ -787,7 +787,7 @@ class Command(Resource):
             headers.pop(header, None)
         headers['Cookie'] = '; '.join([m.OutputString(attrs=[]) for name, m in self.cookies.items() if not name.startswith('UMCUsername')])
         headers['X-User-Dn'] = json.dumps(session.user.user_dn)
-        #headers['X-UMC-Flavor'] = None
+        # headers['X-UMC-Flavor'] = None
         # X-UMC-IP=self.get_ip_address() ?
         headers['Authorization'] = 'basic ' + base64.b64encode(('%s:%s' % (session.user.username, session.get_umc_password())).encode('ISO8859-1')).decode('ASCII')
         headers['X-UMC-Method'] = methodname

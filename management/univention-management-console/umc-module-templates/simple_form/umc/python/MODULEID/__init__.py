@@ -40,7 +40,7 @@ from email.mime.nonmultipart import MIMENonMultipart
 from univention.lib.i18n import Translation
 from univention.management.console.base import Base
 from univention.management.console.log import MODULE
-#from univention.management.console.config import ucr
+# from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.management.console.modules.sanitizers import StringSanitizer
 

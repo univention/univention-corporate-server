@@ -232,7 +232,7 @@ class TestDomain(TestXml):
     def domain_tree(self):
         dom = E.domain(
             E.name(self.iname),
-            #E.uuid("%s" % ...),
+            # E.uuid("%s" % ...),
             E.description("Automated installer test"),
             E.memory("%d" % self.memory, unit="MiB"),
             E.vcpu("1", placement="static"),

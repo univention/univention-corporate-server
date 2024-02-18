@@ -87,8 +87,8 @@ def _param_to_openapi(param):
         type_ = 'boolean'
     elif isinstance(san, BoolSanitizer):
         type_ = 'boolean'
-        #type_ = 'string'
-        #definition['examples'] = {choice: {'value': choice, 'summary': choice} for choice in san.choices}
+        # type_ = 'string'
+        # definition['examples'] = {choice: {'value': choice, 'summary': choice} for choice in san.choices}
     elif isinstance(san, ChoicesSanitizer):
         type_ = 'string'
         definition['examples'] = {choice: {'value': choice, 'summary': choice} for choice in san.choices}

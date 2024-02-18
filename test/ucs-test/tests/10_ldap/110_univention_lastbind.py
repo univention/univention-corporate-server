@@ -133,7 +133,7 @@ def test_save_timestamp(udm, readudm, binddn, bindpwdfile, capsys):
     writeudm = univention_lastbind.get_writable_udm(binddn, bindpwdfile)
     o = writeudm.obj_by_dn(dn)
     univention_lastbind.save_timestamp(o, timestamp)
-    #assert "INFO: Modified 'users/user' object" in capsys.readouterr()[1]  # make sure that this string is still printed on save so that we can check later that it is missing
+    # assert "INFO: Modified 'users/user' object" in capsys.readouterr()[1]  # make sure that this string is still printed on save so that we can check later that it is missing
     o.reload()
     assert o.props.lastbind == timestamp
     capsys.readouterr()  # flush

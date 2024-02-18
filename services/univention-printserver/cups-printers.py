@@ -263,7 +263,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
         # Add/Modify Printergroup
         if printer_is_group:
-            #add = []
+            # add = []
             # if old:  # Diff old <==> new
             #    rem = old['univentionPrinterGroupMember']
             #    for el in new['univentionPrinterGroupMember']:

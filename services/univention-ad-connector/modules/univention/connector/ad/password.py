@@ -146,7 +146,7 @@ def decrypt_history(key, data, rid):
 
 def calculate_krb5keys(supplementalCredentialsblob):
     spl = supplementalCredentialsblob
-    #cleartext_hex = None
+    # cleartext_hex = None
     keys = []
     keytypes = []
     kvno = 0

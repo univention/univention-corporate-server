@@ -622,7 +622,7 @@ class Directory(Resource):
                     continue
                 if object_type == 'containers' and not module.childs:
                     continue
-                #entry = {
+                # entry = {
                 #    'dn': obj.dn,
                 #    'objectType': module.name,
                 #    'labelObjectType': module.subtitle,
@@ -631,7 +631,7 @@ class Directory(Resource):
                 #    #'$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])],
                 #    #'$childs$': module.childs,
                 #    #'$operations$': module.operations,
-                #}
+                # }
                 entry = Object.get_representation(module, obj, [], self.ldap_connection)
                 entry['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
                 self.add_link(entry, 'self', entry['uri'], name=entry['dn'], title=entry['id'], dont_set_http_header=True)
@@ -798,7 +798,7 @@ class SubObjectTypes(Resource):
         # 'help_text': mod.help_text,
         # 'columns': mod.columns,
         # 'has_tree': mod.has_tree,
-        #self.add_link(result, 'udm:object-types', self.abspath(mod.name) + '/', name=mod.name, title=mod.title)
+        # self.add_link(result, 'udm:object-types', self.abspath(mod.name) + '/', name=mod.name, title=mod.title)
         self.add_link(result, 'self', self.urljoin(''), title=_('Types'))
         self.add_caching(public=True, must_revalidate=True)
         self.content_negotiation(result)
@@ -868,7 +868,7 @@ class ContainerQueryBase(Resource):
         if not container:
             container = ucr['ldap/base']
             defaults = {}
-            #if object_type != 'directory':
+            # if object_type != 'directory':
             #    defaults['$operations$'] = ['search']  # disallow edit
             if object_type in ('dns/dns', 'dhcp/dhcp'):
                 defaults.update({
@@ -883,10 +883,10 @@ class ContainerQueryBase(Resource):
                 'icon': 'udm-container-dc',
                 'path': ldap_dn2path(container),
                 'objectType': 'container/dc',
-                #'$operations$': UDM_Module('container/dc', ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).operations,
-                #'$flags$': [],
+                # '$operations$': UDM_Module('container/dc', ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).operations,
+                # '$flags$': [],
                 'has-childs': True,
-                #'$isSuperordinate$': False,
+                # '$isSuperordinate$': False,
                 'root': True,
             }, **defaults)]
 
@@ -906,11 +906,11 @@ class ContainerQueryBase(Resource):
                         'icon': 'udm-%s' % (module.name.replace('/', '-')),
                         'path': ldap_dn2path(item.dn),
                         'objectType': module.name,
-                        #'$operations$': module.operations,
-                        #'$flags$': [x.decode('UTF-8') for x in item.oldattr.get('univentionObjectFlag', [])],
+                        # '$operations$': module.operations,
+                        # '$flags$': [x.decode('UTF-8') for x in item.oldattr.get('univentionObjectFlag', [])],
                         'has-childs': module.childs,
                         'root': False,
-                        #'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
+                        # '$isSuperordinate$': udm_modules.isSuperordinate(module.module),
                     })
             except UDM_Error as exc:
                 raise HTTPError(400, None, str(exc))
@@ -945,7 +945,7 @@ class Tree(ContainerQueryBase):
         containers = await self._container_query(object_type, container, modules, scope)
         for _container in containers:
             self.add_link(_container, 'item', href=self.urljoin('./tree?container=%s&level=%s' % (quote(_container['id']), quote(str(level + 1)))), title=_container['label'])  # should be "self" and with no header added
-            #self.add_link(result, 'item', href=self.urljoin('./tree?container=%s' % (quote(_container['id']),)), title=_container['label'], path=_container['path'])
+            # self.add_link(result, 'item', href=self.urljoin('./tree?container=%s' % (quote(_container['id']),)), title=_container['label'], path=_container['path'])
             self.add_resource(result, 'udm:tree', _container)
 
         self.add_link(result, 'self', self.urljoin(''), title='Tree')
@@ -1472,7 +1472,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         self.add_form_element(form, 'query*', query.get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'), **{'data-size': 'TwoThird'})
         self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}], label=_('Search scope'))
         self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'))
-        #self.add_form_element(form, 'fields', list(fields))
+        # self.add_form_element(form, 'fields', list(fields))
         if module.supports_pagination:
             self.add_form_element(form, 'limit', str(items_per_page or '0'), type='number', label=_('Limit'), **{'data-size': 'OneThird'})
             self.add_form_element(form, 'page', str(page or '1'), type='number', label=_('Selected page'), **{'data-size': 'OneThird'})
@@ -1653,7 +1653,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         return result
 
     def options_html(self, response):
-        #root = self.get_html(response)
+        # root = self.get_html(response)
         root = ET.Element('script', type='application/json')
         root.text = json.dumps(response, indent=4)
         return root
@@ -1769,7 +1769,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         parent_module = self.get_parent_object_type(module)
         self.add_link(props, 'udm:object-modules', self.urljoin('../../'), title=_('All modules'))
         self.add_link(props, 'udm:object-module', self.urljoin('../'), name=parent_module.name, title=parent_module.object_name_plural)
-        #self.add_link(props, 'udm:object-types', self.urljoin('../'))
+        # self.add_link(props, 'udm:object-types', self.urljoin('../'))
         self.add_link(props, 'type', self.urljoin('x/../'), name=module.name, title=module.object_name)
         self.add_link(props, 'up', self.urljoin('x/../'), name=module.name, title=module.object_name)
         self.add_link(props, 'self', self.urljoin(''), title=dn)
@@ -2450,9 +2450,9 @@ class ObjectEdit(FormBase, Resource):
             layout[0]['layout'].extend([
                 ['', 'dn', 'position'],
                 ['jpegPhoto-preview'],
-                #[{'$form-ref': ['remove', 'move']}]
+                # [{'$form-ref': ['remove', 'move']}]
             ])
-            #layout.insert(1, {'layout': [{'$form-ref': ['remove', 'move']}], 'advanced': False, 'description': _('information'), 'label': _('information'), 'is_app_tab': False})
+            # layout.insert(1, {'layout': [{'$form-ref': ['remove', 'move']}], 'advanced': False, 'description': _('information'), 'label': _('information'), 'is_app_tab': False})
 
             properties = Properties.get_properties(module, dn)
             self.add_resource(result, 'udm:properties', {'properties': properties})
@@ -2544,11 +2544,11 @@ class DefaultContainers(Resource):
         data['name'] = self.get_query_argument('name', '')
         return data
 
-    #@sanitize
+    # @sanitize
     async def get(
         self,
         object_type,
-        #include_empty: bool = Query(BoolSanitizer(required=False)),
+        # include_empty: bool = Query(BoolSanitizer(required=False)),
     ):
         result = {}
         module = self.get_module(object_type)
@@ -2964,7 +2964,7 @@ class Application(tornado.web.Application):
     """The main tornado application"""
 
     def __init__(self, **settings):
-        #module_type = '([a-z]+)'
+        # module_type = '([a-z]+)'
         module_type = '(%s)' % '|'.join(re.escape(mod) for mod in Modules.mapping)
         object_type = '([A-Za-z0-9_-]+/[A-Za-z0-9_-]+)'
         policies_object_type = '(policies/[A-Za-z0-9_-]+)'

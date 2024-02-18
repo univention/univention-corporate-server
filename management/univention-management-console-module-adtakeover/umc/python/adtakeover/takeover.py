@@ -1640,7 +1640,7 @@ class AD_Takeover_Finalize(object):
         # wait_for_s4_connector_replication hangs forever in the sqlite query
         # #wait_for_s4_connector_replication(self.ucr, self.lp)
         # # Let samba_dnsupdate check DNS records
-        #run_and_output_to_log(["/usr/sbin/samba_dnsupdate", ], log.info)
+        # run_and_output_to_log(["/usr/sbin/samba_dnsupdate", ], log.info)
 
         # remove local entry for AD DC from /etc/hosts
         run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % self.ad_server_ip], log.debug)

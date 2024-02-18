@@ -277,13 +277,13 @@ class HTML:
                 field['element'] = 'select'
                 elemattrs.update({
                     'hx-push-url': 'false',
-                    #'hx-trigger': 'revealed',  # faster but more traffic
+                    # 'hx-trigger': 'revealed',  # faster but more traffic
                     'hx-trigger': 'intersect once',
-                    #'hx-select': 'select > option',  # bug: no re-rendering in browser, wrong value is displayed
-                    #'hx-swap': 'innerHTML',
+                    # 'hx-select': 'select > option',  # bug: no re-rendering in browser, wrong value is displayed
+                    # 'hx-swap': 'innerHTML',
                     'hx-select': 'select',  # bug: no attributes like required are taken
                     'hx-swap': 'outerHTML',
-                    #'hx-get': self._append_query(field['data-dynamic'], f'selected={quote(value)}'),
+                    # 'hx-get': self._append_query(field['data-dynamic'], f'selected={quote(value)}'),
                     'hx-get': field['data-dynamic'],
                     'hx-vals': json.dumps({'selected': value, 'required': field.get('required', ''), 'name': field.get('name', '')})  # caution: allowing freely added values like name=javascript: is a security risk
                 })
@@ -331,7 +331,7 @@ class HTML:
         parent_element.append(wrapper)
 
     def get_html_button(self, _button, response):
-        #buttonattrs = {p: _button[p] for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _button.get(p)}
+        # buttonattrs = {p: _button[p] for p in ('id', 'class', 'name', 'method', 'action', 'rel', 'enctype', 'accept-charset', 'novalidate') if _button.get(p)}
         label = _button.pop('label', '')
         buttonattrs = _button
         buttonattrs.setdefault('hx-boost', 'true')
@@ -367,9 +367,9 @@ class HTML:
     def add_button(self, obj, action, method, **kwargs):
         button = {'hx-%s' % method.lower(): action, 'formaction': action, 'hx-boost': 'true'}
         button.update(kwargs)
-        #title = kwargs.pop('title', '')
-        #form = self.add_form(obj, action, method, **kwargs)
-        #self.add_form_element(form, '', title, type='submit')
+        # title = kwargs.pop('title', '')
+        # form = self.add_form(obj, action, method, **kwargs)
+        # self.add_form_element(form, '', title, type='submit')
 
         self.add_resource(obj, 'udm:button', button)
 

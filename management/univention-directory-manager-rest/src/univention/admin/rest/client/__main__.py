@@ -433,7 +433,7 @@ def main():
         prog='univention-directory-manager',
         # usage=argparse.SUPPRESS,
         usage=description,
-        #description='\n'.join(x.ljust(64, 'x') for x in description.splitlines()),
+        # description='\n'.join(x.ljust(64, 'x') for x in description.splitlines()),
         # add_help=False,
         epilog='''Description:
 univention-directory-manager is a tool to handle the configuration for UCS on command line level.

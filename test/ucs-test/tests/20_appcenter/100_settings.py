@@ -25,7 +25,7 @@ from univention.appcenter.ucr import ucr_get, ucr_save
 import appcentertest as app_test
 
 
-#from shutil import rmtree
+# from shutil import rmtree
 
 
 log_to_logfile()
