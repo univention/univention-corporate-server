@@ -14,7 +14,7 @@ skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-l
 skip_glob = "venv/*"
 
 [tool.ruff]
-# ruff 0.2.1
+# ruff 0.2.2
 target-version = "py37"
 
 line-length = 180
@@ -27,6 +27,7 @@ extend-exclude = [
 ]
 
 [tool.ruff.lint]
+preview = true
 external = ["W601", "F812", "E403", "E704"]
 ignore-init-module-imports = true
 
@@ -74,7 +75,17 @@ ignore = [
  "PLR0915",  # too-many-statements
  "PLR0911",  # too-many-return-statements
  "PLR0912",  # too-many-branches
+ "PLR0904",  # too-many-public-methods
+ "PLR0917",  # too-many-positional
+ "PLR1702",  # too-many-nested-blocks
+ "PLR0914",  # too-many-locals
+ "PLR6301",  # no-self-use
+ "PLR6201",  # literal-membership
+ "PLR1704",  # redefined-argument-from-local
+ "PLC2801",  # unnecessary-dunder-call
+ "PLC2701",  # import-private-name
  "PLW2901",  # redefined-loop-name
+ "PLW1514",  # unspecified-encoding
  "PYI014",  # argument-simple-defaults
  "PYI034",  # non-self-return-type
  "PYI052",  # unannotated-assignment-in-stub
@@ -88,8 +99,31 @@ ignore = [
  "S603",  # subprocess-without-shell-equals-true
  "S604",  # call-with-shell-equals-true
  "S607",  # start-process-with-partial-path
+ "FURB101",  # read-whole-file
+ "FURB105",  # print-empty-string
+ "FURB129",  # readlines-in-for
+ "FURB131",  # delete-full-slice
+ "FURB132",  # check-and-remove-from-set
+ "FURB136",  # if-expr-min-max
+ "FURB140",  # reimplemented-starmap
+ "FURB145",  # slice-copy
+ "FURB148",  # unnecessary-enumerate
+ "FURB152",  # math-constant
+ "FURB161",  # bit-count
+ "FURB163",  # redundant-log-base
+ "FURB167",  # regex-flag-alias
+ "FURB168",  # isinstance-type-none
+ "FURB169",  # type-none-comparison
+ "FURB171",  # single-item-membership-test
+ "FURB177",  # implicit-cwd
+ "FURB180",  # meta-class-abc-meta
+ "FURB181",  # hashlib-digest-hex
+ "S404", # suspicious-subprocess-import
+ "RUF021",  # parenthesize-chained-operators
+ "PLC0415",  # import-outside-top-level
 
  # not py2 compatible
+ "COM812",  # missing-trailing-comma
  "RUF012",  # mutable-class-default
  "FLY002",  #
  "UP004", "UP008", "UP009", "UP010", "UP025", "UP029",  # be Python 2 compatible
@@ -157,14 +191,16 @@ ignore = [
  "SIM112",  #
  "PERF203",  # try-except-in-loop
  "PERF401",  # manual-list-comprehension
- "COM812",  # WAF uses it <https://docs.astral.sh/ruff/rules/missing-trailing-comma/>
- "ISC001", # WAF uses it <https://docs.astral.sh/ruff/rules/single-line-implicit-string-concatenation/>
+ "FURB113",  # repeated-append
 
  "PT027",  # pytest-unittest-raises-assertion  # some still use unittest
 
  "SIM118",  # unsure if everything is a dict, let's select each individually somewhen
+ "SIM300",  # do it somewhen
 
  # issues in ruff:
+ "RUF027",  # missing-f-string-syntax, https://github.com/astral-sh/ruff/issues/10023
+ "CPY001",  # missing-copyright-notice, https://github.com/astral-sh/ruff/issues/10021
  "SIM114",  # https://github.com/astral-sh/ruff/issues/2848
  #"PIE804",  # no-unnecessary-dict-kwargs https://github.com/astral-sh/ruff/issues/2387
  "RUF100",  # https://github.com/astral-sh/ruff/issues/2406, https://github.com/astral-sh/ruff/issues/2407
@@ -179,6 +215,20 @@ allowed-confusables = ["’", "`", "´"]
 
 
 task-tags = ["TODO", "FIXME"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"oidc/python-keycloak/keycloak/*" = [
+ "ALL",
+]
+"services/univention-ldb-modules/buildtools/*" = [
+ "ALL",
+]
+"**/tests/*" = [
+ "PLC0415",
+]
+"test/ucs-test/*" = [
+ "PLC0415",
+]
 
 [tool.ruff.lint.flake8-builtins]
 builtins-ignorelist = ["copyright", "license", "object", "exit", "quit", "credits"]
