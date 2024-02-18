@@ -446,23 +446,16 @@ Type=str
 Default=10 20 300 +
 Categories=service-ldap
 
-[ldap/database/internal/syncprov/acl/groups/write]
-Description[de]=Liste von DN's von Gruppen, die Schreibzugriff auf die internal Datenbank haben.
-Description[en]=List of group dn's that have write access to the internal database.
+[ldap/database/internal/syncprov/acl/blocklists/groups/write]
+Description[de]=Liste von DN's von Gruppen, die Schreibzugriff auf alle Object unterhalb desContainers `blocklists` in der Datenbank `internal` haben.
+Description[en]=List of group dn's that have write access to all objects beneath the container `blocklists` the internal database.
 Type=list
 Separator=|
 Categories=service-ldap
 
-[ldap/database/internal/syncprov/acl/groups/read]
-Description[de]=Liste von DN's von Gruppen, die Lesezugriff auf die internal Datenbank haben.
-Description[en]=List of group dn's that have read access to the internal database.
-Type=list
-Separator=|
-Categories=service-ldap
-
-[ldap/database/internal/syncrepl/acl/groups/read]
-Description[de]=Liste von DN's von Gruppen, die Lesezugriff auf die internal Datenbank haben.
-Description[en]=List of group dn's that have read access to the internal database.
+[ldap/database/internal/syncprov/acl/blocklists/groups/read]
+Description[de]=Liste von DN's von Gruppen, die Lesezugriff auf alle Object unterhalb desContainers `blocklists` in der Datenbank `internal` haben.
+Description[en]=List of group dn's that have read access to all objects beneath the container `blocklists` the internal database.
 Type=list
 Separator=|
 Categories=service-ldap
