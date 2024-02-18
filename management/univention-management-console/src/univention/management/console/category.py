@@ -70,7 +70,7 @@ must be given in curly braces {VARIABLE}.
 
 import os
 import sys
-import xml.etree.cElementTree as ET  # noqa: S405
+import xml.etree.ElementTree as ET  # noqa: S405
 import xml.parsers.expat
 
 from .log import RESOURCES

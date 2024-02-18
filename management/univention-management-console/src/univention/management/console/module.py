@@ -124,7 +124,7 @@ import copy
 import os
 import re
 import sys
-import xml.etree.cElementTree as ET  # noqa: S405
+import xml.etree.ElementTree as ET  # noqa: S405
 import xml.parsers.expat
 
 from .config import ucr
