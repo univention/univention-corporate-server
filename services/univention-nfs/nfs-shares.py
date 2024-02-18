@@ -36,6 +36,7 @@
 
 from __future__ import absolute_import, annotations
 
+import operator
 import os
 import re
 from typing import Dict, List
@@ -140,7 +141,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 
 def clean() -> None:
     # clear exports file
-    lines = _read(lambda match: not match)
+    lines = _read(operator.not_)
     _write(lines)
 
 

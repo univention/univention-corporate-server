@@ -41,6 +41,7 @@ import functools
 import io
 import json
 import logging
+import operator
 import os
 import re
 import traceback
@@ -2076,7 +2077,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         options_disable = {opt for opt, enabled in options.items() if enabled is False}  # ignore None!
         obj.options = list(set(obj.options) - options_disable | options_enable)
         if representation['policies']:
-            obj.policies = functools.reduce(lambda x, y: x + y, representation['policies'].values())
+            obj.policies = functools.reduce(operator.add, representation['policies'].values())
         try:
             properties = PropertiesSanitizer(_copy_value=False).sanitize(representation['properties'], module=module, obj=obj)
         except MultiValidationError as exc:

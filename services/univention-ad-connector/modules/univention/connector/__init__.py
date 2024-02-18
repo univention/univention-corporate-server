@@ -136,7 +136,7 @@ def dictonary_lowercase(dict_):
             pass
 
 
-def compare_normal(val1, val2):
+def compare_normal(val1, val2):  # noqa: FURB118
     return val1 == val2
 
 

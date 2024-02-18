@@ -39,6 +39,7 @@ import functools
 import gc
 import inspect
 import locale
+import operator
 import re
 import sys
 import threading
@@ -558,7 +559,7 @@ class UDM_Module(object):
                 obj.options = options
                 del ldap_object['$options$']
             if '$policies$' in ldap_object:
-                obj.policies = reduce(lambda x, y: x + y, ldap_object['$policies$'].values(), [])
+                obj.policies = reduce(operator.add, ldap_object['$policies$'].values(), [])
                 del ldap_object['$policies$']
 
             self._map_properties(obj, ldap_object)
@@ -637,7 +638,7 @@ class UDM_Module(object):
                 del ldap_object['$options$']
             MODULE.info('Modifying LDAP object %s' % obj.dn)
             if '$policies$' in ldap_object:
-                obj.policies = reduce(lambda x, y: x + y, ldap_object['$policies$'].values(), [])
+                obj.policies = reduce(operator.add, ldap_object['$policies$'].values(), [])
                 del ldap_object['$policies$']
 
             self._map_properties(obj, ldap_object)

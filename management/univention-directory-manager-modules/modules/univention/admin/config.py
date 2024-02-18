@@ -71,7 +71,7 @@ class config(object):
         self.data[key] = value
 
     if six.PY2:
-        def has_key(self, key):
+        def has_key(self, key):  # noqa: FURB118
             return key in self
 
     def __contains__(self, key):
