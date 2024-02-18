@@ -19,7 +19,7 @@ from univention.testing.codes import MAX_MESSAGE_LEN
 from univention.testing.data import TestCase, TestEnvironment, TestFormatInterface, TestResult
 
 
-__all__ = ['Text', 'Raw']
+__all__ = ['Raw', 'Text']
 
 
 class _Term:  # pylint: disable-msg=R0903

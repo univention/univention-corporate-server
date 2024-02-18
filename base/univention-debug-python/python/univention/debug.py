@@ -57,7 +57,7 @@ from univention._debug import (
 )
 
 
-__all__ = ('debug', 'function', 'trace', 'ACL', 'ADMIN', 'ALL', 'AUTH', 'CONFIG', 'DHCP', 'ERROR', 'FLUSH', 'FUNCTION', 'INFO', 'KERBEROS', 'LDAP', 'LICENSE', 'LISTENER', 'LOCALE', 'MAIN', 'MODULE', 'NETWORK', 'NO_FLUSH', 'NO_FUNCTION', 'PARSER', 'POLICY', 'PROCESS', 'PROTOCOL', 'RESOURCES', 'SEARCH', 'SLAPD', 'SSL', 'TRANSFILE', 'USERS', 'WARN', 'begin', 'debug', 'end', 'exit', 'get_level', 'init', 'reopen', 'set_function', 'set_level')
+__all__ = ('ACL', 'ADMIN', 'ALL', 'AUTH', 'CONFIG', 'DHCP', 'ERROR', 'FLUSH', 'FUNCTION', 'INFO', 'KERBEROS', 'LDAP', 'LICENSE', 'LISTENER', 'LOCALE', 'MAIN', 'MODULE', 'NETWORK', 'NO_FLUSH', 'NO_FUNCTION', 'PARSER', 'POLICY', 'PROCESS', 'PROTOCOL', 'RESOURCES', 'SEARCH', 'SLAPD', 'SSL', 'TRANSFILE', 'USERS', 'WARN', 'begin', 'debug', 'debug', 'end', 'exit', 'function', 'get_level', 'init', 'reopen', 'set_function', 'set_level', 'trace')
 
 
 def debug(category, level, message, utf8=True):

@@ -58,7 +58,7 @@ from univention.management.console.shared_memory import shared_memory
 class OIDCUser(object):
     """OIDC tokens of the authenticated user."""
 
-    __slots__ = ('id_token', 'access_token', 'refresh_token', 'claims', 'username', 'session_refresh_future')
+    __slots__ = ('access_token', 'claims', 'id_token', 'refresh_token', 'session_refresh_future', 'username')
 
     def __init__(self, id_token, access_token, refresh_token, claims):
         self.id_token = id_token

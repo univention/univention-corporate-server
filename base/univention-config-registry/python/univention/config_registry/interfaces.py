@@ -51,7 +51,7 @@ try:
 except ImportError:  # pragma: no cover
     pass
 
-__all__ = ['RE_IFACE', 'forgiving', 'cmp_alnum', 'Interfaces']
+__all__ = ['RE_IFACE', 'Interfaces', 'cmp_alnum', 'forgiving']
 
 _SKIP = {
     'interfaces/handler',

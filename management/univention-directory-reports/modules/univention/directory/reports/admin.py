@@ -50,7 +50,7 @@ try:
 except ImportError:
     from cgi import escape
 
-__all__ = ['connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format']
+__all__ = ['cache_object', 'connect', 'connected', 'get_object', 'identify', 'set_format']
 
 _admin = None
 

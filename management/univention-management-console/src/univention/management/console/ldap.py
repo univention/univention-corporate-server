@@ -65,7 +65,7 @@ from univention.management.console.config import ucr
 from univention.uldap import getBackupConnection as _getBackupConnection
 
 
-__all__ = ('connection', 'get_connection', 'user_connection', 'get_user_connection', 'machine_connection', 'get_machine_connection', 'admin_connection', 'get_admin_connection')
+__all__ = ('admin_connection', 'connection', 'get_admin_connection', 'get_connection', 'get_machine_connection', 'get_user_connection', 'machine_connection', 'user_connection')
 
 
 class LDAP(object):

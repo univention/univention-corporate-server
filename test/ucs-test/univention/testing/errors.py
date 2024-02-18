@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 """UCS Test errors."""
-__all__ = ['TestError', 'TestConditionError']
+__all__ = ['TestConditionError', 'TestError']
 
 
 class TestError(Exception):

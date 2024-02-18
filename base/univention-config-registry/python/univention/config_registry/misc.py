@@ -52,9 +52,13 @@ except ImportError:  # pragma: no cover
     pass
 
 __all__ = [
-    'replace_dict', 'replace_umlaut', 'directory_files',
+    'INVALID_KEY_CHARS',
+    'directory_files',
     'escape_value',
-    'key_shell_escape', 'validate_key', 'INVALID_KEY_CHARS',
+    'key_shell_escape',
+    'replace_dict',
+    'replace_umlaut',
+    'validate_key',
 ]
 
 

@@ -41,8 +41,14 @@ from typing import Any, Callable, Dict, Iterable, List, Tuple
 
 
 __all__ = [
-    'TEST_BASE', 'LOG_BASE', 'setup_environment', 'setup_debug',
-    'strip_indent', 'get_sections', 'get_tests', 'UCSVersion',
+    'LOG_BASE',
+    'TEST_BASE',
+    'UCSVersion',
+    'get_sections',
+    'get_tests',
+    'setup_debug',
+    'setup_environment',
+    'strip_indent',
 ]
 
 TEST_BASE = os.environ.get('UCS_TESTS', '/usr/share/ucs-test')

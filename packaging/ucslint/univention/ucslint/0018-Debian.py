@@ -431,7 +431,7 @@ class Version:
     '1:2.34alpha~5-6.7'
     """
 
-    __slots__ = ('text', 'numeric')
+    __slots__ = ('numeric', 'text')
 
     RE_VERSION = re.compile(r'([0-9]+)')
 

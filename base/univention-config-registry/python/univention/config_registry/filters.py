@@ -41,7 +41,7 @@ try:
 except ImportError:  # pragma: no cover
     pass
 
-__all__ = ['filter_shell', 'filter_keys_only', 'filter_sort']
+__all__ = ['filter_keys_only', 'filter_shell', 'filter_sort']
 
 
 def filter_shell(args, text):  # pylint: disable-msg=W0613

@@ -44,8 +44,8 @@ from typing import IO, Iterable, Iterator  # noqa: F401
 
 __all__ = [
     "ldif_decode",
-    "ldif_unwrap",
     "ldif_normalize",
+    "ldif_unwrap",
 ]
 
 RE_B64 = re.compile(r'^([a-zA-Z0-9-]+):: (.*)')

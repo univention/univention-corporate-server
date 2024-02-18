@@ -36,7 +36,7 @@ from univention.testing.internal import UCSVersion
 from univention.testing.pytest import PytestRunner
 
 
-__all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
+__all__ = ['TestCase', 'TestEnvironment', 'TestFormatInterface', 'TestResult']
 
 T = TypeVar("T")
 

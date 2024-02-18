@@ -58,7 +58,7 @@ if TYPE_CHECKING:
     from univention.admin.layout import Tab  # noqa: F401
 
 
-__all__ = ('configRegistry', 'ucr_overwrite_properties', 'pattern_replace', 'property', 'option', 'ucr_overwrite_module_layout', 'ucr_overwrite_layout', 'extended_attribute', 'policiesGroup', 'modules', 'objects', 'syntax', 'hook', 'mapping')
+__all__ = ('configRegistry', 'extended_attribute', 'hook', 'mapping', 'modules', 'objects', 'option', 'pattern_replace', 'policiesGroup', 'property', 'syntax', 'ucr_overwrite_layout', 'ucr_overwrite_module_layout', 'ucr_overwrite_properties')
 
 if six.PY2:
     # baseconfig legacy

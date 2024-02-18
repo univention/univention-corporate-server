@@ -74,7 +74,7 @@ try:
 except ImportError:  # pragma: no cover
     pass
 
-__all__ = ['StrictModeException', 'exception_occured', 'SCOPE', 'ConfigRegistry']
+__all__ = ['SCOPE', 'ConfigRegistry', 'StrictModeException', 'exception_occured']
 MYPY = False
 INVALID_VALUE_CHARS = '\r\n'
 

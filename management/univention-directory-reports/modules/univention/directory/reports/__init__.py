@@ -41,4 +41,4 @@ from univention.directory.reports.error import ReportError
 from univention.directory.reports.report import Report
 
 
-__all__ = ['Report', 'ReportError', 'Document', 'connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format', 'Config']
+__all__ = ['Config', 'Document', 'Report', 'ReportError', 'cache_object', 'connect', 'connected', 'get_object', 'identify', 'set_format']

@@ -48,7 +48,7 @@ import subprocess
 from typing import Dict, List, Mapping, Optional, Union  # noqa: F401
 
 
-__all__ = ['add', 'list', 'load', 'remove', 'reschedule', 'AtJob']
+__all__ = ['AtJob', 'add', 'list', 'load', 'remove', 'reschedule']
 
 # internal formatting strings and regexps
 _regWhiteSpace = re.compile(r'\s+')

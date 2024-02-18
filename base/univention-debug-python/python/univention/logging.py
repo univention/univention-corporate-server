@@ -47,7 +47,7 @@ import logging
 import univention.debug as ud
 
 
-__all__ = ['getLogger', 'basicConfig', 'Logger', 'DebugHandler', 'LevelDependentFormatter', 'extendLogger']
+__all__ = ['DebugHandler', 'LevelDependentFormatter', 'Logger', 'basicConfig', 'extendLogger', 'getLogger']
 for name in logging.__all__:
     if name not in __all__:
         globals()[name] = getattr(logging, name)

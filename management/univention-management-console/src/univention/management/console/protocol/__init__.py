@@ -47,7 +47,19 @@ from .session import TEMPUPLOADDIR
 warnings.warn('Importing code from obsolete univention.management.console.protocol. This is going to be removed without replacement in UCS 5.1.', DeprecationWarning, stacklevel=2)
 
 __all__ = (
-    'BAD_REQUEST', 'BAD_REQUEST_UNAUTH', 'MODULE_ERR', 'MODULE_ERR_COMMAND_FAILED', 'MODULE_ERR_INIT_FAILED', 'SUCCESS',
-    'MIMETYPE_HTML', 'MIMETYPE_JPEG', 'MIMETYPE_JSON', 'MIMETYPE_PLAIN', 'MIMETYPE_PNG', 'Message', 'Request', 'Response',
+    'BAD_REQUEST',
+    'BAD_REQUEST_UNAUTH',
+    'MIMETYPE_HTML',
+    'MIMETYPE_JPEG',
+    'MIMETYPE_JSON',
+    'MIMETYPE_PLAIN',
+    'MIMETYPE_PNG',
+    'MODULE_ERR',
+    'MODULE_ERR_COMMAND_FAILED',
+    'MODULE_ERR_INIT_FAILED',
+    'SUCCESS',
     'TEMPUPLOADDIR',
+    'Message',
+    'Request',
+    'Response',
 )

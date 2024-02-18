@@ -71,7 +71,7 @@ SERVICE_UNAVAILABLE = 503
 class SAMLUser(object):
     """SAML specific user information"""
 
-    __slots__ = ('message', 'username', 'session_end_time', 'name_id')
+    __slots__ = ('message', 'name_id', 'session_end_time', 'username')
 
     def __init__(self, response, message):
         self.name_id = encode_name_id(response.name_id)

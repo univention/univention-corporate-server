@@ -66,7 +66,7 @@ _session_timeout = ucr.get_int('umc/http/session/timeout', 300)
 class User(object):
     """Information about the authenticated user"""
 
-    __slots__ = ('ip', 'authenticated', 'username', 'password', 'user_dn', 'auth_type', 'session_end_time', '_locale')
+    __slots__ = ('_locale', 'auth_type', 'authenticated', 'ip', 'password', 'session_end_time', 'user_dn', 'username')
 
     def __init__(self):
         self.ip = None
@@ -86,7 +86,7 @@ class User(object):
 class Session(object):
     """A interface to session data"""
 
-    __slots__ = ('session_id', 'acls', 'user', 'saml', 'oidc', 'processes', '_timeout_id', '_active_requests', '_')
+    __slots__ = ('_', '_active_requests', '_timeout_id', 'acls', 'oidc', 'processes', 'saml', 'session_id', 'user')
     __auth = AuthHandler()
     sessions = {}
 
