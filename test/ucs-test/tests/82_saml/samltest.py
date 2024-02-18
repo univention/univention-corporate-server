@@ -10,7 +10,7 @@ from html import unescape
 
 import requests
 from bs4 import BeautifulSoup
-from lxml import etree
+from lxml import etree  # noqa: S410
 from requests_kerberos import OPTIONAL, HTTPKerberosAuth
 
 import univention.config_registry as configRegistry

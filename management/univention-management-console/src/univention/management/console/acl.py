@@ -71,7 +71,7 @@ import itertools
 import json
 import operator
 import os
-import pickle
+import pickle  # noqa: S403
 import traceback
 from fnmatch import fnmatch
 
@@ -89,7 +89,7 @@ from .config import ucr
 from .log import ACL
 
 
-class Rule(dict):
+class Rule(dict):  # noqa: PLW1641
     """
     A simple class representing one ACL rule in a form that can be
     simply serialized.

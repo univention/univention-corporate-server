@@ -1615,7 +1615,7 @@ class ad(univention.connector.ucs):
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to add: %s" % add_members)
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: members to del: %s" % del_members)
 
-        if add_members['user'] or add_members['group'] or del_members['user'] or del_members['group'] or add_members['unknown'] or add_members['windowscomputer'] or del_members['windowscomputer']:
+        if add_members['user'] or add_members['group'] or del_members['user'] or del_members['group'] or add_members['unknown'] or add_members['windowscomputer'] or del_members['windowscomputer']:  # noqa: PLR0916
             ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
             ucs_admin_object.open()
 

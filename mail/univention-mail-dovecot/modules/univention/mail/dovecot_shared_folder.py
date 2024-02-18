@@ -69,7 +69,7 @@ glocal_acl_pattern1 = re.compile(r'(?P<folder>[^ ]+) "(?P<id>.+)" (?P<acl>\w+)')
 glocal_acl_pattern2 = re.compile(r'(?P<folder>[^ ]+) (?P<id>.+) (?P<acl>\w+)')
 
 
-class DovecotFolderAclEntry(object):
+class DovecotFolderAclEntry(object):  # noqa: PLW1641
     def __init__(self, folder_name, identifier, acl):  # type: (str, str, str) -> None
         self.folder_name = folder_name
         self.identifier = identifier

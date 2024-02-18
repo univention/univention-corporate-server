@@ -61,7 +61,7 @@ def ucr_save(values):
     _UCR.load()
     for k, v in values.items():
         if _UCR.get(k) != v:
-            changed_values[k] = v
+            changed_values[k] = v  # noqa: PERF403
     if changed_values:
         ucr_update(_UCR, changed_values)
     return changed_values

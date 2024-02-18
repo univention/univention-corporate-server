@@ -64,7 +64,7 @@ import re
 import subprocess
 import sys
 import warnings
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # noqa: S405
 from email.utils import formatdate
 
 import polib

@@ -99,7 +99,7 @@ else:
     __LD = dict
 
 
-class LocalizedDictionary(__LD):
+class LocalizedDictionary(__LD):  # noqa: PLW1641
     """Localized descriptions."""
 
     _LOCALE_REGEX = re.compile(r'(?P<key>[a-zA-Z]*)\[(?P<lang>[a-z]*)\]$')

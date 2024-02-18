@@ -98,7 +98,7 @@ class SkipPhase(Exception):
     pass
 
 
-class Phase:
+class Phase:  # noqa: PLW1641
     """Base-class for all phases."""
 
     priority = 0

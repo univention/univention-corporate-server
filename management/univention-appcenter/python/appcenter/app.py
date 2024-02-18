@@ -485,7 +485,7 @@ class AppMetaClass(UniventionMetaClass):
         return new_cls
 
 
-class App(with_metaclass(AppMetaClass, object)):
+class App(with_metaclass(AppMetaClass, object)):  # noqa: PLW1641
     """
     This is the main App class. It represents *one version* of the App in
     the Univention App Center. It is mainly a container for a parsed ini

@@ -45,7 +45,7 @@ import Crypto
 import heimdal
 import ldap
 import samba.dcerpc.samr
-from Crypto.Cipher import ARC4, DES
+from Crypto.Cipher import ARC4, DES  # noqa: S413
 from samba import NTSTATUSError
 from samba.dcerpc import drsblobs, drsuapi, lsa, misc, security
 from samba.ndr import ndr_unpack

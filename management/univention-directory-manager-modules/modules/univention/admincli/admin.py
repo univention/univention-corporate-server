@@ -797,7 +797,7 @@ class CLI(object):
             object.policy_reference(*policy_reference)
             object.policy_dereference(*policy_dereference)
 
-            if object.hasChanged(input.keys()) or object.hasChanged(append.keys()) or object.hasChanged(remove.keys()) or parsed_append_options or parsed_remove_options or parsed_options or object.policiesChanged():
+            if object.hasChanged(input.keys()) or object.hasChanged(append.keys()) or object.hasChanged(remove.keys()) or parsed_append_options or parsed_remove_options or parsed_options or object.policiesChanged():  # noqa: PLR0916
                 try:
                     dn = object.modify()
                     object_modified += 1

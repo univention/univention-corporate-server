@@ -68,7 +68,7 @@ def check_webinterface(app):
 
 def _check_url(url):
     print('       Checking', url)
-    import lxml
+    import lxml  # noqa: S410
     import requests
     requests_timeout = 30
     r = requests.get(url, timeout=requests_timeout, verify=False)  # noqa: S501

@@ -73,7 +73,7 @@ class _Link(object):
             port = ''
         return '%s://%s%s%s' % (self.protocol, self.host, port, self.path)
 
-    def __nonzero__(self):
+    def __nonzero__(self):  # noqa: PLW3201
         return str(self) != ''
     __bool__ = __nonzero__
 

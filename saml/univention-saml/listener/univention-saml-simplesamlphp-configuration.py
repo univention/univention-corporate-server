@@ -38,7 +38,7 @@ from __future__ import absolute_import, annotations
 import glob
 import os
 import os.path
-import xml.etree.ElementTree
+import xml.etree.ElementTree  # noqa: S405
 from subprocess import PIPE, Popen
 from tempfile import NamedTemporaryFile
 from typing import Dict, List, Tuple

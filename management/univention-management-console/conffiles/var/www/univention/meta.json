@@ -221,7 +221,7 @@ ucr_vars = [
 
 for i in ucr_vars:
     for key, value in get_ucr_entry(*i):
-        data[key] = value
+        data[key] = value  # noqa: PERF403
 
 print(json.dumps(data, indent=2, sort_keys=True))
 @!@

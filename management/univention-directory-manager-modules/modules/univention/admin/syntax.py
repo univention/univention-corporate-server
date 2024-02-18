@@ -5520,7 +5520,7 @@ class SambaLogonHours(MultiSelect):
                 from univention.admin.handlers.users.user import logonHoursUnmap
                 value = logonHoursUnmap([value.encode('ASCII')])
             else:
-                value = list(map(lambda x: int(x), shlex.split(value)))
+                value = list(map(lambda x: int(x), shlex.split(value)))  # noqa: PLW0108
 
         return super(SambaLogonHours, self).parse(value)
 

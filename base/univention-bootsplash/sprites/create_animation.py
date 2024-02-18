@@ -34,7 +34,7 @@
 import math
 import os
 import subprocess
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # noqa: S405
 
 
 STEPS = 48

@@ -35,7 +35,7 @@
 
 import json
 import re
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # noqa: S405
 
 import defusedxml.minidom
 from genshi import XML

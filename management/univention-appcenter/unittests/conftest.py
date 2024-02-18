@@ -65,7 +65,7 @@ def mocked_ucr_appcenter(mock_ucr, mocker):
         changed_values = {}
         for k, v in values.items():
             if mock_ucr.get(k) != v:
-                changed_values[k] = v
+                changed_values[k] = v  # noqa: PERF403
         if changed_values:
             mock_ucr.items.update(changed_values)
         return changed_values

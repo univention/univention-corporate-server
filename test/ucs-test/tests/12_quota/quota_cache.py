@@ -1,5 +1,5 @@
 import os
-import pickle
+import pickle  # noqa: S403
 import time
 
 from univention.testing import utils

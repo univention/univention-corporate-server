@@ -14,7 +14,7 @@ from univention.appcenter.actions import get_action
 def mock_ucr_get(var):
     if var == 'version/version':
         return '4.4'
-    raise
+    raise  # noqa: PLE0704
 
 
 # new app cache

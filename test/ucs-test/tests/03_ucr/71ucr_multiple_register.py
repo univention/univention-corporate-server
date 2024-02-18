@@ -5,7 +5,7 @@
 ##  - univention-base-files
 ## exposure: dangerous
 
-import pickle
+import pickle  # noqa: S403
 import sys
 
 import univention.config_registry.handler as ucrh

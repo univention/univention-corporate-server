@@ -126,7 +126,7 @@ def verify_script(script, signature):
     return stdout if ret != 0 else None
 
 
-class _UCSRepo(UCS_Version):
+class _UCSRepo(UCS_Version):  # noqa: PLW1641
     """Super class to build URLs for APT repositories."""
 
     ARCHS = {'all', 'amd64'}
@@ -423,7 +423,7 @@ class UCSRepoPoolNoArch(_UCSRepo):
         return "clean %s%s" % (server, super(UCSRepoPoolNoArch, self)._format(fmt))
 
 
-class _UCSServer(object):
+class _UCSServer(object):  # noqa: PLW1641
     """Abstrace base class to access UCS compatible update server."""
 
     @classmethod

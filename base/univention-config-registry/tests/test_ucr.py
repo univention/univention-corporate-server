@@ -33,10 +33,10 @@ def test_ro(ucrf):
 
 
 @pytest.mark.parametrize("autoload,before,after", [
-    pytest.param(lambda: UCR.ConfigRegistry(), None, None, id="Manual"),
+    pytest.param(lambda: UCR.ConfigRegistry(), None, None, id="Manual"),  # noqa: PLW0108
     pytest.param(lambda: UCR.ucr, "BEFORE", "BEFORE", id="Once"),
     pytest.param(lambda: UCR.ucr_live, "BEFORE", "AFTER", id="Always"),
-    pytest.param(lambda: UCR.ucr_live.__enter__(), "BEFORE", "BEFORE", id="View"),
+    pytest.param(lambda: UCR.ucr_live.__enter__(), "BEFORE", "BEFORE", id="View"),  # noqa: PLW0108
 ])
 def test_autoload(autoload, before, after, ucr0):
     reload(UCR)

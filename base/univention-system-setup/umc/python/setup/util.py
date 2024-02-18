@@ -344,7 +344,7 @@ def written_profile(values: Dict[str, str]) -> Iterator[None]:
         os.remove(PATH_PROFILE)
 
 
-class ProgressState(object):
+class ProgressState(object):  # noqa: PLW1641
 
     def __init__(self) -> None:
         self.reset()

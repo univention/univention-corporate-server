@@ -69,7 +69,7 @@ class DN(object):
     def __str__(self):
         return ldap.dn.dn2str(self._dn)
 
-    def __unicode__(self):
+    def __unicode__(self):  # noqa: PLW3201
         return unicode(str(self))  # noqa: F821
 
     def __repr__(self):

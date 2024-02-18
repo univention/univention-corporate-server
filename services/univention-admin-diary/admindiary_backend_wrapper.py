@@ -72,7 +72,7 @@ class RsyslogTransport(object):
 
         # message
         payload = Regex(".*")
-        payload.setParseAction(lambda t: "".join(t))  # json parsing happens in Event class
+        payload.setParseAction(lambda t: "".join(t))  # json parsing happens in Event class  # noqa: PLW0108
 
         self._pattern = timestamp("source_datetime") + hostname("source_hostname") + syslogtag + payload("serialized_event_dict")
 

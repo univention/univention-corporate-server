@@ -70,7 +70,7 @@ def test_ini_data(umc_data, lang):
         'description': 'Test App [%s]' % lang,
     }
     for ikey, ival in expected_data.items():
-        expected_val = expected_data[ikey]
+        expected_val = expected_data[ikey]  # noqa: PLR1733
         assert umc_data[ikey] == ival, f'Entry {ikey}={ival} does not match expected value {expected_val}!'
     print('SUCCESS')
 

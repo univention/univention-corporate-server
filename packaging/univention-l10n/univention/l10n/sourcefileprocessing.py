@@ -39,7 +39,7 @@ from __future__ import absolute_import
 import os
 
 import polib
-from lxml import etree
+from lxml import etree  # noqa: S410
 
 from . import message_catalogs, umc
 

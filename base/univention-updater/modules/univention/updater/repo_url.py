@@ -45,7 +45,7 @@ except ImportError:
 from six.moves.urllib_parse import quote, urlsplit
 
 
-class UcsRepoUrl(object):
+class UcsRepoUrl(object):  # noqa: PLW1641
     """UCS repository server base URL."""
 
     DEFAULT = 'https://updates.software-univention.de/'

@@ -110,7 +110,7 @@ class Resource(RequestHandler):
 
     def get_current_user(self):
         session = Session.get_or_create(self.get_session_id())  # FIXME: this creates a Session instance even if the session does not exists
-        session._ = lambda *args: self._(*args)  # hack to prevent circular use, when "_" is not yet set but only in prepare()
+        session._ = lambda *args: self._(*args)  # hack to prevent circular use, when "_" is not yet set but only in prepare()  # noqa: PLW0108
         if not session.user.ip:
             session.user.ip = self.get_ip_address()
         return session

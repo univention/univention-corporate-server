@@ -135,6 +135,6 @@ def main():
 
 
 if __name__ == '__main__':
-    global timeout
+    global timeout  # noqa: PLW0604
     timeout = 1
     main()

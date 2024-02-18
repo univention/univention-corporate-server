@@ -757,7 +757,7 @@ class _ConfigRegistry(dict):
             for key, val in sorted(self.items())
         )
 
-    def __unicode__(self):
+    def __unicode__(self):  # noqa: PLW3201
         data = self.__str__()
         if isinstance(data, bytes):
             data = data.decode('UTF-8')

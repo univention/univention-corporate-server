@@ -455,7 +455,7 @@ class Device(object):
         vals: Dict[str, str | None] = {key: None for key in ucr if pattern.match(key)}
 
         for key, val in self._leftover:
-            vals[key] = val
+            vals[key] = val  # noqa: PERF403
 
         if self.start is not None:
             vals['interfaces/%s/start' % (name)] = str(bool(self.start)).lower()

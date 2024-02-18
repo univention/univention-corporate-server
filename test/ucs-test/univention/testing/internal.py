@@ -128,7 +128,7 @@ def get_tests(sections: Iterable[str]) -> Dict[str, List[str]]:
     return result
 
 
-class UCSVersion:  # pylint: disable-msg=R0903
+class UCSVersion:  # pylint: disable-msg=R0903  # noqa: PLW1641
     """
     UCS version.
 

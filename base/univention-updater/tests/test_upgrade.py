@@ -27,7 +27,7 @@ def test_parse_args_rejects_invalid_update_to_bug49061(mocker):
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         mocker.patch('sys.argv', ['/usr/sbin/univention-upgrade', '--updateto=4.0.0'])
         parse_args()
-    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.type == SystemExit  # noqa: E721
     assert pytest_wrapped_e.value.code == 1
 
 

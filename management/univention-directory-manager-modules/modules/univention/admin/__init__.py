@@ -543,7 +543,7 @@ if six.PY2:  # deprecated, use layout.Tab instead
 
 
 if six.PY2:  # deprecated, use layout.Group instead
-    class field:
+    class field:  # noqa: PLW1641
         """
         >>> field('bar') < field('foo')
         True

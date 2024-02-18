@@ -8,7 +8,7 @@
 ## - domaincontroller_master
 ## - domaincontroller_slave
 
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # noqa: S405
 from os import path
 from re import search
 from subprocess import PIPE, Popen

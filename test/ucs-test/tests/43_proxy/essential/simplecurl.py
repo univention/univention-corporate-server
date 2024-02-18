@@ -108,7 +108,7 @@ class SimpleCurl:
                 time.sleep(1)
         else:
             print('Requested page could not be fetched')
-            raise
+            raise  # noqa: PLE0704
         page = buf.getvalue()
         # print page[1:400]
         buf.close()

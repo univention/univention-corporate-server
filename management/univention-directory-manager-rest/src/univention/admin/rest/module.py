@@ -46,7 +46,7 @@ import os
 import re
 import traceback
 import uuid
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # noqa: S405
 import zlib
 from http.client import responses
 from typing import Dict, List, Optional
@@ -2687,7 +2687,7 @@ class PolicyResultBase(Resource):
         infos = copy.copy(policy_obj.polinfo_more)
         for key, _value in infos.items():
             if key in policy_obj.polinfo:
-                if isinstance(infos[key], (tuple, list)):
+                if isinstance(infos[key], (tuple, list)):  # noqa: PLR1733
                     continue
                 _value['value'] = policy_obj.polinfo[key]
         if policy_dn:

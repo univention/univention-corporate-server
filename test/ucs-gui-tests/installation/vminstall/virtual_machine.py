@@ -44,7 +44,7 @@ from os.path import exists, extsep, join, split, splitext
 from sys import exit, stderr
 
 import libvirt
-from lxml import etree
+from lxml import etree  # noqa: S410
 from lxml.builder import E
 from urlparse import urlparse
 

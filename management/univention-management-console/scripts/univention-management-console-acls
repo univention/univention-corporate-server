@@ -38,7 +38,7 @@ from __future__ import print_function
 
 import json
 import os
-import pickle
+import pickle  # noqa: S403
 import sys
 from argparse import ArgumentParser
 

@@ -30,7 +30,7 @@ MAPPED_UDM_PROPERTIES = [
 
 
 def setup_kelvin_traeger():
-    with open('/var/lib/ucs-school-import/configs/kelvin.json', 'r+w') as fp:
+    with open('/var/lib/ucs-school-import/configs/kelvin.json', 'r+w') as fp:  # noqa: PLW1501
         config = json.load(fp)
         config['configuration_checks'] = ['defaults', 'class_overwrites', 'mapped_udm_properties']
         config['mapped_udm_properties'] = MAPPED_UDM_PROPERTIES

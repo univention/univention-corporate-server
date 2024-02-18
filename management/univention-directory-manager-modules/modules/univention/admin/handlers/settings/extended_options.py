@@ -197,7 +197,7 @@ class object(univention.admin.handlers.simpleLdap):
                 # modlist for new items
                 for lang, txt in oldlist.items():
                     if txt != newlist[lang]:
-                        ml.append(('univentionUDMOptionTranslation%s;entry-%s' % (transKey, lang), oldlist[lang], newlist[lang]))
+                        ml.append(('univentionUDMOptionTranslation%s;entry-%s' % (transKey, lang), oldlist[lang], newlist[lang]))  # noqa: PLR1733
 
         return ml
 
