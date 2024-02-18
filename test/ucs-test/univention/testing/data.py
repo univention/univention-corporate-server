@@ -1,3 +1,9 @@
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
 """Test case, environment, result and related classes."""
 
 # pylint: disable-msg=R0902,W0201,R0903,E1101,E0611

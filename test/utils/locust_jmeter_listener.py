@@ -1,3 +1,8 @@
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 """
 a listener to provide results from locust tests in a JMeter compatible format
 and thereby allow JMeter users with existing reporting solutions to transition more easily

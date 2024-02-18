@@ -1,3 +1,9 @@
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
 """Import all UCS Test formatters."""
 from univention.testing.format.html import HTML as format_html  # noqa: F401
 from univention.testing.format.jenkins import Jenkins as format_jenkins  # noqa: F401

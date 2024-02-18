@@ -1,3 +1,9 @@
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
 import os
 
 from vminstall.utils import copy_through_ssh, execute_through_ssh
