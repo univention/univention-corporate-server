@@ -47,7 +47,7 @@ def _extract_id_from_dn(dn):
     => 300ns
     %timeit ldap.explode_dn(dn, 1)[0]
     => 8µs
-    """
+    """  # noqa: RUF002
     return dn.split(",", 1)[0].split("=", 1)[1]
 
 
