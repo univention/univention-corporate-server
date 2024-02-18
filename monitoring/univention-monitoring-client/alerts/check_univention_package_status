@@ -40,7 +40,7 @@ class PackageStatus(Alert):
 
     def write_metrics(self):
         # Find half-configured (exit 1 in postinst) and half-installed packages (exit 1 in postrm)
-        rc, output = self.exec_command("dpkg-query -f '${status} ${package}\n' -W | awk '$3 ~ \"half\" {printf $4 \" \"}'", shell=True)
+        _rc, output = self.exec_command("dpkg-query -f '${status} ${package}\n' -W | awk '$3 ~ \"half\" {printf $4 \" \"}'", shell=True)
         self.write_metric('univention_package_status_ok', 0 if output else 1)
         if output:
             self.log.debug(output)

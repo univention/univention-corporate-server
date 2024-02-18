@@ -189,7 +189,7 @@ class CertificateVerifier(object):
         # unfortunately only version 0.14 is available in debian.
         cmd = ('openssl', 'verify', '-CAfile', self.root_cert_path, '-CRLfile', self.crl_path, '-crl_check', path)
         verify = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-        stdout_, stderr = verify.communicate()
+        stdout_, _stderr = verify.communicate()
         stdout = stdout_.decode('UTF-8', 'replace')
         if verify.poll() != 0:
             # `openssl` can not cope with both `-CAfile` and `-CApath` at the

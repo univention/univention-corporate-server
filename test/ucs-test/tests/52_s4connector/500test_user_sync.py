@@ -87,7 +87,7 @@ def test_user_sync_from_udm_to_s4_with_move(user_class, sync_mode):
 def test_user_sync_from_s4_to_udm(user_class, sync_mode):
     with connector_setup(sync_mode) as s4:
         udm_user = user_class()
-        (basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4, udm_user, s4connector.wait_for_sync)
+        (_basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4, udm_user, s4connector.wait_for_sync)
 
         print("\nModifying S4 user\n")
         s4.set_attributes(s4_user_dn, **tcommon.map_udm_user_to_con(udm_user.user))
@@ -103,7 +103,7 @@ def test_user_sync_from_s4_to_udm(user_class, sync_mode):
 def test_user_sync_from_s4_to_udm_with_rename(user_class, sync_mode):
     with connector_setup(sync_mode) as s4:
         udm_user = user_class()
-        (basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4, udm_user, s4connector.wait_for_sync)
+        (_basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4, udm_user, s4connector.wait_for_sync)
 
         print("\nRename S4 user {!r} to {!r}\n".format(s4_user_dn, udm_user.rename.get("username")))
         s4_user_dn = s4.rename_or_move_user_or_group(s4_user_dn, name=tcommon.to_unicode(udm_user.rename.get("username")))
@@ -125,7 +125,7 @@ def test_user_sync_from_s4_to_udm_with_rename(user_class, sync_mode):
 def test_user_sync_from_s4_to_udm_with_move(user_class, sync_mode):
     with connector_setup(sync_mode) as s4:
         udm_user = user_class()
-        (basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4, udm_user, s4connector.wait_for_sync)
+        (_basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4, udm_user, s4connector.wait_for_sync)
 
         print(f"\nMove S4 user {s4_user_dn!r} to {udm_user.container!r}\n")
         container_dn = s4.container_create(udm_user.container)

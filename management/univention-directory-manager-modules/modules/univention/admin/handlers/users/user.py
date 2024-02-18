@@ -1257,7 +1257,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         if 'automountInformation' not in self.oldattr:
             return
         try:
-            flags, unc = re.split(b' +', self.oldattr['automountInformation'][0], 1)  # noqa: B034
+            _flags, unc = re.split(b' +', self.oldattr['automountInformation'][0], 1)  # noqa: B034
             host, path = unc.split(b':', 1)
         except ValueError:
             return

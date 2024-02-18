@@ -259,7 +259,7 @@ class SpecialCase:
 
     def create_po_template(self, output_path=os.path.curdir):
         # type: (str) -> str
-        base, ext = os.path.splitext(os.path.join(output_path, self.new_po_path))
+        base, _ext = os.path.splitext(os.path.join(output_path, self.new_po_path))
         pot_path = '{}.pot'.format(base)
         message_catalogs.create_empty_po(self.binary_package_name, pot_path)
         partial_pot_path = '{}.pot.partial'.format(base)

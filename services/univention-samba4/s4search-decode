@@ -110,7 +110,7 @@ def decode_krb5Key(value):
     if not krb5_context:
         krb5_context = Krb5Context()
     k = binascii.a2b_base64(value)
-    (keyblock, salt, kvno) = heimdal.asn1_decode_key(k)
+    (keyblock, salt, _kvno) = heimdal.asn1_decode_key(k)
     enctype = keyblock.keytype()
     enctype_id = enctype.toint()
     if enctype_id not in krb5_context.etype_ids:

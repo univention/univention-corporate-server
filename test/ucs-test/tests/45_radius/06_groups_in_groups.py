@@ -28,11 +28,11 @@ def radtest(username):
 def main():
     with udm_test.UCSTestUDM() as udm:
         userdn, username = udm.create_user(set={'networkAccess': 0})
-        innergroupdn, innergroupname = udm.create_group(set={
+        innergroupdn, _innergroupname = udm.create_group(set={
             'networkAccess': 1,
             'users': userdn,
         })
-        outergroupdn, outergroupname = udm.create_group(set={
+        outergroupdn, _outergroupname = udm.create_group(set={
             'networkAccess': 1,
             'nestedGroup': innergroupdn,
         })

@@ -1266,7 +1266,7 @@ def prune_ldap(opt):
     with ldapi(opt) as ld:
         while True:
             response = ld.search_ext(base, scope, filterstr, attrlist, serverctrls=[page_control])
-            rtype, rdata, rmsgid, serverctrls = ld.result3(response)
+            _rtype, rdata, _rmsgid, serverctrls = ld.result3(response)
 
             for control in serverctrls:
                 if control.controlType == SimplePagedResultsControl.controlType:

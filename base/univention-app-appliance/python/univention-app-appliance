@@ -122,7 +122,7 @@ def cache_portal(app: App) -> None:
 
 
 def configure_portal(app: App) -> None:
-    lo, po = udm_uldap.getMachineConnection()
+    lo, _po = udm_uldap.getMachineConnection()
     udm_modules.update()
     module = udm_modules.get('portals/portal')
     result = module.lookup(None, lo, 'cn=domain', base=UCR['ldap/base'], scope='sub')

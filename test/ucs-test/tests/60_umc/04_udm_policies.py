@@ -77,7 +77,7 @@ def main():
         # create user to authenticate with at UMC
         # appending the created UMC policy
         global USERNAME
-        userdn, USERNAME = udm.create_user(**{  # noqa: PIE804
+        _userdn, USERNAME = udm.create_user(**{  # noqa: PIE804
             'policy_reference': umc_policy_dn,
         })
 

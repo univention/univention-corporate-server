@@ -44,7 +44,7 @@ def main():
                 password = 'univention'
                 username = uts.random_name()
                 mail = '%s@%s' % (username, domain)
-                user_dn, username = udm.create_user(
+                _user_dn, username = udm.create_user(
                     username=username,
                     set={
                         'password': password,

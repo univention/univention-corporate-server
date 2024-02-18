@@ -93,7 +93,7 @@ def test_group_sync_from_udm_to_s4_with_move(group_class, sync_mode):
 def test_group_sync_from_s4_to_udm(group_class, sync_mode):
     with connector_setup(sync_mode) as s4:
         udm_group = group_class()
-        (s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
+        (_s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
         delete_con_group(s4, s4_group_dn, udm_group_dn, s4connector.wait_for_sync)
 
 
@@ -103,7 +103,7 @@ def test_group_sync_from_s4_to_udm(group_class, sync_mode):
 def test_group_sync_from_s4_to_udm_with_rename(group_class, sync_mode):
     with connector_setup(sync_mode) as s4:
         udm_group = group_class()
-        (s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
+        (_s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
         print("\nRename S4 group {!r} to {!r}\n".format(s4_group_dn, udm_group.rename.get("name")))
         s4_group_dn = s4.rename_or_move_user_or_group(s4_group_dn, name=tcommon.to_unicode(udm_group.rename.get("name")))
@@ -125,7 +125,7 @@ def test_group_sync_from_s4_to_udm_with_rename(group_class, sync_mode):
 def test_group_sync_from_s4_to_udm_with_move(group_class, sync_mode):
     with connector_setup(sync_mode) as s4:
         udm_group = group_class()
-        (s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
+        (_s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
         print(f"\nMove S4 group {s4_group_dn!r} to {udm_group.container!r}\n")
         container_dn = s4.container_create(udm_group.container)
@@ -172,10 +172,10 @@ def test_group_sync_from_s4_to_udm_with_nested_user(group_class, nested_class, s
     with connector_setup(sync_mode) as s4:
         udm_group = group_class()
         nested_user = nested_class()
-        (s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
+        (_s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
         print("\nModifying S4 group\n")
-        (nested_s4_user, nested_s4_user_dn, nested_udm_user_dn) = create_con_user(s4, nested_user, s4connector.wait_for_sync)
+        (_nested_s4_user, nested_s4_user_dn, nested_udm_user_dn) = create_con_user(s4, nested_user, s4connector.wait_for_sync)
         s4.set_attributes(s4_group_dn, member=[nested_s4_user_dn.encode("UTF-8")])
         s4connector.wait_for_sync()
         udm_attributes = {"users": [nested_udm_user_dn]}
@@ -216,10 +216,10 @@ def test_group_sync_from_s4_to_udm_with_nested_group(group_class, nested_class, 
     with connector_setup(sync_mode) as s4:
         udm_group = group_class()
         nested_group = nested_class()
-        (s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
+        (_s4_group, s4_group_dn, udm_group_dn) = create_con_group(s4, udm_group, s4connector.wait_for_sync)
 
         print("\nModifying S4 group\n")
-        (nested_s4_user, nested_s4_user_dn, nested_udm_user_dn) = create_con_group(s4, nested_group, s4connector.wait_for_sync)
+        (_nested_s4_user, nested_s4_user_dn, nested_udm_user_dn) = create_con_group(s4, nested_group, s4connector.wait_for_sync)
         s4.set_attributes(s4_group_dn, member=[nested_s4_user_dn.encode("UTF-8")])
         s4connector.wait_for_sync()
         udm_attributes = {"nestedGroup": [nested_udm_user_dn]}

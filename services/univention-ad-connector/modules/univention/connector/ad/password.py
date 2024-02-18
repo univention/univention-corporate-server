@@ -231,7 +231,7 @@ def set_password_in_ad(connector, samaccountname, pwd, reconnect=False):
     try:
         sam_accountname = lsa.String()
         sam_accountname.string = samaccountname
-        (rids, types) = connector.samr.LookupNames(connector.dom_handle, [sam_accountname])
+        (rids, _types) = connector.samr.LookupNames(connector.dom_handle, [sam_accountname])
 
         rid = rids.ids[0]
         user_handle = connector.samr.OpenUser(connector.dom_handle, security.SEC_FLAG_MAXIMUM_ALLOWED, rid)
@@ -296,7 +296,7 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
     req8.fsmo_info = 0
 
     while True:
-        (level, ctr) = connector.drs.DsGetNCChanges(connector.drsuapi_handle, 8, req8)
+        (_level, ctr) = connector.drs.DsGetNCChanges(connector.drsuapi_handle, 8, req8)
         rid = None
         unicode_blob = None
         history_blob = None
@@ -400,10 +400,10 @@ def password_sync_ucs(connector, key, object):
 
     pwd_set = False
     try:
-        nt_hash, krb5Key, _ = get_password_from_ad(connector, object['dn'])
+        nt_hash, _krb5Key, _ = get_password_from_ad(connector, object['dn'])
     except NTSTATUSError as exc:
         ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: get_password_from_ad failed with %s, retry with reconnect" % (exc,))
-        nt_hash, krb5Key, _ = get_password_from_ad(connector, object['dn'], reconnect=True)
+        nt_hash, _krb5Key, _ = get_password_from_ad(connector, object['dn'], reconnect=True)
 
     if not nt_hash:
         ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: No password hash could be read from AD")

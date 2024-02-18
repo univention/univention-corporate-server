@@ -120,7 +120,7 @@ def prevent_denial_of_service(func):
     def _pretty_time(sec):
         if sec <= 60:
             return _("one minute")
-        m, s = divmod(sec, 60)
+        m, _s = divmod(sec, 60)
         if m < 60:
             return _("{} minutes").format(m + 1)
         elif m == 60:
@@ -295,7 +295,7 @@ class Instance(Base):
         # the backend to true means that the admin wants to allow
         # radius password. at some point we would need to know which
         # services should actually be managed
-        ldap_connection, ldap_position = getMachineConnection()
+        ldap_connection, _ldap_position = getMachineConnection()
         radius_passwords = ldap_connection.get(dn, attr=['univentionRadiusPassword']).get('univentionRadiusPassword', [])
         ret.append({'type': 'radius', 'set': len(radius_passwords)})
         return ret
@@ -345,7 +345,7 @@ class Instance(Base):
             MODULE.error(f'get_contact(): {msg}')
             raise UMC_Error(msg)
 
-        dn, username = self.auth(username, password)
+        _dn, username = self.auth(username, password)
         if self.is_blacklisted(username, 'passwordreset'):  # FIXME: should be 'protect-account'
             raise ServiceForbidden()
 
@@ -490,7 +490,7 @@ class Instance(Base):
         password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1))
     @simple_response
     def validate_user_attributes(self, username, password, attributes):
-        dn, username = self.authenticate_user(username, password)
+        _dn, username = self.authenticate_user(username, password)
         if self.is_blacklisted(username, 'profiledata'):
             raise ServiceForbidden()
         return self._validate_user_attributes(attributes)
@@ -882,7 +882,7 @@ class Instance(Base):
             msg = _('The account deregistration was disabled via the Univention Configuration Registry.')
             MODULE.error(f'deregister_account(): {msg}')
             raise UMC_Error(msg)
-        dn, username = self.auth(username, password)
+        _dn, username = self.auth(username, password)
         if self.is_blacklisted(username, 'account-deregistration'):
             raise ServiceForbidden()
         try:
@@ -1269,7 +1269,7 @@ class Instance(Base):
     def get_udm_user(self, username, admin=False):
         filter_s = filter_format('(|(uid=%s)(mailPrimaryAddress=%s))', (username, username))
 
-        lo, po = get_machine_connection()
+        lo, _po = get_machine_connection()
         dn = lo.searchDn(filter=filter_s)[0]
         return self.get_udm_user_by_dn(dn, admin=admin)
 

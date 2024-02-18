@@ -21,7 +21,7 @@ def main():
         domain = ucr.get('domainname')
         mail1 = '%s@%s' % (uts.random_name(), domain)
         password = 'univention'
-        user_dn1, username1 = udm.create_user(
+        _user_dn1, _username1 = udm.create_user(
             set={
                 'password': password,
                 'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
@@ -29,7 +29,7 @@ def main():
             },
         )
         mail2 = '%s@%s' % (uts.random_name(), domain)
-        user_dn2, username2 = udm.create_user(
+        _user_dn2, _username2 = udm.create_user(
             set={
                 'password': password,
                 'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),

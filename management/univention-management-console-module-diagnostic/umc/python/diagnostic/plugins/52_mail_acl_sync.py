@@ -117,7 +117,7 @@ class MailFolder(object):
     @classmethod
     def from_udm(cls) -> Iterator["MailFolder"]:
         univention.admin.modules.update()
-        (ldap_connection, position) = univention.admin.uldap.getMachineConnection()
+        (ldap_connection, _position) = univention.admin.uldap.getMachineConnection()
         module = udm_modules.get('mail/folder')
         for instance in module.lookup(None, ldap_connection, ''):
             instance.open()

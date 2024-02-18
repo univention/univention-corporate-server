@@ -641,7 +641,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
                 os.unlink(fname)
             with open(filename, 'wb') as packages:
                 process = subprocess.Popen(['apt-ftparchive', mode, os.path.dirname(filename)], stdout=subprocess.PIPE)
-                stdout, stderr = process.communicate()
+                stdout, _stderr = process.communicate()
                 for line in stdout.splitlines():
                     if line.startswith(b'Filename:'):
                         path = line[len(os.path.dirname(repo_dir).encode('utf-8')) + 11:]  # -"Filename: /var/www/.../maintained/component/"

@@ -134,7 +134,7 @@ class Junit(TestFormatInterface):
 
             if skipped:
                 try:
-                    mime, content = result.artifacts['check']
+                    _mime, content = result.artifacts['check']
                 except KeyError:
                     msg = ''
                 else:
@@ -157,7 +157,7 @@ class Junit(TestFormatInterface):
                 xml.endElement('failure')
 
             try:
-                mime, content = result.artifacts['stdout']
+                _mime, content = result.artifacts['stdout']
             except KeyError:
                 pass
             else:
@@ -166,7 +166,7 @@ class Junit(TestFormatInterface):
                 xml.endElement('system-out')
 
             try:
-                mime, content = result.artifacts['stderr']
+                _mime, content = result.artifacts['stderr']
             except KeyError:
                 pass
             else:

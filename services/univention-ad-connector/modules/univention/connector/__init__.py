@@ -861,7 +861,7 @@ class ucs(object):
                 ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object not found: %s" % searchdn)
                 return None
 
-            module, key = self.identify_udm_object(searchdn, attr)
+            module, _key = self.identify_udm_object(searchdn, attr)
             if not module:
                 module = self.modules[property_type]  # default, determined by mapping filter
                 ud.debug(ud.LDAP, ud.ERROR, "get_ucs_object: could not identify UDM object type: %s" % searchdn)
@@ -981,7 +981,7 @@ class ucs(object):
                 if filename not in self.rejected_files:
                     try:
                         with open(filename, 'rb') as fob:
-                            (dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
+                            (dn, _new, _old, old_dn) = pickle.load(fob, encoding='bytes')
                             if isinstance(dn, bytes):
                                 dn = dn.decode('utf-8')
                             if isinstance(old_dn, bytes):

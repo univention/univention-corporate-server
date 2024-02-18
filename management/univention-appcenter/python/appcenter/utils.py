@@ -503,7 +503,7 @@ def gpg_verify(filename, signature=None):
         filename,
     )
     p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
-    stdout, stderr = p.communicate()
+    _stdout, stderr = p.communicate()
     return (p.returncode, stderr.decode('utf-8'))
 
 
@@ -586,7 +586,7 @@ def resolve_dependencies(apps, action):
     # type: (List[App], str) -> List[App]
     from univention.appcenter.app_cache import Apps
     from univention.appcenter.udm import get_machine_connection
-    lo, pos = get_machine_connection()
+    lo, _pos = get_machine_connection()
     utils_logger.info('Resolving dependencies for %s' % ', '.join(app.id for app in apps))
     apps_with_their_dependencies = []
     depends = {}  # type: Dict[int, List[int]]

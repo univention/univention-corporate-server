@@ -28,7 +28,7 @@ def radtest(username):
 def main():
     with udm_test.UCSTestUDM() as udm:
         userdn, username = udm.create_user(set={'networkAccess': 1})
-        groupdn, groupname = udm.create_group(set={
+        groupdn, _groupname = udm.create_group(set={
             'networkAccess': 1,
             'users': userdn,
         })

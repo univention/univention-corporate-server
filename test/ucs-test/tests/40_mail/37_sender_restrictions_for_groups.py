@@ -41,7 +41,7 @@ def main():
                 for i in range(5):
                     mail = '%s@%s' % (uts.random_name(), domain)
                     alt = '%s@%s' % (uts.random_name(), domain)
-                    user_dn, username = udm.create_user(
+                    user_dn, _username = udm.create_user(
                         set={
                             'password': password,
                             'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
@@ -60,7 +60,7 @@ def main():
                     },
                 )
                 group2_mail = '%s@%s' % (uts.random_name(), domain)
-                group2_dn, group2_name = udm.create_group(
+                _group2_dn, group2_name = udm.create_group(
                     set={
                         'mailAddress': group2_mail,
                         'users': users[4],

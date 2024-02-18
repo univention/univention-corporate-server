@@ -127,7 +127,7 @@ def test_logout(portal_login_via_keycloak, portal_config, keycloak_config, udm):
 
 
 def test_login_not_possible_with_deleted_user(keycloak_config, portal_login_via_keycloak, portal_config, udm):
-    dn, username = udm.create_user()
+    _dn, username = udm.create_user()
     # login
     driver = portal_login_via_keycloak(username, 'univention')
     users = keycloak_get_request(keycloak_config, 'realms/ucs/users', params={'search': username})

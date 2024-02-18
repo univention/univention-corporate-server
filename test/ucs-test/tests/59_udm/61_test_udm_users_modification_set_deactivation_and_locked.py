@@ -55,7 +55,7 @@ def modify_and_check(udm, ldap_base, dn, disabled_state, locked_state):
             locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
             subprocess.call(['python3', '-m', 'univention.lib.account', 'lock', '--dn', dn, '--lock-time', locktime])
     else:
-        dn, username = udm.create_user(
+        dn, _username = udm.create_user(
             position=f'cn=users,{ldap_base}',
             disabled=disabled_state,
         )
@@ -71,7 +71,7 @@ def modify_and_check(udm, ldap_base, dn, disabled_state, locked_state):
 
     # length of whitespace in sambaAcctFlags varies. cannot use utils.verify_ldap_object() to test it
 
-    lo, pos = univention.admin.uldap.getMachineConnection(ldap_master=False)
+    lo, _pos = univention.admin.uldap.getMachineConnection(ldap_master=False)
     user = lo.get(dn)
     print_transitions()
     assert user['krb5KDCFlags'] == [krb_state], 'krb5KDCFlags: expected {!r} found {!r}'.format(krb_state, user['krb5KDCFlags'])

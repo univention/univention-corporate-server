@@ -82,7 +82,7 @@ class ILayoutElement(dict):
                         line.append(elem)
                 new_layout.append(line)
             elif isinstance(item, ILayoutElement) and recursive:
-                replaced, layout = item.replace(old, new, recursive)
+                replaced, _layout = item.replace(old, new, recursive)
                 new_layout.append(item)
             else:
                 new_layout.append(item)
@@ -109,7 +109,7 @@ class ILayoutElement(dict):
                             removed = True
                     new_layout.append(line)
                 elif isinstance(item, ILayoutElement) and recursive:
-                    removed, layout = item.remove(field, recursive)
+                    removed, _layout = item.remove(field, recursive)
                     new_layout.append(item)
                 else:
                     removed = True

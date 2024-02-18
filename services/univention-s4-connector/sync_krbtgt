@@ -72,7 +72,7 @@ class S4(object):
             return
 
         try:
-            s4_dn, s4_attr = self.s4.lo_s4.lo.search_s(self.s4.lo_s4.base, ldap.SCOPE_SUBTREE, '(&(objectClass=user)(!(objectClass=computer))(cn=krbtgt))', ['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])[0]
+            _s4_dn, s4_attr = self.s4.lo_s4.lo.search_s(self.s4.lo_s4.base, ldap.SCOPE_SUBTREE, '(&(objectClass=user)(!(objectClass=computer))(cn=krbtgt))', ['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])[0]
         except (ldap.NO_SUCH_OBJECT, IndexError):
             ud.debug(ud.LDAP, ud.PROCESS, "The Samba4 user (krbtgt) was not found.")
             print("The Samba4 user (krbtgt) was not found.")

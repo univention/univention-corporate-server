@@ -451,7 +451,7 @@ class Base(Translation):
         """Should be invoked by module to finish the processing of a request. 'id' is the request command identifier"""
         if id not in self.__requests:
             return
-        request, method = self.__requests[id]
+        request, _method = self.__requests[id]
 
         if not isinstance(response, Response):
             res = Response(request)
@@ -478,7 +478,7 @@ class Base(Translation):
 
     def result(self, response):
         try:
-            request, method = self.__requests.pop(response.id)
+            request, _method = self.__requests.pop(response.id)
         except KeyError:
             return
         request._request_handler.reply(response)

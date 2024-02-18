@@ -92,7 +92,7 @@ def repquota(partition):
     # -v == verbose
     cmd = ['/usr/sbin/repquota', '-C', '-v', partition] + args
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    stdout, stderr = proc.communicate()
+    stdout, _stderr = proc.communicate()
     return (stdout, proc.returncode)
 
 
@@ -142,7 +142,7 @@ def quota_is_enabled(fstab_entry):
     local_env["LC_MESSAGES"] = "C"
     cmd = ("/sbin/quotaon", "-p", "-u", fstab_entry.mount_point)
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=local_env)
-    stdout, stderr = p1.communicate()
+    stdout, _stderr = p1.communicate()
     stdout = stdout.decode('UTF-8', 'replace')
     if "not found or has no quota enabled" in stdout:
         return False

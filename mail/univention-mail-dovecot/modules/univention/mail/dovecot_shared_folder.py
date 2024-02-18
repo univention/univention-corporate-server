@@ -501,7 +501,7 @@ class DovecotSharedFolderListener(DovecotListener):
         try:
             self.listener.setuid(0)
             univention.admin.modules.update()
-            lo, po = getMachineConnection()
+            lo, _po = getMachineConnection()
             mod = univention.admin.modules.get(udm_module)
             return mod.lookup(None, lo, udm_filter)
         except Exception:

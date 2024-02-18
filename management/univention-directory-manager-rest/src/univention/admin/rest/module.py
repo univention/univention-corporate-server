@@ -220,7 +220,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
     @property
     def ldap_write_connection(self):
-        auth_type, username, userdn, password = shared_memory.authenticated[self.request.headers.get('Authorization')]
+        auth_type, _username, userdn, password = shared_memory.authenticated[self.request.headers.get('Authorization')]
         return get_user_ldap_write_connection(auth_type, userdn, password)[0]
 
     def _auth_check_allowed_groups(self):
@@ -234,7 +234,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
     def _auth_get_userdn(self, username):
         if username in ('cn=admin',):
             return 'cn=admin,%(ldap/base)s' % ucr
-        lo, po = get_machine_ldap_read_connection()
+        lo, _po = get_machine_ldap_read_connection()
         dns = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [username]), unique=True)
         return dns[0] if dns else None
 
@@ -2183,7 +2183,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
     ):
         """Remove a {module.object_name_plural} object"""
         dn = unquote_dn(dn)
-        module, obj = await self.pool_submit(self.get_module_object, object_type, dn, self.ldap_write_connection)
+        _module, obj = await self.pool_submit(self.get_module_object, object_type, dn, self.ldap_write_connection)
         assert obj._open
 
         self.set_entity_tags(obj, remove_after_check=True)

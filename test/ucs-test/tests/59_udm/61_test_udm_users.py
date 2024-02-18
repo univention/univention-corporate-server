@@ -296,10 +296,10 @@ def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
     assert ucr.is_true('ldap/shadowbind', True), 'UCR variable ldap/shadowbind is disabled (%s), test will not work' % ucr['ldap/shadowbind']
 
     print(time.ctime())
-    lo, position = univention.admin.uldap.getAdminConnection()
+    lo, _position = univention.admin.uldap.getAdminConnection()
     today = int(time.time() / 24 / 3600)
 
-    dn, username = udm.create_user(disabled=disabled)
+    dn, _username = udm.create_user(disabled=disabled)
     oldattr = lo.get(dn)
     shadowMax = 7
     planned_expiry_day = today + delta
@@ -313,7 +313,7 @@ def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
     cmd = ['univention-ldapsearch', '-LLL', '-D', dn, '-x', '-w', 'univention', 'uid=dummy']
     print("Running:", " ".join(cmd))
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-    stdout, stderr = p.communicate()
+    stdout, _stderr = p.communicate()
     print("expecting: %s" % ("failure" if expected else "success"))
     print("result   : %s" % ("failure" if p.returncode else "success"))
     print(stdout.decode('utf-8', 'replace'))
@@ -742,7 +742,7 @@ def test_user_username_case_modification(udm):
     """Test modifying the case of a character in a user name with a single operation"""
     # bugs: [54673]
     name = uts.random_username().lower()
-    user, uid = udm.create_user(username=name)
+    user, _uid = udm.create_user(username=name)
     name = name[0].upper() + name[1:]
 
     dn = udm.modify_object('users/user', dn=user, username=name)

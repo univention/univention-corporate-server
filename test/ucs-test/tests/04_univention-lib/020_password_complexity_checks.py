@@ -144,7 +144,7 @@ def udm():
 
 @pytest.fixture(scope="module")
 def existing_username(udm):
-    dn, username = udm.create_user()
+    _dn, username = udm.create_user()
     return username
     # No explicit teardown required
 

@@ -110,7 +110,7 @@ def check_entry(config, mailserver, remote_username, password, mail_addr, uid):
 def test_create_single_drop_configuration(udm, ucr, fqdn, user_addr):
     remote_username = uts.random_string()
     password = uts.random_string()
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
@@ -128,7 +128,7 @@ def test_create_single_drop_configuration(udm, ucr, fqdn, user_addr):
 def test_create_multi_drop_configuration(udm, ucr, fqdn, user_addr):
     remote_username = uts.random_string()
     password = uts.random_string()
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
@@ -146,7 +146,7 @@ def test_create_multi_drop_configuration(udm, ucr, fqdn, user_addr):
 def test_single_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     remote_username = uts.random_string()
     password = uts.random_string()
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
@@ -188,7 +188,7 @@ def test_single_drop_configuration_removal(udm, ucr, fqdn, user_addr):
 def test_multi_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     remote_username = uts.random_string()
     password = uts.random_string()
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
@@ -228,7 +228,7 @@ def test_multi_drop_configuration_removal(udm, ucr, fqdn, user_addr):
 
 
 def test_non_fetchmail_user_does_not_show_in_fetchmailrc(udm, ucr, fqdn, user_addr):
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
@@ -244,7 +244,7 @@ def test_non_fetchmail_user_does_not_show_in_fetchmailrc(udm, ucr, fqdn, user_ad
 def test_remove_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
     remote_username = uts.random_string()
     password = uts.random_string()
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
@@ -273,7 +273,7 @@ def test_remove_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
 def test_create_user_without_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
     remote_username = uts.random_string()
     password = uts.random_string()
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
         }, append={
@@ -292,7 +292,7 @@ def test_create_user_without_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
 def test_modify_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
     remote_username = uts.random_string()
     password = uts.random_string()
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
@@ -321,7 +321,7 @@ def test_modify_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
 def test_modify_uid(udm, ucr, fqdn, user_addr):
     remote_username = uts.random_string()
     password = uts.random_string()
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
@@ -349,7 +349,7 @@ def test_modify_uid(udm, ucr, fqdn, user_addr):
 def test_remove_user(udm, ucr, fqdn, user_addr):
     remote_username = uts.random_string()
     password = uts.random_string()
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
@@ -376,7 +376,7 @@ def test_remove_user(udm, ucr, fqdn, user_addr):
 def test_modify_configuration(udm, ucr, fqdn, user_addr):
     remote_username = uts.random_string()
     password = uts.random_string()
-    user_dn, user_name = udm.create_user(
+    user_dn, _user_name = udm.create_user(
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,

@@ -180,7 +180,7 @@ class I2O_RAIDCheck:
     def main(self):
         # parse command line
         try:
-            (opts, pargs) = getopt.getopt(sys.argv[1:], 'cd:lprv', ['help', 'version'])
+            (opts, _pargs) = getopt.getopt(sys.argv[1:], 'cd:lprv', ['help', 'version'])
         except getopt.GetoptError:
             self.print_usage()
             sys.exit(self.state['UNKNOWN'])

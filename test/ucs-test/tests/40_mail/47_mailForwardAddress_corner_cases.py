@@ -175,7 +175,7 @@ def test_user_mail_alt_equals_shared_folder_mail_address():
         user = random_mail_user(udm=udm, mail_alternative_address=shared_folder_mail)
         token = make_token()
         msgid = uts.random_name()
-        folder_dn, folder_name, folder_mailaddress = create_shared_mailfolder(
+        _folder_dn, folder_name, _folder_mailaddress = create_shared_mailfolder(
             udm, FQDN, mailAddress=shared_folder_mail,
             user_permission=['"%s" "%s"' % ("anyone", "all")],
         )

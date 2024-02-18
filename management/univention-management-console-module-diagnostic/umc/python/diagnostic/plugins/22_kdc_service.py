@@ -248,7 +248,7 @@ def send_and_receive(kdc: str, port: int, protocol: str, as_req: bytes) -> bytes
         num_received += 4
     while num_received < 128:
         try:
-            (buf, addr) = sock.recvfrom(128)
+            (buf, _addr) = sock.recvfrom(128)
         except (socket.error, socket.timeout):
             buf = b''
         if not buf:
@@ -283,14 +283,14 @@ def probe_kdc(kdc: str, port: int, protocol: str, target_realm: str, user_name: 
     # http://snmplabs.com/pyasn1/changelog.html
     # Keyword: require strict two-zeros sentinel encoding
     try:
-        (error, _sub) = pyasn1.codec.der.decoder.decode(received, asn1Spec=KrbError())
+        (_error, _sub) = pyasn1.codec.der.decoder.decode(received, asn1Spec=KrbError())
     except pyasn1.error.PyAsn1Error:
         pass
     else:
         return True
 
     try:
-        (rep, _sub) = pyasn1.codec.der.decoder.decode(received, asn1Spec=AsRep())
+        (_rep, _sub) = pyasn1.codec.der.decoder.decode(received, asn1Spec=AsRep())
     except pyasn1.error.PyAsn1Error:
         return False
 

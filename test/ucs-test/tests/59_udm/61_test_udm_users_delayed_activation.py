@@ -52,7 +52,7 @@ def test_disabled_user_creation_activation(disabled_cronjob, udm, ucr):
     with open("/etc/timezone") as tzfile:
         timezone = tzfile.read().strip()
     ts_later = (now + timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M " + timezone)
-    userdn, username = udm.create_user(accountActivationDate=ts_later)
+    userdn, _username = udm.create_user(accountActivationDate=ts_later)
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound):
@@ -84,7 +84,7 @@ def test_disabled_user_creation(disabled_cronjob, udm):
         timezone = tzfile.read().strip()
     ts_earlier = now.strftime("%Y-%m-%d %H:%M " + timezone)
     ts_later = (now + timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M " + timezone)
-    userdn, username = udm.create_user(accountActivationDate=ts_later)
+    userdn, _username = udm.create_user(accountActivationDate=ts_later)
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound):
@@ -140,7 +140,7 @@ def test_disabled_and_expired_user_creation(disabled_cronjob, udm):
         accountActivationDate="2021-08-17 23:00 UTC" and userexpiry="2021-08-18"
     """
 
-    userdn, username = udm.create_user(accountActivationDate=ts_later, userexpiry=date_today_in_utc)
+    userdn, _username = udm.create_user(accountActivationDate=ts_later, userexpiry=date_today_in_utc)
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound):
@@ -184,7 +184,7 @@ def test_access_to_accountActivationDate(disabled_cronjob, udm):
         timezone = tzfile.read().strip()
     ts_earlier = now.strftime("%Y-%m-%d %H:%M " + timezone)
     ts_later = (now + timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M " + timezone)
-    userdn, username = udm.create_user(accountActivationDate=ts_later, password="univention")
+    userdn, _username = udm.create_user(accountActivationDate=ts_later, password="univention")
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound):
@@ -195,6 +195,6 @@ def test_access_to_accountActivationDate(disabled_cronjob, udm):
     with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
         udm.modify_object('users/user', dn=userdn, accountActivationDate=ts_earlier, binddn=userdn, bindpwd="univention")
 
-    other_userdn, other_username = udm.create_user(password="univention")
+    other_userdn, _other_username = udm.create_user(password="univention")
     with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
         udm.modify_object('users/user', dn=userdn, accountActivationDate=ts_earlier, binddn=other_userdn, bindpwd="univention")

@@ -43,7 +43,7 @@ def main():
                 logfiles = ['/var/log/dovecot.log', '/var/log/univention/listener.log']
                 with utils.FollowLogfile(logfiles=logfiles):
                     with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'], exit_cmd=['doveadm', 'log', 'reopen']):
-                        user_dn, user_name = udm.create_user(
+                        _user_dn, _user_name = udm.create_user(
                             set={
                                 'mailHomeServer': fqdn,
                                 'mailPrimaryAddress': user_addr,

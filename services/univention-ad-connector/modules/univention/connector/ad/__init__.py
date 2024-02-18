@@ -623,12 +623,12 @@ class ad(univention.connector.ucs):
         repl_creds.set_password(self.lo_ad.bindpw)
 
         # binding_options = "seal,print"
-        self.drs, self.drsuapi_handle, bind_supported_extensions = drs_utils.drsuapi_connect(self.ad_ldap_host, lp, repl_creds)
+        self.drs, self.drsuapi_handle, _bind_supported_extensions = drs_utils.drsuapi_connect(self.ad_ldap_host, lp, repl_creds)
 
         dcinfo = drsuapi.DsGetDCInfoRequest1()
         dcinfo.level = 1
         dcinfo.domain_name = self.ad_netbios_domainname
-        i, o = self.drs.DsGetDomainControllerInfo(self.drsuapi_handle, 1, dcinfo)
+        _i, o = self.drs.DsGetDomainControllerInfo(self.drsuapi_handle, 1, dcinfo)
         computer_dn = o.array[0].computer_dn
 
         req = drsuapi.DsNameRequest1()
@@ -638,7 +638,7 @@ class ad(univention.connector.ucs):
         req.format_desired = drsuapi.DRSUAPI_DS_NAME_FORMAT_GUID
         req.count = 1
         req.names = [names]
-        i, o = self.drs.DsCrackNames(self.drsuapi_handle, 1, req)
+        _i, o = self.drs.DsCrackNames(self.drsuapi_handle, 1, req)
         source_dsa_guid = o.array[0].result_name
         self.computer_guid = source_dsa_guid.replace('{', '').replace('}', '').encode('utf8')
 
@@ -672,7 +672,7 @@ class ad(univention.connector.ucs):
             fd.flush()
             cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % (fd.name,), self.ad_ldap_binddn]
             p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-            stdout, stderr = p1.communicate()
+            stdout, _stderr = p1.communicate()
         if p1.returncode != 0:
             raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (' '.join(cmd_block), p1.returncode, stdout.decode('UTF-8', 'replace')))
 
@@ -872,7 +872,7 @@ class ad(univention.connector.ucs):
         pages = 0
         while True:
             pages += 1
-            rtype, rdata, rmsgid, serverctrls = self.lo_ad.lo.result3(msgid)
+            _rtype, rdata, _rmsgid, serverctrls = self.lo_ad.lo.result3(msgid)
             res += rdata
 
             pctrls = [

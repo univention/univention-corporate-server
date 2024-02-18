@@ -33,7 +33,7 @@ def main():
                 users = []
                 for i in range(3):
                     usermail = '%s@%s' % (uts.random_name(), domain)
-                    userdn, username = udm.create_user(
+                    userdn, _username = udm.create_user(
                         set={
                             'password': password,
                             'mailHomeServer': host,
@@ -44,7 +44,7 @@ def main():
                     users.append(userdn)
                 default_shared_permissions = {'anyone': 'lrswipkxtecda'}
                 permissions = 'lrswipkxtecda'
-                shared_dn, shared_mailbox, shared_address = create_shared_mailfolder(
+                _shared_dn, shared_mailbox, _shared_address = create_shared_mailfolder(
                     udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('anyone', 'all')])
 
                 test_cases = itertools.product(mails[0:2], permissions)

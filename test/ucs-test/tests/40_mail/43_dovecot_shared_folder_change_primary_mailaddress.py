@@ -44,7 +44,7 @@ def main():
         syslog.openlog(facility=syslog.LOG_MAIL)  # get markers in mail.log in case of error
         fqdn = '%(hostname)s.%(domainname)s' % ucr
         user_addr = random_email()
-        user_dn, user_name = udm.create_user(
+        _user_dn, _user_name = udm.create_user(
             set={
                 'mailHomeServer': fqdn,
                 'mailPrimaryAddress': user_addr,

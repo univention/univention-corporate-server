@@ -117,10 +117,10 @@ KRB5KDCFLAGS_REQUIRE_AS_REQ = str(int(KRB5KDCFLAGS_NORMAL) | (1 << 7)).encode('A
 def run():
     with udm_test.UCSTestUDM() as udm:
         passwd = uts.random_string()
-        username = uts.random_name()
+        uts.random_name()
 
         # Prepare user and check
-        userdn, username = udm.create_user(password=passwd, disabled="0")
+        userdn, _username = udm.create_user(password=passwd, disabled="0")
 
         # since we don't expect a later diff, we have to wait for the domain SID
         # TODO: this should be done in a more generic way:1

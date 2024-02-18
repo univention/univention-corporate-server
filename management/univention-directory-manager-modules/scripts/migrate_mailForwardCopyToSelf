@@ -60,7 +60,7 @@ def main():
     ucr.load()
 
     if ucr.get("server/role") in ["domaincontroller_master", "domaincontroller_backup"]:
-        lo, po = univention.admin.uldap.getAdminConnection()
+        lo, _po = univention.admin.uldap.getAdminConnection()
     else:
         print("ERROR: this script may only be called on a Primary Directory Node and Backup Directory Node ")
         print("(previously DC master and DC backup).")

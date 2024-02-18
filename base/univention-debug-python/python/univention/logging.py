@@ -364,7 +364,7 @@ class DebugHandler(logging.Handler):
         msg = self.format(record)
         level = _map_level_to_ud(record.levelno)
 
-        name, _, prefix = record.name.partition('.')
+        _name, _, prefix = record.name.partition('.')
         message = "%s: %s" % (prefix, msg) if prefix else msg
         try:
             ud.debug(self._category, level, message)

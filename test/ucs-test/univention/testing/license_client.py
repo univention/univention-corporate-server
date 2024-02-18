@@ -252,7 +252,7 @@ class TestLicenseClient:
     def get_body(self, response: HTTPResponse) -> str:
         self.log.debug("The response status is '%s', reason is '%s', headers are '%s'", response.status, response.reason, response.getheaders())
         content_type = response.getheader('Content-Type')
-        mimetype, options = cgi.parse_header(content_type)
+        _mimetype, options = cgi.parse_header(content_type)
         encoding = options.get("charset", "ascii")
         return response.read().decode(encoding, "replace")
 

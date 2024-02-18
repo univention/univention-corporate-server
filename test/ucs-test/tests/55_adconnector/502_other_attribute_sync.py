@@ -131,7 +131,7 @@ def test_attribute_sync_from_ad_to_udm(attribute, sync_mode):
 
     with connector_setup(sync_mode):
         # A single `telephoneNumber` must be synced to `phone` in UDM.
-        (basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
+        (_basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
 
         # Additional values in `otherTelephone` must be appended to `phone`.
         print(f"\nModifying AD user: {con_attribute}={primary_value}, {con_other_attribute}={secondary_values}\n")

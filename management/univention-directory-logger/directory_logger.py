@@ -237,7 +237,7 @@ def handler(dn: str, new_copy: Dict[str, List[bytes]], old_copy: Dict[str, List[
                 record += newtag
                 record += ldapEntry2string(new_copy)
         else:  # delete branch
-            (timestamp, dellog_id, modifier, action) = process_dellog(dn)
+            (timestamp, _dellog_id, modifier, _action) = process_dellog(dn)
 
             record = headerfmt % (previoushash, dn, nid, modifier, timestamp, 'delete')
             record += oldtag

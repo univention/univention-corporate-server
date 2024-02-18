@@ -40,7 +40,7 @@ class Ping(Alert):
 
     def write_metrics(self):
         address = 'localhost'  # FIXME: what here?
-        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_ping', '-H', address, '-w', '50,20%', '-c', '100,40%'])
+        rc, _output = self.exec_command(['/usr/lib/nagios/plugins/check_ping', '-H', address, '-w', '50,20%', '-c', '100,40%'])
         self.write_metric('univention_ping_status', 1 if rc == 0 else 0)  # FIXME: metric name should be what the nagios plugin does, e.g. ping_packages_lost_ratio
 
 

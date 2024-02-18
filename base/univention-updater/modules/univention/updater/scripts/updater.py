@@ -489,7 +489,7 @@ def main():
                 update_status(status='DONE', errorsource='PREPARATION')
                 dprint(ex)
             except PreconditionError as ex:
-                (phase, order, component, script) = ex.args
+                (phase, order, component, _script) = ex.args
                 if phase == 'preup':
                     phase = 'pre-update'
                     errorsource = 'PREUP'  # type: _ESRC

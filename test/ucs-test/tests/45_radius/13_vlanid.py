@@ -83,14 +83,14 @@ def test_user_vlan_id(udm_session, vlan_id_group_one, vlan_id_group_two, ucr_vla
     }
     if vlan_id_group_one:
         group_one_set['vlanId'] = vlan_id_group_one
-    groupdn_one, groupname_one = udm_session.create_group(set=group_one_set)
+    _groupdn_one, _groupname_one = udm_session.create_group(set=group_one_set)
     group_two_set = {
         'networkAccess': 1,
         'users': userdn,
     }
     if vlan_id_group_two:
         group_two_set['vlanId'] = vlan_id_group_two
-    groupdn_two, groupname_two = udm_session.create_group(set=group_two_set)
+    _groupdn_two, _groupname_two = udm_session.create_group(set=group_two_set)
     for auth_method in ('pap', 'mschap', 'eap'):
         assert radius_auth(username, 'univention', 'user', auth_method) == expected_vlan_id
 
@@ -104,12 +104,12 @@ def test_user_vlan_id(udm_session, vlan_id_group_one, vlan_id_group_two, ucr_vla
 def test_host_auth(udm_session, ucr_session, credentials, vlg1, vlg2, ucr_vlan_id, expected_vlan_id, restart_freeradius):
     default_vlan_id(ucr_vlan_id, restart_freeradius)
     hostdn = ucr_session.get('ldap/hostdn')
-    group1dn, group1name = udm_session.create_group(set={
+    group1dn, _group1name = udm_session.create_group(set={
         'networkAccess': 1,
         'hosts': hostdn,
         'vlanId': vlg1,
     })
-    group2dn, group2name = udm_session.create_group(set={
+    group2dn, _group2name = udm_session.create_group(set={
         'networkAccess': 1,
         'hosts': hostdn,
         'vlanId': vlg2,

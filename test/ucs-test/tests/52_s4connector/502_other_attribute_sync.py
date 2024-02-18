@@ -131,7 +131,7 @@ def test_attribute_sync_from_s4_to_udm(attribute, sync_mode):
 
     with connector_setup(sync_mode) as s4:
         # A single `telephoneNumber` must be synced to `phone` in UDM.
-        (basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4, udm_user, s4connector.wait_for_sync)
+        (_basic_s4_user, s4_user_dn, udm_user_dn) = create_con_user(s4, udm_user, s4connector.wait_for_sync)
 
         # Additional values in `otherTelephone` must be appended to `phone`.
         print(f"\nModifying S4 user: {con_attribute}={primary_value}, {con_other_attribute}={secondary_values}\n")

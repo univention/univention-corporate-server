@@ -98,7 +98,7 @@ def test_etag_after_create_via_post(udm, udm_client, random_string):
 
 def test_etag_after_modify_via_put(udm, udm_client):
     """make sure that changes to an object via PUT change the Etag and respect If-Match"""
-    userdn, username = udm.create_user()
+    userdn, _username = udm.create_user()
     User = udm_client.get('users/user')
     user = User.get(userdn)
     uri = user.uri
@@ -117,7 +117,7 @@ def test_etag_after_modify_via_put(udm, udm_client):
 
 def test_etag_after_modify_via_patch(udm, udm_client):
     """make sure that changes to an object via PATCH change the Etag and respect If-Match"""
-    userdn, username = udm.create_user()
+    userdn, _username = udm.create_user()
     User = udm_client.get('users/user')
     user = User.get(userdn)
     uri = user.uri
@@ -157,7 +157,7 @@ def test_etag_last_modified_via_client(udm, udm_client):
 
 
 def test_etag_via_delete(udm, udm_client):
-    userdn, username = udm.create_user()
+    userdn, _username = udm.create_user()
     User = udm_client.get('users/user')
     user = User.get(userdn)
     uri = user.uri
@@ -171,8 +171,8 @@ def test_etag_via_delete(udm, udm_client):
 
 @pytest.mark.xfail(reason='Not working')
 def test_etag_after_modification_of_external_referenced_object(udm, udm_client):
-    group_dn, group = udm.create_group()
-    userdn, username = udm.create_user(groups=[group_dn])
+    group_dn, _group = udm.create_group()
+    userdn, _username = udm.create_user(groups=[group_dn])
     User = udm_client.get('users/user')
     user = User.get(userdn)
     uri = user.uri
@@ -195,7 +195,7 @@ def test_create_modify_move_remove(random_string, suffix, ucr, udm_rest):
         time.sleep(1)
 
     username = random_string() + suffix
-    userdn, user = udm_rest.create_user(username=username)
+    userdn, _user = udm_rest.create_user(username=username)
     udm_rest.verify_ldap_object(userdn)
     org_dn = userdn
 
@@ -239,7 +239,7 @@ def test_special_characters_in_dn(name, udm_client, udm_rest):
 def test_translation(language, error_message):
     with UDM(language=language) as udm:
         with pytest.raises(UCSTestUDM_CreateUDMObjectFailed) as exc:
-            userdn, user = udm.create_user(gecos='foobär')
+            _userdn, _user = udm.create_user(gecos='foobär')
 
         assert error_message in str(exc.value)
 
@@ -272,7 +272,7 @@ def test_error_handling(udm, ldap_base, udm_client):
         list(users_user.search(position=f'cn=does,cn=not,cn=exists,{ldap_base}'))
     assert exc.value.error_details['error'] == [{'location': ['query', 'position'], 'message': f'LDAP object cn=does,cn=not,cn=exists,{ldap_base} could not be found.\nIt possibly has been deleted or moved. Please update your search results and open the object again.', 'type': 'value_error'}]
 
-    userdn, username = udm.create_user(wait_for=False)
+    userdn, _username = udm.create_user(wait_for=False)
     user = users_user.get(userdn)
 
     # prohibited usernames

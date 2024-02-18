@@ -115,7 +115,7 @@ class Testclass_GPO_Security_Descriptor:
     def restart_s4_connector(self):
         cmd = ("/etc/init.d/univention-s4-connector", "restart")
         p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-        stdout, stderr = p1.communicate()
+        stdout, _stderr = p1.communicate()
         if p1.returncode != 0:
             utils.fail("Error restarting S4 Connector: %s\nCommand was: %s" % (stdout.decode('UTF-8', 'replace'), cmd))
 
@@ -221,7 +221,7 @@ class Testclass_GPO_Security_Descriptor:
                 "--password", self.adminaccount.bindpw)
 
             p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-            stdout, stderr = p1.communicate()
+            stdout, _stderr = p1.communicate()
             if p1.returncode != 0:
                 if critical:
                     utils.fail("Error removing GPO using samba-tool: %s\nCommand was: %s" % (stdout.decode('UTF-8', 'replace'), cmd))
@@ -239,7 +239,7 @@ class Testclass_GPO_Security_Descriptor:
             "--password", self.adminaccount.bindpw)
 
         p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-        stdout, stderr = p1.communicate()
+        stdout, _stderr = p1.communicate()
         if p1.returncode != 0:
             utils.fail("ERROR: %s: creating GPO using samba-tool: %s\nCommand was: %s" % (logtag, stdout.decode('UTF-8', 'replace'), cmd))
 

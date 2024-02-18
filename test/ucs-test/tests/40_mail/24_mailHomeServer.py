@@ -76,7 +76,7 @@ def main():
             mails_list = []
             for mailHomeServer, _ in hosts:
                 mail = '%s@%s' % (uts.random_name(), domain)
-                user_dn, username = udm.create_user(
+                user_dn, _username = udm.create_user(
                     set={
                         'password': password,
                         'mailPrimaryAddress': mail,

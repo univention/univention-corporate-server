@@ -348,7 +348,7 @@ class Migration(object):
 
     def arcfour_hmac_md5_to_nt_password(self, ucs_krb5key):  # [bytes] -> bytes
         for k in ucs_krb5key:
-            (keyblock, salt, kvno) = heimdal.asn1_decode_key(k)
+            (keyblock, _salt, _kvno) = heimdal.asn1_decode_key(k)
 
             enctype = keyblock.keytype()
             enctype_id = enctype.toint()

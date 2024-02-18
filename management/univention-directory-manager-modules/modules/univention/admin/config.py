@@ -121,9 +121,9 @@ def getDefaultValue(lo, name, position=None):
         att = name
 
     if position:
-        dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], base=position.getDomain(), scope='domain', unique=True, required=True)[0]
+        _dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], base=position.getDomain(), scope='domain', unique=True, required=True)[0]
     else:
-        dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], scope='domain', unique=True, required=True)[0]
+        _dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], scope='domain', unique=True, required=True)[0]
     result = attrs.get(att, [None])[0]
     if result is not None:
         return result.decode('UTF-8')

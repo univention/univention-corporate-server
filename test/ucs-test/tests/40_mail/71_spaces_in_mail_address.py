@@ -19,7 +19,7 @@ def main():
         fqdn = '%(hostname)s.%(domainname)s' % ucr
         mail_address = '%s @%s' % (uts.random_name(), ucr.get('domainname'))
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed) as exc:
-            userdn, username = udm.create_user(
+            _userdn, _username = udm.create_user(
                 set={
                     'password': 'univention',
                     'mailHomeServer': fqdn,

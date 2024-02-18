@@ -36,7 +36,7 @@ def main():
                     users_list = []
                     for i in range(4):
                         mail = '%s@%s' % (uts.random_name(), domain)
-                        user_dn, username = udm.create_user(
+                        user_dn, _username = udm.create_user(
                             set={
                                 'password': password,
                                 'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),

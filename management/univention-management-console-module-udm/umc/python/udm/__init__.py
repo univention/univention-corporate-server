@@ -215,9 +215,9 @@ class Instance(Base, ProgressMixin):
 
     def get_ldap_connection(self):
         try:
-            lo, po = get_user_connection(bind=self.bind_user_connection, write=True)
+            lo, _po = get_user_connection(bind=self.bind_user_connection, write=True)
         except (LDAPError, udm_errors.ldapError):
-            lo, po = get_user_connection(bind=self.bind_user_connection, write=True)
+            lo, _po = get_user_connection(bind=self.bind_user_connection, write=True)
         return lo, udm_uldap.position(lo.base)
 
     def get_module(self, flavor, ldap_dn):

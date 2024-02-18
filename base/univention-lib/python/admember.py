@@ -1193,7 +1193,7 @@ def prepare_dns_reverse_settings(ad_domain_info, ucr=None):
 
     # Test DNS resolution (just for fun)
     try:
-        hostname, aliaslist, ipaddrlist = socket.gethostbyaddr(ad_domain_info['DC IP'])
+        hostname, _aliaslist, _ipaddrlist = socket.gethostbyaddr(ad_domain_info['DC IP'])
         ud.debug(ud.MODULE, ud.INFO, "%s resolves to %s" % (ad_domain_info['DC IP'], hostname))
     except (socket.herror, socket.gaierror) as exc:
         ud.debug(ud.MODULE, ud.INFO, "Resolving %s failed: %s" % (ad_domain_info['DC IP'], exc.args[1]))

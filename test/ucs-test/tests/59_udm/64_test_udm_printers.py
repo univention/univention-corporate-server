@@ -321,7 +321,7 @@ def get_testparm_var(smbconf, sectionname, varname):
         "--parameter-name=%s" % varname,
         smbconf]
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
-    (out, err) = p1.communicate()
+    (out, _err) = p1.communicate()
     return out.strip().decode('UTF-8', 'replace')
 
 
@@ -412,7 +412,7 @@ def test_force_printername(ucr, udm, ucr_value):
 
 def get_uirs():
     cmd = ['udm-test', 'settings/printeruri', 'list']
-    out, err = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    out, _err = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     uris = re.findall(r'printeruri:\s(\w*):', out.decode('UTF-8', 'replace'))
     return uris
 

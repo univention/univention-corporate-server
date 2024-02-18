@@ -50,7 +50,7 @@ run_descr = ['This can be checked by running: dpkg --audit']
 
 def run(_umc_instance: Instance) -> None:
     proccess = Popen(['dpkg', '--audit'], stdout=PIPE, env={'LANG': 'C'})
-    stdout_, stderr = proccess.communicate()
+    stdout_, _stderr = proccess.communicate()
     stdout = stdout_.decode('UTF-8', 'replace')
 
     if 'The following packages' in stdout:

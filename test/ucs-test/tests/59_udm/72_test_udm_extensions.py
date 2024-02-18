@@ -299,7 +299,7 @@ class Test_UDMExtensionsJoinscript:
     def test_register_with_non_join_accounts(self, udm, extension_type, ucr):
         """Register UDM extension with non-join-accounts"""
         password = 'univention'
-        dn, username = udm.create_user(password=password)
+        dn, _username = udm.create_user(password=password)
         print('========================= TESTING EXTENSION %s =============================' % extension_type)
         self._test_extension(extension_type, dn, password)
         self._test_extension(extension_type, ucr.get('ldap/hostdn'), open('/etc/machine.secret').read())
@@ -1220,7 +1220,7 @@ class Test_UDMExtensions:
 
         })
 
-        output, stderr = subprocess.Popen(['udm', 'modules'], stdout=subprocess.PIPE).communicate()
+        output, _stderr = subprocess.Popen(['udm', 'modules'], stdout=subprocess.PIPE).communicate()
         assert extension_name.encode('UTF-8') in output, 'ERROR: udm cli server has not been reloaded yet or module registration failed'
 
         extension_dn = udm.create_object(extension_name, position=ucr.get('ldap/base'), name=object_name)
@@ -1286,7 +1286,7 @@ class Test_UDMExtensions:
 
         })
 
-        output, stderr = subprocess.Popen(['udm', 'modules'], stdout=subprocess.PIPE).communicate()
+        output, _stderr = subprocess.Popen(['udm', 'modules'], stdout=subprocess.PIPE).communicate()
         assert extension_name.encode('UTF-8') in output, 'ERROR: udm cli server has not been reloaded yet or module registration failed'
 
         extension_dn = udm.create_object(extension_name, position=ucr.get('ldap/base'), name=object_name)
@@ -1892,7 +1892,7 @@ class Test_UDMExtensions:
         # create user and set extended attribute with valid value
         value = 'ucstest-%s' % random_name()
         userargs = {'ucstest%s' % extension_name.upper(): value}
-        user_dn, username = udm.create_user(**userargs)
+        user_dn, _username = udm.create_user(**userargs)
 
         # modify user and set extended attribute with invalid value (according to assigned syntax)
         userargs = {'ucstest%s' % extension_name.upper(): random_name()}
@@ -1986,7 +1986,7 @@ class Test_UDMExtensions:
         # create user and set extended attribute with valid value
         value = 'ucstest-%s' % random_name()
         userargs = {'ucstest%s' % extension_name.upper(): value}
-        user_dn, username = udm.create_user(**userargs)
+        user_dn, _username = udm.create_user(**userargs)
 
         # modify user and set extended attribute with invalid value (according to assigned syntax)
         userargs = {'ucstest%s' % extension_name.upper(): random_name()}

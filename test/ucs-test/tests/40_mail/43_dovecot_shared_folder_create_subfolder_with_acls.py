@@ -32,13 +32,13 @@ def main():
     with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
         fqdn = '%(hostname)s.%(domainname)s' % ucr
         user_addr1 = random_email()
-        user_dn1, user_name1 = udm.create_user(
+        _user_dn1, _user_name1 = udm.create_user(
             set={
                 'mailHomeServer': fqdn,
                 'mailPrimaryAddress': user_addr1,
             })
         user_addr2 = random_email()
-        user_dn2, user_name2 = udm.create_user(
+        _user_dn2, _user_name2 = udm.create_user(
             set={
                 'mailHomeServer': fqdn,
                 'mailPrimaryAddress': user_addr2,
@@ -53,7 +53,7 @@ def main():
 
         for with_email in (True, False):
             print('***** Testing shared folder {} email address *****'.format('with' if with_email else 'without'))
-            folder_dn, folder_name, folder_address = create_shared_mailfolder(
+            _folder_dn, folder_name, _folder_address = create_shared_mailfolder(
                 udm,
                 fqdn,
                 mailAddress=random_email() if with_email else None,

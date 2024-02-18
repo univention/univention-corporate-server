@@ -30,7 +30,7 @@ def get_testparm_var(sectionname, varname):
         "--section-name=%s" % sectionname,
         "--parameter-name=%s" % varname]
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
-    (out, err) = p1.communicate()
+    (out, _err) = p1.communicate()
     return out.strip()
 
 

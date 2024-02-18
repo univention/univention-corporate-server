@@ -140,7 +140,7 @@ class AuthHandler(object):
 
     def __canonicalize_username(self, username):  # type: (str) -> str
         try:
-            lo, po = get_machine_connection(write=False)
+            lo, _po = get_machine_connection(write=False)
             result = None
             if lo:
                 attr = 'mailPrimaryAddress' if '@' in username else 'uid'

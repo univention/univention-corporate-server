@@ -426,7 +426,7 @@ class CheckOperations:
     def _check_dpkg_installed_status(self):
         for package in self._packages():
             try:
-                (expected, current) = self._dpkg_status(package)
+                (_expected, current) = self._dpkg_status(package)
                 error = current != "installed"
             except subprocess.CalledProcessError:
                 error = True
@@ -439,7 +439,7 @@ class CheckOperations:
     def _check_dpkg_uninstalled_status(self):
         for package in self._packages():
             try:
-                (expected, current) = self._dpkg_status(package)
+                (_expected, current) = self._dpkg_status(package)
                 error = current not in ("not-installed", "unknown", "config-files")
             except subprocess.CalledProcessError as e:
                 error = e.returncode != 1

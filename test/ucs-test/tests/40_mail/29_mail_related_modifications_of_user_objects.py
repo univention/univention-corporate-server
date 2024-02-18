@@ -76,7 +76,7 @@ def main():
                 # → mailbox with OLD name should NOT be accessible
                 print("== case 1 ==")
                 usermail = f'{uts.random_name()}@{domain}'
-                userdn, username = udm.create_user(
+                userdn, _username = udm.create_user(
                     set={
                         'password': password,
                         'mailHomeServer': host,
@@ -102,7 +102,7 @@ def main():
                 # → mailbox should have been created and is accessible
                 print("== case 2 ==")
                 usermail = f'{uts.random_name()}@{domain}'
-                userdn, username = udm.create_user(
+                userdn, _username = udm.create_user(
                     set={
                         'password': password,
                         'mailPrimaryAddress': usermail,
@@ -125,7 +125,7 @@ def main():
                 # → mailbox should NOT have been created
                 print("== case 3 ==")
                 usermail = f'{uts.random_name()}@{domain}'
-                userdn, username = udm.create_user(
+                userdn, _username = udm.create_user(
                     set={
                         'password': password,
                         'mailPrimaryAddress': usermail,
@@ -148,7 +148,7 @@ def main():
                 # → mailbox should have been created and is accessible
                 print("== case 4 ==")
                 usermail = f'{uts.random_name()}@{domain}'
-                userdn, username = udm.create_user(
+                userdn, _username = udm.create_user(
                     set={
                         'password': password,
                         'mailHomeServer': host,
@@ -183,7 +183,7 @@ def main():
                     position='cn=computers,%s' % basedn,
                 )
                 usermail = f'{uts.random_name()}@{domain}'
-                userdn, username = udm.create_user(
+                userdn, _username = udm.create_user(
                     set={
                         'password': password,
                         'mailHomeServer': host,
@@ -219,7 +219,7 @@ def main():
                     position='cn=computers,%s' % basedn,
                 )
                 usermail = f'{uts.random_name()}@{domain}'
-                userdn, username = udm.create_user(
+                userdn, _username = udm.create_user(
                     set={
                         'password': password,
                         'mailHomeServer': host,
@@ -255,7 +255,7 @@ def main():
                     position='cn=computers,%s' % basedn,
                 )
                 usermail = f'{uts.random_name()}@{domain}'
-                userdn, username = udm.create_user(
+                userdn, _username = udm.create_user(
                     set={
                         'password': password,
                         'mailHomeServer': host,

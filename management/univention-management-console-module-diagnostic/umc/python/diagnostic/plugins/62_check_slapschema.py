@@ -51,7 +51,7 @@ def run(_umc_instance: Instance) -> None:
         return
 
     process = Popen(['/usr/sbin/slapschema', '-f', '/etc/ldap/slapd.conf'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
-    stdout, stderr_ = process.communicate()
+    _stdout, stderr_ = process.communicate()
     stderr = stderr_.decode('UTF-8', 'replace')
 
     if not stderr:

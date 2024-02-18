@@ -46,7 +46,7 @@ def run_samba_tool_dbcheck_fix(umc_instance: Instance) -> None:
         return
 
     cmd = ['samba-tool', 'dbcheck', '--fix', '--cross-ncs', '--yes']
-    (success, output) = util.run_with_output(cmd)
+    (_success, output) = util.run_with_output(cmd)
 
     cmd_string = ' '.join(cmd)
     MODULE.process('Output of %s:\n%s' % (cmd_string, output))
@@ -75,7 +75,7 @@ def run(_umc_instance: Instance, rerun: bool = False, fix_log: str = '') -> None
     }]
 
     cmd = ['samba-tool', 'dbcheck']
-    (success, output) = util.run_with_output(cmd)
+    (_success, output) = util.run_with_output(cmd)
     if [x for x in output.split('\n') if x.startswith("ERROR:")]:
         error = _('`samba-tool dbcheck` found an error in the local AD database.')
         error_descriptions.append(error)

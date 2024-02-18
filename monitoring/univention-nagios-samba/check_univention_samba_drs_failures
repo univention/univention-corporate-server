@@ -67,11 +67,11 @@ class CheckSambaDrsRepl(object):
         drsuapi_connect(self)
         req1 = drsuapi.DsReplicaGetInfoRequest1()
         req1.info_type = drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO
-        (info_type, info) = self.drsuapi.DsReplicaGetInfo(self.drsuapi_handle, 1, req1)
+        (_info_type, info) = self.drsuapi.DsReplicaGetInfo(self.drsuapi_handle, 1, req1)
         for n in info.array:
             if n.consecutive_sync_failures > 0:
                 failures = True
-                (site, server) = drs_parse_ntds_dn(n.source_dsa_obj_dn)
+                (_site, server) = drs_parse_ntds_dn(n.source_dsa_obj_dn)
                 if server not in consecutive_sync_failures:
                     consecutive_sync_failures[server] = 0
                 consecutive_sync_failures[server] += n.consecutive_sync_failures

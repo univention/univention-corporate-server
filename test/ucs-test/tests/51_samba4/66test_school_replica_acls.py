@@ -69,7 +69,7 @@ def check_primarys4_access(username, primary_ip, ucr, ldif, password="univention
 # test that the school replica can't modify groupmemberships
 def test_group_modification(udm, ucr, lo, user1, ldif):
     user_dn, username = user1[0].encode('utf-8'), user1[1].encode('utf-8')
-    group_dn, attrs = lo.search(filter='cn=Domain Admins', attr=['memberUid', 'uniqueMember'])[0]
+    group_dn, _attrs = lo.search(filter='cn=Domain Admins', attr=['memberUid', 'uniqueMember'])[0]
     with pytest.raises(univention.admin.uexceptions.permissionDenied):
         lo.modify(group_dn, (('memberUid', b'', username), ('uniqueMember', b'', user_dn)))
 

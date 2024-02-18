@@ -47,7 +47,7 @@ def main():
                             users = []
                             for _i in range(3):
                                 usermail = '%s@%s' % (uts.random_name(), domain)
-                                userdn, username = udm.create_user(
+                                userdn, _username = udm.create_user(
                                     set={
                                         'password': password,
                                         'mailHomeServer': host,
@@ -60,7 +60,7 @@ def main():
                             send_mail(recipients=mails, msg=token, port=587, tls=True, username=usermail, password=password, debuglevel=0)
                             check_delivery(token, mails[0], True)
                             group_mail = '%s@%s' % (uts.random_name(), domain)
-                            groupdn, groupname = udm.create_group(
+                            _groupdn, groupname = udm.create_group(
                                 set={
                                     'users': users[1],
                                     'mailAddress': group_mail,

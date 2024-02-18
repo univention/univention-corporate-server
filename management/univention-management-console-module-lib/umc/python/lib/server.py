@@ -86,7 +86,7 @@ class Server(object):
         # (disable first to make sure the services are restarted)
         subprocess.call(CMD_DISABLE_EXEC)
         p = subprocess.Popen(CMD_ENABLE_EXEC_WITH_RESTART, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        out, err = p.communicate()
+        out, _err = p.communicate()
         MODULE.info('enabling server restart:\n%s' % (out.decode('utf-8')))
 
     @simple_response

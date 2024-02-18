@@ -104,7 +104,7 @@ class object(DHCPBase):
         oldServiceDN = self.lo.getAttr(self.dn, 'dhcpServiceDN')
         module = univention.admin.modules.identifyOne(self.position.getDn(), self.lo.get(self.position.getDn()))
         obj = univention.admin.objects.get(module, None, self.lo, self.position, dn=self.position.getDn())
-        shadow_module, shadow_object = univention.admin.objects.shadow(self.lo, module, obj, self.position)
+        _shadow_module, shadow_object = univention.admin.objects.shadow(self.lo, module, obj, self.position)
         self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn.encode('UTF-8'))])
 
     @classmethod

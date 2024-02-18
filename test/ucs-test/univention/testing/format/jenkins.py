@@ -31,7 +31,7 @@ class Jenkins(TestFormatInterface):
         """Called after each test."""
         print('<run>', file=self.stream)
         try:
-            mime, content = result.artifacts['stdout']
+            _mime, content = result.artifacts['stdout']
         except KeyError:
             pass
         else:

@@ -34,7 +34,7 @@ def eapol_test(username, client_mac):
 def main():
     with ucr_test.UCSTestConfigRegistry(), udm_test.UCSTestUDM() as udm:
         client_mac = strings.random_mac()
-        userdn, username = udm.create_user(networkAccess=1)
+        _userdn, username = udm.create_user(networkAccess=1)
         clientdn = udm.create_object(
             'computers/ipmanagedclient',
             set={

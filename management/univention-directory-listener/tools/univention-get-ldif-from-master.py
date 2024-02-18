@@ -110,7 +110,7 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
     writer = ldif.LDIFWriter(output, cols=10000)
     while True:
         msgid = lo.lo.search_ext(base, ldap.SCOPE_SUBTREE, '(objectclass=*)', ['+', '*'], serverctrls=[lc])
-        rtype, rdata, rmsgid, serverctrls = lo.lo.result3(msgid)
+        _rtype, rdata, _rmsgid, serverctrls = lo.lo.result3(msgid)
 
         for dn, data in rdata:
             logging.debug('Processing %s ...', dn)

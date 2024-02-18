@@ -88,7 +88,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
         unc = automountInformation
         if " " in automountInformation:
-            flags, unc = automountInformation.split(" ", 1)
+            _flags, unc = automountInformation.split(" ", 1)
         if ":" in unc:
             host, path = unc.split(':', 1)
             if host and host == fqdn and not os.path.exists(path):

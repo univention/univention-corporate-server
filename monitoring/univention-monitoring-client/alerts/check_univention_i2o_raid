@@ -72,7 +72,7 @@ class I2O_RAIDCheck(Alert):
         for option in options:
             cmd.extend(['-L', option])
         try:
-            rc, output = self.exec_command(cmd)
+            _rc, output = self.exec_command(cmd)
         except OSError as err:
             self.log.debug('error executing raidutil: %s' % (err,))
             for option in options:
@@ -89,7 +89,7 @@ class I2O_RAIDCheck(Alert):
             result = self.re_other.match(line) if option in ['physical', 'logical', 'raid'] else self.re_controller.match(line)
             if not result:
                 continue
-            (addr, device, type_, size_or_serial, status) = result.groups()
+            (_addr, device, _type, _size_or_serial, status) = result.groups()
             if int(device) not in devices:
                 continue
             state = self.STATUS.get(status, -1)

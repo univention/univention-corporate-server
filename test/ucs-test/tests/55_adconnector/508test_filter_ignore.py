@@ -34,7 +34,7 @@ def test_user_sync_from_ad_to_udm_with_ignorefilter(user_class, sync_mode):
     with connector_setup(sync_mode):
         try:
             udm_user = user_class()
-            (basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
+            (_basic_ad_user, ad_user_dn, udm_user_dn) = create_con_user(AD, udm_user, adconnector.wait_for_sync)
             with testing_ucr.UCSTestConfigRegistry():
                 ignorefilter = filter_format("(givenName=%s)", [udm_user.user["firstname"].decode("utf-8")])
                 ucr_set([f"connector/ad/mapping/user/ignorefilter={ignorefilter}"])

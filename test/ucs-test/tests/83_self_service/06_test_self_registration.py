@@ -88,7 +88,7 @@ def get_registration_info(ucr):
             },
         }
     yield _get_registration_info
-    lo, po = getAdminConnection()
+    lo, _po = getAdminConnection()
     for dn in local.dns:
         try:
             lo.delete(dn)

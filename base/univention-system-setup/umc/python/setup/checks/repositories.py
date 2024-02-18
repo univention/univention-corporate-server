@@ -80,7 +80,7 @@ def log_warnings_about_unreachable_repository_servers(servers_with_curl_processe
     """
     for server, process in servers_with_curl_processes:
         if process.returncode != 0:
-            stdout, strerr = process.communicate()
+            stdout, _strerr = process.communicate()
             MODULE.warn(
                 "'%s' exited with returncode %s: %s" % (
                     " ".join(quote(arg) for arg in cast(Iterable[str], process.args)),

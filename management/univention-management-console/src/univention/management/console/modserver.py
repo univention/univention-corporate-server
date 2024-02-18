@@ -451,7 +451,7 @@ class Handler(RequestHandler):
 
     def suffixed_cookie_name(self, cookie_name):
         # TODO: test if the Host header is correctly passed through the UNIX socket
-        host, _, port = self.request.headers.get('Host', '').partition(':')
+        _host, _, port = self.request.headers.get('Host', '').partition(':')
         if port:
             try:
                 port = '-%d' % (int(port),)
@@ -542,7 +542,7 @@ class Cancel(RequestHandler):
     def get(self):
         id_to_cancel = self.request.headers.get("X-UMC-Request-ID")
         try:
-            request, method = self.handler._Base__requests.pop(id_to_cancel)
+            request, _method = self.handler._Base__requests.pop(id_to_cancel)
         except KeyError:
             body = json.dumps({'status': 400, 'result': None, 'message': _('failed to cancel request.')})
             self.set_status(400)

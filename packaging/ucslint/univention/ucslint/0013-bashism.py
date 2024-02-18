@@ -86,7 +86,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check_bashism(self, fn: Path) -> None:
         p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p.communicate()
+        _stdout, stderr = p.communicate()
         # 2 = file is no shell script or file is already bash script
         # 1 = bashism found
         # 0 = everything is posix compliant

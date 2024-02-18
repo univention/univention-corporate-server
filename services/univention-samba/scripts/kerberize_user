@@ -106,7 +106,7 @@ def nt_password_to_arcfour_hmac_md5(nt_password):
 
 def main():
     username = None
-    optlist, mail_user = getopt.getopt(sys.argv[1:], 'u:')
+    optlist, _mail_user = getopt.getopt(sys.argv[1:], 'u:')
     for option, value in optlist:
         if option == '-u':
             username = value

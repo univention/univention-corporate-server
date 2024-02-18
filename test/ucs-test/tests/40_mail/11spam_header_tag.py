@@ -24,7 +24,7 @@ def main():
                 mailHomeServer = '%(hostname)s.%(domainname)s' % ucr
                 spam_folder = essential.mail.get_spam_folder_name()
 
-                userdn, username = udm.create_user(
+                _userdn, _username = udm.create_user(
                     password=password,
                     set={
                         'mailHomeServer': mailHomeServer,

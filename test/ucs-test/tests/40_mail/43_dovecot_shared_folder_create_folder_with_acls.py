@@ -42,7 +42,7 @@ def main() -> None:
                         fqdn = '%(hostname)s.%(domainname)s' % ucr
                         user_address = random_email()
                         user_password = 'univention'
-                        user_dn, user_name = udm.create_user(
+                        _user_dn, _user_name = udm.create_user(
                             set={
                                 'mailHomeServer': fqdn,
                                 'mailPrimaryAddress': user_address,
@@ -57,7 +57,7 @@ def main() -> None:
                         ]
                         user_acls = ['"%s" "%s"' % (user_address, 'all')]
                         # create folder
-                        folder_dn, folder_name, folder_address = create_shared_mailfolder(
+                        folder_dn, folder_name, _folder_address = create_shared_mailfolder(
                             udm,
                             fqdn,
                             mailAddress=False,

@@ -273,7 +273,7 @@ class UDMLicenseManagement(UDMModule):
         print("\nSaving initial license to file: '%s'" % license_file)
         with open(license_file, 'w') as license:
             proc = Popen(("univention-ldapsearch", "-LLLb", self.license_dn), stdout=license, stderr=PIPE)
-            stdout, stderr = proc.communicate()
+            _stdout, stderr = proc.communicate()
             assert not stderr
             assert proc.returncode == 0
 

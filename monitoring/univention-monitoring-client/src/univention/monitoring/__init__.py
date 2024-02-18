@@ -85,6 +85,6 @@ class Alert(object):
         kwargs.setdefault('stdout', subprocess.PIPE)
         kwargs.setdefault('stderr', subprocess.DEVNULL)
         proc = subprocess.Popen(*args, **kwargs)
-        stdout, stderr = proc.communicate()
+        stdout, _stderr = proc.communicate()
         output = stdout.decode('UTF-8', 'replace') if stdout is not None else None
         return proc.returncode, output

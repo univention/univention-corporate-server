@@ -100,7 +100,7 @@ def windows_link_gpo(gpo_name, container, server=""):
 def windows_force_gpo_update():
     print("Forcing GPO update on Windows:")
     try:
-        ret_code, stdout, stderr = Win.force_gpo_update()
+        _ret_code, stdout, stderr = Win.force_gpo_update()
         if stdout:
             print(stdout)
         if stderr:
@@ -142,7 +142,7 @@ def samba_check_gpo_exists(gpo_name):
     print("\nChecking that GPO '%s' exists." % gpo_name)
     cmd = ("samba-tool", "gpo", "listall")
 
-    stdout, stderr = run_samba_tool(cmd)
+    stdout, _stderr = run_samba_tool(cmd)
     if not stdout:
         utils.fail("The samba-tool did not produce any output when list of all GPOs is expected.")
     if gpo_name not in stdout:
@@ -318,7 +318,7 @@ def dns_get_host_ip(host_name, all=False):
         try:
             cmd = ['dig', dig_source, host_name, '+search', '+short']
             p1 = Popen(cmd, close_fds=True, stdout=PIPE, stderr=PIPE)
-            stdout, stderr = p1.communicate()
+            stdout, _stderr = p1.communicate()
             if p1.returncode == 0:
                 for i in stdout.split('\n'):
                     if i:

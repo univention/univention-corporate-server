@@ -180,7 +180,7 @@ class Request(Message):
         if not self.user_dn:
             return  # local user (probably root)
         try:
-            lo, po = get_user_connection(bind=self.bind_user_connection, write=kwargs.pop('write', False), follow_referral=True, no_cache=no_cache, **kwargs)
+            lo, _po = get_user_connection(bind=self.bind_user_connection, write=kwargs.pop('write', False), follow_referral=True, no_cache=no_cache, **kwargs)
             if not no_cache:
                 self._user_connections.add(lo)
             return lo
@@ -250,7 +250,7 @@ class Response(Message):
         type is guessed using the extension of the filename.
         """
         if mimetype is None:
-            self.mimetype, encoding = mimetypes.guess_type(filename)
+            self.mimetype, _encoding = mimetypes.guess_type(filename)
         else:
             self.mimetype = mimetype
 

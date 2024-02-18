@@ -502,7 +502,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
         self.options = options
         self.udm_passthrough_options = udm_passthrough_options
 
-        rc, object_dn, stdout = self.udm_find_object_dn()
+        _rc, object_dn, stdout = self.udm_find_object_dn()
         if not object_dn:
             print("ERROR: Object not found in UDM.", file=sys.stderr)
             return
@@ -1445,7 +1445,7 @@ def ucs_registerLDAPExtension():
         help="File containing LDAP bindpwd", metavar="<filename>")
     parser.add_option_group(auth_options)
 
-    opts, args = parser.parse_args()
+    opts, _args = parser.parse_args()
     if len(opts.udm_module) > 1:
         parser.error('--udm_module option can be given once only.')
     if not opts.packagename:
@@ -1583,7 +1583,7 @@ def ucs_unregisterLDAPExtension():
         type="existing_filename",
         help="File containing LDAP bindpwd", metavar="<filename>")
     parser.add_option_group(auth_options)
-    opts, args = parser.parse_args()
+    opts, _args = parser.parse_args()
 
     ucr = ConfigRegistry()
     ucr.load()

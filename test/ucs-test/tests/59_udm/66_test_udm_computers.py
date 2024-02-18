@@ -826,9 +826,9 @@ def test_modify_ip_ptr_record(udm, lo):
 def test_concurrent_rename_and_group_change(udm, verify_ldap_object):
     """rename and change groups at once"""
     # bugs: [41694]
-    groupdn_a, name = udm.create_group()
-    groupdn_b, name = udm.create_group()
-    groupdn_c, name = udm.create_group()
+    groupdn_a, _name = udm.create_group()
+    groupdn_b, _name = udm.create_group()
+    groupdn_c, _name = udm.create_group()
     computerdn = udm.create_object('computers/ubuntu', name=random_string(), groups=[groupdn_a, groupdn_b])
     verify_ldap_object(groupdn_a, {'uniqueMember': [computerdn]})
     verify_ldap_object(groupdn_b, {'uniqueMember': [computerdn]})
@@ -928,7 +928,7 @@ def test_create_empty_dhcp(udm):
     )
 
     host = 'cn=%s,%s' % (computerName, service)
-    ((dn, attr),) = udm._lo.search(
+    ((_dn, attr),) = udm._lo.search(
         filter='(objectClass=*)',
         base=host,
         scope=utils.ldap.SCOPE_BASE,

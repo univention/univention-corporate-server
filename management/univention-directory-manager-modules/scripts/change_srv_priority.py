@@ -60,7 +60,7 @@ def main():
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
 
-    lo, position = univention.admin.uldap.getAdminConnection()
+    lo, _position = univention.admin.uldap.getAdminConnection()
     forward_module = univention.admin.modules.get('dns/forward_zone')
     forward_zones = univention.admin.modules.lookup(forward_module, None, lo, scope='sub', superordinate=None, base=configRegistry.get('ldap_base'))
 

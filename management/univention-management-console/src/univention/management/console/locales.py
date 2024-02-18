@@ -156,7 +156,7 @@ class I18N_Manager(dict):
     """
 
     def __init__(self):
-        lang, codeset = getlocale()
+        lang, _codeset = getlocale()
         if lang is None:
             lang = 'C'
         self.locale = Locale(lang)

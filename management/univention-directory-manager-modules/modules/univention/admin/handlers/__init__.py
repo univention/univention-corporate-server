@@ -2502,7 +2502,7 @@ class simpleComputer(simpleLdap):
             else:
                 base = zoneDn
 
-            naddr, nattr = self._ip2dns(new_ip)
+            naddr, _nattr = self._ip2dns(new_ip)
             oaddr, oattr = self._ip2dns(old_ip)
             results = self.lo.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, oattr, old_ip)), unique=False)
 
@@ -2812,13 +2812,13 @@ class simpleComputer(simpleLdap):
         self.update_groups()
 
     def __remove_associated_domain(self, entry):
-        dn, ip = self.__split_dns_line(entry)
+        dn, _ip = self.__split_dns_line(entry)
         domain = explode_rdn(dn, 1)[0]
         if self.info.get('domain', None) == domain:
             self.info['domain'] = None
 
     def __set_associated_domain(self, entry):
-        dn, ip = self.__split_dns_line(entry)
+        dn, _ip = self.__split_dns_line(entry)
         domain = explode_rdn(dn, 1)[0]
         if not self.info.get('domain', None):
             self.info['domain'] = domain
@@ -2919,7 +2919,7 @@ class simpleComputer(simpleLdap):
             if 'dhcpEntryZone' in self.info:
                 for entry in self.info['dhcpEntryZone']:
                     # check if line is valid
-                    dn, ip, mac = self.__split_dhcp_line(entry)
+                    dn, _ip, mac = self.__split_dhcp_line(entry)
                     if dn and mac:
                         if entry not in self.oldinfo.get('dhcpEntryZone', []):
                             self.__changes['dhcpEntryZone']['add'].append(entry)

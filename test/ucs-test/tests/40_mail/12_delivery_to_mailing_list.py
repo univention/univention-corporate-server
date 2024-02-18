@@ -27,7 +27,7 @@ def main():
             for _i in range(2):
                 name = uts.random_name()
                 usermail = '%s@%s' % (name, domain)
-                userdn, username = udm.create_user(
+                _userdn, _username = udm.create_user(
                     username=name,
                     set={
                         'password': password,

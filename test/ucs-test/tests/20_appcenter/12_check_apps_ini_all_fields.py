@@ -310,7 +310,7 @@ def parse_args():
                       help=("Force check of all Apps .ini. By default "
                             "checks only currently installed Apps."))
 
-    options, args = parser.parse_args()
+    options, _args = parser.parse_args()
     return options
 
 

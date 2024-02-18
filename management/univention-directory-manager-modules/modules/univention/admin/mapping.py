@@ -464,7 +464,7 @@ class mapping(object):
         """
         # unregister(pop_unmap=False) is used by LDAP_Search syntax classes with viewonly=True.
         # See SimpleLdap._init_ldap_search().
-        unmap_name, map_value = self._map.pop(map_name, ('', None))
+        unmap_name, _map_value = self._map.pop(map_name, ('', None))
         self._map_encoding.pop(map_name, None)
         if pop_unmap:
             self._unmap.pop(unmap_name, None)

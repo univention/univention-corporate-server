@@ -87,7 +87,7 @@ class ImapMail(Mail):
 
     def get_mails(self, filter='ALL', mailbox='INBOX'):
         msgs = []
-        rv, data = self.connection.select(mailbox)
+        rv, _data = self.connection.select(mailbox)
         assert rv == "OK"
         rv, msg_ids = self.connection.search(None, filter)
         assert rv == "OK"
@@ -99,7 +99,7 @@ class ImapMail(Mail):
 
     def get_connection(self, host, user, password):
         self.connection = imaplib.IMAP4_SSL(host)
-        rv, data = self.connection.login(user, password)
+        rv, _data = self.connection.login(user, password)
         assert rv == "OK"
 
     def get_return_code(self, id, response):
@@ -165,9 +165,9 @@ class ImapMail(Mail):
         return quota, retval[0]
 
     def copy(self, message_set, old_mailbox, new_mailbox):
-        rv, data = self.connection.select(old_mailbox)
+        rv, _data = self.connection.select(old_mailbox)
         assert rv == "OK"
-        rv, data = self.connection.copy(message_set, new_mailbox)
+        rv, _data = self.connection.copy(message_set, new_mailbox)
         assert rv == "OK"
 
     def create_subfolder(self, parent, child):
@@ -189,7 +189,7 @@ class ImapMail(Mail):
         return subfolder_name
 
     def delete_folder(self, folder_name):
-        rv, data = self.connection.delete(folder_name)
+        rv, _data = self.connection.delete(folder_name)
         assert rv == "OK"
 
 
@@ -470,7 +470,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
             msgids = result.split()
             print('Folder contains %d messages' % (len(msgids),))
             for msgid in msgids:
-                typ, msg_data = conn.fetch(msgid, '(BODY.PEEK[TEXT])')
+                _typ, msg_data = conn.fetch(msgid, '(BODY.PEEK[TEXT])')
                 for response_part in msg_data:
                     if isinstance(response_part, tuple) and token in response_part[1]:
                         print('Found token %r in msg %r' % (token, msgid))

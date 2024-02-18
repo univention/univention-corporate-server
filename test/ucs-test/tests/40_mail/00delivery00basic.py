@@ -64,7 +64,7 @@ class Tester:
             '1fo%so2bar3@%s' % (uts.random_string(), domain),
         ]
         for mail in mails:
-            userdn, username = self.udm.create_user(
+            _userdn, username = self.udm.create_user(
                 set={
                     'mailHomeServer': '%s.%s' % (self.ucr.get('hostname'), domain),
                     'mailPrimaryAddress': mail,

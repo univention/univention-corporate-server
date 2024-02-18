@@ -37,7 +37,7 @@ def main():
             with ucr_test.UCSTestConfigRegistry() as ucr:
                 fqdn = '%(hostname)s.%(domainname)s' % ucr
                 user_addr = random_email()
-                user_dn, user_name = udm.create_user(
+                _user_dn, _user_name = udm.create_user(
                     set={
                         'mailHomeServer': fqdn,
                         'mailPrimaryAddress': user_addr,

@@ -117,7 +117,7 @@ def checkDirFileSystem(path, cr):
     :rtype: str or None
     """
     knownFs = cr.get("listener/shares/rename/fstypes", DEFAULT_FS).split(":")
-    ret, out = getstatusoutput("LC_ALL=C stat -f %s" % quote(path))  # noqa: S605
+    _ret, out = getstatusoutput("LC_ALL=C stat -f %s" % quote(path))  # noqa: S605
     myFs = ""
     for line in out.split("\n"):
         tmp = line.split("Type: ")

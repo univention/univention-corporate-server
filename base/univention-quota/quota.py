@@ -81,7 +81,7 @@ def _read_share_and_policy_result(dn: str) -> Tuple[Dict[str, List[bytes]] | Non
         return (None, None)
 
     with open(filename, 'rb') as fd:
-        (tdn, share_object, policy_result) = pickle.load(fd, encoding='bytes')
+        (_tdn, share_object, policy_result) = pickle.load(fd, encoding='bytes')
 
     return (share_object, policy_result)
 

@@ -1014,7 +1014,7 @@ class %s(univention.admin.hook.simpleHook):
         udm.stop_cli_server()
 
         ea_value = uts.random_string()
-        group_dn, group_name = udm.create_group(**{ea_name: ea_value})
+        group_dn, _group_name = udm.create_group(**{ea_name: ea_value})
         utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False)
 
         udm.modify_object('groups/group', dn=group_dn, set={ea_name: ''})
@@ -1038,7 +1038,7 @@ class %s(univention.admin.hook.simpleHook):
         }
         udm.create_object('settings/extended_options', position=udm.UNIVENTION_CONTAINER, **eo_properties)
 
-        group_dn, group_name = udm.create_group(options=['posix', eo_name])
+        group_dn, _group_name = udm.create_group(options=['posix', eo_name])
         utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False)
 
         udm.modify_object('groups/group', dn=group_dn, options=['posix'])

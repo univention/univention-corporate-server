@@ -144,7 +144,7 @@ def test_error_enter(lock, capsys):
         raise AssertionError()
 
     assert exc_info.value.code == 5
-    out, err = capsys.readouterr()
+    _out, err = capsys.readouterr()
     assert "Invalid PID" in err
 
 
@@ -153,7 +153,7 @@ def test_error_gone(lock, capsys):
         assert lock.check(file=1)
         lock.remove()
 
-    out, err = capsys.readouterr()
+    _out, err = capsys.readouterr()
     assert "already released" in err
 
 

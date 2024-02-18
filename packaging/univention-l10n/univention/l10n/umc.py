@@ -423,7 +423,7 @@ def create_mo_file(po_file, mo_file=''):
 
     cmd = ('msgattrib', '--only-fuzzy', '--no-wrap', po_file)
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    out, err = proc.communicate()
+    out, _err = proc.communicate()
     if out:
         raise Error(u"Error: '{}' contains 'fuzzy' translations:\n{}".format(po_file, out.decode('utf-8', 'replace')))
 

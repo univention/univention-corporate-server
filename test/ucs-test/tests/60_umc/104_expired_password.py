@@ -37,7 +37,7 @@ class TestPwdChangeNextLogin:
     def test_expired_password_detection_create_pwdchangenextlogin(self, options, udm, Client, random_string):
         print(f'test_expired_password_detection_create_pwdchangenextlogin({options!r})')
         password = random_string()
-        userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
+        _userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
         client = Client(language='en-US')
         with pytest.raises(Unauthorized) as msg:
             client.authenticate(username, password)
@@ -70,7 +70,7 @@ class TestPwdChangeNextLogin:
         print(f'test_change_password({options!r})')
         password = random_string()
         new_password = random_string(5) + random_string(5).upper() + '@99'
-        userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
+        _userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
         if samba4_installed:
             utils.wait_for_connector_replication()
             wait_for_drs_replication(filter_format('sAMAccountName=%s', [username]))
@@ -108,14 +108,14 @@ class TestBasics:
 
     def test_login_invalid_user(self, udm, Client, random_string):
         password = random_string()
-        userdn, username = udm.create_user(password=password)
+        _userdn, username = udm.create_user(password=password)
         with pytest.raises(Unauthorized):
             client = Client(language='en-US')
             client.authenticate('UNKNOWN' + username, password)
 
     def test_login_invalid_password(self, udm, Client, random_string):
         password = random_string()
-        userdn, username = udm.create_user(password=password)
+        _userdn, username = udm.create_user(password=password)
         with pytest.raises(Unauthorized):
             client = Client(language='en-US')
             client.authenticate(username, password + 'INVALID')
@@ -131,6 +131,6 @@ class TestLDAPUsers:
 
     def test_ldap_pwd_user_umc_authentication(self, udm, Client, random_string):
         password = random_string()
-        userdn, username = udm.create_ldap_user(password=password)
+        _userdn, username = udm.create_ldap_user(password=password)
         client = Client(language='en-US')
         client.authenticate(username, password)

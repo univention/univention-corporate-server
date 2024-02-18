@@ -93,7 +93,7 @@ def open_drs_connection():
             fd.flush()
             cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % (fd.name,), ad_ldap_binddn]
             p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-            stdout, stderr = p1.communicate()
+            stdout, _stderr = p1.communicate()
         if p1.returncode != 0:
             raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (' '.join(cmd_block), p1.returncode, stdout.decode('UTF-8', 'replace')))
 
@@ -130,7 +130,7 @@ def open_drs_connection():
     repl_creds.set_password(bindpw)
 
     # binding_options = "seal,print"
-    drs, drsuapi_handle, bind_supported_extensions = drs_utils.drsuapi_connect(ad_ldap_host, lp, repl_creds)
+    drs, drsuapi_handle, _bind_supported_extensions = drs_utils.drsuapi_connect(ad_ldap_host, lp, repl_creds)
 
     dcinfo = drsuapi.DsGetDCInfoRequest1()
     dcinfo.level = 1
@@ -147,7 +147,7 @@ def open_drs_connection():
         raise netbiosDomainnameNotFound('Failed to find Netbios domain name from AD server. Please configure it manually: "ucr set connector/ad/netbiosdomainname=<AD NetBIOS Domainname>"')
     dcinfo.domain_name = ad_netbios_domainname
 
-    i, o = drs.DsGetDomainControllerInfo(drsuapi_handle, 1, dcinfo)
+    _i, o = drs.DsGetDomainControllerInfo(drsuapi_handle, 1, dcinfo)
     computer_dn = o.array[0].computer_dn
 
     req = drsuapi.DsNameRequest1()
@@ -157,7 +157,7 @@ def open_drs_connection():
     req.format_desired = drsuapi.DRSUAPI_DS_NAME_FORMAT_GUID
     req.count = 1
     req.names = [names]
-    i, o = drs.DsCrackNames(drsuapi_handle, 1, req)
+    _i, o = drs.DsCrackNames(drsuapi_handle, 1, req)
     source_dsa_guid = o.array[0].result_name
     computer_guid = source_dsa_guid.replace('{', '').replace('}', '').encode('utf8')
 
@@ -198,7 +198,7 @@ def get_ad_password(computer_guid, dn, drs, drsuapi_handle):
         return ndr_unpack(drsblobs.supplementalCredentialsBlob, attr_val)
 
     while True:
-        (level, ctr) = drs.DsGetNCChanges(drsuapi_handle, 8, req8)
+        (_level, ctr) = drs.DsGetNCChanges(drsuapi_handle, 8, req8)
         rid = None
         unicode_blob = None
         history_blob = None
@@ -291,7 +291,7 @@ def test_initial_AD_pwd_is_synced():
         (ad_user_dn, udm_user_dn) = create_ad_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
 
         drs, drs_handle, computer_guid = open_drs_connection()
-        nt_hash, keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
+        nt_hash, _keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
         ucs_result = udm._lo.search(base=udm_user_dn, attr=['sambaNTPassword', 'pwhistory'])[0][1]
         print("- Check udm and ad nt_hash.")
         assert ucs_result["sambaNTPassword"][0] == nt_hash, "UDM sambaNTPassword and AD nt_hash should be equal"
@@ -311,7 +311,7 @@ def test_initial_UCS_pwd_is_synced():
         (udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
 
         drs, drs_handle, computer_guid = open_drs_connection()
-        nt_hash, keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
+        nt_hash, _keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
         ucs_result = udm._lo.search(base=udm_user_dn, attr=['sambaNTPassword', 'pwhistory'])[0][1]
         print("- Check udm and ad nt_hash.")
         assert ucs_result["sambaNTPassword"][0] == nt_hash, "UDM sambaNTPassword and AD nt_hash should be equal"
@@ -333,7 +333,7 @@ def test_create_user_in_AD_set_same_pwd_in_UDM():
             udm_modify(udm, dn=udm_user_dn, password="Univention.2-")
         print("Ok")
         drs, drs_handle, computer_guid = open_drs_connection()
-        nt_hash, keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
+        nt_hash, _keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
         ucs_result = udm._lo.search(base=udm_user_dn, attr=['sambaNTPassword', 'pwhistory'])[0][1]
         print("- Check udm and ad nt_hash.")
         assert ucs_result["sambaNTPassword"][0] == nt_hash, "UDM sambaNTPassword and AD nt_hash should be equal"
@@ -360,7 +360,7 @@ def test_set_already_used_password_set_in_AD():
             udm_modify(udm, dn=udm_user_dn, password="Njkxsa12.qad")
         print("Ok")
         drs, drs_handle, computer_guid = open_drs_connection()
-        nt_hash, keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
+        nt_hash, _keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
         ucs_result = udm._lo.search(base=udm_user_dn, attr=['sambaNTPassword', 'pwhistory'])[0][1]
         print("- Check udm and ad nt_hash.")
         assert ucs_result["sambaNTPassword"][0] == nt_hash, "UDM sambaNTPassword and AD nt_hash should be equal"

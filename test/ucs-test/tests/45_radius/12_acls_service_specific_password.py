@@ -28,7 +28,7 @@ def credentials(user_type, rad_user, ucr):
     (True, 'admin'),
 ])
 def test_acl_read_access(rad_user, lo, ssp, ucr, allowed, credentials):
-    dn, name, password = rad_user
+    dn, _name, _password = rad_user
     binddn, bindpw = credentials
     lo.modify(dn, [('univentionRadiusPassword', [b'old'], [ssp[1]])])
     lo = univention.admin.uldap.access(host=ucr.get('ldap/master'), port=ucr.get('ldap/server/port'), base=ucr.get('ldap/base'), binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
@@ -45,7 +45,7 @@ def test_acl_read_access(rad_user, lo, ssp, ucr, allowed, credentials):
     (True, 'admin'),
 ])
 def test_acl_write_access(rad_user, ssp, ucr, allowed, credentials):
-    dn, name, password = rad_user
+    dn, _name, _password = rad_user
     binddn, bindpw = credentials
     lo = univention.admin.uldap.access(host=ucr.get('ldap/master'), port=ucr.get('ldap/server/port'), base=ucr.get('ldap/base'), binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
     if allowed:

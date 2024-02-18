@@ -86,7 +86,7 @@ class FSMountCheck:
     def main(self):
         # parse command line
         try:
-            (opts, pargs) = getopt.getopt(sys.argv[1:], 'acvw', ['help', 'version'])
+            (opts, _pargs) = getopt.getopt(sys.argv[1:], 'acvw', ['help', 'version'])
         except getopt.GetoptError:
             self.print_usage()
             sys.exit(self.STATE['UNKNOWN'])

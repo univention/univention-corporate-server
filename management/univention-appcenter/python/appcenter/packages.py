@@ -189,7 +189,7 @@ def _apt_get_dry_run(action, pkgs):
         for regex in [install_regex, upgrade_remove_regex]:
             match = regex.match(line)
             if match:
-                operation, pkg_name, version = match.groups()
+                operation, pkg_name, _version = match.groups()
                 if operation == 'Inst':
                     install.append(pkg_name)
                 elif operation == 'Remv':

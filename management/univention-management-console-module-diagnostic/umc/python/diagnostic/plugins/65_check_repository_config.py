@@ -88,7 +88,7 @@ def run_cleanup_deprecated(umc_instance: Instance) -> None:
     for var_list in sorted_vars.values():
         values: Dict[str, str] = dict.fromkeys(DEPRECATED_VARS, "")
         for name, value in var_list:
-            base, dummy, key = name.rpartition("/")
+            base, _dummy, key = name.rpartition("/")
             if key not in DEPRECATED_VARS:
                 raise LookupError(f'Unexpected key found: {key}')
             values[key] = value

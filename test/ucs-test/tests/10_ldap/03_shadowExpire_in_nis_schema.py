@@ -40,7 +40,7 @@ def run():
             expiry_date = chosen_time.strftime("%Y-%m-%d")
             passwd = uts.random_string()
             username = uts.random_name()
-            userdn, username = udm.create_user(password=passwd, userexpiry=expiry_date)
+            _userdn, username = udm.create_user(password=passwd, userexpiry=expiry_date)
             expiry_ldap = int(ldap_search('uid=%s' % username)[0][1])  # get the real set value from ldap
             return username, passwd, expiry_ldap
 

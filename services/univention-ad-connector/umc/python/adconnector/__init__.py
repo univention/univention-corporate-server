@@ -90,7 +90,7 @@ def test_connection():
     """Search a query that should never fail: RDN of connector/ad/ldap/base"""
     base = ucr.get('connector/ad/ldap/base')
     rdn = explode_rdn(base)[0]
-    p1, stdout, stderr = adsearch(rdn)
+    p1, _stdout, stderr = adsearch(rdn)
     if stderr:
         MODULE.warn(stderr)
     if p1.returncode != 0:
@@ -111,7 +111,7 @@ def guess_ad_domain_language():
     AD Connector supports "en" and "de", this check detects a German AD
     Domain and returns "en" as fallback.
     '''
-    p1, stdout, stderr = adsearch('sAMAccountName=Domänen-Admins')
+    _p1, stdout, stderr = adsearch('sAMAccountName=Domänen-Admins')
     if stderr:
         MODULE.warn('adsearch "sAMAccountName=Domänen-Admins" stderr: %s' % stderr)
     for line in stdout.split('\n'):

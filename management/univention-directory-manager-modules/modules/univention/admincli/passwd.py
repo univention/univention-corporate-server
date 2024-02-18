@@ -53,7 +53,7 @@ log = getLogger('ADMIN')
 def doit(arglist):
     univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', level=DEBUG)
     out = []
-    opts, args = getopt.getopt(arglist[1:], '', ['binddn=', 'pwdfile=', 'user=', 'pwd='])
+    opts, _args = getopt.getopt(arglist[1:], '', ['binddn=', 'pwdfile=', 'user=', 'pwd='])
 
     binddn = None
     pwdfile = None

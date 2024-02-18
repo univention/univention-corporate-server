@@ -27,7 +27,7 @@ def main():
         fqdn = '%(hostname)s.%(domainname)s' % ucr
         handler_set(['mail/alias/root=systemmail@%s' % fqdn])
         mailAddress = '%s@%s' % (uts.random_name(), ucr.get('domainname'))
-        userdn, username = udm.create_user(
+        _userdn, _username = udm.create_user(
             set={
                 'password': 'univention',
                 'mailHomeServer': fqdn,

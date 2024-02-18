@@ -595,7 +595,7 @@ class object(univention.admin.handlers.simpleLdap):
         self.open()
         # is this group in mentioned in settings/default?
         try:
-            dn, attrs = self.lo.search(filter='objectClass=univentionDefault', base=self.position.getDomain(), scope='domain', unique=True, required=True)[0]
+            _dn, attrs = self.lo.search(filter='objectClass=univentionDefault', base=self.position.getDomain(), scope='domain', unique=True, required=True)[0]
         except ldap.NO_SUCH_OBJECT:
             pass
         else:

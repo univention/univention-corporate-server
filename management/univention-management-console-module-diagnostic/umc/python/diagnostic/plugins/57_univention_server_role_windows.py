@@ -75,7 +75,7 @@ def run(_umc_instance: Instance) -> None:
     if ucr.get('server/role') != 'domaincontroller_master':
         return
 
-    lo, pos = getAdminConnection()
+    lo, _pos = getAdminConnection()
     objs = udm_objects_without_ServerRole(lo)
     details = '\n\n' + _('These objects were found:')
 
@@ -101,7 +101,7 @@ def run(_umc_instance: Instance) -> None:
 
 
 def migrate_objects(_umc_instance: Instance) -> None:
-    lo, pos = getAdminConnection()
+    lo, _pos = getAdminConnection()
     objs = udm_objects_without_ServerRole(lo)
     for server_role in sorted(objs):
         if not server_role:

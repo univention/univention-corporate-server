@@ -55,7 +55,7 @@ class TestUMCUserAuthentication(UMCBase):
             tempfile.write(image)
             tempfile.flush()
             p = subprocess.Popen(['/usr/bin/file', '-i', tempfile.name], stdout=subprocess.PIPE)
-            stdout, stderr = p.communicate()
+            stdout, _stderr = p.communicate()
             assert b'image/jpeg' in stdout, f"Failed to set PNG user photo (not converted to JPEG): {stdout!r}"
 
     def unset_image(self):

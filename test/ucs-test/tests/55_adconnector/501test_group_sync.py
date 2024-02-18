@@ -98,7 +98,7 @@ def test_group_sync_from_udm_to_ad_with_move(group_class, sync_mode):
 def test_group_sync_from_ad_to_udm(group_class, sync_mode):
     with connector_setup(sync_mode):
         udm_group = group_class()
-        (ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
+        (_ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
         delete_con_group(AD, ad_group_dn, udm_group_dn, adconnector.wait_for_sync)
 
 
@@ -108,7 +108,7 @@ def test_group_sync_from_ad_to_udm(group_class, sync_mode):
 def test_group_sync_from_ad_to_udm_with_rename(group_class, sync_mode):
     with connector_setup(sync_mode):
         udm_group = group_class()
-        (ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
+        (_ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
 
         print("\nRename AD group {!r} to {!r}\n".format(ad_group_dn, udm_group.rename.get("name")))
         ad_group_dn = AD.rename_or_move_user_or_group(ad_group_dn, name=udm_group.to_unicode(udm_group.rename).get("name"))
@@ -130,7 +130,7 @@ def test_group_sync_from_ad_to_udm_with_rename(group_class, sync_mode):
 def test_group_sync_from_ad_to_udm_with_move(group_class, sync_mode):
     with connector_setup(sync_mode):
         udm_group = group_class()
-        (ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
+        (_ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
 
         print(f"\nMove AD group {ad_group_dn!r} to {udm_group.container!r}\n")
         container_dn = AD.container_create(udm_group.container)
@@ -177,10 +177,10 @@ def test_group_sync_from_ad_to_udm_with_nested_user(group_class, nested_class, s
     with connector_setup(sync_mode):
         udm_group = group_class()
         nested_user = nested_class()
-        (ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
+        (_ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
 
         print("\nModifying AD group\n")
-        (nested_ad_user, nested_ad_user_dn, nested_udm_user_dn) = create_con_user(AD, nested_user, adconnector.wait_for_sync)
+        (_nested_ad_user, nested_ad_user_dn, nested_udm_user_dn) = create_con_user(AD, nested_user, adconnector.wait_for_sync)
         AD.set_attributes(ad_group_dn, member=[nested_ad_user_dn.encode('UTF-8')])
         adconnector.wait_for_sync()
         udm_attributes = {"users": [nested_udm_user_dn]}
@@ -221,10 +221,10 @@ def test_group_sync_from_ad_to_udm_with_nested_group(group_class, nested_class, 
     with connector_setup(sync_mode):
         udm_group = group_class()
         nested_group = nested_class()
-        (ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
+        (_ad_group, ad_group_dn, udm_group_dn) = create_con_group(AD, udm_group, adconnector.wait_for_sync)
 
         print("\nModifying AD group\n")
-        (nested_ad_user, nested_ad_user_dn, nested_udm_user_dn) = create_con_group(AD, nested_group, adconnector.wait_for_sync)
+        (_nested_ad_user, nested_ad_user_dn, nested_udm_user_dn) = create_con_group(AD, nested_group, adconnector.wait_for_sync)
         AD.set_attributes(ad_group_dn, member=[nested_ad_user_dn.encode('UTF-8')])
         adconnector.wait_for_sync()
         udm_attributes = {"nestedGroup": [nested_udm_user_dn]}

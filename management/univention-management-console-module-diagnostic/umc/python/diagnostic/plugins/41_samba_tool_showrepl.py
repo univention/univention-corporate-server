@@ -94,7 +94,7 @@ class DRSUAPI(object):
 
     def neighbours(self) -> Iterator[Tuple]:
         for replica_info_direction in (drsuapi.DRSUAPI_DS_REPLICA_INFO_NEIGHBORS, drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO):
-            (info_type, info) = self._replica_info(replica_info_direction)
+            (_info_type, info) = self._replica_info(replica_info_direction)
             for neighbour in info.array:
                 yield (replica_info_direction, neighbour)
 

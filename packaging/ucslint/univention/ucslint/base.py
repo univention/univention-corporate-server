@@ -118,7 +118,7 @@ def line_regexp(text: str, regexp: Pattern[str]) -> Iterator[tuple[int, int, Mat
     col = 1
     pos = 0
     for match in regexp.finditer(text):
-        start, end = match.span()
+        start, _end = match.span()
         while pos < start:
             if text[pos] == "\n":
                 col = 1

@@ -491,7 +491,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
             msgids = result.split()
             print('Folder contains %d messages' % (len(msgids),))
             for msgid in msgids:
-                typ, msg_data = conn.fetch(msgid, '(BODY.PEEK[TEXT])')
+                _typ, msg_data = conn.fetch(msgid, '(BODY.PEEK[TEXT])')
                 for response_part in msg_data:
                     if isinstance(response_part, tuple) and token in response_part[1]:
                         print('Found token %r in msg %r' % (token, msgid))

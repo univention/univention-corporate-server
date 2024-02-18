@@ -24,7 +24,7 @@ def main():
 
             recipient_email = '%s@%s' % (uts.random_name(), domain)
             password = 'univention'
-            userdn, username = udm.create_user(
+            _userdn, _username = udm.create_user(
                 set={
                     'password': password,
                     'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),

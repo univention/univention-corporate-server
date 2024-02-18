@@ -42,7 +42,7 @@ def get_unique_username():
         # univention-directory-manager users/user list | sed -rne "s_^\s+username:\s+(.*)$_\1_p"
         udm = subprocess.Popen(["univention-directory-manager", "users/user", "list"], stdout=subprocess.PIPE)
         sed = subprocess.Popen(["sed", "-rne", r"s_^\s+username:\s+(.*)$_\1_p"], stdin=udm.stdout, stdout=subprocess.PIPE)
-        stdout, stderr = sed.communicate()
+        stdout, _stderr = sed.communicate()
         for username in stdout:
             if randomname == username.strip():  # collision
                 break  # continue while

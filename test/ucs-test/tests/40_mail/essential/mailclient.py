@@ -108,7 +108,7 @@ class BaseMailClient:
         :mailbox: string, user mailbox name
         :returns: string, acl strign or permission denied
         """
-        code, acls = self.getacl(mailbox)
+        _code, acls = self.getacl(mailbox)
 
         # parse string into tokens
         tokens = []

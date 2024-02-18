@@ -378,8 +378,8 @@ class License(object):
                 log.debug('LICENSE: 4')
                 disable_add = 4
         elif self.version == '2':
-            lic_users, lic_servers, lic_managedclients, lic_corporateclients, = lic
-            real_users, real_servers, real_managedclients, real_corporateclients, = real
+            lic_users, _lic_servers, lic_managedclients, lic_corporateclients, = lic
+            real_users, _real_servers, real_managedclients, real_corporateclients, = real
             if lic_users and self.__cmp_gt(int(real_users) - self.sysAccountsFound, lic_users):
                 disable_add = 6
             # The license should be valid even if we have more servers than the license allowed

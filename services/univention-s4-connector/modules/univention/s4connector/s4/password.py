@@ -172,7 +172,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
     krb_ctr3_salt = ''
     krb_ctr4_salt = ''
     for k in ucs_krb5key:
-        (keyblock, salt, kvno) = heimdal.asn1_decode_key(k)
+        (keyblock, salt, _kvno) = heimdal.asn1_decode_key(k)
         key_data = keyblock.keyvalue()
         saltstring = salt.saltvalue()
         enctype = keyblock.keytype()
@@ -462,7 +462,7 @@ def extract_NThash_from_krb5key(ucs_krb5key):
     NThash = None
 
     for k in ucs_krb5key:
-        (keyblock, salt, kvno) = heimdal.asn1_decode_key(k)
+        (keyblock, _salt, _kvno) = heimdal.asn1_decode_key(k)
 
         enctype = keyblock.keytype()
         enctype_id = enctype.toint()

@@ -36,7 +36,7 @@ def main():
                 domain = ucr.get('domainname')
                 pw = 'univention'
                 mail = '%s@%s' % (uts.random_name(), domain)
-                userdn, username = udm.create_user(
+                userdn, _username = udm.create_user(
                     password=pw,
                     set={
                         "mailHomeServer": '%s.%s' % (ucr.get("hostname"), domain),

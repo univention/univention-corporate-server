@@ -49,7 +49,7 @@ def main():
     with ucr_test.UCSTestConfigRegistry() as ucr, univention.testing.udm.UCSTestUDM() as udm:
         account = utils.UCSTestDomainAdminCredentials()
 
-        user_dn, username = udm.create_user()
+        user_dn, _username = udm.create_user()
 
         # test with univention.uldap and univention.admin.uldap connection objects
         for access in (univention.uldap.access, univention.admin.uldap.access):

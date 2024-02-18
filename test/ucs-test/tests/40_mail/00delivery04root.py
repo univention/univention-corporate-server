@@ -44,7 +44,7 @@ def main():
                 reload_postfix()
 
                 mail = f'{uts.random_name()}@{domain}'
-                userdn, username = udm.create_user(
+                _userdn, _username = udm.create_user(
                     set={
                         'mailHomeServer': f'{host}.{domain}',
                         'mailPrimaryAddress': mail,

@@ -38,7 +38,7 @@ def main():
                 ])
                 reload_amavis_postfix()
                 mail = 'virus%stest@%s' % (uts.random_string(), domain)
-                userdn, username = udm.create_user(
+                _userdn, _username = udm.create_user(
                     set={
                         'mailHomeServer': '%s.%s' % (host, domain),
                         'mailPrimaryAddress': mail,

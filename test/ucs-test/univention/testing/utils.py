@@ -239,7 +239,7 @@ def __verify_ldap_object(
     if not_expected_attr is None:
         not_expected_attr = {}
     try:
-        dn, attr = get_ldap_connection(primary=primary).search(
+        _dn, attr = get_ldap_connection(primary=primary).search(
             filter='(objectClass=*)',
             base=baseDn,
             scope=ldap.SCOPE_BASE,
@@ -533,7 +533,7 @@ def wait_for_listener_replication(verbose: bool = True) -> None:
         # Otherwise the check is successful as long as the listener id changed since the last check.
         cmd = ('/usr/lib/nagios/plugins/check_univention_replication', '-c', '1')
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        stdout, _stderr = proc.communicate()
+        _stdout, _stderr = proc.communicate()
         if proc.returncode == 0:
             if verbose:
                 print('Done: replication complete.')

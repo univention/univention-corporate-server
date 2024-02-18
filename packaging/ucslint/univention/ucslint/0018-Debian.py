@@ -92,7 +92,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for script_path in paths:
             if script_path.suffix not in ('.%s' % suf for suf in self.SCRIPTS):
                 continue
-            package, suffix = self.split_pkg(script_path)
+            _package, suffix = self.split_pkg(script_path)
 
             other_scripts = self.SCRIPTS - {suffix}
             other_actions = {action for actions in self.ACTIONS.values() for action in actions} - self.ACTIONS[suffix]
@@ -129,7 +129,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             script_path, row, line=line)
 
                 for match in self.RE_COMPARE_VERSIONS.finditer(line):
-                    ver_a, op, ver_b = match.groups()
+                    ver_a, _op, ver_b = match.groups()
                     for arg in (ver_a, ver_b):
                         if self.RE_ARG2.match(arg):
                             continue
@@ -224,7 +224,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for fp in paths:
             if fp.suffix != '.install':
                 continue
-            package, suffix = self.split_pkg(fp)
+            package, _suffix = self.split_pkg(fp)
             pkg = dirs.setdefault(package, Dirs(package))
             # ~/doc/2018-04-11-ApiDoc/pymerge
             for row, line in self.lines(fp):
@@ -242,7 +242,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for fp in paths:
             if fp.suffix != '.pyinstall':
                 continue
-            package, suffix = self.split_pkg(fp)
+            package, _suffix = self.split_pkg(fp)
             pkg = dirs.setdefault(package, Dirs(package))
             for row, line in self.lines(fp):
                 for src, dst in self.process_pyinstall(fp, line):
@@ -252,7 +252,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for fp in paths:
             if fp.suffix != '.dirs':
                 continue
-            package, suffix = self.split_pkg(fp)
+            package, _suffix = self.split_pkg(fp)
             pkg = dirs.setdefault(package, Dirs(package))
             for row, line in self.lines(fp):
                 path = Path(line.strip('/'))

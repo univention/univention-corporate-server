@@ -940,7 +940,7 @@ class Component(object):
         cmd = ['/usr/bin/dpkg-query', '-W', '-f', '${Status}\\n']
         cmd.extend(pkglist)
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in p.communicate())
+        stdout, _stderr = (data.decode("UTF-8", errors="replace") for data in p.communicate())
         # count number of "Status: install ok installed" lines
         installed_correctly = [x for x in stdout.splitlines() if x.endswith(' ok installed')]
         # if pkg count and number of counted lines match, all packages are installed
@@ -1045,7 +1045,7 @@ class Component(object):
                 try:
                     assert server.access(None, '')
                 except DownloadError as e:
-                    uri, code = e.args
+                    uri, _code = e.args
                     raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (self.name, uri))
             else:
                 # FIXME: PMH stop iterating
@@ -1063,7 +1063,7 @@ class Component(object):
                         return testserver
                     except DownloadError as e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                        uri, code = e.args
+                        uri, _code = e.args
                 raise ConfigurationError(uri, 'non-existing component prefix: %s' % (uri,))
 
         except ConfigurationError:
@@ -1282,7 +1282,7 @@ class UniventionUpdater(object):
                 self.releases = json.loads(data)
             except DownloadError as e:
                 self.log.exception('Failed configured prefix %s', self.repourl.path)
-                uri, code = e.args
+                uri, _code = e.args
                 raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri))
         except ConfigurationError as e:
             if self.check_access:

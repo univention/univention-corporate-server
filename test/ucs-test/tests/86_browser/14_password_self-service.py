@@ -74,7 +74,7 @@ class UMCTester(object):
         domain = self.ucr.get('domainname')
         mail = '%s@%s' % (uts.random_string(), domain)
         password = 'univention'
-        userdn, username = self.udm.create_user(
+        _userdn, username = self.udm.create_user(
             set={
                 'mailHomeServer': '%s.%s' % (self.ucr.get('hostname'), domain),
                 'mailPrimaryAddress': mail,

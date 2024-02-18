@@ -113,7 +113,7 @@ class LDIFObject(object):
         encode = b'\n' in value
         try:
             if isinstance(value, tuple):
-                (newval, leng) = value
+                (newval, _leng) = value
             else:
                 newval = value
             newval.decode('ascii')

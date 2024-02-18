@@ -107,7 +107,7 @@ class Instance(Base):
         #       to get localized date/time strings.
 
         result = []
-        (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-o', printer])
+        (stdout, _stderr, status) = self._shell_command(['/usr/bin/lpstat', '-o', printer])
         expr = re.compile(r'\s*(\S+)\s+(\S+)\s+(\d+)\s*(.*?)$')
         if status == 0:
             for line in stdout.split("\n"):
@@ -126,7 +126,7 @@ class Instance(Base):
         """returns a list of printers, along with their 'enabled' status."""
         result = []
         expr = re.compile(r'printer\s+(\S+)\s.*?(\S+abled)')
-        (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p'], {'LANG': 'C'})
+        (stdout, _stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p'], {'LANG': 'C'})
         if status == 0:
             for line in stdout.split("\n"):
                 mobj = expr.match(line)
@@ -137,7 +137,7 @@ class Instance(Base):
 
     def _printer_status(self, printer):
         """returns the 'enabled' status of a printer"""
-        (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p', printer], {'LANG': 'C'})
+        (stdout, _stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p', printer], {'LANG': 'C'})
         if status == 0:
             if ' enabled ' in stdout:
                 return 'enabled'
@@ -149,7 +149,7 @@ class Instance(Base):
         """returns as much as possible details about a printer."""
         result = {}
         expr = re.compile(r'\s+([^\s\:]+)\:\s*(.*?)$')
-        (stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-l', '-p', printer], {'LANG': 'C'})
+        (stdout, _stderr, status) = self._shell_command(['/usr/bin/lpstat', '-l', '-p', printer], {'LANG': 'C'})
         if status == 0:
             for line in stdout.split("\n"):
                 mobj = expr.match(line)
@@ -163,7 +163,7 @@ class Instance(Base):
     def enable_printer(self, printer='', on=False):
         """enable or disable a printer, depending on args."""
         cmd = 'univention-cups-enable' if on else 'univention-cups-disable'
-        (stdout, stderr, status) = self._shell_command([cmd, printer])
+        (_stdout, stderr, status) = self._shell_command([cmd, printer])
 
         if status:
             raise UMC_Error(_('Could not %s printer: %s') % (_('activate') if on else _('deactivate'), stderr))
@@ -180,7 +180,7 @@ class Instance(Base):
         for job in jobs:
             args.append(job)  # noqa: PERF402
         args.append(printer)
-        (stdout, stderr, status) = self._shell_command(args)
+        (_stdout, stderr, status) = self._shell_command(args)
         if status:
             raise UMC_Error(_('Could not cancel job: %s') % (stderr,))
 

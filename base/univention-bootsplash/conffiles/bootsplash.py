@@ -4,7 +4,7 @@ from subprocess import call
 def postinst(baseConfig, changes):
     theme = changes.get("bootsplash/theme", False)
     try:
-        old, new = theme
+        _old, new = theme
     except (TypeError, ValueError):
         pass
     else:

@@ -552,7 +552,7 @@ class access(object):
     def __search(self, *args, **kwargs):
         response = kwargs.pop('response', None)
         if isinstance(response, dict) and kwargs.get('serverctrls'):
-            rtype, res, rmsgid, resp_ctrls = self.lo.result3(self.lo.search_ext(*args, **kwargs))
+            _rtype, res, _rmsgid, resp_ctrls = self.lo.result3(self.lo.search_ext(*args, **kwargs))
             response['ctrls'] = resp_ctrls
             return res
         else:
@@ -726,12 +726,12 @@ class access(object):
         nal = self.__encode_entry([(k, list(v)) for k, v in nal.items()])
 
         try:
-            rtype, rdata, rmsgid, resp_ctrls = self.lo.add_ext_s(dn, nal, serverctrls=serverctrls)
+            _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.add_ext_s(dn, nal, serverctrls=serverctrls)
         except ldap.REFERRAL as exc:
             if not self.follow_referral:
                 raise
             lo_ref = self._handle_referral(exc)
-            rtype, rdata, rmsgid, resp_ctrls = lo_ref.add_ext_s(dn, nal, serverctrls=serverctrls)
+            _rtype, _rdata, _rmsgid, resp_ctrls = lo_ref.add_ext_s(dn, nal, serverctrls=serverctrls)
 
         if serverctrls and isinstance(response, dict):
             response['ctrls'] = resp_ctrls
@@ -846,12 +846,12 @@ class access(object):
             serverctrls = []
 
         try:
-            rtype, rdata, rmsgid, resp_ctrls = self.lo.modify_ext_s(dn, ml, serverctrls=serverctrls)
+            _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.modify_ext_s(dn, ml, serverctrls=serverctrls)
         except ldap.REFERRAL as exc:
             if not self.follow_referral:
                 raise
             lo_ref = self._handle_referral(exc)
-            rtype, rdata, rmsgid, resp_ctrls = lo_ref.modify_ext_s(dn, ml, serverctrls=serverctrls)
+            _rtype, _rdata, _rmsgid, resp_ctrls = lo_ref.modify_ext_s(dn, ml, serverctrls=serverctrls)
 
         if serverctrls and isinstance(response, dict):
             response['ctrls'] = resp_ctrls
@@ -899,12 +899,12 @@ class access(object):
             serverctrls = []
 
         try:
-            rtype, rdata, rmsgid, resp_ctrls = self.lo.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
+            _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
         except ldap.REFERRAL as exc:
             if not self.follow_referral:
                 raise
             lo_ref = self._handle_referral(exc)
-            rtype, rdata, rmsgid, resp_ctrls = lo_ref.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
+            _rtype, _rdata, _rmsgid, resp_ctrls = lo_ref.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
 
         if serverctrls and isinstance(response, dict):
             response['ctrls'] = resp_ctrls

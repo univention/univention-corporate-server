@@ -754,7 +754,7 @@ class s4(univention.s4connector.ucs):
     def get_object_dn(self, dn):
         for i in [0, 1]:  # do it twice if the LDAP connection was closed
             try:
-                dn, ad_object = self.s4_search_ext_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0]
+                dn, _ad_object = self.s4_search_ext_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0]
                 ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %r" % (dn,))
                 return dn
             except (IndexError, ldap.NO_SUCH_OBJECT):
@@ -870,7 +870,7 @@ class s4(univention.s4connector.ucs):
         pages = 0
         while True:
             pages += 1
-            rtype, rdata, rmsgid, serverctrls = self.lo_s4.lo.result3(msgid)
+            _rtype, rdata, _rmsgid, serverctrls = self.lo_s4.lo.result3(msgid)
             res += rdata
 
             pctrls = [

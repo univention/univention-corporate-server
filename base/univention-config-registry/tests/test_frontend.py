@@ -389,7 +389,7 @@ class TestHandler(object):
 
         assert exc_info.value.code != 0
 
-        out, err = capsys.readouterr()
+        _out, err = capsys.readouterr()
         assert error in err
 
     @pytest.mark.parametrize("key,val", [
@@ -412,7 +412,7 @@ class TestHandler(object):
 
         assert list(ucrfe.handler_info(["key"])) == []
 
-        out, err = capsys.readouterr()
+        _out, err = capsys.readouterr()
         assert err == 'W: Unknown key: "key"\n'
 
 
@@ -461,7 +461,7 @@ def test_handler_version(capsys):
 
     assert exc_info.value.code == 0
 
-    out, err = capsys.readouterr()
+    out, _err = capsys.readouterr()
     assert out.startswith("univention-config-registry ")
 
 
@@ -531,7 +531,7 @@ class TestMain(object):
 
         assert exc_info.value.code != 0
 
-        out, err = capsys.readouterr()
+        _out, err = capsys.readouterr()
         assert error in err
 
     @pytest.mark.parametrize("args", [

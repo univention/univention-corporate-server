@@ -277,7 +277,7 @@ def run(
             line = fd.read().decode('utf-8', 'replace')
             eof = not line
             buf += line
-            lines, newline, buf = buf.rpartition('\n')
+            lines, _newline, buf = buf.rpartition('\n')
 
             # parse completed joinscript executions
             for line in lines.splitlines():
@@ -357,7 +357,7 @@ class Instance(Base):
 
         # check for unconfigured scripts
         process = subprocess.Popen(['/usr/sbin/univention-check-join-status'], shell=False, stdout=subprocess.PIPE)
-        stdout, stderr = process.communicate()
+        stdout, _stderr = process.communicate()
         if process.returncode == 0:
             return list(files.values())
 

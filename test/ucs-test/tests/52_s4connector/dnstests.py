@@ -220,6 +220,6 @@ def get_kerberos_ticket_for_machine():
 
 def nsupdate(nsupdate_request):
     p = subprocess.Popen(["nsupdate", "-v", "-g"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    (stdout, stderr) = p.communicate(nsupdate_request.encode('UTF-8'))
+    (stdout, _stderr) = p.communicate(nsupdate_request.encode('UTF-8'))
     if p.returncode != 0:
         utils.fail("nsupdate failed: %s" % (stdout.decode('UTF-8', 'replace'),))

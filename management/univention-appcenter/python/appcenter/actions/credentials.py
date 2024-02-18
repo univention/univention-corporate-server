@@ -71,7 +71,7 @@ class CredentialsAction(UniventionAppAction):
 
     def check_user_credentials(self, args):
         try:
-            lo, pos = self._get_ldap_connection(args, allow_machine_connection=False, allow_admin_connection=False)
+            _lo, _pos = self._get_ldap_connection(args, allow_machine_connection=False, allow_admin_connection=False)
         except ConnectionFailed:
             return False
         else:

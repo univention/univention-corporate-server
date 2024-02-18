@@ -161,7 +161,7 @@ class AdvancedIniSectionObjectTest(IniSectionObjectTest):
 def test_localisable_attribute(valid_ini_file):
     objs = AdvancedIniSectionObjectTest.all_from_file(valid_ini_file)
     assert len(objs) == 2
-    obj1, obj2 = objs
+    _obj1, _obj2 = objs
 
 
 class ListObject(IniSectionObject):

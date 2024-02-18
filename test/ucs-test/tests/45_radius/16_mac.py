@@ -86,13 +86,13 @@ def test_computer_mac(udm, ucr_session, vlg1, vlg2, ucr_vlan_id, expected_vlan_i
         "networkAccess": 1 if expected_access and len(add_to_groups) == 0 else 0,
     })
     if 1 in add_to_groups:
-        group1dn, group1name = udm.create_group(set={
+        _group1dn, _group1name = udm.create_group(set={
             'networkAccess': 1,
             'hosts': hostdn,
             'vlanId': vlg1,
         })
     if 2 in add_to_groups:
-        group2dn, group2name = udm.create_group(set={
+        _group2dn, _group2name = udm.create_group(set={
             'networkAccess': 1,
             'hosts': hostdn,
             'vlanId': vlg2,

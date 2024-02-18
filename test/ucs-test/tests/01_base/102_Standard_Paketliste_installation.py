@@ -18,7 +18,7 @@ def run_command(cmd):
     """Runs cmd command in terminal"""
     print(' ** %r' % cmd)
     popen_obj = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = popen_obj.communicate()
+    out, _err = popen_obj.communicate()
     ret = popen_obj.returncode
     if ret != 0:
         print(f'Return code = {ret},\nOut= {out}')

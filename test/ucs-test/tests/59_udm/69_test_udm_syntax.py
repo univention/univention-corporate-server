@@ -39,7 +39,7 @@ def test_udm_syntax(udm, syntax, valid_values, invalid_values, verify_ldap_objec
 
     # check valid values
     for value in valid_values:
-        user_dn, username = udm.create_user(**{cli_name: value})
+        user_dn, _username = udm.create_user(**{cli_name: value})
         if syntax in ('emailAddress', 'emailAddressTemplate'):
             verify_ldap_object(user_dn, {
                 'univentionFreeAttribute15': [value] if value else [],
@@ -53,7 +53,7 @@ def test_udm_syntax(udm, syntax, valid_values, invalid_values, verify_ldap_objec
 
 def test_complex_syntax_doublequote_parsing(udm, verify_ldap_object):
     """Verify the option to use doublequotes in complex-syntax values (Bug #27241)"""
-    user_dn, username = udm.create_user()
+    user_dn, _username = udm.create_user()
     udm.modify_object('users/user', dn=user_dn, umcProperty=r'"foo" "b\"ar"')
     verify_ldap_object(user_dn, {
         'univentionUMCProperty': [r'foo=b"ar'],

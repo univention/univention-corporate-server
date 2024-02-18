@@ -51,7 +51,7 @@ def active_services(lo: Optional[univention.uldap.access] = None) -> Optional[Li
         lo = univention.uldap.getMachineConnection()
     res = lo.search(base=lo.binddn, scope='base', attr=['univentionService'])
     if res:
-        dn, attr = res[0]
+        _dn, attr = res[0]
         return attr.get('univentionService', [])
     return None
 

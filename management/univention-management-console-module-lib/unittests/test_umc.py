@@ -81,9 +81,9 @@ class TestUMCModule(object):
             reason = 'The system will now be shut down'
         instance.shutdown(umc_request)
         assert mocked_subprocess.call.call_count == 2
-        args, kwargs = mocked_subprocess.call.call_args_list[0]
+        args, _kwargs = mocked_subprocess.call.call_args_list[0]
         assert args[0] == ('/usr/bin/logger', '-f', '/var/log/syslog', '-t', 'UMC', reason)
-        args, kwargs = mocked_subprocess.call.call_args_list[1]
+        args, _kwargs = mocked_subprocess.call.call_args_list[1]
         assert args[0] == ('/sbin/shutdown', '-h', 'now', reason)
         umc_request.expected_response(None)
 
@@ -105,9 +105,9 @@ class TestUMCModule(object):
             reason = 'The system will now be restarted'
         instance.reboot(umc_request)
         assert mocked_subprocess.call.call_count == 2
-        args, kwargs = mocked_subprocess.call.call_args_list[0]
+        args, _kwargs = mocked_subprocess.call.call_args_list[0]
         assert args[0] == ('/usr/bin/logger', '-f', '/var/log/syslog', '-t', 'UMC', reason)
-        args, kwargs = mocked_subprocess.call.call_args_list[1]
+        args, _kwargs = mocked_subprocess.call.call_args_list[1]
         assert args[0] == ('/sbin/shutdown', '-r', 'now', reason)
         umc_request.expected_response(None)
 

@@ -151,9 +151,9 @@ def main():
     else:
         try:
             if ucr['server/role'] == 'domaincontroller_master':
-                lo, po = univention.admin.uldap.getAdminConnection(start_tls=0)
+                lo, _po = univention.admin.uldap.getAdminConnection(start_tls=0)
             else:
-                lo, po = univention.admin.uldap.getMachineConnection(start_tls=0)
+                lo, _po = univention.admin.uldap.getMachineConnection(start_tls=0)
         except IOError:
             print(_("Error: user and/or password not specified"), file=sys.stderr)
             parser.print_help(sys.stderr)

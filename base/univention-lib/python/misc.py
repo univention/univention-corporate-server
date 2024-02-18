@@ -54,7 +54,7 @@ def createMachinePassword():
     length = ucr.get('machine/password/length', '20')
     compl = ucr.get('machine/password/complexity', 'scn')
     p = subprocess.Popen(["pwgen", "-1", "-" + compl, length], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    (stdout, stderr) = p.communicate()
+    (stdout, _stderr) = p.communicate()
     if not isinstance(stdout, str):  # Python 3
         return stdout.decode('ASCII', 'replace').strip()
     return stdout.strip()

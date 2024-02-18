@@ -618,13 +618,13 @@ def update_extended_attributes(lo, module, position):
                 elif ea_layout.overwrite and not freshTab:  # we want to overwrite an existing property
                     # in the global fields ...
                     if not ea_layout.groupName:
-                        replaced, layout = currentTab.replace(ea_layout.overwrite, ea_layout.name, recursive=True)
+                        replaced, _layout = currentTab.replace(ea_layout.overwrite, ea_layout.name, recursive=True)
                         if not replaced:  # the property was not found so we'll append it
                             currentTab.layout.append(ea_layout.name)
                     else:
                         for item in currentTab.layout:
                             if isinstance(item, ILayoutElement) and item.label == ea_layout.groupName:
-                                replaced, layout = item.replace(ea_layout.overwrite, ea_layout.name)
+                                replaced, _layout = item.replace(ea_layout.overwrite, ea_layout.name)
                                 if not replaced:  # the property was not found so we'll append it
                                     item.layout.append(ea_layout.name)
                 else:

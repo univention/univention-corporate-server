@@ -129,7 +129,7 @@ def get_testparm_var(smbconf: str, sectionname: str, varname: str) -> str:
 
     cmd = ["/usr/bin/testparm", "-s", "-l", "--section-name=%s" % sectionname, "--parameter-name=%s" % varname, smbconf]
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
-    (out, err) = p1.communicate()
+    (out, _err) = p1.communicate()
     return out.decode('UTF-8').strip()
 
 

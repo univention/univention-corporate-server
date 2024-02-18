@@ -105,7 +105,7 @@ class Instance(umcm.Base):
             '-s', ticket,
             '-u')
 
-        (exitcode, stdout, stderr) = self._call(SYSTEM_INFO_CMD)
+        (exitcode, stdout, _stderr) = self._call(SYSTEM_INFO_CMD)
         if exitcode:
             MODULE.error('Execution of univention-system-info failed: %s' % (stdout,))
             raise UMC_Error('Execution of univention-system-info failed')

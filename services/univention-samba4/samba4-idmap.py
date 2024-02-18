@@ -157,7 +157,7 @@ def rename_or_modify_idmap_entry(old_sambaSID: str, new_sambaSID: str, xidNumber
             idmap.modify(msg)
 
     except ldb.LdbError as exc:
-        (enum, estr) = exc.args
+        (_enum, estr) = exc.args
         ud.debug(ud.LISTENER, ud.WARN, estr)
         # ok, there is an entry for the target sambaSID, let's remove the old sambaSID and modify the target
         remove_idmap_entry(old_sambaSID, xidNumber, type_string, idmap)
@@ -190,7 +190,7 @@ def modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: I
         idmap.modify(msg)
 
     except ldb.LdbError as exc:
-        (enum, estr) = exc.args
+        (_enum, estr) = exc.args
         ud.debug(ud.LISTENER, ud.ERROR, estr)
 
 
@@ -217,7 +217,7 @@ def add_or_modify_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, i
 
     except ldb.LdbError as exc:
         # ok, there is an entry for this sambaSID, let's replace it
-        (enum, estr) = exc.args
+        (_enum, _estr) = exc.args
         # ok, there is an entry for this sambaSID, let's replace it
         modify_idmap_entry(sambaSID, xidNumber, type_string, idmap)
 
@@ -244,7 +244,7 @@ def remove_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: I
                 ud.debug(ud.LISTENER, ud.WARN, "%s: removed entry type %s did not match object type %s" % (name, record["type"][0], type_string))
 
     except ldb.LdbError as exc:
-        (enum, estr) = exc.args
+        (_enum, estr) = exc.args
         ud.debug(ud.LISTENER, ud.ERROR, estr)
 
 
@@ -295,7 +295,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
                         return
                     add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap)
         except ldb.LdbError as exc:
-            (enum, estr) = exc.args
+            (_enum, _estr) = exc.args
             ud.debug(ud.LISTENER, ud.ERROR, "%s: entry for %r could not be updated" % (name, new[sidAttribute][0]))
     elif old:
         if operation == 'r':  # modrdn
@@ -321,7 +321,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], o
                     xid_type = 'ID_TYPE_BOTH'
                 remove_idmap_entry(old_sambaSID.decode('ASCII'), old_xid, xid_type, idmap)
         except ldb.LdbError as exc:
-            (enum, estr) = exc.args
+            (_enum, _estr) = exc.args
             ud.debug(ud.LISTENER, ud.ERROR, "%s: entry for %r could not be updated" % (name, old[sidAttribute][0]))
 
 

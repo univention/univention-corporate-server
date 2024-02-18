@@ -58,7 +58,7 @@ def get_id(master: str, cmd: str = 'GET_ID') -> str:
     sock.send(f'MSGID: 1\n{cmd}\n\n'.encode('ASCII'))
     notifier_result = sock.recv(100).strip().decode('ASCII')
 
-    (msg_id, notifier_id) = notifier_result.split('\n', 1)
+    (_msg_id, notifier_id) = notifier_result.split('\n', 1)
     return notifier_id
 
 

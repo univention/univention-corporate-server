@@ -24,7 +24,7 @@ LDAP_WRITE_PARALLELISM = multiprocessing.cpu_count()
 def update_roles_in_memory(dn: str, attrs: Dict[str, List[bytes]]) -> None:
     for role_b in attrs["ucsschoolRole"][:]:
         role_s = role_b.decode()
-        role, context_type, context = get_role_info(role_s)
+        role, _context_type, context = get_role_info(role_s)
         bsb_role = f"{role}:bsb:{context}".encode()
         if bsb_role not in attrs["ucsschoolRole"]:
             if "ucsschoolRoleOld" not in attrs:

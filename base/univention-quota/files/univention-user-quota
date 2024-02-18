@@ -84,7 +84,7 @@ def get_shares():
         if os.path.isdir(filename):
             continue
         with open(filename, 'rb') as fd:
-            dn, attrs, policy_result = pickle.load(fd, encoding='bytes')
+            _dn, attrs, policy_result = pickle.load(fd, encoding='bytes')
         sharepath = attrs['univentionSharePath'][0].decode('UTF-8')
         shares[sharepath] = {
             'inodeSoftLimit': int(policy_result.get('univentionQuotaSoftLimitInodes', ['0'])[0]),

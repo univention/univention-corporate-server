@@ -234,7 +234,7 @@ class DebianPackageCheck:
 
             msgid = msg.getId()
             try:
-                lvl, msgstr = self.msgidlist[msgid]
+                lvl, _msgstr = self.msgidlist[msgid]
                 category = uub.RESULT_INT2STR[lvl]
             except LookupError:
                 category = 'FIXME'
@@ -452,7 +452,7 @@ def run() -> None:
         except uub.UCSLintException as ex:
             print(ex, file=sys.stderr)
 
-        incident_cnt, exitcode_cnt = chk.printResult(ignore_IDs, display_only_IDs, options.display_only_categories, options.exitcode_categories, options.junit_xml)
+        _incident_cnt, exitcode_cnt = chk.printResult(ignore_IDs, display_only_IDs, options.display_only_categories, options.exitcode_categories, options.junit_xml)
         fail |= bool(exitcode_cnt)
 
     if fail:
@@ -484,7 +484,7 @@ def main() -> None:
         except uub.UCSLintException as ex:
             print(ex, file=sys.stderr)
 
-        incident_cnt, exitcode_cnt = chk.printResult(ignore_IDs, display_only_IDs, options.display_only_categories, options.exitcode_categories, options.junit_xml)
+        _incident_cnt, exitcode_cnt = chk.printResult(ignore_IDs, display_only_IDs, options.display_only_categories, options.exitcode_categories, options.junit_xml)
         fail |= bool(exitcode_cnt)
 
     if fail:

@@ -80,7 +80,7 @@ def get_registration_info(ucr):
         }
 
     yield _get_registration_info
-    lo, po = getAdminConnection()
+    lo, _po = getAdminConnection()
     for dn in local.dns:
         try:
             lo.delete(dn)
@@ -207,7 +207,7 @@ def test_account_verfiyaccount_page_errors(self_service: SelfService, udm):
 
     expect(self_service.page.get_by_text(_('The verification token could not be sent. Please verify your input.')))
 
-    dn, username = udm.create_user({'PasswordRecoveryEmail': None})
+    _dn, username = udm.create_user({'PasswordRecoveryEmail': None})
     self_service.navigate('verifyaccount')
     self_service.fill_create_account(
         {

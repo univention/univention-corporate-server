@@ -37,7 +37,7 @@ def set_role_and_check_if_join_will_work(role: str, master_fqdn: str, admin_user
                 '-dcpwd', password_file,
                 '-checkPrerequisites',
             ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-            stdout, stderr = p1.communicate()
+            stdout, _stderr = p1.communicate()
             if p1.returncode != 0:
                 messages = [line[11:] for line in stdout.decode("UTF-8", "replace").split('\n') if line.startswith("* Message: ")]
                 raise UMC_Error(_(

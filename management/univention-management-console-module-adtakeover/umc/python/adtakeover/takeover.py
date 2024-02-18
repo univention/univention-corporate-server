@@ -513,7 +513,7 @@ def get_ip_and_hostname_of_ad():
     ad_server_ip = ucr.get("univention/ad/takeover/ad/server/ip")
     if ad_server_ip:
         if "hosts/static/%s" % ad_server_ip in ucr:
-            ad_server_fqdn, ad_server_name = ucr["hosts/static/%s" % ad_server_ip].split()
+            _ad_server_fqdn, ad_server_name = ucr["hosts/static/%s" % ad_server_ip].split()
             return [ad_server_ip, ad_server_name]
     else:
         return AD_IP_HOSTNAME
@@ -602,7 +602,7 @@ class UCS_License_detection(object):
             check_array = self.determine_license(lo, None)
         except uexceptions.base:
             dns = license_check.find_licenses(lo, self.ucr['ldap/base'], 'admin')
-            dn, expired = license_check.choose_license(lo, dns)
+            dn, _expired = license_check.choose_license(lo, dns)
             check_array = self.determine_license(lo, dn)
 
         # some name translation
@@ -830,7 +830,7 @@ class AD_Takeover(object):
         env["LC_ALL"] = "C"
         try:
             p1 = subprocess.Popen(["rdate", "-p", "-n", self.ad_server_ip], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
-            stdout, stderr = p1.communicate()
+            stdout, _stderr = p1.communicate()
         except OSError as ex:
             log.error("ERROR: rdate -p -n %s: %s" % (self.ad_server_ip, ex.args[1]))
             return False
@@ -863,7 +863,7 @@ class AD_Takeover(object):
         else:
             log.info("INFO: Synchronizing time to %s" % self.ad_server_ip)
             p1 = subprocess.Popen(["rdate", "-s", "-n", self.ad_server_ip], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = p1.communicate()
+            stdout, _stderr = p1.communicate()
             if p1.returncode:
                 log.error("ERROR: rdate -s -p failed (%d)" % (p1.returncode,))
                 raise TimeSynchronizationFailed(_("Internal Error: rdate -s -p failed (%d).") % (p1.returncode,))
@@ -1709,7 +1709,7 @@ class AD_Takeover_Finalize(object):
         # from routing
         primary_interface = None
         p = subprocess.Popen(['ip', 'route', 'get', self.ad_server_ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        (stdout, stderr) = p.communicate()
+        (stdout, _stderr) = p.communicate()
         if stdout:
             for line in stdout.decode('UTF-8').splitlines():
                 if 'dev ' in line:
@@ -1821,13 +1821,13 @@ class AD_Takeover_Finalize(object):
     def create_reverse_DNS_records(self):
         # Add record in reverse zone as well, to make nslookup $domainname on XP clients happy..
         p = subprocess.Popen(["univention-ipcalc6", "--ip", self.ad_server_ip, "--netmask", self.ucr["interfaces/%s/netmask" % self.primary_interface], "--output", "pointer", "--calcdns"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        (stdout, stderr) = p.communicate()
+        (stdout, _stderr) = p.communicate()
         stdout = stdout.decode('UTF-8').rstrip()
         if stdout:
             ptr_address = stdout
 
         p = subprocess.Popen(["univention-ipcalc6", "--ip", self.ad_server_ip, "--netmask", self.ucr["interfaces/%s/netmask" % self.primary_interface], "--output", "reverse", "--calcdns"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        (stdout, stderr) = p.communicate()
+        (stdout, _stderr) = p.communicate()
         stdout = stdout.decode('UTF-8').rstrip()
         if stdout:
             subnet_parts = stdout.split('.')
@@ -1837,7 +1837,7 @@ class AD_Takeover_Finalize(object):
         if ptr_zone and ptr_address:
             # check for an existing record.
             p = subprocess.Popen(["univention-directory-manager", "dns/ptr_record", "list", "--superordinate", "zoneName=%s,cn=dns,%s" % (escape_dn_chars(ptr_zone), self.ucr["ldap/base"]), "--filter", filter_format("address=%s", [ptr_address])], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            (stdout, stderr) = p.communicate()
+            (stdout, _stderr) = p.communicate()
             stdout = stdout.decode('UTF-8').rstrip()
             if len(stdout.splitlines()) > 1:
                 # modify existing record.
@@ -1944,7 +1944,7 @@ def check_gpo_presence():
         name = obj["cn"][0].decode('UTF-8')
         if "gPCFileSysPath" in obj:
             try:
-                [server, share, subdir] = parse_unc(obj["gPCFileSysPath"][0].decode('UTF8'))
+                [_server, _share, subdir] = parse_unc(obj["gPCFileSysPath"][0].decode('UTF8'))
                 gpo_path = os.path.join(sysvol_dir, subdir.replace('\\', '/'))
             except ValueError as ex:
                 log.error(ex.args[0])
@@ -1995,7 +1995,7 @@ class Timer(object):
 
     def log_stats(self):
         (label0, t0) = self.timetable[0]
-        (label1, t1) = self.timetable[-1]
+        (_label1, t1) = self.timetable[-1]
         total = t1 - t0
         ti = t0
         percent = [(label0, 0)]
@@ -2095,7 +2095,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
     if not ip_address and cldap_res.pdc_dns_name:
         try:
             p1 = subprocess.Popen(['net', 'lookup', cldap_res.pdc_dns_name], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = p1.communicate()
+            stdout, _stderr = p1.communicate()
             ip_address = stdout.decode('UTF-8').strip()
         except OSError as ex:
             log.warning("WARNING: net lookup %s failed: %s" % (cldap_res.pdc_dns_name, ex.args[1]))
@@ -2243,7 +2243,7 @@ def check_samba4_started():
     for _i in range(5):
         time.sleep(1)
         p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
-        (stdout, stderr) = p.communicate()
+        (stdout, _stderr) = p.communicate()
         stdout = stdout.decode('UTF-8').rstrip()
         if int(stdout) > 1:
             break
@@ -2253,7 +2253,7 @@ def check_samba4_started():
             run_and_output_to_log(["/etc/init.d/samba-ad-dc", "stop"], log.debug)
             run_and_output_to_log(["pkill", "-9", "-xf", "/usr/sbin/samba -D"], log.debug)
             p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
-            (stdout, stderr) = p.communicate()
+            (stdout, _stderr) = p.communicate()
             stdout = stdout.decode('UTF-8').rstrip()
             if int(stdout) > 0:
                 log.debug("ERROR: Stray Processes: %s", int(stdout))
@@ -2262,7 +2262,7 @@ def check_samba4_started():
             # fallback
             time.sleep(2)
             p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
-            (stdout, stderr) = p.communicate()
+            (stdout, _stderr) = p.communicate()
             stdout = stdout.decode('UTF-8').rstrip()
             if int(stdout) == 1:
                 attempt = 3
@@ -2272,7 +2272,7 @@ def check_samba4_started():
                 # and log
                 time.sleep(2)
                 p = subprocess.Popen(["pgrep", "-cxf", "/usr/sbin/samba -D"], stdout=subprocess.PIPE)
-                (stdout, stderr) = p.communicate()
+                (stdout, _stderr) = p.communicate()
                 stdout = stdout.decode('UTF-8').rstrip()
         log.debug("Number of Samba 4 processes after %s start/restart attempts: %s" % (attempt, stdout))
 

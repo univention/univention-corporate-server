@@ -38,7 +38,7 @@ def main():
             with ucr_test.UCSTestConfigRegistry() as ucr:
                 domain = ucr.get('domainname')
                 mail = 'spam%stest@%s' % (uts.random_string(), domain)
-                userdn, username = udm.create_user(
+                _userdn, _username = udm.create_user(
                     set={
                         'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
                         'mailPrimaryAddress': mail,

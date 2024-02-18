@@ -1575,7 +1575,7 @@ class UMCMessageCatalogFilename(string):
     @classmethod
     def parse(self, text):
         text = string.parse(text)
-        language_id, dash, module_id = text.partition('-')
+        _language_id, dash, _module_id = text.partition('-')
         if not dash:
             raise univention.admin.uexceptions.valueError(_('Not a valid filename for umcmessagecatalog. It must match "$language-$moduleid.mo" (e.g. "de-udm-foo.mo")'))
         return text
@@ -6022,7 +6022,7 @@ class LDAP_Search(select):
 
             if display_attr:
                 # currently we just support one display attribute
-                mod_display, display = split_module_attr(display_attr[0])  # mod_display might be None
+                _mod_display, display = split_module_attr(display_attr[0])  # mod_display might be None
                 modules = univention.admin.modules.objectType(None, lo, dn)
             else:
                 modules = univention.admin.modules.objectType(None, lo, dn)
@@ -6041,7 +6041,7 @@ class LDAP_Search(select):
             # find the value to store
             id = dn
             if not cls.viewonly:
-                mod_store, store = split_module_attr(store_pattern)
+                _mod_store, store = split_module_attr(store_pattern)
                 if store == 'dn':
                     id = dn
                 elif store in obj:

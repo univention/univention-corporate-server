@@ -113,7 +113,7 @@ class InstallRemoveUpgrade(Register):
         folders manually using that tool.
         """
         if os.path.isdir(directory):
-            (retval, output) = call_process2(["run-parts", directory])
+            (_retval, _output) = call_process2(["run-parts", directory])
             # self.log(output) is unnecessary, because call_process2 logs its
             # output, but if you are replacing call_process2 with something
             # different, please remember to to inform the user about the output

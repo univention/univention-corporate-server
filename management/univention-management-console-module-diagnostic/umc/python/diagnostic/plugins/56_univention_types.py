@@ -75,7 +75,7 @@ def run(_umc_instance: Instance) -> None:
     if ucr.get('server/role') != 'domaincontroller_master':
         return
 
-    lo, pos = getAdminConnection()
+    lo, _pos = getAdminConnection()
     objects = udm_objects_without_type(lo)
     if len(objects):
         counted_objects: Dict[str, int] = {}
@@ -94,7 +94,7 @@ def run(_umc_instance: Instance) -> None:
 
 
 def migrate_objects(_umc_instance: Instance) -> None:
-    lo, pos = getAdminConnection()
+    lo, _pos = getAdminConnection()
     objects = udm_objects_without_type(lo)
     for dn, modules, object_classes in objects:
         new_object_classes = object_classes[:]

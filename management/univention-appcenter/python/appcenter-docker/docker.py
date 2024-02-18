@@ -206,13 +206,13 @@ def commit(container, new_base_image):
 
 def docker_logs(container, logger=None):
     args = ['docker', 'logs', container]
-    ret, out = call_process2(args, logger=logger)
+    _ret, out = call_process2(args, logger=logger)
     return out
 
 
 def dockerd_logs(logger=None):
     args = ['journalctl', '-n', '20', '-o', 'short', '/usr/bin/dockerd']
-    ret, out = call_process2(args, logger=logger)
+    _ret, out = call_process2(args, logger=logger)
     return out
 
 
@@ -277,7 +277,7 @@ class Docker(object):
     def pull(self):
         self.logger.info('Downloading app image %s' % self.image)
         try:
-            hub, image_name = self.image.split('/', 1)
+            hub, _image_name = self.image.split('/', 1)
         except ValueError:
             pass
         else:

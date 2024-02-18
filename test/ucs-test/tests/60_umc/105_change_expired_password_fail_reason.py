@@ -81,7 +81,7 @@ def test_password_changing_failure_reason(new_password, reason, udm, Client, ran
 
 
 def _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string):
-    userdn, username = udm.create_user(password=INITIAL_PASSWORD, pwdChangeNextLogin=1, overridePWLength=1)
+    _userdn, username = udm.create_user(password=INITIAL_PASSWORD, pwdChangeNextLogin=1, overridePWLength=1)
     client = Client(language='en-US')
     if samba4_installed:
         utils.wait_for_connector_replication()

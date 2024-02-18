@@ -124,7 +124,7 @@ def doit(arglist):
         scope = 'user'
         op = 'primarygroup'
 
-    opts, args = getopt.getopt(arglist[1:], '', ['status-fd=', 'status-fifo='])
+    _opts, args = getopt.getopt(arglist[1:], '', ['status-fd=', 'status-fifo='])
 
     try:
         lo, position = univention.admin.uldap.getAdminConnection()

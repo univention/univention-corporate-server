@@ -53,7 +53,7 @@ def run(_umc_instance: Instance) -> None:
         return
 
     process = Popen([SCRIPT, '--check'], stderr=STDOUT, stdout=PIPE)
-    stdout_, stderr = process.communicate()
+    stdout_, _stderr = process.communicate()
     stdout = stdout_.decode('UTF-8', 'replace')
     if process.returncode:
         MODULE.error(description + stdout)
@@ -65,7 +65,7 @@ def run(_umc_instance: Instance) -> None:
 
 def migrate_users(_umc_instance: Instance) -> None:
     process = Popen([SCRIPT], stderr=STDOUT, stdout=PIPE)
-    stdout_, stderr = process.communicate()
+    stdout_, _stderr = process.communicate()
     stdout = stdout_.decode('UTF-8', 'replace')
     if process.returncode:
         MODULE.error('Error running univention-migrate-users-to-ucs4.3:\n%s' % (stdout,))

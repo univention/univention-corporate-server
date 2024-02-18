@@ -139,7 +139,7 @@ class Status(Service):
             return ''
         else:
             try:
-                ret, out = call_process2([cls.get_init(app), 'status'])
+                _ret, out = call_process2([cls.get_init(app), 'status'])
                 # dirty, but we have a limit for sending status information
                 out = out[500:]
             except Exception as e:

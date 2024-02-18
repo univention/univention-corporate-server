@@ -377,7 +377,7 @@ class TestUdmAutoOpen(TestCase):
 
     def test_auto_open_default(self):
         print('Opening user with default settings (module.meta.auto_open == True)...')
-        dn, username = self.udm_test.create_user()
+        dn, _username = self.udm_test.create_user()
         user_mod = self.udm.get('users/user')
         assert user_mod.meta.auto_open is True
         obj = user_mod.get(dn)
@@ -385,7 +385,7 @@ class TestUdmAutoOpen(TestCase):
 
     def test_auto_open_false(self):
         print('Opening user with module.meta.auto_open == False...')
-        dn, username = self.udm_test.create_user()
+        dn, _username = self.udm_test.create_user()
         user_mod = self.udm.get('users/user')
         user_mod.meta.auto_open = False
         obj = user_mod.get(dn)
