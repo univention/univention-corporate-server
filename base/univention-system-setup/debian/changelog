@@ -1,3 +1,9 @@
+univention-system-setup (13.0.10-2) unstable; urgency=medium
+
+  * Bug #57039: Restart udm-cli after settings ldap/base
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Feb 2024 09:22:49 +0100
+
 univention-system-setup (13.0.10-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
