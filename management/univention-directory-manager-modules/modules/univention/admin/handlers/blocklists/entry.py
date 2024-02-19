@@ -71,13 +71,13 @@ property_descriptions = {
     ),
     'blockedUntil': univention.admin.property(
         short_description=_('Blocked until'),
-        long_description='',
+        long_description=_('This blocklist entry is valid until timestamp (generalized time in LDAP-Syntax -> 21241212000000Z). Expired entries are deleted.'),
         syntax=univention.admin.syntax.GeneralizedTimeUTC,
         required=True,
     ),
     'originUniventionObjectIdentifier': univention.admin.property(
         short_description=_('Origin ID'),
-        long_description='',
+        long_description=_('The ID of the UDM object that lead to this blocklist entry. The value of this blocklist entry can still be used on that UDM object.'),
         syntax=univention.admin.syntax.string,
         required=True,
         may_change=False,
