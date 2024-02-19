@@ -1,6 +1,7 @@
 ucs-test (10.0.20-31) unstable; urgency=medium
 
   * Bug #56999: test for blocklist and cn=internal
+  * Bug #57042: test for deleted expired entries
 
  -- Felix Botner <botner@univention.de>  Thu, 15 Feb 2024 12:50:28 +0100
 
