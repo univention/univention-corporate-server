@@ -14,6 +14,7 @@ from univention.testing.ucr import UCSTestConfigRegistry
 
 
 BASE = 'cn=internal'
+BASE_BLOCKLISTS = f'cn=blocklists,{BASE}'
 
 
 def role():
@@ -21,9 +22,9 @@ def role():
         return ucr.get('server/role')
 
 
-def create_container(lo, cn):
-    lo.search(base=BASE)
-    dn = f'cn={cn},{BASE}'
+def create_container(lo, cn, base):
+    lo.search(base=base)
+    dn = f'cn={cn},{base}'
     lo.add(dn, [('cn', cn.encode('UTF-8')), ('objectClass', b'organizationalRole')])
     lo.get(dn, required=True)
     lo.delete(dn)
@@ -35,29 +36,31 @@ def restart_slapd():
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_master'], reason="check additional acls only on syncprov/primary")
-def test_syncprov_additional_group_acls_write(udm, ucr, random_string):
+def test_blocklist_additional_group_acls_write(udm, ucr, random_string):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
     ucr.handler_set([f'ldap/database/internal/acl/blocklists/groups/write=cn=justfortesting|{group_dn}'])
     restart_slapd()
-    lo = access(base=BASE, binddn=user_dn, bindpw=password)
+    lo = access(base=BASE_BLOCKLISTS, binddn=user_dn, bindpw=password)
     cn = random_string()
-    create_container(lo, cn)
+    create_container(lo, cn, BASE_BLOCKLISTS)
+    with pytest.raises(noObject):
+        create_container(lo, cn, BASE)
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_master'], reason="check additional acls only on syncprov/primary")
-def test_syncprov_additional_group_acls_read(udm, ucr, random_string):
+def test_blocklist_additional_group_acls_read(udm, ucr, random_string):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
     ucr.handler_set([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
     restart_slapd()
-    lo = access(base=BASE, binddn=user_dn, bindpw=password)
+    lo = access(base=BASE_BLOCKLISTS, binddn=user_dn, bindpw=password)
     cn = random_string()
-    lo.search(base=BASE)
+    lo.search(base=BASE_BLOCKLISTS)
     with pytest.raises(permissionDenied):
-        create_container(lo, cn)
+        create_container(lo, cn, BASE_BLOCKLISTS)
 
 
 @pytest.mark.skipif(role() in ['domaincontroller_master', 'domaincontroller_backup'], reason="database exists on primary and backup, but not on the other roles")
@@ -76,27 +79,33 @@ def test_local_database():
 def test_write_with_machine_account_on_primary(random_string):
     lo, po = getMachineConnection(ldap_master=True)
     cn = random_string()
-    create_container(lo, cn)
+    create_container(lo, cn, BASE)
 
 
 def test_write_domain_admins_on_primary(account, random_string, ucr):
     lo = access(host=ucr['ldap/master'], base=BASE, binddn=account.binddn, bindpw=account.bindpw)
     cn = random_string()
-    create_container(lo, cn)
+    create_container(lo, cn, BASE)
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_master', 'domaincontroller_backup'], reason="no admin connection on this role")
 def test_write_admin_connection_on_primary(random_string):
     lo, pos = getAdminConnection()
     cn = random_string()
-    create_container(lo, cn)
+    create_container(lo, cn, BASE)
 
 
-def test_normal_user_can_not_read(udm, ucr):
+def test_normal_user_can_not_read_internal(udm, ucr):
     dn, name = udm.create_user(password='univention')
     lo = access(host=ucr['ldap/master'], base=BASE, binddn=dn, bindpw='univention')
     with pytest.raises(noObject):
         lo.search(base=BASE)
+
+
+def test_normal_user_can_read_blocklists(udm, ucr):
+    dn, name = udm.create_user(password='univention')
+    lo = access(host=ucr['ldap/master'], base=BASE, binddn=dn, bindpw='univention')
+    lo.search(base=BASE_BLOCKLISTS)
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_master'], reason="check primary config")
