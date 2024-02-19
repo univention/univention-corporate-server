@@ -5,9 +5,8 @@ attributetype ( 1.3.6.1.4.1.10176.1442.1.5 NAME 'blockedUntil'
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 )
 
 attributetype ( 1.3.6.1.4.1.10176.1442.1.2 NAME 'originUniventionObjectIdentifier'
-    EQUALITY uuidMatch
-    ORDERING UUIDOrderingMatch
-    SYNTAX 1.3.6.1.1.16.1 SINGLE-VALUE )
+    EQUALITY caseExactMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
 
 objectClass ( 1.3.6.1.4.1.10176.1442.1.1 NAME 'univentionBlockingEntry'
     DESC 'Entry in the UDM property blocklist'
