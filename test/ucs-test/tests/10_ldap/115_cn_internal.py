@@ -30,18 +30,27 @@ def create_container(lo, cn, base):
     lo.delete(dn)
 
 
-def restart_slapd():
+@pytest.fixture()
+def slapd_config():
+
+    def _func(ucr_changes: list) -> None:
+        with UCSTestConfigRegistry() as ucr:
+            ucr.handler_set(ucr_changes)
+            subprocess.check_call(['deb-systemd-invoke', 'restart', 'slapd'])
+            time.sleep(3)
+
+    yield _func
+
     subprocess.check_call(['deb-systemd-invoke', 'restart', 'slapd'])
     time.sleep(3)
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_master'], reason="check additional acls only on syncprov/primary")
-def test_blocklist_additional_group_acls_write(udm, ucr, random_string):
+def test_blocklist_additional_group_acls_write(udm, random_string, slapd_config):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
-    ucr.handler_set([f'ldap/database/internal/acl/blocklists/groups/write=cn=justfortesting|{group_dn}'])
-    restart_slapd()
+    slapd_config([f'ldap/database/internal/acl/blocklists/groups/write=cn=justfortesting|{group_dn}'])
     lo = access(base=BASE_BLOCKLISTS, binddn=user_dn, bindpw=password)
     cn = random_string()
     create_container(lo, cn, BASE_BLOCKLISTS)
@@ -50,12 +59,11 @@ def test_blocklist_additional_group_acls_write(udm, ucr, random_string):
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_master'], reason="check additional acls only on syncprov/primary")
-def test_blocklist_additional_group_acls_read(udm, ucr, random_string):
+def test_blocklist_additional_group_acls_read(udm, random_string, slapd_config):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
-    ucr.handler_set([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
-    restart_slapd()
+    slapd_config([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
     lo = access(base=BASE_BLOCKLISTS, binddn=user_dn, bindpw=password)
     cn = random_string()
     lo.search(base=BASE_BLOCKLISTS)
@@ -197,12 +205,11 @@ def test_access_on_backup(random_string, account, udm, ucr):
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_backup'], reason="check additional acls only on syncrepl/backup")
-def test_syncrepl_additional_group_acls_read(udm, ucr, random_string):
+def test_syncrepl_additional_group_acls_read(udm, random_string, slapd_config):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
-    ucr.handler_set([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
-    restart_slapd()
+    slapd_config([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
     lo = access(base=BASE, binddn=user_dn, bindpw=password)
     cn = random_string()
     lo.search(base=BASE)
