@@ -57,7 +57,7 @@ except NameError:
 
 
 def hash_blocklist_value(value):
-    return 'sha256:%s' % hashlib.sha256(value.lower().encode('UTF-8')).hexdigest()
+    return 'sha256:%s' % hashlib.sha256(value.lower()).hexdigest()
 
 
 def parse_timedelta(timedelta_string):
@@ -79,9 +79,7 @@ def get_blocklist_config(lo):
     for blist in univention.admin.handlers.blocklists.list.lookup(None, lo, 'entryUUID=*', base=BLOCKLIST_BASE, scope='one'):
         config[blist.dn] = blist.get('retentionTime', '30d')
         for mod, prop in blist.get('blockingProperties', []):
-            if not config.get(mod):
-                config[mod] = {}
-            config[mod][prop] = blist.dn
+            config.setdefault(mod, {})[prop] = blist.dn
     return config
 
 
