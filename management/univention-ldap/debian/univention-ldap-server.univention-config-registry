@@ -159,8 +159,8 @@ Variables: ldap/database/internal/checkpoint
 Variables: ldap/database/internal/syncprov
 Variables: ldap/database/internal/syncprov/checkpoint
 Variables: ldap/database/internal/syncprov/sessionlog
-Variables: ldap/database/internal/syncprov/acl/blocklists/groups/write
-Variables: ldap/database/internal/syncprov/acl/blocklists/groups/read
+Variables: ldap/database/internal/acl/blocklists/groups/write
+Variables: ldap/database/internal/acl/blocklists/groups/read
 Variables: ldap/database/internal/syncrepl
 Variables: ldap/database/internal/syncrepl/retry
 Variables: ldap/hostdn
