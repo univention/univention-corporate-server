@@ -731,7 +731,7 @@ class CLI(object):
         try:
             object = univention.admin.objects.get(module, None, lo, position='', dn=dn)
         except univention.admin.uexceptions.noObject:
-            raise OperationFailed('E: object not found')
+            raise OperationFailed('E: object not found: %s' % dn)
 
         object.open()
 
@@ -773,7 +773,7 @@ class CLI(object):
             if ignore_not_exists:
                 print('Object not found: %s' % (dn or filter,), file=self.stdout)
                 return
-            raise OperationFailed('E: object not found')
+            raise OperationFailed('E: object not found: %s' % (dn or filter,))
 
         object.open()
 
@@ -826,7 +826,7 @@ class CLI(object):
             if ignore_not_exists:
                 print('Object not found: %s' % (dn or filter,), file=self.stdout)
                 return
-            raise OperationFailed('E: object not found')
+            raise OperationFailed('E: object not found: %s' % (dn or filter))
 
         object.open()
 
