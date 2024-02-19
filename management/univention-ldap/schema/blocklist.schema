@@ -1,4 +1,4 @@
-attributetype ( 1.3.6.1.4.1.10176.1442.1.5 NAME 'blockedUntil'
+attributetype ( 1.3.6.1.4.1.10176.1442.1.3 NAME 'blockedUntil'
     SINGLE-VALUE
     EQUALITY generalizedTimeMatch
     ORDERING generalizedTimeOrderingMatch
