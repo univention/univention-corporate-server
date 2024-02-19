@@ -37,7 +37,7 @@ def blocklist_list(random_string, udm, enable_blocklists):
 
 
 def check_blocklistentry_exists(value, blocklist_dn):
-    value_hashed = hash_blocklist_value(value)
+    value_hashed = hash_blocklist_value(value.encode('UTF-8'))
     stdout = subprocess.check_output(['udm', 'blocklists/entry', 'list', '--filter', f'value={value}'])
     assert value_hashed.encode('UTF-8') in stdout
     lo, po = getMachineConnection(ldap_master=True)
@@ -45,7 +45,7 @@ def check_blocklistentry_exists(value, blocklist_dn):
 
 
 def delete_blocklistentry(value, blocklist_dn):
-    dn = f'cn={hash_blocklist_value(value)},{blocklist_dn}'
+    dn = f'cn={hash_blocklist_value(value.encode("UTF-8"))},{blocklist_dn}'
     lo, po = getMachineConnection(ldap_master=True)
     lo.get(dn, required=True, exceptions=True)
     lo.delete(dn)
