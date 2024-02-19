@@ -136,7 +136,8 @@ def check_blocklistentry(udm_obj):
     for attr, bl_dn in get_blocking_udm_properties(udm_obj).items():
         if udm_obj.hasChanged(attr) and udm_obj.info.get(attr):
             for value in get_blocklist_values_from_udm_property(udm_obj.info[attr], attr):
-                hashed_value = ldap.dn.escape_dn_chars(hash_blocklist_value(value.encode(udm_obj.mapping.getEncoding(attr))))
+                encoding, errors = udm_obj.mapping.getEncoding(attr)
+                hashed_value = ldap.dn.escape_dn_chars(hash_blocklist_value(value.encode(encoding)))
                 dn = 'cn=%s,%s' % (hashed_value, bl_dn)
                 obj = udm_obj.lo_machine_primary.get(dn)
                 if obj and obj['originUniventionObjectIdentifier'][0].decode('utf-8') != udm_obj.entry_uuid:
