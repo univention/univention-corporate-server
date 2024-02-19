@@ -39,7 +39,7 @@ def test_syncprov_additional_group_acls_write(udm, ucr, random_string):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
-    ucr.handler_set([f'ldap/database/internal/syncprov/acl/groups/write=cn=justfortesting|{group_dn}'])
+    ucr.handler_set([f'ldap/database/internal/acl/blocklists/groups/write=cn=justfortesting|{group_dn}'])
     restart_slapd()
     lo = access(base=BASE, binddn=user_dn, bindpw=password)
     cn = random_string()
@@ -51,7 +51,7 @@ def test_syncprov_additional_group_acls_read(udm, ucr, random_string):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
-    ucr.handler_set([f'ldap/database/internal/syncprov/acl/groups/read=cn=justfortesting|{group_dn}'])
+    ucr.handler_set([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
     restart_slapd()
     lo = access(base=BASE, binddn=user_dn, bindpw=password)
     cn = random_string()
@@ -192,7 +192,7 @@ def test_syncrepl_additional_group_acls_read(udm, ucr, random_string):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
-    ucr.handler_set([f'ldap/database/internal/syncrepl/acl/groups/read=cn=justfortesting|{group_dn}'])
+    ucr.handler_set([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
     restart_slapd()
     lo = access(base=BASE, binddn=user_dn, bindpw=password)
     cn = random_string()
