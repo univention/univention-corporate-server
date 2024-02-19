@@ -36,6 +36,6 @@
 . /usr/lib/univention-server/lib/server_password_change/debug.sh
 
 if [ "$1" = "postchange" -o "$1" = "nochange" ] ; then
-	ucr commit /etc/sssd/sssd.conf
-	systemctl restart sssd.service
+	ucr commit /etc/nslcd.conf
+	systemctl restart nslcd.service
 fi

@@ -51,6 +51,11 @@ fi
 
 eval "$(univention-config-registry shell)"
 
+# /etc/libnss-ldap.secret is required for rootbinddn in /etc/libnss-ldap.conf
+ln -sf /etc/machine.secret /etc/libnss-ldap.secret
+# /etc/pam_ldap.secret is required for rootbinddn in /etc/pam_ldap.conf
+ln -sf /etc/machine.secret /etc/pam_ldap.secret
+
 univention-config-registry set \
 	nscd/passwd/size?6007 \
 	nscd/group/size?56003 \
@@ -94,7 +99,7 @@ univention-config-registry set \
 	nss/group/cachefile?yes \
 	nss/group/cachefile/invalidate_on_changes?yes \
 	nss/group/cachefile/invalidate_interval?"30 3 * * *" \
-	nscd/passwd/enabled?no
+	nscd/group/enabled?no
 
 
 # remove old non-multifile template
@@ -109,17 +114,7 @@ systemctl try-restart univention-directory-listener
 test -x /etc/init.d/cron && /etc/init.d/cron reload
 
 # Restart nscd
-deb-systemd-invoke restart nscd
-
-# SSSD alters /etc/nsswitch.conf during installation - revert changes
-ucr commit /etc/nsswitch.conf
-
-# Set SSSD ownership
-ucr commit /etc/sssd/sssd.conf
-chmod -R 0600 /etc/sssd
-
-# Restart sssd
-deb-systemd-invoke restart sssd
+test -x /etc/init.d/nscd && /etc/init.d/nscd restart
 
 # default limits
 univention-config-registry set \

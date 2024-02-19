@@ -26,7 +26,7 @@ class TestPwdChangeNextLogin:
     """
     Ensure that the UMC PAM configuration for pam_unix.so + pam_krb5.so is correct.
     This is tested by UMC authenticating a user with pwdChangeNextLogin=1
-    pam_sss is therefore untested!
+    pam_ldap is therefore untested!
     """
 
     PWD_CHANGE_NEXT_LOGIN_OPTIONS = [
@@ -127,7 +127,7 @@ class TestBasics:
 
 
 class TestLDAPUsers:
-    """Ensure pam_sss.so works and the PAM configuration for LDAP users is not disturbed by pam_unix.so / pam_sss.so)"""
+    """Ensure pam_ldap.so works and the PAM configuration for LDAP users is not disturbed by pam_unix.so / pam_ldap.so)"""
 
     def test_ldap_pwd_user_umc_authentication(self, udm, Client, random_string):
         password = random_string()

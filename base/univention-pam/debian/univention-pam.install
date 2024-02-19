@@ -4,7 +4,7 @@ ldap-group-to-file.py	usr/lib/univention-pam/
 lock-user	usr/lib/univention-pam/
 nscd.py	usr/lib/univention-directory-listener/system/
 nss.py	usr/lib/univention-directory-listener/system/
-server_password_change.d/univention-nscd	usr/lib/univention-server/server_password_change.d/
-server_password_change.d/univention-sssd	usr/lib/univention-server/server_password_change.d/
 univention-create-homedir	usr/sbin/
+univention-libnss-ldap	usr/lib/univention-server/server_password_change.d/
+univention-nscd	usr/lib/univention-server/server_password_change.d/
 well-known-sid-name-mapping.py	usr/lib/univention-directory-listener/system/

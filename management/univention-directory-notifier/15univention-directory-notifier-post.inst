@@ -54,12 +54,11 @@ have univention-directory-listener ||
 
 eval "$(univention-config-registry shell)"
 
-have sss_cache && sss_cache -U
+test -x /usr/sbin/nscd && nscd -i passwd
 if is_ucr_true nss/group/cachefile; then
 	/usr/lib/univention-pam/ldap-group-to-file.py
 else
-	# have sss_cache && sss_cache -G
-	test -x /usr/sbin/nscd && nscd -i group
+	have nscd && nscd -i group
 fi
 
 sleep 2

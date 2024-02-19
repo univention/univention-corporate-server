@@ -2,26 +2,23 @@
 
 @!@
 if configRegistry.is_true('auth/faillog', False):
-    print('account  required          pam_faillock.so')
+    print('account	required	pam_faillock.so')
 @!@
 
 # local unix authentication; deny access if account is expired
-account [success=done new_authtok_reqd=done \
-        acct_expired=bad \
-        default=ignore]    pam_unix.so
+account [success=done new_authtok_reqd=done acct_expired=bad default=ignore]    pam_unix.so
 
 # remote authentication; if a service
 # - isn't aware of the user, proceed with the next service
 @!@
 minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5 = '''
-account  [success=1 \\
-         default=ignore]   pam_succeed_if.so quiet service = samba
-account  <action>        pam_krb5.so minimum_uid=%d''' % (minimum_uid,)
-pam_sss = '''
-account  <action>        pam_sss.so'''
+account  [default=ignore success=1]       pam_succeed_if.so quiet service = samba
+account  <action>                         pam_krb5.so minimum_uid=%d''' % (minimum_uid,)
+pam_ldap = '''
+account  <action>                         pam_ldap.so'''
 pam_winbind = '''
-account  <action>        pam_winbind.so'''
+account  <action>                         pam_winbind.so'''
 
 
 def pam_section(template, index):
@@ -36,7 +33,7 @@ if 'krb5' in methods:
     print(pam_section(pam_krb5, index))
     index -= 1
 if 'ldap' in methods:
-    print(pam_section(pam_sss, index))
+    print(pam_section(pam_ldap, index))
     index -= 1
 if 'winbind' in methods:
     print(pam_section(pam_winbind, index))

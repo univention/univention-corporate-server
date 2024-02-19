@@ -65,7 +65,7 @@ def pam_conv(auth, query_list, userData):
 	return resp
 
 with open(conf, "w") as fd:
-	print("auth required pam_sss.so", file=fd)
+	print("auth required pam_ldap.so", file=fd)
 	print("account required pam_unix.so", file=fd)
 
 try:

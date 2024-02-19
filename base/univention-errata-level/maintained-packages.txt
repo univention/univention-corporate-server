@@ -4087,7 +4087,6 @@ ss-dev
 ssh
 ssh-askpass-gnome
 ssl-cert
-sssd
 strace
 strip-nondeterminism
 stunnel4

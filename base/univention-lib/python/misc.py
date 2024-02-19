@@ -60,8 +60,8 @@ def createMachinePassword():
     return stdout.strip()
 
 
-def getLDAPURIs(ucr=None, sep=' '):
-    # type: (Optional[ConfigRegistry], str) -> str
+def getLDAPURIs(ucr=None):
+    # type: (Optional[ConfigRegistry]) -> str
     """
     Returns a space separated list of all configured |LDAP| servers, according to |UCR| variables
     `ldap/server/name` and `ldap/server/addition`.
@@ -86,7 +86,7 @@ def getLDAPURIs(ucr=None, sep=' '):
         ldaphosts.extend(ldap_server_addition.split())
     if ldaphosts:
         urilist = ["ldap://%s:%s" % (host, port) for host in ldaphosts]
-        uri_string = sep.join(urilist)
+        uri_string = ' '.join(urilist)
 
     return uri_string
 

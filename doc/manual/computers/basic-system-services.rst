@@ -425,8 +425,7 @@ commands:
 
 .. code-block:: console
 
-   $ sss_cache -U
-   $ nscd -i group
+   $ nscd -i passwd
    $ nscd -i hosts
 
 

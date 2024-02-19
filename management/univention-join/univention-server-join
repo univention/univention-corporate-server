@@ -391,8 +391,7 @@ create_entry () {
 	# Invalidate caches
 	if [ "$USER" = "root" ]
 	then
-		sss_cache -U || true
-		# sss_cache -G || true
+		nscd -i passwd || true
 		nscd -i group || true
 		nscd -i hosts || true
 	fi

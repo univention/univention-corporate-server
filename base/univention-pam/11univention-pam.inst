@@ -57,10 +57,10 @@ if is_domain_controller; then
 		auth/sshd/user/root?"yes"
 fi
 
-# assure that /etc/sssd/sssd.conf is re-committed at least once after the
+# assure that /etc/nslcd.conf is re-commited at least once after the
 # machine.secret has been created in 10univention-ldap-server.inst
-ucr commit /etc/sssd/sssd.conf
-systemctl restart sssd.service
+ucr commit /etc/nslcd.conf
+systemctl restart nslcd.service
 
 joinscript_save_current_version
 

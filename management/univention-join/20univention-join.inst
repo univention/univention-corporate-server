@@ -94,13 +94,10 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 
 fi
 
-if command -v sss_cache >/dev/null; then
-	sss_cache -U
-fi
+test -x /usr/sbin/nscd && nscd -i passwd
 if is_ucr_true nss/group/cachefile; then
 	/usr/lib/univention-pam/ldap-group-to-file.py
 else
-	# test -x /usr/sbin/sss_cache && sss_cache -G
 	test -x /usr/sbin/nscd && nscd -i group
 fi
 

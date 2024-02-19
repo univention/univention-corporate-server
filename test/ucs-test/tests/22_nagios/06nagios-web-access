@@ -34,9 +34,8 @@ user_create "$username" || fail_fast 140 "can not create test user"
 group_adduser "$username" "$(custom_groupname "Domain Admins")" || fail_fast 140 "can add $username to Domain Admins group"
 wait_for_replication
 /usr/lib/univention-pam/ldap-group-to-file.py --check_member
-# sss_cache -G
 nscd -i group
-sss_cache -U
+nscd -i passwd
 sleep 15
 
 output=$(wget -O - "https://${username}:univention@${hostname}.${domainname}/nagios/" 2>&1)

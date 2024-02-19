@@ -1,4 +1,4 @@
 @!@
 if not configRegistry.is_false('quota/userdefault', False):
-    print('session  optional          pam_runasroot.so program=/usr/sbin/univention-user-quota')
+    print('session	   optional   pam_runasroot.so program=/usr/sbin/univention-user-quota')
 @!@

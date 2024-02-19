@@ -6,13 +6,13 @@ main () {
 
 	check account '[success=done new_authtok_reqd=done acct_expired=bad default=ignore]' pam_unix.so
 	check account 'sufficient' pam_krb5.so
-	check account 'sufficient' pam_sss.so
+	check account 'sufficient' pam_ldap.so
 	check account 'sufficient' pam_winbind.so
 
 	check auth 'requisite' pam_nologin.so
 	check auth 'sufficient' pam_unix.so
 	check auth '[success=2 new_authtok_reqd=ok user_unknown=ignore service_err=3 authinfo_unavail=3 default=ignore]' pam_krb5.so 'use_first_pass'
-	check auth '[success=1 new_authtok_reqd=ok user_unknown=ignore service_err=2 authinfo_unavail=2 default=ignore]' pam_sss.so 'use_first_pass'
+	check auth '[success=1 new_authtok_reqd=ok user_unknown=ignore service_err=2 authinfo_unavail=2 default=ignore]' pam_ldap.so 'use_first_pass'
 	check auth '[success=ok new_authtok_reqd=ok user_unknown=die service_err=1 authinfo_unavail=1 default=die]' pam_winbind.so use_first_pass
 	check auth 'required' pam_env.so
 

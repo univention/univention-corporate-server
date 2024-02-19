@@ -244,9 +244,11 @@ then
 	done
 fi
 
-have sss_cache && sss_cache -U
-# have sss_cache && sss_cache -G
-have nscd && nscd -i group
+if have nscd
+then
+	nscd -i passwd
+	nscd -i group
+fi
 
 joinscript_save_current_version
 exit 0

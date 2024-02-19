@@ -11,7 +11,9 @@ Package: univention-pam
 Architecture: all
 Depends:
  libnss-extrausers,
+ libnss-ldapd,
  libpam-heimdal,
+ libpam-ldapd,
  libpam-modules (>= 1.1.8),
  libpam-pwquality,
  nscd,
@@ -19,8 +21,6 @@ Depends:
  python3-ldap,
  python3-univention-lib,
  shell-univention-lib (>= 3.0.26-7.202.201312111504),
- sssd,
- sssd-tools,
  univention-config (>= 9.0.5-2.443.201312091553),
  wngerman,
  ${misc:Depends},

@@ -33,13 +33,13 @@ Example
 Here is a sample /etc/pam.d/login file for Debian GNU/Linux 3.0:
 
     auth       requisite  pam_securetty.so
-    auth       sufficient pam_sss.so
+    auth       sufficient pam_ldap.so
     auth       required   pam_pwdb.so
     auth       optional   pam_group.so
     auth       optional   pam_mail.so
     auth       optional   pam_runasroot.so save_pass program=/usr/bin/prepare_remote.sh
     account    requisite  pam_time.so
-    account    sufficient pam_sss.so
+    account    sufficient pam_ldap.so
     account    required   pam_pwdb.so
     session    required   pam_mkhomedir.so skel=/etc/skel/ umask=0022
     session    required   pam_runasroot.so export_pass program=/usr/bin/mountdrives.sh

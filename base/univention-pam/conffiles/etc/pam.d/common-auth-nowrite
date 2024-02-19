@@ -1,39 +1,37 @@
 @%@UCRWARNING=# @%@
 
-auth     requisite         pam_nologin.so
+auth     requisite                          pam_nologin.so
 @!@
 if configRegistry.is_true('auth/faillog', False):
     if configRegistry.is_true('auth/faillog/lock_global', False):
-        print('\
-auth     [success=1 user_unknown=1 \\\n\
-         default=bad]      pam_faillock.so preauth')
-        print('auth     [default=die]     pam_runasroot.so program=/usr/lib/univention-pam/lock-user')
+        print('auth	[success=1 user_unknown=1 default=bad]	pam_faillock.so preauth')
+        print('auth	[default=die]	pam_runasroot.so program=/usr/lib/univention-pam/lock-user')
     else:
-        print('auth     required          pam_faillock.so preauth')
+        print('auth	required	pam_faillock.so preauth')
 @!@
 
 # local unix authentication; don't cache passwords
-auth     sufficient        pam_unix.so
+auth     sufficient                         pam_unix.so
 
 # remote authentication; if a service
 # - isn't aware of the user, proceed with the next service
 @!@
 minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5 = '''
-auth     sufficient        pam_krb5.so use_first_pass minimum_uid=%d''' % (minimum_uid,)
-pam_sss = '''
-auth     sufficient        pam_sss.so use_first_pass'''
+auth	sufficient			pam_krb5.so use_first_pass minimum_uid=%d''' % (minimum_uid,)
+pam_ldap = '''
+auth 	sufficient 			pam_ldap.so use_first_pass'''
 pam_winbind = '''
-auth     sufficient        pam_winbind.so use_first_pass'''
+auth 	sufficient 			pam_winbind.so use_first_pass'''
 
 methods = set(configRegistry['auth/methods'].split(' ')) & {'krb5', 'ldap', 'winbind'}
 
 if 'krb5' in methods:
     print(pam_krb5)
 if 'ldap' in methods:
-    print(pam_sss)
+    print(pam_ldap)
 if 'winbind' in methods:
     print(pam_winbind)
 @!@
 
-auth     required          pam_env.so
+auth     required                           pam_env.so
