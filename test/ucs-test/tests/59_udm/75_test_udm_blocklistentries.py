@@ -6,6 +6,7 @@
 ##   - univention-directory-manager-tools
 
 import subprocess
+from datetime import datetime, timedelta
 from types import SimpleNamespace
 
 import pytest
@@ -191,3 +192,55 @@ def test_multivalue_property_modify(ucr, udm, mail_domain_name, enable_blocklist
     for value in values:
         check_blocklistentry_exists(value, bl_dn)
         delete_blocklistentry(value, bl_dn)
+
+
+def test_clean_expired_entries(ucr, udm, mail_domain_name, enable_blocklists):
+    current_time = datetime.utcnow()
+
+    bl_name = uts.random_name()
+    data = {
+        'name': bl_name,
+        'blockingProperties': [
+            'users/user mailPrimaryAddress',
+            'groups/group mailAddress',
+        ]
+    }
+    bl_dn = udm.create_object('blocklists/list', **data)
+    udm.stop_cli_server()
+
+    expired_ble_name = uts.random_name()
+    expired_entry_data = {
+        'value': expired_ble_name,
+        'originUniventionObjectIdentifier': '9521d08e-6cf6-103b-9a74-edbd30d12cd6',
+        'blockedUntil': datetime.strftime(current_time + timedelta(days=-2), '%Y%m%d%H%M%SZ')
+
+    }
+    expired_ble_dn = udm.create_object('blocklists/entry', superordinate=bl_dn, **expired_entry_data)
+    udm.stop_cli_server()
+
+    ble_name = uts.random_name()
+    entry_data = {
+        'value': ble_name,
+        'originUniventionObjectIdentifier': '9521d08e-6cf6-103b-9a74-edbd30d12cd6',
+        'blockedUntil': datetime.strftime(current_time + timedelta(days=20), '%Y%m%d%H%M%SZ')
+
+    }
+    ble_dn = udm.create_object('blocklists/entry', superordinate=bl_dn, **entry_data)
+    udm.stop_cli_server()
+
+    # DNs of the blocklist entries
+    entries_names = [expired_ble_name, ble_name]
+    entries_dn = [expired_ble_dn, ble_dn]
+    print(entries_dn)
+
+    # Verify the entries exists
+    for value in entries_names:
+        check_blocklistentry_exists(value, bl_dn)
+
+    subprocess.check_output(['/usr/share/univention-directory-manager-tools/univention-blocklist-clean-expired-entries',
+                             '--remove-expired'])
+
+    check_blocklistentry_exists(ble_name, bl_dn)
+
+    with pytest.raises(AssertionError):
+        check_blocklistentry_exists(expired_ble_name, bl_dn)
