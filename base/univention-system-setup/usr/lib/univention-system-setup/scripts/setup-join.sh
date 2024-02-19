@@ -131,12 +131,16 @@ hostname=$(get_profile_var "hostname")
 # set domainame
 domainname=$(get_profile_var "domainname")
 [ -n "$domainname" ] && univention-config-registry set domainname="$domainname"
-# set ldap/basee
+# set ldap/base
 ldap_base=$(get_profile_var "ldap/base")
 [ -n "$ldap_base" ] && univention-config-registry set ldap/base="$ldap_base"
 # set windows domain
 windows_domain=$(get_profile_var "windows/domain")
 [ -n "$windows_domain" ] && univention-config-registry set windows/domain="$windows_domain"
+
+# restart udm to be sure the new settings apply
+. /usr/share/univention-lib/base.sh
+stop_udm_cli_server
 
 eval "$(univention-config-registry shell)"
 
