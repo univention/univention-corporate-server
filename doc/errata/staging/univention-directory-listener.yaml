@@ -14,7 +14,7 @@ desc: |
    run as systemd service. A retry mechanism has been introduced for
    this case, which is similar to what we already did for the connection
    to the LDAP server.
-   There is a new UCR variable listener/notifier/retries with default 10.
+   There is a new UCR variable listener/notifier/retries with default 30.
    There is an exponential backoff algorithm to delay the retries and
    log messages are generated showing what is going on.
 bug: [57024]

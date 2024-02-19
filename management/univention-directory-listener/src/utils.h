@@ -70,7 +70,7 @@ extern int get_notifier_retries();
 			while (_retry < notifier_retries) {                                         \
 				if (notifier_client_new(NULL, NULL, 0) == 0)                        \
 					break;                                                      \
-				_delay = 1 << (_retry++ < 8 ? _retry : 8);                          \
+				_delay = 1 << (_retry++ < 5 ? _retry : 5);                          \
 				if (_retry < notifier_retries) {                                    \
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,          \
 					"connection to notifier failed, retry #%d in %d second(s)", \
@@ -98,7 +98,7 @@ extern int get_notifier_retries();
 			else                                                                        \
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,                  \
 					"communication with notifier failed (%d)", _rv);            \
-			_delay = 1 << (_retry++ < 8 ? _retry : 8);                                  \
+			_delay = 1 << (_retry++ < 5 ? _retry : 5);                                  \
 			if (_retry < notifier_retries) {                                            \
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,                  \
 				"connection to notifier failed, retry #%d in %d second(s)",         \
