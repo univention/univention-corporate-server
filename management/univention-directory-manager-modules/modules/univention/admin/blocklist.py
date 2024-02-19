@@ -122,7 +122,7 @@ def create_blocklistentry(udm_obj):
                 blocklistentry['originUniventionObjectIdentifier'] = udm_obj.entry_uuid
                 blocklistentry['blockedUntil'] = get_blockeduntil(bl_dn, udm_obj.lo_machine_primary)
                 try:
-                    blocklistentry.create()
+                    blocklistentry.create(ignore_license=True)
                 except univention.admin.uexceptions.objectExists:
                     pass
                 else:

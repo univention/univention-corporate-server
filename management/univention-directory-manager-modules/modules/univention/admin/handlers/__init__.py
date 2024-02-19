@@ -555,7 +555,7 @@ class simpleLdap(object):
         """
         return [(key, self[key]) for key in self.keys() if self.has_property(key)]
 
-    def create(self, serverctrls=None, response=None):  # type: (List[ldap.controls.LDAPControl], Dict[Text, Any]) -> Text
+    def create(self, serverctrls=None, response=None, ignore_license=False):  # type: (List[ldap.controls.LDAPControl], Dict[Text, Any]) -> Text
         """
         Creates the LDAP object if it does not exists by building the list of attributes (addlist) and write it to LDAP.
         If this call raises an exception it is necessary to instantiate a new object before trying to create it again.
@@ -567,11 +567,15 @@ class simpleLdap(object):
         :param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
         :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
+        :param ignore_license: If the license is exceeded the modification may fail. Setting this to True causes license checks to be disabled
+        :type ignore_license: bool
         :returns: The DN of the created object.
         :rtype: str
         """
         if not univention.admin.modules.supports(self.module, 'add'):
-            raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be created.') % (self.module,))
+            # if the licence is exceeded 'add' is removed from the modules operations. Some objects may need to be added anyway.
+            if not ignore_license:
+                raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be created.') % (self.module,))
 
         if self.exists():
             raise univention.admin.uexceptions.objectExists(self.dn)
@@ -583,7 +587,7 @@ class simpleLdap(object):
             self._ldap_pre_ready()
             self.ready()
 
-            dn = self._create(response=response, serverctrls=serverctrls)
+            dn = self._create(response=response, serverctrls=serverctrls, ignore_license=ignore_license)
         except Exception:
             self._safe_cancel()
             raise
@@ -1287,7 +1291,7 @@ class simpleLdap(object):
 
         return ml
 
-    def _create(self, response=None, serverctrls=None):
+    def _create(self, response=None, serverctrls=None, ignore_license=False):
         """Create the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.create`."""
         univention.admin.blocklist.check_blocklistentry(self)
         self._ldap_pre_create()
@@ -1312,7 +1316,7 @@ class simpleLdap(object):
 
         # if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
         try:
-            self.lo.add(self.dn, al, serverctrls=serverctrls, response=response)
+            self.lo.add(self.dn, al, serverctrls=serverctrls, response=response, ignore_license=ignore_license)
             self._exists = True
             self._ldap_post_create()
         except Exception:
