@@ -108,14 +108,14 @@ class object(univention.admin.handlers.simpleLdap):
     def rewrite_filter(cls, filter, mapping):
         super(object, cls).rewrite_filter(filter, mapping)
         if filter.variable == 'cn':
-            filter.value = univention.admin.blocklist.hash_blocklist_value(filter.value)
+            filter.value = univention.admin.blocklist.hash_blocklist_value(filter.value.encode('UTF-8'))
 
     @classmethod
     def identify(cls, dn, attr, canonical=False):
         return b'univentionBlockingEntry' in attr.get('objectClass', [])
 
     def _ldap_pre_create(self):
-        self['value'] = univention.admin.blocklist.hash_blocklist_value(self['value'])
+        self['value'] = univention.admin.blocklist.hash_blocklist_value(self['value'].encode('UTF-8'))
         super(object, self)._ldap_pre_create()
 
     # TODO not needed?

@@ -107,7 +107,7 @@ def test_udm_cli_list(add_ldap_blocklistentries, random_string, udm):
 
 def test_udm_cli_create_without_position(random_string, udm, blocklist_list):
     value = random_string()
-    dn = f'cn={hash_blocklist_value(value)},{blocklist_list.dn}'
+    dn = f'cn={hash_blocklist_value(value.encode("UTF-8"))},{blocklist_list.dn}'
     data = {
         'value': value,
         'blockedUntil': '33331212010101Z',
@@ -125,7 +125,7 @@ def test_udm_cli_create_without_position(random_string, udm, blocklist_list):
 def test_udm_cli_create_with_position(blocklist_list, random_string, udm):
     # with position/superordinate
     value = random_string()
-    dn = f'cn={hash_blocklist_value(value)},{blocklist_list.dn}'
+    dn = f'cn={hash_blocklist_value(value.encode("UTF-8"))},{blocklist_list.dn}'
     data = {
         'value': value,
         'blockedUntil': '33331212010101Z',
@@ -161,14 +161,14 @@ def test_udm_api_list_delete(add_ldap_blocklistentries, random_string):
 def test_udm_api_create(random_string, blocklist_list):
     bl_mod = UDM.machine().version(2).get('blocklists/entry')
     value = random_string()
-    dn = f'cn={hash_blocklist_value(value)},{blocklist_list.dn}'
+    dn = f'cn={hash_blocklist_value(value.encode("UTF-8"))},{blocklist_list.dn}'
     new_bl = bl_mod.new(superordinate=blocklist_list.dn)
     new_bl.props.value = value
     new_bl.props.blockedUntil = '33331212010101Z'
     new_bl.props.originUniventionObjectIdentifier = get_uuid()
     new_bl.save()
     obj = bl_mod.get(new_bl.dn)
-    assert hash_blocklist_value(value) == obj.props.value
+    assert hash_blocklist_value(value.encode('UTF-8')) == obj.props.value
     assert obj.dn == dn
     obj.delete()
     with pytest.raises(NoObject):
@@ -214,8 +214,8 @@ def test_udm_python_create_superordinate(random_string, blocklist_list):
     new.create()
     obj = blocklistentry_mod.lookup(None, lo, f'value={value}')[0]
     obj.open()
-    assert hash_blocklist_value(value) == obj['value']
-    assert obj.dn == f'cn={hash_blocklist_value(value)},cn={blocklist_list.cn},{BASE}'
+    assert hash_blocklist_value(value.encode('UTF-8')) == obj['value']
+    assert obj.dn == f'cn={hash_blocklist_value(value.encode("UTF-8"))},cn={blocklist_list.cn},{BASE}'
     obj.remove()
     assert not blocklistentry_mod.lookup(None, lo, f'value={value}')
 
@@ -233,7 +233,7 @@ def test_udm_python_create_with_position(blocklist_list, random_string):
     new['originUniventionObjectIdentifier'] = get_uuid()
     new.create()
     entry_obj = blocklistentry_mod.lookup(None, lo, f'value={value}')[0]
-    assert entry_obj.dn == f'cn={hash_blocklist_value(value)},{blocklist_list.dn}'
+    assert entry_obj.dn == f'cn={hash_blocklist_value(value.encode("UTF-8"))},{blocklist_list.dn}'
     entry_obj.remove()
     assert not blocklistentry_mod.lookup(None, lo, f'value={value}')
 
@@ -270,10 +270,10 @@ def test_udm_rest_create_without_position(random_string, udm_rest_client, blockl
     new.position = None
     new.save()
     obj = udm_rest_client.get(new.dn)
-    assert obj.properties['value'] == hash_blocklist_value(value)
+    assert obj.properties['value'] == hash_blocklist_value(value.encode('UTF-8'))
     assert obj.properties['blockedUntil'] == '99331212000000Z'
     assert obj.properties['originUniventionObjectIdentifier'] == my_uuid
-    assert obj.dn == f'cn={hash_blocklist_value(value)},{blocklist_list.dn}'
+    assert obj.dn == f'cn={hash_blocklist_value(value.encode("UTF-8"))},{blocklist_list.dn}'
     obj.delete()
     with pytest.raises(UnprocessableEntity):
         udm_rest_client.get(obj.dn)
@@ -289,10 +289,10 @@ def test_udm_rest_create_with_position(blocklist_list, random_string, udm_rest_c
     new.position = blocklist_list.dn
     new.save()
     obj = udm_rest_client.get(new.dn)
-    assert obj.properties['value'] == hash_blocklist_value(value)
+    assert obj.properties['value'] == hash_blocklist_value(value.encode('UTF-8'))
     assert obj.properties['blockedUntil'] == '99331212000000Z'
     assert obj.properties['originUniventionObjectIdentifier'] == my_uuid
-    assert obj.dn == f'cn={hash_blocklist_value(value)},{blocklist_list.dn}'
+    assert obj.dn == f'cn={hash_blocklist_value(value.encode("UTF-8"))},{blocklist_list.dn}'
     obj.delete()
     with pytest.raises(UnprocessableEntity):
         udm_rest_client.get(obj.dn)
