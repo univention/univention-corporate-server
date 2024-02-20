@@ -56,7 +56,7 @@ except NameError:
     unicode = str
 
 
-def hash_blocklist_value(value):
+def hash_blocklist_value(value):  # type: (bytes) -> str
     return 'sha256:%s' % hashlib.sha256(value.lower()).hexdigest()
 
 
@@ -133,14 +133,14 @@ def create_blocklistentry(udm_obj):
 def check_blocklistentry(udm_obj):
     if not blocklist_enabled(udm_obj):
         return
-    for attr, bl_dn in get_blocking_udm_properties(udm_obj).items():
-        if udm_obj.hasChanged(attr) and udm_obj.info.get(attr):
-            for value in get_blocklist_values_from_udm_property(udm_obj.info[attr], attr):
-                hashed_value = ldap.dn.escape_dn_chars(hash_blocklist_value(value.encode(*udm_obj.mapping.getEncoding(attr))))
+    for prop, bl_dn in get_blocking_udm_properties(udm_obj).items():
+        if udm_obj.hasChanged(prop) and udm_obj.info.get(prop):
+            for value in get_blocklist_values_from_udm_property(udm_obj.info[prop], prop):
+                hashed_value = ldap.dn.escape_dn_chars(hash_blocklist_value(value.encode(*udm_obj.mapping.getEncoding(prop))))
                 dn = 'cn=%s,%s' % (hashed_value, bl_dn)
                 obj = udm_obj.lo_machine_primary.get(dn)
                 if obj and obj['originUniventionObjectIdentifier'][0].decode('utf-8') != udm_obj.entry_uuid:
-                    raise univention.admin.uexceptions.valueError(_('The value %r is blocked for the UDM property %r.') % (value, attr), property=attr)
+                    raise univention.admin.uexceptions.valueError(_('The value %r is blocked for the UDM property %r.') % (value, prop), property=prop)
 
 
 def cleanup_blocklistentry(blocklist_entries, udm_obj):

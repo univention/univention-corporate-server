@@ -555,7 +555,7 @@ class simpleLdap(object):
         """
         return [(key, self[key]) for key in self.keys() if self.has_property(key)]
 
-    def create(self, serverctrls=None, response=None, ignore_license=False):  # type: (List[ldap.controls.LDAPControl], Dict[Text, Any]) -> Text
+    def create(self, serverctrls=None, response=None, ignore_license=False):  # type: (List[ldap.controls.LDAPControl], Dict[Text, Any], Optional[bool]) -> Text
         """
         Creates the LDAP object if it does not exists by building the list of attributes (addlist) and write it to LDAP.
         If this call raises an exception it is necessary to instantiate a new object before trying to create it again.

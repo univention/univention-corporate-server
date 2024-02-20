@@ -3,7 +3,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2012-2024 Univention GmbH
+# Copyright 2024 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -32,8 +32,6 @@
 
 """This tool removes the cleanup the expired blocklist items"""
 
-from __future__ import print_function
-
 from argparse import ArgumentParser
 from datetime import datetime
 
@@ -48,7 +46,6 @@ def is_expired(blockedUntil):
 
 
 if __name__ == '__main__':
-
     parser = ArgumentParser(description=__doc__)
     parser.add_argument(
         "--remove-expired",
@@ -60,7 +57,7 @@ if __name__ == '__main__':
 
     options = parser.parse_args()
 
-    blocklist_mod = UDM.admin().version(2).get('blocklists/entry')
+    blocklist_mod = UDM.admin().version(3).get('blocklists/entry')
 
     for entry in blocklist_mod.search(base=BLOCKLIST_BASE):
         if is_expired(entry.props.blockedUntil):

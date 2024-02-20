@@ -118,13 +118,6 @@ class object(univention.admin.handlers.simpleLdap):
         self['value'] = univention.admin.blocklist.hash_blocklist_value(self['value'].encode('UTF-8'))
         super(object, self)._ldap_pre_create()
 
-    # TODO not needed?
-    #@classmethod
-    #def lookup_filter_superordinate(cls, filter, superordinate):
-    #    #filter.expressions.append(univention.admin.filter.expression('cn', superordinate['name'], escape=True))
-    #    return filter
-
-
 lookup_filter = object.lookup_filter
 lookup = object.lookup
 identify = object.identify
