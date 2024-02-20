@@ -1403,11 +1403,12 @@ class simpleLdap(object):
 
         blocklist_entries = univention.admin.blocklist.create_blocklistentry(self)
         try:
-            self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response, rename_callback=wouldRename.on_rename)
-        except wouldRename as exc:
-            self._ldap_pre_rename(exc.args[1])
-            self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
-            self._ldap_post_rename(exc.args[0])
+            try:
+                self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response, rename_callback=wouldRename.on_rename)
+            except wouldRename as exc:
+                self._ldap_pre_rename(exc.args[1])
+                self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
+                self._ldap_post_rename(exc.args[0])
         except Exception:
             univention.admin.blocklist.cleanup_blocklistentry(blocklist_entries, self)
             raise
