@@ -721,7 +721,7 @@ class UDM_Module(object):
             raise
         except udm_errors.base as exc:
             MODULE.info('Failed to retrieve LDAP object: %s' % (exc,))
-            if isinstance(exc, udm_errors.noObject) and superordinate and not ldap_connection.get(superordinate):
+            if isinstance(exc, udm_errors.noObject) and superordinate and not ldap_connection.get(superordinate.dn):
                 raise SuperordinateDoesNotExist(superordinate)
             UDM_Error(exc).reraise()
         return obj

@@ -1,3 +1,10 @@
+univention-management-console-module-udm (10.0.9-5) unstable; urgency=medium
+
+  * Bug #55555: fix error handling when superordinate object doesn't
+    exists
+
+ -- Florian Best <best@univention.de>  Thu, 29 Feb 2024 21:05:03 +0100
+
 univention-management-console-module-udm (10.0.9-4) unstable; urgency=medium
 
   * Bug #57046: UCR Policy input now allows multiple values to be set
