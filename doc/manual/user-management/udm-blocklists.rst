@@ -108,7 +108,9 @@ Every block list entry has the following properties:
 
    * - Value
      - A ``sha256`` hash representing the value to block. When creating an
-       entry this is the clear text value.
+       entry this is the clear text value. Before creating the hash
+       the value is converted to lower case, so that all versions, regardless
+       of case, match the block list entry when it is checked.
 
    * - Blocked until
      - The block list entry expired after this
