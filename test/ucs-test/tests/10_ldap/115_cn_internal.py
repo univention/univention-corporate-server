@@ -176,42 +176,42 @@ def test_syncrepl_simple(random_string):
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_backup'], reason="check access on backup")
-def test_access_on_backup(random_string, account, udm, ucr):
+def test_access_blocklist_on_backup(random_string, account, udm, ucr):
 
     # machine account can read
     lo, po = getMachineConnection(ldap_master=False)
-    lo.search(base=BASE)
+    lo.search(base=BASE_BLOCKLISTS)
     cn = random_string()
     with pytest.raises(ldapError):
-        create_container(lo, cn)
+        create_container(lo, cn, BASE_BLOCKLISTS)
 
     # admins can read
     lo = access(host=ucr['ldap/server/name'], base=BASE, binddn=account.binddn, bindpw=account.bindpw)
-    lo.search(base=BASE)
+    lo.search(base=BASE_BLOCKLISTS)
     cn = random_string()
     with pytest.raises(ldapError):
-        create_container(lo, cn)
+        create_container(lo, cn, BASE_BLOCKLISTS)
 
-    # users can not read
+    # users can read
     dn, name = udm.create_user(password='univention')
     lo = access(host=ucr['ldap/server/name'], base=BASE, binddn=dn, bindpw='univention')
-    with pytest.raises(noObject):
-        lo.search(base=BASE)
+    with pytest.raises(ldapError):
+        create_container(lo, cn, BASE_BLOCKLISTS)
 
-    # admin connectiob
+    # admin connection
     lo, pos = getAdminConnection()
     cn = random_string()
-    create_container(lo, cn)
+    create_container(lo, cn, BASE_BLOCKLISTS)
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_backup'], reason="check additional acls only on syncrepl/backup")
-def test_syncrepl_additional_group_acls_read(udm, random_string, slapd_config):
+def test_access_blocklist_additional_group_acls_read(udm, random_string, slapd_config):
     password = 'univention'
     user_dn, name = udm.create_user(password=password)
     group_dn, group_name = udm.create_group(users=[user_dn])
     slapd_config([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
-    lo = access(base=BASE, binddn=user_dn, bindpw=password)
+    lo = access(base=BASE_BLOCKLISTS, binddn=user_dn, bindpw=password)
     cn = random_string()
-    lo.search(base=BASE)
+    lo.search(base=BASE_BLOCKLISTS)
     with pytest.raises(ldapError):
-        create_container(lo, cn)
+        create_container(lo, cn, BASE_BLOCKLISTS)
