@@ -116,7 +116,9 @@ Every block list entry has the following properties:
      - The block list entry expired after this
        `GeneralizedTime-LDAP-Syntax <ldap-generalized-time_>`_ time stamp.
        When an entry is create this is set to now + the retention time
-       of the corresponding block list.
+       of the corresponding block list. This time stamp is set when creating
+       the block list entry. It is not updated if the retention time of
+       the block list is updated.
 
    * - Origin ID
      - The ID of the UDM object that lead to this block list entry. The value
