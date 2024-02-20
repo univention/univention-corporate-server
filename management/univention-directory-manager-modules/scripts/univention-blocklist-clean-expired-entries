@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""This tool removes the cleanup the expired blocklist items"""
+"""This tool lists expired blocklist entries."""
 
 from argparse import ArgumentParser
 from datetime import datetime
@@ -54,15 +54,13 @@ if __name__ == '__main__':
         default=False,
         required=False,
     )
-
     options = parser.parse_args()
-
     blocklist_mod = UDM.admin().version(3).get('blocklists/entry')
-
     for entry in blocklist_mod.search(base=BLOCKLIST_BASE):
         if is_expired(entry.props.blockedUntil):
+            now = datetime.now()
             if options.remove_expired:
-                print('Deleting entry: ', entry.dn)
+                print(f'{now} - deleting expired entry: {entry.dn}')
                 entry.delete()
             else:
-                print(entry.dn)
+                print(f'expired entry: {entry.dn}')
