@@ -1,4 +1,4 @@
-univention-monitoring-client (3.0.0-1) unstable; urgency=medium
+univention-monitoring-client (3.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.2-0 version bump
 
