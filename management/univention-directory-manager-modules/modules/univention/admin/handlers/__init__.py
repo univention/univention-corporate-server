@@ -573,7 +573,7 @@ class simpleLdap(object):
         :rtype: str
         """
         if not univention.admin.modules.supports(self.module, 'add'):
-            # if the licence is exceeded 'add' is removed from the modules operations. Some objects may need to be added anyway.
+            # if the licence is exceeded 'add' is removed from the modules operations. Blocklist objects may need to be added anyway.
             if not ignore_license:
                 raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be created.') % (self.module,))
 
