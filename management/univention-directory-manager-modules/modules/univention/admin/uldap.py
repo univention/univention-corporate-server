@@ -680,9 +680,7 @@ class access(object):
         try:
             return self.lo.search(filter, base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response)
         except ldap.NO_SUCH_OBJECT as msg:
-            if len(getattr(msg, 'args', [])) >= 1 and msg.args[0].get('desc', '') == 'No such object':
-                raise univention.admin.uexceptions.noObject('base: %s, filter: %s' % (base, filter))
-            raise univention.admin.uexceptions.noObject(_err2str(msg))
+            raise univention.admin.uexceptions.noObject(_err2str(msg), base)
         except ldap.INAPPROPRIATE_MATCHING as msg:
             raise univention.admin.uexceptions.insufficientInformation(_err2str(msg))
         except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED) as msg:

@@ -730,8 +730,8 @@ class CLI(object):
 
         try:
             object = univention.admin.objects.get(module, None, lo, position='', dn=dn)
-        except univention.admin.uexceptions.noObject:
-            raise OperationFailed('E: object not found: %s' % dn)
+        except univention.admin.uexceptions.noObject as exc:
+            raise OperationFailed('E: %s' % (exc,))
 
         object.open()
 
@@ -769,11 +769,11 @@ class CLI(object):
 
         try:
             object = univention.admin.objects.get(module, None, lo, position='', dn=dn)
-        except univention.admin.uexceptions.noObject:
+        except univention.admin.uexceptions.noObject as exc:
             if ignore_not_exists:
-                print('Object not found: %s' % (dn or filter,), file=self.stdout)
+                print('%s' % (exc,), file=self.stdout)
                 return
-            raise OperationFailed('E: object not found: %s' % (dn or filter,))
+            raise OperationFailed('E: %s' % (exc,))
 
         object.open()
 
@@ -822,11 +822,13 @@ class CLI(object):
                 object = univention.admin.modules.lookup(module, None, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter, required=True, unique=True)[0]
             else:
                 raise OperationFailed('E: dn or filter needed')
-        except (univention.admin.uexceptions.noObject, IndexError):
+        except (univention.admin.uexceptions.noObject, IndexError) as exc:
+            if isinstance(exc, IndexError):
+                exc = "No such object: %s" % (dn or filter)
             if ignore_not_exists:
-                print('Object not found: %s' % (dn or filter,), file=self.stdout)
+                print('%s' % (exc,), file=self.stdout)
                 return
-            raise OperationFailed('E: object not found: %s' % (dn or filter))
+            raise OperationFailed('E: %s' % (exc,))
 
         object.open()
 
