@@ -166,10 +166,11 @@ class object(univention.admin.handlers.simpleLdap):
 
     def description(self):
         try:
-            return calc_ip(self.info['address'], self.superordinate.info['subnet']).compressed
+            if self.superordinate:
+                return calc_ip(self.info['address'] or '', self.superordinate.info['subnet'] or '').compressed
         except (LookupError, ValueError, AssertionError) as ex:
             log.warning('Failed to parse dn=%s: (%s)', self.dn, ex)
-            return super(object, self).description()
+        return super(object, self).description()
 
     def open(self):
         super(object, self).open()

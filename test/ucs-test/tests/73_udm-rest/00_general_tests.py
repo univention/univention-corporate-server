@@ -13,6 +13,7 @@ from operator import itemgetter
 import pytest
 import requests
 
+import univention.admin.modules
 from univention.admin.rest.client import (
     UDM as UDMClient, Forbidden, PreconditionFailed, Unauthorized, UnprocessableEntity,
 )
@@ -21,6 +22,9 @@ from univention.lib.misc import custom_groupname
 from univention.testing.conftest import locale_available
 from univention.testing.udm import UDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import UCSTestDomainAdminCredentials
+
+
+univention.admin.modules.update()
 
 
 if ucr.is_true('ad/member'):
@@ -68,6 +72,12 @@ def test_authentication(udm):
     print('3. domain admin must be able to access the API')
     udm_client = UDMClient.master_connection(user, 'univention')
     udm_client.get('users/user')
+
+
+@pytest.mark.parametrize('module', [n for n, m in univention.admin.modules.modules.items() if not getattr(m, 'virtual', False) and 'add' in m.operations])
+def test_all_module_descriptions(module, udm_client):
+    mod = udm_client.get(module)
+    mod.new()
 
 
 def test_etag_after_create_via_post(udm, udm_client, random_string):

@@ -253,11 +253,10 @@ class object(univention.admin.handlers.simpleLdap):
     # FIXME: there should be general solution; subnet is just a naming
     # attribute (though calculated from rdn)
     def description(self):
-        if 0:  # open?
-            return self['subnet']
-        else:
+        if self.exists():
             rdn_value = ldap.dn.str2dn(self.dn)[0][0][1].encode('UTF-8')
             return unmapSubnet([rdn_value])
+        return self['subnet']
 
     @classmethod
     def unmapped_lookup_filter(cls):

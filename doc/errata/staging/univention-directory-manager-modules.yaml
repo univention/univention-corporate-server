@@ -3,7 +3,7 @@ release: "5.0"
 version: [6]
 scope: ucs_5.0-0-errata5.0-6
 src: univention-directory-manager-modules
-fix: 15.0.25-12
+fix: 15.0.25-13
 desc: |
  This update addresses the following issues:
  * The Univention Configuration Registry Policy UDM module now has an
@@ -12,4 +12,5 @@ desc: |
  * A file descriptor leak in the UDM CLI server has been fixed.
  * Fix reaping terminated child processes.
  * Fix a potential infinite loop in handling Samba logon hour syntax.
-bug: [57046, 57089, 7735, 28496]
+ * Adjusted DNS object handling to fix compatibility with the UDM REST API.
+bug: [57046, 57089, 7735, 28496, 55555]

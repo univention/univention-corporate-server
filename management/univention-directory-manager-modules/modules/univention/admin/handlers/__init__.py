@@ -1226,7 +1226,7 @@ class simpleLdap(object):
             for name, property in self.descriptions.items():
                 if property.identifies:
                     syntax = property.syntax
-                    return syntax.tostring(self[name])
+                    return syntax.tostring(self[name] or '')
         return u'none'
 
     def _post_unmap(self, info, values):

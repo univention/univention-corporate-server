@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-13) unstable; urgency=medium
+
+  * Bug #55555: fix object description when object doesn't exists
+
+ -- Florian Best <best@univention.de>  Thu, 29 Feb 2024 21:11:47 +0100
+
 univention-directory-manager-modules (15.0.25-12) unstable; urgency=low
 
   * Bug #57089: Fix file descriptor leak in CLI server
