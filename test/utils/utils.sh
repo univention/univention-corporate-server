@@ -538,6 +538,10 @@ install_ucs_test_appcenter_uninstall () {
 	install_with_unmaintained ucs-test-appcenter-uninstall
 }
 
+install_required_packages () {
+	install_additional_packages $REQUIRED_SOFTWARE
+}
+
 create_DONT_START_UCS_TEST () {
 	echo "-----------------------------------------------------------------------------------"
 	echo "$@"
@@ -884,7 +888,8 @@ assert_package_version () {
 	local min_version=$2
     local get_newest=$3
 	local version=$(dpkg -s $package | grep -Po "(?<=Version: )([0-9]|\.)*(?=\s|$)")
-	if  [ $(ver $version) -le $(ver $min_version) ];
+	# Check if current version is newer than minimum required version
+	if  [ $(ver $version) -lt $(ver $min_version) ];
     then
         echo "Found version $version of $package installed, which is lower than $min_version."
         if ! $get_newest -eq true ;
@@ -898,7 +903,8 @@ assert_package_version () {
             univention-install -y $package
             version=$(dpkg -s $package | grep -Po "(?<=Version: )([0-9]|\.)*(?=\s|$)")
             echo "Installed new version of $package: $version."
-			if  [ $(ver $version) -le $(ver $min_version) ]; then
+			# Checking if version is sufficient after installation of newer version
+			if  [ $(ver $version) -lt $(ver $min_version) ]; then
 				echo "Newest available version is still lower than specified minimum version $min_version."
 				return 1
 			fi
