@@ -112,10 +112,10 @@ def create_blocklistentry(udm_obj):
     if not blocklist_enabled(udm_obj):
         return []
     blocklist_entries = []
-    for attr, bl_dn in get_blocking_udm_properties(udm_obj).items():
-        if (not udm_obj.exists() and udm_obj.oldinfo.get(attr)) or (udm_obj.hasChanged(attr) and udm_obj.oldinfo.get(attr)):
+    for prop, bl_dn in get_blocking_udm_properties(udm_obj).items():
+        if (not udm_obj.exists() and udm_obj.oldinfo.get(prop)) or (udm_obj.hasChanged(prop) and udm_obj.oldinfo.get(prop)):
             blocklist_position = univention.admin.uldap.position(bl_dn)
-            for value in get_blocklist_values_from_udm_property(udm_obj.oldinfo[attr], attr):
+            for value in get_blocklist_values_from_udm_property(udm_obj.oldinfo[prop], prop):
                 blocklistentry = univention.admin.handlers.blocklists.entry.object(None, udm_obj.lo_machine_primary, blocklist_position)
                 blocklistentry.open()
                 blocklistentry['value'] = value
