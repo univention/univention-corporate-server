@@ -118,6 +118,7 @@ class object(univention.admin.handlers.simpleLdap):
         self['value'] = univention.admin.blocklist.hash_blocklist_value(self['value'].encode('UTF-8'))
         super(object, self)._ldap_pre_create()
 
+
 lookup_filter = object.lookup_filter
 lookup = object.lookup
 identify = object.identify
