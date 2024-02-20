@@ -122,6 +122,22 @@ Every block list entry has the following properties:
 
 .. _udm-blocklists-expired-entries:
 
+.. note::
+
+   Listing block list entries gives you only the hashes of the blocked values.
+   But you can search for the clear text value of a particular entry, e.g. in
+   case you want to delete that entry.
+
+   .. code-block::
+
+      $ udm blocklists/entry list
+      DN: cn=sha256:a859cd5964b6ac...,cn=emails,cn=blocklists
+      DN: cn=sha256:b859cd5964b6ac...,cn=emails,cn=blocklists
+      DN: cn=sha256:c859cd5964b6ac...,cn=emails,cn=blocklists
+
+      $ udm blocklists/entry list --filter value=blocked_email@mail.test
+      DN: cn=sha256:c859cd5964b6ac...,cn=emails,cn=blocklists
+
 Expired block list entries
 --------------------------
 
