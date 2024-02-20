@@ -1412,16 +1412,21 @@ class ad(univention.connector.ucs):
                 else:
                     ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: Failed to append user %s to AD group member cache of %s" % (object['dn'].lower(), groupDN.lower()))
 
-    def __compare_lowercase(self, dn, dn_list):
+    def __compare_lowercase(self, value, value_list):
+        """Checks if value is in value_list"""
+        return any(value.lower() == v.lower() for v in value_list)
+
+    def __compare_lowercase_dn(self, dn, dn_list):
         """Checks if dn is in dn_list"""
-        return any(dn.lower() == d.lower() for d in dn_list)
+        dn_lower = dn.lower()
+        return any(self.lo.compare_dn(dn_lower, d.lower()) for d in dn_list)
 
     def one_group_member_sync_to_ucs(self, ucs_group_object, object):
         """sync groupmembers in UCS if changend one member in AD"""
         # In AD the object['dn'] is member of the group sync_object
 
         ml = []
-        if not self.__compare_lowercase(object['dn'].encode('UTF-8'), ucs_group_object['attributes'].get('uniqueMember', [])):
+        if not self.__compare_lowercase_dn(object['dn'].encode('UTF-8'), ucs_group_object['attributes'].get('uniqueMember', [])):
             ml.append((ldap.MOD_ADD, 'uniqueMember', [object['dn'].encode('UTF-8')]))
 
         if object['attributes'].get('uid'):
@@ -1442,7 +1447,7 @@ class ad(univention.connector.ucs):
     def one_group_member_sync_from_ucs(self, ad_group_object, object):
         """sync groupmembers in AD if changend one member in AD"""
         ml = []
-        if not self.__compare_lowercase(object['dn'].encode('UTF-8'), ad_group_object['attributes'].get('member', [])):
+        if not self.__compare_lowercase_dn(object['dn'].encode('UTF-8'), ad_group_object['attributes'].get('member', [])):
             ml.append((ldap.MOD_ADD, 'member', [object['dn'].encode('UTF-8')]))
 
         if ml:
