@@ -447,7 +447,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    container ``cn=blocklists`` the internal database, see
    :ref:`udm-blocklists-ldap-acl`
 
-.. envar:: ldap/database/internal/acl/blocklists/groups/write
+.. envvar:: ldap/database/internal/acl/blocklists/groups/write
 
    List of group dn's that have write access to all objects beneath the
    container ``cn=blocklists`` the internal database, see
