@@ -877,6 +877,39 @@ assert_packages () {
 	return 0
 }
 
+assert_package_version () {
+	# Make version strings comparable
+    function ver { printf "%03d%03d%03d%03d" $(echo "$1" | tr '.' ' '); }
+	local package=$1
+	local min_version=$2
+    local get_newest=$3
+	local version=$(dpkg -s $package | grep -Po "(?<=Version: )([0-9]|\.)*(?=\s|$)")
+	if  [ $(ver $version) -le $(ver $min_version) ];
+    then
+        echo "Found version $version of $package installed, which is lower than $min_version."
+        if ! $get_newest -eq true ;
+        then
+            return 1
+        else
+            echo "Switching to test-appcenter now."
+            switch_to_test_app_center
+            add_ucsschool_dev_repo
+			upgrade_to_latest
+            univention-install -y $package
+            version=$(dpkg -s $package | grep -Po "(?<=Version: )([0-9]|\.)*(?=\s|$)")
+            echo "Installed new version of $package: $version."
+			if  [ $(ver $version) -le $(ver $min_version) ]; then
+				echo "Newest available version is still lower than specified minimum version $min_version."
+				return 1
+			fi
+        fi
+    else
+        echo "Wanted version already installed."
+	fi
+    return 0
+}
+
+
 set_administrator_dn_for_ucs_test () {
 	local dn
 	dn="$(univention-ldapsearch -LLL '(sambaSid=*-500)' 1.1 | sed -ne 's|dn: ||p')"
