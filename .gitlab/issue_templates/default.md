@@ -21,5 +21,5 @@ Additional points:
 
 ## Acceptance criteria & steps for reproduction
 
-- [ ]
-- [ ]
+- [ ] DOD has been checked,  https://univention.gitpages.knut.univention.de/internal/dev-handbook/dev-workflow/dod.html#definition-of-done
+- [ ] ...
