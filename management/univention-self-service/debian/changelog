@@ -1,3 +1,9 @@
+univention-self-service (5.0.8-2) unstable; urgency=medium
+
+  * Bug #57061: fix logging strings
+
+ -- Florian Best <best@univention.de>  Tue, 20 Feb 2024 14:44:38 +0100
+
 univention-self-service (5.0.8-1) unstable; urgency=medium
 
   [ Philipp Hahn ]

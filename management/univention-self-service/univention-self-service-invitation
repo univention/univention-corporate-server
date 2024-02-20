@@ -80,7 +80,7 @@ class Invitation(object):
 
         # activated?
         if not self.ucr.is_true('umc/self-service/invitation/enabled', True):
-            self.logger.info(f'{self.prog} is disabled by UCRV umc/self-service/invitation/enabled')
+            self.logger.info('%s is disabled by UCRV umc/self-service/invitation/enabled', self.prog)
             sys.exit(0)
 
         # ldap/umc connection
@@ -92,35 +92,35 @@ class Invitation(object):
     def is_valid_user(self, username):
         # check if users exists and has univentionPasswordSelfServiceEmail
         l_filter = filter_format('uid=%s', (username,))
-        self.logger.debug(f'checking ldap with filter {l_filter}')
+        self.logger.debug('checking ldap with filter %s', l_filter)
         res = self.lo.search(l_filter)
         if len(res) == 1 and 'univentionPasswordSelfServiceEmail' in res[0][1]:
-            self.logger.debug(f'user {username} is valid')
+            self.logger.debug('user %s is valid', username)
             return True
-        self.logger.debug(f'user {username} is NOT valid')
+        self.logger.debug('user %s is NOT valid', username)
         return False
 
     def check_trigger(self):
         # check trigger dir for users and send token
         while True:
             time.sleep(5)
-            self.logger.debug('checkig trigger dir {}'.format(os.path.join(TRIGGER_DIR, '*.send')))
+            self.logger.debug('checkig trigger dir %s', os.path.join(TRIGGER_DIR, '*.send'))
             exc_info = None
             for filename in glob.glob(os.path.join(TRIGGER_DIR, '*.send')):
                 try:
                     user = os.path.basename(filename).rsplit('.send', 1)[0]
-                    self.logger.info(f'Found trigger for user {user}')
+                    self.logger.info('Found trigger for user %s', user)
                     if self.is_valid_user(user):
-                        self.logger.info(f'Sending token to {user}')
+                        self.logger.info('Sending token to %s', user)
                         if not self.args.dry_run:
                             self.umc_client.umc_command(self.umc_path, {"username": user, "method": 'email'})
                             os.remove(filename)
                     else:
-                        self.logger.info(f'ignore request and delete trigger file for user {user} (not a valid invitation account)')
+                        self.logger.info('ignore request and delete trigger file for user %s (not a valid invitation account)', user)
                         if not self.args.dry_run:
                             os.remove(filename)
                 except Exception:
-                    self.logger.exception(f'Failed sending invitation for user {user}')
+                    self.logger.exception('Failed sending invitation for user %s', user)
                     exc_info = sys.exc_info()
             if exc_info:
                 six.reraise(*exc_info)
