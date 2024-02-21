@@ -9,3 +9,6 @@ desc: |
  * For containerized environments, the UDM REST API OpenAPI Schema user
    interface is now exposed via the UDM REST API server as well.
 bug: [57058]
+erratum: 961
+announced: 2024-02-21
+support: core
