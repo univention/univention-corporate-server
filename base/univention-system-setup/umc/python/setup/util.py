@@ -947,12 +947,12 @@ def get_ucs_domaincontroller_master_query(nameserver: str, domain: str) -> dns.r
 
 
 def resolve_domaincontroller_master_srv_record(nameserver: str, domain: str) -> bool:
-    query = get_ucs_domaincontroller_master_query(nameserver, domain)
-    if not query:
+    response = get_ucs_domaincontroller_master_query(nameserver, domain)
+    if not response:
         return False
     try:
-        return query.response.answer[0].items[0].target.to_text().rstrip('.')
-    except IndexError:
+        return response[0].target.to_text().rstrip('.')
+    except LookupError:
         return False
 
 
