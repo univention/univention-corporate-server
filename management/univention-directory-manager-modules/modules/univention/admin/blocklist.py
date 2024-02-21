@@ -76,10 +76,15 @@ def parse_timedelta(timedelta_string):
 @univention.admin._ldap_cache(ttl=120)
 def get_blocklist_config(lo):
     config = {}
-    for blist in univention.admin.handlers.blocklists.list.lookup(None, lo, 'entryUUID=*', base=BLOCKLIST_BASE, scope='one'):
-        config[blist.dn] = blist.get('retentionTime', '30d')
-        for mod, prop in blist.get('blockingProperties', []):
-            config.setdefault(mod, {})[prop] = blist.dn
+    try:
+        for blist in univention.admin.handlers.blocklists.list.lookup(None, lo, 'entryUUID=*', base=BLOCKLIST_BASE, scope='one'):
+            config[blist.dn] = blist.get('retentionTime', '30d')
+            for mod, prop in blist.get('blockingProperties', []):
+                config.setdefault(mod, {})[prop] = blist.dn
+    except univention.admin.uexceptions.noObject:
+        # that means cn=internal is not (yet) available
+        # return an empty config, without cn=internal, there is no config
+        pass
     return config
 
 
