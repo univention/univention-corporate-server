@@ -32,10 +32,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/backup.sh
 eval "$(univention-config-registry shell server/role slapd/backup/owner slapd/backup/group slapd/backup/permissions)"
 
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+# shellcheck disable=SC2154
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	currentdate=$(date +%Y%m%d)
 	ldapbackupname="/var/univention-backup/ldap-backup_${currentdate}.ldif"
 	ldapbackuplog="/var/univention-backup/ldap-backup_${currentdate}.log"
@@ -56,6 +58,35 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	fi
 
 	clean_old_backups 'ldap-backup_.*\.\(log\|ldif\)\(\.gz\)?'
+
+	# Attempt backup with user variables
+	chown "${slapd_backup_owner}":"${slapd_backup_group}" "${ldapbackupname}.gz" "${ldapbackuplog}.gz" &&
+		chmod "${slapd_backup_permissions}" "${ldapbackupname}.gz" "${ldapbackuplog}.gz" ||
+		chown 0:0 "${ldapbackupname}.gz" "${ldapbackuplog}.gz"
+fi
+
+# cn=internal
+if [ "$server_role" = "domaincontroller_master" ] && /usr/share/univention-ldap/setup-internal check; then
+	currentdate=$(date +%Y%m%d)
+	ldapbackupname="/var/univention-backup/internal-backup_${currentdate}.ldif"
+	ldapbackuplog="/var/univention-backup/internal-backup_${currentdate}.log"
+
+	# Default backup
+	touch "$ldapbackupname" "$ldapbackuplog"
+	chmod 600 "$ldapbackupname" "$ldapbackuplog"
+
+	slapcat -f /etc/ldap/slapd.conf -b cn=internal -l "$ldapbackupname" 2>"$ldapbackuplog"
+	rc=$?
+	gzip -9 "$ldapbackupname" "$ldapbackuplog" -f 2>/dev/null
+	chmod 600 "${ldapbackupname}.gz" "${ldapbackuplog}.gz"
+
+	if [ $rc -ne 0 ]
+	then
+		echo "internal could not be dumped!" >&2
+		exit 1
+	fi
+
+	clean_old_backups 'internal-backup_.*\.\(log\|ldif\)\(\.gz\)?'
 
 	# Attempt backup with user variables
 	chown "${slapd_backup_owner}":"${slapd_backup_group}" "${ldapbackupname}.gz" "${ldapbackuplog}.gz" &&

@@ -189,6 +189,9 @@ define([
 		// reference to the last item in the navigation on which a context menu has been opened
 		_navContextItem: null,
 
+		// base of the ldap objects
+		_ldapBase: '',
+
 		// a dict of variable -> value entries for relevant UCR variables
 		_ucr: null,
 
@@ -243,6 +246,9 @@ define([
 				return deferred;
 			}
 			return tools.ucr(['directory/manager/web*', 'ldap/base', 'ad/member']).then(lang.hitch(this, function(ucr) {
+				if (! this._ldapBase) {
+					this._ldapBase = ucr['ldap/base'];
+				}
 				this._ucr = lang.setObject('umc.modules.udm.ucr', ucr);
 			}));
 		},
@@ -319,6 +325,7 @@ define([
 					metaInfo: moduleCache.getMetaInfo(),
 					ucr: this._loadUCRVariables()
 				}).then(lang.hitch(this, function(results) {
+					this._ldapBase = results.metaInfo.ldap_base;
 					this._reports = results.reports;
 					this._default_columns = results.columns;
 					this.renderSearchPage(results.containers, results.metaInfo);
@@ -398,7 +405,7 @@ define([
 
 		_ldapDN2TreePath: function(ldapDN) {
 			var path = [];
-			while (ldapDN != this._ucr[ 'ldap/base' ]) {
+			while (ldapDN != this._ldapBase) {
 				path.unshift(ldapDN);
 				ldapDN = ldapDN.slice(ldapDN.indexOf(',') + 1);
 			}
@@ -2006,7 +2013,7 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				objectType: objectType,
 				operation: operation,
-				ldapBase: this._ucr['ldap/base'],
+				ldapBase: this._ldapBase,
 				ldapName: ldapName,
 				newObjectOptions: newObjOptions,
 				moduleWidget: this,

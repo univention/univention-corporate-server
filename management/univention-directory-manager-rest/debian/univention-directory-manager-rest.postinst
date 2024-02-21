@@ -35,6 +35,7 @@
 
 #DEBHELPER#
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 a2ensite univention-udm.conf

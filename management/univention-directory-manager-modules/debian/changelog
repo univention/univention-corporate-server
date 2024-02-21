@@ -1,3 +1,12 @@
+univention-directory-manager-modules (15.0.25-7) unstable; urgency=medium
+
+  * Bug #57039: add blocklist module
+  * Bug #57040: manage blocklist objects in UDM
+  * Bug #57043: blocklist in UMC
+  * Bug #57042: add clean expired entries script and cron job configuration
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Feb 2024 10:03:04 +0100
+
 univention-directory-manager-modules (15.0.25-6) unstable; urgency=medium
 
   * Bug #57064: add missing dependency on python-univention-debug

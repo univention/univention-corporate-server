@@ -1,0 +1,117 @@
+### cn=internal backend
+@!@
+import ldap
+import os
+import sys
+from univention.lib.misc import custom_groupname
+
+groups_default_domainadmins = custom_groupname('Domain Admins')
+groups_default_domainadmins_dn = "cn=%s,cn=groups,%s" % (groups_default_domainadmins, configRegistry['ldap/base'])
+groups_default_domainadmins_dn = "cn=%s,cn=groups,%s" % (ldap.dn.escape_dn_chars(groups_default_domainadmins), configRegistry['ldap/base'])
+machine_secret = None
+if os.path.isfile('/etc/machine.secret'):
+    machine_secret = open('/etc/machine.secret').read().strip()
+
+# database
+DATABASE = """\
+database   mdb
+suffix     "cn=internal"
+directory  "/var/lib/univention-ldap/internal"
+maxsize    %(ldap/database/mdb/maxsize)s
+envflags   %(ldap/database/internal/envflags)s
+checkpoint %(ldap/database/internal/checkpoint)s
+rootdn     "cn=admin,%(ldap/base)s"
+index      cn pres,eq,sub,approx
+index      entryCSN eq
+index      entryUUID eq
+index      objectClass pres,eq
+"""
+
+# primary
+if configRegistry['server/role'] == 'domaincontroller_master':
+    print(DATABASE % configRegistry)
+    # syncprov
+    if configRegistry.is_true('ldap/database/internal/syncprov', False):
+        print("""
+overlay syncprov
+syncprov-checkpoint %(ldap/database/internal/syncprov/checkpoint)s
+syncprov-sessionlog %(ldap/database/internal/syncprov/sessionlog)s
+""" % configRegistry)
+
+    # limits
+    print("""
+limits dn.children=cn=peercred,cn=external,cn=auth time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
+limits group/univentionGroup/uniqueMember="cn=DC Backup Hosts,cn=groups,%(ldap/base)s" time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
+    """ % configRegistry)
+
+    # acl
+    acls = []
+    acls.append('by sockname="PATH=/var/run/slapd/ldapi" write')
+    acls.append('by group/univentionGroup/uniqueMember="%s" write' % groups_default_domainadmins_dn)
+    acls.append('by set="user/univentionObjectType & [computers/domaincontroller_master]" write')
+    acls.append('by set="user/univentionObjectType & [computers/domaincontroller_backup]" write')
+    acls.append('by set="user/univentionObjectType & [computers/domaincontroller_slave]" write')
+    acls.append('by set="user/univentionObjectType & [computers/memberserver]" write')
+    acls.append('by * none break\n')
+    print('# ACLs for cn=internal')
+    print('access to *')
+    for acl in acls:
+        print('    %s' % acl)
+
+    print('\n# ACLs for cn=blocklists,cn=internal')
+    blocklist_acls = []
+    for group in configRegistry.get('ldap/database/internal/acl/blocklists/groups/write', '').split('|'):
+        if group:
+            blocklist_acls.append('by group/univentionGroup/uniqueMember="%s" write' % group)
+    read_groups = configRegistry.get('ldap/database/internal/acl/blocklists/groups/read', '')
+    for group in read_groups.split('|'):
+        if group:
+            blocklist_acls.append('by group/univentionGroup/uniqueMember="%s" read' % group)
+    print('access to dn.subtree=cn=blocklists,cn=internal')
+    for acl in blocklist_acls:
+        print('    %s' % acl)
+    print('    by * %s' % ("none" if read_groups else "read"))
+
+# backup
+if configRegistry['server/role'] == 'domaincontroller_backup':
+    print(DATABASE % configRegistry)
+    if configRegistry.is_true('ldap/database/internal/syncrepl', False):
+        sys.stdout.write("""
+# syncrepl, rid has to be unique in slapd.conf!
+syncrepl rid=1
+    provider="ldap://%(ldap/master)s:7389"
+    type="refreshAndPersist"
+    searchbase="cn=internal"
+    filter="(objectClass=*)"
+    scope="sub"
+    schemachecking="off"
+    retry="%(ldap/database/internal/syncrepl/retry)s"
+    bindmethod=simple
+    starttls="critical"
+    binddn="%(ldap/hostdn)s"
+    """ % configRegistry)
+        print('credentials="%s"\n' % machine_secret)
+
+    # acl
+    acls = []
+    acls.append('by sockname="PATH=/var/run/slapd/ldapi" write')
+    acls.append('by group/univentionGroup/uniqueMember="%s" write' % groups_default_domainadmins_dn)
+    acls.append('by set="user/univentionObjectType & [computers/domaincontroller_master]" read')
+    acls.append('by set="user/univentionObjectType & [computers/domaincontroller_backup]" read')
+    acls.append('by * none break\n')
+    print('# ACLs for cn=internal')
+    print('access to *')
+    for acl in acls:
+        print('    %s' % acl)
+
+    print('# ACLs for cn=blocklists,cn=internal')
+    blocklist_acls = []
+    read_groups = configRegistry.get('ldap/database/internal/acl/blocklists/groups/read', '')
+    for group in read_groups.split('|'):
+        if group:
+            blocklist_acls.append('by group/univentionGroup/uniqueMember="%s" read' % group)
+    print('access to dn.subtree=cn=blocklists,cn=internal')
+    for acl in blocklist_acls:
+        print('    %s' % acl)
+    print('    by * %s' % ("none" if read_groups else "read"))
+@!@

@@ -59,6 +59,7 @@ from ldap.controls.readentry import PostReadControl
 from ldap.dn import dn2str, escape_dn_chars, explode_rdn, str2dn
 from ldap.filter import filter_format
 
+import univention.admin.blocklist
 import univention.admin.filter
 import univention.admin.localization
 import univention.admin.mapping
@@ -163,6 +164,8 @@ class simpleLdap(object):
 
     module = ''  # the name of the module
     use_performant_ldap_search_filter = False
+    ldap_base = configRegistry['ldap/base']
+    _lo_machine_primary = None
 
     def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):  # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, Text, simpleLdap, _Attributes) -> None
         self._exists = False
@@ -181,7 +184,7 @@ class simpleLdap(object):
 
         self.set_defaults = not self.dn  # this object is newly created and so we can use the default values
 
-        self.position = position or univention.admin.uldap.position(lo.base)  # type: univention.admin.uldap.position
+        self.position = position or univention.admin.uldap.position(self.ldap_base)  # type: univention.admin.uldap.position
         if not position and self.dn:
             self.position.setDn(self.dn)
         self.info = {}  # type: _Properties
@@ -239,6 +242,31 @@ class simpleLdap(object):
         self.save()
 
         self._validate_superordinate(False)
+
+    def set_lo_machine_primary(self, lo):  # type: (univention.admin.uldap.access) -> None
+        self._lo_machine_primary = lo
+
+    @property
+    def lo_machine_primary(self):  # type: () -> univention.admin.uldap.access
+        try:  # maybe check if we have long lived connections which are invalidated?!
+            if self._lo_machine_primary is not None and not self._lo_machine_primary.whoami():
+                raise univention.admin.uexceptions.base('invalid LDAP connection lo_machine_primary')
+        except (ldap.LDAPError, univention.admin.uexceptions.base, AttributeError):
+            self._lo_machine_primary = None
+        if self._lo_machine_primary is None:
+            try:
+                simpleLdap._lo_machine_primary = univention.admin.uldap.getMachineConnection(ldap_master=True)[0]
+            except IOError:
+                # This is for joining UCS systems into the domain.
+                # During join the joining system calls udm-cli via ssh on the primary
+                # as, usally, domain admin. This account does not have read permission for machine.secret
+                # so we use the user connection instead.
+                # Problems:
+                # * the join user (if not domain admins group) has no read permissions for blocklist, so he can bypass the blocklist check
+                # * any other user with permissions to create user objects (connector's?) but without permissions to read
+                #   blocklists can bypass the blocklist check with udm-cli
+                self._lo_machine_primary = self.lo
+        return self._lo_machine_primary
 
     @property
     def descriptions(self):  # type: () -> Dict[Text, univention.admin.property]
@@ -527,7 +555,7 @@ class simpleLdap(object):
         """
         return [(key, self[key]) for key in self.keys() if self.has_property(key)]
 
-    def create(self, serverctrls=None, response=None):  # type: (List[ldap.controls.LDAPControl], Dict[Text, Any]) -> Text
+    def create(self, serverctrls=None, response=None, ignore_license=False):  # type: (List[ldap.controls.LDAPControl], Dict[Text, Any], Optional[bool]) -> Text
         """
         Creates the LDAP object if it does not exists by building the list of attributes (addlist) and write it to LDAP.
         If this call raises an exception it is necessary to instantiate a new object before trying to create it again.
@@ -539,11 +567,15 @@ class simpleLdap(object):
         :param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
         :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
+        :param ignore_license: If the license is exceeded the modification may fail. Setting this to True causes license checks to be disabled
+        :type ignore_license: bool
         :returns: The DN of the created object.
         :rtype: str
         """
         if not univention.admin.modules.supports(self.module, 'add'):
-            raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be created.') % (self.module,))
+            # if the licence is exceeded 'add' is removed from the modules operations. Blocklist objects may need to be added anyway.
+            if not ignore_license:
+                raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be created.') % (self.module,))
 
         if self.exists():
             raise univention.admin.uexceptions.objectExists(self.dn)
@@ -555,7 +587,7 @@ class simpleLdap(object):
             self._ldap_pre_ready()
             self.ready()
 
-            dn = self._create(response=response, serverctrls=serverctrls)
+            dn = self._create(response=response, serverctrls=serverctrls, ignore_license=ignore_license)
         except Exception:
             self._safe_cancel()
             raise
@@ -1259,15 +1291,15 @@ class simpleLdap(object):
 
         return ml
 
-    def _create(self, response=None, serverctrls=None):
+    def _create(self, response=None, serverctrls=None, ignore_license=False):
         """Create the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.create`."""
+        univention.admin.blocklist.check_blocklistentry(self)
         self._ldap_pre_create()
         self._update_policies()
         self.call_udm_property_hook('hook_ldap_pre_create', self)
 
         self.set_default_values()
 
-        # iterate over all properties and call checkLdap() of corresponding syntax
         self._call_checkLdap_on_all_property_syntaxes()
 
         al = self._ldap_addlist()
@@ -1284,7 +1316,7 @@ class simpleLdap(object):
 
         # if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
         try:
-            self.lo.add(self.dn, al, serverctrls=serverctrls, response=response)
+            self.lo.add(self.dn, al, serverctrls=serverctrls, response=response, ignore_license=ignore_license)
             self._exists = True
             self._ldap_post_create()
         except Exception:
@@ -1346,6 +1378,7 @@ class simpleLdap(object):
         """Modify the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.modify`."""
         self.__prevent_ad_property_change()
 
+        univention.admin.blocklist.check_blocklistentry(self)
         self._ldap_pre_modify()
         self._update_policies()
         self.call_udm_property_hook('hook_ldap_pre_modify', self)
@@ -1367,12 +1400,18 @@ class simpleLdap(object):
 
         # FIXME: timeout without exception if objectClass of Object is not exsistant !!
         log.log(1, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;', self.dn, ml, self.oldattr)
+
+        blocklist_entries = univention.admin.blocklist.create_blocklistentry(self)
         try:
-            self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response, rename_callback=wouldRename.on_rename)
-        except wouldRename as exc:
-            self._ldap_pre_rename(exc.args[1])
-            self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
-            self._ldap_post_rename(exc.args[0])
+            try:
+                self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response, rename_callback=wouldRename.on_rename)
+            except wouldRename as exc:
+                self._ldap_pre_rename(exc.args[1])
+                self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
+                self._ldap_post_rename(exc.args[0])
+        except Exception:
+            univention.admin.blocklist.cleanup_blocklistentry(blocklist_entries, self)
+            raise
         if ml:
             self._write_admin_diary_modify()
 
@@ -1576,8 +1615,14 @@ class simpleLdap(object):
                 else:
                     log.warning('remove: could not identify UDM module of %r', subolddn)
 
-        self.lo.delete(self.dn)
         self._exists = False
+        blocklist_entries = univention.admin.blocklist.create_blocklistentry(self)
+        try:
+            self.lo.delete(self.dn)
+        except Exception:
+            univention.admin.blocklist.cleanup_blocklistentry(blocklist_entries, self)
+            self._exists = True
+            raise
 
         self._ldap_post_remove()
 
@@ -1804,7 +1849,7 @@ class simpleLdap(object):
         filter_str = six.text_type(filter_s or u'')
         attr = cls._ldap_attributes()
         result = []
-        for dn, attrs in lo.search(filter_str, base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
+        for dn, attrs in lo.search(filter_str, base or cls.ldap_base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
             try:
                 result.append(cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
             except univention.admin.uexceptions.base as exc:

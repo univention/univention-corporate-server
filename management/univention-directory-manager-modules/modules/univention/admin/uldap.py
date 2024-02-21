@@ -751,7 +751,7 @@ class access(object):
         udm_log.debug('getPolicies modules dn %s result', dn)
         return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
 
-    def add(self, dn, al, exceptions=False, serverctrls=None, response=None):
+    def add(self, dn, al, exceptions=False, serverctrls=None, response=None, ignore_license=False):
         # type: (str, List[Tuple[str, Any]], bool, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> None
         """
         Add LDAP entry at distinguished name and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values).
@@ -760,6 +760,7 @@ class access(object):
         :param al: The add-list of 2-tuples (attribute-name, new-values).
         :param bool exceptions: Raise the low level exception instead of the wrapping UDM exceptions.
         :param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
+        :param bool ignore_license: Ignore license check if True.
         :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         :raises univention.admin.uexceptions.licenseDisableModify: if the UCS licence prohibits any modificcation
@@ -769,7 +770,7 @@ class access(object):
         :raises univention.admin.uexceptions.ldapError: on any other LDAP error.
         """
         self._validateLicense()
-        if not self.allow_modify:
+        if not self.allow_modify and not ignore_license:
             udm_log.error('add dn: %s', dn)
             raise univention.admin.uexceptions.licenseDisableModify()
         log.debug('add dn=%s al=%s', dn, al)

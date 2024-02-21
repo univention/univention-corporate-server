@@ -479,6 +479,7 @@ class Instance(Base, ProgressMixin):
                 'help_text': module.help_text,
                 'columns': module.columns,
                 'has_tree': module.has_tree,
+                'ldap_base': module.ldap_base,
             }
 
     @threaded
@@ -592,6 +593,10 @@ class Instance(Base, ProgressMixin):
             else:
                 raise SuperordinateDoesNotExist(superordinate)
 
+        # overwrite base, blocklists are always in its module defined base
+        if module.name == 'blocklists/list':
+            request.options['container'] = module.ldap_base
+
         container = request.options.get('container')
         objectProperty = request.options['objectProperty']
         objectPropertyValue = request.options['objectPropertyValue']
@@ -621,7 +626,7 @@ class Instance(Base, ProgressMixin):
                 'objectType': module.name,
                 'labelObjectType': module.subtitle,
                 'name': module.obj_description(obj),
-                'path': ldap_dn2path(obj.dn, include_rdn=False),
+                'path': ldap_dn2path(obj.dn, include_rdn=False, ldap_base=module.ldap_base),
             }
             if '$value$' in fields:
                 entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
@@ -736,7 +741,7 @@ class Instance(Base, ProgressMixin):
 
         return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
         """
-        containers = [{'id': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()]
+        containers = [{'id': x, 'label': ldap_dn2path(x, ldap_base=module.ldap_base)} for x in module.get_default_containers()]
         return sorted(containers, key=lambda x: x['label'].lower())
 
     @module_from_request
@@ -1036,16 +1041,17 @@ class Instance(Base, ProgressMixin):
             defaults = {}
             if request.flavor != 'navigation':
                 defaults['$operations$'] = ['search']  # disallow edit
-            if request.flavor in ('dns/dns', 'dhcp/dhcp'):
+            module = UDM_Module(request.flavor)
+            if request.flavor in ('dns/dns', 'dhcp/dhcp', 'blocklists/all'):
                 defaults.update({
-                    'label': UDM_Module(request.flavor).title,
+                    'label': module.title,
                     'icon': 'udm-%s' % (request.flavor.replace('/', '-'),),
                 })
             return [dict({
                     'id': container,
-                    'label': ldap_dn2path(container),
+                    'label': ldap_dn2path(container, ldap_base=module.ldap_base),
                     'icon': 'udm-container-dc',
-                    'path': ldap_dn2path(container),
+                    'path': ldap_dn2path(container, ldap_base=module.ldap_base),
                     'objectType': 'container/dc',
                     '$operations$': UDM_Module('container/dc').operations,
                     '$flags$': [],
@@ -1064,7 +1070,7 @@ class Instance(Base, ProgressMixin):
                         'id': item.dn,
                         'label': module.obj_description(item),
                         'icon': 'udm-%s' % (module.name.replace('/', '-')),
-                        'path': ldap_dn2path(item.dn),
+                        'path': ldap_dn2path(item.dn, ldap_base=xmodule.ldap_base),
                         'objectType': module.name,
                         '$operations$': module.operations,
                         '$flags$': [x.decode('UTF-8') for x in item.oldattr.get('univentionObjectFlag', [])],
@@ -1122,7 +1128,7 @@ class Instance(Base, ProgressMixin):
                     'objectType': module.name,
                     'labelObjectType': module.subtitle,
                     'name': udm_objects.description(obj),
-                    'path': ldap_dn2path(obj.dn, include_rdn=False),
+                    'path': ldap_dn2path(obj.dn, include_rdn=False, ldap_base=module.ldap_base),
                     '$flags$': [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])],
                     '$operations$': module.operations,
                 })

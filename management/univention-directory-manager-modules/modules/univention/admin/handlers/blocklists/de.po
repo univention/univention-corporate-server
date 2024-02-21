@@ -1,0 +1,113 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-19 10:56+0100\n"
+"PO-Revision-Date: 2021-05-11 12:01+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: German <packages@univention.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "All blocklist objects"
+msgstr "Alle Blocklist Objekte"
+
+msgid "Blocklist"
+msgstr "Blockliste"
+
+msgid "Blocklists"
+msgstr "Blocklisten"
+
+msgid "Manage the blocklists"
+msgstr "Verwaltung von Blocklisten"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "General"
+msgstr "Allgemein"
+
+msgid "Basic settings"
+msgstr "Grundeinstellungen"
+
+msgid "Univention blocklist entries"
+msgstr "Univention Blocklist-Einträge"
+
+msgid "Univention blocklist entry"
+msgstr "Univention Blocklist-Eintrag"
+
+msgid "Blocklist entry value"
+msgstr "Zu sperrender Wert"
+
+msgid "Blocked until"
+msgstr "Gesperrt bis"
+
+msgid ""
+"This blocklist entry is valid until timestamp (generalized time in LDAP-"
+"Syntax -> 21241212000000Z). Expired entries are deleted."
+msgstr ""
+"Dieser Blocklist-Eintrag ist bis zum Zeitstempel gültig "
+"(allgemeine Zeit in LDAP-Syntax -> 21241212000000Z). "
+"Abgelaufene Einträge werden gelöscht."
+
+msgid "Origin ID"
+msgstr "Ursprungs-ID"
+
+msgid ""
+"The ID of the UDM object that lead to this blocklist entry. The value of "
+"this blocklist entry can still be used on that UDM object."
+msgstr ""
+"Die ID des UDM-Objekts, das zu diesem Sperrlisteneintrag geführt hat. "
+"Der Wert dieses Sperrlisteneintrags kann weiterhin für dieses UDM-Objekt verwendet werden."
+
+msgid "Blocklist entry settings"
+msgstr "Einstellungen für Blocklisten-Eintrag"
+
+msgid "General settings"
+msgstr "Grundeinstellungen"
+
+msgid "Blocklist for certain UDM properties"
+msgstr "Blockliste für UDM Eigenschaften"
+
+msgid "Properties to block"
+msgstr "Zu blockende Eigenschaften"
+
+msgid ""
+"Property values removed from a UDM object can be automatically blocked for "
+"future use. This is achieved by adding the properties to a blocklist. The "
+"properties must be specified according to the following schema: \"udm/module "
+"property\". An example configuration would be \"users/user "
+"mailPrimaryAddress\". If multiple properties are assigned to the same "
+"blocklist, the blocking value applies for multiple properties."
+msgstr ""
+"Von einem UDM-Objekt entfernte Eigenschaftswerte können automatisch für "
+"zukünftige Verwendung blockiert werden. Dies geschieht durch Hinzufügen der "
+"Eigenschaften zu einer Blockliste. Die Eigenschaften müssen nach folgendem "
+"Schema festgelegt werden: \"udm/module property\". Ein Beispiel für die "
+"Konfiguration wäre \"users/user mailPrimaryAddress\". Wenn mehrere "
+"Eigenschaften der gleiche Blockliste zugewiesen wurden, gilt die Blockierung "
+"eines Wertes für mehrere Eigenschaften."
+
+msgid "Retention time for objects in this blocklist"
+msgstr "Aufbewahrungszeit für Einträge in dieser Blockliste"
+
+msgid ""
+"Property values removed from a UDM object can be automatically blocked for "
+"future use. Each blocklist can be assigned a retention period. Once this "
+"retention period has elapsed, the blocking object is automatically deleted, "
+"and the property value can be reassigned. The retention period is set using "
+"the following schema \"1y6m3d\" (which equals one year, six months and three "
+"days)."
+msgstr ""
+"Von einem UDM-Objekt entfernte Eigenschaften können automatisch für "
+"zukünftige Verwendung blockiert werden. Jeder Blockliste kann eine "
+"Aufbewahrungszeit zugewiesen werden. Wenn diese Aufbewahrungszeit "
+"überschritten wurde, wird das blockierende Objekt automatisch gelöscht und "
+"der Eigenschaftswert kann wieder vergeben werden. Die Aufbewahrungszeit wird "
+"mithilfe des folgenden Schemas festgelegt \"1y6m3d\" (entspricht einem Jahr, "
+"sechs Monaten und 3 Tagen)."
+
+msgid "Blocklist settings"
+msgstr "Einstellungen für Blockliste"

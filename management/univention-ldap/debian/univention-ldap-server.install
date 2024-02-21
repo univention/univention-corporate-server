@@ -6,7 +6,9 @@ scripts/convert_shadowMax.py	usr/share/univention-ldap/
 scripts/convert_univentionMailSharedFolderDeliveryAddress.py	usr/share/univention-ldap/
 scripts/create-dh-parameter-files	usr/share/univention-ldap/
 scripts/ldap_setup_index	usr/share/univention-ldap/
+scripts/setup-internal	usr/share/univention-ldap/
 scripts/setup-translog	usr/share/univention-ldap/
+server_password_change.d/univention-ldap-server	usr/lib/univention-server/server_password_change.d/
 univention-backup2master	usr/lib/univention-ldap/
 univention-ldap-backup	usr/sbin/
 well-known-sid-name-mapping.d/univention-ldap-server.py	usr/lib/univention-pam/well-known-sid-name-mapping.d/

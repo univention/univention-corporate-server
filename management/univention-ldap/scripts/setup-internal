@@ -1,0 +1,120 @@
+#!/bin/bash
+# vim: set ts=4 sw=4 et fileencoding=UTF-8:
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# Copyright 2019-2024 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+set -e -u
+
+ARCHIVE='/var/lib/univention-ldap/internal'
+DB="$ARCHIVE/data.mdb"
+
+main () {
+    local action="${1?-Missing action}"
+    shift
+
+    case "$action" in
+    init)
+        wrap setup_db ${1:+"$@"}
+        ;;
+    check)
+        [ -f "$DB" ]
+        ;;
+    db)
+        echo "$DB"
+        ;;
+    help|--help|-h)
+        usage 0
+        ;;
+    *)
+        usage 2 >&2
+        ;;
+    esac
+}
+
+die () {
+    echo "${0##*/}: $*"
+    exit 1
+}
+
+usage () {
+    echo "Usage: ${0##*/} { init [--force] | check | db | help }"
+    trap EXIT
+    exit "${1:-0}"
+}
+
+setup_db () {
+    while [ $# -ge 1 ]
+    do
+        case "$1" in
+        --force)
+            rm -rf "$ARCHIVE"
+            ;;
+        esac
+        shift
+    done
+    [ -s "$DB" ] &&
+        [ -n "$(slapcat -f /etc/ldap/slapd.conf -b cn=internal -H 'ldap:///cn=internal??base')" ] &&
+        return 0
+    install -o openldap -g openldap -d "$ARCHIVE"
+    slapadd -f /etc/ldap/slapd.conf -b cn=internal -l /usr/share/univention-ldap/internal.ldif
+    chown -R -h openldap: "$ARCHIVE"
+}
+
+check_db () {
+    [ -s "$DB" ]
+}
+
+wrap () {
+    tmp="$(mktemp)"
+    trap cleanup EXIT
+    echo "[$(date --rfc-3339=s)] $$ $0 $*" >"$tmp"
+    "$@" >"$tmp" 2>&1
+}
+
+cleanup () {
+    local rc=$?
+    if [ "$rc" -ne 0 ]
+    then
+        set +e +u
+        ps axf
+        grep -i -n -e 'internal' -e '^[^#]' /etc/ldap/slapd.conf
+        ls -l /var/lib/univention-ldap/internal/ /var/univention-join/
+        cat /var/univention-join/status
+    fi >>"$tmp"
+    cat "$tmp" >>/var/log/univention/join.log
+    [ -t 2 ] && cat "$tmp"
+    rm -f "$tmp"
+    return "$rc"
+}
+
+main ${1:+"$@"}
+:
+
+# Constraints
+# * DB must be created before slapd can start

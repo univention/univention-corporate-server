@@ -12,6 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: blocklist.py:143
+#, python-format
+msgid "The value \"%(value)s\" is blocked for the property \"%(prop)s\"."
+msgstr "Der Wert \"%(value)s\" ist für die Eigenschaft \"%(prop)s\" gesperrt."
+
 #: modules/univention/admin/syntax.py:5734
 #, python-format
 msgid "\"%s\" is not a Univention Admin Module."

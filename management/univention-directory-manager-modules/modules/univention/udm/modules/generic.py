@@ -635,7 +635,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         :rtype: list(str)
         """
         module_contailers = [
-            '{},{}'.format(dc, ucr['ldap/base'])
+            '{},{}'.format(dc, self._orig_udm_module.object.ldap_base)
             for dc in getattr(self._orig_udm_module, 'default_containers', [])
         ]
 
@@ -645,7 +645,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         if default_containers and default_positions_property:
             dns = default_containers.get(default_positions_property, [])
             module_contailers.extend(dn for dn in dns if self._dn_exists(dn))
-        module_contailers.append(self.connection.base)
+        module_contailers.append(self._orig_udm_module.object.ldap_base)
         return module_contailers
 
     def _get_orig_udm_module(self):
@@ -705,7 +705,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
             superordinate_modules = univention.admin.modules.superordinate_names(self.name)
             if superordinate_modules and superordinate_modules != ['settings/cn']:
                 raise NoSuperordinate(dn=dn, module_name=self.name, superordinate_types=superordinate_modules)
-        po = univention.admin.uldap.position(self.connection.base)
+        po = univention.admin.uldap.position(udm_module.object.ldap_base)
         try:
             obj = univention.admin.objects.get(udm_module, None, self.connection, po, dn=dn, superordinate=superordinate_obj)
         except univention.admin.uexceptions.noObject:

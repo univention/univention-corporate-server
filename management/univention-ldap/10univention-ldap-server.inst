@@ -382,5 +382,12 @@ fi
 
 ucs_addServiceToLocalhost 'LDAP' "$@" || die
 
+# syncrepl for cn=internal
+if [ "$server_role" = "domaincontroller_master" ]; then
+	ucr set ldap/database/internal/syncprov=true && service slapd start
+elif [ "$server_role" = "domaincontroller_backup" ]; then
+	ucr set ldap/database/internal/syncrepl=true && service slapd start
+fi
+
 joinscript_save_current_version
 exit 0

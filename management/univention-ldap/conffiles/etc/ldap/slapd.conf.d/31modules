@@ -1,6 +1,50 @@
 modulepath	/usr/lib/ldap
 @!@
 import sys
+import os.path
+import re
+from univention.config_registry.handler import run_filter
+
+
+# TODO: move to UCR and replace here and in 25univention-ldap-server_local-schema
+def get_registered_files():
+    files = []
+    registered_directory = '/etc/univention/templates/info/'
+    for f in os.listdir(registered_directory):
+        for line in open(os.path.join(registered_directory, f)).readlines():
+            if line.startswith('File: '):
+                fn = line.replace('File: ', '').strip()
+                if fn.startswith('etc/ldap/slapd.conf.d'):
+                    files.append(fn)
+            elif line.startswith('Subfile: '):
+                fn = line.replace('Subfile: ', '').strip()
+                if fn.startswith('etc/ldap/slapd.conf.d'):
+                    files.append(fn)
+
+    return files
+
+
+def ucr_filter_files(registered_files):
+    directory_path = '/etc/univention/templates/files/etc/ldap/slapd.conf.d/'
+    checklist = []
+    for f in os.listdir(directory_path):
+        if f in {'25univention-ldap-server_local-schema', '31modules'} or f.startswith('.'):
+            continue
+
+        # check if file is registered?
+        if 'etc/ldap/slapd.conf.d/%s' % (f,) not in registered_files:
+            continue
+
+        checklist.append(f)
+
+    output = "\n"
+    if checklist:
+        for fn in checklist:
+            with open('/etc/univention/templates/files/etc/ldap/slapd.conf.d/%s' % (fn,)) as f:
+                output += run_filter(f.read(), configRegistry).decode('UTF-8')
+    return output
+
+
 IS_64BITS = sys.maxsize > 2**32
 for typ in sorted({configRegistry.get('ldap/database/type'), "mdb" if IS_64BITS else "bdb"}):
     print("moduleload\tback_%s.so" % (typ,))
@@ -21,6 +65,14 @@ if configRegistry.is_true('ldap/refint', True) and configRegistry.get('server/ro
     print('moduleload\trefint.so')
 if configRegistry.is_true('ldap/pw-bcrypt', False):
     print('moduleload\tpw-bcrypt.so')
+
+# unfortunately we already have documentation how to activate syncprov
+#   https://docs.software-univention.de/ext-domain/5.0/en/syncrepl.html#activation-of-the-syncrepl-proxy
+# and adding moduleload module.so twice breaks slapd
+if configRegistry.is_true('ldap/syncprov', True):
+    ucr_filtered_output = ucr_filter_files(get_registered_files())
+    if not re.search(r'\nmoduleload.*syncprov.so\n', ucr_filtered_output):
+        print('moduleload\tsyncprov.so')
 @!@
 moduleload	constraint.so
 moduleload	accesslog.so

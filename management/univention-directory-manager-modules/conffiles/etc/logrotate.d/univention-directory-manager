@@ -23,4 +23,12 @@ print("/var/log/univention/%s.log {" % name)
 for setting in sorted(settings):
     print("\t%s" % settings[setting])
 print("}")
+
+name = "blocklist-clean-expired-entries"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+print("/var/log/univention/%s.log {" % name)
+for setting in sorted(settings):
+    print("\t%s" % settings[setting])
+print("}")
+
 @!@

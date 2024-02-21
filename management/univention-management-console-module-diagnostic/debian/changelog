@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.7-3) unstable; urgency=medium
+
+  * Bug #57038: Add check for permissions of slapd.conf
+
+ -- Felix Botner <botner@univention.de>  Tue, 06 Feb 2024 15:43:19 +0100
+
 univention-management-console-module-diagnostic (6.0.7-2) unstable; urgency=medium
 
   * Bug #49006: extend 31_file_permissions for OIDC configuration

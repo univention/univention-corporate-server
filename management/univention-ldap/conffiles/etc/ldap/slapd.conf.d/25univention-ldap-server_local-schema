@@ -25,7 +25,7 @@ def ucr_filter_files(registered_files):
     directory_path = '/etc/univention/templates/files/etc/ldap/slapd.conf.d/'
     checklist = []
     for f in os.listdir(directory_path):
-        if f == '25univention-ldap-server_local-schema' or f.startswith('.'):
+        if f in {'25univention-ldap-server_local-schema', '31modules'} or f.startswith('.'):
             continue
 
         # check if file is registered?
