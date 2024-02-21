@@ -147,11 +147,11 @@ Expired block list entries
 
 Every entry in a block list has a ``Blocked until`` property. Block list
 entries are only valid until this time stamp expires. A cron job on the
-|UCSPRIMARYDN| deletes expired block list entries. How often this cron job
-is executed can be configured with the
-:envvar:`directory/manager/blocklist/cleanup/cron`.
-The logfile :file:`/var/log/univention/blocklist-clean-expired-entries.log`
-lists the expired entries that UDM deleted.
+|UCSPRIMARYDN| deletes expired block list entries. How often this cron job is
+executed can be configured with the
+:envvar:`directory/manager/blocklist/cleanup/cron`.  The log file
+:file:`/var/log/univention/blocklist-clean-expired-entries.log` lists the
+expired entries that UDM deleted.
 
 .. _udm-blocklists-ldap-acl:
 
