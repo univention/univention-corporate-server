@@ -48,8 +48,8 @@ def slapd_config():
 @pytest.mark.skipif(role() not in ['domaincontroller_master'], reason="check additional acls only on syncprov/primary")
 def test_blocklist_additional_group_acls_write(udm, random_string, slapd_config):
     password = 'univention'
-    user_dn, name = udm.create_user(password=password)
-    group_dn, group_name = udm.create_group(users=[user_dn])
+    user_dn, _name = udm.create_user(password=password)
+    group_dn, _group_name = udm.create_group(users=[user_dn])
     slapd_config([f'ldap/database/internal/acl/blocklists/groups/write=cn=justfortesting|{group_dn}'])
     lo = access(base=BASE_BLOCKLISTS, binddn=user_dn, bindpw=password)
     cn = random_string()
@@ -61,8 +61,8 @@ def test_blocklist_additional_group_acls_write(udm, random_string, slapd_config)
 @pytest.mark.skipif(role() not in ['domaincontroller_master'], reason="check additional acls only on syncprov/primary")
 def test_blocklist_additional_group_acls_read(udm, random_string, slapd_config):
     password = 'univention'
-    user_dn, name = udm.create_user(password=password)
-    group_dn, group_name = udm.create_group(users=[user_dn])
+    user_dn, _name = udm.create_user(password=password)
+    group_dn, _group_name = udm.create_group(users=[user_dn])
     slapd_config([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
     lo = access(base=BASE_BLOCKLISTS, binddn=user_dn, bindpw=password)
     cn = random_string()
@@ -73,19 +73,19 @@ def test_blocklist_additional_group_acls_read(udm, random_string, slapd_config):
 
 @pytest.mark.skipif(role() in ['domaincontroller_master', 'domaincontroller_backup'], reason="database exists on primary and backup, but not on the other roles")
 def test_no_local_database():
-    lo, po = getMachineConnection(ldap_master=False)
+    lo, _po = getMachineConnection(ldap_master=False)
     with pytest.raises(noObject):
         lo.search(base=BASE)
 
 
 @pytest.mark.skipif(role() not in ['domaincontroller_master', 'domaincontroller_backup'], reason="database exists on primary and backup, but not on the other roles")
 def test_local_database():
-    lo, po = getMachineConnection(ldap_master=False)
+    lo, _po = getMachineConnection(ldap_master=False)
     lo.search(base=BASE)
 
 
 def test_write_with_machine_account_on_primary(random_string):
-    lo, po = getMachineConnection(ldap_master=True)
+    lo, _po = getMachineConnection(ldap_master=True)
     cn = random_string()
     create_container(lo, cn, BASE)
 
@@ -98,20 +98,20 @@ def test_write_domain_admins_on_primary(account, random_string, ucr):
 
 @pytest.mark.skipif(role() not in ['domaincontroller_master', 'domaincontroller_backup'], reason="no admin connection on this role")
 def test_write_admin_connection_on_primary(random_string):
-    lo, pos = getAdminConnection()
+    lo, _pos = getAdminConnection()
     cn = random_string()
     create_container(lo, cn, BASE)
 
 
 def test_normal_user_can_not_read_internal(udm, ucr):
-    dn, name = udm.create_user(password='univention')
+    dn, _name = udm.create_user(password='univention')
     lo = access(host=ucr['ldap/master'], base=BASE, binddn=dn, bindpw='univention')
     with pytest.raises(noObject):
         lo.search(base=BASE)
 
 
 def test_normal_user_can_read_blocklists(udm, ucr):
-    dn, name = udm.create_user(password='univention')
+    dn, _name = udm.create_user(password='univention')
     lo = access(host=ucr['ldap/master'], base=BASE, binddn=dn, bindpw='univention')
     lo.search(base=BASE_BLOCKLISTS)
 
@@ -130,8 +130,8 @@ def test_backup_config(ucr):
 
 @pytest.mark.skipif(role() not in ['domaincontroller_backup'], reason="syncrepl only on backup")
 def test_syncrepl_simple(random_string):
-    lo_backup, po = getMachineConnection(ldap_master=False)
-    lo_primary, po = getMachineConnection(ldap_master=True)
+    lo_backup, _po = getMachineConnection(ldap_master=False)
+    lo_primary, _po = getMachineConnection(ldap_master=True)
     cn = random_string()
     objects = 10000
 
@@ -179,7 +179,7 @@ def test_syncrepl_simple(random_string):
 def test_access_blocklist_on_backup(random_string, account, udm, ucr):
 
     # machine account can read
-    lo, po = getMachineConnection(ldap_master=False)
+    lo, _po = getMachineConnection(ldap_master=False)
     lo.search(base=BASE_BLOCKLISTS)
     cn = random_string()
     with pytest.raises(ldapError):
@@ -193,13 +193,13 @@ def test_access_blocklist_on_backup(random_string, account, udm, ucr):
         create_container(lo, cn, BASE_BLOCKLISTS)
 
     # users can read
-    dn, name = udm.create_user(password='univention')
+    dn, _name = udm.create_user(password='univention')
     lo = access(host=ucr['ldap/server/name'], base=BASE, binddn=dn, bindpw='univention')
     with pytest.raises(ldapError):
         create_container(lo, cn, BASE_BLOCKLISTS)
 
     # admin connection
-    lo, pos = getAdminConnection()
+    lo, _pos = getAdminConnection()
     cn = random_string()
     create_container(lo, cn, BASE_BLOCKLISTS)
 
@@ -207,8 +207,8 @@ def test_access_blocklist_on_backup(random_string, account, udm, ucr):
 @pytest.mark.skipif(role() not in ['domaincontroller_backup'], reason="check additional acls only on syncrepl/backup")
 def test_access_blocklist_additional_group_acls_read(udm, random_string, slapd_config):
     password = 'univention'
-    user_dn, name = udm.create_user(password=password)
-    group_dn, group_name = udm.create_group(users=[user_dn])
+    user_dn, _name = udm.create_user(password=password)
+    group_dn, _group_name = udm.create_group(users=[user_dn])
     slapd_config([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
     lo = access(base=BASE_BLOCKLISTS, binddn=user_dn, bindpw=password)
     cn = random_string()

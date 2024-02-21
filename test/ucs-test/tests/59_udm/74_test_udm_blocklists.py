@@ -31,7 +31,7 @@ def get_uuid() -> str:
 @pytest.fixture()
 def blocklist_position(random_string):
     name = random_string()
-    lo, po = getMachineConnection(ldap_master=True)
+    lo, _po = getMachineConnection(ldap_master=True)
     dn = f"cn={name},{BASE}"
     lo.add(dn, [
         ('cn', name.encode('UTF-8')),
@@ -62,7 +62,7 @@ def add_ldap_blocklistentries(blocklist_position, random_string):
     container = blocklist_position.cn
 
     def _func(cns: list) -> list:
-        lo, po = getMachineConnection(ldap_master=True)
+        lo, _po = getMachineConnection(ldap_master=True)
         for cn in cns:
             dn = f"cn={cn},cn={container},{BASE}"
             lo.add(dn, [
@@ -77,7 +77,7 @@ def add_ldap_blocklistentries(blocklist_position, random_string):
 
     yield _func
 
-    lo, po = getMachineConnection(ldap_master=True)
+    lo, _po = getMachineConnection(ldap_master=True)
     for dn in dns:
         print(f"cleanup {dn}")
         try:
