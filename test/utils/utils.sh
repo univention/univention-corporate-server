@@ -538,10 +538,6 @@ install_ucs_test_appcenter_uninstall () {
 	install_with_unmaintained ucs-test-appcenter-uninstall
 }
 
-install_required_packages () {
-	install_additional_packages $REQUIRED_SOFTWARE
-}
-
 create_DONT_START_UCS_TEST () {
 	echo "-----------------------------------------------------------------------------------"
 	echo "$@"
