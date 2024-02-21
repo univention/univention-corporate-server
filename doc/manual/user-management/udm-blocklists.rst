@@ -7,37 +7,46 @@
 Prevent reuse of user property values
 =====================================
 
-Since version TODO UCS supports block lists to prevent the reuse of user or
-group property values.
+.. TODO : Add version of the erratum
 
-This feature allows to configure block lists for UDM properties. When this
-property is modified or removed from an UDM object a block list entry for the
-old value of this property is created automatically. This block list entry
-prevents setting this value to the property of another UDM object.
+.. versionadded:: 5.0-6-erratum-...
 
-As an example imagine we want to block old values of the property
-``mailPrimaryAddress`` of UDM user objects from being reused. First you have
-to configure a block list for the property ``mailPrimaryAddress``. If we now
-remove a user object with the ``mailPrimaryAddress`` of ``chef@mail.test`` and
-change the ``mailPrimaryAddress`` of another user from ``james@mail.test`` to
-``john@mail.test``, block list entries for both old values are created. These
-values, ``chef@mail.test`` and ``james@mail.test``, are now blocked and can
-not be set as ``mailPrimaryAddress`` on other user objects.
+   Since :uv:erratum:`5.0x...`, UCS supports block lists to prevent the reuse of user or group
+   property values.
 
-.. note::
+Block lists is a module in UDM.
+It allows to configure block lists for UDM properties.
+When an administrator or software modifies or removes a UDM property on a UDM object,
+the block list automatically adds an entry about this property with its value to the block list.
+The entry in the block list prevents
+that another UDM object can use the same value of the UDM property.
+Block lists operate on the UDM level.
 
-   The block lists feature operates on the UDM level.
+For example, you want to prevent that UCS reuses values
+of the UDM property ``mailPrimaryAddress`` of the UDM objects *user*.
+You configure a block list for the UDM property ``mailPrimaryAddress``.
+If you then remove the value ``chef@example.com`` for the UDM property ``mailPrimaryAddress`` from a
+UDM user object,
+the UDM block list creates an entry for that value.
+If you change the value from ``james@example.com`` to ``john@example.com``
+for the UDM property ``mailPrimaryAddress``,
+the UDM block list creates another entries for ``james@example.com``.
+
+UDM block lists now prevents reusing the values ``chef@example.com`` and ``james@example.com``.
+You can't use them on other UDM user objects for the UDM property ``mailPrimaryAddress``.
 
 .. _udm-blocklists-activate:
 
 Activate block lists
 --------------------
 
-Requirement for the use of block lists is UCS version TODO (at least on all
-server where UDM object are managed).
+Before you can activate the block lists,
+you first need to update the UCS systems,
+where you manage UDM objects,
+to at least :uv:erratum:`5.0x...`.
 
-On all UCS servers in the domain the |UCSUCRV|
-:envvar:`directory/manager/blocklist/enabled` has to be set to ``true``.
+Second, you need to set the |UCSUCRV| :envvar:`directory/manager/blocklist/enabled` to ``true`` with
+:option:`ucr set` on all UCS systems, where you manage UDM objects.
 
 .. _udm-blocklists-configure:
 
@@ -49,17 +58,8 @@ Block lists can be created, listed and removed in the UMC module
 
 On every block list you need to define the following properties:
 
-.. _udm-blocklists-configure-table:
-
-.. list-table:: *General* tab
-   :header-rows: 1
-   :widths: 3 9
-
-   * - Attribute
-     - Description
-
-   * - Name
-     - A free selectable name for the block list.
+Name
+   Provide a human-readable name for the block list for later identification.
 
    * - Retention time
      - Retention time for entries in this block list (expired block list
@@ -67,13 +67,15 @@ On every block list you need to define the following properties:
        following schema "1y6m3d" (which equals one year, six months and three
        days).
 
-   * - Properties to block
-     - Defines the UDM modules and properties for which this block list
-       blocks values from being reused.
+Properties to block
+   Defines the UDM modules and their properties that the block list prevents from reuse.
 
-An example for creating a block list  on the command line would be:
+The following example for :program:`udm blocklists/list` shows how to create a block list.
+The block lists prevents the reuse of
+the UDM property ``mailPrimaryAddress`` for ``users/user`` objects
+and the UDM property ``mailAddress`` for ``groups/group`` objects.
 
-.. code-block::
+.. code-block:: console
 
    $ udm blocklists/list create \
      --set name=user-and-group-emails \
@@ -81,66 +83,66 @@ An example for creating a block list  on the command line would be:
      --append blockingProperties="users/user mailPrimaryAddress" \
      --append blockingProperties="groups/group mailAddress"
 
-Entries in this block list block values from being reused as values for the
-user property ``mailPrimaryAddress`` and the group property ``mailAddress``.
-
 
 .. _udm-blocklists-entry-manage:
 
 Manage block list entries
 -------------------------
 
-Block list entries can be managed in the UMC module :guilabel:`Blocklists`
-or with the command line tool ``udm blocklists/entry``. When block lists are
-activated and configured entries are created automatically when a value is
-removed from an UDM object. Expired entries are automatically deleted.
+You can manage block list entries in the UMC module *Blocklists*,
+or through the command line tool :program:`udm blocklists/list`.
+
+When you activated block lists,
+UDM automatically creates entries in the configured block list,
+when you remove a value from a UDM property of a UDM object.
+UDM automatically deletes expired entries from the block list.
 
 Every block list entry has the following properties:
 
-.. _udm-blocklists-entry-configure-table:
 
-.. list-table:: *General* tab
-   :header-rows: 1
-   :widths: 3 9
+Value
+   A SHA-256 hash representing the value that the block list is blocking from reuse.
+   The UDM property value is a clear text value.
+   Before UDM creates the block list entry,
+   it converts the value to lowercase text.
+   All uppercase and lowercase variants of the value then match the block list entry when validated by UDM.
 
-   * - Attribute
-     - Description
+Blocked until
+   The block list entry expires after this
+   `GeneralizedTime-LDAP-Syntax <ldap-generalized-time_>`_
+   timestamp.
 
-   * - Value
-     - A ``sha256`` hash representing the value to block. When creating an
-       entry this is the clear text value. Before creating the hash
-       the value is converted to lower case, so that all versions, regardless
-       of case, match the block list entry when it is checked.
+   When UDM creates a block list entry,
+   it takes the current date and time,
+   adds the configured retention time of the corresponding block list
+   and writes the result to *Blocked until*.
 
-   * - Blocked until
-     - The block list entry expired after this
-       `GeneralizedTime-LDAP-Syntax <ldap-generalized-time_>`_ time stamp.
-       When an entry is create this is set to now + the retention time
-       of the corresponding block list. This time stamp is set when creating
-       the block list entry. It is not updated if the retention time of
-       the block list is updated.
+   Changing the retention time of the block list
+   doesn't update the *Blocked until* property of the block list entry.
 
-   * - Origin ID
-     - The ID of the UDM object that lead to this block list entry. The value
-       of this block list entry can still be used on that UDM object.
+Origin ID
+   The ID of the UDM object that caused the block list entry.
+   You can still use the value of the block list entry on this UDM object.
 
-.. _udm-blocklists-expired-entries:
-
-.. note::
+.. important::
 
    Listing block list entries gives you only the hashes of the blocked values.
-   But you can search for the clear text value of a particular entry, e.g. in
-   case you want to delete that entry.
 
-   .. code-block::
+   Nevertheless, you can search for the clear text value of a particular entry,
+   for example, in case you want to delete that entry.
+
+   .. code-block:: console
 
       $ udm blocklists/entry list
       DN: cn=sha256:a859cd5964b6ac...,cn=emails,cn=blocklists
       DN: cn=sha256:b859cd5964b6ac...,cn=emails,cn=blocklists
       DN: cn=sha256:c859cd5964b6ac...,cn=emails,cn=blocklists
 
-      $ udm blocklists/entry list --filter value=blocked_email@mail.test
+      $ udm blocklists/entry list --filter value=blocked_email@example.com
       DN: cn=sha256:c859cd5964b6ac...,cn=emails,cn=blocklists
+
+
+.. _udm-blocklists-expired-entries:
 
 Expired block list entries
 --------------------------
@@ -150,7 +152,7 @@ entries are only valid until this time stamp expires. A cron job on the
 |UCSPRIMARYDN| deletes expired block list entries. How often this cron job
 is executed can be configured with the
 :envvar:`directory/manager/blocklist/cleanup/cron`.
-
+The logfile :file:`/var/log/univention/blocklist-clean-expired-entries.log` lists the expired entries that UDM deleted.
 .. _udm-blocklists-ldap-acl:
 
 LDAP ACLs for block lists
@@ -158,12 +160,13 @@ LDAP ACLs for block lists
 
 By default every UCS node in the domain and every member of the
 ``Domain Admins`` group can write block list entries. And everybody can read.
+You can configure the permissions
+on the |UCSPRIMARYDN| and the |UCSBACKUPDN|\ s with the following |UCSUCRVs|:
 
-This can be configured on the |UCSPRIMARYDN| (and |UCSBACKUPDN|\ s)
-with :envvar:`ldap/database/internal/acl/blocklists/groups/read` and
-:envvar:`ldap/database/internal/acl/blocklists/groups/write`.
+* :envvar:`ldap/database/internal/acl/blocklists/groups/read`
+* :envvar:`ldap/database/internal/acl/blocklists/groups/write`
 
-For example, if you want to give a user that is not member of the
-``Domain Admins`` group the permission to delete block list entries, you need
-to create a group with that user as member and add the LDAP DN of this group
-to :envvar:`ldap/database/internal/acl/blocklists/groups/write`.
+For example, if you want to give a user the permission to delete block list entries
+who isn't member of the ``Domain Admins`` group,
+you need to create a group with that user as member
+and add the LDAP DN of this group to :envvar:`ldap/database/internal/acl/blocklists/groups/write`.
