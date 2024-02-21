@@ -771,7 +771,9 @@ class UDM_Module(object):
     @property
     def ldap_base(self):
         """Default LDAP base of the UDM module"""
-        return getattr(self.module.object, 'ldap_base', ucr.get('ldap/base'))
+        if hasattr(self.module, 'object'):
+            return getattr(self.module.object, 'ldap_base', ucr.get('ldap/base'))
+        return ucr.get('ldap/base')
 
     @property
     def description(self):
