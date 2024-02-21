@@ -158,14 +158,15 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: directory/manager/blocklist/cleanup/cron
 
-   This variable determines how often expired block list entries are searched
-   and removed. The value must be in the time format of a crontab entry.
+   This variable determines how often UDM searches and removes the expired block list entries.
+   The value follows the :ref:`cron syntax <cron-syntax>` for the time definition.
    For more information, see :ref:`udm-blocklists-expired-entries`.
 
 .. envvar:: directory/manager/blocklist/enabled
 
-   Activates the management of block list entries in UDM. For more information,
-   see :ref:`udm-blocklists-activate`.
+   Activates the management of block list entries in UDM.
+   Default value is ``false``.
+   For information about how to activate, see :ref:`udm-blocklists-activate`.
 
 .. envvar:: directory/manager/templates/alphanum/whitelist
 
@@ -443,15 +444,15 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
 .. envvar:: ldap/database/internal/acl/blocklists/groups/read
 
-   List of group dn's that have read access to all objects beneath the
-   container ``cn=blocklists`` the internal database, see
-   :ref:`udm-blocklists-ldap-acl`
+   List of group distinguished names (DN)
+   that have read access to all objects under the container ``cn=blocklists`` in the internal database.
+   For more information, see :ref:`udm-blocklists-ldap-acl`.
 
 .. envvar:: ldap/database/internal/acl/blocklists/groups/write
 
-   List of group dn's that have write access to all objects beneath the
-   container ``cn=blocklists`` the internal database, see
-   :ref:`udm-blocklists-ldap-acl`
+   List of group distinguished names (DN)
+   that have write access to all objects under the container ``cn=blocklists`` in the internal database.
+   For more information, see :ref:`udm-blocklists-ldap-acl`
 
 .. envvar:: ldap/acl/read/anonymous
 
