@@ -160,6 +160,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    This variable determines how often UDM searches and removes the expired block list entries.
    The value follows the :ref:`cron syntax <cron-syntax>` for the time definition.
+   The default value is daily at 8:00 in the morning.
    For more information, see :ref:`udm-blocklists-expired-entries`.
 
 .. envvar:: directory/manager/blocklist/enabled
