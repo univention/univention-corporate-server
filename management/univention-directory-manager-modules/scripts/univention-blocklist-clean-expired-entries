@@ -56,6 +56,8 @@ if __name__ == '__main__':
     )
     options = parser.parse_args()
     blocklist_mod = UDM.admin().version(3).get('blocklists/entry')
+    now = datetime.now()
+    print(f'{now} - searching for expired entries')
     for entry in blocklist_mod.search(base=BLOCKLIST_BASE):
         if is_expired(entry.props.blockedUntil):
             now = datetime.now()

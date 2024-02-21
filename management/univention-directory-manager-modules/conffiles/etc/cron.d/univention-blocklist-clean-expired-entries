@@ -8,5 +8,5 @@ if configRegistry.get('directory/manager/blocklist/enabled', False) and configRe
     interval = configRegistry.get("directory/manager/blocklist/cleanup/cron", "0 8 * * *")
     logfile = '/var/log/univention/blocklist-clean-expired-entries.log'
     if interval:
-        print("%s       root    [ -x %s ] && %s --remove-expired >>%s" % (interval, script, script, logfile))
+        print("%s       root    [ -x %s ] && %s --remove-expired >>%s 2>&1" % (interval, script, script, logfile))
 @!@
