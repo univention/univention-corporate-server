@@ -12,3 +12,6 @@ desc: |
    appear in the Samba/AD SAM directory, possibly causing additional delay.
    This has been fixed.
 bug: [57027]
+erratum: 962
+announced: 2024-02-21
+support: core
