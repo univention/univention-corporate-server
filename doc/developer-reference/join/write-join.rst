@@ -90,8 +90,11 @@ Source code:
 
    ``## joinscript api: bindpwdfile``
       Credentials from :command:`univention-join` and
-      :command:`univention-run-join-script` are always passed through the two
+      :command:`univention-run-join-script` are passed through the two
       parameters ``--binddn`` and ``--bindpwdfile``.
+      If the join script is executed on a primary directory node, the 
+      parameters are usually not transferred, as the corresponding credentials
+      are already directly accessible for the join script.
 
       .. deprecated:: 4.4
 
