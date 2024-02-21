@@ -212,13 +212,13 @@ if [ "$1" = "configure" ]; then
 	if dpkg --compare-versions "$2" lt-nl 16.0.14-5; then
 		if [ -e /var/univention-join/joined ] ; then
 			if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-				/usr/share/univention-ldap/setup-internal init
+				/usr/share/univention-ldap/setup-internal init || true
 				if [ "$server_role" = "domaincontroller_master" ]; then
 					ucr set ldap/database/internal/syncprov=true
 				elif [ "$server_role" = "domaincontroller_backup" ]; then
 					ucr set ldap/database/internal/syncrepl=true
 				fi
-				systemctl restart slapd
+				systemctl restart slapd || true
 			fi
 		fi
 	fi
