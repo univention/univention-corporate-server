@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * UDM REST now supports a different LDAP base for each UDM
    module. This is a requirement for the blocklist feature.
-bug: [57039]
+bug: [56999, 57039]
