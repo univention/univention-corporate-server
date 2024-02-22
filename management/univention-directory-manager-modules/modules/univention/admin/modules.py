@@ -233,7 +233,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
                     subsyn._load(lo)
 
     # add new properties, only for modules in default ldap base
-    if lo.compare_dn(configRegistry['ldap/base'].lower(), module.object.ldap_base.lower()):
+    if lo.compare_dn(configRegistry['ldap/base'].lower(), getattr(module.object, 'ldap_base', configRegistry['ldap/base']).lower()):
         update_extended_options(lo, module, position)
         update_extended_attributes(lo, module, position)
 
@@ -1139,7 +1139,7 @@ def defaultContainers(module):
     :param module: |UDM|
     :returns: a list of DNs.
     """
-    base = module.object.ldap_base
+    base = getattr(module.object, 'ldap_base', configRegistry['ldap/base'])
     return ['%s,%s' % (rdn, base) for rdn in getattr(module, 'default_containers', [])]
 
 

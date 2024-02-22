@@ -32,6 +32,10 @@
 
 """|UDM| module for blocklist settings"""
 
+import datetime
+
+from dateutil.parser import parse as duparse
+
 import univention.admin.blocklist
 import univention.admin.filter
 import univention.admin.handlers
@@ -39,10 +43,26 @@ import univention.admin.localization
 import univention.admin.syntax
 import univention.admin.uldap
 from univention.admin.layout import Group, Tab
+from univention.admin.syntax import simple
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.blocklists')
 _ = translation.translate
+
+
+# duplicated syntax class from syntax.py remove and use syntax class from syntax.py when preparing for 5.0-7
+class GeneralizedTimeUTC(simple):
+    """Generalized time but without microseconds and always in UTC"""
+
+    @classmethod
+    def parse(self, text):
+        try:
+            datetime.datetime.strptime(text, "%Y%m%d%H%M%SZ")
+            duparse(text)
+        except ValueError:
+            raise univention.admin.uexceptions.valueError(_('This timestamp needs be in UTC and follow the format YYYYMMDDHHmmssZ.'))
+        return text
+
 
 module = 'blocklists/entry'
 operations = ['add', 'edit', 'remove', 'search']
@@ -72,7 +92,7 @@ property_descriptions = {
     'blockedUntil': univention.admin.property(
         short_description=_('Blocked until'),
         long_description=_('This blocklist entry is valid until timestamp (generalized time in LDAP-Syntax -> 21241212000000Z). Expired entries are deleted.'),
-        syntax=univention.admin.syntax.GeneralizedTimeUTC,
+        syntax=GeneralizedTimeUTC,
         required=True,
     ),
     'originUniventionObjectIdentifier': univention.admin.property(
@@ -93,6 +113,7 @@ layout = [
         ]),
     ]),
 ]
+
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('value', 'cn', None, univention.admin.mapping.ListToString)

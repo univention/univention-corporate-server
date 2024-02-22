@@ -1,4 +1,4 @@
-univention-directory-manager-modules (15.0.25-7) unstable; urgency=medium
+univention-directory-manager-modules (15.0.25-8) unstable; urgency=medium
 
   * Bug #57039: add blocklist module
   * Bug #57040: manage blocklist objects in UDM
