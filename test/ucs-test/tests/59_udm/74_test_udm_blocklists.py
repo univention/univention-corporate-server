@@ -238,6 +238,7 @@ def test_udm_python_create_with_position(blocklist_list, random_string):
     assert not blocklistentry_mod.lookup(None, lo, f'value={value}')
 
 
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
 def test_udm_rest_list_delete(add_ldap_blocklistentries, random_string, udm_rest_client):
     name = random_string()
     blocklist_entries = [f'{name}1', f'{name}2', f'{name}3']
@@ -259,6 +260,7 @@ def test_udm_rest_list_delete(add_ldap_blocklistentries, random_string, udm_rest
             udm_rest_client.get(dn)
 
 
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
 def test_udm_rest_create_without_position(random_string, udm_rest_client, blocklist_list):
     value = random_string()
     new = udm_rest_client.new()
@@ -279,6 +281,7 @@ def test_udm_rest_create_without_position(random_string, udm_rest_client, blockl
         udm_rest_client.get(obj.dn)
 
 
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
 def test_udm_rest_create_with_position(blocklist_list, random_string, udm_rest_client):
     value = random_string()
     new = udm_rest_client.new()

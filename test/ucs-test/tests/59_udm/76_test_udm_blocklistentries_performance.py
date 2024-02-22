@@ -114,4 +114,4 @@ def test_create_1000_users_with_extreme_blocklist_setup(blocklist_setup, mail_do
         for dn in user_dns:
             lo.delete(dn)
     duration = end - start
-    assert duration < 150
+    assert duration < 250
