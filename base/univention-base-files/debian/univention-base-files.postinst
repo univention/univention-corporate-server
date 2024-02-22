@@ -70,35 +70,12 @@ univention-config-registry set cron/autostart?yes \
 	rpcbind/autostart?yes \
 
 # syslog
-if [ "$1" = configure ] && [ -z "$2" ]; then
-	# installation
 	univention-config-registry set syslog/mail/mirrorto/syslog?no \
 		'systemd/journald/Storage?persistent' \
 		'systemd/journald/SystemMaxFileSize?100M' \
 		'systemd/journald/MaxFileSec?1 day' \
 		'systemd/journald/MaxRetentionSec?12 week' \
 		'ntp/noquery?true'
-else
-	# update
-	univention-config-registry set syslog/mail/mirrorto/syslog?yes \
-		'systemd/journald/Storage?persistent' \
-		'systemd/journald/SystemMaxFileSize?100M' \
-		'systemd/journald/MaxFileSec?1 day' \
-		'systemd/journald/MaxRetentionSec?12 week' \
-		'ntp/noquery?false'
-fi
-
-# this must be done _before_ dephelper runs
-if [ "$1" = configure ] && [ ! -e /vmlinuz.install ] && [ ! -e /initrd.img.install ]; then
-	newestkernel=$(readlink /vmlinuz)
-	if [ -z "$newestkernel" ]; then newestkernel=boot/vmlinuz-$(uname -r); fi
-	newestinitrd=$(readlink /initrd.img)
-	if [ -z "$newestinitrd" ]; then newestinitrd=boot/initrd.img-$(uname -r); fi
-	if [ -n "$newestkernel" ] && [ -n "$newestinitrd" ]; then
-		ln -snf "$newestkernel" /vmlinuz.install
-		ln -snf "$newestinitrd" /initrd.img.install
-	fi
-fi
 
 getent passwd tss >/dev/null || useradd --system tss
 getent group scanner >/dev/null || addgroup --system scanner
@@ -108,14 +85,6 @@ getent group fuse >/dev/null || addgroup --system fuse
 getent group kvm >/dev/null || addgroup --system kvm
 
 #DEBHELPER#
-
-# Bug #19585: password/quality/credit/{digist -> digits}
-password_quality_credit_digist=$(univention-config-registry get password/quality/credit/digist)
-if [ -n "$password_quality_credit_digist" ]
-then
-	univention-config-registry set password/quality/credit/digits="$password_quality_credit_digist"
-	univention-config-registry unset password/quality/credit/digist
-fi
 
 # to use pam_tally (account locking) via ssh the passwordauthentication
 # must be disabled otherwise the pam stack won't use for authentication
@@ -149,10 +118,6 @@ univention-config-registry set kernel/blacklist?"nouveau"
 dpkg-statoverride --update --add root root 0640 /var/log/dpkg.log || true
 dpkg-statoverride --update --add root root 0640 /var/log/bootstrap.log || true
 dpkg-statoverride --update --add root root 0640 /var/log/faillog || true
-
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 9.0.3-3; then
-	dpkg-statoverride --remove /var/log/lastlog || true
-fi
 
 if test -x /etc/init.d/ssh; then
 	invoke-rc.d ssh reload
