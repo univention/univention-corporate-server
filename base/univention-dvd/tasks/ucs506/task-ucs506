@@ -31,6 +31,7 @@ univention-server-backup
 univention-server-slave
 univention-server-member
 univention-container-role-common
+univention-ad-connector
 
 /* Translation Packages */
 univention-l10n-fr

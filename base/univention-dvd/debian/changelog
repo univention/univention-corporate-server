@@ -1,3 +1,9 @@
+univention-dvd (5.0.3-2) unstable; urgency=low
+
+  * Bug #57078: Re-add univention-ad-connector to ISO image
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Feb 2024 15:48:02 +0100
+
 univention-dvd (5.0.3-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
