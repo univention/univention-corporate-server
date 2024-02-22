@@ -1,3 +1,9 @@
+ucs-test (10.0.20-35) unstable; urgency=medium
+
+  * Bug #56846: Added new UnsupportedEncodingError to grep_traceback.
+
+ -- Alexander Steffen <steffen@univention.de>  Thu, 22 Feb 2024 09:45:26 +0100
+
 ucs-test (10.0.20-34) unstable; urgency=medium
 
   * Bug #56999: test for blocklist and cn=internal

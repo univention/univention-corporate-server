@@ -295,6 +295,7 @@ COMMON_EXCEPTIONS = (
     E("ldap.CONSTRAINT_VIOLATION: .*unique index violation on objectSid", ['in sync_from_ucs'], 43775),  # a test creates a user with the default Administrators SID, which creates a SID-Conflict
     E("ucsschool.importer.exceptions.UnknownRole: Unknown role 'triggererror' found in 'Typ' column.", ['csv_reader.py']),
     E("KeyError: 'triggererror'", ['csv_reader.py']),
+    E(r"ucsschool.importer.reader.csv_reader.UnsupportedEncodingError: Unsupported encoding 'binary' detected, please check the manual for supported encodings.", ['csv_reader.py'], 56846),  # ucs-test-ucsschool/90_ucsschool/252_import_works_with_encodings and 252a_csv_reader_correct_encodings expect this traceback
     # Tracebacks caused by specific UCS bugs:
     E(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py'], 52765),
     E(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect'], 51671),
