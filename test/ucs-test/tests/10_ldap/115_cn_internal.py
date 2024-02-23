@@ -40,8 +40,8 @@ def slapd_config():
     time.sleep(3)
 
 
-# check additional ACL's for internal in primary and backup
-@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
+# check additional ACL's for internal in primary
+@pytest.mark.roles('domaincontroller_master')
 def test_blocklist_additional_group_acls_write(udm, random_string, slapd_config):
     password = 'univention'
     user_dn, _name = udm.create_user(password=password)
@@ -55,7 +55,7 @@ def test_blocklist_additional_group_acls_write(udm, random_string, slapd_config)
 
 
 # check additional ACL's for internal in primary and backup
-@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
+@pytest.mark.roles('domaincontroller_master')
 def test_blocklist_additional_group_acls_read(udm, random_string, slapd_config):
     password = 'univention'
     user_dn, _name = udm.create_user(password=password)
@@ -65,6 +65,19 @@ def test_blocklist_additional_group_acls_read(udm, random_string, slapd_config):
     cn = random_string()
     lo.search(base=BASE_BLOCKLISTS)
     with pytest.raises(permissionDenied):
+        create_container(lo, cn, BASE_BLOCKLISTS)
+
+
+@pytest.mark.roles('domaincontroller_backup')
+def test_access_blocklist_additional_group_acls_read(udm, random_string, slapd_config):
+    password = 'univention'
+    user_dn, _name = udm.create_user(password=password)
+    group_dn, _group_name = udm.create_group(users=[user_dn])
+    slapd_config([f'ldap/database/internal/acl/blocklists/groups/read=cn=justfortesting|{group_dn}'])
+    lo = access(base=BASE_BLOCKLISTS, binddn=user_dn, bindpw=password)
+    cn = random_string()
+    lo.search(base=BASE_BLOCKLISTS)
+    with pytest.raises(ldapError):
         create_container(lo, cn, BASE_BLOCKLISTS)
 
 

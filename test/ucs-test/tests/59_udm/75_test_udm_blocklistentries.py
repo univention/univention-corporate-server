@@ -194,6 +194,7 @@ def test_multivalue_property_modify(ucr, udm, mail_domain_name, enable_blocklist
         delete_blocklistentry(value, bl_dn)
 
 
+@pytest.mark.roles('domaincontroller_master')
 def test_clean_expired_entries(ucr, udm, mail_domain_name, enable_blocklists):
     current_time = datetime.utcnow()
 
