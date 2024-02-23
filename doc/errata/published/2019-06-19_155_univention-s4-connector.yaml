@@ -6,16 +6,16 @@ src: univention-s4-connector
 fix: 13.0.2-19A~4.4.0.201906131827
 desc: |
  This update addresses the following issues:
- * A trivial ucr syntax error has been fixed in the joinscript
+ * A trivial UCR syntax error has been fixed in the joinscript
  * Remove lockingdb and s4cache during re-join
  * When the S4-Connector starts, it logged the group cache initialization
    at level INFO. In debugging situations that can lead to a lot of output
-   in connector-s4.log which ist hard to scroll. The log volume of the
+   in `connector-s4.log` which ist hard to scroll. The log volume of the
    group cache init has been lowered to log level ALL.
- * The scripts remove_ucs_rejected.py and remove_s4_rejected.py now
+ * The scripts `remove_ucs_rejected.py` and `remove_s4_rejected.py` now
    escapes SQL syntax.
  * Avoid rejects when DNS records have an uppercase DC attribute.
- * Fix traceback password sync_to_ucs for machine accounts.
+ * Fix traceback password `sync_to_ucs` for machine accounts.
 bug: [35237, 40773, 48364, 49445, 49643, 49649]
 erratum: 155
 announced: 2019-06-19
