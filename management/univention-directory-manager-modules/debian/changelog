@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.25-11) unstable; urgency=medium
+
+  * Bug #57046: add a attribute to the UCR policy to indicate that they
+    support multivalue
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 28 Feb 2024 10:10:01 +0100
+
 univention-directory-manager-modules (15.0.25-10) unstable; urgency=medium
 
   * Bug #57040: manage blocklist objects in UDM

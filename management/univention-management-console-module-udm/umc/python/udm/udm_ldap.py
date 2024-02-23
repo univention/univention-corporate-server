@@ -1069,6 +1069,10 @@ class UDM_Module(object):
         return udm_modules.superordinate_names(self.module)
 
     @property
+    def is_policy_multivalue(self):
+        return getattr(self.module, 'multivalue_policy', False)
+
+    @property
     def policies(self):
         """
         Searches in all policy objects for the given object type and
@@ -1084,7 +1088,7 @@ class UDM_Module(object):
         policies = []
         for policy in policyTypes:
             module = UDM_Module(policy, ldap_connection=ldap_connection, ldap_position=ldap_position)
-            policies.append({'objectType': policy, 'label': module.title, 'description': module.description})
+            policies.append({'objectType': policy, 'label': module.title, 'description': module.description, 'multivalue': module.is_policy_multivalue})
 
         return policies
 

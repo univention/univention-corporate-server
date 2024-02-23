@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.9-4) unstable; urgency=medium
+
+  * Bug #57046: UCR Policy input now allows multiple values to be set
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 28 Feb 2024 08:40:24 +0100
+
 univention-management-console-module-udm (10.0.9-3) unstable; urgency=medium
 
   * Bug #57039: get default LDAP base from UDM module

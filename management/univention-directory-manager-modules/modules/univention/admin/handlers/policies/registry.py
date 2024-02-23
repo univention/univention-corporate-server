@@ -64,6 +64,7 @@ operations = ['add', 'edit', 'remove', 'search']
 policy_oc = 'univentionPolicyRegistry'
 policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver"]
 policy_position_dn_prefix = "cn=config-registry"
+multivalue_policy = True
 childs = False
 short_description = _('Policy: Univention Configuration Registry')
 object_name = _('Univention Configuration Registry policy')

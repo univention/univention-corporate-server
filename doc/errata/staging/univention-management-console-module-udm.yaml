@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-management-console-module-udm
+fix: 10.0.9-4
+desc: |
+ This update addresses the following issues:
+ * Existing Univention Configuration Registry policies attached
+   to a container are no longer deleted when multiple ones previously
+   existed and a new one is added.
+bug: [57046]
