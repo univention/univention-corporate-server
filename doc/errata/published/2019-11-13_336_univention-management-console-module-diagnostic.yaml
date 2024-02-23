@@ -6,9 +6,9 @@ src: univention-management-console-module-diagnostic
 fix: 5.0.1-23A~4.4.0.201911081459
 desc: |
  This update addresses the following issues:
- * The package now uses dh_python2 instead of python-support.
-   Therefore python modules are installed into
-   /usr/lib/python2.7/dist-packages/univention/management/console/modules/.
+ * The package now uses `dh_python2` instead of `python-support`.
+   Therefore Python modules are installed into
+   `/usr/lib/python2.7/dist-packages/univention/management/console/modules/`.
  * A broken test for filesystem permissions has been removed.
 bug: [49151, 50394]
 erratum: 336
