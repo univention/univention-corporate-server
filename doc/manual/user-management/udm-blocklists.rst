@@ -61,9 +61,10 @@ Name
 
 Retention time
    Defines the retention time for entries in this block list.  The retention
-   time is the time that needs to expire to automatically remove entries from
-   the block list.  Use the following scheme to set the retention time: For
-   example ``1y6m3d`` which results in one year, six months and three days.
+   time is the time period that needs to expire to automatically remove entries
+   from the block list.
+   Use the following scheme to set the retention time:
+   For example ``1m 20d`` which results in one month and twenty days.
 
 Properties to block
    Defines the UDM modules and their properties that the block list prevents
