@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucs-test 1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2024-01-09 15:15+0100\n"
+"POT-Creation-Date: 2024-02-27 08:51+0100\n"
 "PO-Revision-Date: 2020-09-05 16:32+0200\n"
 "Last-Translator: <ulmer@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -163,6 +163,10 @@ msgstr ""
 msgid "Create group"
 msgstr ""
 
+#: univention/testing/browser/policies.py:59
+msgid "Create new policy"
+msgstr "Neue Richtlinie erstellen"
+
 #: univention/testing/selenium/udm.py:253
 msgid "Create policy"
 msgstr ""
@@ -187,7 +191,7 @@ msgstr "Lösche"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: univention/testing/selenium/base.py:261
+#: univention/testing/selenium/base.py:264
 msgid "Devices"
 msgstr ""
 
@@ -200,7 +204,7 @@ msgstr "Anzeigename"
 msgid "Do not show this message again"
 msgstr "Diese Nachricht nicht wieder anzeige"
 
-#: univention/testing/selenium/base.py:262
+#: univention/testing/selenium/base.py:265
 msgid "Domain"
 msgstr ""
 
@@ -255,7 +259,7 @@ msgstr ""
 msgid "Install app"
 msgstr ""
 
-#: univention/testing/selenium/base.py:265
+#: univention/testing/selenium/base.py:268
 msgid "Installed Applications"
 msgstr ""
 
@@ -273,6 +277,10 @@ msgstr "Interner Name"
 msgid "Internal name *"
 msgstr "Interner Name *"
 
+#: univention/testing/browser/ldap_directory.py:51
+msgid "LDAP directory"
+msgstr "LDAP-Verzeichnis"
+
 #: univention/testing/browser/generic_udm_module.py:265
 msgid "Last name"
 msgstr "Vorname"
@@ -281,8 +289,8 @@ msgstr "Vorname"
 msgid "License information"
 msgstr "Lizenzinformation"
 
-#: univention/testing/browser/sidemenu.py:159
 #: univention/testing/browser/lib.py:296
+#: univention/testing/browser/sidemenu.py:159
 msgid "Login"
 msgstr "Anmelden"
 
@@ -333,7 +341,7 @@ msgstr "Weiter"
 msgid "None"
 msgstr "Keine"
 
-#: univention/testing/selenium/base.py:270
+#: univention/testing/selenium/base.py:273
 #: univention/testing/browser/lib.py:259
 msgid "Ok"
 msgstr "Ok"
@@ -347,8 +355,8 @@ msgid "Package Management"
 msgstr "Paket-Verwaltung"
 
 #: univention/testing/selenium/udm.py:308
-#: univention/testing/browser/selfservice.py:71
 #: univention/testing/browser/lib.py:295
+#: univention/testing/browser/selfservice.py:71
 msgid "Password"
 msgstr "Passwort"
 
@@ -362,6 +370,7 @@ msgstr ""
 
 #: univention/testing/selenium/udm.py:245
 #: univention/testing/browser/generic_udm_module.py:309
+#: univention/testing/browser/policies.py:53
 msgid "Policies"
 msgstr "Richtlinien"
 
@@ -394,16 +403,16 @@ msgstr ""
 msgid "Save"
 msgstr "Speichern"
 
-#: univention/testing/selenium/base.py:310
+#: univention/testing/selenium/base.py:313
 msgid "Search query"
 msgstr ""
 
-#: univention/testing/selenium/base.py:188
-#: univention/testing/selenium/base.py:189
+#: univention/testing/selenium/base.py:191
+#: univention/testing/selenium/base.py:192
 msgid "Show server error message"
 msgstr "Fehlernachricht des Servers anzeigen"
 
-#: univention/testing/selenium/base.py:264
+#: univention/testing/selenium/base.py:267
 msgid "Software"
 msgstr ""
 
@@ -419,7 +428,7 @@ msgstr "Installation beginnen"
 msgid "Start removal"
 msgstr "Deinstallation beginnen"
 
-#: univention/testing/selenium/base.py:263
+#: univention/testing/selenium/base.py:266
 msgid "System"
 msgstr ""
 
@@ -485,8 +494,8 @@ msgstr "Benutzer-Vorlage"
 msgid "Username"
 msgstr "Benutzername"
 
-#: univention/testing/selenium/base.py:260
 #: univention/testing/selenium/udm.py:266
+#: univention/testing/selenium/base.py:263
 #: univention/testing/browser/generic_udm_module.py:214
 msgid "Users"
 msgstr "Benutzer"
@@ -513,8 +522,8 @@ msgstr "installiert"
 msgid "more"
 msgstr "mehr"
 
-#: univention/testing/selenium/base.py:266
 #: univention/testing/selenium/base.py:269
+#: univention/testing/selenium/base.py:272
 msgid "no module available"
 msgstr ""
 
