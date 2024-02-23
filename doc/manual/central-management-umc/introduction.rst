@@ -28,13 +28,13 @@ Browser compatibility
 The |UCSWEB| uses numerous JavaScript and CSS functions. Cookies need to be
 permitted in the browser. The following browsers are supported:
 
-* :program:`Chrome` as of version 85
+* :program:`Chrome` as of version 120
 
-* :program:`Firefox` as of version 78
+* :program:`Firefox` as of version 115
 
-* :program:`Microsoft Edge` as of version 88
+* :program:`Microsoft Edge` as of version 120
 
-* :program:`Safari` and :program:`Safari Mobile` as of version 13
+* :program:`Safari` and :program:`Safari Mobile` as of version 15
 
 Users with older browsers may experience display problems or the site does not
 work at all.
