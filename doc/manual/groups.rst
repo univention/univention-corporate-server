@@ -351,13 +351,14 @@ Universal
 Overlay module for displaying the group information on user objects
 ===================================================================
 
-In the UCS directory service, group membership properties are only saved in the
-group objects and not in the respective user objects. However, some applications
-expect group membership properties at the user objects (e.g., in the attribute
-``memberOf``). An optional overlay module in the LDAP server makes it possible
-to present these attributes automatically based on the group information. The
-additional attributes are not written to the LDAP, but displayed on the fly by
-the overlay module if a user object is queried.
+The UCS directory service only saves group membership properties in the group objects and not in the respective user objects.
+However, some applications expect group membership properties at the user objects, for example in the attribute ``memberOf``.
+An overlay module in the LDAP server makes it possible to manage these attributes automatically based on the group information.
+
+You can use the |UCSUCRV| :envvar:`ldap/overlay/memberof` to activate or deactivate the module.
+UCS activates the overlay module by default since UCS 4.3.
+UCS requires the overlay module for proper operation.
+The recommendation to administrators of older installations is to activate the module manually.
 
 .. caution::
 
@@ -365,11 +366,14 @@ the overlay module if a user object is queried.
    memberships of user and computer objects <6439>` about activating the
    OpenLDAP ``memberOf`` overlay module.
 
-To this end, the :program:`univention-ldap-overlay-memberof` package must be
-installed on all LDAP servers. Afterwards
-:command:`/usr/share/univention-ldap-overlay-memberof/univention-update-memberof`
-must be invoked on all servers.
+By default, user accounts use the user attribute ``memberOf``.
+You can use the |UCSUCRV| :envvar:`ldap/overlay/memberof/memberof` to configure a different attribute.
 
-By default the user attribute ``memberOf`` is shown. The |UCSUCRV|
-:envvar:`ldap/overlay/memberof/memberof` can be used to configure a different
-attribute.
+By default, UCS uses groups matching ``objectClass=posixGroup`` and their attribute ``uniqueMember``.
+You can use the |UCSUCRV|\ s :envvar:`ldap/overlay/memberof/objectclass` and :envvar:`ldap/overlay/memberof/member` to configure a different object class and attribute.
+
+Troubleshooting
+---------------
+
+Sometimes the membership information becomes inconsistent between groups and users.
+In this case, as administrator run the program :command:`/usr/share/univention-ldap-overlay-memberof/univention-update-memberof` on any affected directory server node.
