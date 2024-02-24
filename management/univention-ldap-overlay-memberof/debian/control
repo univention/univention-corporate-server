@@ -10,7 +10,6 @@ Build-Depends:
 Package: univention-ldap-overlay-memberof
 Architecture: all
 Depends:
- shell-univention-lib (>= 1.0.80),
  ${misc:Depends},
 Enhances:
  univention-ldap-server,
