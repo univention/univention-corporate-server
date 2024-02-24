@@ -1,3 +1,9 @@
+univention-system-setup (15.6.1) unstable; urgency=medium
+
+  * Bug #51626: Simplify component package collection in system setup
+
+ -- Christian Castens <castens@univention.de>  Fri, 03 Jul 2026 08:35:46 +0200
+
 univention-system-setup (15.6.0) unstable; urgency=medium
 
   * Bug #59324: UCS 5.2-6 version bump
