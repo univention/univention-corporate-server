@@ -11,8 +11,9 @@ Package: univention-ldap-overlay-memberof
 Architecture: all
 Depends:
  shell-univention-lib (>= 1.0.80),
- univention-ldap-server,
  ${misc:Depends},
+Enhances:
+ univention-ldap-server,
 Description: configuration for OpenLDAP memberOf overlay module
  This package contains the general configuration for the
  OpenLDAP memberOf overlay module.

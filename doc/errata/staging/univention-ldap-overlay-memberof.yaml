@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-ldap-overlay-memberof
+fix: 12.0.3-1
+desc: |
+ This update addresses the following issue:
+ * Change dependency on package `univention-ldap-server` to `Enhances:` to
+   break a circular package dependency leading to unreproducible installs.
+bug: [51626]
