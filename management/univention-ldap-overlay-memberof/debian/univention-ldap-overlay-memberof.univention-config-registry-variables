@@ -2,7 +2,7 @@
 Description[de]=Im UCS-Verzeichnisdienst werden Gruppenmitgliedschaften in der Voreinstellung nur an den Gruppenobjekten gespeichert. Wird diese Option aktiviert, werden die Gruppenmitgliedschaften über das 'memberOf'-Attribut zusätzlich an den Benutzerobjekten gespeichert. Dies erfolgt durch ein Overlay-Modul des LDAP-Servers. Ist die Variable nicht gesetzt, wird das Overlay-Modul nicht verwendet.
 Description[en]=In the UCS directory service group memberships are only stored in the group objects by default. If this option is enabled, the group memberships are also stored in the 'memberOf' attribute of user objects. This is done by using an overlay module of the LDAP server. If the variable is unset, the overlay module is not enabled.
 Type=bool
-Default=false
+Default=true
 Categories=service-ldap
 
 [ldap/overlay/memberof/objectclass]

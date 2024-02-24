@@ -35,8 +35,6 @@
 
 #DEBHELPER#
 
-univention-config-registry set ldap/overlay/memberof?true
-
 test -x /etc/init.d/slapd && invoke-rc.d slapd crestart
 
 # new installations
