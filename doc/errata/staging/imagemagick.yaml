@@ -6,32 +6,23 @@ src: imagemagick
 fix: 8:6.9.10.23+dfsg-2.1+deb10u6
 desc: |
  This update addresses the following issues:
- 8:6.9.10.23+dfsg-2.1+deb10u6 (Fri, 19 Jan 2024 13:20:50 -0500)
- [ Bastien Roucariès ]
  * Fix a heap based overflow in TIFF coder.
  * Avoid a DOS with malformed TIFF file.
  * Avoid a memory leak in TIFF file coder.
- * Fix a non initialized value passed to TIFFGetField().
+ * Fix a non initialized value passed to `TIFFGetField()`.
  * Fix buffer overrun in TIFF coder.
  * In case of exception bail out early in TIFF file handling.
- * Fix unintialised value in TIFF coder.
+ * Fix uninitialised value in TIFF coder.
  * Raise exception when image could not be read but no exception was raised in
    TIFF coder.
- * Fix CVE-2023-39978: a memory leak was present in Magick::Draw.
- * Mark rmagick test as flaky
- * Fix CVE-2023-1289: A vulnerability was discovered in ImageMagick where a
-   specially created SVG file loads itself and causes a segmentation fault.
-   This flaw allows a remote attacker to pass a specially crafted SVG file
-   that leads to a segmentation fault, generating many trash files in "/tmp,"
-   resulting in a denial of service. When ImageMagick crashes, it generates a
-   lot of trash files. These trash files can be large if the SVG file contains
-   many render actions.
- * Fix CVE-2023-34151: A vulnerability was found in ImageMagick, due to
-   undefined behaviors of casting double to size_t in svg, mvg and other
-   coders.
- * Fix CVE-2023-5341: A heap use-after-free flaw was found in coders/bmp.c
- [ Santiago Ruano Rincón ]
- * Enable ARM builds in salsa-ci.yml
+ * CVE-2023-1289: A specially created SVG file loads itself and causes a
+   segmentation fault. This flaw allows a remote attacker to pass a specially
+   crafted SVG file that leads to a segmentation fault, generating many trash
+   files in `/tmp/`, resulting in a denial of service.
+ * CVE-2023-5341: A heap use-after-free flaw was found in `coders/bmp.c`.
+ * CVE-2023-34151: Undefined behaviors of casting `double` to `size_t` in SVG,
+   MVG and other coders.
+ * CVE-2023-39978: A memory leak was present in `Magick::Draw`.
 bug: [57080]
 cve:
 - CVE-2023-39978
