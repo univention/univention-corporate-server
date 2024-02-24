@@ -1,3 +1,10 @@
+univention-system-setup (13.0.10-3) unstable; urgency=low
+
+  * Bug #57078: Re-add ADC to list of base packages downloaded into USS cache
+    required for AD Member Mode.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 01 Mar 2024 13:41:47 +0100
+
 univention-system-setup (13.0.10-2) unstable; urgency=medium
 
   * Bug #57039: Restart udm-cli in setup-join.sh after setting ldap/base
