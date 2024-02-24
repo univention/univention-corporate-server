@@ -32,30 +32,23 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-
-from sys import exit, stderr
+import sys
 
 from ldap import MOD_REPLACE
 from ldap.filter import filter_format
 
-import univention.config_registry
 import univention.uldap
+from univention.config_registry import ucr
 
 
-def main():  # type: () -> int
-    ucr = univention.config_registry.ConfigRegistry()
-    ucr.load()
+def main() -> None:
+    if ucr.get("server/role", "") not in {"domaincontroller_master", "domaincontroller_backup", "domaincontroller_slave"}:
+        return
 
-    if ucr.get("server/role", "dummy") not in {"domaincontroller_master", "domaincontroller_backup", "domaincontroller_slave"}:
-        return 0
-
-    # ldap connection
     try:
         lo = univention.uldap.getRootDnConnection()
     except Exception as ex:
-        print("failed to get ldap connection: %s" % (ex,), file=stderr)
-        return 1
+        sys.exit(f"failed to get ldap connection: {ex}")
 
     # search groups and del/add uniqueMember
     group_oc = ucr.get("ldap/overlay/memberof/objectclass", "posixGroup")
@@ -66,19 +59,17 @@ def main():  # type: () -> int
         uniqueMember = attrs.get(member_ad, [])
         if uniqueMember:
             try:
-                # update groups
                 ml = [
                     (MOD_REPLACE, member_ad, uniqueMember),
                 ]
                 print(f'modify {dn}')
                 lo.modify_s(dn, ml)
             except Exception as e:
-                print("E: modifying %s failed error with %s" % (dn, e), file=stderr)
-                print("   please check the membership of this group", file=stderr)
-                return 1
-
-    return 0
+                sys.exit(
+                    f"E: modifying {dn} failed error with {e}\n"
+                    "   please check the membership of this group"
+                )
 
 
 if __name__ == '__main__':
-    exit(main())
+    main()
