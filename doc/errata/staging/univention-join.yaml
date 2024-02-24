@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-join
+fix: 12.0.7-1
+desc: |
+ This update addresses the following issue:
+ * Remove explicit check if package `univention-ldap-overlay-memberof` is
+   installed. It is a hard dependency since UCS 4.3 and the package is always
+   installed on all Directory Nodes.
+bug: [51626]

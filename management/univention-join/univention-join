@@ -526,9 +526,6 @@ if [ "$CHECK_RUN" = "false" ] && [ "$server_role" = "domaincontroller_backup" -o
 	if is_ucr_true tmp/join/test/master/memberof; then
 		ucr unset tmp/join/test/master/memberof >/dev/null 2>&1
 		msg="The OpenLDAP extension memberOf is activated on the UCS Primary (UCR variable ldap/overlay/memberof is true). In order to join this system successfully"
-		if ! dpkg-query -W -f '${status}' "univention-ldap-overlay-memberof" | grep -q 'install ok installed'; then
-			failed_message "$msg the package \"univention-ldap-overlay-memberof\" has to be installed."
-		fi
 		if ! is_ucr_true ldap/overlay/memberof; then
 			failed_message "$msg the UCR variable ldap/overlay/memberof has to be set to true."
 		fi

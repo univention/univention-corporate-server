@@ -1,8 +1,9 @@
-univention-join (12.0.7-1) UNRELEASED; urgency=medium
+univention-join (12.0.7-1) unstable; urgency=medium
 
   * Bug #57118 UCS 5.0-7 version bump
+  * Bug #51626: Remove explicit check for univention-ldap-overlay-memberof
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:47 +0100
+ -- Philipp Hahn <hahn@univention.de>  Wed, 03 Apr 2024 17:17:09 +0200
 
 univention-join (12.0.6-1) UNRELEASED; urgency=medium
 
