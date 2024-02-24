@@ -226,14 +226,9 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
         allComponents: Set[str] = set()
         currentComponents: Set[str] = set()
         for iapp in get_apps():
-            if iapp['is_installed']:
-                for ipackages in (iapp['default_packages'], iapp['default_packages_master']):
-                    currentComponents = currentComponents.union(ipackages)
-
-        # set of all available software packages
-        for iapp in get_apps():
-            for ipackages in (iapp['default_packages'], iapp['default_packages_master']):
-                allComponents = allComponents.union(ipackages)
+            pkgs = set(iapp['default_packages']) | set(iapp['default_packages_master'])
+            allComponents |= pkgs
+            currentComponents |= pkgs if iapp['is_installed'] else set()
 
         # get all packages that shall be removed
         removeComponents = list(allComponents & (currentComponents - selectedComponents))
