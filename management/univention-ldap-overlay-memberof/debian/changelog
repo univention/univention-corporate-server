@@ -1,6 +1,7 @@
-univention-ldap-overlay-memberof (12.0.2-1) UNRELEASED; urgency=medium
+univention-ldap-overlay-memberof (12.0.2-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #51626: Remove recursive package dependency.
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:32 +0100
 
