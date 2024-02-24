@@ -221,12 +221,9 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
     if isAdMember and newValues['server/role'] == 'domaincontroller_master':
         selectedComponents.add('univention-ad-connector')
 
-    # make sure to install the memberof overlay if it is installed on the Primary Directory Node
-    if newValues['server/role'] not in ('domaincontroller_master', 'memberserver') and newValues.pop('install_memberof_overlay', ""):
-        selectedComponents.add('univention-ldap-overlay-memberof')
-
     # add lists with all packages that should be removed/installed on the system
     if selectedComponents:
+        allComponents: Set[str] = set()
         currentComponents: Set[str] = set()
         for iapp in get_apps():
             if iapp['is_installed']:
@@ -234,7 +231,6 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
                     currentComponents = currentComponents.union(ipackages)
 
         # set of all available software packages
-        allComponents = {'univention-ldap-overlay-memberof'}
         for iapp in get_apps():
             for ipackages in (iapp['default_packages'], iapp['default_packages_master']):
                 allComponents = allComponents.union(ipackages)
