@@ -6,6 +6,6 @@ src: univention-system-setup
 fix: 13.0.10-2
 desc: |
  This update addresses the following issues:
- * The UDM CLI daemon is now restarted  after setting the ldap base
-   during system setup.
+ * The UDM CLI daemon is now restarted after setting the LDAP base during
+   system setup.
 bug: [56999, 57039]
