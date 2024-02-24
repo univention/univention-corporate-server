@@ -6,6 +6,6 @@ src: univention-management-console-module-diagnostic
 fix: 6.0.7-3
 desc: |
  This update addresses the following issues:
- * A check has been added to verify that the LDAP server's config
-   file has the filesystem permissions `640`.
+ * A check has been added to verify that the LDAP server's configuration file
+   has the file system permissions `0640`.
 bug: [56999, 57038]
