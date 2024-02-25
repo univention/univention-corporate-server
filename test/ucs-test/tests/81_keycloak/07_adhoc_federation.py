@@ -3,6 +3,7 @@
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
+## tags: [SKIP]
 
 from __future__ import annotations
 

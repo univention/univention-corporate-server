@@ -146,7 +146,7 @@ def test_ucs_realm_config(keycloak_config, ucr):
 def test_csp(keycloak_config, ucr):
     if not ucr.is_true('keycloak/server/sso/virtualhost'):
         pytest.skip('no virtual host config, therefore no special cookie header settings')
-    response = requests.post(keycloak_config.admin_url, headers={'Accept': 'text/html'})
+    response = requests.post(f'{keycloak_config.admin_url}/master/console', headers={'Accept': 'text/html'})
     assert response.headers['Content-Security-Policy']
     assert f"*.{ucr['domainname']}" in response.headers['Content-Security-Policy']
     if ucr['server/role'] != 'domaincontroller_master':
@@ -155,7 +155,7 @@ def test_csp(keycloak_config, ucr):
         # change app setting for csp
         ucr.handler_set(['keycloak/csp/frame-ancestors=https://*.external.com'])
         run_command(['systemctl', 'restart', 'apache2'])
-        response = requests.post(keycloak_config.admin_url, headers={'Accept': 'text/html'})
+        response = requests.post(f'{keycloak_config.admin_url}/master/console', headers={'Accept': 'text/html'})
         assert response.headers['Content-Security-Policy']
         assert f"frame-src 'self'; frame-ancestors 'self' https://*.{ucr['domainname']} https://*.external.com;  object-src 'none';" == response.headers['Content-Security-Policy']
     finally:
