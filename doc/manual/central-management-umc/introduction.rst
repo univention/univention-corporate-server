@@ -25,24 +25,26 @@ text!
 Browser compatibility
 ---------------------
 
-The |UCSWEB| uses numerous JavaScript and CSS functions. Cookies need to be
-permitted in the browser. The following browsers are supported:
+The |UCSWEB| uses numerous JavaScript and CSS functions.
+Your browser must allow the use of cookies.
+|UCSWEB| supports the following browsers:
 
-* :program:`Chrome` as of version 120
+* :program:`Google Chrome` as of version 120
 
-* :program:`Firefox` as of version 115
+* :program:`Mozilla Firefox` as of version 115
 
 * :program:`Microsoft Edge` as of version 120
 
-* :program:`Safari` and :program:`Safari Mobile` as of version 15
+* :program:`Apple Safari` and :program:`Apple Safari Mobile` as of version 15
 
-Users with older browsers may experience display problems or the site does not
-work at all.
+Users with older browsers may experience display problems
+or |UCSWEB| doesn't work at all.
 
-The |UCSWEB| is available in German and English (and French if it is chosen as
-language during the installation from DVD); the language to be used can be
-changed via the entry :guilabel:`Switch language` of the user menu in the upper
-right corner.
+The |UCSWEB| is available in German and English.
+If you chose French as language during installation from the ISO image,
+you can also use French.
+
+You can select a different language through :guilabel:`Change language` in the user menu.
 
 .. _central-theming:
 
