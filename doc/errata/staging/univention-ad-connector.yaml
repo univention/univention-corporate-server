@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-ad-connector
+fix: 14.0.17-3
+desc: |
+ This update addresses the following issues:
+ * Group member DNs with containing special charcters
+   that require escaping can be notated in different
+   ways. When comparing them, this has not been taken
+   into consideration, leading to rejects and tracebacks
+   in the log file. This has been fixed.
+bug: [57072]

@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.17-3) unstable; urgency=medium
+
+  * Bug #57072: Fix comparison of special DNs
+
+ -- Arvid <requate@univention.de>  Mon, 26 Feb 2024 17:57:09 +0100
+
 univention-ad-connector (14.0.17-2) unstable; urgency=medium
 
   * Bug #56954: Don't replicate objectClass=lock
