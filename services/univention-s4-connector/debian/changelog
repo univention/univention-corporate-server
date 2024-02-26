@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.16-4) unstable; urgency=medium
+
+  * Bug #57072: Fix comparison of special DNs
+
+ -- Arvid <requate@univention.de>  Mon, 26 Feb 2024 17:56:13 +0100
+
 univention-s4-connector (14.0.16-3) unstable; urgency=medium
 
   * Bug #56956: Improve prioritization for initial S4-Connector sync
