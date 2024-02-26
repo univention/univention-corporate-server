@@ -1744,7 +1744,7 @@ performance_template_settings () {
 	local mdb_maxsize="${1:-12884901888}"
 	ucr set \
 		directory/manager/user/primarygroup/update=false \
-		nss/group/cachefile/invalidate_interval=disabled \
+		nss/group/cachefile/invalidate_interval="#" \
 		ldap/database/mdb/maxsize="$mdb_maxsize" \
 		listener/cache/mdb/maxsize="$mdb_maxsize" \
 		slapd/backup=disabled
