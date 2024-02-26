@@ -1133,12 +1133,7 @@ class ad(univention.connector.ucs):
             ad_group = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter=ad_group_filter)
             ucs_group_object = self._object_mapping('group', {'dn': ad_group[0][0], 'attributes': ad_group[0][1]}, 'con')
             ucs_group = self.get_ucs_ldap_object(ucs_group_object['dn'])
-            is_member = False
-            for member in ucs_group.get('uniqueMember', []):
-                if member.lower() == object_ucs['dn'].lower():
-                    is_member = True
-                    break
-            if not is_member:
+            if not self.__compare_lowercase_dn(object_ucs['dn'], ucs_group.get('uniqueMember', [])):
                 # remove AD member from previous group
                 ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: remove AD member from previous group")
                 self.lo_ad.lo.modify_s(ad_group[0][0], [(ldap.MOD_DELETE, 'member', [object['dn'].encode('UTF-8')])])
@@ -1240,7 +1235,7 @@ class ad(univention.connector.ucs):
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS group member cache reset")
 
         for prim_object in prim_members_ucs:
-            if prim_object[0].lower() in ucs_members:
+            if self.__compare_lowercase_dn(prim_object[0], ucs_members):
                 ucs_members.remove(prim_object[0].lower())
 
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)

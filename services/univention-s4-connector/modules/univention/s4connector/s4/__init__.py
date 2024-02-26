@@ -1131,12 +1131,7 @@ class s4(univention.s4connector.ucs):
             s4_group = self.__search_s4(base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter=s4_group_filter)
             ucs_group_object = self._object_mapping('group', {'dn': s4_group[0][0], 'attributes': s4_group[0][1]}, 'con')
             ucs_group = self.get_ucs_ldap_object(ucs_group_object['dn'])
-            is_member = False
-            for member in ucs_group.get('uniqueMember', []):
-                if member.lower() == object_ucs['dn'].lower():
-                    is_member = True
-                    break
-            if not is_member:
+            if not self.__compare_lowercase_dn(object_ucs['dn'], ucs_group.get('uniqueMember', [])):
                 # remove AD member from previous group
                 ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: remove S4 member from previous group")
                 self.lo_s4.lo.modify_s(s4_group[0][0], [(ldap.MOD_DELETE, 'member', [object['dn'].encode('UTF-8')])])
@@ -1237,7 +1232,7 @@ class s4(univention.s4connector.ucs):
             prim_members_ucs_filter = format_escaped('(gidNumber={0!e})', ldap_object_ucs_gidNumber)
             prim_members_ucs = self.lo.lo.search(filter=prim_members_ucs_filter, attr=['gidNumber'])
             for prim_object in prim_members_ucs:
-                if prim_object[0].lower() in ucs_members:
+                if self.__compare_lowercase_dn(prim_object[0], ucs_members):
                     ucs_members.remove(prim_object[0].lower())
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
 
