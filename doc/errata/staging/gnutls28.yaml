@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [5, 6]
+scope: ucs_5.0-0-errata5.0-6
+src: gnutls28
+fix: 3.6.7-4+deb10u12
+desc: |
+ This update addresses the following issue:
+ 3.6.7-4+deb10u12 (Mon, 26 Feb 2024 01:04:02 +0100)
+ * Non-maintainer upload by the LTS Security Team.
+ * Fix CVE-2024-0553: Timing side-channel vulnerability inside RSA-PSK key
+   exchange.
+bug: [57086]
+cve:
+- CVE-2024-0553
