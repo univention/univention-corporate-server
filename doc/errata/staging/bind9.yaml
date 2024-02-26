@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: bind9
+fix: 1:9.10.3.dfsg.P4-12.3+deb9u15A~4.4.9.202402261145
+desc: |
+ This update addresses the following issue:
+ 1:9.10.3.dfsg.P4-12.3+deb9u15 (Sat, 24 Feb 2024 10:03:02 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-3341 A stack exhaustion flaw was discovered in the control channel
+   code which may result in denial of service (named daemon crash).
+bug: [57088]
+cve:
+- CVE-2023-3341
