@@ -14,6 +14,8 @@ import os
 import sys
 import unittest
 
+import ldap
+
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 from univention.testing.connector_common import NormalUser, create_udm_user
@@ -27,9 +29,13 @@ sys.path.append("$TESTLIBPATH")
 
 class TestADCustomMappings(unittest.TestCase):
     def setUp(self):
+        with ucr_test.UCSTestConfigRegistry() as ucr:
+            ucr.load()
+            self.ldap_base = ucr["ldap/base"]
+
         self.attribute = "univentionFreeAttribute20"
         self.target_attribute = "company"
-
+        self.target_position = f"cn=groups,{ucr['connector/ad/ldap/base']}"
         self.mapping_file = "/etc/univention/connector/ad/localmapping.py"
         self.mapping_file_dir = os.path.dirname(self.mapping_file)
 
@@ -42,8 +48,21 @@ class TestADCustomMappings(unittest.TestCase):
             "            ldap_attribute='{attribute}',\n"
             "            con_attribute='{target_attribute}'\n"
             "        )\n"
+            "    ad_mapping['user'].post_attributes['employeeNumber'] = \\\n"
+            "        univention.connector.attribute(\n"
+            "            ucs_attribute='employeeNumber',\n"
+            "            ldap_attribute='employeeNumber',\n"
+            "            con_attribute='employeeNumber'\n"
+            "        )\n"
+            "    ad_mapping['group'].attributes['displayName'] = \\\n"
+            "        univention.connector.attribute(\n"
+            "            ucs_attribute='DisplayName',\n"
+            "            ldap_attribute='displayName',\n"
+            "            con_attribute='displayName'\n"
+            "        )\n"
+            "    ad_mapping['user'].position_mapping=[('cn=users,{ldap_base}', '{target_position}')]\n"
             "    return ad_mapping\n".format(
-                attribute=self.attribute, target_attribute=self.target_attribute,
+                attribute=self.attribute, target_attribute=self.target_attribute, ldap_base=ucr["ldap/base"], target_position=self.target_position
             )
         )
 
@@ -62,10 +81,6 @@ class TestADCustomMappings(unittest.TestCase):
 
         # activate mapping by restarting the ad-connector...
         restart_adconnector()
-
-        with ucr_test.UCSTestConfigRegistry() as ucr:
-            ucr.load()
-            self.ldap_base = ucr["ldap/base"]
 
         self.udm = udm_test.UCSTestUDM()
         self.adc = ADConnection()
@@ -123,15 +138,16 @@ class TestADCustomMappings(unittest.TestCase):
         # the 'o' field in ldap is usually mapped to company in AD's
         # but we have hardcoded in our mapping, that the company should
         # be overwritten by the value from the extended attribute
-        udm_user.basic["o"] = "test failed"
+        udm_user.basic["organisation"] = "test failed"
 
         # write test_string into extended attribute...
         udm_user.basic[self.attribute] = test_string
+        udm_user.basic["employeeNumber"] = "42"
+        udm_user.basic["displayName"] = "test uuuuuuser"
 
-        (udm_user_dn, ad_user_dn) = create_udm_user(
-            self.udm, self.adc, udm_user, wait_for_sync,
-        )
+        (udm_user_dn, ad_user_dn) = create_udm_user(self.udm, self.adc, udm_user, wait_for_sync, verify=False)
 
+        ad_user_dn = f"{ldap.explode_dn(ad_user_dn)[0]},{self.target_position}"
         print(
             "Summary of users to be synchronized:\n\tudm_user_dn:\t%s,\n\ts4_user_dn:\t%s\n"
             % (udm_user_dn, ad_user_dn),
@@ -143,6 +159,8 @@ class TestADCustomMappings(unittest.TestCase):
 
         # check the value from the mapping
         assert self.adc.get_attribute(ad_user_dn, self.target_attribute) == [test_string.encode("UTF-8")]
+        assert self.adc.get_attribute(ad_user_dn, "employeeNumber") == ["42".encode("UTF-8")]
+        assert self.adc.get_attribute(ad_user_dn, "displayName") == ["test uuuuuuser".encode("UTF-8")]
 
 
 if __name__ == "__main__":

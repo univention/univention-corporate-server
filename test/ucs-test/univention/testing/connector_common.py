@@ -243,14 +243,15 @@ def map_udm_group_to_con(group):
     return {mapping[key]: ([value] if not isinstance(value, (list, tuple)) else value) for (key, value) in group.items() if key in mapping}
 
 
-def create_udm_user(udm, con, user, wait_for_sync):
+def create_udm_user(udm, con, user, wait_for_sync, verify=True):
     print(f"\nCreating UDM user {user.basic}\n")
     (udm_user_dn, username) = udm.create_user(**user.to_unicode(user.basic))
     con_user_dn = ldap.dn.dn2str([
         [("CN", to_unicode(username), ldap.AVA_STRING)],
         [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(con.adldapbase))
     wait_for_sync()
-    con.verify_object(con_user_dn, map_udm_user_to_con(user.basic))
+    if verify:
+        con.verify_object(con_user_dn, map_udm_user_to_con(user.basic))
     return (udm_user_dn, con_user_dn)
 
 
