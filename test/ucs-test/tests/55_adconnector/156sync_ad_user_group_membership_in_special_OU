@@ -1,0 +1,113 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "Verify user-group-membership synchronisation after changes from ad-side in sync mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+## tags:
+##  - groupsync
+##  - skip_admember
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/udm.sh
+. "$TESTLIBPATH/udm.sh" || exit 137
+# shellcheck source=../../lib/random.sh
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+
+UDM_container_ou_name="+1"  ## Important: non-dn value: verbatim, unescaped
+UDM_groups_group_name="$(random_chars)"
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+# If the password doesn't adhere the configured Windows-Password-Guidelines
+# weird things might happen when the user is synced to AD.
+UDM_users_user_password="U$(random_chars)123"
+## Important: DN-values must be escaped, can be either \+ or \2B, DN case doesn't seem to matter for writing:
+AD_OU_DN="OU=\+1,$(ad_get_base)"
+AD_GROUP_DN="CN=$UDM_groups_group_name,OU=\+1,$(ad_get_base)"
+AD_USER_DN="CN=$UDM_users_user_username,OU=\+1,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+section "Create user and group"
+
+ad_exists "$AD_OU_DN" || ad_createou "$UDM_container_ou_name" || fail_test 110
+## Important: Position DNs must be escaped, either \+ or \2B
+ad_group_create "$UDM_groups_group_name" "" "ou=\+1,$(ad_get_base)" || fail_test 110
+
+sleep "$(ucr get connector/debug/level)"
+section "Create user and add to group"
+
+ad_createuser "$UDM_users_user_username" "" "ou=\+1,$(ad_get_base)" || fail_test 110
+ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_GROUP_DN"; fail_bool 0 110
+udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base"; fail_bool 0 110
+ad_exists "$AD_USER_DN"; fail_bool 0 110
+udm_exists "users/user" "" "" "ou=\2B1,$ldap_base"; fail_bool 0 110
+
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
+
+section "Remove user from group"
+
+ad_remove_from_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 1 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 1 110
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 1 110
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user"; fail_bool 1 110
+
+section "Re-Add user to group"
+
+ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
+
+section "Remove user"
+
+ad_delete "$AD_USER_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+udm_exists "users/user" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
+
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 1 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 1 110
+
+section "Clean up"
+
+ad_delete "$AD_GROUP_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_GROUP_DN"; fail_bool 1 110
+udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
+ad_delete "OU=\+1,$(ad_get_base)" || fail_test 110
+ad_exists "$AD_OU_DN"; fail_bool 1 110
+UDM_container_ou_name='\+1'
+udm_exists "container/ou"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
