@@ -1,4 +1,4 @@
-univention-management-console-module-udm (10.0.9-2) unstable; urgency=medium
+univention-management-console-module-udm (10.0.9-3) unstable; urgency=medium
 
   * Bug #57039: get default LDAP base from UDM module
   * Bug #57043: blocklist in UMC

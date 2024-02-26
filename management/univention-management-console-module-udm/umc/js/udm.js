@@ -245,7 +245,7 @@ define([
 				deferred.resolve(ucr);
 				return deferred;
 			}
-			return tools.ucr(['directory/manager/web*', 'ldap/base', 'ad/member']).then(lang.hitch(this, function(ucr) {
+			return tools.ucr(['directory/manager/web*', 'ldap/base', 'ad/member', 'directory/manager/blocklist/enabled']).then(lang.hitch(this, function(ucr) {
 				if (! this._ldapBase) {
 					this._ldapBase = ucr['ldap/base'];
 				}
@@ -413,6 +413,19 @@ define([
 
 			return path;
 		},
+		_checkModuleUCRDisabled: function() {
+		        var ucrVar = {
+				'blocklists/all'   : 'directory/manager/blocklist/enabled'
+			}[this.moduleFlavor];
+			var enabled = tools.isTrue(this._ucr[ucrVar]);
+			var warningText = {
+				'blocklists/all'   : _('Blocklists are not enabled. To enable this functionality, set the UCR variable "%s" to "true" on each Domain Controller in the domain.', ucrVar)
+			}[this.moduleFlavor];
+
+			if (warningText && !enabled) {
+				this.addWarning(warningText);
+			}
+		},
 
 		_checkMissingApp: function() {
 			var _warningText = lang.hitch(this, function(app, link) {
@@ -567,6 +580,7 @@ define([
 			this.addChild(this._searchPage);
 			this._checkMissingApp();
 			this._loadUCRVariables().then(lang.hitch(this, '_preloadDetailPage'));
+			this._checkModuleUCRDisabled();
 			if (this.moduleFlavor === 'users/user') {
 				_loadGridViewPreference().then(lang.hitch(this, function(view) {
 					this._setGridView(view);
