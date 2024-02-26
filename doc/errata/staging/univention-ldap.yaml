@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * The new LDAP database `cn=internal` has been added to store blocklist
    entries.
-bug: [56999, 57038]
+bug: [57038]

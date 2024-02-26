@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * A check has been added to verify that the LDAP server's configuration file
    has the file system permissions `0640`.
-bug: [56999, 57038]
+bug: [57038]

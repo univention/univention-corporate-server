@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * UDM now supports blocklist, see the UCS manual for more
    information on blocklists.
-bug: [56999, 57039, 57040, 57042]
+bug: [57039, 57040, 57042]

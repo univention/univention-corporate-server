@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * The UDM CLI daemon is now restarted after setting the LDAP base during
    system setup.
-bug: [56999, 57039]
+bug: [57039]

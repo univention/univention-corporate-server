@@ -7,4 +7,4 @@ fix: 10.0.9-2
 desc: |
  This update addresses the following issues:
  * A UMC module for blocklist lists and entries has been added.
-bug: [56999, 57043]
+bug: [57043]
