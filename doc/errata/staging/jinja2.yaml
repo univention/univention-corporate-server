@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: jinja2
+fix: 2.8-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ 2.8-1+deb9u1 (Sun, 25 Feb 2024 20:40:27 +0100)
+ * Non-maintainer upload by the ELTS team.
+ * CVE-2024-22195: Fix an issue where it was possible to inject arbitrary HTML
+   attributes into the rendered HTML via the "xmlattr" filter, potentially
+   leading to a Cross-Site Scripting (XSS) attack. It may also have been
+   possible to bypass attribute validation checks if they were
+   blacklist-based.
+bug: [57087]
+cve:
+- CVE-2024-22195
