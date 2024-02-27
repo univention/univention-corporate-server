@@ -141,11 +141,14 @@ class CLIClient:
         # TODO: re-execute if changed in between
         try:
             obj = module.get(args.dn)
-        except (NotFound, UnprocessableEntity):
+        except (NotFound, UnprocessableEntity) as exc:
             if args.ignore_not_exists:
                 self.print_line('Object not found', args.dn)
                 return
             else:
+                if isinstance(exc, UnprocessableEntity):
+                    self.handle_unprocessible_entity(exc.error_details)
+                    raise SystemExit(2)
                 raise
         if args.no_patch:
             self.set_properties(obj, args)
@@ -159,11 +162,14 @@ class CLIClient:
         module = self.get_module(args.object_type)
         try:
             obj = module.get(args.dn)
-        except (NotFound, UnprocessableEntity):
+        except (NotFound, UnprocessableEntity) as exc:
             if args.ignore_not_exists:
                 self.print_line('Object not found', args.dn)
                 return
             else:
+                if isinstance(exc, UnprocessableEntity):
+                    self.handle_unprocessible_entity(exc.error_details)
+                    raise SystemExit(2)
                 raise
         obj.delete(args.remove_referring)
         self.print_line('Object removed', obj.dn)
