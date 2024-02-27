@@ -153,7 +153,7 @@ def server_main(args: Namespace) -> None:
     try:
         sock = ForkingServer(socket_path, MyRequestHandler)
         os.chmod(socket_path, 0o600)
-    except EnvironmentError:
+    except OSError:
         print('E: Failed creating socket (%s). Daemon stopped.' % socket_path, file=sys.stderr)
         log.error('daemon [%s] Failed creating socket (%s). Daemon stopped.', os.getpid(), socket_path)
         sys.exit(1)
@@ -161,7 +161,7 @@ def server_main(args: Namespace) -> None:
     try:
         with open(runfilename, 'w') as runfile:
             runfile.write(str(os.getpid()))
-    except IOError:
+    except OSError:
         print('E: Can`t write runfile', file=sys.stderr)
 
     try:
@@ -216,7 +216,7 @@ def doit(sarglist: bytes, conn: socket.socket, stdout: Optional[IO[str]] = None,
                 open(filename).close()
                 secret = True
                 break
-            except IOError:
+            except OSError:
                 continue
         else:
             if not show_help:

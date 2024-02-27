@@ -100,7 +100,7 @@ def fork_server(sock: socket.socket, socket_path: str) -> None:
         try:
             sock.connect(socket_path)
             break
-        except socket.error:
+        except OSError:
             time.sleep(0.1)
             if time.time() > stime:
                 print('W: Can`t connect to daemon after %s seconds.' % connection_timeout, file=sys.stderr)
@@ -157,10 +157,10 @@ def _create_socket(socket_path: str = default_socket_path) -> socket.socket:
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     try:
         if os.path.exists(socket_path) and os.stat(socket_path)[stat.ST_UID] != os.getuid():
-            raise EnvironmentError('Hacking attempt')
+            raise OSError('Hacking attempt')
         # connect to already running server
         sock.connect(socket_path)
-    except EnvironmentError:
+    except OSError:
         fork_server(sock, socket_path)
     return sock
 
@@ -169,7 +169,7 @@ def _re_create_socket() -> socket.socket:
     try:
         socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(six.iterbytes(os.urandom(12))))
         return _create_socket(socket_path)
-    except EnvironmentError:
+    except OSError:
         print('E: Can`t connect to daemon. Giving up.', file=sys.stderr)
         sys.exit(1)
 
@@ -182,7 +182,7 @@ def main() -> None:
     """Forward request to udm-cli-server."""
     try:
         sock = _create_socket()
-    except socket.error:
+    except OSError:
         # try once again
         sock.close()
         sock = _re_create_socket()
