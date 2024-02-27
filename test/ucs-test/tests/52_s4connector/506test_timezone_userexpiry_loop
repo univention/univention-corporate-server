@@ -37,8 +37,25 @@ UDM_users_user_userexpiry="$(random_date)"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
 UCS_DN="uid=$UDM_users_user_username,cn=users,$(ucr get ldap/base)"
 
+function set_timezone {
+	tmp_dir=$(mktemp -d)
+	cd "$tmp_dir" || exit 1
+
+	IFS='/' read -r AREA CITY <<< "$1"
+
+	echo "tzdata tzdata/Areas select $AREA" > preseed.txt
+	echo "tzdata tzdata/Zones/$AREA select $CITY" >> preseed.txt
+
+	rm /etc/localtime /etc/timezone
+
+	debconf-set-selections preseed.txt
+	dpkg-reconfigure -f noninteractive tzdata
+
+	rm preseed.txt
+}
+
 function cleanup {
-	timedatectl set-timezone "$TIMEZONE"
+	set_timezone "$TIMEZONE"
 	udm_remove 'users/user'
 	ad_wait_for_synchronization; fail_bool 0 110
 	udm_exists 'users/user'; fail_bool 1 110
@@ -50,9 +67,9 @@ trap cleanup EXIT
 ad_connector_stop
 udm_create "users/user" || fail_fast 110
 
-for timezone in  "Pacific/Niue" "America/Mexico_City" "UTC" "Pacific/Fiji" "Asia/Bangkok"
+for timezone in  "Pacific/Niue" "America/Mexico_City" "Etc/UTC" "Pacific/Fiji" "Asia/Bangkok"
 do
-	timedatectl set-timezone "$timezone"
+	set_timezone "$timezone"
 	echo "Setting timezone to $timezone"
 	udm_verify_udm_attribute "userexpiry" "$UDM_users_user_userexpiry" "users/user" || fail_fast 110
 
