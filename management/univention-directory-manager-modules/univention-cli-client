@@ -183,6 +183,7 @@ def main():
         sock = _create_socket()
     except socket.error:
         # try once again
+        sock.close()
         sock = _re_create_socket()
 
     cmdfile = os.path.basename(sys.argv[0])
