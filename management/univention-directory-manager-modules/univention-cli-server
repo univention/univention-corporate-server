@@ -202,7 +202,7 @@ def doit(sarglist: bytes, conn: socket.socket, stdout: Optional[IO[str]] = None,
             continue
         if arg.startswith('--logfile='):
             logfile = arg[len('--logfile='):]
-        elif arg.startswith('--logfile'):
+        elif arg == '--logfile':
             next_is_logfile = True
         secret |= arg == '--binddn'
         show_help |= arg in ('--help', '-h', '-?', '--version')
@@ -298,19 +298,23 @@ def daemonize(logfile: str) -> None:
         sys.exit(0)
 
 
-def main() -> None:
+def parse_args() -> Namespace:
     debug_level = ucr.get_int('directory/manager/cmd/debug/level', 1)
     timeout = ucr.get_int('directory/manager/cmd/timeout', 300)
     default_socket_path = '/tmp/admincli_%d/sock' % os.getuid()
 
-    argparser = ArgumentParser()
-    argparser.add_argument('-n', dest='daemonize', action='store_false', default=True, help='Run in foreground without daemonizing')
-    argparser.add_argument('-L', dest='logfile', action='store', default='/var/log/univention/directory-manager-cmd.log', help='logfile: %(default)s')
-    argparser.add_argument('-d', dest='debug_level', action='store', type=int, default=debug_level, help='debug level: %(default)s')
-    argparser.add_argument('-t', dest='timeout', action='store', type=int, default=timeout, help='timeout: %(default)s')
-    argparser.add_argument('-s', dest='socket', action='store', default=default_socket_path)
+    argparser = ArgumentParser(description=__doc__)
+    argparser.add_argument('-n', '--daemonize', action='store_false', default=True, help='Run in foreground without daemonizing')
+    argparser.add_argument('-L', '--logfile', default='/var/log/univention/directory-manager-cmd.log', help='logfile: %(default)s')
+    argparser.add_argument('-d', '--debug-level', type=int, default=debug_level, help='debug level: %(default)s')
+    argparser.add_argument('-t', '--timeout', type=int, default=timeout, help='timeout: %(default)s')
+    argparser.add_argument('-s', '--socket', default=default_socket_path, help='socket: %(default)s')
     args = argparser.parse_args()
+    return args
 
+
+def main() -> None:
+    args = parse_args()
     if args.daemonize:
         daemonize(args.logfile or os.path.devnull)
 

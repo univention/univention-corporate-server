@@ -59,7 +59,7 @@ def get_logfile() -> str:
     for pos, arg in enumerate(sys.argv):
         if arg.startswith('--logfile='):
             logfile = arg[len('--logfile='):]
-        elif arg.startswith('--logfile'):
+        elif arg == '--logfile':
             try:
                 logfile = sys.argv[pos + 1]
             except IndexError:

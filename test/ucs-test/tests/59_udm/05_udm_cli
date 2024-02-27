@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
-## desc: ##  Check UDM CLI server inheriting clean environment
+## desc: Check UDM CLI server inheriting clean environment
 ## bugs: [57089]
 ## exposure: careful
 ## timeout: 30
