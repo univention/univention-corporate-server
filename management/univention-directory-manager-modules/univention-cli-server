@@ -43,10 +43,11 @@ import signal
 import socket
 import sys
 import traceback
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from io import StringIO
 from logging import getLogger
 from select import select
+from typing import IO, List, Optional, Tuple
 
 from six.moves import socketserver
 
@@ -64,7 +65,7 @@ logfile = ''
 loglevel = 1
 
 
-def recv_fds(sock, msglen, maxfds):
+def recv_fds(sock: socket.socket, msglen: int, maxfds: int) -> Tuple[bytes, List[int]]:
     fds = array.array("i")   # Array of ints
     msg, ancdata, _flags, _addr = sock.recvmsg(msglen, socket.CMSG_LEN(maxfds * fds.itemsize))
     for cmsg_level, cmsg_type, cmsg_data in ancdata:
@@ -77,7 +78,7 @@ def recv_fds(sock, msglen, maxfds):
 class MyRequestHandler(socketserver.BaseRequestHandler):
     """Handle request on listening socket to open new connection."""
 
-    def handle(self):
+    def handle(self) -> None:
         log.debug('daemon [%s] new connection [%s]', os.getppid(), os.getpid())
         sarglist = b''
         fds = []
@@ -102,7 +103,7 @@ class ForkingServer(socketserver.ForkingMixIn, socketserver.UnixStreamServer):
     """UDM server listening on UNIX socket."""
 
 
-def server_main(args):
+def server_main(args: Namespace) -> None:
     """UDM command line server."""
     socket_path = args.socket
     socket_dir = os.path.dirname(socket_path)
@@ -181,10 +182,10 @@ def server_main(args):
         ud.exit()
 
 
-def doit(sarglist, conn, stdout=None, stderr=None):
+def doit(sarglist: bytes, conn: socket.socket, stdout: Optional[IO[str]] = None, stderr: Optional[IO[str]] = None) -> None:
     """Process single UDM request."""
 
-    def send_message(output):
+    def send_message(output) -> None:
         """Send answer back."""
         back = json.dumps(output, ensure_ascii=True)
         if not isinstance(back, bytes):
@@ -302,7 +303,7 @@ def daemonize(logfile: str) -> None:
         sys.exit(0)
 
 
-def main():
+def main() -> None:
     ucr = ConfigRegistry()
     ucr.load()
     debug_level = int(ucr.get('directory/manager/cmd/debug/level', 1))

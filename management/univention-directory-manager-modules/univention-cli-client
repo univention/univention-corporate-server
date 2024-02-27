@@ -42,6 +42,7 @@ import socket
 import stat
 import sys
 import time
+from typing import List
 
 import six
 from six.moves import input
@@ -52,7 +53,7 @@ from univention.config_registry import ConfigRegistry
 default_socket_path = '/tmp/admincli_%d/sock' % os.getuid()
 
 
-def get_logfile():
+def get_logfile() -> str:
     """Extract logfile from command line arguments."""
     logfile = ''
     for pos, arg in enumerate(sys.argv):
@@ -67,7 +68,7 @@ def get_logfile():
     return logfile
 
 
-def fork_server(sock, socket_path):
+def fork_server(sock: socket.socket, socket_path: str) -> None:
     """Fork UDM command line server."""
     # start new server
     pid = os.fork()
@@ -106,7 +107,7 @@ def fork_server(sock, socket_path):
                 raise
 
 
-def get_password():
+def get_password() -> str:
     """Query for interactive password."""
     while True:
         pwd1 = input('New password ')
@@ -116,7 +117,7 @@ def get_password():
         print('password mismatch', file=sys.stderr)
 
 
-def receive_answer(sock):
+def receive_answer(sock: socket.socket) -> bytes:
     """Receive complete answer from server."""
     data = b''
     while True:
@@ -133,7 +134,7 @@ def receive_answer(sock):
     return data
 
 
-def process_output(output, cmdfile):
+def process_output(output, cmdfile: str) -> int:
     """Print output and check for errors."""
     result = 0
     if cmdfile == 'univention-passwd':
@@ -152,7 +153,7 @@ def process_output(output, cmdfile):
     return result
 
 
-def _create_socket(socket_path=default_socket_path):
+def _create_socket(socket_path: str = default_socket_path) -> socket.socket:
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     try:
         if os.path.exists(socket_path) and os.stat(socket_path)[stat.ST_UID] != os.getuid():
@@ -164,7 +165,7 @@ def _create_socket(socket_path=default_socket_path):
     return sock
 
 
-def _re_create_socket():
+def _re_create_socket() -> socket.socket:
     try:
         socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(six.iterbytes(os.urandom(12))))
         return _create_socket(socket_path)
@@ -173,11 +174,11 @@ def _re_create_socket():
         sys.exit(1)
 
 
-def send_fds(sock, msg, fds):
+def send_fds(sock: socket.socket, msg: bytes, fds: List[int]) -> int:
     return sock.sendmsg([msg], [(socket.SOL_SOCKET, socket.SCM_RIGHTS, array.array("i", fds))])
 
 
-def main():
+def main() -> None:
     """Forward request to udm-cli-server."""
     try:
         sock = _create_socket()
