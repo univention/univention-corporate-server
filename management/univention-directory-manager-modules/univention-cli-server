@@ -161,17 +161,20 @@ def server_main(args: Namespace) -> None:
     except OSError:
         print('E: Can`t write runfile', file=sys.stderr)
 
+    signal.signal(signal.SIGCHLD, lambda signo, frame: None)
+    (read_fd, write_fd) = os.pipe2(os.O_NONBLOCK | os.O_CLOEXEC)
+    signal.set_wakeup_fd(write_fd)
     try:
-        with sock as sock:
-            while True:
-                rlist, _wlist, _xlist = select([sock], [], [], float(timeout))
-                for handler in rlist:
-                    handler.handle_request()
-                    sock.service_actions()
-                if not rlist:
-                    log.debug('daemon [%s] stopped after %s seconds idle', os.getpid(), timeout)
-                    sys.exit(0)
-
+        while True:
+            rlist, _wlist, _xlist = select([sock, read_fd], [], [], float(timeout))
+            if sock in rlist:
+                sock.handle_request()
+            if read_fd in rlist:
+                os.read(read_fd, 1)
+            sock.service_actions()
+            if not rlist:
+                log.debug('daemon [%s] stopped after %s seconds idle', os.getpid(), timeout)
+                break
     finally:
         os.unlink(socket_path)
         os.unlink(runfilename)

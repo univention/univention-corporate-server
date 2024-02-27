@@ -10,4 +10,5 @@ desc: |
    attribute indicating that it supports being assigned to an object
    multiple times.
  * A file descriptor leak in the UDM CLI server has been fixed.
-bug: [57046, 57089]
+ * Fix reaping terminated child processes.
+bug: [57046, 57089, 7735]
