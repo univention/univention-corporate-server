@@ -57,7 +57,7 @@ import univention.admincli.license_check
 import univention.admincli.passwd
 import univention.debug as ud
 import univention.logging
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 
 
 log = getLogger('ADMIN')
@@ -302,10 +302,8 @@ def daemonize(logfile: str) -> None:
 
 
 def main() -> None:
-    ucr = ConfigRegistry()
-    ucr.load()
-    debug_level = int(ucr.get('directory/manager/cmd/debug/level', 1))
-    timeout = int(ucr.get('directory/manager/cmd/timeout', 300))
+    debug_level = ucr.get_int('directory/manager/cmd/debug/level', 1)
+    timeout = ucr.get_int('directory/manager/cmd/timeout', 300)
     default_socket_path = '/tmp/admincli_%d/sock' % os.getuid()
 
     argparser = ArgumentParser()

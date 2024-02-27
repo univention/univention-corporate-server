@@ -47,7 +47,7 @@ from typing import List
 import six
 from six.moves import input
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 
 
 default_socket_path = '/tmp/admincli_%d/sock' % os.getuid()
@@ -83,8 +83,6 @@ def fork_server(sock: socket.socket, socket_path: str) -> None:
     else:  # parent
         os.waitpid(pid, os.WNOHANG)
 
-    ucr = ConfigRegistry()
-    ucr.load()
     socket_timeout = float(ucr.get('directory/manager/cmd/sockettimeout', 50))
     stime = time.time() + socket_timeout
     while not os.path.exists(socket_path):
