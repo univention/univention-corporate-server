@@ -140,13 +140,7 @@ def server_main(args: Namespace) -> None:
         else:
             print('E: socket directory exists (%s)' % socket_dir, file=sys.stderr)
 
-    timeout = args.timeout
-    if timeout:
-        if int(timeout) > 2147483647:
-            timeout = 2147483647
-    else:
-        timeout = 300
-        log.warning('daemon [%s] baseconfig key directory/manager/cmd/timeout not set, setting to default (%s seconds)', os.getpid(), timeout)
+    timeout = max(0, min(args.timeout, (1 << 31) - 1)) or 300
 
     try:
         sock = ForkingServer(socket_path, MyRequestHandler)
