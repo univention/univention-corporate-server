@@ -127,8 +127,7 @@ def server_main(args: Namespace) -> None:
             os.unlink(runfilename)
             os.rmdir(socket_dir)
         else:
-            print('E: Server already running [Pid: %s]' % pid, file=sys.stderr)
-            sys.exit(1)
+            sys.exit('E: Server already running [Pid: %s]' % pid)
 
     log.debug('server is running as process %d', os.getpid())
 
@@ -137,8 +136,7 @@ def server_main(args: Namespace) -> None:
         os.chmod(socket_dir, 0o700)
     except OSError as ex:
         if ex.errno != errno.EEXIST:
-            print('E: %s %s' % (socket_dir, ex), file=sys.stderr)
-            sys.exit(1)
+            sys.exit('E: %s %s' % (socket_dir, ex))
         else:
             print('E: socket directory exists (%s)' % socket_dir, file=sys.stderr)
 
@@ -154,9 +152,8 @@ def server_main(args: Namespace) -> None:
         sock = ForkingServer(socket_path, MyRequestHandler)
         os.chmod(socket_path, 0o600)
     except OSError:
-        print('E: Failed creating socket (%s). Daemon stopped.' % socket_path, file=sys.stderr)
         log.error('daemon [%s] Failed creating socket (%s). Daemon stopped.', os.getpid(), socket_path)
-        sys.exit(1)
+        sys.exit('E: Failed creating socket (%s). Daemon stopped.' % socket_path)
 
     try:
         with open(runfilename, 'w') as runfile:
