@@ -76,9 +76,9 @@ def fork_server(sock: socket.socket, socket_path: str) -> None:
         argv = ['univention-cli-server']
         logfile = get_logfile()
         if logfile:
-            argv.extend(['-L', logfile])
+            argv += ['-L', logfile]
         if socket_path != default_socket_path:
-            argv.extend(['-s', socket_path])
+            argv += ['-s', socket_path]
         os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', argv)  # noqa: S606
     else:  # parent
         os.waitpid(pid, os.WNOHANG)
