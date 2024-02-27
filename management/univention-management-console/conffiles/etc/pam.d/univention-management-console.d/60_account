@@ -1,4 +1,5 @@
 @!@
+print('account  [success=1  default=ignore]   pam_succeed_if.so uid > 1000')
 print('account  sufficient        pam_unix.so')
 methods = configRegistry.get('auth/methods', '').split(' ')
 if 'krb5' in methods:
