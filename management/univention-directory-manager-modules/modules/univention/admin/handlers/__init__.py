@@ -1791,6 +1791,9 @@ class simpleLdap(object):
             if self.descriptions[key].readonly_when_synced:
                 value = self.info.get(key)
                 oldval = self.oldinfo.get(key)
+                null = [] if self.descriptions[key].multivalue else ''
+                if oldval in (None, null) and value in (None, null):
+                    continue
                 if oldval != value:
                     raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': oldval, 'new': value}, property=key)
 
