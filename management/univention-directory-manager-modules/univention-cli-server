@@ -274,6 +274,34 @@ def doit(sarglist, conn, stdout=None, stderr=None):
         sys.exit(0)
 
 
+def daemonize(logfile: str) -> None:
+    null = os.open(os.path.devnull, os.O_RDONLY)
+    try:
+        log = os.open(logfile, os.O_WRONLY | os.O_APPEND)
+    except OSError:
+        log = os.open(os.path.devnull, os.O_WRONLY)
+
+    for dst in range(3):
+        src = log if dst else null
+        if dst != src:
+            os.dup2(src, dst)
+
+    os.closerange(3, 1 + max(int(fd) for fd in os.listdir("/proc/self/fd")))
+
+    # Prepare to call `setsid()`
+    pid = os.fork()
+    if pid:
+        sys.exit(0)
+
+    # Become session leader
+    os.setsid()
+
+    # Double fork against CTTY
+    pid = os.fork()
+    if pid:
+        sys.exit(0)
+
+
 def main():
     ucr = ConfigRegistry()
     ucr.load()
@@ -290,15 +318,9 @@ def main():
     args = argparser.parse_args()
 
     if args.daemonize:
-        pid = os.fork()
-        if pid == 0:  # child
-            os.setsid()
-            server_main(args)
-            sys.exit(0)
-        else:  # parent
-            os.waitpid(pid, os.P_NOWAIT)
-    else:
-        server_main(args)
+        daemonize(args.logfile or os.path.devnull)
+
+    server_main(args)
 
 
 if __name__ == "__main__":

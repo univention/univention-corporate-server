@@ -1,0 +1,14 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: ##  Check UDM CLI server inheriting clean environment
+## bugs: [57089]
+## exposure: careful
+## timeout: 30
+
+pkill -f /usr/share/univention-directory-manager-tools/univention-cli-server
+timeout 10 sh -c 'udm modules 3>&1 | tee /dev/null >/dev/null' &&
+	exit 0
+
+lsof -p "$(pgrep -f /usr/share/univention-directory-manager-tools/univention-cli-server)" -a -d 0-255
+exit 1
+# vim: set ft=sh :

@@ -72,13 +72,6 @@ def fork_server(sock, socket_path):
     # start new server
     pid = os.fork()
     if pid == 0:  # child
-        null = os.open(os.path.devnull, os.O_RDWR)
-        if sys.stdin:
-            os.dup2(null, sys.stdin.fileno())
-        if sys.stdout:
-            os.dup2(null, sys.stdout.fileno())
-        if sys.stderr:
-            os.dup2(null, sys.stderr.fileno())
         argv = ['univention-cli-server']
         logfile = get_logfile()
         if logfile:

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-12) unstable; urgency=low
+
+  * Bug #57089: Fix file descriptor leak in CLI server
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 28 Feb 2024 17:10:33 +0100
+
 univention-directory-manager-modules (15.0.25-11) unstable; urgency=medium
 
   * Bug #57046: add a attribute to the UCR policy to indicate that they
