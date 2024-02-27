@@ -49,19 +49,21 @@ from univention.admin.syntax import simple
 translation = univention.admin.localization.translation('univention.admin.handlers.blocklists')
 _ = translation.translate
 
+try:
+    from univention.admin.syntax import GeneralizedTimeUTC
+except ImportError:
+    # duplicated syntax class from syntax.py remove and use syntax class from syntax.py when preparing for 5.0-7
+    class GeneralizedTimeUTC(simple):
+        """Generalized time but without microseconds and always in UTC"""
 
-# duplicated syntax class from syntax.py remove and use syntax class from syntax.py when preparing for 5.0-7
-class GeneralizedTimeUTC(simple):
-    """Generalized time but without microseconds and always in UTC"""
-
-    @classmethod
-    def parse(self, text):
-        try:
-            datetime.datetime.strptime(text, "%Y%m%d%H%M%SZ")
-            duparse(text)
-        except ValueError:
-            raise univention.admin.uexceptions.valueError(_('This timestamp needs be in UTC and follow the format YYYYMMDDHHmmssZ.'))
-        return text
+        @classmethod
+        def parse(self, text):
+            try:
+                datetime.datetime.strptime(text, "%Y%m%d%H%M%SZ")
+                duparse(text)
+            except ValueError:
+                raise univention.admin.uexceptions.valueError(_('This timestamp needs be in UTC and follow the format YYYYMMDDHHmmssZ.'))
+            return text
 
 
 module = 'blocklists/entry'
