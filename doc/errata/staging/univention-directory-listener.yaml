@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * In case the communication to the notifier fails, e.g. due to a restart
    of the univention-directory-notifier service on the UCS Primary
-   Directroy Node, the listener did not retry but exit and relies on
+   Directory Node, the listener did not retry but exit and relies on
    systemd to get restarted. This strategy does not work during the
    initialization phase while joining, when the listener is not yet
    run as systemd service. A retry mechanism has been introduced for
