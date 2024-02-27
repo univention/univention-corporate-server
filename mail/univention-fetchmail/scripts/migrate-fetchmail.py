@@ -44,6 +44,7 @@ from univention.config_registry import ConfigRegistry
 
 FETCHMAILRC = '/etc/fetchmailrc'
 PASSWORD_REGEX = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
+FETCHMAIL_PROPERTIES = {'fetchmailUseSSL', 'fetchmailKeep', 'fetchmailPassword', 'fetchmailUsername', 'fetchmailProtocol', 'fetchmailServer'}
 
 
 def load_rc(ofile):
@@ -102,12 +103,15 @@ class Converter(object):
         parser = argparse.ArgumentParser(description=__doc__)
         parser.add_argument('--binddn', help='LDAP bind dn')
         parser.add_argument('--bindpwdfile', help='LDAP bind password file for bind dn')
+        parser.add_argument('--dry-run', action='store_true', help='perform dry run without changes')
+        parser.add_argument('--dn', help='Perform the conversion for an specific DN')
         self.args = parser.parse_args()
 
-    def main(self):
-        self.parse_cmdline()
-        self.get_ldap()
-        ret = self.convert()
+    def main(self, cmdline=True):
+        if cmdline:
+            self.parse_cmdline()
+            self.get_ldap()
+        ret = self.convert(self.args.dn)
 
         return ret
 
@@ -127,55 +131,95 @@ class Converter(object):
         else:
             self.access, self.position = univention.admin.uldap.getAdminConnection()
 
-    def convert(self):
+    def details_complete(self, **kwargs):
+        missing = [key for key in kwargs if not kwargs[key]]
+        return (len(missing) == 0, missing)
+
+    def remaining_attributes(self, missing, keep, ssl):
+        rem = FETCHMAIL_PROPERTIES - set(missing)
+        if not keep:
+            rem.remove('fetchmailUseSSL')
+        if not ssl:
+            rem.remove('fetchmailKeep')
+        return rem
+
+    def convert(self, user_dn=None):
         self.debug("Converting old fetchmail configuration...")
         file = load_rc(FETCHMAILRC)
-        if not file:
+        if file is None:
             return
 
+        ret = []
+        if not user_dn:
+            ldap_filter = '(&(objectClass=univentionFetchmail)(univentionObjectType=users/user))'
+            ldap_base = self.ucr['ldap/base']
+        else:
+            ldap_filter = '(&(objectClass=univentionFetchmail)(univentionObjectType=users/user))'
+            ldap_base = user_dn
         for dn, attrs in self.access.search(
-            filter='(&(objectClass=univentionFetchmail)(univentionObjectType=users/user))',
+            filter=ldap_filter,
             attr=['uid', 'univentionFetchmailAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailPasswd', 'univentionFetchmailKeepMailOnServer', 'univentionFetchmailUseSSL', 'univentionFetchmailSingle'],
+            base=ldap_base
         ):
             uid = attrs['uid'][0].decode('UTF-8')
             server = attrs.get('univentionFetchmailServer', [])
             protocol = attrs.get('univentionFetchmailProtocol', [])
-            passwd = attrs.get('univentionFetchmailPasswd', [get_pw_from_rc(file, uid)])[0]
+            passwd = attrs.get('univentionFetchmailPasswd', [])
             address = attrs.get('univentionFetchmailAddress', [])
             keep = attrs.get('univentionFetchmailKeepMailOnServer', [])
             ssl = attrs.get('univentionFetchmailUseSSL', [])
 
-            if not server:
-                self.debug('Skip object with uid "%s". Already migrated or incomplete configuration' % (uid,))
-                continue
+            res, missing = self.details_complete(fetchmailServer=server,
+                                                 fetchmailProtocol=protocol,
+                                                 fetchmailPassword=passwd,
+                                                 fetchmailUsername=address)
 
+            not_already_migrated = len(missing) < 4
+            # The old listener removed the univentionFetchmailPasswd when possible and used the password from
+            # /etc/fetchmailrc file.
             if not passwd:
-                self.debug('Skip object with uid "%s". Unable to retrieve univentionFetchmailPasswd attribute from /etc/fetchmailrc file' % (uid,))
+                password = get_pw_from_rc(file, uid)
+                if password and not_already_migrated:
+                    missing.remove('fetchmailPassword')
+                    res = len(missing) == 0
+            else:
+                password = passwd[0]
+
+            if not res:
+                if not_already_migrated or keep or ssl:
+                    self.debug("Cannot migrate object with dn: %r. Remaining fetchmail attributes: %s" % (dn, ", ".join(self.remaining_attributes(missing, keep, ssl))))
+                    if self.args.dry_run:
+                        ret.append((dn, self.remaining_attributes(missing, keep, ssl)))
                 continue
+            else:
+                password = password.encode('UTF-8') if isinstance(password, str) else password
+                old_fetchmail_new = attrs.get('univentionFetchmailSingle', [])
+                updated_fetchmail_new = unmap_fetchmail(old_fetchmail_new)
+                updated_fetchmail_new.append([
+                    server[0] if server else b'',
+                    protocol[0] if protocol else b'',
+                    address[0] if address else b'',
+                    password,
+                    keep[0] if keep else b'0',
+                    ssl[0] if ssl else b'0',
+                ])
 
-            passwd = passwd.encode('UTF-8') if isinstance(passwd, str) else passwd
-            old_fetchmail_new = attrs.get('univentionFetchmailSingle', [])
-            updated_fetchmail_new = unmap_fetchmail(old_fetchmail_new)
-            updated_fetchmail_new.append([
-                server[0] if server else b'',
-                protocol[0] if protocol else b'',
-                address[0] if address else b'',
-                passwd,
-                keep[0] if keep else b'0',
-                ssl[0] if ssl else b'0',
-            ])
-
-            changes = [
-                ('univentionFetchmailServer', server, []), ('univentionFetchmailProtocol', protocol, []),
-                ('univentionFetchmailAddress', address, []), ('univentionFetchmailKeepMailOnServer', keep, []),
-                ('univentionFetchmailUseSSL', ssl, []), ('univentionFetchmailSingle', old_fetchmail_new, map_fetchmail(updated_fetchmail_new)),
-            ]
-            try:
-                self.debug('Updating %s' % (dn,))
-                self.access.modify(dn, changes, ignore_license=1)
-            except Exception as ex:
-                self.error('Failed to modify %s: %s, changes: %s' % (dn, ex, changes))
+                changes = [
+                    ('univentionFetchmailServer', server, []), ('univentionFetchmailProtocol', protocol, []),
+                    ('univentionFetchmailAddress', address, []), ('univentionFetchmailKeepMailOnServer', keep, []),
+                    ('univentionFetchmailUseSSL', ssl, []), ('univentionFetchmailPasswd', passwd, []),
+                    ('univentionFetchmailSingle', old_fetchmail_new, map_fetchmail(updated_fetchmail_new)),
+                ]
+                try:
+                    self.debug('Updating %s' % (dn,))
+                    if not self.args.dry_run:
+                        self.access.modify(dn, changes, ignore_license=1)
+                    else:
+                        ret.append((dn, self.remaining_attributes(missing, keep, ssl)))
+                except Exception as ex:
+                    self.error('Failed to modify %s: %s, changes: %s' % (dn, ex, changes))
         self.debug("Done.")
+        return ret
 
     def debug(self, msg):
         print(msg, file=sys.stderr)

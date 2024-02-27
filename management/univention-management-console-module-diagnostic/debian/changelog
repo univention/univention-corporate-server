@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.0.7) unstable; urgency=medium
+
+  * Bug #55905: deprecate old fetchmail attributes
+
+ -- Juan Carlos García García <garcia-garcia@univention.de>  Fri, 08 Mar 2024 00:18:51 +0100
+
 univention-management-console-module-diagnostic (8.0.6) unstable; urgency=medium
 
   * Bug #56793: Replace libnss-ldapd with SSSd
