@@ -1693,8 +1693,7 @@ copy_test_data_cache() {
 # create python diskcache for users and groups
 # (used in performance template job)
 create_and_copy_test_data_cache () {
-	univention-install -y python3-pip
-	pip3 install diskcache
+	univention-install -y python3-diskcache
 	python3 - <<"EOF" || return 1
 from diskcache import Index
 from univention.udm import UDM
