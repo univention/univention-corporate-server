@@ -134,9 +134,9 @@ def mapMX(old, encoding=()):
 def unmapIPAddresses(values, encoding=()):
     records = []
     if 'aRecord' in values:
-        records.extend([x.decode(*encoding) for x in values['aRecord']])
+        records += (x.decode(*encoding) for x in values['aRecord'])
     if 'aAAARecord' in values:
-        records.extend([ipaddress.IPv6Address(x.decode(*encoding)).exploded for x in values['aAAARecord']])
+        records += (ipaddress.IPv6Address(x.decode(*encoding)).exploded for x in values['aAAARecord'])
     return records
 
 

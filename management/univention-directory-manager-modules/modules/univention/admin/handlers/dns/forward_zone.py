@@ -212,9 +212,9 @@ class object(univention.admin.handlers.simpleLdap):
         info = super(object, self)._post_unmap(info, values)
         info['a'] = []
         if 'aRecord' in values:
-            info['a'].extend([x.decode('ASCII') for x in values['aRecord']])
+            info['a'] += (x.decode('ASCII') for x in values['aRecord'])
         if 'aAAARecord' in values:
-            info['a'].extend([ipaddress.IPv6Address(x.decode('ASCII')).exploded for x in values['aAAARecord']])
+            info['a'] += (ipaddress.IPv6Address(x.decode('ASCII')).exploded for x in values['aAAARecord'])
         return info
 
     def open(self):

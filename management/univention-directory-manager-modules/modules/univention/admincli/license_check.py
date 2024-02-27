@@ -163,8 +163,7 @@ def check_license(lo, dn, list_dns, expired):  # type: (univention.admin.uldap.a
                     ignored = True
                 out.append(format(ln, n, m, False, _license.compare, ignored))
                 if list_dns and maximum != 'unlimited':
-                    for dnout in odn:
-                        out.extend(["  %s" % dnout])
+                    out.extend("  %s" % dnout for dnout in odn)
                 if list_dns and (i in (License.USERS, License.ACCOUNT)):
                     out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
 

@@ -192,8 +192,7 @@ class object(univention.admin.handlers.simpleLdap):
     def _ldap_modlist(self):
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-        attr = [x.encode('ASCII') for x in self['attribute']]
-        attr.extend([x.encode('ASCII') for x in self['ldapattribute']])
+        attr = [val.encode('ASCII') for prop in ("attribute", "ldapattribute") for val in self[prop]]
         ml.append(('univentionSyntaxLDAPAttribute', self.oldattr.get('univentionSyntaxLDAPAttribute', []), attr))
 
         val = self['ldapvalue'] or self['value']
