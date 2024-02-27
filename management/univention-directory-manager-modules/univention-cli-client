@@ -192,9 +192,7 @@ def main() -> None:
         password = get_password()
         sys.argv += ['--pwd', password]
 
-    data = json.dumps(sys.argv, ensure_ascii=True)
-    if not isinstance(data, bytes):
-        data = data.encode('ASCII')
+    data = json.dumps(sys.argv, ensure_ascii=True).encode('ASCII')
     send_fds(sock, data + b'\0', [sys.stdout.fileno(), sys.stderr.fileno()])
     data = receive_answer(sock)
     sock.close()

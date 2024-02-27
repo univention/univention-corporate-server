@@ -187,9 +187,7 @@ def doit(sarglist: bytes, conn: socket.socket, stdout: Optional[IO[str]] = None,
 
     def send_message(output) -> None:
         """Send answer back."""
-        back = json.dumps(output, ensure_ascii=True)
-        if not isinstance(back, bytes):
-            back = back.encode('ASCII')
+        back = json.dumps(output, ensure_ascii=True).encode('ASCII')
         conn.send(back + b'\0')
         conn.close()
 
