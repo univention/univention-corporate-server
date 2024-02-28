@@ -9,3 +9,6 @@ desc: |
  * A check has been added to verify that the LDAP server's configuration file
    has the file system permissions `0640`.
 bug: [57038]
+erratum: 971
+announced: 2024-02-28
+support: core
