@@ -9,3 +9,6 @@ desc: |
  * The new LDAP database `cn=internal` has been added to store blocklist
    entries.
 bug: [57038]
+erratum: 970
+announced: 2024-02-28
+support: core
