@@ -9,9 +9,9 @@ Prevent reuse of user property values
 
 .. TODO : Add version of the erratum
 
-.. versionadded:: 5.0-6-erratum-...
+.. versionadded:: 5.0-6-erratum-974
 
-   Since :uv:erratum:`5.0x...`, UCS supports block lists to prevent the reuse of user or group
+   Since :uv:erratum:`5.0x974`, UCS supports block lists to prevent the reuse of user or group
    property values.
 
 Block lists is a module in UDM.
@@ -43,7 +43,7 @@ Activate block lists
 Before you can activate the block lists,
 you first need to update the UCS systems,
 where you manage UDM objects,
-to at least :uv:erratum:`5.0x...`.
+to at least :uv:erratum:`5.0x974`.
 
 Second, you need to set the |UCSUCRV| :envvar:`directory/manager/blocklist/enabled` to ``true`` with
 :option:`ucr set` on all UCS systems, where you manage UDM objects.
