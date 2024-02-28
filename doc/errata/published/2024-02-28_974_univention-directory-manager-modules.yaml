@@ -12,3 +12,6 @@ desc: |
    value in UCS was different from the value in AD when using UCS in AD member
    mode.
 bug: [57039, 57040, 57042, 56929]
+erratum: 974
+announced: 2024-02-28
+support: core
