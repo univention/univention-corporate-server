@@ -1,3 +1,9 @@
+ucs-test (10.0.20-41) unstable; urgency=medium
+
+  * Bug #57046: create a test for the UMC Ldap Directory module
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 28 Feb 2024 16:37:42 +0100
+
 ucs-test (10.0.20-40) unstable; urgency=medium
 
   * Bug #56054: Output more information on assertion failure in
