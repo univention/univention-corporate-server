@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issues:
  * The valid URI schemes for the SAML attribute consuming service and single
    logout endpoints are now configurable via the UCR variable
-  `umc/saml/schemes`.
+   `umc/saml/schemes`.
 bug: [57060]
