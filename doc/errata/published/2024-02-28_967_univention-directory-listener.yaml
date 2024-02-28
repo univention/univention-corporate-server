@@ -18,3 +18,6 @@ desc: |
    There is an exponential backoff algorithm to delay the retries and
    log messages are generated showing what is going on.
 bug: [57024]
+erratum: 967
+announced: 2024-02-28
+support: core
