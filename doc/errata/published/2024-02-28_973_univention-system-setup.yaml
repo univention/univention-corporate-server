@@ -9,3 +9,6 @@ desc: |
  * The UDM CLI daemon is now restarted after setting the LDAP base during
    system setup.
 bug: [57039]
+erratum: 973
+announced: 2024-02-28
+support: core
