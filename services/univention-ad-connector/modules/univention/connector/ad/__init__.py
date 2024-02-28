@@ -1235,7 +1235,7 @@ class ad(univention.connector.ucs):
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS group member cache reset")
 
         for prim_object in prim_members_ucs:
-            if self.__compare_lowercase_dn(prim_object[0], ucs_members):
+            if prim_object[0].lower() in ucs_members:
                 ucs_members.remove(prim_object[0].lower())
 
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
