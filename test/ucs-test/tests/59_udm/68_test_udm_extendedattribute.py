@@ -201,7 +201,7 @@ class Test_UDMExtension:
             'notEditable': '1',
             'valueRequired': '1',
             'deleteObjectClass': '1',
-            'version': uts.random_string(),
+            'version': '2',
             'doNotSearch': '1',
             'set': {'options': uts.random_string()},  # "options" property of settings/extended_attribute collides with already existing keyword argument "options"
         }

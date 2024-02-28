@@ -127,7 +127,7 @@ class TestUsers:
                 'certificateDateNotAfter': parser.parse(dates['notAfter']).strftime('%Y-%m-%d'),
                 'certificateDateNotBefore': parser.parse(dates['notBefore']).strftime('%Y-%m-%d'),
             })
-        user = udm.create_object(module, username=random_name(), name=random_name(), password=random_name(), lastname=random_name())
+        user = udm.create_object(module, username=random_name(), password=random_name(), lastname=random_name())
         udm.modify_object(module, dn=user, append_option=['pki'], userCertificate=certificate)
         udm.verify_udm_object(module, user, certificate_ldap)
 
@@ -257,6 +257,7 @@ class TestUsers:
             udm.remove_object('users/user', dn=user)
         wait_for_connector_replication()
         if kwargs.get('modify', True):
+            props.pop('position', None)
             user = udm.create_user()[0]
             wait_for_connector_replication()
             user = udm.modify_object('users/user', dn=user, **props)
