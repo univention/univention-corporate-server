@@ -10,3 +10,6 @@ desc: |
    logout endpoints are now configurable via the UCR variable
    `umc/saml/schemes`.
 bug: [57060]
+erratum: 968
+announced: 2024-02-28
+support: core
