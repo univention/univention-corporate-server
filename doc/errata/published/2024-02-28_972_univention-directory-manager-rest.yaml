@@ -9,3 +9,6 @@ desc: |
  * UDM REST now supports a different LDAP base for each UDM
    module. This is a requirement for the blocklist feature.
 bug: [57039]
+erratum: 972
+announced: 2024-02-28
+support: core
