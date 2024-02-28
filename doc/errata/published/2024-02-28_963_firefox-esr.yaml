@@ -44,3 +44,6 @@ cve:
 - CVE-2024-1551
 - CVE-2024-1552
 - CVE-2024-1553
+erratum: 963
+announced: 2024-02-28
+support: core
