@@ -53,26 +53,26 @@ Second, you need to set the |UCSUCRV| :envvar:`directory/manager/blocklist/enabl
 Configure block lists
 ---------------------
 
-You can create, list and remove block list entries in the UMC module *Blocklists*,
+You can create, list, and remove block list entries in the UMC module *Blocklists*,
 or through the command line tool :program:`udm blocklists/list`.
 
 On every block list you need to define the following properties:
 
 Name
-   Provide a human-readable name for the block list for later identification.
+   Provides a human-readable name for the block list for later identification.
 
 Retention time
-   Defines the retention time for entries in this block list.  The retention
-   time is the time period that needs to expire to automatically remove entries
-   from the block list.
-   Use the following scheme to set the retention time:
+   Defines the retention time for entries in this block list.
+   The retention time is the time period
+   that needs to expire to automatically remove entries from the block list.
    For example ``1m 20d`` which results in one month and twenty days.
 
 Properties to block
    Defines the UDM modules and their properties that the block list prevents from reuse.
 
-The following example for :program:`udm blocklists/list` shows how to create a block list.
-The block lists prevents the reuse of
+The following example for :program:`udm blocklists/list` shows
+how to create a block list through the command line.
+The block list prevents the reuse of
 the UDM property ``mailPrimaryAddress`` for ``users/user`` objects
 and the UDM property ``mailAddress`` for ``groups/group`` objects.
 
@@ -108,9 +108,8 @@ Value
    All uppercase and lowercase variants of the value then match the block list entry when validated by UDM.
 
 Blocked until
-   The block list entry expires after this
-   `GeneralizedTime-LDAP-Syntax <ldap-generalized-time_>`_
-   timestamp.
+   The timestamp when the block list entry expires.
+   It uses the `GeneralizedTime-LDAP-Syntax <ldap-generalized-time_>`_ format.
 
    When UDM creates a block list entry,
    it takes the current date and time,
@@ -147,12 +146,14 @@ Origin ID
 Expired block list entries
 --------------------------
 
-Every entry in a block list has a ``Blocked until`` property. Block list
-entries are only valid until this time stamp expires. A cron job on the
-|UCSPRIMARYDN| deletes expired block list entries. How often this cron job is
-executed can be configured with the
+Every entry in a block list has a *Blocked until* property.
+Block list entries expire after the timestamp passed.
+A cron job on the |UCSPRIMARYDN| deletes expired block list entries.
+ 
+You can configure how often cron runs the job with the |UCSUCRV|
 :envvar:`directory/manager/blocklist/cleanup/cron`.
-The log file :file:`/var/log/univention/blocklist-clean-expired-entries.log` lists the expired entries that UDM deleted.
+The log file :file:`/var/log/univention/blocklist-clean-expired-entries.log`
+lists the expired entries that UDM deleted.
 
 .. _udm-blocklists-ldap-acl:
 
