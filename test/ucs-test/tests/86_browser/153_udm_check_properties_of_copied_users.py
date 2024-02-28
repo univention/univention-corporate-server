@@ -61,7 +61,7 @@ def user_info(udm):
         'orig_username': username,
         'copied_username': copied_username,
     }
-    for user in UDM.admin().version(1).get('users/user').search(f'username={copied_username}'):
+    for user in UDM.admin().version(3).get('users/user').search(f'username={copied_username}'):
         user.delete()
 
 
@@ -109,7 +109,7 @@ def test_properties_of_copied_users(umc_browser_test: UMCBrowserTest, user_info)
         'certificateSerial',
     ]
 
-    udm_user_module = UDM.admin().version(2).get('users/user')
+    udm_user_module = UDM.admin().version(3).get('users/user')
     orig_user = udm_user_module.get(orig_dn)
     copied_user = udm_user_module.get_by_id(copied_username)
 
@@ -119,4 +119,4 @@ def test_properties_of_copied_users(umc_browser_test: UMCBrowserTest, user_info)
         if attribute == 'jpegPhoto':
             assert copied_user_props[attribute] is None
         else:
-            assert orig_user_props[attribute] != copied_user_props[attribute]
+            assert orig_user_props[attribute] != copied_user_props[attribute], f'Original user and copied user attributes are matching {orig_user_props[attribute]} == {copied_user_props[attribute]} (attribute = {attribute})'

@@ -1,3 +1,10 @@
+ucs-test (10.0.20-40) unstable; urgency=medium
+
+  * Bug #56054: Output more information on assertion failure in
+    86_browser/153_udm_check_properties_of_copied_users
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 28 Feb 2024 10:53:38 +0100
+
 ucs-test (10.0.20-39) unstable; urgency=medium
 
   * Bug #49981: Test documented adconnector custom mapping examples
