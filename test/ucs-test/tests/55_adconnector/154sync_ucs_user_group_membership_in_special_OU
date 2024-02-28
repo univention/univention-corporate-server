@@ -110,9 +110,9 @@ udm_remove "container/ou" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
-udm_exists "users/user"; fail_bool 1 110
+udm_exists "users/user" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
 ad_exists "$AD_GROUP_DN"; fail_bool 1 110
-udm_exists "groups/group"; fail_bool 1 110
+udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
 udm_exists "container/ou"; fail_bool 1 110
 
 ad_set_sync_mode "$SYNCMODE"

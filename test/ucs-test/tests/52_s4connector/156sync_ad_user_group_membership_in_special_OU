@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
-## desc: "Verify user-group-membership synchronisation after changes from ucs-side in sync mode"
+## desc: "Verify user-group-membership synchronisation after changes from ad-side in sync mode"
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector
@@ -26,8 +26,6 @@ UDM_users_user_lastname="$(random_chars)"
 # weird things might happen when the user is synced to AD.
 UDM_users_user_password="U$(random_chars)123"
 ## Important: DN-values must be escaped, can be either \+ or \2B, DN case doesn't seem to matter for writing:
-UDM_GROUP_DN="cn=$UDM_groups_group_name,OU=\+1,$ldap_base"
-## Important: in ad_exists (univention.testing.ldap_glue) DNs need to be \+ (or \\2B) not \2B
 AD_GROUP_DN="CN=$UDM_groups_group_name,OU=\+1,$(ad_get_base)"
 AD_USER_DN="CN=$UDM_users_user_username,OU=\+1,$(ad_get_base)"
 
@@ -37,17 +35,14 @@ ad_set_sync_mode "sync"
 
 section "Create user and group"
 
-udm_create "container/ou" || fail_test 110
+ad_createou "$UDM_container_ou_name" || fail_test 110
 ## Important: Position DNs must be escaped, either \+ or \2B
-udm_create "groups/group" "" "" "ou=\+1,$ldap_base" || fail_test 110
-udm_create "users/user" "" "" "ou=\+1,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_createuser "$UDM_users_user_username" "" "ou=\+1,$(ad_get_base)" || fail_test 110
+ad_group_create "$UDM_groups_group_name" "" "ou=\+1,$(ad_get_base)" || fail_test 110
 
 section "Add user to group"
 
-## Important: protect member dn value with extra single quotes against eval in udm.sh
-udm_modify "users/user" "" "" "ou=\+1,$ldap_base" "" \
-	--append groups="'$UDM_GROUP_DN'" || fail_test 110
+ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
 ad_exists "$AD_GROUP_DN"; fail_bool 0 110
@@ -55,63 +50,58 @@ udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base"; fail_bool 0 110
 ad_exists "$AD_USER_DN"; fail_bool 0 110
 udm_exists "users/user" "" "" "ou=\2B1,$ldap_base"; fail_bool 0 110
 
-udm_verify_multi_value_udm_attribute_contains "users" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
 	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" \
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
 	"cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
 
 section "Remove user from group"
 
-## Important: for udm modifications and read checks: case sensitive and \2B instead of \+
-UDM_GROUP_DN="cn=$UDM_groups_group_name,ou=\2B1,$ldap_base"
-## Important: protect member dn value with extra single quotes against eval in udm.sh
-udm_modify "users/user" "" "" "ou=\+1,$ldap_base" "" \
-    --remove groups="'$UDM_GROUP_DN'" || fail_test 110
+ad_remove_from_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
-udm_verify_multi_value_udm_attribute_contains "users" \
-    "uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 1 110
-udm_verify_multi_value_udm_attribute_contains "groups" \
-    "cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user"; fail_bool 1 110
 ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 1 110
 ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 1 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
+	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 1 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
+	"cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user"; fail_bool 1 110
 
 section "Re-Add user to group"
 
-## Important: protect member dn value with extra single quotes against eval in udm.sh
-udm_modify "users/user" "" "" "ou=\+1,$ldap_base" "" \
-    --append groups="'$UDM_GROUP_DN'" || fail_test 110
+ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
-udm_verify_multi_value_udm_attribute_contains "users" \
-    "uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" \
-    "cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
+	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
+	"cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
 
 section "Remove user"
 
-udm_remove "users/user" "" "" "ou=\2B1,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
-
-udm_verify_multi_value_udm_attribute_contains "groups" \
-	"cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user"; fail_bool 1 110
-ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 1 110
-
-section "Clean up"
-
-udm_remove "groups/group" "" "" "ou=\2B1,$ldap_base" || fail_test 110
-UDM_container_ou_name='\+1'
-udm_remove "container/ou" || fail_test 110
+ad_delete "$AD_USER_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
+
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
+	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 1 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 1 110
+
+section "Clean up"
+
+ad_delete "$AD_GROUP_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
 ad_exists "$AD_GROUP_DN"; fail_bool 1 110
 udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
+ad_delete "OU=\+1,$(ad_get_base)" || fail_test 110
+UDM_container_ou_name='\+1'
 udm_exists "container/ou"; fail_bool 1 110
 
 ad_set_sync_mode "$SYNCMODE"
