@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * A UMC module for blocklist lists and entries has been added.
 bug: [57043]
+erratum: 969
+announced: 2024-02-28
+support: core
