@@ -233,7 +233,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
         old_uid = old.get('uid', [b''])[0]
         oldatt_passwd = new.get('univentionFetchmailPasswd', [get_pw_from_rc(flist, old_uid)])[0]
         if change_required(new, old):
-            flist = objdelete(flist, old)
+            flist = objdelete(flist, old or new)
             objappend_single(flist, new, oldatt_passwd)
             objappend_multi(flist, new)
             write_rc(flist, fn_fetchmailrc)

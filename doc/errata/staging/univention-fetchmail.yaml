@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [6]
+scope: ucs_5.0-0-errata5.0-6
+src: univention-fetchmail
+fix: 13.0.8-2
+desc: |
+ This update addresses the following issues:
+ * Fixed listener fetchmailrc to avoid duplicate entries in /etc/fetchmailrc
+   when running a listener resynchronization.
+bug: [56521]
