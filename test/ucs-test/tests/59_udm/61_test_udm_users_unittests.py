@@ -127,7 +127,8 @@ class TestUsers:
                 'certificateDateNotAfter': parser.parse(dates['notAfter']).strftime('%Y-%m-%d'),
                 'certificateDateNotBefore': parser.parse(dates['notBefore']).strftime('%Y-%m-%d'),
             })
-        user = udm.create_object(module, username=random_name(), password=random_name(), lastname=random_name())
+        kwargs = {'username' if module == 'users/user' else 'name': random_name()}
+        user = udm.create_object(module, password=random_name(), lastname=random_name(), **kwargs)
         udm.modify_object(module, dn=user, append_option=['pki'], userCertificate=certificate)
         udm.verify_udm_object(module, user, certificate_ldap)
 
