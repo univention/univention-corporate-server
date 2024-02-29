@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-10 15:35+0200\n"
-"PO-Revision-Date: 2023-10-10 15:36+0200\n"
+"POT-Creation-Date: 2024-02-29 14:20+0100\n"
+"PO-Revision-Date: 2024-02-29 15:28+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.0\n"
+"Generated-By: Babel 2.14.0\n"
 
 #: ../../user-management/index.rst:73
 msgid "Chapter contents:"
@@ -621,6 +621,363 @@ msgstr ""
 "Nach Ablauf des hier hinterlegten Zeitraums muss das Passwort vom "
 "Benutzer bei der nächsten Anmeldung geändert werden. Bleibt der Wert "
 "leer, ist das Passwort unbegrenzt gültig."
+
+#: ../../user-management/udm-blocklists.rst:8
+msgid "Prevent reuse of user property values"
+msgstr "Wiederverwendung von Benutzereigenschaften verhindern"
+
+#: ../../user-management/udm-blocklists.rst:14
+msgid ""
+"Since :uv:erratum:`5.0x974`, UCS supports block lists to prevent the "
+"reuse of user or group property values."
+msgstr ""
+"Seit :uv:erratum:`5.0x974` unterstützt UCS Blocklisten, um die Wiederverwendung "
+"von Benutzer- oder Gruppeneigenschaftswerten zu verhindern."
+
+#: ../../user-management/udm-blocklists.rst:17
+msgid ""
+"Block lists is a module in UDM. It allows to configure block lists for "
+"UDM properties. When an administrator or software modifies or removes a "
+"UDM property on a UDM object, the block list automatically adds an entry "
+"about this property with its value to the block list. The entry in the "
+"block list prevents that another UDM object can use the same value of the"
+" UDM property. Block lists operate on the UDM level."
+msgstr ""
+"Blocklisten ist ein Modul in UDM. Es ermöglicht die Konfiguration von "
+"Blocklisten für UDM Eigenschaften. Ändert oder entfernt ein Administrator oder "
+"eine Software eine UDM Eigenschaft an einem UDM Objekt, fügt die Blockliste "
+"automatisch einen Eintrag über diese Eigenschaft mit ihrem Wert in die "
+"Blockliste ein. Der Eintrag in der Blockliste verhindert, dass ein anderes "
+"UDM Objekt den gleichen Wert der UDM Eigenschaft verwenden kann. Blocklisten "
+"arbeiten auf der UDM Ebene."
+
+#: ../../user-management/udm-blocklists.rst:25
+msgid ""
+"For example, you want to prevent that UCS reuses values of the UDM "
+"property ``mailPrimaryAddress`` of the UDM objects *user*. You configure "
+"a block list for the UDM property ``mailPrimaryAddress``. If you then "
+"remove the value ``chef@example.com`` for the UDM property "
+"``mailPrimaryAddress`` from a UDM user object, the UDM block list creates"
+" an entry for that value. If you change the value from "
+"``james@example.com`` to ``john@example.com`` for the UDM property "
+"``mailPrimaryAddress``, the UDM block list creates another entries for "
+"``james@example.com``."
+msgstr ""
+"Sie wollen zum Beispiel verhindern, dass UCS die Werte der UDM Eigenschaft "
+"``mailPrimaryAddress`` der UDM Objekte *user* wiederverwendet. Sie "
+"konfigurieren eine Blockliste für die UDM Eigenschaft ``mailPrimaryAddress``. "
+"Wenn Sie dann den Wert ``chef@example.com`` für die UDM Eigenschaft "
+"``mailPrimaryAddress`` aus einem UDM Benutzerobjekt entfernen, erzeugt die "
+"UDM Blockliste einen Eintrag für diesen Wert. Wenn Sie den Wert von "
+"``james@example.com`` auf ``john@example.com`` für die UDM Eigenschaft "
+"``mailPrimaryAddress`` ändern, erzeugt die UDM Blockliste einen weiteren "
+"Eintrag für ``james@example.com``."
+
+#: ../../user-management/udm-blocklists.rst:35
+msgid ""
+"UDM block lists now prevents reusing the values ``chef@example.com`` and "
+"``james@example.com``. You can't use them on other UDM user objects for "
+"the UDM property ``mailPrimaryAddress``."
+msgstr ""
+"UDM Blocklisten verhindern nun die Wiederverwendung der Werte "
+"``chef@example.com`` und ``james@example.com``. Sie können in anderen "
+"UDM Benutzerobjekten für die UDM Eigenschaft ``mailPrimaryAddress`` nicht mehr "
+"verwendet werden."
+
+#: ../../user-management/udm-blocklists.rst:41
+msgid "Activate block lists"
+msgstr "Aktivieren von Blocklisten"
+
+#: ../../user-management/udm-blocklists.rst:43
+msgid ""
+"Before you can activate the block lists, you first need to update the UCS"
+" systems, where you manage UDM objects, to at least "
+":uv:erratum:`5.0x974`."
+msgstr ""
+"Bevor Sie die Blocklisten aktivieren können, müssen Sie zuerst die UCS "
+"Systeme, in denen Sie UDM Objekte verwalten, mindestens auf "
+":uv:erratum:`5.0x974` aktualisieren."
+
+#: ../../user-management/udm-blocklists.rst:48
+msgid ""
+"Second, you need to set the |UCSUCRV| "
+":envvar:`directory/manager/blocklist/enabled` to ``true`` with "
+":option:`ucr set` on all UCS systems, where you manage UDM objects."
+msgstr ""
+"Zweitens müssen Sie die |UCSUCRV| :envvar:`directory/manager/blocklist/enabled` "
+"mit :option:`ucr set` auf allen UCS-Systemen, auf denen Sie UDM Objekte "
+"verwalten, auf ``true`` setzen."
+
+#: ../../user-management/udm-blocklists.rst:54
+msgid "Configure block lists"
+msgstr "Konfigurieren von Blocklisten"
+
+#: ../../user-management/udm-blocklists.rst:56
+msgid ""
+"You can create, list, and remove block list entries in the UMC module "
+"*Blocklists*, or through the command line tool :program:`udm "
+"blocklists/list`."
+msgstr ""
+"Sie können Blocklisteneinträge mit dem UMC-Modul *Blocklisten* oder über das "
+"Kommandozeilenwerkzeug :program:`udm blocklists/list` erstellen, auflisten und "
+"entfernen."
+
+#: ../../user-management/udm-blocklists.rst:59
+msgid "On every block list you need to define the following properties:"
+msgstr "Für jede Blockliste müssen Sie die folgenden Eigenschaften festlegen:"
+
+#: ../../user-management/udm-blocklists.rst:62
+msgid "Name"
+msgstr "Name"
+
+#: ../../user-management/udm-blocklists.rst:62
+msgid ""
+"Provides a human-readable name for the block list for later "
+"identification."
+msgstr ""
+"Gibt der Blockliste einen menschenlesbaren Namen für die spätere "
+"Identifizierung."
+
+#: ../../user-management/udm-blocklists.rst:68
+msgid "Retention time"
+msgstr "Aufbewahrungszeit"
+
+#: ../../user-management/udm-blocklists.rst:65
+msgid ""
+"Defines the retention time for entries in this block list. The retention "
+"time is the time period that needs to expire to automatically remove "
+"entries from the block list. For example ``1m 20d`` which results in one "
+"month and twenty days."
+msgstr ""
+"Legt die Aufbewahrungszeit für Einträge in dieser Blockliste fest. Die "
+"Aufbewahrungszeit ist der Zeitraum, der ablaufen muss, um Einträge automatisch "
+"aus der Blockliste zu entfernen. Zum Beispiel ``1m 20d``, was für einen Monat "
+"und zwanzig Tage steht."
+
+#: ../../user-management/udm-blocklists.rst:71
+msgid "Properties to block"
+msgstr "Zu blockierende Eigenschaften"
+
+#: ../../user-management/udm-blocklists.rst:71
+msgid ""
+"Defines the UDM modules and their properties that the block list prevents"
+" from reuse."
+msgstr ""
+"Definiert die UDM Module und ihre Eigenschaften, deren Wiederverwendung die "
+"Blockliste verhindert."
+
+#: ../../user-management/udm-blocklists.rst:73
+msgid ""
+"The following example for :program:`udm blocklists/list` shows how to "
+"create a block list through the command line. The block list prevents the"
+" reuse of the UDM property ``mailPrimaryAddress`` for ``users/user`` "
+"objects and the UDM property ``mailAddress`` for ``groups/group`` "
+"objects."
+msgstr ""
+"Das folgende Beispiel für :program:`udm blocklists/list` zeigt, wie man eine "
+"Blockliste über die Befehlszeile erstellt wird. Die Blockliste verhindert die "
+"Wiederverwendung der UDM Eigenschaft ``mailPrimaryAddress`` für ``users/user`` "
+"Objekte und die UDM Eigenschaft ``mailAddress`` für ``groups/group`` Objekte."
+
+#: ../../user-management/udm-blocklists.rst:79
+msgid ""
+"$ udm blocklists/list create \\\n"
+"  --set name=user-and-group-emails \\\n"
+"  --set retentionTime=40d \\\n"
+"  --append blockingProperties=\"users/user mailPrimaryAddress\" \\\n"
+"  --append blockingProperties=\"groups/group mailAddress\""
+msgstr ""
+"$ udm blocklists/list create \\\n"
+"  --set name=user-and-group-emails \\\n"
+"  --set retentionTime=40d \\\n"
+"  --append blockingProperties=\"users/user mailPrimaryAddress\" \\\n"
+"  --append blockingProperties=\"groups/group mailAddress\""
+
+#: ../../user-management/udm-blocklists.rst:91
+msgid "Manage block list entries"
+msgstr "Einträge in der Blockliste verwalten"
+
+#: ../../user-management/udm-blocklists.rst:93
+msgid ""
+"You can manage block list entries in the UMC module *Blocklists*, or "
+"through the command line tool :program:`udm blocklists/list`."
+msgstr ""
+"Sie können Blocklisteneinträge im UMC-Modul *Blocklisten* oder über das "
+"Kommandozeilenwerkzeug :program:`udm blocklists/list` verwalten."
+
+#: ../../user-management/udm-blocklists.rst:95
+msgid ""
+"When you activated block lists, UDM automatically creates entries in the "
+"configured block list, when you remove a value from a UDM property of a "
+"UDM object. UDM automatically deletes expired entries from the block "
+"list."
+msgstr ""
+"Wenn Sie Blocklisten aktiviert haben, erstellt UDM automatisch Einträge in der "
+"konfigurierten Blockliste, wenn Sie einen Wert aus einer UDM Eigenschaft eines "
+"UDM Objekts entfernen. UDM löscht abgelaufene Einträge automatisch aus der "
+"Blockliste."
+
+#: ../../user-management/udm-blocklists.rst:100
+msgid "Every block list entry has the following properties:"
+msgstr "Jeder Blocklisteneintrag hat die folgenden Eigenschaften:"
+
+#: ../../user-management/udm-blocklists.rst:108
+msgid "Value"
+msgstr "Wert"
+
+#: ../../user-management/udm-blocklists.rst:104
+msgid ""
+"A SHA-256 hash representing the value that the block list is blocking "
+"from reuse. The UDM property value is a clear text value. Before UDM "
+"creates the block list entry, it converts the value to lowercase text. "
+"All uppercase and lowercase variants of the value then match the block "
+"list entry when validated by UDM."
+msgstr ""
+"Ein SHA-256-Hash, der den Wert darstellt, den die Blockliste für die "
+"Wiederverwendung blockiert. Der Wert für die UDM Eigenschaft ist ein "
+"Klartextwert. Bevor UDM den Blocklisteneintrag erstellt, wird der Wert in "
+"Kleinbuchstaben umgewandelt. Alle groß- und kleingeschriebenen Varianten des "
+"Wertes stimmen dann mit dem Blocklisteneintrag überein, wenn er von UDM "
+"validiert wird."
+
+#: ../../user-management/udm-blocklists.rst:120
+msgid "Blocked until"
+msgstr "Blockiert bis"
+
+#: ../../user-management/udm-blocklists.rst:111
+msgid ""
+"The timestamp when the block list entry expires. It uses the "
+"`GeneralizedTime-LDAP-Syntax <ldap-generalized-time_>`_ format."
+msgstr ""
+"Der Zeitstempel, zu dem der Eintrag in der Blockliste abläuft. Er verwendet das "
+"`GeneralizedTime-LDAP-Syntax <ldap-generalized-time_>`_ Format."
+
+#: ../../user-management/udm-blocklists.rst:114
+msgid ""
+"When UDM creates a block list entry, it takes the current date and time, "
+"adds the configured retention time of the corresponding block list and "
+"writes the result to *Blocked until*."
+msgstr ""
+"Wenn UDM einen Blocklisteneintrag erstellt, nimmt es das aktuelle Datum und die "
+"aktuelle Uhrzeit, addiert die konfigurierte Aufbewahrungszeit der "
+"entsprechenden Blockliste und schreibt das Ergebnis nach *Blockiert bis*."
+
+#: ../../user-management/udm-blocklists.rst:119
+msgid ""
+"Changing the retention time of the block list doesn't update the *Blocked"
+" until* property of the block list entry."
+msgstr ""
+"Eine Änderung der Aufbewahrungszeit der Blockliste führt nicht zur "
+"Aktualisierung der Eigenschaft *Blockiert bis* des Blocklisteneintrags."
+
+#: ../../user-management/udm-blocklists.rst:124
+msgid "Origin ID"
+msgstr "ID des Ursprungsobjekts"
+
+#: ../../user-management/udm-blocklists.rst:123
+msgid ""
+"The ID of the UDM object that caused the block list entry. You can still "
+"use the value of the block list entry on this UDM object."
+msgstr ""
+"Die ID des UDM Objekts, das den Blocklisteneintrag verursacht hat. Sie können "
+"weiterhin den Wert des Blocklisteneintrags für dieses UDM Objekt verwenden."
+
+#: ../../user-management/udm-blocklists.rst:128
+msgid ""
+"Listing block list entries gives you only the hashes of the blocked "
+"values."
+msgstr ""
+"Wenn Sie die Einträge der Blockliste auflisten, erhalten Sie nur die Hashes der "
+"blockierten Werte."
+
+#: ../../user-management/udm-blocklists.rst:130
+msgid ""
+"Nevertheless, you can search for the clear text value of a particular "
+"entry, for example, in case you want to delete that entry."
+msgstr ""
+"Sie können jedoch nach dem Klartextwert eines bestimmten Eintrags suchen, z. B. "
+"wenn Sie diesen Eintrag löschen möchten."
+
+#: ../../user-management/udm-blocklists.rst:133
+msgid ""
+"$ udm blocklists/entry list\n"
+"DN: cn=sha256:a859cd5964b6ac...,cn=emails,cn=blocklists\n"
+"DN: cn=sha256:b859cd5964b6ac...,cn=emails,cn=blocklists\n"
+"DN: cn=sha256:c859cd5964b6ac...,cn=emails,cn=blocklists\n"
+"\n"
+"$ udm blocklists/entry list --filter value=blocked_email@example.com\n"
+"DN: cn=sha256:c859cd5964b6ac...,cn=emails,cn=blocklists"
+msgstr ""
+"$ udm blocklists/entry list\n"
+"DN: cn=sha256:a859cd5964b6ac...,cn=emails,cn=blocklists\n"
+"DN: cn=sha256:b859cd5964b6ac...,cn=emails,cn=blocklists\n"
+"DN: cn=sha256:c859cd5964b6ac...,cn=emails,cn=blocklists\n"
+"\n"
+"$ udm blocklists/entry list --filter value=blocked_email@example.com\n"
+"DN: cn=sha256:c859cd5964b6ac...,cn=emails,cn=blocklists"
+
+#: ../../user-management/udm-blocklists.rst:147
+msgid "Expired block list entries"
+msgstr "Abgelaufene Blocklisteneinträge"
+
+#: ../../user-management/udm-blocklists.rst:149
+msgid ""
+"Every entry in a block list has a *Blocked until* property. Block list "
+"entries expire after the timestamp passed. A cron job on the "
+"|UCSPRIMARYDN| deletes expired block list entries."
+msgstr ""
+"Jeder Eintrag in einer Blockliste hat eine Eigenschaft *Blockiert bis*. "
+"Blocklisteneinträge laufen nach Ablauf dieses Zeitstempels ab. Ein Cron-Job auf "
+"dem |UCSPRIMARYDN| löscht abgelaufene Blocklisteneinträge."
+
+#: ../../user-management/udm-blocklists.rst:153
+msgid ""
+"You can configure how often cron runs the job with the |UCSUCRV| "
+":envvar:`directory/manager/blocklist/cleanup/cron`. The log file "
+":file:`/var/log/univention/blocklist-clean-expired-entries.log` lists the"
+" expired entries that UDM deleted."
+msgstr ""
+"Sie können die Häufigkeit, mit der Cron den Job ausführt, mit dem Parameter "
+"|UCSUCRV| :envvar:`directory/manager/blocklist/cleanup/cron` konfigurieren. Die "
+"Protokolldatei :file:`/var/log/univention/blocklist-clean-expired-entries.log` "
+"listet die abgelaufenen Einträge auf, die UDM gelöscht hat."
+
+#: ../../user-management/udm-blocklists.rst:161
+msgid "LDAP ACLs for block lists"
+msgstr "LDAP ACLs für Blocklisten"
+
+#: ../../user-management/udm-blocklists.rst:163
+msgid ""
+"By default every UCS node in the domain and every member of the ``Domain "
+"Admins`` group can write block list entries. And everybody can read. You "
+"can configure the permissions on the |UCSPRIMARYDN| and the "
+"|UCSBACKUPDN|\\ s with the following |UCSUCRVs|:"
+msgstr ""
+"Standardmäßig kann jeder UCS Knoten in der Domäne und jedes Mitglied der Gruppe "
+"``Domain Admins`` Blocklisteneinträge schreiben. Und jeder kann lesen. Sie "
+"können die Berechtigungen für den |UCSPRIMARYDN| und den |UCSBACKUPDN|\\ s mit "
+"den folgenden |UCSUCRVs| konfigurieren:"
+
+#: ../../user-management/udm-blocklists.rst:168
+msgid ":envvar:`ldap/database/internal/acl/blocklists/groups/read`"
+msgstr ":envvar:`ldap/database/internal/acl/blocklists/groups/read`"
+
+#: ../../user-management/udm-blocklists.rst:169
+msgid ":envvar:`ldap/database/internal/acl/blocklists/groups/write`"
+msgstr ":envvar:`ldap/database/internal/acl/blocklists/groups/write`"
+
+#: ../../user-management/udm-blocklists.rst:171
+msgid ""
+"For example, if you want to give a user the permission to delete block "
+"list entries who isn't member of the ``Domain Admins`` group, you need to"
+" create a group with that user as member and add the LDAP DN of this "
+"group to :envvar:`ldap/database/internal/acl/blocklists/groups/write`."
+msgstr ""
+"Wenn Sie zum Beispiel einem Benutzer das Recht geben wollen, Einträge in der "
+"Blockliste zu löschen, der nicht Mitglied der Gruppe ``Domain Admins`` ist, "
+"müssen Sie eine Gruppe mit diesem Benutzer als Mitglied erstellen und den LDAP "
+"DN dieser Gruppe zu "
+":envvar:`ldap/database/internal/acl/blocklists/groups/write` hinzufügen."
 
 #: ../../user-management/umc.rst:8
 msgid "User management via |UCSUMC| module"

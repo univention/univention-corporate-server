@@ -156,6 +156,18 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Defines the print server to be used by a UCS system. For more information,
    see :ref:`computers-configure-print-server`.
 
+.. envvar:: directory/manager/blocklist/cleanup/cron
+
+   This variable determines how often UDM searches and removes the expired block list entries.
+   The value follows the :ref:`cron syntax <cron-syntax>` for the time definition.
+   The default value is daily at 8:00 in the morning.
+   For more information, see :ref:`udm-blocklists-expired-entries`.
+
+.. envvar:: directory/manager/blocklist/enabled
+
+   Activates the management of block list entries in UDM.
+   Default value is ``false``.
+   For information about how to activate, see :ref:`udm-blocklists-activate`.
 
 .. envvar:: directory/manager/templates/alphanum/whitelist
 
@@ -431,6 +443,17 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    boot. Single items must be separated with a semicolon (``;``). For more
    information, see :ref:`computers-hardware-drivers-kernel-modules`.
 
+.. envvar:: ldap/database/internal/acl/blocklists/groups/read
+
+   List of group distinguished names (DN)
+   that have read access to all objects under the container ``cn=blocklists`` in the internal database.
+   For more information, see :ref:`udm-blocklists-ldap-acl`.
+
+.. envvar:: ldap/database/internal/acl/blocklists/groups/write
+
+   List of group distinguished names (DN)
+   that have write access to all objects under the container ``cn=blocklists`` in the internal database.
+   For more information, see :ref:`udm-blocklists-ldap-acl`.
 
 .. envvar:: ldap/acl/read/anonymous
 
