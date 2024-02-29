@@ -1,0 +1,8 @@
+[directory/manager/starttls]
+Description[de]=Konfiguriert den StartTLS-Modus für LDAP-Verbindungen, die durch UDM durchgeführt werden. Mögliche Werte sind "2" für die erzwungene Verwendung von TLS, "1" für das Versuchen der Verwendung von TLS oder "0" für keine Verwendung von TLS.
+Description[en]=Configures the StartTLS mode for LDAP connections done by UDM. Possible values are "2" for requiring TLS, "1" for trying TLS but ignore failure or "0" for not using TLS.
+Type=int
+Categories=service-ldap
+Default=2
+Min=0
+Max=2

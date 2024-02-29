@@ -20,6 +20,7 @@ Build-Depends:
  python3-univention-config-registry (>= 15.0.7-16),
  python3-univention-debug,
  python3-univentionunittests,
+ univention-config-dev,
 
 Package: python-univention-namespace
 Architecture: all
