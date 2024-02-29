@@ -33,6 +33,7 @@
 
 from __future__ import absolute_import, division
 
+import io
 import json
 import logging
 import logging.handlers
@@ -160,14 +161,19 @@ class Server(object):
         log_init(self.options.log_file, self.options.debug, self.options.processes > 1)
 
     def signal_handler_hup(self, signo, frame):
-        """Handler for the reload action"""
+        """Handler for the postrotate action"""
         CORE.process('Got SIGHUP')
         ucr.load()
         log_reopen()
         tornado_log_reopen()
         self._inform_childs(signal)
 
+    def signal_handler_sigusr2(self, signo, frame):
+        """Handler for SIGUSR2 for debugging e.g. memory analysis"""
+        self.analyse_memory()
+
     def signal_handler_reload(self, signo, frame):
+        """Handler for the reload action"""
         CORE.process('Got SIGUSR1')
         log_reopen()
         tornado_log_reopen()
@@ -204,6 +210,7 @@ class Server(object):
         n = SystemdNotifier()
         signal.signal(signal.SIGHUP, self.signal_handler_hup)
         signal.signal(signal.SIGUSR1, self.signal_handler_reload)
+        signal.signal(signal.SIGUSR2, self.signal_handler_sigusr2)
         signal.signal(signal.SIGTERM, self.signal_handler_stop)
 
         tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
@@ -292,6 +299,37 @@ class Server(object):
         except (KeyboardInterrupt, SystemExit):
             ioloop.stop()
             pool.shutdown(False)
+
+    @staticmethod
+    def analyse_memory():
+        # type: () -> None
+        """Print the number of living UMC objects. Helpful when analysing memory leaks."""
+        components = (
+            'session.Session', 'session.User', 'session.IACLs', 'session.Processes',
+            'server.Server',
+            'acl.ACLs', 'acl.LDAP_ACLs', 'acl.Rule', 'auth.AuthHandler',
+            'base.Base',
+            'category.Manager', 'category.XML_Definition',
+            'ldap.LDAP',
+            'locales.I18N', 'locales.I18N_Manager',
+            'module.Manager', 'module.Module', 'module.Flavor',
+            'resources.ModuleProcess', 'resources.SessionInfo', 'resources.Command',
+            'saml.SAMLUser', 'saml.SamlACS', 'saml.SamlIframeACS', 'saml.SamlLogout', 'saml.SamlSingleLogout',
+        )
+        try:
+            import objgraph
+        except ImportError:
+            return
+        CORE.warn('### MEMORY')
+        s = io.StringIO()
+        objgraph.show_most_common_types(30, shortnames=False, file=s, filter=lambda o: type(o).__module__.startswith('univention.'))
+        CORE.warn('%s', s.getvalue())
+        CORE.warn('univention.admin.uldap.access: %d', objgraph.count('univention.admin.uldap.access'))
+        CORE.warn('univention.uldap.access: %d', objgraph.count('univention.uldap.access'))
+        for component in components:
+            CORE.warn('%s: %d', component, objgraph.count('univention.management.console.%s' % (component,)))
+
+        # objgraph.show_backrefs(objgraph.by_type('univention.uldap.access')[0])
 
 
 def main():

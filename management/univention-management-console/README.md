@@ -1,5 +1,57 @@
 # Univention Management Console
 
+# Known issues regarding memory consumption
+
+* Authentication and password changes happen in a thread pool, configurable via `umc/http/maxthreads` defaulting to 35.
+* UMC module processes take at minimum 30 MB RAM. One module process is created per module per session (user).
+* The default session timeout for plain logins (not SAML or OIDC) is 28800 seconds / 8 hours (`umc/http/session/timeout`) and refreshes itself by that time at every request.
+  This holds the session open for 8 hours of inactivity. Many opened sessions will cause many unfreeable memory.
+* Apache performance settings are configurable via `apache2/max-request-workers`, `apache2/maxclients`, `apache2/min-spare-servers`, `apache2/max-spare-servers`.
+
+# Debugging UMC-Server or module processes
+
+The UMC server can be started in foreground, even with starting module processes in foreground:
+
+```bash
+univention-management-console-server -d4 -L /dev/stdout --no-daemonize-module-processes
+```
+
+breakpoint in `pdb` help to analyze problems, e.g. in module processes or in the server itself.
+
+## Analyzing memory leaks
+
+Print the amount of objects to the logfile:
+```bash
+apt install python3-objgraph
+tail -f /var/log/univention/management-console-server.log &
+pkill -SIGUSR2 -f univention-management-console-server
+```
+
+Watch memory usage continuously:
+```bash
+PID="$(pgrep -f univention-management-console-server)"
+while sleep 2; do grep RssAnon "/proc/$PID/status"; done
+```
+
+Attach to a running UMC server process and analyze local variables, etc:
+```bash
+apt install python3-pip gdb python3-dev python3-dbg
+pip install pyrasite
+# echo 0 > /proc/sys/kernel/yama/ptrace_scope
+PID="$(pgrep -f univention-management-console-server)"
+pyrasite-shell "$PID"
+```
+
+Use `objgraph` to search for circular references (when attached with `pyrasite`):
+```python
+import gc, objgraph, univention
+# objgraph.show_most_common_types(limit=20)
+gc.collect()
+objgraph.show_most_common_types(limit=20)
+obj = objgraph.by_type('univention.management.console.session.Session')[-1]
+objgraph.show_backrefs([obj], max_depth=10)
+```
+
 ## OAuth 2.0 Authorization in UCS and OIDC Authentication in UMC
 
 ### Glossary
