@@ -700,8 +700,6 @@ run_admember_tests () {
 }
 
 run_keycloak_tests () {
-	# workaround Bug #55976
-	ucr set diagnostic/check/disable/04_saml_certificate_check=true
 	run_tests -s checks -s keycloak -s end "$@"
 }
 
