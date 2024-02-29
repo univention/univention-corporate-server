@@ -533,7 +533,8 @@ class ad(univention.connector.ucs):
             self.group_members_cache_ucs[group_lower] = set()
             if ucs_group[1]:
                 for member in ucs_group[1].get('uniqueMember'):
-                    self.group_members_cache_ucs[group_lower].add(member.decode('UTF-8').lower())
+                    member = ldap.dn.dn2str(ldap.dn.str2dn(member.decode('UTF-8'))) if b'\\' in member else member.decode('UTF-8')
+                    self.group_members_cache_ucs[group_lower].add(member.lower())
         ud.debug(ud.LDAP, ud.ALL, "__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
         ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
 
@@ -1223,7 +1224,7 @@ class ad(univention.connector.ucs):
             return
 
         ldap_object_ucs_gidNumber = ldap_object_ucs['gidNumber'][0].decode('UTF-8')
-        ucs_members = {x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', [])}
+        ucs_members = {ldap.dn.dn2str(ldap.dn.str2dn(x.decode('UTF-8'))) if b'\\' in x else x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', [])}
         ud.debug(ud.LDAP, ud.INFO, "ucs_members: %s" % ucs_members)
 
         # remove members which have this group as primary group (set same gidNumber)
@@ -1235,8 +1236,9 @@ class ad(univention.connector.ucs):
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS group member cache reset")
 
         for prim_object in prim_members_ucs:
-            if prim_object[0].lower() in ucs_members:
-                ucs_members.remove(prim_object[0].lower())
+            prim_object_dn = ldap.dn.dn2str(ldap.dn.str2dn(prim_object[0])) if '\\' in prim_object[0] else prim_object[0]
+            if prim_object_dn.lower() in ucs_members:
+                ucs_members.remove(prim_object_dn.lower())
 
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
 
@@ -1499,7 +1501,7 @@ class ad(univention.connector.ucs):
 
         # lookup all current members of UCS group
         ldap_object_ucs = self.get_ucs_ldap_object(object['dn'])
-        ucs_members = {x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', [])}
+        ucs_members = {ldap.dn.dn2str(ldap.dn.str2dn(x.decode('UTF-8'))) if b'\\' in x else x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', [])}
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
 
         # map members from AD to UCS and check if they exist
