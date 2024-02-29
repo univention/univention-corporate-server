@@ -134,7 +134,7 @@ class Converter(object):
             return
 
         for dn, attrs in self.access.search(
-            filter='(objectClass=univentionFetchmail)',
+            filter='(&(objectClass=univentionFetchmail)(univentionObjectType=users/user))',
             attr=['uid', 'univentionFetchmailAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailPasswd', 'univentionFetchmailKeepMailOnServer', 'univentionFetchmailUseSSL', 'univentionFetchmailSingle'],
         ):
             uid = attrs['uid'][0].decode('UTF-8')

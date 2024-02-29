@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issues:
  * Fixed listener fetchmailrc to avoid duplicate entries in /etc/fetchmailrc
    when running a listener resynchronization.
-bug: [56521]
+ * Fixed migration script LDAP filter to only process user objects.
+bug: [56521, 57090]
