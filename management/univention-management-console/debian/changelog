@@ -1,3 +1,9 @@
+univention-management-console (13.0.11) unstable; urgency=medium
+
+  * Bug #57104: fix memory leak / circular references
+
+ -- Florian Best <best@univention.de>  Thu, 14 Mar 2024 20:52:37 +0100
+
 univention-management-console (13.0.10) unstable; urgency=medium
 
   * Bug #55915: remove `try` from `import typing`
@@ -63,7 +69,7 @@ univention-management-console (12.0.33-1) UNRELEASED; urgency=medium
 
   * Bug #57118 UCS 5.0-7 version bump
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:46 +0100
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 08:51:49 +0100
 
 univention-management-console (12.0.32-22) unstable; urgency=medium
 
