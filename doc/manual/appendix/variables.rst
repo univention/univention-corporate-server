@@ -453,7 +453,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    List of group distinguished names (DN)
    that have write access to all objects under the container ``cn=blocklists`` in the internal database.
-   For more information, see :ref:`udm-blocklists-ldap-acl`
+   For more information, see :ref:`udm-blocklists-ldap-acl`.
 
 .. envvar:: ldap/acl/read/anonymous
 
