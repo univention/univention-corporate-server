@@ -150,7 +150,7 @@ def getBaseDN(host='localhost', port=None, uri=None):
     return result[0][1]['namingContexts'][0].decode('utf-8')
 
 
-def getAdminConnection(start_tls=2, decode_ignorelist=[]):
+def getAdminConnection(start_tls=None, decode_ignorelist=[]):
     # type: (int, List[str]) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
     """
     Open a LDAP connection using the admin credentials.
@@ -166,7 +166,7 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[]):
     return access(lo=lo), pos
 
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True):
+def getMachineConnection(start_tls=None, decode_ignorelist=[], ldap_master=True):
     # type: (int, List[str], bool) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
     """
     Open a LDAP connection using the machine credentials.
@@ -459,7 +459,7 @@ class access(object):
         base=u'',  # type: str
         binddn=u'',  # type: str
         bindpw=u'',  # type: str
-        start_tls=2,  # type: int
+        start_tls=None,  # type: Optional[int]
         lo=None,  # type: Optional[univention.uldap.access]
         follow_referral=False,  # type: bool
         uri=None,  # type: Optional[str]

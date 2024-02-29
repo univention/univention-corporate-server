@@ -85,7 +85,7 @@ def explodeDn(dn, notypes=0):
     return ldap.dn.explode_dn(dn, notypes)
 
 
-def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
+def getRootDnConnection(start_tls=None, decode_ignorelist=[], reconnect=True):
     # type: (int, List[str], bool) -> access
     """
     Open a LDAP connection to the local LDAP server with the LDAP root account.
@@ -110,7 +110,7 @@ def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
     return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
+def getAdminConnection(start_tls=None, decode_ignorelist=[], reconnect=True):
     # type: (int, List[str], bool) -> access
     """
     Open a LDAP connection to the Primary Directory Node LDAP server using the admin credentials.
@@ -129,7 +129,7 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
     return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
+def getBackupConnection(start_tls=None, decode_ignorelist=[], reconnect=True):
     # type: (int, List[str], bool) -> access
     """
     Open a LDAP connection to a Backup Directory Node LDAP server using the admin credentials.
@@ -154,7 +154,7 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
         return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True, random_server=False):
+def getMachineConnection(start_tls=None, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True, random_server=False):
     # type: (int, List[str], bool, str, bool, bool) -> access
     """
     Open a LDAP connection using the machine credentials.
@@ -243,7 +243,7 @@ class access(object):
     :param bool reconnect: Automatically re-establish connection to LDAP server if connection breaks.
     """
 
-    def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False, reconnect=True):
+    def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=None, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False, reconnect=True):
         # type: (str, int, str, Optional[str], str, int, str, List, bool, str, bool, bool) -> None
         self.host = host
         self.base = base
@@ -261,6 +261,9 @@ class access(object):
 
         ucr = ConfigRegistry()
         ucr.load()
+
+        if self.start_tls is None:
+            self.start_tls = ucr.get_int('directory/manager/starttls', 2)
 
         if not self.port:  # if no explicit port is given
             self.port = int(ucr.get('ldap/server/port', 7389))  # take UCR value

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-18) unstable; urgency=low
+
+  * Bug #57098: make StartTLS configurable in univention.uldap
+
+ -- Maximilian Janßen <janssen@univention.de>  Mon, 04 Mar 2024 20:45:48 +0100
+
 univention-directory-manager-modules (15.0.25-17) unstable; urgency=low
 
   * Bug #50385: `univention-dnsedit --binddn` is optional

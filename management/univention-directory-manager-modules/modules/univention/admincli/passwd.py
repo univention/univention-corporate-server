@@ -80,7 +80,7 @@ def doit(arglist):
 
     log.warning('binddn: %s; bindpwd: *************', binddn)
     try:
-        lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=bindpw, start_tls=2)
+        lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=bindpw)
     except Exception as exc:
         log.warning('authentication error: %s', exc)
         out.append('authentication error: %s' % (exc,))
