@@ -149,7 +149,7 @@ Expired block list entries
 Every entry in a block list has a *Blocked until* property.
 Block list entries expire after the timestamp passed.
 A cron job on the |UCSPRIMARYDN| deletes expired block list entries.
- 
+
 You can configure how often cron runs the job with the |UCSUCRV|
 :envvar:`directory/manager/blocklist/cleanup/cron`.
 The log file :file:`/var/log/univention/blocklist-clean-expired-entries.log`
