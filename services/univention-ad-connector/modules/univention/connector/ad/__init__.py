@@ -1588,14 +1588,14 @@ class ad(univention.connector.ucs):
 
         for member_dn in ucs_members:
             member_dn_lower = member_dn.lower()
-            if member_dn_lower in ucs_members_from_ad['user']:
-                add_members['user'].remove(member_dn_lower)
-            elif member_dn_lower in ucs_members_from_ad['group']:
-                add_members['group'].remove(member_dn_lower)
-            elif member_dn_lower in ucs_members_from_ad['unknown']:
-                add_members['unknown'].remove(member_dn_lower)
-            elif member_dn_lower in ucs_members_from_ad['windowscomputer']:
-                add_members['windowscomputer'].remove(member_dn_lower)
+            if self.__compare_lowercase_dn(member_dn_lower, ucs_members_from_ad['user']):
+                add_members['user'] = [x for x in add_members['user'] if not self.lo.compare_dn(x, member_dn_lower)]
+            elif self.__compare_lowercase_dn(member_dn_lower, ucs_members_from_ad['group']):
+                add_members['group'] = [x for x in add_members['group'] if not self.lo.compare_dn(x, member_dn_lower)]
+            elif self.__compare_lowercase_dn(member_dn_lower, ucs_members_from_ad['unknown']):
+                add_members['unknown'] = [x for x in add_members['unknown'] if not self.lo.compare_dn(x, member_dn_lower)]
+            elif self.__compare_lowercase_dn(member_dn_lower, ucs_members_from_ad['windowscomputer']):
+                add_members['windowscomputer'] = [x for x in add_members['windowscomputer'] if not self.lo.compare_dn(x, member_dn_lower)]
             else:
                 # remove member only if he was in the cache
                 # otherwise it is possible that the user was just created on UCS
