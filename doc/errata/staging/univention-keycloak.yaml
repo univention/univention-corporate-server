@@ -1,6 +1,6 @@
 product: ucs
 release: "5.0"
-version: [6]
+version: [5, 6]
 scope: ucs_5.0-0-errata5.0-6
 src: univention-keycloak
 fix: 1.0.10-6
@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issues:
  * The `univention-keycloak` scripts has been extended to support more
    parameters for the `init` command.
-bug: [57001]
+ * The standard configuration for keycloak has been changed to allow
+   machine accounts to login.
+bug: [57001, 57100]

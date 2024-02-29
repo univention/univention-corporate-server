@@ -1308,11 +1308,18 @@ def parse_args(args: list[str] | None = None) -> Namespace:
 
     no_ucr_available = not (ucr and ldap_base)
 
+    # if keycloak.secret does not exist the default should be the machine account
+    default_bindpwdfile = "/etc/keycloak.secret"
+    default_binduser = "admin"
+    if not exists(default_bindpwdfile) and ucr.get("hostname"):
+        default_bindpwdfile = "/etc/machine.secret"
+        default_binduser = f"{ucr['hostname']}$"
+
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--binddn", default="")
-    parser.add_argument("--binduser", default="admin")
+    parser.add_argument("--binduser", default=default_binduser)
     parser.add_argument("--bindpwd", default="")
-    parser.add_argument("--bindpwdfile", default="/etc/keycloak.secret")
+    parser.add_argument("--bindpwdfile", default=default_bindpwdfile)
     parser.add_argument("--realm", default="ucs")
     parser.add_argument("--keycloak-pwd", default="")
     parser.add_argument("--keycloak-url", required=no_ucr_available, default=keycloak_url)
@@ -2013,6 +2020,41 @@ def set_kerberos_spn(opt: Namespace) -> None:
     modify_component(session, payload)
 
 
+def update_ldap_federation_ldap_settings(opt: Namespace) -> None:
+    print("updating")
+    session = UniventionKeycloakAdmin(opt)
+    # ucs realm
+    provider_id = session.get_user_storage_provider_id()
+    name = DEFAULT_USER_STORAGE_PROVIDER_NAME
+    payload = {
+        "name": name,
+        "providerType": "org.keycloak.storage.UserStorageProvider",
+        "parentId": get_realm_id(session, opt.realm),
+        "providerId": provider_id,
+        "config": {
+            "userObjectClasses": ["person"],
+        },
+    }
+    modify_component(session, payload)
+    # master realm
+    ldap_base = ucr.get("ldap/base")
+    if ldap_base:
+        session.realm_name = DEFAULT_REALM
+        name = "ldap-master-admin"
+        provider_id = session.get_user_storage_provider_id(name)
+        payload = {
+            "name": name,
+            "providerType": "org.keycloak.storage.UserStorageProvider",
+            "parentId": get_realm_id(session, DEFAULT_REALM),
+            "providerId": provider_id,
+            "config": {
+                "customUserSearchFilter": [f"(|(memberOf=cn=Domain Admins,cn=groups,{ldap_base})(memberOf=cn=DC Backup Hosts,cn=groups,{ldap_base}))"],
+                "userObjectClasses": ["person"]
+            },
+        }
+        modify_component(session, payload)
+
+
 def update_ldap_federation_tls_setting(opt: Namespace) -> None:
     print("updating")
     session = UniventionKeycloakAdmin(opt)
@@ -2110,6 +2152,7 @@ def upgrade_config(opt: Namespace) -> None:
             "19.0.2-ucs2",
             "21.1.1-ucs1",
             "22.0.1-ucs1",
+            "22.0.3-ucs2",  # TODO fix version
         ]
         upgrades.sort(key=LooseVersion)
         kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
@@ -2150,6 +2193,11 @@ def upgrade_config(opt: Namespace) -> None:
                 print(f"Running update steps for version: {version}")
                 if not opt.dry_run:
                     update_ldap_federation_tls_setting(opt)
+                    kdc.set_domain_config_version(version)
+            if version == "22.0.3-ucs2":  # TODO fix version
+                print(f"Running update steps for version: {version}")
+                if not opt.dry_run:
+                    update_ldap_federation_ldap_settings(opt)
                     kdc.set_domain_config_version(version)
     else:
         print("Only supported on UCS systems")
@@ -2836,7 +2884,7 @@ def init_keycloak_ucs(opt):
             "usePasswordModifyExtendedOp": ["true"],
             "trustEmail": ["false"],
             "priority": ["0"],
-            "userObjectClasses": ["inetOrgPerson, organizationalPerson"],
+            "userObjectClasses": ["person"],
             "rdnLDAPAttribute": ["uid"],
             "editMode": ["READ_ONLY"],
             "validatePasswordPolicy": ["false"],
@@ -2988,7 +3036,7 @@ def init_keycloak_ucs(opt):
     # Admins federation ldap provider payload
     ldap_federation_payload["name"] = "ldap-master-admin"
     ldap_federation_payload["parentId"] = get_realm_id(kc_admin, DEFAULT_REALM)
-    ldap_federation_payload["config"]["customUserSearchFilter"] = [f"(memberOf=cn=Domain Admins,cn=groups,{opt.ldap_base})"]
+    ldap_federation_payload["config"]["customUserSearchFilter"] = [f"(|(memberOf=cn=Domain Admins,cn=groups,{opt.ldap_base})(memberOf=cn=DC Backup Hosts,cn=groups,{opt.ldap_base}))"]
 
     # find existing ldap provider or just create if none exists
     ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload, force=opt.force)
