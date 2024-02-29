@@ -1,7 +1,8 @@
-univention-fetchmail (13.0.8-2) UNRELEASED; urgency=medium
+univention-fetchmail (13.0.8-2) unstable; urgency=medium
 
   * Bug #56521: fix fetchmailrc listener resync
   * Bug #57090: fix migration script LDAP filter to only process user objects.
+  * Bug #56587: atomic write of /etc/fetchmailrc
 
  -- Juan Carlos García García <garcia-garcia@univention.de>  Wed, 28 Feb 2024 14:22:00 +0100
 

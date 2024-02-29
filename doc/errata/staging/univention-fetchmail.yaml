@@ -6,7 +6,8 @@ src: univention-fetchmail
 fix: 13.0.8-2
 desc: |
  This update addresses the following issues:
- * Fixed listener fetchmailrc to avoid duplicate entries in /etc/fetchmailrc
-   when running a listener resynchronization.
+ * Avoid duplicate entries in /etc/fetchmailrc when running a
+   listener resynchronization.
  * Fixed migration script LDAP filter to only process user objects.
-bug: [56521, 57090]
+ * The fetchmailrc listener now writes atomically to /etc/fetchmailrc.
+bug: [56521, 57090, 56587]

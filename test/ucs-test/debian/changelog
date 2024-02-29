@@ -2,7 +2,7 @@ ucs-test (10.0.20-46) unstable; urgency=medium
 
   * Bug #56521: test fetchmail listener resync
 
- -- Juan Carlos García García <garcia-garcia@univention.de>  Thu, 29 Feb 2024 11:00:00 +0100
+ -- Juan Carlos García García <garcia-garcia@univention.de>  Mon, 04 Mar 2024 12:01:00 +0100
 
 ucs-test (10.0.20-45) unstable; urgency=medium
 

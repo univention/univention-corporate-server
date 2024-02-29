@@ -36,7 +36,9 @@ from __future__ import absolute_import, annotations
 import json
 import os
 import re
+import shutil
 from functools import reduce
+from tempfile import NamedTemporaryFile
 from typing import Dict, Iterable, List
 
 from six.moves import cPickle as pickle
@@ -90,8 +92,10 @@ def write_rc(flist: Iterable[str], wfile: str) -> None:
     """write to an textfile with setuid(0) for root-action"""
     listener.setuid(0)
     try:
-        with open(wfile, "w") as fd:
-            fd.writelines(flist)
+        with NamedTemporaryFile(dir='/etc/', prefix='fetchmailrc.', mode='w', delete=False) as tmp_fd:
+            tmp_fd.writelines(flist)
+            tmp_fd.close()
+            shutil.move(tmp_fd.name, wfile)
     except EnvironmentError as exc:
         ud.debug(ud.LISTENER, ud.ERROR, 'Failed to write to file "%s": %s' % (wfile, exc))
     listener.unsetuid()
