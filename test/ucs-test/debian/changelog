@@ -1,4 +1,4 @@
-ucs-test (10.0.20-43) unstable; urgency=medium
+ucs-test (10.0.20-44) unstable; urgency=medium
 
   * Bug #53538: fix
     59_udm.61_test_udm_users_unittests.TestUsers.test_unmap_user_certifi

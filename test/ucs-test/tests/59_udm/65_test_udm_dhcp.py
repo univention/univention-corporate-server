@@ -562,9 +562,9 @@ def test_udm_cli_policies_output(udm):
 
     subnet_mask = SUBNET_MASK_IP4
     subnet = SUBNET_IP4
-    dhcp_subnet = udm.create_object('dhcp/subnet', superordinate=dhcp_service, subnet=subnet, subnetmask=subnet_mask)
+    udm.create_object('dhcp/subnet', superordinate=dhcp_service, subnet=subnet, subnetmask=subnet_mask)
 
-    dhcp_host = udm.create_object('dhcp/host', superordinate=dhcp_subnet, host=uts.random_name(), hwaddress='ethernet 01:ff:78:38:ab:24', fixedaddress='10.20.30.123')
+    dhcp_host = udm.create_object('dhcp/host', superordinate=dhcp_service, host=uts.random_name(), hwaddress='ethernet 01:ff:78:38:ab:24', fixedaddress='10.20.30.123')
 
     host = udm.list_objects('dhcp/host', position=dhcp_host, policies=1)[0][1]
     pprint.pprint(host)
