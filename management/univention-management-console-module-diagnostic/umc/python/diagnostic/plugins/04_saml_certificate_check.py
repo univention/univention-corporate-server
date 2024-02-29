@@ -58,7 +58,7 @@ run_descr = ['Checks SAML certificates']
 
 
 def run(_umc_instance: Instance, rerun: bool = False) -> None:
-    keycloak_fqdn = ucr.get('keycloak/server/sso/fqdn')
+    keycloak_fqdn = '%s%s' % (ucr.get('keycloak/server/sso/fqdn'), ucr.get('keycloak/server/sso/path'))
     sso_fqdn = ucr.get('ucs/server/sso/fqdn')
     umc_saml_idp = ucr.get('umc/saml/idp-server')
     # keycloak
