@@ -1,0 +1,71 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "Verify user-group-membership synchronisation after changes from ad-side in sync mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+## tags:
+##  - groupsync
+##  - skip_admember
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/udm.sh
+. "$TESTLIBPATH/udm.sh" || exit 137
+# shellcheck source=../../lib/random.sh
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+
+UDM_container_ou_name="+1"  ## Important: non-dn value: verbatim, unescaped
+UDM_groups_group_name="$(random_chars)"
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+# If the password doesn't adhere the configured Windows-Password-Guidelines
+# weird things might happen when the user is synced to AD.
+UDM_users_user_password="U$(random_chars)123"
+## Important: DN-values must be escaped, can be either \+ or \2B, DN case doesn't seem to matter for writing:
+AD_OU_DN="OU=\+1,$(ad_get_base)"
+AD_GROUP_DN="CN=$UDM_groups_group_name,OU=\+1,$(ad_get_base)"
+AD_USER_DN="CN=$UDM_users_user_username,OU=\+1,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+connector_ad_ldap_bindpw=$(ucr get connector/ad/ldap/bindpw)
+ad_bindpwd=$(<"$connector_ad_ldap_bindpw")
+
+section "Create user and group"
+ad_exists "$AD_OU_DN" || samba-tool ou create 'ou=\+1,'"$(ad_get_base)" --URL="ldap://$(ucr get connector/ad/ldap/host)" -U"Administrator"%"$ad_bindpwd" || fail_test 110
+samba-tool group create "$UDM_groups_group_name" --groupou=ou='\+1' --URL="ldap://$(ucr get connector/ad/ldap/host)" -U"Administrator"%"$ad_bindpwd" || fail_test 110
+sleep "$(ucr get connector/debug/level)"
+samba-tool user create "$UDM_users_user_username" Univention.1 --userou=ou='\+1' --URL="ldap://$(ucr get connector/ad/ldap/host)" -U"Administrator"%"$ad_bindpwd" || fail_test 110
+samba-tool group addmembers "$UDM_groups_group_name" "$UDM_users_user_username" --URL="ldap://$(ucr get connector/ad/ldap/host)" -U"Administrator"%"$ad_bindpwd" || fail_test 110
+sleep 10
+reject_output=$(univention-adconnector-list-rejected)
+if grep -q "${AD_GROUP_DN//\\/\\\\}" <<<"$reject_output"; then
+    echo "$reject_output"
+    fail_test 110
+fi
+
+section "Clean up"
+
+ad_delete "$AD_USER_DN" || fail_test 110
+ad_delete "$AD_GROUP_DN" || fail_test 110
+ad_delete "OU=\+1,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+ad_exists "$AD_GROUP_DN"; fail_bool 1 110
+ad_exists "$AD_OU_DN"; fail_bool 1 110
+udm_exists "users/user" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
+udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
+UDM_container_ou_name='\+1'
+udm_exists "container/ou"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
