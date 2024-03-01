@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
-## desc: "Verify user-group-membership synchronisation after changes from ad-side in sync mode"
+## desc: "Verify user-group-membership synchronisation after changes from ad-side in read mode"
 ## exposure: dangerous
 ## packages:
 ## - univention-ad-connector
@@ -33,7 +33,7 @@ AD_USER_DN="CN=$UDM_users_user_username,OU=\+1,$(ad_get_base)"
 
 SYNCMODE="$(ad_get_sync_mode)"
 
-ad_set_sync_mode "sync"
+ad_set_sync_mode "read"
 
 section "Create user and group"
 
@@ -69,6 +69,18 @@ if grep -q "${AD_USER_DN//\\/\\\\}" <<<"$reject_output"; then
     echo "$reject_output"
     fail_test 110
 fi
+
+section "Remove user"
+
+ad_delete "$AD_USER_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+udm_exists "users/user" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
+
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 1 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 1 110
 
 section "Clean up"
 
