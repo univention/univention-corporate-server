@@ -1,3 +1,10 @@
+univention-mail-dovecot (6.0.8-2) unstable; urgency=medium
+
+  * Bug #56520: Change type of UCRV mail/dovecot/logging/auth_verbose_passwords
+    to str.
+
+ -- Juan Carlos García García <garcia-garcia@univention.de>  Fri, 01 Mar 2024 08:33:00 +0100
+
 univention-mail-dovecot (6.0.8-1) UNRELEASED; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump

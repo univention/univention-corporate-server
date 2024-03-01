@@ -309,7 +309,7 @@ Default=no
 [mail/dovecot/logging/auth_verbose_passwords]
 Description[de]=Im Fall von falschen Passwörtern, logge die verwendeten Passwörter. Gültige Werte sind "no", "plain" und "sha1". "sha1" kann nützlich sein um brute force Passwort Angriffe unterscheiden zu können von Benutzern die immer wieder das gleiche Passwort versuchen.
 Description[en]=In case of password mismatches, log the attempted password. Valid values are "no", "plain" and "sha1". "sha1" can be useful for detecting brute force password attempts vs. user simply trying the same password over and over again.
-Type=bool
+Type=str
 Categories=service-mail
 Default=no
 
