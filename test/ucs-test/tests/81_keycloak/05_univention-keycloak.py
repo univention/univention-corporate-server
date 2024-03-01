@@ -6,6 +6,7 @@
 
 import json
 import os
+from subprocess import CalledProcessError
 
 import pytest
 from keycloak.exceptions import KeycloakGetError
@@ -201,3 +202,40 @@ def test_init_with_parameters(random_string, keycloak_admin_connection):
             keycloak_admin_connection.delete_realm(realm_name=realm_name)
         except KeycloakGetError:
             pass
+
+
+def test_bindpwd(admin_account):
+    cmd = ['univention-keycloak', '--binduser', admin_account.username, '--bindpwd', admin_account.bindpw, 'realms', 'get']
+    run_command(cmd)
+    cmd = ['univention-keycloak', '--binduser', admin_account.username, '--bindpwd', "bindpw", 'realms', 'get']
+    with pytest.raises(CalledProcessError):
+        run_command(cmd)
+
+
+@pytest.fixture()
+def without_keycloak_secret():
+    secret = '/etc/keycloak.secret'
+    secret_tmp = f'{secret}.tmp'
+    moved = False
+
+    if os.path.isfile(secret):
+        os.rename(secret, secret_tmp)
+        moved = True
+
+    yield
+
+    if moved and os.path.isfile(secret_tmp):
+        os.rename(secret_tmp, secret)
+
+
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
+def test_machine_account(without_keycloak_secret):
+    cmd = ['univention-keycloak', 'realms', 'get']
+    run_command(cmd)
+
+
+@pytest.mark.roles('domaincontroller_slave', 'memberserver')
+def test_machine_account_fails(without_keycloak_secret):
+    cmd = ['univention-keycloak', 'realms', 'get']
+    with pytest.raises(CalledProcessError):
+        run_command(cmd)

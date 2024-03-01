@@ -1,3 +1,17 @@
+ucs-test (10.0.20-47) unstable; urgency=medium
+
+  * Bug #57100: added tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Mar 2024 15:48:18 +0100
+
+ucs-test (10.0.20-47) unstable; urgency=medium
+
+  * Bug #53538: fix
+    59_udm.61_test_udm_users_unittests.TestUsers.test_unmap_user_certifi
+    cate[computers/windows]
+
+ -- Florian Best <best@univention.de>  Mon, 04 Mar 2024 15:48:18 +0100
+
 ucs-test (10.0.20-46) unstable; urgency=medium
 
   * Bug #56521: test fetchmail listener resync

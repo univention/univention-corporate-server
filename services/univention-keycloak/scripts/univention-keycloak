@@ -1739,12 +1739,12 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     opt = parser.parse_args(args)
     if opt.binddn:
         opt.binduser = explode_rdn(opt.binddn, 1)[0]
-    if not exists(opt.bindpwdfile):
-        if not opt.bindpwd:
+    if not opt.bindpwd:
+        if not exists(opt.bindpwdfile):
             parser.error(f"Passwordfile {opt.bindpwdfile} for user {opt.binduser} does not exist.")
-    else:
-        with open(opt.bindpwdfile) as fd:
-            opt.bindpwd = fd.read().strip()
+        else:
+            with open(opt.bindpwdfile) as fd:
+                opt.bindpwd = fd.read().strip()
     if opt.command == "init":
         if not exists(opt.ldap_system_user_pwdfile):
             if not opt.ldap_system_user_pwdfile:
