@@ -38,7 +38,7 @@ from __future__ import annotations
 
 import json
 import sys
-from argparse import SUPPRESS, ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
+from argparse import SUPPRESS, Action, ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
 from base64 import b64decode
 from collections import namedtuple
 from enum import Enum
@@ -89,6 +89,22 @@ LOGIN_LINKS = 12
 #  * createTimestamp -> createTimestamp
 #  * displayName -> displayName
 #  * entryUUID -> entryUUID
+
+
+# create a keyvalue class
+class ArgparseKeyvalueAction(Action):
+    # Constructor calling
+    def __call__(self, parser: ArgumentParser, namespace: Namespace, values: list, option_string: str) -> None:
+        setattr(namespace, self.dest, {})
+        if not values:
+            parser.error(f"argument --{self.dest}: expected one argument")
+        for value in values:
+            if '=' not in value:
+                parser.error(f"argument --{self.dest}: expected argument as key=value")
+            # split it into key and value
+            key, value = value.split('=', 1)
+            # assign into dictionary
+            getattr(namespace, self.dest)[key] = value
 
 
 class KeycloakDomainConfig:
@@ -177,12 +193,15 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
 
     def get_user_storage_provider_id(self, name: str | None = None) -> str:
         """Get the id for user storage provider"""
+        return self.get_user_storage_provider(name=name)["id"]
+
+    def get_user_storage_provider(self, name: str | None = None) -> dict:
         if name is None:
             name = DEFAULT_USER_STORAGE_PROVIDER_NAME
         result = self.get_components(query={"name": name, "type": "org.keycloak.storage.UserStorageProvider"})
         if not result or len(result) != 1:
             raise Exception(f"user storage provider {name} not found")
-        return result[0]["id"]
+        return result[0]
 
     def get_user_storage_ldap_mappers(self, parent_id: str | None = None) -> list:
         """Get all the org.keycloak.storage.ldap.mappers.LDAPStorageMapper objects from a given component"""
@@ -1574,6 +1593,17 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     kerberos_config_subparser.add_argument("--server-principal", required=True)
     kerberos_config_subparser.set_defaults(func=set_kerberos_spn)
 
+    ldap_federation = subparsers.add_parser("ldap-federation", help="Manage LDAP federation")
+    ldap_federation_subparsers = ldap_federation.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    sp_ldap_federation_get = ldap_federation_subparsers.add_parser("get", help="Get LDAP federation")
+    sp_ldap_federation_get.add_argument("--json", help="json output", default=False, action="store_true")
+    sp_ldap_federation_get.add_argument("--name", help="name of the ldap provider object")
+    sp_ldap_federation_get.set_defaults(func=ldap_federation_get)
+    sp_ldap_federation_set = ldap_federation_subparsers.add_parser("set", help="Set config for LDAP federation")
+    sp_ldap_federation_set.add_argument("--name", help="name of the ldap provider object")
+    sp_ldap_federation_set.add_argument("--config", help="key value pair of config to change", action=ArgparseKeyvalueAction, nargs='*', required=True, metavar="key=value")
+    sp_ldap_federation_set.set_defaults(func=ldap_federation_set)
+
     adhoc_parser = subparsers.add_parser("ad-hoc", help="configure the ad-hoc federation login flow")
     operation_subparsers = adhoc_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
     adhoc_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses ad-hoc federation")
@@ -1732,6 +1762,28 @@ def _print_json(json_switch: bool, message: str) -> None:
         print(json.dumps(message, indent=4))
     else:
         print(message)
+
+
+def ldap_federation_get(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    provider = session.get_user_storage_provider(name=opt.name)
+    _print_json(opt.json, provider)
+
+
+def ldap_federation_set(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    provider_id = session.get_user_storage_provider_id(name=opt.name)
+    name = opt.name if opt.name else DEFAULT_USER_STORAGE_PROVIDER_NAME
+    payload = {
+        "name": name,
+        "providerType": "org.keycloak.storage.UserStorageProvider",
+        "parentId": get_realm_id(session, opt.realm),
+        "providerId": provider_id,
+        "config": {},
+    }
+    config = {key: [value] for key, value in opt.config.items()}
+    payload['config'].update(config)
+    modify_component(session, payload)
 
 
 def login_links_get(opt: Namespace) -> None:
@@ -2021,48 +2073,6 @@ def set_kerberos_spn(opt: Namespace) -> None:
     modify_component(session, payload)
 
 
-def update_ldap_federation_ldap_settings(opt: Namespace) -> None:
-    print("updating")
-    session = UniventionKeycloakAdmin(opt)
-    # ucs realm
-    provider_id = session.get_user_storage_provider_id()
-    name = DEFAULT_USER_STORAGE_PROVIDER_NAME
-    payload = {
-        "name": name,
-        "providerType": "org.keycloak.storage.UserStorageProvider",
-        "parentId": get_realm_id(session, opt.realm),
-        "providerId": provider_id,
-        "config": {
-            "userObjectClasses": ["person"],
-        },
-    }
-    modify_component(session, payload)
-    # master realm
-    ldap_base = ucr.get("ldap/base")
-    if ldap_base:
-        session.realm_name = DEFAULT_REALM
-        name = "ldap-master-admin"
-        provider_id = session.get_user_storage_provider_id(name)
-        payload = {
-            "name": name,
-            "providerType": "org.keycloak.storage.UserStorageProvider",
-            "parentId": get_realm_id(session, DEFAULT_REALM),
-            "providerId": provider_id,
-            "config": {
-                "customUserSearchFilter": [
-                    filter_format(
-                        "(|(memberOf=%s)(memberOf=%s))", [
-                            f"cn=Domain Admins,cn=groups,{opt.ldap_base}",
-                            f"cn=DC Backup Hosts,cn=groups,{opt.ldap_base}",
-                        ]
-                    )
-                ],
-                "userObjectClasses": ["person"]
-            },
-        }
-        modify_component(session, payload)
-
-
 def update_ldap_federation_tls_setting(opt: Namespace) -> None:
     print("updating")
     session = UniventionKeycloakAdmin(opt)
@@ -2160,7 +2170,6 @@ def upgrade_config(opt: Namespace) -> None:
             "19.0.2-ucs2",
             "21.1.1-ucs1",
             "22.0.1-ucs1",
-            "22.0.3-ucs2",  # TODO fix version
         ]
         upgrades.sort(key=LooseVersion)
         kdc = KeycloakDomainConfig(opt.binddn, opt.bindpwd)
@@ -2201,11 +2210,6 @@ def upgrade_config(opt: Namespace) -> None:
                 print(f"Running update steps for version: {version}")
                 if not opt.dry_run:
                     update_ldap_federation_tls_setting(opt)
-                    kdc.set_domain_config_version(version)
-            if version == "22.0.3-ucs2":  # TODO fix version
-                print(f"Running update steps for version: {version}")
-                if not opt.dry_run:
-                    update_ldap_federation_ldap_settings(opt)
                     kdc.set_domain_config_version(version)
     else:
         print("Only supported on UCS systems")
