@@ -3036,7 +3036,7 @@ def init_keycloak_ucs(opt):
     # Admins federation ldap provider payload
     ldap_federation_payload["name"] = "ldap-master-admin"
     ldap_federation_payload["parentId"] = get_realm_id(kc_admin, DEFAULT_REALM)
-    ldap_federation_payload["config"]["customUserSearchFilter"] = [f"(|(memberOf=cn=Domain Admins,cn=groups,{opt.ldap_base})(memberOf=cn=DC Backup Hosts,cn=groups,{opt.ldap_base}))"]
+    ldap_federation_payload["config"]["customUserSearchFilter"] = [ldap.filter.filter_format("(|(memberOf=%s)(memberOf=%s))", [f"cn=Domain Admins,cn=groups,{opt.ldap_base}", f"cn=DC Backup Hosts,cn=groups,{opt.ldap_base}"])]
 
     # find existing ldap provider or just create if none exists
     ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload, force=opt.force)
