@@ -279,6 +279,24 @@ class configdb(object):
                 self._dbcon = lite.connect(self.filename)
 
 
+class RFC4514_dn(object):
+    special_dn_chars = '"+,;<=>'
+    pattern = '|'.join('(%s)' % re.escape(ldap.dn.escape_dn_chars(s)) for s in special_dn_chars)
+    match = re.compile(pattern)
+    substs = [f'\\{ord(s):X}' for s in special_dn_chars]
+    replace = lambda m: RFC4514_dn.substs[m.lastindex - 1]    # noqa: E731
+
+    @classmethod
+    def to_ad(cls, dn):
+        """Currently just for documentation purposes"""
+        return ldap.dn.dn2str(ldap.dn.str2dn(dn))
+
+    @classmethod
+    def to_openldap(cls, dn):
+        """Doing the inverse of RFC4514_dn.to_ad"""
+        return cls.match.sub(cls.replace, dn)
+
+
 class Mapping(object):
 
     def __init__(self, mapping):
@@ -1755,7 +1773,14 @@ class ucs(object):
                     else:
                         dn_mapped = self._subtree_replace(dn_mapped.lower(), self.lo_ad.base.lower(), self.lo.base)  # FIXME: lo_ad may change with other connectors
                 # write the correct upper and lower case back to the DN
-                object[dntype] = dn_mapped.replace(dn_mapped[0:len(rdn_store)], rdn_store, 1)
+                dn_mapped = dn_mapped.replace(dn_mapped[0:len(rdn_store)], rdn_store, 1)
+                # group_members_sync_to_ucs uses _object_mapping to map AD group
+                # member DNs to OpenLDAP group member DNs. To avoid cache
+                # inconsistencies between the use of AD DN escaping (using '\+')
+                # and OpenLDAP DN escaping (using '\2B') we convert AD DNs to
+                # OpenLDAP notation here. TODO: In _object_mapping_ucs we could
+                # do the inverse simply by using dn2str(str2dn(dn)).
+                object[dntype] = RFC4514_dn.to_openldap(dn_mapped)
 
         object_out = object
 
