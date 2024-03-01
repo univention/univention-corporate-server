@@ -289,6 +289,9 @@ class Logger(logging.Logger):
         super(Logger, self).setLevel(level)
         self.univention_debug_handler.setLevel(self.level)
 
+    def getEffectiveLevel(self):
+        return self.univention_debug_handler.getLevel()
+
     def set_log_pid(self, log_pid):
         self._formatter.log_pid = log_pid
 
