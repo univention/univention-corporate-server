@@ -752,7 +752,7 @@ class access(object):
         return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
 
     def add(self, dn, al, exceptions=False, serverctrls=None, response=None, ignore_license=False):
-        # type: (str, List[Tuple[str, Any]], bool, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> None
+        # type: (str, List[Tuple[str, Any]], bool, Optional[List[ldap.controls.LDAPControl]], Optional[Dict], bool) -> None
         """
         Add LDAP entry at distinguished name and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values).
 
