@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.25-14) unstable; urgency=medium
+
+  * Bug #57102: don't run blocklist-clean-expired cron  job unless
+    block list are activated.
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Mar 2024 11:12:50 +0100
+
 univention-directory-manager-modules (15.0.25-13) unstable; urgency=medium
 
   * Bug #55555: fix object description when object doesn't exists

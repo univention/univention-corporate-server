@@ -3,10 +3,10 @@
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 @!@
-if configRegistry.get('directory/manager/blocklist/enabled', False) and configRegistry.get('server/role') == 'domaincontroller_master':
+if configRegistry.is_true('directory/manager/blocklist/enabled', False) and configRegistry.get('server/role') == 'domaincontroller_master':
     script = "/usr/share/univention-directory-manager-tools/univention-blocklist-clean-expired-entries"
     interval = configRegistry.get("directory/manager/blocklist/cleanup/cron", "0 8 * * *")
     logfile = '/var/log/univention/blocklist-clean-expired-entries.log'
     if interval:
-        print("%s       root    [ -x %s ] && %s --remove-expired >>%s 2>&1" % (interval, script, script, logfile))
+        print("%s       root    [ -x %s ] && umask 026 && %s --remove-expired >>%s 2>&1" % (interval, script, script, logfile))
 @!@
