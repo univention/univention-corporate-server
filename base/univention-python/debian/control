@@ -45,7 +45,6 @@ Package: python-univention
 Architecture: all
 Depends:
  python-cracklib,
- python-dns,
  python-ipaddress,
  python-ldap,
  python-six,
@@ -69,7 +68,6 @@ Package: python3-univention
 Architecture: all
 Depends:
  python3-cracklib,
- python3-dns,
  python3-ldap | python3-pyldap,
  python3-samba,
  python3-six,
