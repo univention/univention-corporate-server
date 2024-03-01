@@ -54,6 +54,7 @@ from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError, raise_error_from_response
 from keycloak.urls_patterns import URL_ADMIN_COMPONENTS, URL_ADMIN_REALM
 from ldap.dn import explode_rdn
+from ldap.filter import filter_format
 
 
 try:
@@ -2048,7 +2049,14 @@ def update_ldap_federation_ldap_settings(opt: Namespace) -> None:
             "parentId": get_realm_id(session, DEFAULT_REALM),
             "providerId": provider_id,
             "config": {
-                "customUserSearchFilter": [f"(|(memberOf=cn=Domain Admins,cn=groups,{ldap_base})(memberOf=cn=DC Backup Hosts,cn=groups,{ldap_base}))"],
+                "customUserSearchFilter": [
+                    filter_format(
+                        "(|(memberOf=%s)(memberOf=%s))", [
+                            f"cn=Domain Admins,cn=groups,{opt.ldap_base}",
+                            f"cn=DC Backup Hosts,cn=groups,{opt.ldap_base}",
+                        ]
+                    )
+                ],
                 "userObjectClasses": ["person"]
             },
         }
@@ -3036,7 +3044,14 @@ def init_keycloak_ucs(opt):
     # Admins federation ldap provider payload
     ldap_federation_payload["name"] = "ldap-master-admin"
     ldap_federation_payload["parentId"] = get_realm_id(kc_admin, DEFAULT_REALM)
-    ldap_federation_payload["config"]["customUserSearchFilter"] = [ldap.filter.filter_format("(|(memberOf=%s)(memberOf=%s))", [f"cn=Domain Admins,cn=groups,{opt.ldap_base}", f"cn=DC Backup Hosts,cn=groups,{opt.ldap_base}"])]
+    ldap_federation_payload["config"]["customUserSearchFilter"] = [
+        filter_format(
+            "(|(memberOf=%s)(memberOf=%s))", [
+                f"cn=Domain Admins,cn=groups,{opt.ldap_base}",
+                f"cn=DC Backup Hosts,cn=groups,{opt.ldap_base}"
+            ]
+        )
+    ]
 
     # find existing ldap provider or just create if none exists
     ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload, force=opt.force)
