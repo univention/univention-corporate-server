@@ -54,10 +54,11 @@ if [ "$1" = "configure" ] && [ -n "$2" ]; then
 						ldap-federation \
 						set \
 						--name ldap-master-admin \
-						--config userObjectClasses="persons" \
-						--config customUserSearchFilter="(|(memberOf=cn=${domain_admins},cn=groups,${ldap_base})(memberOf=cn=DC Backup Hosts,cn=groups,${ldap_base}))" || true
+						--config \
+						userObjectClasses="persons" \
+						customUserSearchFilter="(|(memberOf=cn=${domain_admins},cn=groups,${ldap_base})(memberOf=cn=DC Backup Hosts,cn=groups,${ldap_base}))" || true
 					# ucs realm
-					univention-keycloak ldap-federation set --config userObjectClasses="persons"
+					univention-keycloak ldap-federation set --config userObjectClasses="persons" || true
 				fi
 			fi
 		fi

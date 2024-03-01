@@ -1601,7 +1601,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     sp_ldap_federation_get.set_defaults(func=ldap_federation_get)
     sp_ldap_federation_set = ldap_federation_subparsers.add_parser("set", help="Set config for LDAP federation")
     sp_ldap_federation_set.add_argument("--name", help="name of the ldap provider object")
-    sp_ldap_federation_set.add_argument("--config", help="key value pair of config to change", action=ArgparseKeyvalueAction, nargs='*', required=True, metavar="key=value")
+    sp_ldap_federation_set.add_argument("--config", help="key value pair of config to change", action=ArgparseKeyvalueAction, nargs='+', required=True, metavar="key=value")
     sp_ldap_federation_set.set_defaults(func=ldap_federation_set)
 
     adhoc_parser = subparsers.add_parser("ad-hoc", help="configure the ad-hoc federation login flow")
