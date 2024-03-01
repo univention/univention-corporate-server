@@ -1,3 +1,9 @@
+univention-system-setup (13.0.10-4) unstable; urgency=low
+
+  * Bug #57078: Re-add univention-samba required for AD Member Mode.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 01 Mar 2024 15:17:17 +0100
+
 univention-system-setup (13.0.10-3) unstable; urgency=low
 
   * Bug #57078: Re-add ADC to list of base packages downloaded into USS cache

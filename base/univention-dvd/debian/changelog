@@ -1,3 +1,9 @@
+univention-dvd (5.0.3-3) unstable; urgency=low
+
+  * Bug #57078: Re-add univention-samba to ISO image
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 01 Mar 2024 15:16:49 +0100
+
 univention-dvd (5.0.3-2) unstable; urgency=low
 
   * Bug #57078: Re-add univention-ad-connector to ISO image

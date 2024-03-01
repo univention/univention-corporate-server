@@ -45,7 +45,9 @@ declare -a BASE=(
 	univention-server-backup
 	univention-server-slave
 	univention-server-member
-	univention-ad-connector  # AD Member Mode
+	# AD Member Mode
+	univention-ad-connector
+	univention-samba
 )
 declare -a COMPONENTS=(
 	firefox-esr-l10n-de

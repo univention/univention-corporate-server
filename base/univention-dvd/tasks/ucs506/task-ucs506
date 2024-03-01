@@ -31,7 +31,9 @@ univention-server-backup
 univention-server-slave
 univention-server-member
 univention-container-role-common
+/* AD Member Mode */
 univention-ad-connector
+univention-samba
 
 /* Translation Packages */
 univention-l10n-fr
