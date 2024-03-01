@@ -7,8 +7,6 @@
 Prevent reuse of user property values
 =====================================
 
-.. TODO : Add version of the erratum
-
 .. versionadded:: 5.0-6-erratum-974
 
    Since :uv:erratum:`5.0x974`, UCS supports block lists to prevent the reuse of user or group
