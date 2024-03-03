@@ -1171,7 +1171,10 @@ class UDM(UCSTestUDM):
 
     def stop_cli_server(self) -> None:
         super().stop_cli_server()
-        subprocess.call(['systemctl', 'reload', 'univention-directory-manager-rest.service'])
+        subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest.service'])
+
+
+UCSTestUDM = UDM
 
 
 def verify_udm_object(module: Any, dn: str, expected_properties: Mapping[str, bytes | str | Sequence[str]] | None) -> None:
