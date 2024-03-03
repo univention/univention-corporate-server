@@ -76,7 +76,7 @@ def ldap_master(ucr_session) -> str:
 @pytest.fixture()
 def udm() -> Iterator[_udm.UCSTestUDM]:
     """Auto-reverting UDM wrapper."""
-    with _udm.UCSTestUDM() as udm:
+    with _udm.UDM() as udm:
         yield udm
 
 
