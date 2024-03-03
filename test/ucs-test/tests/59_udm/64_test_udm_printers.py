@@ -481,8 +481,14 @@ def test_create_printer_without_whitespace_in_uri(udm, ucr, uri, uri_expected, u
         uri=uri,
     )
 
-    printer = udm.list_objects('shares/printer', filter=filter_format('name=%s', [name]))
-    assert printer[0][1]['uri'][0] == uri_expected
+    try:
+        uri_expected_protocol, uri_expected_destination = uri_expected.split(None, 1)
+    except:  # noqa: E722
+        uri_expected_protocol, uri_expected_destination = uri_expected, None
+
+    printer = next(udm.list_objects_json('shares/printer', filter=filter_format('name=%s', [name])).values())
+    assert printer['properties']['uri']['protocol'] == uri_expected_protocol
+    assert printer['properties']['uri']['destination'] == uri_expected_destination
 
     utils.verify_ldap_object(created_printer, {
         'univentionPrinterURI': [uri_expected_ldap],
