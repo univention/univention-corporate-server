@@ -342,6 +342,7 @@ class UCSTestUDM:
         :param bool wait_for_replication: delay return until Listener has settled.
         :param bool check_for_drs_replication: delay return until Samab4 has settled.
         :param \*\*kwargs:
+        :return: dn
         """
         if not modulename:
             raise UCSTestUDM_MissingModulename()
