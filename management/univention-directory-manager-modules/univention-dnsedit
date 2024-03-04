@@ -107,9 +107,8 @@ def parse() -> Namespace:
     group_ldap = parser.add_argument_group("LDAP BIND")
     group_ldap.add_argument(
         '--binddn',
-        required=True,
         help='LDAP bind DN')
-    group_pwd = group_ldap.add_mutually_exclusive_group(required=True)
+    group_pwd = group_ldap.add_mutually_exclusive_group()
     group_pwd.add_argument(
         '--bindpwd',
         help='LDAP bind password')
@@ -142,6 +141,8 @@ def parse() -> Namespace:
     if options.bindpwdfile:
         with options.bindpwdfile as fd:
             options.bindpwd = fd.read().strip()
+    if options.binddn and not options.bindpwd:
+        parser.error('authentication error: missing any of --bindpwdfile or --bindpwd')
 
     return options
 

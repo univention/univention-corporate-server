@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-17) unstable; urgency=low
+
+  * Bug #50385: `univention-dnsedit --binddn` is optional
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 04 Mar 2024 19:25:02 +0100
+
 univention-directory-manager-modules (15.0.25-16) unstable; urgency=low
 
   * Bug #50385: Fix escaping of DNS names and lables
