@@ -3,7 +3,7 @@ release: "5.0"
 version: [6]
 scope: ucs_5.0-0-errata5.0-6
 src: univention-management-console-module-diagnostic
-fix: 6.0.7-4
+fix: 6.0.7-5
 desc: |
  This update addresses the following issues:
  * The diagnostic plugin for checking SAML (SSO) certificates now

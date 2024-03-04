@@ -58,7 +58,10 @@ run_descr = ['Checks SAML certificates']
 
 
 def run(_umc_instance: Instance, rerun: bool = False) -> None:
-    keycloak_fqdn = '%s%s' % (ucr.get('keycloak/server/sso/fqdn'), ucr.get('keycloak/server/sso/path'))
+    keycloak_fqdn = '%s%s' % (
+        ucr.get('keycloak/server/sso/fqdn', 'ucs-sso-ng.%s' % ucr['domainname']),
+        ucr.get('keycloak/server/sso/path', ''),
+    )
     sso_fqdn = ucr.get('ucs/server/sso/fqdn')
     umc_saml_idp = ucr.get('umc/saml/idp-server')
     # keycloak
@@ -119,6 +122,7 @@ def test_identity_provider_certificate_keycloak(sso_fqdn: str) -> Iterator[Probl
 
     backend = default_backend()
     certificate = None
+    data = None
 
     url = "https://%s/realms/ucs/protocol/saml/descriptor" % (sso_fqdn,)
     links = {
@@ -136,16 +140,17 @@ def test_identity_provider_certificate_keycloak(sso_fqdn: str) -> Iterator[Probl
             links=[links],
         )
 
-    try:
-        metadata_dom = fromstring(data)
-        der_cert = metadata_dom.find(X509CERT).text
-        certificate = x509.load_der_x509_certificate(b64decode(der_cert), backend)
-        MODULE.process("Looking for certificate %s" % (certificate.subject,))
-    except (ValueError, AttributeError, TypeError) as exc:
-        yield Critical(
-            description=_("Failed to load certificate {{idp}}: {exc}").format(exc=exc),
-            links=[links],
-        )
+    if data:
+        try:
+            metadata_dom = fromstring(data)
+            der_cert = metadata_dom.find(X509CERT).text
+            certificate = x509.load_der_x509_certificate(b64decode(der_cert), backend)
+            MODULE.process("Looking for certificate %s" % (certificate.subject,))
+        except (ValueError, AttributeError, TypeError) as exc:
+            yield Critical(
+                description=_("Failed to load certificate {{idp}}: {exc}").format(exc=exc),
+                links=[links],
+            )
 
     # compare this with /usr/share/univention-management-console/saml/idp/*.xml
     if certificate:
