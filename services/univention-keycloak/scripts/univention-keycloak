@@ -1388,6 +1388,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_saml_parser.add_argument("--role-mapping-single-value", action="store_true")
     create_saml_parser.add_argument("--assertion-consumer-url-post", default=None)
     create_saml_parser.add_argument("--single-logout-service-url-post", default=None)
+    create_saml_parser.add_argument("--single-logout-service-url-redirect", default=None)
     create_saml_parser.add_argument("--idp-initiated-sso-url-name", default=None)
     create_saml_parser.add_argument("--name-id-format", default="transient")
     create_saml_parser.add_argument("--frontchannel-logout-off", default=False, action="store_true", help="Switch off frontchannelLogout")

@@ -1,3 +1,9 @@
+univention-keycloak (1.0.10-6) unstable; urgency=medium
+
+  * Bug #57001: Add more options to `univention-keycloak init`
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Mar 2024 10:25:09 +0100
+
 univention-keycloak (1.0.10-5) unstable; urgency=medium
 
   * Bug #57001: Add more options to `univention-keycloak init`
