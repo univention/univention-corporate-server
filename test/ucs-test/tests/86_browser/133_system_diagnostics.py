@@ -16,7 +16,6 @@ from typing import Generator
 import pytest
 from playwright.sync_api import expect
 
-import univention.testing.strings as uts
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import plugins
 from univention.testing.browser.lib import UMCBrowserTest
@@ -34,28 +33,26 @@ class PluginData:
     description: str
     test_action_label: str
     temp_file_name: Path
-    plugin_path: Path
+    path: Path
 
 
 @pytest.fixture()
-def plugin_data() -> Generator[PluginData, None, None]:
-    p_data = create_diagnostics_plugin()
+def plugin_data(diagnostics_plugin: PluginData) -> Generator[PluginData, None, None]:
+    yield diagnostics_plugin
 
-    yield p_data
+    if diagnostics_plugin.path.exists():
+        diagnostics_plugin.path.unlink()
 
-    if p_data.plugin_path.exists():
-        p_data.plugin_path.unlink()
-
-    pyc_file = Path(f'{p_data}c')
+    pyc_file = Path(f'{diagnostics_plugin}c')
     if pyc_file.exists():
         pyc_file.unlink()
 
-    if p_data.temp_file_name.exists():
-        p_data.temp_file_name.unlink()
+    if diagnostics_plugin.temp_file_name.exists():
+        diagnostics_plugin.temp_file_name.unlink()
 
 
-def create_diagnostics_plugin() -> PluginData:
-    plugin_path = get_plugin_path()
+@pytest.fixture()
+def diagnostics_plugin(plugin_path) -> PluginData:
     temp_file = tempfile.NamedTemporaryFile(delete=False)
     temp_file.close()
     plugin_data = PluginData(
@@ -103,18 +100,19 @@ actions = {{
         fd.write(plugin)
 
 
-def get_plugin_path() -> Path:
-    plugin_path = get_random_plugin_path()
+@pytest.fixture()
+def plugin_path(random_string) -> Path:
+    plugin_path = make_random_plugin_path(random_string)
     while plugin_path.exists():
-        plugin_path = get_random_plugin_path()
+        plugin_path = make_random_plugin_path(random_string)
 
     print(f'Test plugin path is {plugin_path}')
 
     return plugin_path
 
 
-def get_random_plugin_path() -> Path:
-    plugin_name = f'{uts.random_string(length=10, alpha=True, numeric=False)}.py'
+def make_random_plugin_path(random_string) -> Path:
+    plugin_name = f'{random_string(length=10, alpha=True, numeric=False)}.py'
     return PLUGIN_DIR / plugin_name
 
 

@@ -19,7 +19,6 @@ from ldap.filter import filter_format
 from playwright.sync_api import Locator, Page, expect
 
 import univention.admin.modules as udm_modules
-import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 from univention.lib.i18n import Translation
 from univention.testing.browser import logger
@@ -55,11 +54,6 @@ class PasswordChangeExpectedOutcome(Enum):
         elif self == PasswordChangeExpectedOutcome.REUSE:
             return _('password was already used')
         return ''
-
-
-@pytest.fixture()
-def random_password():
-    return uts.random_string()
 
 
 def create_testusers_container(udm, ldap_base):
@@ -131,10 +125,10 @@ def logout(umc_browser_test: UMCBrowserTest):
 
 
 @pytest.mark.parametrize('role', ['admin', 'regular'])
-def test_change_user_password(role: str, random_password: str, test_users: Users, side_menu_user: SideMenuUser):
+def test_change_user_password(role: str, random_string, test_users: Users, side_menu_user: SideMenuUser):
     user = test_users.regular_user if role == 'regular' else test_users.admin_user
 
-    change_own_password(user, random_password, side_menu_user, check_for_no_module_available_popup=user.has_popup_after_login)
+    change_own_password(user, random_string(), side_menu_user, check_for_no_module_available_popup=user.has_popup_after_login)
     logout(side_menu_user.tester)
 
     side_menu_user.tester.login(user.username, user.password, check_for_no_module_available_popup=user.has_popup_after_login)
@@ -213,13 +207,13 @@ def test_for_short_password_error(admin_user: User, side_menu_user: SideMenuUser
     logout(side_menu_user.tester)
 
 
-def test_usability_of_a_module_after_password_change(admin_user: User, random_password, umc_browser_test: UMCBrowserTest):
+def test_usability_of_a_module_after_password_change(admin_user: User, random_string, umc_browser_test: UMCBrowserTest):
     user_module = UserModule(umc_browser_test)
     side_menu = SideMenuUser(umc_browser_test)
     user_module.navigate(admin_user.username, admin_user.password)
     expect(user_module.page.get_by_role('gridcell').first).to_be_visible(timeout=2 * 60 * 1000)
 
-    change_own_password(admin_user, random_password, side_menu, do_login=False)
+    change_own_password(admin_user, random_string(), side_menu, do_login=False)
 
     user_module.open_details(admin_user.username)
     heading = umc_browser_test.page.get_by_role('heading', name=_('Basic settings'))
@@ -227,7 +221,8 @@ def test_usability_of_a_module_after_password_change(admin_user: User, random_pa
     logout(umc_browser_test)
 
 
-def test_login_while_changing_password(admin_user: User, random_password: str, umc_browser_test: UMCBrowserTest):
+def test_login_while_changing_password(admin_user: User, random_string, umc_browser_test: UMCBrowserTest):
+    random_password = random_string()
     set_change_password_on_login_flag(admin_user, umc_browser_test)
     umc_browser_test.end_umc_session()
 

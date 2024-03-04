@@ -16,7 +16,6 @@ import time
 import pytest
 from playwright.sync_api import expect
 
-import univention.testing.strings as uts
 from univention.lib.i18n import Translation
 from univention.testing.browser.generic_udm_module import UserModule
 from univention.testing.browser.udm_users import User, create_test_user
@@ -30,11 +29,11 @@ def test_user(lo, udm):
     return create_test_user(udm, lo)
 
 
-def test_move_user_into_container_and_out_again(user_module: UserModule, test_user: User, udm, ucr, ldap_base):
+def test_move_user_into_container_and_out_again(user_module: UserModule, test_user: User, udm, ucr, ldap_base, random_string):
     position = ucr.get('ldap/base')
-    cn_name = uts.random_string()
+    cn_name = random_string()
     udm.create_object('container/cn', position=position, name=cn_name)
-    ou_name = uts.random_string()
+    ou_name = random_string()
     udm.create_object('container/ou', position=position, name=ou_name)
 
     user_module.navigate()
@@ -55,8 +54,8 @@ def move_user(user_module: UserModule, test_user: User, container_name: str, udm
     return next(prop for prop in props if prop.startswith('uid='))
 
 
-def test_user_templates_description(user_module: UserModule, udm):
-    description_template = uts.random_string()
+def test_user_templates_description(user_module: UserModule, udm, random_string):
+    description_template = random_string()
     udm.create_object(
         'settings/usertemplate',
         position=f'cn=templates,cn=univention,{user_module.tester.ldap_base}',
@@ -78,8 +77,8 @@ def test_user_templates_description(user_module: UserModule, udm):
         user_module.delete(created_item)
 
 
-def test_user_templates_group(user_module: UserModule, udm):
-    secondary_group_template = uts.random_string()
+def test_user_templates_group(user_module: UserModule, udm, random_string):
+    secondary_group_template = random_string()
     udm.create_object(
         'settings/usertemplate',
         position=f'cn=templates,cn=univention,{user_module.tester.ldap_base}',
