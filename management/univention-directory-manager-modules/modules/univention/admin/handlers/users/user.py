@@ -587,6 +587,16 @@ property_descriptions = dict({
         may_change=False,
         dontsearch=True,
     ),
+    'guardianInheritedRole': univention.admin.property(
+        short_description=_('Roles used by Guardian for access permissions. Inherited by group membership'),
+        long_description=_('Roles used by Guardian for access permissions. Inherited by group membership'),
+        syntax=univention.admin.syntax.string,
+        may_change=False,
+        multivalue=True,
+        dontsearch=True,
+        show_in_lists=False,
+        cli_enabled=False,
+    ),
 }, **pki_properties())
 
 layout = [
