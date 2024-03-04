@@ -1,3 +1,25 @@
+univention-directory-manager-modules (16.0.14) unstable; urgency=medium
+
+  * Bug #TODO: Add guardianInheritedRole
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 18 Mar 2024 18:34:39 +0100
+
+univention-directory-manager-modules (16.0.14) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Mar 2024 18:34:39 +0100
+
+univention-directory-manager-modules (16.0.14) unstable; urgency=medium
+
+  [ Philipp Hahn ]
+  * Bug #57118 UCS 5.0-7 version bump
+
+  [ Florian Best ]
+  * Bug #57146: restore Python 2.7 compatibility
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2024 18:34:39 +0100
+
 univention-directory-manager-modules (16.0.13) unstable; urgency=medium
 
   * Bug #56992: disallow purely numerical user and group names by
