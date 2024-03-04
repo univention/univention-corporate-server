@@ -6,9 +6,7 @@ src: libgit2
 fix: 0.25.1+really0.24.6-1+deb9u3
 desc: |
  This update addresses the following issue:
- 0.25.1+really0.24.6-1+deb9u3 (Sun, 03 Mar 2024 15:55:11 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2024-24577: Arbitrary code execution in git_index_add
+ * CVE-2024-24577: Arbitrary code execution in `git_index_add`.
 bug: [57106]
 cve:
 - CVE-2024-24577
