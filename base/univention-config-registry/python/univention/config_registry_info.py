@@ -245,7 +245,7 @@ class ConfigRegistryInfo(object):
         self._write_variables(filename)
 
     def _write_variables(self, filename=None, package=None):
-        # type: (str, str) -> bool
+        # type: (str | None, str | None) -> bool
         """
         Persist the variable descriptions into a file.
 
@@ -284,7 +284,7 @@ class ConfigRegistryInfo(object):
         self.read_variables(filename, override=True)
 
     def read_variables(self, filename=None, package=None, override=False):
-        # type: (str, str, bool) -> None
+        # type: (str | None, str | None, bool) -> None
         """
         Read variable descriptions.
 
@@ -365,7 +365,7 @@ class ConfigRegistryInfo(object):
         return None
 
     def get_variables(self, category=None):
-        # type: (str) -> Dict[str, Variable]
+        # type: (str | None) -> Dict[str, Variable]
         """
         Return dictionary of variable info blocks belonging to given category.
 

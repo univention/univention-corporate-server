@@ -130,7 +130,7 @@ class Service(uit.LocalizedDictionary):
 
     def _service_name(self):
         # type: () -> str
-        service_name = self.get('systemd', self.get('name'))
+        service_name = self.get('systemd') or self['name']
         if service_name.endswith('.service'):
             service_name = service_name.rsplit('.', 1)[0]
         return service_name
@@ -143,7 +143,7 @@ class Service(uit.LocalizedDictionary):
 
 
 def pidof(name, docker='/var/run/docker.pid'):
-    # type: (str, str) -> List[int]
+    # type: (str, int | str) -> List[int]
     """
     Return list of process IDs matching name.
 
@@ -156,7 +156,7 @@ def pidof(name, docker='/var/run/docker.pid'):
     result = set()  # type: Set[int]
     log = getLogger(__name__)
 
-    children = {}  # type: Dict[int, List[int]]
+    children = {}  # type: Dict[int | str, List[int]]
     if isinstance(docker, six.string_types):
         try:
             with open(docker) as stream:
@@ -194,7 +194,7 @@ def pidof(name, docker='/var/run/docker.pid'):
                 log.error('Failed getting parent: %s: %r', ex, status)
 
         def _running(cmd, link, commandline):
-            # type: () -> Iterator[bool]
+            # type: (List[str], str, str) -> Iterator[bool]
             yield cmd == [link]
             args = commandline.split('\x00') if '\x00' in commandline else shlex.split(commandline)
             yield len(cmd) == 1 and cmd[0] in args  # FIXME: it detects "vim /usr/sbin/service" as running process!

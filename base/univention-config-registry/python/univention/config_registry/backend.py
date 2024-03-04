@@ -49,7 +49,7 @@ from stat import S_ISREG
 try:
     from collections.abc import Mapping, MutableMapping  # Python 3.3+
 except ImportError:
-    from collections import Mapping, MutableMapping
+    from collections import Mapping, MutableMapping  # type: ignore[attr-defined]
 
 import six
 
@@ -326,7 +326,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 
     @overload
     def get(self, key, default=None):  # pragma: no cover
-        # type: (str, _VT) -> Union[str, _VT]
+        # type: (str, _VT | None) -> Union[str, _VT]
         pass
 
     def get(self, key, default=None, getscope=False):

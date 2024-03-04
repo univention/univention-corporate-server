@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Common Python Library
-"""Handle UCR network configuration."""
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -34,6 +33,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+"""Handle UCR network configuration."""
+
 # pylint: disable-msg=W0142,C0103,R0201,R0904
 from __future__ import absolute_import
 
@@ -47,7 +48,7 @@ from univention.config_registry.backend import ConfigRegistry, ReadOnlyConfigReg
 
 try:
     from ipaddress import _IPAddressBase  # noqa: F401
-    from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Type, Union  # noqa: F401
+    from typing import Any, Callable, Dict, Iterator, Mapping, Optional, Tuple, Type, Union  # noqa: F401
 except ImportError:  # pragma: no cover
     pass
 
@@ -69,7 +70,7 @@ RE_IFACE = re.compile(r'''^
 
 
 def forgiving(translation=None):
-    # type: (Dict[Type[Exception], Any]) -> Callable[[Callable], Callable]
+    # type: (Dict[Type[Exception], Any] | None) -> Callable[[Callable], Callable]
     """
     Decorator to translate exceptions into return values.
 
@@ -245,7 +246,7 @@ class Interfaces(object):
     """
 
     def __init__(self, ucr=None):
-        # type: (ConfigRegistry) -> None
+        # type: (Mapping[str, str] | None) -> None
         if ucr is None:
             ucr = ConfigRegistry()
             ucr.load()

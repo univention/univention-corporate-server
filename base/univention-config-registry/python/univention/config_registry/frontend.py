@@ -418,7 +418,7 @@ def handler_search(args, opts={}):
             print('E: invalid regular expression: %s' % (ex,), file=sys.stderr)
             sys.exit(1)
     else:
-        def search(x):
+        def search(x):  # type: ignore[misc]
             return True
 
     info = _get_config_registry_info()
@@ -753,7 +753,7 @@ OPT_COMMANDS = {
         'encode-utf8': [BOOL, False],
         'disallow-execution': [BOOL, False],
     },
-}  # type: Dict[str, Dict[str, List]]
+}  # type: Dict[str, Dict[str, Any]]
 
 
 def main(args):

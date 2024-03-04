@@ -43,7 +43,7 @@ try:
     from typing import Dict, Optional, TypeVar, Union, overload  # noqa: F401
     _VT = TypeVar('_VT')  # noqa: PYI018
 except ImportError:
-    def overload(f):
+    def overload(f):  # type: ignore[misc]
         pass
 
 # default locale
@@ -81,7 +81,7 @@ class LocalizedValue(__LVD):
         return self.__default
 
     def set(self, value, locale=None):
-        # type: (str, str) -> None
+        # type: (str, str | None) -> None
         self[locale or _locale] = value
 
     def set_default(self, default):
@@ -144,7 +144,7 @@ class LocalizedDictionary(__LD):  # noqa: PLW1641
         pass
 
     def get(self, key, default=None):  # noqa: F811
-        # type: (str, _VT) -> Union[str, _VT]
+        # type: (str, _VT | None) -> Union[str, _VT]
         try:
             value = self.__getitem__(key) or default
             return value  # type: ignore
@@ -157,7 +157,7 @@ class LocalizedDictionary(__LD):  # noqa: PLW1641
         matches = LocalizedDictionary._LOCALE_REGEX.match(key)
         if matches:
             key = matches.group(1)
-        return dict.__contains__(self, key)
+        return dict.__contains__(self, key)  # type: ignore[operator]
     has_key = __contains__  # type: ignore
 
     def __normalize_key(self, key):
@@ -176,7 +176,7 @@ class LocalizedDictionary(__LD):  # noqa: PLW1641
         return temp
 
     def normalize(self, key=None):  # noqa: F811
-        # type: (str) -> Dict[str, str]
+        # type: (str | None) -> Dict[str, str]
         if key:
             return self.__normalize_key(key)
         temp = {}  # type: Dict[str, str]
