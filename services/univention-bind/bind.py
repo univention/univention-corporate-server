@@ -1,14 +1,5 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
-# pylint: disable-msg=C0103,W0622,W0312
-"""
-Univention Bind listener script
-
-During the update period, only create the configuration snippets for named and
-the proxy.
-During the quiet period check the cache directory (is-state) against the
-configuration directory (should-state) and reload/restart as appropriate.
-"""
+#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -38,6 +29,15 @@ configuration directory (should-state) and reload/restart as appropriate.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+"""
+Univention Bind listener script
+
+During the update period, only create the configuration snippets for named and
+the proxy.
+During the quiet period check the cache directory (is-state) against the
+configuration directory (should-state) and reload/restart as appropriate.
+"""
 
 from __future__ import absolute_import, annotations
 
@@ -101,29 +101,27 @@ def safe_path_join(basedir: str, filename: str) -> str:
     return path
 
 
-def validate_zonename(zonename: str) -> str:
+def validate_zonename(zonename: str) -> None:
     """
     >>> validate_zonename('foo')
-    'foo'
     >>> validate_zonename('foo.bar')
-    'foo.bar'
-    >>> validate_zonename('foo.zone')  # doctest: +ELLIPSIS
+    >>> validate_zonename('foo.zone')  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     InvalidZone: ...
-    >>> validate_zonename('foo.proxy')  # doctest: +ELLIPSIS
+    >>> validate_zonename('foo.proxy')  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     InvalidZone: ...
-    >>> validate_zonename('.')  # doctest: +ELLIPSIS
+    >>> validate_zonename('.')  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     InvalidZone: ...
-    >>> validate_zonename('..')  # doctest: +ELLIPSIS
+    >>> validate_zonename('..')  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     InvalidZone: ...
-    >>> validate_zonename('fo..o')  # doctest: +ELLIPSIS
+    >>> validate_zonename('fo..o')  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     InvalidZone: ...
@@ -132,13 +130,12 @@ def validate_zonename(zonename: str) -> str:
         raise InvalidZone('empty zonename not allowed')
     if set(zonename) & set('\x00/' + ''.join(map(chr, range(0x1F + 1)))):
         raise InvalidZone('zone name %r contains invalid characters' % (zonename,))
-    if zonename.endswith('.zone') or zonename.endswith('.proxy'):
+    if zonename.endswith(('.zone', '.proxy')):
         raise InvalidZone('.zone or .proxy TLD are not supported.')
     if '..' in zonename or zonename == '.':
         raise InvalidZone('zone name must not be ".", ".." or contain "..".')
     if zonename in ('0.in-addr.arpa', '127.in-addr.arpa', '255.in-addr.arpa'):
         raise InvalidZone('zone must not be 0, 127, 255.')
-    return zonename
 
 
 def _quote_config_parameter(arg: str) -> str:
@@ -163,7 +160,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             # Change
             # Create an empty file to trigger the postrun()
             zonename = new['zoneName'][0].decode('UTF-8')
-            zonename = validate_zonename(zonename)
+            validate_zonename(zonename)
             zonefile = safe_path_join(PROXY_CACHE_DIR, "%s.zone" % (zonename,))
             proxy_cache = open(zonefile, 'w')
             proxy_cache.close()
@@ -191,7 +188,7 @@ def _new_zone(ucr: Dict[str, str], zonename: str, dn: str) -> None:
         os.mkdir(NAMED_CONF_DIR)
         os.chmod(NAMED_CONF_DIR, 0o755)
 
-    zonename = validate_zonename(zonename)
+    validate_zonename(zonename)
     zonefile = safe_path_join(NAMED_CONF_DIR, zonename)
 
     # Create empty file and restrict permission
@@ -234,7 +231,7 @@ def _new_zone(ucr: Dict[str, str], zonename: str, dn: str) -> None:
 def _remove_zone(zonename: str) -> None:
     """Handle removal of zone."""
     ud.debug(ud.LISTENER, ud.INFO, 'DNS: Removing zone %s' % (zonename,))
-    zonename = validate_zonename(zonename)
+    validate_zonename(zonename)
     zonefile = safe_path_join(NAMED_CONF_DIR, zonename)
     cached_zonefile = safe_path_join(NAMED_CACHE_DIR, zonename + '.zone')
     # Remove zone file
