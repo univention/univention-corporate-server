@@ -184,8 +184,57 @@ The following API clients implemented in Python exist for the |UCSREST|:
      # 7. remove
      obj.delete()
 
-* Python |UCSREST| Client:
+* :program:`python3-univention-directory-mananger-rest-async-client`:
 
+  After installing the Debian package on a UCS system,
+  you can use it in the following way:
+
+  .. code-block:: python
+     :caption: Example for using Python asynchronous UDM REST API client
+
+     import asyncio
+     from univention.admin.rest.async_client import UDM
+     uri = 'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr
+
+     async def main():
+         async with UDM.http(uri, 'Administrator', 'univention') as udm:
+             module = await udm.get('users/user')
+
+             # 1. create a user
+             obj = await module.new()
+             obj.properties['username'] = 'foo'
+             obj.properties['password'] = 'univention'
+             obj.properties['lastname'] = 'foo'
+             await obj.save()
+
+             # 2. search for users (first user)
+             objs = module.search()
+             async for obj in objs:
+                 if not obj:
+                     continue
+                 obj = await obj.open()
+                 print('Object {}'.format(obj))
+
+             # 3. get by dn
+             ldap_base = await udm.get_ldap_base()
+             obj = await module.get('uid=foo,cn=users,%s' % (ldap_base,))
+
+             # 4. get referenced objects e.g. groups
+             pg = await obj.objects['primaryGroup'].open()
+             print(pg.dn, pg.properties)
+             print(obj.objects['groups'])
+
+             # 5. modify
+             obj.properties['description'] = 'foo'
+             await obj.save()
+
+             # 6. move to the ldap base
+             await obj.move(ldap_base)
+
+             # 7. remove
+             await obj.delete()
+
+* Python |UCSREST| Client:
   * `Package at PyPI <https://pypi.org/project/udm-rest-client/>`_
   * :external+python-udm-rest-client:doc:`Documentation <index>`
 
