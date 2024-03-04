@@ -1,3 +1,9 @@
+univention-keycloak (1.0.10-7) unstable; urgency=medium
+
+  * Bug #57100: Allow machine accounts in keycloak
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Mar 2024 10:35:34 +0100
+
 univention-keycloak (1.0.10-6) unstable; urgency=medium
 
   * Bug #57001: Add more options to `univention-keycloak init`

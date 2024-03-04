@@ -87,3 +87,9 @@ def test_openid_connection_user(keycloak_openid_connection, udm):
     userinfo = keycloak_openid_connection.userinfo(token['access_token'])
     assert userinfo['preferred_username'] == username.lower(), 'Wrong user login'
     keycloak_openid_connection.logout(token['refresh_token'])
+
+
+def test_openid_connection_machine_account(keycloak_openid_connection, ucr):
+    username = f"{ucr.get('hostname')}$"
+    password = open('/etc/machine.secret').read().strip()
+    keycloak_openid_connection.token(username, password, scope='openid')

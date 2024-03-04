@@ -1,3 +1,10 @@
+ucs-test (10.0.20-47) unstable; urgency=medium
+
+  * Bug #57100: added tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Mar 2024 15:48:19 +0100
+
+
 ucs-test (10.0.20-46) unstable; urgency=medium
 
   * Bug #56521: test fetchmail listener resync

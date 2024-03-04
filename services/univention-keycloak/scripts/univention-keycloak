@@ -38,7 +38,7 @@ from __future__ import annotations
 
 import json
 import sys
-from argparse import SUPPRESS, ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
+from argparse import SUPPRESS, Action, ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
 from base64 import b64decode
 from collections import namedtuple
 from enum import Enum
@@ -54,6 +54,7 @@ from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError, raise_error_from_response
 from keycloak.urls_patterns import URL_ADMIN_COMPONENTS, URL_ADMIN_REALM
 from ldap.dn import explode_rdn
+from ldap.filter import filter_format
 
 
 try:
@@ -88,6 +89,22 @@ LOGIN_LINKS = 12
 #  * createTimestamp -> createTimestamp
 #  * displayName -> displayName
 #  * entryUUID -> entryUUID
+
+
+# create a keyvalue class
+class ArgparseKeyvalueAction(Action):
+    # Constructor calling
+    def __call__(self, parser: ArgumentParser, namespace: Namespace, values: list, option_string: str) -> None:
+        setattr(namespace, self.dest, {})
+        if not values:
+            parser.error(f"argument --{self.dest}: expected one argument")
+        for value in values:
+            if '=' not in value:
+                parser.error(f"argument --{self.dest}: expected argument as key=value")
+            # split it into key and value
+            key, value = value.split('=', 1)
+            # assign into dictionary
+            getattr(namespace, self.dest)[key] = value
 
 
 class KeycloakDomainConfig:
@@ -176,12 +193,15 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
 
     def get_user_storage_provider_id(self, name: str | None = None) -> str:
         """Get the id for user storage provider"""
+        return self.get_user_storage_provider(name=name)["id"]
+
+    def get_user_storage_provider(self, name: str | None = None) -> dict:
         if name is None:
             name = DEFAULT_USER_STORAGE_PROVIDER_NAME
         result = self.get_components(query={"name": name, "type": "org.keycloak.storage.UserStorageProvider"})
         if not result or len(result) != 1:
             raise Exception(f"user storage provider {name} not found")
-        return result[0]["id"]
+        return result[0]
 
     def get_user_storage_ldap_mappers(self, parent_id: str | None = None) -> list:
         """Get all the org.keycloak.storage.ldap.mappers.LDAPStorageMapper objects from a given component"""
@@ -1308,11 +1328,18 @@ def parse_args(args: list[str] | None = None) -> Namespace:
 
     no_ucr_available = not (ucr and ldap_base)
 
+    # if keycloak.secret does not exist the default should be the machine account
+    default_bindpwdfile = "/etc/keycloak.secret"
+    default_binduser = "admin"
+    if not exists(default_bindpwdfile) and ucr.get("hostname"):
+        default_bindpwdfile = "/etc/machine.secret"
+        default_binduser = f"{ucr['hostname']}$"
+
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--binddn", default="")
-    parser.add_argument("--binduser", default="admin")
+    parser.add_argument("--binduser", default=default_binduser)
     parser.add_argument("--bindpwd", default="")
-    parser.add_argument("--bindpwdfile", default="/etc/keycloak.secret")
+    parser.add_argument("--bindpwdfile", default=default_bindpwdfile)
     parser.add_argument("--realm", default="ucs")
     parser.add_argument("--keycloak-pwd", default="")
     parser.add_argument("--keycloak-url", required=no_ucr_available, default=keycloak_url)
@@ -1566,6 +1593,17 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     kerberos_config_subparser.add_argument("--server-principal", required=True)
     kerberos_config_subparser.set_defaults(func=set_kerberos_spn)
 
+    ldap_federation = subparsers.add_parser("ldap-federation", help="Manage LDAP federation")
+    ldap_federation_subparsers = ldap_federation.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    sp_ldap_federation_get = ldap_federation_subparsers.add_parser("get", help="Get LDAP federation")
+    sp_ldap_federation_get.add_argument("--json", help="json output", default=False, action="store_true")
+    sp_ldap_federation_get.add_argument("--name", help="name of the ldap provider object")
+    sp_ldap_federation_get.set_defaults(func=ldap_federation_get)
+    sp_ldap_federation_set = ldap_federation_subparsers.add_parser("set", help="Set config for LDAP federation")
+    sp_ldap_federation_set.add_argument("--name", help="name of the ldap provider object")
+    sp_ldap_federation_set.add_argument("--config", help="key value pair of config to change", action=ArgparseKeyvalueAction, nargs='+', required=True, metavar="key=value")
+    sp_ldap_federation_set.set_defaults(func=ldap_federation_set)
+
     adhoc_parser = subparsers.add_parser("ad-hoc", help="configure the ad-hoc federation login flow")
     operation_subparsers = adhoc_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
     adhoc_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses ad-hoc federation")
@@ -1701,12 +1739,12 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     opt = parser.parse_args(args)
     if opt.binddn:
         opt.binduser = explode_rdn(opt.binddn, 1)[0]
-    if not exists(opt.bindpwdfile):
-        if not opt.bindpwd:
+    if not opt.bindpwd:
+        if not exists(opt.bindpwdfile):
             parser.error(f"Passwordfile {opt.bindpwdfile} for user {opt.binduser} does not exist.")
-    else:
-        with open(opt.bindpwdfile) as fd:
-            opt.bindpwd = fd.read().strip()
+        else:
+            with open(opt.bindpwdfile) as fd:
+                opt.bindpwd = fd.read().strip()
     if opt.command == "init":
         if not exists(opt.ldap_system_user_pwdfile):
             if not opt.ldap_system_user_pwdfile:
@@ -1724,6 +1762,28 @@ def _print_json(json_switch: bool, message: str) -> None:
         print(json.dumps(message, indent=4))
     else:
         print(message)
+
+
+def ldap_federation_get(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    provider = session.get_user_storage_provider(name=opt.name)
+    _print_json(opt.json, provider)
+
+
+def ldap_federation_set(opt: Namespace) -> None:
+    session = UniventionKeycloakAdmin(opt)
+    provider_id = session.get_user_storage_provider_id(name=opt.name)
+    name = opt.name if opt.name else DEFAULT_USER_STORAGE_PROVIDER_NAME
+    payload = {
+        "name": name,
+        "providerType": "org.keycloak.storage.UserStorageProvider",
+        "parentId": get_realm_id(session, opt.realm),
+        "providerId": provider_id,
+        "config": {},
+    }
+    config = {key: [value] for key, value in opt.config.items()}
+    payload['config'].update(config)
+    modify_component(session, payload)
 
 
 def login_links_get(opt: Namespace) -> None:
@@ -2836,7 +2896,7 @@ def init_keycloak_ucs(opt):
             "usePasswordModifyExtendedOp": ["true"],
             "trustEmail": ["false"],
             "priority": ["0"],
-            "userObjectClasses": ["inetOrgPerson, organizationalPerson"],
+            "userObjectClasses": ["person"],
             "rdnLDAPAttribute": ["uid"],
             "editMode": ["READ_ONLY"],
             "validatePasswordPolicy": ["false"],
@@ -2988,7 +3048,14 @@ def init_keycloak_ucs(opt):
     # Admins federation ldap provider payload
     ldap_federation_payload["name"] = "ldap-master-admin"
     ldap_federation_payload["parentId"] = get_realm_id(kc_admin, DEFAULT_REALM)
-    ldap_federation_payload["config"]["customUserSearchFilter"] = [f"(memberOf=cn=Domain Admins,cn=groups,{opt.ldap_base})"]
+    ldap_federation_payload["config"]["customUserSearchFilter"] = [
+        filter_format(
+            "(|(memberOf=%s)(memberOf=%s))", [
+                f"cn=Domain Admins,cn=groups,{opt.ldap_base}",
+                f"cn=DC Backup Hosts,cn=groups,{opt.ldap_base}"
+            ]
+        )
+    ]
 
     # find existing ldap provider or just create if none exists
     ldap_component_id = check_and_create_component(kc_admin, ldap_federation_payload["name"], ldap_federation_payload["providerId"], ldap_federation_payload, force=opt.force)
