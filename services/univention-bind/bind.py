@@ -363,10 +363,12 @@ def postrun() -> None:
         proxy_conf = open(PROXY_CONF_FILE, 'w')
         if os.path.isdir(NAMED_CONF_DIR):
             for f in os.listdir(NAMED_CONF_DIR):
-                if not f.endswith('.proxy'):
-                    named_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
-                else:
+                if f.startswith("."):
+                    continue
+                elif f.endswith(".proxy"):
                     proxy_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
+                elif not f.endswith(("~", ".bak")):
+                    named_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
         named_conf.close()
         proxy_conf.close()
 

@@ -2,6 +2,7 @@ univention-bind (14.0.6-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
   * Bug #50385: Fix detecting DNS zones
+  * Bug #57013: Ignore invalid zone files
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 04 Mar 2024 11:03:38 +0100
 
